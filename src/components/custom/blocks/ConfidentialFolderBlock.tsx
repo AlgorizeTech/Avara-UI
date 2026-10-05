@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 
 // ============================================================================
 // CLASSIFIED SECURITY CREST SEAL SVG
-// Geometric security seal emblem for confidential dossiers and classified folders
 // ============================================================================
 export function ClassifiedSeal({
   className,
@@ -29,7 +28,6 @@ export function ClassifiedSeal({
       className={cn("pointer-events-none select-none", className)}
     >
       <g transform="translate(100, 100)">
-        {/* Outer Security Orbit / Dashed Perimeter */}
         <circle
           r={86}
           stroke="currentColor"
@@ -37,58 +35,32 @@ export function ClassifiedSeal({
           strokeDasharray="4 6"
           className="opacity-40"
         />
-
-        {/* Secondary Precision Ring */}
         <circle
           r={78}
           stroke="currentColor"
           strokeWidth={strokeWidth * 0.8}
           className="opacity-55"
         />
-
-        {/* Cardinal Axis Crosshairs */}
         <line x1="-92" y1="0" x2="-80" y2="0" stroke="currentColor" strokeWidth={strokeWidth} className="opacity-70" />
         <line x1="80" y1="0" x2="92" y2="0" stroke="currentColor" strokeWidth={strokeWidth} className="opacity-70" />
         <line x1="0" y1="-92" x2="0" y2="-80" stroke="currentColor" strokeWidth={strokeWidth} className="opacity-70" />
         <line x1="0" y1="80" x2="0" y2="92" stroke="currentColor" strokeWidth={strokeWidth} className="opacity-70" />
-
-        {/* 8-Point Octagonal Security Diamond Geometry */}
         <polygon
           points="0,-64 45,-45 64,0 45,45 0,64 -45,45 -64,0 -45,-45"
           stroke="currentColor"
           strokeWidth={strokeWidth * 0.85}
           className="opacity-35"
         />
-        <polygon
-          points="0,-64 45,-45 64,0 45,45 0,64 -45,45 -64,0 -45,-45"
-          stroke="currentColor"
-          strokeWidth={strokeWidth * 0.65}
-          transform="rotate(22.5)"
-          className="opacity-20"
-        />
-
-        {/* Inner Solid Border Ring */}
         <circle
           r={48}
           stroke="currentColor"
           strokeWidth={strokeWidth}
           className="opacity-65"
         />
-        <circle
-          r={44}
-          stroke="currentColor"
-          strokeWidth={strokeWidth * 0.7}
-          strokeDasharray="2 4"
-          className="opacity-45"
-        />
-
-        {/* Four Micro Security Dots */}
         <circle cx="0" cy="-56" r={1.8} fill="currentColor" className="opacity-60" />
         <circle cx="56" cy="0" r={1.8} fill="currentColor" className="opacity-60" />
         <circle cx="0" cy="56" r={1.8} fill="currentColor" className="opacity-60" />
         <circle cx="-56" cy="0" r={1.8} fill="currentColor" className="opacity-60" />
-
-        {/* Central Classified Security Shield Emblem */}
         <path
           d="M 0 -26 L 20 -16 V 3 C 20 16 11 26 0 30 C -11 26 -20 16 -20 3 V -16 Z"
           stroke="currentColor"
@@ -96,8 +68,6 @@ export function ClassifiedSeal({
           strokeLinejoin="round"
           className="opacity-85"
         />
-
-        {/* Security Shield Inner Lock / Keyhole */}
         <circle
           cx="0"
           cy="-2"
@@ -116,13 +86,154 @@ export function ClassifiedSeal({
   );
 }
 
-// Alias for backward compatibility
 export const OrbitalSpirograph = ClassifiedSeal;
+
+// ============================================================================
+// HYPERBOLT EXPRESS BULLET TRAIN LOGO & WATERMARK SVGS
+// ============================================================================
+export function HyperboltTrainLogo({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 160 56"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("select-none pointer-events-none", className)}
+    >
+      {/* 5 Aerodynamic Speed Streak Fins */}
+      <path d="M 0 32 L 62 32 L 65 28 L 5 28 Z" opacity="0.95" />
+      <path d="M 10 24 L 68 24 L 71 20 L 15 20 Z" opacity="0.95" />
+      <path d="M 22 16 L 76 16 L 79 12 L 28 12 Z" opacity="0.95" />
+      <path d="M 38 8 L 84 8 L 87 4 L 44 4 Z" opacity="0.95" />
+      <path d="M 54 2 L 92 2 L 94 0 L 58 0 Z" opacity="0.95" />
+
+      {/* Main Bullet Locomotive Body */}
+      <path
+        d="M 65 32 L 115 32 C 128 32, 138 28, 144 22 C 147 19, 149 14, 145 11 C 137 3, 118 0, 92 0 L 58 0 L 65 32 Z"
+      />
+
+      {/* Cockpit Windshield */}
+      <path
+        d="M 120 14 C 130 14, 136 18, 138 20 C 133 22, 126 22, 120 22 Z"
+        className="fill-background"
+      />
+
+      {/* Wheel Tracks & Undercarriage */}
+      <rect x="72" y="34" width="7" height="2" rx="1" />
+      <rect x="88" y="34" width="7" height="2" rx="1" />
+      <rect x="106" y="34" width="7" height="2" rx="1" />
+      <line x1="60" y1="38" x2="132" y2="38" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
+export function TrainWatermark({ className }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 160 56"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("pointer-events-none select-none", className)}
+    >
+      <path d="M 0 32 L 62 32 L 65 28 L 5 28 Z" />
+      <path d="M 10 24 L 68 24 L 71 20 L 15 20 Z" />
+      <path d="M 22 16 L 76 16 L 79 12 L 28 12 Z" />
+      <path d="M 38 8 L 84 8 L 87 4 L 44 4 Z" />
+      <path d="M 65 32 L 115 32 C 128 32, 138 28, 144 22 C 147 19, 149 14, 145 11 C 137 3, 118 0, 92 0 L 58 0 L 65 32 Z" />
+    </svg>
+  );
+}
+
+export function HyperboltSleeveSeal({
+  className,
+  style,
+  size = 240,
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+  size?: number | string;
+}) {
+  return (
+    <svg
+      viewBox="0 0 200 200"
+      width={size}
+      height={size}
+      style={style}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={cn("pointer-events-none select-none", className)}
+    >
+      <g transform="translate(100, 100)">
+        {/* Outer Dotted Speed Orbit */}
+        <circle r="86" stroke="currentColor" strokeWidth="1.4" strokeDasharray="4 6" className="opacity-40" />
+        <circle r="78" stroke="currentColor" strokeWidth="1" className="opacity-50" />
+
+        {/* Speed Rays */}
+        <line x1="-92" y1="0" x2="-80" y2="0" stroke="currentColor" strokeWidth="1.5" className="opacity-70" />
+        <line x1="80" y1="0" x2="92" y2="0" stroke="currentColor" strokeWidth="1.5" className="opacity-70" />
+        <line x1="0" y1="-92" x2="0" y2="-80" stroke="currentColor" strokeWidth="1.5" className="opacity-70" />
+        <line x1="0" y1="80" x2="0" y2="92" stroke="currentColor" strokeWidth="1.5" className="opacity-70" />
+
+        {/* Center Bullet Train Silhouette */}
+        <g transform="translate(-40, -14) scale(0.55)">
+          <path d="M 0 32 L 62 32 L 65 28 L 5 28 Z" fill="currentColor" opacity="0.9" />
+          <path d="M 10 24 L 68 24 L 71 20 L 15 20 Z" fill="currentColor" opacity="0.9" />
+          <path d="M 22 16 L 76 16 L 79 12 L 28 12 Z" fill="currentColor" opacity="0.9" />
+          <path d="M 38 8 L 84 8 L 87 4 L 44 4 Z" fill="currentColor" opacity="0.9" />
+          <path d="M 65 32 L 115 32 C 128 32, 138 28, 144 22 C 147 19, 149 14, 145 11 C 137 3, 118 0, 92 0 L 58 0 L 65 32 Z" fill="currentColor" />
+          <circle cx="125" cy="18" r="3" className="fill-background" />
+          <rect x="72" y="34" width="7" height="2" rx="1" fill="currentColor" />
+          <rect x="88" y="34" width="7" height="2" rx="1" fill="currentColor" />
+          <rect x="106" y="34" width="7" height="2" rx="1" fill="currentColor" />
+          <line x1="60" y1="38" x2="132" y2="38" stroke="currentColor" strokeWidth="2" />
+        </g>
+
+        {/* Outer Circular Train Track Markers */}
+        {[0, 45, 90, 135, 180, 225, 270, 315].map((angle, i) => (
+          <circle
+            key={i}
+            cx={70 * Math.cos((angle * Math.PI) / 180)}
+            cy={70 * Math.sin((angle * Math.PI) / 180)}
+            r={1.8}
+            fill="currentColor"
+            className="opacity-60"
+          />
+        ))}
+      </g>
+    </svg>
+  );
+}
+
+export function VerticalBarcode({
+  code = "0 734664 235788",
+  className,
+}: {
+  code?: string;
+  className?: string;
+}) {
+  const bars = [2, 1, 3, 1, 2, 4, 1, 2, 3, 1, 4, 2, 1, 3, 2, 1, 4, 2, 3, 1, 2, 4, 1, 3, 2, 1, 2, 3];
+  return (
+    <div className={cn("flex items-center gap-0.5 select-none", className)}>
+      <div className="flex flex-col gap-[1.2px] min-[400px]:gap-[1.5px] sm:gap-[2.2px] h-16 min-[400px]:h-20 sm:h-32 justify-between">
+        {bars.map((w, i) => (
+          <div
+            key={i}
+            className="w-full bg-foreground rounded-full transition-colors duration-300"
+            style={{ height: `${w * 0.75}px` }}
+          />
+        ))}
+      </div>
+      <span className="[writing-mode:vertical-lr] rotate-180 font-mono text-[4.5px] min-[400px]:text-[5.5px] sm:text-[8px] font-semibold text-foreground/80 tracking-wider transition-colors duration-300">
+        {code}
+      </span>
+    </div>
+  );
+}
 
 // ============================================================================
 // TYPES & PROPS
 // ============================================================================
 export type ConfidentialFolderInteractionMode = "auto-flip" | "step-flip";
+export type ConfidentialFolderCardDesign = "classified" | "train-ticket";
 
 export interface ConfidentialFolderProps
   extends React.HTMLAttributes<HTMLDivElement> {
@@ -130,9 +241,24 @@ export interface ConfidentialFolderProps
   interactionMode?: ConfidentialFolderInteractionMode;
   mode?: ConfidentialFolderInteractionMode;
   variant?: ConfidentialFolderInteractionMode;
+  cardDesign?: ConfidentialFolderCardDesign;
+  cardType?: ConfidentialFolderCardDesign;
+  designVariant?: ConfidentialFolderCardDesign;
   sleeveTitle?: string;
   sleeveSubtitle?: string;
-  // Face 1: Front Cover / Voucher Pass
+  // Train Ticket Specific Props (Matching Exact User Reference)
+  passengerName?: string;
+  routeText?: string;
+  date?: string;
+  departureTime?: string;
+  seatNumber?: string;
+  trainNumber?: string;
+  trainCompany?: string;
+  slogan?: string;
+  barcodeNumber?: string;
+  websiteUrl?: string;
+  ticketTitle?: string;
+  // Face 1: Front Cover / Voucher Pass (General & Classified)
   frontBadge?: string;
   frontSerial?: string;
   frontTitle?: string;
@@ -141,7 +267,7 @@ export interface ConfidentialFolderProps
   stampSuffix?: string;
   barcodeText?: string;
   clearanceLevel?: string;
-  // Face 2: Back Details / Manifesto
+  // Face 2: Back Details / Manifesto (General & Classified)
   cardCategory?: string;
   cardDate?: string;
   cardTitle?: string;
@@ -182,35 +308,49 @@ export interface ConfidentialFolderProps
 
 export function ConfidentialFolder({
   folderColor,
-  interactionMode = "auto-flip",
+  interactionMode = "step-flip",
   mode,
   variant,
+  cardDesign = "classified",
+  cardType,
+  designVariant,
   centerIcon,
-  sleeveTitle = "Designed to endure",
-  sleeveSubtitle = "Crafted for those who value timeless clarity.",
-  // Face 1 (Front Cover Pass)
-  frontBadge = "SPECIAL OFFER",
-  frontSerial = "VOUCHER // 2026-X",
-  frontTitle = "Exclusive Access",
-  frontSubtitle = "Limited edition membership and premium reward voucher.",
-  frontStamp = "VERIFIED",
-  stampSuffix = "// VIP PASS",
-  barcodeText = "COUPON // APEX-07-CORE",
-  clearanceLevel = "REWARD STATUS: ACTIVE",
-  // Face 2 (Back Manifesto Details)
-  cardCategory = "COUPON VOUCHER",
-  cardDate = "VALID // 2026",
-  cardTitle = "The Art of Craft",
-  cardSubtitle = "Foundational reward tier for premium members.",
-  statement = "Redeem this exclusive voucher across any tier. Every detail is crafted with perfection to bring maximum value to your workflow.",
-  highlightQuote = "Unlock 50% off on all annual pro plans.",
-  authorText = "PRO MEMBERSHIP",
-  metric1Label = "DISCOUNT",
-  metric1Value = "50% OFF",
-  metric2Label = "TIER",
-  metric2Value = "VIP Elite",
-  metric3Label = "STATUS",
-  metric3Value = "Active",
+  sleeveTitle,
+  sleeveSubtitle,
+  // Train Ticket Reference Defaults (1:1 with Reference Image)
+  passengerName = "Barbara M. Sandoval",
+  routeText = "ZÜRICH HB - PARIS-EST",
+  date = "25/11/2024",
+  departureTime = "06.30",
+  seatNumber = "18A",
+  trainNumber = "6",
+  trainCompany = "HYPERBOLT EXPRESS",
+  slogan = "UNLEASH THE POWER OF SPEED WITH HYPERBOLT EXPRESS",
+  barcodeNumber = "0 734664 235788",
+  websiteUrl = "HYPERBOLTEXPRESS.COM",
+  ticketTitle = "TRAIN ONLINE TICKET",
+  // Classified Defaults
+  frontBadge,
+  frontSerial,
+  frontTitle,
+  frontSubtitle,
+  frontStamp,
+  stampSuffix,
+  barcodeText,
+  clearanceLevel,
+  cardCategory,
+  cardDate,
+  cardTitle,
+  cardSubtitle,
+  statement,
+  highlightQuote,
+  authorText,
+  metric1Label,
+  metric1Value,
+  metric2Label,
+  metric2Value,
+  metric3Label,
+  metric3Value,
   initialPeek = 38,
   hoverPeek = 88,
   cardBadge,
@@ -236,19 +376,14 @@ export function ConfidentialFolder({
   const activeMode: ConfidentialFolderInteractionMode =
     mode ?? variant ?? interactionMode ?? "auto-flip";
 
+  const activeDesign: ConfidentialFolderCardDesign =
+    cardType ?? designVariant ?? cardDesign ?? "classified";
+
+  const isTrainTicket = activeDesign === "train-ticket";
+
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Animation Stages:
-  // "inside"            -> Card resting inside (peeks out by initialPeek or hoverPeek)
-  // "sliding-out"       -> Card sliding out completely to the right (behind sleeve, zIndex 10, rotateY 0deg)
-  // "sliding-in-top"    -> Card arrives on top of sleeve (zIndex 30, rotate -2.5deg, rotateY 0deg)
-  // "resting-top-front" -> (step-flip) Sits on top showing Face 1 (Front Cover)
-  // "flipping-open"     -> Flips 180° in place on top of sleeve to reveal Face 2 (Back Details)
-  // "resting-top"       -> Fully settled on top showing Face 2 (rotateY 180deg)
-  // "flipping-close"    -> Flips back 180° in place from Face 2 to Face 1
-  // "sliding-out-top"   -> Card slides out to the right in front of sleeve
-  // "sliding-in-back"   -> Card slides back into sleeve pocket
   const [animStage, setAnimStage] = useState<
     | "inside"
     | "sliding-out"
@@ -267,9 +402,7 @@ export function ConfidentialFolder({
       : "inside"
   );
 
-  // zIndex elevates to 30 only when outside sleeve
   const [cardZIndex, setCardZIndex] = useState(defaultOpen ? 30 : 10);
-
   const isTransitioningRef = useRef(false);
 
   const handleToggle = () => {
@@ -277,21 +410,12 @@ export function ConfidentialFolder({
     isTransitioningRef.current = true;
 
     if (activeMode === "step-flip") {
-      // ======================================================================
-      // 3-STAGE STEP-FLIP INTERACTION:
-      // Click 1: Slide out and seat on top showing Face 1 (Front Cover)
-      // Click 2: Flip 180° in place showing Face 2 (Back Details)
-      // Click 3: Flip back & slide back into sleeve
-      // ======================================================================
       if (animStage === "inside") {
         setAnimStage("sliding-out");
-
         setTimeout(() => {
           setCardZIndex(30);
-
           setTimeout(() => {
             setAnimStage("sliding-in-top");
-
             setTimeout(() => {
               setAnimStage("resting-top-front");
               setIsOpen(true);
@@ -302,23 +426,18 @@ export function ConfidentialFolder({
         }, 380);
       } else if (animStage === "resting-top-front") {
         setAnimStage("flipping-open");
-
         setTimeout(() => {
           setAnimStage("resting-top");
           isTransitioningRef.current = false;
         }, 580);
       } else if (animStage === "resting-top") {
         setAnimStage("flipping-close");
-
         setTimeout(() => {
           setAnimStage("sliding-out-top");
-
           setTimeout(() => {
             setCardZIndex(10);
-
             setTimeout(() => {
               setAnimStage("sliding-in-back");
-
               setTimeout(() => {
                 setAnimStage("inside");
                 setIsOpen(false);
@@ -332,23 +451,14 @@ export function ConfidentialFolder({
         isTransitioningRef.current = false;
       }
     } else {
-      // ======================================================================
-      // DEFAULT AUTO-FLIP INTERACTION:
-      // Click 1: Slide out -> Sit on top -> Auto flip 180° to Face 2
-      // Click 2: Flip back -> Slide out -> Slide into sleeve
-      // ======================================================================
       if (!isOpen || animStage === "inside") {
         setAnimStage("sliding-out");
-
         setTimeout(() => {
           setCardZIndex(30);
-
           setTimeout(() => {
             setAnimStage("sliding-in-top");
-
             setTimeout(() => {
               setAnimStage("flipping-open");
-
               setTimeout(() => {
                 setAnimStage("resting-top");
                 setIsOpen(true);
@@ -360,16 +470,12 @@ export function ConfidentialFolder({
         }, 380);
       } else {
         setAnimStage("flipping-close");
-
         setTimeout(() => {
           setAnimStage("sliding-out-top");
-
           setTimeout(() => {
             setCardZIndex(10);
-
             setTimeout(() => {
               setAnimStage("sliding-in-back");
-
               setTimeout(() => {
                 setAnimStage("inside");
                 setIsOpen(false);
@@ -383,7 +489,6 @@ export function ConfidentialFolder({
     }
   };
 
-  // Keyboard navigation
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
@@ -396,7 +501,6 @@ export function ConfidentialFolder({
 
   const isSleeveShifted = animStage === "sliding-out" || animStage === "sliding-out-top";
 
-  // Compute Card CSS transform based on animation stage & hover
   let cardTransform = "translate3d(var(--cf-initial-peek, 14px), 0px, 0px) rotateY(0deg)";
   let cardTransition = "transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)";
 
@@ -435,7 +539,16 @@ export function ConfidentialFolder({
 
   const isAdaptive = cardVariant === "adaptive";
 
-  // Resolve Face 1 & Face 2 labels
+  // Resolved Sleeve Text
+  const resolvedSleeveTitle =
+    sleeveTitle || (isTrainTicket ? "Hyperbolt Express" : "Designed to endure");
+  const resolvedSleeveSubtitle =
+    sleeveSubtitle ||
+    (isTrainTicket
+      ? "High-speed European rail transit pass."
+      : "Crafted for those who value timeless clarity.");
+
+  // Classified Mode Labels
   const fBadge = frontBadge || cardBadge || sessionLabel || "SPECIAL OFFER";
   const fSerial = frontSerial || cardVersion || sessionNumber || "VOUCHER // 2026-X";
   const fTitle = frontTitle || cardTitle || "Exclusive Access";
@@ -476,19 +589,19 @@ export function ConfidentialFolder({
           --cf-sleeve-shift: -42%;
           --cf-initial-peek: ${Math.round(initialPeek * 0.35)}px;
           --cf-hover-peek: ${Math.round(hoverPeek * 0.35)}px;
-          --cf-base: var(--cf-override, var(--primary, #6366f1));
-          --cf-flap: oklch(from var(--cf-base) 0.88 calc(c * 0.4) h);
-          --cf-plate: oklch(from var(--cf-base) 0.80 calc(c * 0.5) h);
-          --cf-ink: oklch(from var(--cf-base) 0.32 calc(c * 0.6) h);
-          --cf-ink-muted: oklch(from var(--cf-base) 0.45 calc(c * 0.35) h);
-          --cf-spiro: oklch(from var(--cf-base) 0.38 calc(c * 0.5) h / 0.55);
-          --cf-stroke-flap: oklch(from var(--cf-base) 0.76 calc(c * 0.3) h / 0.35);
-          --cf-stroke-plate: oklch(from var(--cf-base) 0.68 calc(c * 0.3) h / 0.25);
+          --cf-base: var(--cf-override, var(--primary, #0284c7));
+          --cf-flap: ${isTrainTicket ? "oklch(from var(--cf-base) 0.93 calc(c * 0.25) h)" : "oklch(from var(--cf-base) 0.88 calc(c * 0.4) h)"};
+          --cf-plate: ${isTrainTicket ? "oklch(from var(--cf-base) 0.82 calc(c * 0.35) h)" : "oklch(from var(--cf-base) 0.80 calc(c * 0.5) h)"};
+          --cf-ink: ${isTrainTicket ? "oklch(from var(--cf-base) 0.15 calc(c * 0.6) h)" : "oklch(from var(--cf-base) 0.22 calc(c * 0.5) h)"};
+          --cf-ink-muted: ${isTrainTicket ? "oklch(from var(--cf-base) 0.35 calc(c * 0.35) h)" : "oklch(from var(--cf-base) 0.45 calc(c * 0.35) h)"};
+          --cf-spiro: oklch(from var(--cf-base) 0.38 calc(c * 0.5) h / 0.75);
+          --cf-stroke-flap: oklch(from var(--cf-base) 0.68 calc(c * 0.3) h / 0.5);
+          --cf-stroke-plate: oklch(from var(--cf-base) 0.60 calc(c * 0.3) h / 0.4);
           --cf-card-bg: var(--card, #ffffff);
-          --cf-card-border: var(--border, rgba(0, 0, 0, 0.08));
-          --cf-card-text: oklch(from var(--cf-base) 0.22 calc(c * 0.5) h);
-          --cf-card-subtext: oklch(from var(--cf-base) 0.38 calc(c * 0.3) h);
-          --cf-divider: oklch(from var(--cf-base) 0.88 calc(c * 0.2) h);
+          --cf-card-border: var(--border, rgba(0, 0, 0, 0.12));
+          --cf-card-text: var(--foreground, #0f172a);
+          --cf-card-subtext: var(--muted-foreground, #64748b);
+          --cf-divider: var(--border, rgba(0, 0, 0, 0.12));
         }
         @media (min-width: 640px) {
           .cf-theme-scope {
@@ -499,18 +612,18 @@ export function ConfidentialFolder({
         }
         :is(.dark, .dark *) .cf-theme-scope,
         .cf-theme-scope:is(.dark, .dark *) {
-          --cf-flap: oklch(from var(--cf-base) 0.22 calc(c * 0.35) h);
-          --cf-plate: oklch(from var(--cf-base) 0.15 calc(c * 0.25) h);
+          --cf-flap: ${isTrainTicket ? "oklch(from var(--cf-base) 0.22 calc(c * 0.35) h)" : "oklch(from var(--cf-base) 0.22 calc(c * 0.35) h)"};
+          --cf-plate: ${isTrainTicket ? "oklch(from var(--cf-base) 0.15 calc(c * 0.25) h)" : "oklch(from var(--cf-base) 0.15 calc(c * 0.25) h)"};
           --cf-ink: #ffffff;
-          --cf-ink-muted: oklch(from var(--cf-base) 0.75 calc(c * 0.15) h);
-          --cf-spiro: oklch(from var(--cf-base) 0.85 calc(c * 0.4) h / 0.75);
-          --cf-stroke-flap: rgba(255, 255, 255, 0.12);
+          --cf-ink-muted: oklch(from var(--cf-base) 0.82 calc(c * 0.12) h);
+          --cf-spiro: oklch(from var(--cf-base) 0.85 calc(c * 0.35) h / 0.85);
+          --cf-stroke-flap: rgba(255, 255, 255, 0.16);
           --cf-stroke-plate: rgba(255, 255, 255, 0.08);
-          --cf-card-bg: var(--card, oklch(from var(--cf-base) 0.16 calc(c * 0.2) h));
-          --cf-card-border: var(--border, rgba(255, 255, 255, 0.1));
+          --cf-card-bg: var(--card, oklch(from var(--cf-base) 0.16 calc(c * 0.15) h));
+          --cf-card-border: var(--border, rgba(255, 255, 255, 0.12));
           --cf-card-text: #ffffff;
-          --cf-card-subtext: oklch(from var(--cf-base) 0.80 calc(c * 0.1) h);
-          --cf-divider: oklch(from var(--cf-base) 0.32 calc(c * 0.25) h / 0.5);
+          --cf-card-subtext: oklch(from var(--cf-base) 0.80 calc(c * 0.08) h);
+          --cf-divider: rgba(255, 255, 255, 0.12);
         }
       `}</style>
 
@@ -519,7 +632,7 @@ export function ConfidentialFolder({
         role="button"
         tabIndex={0}
         aria-expanded={isOpen}
-        aria-label={`${sleeveTitle} coupon card. Click to ${isOpen ? "close" : "open"}`}
+        aria-label={`${resolvedSleeveTitle} coupon card. Click to ${isOpen ? "close" : "open"}`}
         onKeyDown={handleKeyDown}
         onClick={handleToggle}
         onMouseEnter={() => setIsHovered(true)}
@@ -531,14 +644,13 @@ export function ConfidentialFolder({
           borderRadius: "var(--radius, 1.25rem)",
         }}
         className={cn(
-          "relative w-[160px] min-[400px]:w-[185px] sm:w-[360px] h-[215px] min-[400px]:h-[247px] sm:h-[480px] cursor-pointer outline-none select-none will-change-transform shadow-[0_0_15px_rgba(0,0,0,0.05)] dark:shadow-[0_0_20px_rgba(0,0,0,0.35)]",
+          "relative w-[160px] min-[400px]:w-[185px] sm:w-[360px] h-[215px] min-[400px]:h-[247px] sm:h-[480px] cursor-pointer outline-none select-none shadow-[0_0_15px_rgba(0,0,0,0.05)] dark:shadow-[0_0_20px_rgba(0,0,0,0.35)]",
           "focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-4 focus-visible:ring-offset-background",
           sleeveClassName
         )}
       >
         {/* ============================================================== */}
         {/* LAYER 1: BACK PLATE (Folder Sleeve Backing)                     */}
-        {/* Uses global border-radius dynamically with theme palette        */}
         {/* ============================================================== */}
         <div
           className="absolute inset-0 pointer-events-none border transition-colors duration-300"
@@ -550,8 +662,7 @@ export function ConfidentialFolder({
         />
 
         {/* ============================================================== */}
-        {/* LAYER 2: THE CARD (Dual-Sided 3D Flipping Document)            */}
-        {/* Glides out horizontally and flips 180° onto the front sleeve   */}
+        {/* LAYER 2: THE CARD (Dual-Sided 3D Flipping Ticket)              */}
         {/* ============================================================== */}
         <div
           style={{
@@ -563,105 +674,251 @@ export function ConfidentialFolder({
           }}
           className={cn(
             "absolute inset-x-1.5 min-[400px]:inset-x-2 sm:inset-x-3.5 top-1 min-[400px]:top-1.5 sm:top-5 bottom-1 min-[400px]:bottom-1.5 sm:bottom-5",
-            "will-change-transform transform-gpu pointer-events-auto",
+            "pointer-events-auto",
             cardClassName
           )}
         >
           {/* ============================================================ */}
-          {/* FACE 1: FRONT FACE (Voucher Pass & Clearance Badge)          */}
-          {/* Visible when resting inside or seated on top before flip     */}
+          {/* FACE 1: FRONT FACE OF TICKET (Left side in user's image)     */}
           {/* ============================================================ */}
           <div
             style={{
               backfaceVisibility: "hidden",
               WebkitBackfaceVisibility: "hidden",
               borderRadius: "calc(var(--radius, 1.25rem) - 2px)",
-              backgroundColor: isAdaptive ? "var(--cf-card-bg)" : "#f4efe6",
-              borderColor: isAdaptive ? "var(--cf-card-border)" : "#e5dfd4",
-              color: isAdaptive ? "var(--cf-card-text)" : "#1c1b18",
+              color: isAdaptive ? "var(--cf-card-text)" : "#0f172a",
             }}
             className={cn(
-              "absolute inset-0 border shadow-[0_0_14px_rgba(0,0,0,0.07)] dark:shadow-[0_0_16px_rgba(0,0,0,0.35)] overflow-hidden flex flex-col justify-between p-2 min-[400px]:p-2.5 sm:p-6 select-none transition-colors duration-300"
+              "absolute inset-0 shadow-[0_0_14px_rgba(0,0,0,0.07)] dark:shadow-[0_0_16px_rgba(0,0,0,0.35)] flex flex-col justify-between select-none transition-colors duration-300",
+              isTrainTicket ? "p-0 bg-transparent border-0" : "p-2 min-[400px]:p-2.5 sm:p-5 border bg-card border-border"
             )}
           >
-            {/* Header */}
-            <div>
-              <div className="flex items-center justify-between font-mono text-[6px] min-[400px]:text-[7.5px] sm:text-[11px] font-semibold tracking-wider">
-                <div className="flex items-center gap-1 sm:gap-1.5 text-primary">
-                  <span className="w-1 h-1 min-[400px]:w-1.5 min-[400px]:h-1.5 rounded-full bg-primary animate-pulse" />
-                  <span>{fBadge}</span>
+            {isTrainTicket ? (
+              /* -------------------------------------------------------- */
+              /* EXACT 1:1 REPLICA OF LEFT TICKET (FRONT FACE)            */
+              /* -------------------------------------------------------- */
+              <div className="relative w-full h-full flex flex-col justify-between text-foreground select-none">
+                {/* 100% Vector Card Shell with Inward Curved Notch Borders (All-Time Transparent Cutouts) */}
+                <svg
+                  viewBox="0 0 340 440"
+                  preserveAspectRatio="none"
+                  className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible text-border/80"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M 16 0 L 324 0 A 16 16 0 0 1 340 16 L 340 266 A 14 14 0 0 0 340 294 L 340 424 A 16 16 0 0 1 324 440 L 16 440 A 16 16 0 0 1 0 424 L 0 294 A 14 14 0 0 0 0 266 L 0 16 A 16 16 0 0 1 16 0 Z"
+                    className="fill-card transition-colors duration-300"
+                    stroke="currentColor"
+                    strokeWidth="1.2"
+                    vectorEffect="non-scaling-stroke"
+                  />
+                </svg>
+
+                {/* Card Content (Layered over the SVG Shell) */}
+                <div className="relative z-10 w-full h-full flex flex-col justify-between">
+                  {/* Upper Section */}
+                  <div>
+                    {/* 1. Top Blue/Primary Pill Banner Tab */}
+                    <div className="w-full flex justify-center px-3 pt-1.5 sm:pt-3">
+                      <div className="w-full sm:w-[94%] py-1 sm:py-2 px-2 rounded-b-xl sm:rounded-b-2xl bg-primary text-primary-foreground text-center font-sans font-black tracking-wider text-[7px] min-[400px]:text-[8.5px] sm:text-[14px] uppercase shadow-xs transition-colors duration-300">
+                        {ticketTitle}
+                      </div>
+                    </div>
+
+                    {/* 2. Upper Passenger & Trip Info Grid */}
+                    <div className="px-3 min-[400px]:px-4 sm:px-6 py-1 sm:py-2 flex items-center justify-between">
+                      <div className="flex flex-col text-left space-y-1 sm:space-y-2">
+                        {/* Passenger Name */}
+                        <div>
+                          <span className="block font-sans text-[4.5px] min-[400px]:text-[5.5px] sm:text-[9px] font-bold text-muted-foreground uppercase tracking-wide">
+                            PASSENGER NAME
+                          </span>
+                          <span className="block font-sans text-[6px] min-[400px]:text-[7.5px] sm:text-[13px] font-semibold text-foreground leading-tight">
+                            {passengerName}
+                          </span>
+                        </div>
+
+                        {/* Date & Departure */}
+                        <div className="flex items-center gap-2 sm:gap-6">
+                          <div>
+                            <span className="block font-sans text-[4.5px] min-[400px]:text-[5.5px] sm:text-[8.5px] font-bold text-muted-foreground uppercase">
+                              DATE
+                            </span>
+                            <span className="block font-sans text-[5.5px] min-[400px]:text-[7px] sm:text-[11.5px] font-medium text-foreground">
+                              {date}
+                            </span>
+                          </div>
+                          <div>
+                            <span className="block font-sans text-[4.5px] min-[400px]:text-[5.5px] sm:text-[8.5px] font-bold text-muted-foreground uppercase">
+                              DEPARTURE
+                            </span>
+                            <span className="block font-sans text-[5.5px] min-[400px]:text-[7px] sm:text-[11.5px] font-medium text-foreground">
+                              {departureTime}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Seat & Train */}
+                        <div className="flex items-center gap-3 sm:gap-8">
+                          <div>
+                            <span className="block font-sans text-[4.5px] min-[400px]:text-[5.5px] sm:text-[8.5px] font-bold text-muted-foreground uppercase">
+                              SEAT
+                            </span>
+                            <span className="block font-sans text-[8px] min-[400px]:text-[10px] sm:text-[17px] font-black text-foreground leading-none mt-0.5">
+                              {seatNumber}
+                            </span>
+                          </div>
+                          <div>
+                            <span className="block font-sans text-[4.5px] min-[400px]:text-[5.5px] sm:text-[8.5px] font-bold text-muted-foreground uppercase">
+                              TRAIN
+                            </span>
+                            <span className="block font-sans text-[8px] min-[400px]:text-[10px] sm:text-[17px] font-black text-foreground leading-none mt-0.5">
+                              {trainNumber}
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Vertical Barcode on Right */}
+                      <div className="shrink-0 pl-1">
+                        <VerticalBarcode code={barcodeNumber} />
+                      </div>
+                    </div>
+
+                    {/* 3. Middle Primary Station Banner with Watermark */}
+                    <div className="relative w-full bg-primary py-1 sm:py-2.5 px-3 flex items-center justify-center overflow-hidden transition-colors duration-300">
+                      <TrainWatermark className="absolute inset-0 w-full h-full object-cover text-primary-foreground opacity-30" />
+                      <span className="relative z-10 text-primary-foreground font-sans font-black tracking-wider text-[8px] min-[400px]:text-[10px] sm:text-[16px] uppercase truncate drop-shadow-xs">
+                        {routeText}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Dotted Perforation Line (Extends seamlessly from Left Notch to Right Notch) */}
+                  <div className="relative w-full flex items-center justify-between px-3 sm:px-4 my-auto select-none">
+                    <div className="w-full border-t-2 border-dotted border-border/80" />
+                  </div>
+
+                  {/* 4. Bottom Tear-Off Stub (Lower Section) */}
+                  <div className="px-3 min-[400px]:px-4 sm:px-6 pb-2 pt-0.5 sm:pb-3.5 flex flex-col justify-between">
+                    {/* Mini Primary banner */}
+                    <div className="w-full bg-primary text-primary-foreground text-center font-sans font-bold tracking-wider text-[5px] min-[400px]:text-[6.5px] sm:text-[10.5px] py-0.5 sm:py-1 rounded-sm uppercase mb-1 transition-colors duration-300">
+                      {ticketTitle}
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="flex flex-col space-y-0.5 sm:space-y-1">
+                        <div>
+                          <span className="block font-sans text-[4px] min-[400px]:text-[5px] sm:text-[7.5px] font-bold text-muted-foreground uppercase">
+                            PASSENGER NAME
+                          </span>
+                          <span className="block font-sans text-[5px] min-[400px]:text-[6.5px] sm:text-[10.5px] font-semibold text-foreground">
+                            {passengerName}
+                          </span>
+                        </div>
+
+                        <div className="flex items-center gap-1.5 sm:gap-3 text-[4px] min-[400px]:text-[5px] sm:text-[8px] text-muted-foreground">
+                          <div>
+                            <span className="font-bold text-foreground">SEAT:</span> {seatNumber}
+                          </div>
+                          <div>
+                            <span className="font-bold text-foreground">TRAIN:</span> {trainNumber}
+                          </div>
+                          <div>
+                            <span className="font-bold text-foreground">DATE:</span> {date}
+                          </div>
+                        </div>
+
+                        {/* Solid Station Badge */}
+                        <div className="mt-0.5 sm:mt-1 bg-zinc-950 dark:bg-black text-white px-1 sm:px-2 py-0.5 rounded-sm font-sans font-bold text-[5px] min-[400px]:text-[6px] sm:text-[9.5px] tracking-wider uppercase inline-block">
+                          {routeText}
+                        </div>
+                      </div>
+
+                      {/* Mini Vertical Barcode */}
+                      <div className="shrink-0 pl-1">
+                        <VerticalBarcode code={barcodeNumber} className="scale-75 sm:scale-90 origin-right" />
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <span className="opacity-75 font-mono">{fSerial}</span>
               </div>
+            ) : (
+              /* -------------------------------------------------------- */
+              /* CLASSIFIED DOSSIER FACE 1 (Voucher Pass & Clearance)     */
+              /* -------------------------------------------------------- */
+              <>
+                <div>
+                  <div className="flex items-center justify-between font-mono text-[6px] min-[400px]:text-[7.5px] sm:text-[11px] font-semibold tracking-wider">
+                    <div className="flex items-center gap-1 sm:gap-1.5 text-primary">
+                      <span className="w-1 h-1 min-[400px]:w-1.5 min-[400px]:h-1.5 rounded-full bg-primary animate-pulse" />
+                      <span>{fBadge}</span>
+                    </div>
+                    <span className="opacity-75 font-mono">{fSerial}</span>
+                  </div>
+                  <div
+                    className="w-full h-px my-0.5 min-[400px]:my-1 sm:my-3 transition-colors duration-300"
+                    style={{ backgroundColor: isAdaptive ? "var(--cf-divider)" : "#e5dfd4" }}
+                  />
+                  <h3
+                    className="text-[10.5px] min-[400px]:text-[13px] sm:text-[22px] font-semibold tracking-tight font-sans leading-tight transition-colors duration-300"
+                    style={{ color: isAdaptive ? "var(--cf-card-text)" : "#1a1917" }}
+                  >
+                    {fTitle}
+                  </h3>
+                  <p
+                    className="text-[7px] min-[400px]:text-[8.5px] sm:text-[13px] leading-tight sm:leading-relaxed mt-0.5 sm:mt-1 transition-colors duration-300 line-clamp-2 sm:line-clamp-none"
+                    style={{ color: isAdaptive ? "var(--cf-card-subtext)" : "#475569" }}
+                  >
+                    {fSubtitle}
+                  </p>
+                </div>
 
-              <div
-                className="w-full h-px my-0.5 min-[400px]:my-1 sm:my-3 transition-colors duration-300"
-                style={{ backgroundColor: isAdaptive ? "var(--cf-divider)" : "#e5dfd4" }}
-              />
+                <div className="my-auto py-0.5 min-[400px]:py-1 sm:py-2 flex flex-col items-center justify-center">
+                  <div
+                    className={cn(
+                      "px-1.5 min-[400px]:px-2 sm:px-3.5 py-0.5 min-[400px]:py-1 sm:py-1.5 rounded-md border-2 border-dashed font-mono font-bold text-[6.5px] min-[400px]:text-[8px] sm:text-[12px] tracking-[0.1em] sm:tracking-[0.2em] uppercase select-none transform -rotate-2 shadow-[0_0_6px_rgba(244,63,94,0.12)]",
+                      "border-rose-500/80 text-rose-600 dark:border-rose-400/80 dark:text-rose-400 bg-rose-500/5"
+                    )}
+                  >
+                    {fStamp} {fStampSuffix}
+                  </div>
+                  <div className="mt-1 min-[400px]:mt-1.5 sm:mt-4 flex flex-col items-center gap-1 opacity-70">
+                    <div className="h-2.5 min-[400px]:h-3.5 sm:h-6 flex items-center gap-[1.5px] sm:gap-[3px]">
+                      {[2, 4, 1, 3, 2, 5, 2, 1, 4, 3, 1, 5, 2, 3, 4, 2, 1, 3, 5, 2, 4, 1, 3].map((w, i) => (
+                        <div
+                          key={i}
+                          className="h-full bg-current rounded-full"
+                          style={{ width: `${w}px` }}
+                        />
+                      ))}
+                    </div>
+                    <span className="font-mono text-[5px] min-[400px]:text-[6.5px] sm:text-[9px] tracking-wider uppercase opacity-75">
+                      {fBarcode}
+                    </span>
+                  </div>
+                </div>
 
-              <h3
-                className="text-[10.5px] min-[400px]:text-[13px] sm:text-[22px] font-semibold tracking-tight font-sans leading-tight transition-colors duration-300"
-                style={{ color: isAdaptive ? "var(--cf-card-text)" : "#1a1917" }}
-              >
-                {fTitle}
-              </h3>
-
-              <p
-                className="text-[7px] min-[400px]:text-[8.5px] sm:text-[13px] leading-tight sm:leading-relaxed mt-0.5 sm:mt-1 transition-colors duration-300 line-clamp-2 sm:line-clamp-none"
-                style={{ color: isAdaptive ? "var(--cf-card-subtext)" : "#475569" }}
-              >
-                {fSubtitle}
-              </p>
-            </div>
-
-            {/* Centerpiece: Authentic Clearance Stamp & Security Barcode */}
-            <div className="my-auto py-0.5 min-[400px]:py-1 sm:py-2 flex flex-col items-center justify-center">
-              <div
-                className={cn(
-                  "px-1.5 min-[400px]:px-2 sm:px-3.5 py-0.5 min-[400px]:py-1 sm:py-1.5 rounded-md border-2 border-dashed font-mono font-bold text-[6.5px] min-[400px]:text-[8px] sm:text-[12px] tracking-[0.1em] sm:tracking-[0.2em] uppercase select-none transform -rotate-2 shadow-[0_0_6px_rgba(244,63,94,0.12)]",
-                  "border-rose-500/80 text-rose-600 dark:border-rose-400/80 dark:text-rose-400 bg-rose-500/5"
-                )}
-              >
-                {fStamp} {fStampSuffix}
-              </div>
-
-              {/* Cryptographic barcode vector */}
-              <div className="mt-1 min-[400px]:mt-1.5 sm:mt-4 flex flex-col items-center gap-1 opacity-70">
-                <div className="h-2.5 min-[400px]:h-3.5 sm:h-6 flex items-center gap-[1.5px] sm:gap-[3px]">
-                  {[2, 4, 1, 3, 2, 5, 2, 1, 4, 3, 1, 5, 2, 3, 4, 2, 1, 3, 5, 2, 4, 1, 3].map((w, i) => (
-                    <div
-                      key={i}
-                      className="h-full bg-current rounded-full"
-                      style={{ width: `${w}px` }}
+                <div className="mt-auto pt-0.5 min-[400px]:pt-1 sm:pt-2">
+                  <div
+                    className="w-full h-px mb-0.5 min-[400px]:mb-1 sm:mb-3 transition-colors duration-300"
+                    style={{ backgroundColor: isAdaptive ? "var(--cf-divider)" : "#e5dfd4" }}
+                  />
+                  <div className="flex items-center justify-between font-mono text-[5.5px] min-[400px]:text-[7px] sm:text-[9.5px] tracking-wider uppercase opacity-75">
+                    <span>{fStatus}</span>
+                    <ClassifiedSeal
+                      size={16}
+                      strokeWidth={1.2}
+                      className="w-[11px] h-[11px] min-[400px]:w-[14px] min-[400px]:h-[14px] sm:w-[22px] sm:h-[22px] opacity-80 text-primary"
                     />
-                  ))}
+                  </div>
                 </div>
-                <span className="font-mono text-[5px] min-[400px]:text-[6.5px] sm:text-[9px] tracking-wider uppercase opacity-75">
-                  {fBarcode}
-                </span>
-              </div>
-            </div>
-
-            {/* Footer Bar */}
-            <div className="mt-auto pt-0.5 min-[400px]:pt-1 sm:pt-2">
-              <div
-                className="w-full h-px mb-0.5 min-[400px]:mb-1 sm:mb-3 transition-colors duration-300"
-                style={{ backgroundColor: isAdaptive ? "var(--cf-divider)" : "#e5dfd4" }}
-              />
-              <div className="flex items-center justify-between font-mono text-[5.5px] min-[400px]:text-[7px] sm:text-[9.5px] tracking-wider uppercase opacity-75">
-                <span>{fStatus}</span>
-                <ClassifiedSeal
-                  size={16}
-                  strokeWidth={1.2}
-                  className="w-[11px] h-[11px] min-[400px]:w-[14px] min-[400px]:h-[14px] sm:w-[22px] sm:h-[22px] opacity-80 text-primary"
-                />
-              </div>
-            </div>
+              </>
+            )}
           </div>
 
           {/* ============================================================ */}
-          {/* FACE 2: BACK FACE (Editorial Manifesto & Reward Breakdown)  */}
-          {/* Revealed upon 180° flip                                      */}
+          {/* FACE 2: BACK FACE OF TICKET (Right side in user's image)     */}
           {/* ============================================================ */}
           <div
             style={{
@@ -669,206 +926,282 @@ export function ConfidentialFolder({
               WebkitBackfaceVisibility: "hidden",
               transform: "rotateY(180deg)",
               borderRadius: "calc(var(--radius, 1.25rem) - 2px)",
-              backgroundColor: isAdaptive ? "var(--cf-card-bg)" : "#f4efe6",
-              borderColor: isAdaptive ? "var(--cf-card-border)" : "#e5dfd4",
-              color: isAdaptive ? "var(--cf-card-text)" : "#1c1b18",
+              color: isAdaptive ? "var(--cf-card-text)" : "#0f172a",
             }}
             className={cn(
-              "absolute inset-0 border shadow-[0_0_14px_rgba(0,0,0,0.07)] dark:shadow-[0_0_16px_rgba(0,0,0,0.35)] overflow-hidden flex flex-col justify-between p-2 min-[400px]:p-2.5 sm:p-6 select-none transition-colors duration-300"
+              "absolute inset-0 shadow-[0_0_14px_rgba(0,0,0,0.07)] dark:shadow-[0_0_16px_rgba(0,0,0,0.35)] flex flex-col justify-between select-none transition-colors duration-300",
+              isTrainTicket ? "p-0 bg-transparent border-0" : "p-2 min-[400px]:p-2.5 sm:p-5 border bg-card border-border"
             )}
           >
-            {/* Top Section */}
-            <div>
-              {/* Category & Edition Date */}
-              <div className="flex items-center justify-between font-mono text-[6px] min-[400px]:text-[7.5px] sm:text-[10.5px] font-semibold tracking-wider">
-                <div className="flex items-center gap-1 sm:gap-1.5 text-primary">
-                  <span className="w-1 h-1 min-[400px]:w-1.5 min-[400px]:h-1.5 rounded-full bg-primary" />
-                  <span>{bCategory}</span>
-                </div>
-                <span className="opacity-60 font-mono text-[5.5px] min-[400px]:text-[7px] sm:text-[10px] tracking-wide">
-                  {bDate}
-                </span>
-              </div>
-
-              {/* Title & Subtitle */}
-              <div className="mt-0.5 min-[400px]:mt-1 sm:mt-3">
-                <h3
-                  className="text-[10.5px] min-[400px]:text-[13px] sm:text-[21px] font-semibold tracking-tight font-sans leading-tight transition-colors duration-300"
-                  style={{ color: isAdaptive ? "var(--cf-card-text)" : "#1a1917" }}
+            {isTrainTicket ? (
+              /* -------------------------------------------------------- */
+              /* EXACT 1:1 REPLICA OF RIGHT TICKET (BACK FACE)            */
+              /* -------------------------------------------------------- */
+              <div className="relative w-full h-full flex flex-col justify-between text-foreground select-none">
+                {/* 100% Vector Card Shell with Inward Curved Notch Borders (All-Time Transparent Cutouts) */}
+                <svg
+                  viewBox="0 0 340 440"
+                  preserveAspectRatio="none"
+                  className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible text-border/80"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  {bTitle}
-                </h3>
-                <p
-                  className="text-[6.5px] min-[400px]:text-[8px] sm:text-[12.5px] leading-tight sm:leading-normal mt-0.5 sm:mt-1 transition-colors duration-300"
-                  style={{ color: isAdaptive ? "var(--cf-card-subtext)" : "#57534e" }}
-                >
-                  {bSubtitle}
-                </p>
-              </div>
+                  {/* Top Half: Card background */}
+                  <path
+                    d="M 16 0 L 324 0 A 16 16 0 0 1 340 16 L 340 216 A 14 14 0 0 0 340 244 L 340 244 L 0 244 L 0 244 A 14 14 0 0 0 0 216 L 0 16 A 16 16 0 0 1 16 0 Z"
+                    className="fill-card transition-colors duration-300"
+                  />
+                  {/* Bottom Half: Primary Blue background */}
+                  <path
+                    d="M 0 244 L 340 244 L 340 424 A 16 16 0 0 1 324 440 L 16 440 A 16 16 0 0 1 0 424 Z"
+                    className="fill-primary transition-colors duration-300"
+                  />
+                  {/* Full Continuous Outer Perimeter Stroke with Inward Curved Notch Arcs */}
+                  <path
+                    d="M 16 0 L 324 0 A 16 16 0 0 1 340 16 L 340 216 A 14 14 0 0 0 340 244 L 340 424 A 16 16 0 0 1 324 440 L 16 440 A 16 16 0 0 1 0 424 L 0 244 A 14 14 0 0 0 0 216 L 0 16 A 16 16 0 0 1 16 0 Z"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.2"
+                    vectorEffect="non-scaling-stroke"
+                  />
+                </svg>
 
-              {/* Divider */}
-              <div
-                className="w-full h-px my-0.5 min-[400px]:my-1 sm:my-3 transition-colors duration-300"
-                style={{ backgroundColor: isAdaptive ? "var(--cf-divider)" : "#e5dfd4" }}
-              />
+                {/* Card Content (Layered over the SVG Shell) */}
+                <div className="relative z-10 w-full h-full flex flex-col justify-between">
+                  {/* Upper White/Card Section: Train Logo & Slogan */}
+                  <div className="p-3 min-[400px]:p-4 sm:p-8 flex flex-col items-center justify-center text-center my-auto">
+                    <HyperboltTrainLogo className="w-16 min-[400px]:w-20 sm:w-36 text-foreground transition-colors duration-300" />
+                    <h3 className="font-sans font-black text-[8px] min-[400px]:text-[10px] sm:text-[16px] tracking-wider text-foreground uppercase mt-1 sm:mt-2 transition-colors duration-300">
+                      {trainCompany}
+                    </h3>
+                    <p className="font-sans font-semibold text-[5px] min-[400px]:text-[6.5px] sm:text-[10.5px] tracking-wide text-muted-foreground uppercase max-w-[120px] min-[400px]:max-w-[150px] sm:max-w-[240px] mt-1 sm:mt-2 leading-tight transition-colors duration-300">
+                      {slogan}
+                    </p>
+                  </div>
 
-              {/* Statement */}
-              <p
-                className="text-[6px] min-[400px]:text-[7.5px] sm:text-[12.5px] leading-tight sm:leading-relaxed transition-colors duration-300 line-clamp-2 sm:line-clamp-none"
-                style={{ color: isAdaptive ? "var(--cf-card-subtext)" : "#44403c" }}
-              >
-                {bStatement}
-              </p>
+                  {/* Dotted Perforation Line (Extends seamlessly from Left Notch to Right Notch) */}
+                  <div className="relative w-full flex items-center justify-between px-3 sm:px-4 my-0 select-none z-20">
+                    <div className="w-full border-t-2 border-dotted border-border/80" />
+                  </div>
 
-              {/* Highlight Punchline Box */}
-              <div
-                className="mt-0.5 min-[400px]:mt-1 sm:mt-3 px-1.5 min-[400px]:px-2 sm:px-3 py-0.5 min-[400px]:py-1 sm:py-2 rounded-lg border-l-2 border-primary bg-primary/[0.04] transition-colors duration-300"
-              >
-                <p
-                  className="italic text-[6px] min-[400px]:text-[7.5px] sm:text-[12px] font-medium leading-tight sm:leading-snug line-clamp-2 sm:line-clamp-none"
-                  style={{ color: isAdaptive ? "var(--cf-card-text)" : "#1c1917" }}
-                >
-                  &ldquo;{bHighlight}&rdquo;
-                </p>
-              </div>
+                  {/* Lower Primary Banner Section with Station Name */}
+                  <div className="relative w-full p-2.5 min-[400px]:p-3 sm:p-6 flex flex-col items-center justify-center overflow-hidden">
+                    <TrainWatermark className="absolute inset-0 w-full h-full object-cover text-primary-foreground opacity-30" />
 
-              {/* 3 Metric Pills Strip */}
-              <div className="grid grid-cols-3 gap-0.5 min-[400px]:gap-1 sm:gap-2 mt-0.5 min-[400px]:mt-1 sm:mt-3.5">
-                <div
-                  className="px-0.5 py-0.5 min-[400px]:px-1 min-[400px]:py-0.5 sm:px-2 sm:py-1.5 rounded-lg border text-center transition-colors duration-300"
-                  style={{
-                    backgroundColor: isAdaptive ? "rgba(255, 255, 255, 0.03)" : "#ece6dc",
-                    borderColor: isAdaptive ? "var(--cf-divider)" : "#e2dbce",
-                  }}
-                >
-                  <span
-                    className="block font-mono text-[5px] min-[400px]:text-[6px] sm:text-[8.5px] tracking-wider uppercase opacity-60"
-                    style={{ color: isAdaptive ? "var(--cf-card-subtext)" : "#78716c" }}
-                  >
-                    {m1L}
-                  </span>
-                  <span
-                    className="block font-mono text-[6px] min-[400px]:text-[7.5px] sm:text-[10.5px] font-bold text-primary mt-0.5"
-                  >
-                    {m1V}
-                  </span>
-                </div>
+                    {/* Black Station Box */}
+                    <div className="relative z-10 w-full bg-zinc-950 dark:bg-black text-white py-1 sm:py-2 px-2 text-center rounded-sm shadow-md">
+                      <span className="font-sans font-bold text-[7px] min-[400px]:text-[8.5px] sm:text-[14px] uppercase tracking-wider">
+                        {routeText}
+                      </span>
+                    </div>
 
-                <div
-                  className="px-0.5 py-0.5 min-[400px]:px-1 min-[400px]:py-0.5 sm:px-2 sm:py-1.5 rounded-lg border text-center transition-colors duration-300"
-                  style={{
-                    backgroundColor: isAdaptive ? "rgba(255, 255, 255, 0.03)" : "#ece6dc",
-                    borderColor: isAdaptive ? "var(--cf-divider)" : "#e2dbce",
-                  }}
-                >
-                  <span
-                    className="block font-mono text-[5px] min-[400px]:text-[6px] sm:text-[8.5px] tracking-wider uppercase opacity-60"
-                    style={{ color: isAdaptive ? "var(--cf-card-subtext)" : "#78716c" }}
-                  >
-                    {m2L}
-                  </span>
-                  <span
-                    className="block font-mono text-[6px] min-[400px]:text-[7.5px] sm:text-[10.5px] font-bold text-primary mt-0.5"
-                  >
-                    {m2V}
-                  </span>
-                </div>
-
-                <div
-                  className="px-0.5 py-0.5 min-[400px]:px-1 min-[400px]:py-0.5 sm:px-2 sm:py-1.5 rounded-lg border text-center transition-colors duration-300"
-                  style={{
-                    backgroundColor: isAdaptive ? "rgba(255, 255, 255, 0.03)" : "#ece6dc",
-                    borderColor: isAdaptive ? "var(--cf-divider)" : "#e2dbce",
-                  }}
-                >
-                  <span
-                    className="block font-mono text-[5px] min-[400px]:text-[6px] sm:text-[8.5px] tracking-wider uppercase opacity-60"
-                    style={{ color: isAdaptive ? "var(--cf-card-subtext)" : "#78716c" }}
-                  >
-                    {m3L}
-                  </span>
-                  <span
-                    className="block font-mono text-[6px] min-[400px]:text-[7.5px] sm:text-[10.5px] font-bold text-emerald-500 mt-0.5"
-                  >
-                    {m3V}
-                  </span>
+                    {/* Website link */}
+                    <span className="relative z-10 font-sans text-[4px] min-[400px]:text-[5px] sm:text-[8px] text-primary-foreground/90 uppercase tracking-widest mt-1 sm:mt-2 font-semibold">
+                      {websiteUrl}
+                    </span>
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              /* -------------------------------------------------------- */
+              /* CLASSIFIED DOSSIER FACE 2 (Editorial Manifesto & Metrics)*/
+              /* -------------------------------------------------------- */
+              <>
+                <div>
+                  <div className="flex items-center justify-between font-mono text-[6px] min-[400px]:text-[7.5px] sm:text-[10.5px] font-semibold tracking-wider">
+                    <div className="flex items-center gap-1 sm:gap-1.5 text-primary">
+                      <span className="w-1 h-1 min-[400px]:w-1.5 min-[400px]:h-1.5 rounded-full bg-primary" />
+                      <span>{bCategory}</span>
+                    </div>
+                    <span className="opacity-60 font-mono text-[5.5px] min-[400px]:text-[7px] sm:text-[10px] tracking-wide">
+                      {bDate}
+                    </span>
+                  </div>
+                  <div className="mt-0.5 min-[400px]:mt-1 sm:mt-3">
+                    <h3
+                      className="text-[10.5px] min-[400px]:text-[13px] sm:text-[21px] font-semibold tracking-tight font-sans leading-tight transition-colors duration-300"
+                      style={{ color: isAdaptive ? "var(--cf-card-text)" : "#1a1917" }}
+                    >
+                      {bTitle}
+                    </h3>
+                    <p
+                      className="text-[6.5px] min-[400px]:text-[8px] sm:text-[12.5px] leading-tight sm:leading-normal mt-0.5 sm:mt-1 transition-colors duration-300"
+                      style={{ color: isAdaptive ? "var(--cf-card-subtext)" : "#57534e" }}
+                    >
+                      {bSubtitle}
+                    </p>
+                  </div>
+                  <div
+                    className="w-full h-px my-0.5 min-[400px]:my-1 sm:my-3 transition-colors duration-300"
+                    style={{ backgroundColor: isAdaptive ? "var(--cf-divider)" : "#e5dfd4" }}
+                  />
+                  <p
+                    className="text-[6px] min-[400px]:text-[7.5px] sm:text-[12.5px] leading-tight sm:leading-relaxed transition-colors duration-300 line-clamp-2 sm:line-clamp-none"
+                    style={{ color: isAdaptive ? "var(--cf-card-subtext)" : "#44403c" }}
+                  >
+                    {bStatement}
+                  </p>
+                  <div className="mt-0.5 min-[400px]:mt-1 sm:mt-3 px-1.5 min-[400px]:px-2 sm:px-3 py-0.5 min-[400px]:py-1 sm:py-2 rounded-lg border-l-2 border-primary bg-primary/[0.04] transition-colors duration-300">
+                    <p
+                      className="italic text-[6px] min-[400px]:text-[7.5px] sm:text-[12px] font-medium leading-tight sm:leading-snug line-clamp-2 sm:line-clamp-none"
+                      style={{ color: isAdaptive ? "var(--cf-card-text)" : "#1c1917" }}
+                    >
+                      &ldquo;{bHighlight}&rdquo;
+                    </p>
+                  </div>
+                  <div className="grid grid-cols-3 gap-0.5 min-[400px]:gap-1 sm:gap-2 mt-0.5 min-[400px]:mt-1 sm:mt-3.5">
+                    <div
+                      className="px-0.5 py-0.5 min-[400px]:px-1 min-[400px]:py-0.5 sm:px-2 sm:py-1.5 rounded-lg border text-center transition-colors duration-300"
+                      style={{
+                        backgroundColor: isAdaptive ? "rgba(255, 255, 255, 0.03)" : "#ece6dc",
+                        borderColor: isAdaptive ? "var(--cf-divider)" : "#e2dbce",
+                      }}
+                    >
+                      <span
+                        className="block font-mono text-[5px] min-[400px]:text-[6px] sm:text-[8.5px] tracking-wider uppercase opacity-60"
+                        style={{ color: isAdaptive ? "var(--cf-card-subtext)" : "#78716c" }}
+                      >
+                        {m1L}
+                      </span>
+                      <span className="block font-mono text-[6px] min-[400px]:text-[7.5px] sm:text-[10.5px] font-bold text-primary mt-0.5">
+                        {m1V}
+                      </span>
+                    </div>
+                    <div
+                      className="px-0.5 py-0.5 min-[400px]:px-1 min-[400px]:py-0.5 sm:px-2 sm:py-1.5 rounded-lg border text-center transition-colors duration-300"
+                      style={{
+                        backgroundColor: isAdaptive ? "rgba(255, 255, 255, 0.03)" : "#ece6dc",
+                        borderColor: isAdaptive ? "var(--cf-divider)" : "#e2dbce",
+                      }}
+                    >
+                      <span
+                        className="block font-mono text-[5px] min-[400px]:text-[6px] sm:text-[8.5px] tracking-wider uppercase opacity-60"
+                        style={{ color: isAdaptive ? "var(--cf-card-subtext)" : "#78716c" }}
+                      >
+                        {m2L}
+                      </span>
+                      <span className="block font-mono text-[6px] min-[400px]:text-[7.5px] sm:text-[10.5px] font-bold text-primary mt-0.5">
+                        {m2V}
+                      </span>
+                    </div>
+                    <div
+                      className="px-0.5 py-0.5 min-[400px]:px-1 min-[400px]:py-0.5 sm:px-2 sm:py-1.5 rounded-lg border text-center transition-colors duration-300"
+                      style={{
+                        backgroundColor: isAdaptive ? "rgba(255, 255, 255, 0.03)" : "#ece6dc",
+                        borderColor: isAdaptive ? "var(--cf-divider)" : "#e2dbce",
+                      }}
+                    >
+                      <span
+                        className="block font-mono text-[5px] min-[400px]:text-[6px] sm:text-[8.5px] tracking-wider uppercase opacity-60"
+                        style={{ color: isAdaptive ? "var(--cf-card-subtext)" : "#78716c" }}
+                      >
+                        {m3L}
+                      </span>
+                      <span className="block font-mono text-[6px] min-[400px]:text-[7.5px] sm:text-[10.5px] font-bold text-emerald-500 mt-0.5">
+                        {m3V}
+                      </span>
+                    </div>
+                  </div>
+                </div>
 
-            {/* Bottom Footer Section */}
-            <div className="pt-0.5 min-[400px]:pt-1 sm:pt-2">
-              <div
-                className="w-full h-px mb-0.5 min-[400px]:mb-1 sm:mb-2.5 transition-colors duration-300"
-                style={{ backgroundColor: isAdaptive ? "var(--cf-divider)" : "#e5dfd4" }}
-              />
-              <div className="flex items-center justify-between font-mono text-[5.5px] min-[400px]:text-[6.5px] sm:text-[9.5px] tracking-wider uppercase opacity-75">
-                <span style={{ color: isAdaptive ? "var(--cf-card-subtext)" : "#78716c" }}>
-                  ✦ {bAuthor}
-                </span>
-                <ClassifiedSeal
-                  size={16}
-                  strokeWidth={1.2}
-                  className="w-[11px] h-[11px] min-[400px]:w-[14px] min-[400px]:h-[14px] sm:w-[22px] sm:h-[22px] opacity-80 text-primary"
-                />
-              </div>
-            </div>
+                <div className="pt-0.5 min-[400px]:pt-1 sm:pt-2">
+                  <div
+                    className="w-full h-px mb-0.5 min-[400px]:mb-1 sm:mb-2.5 transition-colors duration-300"
+                    style={{ backgroundColor: isAdaptive ? "var(--cf-divider)" : "#e5dfd4" }}
+                  />
+                  <div className="flex items-center justify-between font-mono text-[5.5px] min-[400px]:text-[6.5px] sm:text-[9.5px] tracking-wider uppercase opacity-75">
+                    <span style={{ color: isAdaptive ? "var(--cf-card-subtext)" : "#78716c" }}>
+                      ✦ {bAuthor}
+                    </span>
+                    <ClassifiedSeal
+                      size={16}
+                      strokeWidth={1.2}
+                      className="w-[11px] h-[11px] min-[400px]:w-[14px] min-[400px]:h-[14px] sm:w-[22px] sm:h-[22px] opacity-80 text-primary"
+                    />
+                  </div>
+                </div>
+              </>
+            )}
           </div>
         </div>
 
         {/* ============================================================== */}
-        {/* LAYER 3: FRONT SLEEVE FLAP                                     */}
-        {/* Precise thumb notch with dynamic global border radius          */}
+        {/* LAYER 3: FRONT SLEEVE FLAP (CARD BOX DESIGN)                   */}
+        {/* Custom styled envelope box matching the Train Ticket aesthetic  */}
         {/* ============================================================== */}
+        {/* 3A. Flap Background Plate with Thumb Notch Scoop Mask */}
         <div
-          className="absolute inset-0 pointer-events-none border transition-colors duration-300 overflow-hidden"
+          className="absolute inset-0 pointer-events-none border transition-colors duration-300"
           style={{
             zIndex: 20,
             borderRadius: "var(--radius, 1.25rem)",
             backgroundColor: "var(--cf-flap)",
             borderColor: "var(--cf-stroke-flap)",
             maskImage:
-              "radial-gradient(circle 24px at calc(100% - 0px) 50%, transparent 23px, black 24px)",
+              "radial-gradient(circle 24px at 100% 50%, transparent 23px, black 24px)",
             WebkitMaskImage:
-              "radial-gradient(circle 24px at calc(100% - 0px) 50%, transparent 23px, black 24px)",
+              "radial-gradient(circle 24px at 100% 50%, transparent 23px, black 24px)",
           }}
+        />
+
+        {/* 3B. Flap Surface Content Layer (UNMASKED -> 100% CRISP VECTOR TYPOGRAPHY, ZERO BLUR) */}
+        <div
+          className="absolute inset-0 pointer-events-none flex flex-col justify-between p-2 min-[400px]:p-3 sm:p-8 select-none"
+          style={{ zIndex: 22 }}
         >
-          {/* Front Sleeve Surface Content */}
-          <div className="relative z-10 w-full h-full flex flex-col justify-between p-2 min-[400px]:p-3 sm:p-8">
-            {/* Top Empty Space */}
-            <div />
-
-            {/* Center Classified Security Crest Seal */}
-            <div className="flex items-center justify-center my-auto py-1 sm:py-2">
-              {centerIcon ? (
-                <div className="w-[80px] h-[80px] min-[400px]:w-[105px] min-[400px]:h-[105px] sm:w-[265px] sm:h-[265px] flex items-center justify-center transition-colors duration-300">
-                  {centerIcon}
-                </div>
-              ) : (
-                <ClassifiedSeal
-                  size={265}
-                  strokeWidth={1.3}
-                  className="w-[80px] h-[80px] min-[400px]:w-[105px] min-[400px]:h-[105px] sm:w-[265px] sm:h-[265px] transition-colors duration-300"
-                  style={{ color: "var(--cf-spiro)" }}
-                />
-              )}
-            </div>
-
-            {/* Bottom Title & Subtitle */}
-            <div className="text-left w-full pr-1 sm:pr-4 overflow-hidden">
-              <h2
-                className="text-[10.5px] min-[400px]:text-[13px] sm:text-[22px] font-semibold tracking-tight leading-tight transition-colors duration-300 whitespace-nowrap truncate"
-                style={{ color: "var(--cf-ink)" }}
+          {/* Top Floating Badge */}
+          <div className="flex items-center justify-between">
+            {isTrainTicket ? (
+              <div
+                className="px-2.5 py-0.5 sm:py-1 rounded-full font-sans text-[5px] min-[400px]:text-[6.5px] sm:text-[10px] font-bold uppercase tracking-wider backdrop-blur-xs border transition-colors duration-300 shadow-xs"
+                style={{
+                  backgroundColor: "var(--cf-card-bg)",
+                  color: "var(--cf-ink)",
+                  borderColor: "var(--cf-stroke-flap)",
+                }}
               >
-                {sleeveTitle}
-              </h2>
-              <p
-                className="text-[5.5px] min-[400px]:text-[7px] sm:text-[13.5px] font-normal leading-tight mt-0.5 sm:mt-1 transition-colors duration-300 whitespace-nowrap truncate"
-                style={{ color: "var(--cf-ink-muted)" }}
-              >
-                {sleeveSubtitle}
-              </p>
-            </div>
+                ✦ {trainCompany}
+              </div>
+            ) : (
+              <div />
+            )}
+          </div>
+
+          {/* Center Emblem Seal */}
+          <div className="flex items-center justify-center my-auto py-1 sm:py-2">
+            {centerIcon ? (
+              <div className="w-[80px] h-[80px] min-[400px]:w-[105px] min-[400px]:h-[105px] sm:w-[265px] sm:h-[265px] flex items-center justify-center transition-colors duration-300">
+                {centerIcon}
+              </div>
+            ) : isTrainTicket ? (
+              <HyperboltSleeveSeal
+                size={265}
+                className="w-[80px] h-[80px] min-[400px]:w-[105px] min-[400px]:h-[105px] sm:w-[265px] sm:h-[265px] transition-colors duration-300 drop-shadow-xs"
+                style={{ color: "var(--cf-spiro)" }}
+              />
+            ) : (
+              <ClassifiedSeal
+                size={265}
+                strokeWidth={1.3}
+                className="w-[80px] h-[80px] min-[400px]:w-[105px] min-[400px]:h-[105px] sm:w-[265px] sm:h-[265px] transition-colors duration-300"
+                style={{ color: "var(--cf-spiro)" }}
+              />
+            )}
+          </div>
+
+          {/* Bottom Title & Subtitle with Crystal Clear High Contrast Vector Typography */}
+          <div className="text-left w-full pr-1 sm:pr-4 overflow-hidden">
+            <h2
+              className="text-[11px] min-[400px]:text-[13.5px] sm:text-[23px] font-bold tracking-tight leading-tight transition-colors duration-300 whitespace-nowrap truncate drop-shadow-xs"
+              style={{ color: "var(--cf-ink)" }}
+            >
+              {resolvedSleeveTitle}
+            </h2>
+            <p
+              className="text-[6px] min-[400px]:text-[7.5px] sm:text-[13.5px] font-medium leading-tight mt-0.5 sm:mt-1 transition-colors duration-300 whitespace-nowrap truncate"
+              style={{ color: "var(--cf-ink-muted)" }}
+            >
+              {resolvedSleeveSubtitle}
+            </p>
           </div>
         </div>
       </div>
@@ -880,3 +1213,4 @@ export function ConfidentialFolder({
 export const CouponCards = ConfidentialFolder;
 export type CouponCardsProps = ConfidentialFolderProps;
 export type CouponCardsInteractionMode = ConfidentialFolderInteractionMode;
+export type ConfidentialFolderDesign = ConfidentialFolderCardDesign;

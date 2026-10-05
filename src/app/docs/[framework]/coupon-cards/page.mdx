@@ -8,9 +8,35 @@ import { extractCode } from "@/lib/code";
 
 # Coupon Cards
 
-An interactive classified folder sleeve component featuring a secret document card that glides out horizontally on hover and elevates gracefully onto the folder cover on click. Designed with a vector-precise thumb notch, geometric classified security crest seal, and luxurious dual-tone cardstock aesthetics.
+An interactive classified folder & boarding pass component featuring a secret card that glides out horizontally on hover and elevates gracefully onto the cover on click. Designed with a vector-precise thumb notch, authentic security crest seals, and luxurious 3D dual-sided flip physics.
 
-`ConfidentialFolder` brings tactile physical curiosity to editorial portfolios, mission statements, manifesto showcases, and private asset reveals.
+`CouponCards` brings tactile physical curiosity to train online tickets, travel booking passes, coupon reward vouchers, and editorial dossiers.
+
+export const usageTrainTicket = `import { CouponCards } from "@/components/custom/blocks/ConfidentialFolderBlock";
+
+export default function TrainOnlineTicketExample() {
+  return (
+    <div className="w-full flex items-center justify-center py-12">
+      <CouponCards
+        cardDesign="train-ticket"
+        interactionMode="step-flip"
+        ticketTitle="TRAIN ONLINE TICKET"
+        passengerName="Barbara M. Sandoval"
+        routeText="ZÜRICH HB - PARIS-EST"
+        date="25/11/2024"
+        departureTime="06.30"
+        seatNumber="18A"
+        trainNumber="6"
+        trainCompany="HYPERBOLT EXPRESS"
+        slogan="UNLEASH THE POWER OF SPEED WITH HYPERBOLT EXPRESS"
+        barcodeNumber="0 734664 235788"
+        websiteUrl="HYPERBOLTEXPRESS.COM"
+        initialPeek={38}
+        hoverPeek={88}
+      />
+    </div>
+  );
+}`;
 
 export const usageAutoFlip = `import { CouponCards } from "@/components/custom/blocks/ConfidentialFolderBlock";
 
@@ -92,7 +118,55 @@ export default function StepFlipCouponCardsExample() {
   columns={1}
   examples={[
     {
-      title: "Auto Flip (Default)",
+      title: "Train Online Ticket (Hyperbolt Express Variant)",
+      subheading:
+        "Exact high-speed rail ticket and envelope design. Features the top blue pill header, passenger info, seat/train numbers, vertical barcode, watermarked station route bar, tear-off stub, and Hyperbolt bullet train box sleeve.",
+      propNotes: [
+        {
+          lead: "Design Variant",
+          prop: "cardDesign",
+          value: '"train-ticket"',
+          effect:
+            "activates the Hyperbolt Express train online ticket layout for both the card and the outer sleeve box.",
+        },
+        {
+          lead: "Route & Stations",
+          prop: "routeText",
+          value: '"ZÜRICH HB - PARIS-EST"',
+          effect:
+            "displays the bold route on the middle watermarked banner, stub badge, and sleeve cover.",
+        },
+        {
+          lead: "Passenger Details",
+          prop: "passengerName / seatNumber / trainNumber",
+          value: '"Barbara M. Sandoval" / "18A" / "6"',
+          effect:
+            "renders passenger identification, seat assignment, and train number.",
+        },
+      ],
+      props: {
+        cardDesign: "train-ticket",
+        interactionMode: "step-flip",
+        ticketTitle: "TRAIN ONLINE TICKET",
+        passengerName: "Barbara M. Sandoval",
+        routeText: "ZÜRICH HB - PARIS-EST",
+        date: "25/11/2024",
+        departureTime: "06.30",
+        seatNumber: "18A",
+        trainNumber: "6",
+        trainCompany: "HYPERBOLT EXPRESS",
+        slogan: "UNLEASH THE POWER OF SPEED WITH HYPERBOLT EXPRESS",
+        barcodeNumber: "0 734664 235788",
+        websiteUrl: "HYPERBOLTEXPRESS.COM",
+        initialPeek: 38,
+        hoverPeek: 88,
+      },
+      usage: usageTrainTicket,
+      code: extractCode("src/components/custom/blocks/ConfidentialFolderBlock.tsx"),
+      minHeight: 580,
+    },
+    {
+      title: "Auto Flip (Classic Voucher / Classified)",
       subheading:
         "1st click slides the card out from the sleeve, elevates onto the front, and automatically flips 180° in-place to reveal the back details. 2nd click flips back and returns inside the sleeve.",
       propNotes: [
@@ -150,7 +224,7 @@ export default function StepFlipCouponCardsExample() {
       minHeight: 580,
     },
     {
-      title: "Step Flip (3-Stage Interaction)",
+      title: "Step Flip (3-Stage Progressive Reveal)",
       subheading:
         "1st click slides the card onto the sleeve cover and sits in place displaying the front cover. 2nd click executes a tactile 180° in-place flip revealing the back face. 3rd click flips it back and slides it safely into the sleeve.",
       propNotes: [
@@ -212,6 +286,10 @@ export default function StepFlipCouponCardsExample() {
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Train Online Ticket & Hyperbolt Sleeve</h3>
+    <p className="text-muted-foreground text-sm">Authentic railway transit ticket design with blue pill headers, passenger/seat matrix, vertical barcode, station route banner, tear-off stub, and matching Hyperbolt Express sleeve.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">Two-Stage Flight Choreography</h3>
     <p className="text-muted-foreground text-sm">When clicked, the document slides out horizontally past the sleeve edge, elevates in front on the z-axis, and glides back down with a gentle tilt onto the front cover.</p>
   </div>
@@ -220,12 +298,8 @@ export default function StepFlipCouponCardsExample() {
     <p className="text-muted-foreground text-sm">Engineered with a clean, subpixel-sharp SVG inward scoop notch along the right edge, exposing the card inside exactly like a high-end physical envelope sleeve.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Atomic Orbital Spirograph Seal</h3>
-    <p className="text-muted-foreground text-sm">Features an intricate, mathematically balanced atomic orbital spirograph with rotated orbital ellipses and delicate node markers in vector SVG format.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Dual-Tone Editorial Aesthetic</h3>
-    <p className="text-muted-foreground text-sm">Pairing a deep slate luxury sleeve with an authentic textured ivory cardstock creates a compelling, museum-grade visual contrast.</p>
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">3D In-Place Flip Physics</h3>
+    <p className="text-muted-foreground text-sm">Features seamless 180-degree in-place 3D card flips with true perspective, preserved backface visibility, and dynamic theme adaptivity.</p>
   </div>
 </div>
 
@@ -234,15 +308,15 @@ export default function StepFlipCouponCardsExample() {
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
     <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Keyboard & Accessibility</h4>
-    <p className="text-[13px] leading-relaxed text-foreground/50"><code>ConfidentialFolder</code> supports keyboard navigation: focus it with <code>Tab</code> and trigger the opening/closing animation using <code>Enter</code> or <code>Space</code>, or close with <code>Escape</code>.</p>
+    <p className="text-[13px] leading-relaxed text-foreground/50"><code>CouponCards</code> supports keyboard navigation: focus it with <code>Tab</code> and trigger the opening/closing animation using <code>Enter</code> or <code>Space</code>, or close with <code>Escape</code>.</p>
   </div>
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
     <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Mobile & Touch Interaction</h4>
     <p className="text-[13px] leading-relaxed text-foreground/50">On touch devices where hover is unavailable, tapping the folder launches the smooth opening flight sequence immediately.</p>
   </div>
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Custom Manifesto & Quotes</h4>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Customize <code>quote</code>, <code>subquote</code>, <code>sessionLabel</code>, and <code>sessionNumber</code> to feature your team's core values, product teasers, private key announcements, or executive notes.</p>
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Custom Train Tickets</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Pass <code>cardDesign="train-ticket"</code> with custom <code>passengerName</code>, <code>routeText</code>, <code>seatNumber</code>, <code>trainNumber</code>, and <code>date</code> to create realistic online transit passes.</p>
   </div>
 </div>
 
@@ -260,136 +334,82 @@ export default function StepFlipCouponCardsExample() {
     </thead>
     <tbody>
       <tr>
+        <td><code>cardDesign</code></td>
+        <td><code>"classified" | "train-ticket"</code></td>
+        <td><code>"classified"</code></td>
+        <td>Selects the card visual template: <code>"train-ticket"</code> for Hyperbolt train online tickets & sleeve box, or <code>"classified"</code> for confidential dossiers.</td>
+      </tr>
+      <tr>
         <td><code>interactionMode</code></td>
         <td><code>"auto-flip" | "step-flip"</code></td>
         <td><code>"auto-flip"</code></td>
         <td>Controls opening behavior: <code>"auto-flip"</code> opens and flips automatically on 1st click; <code>"step-flip"</code> splits the interaction into 3 clicks (Click 1 opens, Click 2 flips, Click 3 closes).</td>
       </tr>
       <tr>
+        <td><code>passengerName</code></td>
+        <td><code>string</code></td>
+        <td><code>"Barbara M. Sandoval"</code></td>
+        <td>Name of passenger printed on the train ticket.</td>
+      </tr>
+      <tr>
+        <td><code>routeText</code></td>
+        <td><code>string</code></td>
+        <td><code>"ZÜRICH HB - PARIS-EST"</code></td>
+        <td>Train route printed across the blue banner and solid black badge.</td>
+      </tr>
+      <tr>
+        <td><code>seatNumber</code></td>
+        <td><code>string</code></td>
+        <td><code>"18A"</code></td>
+        <td>Assigned train seat number.</td>
+      </tr>
+      <tr>
+        <td><code>trainNumber</code></td>
+        <td><code>string</code></td>
+        <td><code>"6"</code></td>
+        <td>Assigned train carriage/train number.</td>
+      </tr>
+      <tr>
+        <td><code>date</code></td>
+        <td><code>string</code></td>
+        <td><code>"25/11/2024"</code></td>
+        <td>Scheduled date of travel.</td>
+      </tr>
+      <tr>
+        <td><code>departureTime</code></td>
+        <td><code>string</code></td>
+        <td><code>"06.30"</code></td>
+        <td>Departure timestamp.</td>
+      </tr>
+      <tr>
+        <td><code>trainCompany</code></td>
+        <td><code>string</code></td>
+        <td><code>"HYPERBOLT EXPRESS"</code></td>
+        <td>Transit brand printed on the sleeve cover and ticket back.</td>
+      </tr>
+      <tr>
+        <td><code>slogan</code></td>
+        <td><code>string</code></td>
+        <td><code>"UNLEASH THE POWER OF SPEED WITH HYPERBOLT EXPRESS"</code></td>
+        <td>High-speed transit slogan on the sleeve and ticket back.</td>
+      </tr>
+      <tr>
+        <td><code>barcodeNumber</code></td>
+        <td><code>string</code></td>
+        <td><code>"0 734664 235788"</code></td>
+        <td>Code string for the vertical barcodes.</td>
+      </tr>
+      <tr>
+        <td><code>websiteUrl</code></td>
+        <td><code>string</code></td>
+        <td><code>"HYPERBOLTEXPRESS.COM"</code></td>
+        <td>Website URL printed on the sleeve and reverse side.</td>
+      </tr>
+      <tr>
         <td><code>folderColor</code></td>
         <td><code>string</code></td>
         <td><code>undefined (var(--primary))</code></td>
         <td>Optional custom theme color override for the folder sleeve and accents. Defaults to the active theme's primary color.</td>
-      </tr>
-      <tr>
-        <td><code>sleeveTitle</code></td>
-        <td><code>string</code></td>
-        <td><code>"Designed to endure"</code></td>
-        <td>The primary headline displayed on the front face of the sleeve flap.</td>
-      </tr>
-      <tr>
-        <td><code>sleeveSubtitle</code></td>
-        <td><code>string</code></td>
-        <td><code>"Crafted for those who value timeless clarity."</code></td>
-        <td>Subtext displayed beneath the sleeve headline.</td>
-      </tr>
-      <tr>
-        <td><code>frontBadge</code></td>
-        <td><code>string</code></td>
-        <td><code>"INTERNAL DISPATCH"</code></td>
-        <td>Badge text displayed at the top left of the card's front cover face.</td>
-      </tr>
-      <tr>
-        <td><code>frontSerial</code></td>
-        <td><code>string</code></td>
-        <td><code>"ARCHIVE // 07-X"</code></td>
-        <td>Document tracking serial number at the top right of the card's front cover.</td>
-      </tr>
-      <tr>
-        <td><code>frontTitle</code></td>
-        <td><code>string</code></td>
-        <td><code>"Design Directives"</code></td>
-        <td>The prominent project title on the front face of the card.</td>
-      </tr>
-      <tr>
-        <td><code>frontSubtitle</code></td>
-        <td><code>string</code></td>
-        <td><code>"Proprietary framework for world-class..."</code></td>
-        <td>Descriptive clearance subtext on the front face of the card.</td>
-      </tr>
-      <tr>
-        <td><code>frontStamp</code></td>
-        <td><code>string</code></td>
-        <td><code>"RESTRICTED"</code></td>
-        <td>The angled classification stamp text displayed in the dashed security box.</td>
-      </tr>
-      <tr>
-        <td><code>cardCategory</code></td>
-        <td><code>string</code></td>
-        <td><code>"ARCHIVE PROTOCOL"</code></td>
-        <td>Category label displayed with indicator dot at the top left of the card.</td>
-      </tr>
-      <tr>
-        <td><code>cardDate</code></td>
-        <td><code>string</code></td>
-        <td><code>"2026 // ED. 04"</code></td>
-        <td>Edition / date tracking tag displayed at the top right of the card.</td>
-      </tr>
-      <tr>
-        <td><code>cardTitle</code></td>
-        <td><code>string</code></td>
-        <td><code>"The Art of Restraint"</code></td>
-        <td>The primary headline of the editorial card.</td>
-      </tr>
-      <tr>
-        <td><code>cardSubtitle</code></td>
-        <td><code>string</code></td>
-        <td><code>"Foundational principles on..."</code></td>
-        <td>Subtext explaining the core theme of the card.</td>
-      </tr>
-      <tr>
-        <td><code>statement</code></td>
-        <td><code>string</code></td>
-        <td><code>"Simplicity is not the lack of..."</code></td>
-        <td>The primary editorial manifesto paragraph inside the card.</td>
-      </tr>
-      <tr>
-        <td><code>highlightQuote</code></td>
-        <td><code>string</code></td>
-        <td><code>"Cut until it is obvious..."</code></td>
-        <td>Featured punchline callout rendered inside the primary-accented quote box.</td>
-      </tr>
-      <tr>
-        <td><code>metric1Label</code> / <code>metric1Value</code></td>
-        <td><code>string</code></td>
-        <td><code>"LATENCY" / "< 16ms"</code></td>
-        <td>Label and value for the first metric pill tile.</td>
-      </tr>
-      <tr>
-        <td><code>metric2Label</code> / <code>metric2Value</code></td>
-        <td><code>string</code></td>
-        <td><code>"PHYSICS" / "Spring-3D"</code></td>
-        <td>Label and value for the second metric pill tile.</td>
-      </tr>
-      <tr>
-        <td><code>metric3Label</code> / <code>metric3Value</code></td>
-        <td><code>string</code></td>
-        <td><code>"INTEGRITY" / "100%"</code></td>
-        <td>Label and value for the third metric pill tile.</td>
-      </tr>
-      <tr>
-        <td><code>pillar1Title</code> / <code>pillar1Desc</code></td>
-        <td><code>string</code></td>
-        <td><code>undefined</code></td>
-        <td>When set, replace <code>metric1Label</code> / <code>metric1Value</code> in the first metric pill tile.</td>
-      </tr>
-      <tr>
-        <td><code>pillar2Title</code> / <code>pillar2Desc</code></td>
-        <td><code>string</code></td>
-        <td><code>undefined</code></td>
-        <td>When set, replace <code>metric2Label</code> / <code>metric2Value</code> in the second metric pill tile.</td>
-      </tr>
-      <tr>
-        <td><code>statusText</code></td>
-        <td><code>string</code></td>
-        <td><code>undefined</code></td>
-        <td>When set, replaces <code>clearanceLevel</code> as the status line in the cover's footer.</td>
-      </tr>
-      <tr>
-        <td><code>authorText</code></td>
-        <td><code>string</code></td>
-        <td><code>"STUDIO CORE TEAM"</code></td>
-        <td>Attribution signature displayed in the footer next to the spirograph.</td>
       </tr>
       <tr>
         <td><code>initialPeek</code></td>
