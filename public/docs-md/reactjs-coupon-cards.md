@@ -2,9 +2,17 @@ export const metadata = docsPageMetadata("coupon-cards");
 
 # Coupon Cards
 
-An interactive classified folder sleeve component featuring a secret document card that glides out horizontally on hover and elevates gracefully onto the folder cover on click. Designed with a vector-precise thumb notch, geometric classified security crest seal, and luxurious dual-tone cardstock aesthetics.
+An interactive classified folder & boarding pass component featuring a secret card that glides out horizontally on hover and elevates gracefully onto the cover on click. Designed with a vector-precise thumb notch, authentic security crest seals, and luxurious 3D dual-sided flip physics.
 
-`ConfidentialFolder` brings tactile physical curiosity to editorial portfolios, mission statements, manifesto showcases, and private asset reveals.
+`CouponCards` brings tactile physical curiosity to train online tickets, travel booking passes, coupon reward vouchers, and editorial dossiers.
+
+export const usageTrainTicket = `import { CouponCards } from "@/components/custom/blocks/ConfidentialFolderBlock";
+
+export default function TrainOnlineTicketExample() {
+  return (
+
+  );
+}`;
 
 export const usageAutoFlip = `import { CouponCards } from "@/components/custom/blocks/ConfidentialFolderBlock";
 
@@ -33,28 +41,28 @@ npx shadcn@latest add @algorize-ui/confidential-folder
 
 ## Features
 
+    Train Online Ticket & Hyperbolt Sleeve
+    Authentic railway transit ticket design with blue pill headers, passenger/seat matrix, vertical barcode, station route banner, tear-off stub, and matching Hyperbolt Express sleeve.
+
     Two-Stage Flight Choreography
     When clicked, the document slides out horizontally past the sleeve edge, elevates in front on the z-axis, and glides back down with a gentle tilt onto the front cover.
 
     Vector Thumb Scoop Notch
     Engineered with a clean, subpixel-sharp SVG inward scoop notch along the right edge, exposing the card inside exactly like a high-end physical envelope sleeve.
 
-    Atomic Orbital Spirograph Seal
-    Features an intricate, mathematically balanced atomic orbital spirograph with rotated orbital ellipses and delicate node markers in vector SVG format.
-
-    Dual-Tone Editorial Aesthetic
-    Pairing a deep slate luxury sleeve with an authentic textured ivory cardstock creates a compelling, museum-grade visual contrast.
+    3D In-Place Flip Physics
+    Features seamless 180-degree in-place 3D card flips with true perspective, preserved backface visibility, and dynamic theme adaptivity.
 
 ## Best Practices & Guidelines
 
     Keyboard & Accessibility
-    ConfidentialFolder supports keyboard navigation: focus it with Tab and trigger the opening/closing animation using Enter or Space, or close with Escape.
+    CouponCards supports keyboard navigation: focus it with Tab and trigger the opening/closing animation using Enter or Space, or close with Escape.
 
     Mobile & Touch Interaction
     On touch devices where hover is unavailable, tapping the folder launches the smooth opening flight sequence immediately.
 
-    Custom Manifesto & Quotes
-    Customize quote, subquote, sessionLabel, and sessionNumber to feature your team's core values, product teasers, private key announcements, or executive notes.
+    Custom Train Tickets
+    Pass cardDesign="train-ticket" with custom passengerName, routeText, seatNumber, trainNumber, and date to create realistic online transit passes.
 
 ## Props Reference
 
@@ -63,115 +71,70 @@ npx shadcn@latest add @algorize-ui/confidential-folder
         Default
         Description
 
+        cardDesign
+        "classified" | "train-ticket"
+        "classified"
+        Selects the card visual template: "train-ticket" for Hyperbolt train online tickets & sleeve box, or "classified" for confidential dossiers.
+
         interactionMode
         "auto-flip" | "step-flip"
         "auto-flip"
         Controls opening behavior: "auto-flip" opens and flips automatically on 1st click; "step-flip" splits the interaction into 3 clicks (Click 1 opens, Click 2 flips, Click 3 closes).
 
+        passengerName
+        string
+        "Barbara M. Sandoval"
+        Name of passenger printed on the train ticket.
+
+        routeText
+        string
+        "ZÜRICH HB - PARIS-EST"
+        Train route printed across the blue banner and solid black badge.
+
+        seatNumber
+        string
+        "18A"
+        Assigned train seat number.
+
+        trainNumber
+        string
+        "6"
+        Assigned train carriage/train number.
+
+        date
+        string
+        "25/11/2024"
+        Scheduled date of travel.
+
+        departureTime
+        string
+        "06.30"
+        Departure timestamp.
+
+        trainCompany
+        string
+        "HYPERBOLT EXPRESS"
+        Transit brand printed on the sleeve cover and ticket back.
+
+        slogan
+        string
+        "UNLEASH THE POWER OF SPEED WITH HYPERBOLT EXPRESS"
+        High-speed transit slogan on the sleeve and ticket back.
+
+        barcodeNumber
+        string
+        "0 734664 235788"
+        Code string for the vertical barcodes.
+
+        websiteUrl
+        string
+        "HYPERBOLTEXPRESS.COM"
+        Website URL printed on the sleeve and reverse side.
+
         folderColor
         string
         undefined (var(--primary))
         Optional custom theme color override for the folder sleeve and accents. Defaults to the active theme's primary color.
-
-        sleeveTitle
-        string
-        "Designed to endure"
-        The primary headline displayed on the front face of the sleeve flap.
-
-        sleeveSubtitle
-        string
-        "Crafted for those who value timeless clarity."
-        Subtext displayed beneath the sleeve headline.
-
-        frontBadge
-        string
-        "INTERNAL DISPATCH"
-        Badge text displayed at the top left of the card's front cover face.
-
-        frontSerial
-        string
-        "ARCHIVE // 07-X"
-        Document tracking serial number at the top right of the card's front cover.
-
-        frontTitle
-        string
-        "Design Directives"
-        The prominent project title on the front face of the card.
-
-        frontSubtitle
-        string
-        "Proprietary framework for world-class..."
-        Descriptive clearance subtext on the front face of the card.
-
-        frontStamp
-        string
-        "RESTRICTED"
-        The angled classification stamp text displayed in the dashed security box.
-
-        cardCategory
-        string
-        "ARCHIVE PROTOCOL"
-        Category label displayed with indicator dot at the top left of the card.
-
-        cardDate
-        string
-        "2026 // ED. 04"
-        Edition / date tracking tag displayed at the top right of the card.
-
-        cardTitle
-        string
-        "The Art of Restraint"
-        The primary headline of the editorial card.
-
-        cardSubtitle
-        string
-        "Foundational principles on..."
-        Subtext explaining the core theme of the card.
-
-        statement
-        string
-        "Simplicity is not the lack of..."
-        The primary editorial manifesto paragraph inside the card.
-
-        highlightQuote
-        string
-        "Cut until it is obvious..."
-        Featured punchline callout rendered inside the primary-accented quote box.
-
-        metric1Label / metric1Value
-        string
-        "LATENCY" / "
-        Label and value for the first metric pill tile.
-
-        metric2Label / metric2Value
-        string
-        "PHYSICS" / "Spring-3D"
-        Label and value for the second metric pill tile.
-
-        metric3Label / metric3Value
-        string
-        "INTEGRITY" / "100%"
-        Label and value for the third metric pill tile.
-
-        pillar1Title / pillar1Desc
-        string
-        undefined
-        When set, replace metric1Label / metric1Value in the first metric pill tile.
-
-        pillar2Title / pillar2Desc
-        string
-        undefined
-        When set, replace metric2Label / metric2Value in the second metric pill tile.
-
-        statusText
-        string
-        undefined
-        When set, replaces clearanceLevel as the status line in the cover's footer.
-
-        authorText
-        string
-        "STUDIO CORE TEAM"
-        Attribution signature displayed in the footer next to the spirograph.
 
         initialPeek
         number
