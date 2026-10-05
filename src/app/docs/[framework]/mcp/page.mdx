@@ -58,8 +58,11 @@ Pick your client and run the command in your project. Prefer to do it by hand? S
     Open `.vscode/mcp.json` and click **Start** beside the shadcn server.
   </McpClientPanel>
   <McpClientPanel client="codex">
-    Codex has no init command. Add the server by hand to `~/.codex/config.toml`, then
-    restart Codex — see [Configuration](#configuration).
+    **Run the following command** in your project:
+
+    <Cli command={`mcp init --client codex`} />
+
+    Restart Codex to load the server.
   </McpClientPanel>
   <McpClientPanel client="opencode">
     **Run the following command** in your project:
@@ -135,12 +138,28 @@ only the file differs.
     ```
   </McpClientPanel>
   <McpClientPanel client="codex">
-    Add to `~/.codex/config.toml`, then restart Codex:
+    Add to `.codex/config.toml` in your project (or `~/.codex/config.toml` for every project), then restart Codex:
 
     ```toml
     [mcp_servers.shadcn]
     command = "npx"
     args = ["shadcn@latest", "mcp"]
+    ```
+  </McpClientPanel>
+  <McpClientPanel client="opencode">
+    Add to `opencode.json`, then restart OpenCode:
+
+    ```json
+    {
+      "$schema": "https://opencode.ai/config.json",
+      "mcp": {
+        "shadcn": {
+          "type": "local",
+          "command": ["npx", "shadcn@latest", "mcp"],
+          "enabled": true
+        }
+      }
+    }
     ```
   </McpClientPanel>
 </McpClientTabs>
