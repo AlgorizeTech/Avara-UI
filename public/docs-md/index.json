@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-05T06:24:03.975Z",
+  "generatedAt": "2026-10-05T11:41:13.378Z",
   "totalFiles": 301,
   "files": [
     {
@@ -183,12 +183,6 @@
       "originalMdx": "[framework]\\component-wall\\page.mdx"
     },
     {
-      "name": "nextjs/confidential-folder",
-      "path": "/docs/nextjs-confidential-folder.md",
-      "url": "/docs/nextjs/confidential-folder",
-      "originalMdx": "[framework]\\confidential-folder\\page.mdx"
-    },
-    {
       "name": "nextjs/context-menu",
       "path": "/docs/nextjs-context-menu.md",
       "url": "/docs/nextjs/context-menu",
@@ -217,6 +211,12 @@
       "path": "/docs/nextjs-counter-section.md",
       "url": "/docs/nextjs/counter-section",
       "originalMdx": "[framework]\\counter-section\\page.mdx"
+    },
+    {
+      "name": "nextjs/coupon-cards",
+      "path": "/docs/nextjs-coupon-cards.md",
+      "url": "/docs/nextjs/coupon-cards",
+      "originalMdx": "[framework]\\coupon-cards\\page.mdx"
     },
     {
       "name": "nextjs/cursor-animation",
@@ -1089,12 +1089,6 @@
       "originalMdx": "[framework]\\component-wall\\page.mdx"
     },
     {
-      "name": "reactjs/confidential-folder",
-      "path": "/docs/reactjs-confidential-folder.md",
-      "url": "/docs/reactjs/confidential-folder",
-      "originalMdx": "[framework]\\confidential-folder\\page.mdx"
-    },
-    {
       "name": "reactjs/context-menu",
       "path": "/docs/reactjs-context-menu.md",
       "url": "/docs/reactjs/context-menu",
@@ -1123,6 +1117,12 @@
       "path": "/docs/reactjs-counter-section.md",
       "url": "/docs/reactjs/counter-section",
       "originalMdx": "[framework]\\counter-section\\page.mdx"
+    },
+    {
+      "name": "reactjs/coupon-cards",
+      "path": "/docs/reactjs-coupon-cards.md",
+      "url": "/docs/reactjs/coupon-cards",
+      "originalMdx": "[framework]\\coupon-cards\\page.mdx"
     },
     {
       "name": "reactjs/cursor-animation",

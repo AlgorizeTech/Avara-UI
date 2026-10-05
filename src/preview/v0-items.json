@@ -209,9 +209,6 @@
     "build-interactive-interfaces": "Component Wall — Build interactive interfaces",
     "copy-beside-the-wall": "Component Wall — Copy beside the wall"
   },
-  "confidential-folder": {
-    "confidential-folder": "Confidential Folder"
-  },
   "context-menu": {
     "labels-shortcuts-disabled": "Context Menu — Labels, shortcuts & disabled"
   },
@@ -246,6 +243,10 @@
     "2-minimal-slash-agency-studio": "Counter Section — 2. Minimal Slash (Agency / Studio)",
     "3-halftone-cinema-architectural": "Counter Section — 3. Halftone Cinema (Architectural)",
     "4-spotlight-gradient-interactive-pointer": "Counter Section — 4. Spotlight Gradient (Interactive Pointer)"
+  },
+  "confidential-folder": {
+    "auto-flip-default": "Confidential Folder — Auto Flip (Default)",
+    "step-flip-3-stage-interaction": "Confidential Folder — Step Flip (3-Stage Interaction)"
   },
   "cursor-animation": {
     "image-trail-cursor": "Cursor Animation — Image Trail Cursor",

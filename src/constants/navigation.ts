@@ -159,11 +159,13 @@ const rawNavigation: NavigationItem[] = [
       { label: "Command", slug: "command" },
       { label: "Components Folder", slug: "design-components-folder" },
       {
-        label: "Confidential Folder",
-        slug: "confidential-folder",
+        label: "Coupon Cards",
+        slug: "coupon-cards",
         badge: "New",
         addedOn: "2026-09-29",
         keywords: [
+          "coupon cards",
+          "coupon",
           "confidential folder",
           "folder",
           "sleeve",
