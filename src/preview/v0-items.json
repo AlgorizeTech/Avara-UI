@@ -171,7 +171,10 @@
     "pie-chart": "Chart — Pie chart",
     "donut-chart": "Chart — Donut chart",
     "donut-with-legend": "Chart — Donut with legend",
-    "stacked-bar": "Chart — Stacked bar"
+    "stacked-bar": "Chart — Stacked bar",
+    "traffic-sources-gauge": "Chart — Traffic sources gauge",
+    "visitors-by-country": "Chart — Visitors by country",
+    "metrics-overview-tabs": "Chart — Metrics overview tabs"
   },
   "chat": {
     "chat-application": "Chat — Chat application",
