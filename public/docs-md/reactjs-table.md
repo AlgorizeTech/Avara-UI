@@ -12,10 +12,11 @@ Every example below is live. Click a sortable header, expand a row, or hover the
 
 export const invoiceType = `type Invoice = {
   reference: string;
-  customer: { name: string; email: string }; // nested — no flattening needed
+  customer: { name: string; email: string };
   amount: number;
   status: "completed" | "processing" | "failed";
   issuedAt: string;
+  note?: string;
 };`;
 
 export const usageBasic = `${invoiceType}
@@ -35,118 +36,658 @@ const sampleInvoices: Invoice[] = [
     status: "processing",
     issuedAt: "2023-10-24",
   },
+  {
+    reference: "INV-3023",
+    customer: { name: "Charlie Davis", email: "charlie@example.com" },
+    amount: 1420,
+    status: "failed",
+    issuedAt: "2023-10-23",
+  },
+  {
+    reference: "INV-3024",
+    customer: { name: "Diana Prince", email: "diana@example.com" },
+    amount: 940,
+    status: "completed",
+    issuedAt: "2023-10-22",
+  },
 ];
 
-export default function InvoiceTable({ invoices = sampleInvoices }: { invoices?: Invoice[] }) {
+const STATUS_STYLES: Record = {
+  completed:
+    "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400",
+  processing:
+    "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400",
+  failed: "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400",
+};
+
+const StatusPill = ({ status }: { status: Invoice["status"] }) => (
+  
+    {status}
+  
+);
+
+const money = (value: number) =>
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
+
+export default function ComposableTable({
+  invoices = sampleInvoices,
+}: {
+  invoices?: Invoice[];
+}) {
   return (
 
             Invoice
             Customer
             Amount
+            Status
+            Issued
 
           {invoices.map((invoice) => (
-            
-              {invoice.reference}
 
-              {/* Reach as deep into the row as you like */}
+                {invoice.reference}
 
-                  {invoice.customer.name}
-                  
+                    {invoice.customer.name}
+
                     {invoice.customer.email}
 
-              \${invoice.amount}
-            
+                {money(invoice.amount)}
+
+                {invoice.issuedAt}
+
           ))}
 
   );
 }`;
 
-export const usageMinimal = `
+export const usageMinimal = `${invoiceType}
 
-        Invoice
+const sampleInvoices: Invoice[] = [
+  {
+    reference: "INV-3021",
+    customer: { name: "Alice Freeman", email: "alice@example.com" },
+    amount: 3200,
+    status: "completed",
+    issuedAt: "2023-10-24",
+  },
+  {
+    reference: "INV-3022",
+    customer: { name: "Bob Smith", email: "bob@example.com" },
+    amount: 850.5,
+    status: "processing",
+    issuedAt: "2023-10-24",
+  },
+  {
+    reference: "INV-3023",
+    customer: { name: "Charlie Davis", email: "charlie@example.com" },
+    amount: 1420,
+    status: "failed",
+    issuedAt: "2023-10-23",
+  },
+  {
+    reference: "INV-3024",
+    customer: { name: "Diana Prince", email: "diana@example.com" },
+    amount: 940,
+    status: "completed",
+    issuedAt: "2023-10-22",
+  },
+];
 
-      {invoices.map((invoice) => (
-        
-          {invoice.reference}
-        
-      ))}
+const STATUS_STYLES: Record = {
+  completed:
+    "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400",
+  processing:
+    "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400",
+  failed: "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400",
+};
 
-`;
-
-export const usageSorting = `// Sorting is controlled — the table renders the affordance, you own the state.
-const [sort, setSort] = useState(null);
-
-const toggleSort = (key: string) =>
-  setSort((prev) =>
-    prev && prev.key === key
-      ? { key, direction: prev.direction === "asc" ? "desc" : "asc" }
-      : { key, direction: "asc" },
-  );
-
-const sorted = useMemo(() => {
-  if (!sort) return invoices;
-  const factor = sort.direction === "asc" ? 1 : -1;
-  return [...invoices].sort((a, b) =>
-    factor * String(a[sort.key]).localeCompare(String(b[sort.key])),
-  );
-}, [invoices, sort]);
-
- toggleSort("customer")}
->
-  Customer
-`;
-
-export const usageExpandable = `const [open, setOpen] = useState>(new Set());
-
-const toggle = (id: string) =>
-  setOpen((prev) => {
-    const next = new Set(prev);
-    next.has(id) ? next.delete(id) : next.add(id);
-    return next;
-  });
-
-  {invoices.map((invoice) => (
-
-           toggle(invoice.reference)}
-          />
-        
-        {invoice.reference}
-
-        {invoice.note}
-
-  ))}
-`;
-
-export const usagePagination = `// The primitives do not paginate for you — slice the array and fill the footer.
-// Want it built in? Use the Data Table component instead.
-const pageSize = 4;
-const [page, setPage] = useState(1);
-const totalPages = Math.max(1, Math.ceil(invoices.length / pageSize));
-const rows = invoices.slice((page - 1) * pageSize, page * pageSize);
-
-  {/* … rows … */}
-
-    Page {page} of {totalPages}
-    
-       setPage((p) => Math.max(1, p - 1))}>Prev
-       setPage((p) => Math.min(totalPages, p + 1))}>Next
-
-`;
-
-export const usageActions = `// TableRow sets a group class, so TableRowActions can reveal on row hover.
-
-     edit(invoice)}>Edit
-     remove(invoice)}>Delete
+const StatusPill = ({ status }: { status: Invoice["status"] }) => (
   
-`;
+    {status}
+  
+);
 
-export const usageEmpty = `
-  {rows.length === 0 ? (
-    No invoices yet.
-  ) : (
-    rows.map((invoice) => {/* … */})
-  )}
-`;
+const money = (value: number) =>
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
+
+export default function MinimalTable({
+  invoices = sampleInvoices,
+}: {
+  invoices?: Invoice[];
+}) {
+  return (
+
+            Invoice
+            Customer
+            Amount
+            Status
+            Issued
+
+          {invoices.map((invoice) => (
+
+                {invoice.reference}
+
+                    {invoice.customer.name}
+
+                    {invoice.customer.email}
+
+                {money(invoice.amount)}
+
+                {invoice.issuedAt}
+
+          ))}
+
+  );
+}`;
+
+export const usageSorting = `${invoiceType}
+
+const sampleInvoices: Invoice[] = [
+  {
+    reference: "INV-3021",
+    customer: { name: "Alice Freeman", email: "alice@example.com" },
+    amount: 3200,
+    status: "completed",
+    issuedAt: "2023-10-24",
+  },
+  {
+    reference: "INV-3022",
+    customer: { name: "Bob Smith", email: "bob@example.com" },
+    amount: 850.5,
+    status: "processing",
+    issuedAt: "2023-10-24",
+  },
+  {
+    reference: "INV-3023",
+    customer: { name: "Charlie Davis", email: "charlie@example.com" },
+    amount: 1420,
+    status: "failed",
+    issuedAt: "2023-10-23",
+  },
+  {
+    reference: "INV-3024",
+    customer: { name: "Diana Prince", email: "diana@example.com" },
+    amount: 940,
+    status: "completed",
+    issuedAt: "2023-10-22",
+  },
+  {
+    reference: "INV-3025",
+    customer: { name: "Evan Wright", email: "evan@example.com" },
+    amount: 2100,
+    status: "completed",
+    issuedAt: "2023-10-21",
+  },
+];
+
+const STATUS_STYLES: Record = {
+  completed:
+    "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400",
+  processing:
+    "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400",
+  failed: "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400",
+};
+
+const StatusPill = ({ status }: { status: Invoice["status"] }) => (
+  
+    {status}
+  
+);
+
+const money = (value: number) =>
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
+
+type SortKey = "reference" | "customer" | "amount" | "issuedAt";
+
+const SORT_ACCESSORS = {
+  reference: (row: Invoice) => row.reference,
+  customer: (row: Invoice) => row.customer.name,
+  amount: (row: Invoice) => row.amount,
+  issuedAt: (row: Invoice) => row.issuedAt,
+} as const;
+
+export default function SortableTable({
+  invoices = sampleInvoices,
+}: {
+  invoices?: Invoice[];
+}) {
+  const [sort, setSort] = useState({ key: "reference", direction: "asc" });
+
+  const toggleSort = (key: SortKey) =>
+    setSort((prev) =>
+      prev && prev.key === key
+        ? { key, direction: prev.direction === "asc" ? "desc" : "asc" }
+        : { key, direction: "asc" },
+    );
+
+  const sorted = useMemo(() => {
+    if (!sort) return invoices;
+    const read = SORT_ACCESSORS[sort.key];
+    const factor = sort.direction === "asc" ? 1 : -1;
+    return [...invoices].sort((a, b) => {
+      const av = read(a);
+      const bv = read(b);
+      if (typeof av === "number" && typeof bv === "number")
+        return factor * (av - bv);
+      return factor * String(av).localeCompare(String(bv));
+    });
+  }, [invoices, sort]);
+
+  return (
+
+             toggleSort("reference")}
+            >
+              Invoice
+            
+             toggleSort("customer")}
+            >
+              Customer
+            
+             toggleSort("amount")}
+            >
+              Amount
+            
+            Status
+             toggleSort("issuedAt")}
+            >
+              Issued
+
+          {sorted.map((invoice) => (
+
+                {invoice.reference}
+
+                    {invoice.customer.name}
+
+                    {invoice.customer.email}
+
+                {money(invoice.amount)}
+
+                {invoice.issuedAt}
+
+          ))}
+
+  );
+}`;
+
+export const usageExpandable = `${invoiceType}
+
+const sampleInvoices: Invoice[] = [
+  {
+    reference: "INV-3021",
+    customer: { name: "Alice Freeman", email: "alice@example.com" },
+    amount: 3200,
+    status: "completed",
+    issuedAt: "2023-10-24",
+    note: "Payment processed via Stripe. Receipt emailed to the customer.",
+  },
+  {
+    reference: "INV-3022",
+    customer: { name: "Bob Smith", email: "bob@example.com" },
+    amount: 850.5,
+    status: "processing",
+    issuedAt: "2023-10-24",
+    note: "Waiting on bank confirmation — usually 2–3 business days.",
+  },
+  {
+    reference: "INV-3023",
+    customer: { name: "Charlie Davis", email: "charlie@example.com" },
+    amount: 1420,
+    status: "failed",
+    issuedAt: "2023-10-23",
+    note: "Card declined by issuer. Customer asked to update payment method.",
+  },
+  {
+    reference: "INV-3024",
+    customer: { name: "Diana Prince", email: "diana@example.com" },
+    amount: 940,
+    status: "completed",
+    issuedAt: "2023-10-22",
+    note: "Payment processed via PayPal.",
+  },
+];
+
+const STATUS_STYLES: Record = {
+  completed:
+    "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400",
+  processing:
+    "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400",
+  failed: "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400",
+};
+
+const StatusPill = ({ status }: { status: Invoice["status"] }) => (
+  
+    {status}
+  
+);
+
+const money = (value: number) =>
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
+
+export default function ExpandableTable({
+  invoices = sampleInvoices,
+}: {
+  invoices?: Invoice[];
+}) {
+  const [expanded, setExpanded] = useState>(new Set(["INV-3021"]));
+
+  const toggleExpanded = (reference: string) =>
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      if (next.has(reference)) next.delete(reference);
+      else next.add(reference);
+      return next;
+    });
+
+  const columnCount = 6;
+
+  return (
+
+            Invoice
+            Customer
+            Amount
+            Status
+            Issued
+
+          {invoices.map((invoice) => (
+
+                   toggleExpanded(invoice.reference)}
+                  />
+
+                  {invoice.reference}
+
+                      {invoice.customer.name}
+
+                      {invoice.customer.email}
+
+                  {money(invoice.amount)}
+
+                  {invoice.issuedAt}
+
+                  Transaction summary
+
+                  {invoice.note ??
+                    "No additional history recorded for this invoice."}
+
+          ))}
+
+  );
+}`;
+
+export const usagePagination = `${invoiceType}
+
+const sampleInvoices: Invoice[] = [
+  { reference: "INV-3021", customer: { name: "Alice Freeman", email: "alice@example.com" }, amount: 3200, status: "completed", issuedAt: "2023-10-24" },
+  { reference: "INV-3022", customer: { name: "Bob Smith", email: "bob@example.com" }, amount: 850.5, status: "processing", issuedAt: "2023-10-24" },
+  { reference: "INV-3023", customer: { name: "Charlie Davis", email: "charlie@example.com" }, amount: 1420, status: "failed", issuedAt: "2023-10-23" },
+  { reference: "INV-3024", customer: { name: "Diana Prince", email: "diana@example.com" }, amount: 940, status: "completed", issuedAt: "2023-10-22" },
+  { reference: "INV-3025", customer: { name: "Evan Wright", email: "evan@example.com" }, amount: 2100, status: "completed", issuedAt: "2023-10-21" },
+  { reference: "INV-3026", customer: { name: "Fiona Gallagher", email: "fiona@example.com" }, amount: 450, status: "processing", issuedAt: "2023-10-21" },
+  { reference: "INV-3027", customer: { name: "George Harris", email: "george@example.com" }, amount: 5500, status: "completed", issuedAt: "2023-10-20" },
+];
+
+const STATUS_STYLES: Record = {
+  completed: "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400",
+  processing: "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400",
+  failed: "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400",
+};
+
+const StatusPill = ({ status }: { status: Invoice["status"] }) => (
+  
+    {status}
+  
+);
+
+const money = (value: number) =>
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
+
+export default function PaginatedTable({
+  invoices = sampleInvoices,
+}: {
+  invoices?: Invoice[];
+}) {
+  const pageSize = 4;
+  const [page, setPage] = useState(1);
+  const totalPages = Math.max(1, Math.ceil(invoices.length / pageSize));
+  const rows = invoices.slice((page - 1) * pageSize, page * pageSize);
+
+  return (
+
+            Invoice
+            Customer
+            Amount
+            Status
+            Issued
+
+          {rows.map((invoice) => (
+
+                {invoice.reference}
+
+                    {invoice.customer.name}
+
+                    {invoice.customer.email}
+
+                {money(invoice.amount)}
+
+                {invoice.issuedAt}
+
+          ))}
+
+          Page {page} of {totalPages}
+
+           setPage((p) => Math.max(1, p - 1))}
+            disabled={page === 1}
+            aria-label="Previous page"
+            className="p-1.5 rounded-md border border-border text-muted-foreground hover:border-primary/50 hover:text-primary hover:bg-primary/10 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+          >
+
+           setPage((p) => Math.min(totalPages, p + 1))}
+            disabled={page === totalPages}
+            aria-label="Next page"
+            className="p-1.5 rounded-md border border-border text-muted-foreground hover:border-primary/50 hover:text-primary hover:bg-primary/10 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+          >
+
+  );
+}`;
+
+export const usageActions = `${invoiceType}
+
+const sampleInvoices: Invoice[] = [
+  {
+    reference: "INV-3021",
+    customer: { name: "Alice Freeman", email: "alice@example.com" },
+    amount: 3200,
+    status: "completed",
+    issuedAt: "2023-10-24",
+  },
+  {
+    reference: "INV-3022",
+    customer: { name: "Bob Smith", email: "bob@example.com" },
+    amount: 850.5,
+    status: "processing",
+    issuedAt: "2023-10-24",
+  },
+  {
+    reference: "INV-3023",
+    customer: { name: "Charlie Davis", email: "charlie@example.com" },
+    amount: 1420,
+    status: "failed",
+    issuedAt: "2023-10-23",
+  },
+  {
+    reference: "INV-3024",
+    customer: { name: "Diana Prince", email: "diana@example.com" },
+    amount: 940,
+    status: "completed",
+    issuedAt: "2023-10-22",
+  },
+];
+
+const STATUS_STYLES: Record = {
+  completed:
+    "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400",
+  processing:
+    "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400",
+  failed: "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400",
+};
+
+const StatusPill = ({ status }: { status: Invoice["status"] }) => (
+  
+    {status}
+  
+);
+
+const money = (value: number) =>
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
+
+export default function RowActionsTable({
+  invoices = sampleInvoices,
+}: {
+  invoices?: Invoice[];
+}) {
+  const handleEdit = (invoice: Invoice) => {
+    console.log("Editing invoice:", invoice.reference);
+  };
+
+  const handleDelete = (invoice: Invoice) => {
+    console.log("Deleting invoice:", invoice.reference);
+  };
+
+  return (
+
+            Invoice
+            Customer
+            Amount
+            Status
+            Issued
+            Actions
+
+          {invoices.map((invoice) => (
+
+                {invoice.reference}
+
+                    {invoice.customer.name}
+
+                    {invoice.customer.email}
+
+                {money(invoice.amount)}
+
+                {invoice.issuedAt}
+
+                   handleEdit(invoice)}
+                    aria-label={\`Edit \${invoice.reference}\`}
+                    className="p-1.5 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors cursor-pointer"
+                  >
+
+                   handleDelete(invoice)}
+                    aria-label={\`Delete \${invoice.reference}\`}
+                    className="p-1.5 rounded-md text-muted-foreground hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors cursor-pointer"
+                  >
+
+          ))}
+
+  );
+}`;
+
+export const usageSizes = `${invoiceType}
+
+const sampleInvoices: Invoice[] = [
+  {
+    reference: "INV-3021",
+    customer: { name: "Alice Freeman", email: "alice@example.com" },
+    amount: 3200,
+    status: "completed",
+    issuedAt: "2023-10-24",
+  },
+  {
+    reference: "INV-3022",
+    customer: { name: "Bob Smith", email: "bob@example.com" },
+    amount: 850.5,
+    status: "processing",
+    issuedAt: "2023-10-24",
+  },
+  {
+    reference: "INV-3023",
+    customer: { name: "Charlie Davis", email: "charlie@example.com" },
+    amount: 1420,
+    status: "failed",
+    issuedAt: "2023-10-23",
+  },
+];
+
+const STATUS_STYLES: Record = {
+  completed:
+    "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400",
+  processing:
+    "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400",
+  failed: "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400",
+};
+
+const StatusPill = ({ status }: { status: Invoice["status"] }) => (
+  
+    {status}
+  
+);
+
+const money = (value: number) =>
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
+
+const TABLE_SIZES = ["sm", "md", "lg"] as const;
+
+export default function TableSizesDemo({
+  invoices = sampleInvoices,
+}: {
+  invoices?: Invoice[];
+}) {
+  return (
+    
+      {TABLE_SIZES.map((size) => (
+
+            size=&quot;{size}&quot;
+
+                  Invoice
+                  Customer
+                  Amount
+                  Status
+
+                {invoices.map((invoice) => (
+
+                      {invoice.reference}
+                    
+                    {invoice.customer.name}
+                    
+                      {money(invoice.amount)}
+
+                ))}
+
+      ))}
+    
+  );
+}`;
+
+export const usageEmpty = `${invoiceType}
+
+export default function EmptyTableDemo() {
+  const rows: Invoice[] = [];
+
+  return (
+
+            Invoice
+            Customer
+            Amount
+            Status
+            Issued
+
+          {rows.length === 0 ? (
+            No invoices yet.
+          ) : (
+            rows.map((invoice) => (
+              
+                {invoice.reference}
+              
+            ))
+          )}
+
+  );
+}`;
 
 ## Installation
 
@@ -160,13 +701,6 @@ npx shadcn@latest add @algorize-ui/table
 ## Examples
 
 ## Density
-
-…
-…
-…`,
-    },
-  ]}
-/>
 
 ## Features
 

@@ -28,11 +28,11 @@ export const chartData = `const revenue: ChartDataPoint[] = [
   { label: "Dec", value: 4800 },
 ];`;
 
-export const chartHeading = `<div className="mb-8">
-        <h3 className="text-xl font-bold text-foreground">
+export const chartHeading = `<div className="mb-6">
+        <h3 className="text-lg font-semibold text-foreground">
           Annual Revenue Overview
         </h3>
-        <p className="text-sm font-medium text-muted-foreground mt-1">
+        <p className="text-xs font-medium text-muted-foreground mt-0.5">
           Fiscal year 2023 performance metrics.
         </p>
       </div>`;
@@ -43,7 +43,7 @@ ${chartData}
 
 export default function RevenueChart() {
   return (
-    <div className="w-full max-w-4xl mx-auto">
+    <div className="w-full max-w-4xl mx-auto rounded-3xl border border-border bg-card p-6 text-card-foreground">
       ${chartHeading}
       <ChartBlock
         data={revenue}
@@ -62,7 +62,7 @@ ${chartData}
 export default function RevenueLine() {
   // Bezier-smoothed stroke, no fill.
   return (
-    <div className="w-full max-w-4xl mx-auto">
+    <div className="w-full max-w-4xl mx-auto rounded-3xl border border-border bg-card p-6 text-card-foreground">
       ${chartHeading}
       <ChartBlock
         data={revenue}
@@ -83,7 +83,7 @@ export default function RevenuePie() {
   // Pie and donut render in a 1:1 container, so they never stretch into
   // ovals, and shade each slice from a single theme color.
   return (
-    <div className="w-full max-w-4xl mx-auto">
+    <div className="w-full max-w-4xl mx-auto rounded-3xl border border-border bg-card p-6 text-card-foreground">
       ${chartHeading}
       <ChartBlock data={revenue.slice(0, 5)} type="pie" valuePrefix="$" height={300} />
     </div>
@@ -96,7 +96,7 @@ ${chartData}
 
 export default function RevenueDonut() {
   return (
-    <div className="w-full max-w-4xl mx-auto">
+    <div className="w-full max-w-4xl mx-auto rounded-3xl border border-border bg-card p-6 text-card-foreground">
       ${chartHeading}
       <ChartBlock data={revenue.slice(0, 5)} type="donut" valuePrefix="$" height={300} />
     </div>
@@ -114,7 +114,7 @@ const visitReasons = [
 
 export default function VisitReasons() {
   return (
-    <div className="max-w-md rounded-3xl border border-border bg-card p-6">
+    <div className="w-full max-w-lg md:max-w-xl mx-auto rounded-3xl border border-border bg-card p-6 text-card-foreground">
       <h3 className="text-sm font-semibold">Top visit reasons</h3>
       <ChartBlock
         type="donut-legend"
@@ -140,9 +140,145 @@ const week = [
 
 export default function WeekSplit() {
   return (
-    <div className="max-w-md rounded-3xl border border-border bg-card p-6">
+    <div className="w-full max-w-lg md:max-w-xl mx-auto rounded-3xl border border-border bg-card p-6 text-card-foreground">
       <h3 className="text-sm font-semibold">Where the week goes</h3>
       <ChartBlock type="stacked-bar" data={week} valueSuffix="%" className="mt-4" />
+    </div>
+  );
+}`;
+
+export const usageTrafficSources = `import { ChartBlock, TrafficSourcesChart } from "@/components/custom/blocks/ChartBlock";
+
+const sources = [
+  { label: "Direct", value: 3420 },
+  { label: "Google Search", value: 2180 },
+  { label: "GitHub", value: 1450 },
+  { label: "Twitter / X", value: 890 },
+  { label: "LinkedIn", value: 430 },
+];
+
+export default function TrafficSourcesDemo() {
+  return (
+    <div className="w-full max-w-lg md:max-w-xl lg:max-w-2xl mx-auto">
+      <ChartBlock
+        type="traffic-sources"
+        data={sources}
+        signUps={412}
+        title="Traffic sources"
+        caption="Today"
+      />
+    </div>
+  );
+}`;
+
+export const usageVisitorsByCountry = `import { ChartBlock, VisitorsByCountryChart } from "@/components/custom/blocks/ChartBlock";
+
+const countryVisits = [
+  { label: "United States", value: 4250, code: "US" },
+  { label: "Germany", value: 1820, code: "DE" },
+  { label: "United Kingdom", value: 1340, code: "GB" },
+  { label: "India", value: 980, code: "IN" },
+  { label: "Canada", value: 650, code: "CA" },
+  { label: "France", value: 420, code: "FR" },
+];
+
+export default function CountryVisitorsDemo() {
+  return (
+    <div className="w-full max-w-lg md:max-w-xl lg:max-w-2xl mx-auto">
+      <ChartBlock
+        type="visitors-by-country"
+        data={countryVisits}
+        title="Visitors by country"
+        caption="Today"
+      />
+    </div>
+  );
+}`;
+
+export const usageMetricsOverview = `import { ChartBlock, type MetricTabItem } from "@/components/custom/blocks/ChartBlock";
+import { Mail, PenLine, UserPlus, Wallet } from "lucide-react";
+
+const overviewMetrics: MetricTabItem[] = [
+  {
+    id: "users",
+    label: "New users",
+    icon: <UserPlus className="size-4" />,
+    change: 9.1,
+    points: [
+      { label: "Jan", value: 850 },
+      { label: "Feb", value: 940 },
+      { label: "Mar", value: 1050 },
+      { label: "Apr", value: 1000 },
+      { label: "May", value: 1120 },
+      { label: "Jun", value: 1200 },
+      { label: "Jul", value: 1180 },
+      { label: "Aug", value: 1280 },
+      { label: "Sep", value: 1094 },
+    ],
+  },
+  {
+    id: "posts",
+    label: "Posts",
+    icon: <PenLine className="size-4" />,
+    change: 5.6,
+    points: [
+      { label: "Jan", value: 110 },
+      { label: "Feb", value: 125 },
+      { label: "Mar", value: 130 },
+      { label: "Apr", value: 120 },
+      { label: "May", value: 140 },
+      { label: "Jun", value: 150 },
+      { label: "Jul", value: 145 },
+      { label: "Aug", value: 160 },
+      { label: "Sep", value: 149 },
+    ],
+  },
+  {
+    id: "messages",
+    label: "Messages",
+    icon: <Mail className="size-4" />,
+    change: 4.4,
+    points: [
+      { label: "Jan", value: 420 },
+      { label: "Feb", value: 460 },
+      { label: "Mar", value: 490 },
+      { label: "Apr", value: 470 },
+      { label: "May", value: 520 },
+      { label: "Jun", value: 580 },
+      { label: "Jul", value: 550 },
+      { label: "Aug", value: 610 },
+      { label: "Sep", value: 571 },
+    ],
+  },
+  {
+    id: "revenue",
+    label: "Revenue",
+    icon: <Wallet className="size-4" />,
+    currency: "USD",
+    change: 7.7,
+    points: [
+      { label: "Jan", value: 52000 },
+      { label: "Feb", value: 58000 },
+      { label: "Mar", value: 64000 },
+      { label: "Apr", value: 61000 },
+      { label: "May", value: 69000 },
+      { label: "Jun", value: 74000 },
+      { label: "Jul", value: 71000 },
+      { label: "Aug", value: 82000 },
+      { label: "Sep", value: 77400 },
+    ],
+  },
+];
+
+export default function MetricsOverviewDemo() {
+  return (
+    <div className="w-full max-w-4xl mx-auto">
+      <ChartBlock
+        type="metrics-overview"
+        metrics={overviewMetrics}
+        title="This year by month"
+        caption="vs last month"
+      />
     </div>
   );
 }`;
@@ -276,6 +412,58 @@ export default function WeekSplit() {
       props: { type: "stacked-bar" },
       usage: usageStackedBar,
     },
+    {
+      title: "Traffic sources gauge",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"traffic-sources"',
+          effect:
+            "for a semicircular tick-gauge breakdown of visitor channels with total counts and share percentages.",
+        },
+        {
+          prop: "signUps",
+          value: "{412}",
+          effect: "calculates and renders the visit-to-sign-up conversion rate meter.",
+        },
+      ],
+      props: { type: "traffic-sources" },
+      usage: usageTrafficSources,
+    },
+    {
+      title: "Visitors by country",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"visitors-by-country"',
+          effect:
+            "for an interactive barcode breakdown with ISO country code badges and ranked shares.",
+        },
+        {
+          prop: "showCodes",
+          value: "{true}",
+          effect: "renders the 2-letter ISO country badges in the breakdown list.",
+        },
+      ],
+      props: { type: "visitors-by-country" },
+      usage: usageVisitorsByCountry,
+    },
+    {
+      title: "Metrics overview tabs",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"metrics-overview"',
+          effect:
+            "for an interactive multi-tab dashboard chart featuring pill track columns, animated active tab spring, total & average statistics, and a toggle between columns and smooth trend spline.",
+        },
+      ],
+      props: { type: "metrics-overview" },
+      usage: usageMetricsOverview,
+    },
   ]}
 />
 
@@ -328,19 +516,19 @@ Explore the Chart component's data visualization capabilities, featuring respons
           <code>data</code>
         </td>
         <td>
-          <code>{`{ label: string, value: number, color?: string }[]`}</code>
+          <code>{`{ label: string, value: number, color?: string, code?: string }[]`}</code>
         </td>
         <td>
           <strong>Required</strong>
         </td>
-        <td>An array of objects mapping string labels to numerical values. <code>color</code> pins one share's colour in the legend charts.</td>
+        <td>An array of objects mapping string labels to numerical values. <code>color</code> pins one share's colour; <code>code</code> provides 2-letter ISO country codes.</td>
       </tr>
       <tr>
         <td>
           <code>type</code>
         </td>
         <td>
-          <code>"bar" | "line" | "pie" | "donut" | "donut-legend" | "stacked-bar"</code>
+          <code>"bar" | "line" | "pie" | "donut" | "donut-legend" | "stacked-bar" | "traffic-sources" | "visitors-by-country" | "metrics-overview"</code>
         </td>
         <td>
           <code>"bar"</code>
@@ -471,17 +659,72 @@ Explore the Chart component's data visualization capabilities, featuring respons
       </tr>
       <tr>
         <td>
-          <code>valueSuffix</code>
+          <code>signUps</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          <strong>Traffic sources only:</strong> total sign-ups in the period, used to calculate and render the visit-to-sign-up conversion rate bar.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>showCodes</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          <strong>Visitors by country only:</strong> whether to render the 2-letter ISO country code badges in the breakdown list.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>title</code>
         </td>
         <td>
           <code>string</code>
         </td>
         <td>
-          <code>""</code>
+          <code>undefined</code>
         </td>
         <td>
-          Appends a string (like <code>"k"</code> or <code>"%"</code>) to the
-          tooltip and Y-Axis values.
+          Header title for card-based breakdown charts (e.g. "Traffic sources", "Visitors by country").
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>caption</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Subheading or period caption under the title (e.g. "Today", "This week").
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>metrics</code>
+        </td>
+        <td>
+          <code>MetricTabItem[]</code>
+        </td>
+        <td>
+          Default 4 tabs (Users, Posts, Messages, Revenue)
+        </td>
+        <td>
+          <strong>Metrics overview only:</strong> custom array of metric tabs with data series, labels, icons, currency codes, and delta change percentages.
         </td>
       </tr>
     </tbody>

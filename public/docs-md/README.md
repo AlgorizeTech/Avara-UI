@@ -2,7 +2,7 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-10-04T05:25:04.948Z
+**Generated at:** 2026-10-05T12:21:47.641Z
 **Total files:** 301
 
 ## Available Files
@@ -37,12 +37,12 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/color-picker](/docs/nextjs-color-picker.md) - Source: `[framework]\color-picker\page.mdx`
 - [nextjs/command](/docs/nextjs-command.md) - Source: `[framework]\command\page.mdx`
 - [nextjs/component-wall](/docs/nextjs-component-wall.md) - Source: `[framework]\component-wall\page.mdx`
-- [nextjs/confidential-folder](/docs/nextjs-confidential-folder.md) - Source: `[framework]\confidential-folder\page.mdx`
 - [nextjs/context-menu](/docs/nextjs-context-menu.md) - Source: `[framework]\context-menu\page.mdx`
 - [nextjs/conversation-timeline](/docs/nextjs-conversation-timeline.md) - Source: `[framework]\conversation-timeline\page.mdx`
 - [nextjs/copy-button](/docs/nextjs-copy-button.md) - Source: `[framework]\copy-button\page.mdx`
 - [nextjs/counter](/docs/nextjs-counter.md) - Source: `[framework]\counter\page.mdx`
 - [nextjs/counter-section](/docs/nextjs-counter-section.md) - Source: `[framework]\counter-section\page.mdx`
+- [nextjs/coupon-cards](/docs/nextjs-coupon-cards.md) - Source: `[framework]\coupon-cards\page.mdx`
 - [nextjs/cursor-animation](/docs/nextjs-cursor-animation.md) - Source: `[framework]\cursor-animation\page.mdx`
 - [nextjs/curved-carousel](/docs/nextjs-curved-carousel.md) - Source: `[framework]\curved-carousel\page.mdx`
 - [nextjs/custom-code-block](/docs/nextjs-custom-code-block.md) - Source: `[framework]\custom-code-block\page.mdx`
@@ -188,12 +188,12 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/color-picker](/docs/reactjs-color-picker.md) - Source: `[framework]\color-picker\page.mdx`
 - [reactjs/command](/docs/reactjs-command.md) - Source: `[framework]\command\page.mdx`
 - [reactjs/component-wall](/docs/reactjs-component-wall.md) - Source: `[framework]\component-wall\page.mdx`
-- [reactjs/confidential-folder](/docs/reactjs-confidential-folder.md) - Source: `[framework]\confidential-folder\page.mdx`
 - [reactjs/context-menu](/docs/reactjs-context-menu.md) - Source: `[framework]\context-menu\page.mdx`
 - [reactjs/conversation-timeline](/docs/reactjs-conversation-timeline.md) - Source: `[framework]\conversation-timeline\page.mdx`
 - [reactjs/copy-button](/docs/reactjs-copy-button.md) - Source: `[framework]\copy-button\page.mdx`
 - [reactjs/counter](/docs/reactjs-counter.md) - Source: `[framework]\counter\page.mdx`
 - [reactjs/counter-section](/docs/reactjs-counter-section.md) - Source: `[framework]\counter-section\page.mdx`
+- [reactjs/coupon-cards](/docs/reactjs-coupon-cards.md) - Source: `[framework]\coupon-cards\page.mdx`
 - [reactjs/cursor-animation](/docs/reactjs-cursor-animation.md) - Source: `[framework]\cursor-animation\page.mdx`
 - [reactjs/curved-carousel](/docs/reactjs-curved-carousel.md) - Source: `[framework]\curved-carousel\page.mdx`
 - [reactjs/custom-code-block](/docs/reactjs-custom-code-block.md) - Source: `[framework]\custom-code-block\page.mdx`

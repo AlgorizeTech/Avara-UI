@@ -756,8 +756,12 @@
       "categories": [
         "data-display"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/popover.json",
+        "https://algorize-ui.vercel.app/r/toggle-group.json",
         "utils"
       ],
       "files": [
@@ -1233,7 +1237,8 @@
         "layout"
       ],
       "dependencies": [
-        "lucide-react"
+        "lucide-react",
+        "motion"
       ],
       "registryDependencies": [
         "https://algorize-ui.vercel.app/r/chart.json",

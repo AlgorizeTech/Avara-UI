@@ -1,46 +1,47 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
 
-export const metadata = docsPageMetadata("confidential-folder");
+export const metadata = docsPageMetadata("coupon-cards");
 
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { Installation } from "@/components/site/installation";
 import { extractCode } from "@/lib/code";
 
-# Confidential Folder
+# Coupon Cards
 
 An interactive classified folder sleeve component featuring a secret document card that glides out horizontally on hover and elevates gracefully onto the folder cover on click. Designed with a vector-precise thumb notch, geometric classified security crest seal, and luxurious dual-tone cardstock aesthetics.
 
 `ConfidentialFolder` brings tactile physical curiosity to editorial portfolios, mission statements, manifesto showcases, and private asset reveals.
 
-export const usageDefault = `import { ConfidentialFolder } from "@/components/custom/blocks/ConfidentialFolderBlock";
+export const usageAutoFlip = `import { CouponCards } from "@/components/custom/blocks/ConfidentialFolderBlock";
 
-export default function ConfidentialFolderExample() {
+export default function AutoFlipCouponCardsExample() {
   return (
     <div className="w-full flex items-center justify-center py-12">
-      <ConfidentialFolder
+      <CouponCards
+        interactionMode="auto-flip"
         sleeveTitle="Designed to endure"
         sleeveSubtitle="Crafted for those who value timeless clarity."
-        frontBadge="INTERNAL DISPATCH"
-        frontSerial="ARCHIVE // 07-X"
-        frontTitle="Design Directives"
-        frontSubtitle="Proprietary framework for world-class product architecture."
-        frontStamp="RESTRICTED"
-        stampSuffix="// CORE TEAM"
-        barcodeText="DISPATCH // APEX-07-CORE"
-        clearanceLevel="ACCESS PROTOCOL: TIER 1"
-        cardCategory="ARCHIVE PROTOCOL"
-        cardDate="2026 // ED. 04"
-        cardTitle="The Art of Restraint"
-        cardSubtitle="Foundational principles on high-craft software."
-        statement="Simplicity is not the lack of ambition; it is the absolute mastery of complexity. Strip away every superfluous element until only pure utility and craft remain."
-        highlightQuote="Cut until it is obvious. Then ship with conviction."
-        authorText="STUDIO CORE TEAM"
-        metric1Label="LATENCY"
-        metric1Value="< 16ms"
-        metric2Label="PHYSICS"
-        metric2Value="Spring-3D"
-        metric3Label="INTEGRITY"
-        metric3Value="100%"
+        frontBadge="SPECIAL OFFER"
+        frontSerial="VOUCHER // 2026-X"
+        frontTitle="Exclusive Access"
+        frontSubtitle="Limited edition membership and premium reward voucher."
+        frontStamp="VERIFIED"
+        stampSuffix="// VIP PASS"
+        barcodeText="COUPON // APEX-07-CORE"
+        clearanceLevel="REWARD STATUS: ACTIVE"
+        cardCategory="COUPON VOUCHER"
+        cardDate="VALID // 2026"
+        cardTitle="The Art of Craft"
+        cardSubtitle="Foundational reward tier for premium members."
+        statement="Redeem this exclusive voucher across any tier. Every detail is crafted with perfection to bring maximum value to your workflow."
+        highlightQuote="Unlock 50% off on all annual pro plans."
+        authorText="PRO MEMBERSHIP"
+        metric1Label="DISCOUNT"
+        metric1Value="50% OFF"
+        metric2Label="TIER"
+        metric2Value="VIP Elite"
+        metric3Label="STATUS"
+        metric3Value="Active"
         initialPeek={38}
         hoverPeek={88}
       />
@@ -48,37 +49,38 @@ export default function ConfidentialFolderExample() {
   );
 }`;
 
-export const usageCustom = `import { ConfidentialFolder } from "@/components/custom/blocks/ConfidentialFolderBlock";
+export const usageStepFlip = `import { CouponCards } from "@/components/custom/blocks/ConfidentialFolderBlock";
 
-export default function CustomFolderExample() {
+export default function StepFlipCouponCardsExample() {
   return (
     <div className="w-full flex items-center justify-center py-12">
-      <ConfidentialFolder
-        sleeveTitle="Founder Directives"
-        sleeveSubtitle="Internal notes on building category-defining software."
-        frontBadge="EXECUTIVE SPEC"
-        frontSerial="RELEASE #01-A"
-        frontTitle="Project Horizon"
-        frontSubtitle="Proprietary specifications for engineering leads."
-        frontStamp="TOP SECRET"
-        stampSuffix="// EYES ONLY"
-        barcodeText="SEC // 904-HORIZON"
-        clearanceLevel="CLEARANCE: LEVEL 5"
-        cardCategory="FOUNDER MEMO"
+      <CouponCards
+        interactionMode="step-flip"
+        sleeveTitle="Member Directives"
+        sleeveSubtitle="3-stage progressive interactive card exploration."
+        frontBadge="PROMO REWARD"
+        frontSerial="CARD // 09-STEP"
+        frontTitle="Founder Directives"
+        frontSubtitle="1st click opens to front cover. 2nd click flips. 3rd click closes."
+        frontStamp="TOP REWARD"
+        stampSuffix="// STAGE-3"
+        barcodeText="PASS // 904-HORIZON"
+        clearanceLevel="CLEARANCE: TIER 1"
+        cardCategory="PREMIUM PASS"
         cardDate="OCTOBER 2026"
-        cardTitle="First Principles"
-        cardSubtitle="Directives on product craft and execution."
-        statement="Great products are not compromises born out of endless committee consensus. They are clear, uncompromising viewpoints sculpted with relentless craft."
-        highlightQuote="Design with obsession. Ship with conviction."
+        cardTitle="Step-by-Step Reveal"
+        cardSubtitle="Click 1 seats on top. Click 2 flips. Click 3 closes."
+        statement="Explore information with purposeful progressive disclosure. Each click seamlessly advances the interaction state with high-precision physics."
+        highlightQuote="Click 1: Open • Click 2: Flip • Click 3: Close"
         authorText="CREATIVE LEADERSHIP"
         metric1Label="LATENCY"
         metric1Value="0 MS"
-        metric2Label="FPS"
-        metric2Value="120"
-        metric3Label="CLEARANCE"
-        metric3Value="TIER 1"
-        initialPeek={40}
-        hoverPeek={90}
+        metric2Label="STAGES"
+        metric2Value="3 Steps"
+        metric3Label="PHYSICS"
+        metric3Value="Spring-3D"
+        initialPeek={38}
+        hoverPeek={88}
       />
     </div>
   );
@@ -90,10 +92,17 @@ export default function CustomFolderExample() {
   columns={1}
   examples={[
     {
-      title: "Confidential Folder",
+      title: "Auto Flip (Default)",
       subheading:
-        "The inner card peeks out from the notch by default and slides out further on hover. Click to glide the card fully into position on top of the sleeve, where it settles and executes a tactile 180° 3D flip. Click again to flip back and return inside.",
+        "1st click slides the card out from the sleeve, elevates onto the front, and automatically flips 180° in-place to reveal the back details. 2nd click flips back and returns inside the sleeve.",
       propNotes: [
+        {
+          lead: "Interaction",
+          prop: "interactionMode",
+          value: '"auto-flip"',
+          effect:
+            "automatically executes the full slide-out and in-place 180° flip on first click.",
+        },
         {
           lead: "Resting Peek",
           prop: "initialPeek",
@@ -104,50 +113,91 @@ export default function CustomFolderExample() {
           lead: "Hover Peek",
           prop: "hoverPeek",
           effect:
-            "smoothly glides the card 88px out on hover, revealing content and inviting user interaction.",
-        },
-        {
-          lead: "In-Place 3D Flip",
-          prop: "onClick",
-          effect:
-            "glides the card onto the sleeve face, settles firmly into position, and executes a 180° flip (rotateY) revealing the manifesto.",
-        },
-        {
-          lead: "Vector Scoop",
-          prop: "notchRadius",
-          effect:
-            "physically cuts a clean inward semicircular scoop notch on the right edge of the sleeve for an authentic document envelope feel.",
+            "smoothly glides the card 88px out on hover, inviting user interaction.",
         },
       ],
       props: {
+        interactionMode: "auto-flip",
         sleeveTitle: "Designed to endure",
         sleeveSubtitle: "Crafted for those who value timeless clarity.",
-        frontBadge: "INTERNAL DISPATCH",
-        frontSerial: "ARCHIVE // 07-X",
-        frontTitle: "Design Directives",
-        frontSubtitle: "Proprietary framework for world-class product architecture.",
-        frontStamp: "RESTRICTED",
-        stampSuffix: "// CORE TEAM",
-        barcodeText: "DISPATCH // APEX-07-CORE",
-        clearanceLevel: "ACCESS PROTOCOL: TIER 1",
-        cardCategory: "ARCHIVE PROTOCOL",
-        cardDate: "2026 // ED. 04",
-        cardTitle: "The Art of Restraint",
-        cardSubtitle: "Foundational principles on high-craft software.",
+        frontBadge: "SPECIAL OFFER",
+        frontSerial: "VOUCHER // 2026-X",
+        frontTitle: "Exclusive Access",
+        frontSubtitle: "Limited edition membership and premium reward voucher.",
+        frontStamp: "VERIFIED",
+        stampSuffix: "// VIP PASS",
+        barcodeText: "COUPON // APEX-07-CORE",
+        clearanceLevel: "REWARD STATUS: ACTIVE",
+        cardCategory: "COUPON VOUCHER",
+        cardDate: "VALID // 2026",
+        cardTitle: "The Art of Craft",
+        cardSubtitle: "Foundational reward tier for premium members.",
         statement:
-          "Simplicity is not the lack of ambition; it is the absolute mastery of complexity. Strip away every superfluous element until only pure utility and craft remain.",
-        highlightQuote: "Cut until it is obvious. Then ship with conviction.",
-        authorText: "STUDIO CORE TEAM",
-        metric1Label: "LATENCY",
-        metric1Value: "< 16ms",
-        metric2Label: "PHYSICS",
-        metric2Value: "Spring-3D",
-        metric3Label: "INTEGRITY",
-        metric3Value: "100%",
+          "Redeem this exclusive voucher across any tier. Every detail is crafted with perfection to bring maximum value to your workflow.",
+        highlightQuote: "Unlock 50% off on all annual pro plans.",
+        authorText: "PRO MEMBERSHIP",
+        metric1Label: "DISCOUNT",
+        metric1Value: "50% OFF",
+        metric2Label: "TIER",
+        metric2Value: "VIP Elite",
+        metric3Label: "STATUS",
+        metric3Value: "Active",
         initialPeek: 38,
         hoverPeek: 88,
       },
-      usage: usageDefault,
+      usage: usageAutoFlip,
+      code: extractCode("src/components/custom/blocks/ConfidentialFolderBlock.tsx"),
+      minHeight: 580,
+    },
+    {
+      title: "Step Flip (3-Stage Interaction)",
+      subheading:
+        "1st click slides the card onto the sleeve cover and sits in place displaying the front cover. 2nd click executes a tactile 180° in-place flip revealing the back face. 3rd click flips it back and slides it safely into the sleeve.",
+      propNotes: [
+        {
+          lead: "Interaction",
+          prop: "interactionMode",
+          value: '"step-flip"',
+          effect:
+            "splits the animation into 3 distinct clicks: Click 1 opens to front cover, Click 2 flips to back details, Click 3 closes into sleeve.",
+        },
+        {
+          lead: "Resting State",
+          prop: "resting-top-front",
+          effect:
+            "allows users to pause and read the front cover when opened, before deciding to flip.",
+        },
+      ],
+      props: {
+        interactionMode: "step-flip",
+        sleeveTitle: "Member Directives",
+        sleeveSubtitle: "3-stage progressive interactive card exploration.",
+        frontBadge: "PROMO REWARD",
+        frontSerial: "CARD // 09-STEP",
+        frontTitle: "Founder Directives",
+        frontSubtitle: "1st click opens to front cover. 2nd click flips. 3rd click closes.",
+        frontStamp: "TOP REWARD",
+        stampSuffix: "// STAGE-3",
+        barcodeText: "PASS // 904-HORIZON",
+        clearanceLevel: "CLEARANCE: TIER 1",
+        cardCategory: "PREMIUM PASS",
+        cardDate: "OCTOBER 2026",
+        cardTitle: "Step-by-Step Reveal",
+        cardSubtitle: "Click 1 seats on top. Click 2 flips. Click 3 closes.",
+        statement:
+          "Explore information with purposeful progressive disclosure. Each click seamlessly advances the interaction state with high-precision physics.",
+        highlightQuote: "Click 1: Open • Click 2: Flip • Click 3: Close",
+        authorText: "CREATIVE LEADERSHIP",
+        metric1Label: "LATENCY",
+        metric1Value: "0 MS",
+        metric2Label: "STAGES",
+        metric2Value: "3 Steps",
+        metric3Label: "PHYSICS",
+        metric3Value: "Spring-3D",
+        initialPeek: 38,
+        hoverPeek: 88,
+      },
+      usage: usageStepFlip,
       code: extractCode("src/components/custom/blocks/ConfidentialFolderBlock.tsx"),
       minHeight: 580,
     },
@@ -209,6 +259,12 @@ export default function CustomFolderExample() {
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><code>interactionMode</code></td>
+        <td><code>"auto-flip" | "step-flip"</code></td>
+        <td><code>"auto-flip"</code></td>
+        <td>Controls opening behavior: <code>"auto-flip"</code> opens and flips automatically on 1st click; <code>"step-flip"</code> splits the interaction into 3 clicks (Click 1 opens, Click 2 flips, Click 3 closes).</td>
+      </tr>
       <tr>
         <td><code>folderColor</code></td>
         <td><code>string</code></td>

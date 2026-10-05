@@ -139,9 +139,8 @@ const Header = () => {
                 />
               </svg>
             </div>
-            <span className="font-semibold text-[16px] tracking-tight text-foreground flex items-center gap-1.5">
+            <span className="font-semibold text-[16px] tracking-tight text-foreground">
               Docs UI
-              <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 leading-none">v1.0</span>
             </span>
           </Link>
 
@@ -217,11 +216,8 @@ const Header = () => {
                   />
                 </svg>
               </div>
-              <span className="font-extrabold text-[15px] tracking-tight text-foreground flex items-center gap-1.5">
+              <span className="font-extrabold text-[15px] tracking-tight text-foreground">
                 Docs <span className="text-primary font-normal">UI</span>
-                <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 leading-none">
-                  v1.0
-                </span>
               </span>
             </Link>
           </div>
@@ -305,7 +301,7 @@ const Header = () => {
 
             {/* GitHub Stars Pill */}
             <Link
-              href="https://github.com/docs/docs"
+              href="https://github.com/AlgorizeTech/Reusable-Component-Documentation"
               target="_blank"
               rel="noopener noreferrer"
               className="pointer-events-auto hidden sm:flex items-center justify-center gap-2 size-10 lg:w-auto lg:px-3.5 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 text-foreground/80 hover:text-foreground hover:border-border/70 transition-all text-[12.5px] font-medium"
@@ -313,10 +309,10 @@ const Header = () => {
             >
               <GitHubIcon className="w-4 h-4 fill-current" />
               <span className="hidden lg:inline text-[12px] font-semibold text-foreground">GitHub</span>
-              <span className="hidden lg:block w-px h-3.5 bg-border/60 mx-0.5" />
+              {/* <span className="hidden lg:block w-px h-3.5 bg-border/60 mx-0.5" />
               <span className="hidden lg:inline text-[11px] font-semibold text-foreground/50">
                 2.1k
-              </span>
+              </span> */}
             </Link>
 
             {/* Dynamic System Theme Core Engine Toggle */}

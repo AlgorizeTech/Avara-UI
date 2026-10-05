@@ -265,6 +265,7 @@
     "src/components/custom/ui/multi-select.tsx",
     "src/components/custom/ui/sheet.tsx",
     "src/components/custom/ui/slider.tsx",
-    "src/components/ui/card.tsx"
+    "src/components/ui/card.tsx",
+    "src/lib/accent.ts"
   ]
 }

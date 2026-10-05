@@ -1,22 +1,22 @@
-export const metadata = docsPageMetadata("confidential-folder");
+export const metadata = docsPageMetadata("coupon-cards");
 
-# Confidential Folder
+# Coupon Cards
 
-An interactive classified folder sleeve component featuring a secret document card that glides out horizontally on hover and elevates gracefully onto the folder cover on click. Designed with a vector-precise thumb notch, geometric atomic orbital spirograph seal, and luxurious dual-tone cardstock aesthetics.
+An interactive classified folder sleeve component featuring a secret document card that glides out horizontally on hover and elevates gracefully onto the folder cover on click. Designed with a vector-precise thumb notch, geometric classified security crest seal, and luxurious dual-tone cardstock aesthetics.
 
 `ConfidentialFolder` brings tactile physical curiosity to editorial portfolios, mission statements, manifesto showcases, and private asset reveals.
 
-export const usageDefault = `import { ConfidentialFolder } from "@/components/custom/blocks/ConfidentialFolderBlock";
+export const usageAutoFlip = `import { CouponCards } from "@/components/custom/blocks/ConfidentialFolderBlock";
 
-export default function ConfidentialFolderExample() {
+export default function AutoFlipCouponCardsExample() {
   return (
 
   );
 }`;
 
-export const usageCustom = `import { ConfidentialFolder } from "@/components/custom/blocks/ConfidentialFolderBlock";
+export const usageStepFlip = `import { CouponCards } from "@/components/custom/blocks/ConfidentialFolderBlock";
 
-export default function CustomFolderExample() {
+export default function StepFlipCouponCardsExample() {
   return (
 
   );
@@ -62,6 +62,11 @@ npx shadcn@latest add @algorize-ui/confidential-folder
         Type
         Default
         Description
+
+        interactionMode
+        "auto-flip" | "step-flip"
+        "auto-flip"
+        Controls opening behavior: "auto-flip" opens and flips automatically on 1st click; "step-flip" splits the interaction into 3 clicks (Click 1 opens, Click 2 flips, Click 3 closes).
 
         folderColor
         string
@@ -195,6 +200,6 @@ npx shadcn@latest add @algorize-ui/confidential-folder
 
 ---
 
-**Component Path:** `[framework]\confidential-folder\page.mdx`
+**Component Path:** `[framework]\coupon-cards\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

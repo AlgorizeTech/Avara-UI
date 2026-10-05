@@ -4,7 +4,7 @@ export const metadata = docsPageMetadata("card-stack");
 
 A layered deck of cards featuring fluid drag-to-discard gestures, button-driven directional slide animations, and realistic depth perspective. Users can swipe cards left or right to review and discard them, with the next cards seamlessly stepping forward.
 
-export const usageSwipe = `const ARRIVALS = [
+export const usageSwipe = `const ARRIVALS: CardStackItem[] = [
   {
     id: "maker-hunt",
     title: "MakerHunt",
@@ -61,7 +61,7 @@ export default function SwipeToDiscardDemo() {
 }
 `;
 
-export const usageButtons = `const ARRIVALS = [
+export const usageButtons = `const ARRIVALS: CardStackItem[] = [
   {
     id: "maker-hunt",
     title: "MakerHunt",
@@ -95,14 +95,108 @@ export default function ButtonStackDemo() {
 }
 `;
 
-export const usageLeft = `export default function LeftSlideDemo({ items }: { items: CardStackItem[] }) {
+export const usageLeft = `const ARRIVALS: CardStackItem[] = [
+  {
+    id: "maker-hunt",
+    title: "MakerHunt",
+    description: "Daily product launches for indie makers.",
+    category: "Productivity",
+    date: "1d ago",
+    href: "https://makerhunt.example.com",
+    icon: (
+
+    ),
+  },
+  {
+    id: "design-forge",
+    title: "DesignForge",
+    description: "AI-powered vector generation and canvas tools for modern UI designers.",
+    category: "Design",
+    date: "2d ago",
+    href: "https://designforge.example.com",
+    icon: (
+
+    ),
+  },
+  {
+    id: "dev-pulse",
+    title: "DevPulse",
+    description: "Real-time deployment monitors and automated error triage alerts.",
+    category: "Developer Tools",
+    date: "3d ago",
+    href: "https://devpulse.example.com",
+    icon: (
+
+    ),
+  },
+  {
+    id: "draft-craft",
+    title: "DraftCraft",
+    description: "Collaborative markdown workspace with branch versioning and instant preview.",
+    category: "Writing",
+    date: "4d ago",
+    href: "https://draftcraft.example.com",
+    icon: (
+
+    ),
+  },
+];
+
+export default function LeftSlideDemo() {
   return (
     
   );
 }
 `;
 
-export const usageLoop = `export default function InfiniteLoopDemo({ items }: { items: CardStackItem[] }) {
+export const usageLoop = `const ARRIVALS: CardStackItem[] = [
+  {
+    id: "maker-hunt",
+    title: "MakerHunt",
+    description: "Daily product launches for indie makers.",
+    category: "Productivity",
+    date: "1d ago",
+    href: "https://makerhunt.example.com",
+    icon: (
+
+    ),
+  },
+  {
+    id: "design-forge",
+    title: "DesignForge",
+    description: "AI-powered vector generation and canvas tools for modern UI designers.",
+    category: "Design",
+    date: "2d ago",
+    href: "https://designforge.example.com",
+    icon: (
+
+    ),
+  },
+  {
+    id: "dev-pulse",
+    title: "DevPulse",
+    description: "Real-time deployment monitors and automated error triage alerts.",
+    category: "Developer Tools",
+    date: "3d ago",
+    href: "https://devpulse.example.com",
+    icon: (
+
+    ),
+  },
+  {
+    id: "draft-craft",
+    title: "DraftCraft",
+    description: "Collaborative markdown workspace with branch versioning and instant preview.",
+    category: "Writing",
+    date: "4d ago",
+    href: "https://draftcraft.example.com",
+    icon: (
+
+    ),
+  },
+];
+
+export default function InfiniteLoopDemo() {
   return (
     
   );

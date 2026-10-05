@@ -171,7 +171,10 @@
     "pie-chart": "Chart — Pie chart",
     "donut-chart": "Chart — Donut chart",
     "donut-with-legend": "Chart — Donut with legend",
-    "stacked-bar": "Chart — Stacked bar"
+    "stacked-bar": "Chart — Stacked bar",
+    "traffic-sources-gauge": "Chart — Traffic sources gauge",
+    "visitors-by-country": "Chart — Visitors by country",
+    "metrics-overview-tabs": "Chart — Metrics overview tabs"
   },
   "chat": {
     "chat-application": "Chat — Chat application",
@@ -205,9 +208,6 @@
   "component-wall": {
     "build-interactive-interfaces": "Component Wall — Build interactive interfaces",
     "copy-beside-the-wall": "Component Wall — Copy beside the wall"
-  },
-  "confidential-folder": {
-    "confidential-folder": "Confidential Folder"
   },
   "context-menu": {
     "labels-shortcuts-disabled": "Context Menu — Labels, shortcuts & disabled"
@@ -243,6 +243,10 @@
     "2-minimal-slash-agency-studio": "Counter Section — 2. Minimal Slash (Agency / Studio)",
     "3-halftone-cinema-architectural": "Counter Section — 3. Halftone Cinema (Architectural)",
     "4-spotlight-gradient-interactive-pointer": "Counter Section — 4. Spotlight Gradient (Interactive Pointer)"
+  },
+  "confidential-folder": {
+    "auto-flip-default": "Confidential Folder — Auto Flip (Default)",
+    "step-flip-3-stage-interaction": "Confidential Folder — Step Flip (3-Stage Interaction)"
   },
   "cursor-animation": {
     "image-trail-cursor": "Cursor Animation — Image Trail Cursor",
@@ -645,6 +649,7 @@
     "single-month-range-date-picker": "Range Date Picker — Single Month Range Date Picker",
     "single-month-priced-range-date-picker": "Range Date Picker — Single Month Priced Range Date Picker",
     "dual-month-range-date-picker": "Range Date Picker — Dual Month Range Date Picker",
+    "dual-month-priced-range-date-picker": "Range Date Picker — Dual Month Priced Range Date Picker",
     "disable-past-dates": "Range Date Picker — Disable past dates",
     "range-with-times": "Range Date Picker — Range with times"
   },
@@ -777,7 +782,13 @@
     "soft-variant": "Table — Soft variant"
   },
   "table": {
-    "composable-table": "Table — Composable table"
+    "composable-table": "Table — Composable table",
+    "minimal": "Table — Minimal",
+    "sortable-headers": "Table — Sortable headers",
+    "expandable-rows": "Table — Expandable rows",
+    "pagination": "Table — Pagination",
+    "row-actions": "Table — Row actions",
+    "sizes": "Table — Sizes"
   },
   "table-soft-comparison": {
     "comparison-soft": "Table — Comparison (soft)"
