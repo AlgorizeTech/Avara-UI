@@ -158,13 +158,13 @@ const StepperCounter = ({
         return (
           <div
             ref={containerRef}
-            className="flex items-center rounded-full border-2 border-border p-1 shadow-sm bg-background"
+            className="flex items-center rounded-full border-2 border-border p-1 bg-background"
           >
             <button
               onClick={handleDec}
               disabled={count <= min}
               className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-full transition-colors active:scale-95 disabled:opacity-50 shadow-sm",
+                "w-10 h-10 flex items-center justify-center rounded-full transition-colors active:scale-95 disabled:opacity-50",
                 theme.bg,
               )}
             >
@@ -177,7 +177,7 @@ const StepperCounter = ({
               onClick={handleInc}
               disabled={count >= max}
               className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-full transition-colors active:scale-95 disabled:opacity-50 shadow-sm",
+                "w-10 h-10 flex items-center justify-center rounded-full transition-colors active:scale-95 disabled:opacity-50",
                 theme.bg,
               )}
             >
@@ -190,7 +190,7 @@ const StepperCounter = ({
           <div
             ref={containerRef}
             className={cn(
-              "flex items-center rounded-2xl p-1.5 shadow-inner",
+              "flex items-center rounded-2xl p-1.5 border border-border/50",
               theme.bgSoft,
             )}
           >
@@ -198,7 +198,7 @@ const StepperCounter = ({
               onClick={handleDec}
               disabled={count <= min}
               className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-xl bg-card shadow-sm hover:scale-105 active:scale-95 transition-all disabled:opacity-50",
+                "w-10 h-10 flex items-center justify-center rounded-xl bg-card border border-border/40 hover:scale-105 active:scale-95 transition-all disabled:opacity-50",
                 theme.text,
               )}
             >
@@ -216,7 +216,7 @@ const StepperCounter = ({
               onClick={handleInc}
               disabled={count >= max}
               className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-xl bg-card shadow-sm hover:scale-105 active:scale-95 transition-all disabled:opacity-50",
+                "w-10 h-10 flex items-center justify-center rounded-xl bg-card border border-border/40 hover:scale-105 active:scale-95 transition-all disabled:opacity-50",
                 theme.text,
               )}
             >
@@ -228,7 +228,7 @@ const StepperCounter = ({
         return (
           <div
             ref={containerRef}
-            className="flex flex-col items-center bg-muted border border-border rounded-2xl overflow-hidden shadow-sm"
+            className="flex flex-col items-center bg-muted border border-border rounded-2xl overflow-hidden"
           >
             <button
               onClick={handleInc}
@@ -260,13 +260,13 @@ const StepperCounter = ({
         return (
           <div
             ref={containerRef}
-            className="flex items-center bg-card border border-border rounded-xl shadow-sm overflow-hidden p-1"
+            className="flex items-center bg-card border border-border rounded-xl overflow-hidden p-1"
           >
             <button
               onClick={handleDec}
               disabled={count <= min}
               className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-lg transition-colors active:scale-95 disabled:opacity-50 border border-foreground/10 shadow-sm",
+                "w-10 h-10 flex items-center justify-center rounded-lg transition-colors active:scale-95 disabled:opacity-50 border border-foreground/10",
                 theme.bg,
               )}
             >
@@ -279,7 +279,7 @@ const StepperCounter = ({
               onClick={handleInc}
               disabled={count >= max}
               className={cn(
-                "w-10 h-10 flex items-center justify-center rounded-lg transition-colors active:scale-95 disabled:opacity-50 border border-foreground/10 shadow-sm",
+                "w-10 h-10 flex items-center justify-center rounded-lg transition-colors active:scale-95 disabled:opacity-50 border border-foreground/10",
                 theme.bg,
               )}
             >
@@ -366,7 +366,7 @@ const AnimatedCounter = ({
     <div
       ref={rootRef as React.RefObject<HTMLDivElement>}
       className={cn(
-        "flex flex-col items-center justify-center p-8 bg-card border border-border rounded-2xl shadow-xl w-full max-w-sm",
+        "flex flex-col items-center justify-center p-8 bg-card border border-border rounded-2xl w-full max-w-sm",
         className,
       )}
       style={style}
@@ -587,7 +587,7 @@ function TimeUnit({
 }) {
   return (
     <div className="flex flex-col items-center">
-      <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center bg-card border border-border rounded-2xl shadow-lg mb-3">
+      <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center bg-card border border-border rounded-2xl mb-3">
         <span
           className={cn(
             "text-2xl sm:text-3xl font-bold tracking-tighter",
