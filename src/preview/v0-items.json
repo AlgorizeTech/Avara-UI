@@ -645,6 +645,7 @@
     "single-month-range-date-picker": "Range Date Picker — Single Month Range Date Picker",
     "single-month-priced-range-date-picker": "Range Date Picker — Single Month Priced Range Date Picker",
     "dual-month-range-date-picker": "Range Date Picker — Dual Month Range Date Picker",
+    "dual-month-priced-range-date-picker": "Range Date Picker — Dual Month Priced Range Date Picker",
     "disable-past-dates": "Range Date Picker — Disable past dates",
     "range-with-times": "Range Date Picker — Range with times"
   },

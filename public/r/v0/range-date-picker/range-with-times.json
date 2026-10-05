@@ -16,7 +16,7 @@
       "path": "app/page.tsx",
       "type": "registry:page",
       "target": "app/page.tsx",
-      "content": "import { RangeDatePicker, type DateRange } from \"@/components/custom/range-date-picker\";\nimport { useState } from \"react\";\n\nexport default function PricedDualRangeDatePickerDemo() {\n  const [range, setRange] = useState<DateRange>({\n    from: new Date(new Date().setDate(8)),\n    to: new Date(new Date().setDate(28)),\n  });\n\n  return (\n    <RangeDatePicker\n      variant=\"priced-dual\"\n      showPrices={true}\n      value={range}\n      onChange={setRange}\n      getPrice={(date) => (date.getDay() === 0 || date.getDay() === 6 ? \"$120\" : \"$100\")}\n      color=\"primary\"\n    />\n  );\n}"
+      "content": "import { RangeDatePicker, type DateRange } from \"@/components/custom/range-date-picker\";\nimport { useState } from \"react\";\n\nexport default function BookingWindow() {\n  // Start empty: the card is just the calendar until a start day is picked.\n  const [range, setRange] = useState<DateRange>({ from: null, to: null });\n\n  // showTime keeps the time columns folded away until the first pick, then\n  // unfolds them beside the calendar (under it when the card is narrow).\n  // Both dates carry a time, and on a same-day range the end can never be\n  // earlier than the start. Clear folds the columns away again.\n  return (\n    <RangeDatePicker\n      variant=\"single\"\n      value={range}\n      onChange={setRange}\n      showTime\n      minuteStep={15}\n      timeFormat=\"12h\"\n      disablePast\n    />\n  );\n}"
     },
     {
       "path": "components/custom/range-date-picker.tsx",
