@@ -117,6 +117,119 @@ export default function WeekSplit() {
   );
 }`;
 
+export const usageTrafficSources = `import { ChartBlock, TrafficSourcesChart } from "@/components/custom/blocks/ChartBlock";
+
+const sources = [
+  { label: "Direct", value: 3420 },
+  { label: "Google Search", value: 2180 },
+  { label: "GitHub", value: 1450 },
+  { label: "Twitter / X", value: 890 },
+  { label: "LinkedIn", value: 430 },
+];
+
+export default function TrafficSourcesDemo() {
+  return (
+
+  );
+}`;
+
+export const usageVisitorsByCountry = `import { ChartBlock, VisitorsByCountryChart } from "@/components/custom/blocks/ChartBlock";
+
+const countryVisits = [
+  { label: "United States", value: 4250, code: "US" },
+  { label: "Germany", value: 1820, code: "DE" },
+  { label: "United Kingdom", value: 1340, code: "GB" },
+  { label: "India", value: 980, code: "IN" },
+  { label: "Canada", value: 650, code: "CA" },
+  { label: "France", value: 420, code: "FR" },
+];
+
+export default function CountryVisitorsDemo() {
+  return (
+
+  );
+}`;
+
+export const usageMetricsOverview = `import { ChartBlock, type MetricTabItem } from "@/components/custom/blocks/ChartBlock";
+
+const overviewMetrics: MetricTabItem[] = [
+  {
+    id: "users",
+    label: "New users",
+    icon: ,
+    change: 9.1,
+    points: [
+      { label: "Jan", value: 850 },
+      { label: "Feb", value: 940 },
+      { label: "Mar", value: 1050 },
+      { label: "Apr", value: 1000 },
+      { label: "May", value: 1120 },
+      { label: "Jun", value: 1200 },
+      { label: "Jul", value: 1180 },
+      { label: "Aug", value: 1280 },
+      { label: "Sep", value: 1094 },
+    ],
+  },
+  {
+    id: "posts",
+    label: "Posts",
+    icon: ,
+    change: 5.6,
+    points: [
+      { label: "Jan", value: 110 },
+      { label: "Feb", value: 125 },
+      { label: "Mar", value: 130 },
+      { label: "Apr", value: 120 },
+      { label: "May", value: 140 },
+      { label: "Jun", value: 150 },
+      { label: "Jul", value: 145 },
+      { label: "Aug", value: 160 },
+      { label: "Sep", value: 149 },
+    ],
+  },
+  {
+    id: "messages",
+    label: "Messages",
+    icon: ,
+    change: 4.4,
+    points: [
+      { label: "Jan", value: 420 },
+      { label: "Feb", value: 460 },
+      { label: "Mar", value: 490 },
+      { label: "Apr", value: 470 },
+      { label: "May", value: 520 },
+      { label: "Jun", value: 580 },
+      { label: "Jul", value: 550 },
+      { label: "Aug", value: 610 },
+      { label: "Sep", value: 571 },
+    ],
+  },
+  {
+    id: "revenue",
+    label: "Revenue",
+    icon: ,
+    currency: "USD",
+    change: 7.7,
+    points: [
+      { label: "Jan", value: 52000 },
+      { label: "Feb", value: 58000 },
+      { label: "Mar", value: 64000 },
+      { label: "Apr", value: 61000 },
+      { label: "May", value: 69000 },
+      { label: "Jun", value: 74000 },
+      { label: "Jul", value: 71000 },
+      { label: "Aug", value: 82000 },
+      { label: "Sep", value: 77400 },
+    ],
+  },
+];
+
+export default function MetricsOverviewDemo() {
+  return (
+
+  );
+}`;
+
 ## Installation
 
 Register the @algorize-ui registry once per project, then add the component:
@@ -157,15 +270,15 @@ Explore the Chart component's data visualization capabilities, featuring respons
 
           data
 
-          {`{ label: string, value: number, color?: string }[]`}
+          {`{ label: string, value: number, color?: string, code?: string }[]`}
 
           Required
         
-        An array of objects mapping string labels to numerical values. color pins one share's colour in the legend charts.
+        An array of objects mapping string labels to numerical values. color pins one share's colour; code provides 2-letter ISO country codes.
 
           type
 
-          "bar" | "line" | "pie" | "donut" | "donut-legend" | "stacked-bar"
+          "bar" | "line" | "pie" | "donut" | "donut-legend" | "stacked-bar" | "traffic-sources" | "visitors-by-country" | "metrics-overview"
 
           "bar"
         
@@ -245,14 +358,45 @@ Explore the Chart component's data visualization capabilities, featuring respons
           Prepends a string (like "$") to the tooltip and Y-Axis
           values.
 
-          valueSuffix
+          signUps
+
+          number
+
+          undefined
+
+          Traffic sources only: total sign-ups in the period, used to calculate and render the visit-to-sign-up conversion rate bar.
+
+          showCodes
+
+          boolean
+
+          true
+
+          Visitors by country only: whether to render the 2-letter ISO country code badges in the breakdown list.
+
+          title
 
           string
 
-          ""
+          undefined
 
-          Appends a string (like "k" or "%") to the
-          tooltip and Y-Axis values.
+          Header title for card-based breakdown charts (e.g. "Traffic sources", "Visitors by country").
+
+          caption
+
+          string
+
+          undefined
+
+          Subheading or period caption under the title (e.g. "Today", "This week").
+
+          metrics
+
+          MetricTabItem[]
+
+          Default 4 tabs (Users, Posts, Messages, Revenue)
+
+          Metrics overview only: custom array of metric tabs with data series, labels, icons, currency codes, and delta change percentages.
 
 ---
 

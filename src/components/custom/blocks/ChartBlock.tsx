@@ -1368,7 +1368,6 @@ function ColumnsChart({ entry }: { entry: ResolvedOverviewMetric }) {
   const empty = entry.total === 0;
   const ticks = axisTicks(ceiling, Boolean(entry.metric.currency), empty);
   const shown = empty ? inspected : (inspected ?? lastIndex);
-  const inspectedPoint = inspected === null ? null : points[inspected];
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     const from = inspected ?? lastIndex;

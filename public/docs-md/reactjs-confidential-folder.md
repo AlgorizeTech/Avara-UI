@@ -2,7 +2,7 @@ export const metadata = docsPageMetadata("confidential-folder");
 
 # Confidential Folder
 
-An interactive classified folder sleeve component featuring a secret document card that glides out horizontally on hover and elevates gracefully onto the folder cover on click. Designed with a vector-precise thumb notch, geometric atomic orbital spirograph seal, and luxurious dual-tone cardstock aesthetics.
+An interactive classified folder sleeve component featuring a secret document card that glides out horizontally on hover and elevates gracefully onto the folder cover on click. Designed with a vector-precise thumb notch, geometric classified security crest seal, and luxurious dual-tone cardstock aesthetics.
 
 `ConfidentialFolder` brings tactile physical curiosity to editorial portfolios, mission statements, manifesto showcases, and private asset reveals.
 

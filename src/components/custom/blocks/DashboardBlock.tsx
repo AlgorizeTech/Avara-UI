@@ -17,7 +17,8 @@ import {
   UserPlus,
   Wallet,
 } from "lucide-react";
-import React, { useId, useMemo, useState, useSyncExternalStore } from "react";
+import React, { useEffect, useId, useMemo, useState, useSyncExternalStore } from "react";
+import { motion } from "motion/react";
 import { ChartBlock } from "./ChartBlock";
 import { Popover, PopoverContent, PopoverTrigger } from "./PopoverBlock";
 import { ToggleGroup, ToggleGroupItem } from "./ToggleGroupBlock";
@@ -755,7 +756,7 @@ function OverviewPanel({
                 )}
                 <span className="truncate">{entry.metric.label}</span>
               </span>
-              <span className="flex max-w-full flex-col items-start gap-1 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-1.5">
+              <span className="flex min-h-[1.75rem] max-w-full flex-col items-start gap-1 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-1.5">
                 <span className="text-[1.0625rem] font-normal leading-6 tracking-[-0.02em] tabular-nums text-foreground sm:text-[1.3125rem] sm:leading-7">
                   {entry.formatShort(entry.current)}
                 </span>
@@ -826,7 +827,7 @@ function OverviewPanel({
                 </ToggleGroup>
               </div>
             </div>
-            <div className="mt-2">
+            <div className="mt-2 min-h-[304px]">
               {active.points.length === 0 ? (
                 <EmptyState title="No data for this period yet" className="h-[304px]" />
               ) : form === "line" ? (
@@ -886,6 +887,10 @@ function ColumnsChart({ entry }: { entry: ResolvedMetric }) {
   const ticks = axisTicks(ceiling, Boolean(entry.metric.currency), empty);
   const shown = empty ? inspected : (inspected ?? lastIndex);
   const inspectedPoint = inspected === null ? null : points[inspected];
+
+  useEffect(() => {
+    setInspected(null);
+  }, [entry.points]);
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     const from = inspected ?? lastIndex;
@@ -955,7 +960,7 @@ function ColumnsChart({ entry }: { entry: ResolvedMetric }) {
                         {point.value > 0 && (
                           <div
                             className={cn(
-                              "absolute inset-x-0 bottom-0 rounded-full transition-colors duration-150",
+                              "absolute inset-x-0 bottom-0 rounded-full transition-all duration-300 ease-out",
                               isCurrent
                                 ? "bg-[var(--dash-accent)]"
                                 : isInspected
@@ -993,7 +998,7 @@ function ColumnsChart({ entry }: { entry: ResolvedMetric }) {
             </div>
           </div>
         </div>
-        <div aria-hidden="true" className="ml-12 mt-3 flex gap-1 sm:gap-2 md:gap-3">
+        <div aria-hidden="true" className="ml-12 mt-3 flex h-4 items-center gap-1 sm:gap-2 md:gap-3">
           {points.map((point, index) => (
             <span
               key={`${point.label}-${index}`}
@@ -1087,7 +1092,7 @@ function ActivityPanel({
     : [{ key: "all", label: "", items }];
 
   return (
-    <section aria-labelledby={`${id}-title`} className={cn(PANEL, "flex flex-col p-5 sm:p-6", className)}>
+    <section aria-labelledby={`${id}-title`} className={cn(PANEL, "flex flex-col p-5 sm:p-6 h-[580px] min-h-[580px]", className)}>
       <PanelHeader
         id={`${id}-title`}
         title="Recent activity"
@@ -1096,94 +1101,108 @@ function ActivityPanel({
         linkLabel="Open all activity"
         linkComponent={Link}
       />
-      <div className="-mx-1 mt-4 px-1 py-0.5 [overflow-x:auto] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        <ToggleGroup
-          type="single"
-          variant="segmented"
-          size="sm"
-          value={tab}
-          onValueChange={(next) => next && setTab(next)}
-          aria-label="Filter activity"
-        >
-          {ACTIVITY_TABS.map((option) => (
-            <ToggleGroupItem key={option.value} value={option.value}>
-              {option.label}
-            </ToggleGroupItem>
-          ))}
-        </ToggleGroup>
+      <div className="shrink-0 w-full mt-4 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden touch-pan-x">
+        <div className="inline-flex w-max items-center gap-1 rounded-lg bg-[var(--tbl-well,color-mix(in_oklab,var(--primary)_5%,color-mix(in_oklab,var(--foreground)_5%,var(--card))))] p-1">
+          {ACTIVITY_TABS.map((option) => {
+            const selected = tab === option.value;
+            return (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => setTab(option.value)}
+                className={cn(
+                  "shrink-0 whitespace-nowrap rounded-md px-3 py-1.5 text-xs font-medium transition-colors duration-150",
+                  selected
+                    ? "bg-card text-foreground shadow-sm ring-1 ring-foreground/[0.08]"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                {option.label}
+              </button>
+            );
+          })}
+        </div>
       </div>
-      {/* Scrolls when the panel is given a fixed height (beside the overview). */}
-      <div className="-mr-3 mt-5 min-h-0 flex-1 pr-3 [overflow-y:auto] [scrollbar-width:thin]">
-        {items.length ? (
-          <div className="space-y-5">
-            {groups.map((group) => (
-              <section key={group.key} aria-label={group.label || undefined}>
-                {group.label && <h3 className="mb-3 text-xs font-medium text-muted-foreground">{group.label}</h3>}
-                {/* The rail runs chip centre to chip centre; chips sit on top of it. */}
-                <ol className="relative space-y-4 before:absolute before:inset-y-4 before:left-4 before:w-px before:bg-foreground/[0.12]">
-                  {group.items.map((item) => {
-                    const type = ACTIVITY_TYPES[item.type];
-                    const Icon = type.icon;
-                    return (
-                      <li key={item.id} className="relative flex gap-3">
-                        <span
-                          className="relative grid size-8 shrink-0 place-items-center rounded-full"
-                          style={{
-                            backgroundColor: `color-mix(in oklab, ${type.color} 16%, var(--card))`,
-                            color: `color-mix(in oklab, ${type.color} 72%, var(--foreground))`,
-                          }}
-                        >
-                          <Icon className="size-4" aria-hidden="true" />
-                        </span>
-                        <div className="min-w-0 flex-1">
-                          <div className="flex items-baseline justify-between gap-3">
-                            <p className="truncate text-sm font-medium leading-5 text-foreground">
-                              <span className="sr-only">{type.label}: </span>
-                              {item.href ? (
-                                <Link href={item.href} className={cn("rounded-sm hover:underline", FOCUS)}>
-                                  {item.title}
-                                </Link>
-                              ) : (
-                                item.title
-                              )}
-                            </p>
-                            {now && (
-                              <time
-                                dateTime={item.at.toISOString()}
-                                className="shrink-0 text-xs tabular-nums text-muted-foreground"
-                              >
-                                {activityTime(item.at, now)}
-                              </time>
-                            )}
-                          </div>
-                          <div className="flex min-w-0 items-center gap-2">
-                            {item.subtitle && (
-                              <p className="truncate text-[13px] leading-5 text-muted-foreground">{item.subtitle}</p>
-                            )}
-                            {item.status && (
-                              <span
-                                className={cn(
-                                  "shrink-0 rounded-full px-2 py-px text-[11px] font-medium capitalize",
-                                  STATUS_STYLES[item.status] ?? "bg-[var(--dash-well)] text-muted-foreground",
+      {/* Permanently fixed height matching all 6 items: zero shrinkage, zero expansion */}
+      <div className="mt-5 h-[420px] min-h-[420px] flex-1 overflow-hidden">
+        <motion.div
+          key={tab}
+          initial={{ opacity: 0, y: 3 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
+          className="h-full min-h-[435px]"
+        >
+          {items.length ? (
+              <div className="space-y-5">
+                {groups.map((group) => (
+                  <section key={group.key} aria-label={group.label || undefined}>
+                    {group.label && <h3 className="mb-3 text-xs font-medium text-muted-foreground">{group.label}</h3>}
+                    {/* The rail runs chip centre to chip centre; chips sit on top of it. */}
+                    <ol className="relative space-y-4 before:absolute before:inset-y-4 before:left-4 before:w-px before:bg-foreground/[0.12]">
+                      {group.items.map((item) => {
+                        const type = ACTIVITY_TYPES[item.type];
+                        const Icon = type.icon;
+                        return (
+                          <li key={item.id} className="relative flex gap-3">
+                            <span
+                              className="relative grid size-8 shrink-0 place-items-center rounded-full"
+                              style={{
+                                backgroundColor: `color-mix(in oklab, ${type.color} 16%, var(--card))`,
+                                color: `color-mix(in oklab, ${type.color} 72%, var(--foreground))`,
+                              }}
+                            >
+                              <Icon className="size-4" aria-hidden="true" />
+                            </span>
+                            <div className="min-w-0 flex-1">
+                              <div className="flex items-baseline justify-between gap-3">
+                                <p className="truncate text-sm font-medium leading-5 text-foreground">
+                                  <span className="sr-only">{type.label}: </span>
+                                  {item.href ? (
+                                    <Link href={item.href} className={cn("rounded-sm hover:underline", FOCUS)}>
+                                      {item.title}
+                                    </Link>
+                                  ) : (
+                                    item.title
+                                  )}
+                                </p>
+                                {now && (
+                                  <time
+                                    dateTime={item.at.toISOString()}
+                                    className="shrink-0 text-xs tabular-nums text-muted-foreground"
+                                  >
+                                    {activityTime(item.at, now)}
+                                  </time>
                                 )}
-                              >
-                                {item.status}
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ol>
-              </section>
-            ))}
-          </div>
-        ) : (
-          <EmptyState icon={<Inbox />} title={current?.empty ?? "No activity yet"} className="h-full min-h-56">
-            New events show up here as they happen.
-          </EmptyState>
-        )}
+                              </div>
+                              <div className="flex min-w-0 items-center gap-2">
+                                {item.subtitle && (
+                                  <p className="truncate text-[13px] leading-5 text-muted-foreground">{item.subtitle}</p>
+                                )}
+                                {item.status && (
+                                  <span
+                                    className={cn(
+                                      "shrink-0 rounded-full px-2 py-px text-[11px] font-medium capitalize",
+                                      STATUS_STYLES[item.status] ?? "bg-[var(--dash-well)] text-muted-foreground",
+                                    )}
+                                  >
+                                    {item.status}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </li>
+                        );
+                      })}
+                    </ol>
+                  </section>
+                ))}
+              </div>
+            ) : (
+              <EmptyState icon={<Inbox />} title={current?.empty ?? "No activity yet"} className="h-full min-h-[380px] flex flex-col items-center justify-center">
+                New events show up here as they happen.
+              </EmptyState>
+            )}
+          </motion.div>
       </div>
     </section>
   );
@@ -1572,7 +1591,7 @@ export function Dashboard({
             now={now}
             href={links.activity}
             linkComponent={linkComponent}
-            className="md:col-span-2 xl:col-span-4 xl:[contain:size]"
+            className="md:col-span-2 xl:col-span-4"
           />
           <TrafficSourcesPanel
             shares={sources?.[period]}
