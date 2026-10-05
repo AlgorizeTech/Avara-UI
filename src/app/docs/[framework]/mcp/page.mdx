@@ -1,0 +1,159 @@
+# MCP Server
+
+Connect your AI assistant to the Algorize UI registry. With the shadcn MCP server
+it can browse, search and install components from plain-language prompts — no
+copy-pasting commands.
+
+The server is part of the shadcn CLI. It is free, needs no API key, and works with
+Algorize UI because our components are published as a standard shadcn registry.
+
+## Quick start
+
+### Step 1: Register Algorize UI
+
+Run once per project, so the server knows where to find our components:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+```
+
+This adds the registry to `components.json`, which you can also write by hand:
+
+```json
+{
+  "registries": {
+    "@algorize-ui": "https://algorize-ui.vercel.app/r/{name}.json"
+  }
+}
+```
+
+### Step 2: Add the MCP server
+
+For Claude Code, one command does it:
+
+```bash
+npx shadcn@latest mcp init --client claude
+```
+
+Using another client? [Configure it by hand](#configuration).
+
+### Step 3: Restart and try it
+
+Restart your client, then ask:
+
+- "Show me all components in the @algorize-ui registry"
+- "Add the hero and navbar from @algorize-ui to my project"
+- "Build a pricing page using components from @algorize-ui"
+
+<div className="flex gap-3 rounded-xl border border-primary/15 bg-primary/5 p-4 my-6 not-prose">
+  <p className="text-[13px] leading-relaxed text-foreground/60">
+    <span className="font-semibold text-primary">Name the registry.</span> Include <code>@algorize-ui</code> in your prompt. Without it the assistant may search only the default shadcn/ui registry.
+  </p>
+</div>
+
+## Configuration
+
+Add the server to your client's MCP config. The command is the same everywhere —
+only the file differs.
+
+### Claude Code
+
+Add to `.mcp.json`, then run `/mcp` to check the connection:
+
+```json
+{
+  "mcpServers": {
+    "shadcn": {
+      "command": "npx",
+      "args": ["shadcn@latest", "mcp"]
+    }
+  }
+}
+```
+
+### Cursor
+
+Add to `.cursor/mcp.json`, then enable the server in Cursor Settings. A green dot
+means it is connected:
+
+```json
+{
+  "mcpServers": {
+    "shadcn": {
+      "command": "npx",
+      "args": ["shadcn@latest", "mcp"]
+    }
+  }
+}
+```
+
+### VS Code
+
+Add to `.vscode/mcp.json`, then click **Start** beside the server. VS Code uses
+`servers` rather than `mcpServers`:
+
+```json
+{
+  "servers": {
+    "shadcn": {
+      "command": "npx",
+      "args": ["shadcn@latest", "mcp"]
+    }
+  }
+}
+```
+
+### Codex
+
+Add to `~/.codex/config.toml`, then restart Codex:
+
+```toml
+[mcp_servers.shadcn]
+command = "npx"
+args = ["shadcn@latest", "mcp"]
+```
+
+## Example prompts
+
+**Browse and search**
+
+- "List the components in @algorize-ui"
+- "Find a pricing section in @algorize-ui"
+
+**Install**
+
+- "Add @algorize-ui/hero to my project"
+- "Install the navbar and footer from @algorize-ui"
+
+**Build**
+
+- "Create a landing page with a hero, features and FAQ from @algorize-ui"
+
+## Troubleshooting
+
+<div className="flex flex-col gap-3 my-6 not-prose">
+  <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+    <h4 className="text-[14px] font-semibold text-foreground mb-1">The assistant can't find Algorize components</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Check that <code>components.json</code> has the <code>@algorize-ui</code> entry from Step 1, and mention <code>@algorize-ui</code> in your prompt.</p>
+  </div>
+  <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+    <h4 className="text-[14px] font-semibold text-foreground mb-1">The server doesn't respond</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Check the config file for typos, restart your client, and make sure you can reach <code>algorize-ui.vercel.app</code>.</p>
+  </div>
+  <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+    <h4 className="text-[14px] font-semibold text-foreground mb-1">"No tools" message</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Clear the npx cache with <code>npx clear-npx-cache</code>, re-enable the server, and read your client's MCP output log.</p>
+  </div>
+  <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
+    <h4 className="text-[14px] font-semibold text-foreground mb-1">Installs fail</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Make sure <code>components.json</code> exists (<a href="/docs/nextjs/installation" className="text-primary hover:underline">run <code>init</code></a>) and you have write access to the project folders.</p>
+  </div>
+</div>
+
+## Next steps
+
+- [Installation](/docs/nextjs/installation) — set up a project for Algorize UI
+- [All components](/docs/nextjs/all-components) — browse the library
+
+For the full server reference, see the
+[shadcn MCP docs](https://ui.shadcn.com/docs/mcp).
