@@ -5,11 +5,45 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@/lib/utils";
 import {
+  ClaudeIcon,
+  CursorIcon,
+  OpenAIIcon,
+  OpenCodeIcon,
+  VSCodeIcon,
+} from "@/components/custom/blocks/Icons";
+import {
   MCP_CLIENT_LABEL,
   isMcpClient,
   useMcpClient,
   type McpClient,
 } from "@/contexts/mcp-client-context";
+
+const CLIENT_ICON: Record<McpClient, typeof ClaudeIcon> = {
+  claude: ClaudeIcon,
+  cursor: CursorIcon,
+  vscode: VSCodeIcon,
+  codex: OpenAIIcon,
+  opencode: OpenCodeIcon,
+};
+
+/**
+ * The client's own logo. Claude and VS Code keep their brand colour, the rest
+ * are monochrome and take the tab's text colour; the idle ones are desaturated
+ * like an inactive tab icon.
+ */
+function ClientMark({ client, active }: { client: McpClient; active: boolean }) {
+  const Icon = CLIENT_ICON[client];
+  return (
+    <Icon
+      aria-hidden
+      size={16}
+      className={cn(
+        "relative shrink-0 transition-[filter,opacity]",
+        !active && "grayscale opacity-60",
+      )}
+    />
+  );
+}
 
 type PanelProps = {
   client: McpClient;
@@ -73,11 +107,13 @@ export const McpClientTabs = ({ children }: { children: React.ReactNode }) => {
                 type="button"
                 role="radio"
                 data-client={name}
+                aria-label={MCP_CLIENT_LABEL[name]}
+                title={MCP_CLIENT_LABEL[name]}
                 aria-checked={isActive}
                 tabIndex={isActive ? 0 : -1}
                 onClick={() => setClient(name)}
                 className={cn(
-                  "relative flex cursor-pointer items-center rounded-md px-3.5 py-1.5 text-[14px] font-medium whitespace-nowrap transition-colors duration-150 motion-reduce:transition-none",
+                  "relative flex cursor-pointer items-center gap-2 rounded-md px-3 py-1.5 text-[14px] sm:px-3.5 font-medium whitespace-nowrap transition-colors duration-150 motion-reduce:transition-none",
                   "focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60",
                   isActive ? "text-primary" : "text-foreground/40 hover:text-foreground/70",
                 )}
@@ -94,7 +130,9 @@ export const McpClientTabs = ({ children }: { children: React.ReactNode }) => {
                     className="absolute inset-0 rounded-md bg-primary/15"
                   />
                 )}
-                <span className="relative">{MCP_CLIENT_LABEL[name]}</span>
+                <ClientMark client={name} active={isActive} />
+                {/* Logos only below `sm`; the name stays for screen readers. */}
+                <span className="relative hidden sm:inline">{MCP_CLIENT_LABEL[name]}</span>
               </button>
             );
           })}
