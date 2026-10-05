@@ -188,7 +188,7 @@ export function generateStructuredData(type: 'component' | 'article' | 'faq' | '
         description: data.description,
         programmingLanguage: 'TypeScript',
         runtimePlatform: 'React',
-        codeRepository: 'https://github.com/AlgorizeTech',
+        codeRepository: 'https://github.com/AlgorizeTech/Reusable-Component-Documentation',
         license: 'https://opensource.org/licenses/MIT',
         author: {
           '@type': 'Organization',
