@@ -3293,48 +3293,82 @@ interface FeedbackItem {
 	name: string;
 	role: string;
 	company?: string;
-	handle: string;
-	avatar: string;
+	initials: string;
+	avatarGradient: string;
 	content: string;
 	rating: number;
-	tag?: string;
+	createdAt: string;
 }
 
-/* Three reviews, one per promise the library makes: you own the code, the
-   motion has a purpose, and it takes your theme. */
+function formatRelativeTime(dateInput: string | Date): string {
+	const date = typeof dateInput === "string" ? new Date(dateInput) : dateInput;
+	const now = new Date();
+	const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+	if (Number.isNaN(diffInSeconds) || diffInSeconds < 0) {
+		return "just now";
+	}
+	if (diffInSeconds < 60) {
+		return "just now";
+	}
+	const diffInMinutes = Math.floor(diffInSeconds / 60);
+	if (diffInMinutes < 60) {
+		return `${diffInMinutes} ${diffInMinutes === 1 ? "minute" : "minutes"} ago`;
+	}
+	const diffInHours = Math.floor(diffInMinutes / 60);
+	if (diffInHours < 24) {
+		return `${diffInHours} ${diffInHours === 1 ? "hour" : "hours"} ago`;
+	}
+	const diffInDays = Math.floor(diffInHours / 24);
+	if (diffInDays < 7) {
+		return `${diffInDays} ${diffInDays === 1 ? "day" : "days"} ago`;
+	}
+	const diffInWeeks = Math.floor(diffInDays / 7);
+	if (diffInWeeks < 4) {
+		return `${diffInWeeks} ${diffInWeeks === 1 ? "week" : "weeks"} ago`;
+	}
+	const diffInMonths = Math.floor(diffInDays / 30);
+	if (diffInMonths < 12) {
+		return `${diffInMonths} ${diffInMonths === 1 ? "month" : "months"} ago`;
+	}
+	const diffInYears = Math.floor(diffInDays / 365);
+	return `${diffInYears} ${diffInYears === 1 ? "year" : "years"} ago`;
+}
+
+/* Three reviews with fixed ISO timestamps so the relative time ('2 days ago', '4 days ago', etc.) updates automatically every day. */
 const FEEDBACK: FeedbackItem[] = [
 	{
 		id: "fb-2",
 		name: "Sadiqur Rahman",
 		role: "Frontend Engineer",
 		company: "Techvence",
-		handle: "@sarah_codes",
-		avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790599673/screenshot-2026-09-28-174224-1790599681663.png",
+		initials: "SR",
+		avatarGradient: "from-blue-500/20 to-indigo-500/20 text-blue-600 dark:text-blue-400 border-blue-500/30",
 		content: "Ran the 'npx shadcn@latest add @algorize-ui/...' command in my Next.js 15 app. The code dropped directly into my components folder with zero dependency issues. Pure bliss.",
 		rating: 5,
-		tag: "CLI Registry",
+		createdAt: "2026-10-03T10:00:00Z",
 	},
 	{
 		id: "fb-5",
 		name: "Abdullah Al Mamun",
 		role: "Full Stack Developer",
 		company: "Helen AI",
-		handle: "@davidkim_design",
-		avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790599727/screenshot-2026-09-28-184847-1790599737677.png",
+		initials: "AM",
+		avatarGradient: "from-emerald-500/20 to-teal-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
 		content: "Finally a component collection where motion design feels purposeful, not distracting. The hover states, button springs, and tabs have so much character.",
 		rating: 5,
-		tag: "Micro-Interactions",
+		createdAt: "2026-10-01T14:30:00Z",
 	},
 	{
 		id: "fb-13",
 		name: "Shuvo Sarkar",
 		role: "Software Engineer",
 		company: "Victory Vector",
-		handle: "@chloedupont",
-		avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790601192/screenshot-2026-09-28-191310-1790601200260.png",
+		initials: "SS",
+		avatarGradient: "from-purple-500/20 to-pink-500/20 text-purple-600 dark:text-purple-400 border-purple-500/30",
 		content: "The way these components leverage Tailwind CSS variables makes theme customization so simple. It matched our existing design tokens in minutes.",
 		rating: 5,
-		tag: "Theming",
+		createdAt: "2026-09-28T09:15:00Z",
 	},
 ];
 
@@ -3379,19 +3413,22 @@ function RatingStars({ rating }: { rating: number }) {
 
 function FeedbackCard({ item }: { item: FeedbackItem }) {
 	return (
-		<div className="group relative w-full p-5 sm:p-6 rounded-2xl bg-card border border-foreground/[0.06] hover:border-primary/40 shadow-2xs hover:shadow-xl hover:shadow-primary/5 transition-colors transition-shadow duration-200 flex flex-col justify-between select-none cursor-default">
+		<div className="group relative w-full p-5 sm:p-6 rounded-2xl bg-card border border-foreground/[0.06] hover:border-primary/40 shadow-2xs hover:shadow-xl hover:shadow-primary/5 transition-colors transition-shadow duration-200 flex flex-col justify-between select-none cursor-pointer">
 			{/* Subtle top border shimmer on hover */}
 			<div className="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-t-2xl" />
 
 			{/* Top Bar: User Profile Header */}
 			<div className="flex items-start justify-between gap-3 mb-3.5">
 				<div className="flex items-center gap-3 min-w-0">
+					{/* User Avatar with initials */}
 					<div className="relative shrink-0">
-						<img
-							src={item.avatar}
-							alt={item.name}
-							className="size-10 sm:size-11 rounded-full object-cover ring-2 ring-foreground/[0.06] group-hover:ring-primary/40 transition-all duration-300"
-						/>
+						<div
+							className={cn(
+								"size-10 sm:size-11 rounded-full bg-gradient-to-br flex items-center justify-center font-bold text-[13px] sm:text-[14px] tracking-tight border shadow-xs transition-all duration-300 group-hover:scale-105",
+								item.avatarGradient
+							)}>
+							{item.initials}
+						</div>
 						<span className="absolute bottom-0 right-0 size-2.5 bg-emerald-500 rounded-full ring-2 ring-card" />
 					</div>
 					<div className="min-w-0">
@@ -3399,27 +3436,31 @@ function FeedbackCard({ item }: { item: FeedbackItem }) {
 							<span className="text-[14px] font-semibold text-foreground truncate group-hover:text-primary transition-colors">
 								{item.name}
 							</span>
-							<span
-								className="inline-flex items-center justify-center size-3.5 rounded-full bg-primary/15 text-primary shrink-0"
-								title="Verified Developer">
-								<Check className="size-2.5 stroke-[3]" />
-							</span>
+							{/* Facebook Verified Badge */}
+							<svg
+								viewBox="0 0 24 24"
+								className="size-3.5 shrink-0"
+								aria-label="Verified User">
+								<title>Verified User</title>
+								<path
+									fill="#1877F2"
+									d="M12 2.1l2.2 2.2 3.1-.3 1.3 2.8 2.8 1.3-.3 3.1 2.2 2.2-2.2 2.2.3 3.1-2.8 1.3-1.3 2.8-3.1-.3L12 21.9l-2.2-2.2-3.1.3-1.3-2.8-2.8-1.3.3-3.1L0.7 12l2.2-2.2-.3-3.1 2.8-1.3 1.3-2.8 3.1.3L12 2.1z"
+								/>
+								<path
+									d="M8.8 12.2l2.4 2.4 5.2-5.2"
+									fill="none"
+									stroke="#ffffff"
+									strokeWidth="2.2"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+								/>
+							</svg>
 						</div>
-						<p className="text-[12px] text-foreground/40 truncate">
-							<span className="font-medium text-foreground/70">{item.handle}</span>
-							{item.role && (
-								<span className="text-foreground/40"> • {item.role}</span>
-							)}
+						<p className="text-[12px] text-muted-foreground truncate">
+							{item.role}
 						</p>
 					</div>
 				</div>
-
-				{/* Source / Company Pill */}
-				{item.company && (
-					<span className="shrink-0 text-[10px] font-mono font-medium px-2 py-0.5 rounded-md bg-foreground/[0.04] text-foreground/50">
-						{item.company}
-					</span>
-				)}
 			</div>
 
 			{/* Review Quote Body (Consistently 3 lines) */}
@@ -3427,15 +3468,15 @@ function FeedbackCard({ item }: { item: FeedbackItem }) {
 				"{item.content}"
 			</p>
 
-			{/* Bottom Bar: 5-Stars Rating + Feature Tag */}
+			{/* Bottom Bar: 5-Stars Rating + Dynamic Relative Date */}
 			<div className="flex items-center justify-between gap-2 pt-3 border-t border-foreground/[0.06] text-xs">
 				<RatingStars rating={item.rating} />
 
-				{item.tag && (
-					<span className="text-[11px] font-medium px-2.5 py-0.5 rounded-full bg-foreground/[0.04] text-foreground/50 group-hover:text-primary group-hover:bg-primary/15 transition-all">
-						{item.tag}
-					</span>
-				)}
+				<span
+					className="text-[11px] font-medium text-foreground/45"
+					suppressHydrationWarning>
+					{formatRelativeTime(item.createdAt)}
+				</span>
 			</div>
 		</div>
 	);
