@@ -1,3 +1,11 @@
+import { Cli } from "@/components/site/cli";
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+} from "@/components/site/tabs";
+
 # MCP Server
 
 Connect your AI assistant to the Algorize UI registry. With the shadcn MCP server
@@ -29,17 +37,54 @@ This adds the registry to `components.json`, which you can also write by hand:
 
 ### Step 2: Add the MCP server
 
-For Claude Code, one command does it:
+Pick your client and run the command in your project. Prefer to do it by hand? See
+[Configuration](#configuration).
 
-```bash
-npx shadcn@latest mcp init --client claude
-```
+<Tabs defaultValue="claude">
+  <TabsList>
+    <TabsTrigger value="claude">Claude Code</TabsTrigger>
+    <TabsTrigger value="cursor">Cursor</TabsTrigger>
+    <TabsTrigger value="vscode">VS Code</TabsTrigger>
+    <TabsTrigger value="codex">Codex</TabsTrigger>
+    <TabsTrigger value="opencode">OpenCode</TabsTrigger>
+  </TabsList>
+  <TabsContent value="claude">
+    **Run the following command** in your project:
 
-Using another client? [Configure it by hand](#configuration).
+    <Cli command={`mcp init --client claude`} />
 
-### Step 3: Restart and try it
+    Restart Claude Code and run `/mcp` to check the connection.
+  </TabsContent>
+  <TabsContent value="cursor">
+    **Run the following command** in your project:
 
-Restart your client, then ask:
+    <Cli command={`mcp init --client cursor`} />
+
+    Open **Cursor Settings** and **Enable** the MCP server for shadcn.
+  </TabsContent>
+  <TabsContent value="vscode">
+    **Run the following command** in your project:
+
+    <Cli command={`mcp init --client vscode`} />
+
+    Open `.vscode/mcp.json` and click **Start** beside the shadcn server.
+  </TabsContent>
+  <TabsContent value="codex">
+    Codex has no init command. Add the server by hand to `~/.codex/config.toml`, then
+    restart Codex — see [Configuration](#configuration).
+  </TabsContent>
+  <TabsContent value="opencode">
+    **Run the following command** in your project:
+
+    <Cli command={`mcp init --client opencode`} />
+
+    Restart OpenCode to load the server.
+  </TabsContent>
+</Tabs>
+
+### Step 3: Try it
+
+Ask your assistant:
 
 - "Show me all components in the @algorize-ui registry"
 - "Add the hero and navbar from @algorize-ui to my project"
@@ -56,62 +101,67 @@ Restart your client, then ask:
 Add the server to your client's MCP config. The command is the same everywhere —
 only the file differs.
 
-### Claude Code
+<Tabs defaultValue="claude">
+  <TabsList>
+    <TabsTrigger value="claude">Claude Code</TabsTrigger>
+    <TabsTrigger value="cursor">Cursor</TabsTrigger>
+    <TabsTrigger value="vscode">VS Code</TabsTrigger>
+    <TabsTrigger value="codex">Codex</TabsTrigger>
+  </TabsList>
+  <TabsContent value="claude">
+    Add to `.mcp.json`, then run `/mcp` to check the connection:
 
-Add to `.mcp.json`, then run `/mcp` to check the connection:
-
-```json
-{
-  "mcpServers": {
-    "shadcn": {
-      "command": "npx",
-      "args": ["shadcn@latest", "mcp"]
+    ```json
+    {
+      "mcpServers": {
+        "shadcn": {
+          "command": "npx",
+          "args": ["shadcn@latest", "mcp"]
+        }
+      }
     }
-  }
-}
-```
+    ```
+  </TabsContent>
+  <TabsContent value="cursor">
+    Add to `.cursor/mcp.json`, then enable the server in Cursor Settings. A green dot
+    means it is connected:
 
-### Cursor
-
-Add to `.cursor/mcp.json`, then enable the server in Cursor Settings. A green dot
-means it is connected:
-
-```json
-{
-  "mcpServers": {
-    "shadcn": {
-      "command": "npx",
-      "args": ["shadcn@latest", "mcp"]
+    ```json
+    {
+      "mcpServers": {
+        "shadcn": {
+          "command": "npx",
+          "args": ["shadcn@latest", "mcp"]
+        }
+      }
     }
-  }
-}
-```
+    ```
+  </TabsContent>
+  <TabsContent value="vscode">
+    Add to `.vscode/mcp.json`, then click **Start** beside the server. VS Code uses
+    `servers` rather than `mcpServers`:
 
-### VS Code
-
-Add to `.vscode/mcp.json`, then click **Start** beside the server. VS Code uses
-`servers` rather than `mcpServers`:
-
-```json
-{
-  "servers": {
-    "shadcn": {
-      "command": "npx",
-      "args": ["shadcn@latest", "mcp"]
+    ```json
+    {
+      "servers": {
+        "shadcn": {
+          "command": "npx",
+          "args": ["shadcn@latest", "mcp"]
+        }
+      }
     }
-  }
-}
-```
+    ```
+  </TabsContent>
+  <TabsContent value="codex">
+    Add to `~/.codex/config.toml`, then restart Codex:
 
-### Codex
-
-Add to `~/.codex/config.toml`, then restart Codex:
-
-```toml
-[mcp_servers.shadcn]
-command = "npx"
-args = ["shadcn@latest", "mcp"]
-```
+    ```toml
+    [mcp_servers.shadcn]
+    command = "npx"
+    args = ["shadcn@latest", "mcp"]
+    ```
+  </TabsContent>
+</Tabs>
 
 ## Example prompts
 
