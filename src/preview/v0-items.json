@@ -181,7 +181,8 @@
   "chat": {
     "chat-application": "Chat — Chat application",
     "minimal": "Chat — Minimal",
-    "glass": "Chat — Glass"
+    "glass": "Chat — Glass",
+    "liquid-glass": "Chat — Liquid Glass"
   },
   "chat-bubble": {
     "conversation": "Chat Bubble — Conversation",

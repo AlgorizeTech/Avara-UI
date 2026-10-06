@@ -18,10 +18,67 @@ import { useEffect, useRef, useState } from "react";
 // ==========================================
 // VARIANT & COLOR CONFIGURATION
 // ==========================================
-export type ChatVariant = "default" | "minimal" | "glass";
+export type ChatVariant = "default" | "minimal" | "glass" | "liquid-glass";
 
 // Added (string & {}) so it accepts arbitrary hex codes without losing IDE autocomplete for the presets
 export type ChatColor = "indigo" | "rose" | "emerald" | "zinc" | (string & {});
+
+export function LiquidGlassSvgFilter() {
+  return (
+    <>
+      <img
+        src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg"
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          top: "-9999px",
+          left: "-9999px",
+          width: "1px",
+          height: "1px",
+          opacity: 0,
+          pointerEvents: "none",
+        }}
+      />
+      <svg
+        style={{
+          position: "fixed",
+          top: "-9999px",
+          left: "-9999px",
+          width: 0,
+          height: 0,
+          pointerEvents: "none",
+        }}
+        aria-hidden="true"
+      >
+        <defs>
+          <filter
+            id="glass-blur"
+            x="0"
+            y="0"
+            width="100%"
+            height="100%"
+            filterUnits="objectBoundingBox"
+          >
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.003 0.007"
+              numOctaves="1"
+              result="turbulence"
+            />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="turbulence"
+              scale="200"
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
+        </defs>
+      </svg>
+    </>
+  );
+}
 
 const chatVariants: Record<ChatVariant, Record<string, string>> = {
   default: {
@@ -69,6 +126,23 @@ const chatVariants: Record<ChatVariant, Record<string, string>> = {
     msgThem:
       "bg-white/50 dark:bg-black/50 backdrop-blur-md text-foreground border border-white/30 dark:border-white/10 rounded-2xl rounded-bl-sm",
     msgMe: "rounded-2xl rounded-br-sm shadow-lg",
+    composer: "",
+  },
+  "liquid-glass": {
+    wrapper:
+      "bg-transparent border-0 shadow-[0_25px_60px_rgba(0,0,0,0.45)] text-white rounded-[22px] sm:rounded-[28px] [--foreground:#ffffff] [--muted-foreground:rgba(255,255,255,0.75)] [--color-foreground:#ffffff] [--color-muted-foreground:rgba(255,255,255,0.75)]",
+    sidebar:
+      "bg-white/[0.07] dark:bg-black/25 border-r border-white/20 dark:border-white/10",
+    main: "bg-transparent",
+    header:
+      "bg-white/[0.07] dark:bg-black/25 border-b border-white/20 dark:border-white/10",
+    footer:
+      "bg-white/[0.07] dark:bg-black/25 border-t border-white/20 dark:border-white/10",
+    inputBg:
+      "bg-white/15 dark:bg-black/30 border border-white/20 dark:border-white/10 text-white placeholder:text-white/60",
+    msgThem:
+      "bg-white/15 dark:bg-white/10 text-white border border-white/20 dark:border-white/15 rounded-2xl rounded-bl-sm backdrop-blur-md shadow-sm",
+    msgMe: "rounded-2xl rounded-br-sm shadow-md border border-white/20",
     composer: "",
   },
 };
@@ -372,142 +446,277 @@ export default function ChatApp({
     <div
       style={customVars}
       className={cn(
-        "w-full max-w-full h-[750px] flex overflow-hidden relative font-sans box-border transition-colors duration-300",
+        "w-full max-w-full h-[750px] flex overflow-hidden relative font-sans box-border transition-colors duration-300 isolate [contain:paint] [transform:translateZ(0)]",
         styles.wrapper,
       )}
     >
+      <LiquidGlassSvgFilter />
+      {variant === "liquid-glass" && (
+        <>
+          {/* Inner Clipping Container for Liquid Background Stack */}
+          <div className="absolute inset-0 overflow-hidden rounded-[22px] sm:rounded-[28px] pointer-events-none z-0">
+            {/* Layer 0: Liquid SVG Displaced Wave Background */}
+            <div
+              className="absolute -inset-10"
+              style={{
+                backgroundImage:
+                  'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                filter: "url(#glass-blur)",
+                transform: "scale(1.1)",
+              }}
+            />
+
+            {/* Layer 1: Contrast overlay & soft backdrop blur */}
+            <div className="absolute inset-0 bg-black/30 dark:bg-black/45 backdrop-blur-[2px]" />
+
+            {/* Layer 2: Ambient Drop Shadow & Subtle Glow */}
+            <div
+              className="absolute inset-0 rounded-[22px] sm:rounded-[28px]"
+              style={{
+                boxShadow:
+                  "0 20px 50px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.08)",
+              }}
+            />
+          </div>
+
+          {/* Layer 3: Specular Inner Border Highlight */}
+          <div
+            className="absolute inset-0 z-40 pointer-events-none rounded-[22px] sm:rounded-[28px] border border-white/40 dark:border-white/15"
+            style={{
+              boxShadow:
+                "inset 2px 2px 2px 0 rgba(255, 255, 255, 0.45), inset -2px -2px 2px 0 rgba(255, 255, 255, 0.3)",
+            }}
+          />
+        </>
+      )}
+
       {/* === LEFT SIDEBAR === */}
       <aside
         className={cn(
-          `absolute sm:relative z-30 w-[300px] sm:w-80 h-full shrink-0 flex-none flex flex-col transition-transform duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"}`,
+          `absolute sm:relative z-30 w-[300px] sm:w-80 h-full shrink-0 flex-none flex flex-col transition-transform duration-300 ease-in-out overflow-hidden ${isSidebarOpen ? "translate-x-0" : "-translate-x-full sm:translate-x-0"}`,
           styles.sidebar,
+          variant === "liquid-glass" && "rounded-l-[22px] sm:rounded-l-[28px] max-sm:rounded-r-2xl max-sm:border-r max-sm:border-white/20",
+          variant === "glass" && "max-sm:rounded-r-2xl max-sm:bg-white/80 max-sm:dark:bg-black/60 max-sm:backdrop-blur-2xl max-sm:shadow-2xl",
+          variant === "default" && "max-sm:rounded-r-2xl max-sm:shadow-2xl",
         )}
       >
-        <div className="pt-6 pb-4 px-5 shrink-0 flex-none min-w-0 box-border">
-          <div className="flex items-center justify-between mb-6">
-            <h1 className="text-xl font-semibold text-foreground tracking-tight">
-              Messages
-            </h1>
-            <BulletproofAvatar
-              src={currentUser.avatar}
-              status={currentUser.status}
-              size={36}
-              statusBorder={
-                variant === "glass"
-                  ? "border-transparent"
-                  : "border-card"
-              }
+        {variant === "liquid-glass" && (
+          <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+            {/* Liquid SVG Displaced Wave Background in Sidebar */}
+            <div
+              className="absolute -inset-10"
+              style={{
+                backgroundImage:
+                  'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
+                backgroundSize: "cover",
+                backgroundPosition: "left center",
+                filter: "url(#glass-blur)",
+                transform: "scale(1.1)",
+              }}
             />
+            <div className="absolute inset-0 bg-black/35 dark:bg-black/50 backdrop-blur-[2px]" />
           </div>
+        )}
 
-          <div className="relative w-full min-w-0 mb-4 group">
-            <Search className="w-4 h-4 text-muted-foreground absolute left-3.5 top-1/2 -translate-y-1/2 shrink-0 group-focus-within:text-muted-foreground transition-colors" />
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+        <div className="relative z-10 flex flex-col h-full">
+          <div className="pt-6 pb-4 px-5 shrink-0 flex-none min-w-0 box-border">
+            <div className="flex items-center justify-between mb-6">
+              <h1 className={cn(
+                "text-xl font-semibold tracking-tight",
+                variant === "liquid-glass" ? "text-white" : "text-foreground"
+              )}>
+                Messages
+              </h1>
+              <BulletproofAvatar
+                src={currentUser.avatar}
+                status={currentUser.status}
+                size={36}
+                statusBorder={
+                  variant === "liquid-glass" || variant === "glass"
+                    ? "border-transparent"
+                    : "border-card"
+                }
+              />
+            </div>
+
+            <div className="relative w-full min-w-0 mb-4 group">
+              <Search className={cn(
+                "w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 shrink-0 transition-colors",
+                variant === "liquid-glass" ? "text-white/60 group-focus-within:text-white" : "text-muted-foreground group-focus-within:text-muted-foreground"
+              )} />
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className={cn(
+                  "w-full min-w-0 rounded-xl py-2 pl-10 pr-4 text-sm outline-none text-foreground transition-all placeholder:text-muted-foreground",
+                  styles.inputBg,
+                  theme.focusRing,
+                )}
+              />
+            </div>
+
+            <div
               className={cn(
-                "w-full min-w-0 rounded-xl py-2 pl-10 pr-4 text-sm outline-none text-foreground transition-all placeholder:text-muted-foreground",
-                styles.inputBg,
-                theme.focusRing,
+                "flex gap-1 p-1 rounded-lg",
+                variant === "liquid-glass"
+                  ? "bg-white/15 dark:bg-black/30 border border-white/20 dark:border-white/10"
+                  : variant === "glass"
+                    ? "bg-black/20"
+                    : "bg-muted/80",
               )}
-            />
-          </div>
-
-          <div
-            className={cn(
-              "flex gap-1 p-1 rounded-lg",
-              variant === "glass"
-                ? "bg-black/20"
-                : "bg-muted/80",
-            )}
-          >
-            <button
-              onClick={() => setFilterType("all")}
-              className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-all ${filterType === "all" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
             >
-              All
-            </button>
-            <button
-              onClick={() => setFilterType("online")}
-              className={`flex-1 py-1.5 text-xs font-semibold rounded-md transition-all ${filterType === "online" ? "bg-card text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
-            >
-              Online
-            </button>
-          </div>
-        </div>
-
-        <div className="flex-1 overflow-y-auto px-2 pb-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          {filteredContacts.length > 0 ? (
-            filteredContacts.map((contact) => (
-              <div
-                key={contact.id}
-                onClick={() => handleContactClick(contact)}
-                className={`px-3 py-2 flex items-center gap-3 cursor-pointer transition-all rounded-xl ${
-                  activeContact?.id === contact.id
-                    ? theme.lightBg
-                    : "hover:bg-muted/80"
-                }`}
+              <button
+                onClick={() => setFilterType("all")}
+                className={cn(
+                  "flex-1 py-1.5 text-xs font-semibold rounded-md transition-all cursor-pointer",
+                  filterType === "all"
+                    ? variant === "liquid-glass"
+                      ? "bg-white text-zinc-900 font-semibold shadow-sm"
+                      : "bg-card text-foreground shadow-sm"
+                    : variant === "liquid-glass"
+                      ? "text-white/70 hover:text-white"
+                      : "text-muted-foreground hover:text-foreground"
+                )}
               >
-                <BulletproofAvatar
-                  src={contact.avatar}
-                  initials={contact.initials}
-                  color={contact.color}
-                  status={contact.status}
-                  size={44}
-                  statusBorder={
+                All
+              </button>
+              <button
+                onClick={() => setFilterType("online")}
+                className={cn(
+                  "flex-1 py-1.5 text-xs font-semibold rounded-md transition-all cursor-pointer",
+                  filterType === "online"
+                    ? variant === "liquid-glass"
+                      ? "bg-white text-zinc-900 font-semibold shadow-sm"
+                      : "bg-card text-foreground shadow-sm"
+                    : variant === "liquid-glass"
+                      ? "text-white/70 hover:text-white"
+                      : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                Online
+              </button>
+            </div>
+          </div>
+
+          <div className="flex-1 overflow-y-auto px-2 pb-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            {filteredContacts.length > 0 ? (
+              filteredContacts.map((contact) => (
+                <div
+                  key={contact.id}
+                  onClick={() => handleContactClick(contact)}
+                  className={cn(
+                    "px-3 py-2 flex items-center gap-3 cursor-pointer transition-all rounded-xl",
                     activeContact?.id === contact.id
-                      ? "border-transparent"
-                      : variant === "glass"
+                      ? variant === "liquid-glass"
+                        ? "bg-white text-zinc-900 font-semibold shadow-md"
+                        : theme.lightBg
+                      : variant === "liquid-glass"
+                        ? "hover:bg-white/10 text-white/80"
+                        : "hover:bg-muted/80"
+                  )}
+                >
+                  <BulletproofAvatar
+                    src={contact.avatar}
+                    initials={contact.initials}
+                    color={contact.color}
+                    status={contact.status}
+                    size={44}
+                    statusBorder={
+                      activeContact?.id === contact.id
                         ? "border-transparent"
-                        : "border-card"
-                  }
-                />
-                <div className="flex-1 min-w-0 overflow-hidden flex flex-col justify-center">
-                  <div className="flex justify-between items-baseline mb-1 gap-2">
-                    <h4
-                      className={`text-sm mb-0 font-semibold truncate ${activeContact?.id === contact.id ? theme.text : "text-foreground"}`}
-                    >
-                      {contact.name}
-                    </h4>
-                    <span
-                      className={`text-[10px] font-medium shrink-0 ${activeContact?.id === contact.id ? theme.text : "text-muted-foreground"}`}
-                    >
-                      {contact.date}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center gap-2">
-                    <p
-                      className={`text-xs mt-0 truncate ${activeContact?.id === contact.id ? theme.text : "text-muted-foreground opacity-80"}`}
-                    >
-                      {contact.message}
-                    </p>
-                    {contact.unread > 0 && (
-                      <span
+                        : variant === "liquid-glass" || variant === "glass"
+                          ? "border-transparent"
+                          : "border-card"
+                    }
+                  />
+                  <div className="flex-1 min-w-0 overflow-hidden flex flex-col justify-center">
+                    <div className="flex justify-between items-baseline mb-1 gap-2">
+                      <h4
                         className={cn(
-                          "w-4 h-4 rounded-full text-white flex items-center justify-center text-[9px] font-semibold shrink-0 shadow-sm",
-                          theme.bg,
+                          "text-sm mb-0 font-semibold truncate",
+                          activeContact?.id === contact.id
+                            ? variant === "liquid-glass"
+                              ? "text-zinc-900"
+                              : theme.text
+                            : variant === "liquid-glass"
+                              ? "text-white"
+                              : "text-foreground"
                         )}
                       >
-                        {contact.unread}
+                        {contact.name}
+                      </h4>
+                      <span
+                        className={cn(
+                          "text-[10px] font-medium shrink-0",
+                          activeContact?.id === contact.id
+                            ? variant === "liquid-glass"
+                              ? "text-zinc-700 font-semibold"
+                              : theme.text
+                            : variant === "liquid-glass"
+                              ? "text-white/60"
+                              : "text-muted-foreground"
+                        )}
+                      >
+                        {contact.date}
                       </span>
-                    )}
+                    </div>
+                    <div className="flex justify-between items-center gap-2">
+                      <p
+                        className={cn(
+                          "text-xs mt-0 truncate",
+                          activeContact?.id === contact.id
+                            ? variant === "liquid-glass"
+                              ? "text-zinc-700 font-medium"
+                              : theme.text
+                            : variant === "liquid-glass"
+                              ? "text-white/70"
+                              : "text-muted-foreground opacity-80"
+                        )}
+                      >
+                        {contact.message}
+                      </p>
+                      {contact.unread > 0 && (
+                        <span
+                          className={cn(
+                            "w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-semibold shrink-0 shadow-sm",
+                            activeContact?.id === contact.id && variant === "liquid-glass"
+                              ? "bg-zinc-900 text-white"
+                              : cn("text-white", theme.bg)
+                          )}
+                        >
+                          {contact.unread}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
+              ))
+            ) : (
+              <div className={cn(
+                "p-8 text-center text-sm flex flex-col items-center gap-2",
+                variant === "liquid-glass" ? "text-white/60" : "text-muted-foreground"
+              )}>
+                <MessageCircle className="w-8 h-8 opacity-40" /> No contacts found
               </div>
-            ))
-          ) : (
-            <div className="p-8 text-center text-sm text-muted-foreground flex flex-col items-center gap-2">
-              <MessageCircle className="w-8 h-8 opacity-20" /> No contacts found
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </aside>
 
       {isSidebarOpen && (
         <div
-          className="absolute inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm z-20 sm:hidden cursor-pointer"
+          className={cn(
+            "absolute inset-0 z-20 sm:hidden cursor-pointer rounded-[inherit] overflow-hidden",
+            variant === "liquid-glass"
+              ? "bg-black/25 backdrop-blur-[2px]"
+              : variant === "glass"
+                ? "bg-black/30 backdrop-blur-sm"
+                : "bg-black/40 dark:bg-black/60 backdrop-blur-sm",
+          )}
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
@@ -523,24 +732,30 @@ export default function ChatApp({
           <div className="flex-1 flex flex-col items-center justify-center p-6 text-center">
             <div
               className={cn(
-                "w-24 h-24 bg-gradient-to-tr rounded-3xl flex items-center justify-center mb-6 border border-border rotate-3 shrink-0 flex-none shadow-xl",
-                theme.gradient,
-                theme.shadow,
-                onAccentText,
+                "w-24 h-24 rounded-3xl flex items-center justify-center mb-6 rotate-3 shrink-0 flex-none shadow-xl",
+                variant === "liquid-glass"
+                  ? "border bg-white/20 border-white/30 text-white backdrop-blur-md shadow-2xl"
+                  : cn("bg-gradient-to-tr border border-border", theme.gradient, theme.shadow, onAccentText),
               )}
             >
               <MessageCircle className="w-10 h-10 -rotate-3" />
             </div>
-            <h3 className="text-xl font-semibold text-foreground mb-2">
+            <h3 className={cn(
+              "text-xl font-semibold mb-2",
+              variant === "liquid-glass" ? "text-white" : "text-foreground"
+            )}>
               Your Messages
             </h3>
-            <p className="text-muted-foreground text-sm max-w-xs">
+            <p className={cn(
+              "text-sm max-w-xs",
+              variant === "liquid-glass" ? "text-white/70" : "text-muted-foreground"
+            )}>
               Select a conversation from the sidebar or start a new one to begin
               chatting.
             </p>
             <button
               className={cn(
-                "mt-8 px-6 py-2.5 rounded-full text-sm font-semibold sm:hidden transition-transform active:scale-95 shadow-lg",
+                "mt-8 px-6 py-2.5 rounded-full text-sm font-semibold sm:hidden transition-transform active:scale-95 shadow-lg cursor-pointer",
                 theme.bg,
                 theme.shadow,
               )}
@@ -559,7 +774,10 @@ export default function ChatApp({
             >
               <div className="flex items-center gap-3 sm:gap-4 min-w-0">
                 <button
-                  className="sm:hidden p-2 -ml-2 text-muted-foreground shrink-0 flex-none"
+                  className={cn(
+                    "sm:hidden p-2 -ml-2 shrink-0 flex-none cursor-pointer",
+                    variant === "liquid-glass" ? "text-white/80 hover:text-white" : "text-muted-foreground hover:text-foreground"
+                  )}
                   onClick={() => setIsSidebarOpen(true)}
                 >
                   <Menu className="w-5 h-5" />
@@ -571,20 +789,26 @@ export default function ChatApp({
                   status={activeContact.status}
                   size={42}
                   statusBorder={
-                    variant === "glass"
+                    variant === "liquid-glass" || variant === "glass"
                       ? "border-transparent"
                       : "border-background"
                   }
                 />
                 <div className="min-w-0 flex-1">
-                  <h2 className="text-base font-semibold text-foreground leading-tight truncate">
+                  <h2 className={cn(
+                    "text-base font-semibold leading-tight truncate",
+                    variant === "liquid-glass" ? "text-white" : "text-foreground"
+                  )}>
                     {activeContact.name}
                   </h2>
                   <div className="flex items-center gap-1.5 mt-0.5">
                     <span
                       className={`w-1.5 h-1.5 rounded-full ${activeContact.status === "online" ? "bg-emerald-500" : "bg-muted-foreground"}`}
                     />
-                    <p className="text-xs font-medium text-muted-foreground capitalize truncate">
+                    <p className={cn(
+                      "text-xs font-medium capitalize truncate",
+                      variant === "liquid-glass" ? "text-white/70" : "text-muted-foreground"
+                    )}>
                       {isTyping === activeContact.id ? (
                         <span className={cn("animate-pulse", theme.text)}>
                           Typing...
@@ -596,14 +820,26 @@ export default function ChatApp({
                   </div>
                 </div>
               </div>
-              <div className="flex items-center gap-1 sm:gap-2 text-muted-foreground shrink-0 flex-none ml-2">
-                <button className="p-2 hover:bg-muted rounded-full transition-colors hidden sm:block">
+              <div className={cn(
+                "flex items-center gap-1 sm:gap-2 shrink-0 flex-none ml-2",
+                variant === "liquid-glass" ? "text-white/80" : "text-muted-foreground"
+              )}>
+                <button className={cn(
+                  "p-2 rounded-full transition-colors hidden sm:block cursor-pointer",
+                  variant === "liquid-glass" ? "hover:bg-white/10 hover:text-white" : "hover:bg-muted"
+                )}>
                   <Phone className="w-4 h-4" />
                 </button>
-                <button className="p-2 hover:bg-muted rounded-full transition-colors hidden sm:block">
+                <button className={cn(
+                  "p-2 rounded-full transition-colors hidden sm:block cursor-pointer",
+                  variant === "liquid-glass" ? "hover:bg-white/10 hover:text-white" : "hover:bg-muted"
+                )}>
                   <Video className="w-4 h-4" />
                 </button>
-                <button className="p-2 hover:bg-muted rounded-full transition-colors">
+                <button className={cn(
+                  "p-2 rounded-full transition-colors cursor-pointer",
+                  variant === "liquid-glass" ? "hover:bg-white/10 hover:text-white" : "hover:bg-muted"
+                )}>
                   <MoreVertical className="w-4 h-4" />
                 </button>
               </div>
@@ -652,7 +888,10 @@ export default function ChatApp({
                         <div
                           className={`flex items-center gap-1.5 px-1 ${isMe ? "flex-row-reverse" : "flex-row"}`}
                         >
-                          <span className="text-[10px] font-medium text-muted-foreground">
+                          <span className={cn(
+                            "text-[10px] font-medium",
+                            variant === "liquid-glass" ? "text-white/60" : "text-muted-foreground"
+                          )}>
                             {msg.time}
                           </span>
                           {isMe && (
@@ -661,7 +900,7 @@ export default function ChatApp({
                                 "w-3.5 h-3.5",
                                 msg.status === "read"
                                   ? theme.text
-                                  : "text-muted-foreground/50",
+                                  : variant === "liquid-glass" ? "text-white/50" : "text-muted-foreground/50",
                               )}
                             />
                           )}
@@ -685,9 +924,18 @@ export default function ChatApp({
                         styles.msgThem,
                       )}
                     >
-                      <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce [animation-delay:-0.3s]" />
-                      <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce [animation-delay:-0.15s]" />
-                      <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce" />
+                      <span className={cn(
+                        "w-1.5 h-1.5 rounded-full animate-bounce [animation-delay:-0.3s]",
+                        variant === "liquid-glass" ? "bg-white/60" : "bg-muted-foreground"
+                      )} />
+                      <span className={cn(
+                        "w-1.5 h-1.5 rounded-full animate-bounce [animation-delay:-0.15s]",
+                        variant === "liquid-glass" ? "bg-white/60" : "bg-muted-foreground"
+                      )} />
+                      <span className={cn(
+                        "w-1.5 h-1.5 rounded-full animate-bounce",
+                        variant === "liquid-glass" ? "bg-white/60" : "bg-muted-foreground"
+                      )} />
                     </div>
                   </div>
                 )}
@@ -711,7 +959,10 @@ export default function ChatApp({
               >
                 <button
                   type="button"
-                  className="p-1.5 -ml-1.5 text-muted-foreground hover:text-muted-foreground transition-colors shrink-0"
+                  className={cn(
+                    "p-1.5 -ml-1.5 transition-colors shrink-0 cursor-pointer",
+                    variant === "liquid-glass" ? "text-white/70 hover:text-white" : "text-muted-foreground hover:text-foreground"
+                  )}
                 >
                   <Paperclip className="w-5 h-5" />
                 </button>
@@ -721,11 +972,17 @@ export default function ChatApp({
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  className="flex-1 min-w-0 w-full bg-transparent border-none focus:outline-none text-[15px] text-foreground placeholder:text-muted-foreground py-1.5"
+                  className={cn(
+                    "flex-1 min-w-0 w-full bg-transparent border-none focus:outline-none text-[15px] text-foreground py-1.5",
+                    variant === "liquid-glass" ? "placeholder:text-white/40" : "placeholder:text-muted-foreground"
+                  )}
                 />
                 <button
                   type="button"
-                  className="p-1.5 text-muted-foreground hover:text-muted-foreground transition-colors shrink-0 mr-1"
+                  className={cn(
+                    "p-1.5 transition-colors shrink-0 mr-1 cursor-pointer",
+                    variant === "liquid-glass" ? "text-white/70 hover:text-white" : "text-muted-foreground hover:text-foreground"
+                  )}
                 >
                   <Mic className="w-4 h-4" />
                 </button>
@@ -738,7 +995,7 @@ export default function ChatApp({
                     theme.shadow,
                   )}
                 >
-                  <Send className="w-4 h-4 ml-0.5" />
+                  <Send className="w-4 h-4 ml-0.5 text-white" />
                 </button>
               </form>
             </div>

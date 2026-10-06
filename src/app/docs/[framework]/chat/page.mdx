@@ -106,6 +106,31 @@ export default function GlassChat() {
   );
 };`;
 
+export const usageLiquidGlass = `import ChatApp, { type Contact, type CurrentUser } from "@/components/custom/blocks/Chat";
+
+${chatData}
+
+export default function LiquidGlassChat() {
+  return (
+    // Real liquid SVG glass displacement with multi-layer reflections and specular highlights
+    <div
+      className="p-8 rounded-2xl bg-cover bg-center relative"
+      style={{
+        backgroundImage:
+          "url('https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg')",
+      }}
+    >
+      <div className="absolute inset-0 bg-black/25 rounded-2xl pointer-events-none" />
+      <ChatApp
+        variant="liquid-glass"
+        color="rose"
+        currentUser={currentUser}
+        contactsData={contactsData}
+      />
+    </div>
+  );
+};`;
+
 <ExampleShowcase
   name="chat"
   colorControl
@@ -172,6 +197,21 @@ export default function GlassChat() {
       ],
       props: { variant: "glass" },
       usage: usageGlass,
+    },
+    {
+      title: "Liquid Glass",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"liquid-glass"',
+          effect:
+            "for authentic liquid glass refraction using SVG displacement mapping, multi-layer specular highlights, and fluid reflections.",
+        },
+        { prop: "color", value: '"rose"', effect: "tints the accents against that backdrop." },
+      ],
+      props: { variant: "liquid-glass" },
+      usage: usageLiquidGlass,
     },
   ]}
 />
@@ -259,7 +299,7 @@ Explore the Chat component's robust features, including message grouping, timest
           <code>variant</code>
         </td>
         <td>
-          <code>"default" | "minimal" | "glass"</code>
+          <code>"default" | "minimal" | "glass" | "liquid-glass"</code>
         </td>
         <td>
           <code>"default"</code>
@@ -268,8 +308,7 @@ Explore the Chat component's robust features, including message grouping, timest
           The shell. <code>default</code> is one card with the list and the
           thread side by side; <code>minimal</code> is two separate cards —
           the list and the thread — with a gap between them and no outer box;
-          <code>glass</code> is one translucent card over a photo. The
-          conversation is the same in all three.
+          <code>glass</code> is one translucent card over a photo; <code>liquid-glass</code> provides true SVG displacement liquid refraction.
         </td>
       </tr>
       <tr>
