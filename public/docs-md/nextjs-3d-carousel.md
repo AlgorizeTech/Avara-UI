@@ -72,6 +72,15 @@ export default function ShortDeckCarousel() {
   return ;
 }`;
 
+export const usageMinimalControls = `import { ThreeDCarousel, type CarouselItem } from "@/components/custom/blocks/ThreeDCarouselBlock";
+
+${carouselItems}
+
+export default function MinimalControlsCarousel() {
+  // Drag, the keyboard arrow keys and clicking a side card still navigate.
+  return ;
+}`;
+
 ## Installation
 
 Register the @algorize-ui registry once per project, then add the component:
@@ -151,6 +160,30 @@ Discover the key capabilities that make this component an excellent choice for m
           4000
 
           The time duration in milliseconds between automatic slide transitions.
+
+          ThreeDCarousel
+
+          showArrows
+
+          boolean
+
+          true
+
+          Shows the control bar: the previous / next slide buttons and the
+          autoplay pause toggle. Drag, keyboard arrows and clicking a side card
+          keep working when this is false, and autoplay still
+          pauses on hover.
+
+          ThreeDCarousel
+
+          showDots
+
+          boolean
+
+          true
+
+          Shows the pagination dots under the deck, which mark the active slide
+          and jump to a slide on click.
 
           ThreeDCarousel
 
