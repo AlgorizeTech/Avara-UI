@@ -72,6 +72,32 @@ export default function GlassCalendar() {
   );
 }`;
 
+export const usageLiquidGlass = `import { CalendarDashboard, LiquidGlassSvgFilter } from "@/components/custom/blocks/Calendar";
+
+const y = new Date().getFullYear();
+const m = new Date().getMonth() + 1;
+const events = {
+  [\`\${y}-\${m}-2\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-10\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-15\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-24\`]: ["kickoff", "pentest"],
+};
+
+export default function LiquidGlassCalendar() {
+  return (
+    <div
+      className="relative overflow-hidden rounded-2xl bg-cover bg-center p-4 sm:p-8"
+      style={{
+        backgroundImage:
+          "linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg')",
+      }}
+    >
+      <LiquidGlassSvgFilter />
+      <CalendarDashboard variant="liquid-glass" mockEvents={events} />
+    </div>
+  );
+}`;
+
 <ExampleShowcase
   name="calendar"
   colorControl
@@ -138,6 +164,20 @@ export default function GlassCalendar() {
       ],
       props: { variant: "glass" },
       usage: usageGlass,
+    },
+    {
+      title: "Liquid Glass",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"liquid-glass"',
+          effect:
+            "for an authentic physical fluid glass distortion effect with layered refraction filters and specular bevels.",
+        },
+      ],
+      props: { variant: "liquid-glass" },
+      usage: usageLiquidGlass,
     },
   ]}
 />
@@ -207,7 +247,7 @@ Discover the Calendar's date selection capabilities, supporting single dates, da
           <code>variant</code>
         </td>
         <td>
-          <code>"default" | "minimal" | "glass"</code>
+          <code>"default" | "minimal" | "glass" | "liquid-glass"</code>
         </td>
         <td>
           <code>"default"</code>
