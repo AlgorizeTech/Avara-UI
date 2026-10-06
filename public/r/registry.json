@@ -170,8 +170,11 @@
       "type": "registry:component",
       "title": "Animated Faq Visuals",
       "author": "AlgorizeTech",
-      "description": "TODO: describe animated-faq-visuals. Generated placeholder.",
-      "categories": [],
+      "description": "Theme-adaptive interactive visual preview components (CLI terminal, token customizer, MIT license certificate, performance HUD) for animated FAQ sections.",
+      "categories": [
+        "marketing",
+        "data-display"
+      ],
       "dependencies": [
         "lucide-react"
       ],
@@ -184,7 +187,8 @@
           "type": "registry:component",
           "target": "components/custom/blocks/AnimatedFAQVisuals.tsx"
         }
-      ]
+      ],
+      "docs": "Exports: CLIInstallationVisual, ThemingVisual, LicensingVisual, PerformanceVisual."
     },
     {
       "name": "animated-list",

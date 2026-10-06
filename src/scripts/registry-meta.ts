@@ -105,6 +105,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["marketing", "layout"],
     docs: "Named export: AnimatedFAQBlock (also the default export); the sample data `FAQ_ITEMS` lives in animated-faq-data.ts, which installs alongside. All motion is CSS — no animation library.",
   },
+  "animated-faq-visuals": {
+    description:
+      "Theme-adaptive interactive visual preview components (CLI terminal, token customizer, MIT license certificate, performance HUD) for animated FAQ sections.",
+    categories: ["marketing", "data-display"],
+    docs: "Exports: CLIInstallationVisual, ThemingVisual, LicensingVisual, PerformanceVisual.",
+  },
   "card-stack": {
     description:
       "A layered deck of cards featuring fluid drag-to-discard gestures, button-driven directional slide animations, and realistic depth perspective.",

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Terminal,
   Check,
@@ -11,7 +11,6 @@ import {
   Zap,
   Sliders,
   Palette,
-  Layers,
   Cpu,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -127,7 +126,7 @@ export function ThemingVisual() {
     textClass: "text-emerald-500 dark:text-emerald-400",
     borderClass: "border-emerald-500/40",
   });
-  const [radius, setRadius] = useState<"rounded-md" | "rounded-xl" | "rounded-full">("rounded-xl");
+  const radius = "rounded-xl";
 
   const PALETTES = [
     { name: "Emerald", hex: "#10b981", bgClass: "bg-emerald-500", textClass: "text-emerald-500 dark:text-emerald-400", borderClass: "border-emerald-500/40" },

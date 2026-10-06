@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-05T13:22:37.446Z",
-  "totalFiles": 301,
+  "generatedAt": "2026-10-06T05:49:19.284Z",
+  "totalFiles": 303,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -505,6 +505,12 @@
       "path": "/docs/nextjs-masonry-grid.md",
       "url": "/docs/nextjs/masonry-grid",
       "originalMdx": "[framework]\\masonry-grid\\page.mdx"
+    },
+    {
+      "name": "nextjs/mcp",
+      "path": "/docs/nextjs-mcp.md",
+      "url": "/docs/nextjs/mcp",
+      "originalMdx": "[framework]\\mcp\\page.mdx"
     },
     {
       "name": "nextjs/memories-card",
@@ -1411,6 +1417,12 @@
       "path": "/docs/reactjs-masonry-grid.md",
       "url": "/docs/reactjs/masonry-grid",
       "originalMdx": "[framework]\\masonry-grid\\page.mdx"
+    },
+    {
+      "name": "reactjs/mcp",
+      "path": "/docs/reactjs-mcp.md",
+      "url": "/docs/reactjs/mcp",
+      "originalMdx": "[framework]\\mcp\\page.mdx"
     },
     {
       "name": "reactjs/memories-card",
