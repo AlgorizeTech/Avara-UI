@@ -148,6 +148,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/animated-faq-visuals.json",
         "utils"
       ],
       "files": [
@@ -163,6 +164,27 @@
         }
       ],
       "docs": "Named export: AnimatedFAQBlock (also the default export); the sample data `FAQ_ITEMS` lives in animated-faq-data.ts, which installs alongside. All motion is CSS — no animation library."
+    },
+    {
+      "name": "animated-faq-visuals",
+      "type": "registry:component",
+      "title": "Animated Faq Visuals",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe animated-faq-visuals. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/AnimatedFAQVisuals.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/AnimatedFAQVisuals.tsx"
+        }
+      ]
     },
     {
       "name": "animated-list",
