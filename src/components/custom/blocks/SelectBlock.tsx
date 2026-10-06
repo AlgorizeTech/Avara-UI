@@ -9,7 +9,7 @@ import { getThemeStyles } from "./select-theme";
 // DYNAMIC THEME ENGINE
 // ==========================================
 export type SelectColor = "indigo" | "rose" | "emerald" | "zinc" | string;
-export type SelectVariant = "default" | "filled" | "underlined" | "glow" | "glass";
+export type SelectVariant = "default" | "filled" | "underlined" | "glow" | "glass" | "liquid-glass";
 export type SelectSize = "sm" | "md" | "lg";
 
 // ==========================================
@@ -234,7 +234,7 @@ const SelectBlockImpl = forwardRef<HTMLDivElement, SelectBlockImplProps>(
         tag: "px-2.5 py-1 text-sm",
       },
     };
-    const s = sizeClasses[inputSize];
+    const s = sizeClasses[inputSize as SelectSize] || sizeClasses.md;
 
     // --- Variant Styles ---
     const getVariantStyles = () => {
@@ -287,11 +287,19 @@ const SelectBlockImpl = forwardRef<HTMLDivElement, SelectBlockImplProps>(
             ),
             active: theme.glow,
           };
+        case "liquid-glass":
+          return {
+            wrapper: cn(
+              baseWrapper,
+              "min-h-[38px] px-3 py-2 text-sm border-white/25 text-white bg-white/10 hover:bg-white/15 focus:bg-white/20 focus:border-white/50 border rounded-xl shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)] transition-all",
+            ),
+            active: "ring-2 ring-white/30 border-white/50 bg-white/20",
+          };
         case "glass":
           return {
             wrapper: cn(
               baseWrapper,
-              "min-h-[38px] px-3 py-2 text-sm border-black/15 text-neutral-900 bg-black/5 hover:bg-black/10 focus:bg-white/40 focus:border-black/30 dark:border-white/25 dark:text-white dark:bg-white/10 dark:hover:bg-white/15 dark:focus:bg-white/20 dark:focus:border-white/50 border rounded-md shadow-xs transition-all",
+              "min-h-[38px] px-3 py-2 text-sm border-black/15 text-neutral-900 bg-black/5 hover:bg-black/10 focus:bg-white/40 focus:border-black/30 dark:border-white/25 dark:text-white dark:bg-white/10 dark:hover:bg-white/15 dark:focus:bg-white/20 dark:focus:border-white/50 border rounded-xl shadow-xs transition-all",
             ),
             active: "ring-2 ring-black/10 dark:ring-white/20 border-black/30 dark:border-white/40 bg-black/10 dark:bg-white/15",
           };
@@ -346,8 +354,16 @@ const SelectBlockImpl = forwardRef<HTMLDivElement, SelectBlockImplProps>(
             "truncate pr-6",
             s.text,
             !singleOption
-              ? variant === "glass" ? "text-neutral-500 dark:text-white/60" : "text-muted-foreground"
-              : variant === "glass" ? "text-neutral-900 font-medium dark:text-white" : "text-foreground",
+              ? variant === "liquid-glass"
+                ? "text-white/60"
+                : variant === "glass"
+                  ? "text-neutral-500 dark:text-white/60"
+                  : "text-muted-foreground"
+              : variant === "liquid-glass"
+                ? "text-white font-medium"
+                : variant === "glass"
+                  ? "text-neutral-900 font-medium dark:text-white"
+                  : "text-foreground",
           )}
         >
           {singleOption ? singleOption.label : placeholder}
@@ -365,7 +381,13 @@ const SelectBlockImpl = forwardRef<HTMLDivElement, SelectBlockImplProps>(
           <label
             className={cn(
               "text-sm font-semibold",
-              hasError ? "text-red-500" : variant === "glass" ? "text-white/90" : "text-foreground",
+              hasError
+                ? "text-red-500"
+                : variant === "liquid-glass"
+                  ? "text-white/90"
+                  : variant === "glass"
+                    ? "text-white/90 dark:text-white/90"
+                    : "text-foreground",
               disabled && "opacity-50",
             )}
           >
@@ -403,7 +425,11 @@ const SelectBlockImpl = forwardRef<HTMLDivElement, SelectBlockImplProps>(
             <ChevronDown
               className={cn(
                 s.icon,
-                variant === "glass" ? "text-neutral-700 dark:text-white/70" : "text-muted-foreground",
+                variant === "liquid-glass"
+                  ? "text-white/80"
+                  : variant === "glass"
+                    ? "text-neutral-700 dark:text-white/70"
+                    : "text-muted-foreground",
                 "transition-transform duration-300",
                 isOpen && "rotate-180",
                 isOpen && theme.text,
@@ -416,10 +442,12 @@ const SelectBlockImpl = forwardRef<HTMLDivElement, SelectBlockImplProps>(
         <div
           ref={dropdownRef}
           className={cn(
-            "absolute left-0 right-0 z-50 overflow-hidden border rounded-xl shadow-2xl transition-all duration-200 ease-out",
-            variant === "glass"
-              ? "bg-white/50 dark:bg-black/60 backdrop-blur-3xl border border-white/50 dark:border-white/20 text-neutral-900 dark:text-white shadow-2xl"
-              : "bg-popover text-popover-foreground border-border",
+            "absolute left-0 right-0 z-50 overflow-hidden border rounded-2xl shadow-2xl transition-all duration-200 ease-out",
+            variant === "liquid-glass"
+              ? "bg-black/50 backdrop-blur-3xl border border-white/30 text-white shadow-[0_25px_60px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.4),inset_-1px_-1px_1px_rgba(255,255,255,0.15)]"
+              : variant === "glass"
+                ? "bg-white/50 dark:bg-black/60 backdrop-blur-3xl border border-white/50 dark:border-white/20 text-neutral-900 dark:text-white shadow-2xl"
+                : "bg-popover text-popover-foreground border-border",
             dropUp
               ? cn(
                   "origin-bottom",
@@ -488,11 +516,15 @@ const SelectBlockImpl = forwardRef<HTMLDivElement, SelectBlockImplProps>(
                           "w-full flex items-center justify-between rounded-lg transition-colors font-medium text-left cursor-pointer active:scale-[0.98]",
                           s.option,
                           isSelected
-                            ? cn(theme.bgSoft, theme.text, "font-semibold shadow-xs")
+                            ? variant === "liquid-glass"
+                              ? "bg-white/30 text-white font-bold border border-white/40 shadow-[0_0_10px_rgba(255,255,255,0.25),inset_0_1px_1px_rgba(255,255,255,0.4)]"
+                              : cn(theme.bgSoft, theme.text, "font-semibold shadow-xs")
                             : cn(
-                                variant === "glass"
-                                  ? "text-neutral-900 dark:text-white/90"
-                                  : "text-foreground",
+                                variant === "liquid-glass"
+                                  ? "text-white hover:bg-white/20"
+                                  : variant === "glass"
+                                    ? "text-neutral-900 dark:text-white/90"
+                                    : "text-foreground",
                                 theme.hoverBg,
                               ),
                         )}

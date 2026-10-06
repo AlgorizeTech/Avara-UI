@@ -128,7 +128,8 @@
   "calendar": {
     "calendar-dashboard": "Calendar — Calendar dashboard",
     "minimal": "Calendar — Minimal",
-    "glass": "Calendar — Glass"
+    "glass": "Calendar — Glass",
+    "liquid-glass": "Calendar — Liquid Glass"
   },
   "card": {
     "e-commerce-product-cards": "Card — E-commerce Product Cards",
@@ -181,7 +182,8 @@
   "chat": {
     "chat-application": "Chat — Chat application",
     "minimal": "Chat — Minimal",
-    "glass": "Chat — Glass"
+    "glass": "Chat — Glass",
+    "liquid-glass": "Chat — Liquid Glass"
   },
   "chat-bubble": {
     "conversation": "Chat Bubble — Conversation",

@@ -235,8 +235,82 @@ export function VerticalBarcode({
 export type ConfidentialFolderInteractionMode = "auto-flip" | "step-flip";
 export type ConfidentialFolderCardDesign = "classified" | "train-ticket";
 
+export interface CouponMetric {
+  label: string;
+  value: string;
+}
+
+export interface CouponCardData {
+  // Sleeve info
+  sleeveTitle?: string;
+  sleeveSubtitle?: string;
+
+  // Train Ticket Specific Fields
+  ticketTitle?: string;
+  passengerName?: string;
+  routeText?: string;
+  date?: string;
+  departureTime?: string;
+  seatNumber?: string;
+  trainNumber?: string;
+  trainCompany?: string;
+  slogan?: string;
+  barcodeNumber?: string;
+  websiteUrl?: string;
+
+  // Face 1: Front Cover / Voucher Pass (General & Classified)
+  frontBadge?: string;
+  frontSerial?: string;
+  frontTitle?: string;
+  frontSubtitle?: string;
+  frontStamp?: string;
+  stampSuffix?: string;
+  barcodeText?: string;
+  clearanceLevel?: string;
+
+  // Face 2: Back Details / Manifesto (General & Classified)
+  cardCategory?: string;
+  cardDate?: string;
+  cardTitle?: string;
+  cardSubtitle?: string;
+  statement?: string;
+  highlightQuote?: string;
+  authorText?: string;
+
+  // Metrics (array or individual fields)
+  metrics?: CouponMetric[];
+  metric1Label?: string;
+  metric1Value?: string;
+  metric2Label?: string;
+  metric2Value?: string;
+  metric3Label?: string;
+  metric3Value?: string;
+
+  // Positioning
+  initialPeek?: number;
+  hoverPeek?: number;
+
+  // Fallbacks
+  cardBadge?: string;
+  cardVersion?: string;
+  pillar1Title?: string;
+  pillar1Desc?: string;
+  pillar2Title?: string;
+  pillar2Desc?: string;
+  quote?: string;
+  quoteAuthor?: string;
+  statusText?: string;
+  sessionLabel?: string;
+  sessionNumber?: string;
+  subquote?: string;
+}
+
+export type ConfidentialFolderData = CouponCardData;
+
 export interface ConfidentialFolderProps
   extends React.HTMLAttributes<HTMLDivElement> {
+  /** Structured data object or array for all ticket, voucher, and card fields. */
+  data?: CouponCardData | CouponCardData[];
   folderColor?: string;
   interactionMode?: ConfidentialFolderInteractionMode;
   mode?: ConfidentialFolderInteractionMode;
@@ -275,6 +349,7 @@ export interface ConfidentialFolderProps
   statement?: string;
   highlightQuote?: string;
   authorText?: string;
+  metrics?: CouponMetric[];
   metric1Label?: string;
   metric1Value?: string;
   metric2Label?: string;
@@ -307,6 +382,7 @@ export interface ConfidentialFolderProps
 }
 
 export function ConfidentialFolder({
+  data,
   folderColor,
   interactionMode = "step-flip",
   mode,
@@ -345,6 +421,7 @@ export function ConfidentialFolder({
   statement,
   highlightQuote,
   authorText,
+  metrics,
   metric1Label,
   metric1Value,
   metric2Label,
@@ -539,38 +616,155 @@ export function ConfidentialFolder({
 
   const isAdaptive = cardVariant === "adaptive";
 
+  const activeData = Array.isArray(data) ? data[0] : data;
+
+  const resolvedPassengerName = activeData?.passengerName ?? passengerName;
+  const resolvedRouteText = activeData?.routeText ?? routeText;
+  const resolvedDate = activeData?.date ?? date;
+  const resolvedDepartureTime = activeData?.departureTime ?? departureTime;
+  const resolvedSeatNumber = activeData?.seatNumber ?? seatNumber;
+  const resolvedTrainNumber = activeData?.trainNumber ?? trainNumber;
+  const resolvedTrainCompany = activeData?.trainCompany ?? trainCompany;
+  const resolvedSlogan = activeData?.slogan ?? slogan;
+  const resolvedBarcodeNumber = activeData?.barcodeNumber ?? barcodeNumber;
+  const resolvedWebsiteUrl = activeData?.websiteUrl ?? websiteUrl;
+  const resolvedTicketTitle = activeData?.ticketTitle ?? ticketTitle;
+
+  const resolvedInitialPeek = activeData?.initialPeek ?? initialPeek;
+  const resolvedHoverPeek = activeData?.hoverPeek ?? hoverPeek;
+
   // Resolved Sleeve Text
   const resolvedSleeveTitle =
-    sleeveTitle || (isTrainTicket ? "Hyperbolt Express" : "Designed to endure");
+    activeData?.sleeveTitle ??
+    sleeveTitle ??
+    (isTrainTicket ? "Hyperbolt Express" : "Designed to endure");
   const resolvedSleeveSubtitle =
-    sleeveSubtitle ||
+    activeData?.sleeveSubtitle ??
+    sleeveSubtitle ??
     (isTrainTicket
       ? "High-speed European rail transit pass."
       : "Crafted for those who value timeless clarity.");
 
   // Classified Mode Labels
-  const fBadge = frontBadge || cardBadge || sessionLabel || "SPECIAL OFFER";
-  const fSerial = frontSerial || cardVersion || sessionNumber || "VOUCHER // 2026-X";
-  const fTitle = frontTitle || cardTitle || "Exclusive Access";
-  const fSubtitle = frontSubtitle || cardSubtitle || "Limited edition membership and premium reward voucher.";
-  const fStamp = frontStamp || "VERIFIED";
-  const fStampSuffix = stampSuffix || "// VIP PASS";
-  const fBarcode = barcodeText || "COUPON // APEX-07-CORE";
-  const fStatus = clearanceLevel || statusText || "REWARD STATUS: ACTIVE";
+  const fBadge =
+    activeData?.frontBadge ??
+    frontBadge ??
+    activeData?.cardBadge ??
+    cardBadge ??
+    activeData?.sessionLabel ??
+    sessionLabel ??
+    "SPECIAL OFFER";
+  const fSerial =
+    activeData?.frontSerial ??
+    frontSerial ??
+    activeData?.cardVersion ??
+    cardVersion ??
+    activeData?.sessionNumber ??
+    sessionNumber ??
+    "VOUCHER // 2026-X";
+  const fTitle =
+    activeData?.frontTitle ??
+    frontTitle ??
+    activeData?.cardTitle ??
+    cardTitle ??
+    "Exclusive Access";
+  const fSubtitle =
+    activeData?.frontSubtitle ??
+    frontSubtitle ??
+    activeData?.cardSubtitle ??
+    cardSubtitle ??
+    "Limited edition membership and premium reward voucher.";
+  const fStamp = activeData?.frontStamp ?? frontStamp ?? "VERIFIED";
+  const fStampSuffix = activeData?.stampSuffix ?? stampSuffix ?? "// VIP PASS";
+  const fBarcode =
+    activeData?.barcodeText ?? barcodeText ?? "COUPON // APEX-07-CORE";
+  const fStatus =
+    activeData?.clearanceLevel ??
+    clearanceLevel ??
+    activeData?.statusText ??
+    statusText ??
+    "REWARD STATUS: ACTIVE";
 
-  const bCategory = cardCategory || cardBadge || sessionLabel || "COUPON VOUCHER";
-  const bDate = cardDate || cardVersion || sessionNumber || "VALID // 2026";
-  const bTitle = cardTitle || frontTitle || "The Art of Craft";
-  const bSubtitle = cardSubtitle || frontSubtitle || "Foundational reward tier for premium members.";
-  const bStatement = statement || quote || "Redeem this exclusive voucher across any tier. Every detail is crafted with perfection to bring maximum value to your workflow.";
-  const bHighlight = highlightQuote || subquote || "Unlock 50% off on all annual pro plans.";
-  const bAuthor = authorText || quoteAuthor || "PRO MEMBERSHIP";
-  const m1L = pillar1Title || metric1Label || "DISCOUNT";
-  const m1V = pillar1Desc || metric1Value || "50% OFF";
-  const m2L = pillar2Title || metric2Label || "TIER";
-  const m2V = pillar2Desc || metric2Value || "VIP Elite";
-  const m3L = metric3Label || "STATUS";
-  const m3V = metric3Value || "Active";
+  const bCategory =
+    activeData?.cardCategory ??
+    cardCategory ??
+    activeData?.cardBadge ??
+    cardBadge ??
+    activeData?.sessionLabel ??
+    sessionLabel ??
+    "COUPON VOUCHER";
+  const bDate =
+    activeData?.cardDate ??
+    cardDate ??
+    activeData?.cardVersion ??
+    cardVersion ??
+    activeData?.sessionNumber ??
+    sessionNumber ??
+    "VALID // 2026";
+  const bTitle =
+    activeData?.cardTitle ??
+    cardTitle ??
+    activeData?.frontTitle ??
+    frontTitle ??
+    "The Art of Craft";
+  const bSubtitle =
+    activeData?.cardSubtitle ??
+    cardSubtitle ??
+    activeData?.frontSubtitle ??
+    frontSubtitle ??
+    "Foundational reward tier for premium members.";
+  const bStatement =
+    activeData?.statement ??
+    statement ??
+    activeData?.quote ??
+    quote ??
+    "Redeem this exclusive voucher across any tier. Every detail is crafted with perfection to bring maximum value to your workflow.";
+  const bHighlight =
+    activeData?.highlightQuote ??
+    highlightQuote ??
+    activeData?.subquote ??
+    subquote ??
+    "Unlock 50% off on all annual pro plans.";
+  const bAuthor =
+    activeData?.authorText ??
+    authorText ??
+    activeData?.quoteAuthor ??
+    quoteAuthor ??
+    "PRO MEMBERSHIP";
+  const m1L =
+    activeData?.metrics?.[0]?.label ??
+    activeData?.metric1Label ??
+    metric1Label ??
+    pillar1Title ??
+    "DISCOUNT";
+  const m1V =
+    activeData?.metrics?.[0]?.value ??
+    activeData?.metric1Value ??
+    metric1Value ??
+    pillar1Desc ??
+    "50% OFF";
+  const m2L =
+    activeData?.metrics?.[1]?.label ??
+    activeData?.metric2Label ??
+    metric2Label ??
+    pillar2Title ??
+    "TIER";
+  const m2V =
+    activeData?.metrics?.[1]?.value ??
+    activeData?.metric2Value ??
+    metric2Value ??
+    pillar2Desc ??
+    "VIP Elite";
+  const m3L =
+    activeData?.metrics?.[2]?.label ??
+    activeData?.metric3Label ??
+    metric3Label ??
+    "STATUS";
+  const m3V =
+    activeData?.metrics?.[2]?.value ??
+    activeData?.metric3Value ??
+    metric3Value ??
+    "Active";
 
   return (
     <div
@@ -587,8 +781,8 @@ export function ConfidentialFolder({
       <style>{`
         .cf-theme-scope {
           --cf-sleeve-shift: -42%;
-          --cf-initial-peek: ${Math.round(initialPeek * 0.35)}px;
-          --cf-hover-peek: ${Math.round(hoverPeek * 0.35)}px;
+          --cf-initial-peek: ${Math.round(resolvedInitialPeek * 0.35)}px;
+          --cf-hover-peek: ${Math.round(resolvedHoverPeek * 0.35)}px;
           --cf-base: var(--cf-override, var(--primary, #0284c7));
           --cf-flap: ${isTrainTicket ? "oklch(from var(--cf-base) 0.93 calc(c * 0.25) h)" : "oklch(from var(--cf-base) 0.88 calc(c * 0.4) h)"};
           --cf-plate: ${isTrainTicket ? "oklch(from var(--cf-base) 0.82 calc(c * 0.35) h)" : "oklch(from var(--cf-base) 0.80 calc(c * 0.5) h)"};
@@ -606,8 +800,8 @@ export function ConfidentialFolder({
         @media (min-width: 640px) {
           .cf-theme-scope {
             --cf-sleeve-shift: 0px;
-            --cf-initial-peek: ${initialPeek}px;
-            --cf-hover-peek: ${hoverPeek}px;
+            --cf-initial-peek: ${resolvedInitialPeek}px;
+            --cf-hover-peek: ${resolvedHoverPeek}px;
           }
         }
         :is(.dark, .dark *) .cf-theme-scope,
@@ -721,7 +915,7 @@ export function ConfidentialFolder({
                     {/* 1. Top Blue/Primary Pill Banner Tab */}
                     <div className="w-full flex justify-center px-3 pt-1.5 sm:pt-3">
                       <div className="w-full sm:w-[94%] py-1 sm:py-2 px-2 rounded-b-xl sm:rounded-b-2xl bg-primary text-primary-foreground text-center font-sans font-black tracking-wider text-[7px] min-[400px]:text-[8.5px] sm:text-[14px] uppercase shadow-xs transition-colors duration-300">
-                        {ticketTitle}
+                        {resolvedTicketTitle}
                       </div>
                     </div>
 
@@ -734,7 +928,7 @@ export function ConfidentialFolder({
                             PASSENGER NAME
                           </span>
                           <span className="block font-sans text-[6px] min-[400px]:text-[7.5px] sm:text-[13px] font-semibold text-foreground leading-tight">
-                            {passengerName}
+                            {resolvedPassengerName}
                           </span>
                         </div>
 
@@ -745,7 +939,7 @@ export function ConfidentialFolder({
                               DATE
                             </span>
                             <span className="block font-sans text-[5.5px] min-[400px]:text-[7px] sm:text-[11.5px] font-medium text-foreground">
-                              {date}
+                              {resolvedDate}
                             </span>
                           </div>
                           <div>
@@ -753,7 +947,7 @@ export function ConfidentialFolder({
                               DEPARTURE
                             </span>
                             <span className="block font-sans text-[5.5px] min-[400px]:text-[7px] sm:text-[11.5px] font-medium text-foreground">
-                              {departureTime}
+                              {resolvedDepartureTime}
                             </span>
                           </div>
                         </div>
@@ -765,7 +959,7 @@ export function ConfidentialFolder({
                               SEAT
                             </span>
                             <span className="block font-sans text-[8px] min-[400px]:text-[10px] sm:text-[17px] font-black text-foreground leading-none mt-0.5">
-                              {seatNumber}
+                              {resolvedSeatNumber}
                             </span>
                           </div>
                           <div>
@@ -773,7 +967,7 @@ export function ConfidentialFolder({
                               TRAIN
                             </span>
                             <span className="block font-sans text-[8px] min-[400px]:text-[10px] sm:text-[17px] font-black text-foreground leading-none mt-0.5">
-                              {trainNumber}
+                              {resolvedTrainNumber}
                             </span>
                           </div>
                         </div>
@@ -781,7 +975,7 @@ export function ConfidentialFolder({
 
                       {/* Vertical Barcode on Right */}
                       <div className="shrink-0 pl-1">
-                        <VerticalBarcode code={barcodeNumber} />
+                        <VerticalBarcode code={resolvedBarcodeNumber} />
                       </div>
                     </div>
 
@@ -789,7 +983,7 @@ export function ConfidentialFolder({
                     <div className="relative w-full bg-primary py-1 sm:py-2.5 px-3 flex items-center justify-center overflow-hidden transition-colors duration-300">
                       <TrainWatermark className="absolute inset-0 w-full h-full object-cover text-primary-foreground opacity-30" />
                       <span className="relative z-10 text-primary-foreground font-sans font-black tracking-wider text-[8px] min-[400px]:text-[10px] sm:text-[16px] uppercase truncate drop-shadow-xs">
-                        {routeText}
+                        {resolvedRouteText}
                       </span>
                     </div>
                   </div>
@@ -803,7 +997,7 @@ export function ConfidentialFolder({
                   <div className="px-3 min-[400px]:px-4 sm:px-6 pb-2 pt-0.5 sm:pb-3.5 flex flex-col justify-between">
                     {/* Mini Primary banner */}
                     <div className="w-full bg-primary text-primary-foreground text-center font-sans font-bold tracking-wider text-[5px] min-[400px]:text-[6.5px] sm:text-[10.5px] py-0.5 sm:py-1 rounded-sm uppercase mb-1 transition-colors duration-300">
-                      {ticketTitle}
+                      {resolvedTicketTitle}
                     </div>
 
                     <div className="flex items-center justify-between">
@@ -813,31 +1007,31 @@ export function ConfidentialFolder({
                             PASSENGER NAME
                           </span>
                           <span className="block font-sans text-[5px] min-[400px]:text-[6.5px] sm:text-[10.5px] font-semibold text-foreground">
-                            {passengerName}
+                            {resolvedPassengerName}
                           </span>
                         </div>
 
                         <div className="flex items-center gap-1.5 sm:gap-3 text-[4px] min-[400px]:text-[5px] sm:text-[8px] text-muted-foreground">
                           <div>
-                            <span className="font-bold text-foreground">SEAT:</span> {seatNumber}
+                            <span className="font-bold text-foreground">SEAT:</span> {resolvedSeatNumber}
                           </div>
                           <div>
-                            <span className="font-bold text-foreground">TRAIN:</span> {trainNumber}
+                            <span className="font-bold text-foreground">TRAIN:</span> {resolvedTrainNumber}
                           </div>
                           <div>
-                            <span className="font-bold text-foreground">DATE:</span> {date}
+                            <span className="font-bold text-foreground">DATE:</span> {resolvedDate}
                           </div>
                         </div>
 
                         {/* Solid Station Badge */}
                         <div className="mt-0.5 sm:mt-1 bg-zinc-950 dark:bg-black text-white px-1 sm:px-2 py-0.5 rounded-sm font-sans font-bold text-[5px] min-[400px]:text-[6px] sm:text-[9.5px] tracking-wider uppercase inline-block">
-                          {routeText}
+                          {resolvedRouteText}
                         </div>
                       </div>
 
                       {/* Mini Vertical Barcode */}
                       <div className="shrink-0 pl-1">
-                        <VerticalBarcode code={barcodeNumber} className="scale-75 sm:scale-90 origin-right" />
+                        <VerticalBarcode code={resolvedBarcodeNumber} className="scale-75 sm:scale-90 origin-right" />
                       </div>
                     </div>
                   </div>
@@ -971,10 +1165,10 @@ export function ConfidentialFolder({
                   <div className="p-3 min-[400px]:p-4 sm:p-8 flex flex-col items-center justify-center text-center my-auto">
                     <HyperboltTrainLogo className="w-16 min-[400px]:w-20 sm:w-36 text-foreground transition-colors duration-300" />
                     <h3 className="font-sans font-black text-[8px] min-[400px]:text-[10px] sm:text-[16px] tracking-wider text-foreground uppercase mt-1 sm:mt-2 transition-colors duration-300">
-                      {trainCompany}
+                      {resolvedTrainCompany}
                     </h3>
                     <p className="font-sans font-semibold text-[5px] min-[400px]:text-[6.5px] sm:text-[10.5px] tracking-wide text-muted-foreground uppercase max-w-[120px] min-[400px]:max-w-[150px] sm:max-w-[240px] mt-1 sm:mt-2 leading-tight transition-colors duration-300">
-                      {slogan}
+                      {resolvedSlogan}
                     </p>
                   </div>
 
@@ -990,13 +1184,13 @@ export function ConfidentialFolder({
                     {/* Black Station Box */}
                     <div className="relative z-10 w-full bg-zinc-950 dark:bg-black text-white py-1 sm:py-2 px-2 text-center rounded-sm shadow-md">
                       <span className="font-sans font-bold text-[7px] min-[400px]:text-[8.5px] sm:text-[14px] uppercase tracking-wider">
-                        {routeText}
+                        {resolvedRouteText}
                       </span>
                     </div>
 
                     {/* Website link */}
                     <span className="relative z-10 font-sans text-[4px] min-[400px]:text-[5px] sm:text-[8px] text-primary-foreground/90 uppercase tracking-widest mt-1 sm:mt-2 font-semibold">
-                      {websiteUrl}
+                      {resolvedWebsiteUrl}
                     </span>
                   </div>
                 </div>
@@ -1214,3 +1408,4 @@ export const CouponCards = ConfidentialFolder;
 export type CouponCardsProps = ConfidentialFolderProps;
 export type CouponCardsInteractionMode = ConfidentialFolderInteractionMode;
 export type ConfidentialFolderDesign = ConfidentialFolderCardDesign;
+export type CouponCardsData = CouponCardData;

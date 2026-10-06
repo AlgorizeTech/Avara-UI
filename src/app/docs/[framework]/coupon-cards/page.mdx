@@ -12,7 +12,21 @@ An interactive classified folder & boarding pass component featuring a secret ca
 
 `CouponCards` brings tactile physical curiosity to train online tickets, travel booking passes, coupon reward vouchers, and editorial dossiers.
 
-export const usageTrainTicket = `import { CouponCards } from "@/components/custom/blocks/ConfidentialFolderBlock";
+export const usageTrainTicket = `import { CouponCards, CouponCardsData } from "@/components/custom/blocks/ConfidentialFolderBlock";
+
+const ticketData: CouponCardsData = {
+  ticketTitle: "TRAIN ONLINE TICKET",
+  passengerName: "Barbara M. Sandoval",
+  routeText: "ZÜRICH HB - PARIS-EST",
+  date: "25/11/2024",
+  departureTime: "06.30",
+  seatNumber: "18A",
+  trainNumber: "6",
+  trainCompany: "HYPERBOLT EXPRESS",
+  slogan: "UNLEASH THE POWER OF SPEED WITH HYPERBOLT EXPRESS",
+  barcodeNumber: "0 734664 235788",
+  websiteUrl: "HYPERBOLTEXPRESS.COM",
+};
 
 export default function TrainOnlineTicketExample() {
   return (
@@ -20,93 +34,83 @@ export default function TrainOnlineTicketExample() {
       <CouponCards
         cardDesign="train-ticket"
         interactionMode="step-flip"
-        ticketTitle="TRAIN ONLINE TICKET"
-        passengerName="Barbara M. Sandoval"
-        routeText="ZÜRICH HB - PARIS-EST"
-        date="25/11/2024"
-        departureTime="06.30"
-        seatNumber="18A"
-        trainNumber="6"
-        trainCompany="HYPERBOLT EXPRESS"
-        slogan="UNLEASH THE POWER OF SPEED WITH HYPERBOLT EXPRESS"
-        barcodeNumber="0 734664 235788"
-        websiteUrl="HYPERBOLTEXPRESS.COM"
-        initialPeek={38}
-        hoverPeek={88}
+        data={ticketData}
       />
     </div>
   );
 }`;
 
-export const usageAutoFlip = `import { CouponCards } from "@/components/custom/blocks/ConfidentialFolderBlock";
+export const usageAutoFlip = `import { CouponCards, CouponCardsData } from "@/components/custom/blocks/ConfidentialFolderBlock";
+
+const voucherData: CouponCardsData = {
+  sleeveTitle: "Designed to endure",
+  sleeveSubtitle: "Crafted for those who value timeless clarity.",
+  frontBadge: "SPECIAL OFFER",
+  frontSerial: "VOUCHER // 2026-X",
+  frontTitle: "Exclusive Access",
+  frontSubtitle: "Limited edition membership and premium reward voucher.",
+  frontStamp: "VERIFIED",
+  stampSuffix: "// VIP PASS",
+  barcodeText: "COUPON // APEX-07-CORE",
+  clearanceLevel: "REWARD STATUS: ACTIVE",
+  cardCategory: "COUPON VOUCHER",
+  cardDate: "VALID // 2026",
+  cardTitle: "The Art of Craft",
+  cardSubtitle: "Foundational reward tier for premium members.",
+  statement: "Redeem this exclusive voucher across any tier. Every detail is crafted with perfection to bring maximum value to your workflow.",
+  highlightQuote: "Unlock 50% off on all annual pro plans.",
+  authorText: "PRO MEMBERSHIP",
+  metrics: [
+    { label: "DISCOUNT", value: "50% OFF" },
+    { label: "TIER", value: "VIP Elite" },
+    { label: "STATUS", value: "Active" },
+  ],
+};
 
 export default function AutoFlipCouponCardsExample() {
   return (
     <div className="w-full flex items-center justify-center py-12">
       <CouponCards
         interactionMode="auto-flip"
-        sleeveTitle="Designed to endure"
-        sleeveSubtitle="Crafted for those who value timeless clarity."
-        frontBadge="SPECIAL OFFER"
-        frontSerial="VOUCHER // 2026-X"
-        frontTitle="Exclusive Access"
-        frontSubtitle="Limited edition membership and premium reward voucher."
-        frontStamp="VERIFIED"
-        stampSuffix="// VIP PASS"
-        barcodeText="COUPON // APEX-07-CORE"
-        clearanceLevel="REWARD STATUS: ACTIVE"
-        cardCategory="COUPON VOUCHER"
-        cardDate="VALID // 2026"
-        cardTitle="The Art of Craft"
-        cardSubtitle="Foundational reward tier for premium members."
-        statement="Redeem this exclusive voucher across any tier. Every detail is crafted with perfection to bring maximum value to your workflow."
-        highlightQuote="Unlock 50% off on all annual pro plans."
-        authorText="PRO MEMBERSHIP"
-        metric1Label="DISCOUNT"
-        metric1Value="50% OFF"
-        metric2Label="TIER"
-        metric2Value="VIP Elite"
-        metric3Label="STATUS"
-        metric3Value="Active"
-        initialPeek={38}
-        hoverPeek={88}
+        data={voucherData}
       />
     </div>
   );
 }`;
 
-export const usageStepFlip = `import { CouponCards } from "@/components/custom/blocks/ConfidentialFolderBlock";
+export const usageStepFlip = `import { CouponCards, CouponCardsData } from "@/components/custom/blocks/ConfidentialFolderBlock";
+
+const stepCardData: CouponCardsData = {
+  sleeveTitle: "Member Directives",
+  sleeveSubtitle: "3-stage progressive interactive card exploration.",
+  frontBadge: "PROMO REWARD",
+  frontSerial: "CARD // 09-STEP",
+  frontTitle: "Founder Directives",
+  frontSubtitle: "1st click opens to front cover. 2nd click flips. 3rd click closes.",
+  frontStamp: "TOP REWARD",
+  stampSuffix: "// STAGE-3",
+  barcodeText: "PASS // 904-HORIZON",
+  clearanceLevel: "CLEARANCE: TIER 1",
+  cardCategory: "PREMIUM PASS",
+  cardDate: "OCTOBER 2026",
+  cardTitle: "Step-by-Step Reveal",
+  cardSubtitle: "Click 1 seats on top. Click 2 flips. Click 3 closes.",
+  statement: "Explore information with purposeful progressive disclosure. Each click seamlessly advances the interaction state with high-precision physics.",
+  highlightQuote: "Click 1: Open • Click 2: Flip • Click 3: Close",
+  authorText: "CREATIVE LEADERSHIP",
+  metrics: [
+    { label: "LATENCY", value: "0 MS" },
+    { label: "STAGES", value: "3 Steps" },
+    { label: "PHYSICS", value: "Spring-3D" },
+  ],
+};
 
 export default function StepFlipCouponCardsExample() {
   return (
     <div className="w-full flex items-center justify-center py-12">
       <CouponCards
         interactionMode="step-flip"
-        sleeveTitle="Member Directives"
-        sleeveSubtitle="3-stage progressive interactive card exploration."
-        frontBadge="PROMO REWARD"
-        frontSerial="CARD // 09-STEP"
-        frontTitle="Founder Directives"
-        frontSubtitle="1st click opens to front cover. 2nd click flips. 3rd click closes."
-        frontStamp="TOP REWARD"
-        stampSuffix="// STAGE-3"
-        barcodeText="PASS // 904-HORIZON"
-        clearanceLevel="CLEARANCE: TIER 1"
-        cardCategory="PREMIUM PASS"
-        cardDate="OCTOBER 2026"
-        cardTitle="Step-by-Step Reveal"
-        cardSubtitle="Click 1 seats on top. Click 2 flips. Click 3 closes."
-        statement="Explore information with purposeful progressive disclosure. Each click seamlessly advances the interaction state with high-precision physics."
-        highlightQuote="Click 1: Open • Click 2: Flip • Click 3: Close"
-        authorText="CREATIVE LEADERSHIP"
-        metric1Label="LATENCY"
-        metric1Value="0 MS"
-        metric2Label="STAGES"
-        metric2Value="3 Steps"
-        metric3Label="PHYSICS"
-        metric3Value="Spring-3D"
-        initialPeek={38}
-        hoverPeek={88}
+        data={stepCardData}
       />
     </div>
   );
@@ -123,6 +127,13 @@ export default function StepFlipCouponCardsExample() {
         "Exact high-speed rail ticket and envelope design. Features the top blue pill header, passenger info, seat/train numbers, vertical barcode, watermarked station route bar, tear-off stub, and Hyperbolt bullet train box sleeve.",
       propNotes: [
         {
+          lead: "Data Object",
+          prop: "data",
+          value: "ticketData",
+          effect:
+            "passes all passenger, train, seat, route, and transit details as a single structured object.",
+        },
+        {
           lead: "Design Variant",
           prop: "cardDesign",
           value: '"train-ticket"',
@@ -130,36 +141,29 @@ export default function StepFlipCouponCardsExample() {
             "activates the Hyperbolt Express train online ticket layout for both the card and the outer sleeve box.",
         },
         {
-          lead: "Route & Stations",
-          prop: "routeText",
-          value: '"ZÜRICH HB - PARIS-EST"',
+          lead: "Interaction",
+          prop: "interactionMode",
+          value: '"step-flip"',
           effect:
-            "displays the bold route on the middle watermarked banner, stub badge, and sleeve cover.",
-        },
-        {
-          lead: "Passenger Details",
-          prop: "passengerName / seatNumber / trainNumber",
-          value: '"Barbara M. Sandoval" / "18A" / "6"',
-          effect:
-            "renders passenger identification, seat assignment, and train number.",
+            "splits the animation into 3 distinct clicks: Click 1 opens to front ticket, Click 2 flips to reverse route overview, Click 3 closes.",
         },
       ],
       props: {
         cardDesign: "train-ticket",
         interactionMode: "step-flip",
-        ticketTitle: "TRAIN ONLINE TICKET",
-        passengerName: "Barbara M. Sandoval",
-        routeText: "ZÜRICH HB - PARIS-EST",
-        date: "25/11/2024",
-        departureTime: "06.30",
-        seatNumber: "18A",
-        trainNumber: "6",
-        trainCompany: "HYPERBOLT EXPRESS",
-        slogan: "UNLEASH THE POWER OF SPEED WITH HYPERBOLT EXPRESS",
-        barcodeNumber: "0 734664 235788",
-        websiteUrl: "HYPERBOLTEXPRESS.COM",
-        initialPeek: 38,
-        hoverPeek: 88,
+        data: {
+          ticketTitle: "TRAIN ONLINE TICKET",
+          passengerName: "Barbara M. Sandoval",
+          routeText: "ZÜRICH HB - PARIS-EST",
+          date: "25/11/2024",
+          departureTime: "06.30",
+          seatNumber: "18A",
+          trainNumber: "6",
+          trainCompany: "HYPERBOLT EXPRESS",
+          slogan: "UNLEASH THE POWER OF SPEED WITH HYPERBOLT EXPRESS",
+          barcodeNumber: "0 734664 235788",
+          websiteUrl: "HYPERBOLTEXPRESS.COM",
+        },
       },
       usage: usageTrainTicket,
       code: extractCode("src/components/custom/blocks/ConfidentialFolderBlock.tsx"),
@@ -171,53 +175,47 @@ export default function StepFlipCouponCardsExample() {
         "1st click slides the card out from the sleeve, elevates onto the front, and automatically flips 180° in-place to reveal the back details. 2nd click flips back and returns inside the sleeve.",
       propNotes: [
         {
+          lead: "Data Object",
+          prop: "data",
+          value: "voucherData",
+          effect:
+            "passes all sleeve headers, voucher passes, back story manifesto, and metric pillars as a clean data object.",
+        },
+        {
           lead: "Interaction",
           prop: "interactionMode",
           value: '"auto-flip"',
           effect:
             "automatically executes the full slide-out and in-place 180° flip on first click.",
         },
-        {
-          lead: "Resting Peek",
-          prop: "initialPeek",
-          effect:
-            "card peeks 38px out through the thumb scoop notch by default so its presence is immediately visible.",
-        },
-        {
-          lead: "Hover Peek",
-          prop: "hoverPeek",
-          effect:
-            "smoothly glides the card 88px out on hover, inviting user interaction.",
-        },
       ],
       props: {
         interactionMode: "auto-flip",
-        sleeveTitle: "Designed to endure",
-        sleeveSubtitle: "Crafted for those who value timeless clarity.",
-        frontBadge: "SPECIAL OFFER",
-        frontSerial: "VOUCHER // 2026-X",
-        frontTitle: "Exclusive Access",
-        frontSubtitle: "Limited edition membership and premium reward voucher.",
-        frontStamp: "VERIFIED",
-        stampSuffix: "// VIP PASS",
-        barcodeText: "COUPON // APEX-07-CORE",
-        clearanceLevel: "REWARD STATUS: ACTIVE",
-        cardCategory: "COUPON VOUCHER",
-        cardDate: "VALID // 2026",
-        cardTitle: "The Art of Craft",
-        cardSubtitle: "Foundational reward tier for premium members.",
-        statement:
-          "Redeem this exclusive voucher across any tier. Every detail is crafted with perfection to bring maximum value to your workflow.",
-        highlightQuote: "Unlock 50% off on all annual pro plans.",
-        authorText: "PRO MEMBERSHIP",
-        metric1Label: "DISCOUNT",
-        metric1Value: "50% OFF",
-        metric2Label: "TIER",
-        metric2Value: "VIP Elite",
-        metric3Label: "STATUS",
-        metric3Value: "Active",
-        initialPeek: 38,
-        hoverPeek: 88,
+        data: {
+          sleeveTitle: "Designed to endure",
+          sleeveSubtitle: "Crafted for those who value timeless clarity.",
+          frontBadge: "SPECIAL OFFER",
+          frontSerial: "VOUCHER // 2026-X",
+          frontTitle: "Exclusive Access",
+          frontSubtitle: "Limited edition membership and premium reward voucher.",
+          frontStamp: "VERIFIED",
+          stampSuffix: "// VIP PASS",
+          barcodeText: "COUPON // APEX-07-CORE",
+          clearanceLevel: "REWARD STATUS: ACTIVE",
+          cardCategory: "COUPON VOUCHER",
+          cardDate: "VALID // 2026",
+          cardTitle: "The Art of Craft",
+          cardSubtitle: "Foundational reward tier for premium members.",
+          statement:
+            "Redeem this exclusive voucher across any tier. Every detail is crafted with perfection to bring maximum value to your workflow.",
+          highlightQuote: "Unlock 50% off on all annual pro plans.",
+          authorText: "PRO MEMBERSHIP",
+          metrics: [
+            { label: "DISCOUNT", value: "50% OFF" },
+            { label: "TIER", value: "VIP Elite" },
+            { label: "STATUS", value: "Active" },
+          ],
+        },
       },
       usage: usageAutoFlip,
       code: extractCode("src/components/custom/blocks/ConfidentialFolderBlock.tsx"),
@@ -229,47 +227,47 @@ export default function StepFlipCouponCardsExample() {
         "1st click slides the card onto the sleeve cover and sits in place displaying the front cover. 2nd click executes a tactile 180° in-place flip revealing the back face. 3rd click flips it back and slides it safely into the sleeve.",
       propNotes: [
         {
+          lead: "Data Object",
+          prop: "data",
+          value: "stepCardData",
+          effect:
+            "passes card content and metrics via a typed data object.",
+        },
+        {
           lead: "Interaction",
           prop: "interactionMode",
           value: '"step-flip"',
           effect:
             "splits the animation into 3 distinct clicks: Click 1 opens to front cover, Click 2 flips to back details, Click 3 closes into sleeve.",
         },
-        {
-          lead: "Resting State",
-          prop: "resting-top-front",
-          effect:
-            "allows users to pause and read the front cover when opened, before deciding to flip.",
-        },
       ],
       props: {
         interactionMode: "step-flip",
-        sleeveTitle: "Member Directives",
-        sleeveSubtitle: "3-stage progressive interactive card exploration.",
-        frontBadge: "PROMO REWARD",
-        frontSerial: "CARD // 09-STEP",
-        frontTitle: "Founder Directives",
-        frontSubtitle: "1st click opens to front cover. 2nd click flips. 3rd click closes.",
-        frontStamp: "TOP REWARD",
-        stampSuffix: "// STAGE-3",
-        barcodeText: "PASS // 904-HORIZON",
-        clearanceLevel: "CLEARANCE: TIER 1",
-        cardCategory: "PREMIUM PASS",
-        cardDate: "OCTOBER 2026",
-        cardTitle: "Step-by-Step Reveal",
-        cardSubtitle: "Click 1 seats on top. Click 2 flips. Click 3 closes.",
-        statement:
-          "Explore information with purposeful progressive disclosure. Each click seamlessly advances the interaction state with high-precision physics.",
-        highlightQuote: "Click 1: Open • Click 2: Flip • Click 3: Close",
-        authorText: "CREATIVE LEADERSHIP",
-        metric1Label: "LATENCY",
-        metric1Value: "0 MS",
-        metric2Label: "STAGES",
-        metric2Value: "3 Steps",
-        metric3Label: "PHYSICS",
-        metric3Value: "Spring-3D",
-        initialPeek: 38,
-        hoverPeek: 88,
+        data: {
+          sleeveTitle: "Member Directives",
+          sleeveSubtitle: "3-stage progressive interactive card exploration.",
+          frontBadge: "PROMO REWARD",
+          frontSerial: "CARD // 09-STEP",
+          frontTitle: "Founder Directives",
+          frontSubtitle: "1st click opens to front cover. 2nd click flips. 3rd click closes.",
+          frontStamp: "TOP REWARD",
+          stampSuffix: "// STAGE-3",
+          barcodeText: "PASS // 904-HORIZON",
+          clearanceLevel: "CLEARANCE: TIER 1",
+          cardCategory: "PREMIUM PASS",
+          cardDate: "OCTOBER 2026",
+          cardTitle: "Step-by-Step Reveal",
+          cardSubtitle: "Click 1 seats on top. Click 2 flips. Click 3 closes.",
+          statement:
+            "Explore information with purposeful progressive disclosure. Each click seamlessly advances the interaction state with high-precision physics.",
+          highlightQuote: "Click 1: Open • Click 2: Flip • Click 3: Close",
+          authorText: "CREATIVE LEADERSHIP",
+          metrics: [
+            { label: "LATENCY", value: "0 MS" },
+            { label: "STAGES", value: "3 Steps" },
+            { label: "PHYSICS", value: "Spring-3D" },
+          ],
+        },
       },
       usage: usageStepFlip,
       code: extractCode("src/components/custom/blocks/ConfidentialFolderBlock.tsx"),
@@ -333,6 +331,12 @@ export default function StepFlipCouponCardsExample() {
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><code>data</code></td>
+        <td><code>CouponCardsData | CouponCardsData[]</code></td>
+        <td><code>undefined</code></td>
+        <td>Structured data object containing all ticket, pass, voucher, and card metric properties. Can also be passed as an array.</td>
+      </tr>
       <tr>
         <td><code>cardDesign</code></td>
         <td><code>"classified" | "train-ticket"</code></td>

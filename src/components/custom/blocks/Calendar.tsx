@@ -45,7 +45,64 @@ const EVENT_PLATFORM_OPTIONS = [
 // ==========================================
 // VARIANT & COLOR CONFIGURATION
 // ==========================================
-export type CalendarVariant = "default" | "minimal" | "glass";
+export type CalendarVariant = "default" | "minimal" | "glass" | "liquid-glass";
+
+export function LiquidGlassSvgFilter() {
+  return (
+    <>
+      <img
+        src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg"
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          top: "-9999px",
+          left: "-9999px",
+          width: "1px",
+          height: "1px",
+          opacity: 0,
+          pointerEvents: "none",
+        }}
+      />
+      <svg
+        style={{
+          position: "fixed",
+          top: "-9999px",
+          left: "-9999px",
+          width: 0,
+          height: 0,
+          pointerEvents: "none",
+        }}
+        aria-hidden="true"
+      >
+        <defs>
+          <filter
+            id="glass-blur"
+            x="0"
+            y="0"
+            width="100%"
+            height="100%"
+            filterUnits="objectBoundingBox"
+          >
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.003 0.007"
+              numOctaves="1"
+              result="turbulence"
+            />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="turbulence"
+              scale="200"
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
+        </defs>
+      </svg>
+    </>
+  );
+}
 
 const TIME_SLOTS = [
   { label: "12:00 AM", startHour: 0, timeStr: "00:00" },
@@ -135,6 +192,19 @@ const dashboardVariants: Record<CalendarVariant, Record<string, string>> = {
       "bg-white/30 dark:bg-black/30 backdrop-blur-md border-b border-white/30 dark:border-white/10",
     cellBg:
       "bg-white/25 dark:bg-black/30 hover:bg-white/40 dark:hover:bg-black/50 backdrop-blur-sm",
+  },
+  "liquid-glass": {
+    wrapper:
+      "bg-transparent border-0 shadow-[0_25px_60px_rgba(0,0,0,0.45)] text-white rounded-[22px] sm:rounded-[28px] [--foreground:#ffffff] [--muted-foreground:rgba(255,255,255,0.75)] [--color-foreground:#ffffff] [--color-muted-foreground:rgba(255,255,255,0.75)]",
+    sidebar:
+      "bg-white/[0.06] dark:bg-white/[0.04] border-r border-white/20 text-white",
+    header: "bg-white/[0.04] dark:bg-white/[0.02] border-b border-white/20 text-white",
+    gridOuter: "bg-white/15 p-px",
+    gridGap: "gap-px",
+    gridHeader:
+      "bg-white/[0.08] dark:bg-white/[0.05] backdrop-blur-xs border-b border-white/20 text-white",
+    cellBg:
+      "bg-white/[0.03] hover:bg-white/[0.10] transition-colors text-white",
   },
 };
 
@@ -385,51 +455,23 @@ function CalendarDayButton({
 }
 // --- END: react-day-picker wrapper ---
 
-const formatDateForInput = (dateKey: string) => {
-  if (!dateKey) return "";
-  const [y, m, d] = dateKey.split("-");
-  return `${y}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
-};
+function useThemeDetector() {
+  const [isDark, setIsDark] = useState(false);
 
-const now = new Date();
-const currentYear = now.getFullYear();
-const currentMonth = now.getMonth() + 1;
-
-const DEFAULT_MOCK_EVENTS: Record<string, string[]> = {
-  [`${currentYear}-${currentMonth}-2`]: ["pentest", "kickoff"],
-  [`${currentYear}-${currentMonth}-10`]: ["pentest", "kickoff"],
-  [`${currentYear}-${currentMonth}-15`]: ["pentest", "kickoff"],
-  [`${currentYear}-${currentMonth}-24`]: ["kickoff", "pentest"],
-};
-
-type CalendarEvent = {
-  id: string;
-  title: string;
-  date: string;
-  time: string;
-  type: string;
-  platform: string;
-};
-
-// Ids are derived from the date key and position so they stay stable across
-// re-seeds -- an open popup keeps pointing at the same event.
-function buildEventsFromMock(
-  mockEvents: Record<string, string[]>,
-): CalendarEvent[] {
-  const list: CalendarEvent[] = [];
-  Object.entries(mockEvents).forEach(([dateKey, types]) => {
-    types.forEach((type, index) => {
-      list.push({
-        id: `${dateKey}-${index}`,
-        title: type === "pentest" ? "Pentest" : "Kick-Off",
-        date: dateKey,
-        time: "12:00",
-        type: type,
-        platform: type === "pentest" ? "slack" : "meet",
-      });
+  useEffect(() => {
+    const checkTheme = () => {
+      setIsDark(document.documentElement.classList.contains("dark"));
+    };
+    checkTheme();
+    const observer = new MutationObserver(checkTheme);
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
     });
-  });
-  return list;
+    return () => observer.disconnect();
+  }, []);
+
+  return isDark;
 }
 
 const formatDisplayDate = (dateStr: string) => {
@@ -478,8 +520,6 @@ function CustomDatePicker({
 
   const [viewDate, setViewDate] = useState<Date>(initialDate);
 
-  // Opening, closing or a new `value` brings the view back to the selected
-  // month. Adjusted while rendering, when either changes, rather than in an effect.
   const [prevSync, setPrevSync] = useState({ value, isOpen });
   if (prevSync.value !== value || prevSync.isOpen !== isOpen) {
     setPrevSync({ value, isOpen });
@@ -544,7 +584,16 @@ function CustomDatePicker({
 
   return (
     <div ref={containerRef} className="relative">
-      <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-neutral-800 dark:text-white/90" : "text-foreground")}>
+      <label
+        className={cn(
+          "block text-sm font-medium mb-1",
+          variant === "liquid-glass"
+            ? "text-white/90"
+            : variant === "glass"
+              ? "text-neutral-800 dark:text-white/90"
+              : "text-foreground",
+        )}
+      >
         Date
       </label>
       <input type="hidden" name="date" value={value} />
@@ -552,24 +601,37 @@ function CustomDatePicker({
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "w-full cursor-pointer flex items-center justify-between border rounded-md px-3 py-2 text-sm bg-transparent transition-all outline-none",
-          variant === "glass"
-            ? "border-black/15 text-neutral-900 bg-black/5 hover:bg-black/10 focus:bg-white/40 focus:border-black/30 dark:border-white/25 dark:text-white dark:bg-white/10 dark:hover:bg-white/15 dark:focus:bg-white/20 dark:focus:border-white/50"
-            : "border-input text-foreground bg-background hover:bg-muted/50",
+          "w-full cursor-pointer flex items-center justify-between border rounded-xl px-3 py-2 text-sm bg-transparent transition-all outline-none",
+          variant === "liquid-glass"
+            ? "border-white/25 text-white bg-white/10 hover:bg-white/15 focus:bg-white/20 focus:border-white/50 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]"
+            : variant === "glass"
+              ? "border-black/15 text-neutral-900 bg-black/5 hover:bg-black/10 focus:bg-white/40 focus:border-black/30 dark:border-white/25 dark:text-white dark:bg-white/10 dark:hover:bg-white/15 dark:focus:bg-white/20 dark:focus:border-white/50"
+              : "border-input text-foreground bg-background hover:bg-muted/50",
           isOpen && (theme.focusRing || "ring-2 ring-primary/20"),
         )}
       >
         <span className="font-medium truncate">{formatDisplayDate(value) || "Pick a date"}</span>
-        <CalendarIcon className={cn("w-4 h-4 shrink-0 opacity-70 cursor-pointer", variant === "glass" ? "text-neutral-700 dark:text-white/80" : "text-muted-foreground")} />
+        <CalendarIcon
+          className={cn(
+            "w-4 h-4 shrink-0 opacity-70 cursor-pointer",
+            variant === "liquid-glass"
+              ? "text-white/80"
+              : variant === "glass"
+                ? "text-neutral-700 dark:text-white/80"
+                : "text-muted-foreground",
+          )}
+        />
       </button>
 
       {isOpen && (
         <div
           className={cn(
-            "absolute top-full left-0 mt-2 z-50 w-72 rounded-xl border p-3 shadow-2xl animate-in fade-in zoom-in-95 duration-150 cursor-default",
-            variant === "glass"
-              ? "bg-white/45 dark:bg-black/60 backdrop-blur-3xl border-white/50 dark:border-white/20 text-neutral-900 dark:text-white shadow-2xl"
-              : "bg-popover text-popover-foreground border-border",
+            "absolute top-full left-0 mt-2 z-50 w-72 rounded-2xl border p-3.5 shadow-2xl animate-in fade-in zoom-in-95 duration-150 cursor-default",
+            variant === "liquid-glass"
+              ? "bg-black/50 backdrop-blur-3xl border border-white/30 text-white shadow-[0_25px_60px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.4),inset_-1px_-1px_1px_rgba(255,255,255,0.15)]"
+              : variant === "glass"
+                ? "bg-white/45 dark:bg-black/60 backdrop-blur-3xl border-white/50 dark:border-white/20 text-neutral-900 dark:text-white shadow-2xl"
+                : "bg-popover text-popover-foreground border-border",
           )}
           onClick={(e) => e.stopPropagation()}
         >
@@ -586,7 +648,11 @@ function CustomDatePicker({
                 }}
                 className={cn(
                   "p-1 rounded-md transition-colors cursor-pointer",
-                  variant === "glass" ? "hover:bg-black/10 dark:hover:bg-white/15" : "hover:bg-muted"
+                  variant === "liquid-glass"
+                    ? "hover:bg-white/20 text-white border border-white/20"
+                    : variant === "glass"
+                      ? "hover:bg-black/10 dark:hover:bg-white/15"
+                      : "hover:bg-muted",
                 )}
               >
                 <ChevronLeft className="w-4 h-4 cursor-pointer" />
@@ -599,7 +665,11 @@ function CustomDatePicker({
                 }}
                 className={cn(
                   "p-1 rounded-md transition-colors cursor-pointer",
-                  variant === "glass" ? "hover:bg-black/10 dark:hover:bg-white/15" : "hover:bg-muted"
+                  variant === "liquid-glass"
+                    ? "hover:bg-white/20 text-white border border-white/20"
+                    : variant === "glass"
+                      ? "hover:bg-black/10 dark:hover:bg-white/15"
+                      : "hover:bg-muted",
                 )}
               >
                 <ChevronRight className="w-4 h-4 cursor-pointer" />
@@ -629,12 +699,16 @@ function CustomDatePicker({
                   }}
                   className={cn(
                     "h-8 w-8 mx-auto flex items-center justify-center rounded-lg text-xs transition-colors cursor-pointer",
-                    !cell.isCurrentMonth && "opacity-35",
+                    !cell.isCurrentMonth && (variant === "liquid-glass" ? "opacity-35 text-white/50" : "opacity-35"),
                     isSelected
-                      ? cn(theme.primaryBg, "font-bold text-white shadow-xs")
-                      : variant === "glass"
-                        ? "hover:bg-black/10 dark:hover:bg-white/15 text-neutral-900 dark:text-white"
-                        : "hover:bg-muted text-foreground",
+                      ? variant === "liquid-glass"
+                        ? "bg-white/30 text-white font-bold border border-white/40 shadow-[0_0_12px_rgba(255,255,255,0.35),inset_0_1px_1px_rgba(255,255,255,0.4)]"
+                        : cn(theme.primaryBg, "font-bold text-white shadow-xs")
+                      : variant === "liquid-glass"
+                        ? "hover:bg-white/20 text-white"
+                        : variant === "glass"
+                          ? "hover:bg-black/10 dark:hover:bg-white/15 text-neutral-900 dark:text-white"
+                          : "hover:bg-muted text-foreground",
                   )}
                 >
                   {cell.day}
@@ -643,7 +717,12 @@ function CustomDatePicker({
             })}
           </div>
 
-          <div className="mt-2 pt-2 border-t border-black/10 dark:border-white/10 flex justify-between items-center text-xs">
+          <div className={cn(
+            "mt-2 pt-2 border-t flex justify-between items-center text-xs",
+            variant === "liquid-glass"
+              ? "border-white/15 text-white"
+              : "border-black/10 dark:border-white/10",
+          )}>
             <button
               type="button"
               onClick={(e) => {
@@ -654,7 +733,12 @@ function CustomDatePicker({
                 onChange(k);
                 setIsOpen(false);
               }}
-              className={cn("font-semibold cursor-pointer px-2 py-1 rounded transition-colors", theme.primaryText || "text-primary")}
+              className={cn(
+                "font-semibold cursor-pointer px-2.5 py-1 rounded-lg transition-all",
+                variant === "liquid-glass"
+                  ? "bg-white/20 hover:bg-white/30 border border-white/30 text-white backdrop-blur-md shadow-xs"
+                  : theme.primaryText || "text-primary font-semibold hover:underline",
+              )}
             >
               Today
             </button>
@@ -664,7 +748,10 @@ function CustomDatePicker({
                 e.stopPropagation();
                 setIsOpen(false);
               }}
-              className="opacity-70 hover:opacity-100 cursor-pointer px-2 py-1"
+              className={cn(
+                "opacity-70 hover:opacity-100 cursor-pointer px-2 py-1 rounded transition-colors",
+                variant === "liquid-glass" && "hover:bg-white/15 text-white",
+              )}
             >
               Close
             </button>
@@ -723,7 +810,16 @@ function CustomTimePicker({
 
   return (
     <div ref={containerRef} className="relative">
-      <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-neutral-800 dark:text-white/90" : "text-foreground")}>
+      <label
+        className={cn(
+          "block text-sm font-medium mb-1",
+          variant === "liquid-glass"
+            ? "text-white/90"
+            : variant === "glass"
+              ? "text-neutral-800 dark:text-white/90"
+              : "text-foreground",
+        )}
+      >
         Time
       </label>
       <input type="hidden" name="time" value={value} />
@@ -731,30 +827,56 @@ function CustomTimePicker({
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={cn(
-          "w-full cursor-pointer flex items-center justify-between border rounded-md px-3 py-2 text-sm bg-transparent transition-all outline-none",
-          variant === "glass"
-            ? "border-black/15 text-neutral-900 bg-black/5 hover:bg-black/10 focus:bg-white/40 focus:border-black/30 dark:border-white/25 dark:text-white dark:bg-white/10 dark:hover:bg-white/15 dark:focus:bg-white/20 dark:focus:border-white/50"
-            : "border-input text-foreground bg-background hover:bg-muted/50",
+          "w-full cursor-pointer flex items-center justify-between border rounded-xl px-3 py-2 text-sm bg-transparent transition-all outline-none",
+          variant === "liquid-glass"
+            ? "border-white/25 text-white bg-white/10 hover:bg-white/15 focus:bg-white/20 focus:border-white/50 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]"
+            : variant === "glass"
+              ? "border-black/15 text-neutral-900 bg-black/5 hover:bg-black/10 focus:bg-white/40 focus:border-black/30 dark:border-white/25 dark:text-white dark:bg-white/10 dark:hover:bg-white/15 dark:focus:bg-white/20 dark:focus:border-white/50"
+              : "border-input text-foreground bg-background hover:bg-muted/50",
           isOpen && (theme.focusRing || "ring-2 ring-primary/20"),
         )}
       >
         <span className="font-medium truncate">{formatDisplayTime(value)}</span>
-        <Clock className={cn("w-4 h-4 shrink-0 opacity-70 cursor-pointer", variant === "glass" ? "text-neutral-700 dark:text-white/80" : "text-muted-foreground")} />
+        <Clock
+          className={cn(
+            "w-4 h-4 shrink-0 opacity-70 cursor-pointer",
+            variant === "liquid-glass"
+              ? "text-white/80"
+              : variant === "glass"
+                ? "text-neutral-700 dark:text-white/80"
+                : "text-muted-foreground",
+          )}
+        />
       </button>
 
       {isOpen && (
         <div
           className={cn(
-            "absolute top-full right-0 mt-2 z-50 w-64 rounded-xl border p-3 shadow-2xl animate-in fade-in zoom-in-95 duration-150 cursor-default",
-            variant === "glass"
-              ? "bg-white/45 dark:bg-black/60 backdrop-blur-3xl border-white/50 dark:border-white/20 text-neutral-900 dark:text-white shadow-2xl"
-              : "bg-popover text-popover-foreground border-border",
+            "absolute top-full right-0 mt-2 z-50 w-64 rounded-2xl border p-3.5 shadow-2xl animate-in fade-in zoom-in-95 duration-150 cursor-default",
+            variant === "liquid-glass"
+              ? "bg-black/50 backdrop-blur-3xl border border-white/30 text-white shadow-[0_25px_60px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.4),inset_-1px_-1px_1px_rgba(255,255,255,0.15)]"
+              : variant === "glass"
+                ? "bg-white/45 dark:bg-black/60 backdrop-blur-3xl border-white/50 dark:border-white/20 text-neutral-900 dark:text-white shadow-2xl"
+                : "bg-popover text-popover-foreground border-border",
           )}
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="flex items-center justify-between mb-2 pb-1 border-b border-black/10 dark:border-white/10">
-            <span className="text-xs font-semibold uppercase tracking-wider opacity-70">Pick Time</span>
-            <span className={cn("text-xs font-bold", theme.primaryText || "text-primary")}>
+          <div
+            className={cn(
+              "flex items-center justify-between mb-2 pb-1.5 border-b",
+              variant === "liquid-glass" ? "border-white/20 text-white" : "border-black/10 dark:border-white/10",
+            )}
+          >
+            <span className={cn(
+              "text-xs font-semibold uppercase tracking-wider",
+              variant === "liquid-glass" ? "text-white/80" : "opacity-70",
+            )}>
+              Pick Time
+            </span>
+            <span className={cn(
+              "text-xs font-bold",
+              variant === "liquid-glass" ? "text-white drop-shadow-xs" : theme.primaryText || "text-primary",
+            )}>
               {formatDisplayTime(value)}
             </span>
           </div>
@@ -776,10 +898,14 @@ function CustomTimePicker({
                     className={cn(
                       "py-1 text-xs rounded-md transition-colors cursor-pointer font-medium",
                       isActive
-                        ? cn(theme.primaryBg, "text-white font-bold shadow-xs")
-                        : variant === "glass"
-                          ? "hover:bg-black/10 dark:hover:bg-white/15 text-neutral-800 dark:text-neutral-200"
-                          : "hover:bg-muted text-foreground",
+                        ? variant === "liquid-glass"
+                          ? "bg-white/30 text-white font-bold border border-white/40 shadow-[0_0_10px_rgba(255,255,255,0.25),inset_0_1px_1px_rgba(255,255,255,0.4)]"
+                          : cn(theme.primaryBg, "text-white font-bold shadow-xs")
+                        : variant === "liquid-glass"
+                          ? "hover:bg-white/20 text-white/90"
+                          : variant === "glass"
+                            ? "hover:bg-black/10 dark:hover:bg-white/15 text-neutral-800 dark:text-neutral-200"
+                            : "hover:bg-muted text-foreground",
                     )}
                   >
                     {String(h).padStart(2, "0")}
@@ -792,7 +918,7 @@ function CustomTimePicker({
             <div className="flex flex-col overflow-y-auto pr-0.5 space-y-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               <span className="text-[10px] uppercase font-semibold text-center opacity-60 mb-0.5">Min</span>
               {minutesList.map((m) => {
-                const isActive = Math.abs(m - minute) <= 2;
+                const isActive = m === minute;
                 return (
                   <button
                     key={m}
@@ -804,10 +930,14 @@ function CustomTimePicker({
                     className={cn(
                       "py-1 text-xs rounded-md transition-colors cursor-pointer font-medium",
                       isActive
-                        ? cn(theme.primaryBg, "text-white font-bold shadow-xs")
-                        : variant === "glass"
-                          ? "hover:bg-black/10 dark:hover:bg-white/15 text-neutral-800 dark:text-neutral-200"
-                          : "hover:bg-muted text-foreground",
+                        ? variant === "liquid-glass"
+                          ? "bg-white/30 text-white font-bold border border-white/40 shadow-[0_0_10px_rgba(255,255,255,0.25),inset_0_1px_1px_rgba(255,255,255,0.4)]"
+                          : cn(theme.primaryBg, "text-white font-bold shadow-xs")
+                        : variant === "liquid-glass"
+                          ? "hover:bg-white/20 text-white/90"
+                          : variant === "glass"
+                            ? "hover:bg-black/10 dark:hover:bg-white/15 text-neutral-800 dark:text-neutral-200"
+                            : "hover:bg-muted text-foreground",
                     )}
                   >
                     {String(m).padStart(2, "0")}
@@ -816,8 +946,8 @@ function CustomTimePicker({
               })}
             </div>
 
-            {/* AM/PM Column */}
-            <div className="flex flex-col space-y-1">
+            {/* AM / PM Column */}
+            <div className="flex flex-col gap-1">
               <span className="text-[10px] uppercase font-semibold text-center opacity-60 mb-0.5">Period</span>
               {(["AM", "PM"] as const).map((p) => {
                 const isActive = p === ampm;
@@ -830,12 +960,16 @@ function CustomTimePicker({
                       updateTime(hour12, minute, p);
                     }}
                     className={cn(
-                      "py-2 text-xs rounded-md transition-colors cursor-pointer font-medium",
+                      "py-2 text-xs rounded-md font-semibold transition-colors cursor-pointer",
                       isActive
-                        ? cn(theme.primaryBg, "text-white font-bold shadow-xs")
-                        : variant === "glass"
-                          ? "hover:bg-black/10 dark:hover:bg-white/15 text-neutral-800 dark:text-neutral-200"
-                          : "hover:bg-muted text-foreground",
+                        ? variant === "liquid-glass"
+                          ? "bg-white/30 text-white font-bold border border-white/40 shadow-[0_0_10px_rgba(255,255,255,0.25),inset_0_1px_1px_rgba(255,255,255,0.4)]"
+                          : cn(theme.primaryBg, "text-white font-bold shadow-xs")
+                        : variant === "liquid-glass"
+                          ? "hover:bg-white/20 text-white/90"
+                          : variant === "glass"
+                            ? "hover:bg-black/10 dark:hover:bg-white/15 text-neutral-800 dark:text-neutral-200"
+                            : "hover:bg-muted text-foreground",
                     )}
                   >
                     {p}
@@ -845,36 +979,24 @@ function CustomTimePicker({
             </div>
           </div>
 
-          <div className="mt-2 pt-2 border-t border-black/10 dark:border-white/10 flex items-center justify-between">
-            <div className="flex gap-1">
-              {["09:00", "12:00", "15:00"].map((slot) => (
-                <button
-                  key={slot}
-                  type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onChange(slot);
-                  }}
-                  className={cn(
-                    "text-[10px] px-1.5 py-0.5 rounded font-medium cursor-pointer transition-colors",
-                    value === slot
-                      ? cn(theme.primaryBg, "text-white")
-                      : variant === "glass"
-                        ? "bg-black/5 hover:bg-black/10 dark:bg-white/10 dark:hover:bg-white/20"
-                        : "bg-muted hover:bg-muted/80",
-                  )}
-                >
-                  {formatDisplayTime(slot)}
-                </button>
-              ))}
-            </div>
+          <div
+            className={cn(
+              "mt-2 pt-2 border-t flex justify-end text-xs",
+              variant === "liquid-glass" ? "border-white/15 text-white" : "border-black/10 dark:border-white/10",
+            )}
+          >
             <button
               type="button"
               onClick={(e) => {
                 e.stopPropagation();
                 setIsOpen(false);
               }}
-              className={cn("text-xs font-semibold px-2 py-0.5 rounded cursor-pointer transition-colors", theme.primaryText || "text-primary")}
+              className={cn(
+                "cursor-pointer px-3 py-1 font-semibold rounded-lg transition-all",
+                variant === "liquid-glass"
+                  ? "bg-white/20 hover:bg-white/30 border border-white/30 text-white backdrop-blur-md shadow-xs"
+                  : "opacity-70 hover:opacity-100",
+              )}
             >
               Done
             </button>
@@ -885,209 +1007,240 @@ function CustomTimePicker({
   );
 }
 
-function CalendarDashboard({
-  mockEvents = DEFAULT_MOCK_EVENTS,
-  variant = "default",
-  color = "primary",
-}: {
-  mockEvents?: Record<string, string[]>;
+// === MAIN CALENDAR DASHBOARD ===
+export interface CalendarEvent {
+  id: string;
+  title: string;
+  date: string; // "YYYY-MM-DD"
+  time: string; // "HH:MM"
+  type: string;
+  platform: string;
+}
+
+export interface CalendarDashboardProps {
   variant?: CalendarVariant;
   color?: CalendarColor;
-}) {
-  const [isDark] = useState(false);
-  const styles = dashboardVariants[variant];
+  className?: string;
+  /**
+   * Initial events mapped by date key, e.g. `{"2026-10-2": ["pentest", "kickoff"]}`.
+   * Month and day are not zero-padded in keys.
+   */
+  mockEvents?: Record<string, string[]>;
+}
 
-  // Custom hex injection logic
-  const isCustomHex = color && color.startsWith("#");
-  const customVars = isCustomHex
+export default function CalendarDashboard({
+  variant = "default",
+  color = "primary",
+  mockEvents = {},
+}: CalendarDashboardProps) {
+  const isDark = useThemeDetector();
+  const styles = dashboardVariants[variant] || dashboardVariants.default;
+  const theme = colorThemes[color] || colorThemes.primary;
+  const isLiquidGlass = variant === "liquid-glass";
+  const isGlass = variant === "glass" || variant === "liquid-glass";
+
+  // Check if color is a custom hex (starts with #) or arbitrary CSS color
+  const isCustomColor =
+    typeof color === "string" &&
+    (color.startsWith("#") ||
+      color.startsWith("rgb") ||
+      color.startsWith("hsl"));
+
+  const customVars = isCustomColor
     ? ({
-        "--cal-custom": color,
-        "--cal-custom-10": `${color}1a`,
-        "--cal-custom-20": `${color}33`,
+        "--primary": color,
+        "--primary-foreground": "#ffffff",
+        "--ring": color,
       } as React.CSSProperties)
-    : {};
+    : undefined;
 
-  const theme = isCustomHex
-    ? {
-        primaryBg:
-          "bg-[var(--cal-custom)] hover:brightness-110 text-white shadow-[0_4px_14px_0_var(--cal-custom-20)]",
-        primaryText: "text-[var(--cal-custom)]",
-        lightBg: "bg-[var(--cal-custom-10)] text-[var(--cal-custom)]",
-        focusRing: "focus:ring-2 focus:ring-[var(--cal-custom-20)]",
-        pulse: "bg-[var(--cal-custom)]",
-      }
-    : colorThemes[color] || colorThemes["primary"];
-
-  // Convert dict prop to rich array state. Seeded during render rather than in
-  // an effect: an effect would render once with an empty calendar, then again
-  // with the events, and re-seeding on a prop change would flash the same way.
-  const [events, setEvents] = useState<CalendarEvent[]>(() =>
-    buildEventsFromMock(mockEvents),
-  );
-  const [seededFrom, setSeededFrom] = useState(mockEvents);
-
-  if (mockEvents !== seededFrom) {
-    setSeededFrom(mockEvents);
-    setEvents(buildEventsFromMock(mockEvents));
-  }
-
-  // View & Date State
-  const [view, setView] = useState("month");
-  const [currentDate, setCurrentDate] = useState(() => new Date());
-
-  // UI State
-  const [activePopupEventId, setActivePopupEventId] = useState<string | null>(
-    null,
-  );
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [modalDate, setModalDate] = useState(() => `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`);
-  const [modalTime, setModalTime] = useState("12:00");
-  const [editingEvent, setEditingEvent] = useState<CalendarEvent | null>(null);
-  const [eventType, setEventType] = useState("pentest");
-  const [eventPlatform, setEventPlatform] = useState("meet");
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [view, setView] = useState<"month" | "week" | "day">("month");
+  const [activePopupEventId, setActivePopupEventId] = useState<string | null>(null);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
-  // Filter State
-  const [filters, setFilters] = useState<{
-    types: Record<string, boolean>;
-    platforms: Record<string, boolean>;
-  }>({
-    types: { pentest: true, kickoff: true },
-    platforms: { meet: true, slack: true, discord: true },
+  // Filters State
+  const [filters, setFilters] = useState({
+    types: { pentest: true, kickoff: true } as Record<string, boolean>,
+    platforms: { meet: true, slack: true, discord: true } as Record<string, boolean>,
   });
-
-  const year = currentDate.getFullYear();
-  const month = currentDate.getMonth();
-  const date = currentDate.getDate();
-  const monthName = currentDate.toLocaleString("en-US", { month: "long" });
-  const monthShortName = currentDate.toLocaleString("en-US", { month: "short" });
-
-  const nextPeriod = () => {
-    if (view === "month") setCurrentDate(new Date(year, month + 1, 1));
-    if (view === "week") setCurrentDate(new Date(year, month, date + 7));
-    if (view === "day") setCurrentDate(new Date(year, month, date + 1));
-  };
-
-  const prevPeriod = () => {
-    if (view === "month") setCurrentDate(new Date(year, month - 1, 1));
-    if (view === "week") setCurrentDate(new Date(year, month, date - 7));
-    if (view === "day") setCurrentDate(new Date(year, month, date - 1));
-  };
-
-  const generateCalendarDays = () => {
-    const days = [];
-    if (view === "month") {
-      const daysInMonth = new Date(year, month + 1, 0).getDate();
-      const firstDayOfMonth = new Date(year, month, 1).getDay();
-      const firstDayIndex = firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1;
-      const prevMonthDays = new Date(year, month, 0).getDate();
-
-      for (let i = firstDayIndex - 1; i >= 0; i--) {
-        days.push({
-          day: prevMonthDays - i,
-          isCurrentMonth: false,
-          dateKey: `${year}-${month}-${prevMonthDays - i}`,
-        });
-      }
-      for (let i = 1; i <= daysInMonth; i++) {
-        days.push({
-          day: i,
-          isCurrentMonth: true,
-          dateKey: `${year}-${month + 1}-${i}`,
-        });
-      }
-      const remainingCells = 35 - days.length;
-      const extraCells = remainingCells < 0 ? 42 - days.length : remainingCells;
-      for (let i = 1; i <= extraCells; i++) {
-        days.push({
-          day: i,
-          isCurrentMonth: false,
-          dateKey: `${year}-${month + 2}-${i}`,
-        });
-      }
-    } else if (view === "week") {
-      const currentDayOfWeek = currentDate.getDay();
-      const distanceToMonday =
-        currentDayOfWeek === 0 ? 6 : currentDayOfWeek - 1;
-      const startOfWeek = new Date(year, month, date - distanceToMonday);
-
-      for (let i = 0; i < 7; i++) {
-        const d = new Date(
-          startOfWeek.getFullYear(),
-          startOfWeek.getMonth(),
-          startOfWeek.getDate() + i,
-        );
-        days.push({
-          day: d.getDate(),
-          isCurrentMonth: true,
-          dateKey: `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`,
-        });
-      }
-    } else if (view === "day") {
-      days.push({
-        day: currentDate.getDate(),
-        isCurrentMonth: true,
-        dateKey: `${year}-${month + 1}-${date}`,
-      });
-    }
-    return days;
-  };
-
-  const calendarDays = generateCalendarDays();
-
-  const filteredEvents = useMemo(() => {
-    return events.filter(
-      (e) =>
-        filters.types[e.type] &&
-        filters.platforms[e.platform],
-    );
-  }, [events, filters]);
 
   const toggleFilter = (category: "types" | "platforms", key: string) => {
     setFilters((prev) => ({
       ...prev,
-      [category]: { ...prev[category], [key]: !prev[category][key] },
+      [category]: {
+        ...prev[category],
+        [key]: !prev[category][key],
+      },
     }));
   };
 
-  const deleteEvent = (id: string) => {
-    setEvents(events.filter((e) => e.id !== id));
-    setActivePopupEventId(null);
+  // Add / Edit Event Modal State
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [editingEvent, setEditingEvent] = useState<CalendarEvent | null>(null);
+  const [modalDate, setModalDate] = useState("");
+  const [modalTime, setModalTime] = useState("12:00");
+  const [eventType, setEventType] = useState("pentest");
+  const [eventPlatform, setEventPlatform] = useState("meet");
+
+  // Initial Events Seed
+  const initialEvents: CalendarEvent[] = useMemo(() => {
+    const defaultTimeSlots = ["09:00", "11:00", "14:00", "16:00", "18:00"];
+    let idCounter = 1;
+    const list: CalendarEvent[] = [];
+
+    const platforms = ["meet", "slack", "discord"];
+
+    Object.entries(mockEvents).forEach(([dateKey, types]) => {
+      const [y, m, d] = dateKey.split("-");
+      if (!y || !m || !d) return;
+      const formattedDate = `${y}-${m.padStart(2, "0")}-${d.padStart(2, "0")}`;
+
+      types.forEach((type, idx) => {
+        const time = defaultTimeSlots[idx % defaultTimeSlots.length];
+        const platform = platforms[idx % platforms.length];
+        const title =
+          type === "pentest"
+            ? `Security Audit & Pentest`
+            : `Client Kick-Off Meeting`;
+
+        list.push({
+          id: `evt-${idCounter++}`,
+          title,
+          date: formattedDate,
+          time,
+          type,
+          platform,
+        });
+      });
+    });
+
+    return list;
+  }, [mockEvents]);
+
+  const [events, setEvents] = useState<CalendarEvent[]>(initialEvents);
+
+  const prevEventsRef = useRef(initialEvents);
+  if (prevEventsRef.current !== initialEvents) {
+    prevEventsRef.current = initialEvents;
+    setEvents(initialEvents);
+  }
+
+  // Active Filtered Events
+  const filteredEvents = useMemo(() => {
+    return events.filter((e) => {
+      const typeAllowed = filters.types[e.type] ?? true;
+      const platformAllowed = filters.platforms[e.platform] ?? true;
+      return typeAllowed && platformAllowed;
+    });
+  }, [events, filters]);
+
+  // Date Navigation Helpers
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+  const date = currentDate.getDate();
+
+  const monthName = currentDate.toLocaleString("en-US", { month: "long" });
+  const monthShortName = currentDate.toLocaleString("en-US", {
+    month: "short",
+  });
+
+  const prevPeriod = () => {
+    if (view === "month") {
+      setCurrentDate(new Date(year, month - 1, 1));
+    } else if (view === "week") {
+      setCurrentDate(new Date(year, month, date - 7));
+    } else {
+      setCurrentDate(new Date(year, month, date - 1));
+    }
   };
 
-  const handleSaveEvent = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const rawDate = formData.get("date") as string;
-    const [y, m, d] = rawDate.split("-");
-    const formattedDateKey = `${parseInt(y)}-${parseInt(m)}-${parseInt(d)}`;
-
-    const eventData: CalendarEvent = {
-      id: editingEvent ? editingEvent.id : Date.now().toString(),
-      title: String(formData.get("title") ?? ""),
-      date: formattedDateKey,
-      time: String(formData.get("time") ?? ""),
-      type: String(formData.get("type") ?? ""),
-      platform: String(formData.get("platform") ?? ""),
-    };
-
-    if (editingEvent) {
-      setEvents(
-        events.map((ev) => (ev.id === editingEvent.id ? eventData : ev)),
-      );
+  const nextPeriod = () => {
+    if (view === "month") {
+      setCurrentDate(new Date(year, month + 1, 1));
+    } else if (view === "week") {
+      setCurrentDate(new Date(year, month, date + 7));
     } else {
-      setEvents([...events, eventData]);
+      setCurrentDate(new Date(year, month, date + 1));
+    }
+  };
+
+  // Calendar Grid Calculation
+  const calendarDays = useMemo(() => {
+    if (view === "day") {
+      const dateKey = `${year}-${String(month + 1).padStart(2, "0")}-${String(date).padStart(2, "0")}`;
+      return [{ day: date, isCurrentMonth: true, dateKey }];
     }
 
-    setIsAddModalOpen(false);
-    setEditingEvent(null);
-    setActivePopupEventId(null);
-  };
+    if (view === "week") {
+      const curr = new Date(year, month, date);
+      const dayOfWeek = curr.getDay();
+      const startOffset = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+      const monday = new Date(year, month, date - startOffset);
 
-  const openAddModalForDate = (dateKey: string, timeStr: string = "12:00") => {
+      const weekDays = [];
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(
+          monday.getFullYear(),
+          monday.getMonth(),
+          monday.getDate() + i,
+        );
+        weekDays.push({
+          day: d.getDate(),
+          isCurrentMonth: d.getMonth() === month,
+          dateKey: `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`,
+        });
+      }
+      return weekDays;
+    }
+
+    // view === "month"
+    const firstDay = new Date(year, month, 1).getDay();
+    const startOffset = firstDay === 0 ? 6 : firstDay - 1;
+    const daysInCurrentMonth = new Date(year, month + 1, 0).getDate();
+    const daysInPrevMonth = new Date(year, month, 0).getDate();
+
+    const days: { day: number; isCurrentMonth: boolean; dateKey: string }[] = [];
+
+    // Previous month padding
+    for (let i = startOffset - 1; i >= 0; i--) {
+      const d = daysInPrevMonth - i;
+      const prevDate = new Date(year, month - 1, d);
+      days.push({
+        day: d,
+        isCurrentMonth: false,
+        dateKey: `${prevDate.getFullYear()}-${String(prevDate.getMonth() + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`,
+      });
+    }
+
+    // Current month days
+    for (let i = 1; i <= daysInCurrentMonth; i++) {
+      days.push({
+        day: i,
+        isCurrentMonth: true,
+        dateKey: `${year}-${String(month + 1).padStart(2, "0")}-${String(i).padStart(2, "0")}`,
+      });
+    }
+
+    // Next month padding (up to 35 or 42 cells total)
+    const totalCells = days.length > 35 ? 42 : 35;
+    const remaining = totalCells - days.length;
+    for (let i = 1; i <= remaining; i++) {
+      const nextDate = new Date(year, month + 1, i);
+      days.push({
+        day: i,
+        isCurrentMonth: false,
+        dateKey: `${nextDate.getFullYear()}-${String(nextDate.getMonth() + 1).padStart(2, "0")}-${String(i).padStart(2, "0")}`,
+      });
+    }
+
+    return days;
+  }, [year, month, date, view]);
+
+  // Modal Handlers
+  const openAddModalForDate = (dateKey: string, timeStr?: string) => {
     setEditingEvent(null);
-    const dFormatted = formatDateForInput(dateKey) || `${year}-${String(month + 1).padStart(2, "0")}-${String(date).padStart(2, "0")}`;
-    setModalDate(dFormatted);
+    setModalDate(dateKey);
     setModalTime(timeStr || "12:00");
     setEventType("pentest");
     setEventPlatform("meet");
@@ -1096,16 +1249,63 @@ function CalendarDashboard({
 
   const openEditModal = (event: CalendarEvent) => {
     setEditingEvent(event);
-    setModalDate(formatDateForInput(event.date));
-    setModalTime(event.time || "12:00");
-    setEventType(event.type ?? "pentest");
-    setEventPlatform(event.platform ?? "meet");
+    setModalDate(event.date);
+    setModalTime(event.time);
+    setEventType(event.type);
+    setEventPlatform(event.platform);
     setIsAddModalOpen(true);
+    setActivePopupEventId(null);
   };
 
   const closeModal = () => {
     setIsAddModalOpen(false);
     setEditingEvent(null);
+  };
+
+  const handleSaveEvent = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const title = formData.get("title") as string;
+    const dateVal = (formData.get("date") as string) || modalDate;
+    const timeVal = (formData.get("time") as string) || modalTime;
+    const type = (formData.get("type") as string) || eventType;
+    const platform = (formData.get("platform") as string) || eventPlatform;
+
+    if (!title || !dateVal) return;
+
+    if (editingEvent) {
+      setEvents((prev) =>
+        prev.map((item) =>
+          item.id === editingEvent.id
+            ? {
+                ...item,
+                title,
+                date: dateVal,
+                time: timeVal,
+                type,
+                platform,
+              }
+            : item,
+        ),
+      );
+    } else {
+      const newEvent: CalendarEvent = {
+        id: `evt-${Date.now()}`,
+        title,
+        date: dateVal,
+        time: timeVal,
+        type,
+        platform,
+      };
+      setEvents((prev) => [...prev, newEvent]);
+    }
+
+    closeModal();
+  };
+
+  const deleteEvent = (id: string) => {
+    setEvents((prev) => prev.filter((e) => e.id !== id));
+    setActivePopupEventId(null);
   };
 
   const handleExportCSV = () => {
@@ -1129,12 +1329,62 @@ function CalendarDashboard({
   };
 
   return (
-    <div className={`${isDark ? "dark" : ""} w-full h-full max-w-full overflow-hidden`} style={customVars}>
+    <div
+      className={cn(
+        isDark ? "dark" : "",
+        "w-full h-full max-w-full overflow-hidden relative",
+        isLiquidGlass && "isolate [contain:paint] [transform:translateZ(0)]",
+      )}
+      style={customVars}
+    >
+      <LiquidGlassSvgFilter />
+
+      {isLiquidGlass && (
+        <>
+          {/* Inner Clipping Container for Liquid Background Stack */}
+          <div className="absolute inset-0 overflow-hidden rounded-[22px] sm:rounded-[28px] pointer-events-none z-0">
+            {/* Layer 0: Liquid SVG Displaced Wave Background */}
+            <div
+              className="absolute -inset-10"
+              style={{
+                backgroundImage:
+                  'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                filter: "url(#glass-blur)",
+                transform: "scale(1.1)",
+              }}
+            />
+
+            {/* Layer 1: Contrast overlay & soft backdrop blur */}
+            <div className="absolute inset-0 bg-black/30 dark:bg-black/45 backdrop-blur-[2px]" />
+
+            {/* Layer 2: Ambient Drop Shadow & Subtle Glow */}
+            <div
+              className="absolute inset-0 rounded-[22px] sm:rounded-[28px]"
+              style={{
+                boxShadow:
+                  "0 20px 50px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.08)",
+              }}
+            />
+          </div>
+
+          {/* Layer 3: Specular Inner Border Highlight */}
+          <div
+            className="absolute inset-0 z-40 pointer-events-none rounded-[22px] sm:rounded-[28px] border border-white/40 dark:border-white/15"
+            style={{
+              boxShadow:
+                "inset 2px 2px 2px 0 rgba(255, 255, 255, 0.45), inset -2px -2px 2px 0 rgba(255, 255, 255, 0.3)",
+            }}
+          />
+        </>
+      )}
+
       <div
         className={cn(
-          "w-full max-w-full h-auto flex flex-col lg:flex-row text-foreground font-sans transition-colors duration-300",
+          "w-full max-w-full h-auto flex flex-col lg:flex-row text-foreground font-sans transition-colors duration-300 relative z-10",
           styles.wrapper,
-          variant !== "minimal" ? "rounded-xl" : "",
+          variant !== "minimal" && !isLiquidGlass ? "rounded-xl" : "",
         )}
       >
         {/* MOBILE SIDEBAR DRAWER OVERLAY */}
@@ -1159,34 +1409,54 @@ function CalendarDashboard({
             className={cn(
               "relative w-72 max-w-[80vw] h-full p-5 overflow-y-auto z-10 shadow-2xl flex flex-col justify-between transition-transform duration-300 ease-in-out transform",
               isMobileSidebarOpen ? "translate-x-0" : "-translate-x-full",
-              variant === "glass"
-                ? "bg-white/25 dark:bg-black/50 backdrop-blur-2xl border-r border-white/25 text-white shadow-2xl"
-                : cn(styles.sidebar, "bg-card text-card-foreground"),
+              variant === "liquid-glass"
+                ? "bg-black/40 backdrop-blur-2xl border-r border-white/25 text-white shadow-2xl overflow-hidden rounded-r-2xl"
+                : variant === "glass"
+                  ? "bg-white/25 dark:bg-black/50 backdrop-blur-2xl border-r border-white/25 text-white shadow-2xl"
+                  : cn(styles.sidebar, "bg-card text-card-foreground"),
             )}
           >
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <h2 className={cn("font-semibold text-lg", variant === "glass" ? "text-white" : "text-foreground")}>
-                  {monthName} {year}
-                </h2>
-                <button
-                  onClick={() => setIsMobileSidebarOpen(false)}
-                  className={cn(
-                    "p-1.5 rounded-lg transition-colors cursor-pointer",
-                    variant === "glass"
-                      ? "hover:bg-white/15 text-white/80 hover:text-white"
-                      : "hover:bg-muted text-muted-foreground",
-                  )}
-                  aria-label="Close Sidebar"
-                >
-                  <X className="w-5 h-5 cursor-pointer" />
-                </button>
+            {variant === "liquid-glass" && (
+              <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+                <div
+                  className="absolute -inset-10"
+                  style={{
+                    backgroundImage:
+                      'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
+                    backgroundSize: "cover",
+                    backgroundPosition: "left center",
+                    filter: "url(#glass-blur)",
+                    transform: "scale(1.1)",
+                  }}
+                />
+                <div className="absolute inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-[2px]" />
               </div>
+            )}
 
-                <hr className={cn("my-4", variant === "glass" ? "border-white/20" : "border-border")} />
+            <div className="relative z-10 flex flex-col justify-between h-full">
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className={cn("font-semibold text-lg", isGlass ? "text-white" : "text-foreground")}>
+                    {monthName} {year}
+                  </h2>
+                  <button
+                    onClick={() => setIsMobileSidebarOpen(false)}
+                    className={cn(
+                      "p-1.5 rounded-lg transition-colors cursor-pointer",
+                      isGlass
+                        ? "hover:bg-white/15 text-white/80 hover:text-white"
+                        : "hover:bg-muted text-muted-foreground",
+                    )}
+                    aria-label="Close Sidebar"
+                  >
+                    <X className="w-5 h-5 cursor-pointer" />
+                  </button>
+                </div>
+
+                <hr className={cn("my-4", isGlass ? "border-white/20" : "border-border")} />
 
                 <div className="mb-6">
-                  <div className={cn("flex items-center justify-between mb-3 cursor-pointer", variant === "glass" ? "text-white/80" : "text-muted-foreground")}>
+                  <div className={cn("flex items-center justify-between mb-3 cursor-pointer", isGlass ? "text-white/80" : "text-muted-foreground")}>
                     <h3 className="text-sm font-medium">Events</h3>
                     <ChevronDown className="w-4 h-4 cursor-pointer" />
                   </div>
@@ -1195,49 +1465,49 @@ function CalendarDashboard({
                       onClick={() => toggleFilter("types", "pentest")}
                       className={cn(
                         "flex items-center justify-between p-2.5 rounded-md cursor-pointer transition-colors",
-                        variant === "glass"
+                        isGlass
                           ? "bg-white/10 hover:bg-white/20 border border-white/15 text-white"
                           : "bg-muted/50 hover:bg-muted text-foreground",
                       )}
                     >
                       <div className="flex items-center gap-3">
                         <div className="w-1.5 h-4 bg-yellow-400 rounded-full"></div>
-                        <span className={cn("text-sm font-medium", variant === "glass" ? "text-white" : "text-foreground")}>Pentest</span>
+                        <span className={cn("text-sm font-medium", isGlass ? "text-white" : "text-foreground")}>Pentest</span>
                       </div>
                       {filters.types.pentest ? (
                         <CheckSquare
                           className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
                         />
                       ) : (
-                        <Square className={cn("w-4 h-4 cursor-pointer", variant === "glass" ? "text-white/50" : "text-muted-foreground")} />
+                        <Square className={cn("w-4 h-4 cursor-pointer", isGlass ? "text-white/50" : "text-muted-foreground")} />
                       )}
                     </div>
                     <div
                       onClick={() => toggleFilter("types", "kickoff")}
                       className={cn(
                         "flex items-center justify-between p-2.5 rounded-md cursor-pointer transition-colors",
-                        variant === "glass"
+                        isGlass
                           ? "bg-white/10 hover:bg-white/20 border border-white/15 text-white"
                           : "bg-muted/50 hover:bg-muted text-foreground",
                       )}
                     >
                       <div className="flex items-center gap-3">
                         <div className="w-1.5 h-4 bg-emerald-500 rounded-full"></div>
-                        <span className={cn("text-sm font-medium", variant === "glass" ? "text-white" : "text-foreground")}>Kick-Off</span>
+                        <span className={cn("text-sm font-medium", isGlass ? "text-white" : "text-foreground")}>Kick-Off</span>
                       </div>
                       {filters.types.kickoff ? (
                         <CheckSquare
                           className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
                         />
                       ) : (
-                        <Square className={cn("w-4 h-4 cursor-pointer", variant === "glass" ? "text-white/50" : "text-muted-foreground")} />
+                        <Square className={cn("w-4 h-4 cursor-pointer", isGlass ? "text-white/50" : "text-muted-foreground")} />
                       )}
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <div className={cn("flex items-center justify-between mb-3 cursor-pointer", variant === "glass" ? "text-white/80" : "text-muted-foreground")}>
+                  <div className={cn("flex items-center justify-between mb-3 cursor-pointer", isGlass ? "text-white/80" : "text-muted-foreground")}>
                     <h3 className="text-sm font-medium">Platforms</h3>
                     <ChevronDown className="w-4 h-4 cursor-pointer" />
                   </div>
@@ -1246,69 +1516,69 @@ function CalendarDashboard({
                       onClick={() => toggleFilter("platforms", "meet")}
                       className={cn(
                         "flex items-center justify-between p-2.5 rounded-md cursor-pointer transition-colors",
-                        variant === "glass"
+                        isGlass
                           ? "bg-white/10 hover:bg-white/20 border border-white/15 text-white"
                           : "bg-muted/50 hover:bg-muted text-foreground",
                       )}
                     >
                       <div className="flex items-center gap-2">
-                        <Video className={cn("w-4 h-4", variant === "glass" ? "text-emerald-400" : "text-emerald-600 dark:text-emerald-400")} />
-                        <span className={cn("text-sm font-medium", variant === "glass" ? "text-white" : "text-foreground")}>Google Meet</span>
+                        <Video className={cn("w-4 h-4", isGlass ? "text-emerald-400" : "text-emerald-600 dark:text-emerald-400")} />
+                        <span className={cn("text-sm font-medium", isGlass ? "text-white" : "text-foreground")}>Google Meet</span>
                       </div>
                       {filters.platforms.meet ? (
                         <CheckSquare
                           className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
                         />
                       ) : (
-                        <Square className={cn("w-4 h-4 cursor-pointer", variant === "glass" ? "text-white/50" : "text-muted-foreground")} />
+                        <Square className={cn("w-4 h-4 cursor-pointer", isGlass ? "text-white/50" : "text-muted-foreground")} />
                       )}
                     </div>
                     <div
                       onClick={() => toggleFilter("platforms", "slack")}
                       className={cn(
                         "flex items-center justify-between p-2.5 rounded-md cursor-pointer transition-colors",
-                        variant === "glass"
+                        isGlass
                           ? "bg-white/10 hover:bg-white/20 border border-white/15 text-white"
                           : "bg-muted/50 hover:bg-muted text-foreground",
                       )}
                     >
                       <div className="flex items-center gap-2">
-                        <Hash className={cn("w-4 h-4", variant === "glass" ? "text-sky-400" : "text-sky-500")} />
-                        <span className={cn("text-sm font-medium", variant === "glass" ? "text-white" : "text-foreground")}>Slack</span>
+                        <Hash className={cn("w-4 h-4", isGlass ? "text-sky-400" : "text-sky-500")} />
+                        <span className={cn("text-sm font-medium", variant === "glass" ? "text-neutral-900 dark:text-white" : isGlass ? "text-white" : "text-foreground")}>Slack</span>
                       </div>
                       {filters.platforms.slack ? (
                         <CheckSquare
                           className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
                         />
                       ) : (
-                        <Square className={cn("w-4 h-4 cursor-pointer", variant === "glass" ? "text-white/50" : "text-muted-foreground")} />
+                        <Square className={cn("w-4 h-4 cursor-pointer", isGlass ? "text-white/50" : "text-muted-foreground")} />
                       )}
                     </div>
                     <div
                       onClick={() => toggleFilter("platforms", "discord")}
                       className={cn(
                         "flex items-center justify-between p-2.5 rounded-md cursor-pointer transition-colors",
-                        variant === "glass"
+                        isGlass
                           ? "bg-white/10 hover:bg-white/20 border border-white/15 text-white"
                           : "bg-muted/50 hover:bg-muted text-foreground",
                       )}
                     >
                       <div className="flex items-center gap-2">
-                        <MessageSquare className={cn("w-4 h-4", variant === "glass" ? "text-indigo-400" : "text-indigo-500")} />
-                        <span className={cn("text-sm font-medium", variant === "glass" ? "text-white" : "text-foreground")}>Discord</span>
+                        <MessageSquare className={cn("w-4 h-4", isGlass ? "text-indigo-400" : "text-indigo-500")} />
+                        <span className={cn("text-sm font-medium", isGlass ? "text-white" : "text-foreground")}>Discord</span>
                       </div>
                       {filters.platforms.discord ? (
                         <CheckSquare
                           className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
                         />
                       ) : (
-                        <Square className={cn("w-4 h-4 cursor-pointer", variant === "glass" ? "text-white/50" : "text-muted-foreground")} />
+                        <Square className={cn("w-4 h-4 cursor-pointer", isGlass ? "text-white/50" : "text-muted-foreground")} />
                       )}
                     </div>
                   </div>
                 </div>
 
-                <hr className={cn("my-5", variant === "glass" ? "border-white/20" : "border-border")} />
+                <hr className={cn("my-5", isGlass ? "border-white/20" : "border-border")} />
 
                 <button
                   onClick={() => {
@@ -1317,7 +1587,7 @@ function CalendarDashboard({
                   }}
                   className={cn(
                     "w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-md text-sm font-medium transition-colors cursor-pointer",
-                    variant === "glass"
+                    isGlass
                       ? "border border-white/25 bg-white/15 hover:bg-white/25 text-white backdrop-blur-md shadow-sm"
                       : "border border-border bg-muted/50 hover:bg-muted text-foreground",
                   )}
@@ -1327,161 +1597,200 @@ function CalendarDashboard({
               </div>
             </div>
           </div>
+        </div>
 
         {/* SIDEBAR FILTERS */}
         <aside
           className={cn(
-            "w-64 flex-shrink-0 p-5 overflow-y-auto hidden lg:block z-10 transition-colors duration-300",
+            "w-64 flex-shrink-0 p-5 overflow-y-auto hidden lg:block z-10 transition-colors duration-300 relative",
             styles.sidebar,
+            variant === "liquid-glass" && "rounded-l-[22px] sm:rounded-l-[28px]",
           )}
         >
-          <div className="flex items-center justify-between mb-4">
-            <h2 className={cn("font-semibold text-lg", variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>
-              {monthName} {year}
-            </h2>
-            <div className={cn("flex gap-1", variant === "glass" ? "text-neutral-700 dark:text-white/80" : "text-muted-foreground")}>
-              <button
-                onClick={prevPeriod}
-                className={cn(
-                  "p-1 rounded transition-colors cursor-pointer",
-                  variant === "glass" ? "hover:bg-white/40 hover:text-neutral-900 dark:hover:bg-white/15 dark:hover:text-white" : "hover:bg-muted/50",
-                )}
-              >
-                <ChevronLeft className="w-4 h-4 cursor-pointer" />
-              </button>
-              <button
-                onClick={nextPeriod}
-                className={cn(
-                  "p-1 rounded transition-colors cursor-pointer",
-                  variant === "glass" ? "hover:bg-white/40 hover:text-neutral-900 dark:hover:bg-white/15 dark:hover:text-white" : "hover:bg-muted/50",
-                )}
-              >
-                <ChevronRight className="w-4 h-4 cursor-pointer" />
-              </button>
+          {variant === "liquid-glass" && (
+            <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden rounded-l-[22px] sm:rounded-l-[28px]">
+              <div
+                className="absolute -inset-10"
+                style={{
+                  backgroundImage:
+                    'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
+                  backgroundSize: "cover",
+                  backgroundPosition: "left center",
+                  filter: "url(#glass-blur)",
+                  transform: "scale(1.1)",
+                }}
+              />
+              <div className="absolute inset-0 bg-black/35 dark:bg-black/50 backdrop-blur-[2px]" />
             </div>
-          </div>
+          )}
 
-          <hr className={cn("my-6", variant === "glass" ? "border-black/10 dark:border-white/20" : "border-border")} />
+          <div className="relative z-10 flex flex-col h-full">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className={cn("font-semibold text-lg", variant === "liquid-glass" ? "text-white" : variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>
+                {monthName} {year}
+              </h2>
+              <div className={cn("flex gap-1", variant === "liquid-glass" ? "text-white/80" : variant === "glass" ? "text-neutral-700 dark:text-white/80" : "text-muted-foreground")}>
+                <button
+                  onClick={prevPeriod}
+                  className={cn(
+                    "p-1 rounded transition-colors cursor-pointer",
+                    variant === "liquid-glass"
+                      ? "hover:bg-white/15 hover:text-white"
+                      : variant === "glass"
+                        ? "hover:bg-white/40 hover:text-neutral-900 dark:hover:bg-white/15 dark:hover:text-white"
+                        : "hover:bg-muted/50",
+                  )}
+                >
+                  <ChevronLeft className="w-4 h-4 cursor-pointer" />
+                </button>
+                <button
+                  onClick={nextPeriod}
+                  className={cn(
+                    "p-1 rounded transition-colors cursor-pointer",
+                    variant === "liquid-glass"
+                      ? "hover:bg-white/15 hover:text-white"
+                      : variant === "glass"
+                        ? "hover:bg-white/40 hover:text-neutral-900 dark:hover:bg-white/15 dark:hover:text-white"
+                        : "hover:bg-muted/50",
+                  )}
+                >
+                  <ChevronRight className="w-4 h-4 cursor-pointer" />
+                </button>
+              </div>
+            </div>
 
-          <div className="mb-6">
-            <div className={cn("flex items-center justify-between mb-3 cursor-pointer", variant === "glass" ? "text-neutral-700 dark:text-white/80" : "text-muted-foreground")}>
-              <h3 className="text-sm font-medium">Events</h3>
-              <ChevronDown className="w-4 h-4 cursor-pointer" />
-            </div>
-            <div className="space-y-2">
-              <div
-                onClick={() => toggleFilter("types", "pentest")}
-                className={cn(
-                  "flex items-center justify-between p-2 rounded-md cursor-pointer transition-colors",
-                  variant === "glass"
-                    ? "bg-white/40 hover:bg-white/60 border border-white/50 text-neutral-900 dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/15 dark:text-white"
-                    : "bg-muted/50 hover:bg-muted text-foreground",
-                )}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-1 h-4 bg-yellow-400 rounded-full"></div>
-                  <span className={cn("text-sm font-medium", variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>Pentest</span>
-                </div>
-                {filters.types.pentest ? (
-                  <CheckSquare
-                    className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
-                  />
-                ) : (
-                  <Square className={cn("w-4 h-4 cursor-pointer", variant === "glass" ? "text-neutral-400 dark:text-white/50" : "text-muted-foreground")} />
-                )}
-              </div>
-              <div
-                onClick={() => toggleFilter("types", "kickoff")}
-                className={cn(
-                  "flex items-center justify-between p-2 rounded-md cursor-pointer transition-colors",
-                  variant === "glass"
-                    ? "bg-white/40 hover:bg-white/60 border border-white/50 text-neutral-900 dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/15 dark:text-white"
-                    : "bg-muted/50 hover:bg-muted text-foreground",
-                )}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-1 h-4 bg-emerald-500 rounded-full"></div>
-                  <span className={cn("text-sm font-medium", variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>Kick-Off</span>
-                </div>
-                {filters.types.kickoff ? (
-                  <CheckSquare
-                    className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
-                  />
-                ) : (
-                  <Square className={cn("w-4 h-4 cursor-pointer", variant === "glass" ? "text-neutral-400 dark:text-white/50" : "text-muted-foreground")} />
-                )}
-              </div>
-            </div>
-          </div>
+            <hr className={cn("my-6", isGlass ? "border-white/20" : "border-border")} />
 
-          <div>
-            <div className={cn("flex items-center justify-between mb-3 cursor-pointer", variant === "glass" ? "text-neutral-700 dark:text-white/80" : "text-muted-foreground")}>
-              <h3 className="text-sm font-medium">Platforms</h3>
-              <ChevronDown className="w-4 h-4 cursor-pointer" />
+            <div className="mb-6">
+              <div className={cn("flex items-center justify-between mb-3 cursor-pointer", isGlass ? "text-white/80" : "text-muted-foreground")}>
+                <h3 className="text-sm font-medium">Events</h3>
+                <ChevronDown className="w-4 h-4 cursor-pointer" />
+              </div>
+              <div className="space-y-2">
+                <div
+                  onClick={() => toggleFilter("types", "pentest")}
+                  className={cn(
+                    "flex items-center justify-between p-2 rounded-md cursor-pointer transition-colors",
+                    variant === "liquid-glass"
+                      ? "bg-white/10 hover:bg-white/20 border border-white/15 text-white"
+                      : variant === "glass"
+                        ? "bg-white/40 hover:bg-white/60 border border-white/50 text-neutral-900 dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/15 dark:text-white"
+                        : "bg-muted/50 hover:bg-muted text-foreground",
+                  )}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-1 h-4 bg-yellow-400 rounded-full"></div>
+                    <span className={cn("text-sm font-medium", variant === "liquid-glass" ? "text-white" : variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>Pentest</span>
+                  </div>
+                  {filters.types.pentest ? (
+                    <CheckSquare
+                      className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
+                    />
+                  ) : (
+                    <Square className={cn("w-4 h-4 cursor-pointer", isGlass ? "text-white/50" : "text-muted-foreground")} />
+                  )}
+                </div>
+                <div
+                  onClick={() => toggleFilter("types", "kickoff")}
+                  className={cn(
+                    "flex items-center justify-between p-2 rounded-md cursor-pointer transition-colors",
+                    variant === "liquid-glass"
+                      ? "bg-white/10 hover:bg-white/20 border border-white/15 text-white"
+                      : variant === "glass"
+                        ? "bg-white/40 hover:bg-white/60 border border-white/50 text-neutral-900 dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/15 dark:text-white"
+                        : "bg-muted/50 hover:bg-muted text-foreground",
+                  )}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-1 h-4 bg-emerald-500 rounded-full"></div>
+                    <span className={cn("text-sm font-medium", variant === "liquid-glass" ? "text-white" : variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>Kick-Off</span>
+                  </div>
+                  {filters.types.kickoff ? (
+                    <CheckSquare
+                      className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
+                    />
+                  ) : (
+                    <Square className={cn("w-4 h-4 cursor-pointer", isGlass ? "text-white/50" : "text-muted-foreground")} />
+                  )}
+                </div>
+              </div>
             </div>
-            <div className="space-y-2">
-              <div
-                onClick={() => toggleFilter("platforms", "meet")}
-                className={cn(
-                  "flex items-center justify-between p-2 rounded-md cursor-pointer transition-colors",
-                  variant === "glass"
-                    ? "bg-white/40 hover:bg-white/60 border border-white/50 text-neutral-900 dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/15 dark:text-white"
-                    : "bg-muted/50 hover:bg-muted text-foreground",
-                )}
-              >
-                <div className="flex items-center gap-2">
-                  <Video className={cn("w-4 h-4", variant === "glass" ? "text-emerald-600 dark:text-emerald-400" : "text-emerald-600 dark:text-emerald-400")} />
-                  <span className={cn("text-sm font-medium", variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>Google Meet</span>
-                </div>
-                {filters.platforms.meet ? (
-                  <CheckSquare
-                    className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
-                  />
-                ) : (
-                  <Square className={cn("w-4 h-4 cursor-pointer", variant === "glass" ? "text-neutral-400 dark:text-white/50" : "text-muted-foreground")} />
-                )}
+
+            <div>
+              <div className={cn("flex items-center justify-between mb-3 cursor-pointer", isGlass ? "text-white/80" : "text-muted-foreground")}>
+                <h3 className="text-sm font-medium">Platforms</h3>
+                <ChevronDown className="w-4 h-4 cursor-pointer" />
               </div>
-              <div
-                onClick={() => toggleFilter("platforms", "slack")}
-                className={cn(
-                  "flex items-center justify-between p-2 rounded-md cursor-pointer transition-colors",
-                  variant === "glass"
-                    ? "bg-white/40 hover:bg-white/60 border border-white/50 text-neutral-900 dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/15 dark:text-white"
-                    : "bg-muted/50 hover:bg-muted text-foreground",
-                )}
-              >
-                <div className="flex items-center gap-2">
-                  <Hash className={cn("w-4 h-4", variant === "glass" ? "text-sky-600 dark:text-sky-400" : "text-sky-500")} />
-                  <span className={cn("text-sm font-medium", variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>Slack</span>
+              <div className="space-y-2">
+                <div
+                  onClick={() => toggleFilter("platforms", "meet")}
+                  className={cn(
+                    "flex items-center justify-between p-2 rounded-md cursor-pointer transition-colors",
+                    variant === "liquid-glass"
+                      ? "bg-white/10 hover:bg-white/20 border border-white/15 text-white"
+                      : variant === "glass"
+                        ? "bg-white/40 hover:bg-white/60 border border-white/50 text-neutral-900 dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/15 dark:text-white"
+                        : "bg-muted/50 hover:bg-muted text-foreground",
+                  )}
+                >
+                  <div className="flex items-center gap-2">
+                    <Video className={cn("w-4 h-4", isGlass ? "text-emerald-400" : "text-emerald-600 dark:text-emerald-400")} />
+                    <span className={cn("text-sm font-medium", variant === "liquid-glass" ? "text-white" : variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>Google Meet</span>
+                  </div>
+                  {filters.platforms.meet ? (
+                    <CheckSquare
+                      className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
+                    />
+                  ) : (
+                    <Square className={cn("w-4 h-4 cursor-pointer", isGlass ? "text-white/50" : "text-muted-foreground")} />
+                  )}
                 </div>
-                {filters.platforms.slack ? (
-                  <CheckSquare
-                    className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
-                  />
-                ) : (
-                  <Square className={cn("w-4 h-4 cursor-pointer", variant === "glass" ? "text-neutral-400 dark:text-white/50" : "text-muted-foreground")} />
-                )}
-              </div>
-              <div
-                onClick={() => toggleFilter("platforms", "discord")}
-                className={cn(
-                  "flex items-center justify-between p-2 rounded-md cursor-pointer transition-colors",
-                  variant === "glass"
-                    ? "bg-white/40 hover:bg-white/60 border border-white/50 text-neutral-900 dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/15 dark:text-white"
-                    : "bg-muted/50 hover:bg-muted text-foreground",
-                )}
-              >
-                <div className="flex items-center gap-2">
-                  <MessageSquare className={cn("w-4 h-4", variant === "glass" ? "text-indigo-600 dark:text-indigo-400" : "text-indigo-500")} />
-                  <span className={cn("text-sm font-medium", variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>Discord</span>
+                <div
+                  onClick={() => toggleFilter("platforms", "slack")}
+                  className={cn(
+                    "flex items-center justify-between p-2 rounded-md cursor-pointer transition-colors",
+                    variant === "liquid-glass"
+                      ? "bg-white/10 hover:bg-white/20 border border-white/15 text-white"
+                      : variant === "glass"
+                        ? "bg-white/40 hover:bg-white/60 border border-white/50 text-neutral-900 dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/15 dark:text-white"
+                        : "bg-muted/50 hover:bg-muted text-foreground",
+                  )}
+                >
+                  <div className="flex items-center gap-2">
+                    <Hash className={cn("w-4 h-4", isGlass ? "text-sky-400" : "text-sky-500")} />
+                    <span className={cn("text-sm font-medium", variant === "liquid-glass" ? "text-white" : variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>Slack</span>
+                  </div>
+                  {filters.platforms.slack ? (
+                    <CheckSquare
+                      className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
+                    />
+                  ) : (
+                    <Square className={cn("w-4 h-4 cursor-pointer", isGlass ? "text-white/50" : "text-muted-foreground")} />
+                  )}
                 </div>
-                {filters.platforms.discord ? (
-                  <CheckSquare
-                    className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
-                  />
-                ) : (
-                  <Square className={cn("w-4 h-4 cursor-pointer", variant === "glass" ? "text-neutral-400 dark:text-white/50" : "text-muted-foreground")} />
-                )}
+                <div
+                  onClick={() => toggleFilter("platforms", "discord")}
+                  className={cn(
+                    "flex items-center justify-between p-2 rounded-md cursor-pointer transition-colors",
+                    variant === "liquid-glass"
+                      ? "bg-white/10 hover:bg-white/20 border border-white/15 text-white"
+                      : variant === "glass"
+                        ? "bg-white/40 hover:bg-white/60 border border-white/50 text-neutral-900 dark:bg-white/10 dark:hover:bg-white/20 dark:border-white/15 dark:text-white"
+                        : "bg-muted/50 hover:bg-muted text-foreground",
+                  )}
+                >
+                  <div className="flex items-center gap-2">
+                    <MessageSquare className={cn("w-4 h-4", isGlass ? "text-indigo-400" : "text-indigo-500")} />
+                    <span className={cn("text-sm font-medium", variant === "liquid-glass" ? "text-white" : variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>Discord</span>
+                  </div>
+                  {filters.platforms.discord ? (
+                    <CheckSquare
+                      className={cn("w-4 h-4 cursor-pointer", theme.primaryText)}
+                    />
+                  ) : (
+                    <Square className={cn("w-4 h-4 cursor-pointer", isGlass ? "text-white/50" : "text-muted-foreground")} />
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -1502,20 +1811,26 @@ function CalendarDashboard({
                   onClick={() => setIsMobileSidebarOpen(true)}
                   className={cn(
                     "p-2 rounded-lg transition-colors cursor-pointer",
-                    variant === "glass"
-                      ? "bg-white/40 hover:bg-white/60 border border-white/40 text-neutral-900 dark:bg-white/15 dark:hover:bg-white/25 dark:border-white/20 dark:text-white backdrop-blur-md"
-                      : "bg-muted/80 hover:bg-muted border border-border text-foreground",
+                    variant === "liquid-glass"
+                      ? "bg-white/15 hover:bg-white/25 border border-white/20 text-white backdrop-blur-md"
+                      : variant === "glass"
+                        ? "bg-white/40 hover:bg-white/60 border border-white/40 text-neutral-900 dark:bg-white/15 dark:hover:bg-white/25 dark:border-white/20 dark:text-white backdrop-blur-md"
+                        : "bg-muted/80 hover:bg-muted border border-border text-foreground",
                   )}
                   aria-label="Open Calendar Filters"
                 >
                   <Menu className="w-5 h-5 cursor-pointer" />
                 </button>
-                <div className={cn("flex gap-1", variant === "glass" ? "text-neutral-700 dark:text-white/80" : "text-muted-foreground")}>
+                <div className={cn("flex gap-1", variant === "liquid-glass" ? "text-white/80" : variant === "glass" ? "text-neutral-700 dark:text-white/80" : "text-muted-foreground")}>
                   <button
                     onClick={prevPeriod}
                     className={cn(
                       "p-1 rounded transition-colors cursor-pointer",
-                      variant === "glass" ? "hover:bg-white/40 hover:text-neutral-900 dark:hover:bg-white/15 dark:hover:text-white" : "hover:bg-muted/50",
+                      variant === "liquid-glass"
+                        ? "hover:bg-white/15 hover:text-white"
+                        : variant === "glass"
+                          ? "hover:bg-white/40 hover:text-neutral-900 dark:hover:bg-white/15 dark:hover:text-white"
+                          : "hover:bg-muted/50",
                     )}
                   >
                     <ChevronLeft className="w-4 h-4 cursor-pointer" />
@@ -1524,7 +1839,11 @@ function CalendarDashboard({
                     onClick={nextPeriod}
                     className={cn(
                       "p-1 rounded transition-colors cursor-pointer",
-                      variant === "glass" ? "hover:bg-white/40 hover:text-neutral-900 dark:hover:bg-white/15 dark:hover:text-white" : "hover:bg-muted/50",
+                      variant === "liquid-glass"
+                        ? "hover:bg-white/15 hover:text-white"
+                        : variant === "glass"
+                          ? "hover:bg-white/40 hover:text-neutral-900 dark:hover:bg-white/15 dark:hover:text-white"
+                          : "hover:bg-muted/50",
                     )}
                   >
                     <ChevronRight className="w-4 h-4 cursor-pointer" />
@@ -1532,7 +1851,7 @@ function CalendarDashboard({
                 </div>
               </div>
 
-              <h1 className={cn("text-base sm:text-2xl font-semibold whitespace-nowrap lg:hidden", variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>
+              <h1 className={cn("text-base sm:text-2xl font-semibold whitespace-nowrap lg:hidden", variant === "liquid-glass" ? "text-white" : variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>
                 <span className="sm:hidden">
                   {view === "day"
                     ? `${monthShortName} ${date}, ${year}`
@@ -1556,7 +1875,7 @@ function CalendarDashboard({
                   setIsAddModalOpen(true);
                 }}
                 className={cn(
-                  "flex items-center gap-2 cursor-pointer px-3 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-colors shadow-sm cursor-pointer ml-auto sm:ml-0",
+                  "flex items-center gap-2 cursor-pointer px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all shadow-md ml-auto sm:ml-0",
                   theme.primaryBg,
                 )}
               >
@@ -1567,31 +1886,43 @@ function CalendarDashboard({
             {/* Bottom Row: View Selectors + Export Button */}
             <div className="flex items-center w-full lg:w-auto gap-2 sm:gap-4 justify-between lg:justify-end">
               <div className={cn(
-                "flex p-1 rounded-lg text-xs sm:text-sm font-medium shrink-0 justify-start",
-                variant === "glass" ? "bg-white/30 dark:bg-white/10 border border-white/40 dark:border-white/15 backdrop-blur-md" : "bg-muted/60",
+                "flex p-1 rounded-xl text-xs sm:text-sm font-medium shrink-0 justify-start",
+                variant === "liquid-glass"
+                  ? "bg-black/30 dark:bg-black/40 border border-white/20 backdrop-blur-md"
+                  : variant === "glass"
+                    ? "bg-white/30 dark:bg-white/10 border border-white/40 dark:border-white/15 backdrop-blur-md"
+                    : "bg-muted/60",
               )}>
                 <button
                   onClick={() => setView("day")}
                   className={cn(
-                    "px-3 sm:px-4 py-1.5 cursor-pointer rounded-md shadow-sm transition-colors",
+                    "px-3 sm:px-4 py-1.5 cursor-pointer rounded-lg shadow-sm transition-all",
                     view === "day"
-                      ? theme.lightBg
-                      : variant === "glass"
-                        ? "text-neutral-700 hover:text-neutral-900 dark:text-white/70 dark:hover:text-white"
-                        : "hover:text-foreground text-muted-foreground",
+                      ? variant === "liquid-glass"
+                        ? "bg-white/25 text-white font-semibold shadow-[0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.4)] border border-white/30 backdrop-blur-md"
+                        : theme.lightBg
+                      : variant === "liquid-glass"
+                        ? "text-white/70 hover:text-white hover:bg-white/10"
+                        : variant === "glass"
+                          ? "text-neutral-700 hover:text-neutral-900 dark:text-white/70 dark:hover:text-white"
+                          : "hover:text-foreground text-muted-foreground",
                   )}
                 >
-                  Today
+                  Day
                 </button>
                 <button
                   onClick={() => setView("week")}
                   className={cn(
-                    "px-3 sm:px-4 py-1.5 cursor-pointer rounded-md shadow-sm transition-colors",
+                    "px-3 sm:px-4 py-1.5 cursor-pointer rounded-lg shadow-sm transition-all",
                     view === "week"
-                      ? theme.lightBg
-                      : variant === "glass"
-                        ? "text-neutral-700 hover:text-neutral-900 dark:text-white/70 dark:hover:text-white"
-                        : "hover:text-foreground text-muted-foreground",
+                      ? variant === "liquid-glass"
+                        ? "bg-white/25 text-white font-semibold shadow-[0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.4)] border border-white/30 backdrop-blur-md"
+                        : theme.lightBg
+                      : variant === "liquid-glass"
+                        ? "text-white/70 hover:text-white hover:bg-white/10"
+                        : variant === "glass"
+                          ? "text-neutral-700 hover:text-neutral-900 dark:text-white/70 dark:hover:text-white"
+                          : "hover:text-foreground text-muted-foreground",
                   )}
                 >
                   Week
@@ -1599,12 +1930,16 @@ function CalendarDashboard({
                 <button
                   onClick={() => setView("month")}
                   className={cn(
-                    "px-3 sm:px-4 py-1.5 cursor-pointer rounded-md shadow-sm transition-colors",
+                    "px-3 sm:px-4 py-1.5 cursor-pointer rounded-lg shadow-sm transition-all",
                     view === "month"
-                      ? theme.lightBg
-                      : variant === "glass"
-                        ? "text-neutral-700 hover:text-neutral-900 dark:text-white/70 dark:hover:text-white"
-                        : "hover:text-foreground text-muted-foreground",
+                      ? variant === "liquid-glass"
+                        ? "bg-white/25 text-white font-semibold shadow-[0_2px_8px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.4)] border border-white/30 backdrop-blur-md"
+                        : theme.lightBg
+                      : variant === "liquid-glass"
+                        ? "text-white/70 hover:text-white hover:bg-white/10"
+                        : variant === "glass"
+                          ? "text-neutral-700 hover:text-neutral-900 dark:text-white/70 dark:hover:text-white"
+                          : "hover:text-foreground text-muted-foreground",
                   )}
                 >
                   Month
@@ -1614,10 +1949,12 @@ function CalendarDashboard({
               <button
                 onClick={handleExportCSV}
                 className={cn(
-                  "hidden sm:flex items-center cursor-pointer gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-md text-xs sm:text-sm font-medium transition-colors",
-                  variant === "glass"
-                    ? "border border-white/40 dark:border-white/20 bg-white/30 hover:bg-white/50 text-neutral-900 dark:bg-white/10 dark:hover:bg-white/20 dark:text-white backdrop-blur-md shadow-xs"
-                    : "border border-border hover:bg-foreground/5",
+                  "hidden sm:flex items-center cursor-pointer gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-medium transition-colors",
+                  variant === "liquid-glass"
+                    ? "border border-white/25 bg-white/15 hover:bg-white/25 text-white backdrop-blur-md shadow-xs"
+                    : variant === "glass"
+                      ? "border border-white/40 dark:border-white/20 bg-white/30 hover:bg-white/50 text-neutral-900 dark:bg-white/10 dark:hover:bg-white/20 dark:text-white backdrop-blur-md shadow-xs"
+                      : "border border-border hover:bg-foreground/5",
                 )}
               >
                 Export <Download className="w-3.5 h-3.5 sm:w-4 sm:h-4 cursor-pointer" />
@@ -1653,9 +1990,13 @@ function CalendarDashboard({
                       key={dayName}
                       className={cn(
                         "py-1.5 sm:py-3 px-1 sm:px-4 text-[11px] sm:text-sm font-semibold text-center truncate",
-                        variant === "glass" ? "text-neutral-900 dark:text-white/90" : "text-muted-foreground",
+                        variant === "liquid-glass"
+                          ? "text-white/90"
+                          : variant === "glass"
+                            ? "text-neutral-900 dark:text-white/90"
+                            : "text-muted-foreground",
                         variant !== "minimal" && idx !== 6
-                          ? variant === "glass" ? "border-r border-white/15" : "border-r border-border"
+                          ? isGlass ? "border-r border-white/15" : "border-r border-border"
                           : "",
                       )}
                     >
@@ -1698,18 +2039,22 @@ function CalendarDashboard({
                 </div>
               </div>
             ) : (
-              <div className={cn("w-full min-w-0 flex flex-col", variant === "glass" ? "bg-transparent" : "bg-card/60")}>
+              <div className={cn("w-full min-w-0 flex flex-col flex-1 overflow-y-auto max-h-[580px] sm:max-h-[660px] [scrollbar-width:thin] [scrollbar-color:rgba(255,255,255,0.2)_transparent]", isGlass ? "bg-transparent" : "bg-card/60")}>
                 {/* Time Grid Sticky Header Bar */}
                 <div
                   className={cn(
                     "sticky top-0 z-20 flex border-b transition-colors duration-300 shrink-0",
-                    variant === "glass" ? "border-white/15" : "border-border",
+                    isGlass ? "border-white/15" : "border-border",
                     styles.gridHeader,
                   )}
                 >
                   <div className={cn(
                     "w-16 sm:w-20 shrink-0 py-2 px-1 text-center text-xs font-semibold border-r flex items-center justify-center",
-                    variant === "glass" ? "text-neutral-900 font-semibold dark:text-white/80 border-white/15 bg-white/20 dark:bg-white/5" : "text-muted-foreground border-border/70 bg-muted/20",
+                    variant === "liquid-glass"
+                      ? "text-white/80 border-white/15 bg-white/5"
+                      : variant === "glass"
+                        ? "text-neutral-900 font-semibold dark:text-white/80 border-white/15 bg-white/20 dark:bg-white/5"
+                        : "text-muted-foreground border-border/70 bg-muted/20",
                   )}>
                     Time
                   </div>
@@ -1736,15 +2081,23 @@ function CalendarDashboard({
                           key={dayObj.dateKey}
                           className={cn(
                             "py-2 px-1 text-center font-medium text-xs sm:text-sm truncate flex flex-col items-center justify-center gap-0.5",
-                            variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground",
+                            variant === "liquid-glass"
+                              ? "text-white"
+                              : variant === "glass"
+                                ? "text-neutral-900 dark:text-white"
+                                : "text-foreground",
                             idx < calendarDays.length - 1
-                              ? variant === "glass" ? "border-r border-white/15" : "border-r border-border"
+                              ? isGlass ? "border-r border-white/15" : "border-r border-border"
                               : "",
                           )}
                         >
                           <span className={cn(
                             "text-[10px] sm:text-xs uppercase tracking-wider font-semibold",
-                            variant === "glass" ? "text-neutral-700 dark:text-white/70" : "text-muted-foreground",
+                            variant === "liquid-glass"
+                              ? "text-white/70"
+                              : variant === "glass"
+                                ? "text-neutral-700 dark:text-white/70"
+                                : "text-muted-foreground",
                           )}>
                             {view === "day" ? fullDayName : dayName}
                           </span>
@@ -1753,9 +2106,11 @@ function CalendarDashboard({
                               "text-xs sm:text-sm font-semibold w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded-full transition-colors",
                               isToday
                                 ? theme.primaryBg
-                                : variant === "glass"
-                                  ? "text-neutral-900 hover:bg-white/30 dark:text-white dark:hover:bg-white/15"
-                                  : "text-foreground hover:bg-muted",
+                                : variant === "liquid-glass"
+                                  ? "text-white hover:bg-white/20"
+                                  : variant === "glass"
+                                    ? "text-neutral-900 hover:bg-white/30 dark:text-white dark:hover:bg-white/15"
+                                    : "text-foreground hover:bg-muted",
                             )}
                           >
                             {dayObj.day}
@@ -1771,12 +2126,16 @@ function CalendarDashboard({
                   {TIME_SLOTS.map((slot, slotIdx) => (
                     <div
                       key={slot.label}
-                      className={cn("flex min-h-[38px] sm:min-h-[44px] border-b", variant === "glass" ? "border-white/15" : "border-border/70")}
+                      className={cn("flex min-h-[38px] sm:min-h-[44px] border-b", isGlass ? "border-white/15" : "border-border/70")}
                     >
                       {/* Time Label Column */}
                       <div className={cn(
                         "w-16 sm:w-20 shrink-0 px-1 py-1 flex items-center justify-center text-[10px] sm:text-xs font-semibold border-r select-none",
-                        variant === "glass" ? "text-neutral-900 font-semibold dark:text-white/80 border-white/15 bg-white/20 dark:bg-white/5" : "text-muted-foreground border-border/70 bg-muted/20",
+                        variant === "liquid-glass"
+                          ? "text-white/80 border-white/15 bg-white/5"
+                          : variant === "glass"
+                            ? "text-neutral-900 font-semibold dark:text-white/80 border-white/15 bg-white/20 dark:bg-white/5"
+                            : "text-muted-foreground border-border/70 bg-muted/20",
                       )}>
                         {slot.label}
                       </div>
@@ -1817,7 +2176,7 @@ function CalendarDashboard({
                               cellClass={cn(
                                 styles.cellBg,
                                 dayIdx < calendarDays.length - 1
-                                  ? variant === "glass" ? "border-r border-white/15" : "border-r border-border/70"
+                                  ? isGlass ? "border-r border-white/15" : "border-r border-border/70"
                                   : "",
                               )}
                               theme={theme}
@@ -1838,127 +2197,212 @@ function CalendarDashboard({
       {/* --- ADD / EDIT EVENT MODAL --- */}
       {isAddModalOpen && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 dark:bg-black/60 backdrop-blur-md p-4 cursor-pointer"
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-md p-4 cursor-pointer"
           onClick={closeModal}
         >
           <div
             className={cn(
-              "w-full max-w-md rounded-xl shadow-2xl border animate-in fade-in zoom-in duration-200 cursor-default",
-              variant === "glass"
-                ? "bg-white/50 dark:bg-black/60 backdrop-blur-3xl border-white/50 dark:border-white/20 text-neutral-900 dark:text-white shadow-2xl"
-                : "bg-card border-border",
+              "w-full max-w-md shadow-2xl animate-in fade-in zoom-in duration-200 cursor-default relative",
+              variant === "liquid-glass"
+                ? "rounded-[22px] sm:rounded-[28px] text-white shadow-[0_25px_60px_rgba(0,0,0,0.5)] border-0"
+                : variant === "glass"
+                  ? "rounded-xl bg-white/50 dark:bg-black/60 backdrop-blur-3xl border border-white/50 dark:border-white/20 text-neutral-900 dark:text-white shadow-2xl"
+                  : "rounded-xl bg-card border border-border",
             )}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className={cn(
-              "flex items-center justify-between px-6 py-4 border-b",
-              variant === "glass" ? "border-black/10 dark:border-white/20" : "border-border"
-            )}>
-              <h3 className={cn("font-semibold text-lg", variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>
-                {editingEvent ? "Update Event" : "Add New Event"}
-              </h3>
-              <button
-                onClick={closeModal}
+            {variant === "liquid-glass" && (
+              <>
+                {/* Modal Layer 0: Liquid SVG Displaced Wave Background */}
+                <div className="absolute inset-0 overflow-hidden rounded-[22px] sm:rounded-[28px] pointer-events-none z-0">
+                  <div
+                    className="absolute -inset-10"
+                    style={{
+                      backgroundImage:
+                        'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      filter: "url(#glass-blur)",
+                      transform: "scale(1.1)",
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-[2px]" />
+                  <div
+                    className="absolute inset-0 rounded-[22px] sm:rounded-[28px]"
+                    style={{
+                      boxShadow:
+                        "0 20px 50px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.08)",
+                    }}
+                  />
+                </div>
+                {/* Modal Layer 3: Specular Inner Border Highlight */}
+                <div
+                  className="absolute inset-0 z-30 pointer-events-none rounded-[22px] sm:rounded-[28px] border border-white/40 dark:border-white/15"
+                  style={{
+                    boxShadow:
+                      "inset 2px 2px 2px 0 rgba(255, 255, 255, 0.45), inset -2px -2px 2px 0 rgba(255, 255, 255, 0.3)",
+                  }}
+                />
+              </>
+            )}
+
+            <div className="relative z-40 flex flex-col flex-1">
+              <div
                 className={cn(
-                  "cursor-pointer p-1 rounded-md transition-colors",
-                  variant === "glass"
-                    ? "text-neutral-600 hover:text-neutral-900 hover:bg-black/5 dark:text-white/70 dark:hover:text-white dark:hover:bg-white/10"
-                    : "text-muted-foreground hover:text-foreground",
+                  "flex items-center justify-between px-6 py-4 border-b",
+                  variant === "liquid-glass"
+                    ? "border-white/20 dark:border-white/15 bg-white/10 dark:bg-white/5 text-white"
+                    : variant === "glass"
+                      ? "border-black/10 dark:border-white/20"
+                      : "border-border",
                 )}
               >
-                <X className="w-5 h-5 cursor-pointer" />
-              </button>
-            </div>
-            <form onSubmit={handleSaveEvent} className="p-6 space-y-4">
-              <div>
-                <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-neutral-800 dark:text-white/90" : "text-foreground")}>
-                  Event Title
-                </label>
-                <input
-                  required
-                  name="title"
-                  type="text"
-                  defaultValue={editingEvent ? editingEvent.title : ""}
-                  placeholder="e.g. Q3 Roadmap Review"
+                <h3
                   className={cn(
-                    "w-full cursor-text border rounded-md px-3 py-2 text-sm bg-transparent focus:ring-2 focus:outline-none transition-all",
-                    variant === "glass"
-                      ? "border-black/15 text-neutral-900 placeholder:text-neutral-400 bg-black/5 hover:bg-black/10 focus:bg-white/40 focus:border-black/30 dark:border-white/25 dark:text-white dark:placeholder:text-white/50 dark:bg-white/10 dark:hover:bg-white/15 dark:focus:bg-white/20 dark:focus:border-white/50"
-                      : "border-input text-foreground",
-                    theme.focusRing,
+                    "font-semibold text-lg",
+                    variant === "liquid-glass"
+                      ? "text-white"
+                      : variant === "glass"
+                        ? "text-neutral-900 dark:text-white"
+                        : "text-foreground",
                   )}
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <CustomDatePicker
-                  value={modalDate}
-                  onChange={setModalDate}
-                  variant={variant}
-                  theme={theme}
-                />
-                <CustomTimePicker
-                  value={modalTime}
-                  onChange={setModalTime}
-                  variant={variant}
-                  theme={theme}
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-neutral-800 dark:text-white/90" : "text-foreground")}>
-                    Event Type
-                  </label>
-                  {/* Hidden input keeps this field in the form's FormData,
-                      since SelectBlock renders a button rather than an input. */}
-                  <input type="hidden" name="type" value={eventType} />
-                  <SelectBlock
-                    options={EVENT_TYPE_OPTIONS}
-                    value={eventType}
-                    onChange={setEventType}
-                    color={color}
-                    variant={variant === "glass" ? "glass" : "default"}
-                    inputSize="sm"
-                  />
-                </div>
-                <div>
-                  <label className={cn("block text-sm font-medium mb-1", variant === "glass" ? "text-neutral-800 dark:text-white/90" : "text-foreground")}>
-                    Platform
-                  </label>
-                  <input type="hidden" name="platform" value={eventPlatform} />
-                  <SelectBlock
-                    options={EVENT_PLATFORM_OPTIONS}
-                    value={eventPlatform}
-                    onChange={setEventPlatform}
-                    color={color}
-                    variant={variant === "glass" ? "glass" : "default"}
-                    inputSize="sm"
-                  />
-                </div>
-              </div>
-              <div className="pt-4 flex items-center justify-end gap-3">
+                >
+                  {editingEvent ? "Update Event" : "Add New Event"}
+                </h3>
                 <button
-                  type="button"
                   onClick={closeModal}
                   className={cn(
-                    "px-4 py-2 text-sm font-medium rounded-md transition-colors cursor-pointer",
-                    variant === "glass"
-                      ? "text-neutral-700 hover:bg-black/5 hover:text-neutral-900 dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white"
-                      : "text-foreground hover:bg-muted",
+                    "cursor-pointer p-1 rounded-md transition-colors",
+                    variant === "liquid-glass"
+                      ? "text-white/80 hover:text-white hover:bg-white/15"
+                      : variant === "glass"
+                        ? "text-neutral-600 hover:text-neutral-900 hover:bg-black/5 dark:text-white/70 dark:hover:text-white dark:hover:bg-white/10"
+                        : "text-muted-foreground hover:text-foreground",
                   )}
                 >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className={cn(
-                    "px-4 py-2 text-sm font-medium rounded-md transition-colors shadow-sm cursor-pointer",
-                    theme.primaryBg,
-                  )}
-                >
-                  {editingEvent ? "Update Event" : "Add Event"}
+                  <X className="w-5 h-5 cursor-pointer" />
                 </button>
               </div>
-            </form>
+              <form onSubmit={handleSaveEvent} className="p-6 space-y-4">
+                <div>
+                  <label
+                    className={cn(
+                      "block text-sm font-medium mb-1",
+                      variant === "liquid-glass"
+                        ? "text-white/90"
+                        : variant === "glass"
+                          ? "text-neutral-800 dark:text-white/90"
+                          : "text-foreground",
+                    )}
+                  >
+                    Event Title
+                  </label>
+                  <input
+                    required
+                    name="title"
+                    type="text"
+                    defaultValue={editingEvent ? editingEvent.title : ""}
+                    placeholder="e.g. Q3 Roadmap Review"
+                    className={cn(
+                      "w-full cursor-text border rounded-xl px-3 py-2 text-sm bg-transparent focus:ring-2 focus:outline-none transition-all",
+                      variant === "liquid-glass"
+                        ? "border-white/25 text-white placeholder:text-white/50 bg-white/10 hover:bg-white/15 focus:bg-white/20 focus:border-white/50 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]"
+                        : variant === "glass"
+                          ? "border-black/15 text-neutral-900 placeholder:text-neutral-400 bg-black/5 hover:bg-black/10 focus:bg-white/40 focus:border-black/30 dark:border-white/25 dark:text-white dark:placeholder:text-white/50 dark:bg-white/10 dark:hover:bg-white/15 dark:focus:bg-white/20 dark:focus:border-white/50"
+                          : "border-input text-foreground",
+                      theme.focusRing,
+                    )}
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <CustomDatePicker
+                    value={modalDate}
+                    onChange={setModalDate}
+                    variant={variant}
+                    theme={theme}
+                  />
+                  <CustomTimePicker
+                    value={modalTime}
+                    onChange={setModalTime}
+                    variant={variant}
+                    theme={theme}
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      className={cn(
+                        "block text-sm font-medium mb-1",
+                        variant === "liquid-glass"
+                          ? "text-white/90"
+                          : variant === "glass"
+                            ? "text-neutral-800 dark:text-white/90"
+                            : "text-foreground",
+                      )}
+                    >
+                      Event Type
+                    </label>
+                    <input type="hidden" name="type" value={eventType} />
+                    <SelectBlock
+                      options={EVENT_TYPE_OPTIONS}
+                      value={eventType}
+                      onChange={setEventType}
+                      color={color}
+                      variant={variant === "liquid-glass" ? "liquid-glass" : isGlass ? "glass" : "default"}
+                      inputSize="sm"
+                    />
+                  </div>
+                  <div>
+                    <label
+                      className={cn(
+                        "block text-sm font-medium mb-1",
+                        variant === "liquid-glass"
+                          ? "text-white/90"
+                          : variant === "glass"
+                            ? "text-neutral-800 dark:text-white/90"
+                            : "text-foreground",
+                      )}
+                    >
+                      Platform
+                    </label>
+                    <input type="hidden" name="platform" value={eventPlatform} />
+                    <SelectBlock
+                      options={EVENT_PLATFORM_OPTIONS}
+                      value={eventPlatform}
+                      onChange={setEventPlatform}
+                      color={color}
+                      variant={variant === "liquid-glass" ? "liquid-glass" : isGlass ? "glass" : "default"}
+                      inputSize="sm"
+                    />
+                  </div>
+                </div>
+                <div className="pt-4 flex items-center justify-end gap-3">
+                  <button
+                    type="button"
+                    onClick={closeModal}
+                    className={cn(
+                      "px-4 py-2 text-sm font-medium rounded-xl transition-colors cursor-pointer",
+                      variant === "liquid-glass"
+                        ? "text-white/80 hover:bg-white/15 hover:text-white"
+                        : variant === "glass"
+                          ? "text-neutral-700 hover:bg-black/5 hover:text-neutral-900 dark:text-white/80 dark:hover:bg-white/10 dark:hover:text-white"
+                          : "text-foreground hover:bg-muted",
+                    )}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className={cn(
+                      "px-4 py-2 text-sm font-semibold rounded-xl transition-colors shadow-sm cursor-pointer",
+                      theme.primaryBg,
+                    )}
+                  >
+                    {editingEvent ? "Update Event" : "Add Event"}
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       )}
@@ -2016,8 +2460,16 @@ function CalendarCell({
       className={cn(
         `relative flex flex-col p-1.5 sm:p-2 h-full transition-colors cursor-pointer ${isAnyPopupOpen ? "z-30" : "z-10 hover:z-20"} ${
           isGray
-            ? variant === "glass" ? "text-neutral-400 dark:text-white/40 opacity-50" : "text-muted-foreground opacity-60"
-            : variant === "glass" ? "text-neutral-900 font-semibold dark:text-white" : "text-foreground"
+            ? variant === "liquid-glass"
+              ? "text-white/40 opacity-50"
+              : variant === "glass"
+                ? "text-neutral-400 dark:text-white/40 opacity-50"
+                : "text-muted-foreground opacity-60"
+            : variant === "liquid-glass"
+              ? "text-white font-semibold"
+              : variant === "glass"
+                ? "text-neutral-900 font-semibold dark:text-white"
+                : "text-foreground"
         }`,
         cellClass,
       )}
@@ -2033,16 +2485,22 @@ function CalendarCell({
           const isPopupOpen = activePopupEventId === event.id;
           const isPentest = event.type === "pentest";
           const borderClass = isGray
-            ? variant === "glass"
-              ? "border-black/10 bg-black/5 text-neutral-500 dark:border-white/10 dark:bg-white/10 dark:text-white/50"
-              : "border-border bg-muted text-muted-foreground"
-            : isPentest
-              ? variant === "glass"
-                ? "border-amber-500/50 bg-amber-400/30 text-amber-950 font-medium dark:border-amber-400/40 dark:bg-amber-500/25 dark:text-amber-100 backdrop-blur-sm shadow-xs"
-                : "border-yellow-200 bg-yellow-50 text-yellow-800 dark:border-yellow-800/50 dark:bg-yellow-900/30 dark:text-yellow-400"
+            ? variant === "liquid-glass"
+              ? "border-white/10 bg-white/10 text-white/50"
               : variant === "glass"
-                ? "border-emerald-500/50 bg-emerald-400/30 text-emerald-950 font-medium dark:border-emerald-400/40 dark:bg-emerald-500/25 dark:text-emerald-100 backdrop-blur-sm shadow-xs"
-                : "border-green-200 bg-green-50 text-green-800 dark:border-green-800/50 dark:bg-green-900/30 dark:text-green-400";
+                ? "border-black/10 bg-black/5 text-neutral-500 dark:border-white/10 dark:bg-white/10 dark:text-white/50"
+                : "border-border bg-muted text-muted-foreground"
+            : isPentest
+              ? variant === "liquid-glass"
+                ? "border-amber-400/40 bg-amber-500/25 text-amber-100 backdrop-blur-sm shadow-xs font-medium"
+                : variant === "glass"
+                  ? "border-amber-500/50 bg-amber-400/30 text-amber-950 font-medium dark:border-amber-400/40 dark:bg-amber-500/25 dark:text-amber-100 backdrop-blur-sm shadow-xs"
+                  : "border-yellow-200 bg-yellow-50 text-yellow-800 dark:border-yellow-800/50 dark:bg-yellow-900/30 dark:text-yellow-400"
+              : variant === "liquid-glass"
+                ? "border-emerald-400/40 bg-emerald-500/25 text-emerald-100 backdrop-blur-sm shadow-xs font-medium"
+                : variant === "glass"
+                  ? "border-emerald-500/50 bg-emerald-400/30 text-emerald-950 font-medium dark:border-emerald-400/40 dark:bg-emerald-500/25 dark:text-emerald-100 backdrop-blur-sm shadow-xs"
+                  : "border-green-200 bg-green-50 text-green-800 dark:border-green-800/50 dark:bg-green-900/30 dark:text-green-400";
           const PlatformIcon =
             event.platform === "meet"
               ? Video
@@ -2069,12 +2527,21 @@ function CalendarCell({
                 <PlatformIcon
                   className={cn(
                     "w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0 cursor-pointer",
-                    variant === "glass" ? "text-current" : iconColor,
+                    variant === "liquid-glass" || variant === "glass" ? "text-current" : iconColor,
                   )}
                 />
                 <span className="truncate max-w-[35px] min-[400px]:max-w-[60px] sm:max-w-none cursor-pointer">{event.title}</span>
               </div>
-              <span className={cn("opacity-75 shrink-0 ml-1 hidden sm:inline cursor-pointer", variant === "glass" ? "text-neutral-800 font-medium dark:text-white/80" : "")}>
+              <span
+                className={cn(
+                  "opacity-75 shrink-0 ml-1 hidden sm:inline cursor-pointer",
+                  variant === "liquid-glass"
+                    ? "text-white/80 font-medium"
+                    : variant === "glass"
+                      ? "text-neutral-800 font-medium dark:text-white/80"
+                      : "",
+                )}
+              >
                 {event.time}
               </span>
             </div>
@@ -2104,7 +2571,11 @@ function CalendarCell({
             <div
               className={cn(
                 "fixed inset-0 z-40 sm:bg-transparent cursor-pointer",
-                variant === "glass" ? "bg-black/30 dark:bg-black/60 backdrop-blur-xs" : "bg-black/20 dark:bg-black/60",
+                variant === "liquid-glass"
+                  ? "bg-black/50 backdrop-blur-xs"
+                  : variant === "glass"
+                    ? "bg-black/30 dark:bg-black/60 backdrop-blur-xs"
+                    : "bg-black/20 dark:bg-black/60",
               )}
               onClick={(e) => {
                 e.stopPropagation();
@@ -2112,61 +2583,119 @@ function CalendarCell({
               }}
             />
             <div
-              className={`fixed sm:absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[320px] sm:top-auto sm:left-auto sm:translate-x-0 sm:translate-y-0 sm:w-72 ${popupXClass} ${popupYClass} ${
-                variant === "glass"
-                  ? "bg-white/50 dark:bg-black/60 backdrop-blur-3xl border-white/50 dark:border-white/20 text-neutral-900 dark:text-white shadow-2xl"
-                  : "bg-popover text-popover-foreground border-border"
-              } rounded-xl shadow-2xl border p-4 cursor-default animate-in fade-in zoom-in-95 duration-150`}
+              className={cn(
+                "fixed sm:absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[320px] sm:top-auto sm:left-auto sm:translate-x-0 sm:translate-y-0 sm:w-72",
+                popupXClass,
+                popupYClass,
+                variant === "liquid-glass"
+                  ? "bg-black/40 dark:bg-black/50 backdrop-blur-3xl border border-white/30 text-white shadow-[0_25px_60px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.4),inset_-1px_-1px_1px_rgba(255,255,255,0.15)] rounded-2xl"
+                  : variant === "glass"
+                    ? "bg-white/50 dark:bg-black/60 backdrop-blur-3xl border-white/50 dark:border-white/20 text-neutral-900 dark:text-white shadow-2xl rounded-xl"
+                    : "bg-popover text-popover-foreground border-border rounded-xl",
+                "shadow-2xl border p-4 cursor-default animate-in fade-in zoom-in-95 duration-150",
+              )}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
-                <h4 className={cn("font-bold text-base truncate pr-4", variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>
+                <h4
+                  className={cn(
+                    "font-bold text-base truncate pr-4",
+                    variant === "liquid-glass"
+                      ? "text-white drop-shadow-xs"
+                      : variant === "glass"
+                        ? "text-neutral-900 dark:text-white"
+                        : "text-foreground",
+                  )}
+                >
                   {event.title}
                 </h4>
-                <div className={cn("flex items-center gap-2 shrink-0", variant === "glass" ? "text-neutral-600 dark:text-white/70" : "text-muted-foreground")}>
+                <div
+                  className={cn(
+                    "flex items-center gap-2 shrink-0",
+                    variant === "liquid-glass"
+                      ? "text-white/80"
+                      : variant === "glass"
+                        ? "text-neutral-600 dark:text-white/70"
+                        : "text-muted-foreground",
+                  )}
+                >
                   <Edit2
                     onClick={(e) => {
                       e.stopPropagation();
                       onEditEvent(event);
                     }}
-                    className={cn("w-4 h-4 cursor-pointer transition-colors", variant === "glass" ? "hover:text-neutral-900 dark:hover:text-white" : "hover:text-foreground")}
+                    className={cn(
+                      "w-4 h-4 cursor-pointer transition-colors",
+                      variant === "liquid-glass"
+                        ? "hover:text-white"
+                        : variant === "glass"
+                          ? "hover:text-neutral-900 dark:hover:text-white"
+                          : "hover:text-foreground",
+                    )}
                   />
                   <Trash2
                     onClick={(e) => {
                       e.stopPropagation();
                       onDeleteEvent(event.id);
                     }}
-                    className="w-4 h-4 cursor-pointer hover:text-red-500 transition-colors"
+                    className="w-4 h-4 cursor-pointer hover:text-red-400 transition-colors"
                   />
                 </div>
               </div>
               <div className="flex items-center gap-2 mb-3">
                 <span
                   className={cn(
-                    "flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md",
-                    variant === "glass"
-                      ? "bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 backdrop-blur-sm"
-                      : theme.lightBg,
+                    "flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-full",
+                    variant === "liquid-glass"
+                      ? "bg-emerald-500/25 text-emerald-200 border border-emerald-400/40 backdrop-blur-md shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]"
+                      : variant === "glass"
+                        ? "bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 backdrop-blur-sm"
+                        : theme.lightBg,
                   )}
                 >
                   <div
                     className={cn(
                       "w-1.5 h-1.5 rounded-full animate-pulse",
-                      variant === "glass" ? "bg-emerald-500 dark:bg-emerald-400" : theme.pulse,
+                      variant === "liquid-glass" || variant === "glass"
+                        ? "bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]"
+                        : theme.pulse,
                     )}
                   ></div>{" "}
                   Pending
                 </span>
               </div>
-              <div className={cn("flex items-center gap-2 text-sm mb-4 font-medium", variant === "glass" ? "text-neutral-700 dark:text-white/85" : "text-muted-foreground")}>
-                <Calendar1 className={cn("w-4 h-4 shrink-0", variant === "glass" ? "text-neutral-600 dark:text-white/70" : "")} /> {dateStr} at {event.time}
+              <div
+                className={cn(
+                  "flex items-center gap-2 text-sm mb-4 font-medium",
+                  variant === "liquid-glass"
+                    ? "text-white/90"
+                    : variant === "glass"
+                      ? "text-neutral-700 dark:text-white/85"
+                      : "text-muted-foreground",
+                )}
+              >
+                <Calendar1
+                  className={cn(
+                    "w-4 h-4 shrink-0",
+                    variant === "liquid-glass"
+                      ? "text-white/85"
+                      : variant === "glass"
+                        ? "text-neutral-600 dark:text-white/70"
+                        : "",
+                  )}
+                />{" "}
+                {dateStr} at {event.time}
               </div>
-              <button className={cn(
-                "w-full flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer",
-                variant === "glass"
-                  ? "bg-white/40 hover:bg-white/60 border border-white/50 text-neutral-900 dark:bg-white/15 dark:hover:bg-white/25 dark:border-white/25 dark:text-white backdrop-blur-md shadow-xs"
-                  : "bg-muted hover:bg-muted/80 text-foreground",
-              )}>
+              <button
+                className={cn(
+                  "w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer",
+                  variant === "liquid-glass"
+                    ? "bg-white/20 hover:bg-white/30 border border-white/35 text-white backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.4)] active:scale-[0.98]"
+                    : variant === "glass"
+                      ? "bg-white/40 hover:bg-white/60 border border-white/50 text-neutral-900 dark:bg-white/15 dark:hover:bg-white/25 dark:border-white/25 dark:text-white backdrop-blur-md shadow-xs"
+                      : "bg-muted hover:bg-muted/80 text-foreground",
+                )}
+              >
                 Join with{" "}
                 {event.platform === "meet"
                   ? "Google Meet"
@@ -2174,7 +2703,7 @@ function CalendarCell({
                     ? "Slack"
                     : "Discord"}{" "}
                 <PlatformIcon
-                  className={`w-4 h-4 cursor-pointer ${variant === "glass" ? "text-neutral-800 dark:text-white" : iconColor}`}
+                  className={`w-4 h-4 cursor-pointer ${variant === "liquid-glass" ? "text-white" : variant === "glass" ? "text-neutral-800 dark:text-white" : iconColor}`}
                 />
               </button>
             </div>
@@ -2209,7 +2738,11 @@ function TimeGridCell({
       onClick={onClickCell}
       className={cn(
         `relative flex flex-col p-1 sm:p-1.5 h-full transition-colors cursor-pointer ${isAnyPopupOpen ? "z-30" : "z-10 hover:z-20"} ${
-          variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground"
+          variant === "liquid-glass"
+            ? "text-white"
+            : variant === "glass"
+              ? "text-neutral-900 dark:text-white"
+              : "text-foreground"
         } min-h-[52px]`,
         cellClass,
       )}
@@ -2219,12 +2752,16 @@ function TimeGridCell({
           const isPopupOpen = activePopupEventId === event.id;
           const isPentest = event.type === "pentest";
           const borderClass = isPentest
-            ? variant === "glass"
-              ? "border-amber-500/50 bg-amber-400/30 text-amber-950 font-medium dark:border-amber-400/40 dark:bg-amber-500/25 dark:text-amber-100 backdrop-blur-sm shadow-xs"
-              : "border-yellow-200 bg-yellow-50 text-yellow-800 dark:border-yellow-800/50 dark:bg-yellow-900/30 dark:text-yellow-400"
-            : variant === "glass"
-              ? "border-emerald-500/50 bg-emerald-400/30 text-emerald-950 font-medium dark:border-emerald-400/40 dark:bg-emerald-500/25 dark:text-emerald-100 backdrop-blur-sm shadow-xs"
-              : "border-green-200 bg-green-50 text-green-800 dark:border-green-800/50 dark:bg-green-900/30 dark:text-green-400";
+            ? variant === "liquid-glass"
+              ? "border-amber-400/40 bg-amber-500/25 text-amber-100 backdrop-blur-sm shadow-xs font-medium"
+              : variant === "glass"
+                ? "border-amber-500/50 bg-amber-400/30 text-amber-950 font-medium dark:border-amber-400/40 dark:bg-amber-500/25 dark:text-amber-100 backdrop-blur-sm shadow-xs"
+                : "border-yellow-200 bg-yellow-50 text-yellow-800 dark:border-yellow-800/50 dark:bg-yellow-900/30 dark:text-yellow-400"
+            : variant === "liquid-glass"
+              ? "border-emerald-400/40 bg-emerald-500/25 text-emerald-100 backdrop-blur-sm shadow-xs font-medium"
+              : variant === "glass"
+                ? "border-emerald-500/50 bg-emerald-400/30 text-emerald-950 font-medium dark:border-emerald-400/40 dark:bg-emerald-500/25 dark:text-emerald-100 backdrop-blur-sm shadow-xs"
+                : "border-green-200 bg-green-50 text-green-800 dark:border-green-800/50 dark:bg-green-900/30 dark:text-green-400";
           const PlatformIcon =
             event.platform === "meet"
               ? Video
@@ -2251,14 +2788,23 @@ function TimeGridCell({
                 <PlatformIcon
                   className={cn(
                     "w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0 cursor-pointer",
-                    variant === "glass" ? "text-current" : iconColor,
+                    variant === "liquid-glass" || variant === "glass" ? "text-current" : iconColor,
                   )}
                 />
                 <span className="truncate max-w-[35px] min-[400px]:max-w-[60px] sm:max-w-none cursor-pointer">
                   {event.title}
                 </span>
               </div>
-              <span className={cn("opacity-75 shrink-0 ml-1 hidden sm:inline cursor-pointer", variant === "glass" ? "text-neutral-800 font-medium dark:text-white/80" : "")}>
+              <span
+                className={cn(
+                  "opacity-75 shrink-0 ml-1 hidden sm:inline cursor-pointer",
+                  variant === "liquid-glass"
+                    ? "text-white/80 font-medium"
+                    : variant === "glass"
+                      ? "text-neutral-800 font-medium dark:text-white/80"
+                      : "",
+                )}
+              >
                 {event.time}
               </span>
             </div>
@@ -2288,7 +2834,11 @@ function TimeGridCell({
             <div
               className={cn(
                 "fixed inset-0 z-40 sm:bg-transparent cursor-pointer",
-                variant === "glass" ? "bg-black/30 dark:bg-black/60 backdrop-blur-xs" : "bg-black/20 dark:bg-black/60",
+                variant === "liquid-glass"
+                  ? "bg-black/50 backdrop-blur-xs"
+                  : variant === "glass"
+                    ? "bg-black/30 dark:bg-black/60 backdrop-blur-xs"
+                    : "bg-black/20 dark:bg-black/60",
               )}
               onClick={(e) => {
                 e.stopPropagation();
@@ -2296,61 +2846,119 @@ function TimeGridCell({
               }}
             />
             <div
-              className={`fixed sm:absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[320px] sm:top-auto sm:left-auto sm:translate-x-0 sm:translate-y-0 sm:w-72 ${popupXClass} ${popupYClass} ${
-                variant === "glass"
-                  ? "bg-white/50 dark:bg-black/60 backdrop-blur-3xl border-white/50 dark:border-white/20 text-neutral-900 dark:text-white shadow-2xl"
-                  : "bg-popover text-popover-foreground border-border"
-              } rounded-xl shadow-2xl border p-4 cursor-default animate-in fade-in zoom-in-95 duration-150`}
+              className={cn(
+                "fixed sm:absolute z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] max-w-[320px] sm:top-auto sm:left-auto sm:translate-x-0 sm:translate-y-0 sm:w-72",
+                popupXClass,
+                popupYClass,
+                variant === "liquid-glass"
+                  ? "bg-black/40 dark:bg-black/50 backdrop-blur-3xl border border-white/30 text-white shadow-[0_25px_60px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.4),inset_-1px_-1px_1px_rgba(255,255,255,0.15)] rounded-2xl"
+                  : variant === "glass"
+                    ? "bg-white/50 dark:bg-black/60 backdrop-blur-3xl border-white/50 dark:border-white/20 text-neutral-900 dark:text-white shadow-2xl rounded-xl"
+                    : "bg-popover text-popover-foreground border-border rounded-xl",
+                "shadow-2xl border p-4 cursor-default animate-in fade-in zoom-in-95 duration-150",
+              )}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-start justify-between mb-4">
-                <h4 className={cn("font-bold text-base truncate pr-4", variant === "glass" ? "text-neutral-900 dark:text-white" : "text-foreground")}>
+                <h4
+                  className={cn(
+                    "font-bold text-base truncate pr-4",
+                    variant === "liquid-glass"
+                      ? "text-white drop-shadow-xs"
+                      : variant === "glass"
+                        ? "text-neutral-900 dark:text-white"
+                        : "text-foreground",
+                  )}
+                >
                   {event.title}
                 </h4>
-                <div className={cn("flex items-center gap-2 shrink-0", variant === "glass" ? "text-neutral-600 dark:text-white/70" : "text-muted-foreground")}>
+                <div
+                  className={cn(
+                    "flex items-center gap-2 shrink-0",
+                    variant === "liquid-glass"
+                      ? "text-white/80"
+                      : variant === "glass"
+                        ? "text-neutral-600 dark:text-white/70"
+                        : "text-muted-foreground",
+                  )}
+                >
                   <Edit2
                     onClick={(e) => {
                       e.stopPropagation();
                       onEditEvent(event);
                     }}
-                    className={cn("w-4 h-4 cursor-pointer transition-colors", variant === "glass" ? "hover:text-neutral-900 dark:hover:text-white" : "hover:text-foreground")}
+                    className={cn(
+                      "w-4 h-4 cursor-pointer transition-colors",
+                      variant === "liquid-glass"
+                        ? "hover:text-white"
+                        : variant === "glass"
+                          ? "hover:text-neutral-900 dark:hover:text-white"
+                          : "hover:text-foreground",
+                    )}
                   />
                   <Trash2
                     onClick={(e) => {
                       e.stopPropagation();
                       onDeleteEvent(event.id);
                     }}
-                    className="w-4 h-4 cursor-pointer hover:text-red-500 transition-colors"
+                    className="w-4 h-4 cursor-pointer hover:text-red-400 transition-colors"
                   />
                 </div>
               </div>
               <div className="flex items-center gap-2 mb-3">
                 <span
                   className={cn(
-                    "flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md",
-                    variant === "glass"
-                      ? "bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 backdrop-blur-sm"
-                      : theme.lightBg,
+                    "flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-full",
+                    variant === "liquid-glass"
+                      ? "bg-emerald-500/25 text-emerald-200 border border-emerald-400/40 backdrop-blur-md shadow-[inset_0_1px_1px_rgba(255,255,255,0.25)]"
+                      : variant === "glass"
+                        ? "bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 border border-emerald-500/30 backdrop-blur-sm"
+                        : theme.lightBg,
                   )}
                 >
                   <div
                     className={cn(
                       "w-1.5 h-1.5 rounded-full animate-pulse",
-                      variant === "glass" ? "bg-emerald-500 dark:bg-emerald-400" : theme.pulse,
+                      variant === "liquid-glass" || variant === "glass"
+                        ? "bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.8)]"
+                        : theme.pulse,
                     )}
                   ></div>{" "}
                   Pending
                 </span>
               </div>
-              <div className={cn("flex items-center gap-2 text-sm mb-4 font-medium", variant === "glass" ? "text-neutral-700 dark:text-white/85" : "text-muted-foreground")}>
-                <Calendar1 className={cn("w-4 h-4 shrink-0", variant === "glass" ? "text-neutral-600 dark:text-white/70" : "")} /> {dateStr} at {event.time}
+              <div
+                className={cn(
+                  "flex items-center gap-2 text-sm mb-4 font-medium",
+                  variant === "liquid-glass"
+                    ? "text-white/90"
+                    : variant === "glass"
+                      ? "text-neutral-700 dark:text-white/85"
+                      : "text-muted-foreground",
+                )}
+              >
+                <Calendar1
+                  className={cn(
+                    "w-4 h-4 shrink-0",
+                    variant === "liquid-glass"
+                      ? "text-white/85"
+                      : variant === "glass"
+                        ? "text-neutral-600 dark:text-white/70"
+                        : "",
+                  )}
+                />{" "}
+                {dateStr} at {event.time}
               </div>
-              <button className={cn(
-                "w-full flex items-center justify-center gap-2 py-2 rounded-lg text-sm font-semibold transition-colors cursor-pointer",
-                variant === "glass"
-                  ? "bg-white/40 hover:bg-white/60 border border-white/50 text-neutral-900 dark:bg-white/15 dark:hover:bg-white/25 dark:border-white/25 dark:text-white backdrop-blur-md shadow-xs"
-                  : "bg-muted hover:bg-muted/80 text-foreground",
-              )}>
+              <button
+                className={cn(
+                  "w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-sm font-semibold transition-all cursor-pointer",
+                  variant === "liquid-glass"
+                    ? "bg-white/20 hover:bg-white/30 border border-white/35 text-white backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.2),inset_0_1px_1px_rgba(255,255,255,0.4)] active:scale-[0.98]"
+                    : variant === "glass"
+                      ? "bg-white/40 hover:bg-white/60 border border-white/50 text-neutral-900 dark:bg-white/15 dark:hover:bg-white/25 dark:border-white/25 dark:text-white backdrop-blur-md shadow-xs"
+                      : "bg-muted hover:bg-muted/80 text-foreground",
+                )}
+              >
                 Join with{" "}
                 {event.platform === "meet"
                   ? "Google Meet"
@@ -2358,7 +2966,7 @@ function TimeGridCell({
                     ? "Slack"
                     : "Discord"}{" "}
                 <PlatformIcon
-                  className={`w-4 h-4 cursor-pointer ${variant === "glass" ? "text-neutral-800 dark:text-white" : iconColor}`}
+                  className={`w-4 h-4 cursor-pointer ${variant === "liquid-glass" ? "text-white" : variant === "glass" ? "text-neutral-800 dark:text-white" : iconColor}`}
                 />
               </button>
             </div>
