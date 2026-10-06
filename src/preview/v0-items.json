@@ -341,7 +341,8 @@
   "email": {
     "email-dashboard": "Email — Email dashboard",
     "minimal": "Email — Minimal",
-    "glass": "Email — Glass"
+    "glass": "Email — Glass",
+    "liquid-glass": "Email — Liquid Glass"
   },
   "faq-section": {
     "1-homepage-faq-section": "Faq Section — 1. Homepage FAQ Section"
@@ -551,11 +552,12 @@
     "google-pixel-10": "Mobile Mockup — Google Pixel 10"
   },
   "modal": {
-    "modal": "Modal",
+    "standard": "Modal — Standard",
     "form": "Modal — Form",
     "confirmation": "Modal — Confirmation",
     "fullscreen": "Modal — Fullscreen",
-    "glass": "Modal — Glass"
+    "glass": "Modal — Glass",
+    "liquid-glass": "Modal — Liquid Glass"
   },
   "navbar": {
     "navbar": "Navbar",
@@ -676,7 +678,8 @@
     "auto-hide": "Scroll Area — Auto-hide"
   },
   "scroll-split-cards": {
-    "scroll-split-cards": "Scroll Split Cards"
+    "default": "Scroll Split Cards — Default",
+    "slow-transition": "Scroll Split Cards — Slow Transition"
   },
   "scroll-stack": {
     "card-gap": "Scroll Stack — Card gap"

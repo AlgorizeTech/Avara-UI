@@ -3,6 +3,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("mcp");
 
 import { Cli } from "@/components/site/cli";
+import { DocLink } from "@/components/site/doc-link";
 import { McpClientTabs, McpClientPanel } from "@/components/site/mcp-client-tabs";
 
 # MCP Server
@@ -207,8 +208,8 @@ only the file differs.
 
 ## Next steps
 
-- [Installation](/docs/nextjs/installation) — set up a project for Algorize UI
-- [All components](/docs/nextjs/all-components) — browse the library
+- <DocLink to="installation">Installation</DocLink> — set up a project for Algorize UI
+- <DocLink to="all-components">All components</DocLink> — browse the library
 
 For the full server reference, see the
 [shadcn MCP docs](https://ui.shadcn.com/docs/mcp).

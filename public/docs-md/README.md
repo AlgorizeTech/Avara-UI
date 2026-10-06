@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-10-05T13:22:37.489Z
-**Total files:** 301
+**Generated at:** 2026-10-06T05:49:19.385Z
+**Total files:** 303
 
 ## Available Files
 
@@ -91,6 +91,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/magic-bento](/docs/nextjs-magic-bento.md) - Source: `[framework]\magic-bento\page.mdx`
 - [nextjs/marquee](/docs/nextjs-marquee.md) - Source: `[framework]\marquee\page.mdx`
 - [nextjs/masonry-grid](/docs/nextjs-masonry-grid.md) - Source: `[framework]\masonry-grid\page.mdx`
+- [nextjs/mcp](/docs/nextjs-mcp.md) - Source: `[framework]\mcp\page.mdx`
 - [nextjs/memories-card](/docs/nextjs-memories-card.md) - Source: `[framework]\memories-card\page.mdx`
 - [nextjs/menubar](/docs/nextjs-menubar.md) - Source: `[framework]\menubar\page.mdx`
 - [nextjs/mobile-mockup](/docs/nextjs-mobile-mockup.md) - Source: `[framework]\mobile-mockup\page.mdx`
@@ -242,6 +243,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/magic-bento](/docs/reactjs-magic-bento.md) - Source: `[framework]\magic-bento\page.mdx`
 - [reactjs/marquee](/docs/reactjs-marquee.md) - Source: `[framework]\marquee\page.mdx`
 - [reactjs/masonry-grid](/docs/reactjs-masonry-grid.md) - Source: `[framework]\masonry-grid\page.mdx`
+- [reactjs/mcp](/docs/reactjs-mcp.md) - Source: `[framework]\mcp\page.mdx`
 - [reactjs/memories-card](/docs/reactjs-memories-card.md) - Source: `[framework]\memories-card\page.mdx`
 - [reactjs/menubar](/docs/reactjs-menubar.md) - Source: `[framework]\menubar\page.mdx`
 - [reactjs/mobile-mockup](/docs/reactjs-mobile-mockup.md) - Source: `[framework]\mobile-mockup\page.mdx`

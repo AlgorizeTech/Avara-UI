@@ -3572,7 +3572,11 @@ function AnimatedFAQSection() {
 					initial={{ opacity: 0, y: 25 }}
 					animate={isInView ? { opacity: 1, y: 0 } : {}}
 					transition={{ duration: 0.7, delay: 0.15 }}>
-					<AnimatedFAQBlock />
+					<AnimatedFAQBlock
+						showTags={false}
+						showLocation={false}
+						showDimensions={false}
+					/>
 				</motion.div>
 			</div>
 		</section>

@@ -8,16 +8,17 @@ import { extractCode } from "@/lib/code";
 
 # Scroll Split Cards
 
-A cinematic scroll-driven storytelling component featuring a unified panoramic landscape that splits into three distinct physical card panels upon scrolling. As the user continues downward, the cards separate, execute a perspective-rich 180° 3D flip to reveal curated editorial narratives, and finally float upward away from the viewport.
+A cinematic scroll-driven storytelling component featuring a unified panoramic landscape that splits into three distinct physical card panels upon scrolling. As the user continues downward, the cards separate, execute a perspective-rich 180° 3D flip to reveal curated editorial narratives, and finally settle cleanly in place.
 
 `ScrollSplitCards` brings tactile visual immersion to brand origin stories, architectural journeys, editorial photography features, and landmark case studies.
 
 export const usageDefault = `import { ScrollSplitCards } from "@/components/custom/blocks/ScrollSplitCardsBlock";
 
-export default function ScrollSplitCardsExample() {
+export default function DefaultVariantExample() {
   return (
     <div className="w-full">
       <ScrollSplitCards
+        variant="default"
         headerTitle="Explore"
         headerSubtitle="Scroll down to reveal the alpine lake narrative"
         imageUrl="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790224415/photo-1501785888041-af3ef285b470-1790146212207-1790224416318.jpg"
@@ -64,39 +65,50 @@ export default function ScrollSplitCardsExample() {
   );
 }`;
 
-export const usageCustom = `import { ScrollSplitCards } from "@/components/custom/blocks/ScrollSplitCardsBlock";
+export const usageSlowTransition = `import { ScrollSplitCards } from "@/components/custom/blocks/ScrollSplitCardsBlock";
 
-export default function MinimalistEditorialExample() {
+export default function SlowTransitionExample() {
   return (
     <div className="w-full">
       <ScrollSplitCards
+        variant="slow-transition"
+        scrollSpeed={0.6}
         headerTitle="The Journey"
-        headerSubtitle="Explore the three foundational acts"
-        imageUrl="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=2400&auto=format&fit=crop"
+        headerSubtitle="Scroll to explore the three acts with custom speed"
+        imageUrl="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2600&auto=format&fit=crop"
         cards={[
           {
             number: "01",
-            tag: "ORIGIN",
-            title: "The Valley",
-            description: "Where silent mist gathers before the early dawn.",
-            backgroundColor: "#f5f5f4",
-            textColor: "#1c1917",
+            tag: "EXPEDITION",
+            metric: "1,850 M",
+            metricLabel: "BASE CAMP",
+            location: "High Tatras, Alpine Pass",
+            title: "The Valley Basin",
+            description: "Where silent mist gathers before the early dawn, cradling the pine riverbed below.",
+            backgroundColor: "#1e293b",
+            textColor: "#f8fafc",
           },
           {
             number: "02",
-            tag: "ASCENT",
-            title: "The Ridge",
-            description: "High elevation where crisp timber meets mountain air.",
-            backgroundColor: "#0284c7",
-            textColor: "#ffffff",
+            tag: "ELEVATION",
+            metric: "2,450 M",
+            metricLabel: "TRAIL HEAD",
+            location: "Granite Ridgeline",
+            title: "The Timber Ridge",
+            description: "High elevation where crisp pine timber meets pure cool mountain air and rugged cliffs.",
+            backgroundColor: "#854d0e",
+            textColor: "#fefce8",
           },
           {
             number: "03",
-            tag: "HORIZON",
-            title: "The Summit",
-            description: "Pure sky spanning out across thirty miles of wilderness.",
+            tag: "SUMMIT",
+            metric: "3,150 M",
+            metricLabel: "PEAK HEIGHT",
+            location: "The Highest Crest",
+            title: "The Silent Summit",
+            description: "Pure panoramic sky spanning out across thirty miles of untouched wilderness in the golden glow.",
             backgroundColor: "#0f172a",
-            textColor: "#f8fafc",
+            textColor: "#f1f5f9",
           },
         ]}
       />
@@ -110,10 +122,17 @@ export default function MinimalistEditorialExample() {
   colorControl={false}
   examples={[
     {
-      title: "Scroll Split Cards",
+      title: "Default",
       subheading:
-        "Scroll down to see the panoramic image split into three panels, expand outward, rotate and flip in 3D to reveal editorial story cards resting cleanly in place.",
+        "The default smooth scroll mode with built-in calibrated spring physics. No speed props required.",
       propNotes: [
+        {
+          lead: "Variant Selector",
+          prop: "variant",
+          value: '"default"',
+          effect:
+            "uses standard responsive spring-follower scroll physics.",
+        },
         {
           lead: "Seamless Panorama Slicing",
           prop: "imageUrl",
@@ -122,22 +141,120 @@ export default function MinimalistEditorialExample() {
         },
         {
           lead: "Expanding Gap Choreography",
-          prop: "smoothProgress",
+          prop: "panelShiftX",
           effect:
             "drives outward translation of left and right panels with spring-damped smoothness as scroll progresses.",
         },
         {
           lead: "180° Perspective 3D Flip",
-          prop: "rotateY",
+          prop: "panelRotateY",
           effect:
             "rotates all three panels in 3D space to reveal bespoke back-face editorial narratives with custom color palettes.",
         },
       ],
       props: {
+        variant: "default",
         headerTitle: "Explore",
         headerSubtitle: "Scroll down to reveal the alpine lake narrative",
       },
       usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/ScrollSplitCardsBlock.tsx"),
+      minHeight: 720,
+    },
+  ]}
+/>
+
+<ExampleShowcase
+  name="scroll-split-cards"
+  columns={1}
+  colorControl={false}
+  controls={[
+    {
+      name: "scrollSpeed",
+      label: "Scroll Speed",
+      min: 0.2,
+      max: 2.5,
+      step: 0.1,
+      defaultValue: 0.6,
+      unit: "x",
+    },
+  ]}
+  examples={[
+    {
+      title: "Slow Transition",
+      subheading:
+        "Pass the variant=\"slow-transition\" and scrollSpeed or speed prop (e.g. scrollSpeed={0.6}) to dynamically control scroll sensitivity.",
+      propNotes: [
+        {
+          lead: "Variant Mode",
+          prop: "variant",
+          value: '"slow-transition"',
+          effect:
+            "activates the slow transition profile with leisurely narrative pacing.",
+        },
+        {
+          lead: "Scroll Speed Multiplier",
+          prop: "scrollSpeed",
+          value: "0.6",
+          effect:
+            "multiplies wheel and touch delta values to fine-tune how fast or leisurely the animation unfolds per scroll tick.",
+        },
+        {
+          lead: "Panoramic Mountain Ridge",
+          prop: "imageUrl",
+          effect:
+            "renders a high-resolution sunset alpine peak panorama across the three split cards.",
+        },
+        {
+          lead: "Custom Narrative Acts",
+          prop: "cards",
+          effect:
+            "renders custom thematic chapters with bespoke metric badges and distinct background colors.",
+        },
+      ],
+      props: {
+        variant: "slow-transition",
+        scrollSpeed: 0.6,
+        headerTitle: "The Journey",
+        headerSubtitle: "Scroll to explore the three acts with custom speed",
+        imageUrl: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=2600&auto=format&fit=crop",
+        cards: [
+          {
+            number: "01",
+            tag: "EXPEDITION",
+            metric: "1,850 M",
+            metricLabel: "BASE CAMP",
+            location: "High Tatras, Alpine Pass",
+            title: "The Valley Basin",
+            description: "Where silent mist gathers before the early dawn, cradling the pine riverbed below.",
+            backgroundColor: "#1e293b",
+            textColor: "#f8fafc",
+          },
+          {
+            number: "02",
+            tag: "ELEVATION",
+            metric: "2,450 M",
+            metricLabel: "TRAIL HEAD",
+            location: "Granite Ridgeline",
+            title: "The Timber Ridge",
+            description: "High elevation where crisp pine timber meets pure cool mountain air and rugged cliffs.",
+            backgroundColor: "#854d0e",
+            textColor: "#fefce8",
+          },
+          {
+            number: "03",
+            tag: "SUMMIT",
+            metric: "3,150 M",
+            metricLabel: "PEAK HEIGHT",
+            location: "The Highest Crest",
+            title: "The Silent Summit",
+            description: "Pure panoramic sky spanning out across thirty miles of untouched wilderness in the golden glow.",
+            backgroundColor: "#0f172a",
+            textColor: "#f1f5f9",
+          },
+        ],
+      },
+      usage: usageSlowTransition,
       code: extractCode("src/components/custom/blocks/ScrollSplitCardsBlock.tsx"),
       minHeight: 720,
     },
@@ -164,8 +281,8 @@ export default function MinimalistEditorialExample() {
     <p className="text-muted-foreground text-sm">Each panel has genuine 3D card faces with <code>preserve-3d</code> and <code>backface-visibility</code>, flipping 180° to reveal typographic narratives with individual color schemes.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Stable Level Resting State</h3>
-    <p className="text-muted-foreground text-sm">Once the cards flip 180°, they rest cleanly aligned and straight side by side in the center without unwanted vertical drift or exit.</p>
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Live Range Slider & Speed Control</h3>
+    <p className="text-muted-foreground text-sm">Fine-tune the scroll rate by passing <code>scrollSpeed</code> or <code>speed</code> (numbers like <code>0.6</code> or presets like <code>"slow"</code>, <code>"normal"</code>, <code>"fast"</code>), with a live interactive range slider.</p>
   </div>
 </div>
 
@@ -188,6 +305,8 @@ export default function MinimalistEditorialExample() {
 
 ## Props Reference
 
+### ScrollSplitCards Props
+
 <div className="overflow-x-auto mb-8">
   <table>
     <thead>
@@ -200,6 +319,12 @@ export default function MinimalistEditorialExample() {
     </thead>
     <tbody>
       <tr>
+        <td><code>variant</code></td>
+        <td><code>"default" | "slow-transition"</code></td>
+        <td><code>"default"</code></td>
+        <td>Selects the transition variant mode. <code>"slow-transition"</code> automatically activates a slower, leisurely storytelling scroll.</td>
+      </tr>
+      <tr>
         <td><code>imageUrl</code></td>
         <td><code>string</code></td>
         <td><code>DEFAULT_IMAGE</code></td>
@@ -209,7 +334,13 @@ export default function MinimalistEditorialExample() {
         <td><code>cards</code></td>
         <td><code>SplitCard[]</code></td>
         <td><code>DEFAULT_CARDS</code></td>
-        <td>Array of card data objects containing <code>title</code>, <code>description</code>, <code>kicker</code>, <code>metric</code>, <code>metricLabel</code>, <code>location</code>, <code>bgColor</code>, and <code>textColor</code>. Also accepts <code>items</code>.</td>
+        <td>Array of card data objects for the three panels. Also accepts <code>items</code>.</td>
+      </tr>
+      <tr>
+        <td><code>scrollSpeed</code></td>
+        <td><code>number | "slow" | "normal" | "fast"</code></td>
+        <td><code>1</code></td>
+        <td>Optional speed multiplier for mousewheel and touch scroll progression. Smaller numbers like <code>0.6</code> or <code>"slow"</code> make the animation slower and more granular. Also accepts <code>speed</code>.</td>
       </tr>
       <tr>
         <td><code>headerTitle</code></td>
@@ -233,13 +364,84 @@ export default function MinimalistEditorialExample() {
         <td><code>enableScrollIndicator</code></td>
         <td><code>boolean</code></td>
         <td><code>true</code></td>
-        <td>Controls whether to display the animated mouse scroll indicator pill at the bottom center.</td>
+        <td>Controls whether to display the animated mouse scroll indicator pill at the top.</td>
       </tr>
       <tr>
         <td><code>className</code></td>
         <td><code>string</code></td>
         <td><code>""</code></td>
         <td>Additional CSS classes applied to the root outer container.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### SplitCard Item Properties
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>string</code></td>
+        <td>Required</td>
+        <td>Main editorial display headline rendered on the card's back face.</td>
+      </tr>
+      <tr>
+        <td><code>description</code></td>
+        <td><code>string</code></td>
+        <td>Required</td>
+        <td>Narrative storytelling copy describing the chapter or feature.</td>
+      </tr>
+      <tr>
+        <td><code>tag</code></td>
+        <td><code>string</code></td>
+        <td><code>"CHAPTER"</code></td>
+        <td>Category pill label badge rendered at the top-left of the back face. Also accepts <code>kicker</code>.</td>
+      </tr>
+      <tr>
+        <td><code>number</code></td>
+        <td><code>string</code></td>
+        <td><code>"01", "02", "03"</code></td>
+        <td>Index label rendered at the top-right of the card.</td>
+      </tr>
+      <tr>
+        <td><code>metric</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Prominent stat, elevation, or milestone callout value (e.g. <code>"1,496 M"</code>).</td>
+      </tr>
+      <tr>
+        <td><code>metricLabel</code></td>
+        <td><code>string</code></td>
+        <td><code>"METRIC"</code></td>
+        <td>Label displayed directly above the prominent metric number.</td>
+      </tr>
+      <tr>
+        <td><code>location</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Geographic location or sub-region rendered in the bottom footer row.</td>
+      </tr>
+      <tr>
+        <td><code>backgroundColor</code></td>
+        <td><code>string</code></td>
+        <td><code>"#13352F"</code></td>
+        <td>Background color of the card back face. Also accepts <code>bgColor</code>.</td>
+      </tr>
+      <tr>
+        <td><code>textColor</code></td>
+        <td><code>string</code></td>
+        <td><code>"#E6F4F1"</code></td>
+        <td>Text color for clear contrast against the card background.</td>
       </tr>
     </tbody>
   </table>

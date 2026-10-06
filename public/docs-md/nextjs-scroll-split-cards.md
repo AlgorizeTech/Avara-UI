@@ -2,21 +2,21 @@ export const metadata = docsPageMetadata("scroll-split-cards");
 
 # Scroll Split Cards
 
-A cinematic scroll-driven storytelling component featuring a unified panoramic landscape that splits into three distinct physical card panels upon scrolling. As the user continues downward, the cards separate, execute a perspective-rich 180° 3D flip to reveal curated editorial narratives, and finally float upward away from the viewport.
+A cinematic scroll-driven storytelling component featuring a unified panoramic landscape that splits into three distinct physical card panels upon scrolling. As the user continues downward, the cards separate, execute a perspective-rich 180° 3D flip to reveal curated editorial narratives, and finally settle cleanly in place.
 
 `ScrollSplitCards` brings tactile visual immersion to brand origin stories, architectural journeys, editorial photography features, and landmark case studies.
 
 export const usageDefault = `import { ScrollSplitCards } from "@/components/custom/blocks/ScrollSplitCardsBlock";
 
-export default function ScrollSplitCardsExample() {
+export default function DefaultVariantExample() {
   return (
 
   );
 }`;
 
-export const usageCustom = `import { ScrollSplitCards } from "@/components/custom/blocks/ScrollSplitCardsBlock";
+export const usageSlowTransition = `import { ScrollSplitCards } from "@/components/custom/blocks/ScrollSplitCardsBlock";
 
-export default function MinimalistEditorialExample() {
+export default function SlowTransitionExample() {
   return (
 
   );
@@ -42,8 +42,8 @@ npx shadcn@latest add @algorize-ui/scroll-split-cards
     Dual-Sided 3D Cardstock
     Each panel has genuine 3D card faces with preserve-3d and backface-visibility, flipping 180° to reveal typographic narratives with individual color schemes.
 
-    Stable Level Resting State
-    Once the cards flip 180°, they rest cleanly aligned and straight side by side in the center without unwanted vertical drift or exit.
+    Live Range Slider & Speed Control
+    Fine-tune the scroll rate by passing scrollSpeed or speed (numbers like 0.6 or presets like "slow", "normal", "fast"), with a live interactive range slider.
 
 ## Best Practices & Guidelines
 
@@ -58,10 +58,17 @@ npx shadcn@latest add @algorize-ui/scroll-split-cards
 
 ## Props Reference
 
+### ScrollSplitCards Props
+
         Prop
         Type
         Default
         Description
+
+        variant
+        "default" | "slow-transition"
+        "default"
+        Selects the transition variant mode. "slow-transition" automatically activates a slower, leisurely storytelling scroll.
 
         imageUrl
         string
@@ -71,7 +78,12 @@ npx shadcn@latest add @algorize-ui/scroll-split-cards
         cards
         SplitCard[]
         DEFAULT_CARDS
-        Array of card data objects containing title, description, kicker, metric, metricLabel, location, bgColor, and textColor. Also accepts items.
+        Array of card data objects for the three panels. Also accepts items.
+
+        scrollSpeed
+        number | "slow" | "normal" | "fast"
+        1
+        Optional speed multiplier for mousewheel and touch scroll progression. Smaller numbers like 0.6 or "slow" make the animation slower and more granular. Also accepts speed.
 
         headerTitle
         string
@@ -91,12 +103,64 @@ npx shadcn@latest add @algorize-ui/scroll-split-cards
         enableScrollIndicator
         boolean
         true
-        Controls whether to display the animated mouse scroll indicator pill at the bottom center.
+        Controls whether to display the animated mouse scroll indicator pill at the top.
 
         className
         string
         ""
         Additional CSS classes applied to the root outer container.
+
+### SplitCard Item Properties
+
+        Property
+        Type
+        Default
+        Description
+
+        title
+        string
+        Required
+        Main editorial display headline rendered on the card's back face.
+
+        description
+        string
+        Required
+        Narrative storytelling copy describing the chapter or feature.
+
+        tag
+        string
+        "CHAPTER"
+        Category pill label badge rendered at the top-left of the back face. Also accepts kicker.
+
+        number
+        string
+        "01", "02", "03"
+        Index label rendered at the top-right of the card.
+
+        metric
+        string
+        undefined
+        Prominent stat, elevation, or milestone callout value (e.g. "1,496 M").
+
+        metricLabel
+        string
+        "METRIC"
+        Label displayed directly above the prominent metric number.
+
+        location
+        string
+        undefined
+        Geographic location or sub-region rendered in the bottom footer row.
+
+        backgroundColor
+        string
+        "#13352F"
+        Background color of the card back face. Also accepts bgColor.
+
+        textColor
+        string
+        "#E6F4F1"
+        Text color for clear contrast against the card background.
 
 ---
 

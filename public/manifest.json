@@ -1,7 +1,7 @@
 {
   "name": "Algorize UI — React Component Library",
   "short_name": "Algorize UI",
-  "description": "A React component library of 179 animated, accessible components installed by the shadcn CLI straight into your project.",
+  "description": "A React component library of 180 animated, accessible components installed by the shadcn CLI straight into your project.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
