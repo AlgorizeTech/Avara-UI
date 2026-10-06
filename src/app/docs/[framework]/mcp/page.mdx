@@ -1,3 +1,7 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("mcp");
+
 import { Cli } from "@/components/site/cli";
 import { McpClientTabs, McpClientPanel } from "@/components/site/mcp-client-tabs";
 
@@ -197,7 +201,7 @@ only the file differs.
   </div>
   <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
     <h4 className="text-[14px] font-semibold text-foreground mb-1">Installs fail</h4>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Make sure <code>components.json</code> exists (<a href="/docs/nextjs/installation" className="text-primary hover:underline">run <code>init</code></a>) and you have write access to the project folders.</p>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Make sure <code>components.json</code> exists (<DocLink to="installation" className="text-primary hover:underline">run <code>init</code></DocLink>) and you have write access to the project folders.</p>
   </div>
 </div>
 

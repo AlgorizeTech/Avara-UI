@@ -3987,12 +3987,63 @@ function FooterSection() {
 							AlgorizeTech
 						</Link>
 					</span>
-					<span>Free and open source.</span>
+					<div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+						<span>Free and open source.</span>
+						<span aria-hidden className="hidden sm:block h-3 w-px bg-foreground/15" />
+						<ul className="flex items-center gap-1">
+							{FOOTER_SOCIALS.map(({ label, href, ariaLabel, Icon }) => (
+								<li key={label}>
+									<Link
+										href={href}
+										target="_blank"
+										rel="noopener noreferrer"
+										aria-label={ariaLabel}
+										className="group -mx-1 inline-flex items-center gap-1.5 rounded-md px-1 py-1 font-medium text-foreground/60 hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50">
+										<span className="flex size-5 items-center justify-center rounded-[5px] bg-foreground/[0.06] text-foreground/70 transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+											<Icon className="size-2.5" />
+										</span>
+										{label}
+									</Link>
+								</li>
+							))}
+						</ul>
+					</div>
 				</div>
 			</div>
 		</footer>
 	);
 }
+
+function FooterXIcon({ className }: { className?: string }) {
+	return (
+		<svg viewBox="0 0 300 271" fill="currentColor" aria-hidden className={className}>
+			<path d="m236 0h46l-101 115 118 156h-92.6l-72.5-94.8-83 94.8h-46l107-123-113-148h94.9l65.5 86.6zm-16.1 244h25.5l-165-218h-27.4z" />
+		</svg>
+	);
+}
+
+function FooterLinkedInIcon({ className }: { className?: string }) {
+	return (
+		<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
+			<path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45z" />
+		</svg>
+	);
+}
+
+const FOOTER_SOCIALS = [
+	{
+		label: "X",
+		href: "https://x.com/Pranto39",
+		ariaLabel: "Pranto Chakraborty on X",
+		Icon: FooterXIcon,
+	},
+	{
+		label: "LinkedIn",
+		href: "https://www.linkedin.com/in/pranto-chakraborty/",
+		ariaLabel: "Pranto Chakraborty on LinkedIn",
+		Icon: FooterLinkedInIcon,
+	},
+];
 
 /* ═══════════════════════════════════════════════
    MAIN PAGE ENTRY POINT

@@ -1,11 +1,13 @@
 {
   "carousel-3d": {
     "3d-carousel": "Carousel 3D — 3D carousel",
-    "shorter-deck": "Carousel 3D — Shorter deck"
+    "shorter-deck": "Carousel 3D — Shorter deck",
+    "without-arrows-or-dots": "Carousel 3D — Without arrows or dots"
   },
   "carousel-3d-motion": {
     "3d-carousel": "Carousel 3D — 3D carousel",
-    "shorter-deck": "Carousel 3D — Shorter deck"
+    "shorter-deck": "Carousel 3D — Shorter deck",
+    "without-arrows-or-dots": "Carousel 3D — Without arrows or dots"
   },
   "accordion": {
     "accordion": "Accordion",

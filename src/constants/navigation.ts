@@ -16,7 +16,7 @@ export type NavigationChild = {
   /**
    * Small tag after the label. `"New"` is time-limited: pair it with `addedOn`
    * and it disappears on its own after NEW_BADGE_DAYS. Every other badge
-   * ("Core", "Updated", …) stays until it is removed by hand.
+   * ("Updated", …) stays until it is removed by hand.
    */
   badge?: string;
   /** The day the page shipped, "YYYY-MM-DD". Drives the `"New"` badge's expiry. */
@@ -332,7 +332,6 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Auth Forms",
         slug: "signup-form",
-        badge: "Core",
         keywords: [
           "login",
           "log in",
@@ -444,7 +443,7 @@ const rawNavigation: NavigationItem[] = [
         addedOn: "2026-09-20",
         keywords: ["hero", "orbit", "gallery", "revolving", "carousel", "cards", "ring", "agency", "studio"],
       },
-      { label: "Navbar", slug: "navbar", badge: "Core" },
+      { label: "Navbar", slug: "navbar" },
       {
         label: "Platform Grid",
         slug: "platform-grid",
@@ -470,7 +469,7 @@ const rawNavigation: NavigationItem[] = [
       },
       { label: "Review Section", slug: "reviews" },
       { label: "Sidebar Section", slug: "sidebar" },
-      { label: "Support Dashboard", slug: "support-dashboard", badge: "Core" },
+      { label: "Support Dashboard", slug: "support-dashboard" },
       {
         label: "Newsletter",
         slug: "newsletter",

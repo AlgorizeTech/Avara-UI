@@ -3,7 +3,7 @@
 import { TOCItem, useTableOfContents } from "@/hooks/use-table-of-contents";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "motion/react";
-import { ArrowDown, ArrowUp, ExternalLink } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpRight } from "lucide-react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 export const TableOfContents: React.FC = () => {
@@ -266,25 +266,34 @@ export const TableOfContents: React.FC = () => {
           </nav>
         </div>
 
-        {/* Algorize Tech Promo Banner Image Segment */}
+        {/* Sponsorship call-out — same footprint as the old 1240×905 banner. */}
         <div className="px-2.5 py-2.5 border-t border-foreground/[0.06] shrink-0">
           <a
-            href="https://algorizetech.com"
+            href="https://algorizetech.com/book-call"
             target="_blank"
             rel="noopener noreferrer"
-            className="group block relative overflow-hidden rounded-xl border border-foreground/[0.06] hover:border-primary/30 transition-colors duration-200 shadow-none cursor-pointer"
+            className={cn(
+              "group flex flex-col justify-between aspect-[1240/905] p-3 rounded-xl",
+              "border border-foreground/[0.08] bg-foreground/[0.02]",
+              "hover:border-primary/40 hover:bg-primary/[0.04]",
+              "transition-colors duration-200",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
+            )}
           >
-            <img
-              src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790595480/screenshot-2026-09-28-173753-1790595489187.png"
-              alt="AlgorizeTech - Engineering scalable SaaS & AI products"
-              className="w-full h-auto object-cover rounded-xl transition-transform duration-300 group-hover:scale-[1.03]"
-            />
-            {/* Hover Dark Overlay with Centered URL Icon */}
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center rounded-xl">
-              <div className="size-9 rounded-full bg-primary text-primary-foreground flex items-center justify-center shadow-lg transform scale-75 group-hover:scale-100 transition-transform duration-300">
-                <ExternalLink className="w-4 h-4" />
-              </div>
-            </div>
+
+            <span className="mt-2 block">
+              <span className="block text-[13px] font-semibold leading-tight text-foreground">
+                Sponsor Algorize UI
+              </span>
+              <span className="mt-1 block text-[11.5px] leading-[1.45] text-foreground/50">
+                Help keep this library free and open source.
+              </span>
+            </span>
+
+            <span className="mt-2 inline-flex items-center gap-1 text-[12px] font-medium text-primary">
+              Book a call
+              <ArrowUpRight className="size-3 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </span>
           </a>
         </div>
 
