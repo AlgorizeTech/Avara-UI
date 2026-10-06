@@ -339,7 +339,8 @@
   "email": {
     "email-dashboard": "Email — Email dashboard",
     "minimal": "Email — Minimal",
-    "glass": "Email — Glass"
+    "glass": "Email — Glass",
+    "liquid-glass": "Email — Liquid Glass"
   },
   "faq-section": {
     "1-homepage-faq-section": "Faq Section — 1. Homepage FAQ Section"

@@ -117,6 +117,26 @@ export default function GlassMailbox() {
   );
 }`;
 
+export const usageLiquidGlass = `import EmailApp, { type Email } from "@/components/custom/blocks/Email";
+
+${emailData}
+
+export default function LiquidGlassMailbox() {
+  return (
+    // Nature wallpaper backdrop with real liquid SVG glass displacement
+    <div
+      className="p-8 rounded-2xl bg-cover bg-center relative"
+      style={{
+        backgroundImage:
+          'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
+      }}
+    >
+      <div className="absolute inset-0 bg-black/25 rounded-2xl pointer-events-none" />
+      <EmailApp variant="liquid-glass" initialEmails={emails} />
+    </div>
+  );
+}`;
+
 <ExampleShowcase
   name="email"
   colorControl
@@ -182,6 +202,20 @@ export default function GlassMailbox() {
       ],
       props: { variant: "glass" },
       usage: usageGlass,
+    },
+    {
+      title: "Liquid Glass",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"liquid-glass"',
+          effect:
+            "for authentic liquid glass refraction using SVG displacement mapping, multi-layer specular highlights, and fluid reflections.",
+        },
+      ],
+      props: { variant: "liquid-glass" },
+      usage: usageLiquidGlass,
     },
   ]}
 />

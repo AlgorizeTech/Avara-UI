@@ -3,7 +3,9 @@
 import EmailApp, {
   EmailColor,
   EmailVariant,
+  LiquidGlassSvgFilter,
 } from "@/components/custom/blocks/Email";
+import { cn } from "@/lib/utils";
 
 const sampleEmails = [
   {
@@ -82,31 +84,38 @@ export default function EmailDemo({
   variant?: EmailVariant;
   color?: EmailColor | string;
 }) {
+  const isGlass = variant === "glass" || variant === "liquid-glass";
+
   return (
     <div
-      className={`w-full transition-all duration-500 relative overflow-hidden ${
-        variant === "glass"
-          ? "p-4 sm:p-8 rounded-2xl bg-cover bg-center"
-          : ""
-      }`}
-      style={
-        variant === "glass"
-          ? {
-              backgroundImage:
-                'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
-            }
-          : undefined
-      }
-    >
-      {variant === "glass" && (
-        <div className="absolute inset-0 bg-black/20 rounded-2xl pointer-events-none" />
+      className={cn(
+        "w-full transition-all duration-500 relative flex items-center justify-center overflow-hidden",
+        isGlass
+          ? "p-0 -my-6 -mx-4 w-[calc(100%+2rem)] min-w-[calc(100%+2rem)] max-w-none"
+          : "w-full"
       )}
-      <EmailApp
-        key={`${variant}-${color}`} // Force re-render to reset email states if user is testing heavily
-        variant={variant}
-        color={color}
-        initialEmails={sampleEmails}
-      />
+    >
+      <LiquidGlassSvgFilter />
+      {isGlass && (
+        <div
+          className="absolute inset-0 w-full h-full bg-cover bg-center pointer-events-none z-0"
+          style={{
+            backgroundImage:
+              'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
+          }}
+        />
+      )}
+      {isGlass && (
+        <div className="absolute inset-0 bg-black/25 pointer-events-none z-0" />
+      )}
+      <div className={cn("w-full relative z-10", isGlass && "p-4 sm:p-8")}>
+        <EmailApp
+          key={`${variant}-${color}`} // Force re-render to reset email states if user is testing heavily
+          variant={variant}
+          color={color}
+          initialEmails={sampleEmails}
+        />
+      </div>
     </div>
   );
 }
