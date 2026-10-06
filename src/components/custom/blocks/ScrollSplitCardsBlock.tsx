@@ -5,10 +5,9 @@ import { cn } from "@/lib/utils";
 import { createSpringFollower } from "./motion-curves";
 
 // Scroll choreography: wheel and touch input move a raw 0 → 1 progress, and
-// the painted progress chases it through this spring (the equation of motion
-// Motion's `useSpring` solves) stepped on requestAnimationFrame. No
-// animation library: every frame writes the panels' transforms directly.
-const PROGRESS_SPRING = { stiffness: 220, damping: 28, mass: 1, restDelta: 0.001, restSpeed: 0.01 };
+// the painted progress chases it through this smooth, damped spring stepped
+// on requestAnimationFrame for a buttery, cinematic feel.
+const PROGRESS_SPRING = { stiffness: 70, damping: 18, mass: 1.2, restDelta: 0.0004, restSpeed: 0.004 };
 
 // ============================================================================
 // TYPES & INTERFACES
@@ -31,6 +30,7 @@ export type SplitCardItem = SplitCard;
 
 export interface ScrollSplitCardsProps
   extends React.HTMLAttributes<HTMLDivElement> {
+  variant?: "default" | "slow-transition";
   items?: SplitCard[];
   cards?: SplitCard[];
   imageSrc?: string;
@@ -39,6 +39,8 @@ export interface ScrollSplitCardsProps
   headerSubtitle?: string;
   containerHeight?: string;
   enableScrollIndicator?: boolean;
+  scrollSpeed?: number | "slow" | "normal" | "fast";
+  speed?: number | "slow" | "normal" | "fast";
 }
 
 // ============================================================================
@@ -102,23 +104,23 @@ function lerp(a: number, b: number, t: number) {
 /** Left/right panels shift outward, keeping a smaller peak and restGap on small screens to prevent clipping. */
 function panelShiftX(progress: number, index: number, isSmall = false) {
   const dir = index === 0 ? -1 : index === 2 ? 1 : 0;
-  const out = remap(progress, 0, 0.4);
-  const settle = remap(progress, 0.4, 0.8);
+  const out = remap(progress, 0, 0.45);
+  const settle = remap(progress, 0.45, 0.88);
   const peak = isSmall ? 18 : 48;
-  return dir * lerp(0, peak, out) * (1 - settle * 0.5) || 0;
+  return dir * lerp(0, peak, out) * (1 - settle * 0.45) || 0;
 }
 
 function panelRotateY(progress: number) {
-  return lerp(0, 180, remap(progress, 0.4, 0.8));
+  return lerp(0, 180, remap(progress, 0.35, 0.85));
 }
 
 function panelScale(progress: number, isSmall = false) {
   const target = isSmall ? 0.88 : 0.94;
-  return lerp(1, target, remap(progress, 0, 0.4));
+  return lerp(1, target, remap(progress, 0, 0.38));
 }
 
 function panelRadius(progress: number, index: number) {
-  const inner = lerp(0, 16, remap(progress, 0, 0.2));
+  const inner = lerp(0, 16, remap(progress, 0, 0.25));
   if (index === 0) return `16px ${inner}px ${inner}px 16px`;
   if (index === 2) return `${inner}px 16px 16px ${inner}px`;
   return `${inner}px`;
@@ -235,6 +237,7 @@ function Panel({
 // MAIN COMPONENT
 // ============================================================================
 export function ScrollSplitCards({
+  variant = "default",
   items,
   cards,
   imageSrc,
@@ -243,12 +246,24 @@ export function ScrollSplitCards({
   headerSubtitle = "Scroll down to reveal the alpine lake narrative",
   containerHeight,
   enableScrollIndicator = true,
+  scrollSpeed,
+  speed,
   className = "",
   style,
   ...props
 }: ScrollSplitCardsProps) {
   const cardList = (items || cards || DEFAULT_CARDS).slice(0, 3);
   const activeImage = imageSrc || imageUrl || DEFAULT_IMAGE;
+  const defaultSpeedForVariant = variant === "slow-transition" ? "slow" : 1;
+  const activeSpeed = speed ?? scrollSpeed ?? defaultSpeedForVariant;
+  const speedFactor =
+    typeof activeSpeed === "number"
+      ? activeSpeed
+      : activeSpeed === "slow"
+      ? 0.5
+      : activeSpeed === "fast"
+      ? 1.8
+      : 1;
 
   const containerRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -331,7 +346,7 @@ export function ScrollSplitCards({
       const current = raw;
       if ((e.deltaY > 0 && current < 1) || (e.deltaY < 0 && current > 0)) {
         e.preventDefault();
-        const delta = e.deltaY * 0.0018;
+        const delta = e.deltaY * 0.00065 * speedFactor;
         moveTo(Math.min(Math.max(current + delta, 0), 1));
       }
     };
@@ -342,12 +357,12 @@ export function ScrollSplitCards({
     };
     const handleTouchMove = (e: TouchEvent) => {
       const currentY = e.touches[0].clientY;
-      const deltaY = (touchStartY - currentY) * 1.5;
+      const deltaY = touchStartY - currentY;
       touchStartY = currentY;
       const current = raw;
       if ((deltaY > 0 && current < 1) || (deltaY < 0 && current > 0)) {
         if (e.cancelable) e.preventDefault();
-        moveTo(Math.min(Math.max(current + deltaY * 0.003, 0), 1));
+        moveTo(Math.min(Math.max(current + deltaY * 0.0012 * speedFactor, 0), 1));
       }
     };
 
@@ -363,7 +378,7 @@ export function ScrollSplitCards({
       el.removeEventListener("touchstart", handleTouchStart);
       el.removeEventListener("touchmove", handleTouchMove);
     };
-  }, []);
+  }, [speedFactor]);
 
   // A re-render (new cards, say) puts fresh panels on the stage at their
   // resting style: bring them to the current progress before they paint.
