@@ -1,8 +1,9 @@
 "use client";
 
 import {
-  CarouselItem,
+  type CarouselItem,
   ThreeDCarousel,
+  type ThreeDCarouselProps,
 } from "@/components/custom/blocks/motion/ThreeDCarouselBlock";
 import { accentStyle } from "@/lib/accent";
 
@@ -57,11 +58,14 @@ const sampleItems: CarouselItem[] = [
 export default function Carousel3DMotionDemo({
   autoPlay = true,
   autoPlayInterval = 4000,
+  showArrows = true,
+  showDots = true,
   itemCount,
   color = "primary",
-}: {
-  autoPlay?: boolean;
-  autoPlayInterval?: number;
+}: Pick<
+  ThreeDCarouselProps,
+  "autoPlay" | "autoPlayInterval" | "showArrows" | "showDots"
+> & {
   /** Trims the deck so you can see how the fan tightens with fewer cards. */
   itemCount?: number;
   /** Accent from the gallery's colour picker. */
@@ -85,6 +89,8 @@ export default function Carousel3DMotionDemo({
           items={items}
           autoPlay={autoPlay}
           autoPlayInterval={autoPlayInterval}
+          showArrows={showArrows}
+          showDots={showDots}
         />
       </div>
     </div>

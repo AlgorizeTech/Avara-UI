@@ -10,7 +10,7 @@ import {
 } from "@/lib/framework";
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "motion/react";
-import { ChevronDown, ChevronRight, PlayCircle, Search, X } from "lucide-react";
+import { ChevronDown, ChevronRight, FileText, PlayCircle, Plug, Search, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useMemo, useState } from "react";
@@ -344,6 +344,28 @@ const Sidebar = () => {
               <PlayCircle className="w-3.5 h-3.5 shrink-0 opacity-70" />
               Getting Started Guide
             </Link>
+            <Link
+              href={docsHref(framework, "mcp")}
+              className={cn(
+                "flex items-center gap-2 min-h-8 py-[0.35rem] px-3 rounded-md text-[13px] transition-colors cursor-pointer",
+                currentSlug === "mcp"
+                  ? "text-primary font-medium"
+                  : "text-foreground/55 hover:text-foreground",
+              )}
+            >
+              <Plug className="w-3.5 h-3.5 shrink-0 opacity-70" />
+              MCP Server
+            </Link>
+            {/* A plain anchor: /llms.txt is a text route, not a docs page. */}
+            <a
+              href="/llms.txt"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 min-h-8 py-[0.35rem] px-3 rounded-md text-[13px] text-foreground/55 hover:text-foreground transition-colors"
+            >
+              <FileText className="w-3.5 h-3.5 shrink-0 opacity-70" />
+              llms.txt
+            </a>
           </div>
         </div>
       </ScrollArea>
