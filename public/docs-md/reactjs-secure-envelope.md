@@ -1,12 +1,19 @@
-export const metadata = docsPageMetadata("coupon-cards");
+export const metadata = docsPageMetadata("secure-envelope");
 
-# Coupon Cards
+# Secure Envelope
 
-An interactive classified folder & boarding pass component featuring a secret card that glides out horizontally on hover and elevates gracefully onto the cover on click. Designed with a vector-precise thumb notch, authentic security crest seals, and luxurious 3D dual-sided flip physics.
+An interactive classified envelope sleeve & travel pass component featuring a secret card that glides out horizontally on hover and elevates gracefully onto the cover on click. Designed with a vector-precise thumb notch, authentic security crest seals, and luxurious 3D dual-sided flip physics.
 
-`CouponCards` brings tactile physical curiosity to train online tickets, travel booking passes, coupon reward vouchers, and editorial dossiers.
+`SecureEnvelope` brings tactile physical curiosity to train online tickets, travel booking passes, security dossiers, coupon reward vouchers, and VIP cards.
 
-export const usageTrainTicket = `import { CouponCards } from "@/components/custom/blocks/ConfidentialFolderBlock";
+export const usageTrainTicket = `import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
+
+const ticketData: SecureEnvelopeData = {
+  passengerName: "Barbara M. Sandoval",
+  routeText: "ZÜRICH HB - PARIS-EST",
+  seatNumber: "18A",
+  trainNumber: "6",
+};
 
 export default function TrainOnlineTicketExample() {
   return (
@@ -14,17 +21,29 @@ export default function TrainOnlineTicketExample() {
   );
 }`;
 
-export const usageAutoFlip = `import { CouponCards } from "@/components/custom/blocks/ConfidentialFolderBlock";
+export const usageAutoFlip = `import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
 
-export default function AutoFlipCouponCardsExample() {
+const voucherData: SecureEnvelopeData = {
+  frontTitle: "Exclusive Access",
+  frontSubtitle: "Limited edition membership and premium reward voucher.",
+  highlightQuote: "Unlock 50% off on all annual pro plans.",
+};
+
+export default function AutoFlipSecureEnvelopeExample() {
   return (
 
   );
 }`;
 
-export const usageStepFlip = `import { CouponCards } from "@/components/custom/blocks/ConfidentialFolderBlock";
+export const usageStepFlip = `import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
 
-export default function StepFlipCouponCardsExample() {
+const keycardData: SecureEnvelopeData = {
+  holderName: "Kaelen Vance",
+  roleTitle: "SECURITY ARCHITECT",
+  authLevel: "LEVEL 09",
+};
+
+export default function CyberBiometricKeycardExample() {
   return (
 
   );
@@ -36,13 +55,13 @@ Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
 npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/confidential-folder
+npx shadcn@latest add @algorize-ui/secure-envelope
 ```
 
 ## Features
 
-    Train Online Ticket & Hyperbolt Sleeve
-    Authentic railway transit ticket design with blue pill headers, passenger/seat matrix, vertical barcode, station route banner, tear-off stub, and matching Hyperbolt Express sleeve.
+    Rail Tickets & Cyber Keycards
+    Rich variety of real-world templates including Hyperbolt European train tickets, classic classified dossiers, and futuristic Quantum biometric keycards with EMV microchips.
 
     Two-Stage Flight Choreography
     When clicked, the document slides out horizontally past the sleeve edge, elevates in front on the z-axis, and glides back down with a gentle tilt onto the front cover.
@@ -56,13 +75,13 @@ npx shadcn@latest add @algorize-ui/confidential-folder
 ## Best Practices & Guidelines
 
     Keyboard & Accessibility
-    CouponCards supports keyboard navigation: focus it with Tab and trigger the opening/closing animation using Enter or Space, or close with Escape.
+    SecureEnvelope supports keyboard navigation: focus it with Tab and trigger the opening/closing animation using Enter or Space, or close with Escape.
 
     Mobile & Touch Interaction
     On touch devices where hover is unavailable, tapping the folder launches the smooth opening flight sequence immediately.
 
-    Custom Train Tickets
-    Pass cardDesign="train-ticket" with custom passengerName, routeText, seatNumber, trainNumber, and date to create realistic online transit passes.
+    Keycards & Access Credentials
+    Pass cardDesign="keycard" with custom clearance levels, holder name, EMV chips, and cryptographic hash telemetry for cybersecurity badges and VIP portals.
 
 ## Props Reference
 
@@ -71,10 +90,15 @@ npx shadcn@latest add @algorize-ui/confidential-folder
         Default
         Description
 
+        data
+        SecureEnvelopeData | SecureEnvelopeData[]
+        undefined
+        Structured data object containing all ticket, pass, keycard, voucher, and card metric properties. Can also be passed as an array.
+
         cardDesign
-        "classified" | "train-ticket"
+        "classified" | "train-ticket" | "keycard"
         "classified"
-        Selects the card visual template: "train-ticket" for Hyperbolt train online tickets & sleeve box, or "classified" for confidential dossiers.
+        Selects the card visual template: "keycard" for biometric smartcards, "train-ticket" for railway tickets, or "classified" for confidential dossiers.
 
         interactionMode
         "auto-flip" | "step-flip"
@@ -163,6 +187,6 @@ npx shadcn@latest add @algorize-ui/confidential-folder
 
 ---
 
-**Component Path:** `[framework]\coupon-cards\page.mdx`
+**Component Path:** `[framework]\secure-envelope\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

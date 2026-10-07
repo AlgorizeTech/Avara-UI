@@ -1038,7 +1038,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "utils"
+        "https://algorize-ui.vercel.app/r/secure-envelope.json"
       ],
       "files": [
         {
@@ -3633,6 +3633,30 @@
         }
       ],
       "docs": "Named exports: ScrollStack, StackItem. `items` take { id, title, description?, content?, color?, icon? }; `depthScale` and `cardGap` tune the stack. Pass `scroller` when the page scrolls inside a container rather than the window. No runtime dependencies."
+    },
+    {
+      "name": "secure-envelope",
+      "type": "registry:component",
+      "title": "Secure Envelope",
+      "author": "AlgorizeTech",
+      "description": "An interactive classified security envelope & travel pass sleeve component featuring a secret card that glides out horizontally on hover and elevates gracefully onto the cover on click with 3D flip physics.",
+      "categories": [
+        "data-display",
+        "marketing",
+        "actions"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/SecureEnvelopeBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/SecureEnvelopeBlock.tsx"
+        }
+      ],
+      "docs": "Named export: SecureEnvelope (also ConfidentialFolder)."
     },
     {
       "name": "select",

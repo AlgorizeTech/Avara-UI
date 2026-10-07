@@ -2,7 +2,7 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-10-06T05:49:19.385Z
+**Generated at:** 2026-10-07T06:50:42.682Z
 **Total files:** 303
 
 ## Available Files
@@ -17,6 +17,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/api-playground](/docs/nextjs-api-playground.md) - Source: `[framework]\api-playground\page.mdx`
 - [nextjs/apple-select](/docs/nextjs-apple-select.md) - Source: `[framework]\apple-select\page.mdx`
 - [nextjs/audio-player](/docs/nextjs-audio-player.md) - Source: `[framework]\audio-player\page.mdx`
+- [nextjs/auth-forms](/docs/nextjs-auth-forms.md) - Source: `[framework]\auth-forms\page.mdx`
 - [nextjs/avatar-stack](/docs/nextjs-avatar-stack.md) - Source: `[framework]\avatar-stack\page.mdx`
 - [nextjs/bento-showcase](/docs/nextjs-bento-showcase.md) - Source: `[framework]\bento-showcase\page.mdx`
 - [nextjs/book-appointment](/docs/nextjs-book-appointment.md) - Source: `[framework]\book-appointment\page.mdx`
@@ -42,7 +43,6 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/copy-button](/docs/nextjs-copy-button.md) - Source: `[framework]\copy-button\page.mdx`
 - [nextjs/counter](/docs/nextjs-counter.md) - Source: `[framework]\counter\page.mdx`
 - [nextjs/counter-section](/docs/nextjs-counter-section.md) - Source: `[framework]\counter-section\page.mdx`
-- [nextjs/coupon-cards](/docs/nextjs-coupon-cards.md) - Source: `[framework]\coupon-cards\page.mdx`
 - [nextjs/cursor-animation](/docs/nextjs-cursor-animation.md) - Source: `[framework]\cursor-animation\page.mdx`
 - [nextjs/curved-carousel](/docs/nextjs-curved-carousel.md) - Source: `[framework]\curved-carousel\page.mdx`
 - [nextjs/custom-code-block](/docs/nextjs-custom-code-block.md) - Source: `[framework]\custom-code-block\page.mdx`
@@ -119,10 +119,10 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/scroll-area](/docs/nextjs-scroll-area.md) - Source: `[framework]\scroll-area\page.mdx`
 - [nextjs/scroll-split-cards](/docs/nextjs-scroll-split-cards.md) - Source: `[framework]\scroll-split-cards\page.mdx`
 - [nextjs/scroll-stack](/docs/nextjs-scroll-stack.md) - Source: `[framework]\scroll-stack\page.mdx`
+- [nextjs/secure-envelope](/docs/nextjs-secure-envelope.md) - Source: `[framework]\secure-envelope\page.mdx`
 - [nextjs/select](/docs/nextjs-select.md) - Source: `[framework]\select\page.mdx`
 - [nextjs/selection-frame](/docs/nextjs-selection-frame.md) - Source: `[framework]\selection-frame\page.mdx`
 - [nextjs/sidebar](/docs/nextjs-sidebar.md) - Source: `[framework]\sidebar\page.mdx`
-- [nextjs/signup-form](/docs/nextjs-signup-form.md) - Source: `[framework]\signup-form\page.mdx`
 - [nextjs/skeleton](/docs/nextjs-skeleton.md) - Source: `[framework]\skeleton\page.mdx`
 - [nextjs/social-links](/docs/nextjs-social-links.md) - Source: `[framework]\social-links\page.mdx`
 - [nextjs/sonner](/docs/nextjs-sonner.md) - Source: `[framework]\sonner\page.mdx`
@@ -169,6 +169,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/api-playground](/docs/reactjs-api-playground.md) - Source: `[framework]\api-playground\page.mdx`
 - [reactjs/apple-select](/docs/reactjs-apple-select.md) - Source: `[framework]\apple-select\page.mdx`
 - [reactjs/audio-player](/docs/reactjs-audio-player.md) - Source: `[framework]\audio-player\page.mdx`
+- [reactjs/auth-forms](/docs/reactjs-auth-forms.md) - Source: `[framework]\auth-forms\page.mdx`
 - [reactjs/avatar-stack](/docs/reactjs-avatar-stack.md) - Source: `[framework]\avatar-stack\page.mdx`
 - [reactjs/bento-showcase](/docs/reactjs-bento-showcase.md) - Source: `[framework]\bento-showcase\page.mdx`
 - [reactjs/book-appointment](/docs/reactjs-book-appointment.md) - Source: `[framework]\book-appointment\page.mdx`
@@ -194,7 +195,6 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/copy-button](/docs/reactjs-copy-button.md) - Source: `[framework]\copy-button\page.mdx`
 - [reactjs/counter](/docs/reactjs-counter.md) - Source: `[framework]\counter\page.mdx`
 - [reactjs/counter-section](/docs/reactjs-counter-section.md) - Source: `[framework]\counter-section\page.mdx`
-- [reactjs/coupon-cards](/docs/reactjs-coupon-cards.md) - Source: `[framework]\coupon-cards\page.mdx`
 - [reactjs/cursor-animation](/docs/reactjs-cursor-animation.md) - Source: `[framework]\cursor-animation\page.mdx`
 - [reactjs/curved-carousel](/docs/reactjs-curved-carousel.md) - Source: `[framework]\curved-carousel\page.mdx`
 - [reactjs/custom-code-block](/docs/reactjs-custom-code-block.md) - Source: `[framework]\custom-code-block\page.mdx`
@@ -271,10 +271,10 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/scroll-area](/docs/reactjs-scroll-area.md) - Source: `[framework]\scroll-area\page.mdx`
 - [reactjs/scroll-split-cards](/docs/reactjs-scroll-split-cards.md) - Source: `[framework]\scroll-split-cards\page.mdx`
 - [reactjs/scroll-stack](/docs/reactjs-scroll-stack.md) - Source: `[framework]\scroll-stack\page.mdx`
+- [reactjs/secure-envelope](/docs/reactjs-secure-envelope.md) - Source: `[framework]\secure-envelope\page.mdx`
 - [reactjs/select](/docs/reactjs-select.md) - Source: `[framework]\select\page.mdx`
 - [reactjs/selection-frame](/docs/reactjs-selection-frame.md) - Source: `[framework]\selection-frame\page.mdx`
 - [reactjs/sidebar](/docs/reactjs-sidebar.md) - Source: `[framework]\sidebar\page.mdx`
-- [reactjs/signup-form](/docs/reactjs-signup-form.md) - Source: `[framework]\signup-form\page.mdx`
 - [reactjs/skeleton](/docs/reactjs-skeleton.md) - Source: `[framework]\skeleton\page.mdx`
 - [reactjs/social-links](/docs/reactjs-social-links.md) - Source: `[framework]\social-links\page.mdx`
 - [reactjs/sonner](/docs/reactjs-sonner.md) - Source: `[framework]\sonner\page.mdx`

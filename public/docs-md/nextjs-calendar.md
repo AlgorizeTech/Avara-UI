@@ -59,6 +59,23 @@ export default function GlassCalendar() {
   );
 }`;
 
+export const usageLiquidGlass = `import { CalendarDashboard, LiquidGlassSvgFilter } from "@/components/custom/blocks/Calendar";
+
+const y = new Date().getFullYear();
+const m = new Date().getMonth() + 1;
+const events = {
+  [\`\${y}-\${m}-2\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-10\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-15\`]: ["pentest", "kickoff"],
+  [\`\${y}-\${m}-24\`]: ["kickoff", "pentest"],
+};
+
+export default function LiquidGlassCalendar() {
+  return (
+
+  );
+}`;
+
 ## Installation
 
 Register the @algorize-ui registry once per project, then add the component:
@@ -109,7 +126,7 @@ Discover the Calendar's date selection capabilities, supporting single dates, da
 
           variant
 
-          "default" | "minimal" | "glass"
+          "default" | "minimal" | "glass" | "liquid-glass"
 
           "default"
 

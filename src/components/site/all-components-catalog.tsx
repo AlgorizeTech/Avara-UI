@@ -204,7 +204,7 @@ const COMPONENT_META: Record<
 
 	// Added after the catalog's last pass — each draws its own miniature below.
 	"card-stack": { countText: "Swipe-to-Discard Deck", illustrationType: "card-stack" },
-	"confidential-folder": { countText: "Slide-Out Sleeve", illustrationType: "confidential-folder" },
+	"secure-envelope": { countText: "Slide-Out Sleeve", illustrationType: "secure-envelope" },
 	"image-wall": { countText: "Camera Over a Wall", illustrationType: "image-wall" },
 	"scroll-split-cards": { countText: "Panorama Split & Flip", illustrationType: "scroll-split-cards" },
 	"split-flap": { countText: "Mechanical Flip Board", illustrationType: "split-flap" },
@@ -272,7 +272,7 @@ const COMPONENT_TYPES = {
 		description: "Cards, decks, folders and scroll-driven stacks.",
 		icon: Layers,
 		kind: "ui",
-		slugs: ["card", "card-stack", "tilted-card", "memories-card", "wallet", "folder", "confidential-folder", "design-components-folder", "scroll-stack", "scroll-split-cards", "draggable-card-list", "book-flip"],
+		slugs: ["card", "card-stack", "tilted-card", "memories-card", "wallet", "folder", "secure-envelope", "design-components-folder", "scroll-stack", "scroll-split-cards", "draggable-card-list", "book-flip"],
 	},
 	data: {
 		label: "Data Display",
@@ -3527,7 +3527,7 @@ function MiniatureIllustration({
 					</div>
 				)}
 
-				{type === "confidential-folder" && (
+				{(type === "secure-envelope" || type === "confidential-folder") && (
 					<div className="w-full h-full flex items-center justify-center my-auto">
 						<div className="relative w-32 h-16">
 							{/* The card slides out of the sleeve to the right. */}

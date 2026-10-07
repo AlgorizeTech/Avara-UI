@@ -2,7 +2,7 @@ export const metadata = docsPageMetadata("modal");
 
 # Modal
 
-A versatile, accessible dialog component with built-in design variants. Choose from pre-configured variants (`standard`, `confirmation`, `form`, `fullscreen`, `glass`) to instantly get complete layout, responsive sizing, and interactive buttons—or use composable subcomponents for custom dialogs.
+A versatile, accessible dialog component with built-in design variants. Choose from pre-configured variants (`standard`, `confirmation`, `form`, `fullscreen`, `glass`, `liquid-glass`) to instantly get complete layout, responsive sizing, and interactive buttons—or use composable subcomponents for custom dialogs.
 
 `Modal` manages all dialog complexities—portals, focus traps, backdrop dismissal, Escape key handling, body scroll locking, and smooth enter/exit animations.
 
@@ -154,12 +154,12 @@ export default function LiquidGlassModal() {
 
        setIsOpen(false)}
         variant="liquid-glass"
-        title="Liquid Glass Experience"
-        badge="Ultra Refraction"
+        title="System Update Available"
+        badge="v2.4.0 Live"
         icon={}
-        description="Next-generation liquid glassmorphism featuring multi-layer specular highlights, chromatic dispersion, and fluid ambient glow."
-        cancelText="Dismiss"
-        confirmText="Explore Fluid"
+        description="A new software update is ready to be installed. This update includes new features, performance improvements, and critical security patches."
+        cancelText="Remind Me Later"
+        confirmText="Install Now"
         onConfirm={() => setIsOpen(false)}
       />
     
