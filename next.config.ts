@@ -58,21 +58,8 @@ const nextConfig: NextConfig = {
     scrollRestoration: true,
   },
 
-  // Bundle analyzer for performance monitoring
-  webpack: (config, { dev, isServer }) => {
-    // Optimize bundle size
-    if (!dev && !isServer) {
-      config.optimization.splitChunks = {
-        chunks: "all",
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: "vendors",
-            chunks: "all",
-          },
-        },
-      };
-    }
+  // Webpack configuration
+  webpack: (config) => {
     return config;
   },
 };

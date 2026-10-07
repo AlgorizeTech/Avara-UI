@@ -7,6 +7,19 @@ import { stripUseClient } from "../lib/snippet";
 import registry from "../../registry.json";
 import { countComponents } from "../lib/component-count";
 
+function safeWriteFileSync(filePath: string, data: string, encoding: BufferEncoding = 'utf-8') {
+  for (let attempt = 0; attempt < 5; attempt++) {
+    try {
+      fs.writeFileSync(filePath, data, encoding);
+      return;
+    } catch (err) {
+      if (attempt === 4) throw err;
+      const end = Date.now() + 150;
+      while (Date.now() < end) {}
+    }
+  }
+}
+
 /** The `{COMPONENT_COUNT}` a page prints, resolved from the same registry. */
 const COMPONENT_COUNT = String(countComponents(registry.items as { name: string }[]));
 
@@ -313,7 +326,7 @@ async function buildMdFiles(): Promise<void> {
             : stripUseClientFromSnippets(mdContent);
 
           // Write the MD file
-          fs.writeFileSync(outputPath, frameworkContent, 'utf-8');
+          safeWriteFileSync(outputPath, frameworkContent, 'utf-8');
 
           // Add to index
           mdIndex.push({
@@ -356,7 +369,7 @@ async function buildMdFiles(): Promise<void> {
       files: mdIndex.sort((a, b) => a.name.localeCompare(b.name))
     };
     
-    fs.writeFileSync(
+    safeWriteFileSync(
       path.join(mdOutputPath, 'index.json'),
       JSON.stringify(indexContent, null, 2),
       'utf-8'
@@ -385,7 +398,7 @@ You can access these files directly via URL:
 These are simplified Markdown versions of the original MDX files. For the full interactive experience with live code previews, visit the original documentation pages.
 `;
     
-    fs.writeFileSync(path.join(mdOutputPath, 'README.md'), readmeContent, 'utf-8');
+    safeWriteFileSync(path.join(mdOutputPath, 'README.md'), readmeContent, 'utf-8');
     
     console.log(`🎉 Successfully generated ${mdIndex.length} MD files!`);
     console.log(`📋 Index written to: /public/docs-md/index.json`);
