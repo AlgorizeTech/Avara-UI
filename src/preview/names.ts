@@ -136,6 +136,7 @@ export const sandboxNames = [
   "scroll-area",
   "scroll-split-cards",
   "scroll-stack",
+  "secure-envelope",
   "select",
   "selection-frame",
   "sidebar",

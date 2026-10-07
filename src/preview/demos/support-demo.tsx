@@ -143,37 +143,30 @@ export default function SupportDemo({
   variant = "default",
   color: pickedColor = "primary",
   layout = "chat",
+  bgImage,
+  ...props
 }: {
   variant?: SupportVariant;
   color?: SupportColor | "lavender";
   layout?: SupportLayout;
+  bgImage?: string;
 }) {
   // The dashboard has no lavender palette and no hex support. Its "primary"
   // palette follows --primary, which the sandbox points at the picked swatch.
-  const color: SupportColor = pickedColor === "lavender" ? "primary" : pickedColor;
+  const color: SupportColor =
+    pickedColor === "lavender" ? "primary" : pickedColor;
+
   return (
-    <div
-      className={`w-full transition-all duration-500 relative overflow-hidden rounded-2xl ${variant === "glass" ? "p-4 sm:p-8" : ""}`}
-    >
-      {variant === "glass" && (
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg"
-            alt="Moody nature landscape background"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
-        </div>
-      )}
-      <div className="relative z-10 w-full">
-        <SupportDashboard
-          key={`${variant}-${color}-${layout}`}
-          variant={variant}
-          color={color}
-          layout={layout}
-          data={sampleData}
-        />
-      </div>
+    <div className="w-full flex items-center justify-center">
+      <SupportDashboard
+        key={`${variant}-${color}-${layout}-${bgImage || ""}`}
+        variant={variant}
+        color={color}
+        layout={layout}
+        bgImage={bgImage}
+        data={sampleData}
+        {...props}
+      />
     </div>
   );
 }

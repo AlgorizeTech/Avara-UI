@@ -21,6 +21,7 @@ import {
 	MousePointerClick,
 	PanelTop,
 	SearchX,
+	ShoppingCart,
 	Sparkles,
 	Table,
 	TextCursorInput,
@@ -77,7 +78,7 @@ const COMPONENT_META: Record<
 > = {
 	// Ui Components
 	accordion: { countText: "Expandable Panels", illustrationType: "accordion" },
-	"ai-chat": { countText: "Streaming Interface", illustrationType: "chat" },
+	"ai-chat": { countText: "Streaming Interface", illustrationType: "ai-chat" },
 	alert: { countText: "Notification Banners", illustrationType: "modal" },
 	"api-playground": { countText: "API Tester", illustrationType: "api-playground" },
 	"apple-select": { countText: "iOS Text Selection", illustrationType: "apple-select" },
@@ -161,7 +162,7 @@ const COMPONENT_META: Record<
 	"table-of-contents": { countText: "Scroll-Spy Nav", illustrationType: "table-of-contents" },
 	"3d-carousel": { countText: "3D Physics Spring", illustrationType: "carousel" },
 	"animated-list": { countText: "Staggered Entrance", illustrationType: "animated-list" },
-	"chat-bubble": { countText: "Spring Motion Feed", illustrationType: "chat" },
+	"chat-bubble": { countText: "Spring Motion Feed", illustrationType: "chat-bubble" },
 	"design-components-folder": { countText: "Animated File Deck", illustrationType: "design-components-folder" },
 	"cursor-animation": { countText: "10 Fluid Variants", illustrationType: "cursor-animation" },
 	"curved-carousel": { countText: "3D Arc Sway Deck", illustrationType: "curved-carousel" },
@@ -181,7 +182,7 @@ const COMPONENT_META: Record<
 	"video-accordion": { countText: "Interactive Media", illustrationType: "video-accordion" },
 
 	// Website Sections
-	"signup-form": { countText: "Login & Register", illustrationType: "auth" },
+	"auth-forms": { countText: "Login & Register", illustrationType: "auth" },
 	footer: { countText: "4 Responsive Variants", illustrationType: "footer" },
 	hero: { countText: "6 Hero Sections", illustrationType: "hero" },
 	marquee: { countText: "Infinite Logo Ticker", illustrationType: "marquee" },
@@ -204,7 +205,7 @@ const COMPONENT_META: Record<
 
 	// Added after the catalog's last pass — each draws its own miniature below.
 	"card-stack": { countText: "Swipe-to-Discard Deck", illustrationType: "card-stack" },
-	"confidential-folder": { countText: "Slide-Out Sleeve", illustrationType: "confidential-folder" },
+	"secure-envelope": { countText: "Slide-Out Sleeve", illustrationType: "secure-envelope" },
 	"image-wall": { countText: "Camera Over a Wall", illustrationType: "image-wall" },
 	"scroll-split-cards": { countText: "Panorama Split & Flip", illustrationType: "scroll-split-cards" },
 	"split-flap": { countText: "Mechanical Flip Board", illustrationType: "split-flap" },
@@ -272,7 +273,7 @@ const COMPONENT_TYPES = {
 		description: "Cards, decks, folders and scroll-driven stacks.",
 		icon: Layers,
 		kind: "ui",
-		slugs: ["card", "card-stack", "tilted-card", "memories-card", "wallet", "folder", "confidential-folder", "design-components-folder", "scroll-stack", "scroll-split-cards", "draggable-card-list", "book-flip"],
+		slugs: ["card", "card-stack", "tilted-card", "memories-card", "wallet", "folder", "secure-envelope", "design-components-folder", "scroll-stack", "scroll-split-cards", "draggable-card-list", "book-flip"],
 	},
 	data: {
 		label: "Data Display",
@@ -342,7 +343,7 @@ const COMPONENT_TYPES = {
 		description: "Full screens: auth, dashboards, profiles and product pages.",
 		icon: AppWindow,
 		kind: "section",
-		slugs: ["signup-form", "book-appointment", "dashboard", "support-dashboard", "profile-page", "product-details", "image-viewer"],
+		slugs: ["auth-forms", "book-appointment", "dashboard", "support-dashboard", "profile-page", "product-details", "image-viewer"],
 	},
 	"more-sections": {
 		label: "More Sections",
@@ -664,13 +665,219 @@ function MiniatureIllustration({
 					</div>
 				)}
 
-				{type === "chat" && (
-					<div className="w-full space-y-1.5 my-auto text-[7px]">
-						<div className="p-1 px-2 rounded-lg bg-muted text-foreground max-w-[80%]">
-							Hello! How can I help?
+				{type === "ai-chat" && (
+					<div className="w-full h-full p-2 flex flex-col justify-between bg-card/90 border border-border/70 rounded-xl shadow-xs text-[7px] select-none">
+						{/* Top AI Header */}
+						<div className="flex items-center justify-between border-b border-border/50 pb-1.5 shrink-0">
+							<div className="flex items-center gap-1.5 font-bold text-foreground text-[8px]">
+								<div className="size-4 rounded-md bg-gradient-to-tr from-indigo-500 via-primary to-purple-500 text-white flex items-center justify-center text-[7px] font-extrabold shadow-2xs">
+									✦
+								</div>
+								<span>Lumen AI</span>
+								<span className="size-1.5 rounded-full bg-emerald-500 animate-pulse ml-0.5" />
+							</div>
+							<div className="flex items-center gap-1">
+								<span className="px-1.5 py-0.5 rounded-full bg-primary/10 text-primary font-semibold text-[6px] border border-primary/20 flex items-center gap-0.5">
+									<span>Lumen Flash</span>
+									<span className="text-[5px]">▾</span>
+								</span>
+							</div>
 						</div>
-						<div className="p-1 px-2 rounded-lg bg-primary text-primary-foreground max-w-[80%] ml-auto font-medium">
-							Show component docs!
+
+						{/* Chat Stream Body */}
+						<div className="flex-1 flex flex-col justify-center space-y-1.5 my-auto py-1">
+							{/* User Prompt */}
+							<div className="flex items-start justify-end gap-1">
+								<div className="p-1.5 px-2 rounded-xl rounded-tr-xs bg-muted/90 text-foreground text-[6.5px] leading-tight max-w-[85%] border border-border/40">
+									Build a stats widget with Tailwind
+								</div>
+								<div className="size-3.5 rounded-full bg-foreground/15 text-foreground text-[6px] font-bold flex items-center justify-center shrink-0">
+									U
+								</div>
+							</div>
+
+							{/* AI Response with Code Pill */}
+							<div className="flex items-start gap-1">
+								<div className="size-3.5 rounded-full bg-primary/20 text-primary text-[6px] font-bold flex items-center justify-center shrink-0">
+									✦
+								</div>
+								<div className="p-1.5 px-2 rounded-xl rounded-tl-xs bg-primary/10 border border-primary/20 text-foreground text-[6.5px] leading-tight max-w-[88%] space-y-1">
+									<p>Here is your responsive metric card:</p>
+									<div className="p-1 rounded bg-background/80 border border-border/60 font-mono text-[5.5px] text-primary flex items-center justify-between">
+										<span>&lt;MetricCard value="$48.2k" /&gt;</span>
+										<span className="text-muted-foreground text-[5px]">📋</span>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						{/* Prompt Dock */}
+						<div className="h-5 w-full bg-muted/60 border border-border/70 rounded-lg flex items-center justify-between px-1.5 text-[6px] text-muted-foreground shrink-0 shadow-2xs">
+							<div className="flex items-center gap-1 truncate">
+								<span className="text-[7px]">📎</span>
+								<span>Ask Lumen anything...</span>
+							</div>
+							<div className="flex items-center gap-1 shrink-0">
+								<span className="text-[6.5px]">🎙️</span>
+								<div className="size-3.5 rounded-md bg-primary text-primary-foreground flex items-center justify-center font-bold text-[6px] shadow-xs">
+									↑
+								</div>
+							</div>
+						</div>
+					</div>
+				)}
+
+				{type === "chat" && (
+					<div className="w-full h-full flex rounded-xl bg-card border border-border/70 overflow-hidden shadow-xs text-[7px] select-none">
+						{/* Left Contacts Sidebar (Mini 35%) */}
+						<div className="w-[36%] border-r border-border/50 bg-muted/30 p-1 flex flex-col justify-between shrink-0">
+							<div className="space-y-1">
+								<div className="h-3.5 w-full bg-background border border-border/60 rounded px-1 flex items-center text-[5.5px] text-muted-foreground">
+									🔍 Search
+								</div>
+								{/* Active Contact Item */}
+								<div className="p-1 rounded bg-primary/15 border border-primary/25 flex items-center gap-1 relative">
+									<div className="relative shrink-0">
+										<div className="size-3.5 rounded-full bg-gradient-to-tr from-sky-400 to-indigo-400 text-white font-bold text-[5px] flex items-center justify-center">
+											FR
+										</div>
+										<span className="absolute -bottom-0.5 -right-0.5 size-1 rounded-full bg-emerald-500 ring-1 ring-card" />
+									</div>
+									<div className="min-w-0 flex-1">
+										<div className="font-bold text-foreground text-[6px] truncate">Felecia R.</div>
+										<div className="text-[5px] text-primary truncate font-medium">I will buy...</div>
+									</div>
+									<span className="size-2.5 rounded-full bg-primary text-primary-foreground text-[5px] font-bold flex items-center justify-center shrink-0">
+										1
+									</span>
+								</div>
+								{/* Second Contact Item */}
+								<div className="p-1 rounded hover:bg-muted/40 flex items-center gap-1 opacity-70">
+									<div className="size-3.5 rounded-full bg-blue-100 text-blue-600 dark:bg-blue-900/40 dark:text-blue-300 font-bold text-[5px] flex items-center justify-center shrink-0">
+										AG
+									</div>
+									<div className="min-w-0 flex-1">
+										<div className="font-medium text-foreground text-[6px] truncate">Adalberto</div>
+										<div className="text-[5px] text-muted-foreground truncate">Email me...</div>
+									</div>
+								</div>
+							</div>
+							<div className="text-[5px] text-muted-foreground/60 text-center font-mono">
+								v2.4 Live
+							</div>
+						</div>
+
+						{/* Right Conversation Window (64%) */}
+						<div className="flex-1 p-1.5 flex flex-col justify-between bg-card">
+							{/* Contact Header */}
+							<div className="flex items-center justify-between border-b border-border/40 pb-1 shrink-0">
+								<div className="flex items-center gap-1">
+									<span className="font-bold text-foreground text-[7px]">Felecia Rower</span>
+									<span className="text-[5px] text-emerald-500 font-semibold">• online</span>
+								</div>
+								<div className="flex items-center gap-1 text-[6px] text-muted-foreground">
+									<span>📞</span>
+									<span>📹</span>
+								</div>
+							</div>
+
+							{/* Chat Messages */}
+							<div className="space-y-1 my-auto py-1">
+								<div className="flex items-end gap-1">
+									<div className="p-1.5 px-2 rounded-xl rounded-bl-xs bg-muted/90 text-foreground text-[6px] leading-tight max-w-[85%] border border-border/30">
+										I will purchase it for sure. 👍
+										<span className="text-[4.5px] text-muted-foreground/70 block mt-0.5 text-right">10:00 AM</span>
+									</div>
+								</div>
+								<div className="flex items-end justify-end gap-1">
+									<div className="p-1.5 px-2 rounded-xl rounded-br-xs bg-primary text-primary-foreground text-[6px] leading-tight max-w-[85%] font-medium shadow-xs">
+										Awesome! Order confirmed.
+										<div className="flex items-center justify-end gap-0.5 mt-0.5 text-[4.5px] text-primary-foreground/80">
+											<span>10:02 AM</span>
+											<span className="font-bold">✓✓</span>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							{/* Message Input */}
+							<div className="h-4 w-full bg-muted/50 border border-border/60 rounded-md flex items-center justify-between px-1.5 text-[5.5px] text-muted-foreground shrink-0">
+								<div className="flex items-center gap-1">
+									<span>😊</span>
+									<span>Type a message...</span>
+								</div>
+								<span className="size-3 rounded bg-primary text-primary-foreground flex items-center justify-center font-bold text-[5px]">
+									➤
+								</span>
+							</div>
+						</div>
+					</div>
+				)}
+
+				{type === "chat-bubble" && (
+					<div className="w-full h-full p-2 flex flex-col justify-between bg-card/90 border border-border/70 rounded-xl shadow-xs text-[7px] select-none">
+						{/* Top Header Strip */}
+						<div className="flex items-center justify-between border-b border-border/50 pb-1 shrink-0">
+							<div className="flex items-center gap-1.5">
+								<div className="relative">
+									<div className="size-4 rounded-full bg-gradient-to-tr from-rose-400 to-orange-300 text-white font-bold text-[5.5px] flex items-center justify-center shadow-2xs">
+										SJ
+									</div>
+									<span className="absolute -bottom-0.5 -right-0.5 size-1 rounded-full bg-emerald-500 ring-1 ring-card" />
+								</div>
+								<div>
+									<div className="font-bold text-foreground text-[7px] leading-none">Sarah Jenkins</div>
+									<span className="text-[5.5px] text-muted-foreground leading-none">Active now</span>
+								</div>
+							</div>
+							<span className="text-[5.5px] font-semibold px-1.5 py-0.2 rounded-full bg-primary/10 text-primary border border-primary/20">
+								Group Spring
+							</span>
+						</div>
+
+						{/* Grouped Chat Bubbles Body */}
+						<div className="space-y-1 my-auto py-1">
+							{/* Received Group 1 */}
+							<div className="flex items-end gap-1.5">
+								<div className="size-3.5 rounded-full bg-gradient-to-tr from-rose-400 to-orange-300 text-white font-bold text-[5px] flex items-center justify-center shrink-0">
+									SJ
+								</div>
+								<div className="p-1.5 px-2 rounded-2xl rounded-bl-xs bg-muted/90 border border-border/60 text-foreground text-[6.5px] leading-tight shadow-2xs max-w-[80%]">
+									Did you check out the new Docs UI kit?
+								</div>
+							</div>
+
+							{/* Sent Group 2 */}
+							<div className="flex items-end justify-end gap-1.5">
+								<div className="p-1.5 px-2 rounded-2xl rounded-br-xs bg-primary text-primary-foreground font-medium text-[6.5px] leading-tight shadow-xs max-w-[80%]">
+									<p>Yeah! The spring grouping logic is smooth.</p>
+									<div className="flex items-center justify-end gap-0.5 mt-0.5 text-[5px] text-primary-foreground/80">
+										<span>10:25 AM</span>
+										<span className="font-bold">✓✓</span>
+									</div>
+								</div>
+								<div className="size-3.5 rounded-full bg-foreground/15 border border-border/40 text-foreground font-bold text-[5px] flex items-center justify-center shrink-0">
+									ME
+								</div>
+							</div>
+
+							{/* Typing Bubble */}
+							<div className="flex items-center gap-1.5 pl-5">
+								<div className="px-2 py-1 rounded-full bg-muted/80 border border-border/50 flex items-center gap-1 shadow-2xs">
+									<span className="size-1 rounded-full bg-primary animate-bounce [animation-delay:-0.3s]" />
+									<span className="size-1 rounded-full bg-primary animate-bounce [animation-delay:-0.15s]" />
+									<span className="size-1 rounded-full bg-primary animate-bounce" />
+								</div>
+								<span className="text-[5px] text-muted-foreground">Sarah is typing...</span>
+							</div>
+						</div>
+
+						{/* Input Strip */}
+						<div className="h-4 w-full bg-muted/50 border border-border/60 rounded-full flex items-center justify-between px-2 text-[5.5px] text-muted-foreground shrink-0">
+							<span>Type a message...</span>
+							<div className="size-3 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-[5px]">
+								➤
+							</div>
 						</div>
 					</div>
 				)}
@@ -733,17 +940,73 @@ function MiniatureIllustration({
 				)}
 
 				{type === "cart" && (
-					<div className="w-full max-w-[130px] p-2 rounded-xl bg-background border border-border shadow-xs space-y-1.5 my-auto text-[7px]">
-						<div className="flex justify-between items-center font-semibold text-foreground border-b border-border pb-0.75">
-							<span>Shopping Cart</span>
-							<span className="text-primary">2 Items</span>
+					<div className="w-full h-full p-2 flex flex-col justify-between bg-card/90 border border-border/70 rounded-xl shadow-xs text-[7px] select-none">
+						{/* Cart Drawer Header */}
+						<div className="flex items-center justify-between border-b border-border/50 pb-1 shrink-0">
+							<div className="flex items-center gap-1.5">
+								<span className="font-bold text-foreground text-[7.5px]">Shopping Bag</span>
+								<span className="px-1.5 py-0.2 rounded-full bg-primary/10 text-primary font-semibold text-[5.5px] border border-primary/20">
+									2 items
+								</span>
+							</div>
+							<span className="text-[6.5px] text-muted-foreground">✕</span>
 						</div>
-						<div className="flex justify-between items-center text-muted-foreground">
-							<span>Next UI Kit</span>
-							<span className="font-semibold text-foreground">$49</span>
+
+						{/* Product Items List */}
+						<div className="space-y-1.5 my-auto py-1">
+							{/* Item 1 */}
+							<div className="flex items-center justify-between gap-1.5">
+								<div className="flex items-center gap-1.5 min-w-0">
+									<div className="size-6 rounded-md bg-gradient-to-tr from-zinc-800 to-zinc-950 border border-border/60 flex items-center justify-center text-[5px] text-zinc-300 font-bold shrink-0">
+										TEE
+									</div>
+									<div className="min-w-0">
+										<div className="font-semibold text-foreground text-[6.5px] truncate">Heavyweight Tee</div>
+										<div className="text-[5px] text-muted-foreground">Onyx Black • L</div>
+									</div>
+								</div>
+								<div className="text-right shrink-0">
+									<div className="font-bold text-foreground text-[6.5px]">$45.00</div>
+									<div className="inline-flex items-center gap-1 px-1 py-0.2 rounded bg-muted/60 border border-border/40 text-[5px] text-muted-foreground font-mono">
+										<span>-</span>
+										<span className="text-foreground font-bold">1</span>
+										<span>+</span>
+									</div>
+								</div>
+							</div>
+
+							{/* Item 2 */}
+							<div className="flex items-center justify-between gap-1.5">
+								<div className="flex items-center gap-1.5 min-w-0">
+									<div className="size-6 rounded-md bg-gradient-to-tr from-blue-700 to-indigo-950 border border-border/60 flex items-center justify-center text-[5px] text-blue-200 font-bold shrink-0">
+										JKT
+									</div>
+									<div className="min-w-0">
+										<div className="font-semibold text-foreground text-[6.5px] truncate">Denim Jacket</div>
+										<div className="text-[5px] text-muted-foreground">Washed Blue • M</div>
+									</div>
+								</div>
+								<div className="text-right shrink-0">
+									<div className="font-bold text-foreground text-[6.5px]">$120.00</div>
+									<div className="inline-flex items-center gap-1 px-1 py-0.2 rounded bg-muted/60 border border-border/40 text-[5px] text-muted-foreground font-mono">
+										<span>-</span>
+										<span className="text-foreground font-bold">1</span>
+										<span>+</span>
+									</div>
+								</div>
+							</div>
 						</div>
-						<div className="h-5 w-full bg-primary text-primary-foreground font-semibold rounded flex items-center justify-center text-[7px]">
-							Checkout
+
+						{/* Checkout Footer */}
+						<div className="border-t border-border/50 pt-1 shrink-0 space-y-1">
+							<div className="flex items-center justify-between text-[6px]">
+								<span className="text-muted-foreground">Subtotal</span>
+								<span className="font-bold text-foreground text-[7px]">$165.00</span>
+							</div>
+							<div className="h-4.5 w-full bg-primary text-primary-foreground font-semibold rounded-md flex items-center justify-center gap-1 text-[6.5px] shadow-xs cursor-pointer">
+								<span>Checkout</span>
+								<span className="text-[5px]">→</span>
+							</div>
 						</div>
 					</div>
 				)}
@@ -2182,17 +2445,87 @@ function MiniatureIllustration({
 				)}
 
 				{type === "mails" && (
-					<div className="w-full p-1.5 rounded-lg bg-background border border-border space-y-1 my-auto text-[6px]">
-						<div className="p-1 rounded bg-primary/10 border border-primary/20 space-y-0.5">
-							<div className="font-extrabold text-primary flex justify-between">
-								<span>Sarah Connor</span>
-								<span className="text-[5px] text-muted-foreground">
-									10:42 AM
+					<div className="w-full h-full p-2 flex flex-col justify-between bg-card/90 border border-border/70 rounded-xl shadow-xs text-[7px] select-none">
+						{/* Top Inbox Header */}
+						<div className="flex items-center justify-between border-b border-border/50 pb-1 shrink-0">
+							<div className="flex items-center gap-1.5 font-bold text-foreground text-[7.5px]">
+								<span>Inbox</span>
+								<span className="px-1.5 py-0.2 rounded-full bg-primary text-primary-foreground font-bold text-[5.5px] shadow-2xs">
+									3 new
 								</span>
 							</div>
-							<div className="text-[5.5px] text-foreground font-semibold truncate">
-								Project Assets Ready
+							<div className="h-3.5 w-24 bg-muted/60 border border-border/50 rounded px-1 flex items-center text-[5.5px] text-muted-foreground">
+								🔍 Search mail...
 							</div>
+						</div>
+
+						{/* Email Rows List */}
+						<div className="space-y-1 my-auto py-1">
+							{/* Email 1 (Unread) */}
+							<div className="p-1 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-between gap-1 relative">
+								<div className="flex items-center gap-1 min-w-0">
+									<span className="size-1.5 rounded-full bg-primary shrink-0" />
+									<div className="size-3.5 rounded-full bg-gradient-to-tr from-rose-400 to-pink-500 text-white font-bold text-[5px] flex items-center justify-center shrink-0">
+										TS
+									</div>
+									<div className="min-w-0">
+										<div className="flex items-center gap-1">
+											<span className="font-bold text-foreground text-[6px] truncate">Tommy Sicilia</span>
+											<span className="px-1 py-0.1 rounded text-[4.5px] font-bold bg-rose-500/15 text-rose-600 dark:text-rose-400">
+												Private
+											</span>
+										</div>
+										<div className="text-[5px] text-muted-foreground truncate">How to Succeed with Shopify Store</div>
+									</div>
+								</div>
+								<span className="text-[5px] text-muted-foreground shrink-0">01:46 PM</span>
+							</div>
+
+							{/* Email 2 (Starred) */}
+							<div className="p-1 rounded-lg hover:bg-muted/40 flex items-center justify-between gap-1 border border-border/30">
+								<div className="flex items-center gap-1 min-w-0">
+									<span className="text-amber-500 text-[6px] shrink-0 font-bold">★</span>
+									<div className="size-3.5 rounded-full bg-gradient-to-tr from-indigo-500 to-blue-500 text-white font-bold text-[5px] flex items-center justify-center shrink-0">
+										TG
+									</div>
+									<div className="min-w-0">
+										<div className="flex items-center gap-1">
+											<span className="font-medium text-foreground text-[6px] truncate">Tressa Gass</span>
+											<span className="px-1 py-0.1 rounded text-[4.5px] font-bold bg-indigo-500/15 text-indigo-600 dark:text-indigo-400">
+												Company
+											</span>
+										</div>
+										<div className="text-[5px] text-muted-foreground truncate">Q3 Financial Report.pdf (2.4 MB)</div>
+									</div>
+								</div>
+								<span className="text-[5px] text-muted-foreground shrink-0">01:55 PM</span>
+							</div>
+
+							{/* Email 3 */}
+							<div className="p-1 rounded-lg hover:bg-muted/40 flex items-center justify-between gap-1 opacity-75">
+								<div className="flex items-center gap-1 min-w-0">
+									<span className="size-1.5 rounded-full bg-transparent shrink-0" />
+									<div className="size-3.5 rounded-full bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300 font-bold text-[5px] flex items-center justify-center shrink-0">
+										LE
+									</div>
+									<div className="min-w-0">
+										<div className="flex items-center gap-1">
+											<span className="font-medium text-foreground text-[6px] truncate">Louetta Esses</span>
+											<span className="px-1 py-0.1 rounded text-[4.5px] font-bold bg-amber-500/15 text-amber-700 dark:text-amber-400">
+												Important
+											</span>
+										</div>
+										<div className="text-[5px] text-muted-foreground truncate">Update on project deliverables</div>
+									</div>
+								</div>
+								<span className="text-[5px] text-muted-foreground shrink-0">03:04 PM</span>
+							</div>
+						</div>
+
+						{/* Footer */}
+						<div className="flex items-center justify-between text-[5.5px] text-muted-foreground border-t border-border/40 pt-0.5 shrink-0">
+							<span>3 of 24 threads</span>
+							<span className="text-primary font-semibold">Mark all read</span>
 						</div>
 					</div>
 				)}
@@ -3527,7 +3860,7 @@ function MiniatureIllustration({
 					</div>
 				)}
 
-				{type === "confidential-folder" && (
+				{(type === "secure-envelope" || type === "confidential-folder") && (
 					<div className="w-full h-full flex items-center justify-center my-auto">
 						<div className="relative w-32 h-16">
 							{/* The card slides out of the sleeve to the right. */}

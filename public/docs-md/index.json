@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-06T05:49:19.284Z",
+  "generatedAt": "2026-10-07T06:50:42.558Z",
   "totalFiles": 303,
   "files": [
     {
@@ -61,6 +61,12 @@
       "path": "/docs/nextjs-audio-player.md",
       "url": "/docs/nextjs/audio-player",
       "originalMdx": "[framework]\\audio-player\\page.mdx"
+    },
+    {
+      "name": "nextjs/auth-forms",
+      "path": "/docs/nextjs-auth-forms.md",
+      "url": "/docs/nextjs/auth-forms",
+      "originalMdx": "[framework]\\auth-forms\\page.mdx"
     },
     {
       "name": "nextjs/avatar-stack",
@@ -211,12 +217,6 @@
       "path": "/docs/nextjs-counter-section.md",
       "url": "/docs/nextjs/counter-section",
       "originalMdx": "[framework]\\counter-section\\page.mdx"
-    },
-    {
-      "name": "nextjs/coupon-cards",
-      "path": "/docs/nextjs-coupon-cards.md",
-      "url": "/docs/nextjs/coupon-cards",
-      "originalMdx": "[framework]\\coupon-cards\\page.mdx"
     },
     {
       "name": "nextjs/cursor-animation",
@@ -675,6 +675,12 @@
       "originalMdx": "[framework]\\scroll-stack\\page.mdx"
     },
     {
+      "name": "nextjs/secure-envelope",
+      "path": "/docs/nextjs-secure-envelope.md",
+      "url": "/docs/nextjs/secure-envelope",
+      "originalMdx": "[framework]\\secure-envelope\\page.mdx"
+    },
+    {
       "name": "nextjs/select",
       "path": "/docs/nextjs-select.md",
       "url": "/docs/nextjs/select",
@@ -691,12 +697,6 @@
       "path": "/docs/nextjs-sidebar.md",
       "url": "/docs/nextjs/sidebar",
       "originalMdx": "[framework]\\sidebar\\page.mdx"
-    },
-    {
-      "name": "nextjs/signup-form",
-      "path": "/docs/nextjs-signup-form.md",
-      "url": "/docs/nextjs/signup-form",
-      "originalMdx": "[framework]\\signup-form\\page.mdx"
     },
     {
       "name": "nextjs/skeleton",
@@ -975,6 +975,12 @@
       "originalMdx": "[framework]\\audio-player\\page.mdx"
     },
     {
+      "name": "reactjs/auth-forms",
+      "path": "/docs/reactjs-auth-forms.md",
+      "url": "/docs/reactjs/auth-forms",
+      "originalMdx": "[framework]\\auth-forms\\page.mdx"
+    },
+    {
       "name": "reactjs/avatar-stack",
       "path": "/docs/reactjs-avatar-stack.md",
       "url": "/docs/reactjs/avatar-stack",
@@ -1123,12 +1129,6 @@
       "path": "/docs/reactjs-counter-section.md",
       "url": "/docs/reactjs/counter-section",
       "originalMdx": "[framework]\\counter-section\\page.mdx"
-    },
-    {
-      "name": "reactjs/coupon-cards",
-      "path": "/docs/reactjs-coupon-cards.md",
-      "url": "/docs/reactjs/coupon-cards",
-      "originalMdx": "[framework]\\coupon-cards\\page.mdx"
     },
     {
       "name": "reactjs/cursor-animation",
@@ -1587,6 +1587,12 @@
       "originalMdx": "[framework]\\scroll-stack\\page.mdx"
     },
     {
+      "name": "reactjs/secure-envelope",
+      "path": "/docs/reactjs-secure-envelope.md",
+      "url": "/docs/reactjs/secure-envelope",
+      "originalMdx": "[framework]\\secure-envelope\\page.mdx"
+    },
+    {
       "name": "reactjs/select",
       "path": "/docs/reactjs-select.md",
       "url": "/docs/reactjs/select",
@@ -1603,12 +1609,6 @@
       "path": "/docs/reactjs-sidebar.md",
       "url": "/docs/reactjs/sidebar",
       "originalMdx": "[framework]\\sidebar\\page.mdx"
-    },
-    {
-      "name": "reactjs/signup-form",
-      "path": "/docs/reactjs-signup-form.md",
-      "url": "/docs/reactjs/signup-form",
-      "originalMdx": "[framework]\\signup-form\\page.mdx"
     },
     {
       "name": "reactjs/skeleton",

@@ -25,8 +25,66 @@ export type LoginVariant =
   | "minimal"
   | "scenic"
   | "nature"
-  | "landscape";
+  | "landscape"
+  | "liquid-glass";
 export type LoginProvider = "github" | "google";
+
+export function LiquidGlassSvgFilter() {
+  return (
+    <>
+      <img
+        src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg"
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          top: "-9999px",
+          left: "-9999px",
+          width: "1px",
+          height: "1px",
+          opacity: 0,
+          pointerEvents: "none",
+        }}
+      />
+      <svg
+        style={{
+          position: "fixed",
+          top: "-9999px",
+          left: "-9999px",
+          width: 0,
+          height: 0,
+          pointerEvents: "none",
+        }}
+        aria-hidden="true"
+      >
+        <defs>
+          <filter
+            id="glass-blur-login"
+            x="0"
+            y="0"
+            width="100%"
+            height="100%"
+            filterUnits="objectBoundingBox"
+          >
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.003 0.007"
+              numOctaves="1"
+              result="turbulence"
+            />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="turbulence"
+              scale="200"
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
+        </defs>
+      </svg>
+    </>
+  );
+}
 
 export type LoginFormValues = {
   email: string;
@@ -75,6 +133,7 @@ interface FieldCheckboxProps
   onCheckedChange: (checked: boolean) => void;
   /** A row out of the block’s colour table. */
   theme: Record<string, string>;
+  isLiquidGlass?: boolean;
 }
 
 const Checkbox = ({
@@ -85,6 +144,7 @@ const Checkbox = ({
   onCheckedChange,
   className,
   theme,
+  isLiquidGlass,
   ...props
 }: FieldCheckboxProps) => (
   <div className="flex flex-col gap-1">
@@ -102,9 +162,11 @@ const Checkbox = ({
             error
               ? "border-red-500"
               : !checked &&
-                  "border-muted-foreground/60 hover:border-muted-foreground",
-            checked && !error && theme.bg,
-            checked && !error && theme.border,
+                  (isLiquidGlass
+                    ? "border-white/50 hover:border-white/80 bg-white/10"
+                    : "border-muted-foreground/60 hover:border-muted-foreground"),
+            checked && !error && (isLiquidGlass ? "bg-white text-zinc-950 border-white" : theme.bg),
+            checked && !error && (isLiquidGlass ? "border-white" : theme.border),
             theme.ring,
             className,
           )}
@@ -115,13 +177,16 @@ const Checkbox = ({
           strokeWidth={3}
           className={cn(
             "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity",
-            theme.panelFg,
+            isLiquidGlass ? "text-zinc-950" : theme.panelFg,
           )}
         />
       </div>
       <label
         htmlFor={id}
-        className="text-sm font-medium text-muted-foreground cursor-pointer leading-tight select-none"
+        className={cn(
+          "text-sm font-medium cursor-pointer leading-tight select-none",
+          isLiquidGlass ? "text-white/90" : "text-muted-foreground"
+        )}
       >
         {label} {props.required && <span className="text-red-500">*</span>}
       </label>
@@ -250,14 +315,28 @@ export default function LoginForm({
     }
   };
 
+  const isLiquidGlass = variant === "liquid-glass";
+
   const FormContent = (
     <div className="w-full max-w-md mx-auto flex flex-col justify-center h-full">
       <div className="mb-8 text-center sm:text-left">
-        <h2 className="text-3xl font-semibold text-foreground tracking-tight mb-2">
-          Welcome back
+        <h2
+          className={cn(
+            "text-3xl font-semibold tracking-tight mb-2",
+            isLiquidGlass ? "text-white" : "text-foreground",
+          )}
+        >
+          {variant === "split" ? "Sign in" : (title || "Welcome back")}
         </h2>
-        <p className="text-sm text-muted-foreground font-medium">
-          Enter your details to access your account.
+        <p
+          className={cn(
+            "text-sm font-medium",
+            isLiquidGlass ? "text-white/75" : "text-muted-foreground",
+          )}
+        >
+          {variant === "split"
+            ? "Enter your details to access your account."
+            : (subtitle || "Enter your details to access your account.")}
         </p>
       </div>
 
@@ -268,7 +347,12 @@ export default function LoginForm({
           color={color}
           onClick={() => onSocialSignIn?.("github")}
           iconLeft={<GitHubIcon size={18} />}
-          className="w-full h-11 border border-border/80 bg-card/70 backdrop-blur-md hover:bg-card hover:text-foreground"
+          className={cn(
+            "w-full h-11 border transition-colors",
+            isLiquidGlass
+              ? "border-white/20 bg-white/15 backdrop-blur-md text-white hover:bg-white/25 hover:text-white"
+              : "border-border/80 bg-card/70 backdrop-blur-md hover:bg-card hover:text-foreground",
+          )}
         >
           GitHub
         </Button>
@@ -278,18 +362,38 @@ export default function LoginForm({
           color={color}
           onClick={() => onSocialSignIn?.("google")}
           iconLeft={<GoogleIcon size={18} />}
-          className="w-full h-11 border border-border/80 bg-card/70 backdrop-blur-md hover:bg-card hover:text-foreground"
+          className={cn(
+            "w-full h-11 border transition-colors",
+            isLiquidGlass
+              ? "border-white/20 bg-white/15 backdrop-blur-md text-white hover:bg-white/25 hover:text-white"
+              : "border-border/80 bg-card/70 backdrop-blur-md hover:bg-card hover:text-foreground",
+          )}
         >
           Google
         </Button>
       </div>
 
       <div className="relative flex items-center mb-5 sm:mb-6">
-        <div className="flex-grow border-t border-border"></div>
-        <span className="flex-shrink-0 mx-3 sm:mx-4 text-muted-foreground text-[10px] sm:text-xs font-semibold uppercase tracking-widest">
+        <div
+          className={cn(
+            "flex-grow border-t",
+            isLiquidGlass ? "border-white/20" : "border-border",
+          )}
+        />
+        <span
+          className={cn(
+            "flex-shrink-0 mx-3 sm:mx-4 text-[10px] sm:text-xs font-semibold uppercase tracking-widest",
+            isLiquidGlass ? "text-white/75" : "text-muted-foreground",
+          )}
+        >
           Or continue with
         </span>
-        <div className="flex-grow border-t border-border"></div>
+        <div
+          className={cn(
+            "flex-grow border-t",
+            isLiquidGlass ? "border-white/20" : "border-border",
+          )}
+        />
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-3.5 sm:space-y-4">
@@ -321,6 +425,7 @@ export default function LoginForm({
         <div className="flex items-center justify-between gap-3 pt-1">
           <Checkbox
             theme={theme}
+            isLiquidGlass={isLiquidGlass}
             label="Remember me"
             id="login-remember"
             checked={formData.remember}
@@ -330,7 +435,7 @@ export default function LoginForm({
             href={forgotPasswordHref}
             className={cn(
               "text-xs font-semibold hover:underline transition-all shrink-0",
-              theme.text,
+              isLiquidGlass ? "text-white/90 hover:text-white" : theme.text,
             )}
           >
             Forgot password?
@@ -342,20 +447,30 @@ export default function LoginForm({
           variant="default"
           color={color}
           loading={loading}
-          className="w-full h-11 mt-4 shadow-lg shadow-black/5"
+          className={cn(
+            "w-full h-11 mt-4 shadow-lg",
+            isLiquidGlass
+              ? "bg-white text-zinc-950 hover:bg-white/90 shadow-black/20"
+              : "shadow-black/5",
+          )}
         >
           {loading ? "Please wait..." : "Sign In"}
         </Button>
       </form>
 
       <div className="mt-8 text-center">
-        <p className="text-sm text-muted-foreground font-medium">
+        <p
+          className={cn(
+            "text-sm font-medium",
+            isLiquidGlass ? "text-white/75" : "text-muted-foreground",
+          )}
+        >
           Don&apos;t have an account?{" "}
           <a
             href={signupHref}
             className={cn(
               "font-semibold hover:underline transition-all",
-              theme.text,
+              isLiquidGlass ? "text-white hover:text-white/90" : theme.text,
             )}
           >
             Sign up
@@ -368,7 +483,7 @@ export default function LoginForm({
   if (variant === "split") {
     return (
       <div
-        className="w-full min-h-[600px] flex overflow-hidden rounded-3xl border border-border shadow-2xl bg-background transition-colors duration-300"
+        className="w-full h-full min-h-[600px] flex overflow-hidden rounded-2xl border border-border bg-background transition-colors duration-300"
         style={style}
       >
         <div
@@ -399,10 +514,12 @@ export default function LoginForm({
 
           <div className="relative z-10">
             <div className="flex items-center gap-2 font-semibold text-2xl tracking-tighter">
-              <div className="w-8 h-8 rounded-lg bg-current/20 flex items-center justify-center backdrop-blur-md">
-                ⚡
-              </div>
-              Acme Inc.
+              {brandIcon || (
+                <div className="w-8 h-8 rounded-lg bg-current/20 flex items-center justify-center backdrop-blur-md">
+                  ⚡
+                </div>
+              )}
+              {brandName || "Acme Inc."}
             </div>
           </div>
 
@@ -577,11 +694,11 @@ export default function LoginForm({
 
           <div className="relative z-10 max-w-sm">
             <h1 className="text-4xl font-semibold mb-4 leading-tight">
-              Welcome back. Pick up where you left off.
+              {title || "Welcome back. Pick up where you left off."}
             </h1>
             <p className="font-medium opacity-80">
-              Your projects, deployments and team are exactly as you left them.
-              Sign in to get straight back to work.
+              {subtitle ||
+                "Your projects, deployments and team are exactly as you left them. Sign in to get straight back to work."}
             </p>
           </div>
         </div>
@@ -791,14 +908,109 @@ export default function LoginForm({
     );
   }
 
+  if (variant === "liquid-glass") {
+    const liquidBg =
+      bgImage ||
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg";
+
+    return (
+      <div
+        className="relative w-full min-h-[600px] sm:min-h-[720px] flex items-center justify-center overflow-hidden rounded-3xl p-4 sm:p-6 md:p-8 isolate [contain:paint] [transform:translateZ(0)]"
+        style={style}
+      >
+        <LiquidGlassSvgFilter />
+
+        {/* Full-bleed background image covering the entire container */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+          <img
+            src={liquidBg}
+            alt="Liquid glass backdrop"
+            className="w-full h-full object-cover select-none pointer-events-none"
+          />
+          <div className="absolute inset-0 bg-black/40 dark:bg-black/55 backdrop-blur-[2px]" />
+        </div>
+
+        {/* Floating Liquid Glass Card */}
+        <div
+          className={cn(
+            "relative z-10 w-full max-w-[460px] p-6 sm:p-8 md:p-10 rounded-3xl isolate [contain:paint] [transform:translateZ(0)] text-white transition-all duration-300",
+            "shadow-[0_25px_60px_rgba(0,0,0,0.5)] [--foreground:#ffffff] [--muted-foreground:rgba(255,255,255,0.75)] [--color-foreground:#ffffff] [--color-muted-foreground:rgba(255,255,255,0.75)] [--border:rgba(255,255,255,0.2)] [--background:rgba(255,255,255,0.12)] [--card:rgba(255,255,255,0.12)]",
+          )}
+        >
+          {/* Inner Clipping Container for Liquid Background Stack */}
+          <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none z-0">
+            {/* Layer 0: Liquid SVG Displaced Wave Background */}
+            <div
+              className="absolute -inset-10"
+              style={{
+                backgroundImage: `url("${liquidBg}")`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                filter: "url(#glass-blur-login)",
+                transform: "scale(1.1)",
+              }}
+            />
+
+            {/* Layer 1: Contrast overlay & soft backdrop blur */}
+            <div className="absolute inset-0 bg-black/30 dark:bg-black/45 backdrop-blur-[3px]" />
+
+            {/* Layer 2: Ambient Drop Shadow & Subtle Glow */}
+            <div
+              className="absolute inset-0 rounded-3xl"
+              style={{
+                boxShadow:
+                  "0 20px 50px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.08)",
+              }}
+            />
+          </div>
+
+          {/* Layer 3: Specular Inner Border Highlight */}
+          <div
+            className="absolute inset-0 z-40 pointer-events-none rounded-3xl border border-white/40 dark:border-white/15"
+            style={{
+              boxShadow:
+                "inset 2px 2px 2px 0 rgba(255, 255, 255, 0.45), inset -2px -2px 2px 0 rgba(255, 255, 255, 0.3)",
+            }}
+          />
+
+          <div className="relative z-10 w-full">{FormContent}</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (variant === "glass") {
+    const glassBg =
+      bgImage ||
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg";
+
+    return (
+      <div
+        className="relative w-full min-h-[600px] sm:min-h-[700px] flex items-center justify-center overflow-hidden rounded-3xl p-4 sm:p-6 md:p-8"
+        style={style}
+      >
+        {/* Full-bleed glass backdrop */}
+        <img
+          src={glassBg}
+          alt="Glass landscape backdrop"
+          className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+        />
+        <div className="absolute inset-0 bg-black/45 backdrop-blur-[1px] pointer-events-none" />
+
+        {/* Floating Glass Card */}
+        <div className="relative z-10 w-full max-w-[460px] p-6 sm:p-8 md:p-10 bg-background/65 backdrop-blur-xl rounded-3xl shadow-2xl border border-foreground/10 transition-colors duration-300">
+          {FormContent}
+        </div>
+      </div>
+    );
+  }
+
   const baseWrapper =
     "w-full max-w-[480px] mx-auto p-4 xs:p-6 sm:p-8 md:p-10 transition-colors duration-300";
   const wrapperClass = cn(
     baseWrapper,
     variant === "default" &&
       "bg-background rounded-3xl shadow-xl border border-border",
-    variant === "glass" &&
-      "bg-background/65 backdrop-blur-xl rounded-3xl shadow-2xl border border-foreground/10",
     variant === "minimal" && "bg-transparent",
   );
 

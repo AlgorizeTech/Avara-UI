@@ -141,6 +141,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "scroll-area": lazyRetry(() => import("./demos/scroll-area-demo")),
   "scroll-split-cards": lazyRetry(() => import("./demos/scroll-split-cards-demo")),
   "scroll-stack": lazyRetry(() => import("./demos/scroll-stack-demo")),
+  "secure-envelope": lazyRetry(() => import("./demos/secure-envelope-demo")),
   "select": lazyRetry(() => import("./demos/select-demo")),
   "selection-frame": lazyRetry(() => import("./demos/selection-frame-demo")),
   "sidebar": lazyRetry(() => import("./demos/sidebar-demo")),

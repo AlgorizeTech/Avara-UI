@@ -146,6 +146,7 @@
     "src/components/custom/blocks/ScrollAreaBlock.tsx",
     "src/components/custom/blocks/ScrollSplitCardsBlock.tsx",
     "src/components/custom/blocks/ScrollStackBlock.tsx",
+    "src/components/custom/blocks/SecureEnvelopeBlock.tsx",
     "src/components/custom/blocks/SelectBlock.tsx",
     "src/components/custom/blocks/SelectionFrameBlock.tsx",
     "src/components/custom/blocks/SettingsBlock.tsx",

@@ -185,8 +185,8 @@ only the file differs.
 
 ## Next steps
 
-- [Installation](/docs/nextjs/installation) — set up a project for Algorize UI
-- [All components](/docs/nextjs/all-components) — browse the library
+- Installation — set up a project for Algorize UI
+- All components — browse the library
 
 For the full server reference, see the
 [shadcn MCP docs](https://ui.shadcn.com/docs/mcp).

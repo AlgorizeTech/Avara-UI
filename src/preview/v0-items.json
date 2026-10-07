@@ -23,14 +23,16 @@
     "compact": "AI Chat — Compact",
     "wired-to-your-backend": "AI Chat — Wired to your backend",
     "minimal": "AI Chat — Minimal",
-    "glass": "AI Chat — Glass"
+    "glass": "AI Chat — Glass",
+    "liquid-glass": "AI Chat — Liquid Glass"
   },
   "ai-chat-motion": {
     "ai-assistant": "AI Chat — AI assistant",
     "compact": "AI Chat — Compact",
     "wired-to-your-backend": "AI Chat — Wired to your backend",
     "minimal": "AI Chat — Minimal",
-    "glass": "AI Chat — Glass"
+    "glass": "AI Chat — Glass",
+    "liquid-glass": "AI Chat — Liquid Glass"
   },
   "alert": {
     "alert": "Alert",
@@ -92,6 +94,21 @@
     "plyr-audio": "Video Player (Plyr) — Plyr — Audio",
     "plyr-html5": "Video Player (Plyr) — Plyr — HTML5",
     "plyr-youtube": "Video Player (Plyr) — Plyr — YouTube"
+  },
+  "login-form": {
+    "login": "Login Form — Login",
+    "login-split": "Login Form — Login — split",
+    "login-minimal": "Login Form — Login — minimal",
+    "login-glass": "Login Form — Login — glass",
+    "login-liquid-glass": "Login Form — Login — liquid-glass"
+  },
+  "register-form": {
+    "register": "Register Form — Register",
+    "register-scenic": "Register Form — Register — scenic",
+    "register-split": "Register Form — Register — split",
+    "register-minimal": "Register Form — Register — minimal",
+    "register-glass": "Register Form — Register — glass",
+    "register-liquid-glass": "Register Form — Register — liquid-glass"
   },
   "avatar-stack": {
     "without-tooltip": "Avatar Stack — Without tooltip",
@@ -247,11 +264,6 @@
     "2-minimal-slash-agency-studio": "Counter Section — 2. Minimal Slash (Agency / Studio)",
     "3-halftone-cinema-architectural": "Counter Section — 3. Halftone Cinema (Architectural)",
     "4-spotlight-gradient-interactive-pointer": "Counter Section — 4. Spotlight Gradient (Interactive Pointer)"
-  },
-  "confidential-folder": {
-    "train-online-ticket-hyperbolt-express-variant": "Confidential Folder — Train Online Ticket (Hyperbolt Express Variant)",
-    "auto-flip-classic-voucher-classified": "Confidential Folder — Auto Flip (Classic Voucher / Classified)",
-    "step-flip-3-stage-progressive-reveal": "Confidential Folder — Step Flip (3-Stage Progressive Reveal)"
   },
   "cursor-animation": {
     "image-trail-cursor": "Cursor Animation — Image Trail Cursor",
@@ -702,6 +714,11 @@
     "horizontal-scroll-stack": "Horizontal Scroll Stack",
     "horizontal-rail-track": "Horizontal Scroll Stack — Shorter Rail"
   },
+  "secure-envelope": {
+    "biometric-nfc-smartcard-quantum-vault-variant": "Secure Envelope — Biometric NFC SmartCard (Quantum Vault Variant)",
+    "auto-flip-classic-voucher-classified": "Secure Envelope — Auto Flip (Classic Voucher / Classified)",
+    "train-online-ticket-hyperbolt-express-variant": "Secure Envelope — Train Online Ticket (Hyperbolt Express Variant)"
+  },
   "select": {
     "select": "Select",
     "underlined": "Select — Underlined",
@@ -719,19 +736,6 @@
   "sidebar": {
     "sidebar": "Sidebar",
     "collapsed-rail": "Sidebar — Collapsed rail"
-  },
-  "login-form": {
-    "login": "Login Form — Login",
-    "login-split": "Login Form — Login — split",
-    "login-glass": "Login Form — Login — glass",
-    "login-minimal": "Login Form — Login — minimal"
-  },
-  "register-form": {
-    "register": "Register Form — Register",
-    "register-scenic": "Register Form — Register — scenic",
-    "register-split": "Register Form — Register — split",
-    "register-glass": "Register Form — Register — glass",
-    "register-minimal": "Register Form — Register — minimal"
   },
   "skeleton": {
     "card": "Skeleton — Card",
@@ -784,7 +788,8 @@
   "support": {
     "ticket-workspace": "Support Dashboard — Ticket workspace",
     "table-view": "Support Dashboard — Table view",
-    "glass": "Support Dashboard — Glass"
+    "glass": "Support Dashboard — Glass",
+    "support-liquid-glass": "Support Dashboard — Liquid glass"
   },
   "table-soft": {
     "soft-variant": "Table — Soft variant"

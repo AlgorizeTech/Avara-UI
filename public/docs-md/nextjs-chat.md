@@ -84,6 +84,17 @@ export default function GlassChat() {
   );
 };`;
 
+export const usageLiquidGlass = `import ChatApp, { type Contact, type CurrentUser } from "@/components/custom/blocks/Chat";
+
+${chatData}
+
+export default function LiquidGlassChat() {
+  return (
+    // Real liquid SVG glass displacement with multi-layer reflections and specular highlights
+
+  );
+};`;
+
 ## Installation
 
 Register the @algorize-ui registry once per project, then add the component:
@@ -146,15 +157,14 @@ Explore the Chat component's robust features, including message grouping, timest
 
           variant
 
-          "default" | "minimal" | "glass"
+          "default" | "minimal" | "glass" | "liquid-glass"
 
           "default"
 
           The shell. default is one card with the list and the
           thread side by side; minimal is two separate cards —
           the list and the thread — with a gap between them and no outer box;
-          glass is one translucent card over a photo. The
-          conversation is the same in all three.
+          glass is one translucent card over a photo; liquid-glass provides true SVG displacement liquid refraction.
 
           color
 

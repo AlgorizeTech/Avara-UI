@@ -49,7 +49,64 @@ import { MOTION_EASE, springEase, springLinear } from "./motion-curves";
 // ==========================================
 // VARIANT & COLOR CONFIGURATION
 // ==========================================
-export type AIChatVariant = "default" | "minimal" | "glass" | "compact";
+export type AIChatVariant = "default" | "minimal" | "glass" | "compact" | "liquid-glass";
+
+export function LiquidGlassSvgFilter() {
+  return (
+    <>
+      <img
+        src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg"
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          top: "-9999px",
+          left: "-9999px",
+          width: "1px",
+          height: "1px",
+          opacity: 0,
+          pointerEvents: "none",
+        }}
+      />
+      <svg
+        style={{
+          position: "fixed",
+          top: "-9999px",
+          left: "-9999px",
+          width: 0,
+          height: 0,
+          pointerEvents: "none",
+        }}
+        aria-hidden="true"
+      >
+        <defs>
+          <filter
+            id="glass-blur-ai"
+            x="0"
+            y="0"
+            width="100%"
+            height="100%"
+            filterUnits="objectBoundingBox"
+          >
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.003 0.007"
+              numOctaves="1"
+              result="turbulence"
+            />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="turbulence"
+              scale="200"
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
+        </defs>
+      </svg>
+    </>
+  );
+}
 
 // We use (string & {}) to preserve IDE autocomplete for the predefined types
 // while still allowing any arbitrary hex string like "#000fff".
@@ -109,6 +166,20 @@ const chatVariants: Record<AIChatVariant, Record<string, string>> = {
     msgUser: "text-white rounded-2xl rounded-tr-sm shadow-lg",
     msgAi:
       "bg-white/50 dark:bg-black/50 backdrop-blur-md text-foreground border border-white/30 dark:border-white/10 rounded-2xl rounded-tl-sm",
+  },
+  "liquid-glass": {
+    wrapper:
+      "bg-transparent border-0 shadow-[0_25px_60px_rgba(0,0,0,0.45)] text-white rounded-[22px] sm:rounded-[28px] [--foreground:#ffffff] [--muted-foreground:rgba(255,255,255,0.75)] [--color-foreground:#ffffff] [--color-muted-foreground:rgba(255,255,255,0.75)]",
+    sidebar:
+      "bg-white/[0.07] dark:bg-black/25 border-r border-white/20 dark:border-white/10",
+    main: "bg-transparent",
+    header:
+      "bg-white/[0.07] dark:bg-black/25 border-b border-white/20 dark:border-white/10",
+    input:
+      "bg-white/15 dark:bg-black/30 border border-white/20 dark:border-white/10 backdrop-blur-md text-white placeholder:text-white/60",
+    msgUser: "text-white rounded-2xl rounded-tr-sm shadow-md border border-white/20",
+    msgAi:
+      "bg-white/15 dark:bg-white/10 backdrop-blur-md text-white border border-white/20 dark:border-white/15 rounded-2xl rounded-tl-sm shadow-sm",
   },
 };
 
@@ -1260,11 +1331,53 @@ export default function AIChat({
     <div
       style={customVars}
       className={cn(
-        "w-full max-w-full h-[650px] sm:h-[750px] flex overflow-hidden relative font-sans box-border transition-colors duration-300",
+        "w-full max-w-full h-[650px] sm:h-[750px] flex overflow-hidden relative font-sans box-border transition-colors duration-300 isolate [contain:paint] [transform:translateZ(0)]",
         styles.wrapper,
       )}
     >
       <style>{MOTION_CSS}</style>
+      <LiquidGlassSvgFilter />
+      {variant === "liquid-glass" && (
+        <>
+          {/* Inner Clipping Container for Liquid Background Stack */}
+          <div className="absolute inset-0 overflow-hidden rounded-[22px] sm:rounded-[28px] pointer-events-none z-0">
+            {/* Layer 0: Liquid SVG Displaced Wave Background */}
+            <div
+              className="absolute -inset-10"
+              style={{
+                backgroundImage:
+                  'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                filter: "url(#glass-blur-ai)",
+                transform: "scale(1.1)",
+              }}
+            />
+
+            {/* Layer 1: Contrast overlay & soft backdrop blur */}
+            <div className="absolute inset-0 bg-black/30 dark:bg-black/45 backdrop-blur-[2px]" />
+
+            {/* Layer 2: Ambient Drop Shadow & Subtle Glow */}
+            <div
+              className="absolute inset-0 rounded-[22px] sm:rounded-[28px]"
+              style={{
+                boxShadow:
+                  "0 20px 50px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.08)",
+              }}
+            />
+          </div>
+
+          {/* Layer 3: Specular Inner Border Highlight */}
+          <div
+            className="absolute inset-0 z-40 pointer-events-none rounded-[22px] sm:rounded-[28px] border border-white/40 dark:border-white/15"
+            style={{
+              boxShadow:
+                "inset 2px 2px 2px 0 rgba(255, 255, 255, 0.45), inset -2px -2px 2px 0 rgba(255, 255, 255, 0.3)",
+            }}
+          />
+        </>
+      )}
+
       {/* === LEFT SIDEBAR === */}
       {showSidebar && (
         <aside
@@ -1272,12 +1385,30 @@ export default function AIChat({
             `absolute lg:relative z-30 w-[280px] max-w-[85vw] shrink-0 h-full flex flex-col transition-transform duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`,
             "rounded-r-2xl rounded-l-none lg:rounded-none overflow-hidden",
             styles.sidebar,
+            variant === "liquid-glass" && "rounded-l-[22px] sm:rounded-l-[28px] max-lg:rounded-r-2xl max-lg:border-r max-lg:border-white/20",
           )}
         >
+          {variant === "liquid-glass" && (
+            <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+              <div
+                className="absolute -inset-10"
+                style={{
+                  backgroundImage:
+                    'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
+                  backgroundSize: "cover",
+                  backgroundPosition: "left center",
+                  filter: "url(#glass-blur-ai)",
+                  transform: "scale(1.1)",
+                }}
+              />
+              <div className="absolute inset-0 bg-black/35 dark:bg-black/50 backdrop-blur-[2px]" />
+            </div>
+          )}
+
           <div
             className={cn(
-              "p-5 border-b shrink-0",
-              variant === "glass"
+              "p-5 border-b shrink-0 relative z-10",
+              variant === "liquid-glass" || variant === "glass"
                 ? "border-white/20 dark:border-white/10"
                 : "border-border",
             )}
@@ -1286,9 +1417,11 @@ export default function AIChat({
               <h2
                 className={cn(
                   "font-semibold",
-                  variant === "glass"
-                    ? "text-zinc-900 dark:text-white"
-                    : "text-foreground",
+                  variant === "liquid-glass"
+                    ? "text-white"
+                    : variant === "glass"
+                      ? "text-zinc-900 dark:text-white"
+                      : "text-foreground",
                 )}
               >
                 History
@@ -1297,9 +1430,11 @@ export default function AIChat({
                 onClick={() => setIsSidebarOpen(false)}
                 className={cn(
                   "p-1 rounded-lg transition-colors cursor-pointer",
-                  variant === "glass"
-                    ? "text-zinc-700 hover:text-zinc-900 hover:bg-white/30 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-white/10"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/60",
+                  variant === "liquid-glass"
+                    ? "text-white/70 hover:text-white hover:bg-white/15"
+                    : variant === "glass"
+                      ? "text-zinc-700 hover:text-zinc-900 hover:bg-white/30 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-white/10"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/60",
                 )}
                 aria-label="Close sidebar"
               >
@@ -1310,15 +1445,16 @@ export default function AIChat({
               onClick={handleNewChat}
               className={cn(
                 "w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold transition-all shadow-md active:scale-95 cursor-pointer",
-                theme.primaryBg,
-                theme.shadow,
+                variant === "liquid-glass"
+                  ? "bg-white/20 hover:bg-white/30 text-white border border-white/25 shadow-lg backdrop-blur-md"
+                  : cn(theme.primaryBg, theme.shadow),
               )}
             >
               <Plus className="w-4 h-4" /> New Chat
             </button>
           </div>
 
-          <div className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] p-3">
+          <div className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] p-3 relative z-10">
             {["Today", "Yesterday", "Previous 7 Days"].map((dateGroup) => {
               const groupChats = chats.filter((c) => c.date === dateGroup);
               if (groupChats.length === 0) return null;
@@ -1328,9 +1464,11 @@ export default function AIChat({
                   <p
                     className={cn(
                       "text-[11px] font-semibold uppercase tracking-wider mb-2 px-3",
-                      variant === "glass"
-                        ? "text-zinc-800 dark:text-zinc-200"
-                        : "text-muted-foreground",
+                      variant === "liquid-glass"
+                        ? "text-white/70"
+                        : variant === "glass"
+                          ? "text-zinc-800 dark:text-zinc-200"
+                          : "text-muted-foreground",
                     )}
                   >
                     {dateGroup}
@@ -1347,12 +1485,16 @@ export default function AIChat({
                           className={cn(
                             "flex items-center justify-between px-3 py-2.5 rounded-lg cursor-pointer transition-all text-sm group",
                             isActive
-                              ? variant === "glass"
-                                ? "bg-white/30 dark:bg-white/15 text-zinc-900 dark:text-white font-semibold shadow-sm border border-white/30 dark:border-white/15 backdrop-blur-md"
-                                : cn("font-semibold", theme.lightBg)
-                              : variant === "glass"
-                                ? "text-zinc-800 dark:text-zinc-200 hover:text-zinc-950 dark:hover:text-white hover:bg-white/15 dark:hover:bg-white/10 font-medium"
-                                : "text-muted-foreground hover:bg-muted font-medium hover:text-foreground",
+                              ? variant === "liquid-glass"
+                                ? "bg-white/20 text-white font-semibold shadow-sm border border-white/20 backdrop-blur-md"
+                                : variant === "glass"
+                                  ? "bg-white/30 dark:bg-white/15 text-zinc-900 dark:text-white font-semibold shadow-sm border border-white/30 dark:border-white/15 backdrop-blur-md"
+                                  : cn("font-semibold", theme.lightBg)
+                              : variant === "liquid-glass"
+                                ? "text-white/80 hover:text-white hover:bg-white/10 font-medium"
+                                : variant === "glass"
+                                  ? "text-zinc-800 dark:text-zinc-200 hover:text-zinc-950 dark:hover:text-white hover:bg-white/15 dark:hover:bg-white/10 font-medium"
+                                  : "text-muted-foreground hover:bg-muted font-medium hover:text-foreground",
                           )}
                         >
                           {isEditing ? (
@@ -1363,7 +1505,7 @@ export default function AIChat({
                               <MessageSquare
                                 className={cn(
                                   "w-4 h-4 shrink-0",
-                                  theme.primaryText,
+                                  variant === "liquid-glass" ? "text-white" : theme.primaryText,
                                 )}
                               />
                               <input
@@ -1379,19 +1521,20 @@ export default function AIChat({
                                 }}
                                 className={cn(
                                   "flex-1 bg-background border rounded px-2 py-0.5 text-xs outline-none text-foreground cursor-text",
+                                  variant === "liquid-glass" && "bg-black/40 border-white/30 text-white",
                                   theme.inputBorder,
                                   theme.focusRing,
                                 )}
                               />
                               <button
                                 onClick={(e) => saveEditChat(chat.id, e)}
-                                className="text-emerald-500 hover:text-emerald-600 cursor-pointer shrink-0"
+                                className="text-emerald-500 hover:text-emerald-400 cursor-pointer shrink-0"
                               >
                                 <Check className="w-4 h-4" />
                               </button>
                               <button
                                 onClick={cancelEditChat}
-                                className="text-rose-500 hover:text-rose-600 cursor-pointer shrink-0"
+                                className="text-rose-500 hover:text-rose-400 cursor-pointer shrink-0"
                               >
                                 <X className="w-4 h-4" />
                               </button>
@@ -1403,10 +1546,14 @@ export default function AIChat({
                                   className={cn(
                                     "w-4 h-4 shrink-0",
                                     isActive
-                                      ? theme.primaryText
-                                      : variant === "glass"
-                                        ? "text-zinc-700 dark:text-zinc-300 group-hover:text-zinc-950 dark:group-hover:text-white"
-                                        : "text-muted-foreground group-hover:text-foreground",
+                                      ? variant === "liquid-glass"
+                                        ? "text-white"
+                                        : theme.primaryText
+                                      : variant === "liquid-glass"
+                                        ? "text-white/70 group-hover:text-white"
+                                        : variant === "glass"
+                                          ? "text-zinc-700 dark:text-zinc-300 group-hover:text-zinc-950 dark:group-hover:text-white"
+                                          : "text-muted-foreground group-hover:text-foreground",
                                   )}
                                 />
                                 <span className="truncate">{chat.title}</span>
@@ -1416,12 +1563,14 @@ export default function AIChat({
                                   onClick={(e) => startEditingChat(chat, e)}
                                   className={cn(
                                     "p-1.5 rounded-md transition-colors cursor-pointer",
-                                    variant === "glass"
-                                      ? "text-zinc-700 hover:text-zinc-950 hover:bg-white/20 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-white/10"
-                                      : cn(
-                                          "text-muted-foreground",
-                                          theme.primaryHover,
-                                        ),
+                                    variant === "liquid-glass"
+                                      ? "text-white/70 hover:text-white hover:bg-white/20"
+                                      : variant === "glass"
+                                        ? "text-zinc-700 hover:text-zinc-950 hover:bg-white/20 dark:text-zinc-300 dark:hover:text-white dark:hover:bg-white/10"
+                                        : cn(
+                                            "text-muted-foreground",
+                                            theme.primaryHover,
+                                          ),
                                   )}
                                 >
                                   <Edit2 className="w-3.5 h-3.5" />
@@ -1430,9 +1579,11 @@ export default function AIChat({
                                   onClick={(e) => handleDeleteChat(chat.id, e)}
                                   className={cn(
                                     "p-1.5 rounded-md transition-colors cursor-pointer",
-                                    variant === "glass"
-                                      ? "text-zinc-700 hover:text-rose-600 hover:bg-rose-500/10 dark:text-zinc-300 dark:hover:text-rose-400"
-                                      : "text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/20",
+                                    variant === "liquid-glass"
+                                      ? "text-white/70 hover:text-rose-400 hover:bg-rose-500/20"
+                                      : variant === "glass"
+                                        ? "text-zinc-700 hover:text-rose-600 hover:bg-rose-500/10 dark:text-zinc-300 dark:hover:text-rose-400"
+                                        : "text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/20",
                                   )}
                                 >
                                   <Trash2 className="w-3.5 h-3.5" />
@@ -1451,10 +1602,12 @@ export default function AIChat({
 
           <div
             className={cn(
-              "p-4 border-t shrink-0 flex items-center justify-between cursor-pointer transition-colors",
-              variant === "glass"
-                ? "border-white/20 dark:border-white/10 hover:bg-white/15 dark:hover:bg-white/10"
-                : "border-border hover:bg-muted",
+              "p-4 border-t shrink-0 flex items-center justify-between cursor-pointer transition-colors relative z-10",
+              variant === "liquid-glass"
+                ? "border-white/20 dark:border-white/10 hover:bg-white/10 text-white"
+                : variant === "glass"
+                  ? "border-white/20 dark:border-white/10 hover:bg-white/15 dark:hover:bg-white/10"
+                  : "border-border hover:bg-muted",
             )}
           >
             <div className="flex items-center gap-3">
@@ -1478,9 +1631,11 @@ export default function AIChat({
               <span
                 className={cn(
                   "text-sm font-semibold",
-                  variant === "glass"
-                    ? "text-zinc-900 dark:text-white"
-                    : "text-foreground",
+                  variant === "liquid-glass"
+                    ? "text-white"
+                    : variant === "glass"
+                      ? "text-zinc-900 dark:text-white"
+                      : "text-foreground",
                 )}
               >
                 Joel M.
@@ -1489,9 +1644,11 @@ export default function AIChat({
             <Settings
               className={cn(
                 "w-4 h-4 transition-colors",
-                variant === "glass"
-                  ? "text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white"
-                  : "text-muted-foreground hover:text-foreground",
+                variant === "liquid-glass"
+                  ? "text-white/70 hover:text-white"
+                  : variant === "glass"
+                    ? "text-zinc-700 hover:text-zinc-950 dark:text-zinc-300 dark:hover:text-white"
+                    : "text-muted-foreground hover:text-foreground",
               )}
             />
           </div>
@@ -1502,7 +1659,7 @@ export default function AIChat({
         <div
           className={cn(
             "absolute inset-0 z-20 lg:hidden cursor-pointer transition-opacity duration-300",
-            variant === "glass"
+            variant === "liquid-glass" || variant === "glass"
               ? "bg-black/25 dark:bg-black/45 backdrop-blur-[2px]"
               : "bg-black/50 dark:bg-black/70 backdrop-blur-sm",
           )}
@@ -1522,6 +1679,7 @@ export default function AIChat({
             <div
               className={cn(
                 "w-24 h-24 bg-gradient-to-tr rounded-3xl flex items-center justify-center mb-6 border border-border rotate-3 shrink-0 shadow-xl",
+                variant === "liquid-glass" && "border-white/20 shadow-2xl",
                 theme.gradient,
                 theme.shadow,
                 onAccentText,
@@ -1529,10 +1687,20 @@ export default function AIChat({
             >
               <Bot className="w-10 h-10 -rotate-3" />
             </div>
-            <h2 className="text-2xl font-semibold text-foreground mb-2">
+            <h2
+              className={cn(
+                "text-2xl font-semibold mb-2",
+                variant === "liquid-glass" ? "text-white" : "text-foreground",
+              )}
+            >
               How can I help you today?
             </h2>
-            <p className="text-muted-foreground text-sm max-w-md mb-8">
+            <p
+              className={cn(
+                "text-sm max-w-md mb-8",
+                variant === "liquid-glass" ? "text-white/70" : "text-muted-foreground",
+              )}
+            >
               {showSidebar
                 ? "Select a conversation from the sidebar or start a new one to begin chatting."
                 : "Start a new conversation to begin chatting."}
@@ -1540,7 +1708,12 @@ export default function AIChat({
             <div className="flex items-center gap-4">
               {showSidebar && (
                 <button
-                  className="lg:hidden px-6 py-2.5 bg-card border border-border text-foreground rounded-xl text-sm font-semibold shadow-sm transition-all active:scale-95"
+                  className={cn(
+                    "lg:hidden px-6 py-2.5 rounded-xl text-sm font-semibold shadow-sm transition-all active:scale-95",
+                    variant === "liquid-glass"
+                      ? "bg-white/20 hover:bg-white/30 text-white border border-white/25 backdrop-blur-md"
+                      : "bg-card border border-border text-foreground",
+                  )}
                   onClick={() => setIsSidebarOpen(true)}
                 >
                   View History
@@ -1550,8 +1723,9 @@ export default function AIChat({
                 onClick={handleNewChat}
                 className={cn(
                   "px-6 py-2.5 rounded-xl text-sm font-semibold transition-all active:scale-95 flex items-center gap-2 shadow-md",
-                  theme.primaryBg,
-                  theme.shadow,
+                  variant === "liquid-glass"
+                    ? "bg-white/20 hover:bg-white/30 text-white border border-white/25 shadow-lg backdrop-blur-md"
+                    : cn(theme.primaryBg, theme.shadow),
                 )}
               >
                 <Plus className="w-4 h-4" /> New Chat
@@ -1561,11 +1735,21 @@ export default function AIChat({
         ) : isHero ? (
           <div className="flex-1 flex flex-col items-center justify-center min-h-0">
             <div className="aichat-rise-10 w-full max-w-3xl px-4 sm:px-6 text-center">
-              <h2 className="text-2xl sm:text-4xl font-semibold tracking-tight text-foreground">
+              <h2
+                className={cn(
+                  "text-2xl sm:text-4xl font-semibold tracking-tight",
+                  variant === "liquid-glass" ? "text-white" : "text-foreground",
+                )}
+              >
                 {heroTitle}
               </h2>
               {heroSubtitle && (
-                <p className="mt-2 text-sm sm:text-base text-muted-foreground">
+                <p
+                  className={cn(
+                    "mt-2 text-sm sm:text-base",
+                    variant === "liquid-glass" ? "text-white/70" : "text-muted-foreground",
+                  )}
+                >
                   {heroSubtitle}
                 </p>
               )}
@@ -1583,7 +1767,12 @@ export default function AIChat({
               <div className="flex items-center gap-3">
                 {showSidebar && (
                   <button
-                    className="lg:hidden text-muted-foreground hover:text-foreground transition-colors shrink-0"
+                    className={cn(
+                      "lg:hidden transition-colors shrink-0",
+                      variant === "liquid-glass"
+                        ? "text-white/70 hover:text-white"
+                        : "text-muted-foreground hover:text-foreground",
+                    )}
                     onClick={() => setIsSidebarOpen(true)}
                   >
                     <Menu className="w-5 h-5" />
@@ -1610,10 +1799,20 @@ export default function AIChat({
                     <Sparkles className="w-4 h-4" />
                   </div>
                   <div>
-                    <h2 className="text-sm font-semibold text-foreground leading-tight">
+                    <h2
+                      className={cn(
+                        "text-sm font-semibold leading-tight",
+                        variant === "liquid-glass" ? "text-white" : "text-foreground",
+                      )}
+                    >
                       AI Assistant
                     </h2>
-                    <p className="text-xs font-medium text-emerald-600 dark:text-emerald-400 mt-0.5">
+                    <p
+                      className={cn(
+                        "text-xs font-medium mt-0.5",
+                        variant === "liquid-glass" ? "text-emerald-400" : "text-emerald-600 dark:text-emerald-400",
+                      )}
+                    >
                       Online & Ready
                     </p>
                   </div>
@@ -1627,15 +1826,23 @@ export default function AIChat({
                     title="New chat"
                     className={cn(
                       "flex items-center gap-1.5 h-9 px-3 rounded-lg text-xs font-semibold transition-colors cursor-pointer",
-                      theme.lightBg,
-                      theme.primaryText,
+                      variant === "liquid-glass"
+                        ? "bg-white/20 hover:bg-white/30 text-white border border-white/25 shadow-sm"
+                        : cn(theme.lightBg, theme.primaryText),
                     )}
                   >
                     <Plus className="w-4 h-4" />
                     <span className="hidden sm:inline">New chat</span>
                   </button>
                 )}
-                <button className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors">
+                <button
+                  className={cn(
+                    "p-2 rounded-lg transition-colors",
+                    variant === "liquid-glass"
+                      ? "text-white/70 hover:text-white hover:bg-white/10"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted",
+                  )}
+                >
                   <MoreVertical className="w-5 h-5" />
                 </button>
               </div>
@@ -1743,7 +1950,12 @@ export default function AIChat({
                       <div
                         className={`flex items-center gap-3 mt-1 px-1 ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                       >
-                        <span className="text-[10px] font-medium text-muted-foreground">
+                        <span
+                          className={cn(
+                            "text-[10px] font-medium",
+                            variant === "liquid-glass" ? "text-white/60" : "text-muted-foreground",
+                          )}
+                        >
                           {msg.time}
                           {msg.model && (
                             <span className="opacity-80">
@@ -1754,8 +1966,20 @@ export default function AIChat({
                           )}
                         </span>
                         {msg.role !== "user" && (
-                          <div className="flex items-center gap-1.5 text-muted-foreground">
-                            <button className="p-1 hover:text-foreground hover:bg-muted rounded transition-colors">
+                          <div
+                            className={cn(
+                              "flex items-center gap-1.5",
+                              variant === "liquid-glass" ? "text-white/70" : "text-muted-foreground",
+                            )}
+                          >
+                            <button
+                              className={cn(
+                                "p-1 rounded transition-colors",
+                                variant === "liquid-glass"
+                                  ? "hover:text-white hover:bg-white/10"
+                                  : "hover:text-foreground hover:bg-muted",
+                              )}
+                            >
                               <Copy className="w-3.5 h-3.5" />
                             </button>
                             <button className="p-1 hover:text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 rounded transition-colors">
@@ -1788,9 +2012,24 @@ export default function AIChat({
                         styles.msgAi,
                       )}
                     >
-                      <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce [animation-delay:-0.3s]" />
-                      <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce [animation-delay:-0.15s]" />
-                      <span className="w-1.5 h-1.5 bg-muted-foreground rounded-full animate-bounce" />
+                      <span
+                        className={cn(
+                          "w-1.5 h-1.5 rounded-full animate-bounce [animation-delay:-0.3s]",
+                          variant === "liquid-glass" ? "bg-white/70" : "bg-muted-foreground",
+                        )}
+                      />
+                      <span
+                        className={cn(
+                          "w-1.5 h-1.5 rounded-full animate-bounce [animation-delay:-0.15s]",
+                          variant === "liquid-glass" ? "bg-white/70" : "bg-muted-foreground",
+                        )}
+                      />
+                      <span
+                        className={cn(
+                          "w-1.5 h-1.5 rounded-full animate-bounce",
+                          variant === "liquid-glass" ? "bg-white/70" : "bg-muted-foreground",
+                        )}
+                      />
                     </div>
                   </div>
                 )}

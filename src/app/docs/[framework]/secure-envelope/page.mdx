@@ -1,0 +1,367 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("secure-envelope");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { Installation } from "@/components/site/installation";
+import { extractCode } from "@/lib/code";
+
+# Secure Envelope
+
+An interactive classified envelope sleeve & travel pass component featuring a secret card that glides out horizontally on hover and elevates gracefully onto the cover on click. Designed with a vector-precise thumb notch, authentic security crest seals, and luxurious 3D dual-sided flip physics.
+
+`SecureEnvelope` brings tactile physical curiosity to train online tickets, travel booking passes, security dossiers, coupon reward vouchers, and VIP cards.
+
+export const usageSmartCard = `import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
+
+const smartCardData: SecureEnvelopeData = {
+  holderName: "Dr. Kaelen Vance",
+  roleTitle: "CHIEF ARCHITECT",
+  authLevel: "LEVEL 09 // OMNI",
+};
+
+export default function CyberSmartCardExample() {
+  return (
+    <div className="w-full flex items-center justify-center py-12">
+      <SecureEnvelope
+        cardDesign="smart-card"
+        interactionMode="step-flip"
+        data={smartCardData}
+      />
+    </div>
+  );
+}`;
+
+export const usageAutoFlip = `import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
+
+const voucherData: SecureEnvelopeData = {
+  frontTitle: "Exclusive Access",
+  frontSubtitle: "Limited edition membership and premium reward voucher.",
+  highlightQuote: "Unlock 50% off on all annual pro plans.",
+};
+
+export default function AutoFlipSecureEnvelopeExample() {
+  return (
+    <div className="w-full flex items-center justify-center py-12">
+      <SecureEnvelope
+        interactionMode="auto-flip"
+        data={voucherData}
+      />
+    </div>
+  );
+}`;
+
+export const usageTrainTicket = `import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
+
+const ticketData: SecureEnvelopeData = {
+  passengerName: "Barbara M. Sandoval",
+  routeText: "ZÜRICH HB - PARIS-EST",
+  seatNumber: "18A",
+  trainNumber: "6",
+};
+
+export default function TrainOnlineTicketExample() {
+  return (
+    <div className="w-full flex items-center justify-center py-12">
+      <SecureEnvelope
+        cardDesign="train-ticket"
+        interactionMode="step-flip"
+        data={ticketData}
+      />
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="secure-envelope"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Biometric NFC SmartCard (Quantum Vault Variant)",
+      subheading:
+        "High-tech biometric identity smartcard & encrypted key vault sleeve. Features golden EMV microchip, contactless NFC glyph, clearance level badge, encrypted magnetic stripe, and crypto signature panel with full light/dark theme adaptivity.",
+      propNotes: [
+        {
+          lead: "Design Variant",
+          prop: "cardDesign",
+          value: '"smart-card"',
+          effect:
+            "activates the Quantum Key Vault biometric smartcard layout and cyber nexus seal styling.",
+        },
+        {
+          lead: "Data Object",
+          prop: "data",
+          value: "smartCardData",
+          effect:
+            "passes essential holder name, role title, and clearance level. Chip serial, security keys, and cryptographic hashes use built-in defaults.",
+        },
+        {
+          lead: "Interaction",
+          prop: "interactionMode",
+          value: '"step-flip"',
+          effect:
+            "splits the animation into 3 distinct clicks: Click 1 opens to front smartcard, Click 2 flips to encrypted magnetic stripe & credentials, Click 3 closes.",
+        },
+      ],
+      props: {
+        cardDesign: "smart-card",
+        interactionMode: "step-flip",
+        data: {
+          holderName: "Dr. Kaelen Vance",
+          roleTitle: "CHIEF ARCHITECT",
+          authLevel: "LEVEL 09 // OMNI",
+        },
+      },
+      usage: usageSmartCard,
+      code: extractCode("src/components/custom/blocks/SecureEnvelopeBlock.tsx"),
+      minHeight: 580,
+    },
+    {
+      title: "Auto Flip (Classic Voucher / Classified)",
+      subheading:
+        "1st click slides the card out from the sleeve, elevates onto the front, and automatically flips 180° in-place to reveal the back details. 2nd click flips back and returns inside the sleeve.",
+      propNotes: [
+        {
+          lead: "Data Object",
+          prop: "data",
+          value: "voucherData",
+          effect:
+            "passes key title, subtitle, and discount quote while all badges, metric pillars, and seals use component defaults.",
+        },
+        {
+          lead: "Interaction",
+          prop: "interactionMode",
+          value: '"auto-flip"',
+          effect:
+            "automatically executes the full slide-out and in-place 180° flip on first click.",
+        },
+      ],
+      props: {
+        interactionMode: "auto-flip",
+        data: {
+          frontTitle: "Exclusive Access",
+          frontSubtitle: "Limited edition membership and premium reward voucher.",
+          highlightQuote: "Unlock 50% off on all annual pro plans.",
+        },
+      },
+      usage: usageAutoFlip,
+      code: extractCode("src/components/custom/blocks/SecureEnvelopeBlock.tsx"),
+      minHeight: 580,
+    },
+    {
+      title: "Train Online Ticket (Hyperbolt Express Variant)",
+      subheading:
+        "Exact high-speed rail ticket and envelope design. Features the top blue pill header, passenger info, seat/train numbers, vertical barcode, watermarked station route bar, tear-off stub, and Hyperbolt bullet train box sleeve.",
+      propNotes: [
+        {
+          lead: "Data Object",
+          prop: "data",
+          value: "ticketData",
+          effect:
+            "passes essential passenger name, route, seat, and train number. All other train details automatically use authentic built-in defaults.",
+        },
+        {
+          lead: "Design Variant",
+          prop: "cardDesign",
+          value: '"train-ticket"',
+          effect:
+            "activates the Hyperbolt Express train online ticket layout for both the card and the outer sleeve box.",
+        },
+        {
+          lead: "Interaction",
+          prop: "interactionMode",
+          value: '"step-flip"',
+          effect:
+            "splits the animation into 3 distinct clicks: Click 1 opens to front ticket, Click 2 flips to reverse route overview, Click 3 closes.",
+        },
+      ],
+      props: {
+        cardDesign: "train-ticket",
+        interactionMode: "step-flip",
+        data: {
+          passengerName: "Barbara M. Sandoval",
+          routeText: "ZÜRICH HB - PARIS-EST",
+          seatNumber: "18A",
+          trainNumber: "6",
+        },
+      },
+      usage: usageTrainTicket,
+      code: extractCode("src/components/custom/blocks/SecureEnvelopeBlock.tsx"),
+      minHeight: 580,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="secure-envelope" />
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Rail Tickets & Biometric SmartCards</h3>
+    <p className="text-muted-foreground text-sm">Rich variety of real-world templates including Hyperbolt European train tickets, classic classified dossiers, and biometric NFC smartcards with EMV microchips and full light/dark theme adaptivity.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Two-Stage Flight Choreography</h3>
+    <p className="text-muted-foreground text-sm">When clicked, the document slides out horizontally past the sleeve edge, elevates in front on the z-axis, and glides back down with a gentle tilt onto the front cover.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Vector Thumb Scoop Notch</h3>
+    <p className="text-muted-foreground text-sm">Engineered with a clean, subpixel-sharp SVG inward scoop notch along the right edge, exposing the card inside exactly like a high-end physical envelope sleeve.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">3D In-Place Flip Physics</h3>
+    <p className="text-muted-foreground text-sm">Features seamless 180-degree in-place 3D card flips with true perspective, preserved backface visibility, and dynamic theme adaptivity.</p>
+  </div>
+</div>
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Keyboard & Accessibility</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50"><code>SecureEnvelope</code> supports keyboard navigation: focus it with <code>Tab</code> and trigger the opening/closing animation using <code>Enter</code> or <code>Space</code>, or close with <code>Escape</code>.</p>
+  </div>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Mobile & Touch Interaction</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">On touch devices where hover is unavailable, tapping the folder launches the smooth opening flight sequence immediately.</p>
+  </div>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Biometric SmartCards & Access Credentials</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Pass <code>cardDesign="smart-card"</code> with custom clearance levels, holder name, and department for cybersecurity credentials, VIP access badges, and identity portals.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>data</code></td>
+        <td><code>SecureEnvelopeData | SecureEnvelopeData[]</code></td>
+        <td><code>undefined</code></td>
+        <td>Structured data object containing all ticket, pass, keycard, voucher, and card metric properties. Can also be passed as an array.</td>
+      </tr>
+      <tr>
+        <td><code>cardDesign</code></td>
+        <td><code>"classified" | "train-ticket" | "smart-card"</code></td>
+        <td><code>"classified"</code></td>
+        <td>Selects the visual template: <code>"smart-card"</code> for biometric NFC smartcards, <code>"train-ticket"</code> for European railway tickets, or <code>"classified"</code> for confidential dossiers.</td>
+      </tr>
+      <tr>
+        <td><code>interactionMode</code></td>
+        <td><code>"auto-flip" | "step-flip"</code></td>
+        <td><code>"auto-flip"</code></td>
+        <td>Controls opening behavior: <code>"auto-flip"</code> opens and flips automatically on 1st click; <code>"step-flip"</code> splits the interaction into 3 clicks (Click 1 opens, Click 2 flips, Click 3 closes).</td>
+      </tr>
+      <tr>
+        <td><code>passengerName</code></td>
+        <td><code>string</code></td>
+        <td><code>"Barbara M. Sandoval"</code></td>
+        <td>Name of passenger printed on the train ticket.</td>
+      </tr>
+      <tr>
+        <td><code>routeText</code></td>
+        <td><code>string</code></td>
+        <td><code>"ZÜRICH HB - PARIS-EST"</code></td>
+        <td>Train route printed across the blue banner and solid black badge.</td>
+      </tr>
+      <tr>
+        <td><code>seatNumber</code></td>
+        <td><code>string</code></td>
+        <td><code>"18A"</code></td>
+        <td>Assigned train seat number.</td>
+      </tr>
+      <tr>
+        <td><code>trainNumber</code></td>
+        <td><code>string</code></td>
+        <td><code>"6"</code></td>
+        <td>Assigned train carriage/train number.</td>
+      </tr>
+      <tr>
+        <td><code>date</code></td>
+        <td><code>string</code></td>
+        <td><code>"25/11/2024"</code></td>
+        <td>Scheduled date of travel.</td>
+      </tr>
+      <tr>
+        <td><code>departureTime</code></td>
+        <td><code>string</code></td>
+        <td><code>"06.30"</code></td>
+        <td>Departure timestamp.</td>
+      </tr>
+      <tr>
+        <td><code>trainCompany</code></td>
+        <td><code>string</code></td>
+        <td><code>"HYPERBOLT EXPRESS"</code></td>
+        <td>Transit brand printed on the sleeve cover and ticket back.</td>
+      </tr>
+      <tr>
+        <td><code>slogan</code></td>
+        <td><code>string</code></td>
+        <td><code>"UNLEASH THE POWER OF SPEED WITH HYPERBOLT EXPRESS"</code></td>
+        <td>High-speed transit slogan on the sleeve and ticket back.</td>
+      </tr>
+      <tr>
+        <td><code>barcodeNumber</code></td>
+        <td><code>string</code></td>
+        <td><code>"0 734664 235788"</code></td>
+        <td>Code string for the vertical barcodes.</td>
+      </tr>
+      <tr>
+        <td><code>websiteUrl</code></td>
+        <td><code>string</code></td>
+        <td><code>"HYPERBOLTEXPRESS.COM"</code></td>
+        <td>Website URL printed on the sleeve and reverse side.</td>
+      </tr>
+      <tr>
+        <td><code>folderColor</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined (var(--primary))</code></td>
+        <td>Optional custom theme color override for the folder sleeve and accents. Defaults to the active theme's primary color.</td>
+      </tr>
+      <tr>
+        <td><code>initialPeek</code></td>
+        <td><code>number</code></td>
+        <td><code>38</code></td>
+        <td>Horizontal pixel distance the card peeks out from the notch in resting idle state.</td>
+      </tr>
+      <tr>
+        <td><code>hoverPeek</code></td>
+        <td><code>number</code></td>
+        <td><code>88</code></td>
+        <td>Horizontal pixel distance the card glides out on hover before being clicked.</td>
+      </tr>
+      <tr>
+        <td><code>cardVariant</code></td>
+        <td><code>"adaptive" | "ivory"</code></td>
+        <td><code>"adaptive"</code></td>
+        <td>Switches between dynamic dual-theme adaptivity (light in Light Mode, dark in Dark Mode) and classic physical ivory cardstock.</td>
+      </tr>
+      <tr>
+        <td><code>defaultOpen</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Whether the folder opens directly in its elevated resting state.</td>
+      </tr>
+      <tr>
+        <td><code>onOpenChange</code></td>
+        <td><code>(open: boolean) =&gt; void</code></td>
+        <td><code>undefined</code></td>
+        <td>Callback fired whenever the card opens or returns inside the sleeve.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
