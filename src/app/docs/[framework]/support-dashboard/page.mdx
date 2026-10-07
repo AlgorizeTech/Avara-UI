@@ -115,20 +115,31 @@ ${supportData}
 
 export default function GlassDashboard() {
   return (
-    // \`glass\` is translucent by design — it needs a backdrop to read against.
-    <div className="w-full relative overflow-hidden rounded-2xl p-4 sm:p-8">
-      <div className="absolute inset-0 z-0">
-        <img
-          src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg"
-          alt="Moody nature landscape background"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
-      </div>
-      <div className="relative z-10 w-full">
-        <SupportDashboard variant="glass" color="rose" data={data} />
-      </div>
-    </div>
+    // \`glass\` provides a self-contained full-bleed backdrop with a floating frosted card.
+    <SupportDashboard
+      variant="glass"
+      color="rose"
+      data={data}
+      bgImage="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg"
+    />
+  );
+}`;
+
+export const usageLiquidGlass = `import SupportDashboard, {
+  type SupportData,
+} from "@/components/custom/blocks/Support-dashboard";
+
+${supportData}
+
+export default function LiquidGlassDashboard() {
+  return (
+    // \`liquid-glass\` features animated SVG displacement turbulence, specular edge highlights, and high-contrast frosted styling.
+    <SupportDashboard
+      variant="liquid-glass"
+      color="indigo"
+      data={data}
+      bgImage="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg"
+    />
   );
 }`;
 
@@ -207,6 +218,21 @@ export default function GlassDashboard() {
       props: { layout: "chat", variant: "glass" },
       usage: usageGlass,
     },
+    {
+      title: "Liquid glass",
+      id: "support-liquid-glass",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"liquid-glass"',
+          effect:
+            "for an interactive multi-layered liquid glass stack with dynamic SVG displacement waves, specular edge highlights, and high-contrast styling.",
+        },
+      ],
+      props: { layout: "chat", variant: "liquid-glass" },
+      usage: usageLiquidGlass,
+    },
   ]}
 />
 
@@ -259,14 +285,14 @@ export default function GlassDashboard() {
           <code>variant</code>
         </td>
         <td>
-          <code>"default" | "minimal" | "glass"</code>
+          <code>"default" | "minimal" | "glass" | "liquid-glass"</code>
         </td>
         <td>
           <code>"default"</code>
         </td>
         <td>
           Applies distinct visual themes to the borders, backgrounds, and drop
-          shadows of the dashboard components.
+          shadows of the dashboard components. <code>liquid-glass</code> wraps in an animated liquid SVG frosted stack, while <code>glass</code> provides translucent styling.
         </td>
       </tr>
       <tr>
@@ -284,6 +310,20 @@ export default function GlassDashboard() {
           metric highlights. This is a fixed set — unlike the other blocks it
           does not accept a hex string, and unrecognised values fall back to{" "}
           <code>"indigo"</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>bgImage</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>Cloudinary landscape URL</code>
+        </td>
+        <td>
+          Custom scenic backdrop image URL for <code>liquid-glass</code> and <code>glass</code> variants.
         </td>
       </tr>
     </tbody>

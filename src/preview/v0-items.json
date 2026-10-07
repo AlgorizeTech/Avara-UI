@@ -788,7 +788,8 @@
   "support": {
     "ticket-workspace": "Support Dashboard — Ticket workspace",
     "table-view": "Support Dashboard — Table view",
-    "glass": "Support Dashboard — Glass"
+    "glass": "Support Dashboard — Glass",
+    "support-liquid-glass": "Support Dashboard — Liquid glass"
   },
   "table-soft": {
     "soft-variant": "Table — Soft variant"
