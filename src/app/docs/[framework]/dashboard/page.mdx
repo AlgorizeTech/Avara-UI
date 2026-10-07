@@ -6,9 +6,16 @@ import { ExampleShowcase } from "@/components/site/Sandbox";
 import { Installation } from "@/components/site/installation";
 import { extractCode } from "@/lib/code";
 
+export const usageGlass = extractCode("src/preview/demos/dashboard-demo.tsx").replace(
+  'variant = "classic"',
+  'variant = "glass"',
+);
+
 # Dashboard
 
 An admin dashboard home on its own canvas: a greeting with all-time totals, a period switch, an overview chart with a tab per metric, the activity feed, traffic sources, visitors by country and the top authors. Every number arrives through props, so you point it at your API and the layout, the empty states and the narrow-screen stacking take care of themselves.
+
+Two looks read the same props: **classic**, solid panels on a light canvas, and **glass**, milky panes over soft colour blobs with KPI cards, metric tiles beside capsule columns, a segmented half ring, the activity as a journey in a notched pane, and a payments table.
 
 <ExampleShowcase
   name="dashboard"
@@ -39,6 +46,35 @@ An admin dashboard home on its own canvas: a greeting with all-time totals, a pe
       usage: extractCode("src/preview/demos/dashboard-demo.tsx"),
       code: extractCode("src/components/custom/blocks/DashboardBlock.tsx"),
     },
+    {
+      title: "Glass",
+      id: "dashboard-glass",
+      subheading: "Milky glass panes on a soft canvas. Pick a metric tile to chart it, hover a capsule column, the half ring or a country segment, and follow the activity from a first post to a message. Switch to dark mode to see the glass go smoky.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"glass"',
+          effect:
+            "— the same `metrics`, `activity`, `sources`, `countries` and `authors` re-present as glass: the top authors sit in the pane's notch and the activity becomes one card per step.",
+        },
+        {
+          lead: "Give",
+          prop: "totals",
+          effect:
+            "a `metric` id and each KPI card says what the current period added (\"+1,094 new users this month\"); an `href` adds its round open button.",
+        },
+        {
+          lead: "Pass",
+          prop: "payments",
+          effect:
+            "for the recent payments table and `shortcuts` for the tiles beside the activity. Leave `payments` out and the countries pane takes the full row.",
+        },
+      ],
+      props: { variant: "glass" },
+      usage: usageGlass,
+      code: extractCode("src/components/custom/blocks/DashboardBlock.tsx"),
+    },
   ]}
 />
 
@@ -60,6 +96,14 @@ An admin dashboard home on its own canvas: a greeting with all-time totals, a pe
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">Follows your theme</h3>
     <p className="text-muted-foreground text-sm">The canvas glow, the current column, the tab indicator and the bars are mixed from <code>--primary</code>, so a theme preset repaints the whole section in light and dark.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Glass without the lag</h3>
+    <p className="text-muted-foreground text-sm">The glass variant gets its depth from a sheen, a light rim and colour blobs on the canvas, not from <code>backdrop-filter</code>, so it scrolls as smoothly as the classic look. With reduced transparency turned on, the panes go solid.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Sizes to its container</h3>
+    <p className="text-muted-foreground text-sm">The glass layout uses container queries, so it stacks, pairs up and spreads out by the width it is given — a sidebar layout and a full-width page both get the right grid.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">No hydration surprises</h3>
@@ -98,6 +142,12 @@ An admin dashboard home on its own canvas: a greeting with all-time totals, a pe
     </thead>
     <tbody>
       <tr>
+        <td><code>variant</code></td>
+        <td><code>"classic" | "glass"</code></td>
+        <td><code>"classic"</code></td>
+        <td>The look. Both read the same props; the glass-only props below are ignored by the classic look.</td>
+      </tr>
+      <tr>
         <td><code>userName</code></td>
         <td><code>string</code></td>
         <td>—</td>
@@ -113,7 +163,7 @@ An admin dashboard home on its own canvas: a greeting with all-time totals, a pe
         <td><code>totals</code></td>
         <td><code>DashboardTotal[]</code></td>
         <td><code>[]</code></td>
-        <td>All-time counts beside the greeting — <code>{`{ label, value, icon? }`}</code>. The period switch never changes them.</td>
+        <td>All-time counts beside the greeting — <code>{`{ label, value, icon?, metric?, href? }`}</code>. The period switch never changes them. In glass, <code>metric</code> (a metric id) adds what the current period brought and <code>href</code> adds an open button.</td>
       </tr>
       <tr>
         <td><code>metrics</code></td>
@@ -125,7 +175,7 @@ An admin dashboard home on its own canvas: a greeting with all-time totals, a pe
         <td><code>activity</code></td>
         <td><code>DashboardActivity[]</code></td>
         <td><code>[]</code></td>
-        <td>The feed, newest shown first, six per filter — <code>{`{ id, type: "user" | "post" | "payment" | "message", title, subtitle?, status?, date, href? }`}</code>.</td>
+        <td>The feed, newest shown first, six per filter — <code>{`{ id, type: "user" | "post" | "payment" | "message", title, subtitle?, status?, date, href?, person?, avatar? }`}</code>. Glass groups it by type into four steps, three rows each, with an avatar when <code>person</code> is set.</td>
       </tr>
       <tr>
         <td><code>sources</code></td>
@@ -149,7 +199,19 @@ An admin dashboard home on its own canvas: a greeting with all-time totals, a pe
         <td><code>authors</code></td>
         <td><code>{`Partial<Record<DashboardPeriod, DashboardAuthor[]>>`}</code></td>
         <td>—</td>
-        <td>Posts per author — <code>{`{ name, posts }`}</code>. The top five are ranked against the leader.</td>
+        <td>Posts per author — <code>{`{ name, posts, avatar? }`}</code>. The top five are ranked against the leader; glass shows the top eight in the activity pane's notch.</td>
+      </tr>
+      <tr>
+        <td><code>payments</code></td>
+        <td><code>DashboardPayment[]</code></td>
+        <td>—</td>
+        <td>Glass only: the recent payments table, newest six — <code>{`{ id, amount, currency, method, status?, person?, avatar?, date }`}</code>. Leave it out to hide the pane.</td>
+      </tr>
+      <tr>
+        <td><code>shortcuts</code></td>
+        <td><code>DashboardShortcut[]</code></td>
+        <td><code>[]</code></td>
+        <td>Glass only: tiles beside the activity steps — <code>{`{ label, href, icon? }`}</code>. The first takes the brand fill.</td>
       </tr>
       <tr>
         <td><code>defaultPeriod</code></td>
@@ -165,7 +227,7 @@ An admin dashboard home on its own canvas: a greeting with all-time totals, a pe
       </tr>
       <tr>
         <td><code>links</code></td>
-        <td><code>{`{ activity?, traffic?, countries?, authors? }`}</code></td>
+        <td><code>{`{ activity?, traffic?, countries?, authors?, payments? }`}</code></td>
         <td><code>{`{}`}</code></td>
         <td>Where each panel's round open button goes. A panel without a link shows none.</td>
       </tr>

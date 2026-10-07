@@ -2,8 +2,11 @@
 
 import {
   CreditCard,
+  FilePlus2,
   FileText,
+  Globe,
   Mail,
+  PackagePlus,
   PenLine,
   UserPlus,
   UsersRound,
@@ -14,10 +17,13 @@ import {
   type DashboardActivity,
   type DashboardAuthor,
   type DashboardMetric,
+  type DashboardPayment,
   type DashboardPeriod,
   type DashboardPoint,
   type DashboardShare,
+  type DashboardShortcut,
   type DashboardTotal,
+  type DashboardVariant,
 } from "@/components/custom/blocks/DashboardBlock";
 
 // Replace everything below with your API's numbers — the section only reads props.
@@ -42,11 +48,13 @@ const series = (
   month: month.map((value, i) => ({ label: MONTHS[i] ?? "", shortLabel: MONTHS[i]?.charAt(0), value })),
 });
 
+// `metric` and `href` are read by the glass variant: each card reports what
+// the current period added and gets a round open button.
 const TOTALS: DashboardTotal[] = [
-  { label: "Total users", value: 12480, icon: <UsersRound /> },
-  { label: "Published posts", value: 1284, icon: <FileText /> },
-  { label: "Messages received", value: 3906, icon: <Mail /> },
-  { label: "Completed payments", value: 8215, icon: <CreditCard /> },
+  { label: "Total users", value: 12480, icon: <UsersRound />, metric: "users", href: "#users" },
+  { label: "Published posts", value: 1284, icon: <FileText />, metric: "posts", href: "#posts" },
+  { label: "Messages received", value: 3906, icon: <Mail />, metric: "messages", href: "#messages" },
+  { label: "Completed payments", value: 8215, icon: <CreditCard />, metric: "revenue" },
 ];
 
 const METRICS: DashboardMetric[] = [
@@ -103,21 +111,22 @@ const METRICS: DashboardMetric[] = [
 // Times relative to now, so the feed always reads as recent.
 const minutesAgo = (minutes: number) => new Date(Date.now() - minutes * 60_000);
 
+// `person` puts an avatar on the row in the glass variant.
 const ACTIVITY: DashboardActivity[] = [
-  { id: 1, type: "user", title: "Priya Nair", subtitle: "Signed up on the Pro plan", date: minutesAgo(4) },
-  { id: 2, type: "payment", title: "$249.00 from Daniel Brooks", subtitle: "Team plan, yearly", date: minutesAgo(18) },
+  { id: 1, type: "user", title: "Priya Nair", subtitle: "Signed up on the Pro plan", person: "Priya Nair", date: minutesAgo(4) },
+  { id: 2, type: "payment", title: "$249.00 from Daniel Brooks", subtitle: "Team plan, yearly", person: "Daniel Brooks", date: minutesAgo(18) },
   { id: 3, type: "message", title: "Question about invoices", subtitle: "marcus@northwind.io", date: minutesAgo(42) },
-  { id: 4, type: "post", title: "Designing calmer dashboards", subtitle: "By Ayesha Rahman", date: minutesAgo(95) },
-  { id: 5, type: "payment", title: "$49.00 from Sofia Alvarez", subtitle: "Pro plan, monthly", status: "pending", date: minutesAgo(150) },
-  { id: 6, type: "user", title: "Liam O'Connor", subtitle: "Invited by Ayesha Rahman", date: minutesAgo(190) },
+  { id: 4, type: "post", title: "Designing calmer dashboards", subtitle: "By Ayesha Rahman", person: "Ayesha Rahman", date: minutesAgo(95) },
+  { id: 5, type: "payment", title: "$49.00 from Sofia Alvarez", subtitle: "Pro plan, monthly", status: "pending", person: "Sofia Alvarez", date: minutesAgo(150) },
+  { id: 6, type: "user", title: "Liam O'Connor", subtitle: "Invited by Ayesha Rahman", person: "Liam O'Connor", date: minutesAgo(190) },
   { id: 7, type: "message", title: "Partnership enquiry", subtitle: "hello@lumen.studio", date: minutesAgo(26 * 60) },
-  { id: 8, type: "post", title: "Release notes: September", subtitle: "By Marcus Chen", date: minutesAgo(28 * 60) },
-  { id: 9, type: "payment", title: "$129.00 from Hana Kobayashi", subtitle: "Team plan, monthly", status: "failed", date: minutesAgo(30 * 60) },
-  { id: 10, type: "user", title: "Omar Haddad", subtitle: "Signed up on the Free plan", date: minutesAgo(50 * 60) },
-  { id: 11, type: "post", title: "Building accessible components", subtitle: "By Daniel Brooks", date: minutesAgo(52 * 60) },
+  { id: 8, type: "post", title: "Release notes: September", subtitle: "By Marcus Chen", person: "Marcus Chen", date: minutesAgo(28 * 60) },
+  { id: 9, type: "payment", title: "$129.00 from Hana Kobayashi", subtitle: "Team plan, monthly", status: "failed", person: "Hana Kobayashi", date: minutesAgo(30 * 60) },
+  { id: 10, type: "user", title: "Omar Haddad", subtitle: "Signed up on the Free plan", person: "Omar Haddad", date: minutesAgo(50 * 60) },
+  { id: 11, type: "post", title: "Building accessible components", subtitle: "By Daniel Brooks", person: "Daniel Brooks", date: minutesAgo(52 * 60) },
   { id: 12, type: "message", title: "Feature request: Custom themes", subtitle: "dev@acme.corp", date: minutesAgo(55 * 60) },
   { id: 13, type: "payment", title: "$399.00 from Acme Corp", subtitle: "Enterprise plan, yearly", date: minutesAgo(58 * 60) },
-  { id: 14, type: "post", title: "State management in 2026", subtitle: "By Priya Nair", date: minutesAgo(65 * 60) },
+  { id: 14, type: "post", title: "State management in 2026", subtitle: "By Priya Nair", person: "Priya Nair", date: minutesAgo(65 * 60) },
   { id: 15, type: "message", title: "Webhook integration bug", subtitle: "support@startup.co", date: minutesAgo(70 * 60) },
 ];
 
@@ -202,9 +211,29 @@ const AUTHORS: Record<DashboardPeriod, DashboardAuthor[]> = {
   ],
 };
 
-export default function AdminDashboard() {
+// The glass variant's payments table and shortcut tiles; the classic look ignores them.
+const PAYMENTS: DashboardPayment[] = [
+  { id: "pay_1", amount: 249, currency: "USD", method: "Stripe", person: "Daniel Brooks", date: minutesAgo(18) },
+  { id: "pay_2", amount: 49, currency: "USD", method: "PayPal", status: "pending", person: "Sofia Alvarez", date: minutesAgo(150) },
+  { id: "pay_3", amount: 129, currency: "USD", method: "Stripe", status: "failed", person: "Hana Kobayashi", date: minutesAgo(30 * 60) },
+  { id: "pay_4", amount: 399, currency: "USD", method: "Bank transfer", person: "Acme Corp", date: minutesAgo(58 * 60) },
+  { id: "pay_5", amount: 19, currency: "USD", method: "Lemon Squeezy", date: minutesAgo(73 * 60) },
+  { id: "pay_6", amount: 249, currency: "USD", method: "Stripe", person: "Priya Nair", date: minutesAgo(96 * 60) },
+];
+
+const SHORTCUTS: DashboardShortcut[] = [
+  { label: "Add a page", href: "#pages/new", icon: <FilePlus2 /> },
+  { label: "Add a package", href: "#packages/new", icon: <PackagePlus /> },
+  { label: "Users", href: "#users", icon: <UsersRound /> },
+  { label: "Messages", href: "#messages", icon: <Mail /> },
+  { label: "Visitors", href: "#visitors", icon: <Globe /> },
+  { label: "Invitations", href: "#invitations", icon: <UserPlus /> },
+];
+
+export default function AdminDashboard({ variant = "classic" }: { variant?: DashboardVariant }) {
   return (
     <Dashboard
+      variant={variant}
       userName="Ayesha Rahman"
       totals={TOTALS}
       metrics={METRICS}
@@ -213,7 +242,15 @@ export default function AdminDashboard() {
       signUps={SIGN_UPS}
       countries={COUNTRIES}
       authors={AUTHORS}
-      links={{ activity: "#activity", traffic: "#traffic", countries: "#countries", authors: "#authors" }}
+      payments={PAYMENTS}
+      shortcuts={SHORTCUTS}
+      links={{
+        activity: "#activity",
+        traffic: "#traffic",
+        countries: "#countries",
+        authors: "#authors",
+        payments: "#payments",
+      }}
     />
   );
 }
