@@ -1,8 +1,15 @@
 export const metadata = docsPageMetadata("dashboard");
 
+export const usageGlass = extractCode("src/preview/demos/dashboard-demo.tsx").replace(
+  'variant = "classic"',
+  'variant = "glass"',
+);
+
 # Dashboard
 
 An admin dashboard home on its own canvas: a greeting with all-time totals, a period switch, an overview chart with a tab per metric, the activity feed, traffic sources, visitors by country and the top authors. Every number arrives through props, so you point it at your API and the layout, the empty states and the narrow-screen stacking take care of themselves.
+
+Two looks read the same props: **classic**, solid panels on a light canvas, and **glass**, milky panes over soft colour blobs with KPI cards, metric tiles beside capsule columns, a segmented half ring, the activity as a journey in a notched pane, and a payments table.
 
 ## Installation
 
@@ -23,6 +30,12 @@ npx shadcn@latest add @algorize-ui/dashboard
 
     Follows your theme
     The canvas glow, the current column, the tab indicator and the bars are mixed from --primary, so a theme preset repaints the whole section in light and dark.
+
+    Glass without the lag
+    The glass variant gets its depth from a sheen, a light rim and colour blobs on the canvas, not from backdrop-filter, so it scrolls as smoothly as the classic look. With reduced transparency turned on, the panes go solid.
+
+    Sizes to its container
+    The glass layout uses container queries, so it stacks, pairs up and spreads out by the width it is given — a sidebar layout and a full-width page both get the right grid.
 
     No hydration surprises
     The greeting, the date and the "4m ago" times read the visitor's clock after mount, so a server-rendered page and the browser agree. Pass now to pin them.
@@ -45,6 +58,11 @@ npx shadcn@latest add @algorize-ui/dashboard
         Default
         Description
 
+        variant
+        "classic" | "glass"
+        "classic"
+        The look. Both read the same props; the glass-only props below are ignored by the classic look.
+
         userName
         string
         —
@@ -58,7 +76,7 @@ npx shadcn@latest add @algorize-ui/dashboard
         totals
         DashboardTotal[]
         []
-        All-time counts beside the greeting — {`{ label, value, icon? }`}. The period switch never changes them.
+        All-time counts beside the greeting — {`{ label, value, icon?, metric?, href? }`}. The period switch never changes them. In glass, metric (a metric id) adds what the current period brought and href adds an open button.
 
         metrics
         DashboardMetric[]
@@ -68,7 +86,7 @@ npx shadcn@latest add @algorize-ui/dashboard
         activity
         DashboardActivity[]
         []
-        The feed, newest shown first, six per filter — {`{ id, type: "user" | "post" | "payment" | "message", title, subtitle?, status?, date, href? }`}.
+        The feed, newest shown first, six per filter — {`{ id, type: "user" | "post" | "payment" | "message", title, subtitle?, status?, date, href?, person?, avatar? }`}. Glass groups it by type into four steps, three rows each, with an avatar when person is set.
 
         sources
         {`Partial>`}
@@ -88,7 +106,17 @@ npx shadcn@latest add @algorize-ui/dashboard
         authors
         {`Partial>`}
         —
-        Posts per author — {`{ name, posts }`}. The top five are ranked against the leader.
+        Posts per author — {`{ name, posts, avatar? }`}. The top five are ranked against the leader; glass shows the top eight in the activity pane's notch.
+
+        payments
+        DashboardPayment[]
+        —
+        Glass only: the recent payments table, newest six — {`{ id, amount, currency, method, status?, person?, avatar?, date }`}. Leave it out to hide the pane.
+
+        shortcuts
+        DashboardShortcut[]
+        []
+        Glass only: tiles beside the activity steps — {`{ label, href, icon? }`}. The first takes the brand fill.
 
         defaultPeriod
         "day" | "week" | "month"
@@ -101,7 +129,7 @@ npx shadcn@latest add @algorize-ui/dashboard
         Replaces the built-in CSV of the overview series for the selected period.
 
         links
-        {`{ activity?, traffic?, countries?, authors? }`}
+        {`{ activity?, traffic?, countries?, authors?, payments? }`}
         {`{}`}
         Where each panel's round open button goes. A panel without a link shows none.
 
