@@ -40,7 +40,6 @@ export const usageDefault = `"use client";
 
 import { useState } from "react";
 import { DataGridBlock } from "@/components/custom/blocks/DataGridBlock";
-import { Download } from "lucide-react";
 
 ${gridSchema}
 
@@ -48,49 +47,29 @@ export default function Ledger() {
   const [data, setData] = useState<Record<string, unknown>[]>(ROWS);
 
   return (
-    <div className="w-full flex flex-col gap-2">
-      <div className="flex items-center justify-between px-2 mb-2">
-        <div className="flex flex-col">
-          <h3 className="font-semibold text-lg text-foreground">
-            Financial Ledger
-          </h3>
-          <p className="text-sm text-muted-foreground">Double-click any cell or press Enter to edit.</p>
-        </div>
-        <button className="hidden sm:flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-all shadow-xs">
-          <Download className="w-3.5 h-3.5" />
-          Export CSV
-        </button>
-      </div>
-
-      <DataGridBlock columns={COLUMNS} data={data} onChange={setData} />
-    </div>
+    <DataGridBlock
+      title="Financial Ledger"
+      columns={COLUMNS}
+      data={data}
+      onChange={setData}
+    />
   );
 }`;
 
 export const usageReadOnly = `import { DataGridBlock } from "@/components/custom/blocks/DataGridBlock";
-import { Download } from "lucide-react";
 
 ${gridSchema}
 
 export default function ReadOnlyGrid() {
   // Keyboard navigation still works — only editing is disabled.
   return (
-    <div className="w-full flex flex-col gap-2">
-      <div className="flex items-center justify-between px-2 mb-2">
-        <div className="flex flex-col">
-          <h3 className="font-semibold text-lg text-foreground">
-            Financial Ledger
-          </h3>
-          <p className="text-sm text-muted-foreground">View mode only.</p>
-        </div>
-        <button className="hidden sm:flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-lg bg-primary text-primary-foreground hover:opacity-90 transition-all shadow-xs">
-          <Download className="w-3.5 h-3.5" />
-          Export CSV
-        </button>
-      </div>
-
-      <DataGridBlock columns={COLUMNS} data={ROWS} readOnly />
-    </div>
+    <DataGridBlock
+      title="Financial Ledger"
+      description="View mode only."
+      columns={COLUMNS}
+      data={ROWS}
+      readOnly
+    />
   );
 }`;
 
@@ -309,6 +288,91 @@ Explore the Data Grid's powerful features for displaying complex datasets, inclu
           If true, globally disables all double-click and keyboard editing
           capabilities across the entire grid, while preserving the ability to
           navigate via arrow keys.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataGridBlock</code>
+        </td>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          An optional header title displayed above the grid (e.g. &quot;Financial Ledger&quot;).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataGridBlock</code>
+        </td>
+        <td>
+          <code>description</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          An optional subtitle or instructions rendered below the title.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataGridBlock</code>
+        </td>
+        <td>
+          <code>showExport</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          Whether to render the built-in &quot;Export CSV&quot; button in the header.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataGridBlock</code>
+        </td>
+        <td>
+          <code>exportFileName</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>&quot;data-grid.csv&quot;</code>
+        </td>
+        <td>
+          Custom file name for the downloaded CSV file.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataGridBlock</code>
+        </td>
+        <td>
+          <code>onExport</code>
+        </td>
+        <td>
+          <code>(data: T[]) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional callback triggered when the user clicks the &quot;Export CSV&quot; button.
         </td>
       </tr>
     </tbody>

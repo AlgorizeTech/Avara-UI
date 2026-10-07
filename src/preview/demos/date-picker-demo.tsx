@@ -70,6 +70,17 @@ export default function DatePickerDemo({
     );
   }
 
+  const isPastDate = (d: Date | null) => {
+    if (!d) return true;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const target = new Date(d);
+    target.setHours(0, 0, 0, 0);
+    return target.getTime() < today.getTime();
+  };
+
+  const isErrorActive = showError && isPastDate(date);
+
   return (
     <div className={`w-full flex flex-col items-start justify-start pt-5 pb-6 relative z-10 ${showTime ? "min-h-[680px]" : "min-h-[450px]"}`}>
       <div className="w-full max-w-sm mx-auto">
@@ -87,16 +98,20 @@ export default function DatePickerDemo({
           label="Launch Date"
           placeholder={showTime ? "Select date & time" : "Select a date"}
           helperText={
-            !showError
-              ? disablePast
+            isErrorActive
+              ? undefined
+              : disablePast
                 ? "Only today and future dates can be picked."
                 : showTime
                   ? "Pick a day, then set the time and hit Done."
-                  : "Choose the date for your next launch."
-              : undefined
+                  : showError && date && !isPastDate(date)
+                    ? "Valid launch date selected."
+                    : "Choose the date for your next launch."
           }
           error={
-            showError ? "Please select a valid date in the future." : undefined
+            isErrorActive
+              ? "Please select a valid date in the future."
+              : undefined
           }
         />
       </div>

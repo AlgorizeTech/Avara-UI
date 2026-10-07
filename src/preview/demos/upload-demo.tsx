@@ -67,14 +67,14 @@ function QueueRow({
 
   return (
     <div
-      className="upload-queue-row"
+      className="upload-queue-row w-full min-w-0"
       data-variant={variant}
       data-leaving={leaving || undefined}
       onAnimationEnd={(e) => {
         if (leaving && e.target === e.currentTarget) onGone(id);
       }}
     >
-      <div>{children}</div>
+      <div className="w-full min-w-0">{children}</div>
     </div>
   );
 }
@@ -294,9 +294,9 @@ export default function UploadDemo({
 
   if (layout === "dropzone") {
     return (
-      <div className="w-full flex justify-center bg-background rounded-2xl border border-border overflow-hidden py-16 relative min-h-[450px]">
+      <div className="w-full flex justify-center bg-background rounded-2xl border border-border overflow-hidden py-8 sm:py-16 relative min-h-[400px] sm:min-h-[450px]">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0" />
-        <div className="w-full max-w-md flex flex-col gap-6 relative z-10 px-4 perspective-[1000px]">
+        <div className="w-full max-w-md flex flex-col gap-6 relative z-10 px-3 sm:px-4 min-w-0 perspective-[1000px]">
           <Dropzone
             onFilesDrop={handleFilesDrop}
             accept="image/*,application/pdf,video/mp4"
@@ -304,7 +304,7 @@ export default function UploadDemo({
           />
 
           {listed && (
-            <div className="flex flex-col">
+            <div className="flex flex-col w-full min-w-0">
               <style>{QUEUE_CSS}</style>
               <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-1">
                 <span>Uploading {totalCount} files</span>
@@ -323,9 +323,9 @@ export default function UploadDemo({
 
   if (showAll === "states") {
     return (
-      <div className="w-full flex justify-center bg-background rounded-2xl border border-border overflow-hidden py-16 relative min-h-[500px]">
+      <div className="w-full flex justify-center bg-background rounded-2xl border border-border overflow-hidden py-8 sm:py-16 relative min-h-[450px] sm:min-h-[500px]">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0" />
-        <div className="w-full max-w-md flex flex-col gap-3 relative z-10 px-4">
+        <div className="w-full max-w-md flex flex-col gap-3 relative z-10 px-3 sm:px-4 min-w-0">
           {STATIC_STATES.map((item) => (
             <UploadItem
               key={item.id}
@@ -340,19 +340,19 @@ export default function UploadDemo({
   }
 
   return (
-    <div className="w-full flex justify-center bg-background rounded-2xl border border-border overflow-hidden py-16 relative min-h-[600px]">
+    <div className="w-full flex justify-center bg-background rounded-2xl border border-border overflow-hidden py-8 sm:py-16 relative min-h-[500px] sm:min-h-[600px]">
       {/* Subtle Grid Background */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0" />
 
       {/* App Container */}
-      <div className="w-full max-w-md flex flex-col gap-6 relative z-10 px-4 perspective-[1000px]">
+      <div className="w-full max-w-md flex flex-col gap-6 relative z-10 px-3 sm:px-4 min-w-0 perspective-[1000px]">
         <Dropzone
           onFilesDrop={handleFilesDrop}
           accept="image/*,application/pdf,video/mp4"
         />
 
         {listed && (
-          <div className="flex flex-col">
+          <div className="flex flex-col w-full min-w-0">
             <style>{QUEUE_CSS}</style>
             <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-1">
               <span>Uploading {totalCount} files</span>
