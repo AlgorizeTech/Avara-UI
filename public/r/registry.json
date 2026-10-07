@@ -1318,7 +1318,9 @@
       "categories": [
         "data-display"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [
         "utils"
       ],
