@@ -139,7 +139,7 @@ export default function MasonryGridDemo({
             return (
               <div
                 className={cn(
-                  "w-full rounded-2xl overflow-hidden relative group cursor-pointer border border-foreground/[0.04] shadow-sm",
+                  "w-full rounded-2xl overflow-hidden relative group cursor-pointer border border-foreground/[0.08]",
                   item.height,
                 )}
               >
@@ -163,7 +163,7 @@ export default function MasonryGridDemo({
             return (
               <div
                 className={cn(
-                  "w-full p-5 sm:p-6 md:p-8 rounded-2xl relative group cursor-pointer overflow-hidden border border-border bg-card shadow-sm",
+                  "w-full p-5 sm:p-6 md:p-8 rounded-2xl relative group cursor-pointer overflow-hidden border border-border bg-card",
                   item.height,
                 )}
               >
@@ -189,7 +189,7 @@ export default function MasonryGridDemo({
           return (
             <div
               className={cn(
-                "w-full p-5 sm:p-6 md:p-8 rounded-2xl bg-card border border-border shadow-sm transition-all duration-500 hover:shadow-md hover:-translate-y-1 flex flex-col items-start justify-between cursor-pointer group relative overflow-hidden",
+                "w-full p-5 sm:p-6 md:p-8 rounded-2xl bg-card border border-border transition-all duration-500 hover:border-foreground/20 hover:-translate-y-1 flex flex-col items-start justify-between cursor-pointer group relative overflow-hidden",
                 item.height,
               )}
             >

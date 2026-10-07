@@ -1,11 +1,13 @@
 {
   "carousel-3d": {
     "3d-carousel": "Carousel 3D — 3D carousel",
-    "shorter-deck": "Carousel 3D — Shorter deck"
+    "shorter-deck": "Carousel 3D — Shorter deck",
+    "without-arrows-or-dots": "Carousel 3D — Without arrows or dots"
   },
   "carousel-3d-motion": {
     "3d-carousel": "Carousel 3D — 3D carousel",
-    "shorter-deck": "Carousel 3D — Shorter deck"
+    "shorter-deck": "Carousel 3D — Shorter deck",
+    "without-arrows-or-dots": "Carousel 3D — Without arrows or dots"
   },
   "accordion": {
     "accordion": "Accordion",
@@ -21,14 +23,16 @@
     "compact": "AI Chat — Compact",
     "wired-to-your-backend": "AI Chat — Wired to your backend",
     "minimal": "AI Chat — Minimal",
-    "glass": "AI Chat — Glass"
+    "glass": "AI Chat — Glass",
+    "liquid-glass": "AI Chat — Liquid Glass"
   },
   "ai-chat-motion": {
     "ai-assistant": "AI Chat — AI assistant",
     "compact": "AI Chat — Compact",
     "wired-to-your-backend": "AI Chat — Wired to your backend",
     "minimal": "AI Chat — Minimal",
-    "glass": "AI Chat — Glass"
+    "glass": "AI Chat — Glass",
+    "liquid-glass": "AI Chat — Liquid Glass"
   },
   "alert": {
     "alert": "Alert",
@@ -91,6 +95,21 @@
     "plyr-html5": "Video Player (Plyr) — Plyr — HTML5",
     "plyr-youtube": "Video Player (Plyr) — Plyr — YouTube"
   },
+  "login-form": {
+    "login": "Login Form — Login",
+    "login-split": "Login Form — Login — split",
+    "login-minimal": "Login Form — Login — minimal",
+    "login-glass": "Login Form — Login — glass",
+    "login-liquid-glass": "Login Form — Login — liquid-glass"
+  },
+  "register-form": {
+    "register": "Register Form — Register",
+    "register-scenic": "Register Form — Register — scenic",
+    "register-split": "Register Form — Register — split",
+    "register-minimal": "Register Form — Register — minimal",
+    "register-glass": "Register Form — Register — glass",
+    "register-liquid-glass": "Register Form — Register — liquid-glass"
+  },
   "avatar-stack": {
     "without-tooltip": "Avatar Stack — Without tooltip",
     "with-an-action": "Avatar Stack — With an action",
@@ -126,7 +145,8 @@
   "calendar": {
     "calendar-dashboard": "Calendar — Calendar dashboard",
     "minimal": "Calendar — Minimal",
-    "glass": "Calendar — Glass"
+    "glass": "Calendar — Glass",
+    "liquid-glass": "Calendar — Liquid Glass"
   },
   "card": {
     "e-commerce-product-cards": "Card — E-commerce Product Cards",
@@ -171,12 +191,16 @@
     "pie-chart": "Chart — Pie chart",
     "donut-chart": "Chart — Donut chart",
     "donut-with-legend": "Chart — Donut with legend",
-    "stacked-bar": "Chart — Stacked bar"
+    "stacked-bar": "Chart — Stacked bar",
+    "traffic-sources-gauge": "Chart — Traffic sources gauge",
+    "visitors-by-country": "Chart — Visitors by country",
+    "metrics-overview-tabs": "Chart — Metrics overview tabs"
   },
   "chat": {
     "chat-application": "Chat — Chat application",
     "minimal": "Chat — Minimal",
-    "glass": "Chat — Glass"
+    "glass": "Chat — Glass",
+    "liquid-glass": "Chat — Liquid Glass"
   },
   "chat-bubble": {
     "conversation": "Chat Bubble — Conversation",
@@ -205,9 +229,6 @@
   "component-wall": {
     "build-interactive-interfaces": "Component Wall — Build interactive interfaces",
     "copy-beside-the-wall": "Component Wall — Copy beside the wall"
-  },
-  "confidential-folder": {
-    "confidential-folder": "Confidential Folder"
   },
   "context-menu": {
     "labels-shortcuts-disabled": "Context Menu — Labels, shortcuts & disabled"
@@ -334,7 +355,8 @@
   "email": {
     "email-dashboard": "Email — Email dashboard",
     "minimal": "Email — Minimal",
-    "glass": "Email — Glass"
+    "glass": "Email — Glass",
+    "liquid-glass": "Email — Liquid Glass"
   },
   "faq-section": {
     "1-homepage-faq-section": "Faq Section — 1. Homepage FAQ Section"
@@ -544,11 +566,12 @@
     "google-pixel-10": "Mobile Mockup — Google Pixel 10"
   },
   "modal": {
-    "modal": "Modal",
+    "standard": "Modal — Standard",
     "form": "Modal — Form",
     "confirmation": "Modal — Confirmation",
     "fullscreen": "Modal — Fullscreen",
-    "glass": "Modal — Glass"
+    "glass": "Modal — Glass",
+    "liquid-glass": "Modal — Liquid Glass"
   },
   "navbar": {
     "navbar": "Navbar",
@@ -645,6 +668,7 @@
     "single-month-range-date-picker": "Range Date Picker — Single Month Range Date Picker",
     "single-month-priced-range-date-picker": "Range Date Picker — Single Month Priced Range Date Picker",
     "dual-month-range-date-picker": "Range Date Picker — Dual Month Range Date Picker",
+    "dual-month-priced-range-date-picker": "Range Date Picker — Dual Month Priced Range Date Picker",
     "disable-past-dates": "Range Date Picker — Disable past dates",
     "range-with-times": "Range Date Picker — Range with times"
   },
@@ -668,7 +692,8 @@
     "auto-hide": "Scroll Area — Auto-hide"
   },
   "scroll-split-cards": {
-    "scroll-split-cards": "Scroll Split Cards"
+    "default": "Scroll Split Cards — Default",
+    "slow-transition": "Scroll Split Cards — Slow Transition"
   },
   "scroll-stack": {
     "card-gap": "Scroll Stack — Card gap"
@@ -689,6 +714,11 @@
     "horizontal-scroll-stack": "Horizontal Scroll Stack",
     "horizontal-rail-track": "Horizontal Scroll Stack — Shorter Rail"
   },
+  "secure-envelope": {
+    "biometric-nfc-smartcard-quantum-vault-variant": "Secure Envelope — Biometric NFC SmartCard (Quantum Vault Variant)",
+    "auto-flip-classic-voucher-classified": "Secure Envelope — Auto Flip (Classic Voucher / Classified)",
+    "train-online-ticket-hyperbolt-express-variant": "Secure Envelope — Train Online Ticket (Hyperbolt Express Variant)"
+  },
   "select": {
     "select": "Select",
     "underlined": "Select — Underlined",
@@ -706,19 +736,6 @@
   "sidebar": {
     "sidebar": "Sidebar",
     "collapsed-rail": "Sidebar — Collapsed rail"
-  },
-  "login-form": {
-    "login": "Login Form — Login",
-    "login-split": "Login Form — Login — split",
-    "login-glass": "Login Form — Login — glass",
-    "login-minimal": "Login Form — Login — minimal"
-  },
-  "register-form": {
-    "register": "Register Form — Register",
-    "register-scenic": "Register Form — Register — scenic",
-    "register-split": "Register Form — Register — split",
-    "register-glass": "Register Form — Register — glass",
-    "register-minimal": "Register Form — Register — minimal"
   },
   "skeleton": {
     "card": "Skeleton — Card",
@@ -771,13 +788,20 @@
   "support": {
     "ticket-workspace": "Support Dashboard — Ticket workspace",
     "table-view": "Support Dashboard — Table view",
-    "glass": "Support Dashboard — Glass"
+    "glass": "Support Dashboard — Glass",
+    "support-liquid-glass": "Support Dashboard — Liquid glass"
   },
   "table-soft": {
     "soft-variant": "Table — Soft variant"
   },
   "table": {
-    "composable-table": "Table — Composable table"
+    "composable-table": "Table — Composable table",
+    "minimal": "Table — Minimal",
+    "sortable-headers": "Table — Sortable headers",
+    "expandable-rows": "Table — Expandable rows",
+    "pagination": "Table — Pagination",
+    "row-actions": "Table — Row actions",
+    "sizes": "Table — Sizes"
   },
   "table-soft-comparison": {
     "comparison-soft": "Table — Comparison (soft)"

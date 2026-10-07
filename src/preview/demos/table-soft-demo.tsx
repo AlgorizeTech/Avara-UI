@@ -13,6 +13,7 @@ import {
   TablePerson,
   TableRow,
 } from "@/components/custom/blocks/TableBlock";
+import { accentStyle } from "@/lib/accent";
 
 type Status = "paid" | "pending" | "failed";
 
@@ -58,9 +59,10 @@ const formatDate = (iso: string) => {
   return `${MONTHS[(month ?? 1) - 1]} ${day}, ${year}`;
 };
 
-export default function InvoicesTable() {
+export default function InvoicesTable({ color }: { color?: string } = {}) {
   return (
-    <Table variant="soft">
+    <div className="w-full" style={accentStyle(color)}>
+      <Table variant="soft" color={color}>
       <TableHeading title="Recent invoices" description="Everything billed in the last 30 days." />
       <TableContent aria-label="Recent invoices">
         <TableHeader>
@@ -95,5 +97,6 @@ export default function InvoicesTable() {
         </TableBody>
       </TableContent>
     </Table>
+    </div>
   );
 }

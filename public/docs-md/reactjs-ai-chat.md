@@ -135,6 +135,17 @@ export default function GlassAssistant() {
   );
 };`;
 
+export const usageLiquidGlass = `import AIChat, { type ChatThread, type Message } from "@/components/custom/blocks/Ai-chat";
+
+${chatData}
+
+export default function LiquidGlassAssistant() {
+  return (
+    // Real liquid SVG glass displacement with multi-layer reflections and specular highlights
+
+  );
+};`;
+
 ## Installation
 
 Register the @algorize-ui registry once per project, then add the component:
@@ -201,6 +212,25 @@ npx shadcn@latest add @algorize-ui/ai-chat-motion
       props: { variant: "glass" },
       usage: usageGlass,
     },
+    {
+      title: "Liquid Glass",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"liquid-glass"',
+          effect:
+            "for authentic liquid glass refraction using SVG displacement mapping, multi-layer specular highlights, and fluid reflections.",
+        },
+        {
+          prop: "color",
+          value: '"#8b5cf6"',
+          effect: "tints the accents so they hold up against your own backdrop.",
+        },
+      ],
+      props: { variant: "liquid-glass" },
+      usage: usageLiquidGlass,
+    },
   ]}
 />
 
@@ -264,13 +294,13 @@ Explore the Ai-Chat interface features, including message streaming, typing indi
 
           variant
 
-          "default" | "minimal" | "glass" | "compact"
+          "default" | "minimal" | "glass" | "compact" | "liquid-glass"
 
           "default"
 
           Applies overarching structural and aesthetic layout styling.{" "}
           "compact" is the default shell without the history
-          sidebar.
+          sidebar, and "liquid-glass" delivers high-refraction specular liquid glass physics.
 
           showSidebar
 

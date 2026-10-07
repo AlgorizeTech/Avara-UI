@@ -35,6 +35,7 @@
     "src/components/custom/blocks/Ai-chat.tsx",
     "src/components/custom/blocks/Alerts.tsx",
     "src/components/custom/blocks/AnimatedFAQBlock.tsx",
+    "src/components/custom/blocks/AnimatedFAQVisuals.tsx",
     "src/components/custom/blocks/AnimatedListBlock.tsx",
     "src/components/custom/blocks/AnimatedTimelineBlock.tsx",
     "src/components/custom/blocks/AnimatedTypographyBlock.tsx",
@@ -145,6 +146,7 @@
     "src/components/custom/blocks/ScrollAreaBlock.tsx",
     "src/components/custom/blocks/ScrollSplitCardsBlock.tsx",
     "src/components/custom/blocks/ScrollStackBlock.tsx",
+    "src/components/custom/blocks/SecureEnvelopeBlock.tsx",
     "src/components/custom/blocks/SelectBlock.tsx",
     "src/components/custom/blocks/SelectionFrameBlock.tsx",
     "src/components/custom/blocks/SettingsBlock.tsx",
@@ -265,6 +267,7 @@
     "src/components/custom/ui/multi-select.tsx",
     "src/components/custom/ui/sheet.tsx",
     "src/components/custom/ui/slider.tsx",
-    "src/components/ui/card.tsx"
+    "src/components/ui/card.tsx",
+    "src/lib/accent.ts"
   ]
 }

@@ -47,7 +47,7 @@ export const SITE_NAME = env(process.env.NEXT_PUBLIC_SITE_NAME) ?? "Algorize UI"
  * filters them out of structured data.
  */
 export const links = {
-  github: env(process.env.NEXT_PUBLIC_GITHUB_URL) ?? "https://github.com/AlgorizeTech",
+  github: env(process.env.NEXT_PUBLIC_GITHUB_URL) ?? "https://github.com/AlgorizeTech/Reusable-Component-Documentation",
   twitter: env(process.env.NEXT_PUBLIC_TWITTER_URL),
   /** Handle including the leading @, used for Twitter card attribution. */
   twitterHandle: env(process.env.NEXT_PUBLIC_TWITTER_HANDLE),
@@ -57,7 +57,7 @@ export const links = {
   issues:
     env(process.env.NEXT_PUBLIC_ISSUES_URL) ??
     env(process.env.NEXT_PUBLIC_GITHUB_URL) ??
-    "https://github.com/AlgorizeTech",
+    "https://github.com/AlgorizeTech/Reusable-Component-Documentation",
 } as const;
 
 /** Every profile that is actually configured — for schema.org `sameAs`. */

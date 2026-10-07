@@ -27,10 +27,67 @@ import {
 } from "lucide-react";
 import { useMemo, useState } from "react";
 
+export function LiquidGlassSvgFilter() {
+  return (
+    <>
+      <img
+        src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg"
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          top: "-9999px",
+          left: "-9999px",
+          width: "1px",
+          height: "1px",
+          opacity: 0,
+          pointerEvents: "none",
+        }}
+      />
+      <svg
+        style={{
+          position: "fixed",
+          top: "-9999px",
+          left: "-9999px",
+          width: 0,
+          height: 0,
+          pointerEvents: "none",
+        }}
+        aria-hidden="true"
+      >
+        <defs>
+          <filter
+            id="glass-blur"
+            x="0"
+            y="0"
+            width="100%"
+            height="100%"
+            filterUnits="objectBoundingBox"
+          >
+            <feTurbulence
+              type="fractalNoise"
+              baseFrequency="0.003 0.007"
+              numOctaves="1"
+              result="turbulence"
+            />
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="turbulence"
+              scale="200"
+              xChannelSelector="R"
+              yChannelSelector="G"
+            />
+          </filter>
+        </defs>
+      </svg>
+    </>
+  );
+}
+
 // ==========================================
 // VARIANT & COLOR CONFIGURATION
 // ==========================================
-export type EmailVariant = "default" | "minimal" | "glass";
+export type EmailVariant = "default" | "minimal" | "glass" | "liquid-glass";
 
 // Added (string & {}) so it accepts arbitrary hex codes without losing IDE autocomplete for the presets
 export type EmailColor =
@@ -86,6 +143,21 @@ const emailVariants: Record<EmailVariant, Record<string, string>> = {
       "bg-transparent hover:bg-white/40 dark:hover:bg-white/5 border-b border-black/5 dark:border-white/5 transition-colors",
     composeModal:
       "bg-white/95 dark:bg-black/70 backdrop-blur-2xl border border-black/10 dark:border-white/10 shadow-2xl text-black dark:text-foreground",
+  },
+  "liquid-glass": {
+    wrapper:
+      "bg-transparent border-0 shadow-[0_25px_60px_rgba(0,0,0,0.45)] text-white rounded-[22px] sm:rounded-[28px] [--foreground:#ffffff] [--muted-foreground:rgba(255,255,255,0.75)] [--color-foreground:#ffffff] [--color-muted-foreground:rgba(255,255,255,0.75)]",
+    sidebar:
+      "bg-white/[0.07] dark:bg-black/25 border-r border-white/20 dark:border-white/10",
+    main: "bg-transparent",
+    header:
+      "bg-white/[0.07] dark:bg-black/25 border-b border-white/20 dark:border-white/10",
+    searchBg:
+      "bg-white/15 dark:bg-black/30 border border-white/20 dark:border-white/10 text-white placeholder:text-white/60",
+    emailItem:
+      "bg-transparent hover:bg-white/15 dark:hover:bg-white/10 border-b border-white/10 dark:border-white/10 text-white transition-colors",
+    composeModal:
+      "bg-black/75 dark:bg-black/85 backdrop-blur-2xl border border-white/20 dark:border-white/15 shadow-2xl text-white",
   },
 };
 
@@ -434,104 +506,203 @@ export default function EmailApp({
     <div
       style={customVars}
       className={cn(
-        "w-full max-w-full h-[700px] sm:h-[800px] flex overflow-hidden relative font-sans box-border transition-colors duration-300",
+        "w-full max-w-full h-[700px] sm:h-[800px] flex overflow-hidden relative font-sans box-border transition-colors duration-300 isolate [contain:paint] [transform:translateZ(0)]",
         styles.wrapper,
       )}
     >
+      <LiquidGlassSvgFilter />
+      {variant === "liquid-glass" && (
+        <>
+          {/* Inner Clipping Container for Liquid Background Stack */}
+          <div className="absolute inset-0 overflow-hidden rounded-[22px] sm:rounded-[28px] pointer-events-none z-0">
+            {/* Layer 0: Liquid SVG Displaced Wave Background */}
+            <div
+              className="absolute -inset-10"
+              style={{
+                backgroundImage:
+                  'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                filter: "url(#glass-blur)",
+                transform: "scale(1.1)",
+              }}
+            />
+
+            {/* Layer 1: Contrast overlay & soft backdrop blur */}
+            <div className="absolute inset-0 bg-black/30 dark:bg-black/45 backdrop-blur-[2px]" />
+
+            {/* Layer 2: Ambient Drop Shadow & Subtle Glow */}
+            <div
+              className="absolute inset-0 rounded-[22px] sm:rounded-[28px]"
+              style={{
+                boxShadow:
+                  "0 20px 50px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.08)",
+              }}
+            />
+          </div>
+
+          {/* Layer 3: Specular Inner Border Highlight */}
+          <div
+            className="absolute inset-0 z-40 pointer-events-none rounded-[22px] sm:rounded-[28px] border border-white/40 dark:border-white/15"
+            style={{
+              boxShadow:
+                "inset 2px 2px 2px 0 rgba(255, 255, 255, 0.45), inset -2px -2px 2px 0 rgba(255, 255, 255, 0.3)",
+            }}
+          />
+        </>
+      )}
       {/* === LEFT SIDEBAR === */}
       <aside
         className={cn(
-          `absolute lg:relative z-30 w-[260px] h-full shrink-0 flex-none flex flex-col transition-transform duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`,
+          `absolute lg:relative z-30 w-[260px] h-full shrink-0 flex-none flex flex-col transition-transform duration-300 ease-in-out overflow-hidden ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`,
           styles.sidebar,
+          variant === "liquid-glass" && "rounded-l-[22px] sm:rounded-l-[28px] max-lg:rounded-r-2xl max-lg:border-r max-lg:border-white/20",
+          variant === "glass" && "max-lg:rounded-r-2xl max-lg:bg-white/80 max-lg:dark:bg-black/60 max-lg:backdrop-blur-2xl max-lg:shadow-2xl",
+          variant === "default" && "max-lg:rounded-r-2xl max-lg:shadow-2xl",
         )}
       >
-        <div className="p-5 border-b border-border shrink-0">
-          <div className="flex items-center justify-between mb-4 lg:hidden">
-            <h2 className="font-semibold text-foreground">
-              Mailbox
-            </h2>
+        {variant === "liquid-glass" && (
+          <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+            {/* Liquid SVG Displaced Wave Background in Sidebar */}
+            <div
+              className="absolute -inset-10"
+              style={{
+                backgroundImage:
+                  'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
+                backgroundSize: "cover",
+                backgroundPosition: "left center",
+                filter: "url(#glass-blur)",
+                transform: "scale(1.1)",
+              }}
+            />
+            <div className="absolute inset-0 bg-black/35 dark:bg-black/50 backdrop-blur-[2px]" />
+          </div>
+        )}
+
+        <div className="relative z-10 flex flex-col h-full">
+          <div className={cn(
+            "p-5 shrink-0",
+            variant === "liquid-glass" ? "border-b border-white/20 dark:border-white/10" : "border-b border-border"
+          )}>
+            <div className="flex items-center justify-between mb-4 lg:hidden">
+              <h2 className={cn(
+                "font-semibold",
+                variant === "liquid-glass" ? "text-white" : "text-foreground"
+              )}>
+                Mailbox
+              </h2>
+              <button
+                onClick={() => setIsSidebarOpen(false)}
+                className={cn(
+                  "p-1 rounded-md transition-colors cursor-pointer",
+                  variant === "liquid-glass" ? "text-white/80 hover:text-white hover:bg-white/10" : "text-muted-foreground hover:text-foreground"
+                )}
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
             <button
-              onClick={() => setIsSidebarOpen(false)}
-              className="text-muted-foreground"
+              onClick={() => {
+                setIsComposeOpen(true);
+                if (typeof window !== "undefined" && window.innerWidth < 1024) {
+                  setIsSidebarOpen(false);
+                }
+              }}
+              className={cn(
+                "w-full py-2.5 rounded-xl font-medium transition-all shadow-md active:scale-95 cursor-pointer flex justify-center items-center gap-2",
+                theme.bg,
+              )}
             >
-              <X className="w-5 h-5" />
+              <Edit3 className="w-4 h-4" /> Compose
             </button>
           </div>
-          <button
-            onClick={() => setIsComposeOpen(true)}
-            className={cn(
-              "w-full py-2.5 rounded-xl font-medium transition-all shadow-md active:scale-95 cursor-pointer flex justify-center items-center gap-2",
-              theme.bg,
-            )}
-          >
-            <Edit3 className="w-4 h-4" /> Compose
-          </button>
-        </div>
 
-        <div className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] py-4">
-          <nav className="space-y-0.5 px-3 mb-8">
-            {[
-              { id: "inbox", icon: Mail, label: "Inbox" },
-              { id: "sent", icon: Send, label: "Sent" },
-              { id: "draft", icon: FileText, label: "Drafts" },
-              { id: "starred", icon: Star, label: "Starred" },
-              { id: "trash", icon: Trash2, label: "Trash" },
-            ].map((item) => {
-              const isActive = activeFolder === item.id && !activeLabel;
-              const unreadCount =
-                item.id === "starred" ? 0 : getFolderCount(item.id);
-
-              return (
-                <div
-                  key={item.id}
-                  onClick={() => handleNavClick(item.id)}
-                  className={`flex items-center justify-between px-3 py-2.5 rounded-lg cursor-pointer transition-all ${isActive ? cn("font-semibold", theme.lightBg) : "text-muted-foreground hover:bg-muted hover:text-foreground font-medium"}`}
-                >
-                  <div className="flex items-center gap-3 text-sm">
-                    <item.icon
-                      className={cn(
-                        "w-[18px] h-[18px]",
-                        isActive ? "opacity-70" : "",
-                      )}
-                    />
-                    {item.label}
-                  </div>
-                  {unreadCount > 0 && (
-                    <span
-                      className={cn(
-                        "text-[10px] font-semibold px-2 py-0.5 rounded-full shadow-sm",
-                        theme.bg,
-                      )}
-                    >
-                      {unreadCount}
-                    </span>
-                  )}
-                </div>
-              );
-            })}
-          </nav>
-
-          <div className="px-6">
-            <p className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-              Labels
-            </p>
-            <div className="space-y-0.5 -mx-3">
+          <div className="flex-1 overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] py-4">
+            <nav className="space-y-0.5 px-3 mb-8">
               {[
-                { id: "Private", color: "bg-rose-500" },
-                { id: "Company", color: "bg-indigo-500" },
-                { id: "Important", color: "bg-amber-500" },
-              ].map((label) => (
-                <div
-                  key={label.id}
-                  onClick={() => handleNavClick("inbox", label.id)}
-                  className={`flex items-center gap-3 text-sm cursor-pointer px-3 py-2 rounded-lg transition-all font-medium ${activeLabel === label.id ? "bg-muted text-foreground" : "text-muted-foreground hover:bg-muted hover:text-foreground"}`}
-                >
+                { id: "inbox", icon: Mail, label: "Inbox" },
+                { id: "sent", icon: Send, label: "Sent" },
+                { id: "draft", icon: FileText, label: "Drafts" },
+                { id: "starred", icon: Star, label: "Starred" },
+                { id: "trash", icon: Trash2, label: "Trash" },
+              ].map((item) => {
+                const isActive = activeFolder === item.id && !activeLabel;
+                const unreadCount =
+                  item.id === "starred" ? 0 : getFolderCount(item.id);
+
+                return (
                   <div
-                    className={`w-2.5 h-2.5 rounded-full shadow-sm ${label.color}`}
-                  ></div>
-                  {label.id}
-                </div>
-              ))}
+                    key={item.id}
+                    onClick={() => handleNavClick(item.id)}
+                    className={`flex items-center justify-between px-3 py-2.5 rounded-lg cursor-pointer transition-all ${
+                      isActive
+                        ? variant === "liquid-glass"
+                          ? "bg-white text-zinc-900 font-semibold shadow-md"
+                          : cn("font-semibold", theme.lightBg)
+                        : variant === "liquid-glass"
+                          ? "text-white/80 hover:bg-white/10 hover:text-white font-medium"
+                          : "text-muted-foreground hover:bg-muted hover:text-foreground font-medium"
+                    }`}
+                  >
+                    <div className="flex items-center gap-3 text-sm">
+                      <item.icon
+                        className={cn(
+                          "w-[18px] h-[18px]",
+                          isActive && variant !== "liquid-glass" ? "opacity-70" : "",
+                        )}
+                      />
+                      {item.label}
+                    </div>
+                    {unreadCount > 0 && (
+                      <span
+                        className={cn(
+                          "text-[10px] font-semibold px-2 py-0.5 rounded-full shadow-sm",
+                          isActive && variant === "liquid-glass"
+                            ? "bg-zinc-900 text-white"
+                            : theme.bg,
+                        )}
+                      >
+                        {unreadCount}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+            </nav>
+
+            <div className="px-6">
+              <p className={cn(
+                "text-[11px] font-semibold uppercase tracking-wider mb-3",
+                variant === "liquid-glass" ? "text-white/60" : "text-muted-foreground"
+              )}>
+                Labels
+              </p>
+              <div className="space-y-0.5 -mx-3">
+                {[
+                  { id: "Private", color: "bg-rose-500" },
+                  { id: "Company", color: "bg-indigo-500" },
+                  { id: "Important", color: "bg-amber-500" },
+                ].map((label) => (
+                  <div
+                    key={label.id}
+                    onClick={() => handleNavClick("inbox", label.id)}
+                    className={`flex items-center gap-3 text-sm cursor-pointer px-3 py-2 rounded-lg transition-all font-medium ${
+                      activeLabel === label.id
+                        ? variant === "liquid-glass"
+                          ? "bg-white text-zinc-900 font-semibold shadow-md"
+                          : "bg-muted text-foreground"
+                        : variant === "liquid-glass"
+                          ? "text-white/80 hover:bg-white/10 hover:text-white"
+                          : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                    }`}
+                  >
+                    <div
+                      className={`w-2.5 h-2.5 rounded-full shadow-sm ${label.color}`}
+                    ></div>
+                    {label.id}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -539,7 +710,14 @@ export default function EmailApp({
 
       {isSidebarOpen && (
         <div
-          className="absolute inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm z-20 lg:hidden cursor-pointer"
+          className={cn(
+            "absolute inset-0 z-20 lg:hidden cursor-pointer rounded-[22px] sm:rounded-[28px]",
+            variant === "liquid-glass"
+              ? "bg-black/25 backdrop-blur-[2px]"
+              : variant === "glass"
+                ? "bg-black/30 backdrop-blur-sm"
+                : "bg-black/40 dark:bg-black/60 backdrop-blur-sm",
+          )}
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
@@ -588,9 +766,11 @@ export default function EmailApp({
             <div
               className={cn(
                 "flex items-center justify-between px-4 sm:px-6 py-2.5 shrink-0 transition-colors duration-300 border-l-[3px] border-transparent",
-                variant === "glass"
-                  ? "bg-white/10 dark:bg-black/5 border-b border-black/10 dark:border-white/10"
-                  : "border-b border-border bg-muted/50",
+                variant === "liquid-glass"
+                  ? "bg-white/10 dark:bg-black/20 border-b border-white/15 dark:border-white/10 backdrop-blur-md text-white"
+                  : variant === "glass"
+                    ? "bg-white/10 dark:bg-black/5 border-b border-black/10 dark:border-white/10"
+                    : "border-b border-border bg-muted/50",
               )}
             >
               <div className="flex items-center gap-3 sm:gap-4">
@@ -612,9 +792,11 @@ export default function EmailApp({
                         theme.checkboxFocus,
                         selectedEmails.length > 0
                           ? cn("shadow-xs", theme.checkboxBg, theme.checkboxText)
-                          : variant === "glass"
-                            ? "border-black/30 dark:border-white/20 bg-white/20 dark:bg-black/20 hover:border-black/50 dark:hover:border-white/60"
-                            : "border-border bg-background hover:border-foreground/30",
+                          : variant === "liquid-glass"
+                            ? "border-white/40 dark:border-white/20 bg-white/15 dark:bg-white/10 hover:border-white/70"
+                            : variant === "glass"
+                              ? "border-black/30 dark:border-white/20 bg-white/20 dark:bg-black/20 hover:border-black/50 dark:hover:border-white/60"
+                              : "border-border bg-background hover:border-foreground/30",
                       )}
                       style={
                         selectedEmails.length > 0 && isCustomHex
@@ -632,7 +814,10 @@ export default function EmailApp({
                   </label>
                   <span
                     onClick={toggleSelectAll}
-                    className="text-xs font-semibold text-muted-foreground cursor-pointer select-none"
+                    className={cn(
+                      "text-xs font-semibold cursor-pointer select-none",
+                      variant === "liquid-glass" ? "text-white/80" : "text-muted-foreground"
+                    )}
                   >
                     {selectedEmails.length > 0
                       ? `${selectedEmails.length} Selected`
@@ -641,7 +826,10 @@ export default function EmailApp({
                 </div>
 
                 {selectedEmails.length > 0 && (
-                  <div className="flex items-center gap-1 border-l border-border pl-3 animate-in fade-in zoom-in-95 duration-200">
+                  <div className={cn(
+                    "flex items-center gap-1 border-l pl-3 animate-in fade-in zoom-in-95 duration-200",
+                    variant === "liquid-glass" ? "border-white/20" : "border-border"
+                  )}>
                     <button
                       onClick={() => moveSelectedToFolder("trash")}
                       className="p-1.5 sm:p-2 text-muted-foreground hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-md transition-colors cursor-pointer"
@@ -659,14 +847,23 @@ export default function EmailApp({
                   </div>
                 )}
               </div>
-              <div className="flex items-center gap-1 text-muted-foreground">
+              <div className={cn(
+                "flex items-center gap-1",
+                variant === "liquid-glass" ? "text-white/70" : "text-muted-foreground"
+              )}>
                 <button
                   onClick={() => setSearchQuery("")}
-                  className="p-2 hover:bg-muted hover:text-foreground rounded-md transition-colors cursor-pointer"
+                  className={cn(
+                    "p-2 rounded-md transition-colors cursor-pointer",
+                    variant === "liquid-glass" ? "hover:bg-white/10 hover:text-white" : "hover:bg-muted hover:text-foreground"
+                  )}
                 >
                   <RefreshCw className="w-4 h-4" />
                 </button>
-                <button className="p-2 hover:bg-muted hover:text-foreground rounded-md transition-colors cursor-pointer">
+                <button className={cn(
+                  "p-2 rounded-md transition-colors cursor-pointer",
+                  variant === "liquid-glass" ? "hover:bg-white/10 hover:text-white" : "hover:bg-muted hover:text-foreground"
+                )}>
                   <MoreVertical className="w-4 h-4" />
                 </button>
               </div>
@@ -708,9 +905,11 @@ export default function EmailApp({
                               theme.checkboxFocus,
                               selectedEmails.includes(email.id)
                                 ? cn("shadow-xs", theme.checkboxBg, theme.checkboxText)
-                                : variant === "glass"
-                                  ? "border-black/30 dark:border-white/20 bg-white/20 dark:bg-black/20 hover:border-black/50 dark:hover:border-white/60"
-                                  : "border-border bg-background hover:border-foreground/30",
+                                : variant === "liquid-glass"
+                                  ? "border-white/40 dark:border-white/20 bg-white/15 dark:bg-white/10 hover:border-white/70"
+                                  : variant === "glass"
+                                    ? "border-black/30 dark:border-white/20 bg-white/20 dark:bg-black/20 hover:border-black/50 dark:hover:border-white/60"
+                                    : "border-border bg-background hover:border-foreground/30",
                             )}
                             style={
                               selectedEmails.includes(email.id) && isCustomHex
@@ -726,7 +925,12 @@ export default function EmailApp({
                         {/* Desktop Star Button */}
                         <button
                           onClick={() => toggleStar(email.id)}
-                          className="hidden sm:block cursor-pointer text-foreground/40 hover:text-amber-400 transition-colors"
+                          className={cn(
+                            "hidden sm:block cursor-pointer transition-colors",
+                            variant === "liquid-glass"
+                              ? "text-white/40 hover:text-amber-300"
+                              : "text-foreground/40 hover:text-amber-400"
+                          )}
                         >
                           <Star
                             className={`w-[18px] h-[18px] ${email.isStarred ? "fill-amber-400 text-amber-400" : ""}`}
@@ -749,7 +953,10 @@ export default function EmailApp({
                           >
                             {email.sender}
                           </span>
-                          <span className="sm:hidden text-xs font-medium text-muted-foreground shrink-0 ml-2">
+                          <span className={cn(
+                            "sm:hidden text-xs font-medium shrink-0 ml-2",
+                            variant === "liquid-glass" ? "text-white/60" : "text-muted-foreground"
+                          )}>
                             {email.time}
                           </span>
                         </div>
@@ -763,10 +970,13 @@ export default function EmailApp({
                             />
                           )}
                           <span
-                            className={`text-sm truncate ${!email.isRead ? "font-semibold text-foreground" : "text-muted-foreground font-medium"}`}
+                            className={`text-sm truncate ${!email.isRead ? "font-semibold text-foreground" : variant === "liquid-glass" ? "text-white/80 font-medium" : "text-muted-foreground font-medium"}`}
                           >
                             {email.subject}{" "}
-                            <span className="text-muted-foreground/85 dark:text-muted-foreground/70 font-normal ml-1 hidden lg:inline-block">
+                            <span className={cn(
+                              "font-normal ml-1 hidden lg:inline-block",
+                              variant === "liquid-glass" ? "text-white/60" : "text-muted-foreground/85 dark:text-muted-foreground/70"
+                            )}>
                               - {email.body.substring(0, 40)}...
                             </span>
                           </span>
@@ -775,7 +985,10 @@ export default function EmailApp({
 
                       {/* Desktop Right Time & Hover Actions */}
                       <div className="hidden sm:flex absolute right-6 top-1/2 -translate-y-1/2 items-center justify-end w-24">
-                        <span className="text-xs font-medium text-muted-foreground group-hover:hidden whitespace-nowrap">
+                        <span className={cn(
+                          "text-xs font-medium group-hover:hidden whitespace-nowrap",
+                          variant === "liquid-glass" ? "text-white/70" : "text-muted-foreground"
+                        )}>
                           {email.time}
                         </span>
                         <div className="hidden group-hover:flex items-center gap-2 animate-in fade-in slide-in-from-right-2 duration-200">
@@ -784,7 +997,12 @@ export default function EmailApp({
                               e.stopPropagation();
                               deleteEmail(email.id);
                             }}
-                            className="p-2 hover:bg-rose-50 dark:hover:bg-rose-500/10 text-muted-foreground hover:text-rose-500 rounded-md transition-colors shadow-sm bg-card border border-border cursor-pointer"
+                            className={cn(
+                              "p-2 rounded-md transition-colors shadow-sm cursor-pointer",
+                              variant === "liquid-glass"
+                                ? "bg-white/20 border border-white/20 text-white hover:bg-rose-500/80 hover:text-white backdrop-blur-md"
+                                : "hover:bg-rose-50 dark:hover:bg-rose-500/10 text-muted-foreground hover:text-rose-500 bg-card border border-border"
+                            )}
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
@@ -794,7 +1012,10 @@ export default function EmailApp({
                               toggleRead(email.id);
                             }}
                             className={cn(
-                              "p-2 text-muted-foreground rounded-md transition-colors shadow-sm bg-card border border-border cursor-pointer",
+                              "p-2 rounded-md transition-colors shadow-sm cursor-pointer",
+                              variant === "liquid-glass"
+                                ? "bg-white/20 border border-white/20 text-white hover:bg-white/30 backdrop-blur-md"
+                                : "text-muted-foreground bg-card border border-border",
                               theme.focusRing,
                             )}
                           >
@@ -825,13 +1046,43 @@ export default function EmailApp({
                 </div>
               ) : (
                 <div className="flex flex-col items-center justify-center h-full text-center p-8">
-                  <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
-                    <Mail className="w-8 h-8 text-muted-foreground" />
+                  <div
+                    className={cn(
+                      "w-16 h-16 flex items-center justify-center mb-4 transition-all",
+                      variant === "liquid-glass"
+                        ? "rounded-2xl border bg-white/20 border-white/30 text-white backdrop-blur-md shadow-sm"
+                        : variant === "glass"
+                          ? "rounded-2xl border bg-white/40 dark:bg-white/10 border-black/10 dark:border-white/10 text-foreground backdrop-blur-md shadow-sm"
+                          : "bg-muted rounded-full",
+                    )}
+                  >
+                    <Mail
+                      className={cn(
+                        "w-8 h-8",
+                        variant === "liquid-glass"
+                          ? "text-white"
+                          : "text-muted-foreground",
+                      )}
+                    />
                   </div>
-                  <h3 className="text-lg font-semibold text-foreground mb-1">
+                  <h3
+                    className={cn(
+                      "text-lg font-semibold mb-1",
+                      variant === "liquid-glass"
+                        ? "text-white"
+                        : "text-foreground",
+                    )}
+                  >
                     Nothing to see here
                   </h3>
-                  <p className="text-sm text-muted-foreground">
+                  <p
+                    className={cn(
+                      "text-sm",
+                      variant === "liquid-glass"
+                        ? "text-white/70"
+                        : "text-muted-foreground",
+                    )}
+                  >
                     No emails found in {activeLabel || activeFolder}.
                   </p>
                 </div>
@@ -856,7 +1107,12 @@ export default function EmailApp({
                 </button>
                 <button
                   onClick={() => setActiveEmailId(null)}
-                  className="flex items-center gap-1 p-1.5 sm:p-2 -ml-1 sm:-ml-2 text-muted-foreground hover:text-foreground rounded-md hover:bg-muted transition-colors shrink-0 cursor-pointer text-xs sm:text-sm font-semibold"
+                  className={cn(
+                    "flex items-center gap-1 p-1.5 sm:p-2 -ml-1 sm:-ml-2 rounded-md transition-colors shrink-0 cursor-pointer text-xs sm:text-sm font-semibold",
+                    variant === "liquid-glass"
+                      ? "text-white/80 hover:text-white hover:bg-white/10"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  )}
                 >
                   <ChevronLeft className="w-5 h-5" />
                   <span>Back</span>
@@ -873,18 +1129,31 @@ export default function EmailApp({
                 </div>
               </div>
 
-              <div className="flex items-center gap-1 text-muted-foreground shrink-0 ml-2 sm:ml-4">
+              <div className={cn(
+                "flex items-center gap-1 shrink-0 ml-2 sm:ml-4",
+                variant === "liquid-glass" ? "text-white/80" : "text-muted-foreground"
+              )}>
                 <button
                   onClick={handlePrevEmail}
                   disabled={activeEmailIndex === 0}
-                  className="p-1.5 sm:p-2 hover:bg-muted hover:text-foreground rounded-md disabled:opacity-30 disabled:hover:bg-transparent transition-colors cursor-pointer"
+                  className={cn(
+                    "p-1.5 sm:p-2 rounded-md disabled:opacity-30 disabled:hover:bg-transparent transition-colors cursor-pointer",
+                    variant === "liquid-glass"
+                      ? "hover:bg-white/10 hover:text-white text-white/80"
+                      : "hover:bg-muted hover:text-foreground"
+                  )}
                 >
                   <ChevronLeft className="w-5 h-5" />
                 </button>
                 <button
                   onClick={handleNextEmail}
                   disabled={activeEmailIndex === filteredEmails.length - 1}
-                  className="p-1.5 sm:p-2 hover:bg-muted hover:text-foreground rounded-md disabled:opacity-30 disabled:hover:bg-transparent transition-colors cursor-pointer"
+                  className={cn(
+                    "p-1.5 sm:p-2 rounded-md disabled:opacity-30 disabled:hover:bg-transparent transition-colors cursor-pointer",
+                    variant === "liquid-glass"
+                      ? "hover:bg-white/10 hover:text-white text-white/80"
+                      : "hover:bg-muted hover:text-foreground"
+                  )}
                 >
                   <ChevronRight className="w-5 h-5" />
                 </button>
@@ -893,10 +1162,12 @@ export default function EmailApp({
 
             <div
               className={cn(
-                "flex items-center justify-between px-3 sm:px-6 py-2.5 sm:py-3 shrink-0 text-muted-foreground transition-colors duration-300",
-                variant === "glass"
-                  ? "bg-white/10 dark:bg-black/5 border-b border-black/10 dark:border-white/10"
-                  : "border-b border-border bg-muted/50",
+                "flex items-center justify-between px-3 sm:px-6 py-2.5 sm:py-3 shrink-0 transition-colors duration-300",
+                variant === "liquid-glass"
+                  ? "bg-white/10 dark:bg-black/20 border-b border-white/15 dark:border-white/10 backdrop-blur-md text-white"
+                  : variant === "glass"
+                    ? "bg-white/10 dark:bg-black/5 border-b border-black/10 dark:border-white/10"
+                    : "border-b border-border bg-muted/50",
               )}
             >
               <div className="flex items-center gap-1 sm:gap-2">
@@ -936,13 +1207,19 @@ export default function EmailApp({
               <div className="flex items-center gap-1 sm:gap-2">
                 <button
                   onClick={() => activeEmail && toggleStar(activeEmail.id)}
-                  className="p-1.5 sm:p-2 hover:bg-muted rounded-md transition-colors cursor-pointer"
+                  className={cn(
+                    "p-1.5 sm:p-2 rounded-md transition-colors cursor-pointer",
+                    variant === "liquid-glass" ? "hover:bg-white/10" : "hover:bg-muted"
+                  )}
                 >
                   <Star
                     className={`w-4 h-4 sm:w-[18px] sm:h-[18px] ${activeEmail?.isStarred ? "fill-amber-400 text-amber-400" : ""}`}
                   />
                 </button>
-                <button className="p-1.5 sm:p-2 hover:bg-muted rounded-md transition-colors hover:text-foreground cursor-pointer">
+                <button className={cn(
+                  "p-1.5 sm:p-2 rounded-md transition-colors cursor-pointer",
+                  variant === "liquid-glass" ? "hover:bg-white/10 hover:text-white" : "hover:bg-muted hover:text-foreground"
+                )}>
                   <MoreVertical className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
                 </button>
               </div>
@@ -953,7 +1230,12 @@ export default function EmailApp({
                 <h1 className="text-lg sm:text-2xl font-semibold text-foreground mb-4 sm:mb-8 break-words leading-snug">
                   {activeEmail?.subject}
                 </h1>
-                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4 mb-6 sm:mb-8 pb-4 sm:pb-0 border-b sm:border-b-0 border-border">
+                <div className={cn(
+                  "flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4 mb-6 sm:mb-8 pb-4 sm:pb-0",
+                  variant === "liquid-glass"
+                    ? "border-b sm:border-b-0 border-white/15"
+                    : "border-b sm:border-b-0 border-border"
+                )}>
                   <div className="flex items-center gap-3 sm:gap-4 min-w-0">
                     <BulletproofAvatar
                       src={activeEmail?.avatar}
@@ -990,9 +1272,11 @@ export default function EmailApp({
                     <div
                       className={cn(
                         "pt-6",
-                        variant === "glass"
-                          ? "border-t border-black/10 dark:border-white/10"
-                          : "border-t border-border",
+                        variant === "liquid-glass"
+                          ? "border-t border-white/15"
+                          : variant === "glass"
+                            ? "border-t border-black/10 dark:border-white/10"
+                            : "border-t border-border",
                       )}
                     >
                       <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">
@@ -1004,9 +1288,11 @@ export default function EmailApp({
                             key={idx}
                             className={cn(
                               "flex items-center gap-3 sm:gap-4 p-3 rounded-xl cursor-pointer transition-all group min-w-0",
-                              variant === "glass"
-                                ? "bg-white/40 dark:bg-white/5 border border-black/10 dark:border-white/10 hover:bg-white/60 dark:hover:bg-white/10"
-                                : "border border-border bg-muted hover:shadow-sm",
+                              variant === "liquid-glass"
+                                ? "bg-white/10 dark:bg-white/5 border border-white/20 dark:border-white/10 hover:bg-white/20 dark:hover:bg-white/10"
+                                : variant === "glass"
+                                  ? "bg-white/40 dark:bg-white/5 border border-black/10 dark:border-white/10 hover:bg-white/60 dark:hover:bg-white/10"
+                                  : "border border-border bg-muted hover:shadow-sm",
                               theme.focusRing,
                             )}
                           >
@@ -1037,9 +1323,11 @@ export default function EmailApp({
                     onClick={() => setIsComposeOpen(true)}
                     className={cn(
                       "flex-1 sm:flex-none cursor-pointer px-5 sm:px-6 py-2.5 font-semibold text-xs sm:text-sm rounded-lg transition-colors shadow-sm text-center justify-center flex items-center",
-                      variant === "glass"
-                        ? "bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 text-foreground dark:text-white border border-black/10 dark:border-white/10"
-                        : "bg-muted hover:bg-muted text-foreground",
+                      variant === "liquid-glass"
+                        ? "bg-white/15 dark:bg-white/10 hover:bg-white/25 dark:hover:bg-white/20 text-white border border-white/25 dark:border-white/15 backdrop-blur-md"
+                        : variant === "glass"
+                          ? "bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 text-foreground dark:text-white border border-black/10 dark:border-white/10"
+                          : "bg-muted hover:bg-muted text-foreground",
                     )}
                   >
                     Reply
@@ -1048,9 +1336,11 @@ export default function EmailApp({
                     onClick={() => setIsComposeOpen(true)}
                     className={cn(
                       "flex-1 sm:flex-none cursor-pointer px-5 sm:px-6 py-2.5 font-semibold text-xs sm:text-sm rounded-lg transition-colors shadow-sm text-center justify-center flex items-center",
-                      variant === "glass"
-                        ? "bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 text-foreground dark:text-white border border-black/10 dark:border-white/10"
-                        : "bg-muted hover:bg-muted text-foreground",
+                      variant === "liquid-glass"
+                        ? "bg-white/15 dark:bg-white/10 hover:bg-white/25 dark:hover:bg-white/20 text-white border border-white/25 dark:border-white/15 backdrop-blur-md"
+                        : variant === "glass"
+                          ? "bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/20 text-foreground dark:text-white border border-black/10 dark:border-white/10"
+                          : "bg-muted hover:bg-muted text-foreground",
                     )}
                   >
                     Forward
@@ -1065,139 +1355,249 @@ export default function EmailApp({
       {/* --- COMPOSE MODAL --- */}
       {isComposeOpen && (
         <div
-          className="fixed inset-0 z-[100] flex items-center justify-center sm:items-end sm:justify-end bg-black/40 backdrop-blur-sm p-4 sm:p-6 cursor-pointer"
+          className="absolute inset-0 z-50 flex items-center justify-center sm:items-end sm:justify-end bg-black/50 backdrop-blur-sm p-2.5 sm:p-6 cursor-pointer rounded-[inherit] overflow-hidden"
           onClick={() => setIsComposeOpen(false)}
         >
           <div
             className={cn(
-              "w-full sm:w-[600px] flex flex-col overflow-hidden animate-in slide-in-from-bottom-8 duration-300 cursor-default rounded-2xl",
-              styles.composeModal,
+              "w-full max-w-[calc(100%-0.5rem)] sm:w-[600px] sm:max-w-[600px] max-h-[calc(100%-1rem)] sm:max-h-[calc(100%-2rem)] flex flex-col relative overflow-hidden animate-in slide-in-from-bottom-6 duration-300 cursor-default isolate [contain:paint] [transform:translateZ(0)] shadow-2xl",
+              variant === "liquid-glass"
+                ? "rounded-[20px] sm:rounded-[28px] text-white shadow-[0_25px_60px_rgba(0,0,0,0.5)] border-0"
+                : cn("rounded-2xl", styles.composeModal),
             )}
             onClick={(e) => e.stopPropagation()}
           >
-            <div
-              className={cn(
-                "flex items-center justify-between px-5 py-3.5 border-b",
-                variant === "glass"
-                  ? "bg-black/5 dark:bg-black/20 border-black/10 dark:border-white/10"
-                  : "bg-muted border-border",
-              )}
-            >
-              <h3 className="font-semibold text-sm text-foreground">
-                New Message
-              </h3>
-              <button
-                onClick={() => setIsComposeOpen(false)}
-                className="p-1 text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-md transition-colors cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            <form onSubmit={handleSendEmail} className="flex flex-col flex-1">
-              <div
-                className={cn(
-                  "px-5 py-3 border-b flex items-center gap-4",
-                  variant === "glass"
-                    ? "border-black/10 dark:border-white/10"
-                    : "border-border",
-                )}
-              >
-                <span className="text-sm font-medium text-muted-foreground">To</span>
-                <input
-                  required
-                  type="email"
-                  name="to"
-                  className="flex-1 bg-transparent text-sm font-medium outline-none text-foreground placeholder:text-muted-foreground/50"
-                />
-              </div>
-              <div
-                className={cn(
-                  "px-5 py-3 border-b flex items-center gap-4",
-                  variant === "glass"
-                    ? "border-black/10 dark:border-white/10"
-                    : "border-border",
-                )}
-              >
-                <span className="text-sm font-medium text-muted-foreground">
-                  Subject
-                </span>
-                <input
-                  required
-                  type="text"
-                  name="subject"
-                  className="flex-1 bg-transparent text-sm font-semibold outline-none text-foreground placeholder:text-muted-foreground/50"
-                />
-              </div>
-
-              <div className="p-5 flex-1 min-h-[250px]">
-                <textarea
-                  required
-                  name="message"
-                  placeholder="Type your message here..."
-                  className="w-full h-full bg-transparent text-[15px] outline-none resize-none text-foreground font-medium placeholder:text-muted-foreground"
-                ></textarea>
-              </div>
-
-              <div
-                className={cn(
-                  "px-5 py-3 border-t flex items-center justify-between",
-                  variant === "glass"
-                    ? "bg-black/5 dark:bg-black/20 border-black/10 dark:border-white/10"
-                    : "bg-muted border-border",
-                )}
-              >
-                <div className="flex items-center gap-1">
-                  <button
-                    type="button"
-                    className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-md transition-colors cursor-pointer"
-                  >
-                    <Bold className="w-4 h-4" />
-                  </button>
-                  <button
-                    type="button"
-                    className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-md transition-colors cursor-pointer"
-                  >
-                    <Italic className="w-4 h-4" />
-                  </button>
-                  <button
-                    type="button"
-                    className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-md transition-colors cursor-pointer"
-                  >
-                    <LinkIcon className="w-4 h-4" />
-                  </button>
+            {variant === "liquid-glass" && (
+              <>
+                {/* Inner Clipping Container for Modal Liquid Background Stack */}
+                <div className="absolute inset-0 overflow-hidden rounded-[20px] sm:rounded-[28px] pointer-events-none z-0">
+                  {/* Modal Layer 0: Liquid SVG Displaced Wave Background */}
                   <div
-                    className={cn(
-                      "w-px h-5 mx-1",
-                      variant === "glass"
-                        ? "bg-black/15 dark:bg-white/20"
-                        : "bg-muted",
-                    )}
-                  ></div>
-                  <button
-                    type="button"
-                    className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-md transition-colors cursor-pointer"
-                  >
-                    <Paperclip className="w-4 h-4" />
-                  </button>
-                  <button
-                    type="button"
-                    className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted/50 rounded-md transition-colors cursor-pointer"
-                  >
-                    <ImageIcon className="w-4 h-4" />
-                  </button>
+                    className="absolute -inset-10"
+                    style={{
+                      backgroundImage:
+                        'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      filter: "url(#glass-blur)",
+                      transform: "scale(1.1)",
+                    }}
+                  />
+
+                  {/* Modal Layer 1: Contrast overlay & soft backdrop blur */}
+                  <div className="absolute inset-0 bg-black/35 dark:bg-black/55 backdrop-blur-[2px]" />
+
+                  {/* Modal Layer 2: Ambient Drop Shadow & Subtle Glow */}
+                  <div
+                    className="absolute inset-0 rounded-[20px] sm:rounded-[28px]"
+                    style={{
+                      boxShadow:
+                        "0 20px 50px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.08)",
+                    }}
+                  />
+                </div>
+
+                {/* Modal Layer 3: Specular Inner Border Highlight */}
+                <div
+                  className="absolute inset-0 z-30 pointer-events-none rounded-[20px] sm:rounded-[28px] border border-white/40 dark:border-white/15"
+                  style={{
+                    boxShadow:
+                      "inset 2px 2px 2px 0 rgba(255, 255, 255, 0.45), inset -2px -2px 2px 0 rgba(255, 255, 255, 0.3)",
+                  }}
+                />
+              </>
+            )}
+
+            {/* Modal Layer 4: Content */}
+            <div className="relative z-40 flex flex-col flex-1 min-h-0 overflow-hidden">
+              <div
+                className={cn(
+                  "flex items-center justify-between px-3.5 sm:px-5 py-2.5 sm:py-3.5 border-b shrink-0",
+                  variant === "liquid-glass"
+                    ? "bg-white/10 dark:bg-white/5 border-white/20 dark:border-white/15 text-white"
+                    : variant === "glass"
+                      ? "bg-black/5 dark:bg-black/20 border-black/10 dark:border-white/10"
+                      : "bg-muted border-border",
+                )}
+              >
+                <div className="flex items-center gap-2 sm:gap-2.5">
+                  {variant === "liquid-glass" && (
+                    <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center border bg-white/20 border-white/30 text-white backdrop-blur-md">
+                      <Edit3 className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                    </div>
+                  )}
+                  <h3 className="font-semibold text-xs sm:text-sm text-foreground">
+                    New Message
+                  </h3>
                 </div>
                 <button
-                  type="submit"
+                  onClick={() => setIsComposeOpen(false)}
                   className={cn(
-                    "cursor-pointer flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all active:scale-95 shadow-md",
-                    theme.bg,
+                    "p-1 rounded-md transition-colors cursor-pointer",
+                    variant === "liquid-glass"
+                      ? "text-white/80 hover:text-white hover:bg-white/10"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                   )}
                 >
-                  Send <Send className="w-3.5 h-3.5" />
+                  <X className="w-4 h-4" />
                 </button>
               </div>
-            </form>
+
+              <form onSubmit={handleSendEmail} className="flex flex-col flex-1 min-h-0 overflow-hidden">
+                <div
+                  className={cn(
+                    "px-3.5 sm:px-5 py-2 sm:py-2.5 border-b flex items-center gap-3 sm:gap-4 shrink-0",
+                    variant === "liquid-glass"
+                      ? "border-white/15 dark:border-white/10"
+                      : variant === "glass"
+                        ? "border-black/10 dark:border-white/10"
+                        : "border-border",
+                  )}
+                >
+                  <span className={cn(
+                    "text-xs sm:text-sm font-medium shrink-0",
+                    variant === "liquid-glass" ? "text-white/70" : "text-muted-foreground"
+                  )}>To</span>
+                  <input
+                    required
+                    type="email"
+                    name="to"
+                    placeholder="recipient@example.com"
+                    className={cn(
+                      "flex-1 min-w-0 bg-transparent text-xs sm:text-sm font-medium outline-none text-foreground",
+                      variant === "liquid-glass" ? "placeholder:text-white/40" : "placeholder:text-muted-foreground/50"
+                    )}
+                  />
+                </div>
+                <div
+                  className={cn(
+                    "px-3.5 sm:px-5 py-2 sm:py-2.5 border-b flex items-center gap-3 sm:gap-4 shrink-0",
+                    variant === "liquid-glass"
+                      ? "border-white/15 dark:border-white/10"
+                      : variant === "glass"
+                        ? "border-black/10 dark:border-white/10"
+                        : "border-border",
+                  )}
+                >
+                  <span className={cn(
+                    "text-xs sm:text-sm font-medium shrink-0",
+                    variant === "liquid-glass" ? "text-white/70" : "text-muted-foreground"
+                  )}>
+                    Subject
+                  </span>
+                  <input
+                    required
+                    type="text"
+                    name="subject"
+                    placeholder="Subject line"
+                    className={cn(
+                      "flex-1 min-w-0 bg-transparent text-xs sm:text-sm font-semibold outline-none text-foreground",
+                      variant === "liquid-glass" ? "placeholder:text-white/40" : "placeholder:text-muted-foreground/50"
+                    )}
+                  />
+                </div>
+
+                <div className="p-3 sm:p-5 flex-1 min-h-[100px] sm:min-h-[180px] overflow-y-auto flex flex-col">
+                  <textarea
+                    required
+                    name="message"
+                    placeholder="Type your message here..."
+                    className={cn(
+                      "w-full flex-1 bg-transparent text-xs sm:text-[15px] outline-none resize-none text-foreground font-medium min-h-[80px] leading-relaxed",
+                      variant === "liquid-glass" ? "placeholder:text-white/40" : "placeholder:text-muted-foreground"
+                    )}
+                  ></textarea>
+                </div>
+
+                <div
+                  className={cn(
+                    "px-3 sm:px-5 py-2 sm:py-2.5 border-t flex items-center justify-between gap-2 shrink-0 flex-nowrap",
+                    variant === "liquid-glass"
+                      ? "bg-white/10 dark:bg-black/30 border-white/15 dark:border-white/10"
+                      : variant === "glass"
+                        ? "bg-black/5 dark:bg-black/20 border-black/10 dark:border-white/10"
+                        : "bg-muted border-border",
+                  )}
+                >
+                  <div className="flex items-center flex-nowrap shrink-0 gap-0.5 sm:gap-1">
+                    <button
+                      type="button"
+                      className={cn(
+                        "p-1.5 sm:p-2 rounded-md transition-colors cursor-pointer shrink-0 flex items-center justify-center",
+                        variant === "liquid-glass"
+                          ? "text-white/70 hover:text-white hover:bg-white/10"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                      )}
+                    >
+                      <Bold className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    </button>
+                    <button
+                      type="button"
+                      className={cn(
+                        "p-1.5 sm:p-2 rounded-md transition-colors cursor-pointer shrink-0 flex items-center justify-center",
+                        variant === "liquid-glass"
+                          ? "text-white/70 hover:text-white hover:bg-white/10"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                      )}
+                    >
+                      <Italic className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    </button>
+                    <button
+                      type="button"
+                      className={cn(
+                        "p-1.5 sm:p-2 rounded-md transition-colors cursor-pointer shrink-0 flex items-center justify-center",
+                        variant === "liquid-glass"
+                          ? "text-white/70 hover:text-white hover:bg-white/10"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                      )}
+                    >
+                      <LinkIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    </button>
+                    <div
+                      className={cn(
+                        "w-px h-4 sm:h-5 mx-0.5 sm:mx-1 shrink-0",
+                        variant === "liquid-glass"
+                          ? "bg-white/20"
+                          : variant === "glass"
+                            ? "bg-black/15 dark:bg-white/20"
+                            : "bg-muted",
+                      )}
+                    ></div>
+                    <button
+                      type="button"
+                      className={cn(
+                        "p-1.5 sm:p-2 rounded-md transition-colors cursor-pointer shrink-0 flex items-center justify-center",
+                        variant === "liquid-glass"
+                          ? "text-white/70 hover:text-white hover:bg-white/10"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                      )}
+                    >
+                      <Paperclip className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    </button>
+                    <button
+                      type="button"
+                      className={cn(
+                        "p-1.5 sm:p-2 rounded-md transition-colors cursor-pointer shrink-0 flex items-center justify-center",
+                        variant === "liquid-glass"
+                          ? "text-white/70 hover:text-white hover:bg-white/10"
+                          : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                      )}
+                    >
+                      <ImageIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    </button>
+                  </div>
+                  <button
+                    type="submit"
+                    className={cn(
+                      "cursor-pointer flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-1.5 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all active:scale-95 shadow-md shrink-0 ml-auto",
+                      theme.bg,
+                    )}
+                  >
+                    Send <Send className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
         </div>
       )}

@@ -103,6 +103,17 @@ export default function GlassMailbox() {
   );
 }`;
 
+export const usageLiquidGlass = `import EmailApp, { type Email } from "@/components/custom/blocks/Email";
+
+${emailData}
+
+export default function LiquidGlassMailbox() {
+  return (
+    // Nature wallpaper backdrop with real liquid SVG glass displacement
+
+  );
+}`;
+
 ## Installation
 
 Register the @algorize-ui registry once per project, then add the component:

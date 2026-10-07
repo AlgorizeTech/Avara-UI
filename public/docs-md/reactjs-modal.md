@@ -2,50 +2,30 @@ export const metadata = docsPageMetadata("modal");
 
 # Modal
 
-A composable overlay. `Modal` owns the hard parts — the portal, the backdrop, the scroll lock, Escape and backdrop dismissal, and the enter/exit transition — and nothing else. There is no preset layout and no `variant`: the panel renders exactly the markup you put inside it.
+A versatile, accessible dialog component with built-in design variants. Choose from pre-configured variants (`standard`, `confirmation`, `form`, `fullscreen`, `glass`, `liquid-glass`) to instantly get complete layout, responsive sizing, and interactive buttons—or use composable subcomponents for custom dialogs.
 
-`ModalHeader`, `ModalBody` and `ModalFooter` are optional slots with sensible padding and dividers. Use them, restyle them through `className`, or skip them entirely and write your own body.
-
-Open state is yours. `Modal` is controlled: you hold `isOpen` and it renders against it, so the same modal can be driven by a button, a route, or the end of an async call.
-
-Every example below is that composition — what the preview renders is exactly what the **Usage** tab hands you. The only things that change between them are the classes on `contentClassName` and the markup inside.
+`Modal` manages all dialog complexities—portals, focus traps, backdrop dismissal, Escape key handling, body scroll locking, and smooth enter/exit animations.
 
 export const usageStandard = `export default function UpdateModal() {
-  // Modal is controlled — you own isOpen, it renders against it.
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
        setIsOpen(true)}
-        className="px-6 py-3 rounded-lg font-semibold transition-transform active:scale-95 shadow-md bg-primary hover:bg-primary/90 text-primary-foreground"
+        className="px-6 py-3 rounded-lg font-semibold shadow-md bg-primary hover:bg-primary/90 text-primary-foreground transition-transform active:scale-95"
       >
         Open Standard Modal
 
        setIsOpen(false)}
-        contentClassName="max-w-md bg-background rounded-2xl shadow-xl border border-border"
-      >
-
-                    System Update Available
-
-                    v2.4.0 Live
-
-            }
-          />
-
-              A new software update is ready to be installed. This update
-              includes new features, performance improvements, and critical
-              security patches.
-
-             setIsOpen(false)}
-              className="px-5 py-2.5 rounded-xl text-sm font-semibold text-muted-foreground hover:bg-muted transition-colors"
-            >
-              Remind Me Later
-            
-             setIsOpen(false)}
-              className="px-6 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-primary/20 active:scale-95 transition-all bg-primary hover:bg-primary/90 text-primary-foreground"
-            >
-              Install Now
-
+        variant="standard"
+        title="System Update Available"
+        badge="v2.4.0 Live"
+        description="A new software update is ready to be installed. This update includes new features, performance improvements, and critical security patches."
+        cancelText="Remind Me Later"
+        confirmText="Install Now"
+        onConfirm={() => setIsOpen(false)}
+      />
+    
   );
 }`;
 
@@ -56,34 +36,23 @@ export const usageForm = `export default function InviteModal() {
   return (
     <>
        setIsOpen(true)}
-        className="px-6 py-3 rounded-lg font-semibold transition-transform active:scale-95 shadow-md bg-primary hover:bg-primary/90 text-primary-foreground"
+        className="px-6 py-3 rounded-lg font-semibold shadow-md bg-primary hover:bg-primary/90 text-primary-foreground transition-transform active:scale-95"
       >
         Open Form Modal
 
-      {/* max-w-lg on contentClassName is the only sizing knob you need. */}
        setIsOpen(false)}
-        contentClassName="max-w-lg bg-background rounded-2xl shadow-xl border border-border"
+        variant="form"
+        title="Invite Team Member"
+        cancelText="Cancel"
+        confirmText="Send Invite"
+        onConfirm={() => setIsOpen(false)}
       >
-        
-          Invite Team Member
 
               Email Address
 
               Role & Permissions
-            
-            {/* Any control drops straight in — this one is the \`select\` block. */}
 
               Personal Message (Optional)
-
-           setIsOpen(false)}
-            className="px-5 py-2.5 rounded-lg font-medium text-muted-foreground hover:bg-muted/50 transition-colors"
-          >
-            Cancel
-          
-           setIsOpen(false)}
-            className="px-5 py-2.5 rounded-lg font-semibold shadow-sm transition-opacity bg-primary hover:bg-primary/90 text-primary-foreground"
-          >
-            Send Invite
 
   );
 }`;
@@ -94,31 +63,19 @@ export const usageConfirmation = `export default function ConfirmDeleteModal() {
   return (
     <>
        setIsOpen(true)}
-        className="px-6 py-3 rounded-lg font-semibold transition-transform active:scale-95 shadow-md bg-primary hover:bg-primary/90 text-primary-foreground"
+        className="px-6 py-3 rounded-lg font-semibold shadow-md bg-primary hover:bg-primary/90 text-primary-foreground transition-transform active:scale-95"
       >
         Open Confirmation Modal
 
-      {/* No ModalHeader here, so ariaLabel names the dialog instead. */}
        setIsOpen(false)}
-        contentClassName="max-w-sm bg-background rounded-2xl shadow-xl border border-border"
-        ariaLabel="Delete permanently?"
-      >
-
-            Delete permanently?
-
-            Are you sure you want to delete this item? This action cannot be
-            undone and all data will be lost.
-
-             setIsOpen(false)}
-              className="flex-1 py-2.5 rounded-lg font-medium text-muted-foreground border border-border hover:bg-muted transition-colors"
-            >
-              Cancel
-            
-             setIsOpen(false)}
-              className="flex-1 py-2.5 rounded-lg font-semibold bg-red-600 hover:bg-red-700 text-white shadow-sm transition-colors"
-            >
-              Delete
-
+        variant="confirmation"
+        title="Delete permanently?"
+        description="Are you sure you want to delete this item? This action cannot be undone and all data will be lost."
+        cancelText="Cancel"
+        confirmText="Delete"
+        onConfirm={() => setIsOpen(false)}
+      />
+    
   );
 }`;
 
@@ -128,48 +85,24 @@ export const usageFullscreen = `export default function SettingsModal() {
   return (
     <>
        setIsOpen(true)}
-        className="px-6 py-3 rounded-lg font-semibold transition-transform active:scale-95 shadow-md bg-primary hover:bg-primary/90 text-primary-foreground"
+        className="px-6 py-3 rounded-lg font-semibold shadow-md bg-primary hover:bg-primary/90 text-primary-foreground transition-transform active:scale-95"
       >
         Open Fullscreen Modal
 
-      {/* max-h, not h: the panel is as tall as its content, up to 90% of
-          the visible screen; past that the body scrolls between the pinned
-          header and footer. */}
        setIsOpen(false)}
-        contentClassName="max-w-5xl max-h-[90dvh] bg-background rounded-2xl shadow-xl border border-border"
+        variant="fullscreen"
+        title="Project Configuration"
+        description="Manage all global settings for your workspace."
+        deleteText="Delete Project"
+        cancelText="Discard Changes"
+        confirmText="Save Configuration"
+        onConfirm={() => setIsOpen(false)}
+        onDelete={() => setIsOpen(false)}
       >
-        {/* pr-12 keeps the title clear of the close button. */}
 
-              Project Configuration
+              General
 
-              Manage all global settings for your workspace.
-
-        {/* max-h-none drops the body's own cap so the panel's governs. */}
-
-                General
-
-                Security
-
-        {/* One row that wraps: Delete left, Discard + Save right. Phones get
-            the short labels and compact buttons so all three fit a line. */}
-        
-           setIsOpen(false)}
-            aria-label="Delete project"
-            className="px-3 py-2 rounded-lg text-sm font-semibold text-red-500 hover:text-red-600 hover:bg-red-500/10 transition-colors"
-          >
-            Delete Project
-
-             setIsOpen(false)}
-              aria-label="Discard changes"
-              className="px-3 py-2 sm:px-4 rounded-lg text-sm font-medium text-muted-foreground hover:bg-background hover:text-foreground transition-colors"
-            >
-              Discard Changes
-            
-             setIsOpen(false)}
-              aria-label="Save configuration"
-              className="px-4 py-2 sm:px-5 rounded-lg text-sm font-semibold shadow-sm transition-opacity bg-primary hover:bg-primary/90 text-primary-foreground"
-            >
-              Save Configuration
+              Security
 
   );
 }`;
@@ -180,37 +113,44 @@ export const usageGlass = `export default function GlassModal() {
   return (
     <>
        setIsOpen(true)}
-        className="px-6 py-3 rounded-lg font-semibold transition-transform active:scale-95 shadow-md bg-primary hover:bg-primary/90 text-primary-foreground"
+        className="px-6 py-3 rounded-lg font-semibold shadow-md bg-primary hover:bg-primary/90 text-primary-foreground transition-transform active:scale-95"
       >
         Open Glass Modal
 
-      {/* Same markup as the standard modal — only these two class props differ. */}
        setIsOpen(false)}
-        overlayClassName="bg-black/50 backdrop-blur-md"
-        contentClassName="max-w-md bg-card/80 backdrop-blur-2xl backdrop-saturate-200 rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.35)] border border-white/60 dark:border-white/20 text-foreground"
+        variant="glass"
+        title="System Update Available"
+        badge="v2.4.0 Live"
+        description="A new software update is ready to be installed. This update includes new features, performance improvements, and critical security patches."
+        cancelText="Remind Me Later"
+        confirmText="Install Now"
+        onConfirm={() => setIsOpen(false)}
+      />
+    
+  );
+}`;
+
+export const usageLiquidGlass = `export default function LiquidGlassModal() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+       setIsOpen(true)}
+        className="px-6 py-3 rounded-lg font-semibold shadow-md bg-primary hover:bg-primary/90 text-primary-foreground transition-transform active:scale-95"
       >
+        Open Liquid Glass Modal
 
-                    System Update Available
-
-                    v2.4.0 Live
-
-            }
-          />
-
-              A new software update is ready to be installed. This update
-              includes new features, performance improvements, and critical
-              security patches.
-
-             setIsOpen(false)}
-              className="px-5 py-2.5 rounded-xl text-sm font-semibold text-muted-foreground hover:bg-muted transition-colors"
-            >
-              Remind Me Later
-            
-             setIsOpen(false)}
-              className="px-6 py-2.5 rounded-xl text-sm font-semibold shadow-lg shadow-primary/20 active:scale-95 transition-all bg-primary hover:bg-primary/90 text-primary-foreground"
-            >
-              Install Now
-
+       setIsOpen(false)}
+        variant="liquid-glass"
+        title="System Update Available"
+        badge="v2.4.0 Live"
+        icon={}
+        description="A new software update is ready to be installed. This update includes new features, performance improvements, and critical security patches."
+        cancelText="Remind Me Later"
+        confirmText="Install Now"
+        onConfirm={() => setIsOpen(false)}
+      />
+    
   );
 }`;
 
@@ -228,22 +168,22 @@ npx shadcn@latest add @algorize-ui/modal
 ## Features
 Discover the Modal's flexible overlay features, designed for important user prompts with accessible focus management and animations.
 
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
+    Variant Presets
+    Pre-styled variants (standard, confirmation, form, fullscreen, glass, liquid-glass) eliminate boilerplate styling.
 
     Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+    Built with aria dialog roles, label connections, Escape dismissal, and body scroll locking.
 
     Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+    Optimized sizing and wrapped action rows that adapt seamlessly across mobile, tablet, and desktop.
 
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
+    Composable
+    Supports optional subcomponents (ModalHeader, ModalBody, ModalFooter) for fully custom layouts.
 
 ## Best Practices & Guidelines
 
     Usage Guidelines
-    Name every modal: put the heading inside ModalHeader, or pass ariaLabel when the heading lives elsewhere. Size the panel on contentClassName rather than wrapping the modal in a sized container — the panel is portalled to document.body, so a wrapper cannot constrain it.
+    Pass variant with title, description, and button labels for fast implementation without manual styling. If you need complete layout freedom, use ModalHeader, ModalBody, and ModalFooter subcomponents directly.
 
 ## Props Reference
 
@@ -279,15 +219,113 @@ Discover the Modal's flexible overlay features, designed for important user prom
 
           Modal
 
+          variant
+
+          {`"standard" | "confirmation" | "form" | "fullscreen" | "glass" | "liquid-glass" | "custom"`}
+
+          "standard"
+
+          Pre-configured design variant. Automatically styles the layout, sizing, header icon, and action buttons.
+
+          Modal
+
+          title
+
+          React.ReactNode
+
+          undefined
+
+          Dialog headline or title.
+
+          Modal
+
+          description
+
+          React.ReactNode
+
+          undefined
+
+          Body copy or subtitle text.
+
+          Modal
+
+          badge
+
+          React.ReactNode
+
+          undefined
+
+          Status badge or version text displayed in the header.
+
+          Modal
+
+          icon
+
+          React.ReactNode
+
+          undefined
+
+          Custom icon element to override the variant's default icon.
+
+          Modal
+
+          confirmText
+
+          string
+
+          undefined
+
+          Label for the primary confirmation button.
+
+          Modal
+
+          cancelText
+
+          string
+
+          undefined
+
+          Label for the secondary cancel/dismiss button.
+
+          Modal
+
+          deleteText
+
+          string
+
+          undefined
+
+          Label for destructive action button in fullscreen variant.
+
+          Modal
+
+          onConfirm
+
+          {`() => void`}
+
+          undefined
+
+          Callback when the confirm button is clicked. Defaults to onClose.
+
+          Modal
+
+          onCancel
+
+          {`() => void`}
+
+          undefined
+
+          Callback when the cancel button is clicked. Defaults to onClose.
+
+          Modal
+
           contentClassName
 
           string
 
           undefined
 
-          Classes for the panel. This is where the modal is sized and skinned —
-          adjust max-w-*, give it a height, or swap the background
-          and border for a glass treatment.
+          Custom CSS classes for the modal panel. Merged with variant defaults.
 
           Modal
 
@@ -297,19 +335,7 @@ Discover the Modal's flexible overlay features, designed for important user prom
 
           undefined
 
-          Classes for the backdrop, e.g.{" "}
-          bg-black/50 backdrop-blur-md behind a translucent panel.
-
-          Modal
-
-          primaryCloseButton
-
-          boolean
-
-          false
-
-          Renders the close button as a tinted primary chip instead of a bare
-          icon, for panels where the plain X gets lost.
+          Custom CSS classes for the backdrop overlay.
 
           Modal
 
@@ -319,46 +345,9 @@ Discover the Modal's flexible overlay features, designed for important user prom
 
           false
 
-          Removes the built-in X, for flows where the user has to pick one of
-          your own actions. Escape and the backdrop still dismiss.
+          Removes the top-right X button (automatically true for confirmation variant).
 
-          Modal
-
-          ariaLabel
-
-          string
-
-          undefined
-
-          Labels the dialog directly. Pass it whenever the heading is not inside{" "}
-          ModalHeader — without it the panel points{" "}
-          aria-labelledby at the header.
-
-          ModalHeader
-
-          title
-
-          React.ReactNode
-
-          undefined
-
-          Shorthand for the header content when you do not need custom markup.{" "}
-          children wins when both are given.
-
-          All Components
-
-          className
-
-          string
-
-          undefined
-
-          Tailwind overrides merged over each slot's defaults — the header's
-          divider and padding, the body's{" "}
-          max-h-[calc(100vh-150px)] cap, the footer's right-aligned
-          row.
-
-          All Components
+          ModalHeader / Body / Footer
 
           children
 
@@ -366,8 +355,7 @@ Discover the Modal's flexible overlay features, designed for important user prom
 
           undefined
 
-          Whatever you want to render. Every slot is optional — a modal made of
-          nothing but a ModalBody is a perfectly normal modal.
+          Optional subcomponents for building completely custom modal layouts.
 
 ---
 

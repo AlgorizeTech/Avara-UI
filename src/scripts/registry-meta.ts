@@ -77,10 +77,17 @@ export const NAME_OVERRIDES: Record<string, string> = {
   "WalletBlock.tsx": "wallet",
   "FAQSectionBlock.tsx": "faq-section",
   "ConfidentialFolderBlock.tsx": "confidential-folder",
+  "SecureEnvelopeBlock.tsx": "secure-envelope",
   "ScrollSplitCardsBlock.tsx": "scroll-split-cards",
 };
 
 export const META: Record<string, ItemMeta> = {
+  "secure-envelope": {
+    description:
+      "An interactive classified security envelope & travel pass sleeve component featuring a secret card that glides out horizontally on hover and elevates gracefully onto the cover on click with 3D flip physics.",
+    categories: ["data-display", "marketing", "actions"],
+    docs: "Named export: SecureEnvelope (also ConfidentialFolder).",
+  },
   "scroll-split-cards": {
     description:
       "A cinematic scroll-driven storytelling card component that splits a seamless panoramic image into three panels, expands gaps, flips 180° in 3D into editorial narratives, and glides away.",
@@ -104,6 +111,12 @@ export const META: Record<string, ItemMeta> = {
       "An FAQ section pairing an accordion of questions with a picture canvas that resizes and crossfades to each open answer. Use it for landing-page FAQs that should feel editorial rather than list-like.",
     categories: ["marketing", "layout"],
     docs: "Named export: AnimatedFAQBlock (also the default export); the sample data `FAQ_ITEMS` lives in animated-faq-data.ts, which installs alongside. All motion is CSS — no animation library.",
+  },
+  "animated-faq-visuals": {
+    description:
+      "Theme-adaptive interactive visual preview components (CLI terminal, token customizer, MIT license certificate, performance HUD) for animated FAQ sections.",
+    categories: ["marketing", "data-display"],
+    docs: "Exports: CLIInstallationVisual, ThemingVisual, LicensingVisual, PerformanceVisual.",
   },
   "card-stack": {
     description:

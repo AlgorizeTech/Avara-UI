@@ -148,6 +148,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/animated-faq-visuals.json",
         "utils"
       ],
       "files": [
@@ -163,6 +164,31 @@
         }
       ],
       "docs": "Named export: AnimatedFAQBlock (also the default export); the sample data `FAQ_ITEMS` lives in animated-faq-data.ts, which installs alongside. All motion is CSS — no animation library."
+    },
+    {
+      "name": "animated-faq-visuals",
+      "type": "registry:component",
+      "title": "Animated Faq Visuals",
+      "author": "AlgorizeTech",
+      "description": "Theme-adaptive interactive visual preview components (CLI terminal, token customizer, MIT license certificate, performance HUD) for animated FAQ sections.",
+      "categories": [
+        "marketing",
+        "data-display"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/AnimatedFAQVisuals.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/AnimatedFAQVisuals.tsx"
+        }
+      ],
+      "docs": "Exports: CLIInstallationVisual, ThemingVisual, LicensingVisual, PerformanceVisual."
     },
     {
       "name": "animated-list",
@@ -756,8 +782,12 @@
       "categories": [
         "data-display"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/popover.json",
+        "https://algorize-ui.vercel.app/r/toggle-group.json",
         "utils"
       ],
       "files": [
@@ -1008,7 +1038,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "utils"
+        "https://algorize-ui.vercel.app/r/secure-envelope.json"
       ],
       "files": [
         {
@@ -1233,7 +1263,8 @@
         "layout"
       ],
       "dependencies": [
-        "lucide-react"
+        "lucide-react",
+        "motion"
       ],
       "registryDependencies": [
         "https://algorize-ui.vercel.app/r/chart.json",
@@ -3604,6 +3635,30 @@
       "docs": "Named exports: ScrollStack, StackItem. `items` take { id, title, description?, content?, color?, icon? }; `depthScale` and `cardGap` tune the stack. Pass `scroller` when the page scrolls inside a container rather than the window. No runtime dependencies."
     },
     {
+      "name": "secure-envelope",
+      "type": "registry:component",
+      "title": "Secure Envelope",
+      "author": "AlgorizeTech",
+      "description": "An interactive classified security envelope & travel pass sleeve component featuring a secret card that glides out horizontally on hover and elevates gracefully onto the cover on click with 3D flip physics.",
+      "categories": [
+        "data-display",
+        "marketing",
+        "actions"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/SecureEnvelopeBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/SecureEnvelopeBlock.tsx"
+        }
+      ],
+      "docs": "Named export: SecureEnvelope (also ConfidentialFolder)."
+    },
+    {
       "name": "select",
       "type": "registry:component",
       "title": "Select",
@@ -4132,6 +4187,11 @@
           "path": "src/components/custom/blocks/table-core.ts",
           "type": "registry:component",
           "target": "components/custom/blocks/table-core.ts"
+        },
+        {
+          "path": "src/lib/accent.ts",
+          "type": "registry:component",
+          "target": "lib/accent.ts"
         }
       ],
       "docs": "Named exports: Table, TableHeading, TableContent, TableHeader, TableBody, TableRow, TableHead, TableCell, TableFooter, TableEmpty, TableExpandedRow, TableExpandToggle, TableRowActions, useTableStyles, getThemeStyles. Each primitive renders its native element and forwards refs, so `colSpan` and aria attributes pass through. Variant (default | minimal | glass | soft), size (sm | md | lg) and color are set once on `Table` and read from context; `soft` is the admin-dashboard look (rounded panel, tinted header band, pill controls, round row actions). Also exports the stateful DataTable family — DataTableTabs, DataTableFilter, DataTableReset, DataTableBatchAction — and the cell/toolbar parts TableAction, TableRowAction, TableBadge and TablePerson. `sticky` on TableHead/TableCell pins a column to the right edge. Sorting and expansion are controlled props — the component never reorders your data. For search, paging, selection and batch actions wired up for you, use `advanced-table`."

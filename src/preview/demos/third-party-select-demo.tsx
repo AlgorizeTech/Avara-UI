@@ -20,6 +20,7 @@ import {
 } from "@/components/custom/blocks/CardBlock";
 import { Badge } from "@/components/custom/ui/badge";
 import { cn } from "@/lib/utils";
+import { accentStyle } from "@/lib/accent";
 
 type Option = { value: string; label: string; hint?: string };
 
@@ -54,31 +55,36 @@ function createClassNames<IsMulti extends boolean>(): ClassNamesConfig<
   return {
     control: ({ isFocused, isDisabled }) =>
       cn(
-        "min-h-9 rounded-md border bg-background px-3 py-1 text-sm transition-colors",
-        isFocused ? "border-ring ring-2 ring-ring/40" : "border-border hover:border-foreground/25",
-        isDisabled && "cursor-not-allowed opacity-50",
+        "min-h-9 rounded-md border bg-background px-3 py-1 text-sm transition-colors !cursor-pointer cursor-pointer",
+        isFocused ? "border-primary ring-2 ring-primary/30" : "border-border hover:border-primary/50",
+        isDisabled && "!cursor-not-allowed opacity-50",
       ),
-    valueContainer: () => "gap-1 py-0.5",
-    placeholder: () => "text-muted-foreground",
-    singleValue: () => "text-foreground",
-    input: () => "text-foreground [&_input:focus]:ring-0",
+    valueContainer: () => "gap-1 py-0.5 !cursor-pointer cursor-pointer",
+    placeholder: () => "text-muted-foreground !cursor-pointer cursor-pointer select-none",
+    singleValue: () => "text-foreground !cursor-pointer cursor-pointer select-none",
+    input: () => "text-foreground [&_input:focus]:ring-0 [&_input]:!cursor-pointer [&_input]:cursor-pointer",
     indicatorSeparator: () => "bg-border",
-    dropdownIndicator: () => "text-muted-foreground px-1 hover:text-foreground",
-    clearIndicator: () => "text-muted-foreground px-1 hover:text-foreground",
+    dropdownIndicator: () => "text-muted-foreground px-1 hover:text-primary transition-colors !cursor-pointer cursor-pointer",
+    clearIndicator: () => "text-muted-foreground px-1 hover:text-primary transition-colors !cursor-pointer cursor-pointer",
     menu: () =>
       "mt-2 overflow-hidden rounded-md border border-border bg-popover shadow-lg",
     menuList: () => "p-1",
-    option: ({ isFocused, isSelected }) =>
+    option: ({ isFocused, isSelected, isDisabled }) =>
       cn(
-        "cursor-pointer rounded-sm px-2 py-1.5 text-sm text-foreground",
-        isFocused && "bg-accent text-accent-foreground",
-        isSelected && "font-medium",
+        "!cursor-pointer cursor-pointer select-none rounded-sm px-2 py-1.5 text-sm transition-colors",
+        isDisabled && "!cursor-not-allowed opacity-50",
+        isSelected
+          ? cn("bg-primary/15 font-medium text-primary", isFocused && "bg-primary/25")
+          : isFocused
+            ? "bg-primary/10 text-primary"
+            : "text-foreground",
       ),
-    noOptionsMessage: () => "py-6 text-center text-sm text-muted-foreground",
+    noOptionsMessage: () => "py-6 text-center text-sm text-muted-foreground select-none",
     multiValue: () =>
-      "items-center gap-1 rounded-sm border border-border bg-muted px-1.5 py-0.5 text-xs",
-    multiValueLabel: () => "text-foreground",
-    multiValueRemove: () => "rounded-sm text-muted-foreground hover:text-destructive",
+      "items-center gap-1 rounded-sm border border-primary/20 bg-primary/10 px-1.5 py-0.5 text-xs text-primary",
+    multiValueLabel: () => "text-primary font-medium select-none",
+    multiValueRemove: () =>
+      "rounded-sm text-primary/70 hover:bg-primary/20 hover:text-primary transition-colors !cursor-pointer cursor-pointer",
   };
 }
 
@@ -98,25 +104,25 @@ const multiClassNames = createClassNames<true>();
  * fighting the cascade with `!flex`.
  */
 const Option_ = (props: OptionProps<Option, false, GroupBase<Option>>) => (
-  <components.Option {...props}>
-    <span className="flex w-full items-center justify-between gap-2">
-      <span className="flex flex-col">
-        <span>{props.data.label}</span>
+  <components.Option {...props} className={cn(props.className, "!cursor-pointer cursor-pointer select-none")}>
+    <span className="flex w-full items-center justify-between gap-2 !cursor-pointer cursor-pointer select-none">
+      <span className="flex flex-col !cursor-pointer cursor-pointer select-none">
+        <span className="!cursor-pointer cursor-pointer">{props.data.label}</span>
         {props.data.hint && (
-          <span className="text-xs text-muted-foreground">{props.data.hint}</span>
+          <span className="text-xs text-muted-foreground !cursor-pointer cursor-pointer">{props.data.hint}</span>
         )}
       </span>
-      {props.isSelected && <Check className="h-4 w-4 shrink-0" aria-hidden />}
+      {props.isSelected && <Check className="h-4 w-4 shrink-0 text-primary" aria-hidden />}
     </span>
   </components.Option>
 );
 
-export default function ReactSelectThemed() {
+export default function ReactSelectThemed({ color }: { color?: string } = {}) {
   const [framework, setFramework] = useState<Option | null>(frameworks[0]);
   const [deployRegions, setDeployRegions] = useState<readonly Option[]>([regions[0], regions[1]]);
 
   return (
-    <Card className="w-full max-w-lg">
+    <Card className="w-full max-w-lg" style={accentStyle(color)}>
       <CardHeader>
         <CardTitle>Deployment target</CardTitle>
         <CardDescription>react-select, unstyled and repainted with design tokens</CardDescription>
@@ -166,7 +172,11 @@ export default function ReactSelectThemed() {
             <span className="text-xs text-muted-foreground">nowhere yet</span>
           )}
           {deployRegions.map((region) => (
-            <Badge key={region.value} variant="secondary">
+            <Badge
+              key={region.value}
+              variant="outline"
+              className="border-primary/25 bg-primary/10 text-primary font-medium"
+            >
               {region.label}
             </Badge>
           ))}

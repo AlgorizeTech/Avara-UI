@@ -1,6 +1,11 @@
 "use client";
 
-import ChatApp from "@/components/custom/blocks/Chat";
+import ChatApp, {
+  ChatColor,
+  ChatVariant,
+  LiquidGlassSvgFilter,
+} from "@/components/custom/blocks/Chat";
+import { cn } from "@/lib/utils";
 
 const sampleCurrentUser = {
   avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg",
@@ -52,34 +57,42 @@ export default function ChatDemo({
   variant = "default",
   color = "primary",
 }: {
-  variant?: string;
-  color?: string;
+  variant?: ChatVariant;
+  color?: ChatColor | string;
 }) {
-  const chat = (
-    <ChatApp
-      key={`${variant}-${color}`}
-      variant={variant as any}
-      color={color as any}
-      currentUser={sampleCurrentUser}
-      contactsData={sampleContactsData}
-    />
-  );
+  const isGlass = variant === "glass" || variant === "liquid-glass";
 
   return (
     <div
-      className={`w-full transition-all duration-500 rounded-2xl ${
-        variant === "glass" ? "p-4 sm:p-8 bg-cover bg-center" : ""
-      }`}
-      style={
-        variant === "glass"
-          ? {
-              backgroundImage:
-                "url('https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg')",
-            }
-          : undefined
-      }
+      className={cn(
+        "w-full transition-all duration-500 relative flex items-center justify-center overflow-hidden",
+        isGlass
+          ? "p-0 -my-6 -mx-4 w-[calc(100%+2rem)] min-w-[calc(100%+2rem)] max-w-none"
+          : "w-full",
+      )}
     >
-      {chat}
+      <LiquidGlassSvgFilter />
+      {isGlass && (
+        <div
+          className="absolute inset-0 w-full h-full bg-cover bg-center pointer-events-none z-0"
+          style={{
+            backgroundImage:
+              'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
+          }}
+        />
+      )}
+      {isGlass && (
+        <div className="absolute inset-0 bg-black/25 pointer-events-none z-0" />
+      )}
+      <div className={cn("w-full relative z-10", isGlass && "p-4 sm:p-8")}>
+        <ChatApp
+          key={`${variant}-${color}`}
+          variant={variant}
+          color={color as any}
+          currentUser={sampleCurrentUser}
+          contactsData={sampleContactsData}
+        />
+      </div>
     </div>
   );
 }

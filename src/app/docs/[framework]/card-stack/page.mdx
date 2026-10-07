@@ -12,9 +12,9 @@ A layered deck of cards featuring fluid drag-to-discard gestures, button-driven 
 export const usageSwipe = `"use client";
 
 import { Compass, Palette, Terminal, FileText } from "lucide-react";
-import { CardStack } from "@/components/custom/blocks/CardStackBlock";
+import { CardStack, type CardStackItem } from "@/components/custom/blocks/CardStackBlock";
 
-const ARRIVALS = [
+const ARRIVALS: CardStackItem[] = [
   {
     id: "maker-hunt",
     title: "MakerHunt",
@@ -75,7 +75,7 @@ export default function SwipeToDiscardDemo() {
       items={ARRIVALS}
       swipeToDismiss={true}
       showHeader={false}
-      onDismiss={(item, direction) => {
+      onDismiss={(item: CardStackItem, direction: "left" | "right") => {
         console.log(\`Dismissed \${item.title} to the \${direction}\`);
       }}
     />
@@ -86,9 +86,9 @@ export default function SwipeToDiscardDemo() {
 export const usageButtons = `"use client";
 
 import { Compass, Palette, Terminal } from "lucide-react";
-import { CardStack } from "@/components/custom/blocks/CardStackBlock";
+import { CardStack, type CardStackItem } from "@/components/custom/blocks/CardStackBlock";
 
-const ARRIVALS = [
+const ARRIVALS: CardStackItem[] = [
   {
     id: "maker-hunt",
     title: "MakerHunt",
@@ -129,14 +129,72 @@ export default function ButtonStackDemo() {
 
 export const usageLeft = `"use client";
 
+import { Compass, Palette, Terminal, FileText } from "lucide-react";
 import { CardStack, type CardStackItem } from "@/components/custom/blocks/CardStackBlock";
 
-export default function LeftSlideDemo({ items }: { items: CardStackItem[] }) {
+const ARRIVALS: CardStackItem[] = [
+  {
+    id: "maker-hunt",
+    title: "MakerHunt",
+    description: "Daily product launches for indie makers.",
+    category: "Productivity",
+    date: "1d ago",
+    href: "https://makerhunt.example.com",
+    icon: (
+      <div className="size-full flex items-center justify-center bg-[#091642] text-white rounded-2xl">
+        <Compass className="size-6" />
+      </div>
+    ),
+  },
+  {
+    id: "design-forge",
+    title: "DesignForge",
+    description: "AI-powered vector generation and canvas tools for modern UI designers.",
+    category: "Design",
+    date: "2d ago",
+    href: "https://designforge.example.com",
+    icon: (
+      <div className="size-full flex items-center justify-center bg-purple-600 text-white rounded-2xl">
+        <Palette className="size-6" />
+      </div>
+    ),
+  },
+  {
+    id: "dev-pulse",
+    title: "DevPulse",
+    description: "Real-time deployment monitors and automated error triage alerts.",
+    category: "Developer Tools",
+    date: "3d ago",
+    href: "https://devpulse.example.com",
+    icon: (
+      <div className="size-full flex items-center justify-center bg-emerald-600 text-white rounded-2xl">
+        <Terminal className="size-6" />
+      </div>
+    ),
+  },
+  {
+    id: "draft-craft",
+    title: "DraftCraft",
+    description: "Collaborative markdown workspace with branch versioning and instant preview.",
+    category: "Writing",
+    date: "4d ago",
+    href: "https://draftcraft.example.com",
+    icon: (
+      <div className="size-full flex items-center justify-center bg-amber-600 text-white rounded-2xl">
+        <FileText className="size-6" />
+      </div>
+    ),
+  },
+];
+
+export default function LeftSlideDemo() {
   return (
     <CardStack
-      items={items}
+      items={ARRIVALS}
       slideDirection="left"
+      swipeToDismiss={false}
       showNavigation={true}
+      showHeader={true}
     />
   );
 }
@@ -144,12 +202,68 @@ export default function LeftSlideDemo({ items }: { items: CardStackItem[] }) {
 
 export const usageLoop = `"use client";
 
+import { Compass, Palette, Terminal, FileText } from "lucide-react";
 import { CardStack, type CardStackItem } from "@/components/custom/blocks/CardStackBlock";
 
-export default function InfiniteLoopDemo({ items }: { items: CardStackItem[] }) {
+const ARRIVALS: CardStackItem[] = [
+  {
+    id: "maker-hunt",
+    title: "MakerHunt",
+    description: "Daily product launches for indie makers.",
+    category: "Productivity",
+    date: "1d ago",
+    href: "https://makerhunt.example.com",
+    icon: (
+      <div className="size-full flex items-center justify-center bg-[#091642] text-white rounded-2xl">
+        <Compass className="size-6" />
+      </div>
+    ),
+  },
+  {
+    id: "design-forge",
+    title: "DesignForge",
+    description: "AI-powered vector generation and canvas tools for modern UI designers.",
+    category: "Design",
+    date: "2d ago",
+    href: "https://designforge.example.com",
+    icon: (
+      <div className="size-full flex items-center justify-center bg-purple-600 text-white rounded-2xl">
+        <Palette className="size-6" />
+      </div>
+    ),
+  },
+  {
+    id: "dev-pulse",
+    title: "DevPulse",
+    description: "Real-time deployment monitors and automated error triage alerts.",
+    category: "Developer Tools",
+    date: "3d ago",
+    href: "https://devpulse.example.com",
+    icon: (
+      <div className="size-full flex items-center justify-center bg-emerald-600 text-white rounded-2xl">
+        <Terminal className="size-6" />
+      </div>
+    ),
+  },
+  {
+    id: "draft-craft",
+    title: "DraftCraft",
+    description: "Collaborative markdown workspace with branch versioning and instant preview.",
+    category: "Writing",
+    date: "4d ago",
+    href: "https://draftcraft.example.com",
+    icon: (
+      <div className="size-full flex items-center justify-center bg-amber-600 text-white rounded-2xl">
+        <FileText className="size-6" />
+      </div>
+    ),
+  },
+];
+
+export default function InfiniteLoopDemo() {
   return (
     <CardStack
-      items={items}
+      items={ARRIVALS}
       loop={true}
       swipeToDismiss={true}
       showHeader={false}

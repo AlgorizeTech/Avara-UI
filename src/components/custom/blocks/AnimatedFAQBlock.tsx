@@ -4,8 +4,35 @@ import { useCallback, useEffect, useState } from "react";
 import { ChevronDown, MapPin, Compass } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { FAQ_ITEMS, type FAQItem } from "./animated-faq-data";
+import {
+  CLIInstallationVisual,
+  ThemingVisual,
+  LicensingVisual,
+  PerformanceVisual,
+} from "./AnimatedFAQVisuals";
 
 export type { FAQItem };
+
+function renderItemVisual(item: FAQItem) {
+  switch (item.id) {
+    case "installation":
+      return <CLIInstallationVisual />;
+    case "theming":
+      return <ThemingVisual />;
+    case "licensing":
+      return <LicensingVisual />;
+    case "performance":
+      return <PerformanceVisual />;
+    default:
+      return (
+        <img
+          src={item.image}
+          alt={item.question}
+          className="w-full h-full object-cover object-center filter brightness-[0.97] contrast-[1.03]"
+        />
+      );
+  }
+}
 
 // ==========================================
 // MOTION
@@ -71,12 +98,18 @@ export interface AnimatedFAQBlockProps {
   items?: FAQItem[];
   className?: string;
   defaultActiveId?: string;
+  showTags?: boolean;
+  showLocation?: boolean;
+  showDimensions?: boolean;
 }
 
 export function AnimatedFAQBlock({
   items = FAQ_ITEMS,
   className,
   defaultActiveId = FAQ_ITEMS[0].id,
+  showTags = true,
+  showLocation = true,
+  showDimensions = true,
 }: AnimatedFAQBlockProps) {
   const [activeId, setActiveId] = useState<string>(defaultActiveId);
   const activeItem = items.find((i) => i.id === activeId) || items[0];
@@ -146,87 +179,79 @@ export function AnimatedFAQBlock({
           <div className="pointer-events-none absolute -inset-6 rounded-3xl bg-primary/8 dark:bg-primary/5 blur-2xl opacity-60" />
 
           {/* ═══════════════════════════════════════════════════════════
-              CHAMFERED NATURE IMAGE CONTAINER (Cut Top-Left & Bottom-Right)
-              Theme-Aware Light Background in Light Mode, Dark in Dark Mode
+              CHAMFERED CONTAINER (Cut Top-Left & Bottom-Right)
+              Exact 1px Inset Border technique to ensure 100% clean single border
               ═══════════════════════════════════════════════════════════ */}
           <div
-            className="relative w-full h-full overflow-hidden bg-muted/90 shadow-xl dark:shadow-2xl border border-border/70 transition-all"
+            className="relative w-full h-full shadow-lg dark:shadow-2xl bg-border transition-all"
             style={{
               clipPath: `polygon(${activeItem.clipCut} 0%, 100% 0%, 100% calc(100% - ${activeItem.clipCut}), calc(100% - ${activeItem.clipCut}) 100%, 0% 100%, 0% ${activeItem.clipCut})`,
             }}
           >
-            {/* Instant Simultaneous Crossfade Nature Image */}
-            {photos.layers.map(({ key, item: photo, leaving }) => (
-              <div
-                key={key}
-                onAnimationEnd={(e) => {
-                  if (leaving && e.target === e.currentTarget) photos.drop(key);
-                }}
-                className={cn(
-                  "absolute inset-0 w-full h-full",
-                  leaving ? "animated-faq-photo-out" : "animated-faq-photo-in",
-                )}
-              >
-                <img
-                  src={photo.image}
-                  alt={photo.question}
-                  className="w-full h-full object-cover object-center filter brightness-[0.97] contrast-[1.03]"
-                />
-
-                {/* Soft Light-Aware Vignette Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-black/20 dark:from-black/75 dark:via-black/20 dark:to-black/35 pointer-events-none" />
-
-                {/* Top Corner Watermark Tag */}
-                <div className="absolute top-4 left-5 right-5 flex items-center justify-between text-xs pointer-events-none">
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-background/85 backdrop-blur-md border border-border/70 text-[11px] font-mono tracking-wider text-foreground shadow-xs">
-                    <Compass className="size-3 text-primary" />
-                    <span>{photo.category}</span>
-                  </div>
-
-                  <span className="font-mono text-[10px] text-muted-foreground tracking-widest uppercase bg-background/75 border border-border/50 px-2 py-0.5 rounded backdrop-blur-xs shadow-xs">
-                    {photo.coordinates}
-                  </span>
-                </div>
-
-                {/* Bottom Nature Caption & Location */}
-                <div className="absolute bottom-4 left-5 right-5 pointer-events-none">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-background/90 backdrop-blur-md border border-border/80 text-xs text-foreground font-medium shadow-sm">
-                    <MapPin className="size-3.5 text-primary shrink-0" />
-                    <span className="truncate">{photo.location}</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-
-            {/* Chamfered Border Outline via SVG to preserve crisp angle */}
-            <svg
-              className="pointer-events-none absolute inset-0 w-full h-full text-foreground/20"
-              fill="none"
-              preserveAspectRatio="none"
-              viewBox="0 0 100 100"
+            {/* Inner background layer with exact 1px inset so the cut corners have a crisp 1px border with no double lines */}
+            <div
+              className="absolute inset-[1px] overflow-hidden bg-card dark:bg-neutral-950"
+              style={{
+                clipPath: `polygon(${activeItem.clipCut} 0%, 100% 0%, 100% calc(100% - ${activeItem.clipCut}), calc(100% - ${activeItem.clipCut}) 100%, 0% 100%, 0% ${activeItem.clipCut})`,
+              }}
             >
-              <polygon
-                points="8 0, 100 0, 100 92, 92 100, 0 100, 0 8"
-                stroke="currentColor"
-                strokeWidth="1"
-                vectorEffect="non-scaling-stroke"
-              />
-            </svg>
+              {/* Instant Simultaneous Crossfade Visual Preview */}
+              {photos.layers.map(({ key, item: photo, leaving }) => (
+                <div
+                  key={key}
+                  onAnimationEnd={(e) => {
+                    if (leaving && e.target === e.currentTarget) photos.drop(key);
+                  }}
+                  className={cn(
+                    "absolute inset-0 w-full h-full overflow-hidden",
+                    leaving ? "animated-faq-photo-out" : "animated-faq-photo-in",
+                  )}
+                >
+                  {renderItemVisual(photo)}
+
+                  {/* Top Corner Watermark Tag */}
+                  {showTags && (
+                    <div className="absolute top-4 left-5 right-5 flex items-center justify-between text-xs pointer-events-none">
+                      <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-background/85 backdrop-blur-md border border-border/70 text-[11px] font-mono tracking-wider text-foreground shadow-xs">
+                        <Compass className="size-3 text-primary" />
+                        <span>{photo.category}</span>
+                      </div>
+
+                      <span className="font-mono text-[10px] text-muted-foreground tracking-widest uppercase bg-background/75 border border-border/50 px-2 py-0.5 rounded backdrop-blur-xs shadow-xs">
+                        {photo.coordinates}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Bottom Nature Caption & Location */}
+                  {showLocation && (
+                    <div className="absolute bottom-4 left-5 right-5 pointer-events-none">
+                      <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-background/90 backdrop-blur-md border border-border/80 text-xs text-foreground font-medium shadow-sm">
+                        <MapPin className="size-3.5 text-primary shrink-0" />
+                        <span className="truncate">{photo.location}</span>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
         {/* Dimension indicator tag below */}
-        <div className="mt-6 flex items-center gap-4 text-[11px] font-mono text-muted-foreground/80">
-          <span>
-            W: <strong className="text-foreground">{activeItem.maxWidth}px</strong>
-          </span>
-          <span>•</span>
-          <span>
-            H: <strong className="text-foreground">{activeItem.height}px</strong>
-          </span>
-          <span>•</span>
-          <span className="text-foreground/70 font-medium">Uniserve Dynamic Canvas</span>
-        </div>
+        {showDimensions && (
+          <div className="mt-6 flex items-center gap-4 text-[11px] font-mono text-muted-foreground/80">
+            <span>
+              W: <strong className="text-foreground">{activeItem.maxWidth}px</strong>
+            </span>
+            <span>•</span>
+            <span>
+              H: <strong className="text-foreground">{activeItem.height}px</strong>
+            </span>
+            <span>•</span>
+            <span className="text-foreground/70 font-medium">Uniserve Dynamic Canvas</span>
+          </div>
+        )}
       </div>
 
       {/* ───────────────────────────────────────────────────────────
@@ -330,15 +355,21 @@ export function AnimatedFAQBlock({
                       {item.answer}
                     </p>
 
-                    <div className="mt-3.5 flex items-center justify-between gap-2 pt-3 border-t border-border/30 text-xs">
-                      <span className="text-xs text-muted-foreground/80 flex items-center gap-1.5">
-                        <MapPin className="size-3 text-primary" />
-                        <span>{item.location}</span>
-                      </span>
-                      <span className="font-mono text-[11px] text-primary/90">
-                        {item.maxWidth}×{item.height}px
-                      </span>
-                    </div>
+                    {(showLocation || showDimensions) && (
+                      <div className="mt-3.5 flex items-center justify-between gap-2 pt-3 border-t border-border/30 text-xs">
+                        {showLocation ? (
+                          <span className="text-xs text-muted-foreground/80 flex items-center gap-1.5">
+                            <MapPin className="size-3 text-primary" />
+                            <span>{item.location}</span>
+                          </span>
+                        ) : <span />}
+                        {showDimensions && (
+                          <span className="font-mono text-[11px] text-primary/90">
+                            {item.maxWidth}×{item.height}px
+                          </span>
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>

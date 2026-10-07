@@ -420,7 +420,7 @@ const TEAMMATES = [
   },
 ];
 
-export default function ProfileCards({ interactive }: { interactive: boolean }) {
+export default function ProfileCards() {
   const [following, setFollowing] = useState(false);
 
   return (

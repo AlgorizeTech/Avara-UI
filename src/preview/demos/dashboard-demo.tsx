@@ -114,6 +114,11 @@ const ACTIVITY: DashboardActivity[] = [
   { id: 8, type: "post", title: "Release notes: September", subtitle: "By Marcus Chen", date: minutesAgo(28 * 60) },
   { id: 9, type: "payment", title: "$129.00 from Hana Kobayashi", subtitle: "Team plan, monthly", status: "failed", date: minutesAgo(30 * 60) },
   { id: 10, type: "user", title: "Omar Haddad", subtitle: "Signed up on the Free plan", date: minutesAgo(50 * 60) },
+  { id: 11, type: "post", title: "Building accessible components", subtitle: "By Daniel Brooks", date: minutesAgo(52 * 60) },
+  { id: 12, type: "message", title: "Feature request: Custom themes", subtitle: "dev@acme.corp", date: minutesAgo(55 * 60) },
+  { id: 13, type: "payment", title: "$399.00 from Acme Corp", subtitle: "Enterprise plan, yearly", date: minutesAgo(58 * 60) },
+  { id: 14, type: "post", title: "State management in 2026", subtitle: "By Priya Nair", date: minutesAgo(65 * 60) },
+  { id: 15, type: "message", title: "Webhook integration bug", subtitle: "support@startup.co", date: minutesAgo(70 * 60) },
 ];
 
 const SOURCES: Record<DashboardPeriod, DashboardShare[]> = {
@@ -177,6 +182,8 @@ const AUTHORS: Record<DashboardPeriod, DashboardAuthor[]> = {
     { name: "Ayesha Rahman", posts: 2 },
     { name: "Daniel Brooks", posts: 1 },
     { name: "Priya Nair", posts: 1 },
+    { name: "Marcus Chen", posts: 1 },
+    { name: "Sofia Alvarez", posts: 1 },
   ],
   week: [
     { name: "Ayesha Rahman", posts: 6 },

@@ -11,6 +11,7 @@ import {
   CardContent,
 } from "@/components/custom/blocks/CardBlock";
 import { Badge } from "@/components/custom/ui/badge";
+import { accentStyle } from "@/lib/accent";
 
 import "swiper/css";
 import "swiper/css/effect-coverflow";
@@ -31,16 +32,17 @@ const testimonials = [
  * slide. The two CSS variables below re-point Swiper's own chrome — arrows and
  * bullets — at the design tokens instead of its default blue.
  */
-export default function SwiperTestimonials() {
+export default function SwiperTestimonials({ color }: { color?: string } = {}) {
   return (
     <div
+      style={accentStyle(color)}
       /**
        * Swiper reads its own CSS variables for arrows and bullets, so pointing
        * them at the design tokens is a class list rather than a stylesheet.
        * `items-stretch` + `h-auto` is what makes the cards share one height —
        * without it each slide is only as tall as its own quote.
        */
-      className="w-full max-w-4xl [--swiper-navigation-color:var(--foreground)] [--swiper-navigation-size:24px] [--swiper-pagination-bullet-inactive-color:var(--muted-foreground)] [--swiper-pagination-color:var(--foreground)] [&_.swiper-slide]:h-auto [&_.swiper-wrapper]:items-stretch [&_.swiper-slide]:transition-opacity [&_.swiper-slide:not(.swiper-slide-active)]:opacity-60 [&_.swiper]:px-10 [&_.swiper]:pb-12"
+      className="w-full max-w-4xl [--swiper-navigation-color:var(--primary)] [--swiper-navigation-size:24px] [--swiper-pagination-bullet-inactive-color:var(--muted-foreground)] [--swiper-pagination-color:var(--primary)] [&_.swiper-slide]:h-auto [&_.swiper-wrapper]:items-stretch [&_.swiper-slide]:transition-opacity [&_.swiper-slide:not(.swiper-slide-active)]:opacity-60 [&_.swiper]:px-10 [&_.swiper]:pb-12"
     >
       <Swiper
         modules={[EffectCoverflow, Navigation, Pagination, Autoplay]}
@@ -58,13 +60,13 @@ export default function SwiperTestimonials() {
           <SwiperSlide key={item.name} className="!w-[280px] sm:!w-[340px]">
             <Card className="h-full">
               <CardContent className="flex h-full flex-col gap-4 p-6">
-                <Quote className="h-6 w-6 text-muted-foreground" aria-hidden />
+                <Quote className="h-6 w-6 text-primary" aria-hidden />
                 <p className="flex-1 text-sm leading-6 text-foreground/85">{item.quote}</p>
                 <div>
                   <p className="text-sm font-semibold text-foreground">{item.name}</p>
                   <p className="text-xs text-muted-foreground">{item.role}</p>
                 </div>
-                <Badge variant="secondary" className="w-fit">Verified customer</Badge>
+                <Badge variant="outline" className="w-fit border-primary/25 bg-primary/10 text-primary font-medium">Verified customer</Badge>
               </CardContent>
             </Card>
           </SwiperSlide>

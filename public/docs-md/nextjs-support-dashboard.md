@@ -110,8 +110,21 @@ ${supportData}
 
 export default function GlassDashboard() {
   return (
-    // \`glass\` is translucent by design — it needs a backdrop to read against.
+    // \`glass\` provides a self-contained full-bleed backdrop with a floating frosted card.
+    
+  );
+}`;
 
+export const usageLiquidGlass = `import SupportDashboard, {
+  type SupportData,
+} from "@/components/custom/blocks/Support-dashboard";
+
+${supportData}
+
+export default function LiquidGlassDashboard() {
+  return (
+    // \`liquid-glass\` features animated SVG displacement turbulence, specular edge highlights, and high-contrast frosted styling.
+    
   );
 }`;
 
@@ -154,12 +167,12 @@ npx shadcn@latest add @algorize-ui/support-dashboard
 
           variant
 
-          "default" | "minimal" | "glass"
+          "default" | "minimal" | "glass" | "liquid-glass"
 
           "default"
 
           Applies distinct visual themes to the borders, backgrounds, and drop
-          shadows of the dashboard components.
+          shadows of the dashboard components. liquid-glass wraps in an animated liquid SVG frosted stack, while glass provides translucent styling.
 
           color
 
@@ -171,6 +184,14 @@ npx shadcn@latest add @algorize-ui/support-dashboard
           metric highlights. This is a fixed set — unlike the other blocks it
           does not accept a hex string, and unrecognised values fall back to{" "}
           "indigo".
+
+          bgImage
+
+          string
+
+          Cloudinary landscape URL
+
+          Custom scenic backdrop image URL for liquid-glass and glass variants.
 
 ---
 

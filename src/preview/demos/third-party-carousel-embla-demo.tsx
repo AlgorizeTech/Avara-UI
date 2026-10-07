@@ -14,6 +14,7 @@ import {
 } from "@/components/custom/blocks/CardBlock";
 import { Badge } from "@/components/custom/ui/badge";
 import Button from "@/components/custom/blocks/Button";
+import { accentStyle } from "@/lib/accent";
 import { cn } from "@/lib/utils";
 
 const products = [
@@ -30,7 +31,7 @@ const products = [
  * That means the controls here are ordinary `Button`s and each slide is an
  * ordinary `Card` — nothing is being restyled or overridden.
  */
-export default function EmblaProductCarousel() {
+export default function EmblaProductCarousel({ color }: { color?: string } = {}) {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" });
   const [selected, setSelected] = useState(0);
   const [snaps, setSnaps] = useState<number[]>([]);
@@ -49,7 +50,7 @@ export default function EmblaProductCarousel() {
   }, [emblaApi]);
 
   return (
-    <div className="w-full max-w-4xl">
+    <div className="w-full max-w-4xl" style={accentStyle(color)}>
       <div className="mb-4 flex items-center justify-between">
         <div>
           <h3 className="text-lg font-semibold text-foreground">Featured products</h3>
@@ -59,7 +60,7 @@ export default function EmblaProductCarousel() {
           <Button
             size="sm"
             variant="outline"
-            className="h-9 w-9 justify-center p-0"
+            className="h-9 w-9 justify-center p-0 hover:border-primary/50 hover:text-primary transition-colors cursor-pointer"
             aria-label="Previous slide"
             iconLeft={<ChevronLeft className="h-4 w-4" />}
             onClick={() => emblaApi?.scrollPrev()}
@@ -67,7 +68,7 @@ export default function EmblaProductCarousel() {
           <Button
             size="sm"
             variant="outline"
-            className="h-9 w-9 justify-center p-0"
+            className="h-9 w-9 justify-center p-0 hover:border-primary/50 hover:text-primary transition-colors cursor-pointer"
             aria-label="Next slide"
             iconLeft={<ChevronRight className="h-4 w-4" />}
             onClick={() => emblaApi?.scrollNext()}
@@ -91,7 +92,7 @@ export default function EmblaProductCarousel() {
                   loading="lazy"
                 />
                 <CardContent className="pt-4">
-                  <Badge variant="secondary" className="mb-2">
+                  <Badge variant="outline" className="mb-2 border-primary/25 bg-primary/10 text-primary font-medium">
                     {product.tag}
                   </Badge>
                   <CardTitle className="text-base">{product.name}</CardTitle>
@@ -111,8 +112,8 @@ export default function EmblaProductCarousel() {
             aria-label={`Go to slide ${index + 1}`}
             onClick={() => scrollTo(index)}
             className={cn(
-              "h-1.5 rounded-full transition-all",
-              index === selected ? "w-6 bg-foreground" : "w-1.5 bg-border",
+              "h-1.5 rounded-full transition-all cursor-pointer",
+              index === selected ? "w-6 bg-primary" : "w-1.5 bg-border hover:bg-primary/40",
             )}
           />
         ))}

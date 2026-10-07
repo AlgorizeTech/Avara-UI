@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-01T13:00:25.437Z",
-  "totalFiles": 301,
+  "generatedAt": "2026-10-07T06:50:42.558Z",
+  "totalFiles": 303,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -61,6 +61,12 @@
       "path": "/docs/nextjs-audio-player.md",
       "url": "/docs/nextjs/audio-player",
       "originalMdx": "[framework]\\audio-player\\page.mdx"
+    },
+    {
+      "name": "nextjs/auth-forms",
+      "path": "/docs/nextjs-auth-forms.md",
+      "url": "/docs/nextjs/auth-forms",
+      "originalMdx": "[framework]\\auth-forms\\page.mdx"
     },
     {
       "name": "nextjs/avatar-stack",
@@ -181,12 +187,6 @@
       "path": "/docs/nextjs-component-wall.md",
       "url": "/docs/nextjs/component-wall",
       "originalMdx": "[framework]\\component-wall\\page.mdx"
-    },
-    {
-      "name": "nextjs/confidential-folder",
-      "path": "/docs/nextjs-confidential-folder.md",
-      "url": "/docs/nextjs/confidential-folder",
-      "originalMdx": "[framework]\\confidential-folder\\page.mdx"
     },
     {
       "name": "nextjs/context-menu",
@@ -507,6 +507,12 @@
       "originalMdx": "[framework]\\masonry-grid\\page.mdx"
     },
     {
+      "name": "nextjs/mcp",
+      "path": "/docs/nextjs-mcp.md",
+      "url": "/docs/nextjs/mcp",
+      "originalMdx": "[framework]\\mcp\\page.mdx"
+    },
+    {
       "name": "nextjs/memories-card",
       "path": "/docs/nextjs-memories-card.md",
       "url": "/docs/nextjs/memories-card",
@@ -669,6 +675,12 @@
       "originalMdx": "[framework]\\scroll-stack\\page.mdx"
     },
     {
+      "name": "nextjs/secure-envelope",
+      "path": "/docs/nextjs-secure-envelope.md",
+      "url": "/docs/nextjs/secure-envelope",
+      "originalMdx": "[framework]\\secure-envelope\\page.mdx"
+    },
+    {
       "name": "nextjs/select",
       "path": "/docs/nextjs-select.md",
       "url": "/docs/nextjs/select",
@@ -685,12 +697,6 @@
       "path": "/docs/nextjs-sidebar.md",
       "url": "/docs/nextjs/sidebar",
       "originalMdx": "[framework]\\sidebar\\page.mdx"
-    },
-    {
-      "name": "nextjs/signup-form",
-      "path": "/docs/nextjs-signup-form.md",
-      "url": "/docs/nextjs/signup-form",
-      "originalMdx": "[framework]\\signup-form\\page.mdx"
     },
     {
       "name": "nextjs/skeleton",
@@ -969,6 +975,12 @@
       "originalMdx": "[framework]\\audio-player\\page.mdx"
     },
     {
+      "name": "reactjs/auth-forms",
+      "path": "/docs/reactjs-auth-forms.md",
+      "url": "/docs/reactjs/auth-forms",
+      "originalMdx": "[framework]\\auth-forms\\page.mdx"
+    },
+    {
       "name": "reactjs/avatar-stack",
       "path": "/docs/reactjs-avatar-stack.md",
       "url": "/docs/reactjs/avatar-stack",
@@ -1087,12 +1099,6 @@
       "path": "/docs/reactjs-component-wall.md",
       "url": "/docs/reactjs/component-wall",
       "originalMdx": "[framework]\\component-wall\\page.mdx"
-    },
-    {
-      "name": "reactjs/confidential-folder",
-      "path": "/docs/reactjs-confidential-folder.md",
-      "url": "/docs/reactjs/confidential-folder",
-      "originalMdx": "[framework]\\confidential-folder\\page.mdx"
     },
     {
       "name": "reactjs/context-menu",
@@ -1413,6 +1419,12 @@
       "originalMdx": "[framework]\\masonry-grid\\page.mdx"
     },
     {
+      "name": "reactjs/mcp",
+      "path": "/docs/reactjs-mcp.md",
+      "url": "/docs/reactjs/mcp",
+      "originalMdx": "[framework]\\mcp\\page.mdx"
+    },
+    {
       "name": "reactjs/memories-card",
       "path": "/docs/reactjs-memories-card.md",
       "url": "/docs/reactjs/memories-card",
@@ -1575,6 +1587,12 @@
       "originalMdx": "[framework]\\scroll-stack\\page.mdx"
     },
     {
+      "name": "reactjs/secure-envelope",
+      "path": "/docs/reactjs-secure-envelope.md",
+      "url": "/docs/reactjs/secure-envelope",
+      "originalMdx": "[framework]\\secure-envelope\\page.mdx"
+    },
+    {
       "name": "reactjs/select",
       "path": "/docs/reactjs-select.md",
       "url": "/docs/reactjs/select",
@@ -1591,12 +1609,6 @@
       "path": "/docs/reactjs-sidebar.md",
       "url": "/docs/reactjs/sidebar",
       "originalMdx": "[framework]\\sidebar\\page.mdx"
-    },
-    {
-      "name": "reactjs/signup-form",
-      "path": "/docs/reactjs-signup-form.md",
-      "url": "/docs/reactjs/signup-form",
-      "originalMdx": "[framework]\\signup-form\\page.mdx"
     },
     {
       "name": "reactjs/skeleton",

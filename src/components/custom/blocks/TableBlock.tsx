@@ -27,6 +27,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { accentStyle } from "@/lib/accent";
 import { type Accessor, DataTableContext, type DataTableContextValue, type SortType, TableContext, type TableSize, type TableVariant, getAccentColor, getThemeStyles, resolveAccessor, useDataTable, useTableStyles } from "./table-core";
 import { ToggleGroup, ToggleGroupItem } from "./ToggleGroupBlock";
 
@@ -81,7 +82,7 @@ const sizesFor = (variant: TableVariant) =>
  * every part reads them: the well (header band, search, filters), the row
  * hover and selected washes, and the tint an applied filter takes.
  */
-const softTokens = (color: string) =>
+const softTokens = (color?: string) =>
   ({
     "--tbl-accent": getAccentColor(color),
     "--tbl-well":
@@ -112,34 +113,34 @@ interface VariantSkin {
 
 const variantClasses: Record<TableVariant, VariantSkin> = {
   default: {
-    wrapper: "w-full bg-card text-card-foreground border rounded-xl shadow-sm overflow-hidden",
-    heading: "border-b bg-card",
-    footer: "border-t bg-card",
-    headerRow: "bg-muted/80 border-b",
-    row: "group border-b last:border-0 transition-colors bg-card hover:bg-muted/60",
-    selectedRow: "bg-muted",
-    expanded: "bg-muted/50 border-b",
+    wrapper: "w-full bg-card text-card-foreground border border-primary/20 rounded-xl shadow-sm overflow-hidden",
+    heading: "border-b border-primary/15 bg-card",
+    footer: "border-t border-primary/15 bg-card",
+    headerRow: "bg-primary/[0.04] dark:bg-primary/[0.08] border-b border-primary/15",
+    row: "group border-b border-primary/10 last:border-0 transition-colors bg-card hover:bg-primary/[0.05] dark:hover:bg-primary/[0.08]",
+    selectedRow: "bg-primary/[0.08] dark:bg-primary/[0.12]",
+    expanded: "bg-primary/[0.03] dark:bg-primary/[0.06] border-b border-primary/10",
   },
   minimal: {
     wrapper: "w-full bg-transparent",
-    heading: "border-b",
-    footer: "border-t",
-    headerRow: "border-b-2",
-    row: "group border-b last:border-0 transition-colors bg-transparent hover:bg-muted/60",
-    selectedRow: "bg-muted/80",
-    expanded: "bg-muted/50 border-b",
+    heading: "border-b border-primary/15",
+    footer: "border-t border-primary/15",
+    headerRow: "border-b-2 border-primary/25",
+    row: "group border-b border-primary/10 last:border-0 transition-colors bg-transparent hover:bg-primary/[0.05] dark:hover:bg-primary/[0.08]",
+    selectedRow: "bg-primary/[0.08] dark:bg-primary/[0.12]",
+    expanded: "bg-primary/[0.03] dark:bg-primary/[0.06] border-b border-primary/10",
   },
   glass: {
     wrapper:
-      "w-full bg-card/40 text-card-foreground backdrop-blur-xl border border-foreground/10 rounded-xl shadow-xl overflow-hidden",
-    heading: "border-b border-foreground/10",
-    footer: "border-t border-foreground/10",
+      "w-full bg-card/40 text-card-foreground backdrop-blur-xl border border-primary/20 rounded-xl shadow-xl overflow-hidden",
+    heading: "border-b border-primary/15",
+    footer: "border-t border-primary/15",
     headerRow:
-      "bg-foreground/[0.04] border-b border-foreground/10",
-    row: "group border-b border-foreground/5 last:border-0 transition-colors hover:bg-foreground/5",
-    selectedRow: "bg-foreground/10",
+      "bg-primary/[0.06] border-b border-primary/15",
+    row: "group border-b border-primary/10 last:border-0 transition-colors hover:bg-primary/[0.05]",
+    selectedRow: "bg-primary/[0.12]",
     expanded:
-      "bg-foreground/5 border-b border-foreground/5",
+      "bg-primary/[0.05] border-b border-primary/10",
   },
   // Separate borders: the dividers live on the cells, so a sticky cell paints
   // its own. The wrapper does not clip, so filter and page-size menus can
@@ -197,6 +198,7 @@ export const Table = forwardRef<HTMLDivElement, TableProps>(
     ref,
   ) => {
     const { theme, style } = getThemeStyles(color as string);
+    const accentCss = accentStyle(color as string);
     return (
       <TableContext.Provider value={{ variant, size, theme }}>
         <div
@@ -208,8 +210,9 @@ export const Table = forwardRef<HTMLDivElement, TableProps>(
             className
           )}
           style={{
+            ...accentCss,
             ...style,
-            ...(variant === "soft" ? softTokens(color as string) : null),
+            ...softTokens(color as string),
             ...styleProp,
           }}
           {...props}
@@ -566,18 +569,18 @@ export const TableHead = forwardRef<HTMLTableCellElement, TableHeadProps>(
             type="button"
             onClick={onSort}
             className={cn(
-              "inline-flex items-center gap-1.5 font-semibold uppercase tracking-wider transition-colors hover:text-foreground",
-              sortDirection && "text-foreground",
+              "inline-flex items-center gap-1.5 font-semibold uppercase tracking-wider transition-colors hover:text-primary cursor-pointer",
+              sortDirection && "text-primary",
             )}
           >
             {children}
             <span className="shrink-0">
               {sortDirection === "asc" ? (
-                <ChevronUp className="w-3.5 h-3.5" />
+                <ChevronUp className="w-3.5 h-3.5 text-primary" />
               ) : sortDirection === "desc" ? (
-                <ChevronDown className="w-3.5 h-3.5" />
+                <ChevronDown className="w-3.5 h-3.5 text-primary" />
               ) : (
-                <ChevronsUpDown className="w-3.5 h-3.5 opacity-50" />
+                <ChevronsUpDown className="w-3.5 h-3.5 opacity-50 group-hover:opacity-100" />
               )}
             </span>
           </button>
@@ -782,11 +785,11 @@ export const TableExpandToggle = forwardRef<
       className={cn(
         variant === "soft"
           ? cn(
-              "grid size-8 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-[var(--tbl-well)] hover:text-foreground",
+              "grid size-8 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-[var(--tbl-well)] hover:text-foreground cursor-pointer",
               FOCUS_RING,
               open && "bg-[var(--tbl-well)] text-foreground",
             )
-          : "p-1 rounded-md text-muted-foreground hover:bg-muted transition-colors",
+          : "p-1 rounded-md text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors cursor-pointer",
         className,
       )}
       {...props}

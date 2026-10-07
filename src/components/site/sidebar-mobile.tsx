@@ -194,6 +194,29 @@ export const SidebarMobile = ({ onClose }: { onClose: () => void }) => {
                 Getting Started Guide
               </Link>
             </div>
+            <Link
+              href={docsHref(framework, 'mcp')}
+              className={cn(
+                'flex items-center min-h-8 py-[0.35rem] pr-2 rounded-md text-[13px] transition-colors',
+                currentSlug === 'mcp'
+                  ? 'text-primary font-medium'
+                  : 'text-foreground/55 hover:text-foreground'
+              )}
+              aria-current={currentSlug === 'mcp' ? 'page' : undefined}
+              onClick={onClose}
+            >
+              MCP Server
+            </Link>
+            {/* A plain anchor: /llms.txt is a text route, not a docs page. */}
+            <a
+              href="/llms.txt"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center min-h-8 py-[0.35rem] pr-2 rounded-md text-[13px] text-foreground/55 hover:text-foreground transition-colors"
+              onClick={onClose}
+            >
+              llms.txt
+            </a>
           </div>
         </div>
       </ScrollArea>

@@ -77,6 +77,15 @@ export default function ShortDeckCarousel() {
   return <ThreeDCarousel items={items.slice(0, 3)} autoPlay />;
 }`;
 
+export const usageMinimalControls = `import { ThreeDCarousel, type CarouselItem } from "@/components/custom/blocks/ThreeDCarouselBlock";
+
+${carouselItems}
+
+export default function MinimalControlsCarousel() {
+  // Drag, the keyboard arrow keys and clicking a side card still navigate.
+  return <ThreeDCarousel items={items} showArrows={false} showDots={false} />;
+}`;
+
 <ExampleShowcase
   name="carousel-3d"
   colorControl
@@ -125,6 +134,25 @@ export default function ShortDeckCarousel() {
       ],
       props: { itemCount: 3 },
       usage: usageShortDeck,
+    },
+    {
+      title: "Without arrows or dots",
+      propNotes: [
+        {
+          prop: "showArrows",
+          value: "{false}",
+          effect:
+            "drops the whole control bar: the previous / next buttons and the autoplay pause toggle.",
+        },
+        {
+          prop: "showDots",
+          value: "{false}",
+          effect:
+            "drops the pagination dots. Each flag works on its own, so you can keep either one.",
+        },
+      ],
+      props: { showArrows: false, showDots: false },
+      usage: usageMinimalControls,
     },
   ]}
 />
@@ -229,6 +257,44 @@ Discover the key capabilities that make this component an excellent choice for m
         </td>
         <td>
           The time duration in milliseconds between automatic slide transitions.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ThreeDCarousel</code>
+        </td>
+        <td>
+          <code>showArrows</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          Shows the control bar: the previous / next slide buttons and the
+          autoplay pause toggle. Drag, keyboard arrows and clicking a side card
+          keep working when this is <code>false</code>, and autoplay still
+          pauses on hover.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ThreeDCarousel</code>
+        </td>
+        <td>
+          <code>showDots</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          Shows the pagination dots under the deck, which mark the active slide
+          and jump to a slide on click.
         </td>
       </tr>
       <tr>

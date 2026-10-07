@@ -1,4 +1,4 @@
-export const metadata = docsPageMetadata("signup-form");
+export const metadata = docsPageMetadata("auth-forms");
 
 # Authentication Forms
 
@@ -12,41 +12,95 @@ Both share the same `variant` and `color` surface, so a login page and a registe
 
 Email, password, remember-me and a forgot-password link. `signupHref` points at wherever the register form lives.
 
-export const usageLogin = `import LoginForm from "@/components/custom/blocks/LoginForm";
+export const usageLogin = `import LoginForm, { LoginFormValues } from "@/components/custom/blocks/LoginForm";
 
 export default function LoginPage() {
+  const handleSubmit = async (values: LoginFormValues) => {
+    // Swap this for your auth call. The button stays in its loading state
+    // until the promise settles, so return the real one.
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    console.log(values);
+  };
+
+  const handleSocialSignIn = (provider: "github" | "google") => {
+    console.log("Sign in with:", provider);
+  };
+
   return (
-     {
-        // Swap this for your auth call. The button stays in its loading state
-        // until the promise settles, so return the real one.
-        await new Promise((resolve) => setTimeout(resolve, 600));
-        console.log({ email, password, remember });
-      }}
-    />
+    
   );
 }`;
 
-export const usageLoginSplit = `import LoginForm from "@/components/custom/blocks/LoginForm";
+export const usageLoginSplit = `import LoginForm, { LoginFormValues } from "@/components/custom/blocks/LoginForm";
 
 export default function SplitLoginPage() {
   // "split" pairs the form with a full-height marketing panel on large screens.
-  return ;
-}`;
+  const handleSubmit = async (values: LoginFormValues) => {
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    console.log(values);
+  };
 
-export const usageLoginGlass = `import LoginForm from "@/components/custom/blocks/LoginForm";
+  const handleSocialSignIn = (provider: "github" | "google") => {
+    console.log("Sign in with:", provider);
+  };
 
-export default function GlassLoginPage() {
-  // "glass" is translucent — it needs something behind it to read against.
   return (
-
+    
   );
 }`;
 
-export const usageLoginMinimal = `import LoginForm from "@/components/custom/blocks/LoginForm";
+export const usageLoginMinimal = `import LoginForm, { LoginFormValues } from "@/components/custom/blocks/LoginForm";
 
 export default function MinimalLoginPage() {
   // "minimal" strips the card, leaving just the fields on your own background.
-  return ;
+  const handleSubmit = async (values: LoginFormValues) => {
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    console.log(values);
+  };
+
+  const handleSocialSignIn = (provider: "github" | "google") => {
+    console.log("Sign in with:", provider);
+  };
+
+  return (
+    
+  );
+}`;
+
+export const usageLoginGlass = `import LoginForm, { LoginFormValues } from "@/components/custom/blocks/LoginForm";
+
+export default function GlassLoginPage() {
+  // "glass" provides a self-contained full-bleed background with a floating frosted card.
+  const handleSubmit = async (values: LoginFormValues) => {
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    console.log(values);
+  };
+
+  const handleSocialSignIn = (provider: "github" | "google") => {
+    console.log("Sign in with:", provider);
+  };
+
+  return (
+    
+  );
+}`;
+
+export const usageLoginLiquidGlass = `import LoginForm, { LoginFormValues } from "@/components/custom/blocks/LoginForm";
+
+export default function LiquidGlassLoginPage() {
+  // "liquid-glass" uses SVG displacement turbulence, specular edge highlights, and high-contrast frosted styling.
+  const handleSubmit = async (values: LoginFormValues) => {
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    console.log(values);
+  };
+
+  const handleSocialSignIn = (provider: "github" | "google") => {
+    console.log("Sign in with:", provider);
+  };
+
+  return (
+    
+  );
 }`;
 
 ### Install the login form
@@ -66,51 +120,114 @@ Every example below is the same `LoginForm` you just installed — only the prop
 
 Paired name fields, email, password with confirmation, and a terms checkbox whose links you point at your own policies. `loginHref` closes the loop back to the login form.
 
-export const usageRegister = `import RegisterForm from "@/components/custom/blocks/RegisterForm";
+export const usageRegister = `import RegisterForm, { RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
 
 export default function RegisterPage() {
-  return (
-     {
-        // values: firstName, lastName, email, password, confirmPassword,
-        // agreeToTerms. Re-validate every one of them on your server.
-        await new Promise((resolve) => setTimeout(resolve, 600));
-        console.log(values);
-      }}
-    />
-  );
-}`;
+  const handleSubmit = async (values: RegisterFormValues) => {
+    // values: firstName, lastName, email, password, confirmPassword, agreeToTerms.
+    // Re-validate every one of them on your server.
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    console.log(values);
+  };
 
-export const usageRegisterScenic = `import RegisterForm from "@/components/custom/blocks/RegisterForm";
+  const handleSocialSignUp = (provider: "github" | "google" | "apple") => {
+    console.log("Sign up with:", provider);
+  };
 
-export default function ScenicRegisterPage() {
-  // "scenic" renders a floating onboarding card over a nature landscape backdrop.
-  // Seamlessly adapts between light mode (frosted card) and dark mode (dark charcoal card).
   return (
     
   );
 }`;
 
-export const usageRegisterSplit = `import RegisterForm from "@/components/custom/blocks/RegisterForm";
+export const usageRegisterScenic = `import RegisterForm, { RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
 
-export default function SplitRegisterPage() {
-  // "split" pairs the form with a full-height marketing panel on large screens.
-  return ;
-}`;
+export default function ScenicRegisterPage() {
+  // "scenic" renders a floating onboarding card over a nature landscape backdrop.
+  // Seamlessly adapts between light mode (frosted card) and dark mode (dark charcoal card).
+  const handleSubmit = async (values: RegisterFormValues) => {
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    console.log(values);
+  };
 
-export const usageRegisterGlass = `import RegisterForm from "@/components/custom/blocks/RegisterForm";
+  const handleSocialSignUp = (provider: "github" | "google" | "apple") => {
+    console.log("Sign up with:", provider);
+  };
 
-export default function GlassRegisterPage() {
-  // "glass" is translucent — it needs something behind it to read against.
   return (
-
+    
   );
 }`;
 
-export const usageRegisterMinimal = `import RegisterForm from "@/components/custom/blocks/RegisterForm";
+export const usageRegisterSplit = `import RegisterForm, { RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
+
+export default function SplitRegisterPage() {
+  // "split" pairs the form with a full-height marketing panel on large screens.
+  const handleSubmit = async (values: RegisterFormValues) => {
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    console.log(values);
+  };
+
+  const handleSocialSignUp = (provider: "github" | "google" | "apple") => {
+    console.log("Sign up with:", provider);
+  };
+
+  return (
+    
+  );
+}`;
+
+export const usageRegisterMinimal = `import RegisterForm, { RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
 
 export default function MinimalRegisterPage() {
   // "minimal" strips the card, leaving just the fields on your own background.
-  return ;
+  const handleSubmit = async (values: RegisterFormValues) => {
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    console.log(values);
+  };
+
+  const handleSocialSignUp = (provider: "github" | "google" | "apple") => {
+    console.log("Sign up with:", provider);
+  };
+
+  return (
+    
+  );
+}`;
+
+export const usageRegisterGlass = `import RegisterForm, { RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
+
+export default function GlassRegisterPage() {
+  // "glass" provides a self-contained full-bleed background with a floating frosted card.
+  const handleSubmit = async (values: RegisterFormValues) => {
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    console.log(values);
+  };
+
+  const handleSocialSignUp = (provider: "github" | "google" | "apple") => {
+    console.log("Sign up with:", provider);
+  };
+
+  return (
+    
+  );
+}`;
+
+export const usageRegisterLiquidGlass = `import RegisterForm, { RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
+
+export default function LiquidGlassRegisterPage() {
+  // "liquid-glass" uses SVG displacement turbulence, specular edge highlights, and high-contrast frosted styling.
+  const handleSubmit = async (values: RegisterFormValues) => {
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    console.log(values);
+  };
+
+  const handleSocialSignUp = (provider: "github" | "google" | "apple") => {
+    console.log("Sign up with:", provider);
+  };
+
+  return (
+    
+  );
 }`;
 
 ### Install the register form
@@ -137,12 +254,12 @@ Every example below is the same `RegisterForm` you just installed — only the p
 
           variant
 
-          "default" | "split" | "glass" | "minimal"
+          "default" | "split" | "liquid-glass" | "glass" | "minimal"
 
           "default"
 
           Applies overarching structural layouts. split wraps the
-          form in a full-width marketing panel, while glass adds
+          form in a full-width marketing panel, liquid-glass adds an interactive liquid SVG glass stack, while glass adds
           translucent styling.
 
           color
@@ -154,6 +271,30 @@ Every example below is the same `RegisterForm` you just installed — only the p
           Applies global color themes to the primary button, focus rings and the
           remember-me checkbox. Accepts valid hex codes (e.g.{" "}
           "#8b5cf6").
+
+          brandName
+
+          string
+
+          "Acme Inc."
+
+          Brand name text displayed in the header of the split variant marketing panel.
+
+          title / subtitle
+
+          string
+
+          See defaults
+
+          Customizable headline and description displayed across all variants and the split marketing panel.
+
+          bgImage
+
+          string
+
+          Cloudinary image
+
+          Custom background image URL for glass and liquid-glass variants.
 
           signupHref
 
@@ -200,11 +341,11 @@ Every example below is the same `RegisterForm` you just installed — only the p
 
           variant
 
-          "scenic" | "default" | "split" | "glass" | "minimal"
+          "scenic" | "default" | "split" | "liquid-glass" | "glass" | "minimal"
 
           "default"
 
-          Five distinct presentation presets. "scenic" renders a floating onboarding card over a landscape backdrop with interactive welcome and registration steps, adapting smoothly to light and dark modes.
+          Distinct presentation presets. "scenic" renders a floating onboarding card over a landscape backdrop, "liquid-glass" wraps in an animated liquid SVG frosted glass stack, and "glass" renders translucent panels.
 
           color
 
@@ -311,6 +452,6 @@ Every example below is the same `RegisterForm` you just installed — only the p
 
 ---
 
-**Component Path:** `[framework]\signup-form\page.mdx`
+**Component Path:** `[framework]\auth-forms\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

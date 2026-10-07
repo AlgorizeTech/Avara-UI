@@ -160,6 +160,8 @@ export default function BookingWindow() {
       title: "Dual Month Priced Range Date Picker",
       subheading: "Side-by-side dual calendars displaying dynamic rate prices ($100, $120) below date numbers.",
       props: { variant: "priced-dual" },
+      usage: usagePricedDual,
+      code: extractCode("src/components/custom/range-date-picker.tsx"),
     },
     {
       title: "Disable past dates",
@@ -173,6 +175,7 @@ export default function BookingWindow() {
       ],
       usage: usageDisablePast,
       props: { variant: "single", disablePast: true },
+      code: extractCode("src/components/custom/range-date-picker.tsx"),
     },
     {
       title: "Range with times",
@@ -187,7 +190,6 @@ export default function BookingWindow() {
       ],
       usage: usageTime,
       props: { variant: "single", showTime: true, disablePast: true },
-      usage: usagePricedDual,
       code: extractCode("src/components/custom/range-date-picker.tsx"),
     },
   ]}
