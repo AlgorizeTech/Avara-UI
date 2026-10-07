@@ -331,7 +331,7 @@ const rawNavigation: NavigationItem[] = [
     children: [
       {
         label: "Auth Forms",
-        slug: "signup-form",
+        slug: "auth-forms",
         keywords: [
           "login",
           "log in",

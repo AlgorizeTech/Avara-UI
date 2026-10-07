@@ -95,6 +95,21 @@
     "plyr-html5": "Video Player (Plyr) — Plyr — HTML5",
     "plyr-youtube": "Video Player (Plyr) — Plyr — YouTube"
   },
+  "login-form": {
+    "login": "Login Form — Login",
+    "login-split": "Login Form — Login — split",
+    "login-minimal": "Login Form — Login — minimal",
+    "login-glass": "Login Form — Login — glass",
+    "login-liquid-glass": "Login Form — Login — liquid-glass"
+  },
+  "register-form": {
+    "register": "Register Form — Register",
+    "register-scenic": "Register Form — Register — scenic",
+    "register-split": "Register Form — Register — split",
+    "register-minimal": "Register Form — Register — minimal",
+    "register-glass": "Register Form — Register — glass",
+    "register-liquid-glass": "Register Form — Register — liquid-glass"
+  },
   "avatar-stack": {
     "without-tooltip": "Avatar Stack — Without tooltip",
     "with-an-action": "Avatar Stack — With an action",
@@ -721,19 +736,6 @@
   "sidebar": {
     "sidebar": "Sidebar",
     "collapsed-rail": "Sidebar — Collapsed rail"
-  },
-  "login-form": {
-    "login": "Login Form — Login",
-    "login-split": "Login Form — Login — split",
-    "login-glass": "Login Form — Login — glass",
-    "login-minimal": "Login Form — Login — minimal"
-  },
-  "register-form": {
-    "register": "Register Form — Register",
-    "register-scenic": "Register Form — Register — scenic",
-    "register-split": "Register Form — Register — split",
-    "register-glass": "Register Form — Register — glass",
-    "register-minimal": "Register Form — Register — minimal"
   },
   "skeleton": {
     "card": "Skeleton — Card",

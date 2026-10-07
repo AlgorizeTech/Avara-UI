@@ -181,7 +181,7 @@ const COMPONENT_META: Record<
 	"video-accordion": { countText: "Interactive Media", illustrationType: "video-accordion" },
 
 	// Website Sections
-	"signup-form": { countText: "Login & Register", illustrationType: "auth" },
+	"auth-forms": { countText: "Login & Register", illustrationType: "auth" },
 	footer: { countText: "4 Responsive Variants", illustrationType: "footer" },
 	hero: { countText: "6 Hero Sections", illustrationType: "hero" },
 	marquee: { countText: "Infinite Logo Ticker", illustrationType: "marquee" },
@@ -342,7 +342,7 @@ const COMPONENT_TYPES = {
 		description: "Full screens: auth, dashboards, profiles and product pages.",
 		icon: AppWindow,
 		kind: "section",
-		slugs: ["signup-form", "book-appointment", "dashboard", "support-dashboard", "profile-page", "product-details", "image-viewer"],
+		slugs: ["auth-forms", "book-appointment", "dashboard", "support-dashboard", "profile-page", "product-details", "image-viewer"],
 	},
 	"more-sections": {
 		label: "More Sections",
