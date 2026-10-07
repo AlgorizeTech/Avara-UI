@@ -178,6 +178,31 @@ export default function GlassAssistant() {
   );
 };`;
 
+export const usageLiquidGlass = `import AIChat, { type ChatThread, type Message } from "@/components/custom/blocks/Ai-chat";
+
+${chatData}
+
+export default function LiquidGlassAssistant() {
+  return (
+    // Real liquid SVG glass displacement with multi-layer reflections and specular highlights
+    <div
+      className="p-8 rounded-2xl bg-cover bg-center relative overflow-hidden"
+      style={{
+        backgroundImage:
+          'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
+      }}
+    >
+      <div className="absolute inset-0 bg-black/25 rounded-2xl pointer-events-none" />
+      <AIChat
+        variant="liquid-glass"
+        color="#8b5cf6"
+        chatHistory={chatHistory}
+        initialMessages={initialMessages}
+      />
+    </div>
+  );
+};`;
+
 <ExampleShowcase
   name="ai-chat"
   colorControl
@@ -303,6 +328,25 @@ export default function GlassAssistant() {
       props: { variant: "glass" },
       usage: usageGlass,
     },
+    {
+      title: "Liquid Glass",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"liquid-glass"',
+          effect:
+            "for authentic liquid glass refraction using SVG displacement mapping, multi-layer specular highlights, and fluid reflections.",
+        },
+        {
+          prop: "color",
+          value: '"#8b5cf6"',
+          effect: "tints the accents so they hold up against your own backdrop.",
+        },
+      ],
+      props: { variant: "liquid-glass" },
+      usage: usageLiquidGlass,
+    },
   ]}
 />
 
@@ -398,7 +442,7 @@ Explore the Ai-Chat interface features, including message streaming, typing indi
           <code>variant</code>
         </td>
         <td>
-          <code>"default" | "minimal" | "glass" | "compact"</code>
+          <code>"default" | "minimal" | "glass" | "compact" | "liquid-glass"</code>
         </td>
         <td>
           <code>"default"</code>
@@ -406,7 +450,7 @@ Explore the Ai-Chat interface features, including message streaming, typing indi
         <td>
           Applies overarching structural and aesthetic layout styling.{" "}
           <code>"compact"</code> is the default shell without the history
-          sidebar.
+          sidebar, and <code>"liquid-glass"</code> delivers high-refraction specular liquid glass physics.
         </td>
       </tr>
       <tr>

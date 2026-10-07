@@ -45,15 +45,16 @@ export default function AIChatDemo({
   color?: AIChatColor | string;
   defaultEffort?: EffortLevel;
 }) {
+  const isGlassLike = variant === "glass" || variant === "liquid-glass";
   return (
     <div
       className={`w-full transition-all duration-500 py-[12px] ${
-        variant === "glass"
+        isGlassLike
           ? "p-4 sm:p-8 bg-cover bg-center rounded-2xl relative overflow-hidden"
           : ""
       }`}
       style={
-        variant === "glass"
+        isGlassLike
           ? {
               backgroundImage:
                 'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
@@ -61,6 +62,9 @@ export default function AIChatDemo({
           : undefined
       }
     >
+      {variant === "liquid-glass" && (
+        <div className="absolute inset-0 bg-black/25 rounded-2xl pointer-events-none" />
+      )}
       <AIChat
         key={`${variant}-${color}-${defaultEffort}`}
         variant={variant}
