@@ -5,8 +5,6 @@ import {
   FileUploadState,
   UploadItem,
 } from "@/components/custom/blocks/UploadBlock";
-import { Folder, type FolderFile } from "@/components/custom/blocks/FolderBlock";
-import { Image as ImageIcon } from "lucide-react";
 import { type ReactNode, useCallback, useEffect, useRef, useState } from "react";
 
 type QueueVariant = "slide-right" | "slide-up" | "pop" | "flip";
@@ -116,9 +114,10 @@ export default function UploadDemo({
   showAll,
 }: {
   variant?: QueueVariant;
-  /** "dropzone" renders the Dropzone on its own; "folder" the Folder drop
-   *  target. Omitted = previous behavior. */
-  layout?: "dropzone" | "folder";
+  /** "dropzone" renders the Dropzone on its own. Omitted = previous behavior.
+   *  (The Folder drop target lives in folder-demo, so it gets the GSAP /
+   *  Motion switch.) */
+  layout?: "dropzone";
   /** Render-all mode for the docs gallery. Omitted = previous behavior. */
   showAll?: "states";
 }) {
@@ -281,17 +280,6 @@ export default function UploadDemo({
     </QueueRow>
   ));
 
-  if (layout === "folder") {
-    // Extra room above: the cards fan up out of the folder on hover, so the
-    // folder sits low in the frame instead of centred.
-    return (
-      <div className="w-full flex items-center justify-center min-h-[460px] px-6 pt-32 pb-12 relative z-10">
-        <FolderUploader />
-      </div>
-    );
-  }
-
-
   if (layout === "dropzone") {
     return (
       <div className="w-full flex justify-center bg-background rounded-2xl border border-border overflow-hidden py-8 sm:py-16 relative min-h-[400px] sm:min-h-[450px]">
@@ -367,53 +355,5 @@ export default function UploadDemo({
         )}
       </div>
     </div>
-  );
-}
-
-/* ========================================================================== */
-/*  Folder drop target - the Folder block as an upload surface                */
-/* ========================================================================== */
-
-/** `peek={0}` keeps the folder empty until something is dropped on it; the
- *  default would show three placeholder cards peeking out. */
-function FolderUploader() {
-  const [files, setFiles] = useState<FolderFile[]>([]);
-  const [progress, setProgress] = useState<number | undefined>(undefined);
-  const timer = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  useEffect(() => () => { if (timer.current) clearInterval(timer.current); }, []);
-
-  // Fake the upload: every file ticks up together, the pocket bar tracks the
-  // overall figure, and both settle at 100 so the bars disappear.
-  const onFiles = (incoming: File[]) => {
-    const next = incoming.map((f) => ({
-      name: f.name,
-      progress: 0,
-      thumb: f.type.startsWith("image/") ? URL.createObjectURL(f) : undefined,
-    }));
-    setFiles((prev) => [...prev, ...next]);
-    setProgress(0);
-    if (timer.current) clearInterval(timer.current);
-    let p = 0;
-    timer.current = setInterval(() => {
-      p = Math.min(100, p + 4);
-      setProgress(p);
-      setFiles((prev) => prev.map((f) => (f.progress !== undefined && f.progress < 100 ? { ...f, progress: p } : f)));
-      if (p >= 100 && timer.current) clearInterval(timer.current);
-    }, 80);
-  };
-
-  return (
-    <Folder
-      interactive
-      peek={0}
-      icon={ImageIcon}
-      label="Drop zone"
-      files={files}
-      progress={progress}
-      onFiles={onFiles}
-      onRemoveFile={(i) => setFiles((prev) => prev.filter((_, idx) => idx !== i))}
-      accept="image/*,.pdf"
-    />
   );
 }

@@ -239,7 +239,11 @@ const rawNavigation: NavigationItem[] = [
           "panorama split",
         ],
       },
-      { label: "Scroll Stack", slug: "scroll-stack" },
+      {
+        label: "Scroll Stack",
+        slug: "scroll-stack",
+        keywords: ["fan stack", "card cascade", "deal cards", "stacked cards", "scroll stack"],
+      },
       {
         label: "Secure Envelope",
         slug: "secure-envelope",
