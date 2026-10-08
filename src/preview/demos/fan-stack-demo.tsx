@@ -64,17 +64,7 @@ export default function HiringFlowStack() {
   return (
     <div ref={scrollerRef} className="h-[680px] w-full overflow-y-auto overflow-x-hidden bg-background">
       <section className="mx-auto max-w-6xl px-6 py-24 sm:px-10">
-        <header className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Criteria. Screening. Interview.
-          </h2>
-          <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-            Requirements, a fair screen for every applicant and a real first interview, joined
-            into one flow. Scroll to deal the steps into place.
-          </p>
-        </header>
-
-        <FanStack scrollerRef={scrollerRef} className="mt-12">
+        <FanStack scrollerRef={scrollerRef}>
           {steps.map((step) => (
             <FanStackCard key={step.id}>
               <FanStackTitle>
