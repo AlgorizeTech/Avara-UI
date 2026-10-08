@@ -1663,6 +1663,58 @@
       "docs": "Named exports: EmailApp, plus Email, EmailLabel and Attachment types. The largest block in the registry — a complete application layout with demo data to replace, not a single element. Variants: default | minimal | glass."
     },
     {
+      "name": "fan-stack",
+      "type": "registry:component",
+      "title": "Fan Stack",
+      "author": "AlgorizeTech",
+      "description": "Overlapping cards in a tilted diagonal cascade, dealt out of one pile into place as the stack scrolls into view. Use it for a short numbered sequence — steps, phases, a three-part system.",
+      "categories": [
+        "scroll",
+        "marketing"
+      ],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/FanStackBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/FanStackBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: FanStack, FanStackCard, FanStackTitle, FanStackStep, FanStackDescription, FanStackPoints, FanStackPoint, FanStackThumb (plus the FanStackTone and FanStackThumbSide types). Compose cards as children — any number works; each card's `tone` (muted | light | accent) and its thumb's `side` (right | left | top) default by position. `FanStackThumb` takes your own `<img>` or framework image as its child. Colours derive from `--primary`. The cascade is a container query: below 768px of width the cards become a CSS sticky stack, each sliding over the last (`stickyTop` clears a fixed header). The deal is scrubbed by scroll (`scrub` seconds of lag, 0 to lock it); pass `scrollerRef` when it scrolls inside a container. The deal is skipped under prefers-reduced-motion."
+    },
+    {
+      "name": "fan-stack-motion",
+      "type": "registry:component",
+      "title": "Fan Stack (Motion)",
+      "author": "AlgorizeTech",
+      "description": "Overlapping cards in a tilted diagonal cascade, dealt out of one pile into place as the stack scrolls into view. Use it for a short numbered sequence — steps, phases, a three-part system.",
+      "categories": [
+        "scroll",
+        "marketing"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/motion/FanStackBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/FanStackBlock.tsx"
+        }
+      ],
+      "docs": "Motion build of `fan-stack` — same props, markup and install path; install one or the other. Named exports: FanStack, FanStackCard, FanStackTitle, FanStackStep, FanStackDescription, FanStackPoints, FanStackPoint, FanStackThumb (plus the FanStackTone and FanStackThumbSide types). Compose cards as children — any number works; each card's `tone` (muted | light | accent) and its thumb's `side` (right | left | top) default by position. `FanStackThumb` takes your own `<img>` or framework image as its child. Colours derive from `--primary`. The cascade is a container query: below 768px of width the cards become a CSS sticky stack, each sliding over the last (`stickyTop` clears a fixed header). The deal is scrubbed by scroll (`scrub` seconds of lag, 0 to lock it); pass `scrollerRef` when it scrolls inside a container. The deal is skipped under prefers-reduced-motion."
+    },
+    {
       "name": "faq-section",
       "type": "registry:component",
       "title": "Faq Section",

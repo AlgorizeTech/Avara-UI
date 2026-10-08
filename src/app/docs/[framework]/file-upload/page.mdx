@@ -325,7 +325,7 @@ export default function DropZone() {
 The `Folder` block as an upload surface — a playful alternative to a dropzone for a handful of files.
 
 <ExampleShowcase
-  name="upload"
+  name="folder"
   colorControl={false}
   columns={1}
   examples={[
@@ -356,7 +356,7 @@ The `Folder` block as an upload surface — a playful alternative to a dropzone 
             "defaults to a soft tint of `--primary` (lightness 0.88, chroma at 40%), so the folder — body, pocket, icon and the peeking cards — follows your theme preset and the colour picker above without going heavy. Pass any CSS colour to pin one.",
         },
       ],
-      props: { layout: "folder" },
+      props: { example: "upload" },
       usage: usageFolder,
       code: extractMotionCode("src/components/custom/blocks/FolderBlock.tsx"),
     },

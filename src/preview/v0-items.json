@@ -364,8 +364,7 @@
   },
   "upload": {
     "dropzone": "Upload — Dropzone",
-    "upload-states": "Upload — Upload states",
-    "folder-drop-target": "Upload — Folder drop target"
+    "upload-states": "Upload — Upload states"
   },
   "input": {
     "simple-file-input": "Input — Simple file input",
@@ -374,6 +373,20 @@
     "underlined": "Input — Underlined",
     "password": "Input — Password",
     "autocomplete": "Input — Autocomplete"
+  },
+  "folder": {
+    "folder-drop-target": "Folder — Folder drop target",
+    "folder": "Folder",
+    "fan-on-hover": "Folder — Fan on hover",
+    "icon": "Folder — Icon",
+    "photos": "Folder — Photos"
+  },
+  "folder-motion": {
+    "folder-drop-target": "Folder — Folder drop target",
+    "folder": "Folder",
+    "fan-on-hover": "Folder — Fan on hover",
+    "icon": "Folder — Icon",
+    "photos": "Folder — Photos"
   },
   "flavour-carousel": {
     "choose-your-matcha-tea": "Flavour Carousel — Choose your matcha tea"
@@ -400,18 +413,6 @@
     "linear-pipeline": "Flowchart — Linear pipeline",
     "no-active-route": "Flowchart — No active route",
     "accent-color": "Flowchart — Accent color"
-  },
-  "folder": {
-    "folder": "Folder",
-    "fan-on-hover": "Folder — Fan on hover",
-    "icon": "Folder — Icon",
-    "photos": "Folder — Photos"
-  },
-  "folder-motion": {
-    "folder": "Folder",
-    "fan-on-hover": "Folder — Fan on hover",
-    "icon": "Folder — Icon",
-    "photos": "Folder — Photos"
   },
   "footer": {
     "simple-centered-footer": "Footer — Simple Centered Footer",
@@ -695,6 +696,12 @@
   "scroll-split-cards": {
     "default": "Scroll Split Cards — Default",
     "slow-transition": "Scroll Split Cards — Slow Transition"
+  },
+  "fan-stack": {
+    "fan-stack": "Fan Stack"
+  },
+  "fan-stack-motion": {
+    "fan-stack": "Fan Stack"
   },
   "scroll-stack": {
     "card-gap": "Scroll Stack — Card gap"

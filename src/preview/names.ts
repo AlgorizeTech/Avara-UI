@@ -63,6 +63,8 @@ export const sandboxNames = [
   "draggable-card-list-motion",
   "drawer",
   "email",
+  "fan-stack",
+  "fan-stack-motion",
   "faq-section",
   "fashion-hero",
   "flavour-carousel",

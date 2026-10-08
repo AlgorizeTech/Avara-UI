@@ -1057,6 +1057,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["media", "marketing"],
     docs: "Named export: TiltedCard. Wraps arbitrary children; tune `tiltIntensity`, `glareOpacity` and `scaleOnHover`. Pointer-driven, so it is inert on touch — keep the content readable without the effect.",
   },
+  "fan-stack": {
+    description:
+      "Overlapping cards in a tilted diagonal cascade, dealt out of one pile into place as the stack scrolls into view. Use it for a short numbered sequence — steps, phases, a three-part system.",
+    categories: ["scroll", "marketing"],
+    docs: "Named exports: FanStack, FanStackCard, FanStackTitle, FanStackStep, FanStackDescription, FanStackPoints, FanStackPoint, FanStackThumb (plus the FanStackTone and FanStackThumbSide types). Compose cards as children — any number works; each card's `tone` (muted | light | accent) and its thumb's `side` (right | left | top) default by position. `FanStackThumb` takes your own `<img>` or framework image as its child. Colours derive from `--primary`. The cascade is a container query: below 768px of width the cards become a CSS sticky stack, each sliding over the last (`stickyTop` clears a fixed header). The deal is scrubbed by scroll (`scrub` seconds of lag, 0 to lock it); pass `scrollerRef` when it scrolls inside a container. The deal is skipped under prefers-reduced-motion.",
+  },
   "scroll-stack": {
     description:
       "Cards that stack and scale as the page scrolls, revealing each in turn. Use it for step-by-step feature walkthroughs.",
