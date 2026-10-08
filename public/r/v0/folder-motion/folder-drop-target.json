@@ -1,8 +1,8 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "upload-folder-drop-target",
+  "name": "folder-motion-folder-drop-target",
   "type": "registry:block",
-  "title": "Upload — Folder drop target",
+  "title": "Folder — Folder drop target",
   "description": "The `Folder` block as an upload surface, tinted with the theme colour: drop files on it or click to browse. It starts empty, each dropped file becomes a card with its own progress bar, the pocket tracks the overall figure, and an × removes a file.",
   "dependencies": [
     "gsap",
