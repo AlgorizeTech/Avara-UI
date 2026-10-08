@@ -48,10 +48,10 @@ export function LiquidGlassSvgFilter({
         <defs>
           <filter
             id={id}
-            x="0"
-            y="0"
-            width="100%"
-            height="100%"
+            x="-20%"
+            y="-20%"
+            width="140%"
+            height="140%"
             filterUnits="objectBoundingBox"
           >
             <feTurbulence
@@ -136,7 +136,7 @@ export function LiquidGlassBackground({
     >
       {/* Inner Clipping Container for Liquid Background Stack */}
       <div
-        className="absolute inset-0 overflow-hidden rounded-[inherit] pointer-events-none z-0 [mask-image:linear-gradient(white,white)] [-webkit-mask-image:-webkit-radial-gradient(white,black)]"
+        className="absolute inset-0 overflow-hidden rounded-[inherit] pointer-events-none z-0 [mask-image:linear-gradient(white,white)] [-webkit-mask-image:-webkit-radial-gradient(white,white)]"
         style={formattedRadius ? { borderRadius: formattedRadius } : undefined}
       >
         {/* Layer 0: Liquid SVG Displaced Wave Background */}
