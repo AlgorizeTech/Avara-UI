@@ -6,7 +6,6 @@ import {
   AlertCircle,
   ArrowLeft,
   Check,
-  CheckCircle2,
   ChevronDown,
   Clock,
   Image as ImageIcon,
@@ -36,7 +35,6 @@ export type SupportColor = "primary" | "indigo" | "rose" | "emerald" | "zinc";
 export type SupportLayout = "chat" | "table";
 
 import {
-  LiquidGlassBackground,
   LiquidGlassSvgFilter,
   LiquidGlassWrapper,
   formatRadius,
@@ -328,11 +326,6 @@ export default function SupportDashboard({
   // === STATE MANAGEMENT ===
   const [tickets, setTickets] = useState<Ticket[]>(data?.tickets || []);
   const [selectedTicketId, setSelectedTicketId] = useState<string | null>(null);
-  // Property dropdown edits, keyed by `${ticketId}-${propertyKey}` so values
-  // don't leak between tickets. Falls back to the ticket's own property value.
-  const [ticketProperties, setTicketProperties] = useState<
-    Record<string, string>
-  >({});
   const [activeReplyTab, setActiveReplyTab] = useState("Reply");
   const [activeDetailsTab, setActiveDetailsTab] = useState(
     () => data?.detailsSection?.tabs?.[0] ?? "User",
