@@ -64,6 +64,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/ui-liquid-glass.json",
         "utils"
       ],
       "files": [
@@ -99,6 +100,7 @@
         "motion"
       ],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/ui-liquid-glass.json",
         "utils"
       ],
       "files": [
@@ -2503,6 +2505,7 @@
         "https://algorize-ui.vercel.app/r/button.json",
         "https://algorize-ui.vercel.app/r/icons.json",
         "https://algorize-ui.vercel.app/r/input.json",
+        "https://algorize-ui.vercel.app/r/ui-liquid-glass.json",
         "utils"
       ],
       "files": [
@@ -3461,6 +3464,7 @@
         "https://algorize-ui.vercel.app/r/button.json",
         "https://algorize-ui.vercel.app/r/icons.json",
         "https://algorize-ui.vercel.app/r/input.json",
+        "https://algorize-ui.vercel.app/r/ui-liquid-glass.json",
         "utils"
       ],
       "files": [
@@ -4099,6 +4103,7 @@
       ],
       "registryDependencies": [
         "https://algorize-ui.vercel.app/r/select.json",
+        "https://algorize-ui.vercel.app/r/ui-liquid-glass.json",
         "utils"
       ],
       "files": [
@@ -4749,6 +4754,25 @@
         }
       ],
       "docs": "Named export: FluidGlassSlider. Slides take { id, image, title, subtitle }. Installs standalone with no registry dependencies — not even `utils`."
+    },
+    {
+      "name": "ui-liquid-glass",
+      "type": "registry:ui",
+      "title": "UI Liquid Glass",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe ui-liquid-glass. Generated placeholder.",
+      "categories": [],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/ui/liquid-glass.tsx",
+          "type": "registry:ui",
+          "target": "components/custom/ui/liquid-glass.tsx"
+        }
+      ]
     },
     {
       "name": "ui-multi-select",

@@ -29,62 +29,12 @@ export type RegisterVariant =
   | "liquid-glass";
 export type RegisterProvider = "github" | "google" | "apple";
 
-export function LiquidGlassSvgFilter() {
-  return (
-    <>
-      <img
-        src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg"
-        alt=""
-        aria-hidden="true"
-        style={{
-          position: "fixed",
-          top: "-9999px",
-          left: "-9999px",
-          width: "1px",
-          height: "1px",
-          opacity: 0,
-          pointerEvents: "none",
-        }}
-      />
-      <svg
-        style={{
-          position: "fixed",
-          top: "-9999px",
-          left: "-9999px",
-          width: 0,
-          height: 0,
-          pointerEvents: "none",
-        }}
-        aria-hidden="true"
-      >
-        <defs>
-          <filter
-            id="glass-blur-register"
-            x="0"
-            y="0"
-            width="100%"
-            height="100%"
-            filterUnits="objectBoundingBox"
-          >
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.003 0.007"
-              numOctaves="1"
-              result="turbulence"
-            />
-            <feDisplacementMap
-              in="SourceGraphic"
-              in2="turbulence"
-              scale="200"
-              xChannelSelector="R"
-              yChannelSelector="G"
-            />
-          </filter>
-        </defs>
-      </svg>
-    </>
-  );
-}
+import {
+  LiquidGlassBackground,
+  LiquidGlassSvgFilter,
+  formatRadius,
+} from "@/components/custom/ui/liquid-glass";
+export { LiquidGlassSvgFilter };
 
 export type ScenicStep =
   | "welcome"
@@ -140,6 +90,10 @@ export interface RegisterFormProps {
   bgImage?: string;
   /** Initial step for scenic mode */
   initialStep?: ScenicStep;
+  /** Optional dynamic corner rounding radius value or Tailwind class */
+  rounded?: string | number;
+  className?: string;
+  style?: React.CSSProperties;
 }
 
 // --- INLINE UI COMPONENTS ---
@@ -306,8 +260,11 @@ export default function RegisterForm({
   alreadyAccountLabel = "I already have an account",
   bgImage = "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
   initialStep = "welcome",
+  rounded,
+  className,
+  style: customStyle,
 }: RegisterFormProps) {
-  const { theme, style } = getThemeStyles(color);
+  const { theme, style: themeStyle } = getThemeStyles(color);
   const focusInputClasses = cn(
     "outline-none transition-all duration-200",
     "focus:bg-white dark:focus:bg-[#18191b]",
@@ -804,7 +761,7 @@ export default function RegisterForm({
     return (
       <div
         className="w-full h-full min-h-[600px] flex overflow-hidden rounded-2xl border border-border bg-background transition-colors duration-300"
-        style={style}
+        style={{ ...themeStyle, ...customStyle }}
       >
         <div
           className={cn(
@@ -1068,7 +1025,7 @@ export default function RegisterForm({
     return (
       <div
         className="relative w-full min-h-[580px] sm:min-h-[640px] flex items-center justify-center overflow-hidden rounded-3xl p-4 sm:p-6 md:p-8"
-        style={style}
+        style={{ ...themeStyle, ...customStyle }}
       >
         <style>{`
           @keyframes scenic-slide-right {
@@ -3303,64 +3260,48 @@ export default function RegisterForm({
       bgImage ||
       "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg";
 
+    const formattedRadius = formatRadius(rounded);
+    const dynamicRadiusStyle: React.CSSProperties =
+      formattedRadius !== undefined
+        ? { borderRadius: formattedRadius }
+        : typeof rounded === "string" && !formatRadius(rounded)
+          ? {}
+          : { borderRadius: "var(--radius-3xl, 1.5rem)" };
+
     return (
       <div
-        className="relative w-full min-h-[600px] sm:min-h-[720px] flex items-center justify-center overflow-hidden rounded-3xl p-4 sm:p-6 md:p-8 isolate [contain:paint] [transform:translateZ(0)]"
-        style={style}
+        className={cn(
+          "relative w-full min-h-[600px] sm:min-h-[720px] flex items-center justify-center overflow-hidden rounded-3xl p-4 sm:p-6 md:p-8 isolate [contain:paint] [transform:translateZ(0)]",
+          className,
+        )}
+        style={{
+          ...themeStyle,
+          ...customStyle,
+        }}
       >
-        <LiquidGlassSvgFilter />
+        <LiquidGlassSvgFilter id="glass-blur-register" bgImage={liquidBg} />
 
         {/* Full-bleed background image covering the entire container */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-          <img
-            src={liquidBg}
-            alt="Liquid glass backdrop"
-            className="w-full h-full object-cover select-none pointer-events-none"
-          />
-          <div className="absolute inset-0 bg-black/40 dark:bg-black/55 backdrop-blur-[2px]" />
-        </div>
+        <img
+          src={liquidBg}
+          alt="Liquid glass backdrop"
+          className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+        />
 
         {/* Floating Liquid Glass Card */}
         <div
           className={cn(
-            "relative z-10 w-full max-w-[460px] p-6 sm:p-8 md:p-10 rounded-3xl isolate [contain:paint] [transform:translateZ(0)] text-white transition-all duration-300",
+            "relative z-10 w-full max-w-[460px] p-6 sm:p-8 md:p-10 isolate [contain:paint] [transform:translateZ(0)] text-white transition-all duration-300 overflow-hidden",
+            typeof rounded === "string" && !formatRadius(rounded) ? rounded : "",
             "shadow-[0_25px_60px_rgba(0,0,0,0.5)] [--foreground:#ffffff] [--muted-foreground:rgba(255,255,255,0.75)] [--color-foreground:#ffffff] [--color-muted-foreground:rgba(255,255,255,0.75)] [--border:rgba(255,255,255,0.2)] [--background:rgba(255,255,255,0.12)] [--card:rgba(255,255,255,0.12)]",
           )}
+          style={dynamicRadiusStyle}
         >
-          {/* Inner Clipping Container for Liquid Background Stack */}
-          <div className="absolute inset-0 overflow-hidden rounded-3xl pointer-events-none z-0">
-            {/* Layer 0: Liquid SVG Displaced Wave Background */}
-            <div
-              className="absolute -inset-10"
-              style={{
-                backgroundImage: `url("${liquidBg}")`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                filter: "url(#glass-blur-register)",
-                transform: "scale(1.1)",
-              }}
-            />
-
-            {/* Layer 1: Contrast overlay & soft backdrop blur */}
-            <div className="absolute inset-0 bg-black/30 dark:bg-black/45 backdrop-blur-[3px]" />
-
-            {/* Layer 2: Ambient Drop Shadow & Subtle Glow */}
-            <div
-              className="absolute inset-0 rounded-3xl"
-              style={{
-                boxShadow:
-                  "0 20px 50px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.08)",
-              }}
-            />
-          </div>
-
-          {/* Layer 3: Specular Inner Border Highlight */}
-          <div
-            className="absolute inset-0 z-40 pointer-events-none rounded-3xl border border-white/40 dark:border-white/15"
-            style={{
-              boxShadow:
-                "inset 2px 2px 2px 0 rgba(255, 255, 255, 0.45), inset -2px -2px 2px 0 rgba(255, 255, 255, 0.3)",
-            }}
+          <LiquidGlassBackground
+            radius={formattedRadius ?? "var(--radius-3xl, 1.5rem)"}
+            bgImage={liquidBg}
+            filterId="glass-blur-register"
+            contrastOverlayClassName="bg-black/30 dark:bg-black/45 backdrop-blur-[3px]"
           />
 
           <div className="relative z-10 w-full">{FormContent}</div>
@@ -3377,7 +3318,7 @@ export default function RegisterForm({
     return (
       <div
         className="relative w-full min-h-[600px] sm:min-h-[700px] flex items-center justify-center overflow-hidden rounded-3xl p-4 sm:p-6 md:p-8"
-        style={style}
+        style={{ ...themeStyle, ...customStyle }}
       >
         {/* Full-bleed glass backdrop */}
         <img
@@ -3405,7 +3346,7 @@ export default function RegisterForm({
   );
 
   return (
-    <div className={wrapperClass} style={style}>
+    <div className={wrapperClass} style={{ ...themeStyle, ...customStyle }}>
       {FormContent}
     </div>
   );

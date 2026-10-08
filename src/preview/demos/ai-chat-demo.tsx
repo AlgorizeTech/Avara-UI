@@ -50,7 +50,7 @@ export default function AIChatDemo({
     <div
       className={`w-full transition-all duration-500 py-[12px] ${
         isGlassLike
-          ? "p-4 sm:p-8 bg-cover bg-center rounded-2xl relative overflow-hidden"
+          ? "p-4 sm:p-8 bg-cover bg-center rounded-[var(--radius-3xl,1.5rem)] relative overflow-hidden"
           : ""
       }`}
       style={
@@ -63,7 +63,7 @@ export default function AIChatDemo({
       }
     >
       {variant === "liquid-glass" && (
-        <div className="absolute inset-0 bg-black/25 rounded-2xl pointer-events-none" />
+        <div className="absolute inset-0 bg-black/25 rounded-[inherit] pointer-events-none" />
       )}
       <AIChat
         key={`${variant}-${color}-${defaultEffort}`}

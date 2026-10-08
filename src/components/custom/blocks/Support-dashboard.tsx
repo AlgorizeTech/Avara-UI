@@ -6,7 +6,6 @@ import {
   AlertCircle,
   ArrowLeft,
   Check,
-  CheckCircle2,
   ChevronDown,
   Clock,
   Image as ImageIcon,
@@ -35,62 +34,12 @@ export type SupportVariant = "default" | "minimal" | "glass" | "liquid-glass";
 export type SupportColor = "primary" | "indigo" | "rose" | "emerald" | "zinc";
 export type SupportLayout = "chat" | "table";
 
-export function LiquidGlassSvgFilter() {
-  return (
-    <>
-      <img
-        src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg"
-        alt=""
-        aria-hidden="true"
-        style={{
-          position: "fixed",
-          top: "-9999px",
-          left: "-9999px",
-          width: "1px",
-          height: "1px",
-          opacity: 0,
-          pointerEvents: "none",
-        }}
-      />
-      <svg
-        style={{
-          position: "fixed",
-          top: "-9999px",
-          left: "-9999px",
-          width: 0,
-          height: 0,
-          pointerEvents: "none",
-        }}
-        aria-hidden="true"
-      >
-        <defs>
-          <filter
-            id="glass-blur-support"
-            x="0"
-            y="0"
-            width="100%"
-            height="100%"
-            filterUnits="objectBoundingBox"
-          >
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.003 0.007"
-              numOctaves="1"
-              result="turbulence"
-            />
-            <feDisplacementMap
-              in="SourceGraphic"
-              in2="turbulence"
-              scale="200"
-              xChannelSelector="R"
-              yChannelSelector="G"
-            />
-          </filter>
-        </defs>
-      </svg>
-    </>
-  );
-}
+import {
+  LiquidGlassSvgFilter,
+  LiquidGlassWrapper,
+  formatRadius,
+} from "@/components/custom/ui/liquid-glass";
+export { LiquidGlassSvgFilter };
 
 const supportVariants: Record<SupportVariant, Record<string, string>> = {
   default: {
@@ -109,9 +58,9 @@ const supportVariants: Record<SupportVariant, Record<string, string>> = {
       "bg-muted/50 border-t border-border",
     detailsPane:
       "bg-muted/50 border-l border-border",
-    card: "bg-card text-card-foreground border border-border shadow-sm",
+    card: "bg-card text-card-foreground border border-border shadow-sm rounded-xl",
     cardHeader:
-      "bg-muted border-b border-border",
+      "bg-muted border-b border-border rounded-t-[inherit]",
     input:
       "bg-muted border border-border",
     chatBubbleReceived:
@@ -138,7 +87,7 @@ const supportVariants: Record<SupportVariant, Record<string, string>> = {
       "bg-transparent border-l border-border pl-4",
     card: "bg-muted/50 border border-border rounded-xl",
     cardHeader:
-      "bg-transparent border-b border-border",
+      "bg-transparent border-b border-border rounded-t-[inherit]",
     input:
       "bg-muted border border-border",
     chatBubbleReceived:
@@ -166,7 +115,7 @@ const supportVariants: Record<SupportVariant, Record<string, string>> = {
       "bg-white/5 dark:bg-black/5 border-l border-white/20 dark:border-white/10",
     card: "bg-white/20 dark:bg-black/20 border border-white/20 dark:border-white/10 shadow-lg rounded-xl",
     cardHeader:
-      "bg-white/10 dark:bg-black/10 border-b border-white/10 dark:border-white/5",
+      "bg-white/10 dark:bg-black/10 border-b border-white/10 dark:border-white/5 rounded-t-[inherit]",
     input:
       "bg-white/30 dark:bg-black/30 border border-white/30 dark:border-white/10",
     chatBubbleReceived:
@@ -180,29 +129,29 @@ const supportVariants: Record<SupportVariant, Record<string, string>> = {
     wrapper:
       "bg-transparent text-white border-0 shadow-none",
     header:
-      "bg-white/15 border-b border-white/20 backdrop-blur-md text-white",
+      "bg-white/10 border-b border-white/20 text-white",
     sidebar:
       "bg-white/10 border-r border-white/20 text-white",
     filterBar:
       "bg-white/10 border-b border-white/15 text-white",
     main: "bg-transparent text-white",
     chatHeader:
-      "bg-white/15 border-b border-white/20 backdrop-blur-md text-white",
+      "bg-white/10 border-b border-white/20 text-white",
     chatFooter:
-      "bg-white/15 border-t border-white/20 backdrop-blur-md text-white",
+      "bg-white/10 border-t border-white/20 text-white",
     detailsPane:
       "bg-white/10 border-l border-white/20 text-white",
-    card: "bg-white/15 border border-white/25 shadow-lg rounded-xl text-white backdrop-blur-md",
+    card: "bg-white/10 border border-white/20 shadow-lg rounded-xl text-white",
     cardHeader:
-      "bg-white/15 border-b border-white/15 text-white/90",
+      "bg-white/10 border-b border-white/15 text-white/90 rounded-t-[inherit]",
     input:
-      "bg-white/15 border border-white/25 text-white placeholder:text-white/60 focus:bg-white/25 focus:border-white/50",
+      "bg-white/10 border border-white/20 text-white placeholder:text-white/60 focus:bg-white/20 focus:border-white/40",
     chatBubbleReceived:
-      "bg-white/20 backdrop-blur-xl text-white border border-white/30 shadow-md",
+      "bg-white/15 text-white border border-white/20 shadow-md",
     tableRow:
-      "hover:bg-white/15 border-b border-white/15 text-white transition-colors cursor-pointer",
+      "hover:bg-white/10 border-b border-white/15 text-white transition-colors cursor-pointer",
     tableHead:
-      "bg-white/15 border-b border-white/25 text-white font-semibold",
+      "bg-white/10 border-b border-white/20 text-white font-semibold",
   },
 };
 
@@ -260,23 +209,23 @@ const colorThemes: Record<SupportColor, Record<string, string>> = {
 };
 
 const liquidGlassStyles = {
-  btn: "bg-white/20 hover:bg-white/30 text-white border border-white/35 backdrop-blur-md shadow-[0_4px_16px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.45)] transition-all active:scale-95 cursor-pointer",
+  btn: "bg-white/20 hover:bg-white/30 text-white border border-white/35 transition-all active:scale-95 cursor-pointer",
   bubbleSent:
-    "rounded-2xl rounded-tl-sm bg-white/20 text-white border border-white/30 backdrop-blur-xl shadow-[0_4px_16px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.35)]",
+    "rounded-2xl rounded-tl-sm bg-white/20 text-white border border-white/30 shadow-[0_4px_16px_rgba(0,0,0,0.25),inset_0_1px_1px_rgba(255,255,255,0.35)]",
   bubbleReceived:
-    "rounded-2xl rounded-tr-sm bg-black/35 text-white/95 border border-white/15 backdrop-blur-xl shadow-md",
+    "rounded-2xl rounded-tr-sm bg-black/35 text-white/95 border border-white/15 shadow-md",
   activeItem:
-    "bg-white/20 border-l-4 border-white text-white font-bold shadow-md backdrop-blur-md",
+    "bg-white/10 border-l-2 border-white text-white font-semibold",
   activeTab:
-    "bg-white/20 text-white border-b-2 border-white font-bold",
+    "bg-white/10 text-white border-b-2 border-white font-semibold",
   iconBg:
-    "bg-white/15 border border-white/25 text-white backdrop-blur-md shadow-inner",
+    "bg-white/15 border border-white/25 text-white shadow-inner",
   badge:
-    "bg-white/20 text-white border border-white/30 backdrop-blur-md font-semibold",
+    "bg-white/20 text-white border border-white/30 font-semibold",
   input:
-    "bg-white/10 border border-white/25 text-white placeholder:text-white/50 focus:bg-white/20 focus:border-white/50 backdrop-blur-md shadow-inner",
+    "bg-white/10 border border-white/25 text-white placeholder:text-white/50 focus:bg-white/20 focus:border-white/50 shadow-inner",
   dropdown:
-    "bg-black/60 text-white border border-white/30 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.3)]",
+    "bg-black/70 text-white border border-white/30 shadow-[0_20px_50px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.3)]",
 };
 
 // ==========================================
@@ -351,6 +300,8 @@ export interface SupportDashboardProps {
   color?: SupportColor;
   layout?: SupportLayout;
   bgImage?: string;
+  /** Optional dynamic corner rounding radius value or Tailwind class */
+  rounded?: string | number;
   className?: string;
   style?: React.CSSProperties;
 }
@@ -361,19 +312,30 @@ export default function SupportDashboard({
   color = "primary",
   layout = "chat",
   bgImage,
+  rounded,
   className,
-  style,
+  style: customStyle,
 }: SupportDashboardProps) {
+  const formattedRadius = formatRadius(rounded);
+  const dynamicRadiusStyle: React.CSSProperties =
+    formattedRadius !== undefined
+      ? { borderRadius: formattedRadius }
+      : typeof rounded === "string" && !formatRadius(rounded)
+        ? {}
+        : { borderRadius: "var(--radius-2xl, 1rem)" };
   // === STATE MANAGEMENT ===
   const [tickets, setTickets] = useState<Ticket[]>(data?.tickets || []);
   const [selectedTicketId, setSelectedTicketId] = useState<string | null>(null);
-  // Property dropdown edits, keyed by `${ticketId}-${propertyKey}` so values
-  // don't leak between tickets. Falls back to the ticket's own property value.
-  const [ticketProperties, setTicketProperties] = useState<
-    Record<string, string>
-  >({});
   const [activeReplyTab, setActiveReplyTab] = useState("Reply");
-  const [activeDetailsTab, setActiveDetailsTab] = useState("Details");
+  const [activeDetailsTab, setActiveDetailsTab] = useState(
+    () => data?.detailsSection?.tabs?.[0] ?? "User",
+  );
+
+  useEffect(() => {
+    if (data?.detailsSection?.tabs?.length) {
+      setActiveDetailsTab(data.detailsSection.tabs[0]);
+    }
+  }, [data?.detailsSection?.tabs]);
 
   // Create Ticket State
   const [isCreatingTicket, setIsCreatingTicket] = useState(false);
@@ -565,471 +527,583 @@ export default function SupportDashboard({
   const dashboardCard = (
     <div
       className={cn(
-        "relative not-prose w-full max-w-full h-[700px] flex flex-col overflow-hidden font-sans box-border text-base m-0 p-0 leading-normal transition-colors duration-300",
+        "relative not-prose w-full max-w-full h-[700px] flex flex-col overflow-hidden font-sans box-border text-base m-0 p-0 leading-normal transition-colors duration-300 rounded-[inherit]",
         variant === "default" && "rounded-xl",
         variant === "minimal" && "rounded-none",
         (variant === "glass" || isLiquidGlass) && "rounded-2xl",
         styles.wrapper,
         className,
       )}
-      style={!isLiquidGlass && variant !== "glass" ? style : undefined}
+      style={!isLiquidGlass && variant !== "glass" ? customStyle : undefined}
     >
       {/* === TABLE VIEW: EMAIL / CONVERSATION MODAL === */}
       {modalTicket && (
         <div
           onClick={closeTicketModal}
-          className="absolute inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-200"
+          className="absolute inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 animate-in fade-in duration-200"
         >
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className={cn(
-              "relative w-full max-w-2xl max-h-full rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-200",
-              isLiquidGlass
-                ? "border border-white/30 text-white shadow-[0_30px_70px_rgba(0,0,0,0.6)]"
-                : isGlassLike
-                  ? "bg-white/40 dark:bg-black/40 border border-white/20 dark:border-white/10 backdrop-blur-2xl"
-                  : "bg-background border border-border",
-            )}
-            style={
-              isLiquidGlass
-                ? {
-                    boxShadow:
-                      "inset 1.5px 1.5px 2px 0 rgba(255, 255, 255, 0.4), inset -1.5px -1.5px 2px 0 rgba(255, 255, 255, 0.2), 0 25px 60px rgba(0, 0, 0, 0.5)",
-                  }
-                : undefined
-            }
-          >
-            {/* Liquid Background Layer for Conversation Modal */}
-            {isLiquidGlass && (
-              <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden rounded-2xl sm:rounded-3xl">
-                <div
-                  className="absolute -inset-10"
-                  style={{
-                    backgroundImage: `url("${liquidBg}")`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    filter: "url(#glass-blur-support)",
-                    transform: "scale(1.15)",
-                  }}
-                />
-                <div className="absolute inset-0 bg-black/45 backdrop-blur-xl" />
-                <div
-                  className="absolute inset-0 rounded-2xl sm:rounded-3xl border border-white/30 pointer-events-none"
-                  style={{
-                    boxShadow:
-                      "inset 1px 1px 2px 0 rgba(255,255,255,0.4), inset -1px -1px 2px 0 rgba(255,255,255,0.2)",
-                  }}
-                />
-              </div>
-            )}
-
-            <div className="relative z-10 flex flex-col h-full max-h-full overflow-hidden">
-              <div
-                className={cn(
-                  "flex items-start justify-between gap-3 px-5 py-4 border-b shrink-0",
-                  isLiquidGlass ? "border-white/15 bg-white/10 backdrop-blur-md" : "border-border",
-                )}
-              >
-                <div className="flex items-center gap-3 min-w-0">
-                  <BulletproofAvatar
-                    initials={modalTicket.initials}
-                    color={modalTicket.color}
-                    size={40}
-                  />
-                  <div className="min-w-0">
-                    <div className={cn(
-                      "text-sm font-semibold truncate",
-                      isLiquidGlass ? "text-white" : "text-foreground",
-                    )}>
-                      {modalTicket.title}
+          {isLiquidGlass ? (
+            <LiquidGlassWrapper
+              radius="1.5rem"
+              bgImage={liquidBg}
+              filterId="glass-blur-support"
+              contrastOverlayClassName="bg-black/55 backdrop-blur-md"
+              className="relative w-full max-w-2xl max-h-full text-white shadow-[0_30px_70px_rgba(0,0,0,0.6)] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="relative z-10 flex flex-col h-full max-h-full overflow-hidden">
+                <div className="flex items-start justify-between gap-3 px-5 py-4 border-b border-white/15 bg-white/10 shrink-0">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <BulletproofAvatar
+                      initials={modalTicket.initials}
+                      color={modalTicket.color}
+                      size={40}
+                    />
+                    <div className="min-w-0">
+                      <div className="text-sm font-semibold truncate text-white">
+                        {modalTicket.title}
+                      </div>
+                      <div className="text-xs font-medium truncate text-white/70">
+                        {modalTicket.author} ({modalTicket.company}) •{" "}
+                        <span className="text-white font-semibold">{modalTicket.id}</span>
+                      </div>
                     </div>
-                    <div className={cn(
-                      "text-xs font-medium truncate",
-                      isLiquidGlass ? "text-white/70" : "text-muted-foreground",
-                    )}>
-                      {modalTicket.author} ({modalTicket.company}) •{" "}
-                      <span className={isLiquidGlass ? "text-white font-semibold" : theme.text}>{modalTicket.id}</span>
+                  </div>
+                  <button
+                    onClick={closeTicketModal}
+                    className="p-1.5 rounded-lg shrink-0 transition-colors cursor-pointer text-white/70 hover:text-white hover:bg-white/15"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                {/* Same bubble treatment as the chat view */}
+                <div className="flex-1 min-h-0 overflow-y-auto p-5">
+                  <div className="flex flex-col gap-6">
+                    {modalTicket.chatHistory.map((msg) => {
+                      const isAgent = msg.type === "sent";
+                      return (
+                        <div
+                          key={msg.id}
+                          className={`flex gap-3 w-full ${isAgent ? "flex-row-reverse" : "flex-row"}`}
+                        >
+                          <div
+                            className={`shrink-0 ${!msg.showAvatar && "invisible"}`}
+                          >
+                            <BulletproofAvatar
+                              initials={msg.initials}
+                              color={msg.color || "bg-zinc-600 dark:bg-zinc-700"}
+                              size={32}
+                            />
+                          </div>
+                          <div
+                            className={`flex flex-col gap-1 min-w-0 max-w-[85%] ${isAgent ? "items-end" : "items-start"}`}
+                          >
+                            <div className="flex items-baseline gap-2 px-1">
+                              <span className="text-[11px] font-semibold text-white/90">
+                                {msg.sender}
+                              </span>
+                              <span className="text-[10px] font-medium text-white/60">
+                                {msg.time}
+                              </span>
+                            </div>
+                            <div
+                              className={cn(
+                                "px-4 sm:px-5 py-3 shadow-sm text-sm whitespace-pre-wrap break-words leading-relaxed",
+                                isAgent
+                                  ? liquidGlassStyles.bubbleSent
+                                  : liquidGlassStyles.bubbleReceived,
+                              )}
+                            >
+                              {msg.message}
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Composer */}
+                <div className="p-4 shrink-0 flex-none border-t border-white/15 bg-white/5">
+                  <div className="border border-white/20 rounded-2xl flex flex-col overflow-hidden transition-all m-0 p-0 bg-white/10 text-white">
+                    <div className="flex border-b border-white/15 bg-white/10 m-0 p-0">
+                      {data.replySection.tabs.map((tab) => (
+                        <button
+                          key={tab}
+                          onClick={() => setModalReplyTab(tab)}
+                          className={cn(
+                            "px-5 py-2.5 text-[13px] font-semibold transition-colors m-0 cursor-pointer",
+                            modalReplyTab === tab
+                              ? liquidGlassStyles.activeTab
+                              : "text-white/60 hover:text-white border-b-2 border-transparent",
+                          )}
+                        >
+                          {tab}
+                        </button>
+                      ))}
+                    </div>
+                    <textarea
+                      value={modalReplyText}
+                      onChange={(e) => setModalReplyText(e.target.value)}
+                      rows={3}
+                      placeholder={
+                        modalReplyTab === "Reply"
+                          ? data.replySection.placeholder
+                          : "Type an internal note..."
+                      }
+                      className={cn(
+                        "w-full p-4 text-sm resize-none outline-none bg-transparent text-white placeholder:text-white/50 focus:ring-0",
+                        modalReplyTab !== "Reply" && "bg-amber-500/10 text-amber-200",
+                      )}
+                    />
+                    <div className="flex items-center justify-between px-3 py-2 border-t border-white/15 bg-white/5">
+                      <div className="flex items-center gap-1">
+                        <button className="p-2 rounded-lg transition-colors cursor-pointer text-white/70 hover:text-white hover:bg-white/10">
+                          <Smile className="w-4 h-4" />
+                        </button>
+                        <button className="p-2 rounded-lg transition-colors cursor-pointer text-white/70 hover:text-white hover:bg-white/10">
+                          <Paperclip className="w-4 h-4" />
+                        </button>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={closeTicketModal}
+                          className="px-4 py-2 rounded-lg text-xs font-semibold transition-colors cursor-pointer text-white/70 hover:bg-white/10 hover:text-white"
+                        >
+                          Close
+                        </button>
+                        <button
+                          onClick={handleSendModalReply}
+                          disabled={!modalReplyText.trim()}
+                          className={cn(
+                            "flex items-center gap-2 px-5 py-2 text-xs font-semibold rounded-lg transition-all active:scale-95 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-white",
+                            modalReplyTab === "Reply"
+                              ? liquidGlassStyles.btn
+                              : "bg-amber-500/30 hover:bg-amber-500/40 border border-amber-400/40 text-amber-100",
+                          )}
+                        >
+                          {modalReplyTab === "Reply"
+                            ? data.replySection.buttonText
+                            : "Add Note"}{" "}
+                          <Send className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <button
-                  onClick={closeTicketModal}
+              </div>
+            </LiquidGlassWrapper>
+          ) : (
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className={cn(
+                "relative w-full max-w-2xl max-h-full rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-200",
+                isGlassLike
+                  ? "bg-white/40 dark:bg-black/40 border border-white/20 dark:border-white/10 backdrop-blur-2xl"
+                  : "bg-background border border-border",
+              )}
+            >
+              <div className="relative z-10 flex flex-col h-full max-h-full overflow-hidden">
+                <div
                   className={cn(
-                    "p-1.5 rounded-lg shrink-0 transition-colors cursor-pointer",
-                    isLiquidGlass ? "text-white/70 hover:text-white hover:bg-white/15" : "text-muted-foreground hover:text-foreground",
+                    "flex items-start justify-between gap-3 px-5 py-4 border-b shrink-0",
+                    "border-border",
                   )}
                 >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
+                  <div className="flex items-center gap-3 min-w-0">
+                    <BulletproofAvatar
+                      initials={modalTicket.initials}
+                      color={modalTicket.color}
+                      size={40}
+                    />
+                    <div className="min-w-0">
+                      <div className="text-sm font-semibold truncate text-foreground">
+                        {modalTicket.title}
+                      </div>
+                      <div className="text-xs font-medium truncate text-muted-foreground">
+                        {modalTicket.author} ({modalTicket.company}) •{" "}
+                        <span className={theme.text}>{modalTicket.id}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    onClick={closeTicketModal}
+                    className="p-1.5 rounded-lg shrink-0 transition-colors cursor-pointer text-muted-foreground hover:text-foreground"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
 
-              {/* Same bubble treatment as the chat view */}
-              <div className="flex-1 min-h-0 overflow-y-auto p-5">
-                <div className="flex flex-col gap-6">
-                  {modalTicket.chatHistory.map((msg) => {
-                    const isAgent = msg.type === "sent";
-                    return (
-                      <div
-                        key={msg.id}
-                        className={`flex gap-3 w-full ${isAgent ? "flex-row-reverse" : "flex-row"}`}
-                      >
+                {/* Same bubble treatment as the chat view */}
+                <div className="flex-1 min-h-0 overflow-y-auto p-5">
+                  <div className="flex flex-col gap-6">
+                    {modalTicket.chatHistory.map((msg) => {
+                      const isAgent = msg.type === "sent";
+                      return (
                         <div
-                          className={`shrink-0 ${!msg.showAvatar && "invisible"}`}
+                          key={msg.id}
+                          className={`flex gap-3 w-full ${isAgent ? "flex-row-reverse" : "flex-row"}`}
                         >
-                          <BulletproofAvatar
-                            initials={msg.initials}
-                            color={msg.color || "bg-zinc-600 dark:bg-zinc-700"}
-                            size={32}
-                          />
-                        </div>
-                        <div
-                          className={`flex flex-col gap-1 min-w-0 max-w-[85%] ${isAgent ? "items-end" : "items-start"}`}
-                        >
-                          <div className="flex items-baseline gap-2 px-1">
-                            <span className={cn(
-                              "text-[11px] font-semibold",
-                              isLiquidGlass ? "text-white/90" : "text-foreground/70",
-                            )}>
-                              {msg.sender}
-                            </span>
-                            <span className={cn(
-                              "text-[10px] font-medium",
-                              isLiquidGlass ? "text-white/60" : "text-muted-foreground",
-                            )}>
-                              {msg.time}
-                            </span>
+                          <div
+                            className={`shrink-0 ${!msg.showAvatar && "invisible"}`}
+                          >
+                            <BulletproofAvatar
+                              initials={msg.initials}
+                              color={msg.color || "bg-zinc-600 dark:bg-zinc-700"}
+                              size={32}
+                            />
                           </div>
                           <div
-                            className={cn(
-                              "px-4 sm:px-5 py-3 shadow-sm text-sm whitespace-pre-wrap break-words leading-relaxed",
-                              isAgent
-                                ? isLiquidGlass
-                                  ? liquidGlassStyles.bubbleSent
-                                  : cn(
+                            className={`flex flex-col gap-1 min-w-0 max-w-[85%] ${isAgent ? "items-end" : "items-start"}`}
+                          >
+                            <div className="flex items-baseline gap-2 px-1">
+                              <span className="text-[11px] font-semibold text-foreground/70">
+                                {msg.sender}
+                              </span>
+                              <span className="text-[10px] font-medium text-muted-foreground">
+                                {msg.time}
+                              </span>
+                            </div>
+                            <div
+                              className={cn(
+                                "px-4 sm:px-5 py-3 shadow-sm text-sm whitespace-pre-wrap break-words leading-relaxed",
+                                isAgent
+                                  ? cn(
                                       "rounded-2xl rounded-tl-sm text-white font-medium shadow-md",
                                       theme.bg,
                                     )
-                                : isLiquidGlass
-                                  ? liquidGlassStyles.bubbleReceived
                                   : cn(styles.chatBubbleReceived),
-                            )}
-                          >
-                            {msg.message}
+                              )}
+                            >
+                              {msg.message}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
 
-              {/* Composer */}
-              <div
-                className={cn("p-4 shrink-0 flex-none", isLiquidGlass ? "border-t border-white/15 bg-white/5" : styles.chatFooter)}
-              >
-                <div className={cn(
-                  "border rounded-2xl flex flex-col overflow-hidden shadow-sm transition-all m-0 p-0",
-                  isLiquidGlass
-                    ? "bg-white/10 backdrop-blur-md border-white/25 shadow-lg"
-                    : variant === "glass"
-                      ? "bg-white/40 dark:bg-black/40 backdrop-blur-md border-white/20 dark:border-white/10"
-                      : "bg-card border-border"
-                )}>
-                  <div className={cn(
-                    "flex border-b m-0 p-0",
-                    isLiquidGlass
-                      ? "border-white/15 bg-white/10"
-                      : variant === "glass"
-                        ? "border-white/10 dark:border-white/10 bg-white/20 dark:bg-black/20"
-                        : "border-border bg-muted/50"
-                  )}>
-                    {data.replySection.tabs.map((tab) => (
-                      <button
-                        key={tab}
-                        onClick={() => setModalReplyTab(tab)}
-                        className={cn(
-                          "px-5 py-2.5 text-[13px] font-semibold transition-colors m-0 cursor-pointer",
-                          modalReplyTab === tab
-                            ? isLiquidGlass
-                              ? liquidGlassStyles.activeTab
-                              : cn(
+                {/* Composer */}
+                <div className={cn("p-4 shrink-0 flex-none", styles.chatFooter)}>
+                  <div
+                    className={cn(
+                      "border rounded-2xl flex flex-col overflow-hidden shadow-sm transition-all m-0 p-0",
+                      variant === "glass"
+                        ? "bg-white/40 dark:bg-black/40 backdrop-blur-md border-white/20 dark:border-white/10"
+                        : "bg-card border-border",
+                    )}
+                  >
+                    <div
+                      className={cn(
+                        "flex border-b m-0 p-0",
+                        variant === "glass"
+                          ? "border-white/10 dark:border-white/10 bg-white/20 dark:bg-black/20"
+                          : "border-border bg-muted/50",
+                      )}
+                    >
+                      {data.replySection.tabs.map((tab) => (
+                        <button
+                          key={tab}
+                          onClick={() => setModalReplyTab(tab)}
+                          className={cn(
+                            "px-5 py-2.5 text-[13px] font-semibold transition-colors m-0 cursor-pointer",
+                            modalReplyTab === tab
+                              ? cn(
                                   variant === "glass"
                                     ? "bg-white/40 dark:bg-black/40"
                                     : "bg-card",
                                   theme.text,
                                   theme.activeBorder,
                                 )
-                            : isLiquidGlass
-                              ? "text-white/60 hover:text-white border-b-2 border-transparent"
                               : "text-muted-foreground hover:text-foreground border-b-2 border-transparent",
-                        )}
-                      >
-                        {tab}
-                      </button>
-                    ))}
-                  </div>
-                  <textarea
-                    value={modalReplyText}
-                    onChange={(e) => setModalReplyText(e.target.value)}
-                    rows={3}
-                    placeholder={
-                      modalReplyTab === "Reply"
-                        ? data.replySection.placeholder
-                        : "Type an internal note..."
-                    }
-                    className={cn(
-                      "w-full p-4 text-sm resize-none outline-none bg-transparent text-foreground placeholder:text-muted-foreground focus:ring-0",
-                      isLiquidGlass && "text-white placeholder:text-white/50",
-                      modalReplyTab !== "Reply" &&
-                        (isLiquidGlass ? "bg-amber-500/10 text-amber-200" : "bg-amber-50/30 dark:bg-amber-900/5"),
-                    )}
-                  />
-                  <div className={cn(
-                    "flex items-center justify-between px-3 py-2 border-t",
-                    isLiquidGlass ? "border-white/15 bg-white/5" : "border-border",
-                  )}>
-                    <div className="flex items-center gap-1">
-                      <button className={cn(
-                        "p-2 rounded-lg transition-colors cursor-pointer",
-                        isLiquidGlass ? "text-white/70 hover:text-white hover:bg-white/10" : "text-muted-foreground hover:bg-muted"
-                      )}>
-                        <Smile className="w-4 h-4" />
-                      </button>
-                      <button className={cn(
-                        "p-2 rounded-lg transition-colors cursor-pointer",
-                        isLiquidGlass ? "text-white/70 hover:text-white hover:bg-white/10" : "text-muted-foreground hover:bg-muted"
-                      )}>
-                        <Paperclip className="w-4 h-4" />
-                      </button>
+                          )}
+                        >
+                          {tab}
+                        </button>
+                      ))}
                     </div>
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={closeTicketModal}
-                        className={cn(
-                          "px-4 py-2 rounded-lg text-xs font-semibold transition-colors cursor-pointer",
-                          isLiquidGlass ? "text-white/70 hover:bg-white/10 hover:text-white" : "text-muted-foreground hover:bg-muted"
-                        )}
-                      >
-                        Close
-                      </button>
-                      <button
-                        onClick={handleSendModalReply}
-                        disabled={!modalReplyText.trim()}
-                        className={cn(
-                          "flex items-center gap-2 px-5 py-2 text-xs font-semibold rounded-lg transition-all active:scale-95 cursor-pointer shadow-sm disabled:opacity-50 disabled:cursor-not-allowed text-white",
-                          isLiquidGlass
-                            ? modalReplyTab === "Reply"
-                              ? liquidGlassStyles.btn
-                              : "bg-amber-500/30 hover:bg-amber-500/40 border border-amber-400/40 text-amber-100 backdrop-blur-md shadow-md"
-                            : modalReplyTab === "Reply"
-                              ? theme.bg
-                              : "bg-amber-500 hover:bg-amber-600 shadow-amber-500/20 text-white",
-                        )}
-                      >
-                        {modalReplyTab === "Reply"
-                          ? data.replySection.buttonText
-                          : "Add Note"}{" "}
-                        <Send className="w-3.5 h-3.5" />
-                      </button>
+                    <textarea
+                      value={modalReplyText}
+                      onChange={(e) => setModalReplyText(e.target.value)}
+                      rows={3}
+                      placeholder={
+                        modalReplyTab === "Reply"
+                          ? data.replySection.placeholder
+                          : "Type an internal note..."
+                      }
+                      className={cn(
+                        "w-full p-4 text-sm resize-none outline-none bg-transparent text-foreground placeholder:text-muted-foreground focus:ring-0",
+                        modalReplyTab !== "Reply" && "bg-amber-50/30 dark:bg-amber-900/5",
+                      )}
+                    />
+                    <div className={cn("flex items-center justify-between px-3 py-2 border-t", "border-border")}>
+                      <div className="flex items-center gap-1">
+                        <button className={cn("p-2 rounded-lg transition-colors cursor-pointer", "text-muted-foreground hover:bg-muted")}>
+                          <Smile className="w-4 h-4" />
+                        </button>
+                        <button className={cn("p-2 rounded-lg transition-colors cursor-pointer", "text-muted-foreground hover:bg-muted")}>
+                          <Paperclip className="w-4 h-4" />
+                        </button>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button onClick={closeTicketModal} className="px-4 py-2 rounded-lg text-xs font-semibold transition-colors cursor-pointer text-muted-foreground hover:bg-muted">
+                          Close
+                        </button>
+                        <button
+                          onClick={handleSendModalReply}
+                          disabled={!modalReplyText.trim()}
+                          className={cn(
+                            "flex items-center gap-2 px-5 py-2 text-xs font-semibold rounded-lg transition-all active:scale-95 cursor-pointer shadow-sm disabled:opacity-50 disabled:cursor-not-allowed text-white",
+                            modalReplyTab === "Reply" ? theme.bg : "bg-amber-500 hover:bg-amber-600 shadow-amber-500/20 text-white",
+                          )}
+                        >
+                          {modalReplyTab === "Reply" ? data.replySection.buttonText : "Add Note"} <Send className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       )}
 
       {/* === CREATE TICKET MODAL OVERLAY === */}
       {isCreatingTicket && (
-        <div className="absolute inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-200">
-          <div
-            className={cn(
-              "relative w-full max-w-md p-6 sm:p-7 rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col gap-4 animate-in zoom-in-95 duration-200 overflow-hidden",
-              isLiquidGlass
-                ? "border border-white/30 text-white shadow-[0_30px_70px_rgba(0,0,0,0.6)]"
-                : isGlassLike
-                  ? "bg-card border border-border backdrop-blur-xl"
-                  : "bg-background border border-border",
-            )}
-            style={
-              isLiquidGlass
-                ? {
-                    boxShadow:
-                      "inset 1.5px 1.5px 2px 0 rgba(255, 255, 255, 0.45), inset -1.5px -1.5px 2px 0 rgba(255, 255, 255, 0.25), 0 25px 60px rgba(0, 0, 0, 0.5)",
-                  }
-                : undefined
-            }
-          >
-            {/* Liquid Background Layer for Modal */}
-            {isLiquidGlass && (
-              <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden rounded-2xl sm:rounded-3xl">
-                <div
-                  className="absolute -inset-10"
-                  style={{
-                    backgroundImage: `url("${liquidBg}")`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    filter: "url(#glass-blur-support)",
-                    transform: "scale(1.15)",
-                  }}
-                />
-                <div className="absolute inset-0 bg-black/45 backdrop-blur-xl" />
-                <div
-                  className="absolute inset-0 rounded-2xl sm:rounded-3xl border border-white/30 pointer-events-none"
-                  style={{
-                    boxShadow:
-                      "inset 1px 1px 2px 0 rgba(255,255,255,0.4), inset -1px -1px 2px 0 rgba(255,255,255,0.2)",
-                  }}
-                />
-              </div>
-            )}
-
-            <div className="relative z-10 flex flex-col gap-4">
-              <div className="flex justify-between items-center pb-2 border-b border-white/15">
-                <div className="flex items-center gap-2.5">
-                  <div className={cn(
-                    "w-7 h-7 rounded-lg flex items-center justify-center text-white",
-                    isLiquidGlass ? liquidGlassStyles.iconBg : theme.bg
-                  )}>
-                    <Plus className="w-4 h-4" />
-                  </div>
-                  <h3 className={cn(
-                    "text-base sm:text-lg font-bold tracking-tight",
-                    isLiquidGlass ? "text-white" : "text-foreground",
-                  )}>
-                    Create New Ticket
-                  </h3>
-                </div>
-                <button
-                  onClick={() => setIsCreatingTicket(false)}
-                  className={cn(
-                    "p-1.5 rounded-lg transition-colors cursor-pointer",
-                    isLiquidGlass ? "text-white/70 hover:text-white hover:bg-white/15" : "text-muted-foreground hover:text-foreground",
-                  )}
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-              <form onSubmit={handleCreateTicket} className="flex flex-col gap-4">
-                <div className="flex flex-col gap-1.5">
-                  <label className={cn(
-                    "text-[11px] font-bold uppercase tracking-wider",
-                    isLiquidGlass ? "text-white/80" : "text-muted-foreground",
-                  )}>
-                    Subject
-                  </label>
-                  <input
-                    required
-                    value={newTicketForm.title}
-                    onChange={(e) =>
-                      setNewTicketForm({
-                        ...newTicketForm,
-                        title: e.target.value,
-                      })
-                    }
-                    className={cn(
-                      "p-3 text-sm rounded-xl outline-none transition-all",
-                      isLiquidGlass
-                        ? "bg-white/10 border border-white/25 text-white placeholder:text-white/50 focus:bg-white/20 focus:border-white/50 backdrop-blur-md shadow-inner"
-                        : cn(styles.input, theme.focusRing),
-                    )}
-                    placeholder="E.g. Cannot access account"
-                  />
-                </div>
-                {/* Stacked on phones — side by side on larger */}
-                <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                  <div className="flex flex-col gap-1.5 flex-1 min-w-0">
-                    <label className={cn(
-                      "text-[11px] font-bold uppercase tracking-wider",
-                      isLiquidGlass ? "text-white/80" : "text-muted-foreground",
+        <div className="absolute inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 animate-in fade-in duration-200">
+          {isLiquidGlass ? (
+            <LiquidGlassWrapper
+              radius="1.5rem"
+              bgImage={liquidBg}
+              filterId="glass-blur-support"
+              contrastOverlayClassName="bg-black/55 backdrop-blur-md"
+              className="relative w-full max-w-md p-6 sm:p-7 text-white shadow-[0_30px_70px_rgba(0,0,0,0.6)] flex flex-col gap-4 animate-in zoom-in-95 duration-200"
+            >
+              <div className="relative z-10 flex flex-col gap-4">
+                <div className="flex justify-between items-center pb-2 border-b border-white/15">
+                  <div className="flex items-center gap-2.5">
+                    <div className={cn(
+                      "w-7 h-7 rounded-lg flex items-center justify-center text-white",
+                      liquidGlassStyles.iconBg,
                     )}>
-                      Customer Name
+                      <Plus className="w-4 h-4" />
+                    </div>
+                    <h3 className="text-base sm:text-lg font-bold tracking-tight text-white">
+                      Create New Ticket
+                    </h3>
+                  </div>
+                  <button
+                    onClick={() => setIsCreatingTicket(false)}
+                    className="p-1.5 rounded-lg transition-colors cursor-pointer text-white/70 hover:text-white hover:bg-white/15"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+                <form onSubmit={handleCreateTicket} className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-white/80">
+                      Subject
                     </label>
                     <input
                       required
-                      value={newTicketForm.author}
+                      value={newTicketForm.title}
                       onChange={(e) =>
                         setNewTicketForm({
                           ...newTicketForm,
-                          author: e.target.value,
+                          title: e.target.value,
                         })
                       }
-                      className={cn(
-                        "p-3 text-sm rounded-xl outline-none transition-all",
-                        isLiquidGlass
-                          ? "bg-white/10 border border-white/25 text-white placeholder:text-white/50 focus:bg-white/20 focus:border-white/50 backdrop-blur-md shadow-inner"
-                          : cn(styles.input, theme.focusRing),
-                      )}
-                      placeholder="John Doe"
+                      className="p-3 text-sm rounded-xl outline-none transition-all bg-white/10 border border-white/25 text-white placeholder:text-white/50 focus:bg-white/20 focus:border-white/50 shadow-inner"
+                      placeholder="E.g. Cannot access account"
                     />
                   </div>
-                  <div className="flex flex-col gap-1.5 flex-1 min-w-0">
-                    <label className={cn(
-                      "text-[11px] font-bold uppercase tracking-wider",
-                      isLiquidGlass ? "text-white/80" : "text-muted-foreground",
-                    )}>
-                      Priority
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                    <div className="flex flex-col gap-1.5 flex-1 min-w-0">
+                      <label className="text-[11px] font-bold uppercase tracking-wider text-white/80">
+                        Customer Name
+                      </label>
+                      <input
+                        required
+                        value={newTicketForm.author}
+                        onChange={(e) =>
+                          setNewTicketForm({
+                            ...newTicketForm,
+                            author: e.target.value,
+                          })
+                        }
+                        className="p-3 text-sm rounded-xl outline-none transition-all bg-white/10 border border-white/25 text-white placeholder:text-white/50 focus:bg-white/20 focus:border-white/50 shadow-inner"
+                        placeholder="John Doe"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1.5 flex-1 min-w-0">
+                      <label className="text-[11px] font-bold uppercase tracking-wider text-white/80">
+                        Priority
+                      </label>
+                      <SelectBlock
+                        options={PRIORITY_OPTIONS}
+                        value={newTicketForm.priority}
+                        onChange={(v) =>
+                          setNewTicketForm({
+                            ...newTicketForm,
+                            priority: Array.isArray(v) ? (v[0] ?? "") : v,
+                          })
+                        }
+                        color={color}
+                        variant="liquid-glass"
+                        placeholder="Select priority"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-white/80">
+                      Initial Message
                     </label>
-                    <SelectBlock
-                      options={PRIORITY_OPTIONS}
-                      value={newTicketForm.priority}
-                      onChange={(v) =>
+                    <textarea
+                      rows={3}
+                      value={newTicketForm.message}
+                      onChange={(e) =>
                         setNewTicketForm({
                           ...newTicketForm,
-                          priority: Array.isArray(v) ? (v[0] ?? "") : v,
+                          message: e.target.value,
                         })
                       }
-                      color={color}
-                      variant={isLiquidGlass ? "liquid-glass" : variant === "glass" ? "glass" : "default"}
-                      placeholder="Select priority"
+                      className="p-3 text-sm rounded-xl outline-none resize-none transition-all bg-white/10 border border-white/25 text-white placeholder:text-white/50 focus:bg-white/20 focus:border-white/50 shadow-inner"
+                      placeholder="Describe the issue..."
                     />
                   </div>
-                </div>
-                <div className="flex flex-col gap-1.5">
-                  <label className={cn(
-                    "text-[11px] font-bold uppercase tracking-wider",
-                    isLiquidGlass ? "text-white/80" : "text-muted-foreground",
-                  )}>
-                    Initial Message
-                  </label>
-                  <textarea
-                    rows={3}
-                    value={newTicketForm.message}
-                    onChange={(e) =>
-                      setNewTicketForm({
-                        ...newTicketForm,
-                        message: e.target.value,
-                      })
-                    }
+                  <button
+                    type="submit"
                     className={cn(
-                      "p-3 text-sm rounded-xl outline-none resize-none transition-all",
-                      isLiquidGlass
-                        ? "bg-white/10 border border-white/25 text-white placeholder:text-white/50 focus:bg-white/20 focus:border-white/50 backdrop-blur-md shadow-inner"
-                        : cn(styles.input, theme.focusRing),
+                      "mt-2 py-3 px-4 rounded-xl font-bold text-white transition-all duration-200 active:scale-[0.98] cursor-pointer flex items-center justify-center gap-2",
+                      liquidGlassStyles.btn,
                     )}
-                    placeholder="Describe the issue..."
-                  />
+                  >
+                    <Plus className="w-4 h-4" /> Create Ticket
+                  </button>
+                </form>
+              </div>
+            </LiquidGlassWrapper>
+          ) : (
+            <div
+              className={cn(
+                "relative w-full max-w-md p-6 sm:p-7 rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col gap-4 animate-in zoom-in-95 duration-200 overflow-hidden",
+                isGlassLike
+                  ? "bg-white/40 dark:bg-black/40 border border-white/20 dark:border-white/10 backdrop-blur-2xl"
+                  : "bg-background border border-border",
+              )}
+            >
+              <div className="relative z-10 flex flex-col gap-4">
+                <div className="flex justify-between items-center pb-2 border-b border-border">
+                  <div className="flex items-center gap-2.5">
+                    <div className={cn("w-7 h-7 rounded-lg flex items-center justify-center text-white", theme.bg)}>
+                      <Plus className="w-4 h-4" />
+                    </div>
+                    <h3 className="text-base sm:text-lg font-bold tracking-tight text-foreground">
+                      Create New Ticket
+                    </h3>
+                  </div>
+                  <button
+                    onClick={() => setIsCreatingTicket(false)}
+                    className="p-1.5 rounded-lg transition-colors cursor-pointer text-muted-foreground hover:text-foreground"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
                 </div>
-                <button
-                  type="submit"
-                  className={cn(
-                    "mt-2 py-3 px-4 rounded-xl font-bold text-white transition-all duration-200 active:scale-[0.98] shadow-lg cursor-pointer flex items-center justify-center gap-2",
-                    isLiquidGlass ? liquidGlassStyles.btn : theme.bg,
-                  )}
-                >
-                  <Plus className="w-4 h-4" /> Create Ticket
-                </button>
-              </form>
+                <form onSubmit={handleCreateTicket} className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                      Subject
+                    </label>
+                    <input
+                      required
+                      value={newTicketForm.title}
+                      onChange={(e) =>
+                        setNewTicketForm({
+                          ...newTicketForm,
+                          title: e.target.value,
+                        })
+                      }
+                      className={cn("p-3 text-sm rounded-xl outline-none transition-all", styles.input, theme.focusRing)}
+                      placeholder="E.g. Cannot access account"
+                    />
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                    <div className="flex flex-col gap-1.5 flex-1 min-w-0">
+                      <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                        Customer Name
+                      </label>
+                      <input
+                        required
+                        value={newTicketForm.author}
+                        onChange={(e) =>
+                          setNewTicketForm({
+                            ...newTicketForm,
+                            author: e.target.value,
+                          })
+                        }
+                        className={cn("p-3 text-sm rounded-xl outline-none transition-all", styles.input, theme.focusRing)}
+                        placeholder="John Doe"
+                      />
+                    </div>
+                    <div className="flex flex-col gap-1.5 flex-1 min-w-0">
+                      <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                        Priority
+                      </label>
+                      <SelectBlock
+                        options={PRIORITY_OPTIONS}
+                        value={newTicketForm.priority}
+                        onChange={(v) =>
+                          setNewTicketForm({
+                            ...newTicketForm,
+                            priority: Array.isArray(v) ? (v[0] ?? "") : v,
+                          })
+                        }
+                        color={color}
+                        variant={variant === "glass" ? "glass" : "default"}
+                        placeholder="Select priority"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+                      Initial Message
+                    </label>
+                    <textarea
+                      rows={3}
+                      value={newTicketForm.message}
+                      onChange={(e) =>
+                        setNewTicketForm({
+                          ...newTicketForm,
+                          message: e.target.value,
+                        })
+                      }
+                      className={cn("p-3 text-sm rounded-xl outline-none resize-none transition-all", styles.input, theme.focusRing)}
+                      placeholder="Describe the issue..."
+                    />
+                  </div>
+                  <button
+                    type="submit"
+                    className={cn(
+                      "mt-2 py-3 px-4 rounded-xl font-bold text-white transition-all duration-200 active:scale-[0.98] shadow-lg cursor-pointer flex items-center justify-center gap-2",
+                      theme.bg,
+                    )}
+                  >
+                    <Plus className="w-4 h-4" /> Create Ticket
+                  </button>
+                </form>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       )}
 
       {/* === GLOBAL HEADER === */}
       <header
         className={cn(
-          "h-[56px] sm:h-[60px] flex items-center justify-between px-3.5 sm:px-5 shrink-0 flex-none z-10 transition-colors duration-300 gap-2",
+          "h-[56px] sm:h-[60px] flex items-center justify-between px-3.5 sm:px-5 shrink-0 flex-none z-10 transition-colors duration-300 gap-2 rounded-t-[inherit]",
           styles.header,
         )}
       >
@@ -1084,7 +1158,7 @@ export default function SupportDashboard({
            --------------------------------------------------------- */
         <div
           className={cn(
-            "flex flex-1 flex-col overflow-y-auto p-4 sm:p-6 lg:p-8 gap-6 m-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]",
+            "flex flex-1 flex-col overflow-y-auto p-4 sm:p-6 lg:p-8 gap-6 m-0 rounded-b-[inherit] [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]",
             isGlassLike ? "bg-transparent" : "bg-muted",
           )}
         >
@@ -1193,7 +1267,7 @@ export default function SupportDashboard({
                       <td
                         className={cn(
                           "px-6 py-4 text-sm font-semibold whitespace-nowrap",
-                          isLiquidGlass ? "text-white" : theme.text,
+                          isLiquidGlass ? "text-white/80" : "text-muted-foreground",
                         )}
                       >
                         {ticket.id}
@@ -1285,13 +1359,13 @@ export default function SupportDashboard({
            --------------------------------------------------------- */
         <div
           className={cn(
-            "flex flex-1 overflow-hidden min-h-0 m-0 p-0",
+            "flex flex-1 overflow-hidden min-h-0 m-0 p-0 rounded-b-[inherit]",
             isGlassLike ? "bg-transparent" : "bg-muted",
           )}
         >
           <aside
             className={cn(
-              `w-full md:w-[320px] shrink-0 flex-none flex flex-col transition-all m-0 p-0 ${selectedTicket ? "hidden md:flex" : "flex"}`,
+              `w-full md:w-[320px] shrink-0 flex-none flex flex-col transition-all m-0 p-0 rounded-bl-[inherit] overflow-hidden ${selectedTicket ? "hidden md:flex" : "flex"}`,
               styles.sidebar,
             )}
           >
@@ -1476,7 +1550,7 @@ export default function SupportDashboard({
                             isLiquidGlass ? "text-white/70" : "text-muted-foreground"
                           )}>
                             {ticket.author} •{" "}
-                            <span className={theme.text}>{ticket.id}</span>
+                            <span className={isLiquidGlass ? "text-white/60 font-medium" : "text-muted-foreground font-medium"}>{ticket.id}</span>
                           </div>
                           <span className={cn(
                             "text-[10px] font-medium shrink-0 ml-2 m-0 p-0",
@@ -1529,7 +1603,7 @@ export default function SupportDashboard({
               <>
                 <div
                   className={cn(
-                    "flex-1 flex flex-col min-w-0 animate-in fade-in slide-in-from-right-4 duration-300 m-0 p-0",
+                    "flex-1 flex flex-col min-w-0 animate-in fade-in slide-in-from-right-4 duration-300 m-0 p-0 rounded-b-[inherit] overflow-hidden",
                     isGlassLike ? "bg-transparent" : "bg-background",
                   )}
                 >
@@ -1642,134 +1716,134 @@ export default function SupportDashboard({
 
                   <div
                     className={cn(
-                      "p-4 shrink-0 flex-none z-10 m-0",
+                      "p-4 shrink-0 flex-none z-10 m-0 rounded-b-[inherit]",
                       styles.chatFooter,
                     )}
                   >
-                    <div className={cn(
-                      "max-w-3xl mx-auto rounded-xl flex flex-col overflow-hidden shadow-sm transition-all m-0 p-0 border",
-                      isLiquidGlass
-                        ? "bg-white/10 backdrop-blur-md border-white/20"
-                        : isGlassLike
-                          ? "bg-white/40 dark:bg-black/40 backdrop-blur-md border-white/20 dark:border-white/10"
-                          : "bg-card border-border"
-                    )}>
-                      <div className={cn(
-                        "flex border-b m-0 p-0",
-                        isLiquidGlass
-                          ? "border-white/15 bg-white/10"
-                          : isGlassLike
-                            ? "border-white/10 dark:border-white/10 bg-white/20 dark:bg-black/20"
-                            : "border-border bg-muted/50"
-                      )}>
-                        {data.replySection.tabs.map((tab) => (
-                          <button
-                            key={tab}
-                            onClick={() => setActiveReplyTab(tab)}
-                            className={cn(
-                              "px-5 py-2.5 text-[13px] font-semibold transition-colors m-0 cursor-pointer",
-                              activeReplyTab === tab
-                                ? isLiquidGlass
+                    {isLiquidGlass ? (
+                      <div className="max-w-3xl mx-auto rounded-xl flex flex-col overflow-hidden transition-all m-0 p-0 border border-white/20 bg-white/10 text-white">
+                        <div className="flex border-b border-white/15 bg-white/10 m-0 p-0">
+                          {data.replySection.tabs.map((tab) => (
+                            <button
+                              key={tab}
+                              onClick={() => setActiveReplyTab(tab)}
+                              className={cn(
+                                "px-5 py-2.5 text-[13px] font-semibold transition-colors m-0 cursor-pointer",
+                                activeReplyTab === tab
                                   ? liquidGlassStyles.activeTab
-                                  : cn(
-                                      isGlassLike
-                                        ? "bg-white/40 dark:bg-black/40"
-                                        : "bg-card",
-                                      theme.text,
-                                      theme.activeBorder,
-                                    )
-                                : isLiquidGlass
-                                  ? "text-white/60 hover:text-white border-b-2 border-transparent"
-                                  : "text-muted-foreground hover:text-foreground border-b-2 border-transparent",
-                            )}
-                          >
-                            {tab}
-                          </button>
-                        ))}
-                      </div>
-                      <textarea
-                        value={replyText}
-                        onChange={(e) => setReplyText(e.target.value)}
-                        rows={3}
-                        placeholder={
-                          activeReplyTab === "Reply"
-                            ? data.replySection.placeholder
-                            : "Type an internal note..."
-                        }
-                        className={cn(
-                          "w-full p-4 text-sm resize-none outline-none bg-transparent text-foreground placeholder:text-muted-foreground m-0 focus:ring-0",
-                          isLiquidGlass && "text-white placeholder:text-white/50",
-                          activeReplyTab !== "Reply" &&
-                            (isLiquidGlass ? "bg-amber-500/10 text-amber-200" : "bg-amber-50/30 dark:bg-amber-900/5"),
-                        )}
-                      />
-                      <div className={cn(
-                        "flex items-center justify-between p-3 border-t m-0",
-                        isLiquidGlass
-                          ? "border-white/15 bg-white/5"
-                          : isGlassLike
-                            ? "border-white/10 dark:border-white/10 bg-white/20 dark:bg-black/20"
-                            : "border-border bg-muted/50"
-                      )}>
-                        <div className="flex gap-1 m-0 p-0">
+                                  : "text-white/60 hover:text-white border-b-2 border-transparent",
+                              )}
+                            >
+                              {tab}
+                            </button>
+                          ))}
+                        </div>
+                        <textarea
+                          value={replyText}
+                          onChange={(e) => setReplyText(e.target.value)}
+                          rows={3}
+                          placeholder={
+                            activeReplyTab === "Reply"
+                              ? data.replySection.placeholder
+                              : "Type an internal note..."
+                          }
+                          className={cn(
+                            "w-full p-4 text-sm resize-none outline-none bg-transparent text-white placeholder:text-white/50 m-0 focus:ring-0",
+                            activeReplyTab !== "Reply" && "bg-amber-500/10 text-amber-200",
+                          )}
+                        />
+                        <div className="flex items-center justify-between p-3 border-t border-white/15 bg-white/5 m-0">
+                          <div className="flex gap-1 m-0 p-0">
+                            <button className="p-2 rounded-md transition-colors cursor-pointer text-white/70 hover:text-white hover:bg-white/10">
+                              <Smile className="w-4 h-4" />
+                            </button>
+                            <button className="p-2 rounded-md transition-colors cursor-pointer text-white/70 hover:text-white hover:bg-white/10">
+                              <ImageIcon className="w-4 h-4" />
+                            </button>
+                            <button className="p-2 rounded-md transition-colors cursor-pointer text-white/70 hover:text-white hover:bg-white/10">
+                              <Paperclip className="w-4 h-4" />
+                            </button>
+                          </div>
                           <button
+                            onClick={handleSendReply}
+                            disabled={!replyText.trim()}
                             className={cn(
-                              "p-2 rounded-md transition-colors cursor-pointer",
-                              isLiquidGlass
-                                ? "text-white/70 hover:text-white hover:bg-white/10"
-                                : cn(theme.focusRing, `hover:${theme.text}`, isGlassLike ? "hover:bg-white/10" : "hover:bg-muted")
+                              "flex items-center gap-2 px-5 py-2 text-xs font-semibold rounded-lg transition-all active:scale-95 m-0 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed text-white",
+                              activeReplyTab === "Reply"
+                                ? liquidGlassStyles.btn
+                                : "bg-amber-500/30 hover:bg-amber-500/40 border border-amber-400/40 text-amber-100",
                             )}
                           >
-                            <Smile className="w-4 h-4" />
-                          </button>
-                          <button
-                            className={cn(
-                              "p-2 rounded-md transition-colors cursor-pointer",
-                              isLiquidGlass
-                                ? "text-white/70 hover:text-white hover:bg-white/10"
-                                : cn(theme.focusRing, `hover:${theme.text}`, isGlassLike ? "hover:bg-white/10" : "hover:bg-muted")
-                            )}
-                          >
-                            <ImageIcon className="w-4 h-4" />
-                          </button>
-                          <button
-                            className={cn(
-                              "p-2 rounded-md transition-colors cursor-pointer",
-                              isLiquidGlass
-                                ? "text-white/70 hover:text-white hover:bg-white/10"
-                                : cn(theme.focusRing, `hover:${theme.text}`, isGlassLike ? "hover:bg-white/10" : "hover:bg-muted")
-                            )}
-                          >
-                            <Paperclip className="w-4 h-4" />
+                            {activeReplyTab === "Reply"
+                              ? data.replySection.buttonText
+                              : "Add Note"}{" "}
+                            <Send className="w-3.5 h-3.5" />
                           </button>
                         </div>
-                        <button
-                          onClick={handleSendReply}
-                          disabled={!replyText.trim()}
-                          className={cn(
-                            "flex items-center gap-2 px-5 py-2 text-xs font-semibold rounded-lg transition-all active:scale-95 m-0 cursor-pointer shadow-sm disabled:opacity-50 disabled:cursor-not-allowed text-white",
-                            isLiquidGlass
-                              ? activeReplyTab === "Reply"
-                                ? liquidGlassStyles.btn
-                                : "bg-amber-500/30 hover:bg-amber-500/40 border border-amber-400/40 text-amber-100 backdrop-blur-md shadow-md"
-                              : activeReplyTab === "Reply"
-                                ? theme.bg
-                                : "bg-amber-500 hover:bg-amber-600 shadow-amber-500/20 text-white",
-                          )}
-                        >
-                          {activeReplyTab === "Reply"
-                            ? data.replySection.buttonText
-                            : "Add Note"}{" "}
-                          <Send className="w-3.5 h-3.5" />
-                        </button>
                       </div>
-                    </div>
+                    ) : (
+                      <div
+                        className={cn(
+                          "max-w-3xl mx-auto rounded-xl flex flex-col overflow-hidden shadow-sm transition-all m-0 p-0 border",
+                          variant === "glass"
+                            ? "bg-white/40 dark:bg-black/40 backdrop-blur-md border-white/20 dark:border-white/10"
+                            : "bg-card border-border",
+                        )}
+                      >
+                        <div className={cn("flex border-b m-0 p-0", variant === "glass" ? "border-white/10 dark:border-white/10 bg-white/20 dark:bg-black/20" : "border-border bg-muted/50")}>
+                          {data.replySection.tabs.map((tab) => (
+                            <button
+                              key={tab}
+                              onClick={() => setActiveReplyTab(tab)}
+                              className={cn(
+                                "px-5 py-2.5 text-[13px] font-semibold transition-colors m-0 cursor-pointer",
+                                activeReplyTab === tab
+                                  ? cn(variant === "glass" ? "bg-white/40 dark:bg-black/40" : "bg-card", theme.text, theme.activeBorder)
+                                  : "text-muted-foreground hover:text-foreground border-b-2 border-transparent",
+                              )}
+                            >
+                              {tab}
+                            </button>
+                          ))}
+                        </div>
+                        <textarea
+                          value={replyText}
+                          onChange={(e) => setReplyText(e.target.value)}
+                          rows={3}
+                          placeholder={activeReplyTab === "Reply" ? data.replySection.placeholder : "Type an internal note..."}
+                          className={cn("w-full p-4 text-sm resize-none outline-none bg-transparent text-foreground placeholder:text-muted-foreground m-0 focus:ring-0", activeReplyTab !== "Reply" && "bg-amber-50/30 dark:bg-amber-900/5")}
+                        />
+                        <div className={cn("flex items-center justify-between p-3 border-t m-0", "border-border")}>
+                          <div className="flex gap-1 m-0 p-0">
+                            <button className={cn("p-2 rounded-md transition-colors cursor-pointer", theme.focusRing, `hover:${theme.text}`, isGlassLike ? "hover:bg-white/10" : "hover:bg-muted")}>
+                              <Smile className="w-4 h-4" />
+                            </button>
+                            <button className={cn("p-2 rounded-md transition-colors cursor-pointer", theme.focusRing, `hover:${theme.text}`, isGlassLike ? "hover:bg-white/10" : "hover:bg-muted")}>
+                              <ImageIcon className="w-4 h-4" />
+                            </button>
+                            <button className={cn("p-2 rounded-md transition-colors cursor-pointer", theme.focusRing, `hover:${theme.text}`, isGlassLike ? "hover:bg-white/10" : "hover:bg-muted")}>
+                              <Paperclip className="w-4 h-4" />
+                            </button>
+                          </div>
+                          <button
+                            onClick={handleSendReply}
+                            disabled={!replyText.trim()}
+                            className={cn(
+                              "flex items-center gap-2 px-5 py-2 text-xs font-semibold rounded-lg transition-all active:scale-95 m-0 cursor-pointer shadow-sm disabled:opacity-50 disabled:cursor-not-allowed text-white",
+                              activeReplyTab === "Reply" ? theme.bg : "bg-amber-500 hover:bg-amber-600 shadow-amber-500/20 text-white",
+                            )}
+                          >
+                            {activeReplyTab === "Reply" ? data.replySection.buttonText : "Add Note"} <Send className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
 
                 <div
                   className={cn(
-                    "hidden xl:flex w-[280px] shrink-0 flex-none flex-col h-full m-0 p-0",
+                    "hidden xl:flex w-[280px] shrink-0 flex-none flex-col h-full m-0 p-0 rounded-br-[inherit] overflow-hidden",
                     styles.detailsPane,
                   )}
                 >
@@ -1797,154 +1871,199 @@ export default function SupportDashboard({
                     ))}
                   </div>
                   <div className="flex-1 overflow-y-auto p-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] flex flex-col gap-4 m-0">
-                    <div className={cn("m-0 p-0", styles.card)}>
-                      <div
-                        className={cn(
-                          "px-4 py-3 text-[11px] font-semibold uppercase tracking-wider flex justify-between items-center m-0",
-                          styles.cardHeader,
-                          isLiquidGlass ? "text-white/80" : "text-muted-foreground",
-                        )}
-                      >
-                        Contact Info{" "}
-                        <User className="w-3.5 h-3.5 text-muted-foreground" />
-                      </div>
-                      <div className="p-4 flex flex-col gap-3 m-0">
-                        {[
-                          { label: "Name", val: selectedTicket.contact.name },
-                          { label: "Email", val: selectedTicket.contact.email },
-                          { label: "Phone", val: selectedTicket.contact.phone },
-                          {
-                            label: "Identifier",
-                            val: selectedTicket.contact.identifier,
-                          },
-                        ].map((field) => (
-                          <div key={field.label} className="m-0 p-0">
-                            <div className={cn(
-                              "text-[10px] font-semibold uppercase tracking-wider mb-0.5 m-0 p-0",
-                              isLiquidGlass ? "text-white/60" : "text-muted-foreground"
-                            )}>
-                              {field.label}
-                            </div>
-                            <div className={cn(
-                              "text-xs font-semibold truncate m-0 p-0",
-                              isLiquidGlass ? "text-white" : "text-foreground"
-                            )}>
-                              {field.val}
-                            </div>
+                    {activeDetailsTab.toLowerCase() === "company" ? (
+                      <>
+                        {/* Company Info Card */}
+                        <div className={cn("m-0 p-0", styles.card)}>
+                          <div
+                            className={cn(
+                              "px-4 py-3 text-[11px] font-semibold uppercase tracking-wider flex justify-between items-center m-0",
+                              styles.cardHeader,
+                              isLiquidGlass ? "text-white/80" : "text-muted-foreground",
+                            )}
+                          >
+                            Company Info{" "}
+                            <User className="w-3.5 h-3.5 text-muted-foreground" />
                           </div>
-                        ))}
-                      </div>
-                    </div>
-                    <div className={cn("m-0 p-0", styles.card)}>
-                      <div
-                        className={cn(
-                          "px-4 py-3 text-[11px] font-semibold uppercase tracking-wider flex justify-between items-center m-0",
-                          styles.cardHeader,
-                          isLiquidGlass ? "text-white/80" : "text-muted-foreground",
-                        )}
-                      >
-                        SLA Goals{" "}
-                        <Clock className="w-3.5 h-3.5 text-muted-foreground" />
-                      </div>
-                      <div className="p-4 flex flex-col gap-3 m-0">
-                        <div className="m-0 p-0">
-                          <div className={cn(
-                            "text-[10px] font-semibold uppercase tracking-wider mb-1 m-0 p-0",
-                            isLiquidGlass ? "text-white/60" : "text-muted-foreground"
-                          )}>
-                            First Response
-                          </div>
-                          <div className="flex items-center gap-2 m-0 p-0">
-                            <CheckCircle2
-                              className={`w-3.5 h-3.5 shrink-0 ${selectedTicket.sla.firstResponse === "Completed" ? "text-emerald-400" : "text-amber-400"}`}
-                            />
-                            <div
-                              className={cn(
-                                "text-xs font-semibold truncate m-0 p-0",
-                                selectedTicket.sla.firstResponse === "Completed"
-                                  ? isLiquidGlass
-                                    ? "text-emerald-300"
-                                    : "text-emerald-600 dark:text-emerald-400"
-                                  : isLiquidGlass
-                                    ? "text-amber-300"
-                                    : "text-amber-600 dark:text-amber-400",
-                              )}
-                            >
-                              {selectedTicket.sla.firstResponse}
-                            </div>
+                          <div className="p-4 flex flex-col gap-3 m-0">
+                            {[
+                              { label: "Company", val: selectedTicket.company },
+                              { label: "Domain", val: `${selectedTicket.company.toLowerCase().replace(/\s+/g, "")}.com` },
+                              { label: "Account Tier", val: "Enterprise Plan" },
+                              { label: "Total Tickets", val: `${tickets.filter((t) => t.company === selectedTicket.company).length} Active` },
+                            ].map((field) => (
+                              <div key={field.label} className="m-0 p-0">
+                                <div className={cn(
+                                  "text-[10px] font-semibold uppercase tracking-wider mb-0.5 m-0 p-0",
+                                  isLiquidGlass ? "text-white/60" : "text-muted-foreground"
+                                )}>
+                                  {field.label}
+                                </div>
+                                <div className={cn(
+                                  "text-xs font-semibold truncate m-0 p-0",
+                                  isLiquidGlass ? "text-white" : "text-foreground"
+                                )}>
+                                  {field.val}
+                                </div>
+                              </div>
+                            ))}
                           </div>
                         </div>
-                        <div className="m-0 p-0">
-                          <div className={cn(
-                            "text-[10px] font-semibold uppercase tracking-wider mb-1 m-0 p-0",
-                            isLiquidGlass ? "text-white/60" : "text-muted-foreground"
-                          )}>
-                            Resolution
+
+                        {/* Team Assignment Card */}
+                        <div className={cn("m-0 p-0", styles.card)}>
+                          <div
+                            className={cn(
+                              "px-4 py-3 text-[11px] font-semibold uppercase tracking-wider flex justify-between items-center m-0",
+                              styles.cardHeader,
+                              isLiquidGlass ? "text-white/80" : "text-muted-foreground",
+                            )}
+                          >
+                            Team Assignment{" "}
+                            <List className="w-3.5 h-3.5 text-muted-foreground" />
                           </div>
-                          <div className="flex items-center gap-2 m-0 p-0">
-                            <Clock
-                              className={cn("w-3.5 h-3.5 shrink-0", isLiquidGlass ? "text-white/80" : theme.text)}
-                            />
-                            <div
-                              className={cn(
-                                "text-xs font-semibold truncate m-0 p-0",
-                                isLiquidGlass ? "text-white" : theme.text,
-                              )}
-                            >
-                              {selectedTicket.sla.resolution}
-                            </div>
+                          <div className="p-4 flex flex-col gap-3 m-0">
+                            {[
+                              { label: "Department", val: selectedTicket.properties.group || "Support" },
+                              { label: "Assigned Lead", val: selectedTicket.properties.assignedTo || "Unassigned" },
+                              { label: "Priority Level", val: selectedTicket.properties.priority || "Medium" },
+                              { label: "Ticket Category", val: selectedTicket.properties.type || "Question" },
+                            ].map((field) => (
+                              <div key={field.label} className="m-0 p-0">
+                                <div className={cn(
+                                  "text-[10px] font-semibold uppercase tracking-wider mb-0.5 m-0 p-0",
+                                  isLiquidGlass ? "text-white/60" : "text-muted-foreground"
+                                )}>
+                                  {field.label}
+                                </div>
+                                <div className={cn(
+                                  "text-xs font-semibold truncate m-0 p-0",
+                                  isLiquidGlass ? "text-white" : "text-foreground"
+                                )}>
+                                  {field.val}
+                                </div>
+                              </div>
+                            ))}
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <div className={cn("m-0 p-0", styles.card)}>
-                      <div
-                        className={cn(
-                          "px-4 py-3 text-[11px] font-semibold uppercase tracking-wider flex justify-between items-center m-0",
-                          styles.cardHeader,
-                          isLiquidGlass ? "text-white/80" : "text-muted-foreground",
-                        )}
-                      >
-                        Properties{" "}
-                        <List className="w-3.5 h-3.5 text-muted-foreground" />
-                      </div>
-                      <div className="p-4 flex flex-col gap-3 m-0">
-                        {Object.entries(
-                          data.detailsSection.dropdownOptions,
-                        ).map(([key, options]) => (
-                          <div key={key} className="flex flex-col m-0 p-0">
-                            <label className={cn(
-                              "text-[10px] font-semibold uppercase tracking-wider mb-1 m-0 p-0",
-                              isLiquidGlass ? "text-white/60" : "text-muted-foreground"
-                            )}>
-                              {key.replace(/([A-Z])/g, " $1")}
-                            </label>
-                            <SelectBlock
-                              options={options.map((opt) => ({
-                                label: opt,
-                                value: opt,
-                              }))}
-                              value={
-                                ticketProperties[
-                                  `${selectedTicket.id}-${key}`
-                                ] ?? selectedTicket.properties[key]
-                              }
-                              onChange={(v) =>
-                                setTicketProperties((prev) => ({
-                                  ...prev,
-                                  [`${selectedTicket.id}-${key}`]: Array.isArray(v)
-                                    ? (v[0] ?? "")
-                                    : v,
-                                }))
-                              }
-                              color={color}
-                              variant={isLiquidGlass ? "liquid-glass" : variant === "glass" ? "glass" : "default"}
-                              inputSize="sm"
-                            />
+                      </>
+                    ) : (
+                      <>
+                        {/* Contact Info Card */}
+                        <div className={cn("m-0 p-0", styles.card)}>
+                          <div
+                            className={cn(
+                              "px-4 py-3 text-[11px] font-semibold uppercase tracking-wider flex justify-between items-center m-0",
+                              styles.cardHeader,
+                              isLiquidGlass ? "text-white/80" : "text-muted-foreground",
+                            )}
+                          >
+                            Contact Info{" "}
+                            <User className="w-3.5 h-3.5 text-muted-foreground" />
                           </div>
-                        ))}
-                      </div>
-                    </div>
+                          <div className="p-4 flex flex-col gap-3 m-0">
+                            {[
+                              { label: "Name", val: selectedTicket.contact.name },
+                              { label: "Email", val: selectedTicket.contact.email },
+                              { label: "Phone", val: selectedTicket.contact.phone },
+                              {
+                                label: "Identifier",
+                                val: selectedTicket.contact.identifier,
+                              },
+                            ].map((field) => (
+                              <div key={field.label} className="m-0 p-0">
+                                <div className={cn(
+                                  "text-[10px] font-semibold uppercase tracking-wider mb-0.5 m-0 p-0",
+                                  isLiquidGlass ? "text-white/60" : "text-muted-foreground"
+                                )}>
+                                  {field.label}
+                                </div>
+                                <div className={cn(
+                                  "text-xs font-semibold truncate m-0 p-0",
+                                  isLiquidGlass ? "text-white" : "text-foreground"
+                                )}>
+                                  {field.val}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+
+
+                        {/* Ticket Details Info Card */}
+                        <div className={cn("m-0 p-0", styles.card)}>
+                          <div
+                            className={cn(
+                              "px-4 py-3 text-[11px] font-semibold uppercase tracking-wider flex justify-between items-center m-0",
+                              styles.cardHeader,
+                              isLiquidGlass ? "text-white/80" : "text-muted-foreground",
+                            )}
+                          >
+                            Ticket Details{" "}
+                            <List className="w-3.5 h-3.5 text-muted-foreground" />
+                          </div>
+                          <div className="p-4 flex flex-col gap-3 m-0">
+                            {[
+                              { label: "Status", val: selectedTicket.status.toUpperCase() },
+                              { label: "Group", val: selectedTicket.properties.group || "Support" },
+                              { label: "Assigned Agent", val: selectedTicket.properties.assignedTo || "Unassigned" },
+                              { label: "Priority", val: selectedTicket.properties.priority || "Medium" },
+                            ].map((field) => (
+                              <div key={field.label} className="m-0 p-0">
+                                <div className={cn(
+                                  "text-[10px] font-semibold uppercase tracking-wider mb-0.5 m-0 p-0",
+                                  isLiquidGlass ? "text-white/60" : "text-muted-foreground"
+                                )}>
+                                  {field.label}
+                                </div>
+                                <div className={cn(
+                                  "text-xs font-semibold truncate m-0 p-0",
+                                  isLiquidGlass ? "text-white" : "text-foreground"
+                                )}>
+                                  {field.val}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* Quick Activity Summary Card (2 lines) */}
+                        <div className={cn("m-0 p-0", styles.card)}>
+                          <div
+                            className={cn(
+                              "px-4 py-2.5 text-[11px] font-semibold uppercase tracking-wider flex justify-between items-center m-0",
+                              styles.cardHeader,
+                              isLiquidGlass ? "text-white/80" : "text-muted-foreground",
+                            )}
+                          >
+                            Activity{" "}
+                            <Clock className="w-3.5 h-3.5 text-muted-foreground" />
+                          </div>
+                          <div className="p-3.5 flex flex-col gap-2.5 m-0">
+                            {[
+                              { label: "Created", val: selectedTicket.time || "2 days ago" },
+                              { label: "Last Response", val: "5 minutes ago" },
+                            ].map((field) => (
+                              <div key={field.label} className="m-0 p-0">
+                                <div className={cn(
+                                  "text-[10px] font-semibold uppercase tracking-wider mb-0.5 m-0 p-0",
+                                  isLiquidGlass ? "text-white/60" : "text-muted-foreground"
+                                )}>
+                                  {field.label}
+                                </div>
+                                <div className={cn(
+                                  "text-xs font-semibold truncate m-0 p-0",
+                                  isLiquidGlass ? "text-white" : "text-foreground"
+                                )}>
+                                  {field.val}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </>
@@ -1956,70 +2075,42 @@ export default function SupportDashboard({
   );
 
   if (isLiquidGlass) {
+    const liquidBg =
+      bgImage ||
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg";
+
     return (
       <div
-        className="relative w-full min-h-[720px] flex items-center justify-center overflow-hidden rounded-3xl p-2 sm:p-6 md:p-8 isolate [contain:paint] [transform:translateZ(0)]"
-        style={style}
+        className={cn(
+          "relative w-full min-h-[720px] flex items-center justify-center overflow-hidden rounded-3xl p-2 sm:p-6 md:p-8 isolate [contain:paint] [transform:translateZ(0)]",
+          className,
+        )}
+        style={customStyle}
       >
-        <LiquidGlassSvgFilter />
+        <LiquidGlassSvgFilter id="glass-blur-support" bgImage={liquidBg} />
 
         {/* Full-bleed background image covering the entire container */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-          <img
-            src={liquidBg}
-            alt="Liquid glass backdrop"
-            className="w-full h-full object-cover select-none pointer-events-none"
-          />
-          <div className="absolute inset-0 bg-black/40 dark:bg-black/55 backdrop-blur-[2px]" />
-        </div>
+        <img
+          src={liquidBg}
+          alt="Liquid glass backdrop"
+          className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+        />
 
         {/* Floating Liquid Glass Card */}
-        <div
+        <LiquidGlassWrapper
+          radius={formattedRadius ?? "var(--radius-2xl, 1rem)"}
+          bgImage={liquidBg}
+          filterId="glass-blur-support"
+          contrastOverlayClassName="bg-black/30 dark:bg-black/45"
           className={cn(
-            "relative z-10 w-full h-[700px] rounded-2xl isolate [contain:paint] [transform:translateZ(0)] text-white transition-all duration-300 overflow-hidden flex flex-col",
+            "relative z-10 w-full h-[700px] text-white transition-all duration-300 overflow-hidden flex flex-col",
+            typeof rounded === "string" && !formatRadius(rounded) ? rounded : "rounded-2xl",
             "shadow-[0_25px_60px_rgba(0,0,0,0.5)] [--foreground:#ffffff] [--muted-foreground:rgba(255,255,255,0.75)] [--color-foreground:#ffffff] [--color-muted-foreground:rgba(255,255,255,0.75)] [--border:rgba(255,255,255,0.2)] [--background:rgba(255,255,255,0.12)] [--card:rgba(255,255,255,0.12)]",
           )}
+          style={dynamicRadiusStyle}
         >
-          {/* Inner Clipping Container for Liquid Background Stack */}
-          <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none z-0">
-            {/* Layer 0: Liquid SVG Displaced Wave Background */}
-            <div
-              className="absolute -inset-10"
-              style={{
-                backgroundImage: `url("${liquidBg}")`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                filter: "url(#glass-blur-support)",
-                transform: "scale(1.1)",
-              }}
-            />
-
-            {/* Layer 1: Contrast overlay & soft backdrop blur */}
-            <div className="absolute inset-0 bg-black/30 dark:bg-black/45 backdrop-blur-[4px]" />
-
-            {/* Layer 2: Ambient Drop Shadow & Subtle Glow */}
-            <div
-              className="absolute inset-0 rounded-2xl"
-              style={{
-                boxShadow:
-                  "0 20px 50px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.08)",
-              }}
-            />
-          </div>
-
-          {/* Layer 3: Specular Inner Border Highlight */}
-          <div
-            className="absolute inset-0 z-40 pointer-events-none rounded-2xl border border-white/40 dark:border-white/15"
-            style={{
-              boxShadow:
-                "inset 2px 2px 2px 0 rgba(255, 255, 255, 0.45), inset -2px -2px 2px 0 rgba(255, 255, 255, 0.3)",
-            }}
-          />
-
-          <div className="relative z-10 w-full h-full flex flex-col overflow-hidden">
-            {dashboardCard}
-          </div>
-        </div>
+          {dashboardCard}
+        </LiquidGlassWrapper>
       </div>
     );
   }
@@ -2032,7 +2123,7 @@ export default function SupportDashboard({
     return (
       <div
         className="relative w-full min-h-[720px] flex items-center justify-center overflow-hidden rounded-3xl p-2 sm:p-6 md:p-8"
-        style={style}
+        style={customStyle}
       >
         {/* Full-bleed glass backdrop */}
         <img
