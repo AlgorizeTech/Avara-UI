@@ -53,62 +53,12 @@ import {
 // ==========================================
 export type AIChatVariant = "default" | "minimal" | "glass" | "compact" | "liquid-glass";
 
-export function LiquidGlassSvgFilter() {
-  return (
-    <>
-      <img
-        src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg"
-        alt=""
-        aria-hidden="true"
-        style={{
-          position: "fixed",
-          top: "-9999px",
-          left: "-9999px",
-          width: "1px",
-          height: "1px",
-          opacity: 0,
-          pointerEvents: "none",
-        }}
-      />
-      <svg
-        style={{
-          position: "fixed",
-          top: "-9999px",
-          left: "-9999px",
-          width: 0,
-          height: 0,
-          pointerEvents: "none",
-        }}
-        aria-hidden="true"
-      >
-        <defs>
-          <filter
-            id="glass-blur-ai"
-            x="0"
-            y="0"
-            width="100%"
-            height="100%"
-            filterUnits="objectBoundingBox"
-          >
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.003 0.007"
-              numOctaves="1"
-              result="turbulence"
-            />
-            <feDisplacementMap
-              in="SourceGraphic"
-              in2="turbulence"
-              scale="200"
-              xChannelSelector="R"
-              yChannelSelector="G"
-            />
-          </filter>
-        </defs>
-      </svg>
-    </>
-  );
-}
+import {
+  LiquidGlassBackground,
+  LiquidGlassSvgFilter,
+  formatRadius,
+} from "@/components/custom/ui/liquid-glass";
+export { LiquidGlassSvgFilter };
 
 // We use (string & {}) to preserve IDE autocomplete for the predefined types
 // while still allowing any arbitrary hex string like "#000fff".
@@ -122,7 +72,7 @@ export type AIChatColor =
 const chatVariants: Record<AIChatVariant, Record<string, string>> = {
   default: {
     wrapper:
-      "bg-background border border-border shadow-none rounded-2xl",
+      "bg-background border border-border shadow-none",
     sidebar:
       "bg-card/95 backdrop-blur-xl border-r border-border shadow-2xl lg:shadow-none rounded-r-2xl rounded-l-none lg:rounded-none",
     main: "bg-background",
@@ -145,7 +95,7 @@ const chatVariants: Record<AIChatVariant, Record<string, string>> = {
   },
   compact: {
     wrapper:
-      "bg-background border border-border shadow-none rounded-2xl",
+      "bg-background border border-border shadow-none",
     sidebar: "",
     main: "bg-background",
     header:
@@ -157,7 +107,7 @@ const chatVariants: Record<AIChatVariant, Record<string, string>> = {
   },
   glass: {
     wrapper:
-      "bg-white/40 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl rounded-2xl",
+      "bg-white/40 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl",
     sidebar:
       "bg-white/40 dark:bg-zinc-950/60 lg:bg-white/[0.08] lg:dark:bg-white/[0.03] backdrop-blur-3xl backdrop-saturate-150 border-r border-white/25 dark:border-white/10 shadow-2xl lg:shadow-none rounded-r-2xl rounded-l-none lg:rounded-none",
     main: "bg-transparent",
@@ -171,7 +121,7 @@ const chatVariants: Record<AIChatVariant, Record<string, string>> = {
   },
   "liquid-glass": {
     wrapper:
-      "bg-transparent border-0 shadow-[0_25px_60px_rgba(0,0,0,0.45)] text-white rounded-[22px] sm:rounded-[28px] [--foreground:#ffffff] [--muted-foreground:rgba(255,255,255,0.75)] [--color-foreground:#ffffff] [--color-muted-foreground:rgba(255,255,255,0.75)]",
+      "bg-transparent border-0 shadow-[0_25px_60px_rgba(0,0,0,0.45)] text-white [--foreground:#ffffff] [--muted-foreground:rgba(255,255,255,0.75)] [--color-foreground:#ffffff] [--color-muted-foreground:rgba(255,255,255,0.75)]",
     sidebar:
       "bg-white/[0.07] dark:bg-black/25 border-r border-white/20 dark:border-white/10",
     main: "bg-transparent",
@@ -500,6 +450,8 @@ export default function AIChat({
   accept,
   maxFiles = 6,
   tools = defaultTools,
+  rounded,
+  className,
 }: {
   chatHistory?: readonly ChatThread[];
   initialMessages?: readonly Message[];
@@ -536,6 +488,9 @@ export default function AIChat({
   maxFiles?: number;
   /** Rows of the "+" menu. One `action: "upload"` row opens the picker; the rest insert `@Label`. */
   tools?: readonly ComposerTool[];
+  /** Optional dynamic corner rounding radius value (e.g. "24px", "1.5rem", or Tailwind class) */
+  rounded?: string | number;
+  className?: string;
 }) {
   const isCustomHex = color.startsWith("#");
 
@@ -1327,54 +1282,30 @@ export default function AIChat({
     </div>
   );
 
+  const formattedRadius = formatRadius(rounded);
+  const dynamicRadiusStyle: React.CSSProperties =
+    formattedRadius !== undefined
+      ? { borderRadius: formattedRadius }
+      : typeof rounded === "string"
+        ? {}
+        : { borderRadius: "var(--radius-3xl, 1.5rem)" };
+
   return (
     <div
-      style={customVars}
+      style={{
+        ...customVars,
+        ...dynamicRadiusStyle,
+      }}
       className={cn(
         "w-full max-w-full h-[650px] sm:h-[750px] flex overflow-hidden relative font-sans box-border transition-colors duration-300 isolate [contain:paint] [transform:translateZ(0)]",
+        typeof rounded === "string" && !formatRadius(rounded) ? rounded : "",
         styles.wrapper,
+        className,
       )}
     >
       <LiquidGlassSvgFilter />
       {variant === "liquid-glass" && (
-        <>
-          {/* Inner Clipping Container for Liquid Background Stack */}
-          <div className="absolute inset-0 overflow-hidden rounded-[22px] sm:rounded-[28px] pointer-events-none z-0">
-            {/* Layer 0: Liquid SVG Displaced Wave Background */}
-            <div
-              className="absolute -inset-10"
-              style={{
-                backgroundImage:
-                  'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                filter: "url(#glass-blur-ai)",
-                transform: "scale(1.1)",
-              }}
-            />
-
-            {/* Layer 1: Contrast overlay & soft backdrop blur */}
-            <div className="absolute inset-0 bg-black/30 dark:bg-black/45 backdrop-blur-[2px]" />
-
-            {/* Layer 2: Ambient Drop Shadow & Subtle Glow */}
-            <div
-              className="absolute inset-0 rounded-[22px] sm:rounded-[28px]"
-              style={{
-                boxShadow:
-                  "0 20px 50px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.08)",
-              }}
-            />
-          </div>
-
-          {/* Layer 3: Specular Inner Border Highlight */}
-          <div
-            className="absolute inset-0 z-40 pointer-events-none rounded-[22px] sm:rounded-[28px] border border-white/40 dark:border-white/15"
-            style={{
-              boxShadow:
-                "inset 2px 2px 2px 0 rgba(255, 255, 255, 0.45), inset -2px -2px 2px 0 rgba(255, 255, 255, 0.3)",
-            }}
-          />
-        </>
+        <LiquidGlassBackground radius={formattedRadius ?? "var(--radius-3xl, 1.5rem)"} />
       )}
 
       {/* === LEFT SIDEBAR === */}
@@ -1382,26 +1313,18 @@ export default function AIChat({
         <aside
           className={cn(
             `absolute lg:relative z-30 w-[280px] max-w-[85vw] shrink-0 h-full flex flex-col transition-transform duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`,
-            "rounded-r-2xl rounded-l-none lg:rounded-none overflow-hidden",
+            "rounded-l-[inherit] max-lg:rounded-r-2xl lg:rounded-r-none overflow-hidden",
             styles.sidebar,
-            variant === "liquid-glass" && "rounded-l-[22px] sm:rounded-l-[28px] max-lg:rounded-r-2xl max-lg:border-r max-lg:border-white/20",
+            variant === "liquid-glass" && "rounded-l-[inherit] max-lg:rounded-r-2xl max-lg:border-r max-lg:border-white/20",
           )}
         >
           {variant === "liquid-glass" && (
-            <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-              <div
-                className="absolute -inset-10"
-                style={{
-                  backgroundImage:
-                    'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
-                  backgroundSize: "cover",
-                  backgroundPosition: "left center",
-                  filter: "url(#glass-blur-ai)",
-                  transform: "scale(1.1)",
-                }}
-              />
-              <div className="absolute inset-0 bg-black/35 dark:bg-black/50 backdrop-blur-[2px]" />
-            </div>
+            <LiquidGlassBackground
+              radius={formattedRadius ?? "var(--radius-3xl, 1.5rem)"}
+              bgPosition="left center"
+              showOuterShadow={false}
+              contrastOverlayClassName="bg-black/35 dark:bg-black/50 backdrop-blur-[2px]"
+            />
           )}
 
           <div
@@ -1656,14 +1579,26 @@ export default function AIChat({
 
       {showSidebar && isSidebarOpen && (
         <div
-          className={cn(
-            "absolute inset-0 z-20 lg:hidden cursor-pointer transition-opacity duration-300",
-            variant === "liquid-glass" || variant === "glass"
-              ? "bg-black/25 dark:bg-black/45 backdrop-blur-[2px]"
-              : "bg-black/50 dark:bg-black/70 backdrop-blur-sm",
-          )}
+          className="absolute inset-0 z-20 lg:hidden cursor-pointer transition-opacity duration-300 rounded-[inherit] overflow-hidden"
           onClick={() => setIsSidebarOpen(false)}
-        />
+        >
+          {variant === "liquid-glass" ? (
+            <LiquidGlassBackground
+              radius={formattedRadius ?? "var(--radius-3xl, 1.5rem)"}
+              showOuterShadow={false}
+              contrastOverlayClassName="bg-black/50 dark:bg-black/70 backdrop-blur-md"
+            />
+          ) : (
+            <div
+              className={cn(
+                "absolute inset-0 rounded-[inherit]",
+                variant === "glass"
+                  ? "bg-black/25 dark:bg-black/45 backdrop-blur-[2px]"
+                  : "bg-black/50 dark:bg-black/70 backdrop-blur-sm",
+              )}
+            />
+          )}
+        </div>
       )}
 
       {/* === MAIN CHAT AREA === */}
