@@ -128,7 +128,8 @@
   },
   "booking-card": {
     "in-a-card": "Booking Card — In a card",
-    "in-a-glass-slab": "Booking Card — In a glass slab"
+    "in-a-glass-slab": "Booking Card — In a glass slab",
+    "liquid-glass": "Booking Card — Liquid glass"
   },
   "breadcrumb": {
     "breadcrumb": "Breadcrumb",
@@ -290,7 +291,8 @@
   },
   "dashboard": {
     "admin-overview": "Dashboard — Admin overview",
-    "dashboard-glass": "Dashboard — Glass"
+    "dashboard-glass": "Dashboard — Glass",
+    "dashboard-liquid-glass": "Dashboard — Liquid Glass"
   },
   "data-flow": {
     "sources-core-outputs": "Data Flow — Sources, core, outputs"
@@ -427,7 +429,8 @@
   "glass-panel": {
     "four-shapes": "Glass Panel — Four shapes",
     "bento-layout": "Glass Panel — Bento layout",
-    "solid": "Glass Panel — Solid"
+    "solid": "Glass Panel — Solid",
+    "liquid-glass": "Glass Panel — Liquid glass"
   },
   "half-stars": {
     "full-stars": "Half Stars — Full stars",
@@ -646,7 +649,8 @@
   },
   "profile-page": {
     "profile-page": "Profile Page",
-    "solid": "Profile Page — Solid"
+    "solid": "Profile Page — Solid",
+    "liquid-glass": "Profile Page — Liquid glass"
   },
   "progress": {
     "progress": "Progress",

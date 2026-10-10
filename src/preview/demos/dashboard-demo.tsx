@@ -230,10 +230,11 @@ const SHORTCUTS: DashboardShortcut[] = [
   { label: "Invitations", href: "#invitations", icon: <UserPlus /> },
 ];
 
-export default function AdminDashboard({ variant = "classic" }: { variant?: DashboardVariant }) {
+export default function AdminDashboard({ variant = "classic", bgImage }: { variant?: DashboardVariant; bgImage?: string }) {
   return (
     <Dashboard
       variant={variant}
+      bgImage={bgImage}
       userName="Ayesha Rahman"
       totals={TOTALS}
       metrics={METRICS}

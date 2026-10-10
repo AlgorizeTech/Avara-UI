@@ -57,12 +57,29 @@ export const usageSolid = `import { GlassBackdrop, GlassPanel } from "@/componen
 export default function Solid() {
   // No glass, no aurora: white cards with a shadow on a flat ground.
   return (
-    <GlassBackdrop variant="solid" className="rounded-[36px]">
+    <GlassBackdrop variant="solid" className="rounded-[var(--radius-3xl,2rem)]">
       <GlassPanel shape="slab" className="p-8 lg:col-span-8">
         <h2 className="text-2xl font-semibold tracking-tight">The hero surface</h2>
       </GlassPanel>
       <GlassPanel shape="tile" interactive className="p-6 lg:col-span-4">
         Lifts on hover.
+      </GlassPanel>
+    </GlassBackdrop>
+  );
+}`;
+
+export const usageLiquidGlass = `import { GlassBackdrop, GlassPanel } from "@/components/custom/blocks/GlassPanelBlock";
+
+export default function LiquidGlass() {
+  return (
+    <GlassBackdrop variant="liquid-glass" className="rounded-[var(--radius-3xl,2rem)]">
+      <GlassPanel shape="slab" className="p-8 lg:col-span-8">
+        <h2 className="text-2xl font-semibold tracking-tight">Liquid glass surface</h2>
+        <p className="mt-2 text-sm text-white/80">Refractive fluid SVG filter with pure white glass elements.</p>
+      </GlassPanel>
+
+      <GlassPanel shape="tile" interactive className="p-6 lg:col-span-4">
+        Frosted glass tile on fluid background.
       </GlassPanel>
     </GlassBackdrop>
   );
@@ -143,6 +160,22 @@ export default function Solid() {
       usage: usageSolid,
       minHeight: 520,
     },
+    {
+      title: "Liquid glass",
+      subheading: "The same layout inside a liquid-glass refraction surface with pure white glass elements.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"liquid-glass"',
+          effect:
+            "on `GlassBackdrop` for realistic fluid refraction with custom background image support and pure white glass panels.",
+        },
+      ],
+      props: { example: "bento", variant: "liquid-glass" },
+      usage: usageLiquidGlass,
+      minHeight: 520,
+    },
   ]}
 />
 
@@ -184,9 +217,27 @@ export default function Solid() {
     <tbody>
       <tr>
         <td><code>variant</code></td>
-        <td><code>"glass" | "solid"</code></td>
+        <td><code>"glass" | "solid" | "liquid-glass"</code></td>
         <td><code>"glass"</code></td>
-        <td>Frosted panels over an aurora, or solid white cards with a shadow on a flat ground. Read by every <code>GlassPanel</code> inside.</td>
+        <td>Frosted panels over an aurora, solid white cards with a shadow on a flat ground, or liquid-glass refraction with fluid background. Read by every <code>GlassPanel</code> inside.</td>
+      </tr>
+      <tr>
+        <td><code>bgImage</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Optional custom background image URL for <code>liquid-glass</code> variant.</td>
+      </tr>
+      <tr>
+        <td><code>wrapperClassName</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Classes for the inner <code>LiquidGlassWrapper</code> — controls ratio (defaults to 40% width centered on large screens).</td>
+      </tr>
+      <tr>
+        <td><code>radius</code></td>
+        <td><code>string | number</code></td>
+        <td>—</td>
+        <td>Dynamic rounding radius for backdrop and wrapper (e.g. <code>"1.5rem"</code>, <code>"var(--radius-3xl)"</code>).</td>
       </tr>
       <tr>
         <td><code>aurora</code></td>

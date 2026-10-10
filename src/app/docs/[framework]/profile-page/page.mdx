@@ -650,6 +650,23 @@ export default function ProfilePageDemo() {
       usage: usagePageSolid,
       minHeight: 880,
     },
+    {
+      title: "Liquid glass",
+      subheading: "Fluid SVG displacement map refraction, specular inner highlights, and ambient depth backdrop using LiquidGlassWrapper and LiquidGlassBackground.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"liquid-glass"',
+          effect:
+            "on `ProfilePage` wraps the bento grid with fluid SVG refractive glass, deep backdrop blur, and high-contrast translucent panels.",
+        },
+      ],
+      props: { rounded: true, variant: "liquid-glass" },
+      usage: usagePage,
+      code: extractCode("src/components/custom/blocks/ProfilePageBlock.tsx"),
+      minHeight: 880,
+    },
   ]}
 />
 

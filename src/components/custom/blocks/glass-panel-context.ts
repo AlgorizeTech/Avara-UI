@@ -6,7 +6,7 @@ import { createContext, useContext } from "react";
  * The page's surface treatment. `glass` is frosted panels over an aurora;
  * `solid` is plain theme cards with an ordinary shadow on a flat ground.
  */
-export type SurfaceVariant = "glass" | "solid";
+export type SurfaceVariant = "glass" | "solid" | "liquid-glass";
 
 /** Set by `GlassBackdrop` for every `GlassPanel` inside it. */
 export const SurfaceContext = createContext<SurfaceVariant>("glass");
