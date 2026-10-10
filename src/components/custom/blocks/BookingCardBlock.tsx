@@ -215,7 +215,7 @@ function BookingCardDays({ days: daysProp, count = 7, horizon = 90, unavailable,
               disabled={off}
               onClick={() => setDay(d)}
               className={cn(
-                "flex flex-col items-center gap-1 rounded-2xl py-2 text-xs transition-colors",
+                "flex flex-col items-center gap-1 rounded-[var(--radius-xl,1rem)] py-2 text-xs transition-colors",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
                 selected
                   ? isLiquid
@@ -269,7 +269,7 @@ function BookingCardSlots({ label, slots, className }: BookingCardSlotsProps) {
               disabled={s.taken || day === null}
               onClick={() => setSlot(s.label)}
               className={cn(
-                "h-9 rounded-full border px-3.5 text-xs font-medium tabular-nums transition-colors",
+                "h-9 rounded-[var(--radius-xl,1rem)] border px-3.5 text-xs font-medium tabular-nums transition-colors",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
                 selected
                   ? isLiquid
@@ -311,7 +311,7 @@ function BookingCardSubmit({ children = "Book now", className }: BookingCardSubm
       aria-busy={busy}
       onClick={submit}
       className={cn(
-        "inline-flex h-11 w-full items-center justify-center gap-2 rounded-full px-5 text-sm font-medium transition-[background-color,transform] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:active:scale-100",
+        "inline-flex h-11 w-full items-center justify-center gap-2 rounded-[var(--radius-xl,1rem)] px-5 text-sm font-medium transition-[background-color,transform] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:active:scale-100",
         isLiquid
           ? "bg-white text-black hover:bg-white/90 font-semibold shadow-sm"
           : "bg-primary text-primary-foreground hover:bg-primary/90",

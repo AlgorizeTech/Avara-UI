@@ -823,6 +823,15 @@ html body[data-scroll-locked] {
   border-color: transparent !important;
 }
 
+/* Remove vertical padding from the sandbox container when the demo has a full-bleed frame or liquid glass */
+div:has(> [data-sandbox-frame]),
+div:has(> * > [data-sandbox-frame]),
+div:has(> [data-liquid-glass]),
+div:has(> * > [data-liquid-glass]) {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
 /* Force zero border radius across all elements while the theme customizer's
    radius is 0 — it marks <html> with `data-radius-zero`. Elements that must
    stay circular (orbital lines) opt out with `.keep-rounded` and carry their

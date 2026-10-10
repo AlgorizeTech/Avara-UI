@@ -56,8 +56,9 @@ export function GlassBackdrop({
     return (
       <SurfaceContext.Provider value={variant}>
         <div
+          data-liquid-glass=""
           className={cn(
-            "relative isolate w-full h-full min-h-[520px] flex flex-col justify-center overflow-hidden rounded-[var(--radius-3xl,2rem)] border border-white/10 text-white p-3 sm:p-6",
+            "relative isolate w-full h-auto min-h-0 lg:h-full lg:min-h-[560px] flex flex-col justify-center overflow-hidden rounded-[var(--radius-3xl,2rem)] border border-white/10 text-white p-4 sm:p-6",
             className,
           )}
           {...props}

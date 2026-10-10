@@ -43,7 +43,7 @@ export default function BookingCardDemo({
 }) {
   if (surface === "liquid-glass") {
     return (
-      <GlassBackdrop variant="liquid-glass" className="w-full max-w-full h-full min-h-full rounded-[var(--radius-3xl,2rem)]">
+      <GlassBackdrop variant="liquid-glass" className="w-full max-w-full h-auto min-h-0 lg:h-full lg:min-h-[560px] rounded-[var(--radius-3xl,2rem)]">
         <Card className="col-span-full" />
       </GlassBackdrop>
     );
