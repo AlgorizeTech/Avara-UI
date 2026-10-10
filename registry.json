@@ -1259,7 +1259,7 @@
       "type": "registry:component",
       "title": "Dashboard",
       "author": "AlgorizeTech",
-      "description": "An admin dashboard home: greeting with all-time totals, a period switch, an overview chart with a tab per metric, activity feed, traffic sources, visitors by country and top authors. Two looks: classic and glass (milky glass panes, KPI cards, capsule columns, a notched activity journey and a payments table).",
+      "description": "An admin dashboard home: greeting with all-time totals, a period switch, an overview chart with a tab per metric, activity feed, traffic sources, visitors by country and top authors. Three looks: classic, glass, and liquid-glass (using LiquidGlassWrapper, LiquidGlassBackground, and LiquidGlassSvgFilter).",
       "categories": [
         "data-display",
         "layout"
@@ -1272,6 +1272,7 @@
         "https://algorize-ui.vercel.app/r/chart.json",
         "https://algorize-ui.vercel.app/r/popover.json",
         "https://algorize-ui.vercel.app/r/toggle-group.json",
+        "https://algorize-ui.vercel.app/r/ui-liquid-glass.json",
         "utils"
       ],
       "files": [
@@ -1281,7 +1282,7 @@
           "target": "components/custom/blocks/DashboardBlock.tsx"
         }
       ],
-      "docs": "Named exports: Dashboard (also the default) plus the DashboardMetric, DashboardPoint, DashboardTotal, DashboardActivity, DashboardShare, DashboardAuthor, DashboardPayment, DashboardShortcut, DashboardLinks, DashboardPeriod and DashboardVariant types. variant: 'classic' (default) | 'glass'; both read the same props, and glass also reads `payments`, `shortcuts`, `totals[].metric` / `href` and `activity[].person` / `avatar`. Every number comes from props: `metrics` carry a series per period (day | week | month, oldest first) and an optional `change` per period; `sources`, `countries` and `authors` are keyed by period; `activity` items have a type of user | post | payment | message. Pass `linkComponent` (e.g. next/link) for the panel links and `onExport` to replace the built-in CSV. Composes toggle-group (segmented), chart and popover. Clock-dependent text renders after mount, so server and client markup agree."
+      "docs": "Named exports: Dashboard (also the default) plus LiquidGlassWrapper, LiquidGlassBackground, LiquidGlassSvgFilter, and the DashboardMetric, DashboardPoint, DashboardTotal, DashboardActivity, DashboardShare, DashboardAuthor, DashboardPayment, DashboardShortcut, DashboardLinks, DashboardPeriod and DashboardVariant types. variant: 'classic' (default) | 'glass' | 'liquid-glass'; all read the same props, and glass/liquid-glass also read `payments`, `shortcuts`, `totals[].metric` / `href` and `activity[].person` / `avatar`. Every number comes from props: `metrics` carry a series per period (day | week | month, oldest first) and an optional `change` per period; `sources`, `countries` and `authors` are keyed by period; `activity` items have a type of user | post | payment | message. Pass `linkComponent` (e.g. next/link) for the panel links and `onExport` to replace the built-in CSV. Composes toggle-group (segmented), chart and popover. Clock-dependent text renders after mount, so server and client markup agree."
     },
     {
       "name": "data-flow",

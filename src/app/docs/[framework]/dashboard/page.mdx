@@ -11,11 +11,16 @@ export const usageGlass = extractCode("src/preview/demos/dashboard-demo.tsx").re
   'variant = "glass"',
 );
 
+export const usageLiquidGlass = extractCode("src/preview/demos/dashboard-demo.tsx").replace(
+  'variant = "classic"',
+  'variant = "liquid-glass"',
+);
+
 # Dashboard
 
 An admin dashboard home on its own canvas: a greeting with all-time totals, a period switch, an overview chart with a tab per metric, the activity feed, traffic sources, visitors by country and the top authors. Every number arrives through props, so you point it at your API and the layout, the empty states and the narrow-screen stacking take care of themselves.
 
-Two looks read the same props: **classic**, solid panels on a light canvas, and **glass**, milky panes over soft colour blobs with KPI cards, metric tiles beside capsule columns, a segmented half ring, the activity as a journey in a notched pane, and a payments table.
+Three looks read the same props: **classic**, solid panels on a light canvas; **glass**, milky panes over soft colour blobs; and **liquid-glass**, fluid refractive glass powered by `LiquidGlassWrapper`, `LiquidGlassBackground`, and `LiquidGlassSvgFilter`.
 
 <ExampleShowcase
   name="dashboard"
@@ -73,6 +78,23 @@ Two looks read the same props: **classic**, solid panels on a light canvas, and 
       ],
       props: { variant: "glass" },
       usage: usageGlass,
+      code: extractCode("src/components/custom/blocks/DashboardBlock.tsx"),
+    },
+    {
+      title: "Liquid Glass",
+      id: "dashboard-liquid-glass",
+      subheading: "Fluid refractive glass effect powered by SVG displacement noise filters. Wraps the dashboard with dynamic liquid glass backdrops, specular highlights, and ambient illumination using LiquidGlassWrapper, LiquidGlassBackground, and LiquidGlassSvgFilter.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"liquid-glass"',
+          effect:
+            "— applies fluid SVG distortion filters, specular highlights, and refractive backdrop glass layers built with LiquidGlassWrapper, LiquidGlassBackground, and LiquidGlassSvgFilter.",
+        },
+      ],
+      props: { variant: "liquid-glass" },
+      usage: usageLiquidGlass,
       code: extractCode("src/components/custom/blocks/DashboardBlock.tsx"),
     },
   ]}
@@ -143,9 +165,9 @@ Two looks read the same props: **classic**, solid panels on a light canvas, and 
     <tbody>
       <tr>
         <td><code>variant</code></td>
-        <td><code>"classic" | "glass"</code></td>
+        <td><code>"classic" | "glass" | "liquid-glass"</code></td>
         <td><code>"classic"</code></td>
-        <td>The look. Both read the same props; the glass-only props below are ignored by the classic look.</td>
+        <td>The look. All variants read the same props. <code>liquid-glass</code> wraps the dashboard in fluid SVG displacement filters, specular highlights, and refractive glass backdrops using <code>LiquidGlassWrapper</code>, <code>LiquidGlassBackground</code>, and <code>LiquidGlassSvgFilter</code>.</td>
       </tr>
       <tr>
         <td><code>userName</code></td>

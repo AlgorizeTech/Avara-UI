@@ -290,7 +290,8 @@
   },
   "dashboard": {
     "admin-overview": "Dashboard — Admin overview",
-    "dashboard-glass": "Dashboard — Glass"
+    "dashboard-glass": "Dashboard — Glass",
+    "dashboard-liquid-glass": "Dashboard — Liquid Glass"
   },
   "data-flow": {
     "sources-core-outputs": "Data Flow — Sources, core, outputs"
