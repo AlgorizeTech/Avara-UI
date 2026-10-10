@@ -24,9 +24,10 @@ export default function GlassPanelDemo({
       <GlassBackdrop
         variant={variant}
         aurora={["#f9a8d4", "#a5b4fc", "#fde68a"]}
-        className={cn("w-full max-w-4xl", rounded && "rounded-[36px]")}
+        wrapperClassName={variant === "liquid-glass" ? "lg:w-full lg:max-w-full" : undefined}
+        className={cn("w-full max-w-full h-auto min-h-0 lg:h-full lg:min-h-[520px]", rounded && "rounded-[var(--radius-3xl,2rem)]")}
       >
-        <GlassPanel shape="slab" className="p-8 md:col-span-4 lg:col-span-8">
+        <GlassPanel shape="slab" className="p-5 sm:p-8 md:col-span-4 lg:col-span-8">
           <p className="text-xs font-medium text-foreground/50">Slab</p>
           <h2 className="mt-1 text-2xl font-semibold tracking-tight">The hero surface</h2>
           <p className="mt-2 max-w-md text-sm text-foreground/60">
@@ -34,7 +35,7 @@ export default function GlassPanelDemo({
             level a panel is.
           </p>
         </GlassPanel>
-        <GlassPanel shape="tile" interactive className="p-6 md:col-span-2 lg:col-span-4">
+        <GlassPanel shape="tile" interactive className="p-5 sm:p-6 md:col-span-2 lg:col-span-4">
           <p className="text-xs font-medium text-foreground/50">Tile, interactive</p>
           <p className="mt-2 text-sm">Lifts on hover and shows a pointer.</p>
         </GlassPanel>
@@ -64,7 +65,10 @@ export default function GlassPanelDemo({
   }
 
   return (
-    <GlassBackdrop variant={variant} className={cn("w-full max-w-3xl", rounded && "rounded-[36px]")}>
+    <GlassBackdrop
+      variant={variant}
+      className={cn("w-full max-w-full h-auto min-h-0 lg:h-full lg:min-h-[320px]", rounded && "rounded-[var(--radius-3xl,2rem)]")}
+    >
       {SHAPES.map((shape) => (
         <div key={shape} className="flex flex-col items-center gap-3 md:col-span-3 lg:col-span-3">
           <GlassPanel

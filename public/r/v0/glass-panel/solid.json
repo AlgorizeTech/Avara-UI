@@ -15,7 +15,7 @@
       "path": "app/page.tsx",
       "type": "registry:page",
       "target": "app/page.tsx",
-      "content": "import { GlassBackdrop, GlassPanel } from \"@/components/custom/blocks/GlassPanelBlock\";\n\nexport default function Solid() {\n  // No glass, no aurora: white cards with a shadow on a flat ground.\n  return (\n    <GlassBackdrop variant=\"solid\" className=\"rounded-[36px]\">\n      <GlassPanel shape=\"slab\" className=\"p-8 lg:col-span-8\">\n        <h2 className=\"text-2xl font-semibold tracking-tight\">The hero surface</h2>\n      </GlassPanel>\n      <GlassPanel shape=\"tile\" interactive className=\"p-6 lg:col-span-4\">\n        Lifts on hover.\n      </GlassPanel>\n    </GlassBackdrop>\n  );\n}"
+      "content": "import { GlassBackdrop, GlassPanel } from \"@/components/custom/blocks/GlassPanelBlock\";\n\nexport default function Solid() {\n  // No glass, no aurora: white cards with a shadow on a flat ground.\n  return (\n    <GlassBackdrop variant=\"solid\" className=\"rounded-[var(--radius-3xl,2rem)]\">\n      <GlassPanel shape=\"slab\" className=\"p-8 lg:col-span-8\">\n        <h2 className=\"text-2xl font-semibold tracking-tight\">The hero surface</h2>\n      </GlassPanel>\n      <GlassPanel shape=\"tile\" interactive className=\"p-6 lg:col-span-4\">\n        Lifts on hover.\n      </GlassPanel>\n    </GlassBackdrop>\n  );\n}"
     },
     {
       "path": "components/custom/blocks/GlassPanelBlock.tsx",

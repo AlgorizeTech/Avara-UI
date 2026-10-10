@@ -429,7 +429,8 @@
   "glass-panel": {
     "four-shapes": "Glass Panel — Four shapes",
     "bento-layout": "Glass Panel — Bento layout",
-    "solid": "Glass Panel — Solid"
+    "solid": "Glass Panel — Solid",
+    "liquid-glass": "Glass Panel — Liquid glass"
   },
   "half-stars": {
     "full-stars": "Half Stars — Full stars",
