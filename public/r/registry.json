@@ -2047,6 +2047,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
+        "https://algorize-ui.vercel.app/r/ui-liquid-glass.json",
         "utils"
       ],
       "files": [
@@ -3346,6 +3347,11 @@
           "path": "src/components/custom/blocks/ProfilePageBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/ProfilePageBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/glass-panel-context.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/glass-panel-context.ts"
         },
         {
           "path": "src/components/custom/blocks/profile-page-hooks.ts",

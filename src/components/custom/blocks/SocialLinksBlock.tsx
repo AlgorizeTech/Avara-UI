@@ -125,9 +125,9 @@ const SIZES: Record<SocialLinksSize, { tile: string; mark: string }> = {
 };
 
 const VARIANTS: Record<Exclude<SocialLinksVariant, "expand-reveal" | "expand-replace">, string> = {
-  tile: "bg-muted/60 text-muted-foreground hover:bg-primary/10 hover:text-primary",
-  outline: "border border-border text-muted-foreground hover:border-primary/40 hover:bg-primary/10 hover:text-primary",
-  ghost: "text-muted-foreground hover:bg-muted hover:text-foreground",
+  tile: "bg-muted/60 text-muted-foreground hover:bg-white/20 hover:text-white transition-all duration-200",
+  outline: "border border-border text-muted-foreground hover:border-white/40 hover:bg-white/20 hover:text-white transition-all duration-200",
+  ghost: "text-muted-foreground hover:bg-white/20 hover:text-white transition-all duration-200",
 };
 
 export const SocialLinks = React.forwardRef<HTMLDivElement, SocialLinksProps>(

@@ -7,6 +7,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { useLocalTime, type LocalTime } from "./profile-page-hooks";
+import { useSurface } from "./glass-panel-context";
 
 // The surface primitives live in GlassPanelBlock so other pages can install
 // them without this one. Re-exported here so existing imports keep working.
@@ -102,6 +103,8 @@ export function WorkdayDial({
   note,
   className,
 }: WorkdayDialProps) {
+  const surface = useSurface();
+  const isLiquid = surface === "liquid-glass";
   const time = useLocalTime(timeZone);
   const working = time !== null && time.hour >= start && time.hour < end;
   const marker = time ? pointAt(time.hour) : null;
@@ -158,7 +161,8 @@ export function WorkdayDial({
           key={l.text}
           aria-hidden
           className={cn(
-            "absolute text-[10px] font-medium tabular-nums text-foreground/45",
+            "absolute text-[10px] font-medium tabular-nums",
+            isLiquid ? "text-white/70" : "text-foreground/45",
             l.className,
           )}
         >
@@ -174,7 +178,7 @@ export function WorkdayDial({
           r={R}
           fill="none"
           strokeWidth="6"
-          className="stroke-foreground/[0.08]"
+          className={cn(isLiquid ? "stroke-white/20" : "stroke-foreground/[0.08]")}
         />
         {/* Working window */}
         <circle
@@ -186,7 +190,7 @@ export function WorkdayDial({
           strokeLinecap="round"
           strokeDasharray={`${(CIRCUMFERENCE * (end - start)) / 24} ${CIRCUMFERENCE}`}
           strokeDashoffset={-(CIRCUMFERENCE * start) / 24}
-          className="stroke-primary"
+          className={cn(isLiquid ? "stroke-white" : "stroke-primary")}
         />
         {/* Six-hour ticks, just outside the ring */}
         {[0, 6, 12, 18].map((h) => {
@@ -200,7 +204,7 @@ export function WorkdayDial({
               y2={50 + 49.5 * Math.sin(a)}
               strokeWidth="1.5"
               strokeLinecap="round"
-              className="stroke-foreground/25"
+              className={cn(isLiquid ? "stroke-white/40" : "stroke-foreground/25")}
             />
           );
         })}
@@ -219,8 +223,12 @@ export function WorkdayDial({
               r="3"
               className={cn(
                 working
-                  ? "fill-primary"
-                  : "fill-muted-foreground",
+                  ? isLiquid
+                    ? "fill-white"
+                    : "fill-primary"
+                  : isLiquid
+                    ? "fill-white/60"
+                    : "fill-muted-foreground",
               )}
             />
           </g>
@@ -229,18 +237,22 @@ export function WorkdayDial({
 
       <div className="absolute inset-0 grid place-items-center text-center">
         <div>
-          <p className="text-3xl font-semibold tabular-nums tracking-tight">
+          <p className={cn("text-3xl font-semibold tabular-nums tracking-tight", isLiquid && "text-white")}>
             {time ? time.label : "--:--"}
           </p>
-          <p className="mt-0.5 text-sm text-foreground/60">
+          <p className={cn("mt-0.5 text-sm", isLiquid ? "text-white/70" : "text-foreground/60")}>
             {place}
           </p>
           <p
             className={cn(
               "mt-2 text-xs font-medium",
               working
-                ? "text-primary"
-                : "text-foreground/50",
+                ? isLiquid
+                  ? "text-white font-semibold"
+                  : "text-primary"
+                : isLiquid
+                  ? "text-white/60"
+                  : "text-foreground/50",
             )}
           >
             {working ? "Working now" : "Off hours"}
@@ -264,12 +276,17 @@ export function WorkdayDial({
                 }
               : { left: "50%", top: 0, width: TIP_WIDTH }
           }
-          className="pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full rounded-2xl border border-popover/70 bg-popover/85 p-3 text-left text-xs leading-relaxed text-popover-foreground shadow-[0_16px_40px_-16px_rgba(15,23,42,0.35)] backdrop-blur-xl dark:border-foreground/10 dark:bg-popover/90 dark:shadow-[0_16px_40px_-16px_rgba(0,0,0,0.9)]"
+          className={cn(
+            "pointer-events-none absolute z-10 -translate-x-1/2 -translate-y-full rounded-2xl p-3 text-left text-xs leading-relaxed shadow-xl backdrop-blur-xl transition-colors duration-200",
+            isLiquid
+              ? "border border-white/40 bg-white/20 backdrop-blur-2xl text-white shadow-2xl"
+              : "border border-popover/70 bg-popover/85 text-popover-foreground dark:border-foreground/10 dark:bg-popover/90 dark:shadow-[0_16px_40px_-16px_rgba(0,0,0,0.9)]",
+          )}
         >
-          <p className="font-semibold">
+          <p className={cn("font-semibold", isLiquid ? "text-white" : "text-popover-foreground")}>
             {time.label} in {place}
           </p>
-          <p className="mt-1 text-popover-foreground/70">
+          <p className={cn("mt-1", isLiquid ? "text-white/80" : "text-popover-foreground/70")}>
             Works {clock(start)} to {clock(end)}
             {sameClock ? "" : `, ${viewerStart} to ${viewerEnd} your time`}
           </p>
@@ -277,14 +294,18 @@ export function WorkdayDial({
             className={cn(
               "mt-1 font-medium",
               working
-                ? "text-primary"
-                : "text-popover-foreground/60",
+                ? isLiquid
+                  ? "text-white font-semibold"
+                  : "text-primary"
+                : isLiquid
+                  ? "text-white/60"
+                  : "text-popover-foreground/60",
             )}
           >
             {untilChange}
           </p>
           {note && (
-            <p className="mt-1 text-popover-foreground/60">{note}</p>
+            <p className={cn("mt-1", isLiquid ? "text-white/60" : "text-popover-foreground/60")}>{note}</p>
           )}
         </div>
       )}

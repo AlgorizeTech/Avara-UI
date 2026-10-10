@@ -2,6 +2,10 @@
 
 import { cn } from "@/lib/utils";
 import React from "react";
+import {
+  LiquidGlassSvgFilter,
+  LiquidGlassWrapper,
+} from "@/components/custom/ui/liquid-glass";
 import { SurfaceContext, useSurface, type SurfaceVariant } from "./glass-panel-context";
 
 // The surface context and its hook, `useSurface`, live in glass-panel-context.ts.
@@ -14,13 +18,15 @@ export type { SurfaceVariant };
 // Card all build on this pair; it has no opinion about what the page is.
 
 export interface GlassBackdropProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Frosted glass over an aurora, or solid cards with a shadow. */
+  /** Frosted glass over an aurora, solid cards with a shadow, or liquid-glass refraction. */
   variant?: SurfaceVariant;
   /**
    * Three colours washed behind the glass, top-left / top-right / bottom.
    * Any CSS colour. The defaults are violet, sky and peach. Ignored by `solid`.
    */
   aurora?: [string, string, string];
+  /** Optional custom background image URL for liquid-glass variant. */
+  bgImage?: string;
   /** Classes for the inner grid — row heights, gaps, a max width. */
   gridClassName?: string;
 }
@@ -31,8 +37,55 @@ export function GlassBackdrop({
   children,
   variant = "glass",
   aurora = ["#a78bfa", "#7dd3fc", "#fdba74"],
+  bgImage,
   ...props
 }: GlassBackdropProps) {
+  if (variant === "liquid-glass") {
+    const liquidBg =
+      bgImage ||
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg";
+    const filterId = "glass-blur-profile";
+
+    return (
+      <SurfaceContext.Provider value={variant}>
+        <div
+          className={cn(
+            "relative isolate w-full min-h-full overflow-hidden rounded-[32px] text-white p-2 sm:p-6 md:p-8",
+            className,
+          )}
+          {...props}
+        >
+          {/* Full-bleed background image - spans 100% width and height of outer container, completely unwrapped */}
+          <LiquidGlassSvgFilter id={filterId} bgImage={liquidBg} />
+          <img
+            src={liquidBg}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none z-0"
+          />
+
+          {/* LiquidGlassWrapper wraps ONLY the component grid area */}
+          <LiquidGlassWrapper
+            radius="1.75rem"
+            bgImage={liquidBg}
+            filterId={filterId}
+            contrastOverlayClassName="bg-black/15 backdrop-blur-[1px]"
+            className="relative z-10 w-full text-white transition-all duration-300 p-4 sm:p-6 lg:p-8 [--foreground:#ffffff] [--muted-foreground:rgba(255,255,255,0.85)]"
+          >
+            <div
+              className={cn(
+                "grid grid-cols-1 gap-4 p-2 sm:p-4 md:grid-cols-6 lg:grid-cols-12 text-white",
+                gridClassName,
+              )}
+            >
+              {children}
+            </div>
+          </LiquidGlassWrapper>
+        </div>
+      </SurfaceContext.Provider>
+    );
+  }
+
   return (
     <SurfaceContext.Provider value={variant}>
       <div
@@ -109,6 +162,11 @@ const SURFACES: Record<SurfaceVariant, { base: string; hover: string }> = {
       "dark:shadow-[0_1px_2px_rgba(0,0,0,0.4),0_16px_40px_-20px_rgba(0,0,0,0.9)]",
     hover:
       "hover:shadow-[0_1px_2px_rgba(0,0,0,0.04),0_24px_48px_-20px_rgba(15,23,42,0.3)]",
+  },
+  "liquid-glass": {
+    base:
+      "border border-white/35 bg-white/15 text-white shadow-[0_8px_32px_rgba(0,0,0,0.15),inset_0_1px_1px_rgba(255,255,255,0.5)]",
+    hover: "hover:bg-white/25 hover:border-white/50",
   },
 };
 

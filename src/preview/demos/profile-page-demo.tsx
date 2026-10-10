@@ -51,9 +51,9 @@ const HIGHLIGHTS = [
 ];
 
 const TEAMMATES = [
-  { initials: "MD", name: "Mateo Duarte", role: "Prototypes and animation", zone: "Lisbon", tint: "bg-sky-500/15 text-sky-800 dark:text-sky-200" },
-  { initials: "IO", name: "Ifeoma Okafor", role: "Inclusive design", zone: "Lagos", tint: "bg-amber-500/15 text-amber-800 dark:text-amber-200" },
-  { initials: "KI", name: "Kavya Iyer", role: "Design tokens", zone: "Pune", tint: "bg-rose-500/15 text-rose-800 dark:text-rose-200" },
+  { initials: "MD", name: "Mateo Duarte", role: "Prototypes and animation", zone: "Lisbon", tint: "bg-sky-500/25 text-sky-200 border border-sky-400/40 font-bold shadow-sm" },
+  { initials: "IO", name: "Ifeoma Okafor", role: "Inclusive design", zone: "Lagos", tint: "bg-amber-500/25 text-amber-200 border border-amber-400/40 font-bold shadow-sm" },
+  { initials: "KI", name: "Kavya Iyer", role: "Design tokens", zone: "Pune", tint: "bg-rose-500/25 text-rose-200 border border-rose-400/40 font-bold shadow-sm" },
 ];
 
 const ACTIVITY = [
@@ -75,6 +75,7 @@ export default function ProfilePageDemo({
   variant?: SurfaceVariant;
 }) {
   const [following, setFollowing] = useState(false);
+  const isLiquid = variant === "liquid-glass";
 
   return (
     <ProfilePage
@@ -82,7 +83,7 @@ export default function ProfilePageDemo({
       // First blob on the theme colour, so the backdrop follows the palette
       // (and the docs picker) along with the dial and the buttons.
       aurora={["var(--primary)", "#7dd3fc", "#fdba74"]}
-      className={cn("max-w-6xl", rounded && "rounded-[36px]")}
+      className={cn("w-full max-w-full", rounded && "rounded-[36px]")}
     >
       {/* Hero */}
       <GlassPanel shape="slab" className="flex flex-col gap-6 p-5 sm:p-8 md:col-span-6 lg:col-span-8">
@@ -90,7 +91,8 @@ export default function ProfilePageDemo({
           <a
             href="#"
             className={cn(
-              "inline-flex items-center gap-1.5 rounded-full text-sm text-foreground/60 transition-colors hover:text-foreground",
+              "inline-flex items-center gap-1.5 rounded-full text-sm transition-colors",
+              isLiquid ? "text-white/80 hover:text-white" : "text-foreground/60 hover:text-primary",
               focusRing,
             )}
           >
@@ -99,7 +101,10 @@ export default function ProfilePageDemo({
           <button
             type="button"
             className={cn(
-              "inline-flex size-10 items-center justify-center rounded-full border border-foreground/10 bg-foreground/[0.04] text-foreground/70 transition-colors hover:bg-foreground/[0.08]",
+              "inline-flex size-10 items-center justify-center rounded-full border transition-colors",
+              isLiquid
+                ? "border-white/20 bg-white/10 text-white hover:bg-white/25 hover:border-white/40"
+                : "border-foreground/10 bg-foreground/[0.04] text-foreground/70 hover:bg-foreground/[0.08]",
               focusRing,
             )}
             aria-label="Share profile"
@@ -112,7 +117,14 @@ export default function ProfilePageDemo({
           {/* Squircle avatar — the only shape on the page that isn't a
               rectangle, circle or capsule, so it reads as the person */}
           <div className="relative shrink-0">
-            <span className="grid size-24 place-items-center rounded-[30%] bg-gradient-to-br from-primary to-primary/70 text-3xl font-semibold text-primary-foreground shadow-[0_16px_32px_-16px_var(--primary)] sm:size-28 sm:text-4xl">
+            <span
+              className={cn(
+                "grid size-24 place-items-center rounded-[30%] text-3xl font-semibold sm:size-28 sm:text-4xl",
+                isLiquid
+                  ? "bg-white/20 text-white border border-white/40 shadow-xl backdrop-blur-md"
+                  : "bg-gradient-to-br from-primary to-primary/70 text-primary-foreground shadow-[0_16px_32px_-16px_var(--primary)]",
+              )}
+            >
               FH
             </span>
           </div>
@@ -121,10 +133,10 @@ export default function ProfilePageDemo({
               Farah Haque
               <VerifyBadge size="lg" aria-label="Verified" />
             </h1>
-            <p className="mt-2 text-base text-foreground/60">
+            <p className={cn("mt-2 text-base", isLiquid ? "text-white/80" : "text-foreground/60")}>
               UI engineer at Brightmoor
             </p>
-            <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm text-foreground/60">
+            <ul className={cn("mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm", isLiquid ? "text-white/80" : "text-foreground/60")}>
               <li className="flex items-center gap-1.5">
                 <MapPin className="size-3.5" /> Dhaka
               </li>
@@ -157,8 +169,12 @@ export default function ProfilePageDemo({
             className={cn(
               "inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-[13px] font-medium transition-colors sm:h-11 sm:gap-2 sm:px-5 sm:text-sm",
               following
-                ? "border border-foreground/10 bg-foreground/[0.04] text-foreground hover:bg-foreground/[0.08]"
-                : "bg-primary text-primary-foreground hover:bg-primary/90",
+                ? isLiquid
+                  ? "border border-white/30 bg-white/10 text-white hover:bg-white/20"
+                  : "border border-foreground/10 bg-foreground/[0.04] text-foreground hover:bg-foreground/[0.08]"
+                : isLiquid
+                  ? "bg-white/25 text-white border border-white/40 hover:bg-white/40 shadow-sm"
+                  : "bg-primary text-primary-foreground hover:bg-primary/90",
               focusRing,
             )}
           >
@@ -168,7 +184,10 @@ export default function ProfilePageDemo({
           <button
             type="button"
             className={cn(
-              "inline-flex h-9 items-center gap-1.5 rounded-full border border-foreground/10 bg-foreground/[0.04] px-3 text-[13px] font-medium transition-colors hover:bg-foreground/[0.08] sm:h-11 sm:gap-2 sm:px-5 sm:text-sm",
+              "inline-flex h-9 items-center gap-1.5 rounded-full border px-3 text-[13px] font-medium transition-colors sm:h-11 sm:gap-2 sm:px-5 sm:text-sm",
+              isLiquid
+                ? "border-white/20 bg-white/10 text-white hover:bg-white/25 hover:border-white/40"
+                : "border-foreground/10 bg-foreground/[0.04] text-foreground hover:bg-foreground/[0.08]",
               focusRing,
             )}
           >
@@ -181,7 +200,7 @@ export default function ProfilePageDemo({
       <GlassPanel shape="slab" className="flex flex-col p-6 md:col-span-6 lg:col-span-4">
         <div className="flex items-baseline justify-between">
           <h2 className="text-sm font-semibold">Her schedule</h2>
-          <p className="text-xs text-foreground/50">UTC+6</p>
+          <p className={cn("text-xs", isLiquid ? "text-white/60" : "text-foreground/50")}>UTC+6</p>
         </div>
         <div className="my-auto py-4">
           <WorkdayDial
@@ -193,7 +212,7 @@ export default function ProfilePageDemo({
             note="Usually answers the same day"
           />
         </div>
-        <p className="text-center text-sm text-foreground/60">
+        <p className={cn("text-center text-sm", isLiquid ? "text-white/70" : "text-foreground/60")}>
           Point at the ring to see her hours in your zone
         </p>
       </GlassPanel>
@@ -204,7 +223,7 @@ export default function ProfilePageDemo({
           <GlassPanel key={s.label} shape="disc" className="grid place-items-center text-center">
             <div>
               <p className="text-2xl font-semibold tabular-nums tracking-tight sm:text-3xl">{s.value}</p>
-              <p className="mt-0.5 text-[11px] text-foreground/55 sm:text-xs">{s.label}</p>
+              <p className={cn("mt-0.5 text-[11px] sm:text-xs", isLiquid ? "text-white/70" : "text-foreground/55")}>{s.label}</p>
             </div>
           </GlassPanel>
         ))}
@@ -213,7 +232,7 @@ export default function ProfilePageDemo({
       {/* About */}
       <GlassPanel className="flex flex-col gap-4 p-6 md:col-span-6 lg:col-span-8">
         <h2 className="text-sm font-semibold">About</h2>
-        <p className="max-w-prose text-[15px] leading-relaxed text-foreground/70">
+        <p className={cn("max-w-prose text-[15px] leading-relaxed", isLiquid ? "text-white/80" : "text-foreground/70")}>
           Maintains the shared UI kit that three product squads build on. Right
           now reworking the animation toolkit so dialogs, sheets and toasts all
           move on one curve. Loves turning a design choice into a single token.
@@ -222,7 +241,12 @@ export default function ProfilePageDemo({
           {SKILLS.map((skill) => (
             <li
               key={skill}
-              className="rounded-full border border-foreground/10 bg-foreground/[0.04] px-3 py-1 text-xs"
+              className={cn(
+                "rounded-full px-3 py-1 text-xs border",
+                isLiquid
+                  ? "border-white/25 bg-white/10 text-white"
+                  : "border-foreground/10 bg-foreground/[0.04]",
+              )}
             >
               {skill}
             </li>
@@ -235,7 +259,7 @@ export default function ProfilePageDemo({
         <GlassPanel key={item.title} className="flex flex-col gap-3 p-5 md:col-span-2 lg:col-span-4">
           <div className="space-y-1">
             <p className="text-sm font-semibold leading-snug">{item.title}</p>
-            <p className="text-xs leading-relaxed text-foreground/60">{item.summary}</p>
+            <p className={cn("text-xs leading-relaxed", isLiquid ? "text-white/70" : "text-foreground/60")}>{item.summary}</p>
           </div>
           <div className="mt-auto space-y-2">
             {item.progress !== undefined && (
@@ -245,10 +269,10 @@ export default function ProfilePageDemo({
                 aria-valuemin={0}
                 aria-valuemax={100}
                 aria-label={`${item.title} progress`}
-                className="h-1.5 overflow-hidden rounded-full bg-foreground/10"
+                className={cn("h-1.5 overflow-hidden rounded-full", isLiquid ? "bg-white/20" : "bg-foreground/10")}
               >
                 <div
-                  className="h-full rounded-full bg-primary"
+                  className={cn("h-full rounded-full", isLiquid ? "bg-white" : "bg-primary")}
                   style={{ width: `${item.progress}%` }}
                 />
               </div>
@@ -257,8 +281,12 @@ export default function ProfilePageDemo({
               className={cn(
                 "text-xs font-medium",
                 item.progress !== undefined
-                  ? "text-primary"
-                  : "text-foreground/50",
+                  ? isLiquid
+                    ? "text-white font-semibold"
+                    : "text-primary"
+                  : isLiquid
+                    ? "text-white/60"
+                    : "text-foreground/50",
               )}
             >
               {item.status}
