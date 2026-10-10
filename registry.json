@@ -74,6 +74,11 @@
           "target": "components/custom/blocks/Ai-chat.tsx"
         },
         {
+          "path": "src/components/custom/blocks/glass-panel-context.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/glass-panel-context.ts"
+        },
+        {
           "path": "src/components/custom/blocks/gsap-motion.ts",
           "type": "registry:component",
           "target": "components/custom/blocks/gsap-motion.ts"
@@ -108,6 +113,11 @@
           "path": "src/components/custom/blocks/motion/Ai-chat.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/Ai-chat.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/glass-panel-context.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/glass-panel-context.ts"
         }
       ],
       "docs": "Motion build of `ai-chat` — same props, markup and install path; install one or the other. Named exports: AIChat, plus ChatThread, Message, ChatModel, EffortOption, ComposerTool, SendPayload and UploadHandler types. Responses are mocked — wire `onSend` ({ content, attachments, model, effort, tools }) to your endpoint and `uploadFile` (file, onProgress, signal) to your storage. The composer ships with a + menu (`tools`: one upload row opens the picker, the rest insert @Label mentions), drag-and-drop attachments (rocket progress indicator), a `models` picker, a Faster↔Smarter `efforts` slider that lights the prompt bar at the top level, and mic dictation via getUserMedia + the Web Speech API with graceful fallbacks. Variants: default | minimal | glass | compact (no history sidebar — opens as a hero with `heroTitle` over the prompt bar until the first message; `showSidebar={false}` does the same for any variant)."

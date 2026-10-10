@@ -58,6 +58,7 @@ import {
   LiquidGlassSvgFilter,
   formatRadius,
 } from "@/components/custom/ui/liquid-glass";
+import { SurfaceContext, useSurface } from "../glass-panel-context";
 export { LiquidGlassSvgFilter };
 
 // We use (string & {}) to preserve IDE autocomplete for the predefined types
@@ -521,6 +522,9 @@ export default function AIChat({
     : colorThemes[color] || colorThemes["primary"];
 
   const styles = chatVariants[variant];
+  const inheritedSurface = useSurface();
+  const isLiquid = variant === "liquid-glass" || inheritedSurface === "liquid-glass";
+  const surfaceValue = isLiquid ? "liquid-glass" : inheritedSurface;
 
   // Ink for the accent-gradient tiles, read off `theme.primaryBg` so it matches
   // the button text: `primary` pairs with primary-foreground, not white.
@@ -1086,17 +1090,37 @@ export default function AIChat({
                         role="menuitem"
                         disabled={full}
                         onClick={() => runTool(tool)}
-                        className="w-full flex items-center gap-3 px-2.5 sm:px-3 py-2 sm:py-2.5 rounded-lg text-left transition-colors hover:bg-muted disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed"
+                        className={cn(
+                          "w-full flex items-center gap-3 px-2.5 sm:px-3 py-2 sm:py-2.5 rounded-lg text-left transition-colors disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed",
+                          isLiquid
+                            ? "hover:bg-white/15 text-white"
+                            : "hover:bg-muted",
+                        )}
                       >
-                        <span className="shrink-0 text-muted-foreground">
+                        <span
+                          className={cn(
+                            "shrink-0",
+                            isLiquid ? "text-white/80" : "text-muted-foreground",
+                          )}
+                        >
                           {tool.icon ?? <Plus className="w-4 h-4" />}
                         </span>
                         <span className="min-w-0 flex items-baseline gap-2 truncate">
-                          <span className="text-sm font-semibold text-foreground">
+                          <span
+                            className={cn(
+                              "text-sm font-semibold",
+                              isLiquid ? "text-white" : "text-foreground",
+                            )}
+                          >
                             {tool.label}
                           </span>
                           {tool.description && (
-                            <span className="text-xs text-muted-foreground truncate">
+                            <span
+                              className={cn(
+                                "text-xs truncate",
+                                isLiquid ? "text-white/70" : "text-muted-foreground",
+                              )}
+                            >
                               {tool.description}
                             </span>
                           )}
@@ -1154,7 +1178,7 @@ export default function AIChat({
                             <span
                               className={cn(
                                 "text-[9px] font-semibold uppercase tracking-wide px-1.5 py-px rounded-full",
-                                theme.lightBg,
+                                isLiquid ? "bg-white/20 text-white" : theme.lightBg,
                               )}
                             >
                               {model.badge}
@@ -1163,7 +1187,12 @@ export default function AIChat({
                           {tier && <TierBadge tier={tier} />}
                         </div>
                         {model.description && (
-                          <p className="text-xs text-muted-foreground truncate">
+                          <p
+                            className={cn(
+                              "text-xs truncate",
+                              isLiquid ? "text-white/70" : "text-muted-foreground",
+                            )}
+                          >
                             {model.description}
                           </p>
                         )}
@@ -1191,9 +1220,19 @@ export default function AIChat({
               >
                 <div className="p-2.5 sm:p-3">
                   <div className="flex items-center justify-between gap-3">
-                    <p className="text-xs sm:text-sm font-medium text-muted-foreground leading-none">
+                    <p
+                      className={cn(
+                        "text-xs sm:text-sm font-medium leading-none",
+                        isLiquid ? "text-white/80" : "text-muted-foreground",
+                      )}
+                    >
                       Effort
-                      <span className="ml-2 font-semibold text-foreground">
+                      <span
+                        className={cn(
+                          "ml-2 font-semibold",
+                          isLiquid ? "text-white" : "text-foreground",
+                        )}
+                      >
                         {selectedEffort.label}
                       </span>
                     </p>
@@ -1202,12 +1241,22 @@ export default function AIChat({
                         selectedEffort.description ??
                         "How long the model thinks before answering"
                       }
-                      className="p-0.5 -mr-0.5 rounded-full text-muted-foreground/70 hover:text-foreground cursor-help"
+                      className={cn(
+                        "p-0.5 -mr-0.5 rounded-full cursor-help transition-colors",
+                        isLiquid
+                          ? "text-white/70 hover:text-white"
+                          : "text-muted-foreground/70 hover:text-foreground",
+                      )}
                     >
                       <CircleHelp className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     </span>
                   </div>
-                  <div className="mt-3 sm:mt-4 mb-1.5 sm:mb-2 flex items-center justify-between text-[11px] sm:text-xs font-medium text-muted-foreground leading-none">
+                  <div
+                    className={cn(
+                      "mt-3 sm:mt-4 mb-1.5 sm:mb-2 flex items-center justify-between text-[11px] sm:text-xs font-medium leading-none",
+                      isLiquid ? "text-white/70" : "text-muted-foreground",
+                    )}
+                  >
                     <span>Faster</span>
                     <span>Smarter</span>
                   </div>
@@ -1291,11 +1340,12 @@ export default function AIChat({
         : { borderRadius: "var(--radius-3xl, 1.5rem)" };
 
   return (
-    <div
-      style={{
-        ...customVars,
-        ...dynamicRadiusStyle,
-      }}
+    <SurfaceContext.Provider value={surfaceValue}>
+      <div
+        style={{
+          ...customVars,
+          ...dynamicRadiusStyle,
+        }}
       className={cn(
         "w-full max-w-full h-[650px] sm:h-[750px] flex overflow-hidden relative font-sans box-border transition-colors duration-300 isolate [contain:paint] [transform:translateZ(0)]",
         typeof rounded === "string" && !formatRadius(rounded) ? rounded : "",
@@ -1987,7 +2037,8 @@ export default function AIChat({
         )}
       </main>
     </div>
-  );
+  </SurfaceContext.Provider>
+);
 }
 
 // ==========================================
@@ -2236,6 +2287,9 @@ function EffortSlider({
   onChange: (index: number) => void;
   theme: Theme;
 }) {
+  const surface = useSurface();
+  const isLiquid = surface === "liquid-glass";
+
   const last = Math.max(efforts.length - 1, 1);
   const index = Math.min(Math.max(0, value), last);
   // Stop centres run from half a thumb in from each end, inside the track inset.
@@ -2248,11 +2302,24 @@ function EffortSlider({
   const spring = { type: "spring" as const, stiffness: 400, damping: 30 };
 
   return (
-    <div className={cn("relative h-7 sm:h-8 w-full select-none", theme.primaryText)}>
-      <div className="absolute inset-0 rounded-full bg-muted" />
+    <div
+      className={cn(
+        "relative h-7 sm:h-8 w-full select-none",
+        isLiquid ? "text-white" : theme.primaryText,
+      )}
+    >
+      <div
+        className={cn(
+          "absolute inset-0 rounded-full",
+          isLiquid ? "bg-white/15" : "bg-muted",
+        )}
+      />
       {/* Fill runs from the track's start to the thumb's trailing edge */}
       <motion.div
-        className="absolute rounded-full bg-current opacity-40"
+        className={cn(
+          "absolute rounded-full",
+          isLiquid ? "bg-white/40" : "bg-current opacity-40",
+        )}
         style={{ top: TRACK_INSET, bottom: TRACK_INSET, left: TRACK_INSET }}
         initial={false}
         animate={{
@@ -2265,13 +2332,22 @@ function EffortSlider({
           key={effort.id}
           className={cn(
             "absolute top-1/2 size-[5px] -translate-x-1/2 -translate-y-1/2 rounded-full transition-colors duration-300",
-            i <= index ? "bg-background/80" : "bg-foreground/20",
+            i <= index
+              ? isLiquid
+                ? "bg-white"
+                : "bg-background/80"
+              : isLiquid
+                ? "bg-white/30"
+                : "bg-foreground/20",
           )}
           style={{ left: stopLeft(i) }}
         />
       ))}
       <motion.div
-        className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-current shadow-sm"
+        className={cn(
+          "absolute top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-sm",
+          isLiquid ? "bg-white" : "bg-current",
+        )}
         style={{
           width: THUMB_WIDTH,
           height: `calc(100% - ${TRACK_INSET * 2}px)`,
@@ -2769,6 +2845,8 @@ function ComposerMenu({
   theme: Theme;
   children: React.ReactNode;
 }) {
+  const surface = useSurface();
+  const isLiquid = surface === "liquid-glass";
   const ref = useRef<HTMLDivElement>(null);
 
   // A trigger near the right of a narrow composer would push its panel past
@@ -2823,10 +2901,10 @@ function ComposerMenu({
             ? "size-7 sm:size-8 justify-center"
             : "gap-1 sm:gap-1.5 h-7 sm:h-8 px-1.5 sm:pl-2 max-w-full sm:max-w-[160px] text-[11px] sm:text-xs",
           highlighted
-            ? (highlightClassName ?? cn(theme.lightBg, theme.primaryText))
+            ? (highlightClassName ?? (isLiquid ? "bg-white/20 text-white" : cn(theme.lightBg, theme.primaryText)))
             : open
-              ? theme.lightBg
-              : cn("text-muted-foreground", theme.primaryHover),
+              ? (isLiquid ? "bg-white/20 text-white" : theme.lightBg)
+              : (isLiquid ? "text-white/80 hover:bg-white/15 hover:text-white" : cn("text-muted-foreground", theme.primaryHover)),
         )}
       >
         {flourish}
@@ -2854,12 +2932,20 @@ function ComposerMenu({
             transition={{ duration: 0.16, ease: "easeOut" }}
             style={{ transformOrigin: "bottom left" }}
             className={cn(
-              "absolute bottom-full left-0 mb-2 rounded-xl border border-border bg-popover text-popover-foreground shadow-xl p-1 z-50",
+              "absolute bottom-full left-0 mb-2 rounded-xl p-1 z-50 transition-all",
+              isLiquid
+                ? "bg-black/75 backdrop-blur-2xl border border-white/30 text-white shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.3)]"
+                : "border border-border bg-popover text-popover-foreground shadow-xl",
               width,
             )}
           >
             {heading && (
-              <p className="px-2.5 pt-1.5 pb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              <p
+                className={cn(
+                  "px-2.5 pt-1.5 pb-1 text-[10px] font-semibold uppercase tracking-wider",
+                  isLiquid ? "text-white/60" : "text-muted-foreground",
+                )}
+              >
                 {heading}
               </p>
             )}
@@ -2882,6 +2968,9 @@ function MenuItem({
   onClick: () => void;
   children: React.ReactNode;
 }) {
+  const surface = useSurface();
+  const isLiquid = surface === "liquid-glass";
+
   return (
     <button
       type="button"
@@ -2890,15 +2979,24 @@ function MenuItem({
       onClick={onClick}
       className={cn(
         "w-full flex items-center gap-2.5 px-2.5 py-1.5 sm:py-2 rounded-lg text-left transition-colors cursor-pointer",
-        active ? theme.lightBg : "hover:bg-muted",
+        isLiquid
+          ? active
+            ? "bg-white/20 text-white font-medium"
+            : "text-white/80 hover:bg-white/10 hover:text-white"
+          : active
+            ? theme.lightBg
+            : "hover:bg-muted",
       )}
     >
       {children}
       <Check
         className={cn(
           "w-4 h-4 shrink-0 transition-opacity",
-          theme.primaryText,
-          active ? "opacity-100" : "opacity-0",
+          isLiquid
+            ? active
+              ? "opacity-100 text-white"
+              : "opacity-0 text-white"
+            : cn(theme.primaryText, active ? "opacity-100" : "opacity-0"),
         )}
       />
     </button>
