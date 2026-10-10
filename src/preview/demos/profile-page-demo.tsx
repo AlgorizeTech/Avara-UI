@@ -80,10 +80,11 @@ export default function ProfilePageDemo({
   return (
     <ProfilePage
       variant={variant}
+      wrapperClassName="lg:w-full lg:max-w-full"
       // First blob on the theme colour, so the backdrop follows the palette
       // (and the docs picker) along with the dial and the buttons.
       aurora={["var(--primary)", "#7dd3fc", "#fdba74"]}
-      className={cn("w-full max-w-full", rounded && "rounded-[36px]")}
+      className={cn("w-full max-w-full", rounded && "rounded-[var(--radius-3xl,2rem)]")}
     >
       {/* Hero */}
       <GlassPanel shape="slab" className="flex flex-col gap-6 p-5 sm:p-8 md:col-span-6 lg:col-span-8">

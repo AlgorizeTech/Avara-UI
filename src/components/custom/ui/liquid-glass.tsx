@@ -79,7 +79,14 @@ export function formatRadius(radius?: string | number | boolean): string | undef
   if (radius === false || radius === 0 || radius === "0" || radius === "0px") return "0px";
   if (typeof radius === "number") return `${radius}px`;
   if (typeof radius === "string") {
-    if (radius.endsWith("px") || radius.endsWith("rem") || radius.endsWith("em") || radius.endsWith("%")) {
+    if (
+      radius.endsWith("px") ||
+      radius.endsWith("rem") ||
+      radius.endsWith("em") ||
+      radius.endsWith("%") ||
+      radius.includes("var(") ||
+      radius.includes("calc(")
+    ) {
       return radius;
     }
     const parsed = parseFloat(radius);

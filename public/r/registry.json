@@ -477,6 +477,11 @@
           "path": "src/components/custom/blocks/BookingCardBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/BookingCardBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/glass-panel-context.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/glass-panel-context.ts"
         }
       ],
       "docs": "Named export: BookingCard (plus the BookingSlot and Booking types). `BookingCard` is a compound component — put `BookingCard.Days`, `BookingCard.Slots`, `BookingCard.Submit` and `BookingCard.Confirmation` inside it in any layout; it holds the chosen day and slot and calls `onBook`. It draws no surface of its own: make it the padded inside of whatever panel it sits in so the confirmation reaches the edges. The selected day and slot, the submit and 'Add to calendar' buttons, the check mark and the focus rings use the `--primary` token."

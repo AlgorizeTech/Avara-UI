@@ -5,6 +5,7 @@ import React from "react";
 import {
   LiquidGlassSvgFilter,
   LiquidGlassWrapper,
+  formatRadius,
 } from "@/components/custom/ui/liquid-glass";
 import { SurfaceContext, useSurface, type SurfaceVariant } from "./glass-panel-context";
 
@@ -29,11 +30,17 @@ export interface GlassBackdropProps extends React.HTMLAttributes<HTMLDivElement>
   bgImage?: string;
   /** Classes for the inner grid — row heights, gaps, a max width. */
   gridClassName?: string;
+  /** Classes for the inner LiquidGlassWrapper — controls width ratio on large screens. */
+  wrapperClassName?: string;
+  /** Dynamic rounding radius for the wrapper/backdrop. Can be a string ("1.5rem", "var(--radius-3xl)") or number (px). */
+  radius?: string | number;
 }
 
 export function GlassBackdrop({
   className,
   gridClassName,
+  wrapperClassName,
+  radius,
   children,
   variant = "glass",
   aurora = ["#a78bfa", "#7dd3fc", "#fdba74"],
@@ -50,7 +57,7 @@ export function GlassBackdrop({
       <SurfaceContext.Provider value={variant}>
         <div
           className={cn(
-            "relative isolate w-full min-h-full overflow-hidden rounded-[32px] text-white p-2 sm:p-6 md:p-8",
+            "relative isolate w-full h-full min-h-[520px] flex flex-col justify-center overflow-hidden rounded-[var(--radius-3xl,2rem)] border border-white/10 text-white p-3 sm:p-6",
             className,
           )}
           {...props}
@@ -61,20 +68,24 @@ export function GlassBackdrop({
             src={liquidBg}
             alt=""
             aria-hidden="true"
-            className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none z-0"
+            style={radius ? { borderRadius: formatRadius(radius) } : undefined}
+            className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none z-0 rounded-[inherit]"
           />
 
           {/* LiquidGlassWrapper wraps ONLY the component grid area */}
           <LiquidGlassWrapper
-            radius="1.75rem"
+            radius={radius ?? "var(--radius-3xl, 1.75rem)"}
             bgImage={liquidBg}
             filterId={filterId}
             contrastOverlayClassName="bg-black/15 backdrop-blur-[1px]"
-            className="relative z-10 w-full text-white transition-all duration-300 p-4 sm:p-6 lg:p-8 [--foreground:#ffffff] [--muted-foreground:rgba(255,255,255,0.85)]"
+            className={cn(
+              "relative z-10 w-full lg:w-[40%] lg:max-w-[40%] mx-auto text-white transition-all duration-300 p-1 sm:p-2 [--foreground:#ffffff] [--muted-foreground:rgba(255,255,255,0.85)]",
+              wrapperClassName,
+            )}
           >
             <div
               className={cn(
-                "grid grid-cols-1 gap-4 p-2 sm:p-4 md:grid-cols-6 lg:grid-cols-12 text-white",
+                "grid grid-cols-1 gap-4 md:grid-cols-6 lg:grid-cols-12 text-white",
                 gridClassName,
               )}
             >
@@ -132,9 +143,9 @@ export type GlassShape = "slab" | "tile" | "disc" | "capsule";
 
 const SHAPES: Record<GlassShape, string> = {
   /** Hero-level surface. */
-  slab: "rounded-[32px]",
+  slab: "rounded-[var(--radius-3xl,2rem)]",
   /** Everyday content tile. */
-  tile: "rounded-3xl",
+  tile: "rounded-[var(--radius-2xl,1.5rem)]",
   /** A circle — for a single number or an icon. */
   disc: "aspect-square rounded-full",
   /** Chips, action bars, anything one line tall. */
@@ -147,6 +158,8 @@ export interface GlassPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   interactive?: boolean;
   /** Override the surface set by the enclosing `GlassBackdrop`. */
   variant?: SurfaceVariant;
+  /** Optional custom rounding radius override. */
+  radius?: string | number;
 }
 
 const SURFACES: Record<SurfaceVariant, { base: string; hover: string }> = {
@@ -174,14 +187,18 @@ export function GlassPanel({
   shape = "tile",
   interactive = false,
   variant,
+  radius,
   className,
+  style,
   children,
   ...props
 }: GlassPanelProps) {
   const inherited = useSurface();
   const surface = SURFACES[variant ?? inherited];
+  const formattedRadius = formatRadius(radius);
   return (
     <div
+      style={formattedRadius ? { borderRadius: formattedRadius, ...style } : style}
       className={cn(
         "relative",
         surface.base,

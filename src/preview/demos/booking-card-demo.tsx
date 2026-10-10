@@ -16,10 +16,10 @@ const AFTERNOON = [
   { label: "3:00 PM", taken: true },
 ];
 
-function Card({ heading = "Book an appointment" }: { heading?: string }) {
+function Card({ heading = "Book an appointment", className }: { heading?: string; className?: string }) {
   return (
     <BookingCard
-      className="flex h-full flex-col gap-5 p-6"
+      className={cn("flex h-full flex-col gap-5 p-6", className)}
       onBook={() => new Promise((resolve) => setTimeout(resolve, 900))}
     >
       <h2 className="text-lg font-semibold tracking-tight">{heading}</h2>
@@ -38,12 +38,20 @@ function Card({ heading = "Book an appointment" }: { heading?: string }) {
 export default function BookingCardDemo({
   surface = "card",
 }: {
-  /** The panel the card sits in: a plain bordered card, or a glass slab. */
-  surface?: "card" | "glass";
+  /** The panel the card sits in: a plain bordered card, a glass slab, or liquid-glass refraction. */
+  surface?: "card" | "glass" | "liquid-glass";
 }) {
+  if (surface === "liquid-glass") {
+    return (
+      <GlassBackdrop variant="liquid-glass" className="w-full max-w-full h-full min-h-full rounded-[var(--radius-3xl,2rem)]">
+        <Card className="col-span-full" />
+      </GlassBackdrop>
+    );
+  }
+
   if (surface === "glass") {
     return (
-      <GlassBackdrop className="w-full max-w-md rounded-[36px]">
+      <GlassBackdrop className="w-full max-w-md rounded-[var(--radius-3xl,2rem)]">
         <GlassPanel shape="slab" className="col-span-full">
           <Card />
         </GlassPanel>
