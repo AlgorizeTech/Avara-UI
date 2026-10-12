@@ -79,9 +79,17 @@ export const NAME_OVERRIDES: Record<string, string> = {
   "ConfidentialFolderBlock.tsx": "confidential-folder",
   "SecureEnvelopeBlock.tsx": "secure-envelope",
   "ScrollSplitCardsBlock.tsx": "scroll-split-cards",
+  "ErrorSectionBlock.tsx": "error-section",
 };
 
 export const META: Record<string, ItemMeta> = {
+  "error-section": {
+    title: "Error Section",
+    description:
+      "A responsive, animated Cyberpunk Diagnostic Terminal Error Website Section with full Light and Dark mode adaptive styling, diagnostic monitors, and live stacktrace inspection.",
+    categories: ["marketing", "layout", "feedback"],
+    docs: "Named export: ErrorSection (also default export) and ErrorSectionProps. Designed to serve as a full-page 500, 404, or runtime error boundary with light & dark theme support, one-click incident copying, and reboot action triggers.",
+  },
   "secure-envelope": {
     description:
       "An interactive classified security envelope & travel pass sleeve component featuring a secret card that glides out horizontally on hover and elevates gracefully onto the cover on click with 3D flip physics.",

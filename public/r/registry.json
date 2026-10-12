@@ -1679,6 +1679,32 @@
       "docs": "Named exports: EmailApp, plus Email, EmailLabel and Attachment types. The largest block in the registry — a complete application layout with demo data to replace, not a single element. Variants: default | minimal | glass."
     },
     {
+      "name": "error-section",
+      "type": "registry:component",
+      "title": "Error Section",
+      "author": "AlgorizeTech",
+      "description": "A responsive, animated Cyberpunk Diagnostic Terminal Error Website Section with full Light and Dark mode adaptive styling, diagnostic monitors, and live stacktrace inspection.",
+      "categories": [
+        "marketing",
+        "layout",
+        "feedback"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ErrorSectionBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ErrorSectionBlock.tsx"
+        }
+      ],
+      "docs": "Named export: ErrorSection (also default export) and ErrorSectionProps. Designed to serve as a full-page 500, 404, or runtime error boundary with light & dark theme support, one-click incident copying, and reboot action triggers."
+    },
+    {
       "name": "fan-stack",
       "type": "registry:component",
       "title": "Fan Stack",

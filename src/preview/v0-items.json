@@ -361,6 +361,9 @@
     "glass": "Email — Glass",
     "liquid-glass": "Email — Liquid Glass"
   },
+  "error-section": {
+    "cyberpunk-terminal-section": "Error Section — Cyberpunk Terminal Section"
+  },
   "faq-section": {
     "1-homepage-faq-section": "Faq Section — 1. Homepage FAQ Section"
   },

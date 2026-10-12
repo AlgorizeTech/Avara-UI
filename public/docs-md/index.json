@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-12T02:21:26.273Z",
-  "totalFiles": 303,
+  "generatedAt": "2026-10-12T04:00:28.313Z",
+  "totalFiles": 305,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -307,6 +307,12 @@
       "path": "/docs/nextjs-email.md",
       "url": "/docs/nextjs/email",
       "originalMdx": "[framework]\\email\\page.mdx"
+    },
+    {
+      "name": "nextjs/error-section",
+      "path": "/docs/nextjs-error-section.md",
+      "url": "/docs/nextjs/error-section",
+      "originalMdx": "[framework]\\error-section\\page.mdx"
     },
     {
       "name": "nextjs/examples",
@@ -1219,6 +1225,12 @@
       "path": "/docs/reactjs-email.md",
       "url": "/docs/reactjs/email",
       "originalMdx": "[framework]\\email\\page.mdx"
+    },
+    {
+      "name": "reactjs/error-section",
+      "path": "/docs/reactjs-error-section.md",
+      "url": "/docs/reactjs/error-section",
+      "originalMdx": "[framework]\\error-section\\page.mdx"
     },
     {
       "name": "reactjs/examples",
