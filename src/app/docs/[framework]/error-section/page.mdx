@@ -59,40 +59,100 @@ export default function ErrorPage() {
   ]}
 />
 
-## Next.js Error Page Integration (`error.tsx`)
+## Installation
 
-Drop `ErrorSection` directly into your Next.js App Router root error boundary:
+<Installation name="error-section" />
 
-```tsx
-"use client";
+## Features
 
-import { useEffect } from "react";
-import ErrorSection from "@/components/custom/blocks/ErrorSectionBlock";
+Discover the key capabilities of the `ErrorSection` component:
 
-export default function GlobalError({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}) {
-  useEffect(() => {
-    // Optionally log to error monitoring service like Sentry
-    console.error("Boundary intercepted error:", error);
-  }, [error]);
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Cyberpunk Diagnostic Enclosure</h3>
+    <p className="text-muted-foreground text-sm">Full-width futuristic telemetry console with macOS window indicators, pulsating status badge, and glowing holographic crash icon.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Adaptive Light & Dark Modes</h3>
+    <p className="text-muted-foreground text-sm">Clean high-contrast daytime mode alongside an immersive deep obsidian cyberpunk nocturnal theme with red spotlights.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Live Stacktrace Console & Copy</h3>
+    <p className="text-muted-foreground text-sm">Scroll-safe diagnostic trace terminal with one-click clipboard copying for quick bug triage and escalation.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Mobile Touch-Friendly Layout</h3>
+    <p className="text-muted-foreground text-sm">Responsive action buttons and fluid typography that automatically adapt from compact 320px smartphones to widescreen monitors.</p>
+  </div>
+</div>
 
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-      <ErrorSection
-        errorCode="500"
-        title="SYSTEM RUNTIME EXCEPTION"
-        description="An unhandled exception occurred during application execution."
-        errorDetails={error.stack || error.message}
-        errorId={error.digest || "ERR-RUNTIME"}
-        onRetry={() => reset()}
-        onHome={() => (window.location.href = "/")}
-      />
-    </div>
-  );
-}
-```
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>errorCode</code></td>
+        <td><code>string</code></td>
+        <td><code>"500"</code></td>
+        <td>Primary error code or HTTP status string displayed on the status telemetry badge.</td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>string</code></td>
+        <td><code>"SYSTEM RUNTIME EXCEPTION"</code></td>
+        <td>Primary uppercase diagnostic heading.</td>
+      </tr>
+      <tr>
+        <td><code>description</code></td>
+        <td><code>string</code></td>
+        <td><code>"Critical process halted..."</code></td>
+        <td>User-friendly explanatory message explaining why execution was suspended.</td>
+      </tr>
+      <tr>
+        <td><code>errorId</code></td>
+        <td><code>string</code></td>
+        <td><code>"ERR_0x9481FA"</code></td>
+        <td>Unique incident trace or digest identifier for diagnostics.</td>
+      </tr>
+      <tr>
+        <td><code>errorDetails</code></td>
+        <td><code>string</code></td>
+        <td><code>sample stacktrace</code></td>
+        <td>Raw stacktrace or diagnostic technical dump rendered inside the expandable code console.</td>
+      </tr>
+      <tr>
+        <td><code>onRetry</code></td>
+        <td><code>() =&gt; void</code></td>
+        <td><code>undefined</code></td>
+        <td>Callback invoked when user clicks the "Reboot System" action button.</td>
+      </tr>
+      <tr>
+        <td><code>onHome</code></td>
+        <td><code>() =&gt; void</code></td>
+        <td><code>undefined</code></td>
+        <td>Callback invoked when user clicks the "Return Home" action button.</td>
+      </tr>
+      <tr>
+        <td><code>onSupport</code></td>
+        <td><code>() =&gt; void</code></td>
+        <td><code>undefined</code></td>
+        <td>Callback invoked when user clicks the "Contact Escalation Team" link.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>""</code></td>
+        <td>Custom Tailwind CSS class overrides for the container section.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
