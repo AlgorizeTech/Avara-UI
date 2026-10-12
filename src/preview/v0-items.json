@@ -361,6 +361,9 @@
     "glass": "Email — Glass",
     "liquid-glass": "Email — Liquid Glass"
   },
+  "error-section": {
+    "cyberpunk-terminal-section": "Error Section — Cyberpunk Terminal Section"
+  },
   "faq-section": {
     "1-homepage-faq-section": "Faq Section — 1. Homepage FAQ Section"
   },
@@ -600,6 +603,9 @@
     "portraits": "Newsletter — Portraits",
     "spotlight": "Newsletter — Spotlight",
     "issues": "Newsletter — Issues"
+  },
+  "not-found-section": {
+    "hyperspace-404-section": "Not Found Section — Hyperspace 404 Section"
   },
   "orbit-gallery": {
     "movement-is-what-people-notice-first": "Orbit Gallery — Movement is what people notice first"
@@ -913,8 +919,9 @@
     "disabled": "Toggle Group — Disabled"
   },
   "tooltip": {
-    "rich-content": "Tooltip — Rich content",
-    "offset": "Tooltip — Offset"
+    "without-arrow": "Tooltip — Without Arrow",
+    "with-arrow": "Tooltip — With Arrow",
+    "with-arrow-animated": "Tooltip — With Arrow & Animated"
   },
   "user-graph": {
     "user-graph": "User Graph"

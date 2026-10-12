@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-08T08:07:38.170Z",
-  "totalFiles": 303,
+  "generatedAt": "2026-10-12T19:15:44.197Z",
+  "totalFiles": 307,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -309,6 +309,12 @@
       "originalMdx": "[framework]\\email\\page.mdx"
     },
     {
+      "name": "nextjs/error-section",
+      "path": "/docs/nextjs-error-section.md",
+      "url": "/docs/nextjs/error-section",
+      "originalMdx": "[framework]\\error-section\\page.mdx"
+    },
+    {
       "name": "nextjs/examples",
       "path": "/docs/nextjs-examples.md",
       "url": "/docs/nextjs/examples",
@@ -559,6 +565,12 @@
       "path": "/docs/nextjs-newsletter.md",
       "url": "/docs/nextjs/newsletter",
       "originalMdx": "[framework]\\newsletter\\page.mdx"
+    },
+    {
+      "name": "nextjs/not-found-section",
+      "path": "/docs/nextjs-not-found-section.md",
+      "url": "/docs/nextjs/not-found-section",
+      "originalMdx": "[framework]\\not-found-section\\page.mdx"
     },
     {
       "name": "nextjs/orbit-gallery",
@@ -1221,6 +1233,12 @@
       "originalMdx": "[framework]\\email\\page.mdx"
     },
     {
+      "name": "reactjs/error-section",
+      "path": "/docs/reactjs-error-section.md",
+      "url": "/docs/reactjs/error-section",
+      "originalMdx": "[framework]\\error-section\\page.mdx"
+    },
+    {
       "name": "reactjs/examples",
       "path": "/docs/reactjs-examples.md",
       "url": "/docs/reactjs/examples",
@@ -1471,6 +1489,12 @@
       "path": "/docs/reactjs-newsletter.md",
       "url": "/docs/reactjs/newsletter",
       "originalMdx": "[framework]\\newsletter\\page.mdx"
+    },
+    {
+      "name": "reactjs/not-found-section",
+      "path": "/docs/reactjs-not-found-section.md",
+      "url": "/docs/reactjs/not-found-section",
+      "originalMdx": "[framework]\\not-found-section\\page.mdx"
     },
     {
       "name": "reactjs/orbit-gallery",

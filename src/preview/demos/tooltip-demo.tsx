@@ -6,151 +6,104 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/custom/blocks/TooltipBlock";
-import { Heart, Plus, Settings } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  Compass,
+  Layers,
+  Sparkles,
+  Zap,
+} from "lucide-react";
 
 type Side = "top" | "right" | "bottom" | "left";
-type Align = "start" | "center" | "end";
 
-const TILE =
-  "w-16 h-16 flex items-center justify-center bg-muted border border-border rounded-2xl hover:scale-105 transition-transform cursor-pointer shadow-sm text-sm font-medium text-foreground/80";
+const ITEMS = [
+  {
+    side: "bottom" as Side,
+    label: "Bottom",
+    buttonIcon: ArrowDown,
+    tooltipIcon: Zap,
+    title: "Bottom Tooltip",
+    description: "Renders cleanly below without clipping.",
+    mobileClass: "self-center sm:self-auto order-1 sm:order-3",
+  },
+  {
+    side: "right" as Side,
+    label: "Right",
+    buttonIcon: ArrowRight,
+    tooltipIcon: Layers,
+    title: "Right Tooltip",
+    description: "Anchored smoothly to the right edge.",
+    mobileClass: "self-start sm:self-auto order-2 sm:order-4",
+  },
+  {
+    side: "top" as Side,
+    label: "Top",
+    buttonIcon: ArrowUp,
+    tooltipIcon: Sparkles,
+    title: "Top Tooltip",
+    description: "Positioned dynamically above the trigger.",
+    mobileClass: "self-center sm:self-auto order-3 sm:order-2",
+  },
+  {
+    side: "left" as Side,
+    label: "Left",
+    buttonIcon: ArrowLeft,
+    tooltipIcon: Compass,
+    title: "Left Tooltip",
+    description: "Attached to the left side with portal layout.",
+    mobileClass: "self-end sm:self-auto order-4 sm:order-1",
+  },
+];
 
 export default function TooltipDemo({
-  side = "top",
-  align = "center",
-  delay = 200,
-  example = "all",
-  sideOffset,
+  delay = 150,
+  example = "no-arrow",
 }: {
-  side?: Side;
-  align?: Align;
   delay?: number;
-  /** "all" is the classic layout; the others isolate one aspect of the API. */
-  example?: "all" | "single" | "sides" | "align" | "delay" | "rich";
-  /** Gap in px between trigger and bubble (single example only). */
-  sideOffset?: number;
+  /**
+   * 3 core variants:
+   * 1. "no-arrow" (default) -> 4 directions without arrow
+   * 2. "arrow" -> 4 directions with pointer arrow
+   * 3. "animated" -> 4 directions with pointer arrow + smooth pull-out animation
+   */
+  example?: "no-arrow" | "arrow" | "animated" | "all" | string;
 }) {
-  if (example !== "all") {
-    return (
-      <div className="w-full flex items-center justify-center min-h-[400px] relative z-10">
-        <TooltipProvider>
-          {example === "single" && (
-            <Tooltip delayDuration={delay}>
-              <TooltipTrigger>
-                <div className={TILE}>
-                  <Plus className="w-6 h-6" />
-                </div>
-              </TooltipTrigger>
-              <TooltipContent side={side} align={align} sideOffset={sideOffset}>
-                <p>Create new project</p>
-              </TooltipContent>
-            </Tooltip>
-          )}
-
-          {example === "sides" && (
-            <div className="flex flex-wrap items-center justify-center gap-6">
-              {(["top", "right", "bottom", "left"] as Side[]).map((s) => (
-                <Tooltip key={s} delayDuration={delay}>
-                  <TooltipTrigger>
-                    <div className={TILE}>{s}</div>
-                  </TooltipTrigger>
-                  <TooltipContent side={s}>Side: {s}</TooltipContent>
-                </Tooltip>
-              ))}
-            </div>
-          )}
-
-          {example === "align" && (
-            <div className="flex flex-col items-center justify-center gap-6">
-              {(["start", "center", "end"] as Align[]).map((a) => (
-                <Tooltip key={a} delayDuration={delay}>
-                  <TooltipTrigger>
-                    <div className="w-56 h-12 flex items-center justify-center bg-muted border border-border rounded-xl hover:scale-[1.02] transition-transform cursor-pointer text-sm font-medium text-foreground/80">
-                      align=&quot;{a}&quot;
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom" align={a}>
-                    Aligned {a}
-                  </TooltipContent>
-                </Tooltip>
-              ))}
-            </div>
-          )}
-
-          {example === "delay" && (
-            <div className="flex flex-wrap items-center justify-center gap-6">
-              <Tooltip delayDuration={0}>
-                <TooltipTrigger>
-                  <div className={TILE}>0ms</div>
-                </TooltipTrigger>
-                <TooltipContent side="top">Opens instantly</TooltipContent>
-              </Tooltip>
-              <Tooltip delayDuration={700}>
-                <TooltipTrigger>
-                  <div className={TILE}>700ms</div>
-                </TooltipTrigger>
-                <TooltipContent side="top">Waits 700ms</TooltipContent>
-              </Tooltip>
-            </div>
-          )}
-
-          {example === "rich" && (
-            <Tooltip delayDuration={delay}>
-              <TooltipTrigger>
-                <button className="p-3 text-muted-foreground hover:bg-muted rounded-full transition-colors">
-                  <Settings className="w-6 h-6" />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent side="top" className="max-w-[220px] p-3">
-                <p className="font-semibold mb-1">System preferences</p>
-                <p className="opacity-80">
-                  Theme, notifications and keyboard shortcuts live here.
-                </p>
-              </TooltipContent>
-            </Tooltip>
-          )}
-        </TooltipProvider>
-      </div>
-    );
-  }
+  const isAnimated = example === "animated";
+  const hasArrow = example === "arrow" || example === "animated";
 
   return (
-    <div className="w-full flex items-center justify-center min-h-[400px] relative z-10">
+    <div className="w-full flex items-center justify-center min-h-[420px] p-6 relative z-10">
       <TooltipProvider>
-        {/* Main Demo Tooltip */}
-        <Tooltip delayDuration={delay}>
-          <TooltipTrigger>
-            <div className="w-16 h-16 flex items-center justify-center bg-muted border border-border rounded-2xl hover:scale-105 transition-transform cursor-pointer shadow-sm">
-              <Plus className="w-6 h-6 text-foreground/80" />
-            </div>
-          </TooltipTrigger>
-          <TooltipContent side={side} align={align}>
-            <p>Create new project</p>
-          </TooltipContent>
-        </Tooltip>
+        <div className="w-full max-w-xs sm:max-w-none flex flex-col sm:flex-row sm:items-center sm:justify-center gap-7 sm:gap-6">
+          {ITEMS.map((item) => {
+            const ButtonIcon = item.buttonIcon;
+            const TooltipIcon = item.tooltipIcon;
 
-        {/* Accessory Tooltips to show density handling */}
-        <div className="absolute top-6 right-6 flex gap-2">
-          <Tooltip delayDuration={delay}>
-            <TooltipTrigger>
-              <button className="p-2 text-muted-foreground hover:bg-muted rounded-full transition-colors">
-                <Heart className="w-5 h-5" />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="bottom" sideOffset={8}>
-              Add to favorites
-            </TooltipContent>
-          </Tooltip>
-
-          <Tooltip delayDuration={delay}>
-            <TooltipTrigger>
-              <button className="p-2 text-muted-foreground hover:bg-muted rounded-full transition-colors">
-                <Settings className="w-5 h-5" />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="bottom" align="end" sideOffset={8}>
-              System preferences
-            </TooltipContent>
-          </Tooltip>
+            return (
+              <div key={item.side} className={item.mobileClass}>
+                <Tooltip delayDuration={delay}>
+                  <TooltipTrigger>
+                    <button className="group flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-card hover:bg-muted text-sm font-medium text-foreground transition-colors cursor-pointer shadow-2xs">
+                      <ButtonIcon className="w-3.5 h-3.5 text-muted-foreground group-hover:text-foreground transition-colors" />
+                      <span>{item.label}</span>
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    side={item.side}
+                    showArrow={hasArrow}
+                    animated={isAnimated}
+                    sideOffset={hasArrow ? 8 : 6}
+                    icon={<TooltipIcon className="w-4 h-4" />}
+                    title={item.title}
+                    description={item.description}
+                  />
+                </Tooltip>
+              </div>
+            );
+          })}
         </div>
       </TooltipProvider>
     </div>

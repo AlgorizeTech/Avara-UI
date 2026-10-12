@@ -132,10 +132,90 @@ export function TooltipTrigger({
 // 5. CONTENT (Portal Renderer)
 // ==========================================
 export interface TooltipContentProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   side?: "top" | "right" | "bottom" | "left";
   align?: "start" | "center" | "end";
   sideOffset?: number;
+  /** Whether to render a pointer arrow anchoring to the trigger. Defaults to false. */
+  showArrow?: boolean;
+  /** Custom classes for the pointer arrow element. */
+  arrowClassName?: string;
+  /** Whether to enable a smooth pull-out animation sliding gently out from the trigger. */
+  animated?: boolean;
+  /** Optional title header displayed in bold. */
+  title?: React.ReactNode;
+  /** Optional description text. */
+  description?: React.ReactNode;
+  /** Shorthand alias for description. */
+  des?: React.ReactNode;
+  /** Optional leading icon displayed next to the content. */
+  icon?: React.ReactNode;
+  /** Optional custom classes for the icon background container. */
+  iconClassName?: string;
+}
+
+interface TooltipContentContextType {
+  side: NonNullable<TooltipContentProps["side"]>;
+  align: NonNullable<TooltipContentProps["align"]>;
+}
+
+const TooltipContentContext = createContext<TooltipContentContextType | null>(null);
+
+const ARROW_POSITIONS: Record<
+  NonNullable<TooltipContentProps["side"]>,
+  Record<NonNullable<TooltipContentProps["align"]>, string>
+> = {
+  top: {
+    center: "-bottom-1 left-1/2 -translate-x-1/2",
+    start: "-bottom-1 left-3",
+    end: "-bottom-1 right-3",
+  },
+  bottom: {
+    center: "-top-1 left-1/2 -translate-x-1/2",
+    start: "-top-1 left-3",
+    end: "-top-1 right-3",
+  },
+  left: {
+    center: "-right-1 top-1/2 -translate-y-1/2",
+    start: "-right-1 top-3",
+    end: "-right-1 bottom-3",
+  },
+  right: {
+    center: "-left-1 top-1/2 -translate-y-1/2",
+    start: "-left-1 top-3",
+    end: "-left-1 bottom-3",
+  },
+};
+
+const ARROW_BORDERS: Record<NonNullable<TooltipContentProps["side"]>, string> = {
+  top: "border-b border-r",
+  bottom: "border-t border-l",
+  left: "border-t border-r",
+  right: "border-b border-l",
+};
+
+export interface TooltipArrowProps
+  extends React.HTMLAttributes<HTMLSpanElement> {
+  className?: string;
+}
+
+export function TooltipArrow({ className, ...props }: TooltipArrowProps) {
+  const context = useContext(TooltipContentContext);
+  const side = context?.side ?? "top";
+  const align = context?.align ?? "center";
+
+  return (
+    <span
+      aria-hidden="true"
+      className={cn(
+        "absolute w-2 h-2 rotate-45 bg-inherit border-inherit pointer-events-none",
+        ARROW_POSITIONS[side][align],
+        ARROW_BORDERS[side],
+        className,
+      )}
+      {...props}
+    />
+  );
 }
 
 // The entrance grows out of the trigger's edge: a tooltip above the trigger
@@ -147,10 +227,26 @@ const ENTER_FROM_SIDE: Record<NonNullable<TooltipContentProps["side"]>, string> 
   right: "origin-left slide-in-from-left-1",
 };
 
+// Smooth pull-out animation that emerges gently out from the trigger.
+const ENTER_PULL_OUT: Record<NonNullable<TooltipContentProps["side"]>, string> = {
+  top: "origin-bottom slide-in-from-bottom-3 zoom-in-75 duration-300 ease-out",
+  bottom: "origin-top slide-in-from-top-3 zoom-in-75 duration-300 ease-out",
+  left: "origin-right slide-in-from-right-3 zoom-in-75 duration-300 ease-out",
+  right: "origin-left slide-in-from-left-3 zoom-in-75 duration-300 ease-out",
+};
+
 export function TooltipContent({
   side = "top",
   align = "center",
   sideOffset = 6,
+  showArrow = false,
+  arrowClassName,
+  animated = false,
+  title,
+  description,
+  des,
+  icon,
+  iconClassName,
   className,
   children,
   ...props
@@ -158,6 +254,7 @@ export function TooltipContent({
   const context = useContext(TooltipContext);
   if (!context) throw new Error("TooltipContent must be used within a Tooltip");
 
+  const effectiveOffset = sideOffset === 6 && showArrow ? 8 : sideOffset;
   const { open, trigger: triggerEl } = context;
   const [coords, setCoords] = useState({ top: -9999, left: -9999 });
   // Stale coordinates from the previous open would otherwise paint first.
@@ -192,10 +289,10 @@ export function TooltipContent({
       let left = 0;
 
       // 1. Calculate Side
-      if (side === "top") top = trigger.top - content.height - sideOffset;
-      if (side === "bottom") top = trigger.bottom + sideOffset;
-      if (side === "left") left = trigger.left - content.width - sideOffset;
-      if (side === "right") left = trigger.right + sideOffset;
+      if (side === "top") top = trigger.top - content.height - effectiveOffset;
+      if (side === "bottom") top = trigger.bottom + effectiveOffset;
+      if (side === "left") left = trigger.left - content.width - effectiveOffset;
+      if (side === "right") left = trigger.right + effectiveOffset;
 
       // 2. Calculate Align
       if (side === "top" || side === "bottom") {
@@ -210,6 +307,12 @@ export function TooltipContent({
         if (align === "end") top = trigger.bottom - content.height;
       }
 
+      // Clamp within viewport padding to prevent overflowing screen edges
+      const viewportPadding = 8;
+      const docWidth = doc.documentElement.clientWidth || win.innerWidth;
+      const maxLeft = Math.max(viewportPadding, docWidth - content.width - viewportPadding);
+      left = Math.max(viewportPadding, Math.min(left, maxLeft));
+
       setCoords({ top: top + win.scrollY, left: left + win.scrollX });
       setPositioned(true);
     };
@@ -222,7 +325,7 @@ export function TooltipContent({
       win.removeEventListener("scroll", updatePosition, true);
       win.removeEventListener("resize", updatePosition);
     };
-  }, [open, side, align, sideOffset, triggerEl]);
+  }, [open, side, align, effectiveOffset, triggerEl]);
 
   // triggerEl is null until the trigger commits, which also covers SSR: there
   // is no document to portal into on the server.
@@ -231,29 +334,75 @@ export function TooltipContent({
   // Portal into the trigger's own document (supports iframe rendering).
   const portalTarget = triggerEl.ownerDocument.body;
 
+  const resolvedDes = description ?? des;
+  const hasStructured = Boolean(title || resolvedDes || icon);
+
   return createPortal(
-    <div
-      ref={contentRef}
-      role="tooltip"
-      className={cn(
-        "absolute z-[9999] px-3 py-1.5 text-xs font-medium text-primary-foreground bg-primary rounded-md shadow-md pointer-events-none",
-        // `duration-150` sets transition-duration too, and the browser default
-        // transition-property is `all` — without `transition-none` top/left
-        // would tween from the placeholder coordinates, sliding the tooltip
-        // across the screen instead of opening in place.
-        "transition-none animate-in fade-in zoom-in-95 duration-150",
-        ENTER_FROM_SIDE[side],
-        className,
-      )}
-      style={{
-        top: coords.top,
-        left: coords.left,
-        visibility: positioned ? "visible" : "hidden",
-      }}
-      {...props}
-    >
-      {children}
-    </div>,
+    <TooltipContentContext.Provider value={{ side, align }}>
+      <div
+        ref={contentRef}
+        role="tooltip"
+        className={cn(
+          "absolute z-[9999] text-xs text-primary-foreground bg-primary shadow-md pointer-events-none",
+          title
+            ? "px-3.5 py-2.5 rounded-lg max-w-xs"
+            : "px-3 py-1.5 rounded-md font-medium",
+          // `duration-150` sets transition-duration too, and the browser default
+          // transition-property is `all` — without `transition-none` top/left
+          // would tween from the placeholder coordinates, sliding the tooltip
+          // across the screen instead of opening in place.
+          "transition-none animate-in fade-in",
+          animated
+            ? ENTER_PULL_OUT[side]
+            : cn("zoom-in-95 duration-150", ENTER_FROM_SIDE[side]),
+          className,
+        )}
+        style={{
+          top: coords.top,
+          left: coords.left,
+          visibility: positioned ? "visible" : "hidden",
+        }}
+        {...props}
+      >
+        {hasStructured ? (
+          <div className="flex items-center gap-2.5 max-w-xs">
+            {icon && (
+              <div
+                className={cn(
+                  "size-8 rounded-lg bg-primary-foreground/15 flex items-center justify-center shrink-0 text-current [&_svg]:size-4 shadow-2xs",
+                  iconClassName,
+                )}
+              >
+                {icon}
+              </div>
+            )}
+            <div className="flex flex-col min-w-0 justify-center">
+              {title && (
+                <div className="font-semibold text-xs leading-tight tracking-tight text-primary-foreground truncate whitespace-nowrap">
+                  {title}
+                </div>
+              )}
+              {resolvedDes && (
+                <div
+                  className={cn(
+                    "text-xs leading-tight truncate whitespace-nowrap",
+                    title
+                      ? "opacity-85 text-[11px] mt-0.5"
+                      : "font-medium opacity-95",
+                  )}
+                >
+                  {resolvedDes}
+                </div>
+              )}
+              {children}
+            </div>
+          </div>
+        ) : (
+          children
+        )}
+        {showArrow && <TooltipArrow className={arrowClassName} />}
+      </div>
+    </TooltipContentContext.Provider>,
     portalTarget,
   );
 }

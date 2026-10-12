@@ -13,57 +13,313 @@ Most lightweight tooltips suffer from a fatal flaw: they get clipped or hidden i
 
 Hover or tab to each trigger to open its tooltip.
 
-export const usageRich = `import {
+export const usageNoArrow = `import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/custom/blocks/TooltipBlock";
-import { Settings } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  Compass,
+  Layers,
+  Sparkles,
+  Zap,
+} from "lucide-react";
 
-export default function RichTooltip() {
+export default function NoArrowTooltip() {
   return (
     <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger>
-          <button className="p-3 rounded-full hover:bg-muted">
-            <Settings className="w-6 h-6" />
-          </button>
-        </TooltipTrigger>
-        {/* className lands on the bubble — widen it and lay out real content */}
-        <TooltipContent side="top" className="max-w-[220px] p-3">
-          <p className="font-semibold mb-1">System preferences</p>
-          <p className="opacity-80">
-            Theme, notifications and keyboard shortcuts live here.
-          </p>
-        </TooltipContent>
-      </Tooltip>
+      <div className="w-full max-w-xs sm:max-w-none flex flex-col sm:flex-row sm:items-center sm:justify-center gap-7 sm:gap-6">
+        {/* 1. Bottom Placement */}
+        <div className="self-center sm:self-auto order-1 sm:order-3">
+          <Tooltip>
+            <TooltipTrigger>
+              <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-card hover:bg-muted text-sm font-medium transition-colors">
+                <ArrowDown className="w-3.5 h-3.5 text-muted-foreground" />
+                <span>Bottom</span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="bottom"
+              icon={<Zap className="w-4 h-4" />}
+              title="Bottom Tooltip"
+              description="Renders cleanly below without clipping."
+            />
+          </Tooltip>
+        </div>
+
+        {/* 2. Right Placement (Placed on left edge on mobile to open right) */}
+        <div className="self-start sm:self-auto order-2 sm:order-4">
+          <Tooltip>
+            <TooltipTrigger>
+              <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-card hover:bg-muted text-sm font-medium transition-colors">
+                <ArrowRight className="w-3.5 h-3.5 text-muted-foreground" />
+                <span>Right</span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="right"
+              icon={<Layers className="w-4 h-4" />}
+              title="Right Tooltip"
+              description="Anchored smoothly to the right edge."
+            />
+          </Tooltip>
+        </div>
+
+        {/* 3. Top Placement */}
+        <div className="self-center sm:self-auto order-3 sm:order-2">
+          <Tooltip>
+            <TooltipTrigger>
+              <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-card hover:bg-muted text-sm font-medium transition-colors">
+                <ArrowUp className="w-3.5 h-3.5 text-muted-foreground" />
+                <span>Top</span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="top"
+              icon={<Sparkles className="w-4 h-4" />}
+              title="Top Tooltip"
+              description="Positioned dynamically above the trigger."
+            />
+          </Tooltip>
+        </div>
+
+        {/* 4. Left Placement (Placed on right edge on mobile to open left) */}
+        <div className="self-end sm:self-auto order-4 sm:order-1">
+          <Tooltip>
+            <TooltipTrigger>
+              <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-card hover:bg-muted text-sm font-medium transition-colors">
+                <ArrowLeft className="w-3.5 h-3.5 text-muted-foreground" />
+                <span>Left</span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="left"
+              icon={<Compass className="w-4 h-4" />}
+              title="Left Tooltip"
+              description="Attached to the left side with portal layout."
+            />
+          </Tooltip>
+        </div>
+      </div>
     </TooltipProvider>
   );
 }`;
 
-export const usageOffset = `import {
+export const usageArrow = `import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/custom/blocks/TooltipBlock";
-import { Plus } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  Compass,
+  Layers,
+  Sparkles,
+  Zap,
+} from "lucide-react";
 
-export default function OffsetTooltip() {
+export default function ArrowTooltip() {
   return (
     <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger>
-          <div className="w-16 h-16 flex items-center justify-center rounded-2xl border">
-            <Plus className="w-6 h-6" />
-          </div>
-        </TooltipTrigger>
-        {/* sideOffset is the gap in px between trigger and bubble */}
-        <TooltipContent side="right" sideOffset={16}>
-          <p>Create new project</p>
-        </TooltipContent>
-      </Tooltip>
+      <div className="w-full max-w-xs sm:max-w-none flex flex-col sm:flex-row sm:items-center sm:justify-center gap-7 sm:gap-6">
+        {/* 1. Bottom Placement */}
+        <div className="self-center sm:self-auto order-1 sm:order-3">
+          <Tooltip>
+            <TooltipTrigger>
+              <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-card hover:bg-muted text-sm font-medium transition-colors">
+                <ArrowDown className="w-3.5 h-3.5 text-muted-foreground" />
+                <span>Bottom</span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="bottom"
+              showArrow
+              sideOffset={8}
+              icon={<Zap className="w-4 h-4" />}
+              title="Bottom Tooltip"
+              description="Renders cleanly below without clipping."
+            />
+          </Tooltip>
+        </div>
+
+        {/* 2. Right Placement */}
+        <div className="self-start sm:self-auto order-2 sm:order-4">
+          <Tooltip>
+            <TooltipTrigger>
+              <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-card hover:bg-muted text-sm font-medium transition-colors">
+                <ArrowRight className="w-3.5 h-3.5 text-muted-foreground" />
+                <span>Right</span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="right"
+              showArrow
+              sideOffset={8}
+              icon={<Layers className="w-4 h-4" />}
+              title="Right Tooltip"
+              description="Anchored smoothly to the right edge."
+            />
+          </Tooltip>
+        </div>
+
+        {/* 3. Top Placement */}
+        <div className="self-center sm:self-auto order-3 sm:order-2">
+          <Tooltip>
+            <TooltipTrigger>
+              <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-card hover:bg-muted text-sm font-medium transition-colors">
+                <ArrowUp className="w-3.5 h-3.5 text-muted-foreground" />
+                <span>Top</span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="top"
+              showArrow
+              sideOffset={8}
+              icon={<Sparkles className="w-4 h-4" />}
+              title="Top Tooltip"
+              description="Positioned dynamically above the trigger."
+            />
+          </Tooltip>
+        </div>
+
+        {/* 4. Left Placement */}
+        <div className="self-end sm:self-auto order-4 sm:order-1">
+          <Tooltip>
+            <TooltipTrigger>
+              <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-card hover:bg-muted text-sm font-medium transition-colors">
+                <ArrowLeft className="w-3.5 h-3.5 text-muted-foreground" />
+                <span>Left</span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="left"
+              showArrow
+              sideOffset={8}
+              icon={<Compass className="w-4 h-4" />}
+              title="Left Tooltip"
+              description="Attached to the left side with portal layout."
+            />
+          </Tooltip>
+        </div>
+      </div>
+    </TooltipProvider>
+  );
+}`;
+
+export const usageAnimated = `import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/custom/blocks/TooltipBlock";
+import {
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  Compass,
+  Layers,
+  Sparkles,
+  Zap,
+} from "lucide-react";
+
+export default function AnimatedTooltip() {
+  return (
+    <TooltipProvider>
+      <div className="w-full max-w-xs sm:max-w-none flex flex-col sm:flex-row sm:items-center sm:justify-center gap-7 sm:gap-6">
+        {/* 1. Bottom Placement */}
+        <div className="self-center sm:self-auto order-1 sm:order-3">
+          <Tooltip>
+            <TooltipTrigger>
+              <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-card hover:bg-muted text-sm font-medium transition-colors">
+                <ArrowDown className="w-3.5 h-3.5 text-muted-foreground" />
+                <span>Bottom</span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="bottom"
+              showArrow
+              animated
+              sideOffset={8}
+              icon={<Zap className="w-4 h-4" />}
+              title="Bottom Tooltip"
+              description="Renders cleanly below without clipping."
+            />
+          </Tooltip>
+        </div>
+
+        {/* 2. Right Placement */}
+        <div className="self-start sm:self-auto order-2 sm:order-4">
+          <Tooltip>
+            <TooltipTrigger>
+              <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-card hover:bg-muted text-sm font-medium transition-colors">
+                <ArrowRight className="w-3.5 h-3.5 text-muted-foreground" />
+                <span>Right</span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="right"
+              showArrow
+              animated
+              sideOffset={8}
+              icon={<Layers className="w-4 h-4" />}
+              title="Right Tooltip"
+              description="Anchored smoothly to the right edge."
+            />
+          </Tooltip>
+        </div>
+
+        {/* 3. Top Placement */}
+        <div className="self-center sm:self-auto order-3 sm:order-2">
+          <Tooltip>
+            <TooltipTrigger>
+              <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-card hover:bg-muted text-sm font-medium transition-colors">
+                <ArrowUp className="w-3.5 h-3.5 text-muted-foreground" />
+                <span>Top</span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="top"
+              showArrow
+              animated
+              sideOffset={8}
+              icon={<Sparkles className="w-4 h-4" />}
+              title="Top Tooltip"
+              description="Positioned dynamically above the trigger."
+            />
+          </Tooltip>
+        </div>
+
+        {/* 4. Left Placement */}
+        <div className="self-end sm:self-auto order-4 sm:order-1">
+          <Tooltip>
+            <TooltipTrigger>
+              <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-card hover:bg-muted text-sm font-medium transition-colors">
+                <ArrowLeft className="w-3.5 h-3.5 text-muted-foreground" />
+                <span>Left</span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="left"
+              showArrow
+              animated
+              sideOffset={8}
+              icon={<Compass className="w-4 h-4" />}
+              title="Left Tooltip"
+              description="Attached to the left side with portal layout."
+            />
+          </Tooltip>
+        </div>
+      </div>
     </TooltipProvider>
   );
 }`;
@@ -73,16 +329,21 @@ export default function OffsetTooltip() {
   columns={1}
   examples={[
     {
-      title: "Rich content",
+      title: "Without Arrow",
       propNotes: [
         {
-          prop: "children",
+          prop: "side",
           effect:
-            "of `TooltipContent` takes any markup; `className` is where width and padding go.",
+            "renders the tooltip on `left`, `top`, `bottom`, or `right` without an indicator arrow.",
+        },
+        {
+          prop: "icon / title / des",
+          effect:
+            "renders a matching-height icon badge on the left, a single-line title, and single-line description.",
         },
       ],
-      props: { example: "rich" },
-      usage: usageRich,
+      props: { example: "no-arrow" },
+      usage: usageNoArrow,
       code: extractCode("src/components/custom/blocks/TooltipBlock.tsx"),
     },
   ]}
@@ -99,17 +360,32 @@ export default function OffsetTooltip() {
   columns={1}
   examples={[
     {
-      title: "Offset",
+      title: "With Arrow",
       propNotes: [
         {
-          prop: "sideOffset",
-          value: '{6}',
+          lead: "Use",
+          prop: "showArrow",
+          value: "true",
           effect:
-            "is the gap in pixels between the trigger edge and the bubble.",
+            "on `TooltipContent` to anchor a directional pointer arrow.",
         },
       ],
-      props: { example: "single", side: "right", align: "center", sideOffset: 16 },
-      usage: usageOffset,
+      props: { example: "arrow" },
+      usage: usageArrow,
+    },
+    {
+      title: "With Arrow & Animated",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "animated",
+          value: "true",
+          effect:
+            "for a smooth pull-out emergence animation sliding gently out from the trigger.",
+        },
+      ],
+      props: { example: "animated" },
+      usage: usageAnimated,
     },
   ]}
 />
@@ -198,6 +474,159 @@ export default function OffsetTooltip() {
         <td>
           The distance (in pixels) from the edge of the trigger element to the
           tooltip bubble.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TooltipContent</code>
+        </td>
+        <td>
+          <code>showArrow</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          Whether to render an adaptive pointer arrow anchoring the tooltip bubble to its trigger.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TooltipContent</code>
+        </td>
+        <td>
+          <code>animated</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          Whether to enable the smooth pull-out animation that slides gently out from the trigger.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TooltipContent</code>
+        </td>
+        <td>
+          <code>arrowClassName</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional Tailwind CSS classes for custom styling on the pointer arrow.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TooltipContent</code>
+        </td>
+        <td>
+          <code>icon</code>
+        </td>
+        <td>
+          <code>React.ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional leading icon rendered on the left inside a background badge container that matches the content height.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TooltipContent</code>
+        </td>
+        <td>
+          <code>iconClassName</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional Tailwind CSS classes for custom styling on the icon background badge container.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TooltipContent</code>
+        </td>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>React.ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional header title rendered in bold to the right of the icon (single line). If omitted, no title is rendered.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TooltipContent</code>
+        </td>
+        <td>
+          <code>description</code>
+        </td>
+        <td>
+          <code>React.ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional descriptive text rendered underneath the title (single line). If only description is passed, it cleanly renders just the description.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TooltipContent</code>
+        </td>
+        <td>
+          <code>des</code>
+        </td>
+        <td>
+          <code>React.ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Shorthand alias for <code>description</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TooltipArrow</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Standalone arrow sub-component that automatically reads side and align to anchor the bubble.
         </td>
       </tr>
       <tr>

@@ -79,9 +79,25 @@ export const NAME_OVERRIDES: Record<string, string> = {
   "ConfidentialFolderBlock.tsx": "confidential-folder",
   "SecureEnvelopeBlock.tsx": "secure-envelope",
   "ScrollSplitCardsBlock.tsx": "scroll-split-cards",
+  "ErrorSectionBlock.tsx": "error-section",
+  "NotFoundSectionBlock.tsx": "not-found-section",
 };
 
 export const META: Record<string, ItemMeta> = {
+  "not-found-section": {
+    title: "Not Found Section",
+    description:
+      "A responsive, full-page 404 Hyperspace website section with ambient radial glow, masked cyber grid backdrop, animated compass indicator, and customizable shortcuts.",
+    categories: ["marketing", "layout", "feedback"],
+    docs: "Named export: NotFoundSection (also default export) and NotFoundSectionProps. Ready for drop-in use in Next.js not-found.tsx or standalone 404 routes.",
+  },
+  "error-section": {
+    title: "Error Section",
+    description:
+      "A responsive, animated Cyberpunk Diagnostic Terminal Error Website Section with full Light and Dark mode adaptive styling, diagnostic monitors, and live stacktrace inspection.",
+    categories: ["marketing", "layout", "feedback"],
+    docs: "Named export: ErrorSection (also default export) and ErrorSectionProps. Designed to serve as a full-page 500, 404, or runtime error boundary with light & dark theme support, one-click incident copying, and reboot action triggers.",
+  },
   "secure-envelope": {
     description:
       "An interactive classified security envelope & travel pass sleeve component featuring a secret card that glides out horizontally on hover and elevates gracefully onto the cover on click with 3D flip physics.",
