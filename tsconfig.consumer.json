@@ -123,6 +123,7 @@
     "src/components/custom/blocks/NavigationMenu.tsx",
     "src/components/custom/blocks/NetworkGraphBlock.tsx",
     "src/components/custom/blocks/NewsletterBlock.tsx",
+    "src/components/custom/blocks/NotFoundSectionBlock.tsx",
     "src/components/custom/blocks/OrbitGalleryBlock.tsx",
     "src/components/custom/blocks/OtpInputBlock.tsx",
     "src/components/custom/blocks/PaginationBlock.tsx",

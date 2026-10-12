@@ -9,7 +9,7 @@ import { extractCode } from "@/lib/code";
 
 A two-column hero for an agency, studio or gallery: copy and actions on the left, and on the right a ring of photo cards that revolves once every 36 seconds, each card staying upright as it travels. Hovering the ring holds it still; moving the pointer anywhere over the section leaves a short trail of dots in the accent colour.
 
-The ring is pure CSS — one keyframe rotates each card about the centre, pushes it out by a radius that grows with the breakpoint, and counter-rotates it upright — so any number of `images` space themselves evenly and the motion costs nothing on the main thread. Under `prefers-reduced-motion` the ring holds still.
+The component also includes a **Moving Bento** variant — a self-rearranging image bento grid with a dominant center hero slot where peripheral items rotate seamlessly into focus via GSAP Flip animations.
 
 {/* The snippets below pass next/link so links route client-side in Next.js. The React tab is the same file without it: the component's default <a> needs no import. */}
 
@@ -56,6 +56,73 @@ export default function Hero() {
 }
 `;
 
+export const bentoUsage = `"use client";
+
+import { OrbitGallery } from "@/components/custom/blocks/OrbitGalleryBlock";
+
+const BENTO_ITEMS = [
+  {
+    id: "alpine-horizons",
+    title: "Alpine Horizons",
+    description: "Granite monoliths rising above early morning valley fog",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+  },
+  {
+    id: "emerald-canopy",
+    title: "Emerald Canopy",
+    description: "Sunlit trails winding through ancient coastal redwood forests",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
+  },
+  {
+    id: "whispering-peaks",
+    title: "Whispering Peaks",
+    description: "Layers of mountain silhouettes veiled in twilight atmospheric mist",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+  },
+  {
+    id: "sunbeam-sanctuary",
+    title: "Sunbeam Sanctuary",
+    description: "Golden rays breaking through tall evergreens after summer rain",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+  },
+  {
+    id: "verdant-valleys",
+    title: "Verdant Valleys",
+    description: "Rolling emerald highlands sweeping toward dramatic skies",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg",
+  },
+  {
+    id: "glacial-waters",
+    title: "Glacial Reflections",
+    description: "Mirror-still alpine lake echoing snow-dusted jagged ridge lines",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
+  },
+  {
+    id: "untamed-wilds",
+    title: "Untamed Wilds",
+    description: "Untouched wilderness under vibrant open skies",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+  },
+  {
+    id: "golden-ridge",
+    title: "Golden Ridge",
+    description: "Late sunset warmth illuminating steep rocky summits",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+  },
+];
+
+export default function MovingBentoExample() {
+  return (
+    <OrbitGallery
+      variant="moving-bento"
+      items={BENTO_ITEMS}
+      swapInterval={3000}
+      gap={12}
+    />
+  );
+}
+`;
+
 <ExampleShowcase
   name="orbit-gallery"
   colorControl
@@ -65,6 +132,7 @@ export default function Hero() {
     {
       title: "Movement is what people notice first",
       subheading: "Copy and actions on the left, the revolving ring on the right. Hover the ring to hold it; move the pointer over the section for the trail.",
+      props: { variant: "orbit" },
       propNotes: [
         {
           prop: "images",
@@ -87,6 +155,34 @@ export default function Hero() {
       usage: nextAndReact(usage),
       code: extractCode("src/components/custom/blocks/OrbitGalleryBlock.tsx"),
     },
+    {
+      title: "Moving Bento",
+      subheading: "Self-rearranging image bento grid with a dominant center hero slot. Peripheral items rotate into focus via GSAP Flip animations. Hovering holds the items still; clicking any peripheral item instantly brings it to the hero slot.",
+      props: { variant: "moving-bento" },
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"moving-bento"',
+          effect: "switches from the circular orbit to the GSAP Flip moving bento grid layout.",
+        },
+        {
+          prop: "swapInterval",
+          value: "3000",
+          effect: "is the milliseconds between automatic position swaps.",
+        },
+        {
+          prop: "gap",
+          value: "12",
+          effect: "is the spacing in pixels between bento items.",
+        },
+        {
+          prop: "items",
+          effect: "is an array of cards ({ id, title, description, image }) to populate the grid.",
+        },
+      ],
+      usage: nextAndReact(bentoUsage),
+      code: extractCode("src/components/custom/blocks/OrbitGalleryBlock.tsx"),
+    },
   ]}
 />
 
@@ -107,6 +203,12 @@ export default function Hero() {
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"orbit" | "moving-bento"</code></td>
+        <td><code>"orbit"</code></td>
+        <td>Selects the circular orbit hero or the GSAP Flip moving bento grid.</td>
+      </tr>
       <tr>
         <td><code>badgeText</code>, <code>badgeHref</code></td>
         <td><code>string</code></td>
@@ -141,13 +243,37 @@ export default function Hero() {
         <td><code>images</code></td>
         <td><code>string[]</code></td>
         <td>15 landscapes</td>
-        <td>The cards on the ring, in orbit order.</td>
+        <td>The cards on the ring for the <code>"orbit"</code> variant.</td>
       </tr>
       <tr>
         <td><code>duration</code></td>
         <td><code>number</code></td>
         <td><code>36</code></td>
-        <td>Seconds per revolution.</td>
+        <td>Seconds per revolution on the orbit ring.</td>
+      </tr>
+      <tr>
+        <td><code>items</code></td>
+        <td><code>MovingBentoItem[]</code></td>
+        <td>8 landscapes</td>
+        <td>The cards for the <code>"moving-bento"</code> variant.</td>
+      </tr>
+      <tr>
+        <td><code>swapInterval</code></td>
+        <td><code>number</code></td>
+        <td><code>3000</code></td>
+        <td>Milliseconds between automatic card swaps in the moving bento.</td>
+      </tr>
+      <tr>
+        <td><code>gap</code></td>
+        <td><code>number</code></td>
+        <td><code>12</code></td>
+        <td>Gap in pixels between bento grid cards.</td>
+      </tr>
+      <tr>
+        <td><code>autoPlay</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Controls whether automatic card swaps are enabled.</td>
       </tr>
       <tr>
         <td><code>highlights</code></td>

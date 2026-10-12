@@ -3,13 +3,11 @@
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import {
-  RotateCcw,
   Home,
   Copy,
   Check,
   ServerCrash,
   Radio,
-  Bug,
   LifeBuoy,
   RefreshCw,
   Cpu,

@@ -1,15 +1,23 @@
 "use client";
 
-import React, { forwardRef, useEffect, useRef, useState } from "react";
+import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState, memo } from "react";
 import { ArrowRight, ArrowUpRight, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
+import gsap from "gsap";
+import { Flip } from "gsap/dist/Flip";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(Flip);
+}
+
+const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 // ==========================================
-// ORBIT GALLERY
-// A two-column hero: copy and actions on the left, and on the right a ring of
-// photo cards that revolves once every 36 seconds, each card staying upright
-// as it travels. Hovering the ring holds it still; moving the pointer over
-// the section leaves a short trail of dots in the accent colour.
+// ORBIT GALLERY & MOVING BENTO
+// A dynamic visual showcase featuring:
+// 1. Orbit Ring: revolving 3D circular photo carousel with upright rotation and mouse trail.
+// 2. Moving Bento: self-rearranging image bento grid with a dominant center hero slot,
+//    powered by fluid GSAP Flip transitions.
 // ==========================================
 
 export interface OrbitHighlight {
@@ -18,7 +26,25 @@ export interface OrbitHighlight {
   color?: string;
 }
 
+export interface MovingBentoItem {
+  id: string;
+  title: string;
+  description?: string;
+  image: string;
+}
+
+export interface MovingBentoProps extends React.HTMLAttributes<HTMLDivElement> {
+  items?: MovingBentoItem[];
+  swapInterval?: number;
+  gap?: number;
+  autoPlay?: boolean;
+  color?: string;
+  onCardClick?: (item: MovingBentoItem, index: number) => void;
+}
+
 export interface OrbitGalleryProps extends React.HTMLAttributes<HTMLElement> {
+  /** Gallery variant: "orbit" (circular revolving ring) or "moving-bento" (GSAP Flip self-rearranging grid). */
+  variant?: "orbit" | "moving-bento";
   /** Small tracked line above the headline, with a spark before it. */
   badgeText?: string;
   badgeHref?: string;
@@ -31,9 +57,9 @@ export interface OrbitGalleryProps extends React.HTMLAttributes<HTMLElement> {
   primaryActionHref?: string;
   secondaryActionLabel?: string;
   secondaryActionHref?: string;
-  /** The photographs on the ring, in orbit order. */
+  /** The photographs on the orbit ring, in orbit order. */
   images?: string[];
-  /** Seconds for one full revolution. */
+  /** Seconds for one full revolution of the orbit ring. */
   duration?: number;
   /** Small dotted facts under the actions. */
   highlights?: OrbitHighlight[];
@@ -41,6 +67,16 @@ export interface OrbitGalleryProps extends React.HTMLAttributes<HTMLElement> {
   color?: string;
   /** Pass `next/link` to keep client-side navigation. */
   linkComponent?: React.ElementType;
+
+  // Moving Bento specific props
+  /** Bento items for the "moving-bento" variant. */
+  items?: MovingBentoItem[];
+  /** Swap interval in ms for the bento variant. */
+  swapInterval?: number;
+  /** Grid gap in px for the bento variant. */
+  gap?: number;
+  /** Auto-swapping state for the bento variant. */
+  autoPlay?: boolean;
 }
 
 // ------------------------------------------
@@ -126,18 +162,356 @@ const DEFAULT_IMAGES = [
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790158814/photo-1518495973542-4542c06a5843-1790158812213.jpg", // Sunlit trees
 ];
 
+export const DEFAULT_BENTO_ITEMS: MovingBentoItem[] = [
+  {
+    id: "alpine-horizons",
+    title: "Alpine Horizons",
+    description: "Granite monoliths rising above early morning valley fog",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+  },
+  {
+    id: "emerald-canopy",
+    title: "Emerald Canopy",
+    description: "Sunlit trails winding through ancient coastal redwood forests",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
+  },
+  {
+    id: "whispering-peaks",
+    title: "Whispering Peaks",
+    description: "Layers of mountain silhouettes veiled in twilight atmospheric mist",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+  },
+  {
+    id: "sunbeam-sanctuary",
+    title: "Sunbeam Sanctuary",
+    description: "Golden rays breaking through tall evergreens after summer rain",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+  },
+  {
+    id: "verdant-valleys",
+    title: "Verdant Valleys",
+    description: "Rolling emerald highlands sweeping toward dramatic skies",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg",
+  },
+  {
+    id: "glacial-waters",
+    title: "Glacial Reflections",
+    description: "Mirror-still alpine lake echoing snow-dusted jagged ridge lines",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
+  },
+  {
+    id: "untamed-wilds",
+    title: "Untamed Wilds",
+    description: "Untouched wilderness under vibrant open skies",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+  },
+  {
+    id: "golden-ridge",
+    title: "Golden Ridge",
+    description: "Late sunset warmth illuminating steep rocky summits",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+  },
+];
+
 const DEFAULT_HIGHLIGHTS: OrbitHighlight[] = [
   { label: "15 hand-picked scenes" },
   { label: "Full-circle rotation", color: "#10b981" },
   { label: "Holds still on hover", color: "#f59e0b" },
 ];
 
+const DEFAULT_BENTO_HIGHLIGHTS: OrbitHighlight[] = [
+  { label: "GSAP Flip layout animation" },
+  { label: "Self-rearranging hero card", color: "#10b981" },
+  { label: "Click to focus", color: "#f59e0b" },
+];
+
+// ==========================================
+// MOVING BENTO GRID DEFINITIONS
+// ==========================================
+interface SlotDef {
+  gridColumn: string;
+  gridRow: string;
+}
+
+const DESKTOP_SLOTS: SlotDef[] = [
+  { gridColumn: "2 / 4", gridRow: "2 / 4" }, // CENTER HERO (2x2)
+  { gridColumn: "1 / 2", gridRow: "1 / 2" }, // top-left
+  { gridColumn: "2 / 4", gridRow: "1 / 2" }, // top-center wide
+  { gridColumn: "4 / 5", gridRow: "1 / 2" }, // top-right
+  { gridColumn: "1 / 2", gridRow: "2 / 3" }, // mid-left
+  { gridColumn: "4 / 5", gridRow: "2 / 3" }, // mid-right
+  { gridColumn: "1 / 2", gridRow: "3 / 4" }, // bottom-left
+  { gridColumn: "4 / 5", gridRow: "3 / 4" }, // bottom-right
+];
+
+const TABLET_SLOTS: SlotDef[] = [
+  { gridColumn: "2 / 4", gridRow: "2 / 4" }, // Hero (2x2)
+  { gridColumn: "1 / 2", gridRow: "1 / 2" },
+  { gridColumn: "2 / 3", gridRow: "1 / 2" },
+  { gridColumn: "3 / 4", gridRow: "1 / 2" },
+  { gridColumn: "1 / 2", gridRow: "2 / 3" },
+  { gridColumn: "1 / 2", gridRow: "3 / 4" },
+];
+
+const MOBILE_SLOTS: SlotDef[] = [
+  { gridColumn: "1 / 3", gridRow: "2 / 3" }, // Hero middle row (2 cols x 1 row)
+  { gridColumn: "1 / 2", gridRow: "1 / 2" },
+  { gridColumn: "2 / 3", gridRow: "1 / 2" },
+  { gridColumn: "1 / 2", gridRow: "3 / 4" },
+  { gridColumn: "2 / 3", gridRow: "3 / 4" },
+];
+
+const SLOT_COUNTS = { mobile: 5, tablet: 6, desktop: 8 } as const;
+type Breakpoint = keyof typeof SLOT_COUNTS;
+
+const SLOTS: Record<Breakpoint, SlotDef[]> = {
+  mobile: MOBILE_SLOTS,
+  tablet: TABLET_SLOTS,
+  desktop: DESKTOP_SLOTS,
+};
+
+const GRID_COLS: Record<Breakpoint, number> = { mobile: 2, tablet: 3, desktop: 4 };
+const ASPECT_RATIOS: Record<Breakpoint, string> = {
+  mobile: "3 / 4",
+  tablet: "4 / 3",
+  desktop: "16 / 10",
+};
+
+const CENTER_SLOT = 0;
+const DATA_ATTR = "data-moving-id";
+const DATA_SELECTOR = `[${DATA_ATTR}]`;
+
+function pickPeripheral(count: number): number {
+  return 1 + Math.floor(Math.random() * (count - 1));
+}
+
 // ------------------------------------------
-// Root
+// Bento Card Component
+// ------------------------------------------
+const BentoCard = memo(function BentoCard({
+  item,
+  isHero,
+  onClick,
+}: {
+  item: MovingBentoItem;
+  isHero?: boolean;
+  onClick?: () => void;
+}) {
+  return (
+    <div
+      onClick={onClick}
+      className={cn(
+        "group relative size-full overflow-hidden rounded-2xl select-none transition-all duration-300",
+        "border border-border/50 bg-card shadow-md hover:shadow-xl",
+        !isHero && "cursor-pointer hover:border-primary/50 hover:brightness-105 active:scale-[0.98]",
+        isHero && "ring-1 ring-primary/30 shadow-2xl"
+      )}
+    >
+      <div
+        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-105"
+        style={{ backgroundImage: `url(${item.image})` }}
+      />
+      <div
+        className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent transition-opacity duration-300"
+        aria-hidden="true"
+      />
+
+      <div className="relative size-full flex flex-col justify-end p-2.5 sm:p-4 md:p-5 z-10 pointer-events-none">
+        <h3 className="text-xs sm:text-sm md:text-base font-bold text-white leading-tight drop-shadow-sm">
+          {item.title}
+        </h3>
+        {item.description && (
+          <p className="text-[10px] sm:text-xs text-white/80 mt-0.5 sm:mt-1 leading-relaxed drop-shadow-sm line-clamp-1 sm:line-clamp-2">
+            {item.description}
+          </p>
+        )}
+      </div>
+    </div>
+  );
+});
+
+// ------------------------------------------
+// Moving Bento Standalone Component
+// ------------------------------------------
+export function MovingBento({
+  items = DEFAULT_BENTO_ITEMS,
+  swapInterval = 3000,
+  gap = 12,
+  autoPlay = true,
+  color,
+  className,
+  style,
+  onCardClick,
+  ...props
+}: MovingBentoProps) {
+  const gridRef = useRef<HTMLDivElement>(null);
+  const [bp, setBp] = useState<Breakpoint>("desktop");
+  const isHovered = useRef(false);
+  const isOffScreen = useRef(false);
+  const isAnimating = useRef(false);
+  const hasEntered = useRef(false);
+  const flipStateRef = useRef<Flip.FlipState | null>(null);
+  const flipTweenRef = useRef<gsap.core.Timeline | gsap.core.Tween | null>(null);
+
+  const [assignment, setAssignment] = useState<number[]>(() =>
+    Array.from({ length: Math.max(items.length, SLOT_COUNTS.desktop) }, (_, i) => i % items.length)
+  );
+
+  const slots = SLOTS[bp];
+  const slotCount = SLOT_COUNTS[bp];
+
+  useEffect(() => {
+    const mqMobile = window.matchMedia("(max-width: 639px)");
+    const mqTablet = window.matchMedia("(min-width: 640px) and (max-width: 1023px)");
+    const update = () => {
+      if (mqMobile.matches) setBp("mobile");
+      else if (mqTablet.matches) setBp("tablet");
+      else setBp("desktop");
+    };
+    update();
+    mqMobile.addEventListener("change", update);
+    mqTablet.addEventListener("change", update);
+    return () => {
+      mqMobile.removeEventListener("change", update);
+      mqTablet.removeEventListener("change", update);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!gridRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isOffScreen.current = !entry.isIntersecting;
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(gridRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useIsomorphicLayoutEffect(() => {
+    if (!flipStateRef.current || !hasEntered.current) return;
+    const state = flipStateRef.current;
+    flipStateRef.current = null;
+
+    flipTweenRef.current?.kill();
+    isAnimating.current = true;
+
+    flipTweenRef.current = Flip.from(state, {
+      duration: 1.0,
+      ease: "power2.inOut",
+      absolute: true,
+      zIndex: 20,
+      onComplete: () => {
+        isAnimating.current = false;
+      },
+    });
+  }, [assignment]);
+
+  const swapWithHero = (slotIdx: number) => {
+    if (slotIdx === CENTER_SLOT || isAnimating.current || !gridRef.current) return;
+    flipStateRef.current = Flip.getState(gridRef.current.querySelectorAll(DATA_SELECTOR));
+    setAssignment((prev) => {
+      const next = [...prev];
+      [next[CENTER_SLOT], next[slotIdx]] = [next[slotIdx], next[CENTER_SLOT]];
+      return next;
+    });
+  };
+
+  useEffect(() => {
+    if (!autoPlay) return;
+    const id = setInterval(() => {
+      if (isHovered.current || isOffScreen.current || isAnimating.current) return;
+      if (!gridRef.current) return;
+
+      const p = pickPeripheral(slotCount);
+      swapWithHero(p);
+    }, swapInterval);
+    return () => clearInterval(id);
+  }, [autoPlay, swapInterval, slotCount]);
+
+  useEffect(() => {
+    if (hasEntered.current || !gridRef.current) return;
+    hasEntered.current = true;
+    gsap.fromTo(
+      gridRef.current.querySelectorAll(DATA_SELECTOR),
+      { opacity: 0, y: 24, scale: 0.94 },
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.6,
+        stagger: 0.05,
+        ease: "power3.out",
+        clearProps: "opacity,transform",
+      }
+    );
+  }, []);
+
+  useEffect(() => () => {
+    flipTweenRef.current?.kill();
+  }, []);
+
+  return (
+    <div
+      ref={gridRef}
+      onPointerEnter={() => {
+        isHovered.current = true;
+      }}
+      onPointerLeave={() => {
+        isHovered.current = false;
+      }}
+      role="region"
+      aria-label="Moving bento grid"
+      style={{
+        display: "grid",
+        gridTemplateColumns: `repeat(${GRID_COLS[bp]}, 1fr)`,
+        gridTemplateRows: "repeat(3, 1fr)",
+        gap: `${gap}px`,
+        aspectRatio: ASPECT_RATIOS[bp],
+        ...accentStyle(color),
+        ...style,
+      }}
+      className={cn("relative w-full select-none", className)}
+      {...props}
+    >
+      {assignment.slice(0, slotCount).map((itemIdx, slotIdx) => {
+        const item = items[itemIdx] ?? items[itemIdx % items.length];
+        const isHero = slotIdx === CENTER_SLOT;
+        return (
+          <div
+            key={item.id}
+            {...{ [DATA_ATTR]: item.id }}
+            style={{
+              gridColumn: slots[slotIdx].gridColumn,
+              gridRow: slots[slotIdx].gridRow,
+            }}
+            className="size-full overflow-hidden"
+          >
+            <BentoCard
+              item={item}
+              isHero={isHero}
+              onClick={() => {
+                if (!isHero) {
+                  swapWithHero(slotIdx);
+                  onCardClick?.(item, slotIdx);
+                }
+              }}
+            />
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ------------------------------------------
+// Root OrbitGallery
 // ------------------------------------------
 export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
   (
     {
+      variant = "orbit",
       badgeText = "Identity & animation studio",
       badgeHref = "#",
       title = "Wander through",
@@ -149,7 +523,7 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
       secondaryActionHref = "#",
       images = DEFAULT_IMAGES,
       duration = 36,
-      highlights = DEFAULT_HIGHLIGHTS,
+      highlights,
       color,
       linkComponent: Link = "a",
       className,
@@ -157,10 +531,16 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
       onMouseMove,
       onMouseEnter,
       onMouseLeave,
+      // Bento specific
+      items = DEFAULT_BENTO_ITEMS,
+      swapInterval = 3000,
+      gap = 12,
+      autoPlay = true,
       ...props
     },
     ref,
   ) => {
+    const effectiveHighlights = highlights ?? (variant === "moving-bento" ? DEFAULT_BENTO_HIGHLIGHTS : DEFAULT_HIGHLIGHTS);
     const count = images.length;
 
     // The pointer trail: a handful of dots that follow the pointer while it is
@@ -209,6 +589,71 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
       setTrail([]);
     };
 
+    // ----------------------------------------
+    // VARIANT: MOVING BENTO
+    // ----------------------------------------
+    if (variant === "moving-bento") {
+      return (
+        <section
+          ref={(node) => {
+            containerRef.current = node;
+            if (typeof ref === "function") ref(node);
+            else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
+          }}
+          onMouseMove={handleMouseMove}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          style={{ ...accentStyle(color), ...style }}
+          className={cn(
+            "relative flex w-full select-none items-center justify-center overflow-hidden bg-background py-6 sm:py-10 lg:py-12 text-foreground transition-colors duration-300",
+            className,
+          )}
+          {...props}
+        >
+          {/* ---- Pointer trail ---- */}
+          {hovered && (
+            <div className="pointer-events-none absolute inset-0 z-50 overflow-hidden" aria-hidden>
+              {trail.map((pt, i) => {
+                const size = Math.max(4, 18 - i * 2);
+                const opacity = (trail.length - i) / trail.length;
+                return (
+                  <div
+                    key={pt.id + i}
+                    className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full transition-opacity duration-150"
+                    style={{
+                      left: `${pt.x}px`,
+                      top: `${pt.y}px`,
+                      width: `${size}px`,
+                      height: `${size}px`,
+                      backgroundColor: "var(--hero-accent-text)",
+                      opacity: opacity * 0.7,
+                    }}
+                  />
+                );
+              })}
+              <div
+                className="pointer-events-none absolute size-4 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg"
+                style={{ left: `${pointer.x}px`, top: `${pointer.y}px`, backgroundColor: "var(--hero-accent-text)" }}
+              />
+            </div>
+          )}
+
+          <div className="relative z-10 w-full px-2 sm:px-4 md:px-6">
+            <MovingBento
+              items={items}
+              swapInterval={swapInterval}
+              gap={gap}
+              autoPlay={autoPlay}
+              color={color}
+            />
+          </div>
+        </section>
+      );
+    }
+
+    // ----------------------------------------
+    // VARIANT: ORBIT (DEFAULT)
+    // ----------------------------------------
     return (
       <section
         ref={(node) => {
@@ -332,9 +777,9 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
                 )}
               </div>
 
-              {highlights.length > 0 && (
+              {effectiveHighlights.length > 0 && (
                 <div className="flex flex-wrap items-center gap-5 border-t border-border/40 pt-2 text-xs font-semibold text-muted-foreground sm:gap-8">
-                  {highlights.map((h) => (
+                  {effectiveHighlights.map((h) => (
                     <div key={h.label} className="flex items-center gap-2">
                       <div className="size-2 rounded-full" style={{ backgroundColor: h.color ?? "var(--hero-accent-text)" }} />
                       <span>{h.label}</span>
@@ -372,6 +817,7 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
     );
   },
 );
+
 OrbitGallery.displayName = "OrbitGallery";
 
 export default OrbitGallery;

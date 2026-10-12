@@ -3049,6 +3049,7 @@
         "layout"
       ],
       "dependencies": [
+        "gsap",
         "lucide-react"
       ],
       "registryDependencies": [

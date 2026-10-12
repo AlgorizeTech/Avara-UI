@@ -132,7 +132,7 @@ export function TooltipTrigger({
 // 5. CONTENT (Portal Renderer)
 // ==========================================
 export interface TooltipContentProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   side?: "top" | "right" | "bottom" | "left";
   align?: "start" | "center" | "end";
   sideOffset?: number;

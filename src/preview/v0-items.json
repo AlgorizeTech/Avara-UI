@@ -919,8 +919,9 @@
     "disabled": "Toggle Group — Disabled"
   },
   "tooltip": {
-    "rich-content": "Tooltip — Rich content",
-    "offset": "Tooltip — Offset"
+    "without-arrow": "Tooltip — Without Arrow",
+    "with-arrow": "Tooltip — With Arrow",
+    "with-arrow-animated": "Tooltip — With Arrow & Animated"
   },
   "user-graph": {
     "user-graph": "User Graph"

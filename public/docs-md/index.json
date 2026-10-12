@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-12T04:00:28.313Z",
-  "totalFiles": 305,
+  "generatedAt": "2026-10-12T19:15:44.197Z",
+  "totalFiles": 307,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -565,6 +565,12 @@
       "path": "/docs/nextjs-newsletter.md",
       "url": "/docs/nextjs/newsletter",
       "originalMdx": "[framework]\\newsletter\\page.mdx"
+    },
+    {
+      "name": "nextjs/not-found-section",
+      "path": "/docs/nextjs-not-found-section.md",
+      "url": "/docs/nextjs/not-found-section",
+      "originalMdx": "[framework]\\not-found-section\\page.mdx"
     },
     {
       "name": "nextjs/orbit-gallery",
@@ -1483,6 +1489,12 @@
       "path": "/docs/reactjs-newsletter.md",
       "url": "/docs/reactjs/newsletter",
       "originalMdx": "[framework]\\newsletter\\page.mdx"
+    },
+    {
+      "name": "reactjs/not-found-section",
+      "path": "/docs/reactjs-not-found-section.md",
+      "url": "/docs/reactjs/not-found-section",
+      "originalMdx": "[framework]\\not-found-section\\page.mdx"
     },
     {
       "name": "reactjs/orbit-gallery",
