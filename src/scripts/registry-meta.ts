@@ -80,9 +80,17 @@ export const NAME_OVERRIDES: Record<string, string> = {
   "SecureEnvelopeBlock.tsx": "secure-envelope",
   "ScrollSplitCardsBlock.tsx": "scroll-split-cards",
   "ErrorSectionBlock.tsx": "error-section",
+  "NotFoundSectionBlock.tsx": "not-found-section",
 };
 
 export const META: Record<string, ItemMeta> = {
+  "not-found-section": {
+    title: "Not Found Section",
+    description:
+      "A responsive, full-page 404 Hyperspace website section with ambient radial glow, masked cyber grid backdrop, animated compass indicator, and customizable shortcuts.",
+    categories: ["marketing", "layout", "feedback"],
+    docs: "Named export: NotFoundSection (also default export) and NotFoundSectionProps. Ready for drop-in use in Next.js not-found.tsx or standalone 404 routes.",
+  },
   "error-section": {
     title: "Error Section",
     description:

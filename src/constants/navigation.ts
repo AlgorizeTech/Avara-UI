@@ -447,6 +447,22 @@ const rawNavigation: NavigationItem[] = [
         ],
       },
       {
+        label: "Not Found Section",
+        slug: "not-found-section",
+        badge: "New",
+        addedOn: "2026-10-12",
+        keywords: [
+          "not found section",
+          "not found",
+          "404",
+          "404 page",
+          "lost in hyperspace",
+          "hyperspace",
+          "missing route",
+          "page not found",
+        ],
+      },
+      {
         label: "Hero",
         slug: "hero",
         badge: "Updated",

@@ -1,0 +1,102 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("not-found-section");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Not Found Section
+
+A responsive, full-page 404 Hyperspace website section featuring ambient radial glow, masked cyber grid backdrop, animated compass indicator, and customizable shortcuts.
+
+Designed as a drop-in replacement for Next.js `not-found.tsx` or standalone missing route pages.
+
+export const usageDefault = `import { NotFoundSection } from "@/components/custom/blocks/NotFoundSectionBlock";
+
+export default function NotFound() {
+  return (
+    <NotFoundSection
+      code="404"
+      badge="Error 404 • Page Not Found"
+      title="Lost in Hyperspace?"
+      description="The page you are looking for doesn't exist, was relocated, or is temporarily unavailable in this documentation."
+      primaryAction={{
+        label: "Explore Documentation",
+        href: "/docs",
+      }}
+      secondaryAction={{
+        label: "Back to Home",
+        href: "/",
+      }}
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="not-found-section"
+  columns={1}
+  colorControl={false}
+  minHeight={640}
+  examples={[
+    {
+      title: "Hyperspace 404 Section",
+      propNotes: [
+        {
+          prop: "code",
+          value: '"404"',
+          effect: "displays the primary numerical status code with serif typography.",
+        },
+        {
+          prop: "badge",
+          value: '"Error 404 • Page Not Found"',
+          effect: "floating status badge with animated rotating compass icon.",
+        },
+        {
+          prop: "showShortcuts",
+          value: "true",
+          effect: "toggles quick navigation shortcuts grid at the bottom.",
+        },
+      ],
+      props: {
+        code: "404",
+        badge: "Error 404 • Page Not Found",
+        title: "Lost in Hyperspace?",
+        description: "The page you are looking for doesn't exist, was relocated, or is temporarily unavailable in this documentation.",
+        showShortcuts: true,
+      },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/NotFoundSectionBlock.tsx"),
+    },
+  ]}
+/>
+
+## Next.js Not Found Page Integration (`not-found.tsx`)
+
+Drop `NotFoundSection` directly into your Next.js App Router root `app/not-found.tsx`:
+
+```tsx
+import { NotFoundSection } from "@/components/custom/blocks/NotFoundSectionBlock";
+
+export default function NotFound() {
+  return (
+    <NotFoundSection
+      code="404"
+      badge="Error 404 • Page Not Found"
+      title="Lost in Hyperspace?"
+      description="The page you are looking for doesn't exist, was relocated, or is temporarily unavailable in this documentation."
+      primaryAction={{
+        label: "Explore Documentation",
+        href: "/docs",
+      }}
+      secondaryAction={{
+        label: "Back to Home",
+        href: "/",
+      }}
+      shortcuts={[
+        { label: "All Components", href: "/docs/all-components" },
+        { label: "Installation Guide", href: "/docs/installation" },
+      ]}
+    />
+  );
+}
+```

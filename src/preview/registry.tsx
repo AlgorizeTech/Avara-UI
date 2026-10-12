@@ -123,6 +123,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "network-graph": lazyRetry(() => import("./demos/network-graph-demo")),
   "newsletter": lazyRetry(() => import("./demos/newsletter-demo")),
   "newsletter-motion": lazyRetry(() => import("./demos/newsletter-motion-demo")),
+  "not-found-section": lazyRetry(() => import("./demos/not-found-section-demo")),
   "orbit-gallery": lazyRetry(() => import("./demos/orbit-gallery-demo")),
   "otp-input": lazyRetry(() => import("./demos/otp-input-demo")),
   "pagination": lazyRetry(() => import("./demos/pagination-demo")),

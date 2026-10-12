@@ -3013,6 +3013,32 @@
       "docs": "Motion build of `newsletter` — same props, markup and install path; install one or the other. Named export: Newsletter, with parts Heading, Intro, Form, Proof, Ticker and Issues. Composed from the input, button, marquee and tilted-card items, which install alongside it. `variant` is portraits | spotlight | issues, each styled for light and dark mode; `portraits` takes up to four faces; `Form` takes `onSubscribe(email)` (a promise holds the busy state), `action`, `successTitle`/`successText`; `accent` pins the glow and button colour; `reveal` is in-view or immediate."
     },
     {
+      "name": "not-found-section",
+      "type": "registry:component",
+      "title": "Not Found Section",
+      "author": "AlgorizeTech",
+      "description": "A responsive, full-page 404 Hyperspace website section with ambient radial glow, masked cyber grid backdrop, animated compass indicator, and customizable shortcuts.",
+      "categories": [
+        "marketing",
+        "layout",
+        "feedback"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/NotFoundSectionBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/NotFoundSectionBlock.tsx"
+        }
+      ],
+      "docs": "Named export: NotFoundSection (also default export) and NotFoundSectionProps. Ready for drop-in use in Next.js not-found.tsx or standalone 404 routes."
+    },
+    {
       "name": "orbit-gallery",
       "type": "registry:component",
       "title": "Orbit Gallery",

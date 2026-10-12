@@ -118,6 +118,7 @@ export const sandboxNames = [
   "network-graph",
   "newsletter",
   "newsletter-motion",
+  "not-found-section",
   "orbit-gallery",
   "otp-input",
   "pagination",
