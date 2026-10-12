@@ -52,6 +52,19 @@ export default function Solid() {
   );
 }`;
 
+export const usageLiquidGlass = `import { GlassBackdrop, GlassPanel } from "@/components/custom/blocks/GlassPanelBlock";
+
+export default function LiquidGlass() {
+  return (
+
+        Liquid glass surface
+        Refractive fluid SVG filter with pure white glass elements.
+
+        Frosted glass tile on fluid background.
+
+  );
+}`;
+
 ## Installation
 
 Register the @algorize-ui registry once per project, then add the component:
@@ -87,9 +100,24 @@ npx shadcn@latest add @algorize-ui/glass-panel
         Description
 
         variant
-        "glass" | "solid"
+        "glass" | "solid" | "liquid-glass"
         "glass"
-        Frosted panels over an aurora, or solid white cards with a shadow on a flat ground. Read by every GlassPanel inside.
+        Frosted panels over an aurora, solid white cards with a shadow on a flat ground, or liquid-glass refraction with fluid background. Read by every GlassPanel inside.
+
+        bgImage
+        string
+        —
+        Optional custom background image URL for liquid-glass variant.
+
+        wrapperClassName
+        string
+        —
+        Classes for the inner LiquidGlassWrapper — controls ratio (defaults to 40% width centered on large screens).
+
+        radius
+        string | number
+        —
+        Dynamic rounding radius for backdrop and wrapper (e.g. "1.5rem", "var(--radius-3xl)").
 
         aurora
         [string, string, string]

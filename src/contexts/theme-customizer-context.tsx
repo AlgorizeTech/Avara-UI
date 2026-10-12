@@ -293,7 +293,7 @@ export function ThemeCustomizerProvider({
 
   const getColorToken = useCallback(
     (mode: "light" | "dark", token: ColorToken): string => {
-      return state.colors[mode][token] ?? "";
+      return state.colors?.[mode]?.[token] ?? "";
     },
     [state.colors]
   );

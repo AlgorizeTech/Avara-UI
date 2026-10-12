@@ -47,6 +47,25 @@ export default function Booking() {
 }
 `;
 
+export const usageLiquidGlass = `const MORNING = [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }];
+const AFTERNOON = [{ label: "12:00 PM" }, { label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM", taken: true }];
+
+export default function Booking() {
+  return (
+    
+       {
+          await fetch("/api/book", { method: "POST", body: JSON.stringify({ day, slot }) });
+        }}
+      >
+        Book an appointment
+         d.getDay() === 0} />
+        
+          Time
+
+  );
+}
+`;
+
  day.getDay() === 0",
           effect:
             "on `BookingCard.Days` strikes out days with nothing free. Sundays here; feed it your real availability.",
