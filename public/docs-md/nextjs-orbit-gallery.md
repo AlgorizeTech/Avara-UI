@@ -176,6 +176,63 @@ export default function CircularReelExample() {
 }
 `;
 
+export const pillUsage = `"use client";
+
+const PILL_ITEMS = [
+  {
+    id: "pill-1",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+      alt: "Daily Rituals",
+    },
+    tooltipText: "Daily Rituals",
+    link: "",
+  },
+  {
+    id: "pill-2",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
+      alt: "Slow Living",
+    },
+    tooltipText: "Slow Living",
+    link: "",
+  },
+  {
+    id: "pill-3",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+      alt: "Explore",
+    },
+    tooltipText: "Explore",
+    link: "",
+  },
+  {
+    id: "pill-4",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+      alt: "Morning Flow",
+    },
+    tooltipText: "Morning Flow",
+    link: "",
+  },
+  {
+    id: "pill-5",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
+      alt: "Soft Focus",
+    },
+    tooltipText: "Soft Focus",
+    link: "",
+  },
+];
+
+export default function ThreeDPillCarouselExample() {
+  return (
+    
+  );
+}
+`;
+
 ## Installation
 
 Register the @algorize-ui registry once per project, then add the component:
@@ -193,9 +250,9 @@ npx shadcn@latest add @algorize-ui/orbit-gallery
         Description
 
         variant
-        "orbit" | "moving-bento" | "circular-reel"
+        "orbit" | "moving-bento" | "circular-reel" | "pill-carousel"
         "orbit"
-        Selects the circular orbit hero, GSAP Flip moving bento, or circular reel dial spinner.
+        Selects the circular orbit hero, GSAP Flip moving bento, circular reel dial spinner, or 3D pill carousel.
 
         badgeText, badgeHref
         string
@@ -259,12 +316,12 @@ npx shadcn@latest add @algorize-ui/orbit-gallery
 
         idleRotationSpeed
         number
-        6
+        5
         Degrees per second of passive idle rotation in the circular reel.
 
         scrollSensitivity
         number
-        0.04
+        0.06
         Scroll and wheel sensitivity factor in the circular reel.
 
         ringThickness
@@ -276,6 +333,31 @@ npx shadcn@latest add @algorize-ui/orbit-gallery
         boolean
         false
         Applies a grayscale filter to the reel images.
+
+        pillItems
+        PillCarouselItem[]
+        5 landscapes
+        The items ({`{ id, image, tooltipText, link }`}) for the "pill-carousel" variant.
+
+        autoSlide
+        boolean
+        true
+        Controls automatic sliding in the "pill-carousel" variant. When true, cards slide automatically and can also be clicked; set to false to disable auto-sliding and navigate by clicking only.
+
+        cardBorderRadius
+        number
+        200
+        Border radius in pixels for the pill-shaped cards in the 3D pill carousel.
+
+        activeBorderWidth
+        number
+        6
+        Border width in pixels around the active center pill card (uses theme/accent colour by default).
+
+        autoPlayInterval
+        number
+        3000
+        Milliseconds between automatic transitions in the 3D pill carousel when autoSlide is true.
 
         highlights
         &#123; label: string; color?: string &#125;[]

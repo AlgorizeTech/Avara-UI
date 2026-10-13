@@ -5,13 +5,18 @@ import { toBlockColor } from "@/lib/accent";
 
 interface OrbitGalleryDemoProps {
   color?: string;
-  variant?: "orbit" | "moving-bento" | "circular-reel";
+  variant?: "orbit" | "moving-bento" | "circular-reel" | "pill-carousel";
   swapInterval?: number;
   gap?: number;
   idleRotationSpeed?: number;
   scrollSensitivity?: number;
   ringThickness?: number;
   grayscale?: boolean;
+  cardBorderRadius?: number;
+  activeBorderWidth?: number;
+  transitionDuration?: number;
+  autoSlide?: boolean;
+  autoPlayInterval?: number;
 }
 
 export default function OrbitGalleryDemo({
@@ -23,8 +28,30 @@ export default function OrbitGalleryDemo({
   scrollSensitivity = 0.06,
   ringThickness = 37,
   grayscale = false,
+  cardBorderRadius = 200,
+  activeBorderWidth = 6,
+  transitionDuration = 0.6,
+  autoSlide = true,
+  autoPlayInterval = 3000,
 }: OrbitGalleryDemoProps) {
   const color = toBlockColor(pickedColor);
+
+  if (variant === "pill-carousel") {
+    return (
+      <div className="w-full -my-2 overflow-hidden rounded-2xl bg-background">
+        <OrbitGallery
+          variant="pill-carousel"
+          color={color}
+          cardBorderRadius={cardBorderRadius}
+          activeBorderWidth={activeBorderWidth}
+          transitionDuration={transitionDuration}
+          autoSlide={autoSlide}
+          autoPlayInterval={autoPlayInterval}
+          className="w-full"
+        />
+      </div>
+    );
+  }
 
   if (variant === "circular-reel") {
     return (

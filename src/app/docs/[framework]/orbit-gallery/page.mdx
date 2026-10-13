@@ -205,9 +205,76 @@ export default function CircularReelExample() {
     <OrbitGallery
       variant="circular-reel"
       reelItems={REEL_ITEMS}
-      idleRotationSpeed={6}
-      scrollSensitivity={0.04}
+      idleRotationSpeed={5}
+      scrollSensitivity={0.06}
       ringThickness={37}
+    />
+  );
+}
+`;
+
+export const pillUsage = `"use client";
+
+import { OrbitGallery } from "@/components/custom/blocks/OrbitGalleryBlock";
+
+const PILL_ITEMS = [
+  {
+    id: "pill-1",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+      alt: "Daily Rituals",
+    },
+    tooltipText: "Daily Rituals",
+    link: "",
+  },
+  {
+    id: "pill-2",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
+      alt: "Slow Living",
+    },
+    tooltipText: "Slow Living",
+    link: "",
+  },
+  {
+    id: "pill-3",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+      alt: "Explore",
+    },
+    tooltipText: "Explore",
+    link: "",
+  },
+  {
+    id: "pill-4",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+      alt: "Morning Flow",
+    },
+    tooltipText: "Morning Flow",
+    link: "",
+  },
+  {
+    id: "pill-5",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
+      alt: "Soft Focus",
+    },
+    tooltipText: "Soft Focus",
+    link: "",
+  },
+];
+
+export default function ThreeDPillCarouselExample() {
+  return (
+    <OrbitGallery
+      variant="pill-carousel"
+      pillItems={PILL_ITEMS}
+      autoSlide={true}
+      cardBorderRadius={200}
+      activeBorderWidth={6}
+      transitionDuration={0.6}
+      autoPlayInterval={3000}
     />
   );
 }
@@ -275,7 +342,7 @@ export default function CircularReelExample() {
     },
     {
       title: "Circular Reel",
-      subheading: "Interactive, scroll-driven circular spinner. Each item lives on a segmented ring that responds to scroll or idles with smooth passive rotation. Features an auto-crossfading preview and active item badge.",
+      subheading: "Interactive, scroll-driven circular spinner. Each item lives on a segmented ring that responds to scroll or idles with smooth passive rotation. Features an active full-bleed background preview and center HUD.",
       props: { variant: "circular-reel" },
       propNotes: [
         {
@@ -285,12 +352,12 @@ export default function CircularReelExample() {
         },
         {
           prop: "idleRotationSpeed",
-          value: "6",
+          value: "5",
           effect: "is the degrees per second of passive idle rotation.",
         },
         {
           prop: "scrollSensitivity",
-          value: "0.04",
+          value: "0.06",
           effect: "is the multiplier for mouse wheel and touch scroll interactions.",
         },
         {
@@ -304,6 +371,44 @@ export default function CircularReelExample() {
         },
       ],
       usage: nextAndReact(reelUsage),
+      code: extractCode("src/components/custom/blocks/OrbitGalleryBlock.tsx"),
+    },
+    {
+      title: "3D Pill Carousel",
+      subheading: "Layered diagonal image carousel with sculptural pill-shaped cards, smooth 3D depth transitions, click-to-focus, keyboard navigation, hover brightness/scale, and a floating theme-accent tooltip CTA above the active card.",
+      props: { variant: "pill-carousel", autoSlide: true },
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"pill-carousel"',
+          effect: "switches to the Framer-inspired 3D layered pill carousel.",
+        },
+        {
+          prop: "autoSlide",
+          value: "true",
+          effect: "enables automatic sliding while also supporting click-to-focus. Pass `false` (`autoSlide={false}`) to disable automatic sliding so cards change only when clicked.",
+        },
+        {
+          prop: "cardBorderRadius",
+          value: "200",
+          effect: "is the border radius in pixels for the pill-shaped cards.",
+        },
+        {
+          prop: "activeBorderWidth",
+          value: "6",
+          effect: "is the border width in pixels around the centered active pill card (coloured with your theme/accent colour).",
+        },
+        {
+          prop: "autoPlayInterval",
+          value: "3000",
+          effect: "is the interval in milliseconds between automatic slide advances when `autoSlide` is `true`.",
+        },
+        {
+          prop: "pillItems",
+          effect: "is an array of items ({ id, image, tooltipText, link }) to populate the 3D pill carousel.",
+        },
+      ],
+      usage: nextAndReact(pillUsage),
       code: extractCode("src/components/custom/blocks/OrbitGalleryBlock.tsx"),
     },
   ]}
@@ -328,9 +433,9 @@ export default function CircularReelExample() {
     <tbody>
       <tr>
         <td><code>variant</code></td>
-        <td><code>"orbit" | "moving-bento" | "circular-reel"</code></td>
+        <td><code>"orbit" | "moving-bento" | "circular-reel" | "pill-carousel"</code></td>
         <td><code>"orbit"</code></td>
-        <td>Selects the circular orbit hero, GSAP Flip moving bento, or circular reel dial spinner.</td>
+        <td>Selects the circular orbit hero, GSAP Flip moving bento, circular reel dial spinner, or 3D pill carousel.</td>
       </tr>
       <tr>
         <td><code>badgeText</code>, <code>badgeHref</code></td>
@@ -407,13 +512,13 @@ export default function CircularReelExample() {
       <tr>
         <td><code>idleRotationSpeed</code></td>
         <td><code>number</code></td>
-        <td><code>6</code></td>
+        <td><code>5</code></td>
         <td>Degrees per second of passive idle rotation in the circular reel.</td>
       </tr>
       <tr>
         <td><code>scrollSensitivity</code></td>
         <td><code>number</code></td>
-        <td><code>0.04</code></td>
+        <td><code>0.06</code></td>
         <td>Scroll and wheel sensitivity factor in the circular reel.</td>
       </tr>
       <tr>
@@ -427,6 +532,36 @@ export default function CircularReelExample() {
         <td><code>boolean</code></td>
         <td><code>false</code></td>
         <td>Applies a grayscale filter to the reel images.</td>
+      </tr>
+      <tr>
+        <td><code>pillItems</code></td>
+        <td><code>PillCarouselItem[]</code></td>
+        <td>5 landscapes</td>
+        <td>The items ({`{ id, image, tooltipText, link }`}) for the <code>"pill-carousel"</code> variant.</td>
+      </tr>
+      <tr>
+        <td><code>autoSlide</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Controls automatic sliding in the <code>"pill-carousel"</code> variant. When <code>true</code>, cards slide automatically and can also be clicked; set to <code>false</code> to disable auto-sliding and navigate by clicking only.</td>
+      </tr>
+      <tr>
+        <td><code>cardBorderRadius</code></td>
+        <td><code>number</code></td>
+        <td><code>200</code></td>
+        <td>Border radius in pixels for the pill-shaped cards in the 3D pill carousel.</td>
+      </tr>
+      <tr>
+        <td><code>activeBorderWidth</code></td>
+        <td><code>number</code></td>
+        <td><code>6</code></td>
+        <td>Border width in pixels around the active center pill card (uses theme/accent colour by default).</td>
+      </tr>
+      <tr>
+        <td><code>autoPlayInterval</code></td>
+        <td><code>number</code></td>
+        <td><code>3000</code></td>
+        <td>Milliseconds between automatic transitions in the 3D pill carousel when <code>autoSlide</code> is <code>true</code>.</td>
       </tr>
       <tr>
         <td><code>highlights</code></td>

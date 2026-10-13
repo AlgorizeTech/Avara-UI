@@ -67,9 +67,42 @@ export interface CircularReelProps extends React.HTMLAttributes<HTMLDivElement> 
   onItemChange?: (item: CircularReelItem, index: number) => void;
 }
 
+export interface PillCarouselItem {
+  id?: string;
+  image: string | { src: string; alt?: string };
+  tooltipText?: string;
+  link?: string;
+}
+
+export interface PillCarouselProps extends React.HTMLAttributes<HTMLDivElement> {
+  items?: PillCarouselItem[];
+  color?: string;
+  backgroundColor?: string;
+  cardBorderRadius?: number;
+  cardShadow?: string;
+  activeBorderWidth?: number;
+  activeBorderColor?: string;
+  transitionDuration?: number;
+  hoverScale?: number;
+  hoverBrightness?: number;
+  /** Controls whether pills slide automatically (true) or only when clicked (false). Defaults to true. */
+  autoSlide?: boolean;
+  autoPlay?: boolean;
+  autoPlayInterval?: number;
+  tooltipText?: string;
+  tooltipBackgroundColor?: string;
+  tooltipTextColor?: string;
+  tooltipPadding?: string;
+  tooltipFontSize?: number;
+  tooltipBorderRadius?: number;
+  tooltipShadow?: string;
+  linkNewTab?: boolean;
+  onTooltipClick?: (item: PillCarouselItem, index: number) => void;
+}
+
 export interface OrbitGalleryProps extends React.HTMLAttributes<HTMLElement> {
-  /** Gallery variant: "orbit" (circular revolving ring), "moving-bento" (GSAP Flip self-rearranging grid), or "circular-reel" (interactive scroll-driven spinner). */
-  variant?: "orbit" | "moving-bento" | "circular-reel";
+  /** Gallery variant: "orbit" (circular revolving ring), "moving-bento" (GSAP Flip self-rearranging grid), "circular-reel" (interactive scroll-driven spinner), or "pill-carousel" (3D layered pill carousel). */
+  variant?: "orbit" | "moving-bento" | "circular-reel" | "pill-carousel";
   /** Small tracked line above the headline, with a spark before it. */
   badgeText?: string;
   badgeHref?: string;
@@ -100,7 +133,7 @@ export interface OrbitGalleryProps extends React.HTMLAttributes<HTMLElement> {
   swapInterval?: number;
   /** Grid gap in px for the bento variant. */
   gap?: number;
-  /** Auto-swapping state for the bento variant. */
+  /** Auto-swapping state for the bento / reel / pill-carousel variants. */
   autoPlay?: boolean;
 
   // Circular Reel specific props
@@ -114,6 +147,32 @@ export interface OrbitGalleryProps extends React.HTMLAttributes<HTMLElement> {
   ringThickness?: number;
   /** Filter images with grayscale preview. */
   grayscale?: boolean;
+
+  // 3D Pill Carousel specific props
+  /** Pill items for the "pill-carousel" variant. */
+  pillItems?: PillCarouselItem[];
+  /** Pill card border radius in px. */
+  cardBorderRadius?: number;
+  /** Active center pill border width in px. */
+  activeBorderWidth?: number;
+  /** Active center pill border color (defaults to theme primary/accent). */
+  activeBorderColor?: string;
+  /** Transition duration in seconds for pill movement. */
+  transitionDuration?: number;
+  /** Scale multiplier when hovering peripheral pills. */
+  hoverScale?: number;
+  /** Brightness multiplier when hovering peripheral pills. */
+  hoverBrightness?: number;
+  /** Controls whether pills slide automatically (true) or only on click (false). Defaults to true. */
+  autoSlide?: boolean;
+  /** Auto-play interval in ms for the pill carousel. */
+  autoPlayInterval?: number;
+  /** Default fallback tooltip CTA text. */
+  tooltipText?: string;
+  /** Tooltip background color (defaults to theme primary/accent). */
+  tooltipBackgroundColor?: string;
+  /** Tooltip text color (defaults to theme primary-foreground). */
+  tooltipTextColor?: string;
 }
 
 // ------------------------------------------
@@ -339,6 +398,60 @@ const DEFAULT_REEL_HIGHLIGHTS: OrbitHighlight[] = [
   { label: "Interactive circular dial" },
   { label: "Scroll & drag to spin", color: "#10b981" },
   { label: "Auto-crossfading preview", color: "#f59e0b" },
+];
+
+export const DEFAULT_PILL_CAROUSEL_ITEMS: PillCarouselItem[] = [
+  {
+    id: "pill-1",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+      alt: "Daily Rituals",
+    },
+    tooltipText: "Daily Rituals",
+    link: "",
+  },
+  {
+    id: "pill-2",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
+      alt: "Slow Living",
+    },
+    tooltipText: "Slow Living",
+    link: "",
+  },
+  {
+    id: "pill-3",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+      alt: "Explore",
+    },
+    tooltipText: "Explore",
+    link: "",
+  },
+  {
+    id: "pill-4",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+      alt: "Morning Flow",
+    },
+    tooltipText: "Morning Flow",
+    link: "",
+  },
+  {
+    id: "pill-5",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
+      alt: "Soft Focus",
+    },
+    tooltipText: "Soft Focus",
+    link: "",
+  },
+];
+
+const DEFAULT_PILL_HIGHLIGHTS: OrbitHighlight[] = [
+  { label: "3D layered pill cards" },
+  { label: "Click to focus & keyboard nav", color: "#10b981" },
+  { label: "Animated tooltip CTA", color: "#f59e0b" },
 ];
 
 // ==========================================
@@ -1106,6 +1219,358 @@ export const CircularReel = forwardRef<HTMLDivElement, CircularReelProps>(
 CircularReel.displayName = "CircularReel";
 
 // ------------------------------------------
+// 3D Pill Carousel Standalone Component
+// ------------------------------------------
+export const ThreeDPillCarousel = forwardRef<HTMLDivElement, PillCarouselProps>(
+  (
+    {
+      items = DEFAULT_PILL_CAROUSEL_ITEMS,
+      color,
+      backgroundColor,
+      cardBorderRadius = 200,
+      cardShadow = "0 20px 60px rgba(0, 0, 0, 0.3)",
+      activeBorderWidth = 6,
+      activeBorderColor,
+      transitionDuration = 0.6,
+      hoverScale = 1.05,
+      hoverBrightness = 1.15,
+      autoSlide,
+      autoPlay = true,
+      autoPlayInterval = 3000,
+      tooltipText = "View Details",
+      tooltipBackgroundColor,
+      tooltipTextColor,
+      tooltipPadding = "12px 24px",
+      tooltipFontSize = 14,
+      tooltipBorderRadius = 50,
+      tooltipShadow = "0 4px 12px rgba(0, 0, 0, 0.15)",
+      linkNewTab = true,
+      onTooltipClick,
+      className,
+      style,
+      ...props
+    },
+    ref,
+  ) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+    const [tooltipHovered, setTooltipHovered] = useState(false);
+    const [tooltipPressed, setTooltipPressed] = useState(false);
+
+    const shouldAutoSlide = autoSlide ?? autoPlay ?? true;
+
+    const validItems = useMemo(
+      () =>
+        items.filter((item) => {
+          const src = typeof item?.image === "string" ? item.image : item?.image?.src;
+          return Boolean(src);
+        }),
+      [items],
+    );
+
+    const openLink = (url?: string) => {
+      if (!url || typeof window === "undefined") return;
+      if (linkNewTab) {
+        window.open(url, "_blank", "noopener,noreferrer");
+      } else {
+        window.location.href = url;
+      }
+    };
+
+    const handleNext = () => {
+      if (validItems.length === 0) return;
+      React.startTransition(() => {
+        setCurrentIndex((prev) => (prev + 1) % validItems.length);
+      });
+    };
+
+    const handlePrev = () => {
+      if (validItems.length === 0) return;
+      React.startTransition(() => {
+        setCurrentIndex((prev) => (prev - 1 + validItems.length) % validItems.length);
+      });
+    };
+
+    const handleCardClick = (index: number) => {
+      React.startTransition(() => {
+        setCurrentIndex(index);
+      });
+    };
+
+    useEffect(() => {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+          e.preventDefault();
+          handleNext();
+        } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+          e.preventDefault();
+          handlePrev();
+        }
+      };
+      if (typeof window !== "undefined") {
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+      }
+    }, [validItems.length]);
+
+    useEffect(() => {
+      if (!shouldAutoSlide || validItems.length <= 1) return;
+      const interval = setInterval(() => {
+        React.startTransition(() => {
+          setCurrentIndex((prev) => (prev + 1) % validItems.length);
+        });
+      }, autoPlayInterval);
+      return () => clearInterval(interval);
+    }, [shouldAutoSlide, autoPlayInterval, validItems.length]);
+
+    const getCardStyle = (index: number): React.CSSProperties => {
+      const total = validItems.length;
+      const diff = (index - currentIndex + total) % total;
+      const isHovered = hoveredIndex === index;
+
+      if (diff === 0) {
+        return {
+          transform: "translateX(-50%) translateY(-50%) scale(1)",
+          zIndex: 50,
+          opacity: 1,
+          left: "50%",
+          top: "53%",
+          filter: "blur(0px) brightness(1)",
+        };
+      }
+      if (diff === 1 || diff === -total + 1) {
+        return {
+          transform: `translateX(-50%) translateY(-50%) scale(${isHovered ? 0.85 * hoverScale : 0.85})`,
+          zIndex: 40,
+          opacity: isHovered ? 1 : 0.95,
+          left: "88%",
+          top: "39%",
+          filter: `blur(0.5px) brightness(${isHovered ? hoverBrightness : 1})`,
+        };
+      }
+      if (diff === 2 || diff === -total + 2) {
+        return {
+          transform: `translateX(-50%) translateY(-50%) scale(${isHovered ? 0.7 * hoverScale : 0.7})`,
+          zIndex: 30,
+          opacity: isHovered ? 0.9 : 0.85,
+          left: "122%",
+          top: "27%",
+          filter: `blur(1.5px) brightness(${isHovered ? hoverBrightness : 1})`,
+        };
+      }
+      if (diff === total - 1 || diff === -1) {
+        return {
+          transform: `translateX(-50%) translateY(-50%) scale(${isHovered ? 0.85 * hoverScale : 0.85})`,
+          zIndex: 40,
+          opacity: isHovered ? 1 : 0.95,
+          left: "12%",
+          top: "64%",
+          filter: `blur(0.5px) brightness(${isHovered ? hoverBrightness : 1})`,
+        };
+      }
+      if (diff === total - 2 || diff === -2) {
+        return {
+          transform: `translateX(-50%) translateY(-50%) scale(${isHovered ? 0.7 * hoverScale : 0.7})`,
+          zIndex: 30,
+          opacity: isHovered ? 0.9 : 0.85,
+          left: "-22%",
+          top: "74%",
+          filter: `blur(1.5px) brightness(${isHovered ? hoverBrightness : 1})`,
+        };
+      }
+      return {
+        transform: "translateX(-50%) translateY(-50%) scale(0.5)",
+        zIndex: 10,
+        opacity: 0,
+        left: "50%",
+        top: "53%",
+        filter: "blur(3px) brightness(1)",
+      };
+    };
+
+    const effectiveBorderColor = activeBorderColor || "var(--hero-accent-text, var(--primary))";
+    const effectiveTooltipBg = tooltipBackgroundColor || "var(--hero-accent-text, var(--primary))";
+    const effectiveTooltipText = tooltipTextColor || "var(--primary-foreground)";
+
+    if (validItems.length === 0) {
+      return (
+        <div
+          ref={ref}
+          style={{ ...style, ...(backgroundColor ? { backgroundColor } : {}) }}
+          className={cn(
+            "relative flex h-[540px] sm:h-[640px] md:h-[700px] w-full items-center justify-center rounded-2xl bg-background text-foreground text-base transition-colors duration-300",
+            className,
+          )}
+          {...props}
+        >
+          Add images to the carousel
+        </div>
+      );
+    }
+
+    const currentItem = validItems[currentIndex];
+
+    return (
+      <div
+        ref={ref}
+        style={{
+          ...accentStyle(color),
+          ...(backgroundColor ? { backgroundColor } : {}),
+          ...style,
+        }}
+        className={cn(
+          "relative h-[540px] sm:h-[640px] md:h-[700px] lg:h-[760px] w-full select-none overflow-hidden rounded-2xl bg-background text-foreground transition-colors duration-300",
+          className,
+        )}
+        {...props}
+      >
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              @keyframes pillTooltipEnter {
+                from {
+                  opacity: 0;
+                  transform: translate(-50%, 20px) scale(0.8);
+                }
+                to {
+                  opacity: 1;
+                  transform: translate(-50%, 0px) scale(1);
+                }
+              }
+            `,
+          }}
+        />
+
+        {/* Center Pill Column Stage */}
+        <div className="absolute left-1/2 top-1/2 h-full w-[195px] xs:w-[225px] sm:w-[265px] md:w-[290px] -translate-x-1/2 -translate-y-1/2">
+          {validItems.map((item, index) => {
+            const cardStyle = getCardStyle(index);
+            const isCenter = (index - currentIndex + validItems.length) % validItems.length === 0;
+            const imgSrc = typeof item.image === "string" ? item.image : item.image?.src || "";
+            const imgAlt =
+              typeof item.image === "string"
+                ? item.tooltipText || `Carousel image ${index + 1}`
+                : item.image?.alt || item.tooltipText || "Carousel image";
+
+            return (
+              <div
+                key={item.id ?? index}
+                style={{
+                  position: "absolute",
+                  width: "100%",
+                  height: "75%",
+                  ...cardStyle,
+                  transition: `all ${transitionDuration}s cubic-bezier(0.4, 0, 0.2, 1)`,
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  if (isCenter) {
+                    openLink(item.link);
+                  } else {
+                    handleCardClick(index);
+                  }
+                }}
+                onMouseEnter={() => !isCenter && setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+              >
+                <div
+                  style={{
+                    position: "relative",
+                    width: "100%",
+                    height: "100%",
+                    borderRadius: `${cardBorderRadius}px`,
+                    overflow: "hidden",
+                    boxShadow:
+                      hoveredIndex === index && !isCenter
+                        ? "0 25px 70px rgba(0, 0, 0, 0.4)"
+                        : cardShadow,
+                    transition: "box-shadow 0.3s ease",
+                    border: isCenter
+                      ? `${activeBorderWidth}px solid ${effectiveBorderColor}`
+                      : "none",
+                  }}
+                >
+                  <img
+                    src={imgSrc}
+                    alt={imgAlt}
+                    draggable={false}
+                    className="size-full object-cover"
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Floating Tooltip CTA above Center Pill */}
+        {validItems.length > 0 && (
+          <button
+            key={currentIndex}
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (currentItem?.link) {
+                openLink(currentItem.link);
+              } else if (onTooltipClick && currentItem) {
+                onTooltipClick(currentItem, currentIndex);
+              } else {
+                handleNext();
+              }
+            }}
+            onMouseEnter={() => setTooltipHovered(true)}
+            onMouseLeave={() => {
+              setTooltipHovered(false);
+              setTooltipPressed(false);
+            }}
+            onMouseDown={() => setTooltipPressed(true)}
+            onMouseUp={() => setTooltipPressed(false)}
+            style={{
+              position: "absolute",
+              top: "calc(15.5% - 52px)",
+              left: "50%",
+              transform: `translate(-50%, 0px) scale(${tooltipPressed ? 0.95 : tooltipHovered ? 1.05 : 1})`,
+              backgroundColor: effectiveTooltipBg,
+              color: effectiveTooltipText,
+              padding: tooltipPadding,
+              borderRadius: `${tooltipBorderRadius}px`,
+              border: "none",
+              cursor: "pointer",
+              fontSize: `${tooltipFontSize}px`,
+              fontWeight: 600,
+              letterSpacing: "-0.01em",
+              boxShadow: tooltipHovered
+                ? "0 8px 24px rgba(0, 0, 0, 0.25)"
+                : tooltipShadow,
+              transition: "box-shadow 0.3s ease, transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+              animation: "pillTooltipEnter 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+              zIndex: 100,
+              whiteSpace: "nowrap",
+            }}
+          >
+            {currentItem?.tooltipText || tooltipText}
+            <div
+              style={{
+                position: "absolute",
+                bottom: "-8px",
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: 0,
+                height: 0,
+                borderLeft: "8px solid transparent",
+                borderRight: "8px solid transparent",
+                borderTop: `8px solid ${effectiveTooltipBg}`,
+              }}
+            />
+          </button>
+        )}
+      </div>
+    );
+  },
+);
+
+ThreeDPillCarousel.displayName = "ThreeDPillCarousel";
+
+// ------------------------------------------
 // Root OrbitGallery
 // ------------------------------------------
 export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
@@ -1142,6 +1607,19 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
       scrollSensitivity = 0.06,
       ringThickness = 37,
       grayscale = false,
+      // 3D Pill Carousel specific
+      pillItems = DEFAULT_PILL_CAROUSEL_ITEMS,
+      cardBorderRadius = 200,
+      activeBorderWidth = 6,
+      activeBorderColor,
+      transitionDuration = 0.6,
+      hoverScale = 1.05,
+      hoverBrightness = 1.15,
+      autoSlide = true,
+      autoPlayInterval = 3000,
+      tooltipText = "View Details",
+      tooltipBackgroundColor,
+      tooltipTextColor,
       ...props
     },
     ref,
@@ -1152,6 +1630,8 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
         ? DEFAULT_BENTO_HIGHLIGHTS
         : variant === "circular-reel"
         ? DEFAULT_REEL_HIGHLIGHTS
+        : variant === "pill-carousel"
+        ? DEFAULT_PILL_HIGHLIGHTS
         : DEFAULT_HIGHLIGHTS);
     const count = images.length;
 
@@ -1200,6 +1680,77 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
       setPointer({ x: -100, y: -100 });
       setTrail([]);
     };
+
+    // ----------------------------------------
+    // VARIANT: 3D PILL CAROUSEL
+    // ----------------------------------------
+    if (variant === "pill-carousel") {
+      return (
+        <section
+          ref={(node) => {
+            containerRef.current = node;
+            if (typeof ref === "function") ref(node);
+            else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
+          }}
+          onMouseMove={handleMouseMove}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          style={{ ...accentStyle(color), ...style }}
+          className={cn(
+            "relative flex w-full select-none items-center justify-center overflow-hidden bg-background text-foreground transition-colors duration-300",
+            className,
+          )}
+          {...props}
+        >
+          {/* ---- Pointer trail ---- */}
+          {hovered && (
+            <div className="pointer-events-none absolute inset-0 z-50 overflow-hidden" aria-hidden>
+              {trail.map((pt, i) => {
+                const size = Math.max(4, 18 - i * 2);
+                const opacity = (trail.length - i) / trail.length;
+                return (
+                  <div
+                    key={pt.id + i}
+                    className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full transition-opacity duration-150"
+                    style={{
+                      left: `${pt.x}px`,
+                      top: `${pt.y}px`,
+                      width: `${size}px`,
+                      height: `${size}px`,
+                      backgroundColor: "var(--hero-accent-text)",
+                      opacity: opacity * 0.7,
+                    }}
+                  />
+                );
+              })}
+              <div
+                className="pointer-events-none absolute size-4 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg"
+                style={{ left: `${pointer.x}px`, top: `${pointer.y}px`, backgroundColor: "var(--hero-accent-text)" }}
+              />
+            </div>
+          )}
+
+          <div className="relative z-10 w-full">
+            <ThreeDPillCarousel
+              items={pillItems}
+              color={color}
+              cardBorderRadius={cardBorderRadius}
+              activeBorderWidth={activeBorderWidth}
+              activeBorderColor={activeBorderColor}
+              transitionDuration={transitionDuration}
+              hoverScale={hoverScale}
+              hoverBrightness={hoverBrightness}
+              autoSlide={autoSlide}
+              autoPlay={autoPlay}
+              autoPlayInterval={autoPlayInterval}
+              tooltipText={tooltipText}
+              tooltipBackgroundColor={tooltipBackgroundColor}
+              tooltipTextColor={tooltipTextColor}
+            />
+          </div>
+        </section>
+      );
+    }
 
     // ----------------------------------------
     // VARIANT: CIRCULAR REEL
