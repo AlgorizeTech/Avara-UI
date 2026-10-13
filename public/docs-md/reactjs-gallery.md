@@ -1,10 +1,8 @@
-export const metadata = docsPageMetadata("orbit-gallery");
+export const metadata = docsPageMetadata("gallery");
 
-# Orbit Gallery
+# Gallery
 
-A two-column hero for an agency, studio or gallery: copy and actions on the left, and on the right a ring of photo cards that revolves once every 36 seconds, each card staying upright as it travels. Hovering the ring holds it still; moving the pointer anywhere over the section leaves a short trail of dots in the accent colour.
-
-The component also includes a **Moving Bento** variant — a self-rearranging image bento grid with GSAP Flip animations, and a **Circular Reel** variant — an interactive scroll-driven dial with passive rotation, tangential segmented ring slices, and an auto-crossfading preview inspired by Framer.
+A dynamic visual showcase featuring five interactive variants: a revolving 3D circular photo orbit ring, a GSAP Flip self-rearranging moving bento grid, an interactive circular reel dial spinner, a 3D layered pill carousel, and a Framer-inspired 3D curved arc carousel gallery.
 
 {/* The snippets below pass next/link so links route client-side in Next.js. The React tab is the same file without it: the component's default  needs no import. */}
 
@@ -23,6 +21,15 @@ const IMAGES = [
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg",
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790148863/photo-1447752875215-b2761acb3c5d-1790148865109.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146210/photo-1507525428034-b723cf961d3e-1790146212208.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790158813/photo-1433086966358-54859d0ed716-1790158812209.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790145142/photo-1500530855697-b586d89ba3ee-1790145143493.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790148863/photo-1473448912268-2022ce9509d8-1790148865110.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790158814/photo-1518495973542-4542c06a5843-1790158812213.jpg",
 ];
 
 export default function Hero() {
@@ -170,13 +177,138 @@ export default function CircularReelExample() {
 }
 `;
 
+export const pillUsage = `const PILL_ITEMS = [
+  {
+    id: "pill-1",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+      alt: "Daily Rituals",
+    },
+    tooltipText: "Daily Rituals",
+    link: "",
+  },
+  {
+    id: "pill-2",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
+      alt: "Slow Living",
+    },
+    tooltipText: "Slow Living",
+    link: "",
+  },
+  {
+    id: "pill-3",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+      alt: "Explore",
+    },
+    tooltipText: "Explore",
+    link: "",
+  },
+  {
+    id: "pill-4",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+      alt: "Morning Flow",
+    },
+    tooltipText: "Morning Flow",
+    link: "",
+  },
+  {
+    id: "pill-5",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
+      alt: "Soft Focus",
+    },
+    tooltipText: "Soft Focus",
+    link: "",
+  },
+];
+
+export default function ThreeDPillCarouselExample() {
+  return (
+    
+  );
+}
+`;
+
+export const arcUsage = `const ARC_ITEMS = [
+  {
+    id: "arc-1",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+    title: "Velvet Horizon",
+    subtitle: "Yosemite Valley",
+  },
+  {
+    id: "arc-2",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
+    title: "Glass Relay",
+    subtitle: "Redwood Trail",
+  },
+  {
+    id: "arc-3",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+    title: "Noir Mist",
+    subtitle: "Mountain Peaks",
+  },
+  {
+    id: "arc-4",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+    title: "Driftline Rays",
+    subtitle: "Canopy Light",
+  },
+  {
+    id: "arc-5",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg",
+    title: "Pulse Emerald",
+    subtitle: "Verdant Highlands",
+  },
+  {
+    id: "arc-6",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
+    title: "Cold Meridian",
+    subtitle: "Alpine Lake",
+  },
+  {
+    id: "arc-7",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+    title: "Astra Wilds",
+    subtitle: "Open Range",
+  },
+  {
+    id: "arc-8",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+    title: "Mono Summit",
+    subtitle: "Golden Ridge",
+  },
+  {
+    id: "arc-9",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158813/photo-1433086966358-54859d0ed716-1790158812209.jpg",
+    title: "Lumen Cascade",
+    subtitle: "Forest Waterfall",
+  },
+  {
+    id: "arc-10",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
+    title: "Shadow Bloom",
+    subtitle: "Alpine Crest",
+  },
+];
+
+export default function ArcCarouselGalleryExample() {
+  return (
+    
+  );
+}
+`;
+
 ## Installation
 
 Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
 npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/orbit-gallery
+npx shadcn@latest add @algorize-ui/gallery
 ```
 
 ## Props Reference
@@ -187,9 +319,9 @@ npx shadcn@latest add @algorize-ui/orbit-gallery
         Description
 
         variant
-        "orbit" | "moving-bento" | "circular-reel"
+        "orbit" | "moving-bento" | "circular-reel" | "pill-carousel" | "arc-carousel"
         "orbit"
-        Selects the circular orbit hero, GSAP Flip moving bento, or circular reel dial spinner.
+        Selects the circular orbit hero, GSAP Flip moving bento, circular reel dial spinner, 3D pill carousel, or 3D curved arc carousel gallery.
 
         badgeText, badgeHref
         string
@@ -253,12 +385,12 @@ npx shadcn@latest add @algorize-ui/orbit-gallery
 
         idleRotationSpeed
         number
-        6
+        5
         Degrees per second of passive idle rotation in the circular reel.
 
         scrollSensitivity
         number
-        0.04
+        0.06
         Scroll and wheel sensitivity factor in the circular reel.
 
         ringThickness
@@ -270,6 +402,71 @@ npx shadcn@latest add @algorize-ui/orbit-gallery
         boolean
         false
         Applies a grayscale filter to the reel images.
+
+        pillItems
+        PillCarouselItem[]
+        5 landscapes
+        The items ({`{ id, image, tooltipText, link }`}) for the "pill-carousel" variant.
+
+        autoSlide
+        boolean
+        true
+        Controls automatic sliding in the "pill-carousel" variant. When true, cards slide automatically and can also be clicked; set to false to disable auto-sliding and navigate by clicking only.
+
+        cardBorderRadius
+        number
+        200
+        Border radius in pixels for the pill-shaped cards in the 3D pill carousel.
+
+        activeBorderWidth
+        number
+        6
+        Border width in pixels around the active center pill card (uses theme/accent colour by default).
+
+        autoPlayInterval
+        number
+        3000
+        Milliseconds between automatic transitions in the 3D pill carousel when autoSlide is true.
+
+        arcItems
+        ArcCarouselItem[]
+        10 scenes
+        The items ({`{ id, image, title, subtitle, link }`}) for the "arc-carousel" variant.
+
+        curve
+        number
+        -200
+        Curvature value from -300 to 300: negative for concave cylinder arc, 0 for flat row, and positive for convex barrel arc.
+
+        cardSize
+        number
+        220
+        Width in pixels of each card in the arc carousel.
+
+        cardHeight
+        number
+        cardSize * 1.32
+        Height in pixels of each card in the arc carousel.
+
+        perspective
+        number
+        1200
+        3D CSS perspective depth in pixels for the cylindrical arc.
+
+        autoScrollSpeed
+        number
+        0.22
+        Continuous auto-drift velocity in cards per second.
+
+        dragSpeed
+        number
+        1.2
+        Pointer drag multiplier when grabbing and spinning the carousel.
+
+        inertia
+        number
+        0.75
+        Friction momentum coefficient (0 to 1) for smooth coasting after pointer release.
 
         highlights
         &#123; label: string; color?: string &#125;[]
@@ -288,6 +485,6 @@ npx shadcn@latest add @algorize-ui/orbit-gallery
 
 ---
 
-**Component Path:** `[framework]\orbit-gallery\page.mdx`
+**Component Path:** `[framework]\gallery\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

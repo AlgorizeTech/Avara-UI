@@ -196,7 +196,7 @@ const COMPONENT_META: Record<
 	"bento-showcase": { countText: "Six-Card Marketing Bento", illustrationType: "bento-showcase" },
 	"book-appointment": { countText: "Practitioner Booking Flow", illustrationType: "book-appointment" },
 	"component-wall": { countText: "Camera Over a Screenshot Wall", illustrationType: "component-wall" },
-	"orbit-gallery": { countText: "Revolving Ring of Cards", illustrationType: "orbit-gallery" },
+	gallery: { countText: "5 Carousel & Gallery Variants", illustrationType: "gallery" },
 	"data-flow": { countText: "Sources → Node → Results", illustrationType: "data-flow" },
 	"platform-grid": { countText: "Hairline Feature Grid", illustrationType: "platform-grid" },
 	"profile-page": { countText: "Glass Bento & 24h Dial", illustrationType: "profile-page" },
@@ -294,7 +294,7 @@ const COMPONENT_TYPES = {
 		description: "Carousels, galleries, players and tickers.",
 		icon: Images,
 		kind: "ui",
-		slugs: ["carousel", "3d-carousel", "curved-carousel", "squircle-carousel", "flow-gallery", "image-compare", "image-wall", "marquee", "video-player", "audio-player", "video-accordion"],
+		slugs: ["gallery", "carousel", "3d-carousel", "curved-carousel", "squircle-carousel", "flow-gallery", "image-compare", "image-wall", "marquee", "video-player", "audio-player", "video-accordion"],
 	},
 	apps: {
 		label: "Apps & Messaging",
@@ -322,7 +322,7 @@ const COMPONENT_TYPES = {
 		description: "Above-the-fold openers for landing pages.",
 		icon: LayoutTemplate,
 		kind: "section",
-		slugs: ["hero", "component-wall", "orbit-gallery", "flavour-carousel"],
+		slugs: ["hero", "component-wall", "flavour-carousel"],
 	},
 	marketing: {
 		label: "Marketing Sections",
@@ -3723,7 +3723,7 @@ function MiniatureIllustration({
 					</div>
 				)}
 
-				{type === "orbit-gallery" && (
+				{(type === "orbit-gallery" || type === "gallery") && (
 					<div className="w-full h-full flex gap-1.5 my-auto px-0.5 items-center">
 						<div className="flex-1 flex flex-col gap-0.5">
 							<span className="text-[4px] font-semibold tracking-widest uppercase text-muted-foreground">✦ Studio</span>

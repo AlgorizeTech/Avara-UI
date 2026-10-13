@@ -1,15 +1,13 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
 
-export const metadata = docsPageMetadata("orbit-gallery");
+export const metadata = docsPageMetadata("gallery");
 
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
-# Orbit Gallery
+# Gallery
 
-A two-column hero for an agency, studio or gallery: copy and actions on the left, and on the right a ring of photo cards that revolves once every 36 seconds, each card staying upright as it travels. Hovering the ring holds it still; moving the pointer anywhere over the section leaves a short trail of dots in the accent colour.
-
-The component also includes a **Moving Bento** variant — a self-rearranging image bento grid with GSAP Flip animations, and a **Circular Reel** variant — an interactive scroll-driven dial with passive rotation, tangential segmented ring slices, and an auto-crossfading preview inspired by Framer.
+A dynamic visual showcase featuring five interactive variants: a revolving 3D circular photo orbit ring, a GSAP Flip self-rearranging moving bento grid, an interactive circular reel dial spinner, a 3D layered pill carousel, and a Framer-inspired 3D curved arc carousel gallery.
 
 {/* The snippets below pass next/link so links route client-side in Next.js. The React tab is the same file without it: the component's default <a> needs no import. */}
 
@@ -23,7 +21,7 @@ export const nextAndReact = (code) => ({
 export const usage = `"use client";
 
 import Link from "next/link";
-import { OrbitGallery } from "@/components/custom/blocks/OrbitGalleryBlock";
+import { Gallery } from "@/components/custom/blocks/GalleryBlock";
 
 // Landscapes from Unsplash, free to use.
 const IMAGES = [
@@ -33,11 +31,21 @@ const IMAGES = [
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg",
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790148863/photo-1447752875215-b2761acb3c5d-1790148865109.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146210/photo-1507525428034-b723cf961d3e-1790146212208.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790158813/photo-1433086966358-54859d0ed716-1790158812209.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790145142/photo-1500530855697-b586d89ba3ee-1790145143493.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790148863/photo-1473448912268-2022ce9509d8-1790148865110.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790158814/photo-1518495973542-4542c06a5843-1790158812213.jpg",
 ];
 
 export default function Hero() {
   return (
-    <OrbitGallery
+    <Gallery
+      variant="orbit-gallery"
       badgeText="Identity & animation studio"
       badgeHref="/about"
       title="Movement is what"
@@ -48,7 +56,11 @@ export default function Hero() {
       secondaryActionLabel="View projects"
       secondaryActionHref="/work"
       images={IMAGES}
-      highlights={[{ label: "40 brands launched" }, { label: "Animation-led", color: "#10b981" }]}
+      highlights={[
+        { label: "15 hand-picked scenes" },
+        { label: "Full-circle rotation", color: "#10b981" },
+        { label: "Holds still on hover", color: "#f59e0b" },
+      ]}
       duration={36}
       linkComponent={Link}
     />
@@ -58,7 +70,7 @@ export default function Hero() {
 
 export const bentoUsage = `"use client";
 
-import { OrbitGallery } from "@/components/custom/blocks/OrbitGalleryBlock";
+import { Gallery } from "@/components/custom/blocks/GalleryBlock";
 
 const BENTO_ITEMS = [
   {
@@ -113,7 +125,7 @@ const BENTO_ITEMS = [
 
 export default function MovingBentoExample() {
   return (
-    <OrbitGallery
+    <Gallery
       variant="moving-bento"
       items={BENTO_ITEMS}
       swapInterval={3000}
@@ -125,7 +137,7 @@ export default function MovingBentoExample() {
 
 export const reelUsage = `"use client";
 
-import { OrbitGallery } from "@/components/custom/blocks/OrbitGalleryBlock";
+import { Gallery } from "@/components/custom/blocks/GalleryBlock";
 
 const REEL_ITEMS = [
   {
@@ -202,28 +214,181 @@ const REEL_ITEMS = [
 
 export default function CircularReelExample() {
   return (
-    <OrbitGallery
+    <Gallery
       variant="circular-reel"
       reelItems={REEL_ITEMS}
-      idleRotationSpeed={6}
-      scrollSensitivity={0.04}
+      idleRotationSpeed={5}
+      scrollSensitivity={0.06}
       ringThickness={37}
     />
   );
 }
 `;
 
+export const pillUsage = `"use client";
+
+import { Gallery } from "@/components/custom/blocks/GalleryBlock";
+
+const PILL_ITEMS = [
+  {
+    id: "pill-1",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+      alt: "Daily Rituals",
+    },
+    tooltipText: "Daily Rituals",
+    link: "",
+  },
+  {
+    id: "pill-2",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
+      alt: "Slow Living",
+    },
+    tooltipText: "Slow Living",
+    link: "",
+  },
+  {
+    id: "pill-3",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+      alt: "Explore",
+    },
+    tooltipText: "Explore",
+    link: "",
+  },
+  {
+    id: "pill-4",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+      alt: "Morning Flow",
+    },
+    tooltipText: "Morning Flow",
+    link: "",
+  },
+  {
+    id: "pill-5",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
+      alt: "Soft Focus",
+    },
+    tooltipText: "Soft Focus",
+    link: "",
+  },
+];
+
+export default function ThreeDPillCarouselExample() {
+  return (
+    <Gallery
+      variant="pill-carousel"
+      pillItems={PILL_ITEMS}
+      autoSlide={true}
+      cardBorderRadius={200}
+      activeBorderWidth={6}
+      transitionDuration={0.6}
+      autoPlayInterval={3000}
+    />
+  );
+}
+`;
+
+export const arcUsage = `"use client";
+
+import { Gallery } from "@/components/custom/blocks/GalleryBlock";
+
+const ARC_ITEMS = [
+  {
+    id: "arc-1",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+    title: "Velvet Horizon",
+    subtitle: "Yosemite Valley",
+  },
+  {
+    id: "arc-2",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
+    title: "Glass Relay",
+    subtitle: "Redwood Trail",
+  },
+  {
+    id: "arc-3",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+    title: "Noir Mist",
+    subtitle: "Mountain Peaks",
+  },
+  {
+    id: "arc-4",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+    title: "Driftline Rays",
+    subtitle: "Canopy Light",
+  },
+  {
+    id: "arc-5",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg",
+    title: "Pulse Emerald",
+    subtitle: "Verdant Highlands",
+  },
+  {
+    id: "arc-6",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
+    title: "Cold Meridian",
+    subtitle: "Alpine Lake",
+  },
+  {
+    id: "arc-7",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+    title: "Astra Wilds",
+    subtitle: "Open Range",
+  },
+  {
+    id: "arc-8",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+    title: "Mono Summit",
+    subtitle: "Golden Ridge",
+  },
+  {
+    id: "arc-9",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158813/photo-1433086966358-54859d0ed716-1790158812209.jpg",
+    title: "Lumen Cascade",
+    subtitle: "Forest Waterfall",
+  },
+  {
+    id: "arc-10",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
+    title: "Shadow Bloom",
+    subtitle: "Alpine Crest",
+  },
+];
+
+export default function ArcCarouselGalleryExample() {
+  return (
+    <Gallery
+      variant="arc-carousel"
+      arcItems={ARC_ITEMS}
+      curve={-200}
+      cardSize={220}
+      autoScrollSpeed={0.22}
+      autoSlide={true}
+    />
+  );
+}
+`;
+
 <ExampleShowcase
-  name="orbit-gallery"
+  name="gallery"
   colorControl
   columns={1}
   minHeight={520}
   examples={[
     {
-      title: "Movement is what people notice first",
-      subheading: "Copy and actions on the left, the revolving ring on the right. Hover the ring to hold it; move the pointer over the section for the trail.",
-      props: { variant: "orbit" },
+      title: "Orbit Gallery",
+      subheading: "Copy and actions on the left, the revolving 3D circular photo ring on the right. Hover the ring to hold it; move the pointer over the section for the trail.",
+      props: { variant: "orbit-gallery" },
       propNotes: [
+        {
+          prop: "variant",
+          value: '"orbit-gallery"',
+          effect: "is the revolving 3D circular photo orbit ring layout (default).",
+        },
         {
           prop: "images",
           effect: "are the cards on the ring, in orbit order. Any count works — each is offset by a share of `duration`, so they stay evenly spaced.",
@@ -243,7 +408,7 @@ export default function CircularReelExample() {
         },
       ],
       usage: nextAndReact(usage),
-      code: extractCode("src/components/custom/blocks/OrbitGalleryBlock.tsx"),
+      code: extractCode("src/components/custom/blocks/GalleryBlock.tsx"),
     },
     {
       title: "Moving Bento",
@@ -271,11 +436,11 @@ export default function CircularReelExample() {
         },
       ],
       usage: nextAndReact(bentoUsage),
-      code: extractCode("src/components/custom/blocks/OrbitGalleryBlock.tsx"),
+      code: extractCode("src/components/custom/blocks/GalleryBlock.tsx"),
     },
     {
       title: "Circular Reel",
-      subheading: "Interactive, scroll-driven circular spinner. Each item lives on a segmented ring that responds to scroll or idles with smooth passive rotation. Features an auto-crossfading preview and active item badge.",
+      subheading: "Interactive, scroll-driven circular spinner. Each item lives on a segmented ring that responds to scroll or idles with smooth passive rotation. Features an active full-bleed background preview and center HUD.",
       props: { variant: "circular-reel" },
       propNotes: [
         {
@@ -285,12 +450,12 @@ export default function CircularReelExample() {
         },
         {
           prop: "idleRotationSpeed",
-          value: "6",
+          value: "5",
           effect: "is the degrees per second of passive idle rotation.",
         },
         {
           prop: "scrollSensitivity",
-          value: "0.04",
+          value: "0.06",
           effect: "is the multiplier for mouse wheel and touch scroll interactions.",
         },
         {
@@ -304,14 +469,105 @@ export default function CircularReelExample() {
         },
       ],
       usage: nextAndReact(reelUsage),
-      code: extractCode("src/components/custom/blocks/OrbitGalleryBlock.tsx"),
+      code: extractCode("src/components/custom/blocks/GalleryBlock.tsx"),
+    },
+    {
+      title: "3D Pill Carousel",
+      subheading: "Layered diagonal image carousel with sculptural pill-shaped cards, smooth 3D depth transitions, click-to-focus, keyboard navigation, hover brightness/scale, and a floating theme-accent tooltip CTA above the active card.",
+      props: { variant: "pill-carousel", autoSlide: true },
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"pill-carousel"',
+          effect: "switches to the Framer-inspired 3D layered pill carousel.",
+        },
+        {
+          prop: "autoSlide",
+          value: "true",
+          effect: "enables automatic sliding while also supporting click-to-focus. Pass `false` (`autoSlide={false}`) to disable automatic sliding so cards change only when clicked.",
+        },
+        {
+          prop: "cardBorderRadius",
+          value: "200",
+          effect: "is the border radius in pixels for the pill-shaped cards.",
+        },
+        {
+          prop: "activeBorderWidth",
+          value: "6",
+          effect: "is the border width in pixels around the centered active pill card (coloured with your theme/accent colour).",
+        },
+        {
+          prop: "autoPlayInterval",
+          value: "3000",
+          effect: "is the interval in milliseconds between automatic slide advances when `autoSlide` is `true`.",
+        },
+        {
+          prop: "pillItems",
+          effect: "is an array of items ({ id, image, tooltipText, link }) to populate the 3D pill carousel.",
+        },
+      ],
+      usage: nextAndReact(pillUsage),
+      code: extractCode("src/components/custom/blocks/GalleryBlock.tsx"),
+    },
+    {
+      title: "Arc Carousel Gallery",
+      subheading: "Curved 3D image carousel arranged along an interactive concave cylindrical arc. Cards flow seamlessly, drift with passive rotation, and spin with momentum physics on drag.",
+      props: { variant: "arc-carousel", curve: -200 },
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"arc-carousel"',
+          effect: "switches to the Framer-inspired 3D curved arc carousel gallery.",
+        },
+        {
+          prop: "curve",
+          value: "-200",
+          effect: "controls the arc curvature from -300 to 300: negative for concave (wrapping away like inside a cylinder, default -200), 0 for flat, and positive for convex (curling toward you).",
+        },
+        {
+          prop: "cardSize",
+          value: "220",
+          effect: "is the width in pixels for each card on the arc.",
+        },
+        {
+          prop: "perspective",
+          value: "1200",
+          effect: "is the 3D perspective depth in pixels.",
+        },
+        {
+          prop: "autoScrollSpeed",
+          value: "0.22",
+          effect: "is the auto-drift speed in cards per second.",
+        },
+        {
+          prop: "autoSlide",
+          value: "true",
+          effect: "enables continuous auto-scroll. Set to `false` to disable auto-scrolling and rely on drag-and-spin navigation.",
+        },
+        {
+          prop: "dragSpeed",
+          value: "1.2",
+          effect: "is the pointer drag multiplier for spinning with momentum.",
+        },
+        {
+          prop: "inertia",
+          value: "0.75",
+          effect: "is the momentum inertia coefficient (0 to 1) for smooth gliding after release.",
+        },
+        {
+          prop: "arcItems",
+          effect: "is an array of items ({ id, image, title, subtitle, link }) to populate the arc carousel.",
+        },
+      ],
+      usage: nextAndReact(arcUsage),
+      code: extractCode("src/components/custom/blocks/GalleryBlock.tsx"),
     },
   ]}
 />
 
 ## Installation
 
-<Installation name="orbit-gallery" />
+<Installation name="gallery" />
 
 ## Props Reference
 
@@ -328,9 +584,9 @@ export default function CircularReelExample() {
     <tbody>
       <tr>
         <td><code>variant</code></td>
-        <td><code>"orbit" | "moving-bento" | "circular-reel"</code></td>
+        <td><code>"orbit" | "moving-bento" | "circular-reel" | "pill-carousel" | "arc-carousel"</code></td>
         <td><code>"orbit"</code></td>
-        <td>Selects the circular orbit hero, GSAP Flip moving bento, or circular reel dial spinner.</td>
+        <td>Selects the circular orbit hero, GSAP Flip moving bento, circular reel dial spinner, 3D pill carousel, or 3D curved arc carousel gallery.</td>
       </tr>
       <tr>
         <td><code>badgeText</code>, <code>badgeHref</code></td>
@@ -407,13 +663,13 @@ export default function CircularReelExample() {
       <tr>
         <td><code>idleRotationSpeed</code></td>
         <td><code>number</code></td>
-        <td><code>6</code></td>
+        <td><code>5</code></td>
         <td>Degrees per second of passive idle rotation in the circular reel.</td>
       </tr>
       <tr>
         <td><code>scrollSensitivity</code></td>
         <td><code>number</code></td>
-        <td><code>0.04</code></td>
+        <td><code>0.06</code></td>
         <td>Scroll and wheel sensitivity factor in the circular reel.</td>
       </tr>
       <tr>
@@ -427,6 +683,84 @@ export default function CircularReelExample() {
         <td><code>boolean</code></td>
         <td><code>false</code></td>
         <td>Applies a grayscale filter to the reel images.</td>
+      </tr>
+      <tr>
+        <td><code>pillItems</code></td>
+        <td><code>PillCarouselItem[]</code></td>
+        <td>5 landscapes</td>
+        <td>The items ({`{ id, image, tooltipText, link }`}) for the <code>"pill-carousel"</code> variant.</td>
+      </tr>
+      <tr>
+        <td><code>autoSlide</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Controls automatic sliding in the <code>"pill-carousel"</code> variant. When <code>true</code>, cards slide automatically and can also be clicked; set to <code>false</code> to disable auto-sliding and navigate by clicking only.</td>
+      </tr>
+      <tr>
+        <td><code>cardBorderRadius</code></td>
+        <td><code>number</code></td>
+        <td><code>200</code></td>
+        <td>Border radius in pixels for the pill-shaped cards in the 3D pill carousel.</td>
+      </tr>
+      <tr>
+        <td><code>activeBorderWidth</code></td>
+        <td><code>number</code></td>
+        <td><code>6</code></td>
+        <td>Border width in pixels around the active center pill card (uses theme/accent colour by default).</td>
+      </tr>
+      <tr>
+        <td><code>autoPlayInterval</code></td>
+        <td><code>number</code></td>
+        <td><code>3000</code></td>
+        <td>Milliseconds between automatic transitions in the 3D pill carousel when <code>autoSlide</code> is <code>true</code>.</td>
+      </tr>
+      <tr>
+        <td><code>arcItems</code></td>
+        <td><code>ArcCarouselItem[]</code></td>
+        <td>10 scenes</td>
+        <td>The items ({`{ id, image, title, subtitle, link }`}) for the <code>"arc-carousel"</code> variant.</td>
+      </tr>
+      <tr>
+        <td><code>curve</code></td>
+        <td><code>number</code></td>
+        <td><code>-200</code></td>
+        <td>Curvature value from <code>-300</code> to <code>300</code>: negative for concave cylinder arc, <code>0</code> for flat row, and positive for convex barrel arc.</td>
+      </tr>
+      <tr>
+        <td><code>cardSize</code></td>
+        <td><code>number</code></td>
+        <td><code>220</code></td>
+        <td>Width in pixels of each card in the arc carousel.</td>
+      </tr>
+      <tr>
+        <td><code>cardHeight</code></td>
+        <td><code>number</code></td>
+        <td><code>cardSize * 1.32</code></td>
+        <td>Height in pixels of each card in the arc carousel.</td>
+      </tr>
+      <tr>
+        <td><code>perspective</code></td>
+        <td><code>number</code></td>
+        <td><code>1200</code></td>
+        <td>3D CSS perspective depth in pixels for the cylindrical arc.</td>
+      </tr>
+      <tr>
+        <td><code>autoScrollSpeed</code></td>
+        <td><code>number</code></td>
+        <td><code>0.22</code></td>
+        <td>Continuous auto-drift velocity in cards per second.</td>
+      </tr>
+      <tr>
+        <td><code>dragSpeed</code></td>
+        <td><code>number</code></td>
+        <td><code>1.2</code></td>
+        <td>Pointer drag multiplier when grabbing and spinning the carousel.</td>
+      </tr>
+      <tr>
+        <td><code>inertia</code></td>
+        <td><code>number</code></td>
+        <td><code>0.75</code></td>
+        <td>Friction momentum coefficient (<code>0</code> to <code>1</code>) for smooth coasting after pointer release.</td>
       </tr>
       <tr>
         <td><code>highlights</code></td>

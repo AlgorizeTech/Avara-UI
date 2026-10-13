@@ -180,6 +180,12 @@ const rawNavigation: NavigationItem[] = [
       { label: "Folder", slug: "folder", badge: "New", addedOn: "2026-09-13" },
       { label: "Form", slug: "form" },
       {
+        label: "Gallery",
+        slug: "gallery",
+        badge: "Updated",
+        keywords: ["gallery", "orbit", "bento", "reel", "pill carousel", "arc carousel", "cards", "3d", "revolving"],
+      },
+      {
         label: "Glass Panel",
         slug: "glass-panel",
         badge: "New",
@@ -475,13 +481,6 @@ const rawNavigation: NavigationItem[] = [
           "collage", "kindergarten", "school", "photos", "badge", "video", "playful",
           "typing", "typewriter", "bounce", "pet shop", "doctor", "healthcare",
         ],
-      },
-      {
-        label: "Orbit Gallery",
-        slug: "orbit-gallery",
-        badge: "New",
-        addedOn: "2026-09-20",
-        keywords: ["hero", "orbit", "gallery", "revolving", "carousel", "cards", "ring", "agency", "studio"],
       },
       { label: "Navbar", slug: "navbar" },
       {

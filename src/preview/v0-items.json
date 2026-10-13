@@ -429,6 +429,13 @@
     "react-hook-form-zod": "Form — React Hook Form + Zod",
     "submitting": "Form — Submitting"
   },
+  "gallery": {
+    "orbit-gallery": "Gallery — Orbit Gallery",
+    "moving-bento": "Gallery — Moving Bento",
+    "circular-reel": "Gallery — Circular Reel",
+    "3d-pill-carousel": "Gallery — 3D Pill Carousel",
+    "arc-carousel-gallery": "Gallery — Arc Carousel Gallery"
+  },
   "glass-panel": {
     "four-shapes": "Glass Panel — Four shapes",
     "bento-layout": "Glass Panel — Bento layout",
@@ -482,6 +489,9 @@
   },
   "hero-vortex": {
     "atmospheric-cyclone-radar-hero": "Hero — Atmospheric Cyclone Radar Hero"
+  },
+  "hero-orbit": {
+    "orbit-ring-hero": "Hero — Orbit Ring Hero"
   },
   "image-compare": {
     "classic-slider": "Image Compare — Classic Slider",
@@ -606,11 +616,6 @@
   },
   "not-found-section": {
     "hyperspace-404-section": "Not Found Section — Hyperspace 404 Section"
-  },
-  "orbit-gallery": {
-    "movement-is-what-people-notice-first": "Orbit Gallery — Movement is what people notice first",
-    "moving-bento": "Orbit Gallery — Moving Bento",
-    "circular-reel": "Orbit Gallery — Circular Reel"
   },
   "otp-input": {
     "otp-input": "OTP Input",

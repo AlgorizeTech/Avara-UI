@@ -1,6 +1,6 @@
 "use client";
 
-import React, { forwardRef, useEffect, useLayoutEffect, useMemo, useRef, useState, memo } from "react";
+import React, { forwardRef, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, memo } from "react";
 import { Aperture, ArrowRight, ArrowUpRight, Camera, Compass, MapPin, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import gsap from "gsap";
@@ -67,9 +67,70 @@ export interface CircularReelProps extends React.HTMLAttributes<HTMLDivElement> 
   onItemChange?: (item: CircularReelItem, index: number) => void;
 }
 
-export interface OrbitGalleryProps extends React.HTMLAttributes<HTMLElement> {
-  /** Gallery variant: "orbit" (circular revolving ring), "moving-bento" (GSAP Flip self-rearranging grid), or "circular-reel" (interactive scroll-driven spinner). */
-  variant?: "orbit" | "moving-bento" | "circular-reel";
+export interface PillCarouselItem {
+  id?: string;
+  image: string | { src: string; alt?: string };
+  tooltipText?: string;
+  link?: string;
+}
+
+export interface PillCarouselProps extends React.HTMLAttributes<HTMLDivElement> {
+  items?: PillCarouselItem[];
+  color?: string;
+  backgroundColor?: string;
+  cardBorderRadius?: number;
+  cardShadow?: string;
+  activeBorderWidth?: number;
+  activeBorderColor?: string;
+  transitionDuration?: number;
+  hoverScale?: number;
+  hoverBrightness?: number;
+  /** Controls whether pills slide automatically (true) or only when clicked (false). Defaults to true. */
+  autoSlide?: boolean;
+  autoPlay?: boolean;
+  autoPlayInterval?: number;
+  tooltipText?: string;
+  tooltipBackgroundColor?: string;
+  tooltipTextColor?: string;
+  tooltipPadding?: string;
+  tooltipFontSize?: number;
+  tooltipBorderRadius?: number;
+  tooltipShadow?: string;
+  linkNewTab?: boolean;
+  onTooltipClick?: (item: PillCarouselItem, index: number) => void;
+}
+
+export interface ArcCarouselItem {
+  id?: string;
+  image: string | { src: string; alt?: string };
+  title?: string;
+  subtitle?: string;
+  link?: string;
+}
+
+export interface ArcCarouselProps extends React.HTMLAttributes<HTMLDivElement> {
+  items?: ArcCarouselItem[];
+  color?: string;
+  backgroundColor?: string;
+  cardSize?: number;
+  cardHeight?: number;
+  gap?: number;
+  /** Curvature value from -300 to 300 (defaults to -200 for a concave arc). */
+  curve?: number;
+  perspective?: number;
+  autoScrollSpeed?: number;
+  autoSlide?: boolean;
+  autoPlay?: boolean;
+  dragSpeed?: number;
+  inertia?: number;
+  borderRadius?: number;
+  linkNewTab?: boolean;
+  onCardClick?: (item: ArcCarouselItem, index: number) => void;
+}
+
+export interface GalleryProps extends React.HTMLAttributes<HTMLElement> {
+  /** Gallery variant: "orbit" | "orbit-gallery" (circular revolving ring), "moving-bento" (GSAP Flip self-rearranging grid), "circular-reel" (interactive scroll-driven spinner), "pill-carousel" (3D layered pill carousel), or "arc-carousel" / "arc-carousel-gallery" (3D cylindrical arc carousel). */
+  variant?: "orbit" | "orbit-gallery" | "moving-bento" | "circular-reel" | "pill-carousel" | "arc-carousel" | "arc-carousel-gallery";
   /** Small tracked line above the headline, with a spark before it. */
   badgeText?: string;
   badgeHref?: string;
@@ -100,7 +161,7 @@ export interface OrbitGalleryProps extends React.HTMLAttributes<HTMLElement> {
   swapInterval?: number;
   /** Grid gap in px for the bento variant. */
   gap?: number;
-  /** Auto-swapping state for the bento variant. */
+  /** Auto-swapping state for the bento / reel / pill-carousel / arc-carousel variants. */
   autoPlay?: boolean;
 
   // Circular Reel specific props
@@ -114,7 +175,55 @@ export interface OrbitGalleryProps extends React.HTMLAttributes<HTMLElement> {
   ringThickness?: number;
   /** Filter images with grayscale preview. */
   grayscale?: boolean;
+
+  // 3D Pill Carousel specific props
+  /** Pill items for the "pill-carousel" variant. */
+  pillItems?: PillCarouselItem[];
+  /** Pill card border radius in px. */
+  cardBorderRadius?: number;
+  /** Active center pill border width in px. */
+  activeBorderWidth?: number;
+  /** Active center pill border color (defaults to theme primary/accent). */
+  activeBorderColor?: string;
+  /** Transition duration in seconds for pill movement. */
+  transitionDuration?: number;
+  /** Scale multiplier when hovering peripheral pills. */
+  hoverScale?: number;
+  /** Brightness multiplier when hovering peripheral pills. */
+  hoverBrightness?: number;
+  /** Controls whether pills slide automatically (true) or only on click (false). Defaults to true. */
+  autoSlide?: boolean;
+  /** Auto-play interval in ms for the pill carousel. */
+  autoPlayInterval?: number;
+  /** Default fallback tooltip CTA text. */
+  tooltipText?: string;
+  /** Tooltip background color (defaults to theme primary/accent). */
+  tooltipBackgroundColor?: string;
+  /** Tooltip text color (defaults to theme primary-foreground). */
+  tooltipTextColor?: string;
+
+  // Arc Carousel specific props
+  /** Items for the "arc-carousel" variant. */
+  arcItems?: ArcCarouselItem[];
+  /** Width of each card in px (defaults to 220). */
+  cardSize?: number;
+  /** Height of each card in px (defaults to cardSize * 1.32). */
+  cardHeight?: number;
+  /** Curvature value from -300 to 300 (negative is concave, 0 is flat, positive is convex). Defaults to -200. */
+  curve?: number;
+  /** 3D perspective depth in px (defaults to 1200). */
+  perspective?: number;
+  /** Auto-scroll rotation speed (defaults to 0.22). */
+  autoScrollSpeed?: number;
+  /** Drag sensitivity multiplier (defaults to 1.2). */
+  dragSpeed?: number;
+  /** Momentum inertia friction (0 to 1, defaults to 0.75). */
+  inertia?: number;
+  /** Card border radius in px for the arc carousel. */
+  borderRadius?: number;
 }
+
+export type OrbitGalleryProps = GalleryProps;
 
 // ------------------------------------------
 // Accent colour: keep it readable on both light and dark surfaces.
@@ -339,6 +448,129 @@ const DEFAULT_REEL_HIGHLIGHTS: OrbitHighlight[] = [
   { label: "Interactive circular dial" },
   { label: "Scroll & drag to spin", color: "#10b981" },
   { label: "Auto-crossfading preview", color: "#f59e0b" },
+];
+
+export const DEFAULT_PILL_CAROUSEL_ITEMS: PillCarouselItem[] = [
+  {
+    id: "pill-1",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+      alt: "Daily Rituals",
+    },
+    tooltipText: "Daily Rituals",
+    link: "",
+  },
+  {
+    id: "pill-2",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
+      alt: "Slow Living",
+    },
+    tooltipText: "Slow Living",
+    link: "",
+  },
+  {
+    id: "pill-3",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+      alt: "Explore",
+    },
+    tooltipText: "Explore",
+    link: "",
+  },
+  {
+    id: "pill-4",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+      alt: "Morning Flow",
+    },
+    tooltipText: "Morning Flow",
+    link: "",
+  },
+  {
+    id: "pill-5",
+    image: {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
+      alt: "Soft Focus",
+    },
+    tooltipText: "Soft Focus",
+    link: "",
+  },
+];
+
+const DEFAULT_PILL_HIGHLIGHTS: OrbitHighlight[] = [
+  { label: "3D layered pill cards" },
+  { label: "Click to focus & keyboard nav", color: "#10b981" },
+  { label: "Animated tooltip CTA", color: "#f59e0b" },
+];
+
+export const DEFAULT_ARC_CAROUSEL_ITEMS: ArcCarouselItem[] = [
+  {
+    id: "arc-1",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+    title: "Velvet Horizon",
+    subtitle: "Yosemite Valley",
+  },
+  {
+    id: "arc-2",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
+    title: "Glass Relay",
+    subtitle: "Redwood Trail",
+  },
+  {
+    id: "arc-3",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+    title: "Noir Mist",
+    subtitle: "Mountain Peaks",
+  },
+  {
+    id: "arc-4",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+    title: "Driftline Rays",
+    subtitle: "Canopy Light",
+  },
+  {
+    id: "arc-5",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg",
+    title: "Pulse Emerald",
+    subtitle: "Verdant Highlands",
+  },
+  {
+    id: "arc-6",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
+    title: "Cold Meridian",
+    subtitle: "Alpine Lake",
+  },
+  {
+    id: "arc-7",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+    title: "Astra Wilds",
+    subtitle: "Open Range",
+  },
+  {
+    id: "arc-8",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+    title: "Mono Summit",
+    subtitle: "Golden Ridge",
+  },
+  {
+    id: "arc-9",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158813/photo-1433086966358-54859d0ed716-1790158812209.jpg",
+    title: "Lumen Cascade",
+    subtitle: "Forest Waterfall",
+  },
+  {
+    id: "arc-10",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
+    title: "Shadow Bloom",
+    subtitle: "Alpine Crest",
+  },
+];
+
+const DEFAULT_ARC_HIGHLIGHTS: OrbitHighlight[] = [
+  { label: "3D Cylindrical Arc" },
+  { label: "Momentum Physics", color: "#10b981" },
+  { label: "Concave Curvature", color: "#f59e0b" },
 ];
 
 // ==========================================
@@ -1106,9 +1338,891 @@ export const CircularReel = forwardRef<HTMLDivElement, CircularReelProps>(
 CircularReel.displayName = "CircularReel";
 
 // ------------------------------------------
-// Root OrbitGallery
+// 3D Pill Carousel Standalone Component
 // ------------------------------------------
-export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
+export const ThreeDPillCarousel = forwardRef<HTMLDivElement, PillCarouselProps>(
+  (
+    {
+      items = DEFAULT_PILL_CAROUSEL_ITEMS,
+      color,
+      backgroundColor,
+      cardBorderRadius = 200,
+      cardShadow = "0 20px 60px rgba(0, 0, 0, 0.3)",
+      activeBorderWidth = 6,
+      activeBorderColor,
+      transitionDuration = 0.6,
+      hoverScale = 1.05,
+      hoverBrightness = 1.15,
+      autoSlide,
+      autoPlay = true,
+      autoPlayInterval = 3000,
+      tooltipText = "View Details",
+      tooltipBackgroundColor,
+      tooltipTextColor,
+      tooltipPadding = "12px 24px",
+      tooltipFontSize = 14,
+      tooltipBorderRadius = 50,
+      tooltipShadow = "0 4px 12px rgba(0, 0, 0, 0.15)",
+      linkNewTab = true,
+      onTooltipClick,
+      className,
+      style,
+      ...props
+    },
+    ref,
+  ) => {
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+    const [tooltipHovered, setTooltipHovered] = useState(false);
+    const [tooltipPressed, setTooltipPressed] = useState(false);
+
+    const shouldAutoSlide = autoSlide ?? autoPlay ?? true;
+
+    const validItems = useMemo(
+      () =>
+        items.filter((item) => {
+          const src = typeof item?.image === "string" ? item.image : item?.image?.src;
+          return Boolean(src);
+        }),
+      [items],
+    );
+
+    const openLink = (url?: string) => {
+      if (!url || typeof window === "undefined") return;
+      if (linkNewTab) {
+        window.open(url, "_blank", "noopener,noreferrer");
+      } else {
+        window.location.href = url;
+      }
+    };
+
+    const handleNext = () => {
+      if (validItems.length === 0) return;
+      React.startTransition(() => {
+        setCurrentIndex((prev) => (prev + 1) % validItems.length);
+      });
+    };
+
+    const handlePrev = () => {
+      if (validItems.length === 0) return;
+      React.startTransition(() => {
+        setCurrentIndex((prev) => (prev - 1 + validItems.length) % validItems.length);
+      });
+    };
+
+    const handleCardClick = (index: number) => {
+      React.startTransition(() => {
+        setCurrentIndex(index);
+      });
+    };
+
+    useEffect(() => {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+          e.preventDefault();
+          handleNext();
+        } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+          e.preventDefault();
+          handlePrev();
+        }
+      };
+      if (typeof window !== "undefined") {
+        window.addEventListener("keydown", handleKeyDown);
+        return () => window.removeEventListener("keydown", handleKeyDown);
+      }
+    }, [validItems.length]);
+
+    useEffect(() => {
+      if (!shouldAutoSlide || validItems.length <= 1) return;
+      const interval = setInterval(() => {
+        React.startTransition(() => {
+          setCurrentIndex((prev) => (prev + 1) % validItems.length);
+        });
+      }, autoPlayInterval);
+      return () => clearInterval(interval);
+    }, [shouldAutoSlide, autoPlayInterval, validItems.length]);
+
+    const getCardStyle = (index: number): React.CSSProperties => {
+      const total = validItems.length;
+      const diff = (index - currentIndex + total) % total;
+      const isHovered = hoveredIndex === index;
+
+      if (diff === 0) {
+        return {
+          transform: "translateX(-50%) translateY(-50%) scale(1)",
+          zIndex: 50,
+          opacity: 1,
+          left: "50%",
+          top: "53%",
+          filter: "blur(0px) brightness(1)",
+        };
+      }
+      if (diff === 1 || diff === -total + 1) {
+        return {
+          transform: `translateX(-50%) translateY(-50%) scale(${isHovered ? 0.85 * hoverScale : 0.85})`,
+          zIndex: 40,
+          opacity: isHovered ? 1 : 0.95,
+          left: "88%",
+          top: "39%",
+          filter: `blur(0.5px) brightness(${isHovered ? hoverBrightness : 1})`,
+        };
+      }
+      if (diff === 2 || diff === -total + 2) {
+        return {
+          transform: `translateX(-50%) translateY(-50%) scale(${isHovered ? 0.7 * hoverScale : 0.7})`,
+          zIndex: 30,
+          opacity: isHovered ? 0.9 : 0.85,
+          left: "122%",
+          top: "27%",
+          filter: `blur(1.5px) brightness(${isHovered ? hoverBrightness : 1})`,
+        };
+      }
+      if (diff === total - 1 || diff === -1) {
+        return {
+          transform: `translateX(-50%) translateY(-50%) scale(${isHovered ? 0.85 * hoverScale : 0.85})`,
+          zIndex: 40,
+          opacity: isHovered ? 1 : 0.95,
+          left: "12%",
+          top: "64%",
+          filter: `blur(0.5px) brightness(${isHovered ? hoverBrightness : 1})`,
+        };
+      }
+      if (diff === total - 2 || diff === -2) {
+        return {
+          transform: `translateX(-50%) translateY(-50%) scale(${isHovered ? 0.7 * hoverScale : 0.7})`,
+          zIndex: 30,
+          opacity: isHovered ? 0.9 : 0.85,
+          left: "-22%",
+          top: "74%",
+          filter: `blur(1.5px) brightness(${isHovered ? hoverBrightness : 1})`,
+        };
+      }
+      return {
+        transform: "translateX(-50%) translateY(-50%) scale(0.5)",
+        zIndex: 10,
+        opacity: 0,
+        left: "50%",
+        top: "53%",
+        filter: "blur(3px) brightness(1)",
+      };
+    };
+
+    const effectiveBorderColor = activeBorderColor || "var(--hero-accent-text, var(--primary))";
+    const effectiveTooltipBg = tooltipBackgroundColor || "var(--hero-accent-text, var(--primary))";
+    const effectiveTooltipText = tooltipTextColor || "var(--primary-foreground)";
+
+    if (validItems.length === 0) {
+      return (
+        <div
+          ref={ref}
+          style={{ ...style, ...(backgroundColor ? { backgroundColor } : {}) }}
+          className={cn(
+            "relative flex h-[540px] sm:h-[640px] md:h-[700px] w-full items-center justify-center rounded-2xl bg-background text-foreground text-base transition-colors duration-300",
+            className,
+          )}
+          {...props}
+        >
+          Add images to the carousel
+        </div>
+      );
+    }
+
+    const currentItem = validItems[currentIndex];
+
+    return (
+      <div
+        ref={ref}
+        style={{
+          ...accentStyle(color),
+          ...(backgroundColor ? { backgroundColor } : {}),
+          ...style,
+        }}
+        className={cn(
+          "relative h-[420px] xs:h-[480px] sm:h-[580px] md:h-[680px] lg:h-[740px] w-full select-none overflow-hidden rounded-2xl bg-background text-foreground transition-colors duration-300",
+          className,
+        )}
+        {...props}
+      >
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+              @keyframes pillTooltipEnter {
+                from {
+                  opacity: 0;
+                  transform: translate(-50%, 20px) scale(0.8);
+                }
+                to {
+                  opacity: 1;
+                  transform: translate(-50%, 0px) scale(1);
+                }
+              }
+            `,
+          }}
+        />
+
+        {/* Center Pill Column Stage */}
+        <div className="absolute left-1/2 top-1/2 h-full w-[155px] xs:w-[195px] sm:w-[245px] md:w-[275px] lg:w-[290px] -translate-x-1/2 -translate-y-1/2">
+          {validItems.map((item, index) => {
+            const cardStyle = getCardStyle(index);
+            const isCenter = (index - currentIndex + validItems.length) % validItems.length === 0;
+            const imgSrc = typeof item.image === "string" ? item.image : item.image?.src || "";
+            const imgAlt =
+              typeof item.image === "string"
+                ? item.tooltipText || `Carousel image ${index + 1}`
+                : item.image?.alt || item.tooltipText || "Carousel image";
+
+            return (
+              <div
+                key={item.id ?? index}
+                style={{
+                  position: "absolute",
+                  width: "100%",
+                  height: "75%",
+                  ...cardStyle,
+                  transition: `all ${transitionDuration}s cubic-bezier(0.4, 0, 0.2, 1)`,
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  if (isCenter) {
+                    openLink(item.link);
+                  } else {
+                    handleCardClick(index);
+                  }
+                }}
+                onMouseEnter={() => !isCenter && setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+              >
+                <div
+                  style={{
+                    position: "relative",
+                    width: "100%",
+                    height: "100%",
+                    borderRadius: `${cardBorderRadius}px`,
+                    overflow: "hidden",
+                    boxShadow:
+                      hoveredIndex === index && !isCenter
+                        ? "0 25px 70px rgba(0, 0, 0, 0.4)"
+                        : cardShadow,
+                    transition: "box-shadow 0.3s ease",
+                    border: isCenter
+                      ? `${activeBorderWidth}px solid ${effectiveBorderColor}`
+                      : "none",
+                  }}
+                >
+                  <img
+                    src={imgSrc}
+                    alt={imgAlt}
+                    draggable={false}
+                    className="size-full object-cover"
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Floating Tooltip CTA above Center Pill */}
+        {validItems.length > 0 && (
+          <button
+            key={currentIndex}
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (currentItem?.link) {
+                openLink(currentItem.link);
+              } else if (onTooltipClick && currentItem) {
+                onTooltipClick(currentItem, currentIndex);
+              } else {
+                handleNext();
+              }
+            }}
+            onMouseEnter={() => setTooltipHovered(true)}
+            onMouseLeave={() => {
+              setTooltipHovered(false);
+              setTooltipPressed(false);
+            }}
+            onMouseDown={() => setTooltipPressed(true)}
+            onMouseUp={() => setTooltipPressed(false)}
+            style={{
+              position: "absolute",
+              top: "calc(15.5% - 52px)",
+              left: "50%",
+              transform: `translate(-50%, 0px) scale(${tooltipPressed ? 0.95 : tooltipHovered ? 1.05 : 1})`,
+              backgroundColor: effectiveTooltipBg,
+              color: effectiveTooltipText,
+              padding: tooltipPadding,
+              borderRadius: `${tooltipBorderRadius}px`,
+              border: "none",
+              cursor: "pointer",
+              fontSize: `${tooltipFontSize}px`,
+              fontWeight: 600,
+              letterSpacing: "-0.01em",
+              boxShadow: tooltipHovered
+                ? "0 8px 24px rgba(0, 0, 0, 0.25)"
+                : tooltipShadow,
+              transition: "box-shadow 0.3s ease, transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+              animation: "pillTooltipEnter 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
+              zIndex: 100,
+              whiteSpace: "nowrap",
+            }}
+          >
+            {currentItem?.tooltipText || tooltipText}
+            <div
+              style={{
+                position: "absolute",
+                bottom: "-8px",
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: 0,
+                height: 0,
+                borderLeft: "8px solid transparent",
+                borderRight: "8px solid transparent",
+                borderTop: `8px solid ${effectiveTooltipBg}`,
+              }}
+            />
+          </button>
+        )}
+      </div>
+    );
+  },
+);
+
+ThreeDPillCarousel.displayName = "ThreeDPillCarousel";
+
+// ------------------------------------------
+// Arc Carousel Gallery (Framer-inspired)
+// ------------------------------------------
+export const ArcCarouselGallery = forwardRef<HTMLDivElement, ArcCarouselProps>(
+  (
+    {
+      items = DEFAULT_ARC_CAROUSEL_ITEMS,
+      color,
+      backgroundColor,
+      cardSize = 220,
+      cardHeight,
+      gap = 20,
+      curve = -200,
+      perspective = 1200,
+      autoScrollSpeed = 0.22,
+      autoSlide = true,
+      autoPlay = true,
+      dragSpeed = 1.2,
+      inertia = 0.75,
+      borderRadius = 20,
+      linkNewTab = true,
+      onCardClick,
+      className,
+      style,
+      ...props
+    },
+    ref,
+  ) => {
+    const rootRef = useRef<HTMLDivElement | null>(null);
+    const [containerSize, setContainerSize] = useState(() => ({
+      width: typeof window !== "undefined" ? Math.min(window.innerWidth, 1200) : 1000,
+      height: typeof window !== "undefined" ? Math.min(window.innerHeight, 600) : 600,
+    }));
+    const [isAutoPlaying, setIsAutoPlaying] = useState(autoSlide ?? autoPlay);
+    const [isHovered, setIsHovered] = useState(false);
+    const [isDragging, setIsDragging] = useState(false);
+    const [tick, setTick] = useState(0);
+
+    useEffect(() => {
+      setIsAutoPlaying(autoSlide ?? autoPlay);
+    }, [autoSlide, autoPlay]);
+
+    const physicsRef = useRef({
+      offset: 0,
+      velocity: autoSlide ?? autoPlay ? autoScrollSpeed : 0,
+      dragging: false,
+      pointerId: -1,
+      startX: 0,
+      lastX: 0,
+      lastTime: 0,
+      samples: [] as { x: number; t: number }[],
+    });
+
+    useEffect(() => {
+      if (!rootRef.current) return;
+      const updateSize = () => {
+        if (rootRef.current) {
+          const rect = rootRef.current.getBoundingClientRect();
+          if (rect.width > 0) {
+            setContainerSize({
+              width: rect.width,
+              height: rect.height,
+            });
+          }
+        }
+      };
+      updateSize();
+
+      if (typeof ResizeObserver === "undefined") return;
+      const ro = new ResizeObserver((entries) => {
+        const entry = entries[0];
+        if (entry?.contentRect && entry.contentRect.width > 0) {
+          setContainerSize({
+            width: entry.contentRect.width,
+            height: entry.contentRect.height,
+          });
+        }
+      });
+      ro.observe(rootRef.current);
+      return () => ro.disconnect();
+    }, []);
+
+    const validItems = useMemo(
+      () =>
+        (items || []).filter((item) => {
+          const src = typeof item?.image === "string" ? item.image : item?.image?.src;
+          return Boolean(src);
+        }),
+      [items],
+    );
+
+    const effectiveCardWidth = useMemo(() => {
+      // Very small mobile screens (< 380px)
+      if (containerSize.width < 380) {
+        return Math.max(92, Math.min(cardSize, Math.round(containerSize.width * 0.31)));
+      }
+      // Small mobile screens (380px - 480px)
+      if (containerSize.width < 480) {
+        return Math.max(108, Math.min(cardSize, Math.round(containerSize.width * 0.33)));
+      }
+      // Phablets / small tablets (480px - 768px)
+      if (containerSize.width < 768) {
+        return Math.max(138, Math.min(cardSize, Math.round(containerSize.width * 0.28)));
+      }
+      // Tablets / small desktop (768px - 1024px)
+      if (containerSize.width < 1024) {
+        return Math.max(168, Math.min(cardSize, Math.round(containerSize.width * 0.24)));
+      }
+      return cardSize;
+    }, [containerSize.width, cardSize]);
+
+    const effectiveGap = useMemo(() => {
+      if (containerSize.width < 380) return Math.min(gap, 8);
+      if (containerSize.width < 480) return Math.min(gap, 10);
+      if (containerSize.width < 768) return Math.min(gap, 12);
+      return gap;
+    }, [containerSize.width, gap]);
+
+    const effectiveCardHeight = useMemo(() => {
+      if (cardHeight) {
+        const ratio = effectiveCardWidth / cardSize;
+        return Math.round(cardHeight * ratio);
+      }
+      return Math.round(effectiveCardWidth * 1.34);
+    }, [cardHeight, effectiveCardWidth, cardSize]);
+
+    const effectiveBorderRadius = useMemo(() => {
+      if (containerSize.width < 480) return Math.min(borderRadius, 14);
+      if (containerSize.width < 768) return Math.min(borderRadius, 16);
+      return borderRadius;
+    }, [containerSize.width, borderRadius]);
+
+    const effectivePerspective = useMemo(() => {
+      if (containerSize.width < 420) return 480;
+      if (containerSize.width < 640) return 580;
+      if (containerSize.width < 768) return 720;
+      if (containerSize.width < 1024) return Math.min(perspective, 950);
+      return perspective;
+    }, [containerSize.width, perspective]);
+
+    const pitch = Math.max(1, effectiveCardWidth + effectiveGap);
+
+    const arcGeometry = useMemo(() => {
+      const curveStrength = Math.min(1, Math.abs(curve) / 300);
+      const sign = curve < 0 ? -1 : (curve > 0 ? 1 : 0);
+      const count = Math.max(10, Math.min(42, Math.ceil(containerSize.width / pitch) + 12));
+      const half = Math.floor(count / 2);
+
+      // Boost angle step on smaller screens so the minus curvature is clearly visible and proportional
+      const mobileBoost =
+        containerSize.width < 380 ? 2.35 :
+        containerSize.width < 480 ? 2.05 :
+        containerSize.width < 640 ? 1.65 :
+        containerSize.width < 768 ? 1.35 :
+        containerSize.width < 1024 ? 1.15 : 1.0;
+
+      const baseStep = curveStrength === 0 ? 0 : (0.045 + curveStrength * 0.18) * mobileBoost;
+      const angleStep = baseStep;
+      const radius = angleStep === 0 ? 999999 : pitch / angleStep;
+      const maxTheta = half * angleStep;
+      const edgeCos = Math.cos(maxTheta);
+
+      return {
+        curveStrength,
+        sign,
+        angleStep,
+        radius,
+        count,
+        half,
+        maxTheta,
+        edgeCos,
+      };
+    }, [curve, pitch, containerSize.width]);
+
+    const computeSampleVelocity = useCallback(() => {
+      const samples = physicsRef.current.samples;
+      if (samples.length < 2) return physicsRef.current.velocity;
+      const first = samples[0];
+      const last = samples[samples.length - 1];
+      const dt = (last.t - first.t) / 1000;
+      if (dt <= 0) return physicsRef.current.velocity;
+      return -((last.x - first.x) / dt * dragSpeed) / pitch * 0.95;
+    }, [dragSpeed, pitch]);
+
+    useEffect(() => {
+      if (typeof window === "undefined" || validItems.length === 0) return;
+      let animId: number;
+
+      const loop = (timestamp: number) => {
+        const p = physicsRef.current;
+        if (p.lastTime === 0) p.lastTime = timestamp;
+        const dt = Math.max(0.001, Math.min(0.05, (timestamp - p.lastTime) / 1000));
+        p.lastTime = timestamp;
+
+        if (!p.dragging) {
+          const decay = Math.pow(0.82 + Math.max(0, Math.min(1, inertia)) * 0.17, dt * 60);
+          p.velocity *= decay;
+
+          const targetVelocity = isAutoPlaying
+            ? isHovered
+              ? autoScrollSpeed * 0.35
+              : autoScrollSpeed
+            : 0;
+
+          const blend = 1 - Math.exp(-1.2 * dt);
+          p.velocity += (targetVelocity - p.velocity) * blend;
+          p.offset += p.velocity * dt;
+        }
+
+        setTick((prev) => (prev + 1) % 1000000);
+        animId = requestAnimationFrame(loop);
+      };
+
+      animId = requestAnimationFrame(loop);
+      return () => {
+        cancelAnimationFrame(animId);
+        physicsRef.current.lastTime = 0;
+      };
+    }, [validItems.length, inertia, isAutoPlaying, isHovered, autoScrollSpeed]);
+
+    const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+      if (!rootRef.current) return;
+      const p = physicsRef.current;
+      p.dragging = true;
+      p.pointerId = e.pointerId;
+      p.startX = e.clientX;
+      p.lastX = e.clientX;
+      p.samples = [{ x: e.clientX, t: performance.now() }];
+      setIsDragging(true);
+      rootRef.current.setPointerCapture(e.pointerId);
+    };
+
+    const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+      const p = physicsRef.current;
+      if (!p.dragging || p.pointerId !== e.pointerId) return;
+      const deltaX = e.clientX - p.lastX;
+      p.lastX = e.clientX;
+      p.offset += (-deltaX / pitch) * dragSpeed;
+
+      const now = performance.now();
+      p.samples.push({ x: e.clientX, t: now });
+      while (p.samples.length > 8) p.samples.shift();
+      while (p.samples.length > 2 && now - p.samples[0].t > 120) p.samples.shift();
+
+      p.velocity = computeSampleVelocity();
+    };
+
+    const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+      const p = physicsRef.current;
+      if (!p.dragging || p.pointerId !== e.pointerId) return;
+      p.dragging = false;
+      p.velocity = computeSampleVelocity();
+      p.samples = [];
+      setIsDragging(false);
+      if (rootRef.current && rootRef.current.hasPointerCapture(e.pointerId)) {
+        rootRef.current.releasePointerCapture(e.pointerId);
+      }
+    };
+
+    const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      if (Math.abs(delta) < 2) return;
+      physicsRef.current.offset += (delta / pitch) * 0.15;
+      physicsRef.current.velocity += (delta / pitch) * 0.6;
+    };
+
+    const handleCardClick = (item: ArcCarouselItem, index: number, e: React.MouseEvent) => {
+      const p = physicsRef.current;
+      if (Math.abs(e.clientX - p.startX) > 8) return;
+      if (item.link) {
+        if (linkNewTab && typeof window !== "undefined") {
+          window.open(item.link, "_blank", "noopener,noreferrer");
+        } else if (typeof window !== "undefined") {
+          window.location.href = item.link;
+        }
+      }
+      onCardClick?.(item, index);
+    };
+
+    const cards = useMemo(() => {
+      if (validItems.length === 0) return [];
+      const { angleStep, radius, curveStrength, sign, count, half, edgeCos } = arcGeometry;
+      const offset = physicsRef.current.offset;
+      const startIndex = Math.floor(offset) - half;
+
+      return Array.from({ length: count }, (_, idx) => {
+        const slot = startIndex + idx;
+        const d = slot - offset;
+        const wrappedIdx = ((slot % validItems.length) + validItems.length) % validItems.length;
+        const item = validItems[wrappedIdx];
+
+        if (angleStep === 0 || curveStrength === 0) {
+          return {
+            key: `${idx}-${wrappedIdx}`,
+            item,
+            index: wrappedIdx,
+            x: d * pitch,
+            z: 0,
+            rotateY: 0,
+            opacity: 1,
+            zIndex: 1000 - Math.abs(Math.round(d)),
+          };
+        }
+
+        const m = d * angleStep;
+        const x = Math.sin(m) * radius;
+
+        // Minus curve when curve < 0 (e.g. -200):
+        // sign = -1 gives the true minus curve:
+        // Right side (d > 0): negative rotateY. Left side (d < 0): positive rotateY.
+        const z = (Math.cos(m) - (1 + edgeCos) / 2) * radius * sign;
+        const rotateY = ((m * 180) / Math.PI) * sign;
+
+        const fade = Math.min(1, Math.abs(d) / Math.max(1, half));
+        const opacity = 1 - fade * 0.18;
+        const zIndex = 1000 - Math.abs(Math.round(m * 100));
+
+        return {
+          key: `${idx}-${wrappedIdx}`,
+          item,
+          index: wrappedIdx,
+          x,
+          z,
+          rotateY,
+          opacity,
+          zIndex,
+        };
+      });
+    }, [validItems, arcGeometry, pitch, tick]);
+
+    if (validItems.length === 0) {
+      return (
+        <div
+          ref={ref}
+          style={{ ...style, ...(backgroundColor ? { backgroundColor } : {}) }}
+          className={cn(
+            "relative flex h-[500px] sm:h-[580px] md:h-[640px] w-full items-center justify-center rounded-2xl bg-background text-foreground text-base transition-colors duration-300",
+            className,
+          )}
+          {...props}
+        >
+          Add images to the arc carousel
+        </div>
+      );
+    }
+
+    return (
+      <div
+        ref={(node) => {
+          rootRef.current = node;
+          if (typeof ref === "function") ref(node);
+          else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+        }}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        onWheel={handleWheel}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        style={{
+          ...accentStyle(color),
+          ...(backgroundColor ? { backgroundColor } : {}),
+          ...style,
+        }}
+        className={cn(
+          "relative h-[340px] xs:h-[380px] sm:h-[480px] md:h-[580px] lg:h-[680px] w-full select-none overflow-hidden rounded-2xl bg-background text-foreground transition-colors duration-300 touch-none",
+          isDragging ? "cursor-grabbing" : "cursor-grab",
+          className,
+        )}
+        role="region"
+        aria-label="Arc Carousel Gallery"
+        {...props}
+      >
+        {/* 3D Arc Perspective Stage */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            perspective: `${effectivePerspective}px`,
+            perspectiveOrigin: "50% 50%",
+            transformStyle: "preserve-3d",
+          }}
+        >
+          {cards.map((c) => {
+            const imgSrc = typeof c.item.image === "string" ? c.item.image : c.item.image?.src;
+            const imgAlt =
+              typeof c.item.image === "string"
+                ? c.item.title || "Gallery card"
+                : c.item.image?.alt || c.item.title || "Gallery card";
+
+            return (
+              <div
+                key={c.key}
+                style={{
+                  position: "absolute",
+                  left: "50%",
+                  top: "50%",
+                  width: effectiveCardWidth,
+                  height: effectiveCardHeight,
+                  borderRadius: `${effectiveBorderRadius}px`,
+                  overflow: "hidden",
+                  transformStyle: "preserve-3d",
+                  backfaceVisibility: "hidden",
+                  WebkitBackfaceVisibility: "hidden",
+                  opacity: c.opacity,
+                  zIndex: c.zIndex,
+                  transform: `translate3d(-50%, -50%, 0) translateX(${c.x}px) translateZ(${c.z}px) rotateY(${c.rotateY}deg)`,
+                  willChange: "transform, opacity",
+                  boxShadow: "0 22px 55px rgba(0, 0, 0, 0.28)",
+                }}
+                onClick={(e) => handleCardClick(c.item, c.index, e)}
+                className="group select-none border border-border/20 transition-shadow duration-300 hover:shadow-2xl hover:border-foreground/20"
+              >
+                <img
+                  src={imgSrc}
+                  alt={imgAlt}
+                  draggable={false}
+                  className="size-full object-cover pointer-events-none transition-transform duration-500 group-hover:scale-105"
+                />
+                {(c.item.title || c.item.subtitle) && (
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent p-2 sm:p-3.5 pt-5 sm:pt-8 text-white pointer-events-none">
+                    {c.item.title && <p className="text-[11px] sm:text-xs font-bold leading-tight drop-shadow truncate">{c.item.title}</p>}
+                    {c.item.subtitle && <p className="text-[9px] sm:text-[10px] text-white/80 drop-shadow leading-tight mt-0.5 truncate">{c.item.subtitle}</p>}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  },
+);
+
+ArcCarouselGallery.displayName = "ArcCarouselGallery";
+
+// ------------------------------------------
+// Isolated Pointer Trail (Memoized to prevent parent re-renders)
+// ------------------------------------------
+const PointerTrail = memo(
+  ({ containerRef }: { containerRef: React.RefObject<HTMLElement | null> }) => {
+    const targetRef = useRef({ x: -100, y: -100 });
+    const [pointer, setPointer] = useState({ x: -100, y: -100 });
+    const [trail, setTrail] = useState<{ x: number; y: number; id: number }[]>([]);
+    const [hovered, setHovered] = useState(false);
+
+    useEffect(() => {
+      const el = containerRef.current;
+      if (!el) return;
+
+      const handleMove = (e: MouseEvent) => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        targetRef.current = { x, y };
+        setPointer({ x, y });
+      };
+
+      const handleEnter = () => {
+        setHovered(true);
+      };
+
+      const handleLeave = () => {
+        setHovered(false);
+        targetRef.current = { x: -100, y: -100 };
+        setPointer({ x: -100, y: -100 });
+        setTrail([]);
+      };
+
+      el.addEventListener("mousemove", handleMove);
+      el.addEventListener("mouseenter", handleEnter);
+      el.addEventListener("mouseleave", handleLeave);
+
+      return () => {
+        el.removeEventListener("mousemove", handleMove);
+        el.removeEventListener("mouseenter", handleEnter);
+        el.removeEventListener("mouseleave", handleLeave);
+      };
+    }, [containerRef]);
+
+    useEffect(() => {
+      if (!hovered) return;
+      let frame: number;
+      let last = 0;
+      const loop = (t: number) => {
+        if (t - last > 20) {
+          last = t;
+          const { x, y } = targetRef.current;
+          setTrail((prev) => [{ x, y, id: t }, ...prev.slice(0, 7)]);
+        }
+        frame = requestAnimationFrame(loop);
+      };
+      frame = requestAnimationFrame(loop);
+      return () => cancelAnimationFrame(frame);
+    }, [hovered]);
+
+    if (!hovered) return null;
+
+    return (
+      <div className="pointer-events-none absolute inset-0 z-50 overflow-hidden" aria-hidden>
+        {trail.map((pt, i) => {
+          const size = Math.max(4, 18 - i * 2);
+          const opacity = (trail.length - i) / trail.length;
+          return (
+            <div
+              key={pt.id + i}
+              className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full transition-opacity duration-150"
+              style={{
+                left: `${pt.x}px`,
+                top: `${pt.y}px`,
+                width: `${size}px`,
+                height: `${size}px`,
+                backgroundColor: "var(--hero-accent-text)",
+                opacity: opacity * 0.7,
+              }}
+            />
+          );
+        })}
+        <div
+          className="pointer-events-none absolute size-4 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg"
+          style={{ left: `${pointer.x}px`, top: `${pointer.y}px`, backgroundColor: "var(--hero-accent-text)" }}
+        />
+      </div>
+    );
+  },
+);
+
+PointerTrail.displayName = "PointerTrail";
+
+// ------------------------------------------
+// Root Gallery
+// ------------------------------------------
+export const Gallery = forwardRef<HTMLElement, GalleryProps>(
   (
     {
       variant = "orbit",
@@ -1142,6 +2256,29 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
       scrollSensitivity = 0.06,
       ringThickness = 37,
       grayscale = false,
+      // 3D Pill Carousel specific
+      pillItems = DEFAULT_PILL_CAROUSEL_ITEMS,
+      cardBorderRadius = 200,
+      activeBorderWidth = 6,
+      activeBorderColor,
+      transitionDuration = 0.6,
+      hoverScale = 1.05,
+      hoverBrightness = 1.15,
+      autoSlide = true,
+      autoPlayInterval = 3000,
+      tooltipText = "View Details",
+      tooltipBackgroundColor,
+      tooltipTextColor,
+      // Arc Carousel specific
+      arcItems = DEFAULT_ARC_CAROUSEL_ITEMS,
+      cardSize = 220,
+      cardHeight,
+      curve = -200,
+      perspective = 1200,
+      autoScrollSpeed = 0.22,
+      dragSpeed = 1.2,
+      inertia = 0.75,
+      borderRadius = 20,
       ...props
     },
     ref,
@@ -1152,54 +2289,105 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
         ? DEFAULT_BENTO_HIGHLIGHTS
         : variant === "circular-reel"
         ? DEFAULT_REEL_HIGHLIGHTS
+        : variant === "pill-carousel"
+        ? DEFAULT_PILL_HIGHLIGHTS
+        : variant === "arc-carousel" || variant === "arc-carousel-gallery"
+        ? DEFAULT_ARC_HIGHLIGHTS
         : DEFAULT_HIGHLIGHTS);
     const count = images.length;
 
-    // The pointer trail: a handful of dots that follow the pointer while it is
-    // over the section. Positions are sampled on a frame loop, not on every
-    // mousemove, so the trail keeps an even spacing.
     const containerRef = useRef<HTMLElement | null>(null);
-    const targetRef = useRef({ x: -100, y: -100 });
-    const [pointer, setPointer] = useState({ x: -100, y: -100 });
-    const [trail, setTrail] = useState<{ x: number; y: number; id: number }[]>([]);
-    const [hovered, setHovered] = useState(false);
 
-    useEffect(() => {
-      if (!hovered) return;
-      let frame: number;
-      let last = 0;
-      const loop = (t: number) => {
-        if (t - last > 20) {
-          last = t;
-          const { x, y } = targetRef.current;
-          setTrail((prev) => [{ x, y, id: t }, ...prev.slice(0, 7)]);
-        }
-        frame = requestAnimationFrame(loop);
-      };
-      frame = requestAnimationFrame(loop);
-      return () => cancelAnimationFrame(frame);
-    }, [hovered]);
+    // ----------------------------------------
+    // VARIANT: 3D PILL CAROUSEL
+    // ----------------------------------------
+    if (variant === "pill-carousel") {
+      return (
+        <section
+          ref={(node) => {
+            containerRef.current = node;
+            if (typeof ref === "function") ref(node);
+            else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
+          }}
+          onMouseMove={onMouseMove}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+          style={{ ...accentStyle(color), ...style }}
+          className={cn(
+            "relative flex w-full select-none items-center justify-center overflow-hidden bg-background text-foreground transition-colors duration-300",
+            className,
+          )}
+          {...props}
+        >
+          {/* ---- Pointer trail ---- */}
+          <PointerTrail containerRef={containerRef} />
 
-    const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
-      onMouseMove?.(e);
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      targetRef.current = { x, y };
-      setPointer({ x, y });
-    };
-    const handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
-      onMouseEnter?.(e);
-      setHovered(true);
-    };
-    const handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
-      onMouseLeave?.(e);
-      setHovered(false);
-      targetRef.current = { x: -100, y: -100 };
-      setPointer({ x: -100, y: -100 });
-      setTrail([]);
-    };
+          <div className="relative z-10 w-full">
+            <ThreeDPillCarousel
+              items={pillItems}
+              color={color}
+              cardBorderRadius={cardBorderRadius}
+              activeBorderWidth={activeBorderWidth}
+              activeBorderColor={activeBorderColor}
+              transitionDuration={transitionDuration}
+              hoverScale={hoverScale}
+              hoverBrightness={hoverBrightness}
+              autoSlide={autoSlide}
+              autoPlay={autoPlay}
+              autoPlayInterval={autoPlayInterval}
+              tooltipText={tooltipText}
+              tooltipBackgroundColor={tooltipBackgroundColor}
+              tooltipTextColor={tooltipTextColor}
+            />
+          </div>
+        </section>
+      );
+    }
+
+    // ----------------------------------------
+    // VARIANT: ARC CAROUSEL GALLERY
+    // ----------------------------------------
+    if (variant === "arc-carousel" || variant === "arc-carousel-gallery") {
+      return (
+        <section
+          ref={(node) => {
+            containerRef.current = node;
+            if (typeof ref === "function") ref(node);
+            else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
+          }}
+          onMouseMove={onMouseMove}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+          style={{ ...accentStyle(color), ...style }}
+          className={cn(
+            "relative flex w-full select-none items-center justify-center overflow-hidden bg-background text-foreground transition-colors duration-300",
+            className,
+          )}
+          {...props}
+        >
+          {/* ---- Pointer trail ---- */}
+          <PointerTrail containerRef={containerRef} />
+
+          <div className="relative z-10 w-full">
+            <ArcCarouselGallery
+              items={arcItems}
+              color={color}
+              cardSize={cardSize}
+              cardHeight={cardHeight}
+              gap={gap}
+              curve={curve}
+              perspective={perspective}
+              autoScrollSpeed={autoScrollSpeed}
+              autoSlide={autoSlide}
+              autoPlay={autoPlay}
+              dragSpeed={dragSpeed}
+              inertia={inertia}
+              borderRadius={borderRadius}
+            />
+          </div>
+        </section>
+      );
+    }
 
     // ----------------------------------------
     // VARIANT: CIRCULAR REEL
@@ -1212,9 +2400,9 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
             if (typeof ref === "function") ref(node);
             else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
           }}
-          onMouseMove={handleMouseMove}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
+          onMouseMove={onMouseMove}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
           style={{ ...accentStyle(color), ...style }}
           className={cn(
             "relative flex w-full select-none items-center justify-center overflow-hidden",
@@ -1223,32 +2411,7 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
           {...props}
         >
           {/* ---- Pointer trail ---- */}
-          {hovered && (
-            <div className="pointer-events-none absolute inset-0 z-50 overflow-hidden" aria-hidden>
-              {trail.map((pt, i) => {
-                const size = Math.max(4, 18 - i * 2);
-                const opacity = (trail.length - i) / trail.length;
-                return (
-                  <div
-                    key={pt.id + i}
-                    className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full transition-opacity duration-150"
-                    style={{
-                      left: `${pt.x}px`,
-                      top: `${pt.y}px`,
-                      width: `${size}px`,
-                      height: `${size}px`,
-                      backgroundColor: "var(--hero-accent-text)",
-                      opacity: opacity * 0.7,
-                    }}
-                  />
-                );
-              })}
-              <div
-                className="pointer-events-none absolute size-4 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg"
-                style={{ left: `${pointer.x}px`, top: `${pointer.y}px`, backgroundColor: "var(--hero-accent-text)" }}
-              />
-            </div>
-          )}
+          <PointerTrail containerRef={containerRef} />
 
           <div className="relative z-10 w-full">
             <CircularReel
@@ -1276,9 +2439,9 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
             if (typeof ref === "function") ref(node);
             else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
           }}
-          onMouseMove={handleMouseMove}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
+          onMouseMove={onMouseMove}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
           style={{ ...accentStyle(color), ...style }}
           className={cn(
             "relative flex w-full select-none items-center justify-center overflow-hidden bg-background p-4 sm:p-6 text-foreground transition-colors duration-300",
@@ -1287,32 +2450,7 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
           {...props}
         >
           {/* ---- Pointer trail ---- */}
-          {hovered && (
-            <div className="pointer-events-none absolute inset-0 z-50 overflow-hidden" aria-hidden>
-              {trail.map((pt, i) => {
-                const size = Math.max(4, 18 - i * 2);
-                const opacity = (trail.length - i) / trail.length;
-                return (
-                  <div
-                    key={pt.id + i}
-                    className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full transition-opacity duration-150"
-                    style={{
-                      left: `${pt.x}px`,
-                      top: `${pt.y}px`,
-                      width: `${size}px`,
-                      height: `${size}px`,
-                      backgroundColor: "var(--hero-accent-text)",
-                      opacity: opacity * 0.7,
-                    }}
-                  />
-                );
-              })}
-              <div
-                className="pointer-events-none absolute size-4 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg"
-                style={{ left: `${pointer.x}px`, top: `${pointer.y}px`, backgroundColor: "var(--hero-accent-text)" }}
-              />
-            </div>
-          )}
+          <PointerTrail containerRef={containerRef} />
 
           <div className="relative z-10 w-full">
             <MovingBento
@@ -1337,43 +2475,18 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
           if (typeof ref === "function") ref(node);
           else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
         }}
-        onMouseMove={handleMouseMove}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        onMouseMove={onMouseMove}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
         style={{ ...accentStyle(color), ...style }}
         className={cn(
-          "relative flex min-h-[580px] w-full select-none items-center overflow-hidden bg-background py-12 text-foreground transition-colors duration-300 sm:py-16 lg:py-24",
+          "relative flex min-h-[600px] w-full select-none items-center overflow-hidden bg-background py-10 text-foreground transition-colors duration-300 sm:min-h-[660px] sm:py-14 lg:min-h-[720px] lg:py-20",
           className,
         )}
         {...props}
       >
         {/* ---- Pointer trail ---- */}
-        {hovered && (
-          <div className="pointer-events-none absolute inset-0 z-50 overflow-hidden" aria-hidden>
-            {trail.map((pt, i) => {
-              const size = Math.max(4, 18 - i * 2);
-              const opacity = (trail.length - i) / trail.length;
-              return (
-                <div
-                  key={pt.id + i}
-                  className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full transition-opacity duration-150"
-                  style={{
-                    left: `${pt.x}px`,
-                    top: `${pt.y}px`,
-                    width: `${size}px`,
-                    height: `${size}px`,
-                    backgroundColor: "var(--hero-accent-text)",
-                    opacity: opacity * 0.7,
-                  }}
-                />
-              );
-            })}
-            <div
-              className="pointer-events-none absolute size-4 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg"
-              style={{ left: `${pointer.x}px`, top: `${pointer.y}px`, backgroundColor: "var(--hero-accent-text)" }}
-            />
-          </div>
-        )}
+        <PointerTrail containerRef={containerRef} />
 
         {/* The orbit: every card is rotated about the ring's centre, pushed out
             by the radius, then counter-rotated so it stays upright. The radius
@@ -1385,8 +2498,9 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
           }
           .orbit-gallery-card {
             --orbit-r: 110px;
-            transform-style: preserve-3d;
             backface-visibility: hidden;
+            will-change: transform;
+            animation: orbit-gallery-slide var(--orbit-duration, 36s) linear infinite;
           }
           @media (min-width: 480px) { .orbit-gallery-card { --orbit-r: 135px; } }
           @media (min-width: 640px) { .orbit-gallery-card { --orbit-r: 185px; } }
@@ -1398,10 +2512,20 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
             75%  { transform: rotate(270deg) translateY(calc(-1 * var(--orbit-r))) rotateY(2.5deg) rotate(-270deg); }
             100% { transform: rotate(360deg) translateY(calc(-1 * var(--orbit-r))) rotateY(2.5deg) rotate(-360deg); }
           }
-          .orbit-gallery-card { animation: orbit-gallery-slide var(--orbit-duration, 36s) linear infinite; }
-          .orbit-gallery-ring:hover .orbit-gallery-card { animation-play-state: paused; }
-          .orbit-gallery-card:hover { z-index: 50; }
-          @media (prefers-reduced-motion: reduce) { .orbit-gallery-card { animation-play-state: paused; } }
+          .orbit-gallery-wrapper:hover .orbit-gallery-card,
+          .orbit-gallery-ring:hover .orbit-gallery-card,
+          .orbit-gallery-card:hover {
+            animation-play-state: paused;
+          }
+          .orbit-gallery-card:hover {
+            z-index: 50;
+          }
+          .orbit-gallery-card:hover > div {
+            transform: translateZ(30px) scale(1.15) !important;
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .orbit-gallery-card { animation-play-state: paused; }
+          }
         `}</style>
 
         <div className="relative z-10 mx-auto w-full max-w-[1380px] px-4 sm:px-6 md:px-10">
@@ -1466,22 +2590,30 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
             </div>
 
             {/* ---- The ring ---- */}
-            <div className="relative col-span-1 flex h-[460px] items-center justify-center overflow-visible py-4 sm:h-[560px] lg:col-span-6 lg:h-[620px]">
+            <div className="orbit-gallery-wrapper relative col-span-1 flex h-[480px] items-center justify-center overflow-visible py-4 sm:h-[580px] lg:col-span-6 lg:h-[660px]">
               <div
                 className="orbit-gallery-ring pointer-events-auto relative flex size-[340px] cursor-pointer items-center justify-center overflow-visible rounded-full sm:size-[440px] lg:size-[480px]"
                 style={{ "--orbit-duration": `${duration}s` } as React.CSSProperties}
               >
-                <div className="pointer-events-none absolute inset-0 rounded-full border border-foreground/10" aria-hidden />
+                <div className="pointer-events-none absolute inset-0 rounded-full border border-transparent" aria-hidden />
 
                 {images.map((src, i) => (
                   <div
                     key={src + i}
                     data-index={i}
-                    className="orbit-gallery-card pointer-events-auto absolute left-1/2 top-1/2 -ml-[38px] -mt-[48px] h-[96px] w-[76px] sm:-ml-[62px] sm:-mt-[77px] sm:h-[155px] sm:w-[125px] lg:-ml-[75px] lg:-mt-[90px] lg:h-[180px] lg:w-[150px]"
+                    className="orbit-gallery-card group pointer-events-auto absolute left-1/2 top-1/2 -ml-[38px] -mt-[48px] h-[96px] w-[76px] sm:-ml-[62px] sm:-mt-[77px] sm:h-[155px] sm:w-[125px] lg:-ml-[75px] lg:-mt-[90px] lg:h-[180px] lg:w-[150px]"
                     style={{ animationDelay: `${-((i / count) * duration)}s` }}
                   >
-                    <div className="group h-full w-full overflow-hidden rounded-[22px] border-2 border-card bg-card shadow-2xl transition-all duration-300 hover:scale-110 sm:rounded-[28px]">
-                      <img src={src} alt="" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                    <div
+                      className="h-full w-full overflow-hidden rounded-[22px] border-2 border-card bg-card shadow-xl sm:rounded-[28px] transition-transform duration-300 ease-out group-hover:scale-115 group-hover:shadow-2xl cursor-pointer"
+                      style={{ transformOrigin: "center center", willChange: "transform" }}
+                    >
+                      <img
+                        src={src}
+                        alt=""
+                        draggable={false}
+                        className="size-full object-cover pointer-events-none select-none transition-transform duration-300 ease-out group-hover:scale-105"
+                      />
                     </div>
                   </div>
                 ))}
@@ -1494,6 +2626,8 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
   },
 );
 
-OrbitGallery.displayName = "OrbitGallery";
+Gallery.displayName = "Gallery";
 
-export default OrbitGallery;
+export const OrbitGallery = Gallery;
+
+export default Gallery;
