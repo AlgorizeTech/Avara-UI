@@ -507,63 +507,63 @@ const DEFAULT_PILL_HIGHLIGHTS: OrbitHighlight[] = [
 export const DEFAULT_ARC_CAROUSEL_ITEMS: ArcCarouselItem[] = [
   {
     id: "arc-1",
-    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80",
-    title: "Air Velocity",
-    subtitle: "Crimson Edition",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+    title: "Velvet Horizon",
+    subtitle: "Yosemite Valley",
   },
   {
     id: "arc-2",
-    image: "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=800&auto=format&fit=crop&q=80",
-    title: "Hyper Blaze",
-    subtitle: "Amber Fade",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
+    title: "Glass Relay",
+    subtitle: "Redwood Trail",
   },
   {
     id: "arc-3",
-    image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&auto=format&fit=crop&q=80",
-    title: "Volt Runner",
-    subtitle: "Neon Acid",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+    title: "Noir Mist",
+    subtitle: "Mountain Peaks",
   },
   {
     id: "arc-4",
-    image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&auto=format&fit=crop&q=80",
-    title: "Pastel Drift",
-    subtitle: "Chalk Studio",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+    title: "Driftline Rays",
+    subtitle: "Canopy Light",
   },
   {
     id: "arc-5",
-    image: "https://images.unsplash.com/photo-1575537302964-96cd47c06b1b?w=800&auto=format&fit=crop&q=80",
-    title: "Aero Stride",
-    subtitle: "Cyber Yellow",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg",
+    title: "Pulse Emerald",
+    subtitle: "Verdant Highlands",
   },
   {
     id: "arc-6",
-    image: "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?w=800&auto=format&fit=crop&q=80",
-    title: "Magenta Pulse",
-    subtitle: "Ultra Sprint",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
+    title: "Cold Meridian",
+    subtitle: "Alpine Lake",
   },
   {
     id: "arc-7",
-    image: "https://images.unsplash.com/photo-1582588678413-dbf45f4823e9?w=800&auto=format&fit=crop&q=80",
-    title: "Cobalt Horizon",
-    subtitle: "Track Racer",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+    title: "Astra Wilds",
+    subtitle: "Open Range",
   },
   {
     id: "arc-8",
-    image: "https://images.unsplash.com/photo-1514989940723-e8e51635b782?w=800&auto=format&fit=crop&q=80",
-    title: "Teal Apex",
-    subtitle: "Dynamic Flight",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+    title: "Mono Summit",
+    subtitle: "Golden Ridge",
   },
   {
     id: "arc-9",
-    image: "https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?w=800&auto=format&fit=crop&q=80",
-    title: "Cyan Torrent",
-    subtitle: "Ocean Breeze",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158813/photo-1433086966358-54859d0ed716-1790158812209.jpg",
+    title: "Lumen Cascade",
+    subtitle: "Forest Waterfall",
   },
   {
     id: "arc-10",
-    image: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=800&auto=format&fit=crop&q=80",
-    title: "Monochrome Pro",
-    subtitle: "Pure Classic",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
+    title: "Shadow Bloom",
+    subtitle: "Alpine Crest",
   },
 ];
 
@@ -1718,11 +1718,14 @@ export const ArcCarouselGallery = forwardRef<HTMLDivElement, ArcCarouselProps>(
     ref,
   ) => {
     const rootRef = useRef<HTMLDivElement | null>(null);
-    const [containerSize, setContainerSize] = useState({ width: 1000, height: 600 });
+    const [containerSize, setContainerSize] = useState(() => ({
+      width: typeof window !== "undefined" ? Math.min(window.innerWidth, 1200) : 1000,
+      height: typeof window !== "undefined" ? Math.min(window.innerHeight, 600) : 600,
+    }));
     const [isAutoPlaying, setIsAutoPlaying] = useState(autoSlide ?? autoPlay);
     const [isHovered, setIsHovered] = useState(false);
     const [isDragging, setIsDragging] = useState(false);
-    const [, setTick] = useState(0);
+    const [tick, setTick] = useState(0);
 
     useEffect(() => {
       setIsAutoPlaying(autoSlide ?? autoPlay);
@@ -1740,10 +1743,24 @@ export const ArcCarouselGallery = forwardRef<HTMLDivElement, ArcCarouselProps>(
     });
 
     useEffect(() => {
-      if (!rootRef.current || typeof ResizeObserver === "undefined") return;
+      if (!rootRef.current) return;
+      const updateSize = () => {
+        if (rootRef.current) {
+          const rect = rootRef.current.getBoundingClientRect();
+          if (rect.width > 0) {
+            setContainerSize({
+              width: rect.width,
+              height: rect.height,
+            });
+          }
+        }
+      };
+      updateSize();
+
+      if (typeof ResizeObserver === "undefined") return;
       const ro = new ResizeObserver((entries) => {
         const entry = entries[0];
-        if (entry?.contentRect) {
+        if (entry?.contentRect && entry.contentRect.width > 0) {
           setContainerSize({
             width: entry.contentRect.width,
             height: entry.contentRect.height,
@@ -1766,27 +1783,27 @@ export const ArcCarouselGallery = forwardRef<HTMLDivElement, ArcCarouselProps>(
     const effectiveCardWidth = useMemo(() => {
       // Very small mobile screens (< 380px)
       if (containerSize.width < 380) {
-        return Math.max(90, Math.min(cardSize, Math.round(containerSize.width * 0.32)));
+        return Math.max(92, Math.min(cardSize, Math.round(containerSize.width * 0.31)));
       }
       // Small mobile screens (380px - 480px)
       if (containerSize.width < 480) {
-        return Math.max(110, Math.min(cardSize, Math.round(containerSize.width * 0.34)));
+        return Math.max(108, Math.min(cardSize, Math.round(containerSize.width * 0.33)));
       }
       // Phablets / small tablets (480px - 768px)
       if (containerSize.width < 768) {
-        return Math.max(140, Math.min(cardSize, Math.round(containerSize.width * 0.28)));
+        return Math.max(138, Math.min(cardSize, Math.round(containerSize.width * 0.28)));
       }
       // Tablets / small desktop (768px - 1024px)
       if (containerSize.width < 1024) {
-        return Math.max(170, Math.min(cardSize, Math.round(containerSize.width * 0.24)));
+        return Math.max(168, Math.min(cardSize, Math.round(containerSize.width * 0.24)));
       }
       return cardSize;
     }, [containerSize.width, cardSize]);
 
     const effectiveGap = useMemo(() => {
-      if (containerSize.width < 380) return Math.min(gap, 10);
-      if (containerSize.width < 480) return Math.min(gap, 12);
-      if (containerSize.width < 768) return Math.min(gap, 16);
+      if (containerSize.width < 380) return Math.min(gap, 8);
+      if (containerSize.width < 480) return Math.min(gap, 10);
+      if (containerSize.width < 768) return Math.min(gap, 12);
       return gap;
     }, [containerSize.width, gap]);
 
@@ -1805,8 +1822,10 @@ export const ArcCarouselGallery = forwardRef<HTMLDivElement, ArcCarouselProps>(
     }, [containerSize.width, borderRadius]);
 
     const effectivePerspective = useMemo(() => {
-      if (containerSize.width < 480) return Math.max(650, Math.round(perspective * 0.65));
-      if (containerSize.width < 768) return Math.max(800, Math.round(perspective * 0.8));
+      if (containerSize.width < 420) return 480;
+      if (containerSize.width < 640) return 580;
+      if (containerSize.width < 768) return 720;
+      if (containerSize.width < 1024) return Math.min(perspective, 950);
       return perspective;
     }, [containerSize.width, perspective]);
 
@@ -1814,19 +1833,20 @@ export const ArcCarouselGallery = forwardRef<HTMLDivElement, ArcCarouselProps>(
 
     const arcGeometry = useMemo(() => {
       const curveStrength = Math.min(1, Math.abs(curve) / 300);
-      const sign = curve < 0 ? -1 : 1;
+      const sign = curve < 0 ? -1 : (curve > 0 ? 1 : 0);
       const count = Math.max(10, Math.min(42, Math.ceil(containerSize.width / pitch) + 12));
       const half = Math.floor(count / 2);
-      const baseStep = curveStrength === 0 ? 0 : 0.04 + curveStrength * 0.2;
-      const nominalArc = half * baseStep;
-      let angleStep = baseStep;
 
-      if (sign === 1 && curveStrength > 0 && half > 0) {
-        const t = Math.pow(curveStrength, 2.2);
-        const fullCircle = Math.PI * 2 * 0.98;
-        angleStep = (nominalArc * (1 - t) + fullCircle * t) / half;
-      }
+      // Boost angle step on smaller screens so the minus curvature is clearly visible and proportional
+      const mobileBoost =
+        containerSize.width < 380 ? 2.35 :
+        containerSize.width < 480 ? 2.05 :
+        containerSize.width < 640 ? 1.65 :
+        containerSize.width < 768 ? 1.35 :
+        containerSize.width < 1024 ? 1.15 : 1.0;
 
+      const baseStep = curveStrength === 0 ? 0 : (0.045 + curveStrength * 0.18) * mobileBoost;
+      const angleStep = baseStep;
       const radius = angleStep === 0 ? 999999 : pitch / angleStep;
       const maxTheta = half * angleStep;
       const edgeCos = Math.cos(maxTheta);
@@ -1975,8 +1995,13 @@ export const ArcCarouselGallery = forwardRef<HTMLDivElement, ArcCarouselProps>(
 
         const m = d * angleStep;
         const x = Math.sin(m) * radius;
+
+        // Minus curve when curve < 0 (e.g. -200):
+        // sign = -1 gives the true minus curve:
+        // Right side (d > 0): negative rotateY. Left side (d < 0): positive rotateY.
         const z = (Math.cos(m) - (1 + edgeCos) / 2) * radius * sign;
         const rotateY = ((m * 180) / Math.PI) * sign;
+
         const fade = Math.min(1, Math.abs(d) / Math.max(1, half));
         const opacity = 1 - fade * 0.18;
         const zIndex = 1000 - Math.abs(Math.round(m * 100));
@@ -1992,8 +2017,7 @@ export const ArcCarouselGallery = forwardRef<HTMLDivElement, ArcCarouselProps>(
           zIndex,
         };
       });
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [validItems, arcGeometry, pitch, physicsRef.current.offset]);
+    }, [validItems, arcGeometry, pitch, tick]);
 
     if (validItems.length === 0) {
       return (
@@ -2047,7 +2071,6 @@ export const ArcCarouselGallery = forwardRef<HTMLDivElement, ArcCarouselProps>(
             perspective: `${effectivePerspective}px`,
             perspectiveOrigin: "50% 50%",
             transformStyle: "preserve-3d",
-            overflow: "hidden",
           }}
         >
           {cards.map((c) => {

@@ -226,63 +226,63 @@ export default function ThreeDPillCarouselExample() {
 export const arcUsage = `const ARC_ITEMS = [
   {
     id: "arc-1",
-    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80",
-    title: "Air Velocity",
-    subtitle: "Crimson Edition",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+    title: "Velvet Horizon",
+    subtitle: "Yosemite Valley",
   },
   {
     id: "arc-2",
-    image: "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=800&auto=format&fit=crop&q=80",
-    title: "Hyper Blaze",
-    subtitle: "Amber Fade",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
+    title: "Glass Relay",
+    subtitle: "Redwood Trail",
   },
   {
     id: "arc-3",
-    image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&auto=format&fit=crop&q=80",
-    title: "Volt Runner",
-    subtitle: "Neon Acid",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+    title: "Noir Mist",
+    subtitle: "Mountain Peaks",
   },
   {
     id: "arc-4",
-    image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&auto=format&fit=crop&q=80",
-    title: "Pastel Drift",
-    subtitle: "Chalk Studio",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+    title: "Driftline Rays",
+    subtitle: "Canopy Light",
   },
   {
     id: "arc-5",
-    image: "https://images.unsplash.com/photo-1575537302964-96cd47c06b1b?w=800&auto=format&fit=crop&q=80",
-    title: "Aero Stride",
-    subtitle: "Cyber Yellow",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg",
+    title: "Pulse Emerald",
+    subtitle: "Verdant Highlands",
   },
   {
     id: "arc-6",
-    image: "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?w=800&auto=format&fit=crop&q=80",
-    title: "Magenta Pulse",
-    subtitle: "Ultra Sprint",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
+    title: "Cold Meridian",
+    subtitle: "Alpine Lake",
   },
   {
     id: "arc-7",
-    image: "https://images.unsplash.com/photo-1582588678413-dbf45f4823e9?w=800&auto=format&fit=crop&q=80",
-    title: "Cobalt Horizon",
-    subtitle: "Track Racer",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+    title: "Astra Wilds",
+    subtitle: "Open Range",
   },
   {
     id: "arc-8",
-    image: "https://images.unsplash.com/photo-1514989940723-e8e51635b782?w=800&auto=format&fit=crop&q=80",
-    title: "Teal Apex",
-    subtitle: "Dynamic Flight",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+    title: "Mono Summit",
+    subtitle: "Golden Ridge",
   },
   {
     id: "arc-9",
-    image: "https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?w=800&auto=format&fit=crop&q=80",
-    title: "Cyan Torrent",
-    subtitle: "Ocean Breeze",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158813/photo-1433086966358-54859d0ed716-1790158812209.jpg",
+    title: "Lumen Cascade",
+    subtitle: "Forest Waterfall",
   },
   {
     id: "arc-10",
-    image: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=800&auto=format&fit=crop&q=80",
-    title: "Monochrome Pro",
-    subtitle: "Pure Classic",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
+    title: "Shadow Bloom",
+    subtitle: "Alpine Crest",
   },
 ];
 
@@ -421,7 +421,7 @@ npx shadcn@latest add @algorize-ui/gallery
 
         arcItems
         ArcCarouselItem[]
-        10 sneakers
+        10 scenes
         The items ({`{ id, image, title, subtitle, link }`}) for the "arc-carousel" variant.
 
         curve
