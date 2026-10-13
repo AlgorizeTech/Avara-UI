@@ -1,7 +1,7 @@
 "use client";
 
-import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState, memo } from "react";
-import { ArrowRight, ArrowUpRight, Sparkles } from "lucide-react";
+import React, { forwardRef, useEffect, useLayoutEffect, useMemo, useRef, useState, memo } from "react";
+import { Aperture, ArrowRight, ArrowUpRight, Camera, Compass, MapPin, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import { Flip } from "gsap/dist/Flip";
@@ -13,11 +13,13 @@ if (typeof window !== "undefined") {
 const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 // ==========================================
-// ORBIT GALLERY & MOVING BENTO
+// ORBIT GALLERY, MOVING BENTO & CIRCULAR REEL
 // A dynamic visual showcase featuring:
 // 1. Orbit Ring: revolving 3D circular photo carousel with upright rotation and mouse trail.
 // 2. Moving Bento: self-rearranging image bento grid with a dominant center hero slot,
 //    powered by fluid GSAP Flip transitions.
+// 3. Circular Reel: interactive scroll-driven dial with passive rotation,
+//    tangential segmented ring slices, and auto-crossfading preview.
 // ==========================================
 
 export interface OrbitHighlight {
@@ -42,9 +44,32 @@ export interface MovingBentoProps extends React.HTMLAttributes<HTMLDivElement> {
   onCardClick?: (item: MovingBentoItem, index: number) => void;
 }
 
+export interface CircularReelItem {
+  id?: string;
+  name: string;
+  category?: string;
+  description?: string;
+  image: string;
+  href?: string;
+}
+
+export interface CircularReelProps extends React.HTMLAttributes<HTMLDivElement> {
+  items?: CircularReelItem[];
+  color?: string;
+  accentColor?: string;
+  backgroundColor?: string;
+  idleRotationSpeed?: number;
+  scrollSensitivity?: number;
+  ringThickness?: number;
+  fontSize?: number;
+  grayscale?: boolean;
+  autoPlay?: boolean;
+  onItemChange?: (item: CircularReelItem, index: number) => void;
+}
+
 export interface OrbitGalleryProps extends React.HTMLAttributes<HTMLElement> {
-  /** Gallery variant: "orbit" (circular revolving ring) or "moving-bento" (GSAP Flip self-rearranging grid). */
-  variant?: "orbit" | "moving-bento";
+  /** Gallery variant: "orbit" (circular revolving ring), "moving-bento" (GSAP Flip self-rearranging grid), or "circular-reel" (interactive scroll-driven spinner). */
+  variant?: "orbit" | "moving-bento" | "circular-reel";
   /** Small tracked line above the headline, with a spark before it. */
   badgeText?: string;
   badgeHref?: string;
@@ -77,6 +102,18 @@ export interface OrbitGalleryProps extends React.HTMLAttributes<HTMLElement> {
   gap?: number;
   /** Auto-swapping state for the bento variant. */
   autoPlay?: boolean;
+
+  // Circular Reel specific props
+  /** Reel items for the "circular-reel" variant. */
+  reelItems?: CircularReelItem[];
+  /** Degrees per second of idle passive rotation. */
+  idleRotationSpeed?: number;
+  /** Wheel / scroll delta multiplier. */
+  scrollSensitivity?: number;
+  /** Donut ring thickness percentage (10 to 60). */
+  ringThickness?: number;
+  /** Filter images with grayscale preview. */
+  grayscale?: boolean;
 }
 
 // ------------------------------------------
@@ -223,6 +260,85 @@ const DEFAULT_BENTO_HIGHLIGHTS: OrbitHighlight[] = [
   { label: "GSAP Flip layout animation" },
   { label: "Self-rearranging hero card", color: "#10b981" },
   { label: "Click to focus", color: "#f59e0b" },
+];
+
+export const DEFAULT_CIRCULAR_REEL_ITEMS: CircularReelItem[] = [
+  {
+    id: "reel-1",
+    name: "Velvet Horizon",
+    category: "Yosemite Valley",
+    description: "Granite peaks glowing in the golden twilight above misty valley floor",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+  },
+  {
+    id: "reel-2",
+    name: "Glass Relay",
+    category: "Redwood Trail",
+    description: "Ancient sequoias towering through filtered coastal morning rays",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
+  },
+  {
+    id: "reel-3",
+    name: "Noir Mist",
+    category: "Mountain Peaks",
+    description: "Monochrome layered ridges dissolving into distant cloud banks",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+  },
+  {
+    id: "reel-4",
+    name: "Driftline Rays",
+    category: "Canopy Light",
+    description: "Luminescent beams descending through mossy pine canopies",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+  },
+  {
+    id: "reel-5",
+    name: "Pulse Emerald",
+    category: "Verdant Highlands",
+    description: "Vibrant rolling green bluffs descending toward serene shoreline",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg",
+  },
+  {
+    id: "reel-6",
+    name: "Cold Meridian",
+    category: "Alpine Lake",
+    description: "Crystalline glacial waters reflecting jagged snow-capped crests",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
+  },
+  {
+    id: "reel-7",
+    name: "Astra Wilds",
+    category: "Open Range",
+    description: "Solitary wanderer contemplating vast expanses of pristine tundra",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+  },
+  {
+    id: "reel-8",
+    name: "Mono Summit",
+    category: "Golden Ridge",
+    description: "Sharp stone pinnacles bathed in amber warmth at sunrise",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+  },
+  {
+    id: "reel-9",
+    name: "Lumen Cascade",
+    category: "Forest Waterfall",
+    description: "Rushing mountain falls carving through lush temperate rainforest",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158813/photo-1433086966358-54859d0ed716-1790158812209.jpg",
+  },
+  {
+    id: "reel-10",
+    name: "Shadow Bloom",
+    category: "Alpine Crest",
+    description: "Majestic European peaks framed by drifting atmospheric shadows",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
+  },
+];
+
+const DEFAULT_REEL_HIGHLIGHTS: OrbitHighlight[] = [
+  { label: "Interactive circular dial" },
+  { label: "Scroll & drag to spin", color: "#10b981" },
+  { label: "Auto-crossfading preview", color: "#f59e0b" },
 ];
 
 // ==========================================
@@ -506,6 +622,490 @@ export function MovingBento({
 }
 
 // ------------------------------------------
+// Circular Reel Standalone Component
+// ------------------------------------------
+export const CircularReel = forwardRef<HTMLDivElement, CircularReelProps>(
+  (
+    {
+      items = DEFAULT_CIRCULAR_REEL_ITEMS,
+      color,
+      accentColor,
+      backgroundColor,
+      idleRotationSpeed = 5,
+      scrollSensitivity = 0.06,
+      ringThickness = 37,
+      fontSize = 12,
+      grayscale = false,
+      autoPlay = true,
+      onItemChange,
+      className,
+      style,
+      ...props
+    },
+    ref,
+  ) => {
+    const containerRef = useRef<HTMLDivElement | null>(null);
+    const [dimensions, setDimensions] = useState({ width: 800, height: 600 });
+    const [activeIndex, setActiveIndex] = useState(0);
+    const uid = React.useId().replace(/:/g, "-");
+
+    const spinnerGroupRef = useRef<SVGGElement | null>(null);
+    const indicatorGroupRef = useRef<SVGGElement | null>(null);
+
+    const isDragging = useRef(false);
+    const dragCenter = useRef({ x: 0, y: 0, lastAngle: 0 });
+
+    const rotRef = useRef({
+      currentIndicatorRotation: 0,
+      targetIndicatorRotation: 0,
+      currentSpinnerRotation: 0,
+      targetSpinnerRotation: 0,
+      direction: 1,
+      lastTime: typeof performance !== "undefined" ? performance.now() : 0,
+      lastIndex: 0,
+      rafId: 0,
+    });
+
+    const itemsRef = useRef(items);
+    itemsRef.current = items;
+    const onItemChangeRef = useRef(onItemChange);
+    onItemChangeRef.current = onItemChange;
+
+    useEffect(() => {
+      const el = containerRef.current;
+      if (!el) return;
+      const updateSize = () => {
+        const w = el.clientWidth || 800;
+        const h = el.clientHeight || Math.max(500, Math.min(w * 0.72, 680));
+        setDimensions({ width: w, height: h });
+      };
+      updateSize();
+      const observer = new ResizeObserver(updateSize);
+      observer.observe(el);
+      return () => observer.disconnect();
+    }, []);
+
+    const outerRadius = Math.max(120, Math.min(dimensions.width, dimensions.height) * 0.46);
+    const thicknessPct = Math.max(10, Math.min(60, ringThickness));
+    const innerRadius = outerRadius * (1 - thicknessPct / 100);
+    const centerX = dimensions.width / 2;
+    const centerY = dimensions.height / 2;
+
+    // Animation frame loop: uniform constant-speed auto-spin + frame-rate-independent scroll smoothing
+    useEffect(() => {
+      const lerp = (start: number, target: number, factor: number) =>
+        start + (target - start) * factor;
+
+      const tick = (now: number) => {
+        const state = rotRef.current;
+        let dt = (now - state.lastTime) / 1000;
+        state.lastTime = now;
+        if (dt <= 0 || dt > 0.1) dt = 1 / 60;
+
+        if (!isDragging.current && autoPlay) {
+          // Advance both current and target linearly so auto-scroll is 100% constant speed (never speeds up or slows down)
+          const autoDelta = idleRotationSpeed * 0.45 * state.direction * dt;
+          state.targetIndicatorRotation += autoDelta;
+          state.currentIndicatorRotation += autoDelta;
+          state.targetSpinnerRotation -= autoDelta;
+          state.currentSpinnerRotation -= autoDelta;
+        }
+
+        // Frame-rate-independent smoothing for user scroll / drag / click offsets
+        const smoothFactor = 1 - Math.exp(-8 * dt);
+        state.currentIndicatorRotation = lerp(
+          state.currentIndicatorRotation,
+          state.targetIndicatorRotation,
+          smoothFactor,
+        );
+        state.currentSpinnerRotation = lerp(
+          state.currentSpinnerRotation,
+          state.targetSpinnerRotation,
+          smoothFactor,
+        );
+
+        if (indicatorGroupRef.current) {
+          const indAngle = state.currentIndicatorRotation % 360;
+          indicatorGroupRef.current.setAttribute(
+            "transform",
+            `rotate(${indAngle} ${centerX} ${centerY})`,
+          );
+        }
+
+        if (spinnerGroupRef.current) {
+          const spinAngle = state.currentSpinnerRotation % 360;
+          spinnerGroupRef.current.setAttribute(
+            "transform",
+            `rotate(${spinAngle} ${centerX} ${centerY})`,
+          );
+        }
+
+        const total = itemsRef.current.length;
+        if (total > 0) {
+          const angleStep = 360 / total;
+          const diff =
+            ((state.currentIndicatorRotation - state.currentSpinnerRotation) % 360 + 360) % 360;
+          const idx = Math.floor(diff / angleStep) % total;
+          if (idx !== state.lastIndex) {
+            state.lastIndex = idx;
+            setActiveIndex(idx);
+            onItemChangeRef.current?.(itemsRef.current[idx], idx);
+          }
+        }
+
+        state.rafId = requestAnimationFrame(tick);
+      };
+
+      rotRef.current.lastTime = performance.now();
+      rotRef.current.rafId = requestAnimationFrame(tick);
+      return () => cancelAnimationFrame(rotRef.current.rafId);
+    }, [autoPlay, idleRotationSpeed, centerX, centerY]);
+
+    // Wheel & Window Scroll listeners with speed-dependent rotation boost
+    useEffect(() => {
+      const el = containerRef.current;
+      if (!el) return;
+
+      let lastWheelTime = performance.now();
+
+      const onWheel = (e: WheelEvent) => {
+        e.preventDefault();
+        const now = performance.now();
+        const elapsed = Math.max(8, now - lastWheelTime);
+        lastWheelTime = now;
+
+        const rawDelta = e.deltaY;
+        if (Math.abs(rawDelta) < 0.1) return;
+
+        const dir = rawDelta >= 0 ? 1 : -1;
+        rotRef.current.direction = dir;
+
+        // Calculate scroll speed (px/ms) so faster scrolling spins significantly more
+        const wheelSpeed = Math.abs(rawDelta) / elapsed;
+        const speedMultiplier = 1 + Math.min(wheelSpeed * 1.1 + Math.abs(rawDelta) / 60, 5);
+        const delta = rawDelta * scrollSensitivity * speedMultiplier;
+
+        rotRef.current.targetIndicatorRotation += delta;
+        rotRef.current.targetSpinnerRotation -= delta;
+      };
+
+      let lastScrollY = typeof window !== "undefined" ? window.scrollY : 0;
+      let lastScrollTime = performance.now();
+
+      const onWindowScroll = () => {
+        const now = performance.now();
+        const dy = window.scrollY - lastScrollY;
+        const elapsed = Math.max(8, now - lastScrollTime);
+        lastScrollY = window.scrollY;
+        lastScrollTime = now;
+
+        if (Math.abs(dy) < 1) return;
+        const dir = dy >= 0 ? 1 : -1;
+        rotRef.current.direction = dir;
+
+        const pageScrollSpeed = Math.abs(dy) / elapsed;
+        const speedMultiplier = 1 + Math.min(pageScrollSpeed * 1.5, 4.5);
+        const delta = dy * scrollSensitivity * 0.8 * speedMultiplier;
+
+        rotRef.current.targetIndicatorRotation += delta;
+        rotRef.current.targetSpinnerRotation -= delta;
+      };
+
+      el.addEventListener("wheel", onWheel, { passive: false });
+      window.addEventListener("scroll", onWindowScroll, { passive: true });
+      return () => {
+        el.removeEventListener("wheel", onWheel);
+        window.removeEventListener("scroll", onWindowScroll);
+      };
+    }, [scrollSensitivity]);
+
+    // Pointer Drag handlers
+    const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+      isDragging.current = true;
+      (e.currentTarget as Element).setPointerCapture?.(e.pointerId);
+      const rect = containerRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const angle = Math.atan2(e.clientY - cy, e.clientX - cx) * (180 / Math.PI);
+      dragCenter.current = { x: cx, y: cy, lastAngle: angle };
+    };
+
+    const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+      if (!isDragging.current) return;
+      const { x: cx, y: cy, lastAngle } = dragCenter.current;
+      const angle = Math.atan2(e.clientY - cy, e.clientX - cx) * (180 / Math.PI);
+      let delta = angle - lastAngle;
+      if (delta > 180) delta -= 360;
+      if (delta < -180) delta += 360;
+      rotRef.current.targetSpinnerRotation += delta;
+      rotRef.current.targetIndicatorRotation -= delta * 0.25;
+      dragCenter.current.lastAngle = angle;
+    };
+
+    const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+      isDragging.current = false;
+      try {
+        (e.currentTarget as Element).releasePointerCapture?.(e.pointerId);
+      } catch {}
+    };
+
+    const handleSegmentClick = (index: number) => {
+      const total = items.length;
+      if (total === 0) return;
+      const angleStep = 360 / total;
+      const targetAngle = (index + 0.5) * angleStep;
+      rotRef.current.targetSpinnerRotation =
+        rotRef.current.currentIndicatorRotation - targetAngle;
+    };
+
+    const count = items.length;
+    const d = (2 * Math.PI) / (count || 1);
+
+    const segments = useMemo(() => {
+      return items.map((item, i) => {
+        const startAngle = i * d - Math.PI / 2;
+        const endAngle = (i + 1) * d - Math.PI / 2;
+        const midAngle = (startAngle + endAngle) / 2;
+
+        const x1 = centerX + outerRadius * Math.cos(startAngle);
+        const y1 = centerY + outerRadius * Math.sin(startAngle);
+        const x2 = centerX + outerRadius * Math.cos(endAngle);
+        const y2 = centerY + outerRadius * Math.sin(endAngle);
+        const x3 = centerX + innerRadius * Math.cos(endAngle);
+        const y3 = centerY + innerRadius * Math.sin(endAngle);
+        const x4 = centerX + innerRadius * Math.cos(startAngle);
+        const y4 = centerY + innerRadius * Math.sin(startAngle);
+
+        const pathD = `M ${x1} ${y1} A ${outerRadius} ${outerRadius} 0 0 1 ${x2} ${y2} L ${x3} ${y3} A ${innerRadius} ${innerRadius} 0 0 0 ${x4} ${y4} Z`;
+
+        const midRadius = (innerRadius + outerRadius) / 2;
+        const midX = centerX + Math.cos(midAngle) * midRadius;
+        const midY = centerY + Math.sin(midAngle) * midRadius;
+        const imgW = outerRadius * d * 1.38;
+        const imgH = (outerRadius - innerRadius) * 1.38;
+        const imgRot = (midAngle * 180) / Math.PI + 90;
+
+        return {
+          item,
+          index: i,
+          pathD,
+          midX,
+          midY,
+          imgW,
+          imgH,
+          imgRot,
+        };
+      });
+    }, [items, d, centerX, centerY, outerRadius, innerRadius]);
+
+    const activeItem = items[activeIndex] ?? items[0];
+
+    return (
+      <div
+        ref={(node) => {
+          containerRef.current = node;
+          if (typeof ref === "function") ref(node);
+          else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+        }}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        onPointerLeave={() => {
+          isDragging.current = false;
+        }}
+        style={{
+          ...accentStyle(color ?? accentColor),
+          ...(backgroundColor ? { backgroundColor } : {}),
+          ...style,
+        }}
+        className={cn(
+          "relative flex h-[400px] sm:h-[600px] md:h-[660px] lg:h-[720px] w-full select-none cursor-grab active:cursor-grabbing items-center justify-center overflow-hidden rounded-2xl",
+          className,
+        )}
+        {...props}
+      >
+        {/* Full-Bleed Active Image Background (Instant Switch, No Blank Screen on Fast Scroll) */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden>
+          {items.map((item, idx) => (
+            <div
+              key={item.id ?? item.name + idx}
+              className={cn(
+                "absolute inset-0",
+                idx === activeIndex
+                  ? "opacity-100"
+                  : "opacity-0 pointer-events-none",
+              )}
+              style={{
+                filter: grayscale ? "saturate(0)" : undefined,
+              }}
+            >
+              <img
+                src={item.image}
+                alt={item.name}
+                className="size-full object-cover object-center"
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* SVG Segmented Wheel */}
+        <svg
+          className="absolute inset-0 size-full pointer-events-auto"
+          viewBox={`0 0 ${dimensions.width} ${dimensions.height}`}
+          aria-label="Circular reel spinner"
+        >
+          <defs>
+            {segments.map((seg) => (
+              <clipPath key={`clip-${uid}-${seg.index}`} id={`reel-clip-${uid}-${seg.index}`}>
+                <path d={seg.pathD} />
+              </clipPath>
+            ))}
+          </defs>
+
+          {/* Rotating Spinner Group */}
+          <g ref={spinnerGroupRef}>
+            {segments.map((seg) => {
+              const isSelected = seg.index === activeIndex;
+              return (
+                <g
+                  key={seg.index}
+                  clipPath={`url(#reel-clip-${uid}-${seg.index})`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleSegmentClick(seg.index);
+                  }}
+                  className="cursor-pointer"
+                >
+                  <image
+                    href={seg.item.image}
+                    width={seg.imgW}
+                    height={seg.imgH}
+                    x={seg.midX - seg.imgW / 2}
+                    y={seg.midY - seg.imgH / 2}
+                    preserveAspectRatio="xMidYMid slice"
+                    transform={`rotate(${seg.imgRot} ${seg.midX} ${seg.midY})`}
+                    style={{
+                      filter: grayscale ? "saturate(0)" : undefined,
+                    }}
+                  />
+                  {/* Segment separation line */}
+                  <path
+                    d={seg.pathD}
+                    fill="none"
+                    stroke={isSelected ? "var(--hero-accent-text, #ffff2b)" : "rgba(255,255,255,0.18)"}
+                    strokeWidth={isSelected ? "2" : "0.75"}
+                  />
+                </g>
+              );
+            })}
+          </g>
+
+          {/* Inner Lens Reticle Ring */}
+          <circle
+            cx={centerX}
+            cy={centerY}
+            r={Math.max(40, innerRadius * 0.91)}
+            fill="none"
+            stroke="rgba(255,255,255,0.22)"
+            strokeWidth="1"
+            strokeDasharray="4 6"
+            className="pointer-events-none"
+          />
+
+          {/* Rotating Dial Indicator */}
+          <g ref={indicatorGroupRef} className="pointer-events-none">
+            <line
+              x1={centerX}
+              y1={centerY - innerRadius * 0.85}
+              x2={centerX}
+              y2={centerY - outerRadius * 1.08}
+              stroke="var(--hero-accent-text, #ffff2b)"
+              strokeWidth="3"
+              strokeLinecap="round"
+            />
+          </g>
+        </svg>
+
+        {/* Center Active Showcase HUD (Responsive Icons + Text) */}
+        <div
+          className="pointer-events-none absolute left-1/2 top-1/2 z-20 flex w-full -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center text-center px-2 sm:px-3"
+          style={{
+            maxWidth: `${Math.min(300, Math.max(136, Math.round(innerRadius * 1.56)))}px`,
+          }}
+        >
+          {/* Category & Index Pill */}
+          <div className="mb-1 sm:mb-2.5 inline-flex max-w-full items-center gap-1 sm:gap-1.5 rounded-full border border-white/25 bg-black/45 px-2 py-0.5 sm:px-3 sm:py-1 font-mono text-[8px] sm:text-[11px] uppercase tracking-wider sm:tracking-widest text-white shadow-lg backdrop-blur-md">
+            <Compass
+              className="size-2.5 sm:size-3.5 shrink-0"
+              style={{ color: "var(--hero-accent-text, #ffff2b)" }}
+            />
+            <span className="truncate max-w-[78px] xs:max-w-[100px] sm:max-w-[170px]">
+              {activeItem?.category || "Featured Scene"}
+            </span>
+            <span className="opacity-40">•</span>
+            <span className="tabular-nums opacity-85 shrink-0">
+              {String(activeIndex + 1).padStart(2, "0")}/{String(items.length).padStart(2, "0")}
+            </span>
+          </div>
+
+          {/* Main Active Title Badge with Icons */}
+          <div
+            className="inline-flex max-w-full items-center justify-center gap-1 sm:gap-2 rounded-md px-2 py-1 sm:px-3.5 sm:py-1.5 font-mono text-[10px] sm:text-xs font-semibold uppercase tracking-wider shadow-xl whitespace-nowrap"
+            style={{
+              backgroundColor: "var(--hero-accent-text, #ffff2b)",
+              color: "#000000",
+              fontSize: innerRadius < 130 ? "10px" : `${fontSize}px`,
+            }}
+          >
+            <Sparkles className="size-3 sm:size-4 shrink-0" />
+            <span className="truncate">{activeItem?.name || "Widget"}</span>
+            <span className="inline-flex size-3.5 sm:size-5 shrink-0 items-center justify-center rounded-sm bg-black/15">
+              <ArrowUpRight className="size-2.5 sm:size-3.5" />
+            </span>
+          </div>
+
+          {/* Scene Description */}
+          {activeItem?.description && innerRadius >= 85 && (
+            <p className="mt-1 sm:mt-2.5 line-clamp-1 sm:line-clamp-2 w-full rounded-md sm:rounded-lg border border-white/15 bg-black/40 px-2 py-1 sm:px-3 sm:py-1.5 text-[9px] sm:text-xs font-medium leading-tight sm:leading-relaxed text-white/95 shadow-md backdrop-blur-md">
+              {activeItem.description}
+            </p>
+          )}
+
+          {/* Telemetry & Camera Metadata Row */}
+          <div className="mt-1 sm:mt-2.5 flex flex-wrap items-center justify-center gap-1 sm:gap-1.5">
+            <span className="inline-flex items-center gap-1 rounded-full border border-white/20 bg-black/45 px-1.5 py-0.5 sm:px-2.5 font-mono text-[8px] sm:text-[10px] uppercase tracking-wider text-white/90 backdrop-blur-md">
+              <Aperture
+                className="size-2.5 sm:size-3 shrink-0"
+                style={{ color: "var(--hero-accent-text, #ffff2b)" }}
+              />
+              f/1.8
+            </span>
+            <span className="inline-flex items-center gap-1 rounded-full border border-white/20 bg-black/45 px-1.5 py-0.5 sm:px-2.5 font-mono text-[8px] sm:text-[10px] uppercase tracking-wider text-white/90 backdrop-blur-md">
+              <Camera
+                className="size-2.5 sm:size-3 shrink-0"
+                style={{ color: "var(--hero-accent-text, #ffff2b)" }}
+              />
+              {24 + (activeIndex % 4) * 12}mm
+            </span>
+            <span className="hidden sm:inline-flex items-center gap-1 rounded-full border border-white/20 bg-black/45 px-2.5 py-0.5 font-mono text-[10px] uppercase tracking-wider text-white/90 backdrop-blur-md">
+              <MapPin
+                className="size-3 shrink-0"
+                style={{ color: "var(--hero-accent-text, #ffff2b)" }}
+              />
+              {Math.round((activeIndex * 360) / Math.max(1, items.length))}°
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  },
+);
+
+CircularReel.displayName = "CircularReel";
+
+// ------------------------------------------
 // Root OrbitGallery
 // ------------------------------------------
 export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
@@ -536,11 +1136,23 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
       swapInterval = 3000,
       gap = 12,
       autoPlay = true,
+      // Reel specific
+      reelItems = DEFAULT_CIRCULAR_REEL_ITEMS,
+      idleRotationSpeed = 5,
+      scrollSensitivity = 0.06,
+      ringThickness = 37,
+      grayscale = false,
       ...props
     },
     ref,
   ) => {
-    const effectiveHighlights = highlights ?? (variant === "moving-bento" ? DEFAULT_BENTO_HIGHLIGHTS : DEFAULT_HIGHLIGHTS);
+    const effectiveHighlights =
+      highlights ??
+      (variant === "moving-bento"
+        ? DEFAULT_BENTO_HIGHLIGHTS
+        : variant === "circular-reel"
+        ? DEFAULT_REEL_HIGHLIGHTS
+        : DEFAULT_HIGHLIGHTS);
     const count = images.length;
 
     // The pointer trail: a handful of dots that follow the pointer while it is
@@ -590,9 +1202,9 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
     };
 
     // ----------------------------------------
-    // VARIANT: MOVING BENTO
+    // VARIANT: CIRCULAR REEL
     // ----------------------------------------
-    if (variant === "moving-bento") {
+    if (variant === "circular-reel") {
       return (
         <section
           ref={(node) => {
@@ -605,7 +1217,7 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
           onMouseLeave={handleMouseLeave}
           style={{ ...accentStyle(color), ...style }}
           className={cn(
-            "relative flex w-full select-none items-center justify-center overflow-hidden bg-background py-6 sm:py-10 lg:py-12 text-foreground transition-colors duration-300",
+            "relative flex w-full select-none items-center justify-center overflow-hidden",
             className,
           )}
           {...props}
@@ -638,7 +1250,71 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
             </div>
           )}
 
-          <div className="relative z-10 w-full px-2 sm:px-4 md:px-6">
+          <div className="relative z-10 w-full">
+            <CircularReel
+              items={reelItems}
+              color={color}
+              idleRotationSpeed={idleRotationSpeed}
+              scrollSensitivity={scrollSensitivity}
+              ringThickness={ringThickness}
+              grayscale={grayscale}
+              autoPlay={autoPlay}
+            />
+          </div>
+        </section>
+      );
+    }
+
+    // ----------------------------------------
+    // VARIANT: MOVING BENTO
+    // ----------------------------------------
+    if (variant === "moving-bento") {
+      return (
+        <section
+          ref={(node) => {
+            containerRef.current = node;
+            if (typeof ref === "function") ref(node);
+            else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
+          }}
+          onMouseMove={handleMouseMove}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          style={{ ...accentStyle(color), ...style }}
+          className={cn(
+            "relative flex w-full select-none items-center justify-center overflow-hidden bg-background p-4 sm:p-6 text-foreground transition-colors duration-300",
+            className,
+          )}
+          {...props}
+        >
+          {/* ---- Pointer trail ---- */}
+          {hovered && (
+            <div className="pointer-events-none absolute inset-0 z-50 overflow-hidden" aria-hidden>
+              {trail.map((pt, i) => {
+                const size = Math.max(4, 18 - i * 2);
+                const opacity = (trail.length - i) / trail.length;
+                return (
+                  <div
+                    key={pt.id + i}
+                    className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full transition-opacity duration-150"
+                    style={{
+                      left: `${pt.x}px`,
+                      top: `${pt.y}px`,
+                      width: `${size}px`,
+                      height: `${size}px`,
+                      backgroundColor: "var(--hero-accent-text)",
+                      opacity: opacity * 0.7,
+                    }}
+                  />
+                );
+              })}
+              <div
+                className="pointer-events-none absolute size-4 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg"
+                style={{ left: `${pointer.x}px`, top: `${pointer.y}px`, backgroundColor: "var(--hero-accent-text)" }}
+              />
+            </div>
+          )}
+
+          <div className="relative z-10 w-full">
             <MovingBento
               items={items}
               swapInterval={swapInterval}

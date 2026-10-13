@@ -4,7 +4,7 @@ export const metadata = docsPageMetadata("orbit-gallery");
 
 A two-column hero for an agency, studio or gallery: copy and actions on the left, and on the right a ring of photo cards that revolves once every 36 seconds, each card staying upright as it travels. Hovering the ring holds it still; moving the pointer anywhere over the section leaves a short trail of dots in the accent colour.
 
-The component also includes a **Moving Bento** variant — a self-rearranging image bento grid with a dominant center hero slot where peripheral items rotate seamlessly into focus via GSAP Flip animations.
+The component also includes a **Moving Bento** variant — a self-rearranging image bento grid with GSAP Flip animations, and a **Circular Reel** variant — an interactive scroll-driven dial with passive rotation, tangential segmented ring slices, and an auto-crossfading preview inspired by Framer.
 
 {/* The snippets below pass next/link so links route client-side in Next.js. The React tab is the same file without it: the component's default  needs no import. */}
 
@@ -90,6 +90,86 @@ export default function MovingBentoExample() {
 }
 `;
 
+export const reelUsage = `const REEL_ITEMS = [
+  {
+    id: "reel-1",
+    name: "Velvet Horizon",
+    category: "Yosemite Valley",
+    description: "Granite peaks glowing in the golden twilight above misty valley floor",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+  },
+  {
+    id: "reel-2",
+    name: "Glass Relay",
+    category: "Redwood Trail",
+    description: "Ancient sequoias towering through filtered coastal morning rays",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
+  },
+  {
+    id: "reel-3",
+    name: "Noir Mist",
+    category: "Mountain Peaks",
+    description: "Monochrome layered ridges dissolving into distant cloud banks",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+  },
+  {
+    id: "reel-4",
+    name: "Driftline Rays",
+    category: "Canopy Light",
+    description: "Luminescent beams descending through mossy pine canopies",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+  },
+  {
+    id: "reel-5",
+    name: "Pulse Emerald",
+    category: "Verdant Highlands",
+    description: "Vibrant rolling green bluffs descending toward serene shoreline",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg",
+  },
+  {
+    id: "reel-6",
+    name: "Cold Meridian",
+    category: "Alpine Lake",
+    description: "Crystalline glacial waters reflecting jagged snow-capped crests",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
+  },
+  {
+    id: "reel-7",
+    name: "Astra Wilds",
+    category: "Open Range",
+    description: "Solitary wanderer contemplating vast expanses of pristine tundra",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+  },
+  {
+    id: "reel-8",
+    name: "Mono Summit",
+    category: "Golden Ridge",
+    description: "Sharp stone pinnacles bathed in amber warmth at sunrise",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+  },
+  {
+    id: "reel-9",
+    name: "Lumen Cascade",
+    category: "Forest Waterfall",
+    description: "Rushing mountain falls carving through lush temperate rainforest",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158813/photo-1433086966358-54859d0ed716-1790158812209.jpg",
+  },
+  {
+    id: "reel-10",
+    name: "Shadow Bloom",
+    category: "Alpine Crest",
+    description: "Majestic European peaks framed by drifting atmospheric shadows",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
+  },
+];
+
+export default function CircularReelExample() {
+  return (
+    
+  );
+}
+`;
+
 ## Installation
 
 Register the @algorize-ui registry once per project, then add the component:
@@ -107,9 +187,9 @@ npx shadcn@latest add @algorize-ui/orbit-gallery
         Description
 
         variant
-        "orbit" | "moving-bento"
+        "orbit" | "moving-bento" | "circular-reel"
         "orbit"
-        Selects the circular orbit hero or the GSAP Flip moving bento grid.
+        Selects the circular orbit hero, GSAP Flip moving bento, or circular reel dial spinner.
 
         badgeText, badgeHref
         string
@@ -164,7 +244,32 @@ npx shadcn@latest add @algorize-ui/orbit-gallery
         autoPlay
         boolean
         true
-        Controls whether automatic card swaps are enabled.
+        Controls whether automatic card swaps or idle passive rotation are enabled.
+
+        reelItems
+        CircularReelItem[]
+        10 landscapes
+        The items positioned along the ring for the "circular-reel" variant.
+
+        idleRotationSpeed
+        number
+        6
+        Degrees per second of passive idle rotation in the circular reel.
+
+        scrollSensitivity
+        number
+        0.04
+        Scroll and wheel sensitivity factor in the circular reel.
+
+        ringThickness
+        number
+        37
+        Percentage thickness of the circular reel segmented donut ring (10 to 60).
+
+        grayscale
+        boolean
+        false
+        Applies a grayscale filter to the reel images.
 
         highlights
         &#123; label: string; color?: string &#125;[]
