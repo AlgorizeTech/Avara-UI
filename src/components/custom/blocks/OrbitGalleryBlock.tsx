@@ -1,6 +1,6 @@
 "use client";
 
-import React, { forwardRef, useEffect, useLayoutEffect, useMemo, useRef, useState, memo } from "react";
+import React, { forwardRef, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, memo } from "react";
 import { Aperture, ArrowRight, ArrowUpRight, Camera, Compass, MapPin, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import gsap from "gsap";
@@ -100,9 +100,37 @@ export interface PillCarouselProps extends React.HTMLAttributes<HTMLDivElement> 
   onTooltipClick?: (item: PillCarouselItem, index: number) => void;
 }
 
+export interface ArcCarouselItem {
+  id?: string;
+  image: string | { src: string; alt?: string };
+  title?: string;
+  subtitle?: string;
+  link?: string;
+}
+
+export interface ArcCarouselProps extends React.HTMLAttributes<HTMLDivElement> {
+  items?: ArcCarouselItem[];
+  color?: string;
+  backgroundColor?: string;
+  cardSize?: number;
+  cardHeight?: number;
+  gap?: number;
+  /** Curvature value from -300 to 300 (defaults to -200 for a concave arc). */
+  curve?: number;
+  perspective?: number;
+  autoScrollSpeed?: number;
+  autoSlide?: boolean;
+  autoPlay?: boolean;
+  dragSpeed?: number;
+  inertia?: number;
+  borderRadius?: number;
+  linkNewTab?: boolean;
+  onCardClick?: (item: ArcCarouselItem, index: number) => void;
+}
+
 export interface OrbitGalleryProps extends React.HTMLAttributes<HTMLElement> {
-  /** Gallery variant: "orbit" (circular revolving ring), "moving-bento" (GSAP Flip self-rearranging grid), "circular-reel" (interactive scroll-driven spinner), or "pill-carousel" (3D layered pill carousel). */
-  variant?: "orbit" | "moving-bento" | "circular-reel" | "pill-carousel";
+  /** Gallery variant: "orbit" (circular revolving ring), "moving-bento" (GSAP Flip self-rearranging grid), "circular-reel" (interactive scroll-driven spinner), "pill-carousel" (3D layered pill carousel), or "arc-carousel" / "arc-carousel-gallery" (3D cylindrical arc carousel). */
+  variant?: "orbit" | "moving-bento" | "circular-reel" | "pill-carousel" | "arc-carousel" | "arc-carousel-gallery";
   /** Small tracked line above the headline, with a spark before it. */
   badgeText?: string;
   badgeHref?: string;
@@ -133,7 +161,7 @@ export interface OrbitGalleryProps extends React.HTMLAttributes<HTMLElement> {
   swapInterval?: number;
   /** Grid gap in px for the bento variant. */
   gap?: number;
-  /** Auto-swapping state for the bento / reel / pill-carousel variants. */
+  /** Auto-swapping state for the bento / reel / pill-carousel / arc-carousel variants. */
   autoPlay?: boolean;
 
   // Circular Reel specific props
@@ -173,6 +201,26 @@ export interface OrbitGalleryProps extends React.HTMLAttributes<HTMLElement> {
   tooltipBackgroundColor?: string;
   /** Tooltip text color (defaults to theme primary-foreground). */
   tooltipTextColor?: string;
+
+  // Arc Carousel specific props
+  /** Items for the "arc-carousel" variant. */
+  arcItems?: ArcCarouselItem[];
+  /** Width of each card in px (defaults to 220). */
+  cardSize?: number;
+  /** Height of each card in px (defaults to cardSize * 1.32). */
+  cardHeight?: number;
+  /** Curvature value from -300 to 300 (negative is concave, 0 is flat, positive is convex). Defaults to -200. */
+  curve?: number;
+  /** 3D perspective depth in px (defaults to 1200). */
+  perspective?: number;
+  /** Auto-scroll rotation speed (defaults to 0.22). */
+  autoScrollSpeed?: number;
+  /** Drag sensitivity multiplier (defaults to 1.2). */
+  dragSpeed?: number;
+  /** Momentum inertia friction (0 to 1, defaults to 0.75). */
+  inertia?: number;
+  /** Card border radius in px for the arc carousel. */
+  borderRadius?: number;
 }
 
 // ------------------------------------------
@@ -452,6 +500,75 @@ const DEFAULT_PILL_HIGHLIGHTS: OrbitHighlight[] = [
   { label: "3D layered pill cards" },
   { label: "Click to focus & keyboard nav", color: "#10b981" },
   { label: "Animated tooltip CTA", color: "#f59e0b" },
+];
+
+export const DEFAULT_ARC_CAROUSEL_ITEMS: ArcCarouselItem[] = [
+  {
+    id: "arc-1",
+    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80",
+    title: "Air Velocity",
+    subtitle: "Crimson Edition",
+  },
+  {
+    id: "arc-2",
+    image: "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=800&auto=format&fit=crop&q=80",
+    title: "Hyper Blaze",
+    subtitle: "Amber Fade",
+  },
+  {
+    id: "arc-3",
+    image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&auto=format&fit=crop&q=80",
+    title: "Volt Runner",
+    subtitle: "Neon Acid",
+  },
+  {
+    id: "arc-4",
+    image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&auto=format&fit=crop&q=80",
+    title: "Pastel Drift",
+    subtitle: "Chalk Studio",
+  },
+  {
+    id: "arc-5",
+    image: "https://images.unsplash.com/photo-1575537302964-96cd47c06b1b?w=800&auto=format&fit=crop&q=80",
+    title: "Aero Stride",
+    subtitle: "Cyber Yellow",
+  },
+  {
+    id: "arc-6",
+    image: "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?w=800&auto=format&fit=crop&q=80",
+    title: "Magenta Pulse",
+    subtitle: "Ultra Sprint",
+  },
+  {
+    id: "arc-7",
+    image: "https://images.unsplash.com/photo-1582588678413-dbf45f4823e9?w=800&auto=format&fit=crop&q=80",
+    title: "Cobalt Horizon",
+    subtitle: "Track Racer",
+  },
+  {
+    id: "arc-8",
+    image: "https://images.unsplash.com/photo-1514989940723-e8e51635b782?w=800&auto=format&fit=crop&q=80",
+    title: "Teal Apex",
+    subtitle: "Dynamic Flight",
+  },
+  {
+    id: "arc-9",
+    image: "https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?w=800&auto=format&fit=crop&q=80",
+    title: "Cyan Torrent",
+    subtitle: "Ocean Breeze",
+  },
+  {
+    id: "arc-10",
+    image: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=800&auto=format&fit=crop&q=80",
+    title: "Monochrome Pro",
+    subtitle: "Pure Classic",
+  },
+];
+
+const DEFAULT_ARC_HIGHLIGHTS: OrbitHighlight[] = [
+  { label: "3D Cylindrical Arc" },
+  { label: "Momentum Physics", color: "#10b981" },
+  { label: "Concave Curvature", color: "#f59e0b" },
 ];
 
 // ==========================================
@@ -1419,7 +1536,7 @@ export const ThreeDPillCarousel = forwardRef<HTMLDivElement, PillCarouselProps>(
           ...style,
         }}
         className={cn(
-          "relative h-[540px] sm:h-[640px] md:h-[700px] lg:h-[760px] w-full select-none overflow-hidden rounded-2xl bg-background text-foreground transition-colors duration-300",
+          "relative h-[420px] xs:h-[480px] sm:h-[580px] md:h-[680px] lg:h-[740px] w-full select-none overflow-hidden rounded-2xl bg-background text-foreground transition-colors duration-300",
           className,
         )}
         {...props}
@@ -1442,7 +1559,7 @@ export const ThreeDPillCarousel = forwardRef<HTMLDivElement, PillCarouselProps>(
         />
 
         {/* Center Pill Column Stage */}
-        <div className="absolute left-1/2 top-1/2 h-full w-[195px] xs:w-[225px] sm:w-[265px] md:w-[290px] -translate-x-1/2 -translate-y-1/2">
+        <div className="absolute left-1/2 top-1/2 h-full w-[155px] xs:w-[195px] sm:w-[245px] md:w-[275px] lg:w-[290px] -translate-x-1/2 -translate-y-1/2">
           {validItems.map((item, index) => {
             const cardStyle = getCardStyle(index);
             const isCenter = (index - currentIndex + validItems.length) % validItems.length === 0;
@@ -1571,6 +1688,420 @@ export const ThreeDPillCarousel = forwardRef<HTMLDivElement, PillCarouselProps>(
 ThreeDPillCarousel.displayName = "ThreeDPillCarousel";
 
 // ------------------------------------------
+// Arc Carousel Gallery (Framer-inspired)
+// ------------------------------------------
+export const ArcCarouselGallery = forwardRef<HTMLDivElement, ArcCarouselProps>(
+  (
+    {
+      items = DEFAULT_ARC_CAROUSEL_ITEMS,
+      color,
+      backgroundColor,
+      cardSize = 220,
+      cardHeight,
+      gap = 20,
+      curve = -200,
+      perspective = 1200,
+      autoScrollSpeed = 0.22,
+      autoSlide = true,
+      autoPlay = true,
+      dragSpeed = 1.2,
+      inertia = 0.75,
+      borderRadius = 20,
+      linkNewTab = true,
+      onCardClick,
+      className,
+      style,
+      ...props
+    },
+    ref,
+  ) => {
+    const rootRef = useRef<HTMLDivElement | null>(null);
+    const [containerSize, setContainerSize] = useState({ width: 1000, height: 600 });
+    const [isAutoPlaying, setIsAutoPlaying] = useState(autoSlide ?? autoPlay);
+    const [isHovered, setIsHovered] = useState(false);
+    const [isDragging, setIsDragging] = useState(false);
+    const [, setTick] = useState(0);
+
+    useEffect(() => {
+      setIsAutoPlaying(autoSlide ?? autoPlay);
+    }, [autoSlide, autoPlay]);
+
+    const physicsRef = useRef({
+      offset: 0,
+      velocity: autoSlide ?? autoPlay ? autoScrollSpeed : 0,
+      dragging: false,
+      pointerId: -1,
+      startX: 0,
+      lastX: 0,
+      lastTime: 0,
+      samples: [] as { x: number; t: number }[],
+    });
+
+    useEffect(() => {
+      if (!rootRef.current || typeof ResizeObserver === "undefined") return;
+      const ro = new ResizeObserver((entries) => {
+        const entry = entries[0];
+        if (entry?.contentRect) {
+          setContainerSize({
+            width: entry.contentRect.width,
+            height: entry.contentRect.height,
+          });
+        }
+      });
+      ro.observe(rootRef.current);
+      return () => ro.disconnect();
+    }, []);
+
+    const validItems = useMemo(
+      () =>
+        (items || []).filter((item) => {
+          const src = typeof item?.image === "string" ? item.image : item?.image?.src;
+          return Boolean(src);
+        }),
+      [items],
+    );
+
+    const effectiveCardWidth = useMemo(() => {
+      // Very small mobile screens (< 380px)
+      if (containerSize.width < 380) {
+        return Math.max(90, Math.min(cardSize, Math.round(containerSize.width * 0.32)));
+      }
+      // Small mobile screens (380px - 480px)
+      if (containerSize.width < 480) {
+        return Math.max(110, Math.min(cardSize, Math.round(containerSize.width * 0.34)));
+      }
+      // Phablets / small tablets (480px - 768px)
+      if (containerSize.width < 768) {
+        return Math.max(140, Math.min(cardSize, Math.round(containerSize.width * 0.28)));
+      }
+      // Tablets / small desktop (768px - 1024px)
+      if (containerSize.width < 1024) {
+        return Math.max(170, Math.min(cardSize, Math.round(containerSize.width * 0.24)));
+      }
+      return cardSize;
+    }, [containerSize.width, cardSize]);
+
+    const effectiveGap = useMemo(() => {
+      if (containerSize.width < 380) return Math.min(gap, 10);
+      if (containerSize.width < 480) return Math.min(gap, 12);
+      if (containerSize.width < 768) return Math.min(gap, 16);
+      return gap;
+    }, [containerSize.width, gap]);
+
+    const effectiveCardHeight = useMemo(() => {
+      if (cardHeight) {
+        const ratio = effectiveCardWidth / cardSize;
+        return Math.round(cardHeight * ratio);
+      }
+      return Math.round(effectiveCardWidth * 1.34);
+    }, [cardHeight, effectiveCardWidth, cardSize]);
+
+    const effectiveBorderRadius = useMemo(() => {
+      if (containerSize.width < 480) return Math.min(borderRadius, 14);
+      if (containerSize.width < 768) return Math.min(borderRadius, 16);
+      return borderRadius;
+    }, [containerSize.width, borderRadius]);
+
+    const effectivePerspective = useMemo(() => {
+      if (containerSize.width < 480) return Math.max(650, Math.round(perspective * 0.65));
+      if (containerSize.width < 768) return Math.max(800, Math.round(perspective * 0.8));
+      return perspective;
+    }, [containerSize.width, perspective]);
+
+    const pitch = Math.max(1, effectiveCardWidth + effectiveGap);
+
+    const arcGeometry = useMemo(() => {
+      const curveStrength = Math.min(1, Math.abs(curve) / 300);
+      const sign = curve < 0 ? -1 : 1;
+      const count = Math.max(10, Math.min(42, Math.ceil(containerSize.width / pitch) + 12));
+      const half = Math.floor(count / 2);
+      const baseStep = curveStrength === 0 ? 0 : 0.04 + curveStrength * 0.2;
+      const nominalArc = half * baseStep;
+      let angleStep = baseStep;
+
+      if (sign === 1 && curveStrength > 0 && half > 0) {
+        const t = Math.pow(curveStrength, 2.2);
+        const fullCircle = Math.PI * 2 * 0.98;
+        angleStep = (nominalArc * (1 - t) + fullCircle * t) / half;
+      }
+
+      const radius = angleStep === 0 ? 999999 : pitch / angleStep;
+      const maxTheta = half * angleStep;
+      const edgeCos = Math.cos(maxTheta);
+
+      return {
+        curveStrength,
+        sign,
+        angleStep,
+        radius,
+        count,
+        half,
+        maxTheta,
+        edgeCos,
+      };
+    }, [curve, pitch, containerSize.width]);
+
+    const computeSampleVelocity = useCallback(() => {
+      const samples = physicsRef.current.samples;
+      if (samples.length < 2) return physicsRef.current.velocity;
+      const first = samples[0];
+      const last = samples[samples.length - 1];
+      const dt = (last.t - first.t) / 1000;
+      if (dt <= 0) return physicsRef.current.velocity;
+      return -((last.x - first.x) / dt * dragSpeed) / pitch * 0.95;
+    }, [dragSpeed, pitch]);
+
+    useEffect(() => {
+      if (typeof window === "undefined" || validItems.length === 0) return;
+      let animId: number;
+
+      const loop = (timestamp: number) => {
+        const p = physicsRef.current;
+        if (p.lastTime === 0) p.lastTime = timestamp;
+        const dt = Math.max(0.001, Math.min(0.05, (timestamp - p.lastTime) / 1000));
+        p.lastTime = timestamp;
+
+        if (!p.dragging) {
+          const decay = Math.pow(0.82 + Math.max(0, Math.min(1, inertia)) * 0.17, dt * 60);
+          p.velocity *= decay;
+
+          const targetVelocity = isAutoPlaying
+            ? isHovered
+              ? autoScrollSpeed * 0.35
+              : autoScrollSpeed
+            : 0;
+
+          const blend = 1 - Math.exp(-1.2 * dt);
+          p.velocity += (targetVelocity - p.velocity) * blend;
+          p.offset += p.velocity * dt;
+        }
+
+        setTick((prev) => (prev + 1) % 1000000);
+        animId = requestAnimationFrame(loop);
+      };
+
+      animId = requestAnimationFrame(loop);
+      return () => {
+        cancelAnimationFrame(animId);
+        physicsRef.current.lastTime = 0;
+      };
+    }, [validItems.length, inertia, isAutoPlaying, isHovered, autoScrollSpeed]);
+
+    const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+      if (!rootRef.current) return;
+      const p = physicsRef.current;
+      p.dragging = true;
+      p.pointerId = e.pointerId;
+      p.startX = e.clientX;
+      p.lastX = e.clientX;
+      p.samples = [{ x: e.clientX, t: performance.now() }];
+      setIsDragging(true);
+      rootRef.current.setPointerCapture(e.pointerId);
+    };
+
+    const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+      const p = physicsRef.current;
+      if (!p.dragging || p.pointerId !== e.pointerId) return;
+      const deltaX = e.clientX - p.lastX;
+      p.lastX = e.clientX;
+      p.offset += (-deltaX / pitch) * dragSpeed;
+
+      const now = performance.now();
+      p.samples.push({ x: e.clientX, t: now });
+      while (p.samples.length > 8) p.samples.shift();
+      while (p.samples.length > 2 && now - p.samples[0].t > 120) p.samples.shift();
+
+      p.velocity = computeSampleVelocity();
+    };
+
+    const handlePointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+      const p = physicsRef.current;
+      if (!p.dragging || p.pointerId !== e.pointerId) return;
+      p.dragging = false;
+      p.velocity = computeSampleVelocity();
+      p.samples = [];
+      setIsDragging(false);
+      if (rootRef.current && rootRef.current.hasPointerCapture(e.pointerId)) {
+        rootRef.current.releasePointerCapture(e.pointerId);
+      }
+    };
+
+    const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+      const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+      if (Math.abs(delta) < 2) return;
+      physicsRef.current.offset += (delta / pitch) * 0.15;
+      physicsRef.current.velocity += (delta / pitch) * 0.6;
+    };
+
+    const handleCardClick = (item: ArcCarouselItem, index: number, e: React.MouseEvent) => {
+      const p = physicsRef.current;
+      if (Math.abs(e.clientX - p.startX) > 8) return;
+      if (item.link) {
+        if (linkNewTab && typeof window !== "undefined") {
+          window.open(item.link, "_blank", "noopener,noreferrer");
+        } else if (typeof window !== "undefined") {
+          window.location.href = item.link;
+        }
+      }
+      onCardClick?.(item, index);
+    };
+
+    const cards = useMemo(() => {
+      if (validItems.length === 0) return [];
+      const { angleStep, radius, curveStrength, sign, count, half, edgeCos } = arcGeometry;
+      const offset = physicsRef.current.offset;
+      const startIndex = Math.floor(offset) - half;
+
+      return Array.from({ length: count }, (_, idx) => {
+        const slot = startIndex + idx;
+        const d = slot - offset;
+        const wrappedIdx = ((slot % validItems.length) + validItems.length) % validItems.length;
+        const item = validItems[wrappedIdx];
+
+        if (angleStep === 0 || curveStrength === 0) {
+          return {
+            key: `${idx}-${wrappedIdx}`,
+            item,
+            index: wrappedIdx,
+            x: d * pitch,
+            z: 0,
+            rotateY: 0,
+            opacity: 1,
+            zIndex: 1000 - Math.abs(Math.round(d)),
+          };
+        }
+
+        const m = d * angleStep;
+        const x = Math.sin(m) * radius;
+        const z = (Math.cos(m) - (1 + edgeCos) / 2) * radius * sign;
+        const rotateY = ((m * 180) / Math.PI) * sign;
+        const fade = Math.min(1, Math.abs(d) / Math.max(1, half));
+        const opacity = 1 - fade * 0.18;
+        const zIndex = 1000 - Math.abs(Math.round(m * 100));
+
+        return {
+          key: `${idx}-${wrappedIdx}`,
+          item,
+          index: wrappedIdx,
+          x,
+          z,
+          rotateY,
+          opacity,
+          zIndex,
+        };
+      });
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [validItems, arcGeometry, pitch, physicsRef.current.offset]);
+
+    if (validItems.length === 0) {
+      return (
+        <div
+          ref={ref}
+          style={{ ...style, ...(backgroundColor ? { backgroundColor } : {}) }}
+          className={cn(
+            "relative flex h-[500px] sm:h-[580px] md:h-[640px] w-full items-center justify-center rounded-2xl bg-background text-foreground text-base transition-colors duration-300",
+            className,
+          )}
+          {...props}
+        >
+          Add images to the arc carousel
+        </div>
+      );
+    }
+
+    return (
+      <div
+        ref={(node) => {
+          rootRef.current = node;
+          if (typeof ref === "function") ref(node);
+          else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+        }}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+        onWheel={handleWheel}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        style={{
+          ...accentStyle(color),
+          ...(backgroundColor ? { backgroundColor } : {}),
+          ...style,
+        }}
+        className={cn(
+          "relative h-[340px] xs:h-[380px] sm:h-[480px] md:h-[580px] lg:h-[680px] w-full select-none overflow-hidden rounded-2xl bg-background text-foreground transition-colors duration-300 touch-none",
+          isDragging ? "cursor-grabbing" : "cursor-grab",
+          className,
+        )}
+        role="region"
+        aria-label="Arc Carousel Gallery"
+        {...props}
+      >
+        {/* 3D Arc Perspective Stage */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            perspective: `${effectivePerspective}px`,
+            perspectiveOrigin: "50% 50%",
+            transformStyle: "preserve-3d",
+            overflow: "hidden",
+          }}
+        >
+          {cards.map((c) => {
+            const imgSrc = typeof c.item.image === "string" ? c.item.image : c.item.image?.src;
+            const imgAlt =
+              typeof c.item.image === "string"
+                ? c.item.title || "Gallery card"
+                : c.item.image?.alt || c.item.title || "Gallery card";
+
+            return (
+              <div
+                key={c.key}
+                style={{
+                  position: "absolute",
+                  left: "50%",
+                  top: "50%",
+                  width: effectiveCardWidth,
+                  height: effectiveCardHeight,
+                  borderRadius: `${effectiveBorderRadius}px`,
+                  overflow: "hidden",
+                  transformStyle: "preserve-3d",
+                  backfaceVisibility: "hidden",
+                  WebkitBackfaceVisibility: "hidden",
+                  opacity: c.opacity,
+                  zIndex: c.zIndex,
+                  transform: `translate3d(-50%, -50%, 0) translateX(${c.x}px) translateZ(${c.z}px) rotateY(${c.rotateY}deg)`,
+                  willChange: "transform, opacity",
+                  boxShadow: "0 22px 55px rgba(0, 0, 0, 0.28)",
+                }}
+                onClick={(e) => handleCardClick(c.item, c.index, e)}
+                className="group select-none border border-border/20 transition-shadow duration-300 hover:shadow-2xl hover:border-foreground/20"
+              >
+                <img
+                  src={imgSrc}
+                  alt={imgAlt}
+                  draggable={false}
+                  className="size-full object-cover pointer-events-none transition-transform duration-500 group-hover:scale-105"
+                />
+                {(c.item.title || c.item.subtitle) && (
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent p-2 sm:p-3.5 pt-5 sm:pt-8 text-white pointer-events-none">
+                    {c.item.title && <p className="text-[11px] sm:text-xs font-bold leading-tight drop-shadow truncate">{c.item.title}</p>}
+                    {c.item.subtitle && <p className="text-[9px] sm:text-[10px] text-white/80 drop-shadow leading-tight mt-0.5 truncate">{c.item.subtitle}</p>}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  },
+);
+
+ArcCarouselGallery.displayName = "ArcCarouselGallery";
+
+// ------------------------------------------
 // Root OrbitGallery
 // ------------------------------------------
 export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
@@ -1620,6 +2151,16 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
       tooltipText = "View Details",
       tooltipBackgroundColor,
       tooltipTextColor,
+      // Arc Carousel specific
+      arcItems = DEFAULT_ARC_CAROUSEL_ITEMS,
+      cardSize = 220,
+      cardHeight,
+      curve = -200,
+      perspective = 1200,
+      autoScrollSpeed = 0.22,
+      dragSpeed = 1.2,
+      inertia = 0.75,
+      borderRadius = 20,
       ...props
     },
     ref,
@@ -1632,6 +2173,8 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
         ? DEFAULT_REEL_HIGHLIGHTS
         : variant === "pill-carousel"
         ? DEFAULT_PILL_HIGHLIGHTS
+        : variant === "arc-carousel" || variant === "arc-carousel-gallery"
+        ? DEFAULT_ARC_HIGHLIGHTS
         : DEFAULT_HIGHLIGHTS);
     const count = images.length;
 
@@ -1746,6 +2289,76 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
               tooltipText={tooltipText}
               tooltipBackgroundColor={tooltipBackgroundColor}
               tooltipTextColor={tooltipTextColor}
+            />
+          </div>
+        </section>
+      );
+    }
+
+    // ----------------------------------------
+    // VARIANT: ARC CAROUSEL GALLERY
+    // ----------------------------------------
+    if (variant === "arc-carousel" || variant === "arc-carousel-gallery") {
+      return (
+        <section
+          ref={(node) => {
+            containerRef.current = node;
+            if (typeof ref === "function") ref(node);
+            else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
+          }}
+          onMouseMove={handleMouseMove}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          style={{ ...accentStyle(color), ...style }}
+          className={cn(
+            "relative flex w-full select-none items-center justify-center overflow-hidden bg-background text-foreground transition-colors duration-300",
+            className,
+          )}
+          {...props}
+        >
+          {/* ---- Pointer trail ---- */}
+          {hovered && (
+            <div className="pointer-events-none absolute inset-0 z-50 overflow-hidden" aria-hidden>
+              {trail.map((pt, i) => {
+                const size = Math.max(4, 18 - i * 2);
+                const opacity = (trail.length - i) / trail.length;
+                return (
+                  <div
+                    key={pt.id + i}
+                    className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full transition-opacity duration-150"
+                    style={{
+                      left: `${pt.x}px`,
+                      top: `${pt.y}px`,
+                      width: `${size}px`,
+                      height: `${size}px`,
+                      backgroundColor: "var(--hero-accent-text)",
+                      opacity: opacity * 0.7,
+                    }}
+                  />
+                );
+              })}
+              <div
+                className="pointer-events-none absolute size-4 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg"
+                style={{ left: `${pointer.x}px`, top: `${pointer.y}px`, backgroundColor: "var(--hero-accent-text)" }}
+              />
+            </div>
+          )}
+
+          <div className="relative z-10 w-full">
+            <ArcCarouselGallery
+              items={arcItems}
+              color={color}
+              cardSize={cardSize}
+              cardHeight={cardHeight}
+              gap={gap}
+              curve={curve}
+              perspective={perspective}
+              autoScrollSpeed={autoScrollSpeed}
+              autoSlide={autoSlide}
+              autoPlay={autoPlay}
+              dragSpeed={dragSpeed}
+              inertia={inertia}
+              borderRadius={borderRadius}
             />
           </div>
         </section>

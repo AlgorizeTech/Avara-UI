@@ -4,7 +4,7 @@ export const metadata = docsPageMetadata("orbit-gallery");
 
 A two-column hero for an agency, studio or gallery: copy and actions on the left, and on the right a ring of photo cards that revolves once every 36 seconds, each card staying upright as it travels. Hovering the ring holds it still; moving the pointer anywhere over the section leaves a short trail of dots in the accent colour.
 
-The component also includes a **Moving Bento** variant — a self-rearranging image bento grid with GSAP Flip animations, and a **Circular Reel** variant — an interactive scroll-driven dial with passive rotation, tangential segmented ring slices, and an auto-crossfading preview inspired by Framer.
+The component also includes a **Moving Bento** variant — a self-rearranging image bento grid with GSAP Flip animations, a **Circular Reel** variant — an interactive scroll-driven dial with passive rotation, tangential segmented ring slices, and an auto-crossfading preview, a **3D Pill Carousel** variant — a layered diagonal image carousel with sculptural pill-shaped cards, and an **Arc Carousel Gallery** variant — a 3D curved image carousel along an interactive cylindrical arc with momentum drag physics and bidirectional curve bending inspired by Framer.
 
 {/* The snippets below pass next/link so links route client-side in Next.js. The React tab is the same file without it: the component's default  needs no import. */}
 
@@ -233,6 +233,78 @@ export default function ThreeDPillCarouselExample() {
 }
 `;
 
+export const arcUsage = `"use client";
+
+const ARC_ITEMS = [
+  {
+    id: "arc-1",
+    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80",
+    title: "Air Velocity",
+    subtitle: "Crimson Edition",
+  },
+  {
+    id: "arc-2",
+    image: "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=800&auto=format&fit=crop&q=80",
+    title: "Hyper Blaze",
+    subtitle: "Amber Fade",
+  },
+  {
+    id: "arc-3",
+    image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=800&auto=format&fit=crop&q=80",
+    title: "Volt Runner",
+    subtitle: "Neon Acid",
+  },
+  {
+    id: "arc-4",
+    image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&auto=format&fit=crop&q=80",
+    title: "Pastel Drift",
+    subtitle: "Chalk Studio",
+  },
+  {
+    id: "arc-5",
+    image: "https://images.unsplash.com/photo-1575537302964-96cd47c06b1b?w=800&auto=format&fit=crop&q=80",
+    title: "Aero Stride",
+    subtitle: "Cyber Yellow",
+  },
+  {
+    id: "arc-6",
+    image: "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?w=800&auto=format&fit=crop&q=80",
+    title: "Magenta Pulse",
+    subtitle: "Ultra Sprint",
+  },
+  {
+    id: "arc-7",
+    image: "https://images.unsplash.com/photo-1582588678413-dbf45f4823e9?w=800&auto=format&fit=crop&q=80",
+    title: "Cobalt Horizon",
+    subtitle: "Track Racer",
+  },
+  {
+    id: "arc-8",
+    image: "https://images.unsplash.com/photo-1514989940723-e8e51635b782?w=800&auto=format&fit=crop&q=80",
+    title: "Teal Apex",
+    subtitle: "Dynamic Flight",
+  },
+  {
+    id: "arc-9",
+    image: "https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?w=800&auto=format&fit=crop&q=80",
+    title: "Cyan Torrent",
+    subtitle: "Ocean Breeze",
+  },
+  {
+    id: "arc-10",
+    image: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=800&auto=format&fit=crop&q=80",
+    title: "Monochrome Pro",
+    subtitle: "Pure Classic",
+  },
+];
+
+export default function ArcCarouselGalleryExample() {
+  return (
+    
+  );
+}
+`;
+
 ## Installation
 
 Register the @algorize-ui registry once per project, then add the component:
@@ -250,9 +322,9 @@ npx shadcn@latest add @algorize-ui/orbit-gallery
         Description
 
         variant
-        "orbit" | "moving-bento" | "circular-reel" | "pill-carousel"
+        "orbit" | "moving-bento" | "circular-reel" | "pill-carousel" | "arc-carousel"
         "orbit"
-        Selects the circular orbit hero, GSAP Flip moving bento, circular reel dial spinner, or 3D pill carousel.
+        Selects the circular orbit hero, GSAP Flip moving bento, circular reel dial spinner, 3D pill carousel, or 3D curved arc carousel gallery.
 
         badgeText, badgeHref
         string
@@ -358,6 +430,46 @@ npx shadcn@latest add @algorize-ui/orbit-gallery
         number
         3000
         Milliseconds between automatic transitions in the 3D pill carousel when autoSlide is true.
+
+        arcItems
+        ArcCarouselItem[]
+        10 sneakers
+        The items ({`{ id, image, title, subtitle, link }`}) for the "arc-carousel" variant.
+
+        curve
+        number
+        -200
+        Curvature value from -300 to 300: negative for concave cylinder arc, 0 for flat row, and positive for convex barrel arc.
+
+        cardSize
+        number
+        220
+        Width in pixels of each card in the arc carousel.
+
+        cardHeight
+        number
+        cardSize * 1.32
+        Height in pixels of each card in the arc carousel.
+
+        perspective
+        number
+        1200
+        3D CSS perspective depth in pixels for the cylindrical arc.
+
+        autoScrollSpeed
+        number
+        0.22
+        Continuous auto-drift velocity in cards per second.
+
+        dragSpeed
+        number
+        1.2
+        Pointer drag multiplier when grabbing and spinning the carousel.
+
+        inertia
+        number
+        0.75
+        Friction momentum coefficient (0 to 1) for smooth coasting after pointer release.
 
         highlights
         &#123; label: string; color?: string &#125;[]

@@ -5,7 +5,7 @@ import { toBlockColor } from "@/lib/accent";
 
 interface OrbitGalleryDemoProps {
   color?: string;
-  variant?: "orbit" | "moving-bento" | "circular-reel" | "pill-carousel";
+  variant?: "orbit" | "moving-bento" | "circular-reel" | "pill-carousel" | "arc-carousel" | "arc-carousel-gallery";
   swapInterval?: number;
   gap?: number;
   idleRotationSpeed?: number;
@@ -17,6 +17,9 @@ interface OrbitGalleryDemoProps {
   transitionDuration?: number;
   autoSlide?: boolean;
   autoPlayInterval?: number;
+  curve?: number;
+  cardSize?: number;
+  autoScrollSpeed?: number;
 }
 
 export default function OrbitGalleryDemo({
@@ -33,8 +36,27 @@ export default function OrbitGalleryDemo({
   transitionDuration = 0.6,
   autoSlide = true,
   autoPlayInterval = 3000,
+  curve = -200,
+  cardSize = 220,
+  autoScrollSpeed = 0.22,
 }: OrbitGalleryDemoProps) {
   const color = toBlockColor(pickedColor);
+
+  if (variant === "arc-carousel" || variant === "arc-carousel-gallery") {
+    return (
+      <div className="w-full -my-2 overflow-hidden rounded-2xl bg-background">
+        <OrbitGallery
+          variant="arc-carousel"
+          color={color}
+          curve={curve}
+          cardSize={cardSize}
+          autoScrollSpeed={autoScrollSpeed}
+          autoSlide={autoSlide}
+          className="w-full"
+        />
+      </div>
+    );
+  }
 
   if (variant === "pill-carousel") {
     return (
