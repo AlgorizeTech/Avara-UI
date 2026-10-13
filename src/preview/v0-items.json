@@ -429,6 +429,13 @@
     "react-hook-form-zod": "Form — React Hook Form + Zod",
     "submitting": "Form — Submitting"
   },
+  "gallery": {
+    "movement-is-what-people-notice-first": "Gallery — Movement is what people notice first",
+    "moving-bento": "Gallery — Moving Bento",
+    "circular-reel": "Gallery — Circular Reel",
+    "3d-pill-carousel": "Gallery — 3D Pill Carousel",
+    "arc-carousel-gallery": "Gallery — Arc Carousel Gallery"
+  },
   "glass-panel": {
     "four-shapes": "Glass Panel — Four shapes",
     "bento-layout": "Glass Panel — Bento layout",
@@ -606,13 +613,6 @@
   },
   "not-found-section": {
     "hyperspace-404-section": "Not Found Section — Hyperspace 404 Section"
-  },
-  "orbit-gallery": {
-    "movement-is-what-people-notice-first": "Orbit Gallery — Movement is what people notice first",
-    "moving-bento": "Orbit Gallery — Moving Bento",
-    "circular-reel": "Orbit Gallery — Circular Reel",
-    "3d-pill-carousel": "Orbit Gallery — 3D Pill Carousel",
-    "arc-carousel-gallery": "Orbit Gallery — Arc Carousel Gallery"
   },
   "otp-input": {
     "otp-input": "OTP Input",

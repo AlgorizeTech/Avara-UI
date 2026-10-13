@@ -1,10 +1,8 @@
-export const metadata = docsPageMetadata("orbit-gallery");
+export const metadata = docsPageMetadata("gallery");
 
-# Orbit Gallery
+# Gallery
 
-A two-column hero for an agency, studio or gallery: copy and actions on the left, and on the right a ring of photo cards that revolves once every 36 seconds, each card staying upright as it travels. Hovering the ring holds it still; moving the pointer anywhere over the section leaves a short trail of dots in the accent colour.
-
-The component also includes a **Moving Bento** variant — a self-rearranging image bento grid with GSAP Flip animations, a **Circular Reel** variant — an interactive scroll-driven dial with passive rotation, tangential segmented ring slices, and an auto-crossfading preview, a **3D Pill Carousel** variant — a layered diagonal image carousel with sculptural pill-shaped cards, and an **Arc Carousel Gallery** variant — a 3D curved image carousel along an interactive cylindrical arc with momentum drag physics and bidirectional curve bending inspired by Framer.
+A dynamic visual showcase featuring five interactive variants: a revolving 3D circular photo orbit ring, a GSAP Flip self-rearranging moving bento grid, an interactive circular reel dial spinner, a 3D layered pill carousel, and a Framer-inspired 3D curved arc carousel gallery.
 
 {/* The snippets below pass next/link so links route client-side in Next.js. The React tab is the same file without it: the component's default  needs no import. */}
 
@@ -15,9 +13,7 @@ export const nextAndReact = (code) => ({
     .replace(/\r?\n[ \t]*linkComponent=\{Link\}/, ""),
 });
 
-export const usage = `"use client";
-
-// Landscapes from Unsplash, free to use.
+export const usage = `// Landscapes from Unsplash, free to use.
 const IMAGES = [
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
@@ -34,9 +30,7 @@ export default function Hero() {
 }
 `;
 
-export const bentoUsage = `"use client";
-
-const BENTO_ITEMS = [
+export const bentoUsage = `const BENTO_ITEMS = [
   {
     id: "alpine-horizons",
     title: "Alpine Horizons",
@@ -94,9 +88,7 @@ export default function MovingBentoExample() {
 }
 `;
 
-export const reelUsage = `"use client";
-
-const REEL_ITEMS = [
+export const reelUsage = `const REEL_ITEMS = [
   {
     id: "reel-1",
     name: "Velvet Horizon",
@@ -176,9 +168,7 @@ export default function CircularReelExample() {
 }
 `;
 
-export const pillUsage = `"use client";
-
-const PILL_ITEMS = [
+export const pillUsage = `const PILL_ITEMS = [
   {
     id: "pill-1",
     image: {
@@ -233,9 +223,7 @@ export default function ThreeDPillCarouselExample() {
 }
 `;
 
-export const arcUsage = `"use client";
-
-const ARC_ITEMS = [
+export const arcUsage = `const ARC_ITEMS = [
   {
     id: "arc-1",
     image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80",
@@ -311,7 +299,7 @@ Register the @algorize-ui registry once per project, then add the component:
 
 ```bash
 npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/orbit-gallery
+npx shadcn@latest add @algorize-ui/gallery
 ```
 
 ## Props Reference
@@ -488,6 +476,6 @@ npx shadcn@latest add @algorize-ui/orbit-gallery
 
 ---
 
-**Component Path:** `[framework]\orbit-gallery\page.mdx`
+**Component Path:** `[framework]\gallery\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.

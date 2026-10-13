@@ -2078,6 +2078,33 @@
       "docs": "Named exports: FormWrapper, FormField, FormError, FormSubmit, getThemeStyles (from form-theme.ts, which installs alongside). Layout and styling only — bring your own state, via react-hook-form or otherwise. FormSubmit takes `isSubmitting` to render its pending state."
     },
     {
+      "name": "gallery",
+      "type": "registry:component",
+      "title": "Gallery",
+      "author": "AlgorizeTech",
+      "description": "A versatile, multi-variant interactive visual gallery featuring revolving 3D orbit rings, responsive bento grids, vertical continuous reels, 3D pill carousels, and perspective arc carousels. Use it for agencies, portfolios, product showcases, and creative hero sections.",
+      "categories": [
+        "media",
+        "scroll",
+        "layout"
+      ],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/GalleryBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/GalleryBlock.tsx"
+        }
+      ],
+      "docs": "Named export: Gallery (also exports OrbitGallery for backward compatibility). Default export: Gallery. Variants: orbit | bento | reel | pill | arc. Pass items ({ image, alt, title?, subtitle?, href? }), speed/duration, orientation, aspect, autoSlide, and radius/gap options."
+    },
+    {
       "name": "glass-panel",
       "type": "registry:component",
       "title": "Glass Panel",
@@ -3037,32 +3064,6 @@
         }
       ],
       "docs": "Named export: NotFoundSection (also default export) and NotFoundSectionProps. Ready for drop-in use in Next.js not-found.tsx or standalone 404 routes."
-    },
-    {
-      "name": "orbit-gallery",
-      "type": "registry:component",
-      "title": "Orbit Gallery",
-      "author": "AlgorizeTech",
-      "description": "A two-column hero with a ring of photo cards revolving on the right, each card staying upright as it travels. Hovering the ring holds it still; moving the pointer over the section leaves a trail of dots in the accent colour. Use it for an agency, studio or gallery.",
-      "categories": [
-        "marketing",
-        "layout"
-      ],
-      "dependencies": [
-        "gsap",
-        "lucide-react"
-      ],
-      "registryDependencies": [
-        "utils"
-      ],
-      "files": [
-        {
-          "path": "src/components/custom/blocks/OrbitGalleryBlock.tsx",
-          "type": "registry:component",
-          "target": "components/custom/blocks/OrbitGalleryBlock.tsx"
-        }
-      ],
-      "docs": "Named export: OrbitGallery. Pass `badgeText`/`badgeHref`, `title` and `titleAccent`, `subtitle`, primary and secondary actions, `images` (any count — they space themselves evenly), `duration` in seconds for one revolution and `highlights` for the dotted facts row. `color` is a preset name or any CSS colour; `linkComponent` takes next/link."
     },
     {
       "name": "otp-input",

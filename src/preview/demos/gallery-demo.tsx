@@ -1,9 +1,9 @@
 "use client";
 
-import { OrbitGallery } from "@/components/custom/blocks/OrbitGalleryBlock";
+import { Gallery } from "@/components/custom/blocks/GalleryBlock";
 import { toBlockColor } from "@/lib/accent";
 
-interface OrbitGalleryDemoProps {
+interface GalleryDemoProps {
   color?: string;
   variant?: "orbit" | "moving-bento" | "circular-reel" | "pill-carousel" | "arc-carousel" | "arc-carousel-gallery";
   swapInterval?: number;
@@ -22,7 +22,7 @@ interface OrbitGalleryDemoProps {
   autoScrollSpeed?: number;
 }
 
-export default function OrbitGalleryDemo({
+export default function GalleryDemo({
   color: pickedColor = "primary",
   variant = "orbit",
   swapInterval = 3000,
@@ -39,13 +39,13 @@ export default function OrbitGalleryDemo({
   curve = -200,
   cardSize = 220,
   autoScrollSpeed = 0.22,
-}: OrbitGalleryDemoProps) {
+}: GalleryDemoProps) {
   const color = toBlockColor(pickedColor);
 
   if (variant === "arc-carousel" || variant === "arc-carousel-gallery") {
     return (
       <div className="w-full -my-2 overflow-hidden rounded-2xl bg-background">
-        <OrbitGallery
+        <Gallery
           variant="arc-carousel"
           color={color}
           curve={curve}
@@ -61,7 +61,7 @@ export default function OrbitGalleryDemo({
   if (variant === "pill-carousel") {
     return (
       <div className="w-full -my-2 overflow-hidden rounded-2xl bg-background">
-        <OrbitGallery
+        <Gallery
           variant="pill-carousel"
           color={color}
           cardBorderRadius={cardBorderRadius}
@@ -78,7 +78,7 @@ export default function OrbitGalleryDemo({
   if (variant === "circular-reel") {
     return (
       <div className="w-full -my-2 overflow-hidden rounded-2xl">
-        <OrbitGallery
+        <Gallery
           variant="circular-reel"
           color={color}
           idleRotationSpeed={idleRotationSpeed}
@@ -94,7 +94,7 @@ export default function OrbitGalleryDemo({
   if (variant === "moving-bento") {
     return (
       <div className="w-full -my-2 overflow-hidden rounded-2xl bg-background p-2 sm:p-4">
-        <OrbitGallery
+        <Gallery
           variant="moving-bento"
           color={color}
           swapInterval={swapInterval}
@@ -107,7 +107,7 @@ export default function OrbitGalleryDemo({
 
   return (
     <div className="w-full overflow-hidden rounded-2xl border border-border bg-background">
-      <OrbitGallery
+      <Gallery
         variant="orbit"
         color={color}
         badgeText="Identity & animation studio"

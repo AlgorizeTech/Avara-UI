@@ -2,7 +2,7 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-10-13T11:30:14.499Z
+**Generated at:** 2026-10-13T12:43:55.080Z
 **Total files:** 307
 
 ## Available Files
@@ -74,6 +74,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/folder](/docs/nextjs-folder.md) - Source: `[framework]\folder\page.mdx`
 - [nextjs/footer](/docs/nextjs-footer.md) - Source: `[framework]\footer\page.mdx`
 - [nextjs/form](/docs/nextjs-form.md) - Source: `[framework]\form\page.mdx`
+- [nextjs/gallery](/docs/nextjs-gallery.md) - Source: `[framework]\gallery\page.mdx`
 - [nextjs/glass-panel](/docs/nextjs-glass-panel.md) - Source: `[framework]\glass-panel\page.mdx`
 - [nextjs/half-stars](/docs/nextjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`
 - [nextjs/heart-signal](/docs/nextjs-heart-signal.md) - Source: `[framework]\heart-signal\page.mdx`
@@ -102,7 +103,6 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/network-graph](/docs/nextjs-network-graph.md) - Source: `[framework]\network-graph\page.mdx`
 - [nextjs/newsletter](/docs/nextjs-newsletter.md) - Source: `[framework]\newsletter\page.mdx`
 - [nextjs/not-found-section](/docs/nextjs-not-found-section.md) - Source: `[framework]\not-found-section\page.mdx`
-- [nextjs/orbit-gallery](/docs/nextjs-orbit-gallery.md) - Source: `[framework]\orbit-gallery\page.mdx`
 - [nextjs/otp-input](/docs/nextjs-otp-input.md) - Source: `[framework]\otp-input\page.mdx`
 - [nextjs/pagination](/docs/nextjs-pagination.md) - Source: `[framework]\pagination\page.mdx`
 - [nextjs/particle-canvas](/docs/nextjs-particle-canvas.md) - Source: `[framework]\particle-canvas\page.mdx`
@@ -228,6 +228,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/folder](/docs/reactjs-folder.md) - Source: `[framework]\folder\page.mdx`
 - [reactjs/footer](/docs/reactjs-footer.md) - Source: `[framework]\footer\page.mdx`
 - [reactjs/form](/docs/reactjs-form.md) - Source: `[framework]\form\page.mdx`
+- [reactjs/gallery](/docs/reactjs-gallery.md) - Source: `[framework]\gallery\page.mdx`
 - [reactjs/glass-panel](/docs/reactjs-glass-panel.md) - Source: `[framework]\glass-panel\page.mdx`
 - [reactjs/half-stars](/docs/reactjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`
 - [reactjs/heart-signal](/docs/reactjs-heart-signal.md) - Source: `[framework]\heart-signal\page.mdx`
@@ -256,7 +257,6 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/network-graph](/docs/reactjs-network-graph.md) - Source: `[framework]\network-graph\page.mdx`
 - [reactjs/newsletter](/docs/reactjs-newsletter.md) - Source: `[framework]\newsletter\page.mdx`
 - [reactjs/not-found-section](/docs/reactjs-not-found-section.md) - Source: `[framework]\not-found-section\page.mdx`
-- [reactjs/orbit-gallery](/docs/reactjs-orbit-gallery.md) - Source: `[framework]\orbit-gallery\page.mdx`
 - [reactjs/otp-input](/docs/reactjs-otp-input.md) - Source: `[framework]\otp-input\page.mdx`
 - [reactjs/pagination](/docs/reactjs-pagination.md) - Source: `[framework]\pagination\page.mdx`
 - [reactjs/particle-canvas](/docs/reactjs-particle-canvas.md) - Source: `[framework]\particle-canvas\page.mdx`

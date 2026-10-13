@@ -675,11 +675,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["marketing", "layout"],
     docs: "Named export: HoneycombHero. Pass `title` and `titleAccent` (its letters that cross the photographs take `titleOverlapColor`, the primary by default), `subtitle`, `primaryActionLabel` (a \\n breaks the line; a compass sits above it in the hexagon) and `primaryActionHref`, `images` ({ src, alt, tone? }[] in queue order — nine cells are visible; tone is the deep colour behind everything while that photograph is featured), `socialLinks`, `interval` in ms (0 turns autoplay off) and `onChange`. The overlapping letters, rule, arrows and call to action follow the theme's primary (the hexagon's compass and label primary-foreground); `accent` sets --primary for the section, `background` is the tone for photographs without one (a deep shade of the primary by default); `linkComponent` takes next/link.",
   },
-  "orbit-gallery": {
+  gallery: {
+    title: "Gallery",
     description:
-      "A two-column hero with a ring of photo cards revolving on the right, each card staying upright as it travels. Hovering the ring holds it still; moving the pointer over the section leaves a trail of dots in the accent colour. Use it for an agency, studio or gallery.",
-    categories: ["marketing", "layout"],
-    docs: "Named export: OrbitGallery. Pass `badgeText`/`badgeHref`, `title` and `titleAccent`, `subtitle`, primary and secondary actions, `images` (any count — they space themselves evenly), `duration` in seconds for one revolution and `highlights` for the dotted facts row. `color` is a preset name or any CSS colour; `linkComponent` takes next/link.",
+      "A versatile, multi-variant interactive visual gallery featuring revolving 3D orbit rings, responsive bento grids, vertical continuous reels, 3D pill carousels, and perspective arc carousels. Use it for agencies, portfolios, product showcases, and creative hero sections.",
+    categories: ["media", "scroll", "layout"],
+    docs: "Named export: Gallery (also exports OrbitGallery for backward compatibility). Default export: Gallery. Variants: orbit | bento | reel | pill | arc. Pass items ({ image, alt, title?, subtitle?, href? }), speed/duration, orientation, aspect, autoSlide, and radius/gap options.",
   },
   "hero-carousel": {
     description:

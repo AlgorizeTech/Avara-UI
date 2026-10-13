@@ -128,7 +128,7 @@ export interface ArcCarouselProps extends React.HTMLAttributes<HTMLDivElement> {
   onCardClick?: (item: ArcCarouselItem, index: number) => void;
 }
 
-export interface OrbitGalleryProps extends React.HTMLAttributes<HTMLElement> {
+export interface GalleryProps extends React.HTMLAttributes<HTMLElement> {
   /** Gallery variant: "orbit" (circular revolving ring), "moving-bento" (GSAP Flip self-rearranging grid), "circular-reel" (interactive scroll-driven spinner), "pill-carousel" (3D layered pill carousel), or "arc-carousel" / "arc-carousel-gallery" (3D cylindrical arc carousel). */
   variant?: "orbit" | "moving-bento" | "circular-reel" | "pill-carousel" | "arc-carousel" | "arc-carousel-gallery";
   /** Small tracked line above the headline, with a spark before it. */
@@ -222,6 +222,8 @@ export interface OrbitGalleryProps extends React.HTMLAttributes<HTMLElement> {
   /** Card border radius in px for the arc carousel. */
   borderRadius?: number;
 }
+
+export type OrbitGalleryProps = GalleryProps;
 
 // ------------------------------------------
 // Accent colour: keep it readable on both light and dark surfaces.
@@ -2102,9 +2104,9 @@ export const ArcCarouselGallery = forwardRef<HTMLDivElement, ArcCarouselProps>(
 ArcCarouselGallery.displayName = "ArcCarouselGallery";
 
 // ------------------------------------------
-// Root OrbitGallery
+// Root Gallery
 // ------------------------------------------
-export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
+export const Gallery = forwardRef<HTMLElement, GalleryProps>(
   (
     {
       variant = "orbit",
@@ -2658,6 +2660,8 @@ export const OrbitGallery = forwardRef<HTMLElement, OrbitGalleryProps>(
   },
 );
 
-OrbitGallery.displayName = "OrbitGallery";
+Gallery.displayName = "Gallery";
 
-export default OrbitGallery;
+export const OrbitGallery = Gallery;
+
+export default Gallery;

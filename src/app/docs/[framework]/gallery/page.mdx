@@ -1,15 +1,13 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
 
-export const metadata = docsPageMetadata("orbit-gallery");
+export const metadata = docsPageMetadata("gallery");
 
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
-# Orbit Gallery
+# Gallery
 
-A two-column hero for an agency, studio or gallery: copy and actions on the left, and on the right a ring of photo cards that revolves once every 36 seconds, each card staying upright as it travels. Hovering the ring holds it still; moving the pointer anywhere over the section leaves a short trail of dots in the accent colour.
-
-The component also includes a **Moving Bento** variant — a self-rearranging image bento grid with GSAP Flip animations, a **Circular Reel** variant — an interactive scroll-driven dial with passive rotation, tangential segmented ring slices, and an auto-crossfading preview, a **3D Pill Carousel** variant — a layered diagonal image carousel with sculptural pill-shaped cards, and an **Arc Carousel Gallery** variant — a 3D curved image carousel along an interactive cylindrical arc with momentum drag physics and bidirectional curve bending inspired by Framer.
+A dynamic visual showcase featuring five interactive variants: a revolving 3D circular photo orbit ring, a GSAP Flip self-rearranging moving bento grid, an interactive circular reel dial spinner, a 3D layered pill carousel, and a Framer-inspired 3D curved arc carousel gallery.
 
 {/* The snippets below pass next/link so links route client-side in Next.js. The React tab is the same file without it: the component's default <a> needs no import. */}
 
@@ -23,7 +21,7 @@ export const nextAndReact = (code) => ({
 export const usage = `"use client";
 
 import Link from "next/link";
-import { OrbitGallery } from "@/components/custom/blocks/OrbitGalleryBlock";
+import { Gallery } from "@/components/custom/blocks/GalleryBlock";
 
 // Landscapes from Unsplash, free to use.
 const IMAGES = [
@@ -37,7 +35,7 @@ const IMAGES = [
 
 export default function Hero() {
   return (
-    <OrbitGallery
+    <Gallery
       badgeText="Identity & animation studio"
       badgeHref="/about"
       title="Movement is what"
@@ -58,7 +56,7 @@ export default function Hero() {
 
 export const bentoUsage = `"use client";
 
-import { OrbitGallery } from "@/components/custom/blocks/OrbitGalleryBlock";
+import { Gallery } from "@/components/custom/blocks/GalleryBlock";
 
 const BENTO_ITEMS = [
   {
@@ -113,7 +111,7 @@ const BENTO_ITEMS = [
 
 export default function MovingBentoExample() {
   return (
-    <OrbitGallery
+    <Gallery
       variant="moving-bento"
       items={BENTO_ITEMS}
       swapInterval={3000}
@@ -125,7 +123,7 @@ export default function MovingBentoExample() {
 
 export const reelUsage = `"use client";
 
-import { OrbitGallery } from "@/components/custom/blocks/OrbitGalleryBlock";
+import { Gallery } from "@/components/custom/blocks/GalleryBlock";
 
 const REEL_ITEMS = [
   {
@@ -202,7 +200,7 @@ const REEL_ITEMS = [
 
 export default function CircularReelExample() {
   return (
-    <OrbitGallery
+    <Gallery
       variant="circular-reel"
       reelItems={REEL_ITEMS}
       idleRotationSpeed={5}
@@ -215,7 +213,7 @@ export default function CircularReelExample() {
 
 export const pillUsage = `"use client";
 
-import { OrbitGallery } from "@/components/custom/blocks/OrbitGalleryBlock";
+import { Gallery } from "@/components/custom/blocks/GalleryBlock";
 
 const PILL_ITEMS = [
   {
@@ -267,7 +265,7 @@ const PILL_ITEMS = [
 
 export default function ThreeDPillCarouselExample() {
   return (
-    <OrbitGallery
+    <Gallery
       variant="pill-carousel"
       pillItems={PILL_ITEMS}
       autoSlide={true}
@@ -282,7 +280,7 @@ export default function ThreeDPillCarouselExample() {
 
 export const arcUsage = `"use client";
 
-import { OrbitGallery } from "@/components/custom/blocks/OrbitGalleryBlock";
+import { Gallery } from "@/components/custom/blocks/GalleryBlock";
 
 const ARC_ITEMS = [
   {
@@ -349,7 +347,7 @@ const ARC_ITEMS = [
 
 export default function ArcCarouselGalleryExample() {
   return (
-    <OrbitGallery
+    <Gallery
       variant="arc-carousel"
       arcItems={ARC_ITEMS}
       curve={-200}
@@ -362,7 +360,7 @@ export default function ArcCarouselGalleryExample() {
 `;
 
 <ExampleShowcase
-  name="orbit-gallery"
+  name="gallery"
   colorControl
   columns={1}
   minHeight={520}
@@ -391,7 +389,7 @@ export default function ArcCarouselGalleryExample() {
         },
       ],
       usage: nextAndReact(usage),
-      code: extractCode("src/components/custom/blocks/OrbitGalleryBlock.tsx"),
+      code: extractCode("src/components/custom/blocks/GalleryBlock.tsx"),
     },
     {
       title: "Moving Bento",
@@ -419,7 +417,7 @@ export default function ArcCarouselGalleryExample() {
         },
       ],
       usage: nextAndReact(bentoUsage),
-      code: extractCode("src/components/custom/blocks/OrbitGalleryBlock.tsx"),
+      code: extractCode("src/components/custom/blocks/GalleryBlock.tsx"),
     },
     {
       title: "Circular Reel",
@@ -452,7 +450,7 @@ export default function ArcCarouselGalleryExample() {
         },
       ],
       usage: nextAndReact(reelUsage),
-      code: extractCode("src/components/custom/blocks/OrbitGalleryBlock.tsx"),
+      code: extractCode("src/components/custom/blocks/GalleryBlock.tsx"),
     },
     {
       title: "3D Pill Carousel",
@@ -490,7 +488,7 @@ export default function ArcCarouselGalleryExample() {
         },
       ],
       usage: nextAndReact(pillUsage),
-      code: extractCode("src/components/custom/blocks/OrbitGalleryBlock.tsx"),
+      code: extractCode("src/components/custom/blocks/GalleryBlock.tsx"),
     },
     {
       title: "Arc Carousel Gallery",
@@ -543,14 +541,14 @@ export default function ArcCarouselGalleryExample() {
         },
       ],
       usage: nextAndReact(arcUsage),
-      code: extractCode("src/components/custom/blocks/OrbitGalleryBlock.tsx"),
+      code: extractCode("src/components/custom/blocks/GalleryBlock.tsx"),
     },
   ]}
 />
 
 ## Installation
 
-<Installation name="orbit-gallery" />
+<Installation name="gallery" />
 
 ## Props Reference
 

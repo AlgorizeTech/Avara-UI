@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-13T11:30:14.407Z",
+  "generatedAt": "2026-10-13T12:43:54.989Z",
   "totalFiles": 307,
   "files": [
     {
@@ -405,6 +405,12 @@
       "originalMdx": "[framework]\\form\\page.mdx"
     },
     {
+      "name": "nextjs/gallery",
+      "path": "/docs/nextjs-gallery.md",
+      "url": "/docs/nextjs/gallery",
+      "originalMdx": "[framework]\\gallery\\page.mdx"
+    },
+    {
       "name": "nextjs/glass-panel",
       "path": "/docs/nextjs-glass-panel.md",
       "url": "/docs/nextjs/glass-panel",
@@ -571,12 +577,6 @@
       "path": "/docs/nextjs-not-found-section.md",
       "url": "/docs/nextjs/not-found-section",
       "originalMdx": "[framework]\\not-found-section\\page.mdx"
-    },
-    {
-      "name": "nextjs/orbit-gallery",
-      "path": "/docs/nextjs-orbit-gallery.md",
-      "url": "/docs/nextjs/orbit-gallery",
-      "originalMdx": "[framework]\\orbit-gallery\\page.mdx"
     },
     {
       "name": "nextjs/otp-input",
@@ -1329,6 +1329,12 @@
       "originalMdx": "[framework]\\form\\page.mdx"
     },
     {
+      "name": "reactjs/gallery",
+      "path": "/docs/reactjs-gallery.md",
+      "url": "/docs/reactjs/gallery",
+      "originalMdx": "[framework]\\gallery\\page.mdx"
+    },
+    {
       "name": "reactjs/glass-panel",
       "path": "/docs/reactjs-glass-panel.md",
       "url": "/docs/reactjs/glass-panel",
@@ -1495,12 +1501,6 @@
       "path": "/docs/reactjs-not-found-section.md",
       "url": "/docs/reactjs/not-found-section",
       "originalMdx": "[framework]\\not-found-section\\page.mdx"
-    },
-    {
-      "name": "reactjs/orbit-gallery",
-      "path": "/docs/reactjs-orbit-gallery.md",
-      "url": "/docs/reactjs/orbit-gallery",
-      "originalMdx": "[framework]\\orbit-gallery\\page.mdx"
     },
     {
       "name": "reactjs/otp-input",
