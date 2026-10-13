@@ -9,7 +9,7 @@ Every hero section in the library, on one page. Each is its own registry item wi
   Fashion HeroStaggered columns of looks on flat colour — lookbook, store, editorial.
   Support HeroA frosted bento of cards and counting figures — SaaS and AI products.
   Collage HeroA photo collage under a turning badge — school, studio, workshop.
-  Hero BlockComprehensive variants from one component — bounce, typing, slider, pet shop, doctor, facility, and rotating vortex cyclone radar.
+  Hero BlockComprehensive variants from one component — orbit ring, bounce, typing, slider, pet shop, doctor, facility, and rotating vortex cyclone radar.
 
 ## Honeycomb Hero
 
@@ -757,7 +757,7 @@ npx shadcn@latest add @algorize-ui/collage-hero
 
 ## Hero Block
 
-A collection of modern hero layouts in one component, built with Tailwind CSS and plain CSS animations, no animation library: rotating word spring bounce, character typewriter effect, continuous thumbnail slider marquee, a CLI copy button and call-to-action buttons. One registry item, five variants.
+A collection of modern hero layouts in one component, built with Tailwind CSS and plain CSS animations, no animation library: revolving 3D circular photo orbit ring, rotating word spring bounce, character typewriter effect, continuous thumbnail slider marquee, facility architectural blueprint grid, and high-tech cyclone radar. One registry item, multiple opinionated variants.
 
 export const usageWordBounce = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
 
@@ -823,6 +823,34 @@ export default function VortexHeroExample() {
   );
 }`;
 
+export const usageOrbit = `"use client";
+
+// Landscapes from Unsplash, free to use.
+const IMAGES = [
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790148863/photo-1447752875215-b2761acb3c5d-1790148865109.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146210/photo-1507525428034-b723cf961d3e-1790146212208.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790158813/photo-1433086966358-54859d0ed716-1790158812209.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790145142/photo-1500530855697-b586d89ba3ee-1790145143493.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790148863/photo-1473448912268-2022ce9509d8-1790148865110.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790158814/photo-1518495973542-4542c06a5843-1790158812213.jpg",
+];
+
+export default function OrbitHeroExample() {
+  return (
+    
+  );
+}
+`;
+
 ### Installation
 
 Register the @algorize-ui registry once per project, then add the component:
@@ -841,11 +869,11 @@ npx shadcn@latest add @algorize-ui/hero
 
           variant
 
-          "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "facility" | "vortex"
+          "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "facility" | "vortex" | "orbit"
 
           "bounce"
 
-          The layout & animation style. "bounce" uses spring word motion; "typing" uses typewriter effect; "slider" renders split 2-column hero with continuous marquee; "glow-arc" / "pet-shop" renders pet care hero; "doctor" renders medical test kits hero; "facility" renders architectural CAD blueprint grid hero with interactive morphing shape; "vortex" renders atmospheric cyclone radar simulation with animated rotating canvas and telemetry HUD.
+          The layout & animation style. "orbit" / "orbit-gallery" renders revolving 3D circular photo ring with upright cards & smooth hover pause; "bounce" uses spring word motion; "typing" uses typewriter effect; "slider" renders split 2-column hero with continuous marquee; "glow-arc" / "pet-shop" renders pet care hero; "doctor" renders medical test kits hero; "facility" renders architectural CAD blueprint grid hero with interactive morphing shape; "vortex" renders atmospheric cyclone radar simulation with animated rotating canvas and telemetry HUD.
 
           typingWords
 

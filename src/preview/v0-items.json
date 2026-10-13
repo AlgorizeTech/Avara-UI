@@ -430,7 +430,7 @@
     "submitting": "Form — Submitting"
   },
   "gallery": {
-    "movement-is-what-people-notice-first": "Gallery — Movement is what people notice first",
+    "orbit-gallery": "Gallery — Orbit Gallery",
     "moving-bento": "Gallery — Moving Bento",
     "circular-reel": "Gallery — Circular Reel",
     "3d-pill-carousel": "Gallery — 3D Pill Carousel",
@@ -489,6 +489,9 @@
   },
   "hero-vortex": {
     "atmospheric-cyclone-radar-hero": "Hero — Atmospheric Cyclone Radar Hero"
+  },
+  "hero-orbit": {
+    "orbit-ring-hero": "Hero — Orbit Ring Hero"
   },
   "image-compare": {
     "classic-slider": "Image Compare — Classic Slider",

@@ -15,7 +15,7 @@ Every hero section in the library, on one page. Each is its own registry item wi
   <a href="#fashion-hero" className="rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] px-4 py-3 hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors"><strong className="block text-[14px] font-semibold text-foreground">Fashion Hero</strong><span className="text-[13px] leading-relaxed text-foreground/50">Staggered columns of looks on flat colour — lookbook, store, editorial.</span></a>
   <a href="#support-hero" className="rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] px-4 py-3 hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors"><strong className="block text-[14px] font-semibold text-foreground">Support Hero</strong><span className="text-[13px] leading-relaxed text-foreground/50">A frosted bento of cards and counting figures — SaaS and AI products.</span></a>
   <a href="#collage-hero" className="rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] px-4 py-3 hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors"><strong className="block text-[14px] font-semibold text-foreground">Collage Hero</strong><span className="text-[13px] leading-relaxed text-foreground/50">A photo collage under a turning badge — school, studio, workshop.</span></a>
-  <a href="#hero-block" className="rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] px-4 py-3 hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors"><strong className="block text-[14px] font-semibold text-foreground">Hero Block</strong><span className="text-[13px] leading-relaxed text-foreground/50">Comprehensive variants from one component — bounce, typing, slider, pet shop, doctor, facility, and rotating vortex cyclone radar.</span></a>
+  <a href="#hero-block" className="rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] px-4 py-3 hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors"><strong className="block text-[14px] font-semibold text-foreground">Hero Block</strong><span className="text-[13px] leading-relaxed text-foreground/50">Comprehensive variants from one component — orbit ring, bounce, typing, slider, pet shop, doctor, facility, and rotating vortex cyclone radar.</span></a>
 </div>
 
 ## Honeycomb Hero
@@ -1180,7 +1180,7 @@ import { Sparkles } from "lucide-react";
 
 ## Hero Block
 
-A collection of modern hero layouts in one component, built with Tailwind CSS and plain CSS animations, no animation library: rotating word spring bounce, character typewriter effect, continuous thumbnail slider marquee, a CLI copy button and call-to-action buttons. One registry item, five variants.
+A collection of modern hero layouts in one component, built with Tailwind CSS and plain CSS animations, no animation library: revolving 3D circular photo orbit ring, rotating word spring bounce, character typewriter effect, continuous thumbnail slider marquee, facility architectural blueprint grid, and high-tech cyclone radar. One registry item, multiple opinionated variants.
 
 
 export const usageWordBounce = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
@@ -1532,6 +1532,93 @@ export default function VortexHeroExample() {
   ]}
 />
 
+export const usageOrbit = `"use client";
+
+import Link from "next/link";
+import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
+// Landscapes from Unsplash, free to use.
+const IMAGES = [
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790148863/photo-1447752875215-b2761acb3c5d-1790148865109.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146210/photo-1507525428034-b723cf961d3e-1790146212208.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790158813/photo-1433086966358-54859d0ed716-1790158812209.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790145142/photo-1500530855697-b586d89ba3ee-1790145143493.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790148863/photo-1473448912268-2022ce9509d8-1790148865110.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790158814/photo-1518495973542-4542c06a5843-1790158812213.jpg",
+];
+
+export default function OrbitHeroExample() {
+  return (
+    <HeroBlock
+      variant="orbit"
+      badgeText="Identity & animation studio"
+      badgeHref="/about"
+      title="Movement is what"
+      titleAccent="people notice first."
+      subtitle="We design brand identities and the animation that brings them to life — from early sketches to the live release."
+      primaryActionLabel="Work with us"
+      primaryActionHref="/contact"
+      secondaryActionLabel="View projects"
+      secondaryActionHref="/work"
+      images={IMAGES}
+      highlights={[
+        { label: "15 hand-picked scenes" },
+        { label: "Full-circle rotation", color: "#10b981" },
+        { label: "Holds still on hover", color: "#f59e0b" },
+      ]}
+      duration={36}
+      linkComponent={Link}
+    />
+  );
+}
+`;
+
+<ExampleShowcase
+  name="hero-orbit"
+  colorControl
+  columns={1}
+  minHeight={520}
+  examples={[
+    {
+      title: "Orbit Ring Hero",
+      subheading: "Copy and actions on the left, revolving 3D circular photo orbit ring on the right with smooth hover pause.",
+      props: { variant: "orbit" },
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"orbit"',
+          effect: "for a revolving 3D circular photo orbit ring layout.",
+        },
+        {
+          prop: "images",
+          effect: "are the cards on the ring, in orbit order. Offset evenly by duration.",
+        },
+        {
+          prop: "duration",
+          value: "36",
+          effect: "is the seconds for one full revolution.",
+        },
+        {
+          prop: "highlights",
+          effect: "are the dotted facts under the action buttons with customizable label and color.",
+        },
+      ],
+      usage: nextAndReact(usageOrbit),
+      code: extractCode("src/components/custom/blocks/HeroBlock.tsx"),
+    },
+  ]}
+/>
+
 ### Installation
 
 <Installation name="hero" showSetupPath={false} />
@@ -1554,13 +1641,13 @@ export default function VortexHeroExample() {
           <code>variant</code>
         </td>
         <td>
-          <code>"bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "facility" | "vortex"</code>
+          <code>"bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "facility" | "vortex" | "orbit"</code>
         </td>
         <td>
           <code>"bounce"</code>
         </td>
         <td>
-          The layout & animation style. <code>"bounce"</code> uses spring word motion; <code>"typing"</code> uses typewriter effect; <code>"slider"</code> renders split 2-column hero with continuous marquee; <code>"glow-arc"</code> / <code>"pet-shop"</code> renders pet care hero; <code>"doctor"</code> renders medical test kits hero; <code>"facility"</code> renders architectural CAD blueprint grid hero with interactive morphing shape; <code>"vortex"</code> renders atmospheric cyclone radar simulation with animated rotating canvas and telemetry HUD.
+          The layout & animation style. <code>"orbit"</code> / <code>"orbit-gallery"</code> renders revolving 3D circular photo ring with upright cards & smooth hover pause; <code>"bounce"</code> uses spring word motion; <code>"typing"</code> uses typewriter effect; <code>"slider"</code> renders split 2-column hero with continuous marquee; <code>"glow-arc"</code> / <code>"pet-shop"</code> renders pet care hero; <code>"doctor"</code> renders medical test kits hero; <code>"facility"</code> renders architectural CAD blueprint grid hero with interactive morphing shape; <code>"vortex"</code> renders atmospheric cyclone radar simulation with animated rotating canvas and telemetry HUD.
         </td>
       </tr>
       <tr>

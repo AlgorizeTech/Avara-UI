@@ -92,6 +92,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "hero-doctor": lazyRetry(() => import("./demos/hero-doctor-demo")),
   "hero-facility": lazyRetry(() => import("./demos/hero-facility-demo")),
   "hero-minimal": lazyRetry(() => import("./demos/hero-minimal-demo")),
+  "hero-orbit": lazyRetry(() => import("./demos/hero-orbit-demo")),
   "hero-saas": lazyRetry(() => import("./demos/hero-saas-demo")),
   "hero-vortex": lazyRetry(() => import("./demos/hero-vortex-demo")),
   "homepage-hero": lazyRetry(() => import("./demos/homepage-hero-demo")),

@@ -87,6 +87,7 @@ export const sandboxNames = [
   "hero-doctor",
   "hero-facility",
   "hero-minimal",
+  "hero-orbit",
   "hero-saas",
   "hero-vortex",
   "homepage-hero",

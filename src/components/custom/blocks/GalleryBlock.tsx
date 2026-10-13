@@ -129,8 +129,8 @@ export interface ArcCarouselProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export interface GalleryProps extends React.HTMLAttributes<HTMLElement> {
-  /** Gallery variant: "orbit" (circular revolving ring), "moving-bento" (GSAP Flip self-rearranging grid), "circular-reel" (interactive scroll-driven spinner), "pill-carousel" (3D layered pill carousel), or "arc-carousel" / "arc-carousel-gallery" (3D cylindrical arc carousel). */
-  variant?: "orbit" | "moving-bento" | "circular-reel" | "pill-carousel" | "arc-carousel" | "arc-carousel-gallery";
+  /** Gallery variant: "orbit" | "orbit-gallery" (circular revolving ring), "moving-bento" (GSAP Flip self-rearranging grid), "circular-reel" (interactive scroll-driven spinner), "pill-carousel" (3D layered pill carousel), or "arc-carousel" / "arc-carousel-gallery" (3D cylindrical arc carousel). */
+  variant?: "orbit" | "orbit-gallery" | "moving-bento" | "circular-reel" | "pill-carousel" | "arc-carousel" | "arc-carousel-gallery";
   /** Small tracked line above the headline, with a spark before it. */
   badgeText?: string;
   badgeHref?: string;
@@ -2127,6 +2127,99 @@ export const ArcCarouselGallery = forwardRef<HTMLDivElement, ArcCarouselProps>(
 ArcCarouselGallery.displayName = "ArcCarouselGallery";
 
 // ------------------------------------------
+// Isolated Pointer Trail (Memoized to prevent parent re-renders)
+// ------------------------------------------
+const PointerTrail = memo(
+  ({ containerRef }: { containerRef: React.RefObject<HTMLElement | null> }) => {
+    const targetRef = useRef({ x: -100, y: -100 });
+    const [pointer, setPointer] = useState({ x: -100, y: -100 });
+    const [trail, setTrail] = useState<{ x: number; y: number; id: number }[]>([]);
+    const [hovered, setHovered] = useState(false);
+
+    useEffect(() => {
+      const el = containerRef.current;
+      if (!el) return;
+
+      const handleMove = (e: MouseEvent) => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        targetRef.current = { x, y };
+        setPointer({ x, y });
+      };
+
+      const handleEnter = () => {
+        setHovered(true);
+      };
+
+      const handleLeave = () => {
+        setHovered(false);
+        targetRef.current = { x: -100, y: -100 };
+        setPointer({ x: -100, y: -100 });
+        setTrail([]);
+      };
+
+      el.addEventListener("mousemove", handleMove);
+      el.addEventListener("mouseenter", handleEnter);
+      el.addEventListener("mouseleave", handleLeave);
+
+      return () => {
+        el.removeEventListener("mousemove", handleMove);
+        el.removeEventListener("mouseenter", handleEnter);
+        el.removeEventListener("mouseleave", handleLeave);
+      };
+    }, [containerRef]);
+
+    useEffect(() => {
+      if (!hovered) return;
+      let frame: number;
+      let last = 0;
+      const loop = (t: number) => {
+        if (t - last > 20) {
+          last = t;
+          const { x, y } = targetRef.current;
+          setTrail((prev) => [{ x, y, id: t }, ...prev.slice(0, 7)]);
+        }
+        frame = requestAnimationFrame(loop);
+      };
+      frame = requestAnimationFrame(loop);
+      return () => cancelAnimationFrame(frame);
+    }, [hovered]);
+
+    if (!hovered) return null;
+
+    return (
+      <div className="pointer-events-none absolute inset-0 z-50 overflow-hidden" aria-hidden>
+        {trail.map((pt, i) => {
+          const size = Math.max(4, 18 - i * 2);
+          const opacity = (trail.length - i) / trail.length;
+          return (
+            <div
+              key={pt.id + i}
+              className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full transition-opacity duration-150"
+              style={{
+                left: `${pt.x}px`,
+                top: `${pt.y}px`,
+                width: `${size}px`,
+                height: `${size}px`,
+                backgroundColor: "var(--hero-accent-text)",
+                opacity: opacity * 0.7,
+              }}
+            />
+          );
+        })}
+        <div
+          className="pointer-events-none absolute size-4 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg"
+          style={{ left: `${pointer.x}px`, top: `${pointer.y}px`, backgroundColor: "var(--hero-accent-text)" }}
+        />
+      </div>
+    );
+  },
+);
+
+PointerTrail.displayName = "PointerTrail";
+
+// ------------------------------------------
 // Root Gallery
 // ------------------------------------------
 export const Gallery = forwardRef<HTMLElement, GalleryProps>(
@@ -2203,51 +2296,7 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
         : DEFAULT_HIGHLIGHTS);
     const count = images.length;
 
-    // The pointer trail: a handful of dots that follow the pointer while it is
-    // over the section. Positions are sampled on a frame loop, not on every
-    // mousemove, so the trail keeps an even spacing.
     const containerRef = useRef<HTMLElement | null>(null);
-    const targetRef = useRef({ x: -100, y: -100 });
-    const [pointer, setPointer] = useState({ x: -100, y: -100 });
-    const [trail, setTrail] = useState<{ x: number; y: number; id: number }[]>([]);
-    const [hovered, setHovered] = useState(false);
-
-    useEffect(() => {
-      if (!hovered) return;
-      let frame: number;
-      let last = 0;
-      const loop = (t: number) => {
-        if (t - last > 20) {
-          last = t;
-          const { x, y } = targetRef.current;
-          setTrail((prev) => [{ x, y, id: t }, ...prev.slice(0, 7)]);
-        }
-        frame = requestAnimationFrame(loop);
-      };
-      frame = requestAnimationFrame(loop);
-      return () => cancelAnimationFrame(frame);
-    }, [hovered]);
-
-    const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
-      onMouseMove?.(e);
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      targetRef.current = { x, y };
-      setPointer({ x, y });
-    };
-    const handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
-      onMouseEnter?.(e);
-      setHovered(true);
-    };
-    const handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
-      onMouseLeave?.(e);
-      setHovered(false);
-      targetRef.current = { x: -100, y: -100 };
-      setPointer({ x: -100, y: -100 });
-      setTrail([]);
-    };
 
     // ----------------------------------------
     // VARIANT: 3D PILL CAROUSEL
@@ -2260,9 +2309,9 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
             if (typeof ref === "function") ref(node);
             else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
           }}
-          onMouseMove={handleMouseMove}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
+          onMouseMove={onMouseMove}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
           style={{ ...accentStyle(color), ...style }}
           className={cn(
             "relative flex w-full select-none items-center justify-center overflow-hidden bg-background text-foreground transition-colors duration-300",
@@ -2271,32 +2320,7 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
           {...props}
         >
           {/* ---- Pointer trail ---- */}
-          {hovered && (
-            <div className="pointer-events-none absolute inset-0 z-50 overflow-hidden" aria-hidden>
-              {trail.map((pt, i) => {
-                const size = Math.max(4, 18 - i * 2);
-                const opacity = (trail.length - i) / trail.length;
-                return (
-                  <div
-                    key={pt.id + i}
-                    className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full transition-opacity duration-150"
-                    style={{
-                      left: `${pt.x}px`,
-                      top: `${pt.y}px`,
-                      width: `${size}px`,
-                      height: `${size}px`,
-                      backgroundColor: "var(--hero-accent-text)",
-                      opacity: opacity * 0.7,
-                    }}
-                  />
-                );
-              })}
-              <div
-                className="pointer-events-none absolute size-4 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg"
-                style={{ left: `${pointer.x}px`, top: `${pointer.y}px`, backgroundColor: "var(--hero-accent-text)" }}
-              />
-            </div>
-          )}
+          <PointerTrail containerRef={containerRef} />
 
           <div className="relative z-10 w-full">
             <ThreeDPillCarousel
@@ -2331,9 +2355,9 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
             if (typeof ref === "function") ref(node);
             else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
           }}
-          onMouseMove={handleMouseMove}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
+          onMouseMove={onMouseMove}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
           style={{ ...accentStyle(color), ...style }}
           className={cn(
             "relative flex w-full select-none items-center justify-center overflow-hidden bg-background text-foreground transition-colors duration-300",
@@ -2342,32 +2366,7 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
           {...props}
         >
           {/* ---- Pointer trail ---- */}
-          {hovered && (
-            <div className="pointer-events-none absolute inset-0 z-50 overflow-hidden" aria-hidden>
-              {trail.map((pt, i) => {
-                const size = Math.max(4, 18 - i * 2);
-                const opacity = (trail.length - i) / trail.length;
-                return (
-                  <div
-                    key={pt.id + i}
-                    className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full transition-opacity duration-150"
-                    style={{
-                      left: `${pt.x}px`,
-                      top: `${pt.y}px`,
-                      width: `${size}px`,
-                      height: `${size}px`,
-                      backgroundColor: "var(--hero-accent-text)",
-                      opacity: opacity * 0.7,
-                    }}
-                  />
-                );
-              })}
-              <div
-                className="pointer-events-none absolute size-4 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg"
-                style={{ left: `${pointer.x}px`, top: `${pointer.y}px`, backgroundColor: "var(--hero-accent-text)" }}
-              />
-            </div>
-          )}
+          <PointerTrail containerRef={containerRef} />
 
           <div className="relative z-10 w-full">
             <ArcCarouselGallery
@@ -2401,9 +2400,9 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
             if (typeof ref === "function") ref(node);
             else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
           }}
-          onMouseMove={handleMouseMove}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
+          onMouseMove={onMouseMove}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
           style={{ ...accentStyle(color), ...style }}
           className={cn(
             "relative flex w-full select-none items-center justify-center overflow-hidden",
@@ -2412,32 +2411,7 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
           {...props}
         >
           {/* ---- Pointer trail ---- */}
-          {hovered && (
-            <div className="pointer-events-none absolute inset-0 z-50 overflow-hidden" aria-hidden>
-              {trail.map((pt, i) => {
-                const size = Math.max(4, 18 - i * 2);
-                const opacity = (trail.length - i) / trail.length;
-                return (
-                  <div
-                    key={pt.id + i}
-                    className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full transition-opacity duration-150"
-                    style={{
-                      left: `${pt.x}px`,
-                      top: `${pt.y}px`,
-                      width: `${size}px`,
-                      height: `${size}px`,
-                      backgroundColor: "var(--hero-accent-text)",
-                      opacity: opacity * 0.7,
-                    }}
-                  />
-                );
-              })}
-              <div
-                className="pointer-events-none absolute size-4 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg"
-                style={{ left: `${pointer.x}px`, top: `${pointer.y}px`, backgroundColor: "var(--hero-accent-text)" }}
-              />
-            </div>
-          )}
+          <PointerTrail containerRef={containerRef} />
 
           <div className="relative z-10 w-full">
             <CircularReel
@@ -2465,9 +2439,9 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
             if (typeof ref === "function") ref(node);
             else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
           }}
-          onMouseMove={handleMouseMove}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
+          onMouseMove={onMouseMove}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
           style={{ ...accentStyle(color), ...style }}
           className={cn(
             "relative flex w-full select-none items-center justify-center overflow-hidden bg-background p-4 sm:p-6 text-foreground transition-colors duration-300",
@@ -2476,32 +2450,7 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
           {...props}
         >
           {/* ---- Pointer trail ---- */}
-          {hovered && (
-            <div className="pointer-events-none absolute inset-0 z-50 overflow-hidden" aria-hidden>
-              {trail.map((pt, i) => {
-                const size = Math.max(4, 18 - i * 2);
-                const opacity = (trail.length - i) / trail.length;
-                return (
-                  <div
-                    key={pt.id + i}
-                    className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full transition-opacity duration-150"
-                    style={{
-                      left: `${pt.x}px`,
-                      top: `${pt.y}px`,
-                      width: `${size}px`,
-                      height: `${size}px`,
-                      backgroundColor: "var(--hero-accent-text)",
-                      opacity: opacity * 0.7,
-                    }}
-                  />
-                );
-              })}
-              <div
-                className="pointer-events-none absolute size-4 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg"
-                style={{ left: `${pointer.x}px`, top: `${pointer.y}px`, backgroundColor: "var(--hero-accent-text)" }}
-              />
-            </div>
-          )}
+          <PointerTrail containerRef={containerRef} />
 
           <div className="relative z-10 w-full">
             <MovingBento
@@ -2526,43 +2475,18 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
           if (typeof ref === "function") ref(node);
           else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
         }}
-        onMouseMove={handleMouseMove}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
+        onMouseMove={onMouseMove}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
         style={{ ...accentStyle(color), ...style }}
         className={cn(
-          "relative flex min-h-[580px] w-full select-none items-center overflow-hidden bg-background py-12 text-foreground transition-colors duration-300 sm:py-16 lg:py-24",
+          "relative flex min-h-[600px] w-full select-none items-center overflow-hidden bg-background py-10 text-foreground transition-colors duration-300 sm:min-h-[660px] sm:py-14 lg:min-h-[720px] lg:py-20",
           className,
         )}
         {...props}
       >
         {/* ---- Pointer trail ---- */}
-        {hovered && (
-          <div className="pointer-events-none absolute inset-0 z-50 overflow-hidden" aria-hidden>
-            {trail.map((pt, i) => {
-              const size = Math.max(4, 18 - i * 2);
-              const opacity = (trail.length - i) / trail.length;
-              return (
-                <div
-                  key={pt.id + i}
-                  className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full transition-opacity duration-150"
-                  style={{
-                    left: `${pt.x}px`,
-                    top: `${pt.y}px`,
-                    width: `${size}px`,
-                    height: `${size}px`,
-                    backgroundColor: "var(--hero-accent-text)",
-                    opacity: opacity * 0.7,
-                  }}
-                />
-              );
-            })}
-            <div
-              className="pointer-events-none absolute size-4 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg"
-              style={{ left: `${pointer.x}px`, top: `${pointer.y}px`, backgroundColor: "var(--hero-accent-text)" }}
-            />
-          </div>
-        )}
+        <PointerTrail containerRef={containerRef} />
 
         {/* The orbit: every card is rotated about the ring's centre, pushed out
             by the radius, then counter-rotated so it stays upright. The radius
@@ -2574,8 +2498,9 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
           }
           .orbit-gallery-card {
             --orbit-r: 110px;
-            transform-style: preserve-3d;
             backface-visibility: hidden;
+            will-change: transform;
+            animation: orbit-gallery-slide var(--orbit-duration, 36s) linear infinite;
           }
           @media (min-width: 480px) { .orbit-gallery-card { --orbit-r: 135px; } }
           @media (min-width: 640px) { .orbit-gallery-card { --orbit-r: 185px; } }
@@ -2587,10 +2512,20 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
             75%  { transform: rotate(270deg) translateY(calc(-1 * var(--orbit-r))) rotateY(2.5deg) rotate(-270deg); }
             100% { transform: rotate(360deg) translateY(calc(-1 * var(--orbit-r))) rotateY(2.5deg) rotate(-360deg); }
           }
-          .orbit-gallery-card { animation: orbit-gallery-slide var(--orbit-duration, 36s) linear infinite; }
-          .orbit-gallery-ring:hover .orbit-gallery-card { animation-play-state: paused; }
-          .orbit-gallery-card:hover { z-index: 50; }
-          @media (prefers-reduced-motion: reduce) { .orbit-gallery-card { animation-play-state: paused; } }
+          .orbit-gallery-wrapper:hover .orbit-gallery-card,
+          .orbit-gallery-ring:hover .orbit-gallery-card,
+          .orbit-gallery-card:hover {
+            animation-play-state: paused;
+          }
+          .orbit-gallery-card:hover {
+            z-index: 50;
+          }
+          .orbit-gallery-card:hover > div {
+            transform: translateZ(30px) scale(1.15) !important;
+          }
+          @media (prefers-reduced-motion: reduce) {
+            .orbit-gallery-card { animation-play-state: paused; }
+          }
         `}</style>
 
         <div className="relative z-10 mx-auto w-full max-w-[1380px] px-4 sm:px-6 md:px-10">
@@ -2655,22 +2590,30 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
             </div>
 
             {/* ---- The ring ---- */}
-            <div className="relative col-span-1 flex h-[460px] items-center justify-center overflow-visible py-4 sm:h-[560px] lg:col-span-6 lg:h-[620px]">
+            <div className="orbit-gallery-wrapper relative col-span-1 flex h-[480px] items-center justify-center overflow-visible py-4 sm:h-[580px] lg:col-span-6 lg:h-[660px]">
               <div
                 className="orbit-gallery-ring pointer-events-auto relative flex size-[340px] cursor-pointer items-center justify-center overflow-visible rounded-full sm:size-[440px] lg:size-[480px]"
                 style={{ "--orbit-duration": `${duration}s` } as React.CSSProperties}
               >
-                <div className="pointer-events-none absolute inset-0 rounded-full border border-foreground/10" aria-hidden />
+                <div className="pointer-events-none absolute inset-0 rounded-full border border-transparent" aria-hidden />
 
                 {images.map((src, i) => (
                   <div
                     key={src + i}
                     data-index={i}
-                    className="orbit-gallery-card pointer-events-auto absolute left-1/2 top-1/2 -ml-[38px] -mt-[48px] h-[96px] w-[76px] sm:-ml-[62px] sm:-mt-[77px] sm:h-[155px] sm:w-[125px] lg:-ml-[75px] lg:-mt-[90px] lg:h-[180px] lg:w-[150px]"
+                    className="orbit-gallery-card group pointer-events-auto absolute left-1/2 top-1/2 -ml-[38px] -mt-[48px] h-[96px] w-[76px] sm:-ml-[62px] sm:-mt-[77px] sm:h-[155px] sm:w-[125px] lg:-ml-[75px] lg:-mt-[90px] lg:h-[180px] lg:w-[150px]"
                     style={{ animationDelay: `${-((i / count) * duration)}s` }}
                   >
-                    <div className="group h-full w-full overflow-hidden rounded-[22px] border-2 border-card bg-card shadow-2xl transition-all duration-300 hover:scale-110 sm:rounded-[28px]">
-                      <img src={src} alt="" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                    <div
+                      className="h-full w-full overflow-hidden rounded-[22px] border-2 border-card bg-card shadow-xl sm:rounded-[28px] transition-transform duration-300 ease-out group-hover:scale-115 group-hover:shadow-2xl cursor-pointer"
+                      style={{ transformOrigin: "center center", willChange: "transform" }}
+                    >
+                      <img
+                        src={src}
+                        alt=""
+                        draggable={false}
+                        className="size-full object-cover pointer-events-none select-none transition-transform duration-300 ease-out group-hover:scale-105"
+                      />
                     </div>
                   </div>
                 ))}

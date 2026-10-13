@@ -5,7 +5,7 @@ import { toBlockColor } from "@/lib/accent";
 
 interface GalleryDemoProps {
   color?: string;
-  variant?: "orbit" | "moving-bento" | "circular-reel" | "pill-carousel" | "arc-carousel" | "arc-carousel-gallery";
+  variant?: "orbit" | "orbit-gallery" | "moving-bento" | "circular-reel" | "pill-carousel" | "arc-carousel" | "arc-carousel-gallery";
   swapInterval?: number;
   gap?: number;
   idleRotationSpeed?: number;
@@ -106,7 +106,7 @@ export default function GalleryDemo({
   }
 
   return (
-    <div className="w-full overflow-hidden rounded-2xl border border-border bg-background">
+    <div className="w-full my-4 sm:my-6 overflow-hidden rounded-2xl border border-border bg-background">
       <Gallery
         variant="orbit"
         color={color}
@@ -119,7 +119,7 @@ export default function GalleryDemo({
         primaryActionHref="#"
         secondaryActionLabel="View projects"
         secondaryActionHref="#"
-        className="w-full py-8 sm:py-12"
+        className="w-full py-12 sm:py-16 lg:py-20"
       />
     </div>
   );
