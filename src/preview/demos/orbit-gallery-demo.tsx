@@ -5,9 +5,13 @@ import { toBlockColor } from "@/lib/accent";
 
 interface OrbitGalleryDemoProps {
   color?: string;
-  variant?: "orbit" | "moving-bento";
+  variant?: "orbit" | "moving-bento" | "circular-reel";
   swapInterval?: number;
   gap?: number;
+  idleRotationSpeed?: number;
+  scrollSensitivity?: number;
+  ringThickness?: number;
+  grayscale?: boolean;
 }
 
 export default function OrbitGalleryDemo({
@@ -15,18 +19,38 @@ export default function OrbitGalleryDemo({
   variant = "orbit",
   swapInterval = 3000,
   gap = 12,
+  idleRotationSpeed = 5,
+  scrollSensitivity = 0.06,
+  ringThickness = 37,
+  grayscale = false,
 }: OrbitGalleryDemoProps) {
   const color = toBlockColor(pickedColor);
 
+  if (variant === "circular-reel") {
+    return (
+      <div className="w-full -my-2 overflow-hidden rounded-2xl">
+        <OrbitGallery
+          variant="circular-reel"
+          color={color}
+          idleRotationSpeed={idleRotationSpeed}
+          scrollSensitivity={scrollSensitivity}
+          ringThickness={ringThickness}
+          grayscale={grayscale}
+          className="w-full"
+        />
+      </div>
+    );
+  }
+
   if (variant === "moving-bento") {
     return (
-      <div className="w-full overflow-hidden rounded-2xl border border-border bg-background p-2 sm:p-4">
+      <div className="w-full -my-2 overflow-hidden rounded-2xl bg-background p-2 sm:p-4">
         <OrbitGallery
           variant="moving-bento"
           color={color}
           swapInterval={swapInterval}
           gap={gap}
-          className="w-full py-0 sm:py-0"
+          className="w-full p-0 sm:p-0"
         />
       </div>
     );
