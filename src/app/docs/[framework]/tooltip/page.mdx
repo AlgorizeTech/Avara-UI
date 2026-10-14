@@ -324,6 +324,228 @@ export default function AnimatedTooltip() {
   );
 }`;
 
+export const usageStaggered = `import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/custom/blocks/TooltipBlock";
+import {
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  Compass,
+  Layers,
+  Sparkles,
+  Zap,
+} from "lucide-react";
+
+export default function StaggeredTooltip() {
+  return (
+    <TooltipProvider>
+      <div className="w-full max-w-xs sm:max-w-none flex flex-col sm:flex-row sm:items-center sm:justify-center gap-7 sm:gap-6">
+        {/* 1. Bottom Placement */}
+        <div className="self-center sm:self-auto order-1 sm:order-3">
+          <Tooltip>
+            <TooltipTrigger>
+              <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-card hover:bg-muted text-sm font-medium transition-colors">
+                <ArrowDown className="w-3.5 h-3.5 text-muted-foreground" />
+                <span>Bottom</span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="bottom"
+              showArrow
+              animated
+              staggered
+              sideOffset={8}
+              icon={<Zap className="w-4 h-4" />}
+              title="Bottom Tooltip"
+              description="Renders cleanly below without clipping."
+            />
+          </Tooltip>
+        </div>
+
+        {/* 2. Right Placement */}
+        <div className="self-start sm:self-auto order-2 sm:order-4">
+          <Tooltip>
+            <TooltipTrigger>
+              <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-card hover:bg-muted text-sm font-medium transition-colors">
+                <ArrowRight className="w-3.5 h-3.5 text-muted-foreground" />
+                <span>Right</span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="right"
+              showArrow
+              animated
+              staggered
+              sideOffset={8}
+              icon={<Layers className="w-4 h-4" />}
+              title="Right Tooltip"
+              description="Anchored smoothly to the right edge."
+            />
+          </Tooltip>
+        </div>
+
+        {/* 3. Top Placement */}
+        <div className="self-center sm:self-auto order-3 sm:order-2">
+          <Tooltip>
+            <TooltipTrigger>
+              <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-card hover:bg-muted text-sm font-medium transition-colors">
+                <ArrowUp className="w-3.5 h-3.5 text-muted-foreground" />
+                <span>Top</span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="top"
+              showArrow
+              animated
+              staggered
+              sideOffset={8}
+              icon={<Sparkles className="w-4 h-4" />}
+              title="Top Tooltip"
+              description="Positioned dynamically above the trigger."
+            />
+          </Tooltip>
+        </div>
+
+        {/* 4. Left Placement */}
+        <div className="self-end sm:self-auto order-4 sm:order-1">
+          <Tooltip>
+            <TooltipTrigger>
+              <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-card hover:bg-muted text-sm font-medium transition-colors">
+                <ArrowLeft className="w-3.5 h-3.5 text-muted-foreground" />
+                <span>Left</span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="left"
+              showArrow
+              animated
+              staggered
+              sideOffset={8}
+              icon={<Compass className="w-4 h-4" />}
+              title="Left Tooltip"
+              description="Attached to the left side with portal layout."
+            />
+          </Tooltip>
+        </div>
+      </div>
+    </TooltipProvider>
+  );
+}`;
+
+export const usageExpand = `import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/custom/blocks/TooltipBlock";
+import {
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  Compass,
+  Layers,
+  Sparkles,
+  Zap,
+} from "lucide-react";
+
+export default function ExpandTooltip() {
+  return (
+    <TooltipProvider>
+      <div className="w-full max-w-xs sm:max-w-none flex flex-col sm:flex-row sm:items-center sm:justify-center gap-7 sm:gap-6">
+        {/* 1. Bottom Placement (Height expands downwards) */}
+        <div className="self-center sm:self-auto order-1 sm:order-3">
+          <Tooltip>
+            <TooltipTrigger>
+              <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-card hover:bg-muted text-sm font-medium transition-colors">
+                <ArrowDown className="w-3.5 h-3.5 text-muted-foreground" />
+                <span>Bottom</span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="bottom"
+              showArrow
+              expand
+              sideOffset={8}
+              icon={<Zap className="w-4 h-4" />}
+              title="Bottom Tooltip"
+              description="Renders cleanly below without clipping."
+            />
+          </Tooltip>
+        </div>
+
+        {/* 2. Right Placement (Width expands rightwards) */}
+        <div className="self-start sm:self-auto order-2 sm:order-4">
+          <Tooltip>
+            <TooltipTrigger>
+              <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-card hover:bg-muted text-sm font-medium transition-colors">
+                <ArrowRight className="w-3.5 h-3.5 text-muted-foreground" />
+                <span>Right</span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="right"
+              showArrow
+              expand
+              sideOffset={8}
+              icon={<Layers className="w-4 h-4" />}
+              title="Right Tooltip"
+              description="Anchored smoothly to the right edge."
+            />
+          </Tooltip>
+        </div>
+
+        {/* 3. Top Placement (Height expands upwards) */}
+        <div className="self-center sm:self-auto order-3 sm:order-2">
+          <Tooltip>
+            <TooltipTrigger>
+              <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-card hover:bg-muted text-sm font-medium transition-colors">
+                <ArrowUp className="w-3.5 h-3.5 text-muted-foreground" />
+                <span>Top</span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="top"
+              showArrow
+              expand
+              sideOffset={8}
+              icon={<Sparkles className="w-4 h-4" />}
+              title="Top Tooltip"
+              description="Positioned dynamically above the trigger."
+            />
+          </Tooltip>
+        </div>
+
+        {/* 4. Left Placement (Width expands leftwards) */}
+        <div className="self-end sm:self-auto order-4 sm:order-1">
+          <Tooltip>
+            <TooltipTrigger>
+              <button className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border bg-card hover:bg-muted text-sm font-medium transition-colors">
+                <ArrowLeft className="w-3.5 h-3.5 text-muted-foreground" />
+                <span>Left</span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent
+              side="left"
+              showArrow
+              expand
+              sideOffset={8}
+              icon={<Compass className="w-4 h-4" />}
+              title="Left Tooltip"
+              description="Attached to the left side with portal layout."
+            />
+          </Tooltip>
+        </div>
+      </div>
+    </TooltipProvider>
+  );
+}`;
+
 <ExampleShowcase
   name="tooltip"
   columns={1}
@@ -386,6 +608,34 @@ export default function AnimatedTooltip() {
       ],
       props: { example: "animated" },
       usage: usageAnimated,
+    },
+    {
+      title: "With Staggered Content Animation",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "staggered",
+          value: "true",
+          effect:
+            "along with `animated` for a sequential entrance where the icon appears first, followed by the title, and then the description.",
+        },
+      ],
+      props: { example: "staggered" },
+      usage: usageStaggered,
+    },
+    {
+      title: "With Expanding Content",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "expand",
+          value: "true",
+          effect:
+            "to open as a compact title badge first, then smoothly expand its height (for top/bottom) or width (for left/right) to unveil the description.",
+        },
+      ],
+      props: { example: "expand" },
+      usage: usageExpand,
     },
   ]}
 />
@@ -508,6 +758,40 @@ export default function AnimatedTooltip() {
         </td>
         <td>
           Whether to enable the smooth pull-out animation that slides gently out from the trigger.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TooltipContent</code>
+        </td>
+        <td>
+          <code>staggered</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          Whether to animate child elements (icon &rarr; title &rarr; description) in a smooth staggered cascade.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>TooltipContent</code>
+        </td>
+        <td>
+          <code>expand</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          Whether to start with only title space and smoothly expand height (for top/bottom) or width (for left/right) to unveil the description.
         </td>
       </tr>
       <tr>

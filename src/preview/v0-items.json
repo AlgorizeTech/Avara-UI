@@ -434,7 +434,8 @@
     "moving-bento": "Gallery — Moving Bento",
     "circular-reel": "Gallery — Circular Reel",
     "3d-pill-carousel": "Gallery — 3D Pill Carousel",
-    "arc-carousel-gallery": "Gallery — Arc Carousel Gallery"
+    "arc-carousel-gallery": "Gallery — Arc Carousel Gallery",
+    "video-sphere-gallery": "Gallery — Video Sphere Gallery"
   },
   "glass-panel": {
     "four-shapes": "Glass Panel — Four shapes",
@@ -928,7 +929,9 @@
   "tooltip": {
     "without-arrow": "Tooltip — Without Arrow",
     "with-arrow": "Tooltip — With Arrow",
-    "with-arrow-animated": "Tooltip — With Arrow & Animated"
+    "with-arrow-animated": "Tooltip — With Arrow & Animated",
+    "with-staggered-content-animation": "Tooltip — With Staggered Content Animation",
+    "with-expanding-content": "Tooltip — With Expanding Content"
   },
   "user-graph": {
     "user-graph": "User Graph"

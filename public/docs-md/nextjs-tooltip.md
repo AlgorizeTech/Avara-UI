@@ -155,6 +155,104 @@ export default function AnimatedTooltip() {
   );
 }`;
 
+export const usageStaggered = `import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/custom/blocks/TooltipBlock";
+
+export default function StaggeredTooltip() {
+  return (
+
+        {/* 1. Bottom Placement */}
+
+                Bottom
+
+            }
+              title="Bottom Tooltip"
+              description="Renders cleanly below without clipping."
+            />
+
+        {/* 2. Right Placement */}
+
+                Right
+
+            }
+              title="Right Tooltip"
+              description="Anchored smoothly to the right edge."
+            />
+
+        {/* 3. Top Placement */}
+
+                Top
+
+            }
+              title="Top Tooltip"
+              description="Positioned dynamically above the trigger."
+            />
+
+        {/* 4. Left Placement */}
+
+                Left
+
+            }
+              title="Left Tooltip"
+              description="Attached to the left side with portal layout."
+            />
+
+  );
+}`;
+
+export const usageExpand = `import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/custom/blocks/TooltipBlock";
+
+export default function ExpandTooltip() {
+  return (
+
+        {/* 1. Bottom Placement */}
+
+                Bottom
+
+            }
+              title="Bottom Tooltip"
+              description="Renders cleanly below without clipping."
+            />
+
+        {/* 2. Right Placement */}
+
+                Right
+
+            }
+              title="Right Tooltip"
+              description="Anchored smoothly to the right edge."
+            />
+
+        {/* 3. Top Placement */}
+
+                Top
+
+            }
+              title="Top Tooltip"
+              description="Positioned dynamically above the trigger."
+            />
+
+        {/* 4. Left Placement */}
+
+                Left
+
+            }
+              title="Left Tooltip"
+              description="Attached to the left side with portal layout."
+            />
+
+  );
+}`;
+
 ## Installation
 
 Register the @algorize-ui registry once per project, then add the component:
@@ -237,6 +335,26 @@ npx shadcn@latest add @algorize-ui/tooltip
           false
 
           Whether to enable the smooth pull-out animation that slides gently out from the trigger.
+
+          TooltipContent
+
+          staggered
+
+          boolean
+
+          false
+
+          Whether to animate child elements (icon → title → description) in a smooth staggered cascade.
+
+          TooltipContent
+
+          expand
+
+          boolean
+
+          false
+
+          Whether to start with only title space and smoothly expand height (for top/bottom) or width (for left/right) to unveil the description.
 
           TooltipContent
 

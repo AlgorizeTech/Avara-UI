@@ -5,7 +5,7 @@ import { toBlockColor } from "@/lib/accent";
 
 interface GalleryDemoProps {
   color?: string;
-  variant?: "orbit" | "orbit-gallery" | "moving-bento" | "circular-reel" | "pill-carousel" | "arc-carousel" | "arc-carousel-gallery";
+  variant?: "orbit" | "orbit-gallery" | "moving-bento" | "circular-reel" | "pill-carousel" | "arc-carousel" | "arc-carousel-gallery" | "video-sphere" | "video-sphere-gallery";
   swapInterval?: number;
   gap?: number;
   idleRotationSpeed?: number;
@@ -20,6 +20,12 @@ interface GalleryDemoProps {
   curve?: number;
   cardSize?: number;
   autoScrollSpeed?: number;
+  radius?: number;
+  itemCount?: number;
+  autoRotateSpeed?: number;
+  itemWidth?: number;
+  itemHeight?: number;
+  blurStrength?: number;
 }
 
 export default function GalleryDemo({
@@ -39,8 +45,32 @@ export default function GalleryDemo({
   curve = -200,
   cardSize = 220,
   autoScrollSpeed = 0.22,
+  radius = 280,
+  itemCount = 35,
+  autoRotateSpeed = 0.0015,
+  itemWidth = 110,
+  itemHeight = 150,
+  blurStrength = 12,
 }: GalleryDemoProps) {
   const color = toBlockColor(pickedColor);
+
+  if (variant === "video-sphere" || variant === "video-sphere-gallery") {
+    return (
+      <div className="w-full -my-2 overflow-hidden rounded-2xl bg-background">
+        <Gallery
+          variant="video-sphere"
+          color={color}
+          radius={radius}
+          itemCount={itemCount}
+          autoRotateSpeed={autoRotateSpeed}
+          itemWidth={itemWidth}
+          itemHeight={itemHeight}
+          blurStrength={blurStrength}
+          className="w-full"
+        />
+      </div>
+    );
+  }
 
   if (variant === "arc-carousel" || variant === "arc-carousel-gallery") {
     return (
@@ -110,15 +140,6 @@ export default function GalleryDemo({
       <Gallery
         variant="orbit"
         color={color}
-        badgeText="Identity & animation studio"
-        badgeHref="#"
-        title="Movement is what"
-        titleAccent="people notice first."
-        subtitle="We design brand identities and the animation that brings them to life — from early sketches to the live release."
-        primaryActionLabel="Work with us"
-        primaryActionHref="#"
-        secondaryActionLabel="View projects"
-        secondaryActionHref="#"
         className="w-full py-12 sm:py-16 lg:py-20"
       />
     </div>

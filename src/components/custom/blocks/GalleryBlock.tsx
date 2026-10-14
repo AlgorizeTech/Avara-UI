@@ -1,7 +1,8 @@
 "use client";
 
 import React, { forwardRef, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, memo } from "react";
-import { Aperture, ArrowRight, ArrowUpRight, Camera, Compass, MapPin, Sparkles } from "lucide-react";
+import { createPortal } from "react-dom";
+import { Aperture, ArrowRight, ArrowUpRight, Camera, Compass, MapPin, Sparkles, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import { Flip } from "gsap/dist/Flip";
@@ -128,31 +129,50 @@ export interface ArcCarouselProps extends React.HTMLAttributes<HTMLDivElement> {
   onCardClick?: (item: ArcCarouselItem, index: number) => void;
 }
 
-export interface GalleryProps extends React.HTMLAttributes<HTMLElement> {
-  /** Gallery variant: "orbit" | "orbit-gallery" (circular revolving ring), "moving-bento" (GSAP Flip self-rearranging grid), "circular-reel" (interactive scroll-driven spinner), "pill-carousel" (3D layered pill carousel), or "arc-carousel" / "arc-carousel-gallery" (3D cylindrical arc carousel). */
-  variant?: "orbit" | "orbit-gallery" | "moving-bento" | "circular-reel" | "pill-carousel" | "arc-carousel" | "arc-carousel-gallery";
-  /** Small tracked line above the headline, with a spark before it. */
-  badgeText?: string;
-  badgeHref?: string;
-  /** The first line of the headline. */
+export interface VideoSphereItem {
+  id?: string;
+  /** Media type: "image" or "video". If omitted, inferred from file extension. */
+  type?: "image" | "video";
+  src: string;
+  poster?: string;
   title?: string;
-  /** The second line, set in the accent colour. */
-  titleAccent?: string;
-  subtitle?: string;
-  primaryActionLabel?: string;
-  primaryActionHref?: string;
-  secondaryActionLabel?: string;
-  secondaryActionHref?: string;
+  description?: string;
+  link?: string;
+}
+
+export interface VideoSphereGalleryProps extends React.HTMLAttributes<HTMLDivElement> {
+  items?: VideoSphereItem[];
+  radius?: number;
+  itemCount?: number;
+  autoRotateSpeed?: number;
+  itemWidth?: number;
+  itemHeight?: number;
+  perspective?: number;
+  blurStrength?: number;
+  autoRotate?: boolean;
+  muted?: boolean;
+  loop?: boolean;
+  unmuteOnHover?: boolean;
+  maxConcurrentVideos?: number;
+  hoverScale?: number;
+  enableHoverScale?: boolean;
+  enablePopup?: boolean;
+  popupWidth?: number;
+  popupHeight?: number;
+  cardBorderColor?: string;
+  color?: string;
+  onCardClick?: (item: VideoSphereItem, index: number) => void;
+}
+
+export interface GalleryProps extends React.HTMLAttributes<HTMLElement> {
+  /** Gallery variant: "orbit" | "orbit-gallery" (circular revolving ring), "moving-bento" (GSAP Flip self-rearranging grid), "circular-reel" (interactive scroll-driven spinner), "pill-carousel" (3D layered pill carousel), "arc-carousel" / "arc-carousel-gallery" (3D cylindrical arc carousel), or "video-sphere" / "video-sphere-gallery" (interactive 3D video sphere showcase). */
+  variant?: "orbit" | "orbit-gallery" | "moving-bento" | "circular-reel" | "pill-carousel" | "arc-carousel" | "arc-carousel-gallery" | "video-sphere" | "video-sphere-gallery";
   /** The photographs on the orbit ring, in orbit order. */
   images?: string[];
   /** Seconds for one full revolution of the orbit ring. */
   duration?: number;
-  /** Small dotted facts under the actions. */
-  highlights?: OrbitHighlight[];
   /** Accent colour — a preset name (indigo, rose, emerald, zinc) or any CSS colour. */
   color?: string;
-  /** Pass `next/link` to keep client-side navigation. */
-  linkComponent?: React.ElementType;
 
   // Moving Bento specific props
   /** Bento items for the "moving-bento" variant. */
@@ -221,6 +241,38 @@ export interface GalleryProps extends React.HTMLAttributes<HTMLElement> {
   inertia?: number;
   /** Card border radius in px for the arc carousel. */
   borderRadius?: number;
+
+  // Video Sphere specific props
+  /** Items for the "video-sphere" variant. */
+  sphereItems?: VideoSphereItem[];
+  /** Sphere radius in px (defaults to 280). */
+  radius?: number;
+  /** Number of cards distributed around the sphere (defaults to 30). */
+  itemCount?: number;
+  /** Speed of passive auto-rotation drift (defaults to 0.0015). */
+  autoRotateSpeed?: number;
+  /** Card width in px (defaults to 120). */
+  itemWidth?: number;
+  /** Card height in px (defaults to 165). */
+  itemHeight?: number;
+  /** Max blur in px for cards on the far side of the sphere (defaults to 12). */
+  blurStrength?: number;
+  /** Whether to unmute audio on card hover (defaults to false). */
+  unmuteOnHover?: boolean;
+  /** Maximum number of front-facing videos actively playing at once (defaults to 12). */
+  maxConcurrentVideos?: number;
+  /** Whether hovering zooms a card (defaults to true). */
+  enableHoverScale?: boolean;
+  /** Whether clicking opens a popup preview modal (defaults to true). */
+  enablePopup?: boolean;
+  /** Width in px of popup modal (defaults to 480). */
+  popupWidth?: number;
+  /** Height in px of popup modal (defaults to 500). */
+  popupHeight?: number;
+  /** Border color for sphere cards (defaults to theme color var(--primary)). */
+  cardBorderColor?: string;
+  /** Click callback for gallery cards. */
+  onCardClick?: (item: any, index: number) => void;
 }
 
 export type OrbitGalleryProps = GalleryProps;
@@ -572,6 +624,115 @@ const DEFAULT_ARC_HIGHLIGHTS: OrbitHighlight[] = [
   { label: "Momentum Physics", color: "#10b981" },
   { label: "Concave Curvature", color: "#f59e0b" },
 ];
+
+export const DEFAULT_VIDEO_SPHERE_ITEMS: VideoSphereItem[] = [
+  {
+    id: "sphere-1",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+    title: "Alpine Horizons",
+    description: "Granite monoliths rising above early morning valley fog",
+  },
+  {
+    id: "sphere-2",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
+    title: "Emerald Canopy",
+    description: "Sunlit trails winding through ancient coastal redwood forests",
+  },
+  {
+    id: "sphere-3",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+    title: "Whispering Peaks",
+    description: "Layers of mountain silhouettes veiled in twilight atmospheric mist",
+  },
+  {
+    id: "sphere-4",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+    title: "Sunbeam Sanctuary",
+    description: "Golden rays breaking through tall evergreens after summer rain",
+  },
+  {
+    id: "sphere-5",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg",
+    title: "Verdant Valleys",
+    description: "Rolling emerald highlands sweeping toward dramatic skies",
+  },
+  {
+    id: "sphere-6",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
+    title: "Glacial Reflections",
+    description: "Mirror-still alpine lake echoing snow-dusted jagged ridge lines",
+  },
+  {
+    id: "sphere-7",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+    title: "Untamed Wilds",
+    description: "Untouched wilderness under vibrant open skies",
+  },
+  {
+    id: "sphere-8",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+    title: "Golden Hour Ridge",
+    description: "Sun setting behind sharp mountain contours",
+  },
+  {
+    id: "sphere-9",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148863/photo-1447752875215-b2761acb3c5d-1790148865109.jpg",
+    title: "Autumn Stream",
+    description: "Gentle brook weaving through vibrant autumn woods",
+  },
+  {
+    id: "sphere-10",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1507525428034-b723cf961d3e-1790146212208.jpg",
+    title: "Tropical Coast",
+    description: "Crystal waters washing onto warm golden sands",
+  },
+  {
+    id: "sphere-11",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158813/photo-1433086966358-54859d0ed716-1790158812209.jpg",
+    title: "Cascading Falls",
+    description: "Hidden waterfall plunging into clear mountain pools",
+  },
+  {
+    id: "sphere-12",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
+    title: "Alpine Mist",
+    description: "Snow-covered peaks shrouded in high-altitude clouds",
+  },
+  {
+    id: "sphere-13",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145142/photo-1500530855697-b586d89ba3ee-1790145143493.jpg",
+    title: "Golden Waters",
+    description: "Sunset glow reflecting over tranquil lake waters",
+  },
+  {
+    id: "sphere-14",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148863/photo-1473448912268-2022ce9509d8-1790148865110.jpg",
+    title: "Pine Forest",
+    description: "Lush green pine trees greeting early morning light",
+  },
+  {
+    id: "sphere-15",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158814/photo-1518495973542-4542c06a5843-1790158812213.jpg",
+    title: "Sunlit Trees",
+    description: "Dappled sunlight filtering through summer leaves",
+  },
+];
+
 
 // ==========================================
 // MOVING BENTO GRID DEFINITIONS
@@ -2127,97 +2288,588 @@ export const ArcCarouselGallery = forwardRef<HTMLDivElement, ArcCarouselProps>(
 ArcCarouselGallery.displayName = "ArcCarouselGallery";
 
 // ------------------------------------------
-// Isolated Pointer Trail (Memoized to prevent parent re-renders)
+// 3D VIDEO SPHERE GALLERY COMPONENT
+// Inspired by Framer Video Sphere Gallery
 // ------------------------------------------
-const PointerTrail = memo(
-  ({ containerRef }: { containerRef: React.RefObject<HTMLElement | null> }) => {
-    const targetRef = useRef({ x: -100, y: -100 });
-    const [pointer, setPointer] = useState({ x: -100, y: -100 });
-    const [trail, setTrail] = useState<{ x: number; y: number; id: number }[]>([]);
-    const [hovered, setHovered] = useState(false);
+
+export const VideoSphereGallery = forwardRef<HTMLDivElement, VideoSphereGalleryProps>(
+  (
+    {
+      items = DEFAULT_VIDEO_SPHERE_ITEMS,
+      radius = 280,
+      itemCount = 35,
+      autoRotateSpeed = 0.0015,
+      itemWidth = 110,
+      itemHeight = 150,
+      perspective = 1200,
+      blurStrength = 12,
+      autoRotate = true,
+      muted = true,
+      loop = true,
+      unmuteOnHover = false,
+      maxConcurrentVideos = 12,
+      hoverScale = 1.1,
+      enableHoverScale = true,
+      enablePopup = true,
+      popupWidth = 400,
+      popupHeight = 500,
+      cardBorderColor,
+      color,
+      className,
+      style,
+      onCardClick,
+      ...props
+    },
+    ref,
+  ) => {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+
+    const [mounted, setMounted] = useState(false);
+    useEffect(() => {
+      setMounted(true);
+    }, []);
+
+    const [selectedItem, setSelectedItem] = useState<VideoSphereItem | null>(null);
+    const selectedItemRef = useRef<VideoSphereItem | null>(null);
+    selectedItemRef.current = selectedItem;
+
+    const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+    const hoveredIndexRef = useRef<number | null>(null);
+    hoveredIndexRef.current = hoveredIndex;
+
+    const [isGrabbing, setIsGrabbing] = useState(false);
+    const isDragging = useRef(false);
+    const hasMoved = useRef(false);
+    const dragStartPos = useRef({ x: 0, y: 0 });
+    const lastMousePos = useRef({ x: 0, y: 0 });
+    const velocityX = useRef(0);
+    const velocityY = useRef(0);
+    const cardPressRef = useRef<{ item: VideoSphereItem; idx: number; x: number; y: number; time: number } | null>(null);
+    const capturedPointerId = useRef<number | null>(null);
+
+    const rotX = useRef(0);
+    const rotY = useRef(0);
+    const currentRotX = useRef(0);
+    const currentRotY = useRef(0);
+    const isVisibleRef = useRef(true);
+    const lastCheckTime = useRef(0);
+
+    // Responsive sizing using ResizeObserver & window resize fallback
+    const [responsiveRadius, setResponsiveRadius] = useState(radius);
+    const [responsiveWidth, setResponsiveWidth] = useState(itemWidth);
+    const [responsiveHeight, setResponsiveHeight] = useState(itemHeight);
 
     useEffect(() => {
       const el = containerRef.current;
       if (!el) return;
 
-      const handleMove = (e: MouseEvent) => {
-        const rect = el.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        targetRef.current = { x, y };
-        setPointer({ x, y });
-      };
-
-      const handleEnter = () => {
-        setHovered(true);
-      };
-
-      const handleLeave = () => {
-        setHovered(false);
-        targetRef.current = { x: -100, y: -100 };
-        setPointer({ x: -100, y: -100 });
-        setTrail([]);
-      };
-
-      el.addEventListener("mousemove", handleMove);
-      el.addEventListener("mouseenter", handleEnter);
-      el.addEventListener("mouseleave", handleLeave);
-
-      return () => {
-        el.removeEventListener("mousemove", handleMove);
-        el.removeEventListener("mouseenter", handleEnter);
-        el.removeEventListener("mouseleave", handleLeave);
-      };
-    }, [containerRef]);
-
-    useEffect(() => {
-      if (!hovered) return;
-      let frame: number;
-      let last = 0;
-      const loop = (t: number) => {
-        if (t - last > 20) {
-          last = t;
-          const { x, y } = targetRef.current;
-          setTrail((prev) => [{ x, y, id: t }, ...prev.slice(0, 7)]);
+      const updateSize = () => {
+        const w = el.clientWidth || (typeof window !== "undefined" ? window.innerWidth : 1200);
+        if (w < 380) {
+          // Extra small phone (320px - 379px)
+          setResponsiveRadius(Math.min(radius * 0.52, 145));
+          setResponsiveWidth(Math.min(itemWidth * 0.65, 72));
+          setResponsiveHeight(Math.min(itemHeight * 0.65, 98));
+        } else if (w < 500) {
+          // Small phone (380px - 499px)
+          setResponsiveRadius(Math.min(radius * 0.62, 172));
+          setResponsiveWidth(Math.min(itemWidth * 0.74, 82));
+          setResponsiveHeight(Math.min(itemHeight * 0.74, 112));
+        } else if (w < 768) {
+          // Large mobile / small tablet (500px - 767px)
+          setResponsiveRadius(Math.min(radius * 0.75, 210));
+          setResponsiveWidth(Math.min(itemWidth * 0.85, 94));
+          setResponsiveHeight(Math.min(itemHeight * 0.85, 128));
+        } else if (w < 1024) {
+          // Tablet (768px - 1023px)
+          setResponsiveRadius(Math.min(radius * 0.88, 245));
+          setResponsiveWidth(Math.min(itemWidth * 0.92, 102));
+          setResponsiveHeight(Math.min(itemHeight * 0.92, 138));
+        } else {
+          // Desktop (1024px+)
+          setResponsiveRadius(radius);
+          setResponsiveWidth(itemWidth);
+          setResponsiveHeight(itemHeight);
         }
-        frame = requestAnimationFrame(loop);
       };
-      frame = requestAnimationFrame(loop);
-      return () => cancelAnimationFrame(frame);
-    }, [hovered]);
 
-    if (!hovered) return null;
+      updateSize();
+
+      if (typeof ResizeObserver !== "undefined") {
+        const ro = new ResizeObserver(() => updateSize());
+        ro.observe(el);
+        return () => ro.disconnect();
+      }
+
+      window.addEventListener("resize", updateSize);
+      return () => window.removeEventListener("resize", updateSize);
+    }, [radius, itemWidth, itemHeight]);
+
+    // Proportionally scale 3D perspective to preserve field-of-view on all viewports
+    const responsivePerspective = useMemo(() => {
+      return Math.round(perspective * (responsiveRadius / radius));
+    }, [perspective, responsiveRadius, radius]);
+
+    // Populate display items up to itemCount
+    const displayItems = useMemo(() => {
+      const valid = (items || []).filter((i) => i && i.src);
+      const source = valid.length > 0 ? valid : DEFAULT_VIDEO_SPHERE_ITEMS;
+      const count = Math.max(itemCount, source.length);
+      const result: VideoSphereItem[] = [];
+      for (let i = 0; i < count; i++) {
+        result.push(source[i % source.length]);
+      }
+      return result;
+    }, [items, itemCount]);
+
+    // Calculate spherical distribution coordinates (Fibonacci spiral sphere)
+    const positions = useMemo(() => {
+      const result: { x: number; y: number; z: number }[] = [];
+      const total = displayItems.length;
+      const goldenAngle = Math.PI * (3 - Math.sqrt(5));
+      for (let i = 0; i < total; i++) {
+        const yRatio = total > 1 ? 1 - (i / (total - 1)) * 2 : 0;
+        const radiusAtY = Math.sqrt(Math.max(0, 1 - yRatio * yRatio));
+        const theta = goldenAngle * i;
+        result.push({
+          x: Math.cos(theta) * radiusAtY * responsiveRadius,
+          y: yRatio * responsiveRadius,
+          z: Math.sin(theta) * radiusAtY * responsiveRadius,
+        });
+      }
+      return result;
+    }, [displayItems.length, responsiveRadius]);
+
+    // Viewport intersection observer to pause when offscreen
+    useEffect(() => {
+      const el = containerRef.current;
+      if (!el || typeof IntersectionObserver === "undefined") return;
+      const obs = new IntersectionObserver(
+        ([e]) => {
+          isVisibleRef.current = e.isIntersecting;
+        },
+        { threshold: 0.05 },
+      );
+      obs.observe(el);
+      return () => obs.disconnect();
+    }, []);
+
+    // 60 FPS Animation & 3D projection loop
+    useEffect(() => {
+      let animId: number;
+
+      const frame = (time: number) => {
+        // Auto-rotation when not interacting or modal open
+        if (autoRotate && !isDragging.current && hoveredIndexRef.current === null && !selectedItemRef.current) {
+          rotY.current += autoRotateSpeed;
+        }
+
+        // Smooth spring-like lerp towards target rotation angles
+        currentRotX.current += (rotX.current - currentRotX.current) * 0.08;
+        currentRotY.current += (rotY.current - currentRotY.current) * 0.08;
+
+        const cosX = Math.cos(currentRotX.current);
+        const sinX = Math.sin(currentRotX.current);
+        const cosY = Math.cos(currentRotY.current);
+        const sinY = Math.sin(currentRotY.current);
+
+        const posLen = positions.length;
+        const depthList: { idx: number; z: number }[] = [];
+
+        for (let i = 0; i < posLen; i++) {
+          const p = positions[i];
+          const el = cardRefs.current[i];
+          if (!el) continue;
+
+          // 3D camera projection matching Framer
+          const px = p.x * cosY + p.z * sinY;
+          const py = p.y * cosX + (p.z * cosY - p.x * sinY) * sinX;
+          const pz = (p.z * cosY - p.x * sinY) * cosX - p.y * sinX;
+
+          depthList.push({ idx: i, z: pz });
+
+          const isHov = hoveredIndexRef.current === i;
+          const depth = Math.max(0, (responsiveRadius - pz) / (responsiveRadius * 2));
+          const baseScale = Math.max(0.45, Math.min(1.2, 0.5 + ((pz + responsiveRadius) / (responsiveRadius * 2)) * 0.7));
+          const scale = isHov ? (enableHoverScale ? baseScale * hoverScale : baseScale) : baseScale;
+          const opacity = isHov ? 1 : Math.max(0.1, Math.min(1, 0.1 + ((pz + responsiveRadius) / (responsiveRadius * 2)) * 0.9));
+          const zIndex = isHov ? 2000 : Math.round(pz + responsiveRadius);
+          const blur = isHov ? 0 : depth * blurStrength;
+          const gray = isHov ? 0 : depth * 100;
+
+          el.style.transform = `translate3d(calc(-50% + ${px.toFixed(1)}px), calc(-50% + ${py.toFixed(1)}px), ${pz.toFixed(1)}px) scale(${scale.toFixed(3)})`;
+          el.style.opacity = `${opacity.toFixed(2)}`;
+          el.style.zIndex = `${zIndex}`;
+          el.style.filter = `blur(${blur.toFixed(1)}px) grayscale(${gray.toFixed(0)}%)`;
+          el.style.pointerEvents = pz > -responsiveRadius * 0.35 ? "auto" : "none";
+        }
+
+        // Playback optimization: throttle check every 150ms
+        if (time - lastCheckTime.current > 150) {
+          lastCheckTime.current = time;
+          if (isVisibleRef.current) {
+            depthList.sort((a, b) => b.z - a.z);
+            const playSet = new Set<number>();
+            const limit = Math.min(maxConcurrentVideos, depthList.length);
+            for (let j = 0; j < limit; j++) {
+              if (depthList[j].z > -responsiveRadius * 0.25) {
+                playSet.add(depthList[j].idx);
+              }
+            }
+            videoRefs.current.forEach((v, idx) => {
+              if (!v) return;
+              if (playSet.has(idx)) {
+                v.play().catch(() => {});
+              } else {
+                v.pause();
+              }
+            });
+          }
+        }
+
+        animId = requestAnimationFrame(frame);
+      };
+
+      animId = requestAnimationFrame(frame);
+      return () => cancelAnimationFrame(animId);
+    }, [positions, responsiveRadius, autoRotate, autoRotateSpeed, blurStrength, enableHoverScale, hoverScale, maxConcurrentVideos]);
+
+    // Pointer events for drag navigation
+    const handlePointerDown = (e: React.PointerEvent) => {
+      isDragging.current = true;
+      hasMoved.current = false;
+      dragStartPos.current = { x: e.clientX, y: e.clientY };
+      lastMousePos.current = { x: e.clientX, y: e.clientY };
+      velocityX.current = 0;
+      velocityY.current = 0;
+      // Do NOT setPointerCapture on down! That captures pointer events and swallows clicks on child cards!
+    };
+
+    const handlePointerMove = (e: React.PointerEvent) => {
+      if (!isDragging.current) return;
+      const dx = e.clientX - lastMousePos.current.x;
+      const dy = e.clientY - lastMousePos.current.y;
+      const totalDist = Math.hypot(e.clientX - dragStartPos.current.x, e.clientY - dragStartPos.current.y);
+
+      // Only engage drag rotation if moved more than 7px
+      if (totalDist > 7) {
+        hasMoved.current = true;
+        setIsGrabbing(true);
+        if (capturedPointerId.current === null) {
+          try {
+            (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+            capturedPointerId.current = e.pointerId;
+          } catch {}
+        }
+      }
+
+      if (hasMoved.current) {
+        velocityX.current = dx * 0.004;
+        velocityY.current = dy * 0.004;
+        rotY.current += dx * 0.004;
+        rotX.current += dy * 0.004;
+        rotX.current = Math.max(-1.35, Math.min(1.35, rotX.current));
+      }
+      lastMousePos.current = { x: e.clientX, y: e.clientY };
+    };
+
+    const handlePointerUp = (e: React.PointerEvent) => {
+      if (!isDragging.current) return;
+      isDragging.current = false;
+      setIsGrabbing(false);
+
+      if (capturedPointerId.current !== null) {
+        try {
+          (e.currentTarget as HTMLElement).releasePointerCapture(capturedPointerId.current);
+        } catch {}
+        capturedPointerId.current = null;
+      }
+
+      // Momentum carry only if user actually dragged
+      if (hasMoved.current) {
+        rotY.current += velocityX.current * 8;
+        rotX.current += velocityY.current * 8;
+        rotX.current = Math.max(-1.35, Math.min(1.35, rotX.current));
+      } else if (cardPressRef.current) {
+        // Direct tap/click fallback if pointer release was captured
+        const press = cardPressRef.current;
+        const dist = Math.hypot(e.clientX - press.x, e.clientY - press.y);
+        const elapsed = Date.now() - press.time;
+        if (dist < 15 && elapsed < 800) {
+          handleCardSelect(press.item, press.idx);
+        }
+      }
+
+      cardPressRef.current = null;
+      velocityX.current = 0;
+      velocityY.current = 0;
+    };
+
+    const handleWheel = (e: React.WheelEvent) => {
+      rotY.current += e.deltaX * 0.001;
+      rotX.current += e.deltaY * 0.001;
+      rotX.current = Math.max(-1.35, Math.min(1.35, rotX.current));
+    };
+
+    const handleCardSelect = (item: VideoSphereItem, idx: number) => {
+      if (onCardClick) onCardClick(item, idx);
+      if (enablePopup) setSelectedItem(item);
+    };
+
+    // Keyboard navigation (Escape to close modal)
+    useEffect(() => {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape") setSelectedItem(null);
+      };
+      window.addEventListener("keydown", handleKeyDown);
+      return () => window.removeEventListener("keydown", handleKeyDown);
+    }, []);
 
     return (
-      <div className="pointer-events-none absolute inset-0 z-50 overflow-hidden" aria-hidden>
-        {trail.map((pt, i) => {
-          const size = Math.max(4, 18 - i * 2);
-          const opacity = (trail.length - i) / trail.length;
-          return (
-            <div
-              key={pt.id + i}
-              className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full transition-opacity duration-150"
-              style={{
-                left: `${pt.x}px`,
-                top: `${pt.y}px`,
-                width: `${size}px`,
-                height: `${size}px`,
-                backgroundColor: "var(--hero-accent-text)",
-                opacity: opacity * 0.7,
-              }}
-            />
-          );
-        })}
+      <div
+        ref={containerRef}
+        className={cn(
+          "relative flex h-[460px] sm:h-[560px] md:h-[640px] lg:h-[700px] w-full items-center justify-center overflow-hidden select-none bg-background text-foreground transition-colors duration-300",
+          className,
+        )}
+        style={{ ...accentStyle(color), ...style }}
+        {...props}
+      >
+        {/* Ambient radial glow matching Framer */}
         <div
-          className="pointer-events-none absolute size-4 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg"
-          style={{ left: `${pointer.x}px`, top: `${pointer.y}px`, backgroundColor: "var(--hero-accent-text)" }}
+          style={{
+            position: "absolute",
+            width: "60%",
+            height: "60%",
+            top: "20%",
+            left: "20%",
+            borderRadius: "50%",
+            background: "var(--color-accent, rgba(99, 102, 241, 0.09))",
+            filter: "blur(120px)",
+            pointerEvents: "none",
+          }}
         />
+
+        {/* Grain / noise texture overlay matching Framer */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            pointerEvents: "none",
+            opacity: 0.03,
+            backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')",
+            mixBlendMode: "overlay",
+          }}
+        />
+
+        {/* 3D Sphere Interactive Stage */}
+        <div
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerUp}
+          onWheel={handleWheel}
+          style={{
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            perspective: `${responsivePerspective}px`,
+            perspectiveOrigin: "50% 50%",
+            transformStyle: "preserve-3d",
+            cursor: isGrabbing ? "grabbing" : "grab",
+            touchAction: "none",
+          }}
+        >
+          <div
+            style={{
+              position: "relative",
+              pointerEvents: "none",
+              transformStyle: "preserve-3d",
+            }}
+          >
+            {displayItems.map((item, idx) => {
+              const isVideo = item.type === "video" || (!item.type && !item.src.match(/\.(jpg|jpeg|png|webp|gif|svg)$/i));
+              const isHov = hoveredIndex === idx;
+
+              return (
+                <div
+                  key={(item.id || item.src) + idx}
+                  ref={(el) => {
+                    cardRefs.current[idx] = el;
+                  }}
+                  onMouseEnter={() => {
+                    setHoveredIndex(idx);
+                    if (unmuteOnHover && videoRefs.current[idx]) {
+                      videoRefs.current[idx]!.muted = false;
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    setHoveredIndex(null);
+                    if (unmuteOnHover && videoRefs.current[idx]) {
+                      videoRefs.current[idx]!.muted = true;
+                    }
+                  }}
+                  onPointerDown={(e) => {
+                    cardPressRef.current = {
+                      item,
+                      idx,
+                      x: e.clientX,
+                      y: e.clientY,
+                      time: Date.now(),
+                    };
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (!hasMoved.current) {
+                      handleCardSelect(item, idx);
+                    }
+                  }}
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    width: responsiveWidth,
+                    height: responsiveHeight,
+                    borderRadius: responsiveWidth < 85 ? "10px" : "12px",
+                    overflow: "hidden",
+                    backgroundColor: "#111",
+                    border: `1.5px solid ${cardBorderColor || "var(--primary)"}`,
+                    boxShadow: "none",
+                    cursor: "pointer",
+                    pointerEvents: "auto",
+                    willChange: "transform, opacity, filter",
+                  }}
+                >
+                  {isVideo ? (
+                    <video
+                      ref={(el) => {
+                        videoRefs.current[idx] = el;
+                      }}
+                      src={item.src}
+                      poster={item.poster}
+                      muted={muted}
+                      autoPlay
+                      loop={loop}
+                      playsInline
+                      preload="metadata"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        userSelect: "none",
+                        pointerEvents: "none",
+                      }}
+                    />
+                  ) : (
+                    <img
+                      src={item.src}
+                      alt={item.title || ""}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                        userSelect: "none",
+                        pointerEvents: "none",
+                      }}
+                    />
+                  )}
+
+                  {/* Subtle bottom gradient overlay */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      background: "linear-gradient(to top, rgba(0,0,0,0.5), transparent)",
+                      pointerEvents: "none",
+                    }}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Fullscreen Video / Image Preview Lightbox Modal */}
+        {mounted && selectedItem && enablePopup && typeof document !== "undefined" && createPortal(
+          <div
+            onClick={() => setSelectedItem(null)}
+            className="fixed inset-0 z-[99999] flex items-center justify-center bg-background/80 dark:bg-black/85 backdrop-blur-md p-3 sm:p-6 md:p-8 animate-in fade-in duration-200 cursor-pointer"
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="relative max-w-5xl max-h-[90vh] w-auto h-auto overflow-hidden rounded-2xl bg-card text-card-foreground shadow-2xl animate-in zoom-in-95 duration-200 cursor-default flex flex-col items-center justify-center border border-border"
+              style={{
+                borderColor: cardBorderColor || undefined,
+              }}
+            >
+              {/* Close Button with mobile-friendly touch area */}
+              <button
+                type="button"
+                onClick={() => setSelectedItem(null)}
+                className="absolute top-3 right-3 z-30 size-9 sm:size-10 rounded-full bg-background/80 hover:bg-background text-foreground border border-border flex items-center justify-center transition-colors cursor-pointer shadow-md backdrop-blur-sm"
+                aria-label="Close preview"
+              >
+                <X className="size-4 sm:size-5" />
+              </button>
+
+              {/* Media container */}
+              <div className="relative max-h-[82vh] max-w-[92vw] overflow-hidden flex items-center justify-center bg-black/5 dark:bg-black rounded-2xl">
+                {selectedItem.type === "video" || (!selectedItem.type && !selectedItem.src.match(/\.(jpg|jpeg|png|webp|gif|svg)$/i)) ? (
+                  <video
+                    key={selectedItem.src}
+                    src={selectedItem.src}
+                    poster={selectedItem.poster}
+                    autoPlay
+                    controls
+                    loop
+                    playsInline
+                    className="max-h-[82vh] max-w-[92vw] w-auto h-auto object-contain rounded-2xl"
+                    ref={(el) => {
+                      if (el) {
+                        el.play().catch(() => {
+                          el.muted = true;
+                          el.play().catch(() => {});
+                        });
+                      }
+                    }}
+                  />
+                ) : (
+                  <img
+                    key={selectedItem.src}
+                    src={selectedItem.src}
+                    alt={selectedItem.title || ""}
+                    className="max-h-[82vh] max-w-[92vw] w-auto h-auto object-contain rounded-2xl"
+                  />
+                )}
+              </div>
+
+              {/* Title footer if available */}
+              {selectedItem.title && (
+                <div className="absolute inset-x-0 bottom-0 z-20 p-4 sm:p-5 bg-gradient-to-t from-black/90 via-black/50 to-transparent pointer-events-none rounded-b-2xl">
+                  <h4 className="text-sm sm:text-base font-semibold text-white drop-shadow">
+                    {selectedItem.title}
+                  </h4>
+                  {selectedItem.description && (
+                    <p className="text-xs sm:text-sm text-white/80 mt-1 drop-shadow leading-relaxed line-clamp-2">
+                      {selectedItem.description}
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>,
+          document.body,
+        )}
       </div>
     );
   },
 );
 
-PointerTrail.displayName = "PointerTrail";
+VideoSphereGallery.displayName = "VideoSphereGallery";
 
 // ------------------------------------------
 // Root Gallery
@@ -2226,20 +2878,9 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
   (
     {
       variant = "orbit",
-      badgeText = "Identity & animation studio",
-      badgeHref = "#",
-      title = "Wander through",
-      titleAccent = "Wild Places, Up Close.",
-      subtitle = "Lose yourself in sweeping valleys, quiet forests and remote peaks that feel a world away.",
-      primaryActionLabel = "Browse photos",
-      primaryActionHref = "#",
-      secondaryActionLabel,
-      secondaryActionHref = "#",
       images = DEFAULT_IMAGES,
       duration = 36,
-      highlights,
       color,
-      linkComponent: Link = "a",
       className,
       style,
       onMouseMove,
@@ -2279,36 +2920,35 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
       dragSpeed = 1.2,
       inertia = 0.75,
       borderRadius = 20,
+      // Video Sphere specific
+      sphereItems = DEFAULT_VIDEO_SPHERE_ITEMS,
+      radius = 280,
+      itemCount = 35,
+      autoRotateSpeed = 0.0015,
+      itemWidth = 110,
+      itemHeight = 150,
+      blurStrength = 12,
+      unmuteOnHover = false,
+      maxConcurrentVideos = 12,
+      enableHoverScale = true,
+      enablePopup = true,
+      popupWidth = 400,
+      popupHeight = 500,
+      cardBorderColor,
+      onCardClick,
       ...props
     },
     ref,
   ) => {
-    const effectiveHighlights =
-      highlights ??
-      (variant === "moving-bento"
-        ? DEFAULT_BENTO_HIGHLIGHTS
-        : variant === "circular-reel"
-        ? DEFAULT_REEL_HIGHLIGHTS
-        : variant === "pill-carousel"
-        ? DEFAULT_PILL_HIGHLIGHTS
-        : variant === "arc-carousel" || variant === "arc-carousel-gallery"
-        ? DEFAULT_ARC_HIGHLIGHTS
-        : DEFAULT_HIGHLIGHTS);
     const count = images.length;
 
-    const containerRef = useRef<HTMLElement | null>(null);
-
     // ----------------------------------------
-    // VARIANT: 3D PILL CAROUSEL
+    // VARIANT: VIDEO SPHERE GALLERY
     // ----------------------------------------
-    if (variant === "pill-carousel") {
+    if (variant === "video-sphere" || variant === "video-sphere-gallery") {
       return (
         <section
-          ref={(node) => {
-            containerRef.current = node;
-            if (typeof ref === "function") ref(node);
-            else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
-          }}
+          ref={ref}
           onMouseMove={onMouseMove}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
@@ -2319,9 +2959,52 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
           )}
           {...props}
         >
-          {/* ---- Pointer trail ---- */}
-          <PointerTrail containerRef={containerRef} />
+          <div className="relative z-10 w-full">
+            <VideoSphereGallery
+              items={sphereItems}
+              radius={radius}
+              itemCount={itemCount}
+              autoRotateSpeed={autoRotateSpeed}
+              itemWidth={itemWidth}
+              itemHeight={itemHeight}
+              perspective={perspective}
+              blurStrength={blurStrength}
+              autoRotate={autoPlay}
+              muted={true}
+              loop={true}
+              unmuteOnHover={unmuteOnHover}
+              maxConcurrentVideos={maxConcurrentVideos}
+              hoverScale={hoverScale}
+              enableHoverScale={enableHoverScale}
+              enablePopup={enablePopup}
+              popupWidth={popupWidth}
+              popupHeight={popupHeight}
+              cardBorderColor={cardBorderColor}
+              color={color}
+              onCardClick={onCardClick}
+            />
+          </div>
+        </section>
+      );
+    }
 
+    // ----------------------------------------
+    // VARIANT: 3D PILL CAROUSEL
+    // ----------------------------------------
+    if (variant === "pill-carousel") {
+      return (
+        <section
+          ref={ref}
+          onMouseMove={onMouseMove}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+          style={{ ...accentStyle(color), ...style }}
+          className={cn(
+            "relative flex w-full select-none items-center justify-center overflow-hidden bg-background text-foreground transition-colors duration-300",
+            className,
+          )}
+          {...props}
+        >
           <div className="relative z-10 w-full">
             <ThreeDPillCarousel
               items={pillItems}
@@ -2350,11 +3033,7 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
     if (variant === "arc-carousel" || variant === "arc-carousel-gallery") {
       return (
         <section
-          ref={(node) => {
-            containerRef.current = node;
-            if (typeof ref === "function") ref(node);
-            else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
-          }}
+          ref={ref}
           onMouseMove={onMouseMove}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
@@ -2365,9 +3044,6 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
           )}
           {...props}
         >
-          {/* ---- Pointer trail ---- */}
-          <PointerTrail containerRef={containerRef} />
-
           <div className="relative z-10 w-full">
             <ArcCarouselGallery
               items={arcItems}
@@ -2395,11 +3071,7 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
     if (variant === "circular-reel") {
       return (
         <section
-          ref={(node) => {
-            containerRef.current = node;
-            if (typeof ref === "function") ref(node);
-            else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
-          }}
+          ref={ref}
           onMouseMove={onMouseMove}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
@@ -2410,9 +3082,6 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
           )}
           {...props}
         >
-          {/* ---- Pointer trail ---- */}
-          <PointerTrail containerRef={containerRef} />
-
           <div className="relative z-10 w-full">
             <CircularReel
               items={reelItems}
@@ -2434,11 +3103,7 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
     if (variant === "moving-bento") {
       return (
         <section
-          ref={(node) => {
-            containerRef.current = node;
-            if (typeof ref === "function") ref(node);
-            else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
-          }}
+          ref={ref}
           onMouseMove={onMouseMove}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
@@ -2449,9 +3114,6 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
           )}
           {...props}
         >
-          {/* ---- Pointer trail ---- */}
-          <PointerTrail containerRef={containerRef} />
-
           <div className="relative z-10 w-full">
             <MovingBento
               items={items}
@@ -2470,11 +3132,7 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
     // ----------------------------------------
     return (
       <section
-        ref={(node) => {
-          containerRef.current = node;
-          if (typeof ref === "function") ref(node);
-          else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
-        }}
+        ref={ref}
         onMouseMove={onMouseMove}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
@@ -2485,8 +3143,6 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
         )}
         {...props}
       >
-        {/* ---- Pointer trail ---- */}
-        <PointerTrail containerRef={containerRef} />
 
         {/* The orbit: every card is rotated about the ring's centre, pushed out
             by the radius, then counter-rotated so it stays upright. The radius
@@ -2528,96 +3184,35 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
           }
         `}</style>
 
-        <div className="relative z-10 mx-auto w-full max-w-[1380px] px-4 sm:px-6 md:px-10">
-          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-8">
-            {/* ---- Copy and actions ---- */}
-            <div className="z-10 col-span-1 flex flex-col justify-center space-y-6 sm:space-y-8 lg:col-span-6">
-              {badgeText && (
-                <Link href={badgeHref} className="group inline-block self-start">
-                  <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground transition-colors group-hover:text-foreground sm:text-sm">
-                    <Sparkles className="size-3.5 shrink-0 text-[var(--hero-accent-text)]" />
-                    <span>{badgeText}</span>
-                  </div>
-                </Link>
-              )}
+        <div className="relative z-10 mx-auto flex w-full items-center justify-center px-4 sm:px-6 md:px-10">
+          {/* ---- The ring ---- */}
+          <div className="orbit-gallery-wrapper relative flex h-[480px] w-full items-center justify-center overflow-visible py-4 sm:h-[580px] lg:h-[660px]">
+            <div
+              className="orbit-gallery-ring pointer-events-auto relative flex size-[340px] cursor-pointer items-center justify-center overflow-visible rounded-full sm:size-[440px] lg:size-[480px]"
+              style={{ "--orbit-duration": `${duration}s` } as React.CSSProperties}
+            >
+              <div className="pointer-events-none absolute inset-0 rounded-full border border-transparent" aria-hidden />
 
-              <h1 className="text-xl font-extrabold leading-[1.15] tracking-tight text-foreground sm:text-3xl lg:text-[36px] xl:text-[42px]">
-                <span className="block">{title}</span>
-                {titleAccent && (
-                  <span className="mt-1 block font-bold tracking-tight" style={{ color: "var(--hero-accent-text)" }}>
-                    {titleAccent}
-                  </span>
-                )}
-              </h1>
-
-              {subtitle && (
-                <div className="border-l-3 py-1 pl-4 transition-colors duration-300" style={{ borderColor: "var(--hero-accent-text)" }}>
-                  <p className="max-w-lg text-sm font-medium leading-relaxed text-muted-foreground sm:text-base lg:text-lg">{subtitle}</p>
-                </div>
-              )}
-
-              <div className="flex flex-wrap items-center gap-3.5 pt-2 sm:gap-4">
-                <Link
-                  href={primaryActionHref}
-                  className="group inline-flex items-center justify-center gap-2.5 rounded-2xl px-7 py-3.5 text-sm font-extrabold shadow-xl transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 sm:py-4 sm:text-base"
-                  style={{ backgroundColor: "var(--hero-accent-text)", color: "var(--primary-foreground)" }}
+              {images.map((src, i) => (
+                <div
+                  key={src + i}
+                  data-index={i}
+                  className="orbit-gallery-card group pointer-events-auto absolute left-1/2 top-1/2 -ml-[38px] -mt-[48px] h-[96px] w-[76px] sm:-ml-[62px] sm:-mt-[77px] sm:h-[155px] sm:w-[125px] lg:-ml-[75px] lg:-mt-[90px] lg:h-[180px] lg:w-[150px]"
+                  style={{ animationDelay: `${-((i / count) * duration)}s` }}
                 >
-                  <span>{primaryActionLabel}</span>
-                  <ArrowRight className="size-4 shrink-0 transition-transform group-hover:translate-x-1" />
-                </Link>
-
-                {secondaryActionLabel && (
-                  <Link
-                    href={secondaryActionHref}
-                    className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border bg-card px-6 py-3.5 text-sm font-semibold text-foreground shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-muted active:translate-y-0 sm:py-4 sm:text-base"
-                  >
-                    <span>{secondaryActionLabel}</span>
-                    <ArrowUpRight className="size-4 shrink-0 text-muted-foreground" />
-                  </Link>
-                )}
-              </div>
-
-              {effectiveHighlights.length > 0 && (
-                <div className="flex flex-wrap items-center gap-5 border-t border-border/40 pt-2 text-xs font-semibold text-muted-foreground sm:gap-8">
-                  {effectiveHighlights.map((h) => (
-                    <div key={h.label} className="flex items-center gap-2">
-                      <div className="size-2 rounded-full" style={{ backgroundColor: h.color ?? "var(--hero-accent-text)" }} />
-                      <span>{h.label}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* ---- The ring ---- */}
-            <div className="orbit-gallery-wrapper relative col-span-1 flex h-[480px] items-center justify-center overflow-visible py-4 sm:h-[580px] lg:col-span-6 lg:h-[660px]">
-              <div
-                className="orbit-gallery-ring pointer-events-auto relative flex size-[340px] cursor-pointer items-center justify-center overflow-visible rounded-full sm:size-[440px] lg:size-[480px]"
-                style={{ "--orbit-duration": `${duration}s` } as React.CSSProperties}
-              >
-                <div className="pointer-events-none absolute inset-0 rounded-full border border-transparent" aria-hidden />
-
-                {images.map((src, i) => (
                   <div
-                    key={src + i}
-                    data-index={i}
-                    className="orbit-gallery-card group pointer-events-auto absolute left-1/2 top-1/2 -ml-[38px] -mt-[48px] h-[96px] w-[76px] sm:-ml-[62px] sm:-mt-[77px] sm:h-[155px] sm:w-[125px] lg:-ml-[75px] lg:-mt-[90px] lg:h-[180px] lg:w-[150px]"
-                    style={{ animationDelay: `${-((i / count) * duration)}s` }}
+                    className="h-full w-full overflow-hidden rounded-[22px] border-2 border-card bg-card shadow-xl sm:rounded-[28px] transition-transform duration-300 ease-out group-hover:scale-115 group-hover:shadow-2xl cursor-pointer"
+                    style={{ transformOrigin: "center center", willChange: "transform" }}
                   >
-                    <div
-                      className="h-full w-full overflow-hidden rounded-[22px] border-2 border-card bg-card shadow-xl sm:rounded-[28px] transition-transform duration-300 ease-out group-hover:scale-115 group-hover:shadow-2xl cursor-pointer"
-                      style={{ transformOrigin: "center center", willChange: "transform" }}
-                    >
-                      <img
-                        src={src}
-                        alt=""
-                        draggable={false}
-                        className="size-full object-cover pointer-events-none select-none transition-transform duration-300 ease-out group-hover:scale-105"
-                      />
-                    </div>
+                    <img
+                      src={src}
+                      alt=""
+                      draggable={false}
+                      className="size-full object-cover pointer-events-none select-none transition-transform duration-300 ease-out group-hover:scale-105"
+                    />
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -2631,3 +3226,4 @@ Gallery.displayName = "Gallery";
 export const OrbitGallery = Gallery;
 
 export default Gallery;
+
