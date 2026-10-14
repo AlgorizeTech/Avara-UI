@@ -42,27 +42,12 @@ const IMAGES = [
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790158814/photo-1518495973542-4542c06a5843-1790158812213.jpg",
 ];
 
-export default function Hero() {
+export default function OrbitGalleryExample() {
   return (
     <Gallery
       variant="orbit-gallery"
-      badgeText="Identity & animation studio"
-      badgeHref="/about"
-      title="Movement is what"
-      titleAccent="people notice first."
-      subtitle="We design brand identities and the animation that brings them to life — from early sketches to the live release."
-      primaryActionLabel="Work with us"
-      primaryActionHref="/contact"
-      secondaryActionLabel="View projects"
-      secondaryActionHref="/work"
       images={IMAGES}
-      highlights={[
-        { label: "15 hand-picked scenes" },
-        { label: "Full-circle rotation", color: "#10b981" },
-        { label: "Holds still on hover", color: "#f59e0b" },
-      ]}
       duration={36}
-      linkComponent={Link}
     />
   );
 }
@@ -381,7 +366,7 @@ export default function ArcCarouselGalleryExample() {
   examples={[
     {
       title: "Orbit Gallery",
-      subheading: "Copy and actions on the left, the revolving 3D circular photo ring on the right. Hover the ring to hold it; move the pointer over the section for the trail.",
+      subheading: "Revolving 3D circular photo orbit ring with upright cards and smooth hover pause.",
       props: { variant: "orbit-gallery" },
       propNotes: [
         {
@@ -397,10 +382,6 @@ export default function ArcCarouselGalleryExample() {
           prop: "duration",
           value: "36",
           effect: "is the seconds for one full revolution.",
-        },
-        {
-          prop: "highlights",
-          effect: "are the dotted facts under the actions; each takes a `label` and an optional dot `color` (the accent by default). Pass `[]` to drop the row.",
         },
         {
           prop: "color",
@@ -586,37 +567,7 @@ export default function ArcCarouselGalleryExample() {
         <td><code>variant</code></td>
         <td><code>"orbit" | "moving-bento" | "circular-reel" | "pill-carousel" | "arc-carousel"</code></td>
         <td><code>"orbit"</code></td>
-        <td>Selects the circular orbit hero, GSAP Flip moving bento, circular reel dial spinner, 3D pill carousel, or 3D curved arc carousel gallery.</td>
-      </tr>
-      <tr>
-        <td><code>badgeText</code>, <code>badgeHref</code></td>
-        <td><code>string</code></td>
-        <td><code>"Identity & animation studio"</code>, <code>"#"</code></td>
-        <td>The tracked line above the headline and where it links.</td>
-      </tr>
-      <tr>
-        <td><code>title</code>, <code>titleAccent</code></td>
-        <td><code>string</code></td>
-        <td><code>"Wander through"</code>, <code>"Wild Places, Up Close."</code></td>
-        <td>The two lines of the headline; the second is set in the accent.</td>
-      </tr>
-      <tr>
-        <td><code>subtitle</code></td>
-        <td><code>string</code></td>
-        <td>—</td>
-        <td>The paragraph beside the accent rule.</td>
-      </tr>
-      <tr>
-        <td><code>primaryActionLabel</code>, <code>primaryActionHref</code></td>
-        <td><code>string</code></td>
-        <td><code>"Browse photos"</code>, <code>"#"</code></td>
-        <td>The filled button.</td>
-      </tr>
-      <tr>
-        <td><code>secondaryActionLabel</code>, <code>secondaryActionHref</code></td>
-        <td><code>string</code></td>
-        <td>—</td>
-        <td>The outlined button; omitted when there is no label.</td>
+        <td>Selects the revolving 3D circular photo orbit ring, GSAP Flip moving bento, circular reel dial spinner, 3D pill carousel, or 3D curved arc carousel gallery.</td>
       </tr>
       <tr>
         <td><code>images</code></td>

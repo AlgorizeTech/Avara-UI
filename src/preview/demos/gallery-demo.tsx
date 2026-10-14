@@ -110,15 +110,6 @@ export default function GalleryDemo({
       <Gallery
         variant="orbit"
         color={color}
-        badgeText="Identity & animation studio"
-        badgeHref="#"
-        title="Movement is what"
-        titleAccent="people notice first."
-        subtitle="We design brand identities and the animation that brings them to life — from early sketches to the live release."
-        primaryActionLabel="Work with us"
-        primaryActionHref="#"
-        secondaryActionLabel="View projects"
-        secondaryActionHref="#"
         className="w-full py-12 sm:py-16 lg:py-20"
       />
     </div>

@@ -131,28 +131,12 @@ export interface ArcCarouselProps extends React.HTMLAttributes<HTMLDivElement> {
 export interface GalleryProps extends React.HTMLAttributes<HTMLElement> {
   /** Gallery variant: "orbit" | "orbit-gallery" (circular revolving ring), "moving-bento" (GSAP Flip self-rearranging grid), "circular-reel" (interactive scroll-driven spinner), "pill-carousel" (3D layered pill carousel), or "arc-carousel" / "arc-carousel-gallery" (3D cylindrical arc carousel). */
   variant?: "orbit" | "orbit-gallery" | "moving-bento" | "circular-reel" | "pill-carousel" | "arc-carousel" | "arc-carousel-gallery";
-  /** Small tracked line above the headline, with a spark before it. */
-  badgeText?: string;
-  badgeHref?: string;
-  /** The first line of the headline. */
-  title?: string;
-  /** The second line, set in the accent colour. */
-  titleAccent?: string;
-  subtitle?: string;
-  primaryActionLabel?: string;
-  primaryActionHref?: string;
-  secondaryActionLabel?: string;
-  secondaryActionHref?: string;
   /** The photographs on the orbit ring, in orbit order. */
   images?: string[];
   /** Seconds for one full revolution of the orbit ring. */
   duration?: number;
-  /** Small dotted facts under the actions. */
-  highlights?: OrbitHighlight[];
   /** Accent colour — a preset name (indigo, rose, emerald, zinc) or any CSS colour. */
   color?: string;
-  /** Pass `next/link` to keep client-side navigation. */
-  linkComponent?: React.ElementType;
 
   // Moving Bento specific props
   /** Bento items for the "moving-bento" variant. */
@@ -2126,98 +2110,7 @@ export const ArcCarouselGallery = forwardRef<HTMLDivElement, ArcCarouselProps>(
 
 ArcCarouselGallery.displayName = "ArcCarouselGallery";
 
-// ------------------------------------------
-// Isolated Pointer Trail (Memoized to prevent parent re-renders)
-// ------------------------------------------
-const PointerTrail = memo(
-  ({ containerRef }: { containerRef: React.RefObject<HTMLElement | null> }) => {
-    const targetRef = useRef({ x: -100, y: -100 });
-    const [pointer, setPointer] = useState({ x: -100, y: -100 });
-    const [trail, setTrail] = useState<{ x: number; y: number; id: number }[]>([]);
-    const [hovered, setHovered] = useState(false);
 
-    useEffect(() => {
-      const el = containerRef.current;
-      if (!el) return;
-
-      const handleMove = (e: MouseEvent) => {
-        const rect = el.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        targetRef.current = { x, y };
-        setPointer({ x, y });
-      };
-
-      const handleEnter = () => {
-        setHovered(true);
-      };
-
-      const handleLeave = () => {
-        setHovered(false);
-        targetRef.current = { x: -100, y: -100 };
-        setPointer({ x: -100, y: -100 });
-        setTrail([]);
-      };
-
-      el.addEventListener("mousemove", handleMove);
-      el.addEventListener("mouseenter", handleEnter);
-      el.addEventListener("mouseleave", handleLeave);
-
-      return () => {
-        el.removeEventListener("mousemove", handleMove);
-        el.removeEventListener("mouseenter", handleEnter);
-        el.removeEventListener("mouseleave", handleLeave);
-      };
-    }, [containerRef]);
-
-    useEffect(() => {
-      if (!hovered) return;
-      let frame: number;
-      let last = 0;
-      const loop = (t: number) => {
-        if (t - last > 20) {
-          last = t;
-          const { x, y } = targetRef.current;
-          setTrail((prev) => [{ x, y, id: t }, ...prev.slice(0, 7)]);
-        }
-        frame = requestAnimationFrame(loop);
-      };
-      frame = requestAnimationFrame(loop);
-      return () => cancelAnimationFrame(frame);
-    }, [hovered]);
-
-    if (!hovered) return null;
-
-    return (
-      <div className="pointer-events-none absolute inset-0 z-50 overflow-hidden" aria-hidden>
-        {trail.map((pt, i) => {
-          const size = Math.max(4, 18 - i * 2);
-          const opacity = (trail.length - i) / trail.length;
-          return (
-            <div
-              key={pt.id + i}
-              className="pointer-events-none absolute -translate-x-1/2 -translate-y-1/2 rounded-full transition-opacity duration-150"
-              style={{
-                left: `${pt.x}px`,
-                top: `${pt.y}px`,
-                width: `${size}px`,
-                height: `${size}px`,
-                backgroundColor: "var(--hero-accent-text)",
-                opacity: opacity * 0.7,
-              }}
-            />
-          );
-        })}
-        <div
-          className="pointer-events-none absolute size-4 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-lg"
-          style={{ left: `${pointer.x}px`, top: `${pointer.y}px`, backgroundColor: "var(--hero-accent-text)" }}
-        />
-      </div>
-    );
-  },
-);
-
-PointerTrail.displayName = "PointerTrail";
 
 // ------------------------------------------
 // Root Gallery
@@ -2226,20 +2119,9 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
   (
     {
       variant = "orbit",
-      badgeText = "Identity & animation studio",
-      badgeHref = "#",
-      title = "Wander through",
-      titleAccent = "Wild Places, Up Close.",
-      subtitle = "Lose yourself in sweeping valleys, quiet forests and remote peaks that feel a world away.",
-      primaryActionLabel = "Browse photos",
-      primaryActionHref = "#",
-      secondaryActionLabel,
-      secondaryActionHref = "#",
       images = DEFAULT_IMAGES,
       duration = 36,
-      highlights,
       color,
-      linkComponent: Link = "a",
       className,
       style,
       onMouseMove,
@@ -2283,20 +2165,7 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
     },
     ref,
   ) => {
-    const effectiveHighlights =
-      highlights ??
-      (variant === "moving-bento"
-        ? DEFAULT_BENTO_HIGHLIGHTS
-        : variant === "circular-reel"
-        ? DEFAULT_REEL_HIGHLIGHTS
-        : variant === "pill-carousel"
-        ? DEFAULT_PILL_HIGHLIGHTS
-        : variant === "arc-carousel" || variant === "arc-carousel-gallery"
-        ? DEFAULT_ARC_HIGHLIGHTS
-        : DEFAULT_HIGHLIGHTS);
     const count = images.length;
-
-    const containerRef = useRef<HTMLElement | null>(null);
 
     // ----------------------------------------
     // VARIANT: 3D PILL CAROUSEL
@@ -2304,11 +2173,7 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
     if (variant === "pill-carousel") {
       return (
         <section
-          ref={(node) => {
-            containerRef.current = node;
-            if (typeof ref === "function") ref(node);
-            else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
-          }}
+          ref={ref}
           onMouseMove={onMouseMove}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
@@ -2319,9 +2184,6 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
           )}
           {...props}
         >
-          {/* ---- Pointer trail ---- */}
-          <PointerTrail containerRef={containerRef} />
-
           <div className="relative z-10 w-full">
             <ThreeDPillCarousel
               items={pillItems}
@@ -2350,11 +2212,7 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
     if (variant === "arc-carousel" || variant === "arc-carousel-gallery") {
       return (
         <section
-          ref={(node) => {
-            containerRef.current = node;
-            if (typeof ref === "function") ref(node);
-            else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
-          }}
+          ref={ref}
           onMouseMove={onMouseMove}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
@@ -2365,9 +2223,6 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
           )}
           {...props}
         >
-          {/* ---- Pointer trail ---- */}
-          <PointerTrail containerRef={containerRef} />
-
           <div className="relative z-10 w-full">
             <ArcCarouselGallery
               items={arcItems}
@@ -2395,11 +2250,7 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
     if (variant === "circular-reel") {
       return (
         <section
-          ref={(node) => {
-            containerRef.current = node;
-            if (typeof ref === "function") ref(node);
-            else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
-          }}
+          ref={ref}
           onMouseMove={onMouseMove}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
@@ -2410,9 +2261,6 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
           )}
           {...props}
         >
-          {/* ---- Pointer trail ---- */}
-          <PointerTrail containerRef={containerRef} />
-
           <div className="relative z-10 w-full">
             <CircularReel
               items={reelItems}
@@ -2434,11 +2282,7 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
     if (variant === "moving-bento") {
       return (
         <section
-          ref={(node) => {
-            containerRef.current = node;
-            if (typeof ref === "function") ref(node);
-            else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
-          }}
+          ref={ref}
           onMouseMove={onMouseMove}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
@@ -2449,9 +2293,6 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
           )}
           {...props}
         >
-          {/* ---- Pointer trail ---- */}
-          <PointerTrail containerRef={containerRef} />
-
           <div className="relative z-10 w-full">
             <MovingBento
               items={items}
@@ -2470,11 +2311,7 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
     // ----------------------------------------
     return (
       <section
-        ref={(node) => {
-          containerRef.current = node;
-          if (typeof ref === "function") ref(node);
-          else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = node;
-        }}
+        ref={ref}
         onMouseMove={onMouseMove}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
@@ -2485,8 +2322,6 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
         )}
         {...props}
       >
-        {/* ---- Pointer trail ---- */}
-        <PointerTrail containerRef={containerRef} />
 
         {/* The orbit: every card is rotated about the ring's centre, pushed out
             by the radius, then counter-rotated so it stays upright. The radius
@@ -2528,96 +2363,35 @@ export const Gallery = forwardRef<HTMLElement, GalleryProps>(
           }
         `}</style>
 
-        <div className="relative z-10 mx-auto w-full max-w-[1380px] px-4 sm:px-6 md:px-10">
-          <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-8">
-            {/* ---- Copy and actions ---- */}
-            <div className="z-10 col-span-1 flex flex-col justify-center space-y-6 sm:space-y-8 lg:col-span-6">
-              {badgeText && (
-                <Link href={badgeHref} className="group inline-block self-start">
-                  <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground transition-colors group-hover:text-foreground sm:text-sm">
-                    <Sparkles className="size-3.5 shrink-0 text-[var(--hero-accent-text)]" />
-                    <span>{badgeText}</span>
-                  </div>
-                </Link>
-              )}
+        <div className="relative z-10 mx-auto flex w-full items-center justify-center px-4 sm:px-6 md:px-10">
+          {/* ---- The ring ---- */}
+          <div className="orbit-gallery-wrapper relative flex h-[480px] w-full items-center justify-center overflow-visible py-4 sm:h-[580px] lg:h-[660px]">
+            <div
+              className="orbit-gallery-ring pointer-events-auto relative flex size-[340px] cursor-pointer items-center justify-center overflow-visible rounded-full sm:size-[440px] lg:size-[480px]"
+              style={{ "--orbit-duration": `${duration}s` } as React.CSSProperties}
+            >
+              <div className="pointer-events-none absolute inset-0 rounded-full border border-transparent" aria-hidden />
 
-              <h1 className="text-xl font-extrabold leading-[1.15] tracking-tight text-foreground sm:text-3xl lg:text-[36px] xl:text-[42px]">
-                <span className="block">{title}</span>
-                {titleAccent && (
-                  <span className="mt-1 block font-bold tracking-tight" style={{ color: "var(--hero-accent-text)" }}>
-                    {titleAccent}
-                  </span>
-                )}
-              </h1>
-
-              {subtitle && (
-                <div className="border-l-3 py-1 pl-4 transition-colors duration-300" style={{ borderColor: "var(--hero-accent-text)" }}>
-                  <p className="max-w-lg text-sm font-medium leading-relaxed text-muted-foreground sm:text-base lg:text-lg">{subtitle}</p>
-                </div>
-              )}
-
-              <div className="flex flex-wrap items-center gap-3.5 pt-2 sm:gap-4">
-                <Link
-                  href={primaryActionHref}
-                  className="group inline-flex items-center justify-center gap-2.5 rounded-2xl px-7 py-3.5 text-sm font-extrabold shadow-xl transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 sm:py-4 sm:text-base"
-                  style={{ backgroundColor: "var(--hero-accent-text)", color: "var(--primary-foreground)" }}
+              {images.map((src, i) => (
+                <div
+                  key={src + i}
+                  data-index={i}
+                  className="orbit-gallery-card group pointer-events-auto absolute left-1/2 top-1/2 -ml-[38px] -mt-[48px] h-[96px] w-[76px] sm:-ml-[62px] sm:-mt-[77px] sm:h-[155px] sm:w-[125px] lg:-ml-[75px] lg:-mt-[90px] lg:h-[180px] lg:w-[150px]"
+                  style={{ animationDelay: `${-((i / count) * duration)}s` }}
                 >
-                  <span>{primaryActionLabel}</span>
-                  <ArrowRight className="size-4 shrink-0 transition-transform group-hover:translate-x-1" />
-                </Link>
-
-                {secondaryActionLabel && (
-                  <Link
-                    href={secondaryActionHref}
-                    className="inline-flex items-center justify-center gap-2 rounded-2xl border border-border bg-card px-6 py-3.5 text-sm font-semibold text-foreground shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-muted active:translate-y-0 sm:py-4 sm:text-base"
-                  >
-                    <span>{secondaryActionLabel}</span>
-                    <ArrowUpRight className="size-4 shrink-0 text-muted-foreground" />
-                  </Link>
-                )}
-              </div>
-
-              {effectiveHighlights.length > 0 && (
-                <div className="flex flex-wrap items-center gap-5 border-t border-border/40 pt-2 text-xs font-semibold text-muted-foreground sm:gap-8">
-                  {effectiveHighlights.map((h) => (
-                    <div key={h.label} className="flex items-center gap-2">
-                      <div className="size-2 rounded-full" style={{ backgroundColor: h.color ?? "var(--hero-accent-text)" }} />
-                      <span>{h.label}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* ---- The ring ---- */}
-            <div className="orbit-gallery-wrapper relative col-span-1 flex h-[480px] items-center justify-center overflow-visible py-4 sm:h-[580px] lg:col-span-6 lg:h-[660px]">
-              <div
-                className="orbit-gallery-ring pointer-events-auto relative flex size-[340px] cursor-pointer items-center justify-center overflow-visible rounded-full sm:size-[440px] lg:size-[480px]"
-                style={{ "--orbit-duration": `${duration}s` } as React.CSSProperties}
-              >
-                <div className="pointer-events-none absolute inset-0 rounded-full border border-transparent" aria-hidden />
-
-                {images.map((src, i) => (
                   <div
-                    key={src + i}
-                    data-index={i}
-                    className="orbit-gallery-card group pointer-events-auto absolute left-1/2 top-1/2 -ml-[38px] -mt-[48px] h-[96px] w-[76px] sm:-ml-[62px] sm:-mt-[77px] sm:h-[155px] sm:w-[125px] lg:-ml-[75px] lg:-mt-[90px] lg:h-[180px] lg:w-[150px]"
-                    style={{ animationDelay: `${-((i / count) * duration)}s` }}
+                    className="h-full w-full overflow-hidden rounded-[22px] border-2 border-card bg-card shadow-xl sm:rounded-[28px] transition-transform duration-300 ease-out group-hover:scale-115 group-hover:shadow-2xl cursor-pointer"
+                    style={{ transformOrigin: "center center", willChange: "transform" }}
                   >
-                    <div
-                      className="h-full w-full overflow-hidden rounded-[22px] border-2 border-card bg-card shadow-xl sm:rounded-[28px] transition-transform duration-300 ease-out group-hover:scale-115 group-hover:shadow-2xl cursor-pointer"
-                      style={{ transformOrigin: "center center", willChange: "transform" }}
-                    >
-                      <img
-                        src={src}
-                        alt=""
-                        draggable={false}
-                        className="size-full object-cover pointer-events-none select-none transition-transform duration-300 ease-out group-hover:scale-105"
-                      />
-                    </div>
+                    <img
+                      src={src}
+                      alt=""
+                      draggable={false}
+                      className="size-full object-cover pointer-events-none select-none transition-transform duration-300 ease-out group-hover:scale-105"
+                    />
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

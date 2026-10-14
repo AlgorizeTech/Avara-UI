@@ -34,7 +34,7 @@ const IMAGES = [
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790158814/photo-1518495973542-4542c06a5843-1790158812213.jpg",
 ];
 
-export default function Hero() {
+export default function OrbitGalleryExample() {
   return (
     
   );
@@ -331,32 +331,7 @@ npx shadcn@latest add @algorize-ui/gallery
         variant
         "orbit" | "moving-bento" | "circular-reel" | "pill-carousel" | "arc-carousel"
         "orbit"
-        Selects the circular orbit hero, GSAP Flip moving bento, circular reel dial spinner, 3D pill carousel, or 3D curved arc carousel gallery.
-
-        badgeText, badgeHref
-        string
-        "Identity & animation studio", "#"
-        The tracked line above the headline and where it links.
-
-        title, titleAccent
-        string
-        "Wander through", "Wild Places, Up Close."
-        The two lines of the headline; the second is set in the accent.
-
-        subtitle
-        string
-        —
-        The paragraph beside the accent rule.
-
-        primaryActionLabel, primaryActionHref
-        string
-        "Browse photos", "#"
-        The filled button.
-
-        secondaryActionLabel, secondaryActionHref
-        string
-        —
-        The outlined button; omitted when there is no label.
+        Selects the revolving 3D circular photo orbit ring, GSAP Flip moving bento, circular reel dial spinner, 3D pill carousel, or 3D curved arc carousel gallery.
 
         images
         string[]
