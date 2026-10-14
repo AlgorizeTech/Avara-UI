@@ -64,15 +64,19 @@ export default function TooltipDemo({
 }: {
   delay?: number;
   /**
-   * 3 core variants:
+   * 5 core variants:
    * 1. "no-arrow" (default) -> 4 directions without arrow
    * 2. "arrow" -> 4 directions with pointer arrow
    * 3. "animated" -> 4 directions with pointer arrow + smooth pull-out animation
+   * 4. "staggered" -> 4 directions with pointer arrow + smooth pull-out + staggered cascade (icon -> title -> description)
+   * 5. "expand" -> 4 directions with pointer arrow + starts title-only, then height expands (top/bottom) and width expands (left/right) to unveil description
    */
-  example?: "no-arrow" | "arrow" | "animated" | "all" | string;
+  example?: "no-arrow" | "arrow" | "animated" | "staggered" | "expand" | "animated-staggered" | "all" | string;
 }) {
-  const isAnimated = example === "animated";
-  const hasArrow = example === "arrow" || example === "animated";
+  const isExpand = example === "expand";
+  const isStaggered = !isExpand && (example === "staggered" || example === "animated-staggered");
+  const isAnimated = example === "animated" || isStaggered || isExpand;
+  const hasArrow = example === "arrow" || isAnimated;
 
   return (
     <div className="w-full flex items-center justify-center min-h-[420px] p-6 relative z-10">
@@ -95,6 +99,8 @@ export default function TooltipDemo({
                     side={item.side}
                     showArrow={hasArrow}
                     animated={isAnimated}
+                    staggered={isStaggered}
+                    expand={isExpand}
                     sideOffset={hasArrow ? 8 : 6}
                     icon={<TooltipIcon className="w-4 h-4" />}
                     title={item.title}
