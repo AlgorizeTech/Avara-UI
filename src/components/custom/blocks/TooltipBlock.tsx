@@ -280,7 +280,6 @@ export function TooltipContent({
   const isExpand = Boolean(expand || animated === "expand");
   const isStaggered = Boolean(!isExpand && (staggered || animated === "staggered"));
   const isAnimated = Boolean(animated || staggered || expand);
-  const isVertical = side === "top" || side === "bottom";
 
   // Forget the measurement on close, so the next open cannot flash at last
   // time’s coordinates before the layout effect re-measures.
