@@ -2,7 +2,7 @@ export const metadata = docsPageMetadata("gallery");
 
 # Gallery
 
-A dynamic visual showcase featuring five interactive variants: a revolving 3D circular photo orbit ring, a GSAP Flip self-rearranging moving bento grid, an interactive circular reel dial spinner, a 3D layered pill carousel, and a Framer-inspired 3D curved arc carousel gallery.
+A dynamic visual showcase featuring six interactive variants: a revolving 3D circular photo orbit ring, an interactive 3D video sphere gallery, a GSAP Flip self-rearranging moving bento grid, an interactive circular reel dial spinner, a 3D layered pill carousel, and a Framer-inspired 3D curved arc carousel gallery.
 
 {/* The snippets below pass next/link so links route client-side in Next.js. The React tab is the same file without it: the component's default  needs no import. */}
 
@@ -312,6 +312,123 @@ export default function ArcCarouselGalleryExample() {
 }
 `;
 
+export const videoSphereUsage = `"use client";
+
+const SPHERE_ITEMS = [
+  {
+    id: "sphere-1",
+    type: "image", // Supports "image" or "video"
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+    title: "Alpine Horizons",
+    description: "Granite monoliths rising above early morning valley fog",
+  },
+  {
+    id: "sphere-2",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
+    title: "Emerald Canopy",
+    description: "Sunlit trails winding through ancient coastal redwood forests",
+  },
+  {
+    id: "sphere-3",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+    title: "Whispering Peaks",
+    description: "Layers of mountain silhouettes veiled in twilight atmospheric mist",
+  },
+  {
+    id: "sphere-4",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+    title: "Sunbeam Sanctuary",
+    description: "Golden rays breaking through tall evergreens after summer rain",
+  },
+  {
+    id: "sphere-5",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg",
+    title: "Verdant Valleys",
+    description: "Rolling emerald highlands sweeping toward dramatic skies",
+  },
+  {
+    id: "sphere-6",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
+    title: "Glacial Reflections",
+    description: "Mirror-still alpine lake echoing snow-dusted jagged ridge lines",
+  },
+  {
+    id: "sphere-7",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+    title: "Untamed Wilds",
+    description: "Untouched wilderness under vibrant open skies",
+  },
+  {
+    id: "sphere-8",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+    title: "Golden Hour Ridge",
+    description: "Sun setting behind sharp mountain contours",
+  },
+  {
+    id: "sphere-9",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148863/photo-1447752875215-b2761acb3c5d-1790148865109.jpg",
+    title: "Autumn Stream",
+    description: "Gentle brook weaving through vibrant autumn woods",
+  },
+  {
+    id: "sphere-10",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1507525428034-b723cf961d3e-1790146212208.jpg",
+    title: "Tropical Coast",
+    description: "Crystal waters washing onto warm golden sands",
+  },
+  {
+    id: "sphere-11",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158813/photo-1433086966358-54859d0ed716-1790158812209.jpg",
+    title: "Cascading Falls",
+    description: "Hidden waterfall plunging into clear mountain pools",
+  },
+  {
+    id: "sphere-12",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
+    title: "Alpine Mist",
+    description: "Snow-covered peaks shrouded in high-altitude clouds",
+  },
+  {
+    id: "sphere-13",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145142/photo-1500530855697-b586d89ba3ee-1790145143493.jpg",
+    title: "Golden Waters",
+    description: "Sunset glow reflecting over tranquil lake waters",
+  },
+  {
+    id: "sphere-14",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148863/photo-1473448912268-2022ce9509d8-1790148865110.jpg",
+    title: "Pine Forest",
+    description: "Lush green pine trees greeting early morning light",
+  },
+  {
+    id: "sphere-15",
+    type: "image",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158814/photo-1518495973542-4542c06a5843-1790158812213.jpg",
+    title: "Sunlit Trees",
+    description: "Dappled sunlight filtering through summer leaves",
+  },
+];
+
+export default function VideoSphereGalleryExample() {
+  return (
+    
+  );
+}
+`;
+
 ## Installation
 
 Register the @algorize-ui registry once per project, then add the component:
@@ -329,9 +446,9 @@ npx shadcn@latest add @algorize-ui/gallery
         Description
 
         variant
-        "orbit" | "moving-bento" | "circular-reel" | "pill-carousel" | "arc-carousel"
+        "orbit" | "moving-bento" | "circular-reel" | "pill-carousel" | "arc-carousel" | "video-sphere"
         "orbit"
-        Selects the revolving 3D circular photo orbit ring, GSAP Flip moving bento, circular reel dial spinner, 3D pill carousel, or 3D curved arc carousel gallery.
+        Selects the revolving 3D circular photo orbit ring, 3D video sphere gallery, GSAP Flip moving bento, circular reel dial spinner, 3D pill carousel, or 3D curved arc carousel gallery.
 
         images
         string[]
@@ -452,6 +569,51 @@ npx shadcn@latest add @algorize-ui/gallery
         number
         0.75
         Friction momentum coefficient (0 to 1) for smooth coasting after pointer release.
+
+        sphereItems
+        VideoSphereItem[]
+        9 video scenes
+        The items ({`{ id, src, poster, title, description, link }`}) for the "video-sphere" variant.
+
+        radius
+        number
+        280
+        Radius in pixels of the 3D sphere.
+
+        itemCount
+        number
+        35
+        Total count of cards distributed along the Fibonacci sphere surface.
+
+        itemWidth
+        number
+        110
+        Width in pixels of each video card.
+
+        itemHeight
+        number
+        150
+        Height in pixels of each video card.
+
+        blurStrength
+        number
+        12
+        Max blur in pixels applied to cards on the far side of the sphere.
+
+        enablePopup
+        boolean
+        true
+        Whether clicking a video card opens an animated lightbox preview modal.
+
+        unmuteOnHover
+        boolean
+        false
+        Whether to unmute audio while hovering over an individual video card.
+
+        maxConcurrentVideos
+        number
+        12
+        Max number of front-facing videos actively playing at once for performance optimization.
 
         highlights
         &#123; label: string; color?: string &#125;[]
