@@ -929,7 +929,9 @@
   "tooltip": {
     "without-arrow": "Tooltip — Without Arrow",
     "with-arrow": "Tooltip — With Arrow",
-    "with-arrow-animated": "Tooltip — With Arrow & Animated"
+    "with-arrow-animated": "Tooltip — With Arrow & Animated",
+    "with-staggered-content-animation": "Tooltip — With Staggered Content Animation",
+    "with-expanding-content": "Tooltip — With Expanding Content"
   },
   "user-graph": {
     "user-graph": "User Graph"
