@@ -196,6 +196,13 @@ const rawNavigation: NavigationItem[] = [
       { label: "Heart Signal", slug: "heart-signal" },
       { label: "Image Compare", slug: "image-compare" },
       {
+        label: "Image Viewer",
+        slug: "image-viewer",
+        badge: "New",
+        addedOn: "2026-09-23",
+        keywords: ["image", "viewer", "zoom", "magnifier", "gallery", "product", "e-commerce", "lens", "lightbox", "slider"],
+      },
+      {
         label: "Image Wall",
         slug: "image-wall",
         badge: "New",
@@ -492,13 +499,6 @@ const rawNavigation: NavigationItem[] = [
       },
       { label: "Pricing Section", slug: "pricing" },
       { label: "Product Details", slug: "product-details" },
-      {
-        label: "Image Viewer",
-        slug: "image-viewer",
-        badge: "New",
-        addedOn: "2026-09-23",
-        keywords: ["image", "viewer", "zoom", "magnifier", "gallery", "product", "e-commerce", "lens", "lightbox", "slider"],
-      },
       {
         label: "Profile Page",
         slug: "profile-page",
