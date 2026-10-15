@@ -692,7 +692,7 @@ function HeroSection() {
 				}
 				install={{ command: "npx shadcn@latest add @algorize-ui/{item}" }}
 				primaryAction={{ label: "Browse components", href: "/docs/nextjs/all-components" }}
-				secondaryAction={{ label: "Star on GitHub", href: links.github, icon: <GitHubIcon size={16} /> }}
+				secondaryAction={{ label: "Get Started", href: "/docs/nextjs/index" }}
 				items={WALL_ITEMS}
 				stack={<WallStack variant="compact" label={STACK_LABEL} />}
 				interval={4500}
