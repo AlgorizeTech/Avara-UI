@@ -65,13 +65,7 @@ export const Dock = React.forwardRef<HTMLDivElement, DockProps>(
   ) => {
     const bus = useRef<PointerBus>({ x: Infinity, listeners: new Set() });
     const dot = useRef<DotMemory>({ rect: null });
-    const [screenTier, setScreenTier] = useState<"desktop" | "tablet" | "mobile">(() => {
-      if (typeof window === "undefined") return "desktop";
-      const w = window.innerWidth;
-      if (w < 480) return "mobile";
-      if (w < 640) return "tablet";
-      return "desktop";
-    });
+    const [screenTier, setScreenTier] = useState<"desktop" | "tablet" | "mobile">("desktop");
 
     // Automatically detect small screens to scale down physics on touch devices
     useEffect(() => {

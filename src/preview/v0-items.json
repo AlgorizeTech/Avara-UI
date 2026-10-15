@@ -111,6 +111,7 @@
     "register-liquid-glass": "Register Form — Register — liquid-glass"
   },
   "avatar-stack": {
+    "avatar-group-shift-on-hover": "Avatar Stack — Avatar Group (Shift on hover)",
     "without-tooltip": "Avatar Stack — Without tooltip",
     "with-an-action": "Avatar Stack — With an action",
     "folded-count": "Avatar Stack — Folded count",

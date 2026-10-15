@@ -2,7 +2,7 @@
 
 import React, { forwardRef, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, memo } from "react";
 import { createPortal } from "react-dom";
-import { Aperture, ArrowRight, ArrowUpRight, Camera, Compass, MapPin, Sparkles, X } from "lucide-react";
+import { Aperture, ArrowUpRight, Camera, Compass, MapPin, Sparkles, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import gsap from "gsap";
 import { Flip } from "gsap/dist/Flip";
@@ -411,13 +411,13 @@ export const DEFAULT_BENTO_ITEMS: MovingBentoItem[] = [
   },
 ];
 
-const DEFAULT_HIGHLIGHTS: OrbitHighlight[] = [
+export const DEFAULT_HIGHLIGHTS: OrbitHighlight[] = [
   { label: "15 hand-picked scenes" },
   { label: "Full-circle rotation", color: "#10b981" },
   { label: "Holds still on hover", color: "#f59e0b" },
 ];
 
-const DEFAULT_BENTO_HIGHLIGHTS: OrbitHighlight[] = [
+export const DEFAULT_BENTO_HIGHLIGHTS: OrbitHighlight[] = [
   { label: "GSAP Flip layout animation" },
   { label: "Self-rearranging hero card", color: "#10b981" },
   { label: "Click to focus", color: "#f59e0b" },
@@ -496,7 +496,7 @@ export const DEFAULT_CIRCULAR_REEL_ITEMS: CircularReelItem[] = [
   },
 ];
 
-const DEFAULT_REEL_HIGHLIGHTS: OrbitHighlight[] = [
+export const DEFAULT_REEL_HIGHLIGHTS: OrbitHighlight[] = [
   { label: "Interactive circular dial" },
   { label: "Scroll & drag to spin", color: "#10b981" },
   { label: "Auto-crossfading preview", color: "#f59e0b" },
@@ -550,7 +550,7 @@ export const DEFAULT_PILL_CAROUSEL_ITEMS: PillCarouselItem[] = [
   },
 ];
 
-const DEFAULT_PILL_HIGHLIGHTS: OrbitHighlight[] = [
+export const DEFAULT_PILL_HIGHLIGHTS: OrbitHighlight[] = [
   { label: "3D layered pill cards" },
   { label: "Click to focus & keyboard nav", color: "#10b981" },
   { label: "Animated tooltip CTA", color: "#f59e0b" },
@@ -619,7 +619,7 @@ export const DEFAULT_ARC_CAROUSEL_ITEMS: ArcCarouselItem[] = [
   },
 ];
 
-const DEFAULT_ARC_HIGHLIGHTS: OrbitHighlight[] = [
+export const DEFAULT_ARC_HIGHLIGHTS: OrbitHighlight[] = [
   { label: "3D Cylindrical Arc" },
   { label: "Momentum Physics", color: "#10b981" },
   { label: "Concave Curvature", color: "#f59e0b" },
@@ -2629,7 +2629,11 @@ export const VideoSphereGallery = forwardRef<HTMLDivElement, VideoSphereGalleryP
 
     return (
       <div
-        ref={containerRef}
+        ref={(node) => {
+          (containerRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
+          if (typeof ref === "function") ref(node);
+          else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
+        }}
         className={cn(
           "relative flex h-[460px] sm:h-[560px] md:h-[640px] lg:h-[700px] w-full items-center justify-center overflow-hidden select-none bg-background text-foreground transition-colors duration-300",
           className,
@@ -2693,7 +2697,6 @@ export const VideoSphereGallery = forwardRef<HTMLDivElement, VideoSphereGalleryP
           >
             {displayItems.map((item, idx) => {
               const isVideo = item.type === "video" || (!item.type && !item.src.match(/\.(jpg|jpeg|png|webp|gif|svg)$/i));
-              const isHov = hoveredIndex === idx;
 
               return (
                 <div
