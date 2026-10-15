@@ -4069,11 +4069,10 @@ function FooterSection() {
 										target="_blank"
 										rel="noopener noreferrer"
 										aria-label={ariaLabel}
-										className="group -mx-1 inline-flex items-center gap-1.5 rounded-md px-1 py-1 font-medium text-foreground/60 hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50">
+										className="group inline-flex items-center justify-center rounded-md p-0.5 text-foreground/60 hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50">
 										<span className="flex size-5 items-center justify-center rounded-[5px] bg-foreground/[0.06] text-foreground/70 transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
 											<Icon className="size-2.5" />
 										</span>
-										{label}
 									</Link>
 								</li>
 							))}
