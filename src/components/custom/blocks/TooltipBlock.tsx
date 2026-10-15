@@ -258,14 +258,6 @@ const ENTER_FROM_SIDE: Record<NonNullable<TooltipContentProps["side"]>, string> 
   right: "origin-left slide-in-from-left-1",
 };
 
-// Smooth pull-out animation that emerges gently out from the trigger (classic animated variant).
-const ENTER_PULL_OUT: Record<NonNullable<TooltipContentProps["side"]>, string> = {
-  top: "origin-bottom slide-in-from-bottom-3 zoom-in-75 duration-300 ease-out",
-  bottom: "origin-top slide-in-from-top-3 zoom-in-75 duration-300 ease-out",
-  left: "origin-right slide-in-from-right-3 zoom-in-75 duration-300 ease-out",
-  right: "origin-left slide-in-from-left-3 zoom-in-75 duration-300 ease-out",
-};
-
 // Slower, smoother emergence for the staggered cascade variant.
 const ENTER_STAGGERED: Record<NonNullable<TooltipContentProps["side"]>, string> = {
   top: "origin-bottom slide-in-from-bottom-3 zoom-in-90 duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]",
@@ -307,7 +299,6 @@ export function TooltipContent({
   const isExpand = Boolean(expand || animated === "expand");
   const isStaggered = Boolean(!isExpand && (staggered || animated === "staggered"));
   const isArrowEmerge = Boolean(!isExpand && !isStaggered && (animated === true || animated === "pull-out"));
-  const isAnimated = Boolean(animated || staggered || expand);
 
   // Forget the measurement on close, so the next open cannot flash at last
   // time’s coordinates before the layout effect re-measures.

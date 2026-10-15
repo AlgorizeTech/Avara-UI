@@ -368,9 +368,13 @@
       "categories": [
         "data-display"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "@radix-ui/react-avatar",
+        "motion"
+      ],
       "registryDependencies": [
         "https://algorize-ui.vercel.app/r/tooltip.json",
+        "https://algorize-ui.vercel.app/r/ui-avatar.json",
         "utils"
       ],
       "files": [

@@ -214,7 +214,7 @@ export const usageExpand = `import {
 export default function ExpandTooltip() {
   return (
 
-        {/* 1. Bottom Placement */}
+        {/* 1. Bottom Placement (Height expands downwards) */}
 
                 Bottom
 
@@ -223,7 +223,7 @@ export default function ExpandTooltip() {
               description="Renders cleanly below without clipping."
             />
 
-        {/* 2. Right Placement */}
+        {/* 2. Right Placement (Width expands rightwards) */}
 
                 Right
 
@@ -232,7 +232,7 @@ export default function ExpandTooltip() {
               description="Anchored smoothly to the right edge."
             />
 
-        {/* 3. Top Placement */}
+        {/* 3. Top Placement (Height expands upwards) */}
 
                 Top
 
@@ -241,7 +241,7 @@ export default function ExpandTooltip() {
               description="Positioned dynamically above the trigger."
             />
 
-        {/* 4. Left Placement */}
+        {/* 4. Left Placement (Width expands leftwards) */}
 
                 Left
 
@@ -344,7 +344,7 @@ npx shadcn@latest add @algorize-ui/tooltip
 
           false
 
-          Whether to animate child elements (icon → title → description) in a smooth staggered cascade.
+          Whether to animate child elements (icon &rarr; title &rarr; description) in a smooth staggered cascade.
 
           TooltipContent
 
