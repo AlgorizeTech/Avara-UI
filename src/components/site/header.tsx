@@ -56,6 +56,11 @@ const Header = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
 
+  // Close sidebar drawer on route change
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [pathname]);
+
   // Universal Cmd+K / Ctrl+K Palette Interceptor
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -171,6 +176,7 @@ const Header = () => {
 
             <Link
               href="/"
+              onClick={() => setSidebarOpen(false)}
               className="flex items-center gap-2 select-none group"
             >
               <div className="relative flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
