@@ -75,6 +75,59 @@ export default function SizesDemo() {
   );
 }`;
 
+export const usageAvatarGroup = `import {
+  AvatarGroup,
+  AvatarGroupTooltip,
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+} from "@/components/custom/blocks/AvatarStackBlock";
+
+const PEOPLE = [
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg",
+    alt: "Ana Watson",
+    name: "Ana Watson",
+    fallback: "AW",
+    designation: "Product Designer",
+  },
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg",
+    alt: "Tom Hardy",
+    name: "Tom Hardy",
+    fallback: "TH",
+    designation: "Frontend Developer",
+  },
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg",
+    alt: "Mara Jade",
+    name: "Mara Jade",
+    fallback: "MJ",
+    designation: "Engineering Lead",
+  },
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg",
+    alt: "Leo Silva",
+    name: "Leo Silva",
+    fallback: "LS",
+    designation: "Creative Technologist",
+  },
+];
+
+export default function AvatarGroupDemo() {
+  return (
+    
+      {PEOPLE.map((avatar, index) => (
+
+          {avatar.fallback}
+          
+            {avatar.name}
+
+      ))}
+    
+  );
+}`;
+
 ## Installation
 
 Register the @algorize-ui registry once per project, then add the component:
@@ -88,20 +141,54 @@ npx shadcn@latest add @algorize-ui/avatar-stack
 
 ## Props Reference
 
+### AvatarGroup Props
+
+        Prop
+        Type
+        Default
+        Description
+
+        translate
+        string | number
+        "-30%"
+        Vertical displacement of each avatar on hover using spring motion.
+
+        invertOverlap
+        boolean
+        true
+        Whether earlier avatars sit on top of subsequent ones. Hovering automatically raises an avatar's z-index to 50.
+
+        transition
+        Transition
+        &#123; type: "spring", stiffness: 300, damping: 17 &#125;
+        Spring transition configuration for the hover shift animation.
+
+        children
+        ReactNode
+        —
+        Composable &lt;Avatar&gt; elements containing images, fallbacks, and optional &lt;AvatarGroupTooltip&gt;.
+
+### AvatarStack Props
+
         Prop
         Type
         Default
         Description
 
         avatars
-        &#123; src: string; alt?: string &#125;[]
+        &#123; src: string; alt?: string; tooltip?: string; fallback?: string &#125;[]
         Required
-        The list of faces in order. The alt text is displayed inside the hover tooltip.
+        The list of faces in order. The alt or tooltip text is displayed inside the hover tooltip.
+
+        variant
+        "default" | "shift"
+        "default"
+        Presentation style: default (smooth fan out) or shift (animate-ui spring shift upward with pointer tooltip).
 
         size
-        "sm" | "md" | "lg"
+        "sm" | "md" | "lg" | "xl"
         "md"
-        Avatar diameter: sm (28px), md (36px), or lg (44px).
+        Avatar diameter: sm (28px), md (36px), lg (44px), or xl (48px).
 
         max
         number

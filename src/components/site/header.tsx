@@ -56,6 +56,11 @@ const Header = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
 
+  // Close sidebar drawer on route change
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [pathname]);
+
   // Universal Cmd+K / Ctrl+K Palette Interceptor
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -159,18 +164,21 @@ const Header = () => {
         <header className="mx-auto max-w-[1536px] h-10 flex items-center justify-between relative">
           {/* Left Area: Logo & Mobile Trigger Segment */}
           <div className="pointer-events-auto flex items-center gap-2 sm:gap-2.5 h-10 px-3 sm:px-3.5 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 transition-all">
-            <button
-              onClick={() => setSidebarOpen(true)}
-              className="flex flex-col gap-1 md:hidden p-1 hover:bg-foreground/10 rounded-full transition-colors cursor-pointer"
-              aria-label="Open navigation menu"
-            >
-              <span className="w-4 h-0.5 bg-foreground rounded-full" />
-              <span className="w-2.5 h-0.5 bg-foreground rounded-full" />
-              <span className="w-3.5 h-0.5 bg-foreground rounded-full" />
-            </button>
+            {pathname !== "/" && (
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="flex flex-col gap-1 md:hidden p-1 hover:bg-foreground/10 rounded-full transition-colors cursor-pointer"
+                aria-label="Open navigation menu"
+              >
+                <span className="w-4 h-0.5 bg-foreground rounded-full" />
+                <span className="w-2.5 h-0.5 bg-foreground rounded-full" />
+                <span className="w-3.5 h-0.5 bg-foreground rounded-full" />
+              </button>
+            )}
 
             <Link
               href="/"
+              onClick={() => setSidebarOpen(false)}
               className="flex items-center gap-2 select-none group"
             >
               <div className="relative flex items-center justify-center transition-transform duration-200 group-hover:scale-105">

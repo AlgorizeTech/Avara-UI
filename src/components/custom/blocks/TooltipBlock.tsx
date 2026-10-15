@@ -222,6 +222,33 @@ export function TooltipArrow({ className, ...props }: TooltipArrowProps) {
   );
 }
 
+// Precise transform origin mapped to the pointer arrow anchor position.
+const ARROW_ORIGINS: Record<
+  NonNullable<TooltipContentProps["side"]>,
+  Record<NonNullable<TooltipContentProps["align"]>, string>
+> = {
+  top: {
+    center: "origin-bottom",
+    start: "origin-bottom-left",
+    end: "origin-bottom-right",
+  },
+  bottom: {
+    center: "origin-top",
+    start: "origin-top-left",
+    end: "origin-top-right",
+  },
+  left: {
+    center: "origin-right",
+    start: "origin-top-right",
+    end: "origin-bottom-right",
+  },
+  right: {
+    center: "origin-left",
+    start: "origin-top-left",
+    end: "origin-bottom-left",
+  },
+};
+
 // The entrance grows out of the trigger's edge: a tooltip above the trigger
 // scales from its own bottom edge and slides up a touch, and so on.
 const ENTER_FROM_SIDE: Record<NonNullable<TooltipContentProps["side"]>, string> = {
@@ -229,14 +256,6 @@ const ENTER_FROM_SIDE: Record<NonNullable<TooltipContentProps["side"]>, string> 
   bottom: "origin-top slide-in-from-top-1",
   left: "origin-right slide-in-from-right-1",
   right: "origin-left slide-in-from-left-1",
-};
-
-// Smooth pull-out animation that emerges gently out from the trigger (classic animated variant).
-const ENTER_PULL_OUT: Record<NonNullable<TooltipContentProps["side"]>, string> = {
-  top: "origin-bottom slide-in-from-bottom-3 zoom-in-75 duration-300 ease-out",
-  bottom: "origin-top slide-in-from-top-3 zoom-in-75 duration-300 ease-out",
-  left: "origin-right slide-in-from-right-3 zoom-in-75 duration-300 ease-out",
-  right: "origin-left slide-in-from-left-3 zoom-in-75 duration-300 ease-out",
 };
 
 // Slower, smoother emergence for the staggered cascade variant.
@@ -279,7 +298,7 @@ export function TooltipContent({
   const resolvedDes = description ?? des;
   const isExpand = Boolean(expand || animated === "expand");
   const isStaggered = Boolean(!isExpand && (staggered || animated === "staggered"));
-  const isAnimated = Boolean(animated || staggered || expand);
+  const isArrowEmerge = Boolean(!isExpand && !isStaggered && (animated === true || animated === "pull-out"));
 
   // Forget the measurement on close, so the next open cannot flash at last
   // time’s coordinates before the layout effect re-measures.
@@ -292,7 +311,7 @@ export function TooltipContent({
     }
   }
 
-  // Smooth two-stage sequence for expand: show title badge first, then expand gracefully
+  // Expand variant: first emerges out of the arrow (animated=true style), then smoothly expands width & height
   useEffect(() => {
     if (!open || !isExpand) {
       setExpanded(false);
@@ -300,7 +319,7 @@ export function TooltipContent({
     }
     const timer = setTimeout(() => {
       setExpanded(true);
-    }, 240);
+    }, 350);
     return () => clearTimeout(timer);
   }, [open, isExpand]);
 
@@ -401,7 +420,7 @@ export function TooltipContent({
       // Offset width expansion symmetrically by 73px to keep centered on trigger
       // Natural downward height expansion keeps top edge and arrow pinned
       const tx = alignCenter ? (expanded ? "-73px" : "0px") : "0px";
-      expandTransform = `translateX(${tx}) translateY(0)`;
+      expandTransform = `translateX(${tx}) translateY(0px)`;
     } else if (side === "left") {
       // Offset full 146px width expansion to keep right edge and arrow pinned
       // Offset 7px vertical shift to keep arrow centered
@@ -412,17 +431,155 @@ export function TooltipContent({
       // Natural rightward width expansion keeps left edge pinned
       // Offset 7px vertical shift to keep arrow centered
       const ty = alignCenter ? (expanded ? "-7px" : "0px") : "0px";
-      expandTransform = `translateX(0) translateY(${ty})`;
+      expandTransform = `translateX(0px) translateY(${ty})`;
     }
   }
 
-  const entranceClass = isExpand
-    ? "animate-in fade-in duration-200"
+  if (isExpand) {
+    return createPortal(
+      <TooltipContentContext.Provider value={{ side, align }}>
+        <div
+          style={{
+            position: "absolute",
+            top: coords.top,
+            left: coords.left,
+            visibility: positioned ? "visible" : "hidden",
+            zIndex: 9999,
+            pointerEvents: "none",
+            transformOrigin: ARROW_ORIGINS[side]?.[align] ?? "center",
+            animation: positioned
+              ? `tooltip-emerge-${side} 480ms cubic-bezier(0.16, 1, 0.3, 1) both`
+              : undefined,
+            willChange: "transform, opacity",
+          }}
+        >
+          <div
+            ref={contentRef}
+            role="tooltip"
+            className={cn(
+              "relative text-xs text-primary-foreground bg-primary shadow-md pointer-events-none box-border px-3.5 rounded-lg flex items-center overflow-visible",
+              className,
+            )}
+            style={{
+              width: expandWidth,
+              height: expandHeight,
+              transform: expandTransform,
+              transition:
+                "width 1200ms cubic-bezier(0.16, 1, 0.3, 1), height 1200ms cubic-bezier(0.16, 1, 0.3, 1), transform 1200ms cubic-bezier(0.16, 1, 0.3, 1)",
+              willChange: "width, height, transform",
+            }}
+            {...props}
+          >
+            <style>{`
+              @keyframes tooltip-emerge-top {
+                0% {
+                  opacity: 0;
+                  transform: translateY(12px) scale(0.08);
+                }
+                25% {
+                  opacity: 1;
+                }
+                100% {
+                  opacity: 1;
+                  transform: translateY(0) scale(1);
+                }
+              }
+              @keyframes tooltip-emerge-bottom {
+                0% {
+                  opacity: 0;
+                  transform: translateY(-12px) scale(0.08);
+                }
+                25% {
+                  opacity: 1;
+                }
+                100% {
+                  opacity: 1;
+                  transform: translateY(0) scale(1);
+                }
+              }
+              @keyframes tooltip-emerge-left {
+                0% {
+                  opacity: 0;
+                  transform: translateX(12px) scale(0.08);
+                }
+                25% {
+                  opacity: 1;
+                }
+                100% {
+                  opacity: 1;
+                  transform: translateX(0) scale(1);
+                }
+              }
+              @keyframes tooltip-emerge-right {
+                0% {
+                  opacity: 0;
+                  transform: translateX(-12px) scale(0.08);
+                }
+                25% {
+                  opacity: 1;
+                }
+                100% {
+                  opacity: 1;
+                  transform: translateX(0) scale(1);
+                }
+              }
+              @media (prefers-reduced-motion: reduce) {
+                * {
+                  animation: none !important;
+                }
+              }
+            `}</style>
+            <div className="flex items-center gap-2.5 w-full h-full min-w-0">
+              {icon && (
+                <div
+                  className={cn(
+                    "size-7 rounded-lg bg-primary-foreground/15 flex items-center justify-center shrink-0 text-current [&_svg]:size-3.5 shadow-2xs",
+                    iconClassName,
+                  )}
+                >
+                  {icon}
+                </div>
+              )}
+              <div className="flex flex-col flex-1 min-w-0 justify-center">
+                {title && (
+                  <div className="font-semibold text-xs leading-none tracking-tight text-primary-foreground truncate whitespace-nowrap">
+                    {title}
+                  </div>
+                )}
+                {resolvedDes && (
+                  <div
+                    className="overflow-hidden min-h-0"
+                    style={{
+                      maxHeight: expanded ? "18px" : "0px",
+                      opacity: expanded ? 0.85 : 0,
+                      transform: expanded ? "translateY(0)" : "translateY(-3px)",
+                      transition:
+                        "max-height 1200ms cubic-bezier(0.16, 1, 0.3, 1), opacity 800ms cubic-bezier(0.16, 1, 0.3, 1) 220ms, transform 1200ms cubic-bezier(0.16, 1, 0.3, 1)",
+                      willChange: "max-height, opacity, transform",
+                    }}
+                  >
+                    <div className="text-[11px] leading-tight text-primary-foreground/85 pt-1 truncate whitespace-nowrap">
+                      {resolvedDes}
+                    </div>
+                  </div>
+                )}
+                {children}
+              </div>
+            </div>
+            {showArrow && <TooltipArrow className={arrowClassName} />}
+          </div>
+        </div>
+      </TooltipContentContext.Provider>,
+      portalTarget,
+    );
+  }
+
+  // Classic and Staggered variants
+  const entranceClass = isArrowEmerge
+    ? ""
     : isStaggered
       ? ENTER_STAGGERED[side]
-      : isAnimated
-        ? ENTER_PULL_OUT[side]
-        : cn("zoom-in-95 duration-150", ENTER_FROM_SIDE[side]);
+      : cn("zoom-in-95 duration-150", ENTER_FROM_SIDE[side]);
 
   return createPortal(
     <TooltipContentContext.Provider value={{ side, align }}>
@@ -431,12 +588,11 @@ export function TooltipContent({
         role="tooltip"
         className={cn(
           "absolute z-[9999] text-xs text-primary-foreground bg-primary shadow-md pointer-events-none box-border",
-          isExpand
-            ? "px-3.5 rounded-lg flex items-center overflow-visible"
-            : title
-              ? "px-3.5 py-2.5 rounded-lg max-w-xs"
-              : "px-3 py-1.5 rounded-md font-medium",
-          !isExpand && "transition-none",
+          isArrowEmerge && (ARROW_ORIGINS[side]?.[align] ?? "origin-center"),
+          title
+            ? "px-3.5 py-2.5 rounded-lg max-w-xs"
+            : "px-3 py-1.5 rounded-md font-medium",
+          !isArrowEmerge && "transition-none",
           entranceClass,
           className,
         )}
@@ -445,20 +601,79 @@ export function TooltipContent({
             top: coords.top,
             left: coords.left,
             visibility: positioned ? "visible" : "hidden",
-            ...(isExpand
+            ...(isArrowEmerge
               ? {
-                  width: expandWidth,
-                  height: expandHeight,
-                  transform: expandTransform,
-                  transition:
-                    "width 1200ms cubic-bezier(0.16, 1, 0.3, 1), height 1200ms cubic-bezier(0.16, 1, 0.3, 1), transform 1200ms cubic-bezier(0.16, 1, 0.3, 1)",
-                  willChange: "width, height, transform",
+                  animation: positioned
+                    ? `tooltip-emerge-${side} 600ms cubic-bezier(0.16, 1, 0.3, 1) both`
+                    : undefined,
+                  willChange: "transform, opacity",
                 }
               : undefined),
           } as React.CSSProperties
         }
         {...props}
       >
+        {isArrowEmerge && (
+          <style>{`
+            @keyframes tooltip-emerge-top {
+              0% {
+                opacity: 0;
+                transform: translateY(12px) scale(0.08);
+              }
+              25% {
+                opacity: 1;
+              }
+              100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+              }
+            }
+            @keyframes tooltip-emerge-bottom {
+              0% {
+                opacity: 0;
+                transform: translateY(-12px) scale(0.08);
+              }
+              25% {
+                opacity: 1;
+              }
+              100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+              }
+            }
+            @keyframes tooltip-emerge-left {
+              0% {
+                opacity: 0;
+                transform: translateX(12px) scale(0.08);
+              }
+              25% {
+                opacity: 1;
+              }
+              100% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+              }
+            }
+            @keyframes tooltip-emerge-right {
+              0% {
+                opacity: 0;
+                transform: translateX(-12px) scale(0.08);
+              }
+              25% {
+                opacity: 1;
+              }
+              100% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+              }
+            }
+            @media (prefers-reduced-motion: reduce) {
+              * {
+                animation: none !important;
+              }
+            }
+          `}</style>
+        )}
         {isStaggered && (
           <style>{`
             @keyframes tooltip-icon-pop {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState, memo } from "react";
+import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { AnimatedTypographyBlock, type PrefixPosition } from "./AnimatedTypographyBlock";
 import { ArrowRight, ArrowUpRight, Check, Copy, Sparkles, Terminal, Star, Code, Mail, FileText, Heart, ShieldCheck, ShoppingBag, Package } from "lucide-react";
