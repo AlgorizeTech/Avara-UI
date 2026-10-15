@@ -668,11 +668,15 @@ const BTN_SOFT =
    the h1, the description the paragraph right after it, and the two actions
    the links in the row that follows. */
 const HERO_TYPE = [
+	// Copy column width
+	"[&_.cw-rise-group]:max-w-[56rem] lg:[&_.cw-rise-group]:max-w-[52rem] xl:[&_.cw-rise-group]:max-w-[58rem]",
 	// Eyebrow pill
 	"[&_div:has(+h1)>a]:gap-1.5 [&_div:has(+h1)>a]:border-transparent [&_div:has(+h1)>a]:bg-foreground/[0.04] [&_div:has(+h1)>a]:px-3 [&_div:has(+h1)>a]:py-1 [&_div:has(+h1)>a]:text-[12px] [&_div:has(+h1)>a]:font-normal [&_div:has(+h1)>a]:text-foreground/90",
 	"[&_div:has(+h1)>a]:hover:border-transparent [&_div:has(+h1)>a]:hover:bg-foreground/10 [&_div:has(+h1)>a]:hover:text-foreground",
-	// Headline: Cooper at its regular weight
-	"[&_h1]:font-normal [&_h1]:text-[clamp(34px,6.8vw,84px)] [&_h1]:leading-[1.06] [&_h1]:tracking-[-0.03em] [&_h1]:text-foreground",
+	// Headline: Cooper at its regular weight, max-w-none so it doesn't wrap "Build interactive"
+	"[&_h1]:max-w-none [&_h1]:font-normal [&_h1]:text-[clamp(26px,5.6vw,78px)] [&_h1]:leading-[1.06] [&_h1]:tracking-[-0.03em] [&_h1]:text-foreground",
+	// Force the animated word token to the next line so "Build interactive" stays on line 1
+	"[&_h1>span:last-child]:basis-full [&_h1>span:last-child]:text-center",
 	// Subtitle
 	"[&_h1+p]:text-[clamp(13px,1.45vw,18px)] [&_h1+p]:leading-[1.65] [&_h1+p]:text-foreground/60",
 	// Primary action: the clay button
