@@ -21,7 +21,13 @@ import {
 } from "@/components/custom/blocks/ThreeDCarouselBlock";
 import { CommandSearchBlock } from "@/components/custom/blocks/UtilityBlocks";
 import { AppleSelect } from "@/components/custom/blocks/AppleSelectBlock";
-import { Avatar } from "@/components/custom/blocks/AvatarStackBlock";
+import {
+	Avatar,
+	AvatarGroup,
+	AvatarGroupTooltip,
+	AvatarImage,
+	AvatarFallback,
+} from "@/components/custom/blocks/AvatarStackBlock";
 import { ComponentWall } from "@/components/custom/blocks/ComponentWallBlock";
 import { AnimatedFAQBlock } from "@/components/custom/blocks/AnimatedFAQBlock";
 import { GitHubIcon } from "@/components/custom/blocks/Icons";
@@ -56,6 +62,7 @@ import {
 	GripVertical,
 	CreditCard,
 	GalleryVerticalEnd,
+	Users,
 } from "lucide-react";
 import { motion, useInView } from "motion/react";
 // The motion demos (CardStack) read their config from motion's context.
@@ -205,6 +212,37 @@ const sampleCarouselItems: CarouselItem[] = [
 		image:
 			"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
 		description: "Golden foliage covering quiet forest trails in peak autumn.",
+	},
+];
+
+const sampleGroupAvatars = [
+	{
+		src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg",
+		alt: "Ana Watson",
+		name: "Ana Watson",
+		fallback: "AW",
+		designation: "Product Designer",
+	},
+	{
+		src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg",
+		alt: "Tom Hardy",
+		name: "Tom Hardy",
+		fallback: "TH",
+		designation: "Frontend Developer",
+	},
+	{
+		src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg",
+		alt: "Mara Jade",
+		name: "Mara Jade",
+		fallback: "MJ",
+		designation: "Engineering Lead",
+	},
+	{
+		src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg",
+		alt: "Leo Silva",
+		name: "Leo Silva",
+		fallback: "LS",
+		designation: "Creative Technologist",
 	},
 ];
 
@@ -923,6 +961,31 @@ function ComponentShowcase() {
 										containerHeight={84}
 									/>
 								</FitToWidth>
+							</div>
+						</div>
+
+						<div className="showcase-card rounded-2xl border border-foreground/[0.06] bg-card px-5 pt-5 pb-2 overflow-hidden">
+							<div className="flex items-center justify-between gap-3 mb-4">
+								<span className="flex min-w-0 items-center gap-1.5 text-[14px] font-semibold text-foreground">
+									<Users className="size-3.5 shrink-0 text-primary" />
+									<span className="truncate">Avatar Group</span>
+								</span>
+								<span className={CHIP}>
+									Shift on Hover
+								</span>
+							</div>
+							<div className="flex items-center justify-center pt-6 pb-1">
+								<AvatarGroup>
+									{sampleGroupAvatars.map((avatar, index) => (
+										<Avatar key={index} className="size-12 border-[3px] border-background ring-0 cursor-pointer">
+											<AvatarImage src={avatar.src} alt={avatar.alt} />
+											<AvatarFallback>{avatar.fallback}</AvatarFallback>
+											<AvatarGroupTooltip designation={avatar.designation}>
+												{avatar.name}
+											</AvatarGroupTooltip>
+										</Avatar>
+									))}
+								</AvatarGroup>
 							</div>
 						</div>
 					</motion.div>
