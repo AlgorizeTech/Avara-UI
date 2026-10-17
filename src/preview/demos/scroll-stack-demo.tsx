@@ -31,6 +31,7 @@ export default function ScrollStackDemo({
       description:
         "Instantly sync state across clients without writing WebSocket logic. Our engine handles race conditions seamlessly.",
       icon: Zap,
+      color: "#1e3a8a",
       content: (
         <div className="w-full h-full flex flex-col justify-between p-6 bg-muted text-foreground rounded-2xl border border-border shadow-sm relative overflow-hidden group">
           <div className="flex items-center justify-between border-b border-border pb-3">
@@ -75,6 +76,7 @@ export default function ScrollStackDemo({
       description:
         "Build robust systems with separated concerns. Easily swap out databases or auth providers without rewriting your core.",
       icon: Layers,
+      color: "#581c87",
       content: (
         <div className="w-full h-full flex flex-col justify-center gap-3 p-6 bg-muted rounded-2xl border border-border text-foreground relative overflow-hidden">
           <div className="p-3.5 rounded-xl bg-card border border-border flex items-center justify-between shadow-xs">
@@ -124,6 +126,7 @@ export default function ScrollStackDemo({
       description:
         "Don't reinvent the wheel. Utilize our library of pre-built, accessible UI blocks designed to drop into any codebase.",
       icon: Blocks,
+      color: "#065f46",
       content: (
         <div className="w-full h-full p-6 bg-muted rounded-2xl border border-border text-foreground flex flex-col justify-between">
           <div className="flex items-center justify-between mb-2">
@@ -183,6 +186,7 @@ export default function ScrollStackDemo({
       description:
         "Bank-grade encryption, automated compliance tracking, and granular role-based access control built in out of the box.",
       icon: ShieldCheck,
+      color: "#9f1239",
       content: (
         <div className="w-full h-full p-6 bg-muted rounded-2xl border border-border text-foreground flex flex-col justify-between items-center text-center">
           <div className="w-full flex items-center justify-between border-b border-border pb-3">

@@ -11,7 +11,10 @@ export interface StackItem {
   title: string;
   description: string;
   content?: React.ReactNode;
-  color?: string; // Optional custom background classes
+  /** Custom background color hex (e.g. "#1e3a8a"), CSS color, or Tailwind classes (e.g. "bg-blue-900") */
+  color?: string;
+  /** Optional alias for color */
+  bgColor?: string;
   icon?: React.ElementType;
 }
 
@@ -21,6 +24,17 @@ export interface ScrollStackProps extends React.HTMLAttributes<HTMLDivElement> {
   cardGap?: number; // Pixel distance between stacked sticky cards (default: 24)
   scroller?: string | Element | null; // Scroll viewport driving the effect
 }
+
+// Helper to determine if a color string is a direct CSS color (hex, rgb, hsl, var)
+const isCssColor = (c?: string): boolean => {
+  if (!c) return false;
+  return (
+    c.startsWith("#") ||
+    c.startsWith("rgb") ||
+    c.startsWith("hsl") ||
+    c.startsWith("var(")
+  );
+};
 
 // ==========================================
 // MAIN CONTAINER (SCROLL-DRIVEN)
@@ -117,57 +131,84 @@ export const ScrollStack = ({
       style={{ paddingBottom: "15vh" }}
       {...props}
     >
-      {items.map((item, index) => (
-        <div
-          key={item.id}
-          className="flex min-h-screen w-full items-center justify-center sticky"
-          // Each card sticks a little lower than the one before, which is
-          // what makes the stack fan out rather than pile up exactly.
-          style={{ top: index * cardGap }}
-        >
-          <div
-            ref={(el) => {
-              cardRefs.current[index] = el;
-            }}
-            className={cn(
-              "relative w-full max-w-4xl h-[60vh] sm:h-[65vh] rounded-2xl p-8 md:p-12 shadow-xl dark:shadow-2xl origin-top flex flex-col md:flex-row gap-8 overflow-hidden border transition-colors duration-300",
-              item.color ||
-                "bg-card border-border text-foreground hover:border-[var(--theme-color,var(--primary))]",
-            )}
-          >
-            {/* Subtle Glass Noise Overlay */}
-            <div className="absolute inset-0 bg-foreground/[0.02] pointer-events-none" />
+      {items.map((item, index) => {
+        const customColor = item.color || item.bgColor;
+        const hasCssBg = Boolean(customColor && isCssColor(customColor));
 
-            <div className="flex-1 flex flex-col justify-center relative z-10">
-              {item.icon && (
-                <div className="w-14 h-14 rounded-2xl bg-[var(--theme-color,var(--primary))]/10 border border-[var(--theme-color,var(--primary))]/20 flex items-center justify-center mb-6 shadow-sm text-[var(--theme-color,var(--primary))] transition-colors">
-                  <item.icon className="w-7 h-7 text-[var(--theme-color,var(--primary))]" />
+        return (
+          <div
+            key={item.id}
+            className="flex min-h-screen w-full items-center justify-center sticky"
+            // Each card sticks a little lower than the one before, which is
+            // what makes the stack fan out rather than pile up exactly.
+            style={{ top: index * cardGap }}
+          >
+            <div
+              ref={(el) => {
+                cardRefs.current[index] = el;
+              }}
+              style={
+                hasCssBg && customColor
+                  ? { backgroundColor: customColor }
+                  : undefined
+              }
+              className={cn(
+                "relative w-full max-w-4xl h-[60vh] sm:h-[65vh] rounded-2xl p-8 md:p-12 shadow-xl dark:shadow-2xl origin-top flex flex-col md:flex-row gap-8 overflow-hidden border transition-colors duration-300",
+                hasCssBg
+                  ? "border-white/10 text-white"
+                  : customColor
+                    ? customColor
+                    : "bg-card border-border text-foreground hover:border-[var(--theme-color,var(--primary))]",
+              )}
+            >
+              {/* Subtle Glass Noise Overlay */}
+              <div className="absolute inset-0 bg-foreground/[0.02] pointer-events-none" />
+
+              <div className="flex-1 flex flex-col justify-center relative z-10">
+                {item.icon && (
+                  <div
+                    className={cn(
+                      "w-14 h-14 rounded-2xl flex items-center justify-center mb-6 shadow-sm transition-colors",
+                      customColor
+                        ? "bg-white/15 border border-white/20 text-white"
+                        : "bg-[var(--theme-color,var(--primary))]/10 border border-[var(--theme-color,var(--primary))]/20 text-[var(--theme-color,var(--primary))]"
+                    )}
+                  >
+                    <item.icon className="w-7 h-7" />
+                  </div>
+                )}
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight mb-4 leading-tight">
+                  {item.title}
+                </h2>
+                <p
+                  className={cn(
+                    "text-base sm:text-lg font-medium leading-relaxed max-w-lg transition-colors",
+                    customColor
+                      ? "text-white/85"
+                      : "text-muted-foreground",
+                  )}
+                >
+                  {item.description}
+                </p>
+              </div>
+
+              {/* Right-Side Content Payload */}
+              {item.content && (
+                <div
+                  className={cn(
+                    "flex-1 relative z-10 rounded-2xl overflow-hidden hidden md:flex items-center justify-center transition-colors",
+                    customColor
+                      ? "bg-black/20 border border-white/10 shadow-lg"
+                      : "bg-muted/80 border border-border/80"
+                  )}
+                >
+                  {item.content}
                 </div>
               )}
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight mb-4 leading-tight">
-                {item.title}
-              </h2>
-              <p
-                className={cn(
-                  "text-base sm:text-lg font-medium leading-relaxed max-w-lg transition-colors",
-                  item.color
-                    ? "text-white/80"
-                    : "text-muted-foreground",
-                )}
-              >
-                {item.description}
-              </p>
             </div>
-
-            {/* Right-Side Content Payload */}
-            {item.content && (
-              <div className="flex-1 relative z-10 rounded-2xl overflow-hidden bg-muted/80 border border-border/80 hidden md:flex items-center justify-center transition-colors">
-                {item.content}
-              </div>
-            )}
           </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };
