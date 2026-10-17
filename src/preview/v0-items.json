@@ -935,6 +935,9 @@
     "with-staggered-content-animation": "Tooltip — With Staggered Content Animation",
     "with-expanding-content": "Tooltip — With Expanding Content"
   },
+  "top-destinations": {
+    "dual-row-parallax-travel": "Top Destinations — Dual-row parallax travel"
+  },
   "user-graph": {
     "user-graph": "User Graph"
   },

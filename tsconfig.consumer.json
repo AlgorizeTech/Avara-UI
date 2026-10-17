@@ -180,6 +180,7 @@
     "src/components/custom/blocks/ToggleBlock.tsx",
     "src/components/custom/blocks/ToggleGroupBlock.tsx",
     "src/components/custom/blocks/TooltipBlock.tsx",
+    "src/components/custom/blocks/TopDestinationsBlock.tsx",
     "src/components/custom/blocks/UploadBlock.tsx",
     "src/components/custom/blocks/UserGraphBlock.tsx",
     "src/components/custom/blocks/UtilityBlocks.tsx",

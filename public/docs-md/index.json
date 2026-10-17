@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-17T05:18:43.236Z",
-  "totalFiles": 307,
+  "generatedAt": "2026-10-17T06:42:40.583Z",
+  "totalFiles": 309,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -871,6 +871,12 @@
       "path": "/docs/nextjs-tooltip.md",
       "url": "/docs/nextjs/tooltip",
       "originalMdx": "[framework]\\tooltip\\page.mdx"
+    },
+    {
+      "name": "nextjs/top-destinations",
+      "path": "/docs/nextjs-top-destinations.md",
+      "url": "/docs/nextjs/top-destinations",
+      "originalMdx": "[framework]\\top-destinations\\page.mdx"
     },
     {
       "name": "nextjs/user-graph",
@@ -1795,6 +1801,12 @@
       "path": "/docs/reactjs-tooltip.md",
       "url": "/docs/reactjs/tooltip",
       "originalMdx": "[framework]\\tooltip\\page.mdx"
+    },
+    {
+      "name": "reactjs/top-destinations",
+      "path": "/docs/reactjs-top-destinations.md",
+      "url": "/docs/reactjs/top-destinations",
+      "originalMdx": "[framework]\\top-destinations\\page.mdx"
     },
     {
       "name": "reactjs/user-graph",

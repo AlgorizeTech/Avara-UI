@@ -4665,6 +4665,33 @@
       "docs": "Named exports: TooltipProvider, Tooltip, TooltipTrigger, TooltipContent. Requires the `animate-in`, `fade-in` and `zoom-in-95` utilities — on Tailwind v4 add `@import \"tw-animate-css\";` to your global stylesheet, on v3 use the `tailwindcss-animate` plugin. Content renders through a React portal at z-index 9999."
     },
     {
+      "name": "top-destinations",
+      "type": "registry:component",
+      "title": "Top Destinations",
+      "author": "AlgorizeTech",
+      "description": "A dual-row scroll-driven destination showcase with opposite-direction GSAP ScrollTrigger parallax travel, full-bleed photography, and interactive hover details.",
+      "categories": [
+        "marketing",
+        "data-display",
+        "scroll"
+      ],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/TopDestinationsBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/TopDestinationsBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: TopDestinations, TopDestinationsCard, DEFAULT_DESTINATIONS (plus DestinationItem type). Accepts items array or row1Items/row2Items, scrollOffset, and scrollerRef."
+    },
+    {
       "name": "ui-accordion",
       "type": "registry:ui",
       "title": "UI Accordion",

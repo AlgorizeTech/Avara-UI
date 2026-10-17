@@ -1223,5 +1223,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["data-display", "media"],
     docs: "Named exports: SplitFlap, SPLIT_FLAP_CHARSET. Default export: SplitFlap. Variants: ivory | minimalist. Features 3D mechanical rotateX animation, Web Audio API sound generator, and responsive size presets.",
   },
+  "top-destinations": {
+    title: "Top Destinations",
+    description:
+      "A dual-row scroll-driven destination showcase with opposite-direction GSAP ScrollTrigger parallax travel, full-bleed photography, and interactive hover details.",
+    categories: ["marketing", "data-display", "scroll"],
+    docs: "Named exports: TopDestinations, TopDestinationsCard, DEFAULT_DESTINATIONS (plus DestinationItem type). Accepts items array or row1Items/row2Items, scrollOffset, and scrollerRef.",
+  },
 };
 

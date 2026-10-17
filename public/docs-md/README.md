@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-10-17T05:18:43.342Z
-**Total files:** 307
+**Generated at:** 2026-10-17T06:42:40.671Z
+**Total files:** 309
 
 ## Available Files
 
@@ -152,6 +152,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/toggle](/docs/nextjs-toggle.md) - Source: `[framework]\toggle\page.mdx`
 - [nextjs/toggle-group](/docs/nextjs-toggle-group.md) - Source: `[framework]\toggle-group\page.mdx`
 - [nextjs/tooltip](/docs/nextjs-tooltip.md) - Source: `[framework]\tooltip\page.mdx`
+- [nextjs/top-destinations](/docs/nextjs-top-destinations.md) - Source: `[framework]\top-destinations\page.mdx`
 - [nextjs/user-graph](/docs/nextjs-user-graph.md) - Source: `[framework]\user-graph\page.mdx`
 - [nextjs/verify-badge](/docs/nextjs-verify-badge.md) - Source: `[framework]\verify-badge\page.mdx`
 - [nextjs/vertical-tabs](/docs/nextjs-vertical-tabs.md) - Source: `[framework]\vertical-tabs\page.mdx`
@@ -306,6 +307,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/toggle](/docs/reactjs-toggle.md) - Source: `[framework]\toggle\page.mdx`
 - [reactjs/toggle-group](/docs/reactjs-toggle-group.md) - Source: `[framework]\toggle-group\page.mdx`
 - [reactjs/tooltip](/docs/reactjs-tooltip.md) - Source: `[framework]\tooltip\page.mdx`
+- [reactjs/top-destinations](/docs/reactjs-top-destinations.md) - Source: `[framework]\top-destinations\page.mdx`
 - [reactjs/user-graph](/docs/reactjs-user-graph.md) - Source: `[framework]\user-graph\page.mdx`
 - [reactjs/verify-badge](/docs/reactjs-verify-badge.md) - Source: `[framework]\verify-badge\page.mdx`
 - [reactjs/vertical-tabs](/docs/reactjs-vertical-tabs.md) - Source: `[framework]\vertical-tabs\page.mdx`
