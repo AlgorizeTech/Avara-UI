@@ -41,7 +41,7 @@ export const wallGroups = `    <TechStackGroup>
 
 {/* One snippet per framework: Next.js passes next/link so the wall's links route client-side; anywhere else the default <a> is the right thing and needs no import. */}
 
-export const wallUsage = ({ next, layout, comment, stackVariant }) => `"use client";
+export const wallUsage = ({ next, layout, comment, stackVariant, persistentBackground }) => `"use client";
 
 ${next ? 'import Link from "next/link";\n' : ""}import { ComponentWall, type ComponentWallItem } from "@/components/custom/blocks/ComponentWallBlock";
 import { TechStack, TechStackGroup, TechStackTool } from "@/components/custom/blocks/TechStackBlock";
@@ -58,7 +58,7 @@ ${wallGroups}  </TechStack>
 export default function Hero() {
   return (
     <ComponentWall
-      layout="${layout}"
+      layout="${layout}"${persistentBackground ? "\n      persistentBackground" : ""}
       badge={{ label: "Next-gen React components", href: "/docs" }}
       heading="Build interactive {word}."
       headingWords={["interfaces", "components", "experiences", "animations", "dashboards"]}
@@ -84,6 +84,14 @@ export const wallCenter = {
 // The centred column is narrow, so the compact variant (marks only) fits it.`,
 };
 
+export const wallPersistent = {
+  layout: "center",
+  persistentBackground: true,
+  stackVariant: ' variant="compact"',
+  comment: `// Keeps the animated screenshot walls in the background layer behind the copy
+// across all screen sizes (mobile and desktop) instead of dropping below the buttons.`,
+};
+
 export const wallSplit = {
   layout: "split",
   stackVariant: "",
@@ -94,6 +102,11 @@ export const wallSplit = {
 export const usage = {
   nextjs: wallUsage({ ...wallCenter, next: true }),
   reactjs: wallUsage({ ...wallCenter, next: false }),
+};
+
+export const usagePersistent = {
+  nextjs: wallUsage({ ...wallPersistent, next: true }),
+  reactjs: wallUsage({ ...wallPersistent, next: false }),
 };
 
 export const usageSplit = {
@@ -156,6 +169,54 @@ export const usageSplit = {
       props: { layout: "center" },
       usage,
       code: extractCode("src/components/custom/blocks/ComponentWallBlock.tsx"),
+    },
+    {
+      title: "Centred with persistent background",
+      subheading:
+        "The copy in the middle between two gliding screenshot walls. On mobile and small screens, the animated walls stay underneath the copy in the background layer just like on desktop, rather than dropping below the action buttons.",
+      propNotes: [
+        {
+          prop: "layout",
+          value: '"center"',
+          effect:
+            "centres the copy between two walls, each half the width and fading in under it.",
+        },
+        {
+          prop: "persistentBackground",
+          value: "true",
+          effect:
+            "ensures the animated walls remain anchored in the background behind the content on small screens, preventing the cards from dropping down below the call-to-action buttons.",
+        },
+        {
+          prop: "install",
+          effect:
+            "is the command in the box. Live-updates with the card slug the camera lands on.",
+        },
+        {
+          prop: "items",
+          effect:
+            "are the cards dealt into the walls. The left wall draws the first half, the right wall the second half.",
+        },
+        {
+          prop: "interval",
+          value: "4500",
+          effect:
+            "is how long each camera rests on a card; the right one lands half an interval after the left.",
+        },
+        {
+          prop: "mobileZoom",
+          value: "0.30",
+          effect:
+            "controls the scale of the background cards on small screens and phones, rendering them delightfully compact and unobtrusive.",
+        },
+        {
+          prop: "stack",
+          effect:
+            "renders the Tech Stack in compact mode below the trust statement in the center column.",
+        },
+      ],
+      props: { layout: "center", persistentBackground: true },
+      usage: usagePersistent,
     },
   ]}
 />

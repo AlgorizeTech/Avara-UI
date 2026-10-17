@@ -8,13 +8,19 @@ export default function ComponentWallDemo({
   interval = 4500,
   order = "serial",
   layout = "center",
+  persistentBackground = false,
+  mobileZoom,
 }: {
   /** Milliseconds the camera rests on a card; 0 holds still. */
   interval?: number;
   /** Card by card, or every card once per round in a random order. */
   order?: "serial" | "shuffle";
   /** Copy on the left and the wall on the right, or the copy between two walls. */
-  layout?: "split" | "center";
+  layout?: "split" | "center" | "center-background";
+  /** Keep wall in the background on mobile instead of dropping as a bottom band. */
+  persistentBackground?: boolean;
+  /** Scale of background cards on small/mobile screens. */
+  mobileZoom?: number;
 }) {
   return (
     <div className="w-full overflow-hidden rounded-2xl border border-border">
@@ -29,10 +35,12 @@ export default function ComponentWallDemo({
         secondaryAction={{ label: "Star on GitHub", href: "#", icon: <GitHubIcon size={16} /> }}
         trust={{ text: "Loved by developers shipping real products with it", avatars: WALL_AVATARS, rating: 5 }}
         items={WALL_ITEMS}
-        stack={<WallStack variant={layout === "center" ? "compact" : "labelled"} />}
+        stack={<WallStack variant={layout === "split" ? "labelled" : "compact"} />}
         interval={interval}
         order={order}
         layout={layout}
+        persistentBackground={persistentBackground}
+        mobileZoom={mobileZoom}
       />
     </div>
   );

@@ -316,7 +316,7 @@ function InstallationSteps({ name }: { name: string }) {
   const target = item.files?.[0]?.target;
   const direct = item.dependencies ?? [];
   const components = (item.registryDependencies ?? []).filter(
-    (dependency) => !BASELINE_COMPONENTS.has(label(dependency)),
+    (dependency: string) => !BASELINE_COMPONENTS.has(label(dependency)),
   );
   // Includes packages inherited through `components`; see transitivePackages.
   const packages = [...new Set(transitivePackages(name))]
