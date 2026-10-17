@@ -35,6 +35,8 @@ export interface ImageWallProps extends Omit<React.HTMLAttributes<HTMLDivElement
   order?: "serial" | "shuffle";
   /** Camera scale while resting on a card. */
   zoom?: number;
+  /** Camera scale on phones and small viewports (under 640px). Defaults to 0.32. */
+  mobileZoom?: number;
   /**
    * Milliseconds the camera drifts across the wall, pulled back with no card
    * in focus, before its first landing — time for whatever sits beside the
@@ -335,7 +337,22 @@ const CENTER_TILE = "0,0";
 const SCROLL_SETTLE = 150;
 
 const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
-  ({ items, columns = 4, interval = 4500, order = "serial", zoom = 1.35, intro = 0, anchor, onFocus, className, ...props }, ref) => {
+  (
+    {
+      items,
+      columns = 4,
+      interval = 4500,
+      order = "serial",
+      zoom = 1.35,
+      mobileZoom,
+      intro = 0,
+      anchor,
+      onFocus,
+      className,
+      ...props
+    },
+    ref,
+  ) => {
     const ax = anchor?.x ?? 0.5;
     const ay = anchor?.y ?? 0.5;
     const wrapRef = useRef<HTMLDivElement | null>(null);
@@ -453,12 +470,19 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
         // few cards show at once instead of one card spilling out of the band;
         // a narrow one (a phone) pulls back further still, so the flight from
         // card to card is a visible journey rather than a swap.
-        const s = W < 640 ? Math.min(zoom, PHONE_ZOOM) : H < 420 ? Math.min(zoom, BAND_ZOOM) : zoom;
+        const s =
+          mobileZoom !== undefined
+            ? mobileZoom
+            : W <= 640
+              ? Math.min(zoom, PHONE_ZOOM)
+              : H < 420
+                ? Math.min(zoom, BAND_ZOOM)
+                : zoom;
         const cx = card.left + CARD_W / 2;
         const cy = card.top + CARD_H / 2;
         return { x: W * ax - s * cx, y: H * ay - s * cy, s };
       },
-      [placed, zoom, ax, ay],
+      [placed, zoom, mobileZoom, ax, ay],
     );
 
     // ---- First frame, and every resize: snap to the focused card. On the very
@@ -470,9 +494,10 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
       const wrap = wrapRef.current;
       if (!wrap) return;
       const snap = () => {
-        if (flightRef.current?.isActive()) return;
+        flightRef.current?.kill();
         cameraRef.current = restFor(focusRef.current);
         paint();
+        setFlying(false);
       };
       let introLive = false;
       if (!introDone.current && intro > 0 && n > 0 && !prefersReducedMotion()) {

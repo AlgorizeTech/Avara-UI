@@ -43,7 +43,7 @@ export interface ComponentWallItem extends WallItem {
 
 export interface ComponentWallProps
   extends Omit<React.HTMLAttributes<HTMLElement>, "onFocus">,
-    Pick<ImageWallProps, "columns" | "interval" | "order" | "zoom" | "intro" | "onFocus"> {
+    Pick<ImageWallProps, "columns" | "interval" | "order" | "zoom" | "mobileZoom" | "intro" | "onFocus"> {
   /** The small link above the headline. */
   badge?: { label: string; href?: string };
   /**
@@ -83,9 +83,16 @@ export interface ComponentWallProps
    * right one low, taking turns; the tools sit under the copy. The walls
    * split `items`, the first half on the left and the rest on the right.
    * Below `lg` there is a single wall instead: a band of every card
-   * between the copy and the tools.
+   * between the copy and the tools. `center-background`: keeps the walls
+   * anchored in the background layer behind the copy across all screens.
    */
-  layout?: "split" | "center";
+  layout?: "split" | "center" | "center-background";
+  /**
+   * When true (or with layout="center-background"), the animated screenshot
+   * walls stay in the background layer behind the copy on small screens instead
+   * of dropping below the action buttons as a separate band.
+   */
+  persistentBackground?: boolean;
   /**
    * Centred layout only: whether the single wall band shows below `lg`.
    * `false` leaves just the copy and the tools there; the wall never mounts.
@@ -324,10 +331,12 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
       interval,
       order,
       zoom,
+      mobileZoom,
       // Long enough for the headline and the lines under it to have risen.
       intro = 1800,
       onFocus,
       layout = "split",
+      persistentBackground = false,
       compactWall = true,
       linkComponent: Link = "a",
       className,
@@ -336,7 +345,8 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
     ref,
   ) => {
     const reduceMotion = useReducedMotion();
-    const centered = layout === "center";
+    const isPersistent = persistentBackground || layout === "center-background";
+    const centered = layout === "center" || isPersistent;
     const desktop = useMinWidth(1024);
 
     // ---- The word that takes turns in the headline.
@@ -433,7 +443,14 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
       };
     }, [install, slug]);
 
-    const wallProps = { columns, interval, order, zoom: zoom ?? (centered ? CENTER_ZOOM : undefined) };
+    const isSmallScreen = desktop === false;
+    const wallProps = {
+      columns,
+      interval,
+      order,
+      zoom: zoom ?? (centered ? CENTER_ZOOM : undefined),
+      mobileZoom: isSmallScreen ? (mobileZoom ?? (isPersistent ? 0.30 : 0.32)) : undefined,
+    };
 
     // Each line that rises takes the next place in line, skipping the absent ones.
     let risen = 0;
@@ -559,7 +576,7 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
             copy and the tools. It deals every card, being the only wall. The
             box holds its height from the first paint; the wall mounts once the
             breakpoint is known, so a desktop never loads it. ---- */}
-        {centered && compactWall && (
+        {centered && compactWall && !isPersistent && (
           <div
             className="mt-10 h-64 w-screen max-w-none shrink-0 self-center sm:h-80 lg:hidden"
             aria-hidden={desktop !== false || undefined}
@@ -594,38 +611,51 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
           {...props}
         >
           <style>{STYLES}</style>
-          <div className="relative flex w-full flex-col items-center lg:min-h-[46rem] lg:justify-center">
-            {/* ---- From `lg`: the left wall, its camera resting high. (Below
-                `lg` a single band sits in the copy, over the tools.) ---- */}
-            {desktop && (
+          <div
+            className={cn(
+              "relative flex w-full flex-col items-center lg:min-h-[46rem] lg:justify-center",
+              isPersistent && "min-h-[44rem]",
+            )}
+          >
+            {/* ---- From `lg` (or all screens when persistentBackground is active): the left wall ---- */}
+            {(desktop || isPersistent) && (
               <ImageWall
                 {...wallProps}
                 items={startItems}
                 intro={intro}
                 anchor={START_ANCHOR}
                 onFocus={handleFocus}
-                className="absolute inset-y-0 left-0 h-auto w-1/2 [mask-image:linear-gradient(to_right,black_35%,transparent_68%)]"
+                className={cn(
+                  "absolute inset-y-0 left-0 h-auto w-1/2 [mask-image:linear-gradient(to_right,black_35%,transparent_68%)]",
+                  isPersistent && "opacity-60 sm:opacity-90 lg:opacity-100",
+                )}
               />
             )}
 
             {/* ---- The copy, over a soft wash of the background where the walls meet ---- */}
             <div className="pointer-events-none relative z-30 flex w-full justify-center px-6 md:px-10">
               <div
-                className="absolute inset-y-0 left-1/2 hidden w-[52rem] -translate-x-1/2 bg-[radial-gradient(closest-side,var(--background)_55%,transparent)] lg:block"
+                className={cn(
+                  "absolute inset-y-0 left-1/2 w-full max-w-[52rem] -translate-x-1/2 bg-[radial-gradient(closest-side,var(--background)_60%,transparent)]",
+                  !isPersistent && "hidden lg:block",
+                )}
                 aria-hidden
               />
               {copy}
             </div>
 
-            {/* ---- From `lg`: the right wall, its camera resting low ---- */}
-            {desktop && (
+            {/* ---- From `lg` (or all screens when persistentBackground is active): the right wall ---- */}
+            {(desktop || isPersistent) && (
               <ImageWall
                 {...wallProps}
                 items={endItems}
                 intro={intro + restInterval / 2}
                 anchor={END_ANCHOR}
                 onFocus={handleEndFocus}
-                className="absolute inset-y-0 right-0 h-auto w-1/2 [mask-image:linear-gradient(to_left,black_35%,transparent_68%)]"
+                className={cn(
+                  "absolute inset-y-0 right-0 h-auto w-1/2 [mask-image:linear-gradient(to_left,black_35%,transparent_68%)]",
+                  isPersistent && "opacity-60 sm:opacity-90 lg:opacity-100",
+                )}
               />
             )}
           </div>

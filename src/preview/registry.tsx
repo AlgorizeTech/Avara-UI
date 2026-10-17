@@ -186,6 +186,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "toggle": lazyRetry(() => import("./demos/toggle-demo")),
   "toggle-group": lazyRetry(() => import("./demos/toggle-group-demo")),
   "tooltip": lazyRetry(() => import("./demos/tooltip-demo")),
+  "top-destinations": lazyRetry(() => import("./demos/top-destinations-demo")),
   "upload": lazyRetry(() => import("./demos/upload-demo")),
   "user-graph": lazyRetry(() => import("./demos/user-graph-demo")),
   "verify-badge": lazyRetry(() => import("./demos/verify-badge-demo")),

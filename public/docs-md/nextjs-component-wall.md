@@ -36,7 +36,7 @@ export const wallGroups = `
 
 {/* One snippet per framework: Next.js passes next/link so the wall's links route client-side; anywhere else the default  is the right thing and needs no import. */}
 
-export const wallUsage = ({ next, layout, comment, stackVariant }) => `"use client";
+export const wallUsage = ({ next, layout, comment, stackVariant, persistentBackground }) => `"use client";
 
 ${next ? 'import Link from "next/link";\n' : ""}import { ComponentWall, type ComponentWallItem } from "@/components/custom/blocks/ComponentWallBlock";
 
@@ -68,6 +68,14 @@ export const wallCenter = {
 // The centred column is narrow, so the compact variant (marks only) fits it.`,
 };
 
+export const wallPersistent = {
+  layout: "center",
+  persistentBackground: true,
+  stackVariant: ' variant="compact"',
+  comment: `// Keeps the animated screenshot walls in the background layer behind the copy
+// across all screen sizes (mobile and desktop) instead of dropping below the buttons.`,
+};
+
 export const wallSplit = {
   layout: "split",
   stackVariant: "",
@@ -78,6 +86,11 @@ export const wallSplit = {
 export const usage = {
   nextjs: wallUsage({ ...wallCenter, next: true }),
   reactjs: wallUsage({ ...wallCenter, next: false }),
+};
+
+export const usagePersistent = {
+  nextjs: wallUsage({ ...wallPersistent, next: true }),
+  reactjs: wallUsage({ ...wallPersistent, next: false }),
 };
 
 export const usageSplit = {

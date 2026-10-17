@@ -74,7 +74,7 @@ const expireNewBadges = (items: NavigationItem[]): NavigationItem[] =>
   items.map((group) => ({
     ...group,
     children: group.children.map((child) =>
-      child.badge === "New" && !isFreshlyAdded(child.addedOn)
+      child.badge === "New" && child.addedOn && !isFreshlyAdded(child.addedOn)
         ? { ...child, badge: undefined }
         : child,
     ),
@@ -108,7 +108,7 @@ const rawNavigation: NavigationItem[] = [
     label: "Ui Components",
     children: [
       { label: "3D Carousel", slug: "3d-carousel" },
-      { label: "Accordion", slug: "accordion" },
+      { label: "Accordion", slug: "accordion", badge: "New", addedOn: "2026-10-17" },
       { label: "Ai-Chat", slug: "ai-chat" },
       { label: "Alert", slug: "alert" },
       { label: "Animated List", slug: "animated-list" },
@@ -255,6 +255,8 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Scroll Stack",
         slug: "scroll-stack",
+        badge: "New",
+        addedOn: "2026-10-17",
         keywords: ["fan stack", "card cascade", "deal cards", "stacked cards", "scroll stack"],
       },
       {
@@ -381,7 +383,7 @@ const rawNavigation: NavigationItem[] = [
         label: "Component Wall",
         slug: "component-wall",
         badge: "New",
-        addedOn: "2026-09-20",
+        addedOn: "2026-10-17",
         keywords: ["hero", "wall", "screenshots", "camera", "zoom", "library", "landing", "showcase", "grid"],
       },
       {
@@ -515,6 +517,25 @@ const rawNavigation: NavigationItem[] = [
         badge: "New",
         addedOn: "2026-09-15",
         keywords: ["newsletter", "subscribe", "signup", "email", "mailing list"],
+      },
+      {
+        label: "Top Destinations",
+        slug: "top-destinations",
+        badge: "New",
+        addedOn: "2026-10-17",
+        keywords: [
+          "top destinations",
+          "destinations",
+          "travel",
+          "exploreo",
+          "marquee",
+          "parallax",
+          "scroll",
+          "cards",
+          "tourism",
+          "vacation",
+          "showcase",
+        ],
       },
       {
         label: "Waitlist",

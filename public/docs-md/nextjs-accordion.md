@@ -2,7 +2,7 @@ export const metadata = docsPageMetadata("accordion");
 
 # Accordion
 
-A data-driven accordion built on the Radix primitive, with five variants that each look like a different component rather than the same card in five borders. The open panel is the only thing that gets the accent: it lifts out as a card, inverts to your primary color, or grows a rail down its edge, depending on the variant.
+A data-driven accordion built on the Radix primitive, with five list variants and an interactive **Brand Logo Reveal** showcase variant. The open panel is the only thing that gets the accent: it lifts out as a card, inverts to your primary color, grows a rail down its edge, or expands into an editorial brand showcase.
 
 You feed it an `accordionData` array — the wrapper maps it to items, icons and content for you. Switch on `animation="stack"` and the items start piled on the first one and deal down into place when the accordion scrolls into view.
 
@@ -68,6 +68,40 @@ export default function AlwaysOpenFaq() {
     
   );
 }`;
+
+export const usageBrandReveal = `import { BrandLogoAccordion, type BrandItem } from "@/components/custom/blocks/Accordion";
+
+// Alternatively use 
+export default function BrandRevealShowcase() {
+  return (
+    
+  );
+}`;
+
+\` directly.",
+        },
+        {
+          prop: "autoplay",
+          value: "true",
+          effect: "cycles through client/partner brands on an automated timer.",
+        },
+        {
+          prop: "autoplayInterval",
+          value: "4000",
+          effect: "duration in milliseconds before revealing the next brand.",
+        },
+        {
+          prop: "pauseOnHover",
+          value: "true",
+          effect: "pauses autoplay when the cursor hovers over any panel.",
+        },
+      ],
+      props: { variant: "brand-reveal" },
+      usage: usageBrandReveal,
+      code: extractCode("src/components/custom/blocks/Accordion.tsx"),
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -221,14 +255,23 @@ Single or multiple open panels, a one-time stack entrance, and five variants tha
 
           variant
 
-          "default" | "bordered" | "filled" | "elevated" | "ghost"
+          "default" | "bordered" | "filled" | "elevated" | "ghost" | "brand-reveal"
 
           "default"
 
           Which look to use. default lifts the open row out as a
           card, bordered grows a rail on it, filled{" "}
           inverts it to primary, elevated raises it on
-          a ring, ghost is type and hairlines only.
+          a ring, ghost is type and hairlines only, and{" "}
+          brand-reveal renders an interactive horizontal brand showcase.
+
+          brands
+
+          BrandItem[]
+
+          DEFAULT_BRANDS
+
+          Used when variant="brand-reveal". Array of objects defining id, name, caption, and optional logo, link, and index.
 
           animation
 

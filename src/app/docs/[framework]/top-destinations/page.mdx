@@ -1,0 +1,251 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("top-destinations");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { Installation } from "@/components/site/installation";
+import { extractCode } from "@/lib/code";
+
+# Top Destinations
+
+A dual-row scroll-driven destination showcase inspired by the **Exploreo** travel template. As the user scrolls down the page, two parallel rows of destination cards travel in opposite directions via **GSAP ScrollTrigger** scrub animation.
+
+Each card features full-bleed photography, subtle vertical typography by default, smooth hover scaling, and an interactive bordered overlay revealing place counts, tags, and an "Explore" action.
+
+export const usageDestinations = `"use client";
+
+import {
+  TopDestinations,
+  type DestinationItem,
+} from "@/components/custom/blocks/TopDestinationsBlock";
+
+const customDestinations: DestinationItem[] = [
+  {
+    id: "bali",
+    title: "Bali",
+    country: "Indonesia",
+    placesCount: 38,
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158812/photo-1721335916916-37c319adce3a-1790158812206.jpg",
+    tag: "Tropical",
+  },
+  {
+    id: "kyoto",
+    title: "Kyoto",
+    country: "Japan",
+    placesCount: 42,
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+    tag: "Historic",
+  },
+  {
+    id: "santorini",
+    title: "Santorini",
+    country: "Greece",
+    placesCount: 26,
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790166049/photo-1527004013197-933c4bb611b3-1790166052225.jpg",
+    tag: "Islands",
+  },
+  {
+    id: "amalfi",
+    title: "Amalfi Coast",
+    country: "Italy",
+    placesCount: 31,
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158811/photo-1663428520845-056989f8a664-1790158812204.jpg",
+    tag: "Coastal",
+  },
+  {
+    id: "paris",
+    title: "Paris",
+    country: "France",
+    placesCount: 54,
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+    tag: "Romantic",
+  },
+  {
+    id: "new-york",
+    title: "New York",
+    country: "USA",
+    placesCount: 68,
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790145142/photo-1500530855697-b586d89ba3ee-1790145143493.jpg",
+    tag: "Metropolis",
+  },
+  {
+    id: "swiss-alps",
+    title: "Swiss Alps",
+    country: "Switzerland",
+    placesCount: 35,
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146210/photo-1506905925346-21bda4d32df4-1790146212208.jpg",
+    tag: "Alpine",
+  },
+  {
+    id: "dubai",
+    title: "Dubai",
+    country: "UAE",
+    placesCount: 47,
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146211/photo-1519681393784-d120267933ba-1790146212210.jpg",
+    tag: "Luxury",
+  },
+  {
+    id: "tokyo",
+    title: "Tokyo",
+    country: "Japan",
+    placesCount: 72,
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+    tag: "Futuristic",
+  },
+  {
+    id: "sydney",
+    title: "Sydney",
+    country: "Australia",
+    placesCount: 39,
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158811/photo-1682952986992-de7082fb213d-1790158812205.jpg",
+    tag: "Harbour",
+  },
+];
+
+export default function DestinationsShowcase() {
+  return (
+    <TopDestinations
+      title="Top Destinations"
+      subtitle="Experience our Instagram moments, where we share team activities, product stories, and memorable events that showcase our brand's journey."
+      items={customDestinations}
+      scrollOffset={450}
+      onExplore={(item) => console.log("Exploring:", item.title)}
+    />
+  );
+}
+`;
+
+<ExampleShowcase
+  name="top-destinations"
+  columns={1}
+  examples={[
+    {
+      title: "Dual-row parallax travel",
+      subheading:
+        "Scroll down to watch top and bottom rows travel in opposite directions across the screen.",
+      propNotes: [
+        {
+          prop: "scrollOffset",
+          value: "450",
+          effect:
+            "controls the horizontal travel distance in pixels scrubbed by the scrollbar.",
+        },
+        {
+          prop: "items",
+          effect:
+            "accepts an array of destination objects with title, country, image, placesCount, and tag.",
+        },
+        {
+          prop: "onExplore",
+          effect:
+            "callback fired when a card's Explore action button is activated.",
+        },
+      ],
+      props: { scrollOffset: 450 },
+      usage: usageDestinations,
+      code: extractCode("src/components/custom/blocks/TopDestinationsBlock.tsx"),
+    },
+  ]}
+/>
+
+### Installation
+
+<Installation name="top-destinations" />
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Opposite Direction Scrub</h3>
+    <p className="text-muted-foreground text-sm">Row 1 and Row 2 glide in opposite directions as the viewport scrolls, creating an immersive cinematic depth effect.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Interactive Hover Frame</h3>
+    <p className="text-muted-foreground text-sm">Hovering over any card dims the background, smoothly frames the destination with a frosted border, and displays place count and explore CTA.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Flexible Split or Unified Rows</h3>
+    <p className="text-muted-foreground text-sm">Pass a single unified <code>items</code> array to automatically split across rows, or supply <code>row1Items</code> and <code>row2Items</code> explicitly.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Reduced Motion Safe</h3>
+    <p className="text-muted-foreground text-sm">Automatically respects user motion preferences, gracefully falling back to a clean horizontal carousel without jarring animations.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>string</code></td>
+        <td><code>"Top Destinations"</code></td>
+        <td>Section main heading displayed above the card rows.</td>
+      </tr>
+      <tr>
+        <td><code>subtitle</code></td>
+        <td><code>string</code></td>
+        <td>Exploreo lead copy</td>
+        <td>Secondary descriptive paragraph beneath the title.</td>
+      </tr>
+      <tr>
+        <td><code>badgeText</code></td>
+        <td><code>string</code></td>
+        <td><code>"Top Destinations"</code></td>
+        <td>Text rendered in the circular map pin badge header.</td>
+      </tr>
+      <tr>
+        <td><code>badgeIcon</code></td>
+        <td><code>ReactNode</code></td>
+        <td><code>&lt;MapPin /&gt;</code></td>
+        <td>Custom icon placed inside the badge pill.</td>
+      </tr>
+      <tr>
+        <td><code>items</code></td>
+        <td><code>DestinationItem[]</code></td>
+        <td><code>DEFAULT_DESTINATIONS</code></td>
+        <td>Complete list of destinations, automatically split 50/50 between the two rows.</td>
+      </tr>
+      <tr>
+        <td><code>row1Items</code></td>
+        <td><code>DestinationItem[]</code></td>
+        <td>First half</td>
+        <td>Explicit destination items for the top row (travels towards the left).</td>
+      </tr>
+      <tr>
+        <td><code>row2Items</code></td>
+        <td><code>DestinationItem[]</code></td>
+        <td>Second half</td>
+        <td>Explicit destination items for the bottom row (travels towards the right).</td>
+      </tr>
+      <tr>
+        <td><code>scrollOffset</code></td>
+        <td><code>number</code></td>
+        <td><code>450</code></td>
+        <td>Horizontal travel distance in pixels as the section traverses the viewport.</td>
+      </tr>
+      <tr>
+        <td><code>scrollerRef</code></td>
+        <td><code>RefObject&lt;HTMLElement&gt;</code></td>
+        <td><code>undefined</code></td>
+        <td>Custom scroll parent element driving ScrollTrigger (useful inside sandboxes and modals).</td>
+      </tr>
+      <tr>
+        <td><code>onExplore</code></td>
+        <td><code>(item) =&gt; void</code></td>
+        <td><code>undefined</code></td>
+        <td>Click handler triggered when a user explores a specific destination.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

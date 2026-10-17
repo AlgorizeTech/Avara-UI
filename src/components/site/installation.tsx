@@ -282,7 +282,26 @@ export function Installation({
 
 /** Steps 1 and 2 for one registry item. */
 function InstallationSteps({ name }: { name: string }) {
-  const item = ITEMS.find((entry) => entry.name === name);
+  // Read from module import, with safe fallback to disk for hot-reloading dev server
+  const item =
+    ITEMS.find((entry) => entry.name === name) ??
+    (typeof window === "undefined" && typeof process !== "undefined"
+      ? (() => {
+          try {
+            const fs = require("fs");
+            const path = require("path");
+            const regPath = path.resolve(process.cwd(), "registry.json");
+            if (fs.existsSync(regPath)) {
+              const fresh = JSON.parse(fs.readFileSync(regPath, "utf8"));
+              return fresh.items?.find(
+                (entry: RegistryItem) => entry.name === name,
+              );
+            }
+          } catch {
+            return undefined;
+          }
+        })()
+      : undefined);
 
   // Fail at build time rather than shipping a page whose install command is a
   // 404. Every name is generated from the registry, so this only fires when an
@@ -297,7 +316,7 @@ function InstallationSteps({ name }: { name: string }) {
   const target = item.files?.[0]?.target;
   const direct = item.dependencies ?? [];
   const components = (item.registryDependencies ?? []).filter(
-    (dependency) => !BASELINE_COMPONENTS.has(label(dependency)),
+    (dependency: string) => !BASELINE_COMPONENTS.has(label(dependency)),
   );
   // Includes packages inherited through `components`; see transitivePackages.
   const packages = [...new Set(transitivePackages(name))]

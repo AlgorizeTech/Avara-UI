@@ -36,6 +36,7 @@ export const stackItems = `const items: StackItem[] = [
     description:
       "Instantly sync state across clients without writing WebSocket logic. Our engine handles race conditions seamlessly.",
     icon: Zap,
+    color: "#1e3a8a",
     content: (
 
             sync-stream.ts
@@ -60,6 +61,7 @@ export const stackItems = `const items: StackItem[] = [
     description:
       "Build robust systems with separated concerns. Easily swap out databases or auth providers without rewriting your core.",
     icon: Layers,
+    color: "#581c87",
     content: (
 
               API
@@ -89,6 +91,7 @@ export const stackItems = `const items: StackItem[] = [
     description:
       "Don't reinvent the wheel. Utilize our library of pre-built, accessible UI blocks designed to drop into any codebase.",
     icon: Blocks,
+    color: "#065f46",
     content: (
 
           Component Gallery
@@ -120,6 +123,7 @@ export const stackItems = `const items: StackItem[] = [
     description:
       "Bank-grade encryption, automated compliance tracking, and granular role-based access control built in out of the box.",
     icon: ShieldCheck,
+    color: "#9f1239",
     content: (
 
           SECURITY_CHECK // PASSED
@@ -601,6 +605,16 @@ Discover the key capabilities that make this component an excellent choice for m
 
           An array of feature card objects defining the sequential stack
           sequence.
+
+          StackItem
+
+          color
+
+          string
+
+          undefined
+
+          Custom background color for this specific card. Accepts hex color codes (e.g. #1e3a8a), CSS colors (rgb, hsl), or Tailwind utility classes.
 
           ScrollStack
 
