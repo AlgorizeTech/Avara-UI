@@ -7,7 +7,7 @@ import { extractCode } from "@/lib/code";
 
 # Accordion
 
-A data-driven accordion built on the Radix primitive, with five variants that each look like a different component rather than the same card in five borders. The open panel is the only thing that gets the accent: it lifts out as a card, inverts to your primary color, or grows a rail down its edge, depending on the variant.
+A data-driven accordion built on the Radix primitive, with five list variants and an interactive **Brand Logo Reveal** showcase variant. The open panel is the only thing that gets the accent: it lifts out as a card, inverts to your primary color, grows a rail down its edge, or expands into an editorial brand showcase.
 
 You feed it an `accordionData` array — the wrapper maps it to items, icons and content for you. Switch on `animation="stack"` and the items start piled on the first one and deal down into place when the accordion scrolls into view.
 
@@ -91,6 +91,19 @@ export default function AlwaysOpenFaq() {
   );
 }`;
 
+export const usageBrandReveal = `import { BrandLogoAccordion, type BrandItem } from "@/components/custom/blocks/Accordion";
+
+// Alternatively use <Accordion variant="brand-reveal" />
+export default function BrandRevealShowcase() {
+  return (
+    <BrandLogoAccordion
+      autoplay
+      autoplayInterval={4000}
+      pauseOnHover
+    />
+  );
+}`;
+
 <ExampleShowcase
   name="accordion"
   columns={1}
@@ -102,7 +115,7 @@ export default function AlwaysOpenFaq() {
           lead: "Pass",
           prop: "accordionData",
           effect:
-            "as an array of `{ value, title, icon, content }` — `content` is an array of paragraphs and `icon` a key of the block's `ICON_MAP`.",
+            "as an array of \`{ value, title, icon, content }\` — \`content\` is an array of paragraphs and \`icon\` a key of the block's \`ICON_MAP\`.",
         },
         {
           prop: "type",
@@ -116,7 +129,7 @@ export default function AlwaysOpenFaq() {
         {
           prop: "defaultValue",
           value: '"getting-started"',
-          effect: "matches an item's `value` to decide which panel starts open.",
+          effect: "matches an item's \`value\` to decide which panel starts open.",
         },
         {
           lead: "Add",
@@ -128,6 +141,38 @@ export default function AlwaysOpenFaq() {
       ],
       props: { variant: "default", interaction: "single", animation: "stack" },
       usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/Accordion.tsx"),
+    },
+    {
+      title: "Brand logo reveal",
+      subheading:
+        "Accordion brand logo showcase with animated horizontal pleats, autoplay progress indicator, hover pause, and responsive stacking. Inspired by Framer Brand Logo Reveal.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "variant",
+          value: '"brand-reveal"',
+          effect:
+            "to display an editorial horizontal brand accordion, or use \`<BrandLogoAccordion />\` directly.",
+        },
+        {
+          prop: "autoplay",
+          value: "true",
+          effect: "cycles through client/partner brands on an automated timer.",
+        },
+        {
+          prop: "autoplayInterval",
+          value: "4000",
+          effect: "duration in milliseconds before revealing the next brand.",
+        },
+        {
+          prop: "pauseOnHover",
+          value: "true",
+          effect: "pauses autoplay when the cursor hovers over any panel.",
+        },
+      ],
+      props: { variant: "brand-reveal" },
+      usage: usageBrandReveal,
       code: extractCode("src/components/custom/blocks/Accordion.tsx"),
     },
   ]}
@@ -499,7 +544,7 @@ Single or multiple open panels, a one-time stack entrance, and five variants tha
           <code>variant</code>
         </td>
         <td>
-          <code>"default" | "bordered" | "filled" | "elevated" | "ghost"</code>
+          <code>"default" | "bordered" | "filled" | "elevated" | "ghost" | "brand-reveal"</code>
         </td>
         <td>
           <code>"default"</code>
@@ -508,7 +553,22 @@ Single or multiple open panels, a one-time stack entrance, and five variants tha
           Which look to use. <code>default</code> lifts the open row out as a
           card, <code>bordered</code> grows a rail on it, <code>filled</code>{" "}
           inverts it to <code>primary</code>, <code>elevated</code> raises it on
-          a ring, <code>ghost</code> is type and hairlines only.
+          a ring, <code>ghost</code> is type and hairlines only, and{" "}
+          <code>brand-reveal</code> renders an interactive horizontal brand showcase.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>brands</code>
+        </td>
+        <td>
+          <code>BrandItem[]</code>
+        </td>
+        <td>
+          <code>DEFAULT_BRANDS</code>
+        </td>
+        <td>
+          Used when <code>variant="brand-reveal"</code>. Array of objects defining <code>id</code>, <code>name</code>, <code>caption</code>, and optional <code>logo</code>, <code>link</code>, and <code>index</code>.
         </td>
       </tr>
       <tr>

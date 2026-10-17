@@ -11,6 +11,7 @@
   },
   "accordion": {
     "accordion": "Accordion",
+    "brand-logo-reveal": "Accordion — Brand logo reveal",
     "faq-section": "Accordion — FAQ section",
     "multiple-open": "Accordion — Multiple open",
     "always-one-open": "Accordion — Always one open",
