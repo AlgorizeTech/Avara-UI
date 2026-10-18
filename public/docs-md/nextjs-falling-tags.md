@@ -45,7 +45,7 @@ const mySkills = [
 
 export default function GlassTags() {
   return (
-    
+
   );
 }`;
 
@@ -137,13 +137,23 @@ npx shadcn@latest add @algorize-ui/falling-tags
 
         height
         number | string
-        540
+        500
         Height of the physics playground viewport.
 
         showControls
         boolean
-        true
+        false
         Renders top action bar with Drop Again, Scatter, and Zero-G Float toggles.
+
+        title
+        string
+        undefined
+        Optional title shown in the top header bar when controls or title are enabled.
+
+        description
+        string
+        undefined
+        Optional subtitle description in the top header bar.
 
         interactive
         boolean

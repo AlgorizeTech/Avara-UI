@@ -77,6 +77,7 @@
     "src/components/custom/blocks/DatePickerBlock.tsx",
     "src/components/custom/blocks/DesignComponentsFolder.tsx",
     "src/components/custom/blocks/DesignFolderBox.tsx",
+    "src/components/custom/blocks/DesignsToolkitBlock.tsx",
     "src/components/custom/blocks/DialogBlock.tsx",
     "src/components/custom/blocks/DockBlock.tsx",
     "src/components/custom/blocks/Drawer.tsx",

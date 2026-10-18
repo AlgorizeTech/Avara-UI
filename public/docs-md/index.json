@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-18T05:15:01.414Z",
-  "totalFiles": 311,
+  "generatedAt": "2026-10-18T09:12:57.356Z",
+  "totalFiles": 313,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -277,6 +277,12 @@
       "path": "/docs/nextjs-design-components-folder.md",
       "url": "/docs/nextjs/design-components-folder",
       "originalMdx": "[framework]\\design-components-folder\\page.mdx"
+    },
+    {
+      "name": "nextjs/designs-toolkit",
+      "path": "/docs/nextjs-designs-toolkit.md",
+      "url": "/docs/nextjs/designs-toolkit",
+      "originalMdx": "[framework]\\designs-toolkit\\page.mdx"
     },
     {
       "name": "nextjs/dialog",
@@ -1213,6 +1219,12 @@
       "path": "/docs/reactjs-design-components-folder.md",
       "url": "/docs/reactjs/design-components-folder",
       "originalMdx": "[framework]\\design-components-folder\\page.mdx"
+    },
+    {
+      "name": "reactjs/designs-toolkit",
+      "path": "/docs/reactjs-designs-toolkit.md",
+      "url": "/docs/reactjs/designs-toolkit",
+      "originalMdx": "[framework]\\designs-toolkit\\page.mdx"
     },
     {
       "name": "reactjs/dialog",

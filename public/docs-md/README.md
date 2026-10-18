@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-10-18T05:15:01.782Z
-**Total files:** 311
+**Generated at:** 2026-10-18T09:12:57.417Z
+**Total files:** 313
 
 ## Available Files
 
@@ -53,6 +53,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/data-table](/docs/nextjs-data-table.md) - Source: `[framework]\data-table\page.mdx`
 - [nextjs/date-picker](/docs/nextjs-date-picker.md) - Source: `[framework]\date-picker\page.mdx`
 - [nextjs/design-components-folder](/docs/nextjs-design-components-folder.md) - Source: `[framework]\design-components-folder\page.mdx`
+- [nextjs/designs-toolkit](/docs/nextjs-designs-toolkit.md) - Source: `[framework]\designs-toolkit\page.mdx`
 - [nextjs/dialog](/docs/nextjs-dialog.md) - Source: `[framework]\dialog\page.mdx`
 - [nextjs/dock](/docs/nextjs-dock.md) - Source: `[framework]\dock\page.mdx`
 - [nextjs/draggable-card-list](/docs/nextjs-draggable-card-list.md) - Source: `[framework]\draggable-card-list\page.mdx`
@@ -209,6 +210,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/data-table](/docs/reactjs-data-table.md) - Source: `[framework]\data-table\page.mdx`
 - [reactjs/date-picker](/docs/reactjs-date-picker.md) - Source: `[framework]\date-picker\page.mdx`
 - [reactjs/design-components-folder](/docs/reactjs-design-components-folder.md) - Source: `[framework]\design-components-folder\page.mdx`
+- [reactjs/designs-toolkit](/docs/reactjs-designs-toolkit.md) - Source: `[framework]\designs-toolkit\page.mdx`
 - [reactjs/dialog](/docs/reactjs-dialog.md) - Source: `[framework]\dialog\page.mdx`
 - [reactjs/dock](/docs/reactjs-dock.md) - Source: `[framework]\dock\page.mdx`
 - [reactjs/draggable-card-list](/docs/reactjs-draggable-card-list.md) - Source: `[framework]\draggable-card-list\page.mdx`

@@ -327,6 +327,10 @@
   "design-folder-box": {
     "custom-labels": "Design Folder Box — Custom labels"
   },
+  "designs-toolkit": {
+    "pinned-toolkit-corkboard": "Designs Toolkit — Pinned toolkit corkboard",
+    "clean-grid-developer-stack": "Designs Toolkit — Clean Grid (Developer Stack)"
+  },
   "dialog": {
     "dialog": "Dialog",
     "form-dialog": "Dialog — Form dialog",
@@ -368,7 +372,12 @@
     "cyberpunk-terminal-section": "Error Section — Cyberpunk Terminal Section"
   },
   "falling-tags": {
-    "interactive-physics-arena": "Falling Tags — Interactive physics arena"
+    "interactive-physics-arena": "Falling Tags — Interactive physics arena",
+    "colorful": "Falling Tags — Colorful",
+    "glass": "Falling Tags — Glass",
+    "neon": "Falling Tags — Neon",
+    "pastel": "Falling Tags — Pastel",
+    "monochrome": "Falling Tags — Monochrome"
   },
   "faq-section": {
     "1-homepage-faq-section": "Faq Section — 1. Homepage FAQ Section"

@@ -59,6 +59,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "date-picker": lazyRetry(() => import("./demos/date-picker-demo")),
   "design-components-folder": lazyRetry(() => import("./demos/design-components-folder-demo")),
   "design-folder-box": lazyRetry(() => import("./demos/design-folder-box-demo")),
+  "designs-toolkit": lazyRetry(() => import("./demos/designs-toolkit-demo")),
   "dialog": lazyRetry(() => import("./demos/dialog-demo")),
   "dock": lazyRetry(() => import("./demos/dock-demo")),
   "dock-motion": lazyRetry(() => import("./demos/dock-motion-demo")),

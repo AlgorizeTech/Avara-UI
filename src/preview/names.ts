@@ -54,6 +54,7 @@ export const sandboxNames = [
   "date-picker",
   "design-components-folder",
   "design-folder-box",
+  "designs-toolkit",
   "dialog",
   "dock",
   "dock-motion",

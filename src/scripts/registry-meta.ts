@@ -81,6 +81,7 @@ export const NAME_OVERRIDES: Record<string, string> = {
   "ScrollSplitCardsBlock.tsx": "scroll-split-cards",
   "ErrorSectionBlock.tsx": "error-section",
   "NotFoundSectionBlock.tsx": "not-found-section",
+  "DesignsToolkitBlock.tsx": "designs-toolkit",
 };
 
 export const META: Record<string, ItemMeta> = {
@@ -1236,6 +1237,13 @@ export const META: Record<string, ItemMeta> = {
       "A physics-based interactive tags playground where badges float, fall under gravity, collide realistically, and can be dragged and thrown.",
     categories: ["marketing", "data-display"],
     docs: "Named exports: FallingTagsBlock (default), FallingTagItem, FallingTagPalette.",
+  },
+  "designs-toolkit": {
+    title: "Designs Toolkit",
+    description:
+      "A pinned resource toolkit grid featuring authentic 3D pushpins, staggered cards, brand icon badges, and connected corkboard path lines.",
+    categories: ["marketing", "data-display"],
+    docs: "Named exports: DesignsToolkitBlock (default), ToolkitItem.",
   },
 };
 
