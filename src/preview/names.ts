@@ -64,6 +64,7 @@ export const sandboxNames = [
   "drawer",
   "email",
   "error-section",
+  "falling-tags",
   "fan-stack",
   "fan-stack-motion",
   "faq-section",

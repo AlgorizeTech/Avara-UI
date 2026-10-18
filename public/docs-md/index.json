@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-18T02:46:37.965Z",
-  "totalFiles": 309,
+  "generatedAt": "2026-10-18T05:15:01.414Z",
+  "totalFiles": 311,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -337,6 +337,12 @@
       "path": "/docs/nextjs-examples-video-text.md",
       "url": "/docs/nextjs/examples/video-text",
       "originalMdx": "[framework]\\examples\\video-text\\page.mdx"
+    },
+    {
+      "name": "nextjs/falling-tags",
+      "path": "/docs/nextjs-falling-tags.md",
+      "url": "/docs/nextjs/falling-tags",
+      "originalMdx": "[framework]\\falling-tags\\page.mdx"
     },
     {
       "name": "nextjs/faq-section",
@@ -1267,6 +1273,12 @@
       "path": "/docs/reactjs-examples-video-text.md",
       "url": "/docs/reactjs/examples/video-text",
       "originalMdx": "[framework]\\examples\\video-text\\page.mdx"
+    },
+    {
+      "name": "reactjs/falling-tags",
+      "path": "/docs/reactjs-falling-tags.md",
+      "url": "/docs/reactjs/falling-tags",
+      "originalMdx": "[framework]\\falling-tags\\page.mdx"
     },
     {
       "name": "reactjs/faq-section",

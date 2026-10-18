@@ -1230,5 +1230,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["marketing", "data-display", "scroll"],
     docs: "Named exports: TopDestinations, TopDestinationsCard, DEFAULT_DESTINATIONS (plus DestinationItem type). Accepts items array or row1Items/row2Items, scrollOffset, and scrollerRef.",
   },
+  "falling-tags": {
+    title: "Falling Tags",
+    description:
+      "A physics-based interactive tags playground where badges float, fall under gravity, collide realistically, and can be dragged and thrown.",
+    categories: ["marketing", "data-display"],
+    docs: "Named exports: FallingTagsBlock (default), FallingTagItem, FallingTagPalette.",
+  },
 };
 

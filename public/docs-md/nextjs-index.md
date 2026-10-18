@@ -5,7 +5,7 @@ export const metadata = docsPageMetadata("index", {
 
 # Introduction
 
-Algorize UI is a library of **186 animated, responsive React
+Algorize UI is a library of **187 animated, responsive React
 components** — from buttons and inputs to dashboards, carousels and full
 marketing sections.
 
