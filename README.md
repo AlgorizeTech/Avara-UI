@@ -4,7 +4,7 @@
 
 <strong>A shadcn registry of animated React components you install straight into your own codebase.</strong>
 <br />
-<sub><!-- component-count -->186<!-- /component-count --> components and website sections · Next.js and React (Vite) · themed with CSS variables · MIT licensed</sub>
+<sub><!-- component-count -->188<!-- /component-count --> components and website sections · Next.js and React (Vite) · themed with CSS variables · MIT licensed</sub>
 
 <br />
 <br />
@@ -28,7 +28,7 @@ There is no wrapper package to keep up to date and nothing to eject from later.
 
 ## What you get
 
-- **<!-- component-count -->186<!-- /component-count --> components**, from base UI primitives to full page sections. Run `npx shadcn@latest list @algorize-ui` for the live list.
+- **<!-- component-count -->188<!-- /component-count --> components**, from base UI primitives to full page sections. Run `npx shadcn@latest list @algorize-ui` for the live list.
 - **Full website sections as well as primitives.** Heroes, pricing, footers, dashboards, auth forms, carousels, maps, media players and more, in 18 categories.
 - **One source for two frameworks.** No shipped component imports from `next/*`, so the same file compiles in a Next.js App Router project and in a Vite React app. Components that render links or images accept a `linkComponent` / `imageComponent` prop, so Next.js users can pass `next/link` and `next/image`.
 - **Themes as CSS variables.** Colours, radius and fonts come from CSS variables, not hard-coded classes. The [Themes page](https://algorize-ui.vercel.app/themes) has 14 presets and a customiser, and it exports a block you paste into your global stylesheet.

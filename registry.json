@@ -1485,6 +1485,31 @@
       "docs": "Named export: DesignFolderBox. Presentational only — `color` tints the glass. For the version that holds stacked cards inside the folder, use `design-components-folder`."
     },
     {
+      "name": "designs-toolkit",
+      "type": "registry:component",
+      "title": "Designs Toolkit",
+      "author": "AlgorizeTech",
+      "description": "A pinned resource toolkit grid featuring authentic 3D pushpins, staggered cards, brand icon badges, and connected corkboard path lines.",
+      "categories": [
+        "marketing",
+        "data-display"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/DesignsToolkitBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/DesignsToolkitBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: DesignsToolkitBlock (default), ToolkitItem."
+    },
+    {
       "name": "dialog",
       "type": "registry:component",
       "title": "Dialog",
@@ -1707,6 +1732,31 @@
         }
       ],
       "docs": "Named export: ErrorSection (also default export) and ErrorSectionProps. Designed to serve as a full-page 500, 404, or runtime error boundary with light & dark theme support, one-click incident copying, and reboot action triggers."
+    },
+    {
+      "name": "falling-tags",
+      "type": "registry:component",
+      "title": "Falling Tags",
+      "author": "AlgorizeTech",
+      "description": "A physics-based interactive tags playground where badges float, fall under gravity, collide realistically, and can be dragged and thrown.",
+      "categories": [
+        "marketing",
+        "data-display"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/FallingTagsBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/FallingTagsBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: FallingTagsBlock (default), FallingTagItem, FallingTagPalette."
     },
     {
       "name": "fan-stack",

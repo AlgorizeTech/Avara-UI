@@ -5,7 +5,7 @@ export const metadata = docsPageMetadata("index", {
 
 # Introduction
 
-Algorize UI is a library of **186 animated, responsive React
+Algorize UI is a library of **188 animated, responsive React
 components** — from buttons and inputs to dashboards, carousels and full
 marketing sections.
 
@@ -25,16 +25,13 @@ Switch to **URL** above for a command that needs no setup.
 ## Why this approach
 
     You own the code
-    
-      No wrapper package and no version to track. The source lives in your repo.
+    No wrapper package and no version to track. The source lives in your repo.
 
     Your theme
-    
-      Components read your Tailwind theme tokens. Preview a palette on the Themes page.
+    Components read your Tailwind theme tokens. Preview a palette on the Themes page.
 
     Only what you use
-    
-      Each component declares its own dependencies, and the CLI installs them with it.
+    Each component declares its own dependencies, and the CLI installs them with it.
 
 ## Requirements
 

@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-17T12:01:25.919Z",
-  "totalFiles": 309,
+  "generatedAt": "2026-10-18T13:37:07.597Z",
+  "totalFiles": 313,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -279,6 +279,12 @@
       "originalMdx": "[framework]\\design-components-folder\\page.mdx"
     },
     {
+      "name": "nextjs/designs-toolkit",
+      "path": "/docs/nextjs-designs-toolkit.md",
+      "url": "/docs/nextjs/designs-toolkit",
+      "originalMdx": "[framework]\\designs-toolkit\\page.mdx"
+    },
+    {
       "name": "nextjs/dialog",
       "path": "/docs/nextjs-dialog.md",
       "url": "/docs/nextjs/dialog",
@@ -337,6 +343,12 @@
       "path": "/docs/nextjs-examples-video-text.md",
       "url": "/docs/nextjs/examples/video-text",
       "originalMdx": "[framework]\\examples\\video-text\\page.mdx"
+    },
+    {
+      "name": "nextjs/falling-tags",
+      "path": "/docs/nextjs-falling-tags.md",
+      "url": "/docs/nextjs/falling-tags",
+      "originalMdx": "[framework]\\falling-tags\\page.mdx"
     },
     {
       "name": "nextjs/faq-section",
@@ -1209,6 +1221,12 @@
       "originalMdx": "[framework]\\design-components-folder\\page.mdx"
     },
     {
+      "name": "reactjs/designs-toolkit",
+      "path": "/docs/reactjs-designs-toolkit.md",
+      "url": "/docs/reactjs/designs-toolkit",
+      "originalMdx": "[framework]\\designs-toolkit\\page.mdx"
+    },
+    {
       "name": "reactjs/dialog",
       "path": "/docs/reactjs-dialog.md",
       "url": "/docs/reactjs/dialog",
@@ -1267,6 +1285,12 @@
       "path": "/docs/reactjs-examples-video-text.md",
       "url": "/docs/reactjs/examples/video-text",
       "originalMdx": "[framework]\\examples\\video-text\\page.mdx"
+    },
+    {
+      "name": "reactjs/falling-tags",
+      "path": "/docs/reactjs-falling-tags.md",
+      "url": "/docs/reactjs/falling-tags",
+      "originalMdx": "[framework]\\falling-tags\\page.mdx"
     },
     {
       "name": "reactjs/faq-section",
