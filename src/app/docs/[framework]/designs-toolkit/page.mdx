@@ -188,6 +188,81 @@ export default function DeveloperStackSection() {
   );
 }`;
 
+export const usageRoadmap = `"use client";
+
+import DesignsToolkit from "@/components/custom/blocks/DesignsToolkitBlock";
+import { MessageSquareQuote, ShieldCheck, Mail, BookOpen, RotateCcw } from "lucide-react";
+
+const roadmapSteps = [
+  {
+    number: "01",
+    title: "Testimonials",
+    description:
+      "The only way to attract new clients, is to show your experience with the previous ones. Include: real photo, position at company, links to profiles.",
+    icon: <MessageSquareQuote className="w-5 h-5 text-orange-600 dark:text-orange-400" />,
+    accentColor: "orange",
+    pinColor: "#ea580c",
+    onClick: () => {},
+  },
+  {
+    number: "02",
+    title: "Trust Badges",
+    description:
+      "Show all the achievements you have. Awards, certificates, payment protections, and security seals that eliminate buyer doubt.",
+    icon: <ShieldCheck className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
+    accentColor: "blue",
+    pinColor: "#2563eb",
+    onClick: () => {},
+  },
+  {
+    number: "03",
+    title: "Add Contacts",
+    description:
+      "People need to understand that if something happens, they can reach out to you. Leave links to social media, email, and phone.",
+    icon: <Mail className="w-5 h-5 text-purple-600 dark:text-purple-400" />,
+    accentColor: "purple",
+    pinColor: "#8b5cf6",
+    onClick: () => {},
+  },
+  {
+    number: "04",
+    title: "Case Studies",
+    description:
+      "Share detailed examples of how your product or service solved real problems. This helps visitors imagine their own success.",
+    icon: <BookOpen className="w-5 h-5 text-orange-600 dark:text-orange-400" />,
+    accentColor: "orange",
+    pinColor: "#ea580c",
+    onClick: () => {},
+  },
+  {
+    number: "05",
+    title: "Clear Refund Policy",
+    description:
+      "Offer a transparent money-back guarantee or easy return process to build instant customer trust.",
+    icon: <RotateCcw className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
+    accentColor: "blue",
+    pinColor: "#2563eb",
+    onClick: () => {},
+  },
+];
+
+export default function RoadmapPathwaySection() {
+  return (
+    <div className="w-full max-w-4xl mx-auto py-12">
+      <DesignsToolkit
+        variant="roadmap"
+        items={roadmapSteps}
+        showDashedLine={true}
+        showLines={true}
+        interactive={true}
+        footerNote={{
+          highlightText: "all in one",
+        }}
+      />
+    </div>
+  );
+}`;
+
 <ExampleShowcase
   name="designs-toolkit"
   minHeight={0}
@@ -260,7 +335,38 @@ export default function DeveloperStackSection() {
   columns={1}
   examples={[
     {
-      title: "Clean Grid (Developer Stack)",
+      title: "Winding Roadmap Pathway",
+      subheading:
+        "Tilted pastel cards pinned along an alternating zigzag timeline with notebook ruled lines and a design partner note.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"roadmap"',
+          effect: "switches to the alternating winding S-curve pathway layout.",
+        },
+        {
+          prop: "showLines",
+          value: "true",
+          effect: "overlays subtle notebook ruled lines across the board background.",
+        },
+        {
+          prop: "showDashedLine",
+          value: "true",
+          effect: "draws a continuous curved S-path connecting the pushpins to the footer partner note.",
+        },
+      ],
+      props: {
+        variant: "roadmap",
+        showDashedLine: true,
+        showLines: true,
+        interactive: true,
+      },
+      usage: usageRoadmap,
+      code: extractCode("src/components/custom/blocks/DesignsToolkitBlock.tsx"),
+    },
+    {
+      title: "Clean Grid (Without Dashed Lines)",
       subheading:
         "Minimal pinned card layout configured with custom developer stack tools and icons.",
       propNotes: [
@@ -297,8 +403,8 @@ export default function DeveloperStackSection() {
     <p className="text-muted-foreground text-sm">Hyper-realistic SVG 3D pushpins with multi-stop radial highlights, depth bevels, and natural contact drop shadows.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Staggered Column Rhythm</h3>
-    <p className="text-muted-foreground text-sm">Center column vertical offset creates an authentic physical corkboard bulletin feel rather than a rigid symmetric table.</p>
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Multiple Layout Variants</h3>
+    <p className="text-muted-foreground text-sm">Switch effortlessly between the staggered 3-column corkboard <code>grid</code> and the winding alternating <code>roadmap</code> timeline pathway.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">Brand Badges & Glowing Borders</h3>
@@ -324,10 +430,16 @@ export default function DeveloperStackSection() {
     </thead>
     <tbody>
       <tr>
+        <td><code>variant</code></td>
+        <td><code>"grid" | "roadmap"</code></td>
+        <td><code>"grid"</code></td>
+        <td>Layout variant: <code>"grid"</code> for the staggered 3-column corkboard, or <code>"roadmap"</code> for the winding S-curve pathway.</td>
+      </tr>
+      <tr>
         <td><code>items</code></td>
         <td><code>ToolkitItem[]</code></td>
         <td><code>DEFAULT_TOOLKIT_ITEMS</code></td>
-        <td>Array of 6 pinned toolkit cards with number, title, description, icon, colors, and onClick handler.</td>
+        <td>Array of pinned toolkit cards with number, title, description, icon, colors, and onClick handler.</td>
       </tr>
       <tr>
         <td><code>title</code></td>
@@ -345,13 +457,25 @@ export default function DeveloperStackSection() {
         <td><code>showDashedLine</code></td>
         <td><code>boolean</code></td>
         <td><code>true</code></td>
-        <td>Whether to render the dashed corkboard connecting path lines.</td>
+        <td>Whether to render the dashed corkboard or roadmap connecting path lines.</td>
       </tr>
       <tr>
         <td><code>showGrid</code></td>
         <td><code>boolean</code></td>
         <td><code>true</code></td>
-        <td>Renders subtle blueprint grid pattern across the board background.</td>
+        <td>Renders subtle blueprint grid pattern across the board background (for grid variant).</td>
+      </tr>
+      <tr>
+        <td><code>showLines</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Renders subtle horizontal notebook ruled lines across the background (default true in roadmap).</td>
+      </tr>
+      <tr>
+        <td><code>footerNote</code></td>
+        <td><code>FooterNote</code></td>
+        <td><code>undefined</code></td>
+        <td>Custom avatar, text, and highlightText for the roadmap pathway end badge.</td>
       </tr>
       <tr>
         <td><code>interactive</code></td>
@@ -363,7 +487,7 @@ export default function DeveloperStackSection() {
         <td><code>animated</code></td>
         <td><code>boolean</code></td>
         <td><code>true</code></td>
-        <td>Enables the graceful sequential card emergence choreography (Card 02 &rarr; 01 &rarr; 03 &rarr; 04 &rarr; 05 &rarr; 06).</td>
+        <td>Enables the graceful sequential card emergence choreography.</td>
       </tr>
       <tr>
         <td><code>autoStartOnView</code></td>
