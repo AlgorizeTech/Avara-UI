@@ -945,6 +945,9 @@ export default function AIChat({
           )}
         >
           <MaxEffortGlow active={isMaxEffort} className={theme.primaryText} />
+          {selectedTier && (
+            <TierBorderBeam key={selectedTier} tier={selectedTier} />
+          )}
           {tierFx > 0 && tierLook && (
             <tierLook.Sweep key={tierFx} onDone={() => setTierFx(0)} />
           )}
@@ -2600,6 +2603,20 @@ function PremiumSweep({ onDone }: { onDone: () => void }) {
           transition={{ duration: 1, delay: 0.15, ease: "easeInOut" }}
         />
       </span>
+    </motion.div>
+  );
+}
+
+/** The prompt bar's continuous border beam, orbiting as long as a tier (Premium or Pro) is selected. */
+function TierBorderBeam({ tier }: { tier: ModelTier }) {
+  return (
+    <div
+      aria-hidden
+      className={cn(
+        "pointer-events-none absolute inset-0 rounded-2xl",
+        tier === "premium" ? PREMIUM.ink : PRO.ink,
+      )}
+    >
       <span
         className="absolute inset-0 overflow-hidden rounded-2xl p-[2px]"
         style={RING_MASK}
@@ -2607,12 +2624,11 @@ function PremiumSweep({ onDone }: { onDone: () => void }) {
         <motion.span
           className="absolute left-1/2 top-1/2 aspect-square w-[150%]"
           style={{ x: "-50%", y: "-50%", background: BEAM_GRADIENT }}
-          initial={{ rotate: 0 }}
-          animate={{ rotate: 360 }}
-          transition={{ duration: PREMIUM_SWEEP_S, ease: [0.45, 0, 0.2, 1] }}
+          animate={{ rotate: [0, 360] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
         />
       </span>
-    </motion.div>
+    </div>
   );
 }
 
