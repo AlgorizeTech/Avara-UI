@@ -315,12 +315,11 @@ function useStackEntrance(
   }, [listRef, enabled, setStacking]);
 }
 
-export function Accordion({
+function StandardAccordion({
   type = "single",
   collapsible = true,
   defaultValue = null,
   accordionData = [],
-  brands,
   variant = "default",
   animation = "none",
   className = "",
@@ -330,16 +329,13 @@ export function Accordion({
   expandIcon = null,
   expandIconClassName,
 }: CustomAccordionProps) {
-  if (variant === "brand-reveal") {
-    return (
-      <BrandLogoAccordion
-        brands={brands}
-        className={className}
-      />
-    );
-  }
-
-  const styles = VARIANTS[variant === "card-filled" ? "filled" : variant];
+  const safeVariant =
+    variant === "card-filled" || variant === "brand-reveal"
+      ? "filled"
+      : (variant as keyof typeof VARIANTS) in VARIANTS
+        ? (variant as keyof typeof VARIANTS)
+        : "default";
+  const styles = VARIANTS[safeVariant];
 
   /** Radix wants an array here when `type` is "multiple". */
   const multipleDefault = Array.isArray(defaultValue)
@@ -358,6 +354,8 @@ export function Accordion({
 
   const listRef = React.useRef<HTMLDivElement>(null);
   const [stacking, setStacking] = React.useState(animation === "stack");
+  const [multipleValue, setMultipleValue] =
+    React.useState<string[]>(multipleDefault);
   useStackEntrance(listRef, animation === "stack", setStacking);
 
   const shellClassName = cn("relative w-full", styles.list, className);
@@ -440,9 +438,6 @@ export function Accordion({
     );
   });
 
-  const [multipleValue, setMultipleValue] =
-    React.useState<string[]>(multipleDefault);
-
   if (type === "single") {
     return (
       <ShadCNAccordion
@@ -485,6 +480,19 @@ export function Accordion({
       {items}
     </ShadCNAccordion>
   );
+}
+
+export function Accordion(props: CustomAccordionProps) {
+  if (props.variant === "brand-reveal") {
+    return (
+      <BrandLogoAccordion
+        brands={props.brands}
+        className={props.className}
+      />
+    );
+  }
+
+  return <StandardAccordion {...props} />;
 }
 
 /* ═══════════════════════════════════════════════

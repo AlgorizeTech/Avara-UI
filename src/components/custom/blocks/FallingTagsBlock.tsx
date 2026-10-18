@@ -251,10 +251,10 @@ export default function FallingTagsBlock({
   const containerRef = useRef<HTMLDivElement>(null);
   const tagElementsRef = useRef<Map<string, HTMLDivElement>>(new Map());
 
-  const [phase, setPhase] = useState<"floating" | "falling" | "zeroG">("floating");
+  const [, setPhase] = useState<"floating" | "falling" | "zeroG">("floating");
   const [activeGravity, setActiveGravity] = useState<boolean>(true);
-  const [activeTagsCount, setActiveTagsCount] = useState<number>(0);
-  const [arenaDimensions, setArenaDimensions] = useState<{ width: number; height: number }>({
+  const [, setActiveTagsCount] = useState<number>(0);
+  const [, setArenaDimensions] = useState<{ width: number; height: number }>({
     width: 800,
     height: 520,
   });
@@ -392,7 +392,6 @@ export default function FallingTagsBlock({
     if (!isMounted) return;
 
     let animFrame: number;
-    const dt = 1 / 60; // 60hz fixed timestep
 
     const loop = (currentTime: number) => {
       const state = stateRef.current;

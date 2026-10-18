@@ -84,6 +84,7 @@
     "src/components/custom/blocks/Email.tsx",
     "src/components/custom/blocks/ErrorSectionBlock.tsx",
     "src/components/custom/blocks/FAQSectionBlock.tsx",
+    "src/components/custom/blocks/FallingTagsBlock.tsx",
     "src/components/custom/blocks/FanStackBlock.tsx",
     "src/components/custom/blocks/FashionHeroBlock.tsx",
     "src/components/custom/blocks/FlavourCarouselBlock.tsx",

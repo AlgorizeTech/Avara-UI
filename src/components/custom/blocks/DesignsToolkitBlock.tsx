@@ -130,7 +130,7 @@ function PushPin({
 }
 
 // Custom authentic brand icons
-function FreepikLogo() {
+export function FreepikLogo() {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
       <path d="M4 4h16v4.5H9.5v2.8H18v4.2H9.5V20H4V4z" />
@@ -138,7 +138,7 @@ function FreepikLogo() {
   );
 }
 
-function PinterestLogo() {
+export function PinterestLogo() {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
       <path d="M12 2C6.48 2 2 6.48 2 12c0 4.24 2.64 7.86 6.38 9.3-.09-.78-.17-1.98.04-2.83.19-.77 1.25-5.3 1.25-5.3s-.32-.64-.32-1.58c0-1.48.86-2.59 1.93-2.59.91 0 1.35.68 1.35 1.5 0 .91-.58 2.28-.88 3.55-.25 1.06.53 1.93 1.58 1.93 1.9 0 3.36-2 3.36-4.89 0-2.56-1.84-4.35-4.47-4.35-3.05 0-4.84 2.29-4.84 4.65 0 .92.35 1.91.79 2.45.09.11.1.2.07.31-.08.33-.26 1.05-.29 1.2-.05.2-.16.24-.37.15-1.38-.64-2.24-2.66-2.24-4.28 0-3.48 2.53-6.68 7.3-6.68 3.83 0 6.81 2.73 6.81 6.38 0 3.81-2.4 6.87-5.73 6.87-1.12 0-2.17-.58-2.53-1.27l-.69 2.63c-.25.96-.93 2.16-1.38 2.9A9.97 9.97 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z" />
@@ -146,7 +146,7 @@ function PinterestLogo() {
   );
 }
 
-function EnvatoLogo() {
+export function EnvatoLogo() {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
       <path d="M19.4 3.6C16.8 1.2 11.2 2 8.3 4.2 4.6 7 3.3 12.3 5.4 16.6c2 4 6.8 6.2 11.2 5 4.3-1.2 7.1-5.6 6.4-10-.4-2.7-1.8-6-3.6-8zm-3.5 13.9c-2.4 1.7-6 .9-7.2-1.6-.9-1.9-.3-4.3 1.3-5.6 1.8-1.5 4.4-1.8 6.5-.8 1.2.6 1.9 1.7 1.9 3.1 0 2-1 3.8-2.5 4.9z" />
@@ -154,7 +154,7 @@ function EnvatoLogo() {
   );
 }
 
-function DribbbleLogo() {
+export function DribbbleLogo() {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
       <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm7.65 7.42a15.82 15.82 0 0 1-5.18-.89c-.16-.38-.33-.76-.52-1.14 3.03-1.42 5.09-1.21 5.7.03zm-7.65-5.42c2.25 0 4.3.93 5.78 2.43-.87-.79-2.76-.87-5.32.33-.85-1.57-1.8-2.92-2.81-3.95.74-.52 1.51-.81 2.35-.81zm-4.39 1.63c.96 1 1.87 2.3 2.68 3.8-2.87.89-5.96.95-7.53.94 1-2.2 2.76-3.95 4.85-4.74zM3.99 12c0-.12.01-.25.02-.37 1.92.01 5.44-.06 8.59-1.07.23.48.44.96.63 1.45-3.8 1.15-7.23 3.65-8.8 6.13-.28-.68-.44-1.42-.44-2.14zm4.4 7.02c1.47-2.3 4.67-4.66 8.35-5.74.88 2.27 1.25 4.54 1.34 5.25A7.95 7.95 0 0 1 8.39 19.02zm11.23-2.16c-.19-.77-.66-2.95-1.56-5.11 1.71.28 3.25.9 3.51 1.02-.32 1.55-1.03 2.95-1.95 4.09z" />
@@ -162,7 +162,7 @@ function DribbbleLogo() {
   );
 }
 
-function FlaticonLogo() {
+export function FlaticonLogo() {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
       <path d="M12 2L3 8v8l9 6 9-6V8l-9-6zm0 3.3L18.3 9 12 12.7 5.7 9 12 5.3zM5 10.3l6 3.6v6.8l-6-4v-6.4zm8 10.4v-6.8l6-3.6v6.4l-6 4z" />
@@ -170,7 +170,7 @@ function FlaticonLogo() {
   );
 }
 
-function MockupWorldLogo() {
+export function MockupWorldLogo() {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
       <path d="M4 6h3.5l2.5 5 2.5-5H16l-3.5 7.5L16 21h-3.5L10 16l-2.5 5H4l3.5-7.5L4 6zm10 0h2.5l2 4 2-4H23l-3 6 3 6h-2.5l-2-4-2 4H14l3-6-3-6z" />
@@ -478,7 +478,7 @@ export default function DesignsToolkitBlock({
   const svgId = useId().replace(/:/g, "-");
   const containerRef = useRef<HTMLDivElement>(null);
   const hasStartedRef = useRef<boolean>(!autoStartOnView);
-  const timeoutsRef = useRef<NodeJS.Timeout[]>([]);
+  const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   // Track responsive screen size
   useEffect(() => {
