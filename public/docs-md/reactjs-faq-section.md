@@ -16,6 +16,13 @@ export const usageDefault = `export default function FAQExample() {
 }
 `;
 
+export const usageTwoColumn = `export default function TwoColumnFAQExample() {
+  return (
+    
+  );
+}
+`;
+
 ## Installation
 
 Register the @algorize-ui registry once per project, then add the component:
@@ -33,6 +40,11 @@ npx shadcn@latest add @algorize-ui/faq-section
         Type
         Default
         Description
+
+        variant
+        "canvas" | "two-column"
+        "canvas"
+        Layout presentation: "canvas" displays the centered nature canvas layout; "two-column" displays the sticky heading &amp; support card layout.
 
         eyebrow
         string
