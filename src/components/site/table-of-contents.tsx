@@ -295,10 +295,10 @@ export const TableOfContents: React.FC = () => {
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
             )}
           >
-            {/* Border beam / shine effect matching ai-chat premium border shine */}
+            {/* Border beam / shine effect themed to the active theme color */}
             <div
               aria-hidden
-              className="pointer-events-none absolute inset-[-1px] rounded-xl text-amber-400 dark:text-amber-300"
+              className="pointer-events-none absolute inset-[-1px] rounded-xl text-primary"
             >
               <span
                 className="absolute inset-0 overflow-hidden rounded-xl p-[2px]"
