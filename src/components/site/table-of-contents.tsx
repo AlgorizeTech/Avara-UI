@@ -6,6 +6,18 @@ import { AnimatePresence, motion } from "motion/react";
 import { ArrowDown, ArrowUp, ArrowUpRight } from "lucide-react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
+/** Shows only a 2px ring at the padding edge — the track the beam runs in. */
+const RING_MASK: React.CSSProperties = {
+  WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+  WebkitMaskComposite: "xor",
+  mask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+  maskComposite: "exclude",
+};
+
+/** Two comets on opposite sides of the lap, matching ai-chat's border shine. */
+const BEAM_GRADIENT =
+  "conic-gradient(from 0deg, transparent 0deg, currentColor 50deg, transparent 90deg, transparent 180deg, currentColor 230deg, transparent 270deg)";
+
 export const TableOfContents: React.FC = () => {
   const { toc, activeId, scrollToHeading } = useTableOfContents();
 
@@ -274,7 +286,7 @@ export const TableOfContents: React.FC = () => {
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
-              "group flex flex-col gap-3 p-3.5 rounded-xl border",
+              "group relative flex flex-col gap-3 p-3.5 rounded-xl border overflow-hidden",
               "bg-[oklch(from_var(--primary)_0.93_calc(c*0.35)_h)] border-[oklch(from_var(--primary)_0.85_calc(c*0.45)_h)]",
               "hover:bg-[oklch(from_var(--primary)_0.9_calc(c*0.4)_h)]",
               "dark:bg-[oklch(from_var(--primary)_0.28_calc(c*0.45)_h)] dark:border-[oklch(from_var(--primary)_0.38_calc(c*0.5)_h)]",
@@ -283,7 +295,25 @@ export const TableOfContents: React.FC = () => {
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
             )}
           >
-            <span className="block">
+            {/* Border beam / shine effect matching ai-chat premium border shine */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-[-1px] rounded-xl text-amber-400 dark:text-amber-300"
+            >
+              <span
+                className="absolute inset-0 overflow-hidden rounded-xl p-[2px]"
+                style={RING_MASK}
+              >
+                <motion.span
+                  className="absolute left-1/2 top-1/2 aspect-square w-[250%]"
+                  style={{ x: "-50%", y: "-50%", background: BEAM_GRADIENT }}
+                  animate={{ rotate: [0, 360] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                />
+              </span>
+            </div>
+
+            <span className="block relative z-10">
               <span className="block text-sm font-semibold leading-snug text-[oklch(from_var(--primary)_0.3_calc(c*0.6)_h)] dark:text-[oklch(from_var(--primary)_0.95_calc(c*0.25)_h)]">
                 Need any service?
               </span>
@@ -292,7 +322,7 @@ export const TableOfContents: React.FC = () => {
               </span>
             </span>
 
-            <span className="inline-flex w-full items-center justify-center gap-1 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground shadow-sm">
+            <span className="relative z-10 inline-flex w-full items-center justify-center gap-1 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground shadow-sm">
               Book a call
               <ArrowUpRight className="size-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </span>
