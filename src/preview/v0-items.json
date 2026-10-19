@@ -12,7 +12,6 @@
   "accordion": {
     "accordion": "Accordion",
     "brand-logo-reveal": "Accordion — Brand logo reveal",
-    "faq-section": "Accordion — FAQ section",
     "multiple-open": "Accordion — Multiple open",
     "always-one-open": "Accordion — Always one open",
     "multiple-permanent-open": "Accordion — Multiple permanent open",
@@ -381,7 +380,8 @@
     "monochrome": "Falling Tags — Monochrome"
   },
   "faq-section": {
-    "1-homepage-faq-section": "Faq Section — 1. Homepage FAQ Section"
+    "1-homepage-faq-section": "Faq Section — 1. Homepage FAQ Section",
+    "2-two-column-support-faq": "Faq Section — 2. Two-Column Support FAQ"
   },
   "upload": {
     "dropzone": "Upload — Dropzone",
