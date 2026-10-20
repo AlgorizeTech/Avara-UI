@@ -36,7 +36,7 @@ export const wallGroups = `
 
 {/* One snippet per framework: Next.js passes next/link so the wall's links route client-side; anywhere else the default  is the right thing and needs no import. */}
 
-export const wallUsage = ({ next, layout, comment, stackVariant, persistentBackground }) => `"use client";
+export const wallUsage = ({ next, layout, comment, stackVariant, persistentBackground, showMobileWall }) => `"use client";
 
 ${next ? 'import Link from "next/link";\n' : ""}import { ComponentWall, type ComponentWallItem } from "@/components/custom/blocks/ComponentWallBlock";
 
@@ -76,27 +76,11 @@ export const wallPersistent = {
 // across all screen sizes (mobile and desktop) instead of dropping below the buttons.`,
 };
 
-export const wallSplit = {
-  layout: "split",
-  stackVariant: "",
-  comment: `// Beside the wall there is room for names from xl up, so the labelled
-// (default) TechStack variant fits here.`,
-};
-
-export const usage = {
-  nextjs: wallUsage({ ...wallCenter, next: true }),
-  reactjs: wallUsage({ ...wallCenter, next: false }),
-};
-
-export const usagePersistent = {
-  nextjs: wallUsage({ ...wallPersistent, next: true }),
-  reactjs: wallUsage({ ...wallPersistent, next: false }),
-};
-
-export const usageSplit = {
-  nextjs: wallUsage({ ...wallSplit, next: true }),
-  reactjs: wallUsage({ ...wallSplit, next: false }),
-};
+export const wallNoMobile = {
+  layout: "center",
+  showMobileWall: false,
+  stackVariant: ' variant="compact"',
+  comment: `// Hides the background image animation on mobile and small screens (
 
 ## Installation
 
@@ -219,14 +203,29 @@ npx shadcn@latest add @algorize-ui/component-wall
         Called when the camera settles on a card.
 
         layout
-        "split" | "center"
+        "split" | "center" | "center-background"
         "split"
         The copy on the left and the wall on the right, or the copy centred between two walls — the left camera resting high, the right one low — with the tools under the copy. Below lg a single band of every card sits between the copy and the tools.
+
+        showMobileWall
+        boolean
+        true
+        Whether to show the background image animations on mobile and small screens (&lt;lg). When false, the wall animations are completely hidden on small screens across all variants (center, split, and center-background), leaving only the clean content copy and tools on phones while retaining full interactive animations on desktop.
+
+        mobileBackground
+        boolean
+        true
+        Alias for showMobileWall. Set to false to disable the background image animation on small screens across all variants.
+
+        persistentBackground
+        boolean
+        false
+        When true (or with layout="center-background"), the animated screenshot walls remain in the background layer behind the copy on small screens instead of dropping below the action buttons as a separate band.
 
         compactWall
         boolean
         true
-        Centred layout only: whether that band shows below lg. With false the copy and the tools stand alone there, and the wall never mounts.
+        Centred layout only: whether that band shows below lg. Deprecated in favor of showMobileWall which works across all layouts.
 
         linkComponent
         ElementType

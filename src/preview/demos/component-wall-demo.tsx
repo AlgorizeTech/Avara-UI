@@ -9,6 +9,8 @@ export default function ComponentWallDemo({
   order = "serial",
   layout = "center",
   persistentBackground = false,
+  showMobileWall = true,
+  mobileBackground,
   mobileZoom,
 }: {
   /** Milliseconds the camera rests on a card; 0 holds still. */
@@ -19,6 +21,10 @@ export default function ComponentWallDemo({
   layout?: "split" | "center" | "center-background";
   /** Keep wall in the background on mobile instead of dropping as a bottom band. */
   persistentBackground?: boolean;
+  /** Whether to show wall animations on mobile/small screens (<lg). Defaults to true. */
+  showMobileWall?: boolean;
+  /** Alias for showMobileWall. Set to false to hide animations on small screens. */
+  mobileBackground?: boolean;
   /** Scale of background cards on small/mobile screens. */
   mobileZoom?: number;
 }) {
@@ -40,6 +46,8 @@ export default function ComponentWallDemo({
         order={order}
         layout={layout}
         persistentBackground={persistentBackground}
+        showMobileWall={showMobileWall}
+        mobileBackground={mobileBackground}
         mobileZoom={mobileZoom}
       />
     </div>

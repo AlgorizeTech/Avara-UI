@@ -94,8 +94,19 @@ export interface ComponentWallProps
    */
   persistentBackground?: boolean;
   /**
+   * Whether to show the background/wall image animation on mobile and small screens (<lg).
+   * When `false`, the image animation is completely hidden on small screens across all layouts
+   * (split, center, center-background), leaving only the clean content copy and tools on phones.
+   * Defaults to `true`.
+   */
+  showMobileWall?: boolean;
+  /**
+   * Alias for `showMobileWall`. Set to `false` to hide wall animations on small screens across all layouts.
+   */
+  mobileBackground?: boolean;
+  /**
    * Centred layout only: whether the single wall band shows below `lg`.
-   * `false` leaves just the copy and the tools there; the wall never mounts.
+   * Deprecated in favor of `showMobileWall` which works across all layouts.
    */
   compactWall?: boolean;
   /** Pass `next/link` to keep client-side navigation. */
@@ -338,6 +349,8 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
       layout = "split",
       persistentBackground = false,
       compactWall = true,
+      showMobileWall,
+      mobileBackground,
       linkComponent: Link = "a",
       className,
       ...props
@@ -348,6 +361,14 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
     const isPersistent = persistentBackground || layout === "center-background";
     const centered = layout === "center" || isPersistent;
     const desktop = useMinWidth(1024);
+    const isMobileWallVisible =
+      showMobileWall !== undefined
+        ? showMobileWall
+        : mobileBackground !== undefined
+          ? mobileBackground
+          : compactWall !== undefined
+            ? compactWall
+            : true;
 
     // ---- The word that takes turns in the headline.
     const [wordIndex, setWordIndex] = useState(0);
@@ -576,7 +597,7 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
             copy and the tools. It deals every card, being the only wall. The
             box holds its height from the first paint; the wall mounts once the
             breakpoint is known, so a desktop never loads it. ---- */}
-        {centered && compactWall && !isPersistent && (
+        {centered && isMobileWallVisible && !isPersistent && (
           <div
             className="mt-10 h-64 w-screen max-w-none shrink-0 self-center sm:h-80 lg:hidden"
             aria-hidden={desktop !== false || undefined}
@@ -614,11 +635,11 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
           <div
             className={cn(
               "relative flex w-full flex-col items-center lg:min-h-[46rem] lg:justify-center",
-              isPersistent && "min-h-[44rem]",
+              isPersistent && isMobileWallVisible && "min-h-[44rem]",
             )}
           >
-            {/* ---- From `lg` (or all screens when persistentBackground is active): the left wall ---- */}
-            {(desktop || isPersistent) && (
+            {/* ---- From `lg` (or all screens when persistentBackground is active and mobile wall is enabled): the left wall ---- */}
+            {(desktop || (isPersistent && isMobileWallVisible)) && (
               <ImageWall
                 {...wallProps}
                 items={startItems}
@@ -628,6 +649,7 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
                 className={cn(
                   "absolute inset-y-0 left-0 h-auto w-1/2 [mask-image:linear-gradient(to_right,black_35%,transparent_68%)]",
                   isPersistent && "opacity-60 sm:opacity-90 lg:opacity-100",
+                  !isMobileWallVisible && "hidden lg:block",
                 )}
               />
             )}
@@ -637,15 +659,15 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
               <div
                 className={cn(
                   "absolute inset-y-0 left-1/2 w-full max-w-[52rem] -translate-x-1/2 bg-[radial-gradient(closest-side,var(--background)_60%,transparent)]",
-                  !isPersistent && "hidden lg:block",
+                  (!isPersistent || !isMobileWallVisible) && "hidden lg:block",
                 )}
                 aria-hidden
               />
               {copy}
             </div>
 
-            {/* ---- From `lg` (or all screens when persistentBackground is active): the right wall ---- */}
-            {(desktop || isPersistent) && (
+            {/* ---- From `lg` (or all screens when persistentBackground is active and mobile wall is enabled): the right wall ---- */}
+            {(desktop || (isPersistent && isMobileWallVisible)) && (
               <ImageWall
                 {...wallProps}
                 items={endItems}
@@ -655,6 +677,7 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
                 className={cn(
                   "absolute inset-y-0 right-0 h-auto w-1/2 [mask-image:linear-gradient(to_left,black_35%,transparent_68%)]",
                   isPersistent && "opacity-60 sm:opacity-90 lg:opacity-100",
+                  !isMobileWallVisible && "hidden lg:block",
                 )}
               />
             )}
@@ -675,13 +698,18 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
           <div className="relative z-30 mx-auto flex w-full max-w-[98rem] items-center px-6 md:px-10 xl:pl-20">{copy}</div>
 
           {/* ---- The wall: a band under the copy, or the whole right side fading under it ---- */}
-          <ImageWall
-            {...wallProps}
-            items={items}
-            intro={intro}
-            onFocus={handleFocus}
-            className="h-80 [mask-image:linear-gradient(to_left,black_85%,transparent_100%)] sm:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[56%] lg:[mask-image:linear-gradient(to_left,black_72%,transparent_100%)] xl:w-[58%]"
-          />
+          {(desktop || isMobileWallVisible) && (
+            <ImageWall
+              {...wallProps}
+              items={items}
+              intro={intro}
+              onFocus={handleFocus}
+              className={cn(
+                "h-80 [mask-image:linear-gradient(to_left,black_85%,transparent_100%)] sm:h-96 lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[56%] lg:[mask-image:linear-gradient(to_left,black_72%,transparent_100%)] xl:w-[58%]",
+                !isMobileWallVisible && "hidden lg:block",
+              )}
+            />
+          )}
 
           {/* ---- The tools, over the lower part of the wall ---- */}
           {stack && (
