@@ -30,6 +30,21 @@ export default function FAQExample() {
 }
 `;
 
+export const usageTwoColumn = `"use client";
+
+import { FAQSection } from "@/components/custom/blocks/FAQSectionBlock";
+
+export default function TwoColumnFAQExample() {
+  return (
+    <FAQSection
+      variant="two-column"
+      title="Questions people ask before they install."
+      description="Short answers on licensing, theming and where the components run. If yours isn't here, we read every message."
+    />
+  );
+}
+`;
+
 <ExampleShowcase
   name="faq-section"
   columns={1}
@@ -69,6 +84,35 @@ export default function FAQExample() {
       code: extractCode("src/components/custom/blocks/FAQSectionBlock.tsx"),
       minHeight: 650,
     },
+    {
+      title: "2. Two-Column Support FAQ",
+      subheading:
+        "A two-column section: sticky heading and a support team contact card on the left, the expandable questions accordion on the right.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"two-column"',
+          effect:
+            "to switch to a sticky two-column layout with support team contact card.",
+        },
+        {
+          prop: "title",
+          value: '"Questions people ask..."',
+          effect: "for the sticky left-hand headline.",
+        },
+        {
+          prop: "description",
+          effect: "short introductory summary beneath the headline.",
+        },
+      ],
+      props: {
+        variant: "two-column",
+      },
+      usage: usageTwoColumn,
+      code: extractCode("src/components/custom/blocks/FAQSectionBlock.tsx"),
+      minHeight: 640,
+    },
   ]}
 />
 
@@ -91,6 +135,12 @@ export default function FAQExample() {
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"canvas" | "two-column"</code></td>
+        <td><code>"canvas"</code></td>
+        <td>Layout presentation: <code>"canvas"</code> displays the centered nature canvas layout; <code>"two-column"</code> displays the sticky heading &amp; support card layout.</td>
+      </tr>
       <tr>
         <td><code>eyebrow</code></td>
         <td><code>string</code></td>

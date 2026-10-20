@@ -61,6 +61,12 @@ export const usageMonochrome = `export default function MonochromeTags() {
   );
 }`;
 
+export const usageBlackAndWhite = `export default function BlackAndWhiteTags() {
+  return (
+    
+  );
+}`;
+
 ### Installation
 
 Register the @algorize-ui registry once per project, then add the component:
@@ -99,7 +105,7 @@ npx shadcn@latest add @algorize-ui/falling-tags
         List of tag labels or custom tag objects with individual colors/icons.
 
         palette
-        "default" | "colorful" | "glass" | "pastel" | "monochrome" | "neon"
+        "default" | "colorful" | "glass" | "pastel" | "monochrome" | "neon" | "black-and-white"
         "default"
         Preset color distribution applied across the tags.
 

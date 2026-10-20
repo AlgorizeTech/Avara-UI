@@ -34,10 +34,19 @@ export default function FallingTagsDemo({
   const isGlass = palette === "glass";
 
   return (
-    <div className="w-full p-4 sm:p-6 md:p-8 flex items-center justify-center">
+    <div
+      className="w-full block"
+      style={{
+        paddingTop: "15px",
+        paddingBottom: "15px",
+        paddingLeft: "15px",
+        paddingRight: "0px",
+        boxSizing: "border-box",
+      }}
+    >
       {isGlass ? (
         <div
-          className="w-full rounded-3xl bg-cover bg-center p-3 sm:p-5 relative overflow-hidden shadow-2xl"
+          className="w-full rounded-3xl bg-cover bg-center relative overflow-hidden shadow-2xl"
           style={{
             backgroundImage:
               'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
@@ -62,22 +71,20 @@ export default function FallingTagsDemo({
           </div>
         </div>
       ) : (
-        <div className="w-full">
-          <FallingTagsBlock
-            key={palette}
-            palette={palette}
-            height={height}
-            tags={tags}
-            title={title}
-            description={description}
-            gravity={gravity}
-            bounce={bounce}
-            friction={friction}
-            hoverDuration={hoverDuration}
-            showControls={showControls}
-            interactive={interactive}
-          />
-        </div>
+        <FallingTagsBlock
+          key={palette}
+          palette={palette}
+          height={height}
+          tags={tags}
+          title={title}
+          description={description}
+          gravity={gravity}
+          bounce={bounce}
+          friction={friction}
+          hoverDuration={hoverDuration}
+          showControls={showControls}
+          interactive={interactive}
+        />
       )}
     </div>
   );

@@ -29,7 +29,9 @@ export type FallingTagPalette =
   | "glass"
   | "pastel"
   | "monochrome"
-  | "neon";
+  | "neon"
+  | "black-and-white"
+  | "black-white";
 
 export interface FallingTagItem {
   id: string;
@@ -142,6 +144,30 @@ const PALETTES: Record<FallingTagPalette, { bg: string; text: string; border: st
     { bg: "bg-fuchsia-500", text: "text-white font-bold", border: "border-fuchsia-300 shadow-[0_0_15px_rgba(217,70,239,0.5)]" },
     { bg: "bg-yellow-400", text: "text-zinc-950 font-bold", border: "border-yellow-200 shadow-[0_0_15px_rgba(250,204,21,0.5)]" },
     { bg: "bg-violet-500", text: "text-white font-bold", border: "border-violet-300 shadow-[0_0_15px_rgba(139,92,246,0.5)]" },
+  ],
+  "black-and-white": [
+    {
+      bg: "bg-black dark:bg-black",
+      text: "text-white dark:text-white font-medium",
+      border: "border-white dark:border-white shadow-xs",
+    },
+    {
+      bg: "bg-white dark:bg-white",
+      text: "text-black dark:text-black font-medium",
+      border: "border-black dark:border-black shadow-xs",
+    },
+  ],
+  "black-white": [
+    {
+      bg: "bg-black dark:bg-black",
+      text: "text-white dark:text-white font-medium",
+      border: "border-white dark:border-white shadow-xs",
+    },
+    {
+      bg: "bg-white dark:bg-white",
+      text: "text-black dark:text-black font-medium",
+      border: "border-black dark:border-black shadow-xs",
+    },
   ],
 };
 

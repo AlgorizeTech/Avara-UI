@@ -130,9 +130,23 @@ export default function MonochromeTags() {
   );
 }`;
 
+export const usageBlackAndWhite = `"use client";
+
+import FallingTags from "@/components/custom/blocks/FallingTagsBlock";
+
+export default function BlackAndWhiteTags() {
+  return (
+    <FallingTags
+      palette="black-and-white"
+      height={500}
+    />
+  );
+}`;
+
 <ExampleShowcase
   name="falling-tags"
   columns={1}
+  minHeight={0}
   examples={[
     {
       title: "Interactive physics arena",
@@ -143,7 +157,7 @@ export default function MonochromeTags() {
           prop: "palette",
           value: '"default"',
           effect:
-            'chooses the color scheme — "default", "colorful", "glass", "pastel", "monochrome", or "neon".',
+            'chooses the color scheme — "default", "colorful", "glass", "pastel", "monochrome", "neon", or "black-and-white".',
         },
         {
           prop: "hoverDuration",
@@ -186,6 +200,7 @@ export default function MonochromeTags() {
 <ExampleShowcase
   name="falling-tags"
   columns={1}
+  minHeight={0}
   examples={[
     {
       title: "Colorful",
@@ -285,6 +300,26 @@ export default function MonochromeTags() {
       usage: usageMonochrome,
       code: extractCode("src/components/custom/blocks/FallingTagsBlock.tsx"),
     },
+    {
+      title: "Black and white",
+      subheading:
+        "High-contrast dual-tone black and white badges. Tags alternate between black background with white text and border, and white background with black text and border.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "palette",
+          value: '"black-and-white"',
+          effect:
+            "for dual-tone black and white badges with inverted high-contrast borders and text.",
+        },
+      ],
+      props: {
+        palette: "black-and-white",
+        height: 500,
+      },
+      usage: usageBlackAndWhite,
+      code: extractCode("src/components/custom/blocks/FallingTagsBlock.tsx"),
+    },
   ]}
 />
 
@@ -330,7 +365,7 @@ export default function MonochromeTags() {
       </tr>
       <tr>
         <td><code>palette</code></td>
-        <td><code>"default" | "colorful" | "glass" | "pastel" | "monochrome" | "neon"</code></td>
+        <td><code>"default" | "colorful" | "glass" | "pastel" | "monochrome" | "neon" | "black-and-white"</code></td>
         <td><code>"default"</code></td>
         <td>Preset color distribution applied across the tags.</td>
       </tr>

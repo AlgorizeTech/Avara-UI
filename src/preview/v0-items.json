@@ -12,7 +12,6 @@
   "accordion": {
     "accordion": "Accordion",
     "brand-logo-reveal": "Accordion — Brand logo reveal",
-    "faq-section": "Accordion — FAQ section",
     "multiple-open": "Accordion — Multiple open",
     "always-one-open": "Accordion — Always one open",
     "multiple-permanent-open": "Accordion — Multiple permanent open",
@@ -232,6 +231,7 @@
   "component-wall": {
     "build-interactive-interfaces": "Component Wall — Build interactive interfaces",
     "centred-with-persistent-background": "Component Wall — Centred with persistent background",
+    "clean-mobile-view-no-background-animation": "Component Wall — Clean mobile view (no background animation)",
     "copy-beside-the-wall": "Component Wall — Copy beside the wall"
   },
   "context-menu": {
@@ -378,10 +378,12 @@
     "glass": "Falling Tags — Glass",
     "neon": "Falling Tags — Neon",
     "pastel": "Falling Tags — Pastel",
-    "monochrome": "Falling Tags — Monochrome"
+    "monochrome": "Falling Tags — Monochrome",
+    "black-and-white": "Falling Tags — Black and white"
   },
   "faq-section": {
-    "1-homepage-faq-section": "Faq Section — 1. Homepage FAQ Section"
+    "1-homepage-faq-section": "Faq Section — 1. Homepage FAQ Section",
+    "2-two-column-support-faq": "Faq Section — 2. Two-Column Support FAQ"
   },
   "upload": {
     "dropzone": "Upload — Dropzone",

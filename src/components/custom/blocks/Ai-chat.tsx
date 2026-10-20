@@ -946,9 +946,6 @@ export default function AIChat({
           )}
         >
           <MaxEffortGlow active={isMaxEffort} className={theme.primaryText} />
-          {selectedTier && (
-            <TierBorderBeam key={selectedTier} tier={selectedTier} />
-          )}
           {tierFx > 0 && tierLook && (
             <tierLook.Sweep key={tierFx} onDone={() => setTierFx(0)} />
           )}
@@ -2116,7 +2113,6 @@ const MOTION_CSS = `
   to { transform: translate(-50%, -50%) rotate(360deg); }
 }
 .aichat-premium-orbit { animation: aichat-premium-orbit ${PREMIUM_SWEEP_S}s ${PREMIUM_ORBIT_CSS} both; }
-.aichat-premium-orbit-loop { animation: aichat-premium-orbit 3s linear infinite; }
 @keyframes aichat-premium-sheen {
   from { transform: translateX(-120%) skewX(-20deg); }
   to { transform: translateX(420%) skewX(-20deg); }
@@ -2920,26 +2916,12 @@ function PremiumSweep({ onDone }: { onDone: () => void }) {
       <span className="absolute inset-0 overflow-hidden rounded-2xl">
         <span className="aichat-premium-sheen absolute inset-y-0 left-0 w-1/4 bg-gradient-to-r from-transparent via-current to-transparent opacity-25" />
       </span>
-    </div>
-  );
-}
-
-/** The prompt bar's continuous border beam, orbiting as long as a tier (Premium or Pro) is selected. */
-function TierBorderBeam({ tier }: { tier: ModelTier }) {
-  return (
-    <div
-      aria-hidden
-      className={cn(
-        "pointer-events-none absolute inset-0 rounded-2xl",
-        tier === "premium" ? PREMIUM.ink : PRO.ink,
-      )}
-    >
       <span
         className="absolute inset-0 overflow-hidden rounded-2xl p-[2px]"
         style={RING_MASK}
       >
         <span
-          className="aichat-premium-orbit-loop absolute left-1/2 top-1/2 aspect-square w-[150%]"
+          className="aichat-premium-orbit absolute left-1/2 top-1/2 aspect-square w-[150%]"
           style={{ background: BEAM_GRADIENT }}
         />
       </span>

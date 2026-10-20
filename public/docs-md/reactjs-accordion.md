@@ -114,66 +114,15 @@ npx shadcn@latest add @algorize-ui/accordion
 
 ## Examples
 
-export const usageSection = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+export const usageMultiplePermanent = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
 
-// The three faces on the "Still stuck?" card.
-const SUPPORT_TEAM = [
-  { name: "Ana R.", src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg" },
-  { name: "Tom M.", src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg" },
-  { name: "Mara K.", src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg" },
-];
+${usageData}
 
-const faq: AccordionDataItem[] = [
-  {
-    value: "frameworks",
-    title: "Does it work outside Next.js?",
-    icon: "Code",
-    content: [
-      "Every block is plain React and Tailwind. The docs show a Next.js and a React (Vite) version of each snippet, and only the few components that use next/link or next/image need a one-line swap.",
-    ],
-  },
-  {
-    value: "theming",
-    title: "Can I change the colors?",
-    icon: "Palette",
-    content: [
-      "Everything reads the shadcn theme tokens (primary, card, muted, border), so one edit to globals.css restyles all of it.",
-    ],
-  },
-  {
-    value: "updates",
-    title: "How do updates reach my project?",
-    icon: "RefreshCw",
-    content: [
-      "The CLI copies the source into your repo, so nothing changes behind your back. Re-run the install command to pull a newer version, then review the diff like any other change.",
-    ],
-  },
-  {
-    value: "license",
-    title: "How is it licensed?",
-    icon: "Scale",
-    content: ["MIT. Use it in client work, products and templates, with no attribution required."],
-  },
-];
-
-export default function FaqSection() {
+export default function PermanentMultiOpenFaq() {
+  // type="multiple" and collapsible={false} allows opening multiple panels,
+  // but once opened, a panel cannot be closed by clicking it again.
   return (
-
-        {/* Left column stays put while the answers scroll on large screens. */}
-
-            Questions people ask before they install.
-
-            Short answers on licensing, theming and where the components run.
-            If yours isn't here, we read every message.
-
-              {SUPPORT_TEAM.map((person) => (
-                
-              ))}
-
-              Still stuck?
-              
-                Email the team, we reply within a day
-
+    
   );
 }`;
 
@@ -201,18 +150,6 @@ export default function AccordionVariants() {
       {variants.map((variant) => (
         
       ))}
-    
-  );
-}`;
-
-export const usageMultiplePermanent = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
-
-${usageData}
-
-export default function PermanentMultiOpenFaq() {
-  // type="multiple" and collapsible={false} allows opening multiple panels,
-  // but once opened, a panel cannot be closed by clicking it again.
-  return (
     
   );
 }`;

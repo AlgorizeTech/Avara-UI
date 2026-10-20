@@ -335,6 +335,200 @@ export function AnimatedFAQBlock({
 }
 
 // ==========================================
+// SUPPORT TEAM & TWO-COLUMN FAQ SECTION
+// Inspired by the sticky two-column layout with support card
+// ==========================================
+
+export const DEFAULT_SUPPORT_TEAM = [
+  {
+    name: "Ana R.",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg",
+  },
+  {
+    name: "Tom M.",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg",
+  },
+  {
+    name: "Mara K.",
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg",
+  },
+];
+
+export interface TwoColumnFAQSectionProps {
+  id?: string;
+  className?: string;
+  title?: string;
+  description?: string;
+  items?: FAQItem[];
+  supportTeam?: Array<{ name: string; src: string }>;
+  supportEmail?: string;
+  defaultActiveId?: string;
+}
+
+export function TwoColumnFAQSection({
+  id = "faq",
+  className,
+  title = "Questions people ask before they install.",
+  description = "Short answers on licensing, theming and where the components run. If yours isn't here, we read every message.",
+  items = FAQ_ITEMS,
+  supportTeam = DEFAULT_SUPPORT_TEAM,
+  supportEmail = "hello@example.com",
+  defaultActiveId,
+}: TwoColumnFAQSectionProps) {
+  const [activeId, setActiveId] = useState<string>(defaultActiveId || items[0]?.id || "");
+
+  return (
+    <section
+      id={id}
+      className={cn(
+        "w-full rounded-3xl border border-border bg-background px-4 py-8 sm:px-10 lg:px-14 lg:py-16",
+        className,
+      )}
+    >
+      <div className="mx-auto grid max-w-6xl gap-8 sm:gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
+        {/* Left column stays put while the answers scroll on large screens. */}
+        <div className="lg:sticky lg:top-8 lg:self-start">
+          <h2 className="max-w-md font-serif text-3xl leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+            {title}
+          </h2>
+          {description && (
+            <p className="mt-4 sm:mt-5 max-w-md text-sm sm:text-base leading-relaxed text-muted-foreground">
+              {description}
+            </p>
+          )}
+
+          {supportTeam && supportTeam.length > 0 && (
+            <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 rounded-2xl bg-muted/60 p-4 max-w-md">
+              <div className="flex shrink-0 -space-x-2">
+                {supportTeam.map((person) => (
+                  <img
+                    key={person.name}
+                    src={person.src}
+                    alt={person.name}
+                    className="size-9 shrink-0 rounded-full border-2 border-background object-cover"
+                    loading="lazy"
+                  />
+                ))}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="text-sm font-medium text-foreground">Still stuck?</p>
+                <a
+                  href={`mailto:${supportEmail}`}
+                  className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-primary hover:underline break-words"
+                >
+                  Email the team, we reply within a day
+                </a>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Right column: Questions Accordion */}
+        <div className="w-full space-y-3 sm:space-y-4">
+          {items.map((item, idx) => {
+            const isActive = item.id === activeId;
+            const num = String(idx + 1).padStart(2, "0");
+
+            return (
+              <div
+                key={item.id}
+                className={cn(
+                  "rounded-2xl border transition-all duration-300 overflow-hidden",
+                  isActive
+                    ? "border-primary/50 bg-card shadow-lg ring-1 ring-primary/20"
+                    : "border-border/60 bg-card/40 hover:border-border hover:bg-card/80",
+                )}
+              >
+                <button
+                  type="button"
+                  onClick={() => setActiveId(isActive ? "" : item.id)}
+                  aria-expanded={isActive}
+                  className="w-full text-left p-4 sm:p-5 flex items-start justify-between gap-4 cursor-pointer select-none transition-colors group"
+                >
+                  <div className="flex items-start gap-3.5 sm:gap-4 min-w-0">
+                    <span
+                      className={cn(
+                        "shrink-0 font-mono text-xs font-semibold px-2 py-1 rounded-md border transition-colors mt-0.5",
+                        isActive
+                          ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                          : "bg-muted/80 text-muted-foreground border-border/50 group-hover:text-foreground group-hover:border-primary/30",
+                      )}
+                    >
+                      {num}
+                    </span>
+
+                    <div className="min-w-0">
+                      {item.category && (
+                        <div className="flex items-center gap-2 mb-1">
+                          <span
+                            className={cn(
+                              "text-[10px] font-medium uppercase tracking-wider",
+                              isActive
+                                ? "text-primary font-semibold"
+                                : "text-muted-foreground/70",
+                            )}
+                          >
+                            {item.category}
+                          </span>
+                        </div>
+                      )}
+                      <h3
+                        className={cn(
+                          "text-sm sm:text-base font-semibold leading-snug transition-colors",
+                          isActive
+                            ? "text-foreground"
+                            : "text-foreground/80 group-hover:text-foreground",
+                        )}
+                      >
+                        {item.question}
+                      </h3>
+                    </div>
+                  </div>
+
+                  <div
+                    style={{
+                      rotate: isActive ? "180deg" : "0deg",
+                      transition:
+                        "rotate 0.25s cubic-bezier(0.42, 0, 0.58, 1), color 150ms cubic-bezier(0.4, 0, 0.2, 1), background-color 150ms cubic-bezier(0.4, 0, 0.2, 1), border-color 150ms cubic-bezier(0.4, 0, 0.2, 1)",
+                    }}
+                    className={cn(
+                      "shrink-0 size-7 rounded-full flex items-center justify-center border transition-colors mt-0.5",
+                      isActive
+                        ? "bg-primary/10 border-primary/30 text-primary"
+                        : "bg-muted/50 border-border/50 text-muted-foreground group-hover:text-foreground group-hover:border-primary/20",
+                    )}
+                  >
+                    <ChevronDown className="size-4" />
+                  </div>
+                </button>
+
+                <div
+                  inert={!isActive}
+                  style={{
+                    display: "grid",
+                    gridTemplateRows: isActive ? "1fr" : "0fr",
+                    opacity: isActive ? 1 : 0,
+                    transition: `grid-template-rows 0.25s ${EASE}, opacity 0.25s ${EASE}`,
+                  }}
+                >
+                  <div className="min-h-0 overflow-hidden">
+                    <div className="px-4 pb-4 sm:px-5 sm:pb-5 pt-0 border-t border-border/40 text-sm text-muted-foreground leading-relaxed">
+                      <p className="pt-3 text-[13px] sm:text-sm text-foreground/80">
+                        {item.answer}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ==========================================
 // COMPLETE WEBSITE FAQ SECTION COMPONENT
 // Matching the homepage FAQ Section layout
 // ==========================================
@@ -342,24 +536,45 @@ export function AnimatedFAQBlock({
 export interface FAQSectionProps {
   id?: string;
   className?: string;
+  variant?: "canvas" | "two-column";
   eyebrow?: string;
   title?: string;
   description?: string;
   items?: FAQItem[];
   showGlows?: boolean;
   defaultActiveId?: string;
+  supportTeam?: Array<{ name: string; src: string }>;
+  supportEmail?: string;
 }
 
 export function FAQSection({
   id = "faq",
   className,
+  variant = "canvas",
   eyebrow = "Common Queries",
   title = "Frequently Asked Questions",
   description = "Everything you need to know about using Docs UI, component integration, licensing, and custom styling.",
   items = FAQ_ITEMS,
   showGlows = true,
   defaultActiveId,
+  supportTeam,
+  supportEmail,
 }: FAQSectionProps) {
+  if (variant === "two-column") {
+    return (
+      <TwoColumnFAQSection
+        id={id}
+        className={className}
+        title={title}
+        description={description}
+        items={items}
+        supportTeam={supportTeam}
+        supportEmail={supportEmail}
+        defaultActiveId={defaultActiveId}
+      />
+    );
+  }
+
   return (
     <section
       id={id}

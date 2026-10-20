@@ -184,96 +184,21 @@ export default function BrandRevealShowcase() {
 
 ## Examples
 
-export const usageSection = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+export const usageMultiplePermanent = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
 
-// The three faces on the "Still stuck?" card.
-const SUPPORT_TEAM = [
-  { name: "Ana R.", src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg" },
-  { name: "Tom M.", src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg" },
-  { name: "Mara K.", src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg" },
-];
+${usageData}
 
-const faq: AccordionDataItem[] = [
-  {
-    value: "frameworks",
-    title: "Does it work outside Next.js?",
-    icon: "Code",
-    content: [
-      "Every block is plain React and Tailwind. The docs show a Next.js and a React (Vite) version of each snippet, and only the few components that use next/link or next/image need a one-line swap.",
-    ],
-  },
-  {
-    value: "theming",
-    title: "Can I change the colors?",
-    icon: "Palette",
-    content: [
-      "Everything reads the shadcn theme tokens (primary, card, muted, border), so one edit to globals.css restyles all of it.",
-    ],
-  },
-  {
-    value: "updates",
-    title: "How do updates reach my project?",
-    icon: "RefreshCw",
-    content: [
-      "The CLI copies the source into your repo, so nothing changes behind your back. Re-run the install command to pull a newer version, then review the diff like any other change.",
-    ],
-  },
-  {
-    value: "license",
-    title: "How is it licensed?",
-    icon: "Scale",
-    content: ["MIT. Use it in client work, products and templates, with no attribution required."],
-  },
-];
-
-export default function FaqSection() {
+export default function PermanentMultiOpenFaq() {
+  // type="multiple" and collapsible={false} allows opening multiple panels,
+  // but once opened, a panel cannot be closed by clicking it again.
   return (
-    <section className="px-4 py-8 sm:px-10 lg:px-14 lg:py-24">
-      <div className="mx-auto grid max-w-6xl gap-8 sm:gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
-        {/* Left column stays put while the answers scroll on large screens. */}
-        <div className="lg:sticky lg:top-8 lg:self-start">
-          <h2 className="max-w-md font-serif text-3xl leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-            Questions people ask before they install.
-          </h2>
-          <p className="mt-4 sm:mt-5 max-w-md text-sm sm:text-base leading-relaxed text-muted-foreground">
-            Short answers on licensing, theming and where the components run.
-            If yours isn't here, we read every message.
-          </p>
-
-          <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 rounded-2xl bg-muted/60 p-4 max-w-md">
-            <div className="flex shrink-0 -space-x-2">
-              {SUPPORT_TEAM.map((person) => (
-                <img
-                  key={person.name}
-                  src={person.src}
-                  alt={person.name}
-                  className="size-9 shrink-0 rounded-full border-2 border-background object-cover"
-                  loading="lazy"
-                />
-              ))}
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-sm font-medium text-foreground">Still stuck?</p>
-              <a
-                href="mailto:hello@example.com"
-                className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-primary hover:underline break-words"
-              >
-                Email the team, we reply within a day
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <Accordion
-          accordionData={faq}
-          type="single"
-          collapsible
-          variant="default"
-          animation="stack"
-          defaultValue="theming"
-        />
-      </div>
-    </section>
+    <Accordion
+      accordionData={faqItems}
+      type="multiple"
+      collapsible={false}
+      variant="ghost"
+      defaultValue={["getting-started"]}
+    />
   );
 }`;
 
@@ -316,59 +241,6 @@ export default function AccordionVariants() {
         />
       ))}
     </div>
-  );
-}`;
-
-<ExampleShowcase
-  name="accordion"
-  columns={1}
-  minHeight={640}
-  examples={[
-    {
-      title: "FAQ section",
-      subheading:
-        "A two-column section: sticky heading and a support card on the left, the accordion on the right.",
-      propNotes: [
-        {
-          lead: "Compose",
-          prop: "Accordion",
-          effect:
-            "inside a `grid` with `lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]`. The left column is `lg:sticky` so the intro stays put while long answers scroll.",
-        },
-        {
-          prop: "animation",
-          value: '"stack"',
-          effect:
-            "deals the questions out when the section scrolls into view, so the entrance reads as one moment rather than a page full of fades.",
-        },
-        {
-          prop: "defaultValue",
-          value: '"theming"',
-          effect:
-            "opens the answer you most want people to read first. Any `value` from the array works.",
-        },
-      ],
-      props: { layout: "section", animation: "stack" },
-      usage: usageSection,
-    },
-  ]}
-/>
-
-export const usageMultiplePermanent = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
-
-${usageData}
-
-export default function PermanentMultiOpenFaq() {
-  // type="multiple" and collapsible={false} allows opening multiple panels,
-  // but once opened, a panel cannot be closed by clicking it again.
-  return (
-    <Accordion
-      accordionData={faqItems}
-      type="multiple"
-      collapsible={false}
-      variant="ghost"
-      defaultValue={["getting-started"]}
-    />
   );
 }`;
 
