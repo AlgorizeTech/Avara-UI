@@ -1,6 +1,6 @@
 {
-  "name": "Algorize UI — React Component Library",
-  "short_name": "Algorize UI",
+  "name": "Avara UI — React Component Library",
+  "short_name": "Avara UI",
   "description": "A React component library of 188 animated, accessible components installed by the shadcn CLI straight into your project.",
   "start_url": "/",
   "display": "standalone",
