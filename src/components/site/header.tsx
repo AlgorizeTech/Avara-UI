@@ -56,11 +56,6 @@ const Header = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
 
-  // Embedded preview sandbox should not render the global header
-  if (pathname.startsWith("/preview")) {
-    return null;
-  }
-
   // Close sidebar drawer on route change
   useEffect(() => {
     setSidebarOpen(false);
@@ -77,6 +72,11 @@ const Header = () => {
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, []);
+
+  // Embedded preview sandbox should not render the global header
+  if (pathname.startsWith("/preview")) {
+    return null;
+  }
 
   return (
     <>
