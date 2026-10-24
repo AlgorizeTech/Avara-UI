@@ -50,6 +50,16 @@ export default function GlassHeader() {
   );
 }`;
 
+export const usageEcommerce = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
+
+export default function EcommerceHeader() {
+  // A conversion-focused E-Commerce Mega Nav with announcement bar,
+  // persistent mega menu panel, product previews, promo banners, cart, and mobile drawer.
+  return (
+    
+  );
+}`;
+
 ## Installation
 
 Register the @algorize-ui registry once per project, then add the component:
@@ -70,11 +80,11 @@ npx shadcn@latest add @algorize-ui/navbar
 
           variant
 
-          "default" | "floating" | "centered" | "minimal" | "glass"
+          "default" | "floating" | "centered" | "minimal" | "glass" | "ecommerce-mega-nav"
 
           "default"
         
-        Determines the structural layout and positioning of the navbar.
+        Determines the structural layout and positioning of the navbar. Use "ecommerce-mega-nav" for a full-featured e-commerce header with announcement bar, product-rich mega menus, cart, and mobile drawer.
 
           color
 

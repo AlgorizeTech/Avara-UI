@@ -119,6 +119,12 @@ export default function LogoCarouselDemo() {
   );
 }`;
 
+export const usageTestimonialLoom = `import { ReviewsBlock } from "@/components/custom/blocks/ReviewsBlock";
+
+export default function TestimonialLoomDemo() {
+  return ;
+}`;
+
 ## Installation
 
 Register the @algorize-ui registry once per project, then add the component:
@@ -147,9 +153,9 @@ Discover the key capabilities of the `ReviewsBlock` component:
         Description
 
         variant
-        "up-down-vertical-marquee" | "stacked-carousel" | "logo-carousel"
+        "testimonial-loom" | "up-down-vertical-marquee" | "stacked-carousel" | "logo-carousel"
         "up-down-vertical-marquee"
-        Determines the visual review layout style (infinite up/down vertical marquee, 3D stacked cards, or brand logo carousel).
+        Determines the visual review layout style (4-stage interactive envelope loom, infinite up/down vertical marquee, 3D stacked cards, or brand logo carousel).
 
         title
         string

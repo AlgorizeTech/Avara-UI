@@ -85,6 +85,13 @@ export const NAME_OVERRIDES: Record<string, string> = {
 };
 
 export const META: Record<string, ItemMeta> = {
+  "modern-scroll-stack": {
+    title: "Modern Scroll Stack",
+    description:
+      "A sticky scroll-driven service cards stack where cards slide up from below with horizontal fan offsets and smoothly tilt into resting angles as they lock into place.",
+    categories: ["scroll", "marketing", "data-display"],
+    docs: "Named export: ModernScrollStack (also default export), DEFAULT_MODERN_SCROLL_STACK_ITEMS, ModernScrollStackItem, and ModernScrollStackProps.",
+  },
   "not-found-section": {
     title: "Not Found Section",
     description:
@@ -463,7 +470,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A responsive marketing navbar with logo, links, mobile menu and GSAP entrance animation. Use it as the top bar of a landing page.",
     categories: ["navigation", "marketing"],
-    docs: "Named exports: NavbarBlock, getThemeStyles (from navbar-theme.ts, which installs alongside). Variants: default | floating | centered | minimal | glass. Links render through `linkComponent` (a plain `a` by default; pass next/link in Next.js). The mobile menu toggles are the `button` item, which installs alongside. For app chrome with dropdown panels, use `navigation-menu`.",
+    docs: "Named exports: NavbarBlock, getThemeStyles (from navbar-theme.ts, which installs alongside). Variants: default | floating | centered | minimal | glass | ecommerce-mega-nav. Links render through `linkComponent` (a plain `a` by default; pass next/link in Next.js). The mobile menu toggles are the `button` item, which installs alongside. For app chrome with dropdown panels, use `navigation-menu`.",
   },
   command: {
     description:

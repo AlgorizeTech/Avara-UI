@@ -1,8 +1,22 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { ArrowRight, ChevronDown, Command, Menu, X } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import {
+  ArrowRight,
+  BadgePercent,
+  ChevronDown,
+  Command,
+  Heart,
+  Menu,
+  Plus,
+  Search,
+  ShoppingBag,
+  Star,
+  Truck,
+  User,
+  X,
+} from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
 import Button from "./Button";
 import { getThemeStyles } from "./navbar-theme";
 
@@ -19,7 +33,8 @@ export type NavbarVariant =
   | "floating"
   | "centered"
   | "minimal"
-  | "glass";
+  | "glass"
+  | "ecommerce-mega-nav";
 
 export interface NavbarProps {
   variant?: NavbarVariant;
@@ -197,7 +212,874 @@ function DesktopActions({
   );
 }
 
-export function NavbarBlock({
+// ==========================================
+// E-COMMERCE MEGA NAV DATA & COMPONENT
+// ==========================================
+interface MegaMenuLink {
+  name: string;
+  href: string;
+}
+
+interface MegaMenuProduct {
+  id: string;
+  name: string;
+  subtitle: string;
+  price: string;
+  originalPrice?: string;
+  tag?: string;
+  rating: number;
+  image: string;
+  href: string;
+}
+
+interface MegaMenuPromo {
+  tag: string;
+  title: string;
+  subtitle: string;
+  cta: string;
+  image: string;
+  href: string;
+}
+
+interface MegaCategory {
+  id: string;
+  name: string;
+  productsTitle: string;
+  products: MegaMenuProduct[];
+  column1Title: string;
+  column1Links: MegaMenuLink[];
+  column2Title: string;
+  column2Links: MegaMenuLink[];
+  promo: MegaMenuPromo;
+}
+
+const CLD = "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto";
+
+const IMG_CHOCOLATE = `${CLD}/v1790509367/flavour-chocolate-1790509374070.webp`;
+const IMG_COOKIE = `${CLD}/v1790509368/flavour-cookie-1790509374071.webp`;
+const IMG_BERRY = `${CLD}/v1790509367/flavour-berry-1790509374070.webp`;
+const IMG_MANGO = `${CLD}/v1790509367/flavour-mango-1790509374071.webp`;
+
+const ECOM_CATEGORIES: MegaCategory[] = [
+  {
+    id: "protein",
+    name: "Protein",
+    productsTitle: "Our Protein",
+    products: [
+      { id: "p-1", name: "Isoclear Clear Whey", subtitle: "Chocolate · 900g", price: "$39.90", tag: "Bestseller", rating: 4.9, image: IMG_CHOCOLATE, href: "#" },
+      { id: "p-2", name: "Designer Whey Protein", subtitle: "Cookie · 1kg", price: "$34.90", rating: 4.8, image: IMG_COOKIE, href: "#" },
+      { id: "p-3", name: "Vegan Protein Blend", subtitle: "Mixed berry · 750g", price: "$29.90", originalPrice: "$36.90", tag: "-20%", rating: 4.7, image: IMG_BERRY, href: "#" },
+      { id: "p-4", name: "Clear Whey Isolate", subtitle: "Mango · 500g", price: "$24.90", tag: "New", rating: 4.8, image: IMG_MANGO, href: "#" },
+    ],
+    column1Title: "Overview",
+    column1Links: [
+      { name: "Whey Protein", href: "#" },
+      { name: "Vegan Protein", href: "#" },
+      { name: "Clear Whey Isolate", href: "#" },
+    ],
+    column2Title: "Shop by goal",
+    column2Links: [
+      { name: "Muscle Building", href: "#" },
+      { name: "Weight Management", href: "#" },
+    ],
+    promo: {
+      tag: "Top rated",
+      title: "Protein Bestsellers",
+      subtitle: "Save up to 25% on our highest-rated whey & plant blends.",
+      cta: "Discover now",
+      image: IMG_CHOCOLATE,
+      href: "#",
+    },
+  },
+  {
+    id: "bars",
+    name: "Bars & Snacks",
+    productsTitle: "Bars & Snacks",
+    products: [
+      { id: "b-1", name: "Crunchy Protein Bar", subtitle: "Chocolate · 12 pack", price: "$27.90", tag: "Bestseller", rating: 4.9, image: IMG_CHOCOLATE, href: "#" },
+      { id: "b-2", name: "Cookie Dough Bites", subtitle: "Cookie · 10 pack", price: "$19.90", rating: 4.7, image: IMG_COOKIE, href: "#" },
+      { id: "b-3", name: "Berry Protein Crisps", subtitle: "Mixed berry · 8 pack", price: "$16.90", tag: "New", rating: 4.6, image: IMG_BERRY, href: "#" },
+      { id: "b-4", name: "Mango Fruit Bar", subtitle: "Mango · 12 pack", price: "$18.90", originalPrice: "$22.90", tag: "-15%", rating: 4.6, image: IMG_MANGO, href: "#" },
+    ],
+    column1Title: "Overview",
+    column1Links: [
+      { name: "Protein Bars", href: "#" },
+      { name: "Protein Crisps", href: "#" },
+      { name: "Nut Butters", href: "#" },
+    ],
+    column2Title: "Shop by need",
+    column2Links: [
+      { name: "On-the-go", href: "#" },
+      { name: "Low Sugar", href: "#" },
+    ],
+    promo: {
+      tag: "Just landed",
+      title: "New Flavours",
+      subtitle: "Freshly baked protein bars & bites with zero added sugar.",
+      cta: "Taste them all",
+      image: IMG_BERRY,
+      href: "#",
+    },
+  },
+  {
+    id: "vitamins",
+    name: "Vitamins & Health",
+    productsTitle: "Vitamins & Health",
+    products: [
+      { id: "v-1", name: "Daily Multivitamin", subtitle: "Mixed berry · 60 caps", price: "$21.90", tag: "Bestseller", rating: 4.8, image: IMG_BERRY, href: "#" },
+      { id: "v-2", name: "Omega-3 Softgels", subtitle: "Mango · 90 caps", price: "$24.90", rating: 4.7, image: IMG_MANGO, href: "#" },
+      { id: "v-3", name: "Vitamin D3 + K2", subtitle: "Chocolate · 120 caps", price: "$17.90", tag: "New", rating: 4.8, image: IMG_CHOCOLATE, href: "#" },
+      { id: "v-4", name: "Greens Superfood", subtitle: "Cookie · 300g", price: "$32.90", originalPrice: "$39.90", tag: "-18%", rating: 4.6, image: IMG_COOKIE, href: "#" },
+    ],
+    column1Title: "Overview",
+    column1Links: [
+      { name: "Multivitamins", href: "#" },
+      { name: "Omega-3", href: "#" },
+      { name: "Minerals", href: "#" },
+    ],
+    column2Title: "Shop by goal",
+    column2Links: [
+      { name: "Immunity", href: "#" },
+      { name: "Sleep & Recovery", href: "#" },
+    ],
+    promo: {
+      tag: "Daily routine",
+      title: "Health Essentials",
+      subtitle: "Daily micronutrients formulated for immunity & recovery.",
+      cta: "Discover now",
+      image: IMG_MANGO,
+      href: "#",
+    },
+  },
+  {
+    id: "creatine",
+    name: "Creatine",
+    productsTitle: "Our Creatine",
+    products: [
+      { id: "c-1", name: "Creatine Monohydrate", subtitle: "Mango · 500g", price: "$22.90", tag: "Bestseller", rating: 4.9, image: IMG_MANGO, href: "#" },
+      { id: "c-2", name: "Creatine Gummies", subtitle: "Mixed berry · 90 pcs", price: "$26.90", tag: "New", rating: 4.7, image: IMG_BERRY, href: "#" },
+      { id: "c-3", name: "Pre-Workout Pump", subtitle: "Chocolate · 300g", price: "$29.90", rating: 4.6, image: IMG_CHOCOLATE, href: "#" },
+      { id: "c-4", name: "Creatine Chewables", subtitle: "Cookie · 150 tabs", price: "$19.90", originalPrice: "$24.90", tag: "-20%", rating: 4.7, image: IMG_COOKIE, href: "#" },
+    ],
+    column1Title: "Overview",
+    column1Links: [
+      { name: "Creatine Powder", href: "#" },
+      { name: "Creatine Gummies", href: "#" },
+      { name: "Pre-Workout", href: "#" },
+    ],
+    column2Title: "Shop by goal",
+    column2Links: [
+      { name: "Strength", href: "#" },
+      { name: "Power Output", href: "#" },
+    ],
+    promo: {
+      tag: "Athlete pick",
+      title: "Strength Stack",
+      subtitle: "Ultra-pure micronized creatine for peak strength output.",
+      cta: "Build your stack",
+      image: IMG_COOKIE,
+      href: "#",
+    },
+  },
+];
+
+const ECOM_STATIC_LINKS = ["Hydration", "Bundles"];
+
+const CART_PREVIEW_ITEMS = [
+  { name: "Crunchy Protein Bar", variant: "Chocolate · 12 pack", qty: 1, price: "$27.90", image: IMG_CHOCOLATE },
+  { name: "Mango Fruit Bar", variant: "Mango · 12 pack", qty: 2, price: "$37.80", image: IMG_MANGO },
+];
+
+const SEARCH_CATALOG = [
+  { title: "Vitamin D3 + K2", path: "/products/vitamin-d3-k2" },
+  { title: "Omega 3 Softgels", path: "/products/omega-3-softgels" },
+  { title: "Isoclear Clear Whey", path: "/products/isoclear-clear-whey" },
+  { title: "Designer Whey Protein", path: "/products/designer-whey-protein" },
+  { title: "Crunchy Protein Bar", path: "/products/crunchy-protein-bar" },
+  { title: "Cookie Dough Bites", path: "/products/cookie-dough-bites" },
+  { title: "Berry Protein Crisps", path: "/products/berry-protein-crisps" },
+  { title: "Mango Fruit Bar", path: "/products/mango-fruit-bar" },
+  { title: "Creatine Monohydrate", path: "/products/creatine-monohydrate" },
+];
+
+// The panel is mounted once and never unmounted while you move between
+// categories — only its content swaps (with a short cross-fade). Opening
+// eases the height in via grid-template-rows 0fr → 1fr.
+const MEGA_NAV_CSS = `
+@keyframes mega-nav-content-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+.mega-nav-content { animation: mega-nav-content-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@keyframes mega-nav-drawer-in {
+  from { transform: translateX(-100%); }
+  to { transform: none; }
+}
+.mega-nav-drawer { animation: mega-nav-drawer-in 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
+@keyframes mega-nav-fade-in { from { opacity: 0; } to { opacity: 1; } }
+.mega-nav-overlay { animation: mega-nav-fade-in 0.3s ease-out both; }
+@media (prefers-reduced-motion: reduce) {
+  .mega-nav-content, .mega-nav-drawer, .mega-nav-overlay { animation: none; }
+}
+`;
+
+function StarRating({ value }: { value: number }) {
+  return (
+    <span className="inline-flex items-center gap-1 text-[11px] font-medium text-muted-foreground">
+      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+      {value.toFixed(1)}
+    </span>
+  );
+}
+
+function EcommerceMegaNav({
+  color = "primary",
+  logoText = "NUTRIFY",
+  linkComponent: Link = "a",
+}: {
+  color?: NavbarColor;
+  logoText?: string;
+  linkComponent?: React.ElementType;
+}) {
+  const { theme, style } = getThemeStyles(color);
+  const [activeMenuId, setActiveMenuId] = useState<string | null>(null);
+  // Remembers the last category so the panel keeps its content while it
+  // eases closed instead of going blank mid-animation.
+  const [lastMenuId, setLastMenuId] = useState<string>(ECOM_CATEGORIES[0].id);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [expandedMobileCategory, setExpandedMobileCategory] = useState<string | null>(ECOM_CATEGORIES[0].id);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const filteredSearchItems = (() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return SEARCH_CATALOG.slice(0, 4);
+    const matches = SEARCH_CATALOG.filter(
+      (item) => item.title.toLowerCase().includes(q) || item.path.toLowerCase().includes(q),
+    );
+    return matches.length > 0 ? matches : SEARCH_CATALOG.slice(0, 2);
+  })();
+
+  const isOpen = activeMenuId !== null;
+  const shownCategory =
+    ECOM_CATEGORIES.find((c) => c.id === (activeMenuId ?? lastMenuId)) ?? ECOM_CATEGORIES[0];
+
+  const cancelClose = () => {
+    if (closeTimeoutRef.current) {
+      clearTimeout(closeTimeoutRef.current);
+      closeTimeoutRef.current = null;
+    }
+  };
+
+  const openMenu = (id: string) => {
+    cancelClose();
+    setActiveMenuId(id);
+    setLastMenuId(id);
+  };
+
+  const scheduleClose = () => {
+    cancelClose();
+    closeTimeoutRef.current = setTimeout(() => setActiveMenuId(null), 200);
+  };
+
+  useEffect(() => () => cancelClose(), []);
+
+  useEffect(() => {
+    if (!isOpen && !searchOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setActiveMenuId(null);
+        setSearchOpen(false);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isOpen, searchOpen]);
+
+  return (
+    <div className="relative w-full z-50 font-sans bg-background rounded-t-[inherit]" style={style}>
+      <style>{MEGA_NAV_CSS}</style>
+
+      {/* ── Announcement bar ── */}
+      <div className={cn("w-full rounded-t-[inherit] text-[11px] sm:text-xs py-2 px-4 flex items-center justify-center gap-2 font-medium transition-colors", theme.bg)}>
+        <Truck className="w-3.5 h-3.5 opacity-85" />
+        <span>Free delivery from $80</span>
+      </div>
+
+      {/* ── Row 1: logo · search · actions ── */}
+      <div className="w-full border-b border-border lg:border-b-0">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 xl:px-10 h-16 lg:h-[72px] flex items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              aria-label="Open menu"
+              onClick={() => setMobileOpen(true)}
+              className="lg:hidden p-2 -ml-2 rounded-full text-foreground hover:bg-muted transition-colors"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
+            <Link href="#" className="shrink-0">
+              <span className={cn("font-bold text-xl sm:text-[22px] tracking-tight select-none transition-colors", theme.text)}>
+                {logoText}
+              </span>
+            </Link>
+          </div>
+
+          <div className="hidden lg:block flex-1 max-w-md">
+            <button
+              type="button"
+              onClick={() => {
+                setActiveMenuId(null);
+                setSearchOpen(true);
+              }}
+              className="relative w-full h-10 pl-11 pr-4 text-left text-sm rounded-full bg-[color-mix(in_oklab,var(--navbar-accent)_6%,var(--muted))] border border-[color-mix(in_oklab,var(--navbar-accent)_18%,transparent)] hover:border-[color-mix(in_oklab,var(--navbar-accent)_40%,transparent)] transition-colors flex items-center text-muted-foreground cursor-text"
+            >
+              <Search className={cn("w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none", theme.text)} />
+              <span className="truncate">{searchQuery || "Search for protein, creatine, ..."}</span>
+            </button>
+          </div>
+
+          <div className="flex items-center gap-0.5 sm:gap-1">
+            <button
+              type="button"
+              aria-label="Search"
+              onClick={() => {
+                setActiveMenuId(null);
+                setSearchOpen(true);
+              }}
+              className="lg:hidden p-2 rounded-full text-foreground hover:bg-muted transition-colors"
+            >
+              <Search className="w-5 h-5" />
+            </button>
+            <button type="button" aria-label="Account" className="hidden sm:inline-flex p-2 rounded-full text-foreground hover:bg-muted transition-colors">
+              <User className="w-5 h-5" />
+            </button>
+            <button type="button" aria-label="Wishlist" className="hidden sm:inline-flex p-2 rounded-full text-foreground hover:bg-muted transition-colors">
+              <Heart className="w-5 h-5" />
+            </button>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setCartOpen((v) => !v)}
+                aria-label="Cart (3 items)"
+                className="relative p-2 rounded-full text-foreground hover:bg-muted transition-colors"
+              >
+                <ShoppingBag className="w-5 h-5" />
+                <span className={cn("absolute top-0.5 right-0.5 min-w-4 h-4 px-1 rounded-full text-[9px] font-bold flex items-center justify-center leading-none", theme.bg)}>
+                  3
+                </span>
+              </button>
+
+              {cartOpen && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setCartOpen(false)} />
+                  <div className="absolute right-0 top-full mt-2 w-[min(22rem,calc(100vw-2rem))] rounded-2xl p-4 bg-background border border-border shadow-2xl z-50 flex flex-col gap-3">
+                    <div className="flex items-center justify-between pb-2 border-b border-border">
+                      <span className="font-semibold text-sm text-foreground">Your cart (3)</span>
+                      <button type="button" onClick={() => setCartOpen(false)} aria-label="Close cart" className="p-1 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted">
+                        <X className="w-4 h-4" />
+                      </button>
+                    </div>
+                    {CART_PREVIEW_ITEMS.map((item) => (
+                      <div key={item.name} className="flex items-center gap-3">
+                        <div className="w-14 h-14 rounded-xl bg-muted overflow-hidden shrink-0">
+                          <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-foreground truncate">{item.name}</p>
+                          <p className="text-xs text-muted-foreground">{item.variant} · Qty {item.qty}</p>
+                        </div>
+                        <span className="text-sm font-semibold text-foreground">{item.price}</span>
+                      </div>
+                    ))}
+                    <div className="pt-3 border-t border-border flex items-center justify-between text-sm">
+                      <span className="text-muted-foreground">Subtotal</span>
+                      <span className="font-bold text-foreground">$85.70</span>
+                    </div>
+                    <Link
+                      href="#"
+                      onClick={() => setCartOpen(false)}
+                      className={cn("w-full py-3 text-center text-sm font-semibold rounded-full transition-opacity", theme.bg)}
+                    >
+                      Checkout
+                    </Link>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Row 2: category links + persistent mega panel (desktop) ── */}
+      <nav
+        aria-label="Shop categories"
+        className="relative hidden lg:block w-full border-b border-border"
+        onMouseLeave={scheduleClose}
+      >
+        <ul className="flex items-center justify-center gap-1 h-12 pb-1">
+          <li>
+            <Link
+              href="#"
+              onMouseEnter={scheduleClose}
+              className="flex items-center gap-1.5 px-3.5 py-1.5 text-sm font-semibold text-foreground rounded-full hover:bg-[color-mix(in_oklab,var(--navbar-accent)_10%,transparent)] transition-colors"
+            >
+              <BadgePercent className={cn("w-4 h-4", theme.text)} />
+              Deals
+            </Link>
+          </li>
+          {ECOM_CATEGORIES.map((cat) => {
+            const isActive = activeMenuId === cat.id;
+            return (
+              <li key={cat.id} onMouseEnter={() => openMenu(cat.id)}>
+                <button
+                  type="button"
+                  aria-expanded={isActive}
+                  aria-controls="mega-nav-panel"
+                  onClick={() => (isActive ? setActiveMenuId(null) : openMenu(cat.id))}
+                  onFocus={() => openMenu(cat.id)}
+                  className={cn(
+                    "flex items-center gap-1 px-3.5 py-1.5 text-sm font-medium rounded-full transition-colors duration-200",
+                    isActive
+                      ? theme.bg
+                      : "text-foreground hover:bg-[color-mix(in_oklab,var(--navbar-accent)_10%,transparent)] hover:text-[var(--navbar-accent)]",
+                  )}
+                >
+                  {cat.name}
+                  <ChevronDown
+                    className={cn(
+                      "w-3.5 h-3.5 opacity-60 transition-transform duration-300",
+                      isActive && "rotate-180 opacity-100",
+                    )}
+                  />
+                </button>
+              </li>
+            );
+          })}
+          {ECOM_STATIC_LINKS.map((name) => (
+            <li key={name}>
+              <Link
+                href="#"
+                onMouseEnter={scheduleClose}
+                className="block px-3.5 py-1.5 text-sm font-medium text-foreground rounded-full hover:bg-[color-mix(in_oklab,var(--navbar-accent)_10%,transparent)] hover:text-[var(--navbar-accent)] transition-colors"
+              >
+                {name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+
+        {/* Mounted once. Height eases 0fr → 1fr; only the inner content swaps. */}
+        <div
+          id="mega-nav-panel"
+          aria-hidden={!isOpen}
+          onMouseEnter={cancelClose}
+          className={cn(
+            "absolute top-full left-0 right-0 z-50 grid transition-[grid-template-rows,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+            isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0 pointer-events-none",
+          )}
+        >
+          <div className="min-h-0 overflow-hidden">
+            <div className="bg-background border-b border-border shadow-[0_32px_64px_-32px_rgb(0_0_0/0.35)]">
+              <div key={shownCategory.id} className="mega-nav-content max-w-6xl mx-auto px-6 xl:px-10 py-8 grid grid-cols-[minmax(0,1fr)_17rem] gap-8">
+                {/* Left: header, products, link columns */}
+                <div className="flex flex-col gap-6 min-w-0">
+                  <div className="flex items-end justify-between">
+                    <div>
+                      <h3 className="text-lg font-bold tracking-tight text-foreground">{shownCategory.productsTitle}</h3>
+                      <p className="text-xs text-muted-foreground mt-0.5">Hand-picked favourites from our community</p>
+                    </div>
+                    <Link
+                      href="#"
+                      tabIndex={isOpen ? 0 : -1}
+                      className={cn("group inline-flex items-center gap-1.5 text-sm font-semibold hover:opacity-80 transition-opacity", theme.text)}
+                    >
+                      View all products
+                      <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+                    </Link>
+                  </div>
+
+                  <div className="grid grid-cols-4 gap-4">
+                    {shownCategory.products.map((prod) => (
+                      <Link key={prod.id} href={prod.href} tabIndex={isOpen ? 0 : -1} className="group flex flex-col gap-3">
+                        <div className="relative aspect-square w-full rounded-2xl overflow-hidden bg-muted ring-1 ring-transparent group-hover:ring-[color-mix(in_oklab,var(--navbar-accent)_45%,transparent)] transition-all">
+                          <img
+                            src={prod.image}
+                            alt={prod.name}
+                            loading="lazy"
+                            className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                          />
+                          {prod.tag && (
+                            <span
+                              className={cn(
+                                "absolute top-2.5 left-2.5 px-2 py-0.5 rounded-full text-[10px] font-semibold shadow-xs",
+                                prod.tag.startsWith("-")
+                                  ? "bg-rose-500 text-white"
+                                  : theme.bg,
+                              )}
+                            >
+                              {prod.tag}
+                            </span>
+                          )}
+                          <span className={cn("absolute bottom-2.5 right-2.5 w-8 h-8 rounded-full flex items-center justify-center opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 shadow-lg", theme.bg)}>
+                            <Plus className="w-4 h-4" />
+                          </span>
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <div className="flex items-center justify-between gap-2">
+                            <span className="text-sm font-semibold text-foreground group-hover:text-[var(--navbar-accent)] transition-colors truncate">{prod.name}</span>
+                          </div>
+                          <span className="text-xs text-muted-foreground truncate">{prod.subtitle}</span>
+                          <div className="flex items-center justify-between mt-0.5">
+                            <div className="flex items-baseline gap-1.5">
+                              <span className="text-sm font-bold text-foreground">{prod.price}</span>
+                              {prod.originalPrice && (
+                                <span className="text-xs text-muted-foreground line-through">{prod.originalPrice}</span>
+                              )}
+                            </div>
+                            <StarRating value={prod.rating} />
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+
+                  <div className="grid grid-cols-4 gap-4 pt-5 border-t border-border">
+                    {[
+                      { title: shownCategory.column1Title, links: shownCategory.column1Links },
+                      { title: shownCategory.column2Title, links: shownCategory.column2Links },
+                    ].map((col) => (
+                      <div key={col.title} className="col-span-2 flex flex-col gap-2.5">
+                        <span className={cn("text-[11px] font-bold uppercase tracking-[0.12em]", theme.text)}>
+                          {col.title}
+                        </span>
+                        <div className="flex flex-wrap gap-2">
+                          {col.links.map((link) => (
+                            <Link
+                              key={link.name}
+                              href={link.href}
+                              tabIndex={isOpen ? 0 : -1}
+                              className="px-3 py-1.5 rounded-full border border-[color-mix(in_oklab,var(--navbar-accent)_25%,var(--border))] bg-[color-mix(in_oklab,var(--navbar-accent)_6%,transparent)] text-xs font-medium text-foreground hover:bg-[var(--navbar-accent)] hover:text-white hover:border-[var(--navbar-accent)] transition-colors"
+                            >
+                              {link.name}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right: themed promo card */}
+                <Link
+                  href={shownCategory.promo.href}
+                  tabIndex={isOpen ? 0 : -1}
+                  className="group relative rounded-3xl p-4 flex flex-col justify-between gap-4 overflow-hidden border border-[color-mix(in_oklab,var(--navbar-accent)_22%,var(--border))] bg-gradient-to-b from-[color-mix(in_oklab,var(--navbar-accent)_8%,var(--background))] to-[color-mix(in_oklab,var(--navbar-accent)_16%,var(--background))] shadow-xs"
+                >
+                  <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden bg-background/90 border border-[color-mix(in_oklab,var(--navbar-accent)_15%,var(--border))] flex items-center justify-center p-4">
+                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,color-mix(in_oklab,var(--navbar-accent)_14%,transparent),transparent_70%)] pointer-events-none" />
+                    <img
+                      src={shownCategory.promo.image}
+                      alt={shownCategory.promo.title}
+                      loading="lazy"
+                      className="relative z-10 w-full h-full object-contain drop-shadow-sm transition-transform duration-500 ease-out group-hover:scale-105"
+                    />
+                    <span className={cn("absolute top-2.5 left-2.5 z-20 px-2.5 py-1 rounded-full text-[10px] font-semibold tracking-wide not-italic shadow-xs", theme.bg)}>
+                      {shownCategory.promo.tag}
+                    </span>
+                  </div>
+
+                  <div className="flex flex-col gap-1 px-0.5">
+                    <h4 className="text-base font-bold leading-snug tracking-tight text-foreground not-italic">
+                      {shownCategory.promo.title}
+                    </h4>
+                    <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2 not-italic">
+                      {shownCategory.promo.subtitle}
+                    </p>
+                  </div>
+
+                  <span className={cn("inline-flex items-center justify-center gap-2 w-full py-2.5 rounded-xl text-xs font-semibold not-italic transition-all shadow-xs", theme.bg)}>
+                    {shownCategory.promo.cta}
+                    <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+                  </span>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      {/* ── Mobile / tablet sidebar ── */}
+      {mobileOpen && (
+        <div className="fixed inset-0 z-[100] lg:hidden" role="dialog" aria-modal="true" aria-label="Menu">
+          <div className="mega-nav-overlay absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setMobileOpen(false)} />
+          <div className="mega-nav-drawer absolute left-0 top-0 bottom-0 w-[88%] max-w-sm bg-background shadow-2xl flex flex-col">
+            <div className="px-5 h-16 border-b border-border flex items-center justify-between shrink-0">
+              <span className={cn("font-bold not-italic text-xl tracking-tight select-none", theme.text)}>{logoText}</span>
+              <button
+                type="button"
+                aria-label="Close menu"
+                onClick={() => setMobileOpen(false)}
+                className="p-2 -mr-2 rounded-full text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div className="px-5 py-3 shrink-0">
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileOpen(false);
+                  setSearchOpen(true);
+                }}
+                className="relative w-full h-10 pl-10 pr-4 text-left text-sm rounded-full bg-[color-mix(in_oklab,var(--navbar-accent)_6%,var(--muted))] border border-[color-mix(in_oklab,var(--navbar-accent)_18%,transparent)] flex items-center text-muted-foreground"
+              >
+                <Search className={cn("w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none", theme.text)} />
+                <span className="truncate">{searchQuery || "Search for protein, creatine, ..."}</span>
+              </button>
+            </div>
+
+            <div className="flex-1 overflow-y-auto overscroll-contain px-3 pb-4">
+              <Link
+                href="#"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-2 px-3 py-3.5 text-[15px] font-semibold text-foreground rounded-xl hover:bg-muted transition-colors"
+              >
+                <BadgePercent className={cn("w-4 h-4", theme.text)} />
+                Deals
+              </Link>
+
+              {ECOM_CATEGORIES.map((cat) => {
+                const isExpanded = expandedMobileCategory === cat.id;
+                return (
+                  <div key={cat.id} className="border-t border-border/60">
+                    <button
+                      type="button"
+                      aria-expanded={isExpanded}
+                      onClick={() => setExpandedMobileCategory(isExpanded ? null : cat.id)}
+                      className="w-full flex items-center justify-between px-3 py-3.5 text-left text-[15px] font-medium text-foreground"
+                    >
+                      {cat.name}
+                      <ChevronDown
+                        className={cn("w-4 h-4 text-muted-foreground transition-transform duration-300", isExpanded && "rotate-180")}
+                      />
+                    </button>
+
+                    <div
+                      className={cn(
+                        "grid transition-[grid-template-rows] duration-400 ease-[cubic-bezier(0.22,1,0.36,1)]",
+                        isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]",
+                      )}
+                    >
+                      <div className="min-h-0 overflow-hidden">
+                        <div className="px-3 pb-5 flex flex-col gap-5">
+                          <div className="grid grid-cols-2 gap-3">
+                            {cat.products.map((prod) => (
+                              <Link
+                                key={prod.id}
+                                href={prod.href}
+                                onClick={() => setMobileOpen(false)}
+                                tabIndex={isExpanded ? 0 : -1}
+                                className="group flex flex-col gap-1.5 min-w-0"
+                              >
+                                <div className="relative aspect-square w-full rounded-xl overflow-hidden bg-muted ring-1 ring-border/50">
+                                  <img
+                                    src={prod.image}
+                                    alt={prod.name}
+                                    loading="lazy"
+                                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                  />
+                                  {prod.tag && (
+                                    <span
+                                      className={cn(
+                                        "absolute top-2 left-2 px-1.5 py-0.5 rounded-full text-[9px] font-semibold leading-none shadow-xs",
+                                        prod.tag.startsWith("-") ? "bg-rose-500 text-white" : theme.bg,
+                                      )}
+                                    >
+                                      {prod.tag}
+                                    </span>
+                                  )}
+                                </div>
+                                <span className="text-xs font-semibold text-foreground truncate">{prod.name}</span>
+                                <div className="flex items-baseline gap-1.5 -mt-0.5">
+                                  <span className="text-xs font-bold text-foreground">{prod.price}</span>
+                                  {prod.originalPrice && (
+                                    <span className="text-[10px] text-muted-foreground line-through">{prod.originalPrice}</span>
+                                  )}
+                                </div>
+                              </Link>
+                            ))}
+                          </div>
+
+                          {[
+                            { title: cat.column1Title, links: cat.column1Links },
+                            { title: cat.column2Title, links: cat.column2Links },
+                          ].map((col) => (
+                            <div key={col.title} className="flex flex-col gap-2">
+                              <span className={cn("text-[10px] font-bold uppercase tracking-[0.12em]", theme.text)}>
+                                {col.title}
+                              </span>
+                              <div className="flex flex-wrap gap-2">
+                                {col.links.map((link) => (
+                                  <Link
+                                    key={link.name}
+                                    href={link.href}
+                                    onClick={() => setMobileOpen(false)}
+                                    tabIndex={isExpanded ? 0 : -1}
+                                    className="px-3 py-1.5 rounded-full border border-[color-mix(in_oklab,var(--navbar-accent)_25%,var(--border))] bg-[color-mix(in_oklab,var(--navbar-accent)_6%,transparent)] text-xs font-medium text-foreground"
+                                  >
+                                    {link.name}
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          ))}
+
+                          <Link
+                            href={cat.promo.href}
+                            onClick={() => setMobileOpen(false)}
+                            tabIndex={isExpanded ? 0 : -1}
+                            className="flex items-center gap-3.5 p-3 rounded-2xl border border-[color-mix(in_oklab,var(--navbar-accent)_22%,var(--border))] bg-[color-mix(in_oklab,var(--navbar-accent)_10%,var(--background))]"
+                          >
+                            <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-background/90 border border-border/60 p-1.5 flex items-center justify-center">
+                              <img src={cat.promo.image} alt={cat.promo.title} loading="lazy" className="w-full h-full object-contain" />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <span className={cn("inline-block px-2 py-0.5 rounded-full text-[9px] font-semibold not-italic mb-1", theme.bg)}>
+                                {cat.promo.tag}
+                              </span>
+                              <span className="block text-sm font-bold text-foreground not-italic leading-tight truncate">{cat.promo.title}</span>
+                              <span className="block text-[11px] text-muted-foreground not-italic truncate mt-0.5">{cat.promo.cta}</span>
+                            </div>
+                            <span className={cn("w-8 h-8 rounded-full flex items-center justify-center shrink-0", theme.bg)}>
+                              <ArrowRight className="w-4 h-4" />
+                            </span>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+
+              {ECOM_STATIC_LINKS.map((name) => (
+                <Link
+                  key={name}
+                  href="#"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center justify-between px-3 py-3.5 text-[15px] font-medium text-foreground border-t border-border/60"
+                >
+                  {name}
+                  <ArrowRight className="w-4 h-4 text-muted-foreground" />
+                </Link>
+              ))}
+            </div>
+
+            <div className="p-4 border-t border-border flex flex-col gap-2.5 shrink-0 bg-background">
+              <Link
+                href="#"
+                onClick={() => setMobileOpen(false)}
+                className={cn("w-full h-12 text-sm font-semibold rounded-full flex items-center justify-center gap-2 active:scale-[0.98] transition-transform", theme.bg)}
+              >
+                <ShoppingBag className="w-4 h-4" />
+                View cart · $85.70
+              </Link>
+              <div className="grid grid-cols-2 gap-2">
+                <Link
+                  href="#"
+                  onClick={() => setMobileOpen(false)}
+                  className="h-10 text-xs font-medium text-foreground border border-border rounded-full flex items-center justify-center gap-1.5 hover:bg-muted transition-colors"
+                >
+                  <User className="w-4 h-4" />
+                  Account
+                </Link>
+                <Link
+                  href="#"
+                  onClick={() => setMobileOpen(false)}
+                  className="h-10 text-xs font-medium text-foreground border border-border rounded-full flex items-center justify-center gap-1.5 hover:bg-muted transition-colors"
+                >
+                  <Heart className="w-4 h-4" />
+                  Wishlist
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Centered Search Modal (Framer Command Search) ── */}
+      {searchOpen && (
+        <div
+          className="fixed inset-0 z-[110] flex items-start justify-center pt-28 sm:pt-36 px-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Search products"
+        >
+          <div
+            className="mega-nav-overlay absolute inset-0 bg-black/60 backdrop-blur-[1px]"
+            onClick={() => setSearchOpen(false)}
+          />
+          <div className="mega-nav-content relative z-10 w-full max-w-[440px] rounded-2xl bg-background border border-[color-mix(in_oklab,var(--navbar-accent)_28%,var(--border))] shadow-[0_24px_48px_-12px_color-mix(in_oklab,var(--navbar-accent)_22%,rgb(0_0_0/0.45))] overflow-hidden">
+            <div className="flex items-center gap-3 px-4 h-12 bg-[color-mix(in_oklab,var(--navbar-accent)_5%,transparent)]">
+              <Search className={cn("w-4 h-4 shrink-0", theme.text)} />
+              <input
+                autoFocus
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search for protein, creatine, ..."
+                className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
+              />
+              <button
+                type="button"
+                aria-label={searchQuery ? "Clear search" : "Close search"}
+                onClick={() => {
+                  if (searchQuery) setSearchQuery("");
+                  else setSearchOpen(false);
+                }}
+                className={cn(
+                  "w-5 h-5 rounded-full flex items-center justify-center transition-opacity shrink-0 opacity-85 hover:opacity-100",
+                  theme.bg,
+                )}
+              >
+                <X className="w-3 h-3 stroke-[2.5]" />
+              </button>
+            </div>
+
+            <div className="border-t border-[color-mix(in_oklab,var(--navbar-accent)_18%,var(--border))] max-h-64 overflow-y-auto">
+              {filteredSearchItems.map((item, idx) => (
+                <Link
+                  key={item.path}
+                  href="#"
+                  onClick={() => setSearchOpen(false)}
+                  className={cn(
+                    "group flex flex-col gap-0.5 px-4 py-3 transition-colors hover:bg-[color-mix(in_oklab,var(--navbar-accent)_10%,transparent)]",
+                    idx === 0 && "bg-[color-mix(in_oklab,var(--navbar-accent)_8%,transparent)]",
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "text-sm font-medium text-foreground leading-snug transition-colors group-hover:text-[var(--navbar-accent)]",
+                      idx === 0 && theme.text,
+                    )}
+                  >
+                    {item.title}
+                  </span>
+                  <span className="text-xs text-muted-foreground">{item.path}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function StandardNavbar({
   variant = "default",
   color = "primary",
   logoText = "Nexus",
@@ -410,5 +1292,31 @@ export function NavbarBlock({
         </div>
       </div>
     </div>
+  );
+}
+
+export function NavbarBlock({
+  variant = "default",
+  color = "primary",
+  logoText,
+  linkComponent = "a",
+}: NavbarProps) {
+  if (variant === "ecommerce-mega-nav") {
+    return (
+      <EcommerceMegaNav
+        color={color}
+        logoText={logoText ?? "NUTRIFY"}
+        linkComponent={linkComponent}
+      />
+    );
+  }
+
+  return (
+    <StandardNavbar
+      variant={variant}
+      color={color}
+      logoText={logoText ?? "Nexus"}
+      linkComponent={linkComponent}
+    />
   );
 }
