@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-24T01:35:59.291Z",
-  "totalFiles": 313,
+  "generatedAt": "2026-10-24T12:47:55.124Z",
+  "totalFiles": 315,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -559,6 +559,12 @@
       "path": "/docs/nextjs-modal.md",
       "url": "/docs/nextjs/modal",
       "originalMdx": "[framework]\\modal\\page.mdx"
+    },
+    {
+      "name": "nextjs/modern-scroll-stack",
+      "path": "/docs/nextjs-modern-scroll-stack.md",
+      "url": "/docs/nextjs/modern-scroll-stack",
+      "originalMdx": "[framework]\\modern-scroll-stack\\page.mdx"
     },
     {
       "name": "nextjs/navbar",
@@ -1501,6 +1507,12 @@
       "path": "/docs/reactjs-modal.md",
       "url": "/docs/reactjs/modal",
       "originalMdx": "[framework]\\modal\\page.mdx"
+    },
+    {
+      "name": "reactjs/modern-scroll-stack",
+      "path": "/docs/reactjs-modern-scroll-stack.md",
+      "url": "/docs/reactjs/modern-scroll-stack",
+      "originalMdx": "[framework]\\modern-scroll-stack\\page.mdx"
     },
     {
       "name": "reactjs/navbar",

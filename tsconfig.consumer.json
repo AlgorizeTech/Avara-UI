@@ -122,6 +122,7 @@
     "src/components/custom/blocks/MenubarBlock.tsx",
     "src/components/custom/blocks/MobileMockupBlock.tsx",
     "src/components/custom/blocks/ModalBlock.tsx",
+    "src/components/custom/blocks/ModernScrollStackBlock.tsx",
     "src/components/custom/blocks/NavbarBlock.tsx",
     "src/components/custom/blocks/NavigationMenu.tsx",
     "src/components/custom/blocks/NetworkGraphBlock.tsx",

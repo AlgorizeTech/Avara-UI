@@ -1,0 +1,305 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("modern-scroll-stack");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { Installation } from "@/components/site/installation";
+import { extractCode } from "@/lib/code";
+
+# Modern Scroll Stack
+
+A tactile scroll-driven card stacking section where individual service cards slide up from the bottom of the viewport with staggered horizontal offsets and smoothly tilt into organic resting angles (`0°`, `+3.5°`, `-4.5°`, `+3.5°`) as they lock into the sticky deck.
+
+Scroll inside the preview container below to watch each card rise over the previous one and fan out across the stage.
+
+export const usageServiceCards = `import { ModernScrollStack } from "@/components/custom/blocks/ModernScrollStackBlock";
+
+export default function ServiceCardsExample() {
+  return (
+    <main className="min-h-screen bg-background">
+      <ModernScrollStack variant="fan" />
+    </main>
+  );
+}`;
+
+export const usageStackedCards = `import { ModernScrollStack } from "@/components/custom/blocks/ModernScrollStackBlock";
+
+export default function StackedCardsExample() {
+  return (
+    <main className="min-h-screen bg-background">
+      <ModernScrollStack variant="stacked" />
+    </main>
+  );
+}`;
+
+<ExampleShowcase
+  name="modern-scroll-stack"
+  columns={1}
+  colorControl={false}
+  examples={[
+    {
+      title: "Service cards (Horizontal Fan)",
+      subheading:
+        "Each card slides up flat from the bottom-center and glides into its horizontal fan slot with a smooth tilt.",
+      propNotes: [
+        {
+          lead: "Fan Variant",
+          prop: "variant",
+          value: '"fan"',
+          effect:
+            "spreads cards horizontally across the stage as each card rises into the sticky stack.",
+        },
+        {
+          lead: "Horizontal Cascade Step",
+          prop: "cardOffsetX",
+          value: "78",
+          effect:
+            "shifts each subsequent card by 78px so earlier cards remain visible underneath in a fanned horizontal row.",
+        },
+        {
+          lead: "Card Vertical Spacing",
+          prop: "cardGap",
+          value: "48",
+          effect:
+            "spaces consecutive cards by 48px in the vertical scroll track before they stack.",
+        },
+        {
+          lead: "Scroll-Linked Tilt Interpolation",
+          prop: "rotation",
+          effect:
+            "keeps each incoming card flat (0°) near the bottom of the viewport and smoothly eases into its target resting angle as it reaches stickyTop.",
+        },
+      ],
+      props: {
+        variant: "fan",
+        cardOffsetX: 78,
+        cardGap: 48,
+      },
+      usage: usageServiceCards,
+      code: extractCode("src/components/custom/blocks/ModernScrollStackBlock.tsx"),
+      minHeight: 640,
+    },
+    {
+      title: "Centered Stacked Pile",
+      subheading:
+        "Cards rise straight up the center and stack directly on top of one another with alternating angled tilts so every card's edges peek out behind the deck.",
+      propNotes: [
+        {
+          lead: "Stacked Variant",
+          prop: "variant",
+          value: '"stacked"',
+          effect:
+            "locks all cards at x = 0px in the center directly on top of one another.",
+        },
+        {
+          lead: "Layered Deck Angles",
+          prop: "rotation",
+          value: "0° / -6.5° / -2.5° / +6.5°",
+          effect:
+            "tilts each overlapping card at a distinct angle so all four colorful layers peek out around the edges of the pile.",
+        },
+        {
+          lead: "Card Vertical Spacing",
+          prop: "cardGap",
+          value: "48",
+          effect:
+            "spaces consecutive cards by 48px in the vertical scroll track before they stack.",
+        },
+      ],
+      props: {
+        variant: "stacked",
+        cardGap: 48,
+      },
+      usage: usageStackedCards,
+      code: extractCode("src/components/custom/blocks/ModernScrollStackBlock.tsx"),
+      minHeight: 640,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="modern-scroll-stack" />
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Scroll-Linked Tilt Physics</h3>
+    <p className="text-muted-foreground text-sm">Cards enter flat at the bottom of the viewport and smoothly interpolate their rotation using an ease-out curve as they approach the sticky lock position.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Horizontal Fan Cascade</h3>
+    <p className="text-muted-foreground text-sm">Each card is offset along the X-axis so all stacked cards remain partially visible, creating a physical hand-dealt card deck aesthetic.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive Container Clamping</h3>
+    <p className="text-muted-foreground text-sm">A built-in <code>ResizeObserver</code> automatically scales the horizontal fan offset and card dimensions on tablet and mobile viewports so cards never overflow horizontally.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Zero External Animation Dependencies</h3>
+    <p className="text-muted-foreground text-sm">Powered by native CSS <code>position: sticky</code> and <code>requestAnimationFrame</code> transforms for silky 60fps performance without heavy runtime libraries.</p>
+  </div>
+</div>
+
+## Props Reference
+
+### ModernScrollStack Props
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"fan" | "stacked"</code></td>
+        <td><code>"fan"</code></td>
+        <td>Selects the stacking layout: <code>"fan"</code> spreads cards horizontally across the stage, while <code>"stacked"</code> piles cards directly on top of one another in the center with alternating tilts.</td>
+      </tr>
+      <tr>
+        <td><code>items</code></td>
+        <td><code>ModernScrollStackItem[]</code></td>
+        <td><code>DEFAULT_MODERN_SCROLL_STACK_ITEMS</code></td>
+        <td>Array of card items to render in the scroll stack. Defaults to the 4 Demo 1 service cards (Web Design, Content Strategy, SEO &amp; Growth, Brand Identity).</td>
+      </tr>
+      <tr>
+        <td><code>eyebrow</code></td>
+        <td><code>string</code></td>
+        <td><code>"DEMO 1"</code></td>
+        <td>Small uppercase accent label displayed above the main heading.</td>
+      </tr>
+      <tr>
+        <td><code>heading</code></td>
+        <td><code>string</code></td>
+        <td><code>"Service cards"</code></td>
+        <td>Main section heading displayed above the card stack.</td>
+      </tr>
+      <tr>
+        <td><code>subheading</code></td>
+        <td><code>string</code></td>
+        <td><code>"Highlight what you offer..."</code></td>
+        <td>Supporting description text displayed below the heading.</td>
+      </tr>
+      <tr>
+        <td><code>showHeader</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Controls whether the section header block (eyebrow, heading, subheading) is rendered.</td>
+      </tr>
+      <tr>
+        <td><code>cardOffsetX</code></td>
+        <td><code>number</code></td>
+        <td><code>78</code></td>
+        <td>Horizontal step in pixels between consecutive cards in the stack on desktop screens. Automatically clamped on narrow screens.</td>
+      </tr>
+      <tr>
+        <td><code>cardGap</code></td>
+        <td><code>number</code></td>
+        <td><code>48</code></td>
+        <td>Vertical distance in pixels between cards in the scroll track before they stack.</td>
+      </tr>
+      <tr>
+        <td><code>stickyTop</code></td>
+        <td><code>number</code></td>
+        <td><code>72</code></td>
+        <td>Top offset in pixels where each card locks into place while scrolling.</td>
+      </tr>
+      <tr>
+        <td><code>cardWidth</code></td>
+        <td><code>number</code></td>
+        <td><code>316</code></td>
+        <td>Width of each service card in pixels on desktop viewports.</td>
+      </tr>
+      <tr>
+        <td><code>cardHeight</code></td>
+        <td><code>number</code></td>
+        <td><code>376</code></td>
+        <td>Height of each service card in pixels on desktop viewports.</td>
+      </tr>
+      <tr>
+        <td><code>scrollerRef</code></td>
+        <td><code>React.RefObject&lt;HTMLElement | null&gt;</code></td>
+        <td><code>undefined</code></td>
+        <td>Optional ref to a custom scroll container when embedding the stack inside a fixed-height scrollable box. Omit on full-window pages.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Additional CSS classes applied to the outer section element.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### ModernScrollStackItem Properties
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>id</code></td>
+        <td><code>string</code></td>
+        <td>Required</td>
+        <td>Unique identifier for the card item.</td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>string</code></td>
+        <td>Required</td>
+        <td>Service title displayed in bold near the bottom of the card.</td>
+      </tr>
+      <tr>
+        <td><code>description</code></td>
+        <td><code>string</code></td>
+        <td>Required</td>
+        <td>Short service description displayed beneath the card title.</td>
+      </tr>
+      <tr>
+        <td><code>bgColor</code></td>
+        <td><code>string</code></td>
+        <td><code>"#F6F3EE"</code></td>
+        <td>Background color of the card (any valid CSS color value).</td>
+      </tr>
+      <tr>
+        <td><code>textColor</code></td>
+        <td><code>string</code></td>
+        <td><code>"#3E2718"</code></td>
+        <td>Text and SVG stroke color for the card content.</td>
+      </tr>
+      <tr>
+        <td><code>icon</code></td>
+        <td><code>React.ReactNode</code></td>
+        <td><code>undefined</code></td>
+        <td>Custom SVG or icon node displayed in the top-left corner of the card.</td>
+      </tr>
+      <tr>
+        <td><code>image</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Optional image URL displayed in the top-left corner instead of <code>icon</code>.</td>
+      </tr>
+      <tr>
+        <td><code>rotation</code></td>
+        <td><code>number</code></td>
+        <td><code>0 | 3.5 | -4.5 | 3.5</code></td>
+        <td>Target resting tilt angle in degrees once the card locks into the sticky stack.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
