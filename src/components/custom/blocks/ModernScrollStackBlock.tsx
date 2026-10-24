@@ -7,6 +7,10 @@ export interface ModernScrollStackItem {
   id: string;
   title: string;
   description: string;
+  /** Optional prominent metric/stat callout (used in the "stacked" variant, e.g. "48h", "99.9%"). */
+  stat?: string;
+  /** Optional category/step pill label (used in the "stacked" variant, e.g. "01 · VELOCITY"). */
+  badge?: string;
   /** Card background color (CSS color value, e.g. "#F6F3EE"). */
   bgColor?: string;
   /** Card text and icon color (CSS color value, e.g. "#3E2718"). */
@@ -20,6 +24,8 @@ export interface ModernScrollStackItem {
 }
 
 export interface ModernScrollStackProps {
+  /** Layout variant: "fan" spreads cards horizontally; "stacked" piles cards directly on top of one another in the center. */
+  variant?: "fan" | "stacked";
   /** Array of cards to stack on scroll. Defaults to the 4 Demo 1 service cards. */
   items?: ModernScrollStackItem[];
   /** Small uppercase eyebrow label above the section heading. */
@@ -208,10 +214,59 @@ export const DEFAULT_MODERN_SCROLL_STACK_ITEMS: ModernScrollStackItem[] = [
   },
 ];
 
+export const DEFAULT_STACKED_SCROLL_STACK_ITEMS: ModernScrollStackItem[] = [
+  {
+    id: "velocity",
+    badge: "01 · VELOCITY",
+    stat: "10x",
+    title: "Faster Execution",
+    description: "Automated workflows from initial brief to production deploy",
+    bgColor: "#1E1B4B",
+    textColor: "#EEF2FF",
+    icon: <AiAutomationIcon />,
+    rotation: 0,
+  },
+  {
+    id: "uptime",
+    badge: "02 · RELIABILITY",
+    stat: "99.9%",
+    title: "Uptime SLA",
+    description: "Multi-region edge clusters with zero-downtime failover",
+    bgColor: "#065F46",
+    textColor: "#ECFDF5",
+    icon: <CloudArchitectureIcon />,
+    rotation: -6.5,
+  },
+  {
+    id: "turnaround",
+    badge: "03 · DELIVERY",
+    stat: "48h",
+    title: "Turnaround Time",
+    description: "From brief to first interactive concept and prototype",
+    bgColor: "#C2410C",
+    textColor: "#FFF7ED",
+    icon: <ProductStrategyIcon />,
+    rotation: -2.5,
+  },
+  {
+    id: "satisfaction",
+    badge: "04 · IMPACT",
+    stat: "4.9★",
+    title: "Partner Rating",
+    description: "Trusted by high-velocity product teams worldwide",
+    bgColor: "#581C87",
+    textColor: "#FAF5FF",
+    icon: <InteractiveMotionIcon />,
+    rotation: 6.5,
+  },
+];
+
 const DEFAULT_ROTATIONS = [0, 3.5, -4.5, 3.5];
+const STACKED_ROTATIONS = [0, -6.5, -2.5, 6.5];
 
 export function ModernScrollStack({
-  items = DEFAULT_MODERN_SCROLL_STACK_ITEMS,
+  variant = "fan",
+  items,
   eyebrow,
   heading,
   subheading,
@@ -219,11 +274,19 @@ export function ModernScrollStack({
   cardOffsetX = 78,
   cardGap = 48,
   stickyTop = 72,
-  cardWidth = 316,
-  cardHeight = 376,
+  cardWidth,
+  cardHeight,
   scrollerRef,
   className,
 }: ModernScrollStackProps) {
+  const resolvedItems =
+    items ??
+    (variant === "stacked"
+      ? DEFAULT_STACKED_SCROLL_STACK_ITEMS
+      : DEFAULT_MODERN_SCROLL_STACK_ITEMS);
+  const resolvedCardWidth = cardWidth ?? (variant === "stacked" ? 430 : 316);
+  const resolvedCardHeight = cardHeight ?? (variant === "stacked" ? 308 : 376);
+
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const innerCardRefs = useRef<(HTMLDivElement | null)[]>([]);
@@ -232,7 +295,7 @@ export function ModernScrollStack({
   const [containerWidth, setContainerWidth] = useState<number>(1024);
   const [viewportHeight, setViewportHeight] = useState<number>(640);
 
-  const count = items.length;
+  const count = resolvedItems.length;
 
   // Measure available container width & viewport height so horizontal fan offset,
   // card size, and exact scroll termination adapt smoothly on all screens.
@@ -261,19 +324,21 @@ export function ModernScrollStack({
   }, [scrollerRef]);
 
   const effectiveCardWidth = Math.min(
-    cardWidth,
+    resolvedCardWidth,
     Math.max(240, containerWidth - 64),
   );
   const effectiveCardHeight =
-    effectiveCardWidth < cardWidth
-      ? Math.round(cardHeight * (effectiveCardWidth / cardWidth))
-      : cardHeight;
+    effectiveCardWidth < resolvedCardWidth
+      ? Math.round(resolvedCardHeight * (effectiveCardWidth / resolvedCardWidth))
+      : resolvedCardHeight;
 
   const maxTotalSpread = Math.max(0, containerWidth - effectiveCardWidth - 32);
   const effectiveOffsetX =
-    count > 1
-      ? Math.min(cardOffsetX, Math.floor(maxTotalSpread / (count - 1)))
-      : 0;
+    variant === "stacked"
+      ? 0
+      : count > 1
+        ? Math.min(cardOffsetX, Math.floor(maxTotalSpread / (count - 1)))
+        : 0;
 
   // Distance Card 0 travels from the bottom of the viewport up to `stickyTop`
   const card0TravelDistance = Math.min(
@@ -334,8 +399,10 @@ export function ModernScrollStack({
         if (!innerEl) continue;
 
         const targetRotation =
-          items[i]?.rotation ??
-          DEFAULT_ROTATIONS[i % DEFAULT_ROTATIONS.length] ??
+          resolvedItems[i]?.rotation ??
+          (variant === "stacked"
+            ? STACKED_ROTATIONS[i % STACKED_ROTATIONS.length]
+            : DEFAULT_ROTATIONS[i % DEFAULT_ROTATIONS.length]) ??
           0;
 
         const finalXOffset = (i - (count - 1) / 2) * effectiveOffsetX;
@@ -464,9 +531,10 @@ export function ModernScrollStack({
     count,
     effectiveCardHeight,
     effectiveOffsetX,
-    items,
+    resolvedItems,
     scrollerRef,
     stickyTop,
+    variant,
   ]);
 
   return (
@@ -504,7 +572,7 @@ export function ModernScrollStack({
           className="w-full shrink-0 pointer-events-none"
           style={{ height: `${topSpacerHeight}px` }}
         />
-        {items.map((item, index) => {
+        {resolvedItems.map((item, index) => {
           const bgColor = item.bgColor ?? "#F7C844";
           const textColor = item.textColor ?? "#2B1C06";
 
@@ -525,7 +593,12 @@ export function ModernScrollStack({
                 ref={(el) => {
                   innerCardRefs.current[index] = el;
                 }}
-                className="pointer-events-auto rounded-[16px] p-8 sm:p-9 flex flex-col justify-between will-change-transform origin-center"
+                className={cn(
+                  "pointer-events-auto relative overflow-hidden flex flex-col justify-between will-change-transform origin-center",
+                  variant === "stacked"
+                    ? "rounded-[20px] p-6 sm:p-8 border border-white/15"
+                    : "rounded-[16px] p-8 sm:p-9",
+                )}
                 style={{
                   width: `${effectiveCardWidth}px`,
                   height: `${effectiveCardHeight}px`,
@@ -534,31 +607,97 @@ export function ModernScrollStack({
                   transform: "translate3d(0px, 0px, 0px) rotate(0deg)",
                 }}
               >
-                {/* Top-left icon or image */}
-                <div className="flex items-start justify-start">
-                  {item.image ? (
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="w-12 h-12 object-contain"
-                      loading="lazy"
+                {variant === "stacked" ? (
+                  <>
+                    {/* Decorative soft corner glow */}
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute -top-20 -right-20 w-48 h-48 rounded-full opacity-20 blur-2xl"
+                      style={{ backgroundColor: textColor }}
                     />
-                  ) : (
-                    <div className="w-12 h-12 flex items-center justify-start">
-                      {item.icon}
-                    </div>
-                  )}
-                </div>
 
-                {/* Bottom-left title & description */}
-                <div className="flex flex-col gap-2.5 text-left">
-                  <h3 className="text-[22px] sm:text-[25px] font-bold tracking-[-0.02em] leading-[1.15]">
-                    {item.title}
-                  </h3>
-                  <p className="text-[13px] sm:text-[13.5px] leading-[1.45] opacity-90 max-w-[235px] font-normal">
-                    {item.description}
-                  </p>
-                </div>
+                    {/* Top bar: pill badge + icon circle */}
+                    <div className="relative z-10 flex items-center justify-between gap-3">
+                      <span
+                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.14em]"
+                        style={{
+                          backgroundColor: "rgba(255,255,255,0.12)",
+                          border: "1px solid rgba(255,255,255,0.18)",
+                        }}
+                      >
+                        <span
+                          className="w-1.5 h-1.5 rounded-full"
+                          style={{ backgroundColor: textColor }}
+                        />
+                        {item.badge ?? `0${index + 1} · HIGHLIGHT`}
+                      </span>
+
+                      <div
+                        className="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
+                        style={{
+                          backgroundColor: "rgba(255,255,255,0.1)",
+                          border: "1px solid rgba(255,255,255,0.16)",
+                        }}
+                      >
+                        <div className="scale-[0.52] flex items-center justify-center">
+                          {item.icon}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Center hero stat + title */}
+                    <div className="relative z-10 flex flex-col items-center justify-center text-center my-auto py-2">
+                      {item.stat && (
+                        <span className="text-[48px] sm:text-[62px] font-extrabold tracking-[-0.04em] leading-none">
+                          {item.stat}
+                        </span>
+                      )}
+                      <h3 className="text-[19px] sm:text-[22px] font-semibold tracking-[-0.02em] leading-tight mt-2">
+                        {item.title}
+                      </h3>
+                    </div>
+
+                    {/* Bottom footer row */}
+                    <div
+                      className="relative z-10 flex items-center justify-between gap-4 pt-3.5 text-center"
+                      style={{
+                        borderTop: "1px solid rgba(255,255,255,0.15)",
+                      }}
+                    >
+                      <p className="text-[12.5px] sm:text-[13.5px] leading-snug opacity-85 mx-auto font-normal">
+                        {item.description}
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    {/* Top-left icon or image */}
+                    <div className="flex items-start justify-start">
+                      {item.image ? (
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="w-12 h-12 object-contain"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 flex items-center justify-start">
+                          {item.icon}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Bottom-left title & description */}
+                    <div className="flex flex-col gap-2.5 text-left">
+                      <h3 className="text-[22px] sm:text-[25px] font-bold tracking-[-0.02em] leading-[1.15]">
+                        {item.title}
+                      </h3>
+                      <p className="text-[13px] sm:text-[13.5px] leading-[1.45] opacity-90 max-w-[235px] font-normal">
+                        {item.description}
+                      </p>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           );

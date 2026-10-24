@@ -17,7 +17,17 @@ export const usageServiceCards = `import { ModernScrollStack } from "@/component
 export default function ServiceCardsExample() {
   return (
     <main className="min-h-screen bg-background">
-      <ModernScrollStack />
+      <ModernScrollStack variant="fan" />
+    </main>
+  );
+}`;
+
+export const usageStackedCards = `import { ModernScrollStack } from "@/components/custom/blocks/ModernScrollStackBlock";
+
+export default function StackedCardsExample() {
+  return (
+    <main className="min-h-screen bg-background">
+      <ModernScrollStack variant="stacked" />
     </main>
   );
 }`;
@@ -28,16 +38,23 @@ export default function ServiceCardsExample() {
   colorControl={false}
   examples={[
     {
-      title: "Service cards",
+      title: "Service cards (Horizontal Fan)",
       subheading:
-        "Each card slides up flat from below and tilts smoothly as it locks into the horizontal stack.",
+        "Each card slides up flat from the bottom-center and glides into its horizontal fan slot with a smooth tilt.",
       propNotes: [
+        {
+          lead: "Fan Variant",
+          prop: "variant",
+          value: '"fan"',
+          effect:
+            "spreads cards horizontally across the stage as each card rises into the sticky stack.",
+        },
         {
           lead: "Horizontal Cascade Step",
           prop: "cardOffsetX",
           value: "78",
           effect:
-            "shifts each subsequent card to the right by 78px so earlier cards remain visible underneath in a fanned horizontal row.",
+            "shifts each subsequent card by 78px so earlier cards remain visible underneath in a fanned horizontal row.",
         },
         {
           lead: "Card Vertical Spacing",
@@ -52,18 +69,48 @@ export default function ServiceCardsExample() {
           effect:
             "keeps each incoming card flat (0°) near the bottom of the viewport and smoothly eases into its target resting angle as it reaches stickyTop.",
         },
-        {
-          lead: "Custom Icon or Image Slot",
-          prop: "items",
-          effect:
-            "accepts custom SVG icons, React nodes, or image URLs alongside per-card background and text colors.",
-        },
       ],
       props: {
+        variant: "fan",
         cardOffsetX: 78,
         cardGap: 48,
       },
       usage: usageServiceCards,
+      code: extractCode("src/components/custom/blocks/ModernScrollStackBlock.tsx"),
+      minHeight: 640,
+    },
+    {
+      title: "Centered Stacked Pile",
+      subheading:
+        "Cards rise straight up the center and stack directly on top of one another with alternating angled tilts so every card's edges peek out behind the deck.",
+      propNotes: [
+        {
+          lead: "Stacked Variant",
+          prop: "variant",
+          value: '"stacked"',
+          effect:
+            "locks all cards at x = 0px in the center directly on top of one another.",
+        },
+        {
+          lead: "Layered Deck Angles",
+          prop: "rotation",
+          value: "0° / -6.5° / -2.5° / +6.5°",
+          effect:
+            "tilts each overlapping card at a distinct angle so all four colorful layers peek out around the edges of the pile.",
+        },
+        {
+          lead: "Card Vertical Spacing",
+          prop: "cardGap",
+          value: "48",
+          effect:
+            "spaces consecutive cards by 48px in the vertical scroll track before they stack.",
+        },
+      ],
+      props: {
+        variant: "stacked",
+        cardGap: 48,
+      },
+      usage: usageStackedCards,
       code: extractCode("src/components/custom/blocks/ModernScrollStackBlock.tsx"),
       minHeight: 640,
     },
@@ -110,6 +157,12 @@ export default function ServiceCardsExample() {
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"fan" | "stacked"</code></td>
+        <td><code>"fan"</code></td>
+        <td>Selects the stacking layout: <code>"fan"</code> spreads cards horizontally across the stage, while <code>"stacked"</code> piles cards directly on top of one another in the center with alternating tilts.</td>
+      </tr>
       <tr>
         <td><code>items</code></td>
         <td><code>ModernScrollStackItem[]</code></td>
