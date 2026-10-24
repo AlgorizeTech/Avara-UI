@@ -23,8 +23,8 @@ export function MetaTags() {
       {/* PWA Meta Tags */}
       <meta name="mobile-web-app-capable" content="yes" />
       <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-      <meta name="apple-mobile-web-app-title" content="Algorize UI" />
-      <meta name="application-name" content="Algorize UI" />
+      <meta name="apple-mobile-web-app-title" content="Avara UI" />
+      <meta name="application-name" content="Avara UI" />
       <meta name="msapplication-TileColor" content="#000000" />
       <meta name="msapplication-config" content="/browserconfig.xml" />
 

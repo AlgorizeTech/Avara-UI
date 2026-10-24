@@ -52,16 +52,16 @@ export function AIButton({ dir = 'right' }: AIButtonProps) {
   // Create specific prompts for different AI assistants
   const getChatGPTPrompt = (url: string) => {
     if (componentName === 'index') {
-      return `I need help understanding the Algorize UI component library documentation at ${url}. Please explain the overall architecture and available components.`;
+      return `I need help understanding the Avara UI component library documentation at ${url}. Please explain the overall architecture and available components.`;
     }
-    return `I need help understanding the Algorize UI ${componentName} component documentation at ${url}. Please explain the available props, styling options, and provide usage examples.`;
+    return `I need help understanding the Avara UI ${componentName} component documentation at ${url}. Please explain the available props, styling options, and provide usage examples.`;
   };
 
   const getClaudePrompt = (url: string) => {
     if (componentName === 'index') {
-      return `I'm exploring the Algorize UI component library from ${url}. Can you help me understand the component system and how to get started?`;
+      return `I'm exploring the Avara UI component library from ${url}. Can you help me understand the component system and how to get started?`;
     }
-    return `I'm implementing Algorize UI ${componentName} from ${url} but need clarification on the component API, customization options, and best practices. Can you help me understand this documentation?`;
+    return `I'm implementing Avara UI ${componentName} from ${url} but need clarification on the component API, customization options, and best practices. Can you help me understand this documentation?`;
   };
 
   const chatGptUrl = `https://chatgpt.com/?model=gpt-4&q=${encodeURIComponent(getChatGPTPrompt(currentUrl))}`;
@@ -71,10 +71,10 @@ export function AIButton({ dir = 'right' }: AIButtonProps) {
     try {
       // Create a ChatGPT prompt with the markdown URL
       const chatGPTPrompt = componentName === 'index' 
-        ? `I need help understanding the Algorize UI component library documentation. Please analyze this markdown documentation: ${markdownUrl}
+        ? `I need help understanding the Avara UI component library documentation. Please analyze this markdown documentation: ${markdownUrl}
 
 Can you explain the overall architecture and available components?`
-        : `I need help understanding the Algorize UI ${componentName} component. Please analyze this markdown documentation: ${markdownUrl}
+        : `I need help understanding the Avara UI ${componentName} component. Please analyze this markdown documentation: ${markdownUrl}
 
 Can you explain the available props, styling options, and provide usage examples?`;
       

@@ -33,7 +33,7 @@ export function generateMetadata(config: SEOConfig): Metadata {
   } = config
 
   const baseUrl = SITE_URL
-  const fullTitle = title.includes('Algorize UI') ? title : `${title} | Algorize UI`
+  const fullTitle = title.includes('Avara UI') ? title : `${title} | Avara UI`
   const canonicalUrl = canonical ? `${baseUrl}${canonical}` : undefined
 
   return {
@@ -42,7 +42,7 @@ export function generateMetadata(config: SEOConfig): Metadata {
     keywords: [...keywords, ...tags].join(', '),
     authors: authors.map(name => ({ name })),
     creator: 'AlgorizeTech',
-    publisher: 'Algorize UI',
+    publisher: 'Avara UI',
     category,
     
     // Robots
@@ -68,7 +68,7 @@ export function generateMetadata(config: SEOConfig): Metadata {
       title: fullTitle,
       description,
       url: canonicalUrl,
-      siteName: 'Algorize UI',
+      siteName: 'Avara UI',
       locale: 'en_US',
       type: 'website',
       images: [
@@ -96,8 +96,8 @@ export function generateMetadata(config: SEOConfig): Metadata {
       'color-scheme': 'dark light',
       'mobile-web-app-capable': 'yes',
       'apple-mobile-web-app-status-bar-style': 'default',
-      'apple-mobile-web-app-title': 'Algorize UI',
-      'application-name': 'Algorize UI',
+      'apple-mobile-web-app-title': 'Avara UI',
+      'application-name': 'Avara UI',
       'msapplication-TileColor': '#3b82f6',
       'msapplication-config': '/browserconfig.xml',
     },
@@ -196,7 +196,7 @@ export function generateStructuredData(type: 'component' | 'article' | 'faq' | '
         },
         isPartOf: {
           '@type': 'SoftwareApplication',
-          name: 'Algorize UI',
+          name: 'Avara UI',
           url: baseUrl
         }
       }
@@ -213,10 +213,10 @@ export function generateStructuredData(type: 'component' | 'article' | 'faq' | '
         },
         publisher: {
           '@type': 'Organization',
-          name: 'Algorize UI',
+          name: 'Avara UI',
           logo: {
             '@type': 'ImageObject',
-            url: `${baseUrl}/logo.svg`
+            url: `${baseUrl}/favicon/android-chrome-512x512.png`
           }
         },
         datePublished: data.publishedTime,

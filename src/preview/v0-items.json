@@ -610,7 +610,12 @@
     "glass": "Modal — Glass",
     "liquid-glass": "Modal — Liquid Glass"
   },
+  "modern-scroll-stack": {
+    "service-cards-horizontal-fan": "Modern Scroll Stack — Service cards (Horizontal Fan)",
+    "centered-stacked-pile": "Modern Scroll Stack — Centered Stacked Pile"
+  },
   "navbar": {
+    "e-commerce-mega-nav": "Navbar — E-Commerce Mega Nav",
     "navbar": "Navbar",
     "centered": "Navbar — Centered",
     "floating": "Navbar — Floating",
@@ -717,6 +722,7 @@
     "size-constraints": "Resizable — Size constraints"
   },
   "reviews": {
+    "testimonial-loom-pro-envelope-carousel": "Reviews — Testimonial Loom Pro (Envelope Carousel)",
     "updown-vertical-marquee": "Reviews — UpDown Vertical Marquee",
     "3d-stacked-cards-carousel-with-rolling-motion-arrows": "Reviews — 3D Stacked Cards Carousel with Rolling Motion & Arrows",
     "interactive-brand-logo-carousel": "Reviews — Interactive Brand Logo Carousel"

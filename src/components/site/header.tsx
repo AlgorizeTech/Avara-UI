@@ -107,50 +107,16 @@ const Header = () => {
             onClick={() => setSidebarOpen(false)}
           >
             <div className="relative flex items-center justify-center">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+              <img
+                src="/favicon/android-chrome-192x192.png"
+                alt=""
+                width={24}
+                height={24}
                 className="size-6"
-              >
-                <rect
-                  x="3"
-                  y="3"
-                  width="7"
-                  height="7"
-                  rx="1.5"
-                  className="fill-foreground"
-                />
-                <rect
-                  x="14"
-                  y="3"
-                  width="7"
-                  height="7"
-                  rx="1.5"
-                  className="fill-primary"
-                />
-                <rect
-                  x="14"
-                  y="14"
-                  width="7"
-                  height="7"
-                  rx="1.5"
-                  className="fill-foreground"
-                />
-                <rect
-                  x="3"
-                  y="14"
-                  width="7"
-                  height="7"
-                  rx="1.5"
-                  className="fill-primary"
-                />
-              </svg>
+              />
             </div>
             <span className="font-semibold text-[16px] tracking-tight text-foreground">
-              Docs UI
+              Avara UI
             </span>
           </Link>
 
@@ -187,50 +153,16 @@ const Header = () => {
               className="flex items-center gap-2 select-none group"
             >
               <div className="relative flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
-                <svg
-                  width="22"
-                  height="22"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+                <img
+                  src="/favicon/android-chrome-192x192.png"
+                  alt=""
+                  width={20}
+                  height={20}
                   className="size-[20px]"
-                >
-                  <rect
-                    x="3"
-                    y="3"
-                    width="7"
-                    height="7"
-                    rx="1.5"
-                    className="fill-foreground"
-                  />
-                  <rect
-                    x="14"
-                    y="3"
-                    width="7"
-                    height="7"
-                    rx="1.5"
-                    className="fill-primary"
-                  />
-                  <rect
-                    x="14"
-                    y="14"
-                    width="7"
-                    height="7"
-                    rx="1.5"
-                    className="fill-foreground"
-                  />
-                  <rect
-                    x="3"
-                    y="14"
-                    width="7"
-                    height="7"
-                    rx="1.5"
-                    className="fill-primary"
-                  />
-                </svg>
+                />
               </div>
               <span className="font-extrabold text-[15px] tracking-tight text-foreground">
-                Docs <span className="text-primary font-normal">UI</span>
+                Avara <span className="text-primary font-normal">UI</span>
               </span>
             </Link>
           </div>

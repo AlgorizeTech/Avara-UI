@@ -140,6 +140,12 @@ export default function LogoCarouselDemo() {
   );
 }`;
 
+export const usageTestimonialLoom = `import { ReviewsBlock } from "@/components/custom/blocks/ReviewsBlock";
+
+export default function TestimonialLoomDemo() {
+  return <ReviewsBlock variant="testimonial-loom" />;
+}`;
+
 <ExampleShowcase
   name="reviews"
   controls={[
@@ -147,6 +153,21 @@ export default function LogoCarouselDemo() {
   ]}
   columns={1}
   examples={[
+    {
+      title: "Testimonial Loom Pro (Envelope Carousel)",
+      propNotes: [
+        {
+          lead: "4-Stage Envelope Choreography",
+          prop: "variant",
+          value: '"testimonial-loom"',
+          effect:
+            "opens the 3D top envelope flap, extracts the ruled testimonial letter card upward out of the pocket, and settles it onto the front of the envelope with a rubber postmark and mini-envelope thumbnail selector.",
+        },
+      ],
+      props: { variant: "testimonial-loom" },
+      usage: usageTestimonialLoom,
+      code: extractCode("src/components/custom/blocks/ReviewsBlock.tsx"),
+    },
     {
       title: "UpDown Vertical Marquee",
       propNotes: [{ lead: "Features", prop: "up-down-vertical-marquee", value: "UpDown Vertical Marquee", effect: "renders 4 infinite vertical marquee columns scrolling up and down with hover pause." }],
@@ -199,9 +220,9 @@ Discover the key capabilities of the `ReviewsBlock` component:
     <tbody>
       <tr>
         <td><code>variant</code></td>
-        <td><code>"up-down-vertical-marquee" | "stacked-carousel" | "logo-carousel"</code></td>
+        <td><code>"testimonial-loom" | "up-down-vertical-marquee" | "stacked-carousel" | "logo-carousel"</code></td>
         <td><code>"up-down-vertical-marquee"</code></td>
-        <td>Determines the visual review layout style (infinite up/down vertical marquee, 3D stacked cards, or brand logo carousel).</td>
+        <td>Determines the visual review layout style (4-stage interactive envelope loom, infinite up/down vertical marquee, 3D stacked cards, or brand logo carousel).</td>
       </tr>
       <tr>
         <td><code>title</code></td>

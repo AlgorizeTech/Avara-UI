@@ -3,9 +3,9 @@ import { SITE_URL, siteConfig } from "@/config/site";
 export const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "Algorize UI",
+  "name": "Avara UI",
   "url": SITE_URL,
-  "logo": `${SITE_URL}/logo.svg`,
+  "logo": `${SITE_URL}/favicon/android-chrome-512x512.png`,
   "description": siteConfig.tagline,
   "foundingDate": "2024",
   "founder": {
@@ -28,7 +28,7 @@ export const organizationSchema = {
 export const softwareApplicationSchema = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Algorize UI",
+  "name": "Avara UI",
   "description": siteConfig.tagline,
   "url": SITE_URL,
   "applicationCategory": "DeveloperApplication",
@@ -48,10 +48,10 @@ export const softwareApplicationSchema = {
   },
   "publisher": {
     "@type": "Organization",
-    "name": "Algorize UI",
+    "name": "Avara UI",
     "logo": {
       "@type": "ImageObject",
-      "url": `${SITE_URL}/logo.svg`
+      "url": `${SITE_URL}/favicon/android-chrome-512x512.png`
     }
   },
   "offers": {
@@ -94,12 +94,12 @@ export const softwareApplicationSchema = {
 export const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": "Algorize UI",
+  "name": "Avara UI",
   "url": SITE_URL,
   "description": siteConfig.tagline,
   "publisher": {
     "@type": "Organization",
-    "name": "Algorize UI"
+    "name": "Avara UI"
   },
   "potentialAction": {
     "@type": "SearchAction",
@@ -169,7 +169,7 @@ export const componentSchema = (componentName: string, description: string, cate
   },
   "isPartOf": {
     "@type": "SoftwareApplication",
-    "name": "Algorize UI"
+    "name": "Avara UI"
   },
   "applicationCategory": category,
   "keywords": `${componentName}, React component, Tailwind CSS, Motion, UI component`

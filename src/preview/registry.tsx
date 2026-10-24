@@ -122,6 +122,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "menubar": lazyRetry(() => import("./demos/menubar-demo")),
   "mobile-mockup": lazyRetry(() => import("./demos/mobile-mockup-demo")),
   "modal": lazyRetry(() => import("./demos/modal-demo")),
+  "modern-scroll-stack": lazyRetry(() => import("./demos/modern-scroll-stack-demo")),
   "navbar": lazyRetry(() => import("./demos/navbar-demo")),
   "navigation-menu": lazyRetry(() => import("./demos/navigation-menu-demo")),
   "network-graph": lazyRetry(() => import("./demos/network-graph-demo")),

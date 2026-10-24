@@ -71,6 +71,65 @@ export default function GlassHeader() {
   );
 }`;
 
+export const usageEcommerce = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
+
+export default function EcommerceHeader() {
+  // A conversion-focused E-Commerce Mega Nav with announcement bar,
+  // persistent mega menu panel, product previews, promo banners, cart, and mobile drawer.
+  return (
+    <NavbarBlock
+      variant="ecommerce-mega-nav"
+      color="primary"
+      logoText="NUTRIFY"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="navbar"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "E-Commerce Mega Nav",
+      subheading:
+        "A conversion-focused e-commerce navigation inspired by Framer's E-Commerce Mega Nav. Features a top announcement bar, product-rich mega menus with direct product previews and promotional cards, live search, cart badge with mini-cart, and a responsive mobile drawer with drill-down categories.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"ecommerce-mega-nav"',
+          effect:
+            "activates the comprehensive e-commerce navigation with announcement bar, multi-category mega menus, product cards, promo banners, cart indicator, and mobile drawer.",
+        },
+        {
+          lead: "Pass",
+          prop: "logoText",
+          value: '"NUTRIFY"',
+          effect:
+            "sets the brand name in both the desktop bar and mobile drawer.",
+        },
+        {
+          lead: "Customize",
+          prop: "color",
+          effect:
+            "themes the announcement bar, badges, active indicators, and checkout CTA buttons.",
+        },
+      ],
+      props: { variant: "ecommerce-mega-nav", color: "primary", logoText: "NUTRIFY" },
+      usage: usageEcommerce,
+      code: extractCode("src/components/custom/blocks/NavbarBlock.tsx"),
+      minHeight: 620,
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="navbar" />
+
+## Examples
+
 <ExampleShowcase
   name="navbar"
   colorControl
@@ -90,22 +149,7 @@ export default function GlassHeader() {
       ],
       props: { variant: "default", color: "indigo" },
       usage: usageDefault,
-      code: extractCode("src/components/custom/blocks/NavbarBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="navbar" />
-
-## Examples
-
-<ExampleShowcase
-  name="navbar"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Centered",
       propNotes: [
@@ -183,12 +227,12 @@ export default function GlassHeader() {
           <code>variant</code>
         </td>
         <td>
-          <code>"default" | "floating" | "centered" | "minimal" | "glass"</code>
+          <code>"default" | "floating" | "centered" | "minimal" | "glass" | "ecommerce-mega-nav"</code>
         </td>
         <td>
           <code>"default"</code>
         </td>
-        <td>Determines the structural layout and positioning of the navbar.</td>
+        <td>Determines the structural layout and positioning of the navbar. Use <code>"ecommerce-mega-nav"</code> for a full-featured e-commerce header with announcement bar, product-rich mega menus, cart, and mobile drawer.</td>
       </tr>
       <tr>
         <td>

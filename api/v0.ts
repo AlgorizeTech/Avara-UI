@@ -36,7 +36,7 @@ export async function GET(request: Request): Promise<Response> {
 
   const registryItem = (await base.json()) as { title?: string; files: unknown[] };
   registryItem.files.push(
-    ...themedFiles(themeFromParams(url.searchParams), registryItem.title ?? "Algorize UI"),
+    ...themedFiles(themeFromParams(url.searchParams), registryItem.title ?? "Avara UI"),
   );
 
   return new Response(JSON.stringify(registryItem), { headers: HEADERS });
