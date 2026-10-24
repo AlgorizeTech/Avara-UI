@@ -14,6 +14,14 @@ export default function ServiceCardsExample() {
   );
 }`;
 
+export const usageStackedCards = `import { ModernScrollStack } from "@/components/custom/blocks/ModernScrollStackBlock";
+
+export default function StackedCardsExample() {
+  return (
+
+  );
+}`;
+
 ## Installation
 
 Register the @algorize-ui registry once per project, then add the component:
@@ -45,6 +53,11 @@ npx shadcn@latest add @algorize-ui/modern-scroll-stack
         Type
         Default
         Description
+
+        variant
+        "fan" | "stacked"
+        "fan"
+        Selects the stacking layout: "fan" spreads cards horizontally across the stage, while "stacked" piles cards directly on top of one another in the center with alternating tilts.
 
         items
         ModernScrollStackItem[]
