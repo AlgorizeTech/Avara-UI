@@ -1,0 +1,25 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/_next/static/**",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+    },
+    {
+      "source": "**/*.md",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600" }]
+    },
+    {
+      "source": "/sw.js",
+      "headers": [{ "key": "Cache-Control", "value": "no-cache" }]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/r/v0-themed/:component/:example/item.json",
+      "destination": "https://algorize-ui.vercel.app/r/v0-themed/:component/:example/item.json",
+      "type": 302
+    }
+  ]
+}

@@ -62,7 +62,7 @@ https://algorize-ui.vercel.app/r/login-form.json
 
 ## 1.1 Verified facts (from inspection, re-check quickly)
 
-- The repo is a Next.js 15 docs site with `output: "export"`. The root `package.json` is private, has no `workspaces`, and its scripts use `npm`. Lockfiles present: `package-lock.json`, `bun.lockb`, and an untracked `pnpm-lock.yaml`.
+- The repo is a Next.js 15 docs site with `output: "export"`. The root `package.json` is private, has no `workspaces`, and its scripts use `npm`. The only lockfile is `package-lock.json`.
 - Registry index: `public/r/registry.json` (source: root `registry.json`). It has 183 items: 171 `registry:component` and 12 `registry:ui`.
 - Registry index item keys: `name`, `type`, `title`, `author`, `description`, `categories`, `dependencies`, `registryDependencies`, `files`, `docs`.
 - Per-item file `public/r/<name>.json` has the same keys plus `$schema`, and `files[]` carries `path`, `type`, `target` and `content` (the full source).
