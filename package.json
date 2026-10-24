@@ -6,7 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "npm run build:registry && tsx ./src/scripts/build-md-files.ts && npm run check:frameworks && npm run check:types && next build",
     "build:analyze": "set ANALYZE=true && next build",
-    "start": "next start",
+    "start": "serve out --config ../serve.json",
     "lint": "next lint",
     "export": "next build",
     "build:registry": "npm run generate:registry && shadcn build && tsx ./src/scripts/clean-registry-build.ts && npm run generate:v0 && npm run sync:count",
@@ -81,6 +81,7 @@
     "remark": "^15.0.1",
     "remark-gfm": "^4.0.1",
     "remark-html": "^16.0.1",
+    "serve": "^14.2.6",
     "shiki": "^3.4.0",
     "simplex-noise": "^4.0.3",
     "swiper": "^14.2.0",
@@ -114,5 +115,8 @@
     "tsx": "^4.19.4",
     "tw-animate-css": "^1.3.5",
     "typescript": "^5"
+  },
+  "engines": {
+    "node": ">=20.18.1"
   }
 }
