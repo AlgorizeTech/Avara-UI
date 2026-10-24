@@ -1,0 +1,434 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("falling-tags");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { Installation } from "@/components/site/installation";
+import { extractCode } from "@/lib/code";
+
+# Falling Tags
+
+A physics-based interactive tags playground inspired by the viral **Falling Tags** Framer component by Guo. When the section scrolls into view, tags fade in floating gently near the top, hover weightlessly for a moment, then lose their footing, drop, tumble, collide realistically, and pile up naturally at the bottom.
+
+Visitors can grab any tag with a mouse or finger, drag it around, and fling it across the container with authentic velocity and angular momentum. Built with pure TypeScript and mathematical 2D rigid-body collision dynamics — zero external physics dependencies needed. Tags automatically follow your project's global theme radius (`--radius`).
+
+export const usageDefault = `"use client";
+
+import FallingTags from "@/components/custom/blocks/FallingTagsBlock";
+
+export default function SkillsSection() {
+  return (
+    <div className="w-full max-w-4xl mx-auto py-12">
+      <FallingTags
+        palette="default"
+        gravity={0.55}
+        bounce={0.48}
+        hoverDuration={1.4}
+        height={500}
+      />
+    </div>
+  );
+}`;
+
+export const usageColorful = `"use client";
+
+import FallingTags from "@/components/custom/blocks/FallingTagsBlock";
+
+export default function ColorfulTags() {
+  return (
+    <FallingTags
+      palette="colorful"
+      height={500}
+    />
+  );
+}`;
+
+export const usageGlass = `"use client";
+
+import FallingTags from "@/components/custom/blocks/FallingTagsBlock";
+
+const mySkills = [
+  "React 19",
+  "Next.js 15",
+  "TypeScript",
+  "Tailwind CSS",
+  "Framer Motion",
+  "Figma",
+  "UI/UX Design",
+  "Micro-Interactions",
+  "WebGL / Three.js",
+  "Node.js",
+  "PostgreSQL",
+  "GraphQL",
+  "Creative Coding",
+  "Design Systems",
+  "Performance",
+  "Accessibility",
+];
+
+export default function GlassTags() {
+  return (
+    <div
+      className="p-6 sm:p-8 rounded-3xl bg-cover bg-center relative overflow-hidden"
+      style={{
+        backgroundImage:
+          'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
+      }}
+    >
+      <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px] pointer-events-none" />
+      <div className="relative z-10">
+        <FallingTags
+          tags={mySkills}
+          palette="glass"
+          gravity={0.5}
+          bounce={0.55}
+          height={500}
+        />
+      </div>
+    </div>
+  );
+}`;
+
+export const usageNeon = `"use client";
+
+import FallingTags from "@/components/custom/blocks/FallingTagsBlock";
+
+export default function NeonArena() {
+  return (
+    <FallingTags
+      palette="neon"
+      gravity={0.58}
+      bounce={0.52}
+      height={500}
+    />
+  );
+}`;
+
+export const usagePastel = `"use client";
+
+import FallingTags from "@/components/custom/blocks/FallingTagsBlock";
+
+export default function PastelTags() {
+  return (
+    <FallingTags
+      palette="pastel"
+      height={500}
+    />
+  );
+}`;
+
+export const usageMonochrome = `"use client";
+
+import FallingTags from "@/components/custom/blocks/FallingTagsBlock";
+
+export default function MonochromeTags() {
+  return (
+    <FallingTags
+      palette="monochrome"
+      height={500}
+    />
+  );
+}`;
+
+export const usageBlackAndWhite = `"use client";
+
+import FallingTags from "@/components/custom/blocks/FallingTagsBlock";
+
+export default function BlackAndWhiteTags() {
+  return (
+    <FallingTags
+      palette="black-and-white"
+      height={500}
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="falling-tags"
+  columns={1}
+  minHeight={0}
+  examples={[
+    {
+      title: "Interactive physics arena",
+      subheading:
+        "Watch the tags float into view, drop and tumble into a natural pile. Click and throw any tag with your mouse or finger.",
+      propNotes: [
+        {
+          prop: "palette",
+          value: '"default"',
+          effect:
+            'chooses the color scheme — "default", "colorful", "glass", "pastel", "monochrome", "neon", or "black-and-white".',
+        },
+        {
+          prop: "hoverDuration",
+          value: "1.4",
+          effect:
+            "how many seconds tags hover in anti-gravity before the drop begins.",
+        },
+        {
+          prop: "gravity",
+          value: "0.55",
+          effect:
+            "downward gravitational acceleration constant for realistic tumbling.",
+        },
+        {
+          prop: "interactive",
+          value: "true",
+          effect:
+            "enables real-time pointer drag and momentum-based throwing with impulse physics.",
+        },
+      ],
+      props: {
+        palette: "default",
+        gravity: 0.55,
+        bounce: 0.48,
+        hoverDuration: 1.4,
+        height: 500,
+      },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/FallingTagsBlock.tsx"),
+    },
+  ]}
+/>
+
+### Installation
+
+<Installation name="falling-tags" />
+
+## Examples
+
+<ExampleShowcase
+  name="falling-tags"
+  columns={1}
+  minHeight={0}
+  examples={[
+    {
+      title: "Colorful",
+      subheading:
+        "Vibrant multi-color playful palette across rich indigo, emerald, rose, and amber tones.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "palette",
+          value: '"colorful"',
+          effect: "for a vivid color distribution across all falling badges.",
+        },
+      ],
+      props: {
+        palette: "colorful",
+        height: 500,
+      },
+      usage: usageColorful,
+      code: extractCode("src/components/custom/blocks/FallingTagsBlock.tsx"),
+    },
+    {
+      title: "Glass",
+      subheading:
+        "Translucent frosted glass badges with backdrop-blur and luminous specular borders over a scenic backdrop.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "palette",
+          value: '"glass"',
+          effect:
+            "for semi-transparent tags with backdrop blur that blend over dark, light, or image backgrounds.",
+        },
+      ],
+      props: {
+        palette: "glass",
+        height: 500,
+      },
+      usage: usageGlass,
+      code: extractCode("src/components/custom/blocks/FallingTagsBlock.tsx"),
+    },
+    {
+      title: "Neon",
+      subheading:
+        "High-energy glowing cyberpunk badges with vibrant borders and neon glow shadows.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "palette",
+          value: '"neon"',
+          effect: "for intense saturated tones with electric glow box-shadows.",
+        },
+      ],
+      props: {
+        palette: "neon",
+        height: 500,
+      },
+      usage: usageNeon,
+      code: extractCode("src/components/custom/blocks/FallingTagsBlock.tsx"),
+    },
+    {
+      title: "Pastel",
+      subheading:
+        "Soft soothing aesthetic pastel badges designed for serene minimal layouts and creative portfolios.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "palette",
+          value: '"pastel"',
+          effect:
+            "for delicate muted pastel hues that maintain readability without visual clutter.",
+        },
+      ],
+      props: {
+        palette: "pastel",
+        height: 500,
+      },
+      usage: usagePastel,
+      code: extractCode("src/components/custom/blocks/FallingTagsBlock.tsx"),
+    },
+    {
+      title: "Monochrome",
+      subheading:
+        "High-contrast editorial zinc and black/white palette tailored for modern minimalist dark and light themes.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "palette",
+          value: '"monochrome"',
+          effect:
+            "for a restrained black, white, and zinc palette that follows theme foreground/background tokens.",
+        },
+      ],
+      props: {
+        palette: "monochrome",
+        height: 500,
+      },
+      usage: usageMonochrome,
+      code: extractCode("src/components/custom/blocks/FallingTagsBlock.tsx"),
+    },
+    {
+      title: "Black and white",
+      subheading:
+        "High-contrast dual-tone black and white badges. Tags alternate between black background with white text and border, and white background with black text and border.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "palette",
+          value: '"black-and-white"',
+          effect:
+            "for dual-tone black and white badges with inverted high-contrast borders and text.",
+        },
+      ],
+      props: {
+        palette: "black-and-white",
+        height: 500,
+      },
+      usage: usageBlackAndWhite,
+      code: extractCode("src/components/custom/blocks/FallingTagsBlock.tsx"),
+    },
+  ]}
+/>
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Float-to-Drop Sequence</h3>
+    <p className="text-muted-foreground text-sm">When scrolled into view, tags appear in the upper arena with a gentle floating levitation wave before gravity triggers the drop.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Real 2D Rigid-Body Physics</h3>
+    <p className="text-muted-foreground text-sm">Mathematically exact capsule-capsule and capsule-wall collision solver with realistic mass, angular inertia, restitution bounce, and sliding friction.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Interactive Grab & Throw</h3>
+    <p className="text-muted-foreground text-sm">Grab tags with your mouse or finger, toss them in any direction, and watch them rebound off walls and scatter other tags with momentum.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Zero External Dependencies</h3>
+    <p className="text-muted-foreground text-sm">Built purely using native React and high-efficiency requestAnimationFrame loop. Zero bulky physics library dependencies.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>tags</code></td>
+        <td><code>(string | FallingTagItem)[]</code></td>
+        <td><code>DEFAULT_TAG_LABELS</code></td>
+        <td>List of tag labels or custom tag objects with individual colors/icons.</td>
+      </tr>
+      <tr>
+        <td><code>palette</code></td>
+        <td><code>"default" | "colorful" | "glass" | "pastel" | "monochrome" | "neon" | "black-and-white"</code></td>
+        <td><code>"default"</code></td>
+        <td>Preset color distribution applied across the tags.</td>
+      </tr>
+      <tr>
+        <td><code>gravity</code></td>
+        <td><code>number</code></td>
+        <td><code>0.55</code></td>
+        <td>Vertical acceleration rate applied when falling.</td>
+      </tr>
+      <tr>
+        <td><code>bounce</code></td>
+        <td><code>number</code></td>
+        <td><code>0.48</code></td>
+        <td>Restitution coefficient between 0 (no bounce) and 1 (super bouncy).</td>
+      </tr>
+      <tr>
+        <td><code>friction</code></td>
+        <td><code>number</code></td>
+        <td><code>0.985</code></td>
+        <td>Velocity damping factor for air and contact surfaces.</td>
+      </tr>
+      <tr>
+        <td><code>hoverDuration</code></td>
+        <td><code>number</code></td>
+        <td><code>1.4</code></td>
+        <td>Duration in seconds that tags hover in anti-gravity before dropping.</td>
+      </tr>
+      <tr>
+        <td><code>height</code></td>
+        <td><code>number | string</code></td>
+        <td><code>500</code></td>
+        <td>Height of the physics playground viewport.</td>
+      </tr>
+      <tr>
+        <td><code>showControls</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Renders top action bar with Drop Again, Scatter, and Zero-G Float toggles.</td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Optional title shown in the top header bar when controls or title are enabled.</td>
+      </tr>
+      <tr>
+        <td><code>description</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Optional subtitle description in the top header bar.</td>
+      </tr>
+      <tr>
+        <td><code>interactive</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Allows pointer drag and toss throwing physics.</td>
+      </tr>
+      <tr>
+        <td><code>autoStartOnView</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Triggers entrance drop when component scrolls into viewport.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

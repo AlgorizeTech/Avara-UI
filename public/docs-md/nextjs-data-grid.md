@@ -39,13 +39,7 @@ export default function Ledger() {
   const [data, setData] = useState[]>(ROWS);
 
   return (
-
-            Financial Ledger
-          
-          Double-click any cell or press Enter to edit.
-
-          Export CSV
-
+    
   );
 }`;
 
@@ -56,13 +50,7 @@ ${gridSchema}
 export default function ReadOnlyGrid() {
   // Keyboard navigation still works — only editing is disabled.
   return (
-
-            Financial Ledger
-          
-          View mode only.
-
-          Export CSV
-
+    
   );
 }`;
 
@@ -173,6 +161,56 @@ Explore the Data Grid's powerful features for displaying complex datasets, inclu
           If true, globally disables all double-click and keyboard editing
           capabilities across the entire grid, while preserving the ability to
           navigate via arrow keys.
+
+          DataGridBlock
+
+          title
+
+          string
+
+          undefined
+
+          An optional header title displayed above the grid (e.g. &quot;Financial Ledger&quot;).
+
+          DataGridBlock
+
+          description
+
+          string
+
+          undefined
+
+          An optional subtitle or instructions rendered below the title.
+
+          DataGridBlock
+
+          showExport
+
+          boolean
+
+          true
+
+          Whether to render the built-in &quot;Export CSV&quot; button in the header.
+
+          DataGridBlock
+
+          exportFileName
+
+          string
+
+          &quot;data-grid.csv&quot;
+
+          Custom file name for the downloaded CSV file.
+
+          DataGridBlock
+
+          onExport
+
+          (data: T[]) =&gt; void
+
+          undefined
+
+          Optional callback triggered when the user clicks the &quot;Export CSV&quot; button.
 
 ### GridColumn Object
 

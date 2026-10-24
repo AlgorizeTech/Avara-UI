@@ -4,7 +4,28 @@ export const metadata = docsPageMetadata("scroll-stack");
 
 A premium collection of scroll-driven 3D card stacking layouts engineered exclusively with **GSAP's ScrollTrigger plugin**. As users scroll down the page, feature cards stick to the viewport while the next card slides up to cover them, creating a simulated 3D deck with silky 60fps performance across both light and dark modes.
 
-Four independent scroll-driven layouts share this page, each with its own block file. **Scroll inside a preview box** to drive its ScrollTrigger timeline.
+Five independent scroll-driven layouts share this page, each with its own block file. **Scroll inside a preview box** to drive its ScrollTrigger timeline.
+
+## Fan stack
+
+Overlapping cards in a tilted diagonal cascade, each with a photo hanging off its edge. As the stack scrolls into view the cards are dealt out of one pile into place, scrubbed by the scrollbar. It is built from small primitives, so a card holds whatever your data has.
+
+The cascade is a container query, not a breakpoint: under 768px of width the cards become a sticky stack instead — each one sticks near the top and the next slides over it, its header left peeking. Drag the preview narrower to see it. Under `prefers-reduced-motion` the cascade simply shows, without the deal.
+
+### Installation
+
+Register the @algorize-ui registry once per project, then add the component:
+
+```bash
+npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest add @algorize-ui/fan-stack
+```
+
+Or the Motion build (same props, same file — install one):
+
+```bash
+npx shadcn@latest add @algorize-ui/fan-stack-motion
+```
 
 ## Simple stack
 
@@ -15,6 +36,7 @@ export const stackItems = `const items: StackItem[] = [
     description:
       "Instantly sync state across clients without writing WebSocket logic. Our engine handles race conditions seamlessly.",
     icon: Zap,
+    color: "#1e3a8a",
     content: (
 
             sync-stream.ts
@@ -39,6 +61,7 @@ export const stackItems = `const items: StackItem[] = [
     description:
       "Build robust systems with separated concerns. Easily swap out databases or auth providers without rewriting your core.",
     icon: Layers,
+    color: "#581c87",
     content: (
 
               API
@@ -68,6 +91,7 @@ export const stackItems = `const items: StackItem[] = [
     description:
       "Don't reinvent the wheel. Utilize our library of pre-built, accessible UI blocks designed to drop into any codebase.",
     icon: Blocks,
+    color: "#065f46",
     content: (
 
           Component Gallery
@@ -99,6 +123,7 @@ export const stackItems = `const items: StackItem[] = [
     description:
       "Bank-grade encryption, automated compliance tracking, and granular role-based access control built in out of the box.",
     icon: ShieldCheck,
+    color: "#9f1239",
     content: (
 
           SECURITY_CHECK // PASSED
@@ -500,6 +525,76 @@ Discover the key capabilities that make this component an excellent choice for m
         Default
         Description
 
+          FanStack
+
+          children
+
+          ReactNode
+
+          Required
+
+          The FanStackCards, in order. Any number works; the cascade spreads them across the width.
+
+          FanStack
+
+          scrollerRef
+
+          {"RefObject"}
+
+          window
+
+          The element that scrolls, when the stack sits inside a scroll container rather than the page.
+
+          FanStack
+
+          scrub
+
+          number
+
+          0.6
+
+          Seconds the cards take to catch up with the scrollbar. 0 locks them to it.
+
+          FanStack
+
+          stickyTop
+
+          number
+
+          16
+
+          Below 768px of width, the gap in px above the first stuck card. Raise it to clear a fixed header.
+
+          FanStackCard
+
+          tone
+
+          "muted" | "light" | "accent"
+
+          By position
+
+          The card's surface, tinted from --primary. Cards step through the three in order when left unset.
+
+          FanStackThumb
+
+          side
+
+          "right" | "left" | "top"
+
+          By position
+
+          Which edge the photo hangs off in the cascade. Below 768px of width it is a small photo in the card's top corner.
+
+          FanStackPoint
+
+          icon
+
+          ReactNode
+
+          Check mark
+
+          Replaces the check mark ahead of the point.
+
           ScrollStack
 
           items
@@ -510,6 +605,16 @@ Discover the key capabilities that make this component an excellent choice for m
 
           An array of feature card objects defining the sequential stack
           sequence.
+
+          StackItem
+
+          color
+
+          string
+
+          undefined
+
+          Custom background color for this specific card. Accepts hex color codes (e.g. #1e3a8a), CSS colors (rgb, hsl), or Tailwind utility classes.
 
           ScrollStack
 

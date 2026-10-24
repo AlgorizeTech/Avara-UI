@@ -1,0 +1,506 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("designs-toolkit");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { Installation } from "@/components/site/installation";
+import { extractCode } from "@/lib/code";
+
+# Designs Toolkit
+
+A pinned resource toolkit grid inspired by creative studio moodboards and curated design directories. Cards feature authentic glossy **3D pushpins**, custom brand icon badges, staggered column vertical rhythm, and connected corkboard path lines across a subtle blueprint grid.
+
+Each card highlights a curated tool with bold numbering, custom accent-themed borders and glows, brand insignia, and customizable interactions. Built with pure React, Tailwind CSS, and zero external dependencies.
+
+export const usageCreative = `"use client";
+
+import DesignsToolkit from "@/components/custom/blocks/DesignsToolkitBlock";
+import {
+  Palette,
+  Sparkles,
+  Layers,
+  Dribbble,
+  Shapes,
+  Image as ImageIcon,
+} from "lucide-react";
+
+const creativeTools = [
+  {
+    number: "01",
+    title: "Freepik",
+    description: "Curated vectors, stock photos, and graphic templates for visual creatives.",
+    icon: <Palette className="w-5 h-5" />,
+    logoBg: "bg-blue-600 text-white",
+    accentColor: "blue",
+    pinColor: "#2563eb",
+    onClick: () => {},
+  },
+  {
+    number: "02",
+    title: "Pinterest",
+    description: "Visual discovery engine for finding moodboards, ideas, and creative styling.",
+    icon: <Sparkles className="w-5 h-5" />,
+    logoBg: "bg-red-600 text-white",
+    accentColor: "red",
+    pinColor: "#dc2626",
+    onClick: () => {},
+  },
+  {
+    number: "03",
+    title: "Envato",
+    description: "Marketplace for premium design assets like templates, graphics, videos, and more.",
+    icon: <Layers className="w-5 h-5" />,
+    logoBg: "bg-[#7cb342] text-zinc-950",
+    accentColor: "green",
+    pinColor: "#65a30d",
+    onClick: () => {},
+  },
+  {
+    number: "04",
+    title: "Dribbble",
+    description: "Platform for showcasing, discovering, and connecting with creative design work.",
+    icon: <Dribbble className="w-5 h-5" />,
+    logoBg: "bg-pink-500 text-white",
+    accentColor: "pink",
+    pinColor: "#db2777",
+    onClick: () => {},
+  },
+  {
+    number: "05",
+    title: "Flaticon",
+    description: "Millions of free and premium vector icons, stickers, and UI interface graphics.",
+    icon: <Shapes className="w-5 h-5" />,
+    logoBg: "bg-emerald-500 text-white",
+    accentColor: "mint",
+    pinColor: "#059669",
+    onClick: () => {},
+  },
+  {
+    number: "06",
+    title: "Mockup World",
+    description: "Free, high-quality PSD mockups for showcasing designs in realistic settings.",
+    icon: <ImageIcon className="w-5 h-5" />,
+    logoBg: "bg-gradient-to-tr from-cyan-500 to-sky-400 text-white",
+    accentColor: "cyan",
+    pinColor: "#0891b2",
+    onClick: () => {},
+  },
+];
+
+export default function CreativeResourcesSection() {
+  return (
+    <div className="w-full max-w-6xl mx-auto py-12">
+      <DesignsToolkit
+        items={creativeTools}
+        showDashedLine={true}
+        showGrid={true}
+        interactive={true}
+      />
+    </div>
+  );
+}`;
+
+export const usageDeveloper = `"use client";
+
+import DesignsToolkit from "@/components/custom/blocks/DesignsToolkitBlock";
+import {
+  Globe,
+  Code2,
+  Wind,
+  Database,
+  GitBranch,
+  Zap,
+} from "lucide-react";
+
+const developerTools = [
+  {
+    number: "01",
+    title: "Next.js",
+    description: "The React framework for high-performance production web applications.",
+    icon: <Globe className="w-5 h-5" />,
+    logoBg: "bg-zinc-900 text-white dark:bg-zinc-800",
+    accentColor: "blue",
+    pinColor: "#2563eb",
+    onClick: () => {},
+  },
+  {
+    number: "02",
+    title: "TypeScript",
+    description: "Strongly typed programming language that builds on JavaScript syntax.",
+    icon: <Code2 className="w-5 h-5" />,
+    logoBg: "bg-blue-600 text-white",
+    accentColor: "red",
+    pinColor: "#dc2626",
+    onClick: () => {},
+  },
+  {
+    number: "03",
+    title: "Tailwind CSS",
+    description: "Utility-first CSS framework for rapid and maintainable modern UI design.",
+    icon: <Wind className="w-5 h-5" />,
+    logoBg: "bg-sky-500 text-white",
+    accentColor: "green",
+    pinColor: "#65a30d",
+    onClick: () => {},
+  },
+  {
+    number: "04",
+    title: "Supabase",
+    description: "Open source Firebase alternative with PostgreSQL database and realtime sync.",
+    icon: <Database className="w-5 h-5" />,
+    logoBg: "bg-emerald-600 text-white",
+    accentColor: "pink",
+    pinColor: "#db2777",
+    onClick: () => {},
+  },
+  {
+    number: "05",
+    title: "GitHub",
+    description: "Cloud-based hosting service for version control, CI/CD, and collaboration.",
+    icon: <GitBranch className="w-5 h-5" />,
+    logoBg: "bg-zinc-950 text-white",
+    accentColor: "mint",
+    pinColor: "#059669",
+    onClick: () => {},
+  },
+  {
+    number: "06",
+    title: "Vercel",
+    description: "Frontend cloud platform for seamless continuous deployment and serverless.",
+    icon: <Zap className="w-5 h-5" />,
+    logoBg: "bg-zinc-900 text-white",
+    accentColor: "cyan",
+    pinColor: "#0891b2",
+    onClick: () => {},
+  },
+];
+
+export default function DeveloperStackSection() {
+  return (
+    <div className="w-full max-w-6xl mx-auto py-12">
+      <DesignsToolkit
+        items={developerTools}
+        showDashedLine={false}
+        showGrid={true}
+        interactive={true}
+      />
+    </div>
+  );
+}`;
+
+export const usageRoadmap = `"use client";
+
+import DesignsToolkit from "@/components/custom/blocks/DesignsToolkitBlock";
+import { MessageSquareQuote, ShieldCheck, Mail, BookOpen, RotateCcw } from "lucide-react";
+
+const roadmapSteps = [
+  {
+    number: "01",
+    title: "Testimonials",
+    description:
+      "The only way to attract new clients, is to show your experience with the previous ones. Include: real photo, position at company, links to profiles.",
+    icon: <MessageSquareQuote className="w-5 h-5 text-orange-600 dark:text-orange-400" />,
+    accentColor: "orange",
+    pinColor: "#ea580c",
+    onClick: () => {},
+  },
+  {
+    number: "02",
+    title: "Trust Badges",
+    description:
+      "Show all the achievements you have. Awards, certificates, payment protections, and security seals that eliminate buyer doubt.",
+    icon: <ShieldCheck className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
+    accentColor: "blue",
+    pinColor: "#2563eb",
+    onClick: () => {},
+  },
+  {
+    number: "03",
+    title: "Add Contacts",
+    description:
+      "People need to understand that if something happens, they can reach out to you. Leave links to social media, email, and phone.",
+    icon: <Mail className="w-5 h-5 text-purple-600 dark:text-purple-400" />,
+    accentColor: "purple",
+    pinColor: "#8b5cf6",
+    onClick: () => {},
+  },
+  {
+    number: "04",
+    title: "Case Studies",
+    description:
+      "Share detailed examples of how your product or service solved real problems. This helps visitors imagine their own success.",
+    icon: <BookOpen className="w-5 h-5 text-orange-600 dark:text-orange-400" />,
+    accentColor: "orange",
+    pinColor: "#ea580c",
+    onClick: () => {},
+  },
+  {
+    number: "05",
+    title: "Clear Refund Policy",
+    description:
+      "Offer a transparent money-back guarantee or easy return process to build instant customer trust.",
+    icon: <RotateCcw className="w-5 h-5 text-blue-600 dark:text-blue-400" />,
+    accentColor: "blue",
+    pinColor: "#2563eb",
+    onClick: () => {},
+  },
+];
+
+export default function RoadmapPathwaySection() {
+  return (
+    <div className="w-full max-w-4xl mx-auto py-12">
+      <DesignsToolkit
+        variant="roadmap"
+        items={roadmapSteps}
+        showDashedLine={true}
+        showLines={true}
+        interactive={true}
+        footerNote={{
+          highlightText: "all in one",
+        }}
+      />
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="designs-toolkit"
+  minHeight={0}
+  colorControl={false}
+  controls={[
+    {
+      name: "animationDuration",
+      label: "Animation Duration",
+      min: 400,
+      max: 2500,
+      step: 50,
+      defaultValue: 1150,
+      unit: "ms",
+    },
+  ]}
+  columns={1}
+  examples={[
+    {
+      title: "Pinned toolkit corkboard",
+      subheading:
+        "Staggered 3-column pinned resource cards with 3D pushpins, custom icons, and connected dashed paths.",
+      propNotes: [
+        {
+          prop: "items",
+          value: "creativeTools",
+          effect:
+            "passes custom toolkit items with titles, descriptions, icons, and empty onClick handlers.",
+        },
+        {
+          prop: "showDashedLine",
+          value: "true",
+          effect:
+            "renders decorative dashed path lines connecting the cards across columns.",
+        },
+        {
+          prop: "showGrid",
+          value: "true",
+          effect:
+            "overlays a subtle blueprint grid texture with soft radial fade mask.",
+        },
+        {
+          prop: "interactive",
+          value: "true",
+          effect:
+            "enables hover lift, accent glow shadow, and pushpin bounce micro-interactions.",
+        },
+      ],
+      props: {
+        preset: "creative",
+        showDashedLine: true,
+        showGrid: true,
+        interactive: true,
+      },
+      usage: usageCreative,
+      code: extractCode("src/components/custom/blocks/DesignsToolkitBlock.tsx"),
+    },
+  ]}
+/>
+
+### Installation
+
+<Installation name="designs-toolkit" />
+
+## Examples
+
+<ExampleShowcase
+  name="designs-toolkit"
+  minHeight={0}
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Winding Roadmap Pathway",
+      subheading:
+        "Tilted pastel cards pinned along an alternating zigzag timeline with notebook ruled lines and a design partner note.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"roadmap"',
+          effect: "switches to the alternating winding S-curve pathway layout.",
+        },
+        {
+          prop: "showLines",
+          value: "true",
+          effect: "overlays subtle notebook ruled lines across the board background.",
+        },
+        {
+          prop: "showDashedLine",
+          value: "true",
+          effect: "draws a continuous curved S-path connecting the pushpins to the footer partner note.",
+        },
+      ],
+      props: {
+        variant: "roadmap",
+        showDashedLine: true,
+        showLines: true,
+        interactive: true,
+      },
+      usage: usageRoadmap,
+      code: extractCode("src/components/custom/blocks/DesignsToolkitBlock.tsx"),
+    },
+    {
+      title: "Clean Grid (Without Dashed Lines)",
+      subheading:
+        "Minimal pinned card layout configured with custom developer stack tools and icons.",
+      propNotes: [
+        {
+          prop: "items",
+          value: "developerTools",
+          effect:
+            "passes developer stack items with custom icons, text, and empty onClick handlers.",
+        },
+        {
+          lead: "Set",
+          prop: "showDashedLine",
+          value: "false",
+          effect: "to hide the decorative connecting dashed lines.",
+        },
+      ],
+      props: {
+        preset: "developer",
+        showDashedLine: false,
+        showGrid: true,
+        interactive: true,
+      },
+      usage: usageDeveloper,
+      code: extractCode("src/components/custom/blocks/DesignsToolkitBlock.tsx"),
+    },
+  ]}
+/>
+
+## Features
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Authentic 3D Pushpins</h3>
+    <p className="text-muted-foreground text-sm">Hyper-realistic SVG 3D pushpins with multi-stop radial highlights, depth bevels, and natural contact drop shadows.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Multiple Layout Variants</h3>
+    <p className="text-muted-foreground text-sm">Switch effortlessly between the staggered 3-column corkboard <code>grid</code> and the winding alternating <code>roadmap</code> timeline pathway.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Brand Badges & Glowing Borders</h3>
+    <p className="text-muted-foreground text-sm">Each card carries individual accent palettes with matching pastel tinted borders, glowing hover shadows, and custom icon badges.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Pure Reusability & Zero Navigations</h3>
+    <p className="text-muted-foreground text-sm">Pass any custom items with your own icons, titles, and descriptions. Cards trigger customizable onClick handlers without navigating.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"grid" | "roadmap"</code></td>
+        <td><code>"grid"</code></td>
+        <td>Layout variant: <code>"grid"</code> for the staggered 3-column corkboard, or <code>"roadmap"</code> for the winding S-curve pathway.</td>
+      </tr>
+      <tr>
+        <td><code>items</code></td>
+        <td><code>ToolkitItem[]</code></td>
+        <td><code>DEFAULT_TOOLKIT_ITEMS</code></td>
+        <td>Array of pinned toolkit cards with number, title, description, icon, colors, and onClick handler.</td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Optional title shown above the pinned toolkit board.</td>
+      </tr>
+      <tr>
+        <td><code>description</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Optional subtitle description below the title.</td>
+      </tr>
+      <tr>
+        <td><code>showDashedLine</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Whether to render the dashed corkboard or roadmap connecting path lines.</td>
+      </tr>
+      <tr>
+        <td><code>showGrid</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Renders subtle blueprint grid pattern across the board background (for grid variant).</td>
+      </tr>
+      <tr>
+        <td><code>showLines</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Renders subtle horizontal notebook ruled lines across the background (default true in roadmap).</td>
+      </tr>
+      <tr>
+        <td><code>footerNote</code></td>
+        <td><code>FooterNote</code></td>
+        <td><code>undefined</code></td>
+        <td>Custom avatar, text, and highlightText for the roadmap pathway end badge.</td>
+      </tr>
+      <tr>
+        <td><code>interactive</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Enables card lift, pin zoom, and accent glow hover micro-interactions.</td>
+      </tr>
+      <tr>
+        <td><code>animated</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Enables the graceful sequential card emergence choreography.</td>
+      </tr>
+      <tr>
+        <td><code>autoStartOnView</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Triggers the animation when the component scrolls into viewport.</td>
+      </tr>
+      <tr>
+        <td><code>animationDuration</code></td>
+        <td><code>number</code></td>
+        <td><code>1150</code></td>
+        <td>Duration in milliseconds for each card's emergence transition and proportional step timing.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

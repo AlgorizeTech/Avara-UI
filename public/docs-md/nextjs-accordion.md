@@ -2,7 +2,7 @@ export const metadata = docsPageMetadata("accordion");
 
 # Accordion
 
-A data-driven accordion built on the Radix primitive, with five variants that each look like a different component rather than the same card in five borders. The open panel is the only thing that gets the accent: it lifts out as a card, inverts to your primary color, or grows a rail down its edge, depending on the variant.
+A data-driven accordion built on the Radix primitive, with five list variants and an interactive **Brand Logo Reveal** showcase variant. The open panel is the only thing that gets the accent: it lifts out as a card, inverts to your primary color, grows a rail down its edge, or expands into an editorial brand showcase.
 
 You feed it an `accordionData` array — the wrapper maps it to items, icons and content for you. Switch on `animation="stack"` and the items start piled on the first one and deal down into place when the accordion scrolls into view.
 
@@ -69,6 +69,40 @@ export default function AlwaysOpenFaq() {
   );
 }`;
 
+export const usageBrandReveal = `import { BrandLogoAccordion, type BrandItem } from "@/components/custom/blocks/Accordion";
+
+// Alternatively use 
+export default function BrandRevealShowcase() {
+  return (
+    
+  );
+}`;
+
+\` directly.",
+        },
+        {
+          prop: "autoplay",
+          value: "true",
+          effect: "cycles through client/partner brands on an automated timer.",
+        },
+        {
+          prop: "autoplayInterval",
+          value: "4000",
+          effect: "duration in milliseconds before revealing the next brand.",
+        },
+        {
+          prop: "pauseOnHover",
+          value: "true",
+          effect: "pauses autoplay when the cursor hovers over any panel.",
+        },
+      ],
+      props: { variant: "brand-reveal" },
+      usage: usageBrandReveal,
+      code: extractCode("src/components/custom/blocks/Accordion.tsx"),
+    },
+  ]}
+/>
+
 ## Installation
 
 Register the @algorize-ui registry once per project, then add the component:
@@ -80,66 +114,15 @@ npx shadcn@latest add @algorize-ui/accordion
 
 ## Examples
 
-export const usageSection = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+export const usageMultiplePermanent = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
 
-// The three faces on the "Still stuck?" card.
-const SUPPORT_TEAM = [
-  { name: "Ana R.", src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg" },
-  { name: "Tom M.", src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg" },
-  { name: "Mara K.", src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg" },
-];
+${usageData}
 
-const faq: AccordionDataItem[] = [
-  {
-    value: "frameworks",
-    title: "Does it work outside Next.js?",
-    icon: "Code",
-    content: [
-      "Every block is plain React and Tailwind. The docs show a Next.js and a React (Vite) version of each snippet, and only the few components that use next/link or next/image need a one-line swap.",
-    ],
-  },
-  {
-    value: "theming",
-    title: "Can I change the colors?",
-    icon: "Palette",
-    content: [
-      "Everything reads the shadcn theme tokens (primary, card, muted, border), so one edit to globals.css restyles all of it.",
-    ],
-  },
-  {
-    value: "updates",
-    title: "How do updates reach my project?",
-    icon: "RefreshCw",
-    content: [
-      "The CLI copies the source into your repo, so nothing changes behind your back. Re-run the install command to pull a newer version, then review the diff like any other change.",
-    ],
-  },
-  {
-    value: "license",
-    title: "How is it licensed?",
-    icon: "Scale",
-    content: ["MIT. Use it in client work, products and templates, with no attribution required."],
-  },
-];
-
-export default function FaqSection() {
+export default function PermanentMultiOpenFaq() {
+  // type="multiple" and collapsible={false} allows opening multiple panels,
+  // but once opened, a panel cannot be closed by clicking it again.
   return (
-
-        {/* Left column stays put while the answers scroll on large screens. */}
-
-            Questions people ask before they install.
-
-            Short answers on licensing, theming and where the components run.
-            If yours isn't here, we read every message.
-
-              {SUPPORT_TEAM.map((person) => (
-                
-              ))}
-
-              Still stuck?
-              
-                Email the team, we reply within a day
-
+    
   );
 }`;
 
@@ -167,18 +150,6 @@ export default function AccordionVariants() {
       {variants.map((variant) => (
         
       ))}
-    
-  );
-}`;
-
-export const usageMultiplePermanent = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
-
-${usageData}
-
-export default function PermanentMultiOpenFaq() {
-  // type="multiple" and collapsible={false} allows opening multiple panels,
-  // but once opened, a panel cannot be closed by clicking it again.
-  return (
     
   );
 }`;
@@ -221,14 +192,23 @@ Single or multiple open panels, a one-time stack entrance, and five variants tha
 
           variant
 
-          "default" | "bordered" | "filled" | "elevated" | "ghost"
+          "default" | "bordered" | "filled" | "elevated" | "ghost" | "brand-reveal"
 
           "default"
 
           Which look to use. default lifts the open row out as a
           card, bordered grows a rail on it, filled{" "}
           inverts it to primary, elevated raises it on
-          a ring, ghost is type and hairlines only.
+          a ring, ghost is type and hairlines only, and{" "}
+          brand-reveal renders an interactive horizontal brand showcase.
+
+          brands
+
+          BrandItem[]
+
+          DEFAULT_BRANDS
+
+          Used when variant="brand-reveal". Array of objects defining id, name, caption, and optional logo, link, and index.
 
           animation
 

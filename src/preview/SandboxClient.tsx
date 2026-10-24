@@ -1,6 +1,7 @@
 "use client";
 
 import { Suspense, useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
 import { accentTokens } from "@/lib/accent";
 import { SandboxErrorBoundary } from "./SandboxErrorBoundary";
 import { sandboxRegistry } from "./registry";
@@ -182,6 +183,7 @@ export function SandboxClient({ name }: { name: string }) {
   // wrappers. A bordered component capped narrower than the stage (a card, a
   // badge) has its own size, and keeps its border.
   useEffect(() => {
+    if (name === "designs-toolkit" || name === "falling-tags") return;
     const content = contentRef.current;
     if (!content) return;
 
@@ -260,11 +262,21 @@ export function SandboxClient({ name }: { name: string }) {
   // and fixed overlays the demo opens (a modal, a toast) get the whole card
   // as their viewport instead of a strip the height of the trigger. Taller
   // demos push the wrapper past the screen and the frame grows to fit them.
+  const isZeroPadded = name === "designs-toolkit" || name === "falling-tags";
+
   return (
-    <div className="w-full min-h-screen flex flex-col items-center justify-center">
+    <div
+      className={cn(
+        "w-full flex flex-col",
+        isZeroPadded ? "min-h-0 justify-start items-start" : "min-h-screen justify-center items-center",
+      )}
+    >
       <div
         ref={contentRef}
-        className="w-full flex flex-col items-center py-6 px-4"
+        className={cn(
+          "w-full flex flex-col",
+          isZeroPadded ? "p-0 items-start m-0" : "py-6 px-4 items-center",
+        )}
       >
         <SandboxErrorBoundary name={name}>
           <Suspense fallback={null}>

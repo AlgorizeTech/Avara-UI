@@ -16,7 +16,7 @@
       "path": "app/page.tsx",
       "type": "registry:page",
       "target": "app/page.tsx",
-      "content": "\"use client\";\n\nimport { useState } from \"react\";\nimport { DatePickerBlock } from \"@/components/custom/blocks/DatePickerBlock\";\n\nexport default function ValidatedDatePicker() {\n  const [date, setDate] = useState<Date | null>(null);\n\n  // Passing `error` turns the trigger red, swaps in an alert icon and\n  // replaces the helper text with your message.\n  return (\n    <DatePickerBlock\n      value={date}\n      onChange={setDate}\n      label=\"Launch Date\"\n      placeholder=\"Select a date\"\n      error=\"Please select a valid date in the future.\"\n    />\n  );\n}"
+      "content": "\"use client\";\n\nimport { useState } from \"react\";\nimport { DatePickerBlock } from \"@/components/custom/blocks/DatePickerBlock\";\n\nexport default function ValidatedDatePicker() {\n  const [date, setDate] = useState<Date | null>(null);\n\n  const isPast = (d: Date | null) => {\n    if (!d) return true;\n    const today = new Date();\n    today.setHours(0, 0, 0, 0);\n    const target = new Date(d);\n    target.setHours(0, 0, 0, 0);\n    return target.getTime() < today.getTime();\n  };\n\n  const hasError = isPast(date);\n\n  return (\n    <DatePickerBlock\n      value={date}\n      onChange={setDate}\n      label=\"Launch Date\"\n      placeholder=\"Select a date\"\n      helperText={!hasError ? \"Valid launch date selected.\" : undefined}\n      error={hasError ? \"Please select a valid date in the future.\" : undefined}\n    />\n  );\n}"
     },
     {
       "path": "components/custom/blocks/DatePickerBlock.tsx",

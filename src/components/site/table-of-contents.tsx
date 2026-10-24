@@ -6,6 +6,18 @@ import { AnimatePresence, motion } from "motion/react";
 import { ArrowDown, ArrowUp, ArrowUpRight } from "lucide-react";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
+/** Shows only a 2px ring at the padding edge — the track the beam runs in. */
+const RING_MASK: React.CSSProperties = {
+  WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+  WebkitMaskComposite: "xor",
+  mask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+  maskComposite: "exclude",
+};
+
+/** Two comets on opposite sides of the lap, matching ai-chat's border shine. */
+const BEAM_GRADIENT =
+  "conic-gradient(from 0deg, transparent 0deg, currentColor 50deg, transparent 90deg, transparent 180deg, currentColor 230deg, transparent 270deg)";
+
 export const TableOfContents: React.FC = () => {
   const { toc, activeId, scrollToHeading } = useTableOfContents();
 
@@ -266,33 +278,53 @@ export const TableOfContents: React.FC = () => {
           </nav>
         </div>
 
-        {/* Sponsorship call-out — same footprint as the old 1240×905 banner. */}
+        {/* Services call-out — soft tint of the theme colour so it stands out
+            from the greyscale sidebar under every preset. */}
         <div className="px-2.5 py-2.5 border-t border-foreground/[0.06] shrink-0">
           <a
             href="https://algorizetech.com/book-call"
             target="_blank"
             rel="noopener noreferrer"
             className={cn(
-              "group flex flex-col justify-between aspect-[1240/905] p-3 rounded-xl",
-              "border border-foreground/[0.08] bg-foreground/[0.02]",
-              "hover:border-primary/40 hover:bg-primary/[0.04]",
+              "group relative flex flex-col gap-3 p-3.5 rounded-xl border overflow-hidden",
+              "bg-[oklch(from_var(--primary)_0.93_calc(c*0.35)_h)] border-[oklch(from_var(--primary)_0.85_calc(c*0.45)_h)]",
+              "hover:bg-[oklch(from_var(--primary)_0.9_calc(c*0.4)_h)]",
+              "dark:bg-[oklch(from_var(--primary)_0.28_calc(c*0.45)_h)] dark:border-[oklch(from_var(--primary)_0.38_calc(c*0.5)_h)]",
+              "dark:hover:bg-[oklch(from_var(--primary)_0.32_calc(c*0.5)_h)]",
               "transition-colors duration-200",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50",
             )}
           >
-
-            <span className="mt-2 block">
-              <span className="block text-[13px] font-semibold leading-tight text-foreground">
-                Sponsor Algorize UI
+            {/* Border beam / shine effect themed to the active theme color */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-[-1px] rounded-xl text-primary"
+            >
+              <span
+                className="absolute inset-0 overflow-hidden rounded-xl p-[2px]"
+                style={RING_MASK}
+              >
+                <motion.span
+                  className="absolute left-1/2 top-1/2 aspect-square w-[250%]"
+                  style={{ x: "-50%", y: "-50%", background: BEAM_GRADIENT }}
+                  animate={{ rotate: [0, 360] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                />
               </span>
-              <span className="mt-1 block text-[11.5px] leading-[1.45] text-foreground/50">
-                Help keep this library free and open source.
+            </div>
+
+            <span className="block relative z-10">
+              <span className="block text-sm font-semibold leading-snug text-[oklch(from_var(--primary)_0.3_calc(c*0.6)_h)] dark:text-[oklch(from_var(--primary)_0.95_calc(c*0.25)_h)]">
+                Need any service?
+              </span>
+              <span className="mt-1.5 block text-xs leading-relaxed text-[oklch(from_var(--primary)_0.3_calc(c*0.6)_h_/_0.75)] dark:text-[oklch(from_var(--primary)_0.95_calc(c*0.25)_h_/_0.7)]">
+                Have a project in mind? Let's talk about it.
               </span>
             </span>
 
-            <span className="mt-2 inline-flex items-center gap-1 text-[12px] font-medium text-primary">
+            <span className="relative z-10 inline-flex w-full items-center justify-center gap-1 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground shadow-sm">
               Book a call
-              <ArrowUpRight className="size-3 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <ArrowUpRight className="size-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </span>
           </a>
         </div>

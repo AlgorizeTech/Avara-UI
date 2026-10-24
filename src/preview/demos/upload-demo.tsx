@@ -5,8 +5,6 @@ import {
   FileUploadState,
   UploadItem,
 } from "@/components/custom/blocks/UploadBlock";
-import { Folder, type FolderFile } from "@/components/custom/blocks/FolderBlock";
-import { Image as ImageIcon } from "lucide-react";
 import { type ReactNode, useCallback, useEffect, useRef, useState } from "react";
 
 type QueueVariant = "slide-right" | "slide-up" | "pop" | "flip";
@@ -67,14 +65,14 @@ function QueueRow({
 
   return (
     <div
-      className="upload-queue-row"
+      className="upload-queue-row w-full min-w-0"
       data-variant={variant}
       data-leaving={leaving || undefined}
       onAnimationEnd={(e) => {
         if (leaving && e.target === e.currentTarget) onGone(id);
       }}
     >
-      <div>{children}</div>
+      <div className="w-full min-w-0">{children}</div>
     </div>
   );
 }
@@ -116,9 +114,10 @@ export default function UploadDemo({
   showAll,
 }: {
   variant?: QueueVariant;
-  /** "dropzone" renders the Dropzone on its own; "folder" the Folder drop
-   *  target. Omitted = previous behavior. */
-  layout?: "dropzone" | "folder";
+  /** "dropzone" renders the Dropzone on its own. Omitted = previous behavior.
+   *  (The Folder drop target lives in folder-demo, so it gets the GSAP /
+   *  Motion switch.) */
+  layout?: "dropzone";
   /** Render-all mode for the docs gallery. Omitted = previous behavior. */
   showAll?: "states";
 }) {
@@ -281,22 +280,11 @@ export default function UploadDemo({
     </QueueRow>
   ));
 
-  if (layout === "folder") {
-    // Extra room above: the cards fan up out of the folder on hover, so the
-    // folder sits low in the frame instead of centred.
-    return (
-      <div className="w-full flex items-center justify-center min-h-[460px] px-6 pt-32 pb-12 relative z-10">
-        <FolderUploader />
-      </div>
-    );
-  }
-
-
   if (layout === "dropzone") {
     return (
-      <div className="w-full flex justify-center bg-background rounded-2xl border border-border overflow-hidden py-16 relative min-h-[450px]">
+      <div className="w-full flex justify-center bg-background rounded-2xl border border-border overflow-hidden py-8 sm:py-16 relative min-h-[400px] sm:min-h-[450px]">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0" />
-        <div className="w-full max-w-md flex flex-col gap-6 relative z-10 px-4 perspective-[1000px]">
+        <div className="w-full max-w-md flex flex-col gap-6 relative z-10 px-3 sm:px-4 min-w-0 perspective-[1000px]">
           <Dropzone
             onFilesDrop={handleFilesDrop}
             accept="image/*,application/pdf,video/mp4"
@@ -304,7 +292,7 @@ export default function UploadDemo({
           />
 
           {listed && (
-            <div className="flex flex-col">
+            <div className="flex flex-col w-full min-w-0">
               <style>{QUEUE_CSS}</style>
               <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-1">
                 <span>Uploading {totalCount} files</span>
@@ -323,9 +311,9 @@ export default function UploadDemo({
 
   if (showAll === "states") {
     return (
-      <div className="w-full flex justify-center bg-background rounded-2xl border border-border overflow-hidden py-16 relative min-h-[500px]">
+      <div className="w-full flex justify-center bg-background rounded-2xl border border-border overflow-hidden py-8 sm:py-16 relative min-h-[450px] sm:min-h-[500px]">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0" />
-        <div className="w-full max-w-md flex flex-col gap-3 relative z-10 px-4">
+        <div className="w-full max-w-md flex flex-col gap-3 relative z-10 px-3 sm:px-4 min-w-0">
           {STATIC_STATES.map((item) => (
             <UploadItem
               key={item.id}
@@ -340,19 +328,19 @@ export default function UploadDemo({
   }
 
   return (
-    <div className="w-full flex justify-center bg-background rounded-2xl border border-border overflow-hidden py-16 relative min-h-[600px]">
+    <div className="w-full flex justify-center bg-background rounded-2xl border border-border overflow-hidden py-8 sm:py-16 relative min-h-[500px] sm:min-h-[600px]">
       {/* Subtle Grid Background */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0" />
 
       {/* App Container */}
-      <div className="w-full max-w-md flex flex-col gap-6 relative z-10 px-4 perspective-[1000px]">
+      <div className="w-full max-w-md flex flex-col gap-6 relative z-10 px-3 sm:px-4 min-w-0 perspective-[1000px]">
         <Dropzone
           onFilesDrop={handleFilesDrop}
           accept="image/*,application/pdf,video/mp4"
         />
 
         {listed && (
-          <div className="flex flex-col">
+          <div className="flex flex-col w-full min-w-0">
             <style>{QUEUE_CSS}</style>
             <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 px-1">
               <span>Uploading {totalCount} files</span>
@@ -367,53 +355,5 @@ export default function UploadDemo({
         )}
       </div>
     </div>
-  );
-}
-
-/* ========================================================================== */
-/*  Folder drop target - the Folder block as an upload surface                */
-/* ========================================================================== */
-
-/** `peek={0}` keeps the folder empty until something is dropped on it; the
- *  default would show three placeholder cards peeking out. */
-function FolderUploader() {
-  const [files, setFiles] = useState<FolderFile[]>([]);
-  const [progress, setProgress] = useState<number | undefined>(undefined);
-  const timer = useRef<ReturnType<typeof setInterval> | null>(null);
-
-  useEffect(() => () => { if (timer.current) clearInterval(timer.current); }, []);
-
-  // Fake the upload: every file ticks up together, the pocket bar tracks the
-  // overall figure, and both settle at 100 so the bars disappear.
-  const onFiles = (incoming: File[]) => {
-    const next = incoming.map((f) => ({
-      name: f.name,
-      progress: 0,
-      thumb: f.type.startsWith("image/") ? URL.createObjectURL(f) : undefined,
-    }));
-    setFiles((prev) => [...prev, ...next]);
-    setProgress(0);
-    if (timer.current) clearInterval(timer.current);
-    let p = 0;
-    timer.current = setInterval(() => {
-      p = Math.min(100, p + 4);
-      setProgress(p);
-      setFiles((prev) => prev.map((f) => (f.progress !== undefined && f.progress < 100 ? { ...f, progress: p } : f)));
-      if (p >= 100 && timer.current) clearInterval(timer.current);
-    }, 80);
-  };
-
-  return (
-    <Folder
-      interactive
-      peek={0}
-      icon={ImageIcon}
-      label="Drop zone"
-      files={files}
-      progress={progress}
-      onFiles={onFiles}
-      onRemoveFile={(i) => setFiles((prev) => prev.filter((_, idx) => idx !== i))}
-      accept="image/*,.pdf"
-    />
   );
 }

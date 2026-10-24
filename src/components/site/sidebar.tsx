@@ -268,7 +268,7 @@ const Sidebar = () => {
   const isSearching = searchQuery.trim().length > 0;
 
   return (
-    <aside className="hidden md:flex flex-col w-56 shrink-0 h-[calc(100dvh-57px)] sticky top-[57px] bg-background">
+    <aside className="hidden md:flex flex-col w-[244px] shrink-0 h-[calc(100dvh-57px)] sticky top-[57px] bg-background">
       {/* --- STICKY FRAMEWORK SWITCHER + SEARCH INPUT ---
           One control group: the switcher scopes the tree, search filters within
           that scope, and neither may scroll away from the reader. */}

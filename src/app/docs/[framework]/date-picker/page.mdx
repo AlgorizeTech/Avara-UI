@@ -40,15 +40,25 @@ import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
 export default function ValidatedDatePicker() {
   const [date, setDate] = useState<Date | null>(null);
 
-  // Passing \`error\` turns the trigger red, swaps in an alert icon and
-  // replaces the helper text with your message.
+  const isPast = (d: Date | null) => {
+    if (!d) return true;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const target = new Date(d);
+    target.setHours(0, 0, 0, 0);
+    return target.getTime() < today.getTime();
+  };
+
+  const hasError = isPast(date);
+
   return (
     <DatePickerBlock
       value={date}
       onChange={setDate}
       label="Launch Date"
       placeholder="Select a date"
-      error="Please select a valid date in the future."
+      helperText={!hasError ? "Valid launch date selected." : undefined}
+      error={hasError ? "Please select a valid date in the future." : undefined}
     />
   );
 }`;

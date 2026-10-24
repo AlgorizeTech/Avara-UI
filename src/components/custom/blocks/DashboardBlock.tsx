@@ -31,14 +31,21 @@ import { motion } from "motion/react";
 import { ChartBlock } from "./ChartBlock";
 import { Popover, PopoverContent, PopoverTrigger } from "./PopoverBlock";
 import { ToggleGroup, ToggleGroupItem } from "./ToggleGroupBlock";
+import {
+  LiquidGlassWrapper,
+  LiquidGlassBackground,
+  LiquidGlassSvgFilter,
+} from "@/components/custom/ui/liquid-glass";
+
+export { LiquidGlassWrapper, LiquidGlassBackground, LiquidGlassSvgFilter };
 
 // ==========================================
 // TYPES
 // ==========================================
 export type DashboardPeriod = "day" | "week" | "month";
 
-/** `classic` is the light canvas with solid panels; `glass` is milky glass panes on a soft colour canvas. */
-export type DashboardVariant = "classic" | "glass";
+/** `classic` is the light canvas with solid panels; `glass` is milky glass panes on a soft colour canvas; `liquid-glass` is fluid SVG refractive glass. */
+export type DashboardVariant = "classic" | "glass" | "liquid-glass";
 
 export interface DashboardPoint {
   /** Axis label, e.g. "Mon" or "Sep". */
@@ -143,8 +150,10 @@ export interface DashboardLinks {
 
 export interface DashboardProps
   extends Omit<React.HTMLAttributes<HTMLElement>, "title"> {
-  /** The look: `classic` (default) or `glass`. Both read the same props. */
+  /** The look: `classic` (default) | `glass` | `liquid-glass`. */
   variant?: DashboardVariant;
+  /** Optional custom background image URL for liquid-glass and glass variants. */
+  bgImage?: string;
   /** The greeting uses the first name. */
   userName?: string;
   /** The line under the greeting. Defaults to a sentence built from today's numbers. */
@@ -1719,6 +1728,36 @@ const GLASS_CSS = `
     radial-gradient(84rem 34rem at 62% 122%, var(--dash-glow), transparent 72%);
 }
 
+[data-dashboard-glass][data-liquid="true"] {
+  --foreground: #ffffff;
+  --muted-foreground: rgba(255, 255, 255, 0.75);
+  --dash-ink: #ffffff;
+  --dash-icon: rgba(255, 255, 255, 0.9);
+  --dash-canvas: transparent;
+  --dash-surface: rgba(255, 255, 255, 0.1);
+  --dash-pane: rgba(255, 255, 255, 0.08);
+  --dash-card: rgba(255, 255, 255, 0.12);
+  --dash-card-strong: rgba(255, 255, 255, 0.18);
+  --dash-well: rgba(0, 0, 0, 0.25);
+  --dash-hairline: rgba(255, 255, 255, 0.18);
+  --dash-border: rgba(255, 255, 255, 0.2);
+  --dash-sheen-1: rgba(255, 255, 255, 0.25);
+  --dash-sheen-2: rgba(255, 255, 255, 0.05);
+  --dash-edge: rgba(255, 255, 255, 0.3);
+  --dash-rim: rgba(255, 255, 255, 0.25);
+  background-color: transparent !important;
+  background-image: none !important;
+  color: #ffffff !important;
+}
+
+[data-dashboard-glass][data-liquid="true"] .dg-card,
+[data-dashboard-glass][data-liquid="true"] .dg-pane {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(12px) !important;
+  color: #ffffff !important;
+}
+
 /* The period switch (the library's segmented toggle group): a glass track
    with the brand pill and white text. */
 [data-dashboard-glass] .dg-seg {
@@ -1736,6 +1775,8 @@ const GLASS_CSS = `
 [data-dashboard-glass] .dg-seg [aria-checked="true"] {
   color: var(--primary-foreground);
 }
+
+
 
 @layer components {
   [data-dashboard-glass] .dg-pane {
@@ -3345,6 +3386,7 @@ function GlassActivityPanel({
 }
 
 function GlassDashboard({
+  isLiquid,
   userName,
   summary,
   totals,
@@ -3366,6 +3408,7 @@ function GlassDashboard({
   style,
   ...props
 }: Omit<DashboardProps, "variant" | "defaultPeriod" | "onExport" | "now"> & {
+  isLiquid?: boolean;
   summary: React.ReactNode;
   totals: DashboardTotal[];
   metrics: DashboardMetric[];
@@ -3382,6 +3425,7 @@ function GlassDashboard({
     <section
       aria-label="Dashboard"
       data-dashboard-glass=""
+      data-liquid={isLiquid ? "true" : undefined}
       className={cn(
         "@container relative isolate w-full overflow-hidden rounded-[28px] p-4 text-foreground sm:p-6 lg:p-8",
         className,
@@ -3451,6 +3495,99 @@ function GlassDashboard({
   );
 }
 
+function LiquidGlassDashboard({
+  userName,
+  summary,
+  totals,
+  metrics,
+  activity,
+  sources,
+  signUps,
+  countries,
+  authors,
+  payments,
+  shortcuts,
+  links,
+  linkComponent,
+  period,
+  onPeriodChange,
+  onExport,
+  now,
+  bgImage,
+  className,
+  style,
+  ...props
+}: Omit<DashboardProps, "variant" | "defaultPeriod" | "onExport" | "now"> & {
+  summary: React.ReactNode;
+  totals: DashboardTotal[];
+  metrics: DashboardMetric[];
+  activity: DashboardActivity[];
+  shortcuts: DashboardShortcut[];
+  links: DashboardLinks;
+  linkComponent: React.ElementType;
+  period: DashboardPeriod;
+  onPeriodChange: (period: DashboardPeriod) => void;
+  onExport: () => void;
+  now: Date | null;
+}) {
+  const liquidBg =
+    bgImage ||
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg";
+
+  const filterId = "glass-blur-dashboard";
+
+  return (
+    <div
+      className={cn(
+        "@container relative w-full overflow-hidden rounded-3xl p-2 sm:p-6 md:p-8 isolate [contain:paint] [transform:translateZ(0)]",
+        className,
+      )}
+      style={style}
+      {...props}
+    >
+      {/* Single Liquid Glass SVG Filter */}
+      <LiquidGlassSvgFilter id={filterId} bgImage={liquidBg} />
+
+      {/* Full-bleed background image */}
+      <img
+        src={liquidBg}
+        alt="Liquid glass backdrop"
+        className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+      />
+
+      <LiquidGlassWrapper
+        radius="1.5rem"
+        bgImage={liquidBg}
+        filterId={filterId}
+        contrastOverlayClassName="bg-black/45 backdrop-blur-md"
+        className="relative z-10 w-full text-white transition-all duration-300 flex flex-col p-4 sm:p-6 lg:p-8 shadow-[0_30px_70px_rgba(0,0,0,0.6)]"
+      >
+        <GlassDashboard
+          isLiquid={true}
+          userName={userName}
+          summary={summary}
+          totals={totals}
+          metrics={metrics}
+          activity={activity}
+          sources={sources}
+          signUps={signUps}
+          countries={countries}
+          authors={authors}
+          payments={payments}
+          shortcuts={shortcuts}
+          links={links}
+          linkComponent={linkComponent}
+          period={period}
+          onPeriodChange={onPeriodChange}
+          onExport={onExport}
+          now={now}
+          className="!p-0 border-0 bg-transparent shadow-none"
+        />
+      </LiquidGlassWrapper>
+    </div>
+  );
+}
+
 // ==========================================
 // SECTION
 // ==========================================
@@ -3464,9 +3601,14 @@ function GlassDashboard({
  * cards with a brand-filled lead, metric tiles beside capsule columns, a
  * segmented half ring, the activity as a journey in a notched pane with the
  * top authors in the notch, a payments table and a chunky country bar.
+ *
+ * `variant="liquid-glass"` wraps the glass dashboard with fluid SVG displacement map filters,
+ * specular inner highlights, and ambient depth gradients using LiquidGlassWrapper, LiquidGlassBackground,
+ * and LiquidGlassSvgFilter.
  */
 export function Dashboard({
   variant = "classic",
+  bgImage,
   userName,
   summary,
   totals = [],
@@ -3511,6 +3653,34 @@ export function Dashboard({
         onPeriodChange={setPeriod}
         onExport={exportReport}
         now={now}
+        className={className}
+        style={style}
+        {...props}
+      />
+    );
+  }
+
+  if (variant === "liquid-glass") {
+    return (
+      <LiquidGlassDashboard
+        userName={userName}
+        summary={summary ?? describeToday(metrics)}
+        totals={totals}
+        metrics={metrics}
+        activity={activity}
+        sources={sources}
+        signUps={signUps}
+        countries={countries}
+        authors={authors}
+        payments={payments}
+        shortcuts={shortcuts}
+        links={links}
+        linkComponent={linkComponent}
+        period={period}
+        onPeriodChange={setPeriod}
+        onExport={exportReport}
+        now={now}
+        bgImage={bgImage}
         className={className}
         style={style}
         {...props}

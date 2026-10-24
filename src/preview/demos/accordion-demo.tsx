@@ -2,6 +2,7 @@
 
 import {
   Accordion,
+  BrandLogoAccordion,
   type AccordionDataItem,
 } from "@/components/custom/blocks/Accordion";
 
@@ -79,7 +80,7 @@ const libraryFaq: AccordionDataItem[] = [
   },
 ];
 
-type Variant = "default" | "bordered" | "filled" | "ghost" | "elevated";
+type Variant = "default" | "bordered" | "filled" | "ghost" | "elevated" | "brand-reveal";
 type Animation = "none" | "stack";
 type Interaction =
   | "single"
@@ -168,11 +169,19 @@ export default function AccordionDemo({
     );
   }
 
+  if (variant === "brand-reveal") {
+    return (
+      <div className="mx-auto w-full max-w-4xl p-2 sm:p-4">
+        <BrandLogoAccordion />
+      </div>
+    );
+  }
+
   if (showAll === "variants") {
-    const variants: Variant[] = ["default", "bordered", "filled", "elevated", "ghost"];
+    const variants: Variant[] = ["default", "bordered", "filled", "elevated", "ghost", "brand-reveal"];
 
     return (
-      <div className="mx-auto flex w-full max-w-2xl flex-col gap-10 p-4 md:p-8">
+      <div className="mx-auto flex w-full max-w-4xl flex-col gap-10 p-4 md:p-8">
         {variants.map((v) => (
           <div key={v} className="flex flex-col gap-3">
             <p className="text-xs text-muted-foreground">
@@ -180,13 +189,17 @@ export default function AccordionDemo({
                 variant=&quot;{v}&quot;
               </code>
             </p>
-            <Accordion
-              variant={v}
-              type="single"
-              collapsible
-              defaultValue="pricing"
-              accordionData={sampleData}
-            />
+            {v === "brand-reveal" ? (
+              <BrandLogoAccordion />
+            ) : (
+              <Accordion
+                variant={v}
+                type="single"
+                collapsible
+                defaultValue="pricing"
+                accordionData={sampleData}
+              />
+            )}
           </div>
         ))}
       </div>

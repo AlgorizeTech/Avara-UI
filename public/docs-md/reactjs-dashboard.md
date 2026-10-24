@@ -5,11 +5,16 @@ export const usageGlass = extractCode("src/preview/demos/dashboard-demo.tsx").re
   'variant = "glass"',
 );
 
+export const usageLiquidGlass = extractCode("src/preview/demos/dashboard-demo.tsx").replace(
+  'variant = "classic"',
+  'variant = "liquid-glass"',
+);
+
 # Dashboard
 
 An admin dashboard home on its own canvas: a greeting with all-time totals, a period switch, an overview chart with a tab per metric, the activity feed, traffic sources, visitors by country and the top authors. Every number arrives through props, so you point it at your API and the layout, the empty states and the narrow-screen stacking take care of themselves.
 
-Two looks read the same props: **classic**, solid panels on a light canvas, and **glass**, milky panes over soft colour blobs with KPI cards, metric tiles beside capsule columns, a segmented half ring, the activity as a journey in a notched pane, and a payments table.
+Three looks read the same props: **classic**, solid panels on a light canvas; **glass**, milky panes over soft colour blobs; and **liquid-glass**, fluid refractive glass powered by `LiquidGlassWrapper`, `LiquidGlassBackground`, and `LiquidGlassSvgFilter`.
 
 ## Installation
 
@@ -59,9 +64,9 @@ npx shadcn@latest add @algorize-ui/dashboard
         Description
 
         variant
-        "classic" | "glass"
+        "classic" | "glass" | "liquid-glass"
         "classic"
-        The look. Both read the same props; the glass-only props below are ignored by the classic look.
+        The look. All variants read the same props. liquid-glass wraps the dashboard in fluid SVG displacement filters, specular highlights, and refractive glass backdrops using LiquidGlassWrapper, LiquidGlassBackground, and LiquidGlassSvgFilter.
 
         userName
         string

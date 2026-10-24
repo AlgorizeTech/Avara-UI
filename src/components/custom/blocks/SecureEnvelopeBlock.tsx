@@ -1501,7 +1501,7 @@ export function ConfidentialFolder({
                   <div className="px-3 min-[400px]:px-4 sm:px-6 pb-2 pt-0.5 sm:pb-3.5 flex flex-col justify-between">
                     {/* Mini Primary banner */}
                     <div className="w-full bg-primary text-primary-foreground text-center font-sans font-bold tracking-wider text-[5px] min-[400px]:text-[6.5px] sm:text-[10.5px] py-0.5 sm:py-1 rounded-sm uppercase mb-1 transition-colors duration-300">
-                      ✦ {resolvedAirlineCompany} // PASSENGER STUB
+                      ✦ {resolvedAirlineCompany} {"//"} PASSENGER STUB
                     </div>
 
                     <div className="flex items-center justify-between">
@@ -1922,7 +1922,7 @@ export function ConfidentialFolder({
 
                     {/* Website link */}
                     <span className="relative z-10 font-sans text-[4px] min-[400px]:text-[5px] sm:text-[8px] text-primary-foreground/90 uppercase tracking-widest mt-1.5 sm:mt-2.5 font-semibold">
-                      {resolvedWebsiteUrl} // 24/7 CONCIERGE
+                      {resolvedWebsiteUrl} {"//"} 24/7 CONCIERGE
                     </span>
                   </div>
                 </div>
@@ -2165,7 +2165,7 @@ export function ConfidentialFolder({
                   borderColor: "var(--cf-stroke-flap)",
                 }}
               >
-                ✦ {resolvedAirlineCompany} // VIP LOUNGE
+                ✦ {resolvedAirlineCompany} {"//"} VIP LOUNGE
               </div>
             ) : isTrainTicket ? (
               <div

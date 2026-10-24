@@ -9,6 +9,7 @@ import {
 import { cn } from "@/lib/utils";
 import {
   ArrowDown,
+  ArrowUpRight,
   ChevronDown,
   Code,
   CreditCard,
@@ -60,6 +61,7 @@ export type AccordionVariant =
   | "filled"
   | "ghost"
   | "elevated"
+  | "brand-reveal"
   /** @deprecated Alias of "filled". */
   | "card-filled";
 
@@ -68,6 +70,7 @@ export type CustomAccordionProps = {
   collapsible?: boolean;
   defaultValue?: string | string[] | null;
   accordionData?: AccordionDataItem[];
+  brands?: BrandItem[];
   variant?: AccordionVariant;
   /**
    * "stack" starts every item piled on the first one, like a deck of cards,
@@ -100,7 +103,7 @@ type VariantStyles = {
   thread?: boolean;
 };
 
-const VARIANTS: Record<Exclude<AccordionVariant, "card-filled">, VariantStyles> = {
+const VARIANTS: Record<Exclude<AccordionVariant, "card-filled" | "brand-reveal">, VariantStyles> = {
   // "Lift": closed rows are quiet hairline rows; the open one lifts out as a card.
   default: {
     list: "flex flex-col",
@@ -312,7 +315,7 @@ function useStackEntrance(
   }, [listRef, enabled, setStacking]);
 }
 
-export function Accordion({
+function StandardAccordion({
   type = "single",
   collapsible = true,
   defaultValue = null,
@@ -326,7 +329,13 @@ export function Accordion({
   expandIcon = null,
   expandIconClassName,
 }: CustomAccordionProps) {
-  const styles = VARIANTS[variant === "card-filled" ? "filled" : variant];
+  const safeVariant =
+    variant === "card-filled" || variant === "brand-reveal"
+      ? "filled"
+      : (variant as keyof typeof VARIANTS) in VARIANTS
+        ? (variant as keyof typeof VARIANTS)
+        : "default";
+  const styles = VARIANTS[safeVariant];
 
   /** Radix wants an array here when `type` is "multiple". */
   const multipleDefault = Array.isArray(defaultValue)
@@ -345,6 +354,8 @@ export function Accordion({
 
   const listRef = React.useRef<HTMLDivElement>(null);
   const [stacking, setStacking] = React.useState(animation === "stack");
+  const [multipleValue, setMultipleValue] =
+    React.useState<string[]>(multipleDefault);
   useStackEntrance(listRef, animation === "stack", setStacking);
 
   const shellClassName = cn("relative w-full", styles.list, className);
@@ -427,9 +438,6 @@ export function Accordion({
     );
   });
 
-  const [multipleValue, setMultipleValue] =
-    React.useState<string[]>(multipleDefault);
-
   if (type === "single") {
     return (
       <ShadCNAccordion
@@ -471,5 +479,442 @@ export function Accordion({
     >
       {items}
     </ShadCNAccordion>
+  );
+}
+
+export function Accordion(props: CustomAccordionProps) {
+  if (props.variant === "brand-reveal") {
+    return (
+      <BrandLogoAccordion
+        brands={props.brands}
+        className={props.className}
+      />
+    );
+  }
+
+  return <StandardAccordion {...props} />;
+}
+
+/* ═══════════════════════════════════════════════
+   BRAND LOGO REVEAL ACCORDION COMPONENT
+   Horizontal interactive accordion for client & partner showcase.
+   Inspired by Framer Brand Logo Reveal.
+   ═══════════════════════════════════════════════ */
+
+export type BrandItem = {
+  id: string;
+  name: string;
+  caption: string;
+  index?: string;
+  logo?: React.ReactNode | string;
+  link?: string;
+  linkText?: string;
+};
+
+export type BrandLogoAccordionProps = {
+  brands?: BrandItem[];
+  title?: string;
+  defaultActiveId?: string;
+  height?: number | string;
+  autoplay?: boolean;
+  autoplayInterval?: number;
+  pauseOnHover?: boolean;
+  className?: string;
+  onBrandChange?: (brand: BrandItem, index: number) => void;
+};
+
+function AcmeMark({ className = "h-5 w-auto" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 32 32" fill="none" className={className}>
+      <path d="M16 3L28 10V22L16 29L4 22V10L16 3Z" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round" />
+      <path d="M16 3V29M4 10L28 22M28 10L4 22" stroke="currentColor" strokeWidth="1.75" strokeLinejoin="round" opacity="0.6" />
+    </svg>
+  );
+}
+
+function NorthstarMark({ className = "h-5 w-auto" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 32 32" fill="currentColor" className={className}>
+      <path d="M16 2L18.8 11.2L28 14L18.8 16.8L16 26L13.2 16.8L4 14L13.2 11.2L16 2Z" />
+      <circle cx="16" cy="14" r="2.5" fill="none" stroke="currentColor" strokeWidth="2" opacity="0.4" />
+    </svg>
+  );
+}
+
+function VertexMark({ className = "h-5 w-auto" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 32 32" fill="none" className={className}>
+      <path d="M16 4L28 26H4L16 4Z" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round" />
+      <path d="M16 12L22 23H10L16 12Z" fill="currentColor" opacity="0.6" />
+    </svg>
+  );
+}
+
+function HorizonMark({ className = "h-5 w-auto" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 32 32" fill="none" className={className}>
+      <path d="M7 16A9 9 0 0125 16" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M4 21H28" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M8 26H24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" opacity="0.6" />
+    </svg>
+  );
+}
+
+function SummitMark({ className = "h-5 w-auto" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 32 32" fill="none" className={className}>
+      <path d="M3 25L12 8L18 17L22 11L29 25H3Z" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round" />
+      <path d="M12 8V25M22 11V25" stroke="currentColor" strokeWidth="1.5" strokeDasharray="2 2" opacity="0.5" />
+    </svg>
+  );
+}
+
+function AtlasMark({ className = "h-5 w-auto" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 32 32" fill="none" className={className}>
+      <circle cx="16" cy="16" r="12" stroke="currentColor" strokeWidth="2" />
+      <ellipse cx="16" cy="16" rx="12" ry="5" stroke="currentColor" strokeWidth="2" />
+      <ellipse cx="16" cy="16" rx="5" ry="12" stroke="currentColor" strokeWidth="2" opacity="0.6" />
+    </svg>
+  );
+}
+
+function NovaMark({ className = "h-5 w-auto" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 32 32" fill="currentColor" className={className}>
+      <path d="M16 2L18 12L28 14L18 16L16 26L14 16L4 14L14 12L16 2Z" />
+      <circle cx="16" cy="14" r="1.5" fill="currentColor" />
+    </svg>
+  );
+}
+
+function EvergreenMark({ className = "h-5 w-auto" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 32 32" fill="none" className={className}>
+      <path d="M16 4L9 12H13L7 20H12L6 28H26L20 20H25L19 12H23L16 4Z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+      <path d="M16 4V28" stroke="currentColor" strokeWidth="2" opacity="0.5" />
+    </svg>
+  );
+}
+
+const BRAND_MARKS: Record<string, React.ComponentType<{ className?: string }>> = {
+  acme: AcmeMark,
+  northstar: NorthstarMark,
+  vertex: VertexMark,
+  horizon: HorizonMark,
+  summit: SummitMark,
+  atlas: AtlasMark,
+  nova: NovaMark,
+  evergreen: EvergreenMark,
+};
+
+function renderBrandLogo(item: BrandItem, mode: "spine" | "inner") {
+  if (React.isValidElement(item.logo)) {
+    return item.logo;
+  }
+  if (typeof item.logo === "string") {
+    const BuiltinMark = BRAND_MARKS[item.logo.toLowerCase()];
+    if (BuiltinMark) {
+      return (
+        <BuiltinMark
+          className={cn(
+            mode === "spine"
+              ? "size-4 object-contain"
+              : "size-6 sm:size-7 object-contain text-primary dark:text-primary"
+          )}
+        />
+      );
+    }
+    return (
+      <img
+        src={item.logo}
+        alt={item.name}
+        draggable={false}
+        loading="lazy"
+        className={cn(
+          "object-contain",
+          mode === "spine"
+            ? "h-4 w-auto max-w-[70px] filter grayscale opacity-60"
+            : "h-6 sm:h-7 w-auto max-w-[120px]"
+        )}
+      />
+    );
+  }
+  const Fallback = BRAND_MARKS[item.id.toLowerCase()] || AcmeMark;
+  return (
+    <Fallback
+      className={cn(
+        mode === "spine"
+          ? "size-4 object-contain"
+          : "size-6 sm:size-7 object-contain text-primary dark:text-primary"
+      )}
+    />
+  );
+}
+
+export const DEFAULT_BRANDS: BrandItem[] = [
+  {
+    id: "acme",
+    name: "Acme Technologies",
+    caption: "Website redesign and product marketing platform.",
+    index: "01",
+    logo: "acme",
+  },
+  {
+    id: "northstar",
+    name: "Northstar Studio",
+    caption: "Complete brand identity and responsive website.",
+    index: "02",
+    logo: "northstar",
+  },
+  {
+    id: "vertex",
+    name: "Vertex Solutions",
+    caption: "SaaS landing page with conversion focused design.",
+    index: "03",
+    logo: "vertex",
+  },
+  {
+    id: "horizon",
+    name: "Horizon Labs",
+    caption: "Design system and scalable UI components.",
+    index: "04",
+    logo: "horizon",
+  },
+  {
+    id: "summit",
+    name: "Summit Ventures",
+    caption: "Investor website with premium editorial experience.",
+    index: "05",
+    logo: "summit",
+  },
+  {
+    id: "atlas",
+    name: "Atlas Digital",
+    caption: "E-commerce experience with performance optimization.",
+    index: "06",
+    logo: "atlas",
+  },
+  {
+    id: "nova",
+    name: "Nova Creative",
+    caption: "Interactive portfolio and motion driven website.",
+    index: "07",
+    logo: "nova",
+  },
+  {
+    id: "evergreen",
+    name: "Evergreen Capital",
+    caption: "Corporate website with modern brand refresh.",
+    index: "08",
+    logo: "evergreen",
+  },
+];
+
+export function BrandLogoAccordion({
+  brands = DEFAULT_BRANDS,
+  title,
+  defaultActiveId,
+  height = 300,
+  autoplay = true,
+  autoplayInterval = 4000,
+  pauseOnHover = true,
+  className = "",
+  onBrandChange,
+}: BrandLogoAccordionProps) {
+  const initialIndex = defaultActiveId
+    ? Math.max(0, brands.findIndex((b) => b.id === defaultActiveId))
+    : 0;
+
+  const [activeIndex, setActiveIndex] = React.useState(initialIndex);
+  const [isPaused, setIsPaused] = React.useState(false);
+  const [progress, setProgress] = React.useState(0);
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  const activeIndexRef = React.useRef(activeIndex);
+  activeIndexRef.current = activeIndex;
+
+  const brandsRef = React.useRef(brands);
+  brandsRef.current = brands;
+
+  const onBrandChangeRef = React.useRef(onBrandChange);
+  onBrandChangeRef.current = onBrandChange;
+
+  const selectBrand = React.useCallback((index: number) => {
+    setActiveIndex(index);
+    setProgress(0);
+    const b = brandsRef.current[index];
+    if (b) {
+      onBrandChangeRef.current?.(b, index);
+    }
+  }, []);
+
+  // Autoplay ticker with smooth progress animation
+  React.useEffect(() => {
+    if (!autoplay || brands.length <= 1) return;
+
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
+
+    const stepMs = 50;
+    const increment = (stepMs / autoplayInterval) * 100;
+
+    const interval = setInterval(() => {
+      if (isPaused) return;
+
+      setProgress((prev) => {
+        if (prev + increment >= 100) {
+          const next = (activeIndexRef.current + 1) % brandsRef.current.length;
+          selectBrand(next);
+          return 0;
+        }
+        return prev + increment;
+      });
+    }, stepMs);
+
+    return () => clearInterval(interval);
+  }, [autoplay, autoplayInterval, isPaused, brands.length, selectBrand]);
+
+  const totalCount = brands.length;
+  const totalFormatted = String(totalCount).padStart(2, "0");
+
+  return (
+    <div className={cn("w-full select-none", className)}>
+      {title && (
+        <div className="text-[11px] font-semibold tracking-[0.22em] uppercase text-muted-foreground/60 mb-3 px-1">
+          {title}
+        </div>
+      )}
+
+      <div
+        ref={containerRef}
+        role="tablist"
+        aria-label={title || "Brand showcase"}
+        onMouseEnter={() => pauseOnHover && setIsPaused(true)}
+        onMouseLeave={() => pauseOnHover && setIsPaused(false)}
+        style={{
+          minHeight: typeof height === "number" ? `${height}px` : height,
+        }}
+        className={cn(
+          "relative flex flex-col md:flex-row w-full gap-[1px] rounded-2xl overflow-hidden border border-border/80 bg-border/70 dark:bg-border/40 shadow-sm",
+        )}
+      >
+        {brands.map((item, idx) => {
+          const isOpen = activeIndex === idx;
+          const formattedIndex = item.index || String(idx + 1).padStart(2, "0");
+
+          return (
+            <div
+              key={item.id}
+              role="tab"
+              id={`brand-tab-${item.id}`}
+              aria-selected={isOpen}
+              aria-expanded={isOpen}
+              tabIndex={0}
+              onClick={() => selectBrand(idx)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  selectBrand(idx);
+                } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+                  e.preventDefault();
+                  selectBrand((idx + 1) % brands.length);
+                } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+                  e.preventDefault();
+                  selectBrand((idx - 1 + brands.length) % brands.length);
+                }
+              }}
+              className={cn(
+                "relative overflow-hidden cursor-pointer flex transition-[flex-grow,flex-basis,background,color] duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset",
+                isOpen
+                  ? "flex-1 bg-zinc-950 text-zinc-50 dark:bg-zinc-900 dark:text-zinc-100 min-w-0 md:min-w-[280px]"
+                  : "flex-[0_0_54px] md:flex-[0_0_95px] lg:flex-[0_0_105px] bg-card text-foreground hover:bg-muted/70 dark:bg-zinc-950/60 dark:hover:bg-zinc-900/80"
+              )}
+            >
+              {/* Spine (Collapsed State) */}
+              <div
+                aria-hidden={isOpen}
+                className={cn(
+                  "absolute inset-0 flex transition-opacity ease-in-out",
+                  "flex-row md:flex-col items-center justify-between px-5 md:px-0 md:py-6",
+                  isOpen
+                    ? "opacity-0 pointer-events-none duration-300 delay-0"
+                    : "opacity-100 duration-500 delay-300"
+                )}
+              >
+                <div className="shrink-0 flex items-center justify-center opacity-60">
+                  {renderBrandLogo(item, "spine")}
+                </div>
+
+                <span className="md:[writing-mode:vertical-rl] md:rotate-180 text-[11px] font-semibold tracking-[0.2em] uppercase opacity-60 whitespace-nowrap">
+                  {item.name}
+                </span>
+
+                <span className="text-[10px] font-mono tracking-[0.14em] opacity-40">
+                  {formattedIndex}
+                </span>
+              </div>
+
+              {/* Inner Content (Expanded State) */}
+              <div
+                className={cn(
+                  "relative flex flex-col justify-between w-full h-full p-6 sm:p-8 min-w-[260px] box-border transition-all ease-[cubic-bezier(0.16,1,0.3,1)]",
+                  isOpen
+                    ? "opacity-100 translate-x-0 duration-700 delay-300"
+                    : "opacity-0 -translate-x-3 pointer-events-none absolute inset-0 duration-300 delay-0"
+                )}
+              >
+                {/* Counter */}
+                <div className="text-[11px] font-mono tracking-[0.22em] opacity-55">
+                  {formattedIndex} / {totalFormatted}
+                </div>
+
+                {/* Brand Details */}
+                <div className="my-auto py-4">
+                  <div className="inline-flex items-center justify-center size-12 rounded-xl bg-white/10 dark:bg-white/10 border border-white/15 shadow-sm backdrop-blur-sm mb-4 p-2.5">
+                    {renderBrandLogo(item, "inner")}
+                  </div>
+                  <div className="text-[12px] font-bold uppercase tracking-[0.18em] opacity-60">
+                    {item.name}
+                  </div>
+                  <p className="mt-2 text-sm sm:text-[14.5px] leading-relaxed opacity-85 max-w-[34ch] font-normal text-pretty">
+                    {item.caption}
+                  </p>
+                  {item.link && (
+                    <a
+                      href={item.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="inline-flex items-center gap-1.5 mt-3.5 text-[12px] font-medium text-primary hover:underline underline-offset-4 opacity-90 transition-opacity"
+                    >
+                      <span>{item.linkText || "Visit website"}</span>
+                      <ArrowUpRight className="size-3.5" />
+                    </a>
+                  )}
+                </div>
+
+                {/* Progress bar line */}
+                {autoplay && (
+                  <div
+                    aria-hidden="true"
+                    className="absolute left-0 right-0 bottom-0 h-[2.5px] bg-foreground/15 dark:bg-white/15 overflow-hidden"
+                  >
+                    <div
+                      className="h-full bg-primary transition-all duration-75 ease-linear"
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }

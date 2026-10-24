@@ -53,62 +53,13 @@ import {
 // ==========================================
 export type AIChatVariant = "default" | "minimal" | "glass" | "compact" | "liquid-glass";
 
-export function LiquidGlassSvgFilter() {
-  return (
-    <>
-      <img
-        src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg"
-        alt=""
-        aria-hidden="true"
-        style={{
-          position: "fixed",
-          top: "-9999px",
-          left: "-9999px",
-          width: "1px",
-          height: "1px",
-          opacity: 0,
-          pointerEvents: "none",
-        }}
-      />
-      <svg
-        style={{
-          position: "fixed",
-          top: "-9999px",
-          left: "-9999px",
-          width: 0,
-          height: 0,
-          pointerEvents: "none",
-        }}
-        aria-hidden="true"
-      >
-        <defs>
-          <filter
-            id="glass-blur-ai"
-            x="0"
-            y="0"
-            width="100%"
-            height="100%"
-            filterUnits="objectBoundingBox"
-          >
-            <feTurbulence
-              type="fractalNoise"
-              baseFrequency="0.003 0.007"
-              numOctaves="1"
-              result="turbulence"
-            />
-            <feDisplacementMap
-              in="SourceGraphic"
-              in2="turbulence"
-              scale="200"
-              xChannelSelector="R"
-              yChannelSelector="G"
-            />
-          </filter>
-        </defs>
-      </svg>
-    </>
-  );
-}
+import {
+  LiquidGlassBackground,
+  LiquidGlassSvgFilter,
+  formatRadius,
+} from "@/components/custom/ui/liquid-glass";
+import { SurfaceContext, useSurface } from "../glass-panel-context";
+export { LiquidGlassSvgFilter };
 
 // We use (string & {}) to preserve IDE autocomplete for the predefined types
 // while still allowing any arbitrary hex string like "#000fff".
@@ -122,7 +73,7 @@ export type AIChatColor =
 const chatVariants: Record<AIChatVariant, Record<string, string>> = {
   default: {
     wrapper:
-      "bg-background border border-border shadow-none rounded-2xl",
+      "bg-background border border-border shadow-none",
     sidebar:
       "bg-card/95 backdrop-blur-xl border-r border-border shadow-2xl lg:shadow-none rounded-r-2xl rounded-l-none lg:rounded-none",
     main: "bg-background",
@@ -145,7 +96,7 @@ const chatVariants: Record<AIChatVariant, Record<string, string>> = {
   },
   compact: {
     wrapper:
-      "bg-background border border-border shadow-none rounded-2xl",
+      "bg-background border border-border shadow-none",
     sidebar: "",
     main: "bg-background",
     header:
@@ -157,7 +108,7 @@ const chatVariants: Record<AIChatVariant, Record<string, string>> = {
   },
   glass: {
     wrapper:
-      "bg-white/40 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl rounded-2xl",
+      "bg-white/40 dark:bg-black/40 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-2xl",
     sidebar:
       "bg-white/40 dark:bg-zinc-950/60 lg:bg-white/[0.08] lg:dark:bg-white/[0.03] backdrop-blur-3xl backdrop-saturate-150 border-r border-white/25 dark:border-white/10 shadow-2xl lg:shadow-none rounded-r-2xl rounded-l-none lg:rounded-none",
     main: "bg-transparent",
@@ -171,7 +122,7 @@ const chatVariants: Record<AIChatVariant, Record<string, string>> = {
   },
   "liquid-glass": {
     wrapper:
-      "bg-transparent border-0 shadow-[0_25px_60px_rgba(0,0,0,0.45)] text-white rounded-[22px] sm:rounded-[28px] [--foreground:#ffffff] [--muted-foreground:rgba(255,255,255,0.75)] [--color-foreground:#ffffff] [--color-muted-foreground:rgba(255,255,255,0.75)]",
+      "bg-transparent border-0 shadow-[0_25px_60px_rgba(0,0,0,0.45)] text-white [--foreground:#ffffff] [--muted-foreground:rgba(255,255,255,0.75)] [--color-foreground:#ffffff] [--color-muted-foreground:rgba(255,255,255,0.75)]",
     sidebar:
       "bg-white/[0.07] dark:bg-black/25 border-r border-white/20 dark:border-white/10",
     main: "bg-transparent",
@@ -500,6 +451,8 @@ export default function AIChat({
   accept,
   maxFiles = 6,
   tools = defaultTools,
+  rounded,
+  className,
 }: {
   chatHistory?: readonly ChatThread[];
   initialMessages?: readonly Message[];
@@ -536,6 +489,9 @@ export default function AIChat({
   maxFiles?: number;
   /** Rows of the "+" menu. One `action: "upload"` row opens the picker; the rest insert `@Label`. */
   tools?: readonly ComposerTool[];
+  /** Optional dynamic corner rounding radius value (e.g. "24px", "1.5rem", or Tailwind class) */
+  rounded?: string | number;
+  className?: string;
 }) {
   const isCustomHex = color.startsWith("#");
 
@@ -566,6 +522,9 @@ export default function AIChat({
     : colorThemes[color] || colorThemes["primary"];
 
   const styles = chatVariants[variant];
+  const inheritedSurface = useSurface();
+  const isLiquid = variant === "liquid-glass" || inheritedSurface === "liquid-glass";
+  const surfaceValue = isLiquid ? "liquid-glass" : inheritedSurface;
 
   // Ink for the accent-gradient tiles, read off `theme.primaryBg` so it matches
   // the button text: `primary` pairs with primary-foreground, not white.
@@ -1131,17 +1090,37 @@ export default function AIChat({
                         role="menuitem"
                         disabled={full}
                         onClick={() => runTool(tool)}
-                        className="w-full flex items-center gap-3 px-2.5 sm:px-3 py-2 sm:py-2.5 rounded-lg text-left transition-colors hover:bg-muted disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed"
+                        className={cn(
+                          "w-full flex items-center gap-3 px-2.5 sm:px-3 py-2 sm:py-2.5 rounded-lg text-left transition-colors disabled:opacity-40 cursor-pointer disabled:cursor-not-allowed",
+                          isLiquid
+                            ? "hover:bg-white/15 text-white"
+                            : "hover:bg-muted",
+                        )}
                       >
-                        <span className="shrink-0 text-muted-foreground">
+                        <span
+                          className={cn(
+                            "shrink-0",
+                            isLiquid ? "text-white/80" : "text-muted-foreground",
+                          )}
+                        >
                           {tool.icon ?? <Plus className="w-4 h-4" />}
                         </span>
                         <span className="min-w-0 flex items-baseline gap-2 truncate">
-                          <span className="text-sm font-semibold text-foreground">
+                          <span
+                            className={cn(
+                              "text-sm font-semibold",
+                              isLiquid ? "text-white" : "text-foreground",
+                            )}
+                          >
                             {tool.label}
                           </span>
                           {tool.description && (
-                            <span className="text-xs text-muted-foreground truncate">
+                            <span
+                              className={cn(
+                                "text-xs truncate",
+                                isLiquid ? "text-white/70" : "text-muted-foreground",
+                              )}
+                            >
                               {tool.description}
                             </span>
                           )}
@@ -1199,7 +1178,7 @@ export default function AIChat({
                             <span
                               className={cn(
                                 "text-[9px] font-semibold uppercase tracking-wide px-1.5 py-px rounded-full",
-                                theme.lightBg,
+                                isLiquid ? "bg-white/20 text-white" : theme.lightBg,
                               )}
                             >
                               {model.badge}
@@ -1208,7 +1187,12 @@ export default function AIChat({
                           {tier && <TierBadge tier={tier} />}
                         </div>
                         {model.description && (
-                          <p className="text-xs text-muted-foreground truncate">
+                          <p
+                            className={cn(
+                              "text-xs truncate",
+                              isLiquid ? "text-white/70" : "text-muted-foreground",
+                            )}
+                          >
                             {model.description}
                           </p>
                         )}
@@ -1236,9 +1220,19 @@ export default function AIChat({
               >
                 <div className="p-2.5 sm:p-3">
                   <div className="flex items-center justify-between gap-3">
-                    <p className="text-xs sm:text-sm font-medium text-muted-foreground leading-none">
+                    <p
+                      className={cn(
+                        "text-xs sm:text-sm font-medium leading-none",
+                        isLiquid ? "text-white/80" : "text-muted-foreground",
+                      )}
+                    >
                       Effort
-                      <span className="ml-2 font-semibold text-foreground">
+                      <span
+                        className={cn(
+                          "ml-2 font-semibold",
+                          isLiquid ? "text-white" : "text-foreground",
+                        )}
+                      >
                         {selectedEffort.label}
                       </span>
                     </p>
@@ -1247,12 +1241,22 @@ export default function AIChat({
                         selectedEffort.description ??
                         "How long the model thinks before answering"
                       }
-                      className="p-0.5 -mr-0.5 rounded-full text-muted-foreground/70 hover:text-foreground cursor-help"
+                      className={cn(
+                        "p-0.5 -mr-0.5 rounded-full cursor-help transition-colors",
+                        isLiquid
+                          ? "text-white/70 hover:text-white"
+                          : "text-muted-foreground/70 hover:text-foreground",
+                      )}
                     >
                       <CircleHelp className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                     </span>
                   </div>
-                  <div className="mt-3 sm:mt-4 mb-1.5 sm:mb-2 flex items-center justify-between text-[11px] sm:text-xs font-medium text-muted-foreground leading-none">
+                  <div
+                    className={cn(
+                      "mt-3 sm:mt-4 mb-1.5 sm:mb-2 flex items-center justify-between text-[11px] sm:text-xs font-medium leading-none",
+                      isLiquid ? "text-white/70" : "text-muted-foreground",
+                    )}
+                  >
                     <span>Faster</span>
                     <span>Smarter</span>
                   </div>
@@ -1327,54 +1331,31 @@ export default function AIChat({
     </div>
   );
 
+  const formattedRadius = formatRadius(rounded);
+  const dynamicRadiusStyle: React.CSSProperties =
+    formattedRadius !== undefined
+      ? { borderRadius: formattedRadius }
+      : typeof rounded === "string"
+        ? {}
+        : { borderRadius: "var(--radius-3xl, 1.5rem)" };
+
   return (
-    <div
-      style={customVars}
+    <SurfaceContext.Provider value={surfaceValue}>
+      <div
+        style={{
+          ...customVars,
+          ...dynamicRadiusStyle,
+        }}
       className={cn(
         "w-full max-w-full h-[650px] sm:h-[750px] flex overflow-hidden relative font-sans box-border transition-colors duration-300 isolate [contain:paint] [transform:translateZ(0)]",
+        typeof rounded === "string" && !formatRadius(rounded) ? rounded : "",
         styles.wrapper,
+        className,
       )}
     >
       <LiquidGlassSvgFilter />
       {variant === "liquid-glass" && (
-        <>
-          {/* Inner Clipping Container for Liquid Background Stack */}
-          <div className="absolute inset-0 overflow-hidden rounded-[22px] sm:rounded-[28px] pointer-events-none z-0">
-            {/* Layer 0: Liquid SVG Displaced Wave Background */}
-            <div
-              className="absolute -inset-10"
-              style={{
-                backgroundImage:
-                  'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                filter: "url(#glass-blur-ai)",
-                transform: "scale(1.1)",
-              }}
-            />
-
-            {/* Layer 1: Contrast overlay & soft backdrop blur */}
-            <div className="absolute inset-0 bg-black/30 dark:bg-black/45 backdrop-blur-[2px]" />
-
-            {/* Layer 2: Ambient Drop Shadow & Subtle Glow */}
-            <div
-              className="absolute inset-0 rounded-[22px] sm:rounded-[28px]"
-              style={{
-                boxShadow:
-                  "0 20px 50px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.08)",
-              }}
-            />
-          </div>
-
-          {/* Layer 3: Specular Inner Border Highlight */}
-          <div
-            className="absolute inset-0 z-40 pointer-events-none rounded-[22px] sm:rounded-[28px] border border-white/40 dark:border-white/15"
-            style={{
-              boxShadow:
-                "inset 2px 2px 2px 0 rgba(255, 255, 255, 0.45), inset -2px -2px 2px 0 rgba(255, 255, 255, 0.3)",
-            }}
-          />
-        </>
+        <LiquidGlassBackground radius={formattedRadius ?? "var(--radius-3xl, 1.5rem)"} />
       )}
 
       {/* === LEFT SIDEBAR === */}
@@ -1382,26 +1363,18 @@ export default function AIChat({
         <aside
           className={cn(
             `absolute lg:relative z-30 w-[280px] max-w-[85vw] shrink-0 h-full flex flex-col transition-transform duration-300 ease-in-out ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`,
-            "rounded-r-2xl rounded-l-none lg:rounded-none overflow-hidden",
+            "rounded-l-[inherit] max-lg:rounded-r-2xl lg:rounded-r-none overflow-hidden",
             styles.sidebar,
-            variant === "liquid-glass" && "rounded-l-[22px] sm:rounded-l-[28px] max-lg:rounded-r-2xl max-lg:border-r max-lg:border-white/20",
+            variant === "liquid-glass" && "rounded-l-[inherit] max-lg:rounded-r-2xl max-lg:border-r max-lg:border-white/20",
           )}
         >
           {variant === "liquid-glass" && (
-            <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-              <div
-                className="absolute -inset-10"
-                style={{
-                  backgroundImage:
-                    'url("https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg")',
-                  backgroundSize: "cover",
-                  backgroundPosition: "left center",
-                  filter: "url(#glass-blur-ai)",
-                  transform: "scale(1.1)",
-                }}
-              />
-              <div className="absolute inset-0 bg-black/35 dark:bg-black/50 backdrop-blur-[2px]" />
-            </div>
+            <LiquidGlassBackground
+              radius={formattedRadius ?? "var(--radius-3xl, 1.5rem)"}
+              bgPosition="left center"
+              showOuterShadow={false}
+              contrastOverlayClassName="bg-black/35 dark:bg-black/50 backdrop-blur-[2px]"
+            />
           )}
 
           <div
@@ -1656,14 +1629,26 @@ export default function AIChat({
 
       {showSidebar && isSidebarOpen && (
         <div
-          className={cn(
-            "absolute inset-0 z-20 lg:hidden cursor-pointer transition-opacity duration-300",
-            variant === "liquid-glass" || variant === "glass"
-              ? "bg-black/25 dark:bg-black/45 backdrop-blur-[2px]"
-              : "bg-black/50 dark:bg-black/70 backdrop-blur-sm",
-          )}
+          className="absolute inset-0 z-20 lg:hidden cursor-pointer transition-opacity duration-300 rounded-[inherit] overflow-hidden"
           onClick={() => setIsSidebarOpen(false)}
-        />
+        >
+          {variant === "liquid-glass" ? (
+            <LiquidGlassBackground
+              radius={formattedRadius ?? "var(--radius-3xl, 1.5rem)"}
+              showOuterShadow={false}
+              contrastOverlayClassName="bg-black/50 dark:bg-black/70 backdrop-blur-md"
+            />
+          ) : (
+            <div
+              className={cn(
+                "absolute inset-0 rounded-[inherit]",
+                variant === "glass"
+                  ? "bg-black/25 dark:bg-black/45 backdrop-blur-[2px]"
+                  : "bg-black/50 dark:bg-black/70 backdrop-blur-sm",
+              )}
+            />
+          )}
+        </div>
       )}
 
       {/* === MAIN CHAT AREA === */}
@@ -2052,7 +2037,8 @@ export default function AIChat({
         )}
       </main>
     </div>
-  );
+  </SurfaceContext.Provider>
+);
 }
 
 // ==========================================
@@ -2301,6 +2287,9 @@ function EffortSlider({
   onChange: (index: number) => void;
   theme: Theme;
 }) {
+  const surface = useSurface();
+  const isLiquid = surface === "liquid-glass";
+
   const last = Math.max(efforts.length - 1, 1);
   const index = Math.min(Math.max(0, value), last);
   // Stop centres run from half a thumb in from each end, inside the track inset.
@@ -2313,11 +2302,24 @@ function EffortSlider({
   const spring = { type: "spring" as const, stiffness: 400, damping: 30 };
 
   return (
-    <div className={cn("relative h-7 sm:h-8 w-full select-none", theme.primaryText)}>
-      <div className="absolute inset-0 rounded-full bg-muted" />
+    <div
+      className={cn(
+        "relative h-7 sm:h-8 w-full select-none",
+        isLiquid ? "text-white" : theme.primaryText,
+      )}
+    >
+      <div
+        className={cn(
+          "absolute inset-0 rounded-full",
+          isLiquid ? "bg-white/15" : "bg-muted",
+        )}
+      />
       {/* Fill runs from the track's start to the thumb's trailing edge */}
       <motion.div
-        className="absolute rounded-full bg-current opacity-40"
+        className={cn(
+          "absolute rounded-full",
+          isLiquid ? "bg-white/40" : "bg-current opacity-40",
+        )}
         style={{ top: TRACK_INSET, bottom: TRACK_INSET, left: TRACK_INSET }}
         initial={false}
         animate={{
@@ -2330,13 +2332,22 @@ function EffortSlider({
           key={effort.id}
           className={cn(
             "absolute top-1/2 size-[5px] -translate-x-1/2 -translate-y-1/2 rounded-full transition-colors duration-300",
-            i <= index ? "bg-background/80" : "bg-foreground/20",
+            i <= index
+              ? isLiquid
+                ? "bg-white"
+                : "bg-background/80"
+              : isLiquid
+                ? "bg-white/30"
+                : "bg-foreground/20",
           )}
           style={{ left: stopLeft(i) }}
         />
       ))}
       <motion.div
-        className="absolute top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-current shadow-sm"
+        className={cn(
+          "absolute top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full shadow-sm",
+          isLiquid ? "bg-white" : "bg-current",
+        )}
         style={{
           width: THUMB_WIDTH,
           height: `calc(100% - ${TRACK_INSET * 2}px)`,
@@ -2834,6 +2845,8 @@ function ComposerMenu({
   theme: Theme;
   children: React.ReactNode;
 }) {
+  const surface = useSurface();
+  const isLiquid = surface === "liquid-glass";
   const ref = useRef<HTMLDivElement>(null);
 
   // A trigger near the right of a narrow composer would push its panel past
@@ -2888,10 +2901,10 @@ function ComposerMenu({
             ? "size-7 sm:size-8 justify-center"
             : "gap-1 sm:gap-1.5 h-7 sm:h-8 px-1.5 sm:pl-2 max-w-full sm:max-w-[160px] text-[11px] sm:text-xs",
           highlighted
-            ? (highlightClassName ?? cn(theme.lightBg, theme.primaryText))
+            ? (highlightClassName ?? (isLiquid ? "bg-white/20 text-white" : cn(theme.lightBg, theme.primaryText)))
             : open
-              ? theme.lightBg
-              : cn("text-muted-foreground", theme.primaryHover),
+              ? (isLiquid ? "bg-white/20 text-white" : theme.lightBg)
+              : (isLiquid ? "text-white/80 hover:bg-white/15 hover:text-white" : cn("text-muted-foreground", theme.primaryHover)),
         )}
       >
         {flourish}
@@ -2919,12 +2932,20 @@ function ComposerMenu({
             transition={{ duration: 0.16, ease: "easeOut" }}
             style={{ transformOrigin: "bottom left" }}
             className={cn(
-              "absolute bottom-full left-0 mb-2 rounded-xl border border-border bg-popover text-popover-foreground shadow-xl p-1 z-50",
+              "absolute bottom-full left-0 mb-2 rounded-xl p-1 z-50 transition-all",
+              isLiquid
+                ? "bg-black/75 backdrop-blur-2xl border border-white/30 text-white shadow-[0_20px_50px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.3)]"
+                : "border border-border bg-popover text-popover-foreground shadow-xl",
               width,
             )}
           >
             {heading && (
-              <p className="px-2.5 pt-1.5 pb-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+              <p
+                className={cn(
+                  "px-2.5 pt-1.5 pb-1 text-[10px] font-semibold uppercase tracking-wider",
+                  isLiquid ? "text-white/60" : "text-muted-foreground",
+                )}
+              >
                 {heading}
               </p>
             )}
@@ -2947,6 +2968,9 @@ function MenuItem({
   onClick: () => void;
   children: React.ReactNode;
 }) {
+  const surface = useSurface();
+  const isLiquid = surface === "liquid-glass";
+
   return (
     <button
       type="button"
@@ -2955,15 +2979,24 @@ function MenuItem({
       onClick={onClick}
       className={cn(
         "w-full flex items-center gap-2.5 px-2.5 py-1.5 sm:py-2 rounded-lg text-left transition-colors cursor-pointer",
-        active ? theme.lightBg : "hover:bg-muted",
+        isLiquid
+          ? active
+            ? "bg-white/20 text-white font-medium"
+            : "text-white/80 hover:bg-white/10 hover:text-white"
+          : active
+            ? theme.lightBg
+            : "hover:bg-muted",
       )}
     >
       {children}
       <Check
         className={cn(
           "w-4 h-4 shrink-0 transition-opacity",
-          theme.primaryText,
-          active ? "opacity-100" : "opacity-0",
+          isLiquid
+            ? active
+              ? "opacity-100 text-white"
+              : "opacity-0 text-white"
+            : cn(theme.primaryText, active ? "opacity-100" : "opacity-0"),
         )}
       />
     </button>

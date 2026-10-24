@@ -48,6 +48,41 @@ function label(dependency: string): string {
   return toAddArg(dependency).replace(/\.json$/, "");
 }
 
+function getRegistryItem(name: string): RegistryItem | undefined {
+  const fromImport = ITEMS.find((entry) => entry.name === name);
+  if (fromImport) return fromImport;
+
+  if (typeof window === "undefined") {
+    try {
+      const proc = (globalThis as unknown as { process?: any }).process;
+      let fsModule: any = undefined;
+      let pathModule: any = undefined;
+
+      if (proc && typeof proc.getBuiltinModule === "function") {
+        fsModule = proc.getBuiltinModule("fs") || proc.getBuiltinModule("node:fs");
+        pathModule = proc.getBuiltinModule("path") || proc.getBuiltinModule("node:path");
+      }
+
+      if (!fsModule && typeof require !== "undefined") {
+        fsModule = require("fs");
+        pathModule = require("path");
+      }
+
+      if (fsModule && pathModule && proc?.cwd) {
+        const regPath = pathModule.resolve(proc.cwd(), "registry.json");
+        if (fsModule.existsSync(regPath)) {
+          const fresh = JSON.parse(fsModule.readFileSync(regPath, "utf8"));
+          return fresh.items?.find((entry: RegistryItem) => entry.name === name);
+        }
+      }
+    } catch {
+      return undefined;
+    }
+  }
+
+  return undefined;
+}
+
 /**
  * Every npm package an item pulls in, including the ones it inherits through its
  * registry dependencies.
@@ -66,7 +101,7 @@ function transitivePackages(name: string, seen = new Set<string>()): string[] {
   if (seen.has(name)) return [];
   seen.add(name);
 
-  const entry = ITEMS.find((candidate) => candidate.name === name);
+  const entry = getRegistryItem(name);
   if (!entry) return [];
 
   const collected = [...(entry.dependencies ?? [])];
@@ -282,7 +317,7 @@ export function Installation({
 
 /** Steps 1 and 2 for one registry item. */
 function InstallationSteps({ name }: { name: string }) {
-  const item = ITEMS.find((entry) => entry.name === name);
+  const item = getRegistryItem(name);
 
   // Fail at build time rather than shipping a page whose install command is a
   // 404. Every name is generated from the registry, so this only fires when an
@@ -297,7 +332,7 @@ function InstallationSteps({ name }: { name: string }) {
   const target = item.files?.[0]?.target;
   const direct = item.dependencies ?? [];
   const components = (item.registryDependencies ?? []).filter(
-    (dependency) => !BASELINE_COMPONENTS.has(label(dependency)),
+    (dependency: string) => !BASELINE_COMPONENTS.has(label(dependency)),
   );
   // Includes packages inherited through `components`; see transitivePackages.
   const packages = [...new Set(transitivePackages(name))]

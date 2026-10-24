@@ -21,7 +21,13 @@ import {
 } from "@/components/custom/blocks/ThreeDCarouselBlock";
 import { CommandSearchBlock } from "@/components/custom/blocks/UtilityBlocks";
 import { AppleSelect } from "@/components/custom/blocks/AppleSelectBlock";
-import { Avatar } from "@/components/custom/blocks/AvatarStackBlock";
+import {
+	Avatar,
+	AvatarGroup,
+	AvatarGroupTooltip,
+	AvatarImage,
+	AvatarFallback,
+} from "@/components/custom/blocks/AvatarStackBlock";
 import { ComponentWall } from "@/components/custom/blocks/ComponentWallBlock";
 import { AnimatedFAQBlock } from "@/components/custom/blocks/AnimatedFAQBlock";
 import { GitHubIcon } from "@/components/custom/blocks/Icons";
@@ -56,6 +62,7 @@ import {
 	GripVertical,
 	CreditCard,
 	GalleryVerticalEnd,
+	Users,
 } from "lucide-react";
 import { motion, useInView } from "motion/react";
 // The motion demos (CardStack) read their config from motion's context.
@@ -205,6 +212,37 @@ const sampleCarouselItems: CarouselItem[] = [
 		image:
 			"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
 		description: "Golden foliage covering quiet forest trails in peak autumn.",
+	},
+];
+
+const sampleGroupAvatars = [
+	{
+		src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg",
+		alt: "Ana Watson",
+		name: "Ana Watson",
+		fallback: "AW",
+		designation: "Product Designer",
+	},
+	{
+		src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg",
+		alt: "Tom Hardy",
+		name: "Tom Hardy",
+		fallback: "TH",
+		designation: "Frontend Developer",
+	},
+	{
+		src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg",
+		alt: "Mara Jade",
+		name: "Mara Jade",
+		fallback: "MJ",
+		designation: "Engineering Lead",
+	},
+	{
+		src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg",
+		alt: "Leo Silva",
+		name: "Leo Silva",
+		fallback: "LS",
+		designation: "Creative Technologist",
 	},
 ];
 
@@ -630,11 +668,15 @@ const BTN_SOFT =
    the h1, the description the paragraph right after it, and the two actions
    the links in the row that follows. */
 const HERO_TYPE = [
+	// Copy column width
+	"[&_.cw-rise-group]:max-w-[56rem] lg:[&_.cw-rise-group]:max-w-[52rem] xl:[&_.cw-rise-group]:max-w-[58rem]",
 	// Eyebrow pill
 	"[&_div:has(+h1)>a]:gap-1.5 [&_div:has(+h1)>a]:border-transparent [&_div:has(+h1)>a]:bg-foreground/[0.04] [&_div:has(+h1)>a]:px-3 [&_div:has(+h1)>a]:py-1 [&_div:has(+h1)>a]:text-[12px] [&_div:has(+h1)>a]:font-normal [&_div:has(+h1)>a]:text-foreground/90",
 	"[&_div:has(+h1)>a]:hover:border-transparent [&_div:has(+h1)>a]:hover:bg-foreground/10 [&_div:has(+h1)>a]:hover:text-foreground",
-	// Headline: Cooper at its regular weight
-	"[&_h1]:font-normal [&_h1]:text-[clamp(34px,6.8vw,84px)] [&_h1]:leading-[1.06] [&_h1]:tracking-[-0.03em] [&_h1]:text-foreground",
+	// Headline: Cooper at its regular weight, max-w-none so it doesn't wrap "Build interactive"
+	"[&_h1]:max-w-none [&_h1]:font-normal [&_h1]:text-[clamp(26px,5.6vw,78px)] [&_h1]:leading-[1.06] [&_h1]:tracking-[-0.03em] [&_h1]:text-foreground",
+	// Force the animated word token to the next line so "Build interactive" stays on line 1
+	"[&_h1>span:last-child]:basis-full [&_h1>span:last-child]:text-center",
 	// Subtitle
 	"[&_h1+p]:text-[clamp(13px,1.45vw,18px)] [&_h1+p]:leading-[1.65] [&_h1+p]:text-foreground/60",
 	// Primary action: the clay button
@@ -692,7 +734,7 @@ function HeroSection() {
 				}
 				install={{ command: "npx shadcn@latest add @algorize-ui/{item}" }}
 				primaryAction={{ label: "Browse components", href: "/docs/nextjs/all-components" }}
-				secondaryAction={{ label: "Star on GitHub", href: links.github, icon: <GitHubIcon size={16} /> }}
+				secondaryAction={{ label: "Get Started", href: "/docs/nextjs/index" }}
 				items={WALL_ITEMS}
 				stack={<WallStack variant="compact" label={STACK_LABEL} />}
 				interval={4500}
@@ -923,6 +965,31 @@ function ComponentShowcase() {
 										containerHeight={84}
 									/>
 								</FitToWidth>
+							</div>
+						</div>
+
+						<div className="showcase-card rounded-2xl border border-foreground/[0.06] bg-card px-5 pt-5 pb-2 overflow-hidden">
+							<div className="flex items-center justify-between gap-3 mb-4">
+								<span className="flex min-w-0 items-center gap-1.5 text-[14px] font-semibold text-foreground">
+									<Users className="size-3.5 shrink-0 text-primary" />
+									<span className="truncate">Avatar Group</span>
+								</span>
+								<span className={CHIP}>
+									Shift on Hover
+								</span>
+							</div>
+							<div className="flex items-center justify-center pt-6 pb-1">
+								<AvatarGroup>
+									{sampleGroupAvatars.map((avatar, index) => (
+										<Avatar key={index} className="size-12 border-[3px] border-background ring-0 cursor-pointer">
+											<AvatarImage src={avatar.src} alt={avatar.alt} />
+											<AvatarFallback>{avatar.fallback}</AvatarFallback>
+											<AvatarGroupTooltip designation={avatar.designation}>
+												{avatar.name}
+											</AvatarGroupTooltip>
+										</Avatar>
+									))}
+								</AvatarGroup>
 							</div>
 						</div>
 					</motion.div>
@@ -4002,11 +4069,10 @@ function FooterSection() {
 										target="_blank"
 										rel="noopener noreferrer"
 										aria-label={ariaLabel}
-										className="group -mx-1 inline-flex items-center gap-1.5 rounded-md px-1 py-1 font-medium text-foreground/60 hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50">
+										className="group inline-flex items-center justify-center rounded-md p-0.5 text-foreground/60 hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50">
 										<span className="flex size-5 items-center justify-center rounded-[5px] bg-foreground/[0.06] text-foreground/70 transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
 											<Icon className="size-2.5" />
 										</span>
-										{label}
 									</Link>
 								</li>
 							))}

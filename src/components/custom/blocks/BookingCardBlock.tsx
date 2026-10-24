@@ -10,6 +10,7 @@ import React, {
   useState,
   useSyncExternalStore,
 } from "react";
+import { useSurface } from "./glass-panel-context";
 
 // ==========================================
 // BOOKING CARD — days, slots, confirm
@@ -152,6 +153,8 @@ const monthRange = (first?: Date, last?: Date) => {
 
 function BookingCardDays({ days: daysProp, count = 7, horizon = 90, unavailable, className }: BookingCardDaysProps) {
   const { day, setDay } = useBookingCard("Days");
+  const surface = useSurface();
+  const isLiquid = surface === "liquid-glass";
   // Built on the client only — a server render has no idea what "today" is.
   const mounted = useIsMounted();
   const defaultDays = useMemo(
@@ -187,7 +190,9 @@ function BookingCardDays({ days: daysProp, count = 7, horizon = 90, unavailable,
               onClick={() => setPage((p) => Math.min(Math.max(p + step, 0), pageCount - 1))}
               className={cn(
                 "grid size-7 place-items-center rounded-full transition-colors",
-                "hover:bg-foreground/5 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent",
+                isLiquid
+                  ? "hover:bg-white/20 text-white disabled:hover:bg-transparent disabled:opacity-30"
+                  : "hover:bg-foreground/5 disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-transparent",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
               )}
             >
@@ -210,16 +215,22 @@ function BookingCardDays({ days: daysProp, count = 7, horizon = 90, unavailable,
               disabled={off}
               onClick={() => setDay(d)}
               className={cn(
-                "flex flex-col items-center gap-1 rounded-2xl py-2 text-xs transition-colors",
+                "flex flex-col items-center gap-1 rounded-[var(--radius-xl,1rem)] py-2 text-xs transition-colors",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
                 selected
-                  ? "bg-primary text-primary-foreground"
+                  ? isLiquid
+                    ? "bg-white text-black font-semibold shadow-sm"
+                    : "bg-primary text-primary-foreground"
                   : off
-                    ? "text-foreground/30 line-through"
-                    : "hover:bg-foreground/5",
+                    ? isLiquid
+                      ? "text-white/30 line-through"
+                      : "text-foreground/30 line-through"
+                    : isLiquid
+                      ? "text-white hover:bg-white/20"
+                      : "hover:bg-foreground/5",
               )}
             >
-              <span className={cn("text-[10px] uppercase", selected ? "opacity-70" : "text-foreground/50")}>
+              <span className={cn("text-[10px] uppercase", selected ? (isLiquid ? "opacity-90" : "opacity-70") : (isLiquid ? "text-white/70" : "text-foreground/50"))}>
                 {WEEKDAY.format(d).slice(0, 3)}
               </span>
               <span className="text-sm font-semibold tabular-nums">{d.getDate()}</span>
@@ -240,9 +251,12 @@ export interface BookingCardSlotsProps {
 
 function BookingCardSlots({ label, slots, className }: BookingCardSlotsProps) {
   const { day, slot, setSlot } = useBookingCard("Slots");
+  const surface = useSurface();
+  const isLiquid = surface === "liquid-glass";
+
   return (
     <div className={className}>
-      <p className="text-xs text-foreground/50">{label}</p>
+      <p className={cn("text-xs", isLiquid ? "text-white/70" : "text-foreground/50")}>{label}</p>
       <div role="radiogroup" aria-label={`${label} times`} className="mt-2 flex flex-wrap gap-2">
         {slots.map((s) => {
           const selected = slot === s.label;
@@ -255,13 +269,19 @@ function BookingCardSlots({ label, slots, className }: BookingCardSlotsProps) {
               disabled={s.taken || day === null}
               onClick={() => setSlot(s.label)}
               className={cn(
-                "h-9 rounded-full border px-3.5 text-xs font-medium tabular-nums transition-colors",
+                "h-9 rounded-[var(--radius-xl,1rem)] border px-3.5 text-xs font-medium tabular-nums transition-colors",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
                 selected
-                  ? "border-transparent bg-primary text-primary-foreground"
+                  ? isLiquid
+                    ? "border-transparent bg-white text-black font-semibold shadow-sm"
+                    : "border-transparent bg-primary text-primary-foreground"
                   : s.taken
-                    ? "border-transparent text-foreground/30 line-through"
-                    : "border-foreground/10 bg-foreground/[0.03] hover:bg-foreground/[0.06] disabled:opacity-50",
+                    ? isLiquid
+                      ? "border-transparent text-white/30 line-through"
+                      : "border-transparent text-foreground/30 line-through"
+                    : isLiquid
+                      ? "border-white/30 bg-white/10 text-white hover:bg-white/25 disabled:opacity-40"
+                      : "border-foreground/10 bg-foreground/[0.03] hover:bg-foreground/[0.06] disabled:opacity-50",
               )}
             >
               {s.label}
@@ -280,6 +300,8 @@ export interface BookingCardSubmitProps {
 
 function BookingCardSubmit({ children = "Book now", className }: BookingCardSubmitProps) {
   const { day, slot, status, submit } = useBookingCard("Submit");
+  const surface = useSurface();
+  const isLiquid = surface === "liquid-glass";
   const ready = day !== null && slot !== null;
   const busy = status === "booking";
   return (
@@ -289,14 +311,17 @@ function BookingCardSubmit({ children = "Book now", className }: BookingCardSubm
       aria-busy={busy}
       onClick={submit}
       className={cn(
-        "inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground transition-[background-color,transform] hover:bg-primary/90 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:active:scale-100",
+        "inline-flex h-11 w-full items-center justify-center gap-2 rounded-[var(--radius-xl,1rem)] px-5 text-sm font-medium transition-[background-color,transform] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 disabled:active:scale-100",
+        isLiquid
+          ? "bg-white text-black hover:bg-white/90 font-semibold shadow-sm"
+          : "bg-primary text-primary-foreground hover:bg-primary/90",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         className,
       )}
     >
       {busy ? (
         <>
-          <span className="size-4 animate-spin rounded-full border-2 border-primary-foreground/40 border-t-primary-foreground motion-reduce:animate-none" />
+          <span className={cn("size-4 animate-spin rounded-full border-2 motion-reduce:animate-none", isLiquid ? "border-black/30 border-t-black" : "border-primary-foreground/40 border-t-primary-foreground")} />
           Booking
         </>
       ) : ready && day ? (
@@ -345,6 +370,8 @@ const CONFIRMATION_CSS = `
  */
 function BookingCardConfirmation({ withName, place, className }: BookingCardConfirmationProps) {
   const { day, slot, status, reset } = useBookingCard("Confirmation");
+  const surface = useSurface();
+  const isLiquid = surface === "liquid-glass";
   const open = status === "booked" && day !== null && slot !== null;
 
   // "Book another" clears the day and slot straight away, but the cover is
@@ -375,7 +402,10 @@ function BookingCardConfirmation({ withName, place, className }: BookingCardConf
             }
           }}
           className={cn(
-            "booking-card-confirmation absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 rounded-[inherit] bg-card/85 p-6 text-center backdrop-blur-xl",
+            "booking-card-confirmation absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 rounded-[inherit] p-6 text-center backdrop-blur-2xl transition-colors duration-200",
+            isLiquid
+              ? "bg-black/85 text-white border border-white/30 shadow-2xl"
+              : "bg-card/85 text-card-foreground backdrop-blur-xl",
             className,
           )}
         >
@@ -388,7 +418,7 @@ function BookingCardConfirmation({ withName, place, className }: BookingCardConf
               fill="none"
               strokeWidth="3"
               pathLength={1}
-              className="booking-card-ring stroke-primary"
+              className={cn("booking-card-ring", isLiquid ? "stroke-white" : "stroke-primary")}
             />
             <path
               d="M20 33 L28 41 L44 24"
@@ -397,16 +427,16 @@ function BookingCardConfirmation({ withName, place, className }: BookingCardConf
               strokeLinecap="round"
               strokeLinejoin="round"
               pathLength={1}
-              className="booking-card-check stroke-primary"
+              className={cn("booking-card-check", isLiquid ? "stroke-white" : "stroke-primary")}
             />
           </svg>
 
           <div className="booking-card-details">
             <p className="text-lg font-semibold">Booked</p>
-            <p className="mt-1 text-sm text-foreground/70">
+            <p className={cn("mt-1 text-sm", isLiquid ? "text-white/80" : "text-foreground/70")}>
               {LONG_DATE.format(shown.day)} at {shown.slot}
             </p>
-            <p className="mt-0.5 text-sm text-foreground/60">
+            <p className={cn("mt-0.5 text-sm", isLiquid ? "text-white/70" : "text-foreground/60")}>
               with {withName}
               {place ? `, ${place}` : ""}
             </p>
@@ -415,14 +445,24 @@ function BookingCardConfirmation({ withName, place, className }: BookingCardConf
           <div className="booking-card-actions flex w-full max-w-[240px] flex-col gap-2">
             <button
               type="button"
-              className="h-10 rounded-full bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              className={cn(
+                "h-10 rounded-full px-4 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                isLiquid
+                  ? "bg-white text-black font-semibold hover:bg-white/90 shadow-sm"
+                  : "bg-primary text-primary-foreground hover:bg-primary/90",
+              )}
             >
               Add to calendar
             </button>
             <button
               type="button"
               onClick={reset}
-              className="h-10 rounded-full border border-foreground/10 px-4 text-sm font-medium hover:bg-foreground/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+              className={cn(
+                "h-10 rounded-full border px-4 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                isLiquid
+                  ? "border-white/30 text-white hover:bg-white/20"
+                  : "border-foreground/10 hover:bg-foreground/5",
+              )}
             >
               Book another
             </button>

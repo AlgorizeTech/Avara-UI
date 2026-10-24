@@ -1,6 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { Download } from "lucide-react";
 import React, {
   forwardRef,
   useCallback,
@@ -41,6 +42,11 @@ export interface DataGridBlockProps<
   onChange?: (newData: T[]) => void;
   showRowNumbers?: boolean;
   readOnly?: boolean;
+  title?: string;
+  description?: string;
+  showExport?: boolean;
+  exportFileName?: string;
+  onExport?: (data: T[]) => void;
 }
 
 // ==========================================
@@ -55,6 +61,11 @@ const DataGridBlockImpl = forwardRef<HTMLDivElement, DataGridBlockProps>(
       onChange,
       showRowNumbers = true,
       readOnly = false,
+      title,
+      description,
+      showExport = true,
+      exportFileName,
+      onExport,
       className,
       ...props
     },
@@ -225,6 +236,44 @@ const DataGridBlockImpl = forwardRef<HTMLDivElement, DataGridBlockProps>(
       e.stopPropagation(); // Prevent grid listener from firing
     };
 
+    // CSV Export Handler
+    const handleExportCSV = useCallback(() => {
+      if (!data || data.length === 0) return;
+
+      const headerRow = columns
+        .map((col) => `"${col.headerName.replace(/"/g, '""')}"`)
+        .join(",");
+      const rows = data.map((row) =>
+        columns
+          .map((col) => {
+            const val = (row as Record<string, unknown>)[col.field];
+            if (val === null || val === undefined) return '""';
+            const str = String(val).replace(/"/g, '""');
+            return `"${str}"`;
+          })
+          .join(","),
+      );
+
+      const csvContent = [headerRow, ...rows].join("\r\n");
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      const defaultFileName = title
+        ? `${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.csv`
+        : "data-grid.csv";
+      link.setAttribute("href", url);
+      link.setAttribute("download", exportFileName || defaultFileName);
+      link.style.visibility = "hidden";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+
+      if (onExport) {
+        onExport(data as unknown as Record<string, unknown>[]);
+      }
+    }, [columns, data, title, exportFileName, onExport]);
+
     // Click outside to deselect
     useEffect(() => {
       const handleClickOutside = (e: MouseEvent) => {
@@ -241,21 +290,70 @@ const DataGridBlockImpl = forwardRef<HTMLDivElement, DataGridBlockProps>(
         document.removeEventListener("mousedown", handleClickOutside);
     }, [finishEditing]);
 
+    const hasHeader = Boolean(title || description || (showExport && title));
+
     return (
       <div
-        className={cn(
-          "w-full overflow-hidden border border-border rounded-xl bg-card text-card-foreground",
-          className,
-        )}
+        className={cn("w-full flex flex-col gap-2", className)}
         style={style}
         {...props}
       >
-        <div
-          ref={containerRef}
-          tabIndex={0}
-          onKeyDown={handleGridKeyDown}
-          className="w-full overflow-auto max-h-[600px] outline-none"
-        >
+        {hasHeader && (
+          <div className="flex items-center justify-between gap-3 px-1 mb-1">
+            <div className="flex flex-col min-w-0">
+              {title && (
+                <h3 className="font-semibold text-lg text-foreground truncate">
+                  {title}
+                </h3>
+              )}
+              {description ? (
+                <p className="text-sm text-muted-foreground">{description}</p>
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  {readOnly
+                    ? "View mode only."
+                    : "Double-click any cell or press Enter to edit."}
+                </p>
+              )}
+            </div>
+            {showExport && (
+              <button
+                type="button"
+                onClick={handleExportCSV}
+                style={
+                  color && String(color).startsWith("#")
+                    ? { backgroundColor: String(color), color: "#fff" }
+                    : undefined
+                }
+                className={cn(
+                  "flex items-center gap-2 px-3 py-1.5 text-xs font-semibold rounded-lg transition-all shadow-xs shrink-0 cursor-pointer",
+                  color === "indigo"
+                    ? "bg-indigo-600 hover:bg-indigo-700 text-white"
+                    : color === "rose"
+                    ? "bg-rose-600 hover:bg-rose-700 text-white"
+                    : color === "emerald"
+                    ? "bg-emerald-600 hover:bg-emerald-700 text-white"
+                    : color === "blue"
+                    ? "bg-blue-600 hover:bg-blue-700 text-white"
+                    : color === "lavender"
+                    ? "bg-[#9b8afb] hover:bg-[#9b8afb]/90 text-white"
+                    : "bg-primary text-primary-foreground hover:opacity-90",
+                )}
+              >
+                <Download className="w-3.5 h-3.5 shrink-0" />
+                <span>Export CSV</span>
+              </button>
+            )}
+          </div>
+        )}
+
+        <div className="w-full overflow-hidden border border-border rounded-xl bg-card text-card-foreground shadow-sm">
+          <div
+            ref={containerRef}
+            tabIndex={0}
+            onKeyDown={handleGridKeyDown}
+            className="w-full overflow-auto max-h-[600px] outline-none"
+          >
           <table className="w-full border-collapse text-sm text-left whitespace-nowrap select-none">
             {/* HEADERS */}
             <thead
@@ -393,8 +491,9 @@ const DataGridBlockImpl = forwardRef<HTMLDivElement, DataGridBlockProps>(
           )}
         </div>
       </div>
-    );
-  },
+    </div>
+  );
+},
 );
 DataGridBlockImpl.displayName = "DataGridBlock";
 

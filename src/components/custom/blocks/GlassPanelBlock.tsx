@@ -2,6 +2,11 @@
 
 import { cn } from "@/lib/utils";
 import React from "react";
+import {
+  LiquidGlassSvgFilter,
+  LiquidGlassWrapper,
+  formatRadius,
+} from "@/components/custom/ui/liquid-glass";
 import { SurfaceContext, useSurface, type SurfaceVariant } from "./glass-panel-context";
 
 // The surface context and its hook, `useSurface`, live in glass-panel-context.ts.
@@ -14,25 +19,85 @@ export type { SurfaceVariant };
 // Card all build on this pair; it has no opinion about what the page is.
 
 export interface GlassBackdropProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Frosted glass over an aurora, or solid cards with a shadow. */
+  /** Frosted glass over an aurora, solid cards with a shadow, or liquid-glass refraction. */
   variant?: SurfaceVariant;
   /**
    * Three colours washed behind the glass, top-left / top-right / bottom.
    * Any CSS colour. The defaults are violet, sky and peach. Ignored by `solid`.
    */
   aurora?: [string, string, string];
+  /** Optional custom background image URL for liquid-glass variant. */
+  bgImage?: string;
   /** Classes for the inner grid — row heights, gaps, a max width. */
   gridClassName?: string;
+  /** Classes for the inner LiquidGlassWrapper — controls width ratio on large screens. */
+  wrapperClassName?: string;
+  /** Dynamic rounding radius for the wrapper/backdrop. Can be a string ("1.5rem", "var(--radius-3xl)") or number (px). */
+  radius?: string | number;
 }
 
 export function GlassBackdrop({
   className,
   gridClassName,
+  wrapperClassName,
+  radius,
   children,
   variant = "glass",
   aurora = ["#a78bfa", "#7dd3fc", "#fdba74"],
+  bgImage,
   ...props
 }: GlassBackdropProps) {
+  if (variant === "liquid-glass") {
+    const liquidBg =
+      bgImage ||
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg";
+    const filterId = "glass-blur-profile";
+
+    return (
+      <SurfaceContext.Provider value={variant}>
+        <div
+          data-liquid-glass=""
+          className={cn(
+            "relative isolate w-full h-auto min-h-0 lg:h-full lg:min-h-[560px] flex flex-col justify-center overflow-hidden rounded-[var(--radius-3xl,2rem)] border border-white/10 text-white p-4 sm:p-6",
+            className,
+          )}
+          {...props}
+        >
+          {/* Full-bleed background image - spans 100% width and height of outer container, completely unwrapped */}
+          <LiquidGlassSvgFilter id={filterId} bgImage={liquidBg} />
+          <img
+            src={liquidBg}
+            alt=""
+            aria-hidden="true"
+            style={radius ? { borderRadius: formatRadius(radius) } : undefined}
+            className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none z-0 rounded-[inherit]"
+          />
+
+          {/* LiquidGlassWrapper wraps ONLY the component grid area */}
+          <LiquidGlassWrapper
+            radius={radius ?? "var(--radius-3xl, 1.75rem)"}
+            bgImage={liquidBg}
+            filterId={filterId}
+            contrastOverlayClassName="bg-black/15 backdrop-blur-[1px]"
+            className={cn(
+              "relative z-10 w-full lg:w-[40%] lg:max-w-[40%] mx-auto text-white transition-all duration-300 p-1 sm:p-2 [--foreground:#ffffff] [--muted-foreground:rgba(255,255,255,0.85)]",
+              wrapperClassName,
+            )}
+          >
+            <div
+              className={cn(
+                "grid grid-cols-1 gap-4 md:grid-cols-6 lg:grid-cols-12 text-white",
+                gridClassName,
+              )}
+            >
+              {children}
+            </div>
+          </LiquidGlassWrapper>
+        </div>
+      </SurfaceContext.Provider>
+    );
+  }
+
   return (
     <SurfaceContext.Provider value={variant}>
       <div
@@ -79,9 +144,9 @@ export type GlassShape = "slab" | "tile" | "disc" | "capsule";
 
 const SHAPES: Record<GlassShape, string> = {
   /** Hero-level surface. */
-  slab: "rounded-[32px]",
+  slab: "rounded-[var(--radius-3xl,2rem)]",
   /** Everyday content tile. */
-  tile: "rounded-3xl",
+  tile: "rounded-[var(--radius-2xl,1.5rem)]",
   /** A circle — for a single number or an icon. */
   disc: "aspect-square rounded-full",
   /** Chips, action bars, anything one line tall. */
@@ -94,6 +159,8 @@ export interface GlassPanelProps extends React.HTMLAttributes<HTMLDivElement> {
   interactive?: boolean;
   /** Override the surface set by the enclosing `GlassBackdrop`. */
   variant?: SurfaceVariant;
+  /** Optional custom rounding radius override. */
+  radius?: string | number;
 }
 
 const SURFACES: Record<SurfaceVariant, { base: string; hover: string }> = {
@@ -110,20 +177,29 @@ const SURFACES: Record<SurfaceVariant, { base: string; hover: string }> = {
     hover:
       "hover:shadow-[0_1px_2px_rgba(0,0,0,0.04),0_24px_48px_-20px_rgba(15,23,42,0.3)]",
   },
+  "liquid-glass": {
+    base:
+      "border border-white/35 bg-white/15 text-white shadow-[0_8px_32px_rgba(0,0,0,0.15),inset_0_1px_1px_rgba(255,255,255,0.5)]",
+    hover: "hover:bg-white/25 hover:border-white/50",
+  },
 };
 
 export function GlassPanel({
   shape = "tile",
   interactive = false,
   variant,
+  radius,
   className,
+  style,
   children,
   ...props
 }: GlassPanelProps) {
   const inherited = useSurface();
   const surface = SURFACES[variant ?? inherited];
+  const formattedRadius = formatRadius(radius);
   return (
     <div
+      style={formattedRadius ? { borderRadius: formattedRadius, ...style } : style}
       className={cn(
         "relative",
         surface.base,

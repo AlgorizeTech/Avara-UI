@@ -79,9 +79,26 @@ export const NAME_OVERRIDES: Record<string, string> = {
   "ConfidentialFolderBlock.tsx": "confidential-folder",
   "SecureEnvelopeBlock.tsx": "secure-envelope",
   "ScrollSplitCardsBlock.tsx": "scroll-split-cards",
+  "ErrorSectionBlock.tsx": "error-section",
+  "NotFoundSectionBlock.tsx": "not-found-section",
+  "DesignsToolkitBlock.tsx": "designs-toolkit",
 };
 
 export const META: Record<string, ItemMeta> = {
+  "not-found-section": {
+    title: "Not Found Section",
+    description:
+      "A responsive, full-page 404 Hyperspace website section with ambient radial glow, masked cyber grid backdrop, animated compass indicator, and customizable shortcuts.",
+    categories: ["marketing", "layout", "feedback"],
+    docs: "Named export: NotFoundSection (also default export) and NotFoundSectionProps. Ready for drop-in use in Next.js not-found.tsx or standalone 404 routes.",
+  },
+  "error-section": {
+    title: "Error Section",
+    description:
+      "A responsive, animated Cyberpunk Diagnostic Terminal Error Website Section with full Light and Dark mode adaptive styling, diagnostic monitors, and live stacktrace inspection.",
+    categories: ["marketing", "layout", "feedback"],
+    docs: "Named export: ErrorSection (also default export) and ErrorSectionProps. Designed to serve as a full-page 500, 404, or runtime error boundary with light & dark theme support, one-click incident copying, and reboot action triggers.",
+  },
   "secure-envelope": {
     description:
       "An interactive classified security envelope & travel pass sleeve component featuring a secret card that glides out horizontally on hover and elevates gracefully onto the cover on click with 3D flip physics.",
@@ -132,9 +149,9 @@ export const META: Record<string, ItemMeta> = {
   },
   dashboard: {
     description:
-      "An admin dashboard home: greeting with all-time totals, a period switch, an overview chart with a tab per metric, activity feed, traffic sources, visitors by country and top authors. Two looks: classic and glass (milky glass panes, KPI cards, capsule columns, a notched activity journey and a payments table).",
+      "An admin dashboard home: greeting with all-time totals, a period switch, an overview chart with a tab per metric, activity feed, traffic sources, visitors by country and top authors. Three looks: classic, glass, and liquid-glass (using LiquidGlassWrapper, LiquidGlassBackground, and LiquidGlassSvgFilter).",
     categories: ["data-display", "layout"],
-    docs: "Named exports: Dashboard (also the default) plus the DashboardMetric, DashboardPoint, DashboardTotal, DashboardActivity, DashboardShare, DashboardAuthor, DashboardPayment, DashboardShortcut, DashboardLinks, DashboardPeriod and DashboardVariant types. variant: 'classic' (default) | 'glass'; both read the same props, and glass also reads `payments`, `shortcuts`, `totals[].metric` / `href` and `activity[].person` / `avatar`. Every number comes from props: `metrics` carry a series per period (day | week | month, oldest first) and an optional `change` per period; `sources`, `countries` and `authors` are keyed by period; `activity` items have a type of user | post | payment | message. Pass `linkComponent` (e.g. next/link) for the panel links and `onExport` to replace the built-in CSV. Composes toggle-group (segmented), chart and popover. Clock-dependent text renders after mount, so server and client markup agree.",
+    docs: "Named exports: Dashboard (also the default) plus LiquidGlassWrapper, LiquidGlassBackground, LiquidGlassSvgFilter, and the DashboardMetric, DashboardPoint, DashboardTotal, DashboardActivity, DashboardShare, DashboardAuthor, DashboardPayment, DashboardShortcut, DashboardLinks, DashboardPeriod and DashboardVariant types. variant: 'classic' (default) | 'glass' | 'liquid-glass'; all read the same props, and glass/liquid-glass also read `payments`, `shortcuts`, `totals[].metric` / `href` and `activity[].person` / `avatar`. Every number comes from props: `metrics` carry a series per period (day | week | month, oldest first) and an optional `change` per period; `sources`, `countries` and `authors` are keyed by period; `activity` items have a type of user | post | payment | message. Pass `linkComponent` (e.g. next/link) for the panel links and `onExport` to replace the built-in CSV. Composes toggle-group (segmented), chart and popover. Clock-dependent text renders after mount, so server and client markup agree.",
   },
   "counter-section": {
     description:
@@ -639,7 +656,7 @@ export const META: Record<string, ItemMeta> = {
       "A landing hero for a component library: a headline that blurs in word by word and keeps one word turning, a lead, an install command that names whichever card a camera has just landed on, two actions, a line of trust and the tools it is built with in batches — centred between two walls of screenshots that never end, one camera resting high and the other low, or on the left of a single wall.",
     categories: ["marketing", "layout"],
     usageDependencies: ["tech-stack", "icons"],
-    docs: "Named export: ComponentWall (plus the ComponentWallItem type). Composed from the image-wall, text-animation, copy-button, avatar-stack and half-stars items, which install alongside it, and takes a tech-stack in its `stack` slot. Pass `badge` ({ label, href? }), `heading` (a string, revealed word by word; write `{word}` where `headingWords` take turns every `wordInterval` ms, and name one word in `accent` for the primary colour), `description` (a string or inline JSX — it renders inside a <p>), `install` ({ command } — write `{item}` where the focused card's `slug` goes, e.g. `npx shadcn@latest add @algorize-ui/{item}`), `primaryAction`/`secondaryAction` ({ label, href, icon? }), `trust` ({ text, avatars?, rating? }), `items` ({ title, image, slug? }[] — every screenshot sits in the same 493:332 frame; slug defaults to the title in kebab-case) and `stack` (a node — a <TechStack> of <TechStackGroup>s of <TechStackTool name icon />: the tools over the lower wall on desktop and under the band on phones; in the centred layout it closes the copy column, where the compact variant fits). `columns`, `interval` (ms the camera rests; 0 holds still), `order` (serial | shuffle), `zoom`, `intro` (ms the camera drifts with nothing in focus while the copy arrives; default 1800) and `onFocus` pass straight to the wall; `layout` is split (copy left, wall right) or center (copy between two walls — the left camera resting high, the right low, taking turns, the second wall dealing the same items from halfway through; the tools sit under the copy; zoom defaults to 0.9; below lg a single band of every card sits between the copy and the tools); `linkComponent` takes next/link. The headline uses your theme's font-serif, the command font-mono; colours are theme tokens.",
+    docs: "Named export: ComponentWall (plus the ComponentWallItem type). Composed from the image-wall, text-animation, copy-button, avatar-stack and half-stars items, which install alongside it, and takes a tech-stack in its `stack` slot. Pass `badge` ({ label, href? }), `heading` (a string, revealed word by word; write `{word}` where `headingWords` take turns every `wordInterval` ms, and name one word in `accent` for the primary colour), `description` (a string or inline JSX — it renders inside a <p>), `install` ({ command } — write `{item}` where the focused card's `slug` goes, e.g. `npx shadcn@latest add @algorize-ui/{item}`), `primaryAction`/`secondaryAction` ({ label, href, icon? }), `trust` ({ text, avatars?, rating? }), `items` ({ title, image, slug? }[] — every screenshot sits in the same 493:332 frame; slug defaults to the title in kebab-case) and `stack` (a node — a <TechStack> of <TechStackGroup>s of <TechStackTool name icon />: the tools over the lower wall on desktop and under the band on phones; in the centred layout it closes the copy column, where the compact variant fits). `columns`, `interval` (ms the camera rests; 0 holds still), `order` (serial | shuffle), `zoom`, `intro` (ms the camera drifts with nothing in focus while the copy arrives; default 1800) and `onFocus` pass straight to the wall; `layout` is split (copy left, wall right), center (copy between two walls — the left camera resting high, the right low, taking turns, the second wall dealing the same items from halfway through; the tools sit under the copy; zoom defaults to 0.9; below lg a single band of every card sits between the copy and the tools), or center-background (`persistentBackground`); `showMobileWall` (boolean, default true: set to false to completely hide wall animations on small screens <lg across all layouts); `linkComponent` takes next/link. The headline uses your theme's font-serif, the command font-mono; colours are theme tokens.",
   },
   "collage-hero": {
     description:
@@ -659,11 +676,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["marketing", "layout"],
     docs: "Named export: HoneycombHero. Pass `title` and `titleAccent` (its letters that cross the photographs take `titleOverlapColor`, the primary by default), `subtitle`, `primaryActionLabel` (a \\n breaks the line; a compass sits above it in the hexagon) and `primaryActionHref`, `images` ({ src, alt, tone? }[] in queue order — nine cells are visible; tone is the deep colour behind everything while that photograph is featured), `socialLinks`, `interval` in ms (0 turns autoplay off) and `onChange`. The overlapping letters, rule, arrows and call to action follow the theme's primary (the hexagon's compass and label primary-foreground); `accent` sets --primary for the section, `background` is the tone for photographs without one (a deep shade of the primary by default); `linkComponent` takes next/link.",
   },
-  "orbit-gallery": {
+  gallery: {
+    title: "Gallery",
     description:
-      "A two-column hero with a ring of photo cards revolving on the right, each card staying upright as it travels. Hovering the ring holds it still; moving the pointer over the section leaves a trail of dots in the accent colour. Use it for an agency, studio or gallery.",
-    categories: ["marketing", "layout"],
-    docs: "Named export: OrbitGallery. Pass `badgeText`/`badgeHref`, `title` and `titleAccent`, `subtitle`, primary and secondary actions, `images` (any count — they space themselves evenly), `duration` in seconds for one revolution and `highlights` for the dotted facts row. `color` is a preset name or any CSS colour; `linkComponent` takes next/link.",
+      "A versatile, multi-variant interactive visual gallery featuring revolving 3D orbit rings, responsive bento grids, vertical continuous reels, 3D pill carousels, and perspective arc carousels. Use it for agencies, portfolios, product showcases, and creative hero sections.",
+    categories: ["media", "scroll", "layout"],
+    docs: "Named export: Gallery (also exports OrbitGallery for backward compatibility). Default export: Gallery. Variants: orbit | bento | reel | pill | arc. Pass items ({ image, alt, title?, subtitle?, href? }), speed/duration, orientation, aspect, autoSlide, and radius/gap options.",
   },
   "hero-carousel": {
     description:
@@ -881,9 +899,9 @@ export const META: Record<string, ItemMeta> = {
   // ---- Phase 4E: marketing & landing blocks ----
   hero: {
     description:
-      "A prop-driven hero section supporting spring word bounce, character typewriter, 3D split marquee slider, pet-shop, doctor, and facility CAD grid variants.",
+      "A prop-driven hero section supporting revolving 3D orbit ring, spring word bounce, character typewriter, 3D split marquee slider, pet-shop, doctor, and facility CAD grid variants.",
     categories: ["marketing"],
-    docs: "Named export: HeroBlock. Everything is a prop — `variant` switches between 'bounce', 'typing', 'slider', 'pet-shop', 'doctor', and 'facility', with interactive animations, theme color support, and responsive layouts.",
+    docs: "Named export: HeroBlock. Everything is a prop — `variant` switches between 'orbit', 'bounce', 'typing', 'slider', 'pet-shop', 'doctor', and 'facility', with interactive animations, theme color support, and responsive layouts.",
   },
   "video-player": {
     description:
@@ -1057,6 +1075,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["media", "marketing"],
     docs: "Named export: TiltedCard. Wraps arbitrary children; tune `tiltIntensity`, `glareOpacity` and `scaleOnHover`. Pointer-driven, so it is inert on touch — keep the content readable without the effect.",
   },
+  "fan-stack": {
+    description:
+      "Overlapping cards in a tilted diagonal cascade, dealt out of one pile into place as the stack scrolls into view. Use it for a short numbered sequence — steps, phases, a three-part system.",
+    categories: ["scroll", "marketing"],
+    docs: "Named exports: FanStack, FanStackCard, FanStackTitle, FanStackStep, FanStackDescription, FanStackPoints, FanStackPoint, FanStackThumb (plus the FanStackTone and FanStackThumbSide types). Compose cards as children — any number works; each card's `tone` (muted | light | accent) and its thumb's `side` (right | left | top) default by position. `FanStackThumb` takes your own `<img>` or framework image as its child. Colours derive from `--primary`. The cascade is a container query: below 768px of width the cards become a CSS sticky stack, each sliding over the last (`stickyTop` clears a fixed header). The deal is scrubbed by scroll (`scrub` seconds of lag, 0 to lock it); pass `scrollerRef` when it scrolls inside a container. The deal is skipped under prefers-reduced-motion.",
+  },
   "scroll-stack": {
     description:
       "Cards that stack and scale as the page scrolls, revealing each in turn. Use it for step-by-step feature walkthroughs.",
@@ -1199,6 +1223,27 @@ export const META: Record<string, ItemMeta> = {
       "An authentic, physics-driven Split-Flap Display component simulating retro-mechanical flap cards, 3D perspective flips, and synthesized click sounds with ivory and minimalist variants.",
     categories: ["data-display", "media"],
     docs: "Named exports: SplitFlap, SPLIT_FLAP_CHARSET. Default export: SplitFlap. Variants: ivory | minimalist. Features 3D mechanical rotateX animation, Web Audio API sound generator, and responsive size presets.",
+  },
+  "top-destinations": {
+    title: "Top Destinations",
+    description:
+      "A dual-row scroll-driven destination showcase with opposite-direction GSAP ScrollTrigger parallax travel, full-bleed photography, and interactive hover details.",
+    categories: ["marketing", "data-display", "scroll"],
+    docs: "Named exports: TopDestinations, TopDestinationsCard, DEFAULT_DESTINATIONS (plus DestinationItem type). Accepts items array or row1Items/row2Items, scrollOffset, and scrollerRef.",
+  },
+  "falling-tags": {
+    title: "Falling Tags",
+    description:
+      "A physics-based interactive tags playground where badges float, fall under gravity, collide realistically, and can be dragged and thrown.",
+    categories: ["marketing", "data-display"],
+    docs: "Named exports: FallingTagsBlock (default), FallingTagItem, FallingTagPalette.",
+  },
+  "designs-toolkit": {
+    title: "Designs Toolkit",
+    description:
+      "A pinned resource toolkit grid featuring authentic 3D pushpins, staggered cards, brand icon badges, and connected corkboard path lines.",
+    categories: ["marketing", "data-display"],
+    docs: "Named exports: DesignsToolkitBlock (default), ToolkitItem.",
   },
 };
 

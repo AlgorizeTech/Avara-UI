@@ -6,16 +6,15 @@ An interactive classified envelope sleeve & travel pass component featuring a se
 
 `SecureEnvelope` brings tactile physical curiosity to train online tickets, travel booking passes, security dossiers, coupon reward vouchers, and VIP cards.
 
-export const usageTrainTicket = `import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
+export const usageSmartCard = `import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
 
-const ticketData: SecureEnvelopeData = {
-  passengerName: "Barbara M. Sandoval",
-  routeText: "ZÜRICH HB - PARIS-EST",
-  seatNumber: "18A",
-  trainNumber: "6",
+const smartCardData: SecureEnvelopeData = {
+  holderName: "Dr. Kaelen Vance",
+  roleTitle: "CHIEF ARCHITECT",
+  authLevel: "LEVEL 09 // OMNI",
 };
 
-export default function TrainOnlineTicketExample() {
+export default function CyberSmartCardExample() {
   return (
 
   );
@@ -35,15 +34,16 @@ export default function AutoFlipSecureEnvelopeExample() {
   );
 }`;
 
-export const usageStepFlip = `import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
+export const usageTrainTicket = `import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
 
-const keycardData: SecureEnvelopeData = {
-  holderName: "Kaelen Vance",
-  roleTitle: "SECURITY ARCHITECT",
-  authLevel: "LEVEL 09",
+const ticketData: SecureEnvelopeData = {
+  passengerName: "Barbara M. Sandoval",
+  routeText: "ZÜRICH HB - PARIS-EST",
+  seatNumber: "18A",
+  trainNumber: "6",
 };
 
-export default function CyberBiometricKeycardExample() {
+export default function TrainOnlineTicketExample() {
   return (
 
   );
@@ -60,8 +60,8 @@ npx shadcn@latest add @algorize-ui/secure-envelope
 
 ## Features
 
-    Rail Tickets & Cyber Keycards
-    Rich variety of real-world templates including Hyperbolt European train tickets, classic classified dossiers, and futuristic Quantum biometric keycards with EMV microchips.
+    Rail Tickets & Biometric SmartCards
+    Rich variety of real-world templates including Hyperbolt European train tickets, classic classified dossiers, and biometric NFC smartcards with EMV microchips and full light/dark theme adaptivity.
 
     Two-Stage Flight Choreography
     When clicked, the document slides out horizontally past the sleeve edge, elevates in front on the z-axis, and glides back down with a gentle tilt onto the front cover.
@@ -80,8 +80,8 @@ npx shadcn@latest add @algorize-ui/secure-envelope
     Mobile & Touch Interaction
     On touch devices where hover is unavailable, tapping the folder launches the smooth opening flight sequence immediately.
 
-    Keycards & Access Credentials
-    Pass cardDesign="keycard" with custom clearance levels, holder name, EMV chips, and cryptographic hash telemetry for cybersecurity badges and VIP portals.
+    Biometric SmartCards & Access Credentials
+    Pass cardDesign="smart-card" with custom clearance levels, holder name, and department for cybersecurity credentials, VIP access badges, and identity portals.
 
 ## Props Reference
 
@@ -96,9 +96,9 @@ npx shadcn@latest add @algorize-ui/secure-envelope
         Structured data object containing all ticket, pass, keycard, voucher, and card metric properties. Can also be passed as an array.
 
         cardDesign
-        "classified" | "train-ticket" | "keycard"
+        "classified" | "train-ticket" | "smart-card"
         "classified"
-        Selects the card visual template: "keycard" for biometric smartcards, "train-ticket" for railway tickets, or "classified" for confidential dossiers.
+        Selects the visual template: "smart-card" for biometric NFC smartcards, "train-ticket" for European railway tickets, or "classified" for confidential dossiers.
 
         interactionMode
         "auto-flip" | "step-flip"

@@ -1028,10 +1028,12 @@ export interface CalendarDashboardProps {
   mockEvents?: Record<string, string[]>;
 }
 
+const DEFAULT_CALENDAR_MOCK_EVENTS: Record<string, string[]> = {};
+
 export default function CalendarDashboard({
   variant = "default",
   color = "primary",
-  mockEvents = {},
+  mockEvents = DEFAULT_CALENDAR_MOCK_EVENTS,
 }: CalendarDashboardProps) {
   const isDark = useThemeDetector();
   const styles = dashboardVariants[variant] || dashboardVariants.default;
@@ -1121,10 +1123,12 @@ export default function CalendarDashboard({
   const [events, setEvents] = useState<CalendarEvent[]>(initialEvents);
 
   const prevEventsRef = useRef(initialEvents);
-  if (prevEventsRef.current !== initialEvents) {
-    prevEventsRef.current = initialEvents;
-    setEvents(initialEvents);
-  }
+  useEffect(() => {
+    if (prevEventsRef.current !== initialEvents) {
+      prevEventsRef.current = initialEvents;
+      setEvents(initialEvents);
+    }
+  }, [initialEvents]);
 
   // Active Filtered Events
   const filteredEvents = useMemo(() => {

@@ -97,33 +97,90 @@ export default function SizesDemo() {
   );
 }`;
 
+export const usageAvatarGroup = `import {
+  AvatarGroup,
+  AvatarGroupTooltip,
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+} from "@/components/custom/blocks/AvatarStackBlock";
+
+const PEOPLE = [
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg",
+    alt: "Ana Watson",
+    name: "Ana Watson",
+    fallback: "AW",
+    designation: "Product Designer",
+  },
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg",
+    alt: "Tom Hardy",
+    name: "Tom Hardy",
+    fallback: "TH",
+    designation: "Frontend Developer",
+  },
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg",
+    alt: "Mara Jade",
+    name: "Mara Jade",
+    fallback: "MJ",
+    designation: "Engineering Lead",
+  },
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg",
+    alt: "Leo Silva",
+    name: "Leo Silva",
+    fallback: "LS",
+    designation: "Creative Technologist",
+  },
+];
+
+export default function AvatarGroupDemo() {
+  return (
+    <AvatarGroup>
+      {PEOPLE.map((avatar, index) => (
+        <Avatar key={index} className="size-12 border-[3px] border-background ring-0 cursor-pointer">
+          <AvatarImage src={avatar.src} alt={avatar.alt} />
+          <AvatarFallback>{avatar.fallback}</AvatarFallback>
+          <AvatarGroupTooltip designation={avatar.designation}>
+            {avatar.name}
+          </AvatarGroupTooltip>
+        </Avatar>
+      ))}
+    </AvatarGroup>
+  );
+}`;
+
 <ExampleShowcase
   name="avatar-stack"
   colorControl={false}
   columns={1}
   examples={[
     {
-      title: "Without tooltip",
-      subheading: "A clean row of overlapping faces. Hovering expands the stack smoothly without displaying tooltips.",
+      title: "Avatar Group (Shift on hover)",
+      subheading:
+        "An animated avatar group inspired by animate-ui that displays overlapping user images and smoothly shifts each avatar upward with spring physics on hover with an anchored pointer tooltip.",
       propNotes: [
         {
-          prop: "showTooltip",
-          value: "false",
-          effect: "disables the hover tooltip completely so the avatars fan out without displaying name or info popups.",
+          prop: "translate",
+          value: '"-30%"',
+          effect: "controls the upward vertical displacement when hovered (default is -30%).",
         },
         {
-          prop: "spreadOnHover",
-          effect: "slides each face a few pixels further than the one before it while the row is hovered; set it to `false` for a still row.",
+          prop: "invertOverlap",
+          value: "true",
+          effect: "layers earlier avatars over later avatars, while elevating the currently hovered avatar to z-index 50.",
         },
         {
-          prop: "liftOnHover",
-          effect: "raises the face under the pointer above its neighbours and grows it a touch, so a half-covered face can be seen whole; `false` keeps the stacking order fixed.",
+          prop: "AvatarGroupTooltip",
+          effect: "anchors a floating pointer tooltip above the shifted face with smooth spring entrance and exit.",
         },
       ],
-      props: { example: "default", showTooltip: false },
-      usage: usageDefault,
+      props: { example: "avatar-group" },
+      usage: usageAvatarGroup,
       code: extractCode("src/components/custom/blocks/AvatarStackBlock.tsx"),
-      minHeight: 240,
+      minHeight: 260,
     },
   ]}
 />
@@ -139,6 +196,20 @@ export default function SizesDemo() {
   colorControl={false}
   columns={1}
   examples={[
+    {
+      title: "Without tooltip",
+      subheading: "A clean row of overlapping faces without displaying tooltips.",
+      propNotes: [
+        {
+          prop: "showTooltip",
+          value: "false",
+          effect: "disables the hover tooltip completely so the avatars fan out without displaying name or info popups.",
+        },
+      ],
+      props: { example: "default", showTooltip: false },
+      usage: usageDefault,
+      minHeight: 240,
+    },
     {
       title: "With an action",
       subheading: "Three faces and a plus button that shares their size. Hover the row and the faces fan out.",
@@ -180,7 +251,7 @@ export default function SizesDemo() {
       propNotes: [
         {
           prop: "size",
-          effect: "controls the avatar circle dimensions: sm (28px), md (36px), or lg (44px).",
+          effect: "controls the avatar circle dimensions: sm (28px), md (36px), lg (44px), or xl (48px).",
         },
         {
           prop: "showTooltip",
@@ -202,6 +273,49 @@ export default function SizesDemo() {
 
 ## Props Reference
 
+### AvatarGroup Props
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>translate</code></td>
+        <td><code>string | number</code></td>
+        <td><code>"-30%"</code></td>
+        <td>Vertical displacement of each avatar on hover using spring motion.</td>
+      </tr>
+      <tr>
+        <td><code>invertOverlap</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Whether earlier avatars sit on top of subsequent ones. Hovering automatically raises an avatar's z-index to 50.</td>
+      </tr>
+      <tr>
+        <td><code>transition</code></td>
+        <td><code>Transition</code></td>
+        <td><code>&#123; type: "spring", stiffness: 300, damping: 17 &#125;</code></td>
+        <td>Spring transition configuration for the hover shift animation.</td>
+      </tr>
+      <tr>
+        <td><code>children</code></td>
+        <td><code>ReactNode</code></td>
+        <td>—</td>
+        <td>Composable <code>&lt;Avatar&gt;</code> elements containing images, fallbacks, and optional <code>&lt;AvatarGroupTooltip&gt;</code>.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### AvatarStack Props
+
 <div className="overflow-x-auto my-4">
   <table>
     <thead>
@@ -215,15 +329,21 @@ export default function SizesDemo() {
     <tbody>
       <tr>
         <td><code>avatars</code></td>
-        <td><code>&#123; src: string; alt?: string &#125;[]</code></td>
+        <td><code>&#123; src: string; alt?: string; tooltip?: string; fallback?: string &#125;[]</code></td>
         <td><strong>Required</strong></td>
-        <td>The list of faces in order. The <code>alt</code> text is displayed inside the hover tooltip.</td>
+        <td>The list of faces in order. The <code>alt</code> or <code>tooltip</code> text is displayed inside the hover tooltip.</td>
+      </tr>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"default" | "shift"</code></td>
+        <td><code>"default"</code></td>
+        <td>Presentation style: <code>default</code> (smooth fan out) or <code>shift</code> (animate-ui spring shift upward with pointer tooltip).</td>
       </tr>
       <tr>
         <td><code>size</code></td>
-        <td><code>"sm" | "md" | "lg"</code></td>
+        <td><code>"sm" | "md" | "lg" | "xl"</code></td>
         <td><code>"md"</code></td>
-        <td>Avatar diameter: <code>sm</code> (28px), <code>md</code> (36px), or <code>lg</code> (44px).</td>
+        <td>Avatar diameter: <code>sm</code> (28px), <code>md</code> (36px), <code>lg</code> (44px), or <code>xl</code> (48px).</td>
       </tr>
       <tr>
         <td><code>max</code></td>

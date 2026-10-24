@@ -19,10 +19,13 @@ export const usageDefault = `export default function LaunchDatePicker() {
 export const usageError = `export default function ValidatedDatePicker() {
   const [date, setDate] = useState(null);
 
-  // Passing \`error\` turns the trigger red, swaps in an alert icon and
-  // replaces the helper text with your message.
-  return (
-    
+  const isPast = (d: Date | null) => {
+    if (!d) return true;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const target = new Date(d);
+    target.setHours(0, 0, 0, 0);
+    return target.getTime() 
   );
 }`;
 

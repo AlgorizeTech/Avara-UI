@@ -72,9 +72,9 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
 
     p: ({ children, ...props }: React.ComponentProps<'p'>) => {
       return (
-        <p className="mb-6 text-[15px] leading-[1.8] text-foreground/60" {...props}>
+        <div className="mb-6 text-[15px] leading-[1.8] text-foreground/60" {...props}>
           {children}
-        </p>
+        </div>
       );
     },
 

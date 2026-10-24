@@ -9,7 +9,48 @@ import { extractCode, extractMotionCode } from "@/lib/code";
 
 A premium collection of scroll-driven 3D card stacking layouts engineered exclusively with **GSAP's ScrollTrigger plugin**. As users scroll down the page, feature cards stick to the viewport while the next card slides up to cover them, creating a simulated 3D deck with silky 60fps performance across both light and dark modes.
 
-Four independent scroll-driven layouts share this page, each with its own block file. **Scroll inside a preview box** to drive its ScrollTrigger timeline.
+Five independent scroll-driven layouts share this page, each with its own block file. **Scroll inside a preview box** to drive its ScrollTrigger timeline.
+
+## Fan stack
+
+Overlapping cards in a tilted diagonal cascade, each with a photo hanging off its edge. As the stack scrolls into view the cards are dealt out of one pile into place, scrubbed by the scrollbar. It is built from small primitives, so a card holds whatever your data has.
+
+<ExampleShowcase
+  name="fan-stack"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Fan stack",
+      subheading: "Three numbered steps dealt from a pile into a cascade as you scroll.",
+      propNotes: [
+        {
+          prop: "scrollerRef",
+          effect:
+            "points the scroll trigger at the box it scrolls in. Leave it out on a normal page and the window drives the deal.",
+        },
+        {
+          prop: "tone",
+          effect:
+            "on a card picks its surface — `muted`, `light` or `accent`, all tinted from your primary colour. By default the cards step through them in order.",
+        },
+        {
+          prop: "side",
+          effect:
+            "on `FanStackThumb` hangs the photo off the card's `right`, `left` or `top` edge in the cascade.",
+        },
+      ],
+      usage: extractCode("src/preview/demos/fan-stack-demo.tsx"),
+      code: extractMotionCode("src/components/custom/blocks/FanStackBlock.tsx"),
+    },
+  ]}
+/>
+
+The cascade is a container query, not a breakpoint: under 768px of width the cards become a sticky stack instead — each one sticks near the top and the next slides over it, its header left peeking. Drag the preview narrower to see it. Under `prefers-reduced-motion` the cascade simply shows, without the deal.
+
+### Installation
+
+<Installation name="fan-stack" />
 
 ## Simple stack
 
@@ -20,6 +61,7 @@ export const stackItems = `const items: StackItem[] = [
     description:
       "Instantly sync state across clients without writing WebSocket logic. Our engine handles race conditions seamlessly.",
     icon: Zap,
+    color: "#1e3a8a",
     content: (
       <div className="w-full h-full flex flex-col justify-between p-6 bg-muted text-foreground rounded-2xl border border-border shadow-sm relative overflow-hidden group">
         <div className="flex items-center justify-between border-b border-border pb-3">
@@ -64,6 +106,7 @@ export const stackItems = `const items: StackItem[] = [
     description:
       "Build robust systems with separated concerns. Easily swap out databases or auth providers without rewriting your core.",
     icon: Layers,
+    color: "#581c87",
     content: (
       <div className="w-full h-full flex flex-col justify-center gap-3 p-6 bg-muted rounded-2xl border border-border text-foreground relative overflow-hidden">
         <div className="p-3.5 rounded-xl bg-card border border-border flex items-center justify-between shadow-xs">
@@ -113,6 +156,7 @@ export const stackItems = `const items: StackItem[] = [
     description:
       "Don't reinvent the wheel. Utilize our library of pre-built, accessible UI blocks designed to drop into any codebase.",
     icon: Blocks,
+    color: "#065f46",
     content: (
       <div className="w-full h-full p-6 bg-muted rounded-2xl border border-border text-foreground flex flex-col justify-between">
         <div className="flex items-center justify-between mb-2">
@@ -172,6 +216,7 @@ export const stackItems = `const items: StackItem[] = [
     description:
       "Bank-grade encryption, automated compliance tracking, and granular role-based access control built in out of the box.",
     icon: ShieldCheck,
+    color: "#9f1239",
     content: (
       <div className="w-full h-full p-6 bg-muted rounded-2xl border border-border text-foreground flex flex-col justify-between items-center text-center">
         <div className="w-full flex items-center justify-between border-b border-border pb-3">
@@ -223,6 +268,12 @@ export default function GappedStack() {
           effect:
             "is the pixel offset between stacked cards, which is what keeps the titles underneath readable.",
         },
+        {
+          prop: "color",
+          value: '"#1e3a8a"',
+          effect:
+            "on a StackItem sets its unique background color (supports hex codes, CSS colors, or Tailwind classes).",
+        },
       ],
       props: { cardGap: 64 },
       usage: usageSimpleGap,
@@ -233,7 +284,7 @@ export default function GappedStack() {
 
 ### Installation
 
-<Installation name="scroll-stack" />
+<Installation name="scroll-stack" showSetupPath={false} />
 
 ## Sticky stack
 
@@ -810,6 +861,125 @@ Discover the key capabilities that make this component an excellent choice for m
     <tbody>
       <tr>
         <td>
+          <code>FanStack</code>
+        </td>
+        <td>
+          <code>children</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <strong>Required</strong>
+        </td>
+        <td>
+          The <code>FanStackCard</code>s, in order. Any number works; the cascade spreads them across the width.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>FanStack</code>
+        </td>
+        <td>
+          <code>scrollerRef</code>
+        </td>
+        <td>
+          <code>{"RefObject<HTMLElement | null>"}</code>
+        </td>
+        <td>
+          <code>window</code>
+        </td>
+        <td>
+          The element that scrolls, when the stack sits inside a scroll container rather than the page.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>FanStack</code>
+        </td>
+        <td>
+          <code>scrub</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0.6</code>
+        </td>
+        <td>
+          Seconds the cards take to catch up with the scrollbar. <code>0</code> locks them to it.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>FanStack</code>
+        </td>
+        <td>
+          <code>stickyTop</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>16</code>
+        </td>
+        <td>
+          Below 768px of width, the gap in px above the first stuck card. Raise it to clear a fixed header.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>FanStackCard</code>
+        </td>
+        <td>
+          <code>tone</code>
+        </td>
+        <td>
+          <code>"muted" | "light" | "accent"</code>
+        </td>
+        <td>
+          By position
+        </td>
+        <td>
+          The card's surface, tinted from <code>--primary</code>. Cards step through the three in order when left unset.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>FanStackThumb</code>
+        </td>
+        <td>
+          <code>side</code>
+        </td>
+        <td>
+          <code>"right" | "left" | "top"</code>
+        </td>
+        <td>
+          By position
+        </td>
+        <td>
+          Which edge the photo hangs off in the cascade. Below 768px of width it is a small photo in the card's top corner.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>FanStackPoint</code>
+        </td>
+        <td>
+          <code>icon</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          Check mark
+        </td>
+        <td>
+          Replaces the check mark ahead of the point.
+        </td>
+      </tr>
+      <tr>
+        <td>
           <code>ScrollStack</code>
         </td>
         <td>
@@ -824,6 +994,23 @@ Discover the key capabilities that make this component an excellent choice for m
         <td>
           An array of feature card objects defining the sequential stack
           sequence.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>StackItem</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom background color for this specific card. Accepts hex color codes (e.g. <code>#1e3a8a</code>), CSS colors (rgb, hsl), or Tailwind utility classes.
         </td>
       </tr>
       <tr>

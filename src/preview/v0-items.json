@@ -11,7 +11,7 @@
   },
   "accordion": {
     "accordion": "Accordion",
-    "faq-section": "Accordion — FAQ section",
+    "brand-logo-reveal": "Accordion — Brand logo reveal",
     "multiple-open": "Accordion — Multiple open",
     "always-one-open": "Accordion — Always one open",
     "multiple-permanent-open": "Accordion — Multiple permanent open",
@@ -111,6 +111,7 @@
     "register-liquid-glass": "Register Form — Register — liquid-glass"
   },
   "avatar-stack": {
+    "avatar-group-shift-on-hover": "Avatar Stack — Avatar Group (Shift on hover)",
     "without-tooltip": "Avatar Stack — Without tooltip",
     "with-an-action": "Avatar Stack — With an action",
     "folded-count": "Avatar Stack — Folded count",
@@ -128,7 +129,8 @@
   },
   "booking-card": {
     "in-a-card": "Booking Card — In a card",
-    "in-a-glass-slab": "Booking Card — In a glass slab"
+    "in-a-glass-slab": "Booking Card — In a glass slab",
+    "liquid-glass": "Booking Card — Liquid glass"
   },
   "breadcrumb": {
     "breadcrumb": "Breadcrumb",
@@ -228,6 +230,8 @@
   },
   "component-wall": {
     "build-interactive-interfaces": "Component Wall — Build interactive interfaces",
+    "centred-with-persistent-background": "Component Wall — Centred with persistent background",
+    "clean-mobile-view-no-background-animation": "Component Wall — Clean mobile view (no background animation)",
     "copy-beside-the-wall": "Component Wall — Copy beside the wall"
   },
   "context-menu": {
@@ -290,7 +294,8 @@
   },
   "dashboard": {
     "admin-overview": "Dashboard — Admin overview",
-    "dashboard-glass": "Dashboard — Glass"
+    "dashboard-glass": "Dashboard — Glass",
+    "dashboard-liquid-glass": "Dashboard — Liquid Glass"
   },
   "data-flow": {
     "sources-core-outputs": "Data Flow — Sources, core, outputs"
@@ -321,6 +326,11 @@
   },
   "design-folder-box": {
     "custom-labels": "Design Folder Box — Custom labels"
+  },
+  "designs-toolkit": {
+    "pinned-toolkit-corkboard": "Designs Toolkit — Pinned toolkit corkboard",
+    "winding-roadmap-pathway": "Designs Toolkit — Winding Roadmap Pathway",
+    "clean-grid-without-dashed-lines": "Designs Toolkit — Clean Grid (Without Dashed Lines)"
   },
   "dialog": {
     "dialog": "Dialog",
@@ -359,13 +369,25 @@
     "glass": "Email — Glass",
     "liquid-glass": "Email — Liquid Glass"
   },
+  "error-section": {
+    "cyberpunk-terminal-section": "Error Section — Cyberpunk Terminal Section"
+  },
+  "falling-tags": {
+    "interactive-physics-arena": "Falling Tags — Interactive physics arena",
+    "colorful": "Falling Tags — Colorful",
+    "glass": "Falling Tags — Glass",
+    "neon": "Falling Tags — Neon",
+    "pastel": "Falling Tags — Pastel",
+    "monochrome": "Falling Tags — Monochrome",
+    "black-and-white": "Falling Tags — Black and white"
+  },
   "faq-section": {
-    "1-homepage-faq-section": "Faq Section — 1. Homepage FAQ Section"
+    "1-homepage-faq-section": "Faq Section — 1. Homepage FAQ Section",
+    "2-two-column-support-faq": "Faq Section — 2. Two-Column Support FAQ"
   },
   "upload": {
     "dropzone": "Upload — Dropzone",
-    "upload-states": "Upload — Upload states",
-    "folder-drop-target": "Upload — Folder drop target"
+    "upload-states": "Upload — Upload states"
   },
   "input": {
     "simple-file-input": "Input — Simple file input",
@@ -374,6 +396,20 @@
     "underlined": "Input — Underlined",
     "password": "Input — Password",
     "autocomplete": "Input — Autocomplete"
+  },
+  "folder": {
+    "folder-drop-target": "Folder — Folder drop target",
+    "folder": "Folder",
+    "fan-on-hover": "Folder — Fan on hover",
+    "icon": "Folder — Icon",
+    "photos": "Folder — Photos"
+  },
+  "folder-motion": {
+    "folder-drop-target": "Folder — Folder drop target",
+    "folder": "Folder",
+    "fan-on-hover": "Folder — Fan on hover",
+    "icon": "Folder — Icon",
+    "photos": "Folder — Photos"
   },
   "flavour-carousel": {
     "choose-your-matcha-tea": "Flavour Carousel — Choose your matcha tea"
@@ -401,18 +437,6 @@
     "no-active-route": "Flowchart — No active route",
     "accent-color": "Flowchart — Accent color"
   },
-  "folder": {
-    "folder": "Folder",
-    "fan-on-hover": "Folder — Fan on hover",
-    "icon": "Folder — Icon",
-    "photos": "Folder — Photos"
-  },
-  "folder-motion": {
-    "folder": "Folder",
-    "fan-on-hover": "Folder — Fan on hover",
-    "icon": "Folder — Icon",
-    "photos": "Folder — Photos"
-  },
   "footer": {
     "simple-centered-footer": "Footer — Simple Centered Footer",
     "glass-dock-footer": "Footer — Glass Dock Footer",
@@ -423,10 +447,19 @@
     "react-hook-form-zod": "Form — React Hook Form + Zod",
     "submitting": "Form — Submitting"
   },
+  "gallery": {
+    "orbit-gallery": "Gallery — Orbit Gallery",
+    "moving-bento": "Gallery — Moving Bento",
+    "circular-reel": "Gallery — Circular Reel",
+    "3d-pill-carousel": "Gallery — 3D Pill Carousel",
+    "arc-carousel-gallery": "Gallery — Arc Carousel Gallery",
+    "video-sphere-gallery": "Gallery — Video Sphere Gallery"
+  },
   "glass-panel": {
     "four-shapes": "Glass Panel — Four shapes",
     "bento-layout": "Glass Panel — Bento layout",
-    "solid": "Glass Panel — Solid"
+    "solid": "Glass Panel — Solid",
+    "liquid-glass": "Glass Panel — Liquid glass"
   },
   "half-stars": {
     "full-stars": "Half Stars — Full stars",
@@ -475,6 +508,9 @@
   },
   "hero-vortex": {
     "atmospheric-cyclone-radar-hero": "Hero — Atmospheric Cyclone Radar Hero"
+  },
+  "hero-orbit": {
+    "orbit-ring-hero": "Hero — Orbit Ring Hero"
   },
   "image-compare": {
     "classic-slider": "Image Compare — Classic Slider",
@@ -597,8 +633,8 @@
     "spotlight": "Newsletter — Spotlight",
     "issues": "Newsletter — Issues"
   },
-  "orbit-gallery": {
-    "movement-is-what-people-notice-first": "Orbit Gallery — Movement is what people notice first"
+  "not-found-section": {
+    "hyperspace-404-section": "Not Found Section — Hyperspace 404 Section"
   },
   "otp-input": {
     "otp-input": "OTP Input",
@@ -645,7 +681,8 @@
   },
   "profile-page": {
     "profile-page": "Profile Page",
-    "solid": "Profile Page — Solid"
+    "solid": "Profile Page — Solid",
+    "liquid-glass": "Profile Page — Liquid glass"
   },
   "progress": {
     "progress": "Progress",
@@ -695,6 +732,12 @@
   "scroll-split-cards": {
     "default": "Scroll Split Cards — Default",
     "slow-transition": "Scroll Split Cards — Slow Transition"
+  },
+  "fan-stack": {
+    "fan-stack": "Fan Stack"
+  },
+  "fan-stack-motion": {
+    "fan-stack": "Fan Stack"
   },
   "scroll-stack": {
     "card-gap": "Scroll Stack — Card gap"
@@ -902,8 +945,14 @@
     "disabled": "Toggle Group — Disabled"
   },
   "tooltip": {
-    "rich-content": "Tooltip — Rich content",
-    "offset": "Tooltip — Offset"
+    "without-arrow": "Tooltip — Without Arrow",
+    "with-arrow": "Tooltip — With Arrow",
+    "with-arrow-animated": "Tooltip — With Arrow & Animated",
+    "with-staggered-content-animation": "Tooltip — With Staggered Content Animation",
+    "with-expanding-content": "Tooltip — With Expanding Content"
+  },
+  "top-destinations": {
+    "dual-row-parallax-travel": "Top Destinations — Dual-row parallax travel"
   },
   "user-graph": {
     "user-graph": "User Graph"

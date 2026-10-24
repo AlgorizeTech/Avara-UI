@@ -7,7 +7,7 @@ import { extractCode } from "@/lib/code";
 
 # Accordion
 
-A data-driven accordion built on the Radix primitive, with five variants that each look like a different component rather than the same card in five borders. The open panel is the only thing that gets the accent: it lifts out as a card, inverts to your primary color, or grows a rail down its edge, depending on the variant.
+A data-driven accordion built on the Radix primitive, with five list variants and an interactive **Brand Logo Reveal** showcase variant. The open panel is the only thing that gets the accent: it lifts out as a card, inverts to your primary color, grows a rail down its edge, or expands into an editorial brand showcase.
 
 You feed it an `accordionData` array — the wrapper maps it to items, icons and content for you. Switch on `animation="stack"` and the items start piled on the first one and deal down into place when the accordion scrolls into view.
 
@@ -91,6 +91,19 @@ export default function AlwaysOpenFaq() {
   );
 }`;
 
+export const usageBrandReveal = `import { BrandLogoAccordion, type BrandItem } from "@/components/custom/blocks/Accordion";
+
+// Alternatively use <Accordion variant="brand-reveal" />
+export default function BrandRevealShowcase() {
+  return (
+    <BrandLogoAccordion
+      autoplay
+      autoplayInterval={4000}
+      pauseOnHover
+    />
+  );
+}`;
+
 <ExampleShowcase
   name="accordion"
   columns={1}
@@ -102,7 +115,7 @@ export default function AlwaysOpenFaq() {
           lead: "Pass",
           prop: "accordionData",
           effect:
-            "as an array of `{ value, title, icon, content }` — `content` is an array of paragraphs and `icon` a key of the block's `ICON_MAP`.",
+            "as an array of \`{ value, title, icon, content }\` — \`content\` is an array of paragraphs and \`icon\` a key of the block's \`ICON_MAP\`.",
         },
         {
           prop: "type",
@@ -116,7 +129,7 @@ export default function AlwaysOpenFaq() {
         {
           prop: "defaultValue",
           value: '"getting-started"',
-          effect: "matches an item's `value` to decide which panel starts open.",
+          effect: "matches an item's \`value\` to decide which panel starts open.",
         },
         {
           lead: "Add",
@@ -130,6 +143,38 @@ export default function AlwaysOpenFaq() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/Accordion.tsx"),
     },
+    {
+      title: "Brand logo reveal",
+      subheading:
+        "Accordion brand logo showcase with animated horizontal pleats, autoplay progress indicator, hover pause, and responsive stacking. Inspired by Framer Brand Logo Reveal.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "variant",
+          value: '"brand-reveal"',
+          effect:
+            "to display an editorial horizontal brand accordion, or use \`<BrandLogoAccordion />\` directly.",
+        },
+        {
+          prop: "autoplay",
+          value: "true",
+          effect: "cycles through client/partner brands on an automated timer.",
+        },
+        {
+          prop: "autoplayInterval",
+          value: "4000",
+          effect: "duration in milliseconds before revealing the next brand.",
+        },
+        {
+          prop: "pauseOnHover",
+          value: "true",
+          effect: "pauses autoplay when the cursor hovers over any panel.",
+        },
+      ],
+      props: { variant: "brand-reveal" },
+      usage: usageBrandReveal,
+      code: extractCode("src/components/custom/blocks/Accordion.tsx"),
+    },
   ]}
 />
 
@@ -139,96 +184,21 @@ export default function AlwaysOpenFaq() {
 
 ## Examples
 
-export const usageSection = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+export const usageMultiplePermanent = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
 
-// The three faces on the "Still stuck?" card.
-const SUPPORT_TEAM = [
-  { name: "Ana R.", src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg" },
-  { name: "Tom M.", src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg" },
-  { name: "Mara K.", src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg" },
-];
+${usageData}
 
-const faq: AccordionDataItem[] = [
-  {
-    value: "frameworks",
-    title: "Does it work outside Next.js?",
-    icon: "Code",
-    content: [
-      "Every block is plain React and Tailwind. The docs show a Next.js and a React (Vite) version of each snippet, and only the few components that use next/link or next/image need a one-line swap.",
-    ],
-  },
-  {
-    value: "theming",
-    title: "Can I change the colors?",
-    icon: "Palette",
-    content: [
-      "Everything reads the shadcn theme tokens (primary, card, muted, border), so one edit to globals.css restyles all of it.",
-    ],
-  },
-  {
-    value: "updates",
-    title: "How do updates reach my project?",
-    icon: "RefreshCw",
-    content: [
-      "The CLI copies the source into your repo, so nothing changes behind your back. Re-run the install command to pull a newer version, then review the diff like any other change.",
-    ],
-  },
-  {
-    value: "license",
-    title: "How is it licensed?",
-    icon: "Scale",
-    content: ["MIT. Use it in client work, products and templates, with no attribution required."],
-  },
-];
-
-export default function FaqSection() {
+export default function PermanentMultiOpenFaq() {
+  // type="multiple" and collapsible={false} allows opening multiple panels,
+  // but once opened, a panel cannot be closed by clicking it again.
   return (
-    <section className="px-4 py-8 sm:px-10 lg:px-14 lg:py-24">
-      <div className="mx-auto grid max-w-6xl gap-8 sm:gap-12 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
-        {/* Left column stays put while the answers scroll on large screens. */}
-        <div className="lg:sticky lg:top-8 lg:self-start">
-          <h2 className="max-w-md font-serif text-3xl leading-[1.1] tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-            Questions people ask before they install.
-          </h2>
-          <p className="mt-4 sm:mt-5 max-w-md text-sm sm:text-base leading-relaxed text-muted-foreground">
-            Short answers on licensing, theming and where the components run.
-            If yours isn't here, we read every message.
-          </p>
-
-          <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 rounded-2xl bg-muted/60 p-4 max-w-md">
-            <div className="flex shrink-0 -space-x-2">
-              {SUPPORT_TEAM.map((person) => (
-                <img
-                  key={person.name}
-                  src={person.src}
-                  alt={person.name}
-                  className="size-9 shrink-0 rounded-full border-2 border-background object-cover"
-                  loading="lazy"
-                />
-              ))}
-            </div>
-            <div className="min-w-0 flex-1">
-              <p className="text-sm font-medium text-foreground">Still stuck?</p>
-              <a
-                href="mailto:hello@example.com"
-                className="text-sm text-muted-foreground underline-offset-4 transition-colors hover:text-primary hover:underline break-words"
-              >
-                Email the team, we reply within a day
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <Accordion
-          accordionData={faq}
-          type="single"
-          collapsible
-          variant="default"
-          animation="stack"
-          defaultValue="theming"
-        />
-      </div>
-    </section>
+    <Accordion
+      accordionData={faqItems}
+      type="multiple"
+      collapsible={false}
+      variant="ghost"
+      defaultValue={["getting-started"]}
+    />
   );
 }`;
 
@@ -271,59 +241,6 @@ export default function AccordionVariants() {
         />
       ))}
     </div>
-  );
-}`;
-
-<ExampleShowcase
-  name="accordion"
-  columns={1}
-  minHeight={640}
-  examples={[
-    {
-      title: "FAQ section",
-      subheading:
-        "A two-column section: sticky heading and a support card on the left, the accordion on the right.",
-      propNotes: [
-        {
-          lead: "Compose",
-          prop: "Accordion",
-          effect:
-            "inside a `grid` with `lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]`. The left column is `lg:sticky` so the intro stays put while long answers scroll.",
-        },
-        {
-          prop: "animation",
-          value: '"stack"',
-          effect:
-            "deals the questions out when the section scrolls into view, so the entrance reads as one moment rather than a page full of fades.",
-        },
-        {
-          prop: "defaultValue",
-          value: '"theming"',
-          effect:
-            "opens the answer you most want people to read first. Any `value` from the array works.",
-        },
-      ],
-      props: { layout: "section", animation: "stack" },
-      usage: usageSection,
-    },
-  ]}
-/>
-
-export const usageMultiplePermanent = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
-
-${usageData}
-
-export default function PermanentMultiOpenFaq() {
-  // type="multiple" and collapsible={false} allows opening multiple panels,
-  // but once opened, a panel cannot be closed by clicking it again.
-  return (
-    <Accordion
-      accordionData={faqItems}
-      type="multiple"
-      collapsible={false}
-      variant="ghost"
-      defaultValue={["getting-started"]}
-    />
   );
 }`;
 
@@ -499,7 +416,7 @@ Single or multiple open panels, a one-time stack entrance, and five variants tha
           <code>variant</code>
         </td>
         <td>
-          <code>"default" | "bordered" | "filled" | "elevated" | "ghost"</code>
+          <code>"default" | "bordered" | "filled" | "elevated" | "ghost" | "brand-reveal"</code>
         </td>
         <td>
           <code>"default"</code>
@@ -508,7 +425,22 @@ Single or multiple open panels, a one-time stack entrance, and five variants tha
           Which look to use. <code>default</code> lifts the open row out as a
           card, <code>bordered</code> grows a rail on it, <code>filled</code>{" "}
           inverts it to <code>primary</code>, <code>elevated</code> raises it on
-          a ring, <code>ghost</code> is type and hairlines only.
+          a ring, <code>ghost</code> is type and hairlines only, and{" "}
+          <code>brand-reveal</code> renders an interactive horizontal brand showcase.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>brands</code>
+        </td>
+        <td>
+          <code>BrandItem[]</code>
+        </td>
+        <td>
+          <code>DEFAULT_BRANDS</code>
+        </td>
+        <td>
+          Used when <code>variant="brand-reveal"</code>. Array of objects defining <code>id</code>, <code>name</code>, <code>caption</code>, and optional <code>logo</code>, <code>link</code>, and <code>index</code>.
         </td>
       </tr>
       <tr>

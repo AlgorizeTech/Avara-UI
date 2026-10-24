@@ -41,7 +41,7 @@ export const wallGroups = `    <TechStackGroup>
 
 {/* One snippet per framework: Next.js passes next/link so the wall's links route client-side; anywhere else the default <a> is the right thing and needs no import. */}
 
-export const wallUsage = ({ next, layout, comment, stackVariant }) => `"use client";
+export const wallUsage = ({ next, layout, comment, stackVariant, persistentBackground, showMobileWall }) => `"use client";
 
 ${next ? 'import Link from "next/link";\n' : ""}import { ComponentWall, type ComponentWallItem } from "@/components/custom/blocks/ComponentWallBlock";
 import { TechStack, TechStackGroup, TechStackTool } from "@/components/custom/blocks/TechStackBlock";
@@ -58,7 +58,7 @@ ${wallGroups}  </TechStack>
 export default function Hero() {
   return (
     <ComponentWall
-      layout="${layout}"
+      layout="${layout}"${persistentBackground ? "\n      persistentBackground" : ""}${showMobileWall !== undefined ? `\n      showMobileWall={${showMobileWall}}` : ""}
       badge={{ label: "Next-gen React components", href: "/docs" }}
       heading="Build interactive {word}."
       headingWords={["interfaces", "components", "experiences", "animations", "dashboards"]}
@@ -84,6 +84,23 @@ export const wallCenter = {
 // The centred column is narrow, so the compact variant (marks only) fits it.`,
 };
 
+export const wallPersistent = {
+  layout: "center",
+  persistentBackground: true,
+  stackVariant: ' variant="compact"',
+  comment: `// Keeps the animated screenshot walls in the background layer behind the copy
+// across all screen sizes (mobile and desktop) instead of dropping below the buttons.`,
+};
+
+export const wallNoMobile = {
+  layout: "center",
+  showMobileWall: false,
+  stackVariant: ' variant="compact"',
+  comment: `// Hides the background image animation on mobile and small screens (<lg),
+// keeping the hero clean and focused while retaining full animation on desktop.
+// You can use showMobileWall={false} across ALL variants (center, split, persistentBackground).`,
+};
+
 export const wallSplit = {
   layout: "split",
   stackVariant: "",
@@ -94,6 +111,16 @@ export const wallSplit = {
 export const usage = {
   nextjs: wallUsage({ ...wallCenter, next: true }),
   reactjs: wallUsage({ ...wallCenter, next: false }),
+};
+
+export const usagePersistent = {
+  nextjs: wallUsage({ ...wallPersistent, next: true }),
+  reactjs: wallUsage({ ...wallPersistent, next: false }),
+};
+
+export const usageNoMobile = {
+  nextjs: wallUsage({ ...wallNoMobile, next: true }),
+  reactjs: wallUsage({ ...wallNoMobile, next: false }),
 };
 
 export const usageSplit = {
@@ -156,6 +183,96 @@ export const usageSplit = {
       props: { layout: "center" },
       usage,
       code: extractCode("src/components/custom/blocks/ComponentWallBlock.tsx"),
+    },
+    {
+      title: "Centred with persistent background",
+      subheading:
+        "The copy in the middle between two gliding screenshot walls. On mobile and small screens, the animated walls stay underneath the copy in the background layer just like on desktop, rather than dropping below the action buttons.",
+      propNotes: [
+        {
+          prop: "layout",
+          value: '"center"',
+          effect:
+            "centres the copy between two walls, each half the width and fading in under it.",
+        },
+        {
+          prop: "persistentBackground",
+          value: "true",
+          effect:
+            "ensures the animated walls remain anchored in the background behind the content on small screens, preventing the cards from dropping down below the call-to-action buttons.",
+        },
+        {
+          prop: "install",
+          effect:
+            "is the command in the box. Live-updates with the card slug the camera lands on.",
+        },
+        {
+          prop: "items",
+          effect:
+            "are the cards dealt into the walls. The left wall draws the first half, the right wall the second half.",
+        },
+        {
+          prop: "interval",
+          value: "4500",
+          effect:
+            "is how long each camera rests on a card; the right one lands half an interval after the left.",
+        },
+        {
+          prop: "mobileZoom",
+          value: "0.30",
+          effect:
+            "controls the scale of the background cards on small screens and phones, rendering them delightfully compact and unobtrusive.",
+        },
+        {
+          prop: "stack",
+          effect:
+            "renders the Tech Stack in compact mode below the trust statement in the center column.",
+        },
+      ],
+      props: { layout: "center", persistentBackground: true },
+      usage: usagePersistent,
+    },
+    {
+      title: "Clean mobile view (no background animation)",
+      subheading:
+        "Centred hero layout with background image animations completely hidden on mobile and small screens (<lg). Pass showMobileWall={false} (or mobileBackground={false}) across ALL variants (center, split, and center-background) to keep mobile screens clean and distraction-free while retaining full interactive animation on desktop.",
+      propNotes: [
+        {
+          prop: "showMobileWall",
+          value: "false",
+          effect:
+            "completely hides the background screenshot animations on small screens and phones (<lg). Supported across all layout variants (center, split, and center-background). Desktop retains full dual-wall interactive animation.",
+        },
+        {
+          prop: "layout",
+          value: '"center"',
+          effect:
+            "centres the copy between two walls on desktop.",
+        },
+        {
+          prop: "install",
+          effect:
+            "is the command in the box. Live-updates with the card slug the camera lands on.",
+        },
+        {
+          prop: "items",
+          effect:
+            "are the cards dealt into the walls.",
+        },
+        {
+          prop: "interval",
+          value: "4500",
+          effect:
+            "is how long each camera rests on a card.",
+        },
+        {
+          prop: "stack",
+          effect:
+            "renders the Tech Stack in compact mode below the trust statement in the center column.",
+        },
+      ],
+      props: { layout: "center", showMobileWall: false },
+      usage: usageNoMobile,
     },
   ]}
 />
@@ -340,15 +457,33 @@ export const usageSplit = {
       </tr>
       <tr>
         <td><code>layout</code></td>
-        <td><code>"split" | "center"</code></td>
+        <td><code>"split" | "center" | "center-background"</code></td>
         <td><code>"split"</code></td>
         <td>The copy on the left and the wall on the right, or the copy centred between two walls — the left camera resting high, the right one low — with the tools under the copy. Below <code>lg</code> a single band of every card sits between the copy and the tools.</td>
+      </tr>
+      <tr>
+        <td><code>showMobileWall</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Whether to show the background image animations on mobile and small screens (&lt;lg). When <code>false</code>, the wall animations are completely hidden on small screens across <strong>all variants</strong> (<code>center</code>, <code>split</code>, and <code>center-background</code>), leaving only the clean content copy and tools on phones while retaining full interactive animations on desktop.</td>
+      </tr>
+      <tr>
+        <td><code>mobileBackground</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Alias for <code>showMobileWall</code>. Set to <code>false</code> to disable the background image animation on small screens across all variants.</td>
+      </tr>
+      <tr>
+        <td><code>persistentBackground</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>When true (or with <code>layout="center-background"</code>), the animated screenshot walls remain in the background layer behind the copy on small screens instead of dropping below the action buttons as a separate band.</td>
       </tr>
       <tr>
         <td><code>compactWall</code></td>
         <td><code>boolean</code></td>
         <td><code>true</code></td>
-        <td>Centred layout only: whether that band shows below <code>lg</code>. With <code>false</code> the copy and the tools stand alone there, and the wall never mounts.</td>
+        <td>Centred layout only: whether that band shows below <code>lg</code>. Deprecated in favor of <code>showMobileWall</code> which works across all layouts.</td>
       </tr>
       <tr>
         <td><code>linkComponent</code></td>

@@ -150,7 +150,7 @@ export const Dropzone = forwardRef<HTMLDivElement, DropzoneProps>(
         onClick={() => fileInputRef.current?.click()}
         data-dragging={isDragging || undefined}
         className={cn(
-          "relative w-full rounded-2xl border-2 border-dashed border-border flex flex-col items-center justify-center py-12 px-6 cursor-pointer overflow-hidden group bg-card/50",
+          "relative w-full rounded-2xl border-2 border-dashed border-border flex flex-col items-center justify-center py-8 sm:py-12 px-4 sm:px-6 cursor-pointer overflow-hidden group bg-card/50",
           "transition-[border-color,background-color,box-shadow] duration-300",
           "data-[dragging]:border-primary/30 data-[dragging]:bg-primary/5 data-[dragging]:shadow-[0_0_30px_-5px_color-mix(in_oklab,var(--primary)_20%,transparent)]",
           className,
@@ -169,21 +169,21 @@ export const Dropzone = forwardRef<HTMLDivElement, DropzoneProps>(
         {/* pointer-events-none prevents drag events from bubbling and glitching the hover state */}
         <div
           ref={iconRef}
-          className="text-muted-foreground mb-4 transition-colors duration-300 pointer-events-none group-data-[dragging]:text-primary"
+          className="text-muted-foreground mb-3 sm:mb-4 transition-colors duration-300 pointer-events-none group-data-[dragging]:text-primary"
         >
-          <UploadCloud className="w-10 h-10" strokeWidth={1.5} />
+          <UploadCloud className="w-8 h-8 sm:w-10 sm:h-10" strokeWidth={1.5} />
         </div>
 
         <div
           ref={textRef}
-          className="flex flex-col items-center text-center pointer-events-none"
+          className="flex flex-col items-center text-center pointer-events-none px-2"
         >
-          <h3 className="text-base font-semibold text-foreground">
+          <h3 className="text-sm sm:text-base font-semibold text-foreground">
             {isDragging
               ? "Release to upload"
               : "Drop your files here or click to browse"}
           </h3>
-          <p className="text-[13px] text-muted-foreground mt-1">
+          <p className="text-xs sm:text-[13px] text-muted-foreground mt-1">
             PNG, JPG, PDF, MP4 — up to {maxSize} MB
           </p>
         </div>
@@ -216,7 +216,6 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
     const cardRef = useRef<HTMLDivElement>(null);
     const progressRef = useRef<HTMLDivElement>(null);
     const glowRef = useRef<HTMLDivElement>(null);
-
 
     React.useImperativeHandle(ref, () => cardRef.current as HTMLDivElement);
 
@@ -289,7 +288,7 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         className={cn(
-          "w-full bg-card text-card-foreground border rounded-2xl p-4 flex flex-col gap-4 relative overflow-hidden transition-colors duration-300 shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.2)] group",
+          "w-full min-w-0 bg-card text-card-foreground border rounded-2xl p-3.5 sm:p-4 flex flex-col gap-3 sm:gap-4 relative overflow-hidden transition-colors duration-300 shadow-[0_2px_12px_rgba(0,0,0,0.03)] dark:shadow-[0_2px_20px_rgba(0,0,0,0.2)] group",
           isError
             ? "border-rose-200 dark:border-rose-900/50"
             : isSuccess
@@ -308,12 +307,12 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
           }}
         />
 
-        <div className="flex items-start gap-4 relative z-10">
+        <div className="flex items-start gap-3 sm:gap-4 relative z-10 w-full min-w-0">
           {/* Signal 04: Upload Preview */}
           <div
             className={cn(
-              "rounded-xl bg-muted border border-border flex items-center justify-center flex-shrink-0 overflow-hidden relative shadow-sm",
-              previewUrl && isImage ? "w-14 h-14" : "w-12 h-12",
+              "rounded-xl bg-muted border border-border flex items-center justify-center shrink-0 overflow-hidden relative shadow-sm",
+              previewUrl && isImage ? "w-12 h-12 sm:w-14 sm:h-14" : "w-10 h-10 sm:w-12 sm:h-12",
             )}
           >
             {previewUrl && isImage ? (
@@ -338,17 +337,17 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
           </div>
 
           <div className="flex-1 min-w-0 flex flex-col justify-center pt-0.5">
-            <div className="flex items-center justify-between gap-4">
-              <h4 className="text-[14px] font-semibold text-foreground truncate pr-2">
+            <div className="flex items-center justify-between gap-2 sm:gap-4">
+              <h4 className="text-[13px] sm:text-[14px] font-semibold text-foreground truncate pr-1">
                 {file.name}
               </h4>
-              <span className="text-[13px] font-semibold text-foreground flex-shrink-0">
+              <span className="text-[12px] sm:text-[13px] font-semibold text-foreground shrink-0">
                 {Math.round(progress)}%
               </span>
             </div>
 
             {/* Badges / File Info */}
-            <div className="flex items-center gap-2 mt-1 mb-2">
+            <div className="flex items-center gap-2 mt-0.5 sm:mt-1 mb-1.5 sm:mb-2">
               <span className="bg-muted text-muted-foreground px-1.5 py-0.5 rounded text-[10px] font-semibold uppercase tracking-wider border border-border dark:border-transparent">
                 {fileExtension}
               </span>
@@ -358,37 +357,38 @@ export const UploadItem = forwardRef<HTMLDivElement, UploadItemProps>(
             </div>
 
             {/* Honest Progress & Inline Retry Messaging */}
-            <div className="flex items-center justify-between mt-auto h-5">
-              <div className="flex items-center gap-2 text-[12px] font-semibold text-muted-foreground truncate">
+            <div className="flex items-center justify-between gap-2 min-h-[24px] mt-auto">
+              <div className="flex items-center gap-1.5 min-w-0 text-[11px] sm:text-[12px] font-semibold text-muted-foreground overflow-hidden">
                 {isError ? (
-                  <span className="flex items-center text-rose-500 gap-1.5">
-                    <AlertTriangle className="w-3.5 h-3.5" />
-                    {errorMessage || "Connection lost"}
+                  <span className="flex items-center text-rose-500 gap-1.5 truncate">
+                    <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+                    <span className="truncate">{errorMessage || "Connection lost"}</span>
                   </span>
                 ) : isSuccess ? (
-                  <span className="flex items-center text-emerald-600 dark:text-emerald-500 gap-1.5">
-                    <Check className="w-3.5 h-3.5" />
-                    Upload complete
+                  <span className="flex items-center text-emerald-600 dark:text-emerald-500 gap-1.5 truncate">
+                    <Check className="w-3.5 h-3.5 shrink-0" />
+                    <span className="truncate">Upload complete</span>
                   </span>
                 ) : (
-                  <span>{formatTimeLeft(timeLeft)}</span>
+                  <span className="truncate">{formatTimeLeft(timeLeft)}</span>
                 )}
               </div>
 
               {/* Actions */}
-              <div className="flex items-center gap-2 flex-shrink-0">
+              <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
                 {(isError || isPaused) && onRetry && (
                   <button
                     onClick={() => onRetry(item.id)}
-                    className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-muted hover:bg-muted text-foreground text-[11px] font-semibold transition-colors border border-border dark:border-transparent"
+                    className="flex items-center gap-1 sm:gap-1.5 px-2 py-1 rounded-md bg-muted hover:bg-muted/80 text-foreground text-[11px] font-semibold transition-colors border border-border dark:border-transparent cursor-pointer"
                   >
-                    <RefreshCw className="w-3 h-3" /> Retry
+                    <RefreshCw className="w-3 h-3 shrink-0" /> Retry
                   </button>
                 )}
                 {onRemove && (
                   <button
                     onClick={() => onRemove(item.id)}
-                    className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+                    className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
+                    aria-label="Remove file"
                   >
                     <X className="w-4 h-4" />
                   </button>

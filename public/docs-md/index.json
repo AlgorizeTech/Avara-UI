@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-07T06:50:42.558Z",
-  "totalFiles": 303,
+  "generatedAt": "2026-10-24T01:35:59.291Z",
+  "totalFiles": 313,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -279,6 +279,12 @@
       "originalMdx": "[framework]\\design-components-folder\\page.mdx"
     },
     {
+      "name": "nextjs/designs-toolkit",
+      "path": "/docs/nextjs-designs-toolkit.md",
+      "url": "/docs/nextjs/designs-toolkit",
+      "originalMdx": "[framework]\\designs-toolkit\\page.mdx"
+    },
+    {
       "name": "nextjs/dialog",
       "path": "/docs/nextjs-dialog.md",
       "url": "/docs/nextjs/dialog",
@@ -309,6 +315,12 @@
       "originalMdx": "[framework]\\email\\page.mdx"
     },
     {
+      "name": "nextjs/error-section",
+      "path": "/docs/nextjs-error-section.md",
+      "url": "/docs/nextjs/error-section",
+      "originalMdx": "[framework]\\error-section\\page.mdx"
+    },
+    {
       "name": "nextjs/examples",
       "path": "/docs/nextjs-examples.md",
       "url": "/docs/nextjs/examples",
@@ -331,6 +343,12 @@
       "path": "/docs/nextjs-examples-video-text.md",
       "url": "/docs/nextjs/examples/video-text",
       "originalMdx": "[framework]\\examples\\video-text\\page.mdx"
+    },
+    {
+      "name": "nextjs/falling-tags",
+      "path": "/docs/nextjs-falling-tags.md",
+      "url": "/docs/nextjs/falling-tags",
+      "originalMdx": "[framework]\\falling-tags\\page.mdx"
     },
     {
       "name": "nextjs/faq-section",
@@ -397,6 +415,12 @@
       "path": "/docs/nextjs-form.md",
       "url": "/docs/nextjs/form",
       "originalMdx": "[framework]\\form\\page.mdx"
+    },
+    {
+      "name": "nextjs/gallery",
+      "path": "/docs/nextjs-gallery.md",
+      "url": "/docs/nextjs/gallery",
+      "originalMdx": "[framework]\\gallery\\page.mdx"
     },
     {
       "name": "nextjs/glass-panel",
@@ -561,10 +585,10 @@
       "originalMdx": "[framework]\\newsletter\\page.mdx"
     },
     {
-      "name": "nextjs/orbit-gallery",
-      "path": "/docs/nextjs-orbit-gallery.md",
-      "url": "/docs/nextjs/orbit-gallery",
-      "originalMdx": "[framework]\\orbit-gallery\\page.mdx"
+      "name": "nextjs/not-found-section",
+      "path": "/docs/nextjs-not-found-section.md",
+      "url": "/docs/nextjs/not-found-section",
+      "originalMdx": "[framework]\\not-found-section\\page.mdx"
     },
     {
       "name": "nextjs/otp-input",
@@ -859,6 +883,12 @@
       "path": "/docs/nextjs-tooltip.md",
       "url": "/docs/nextjs/tooltip",
       "originalMdx": "[framework]\\tooltip\\page.mdx"
+    },
+    {
+      "name": "nextjs/top-destinations",
+      "path": "/docs/nextjs-top-destinations.md",
+      "url": "/docs/nextjs/top-destinations",
+      "originalMdx": "[framework]\\top-destinations\\page.mdx"
     },
     {
       "name": "nextjs/user-graph",
@@ -1191,6 +1221,12 @@
       "originalMdx": "[framework]\\design-components-folder\\page.mdx"
     },
     {
+      "name": "reactjs/designs-toolkit",
+      "path": "/docs/reactjs-designs-toolkit.md",
+      "url": "/docs/reactjs/designs-toolkit",
+      "originalMdx": "[framework]\\designs-toolkit\\page.mdx"
+    },
+    {
       "name": "reactjs/dialog",
       "path": "/docs/reactjs-dialog.md",
       "url": "/docs/reactjs/dialog",
@@ -1221,6 +1257,12 @@
       "originalMdx": "[framework]\\email\\page.mdx"
     },
     {
+      "name": "reactjs/error-section",
+      "path": "/docs/reactjs-error-section.md",
+      "url": "/docs/reactjs/error-section",
+      "originalMdx": "[framework]\\error-section\\page.mdx"
+    },
+    {
       "name": "reactjs/examples",
       "path": "/docs/reactjs-examples.md",
       "url": "/docs/reactjs/examples",
@@ -1243,6 +1285,12 @@
       "path": "/docs/reactjs-examples-video-text.md",
       "url": "/docs/reactjs/examples/video-text",
       "originalMdx": "[framework]\\examples\\video-text\\page.mdx"
+    },
+    {
+      "name": "reactjs/falling-tags",
+      "path": "/docs/reactjs-falling-tags.md",
+      "url": "/docs/reactjs/falling-tags",
+      "originalMdx": "[framework]\\falling-tags\\page.mdx"
     },
     {
       "name": "reactjs/faq-section",
@@ -1309,6 +1357,12 @@
       "path": "/docs/reactjs-form.md",
       "url": "/docs/reactjs/form",
       "originalMdx": "[framework]\\form\\page.mdx"
+    },
+    {
+      "name": "reactjs/gallery",
+      "path": "/docs/reactjs-gallery.md",
+      "url": "/docs/reactjs/gallery",
+      "originalMdx": "[framework]\\gallery\\page.mdx"
     },
     {
       "name": "reactjs/glass-panel",
@@ -1473,10 +1527,10 @@
       "originalMdx": "[framework]\\newsletter\\page.mdx"
     },
     {
-      "name": "reactjs/orbit-gallery",
-      "path": "/docs/reactjs-orbit-gallery.md",
-      "url": "/docs/reactjs/orbit-gallery",
-      "originalMdx": "[framework]\\orbit-gallery\\page.mdx"
+      "name": "reactjs/not-found-section",
+      "path": "/docs/reactjs-not-found-section.md",
+      "url": "/docs/reactjs/not-found-section",
+      "originalMdx": "[framework]\\not-found-section\\page.mdx"
     },
     {
       "name": "reactjs/otp-input",
@@ -1771,6 +1825,12 @@
       "path": "/docs/reactjs-tooltip.md",
       "url": "/docs/reactjs/tooltip",
       "originalMdx": "[framework]\\tooltip\\page.mdx"
+    },
+    {
+      "name": "reactjs/top-destinations",
+      "path": "/docs/reactjs-top-destinations.md",
+      "url": "/docs/reactjs/top-destinations",
+      "originalMdx": "[framework]\\top-destinations\\page.mdx"
     },
     {
       "name": "reactjs/user-graph",

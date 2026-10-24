@@ -10,7 +10,7 @@ import {
   Palette,
   Video,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // No `color` is passed to any folder here on purpose. The sandbox repoints
 // `--primary` at the page's colour picker (and, on "Default", leaves the site
@@ -79,6 +79,51 @@ function IconPicker() {
   );
 }
 
+/** The `Folder` as an upload surface (shown on the File Upload page).
+ *  `peek={0}` keeps it empty until something is dropped on it; the default
+ *  would show three placeholder cards peeking out. */
+function FolderUploader() {
+  const [files, setFiles] = useState<FolderFile[]>([]);
+  const [progress, setProgress] = useState<number | undefined>(undefined);
+  const timer = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  useEffect(() => () => { if (timer.current) clearInterval(timer.current); }, []);
+
+  // Fake the upload: every file ticks up together, the pocket bar tracks the
+  // overall figure, and both settle at 100 so the bars disappear.
+  const onFiles = (incoming: File[]) => {
+    const next = incoming.map((f) => ({
+      name: f.name,
+      progress: 0,
+      thumb: f.type.startsWith("image/") ? URL.createObjectURL(f) : undefined,
+    }));
+    setFiles((prev) => [...prev, ...next]);
+    setProgress(0);
+    if (timer.current) clearInterval(timer.current);
+    let p = 0;
+    timer.current = setInterval(() => {
+      p = Math.min(100, p + 4);
+      setProgress(p);
+      setFiles((prev) => prev.map((f) => (f.progress !== undefined && f.progress < 100 ? { ...f, progress: p } : f)));
+      if (p >= 100 && timer.current) clearInterval(timer.current);
+    }, 80);
+  };
+
+  return (
+    <Folder
+      interactive
+      peek={0}
+      icon={ImageIcon}
+      label="Drop zone"
+      files={files}
+      progress={progress}
+      onFiles={onFiles}
+      onRemoveFile={(i) => setFiles((prev) => prev.filter((_, idx) => idx !== i))}
+      accept="image/*,.pdf"
+    />
+  );
+}
+
 export default function FolderDemo({
   peek = 3,
   size = 260,
@@ -91,7 +136,7 @@ export default function FolderDemo({
   size?: number;
   blur?: number;
   /** Which preview to render. */
-  example?: "showcase" | "fan" | "icon" | "photos";
+  example?: "showcase" | "fan" | "icon" | "photos" | "upload";
 }) {
   // Headroom above, not around: the fan lifts the cards ~0.29×size above the
   // folder's top edge and the name tooltip sits above that, so the open state
@@ -111,6 +156,14 @@ export default function FolderDemo({
     return (
       <div className={frame}>
         <IconPicker />
+      </div>
+    );
+  }
+
+  if (example === "upload") {
+    return (
+      <div className={frame}>
+        <FolderUploader />
       </div>
     );
   }

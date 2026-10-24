@@ -12,9 +12,10 @@ import {
 } from "@/contexts/motion-library-context";
 
 /**
- * The libraries' own logos from the brand icon set: GSAP in its green, Motion
- * in its monochrome mark (current text colour, as motion.dev draws it). The
- * idle one is desaturated like an inactive tab icon.
+ * The libraries' own logos from the brand icon set. On the solid active pill
+ * the mark takes the pill's text colour so it reads against any theme colour;
+ * the idle one shows the brand mark (GSAP green, Motion in the idle text
+ * colour), slightly faded.
  */
 function LibraryMark({ library, active }: { library: MotionLibrary; active: boolean }) {
   const Icon = library === "gsap" ? GsapIcon : MotionIcon;
@@ -22,10 +23,10 @@ function LibraryMark({ library, active }: { library: MotionLibrary; active: bool
     <Icon
       aria-hidden
       size={16}
+      fill={active ? "currentColor" : undefined}
       className={cn(
-        "relative shrink-0 transition-[filter,opacity]",
-        library === "motion" && "text-foreground",
-        !active && "grayscale opacity-60",
+        "relative shrink-0 transition-opacity",
+        !active && "opacity-80",
       )}
     />
   );
@@ -73,7 +74,7 @@ export function MotionLibraryTabs({
         ) as HTMLButtonElement | null)?.focus();
       }}
       className={cn(
-        "flex shrink-0 items-center gap-0.5 rounded-lg bg-foreground/[0.04] p-0.5",
+        "flex shrink-0 items-center gap-0.5 rounded-lg bg-foreground/[0.06] p-0.5 ring-foreground/10",
         className,
       )}
     >
@@ -94,7 +95,9 @@ export function MotionLibraryTabs({
             className={cn(
               "relative flex cursor-pointer items-center gap-1.5 rounded-md px-2 py-1 text-[12px] font-medium whitespace-nowrap transition-colors duration-150 motion-reduce:transition-none sm:px-2.5",
               "focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60",
-              isActive ? "text-primary" : "text-foreground/40 hover:text-foreground/70",
+              isActive
+                ? "text-primary-foreground"
+                : "text-foreground/60 hover:bg-foreground/[0.05] hover:text-foreground",
             )}
           >
             {isActive && (
@@ -106,7 +109,7 @@ export function MotionLibraryTabs({
                     ? { duration: 0 }
                     : { type: "spring", stiffness: 520, damping: 42, mass: 0.8 }
                 }
-                className="absolute inset-0 rounded-md bg-primary/15"
+                className="absolute inset-0 rounded-md bg-primary shadow-sm"
               />
             )}
             <LibraryMark library={candidate} active={isActive} />
