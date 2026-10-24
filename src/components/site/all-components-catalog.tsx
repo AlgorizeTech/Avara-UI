@@ -843,7 +843,7 @@ function MiniatureIllustration({
 									SJ
 								</div>
 								<div className="p-1.5 px-2 rounded-2xl rounded-bl-xs bg-muted/90 border border-border/60 text-foreground text-[6.5px] leading-tight shadow-2xs max-w-[80%]">
-									Did you check out the new Docs UI kit?
+									Did you check out the new Avara UI kit?
 								</div>
 							</div>
 

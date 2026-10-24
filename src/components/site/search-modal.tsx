@@ -45,7 +45,7 @@ const AILogo: React.FC<{ className?: string; size?: 'sm' | 'md' | 'lg'; loading?
 
   return (
     <img
-      src="/logo.svg"
+      src="/favicon/android-chrome-512x512.png"
       alt="AI Assistant"
       className={`${sizeClasses[size]} ${loading ? 'animate-pulse' : ''} ${className} rounded-lg`}
       style={sizeStyles[size]}
@@ -233,7 +233,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
         `${item.title}: ${item.description} - Link: ${currentUrl}${navHref(item, framework)}`
       ).join('\n');
 
-     const enhancedPrompt = `You are "Algorize UI Search," an expert assistant for the Next.js documentation. Here are the available components with their documentation links:
+     const enhancedPrompt = `You are "Avara UI Search," an expert assistant for the Next.js documentation. Here are the available components with their documentation links:
 
 
 
@@ -242,7 +242,7 @@ ${componentsWithLinks}
 
 When recommending components, follow these guidelines:
 1. Understand the user's intent, even if their keywords are unclear or imperfect.
-2. Suggest the most relevant Algorize UI components based on reasoning, context, and functionality—not just keyword matching.
+2. Suggest the most relevant Avara UI components based on reasoning, context, and functionality—not just keyword matching.
 3. Always include the direct link to the component documentation. Format links as: [Component Name](${currentUrl}/docs/component-name)
 4. Use markdown formatting consistently:
    - **Bold** for key terms or important points
@@ -617,7 +617,7 @@ User question: ${prompt}`;
                       </div>
                       <h3 className="text-[14px] font-semibold text-foreground mb-2">AI Assistant Ready</h3>
                       <p className="text-[13px] leading-[1.65] text-foreground/50 max-w-md mx-auto">
-                        Ask me anything about the Algorize UI components! I can help you find the right component, explain usage patterns, or provide implementation guidance.
+                        Ask me anything about the Avara UI components! I can help you find the right component, explain usage patterns, or provide implementation guidance.
                       </p>
                       <div className="mt-4 flex flex-wrap gap-2 justify-center">
                         {[

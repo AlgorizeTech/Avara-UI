@@ -1,5 +1,5 @@
 /**
- * How many components Algorize UI ships, counted from the registry.
+ * How many components Avara UI ships, counted from the registry.
  *
  * This is the one definition of the number. Everything that prints it — site
  * copy, metadata, structured data, the Markdown docs, the README and the web
