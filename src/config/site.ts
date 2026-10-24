@@ -22,7 +22,7 @@ const env = (value: string | undefined): string | undefined => {
 
 /** Canonical origin, always without a trailing slash. */
 export const SITE_URL = (
-  env(process.env.NEXT_PUBLIC_SITE_URL) ?? "https://algorize-ui.vercel.app"
+  env(process.env.NEXT_PUBLIC_SITE_URL) ?? "https://avaraui.com"
 ).replace(/\/+$/, "");
 
 /** Absolute URL for a site-relative path. `url("/docs")` → `https://…/docs`. */
@@ -39,7 +39,7 @@ export const url = (pathname = "/") =>
  */
 export const COMPONENT_COUNT = process.env.NEXT_PUBLIC_REGISTRY_COMPONENT_COUNT ?? "";
 
-export const SITE_NAME = env(process.env.NEXT_PUBLIC_SITE_NAME) ?? "Algorize UI";
+export const SITE_NAME = env(process.env.NEXT_PUBLIC_SITE_NAME) ?? "Avara UI";
 
 /**
  * External profiles. Only set what genuinely exists — an empty value is

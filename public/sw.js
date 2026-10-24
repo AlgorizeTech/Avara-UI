@@ -1,6 +1,6 @@
 // Service Worker for caching and performance optimization
-const CACHE_NAME = "algorize-ui-v1.0.0";
-const STATIC_CACHE_NAME = "algorize-ui-static-v1.0.0";
+const CACHE_NAME = "avara-ui-v1.0.0";
+const STATIC_CACHE_NAME = "avara-ui-static-v1.0.0";
 
 // Resources to cache immediately
 const STATIC_RESOURCES = [

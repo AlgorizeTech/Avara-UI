@@ -24,8 +24,8 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   keywords: allKeywords,
   authors: [{ name: "AlgorizeTech", url: "https://github.com/AlgorizeTech" }],
-  creator: "Algorize UI",
-  publisher: "Algorize UI",
+  creator: "Avara UI",
+  publisher: "Avara UI",
   formatDetection: {
     email: false,
     address: false,

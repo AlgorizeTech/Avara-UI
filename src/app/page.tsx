@@ -430,7 +430,7 @@ function HeroInteractiveHub() {
 										<Bot className="size-3.5" />
 									</div>
 									<div className="p-2.5 rounded-2xl rounded-tl-none bg-muted/80 text-foreground max-w-[85%] leading-relaxed border border-border/40">
-										Hello! Welcome to Docs UI. How can I assist you with your
+										Hello! Welcome to Avara UI. How can I assist you with your
 										React project today?
 									</div>
 								</div>
@@ -1071,7 +1071,7 @@ function WhyChooseUsSection() {
 					transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
 					className="text-center mb-10 md:mb-12">
 					<h2 className={SECTION_H2}>
-						Why Docs UI?
+						Why Avara UI?
 					</h2>
 					<p className={cn(SECTION_SUB, "mx-auto")}>
 						Engineered to explore unique interaction patterns—from 3D
@@ -3576,7 +3576,7 @@ function FeedbackSection() {
 						What developers are saying
 					</h2>
 					<p className={cn(SECTION_SUB, "mx-auto")}>
-						Real impressions and feedback from developers and designers exploring Docs UI.
+						Real impressions and feedback from developers and designers exploring Avara UI.
 					</p>
 				</motion.div>
 			</div>
@@ -3629,7 +3629,7 @@ function AnimatedFAQSection() {
 					</h2>
 
 					<p className={cn(SECTION_SUB, "mx-auto")}>
-						Everything you need to know about using Docs UI, component integration,
+						Everything you need to know about using Avara UI, component integration,
 						licensing, and custom styling.
 					</p>
 				</motion.div>
@@ -3999,11 +3999,15 @@ function FooterSection() {
 				<div className="flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
 					<div className="max-w-[280px]">
 						<div className="flex items-center gap-2.5">
-							<div className="size-7 rounded-lg bg-primary/15 flex items-center justify-center">
-								<Layers className="size-3.5 text-primary" />
-							</div>
+							<img
+								src="/favicon/android-chrome-192x192.png"
+								alt=""
+								width={28}
+								height={28}
+								className="size-7"
+							/>
 							<span className="text-[14px] font-semibold text-foreground">
-								Docs UI
+								Avara UI
 							</span>
 						</div>
 						<p className="mt-3 text-[13px] leading-[1.65] text-foreground/45">
@@ -4044,7 +4048,7 @@ function FooterSection() {
 				<div
 					aria-hidden
 					className="mt-14 select-none whitespace-nowrap font-serif font-bold text-[clamp(44px,13vw,160px)] leading-none tracking-[-0.04em] text-foreground/25">
-					Docs <span className="text-primary opacity-80">UI</span>
+					Avara <span className="text-primary opacity-80">UI</span>
 				</div>
 
 				<div className="mt-6 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between text-[12px] text-foreground/40">

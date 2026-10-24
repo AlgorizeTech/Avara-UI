@@ -1,5 +1,5 @@
 import { SITE_URL, siteConfig, links, integrations } from "./site";
-// SEO Configuration for Algorize UI. Identity and links come from
+// SEO Configuration for Avara UI. Identity and links come from
 // ./site, which reads them from the environment — change them there.
 export const seoConfig = {
   // Basic site information
@@ -130,7 +130,7 @@ export const seoConfig = {
       '@type': 'Organization',
       name: siteConfig.name,
       url: SITE_URL,
-      logo: `${SITE_URL}/logo.svg`,
+      logo: `${SITE_URL}/favicon/android-chrome-512x512.png`,
       description: 'Modern React component library for developers',
       foundingDate: '2024',
       address: {
