@@ -117,6 +117,7 @@ export const sandboxNames = [
   "menubar",
   "mobile-mockup",
   "modal",
+  "modern-scroll-stack",
   "navbar",
   "navigation-menu",
   "network-graph",

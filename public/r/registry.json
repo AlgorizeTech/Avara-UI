@@ -2936,6 +2936,30 @@
       "docs": "Named exports: Modal, ModalHeader, ModalBody, ModalFooter, plus the ModalProps and ModalSectionProps types. Modal is controlled — pass `isOpen` and `onClose`; there is no trigger and no `type` or `variant`. Size and skin the panel with `contentClassName` and the backdrop with `overlayClassName`; `hideCloseButton` drops the built-in X and `primaryCloseButton` tints it. Pass `ariaLabel` whenever the heading is not inside ModalHeader. Every slot is optional. The documented form example uses `select`. For a trigger-driven dialog with uncontrolled open state, use `dialog`."
     },
     {
+      "name": "modern-scroll-stack",
+      "type": "registry:component",
+      "title": "Modern Scroll Stack",
+      "author": "AlgorizeTech",
+      "description": "A sticky scroll-driven service cards stack where cards slide up from below with horizontal fan offsets and smoothly tilt into resting angles as they lock into place.",
+      "categories": [
+        "scroll",
+        "marketing",
+        "data-display"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ModernScrollStackBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ModernScrollStackBlock.tsx"
+        }
+      ],
+      "docs": "Named export: ModernScrollStack (also default export), DEFAULT_MODERN_SCROLL_STACK_ITEMS, ModernScrollStackItem, and ModernScrollStackProps."
+    },
+    {
       "name": "navbar",
       "type": "registry:component",
       "title": "Navbar",

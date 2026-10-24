@@ -85,6 +85,13 @@ export const NAME_OVERRIDES: Record<string, string> = {
 };
 
 export const META: Record<string, ItemMeta> = {
+  "modern-scroll-stack": {
+    title: "Modern Scroll Stack",
+    description:
+      "A sticky scroll-driven service cards stack where cards slide up from below with horizontal fan offsets and smoothly tilt into resting angles as they lock into place.",
+    categories: ["scroll", "marketing", "data-display"],
+    docs: "Named export: ModernScrollStack (also default export), DEFAULT_MODERN_SCROLL_STACK_ITEMS, ModernScrollStackItem, and ModernScrollStackProps.",
+  },
   "not-found-section": {
     title: "Not Found Section",
     description:

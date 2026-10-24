@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-10-24T03:48:34.557Z
-**Total files:** 313
+**Generated at:** 2026-10-24T06:42:35.605Z
+**Total files:** 315
 
 ## Available Files
 
@@ -100,6 +100,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/menubar](/docs/nextjs-menubar.md) - Source: `[framework]\menubar\page.mdx`
 - [nextjs/mobile-mockup](/docs/nextjs-mobile-mockup.md) - Source: `[framework]\mobile-mockup\page.mdx`
 - [nextjs/modal](/docs/nextjs-modal.md) - Source: `[framework]\modal\page.mdx`
+- [nextjs/modern-scroll-stack](/docs/nextjs-modern-scroll-stack.md) - Source: `[framework]\modern-scroll-stack\page.mdx`
 - [nextjs/navbar](/docs/nextjs-navbar.md) - Source: `[framework]\navbar\page.mdx`
 - [nextjs/navigation](/docs/nextjs-navigation.md) - Source: `[framework]\navigation\page.mdx`
 - [nextjs/network-graph](/docs/nextjs-network-graph.md) - Source: `[framework]\network-graph\page.mdx`
@@ -257,6 +258,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/menubar](/docs/reactjs-menubar.md) - Source: `[framework]\menubar\page.mdx`
 - [reactjs/mobile-mockup](/docs/reactjs-mobile-mockup.md) - Source: `[framework]\mobile-mockup\page.mdx`
 - [reactjs/modal](/docs/reactjs-modal.md) - Source: `[framework]\modal\page.mdx`
+- [reactjs/modern-scroll-stack](/docs/reactjs-modern-scroll-stack.md) - Source: `[framework]\modern-scroll-stack\page.mdx`
 - [reactjs/navbar](/docs/reactjs-navbar.md) - Source: `[framework]\navbar\page.mdx`
 - [reactjs/navigation](/docs/reactjs-navigation.md) - Source: `[framework]\navigation\page.mdx`
 - [reactjs/network-graph](/docs/reactjs-network-graph.md) - Source: `[framework]\network-graph\page.mdx`

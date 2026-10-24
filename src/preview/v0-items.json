@@ -610,6 +610,9 @@
     "glass": "Modal — Glass",
     "liquid-glass": "Modal — Liquid Glass"
   },
+  "modern-scroll-stack": {
+    "service-cards": "Modern Scroll Stack — Service cards"
+  },
   "navbar": {
     "e-commerce-mega-nav": "Navbar — E-Commerce Mega Nav",
     "navbar": "Navbar",
