@@ -3,6 +3,11 @@
 import React from "react";
 
 const colorThemes: Record<string, Record<string, string>> = {
+  lavender: {
+    text: "text-[#9b8afb]",
+    bg: "bg-[#9b8afb] hover:bg-[#8b78f6] text-[#09090b]",
+    bgSoft: "bg-[#9b8afb]/10 text-[#9b8afb]",
+  },
   indigo: {
     text: "text-indigo-600 dark:text-indigo-400",
     bg: "bg-indigo-600 hover:bg-indigo-700 text-white",
@@ -54,6 +59,7 @@ const contrastingForeground = (rgb: string) => {
 // One CSS colour per theme key, exposed as `--navbar-accent` so surfaces (the
 // dropdown panel, hover washes) can be tinted from it whatever the source.
 const accentColors: Record<string, string> = {
+  lavender: "#9b8afb",
   indigo: "#4f46e5",
   rose: "#e11d48",
   emerald: "#059669",

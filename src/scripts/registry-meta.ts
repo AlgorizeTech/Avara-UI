@@ -463,7 +463,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A responsive marketing navbar with logo, links, mobile menu and GSAP entrance animation. Use it as the top bar of a landing page.",
     categories: ["navigation", "marketing"],
-    docs: "Named exports: NavbarBlock, getThemeStyles (from navbar-theme.ts, which installs alongside). Variants: default | floating | centered | minimal | glass. Links render through `linkComponent` (a plain `a` by default; pass next/link in Next.js). The mobile menu toggles are the `button` item, which installs alongside. For app chrome with dropdown panels, use `navigation-menu`.",
+    docs: "Named exports: NavbarBlock, getThemeStyles (from navbar-theme.ts, which installs alongside). Variants: default | floating | centered | minimal | glass | ecommerce-mega-nav. Links render through `linkComponent` (a plain `a` by default; pass next/link in Next.js). The mobile menu toggles are the `button` item, which installs alongside. For app chrome with dropdown panels, use `navigation-menu`.",
   },
   command: {
     description:

@@ -526,7 +526,13 @@ const rawNavigation: NavigationItem[] = [
           "typing", "typewriter", "bounce", "pet shop", "doctor", "healthcare",
         ],
       },
-      { label: "Navbar", slug: "navbar" },
+      {
+        label: "Navbar",
+        slug: "navbar",
+        badge: "New",
+        addedOn: "2026-10-24",
+        keywords: ["navbar", "header", "mega menu", "mega nav", "ecommerce", "navigation", "top bar"],
+      },
       {
         label: "Platform Grid",
         slug: "platform-grid",

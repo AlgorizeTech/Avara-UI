@@ -611,6 +611,7 @@
     "liquid-glass": "Modal — Liquid Glass"
   },
   "navbar": {
+    "e-commerce-mega-nav": "Navbar — E-Commerce Mega Nav",
     "navbar": "Navbar",
     "centered": "Navbar — Centered",
     "floating": "Navbar — Floating",
