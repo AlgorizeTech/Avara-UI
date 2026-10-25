@@ -9,9 +9,9 @@ export function registerSearchTool(server: McpServer, ctx: ToolContext): void {
   server.registerTool(
     "search",
     {
-      title: "Search Algorize UI components",
+      title: "Search Avara UI components",
       description:
-        "Natural-language search over Algorize UI components (e.g. 'login form', 'pricing section', 'date picker'). Returns lightweight ranked metadata, not source code.",
+        "Natural-language search over Avara UI components (e.g. 'login form', 'pricing section', 'date picker'). Returns lightweight ranked metadata, not source code.",
       inputSchema: {
         query: z.string().describe("Search text, e.g. a component name or a short description of what you need."),
         category: z.string().optional().describe("Optional category filter, e.g. 'forms', 'navigation'."),

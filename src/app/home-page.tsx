@@ -3989,6 +3989,7 @@ const FOOTER_GROUPS: {
 				href: "https://www.linkedin.com/company/algorizetech/",
 				external: true,
 			},
+			{ label: "X", href: links.twitter, external: true },
 		],
 	},
 ];
@@ -4008,7 +4009,7 @@ function FooterSection() {
 								className="size-7"
 							/>
 							<span className="text-[14px] font-semibold text-foreground">
-								Avara UI
+								Avara <span className="text-brand">UI</span>
 							</span>
 						</div>
 						<p className="mt-3 text-[13px] leading-[1.65] text-foreground/45">
@@ -4049,7 +4050,7 @@ function FooterSection() {
 				<div
 					aria-hidden
 					className="mt-14 select-none whitespace-nowrap font-serif font-bold text-[clamp(44px,13vw,160px)] leading-none tracking-[-0.04em] text-foreground/25">
-					Avara <span className="text-primary opacity-80">UI</span>
+					Avara <span className="text-brand opacity-80">UI</span>
 				</div>
 
 				<div className="mt-6 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between text-[12px] text-foreground/40">

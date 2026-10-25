@@ -13,8 +13,8 @@ export function registerGetComponentSourceTool(server: McpServer, ctx: ToolConte
   server.registerTool(
     "get_component_source",
     {
-      title: "Get Algorize UI component source",
-      description: "Returns the source files for one Algorize UI component, with their install paths.",
+      title: "Get Avara UI component source",
+      description: "Returns the source files for one Avara UI component, with their install paths.",
       inputSchema: { name: z.string() },
     },
     guarded(async ({ name }) => {

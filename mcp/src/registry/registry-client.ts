@@ -52,7 +52,7 @@ export class RegistryClient {
     } catch (cause) {
       throw new McpToolError(
         "REGISTRY_UNAVAILABLE",
-        `Could not reach the Algorize UI registry at ${url}.`,
+        `Could not reach the Avara UI registry at ${url}.`,
       );
     }
 
@@ -141,7 +141,7 @@ export class RegistryClient {
 
   /**
    * Resolves `registryDependencies` into { internal, external } names.
-   * Internal = another Algorize item (full URL pointing at our own base URL).
+   * Internal = another Avara UI item (full URL pointing at our own base URL).
    * External = a bare shadcn name (e.g. "utils") that resolves upstream, not here.
    */
   splitDependencies(registryDependencies: string[]): { internal: string[]; external: string[] } {

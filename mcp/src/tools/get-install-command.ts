@@ -9,7 +9,7 @@ export function registerGetInstallCommandTool(server: McpServer, ctx: ToolContex
   server.registerTool(
     "get_install_command",
     {
-      title: "Get the exact install command for an Algorize UI component",
+      title: "Get the exact install command for an Avara UI component",
       description:
         "Returns the exact shadcn CLI install command for a component, plus the one-time registry setup command and a zero-setup URL fallback.",
       inputSchema: {

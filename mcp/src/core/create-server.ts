@@ -18,7 +18,7 @@ export interface CreateServerOptions {
   includeLocalOnlyTools: boolean;
 }
 
-const SERVER_INFO = { name: "algorize-ui-mcp", version: "0.1.0" };
+const SERVER_INFO = { name: "avara-ui-mcp", version: "0.1.0" };
 
 /**
  * One shared core, two thin transports (mcp-guide.md section 4). Everything
@@ -41,7 +41,7 @@ export function createServer(options: CreateServerOptions): McpServer {
   registerGetAgentSkillTool(server);
 
   if (options.includeLocalOnlyTools) {
-    registerGetProjectContextTool(server);
+    registerGetProjectContextTool(server, ctx);
   }
 
   return server;

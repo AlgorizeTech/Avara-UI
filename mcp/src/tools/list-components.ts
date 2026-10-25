@@ -9,8 +9,8 @@ export function registerListComponentsTool(server: McpServer, ctx: ToolContext):
   server.registerTool(
     "list_components",
     {
-      title: "List Algorize UI components",
-      description: "Lists Algorize UI components with lightweight metadata, optionally filtered and paginated.",
+      title: "List Avara UI components",
+      description: "Lists Avara UI components with lightweight metadata, optionally filtered and paginated.",
       inputSchema: {
         category: z.string().optional(),
         type: z.enum(["registry:component", "registry:ui"]).optional(),

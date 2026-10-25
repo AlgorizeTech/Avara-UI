@@ -14,8 +14,6 @@ export interface InstallCommand {
   unlockHint?: string;
 }
 
-const REGISTRY_NAMESPACE = "@algorize-ui";
-
 export function buildInstallCommand(
   item: RegistryIndexItem,
   config: Config,
@@ -24,13 +22,14 @@ export function buildInstallCommand(
   const runner = runnerOverride ?? config.defaultRunner;
   const url = `${config.registryBaseUrl}/${item.name}.json`;
   const templateUrl = `${config.registryBaseUrl}/{name}.json`;
+  const namespace = config.registryNamespace;
 
   const locked = item.tier === "premium";
 
   return {
     name: item.name,
-    installCommand: `${runner} shadcn@latest add ${REGISTRY_NAMESPACE}/${item.name}`,
-    setupCommand: `${runner} shadcn@latest registry add ${REGISTRY_NAMESPACE}=${templateUrl}`,
+    installCommand: `${runner} shadcn@latest add ${namespace}/${item.name}`,
+    setupCommand: `${runner} shadcn@latest registry add ${namespace}=${templateUrl}`,
     urlInstallCommand: `${runner} shadcn@latest add ${url}`,
     locked,
     ...(locked

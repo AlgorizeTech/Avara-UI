@@ -9,7 +9,7 @@ export function registerValidateUsageTool(server: McpServer, ctx: ToolContext): 
   server.registerTool(
     "validate_usage",
     {
-      title: "Validate Algorize UI component usage",
+      title: "Validate Avara UI component usage",
       description:
         "Checks that a component exists and, where structured prop data is available, that given props and variant values are valid. Falls back to warnings when only prose documentation exists.",
       inputSchema: {

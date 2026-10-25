@@ -35,13 +35,13 @@ const SITE_UI_DIR = path.join(ROOT, "src/components/ui");
  */
 const CUSTOM_DIR = path.join(ROOT, "src/components/custom");
 
-const REGISTRY_NAME = "algorize-ui";
+const REGISTRY_NAME = "avara-ui";
 /**
  * Canonical registry host. This is a PERMANENT PUBLIC CONTRACT — it is baked
  * into every published item's registryDependencies, so changing it breaks
  * anyone who has already installed. Move to a custom domain before announcing.
  */
-const HOMEPAGE = "https://algorize-ui.vercel.app";
+const HOMEPAGE = "https://avaraui.com";
 const AUTHOR = "AlgorizeTech";
 
 /**

@@ -29,7 +29,7 @@ app.post("/mcp", async (req: Request, res: Response) => {
       server.close();
     });
   } catch (error) {
-    console.error("[algorize-ui-mcp] error handling MCP request:", error);
+    console.error("[avara-ui-mcp] error handling MCP request:", error);
     if (!res.headersSent) {
       res.status(500).json({
         jsonrpc: "2.0",
@@ -57,5 +57,5 @@ app.get("/health", (_req: Request, res: Response) => {
 });
 
 app.listen(PORT, HOST, () => {
-  console.log(`[algorize-ui-mcp] Streamable HTTP server listening on ${HOST}:${PORT} (POST /mcp)`);
+  console.log(`[avara-ui-mcp] Streamable HTTP server listening on ${HOST}:${PORT} (POST /mcp)`);
 });
