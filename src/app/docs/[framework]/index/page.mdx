@@ -2,15 +2,16 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("index", {
   title: "Introduction",
-  description: "What Algorize UI is, how components are installed into your project, and what your project needs."
+  description: `What ${SITE_NAME} is, how components are installed into your project, and what your project needs.`
 });
 
 import { Cli } from "@/components/site/cli";
-import { COMPONENT_COUNT } from "@/config/site";
+import { COMPONENT_COUNT, SITE_NAME } from "@/config/site";
+import { REGISTRY_NAMESPACE } from "@/lib/registry";
 
 # Introduction
 
-Algorize UI is a library of **{COMPONENT_COUNT} animated, responsive React
+{SITE_NAME} is a library of **{COMPONENT_COUNT} animated, responsive React
 components** — from buttons and inputs to dashboards, carousels and full
 marketing sections.
 
@@ -21,7 +22,7 @@ file.
 
 <Cli command={`add button.json`} />
 
-The short `@algorize-ui/…` form needs the registry
+The short <code>{REGISTRY_NAMESPACE}/…</code> form needs the registry
 <DocLink to="installation#step-2-register-the-registry">registered once</DocLink>.
 Switch to **URL** above for a command that needs no setup.
 

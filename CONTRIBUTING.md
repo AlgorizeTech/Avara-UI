@@ -1,6 +1,6 @@
-# Contributing to Algorize UI
+# Contributing to Avara UI
 
-Thanks for taking the time to improve Algorize UI. This guide covers local setup, the rules shipped components follow, and the checks every pull request has to pass.
+Thanks for taking the time to improve Avara UI. This guide covers local setup, the rules shipped components follow, and the checks every pull request has to pass.
 
 One thing worth knowing up front: **this repository publishes source code, not a compiled package.** Whatever lands in `src/components/custom/` or `src/components/ui/` is copied into other people's projects by the `shadcn` CLI and compiled there. A type error or a stray Next.js import here becomes a broken build somewhere else, and that's why the checks below are strict.
 
@@ -8,13 +8,13 @@ One thing worth knowing up front: **this repository publishes source code, not a
 
 ## Before you start
 
-Look through the [issue tracker](https://github.com/AlgorizeTech/Reusable-Component-Documentation/issues) for an existing issue or discussion about your change. If there isn't one, open one first for anything larger than a small fix, so nobody spends a weekend on something that's already in progress.
+Look through the [issue tracker](https://github.com/AlgorizeTech/Avara-UI/issues) for an existing issue or discussion about your change. If there isn't one, open one first for anything larger than a small fix, so nobody spends a weekend on something that's already in progress.
 
 ## Local setup
 
 ```bash
-git clone https://github.com/AlgorizeTech/Reusable-Component-Documentation.git
-cd Reusable-Component-Documentation
+git clone https://github.com/AlgorizeTech/Avara-UI.git
+cd Avara-UI
 npm install        # also points git at .githooks/ (see "The pre-commit hook")
 npm run dev        # http://localhost:3000
 ```
@@ -59,7 +59,7 @@ These apply to everything under `src/components/custom/` and `src/components/ui/
 
 ### Theme through CSS variables
 
-Components take their colours, radius and fonts from the theme's CSS variables, so every preset on the [Themes page](https://algorize-ui.vercel.app/themes) restyles them. Use the theme tokens (`bg-background`, `text-foreground`, `bg-primary` and so on) instead of fixed colours. Check your component in light and dark mode, and with at least one preset besides the default.
+Components take their colours, radius and fonts from the theme's CSS variables, so every preset on the [Themes page](https://avaraui.com/themes) restyles them. Use the theme tokens (`bg-background`, `text-foreground`, `bg-primary` and so on) instead of fixed colours. Check your component in light and dark mode, and with at least one preset besides the default.
 
 ### Animation
 

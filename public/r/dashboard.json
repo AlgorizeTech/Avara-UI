@@ -9,10 +9,10 @@
     "motion"
   ],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/chart.json",
-    "https://algorize-ui.vercel.app/r/popover.json",
-    "https://algorize-ui.vercel.app/r/toggle-group.json",
-    "https://algorize-ui.vercel.app/r/ui-liquid-glass.json",
+    "https://avaraui.com/r/chart.json",
+    "https://avaraui.com/r/popover.json",
+    "https://avaraui.com/r/toggle-group.json",
+    "https://avaraui.com/r/ui-liquid-glass.json",
     "utils"
   ],
   "files": [

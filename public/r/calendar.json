@@ -10,8 +10,8 @@
     "react-day-picker"
   ],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/select.json",
-    "https://algorize-ui.vercel.app/r/ui-button.json",
+    "https://avaraui.com/r/select.json",
+    "https://avaraui.com/r/ui-button.json",
     "utils"
   ],
   "files": [

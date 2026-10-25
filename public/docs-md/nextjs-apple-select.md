@@ -49,11 +49,17 @@ export default function MultilineSelection() {
 
 ## Installation
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/apple-select
+npx shadcn@latest add https://avaraui.com/r/apple-select.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/apple-select
 ```
 
 ## Examples
@@ -124,4 +130,4 @@ Discover the Apple Select component's capabilities for pointing at part of a sen
 
 **Component Path:** `[framework]\apple-select\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

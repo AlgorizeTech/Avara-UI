@@ -3,7 +3,7 @@
   "name": "button-social-login",
   "type": "registry:block",
   "title": "Button — Social login",
-  "description": "The \"Social login\" example from the Algorize UI docs.",
+  "description": "The \"Social login\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

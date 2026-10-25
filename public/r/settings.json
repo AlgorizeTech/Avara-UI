@@ -6,7 +6,7 @@
   "description": "Pre-built settings panels for notification and security preferences, laid out as toggle rows. Use them as a starting point for an account settings page.",
   "dependencies": [],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/ui-base.json"
+    "https://avaraui.com/r/ui-base.json"
   ],
   "files": [
     {

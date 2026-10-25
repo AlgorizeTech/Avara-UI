@@ -16,7 +16,7 @@
       "path": "app/page.tsx",
       "type": "registry:page",
       "target": "app/page.tsx",
-      "content": "import { SocialLinks } from \"@/components/custom/blocks/SocialLinksBlock\";\n\nexport default function FollowUs() {\n  return (\n    <SocialLinks\n      links={[\n        { network: \"x\", href: \"https://x.com/algorize\" },\n        { network: \"github\", href: \"https://github.com/algorize\" },\n        { network: \"linkedin\", href: \"https://linkedin.com/company/algorize\" },\n        { network: \"youtube\", href: \"https://youtube.com/@algorize\" },\n        { network: \"instagram\", href: \"https://instagram.com/algorize\" },\n      ]}\n    />\n  );\n}"
+      "content": "import { SocialLinks } from \"@/components/custom/blocks/SocialLinksBlock\";\n\nexport default function FollowUs() {\n  return (\n    <SocialLinks\n      links={[\n        { network: \"x\", href: \"https://x.com/avaraui\" },\n        { network: \"github\", href: \"https://github.com/avaraui\" },\n        { network: \"linkedin\", href: \"https://linkedin.com/company/avaraui\" },\n        { network: \"youtube\", href: \"https://youtube.com/@avaraui\" },\n        { network: \"instagram\", href: \"https://instagram.com/avaraui\" },\n      ]}\n    />\n  );\n}"
     },
     {
       "path": "components/custom/blocks/SocialLinksBlock.tsx",

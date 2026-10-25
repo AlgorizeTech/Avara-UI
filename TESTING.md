@@ -14,7 +14,7 @@ Intra-registry dependencies are emitted as **absolute URLs**:
 
 ```json
 "registryDependencies": [
-  "https://algorize-ui.vercel.app/r/ui-badge.json",
+  "https://avaraui.com/r/ui-badge.json",
   "utils"
 ]
 ```
@@ -155,7 +155,7 @@ install a no-op and the test silently passes.
 Repeat steps 2–6 against the live domain:
 
 ```bash
-npx shadcn@latest add https://algorize-ui.vercel.app/r/button.json --yes
+npx shadcn@latest add https://avaraui.com/r/button.json --yes
 ```
 
 Do not skip this because localhost passed. The deployed host differs in MIME
@@ -199,12 +199,12 @@ Consumers can add a `registries` block to their `components.json`:
 ```json
 {
   "registries": {
-    "@algorize-ui": "https://algorize-ui.vercel.app/r/{name}.json"
+    "@avara-ui": "https://avaraui.com/r/{name}.json"
   }
 }
 ```
 
-Then `npx shadcn@latest add @algorize-ui/button`. Verified working.
+Then `npx shadcn@latest add @avara-ui/button`. Verified working.
 
 ---
 

@@ -3,7 +3,7 @@
   "name": "resizable-vertical-split",
   "type": "registry:block",
   "title": "Resizable — Vertical split",
-  "description": "The \"Vertical split\" example from the Algorize UI docs.",
+  "description": "The \"Vertical split\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

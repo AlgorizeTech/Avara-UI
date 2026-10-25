@@ -3,7 +3,7 @@
   "name": "reviews-testimonial-loom-pro-envelope-carousel",
   "type": "registry:block",
   "title": "Reviews — Testimonial Loom Pro (Envelope Carousel)",
-  "description": "The \"Testimonial Loom Pro (Envelope Carousel)\" example from the Algorize UI docs.",
+  "description": "The \"Testimonial Loom Pro (Envelope Carousel)\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

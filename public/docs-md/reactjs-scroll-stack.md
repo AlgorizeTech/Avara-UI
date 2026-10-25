@@ -14,17 +14,23 @@ The cascade is a container query, not a breakpoint: under 768px of width the car
 
 ### Installation
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/fan-stack
+npx shadcn@latest add https://avaraui.com/r/fan-stack.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/fan-stack
 ```
 
 Or the Motion build (same props, same file — install one):
 
 ```bash
-npx shadcn@latest add @algorize-ui/fan-stack-motion
+npx shadcn@latest add https://avaraui.com/r/fan-stack-motion.json
 ```
 
 ## Simple stack
@@ -151,11 +157,17 @@ export default function GappedStack() {
 
 ### Installation
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/scroll-stack
+npx shadcn@latest add https://avaraui.com/r/scroll-stack.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/scroll-stack
 ```
 
 ## Sticky stack
@@ -252,17 +264,23 @@ export default function TunedStickyStack() {
 
 ### Installation
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/sticky-scroll-stack
+npx shadcn@latest add https://avaraui.com/r/sticky-scroll-stack.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/sticky-scroll-stack
 ```
 
 Or the Motion build (same props, same file — install one):
 
 ```bash
-npx shadcn@latest add @algorize-ui/sticky-scroll-stack-motion
+npx shadcn@latest add https://avaraui.com/r/sticky-scroll-stack-motion.json
 ```
 
 ### More examples
@@ -391,11 +409,17 @@ export default function PinnedLeftStack() {
 
 ### Installation
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/split-scroll-stack
+npx shadcn@latest add https://avaraui.com/r/split-scroll-stack.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/split-scroll-stack
 ```
 
 ### More examples
@@ -467,11 +491,17 @@ export default function ProcessRail() {
 
 ### Installation
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/horizontal-scroll-stack
+npx shadcn@latest add https://avaraui.com/r/horizontal-scroll-stack.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/horizontal-scroll-stack
 ```
 
 export const usageHorizontalShort = `import { HorizontalRail } from "@/components/custom/blocks/HorizontalRailBlock";
@@ -487,11 +517,17 @@ export default function ProcessRailTrack() {
 
 `HorizontalRail` is its own item, so it installs on its own:
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/horizontal-rail
+npx shadcn@latest add https://avaraui.com/r/horizontal-rail.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/horizontal-rail
 ```
 
 ## Features
@@ -735,4 +771,4 @@ Discover the key capabilities that make this component an excellent choice for m
 
 **Component Path:** `[framework]\scroll-stack\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

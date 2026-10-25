@@ -3,7 +3,7 @@
   "name": "skeleton-pulse-animation",
   "type": "registry:block",
   "title": "Skeleton — Pulse animation",
-  "description": "The \"Pulse animation\" example from the Algorize UI docs.",
+  "description": "The \"Pulse animation\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

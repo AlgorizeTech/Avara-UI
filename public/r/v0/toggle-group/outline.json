@@ -3,7 +3,7 @@
   "name": "toggle-group-outline",
   "type": "registry:block",
   "title": "Toggle Group — Outline",
-  "description": "The \"Outline\" example from the Algorize UI docs.",
+  "description": "The \"Outline\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

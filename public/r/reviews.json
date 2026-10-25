@@ -8,7 +8,7 @@
     "lucide-react"
   ],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/half-stars.json",
+    "https://avaraui.com/r/half-stars.json",
     "utils"
   ],
   "files": [

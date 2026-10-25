@@ -1,8 +1,8 @@
 import { pageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = pageMetadata({
-  title: 'Documentation - Algorize UI',
-  description: 'Documentation for the Algorize UI component library: installation guides, component pages with live previews, and props references.',
+  title: `Documentation - ${SITE_NAME}`,
+  description: `Documentation for the ${SITE_NAME} component library: installation guides, component pages with live previews, and props references.`,
   url: '/docs',
 });
 
@@ -16,11 +16,11 @@ import {
   TabsContent,
 } from "@/components/site/tabs.tsx";
 import Link from 'next/link';
-import { COMPONENT_COUNT, links } from "@/config/site";
+import { COMPONENT_COUNT, SITE_NAME, links } from "@/config/site";
 
 # Documentation
 
-Algorize UI is a library of {COMPONENT_COUNT} React components installed straight
+{SITE_NAME} is a library of {COMPONENT_COUNT} React components installed straight
 into your project by the shadcn CLI — no wrapper package, no lock-in.
 
 <div className="not-prose grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
@@ -112,13 +112,13 @@ into your project by the shadcn CLI — no wrapper package, no lock-in.
 
 ## Getting Help
 
-- Visit our <a href={links.github}>GitHub organisation</a>
+- Visit our <a href={links.github}>GitHub repository</a>
 - Browse the [component library](/docs/nextjs/all-components)
 - For the framework itself, see the [Next.js documentation](https://nextjs.org/docs)
 
 ## Contributing
 
-We welcome contributions to Algorize UI! If you'd like to contribute:
+We welcome contributions to {SITE_NAME}! If you'd like to contribute:
 
 1. Fork the repository
 2. Create a feature branch

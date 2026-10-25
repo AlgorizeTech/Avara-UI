@@ -8,7 +8,7 @@
     "lucide-react"
   ],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/animated-faq-visuals.json",
+    "https://avaraui.com/r/animated-faq-visuals.json",
     "utils"
   ],
   "files": [

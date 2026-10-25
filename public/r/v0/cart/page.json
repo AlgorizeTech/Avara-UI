@@ -3,7 +3,7 @@
   "name": "cart-page",
   "type": "registry:block",
   "title": "Cart — Page",
-  "description": "The \"Page\" example from the Algorize UI docs.",
+  "description": "The \"Page\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

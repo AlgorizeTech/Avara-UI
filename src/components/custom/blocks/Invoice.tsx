@@ -246,7 +246,7 @@ export default function Invoice({
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex items-center gap-2">
-                  <h1 className={cn("text-xl sm:text-2xl font-bold tracking-tight", theme.fg)}>ALGORIZE_UI</h1>
+                  <h1 className={cn("text-xl sm:text-2xl font-bold tracking-tight", theme.fg)}>AVARA_UI</h1>
                   <CheckCircle2 className={cn("w-4 h-4 sm:hidden shrink-0", theme.fg)} />
                 </div>
                 <p className={cn("text-[11px] sm:text-xs mt-0.5 break-words", theme.fgMuted)}>450 South Brand Brooklyn, CA 91905</p>
@@ -455,7 +455,7 @@ export default function Invoice({
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 pb-6 border-b-4 border-foreground">
               <div>
                 <span className={cn("border-2 border-foreground font-bold px-2.5 py-1 text-xs uppercase tracking-wider", theme.bg)}>STATEMENT // OFFICIAL</span>
-                <h1 className="text-2xl sm:text-3xl font-bold uppercase text-foreground mt-3">ALGORIZE_UI</h1>
+                <h1 className="text-2xl sm:text-3xl font-bold uppercase text-foreground mt-3">AVARA_UI</h1>
               </div>
               <div className="text-left sm:text-right">
                 <EditableInput isEditing={isEditing} value={data.invoiceNumber} onChange={(e) => handleMainChange("invoiceNumber", e.target.value)} align="right" className={cn("text-2xl sm:text-3xl font-bold break-all", theme.text)} />
@@ -549,7 +549,7 @@ export default function Invoice({
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">
-                    <h1 className="text-xl sm:text-2xl font-semibold text-foreground tracking-tight">ALGORIZE_UI</h1>
+                    <h1 className="text-xl sm:text-2xl font-semibold text-foreground tracking-tight">AVARA_UI</h1>
                   </div>
                   <p className="text-xs sm:text-sm text-muted-foreground mt-1 max-w-[220px] leading-relaxed break-words">
                     Office 149, 450 South Brand Brooklyn San Diego County, CA 91905, USA

@@ -30,9 +30,11 @@
  * ("@/components/custom/blocks/HalfStarsBlock"); both forms survive install.
  */
 
+import "./load-env";
 import fs from "fs";
 import path from "path";
 import { META, NAME_OVERRIDES, CATEGORIES, type ItemMeta } from "./registry-meta";
+import { REGISTRY_NAMESPACE, SITE_URL, siteConfig } from "../config/site";
 
 const ROOT = path.resolve(__dirname, "../..");
 const BLOCKS_DIR = path.join(ROOT, "src/components/custom/blocks");
@@ -45,14 +47,17 @@ const SITE_UI_DIR = path.join(ROOT, "src/components/ui");
  */
 const CUSTOM_DIR = path.join(ROOT, "src/components/custom");
 
-const REGISTRY_NAME = "algorize-ui";
+/** `NEXT_PUBLIC_REGISTRY_NAMESPACE` without its `@` — the docs print the same name. */
+const REGISTRY_NAME = REGISTRY_NAMESPACE.replace(/^@/, "");
 /**
- * Canonical registry host. This is a PERMANENT PUBLIC CONTRACT — it is baked
- * into every published item's registryDependencies, so changing it breaks
- * anyone who has already installed. Move to a custom domain before announcing.
+ * Canonical registry host, from `NEXT_PUBLIC_SITE_URL`. This is a PUBLIC
+ * CONTRACT — it is baked into every published item's registryDependencies, so
+ * an item someone already installed keeps pointing at the host it was built
+ * with. When the value changes, keep the old host serving /r/ (or redirecting
+ * it) until consumers have moved.
  */
-const HOMEPAGE = "https://algorize-ui.vercel.app";
-const AUTHOR = "AlgorizeTech";
+const HOMEPAGE = SITE_URL;
+const AUTHOR = siteConfig.author;
 
 /**
  * Base URL that registryDependencies pointing at THIS registry resolve against.

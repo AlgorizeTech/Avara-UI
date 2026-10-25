@@ -3,7 +3,7 @@
   "name": "carousel-3d-motion-without-arrows-or-dots",
   "type": "registry:block",
   "title": "Carousel 3D — Without arrows or dots",
-  "description": "The \"Without arrows or dots\" example from the Algorize UI docs.",
+  "description": "The \"Without arrows or dots\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

@@ -35,7 +35,7 @@ export default function VerifyBadgeDemo({
       <div className="w-full min-h-[380px] flex items-center justify-center">
         <div className="flex items-center gap-2">
           <span className="font-semibold text-foreground text-[15px] tracking-tight">
-            AlgorizeSystem
+            AvaraSystem
           </span>
           <VerifyBadge color={activeHex} size={size} animate={animate} />
         </div>
@@ -110,7 +110,7 @@ export default function VerifyBadgeDemo({
               </svg>
             </div>
             <span className="font-semibold text-foreground text-sm sm:text-[15px] tracking-tight truncate">
-              AlgorizeSystem
+              AvaraSystem
             </span>
             <VerifyBadge color={activeHex} size={size} animate={animate} />
             <span

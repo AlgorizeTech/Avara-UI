@@ -16,7 +16,7 @@ See implementation in: `src/app/docs/[framework]/examples/video-text/video-text.
 
 ```tsx
 
-  Algorize UI
+  Video Text
 
 ```
 
@@ -24,4 +24,4 @@ See implementation in: `src/app/docs/[framework]/examples/video-text/video-text.
 
 **Component Path:** `[framework]\examples\video-text\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

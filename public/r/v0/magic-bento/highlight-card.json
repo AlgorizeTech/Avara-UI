@@ -3,7 +3,7 @@
   "name": "magic-bento-highlight-card",
   "type": "registry:block",
   "title": "Magic Bento — Highlight card",
-  "description": "The \"Highlight card\" example from the Algorize UI docs.",
+  "description": "The \"Highlight card\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

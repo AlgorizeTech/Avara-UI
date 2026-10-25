@@ -3,7 +3,7 @@
   "name": "data-grid-data-grid",
   "type": "registry:block",
   "title": "Data Grid",
-  "description": "The \"Data grid\" example from the Algorize UI docs.",
+  "description": "The \"Data grid\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

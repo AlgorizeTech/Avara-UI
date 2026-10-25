@@ -27,9 +27,6 @@ import { accentTokens } from "./accent";
 /** v0's documented entry point for opening a registry item in a new chat. */
 export const V0_OPEN_URL = "https://v0.app/chat/api/open";
 
-/** Where the endpoint is reachable when the page itself runs locally. */
-export const V0_FALLBACK_ORIGIN = "https://algorize-ui.vercel.app";
-
 /** The anchor id of a showcase example — also the file name of its v0 item. */
 export const slugify = (value?: string) =>
   (value || "")

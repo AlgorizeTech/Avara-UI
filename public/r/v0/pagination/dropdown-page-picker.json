@@ -3,7 +3,7 @@
   "name": "pagination-dropdown-page-picker",
   "type": "registry:block",
   "title": "Pagination — Dropdown page picker",
-  "description": "The \"Dropdown page picker\" example from the Algorize UI docs.",
+  "description": "The \"Dropdown page picker\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

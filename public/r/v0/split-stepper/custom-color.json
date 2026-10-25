@@ -3,7 +3,7 @@
   "name": "split-stepper-custom-color",
   "type": "registry:block",
   "title": "Split Stepper — Custom color",
-  "description": "The \"Custom color\" example from the Algorize UI docs.",
+  "description": "The \"Custom color\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

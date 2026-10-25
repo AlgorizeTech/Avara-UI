@@ -3,7 +3,7 @@
   "name": "otp-input-underlined",
   "type": "registry:block",
   "title": "OTP Input — Underlined",
-  "description": "The \"Underlined\" example from the Algorize UI docs.",
+  "description": "The \"Underlined\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

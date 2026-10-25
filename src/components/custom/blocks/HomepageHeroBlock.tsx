@@ -57,7 +57,7 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
       titleSuffix = "",
       prefixPosition,
       subtitle = "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion.",
-      cliCommand = "npx shadcn@latest add @algorize-ui/button",
+      cliCommand = "npx shadcn@latest add @avara-ui/button",
       primaryActionLabel = "Browse Components",
       primaryActionHref = "/docs",
       secondaryActionLabel = "Star on GitHub",

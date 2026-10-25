@@ -1,6 +1,6 @@
 export const metadata = docsPageMetadata("third-party/charts", {
   title: "Charts",
-  description: "Integrate Recharts and Chart.js with Algorize UI — design tokens bridged into both, in light and dark themes."
+  description: `Integrate Recharts and Chart.js with Avara UI — design tokens bridged into both, in light and dark themes.`
 });
 
 # Charts
@@ -42,7 +42,7 @@ const currency = (value: number) => \`$\${(value / 1000).toFixed(1)}k\`;
 
 /**
  * Recharts draws the plot; the surrounding chrome — card, title, legend,
- * tooltip — is all Algorize UI. That split is the whole integration: the
+ * tooltip — is all Avara UI. That split is the whole integration: the
  * chart library never renders anything the design system already owns.
  */
 export default function RechartsRevenue({ color }: { color?: string } = {}) {
@@ -63,7 +63,7 @@ export default function RechartsRevenue({ color }: { color?: string } = {}) {
 
 ### Installation
 
-This example also uses these Algorize UI components — install whichever
+This example also uses these Avara UI components — install whichever
 your project does not already have:
 
 ## The theme bridge
@@ -285,7 +285,7 @@ export default function ChartJsTraffic({ color }: { color?: string } = {}) {
 
 ### Installation
 
-This example also uses these Algorize UI components — install whichever
+This example also uses these Avara UI components — install whichever
 your project does not already have:
 
 ## Which one
@@ -326,4 +326,4 @@ rather than passing hex into each component.
 
 **Component Path:** `[framework]\third-party\charts\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

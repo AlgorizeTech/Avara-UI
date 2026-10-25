@@ -3,7 +3,7 @@
   "name": "scroll-accordion-text-only",
   "type": "registry:block",
   "title": "Scroll Accordion Showcase — Text only",
-  "description": "The \"Text only\" example from the Algorize UI docs.",
+  "description": "The \"Text only\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

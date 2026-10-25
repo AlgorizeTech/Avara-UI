@@ -3,7 +3,7 @@
   "name": "toggle-group-ghost",
   "type": "registry:block",
   "title": "Toggle Group — Ghost",
-  "description": "The \"Ghost\" example from the Algorize UI docs.",
+  "description": "The \"Ghost\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

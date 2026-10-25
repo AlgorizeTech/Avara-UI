@@ -81,11 +81,17 @@ export const usageReader = `export default function ReaderExample() {
 
 ### Installation
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/qr-code-generator
+npx shadcn@latest add https://avaraui.com/r/qr-code-generator.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/qr-code-generator
 ```
 
 ### More examples
@@ -96,11 +102,17 @@ A separate component with its own dependencies — decoding happens entirely in 
 
 ### Installation
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/qr-code-reader
+npx shadcn@latest add https://avaraui.com/r/qr-code-reader.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/qr-code-reader
 ```
 
 ## Features
@@ -183,4 +195,4 @@ Explore the QR Code Generator's customizable features, allowing for different co
 
 **Component Path:** `[framework]\qr-code-generator\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

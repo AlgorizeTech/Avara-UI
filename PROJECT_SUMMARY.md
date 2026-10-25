@@ -1,4 +1,4 @@
-# Algorize UI Migration - Project Summary
+# Avara UI Migration - Project Summary
 
 ## Overview
 This project successfully migrated the documentation to focus on Next.js, creating a comprehensive documentation site for Next.js features and best practices while preserving existing functionality.

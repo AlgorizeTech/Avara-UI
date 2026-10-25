@@ -3,7 +3,7 @@
   "name": "sonner-stacking",
   "type": "registry:block",
   "title": "Sonner — Stacking",
-  "description": "The \"Stacking\" example from the Algorize UI docs.",
+  "description": "The \"Stacking\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

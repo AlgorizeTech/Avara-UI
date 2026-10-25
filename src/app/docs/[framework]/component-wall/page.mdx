@@ -1,4 +1,5 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
+import { REGISTRY_NAMESPACE } from "@/lib/registry";
 
 export const metadata = docsPageMetadata("component-wall");
 
@@ -64,7 +65,7 @@ export default function Hero() {
       headingWords={["interfaces", "components", "experiences", "animations", "dashboards"]}
       accent="interactive"
       description="A meticulous library of React components and interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP and Motion."
-      install={{ command: "npx shadcn@latest add @algorize-ui/{item}" }}
+      install={{ command: "npx shadcn@latest add ${REGISTRY_NAMESPACE}/{item}" }}
       primaryAction={{ label: "Browse components", href: "/docs" }}
       secondaryAction={{ label: "Star on GitHub", href: "https://github.com/AlgorizeTech", icon: <GitHubIcon size={16} /> }}
       trust={{ text: "Loved by developers shipping real products with it", avatars: AVATARS, rating: 5 }}
@@ -146,7 +147,7 @@ export const usageSplit = {
         {
           prop: "install",
           effect:
-            "is the command in the box. Write `{item}` where the card's name goes — `\"npx shadcn@latest add @algorize-ui/{item}\"` — and the card a camera has just landed on fills it in with its `slug`, sliding to the next name as the next camera lands. The copy button copies the whole resolved line. On phones only the last word before the name (`@algorize-ui/`) stays.",
+            `is the command in the box. Write \`{item}\` where the card's name goes — \`"npx shadcn@latest add ${REGISTRY_NAMESPACE}/{item}"\` — and the card a camera has just landed on fills it in with its \`slug\`, sliding to the next name as the next camera lands. The copy button copies the whole resolved line. On phones only the last word before the name (\`${REGISTRY_NAMESPACE}/\`) stays.`,
         },
         {
           prop: "heading",

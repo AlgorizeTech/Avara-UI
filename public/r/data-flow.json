@@ -6,11 +6,11 @@
   "description": "A sources → core → outputs section: platform cards on the left feed one node in the middle, which fans out to result cards on the right, with curved connectors that draw in on first view and then carry a moving dash. Use it to explain a pipeline, an integration, or where an AI product's data comes from.",
   "dependencies": [],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/apple-select.json",
-    "https://algorize-ui.vercel.app/r/button.json",
-    "https://algorize-ui.vercel.app/r/flowchart.json",
-    "https://algorize-ui.vercel.app/r/half-stars.json",
-    "https://algorize-ui.vercel.app/r/icons.json",
+    "https://avaraui.com/r/apple-select.json",
+    "https://avaraui.com/r/button.json",
+    "https://avaraui.com/r/flowchart.json",
+    "https://avaraui.com/r/half-stars.json",
+    "https://avaraui.com/r/icons.json",
     "utils"
   ],
   "files": [

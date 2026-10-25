@@ -3,7 +3,7 @@
   "name": "image-compare-badge-overlay-percentage",
   "type": "registry:block",
   "title": "Image Compare — Badge Overlay Percentage",
-  "description": "The \"Badge Overlay Percentage\" example from the Algorize UI docs.",
+  "description": "The \"Badge Overlay Percentage\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

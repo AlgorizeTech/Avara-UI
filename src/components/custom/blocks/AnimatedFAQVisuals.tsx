@@ -24,10 +24,10 @@ export function CLIInstallationVisual() {
 
   const command =
     pkg === "pnpm"
-      ? "pnpm dlx shadcn@latest add @algorize-ui/animated-faq"
+      ? "pnpm dlx shadcn@latest add @avara-ui/animated-faq"
       : pkg === "bun"
-      ? "bunx --bun shadcn@latest add @algorize-ui/animated-faq"
-      : "npx shadcn@latest add @algorize-ui/animated-faq";
+      ? "bunx --bun shadcn@latest add @avara-ui/animated-faq"
+      : "npx shadcn@latest add @avara-ui/animated-faq";
 
   const handleCopy = () => {
     navigator.clipboard?.writeText(command);
@@ -90,7 +90,7 @@ export function CLIInstallationVisual() {
         <div className="space-y-1 text-[10.5px] text-neutral-600 dark:text-neutral-400 pt-1">
           <p className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-medium">
             <Check className="size-3 shrink-0" />
-            <span>Found registry component @algorize-ui/animated-faq</span>
+            <span>Found registry component @avara-ui/animated-faq</span>
           </p>
           <p className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-medium">
             <Check className="size-3 shrink-0" />

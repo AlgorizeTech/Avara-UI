@@ -3,7 +3,7 @@
   "name": "video-accordion-fewer-panels",
   "type": "registry:block",
   "title": "Video Accordion — Fewer panels",
-  "description": "The \"Fewer panels\" example from the Algorize UI docs.",
+  "description": "The \"Fewer panels\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

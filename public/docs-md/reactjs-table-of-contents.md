@@ -35,7 +35,7 @@ export const usageExample = `const previewItems: TOCItem[] = [
     description:
       "Run the official shadcn registry command to automatically download the component file and inject its dependencies into your project structure.",
     codeSnippet:
-      "npx shadcn@latest add @algorize-ui/table-of-contents",
+      "npx shadcn@latest add @avara-ui/table-of-contents",
   },
   {
     id: "configuration",
@@ -61,11 +61,17 @@ export default function TableOfContentsDemo() {
 
 ## Installation
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/table-of-contents
+npx shadcn@latest add https://avaraui.com/r/table-of-contents.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/table-of-contents
 ```
 
 ## Features
@@ -178,4 +184,4 @@ npx shadcn@latest add @algorize-ui/table-of-contents
 
 **Component Path:** `[framework]\table-of-contents\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

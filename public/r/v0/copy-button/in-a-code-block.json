@@ -3,7 +3,7 @@
   "name": "copy-button-in-a-code-block",
   "type": "registry:block",
   "title": "Copy Button — In a code block",
-  "description": "The \"In a code block\" example from the Algorize UI docs.",
+  "description": "The \"In a code block\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"
@@ -16,7 +16,7 @@
       "path": "app/page.tsx",
       "type": "registry:page",
       "target": "app/page.tsx",
-      "content": "import { CopyButton } from \"@/components/custom/blocks/CopyButtonBlock\";\nimport { Terminal } from \"lucide-react\";\n\nconst SNIPPET = \"npx shadcn@latest add @algorize-ui/copy-button\";\n\nexport default function CommandBlock() {\n  return (\n    <div className=\"w-full max-w-lg overflow-hidden rounded-xl border border-border bg-muted\">\n      <div className=\"flex items-center justify-between border-b border-border px-4 py-2\">\n        <span className=\"flex items-center gap-2 text-xs font-medium text-muted-foreground\">\n          <Terminal className=\"h-3.5 w-3.5\" /> Terminal\n        </span>\n        {/* ghost + a custom className blends it into the toolbar in both themes */}\n        <CopyButton\n          value={SNIPPET}\n          size=\"sm\"\n          variant=\"ghost\"\n          className=\"text-muted-foreground hover:bg-foreground/10 hover:text-foreground\"\n        />\n      </div>\n      <pre className=\"overflow-auto px-4 py-4 text-[13px] leading-relaxed text-foreground\">\n        <code>{SNIPPET}</code>\n      </pre>\n    </div>\n  );\n}"
+      "content": "import { CopyButton } from \"@/components/custom/blocks/CopyButtonBlock\";\nimport { Terminal } from \"lucide-react\";\n\nconst SNIPPET = \"npx shadcn@latest add @avara-ui/copy-button\";\n\nexport default function CommandBlock() {\n  return (\n    <div className=\"w-full max-w-lg overflow-hidden rounded-xl border border-border bg-muted\">\n      <div className=\"flex items-center justify-between border-b border-border px-4 py-2\">\n        <span className=\"flex items-center gap-2 text-xs font-medium text-muted-foreground\">\n          <Terminal className=\"h-3.5 w-3.5\" /> Terminal\n        </span>\n        {/* ghost + a custom className blends it into the toolbar in both themes */}\n        <CopyButton\n          value={SNIPPET}\n          size=\"sm\"\n          variant=\"ghost\"\n          className=\"text-muted-foreground hover:bg-foreground/10 hover:text-foreground\"\n        />\n      </div>\n      <pre className=\"overflow-auto px-4 py-4 text-[13px] leading-relaxed text-foreground\">\n        <code>{SNIPPET}</code>\n      </pre>\n    </div>\n  );\n}"
     },
     {
       "path": "components/custom/blocks/CopyButtonBlock.tsx",

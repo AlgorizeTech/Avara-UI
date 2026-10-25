@@ -6,7 +6,7 @@
   "description": "A compute-resource panel showing instance sizing and usage as a settings-style card. Use it as a starting point for an infrastructure or plan-usage screen.",
   "dependencies": [],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/ui-base.json"
+    "https://avaraui.com/r/ui-base.json"
   ],
   "files": [
     {

@@ -3,7 +3,7 @@
   "name": "upload-dropzone",
   "type": "registry:block",
   "title": "Upload — Dropzone",
-  "description": "The \"Dropzone\" example from the Algorize UI docs.",
+  "description": "The \"Dropzone\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

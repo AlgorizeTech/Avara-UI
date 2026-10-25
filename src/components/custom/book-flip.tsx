@@ -186,7 +186,7 @@ const DEFAULT_PAGES: PageFlipLeaf[] = [
         frontBadge: "Plate 14",
         frontColor: "from-rose-500 to-purple-600",
         backTitle: "THE INFINITE COSMOS",
-        backSubtitle: "Published by Algorize Fine Art Press",
+        backSubtitle: "Published by Avara Fine Art Press",
         backBadge: "HARDCOVER MONOGRAPH",
         backColor: "from-purple-600 to-violet-800",
     },
@@ -524,7 +524,7 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                                     {leaf.frontSubtitle || "A Visual Exploration of Earth's Most Remote Frontiers"}
                                                 </p>
                                                 <div className="pt-0.5 sm:pt-2 text-[7px] sm:text-[9px] font-mono font-semibold tracking-widest text-zinc-300 uppercase">
-                                                    ALGORIZE MAGNATE PRESS
+                                                    AVARA MAGNATE PRESS
                                                 </div>
                                             </div>
                                         </div>
@@ -593,7 +593,7 @@ export const BookFlip = forwardRef<BookFlipHandle, BookFlipProps>(({
                                                 {leaf.backTitle || "THE INFINITE COSMOS"}
                                             </h3>
                                             <p className="text-[9px] sm:text-[11px] font-medium text-zinc-300/90 leading-tight sm:leading-relaxed max-w-[95%] sm:max-w-[92%] line-clamp-2 sm:line-clamp-none">
-                                                {leaf.backSubtitle || "Published by Algorize Fine Art Press. All rights reserved."}
+                                                {leaf.backSubtitle || "Published by Avara Fine Art Press. All rights reserved."}
                                             </p>
                                             <div className="pt-1 sm:pt-2 w-full flex items-center justify-between border-t border-white/15 text-zinc-400 text-[7px] sm:text-[9px] font-mono">
                                                 <span>ISBN 978-0-321-12345-6</span>

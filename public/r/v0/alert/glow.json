@@ -3,7 +3,7 @@
   "name": "alert-glow",
   "type": "registry:block",
   "title": "Alert — Glow",
-  "description": "The \"Glow\" example from the Algorize UI docs.",
+  "description": "The \"Glow\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

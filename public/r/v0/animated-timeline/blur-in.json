@@ -3,7 +3,7 @@
   "name": "animated-timeline-blur-in",
   "type": "registry:block",
   "title": "Animated Timeline — Blur in",
-  "description": "The \"Blur in\" example from the Algorize UI docs.",
+  "description": "The \"Blur in\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

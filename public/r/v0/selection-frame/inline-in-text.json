@@ -3,7 +3,7 @@
   "name": "selection-frame-inline-in-text",
   "type": "registry:block",
   "title": "Selection Frame — Inline in text",
-  "description": "The \"Inline in text\" example from the Algorize UI docs.",
+  "description": "The \"Inline in text\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

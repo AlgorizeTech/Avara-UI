@@ -3,7 +3,7 @@
   "name": "calendar-minimal",
   "type": "registry:block",
   "title": "Calendar — Minimal",
-  "description": "The \"Minimal\" example from the Algorize UI docs.",
+  "description": "The \"Minimal\" example from the Avara UI docs.",
   "dependencies": [
     "@radix-ui/react-slot",
     "class-variance-authority",

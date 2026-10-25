@@ -1,11 +1,12 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
+import { SITE_NAME } from "@/config/site";
 
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
 export const metadata = docsPageMetadata("third-party/tables", {
   title: "Data Tables",
-  description: "Integrate TanStack Table and AG Grid with Algorize UI — a headless table rendered with the Table primitives, and a themed grid with React cell renderers."
+  description: `Integrate TanStack Table and AG Grid with ${SITE_NAME} — a headless table rendered with the Table primitives, and a themed grid with React cell renderers.`
 });
 
 # Data Tables
@@ -20,7 +21,7 @@ is themed rather than composed.
 
 `TableHead` already accepts `sortable`, `sortDirection` and `onSort`, which is
 exactly the shape a TanStack header exposes — so the two meet with no adapter in
-between. Everything visible is an Algorize UI component; TanStack supplies the
+between. Everything visible is an {SITE_NAME} component; TanStack supplies the
 row model and the state.
 
 export const usageTanStack = `import { useState } from "react";
@@ -505,7 +506,7 @@ export default function AgGridInventory() {
 
 <Cli command="install ag-grid-react ag-grid-community" />
 
-This example also uses these Algorize UI components — install whichever
+This example also uses these {SITE_NAME} components — install whichever
 your project does not already have:
 
 <Cli command="add card.json ui-badge.json button.json" />

@@ -8,8 +8,8 @@
     "lucide-react"
   ],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/popover.json",
-    "https://algorize-ui.vercel.app/r/toggle-group.json",
+    "https://avaraui.com/r/popover.json",
+    "https://avaraui.com/r/toggle-group.json",
     "utils"
   ],
   "files": [

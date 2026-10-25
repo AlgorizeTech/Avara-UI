@@ -3,7 +3,7 @@
   "name": "verify-badge-static",
   "type": "registry:block",
   "title": "Verify Badge — Static",
-  "description": "The \"Static\" example from the Algorize UI docs.",
+  "description": "The \"Static\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"
@@ -16,7 +16,7 @@
       "path": "app/page.tsx",
       "type": "registry:page",
       "target": "app/page.tsx",
-      "content": "import { VerifyBadge } from \"@/components/custom/blocks/VerifyBadgeBlock\";\n\nexport default function StaticBadge() {\n  return (\n    <div className=\"flex items-center gap-2\">\n      <span className=\"font-semibold text-foreground text-[15px] tracking-tight\">\n        AlgorizeSystem\n      </span>\n      <VerifyBadge size=\"md\" animate={false} />\n    </div>\n  );\n}"
+      "content": "import { VerifyBadge } from \"@/components/custom/blocks/VerifyBadgeBlock\";\n\nexport default function StaticBadge() {\n  return (\n    <div className=\"flex items-center gap-2\">\n      <span className=\"font-semibold text-foreground text-[15px] tracking-tight\">\n        AvaraSystem\n      </span>\n      <VerifyBadge size=\"md\" animate={false} />\n    </div>\n  );\n}"
     },
     {
       "path": "components/custom/blocks/VerifyBadgeBlock.tsx",

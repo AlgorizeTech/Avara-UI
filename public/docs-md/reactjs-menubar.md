@@ -132,11 +132,17 @@ export default function AppWindow() {
 
 ## Installation
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/menubar
+npx shadcn@latest add https://avaraui.com/r/menubar.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/menubar
 ```
 
 ## Examples
@@ -235,4 +241,4 @@ Learn about the Menubar's desktop-style navigation features, supporting complex 
 
 **Component Path:** `[framework]\menubar\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

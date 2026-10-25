@@ -3,7 +3,7 @@
   "name": "chart-visitors-by-country",
   "type": "registry:block",
   "title": "Chart — Visitors by country",
-  "description": "The \"Visitors by country\" example from the Algorize UI docs.",
+  "description": "The \"Visitors by country\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

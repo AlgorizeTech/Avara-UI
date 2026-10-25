@@ -3,7 +3,7 @@
   "name": "progress-circular-with-a-custom-center",
   "type": "registry:block",
   "title": "Progress — Circular with a custom center",
-  "description": "The \"Circular with a custom center\" example from the Algorize UI docs.",
+  "description": "The \"Circular with a custom center\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

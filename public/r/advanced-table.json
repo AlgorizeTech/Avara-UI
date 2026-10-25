@@ -6,7 +6,7 @@
   "description": "A stateful data table with search, typed sorting, pagination, row selection and batch actions — composed, so your data keeps its own shape.",
   "dependencies": [],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/table.json"
+    "https://avaraui.com/r/table.json"
   ],
   "files": [
     {

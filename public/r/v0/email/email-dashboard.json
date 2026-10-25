@@ -3,7 +3,7 @@
   "name": "email-email-dashboard",
   "type": "registry:block",
   "title": "Email — Email dashboard",
-  "description": "The \"Email dashboard\" example from the Algorize UI docs.",
+  "description": "The \"Email dashboard\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

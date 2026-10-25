@@ -3,7 +3,7 @@
   "name": "product-details-color-swatch-synced-image-gallery-details",
   "type": "registry:block",
   "title": "Product Details — Color Swatch Synced Image Gallery Details",
-  "description": "The \"Color Swatch Synced Image Gallery Details\" example from the Algorize UI docs.",
+  "description": "The \"Color Swatch Synced Image Gallery Details\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

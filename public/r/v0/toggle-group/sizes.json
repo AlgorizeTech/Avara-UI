@@ -3,7 +3,7 @@
   "name": "toggle-group-sizes",
   "type": "registry:block",
   "title": "Toggle Group — Sizes",
-  "description": "The \"Sizes\" example from the Algorize UI docs.",
+  "description": "The \"Sizes\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

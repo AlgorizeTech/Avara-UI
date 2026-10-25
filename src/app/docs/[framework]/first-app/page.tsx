@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 
+import { SITE_NAME } from "@/config/site";
 import { buildDocsMetadata } from "@/lib/docs-metadata";
 import { BUILT_FRAMEWORKS, isFramework } from "@/lib/framework";
 
@@ -25,8 +26,8 @@ export async function generateMetadata({
     title: "Quick Start",
     description:
       framework === "reactjs"
-        ? "Get an Algorize UI component on screen in a new React + Vite app — scaffold, install a component, and render it."
-        : "Get an Algorize UI component on screen in a new Next.js app — scaffold, install a component, and render it.",
+        ? `Get a ${SITE_NAME} component on screen in a new React + Vite app — scaffold, install a component, and render it.`
+        : `Get a ${SITE_NAME} component on screen in a new Next.js app — scaffold, install a component, and render it.`,
     keywords:
       framework === "reactjs"
         ? ["React quick start", "Vite tutorial", "first React app", "React component library tutorial"]

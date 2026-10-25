@@ -107,11 +107,17 @@ export default function NativeModalHero() {
 
 ### Install the video player
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/video-player
+npx shadcn@latest add https://avaraui.com/r/video-player.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/video-player
 ```
 
 ## Plyr player
@@ -173,11 +179,17 @@ export default function PlyrYouTubeHero() {
 
 ### Install the Plyr player
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/video-player-plyr
+npx shadcn@latest add https://avaraui.com/r/video-player-plyr.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/video-player-plyr
 ```
 
 ## JW Player
@@ -210,11 +222,17 @@ export default function BrandedJwHero() {
 
 ### Install the JW player
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/video-player-jw
+npx shadcn@latest add https://avaraui.com/r/video-player-jw.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/video-player-jw
 ```
 
 ### JW Player setup
@@ -516,4 +534,4 @@ If the library fails to load, the component renders a native `` with the poster 
 
 **Component Path:** `[framework]\video-player\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

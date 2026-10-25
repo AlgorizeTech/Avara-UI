@@ -3,7 +3,7 @@
   "name": "timeline-minimal",
   "type": "registry:block",
   "title": "Timeline — Minimal",
-  "description": "The \"Minimal\" example from the Algorize UI docs.",
+  "description": "The \"Minimal\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

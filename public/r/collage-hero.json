@@ -8,10 +8,10 @@
     "lucide-react"
   ],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/animated-typography.json",
-    "https://algorize-ui.vercel.app/r/button.json",
-    "https://algorize-ui.vercel.app/r/circular-text.json",
-    "https://algorize-ui.vercel.app/r/dialog.json",
+    "https://avaraui.com/r/animated-typography.json",
+    "https://avaraui.com/r/button.json",
+    "https://avaraui.com/r/circular-text.json",
+    "https://avaraui.com/r/dialog.json",
     "utils"
   ],
   "files": [

@@ -3,7 +3,7 @@
   "name": "alert-rich-content",
   "type": "registry:block",
   "title": "Alert — Rich content",
-  "description": "The \"Rich content\" example from the Algorize UI docs.",
+  "description": "The \"Rich content\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -8,7 +8,7 @@
     "lucide-react"
   ],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/ui-card.json",
+    "https://avaraui.com/r/ui-card.json",
     "utils"
   ],
   "files": [

@@ -3,7 +3,7 @@
   "name": "ai-chat-motion-wired-to-your-backend",
   "type": "registry:block",
   "title": "AI Chat — Wired to your backend",
-  "description": "The \"Wired to your backend\" example from the Algorize UI docs.",
+  "description": "The \"Wired to your backend\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

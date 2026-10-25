@@ -3,7 +3,7 @@
   "name": "image-compare-vertical-slide-compare",
   "type": "registry:block",
   "title": "Image Compare — Vertical Slide Compare",
-  "description": "The \"Vertical Slide Compare\" example from the Algorize UI docs.",
+  "description": "The \"Vertical Slide Compare\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -3,7 +3,7 @@
   "name": "support-support-liquid-glass",
   "type": "registry:block",
   "title": "Support Dashboard — Liquid glass",
-  "description": "The \"Liquid glass\" example from the Algorize UI docs.",
+  "description": "The \"Liquid glass\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

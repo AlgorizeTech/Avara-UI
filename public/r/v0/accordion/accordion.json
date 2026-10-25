@@ -3,7 +3,7 @@
   "name": "accordion-accordion",
   "type": "registry:block",
   "title": "Accordion",
-  "description": "The \"Accordion\" example from the Algorize UI docs.",
+  "description": "The \"Accordion\" example from the Avara UI docs.",
   "dependencies": [
     "@radix-ui/react-accordion",
     "lucide-react",

@@ -3,7 +3,7 @@
   "name": "login-form-login-liquid-glass",
   "type": "registry:block",
   "title": "Login Form — Login — liquid-glass",
-  "description": "The \"Login — liquid-glass\" example from the Algorize UI docs.",
+  "description": "The \"Login — liquid-glass\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

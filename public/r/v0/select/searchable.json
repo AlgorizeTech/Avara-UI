@@ -3,7 +3,7 @@
   "name": "select-searchable",
   "type": "registry:block",
   "title": "Select — Searchable",
-  "description": "The \"Searchable\" example from the Algorize UI docs.",
+  "description": "The \"Searchable\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

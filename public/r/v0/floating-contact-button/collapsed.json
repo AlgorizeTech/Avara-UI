@@ -3,7 +3,7 @@
   "name": "floating-contact-button-collapsed",
   "type": "registry:block",
   "title": "Floating Contact Button — Collapsed",
-  "description": "The \"Collapsed\" example from the Algorize UI docs.",
+  "description": "The \"Collapsed\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

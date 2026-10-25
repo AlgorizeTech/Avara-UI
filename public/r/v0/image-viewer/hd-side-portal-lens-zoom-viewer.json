@@ -3,7 +3,7 @@
   "name": "image-viewer-hd-side-portal-lens-zoom-viewer",
   "type": "registry:block",
   "title": "Image Viewer — HD Side Portal Lens Zoom Viewer",
-  "description": "The \"HD Side Portal Lens Zoom Viewer\" example from the Algorize UI docs.",
+  "description": "The \"HD Side Portal Lens Zoom Viewer\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

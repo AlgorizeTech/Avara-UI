@@ -3,7 +3,7 @@
   "name": "masonry-grid-motion-slower-stagger",
   "type": "registry:block",
   "title": "Masonry Grid — Slower stagger",
-  "description": "The \"Slower stagger\" example from the Algorize UI docs.",
+  "description": "The \"Slower stagger\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

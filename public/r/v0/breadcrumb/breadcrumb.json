@@ -3,7 +3,7 @@
   "name": "breadcrumb-breadcrumb",
   "type": "registry:block",
   "title": "Breadcrumb",
-  "description": "The \"Breadcrumb\" example from the Algorize UI docs.",
+  "description": "The \"Breadcrumb\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

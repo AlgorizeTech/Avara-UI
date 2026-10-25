@@ -75,6 +75,7 @@ import {
 	type ReactNode,
 } from "react";
 import { COMPONENT_COUNT, links } from "@/config/site";
+import { REGISTRY_ADD_ARGS, REGISTRY_NAMESPACE, REGISTRY_URL_TEMPLATE } from "@/lib/registry";
 
 /* ═══════════════════════════════════════════════
    SAMPLE DATA
@@ -94,10 +95,10 @@ const sampleChartData = [
 const sampleTerminalCode = `$ npx shadcn@latest init
 ✔ Created components.json and lib/utils.ts.
 
-$ npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-✔ Added registry @algorize-ui to components.json.
+$ npx shadcn@latest ${REGISTRY_ADD_ARGS}
+✔ Added registry ${REGISTRY_NAMESPACE} to components.json.
 
-$ npx shadcn@latest add @algorize-ui/ai-chat
+$ npx shadcn@latest add ${REGISTRY_NAMESPACE}/ai-chat
 ✔ Installed dependencies: lucide-react
 ✔ Created components/custom/blocks/Ai-chat.tsx
 
@@ -448,7 +449,7 @@ function HeroInteractiveHub() {
 									<div className="p-2.5 rounded-2xl rounded-tl-none bg-muted/80 text-foreground max-w-[85%] leading-relaxed border border-border/40">
 										Run{" "}
 										<code className="px-1 py-0.5 rounded bg-background font-mono text-[11px] text-primary">
-											npx shadcn@latest add @algorize-ui/&lt;name&gt;
+											npx shadcn@latest add {REGISTRY_NAMESPACE}/&lt;name&gt;
 										</code>{" "}
 										and the source lands in your project. Zero npm lock-in!
 									</div>
@@ -592,14 +593,14 @@ function HeroInteractiveHub() {
 								<p className="break-all">
 									<span className="text-primary font-semibold">$</span> npx
 									shadcn@latest registry add
-									@algorize-ui=https://algorize-ui.vercel.app/r/&#123;name&#125;.json
+									{REGISTRY_NAMESPACE}={REGISTRY_URL_TEMPLATE}
 								</p>
 								<p className="text-emerald-400">
-									✔ Added registry @algorize-ui to components.json.
+									✔ Added registry {REGISTRY_NAMESPACE} to components.json.
 								</p>
 								<p className="break-all">
 									<span className="text-primary font-semibold">$</span> npx
-									shadcn@latest add @algorize-ui/ai-chat
+									shadcn@latest add {REGISTRY_NAMESPACE}/ai-chat
 								</p>
 								<p className="text-emerald-400">
 									✔ Installed dependencies: lucide-react
@@ -732,7 +733,7 @@ function HeroSection() {
 						</span>
 					</>
 				}
-				install={{ command: "npx shadcn@latest add @algorize-ui/{item}" }}
+				install={{ command: `npx shadcn@latest add ${REGISTRY_NAMESPACE}/{item}` }}
 				primaryAction={{ label: "Browse components", href: "/docs/nextjs/all-components" }}
 				secondaryAction={{ label: "Get Started", href: "/docs/nextjs/index" }}
 				items={WALL_ITEMS}
@@ -3411,7 +3412,7 @@ const FEEDBACK: FeedbackItem[] = [
 		company: "Techvence",
 		initials: "SR",
 		avatarGradient: "from-blue-500/20 to-indigo-500/20 text-blue-600 dark:text-blue-400 border-blue-500/30",
-		content: "Ran the 'npx shadcn@latest add @algorize-ui/...' command in my Next.js 15 app. The code dropped directly into my components folder with zero dependency issues. Pure bliss.",
+		content: `Ran the 'npx shadcn@latest add ${REGISTRY_NAMESPACE}/...' command in my Next.js 15 app. The code dropped directly into my components folder with zero dependency issues. Pure bliss.`,
 		rating: 5,
 		createdAt: "2026-10-03T10:00:00Z",
 	},
@@ -3747,10 +3748,10 @@ function CTASection() {
 	] as const;
 
 	const COMMANDS: Record<"npm" | "pnpm" | "yarn" | "bun", string> = {
-		npm: "npx shadcn@latest add @algorize-ui/registry",
-		pnpm: "pnpm dlx shadcn@latest add @algorize-ui/registry",
-		yarn: "npx shadcn@latest add @algorize-ui/registry",
-		bun: "bunx --bun shadcn@latest add @algorize-ui/registry",
+		npm: `npx shadcn@latest ${REGISTRY_ADD_ARGS}`,
+		pnpm: `pnpm dlx shadcn@latest ${REGISTRY_ADD_ARGS}`,
+		yarn: `yarn dlx shadcn@latest ${REGISTRY_ADD_ARGS}`,
+		bun: `bunx --bun shadcn@latest ${REGISTRY_ADD_ARGS}`,
 	};
 
 	const currentCommand = COMMANDS[activePkg];
@@ -3982,7 +3983,7 @@ const FOOTER_GROUPS: {
 	{
 		label: "Connect",
 		links: [
-			{ label: "GitHub", href: links.github, external: true },
+			{ label: "GitHub", href: links.githubOrg, external: true },
 			{
 				label: "LinkedIn",
 				href: "https://www.linkedin.com/company/algorizetech/",

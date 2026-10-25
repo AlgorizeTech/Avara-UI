@@ -3,7 +3,7 @@
   "name": "advanced-table-searchable-datatable",
   "type": "registry:block",
   "title": "Advanced Table — Searchable DataTable",
-  "description": "The \"Searchable DataTable\" example from the Algorize UI docs.",
+  "description": "The \"Searchable DataTable\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

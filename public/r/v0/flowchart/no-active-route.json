@@ -3,7 +3,7 @@
   "name": "flowchart-no-active-route",
   "type": "registry:block",
   "title": "Flowchart — No active route",
-  "description": "The \"No active route\" example from the Algorize UI docs.",
+  "description": "The \"No active route\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

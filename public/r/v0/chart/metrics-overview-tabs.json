@@ -3,7 +3,7 @@
   "name": "chart-metrics-overview-tabs",
   "type": "registry:block",
   "title": "Chart — Metrics overview tabs",
-  "description": "The \"Metrics overview tabs\" example from the Algorize UI docs.",
+  "description": "The \"Metrics overview tabs\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

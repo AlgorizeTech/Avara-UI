@@ -3,7 +3,7 @@
   "name": "data-maps-density-dots",
   "type": "registry:block",
   "title": "Data Maps — Density dots",
-  "description": "The \"Density dots\" example from the Algorize UI docs.",
+  "description": "The \"Density dots\" example from the Avara UI docs.",
   "dependencies": [
     "geojson",
     "leaflet",
