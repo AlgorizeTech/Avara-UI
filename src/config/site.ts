@@ -58,7 +58,7 @@ export const REGISTRY_NAMESPACE = `@${(
  * query string that carries the reader's theme.
  */
 export const V0_ENDPOINT_ORIGIN = (
-  env(process.env.NEXT_PUBLIC_V0_ENDPOINT_ORIGIN) ?? "https://algorize-ui.vercel.app"
+  env(process.env.NEXT_PUBLIC_V0_ENDPOINT_ORIGIN) ?? "https://avaraui.vercel.app"
 ).replace(/\/+$/, "");
 
 /**
