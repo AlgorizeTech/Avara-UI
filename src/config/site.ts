@@ -67,7 +67,10 @@ export const V0_ENDPOINT_ORIGIN = (
  * filters them out of structured data.
  */
 export const links = {
-  github: env(process.env.NEXT_PUBLIC_GITHUB_URL) ?? "https://github.com/AlgorizeTech/Reusable-Component-Documentation",
+  /** The repository — "Star on GitHub", issues, schema.org `codeRepository`. */
+  github: env(process.env.NEXT_PUBLIC_GITHUB_URL) ?? "https://github.com/AlgorizeTech/Avara-UI",
+  /** The organisation's profile — the footer's Connect links and schema.org Organization. */
+  githubOrg: env(process.env.NEXT_PUBLIC_GITHUB_ORG_URL) ?? "https://github.com/AlgorizeTech",
   twitter: env(process.env.NEXT_PUBLIC_TWITTER_URL),
   /** Handle including the leading @, used for Twitter card attribution. */
   twitterHandle: env(process.env.NEXT_PUBLIC_TWITTER_HANDLE),
@@ -77,12 +80,12 @@ export const links = {
   issues:
     env(process.env.NEXT_PUBLIC_ISSUES_URL) ??
     env(process.env.NEXT_PUBLIC_GITHUB_URL) ??
-    "https://github.com/AlgorizeTech/Reusable-Component-Documentation",
+    "https://github.com/AlgorizeTech/Avara-UI",
 } as const;
 
 /** Every profile that is actually configured — for schema.org `sameAs`. */
 export const socialLinks: string[] = [
-  links.github,
+  links.githubOrg,
   links.twitter,
   links.discord,
   links.npm,

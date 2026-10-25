@@ -54,7 +54,7 @@ into your project by the shadcn CLI — no wrapper package, no lock-in.
 
 ## Getting Help
 
-- Visit our GitHub organisation
+- Visit our GitHub repository
 - Browse the [component library](/docs/nextjs/all-components)
 - For the framework itself, see the [Next.js documentation](https://nextjs.org/docs)
 

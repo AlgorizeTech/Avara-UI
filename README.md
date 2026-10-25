@@ -107,8 +107,8 @@ Some items belong to more than one category, so the counts add up to more than t
 This repository holds the components and the documentation site that publishes them.
 
 ```bash
-git clone https://github.com/AlgorizeTech/Reusable-Component-Documentation.git
-cd Reusable-Component-Documentation
+git clone https://github.com/AlgorizeTech/Avara-UI.git
+cd Avara-UI
 npm install
 npm run dev      # http://localhost:3000
 ```

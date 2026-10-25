@@ -3983,7 +3983,7 @@ const FOOTER_GROUPS: {
 	{
 		label: "Connect",
 		links: [
-			{ label: "GitHub", href: links.github, external: true },
+			{ label: "GitHub", href: links.githubOrg, external: true },
 			{
 				label: "LinkedIn",
 				href: "https://www.linkedin.com/company/algorizetech/",

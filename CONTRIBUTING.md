@@ -8,13 +8,13 @@ One thing worth knowing up front: **this repository publishes source code, not a
 
 ## Before you start
 
-Look through the [issue tracker](https://github.com/AlgorizeTech/Reusable-Component-Documentation/issues) for an existing issue or discussion about your change. If there isn't one, open one first for anything larger than a small fix, so nobody spends a weekend on something that's already in progress.
+Look through the [issue tracker](https://github.com/AlgorizeTech/Avara-UI/issues) for an existing issue or discussion about your change. If there isn't one, open one first for anything larger than a small fix, so nobody spends a weekend on something that's already in progress.
 
 ## Local setup
 
 ```bash
-git clone https://github.com/AlgorizeTech/Reusable-Component-Documentation.git
-cd Reusable-Component-Documentation
+git clone https://github.com/AlgorizeTech/Avara-UI.git
+cd Avara-UI
 npm install        # also points git at .githooks/ (see "The pre-commit hook")
 npm run dev        # http://localhost:3000
 ```
