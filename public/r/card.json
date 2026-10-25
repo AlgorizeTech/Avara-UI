@@ -6,7 +6,7 @@
   "description": "A composable surface with header, title, description, content, and footer slots. Use it to group related content into a bounded block.",
   "dependencies": [],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/product-card.json",
+    "https://avaraui.com/r/product-card.json",
     "utils"
   ],
   "files": [

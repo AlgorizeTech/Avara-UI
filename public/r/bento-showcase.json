@@ -8,11 +8,11 @@
     "lucide-react"
   ],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/button.json",
-    "https://algorize-ui.vercel.app/r/chat-bubble.json",
-    "https://algorize-ui.vercel.app/r/half-stars.json",
-    "https://algorize-ui.vercel.app/r/marquee.json",
-    "https://algorize-ui.vercel.app/r/mobile-mockup.json",
+    "https://avaraui.com/r/button.json",
+    "https://avaraui.com/r/chat-bubble.json",
+    "https://avaraui.com/r/half-stars.json",
+    "https://avaraui.com/r/marquee.json",
+    "https://avaraui.com/r/mobile-mockup.json",
     "utils"
   ],
   "files": [

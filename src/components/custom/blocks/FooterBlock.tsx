@@ -125,7 +125,7 @@ function BrandLogo({ logo, brandName }: Pick<FooterProps, "logo" | "brandName">)
       </div>
     )}
     <span className="font-extrabold text-base sm:text-lg tracking-tight text-foreground flex items-center gap-1.5">
-      {brandName === "Algorize UI" ? "Docs" : brandName}{" "}
+      {brandName === "Avara UI" ? "Docs" : brandName}{" "}
       <span className="text-primary font-normal">UI</span>
       <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 leading-none">
         v1.0
@@ -137,7 +137,7 @@ function BrandLogo({ logo, brandName }: Pick<FooterProps, "logo" | "brandName">)
 
 export function Footer({
   variant = "simple-centered",
-  brandName = "Algorize UI",
+  brandName = "Avara UI",
   logo,
   tagline = "Elevate your web applications with fluid, production-ready animated components.",
   copyrightText,

@@ -9,8 +9,8 @@
     "motion"
   ],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/tooltip.json",
-    "https://algorize-ui.vercel.app/r/ui-avatar.json",
+    "https://avaraui.com/r/tooltip.json",
+    "https://avaraui.com/r/ui-avatar.json",
     "utils"
   ],
   "files": [

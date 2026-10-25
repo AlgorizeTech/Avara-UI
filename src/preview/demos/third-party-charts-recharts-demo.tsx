@@ -38,7 +38,7 @@ const currency = (value: number) => `$${(value / 1000).toFixed(1)}k`;
 
 /**
  * Recharts draws the plot; the surrounding chrome — card, title, legend,
- * tooltip — is all Algorize UI. That split is the whole integration: the
+ * tooltip — is all this library. That split is the whole integration: the
  * chart library never renders anything the design system already owns.
  */
 export default function RechartsRevenue({ color }: { color?: string } = {}) {

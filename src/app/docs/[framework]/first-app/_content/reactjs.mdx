@@ -1,10 +1,12 @@
 import { Cli } from "@/components/site/cli";
+import { SITE_NAME } from "@/config/site";
+import { REGISTRY_ADD_ARGS, REGISTRY_NAMESPACE } from "@/lib/registry";
 
 # Quick Start
 
 <OtherFrameworkGuide slug="first-app" label="quick start" />
 
-Get an Algorize UI component on screen in a new React + Vite app. For an existing
+Get a {SITE_NAME} component on screen in a new React + Vite app. For an existing
 project, follow the [Installation guide](/docs/reactjs/installation) instead.
 
 ## 1. Create a Vite app
@@ -60,9 +62,9 @@ Creates `components.json` and the `cn` helper every component imports.
 
 ## 4. Register the registry
 
-Tells the CLI where `@algorize-ui/…` components live.
+Tells the CLI where <code>{REGISTRY_NAMESPACE}/…</code> components live.
 
-<Cli command={`registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json`} />
+<Cli command={REGISTRY_ADD_ARGS} />
 
 ## 5. Add a component
 
@@ -88,7 +90,7 @@ export default function App() {
       <Card variant="bordered" className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>Welcome</CardTitle>
-          <CardDescription>Your first Algorize UI component.</CardDescription>
+          <CardDescription>Your first installed component.</CardDescription>
         </CardHeader>
         <CardContent>
           <p className="text-sm">

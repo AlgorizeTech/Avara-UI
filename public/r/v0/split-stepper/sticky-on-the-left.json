@@ -3,7 +3,7 @@
   "name": "split-stepper-sticky-on-the-left",
   "type": "registry:block",
   "title": "Split Stepper — Sticky on the left",
-  "description": "The \"Sticky on the left\" example from the Algorize UI docs.",
+  "description": "The \"Sticky on the left\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

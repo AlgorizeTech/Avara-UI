@@ -1,11 +1,12 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
+import { SITE_NAME } from "@/config/site";
 
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
 export const metadata = docsPageMetadata("third-party/charts", {
   title: "Charts",
-  description: "Integrate Recharts and Chart.js with Algorize UI — design tokens bridged into both, in light and dark themes."
+  description: `Integrate Recharts and Chart.js with ${SITE_NAME} — design tokens bridged into both, in light and dark themes.`
 });
 
 # Charts
@@ -57,7 +58,7 @@ const currency = (value: number) => \`$\${(value / 1000).toFixed(1)}k\`;
 
 /**
  * Recharts draws the plot; the surrounding chrome — card, title, legend,
- * tooltip — is all Algorize UI. That split is the whole integration: the
+ * tooltip — is all ${SITE_NAME}. That split is the whole integration: the
  * chart library never renders anything the design system already owns.
  */
 export default function RechartsRevenue({ color }: { color?: string } = {}) {
@@ -152,7 +153,7 @@ export default function RechartsRevenue({ color }: { color?: string } = {}) {
     {
       title: "Area chart in a Card",
       subheading:
-        "Recharts draws the plot; the card, the title, the badge and the tooltip surface are all Algorize UI. The chart library never renders anything the design system already owns.",
+        `Recharts draws the plot; the card, the title, the badge and the tooltip surface are all ${SITE_NAME}. The chart library never renders anything the design system already owns.`,
       propNotes: [
         {
           lead: "Pass",
@@ -181,7 +182,7 @@ export default function RechartsRevenue({ color }: { color?: string } = {}) {
 
 <Cli command="install recharts" />
 
-This example also uses these Algorize UI components — install whichever
+This example also uses these {SITE_NAME} components — install whichever
 your project does not already have:
 
 <Cli command="add card.json ui-badge.json" />
@@ -508,7 +509,7 @@ export default function ChartJsTraffic({ color }: { color?: string } = {}) {
 
 <Cli command="install chart.js react-chartjs-2" />
 
-This example also uses these Algorize UI components — install whichever
+This example also uses these {SITE_NAME} components — install whichever
 your project does not already have:
 
 <Cli command="add card.json" />

@@ -3,7 +3,7 @@
   "name": "custom-code-block-shell-commands",
   "type": "registry:block",
   "title": "Custom Code Block — Shell commands",
-  "description": "The \"Shell commands\" example from the Algorize UI docs.",
+  "description": "The \"Shell commands\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"
@@ -16,7 +16,7 @@
       "path": "app/page.tsx",
       "type": "registry:page",
       "target": "app/page.tsx",
-      "content": "import { CustomCodeBlock } from \"@/components/custom/blocks/CustomCodeBlock\";\n\nconst commands = `# Initialize a new Next.js project with Tailwind CSS\nnpx create-next-app@latest my-app --typescript --tailwind --eslint\n\n# Navigate into the project directory\ncd my-app\n\n# Install additional UI dependencies and icons\nnpm install clsx tailwind-merge motion lucide-react\n\n# Add Shadcn UI components for faster development\nnpx shadcn@latest init\nnpx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json\nnpx shadcn@latest add @algorize-ui/button @algorize-ui/card @algorize-ui/dialog\n\n# Start the development server on port 3000\nnpm run dev\n\n# The server is now running at http://localhost:3000\n# Press Ctrl+C to stop the server`;\n\nexport default function ShellBlock() {\n  // Shell snippets get a terminal icon and comment-aware highlighting.\n  return (\n    <CustomCodeBlock code={commands} language=\"bash\" fileName=\"terminal\" />\n  );\n}"
+      "content": "import { CustomCodeBlock } from \"@/components/custom/blocks/CustomCodeBlock\";\n\nconst commands = `# Initialize a new Next.js project with Tailwind CSS\nnpx create-next-app@latest my-app --typescript --tailwind --eslint\n\n# Navigate into the project directory\ncd my-app\n\n# Install additional UI dependencies and icons\nnpm install clsx tailwind-merge motion lucide-react\n\n# Add Shadcn UI components for faster development\nnpx shadcn@latest init\nnpx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json\nnpx shadcn@latest add @avara-ui/button @avara-ui/card @avara-ui/dialog\n\n# Start the development server on port 3000\nnpm run dev\n\n# The server is now running at http://localhost:3000\n# Press Ctrl+C to stop the server`;\n\nexport default function ShellBlock() {\n  // Shell snippets get a terminal icon and comment-aware highlighting.\n  return (\n    <CustomCodeBlock code={commands} language=\"bash\" fileName=\"terminal\" />\n  );\n}"
     },
     {
       "path": "components/custom/blocks/CustomCodeBlock.tsx",

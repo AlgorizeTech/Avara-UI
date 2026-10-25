@@ -1,17 +1,17 @@
 export const metadata = docsPageMetadata("third-party", {
   title: "Third Party Integration",
-  description: "Worked examples pairing Algorize UI with the most widely used React charting, table, carousel, select and lightbox libraries."
+  description: `Worked examples pairing Avara UI with the most widely used React charting, table, carousel, select and lightbox libraries.`
 });
 
 # Third Party Integration
 
-Algorize UI does not try to be every library. Where a problem already has a
+Avara UI does not try to be every library. Where a problem already has a
 well-solved, widely used answer — charting, virtualised data grids, gesture
 carousels, a combobox with async search, a zoomable lightbox — the better move
 is to bring that library in and make it look like the rest of your app.
 
 These pages are worked examples of exactly that. Each one pairs a third-party
-library with real Algorize UI components, and each snippet is a whole file:
+library with real Avara UI components, and each snippet is a whole file:
 copy it, install the packages listed on the page, and it runs.
 
 ## What each page covers
@@ -118,4 +118,4 @@ APIs at import time, which matters only under server rendering:
 
 **Component Path:** `[framework]\third-party\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

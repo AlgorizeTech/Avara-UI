@@ -3,7 +3,7 @@
   "name": "ai-chat-motion-ai-assistant",
   "type": "registry:block",
   "title": "AI Chat — AI assistant",
-  "description": "The \"AI assistant\" example from the Algorize UI docs.",
+  "description": "The \"AI assistant\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

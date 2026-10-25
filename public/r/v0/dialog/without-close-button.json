@@ -3,7 +3,7 @@
   "name": "dialog-without-close-button",
   "type": "registry:block",
   "title": "Dialog — Without close button",
-  "description": "The \"Without close button\" example from the Algorize UI docs.",
+  "description": "The \"Without close button\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

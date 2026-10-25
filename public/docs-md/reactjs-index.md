@@ -1,11 +1,11 @@
 export const metadata = docsPageMetadata("index", {
   title: "Introduction",
-  description: "What Algorize UI is, how components are installed into your project, and what your project needs."
+  description: `What Avara UI is, how components are installed into your project, and what your project needs.`
 });
 
 # Introduction
 
-Algorize UI is a library of **189 animated, responsive React
+Avara UI is a library of **189 animated, responsive React
 components** — from buttons and inputs to dashboards, carousels and full
 marketing sections.
 
@@ -15,10 +15,10 @@ component's source **into your project**, where you can edit it like any other
 file.
 
 ```bash
-npx shadcn@latest add @algorize-ui/button
+npx shadcn@latest add https://avaraui.com/r/button.json
 ```
 
-The short `@algorize-ui/…` form needs the registry
+The short @avara-ui/… form needs the registry
 registered once.
 Switch to **URL** above for a command that needs no setup.
 
@@ -68,4 +68,4 @@ Switch to **URL** above for a command that needs no setup.
 
 **Component Path:** `[framework]\index\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

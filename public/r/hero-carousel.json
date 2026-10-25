@@ -8,8 +8,8 @@
     "lucide-react"
   ],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/animated-typography.json",
-    "https://algorize-ui.vercel.app/r/avatar-stack.json",
+    "https://avaraui.com/r/animated-typography.json",
+    "https://avaraui.com/r/avatar-stack.json",
     "utils"
   ],
   "files": [

@@ -3,7 +3,7 @@
   "name": "carousel-3d-motion-shorter-deck",
   "type": "registry:block",
   "title": "Carousel 3D — Shorter deck",
-  "description": "The \"Shorter deck\" example from the Algorize UI docs.",
+  "description": "The \"Shorter deck\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

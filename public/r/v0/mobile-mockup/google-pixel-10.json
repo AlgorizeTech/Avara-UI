@@ -3,7 +3,7 @@
   "name": "mobile-mockup-google-pixel-10",
   "type": "registry:block",
   "title": "Mobile Mockup — Google Pixel 10",
-  "description": "The \"Google Pixel 10\" example from the Algorize UI docs.",
+  "description": "The \"Google Pixel 10\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

@@ -1,8 +1,8 @@
-# Algorize UI - Markdown Files
+# Avara UI - Markdown Files
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-10-24T12:47:55.322Z
+**Generated at:** 2026-10-25T04:58:11.619Z
 **Total files:** 315
 
 ## Available Files

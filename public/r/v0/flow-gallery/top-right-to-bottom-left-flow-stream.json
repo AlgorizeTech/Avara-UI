@@ -3,7 +3,7 @@
   "name": "flow-gallery-top-right-to-bottom-left-flow-stream",
   "type": "registry:block",
   "title": "Flow Gallery — Top-Right to Bottom-Left Flow Stream",
-  "description": "The \"Top-Right to Bottom-Left Flow Stream\" example from the Algorize UI docs.",
+  "description": "The \"Top-Right to Bottom-Left Flow Stream\" example from the Avara UI docs.",
   "dependencies": [
     "next-themes",
     "tw-animate-css"

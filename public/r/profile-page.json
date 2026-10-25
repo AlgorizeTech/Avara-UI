@@ -6,10 +6,10 @@
   "description": "A person's profile as a glass bento page: an aurora backdrop, frosted panels, and a 24-hour dial that shows their working window live. Use it for team directories, member pages and public profiles.",
   "dependencies": [],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/glass-panel.json",
-    "https://algorize-ui.vercel.app/r/social-links.json",
+    "https://avaraui.com/r/glass-panel.json",
+    "https://avaraui.com/r/social-links.json",
     "utils",
-    "https://algorize-ui.vercel.app/r/verify-badge.json"
+    "https://avaraui.com/r/verify-badge.json"
   ],
   "files": [
     {

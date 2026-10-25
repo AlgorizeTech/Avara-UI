@@ -8,7 +8,7 @@
     "lucide-react"
   ],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/ui-accordion.json",
+    "https://avaraui.com/r/ui-accordion.json",
     "utils"
   ],
   "files": [

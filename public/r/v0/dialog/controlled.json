@@ -3,7 +3,7 @@
   "name": "dialog-controlled",
   "type": "registry:block",
   "title": "Dialog — Controlled",
-  "description": "The \"Controlled\" example from the Algorize UI docs.",
+  "description": "The \"Controlled\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

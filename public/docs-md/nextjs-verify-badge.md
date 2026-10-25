@@ -16,7 +16,7 @@ export const usageDefault = `import { VerifyBadge } from "@/components/custom/bl
 export default function ProfileName() {
   return (
 
-        AlgorizeSystem
+        AvaraSystem
 
   );
 }`;
@@ -34,7 +34,7 @@ export const usageStatic = `import { VerifyBadge } from "@/components/custom/blo
 export default function StaticBadge() {
   return (
 
-        AlgorizeSystem
+        AvaraSystem
 
   );
 }`;
@@ -54,7 +54,7 @@ function BotAvatar({ className }: { className?: string }) {
 export default function NotificationCard() {
   return (
 
-            AlgorizeSystem
+            AvaraSystem
 
             Bot
 
@@ -76,11 +76,17 @@ export default function NotificationCard() {
 
 ## Installation
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/verify-badge
+npx shadcn@latest add https://avaraui.com/r/verify-badge.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/verify-badge
 ```
 
 ## Examples
@@ -161,4 +167,4 @@ Explore the Verify Badge's authentic design features, providing recognizable tru
 
 **Component Path:** `[framework]\verify-badge\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

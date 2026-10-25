@@ -1,6 +1,6 @@
 # Quick Start
 
-Get an Algorize UI component on screen in a new React + Vite app. For an existing
+Get a Avara UI component on screen in a new React + Vite app. For an existing
 project, follow the [Installation guide](/docs/reactjs/installation) instead.
 
 ## 1. Create a Vite app
@@ -54,16 +54,16 @@ npx shadcn@latest init --base radix --preset nova
 
 ## 4. Register the registry
 
-Tells the CLI where `@algorize-ui/…` components live.
+Tells the CLI where @avara-ui/… components live.
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 ```
 
 ## 5. Add a component
 
 ```bash
-npx shadcn@latest add @algorize-ui/card
+npx shadcn@latest add https://avaraui.com/r/card.json
 ```
 
 This writes `src/components/custom/blocks/CardBlock.tsx` into your project.
@@ -77,7 +77,7 @@ export default function App() {
   return (
 
           Welcome
-          Your first Algorize UI component.
+          Your first installed component.
 
             Edit the file the CLI just wrote — it is yours now.
 
@@ -96,4 +96,4 @@ Run `npm run dev` and open `http://localhost:5173`.
 
 **Component Path:** `[framework]\first-app\_content\reactjs.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

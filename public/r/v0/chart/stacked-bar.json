@@ -3,7 +3,7 @@
   "name": "chart-stacked-bar",
   "type": "registry:block",
   "title": "Chart — Stacked bar",
-  "description": "The \"Stacked bar\" example from the Algorize UI docs.",
+  "description": "The \"Stacked bar\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

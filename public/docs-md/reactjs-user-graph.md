@@ -78,11 +78,17 @@ export default function UserGraphDemo() {
 
 ## Installation
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/user-graph
+npx shadcn@latest add https://avaraui.com/r/user-graph.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/user-graph
 ```
 
 ## Features
@@ -147,4 +153,4 @@ Discover the key capabilities of the User Graph hierarchy tree:
 
 **Component Path:** `[framework]\user-graph\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

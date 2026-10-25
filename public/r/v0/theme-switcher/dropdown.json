@@ -3,7 +3,7 @@
   "name": "theme-switcher-dropdown",
   "type": "registry:block",
   "title": "Theme Switcher — Dropdown",
-  "description": "The \"Dropdown\" example from the Algorize UI docs.",
+  "description": "The \"Dropdown\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "next-themes",

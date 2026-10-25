@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 
+import { SITE_NAME } from "@/config/site";
 import { buildDocsMetadata } from "@/lib/docs-metadata";
 import { BUILT_FRAMEWORKS, isFramework } from "@/lib/framework";
 
@@ -37,8 +38,8 @@ export async function generateMetadata({
     title: "Installation Guide",
     description:
       framework === "reactjs"
-        ? "Install Algorize UI in a React + Vite project — Tailwind setup, path aliases, and the shadcn registry."
-        : "Install Algorize UI in a Next.js project — Tailwind setup, shadcn init, and the registry.",
+        ? `Install ${SITE_NAME} in a React + Vite project — Tailwind setup, path aliases, and the shadcn registry.`
+        : `Install ${SITE_NAME} in a Next.js project — Tailwind setup, shadcn init, and the registry.`,
     keywords:
       framework === "reactjs"
         ? ["React installation", "Vite setup", "React component library", "shadcn registry Vite", "Tailwind Vite"]

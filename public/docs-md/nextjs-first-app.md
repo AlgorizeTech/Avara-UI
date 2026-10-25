@@ -1,6 +1,6 @@
 # Quick Start
 
-Get an Algorize UI component on screen in a new Next.js app. For an existing
+Get a Avara UI component on screen in a new Next.js app. For an existing
 project, follow the [Installation guide](/docs/nextjs/installation) instead.
 
 ## 1. Create a Next.js app
@@ -20,16 +20,16 @@ npx shadcn@latest init --base radix --preset nova
 
 ## 3. Register the registry
 
-Tells the CLI where `@algorize-ui/…` components live.
+Tells the CLI where @avara-ui/… components live.
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 ```
 
 ## 4. Add a component
 
 ```bash
-npx shadcn@latest add @algorize-ui/card
+npx shadcn@latest add https://avaraui.com/r/card.json
 ```
 
 This writes `components/custom/blocks/CardBlock.tsx` into your project.
@@ -43,7 +43,7 @@ export default function Home() {
   return (
 
           Welcome
-          Your first Algorize UI component.
+          Your first installed component.
 
             Edit the file the CLI just wrote — it is yours now.
 
@@ -62,4 +62,4 @@ Run `npm run dev` and open `http://localhost:3000`.
 
 **Component Path:** `[framework]\first-app\_content\nextjs.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

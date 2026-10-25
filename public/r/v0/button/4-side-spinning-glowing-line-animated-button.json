@@ -3,7 +3,7 @@
   "name": "button-4-side-spinning-glowing-line-animated-button",
   "type": "registry:block",
   "title": "Button — 4-Side Spinning Glowing Line Animated Button",
-  "description": "The \"4-Side Spinning Glowing Line Animated Button\" example from the Algorize UI docs.",
+  "description": "The \"4-Side Spinning Glowing Line Animated Button\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

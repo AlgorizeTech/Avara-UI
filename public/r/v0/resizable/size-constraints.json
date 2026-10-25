@@ -3,7 +3,7 @@
   "name": "resizable-size-constraints",
   "type": "registry:block",
   "title": "Resizable — Size constraints",
-  "description": "The \"Size constraints\" example from the Algorize UI docs.",
+  "description": "The \"Size constraints\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

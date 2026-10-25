@@ -11,8 +11,10 @@
 import fs from "node:fs";
 import path from "node:path";
 
+import { SITE_NAME } from "@/config/site";
 import { countComponents } from "@/lib/component-count";
 import { FORKED_SLUGS, type Framework } from "@/lib/framework";
+import { REGISTRY_NAMESPACE } from "@/lib/registry";
 
 type RegistryItem = { name: string; description?: string };
 
@@ -44,10 +46,17 @@ export const pageExists = (slug: string) =>
     fs.existsSync(path.join(DOCS_DIR, slug, file)),
   );
 
+/** The site values a page prints as `{NAME}`, resolved the way the page renders them. */
+const PAGE_CONSTANTS: Record<string, string> = {
+  COMPONENT_COUNT: String(COMPONENT_COUNT),
+  SITE_NAME,
+  REGISTRY_NAMESPACE,
+};
+
 /** Markdown and JSX reduced to the plain text a reader sees. */
 const plainText = (text: string) =>
   text
-    .replace(/\{COMPONENT_COUNT\}/g, String(COMPONENT_COUNT))
+    .replace(/\{(COMPONENT_COUNT|SITE_NAME|REGISTRY_NAMESPACE)\}/g, (_, name: string) => PAGE_CONSTANTS[name])
     .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
     .replace(/\*\*([^*]+)\*\*/g, "$1")
     // JSX goes; a tag quoted in inline code (`<select>`) is prose and stays.

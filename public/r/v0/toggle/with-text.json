@@ -3,7 +3,7 @@
   "name": "toggle-with-text",
   "type": "registry:block",
   "title": "Toggle — With text",
-  "description": "The \"With text\" example from the Algorize UI docs.",
+  "description": "The \"With text\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

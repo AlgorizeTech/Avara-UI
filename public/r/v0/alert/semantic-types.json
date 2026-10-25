@@ -3,7 +3,7 @@
   "name": "alert-semantic-types",
   "type": "registry:block",
   "title": "Alert — Semantic types",
-  "description": "The \"Semantic types\" example from the Algorize UI docs.",
+  "description": "The \"Semantic types\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

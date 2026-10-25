@@ -3,7 +3,7 @@
   "name": "register-form-register-split",
   "type": "registry:block",
   "title": "Register Form — Register — split",
-  "description": "The \"Register — split\" example from the Algorize UI docs.",
+  "description": "The \"Register — split\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

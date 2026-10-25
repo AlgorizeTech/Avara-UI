@@ -3,7 +3,7 @@
   "name": "chat-bubble-timestamps-read-receipts",
   "type": "registry:block",
   "title": "Chat Bubble — Timestamps & read receipts",
-  "description": "The \"Timestamps & read receipts\" example from the Algorize UI docs.",
+  "description": "The \"Timestamps & read receipts\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

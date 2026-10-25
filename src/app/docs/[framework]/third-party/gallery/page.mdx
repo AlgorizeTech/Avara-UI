@@ -1,11 +1,12 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
+import { SITE_NAME } from "@/config/site";
 
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
 export const metadata = docsPageMetadata("third-party/gallery", {
   title: "Gallery & Lightbox",
-  description: "Integrate react-photo-album and yet-another-react-lightbox with Algorize UI — justified rows, masonry columns, captions, thumbnails and zoom inside a Card."
+  description: `Integrate react-photo-album and yet-another-react-lightbox with ${SITE_NAME} — justified rows, masonry columns, captions, thumbnails and zoom inside a Card.`
 });
 
 # Gallery & Lightbox
@@ -135,7 +136,7 @@ export default function PhotoAlbumLightbox() {
     {
       title: "Justified rows with captions",
       subheading:
-        "Click any photo to open it. Arrow keys move, Escape closes, the counter and thumbnail strip come from plugins — and the card around it all is Algorize UI.",
+        `Click any photo to open it. Arrow keys move, Escape closes, the counter and thumbnail strip come from plugins — and the card around it all is ${SITE_NAME}.`,
       propNotes: [
         {
           lead: "Give every photo a",
@@ -169,7 +170,7 @@ export default function PhotoAlbumLightbox() {
 
 <Cli command="install react-photo-album yet-another-react-lightbox" />
 
-This example also uses these Algorize UI components — install whichever
+This example also uses these {SITE_NAME} components — install whichever
 your project does not already have:
 
 <Cli command="add card.json" />

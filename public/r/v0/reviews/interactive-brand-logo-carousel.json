@@ -3,7 +3,7 @@
   "name": "reviews-interactive-brand-logo-carousel",
   "type": "registry:block",
   "title": "Reviews — Interactive Brand Logo Carousel",
-  "description": "The \"Interactive Brand Logo Carousel\" example from the Algorize UI docs.",
+  "description": "The \"Interactive Brand Logo Carousel\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

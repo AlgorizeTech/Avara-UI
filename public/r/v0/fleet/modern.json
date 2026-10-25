@@ -3,7 +3,7 @@
   "name": "fleet-modern",
   "type": "registry:block",
   "title": "Fleet Tracker Map — Modern",
-  "description": "The \"Modern\" example from the Algorize UI docs.",
+  "description": "The \"Modern\" example from the Avara UI docs.",
   "dependencies": [
     "leaflet",
     "lucide-react",

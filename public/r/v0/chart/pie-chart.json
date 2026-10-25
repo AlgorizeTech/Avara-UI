@@ -3,7 +3,7 @@
   "name": "chart-pie-chart",
   "type": "registry:block",
   "title": "Chart — Pie chart",
-  "description": "The \"Pie chart\" example from the Algorize UI docs.",
+  "description": "The \"Pie chart\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

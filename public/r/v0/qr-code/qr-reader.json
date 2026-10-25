@@ -3,7 +3,7 @@
   "name": "qr-code-qr-reader",
   "type": "registry:block",
   "title": "QR Code Suite — QR reader",
-  "description": "The \"QR reader\" example from the Algorize UI docs.",
+  "description": "The \"QR reader\" example from the Avara UI docs.",
   "dependencies": [
     "jsqr",
     "lucide-react",

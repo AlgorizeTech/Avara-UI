@@ -42,6 +42,26 @@ export const COMPONENT_COUNT = process.env.NEXT_PUBLIC_REGISTRY_COMPONENT_COUNT 
 export const SITE_NAME = env(process.env.NEXT_PUBLIC_SITE_NAME) ?? "Avara UI";
 
 /**
+ * The namespace readers register in `components.json` and write in front of an
+ * item — `@avara-ui/button`. shadcn requires the leading `@`, so one is added
+ * when the variable leaves it off. The registry's published `name` is this
+ * without the `@`.
+ */
+export const REGISTRY_NAMESPACE = `@${(
+  env(process.env.NEXT_PUBLIC_REGISTRY_NAMESPACE) ?? "avara-ui"
+).replace(/^@+/, "")}`;
+
+/**
+ * The deployment that runs api/v0.ts — the site's only function, so it must be
+ * a Vercel deployment. "Open in v0" links point straight at it from every other
+ * host: a static host can only redirect there, and serve's redirect drops the
+ * query string that carries the reader's theme.
+ */
+export const V0_ENDPOINT_ORIGIN = (
+  env(process.env.NEXT_PUBLIC_V0_ENDPOINT_ORIGIN) ?? "https://algorize-ui.vercel.app"
+).replace(/\/+$/, "");
+
+/**
  * External profiles. Only set what genuinely exists — an empty value is
  * rendered as absent rather than as a broken link, and `socialLinks` below
  * filters them out of structured data.

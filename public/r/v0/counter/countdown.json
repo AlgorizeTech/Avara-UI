@@ -3,7 +3,7 @@
   "name": "counter-countdown",
   "type": "registry:block",
   "title": "Counter — Countdown",
-  "description": "The \"Countdown\" example from the Algorize UI docs.",
+  "description": "The \"Countdown\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

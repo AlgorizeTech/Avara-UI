@@ -3,7 +3,7 @@
   "name": "input-filled",
   "type": "registry:block",
   "title": "Input — Filled",
-  "description": "The \"Filled\" example from the Algorize UI docs.",
+  "description": "The \"Filled\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

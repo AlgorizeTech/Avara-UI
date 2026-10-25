@@ -15,7 +15,7 @@ import { DocLink } from "./doc-link";
  * nothing pointing back at the missing setup.
  *
  * The same sentence names the one-time `registry add`, because the short
- * `@algorize-ui/…` command directly below fails with "Unknown registry" in a
+ * `@avara-ui/…` command directly below fails with "Unknown registry" in a
  * project that has not run it — and that error does not say where to look.
  *
  * Kept to a single sentence on purpose: it has to be readable at a glance

@@ -61,7 +61,7 @@ export interface ComponentWallProps
   description?: React.ReactNode;
   /**
    * The install line. Put `{item}` where the focused card's `slug` goes:
-   * `"npx shadcn@latest add @algorize-ui/{item}"`. The whole resolved
+   * `"npx shadcn@latest add @avara-ui/{item}"`. The whole resolved
    * command is what the copy button copies.
    */
   install?: { command: string };
@@ -446,8 +446,8 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
     );
     const restInterval = interval ?? 4500;
 
-    // `npx shadcn@latest add @algorize-ui/{item}` splits into what comes before
-    // the name and after it; the last word before it (`@algorize-ui/`) stays on
+    // `npx shadcn@latest add @avara-ui/{item}` splits into what comes before
+    // the name and after it; the last word before it (`@avara-ui/`) stays on
     // phones, the rest of the prefix only shows from `sm` up.
     const command = useMemo(() => {
       if (!install) return null;

@@ -3,7 +3,7 @@
   "name": "product-details-modern-split-gallery-slider-details",
   "type": "registry:block",
   "title": "Product Details — Modern Split Gallery Slider Details",
-  "description": "The \"Modern Split Gallery Slider Details\" example from the Algorize UI docs.",
+  "description": "The \"Modern Split Gallery Slider Details\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

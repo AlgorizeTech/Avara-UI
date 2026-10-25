@@ -3,7 +3,7 @@
   "name": "tooltip-with-arrow-animated",
   "type": "registry:block",
   "title": "Tooltip — With Arrow & Animated",
-  "description": "The \"With Arrow & Animated\" example from the Algorize UI docs.",
+  "description": "The \"With Arrow & Animated\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

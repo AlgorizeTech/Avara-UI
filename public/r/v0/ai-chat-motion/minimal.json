@@ -3,7 +3,7 @@
   "name": "ai-chat-motion-minimal",
   "type": "registry:block",
   "title": "AI Chat — Minimal",
-  "description": "The \"Minimal\" example from the Algorize UI docs.",
+  "description": "The \"Minimal\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

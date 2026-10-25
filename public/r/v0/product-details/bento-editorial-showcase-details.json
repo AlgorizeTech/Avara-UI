@@ -3,7 +3,7 @@
   "name": "product-details-bento-editorial-showcase-details",
   "type": "registry:block",
   "title": "Product Details — Bento Editorial Showcase Details",
-  "description": "The \"Bento Editorial Showcase Details\" example from the Algorize UI docs.",
+  "description": "The \"Bento Editorial Showcase Details\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

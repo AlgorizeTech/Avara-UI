@@ -3,7 +3,7 @@
   "name": "animated-list-flip",
   "type": "registry:block",
   "title": "Animated List — Flip",
-  "description": "The \"Flip\" example from the Algorize UI docs.",
+  "description": "The \"Flip\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

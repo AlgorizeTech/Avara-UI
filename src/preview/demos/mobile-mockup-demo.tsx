@@ -1,5 +1,6 @@
 "use client";
 
+import { REGISTRY_NAMESPACE } from "@/lib/registry";
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
@@ -31,7 +32,7 @@ const TYPING_WORDS = [
 ];
 
 const CLI_COMMAND =
-  "npx shadcn@latest add @algorize-ui/mobile-mockup";
+  `npx shadcn@latest add ${REGISTRY_NAMESPACE}/mobile-mockup`;
 
 // The word flip, as keyframes: out upwards, in from below, 0.45s each.
 const FLIP_EASE = "cubic-bezier(0.16, 1, 0.3, 1)";

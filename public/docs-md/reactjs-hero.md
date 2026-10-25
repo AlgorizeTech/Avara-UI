@@ -48,11 +48,17 @@ export default function Hero() {
 
 ### Installation
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/honeycomb-hero
+npx shadcn@latest add https://avaraui.com/r/honeycomb-hero.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/honeycomb-hero
 ```
 
 ### Features
@@ -179,11 +185,17 @@ export default function Hero() {
 
 ### Installation
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/hero-carousel
+npx shadcn@latest add https://avaraui.com/r/hero-carousel.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/hero-carousel
 ```
 
 ### Height
@@ -301,11 +313,17 @@ export default function Hero() {
 
 ### Installation
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/fashion-hero
+npx shadcn@latest add https://avaraui.com/r/fashion-hero.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/fashion-hero
 ```
 
 ### Photos on colour
@@ -416,11 +434,17 @@ export default function Hero() {
 
 ### Installation
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/support-hero
+npx shadcn@latest add https://avaraui.com/r/support-hero.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/support-hero
 ```
 
 ### Layout
@@ -648,11 +672,17 @@ export default function Hero() {
 
 ### Installation
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/collage-hero
+npx shadcn@latest add https://avaraui.com/r/collage-hero.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/collage-hero
 ```
 
 ### The badge
@@ -839,11 +869,17 @@ export default function OrbitHeroExample() {
 
 ### Installation
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/hero
+npx shadcn@latest add https://avaraui.com/r/hero.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/hero
 ```
 
 ### Props Reference
@@ -961,4 +997,4 @@ npx shadcn@latest add @algorize-ui/hero
 
 **Component Path:** `[framework]\hero\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

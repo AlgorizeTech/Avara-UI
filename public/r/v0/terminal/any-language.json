@@ -3,7 +3,7 @@
   "name": "terminal-any-language",
   "type": "registry:block",
   "title": "Terminal — Any language",
-  "description": "The \"Any language\" example from the Algorize UI docs.",
+  "description": "The \"Any language\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

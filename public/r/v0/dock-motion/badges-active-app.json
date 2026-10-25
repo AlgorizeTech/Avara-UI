@@ -3,7 +3,7 @@
   "name": "dock-motion-badges-active-app",
   "type": "registry:block",
   "title": "Dock — Badges & active app",
-  "description": "The \"Badges & active app\" example from the Algorize UI docs.",
+  "description": "The \"Badges & active app\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

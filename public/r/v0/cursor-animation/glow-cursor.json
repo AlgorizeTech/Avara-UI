@@ -3,7 +3,7 @@
   "name": "cursor-animation-glow-cursor",
   "type": "registry:block",
   "title": "Cursor Animation — Glow Cursor",
-  "description": "The \"Glow Cursor\" example from the Algorize UI docs.",
+  "description": "The \"Glow Cursor\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

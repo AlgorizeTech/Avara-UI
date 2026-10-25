@@ -3,7 +3,7 @@
   "name": "reviews-updown-vertical-marquee",
   "type": "registry:block",
   "title": "Reviews — UpDown Vertical Marquee",
-  "description": "The \"UpDown Vertical Marquee\" example from the Algorize UI docs.",
+  "description": "The \"UpDown Vertical Marquee\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

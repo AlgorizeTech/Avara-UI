@@ -9,7 +9,7 @@
     "lucide-react"
   ],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/ui-liquid-glass.json",
+    "https://avaraui.com/r/ui-liquid-glass.json",
     "utils"
   ],
   "files": [

@@ -1,5 +1,6 @@
 "use client";
 
+import { REGISTRY_NAMESPACE } from "@/lib/registry";
 import {
   CopyButton,
   type CopyButtonSize,
@@ -11,7 +12,7 @@ import { Link2, Terminal } from "lucide-react";
 const VARIANTS: CopyButtonVariant[] = ["solid", "soft", "outline", "ghost"];
 const SIZES: CopyButtonSize[] = ["sm", "md", "lg"];
 
-const SNIPPET = `npx shadcn@latest add @algorize-ui/copy-button`;
+const SNIPPET = `npx shadcn@latest add ${REGISTRY_NAMESPACE}/copy-button`;
 
 export default function CopyButtonDemo({
   color = "primary",

@@ -3,7 +3,7 @@
   "name": "wizard-without-the-progress-bar",
   "type": "registry:block",
   "title": "Wizard — Without the progress bar",
-  "description": "The \"Without the progress bar\" example from the Algorize UI docs.",
+  "description": "The \"Without the progress bar\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

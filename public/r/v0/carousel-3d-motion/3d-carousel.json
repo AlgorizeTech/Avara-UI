@@ -3,7 +3,7 @@
   "name": "carousel-3d-motion-3d-carousel",
   "type": "registry:block",
   "title": "Carousel 3D — 3D carousel",
-  "description": "The \"3D carousel\" example from the Algorize UI docs.",
+  "description": "The \"3D carousel\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

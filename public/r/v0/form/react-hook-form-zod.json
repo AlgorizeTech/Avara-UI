@@ -3,7 +3,7 @@
   "name": "form-react-hook-form-zod",
   "type": "registry:block",
   "title": "Form — React Hook Form + Zod",
-  "description": "The \"React Hook Form + Zod\" example from the Algorize UI docs.",
+  "description": "The \"React Hook Form + Zod\" example from the Avara UI docs.",
   "dependencies": [
     "@hookform/resolvers",
     "lucide-react",

@@ -3,7 +3,7 @@
   "name": "tilted-card-stronger-glare",
   "type": "registry:block",
   "title": "Tilted Card — Stronger glare",
-  "description": "The \"Stronger glare\" example from the Algorize UI docs.",
+  "description": "The \"Stronger glare\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

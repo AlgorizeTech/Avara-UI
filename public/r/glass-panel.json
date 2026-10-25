@@ -6,7 +6,7 @@
   "description": "A frosted surface in four shapes and the aurora ground it sits on. Use it for glass bento layouts, profile and booking pages — or flip it to solid cards with one prop.",
   "dependencies": [],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/ui-liquid-glass.json",
+    "https://avaraui.com/r/ui-liquid-glass.json",
     "utils"
   ],
   "files": [

@@ -3,7 +3,7 @@
   "name": "flowchart-linear-pipeline",
   "type": "registry:block",
   "title": "Flowchart — Linear pipeline",
-  "description": "The \"Linear pipeline\" example from the Algorize UI docs.",
+  "description": "The \"Linear pipeline\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

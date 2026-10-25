@@ -3,7 +3,7 @@
   "name": "alert-icons",
   "type": "registry:block",
   "title": "Alert — Icons",
-  "description": "The \"Icons\" example from the Algorize UI docs.",
+  "description": "The \"Icons\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -9,7 +9,7 @@
     "shiki"
   ],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/ui-code-renderer.json"
+    "https://avaraui.com/r/ui-code-renderer.json"
   ],
   "files": [
     {

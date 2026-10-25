@@ -36,9 +36,9 @@ function ownItemArgs(command: string): string[] {
 /**
  * Expands the shorthand a page writes into the real command for `pm`.
  *
- *   `add button.json`            → `npx shadcn@latest add @algorize-ui/button`
- *                                  or, with the URL form selected,
- *                                  `npx shadcn@latest add https://…/r/button.json`
+ *   `add button.json`            → `npx shadcn@latest add https://…/r/button.json`
+ *                                  (the default) or, with the name form selected,
+ *                                  `npx shadcn@latest add @avara-ui/button`
  *   `add select.json utils`      → both, space-separated: shadcn takes several
  *                                  items at once and mixes our items with its
  *                                  own bare names freely

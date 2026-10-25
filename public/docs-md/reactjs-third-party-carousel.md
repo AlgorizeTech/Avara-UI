@@ -1,11 +1,11 @@
 export const metadata = docsPageMetadata("third-party/carousel", {
   title: "Carousels",
-  description: "Integrate Embla Carousel and Swiper with Algorize UI — Card slides, Button controls, and Swiper chrome themed through its own CSS variables."
+  description: `Integrate Embla Carousel and Swiper with Avara UI — Card slides, Button controls, and Swiper chrome themed through its own CSS variables.`
 });
 
 # Carousels
 
-Algorize UI ships its own Carousel set for the
+Avara UI ships its own Carousel set for the
 common cases. These two libraries are for when you need something it does not
 do: Embla when you want the physics and none of the markup, Swiper when you want
 effects, thumbnails and a11y wiring out of the box.
@@ -100,7 +100,7 @@ export default function EmblaProductCarousel({ color }: { color?: string } = {})
 
 ### Installation
 
-This example also uses these Algorize UI components — install whichever
+This example also uses these Avara UI components — install whichever
 your project does not already have:
 
 ## Swiper
@@ -150,7 +150,7 @@ export default function SwiperTestimonials({ color }: { color?: string } = {}) {
 
 ### Installation
 
-This example also uses these Algorize UI components — install whichever
+This example also uses these Avara UI components — install whichever
 your project does not already have:
 
 ## Which one
@@ -194,4 +194,4 @@ thumbnail and radial layouts with no third-party dependency at all.
 
 **Component Path:** `[framework]\third-party\carousel\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

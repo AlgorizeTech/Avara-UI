@@ -3,7 +3,7 @@
   "name": "design-folder-box-custom-labels",
   "type": "registry:block",
   "title": "Design Folder Box — Custom labels",
-  "description": "The \"Custom labels\" example from the Algorize UI docs.",
+  "description": "The \"Custom labels\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

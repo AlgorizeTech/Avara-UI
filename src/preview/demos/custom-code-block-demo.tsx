@@ -1,5 +1,6 @@
 "use client";
 
+import { REGISTRY_ADD_ARGS, REGISTRY_NAMESPACE } from "@/lib/registry";
 import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
 
 const SNIPPETS = {
@@ -214,8 +215,8 @@ npm install clsx tailwind-merge motion lucide-react
 
 # Add Shadcn UI components for faster development
 npx shadcn@latest init
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/button @algorize-ui/card @algorize-ui/dialog
+npx shadcn@latest ${REGISTRY_ADD_ARGS}
+npx shadcn@latest add ${REGISTRY_NAMESPACE}/button ${REGISTRY_NAMESPACE}/card ${REGISTRY_NAMESPACE}/dialog
 
 # Start the development server on port 3000
 npm run dev

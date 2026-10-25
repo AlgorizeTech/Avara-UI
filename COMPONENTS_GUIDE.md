@@ -1,10 +1,10 @@
-# Algorize UI Component System - Professional Guide
+# Avara UI Component System - Professional Guide
 
-This guide explains the complete component system architecture, including how to add, edit, and delete components in the Algorize UI platform.
+This guide explains the complete component system architecture, including how to add, edit, and delete components in the Avara UI platform.
 
 ## 📁 Component Structure Overview
 
-The Algorize UI component system follows a well-defined structure that separates documentation from implementation while maintaining consistency across all components.
+The Avara UI component system follows a well-defined structure that separates documentation from implementation while maintaining consistency across all components.
 
 ### Directory Structure
 ```
@@ -133,7 +133,7 @@ export default NewComponent;
 Create `page.mdx` in your component directory:
 ```mdx
 export const metadata = {
-  title: 'New Component - Algorize UI',
+  title: 'New Component - Avara UI',
   description: 'Description of your new component',
 };
 
@@ -484,4 +484,4 @@ Deploy the `out` directory to your hosting provider.
 - Update package.json version
 - Create changelog entries
 
-This comprehensive guide provides everything needed to work with the Algorize UI component system professionally, from adding new components to maintaining existing ones.
+This comprehensive guide provides everything needed to work with the Avara UI component system professionally, from adding new components to maintaining existing ones.

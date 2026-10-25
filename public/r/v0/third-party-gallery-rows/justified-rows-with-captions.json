@@ -3,7 +3,7 @@
   "name": "third-party-gallery-rows-justified-rows-with-captions",
   "type": "registry:block",
   "title": "Gallery & Lightbox — Justified rows with captions",
-  "description": "Click any photo to open it. Arrow keys move, Escape closes, the counter and thumbnail strip come from plugins — and the card around it all is Algorize UI.",
+  "description": "Click any photo to open it. Arrow keys move, Escape closes, the counter and thumbnail strip come from plugins — and the card around it all is Avara UI.",
   "dependencies": [
     "lucide-react",
     "react-photo-album",

@@ -3,7 +3,7 @@
   "name": "data-grid-read-only",
   "type": "registry:block",
   "title": "Data Grid — Read only",
-  "description": "The \"Read only\" example from the Algorize UI docs.",
+  "description": "The \"Read only\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -8,11 +8,11 @@
     "lucide-react"
   ],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/avatar-stack.json",
-    "https://algorize-ui.vercel.app/r/circular-text.json",
-    "https://algorize-ui.vercel.app/r/dialog.json",
-    "https://algorize-ui.vercel.app/r/text-animation.json",
-    "https://algorize-ui.vercel.app/r/tilted-card.json",
+    "https://avaraui.com/r/avatar-stack.json",
+    "https://avaraui.com/r/circular-text.json",
+    "https://avaraui.com/r/dialog.json",
+    "https://avaraui.com/r/text-animation.json",
+    "https://avaraui.com/r/tilted-card.json",
     "utils"
   ],
   "files": [

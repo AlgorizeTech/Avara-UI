@@ -122,8 +122,8 @@ npm install clsx tailwind-merge motion lucide-react
 
 # Add Shadcn UI components for faster development
 npx shadcn@latest init
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/button @algorize-ui/card @algorize-ui/dialog
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/button @avara-ui/card @avara-ui/dialog
 
 # Start the development server on port 3000
 npm run dev
@@ -179,11 +179,17 @@ export default function MultiFileSnippet() {
 
 ## Installation
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/custom-code-block
+npx shadcn@latest add https://avaraui.com/r/custom-code-block.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/custom-code-block
 ```
 
 ## Examples
@@ -248,4 +254,4 @@ Explore the Custom Code Block's syntax highlighting features, complete with copy
 
 **Component Path:** `[framework]\custom-code-block\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

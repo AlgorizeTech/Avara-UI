@@ -1,6 +1,6 @@
 # Installation
 
-Set up a Next.js project so you can install Algorize UI components with the
+Set up a Next.js project so you can install Avara UI components with the
 shadcn CLI.
 
     Framework
@@ -23,7 +23,7 @@ Skip this if you already have a Next.js app with Tailwind CSS v4.
 npx create-next-app@latest my-app --typescript --tailwind --app
 ```
 
-`--tailwind` installs Tailwind and writes `globals.css` for you. Adding Algorize UI
+`--tailwind` installs Tailwind and writes `globals.css` for you. Adding Avara UI
 to an app without Tailwind? [Set it up first](#set-up-tailwind-css).
 
 ## Add components
@@ -37,15 +37,16 @@ helper every component imports).
 npx shadcn@latest init --base radix --preset nova
 ```
 
-Algorize UI builds on Radix primitives. If you run `init` without flags, choose
+Avara UI builds on Radix primitives. If you run `init` without flags, choose
 **Radix UI** when asked. Any preset works — it only sets the starting theme.
 
 ### Step 2: Register the registry
 
-Run once per project. It lets you install components by name:
+Optional, once per project. Components install by URL with no setup; this
+lets you install them by name instead (@avara-ui/hero):
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 ```
 
 This adds the following to `components.json`, which you can also write by hand:
@@ -53,7 +54,7 @@ This adds the following to `components.json`, which you can also write by hand:
 ```json
 {
   "registries": {
-    "@algorize-ui": "https://algorize-ui.vercel.app/r/{name}.json"
+    "@avara-ui": "https://avaraui.com/r/{name}.json"
   }
 }
 ```
@@ -69,7 +70,7 @@ colours, radius and fonts from these variables.
 Every component page has its own command:
 
 ```bash
-npx shadcn@latest add @algorize-ui/hero
+npx shadcn@latest add https://avaraui.com/r/hero.json
 ```
 
 The CLI writes the source into your project and installs the component's npm
@@ -128,7 +129,7 @@ v4-only syntax.
     Components render unstyled
     Check that @import "tailwindcss"; is the first line of globals.css, that your root layout imports that file, and that tailwind.css in components.json points at it.
 
-    Unknown registry "@algorize-ui"
+    Unknown registry "@avara-ui"
     Run Step 2, or switch the command to URL, which needs no setup.
 
     Cannot find module @/lib/utils
@@ -139,7 +140,7 @@ v4-only syntax.
 - [Quick Start](/docs/nextjs/first-app) — put a component on screen
 - [All components](/docs/nextjs/all-components) — browse the library
 
-For anything beyond Algorize UI, see the
+For anything beyond Avara UI, see the
 [Next.js](https://nextjs.org/docs/app/getting-started/installation),
 [Tailwind CSS](https://tailwindcss.com/docs/installation/framework-guides/nextjs) and
 [shadcn CLI](https://ui.shadcn.com/docs/cli) docs.
@@ -148,4 +149,4 @@ For anything beyond Algorize UI, see the
 
 **Component Path:** `[framework]\installation\_content\nextjs.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

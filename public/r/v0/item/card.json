@@ -3,7 +3,7 @@
   "name": "item-card",
   "type": "registry:block",
   "title": "Item — Card",
-  "description": "The \"Card\" example from the Algorize UI docs.",
+  "description": "The \"Card\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

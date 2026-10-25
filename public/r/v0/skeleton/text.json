@@ -3,7 +3,7 @@
   "name": "skeleton-text",
   "type": "registry:block",
   "title": "Skeleton — Text",
-  "description": "The \"Text\" example from the Algorize UI docs.",
+  "description": "The \"Text\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

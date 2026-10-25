@@ -1,10 +1,12 @@
 import { Cli } from "@/components/site/cli";
+import { SITE_NAME } from "@/config/site";
+import { REGISTRY_ADD_ARGS, REGISTRY_NAMESPACE } from "@/lib/registry";
 
 # Installation
 
 <OtherFrameworkGuide slug="installation" label="installation guide" />
 
-Set up a React + Vite project so you can install Algorize UI components with the
+Set up a React + Vite project so you can install {SITE_NAME} components with the
 shadcn CLI.
 
 <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 my-6 not-prose">
@@ -112,24 +114,19 @@ helper every component imports) and installs `lucide-react`.
 
 <Cli command={`init --base radix --preset nova`} />
 
-Algorize UI builds on Radix primitives. If you run `init` without flags, choose
+{SITE_NAME} builds on Radix primitives. If you run `init` without flags, choose
 **Radix UI** when asked. The CLI detects Vite and sets `rsc` to `false`.
 
 ### Step 2: Register the registry
 
-Run once per project. It lets you install components by name:
+Optional, once per project. Components install by URL with no setup; this
+lets you install them by name instead (<code>{REGISTRY_NAMESPACE}/hero</code>):
 
-<Cli command={`registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json`} />
+<Cli command={REGISTRY_ADD_ARGS} />
 
 This adds the following to `components.json`, which you can also write by hand:
 
-```json
-{
-  "registries": {
-    "@algorize-ui": "https://algorize-ui.vercel.app/r/{name}.json"
-  }
-}
-```
+<RegistryConfig />
 
 ### Step 3: Pick a theme
 
@@ -181,7 +178,7 @@ client-side navigation.
     <p className="text-[13px] leading-relaxed text-foreground/50">A harmless Rollup warning about the <code>"use client"</code> line at the top of components. Vite ignores the directive and the build succeeds.</p>
   </div>
   <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
-    <h4 className="text-[14px] font-semibold text-foreground mb-1">Unknown registry "@algorize-ui"</h4>
+    <h4 className="text-[14px] font-semibold text-foreground mb-1">Unknown registry "{REGISTRY_NAMESPACE}"</h4>
     <p className="text-[13px] leading-relaxed text-foreground/50">Run <a href="#step-2-register-the-registry" className="text-primary hover:underline">Step 2</a>, or switch the command to <strong>URL</strong>, which needs no setup.</p>
   </div>
 </div>
@@ -191,6 +188,6 @@ client-side navigation.
 - [Quick Start](/docs/reactjs/first-app) — put a component on screen
 - [All components](/docs/reactjs/all-components) — browse the library
 
-For anything beyond Algorize UI, see the [Vite](https://vite.dev/guide/),
+For anything beyond {SITE_NAME}, see the [Vite](https://vite.dev/guide/),
 [Tailwind CSS](https://tailwindcss.com/docs/installation/using-vite) and
 [shadcn CLI](https://ui.shadcn.com/docs/cli) docs.

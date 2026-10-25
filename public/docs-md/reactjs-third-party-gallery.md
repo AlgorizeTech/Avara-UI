@@ -1,6 +1,6 @@
 export const metadata = docsPageMetadata("third-party/gallery", {
   title: "Gallery & Lightbox",
-  description: "Integrate react-photo-album and yet-another-react-lightbox with Algorize UI — justified rows, masonry columns, captions, thumbnails and zoom inside a Card."
+  description: `Integrate react-photo-album and yet-another-react-lightbox with Avara UI — justified rows, masonry columns, captions, thumbnails and zoom inside a Card.`
 });
 
 # Gallery & Lightbox
@@ -100,7 +100,7 @@ export default function PhotoAlbumLightbox() {
 
 ### Installation
 
-This example also uses these Algorize UI components — install whichever
+This example also uses these Avara UI components — install whichever
 your project does not already have:
 
 ## Masonry layout
@@ -272,4 +272,4 @@ the album's `render.image` — the layout maths is unaffected.
 
 **Component Path:** `[framework]\third-party\gallery\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

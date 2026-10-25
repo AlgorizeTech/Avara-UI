@@ -14,11 +14,14 @@
  * The examples are read by evaluating the MDX page, not by pattern-matching
  * it: snippets are template literals built from other exports, so only
  * running them yields the text the preview's Usage tab shows. Every import
- * the page makes is stubbed except `ExampleShowcase`, which records its props.
+ * the page makes is stubbed except `ExampleShowcase`, which records its props,
+ * and the site config a snippet may interpolate (`${REGISTRY_NAMESPACE}`),
+ * which is loaded for real.
  *
  * Runs after `shadcn build` (it reads the built public/r/*.json).
  */
 
+import "./load-env";
 import fs from "fs";
 import path from "path";
 import { pathToFileURL } from "url";
@@ -28,6 +31,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import registry from "../../registry.json";
 import { resolveMotion, resolveUsage, type ShowcaseSnippet } from "../lib/snippet";
 import { slugify } from "../lib/open-in-v0";
+import { SITE_NAME } from "../config/site";
 
 /**
  * Every docs page with an example gallery, as its path under the docs route
@@ -261,14 +265,30 @@ function namedImports(code: string): Map<string, Set<string>> {
 }
 
 /**
+ * Site values a snippet interpolates — the registry namespace and host, the
+ * site name. These are read for real (they only read `process.env`, which
+ * load-env has filled), so the item says what the docs page says.
+ */
+const REAL_MODULES: Record<string, string> = {
+  "@/lib/registry": path.join(ROOT, "src/lib/registry.ts"),
+  "@/config/site": path.join(ROOT, "src/config/site.ts"),
+};
+
+/**
  * Every import resolves to a stub module exporting exactly the names the page
- * asks for — except `ExampleShowcase`, which records the props it is given.
+ * asks for — except `ExampleShowcase`, which records the props it is given,
+ * and REAL_MODULES, which are bundled as they are.
  */
 const stubPlugin = (imports: Map<string, Set<string>>): Plugin => ({
   name: "v0-stubs",
   setup(pluginBuild) {
     pluginBuild.onResolve({ filter: /.*/ }, (args) => {
       if (args.kind === "entry-point") return undefined;
+      if (args.path in REAL_MODULES) return { path: REAL_MODULES[args.path], namespace: "real" };
+      // A real module's own relative imports (registry.ts → ../config/site).
+      if (args.namespace === "real") {
+        return { path: `${path.resolve(args.resolveDir, args.path)}.ts`, namespace: "real" };
+      }
       if (/^react(-dom)?(\/|$)/.test(args.path)) return { path: args.path, external: true };
       if (args.path === "node:fs") return { path: args.path, external: true };
       // A usage read from the demo file (`usage: extractCode("src/preview/demos/…")`)
@@ -276,6 +296,11 @@ const stubPlugin = (imports: Map<string, Set<string>>): Plugin => ({
       if (args.path === "@/lib/code") return { path: args.path, namespace: "code" };
       return { path: args.path, namespace: "stub" };
     });
+    pluginBuild.onLoad({ filter: /.*/, namespace: "real" }, (args) => ({
+      loader: "ts",
+      resolveDir: path.dirname(args.path),
+      contents: fs.readFileSync(args.path, "utf8"),
+    }));
     pluginBuild.onLoad({ filter: /.*/, namespace: "code" }, (args) => {
       const others = [...(imports.get(args.path) ?? [])].filter((name) => name !== "extractCode");
       return {
@@ -406,7 +431,7 @@ async function main() {
             const item = flatten(
               key,
               title,
-              example.subheading ?? `The "${example.title}" example from the Algorize UI docs.`,
+              example.subheading ?? `The "${example.title}" example from the ${SITE_NAME} docs.`,
               usage,
             );
             const out = path.join(OUT_DIR, `${key}.json`);

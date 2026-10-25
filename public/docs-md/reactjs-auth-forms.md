@@ -105,11 +105,17 @@ export default function LiquidGlassLoginPage() {
 
 ### Install the login form
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/login-form
+npx shadcn@latest add https://avaraui.com/r/login-form.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/login-form
 ```
 
 ### More login examples
@@ -232,11 +238,17 @@ export default function LiquidGlassRegisterPage() {
 
 ### Install the register form
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/register-form
+npx shadcn@latest add https://avaraui.com/r/register-form.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/register-form
 ```
 
 ### More register examples
@@ -454,4 +466,4 @@ Every example below is the same `RegisterForm` you just installed — only the p
 
 **Component Path:** `[framework]\auth-forms\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

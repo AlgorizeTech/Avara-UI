@@ -137,11 +137,17 @@ export default function BlurTimeline() {
 
 ## Installation
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/animated-timeline
+npx shadcn@latest add https://avaraui.com/r/animated-timeline.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/animated-timeline
 ```
 
 ## Examples
@@ -229,4 +235,4 @@ Discover the key capabilities that make this component an excellent choice for m
 
 **Component Path:** `[framework]\animated-timeline\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

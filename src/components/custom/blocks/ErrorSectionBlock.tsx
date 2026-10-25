@@ -53,7 +53,7 @@ export function ErrorSection({
   at renderWithHooksAgain (react-dom.production.min.js:4133:61)
   at updateFunctionComponent (react-dom.production.min.js:5523:21)
   at performUnitOfWork (react-dom.production.min.js:6892:12)
-  thread_context: 0x8849bf | origin: algorize.ui/runtime
+  thread_context: 0x8849bf | origin: avara.ui/runtime
   incident_digest: "${errorId}"`;
 
   const copyIncidentId = () => {

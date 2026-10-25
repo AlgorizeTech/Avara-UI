@@ -3,7 +3,7 @@
   "name": "counter-vertical-stepper",
   "type": "registry:block",
   "title": "Counter — Vertical stepper",
-  "description": "The \"Vertical stepper\" example from the Algorize UI docs.",
+  "description": "The \"Vertical stepper\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

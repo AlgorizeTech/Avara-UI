@@ -1,11 +1,12 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
+import { SITE_NAME } from "@/config/site";
 
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
 export const metadata = docsPageMetadata("third-party/select", {
   title: "Select",
-  description: "Integrate react-select with Algorize UI — unstyled plus classNames, so a searchable multi-select matches your Input exactly."
+  description: `Integrate react-select with ${SITE_NAME} — unstyled plus classNames, so a searchable multi-select matches your Input exactly.`
 });
 
 # Select
@@ -14,7 +15,7 @@ react-select is what people usually mean when they ask for "Select2 in React":
 searchable, multi-select, async loading, creatable options, grouped menus, and a
 combobox that is keyboard- and screen-reader-correct out of the box.
 
-Algorize UI ships its own <DocLink to="select">Select</DocLink> for the ordinary
+{SITE_NAME} ships its own <DocLink to="select">Select</DocLink> for the ordinary
 case. Reach for react-select when you need the search, the async loading or the
 tag input — and then make it look like everything else.
 
@@ -250,7 +251,7 @@ export default function ReactSelectThemed() {
 
 <Cli command="install react-select" />
 
-This example also uses these Algorize UI components — install whichever
+This example also uses these {SITE_NAME} components — install whichever
 your project does not already have:
 
 <Cli command="add card.json ui-badge.json" />

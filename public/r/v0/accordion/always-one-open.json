@@ -3,7 +3,7 @@
   "name": "accordion-always-one-open",
   "type": "registry:block",
   "title": "Accordion — Always one open",
-  "description": "The \"Always one open\" example from the Algorize UI docs.",
+  "description": "The \"Always one open\" example from the Avara UI docs.",
   "dependencies": [
     "@radix-ui/react-accordion",
     "lucide-react",

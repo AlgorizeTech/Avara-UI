@@ -3,7 +3,7 @@
   "name": "menubar-application-menubar",
   "type": "registry:block",
   "title": "Menubar — Application menubar",
-  "description": "The \"Application menubar\" example from the Algorize UI docs.",
+  "description": "The \"Application menubar\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

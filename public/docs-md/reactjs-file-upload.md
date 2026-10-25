@@ -124,11 +124,17 @@ The full suite: a `Dropzone` that hands you `File[]`, and an `UploadItem` for ea
 
 ### Install the upload suite
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/upload
+npx shadcn@latest add https://avaraui.com/r/upload.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/upload
 ```
 
 The dropzone example animates its queue with a few lines of CSS in the example itself — no extra package. It is optional; `UploadItem` renders fine without it.
@@ -148,11 +154,17 @@ For a form that just needs files attached, the `Input` block has a file mode wit
 
 ### Install the input block
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/input
+npx shadcn@latest add https://avaraui.com/r/input.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/input
 ```
 
 export const usageFolder = `export default function DropZone() {
@@ -192,17 +204,23 @@ The `Folder` block as an upload surface — a playful alternative to a dropzone 
 
 ### Install the folder block
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/folder
+npx shadcn@latest add https://avaraui.com/r/folder.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/folder
 ```
 
 Or the Motion build (same props, same file — install one):
 
 ```bash
-npx shadcn@latest add @algorize-ui/folder-motion
+npx shadcn@latest add https://avaraui.com/r/folder-motion.json
 ```
 
 ## Features
@@ -361,4 +379,4 @@ Discover the key capabilities that make this component an excellent choice for m
 
 **Component Path:** `[framework]\file-upload\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

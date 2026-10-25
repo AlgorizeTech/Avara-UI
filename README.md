@@ -1,6 +1,6 @@
 <div align="center">
 
-<h1>Algorize UI</h1>
+<h1>Avara UI</h1>
 
 <strong>A shadcn registry of animated React components you install straight into your own codebase.</strong>
 <br />
@@ -9,36 +9,36 @@
 <br />
 <br />
 
-[![Website](https://img.shields.io/badge/Website-algorize--ui.vercel.app-9B8AFB?style=flat-square)](https://algorize-ui.vercel.app)
-[![Docs](https://img.shields.io/badge/Docs-read-9B8AFB?style=flat-square)](https://algorize-ui.vercel.app/docs/nextjs/index)
-[![Registry](https://img.shields.io/badge/shadcn-registry-9B8AFB?style=flat-square)](https://algorize-ui.vercel.app/r/registry.json)
+[![Website](https://img.shields.io/badge/Website-avaraui.com-9B8AFB?style=flat-square)](https://avaraui.com)
+[![Docs](https://img.shields.io/badge/Docs-read-9B8AFB?style=flat-square)](https://avaraui.com/docs/nextjs/index)
+[![Registry](https://img.shields.io/badge/shadcn-registry-9B8AFB?style=flat-square)](https://avaraui.com/r/registry.json)
 [![License](https://img.shields.io/badge/License-MIT-9B8AFB?style=flat-square)](LICENSE)
 
-[**Browse components →**](https://algorize-ui.vercel.app/docs/nextjs/all-components) · [**Get started →**](https://algorize-ui.vercel.app/docs/nextjs/installation) · [**Build a theme →**](https://algorize-ui.vercel.app/themes)
+[**Browse components →**](https://avaraui.com/docs/nextjs/all-components) · [**Get started →**](https://avaraui.com/docs/nextjs/installation) · [**Build a theme →**](https://avaraui.com/themes)
 
 </div>
 
 <br />
 
-## Why Algorize UI?
+## Why Avara UI?
 
-Most component libraries hand you a package to depend on. Algorize UI hands you the source. Each component is published as a [shadcn registry](https://ui.shadcn.com/docs/registry) item, so the `shadcn` CLI writes the file into your project, installs whatever npm packages it needs, and steps out of the way. After that it is your code: rename it, restyle it, delete the parts you don't use.
+Most component libraries hand you a package to depend on. Avara UI hands you the source. Each component is published as a [shadcn registry](https://ui.shadcn.com/docs/registry) item, so the `shadcn` CLI writes the file into your project, installs whatever npm packages it needs, and steps out of the way. After that it is your code: rename it, restyle it, delete the parts you don't use.
 
 There is no wrapper package to keep up to date and nothing to eject from later.
 
 ## What you get
 
-- **<!-- component-count -->189<!-- /component-count --> components**, from base UI primitives to full page sections. Run `npx shadcn@latest list @algorize-ui` for the live list.
+- **<!-- component-count -->189<!-- /component-count --> components**, from base UI primitives to full page sections. Run `npx shadcn@latest list @avara-ui` for the live list.
 - **Full website sections as well as primitives.** Heroes, pricing, footers, dashboards, auth forms, carousels, maps, media players and more, in 18 categories.
 - **One source for two frameworks.** No shipped component imports from `next/*`, so the same file compiles in a Next.js App Router project and in a Vite React app. Components that render links or images accept a `linkComponent` / `imageComponent` prop, so Next.js users can pass `next/link` and `next/image`.
-- **Themes as CSS variables.** Colours, radius and fonts come from CSS variables, not hard-coded classes. The [Themes page](https://algorize-ui.vercel.app/themes) has 14 presets and a customiser, and it exports a block you paste into your global stylesheet.
+- **Themes as CSS variables.** Colours, radius and fonts come from CSS variables, not hard-coded classes. The [Themes page](https://avaraui.com/themes) has 14 presets and a customiser, and it exports a block you paste into your global stylesheet.
 - **Motion that fits the job.** Fixed animations are plain CSS. Pointer, scroll and drag effects use GSAP, and several of those also ship a Motion build under the same name with a `-motion` suffix.
 - **Open in v0.** Docs examples can be opened in [v0](https://v0.dev) with your chosen theme applied.
 - **Docs as Markdown too.** Every docs page is also published as plain Markdown under `/docs-md/`, which is handy for pasting into an AI assistant.
 
 ## Quick start
 
-Algorize UI assumes a project that already has Tailwind CSS and a `shadcn` setup. The [installation guide](https://algorize-ui.vercel.app/docs/nextjs/installation) walks through both from scratch.
+Avara UI assumes a project that already has Tailwind CSS and a `shadcn` setup. The [installation guide](https://avaraui.com/docs/nextjs/installation) walks through both from scratch.
 
 **1. Initialise shadcn** (once per project). The components are built on Radix, so choose the Radix base:
 
@@ -46,10 +46,10 @@ Algorize UI assumes a project that already has Tailwind CSS and a `shadcn` setup
 npx shadcn@latest init --base radix --preset nova
 ```
 
-**2. Register the Algorize UI registry** (once per project):
+**2. Register the Avara UI registry** (once per project):
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 ```
 
 That is the same as adding this to `components.json` yourself:
@@ -57,7 +57,7 @@ That is the same as adding this to `components.json` yourself:
 ```json
 {
   "registries": {
-    "@algorize-ui": "https://algorize-ui.vercel.app/r/{name}.json"
+    "@avara-ui": "https://avaraui.com/r/{name}.json"
   }
 }
 ```
@@ -65,24 +65,24 @@ That is the same as adding this to `components.json` yourself:
 **3. Add components by name:**
 
 ```bash
-npx shadcn@latest add @algorize-ui/hero
-npx shadcn@latest add @algorize-ui/hero @algorize-ui/navbar   # several at once
+npx shadcn@latest add @avara-ui/hero
+npx shadcn@latest add @avara-ui/hero @avara-ui/navbar   # several at once
 ```
 
-You can skip step 2 and install by full URL instead, e.g. `npx shadcn@latest add https://algorize-ui.vercel.app/r/hero.json`. Every component page on the site shows both forms.
+You can skip step 2 and install by full URL instead, e.g. `npx shadcn@latest add https://avaraui.com/r/hero.json`. Every component page on the site shows both forms.
 
 To search the registry from your terminal:
 
 ```bash
-npx shadcn@latest search @algorize-ui --query pricing
+npx shadcn@latest search @avara-ui --query pricing
 ```
 
 ## Supported frameworks
 
 | Framework | Supported versions | Guide |
 | :-------- | :----------------- | :---- |
-| **Next.js** (App Router) | Next.js 14, 15 and 16 · React 18 and 19 · Tailwind CSS v3.4+ or v4 | [Installation](https://algorize-ui.vercel.app/docs/nextjs/installation) · [Quick start](https://algorize-ui.vercel.app/docs/nextjs/first-app) |
-| **React + Vite** | Vite 5 to 8 · React 18 and 19 · Tailwind CSS v4 | [Installation](https://algorize-ui.vercel.app/docs/reactjs/installation) · [Quick start](https://algorize-ui.vercel.app/docs/reactjs/first-app) |
+| **Next.js** (App Router) | Next.js 14, 15 and 16 · React 18 and 19 · Tailwind CSS v3.4+ or v4 | [Installation](https://avaraui.com/docs/nextjs/installation) · [Quick start](https://avaraui.com/docs/nextjs/first-app) |
+| **React + Vite** | Vite 5 to 8 · React 18 and 19 · Tailwind CSS v4 | [Installation](https://avaraui.com/docs/reactjs/installation) · [Quick start](https://avaraui.com/docs/reactjs/first-app) |
 
 Both need the `@/*` path alias. TypeScript is recommended, but plain JavaScript projects work too. The components also work in Create React App and React Router projects.
 
@@ -142,4 +142,4 @@ Runtime libraries the components use, such as Radix UI, Lucide, GSAP and Motion,
 
 ## License
 
-Algorize UI is free for personal and commercial use under the [MIT License](LICENSE). Copyright © 2025–2026 AlgorizeTech.
+Avara UI is free for personal and commercial use under the [MIT License](LICENSE). Copyright © 2025–2026 AlgorizeTech.

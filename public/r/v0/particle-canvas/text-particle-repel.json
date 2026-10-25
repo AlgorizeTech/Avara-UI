@@ -3,7 +3,7 @@
   "name": "particle-canvas-text-particle-repel",
   "type": "registry:block",
   "title": "Particle Canvas — Text Particle Repel",
-  "description": "The \"Text Particle Repel\" example from the Algorize UI docs.",
+  "description": "The \"Text Particle Repel\" example from the Avara UI docs.",
   "dependencies": [
     "next-themes",
     "tw-animate-css"
