@@ -7,8 +7,8 @@ export function registerGetAgentSkillTool(server: McpServer): void {
   server.registerTool(
     "get_agent_skill",
     {
-      title: "Get the Algorize UI agent skill",
-      description: "Returns the Algorize UI workflow instructions for coding agents that cannot install a skill file directly.",
+      title: "Get the Avara UI agent skill",
+      description: "Returns the Avara UI workflow instructions for coding agents that cannot install a skill file directly.",
       inputSchema: {},
     },
     guarded(async () => jsonResult({ skill: AGENT_SKILL_MARKDOWN })),

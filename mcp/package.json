@@ -1,11 +1,11 @@
 {
-  "name": "algorize-ui-mcp",
+  "name": "avara-ui-mcp",
   "version": "0.1.0",
-  "description": "MCP server for Algorize UI — lets AI coding agents search, inspect, validate and install Algorize UI components from the live ShadCN registry.",
+  "description": "MCP server for Avara UI — lets AI coding agents search, inspect, validate and install Avara UI components from the live ShadCN registry.",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "algorize-ui-mcp": "dist/entry/stdio.js"
+    "avara-ui-mcp": "dist/entry/stdio.js"
   },
   "files": [
     "dist",

@@ -58,7 +58,7 @@ export const REGISTRY_NAMESPACE = `@${(
  * query string that carries the reader's theme.
  */
 export const V0_ENDPOINT_ORIGIN = (
-  env(process.env.NEXT_PUBLIC_V0_ENDPOINT_ORIGIN) ?? "https://algorize-ui.vercel.app"
+  env(process.env.NEXT_PUBLIC_V0_ENDPOINT_ORIGIN) ?? "https://avaraui.vercel.app"
 ).replace(/\/+$/, "");
 
 /**
@@ -71,7 +71,8 @@ export const links = {
   github: env(process.env.NEXT_PUBLIC_GITHUB_URL) ?? "https://github.com/AlgorizeTech/Avara-UI",
   /** The organisation's profile — the footer's Connect links and schema.org Organization. */
   githubOrg: env(process.env.NEXT_PUBLIC_GITHUB_ORG_URL) ?? "https://github.com/AlgorizeTech",
-  twitter: env(process.env.NEXT_PUBLIC_TWITTER_URL),
+  /** The organisation's X profile — the footer's Connect links and schema.org Organization. */
+  twitter: env(process.env.NEXT_PUBLIC_TWITTER_URL) ?? "https://x.com/AlgorizeTech",
   /** Handle including the leading @, used for Twitter card attribution. */
   twitterHandle: env(process.env.NEXT_PUBLIC_TWITTER_HANDLE),
   discord: env(process.env.NEXT_PUBLIC_DISCORD_URL),
@@ -106,11 +107,18 @@ export const siteConfig = {
   name: SITE_NAME,
   /** Used where a longer, unambiguous name reads better than the short one. */
   fullName: `${SITE_NAME} — React Component Library`,
-  title: `${SITE_NAME} | React Component Library`,
+  /**
+   * The homepage title. Lists only what the site ships — there is no icon set
+   * or template collection yet, so neither is claimed. "MCP" is the shadcn MCP
+   * server the /docs/<framework>/mcp guide connects to the registry. Kept under
+   * ~60 characters so Google does not cut the brand off.
+   */
+  title: `Free Shadcn UI Components, Blocks & MCP - ${SITE_NAME}`,
+  /** The homepage snippet, under the ~160 characters Google shows. */
   description:
-    `A React component library of ${COMPONENT_COUNT} animated, accessible components ` +
-    "built with Tailwind CSS, TypeScript, GSAP and Motion. Installed by the " +
-    "shadcn CLI straight into your project — no wrapper package, no lock-in.",
+    `${COMPONENT_COUNT ? `${COMPONENT_COUNT} free` : "Free"} Shadcn UI components and blocks ` +
+    "for React and Tailwind CSS, with GSAP and Motion animations. Install with " +
+    "the shadcn CLI or your AI agent via MCP.",
   /** One line, for cards and social summaries. */
   tagline: `${COMPONENT_COUNT} React components you install into your own codebase.`,
   url: SITE_URL,
@@ -118,7 +126,8 @@ export const siteConfig = {
   registryUrl: `${SITE_URL}/r`,
   author: env(process.env.NEXT_PUBLIC_SITE_AUTHOR) ?? "AlgorizeTech",
   github: links.github,
-  ogImage: url("/og-image.png"),
+  /** The social card, public/meta-image.png (1733×907). */
+  ogImage: url("/meta-image.png"),
 } as const;
 
 export type SiteConfig = typeof siteConfig;

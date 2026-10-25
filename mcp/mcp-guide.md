@@ -1,10 +1,10 @@
-# Build a Production-Ready MCP Server for Algorize UI
+# Build a Production-Ready MCP Server for Avara UI
 
-I have an existing React UI component library called **Algorize UI**, built on top of **ShadCN UI**.
+I have an existing React UI component library called **Avara UI**, built on top of **ShadCN UI**.
 
-I want you to build a production-ready **Model Context Protocol (MCP) server** for Algorize UI so that AI coding agents can discover, understand, validate, install, and correctly use Algorize UI components.
+I want you to build a production-ready **Model Context Protocol (MCP) server** for Avara UI so that AI coding agents can discover, understand, validate, install, and correctly use Avara UI components.
 
-The goal is to make Algorize UI an **AI-native UI component library**.
+The goal is to make Avara UI an **AI-native UI component library**.
 
 The architecture should be inspired by modern AI-first component libraries such as ReUI, but DO NOT copy their implementation. Adapt the architecture to my existing project and registry.
 
@@ -28,7 +28,7 @@ The architecture should be inspired by modern AI-first component libraries such 
    - Auth: MCPize's gateway reportedly supports API keys and OAuth 2.1, but whether a server is open-by-default or gated is not confirmed. Verify this matches the open, no-login v1 (section 0.1) before relying on it.
    - Marketplace listing is a separate, optional step from hosting; do not list until asked.
    - Because hosting can move (MCPize now, something else later), keep the HTTP entry a plain, portable Streamable HTTP handler with no MCPize-specific code beyond the deploy manifest.
-6. **URLs come from env:** the registry URL and the MCP URL are configuration. The current default `https://algorize-ui.vercel.app/r` is temporary. The main domain is decided at launch. Never hardcode a domain in MCP code. Do not bulk-edit the existing hardcoded `vercel.app` URLs in the library (docs, `src/config/site.ts`, `src/lib/registry.ts`) as part of this work.
+6. **URLs come from env:** the registry URL and the MCP URL are configuration. The default is `https://avaraui.com/r`. Never hardcode a domain in MCP code. Do not bulk-edit the existing hardcoded `vercel.app` URLs in the library (docs, `src/config/site.ts`, `src/lib/registry.ts`) as part of this work.
 7. **Not in v1:** block tools, icon tools, OAuth, embedding/semantic search, a rich `compose_page`.
 8. **DECIDED: Option A, with Option B as fallback.** Extend `src/scripts/generate-registry.ts` to extract props, required flags, and variant unions from each component's exported `type`/`interface` (confirmed clean and typed in practice, e.g. `CustomAccordionProps` in `Accordion.tsx`, `LoginFormProps` in `LoginForm.tsx` — literal unions for variants, `?` for optional, JSDoc comments for descriptions). Use the TypeScript compiler API or `ts-morph` (not raw `@babel/parser`, which does not resolve types) for reliable extraction. Write the result as an optional structured field (e.g. `props`) on the registry item, additive to the existing schema.
    - **Fallback per component:** if extraction fails or finds no exported props type for a given component, that component's `get_component`/`validate_usage` fall back to the existing `docs` prose field and mark the source as `"source": "docs-text"`. This is per-component, not a global switch — most components should get structured props, a few may fall back.
@@ -40,7 +40,7 @@ The architecture should be inspired by modern AI-first component libraries such 
 
 Do NOT start coding immediately.
 
-Inspect the existing Algorize UI repository and confirm the facts in 1.1 still hold. Do not assume anything not listed there.
+Inspect the existing Avara UI repository and confirm the facts in 1.1 still hold. Do not assume anything not listed there.
 
 Understand:
 
@@ -58,7 +58,7 @@ Understand:
 
 Inspect real registry entries, for example:
 
-https://algorize-ui.vercel.app/r/login-form.json
+https://avaraui.com/r/login-form.json
 
 ## 1.1 Verified facts (from inspection, re-check quickly)
 
@@ -69,10 +69,10 @@ https://algorize-ui.vercel.app/r/login-form.json
 - There are 18 categories, for example `layout`, `data-display`, `marketing`, `forms`, `navigation`, `authentication`.
 - The registry has NO `tags`, `aliases`, `props`, `variants`, `examples` or CSS-variable fields.
 - `docs` is a prose string (present on 178 of 183 items), for example the Accordion item's `docs` describes `accordionData`, `type`, `collapsible` and its variants in one paragraph.
-- `registryDependencies` contain either full URLs of other Algorize items (`https://algorize-ui.vercel.app/r/ui-accordion.json`) or plain shadcn names such as `utils`.
+- `registryDependencies` contain either full URLs of other Avara UI items (`https://avaraui.com/r/ui-accordion.json`) or plain shadcn names such as `utils`.
 - Item metadata (description, categories, docs) is authored in `src/scripts/registry-meta.ts`. The registry is generated by `src/scripts/generate-registry.ts`, which reads `REGISTRY_BASE_URL`.
 - Documentation: `src/app/docs/[framework]/<name>/page.mdx`, plus generated markdown in `public/docs-md/` (about 295 files). Live demos: `src/preview/demos/`.
-- Official install docs use a namespaced registry: `npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json`, then `npx shadcn@latest add @algorize-ui/<name>`.
+- Official install docs use a namespaced registry: `npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json`, then `npx shadcn@latest add @avara-ui/<name>`.
 - There is no separate `registry:block` type. The `custom/blocks/` folder items are registered as `registry:component`.
 
 Use the actual implementation as the source of truth. If something differs from 1.1, trust the repo and report the difference.
@@ -83,11 +83,11 @@ Before implementing, give a short analysis covering: recommended MCP architectur
 
 # 2. EXISTING SHADCN REGISTRY
 
-Algorize UI already provides a public ShadCN-compatible registry.
+Avara UI already provides a public ShadCN-compatible registry.
 
-Registry base URL (current, temporary, configurable):
+Registry base URL (default, configurable):
 
-https://algorize-ui.vercel.app/r
+https://avaraui.com/r
 
 A registry item is at `{base}/{component-name}.json`, the index is at `{base}/registry.json`.
 
@@ -106,7 +106,7 @@ Information the registry does not contain (props, variants, examples) must come 
 
 # 3. CORE ARCHITECTURE
 
-                    Algorize UI
+                    Avara UI
                          │
                          ▼
                  ShadCN Registry (static JSON)
@@ -241,8 +241,8 @@ Return example name, description, source code, imports and dependencies. Prefer 
 Return all dependencies of a component:
 
 - **npm dependencies:** the item's `dependencies`
-- **registry dependencies:** the item's `registryDependencies` (full URLs to other Algorize items, or shadcn names such as `utils`), resolved recursively, without cycles
-- **internal dependencies:** other Algorize items found through `registryDependencies`
+- **registry dependencies:** the item's `registryDependencies` (full URLs to other Avara UI items, or shadcn names such as `utils`), resolved recursively, without cycles
+- **internal dependencies:** other Avara UI items found through `registryDependencies`
 - **styling requirements:** the registry has no CSS-variable field. Report only what the item's `docs` text or the installation docs state. Otherwise return nothing. Do not invent theme requirements.
 
 `dependencies` and `registryDependencies` are authoritative.
@@ -253,20 +253,20 @@ Return all dependencies of a component:
 
 Critical tool. Return the EXACT installation command for a component.
 
-Official documented flow: the `@algorize-ui` namespaced registry.
+Official documented flow: the `@avara-ui` namespaced registry.
 
 Return structured data:
 
 {
   "name": "login-form",
-  "installCommand": "npx shadcn@latest add @algorize-ui/login-form",
-  "setupCommand": "npx shadcn@latest registry add @algorize-ui=<REGISTRY_URL>/{name}.json",
+  "installCommand": "npx shadcn@latest add @avara-ui/login-form",
+  "setupCommand": "npx shadcn@latest registry add @avara-ui=<REGISTRY_URL>/{name}.json",
   "urlInstallCommand": "npx shadcn@latest add <REGISTRY_URL>/login-form.json"
 }
 
 Rules:
 
-- `installCommand` uses the namespaced form. `setupCommand` is the one-time step needed if the project has not registered `@algorize-ui`. `urlInstallCommand` is the zero-setup fallback.
+- `installCommand` uses the namespaced form. `setupCommand` is the one-time step needed if the project has not registered `@avara-ui`. `urlInstallCommand` is the zero-setup fallback.
 - The package runner is configurable (`npx`, `pnpm dlx`, `bunx`), default `npx`. Do not assume the user's package manager.
 - The URL must come from configuration and from the registry item, never a hardcoded domain.
 - Do NOT invent package names. Do NOT assume the component is an npm package. Do NOT return `pnpm add login-form`.
@@ -307,7 +307,7 @@ The purpose is to stop agents from hallucinating APIs, not to be a type checker.
 
 Only for **stdio (local) mode**. A remote HTTP server cannot read the user's `package.json` or `components.json`.
 
-In local mode, detect: React, Next.js and Tailwind versions, TypeScript, the ShadCN config and `components.json`, the package manager, and whether `@algorize-ui` is registered.
+In local mode, detect: React, Next.js and Tailwind versions, TypeScript, the ShadCN config and `components.json`, the package manager, and whether `@avara-ui` is registered.
 
 In the HTTP entry, do not register this tool. Agents pass their own context as input to other tools where needed.
 
@@ -327,7 +327,7 @@ Return a structured plan such as: sidebar, header, statistics, chart, recent act
 
 # 15. BLOCK SUPPORT (NOT IN V1)
 
-Algorize UI has no separate block type in the registry. Items under `custom/blocks/` are registered as `registry:component`.
+Avara UI has no separate block type in the registry. Items under `custom/blocks/` are registered as `registry:component`.
 
 Do NOT implement `search_blocks`, `list_blocks` or `get_block`, and do not invent a fake block system. Section-level components are reachable through `categories` such as `marketing`, `layout` and `authentication`. Revisit if a real `registry:block` type is introduced.
 
@@ -335,7 +335,7 @@ Do NOT implement `search_blocks`, `list_blocks` or `get_block`, and do not inven
 
 # 16. ICON SUPPORT (NOT IN V1)
 
-Algorize UI has no icon collection. Do not implement icon tools.
+Avara UI has no icon collection. Do not implement icon tools.
 
 ---
 
@@ -367,9 +367,10 @@ Create a dedicated registry client.
 
 Configuration:
 
-UI_REGISTRY_URL=https://algorize-ui.vercel.app/r
+UI_REGISTRY_URL=https://avaraui.com/r
+UI_REGISTRY_NAMESPACE=@avara-ui
 
-This default is temporary. Read it from the environment. Do not hardcode the URL anywhere else. Documentation URLs used for examples (section 9) are derived from the same configured origin or a second env var.
+Read both from the environment. Do not hardcode the URL or the namespace anywhere else. Documentation URLs used for examples (section 9) are derived from the same configured origin or a second env var.
 
 Responsibilities:
 
@@ -398,7 +399,7 @@ Unknown extra fields must not break parsing. Re-verify against the live registry
 
 # 20. AGENT SKILL
 
-Create an **Algorize UI Agent Skill**. It must work across MCP-compatible coding agents and must NOT depend on Claude-specific, Cursor-specific or Codex-specific APIs.
+Create an **Avara UI Agent Skill**. It must work across MCP-compatible coding agents and must NOT depend on Claude-specific, Cursor-specific or Codex-specific APIs.
 
 The skill teaches agents:
 
@@ -559,7 +560,7 @@ Do not force this if a better layout fits. Do not mix this package's dependencie
 
 # 30. TESTING
 
-Test against real Algorize UI registry entries (for example `login-form`, `accordion`, `button`).
+Test against real Avara UI registry entries (for example `login-form`, `accordion`, `button`).
 
 - **Search:** exact, partial, category, description, no results.
 - **Components:** valid, missing (with suggestions), metadata, dependencies, registry URL.
@@ -586,19 +587,19 @@ Do not change the root `package.json` scripts, and do not add MCP to the root `b
 
 # 32. DOCUMENTATION
 
-Create MCP documentation covering: what Algorize UI MCP is, architecture, registry integration, tools with inputs and outputs, local development, deployment (npm and Vercel), client setup, Agent Skill setup, how the registry and docs feed the server, adding new components (including the `tier` field and props extraction if chosen), premium plan, and troubleshooting.
+Create MCP documentation covering: what Avara UI MCP is, architecture, registry integration, tools with inputs and outputs, local development, deployment (npm and Vercel), client setup, Agent Skill setup, how the registry and docs feed the server, adding new components (including the `tier` field and props extraction if chosen), premium plan, and troubleshooting.
 
-Use real examples, for example the `login-form` registry item and `npx shadcn@latest add @algorize-ui/login-form`. Use the configured domain, not a hardcoded one.
+Use real examples, for example the `login-form` registry item and `npx shadcn@latest add @avara-ui/login-form`. Use the configured domain, not a hardcoded one.
 
 ---
 
 # 33. FINAL AI WORKFLOW
 
-User: "Build me a login page using Algorize UI."
+User: "Build me a login page using Avara UI."
 
 Agent:
 
-1. Search Algorize UI
+1. Search Avara UI
 2. Inspect component metadata
 3. Get the component API
 4. Get examples
@@ -631,7 +632,7 @@ The agent should never guess component names, props, variants, dependencies, reg
 15. Test against real registry entries, run TypeScript checks, tests and the build.
 16. Verify the server with a real MCP client.
 17. Do not claim compatibility with a client whose support is unverified.
-18. Do not break or rewrite the existing Algorize UI library. Changes to `registry-meta.ts` and `generate-registry.ts` must be minimal, additive and approved.
+18. Do not break or rewrite the existing Avara UI library. Changes to `registry-meta.ts` and `generate-registry.ts` must be minimal, additive and approved.
 
 ---
 
@@ -651,6 +652,6 @@ Done only when:
 - the `tier` field and auth hook exist, and a premium-locked item behaves correctly in tests
 - the Agent Skill and the documentation exist
 - the same server connects to Claude Code, Cursor, VS Code and Codex (verified)
-- existing Algorize UI functionality is unaffected
+- existing Avara UI functionality is unaffected
 
-The final product should feel like a first-class AI interface for Algorize UI, fully integrated with the existing ShadCN registry.
+The final product should feel like a first-class AI interface for Avara UI, fully integrated with the existing ShadCN registry.

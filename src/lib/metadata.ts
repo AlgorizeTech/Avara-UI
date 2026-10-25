@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SITE_URL, integrations, siteConfig } from "@/config/site";
+import { SITE_NAME, SITE_URL, integrations, siteConfig } from "@/config/site";
 
 /**
  * What the library is, in the terms people search for it by. Only accurate
@@ -74,8 +74,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: siteConfig.ogImage,
-        width: 1200,
-        height: 630,
+        width: 1733,
+        height: 907,
         alt: siteConfig.fullName,
         type: "image/png",
       },
@@ -86,7 +86,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: siteConfig.title,
-    description: siteConfig.tagline,
+    description: siteConfig.description,
     images: [siteConfig.ogImage],
   },
   robots: {
@@ -108,4 +108,39 @@ export const metadata: Metadata = {
     : {}),
   category: "technology",
   classification: "React Component Library",
+};
+
+/**
+ * The homepage's search terms, phrased the way people search for shadcn
+ * registries (ReUI and shadcn.io target the same queries). Each one describes
+ * something the site ships; "shadcn mcp" is the MCP guide. Kept off the root
+ * metadata so docs pages do not inherit homepage-only terms.
+ */
+const homeKeywords = [
+  "shadcn ui",
+  "shadcn ui components",
+  "shadcn components",
+  "free shadcn components",
+  "shadcn blocks",
+  "shadcn ui blocks",
+  "shadcn registry",
+  "shadcn mcp",
+  "animated shadcn components",
+  "gsap react components",
+  "react components",
+  "tailwind css components",
+  "next.js components",
+  SITE_NAME.toLowerCase(),
+];
+
+/**
+ * The homepage's own additions to the root metadata above, which already
+ * carries its title, description and social cards.
+ *
+ * The canonical is set here, not at the root: a root canonical is inherited by
+ * every page that does not override it (see the note above).
+ */
+export const homeMetadata: Metadata = {
+  keywords: homeKeywords,
+  alternates: { canonical: "/" },
 };

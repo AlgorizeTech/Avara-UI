@@ -9,7 +9,7 @@ export function registerGetComponentDependenciesTool(server: McpServer, ctx: Too
   server.registerTool(
     "get_component_dependencies",
     {
-      title: "Get Algorize UI component dependencies",
+      title: "Get Avara UI component dependencies",
       description: "Returns npm dependencies and registry dependencies (internal and external) for a component.",
       inputSchema: { name: z.string() },
     },

@@ -6,7 +6,16 @@ import {
 	AllComponentsCatalog,
 	type AnimationLibrary,
 } from "@/components/site/all-components-catalog";
+import { SITE_NAME } from "@/config/site";
+import { docsPageMetadata } from "@/lib/docs-metadata";
 import registry from "../../../../../registry.json";
+
+// No MDX to read a title from, so it is given here. Without it the page
+// inherits the homepage's title, description and social card.
+export const metadata = docsPageMetadata("all-components", {
+	title: "All Components",
+	description: `Every ${SITE_NAME} component and website section in one catalog, grouped by type and filterable by GSAP or Motion animation.`,
+});
 
 type RegistryItem = {
 	name: string;

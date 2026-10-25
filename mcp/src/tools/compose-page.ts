@@ -34,9 +34,9 @@ export function registerComposePageTool(server: McpServer, ctx: ToolContext): vo
   server.registerTool(
     "compose_page",
     {
-      title: "Suggest an Algorize UI composition for a page",
+      title: "Suggest an Avara UI composition for a page",
       description:
-        "Given a page description (e.g. 'a SaaS dashboard with a sidebar, statistics and a chart'), suggests existing Algorize UI components per section. Does not invent custom components.",
+        "Given a page description (e.g. 'a SaaS dashboard with a sidebar, statistics and a chart'), suggests existing Avara UI components per section. Does not invent custom components.",
       inputSchema: { description: z.string() },
     },
     guarded(async ({ description }) => {

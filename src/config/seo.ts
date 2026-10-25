@@ -50,9 +50,9 @@ export const seoConfig = {
     siteName: siteConfig.name,
     images: [
       {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
+        url: '/meta-image.png',
+        width: 1733,
+        height: 907,
         alt: siteConfig.title
       }
     ]

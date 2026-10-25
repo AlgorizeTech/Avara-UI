@@ -14,9 +14,9 @@ export function registerGetComponentTool(server: McpServer, ctx: ToolContext): v
   server.registerTool(
     "get_component",
     {
-      title: "Get Algorize UI component details",
+      title: "Get Avara UI component details",
       description:
-        "Returns full metadata for one Algorize UI component: description, docs, props/API (when known), dependencies, install command and related components. Never returns guessed props.",
+        "Returns full metadata for one Avara UI component: description, docs, props/API (when known), dependencies, install command and related components. Never returns guessed props.",
       inputSchema: { name: z.string() },
     },
     guarded(async ({ name }) => {

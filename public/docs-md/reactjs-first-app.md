@@ -1,6 +1,6 @@
 # Quick Start
 
-Get a Avara UI component on screen in a new React + Vite app. For an existing
+Get your first Avara UI component on screen in a new React + Vite app. For an existing
 project, follow the [Installation guide](/docs/reactjs/installation) instead.
 
 ## 1. Create a Vite app

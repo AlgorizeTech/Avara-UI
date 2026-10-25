@@ -16,7 +16,7 @@ export function PerformanceOptimizer() {
       document.head.appendChild(fontLink)
 
       // Preload critical images
-      const criticalImages = ['/logo.svg', '/og-image.png']
+      const criticalImages = ['/logo.svg']
       criticalImages.forEach(src => {
         const link = document.createElement('link')
         link.rel = 'preload'

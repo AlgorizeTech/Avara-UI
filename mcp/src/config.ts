@@ -1,18 +1,22 @@
 /**
  * All URLs are configuration, never hardcoded (mcp-guide.md section 0.6, 18, 23).
- * The `algorize-ui.vercel.app` default is the CURRENT live registry and is
- * temporary — swap it via env vars once the main domain is decided, no code change needed.
+ * The defaults are the live Avara UI registry at avaraui.com. Point the server
+ * elsewhere with UI_REGISTRY_URL / UI_REGISTRY_NAMESPACE / UI_DOCS_ORIGIN — no
+ * code change needed.
  */
 
-const DEFAULT_REGISTRY_URL = "https://algorize-ui.vercel.app/r";
+const DEFAULT_REGISTRY_URL = "https://avaraui.com/r";
+const DEFAULT_REGISTRY_NAMESPACE = "@avara-ui";
 
 function trimTrailingSlash(url: string): string {
   return url.replace(/\/+$/, "");
 }
 
 export interface Config {
-  /** Base URL for the ShadCN registry, e.g. https://algorize-ui.vercel.app/r */
+  /** Base URL for the ShadCN registry, e.g. https://avaraui.com/r */
   registryBaseUrl: string;
+  /** Namespace consumers register in components.json, e.g. @avara-ui. */
+  registryNamespace: string;
   /** Origin used to resolve documentation (docs-md) URLs for examples. */
   siteOrigin: string;
   /** Default package runner used in generated install commands. */
@@ -28,7 +32,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
   try {
     siteOrigin = new URL(registryBaseUrl).origin;
   } catch {
-    siteOrigin = "https://algorize-ui.vercel.app";
+    siteOrigin = new URL(DEFAULT_REGISTRY_URL).origin;
   }
 
   const runnerEnv = env.UI_PACKAGE_RUNNER;
@@ -39,6 +43,8 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
 
   return {
     registryBaseUrl,
+    // shadcn requires the leading @; add it when the variable leaves it off.
+    registryNamespace: `@${(env.UI_REGISTRY_NAMESPACE?.trim() || DEFAULT_REGISTRY_NAMESPACE).replace(/^@+/, "")}`,
     siteOrigin: trimTrailingSlash(env.UI_DOCS_ORIGIN || siteOrigin),
     defaultRunner,
     registryCacheTtlMs: Number.isFinite(ttl) && ttl > 0 ? ttl : 5 * 60 * 1000,

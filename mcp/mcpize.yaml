@@ -7,7 +7,7 @@
 # real `mcpize deploy`. Confirm field names against MCPize's current docs
 # before relying on this for the first real deploy.
 version: 1
-name: algorize-ui-mcp
+name: avara-ui-mcp
 runtime: typescript
 entry: dist/entry/http.js
 build:

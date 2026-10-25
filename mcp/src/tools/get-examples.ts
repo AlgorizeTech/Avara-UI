@@ -10,9 +10,9 @@ export function registerGetExamplesTool(server: McpServer, ctx: ToolContext): vo
   server.registerTool(
     "get_examples",
     {
-      title: "Get Algorize UI component examples",
+      title: "Get Avara UI component examples",
       description:
-        "Returns real usage examples for an Algorize UI component from its documentation. Set 'example' to fetch one by name; otherwise all known examples are returned.",
+        "Returns real usage examples for an Avara UI component from its documentation. Set 'example' to fetch one by name; otherwise all known examples are returned.",
       inputSchema: {
         component: z.string(),
         example: z.string().optional(),

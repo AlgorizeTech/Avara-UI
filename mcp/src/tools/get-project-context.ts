@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
 import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
+import type { ToolContext } from "../context.js";
 import { guarded, jsonResult } from "../mcp-result.js";
 
 /**
@@ -21,13 +22,13 @@ async function readJsonIfExists(path: string): Promise<unknown> {
   }
 }
 
-export function registerGetProjectContextTool(server: McpServer): void {
+export function registerGetProjectContextTool(server: McpServer, ctx: ToolContext): void {
   server.registerTool(
     "get_project_context",
     {
       title: "Get local project context (stdio mode only)",
       description:
-        "Detects React/Next.js/Tailwind/TypeScript versions, the package manager and shadcn/components.json setup of the CURRENT project, to help decide if an Algorize UI component fits. Never reads .env or secrets.",
+        "Detects React/Next.js/Tailwind/TypeScript versions, the package manager and shadcn/components.json setup of the CURRENT project, to help decide if an Avara UI component fits. Never reads .env or secrets.",
       inputSchema: { cwd: z.string().optional().describe("Project root to inspect; defaults to the server's working directory.") },
     },
     guarded(async ({ cwd }) => {
@@ -47,9 +48,9 @@ export function registerGetProjectContextTool(server: McpServer): void {
         tailwindcss: deps?.tailwindcss,
         typescript: deps?.typescript,
         shadcnComponentsJson: components,
-        algorizeRegistryRegistered:
+        registryRegistered:
           typeof components === "object" && components !== null
-            ? JSON.stringify(components).includes("@algorize-ui")
+            ? JSON.stringify(components).includes(`"${ctx.config.registryNamespace}"`)
             : false,
       });
     }),

@@ -4,9 +4,9 @@
  * that install skill files, and served live via the get_agent_skill tool for
  * clients that cannot.
  */
-export const AGENT_SKILL_MARKDOWN = `# Algorize UI
+export const AGENT_SKILL_MARKDOWN = `# Avara UI
 
-Use the Algorize UI MCP tools whenever a task needs a UI component, before writing a new one from scratch.
+Use the Avara UI MCP tools whenever a task needs a UI component, before writing a new one from scratch.
 
 ## Workflow
 
@@ -20,7 +20,7 @@ Use the Algorize UI MCP tools whenever a task needs a UI component, before writi
 ## Rules
 
 - Never invent a component name, prop, variant, dependency or install command. If a tool says something is unknown, say so to the user instead of guessing.
-- Prefer an existing Algorize UI component over writing a custom one when \`search\` returns a reasonable match.
+- Prefer an existing Avara UI component over writing a custom one when \`search\` returns a reasonable match.
 - A component with \`"locked": true\` or \`"tier": "premium"\` requires a license; tell the user instead of trying to fetch its source anyway.
 - If the registry or a tool is unavailable, report that plainly rather than fabricating a plausible-looking answer.
 `;
