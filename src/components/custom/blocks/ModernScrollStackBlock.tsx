@@ -323,16 +323,35 @@ export function ModernScrollStack({
     };
   }, [scrollerRef]);
 
-  const effectiveCardWidth = Math.min(
-    resolvedCardWidth,
-    Math.max(240, containerWidth - 64),
-  );
+  const isMobile = containerWidth < 480;
+  const isSmallScreen = containerWidth < 640;
+
+  const effectiveCardWidth =
+    variant === "fan"
+      ? isMobile
+        ? Math.min(resolvedCardWidth, Math.max(176, Math.round(containerWidth * 0.6)))
+        : isSmallScreen
+          ? Math.min(resolvedCardWidth, Math.max(210, Math.round(containerWidth * 0.58)))
+          : Math.min(resolvedCardWidth, Math.max(240, containerWidth - 64))
+      : isMobile
+        ? Math.min(resolvedCardWidth, Math.max(216, containerWidth - 44))
+        : isSmallScreen
+          ? Math.min(resolvedCardWidth, Math.max(260, containerWidth - 56))
+          : Math.min(resolvedCardWidth, Math.max(240, containerWidth - 64));
+
   const effectiveCardHeight =
     effectiveCardWidth < resolvedCardWidth
-      ? Math.round(resolvedCardHeight * (effectiveCardWidth / resolvedCardWidth))
+      ? Math.max(
+          variant === "stacked" ? 216 : 228,
+          Math.round(resolvedCardHeight * (effectiveCardWidth / resolvedCardWidth)),
+        )
       : resolvedCardHeight;
 
-  const maxTotalSpread = Math.max(0, containerWidth - effectiveCardWidth - 32);
+  const horizontalMargin = isMobile ? 24 : 32;
+  const maxTotalSpread = Math.max(
+    0,
+    containerWidth - effectiveCardWidth - horizontalMargin,
+  );
   const effectiveOffsetX =
     variant === "stacked"
       ? 0
@@ -340,18 +359,33 @@ export function ModernScrollStack({
         ? Math.min(cardOffsetX, Math.floor(maxTotalSpread / (count - 1)))
         : 0;
 
-  // Distance Card 0 travels from the bottom of the viewport up to `stickyTop`
+  const effectiveStickyTop = isMobile
+    ? Math.min(stickyTop, 44)
+    : isSmallScreen
+      ? Math.min(stickyTop, 56)
+      : stickyTop;
+
+  const effectiveCardGap = isMobile
+    ? Math.min(cardGap, 32)
+    : isSmallScreen
+      ? Math.min(cardGap, 40)
+      : cardGap;
+
+  // Distance Card 0 travels from the bottom of the viewport up to `effectiveStickyTop`
   const card0TravelDistance = Math.min(
-    effectiveCardHeight + cardGap,
-    Math.max(220, viewportHeight - stickyTop - 160),
+    effectiveCardHeight + effectiveCardGap,
+    Math.max(
+      isMobile ? 160 : 220,
+      viewportHeight - effectiveStickyTop - (isMobile ? 110 : 160),
+    ),
   );
-  const topSpacerHeight = stickyTop + card0TravelDistance;
+  const topSpacerHeight = effectiveStickyTop + card0TravelDistance;
 
   // Exact spacer inside the sticky content box so scrolling ends the exact
-  // moment the last card reaches `stickyTop`, preventing cards from scrolling up.
+  // moment the last card reaches `effectiveStickyTop`, preventing cards from scrolling up.
   const endSpacerHeight = Math.max(
     0,
-    viewportHeight - stickyTop - effectiveCardHeight,
+    viewportHeight - effectiveStickyTop - effectiveCardHeight,
   );
 
   // Smooth inertial scroll & damped rotation interpolation:
@@ -377,7 +411,7 @@ export function ModernScrollStack({
       const wrapperEl = cardRefs.current[index];
       if (!wrapperEl) return 0;
       const rect = wrapperEl.getBoundingClientRect();
-      const distanceFromSticky = rect.top - scrollerTop - stickyTop;
+      const distanceFromSticky = rect.top - scrollerTop - effectiveStickyTop;
       const raw =
         startDistance > 0
           ? 1 - Math.min(1, Math.max(0, distanceFromSticky / startDistance))
@@ -391,7 +425,7 @@ export function ModernScrollStack({
       const scrollerTop = scroller
         ? scroller.getBoundingClientRect().top
         : 0;
-      const startDistance = effectiveCardHeight + cardGap;
+      const startDistance = effectiveCardHeight + effectiveCardGap;
       let needsMoreFrames = false;
 
       for (let i = 0; i < count; i++) {
@@ -527,13 +561,13 @@ export function ModernScrollStack({
     };
   }, [
     card0TravelDistance,
-    cardGap,
     count,
+    effectiveCardGap,
     effectiveCardHeight,
     effectiveOffsetX,
+    effectiveStickyTop,
     resolvedItems,
     scrollerRef,
-    stickyTop,
     variant,
   ]);
 
@@ -541,24 +575,24 @@ export function ModernScrollStack({
     <section
       ref={sectionRef}
       className={cn(
-        "relative w-full pt-0 pb-0 px-4 sm:px-8 select-none",
+        "relative w-full pt-0 pb-0 px-3 sm:px-8 select-none",
         className,
       )}
     >
       {showHeader && (
-        <div className="max-w-2xl mx-auto text-center flex flex-col items-center gap-2 pt-12 mb-10">
+        <div className="max-w-2xl mx-auto text-center flex flex-col items-center gap-2 pt-8 sm:pt-12 mb-6 sm:mb-10">
           {eyebrow && (
-            <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-[#E85A34]">
+            <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.12em] text-[#E85A34]">
               {eyebrow}
             </span>
           )}
           {heading && (
-            <h2 className="text-2xl sm:text-[28px] font-bold tracking-[-0.02em] text-foreground leading-tight">
+            <h2 className="text-xl sm:text-[28px] font-bold tracking-[-0.02em] text-foreground leading-tight">
               {heading}
             </h2>
           )}
           {subheading && (
-            <p className="text-[13.5px] sm:text-sm text-muted-foreground leading-relaxed max-w-xl mt-0.5">
+            <p className="text-[12.5px] sm:text-sm text-muted-foreground leading-relaxed max-w-xl mt-0.5">
               {subheading}
             </p>
           )}
@@ -584,8 +618,8 @@ export function ModernScrollStack({
               }}
               className="sticky flex justify-center w-full pointer-events-none"
               style={{
-                top: `${stickyTop}px`,
-                marginTop: index === 0 ? "0px" : `${cardGap}px`,
+                top: `${effectiveStickyTop}px`,
+                marginTop: index === 0 ? "0px" : `${effectiveCardGap}px`,
                 zIndex: index + 1,
               }}
             >
@@ -596,8 +630,8 @@ export function ModernScrollStack({
                 className={cn(
                   "pointer-events-auto relative overflow-hidden flex flex-col justify-between will-change-transform origin-center",
                   variant === "stacked"
-                    ? "rounded-[20px] p-6 sm:p-8 border border-white/15"
-                    : "rounded-[16px] p-8 sm:p-9",
+                    ? "rounded-[16px] sm:rounded-[20px] p-4 sm:p-8 border border-white/15"
+                    : "rounded-[14px] sm:rounded-[16px] p-4 sm:p-9",
                 )}
                 style={{
                   width: `${effectiveCardWidth}px`,
@@ -617,54 +651,54 @@ export function ModernScrollStack({
                     />
 
                     {/* Top bar: pill badge + icon circle */}
-                    <div className="relative z-10 flex items-center justify-between gap-3">
+                    <div className="relative z-10 flex items-center justify-between gap-2 sm:gap-3">
                       <span
-                        className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.14em]"
+                        className="inline-flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-[11px] font-bold uppercase tracking-[0.11em] sm:tracking-[0.14em]"
                         style={{
                           backgroundColor: "rgba(255,255,255,0.12)",
                           border: "1px solid rgba(255,255,255,0.18)",
                         }}
                       >
                         <span
-                          className="w-1.5 h-1.5 rounded-full"
+                          className="w-1.5 h-1.5 rounded-full shrink-0"
                           style={{ backgroundColor: textColor }}
                         />
                         {item.badge ?? `0${index + 1} · HIGHLIGHT`}
                       </span>
 
                       <div
-                        className="w-9 h-9 rounded-full flex items-center justify-center shrink-0"
+                        className="w-7 h-7 sm:w-9 sm:h-9 rounded-full flex items-center justify-center shrink-0"
                         style={{
                           backgroundColor: "rgba(255,255,255,0.1)",
                           border: "1px solid rgba(255,255,255,0.16)",
                         }}
                       >
-                        <div className="scale-[0.52] flex items-center justify-center">
+                        <div className="scale-[0.42] sm:scale-[0.52] flex items-center justify-center">
                           {item.icon}
                         </div>
                       </div>
                     </div>
 
                     {/* Center hero stat + title */}
-                    <div className="relative z-10 flex flex-col items-center justify-center text-center my-auto py-2">
+                    <div className="relative z-10 flex flex-col items-center justify-center text-center my-auto py-1 sm:py-2">
                       {item.stat && (
-                        <span className="text-[48px] sm:text-[62px] font-extrabold tracking-[-0.04em] leading-none">
+                        <span className="text-[36px] sm:text-[62px] font-extrabold tracking-[-0.04em] leading-none">
                           {item.stat}
                         </span>
                       )}
-                      <h3 className="text-[19px] sm:text-[22px] font-semibold tracking-[-0.02em] leading-tight mt-2">
+                      <h3 className="text-[16px] sm:text-[22px] font-semibold tracking-[-0.02em] leading-tight mt-1 sm:mt-2">
                         {item.title}
                       </h3>
                     </div>
 
                     {/* Bottom footer row */}
                     <div
-                      className="relative z-10 flex items-center justify-between gap-4 pt-3.5 text-center"
+                      className="relative z-10 flex items-center justify-between gap-3 sm:gap-4 pt-2.5 sm:pt-3.5 text-center"
                       style={{
                         borderTop: "1px solid rgba(255,255,255,0.15)",
                       }}
                     >
-                      <p className="text-[12.5px] sm:text-[13.5px] leading-snug opacity-85 mx-auto font-normal">
+                      <p className="text-[11px] sm:text-[13.5px] leading-snug opacity-85 mx-auto font-normal line-clamp-2">
                         {item.description}
                       </p>
                     </div>
@@ -677,22 +711,22 @@ export function ModernScrollStack({
                         <img
                           src={item.image}
                           alt={item.title}
-                          className="w-12 h-12 object-contain"
+                          className="w-8 h-8 sm:w-12 sm:h-12 object-contain"
                           loading="lazy"
                         />
                       ) : (
-                        <div className="w-12 h-12 flex items-center justify-start">
+                        <div className="w-8 h-8 sm:w-12 sm:h-12 flex items-center justify-start [&>svg]:w-full [&>svg]:h-full">
                           {item.icon}
                         </div>
                       )}
                     </div>
 
                     {/* Bottom-left title & description */}
-                    <div className="flex flex-col gap-2.5 text-left">
-                      <h3 className="text-[22px] sm:text-[25px] font-bold tracking-[-0.02em] leading-[1.15]">
+                    <div className="flex flex-col gap-1.5 sm:gap-2.5 text-left">
+                      <h3 className="text-[17px] sm:text-[25px] font-bold tracking-[-0.02em] leading-[1.15]">
                         {item.title}
                       </h3>
-                      <p className="text-[13px] sm:text-[13.5px] leading-[1.45] opacity-90 max-w-[235px] font-normal">
+                      <p className="text-[11.5px] sm:text-[13.5px] leading-[1.38] sm:leading-[1.45] opacity-90 max-w-[235px] font-normal">
                         {item.description}
                       </p>
                     </div>

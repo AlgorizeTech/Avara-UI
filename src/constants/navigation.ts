@@ -583,7 +583,6 @@ const rawNavigation: NavigationItem[] = [
           "top destinations",
           "destinations",
           "travel",
-          "exploreo",
           "marquee",
           "parallax",
           "scroll",
