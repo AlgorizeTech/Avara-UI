@@ -204,8 +204,8 @@ export function TopDestinationsCard({
         }
       }}
       className={cn(
-        "relative shrink-0 w-60 h-72 sm:w-72 sm:h-84 md:w-80 md:h-96 lg:w-[330px] lg:h-[400px]",
-        "overflow-hidden rounded-3xl group cursor-pointer shadow-md select-none",
+        "relative shrink-0 w-[196px] h-[244px] sm:w-72 sm:h-84 md:w-80 md:h-96 lg:w-[330px] lg:h-[400px]",
+        "overflow-hidden rounded-2xl sm:rounded-3xl group cursor-pointer shadow-md select-none",
         "border border-border/40 bg-muted/40 outline-none focus-visible:ring-2 focus-visible:ring-primary",
       )}
     >
@@ -215,47 +215,56 @@ export function TopDestinationsCard({
         alt={item.title}
         loading="lazy"
         draggable={false}
-        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 will-change-transform"
+        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 group-focus-visible:scale-110 will-change-transform"
       />
 
-      {/* Default Gradient Shadow */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent transition-opacity duration-500 group-hover:opacity-0 pointer-events-none" />
+      {/* Persistent Dark Gradient Shadow (stays visible on hover too) */}
+      <div
+        className="absolute inset-0 pointer-events-none transition-opacity duration-500"
+        style={{
+          background:
+            "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.38) 50%, rgba(0,0,0,0.12) 100%)",
+        }}
+      />
 
       {/* Rotated Country/City Title (Visible by default, fades out on hover) */}
       <span
         aria-hidden="true"
         className={cn(
-          "absolute bottom-6 left-8 -rotate-90 origin-left",
-          "text-white text-xl sm:text-2xl font-bold tracking-wider uppercase",
+          "absolute bottom-4 left-6 sm:bottom-6 sm:left-8 -rotate-90 origin-left",
+          "text-white text-base sm:text-2xl font-bold tracking-wider uppercase whitespace-nowrap",
           "drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)] pointer-events-none",
-          "transition-all duration-500 opacity-100 group-hover:opacity-0 group-hover:-translate-y-4",
+          "transition-all duration-500 opacity-100 group-hover:opacity-0 group-focus-visible:opacity-0 group-hover:-translate-y-4",
         )}
       >
         {item.title}
       </span>
 
-      {/* Hover Overlay with Bordered Box */}
-      <div className="absolute inset-0 bg-black/65 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 p-4 sm:p-5 flex items-end">
-        <div className="w-full h-full border border-white/20 rounded-2xl p-6 flex flex-col justify-between backdrop-blur-[2px] transition-transform duration-500 transform translate-y-3 group-hover:translate-y-0">
+      {/* Hover Overlay with Bordered Box — keeps blackish backdrop */}
+      <div
+        className="absolute inset-0 z-10 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-500 p-3 sm:p-5 flex items-end"
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.56)" }}
+      >
+        <div className="w-full h-full border border-white/25 rounded-xl sm:rounded-2xl p-3.5 sm:p-6 flex flex-col justify-between backdrop-blur-[2px] transition-transform duration-500 transform translate-y-3 group-hover:translate-y-0 group-focus-visible:translate-y-0">
           {/* Top metadata */}
-          <div className="flex justify-between items-center">
+          <div className="flex justify-between items-center gap-2">
             {item.tag && (
-              <span className="text-[10px] font-semibold tracking-widest uppercase px-2.5 py-1 rounded-full bg-white/15 text-white/90 border border-white/20">
+              <span className="text-[9px] sm:text-[10px] font-semibold tracking-widest uppercase px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full bg-white/15 text-white/90 border border-white/20 truncate">
                 {item.tag}
               </span>
             )}
-            <span className="text-[11px] text-white/60 font-mono ml-auto">
+            <span className="text-[10px] sm:text-[11px] text-white/70 font-mono ml-auto truncate">
               {item.country || "Explore"}
             </span>
           </div>
 
           {/* Center Title and Places info */}
-          <div className="my-auto text-center py-2">
-            <h3 className="text-white font-bold text-2xl sm:text-3xl tracking-tight">
+          <div className="my-auto text-center py-1 sm:py-2">
+            <h3 className="text-white font-bold text-lg sm:text-3xl tracking-tight leading-tight">
               {item.title}
             </h3>
             {item.placesCount && (
-              <p className="text-white/70 text-xs sm:text-sm mt-1.5 font-medium">
+              <p className="text-white/75 text-[11px] sm:text-sm mt-1 sm:mt-1.5 font-medium">
                 {item.placesCount} Places to visit
               </p>
             )}
@@ -268,10 +277,10 @@ export function TopDestinationsCard({
               e.stopPropagation();
               onExplore?.(item);
             }}
-            className="text-white text-xs sm:text-sm font-semibold cursor-pointer inline-flex items-center gap-1.5 mx-auto hover:text-primary hover:underline underline-offset-4 transition-colors group/btn"
+            className="text-white text-xs sm:text-sm font-semibold cursor-pointer inline-flex items-center gap-1 sm:gap-1.5 mx-auto hover:text-primary hover:underline underline-offset-4 transition-colors group/btn"
           >
             <span>Explore</span>
-            <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+            <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-300 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
           </button>
         </div>
       </div>
@@ -302,6 +311,8 @@ export function TopDestinations({
   const half = Math.ceil(effectiveItems.length / 2);
   const r1 = row1Items || effectiveItems.slice(0, half);
   const r2 = row2Items || effectiveItems.slice(half);
+  const displayRow1 = r1.length > 0 && r1.length < 10 ? [...r1, ...r1] : r1;
+  const displayRow2 = r2.length > 0 && r2.length < 10 ? [...r2, ...r2] : r2;
 
   useEffect(() => {
     const container = containerRef.current;
@@ -338,13 +349,19 @@ export function TopDestinations({
       }
     }
 
+    const containerWidth = container.clientWidth || 1024;
+    const effectiveOffset =
+      containerWidth < 640
+        ? Math.min(scrollOffset, Math.max(120, Math.round(containerWidth * 0.42)))
+        : scrollOffset;
+
     const ctx = gsap.context(() => {
       // Row 1: starts shifted right, scrubs towards left
       gsap.fromTo(
         row1,
-        { x: scrollOffset },
+        { x: effectiveOffset },
         {
-          x: -scrollOffset,
+          x: -effectiveOffset,
           ease: "none",
           scrollTrigger: {
             trigger: container,
@@ -352,6 +369,7 @@ export function TopDestinations({
             start: "top bottom",
             end: "bottom top",
             scrub: 1.2,
+            invalidateOnRefresh: true,
           },
         },
       );
@@ -359,9 +377,9 @@ export function TopDestinations({
       // Row 2: starts shifted left, scrubs towards right
       gsap.fromTo(
         row2,
-        { x: -scrollOffset },
+        { x: -effectiveOffset },
         {
-          x: scrollOffset,
+          x: effectiveOffset,
           ease: "none",
           scrollTrigger: {
             trigger: container,
@@ -369,6 +387,7 @@ export function TopDestinations({
             start: "top bottom",
             end: "bottom top",
             scrub: 1.2,
+            invalidateOnRefresh: true,
           },
         },
       );
@@ -383,45 +402,45 @@ export function TopDestinations({
     <section
       ref={containerRef}
       className={cn(
-        "w-full pt-12 pb-20 sm:pt-16 sm:pb-28 lg:pt-20 lg:pb-32 bg-background overflow-hidden relative select-none",
+        "w-full pt-8 pb-14 sm:pt-16 sm:pb-28 lg:pt-20 lg:pb-32 bg-background overflow-hidden relative select-none",
         className,
       )}
       {...props}
     >
       {/* Section Header */}
-      <div className="container mx-auto px-4 text-center mb-10 sm:mb-14 lg:mb-16">
+      <div className="container mx-auto px-4 text-center mb-7 sm:mb-14 lg:mb-16">
         {badgeText && (
-          <div className="inline-flex items-center gap-3 relative mb-3">
-            <span className="hidden md:block w-12 h-0.5 bg-gradient-to-r from-transparent to-primary" />
-            <span className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary shadow-xs">
+          <div className="inline-flex items-center gap-2.5 sm:gap-3 relative mb-2.5 sm:mb-3">
+            <span className="w-8 sm:w-12 h-0.5 bg-gradient-to-r from-transparent to-primary" />
+            <span className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-primary/10 flex items-center justify-center text-primary shadow-xs">
               {badgeIcon}
             </span>
-            <span className="hidden md:block w-12 h-0.5 bg-gradient-to-l from-transparent to-primary" />
+            <span className="w-8 sm:w-12 h-0.5 bg-gradient-to-l from-transparent to-primary" />
           </div>
         )}
 
         {title && (
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground">
             {title}
           </h2>
         )}
 
         {subtitle && (
-          <p className="w-full text-sm sm:text-base md:w-[62%] lg:w-[48%] mx-auto mt-3.5 text-muted-foreground leading-relaxed text-pretty">
+          <p className="w-full text-xs sm:text-base max-w-md sm:max-w-none md:w-[62%] lg:w-[48%] mx-auto mt-2.5 sm:mt-3.5 px-1 sm:px-0 text-muted-foreground leading-relaxed text-pretty">
             {subtitle}
           </p>
         )}
       </div>
 
       {/* 2-Row Parallax Dual Scroll Container */}
-      <div className="flex flex-col gap-6 sm:gap-8 lg:gap-10 overflow-hidden w-full">
+      <div className="flex flex-col gap-4 sm:gap-8 lg:gap-10 overflow-hidden w-full">
         {/* Row 1 (Travels Left) */}
-        <div className="w-full flex justify-start">
+        <div className="w-full flex justify-center">
           <div
             ref={row1Ref}
-            className="flex gap-4 sm:gap-6 will-change-transform pl-4 sm:pl-8"
+            className="flex gap-3 sm:gap-6 will-change-transform"
           >
-            {r1.map((item, idx) => (
+            {displayRow1.map((item, idx) => (
               <TopDestinationsCard
                 key={`row1-${item.id}-${idx}`}
                 item={item}
@@ -432,12 +451,12 @@ export function TopDestinations({
         </div>
 
         {/* Row 2 (Travels Right) */}
-        <div className="w-full flex justify-end">
+        <div className="w-full flex justify-center">
           <div
             ref={row2Ref}
-            className="flex gap-4 sm:gap-6 will-change-transform pr-4 sm:pr-8"
+            className="flex gap-3 sm:gap-6 will-change-transform"
           >
-            {r2.map((item, idx) => (
+            {displayRow2.map((item, idx) => (
               <TopDestinationsCard
                 key={`row2-${item.id}-${idx}`}
                 item={item}
