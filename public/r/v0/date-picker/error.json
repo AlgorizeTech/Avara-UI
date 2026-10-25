@@ -3,7 +3,7 @@
   "name": "date-picker-error",
   "type": "registry:block",
   "title": "Date Picker — Error",
-  "description": "The \"Error\" example from the Algorize UI docs.",
+  "description": "The \"Error\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

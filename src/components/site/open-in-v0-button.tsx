@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { useThemeCustomizer } from "@/contexts/theme-customizer-context";
 import { DEFAULT_PRESET, FONT_FAMILY_STORAGE_KEY } from "@/lib/theme-presets";
 import { isDefaultAccent } from "@/lib/accent";
-import { V0_FALLBACK_ORIGIN, openInV0Url, type V0Theme } from "@/lib/open-in-v0";
+import { V0_ENDPOINT_ORIGIN } from "@/config/site";
+import { openInV0Url, type V0Theme } from "@/lib/open-in-v0";
 import v0Items from "@/preview/v0-items.json";
 
 /** Preview name → example id → the v0 chat title. */
@@ -15,12 +16,17 @@ export function v0ItemFor(previewName: string, exampleId: string): string | unde
   return ITEMS[previewName]?.[exampleId] ? `${previewName}/${exampleId}` : undefined;
 }
 
-/** The endpoint lives on the deployment; a local page borrows production's. */
+/**
+ * The endpoint runs only on Vercel. A Vercel deployment (production or a
+ * preview) serves its own; every other host — the static production site,
+ * localhost — links straight to V0_ENDPOINT_ORIGIN, never through a redirect,
+ * which would drop the theme query.
+ */
 function useEndpointOrigin() {
-  const [origin, setOrigin] = useState(V0_FALLBACK_ORIGIN);
+  const [origin, setOrigin] = useState(V0_ENDPOINT_ORIGIN);
   useEffect(() => {
     const { hostname, origin: own } = window.location;
-    if (hostname !== "localhost" && hostname !== "127.0.0.1") setOrigin(own);
+    if (hostname.endsWith(".vercel.app")) setOrigin(own);
   }, []);
   return origin;
 }

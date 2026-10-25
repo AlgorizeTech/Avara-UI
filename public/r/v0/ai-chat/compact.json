@@ -3,7 +3,7 @@
   "name": "ai-chat-compact",
   "type": "registry:block",
   "title": "AI Chat — Compact",
-  "description": "The \"Compact\" example from the Algorize UI docs.",
+  "description": "The \"Compact\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

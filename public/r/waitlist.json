@@ -8,12 +8,12 @@
     "lucide-react"
   ],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/avatar-stack.json",
-    "https://algorize-ui.vercel.app/r/button.json",
-    "https://algorize-ui.vercel.app/r/copy-button.json",
-    "https://algorize-ui.vercel.app/r/counter.json",
-    "https://algorize-ui.vercel.app/r/input.json",
-    "https://algorize-ui.vercel.app/r/progress.json",
+    "https://avaraui.com/r/avatar-stack.json",
+    "https://avaraui.com/r/button.json",
+    "https://avaraui.com/r/copy-button.json",
+    "https://avaraui.com/r/counter.json",
+    "https://avaraui.com/r/input.json",
+    "https://avaraui.com/r/progress.json",
     "utils"
   ],
   "files": [

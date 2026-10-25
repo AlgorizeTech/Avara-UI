@@ -179,7 +179,7 @@ export function SiteErrorView({ error, reset, className }: SiteErrorViewProps) {
             </div>
 
             <a
-              href="https://github.com/AlgorizeTech/Reusable-Component-Documentation/issues"
+              href="https://github.com/AlgorizeTech/Avara-UI/issues"
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs text-neutral-500 hover:text-red-600 dark:text-neutral-400 dark:hover:text-red-400 flex items-center justify-center sm:justify-start gap-1.5 transition-colors cursor-pointer py-1 sm:py-0 w-full sm:w-auto"

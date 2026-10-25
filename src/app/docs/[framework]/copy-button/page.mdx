@@ -1,4 +1,5 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
+import { REGISTRY_NAMESPACE } from "@/lib/registry";
 
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
@@ -94,7 +95,7 @@ export default function InviteLink() {
 export const usageCode = `import { CopyButton } from "@/components/custom/blocks/CopyButtonBlock";
 import { Terminal } from "lucide-react";
 
-const SNIPPET = "npx shadcn@latest add @algorize-ui/copy-button";
+const SNIPPET = "npx shadcn@latest add ${REGISTRY_NAMESPACE}/copy-button";
 
 export default function CommandBlock() {
   return (

@@ -3,7 +3,7 @@
   "name": "sonner-always-expanded",
   "type": "registry:block",
   "title": "Sonner — Always expanded",
-  "description": "The \"Always expanded\" example from the Algorize UI docs.",
+  "description": "The \"Always expanded\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

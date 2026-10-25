@@ -85,17 +85,23 @@ export default function SummerTrip() {
 
 ## Installation
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/folder
+npx shadcn@latest add https://avaraui.com/r/folder.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/folder
 ```
 
 Or the Motion build (same props, same file — install one):
 
 ```bash
-npx shadcn@latest add @algorize-ui/folder-motion
+npx shadcn@latest add https://avaraui.com/r/folder-motion.json
 ```
 
 ## Examples
@@ -245,4 +251,4 @@ Also exported. The placeholder "document" the folder draws for files without a `
 
 **Component Path:** `[framework]\folder\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

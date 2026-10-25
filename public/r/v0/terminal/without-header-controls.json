@@ -3,7 +3,7 @@
   "name": "terminal-without-header-controls",
   "type": "registry:block",
   "title": "Terminal — Without header controls",
-  "description": "The \"Without header controls\" example from the Algorize UI docs.",
+  "description": "The \"Without header controls\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -28,17 +28,17 @@ export default function AuthorCard() {
   return (
 
         Ayesha Karim
-        Design engineer, Algorize
+        Design engineer, Avara
 
   );
 }`;
 
 export const shareLinks = `const links: SocialLink[] = [
-  { network: "x", href: "https://x.com/algorize" },
-  { network: "github", href: "https://github.com/algorize" },
-  { network: "linkedin", href: "https://linkedin.com/company/algorize" },
-  { network: "youtube", href: "https://youtube.com/@algorize" },
-  { network: "instagram", href: "https://instagram.com/algorize" },
+  { network: "x", href: "https://x.com/avaraui" },
+  { network: "github", href: "https://github.com/avaraui" },
+  { network: "linkedin", href: "https://linkedin.com/company/avaraui" },
+  { network: "youtube", href: "https://youtube.com/@avaraui" },
+  { network: "instagram", href: "https://instagram.com/avaraui" },
 ];`;
 
 export const usageExpandReveal = `import { SocialLinks, type SocialLink } from "@/components/custom/blocks/SocialLinksBlock";
@@ -79,11 +79,17 @@ export default function ExpandReplaceShareButton() {
 
 ## Installation
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/social-links
+npx shadcn@latest add https://avaraui.com/r/social-links.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/social-links
 ```
 
 ## Examples
@@ -163,4 +169,4 @@ npx shadcn@latest add @algorize-ui/social-links
 
 **Component Path:** `[framework]\social-links\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

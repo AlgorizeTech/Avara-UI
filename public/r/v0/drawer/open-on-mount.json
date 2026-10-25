@@ -3,7 +3,7 @@
   "name": "drawer-open-on-mount",
   "type": "registry:block",
   "title": "Drawer — Open on mount",
-  "description": "The \"Open on mount\" example from the Algorize UI docs.",
+  "description": "The \"Open on mount\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -3,7 +3,7 @@
   "name": "curved-carousel-3d-curved-arc-sway-deck",
   "type": "registry:block",
   "title": "Curved Carousel — 3D Curved Arc Sway Deck",
-  "description": "The \"3D Curved Arc Sway Deck\" example from the Algorize UI docs.",
+  "description": "The \"3D Curved Arc Sway Deck\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

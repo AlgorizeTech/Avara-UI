@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-import { isRegistryForm, type RegistryForm } from "@/lib/registry";
+import { DEFAULT_REGISTRY_FORM, isRegistryForm, type RegistryForm } from "@/lib/registry";
 
 export type PackageManager = "npm" | "pnpm" | "yarn" | "bun";
 
@@ -32,7 +32,7 @@ interface PackageManagerContextType {
   setPackageManager: (pm: PackageManager) => void;
   getCommand: (type?: "dlx" | "install" | "create") => string;
   /**
-   * Whether `add` commands print `@algorize-ui/foo` or the full registry URL.
+   * Whether `add` commands print the full registry URL or `@avara-ui/foo`.
    * Lives next to the package manager because it is the same kind of choice —
    * a reader picks it once and expects every command on the site to follow.
    */
@@ -48,9 +48,9 @@ interface PackageManagerProviderProps {
 
 export function PackageManagerProvider({ children }: PackageManagerProviderProps) {
   const [packageManager, setPackageManagerState] = useState<PackageManager>("npm");
-  // Namespace by default: it is the form the installation guide teaches, and
-  // the one that keeps working if the registry ever moves host.
-  const [registryForm, setRegistryFormState] = useState<RegistryForm>("namespace");
+  // URL by default (see DEFAULT_REGISTRY_FORM): it needs no `registry add`, so
+  // the first command a reader copies works in any project.
+  const [registryForm, setRegistryFormState] = useState<RegistryForm>(DEFAULT_REGISTRY_FORM);
 
   // Load from localStorage on mount
   useEffect(() => {

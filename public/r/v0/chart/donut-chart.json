@@ -3,7 +3,7 @@
   "name": "chart-donut-chart",
   "type": "registry:block",
   "title": "Chart — Donut chart",
-  "description": "The \"Donut chart\" example from the Algorize UI docs.",
+  "description": "The \"Donut chart\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

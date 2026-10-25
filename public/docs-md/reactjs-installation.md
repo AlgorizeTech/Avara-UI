@@ -1,6 +1,6 @@
 # Installation
 
-Set up a React + Vite project so you can install Algorize UI components with the
+Set up a React + Vite project so you can install Avara UI components with the
 shadcn CLI.
 
     Build tool
@@ -95,15 +95,16 @@ helper every component imports) and installs `lucide-react`.
 npx shadcn@latest init --base radix --preset nova
 ```
 
-Algorize UI builds on Radix primitives. If you run `init` without flags, choose
+Avara UI builds on Radix primitives. If you run `init` without flags, choose
 **Radix UI** when asked. The CLI detects Vite and sets `rsc` to `false`.
 
 ### Step 2: Register the registry
 
-Run once per project. It lets you install components by name:
+Optional, once per project. Components install by URL with no setup; this
+lets you install them by name instead (@avara-ui/hero):
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 ```
 
 This adds the following to `components.json`, which you can also write by hand:
@@ -111,7 +112,7 @@ This adds the following to `components.json`, which you can also write by hand:
 ```json
 {
   "registries": {
-    "@algorize-ui": "https://algorize-ui.vercel.app/r/{name}.json"
+    "@avara-ui": "https://avaraui.com/r/{name}.json"
   }
 }
 ```
@@ -127,7 +128,7 @@ colours, radius and fonts from these variables.
 Every component page has its own command:
 
 ```bash
-npx shadcn@latest add @algorize-ui/hero
+npx shadcn@latest add https://avaraui.com/r/hero.json
 ```
 
 The CLI writes the source into your project and installs the component's npm
@@ -163,7 +164,7 @@ client-side navigation.
     "Module level directives cause errors when bundled"
     A harmless Rollup warning about the "use client" line at the top of components. Vite ignores the directive and the build succeeds.
 
-    Unknown registry "@algorize-ui"
+    Unknown registry "@avara-ui"
     Run Step 2, or switch the command to URL, which needs no setup.
 
 ## Next steps
@@ -171,7 +172,7 @@ client-side navigation.
 - [Quick Start](/docs/reactjs/first-app) — put a component on screen
 - [All components](/docs/reactjs/all-components) — browse the library
 
-For anything beyond Algorize UI, see the [Vite](https://vite.dev/guide/),
+For anything beyond Avara UI, see the [Vite](https://vite.dev/guide/),
 [Tailwind CSS](https://tailwindcss.com/docs/installation/using-vite) and
 [shadcn CLI](https://ui.shadcn.com/docs/cli) docs.
 
@@ -179,4 +180,4 @@ For anything beyond Algorize UI, see the [Vite](https://vite.dev/guide/),
 
 **Component Path:** `[framework]\installation\_content\reactjs.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

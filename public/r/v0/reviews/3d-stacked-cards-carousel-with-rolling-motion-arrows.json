@@ -3,7 +3,7 @@
   "name": "reviews-3d-stacked-cards-carousel-with-rolling-motion-arrows",
   "type": "registry:block",
   "title": "Reviews — 3D Stacked Cards Carousel with Rolling Motion & Arrows",
-  "description": "The \"3D Stacked Cards Carousel with Rolling Motion & Arrows\" example from the Algorize UI docs.",
+  "description": "The \"3D Stacked Cards Carousel with Rolling Motion & Arrows\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -3,7 +3,7 @@
   "name": "breadcrumb-truncated-path",
   "type": "registry:block",
   "title": "Breadcrumb — Truncated path",
-  "description": "The \"Truncated path\" example from the Algorize UI docs.",
+  "description": "The \"Truncated path\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

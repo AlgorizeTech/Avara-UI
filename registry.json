@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
-  "name": "algorize-ui",
-  "homepage": "https://algorize-ui.vercel.app",
+  "name": "avara-ui",
+  "homepage": "https://avaraui.com",
   "items": [
     {
       "name": "accordion",
@@ -16,7 +16,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/ui-accordion.json",
+        "https://avaraui.com/r/ui-accordion.json",
         "utils"
       ],
       "files": [
@@ -39,7 +39,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/table.json"
+        "https://avaraui.com/r/table.json"
       ],
       "files": [
         {
@@ -64,7 +64,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/ui-liquid-glass.json",
+        "https://avaraui.com/r/ui-liquid-glass.json",
         "utils"
       ],
       "files": [
@@ -105,7 +105,7 @@
         "motion"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/ui-liquid-glass.json",
+        "https://avaraui.com/r/ui-liquid-glass.json",
         "utils"
       ],
       "files": [
@@ -160,7 +160,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/animated-faq-visuals.json",
+        "https://avaraui.com/r/animated-faq-visuals.json",
         "utils"
       ],
       "files": [
@@ -295,7 +295,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/select.json",
+        "https://avaraui.com/r/select.json",
         "utils"
       ],
       "files": [
@@ -373,8 +373,8 @@
         "motion"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/tooltip.json",
-        "https://algorize-ui.vercel.app/r/ui-avatar.json",
+        "https://avaraui.com/r/tooltip.json",
+        "https://avaraui.com/r/ui-avatar.json",
         "utils"
       ],
       "files": [
@@ -400,11 +400,11 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/button.json",
-        "https://algorize-ui.vercel.app/r/chat-bubble.json",
-        "https://algorize-ui.vercel.app/r/half-stars.json",
-        "https://algorize-ui.vercel.app/r/marquee.json",
-        "https://algorize-ui.vercel.app/r/mobile-mockup.json",
+        "https://avaraui.com/r/button.json",
+        "https://avaraui.com/r/chat-bubble.json",
+        "https://avaraui.com/r/half-stars.json",
+        "https://avaraui.com/r/marquee.json",
+        "https://avaraui.com/r/mobile-mockup.json",
         "utils"
       ],
       "files": [
@@ -430,10 +430,10 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/booking-card.json",
-        "https://algorize-ui.vercel.app/r/chart.json",
-        "https://algorize-ui.vercel.app/r/glass-panel.json",
-        "https://algorize-ui.vercel.app/r/half-stars.json"
+        "https://avaraui.com/r/booking-card.json",
+        "https://avaraui.com/r/chart.json",
+        "https://avaraui.com/r/glass-panel.json",
+        "https://avaraui.com/r/half-stars.json"
       ],
       "files": [
         {
@@ -483,7 +483,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/glass-panel.json",
+        "https://avaraui.com/r/glass-panel.json",
         "utils"
       ],
       "files": [
@@ -541,7 +541,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/icons.json",
+        "https://avaraui.com/r/icons.json",
         "utils"
       ],
       "files": [
@@ -573,8 +573,8 @@
         "react-day-picker"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/select.json",
-        "https://algorize-ui.vercel.app/r/ui-button.json",
+        "https://avaraui.com/r/select.json",
+        "https://avaraui.com/r/ui-button.json",
         "utils"
       ],
       "files": [
@@ -602,7 +602,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/product-card.json",
+        "https://avaraui.com/r/product-card.json",
         "utils"
       ],
       "files": [
@@ -807,8 +807,8 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/popover.json",
-        "https://algorize-ui.vercel.app/r/toggle-group.json",
+        "https://avaraui.com/r/popover.json",
+        "https://avaraui.com/r/toggle-group.json",
         "utils"
       ],
       "files": [
@@ -904,10 +904,10 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/animated-typography.json",
-        "https://algorize-ui.vercel.app/r/button.json",
-        "https://algorize-ui.vercel.app/r/circular-text.json",
-        "https://algorize-ui.vercel.app/r/dialog.json",
+        "https://avaraui.com/r/animated-typography.json",
+        "https://avaraui.com/r/button.json",
+        "https://avaraui.com/r/circular-text.json",
+        "https://avaraui.com/r/dialog.json",
         "utils"
       ],
       "files": [
@@ -1005,13 +1005,13 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/avatar-stack.json",
-        "https://algorize-ui.vercel.app/r/copy-button.json",
-        "https://algorize-ui.vercel.app/r/half-stars.json",
-        "https://algorize-ui.vercel.app/r/icons.json",
-        "https://algorize-ui.vercel.app/r/image-wall.json",
-        "https://algorize-ui.vercel.app/r/tech-stack.json",
-        "https://algorize-ui.vercel.app/r/text-animation.json",
+        "https://avaraui.com/r/avatar-stack.json",
+        "https://avaraui.com/r/copy-button.json",
+        "https://avaraui.com/r/half-stars.json",
+        "https://avaraui.com/r/icons.json",
+        "https://avaraui.com/r/image-wall.json",
+        "https://avaraui.com/r/tech-stack.json",
+        "https://avaraui.com/r/text-animation.json",
         "utils"
       ],
       "files": [
@@ -1021,7 +1021,7 @@
           "target": "components/custom/blocks/ComponentWallBlock.tsx"
         }
       ],
-      "docs": "Named export: ComponentWall (plus the ComponentWallItem type). Composed from the image-wall, text-animation, copy-button, avatar-stack and half-stars items, which install alongside it, and takes a tech-stack in its `stack` slot. Pass `badge` ({ label, href? }), `heading` (a string, revealed word by word; write `{word}` where `headingWords` take turns every `wordInterval` ms, and name one word in `accent` for the primary colour), `description` (a string or inline JSX — it renders inside a <p>), `install` ({ command } — write `{item}` where the focused card's `slug` goes, e.g. `npx shadcn@latest add @algorize-ui/{item}`), `primaryAction`/`secondaryAction` ({ label, href, icon? }), `trust` ({ text, avatars?, rating? }), `items` ({ title, image, slug? }[] — every screenshot sits in the same 493:332 frame; slug defaults to the title in kebab-case) and `stack` (a node — a <TechStack> of <TechStackGroup>s of <TechStackTool name icon />: the tools over the lower wall on desktop and under the band on phones; in the centred layout it closes the copy column, where the compact variant fits). `columns`, `interval` (ms the camera rests; 0 holds still), `order` (serial | shuffle), `zoom`, `intro` (ms the camera drifts with nothing in focus while the copy arrives; default 1800) and `onFocus` pass straight to the wall; `layout` is split (copy left, wall right), center (copy between two walls — the left camera resting high, the right low, taking turns, the second wall dealing the same items from halfway through; the tools sit under the copy; zoom defaults to 0.9; below lg a single band of every card sits between the copy and the tools), or center-background (`persistentBackground`); `showMobileWall` (boolean, default true: set to false to completely hide wall animations on small screens <lg across all layouts); `linkComponent` takes next/link. The headline uses your theme's font-serif, the command font-mono; colours are theme tokens."
+      "docs": "Named export: ComponentWall (plus the ComponentWallItem type). Composed from the image-wall, text-animation, copy-button, avatar-stack and half-stars items, which install alongside it, and takes a tech-stack in its `stack` slot. Pass `badge` ({ label, href? }), `heading` (a string, revealed word by word; write `{word}` where `headingWords` take turns every `wordInterval` ms, and name one word in `accent` for the primary colour), `description` (a string or inline JSX — it renders inside a <p>), `install` ({ command } — write `{item}` where the focused card's `slug` goes, e.g. `npx shadcn@latest add @avara-ui/{item}`), `primaryAction`/`secondaryAction` ({ label, href, icon? }), `trust` ({ text, avatars?, rating? }), `items` ({ title, image, slug? }[] — every screenshot sits in the same 493:332 frame; slug defaults to the title in kebab-case) and `stack` (a node — a <TechStack> of <TechStackGroup>s of <TechStackTool name icon />: the tools over the lower wall on desktop and under the band on phones; in the centred layout it closes the copy column, where the compact variant fits). `columns`, `interval` (ms the camera rests; 0 holds still), `order` (serial | shuffle), `zoom`, `intro` (ms the camera drifts with nothing in focus while the copy arrives; default 1800) and `onFocus` pass straight to the wall; `layout` is split (copy left, wall right), center (copy between two walls — the left camera resting high, the right low, taking turns, the second wall dealing the same items from halfway through; the tools sit under the copy; zoom defaults to 0.9; below lg a single band of every card sits between the copy and the tools), or center-background (`persistentBackground`); `showMobileWall` (boolean, default true: set to false to completely hide wall animations on small screens <lg across all layouts); `linkComponent` takes next/link. The headline uses your theme's font-serif, the command font-mono; colours are theme tokens."
     },
     {
       "name": "compute",
@@ -1035,7 +1035,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/ui-base.json"
+        "https://avaraui.com/r/ui-base.json"
       ],
       "files": [
         {
@@ -1059,7 +1059,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/secure-envelope.json"
+        "https://avaraui.com/r/secure-envelope.json"
       ],
       "files": [
         {
@@ -1288,10 +1288,10 @@
         "motion"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/chart.json",
-        "https://algorize-ui.vercel.app/r/popover.json",
-        "https://algorize-ui.vercel.app/r/toggle-group.json",
-        "https://algorize-ui.vercel.app/r/ui-liquid-glass.json",
+        "https://avaraui.com/r/chart.json",
+        "https://avaraui.com/r/popover.json",
+        "https://avaraui.com/r/toggle-group.json",
+        "https://avaraui.com/r/ui-liquid-glass.json",
         "utils"
       ],
       "files": [
@@ -1315,11 +1315,11 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/apple-select.json",
-        "https://algorize-ui.vercel.app/r/button.json",
-        "https://algorize-ui.vercel.app/r/flowchart.json",
-        "https://algorize-ui.vercel.app/r/half-stars.json",
-        "https://algorize-ui.vercel.app/r/icons.json",
+        "https://avaraui.com/r/apple-select.json",
+        "https://avaraui.com/r/button.json",
+        "https://avaraui.com/r/flowchart.json",
+        "https://avaraui.com/r/half-stars.json",
+        "https://avaraui.com/r/icons.json",
         "utils"
       ],
       "files": [
@@ -1404,7 +1404,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/time-picker.json",
+        "https://avaraui.com/r/time-picker.json",
         "utils"
       ],
       "files": [
@@ -1522,7 +1522,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/copy-button.json",
+        "https://avaraui.com/r/copy-button.json",
         "utils"
       ],
       "files": [
@@ -1854,11 +1854,11 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/avatar-stack.json",
-        "https://algorize-ui.vercel.app/r/circular-text.json",
-        "https://algorize-ui.vercel.app/r/dialog.json",
-        "https://algorize-ui.vercel.app/r/text-animation.json",
-        "https://algorize-ui.vercel.app/r/tilted-card.json",
+        "https://avaraui.com/r/avatar-stack.json",
+        "https://avaraui.com/r/circular-text.json",
+        "https://avaraui.com/r/dialog.json",
+        "https://avaraui.com/r/text-animation.json",
+        "https://avaraui.com/r/tilted-card.json",
         "utils"
       ],
       "files": [
@@ -1885,7 +1885,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/button.json",
+        "https://avaraui.com/r/button.json",
         "utils"
       ],
       "files": [
@@ -2028,7 +2028,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/tooltip.json",
+        "https://avaraui.com/r/tooltip.json",
         "utils"
       ],
       "files": [
@@ -2064,7 +2064,7 @@
         "motion"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/tooltip.json",
+        "https://avaraui.com/r/tooltip.json",
         "utils"
       ],
       "files": [
@@ -2091,7 +2091,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/social-links.json",
+        "https://avaraui.com/r/social-links.json",
         "utils"
       ],
       "files": [
@@ -2114,7 +2114,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/input.json",
+        "https://avaraui.com/r/input.json",
         "utils"
       ],
       "files": [
@@ -2169,7 +2169,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/ui-liquid-glass.json",
+        "https://avaraui.com/r/ui-liquid-glass.json",
         "utils"
       ],
       "files": [
@@ -2269,7 +2269,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/animated-typography.json",
+        "https://avaraui.com/r/animated-typography.json",
         "utils"
       ],
       "files": [
@@ -2295,8 +2295,8 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/animated-typography.json",
-        "https://algorize-ui.vercel.app/r/avatar-stack.json",
+        "https://avaraui.com/r/animated-typography.json",
+        "https://avaraui.com/r/avatar-stack.json",
         "utils"
       ],
       "files": [
@@ -2322,7 +2322,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/animated-typography.json",
+        "https://avaraui.com/r/animated-typography.json",
         "utils"
       ],
       "files": [
@@ -2678,10 +2678,10 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/button.json",
-        "https://algorize-ui.vercel.app/r/icons.json",
-        "https://algorize-ui.vercel.app/r/input.json",
-        "https://algorize-ui.vercel.app/r/ui-liquid-glass.json",
+        "https://avaraui.com/r/button.json",
+        "https://avaraui.com/r/icons.json",
+        "https://avaraui.com/r/input.json",
+        "https://avaraui.com/r/ui-liquid-glass.json",
         "utils"
       ],
       "files": [
@@ -2923,7 +2923,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/select.json",
+        "https://avaraui.com/r/select.json",
         "utils"
       ],
       "files": [
@@ -2973,7 +2973,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/button.json",
+        "https://avaraui.com/r/button.json",
         "utils"
       ],
       "files": [
@@ -3062,10 +3062,10 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/button.json",
-        "https://algorize-ui.vercel.app/r/input.json",
-        "https://algorize-ui.vercel.app/r/marquee.json",
-        "https://algorize-ui.vercel.app/r/tilted-card.json",
+        "https://avaraui.com/r/button.json",
+        "https://avaraui.com/r/input.json",
+        "https://avaraui.com/r/marquee.json",
+        "https://avaraui.com/r/tilted-card.json",
         "utils"
       ],
       "files": [
@@ -3102,10 +3102,10 @@
         "motion"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/button.json",
-        "https://algorize-ui.vercel.app/r/input.json",
-        "https://algorize-ui.vercel.app/r/marquee.json",
-        "https://algorize-ui.vercel.app/r/tilted-card.json",
+        "https://avaraui.com/r/button.json",
+        "https://avaraui.com/r/input.json",
+        "https://avaraui.com/r/marquee.json",
+        "https://avaraui.com/r/tilted-card.json",
         "utils"
       ],
       "files": [
@@ -3231,8 +3231,8 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/select.json",
-        "https://algorize-ui.vercel.app/r/ui-base.json"
+        "https://avaraui.com/r/select.json",
+        "https://avaraui.com/r/ui-base.json"
       ],
       "files": [
         {
@@ -3280,8 +3280,8 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/icons.json",
-        "https://algorize-ui.vercel.app/r/tilted-card.json",
+        "https://avaraui.com/r/icons.json",
+        "https://avaraui.com/r/tilted-card.json",
         "utils"
       ],
       "files": [
@@ -3329,7 +3329,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/toggle-group.json",
+        "https://avaraui.com/r/toggle-group.json",
         "utils"
       ],
       "files": [
@@ -3360,10 +3360,10 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/ui-badge.json",
-        "https://algorize-ui.vercel.app/r/ui-button.json",
-        "https://algorize-ui.vercel.app/r/ui-card.json",
-        "https://algorize-ui.vercel.app/r/ui-slider.json",
+        "https://avaraui.com/r/ui-badge.json",
+        "https://avaraui.com/r/ui-button.json",
+        "https://avaraui.com/r/ui-card.json",
+        "https://avaraui.com/r/ui-slider.json",
         "utils"
       ],
       "files": [
@@ -3484,10 +3484,10 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/glass-panel.json",
-        "https://algorize-ui.vercel.app/r/social-links.json",
+        "https://avaraui.com/r/glass-panel.json",
+        "https://avaraui.com/r/social-links.json",
         "utils",
-        "https://algorize-ui.vercel.app/r/verify-badge.json"
+        "https://avaraui.com/r/verify-badge.json"
       ],
       "files": [
         {
@@ -3605,7 +3605,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/ui-card.json",
+        "https://avaraui.com/r/ui-card.json",
         "utils"
       ],
       "files": [
@@ -3631,7 +3631,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/time-picker.json",
+        "https://avaraui.com/r/time-picker.json",
         "utils"
       ],
       "files": [
@@ -3667,10 +3667,10 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/button.json",
-        "https://algorize-ui.vercel.app/r/icons.json",
-        "https://algorize-ui.vercel.app/r/input.json",
-        "https://algorize-ui.vercel.app/r/ui-liquid-glass.json",
+        "https://avaraui.com/r/button.json",
+        "https://avaraui.com/r/icons.json",
+        "https://avaraui.com/r/input.json",
+        "https://avaraui.com/r/ui-liquid-glass.json",
         "utils"
       ],
       "files": [
@@ -3725,7 +3725,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/half-stars.json",
+        "https://avaraui.com/r/half-stars.json",
         "utils"
       ],
       "files": [
@@ -3938,7 +3938,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/ui-base.json"
+        "https://avaraui.com/r/ui-base.json"
       ],
       "files": [
         {
@@ -3963,7 +3963,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/tooltip.json",
+        "https://avaraui.com/r/tooltip.json",
         "utils"
       ],
       "files": [
@@ -3994,7 +3994,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/icons.json",
+        "https://avaraui.com/r/icons.json",
         "utils"
       ],
       "files": [
@@ -4207,7 +4207,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/select.json",
+        "https://avaraui.com/r/select.json",
         "utils"
       ],
       "files": [
@@ -4308,8 +4308,8 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/select.json",
-        "https://algorize-ui.vercel.app/r/ui-liquid-glass.json",
+        "https://avaraui.com/r/select.json",
+        "https://avaraui.com/r/ui-liquid-glass.json",
         "utils"
       ],
       "files": [
@@ -4335,10 +4335,10 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/button.json",
-        "https://algorize-ui.vercel.app/r/counter.json",
-        "https://algorize-ui.vercel.app/r/glass-panel.json",
-        "https://algorize-ui.vercel.app/r/text-animation.json",
+        "https://avaraui.com/r/button.json",
+        "https://avaraui.com/r/counter.json",
+        "https://avaraui.com/r/glass-panel.json",
+        "https://avaraui.com/r/text-animation.json",
         "utils"
       ],
       "files": [
@@ -4363,7 +4363,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/select.json"
+        "https://avaraui.com/r/select.json"
       ],
       "files": [
         {
@@ -4387,7 +4387,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/toggle-group.json",
+        "https://avaraui.com/r/toggle-group.json",
         "utils"
       ],
       "files": [
@@ -4423,7 +4423,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/ui-codeblocks.json",
+        "https://avaraui.com/r/ui-codeblocks.json",
         "utils"
       ],
       "files": [
@@ -4452,7 +4452,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/icons.json",
+        "https://avaraui.com/r/icons.json",
         "utils"
       ],
       "files": [
@@ -4957,7 +4957,7 @@
         "shiki"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/ui-code-renderer.json"
+        "https://avaraui.com/r/ui-code-renderer.json"
       ],
       "files": [
         {
@@ -5125,7 +5125,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/icons.json",
+        "https://avaraui.com/r/icons.json",
         "utils"
       ],
       "files": [
@@ -5149,7 +5149,7 @@
       ],
       "dependencies": [],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/ui-base.json"
+        "https://avaraui.com/r/ui-base.json"
       ],
       "files": [
         {
@@ -5327,12 +5327,12 @@
         "lucide-react"
       ],
       "registryDependencies": [
-        "https://algorize-ui.vercel.app/r/avatar-stack.json",
-        "https://algorize-ui.vercel.app/r/button.json",
-        "https://algorize-ui.vercel.app/r/copy-button.json",
-        "https://algorize-ui.vercel.app/r/counter.json",
-        "https://algorize-ui.vercel.app/r/input.json",
-        "https://algorize-ui.vercel.app/r/progress.json",
+        "https://avaraui.com/r/avatar-stack.json",
+        "https://avaraui.com/r/button.json",
+        "https://avaraui.com/r/copy-button.json",
+        "https://avaraui.com/r/counter.json",
+        "https://avaraui.com/r/input.json",
+        "https://avaraui.com/r/progress.json",
         "utils"
       ],
       "files": [

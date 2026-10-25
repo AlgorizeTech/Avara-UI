@@ -6,7 +6,7 @@
   "description": "Two small dashboard panels — a team member list and a command search box — built on the shared card shell. Use them as filler panels while assembling a dashboard layout.",
   "dependencies": [],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/ui-base.json"
+    "https://avaraui.com/r/ui-base.json"
   ],
   "files": [
     {

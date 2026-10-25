@@ -1,4 +1,5 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
+import { REGISTRY_NAMESPACE } from "@/lib/registry";
 
 export const metadata = docsPageMetadata("stepper");
 
@@ -82,7 +83,7 @@ import {
   StepperContent,
 } from "@/components/custom/blocks/StepperBlock";
 // The Workspace step picks a role with the Select block:
-//   npx shadcn@latest add @algorize-ui/select
+//   npx shadcn@latest add ${REGISTRY_NAMESPACE}/select
 import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
 
 const PRIMARY_ROLE_OPTIONS = [

@@ -3,7 +3,7 @@
   "name": "toggle-group-multiple-selection",
   "type": "registry:block",
   "title": "Toggle Group — Multiple selection",
-  "description": "The \"Multiple selection\" example from the Algorize UI docs.",
+  "description": "The \"Multiple selection\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

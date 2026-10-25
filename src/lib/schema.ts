@@ -65,7 +65,7 @@ export const softwareApplicationSchema = {
   "runtimePlatform": "Web Browser",
   "downloadUrl": "https://github.com/AlgorizeTech",
 
-  "codeRepository": "https://github.com/AlgorizeTech/Reusable-Component-Documentation",
+  "codeRepository": "https://github.com/AlgorizeTech/Avara-UI",
   "license": "https://opensource.org/licenses/MIT",
   "aggregateRating": {
     "@type": "AggregateRating",
@@ -161,7 +161,7 @@ export const componentSchema = (componentName: string, description: string, cate
   "description": description,
   "programmingLanguage": "TypeScript",
   "runtimePlatform": "React",
-  "codeRepository": "https://github.com/AlgorizeTech/Reusable-Component-Documentation",
+  "codeRepository": "https://github.com/AlgorizeTech/Avara-UI",
   "license": "https://opensource.org/licenses/MIT",
   "author": {
     "@type": "Organization",

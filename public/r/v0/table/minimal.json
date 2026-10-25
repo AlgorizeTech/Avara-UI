@@ -3,7 +3,7 @@
   "name": "table-minimal",
   "type": "registry:block",
   "title": "Table — Minimal",
-  "description": "The \"Minimal\" example from the Algorize UI docs.",
+  "description": "The \"Minimal\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

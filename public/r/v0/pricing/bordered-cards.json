@@ -3,7 +3,7 @@
   "name": "pricing-bordered-cards",
   "type": "registry:block",
   "title": "Pricing — Bordered cards",
-  "description": "The \"Bordered cards\" example from the Algorize UI docs.",
+  "description": "The \"Bordered cards\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

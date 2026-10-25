@@ -3,7 +3,7 @@
   "name": "tooltip-with-staggered-content-animation",
   "type": "registry:block",
   "title": "Tooltip — With Staggered Content Animation",
-  "description": "The \"With Staggered Content Animation\" example from the Algorize UI docs.",
+  "description": "The \"With Staggered Content Animation\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

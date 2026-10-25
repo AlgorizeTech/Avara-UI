@@ -6,8 +6,8 @@
   "description": "Everything a product offers as one hairline grid: small icon-and-name tiles and a few 2×2 features that show a piece of the product on a tilting card. Reveals as a wave from the centre, then a spotlight follows the pointer. Use it as the 'full platform' section of a product site.",
   "dependencies": [],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/icons.json",
-    "https://algorize-ui.vercel.app/r/tilted-card.json",
+    "https://avaraui.com/r/icons.json",
+    "https://avaraui.com/r/tilted-card.json",
     "utils"
   ],
   "files": [

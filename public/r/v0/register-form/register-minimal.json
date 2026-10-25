@@ -3,7 +3,7 @@
   "name": "register-form-register-minimal",
   "type": "registry:block",
   "title": "Register Form — Register — minimal",
-  "description": "The \"Register — minimal\" example from the Algorize UI docs.",
+  "description": "The \"Register — minimal\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

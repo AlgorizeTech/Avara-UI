@@ -3,7 +3,7 @@
   "name": "masonry-grid-without-the-entrance",
   "type": "registry:block",
   "title": "Masonry Grid — Without the entrance",
-  "description": "The \"Without the entrance\" example from the Algorize UI docs.",
+  "description": "The \"Without the entrance\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

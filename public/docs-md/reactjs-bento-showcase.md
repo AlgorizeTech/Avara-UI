@@ -121,11 +121,17 @@ ${bentoJsx('() => navigate("/pricing")')}
 
 ## Installation
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/bento-showcase
+npx shadcn@latest add https://avaraui.com/r/bento-showcase.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/bento-showcase
 ```
 
 ## Your own card
@@ -347,4 +353,4 @@ The built-in parts carry their own placement (`Hero` is column 1, rows 1–2; `P
 
 **Component Path:** `[framework]\bento-showcase\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

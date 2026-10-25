@@ -3,7 +3,7 @@
   "name": "pricing-elegant-cards",
   "type": "registry:block",
   "title": "Pricing — Elegant cards",
-  "description": "The \"Elegant cards\" example from the Algorize UI docs.",
+  "description": "The \"Elegant cards\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

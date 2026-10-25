@@ -3,7 +3,7 @@
   "name": "apple-select-without-handles",
   "type": "registry:block",
   "title": "Apple Select — Without handles",
-  "description": "The \"Without handles\" example from the Algorize UI docs.",
+  "description": "The \"Without handles\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

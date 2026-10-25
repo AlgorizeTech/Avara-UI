@@ -8,10 +8,10 @@
     "lucide-react"
   ],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/button.json",
-    "https://algorize-ui.vercel.app/r/counter.json",
-    "https://algorize-ui.vercel.app/r/glass-panel.json",
-    "https://algorize-ui.vercel.app/r/text-animation.json",
+    "https://avaraui.com/r/button.json",
+    "https://avaraui.com/r/counter.json",
+    "https://avaraui.com/r/glass-panel.json",
+    "https://avaraui.com/r/text-animation.json",
     "utils"
   ],
   "files": [

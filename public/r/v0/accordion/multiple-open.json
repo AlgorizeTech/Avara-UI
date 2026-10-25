@@ -3,7 +3,7 @@
   "name": "accordion-multiple-open",
   "type": "registry:block",
   "title": "Accordion — Multiple open",
-  "description": "The \"Multiple open\" example from the Algorize UI docs.",
+  "description": "The \"Multiple open\" example from the Avara UI docs.",
   "dependencies": [
     "@radix-ui/react-accordion",
     "lucide-react",

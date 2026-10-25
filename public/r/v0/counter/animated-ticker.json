@@ -3,7 +3,7 @@
   "name": "counter-animated-ticker",
   "type": "registry:block",
   "title": "Counter — Animated ticker",
-  "description": "The \"Animated ticker\" example from the Algorize UI docs.",
+  "description": "The \"Animated ticker\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

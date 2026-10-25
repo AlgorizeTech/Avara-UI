@@ -6,7 +6,7 @@
   "description": "Form scaffolding — wrapper, field, error and submit — with a shared color theme and a glitch error variant. Use it to keep field spacing and validation styling consistent across a form.",
   "dependencies": [],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/input.json",
+    "https://avaraui.com/r/input.json",
     "utils"
   ],
   "files": [

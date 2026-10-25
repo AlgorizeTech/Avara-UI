@@ -8,10 +8,10 @@
     "lucide-react"
   ],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/booking-card.json",
-    "https://algorize-ui.vercel.app/r/chart.json",
-    "https://algorize-ui.vercel.app/r/glass-panel.json",
-    "https://algorize-ui.vercel.app/r/half-stars.json"
+    "https://avaraui.com/r/booking-card.json",
+    "https://avaraui.com/r/chart.json",
+    "https://avaraui.com/r/glass-panel.json",
+    "https://avaraui.com/r/half-stars.json"
   ],
   "files": [
     {

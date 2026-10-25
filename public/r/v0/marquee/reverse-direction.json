@@ -3,7 +3,7 @@
   "name": "marquee-reverse-direction",
   "type": "registry:block",
   "title": "Marquee — Reverse direction",
-  "description": "The \"Reverse direction\" example from the Algorize UI docs.",
+  "description": "The \"Reverse direction\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

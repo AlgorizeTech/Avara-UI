@@ -1,16 +1,17 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
+import { SITE_NAME } from "@/config/site";
 
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
 export const metadata = docsPageMetadata("third-party/carousel", {
   title: "Carousels",
-  description: "Integrate Embla Carousel and Swiper with Algorize UI — Card slides, Button controls, and Swiper chrome themed through its own CSS variables."
+  description: `Integrate Embla Carousel and Swiper with ${SITE_NAME} — Card slides, Button controls, and Swiper chrome themed through its own CSS variables.`
 });
 
 # Carousels
 
-Algorize UI ships its own <DocLink to="carousel">Carousel</DocLink> set for the
+{SITE_NAME} ships its own <DocLink to="carousel">Carousel</DocLink> set for the
 common cases. These two libraries are for when you need something it does not
 do: Embla when you want the physics and none of the markup, Swiper when you want
 effects, thumbnails and a11y wiring out of the box.
@@ -196,7 +197,7 @@ export default function EmblaProductCarousel({ color }: { color?: string } = {})
 
 <Cli command="install embla-carousel-react" />
 
-This example also uses these Algorize UI components — install whichever
+This example also uses these {SITE_NAME} components — install whichever
 your project does not already have:
 
 <Cli command="add card.json ui-badge.json button.json" />
@@ -324,7 +325,7 @@ export default function SwiperTestimonials({ color }: { color?: string } = {}) {
 
 <Cli command="install swiper" />
 
-This example also uses these Algorize UI components — install whichever
+This example also uses these {SITE_NAME} components — install whichever
 your project does not already have:
 
 <Cli command="add card.json ui-badge.json" />

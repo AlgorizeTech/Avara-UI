@@ -1,8 +1,18 @@
+import "./load-env";
 import fs from "fs";
 import path from "path";
 import { glob } from "glob";
 import { BUILT_FRAMEWORKS } from "../lib/framework";
-import { REGISTRY_ADD_ARGS, REGISTRY_NAMESPACE, addArgsFor, resolveAddArg } from "../lib/registry";
+import { SITE_NAME, SITE_URL } from "../config/site";
+import {
+  REGISTRY_ADD_ARGS,
+  REGISTRY_BASE_URL,
+  REGISTRY_COMPONENTS_JSON,
+  REGISTRY_NAMESPACE,
+  REGISTRY_URL_TEMPLATE,
+  addArgsFor,
+  resolveAddArg,
+} from "../lib/registry";
 import { stripUseClient } from "../lib/snippet";
 import registry from "../../registry.json";
 import { countComponents } from "../lib/component-count";
@@ -23,6 +33,31 @@ function safeWriteFileSync(filePath: string, data: string, encoding: BufferEncod
 /** The `{COMPONENT_COUNT}` a page prints, resolved from the same registry. */
 const COMPONENT_COUNT = String(countComponents(registry.items as { name: string }[]));
 
+/**
+ * The site values a page imports and prints — as `{SITE_NAME}` in prose,
+ * `${REGISTRY_NAMESPACE}` inside a snippet's template literal, or
+ * `command={REGISTRY_ADD_ARGS}` as a prop. The web build evaluates them; the
+ * mirror is a text dump of the source, so it substitutes the same values here.
+ */
+const PAGE_CONSTANTS: Record<string, string> = {
+  COMPONENT_COUNT,
+  SITE_NAME,
+  SITE_URL,
+  REGISTRY_NAMESPACE,
+  REGISTRY_BASE_URL,
+  REGISTRY_URL_TEMPLATE,
+  REGISTRY_ADD_ARGS,
+};
+
+const CONSTANT_NAMES = Object.keys(PAGE_CONSTANTS).join("|");
+
+const resolvePageConstants = (md: string) =>
+  md
+    // A bare-constant prop becomes a template literal, so the <Cli> rule below
+    // reads it like any other command.
+    .replace(new RegExp(`=\\{(${CONSTANT_NAMES})\\}`, "g"), (_, name: string) => `={\`${PAGE_CONSTANTS[name]}\`}`)
+    .replace(new RegExp(`\\$?\\{(${CONSTANT_NAMES})\\}`, "g"), (_, name: string) => PAGE_CONSTANTS[name]);
+
 /** Items that ship a Motion twin beside their GSAP default. */
 const MOTION_TWINS = new Set(
   (registry.items as { name: string }[])
@@ -35,8 +70,9 @@ const MOTION_TWINS = new Set(
 const FRAMEWORK_SEGMENT = "[framework]";
 
 /**
- * Mirrors `resolveSegments` in components/site/cli.tsx for the `add` case:
- * `add button.json utils` → `add @algorize-ui/button utils`. Other commands
+ * Mirrors `resolveSegments` in components/site/cli.tsx for the `add` case, in
+ * the site's default form: `add button.json utils` → `add https://…/r/button.json
+ * utils`. Other commands
  * (`init`, `registry add …`, `install gsap`) pass through untouched.
  */
 const expandCliShorthand = (command: string) => {
@@ -109,8 +145,14 @@ function convertMdxToMd(content: string, componentPath: string): string {
   // Remove JSX component imports that are on separate lines
   mdContent = mdContent.replace(/^import\s+.*?\{[\s\S]*?\}\s+from\s+.*?;?\s*$/gm, '');
   
-  // Resolve the component count the page prints as a JSX expression.
-  mdContent = mdContent.replace(/\{COMPONENT_COUNT\}/g, COMPONENT_COUNT);
+  // Resolve the site values the page prints through JSX expressions.
+  mdContent = resolvePageConstants(mdContent);
+
+  // <RegistryConfig /> renders the components.json entry `registry add` writes.
+  mdContent = mdContent.replace(
+    /<RegistryConfig\s*\/>/g,
+    '```json\n' + REGISTRY_COMPONENTS_JSON + '\n```'
+  );
 
   // Convert JSX components to markdown equivalents
 
@@ -183,16 +225,20 @@ function convertMdxToMd(content: string, componentPath: string): string {
   mdContent = mdContent.replace(
     /<Installation\s+name="([^"]+)"[^>]*\/>/g,
     (_, name: string) =>
-      `Register the ${REGISTRY_NAMESPACE} registry once per project, then add the component:\n\n` +
+      'Add the component by URL — no setup needed:\n\n' +
+      '```bash\n' +
+      `npx shadcn@latest ${addArgsFor(name, "url")}\n` +
+      '```\n\n' +
+      `Or register the ${REGISTRY_NAMESPACE} registry once per project and add it by name:\n\n` +
       '```bash\n' +
       `npx shadcn@latest ${REGISTRY_ADD_ARGS}\n` +
-      `npx shadcn@latest ${addArgsFor(name)}\n` +
+      `npx shadcn@latest ${addArgsFor(name, "namespace")}\n` +
       '```' +
       // Dual components: the same file, built on Motion instead of GSAP.
       (MOTION_TWINS.has(name)
         ? '\n\nOr the Motion build (same props, same file — install one):\n\n' +
           '```bash\n' +
-          `npx shadcn@latest ${addArgsFor(`${name}-motion`)}\n` +
+          `npx shadcn@latest ${addArgsFor(`${name}-motion`, "url")}\n` +
           '```'
         : '')
   );
@@ -219,7 +265,7 @@ function convertMdxToMd(content: string, componentPath: string): string {
   mdContent = mdContent.trim();
   
   // Add component path reference
-  const pathReference = `\n\n---\n\n**Component Path:** \`${componentPath}\`\n\n**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.\n`;
+  const pathReference = `\n\n---\n\n**Component Path:** \`${componentPath}\`\n\n**Web Version:** Visit the corresponding URL on the ${SITE_NAME} documentation site for live previews and interactive examples.\n`;
   
   return mdContent + pathReference;
 }
@@ -376,7 +422,7 @@ async function buildMdFiles(): Promise<void> {
     );
     
     // Create a README for the MD directory
-    const readmeContent = `# Algorize UI - Markdown Files
+    const readmeContent = `# ${SITE_NAME} - Markdown Files
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 

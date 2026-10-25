@@ -3,7 +3,7 @@
   "name": "product-details-floating-glassmorphism-card-details",
   "type": "registry:block",
   "title": "Product Details — Floating Glassmorphism Card Details",
-  "description": "The \"Floating Glassmorphism Card Details\" example from the Algorize UI docs.",
+  "description": "The \"Floating Glassmorphism Card Details\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

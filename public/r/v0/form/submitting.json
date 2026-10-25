@@ -3,7 +3,7 @@
   "name": "form-submitting",
   "type": "registry:block",
   "title": "Form — Submitting",
-  "description": "The \"Submitting\" example from the Algorize UI docs.",
+  "description": "The \"Submitting\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

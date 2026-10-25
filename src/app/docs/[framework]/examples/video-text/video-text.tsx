@@ -1,4 +1,5 @@
 'use client'
+import { SITE_NAME } from "@/config/site";
 import React, { ElementType, ReactNode, useEffect, useState, useRef, useMemo, useCallback } from "react";
 
 // Improved type-safe class name utility
@@ -200,7 +201,7 @@ export default function Videotext() {
           onVideoLoad={() => console.log('Video loaded successfully')}
           onVideoError={(error) => console.error('Video error:', error)}
         >
-          Algorize UI
+          {SITE_NAME}
         </VideoText>
       </div>
     </main>

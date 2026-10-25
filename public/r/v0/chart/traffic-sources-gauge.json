@@ -3,7 +3,7 @@
   "name": "chart-traffic-sources-gauge",
   "type": "registry:block",
   "title": "Chart — Traffic sources gauge",
-  "description": "The \"Traffic sources gauge\" example from the Algorize UI docs.",
+  "description": "The \"Traffic sources gauge\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

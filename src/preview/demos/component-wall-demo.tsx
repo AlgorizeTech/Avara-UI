@@ -1,5 +1,6 @@
 "use client";
 
+import { REGISTRY_NAMESPACE } from "@/lib/registry";
 import { ComponentWall } from "@/components/custom/blocks/ComponentWallBlock";
 import { GitHubIcon } from "@/components/custom/blocks/Icons";
 import { WALL_AVATARS, WALL_ITEMS, WallStack } from "@/constants/component-wall";
@@ -36,7 +37,7 @@ export default function ComponentWallDemo({
         headingWords={["interfaces", "components", "experiences", "animations", "dashboards"]}
         accent="interactive"
         description="A meticulous library of React components and interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP and Motion."
-        install={{ command: "npx shadcn@latest add @algorize-ui/{item}" }}
+        install={{ command: `npx shadcn@latest add ${REGISTRY_NAMESPACE}/{item}` }}
         primaryAction={{ label: "Browse components", href: "#" }}
         secondaryAction={{ label: "Star on GitHub", href: "#", icon: <GitHubIcon size={16} /> }}
         trust={{ text: "Loved by developers shipping real products with it", avatars: WALL_AVATARS, rating: 5 }}

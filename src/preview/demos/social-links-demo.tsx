@@ -116,7 +116,7 @@ export default function SocialLinksDemo({
           />
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-semibold">Ayesha Karim</p>
-            <p className="truncate text-xs text-muted-foreground">Design engineer, Algorize</p>
+            <p className="truncate text-xs text-muted-foreground">Design engineer, Avara</p>
             <SocialLinks
               size="sm"
               variant="ghost"

@@ -3,7 +3,7 @@
   "name": "alert-alert",
   "type": "registry:block",
   "title": "Alert",
-  "description": "The \"Alert\" example from the Algorize UI docs.",
+  "description": "The \"Alert\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

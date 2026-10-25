@@ -3,7 +3,7 @@
   "name": "curved-carousel-continuous-3d-concave-arc-marquee",
   "type": "registry:block",
   "title": "Curved Carousel — Continuous 3D Concave Arc Marquee",
-  "description": "The \"Continuous 3D Concave Arc Marquee\" example from the Algorize UI docs.",
+  "description": "The \"Continuous 3D Concave Arc Marquee\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

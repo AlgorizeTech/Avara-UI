@@ -3,7 +3,7 @@
   "name": "scroll-stack-card-gap",
   "type": "registry:block",
   "title": "Scroll Stack — Card gap",
-  "description": "The \"Card gap\" example from the Algorize UI docs.",
+  "description": "The \"Card gap\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

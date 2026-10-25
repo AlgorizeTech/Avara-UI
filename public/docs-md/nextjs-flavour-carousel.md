@@ -58,11 +58,17 @@ export default function Flavours() {
 
 ## Installation
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/flavour-carousel
+npx shadcn@latest add https://avaraui.com/r/flavour-carousel.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/flavour-carousel
 ```
 
 ## Preparing the pictures
@@ -164,4 +170,4 @@ The trick that makes the cup look untouched is that every `product` picture is t
 
 **Component Path:** `[framework]\flavour-carousel\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

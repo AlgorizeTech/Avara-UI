@@ -3,7 +3,7 @@
   "name": "tooltip-without-arrow",
   "type": "registry:block",
   "title": "Tooltip — Without Arrow",
-  "description": "The \"Without Arrow\" example from the Algorize UI docs.",
+  "description": "The \"Without Arrow\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -3,7 +3,7 @@
   "name": "selection-frame-lines",
   "type": "registry:block",
   "title": "Selection Frame — Lines",
-  "description": "The \"Lines\" example from the Algorize UI docs.",
+  "description": "The \"Lines\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

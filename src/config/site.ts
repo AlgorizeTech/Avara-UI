@@ -42,12 +42,35 @@ export const COMPONENT_COUNT = process.env.NEXT_PUBLIC_REGISTRY_COMPONENT_COUNT 
 export const SITE_NAME = env(process.env.NEXT_PUBLIC_SITE_NAME) ?? "Avara UI";
 
 /**
+ * The namespace readers register in `components.json` and write in front of an
+ * item — `@avara-ui/button`. shadcn requires the leading `@`, so one is added
+ * when the variable leaves it off. The registry's published `name` is this
+ * without the `@`.
+ */
+export const REGISTRY_NAMESPACE = `@${(
+  env(process.env.NEXT_PUBLIC_REGISTRY_NAMESPACE) ?? "avara-ui"
+).replace(/^@+/, "")}`;
+
+/**
+ * The deployment that runs api/v0.ts — the site's only function, so it must be
+ * a Vercel deployment. "Open in v0" links point straight at it from every other
+ * host: a static host can only redirect there, and serve's redirect drops the
+ * query string that carries the reader's theme.
+ */
+export const V0_ENDPOINT_ORIGIN = (
+  env(process.env.NEXT_PUBLIC_V0_ENDPOINT_ORIGIN) ?? "https://algorize-ui.vercel.app"
+).replace(/\/+$/, "");
+
+/**
  * External profiles. Only set what genuinely exists — an empty value is
  * rendered as absent rather than as a broken link, and `socialLinks` below
  * filters them out of structured data.
  */
 export const links = {
-  github: env(process.env.NEXT_PUBLIC_GITHUB_URL) ?? "https://github.com/AlgorizeTech/Reusable-Component-Documentation",
+  /** The repository — "Star on GitHub", issues, schema.org `codeRepository`. */
+  github: env(process.env.NEXT_PUBLIC_GITHUB_URL) ?? "https://github.com/AlgorizeTech/Avara-UI",
+  /** The organisation's profile — the footer's Connect links and schema.org Organization. */
+  githubOrg: env(process.env.NEXT_PUBLIC_GITHUB_ORG_URL) ?? "https://github.com/AlgorizeTech",
   twitter: env(process.env.NEXT_PUBLIC_TWITTER_URL),
   /** Handle including the leading @, used for Twitter card attribution. */
   twitterHandle: env(process.env.NEXT_PUBLIC_TWITTER_HANDLE),
@@ -57,12 +80,12 @@ export const links = {
   issues:
     env(process.env.NEXT_PUBLIC_ISSUES_URL) ??
     env(process.env.NEXT_PUBLIC_GITHUB_URL) ??
-    "https://github.com/AlgorizeTech/Reusable-Component-Documentation",
+    "https://github.com/AlgorizeTech/Avara-UI",
 } as const;
 
 /** Every profile that is actually configured — for schema.org `sameAs`. */
 export const socialLinks: string[] = [
-  links.github,
+  links.githubOrg,
   links.twitter,
   links.discord,
   links.npm,

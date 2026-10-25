@@ -1,12 +1,12 @@
 export const metadata = pageMetadata({
-  title: 'Documentation - Algorize UI',
-  description: 'Documentation for the Algorize UI component library: installation guides, component pages with live previews, and props references.',
+  title: `Documentation - Avara UI`,
+  description: `Documentation for the Avara UI component library: installation guides, component pages with live previews, and props references.`,
   url: '/docs',
 });
 
 # Documentation
 
-Algorize UI is a library of 189 React components installed straight
+Avara UI is a library of 189 React components installed straight
 into your project by the shadcn CLI — no wrapper package, no lock-in.
 
     Introduction
@@ -54,13 +54,13 @@ into your project by the shadcn CLI — no wrapper package, no lock-in.
 
 ## Getting Help
 
-- Visit our GitHub organisation
+- Visit our GitHub repository
 - Browse the [component library](/docs/nextjs/all-components)
 - For the framework itself, see the [Next.js documentation](https://nextjs.org/docs)
 
 ## Contributing
 
-We welcome contributions to Algorize UI! If you'd like to contribute:
+We welcome contributions to Avara UI! If you'd like to contribute:
 
 1. Fork the repository
 2. Create a feature branch
@@ -73,4 +73,4 @@ Open an issue or pull request on GitHub to get started.
 
 **Component Path:** `page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

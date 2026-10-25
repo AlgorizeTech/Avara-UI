@@ -15,7 +15,7 @@ const organization = {
   "@type": "Organization",
   "@id": `${SITE_URL}/#organization`,
   name: siteConfig.author,
-  url: links.github,
+  url: links.githubOrg,
   logo: `${SITE_URL}/favicon/android-chrome-512x512.png`,
   ...(socialLinks.length ? { sameAs: socialLinks } : {}),
 };

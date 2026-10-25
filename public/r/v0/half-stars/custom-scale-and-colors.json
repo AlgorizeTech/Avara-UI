@@ -3,7 +3,7 @@
   "name": "half-stars-custom-scale-and-colors",
   "type": "registry:block",
   "title": "Half Stars — Custom scale and colors",
-  "description": "The \"Custom scale and colors\" example from the Algorize UI docs.",
+  "description": "The \"Custom scale and colors\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

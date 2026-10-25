@@ -3,7 +3,7 @@
   "name": "date-picker-disable-past-dates",
   "type": "registry:block",
   "title": "Date Picker — Disable past dates",
-  "description": "The \"Disable past dates\" example from the Algorize UI docs.",
+  "description": "The \"Disable past dates\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

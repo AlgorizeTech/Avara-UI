@@ -3,7 +3,7 @@
   "name": "tooltip-with-expanding-content",
   "type": "registry:block",
   "title": "Tooltip — With Expanding Content",
-  "description": "The \"With Expanding Content\" example from the Algorize UI docs.",
+  "description": "The \"With Expanding Content\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

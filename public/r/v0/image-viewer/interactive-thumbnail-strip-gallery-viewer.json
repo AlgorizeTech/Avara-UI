@@ -3,7 +3,7 @@
   "name": "image-viewer-interactive-thumbnail-strip-gallery-viewer",
   "type": "registry:block",
   "title": "Image Viewer — Interactive Thumbnail Strip Gallery Viewer",
-  "description": "The \"Interactive Thumbnail Strip Gallery Viewer\" example from the Algorize UI docs.",
+  "description": "The \"Interactive Thumbnail Strip Gallery Viewer\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

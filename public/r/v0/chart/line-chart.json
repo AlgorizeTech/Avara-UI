@@ -3,7 +3,7 @@
   "name": "chart-line-chart",
   "type": "registry:block",
   "title": "Chart — Line chart",
-  "description": "The \"Line chart\" example from the Algorize UI docs.",
+  "description": "The \"Line chart\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

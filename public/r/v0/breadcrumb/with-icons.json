@@ -3,7 +3,7 @@
   "name": "breadcrumb-with-icons",
   "type": "registry:block",
   "title": "Breadcrumb — With icons",
-  "description": "The \"With icons\" example from the Algorize UI docs.",
+  "description": "The \"With icons\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

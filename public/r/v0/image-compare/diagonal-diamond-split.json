@@ -3,7 +3,7 @@
   "name": "image-compare-diagonal-diamond-split",
   "type": "registry:block",
   "title": "Image Compare — Diagonal Diamond Split",
-  "description": "The \"Diagonal Diamond Split\" example from the Algorize UI docs.",
+  "description": "The \"Diagonal Diamond Split\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

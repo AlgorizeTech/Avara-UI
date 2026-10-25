@@ -6,8 +6,8 @@
   "description": "A card payment form with number, expiry month/year selects and a simulated submit state. Use it as the checkout step in a commerce flow.",
   "dependencies": [],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/select.json",
-    "https://algorize-ui.vercel.app/r/ui-base.json"
+    "https://avaraui.com/r/select.json",
+    "https://avaraui.com/r/ui-base.json"
   ],
   "files": [
     {

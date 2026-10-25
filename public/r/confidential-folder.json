@@ -6,7 +6,7 @@
   "description": "An interactive confidential folder sleeve with a card that slides out horizontally on hover and gracefully elevates on click.",
   "dependencies": [],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/secure-envelope.json"
+    "https://avaraui.com/r/secure-envelope.json"
   ],
   "files": [
     {

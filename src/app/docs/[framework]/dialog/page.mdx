@@ -1,4 +1,5 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
+import { REGISTRY_NAMESPACE } from "@/lib/registry";
 
 export const metadata = docsPageMetadata("dialog");
 
@@ -29,7 +30,7 @@ import {
   DialogTrigger,
 } from "@/components/custom/blocks/DialogBlock";
 // CopyField ships with the copy-button item:
-// npx shadcn@latest add @algorize-ui/copy-button
+// npx shadcn@latest add ${REGISTRY_NAMESPACE}/copy-button
 import { CopyField } from "@/components/custom/blocks/CopyButtonBlock";
 import { UserPlus } from "lucide-react";
 

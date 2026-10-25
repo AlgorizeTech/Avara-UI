@@ -1,6 +1,6 @@
 export const metadata = docsPageMetadata("third-party/select", {
   title: "Select",
-  description: "Integrate react-select with Algorize UI — unstyled plus classNames, so a searchable multi-select matches your Input exactly."
+  description: `Integrate react-select with Avara UI — unstyled plus classNames, so a searchable multi-select matches your Input exactly.`
 });
 
 # Select
@@ -9,7 +9,7 @@ react-select is what people usually mean when they ask for "Select2 in React":
 searchable, multi-select, async loading, creatable options, grouped menus, and a
 combobox that is keyboard- and screen-reader-correct out of the box.
 
-Algorize UI ships its own Select for the ordinary
+Avara UI ships its own Select for the ordinary
 case. Reach for react-select when you need the search, the async loading or the
 tag input — and then make it look like everything else.
 
@@ -151,7 +151,7 @@ export default function ReactSelectThemed() {
 
 ### Installation
 
-This example also uses these Algorize UI components — install whichever
+This example also uses these Avara UI components — install whichever
 your project does not already have:
 
 ## Two things that will bite
@@ -194,4 +194,4 @@ Select is smaller and needs no configuration.
 
 **Component Path:** `[framework]\third-party\select\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

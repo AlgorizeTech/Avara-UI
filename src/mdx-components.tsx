@@ -9,6 +9,7 @@ import { DocLink, MdxLink } from './components/site/doc-link';
 import { ForFramework } from './components/site/for-framework';
 import { InjectablePropNote } from './components/site/injectable-prop-note';
 import { OtherFrameworkGuide } from './components/site/other-framework-guide';
+import { RegistryConfig } from './components/site/registry-config';
 import {
   PackageManagerTabs as PMTabs,
   PMTabContent,
@@ -307,6 +308,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     ForFramework,
     InjectablePropNote,
     OtherFrameworkGuide,
+    RegistryConfig,
     PMTabs,
     PMTabContent,
     NPMTabContent,

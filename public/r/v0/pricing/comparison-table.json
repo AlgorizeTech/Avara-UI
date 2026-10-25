@@ -3,7 +3,7 @@
   "name": "pricing-comparison-table",
   "type": "registry:block",
   "title": "Pricing — Comparison table",
-  "description": "The \"Comparison table\" example from the Algorize UI docs.",
+  "description": "The \"Comparison table\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

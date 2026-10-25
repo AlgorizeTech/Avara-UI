@@ -2,21 +2,21 @@ export const metadata = docsPageMetadata("mcp");
 
 # MCP Server
 
-Connect your AI assistant to the Algorize UI registry. With the shadcn MCP server
+Connect your AI assistant to the Avara UI registry. With the shadcn MCP server
 it can browse, search and install components from plain-language prompts — no
 copy-pasting commands.
 
 The server is part of the shadcn CLI. It is free, needs no API key, and works with
-Algorize UI because our components are published as a standard shadcn registry.
+Avara UI because our components are published as a standard shadcn registry.
 
 ## Quick start
 
-### Step 1: Register Algorize UI
+### Step 1: Register Avara UI
 
 Run once per project, so the server knows where to find our components:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 ```
 
 This adds the registry to `components.json`, which you can also write by hand:
@@ -24,7 +24,7 @@ This adds the registry to `components.json`, which you can also write by hand:
 ```json
 {
   "registries": {
-    "@algorize-ui": "https://algorize-ui.vercel.app/r/{name}.json"
+    "@avara-ui": "https://avaraui.com/r/{name}.json"
   }
 }
 ```
@@ -78,11 +78,11 @@ npx shadcn@latest mcp init --client opencode
 
 Ask your assistant:
 
-- "Show me all components in the @algorize-ui registry"
-- "Add the hero and navbar from @algorize-ui to my project"
-- "Build a pricing page using components from @algorize-ui"
+- "Show me all components in the @avara-ui registry"
+- "Add the hero and navbar from @avara-ui to my project"
+- "Build a pricing page using components from @avara-ui"
 
-    Name the registry. Include @algorize-ui in your prompt. Without it the assistant may search only the default shadcn/ui registry.
+    Name the registry. Include @avara-ui in your prompt. Without it the assistant may search only the default shadcn/ui registry.
 
 ## Configuration
 
@@ -157,25 +157,25 @@ only the file differs.
 
 **Browse and search**
 
-- "List the components in @algorize-ui"
-- "Find a pricing section in @algorize-ui"
+- "List the components in @avara-ui"
+- "Find a pricing section in @avara-ui"
 
 **Install**
 
-- "Add @algorize-ui/hero to my project"
-- "Install the navbar and footer from @algorize-ui"
+- "Add @avara-ui/hero to my project"
+- "Install the navbar and footer from @avara-ui"
 
 **Build**
 
-- "Create a landing page with a hero, features and FAQ from @algorize-ui"
+- "Create a landing page with a hero, features and FAQ from @avara-ui"
 
 ## Troubleshooting
 
-    The assistant can't find Algorize components
-    Check that components.json has the @algorize-ui entry from Step 1, and mention @algorize-ui in your prompt.
+    The assistant can't find Avara UI components
+    Check that components.json has the @avara-ui entry from Step 1, and mention @avara-ui in your prompt.
 
     The server doesn't respond
-    Check the config file for typos, restart your client, and make sure you can reach algorize-ui.vercel.app.
+    Check the config file for typos, restart your client, and make sure you can reach https://avaraui.com.
 
     "No tools" message
     Clear the npx cache with npx clear-npx-cache, re-enable the server, and read your client's MCP output log.
@@ -185,7 +185,7 @@ only the file differs.
 
 ## Next steps
 
-- Installation — set up a project for Algorize UI
+- Installation — set up a project for Avara UI
 - All components — browse the library
 
 For the full server reference, see the
@@ -195,4 +195,4 @@ For the full server reference, see the
 
 **Component Path:** `[framework]\mcp\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

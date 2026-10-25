@@ -1,6 +1,6 @@
 export const metadata = docsPageMetadata("third-party/tables", {
   title: "Data Tables",
-  description: "Integrate TanStack Table and AG Grid with Algorize UI — a headless table rendered with the Table primitives, and a themed grid with React cell renderers."
+  description: `Integrate TanStack Table and AG Grid with Avara UI — a headless table rendered with the Table primitives, and a themed grid with React cell renderers.`
 });
 
 # Data Tables
@@ -15,7 +15,7 @@ is themed rather than composed.
 
 `TableHead` already accepts `sortable`, `sortDirection` and `onSort`, which is
 exactly the shape a TanStack header exposes — so the two meet with no adapter in
-between. Everything visible is an Algorize UI component; TanStack supplies the
+between. Everything visible is an Avara UI component; TanStack supplies the
 row model and the state.
 
 export const usageTanStack = `import { useState } from "react";
@@ -172,11 +172,17 @@ export default function TanStackDataTable() {
 
 The example renders through our table primitives, so install those too:
 
-Register the @algorize-ui registry once per project, then add the component:
+Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest registry add @algorize-ui=https://algorize-ui.vercel.app/r/{name}.json
-npx shadcn@latest add @algorize-ui/table
+npx shadcn@latest add https://avaraui.com/r/table.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/table
 ```
 
 It also uses `Badge` and `Button`:
@@ -326,7 +332,7 @@ export default function AgGridInventory() {
 
 ### Installation
 
-This example also uses these Algorize UI components — install whichever
+This example also uses these Avara UI components — install whichever
 your project does not already have:
 
 The grid takes its colours from `useChartTokens`, which is not a registry item:
@@ -372,4 +378,4 @@ filter UI you did not have to build.
 
 **Component Path:** `[framework]\third-party\tables\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

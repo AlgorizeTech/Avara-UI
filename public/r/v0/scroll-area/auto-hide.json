@@ -3,7 +3,7 @@
   "name": "scroll-area-auto-hide",
   "type": "registry:block",
   "title": "Scroll Area — Auto-hide",
-  "description": "The \"Auto-hide\" example from the Algorize UI docs.",
+  "description": "The \"Auto-hide\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

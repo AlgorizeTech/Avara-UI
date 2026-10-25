@@ -49,4 +49,4 @@ Have an example you'd like to share? We welcome contributions to our examples co
 
 **Component Path:** `[framework]\examples\page.mdx`
 
-**Web Version:** Visit the corresponding URL on the Algorize UI documentation site for live previews and interactive examples.
+**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

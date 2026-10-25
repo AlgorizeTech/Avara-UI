@@ -3,7 +3,7 @@
   "name": "timeline-glass",
   "type": "registry:block",
   "title": "Timeline — Glass",
-  "description": "The \"Glass\" example from the Algorize UI docs.",
+  "description": "The \"Glass\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

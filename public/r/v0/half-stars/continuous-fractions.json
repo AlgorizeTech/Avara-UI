@@ -3,7 +3,7 @@
   "name": "half-stars-continuous-fractions",
   "type": "registry:block",
   "title": "Half Stars — Continuous fractions",
-  "description": "The \"Continuous fractions\" example from the Algorize UI docs.",
+  "description": "The \"Continuous fractions\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

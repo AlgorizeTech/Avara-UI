@@ -1,6 +1,7 @@
 "use client";
 
 import { GitHubIcon } from "@/assets/icons/github";
+import { links } from "@/config/site";
 import { cn } from "@/lib/utils";
 import {
   docsHref,
@@ -246,7 +247,7 @@ const Header = () => {
 
             {/* GitHub Stars Pill */}
             <Link
-              href="https://github.com/AlgorizeTech/Reusable-Component-Documentation"
+              href={links.github}
               target="_blank"
               rel="noopener noreferrer"
               className="pointer-events-auto hidden sm:flex items-center justify-center gap-2 size-10 lg:w-auto lg:px-3.5 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 text-foreground/80 hover:text-foreground hover:border-border/70 transition-all text-[12.5px] font-medium"

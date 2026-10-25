@@ -9,7 +9,7 @@
     "lucide-react"
   ],
   "registryDependencies": [
-    "https://algorize-ui.vercel.app/r/tooltip.json",
+    "https://avaraui.com/r/tooltip.json",
     "utils"
   ],
   "files": [

@@ -3,7 +3,7 @@
   "name": "not-found-section-hyperspace-404-section",
   "type": "registry:block",
   "title": "Not Found Section — Hyperspace 404 Section",
-  "description": "The \"Hyperspace 404 Section\" example from the Algorize UI docs.",
+  "description": "The \"Hyperspace 404 Section\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"
