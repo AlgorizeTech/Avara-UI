@@ -117,7 +117,7 @@ const Header = () => {
               />
             </div>
             <span className="font-semibold text-[16px] tracking-tight text-foreground">
-              Avara UI
+              Avara <span className="text-brand">UI</span>
             </span>
           </Link>
 
@@ -163,7 +163,7 @@ const Header = () => {
                 />
               </div>
               <span className="font-extrabold text-[15px] tracking-tight text-foreground">
-                Avara <span className="text-primary font-normal">UI</span>
+                Avara <span className="text-brand font-normal">UI</span>
               </span>
             </Link>
           </div>

@@ -18,7 +18,7 @@
   "redirects": [
     {
       "source": "/r/v0-themed/:component/:example/item.json",
-      "destination": "https://algorize-ui.vercel.app/r/v0-themed/:component/:example/item.json",
+      "destination": "https://avaraui.vercel.app/r/v0-themed/:component/:example/item.json",
       "type": 302
     }
   ]

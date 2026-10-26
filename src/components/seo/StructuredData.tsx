@@ -1,4 +1,4 @@
-import { SITE_URL, siteConfig, links, socialLinks } from "@/config/site";
+import { REGISTRY_NAMESPACE, SITE_URL, siteConfig, links, socialLinks } from "@/config/site";
 
 /**
  * Site-wide JSON-LD, rendered into the HTML.
@@ -20,6 +20,15 @@ const organization = {
   ...(socialLinks.length ? { sameAs: socialLinks } : {}),
 };
 
+/**
+ * Other ways people write the name — run together ("AvaraUI") and as the
+ * registry namespace ("avara-ui") — so Google can tie those searches to the
+ * site name. Derived, so they follow the environment.
+ */
+const alternateNames = [
+  ...new Set([siteConfig.name.replace(/\s+/g, ""), REGISTRY_NAMESPACE.slice(1)]),
+].filter((name) => name !== siteConfig.name);
+
 const graph = {
   "@context": "https://schema.org",
   "@graph": [
@@ -28,6 +37,7 @@ const graph = {
       "@type": "WebSite",
       "@id": `${SITE_URL}/#website`,
       name: siteConfig.name,
+      ...(alternateNames.length ? { alternateName: alternateNames } : {}),
       url: SITE_URL,
       description: siteConfig.tagline,
       inLanguage: "en",

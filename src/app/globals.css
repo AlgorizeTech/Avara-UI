@@ -58,6 +58,13 @@
   --preview-stage: color-mix(in oklab, var(--background) 50%, black);
 }
 
+/* The lavender "UI" of the Avara UI wordmark (header, footer). Kept out of the
+   preset tokens on purpose: the colour picker rewrites --primary, and the
+   wordmark must stay on brand whatever the reader picks. */
+:root {
+  --brand: oklch(0.698 0.162 288.379);
+}
+
 .dark {
   --background: oklch(0.141 0.004 285.823);
   --foreground: oklch(1 0 0);
@@ -781,6 +788,7 @@ html body[data-scroll-locked] {
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-preview-stage: var(--preview-stage);
+  --color-brand: var(--brand);
 }
 
 @layer base {

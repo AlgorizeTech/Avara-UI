@@ -15,7 +15,7 @@ is themed rather than composed.
 
 `TableHead` already accepts `sortable`, `sortDirection` and `onSort`, which is
 exactly the shape a TanStack header exposes — so the two meet with no adapter in
-between. Everything visible is an Avara UI component; TanStack supplies the
+between. Everything visible is built from Avara UI components; TanStack supplies the
 row model and the state.
 
 export const usageTanStack = `import { useState } from "react";
