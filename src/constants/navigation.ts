@@ -121,7 +121,7 @@ const rawNavigation: NavigationItem[] = [
         label: "Avatar Stack",
         slug: "avatar-stack",
         badge: "New",
-        addedOn: "2026-09-16",
+        addedOn: "2026-10-26",
         keywords: ["avatar", "avatars", "faces", "group", "stack", "overlap", "social proof", "people"],
       },
       { label: "Book Flip", slug: "book-flip" },
@@ -472,7 +472,12 @@ const rawNavigation: NavigationItem[] = [
         addedOn: "2026-09-16",
         keywords: ["data", "flow", "pipeline", "sources", "diagram", "connectors", "ai", "intelligence", "process"],
       },
-      { label: "Footer", slug: "footer" },
+      {
+        label: "Footer",
+        slug: "footer",
+        badge: "New",
+        addedOn: "2026-10-26",
+      },
       {
         label: "FAQ Section",
         slug: "faq-section",
@@ -546,7 +551,7 @@ const rawNavigation: NavigationItem[] = [
         label: "Navbar",
         slug: "navbar",
         badge: "New",
-        addedOn: "2026-10-24",
+        addedOn: "2026-10-26",
         keywords: ["navbar", "header", "mega menu", "mega nav", "ecommerce", "navigation", "top bar"],
       },
       {

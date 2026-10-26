@@ -443,6 +443,7 @@
     "accent-color": "Flowchart — Accent color"
   },
   "footer": {
+    "snapshot-footer": "Footer — Snapshot Footer",
     "simple-centered-footer": "Footer — Simple Centered Footer",
     "glass-dock-footer": "Footer — Glass Dock Footer",
     "neon-glow-pulse-cyberpunk-footer": "Footer — Neon Glow Pulse Cyberpunk Footer",

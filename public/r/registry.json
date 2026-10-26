@@ -2088,7 +2088,8 @@
         "layout"
       ],
       "dependencies": [
-        "lucide-react"
+        "lucide-react",
+        "motion"
       ],
       "registryDependencies": [
         "https://avaraui.com/r/social-links.json",
@@ -2099,6 +2100,11 @@
           "path": "src/components/custom/blocks/FooterBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/FooterBlock.tsx"
+        },
+        {
+          "path": "src/lib/accent.ts",
+          "type": "registry:component",
+          "target": "lib/accent.ts"
         }
       ],
       "docs": "Named export: Footer. Accepts `variant` (4 responsive variants: simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `brandName`, `tagline`, `logo`, `socialLinks`, `className`. The social row is the `social-links` item, which installs alongside. All variants adapt across mobile, tablet, and desktop screens."
