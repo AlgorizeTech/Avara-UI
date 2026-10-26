@@ -369,8 +369,8 @@
     "glass": "Email — Glass",
     "liquid-glass": "Email — Liquid Glass"
   },
-  "error-section": {
-    "cyberpunk-terminal-section": "Error Section — Cyberpunk Terminal Section"
+  "error": {
+    "cyberpunk-terminal-section": "Error — Cyberpunk Terminal Section"
   },
   "falling-tags": {
     "interactive-physics-arena": "Falling Tags — Interactive physics arena",
@@ -638,8 +638,8 @@
     "spotlight": "Newsletter — Spotlight",
     "issues": "Newsletter — Issues"
   },
-  "not-found-section": {
-    "hyperspace-404-section": "Not Found Section — Hyperspace 404 Section"
+  "not-found": {
+    "hyperspace-404-section": "Not Found — Hyperspace 404 Section"
   },
   "otp-input": {
     "otp-input": "OTP Input",

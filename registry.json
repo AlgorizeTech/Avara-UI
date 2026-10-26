@@ -1708,9 +1708,9 @@
       "docs": "Named exports: EmailApp, plus Email, EmailLabel and Attachment types. The largest block in the registry — a complete application layout with demo data to replace, not a single element. Variants: default | minimal | glass."
     },
     {
-      "name": "error-section",
+      "name": "error",
       "type": "registry:component",
-      "title": "Error Section",
+      "title": "Error",
       "author": "AlgorizeTech",
       "description": "A responsive, animated Cyberpunk Diagnostic Terminal Error Website Section with full Light and Dark mode adaptive styling, diagnostic monitors, and live stacktrace inspection.",
       "categories": [
@@ -1726,9 +1726,9 @@
       ],
       "files": [
         {
-          "path": "src/components/custom/blocks/ErrorSectionBlock.tsx",
+          "path": "src/components/custom/blocks/ErrorBlock.tsx",
           "type": "registry:component",
-          "target": "components/custom/blocks/ErrorSectionBlock.tsx"
+          "target": "components/custom/blocks/ErrorBlock.tsx"
         }
       ],
       "docs": "Named export: ErrorSection (also default export) and ErrorSectionProps. Designed to serve as a full-page 500, 404, or runtime error boundary with light & dark theme support, one-click incident copying, and reboot action triggers."
@@ -3118,9 +3118,9 @@
       "docs": "Motion build of `newsletter` — same props, markup and install path; install one or the other. Named export: Newsletter, with parts Heading, Intro, Form, Proof, Ticker and Issues. Composed from the input, button, marquee and tilted-card items, which install alongside it. `variant` is portraits | spotlight | issues, each styled for light and dark mode; `portraits` takes up to four faces; `Form` takes `onSubscribe(email)` (a promise holds the busy state), `action`, `successTitle`/`successText`; `accent` pins the glow and button colour; `reveal` is in-view or immediate."
     },
     {
-      "name": "not-found-section",
+      "name": "not-found",
       "type": "registry:component",
-      "title": "Not Found Section",
+      "title": "Not Found",
       "author": "AlgorizeTech",
       "description": "A responsive, full-page 404 Hyperspace website section with ambient radial glow, masked cyber grid backdrop, animated compass indicator, and customizable shortcuts.",
       "categories": [
@@ -3136,9 +3136,9 @@
       ],
       "files": [
         {
-          "path": "src/components/custom/blocks/NotFoundSectionBlock.tsx",
+          "path": "src/components/custom/blocks/NotFoundBlock.tsx",
           "type": "registry:component",
-          "target": "components/custom/blocks/NotFoundSectionBlock.tsx"
+          "target": "components/custom/blocks/NotFoundBlock.tsx"
         }
       ],
       "docs": "Named export: NotFoundSection (also default export) and NotFoundSectionProps. Ready for drop-in use in Next.js not-found.tsx or standalone 404 routes."

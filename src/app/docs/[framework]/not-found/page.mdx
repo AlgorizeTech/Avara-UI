@@ -1,17 +1,17 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
 
-export const metadata = docsPageMetadata("not-found-section");
+export const metadata = docsPageMetadata("not-found");
 
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
-# Not Found Section
+# Not Found
 
 A responsive, full-page 404 Hyperspace website section featuring ambient radial glow, masked cyber grid backdrop, animated compass indicator, and customizable shortcuts.
 
 Designed as a drop-in replacement for Next.js `not-found.tsx` or standalone missing route pages.
 
-export const usageDefault = `import { NotFoundSection } from "@/components/custom/blocks/NotFoundSectionBlock";
+export const usageDefault = `import { NotFoundSection } from "@/components/custom/blocks/NotFoundBlock";
 
 export default function NotFound() {
   return (
@@ -33,7 +33,7 @@ export default function NotFound() {
 }`;
 
 <ExampleShowcase
-  name="not-found-section"
+  name="not-found"
   columns={1}
   colorControl={false}
   minHeight={640}
@@ -65,14 +65,14 @@ export default function NotFound() {
         showShortcuts: true,
       },
       usage: usageDefault,
-      code: extractCode("src/components/custom/blocks/NotFoundSectionBlock.tsx"),
+      code: extractCode("src/components/custom/blocks/NotFoundBlock.tsx"),
     },
   ]}
 />
 
 ## Installation
 
-<Installation name="not-found-section" />
+<Installation name="not-found" />
 
 ## Features
 

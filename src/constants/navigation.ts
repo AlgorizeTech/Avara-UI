@@ -493,11 +493,12 @@ const rawNavigation: NavigationItem[] = [
         ],
       },
       {
-        label: "Error Section",
-        slug: "error-section",
+        label: "Error",
+        slug: "error",
         badge: "New",
         addedOn: "2026-10-12",
         keywords: [
+          "error",
           "error section",
           "error page",
           "500",
@@ -512,13 +513,13 @@ const rawNavigation: NavigationItem[] = [
         ],
       },
       {
-        label: "Not Found Section",
-        slug: "not-found-section",
+        label: "Not Found",
+        slug: "not-found",
         badge: "New",
         addedOn: "2026-10-12",
         keywords: [
-          "not found section",
           "not found",
+          "not found section",
           "404",
           "404 page",
           "lost in hyperspace",

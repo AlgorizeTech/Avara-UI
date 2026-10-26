@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import NotFoundSection from "@/components/custom/blocks/NotFoundSectionBlock";
+import NotFoundSection from "@/components/custom/blocks/NotFoundBlock";
 import { BookOpen, Home, LayoutGrid, Compass, ShieldCheck } from "lucide-react";
 
 export default function NotFoundSectionDemo({

@@ -1,12 +1,12 @@
-export const metadata = docsPageMetadata("error-section");
+export const metadata = docsPageMetadata("error");
 
-# Error Section
+# Error
 
 A full-page, responsive Cyberpunk Diagnostic Terminal section designed for root application error boundaries, Next.js `error.tsx` / `global-error.tsx`, and dedicated maintenance pages.
 
 Features a full-width terminal enclosure, diagnostic monitors, adaptive light & dark mode styling, live stacktrace inspector, and one-click incident copying.
 
-export const usageDefault = `import { ErrorSection } from "@/components/custom/blocks/ErrorSectionBlock";
+export const usageDefault = `import { ErrorSection } from "@/components/custom/blocks/ErrorBlock";
 
 export default function ErrorPage() {
   return (
@@ -22,14 +22,14 @@ export default function ErrorPage() {
 Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest add https://avaraui.com/r/error-section.json
+npx shadcn@latest add https://avaraui.com/r/error.json
 ```
 
 Or register the @avara-ui registry once per project and add it by name:
 
 ```bash
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/error-section
+npx shadcn@latest add @avara-ui/error
 ```
 
 ## Features
@@ -102,6 +102,6 @@ Discover the key capabilities of the `ErrorSection` component:
 
 ---
 
-**Component Path:** `[framework]\error-section\page.mdx`
+**Component Path:** `[framework]\error\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

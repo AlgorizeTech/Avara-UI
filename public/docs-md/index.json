@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-25T13:06:12.874Z",
+  "generatedAt": "2026-10-26T05:24:40.857Z",
   "totalFiles": 315,
   "files": [
     {
@@ -315,10 +315,10 @@
       "originalMdx": "[framework]\\email\\page.mdx"
     },
     {
-      "name": "nextjs/error-section",
-      "path": "/docs/nextjs-error-section.md",
-      "url": "/docs/nextjs/error-section",
-      "originalMdx": "[framework]\\error-section\\page.mdx"
+      "name": "nextjs/error",
+      "path": "/docs/nextjs-error.md",
+      "url": "/docs/nextjs/error",
+      "originalMdx": "[framework]\\error\\page.mdx"
     },
     {
       "name": "nextjs/examples",
@@ -591,10 +591,10 @@
       "originalMdx": "[framework]\\newsletter\\page.mdx"
     },
     {
-      "name": "nextjs/not-found-section",
-      "path": "/docs/nextjs-not-found-section.md",
-      "url": "/docs/nextjs/not-found-section",
-      "originalMdx": "[framework]\\not-found-section\\page.mdx"
+      "name": "nextjs/not-found",
+      "path": "/docs/nextjs-not-found.md",
+      "url": "/docs/nextjs/not-found",
+      "originalMdx": "[framework]\\not-found\\page.mdx"
     },
     {
       "name": "nextjs/otp-input",
@@ -1263,10 +1263,10 @@
       "originalMdx": "[framework]\\email\\page.mdx"
     },
     {
-      "name": "reactjs/error-section",
-      "path": "/docs/reactjs-error-section.md",
-      "url": "/docs/reactjs/error-section",
-      "originalMdx": "[framework]\\error-section\\page.mdx"
+      "name": "reactjs/error",
+      "path": "/docs/reactjs-error.md",
+      "url": "/docs/reactjs/error",
+      "originalMdx": "[framework]\\error\\page.mdx"
     },
     {
       "name": "reactjs/examples",
@@ -1539,10 +1539,10 @@
       "originalMdx": "[framework]\\newsletter\\page.mdx"
     },
     {
-      "name": "reactjs/not-found-section",
-      "path": "/docs/reactjs-not-found-section.md",
-      "url": "/docs/reactjs/not-found-section",
-      "originalMdx": "[framework]\\not-found-section\\page.mdx"
+      "name": "reactjs/not-found",
+      "path": "/docs/reactjs-not-found.md",
+      "url": "/docs/reactjs/not-found",
+      "originalMdx": "[framework]\\not-found\\page.mdx"
     },
     {
       "name": "reactjs/otp-input",

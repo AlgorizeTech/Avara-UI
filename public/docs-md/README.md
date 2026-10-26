@@ -2,7 +2,7 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-10-25T13:06:12.917Z
+**Generated at:** 2026-10-26T05:24:41.033Z
 **Total files:** 315
 
 ## Available Files
@@ -59,7 +59,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/draggable-card-list](/docs/nextjs-draggable-card-list.md) - Source: `[framework]\draggable-card-list\page.mdx`
 - [nextjs/drawer](/docs/nextjs-drawer.md) - Source: `[framework]\drawer\page.mdx`
 - [nextjs/email](/docs/nextjs-email.md) - Source: `[framework]\email\page.mdx`
-- [nextjs/error-section](/docs/nextjs-error-section.md) - Source: `[framework]\error-section\page.mdx`
+- [nextjs/error](/docs/nextjs-error.md) - Source: `[framework]\error\page.mdx`
 - [nextjs/examples](/docs/nextjs-examples.md) - Source: `[framework]\examples\page.mdx`
 - [nextjs/examples/button](/docs/nextjs-examples-button.md) - Source: `[framework]\examples\button\page.mdx`
 - [nextjs/examples/counter](/docs/nextjs-examples-counter.md) - Source: `[framework]\examples\counter\page.mdx`
@@ -105,7 +105,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/navigation](/docs/nextjs-navigation.md) - Source: `[framework]\navigation\page.mdx`
 - [nextjs/network-graph](/docs/nextjs-network-graph.md) - Source: `[framework]\network-graph\page.mdx`
 - [nextjs/newsletter](/docs/nextjs-newsletter.md) - Source: `[framework]\newsletter\page.mdx`
-- [nextjs/not-found-section](/docs/nextjs-not-found-section.md) - Source: `[framework]\not-found-section\page.mdx`
+- [nextjs/not-found](/docs/nextjs-not-found.md) - Source: `[framework]\not-found\page.mdx`
 - [nextjs/otp-input](/docs/nextjs-otp-input.md) - Source: `[framework]\otp-input\page.mdx`
 - [nextjs/pagination](/docs/nextjs-pagination.md) - Source: `[framework]\pagination\page.mdx`
 - [nextjs/particle-canvas](/docs/nextjs-particle-canvas.md) - Source: `[framework]\particle-canvas\page.mdx`
@@ -217,7 +217,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/draggable-card-list](/docs/reactjs-draggable-card-list.md) - Source: `[framework]\draggable-card-list\page.mdx`
 - [reactjs/drawer](/docs/reactjs-drawer.md) - Source: `[framework]\drawer\page.mdx`
 - [reactjs/email](/docs/reactjs-email.md) - Source: `[framework]\email\page.mdx`
-- [reactjs/error-section](/docs/reactjs-error-section.md) - Source: `[framework]\error-section\page.mdx`
+- [reactjs/error](/docs/reactjs-error.md) - Source: `[framework]\error\page.mdx`
 - [reactjs/examples](/docs/reactjs-examples.md) - Source: `[framework]\examples\page.mdx`
 - [reactjs/examples/button](/docs/reactjs-examples-button.md) - Source: `[framework]\examples\button\page.mdx`
 - [reactjs/examples/counter](/docs/reactjs-examples-counter.md) - Source: `[framework]\examples\counter\page.mdx`
@@ -263,7 +263,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/navigation](/docs/reactjs-navigation.md) - Source: `[framework]\navigation\page.mdx`
 - [reactjs/network-graph](/docs/reactjs-network-graph.md) - Source: `[framework]\network-graph\page.mdx`
 - [reactjs/newsletter](/docs/reactjs-newsletter.md) - Source: `[framework]\newsletter\page.mdx`
-- [reactjs/not-found-section](/docs/reactjs-not-found-section.md) - Source: `[framework]\not-found-section\page.mdx`
+- [reactjs/not-found](/docs/reactjs-not-found.md) - Source: `[framework]\not-found\page.mdx`
 - [reactjs/otp-input](/docs/reactjs-otp-input.md) - Source: `[framework]\otp-input\page.mdx`
 - [reactjs/pagination](/docs/reactjs-pagination.md) - Source: `[framework]\pagination\page.mdx`
 - [reactjs/particle-canvas](/docs/reactjs-particle-canvas.md) - Source: `[framework]\particle-canvas\page.mdx`
