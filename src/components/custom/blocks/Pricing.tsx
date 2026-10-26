@@ -10,6 +10,7 @@ import {
   HelpCircle,
   Minus,
   PenTool,
+  Plus,
   Rocket,
   Sparkles,
   Star,
@@ -23,6 +24,7 @@ export type PricingVariant =
   | "default"
   | "dot-pattern"
   | "scale"
+  | "plans-pro"
   | "elegant"
   | "minimal"
   | "bordered";
@@ -1768,7 +1770,7 @@ export function PricingScale({
   const currentPlans = plans[billingCycle] || plans.monthly;
 
   return (
-    <section className="w-full bg-background py-10 sm:py-16 px-4 sm:px-6 font-sans transition-colors duration-300" style={style}>
+    <section className="w-full h-full py-10 sm:py-16 px-4 sm:px-6 font-sans transition-colors duration-300" style={style}>
       <div className="max-w-4xl mx-auto space-y-10 sm:space-y-12">
         {/* Header */}
         <div className="text-center space-y-3 sm:space-y-4 max-w-2xl mx-auto">
@@ -2019,7 +2021,7 @@ export function PricingDotPattern({
 
   return (
     <section
-      className="w-full bg-background py-12 sm:py-20 px-4 sm:px-6 font-sans transition-colors duration-300"
+      className="w-full h-full py-12 sm:py-20 px-4 sm:px-6 font-sans transition-colors duration-300"
       style={style}
     >
       <div className="max-w-6xl mx-auto space-y-12 sm:space-y-16">
@@ -2166,6 +2168,694 @@ export function PricingDotPattern({
               </div>
             );
           })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ==========================================
+// 9. PRICING PLANS PRO (SELECTABLE PLAN + USERS STEPPER)
+// ==========================================
+export interface PlansProItem {
+  id: string;
+  title: string;
+  subtitle: string;
+  monthlyPrice: number | string;
+  yearlyPrice: number | string;
+  monthlyPeriod?: string;
+  yearlyPeriod?: string;
+  features: string[];
+}
+
+export interface PricingPlansProProps {
+  title?: string;
+  monthlyLabel?: string;
+  yearlyLabel?: string;
+  discountBadge?: string;
+  plans?: PlansProItem[];
+  defaultBillingCycle?: "monthly" | "yearly";
+  defaultSelectedPlanId?: string;
+  defaultUsers?: number;
+  minUsers?: number;
+  maxUsers?: number;
+  usersLabel?: string;
+  usersSubtext?: string;
+  orderButtonText?: string;
+  orderHref?: string;
+  scalePriceWithUsers?: boolean;
+  layoutMode?: "responsive" | "horizontal" | "vertical";
+  color?: PricingColor;
+  counting?: boolean;
+  linkComponent?: React.ElementType;
+  onOrder?: (payload: {
+    plan: PlansProItem;
+    billingCycle: "monthly" | "yearly";
+    users: number;
+    totalPrice: number;
+  }) => void;
+}
+
+const PLANS_PRO_RING_MASK: React.CSSProperties = {
+  WebkitMask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+  WebkitMaskComposite: "xor",
+  mask: "linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0)",
+  maskComposite: "exclude",
+};
+
+/** 4 glowing border lines spaced 90° apart orbiting around the selected package card */
+const PLANS_PRO_FOUR_BEAM_GRADIENT =
+  "conic-gradient(from 0deg, transparent 0deg, currentColor 32deg, transparent 62deg, transparent 90deg, currentColor 122deg, transparent 152deg, transparent 180deg, currentColor 212deg, transparent 242deg, transparent 270deg, currentColor 302deg, transparent 332deg)";
+
+const PlansProUserIcon = ({ className }: { className?: string }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className={cn("w-5 h-5", className)}
+  >
+    <circle
+      cx="10.5"
+      cy="8.5"
+      r="3.2"
+      stroke="currentColor"
+      strokeWidth="1.75"
+    />
+    <path
+      d="M4.75 19.25C4.75 16.3505 7.32436 14 10.5 14C13.6756 14 16.25 16.3505 16.25 19.25"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+    />
+    <circle cx="17.25" cy="7.25" r="1.45" fill="currentColor" />
+  </svg>
+);
+
+const defaultPlansProItems: PlansProItem[] = [
+  {
+    id: "starter",
+    title: "Starter",
+    subtitle: "creator",
+    monthlyPrice: 9.0,
+    yearlyPrice: 7.0,
+    monthlyPeriod: "Month",
+    yearlyPeriod: "Year",
+    features: [
+      "500GB Cloud Storage",
+      "14-day version history",
+      "End-to-end TLS encryption",
+    ],
+  },
+  {
+    id: "growth",
+    title: "Growth",
+    subtitle: "studio",
+    monthlyPrice: 15.0,
+    yearlyPrice: 12.0,
+    monthlyPeriod: "Month",
+    yearlyPeriod: "Year",
+    features: [
+      "2TB Cloud Storage",
+      "60-day version history",
+      "Custom domain & SSO",
+    ],
+  },
+  {
+    id: "scale",
+    title: "Scale",
+    subtitle: "agency",
+    monthlyPrice: 29.0,
+    yearlyPrice: 23.0,
+    monthlyPeriod: "Month",
+    yearlyPeriod: "Year",
+    features: [
+      "Unlimited Cloud Storage",
+      "365-day version history",
+      "Dedicated SLA & audit logs",
+    ],
+  },
+];
+
+export function PricingPlansPro({
+  title = "Choose Your Workspace",
+  monthlyLabel = "Monthly",
+  yearlyLabel = "Annual",
+  discountBadge = "SAVE 20%",
+  plans = defaultPlansProItems,
+  defaultBillingCycle = "monthly",
+  defaultSelectedPlanId = "scale",
+  defaultUsers = 1,
+  minUsers = 1,
+  maxUsers = 99,
+  usersLabel = "Team Seats",
+  usersSubtext = "Billed per active member",
+  orderButtonText = "Continue",
+  orderHref,
+  scalePriceWithUsers = true,
+  layoutMode = "responsive",
+  color = "primary",
+  counting = true,
+  linkComponent: LinkComp = "a",
+  onOrder,
+}: PricingPlansProProps = {}) {
+  const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">(
+    defaultBillingCycle,
+  );
+  const [selectedPlanId, setSelectedPlanId] = useState<string>(
+    defaultSelectedPlanId || plans[0]?.id || "scale",
+  );
+  const [users, setUsers] = useState<number>(
+    Math.max(minUsers, Math.min(maxUsers, defaultUsers)),
+  );
+  const [cardsSpread, setCardsSpread] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+
+    if (typeof IntersectionObserver === "undefined") {
+      timer = setTimeout(() => setCardsSpread(true), 320);
+      return () => {
+        if (timer) clearTimeout(timer);
+      };
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (!entry) return;
+        if (entry.isIntersecting) {
+          if (timer) clearTimeout(timer);
+          timer = setTimeout(() => setCardsSpread(true), 320);
+        } else {
+          if (timer) clearTimeout(timer);
+          setCardsSpread(false);
+        }
+      },
+      { threshold: 0.2 },
+    );
+
+    observer.observe(el);
+    return () => {
+      if (timer) clearTimeout(timer);
+      observer.disconnect();
+    };
+  }, []);
+
+  const { theme, style } = getThemeStyles(color);
+
+  const parsePrice = (raw: number | string) => {
+    const n =
+      typeof raw === "number"
+        ? raw
+        : parseFloat(String(raw).replace(/[^0-9.]/g, ""));
+    return isNaN(n) ? 0 : n;
+  };
+
+  const getPlanPrice = (plan: PlansProItem) => {
+    const base =
+      billingCycle === "yearly"
+        ? parsePrice(plan.yearlyPrice)
+        : parsePrice(plan.monthlyPrice);
+    const total = scalePriceWithUsers ? base * users : base;
+    return total.toFixed(2);
+  };
+
+  const getPlanPeriod = (plan: PlansProItem) =>
+    billingCycle === "yearly"
+      ? plan.yearlyPeriod || "Year"
+      : plan.monthlyPeriod || "Month";
+
+  const handleOrder = () => {
+    const activePlan =
+      plans.find((p) => p.id === selectedPlanId) || plans[0];
+    if (!activePlan) return;
+    onOrder?.({
+      plan: activePlan,
+      billingCycle,
+      users,
+      totalPrice: parseFloat(getPlanPrice(activePlan)),
+    });
+  };
+
+  const renderRadio = (isSelected: boolean) => (
+    <span
+      aria-hidden="true"
+      className={cn(
+        "w-[22px] h-[22px] rounded-full flex items-center justify-center shrink-0 transition-all duration-300",
+        isSelected
+          ? cn("border-2", theme.border)
+          : "border-[1.5px] border-muted-foreground/35",
+      )}
+    >
+      <span
+        className={cn(
+          "w-[10px] h-[10px] rounded-full transition-transform duration-300 ease-out",
+          isSelected
+            ? cn("scale-100", theme.bg.split(" ")[0])
+            : "scale-0 bg-transparent",
+        )}
+      />
+    </span>
+  );
+
+  const renderUsersStepper = (compact = false) => (
+    <div
+      className={cn(
+        "flex items-center justify-between gap-3",
+        compact ? "w-full" : "w-full sm:w-auto sm:justify-start sm:gap-5",
+      )}
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div className="flex items-center gap-3 min-w-0">
+        <div
+          className={cn(
+            "w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center shrink-0 transition-colors",
+            theme.bgSoft,
+            theme.text,
+          )}
+        >
+          <PlansProUserIcon className="w-5 h-5" />
+        </div>
+        <div className="flex flex-col text-left min-w-0">
+          <span className="font-sans text-[13.5px] font-medium text-foreground leading-tight truncate">
+            {usersLabel}
+          </span>
+          <span className="font-sans text-[12px] font-normal text-muted-foreground leading-tight mt-0.5 truncate">
+            {usersSubtext}
+          </span>
+        </div>
+      </div>
+
+      <div className="inline-flex items-center justify-between rounded-[10px] bg-muted/70 border border-border px-1.5 py-1 min-w-[96px] sm:min-w-[108px] h-[38px] shrink-0">
+        <button
+          type="button"
+          aria-label="Decrease users"
+          disabled={users <= minUsers}
+          onClick={() => setUsers((u) => Math.max(minUsers, u - 1))}
+          className="w-7 h-7 rounded-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-foreground/5 disabled:opacity-35 disabled:pointer-events-none transition-colors cursor-pointer"
+        >
+          <Minus className="w-3.5 h-3.5 stroke-[2]" />
+        </button>
+        <span className="font-sans text-[13.5px] font-semibold text-foreground px-2 tabular-nums select-none">
+          {users}
+        </span>
+        <button
+          type="button"
+          aria-label="Increase users"
+          disabled={users >= maxUsers}
+          onClick={() => setUsers((u) => Math.min(maxUsers, u + 1))}
+          className="w-7 h-7 rounded-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-foreground/5 disabled:opacity-35 disabled:pointer-events-none transition-colors cursor-pointer"
+        >
+          <Plus className="w-3.5 h-3.5 stroke-[2]" />
+        </button>
+      </div>
+    </div>
+  );
+
+  const renderOrderButton = (fullWidth = false) => {
+    const btnClasses = cn(
+      "rounded-[12px] font-sans text-[13.5px] font-semibold px-7 py-3.5 inline-flex items-center justify-center gap-2.5 transition-all duration-200 cursor-pointer shadow-sm hover:opacity-95 active:scale-[0.99]",
+      fullWidth ? "w-full" : "w-full sm:w-auto sm:min-w-[172px]",
+      theme.bg,
+    );
+
+    if (orderHref) {
+      return (
+        <LinkComp href={orderHref} onClick={handleOrder} className={btnClasses}>
+          <span>{orderButtonText}</span>
+          <ArrowRight className="w-4 h-4 stroke-[2]" />
+        </LinkComp>
+      );
+    }
+
+    return (
+      <button type="button" onClick={handleOrder} className={btnClasses}>
+        <span>{orderButtonText}</span>
+        <ArrowRight className="w-4 h-4 stroke-[2]" />
+      </button>
+    );
+  };
+
+  return (
+    <section
+      ref={sectionRef}
+      className="w-full h-full py-6 sm:py-8 px-3 sm:px-6 font-sans transition-colors duration-300"
+      style={style}
+    >
+      <div
+        className={cn(
+          "mx-auto bg-card text-card-foreground rounded-[24px] border border-border shadow-[0_6px_30px_rgba(0,0,0,0.04)] dark:shadow-[0_6px_30px_rgba(0,0,0,0.3)] p-6 sm:p-8 md:p-9 transition-all",
+          layoutMode === "vertical"
+            ? "max-w-[380px]"
+            : layoutMode === "horizontal"
+              ? "max-w-[780px]"
+              : "max-w-[380px] md:max-w-[780px]",
+        )}
+      >
+        {/* Title */}
+        <h2 className="font-sans text-[22px] sm:text-[25px] font-bold tracking-[-0.02em] text-foreground leading-tight mb-4 sm:mb-5 text-left">
+          {title}
+        </h2>
+
+        {/* Segmented Billing Cycle Switch */}
+        <div
+          role="tablist"
+          aria-label="Billing cycle"
+          className="relative w-full rounded-[14px] bg-muted/70 border border-border p-1.5 grid grid-cols-2 mb-6 sm:mb-7"
+        >
+          {/* Sliding Active Pill Background */}
+          <span
+            aria-hidden="true"
+            className={cn(
+              "pointer-events-none absolute top-1.5 bottom-1.5 left-1.5 w-[calc(50%-6px)] rounded-[10px] bg-card shadow-xs border border-border/80 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform",
+              billingCycle === "yearly" ? "translate-x-full" : "translate-x-0",
+            )}
+          />
+
+          <button
+            type="button"
+            role="tab"
+            aria-selected={billingCycle === "monthly"}
+            onClick={() => setBillingCycle("monthly")}
+            className={cn(
+              "relative z-10 py-2.5 sm:py-3 px-3 rounded-[10px] font-sans text-[13.5px] transition-colors duration-300 flex items-center justify-center cursor-pointer select-none",
+              billingCycle === "monthly"
+                ? "text-foreground font-semibold"
+                : "text-muted-foreground font-medium hover:text-foreground",
+            )}
+          >
+            {monthlyLabel}
+          </button>
+
+          <button
+            type="button"
+            role="tab"
+            aria-selected={billingCycle === "yearly"}
+            onClick={() => setBillingCycle("yearly")}
+            className={cn(
+              "relative z-10 py-2.5 sm:py-3 px-2.5 sm:px-3 rounded-[10px] font-sans text-[13.5px] transition-colors duration-300 flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer select-none",
+              billingCycle === "yearly"
+                ? "text-foreground font-semibold"
+                : "text-muted-foreground font-medium hover:text-foreground",
+            )}
+          >
+            <span>{yearlyLabel}</span>
+            {discountBadge && (
+              <span
+                className={cn(
+                  "px-2.5 py-0.5 rounded-full text-[10px] sm:text-[10.5px] font-semibold tracking-tight leading-none whitespace-nowrap transition-colors",
+                  theme.bg,
+                )}
+              >
+                {discountBadge}
+              </span>
+            )}
+          </button>
+        </div>
+
+        {/* DESKTOP / HORIZONTAL LAYOUT (3-Column Grid + Bottom Users/Order Bar) */}
+        <div
+          className={cn(
+            layoutMode === "vertical"
+              ? "hidden"
+              : layoutMode === "horizontal"
+                ? "block"
+                : "hidden md:block",
+          )}
+        >
+          <div
+            role="radiogroup"
+            aria-label="Subscription plans"
+            className="grid grid-cols-1 md:grid-cols-3 gap-4 items-stretch"
+          >
+            {plans.map((plan, cardIdx) => {
+              const isSelected = selectedPlanId === plan.id;
+              const priceStr = getPlanPrice(plan);
+              const periodStr = getPlanPeriod(plan);
+              const isLeftCard = cardIdx === 0;
+              const isCenterCard = cardIdx === 1;
+              const isRightCard = cardIdx === 2;
+
+              const stackedTransform = isCenterCard
+                ? "translate3d(0px, 0px, 0px) scale(1)"
+                : isLeftCard
+                  ? "translate3d(calc(100% + 1rem), 6px, 0px) scale(0.92)"
+                  : isRightCard
+                    ? "translate3d(calc(-100% - 1rem), 6px, 0px) scale(0.92)"
+                    : "translate3d(0px, 0px, 0px) scale(1)";
+
+              return (
+                <div
+                  key={plan.id}
+                  role="radio"
+                  aria-checked={isSelected}
+                  tabIndex={0}
+                  onClick={() => setSelectedPlanId(plan.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setSelectedPlanId(plan.id);
+                    }
+                  }}
+                  className={cn(
+                    "relative rounded-[16px] p-5 cursor-pointer transition-[transform,opacity,border-color,box-shadow] duration-[950ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform flex flex-col justify-between bg-card outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                    isCenterCard
+                      ? "z-20"
+                      : isSelected && cardsSpread
+                        ? "z-30"
+                        : "z-10",
+                    !cardsSpread && !isCenterCard ? "opacity-75" : "opacity-100",
+                    isSelected
+                      ? "border border-border shadow-xs"
+                      : "border border-border hover:border-foreground/30",
+                  )}
+                  style={{
+                    transform: cardsSpread
+                      ? "translate3d(0px, 0px, 0px) scale(1)"
+                      : stackedTransform,
+                    ...(isSelected
+                      ? {
+                          borderColor:
+                            "color-mix(in srgb, var(--pricing-accent, currentColor) 28%, transparent)",
+                        }
+                      : {}),
+                  }}
+                >
+                  {isSelected && (
+                    <div
+                      aria-hidden="true"
+                      className={cn(
+                        "pointer-events-none absolute inset-[-1px] rounded-[16px]",
+                        theme.text,
+                      )}
+                    >
+                      <span
+                        className="absolute inset-0 overflow-hidden rounded-[16px] p-[2px]"
+                        style={PLANS_PRO_RING_MASK}
+                      >
+                        <span
+                          className="absolute left-1/2 top-1/2 aspect-square w-[250%] -translate-x-1/2 -translate-y-1/2 animate-[spin_4s_linear_infinite]"
+                          style={{ background: PLANS_PRO_FOUR_BEAM_GRADIENT }}
+                        />
+                      </span>
+                    </div>
+                  )}
+                  {/* Card Top Header */}
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-3">
+                      {renderRadio(isSelected)}
+                      <div className="flex flex-col text-left">
+                        <span className="font-sans text-[15px] font-bold text-foreground leading-[1.2]">
+                          {plan.title}
+                        </span>
+                        <span className="font-sans text-[12.5px] font-normal text-muted-foreground leading-[1.2] mt-0.5">
+                          {plan.subtitle}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col items-end text-right shrink-0">
+                      <span className="font-sans text-[15px] font-bold text-foreground leading-[1.2] tabular-nums">
+                        $<AnimatedPrice value={priceStr} counting={counting} />
+                      </span>
+                      <span className="font-sans text-[12px] font-normal text-muted-foreground leading-[1.2] mt-0.5">
+                        {periodStr}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Features List */}
+                  <ul className="mt-6 space-y-2.5">
+                    {plan.features.map((feature, idx) => (
+                      <li
+                        key={idx}
+                        className="flex items-center gap-2.5 font-sans text-[12.5px] text-foreground/85 leading-snug"
+                      >
+                        <Check
+                          className={cn(
+                            "w-3.5 h-3.5 stroke-[2.2] shrink-0 transition-colors",
+                            isSelected ? theme.text : "text-foreground/70",
+                          )}
+                        />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Horizontal Divider */}
+          <div className="border-t border-border my-6" />
+
+          {/* Bottom Bar: Users Stepper (Left) + Order CTA (Right) */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
+            {renderUsersStepper(false)}
+            {renderOrderButton(false)}
+          </div>
+        </div>
+
+        {/* MOBILE / VERTICAL ACCORDION LAYOUT (Stacked Expandable Cards + Full-Width Order CTA) */}
+        <div
+          className={cn(
+            layoutMode === "vertical"
+              ? "block"
+              : layoutMode === "horizontal"
+                ? "hidden"
+                : "block md:hidden",
+          )}
+        >
+          <div
+            role="radiogroup"
+            aria-label="Subscription plans"
+            className="flex flex-col gap-3"
+          >
+            {plans.map((plan) => {
+              const isSelected = selectedPlanId === plan.id;
+              const priceStr = getPlanPrice(plan);
+              const periodStr = getPlanPeriod(plan);
+
+              return (
+                <div
+                  key={plan.id}
+                  role="radio"
+                  aria-checked={isSelected}
+                  tabIndex={0}
+                  onClick={() => setSelectedPlanId(plan.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setSelectedPlanId(plan.id);
+                    }
+                  }}
+                  className={cn(
+                    "relative rounded-[16px] px-4 sm:px-5 py-4 cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] bg-card outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                    isSelected
+                      ? "border border-border shadow-xs"
+                      : "border border-border hover:border-foreground/30",
+                  )}
+                  style={
+                    isSelected
+                      ? {
+                          borderColor:
+                            "color-mix(in srgb, var(--pricing-accent, currentColor) 28%, transparent)",
+                        }
+                      : undefined
+                  }
+                >
+                  {isSelected && (
+                    <div
+                      aria-hidden="true"
+                      className={cn(
+                        "pointer-events-none absolute inset-[-1px] rounded-[16px]",
+                        theme.text,
+                      )}
+                    >
+                      <span
+                        className="absolute inset-0 overflow-hidden rounded-[16px] p-[2px]"
+                        style={PLANS_PRO_RING_MASK}
+                      >
+                        <span
+                          className="absolute left-1/2 top-1/2 aspect-square w-[250%] -translate-x-1/2 -translate-y-1/2 animate-[spin_4s_linear_infinite]"
+                          style={{ background: PLANS_PRO_FOUR_BEAM_GRADIENT }}
+                        />
+                      </span>
+                    </div>
+                  )}
+                  {/* Top Row: Radio + Plan Title/Subtitle + Price/Period */}
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="flex items-center gap-3">
+                      {renderRadio(isSelected)}
+                      <div className="flex flex-col text-left">
+                        <span className="font-sans text-[15px] font-bold text-foreground leading-[1.2]">
+                          {plan.title}
+                        </span>
+                        <span className="font-sans text-[12.5px] font-normal text-muted-foreground leading-[1.2] mt-0.5">
+                          {plan.subtitle}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col items-end text-right shrink-0">
+                      <span className="font-sans text-[15px] font-bold text-foreground leading-[1.2] tabular-nums">
+                        $<AnimatedPrice value={priceStr} counting={counting} />
+                      </span>
+                      <span className="font-sans text-[12px] font-normal text-muted-foreground leading-[1.2] mt-0.5">
+                        {periodStr}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Smooth Animated Expand/Collapse Content for Mobile/Vertical */}
+                  <div
+                    aria-hidden={!isSelected}
+                    className={cn(
+                      "grid transition-[grid-template-rows,opacity,margin-top] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+                      isSelected
+                        ? "grid-rows-[1fr] opacity-100 mt-5"
+                        : "grid-rows-[0fr] opacity-0 mt-0 pointer-events-none",
+                    )}
+                  >
+                    <div className="overflow-hidden min-h-0">
+                      <div
+                        className={cn(
+                          "transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+                          isSelected ? "translate-y-0" : "-translate-y-2",
+                        )}
+                      >
+                        <ul className="space-y-2.5">
+                          {plan.features.map((feature, idx) => (
+                            <li
+                              key={idx}
+                              className="flex items-center gap-2.5 font-sans text-[12.5px] text-foreground/85 leading-snug"
+                            >
+                              <Check
+                                className={cn(
+                                  "w-3.5 h-3.5 stroke-[2.2] shrink-0 transition-colors",
+                                  theme.text,
+                                )}
+                              />
+                              <span>{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
+
+                        <div className="border-t border-border my-4" />
+
+                        {renderUsersStepper(true)}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="mt-4">{renderOrderButton(true)}</div>
         </div>
       </div>
     </section>

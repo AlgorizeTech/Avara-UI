@@ -9,7 +9,7 @@ import { extractCode } from "@/lib/code";
 
 A collection of highly-converting, responsive pricing sections. Whether you need traditional tiered subscription cards, a detailed comparison table, or an interactive quote builder, these components are designed to maximize conversions.
 
-`Pricing.tsx` exports eight independent layouts — `PricingCards`, `PricingScale`, `PricingDotPattern`, `PricingBuilder`, `PricingTable`, `PricingSlider`, `PricingTypographic` and `PricingPlans` — that share one color engine. Pick the layout that matches your funnel, then use the theme control above the gallery to see the accent cascade through badges, gradients, glows and buttons.
+`Pricing.tsx` exports nine independent layouts — `PricingCards`, `PricingScale`, `PricingDotPattern`, `PricingPlansPro`, `PricingBuilder`, `PricingTable`, `PricingSlider`, `PricingTypographic` and `PricingPlans` — that share one color engine. Pick the layout that matches your funnel, then use the theme control above the gallery to see the accent cascade through badges, gradients, glows and buttons.
 
 export const pricingData = `const data: PricingData = {
   tabs: [
@@ -511,11 +511,93 @@ export default function ScalablePricing() {
   return <PricingScale plans={scalePlansData} color="indigo" counting={true} />;
 }`;
 
+export const plansProData = `const plansProItems: PlansProItem[] = [
+  {
+    id: "starter",
+    title: "Starter",
+    subtitle: "creator",
+    monthlyPrice: 9.0,
+    yearlyPrice: 7.0,
+    monthlyPeriod: "Month",
+    yearlyPeriod: "Year",
+    features: [
+      "500GB Cloud Storage",
+      "14-day version history",
+      "End-to-end TLS encryption",
+    ],
+  },
+  {
+    id: "growth",
+    title: "Growth",
+    subtitle: "studio",
+    monthlyPrice: 15.0,
+    yearlyPrice: 12.0,
+    monthlyPeriod: "Month",
+    yearlyPeriod: "Year",
+    features: [
+      "2TB Cloud Storage",
+      "60-day version history",
+      "Custom domain & SSO",
+    ],
+  },
+  {
+    id: "scale",
+    title: "Scale",
+    subtitle: "agency",
+    monthlyPrice: 29.0,
+    yearlyPrice: 23.0,
+    monthlyPeriod: "Month",
+    yearlyPeriod: "Year",
+    features: [
+      "Unlimited Cloud Storage",
+      "365-day version history",
+      "Dedicated SLA & audit logs",
+    ],
+  },
+];`;
+
+export const usagePlansPro = `import { PricingPlansPro, type PlansProItem } from "@/components/custom/blocks/Pricing";
+
+${plansProData}
+
+export default function WorkspacePlanSelector() {
+  return (
+    <PricingPlansPro
+      title="Choose Your Workspace"
+      plans={plansProItems}
+      defaultSelectedPlanId="scale"
+      discountBadge="SAVE 20%"
+      counting={true}
+    />
+  );
+}`;
+
 <ExampleShowcase
   name="pricing"
   colorControl
   columns={1}
   examples={[
+    {
+      title: "Selectable workspace plans",
+      subheading: "Interactive radio-selectable plans with Monthly/Annual toggle, team seat stepper, and responsive mobile accordion view.",
+      propNotes: [
+        {
+          lead: "Render",
+          prop: "PricingPlansPro",
+          effect:
+            "with `plans` (`monthlyPrice`, `yearlyPrice`, `subtitle`, `features`). Automatically switches from a 3-column card grid on desktop to an expandable radio stack on mobile.",
+        },
+        {
+          prop: "scalePriceWithUsers",
+          value: "{true}",
+          effect:
+            "multiplies each plan's displayed price as the user increments or decrements the Team Seats stepper.",
+        },
+      ],
+      props: { layout: "plans-pro", counting: true },
+      usage: usagePlansPro,
+      code: extractCode("src/components/custom/blocks/Pricing.tsx"),
+    },
     {
       title: "Tiered cards",
       subheading: "One card per plan, with a billing-cycle tab strip above them.",
@@ -1083,6 +1165,57 @@ export default function ScalablePricing() {
         </td>
         <td>
           Applies accent color to popular plan ring/badge, checkmarks, active toggle, and CTA buttons.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>PricingPlansPro</code>
+        </td>
+        <td>
+          <code>plans</code>
+        </td>
+        <td>
+          <code>PlansProItem[]</code>
+        </td>
+        <td>
+          <code>defaultPlansProItems</code>
+        </td>
+        <td>
+          Array of selectable plan tiers (<code>Starter</code>, <code>Growth</code>, <code>Scale</code>) with <code>monthlyPrice</code>, <code>yearlyPrice</code>, <code>subtitle</code>, and <code>features</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>PricingPlansPro</code>
+        </td>
+        <td>
+          <code>layoutMode</code>
+        </td>
+        <td>
+          <code>"responsive" | "horizontal" | "vertical"</code>
+        </td>
+        <td>
+          <code>"responsive"</code>
+        </td>
+        <td>
+          Renders a 3-column horizontal grid on desktop and automatically switches to a vertical expandable radio stack on mobile screens.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>PricingPlansPro</code>
+        </td>
+        <td>
+          <code>scalePriceWithUsers</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          Multiplies each plan's displayed price dynamically as the user adjusts the seat counter stepper.
         </td>
       </tr>
     </tbody>
