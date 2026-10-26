@@ -113,6 +113,11 @@
   "avatar-stack": {
     "avatar-group-shift-on-hover": "Avatar Stack — Avatar Group (Shift on hover)",
     "without-tooltip": "Avatar Stack — Without tooltip",
+    "with-tooltip-zoom-on-hover": "Avatar Stack — With tooltip (Zoom on hover)",
+    "with-tooltip-arrow-zoom-on-hover": "Avatar Stack — With tooltip arrow (Zoom on hover)",
+    "spread-on-hover-expand-width": "Avatar Stack — Spread on hover (Expand width)",
+    "spread-with-tooltip": "Avatar Stack — Spread with tooltip",
+    "spread-with-tooltip-arrow": "Avatar Stack — Spread with tooltip arrow",
     "with-an-action": "Avatar Stack — With an action",
     "folded-count": "Avatar Stack — Folded count",
     "sizes": "Avatar Stack — Sizes"
