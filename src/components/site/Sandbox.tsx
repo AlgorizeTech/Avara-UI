@@ -1305,7 +1305,7 @@ function ExampleCard({
         ) : (
           <div
             className="my-8 w-full rounded-2xl ring-1 ring-inset ring-foreground/[0.05] flex items-center justify-center bg-foreground/[0.03]"
-            style={{ minHeight: minHeight + 54 /* 48px bar + 6px inset */ }}
+            style={{ minHeight: (minHeight || 420) + 54 /* 48px bar + 6px inset */ }}
           >
             <div className="h-5 w-5 rounded-full border-2 border-foreground/15 border-t-transparent animate-spin" />
           </div>
