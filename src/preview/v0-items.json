@@ -615,12 +615,13 @@
     "centered-stacked-pile": "Modern Scroll Stack — Centered Stacked Pile"
   },
   "navbar": {
-    "e-commerce-mega-nav": "Navbar — E-Commerce Mega Nav",
+    "spotlight-pill-navbar": "Navbar — Spotlight Pill Navbar",
     "navbar": "Navbar",
     "centered": "Navbar — Centered",
     "floating": "Navbar — Floating",
     "minimal": "Navbar — Minimal",
-    "glass": "Navbar — Glass"
+    "glass": "Navbar — Glass",
+    "e-commerce-mega-nav": "Navbar — E-Commerce Mega Nav"
   },
   "navigation-menu": {
     "minimal": "Navigation Menu — Minimal"

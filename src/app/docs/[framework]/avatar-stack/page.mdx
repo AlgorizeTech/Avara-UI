@@ -56,16 +56,23 @@ export default function Community() {
 export const usageCount = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
 
 const PEOPLE = [
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy", designation: "Co-Founder & CTO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara Jade", designation: "Managing Director" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo Silva", designation: "Chairman & Co-Founder" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790082180/pexels-photo-1520760-1790082180553.jpg", alt: "June Carter", designation: "President & Co-Founder" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145141/pexels-photo-6311475-1790145143489.jpg", alt: "Sam Wilson", designation: "Chief Executive Officer" },
 ];
 
 export default function JoinedThisMonth() {
   return (
     <div className="flex items-center gap-3">
-      <AvatarStack avatars={PEOPLE} max={3} />
+      <AvatarStack
+        avatars={PEOPLE}
+        max={3}
+        showTooltip={true}
+        showTooltipArrow={true}
+      />
       <p className="text-sm text-muted-foreground">
         <span className="font-semibold text-foreground">2,400+</span> people joined this month
       </p>
@@ -76,10 +83,10 @@ export default function JoinedThisMonth() {
 export const usageSizes = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
 
 const PEOPLE = [
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy", designation: "Co-Founder & CTO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara Jade", designation: "Managing Director" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo Silva", designation: "Chairman & Co-Founder" },
 ];
 
 export default function SizesDemo() {
@@ -91,9 +98,131 @@ export default function SizesDemo() {
       {/* Medium without tooltip */}
       <AvatarStack avatars={PEOPLE} size="md" max={4} showTooltip={false} />
 
-      {/* Large with tooltip */}
-      <AvatarStack avatars={PEOPLE} size="lg" max={4} />
+      {/* Large with arrow tooltip */}
+      <AvatarStack avatars={PEOPLE} size="lg" max={4} showTooltipArrow={true} />
     </div>
+  );
+}`;
+
+export const usageTooltip = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
+
+const PEOPLE = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy", designation: "Co-Founder & CTO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara Jade", designation: "Managing Director" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo Silva", designation: "Chairman & Co-Founder" },
+];
+
+export default function TooltipZoomAvatarStack() {
+  // Zoom on hover with tooltip, gap remains fixed
+  return (
+    <AvatarStack
+      avatars={PEOPLE}
+      size="md"
+      showTooltip={true}
+      spreadOnHover={false}
+      liftOnHover={true}
+    />
+  );
+}`;
+
+export const usageTooltipArrow = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
+
+const PEOPLE = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy", designation: "Co-Founder & CTO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara Jade", designation: "Managing Director" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo Silva", designation: "Chairman & Co-Founder" },
+];
+
+export default function TooltipArrowAvatarStack() {
+  // Tooltip with pointing arrow and zoom on hover
+  return (
+    <AvatarStack
+      avatars={PEOPLE}
+      size="md"
+      showTooltip={true}
+      showTooltipArrow={true}
+      spreadOnHover={false}
+      liftOnHover={true}
+    />
+  );
+}`;
+
+export const usageSpread = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
+
+const PEOPLE = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo" },
+];
+
+export default function SpreadOnHover() {
+  // Width expands to the right on hover and hovered face shifts slightly upward (-30%) without zoom
+  return (
+    <AvatarStack
+      avatars={PEOPLE}
+      size="md"
+      spreadOnHover={true}
+      spreadDistance={6}
+      transitionDuration={500}
+      translate="-30%"
+      liftOnHover={false}
+      showTooltip={false}
+    />
+  );
+}`;
+
+export const usageSpreadTooltip = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
+
+const PEOPLE = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy", designation: "Co-Founder & CTO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara Jade", designation: "Managing Director" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo Silva", designation: "Chairman & Co-Founder" },
+];
+
+export default function SpreadWithTooltip() {
+  // Width expands to the right on hover, hovered face shifts up (-30%) and reveals tooltip without arrow
+  return (
+    <AvatarStack
+      avatars={PEOPLE}
+      size="md"
+      spreadOnHover={true}
+      spreadDistance={6}
+      transitionDuration={500}
+      translate="-30%"
+      liftOnHover={false}
+      showTooltip={true}
+      showTooltipArrow={false}
+    />
+  );
+}`;
+
+export const usageSpreadTooltipArrow = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
+
+const PEOPLE = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy", designation: "Co-Founder & CTO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara Jade", designation: "Managing Director" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo Silva", designation: "Chairman & Co-Founder" },
+];
+
+export default function SpreadWithTooltipArrow() {
+  // Width expands to the right on hover, hovered face shifts up (-30%) and reveals tooltip with pointing arrow popup
+  return (
+    <AvatarStack
+      avatars={PEOPLE}
+      size="md"
+      spreadOnHover={true}
+      spreadDistance={6}
+      transitionDuration={500}
+      translate="-30%"
+      liftOnHover={false}
+      showTooltip={true}
+      showTooltipArrow={true}
+    />
   );
 }`;
 
@@ -111,34 +240,34 @@ const PEOPLE = [
     alt: "Ana Watson",
     name: "Ana Watson",
     fallback: "AW",
-    designation: "Product Designer",
+    designation: "Founder & CEO",
   },
   {
     src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg",
     alt: "Tom Hardy",
     name: "Tom Hardy",
     fallback: "TH",
-    designation: "Frontend Developer",
+    designation: "Co-Founder & CTO",
   },
   {
     src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg",
     alt: "Mara Jade",
     name: "Mara Jade",
     fallback: "MJ",
-    designation: "Engineering Lead",
+    designation: "Managing Director",
   },
   {
     src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg",
     alt: "Leo Silva",
     name: "Leo Silva",
     fallback: "LS",
-    designation: "Creative Technologist",
+    designation: "Chairman & Co-Founder",
   },
 ];
 
 export default function AvatarGroupDemo() {
   return (
-    <AvatarGroup>
+    <AvatarGroup showTooltip={true}>
       {PEOPLE.map((avatar, index) => (
         <Avatar key={index} className="size-12 border-[3px] border-background ring-0 cursor-pointer">
           <AvatarImage src={avatar.src} alt={avatar.alt} />
@@ -173,11 +302,16 @@ export default function AvatarGroupDemo() {
           effect: "layers earlier avatars over later avatars, while elevating the currently hovered avatar to z-index 50.",
         },
         {
+          prop: "showTooltip",
+          value: "true",
+          effect: "determines whether the gliding tooltip is displayed on hover; set to false to hide tooltips.",
+        },
+        {
           prop: "AvatarGroupTooltip",
           effect: "anchors a floating pointer tooltip above the shifted face with smooth spring entrance and exit.",
         },
       ],
-      props: { example: "avatar-group" },
+      props: { example: "avatar-group", showTooltip: true },
       usage: usageAvatarGroup,
       code: extractCode("src/components/custom/blocks/AvatarStackBlock.tsx"),
       minHeight: 260,
@@ -198,16 +332,194 @@ export default function AvatarGroupDemo() {
   examples={[
     {
       title: "Without tooltip",
-      subheading: "A clean row of overlapping faces without displaying tooltips.",
+      subheading: "A clean row of overlapping faces. Hovering expands the stack smoothly without displaying tooltips.",
       propNotes: [
         {
           prop: "showTooltip",
           value: "false",
           effect: "disables the hover tooltip completely so the avatars fan out without displaying name or info popups.",
         },
+        {
+          prop: "spreadOnHover",
+          effect: "slides each face a few pixels further than the one before it while the row is hovered; set it to `false` for a still row.",
+        },
+        {
+          prop: "liftOnHover",
+          effect: "raises the face under the pointer above its neighbours and grows it a touch, so a half-covered face can be seen whole; `false` keeps the stacking order fixed.",
+        },
       ],
       props: { example: "default", showTooltip: false },
       usage: usageDefault,
+      minHeight: 240,
+    },
+    {
+      title: "With tooltip (Zoom on hover)",
+      subheading:
+        "Hovering an avatar displays its name in a tooltip and zooms the face upward, keeping the row's gap fixed.",
+      propNotes: [
+        {
+          prop: "showTooltip",
+          value: "true",
+          effect: "displays the avatar's alt name in a floating tooltip on hover.",
+        },
+        {
+          prop: "liftOnHover",
+          value: "true",
+          effect: "raises and zooms the hovered avatar above its neighbours.",
+        },
+        {
+          prop: "spreadOnHover",
+          value: "false",
+          effect: "keeps the spacing between avatars fixed so the gap does not expand.",
+        },
+      ],
+      props: { example: "tooltip", showTooltip: true, spreadOnHover: false, liftOnHover: true },
+      usage: usageTooltip,
+      minHeight: 240,
+    },
+    {
+      title: "With tooltip arrow (Zoom on hover)",
+      subheading:
+        "Displays an anchored pointer arrow underneath the tooltip card with a lively spring popup animation as avatars smoothly zoom on hover.",
+      propNotes: [
+        {
+          prop: "showTooltip",
+          value: "true",
+          effect: "displays the avatar's alt name in a floating tooltip on hover.",
+        },
+        {
+          prop: "showTooltipArrow",
+          value: "true",
+          effect: "renders a pointer arrow anchoring to the top of the avatar circle.",
+        },
+        {
+          prop: "liftOnHover",
+          value: "true",
+          effect: "raises and zooms the hovered avatar above its neighbours.",
+        },
+        {
+          prop: "spreadOnHover",
+          value: "false",
+          effect: "keeps the spacing between avatars fixed so the gap does not expand.",
+        },
+      ],
+      props: { example: "tooltip-arrow", showTooltip: true, showTooltipArrow: true, spreadOnHover: false, liftOnHover: true },
+      usage: usageTooltipArrow,
+      minHeight: 240,
+    },
+    {
+      title: "Spread on hover (Expand width)",
+      subheading:
+        "Hovering over the stack smoothly fans the avatars out to the right, widening the gap without zooming individual faces.",
+      propNotes: [
+        {
+          prop: "spreadOnHover",
+          value: "true",
+          effect: "smoothly shifts subsequent avatars to the right on hover, widening the stack.",
+        },
+        {
+          prop: "spreadDistance",
+          value: "6",
+          effect: "sets the subtle shift distance in pixels per avatar (default is 6px).",
+        },
+        {
+          prop: "transitionDuration",
+          value: "500",
+          effect: "controls the transition speed in milliseconds (default is 500ms for a gentle, smooth spread).",
+        },
+        {
+          prop: "translate",
+          value: '"-30%"',
+          effect: "subtly shifts the hovered avatar upward by -30% without flying high.",
+        },
+        {
+          prop: "liftOnHover",
+          value: "false",
+          effect: "disables zooming so the faces remain at their original scale.",
+        },
+      ],
+      props: { example: "spread", spreadOnHover: true, spreadDistance: 6, transitionDuration: 500, translate: "-30%", liftOnHover: false },
+      usage: usageSpread,
+      minHeight: 240,
+    },
+    {
+      title: "Spread with tooltip",
+      subheading:
+        "Hovering over the stack widens the avatar gap to the right, elevates the hovered face by -30%, and displays a clean floating tooltip above it.",
+      propNotes: [
+        {
+          prop: "spreadOnHover",
+          value: "true",
+          effect: "smoothly shifts subsequent avatars to the right on hover, widening the stack.",
+        },
+        {
+          prop: "spreadDistance",
+          value: "6",
+          effect: "sets the shift distance in pixels per avatar.",
+        },
+        {
+          prop: "translate",
+          value: '"-30%"',
+          effect: "subtly shifts the hovered avatar upward by -30%.",
+        },
+        {
+          prop: "showTooltip",
+          value: "true",
+          effect: "displays a floating tooltip with the avatar's name on hover.",
+        },
+        {
+          prop: "showTooltipArrow",
+          value: "false",
+          effect: "renders a clean tooltip without a pointer arrow.",
+        },
+        {
+          prop: "liftOnHover",
+          value: "false",
+          effect: "keeps the avatars at original scale without zooming.",
+        },
+      ],
+      props: { example: "spread-tooltip", spreadOnHover: true, spreadDistance: 6, transitionDuration: 500, translate: "-30%", showTooltip: true, showTooltipArrow: false, liftOnHover: false },
+      usage: usageSpreadTooltip,
+      minHeight: 240,
+    },
+    {
+      title: "Spread with tooltip arrow",
+      subheading:
+        "Hovering widens the stack to the right, subtly raises the hovered face, and reveals a spring popup tooltip with an anchored pointer arrow.",
+      propNotes: [
+        {
+          prop: "spreadOnHover",
+          value: "true",
+          effect: "smoothly shifts subsequent avatars to the right on hover, widening the stack.",
+        },
+        {
+          prop: "spreadDistance",
+          value: "6",
+          effect: "sets the shift distance in pixels per avatar.",
+        },
+        {
+          prop: "translate",
+          value: '"-30%"',
+          effect: "subtly shifts the hovered avatar upward by -30%.",
+        },
+        {
+          prop: "showTooltip",
+          value: "true",
+          effect: "displays a floating tooltip on hover.",
+        },
+        {
+          prop: "showTooltipArrow",
+          value: "true",
+          effect: "renders an anchored pointer arrow underneath with spring popup animation.",
+        },
+        {
+          prop: "liftOnHover",
+          value: "false",
+          effect: "keeps the avatars at original scale without zooming.",
+        },
+      ],
+      props: { example: "spread-tooltip-arrow", spreadOnHover: true, spreadDistance: 6, transitionDuration: 500, translate: "-30%", showTooltip: true, showTooltipArrow: true, liftOnHover: false },
+      usage: usageSpreadTooltipArrow,
       minHeight: 240,
     },
     {
@@ -234,20 +546,26 @@ export default function AvatarGroupDemo() {
     },
     {
       title: "Folded count",
-      subheading: "Six people, three shown — the rest become a +3 disc.",
+      subheading: "Six people, three shown — the rest become a +3 disc. Hovering faces or the counter disc displays arrow tooltips.",
       propNotes: [
         {
           prop: "max",
           effect: "is how many faces show before the rest fold into a count. The count disc is black, so it reads as a number, not a face.",
         },
+        {
+          prop: "showTooltipArrow",
+          value: "true",
+          effect: "displays tooltips with pointer arrows and lively pop animations on hover.",
+        },
       ],
-      props: { example: "count", max: 3 },
+      props: { example: "count", max: 3, showTooltipArrow: true },
       usage: usageCount,
       minHeight: 240,
     },
     {
       title: "Sizes",
-      subheading: "sm, md and lg — 28, 36 and 44 pixels. The middle stack shows without tooltip (showTooltip={false}), while the others display tooltips on hover.",
+      subheading:
+        "sm, md and lg — 28, 36 and 44 pixels. The middle stack shows without tooltip (showTooltip={false}), while the large stack displays tooltips with pointing arrows (showTooltipArrow={true}).",
       propNotes: [
         {
           prop: "size",
@@ -257,6 +575,11 @@ export default function AvatarGroupDemo() {
           prop: "showTooltip",
           value: "false",
           effect: "can be disabled individually per stack (as shown on the middle stack) or left enabled.",
+        },
+        {
+          prop: "showTooltipArrow",
+          value: "true",
+          effect: "renders a pointer arrow anchoring to the top of the avatar circle (as shown on the large stack).",
         },
         {
           prop: "ringClassName",
@@ -270,6 +593,27 @@ export default function AvatarGroupDemo() {
     },
   ]}
 />
+
+## Best Practices & Guidelines
+
+<div className="flex flex-col gap-4 my-6 not-prose">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Optimal Avatar Count</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Limit visible avatars to 3–5 items using the <code>max</code> prop. Folding excess avatars into a <code>+N</code> counter keeps your layout balanced, avoids horizontal overflow on mobile screens, and maintains clean visual hierarchy.</p>
+  </div>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Smooth Hover Motion</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">When enabling <code>spreadOnHover</code>, keep <code>spreadDistance</code> subtle (4–8px) and <code>transitionDuration</code> around 500ms. Pair with <code>translate="-30%"</code> to gently elevate the hovered avatar above its neighbors without jarring layout shifts.</p>
+  </div>
+  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Tooltip Accessibility & Text Alignment</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Always provide accessible <code>alt</code> or <code>name</code> attributes for every avatar. When a <code>designation</code> or subtitle is provided, tooltips automatically align text to the left; otherwise, titles stay cleanly centered for single-line labels.</p>
+  </div>
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
+    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Ring Contrast & Background Matching</h4>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Ensure <code>ringClassName</code> matches the surface the avatars rest upon (defaults to <code>ring-background</code>). A matching border ring creates clean visual separation between overlapping faces in both light and dark modes.</p>
+  </div>
+</div>
 
 ## Props Reference
 
@@ -305,6 +649,12 @@ export default function AvatarGroupDemo() {
         <td>Spring transition configuration for the hover shift animation.</td>
       </tr>
       <tr>
+        <td><code>showTooltip</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Whether to show the floating gliding tooltip on hover. Set to <code>false</code> to disable tooltips.</td>
+      </tr>
+      <tr>
         <td><code>children</code></td>
         <td><code>ReactNode</code></td>
         <td>—</td>
@@ -329,9 +679,9 @@ export default function AvatarGroupDemo() {
     <tbody>
       <tr>
         <td><code>avatars</code></td>
-        <td><code>&#123; src: string; alt?: string; tooltip?: string; fallback?: string &#125;[]</code></td>
+        <td><code>&#123; src: string; alt?: string; name?: string; tooltip?: string; designation?: string; role?: string; fallback?: string &#125;[]</code></td>
         <td><strong>Required</strong></td>
-        <td>The list of faces in order. The <code>alt</code> or <code>tooltip</code> text is displayed inside the hover tooltip.</td>
+        <td>The list of faces in order. Hover tooltips display the avatar's name/alt, and optionally <code>designation</code>/<code>role</code> beneath it if provided.</td>
       </tr>
       <tr>
         <td><code>variant</code></td>
@@ -370,6 +720,24 @@ export default function AvatarGroupDemo() {
         <td>Whether faces smoothly fan apart slightly when the stack is hovered.</td>
       </tr>
       <tr>
+        <td><code>spreadDistance</code></td>
+        <td><code>number</code></td>
+        <td><code>6</code></td>
+        <td>Number of pixels each subsequent avatar shifts to the right on hover when <code>spreadOnHover</code> is enabled.</td>
+      </tr>
+      <tr>
+        <td><code>translate</code></td>
+        <td><code>string | number</code></td>
+        <td><code>"-30%"</code></td>
+        <td>Vertical displacement of an avatar when hovered (e.g. <code>"-30%"</code>).</td>
+      </tr>
+      <tr>
+        <td><code>transitionDuration</code></td>
+        <td><code>number</code></td>
+        <td><code>500</code></td>
+        <td>Duration of the spread and hover transition in milliseconds for a smooth, gentle animation.</td>
+      </tr>
+      <tr>
         <td><code>liftOnHover</code></td>
         <td><code>boolean</code></td>
         <td><code>true</code></td>
@@ -380,6 +748,12 @@ export default function AvatarGroupDemo() {
         <td><code>boolean</code></td>
         <td><code>true</code></td>
         <td>Whether hover reveals the avatar's <code>alt</code> text in a tooltip. Set to <code>false</code> to disable tooltips. (Alias: <code>tooltip</code>).</td>
+      </tr>
+      <tr>
+        <td><code>showTooltipArrow</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Whether to render an anchored pointer arrow beneath the hover tooltip.</td>
       </tr>
     </tbody>
   </table>

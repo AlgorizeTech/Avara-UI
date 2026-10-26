@@ -113,15 +113,27 @@ export function TooltipTrigger({
   return (
     <div
       ref={setTrigger}
-      onMouseEnter={handleOpen}
-      onMouseLeave={handleClose}
-      onFocus={handleOpen}
-      onBlur={handleClose}
       className={cn("inline-block", className)}
       tabIndex={0}
       aria-haspopup="dialog"
       aria-expanded={open}
       {...props}
+      onMouseEnter={(e) => {
+        handleOpen();
+        props.onMouseEnter?.(e);
+      }}
+      onMouseLeave={(e) => {
+        handleClose();
+        props.onMouseLeave?.(e);
+      }}
+      onFocus={(e) => {
+        handleOpen();
+        props.onFocus?.(e);
+      }}
+      onBlur={(e) => {
+        handleClose();
+        props.onBlur?.(e);
+      }}
     >
       {children}
     </div>
@@ -140,8 +152,8 @@ export interface TooltipContentProps
   showArrow?: boolean;
   /** Custom classes for the pointer arrow element. */
   arrowClassName?: string;
-  /** Whether to enable a smooth pull-out animation sliding gently out from the trigger. Can also be set to "staggered" for sequential icon, title, and description entrance, or "expand" for dynamic height/width expansion. */
-  animated?: boolean | "pull-out" | "staggered" | "expand";
+  /** Whether to enable a smooth pull-out animation sliding gently out from the trigger. Can also be set to "staggered" for sequential icon, title, and description entrance, "expand" for dynamic height/width expansion, or "pop" for a snappy spring popup emergence. */
+  animated?: boolean | "pull-out" | "staggered" | "expand" | "pop";
   /** Whether to animate child elements (icon -> title -> description) in a staggered cascade. Defaults to false. */
   staggered?: boolean;
   /** Whether to start with only title space and smoothly expand height (for top/bottom) or width (for left/right) to unveil the description. Defaults to false. */
@@ -298,7 +310,8 @@ export function TooltipContent({
   const resolvedDes = description ?? des;
   const isExpand = Boolean(expand || animated === "expand");
   const isStaggered = Boolean(!isExpand && (staggered || animated === "staggered"));
-  const isArrowEmerge = Boolean(!isExpand && !isStaggered && (animated === true || animated === "pull-out"));
+  const isPop = Boolean(!isExpand && !isStaggered && (animated === "pop" || (animated === true && showArrow)));
+  const isArrowEmerge = Boolean(!isExpand && !isStaggered && !isPop && (animated === true || animated === "pull-out"));
 
   // Forget the measurement on close, so the next open cannot flash at last
   // time’s coordinates before the layout effect re-measures.
@@ -382,10 +395,22 @@ export function TooltipContent({
     };
 
     updatePosition();
+    // Smoothly track moving triggers (e.g. avatar spring/lift transitions) while open
+    let rafId: number;
+    const startTime = typeof performance !== "undefined" ? performance.now() : 0;
+    const trackLoop = () => {
+      updatePosition();
+      if (typeof performance !== "undefined" && performance.now() - startTime < 600) {
+        rafId = requestAnimationFrame(trackLoop);
+      }
+    };
+    rafId = requestAnimationFrame(trackLoop);
+
     // Use capture phase for scroll to ensure it updates during nested scroll containers
     win.addEventListener("scroll", updatePosition, true);
     win.addEventListener("resize", updatePosition);
     return () => {
+      cancelAnimationFrame(rafId);
       win.removeEventListener("scroll", updatePosition, true);
       win.removeEventListener("resize", updatePosition);
     };
@@ -588,12 +613,12 @@ export function TooltipContent({
         role="tooltip"
         className={cn(
           "absolute z-[9999] text-xs text-primary-foreground bg-primary shadow-md pointer-events-none box-border",
-          isArrowEmerge && (ARROW_ORIGINS[side]?.[align] ?? "origin-center"),
+          (isArrowEmerge || isPop) && (ARROW_ORIGINS[side]?.[align] ?? "origin-center"),
           title
             ? "px-3.5 py-2.5 rounded-lg max-w-xs"
             : "px-3 py-1.5 rounded-md font-medium",
-          !isArrowEmerge && "transition-none",
-          entranceClass,
+          !isArrowEmerge && !isPop && "transition-none",
+          isArrowEmerge || isPop ? "" : entranceClass,
           className,
         )}
         style={
@@ -601,18 +626,90 @@ export function TooltipContent({
             top: coords.top,
             left: coords.left,
             visibility: positioned ? "visible" : "hidden",
-            ...(isArrowEmerge
+            ...(isPop
               ? {
                   animation: positioned
-                    ? `tooltip-emerge-${side} 600ms cubic-bezier(0.16, 1, 0.3, 1) both`
+                    ? `tooltip-pop-${side} 320ms cubic-bezier(0.16, 1, 0.3, 1) both`
                     : undefined,
                   willChange: "transform, opacity",
                 }
-              : undefined),
+              : isArrowEmerge
+                ? {
+                    animation: positioned
+                      ? `tooltip-emerge-${side} 600ms cubic-bezier(0.16, 1, 0.3, 1) both`
+                      : undefined,
+                    willChange: "transform, opacity",
+                  }
+                : undefined),
           } as React.CSSProperties
         }
         {...props}
       >
+        {isPop && (
+          <style>{`
+            @keyframes tooltip-pop-top {
+              0% {
+                opacity: 0;
+                transform: translateY(8px) scale(0.65);
+              }
+              60% {
+                opacity: 1;
+                transform: translateY(-2px) scale(1.04);
+              }
+              100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+              }
+            }
+            @keyframes tooltip-pop-bottom {
+              0% {
+                opacity: 0;
+                transform: translateY(-8px) scale(0.65);
+              }
+              60% {
+                opacity: 1;
+                transform: translateY(2px) scale(1.04);
+              }
+              100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+              }
+            }
+            @keyframes tooltip-pop-left {
+              0% {
+                opacity: 0;
+                transform: translateX(8px) scale(0.65);
+              }
+              60% {
+                opacity: 1;
+                transform: translateX(-2px) scale(1.04);
+              }
+              100% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+              }
+            }
+            @keyframes tooltip-pop-right {
+              0% {
+                opacity: 0;
+                transform: translateX(-8px) scale(0.65);
+              }
+              60% {
+                opacity: 1;
+                transform: translateX(2px) scale(1.04);
+              }
+              100% {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+              }
+            }
+            @media (prefers-reduced-motion: reduce) {
+              * {
+                animation: none !important;
+              }
+            }
+          `}</style>
+        )}
         {isArrowEmerge && (
           <style>{`
             @keyframes tooltip-emerge-top {
