@@ -2,9 +2,9 @@ export const metadata = docsPageMetadata("footer");
 
 # Footer
 
-A collection of 4 production-ready, high-capacity, fully responsive Footer components designed for modern web applications, SaaS platforms, e-commerce stores, and enterprise products.
+A collection of 5 production-ready, high-capacity, fully responsive Footer components designed for modern web applications, SaaS platforms, e-commerce stores, and enterprise products.
 
-`Footer` adapts seamlessly across mobile screens, tablets, and desktop viewports, with support for centered layouts, frosted glass docks, cyberpunk neon glow pulses, and quantum particle beams.
+`Footer` adapts seamlessly across mobile screens, tablets, and desktop viewports, with support for centered layouts, frosted glass docks, cyberpunk neon glow pulses, quantum particle beams, and snapshot studio polaroid piles.
 
 export const usageSimple = `import { Footer } from "@/components/custom/blocks/FooterBlock";
 
@@ -30,6 +30,14 @@ export default function QuantumBeamFooterDemo() {
   return ;
 }`;
 
+export const usageSnapshot = `import { Footer } from "@/components/custom/blocks/FooterBlock";
+
+export default function SnapshotFooterDemo() {
+  return (
+    
+  );
+}`;
+
 ## Installation
 
 Add the component by URL — no setup needed:
@@ -51,8 +59,8 @@ npx shadcn@latest add @avara-ui/footer
 
 Discover the key capabilities of the `Footer` component:
 
-    4 High-Performance Responsive Variants
-    Includes Simple Centered, Glass Dock, Neon Glow Pulse, and Quantum Particle Beam.
+    5 High-Performance Responsive Variants
+    Includes Simple Centered, Glass Dock, Neon Glow Pulse, Quantum Particle Beam, and Snapshot.
 
     100% Screen & Device Responsive
     Fluid Tailwind CSS grid and flex layouts built to adapt from 320px mobile viewports up to 4K ultra-wide screens.
@@ -66,8 +74,23 @@ Discover the key capabilities of the `Footer` component:
 
         variant
         FooterVariant
-        "simple-centered"
-        Selects from the 4 active responsive footer variants ("simple-centered", "glass-dock", "neon-glow-pulse", "quantum-particle-beam").
+        "snapshot"
+        Selects from the 5 footer variants ("snapshot", "simple-centered", "glass-dock", "neon-glow-pulse", "quantum-particle-beam").
+
+        color
+        string
+        "primary"
+        Accent theme color (e.g. "indigo", "rose", "emerald", "lavender", or hex). Bridges with the active color picker to style interactive stickers, badges, and glows.
+
+        snapshot
+        SnapshotFooterContent
+        Marlo Studio demo copy
+        Content for variant="snapshot": headingLines, description, taglineLines, five photos (&#123; src, caption &#125;), note card address, hours, stickerText and legalLinks. Every field is optional.
+
+        sections
+        FooterLinkSection[]
+        Per-variant columns
+        Link columns. A link may carry a badge (e.g. 3), shown as a count pill by snapshot.
 
         brandName
         string

@@ -174,7 +174,9 @@ export function SandboxFrame({
   // floor. Growing the iframe's viewport by 1/scale makes the scaled frame
   // fill the card exactly.
   const safeScale = scale > 0 ? scale : 1;
-  const floorHeight = Math.ceil(minHeight / safeScale);
+  const effectiveMinHeight =
+    minHeight > 0 ? minHeight : !ready || contentHeight === 0 ? 420 : 0;
+  const floorHeight = Math.ceil(effectiveMinHeight / safeScale);
   const frameHeight = Math.max(floorHeight, contentHeight);
 
   const frameStyle: React.CSSProperties = fill

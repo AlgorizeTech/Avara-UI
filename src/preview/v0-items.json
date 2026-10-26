@@ -113,6 +113,11 @@
   "avatar-stack": {
     "avatar-group-shift-on-hover": "Avatar Stack — Avatar Group (Shift on hover)",
     "without-tooltip": "Avatar Stack — Without tooltip",
+    "with-tooltip-zoom-on-hover": "Avatar Stack — With tooltip (Zoom on hover)",
+    "with-tooltip-arrow-zoom-on-hover": "Avatar Stack — With tooltip arrow (Zoom on hover)",
+    "spread-on-hover-expand-width": "Avatar Stack — Spread on hover (Expand width)",
+    "spread-with-tooltip": "Avatar Stack — Spread with tooltip",
+    "spread-with-tooltip-arrow": "Avatar Stack — Spread with tooltip arrow",
     "with-an-action": "Avatar Stack — With an action",
     "folded-count": "Avatar Stack — Folded count",
     "sizes": "Avatar Stack — Sizes"
@@ -369,8 +374,8 @@
     "glass": "Email — Glass",
     "liquid-glass": "Email — Liquid Glass"
   },
-  "error-section": {
-    "cyberpunk-terminal-section": "Error Section — Cyberpunk Terminal Section"
+  "error": {
+    "cyberpunk-terminal-section": "Error — Cyberpunk Terminal Section"
   },
   "falling-tags": {
     "interactive-physics-arena": "Falling Tags — Interactive physics arena",
@@ -438,6 +443,7 @@
     "accent-color": "Flowchart — Accent color"
   },
   "footer": {
+    "snapshot-footer": "Footer — Snapshot Footer",
     "simple-centered-footer": "Footer — Simple Centered Footer",
     "glass-dock-footer": "Footer — Glass Dock Footer",
     "neon-glow-pulse-cyberpunk-footer": "Footer — Neon Glow Pulse Cyberpunk Footer",
@@ -615,12 +621,13 @@
     "centered-stacked-pile": "Modern Scroll Stack — Centered Stacked Pile"
   },
   "navbar": {
-    "e-commerce-mega-nav": "Navbar — E-Commerce Mega Nav",
+    "spotlight-pill-navbar": "Navbar — Spotlight Pill Navbar",
     "navbar": "Navbar",
     "centered": "Navbar — Centered",
     "floating": "Navbar — Floating",
     "minimal": "Navbar — Minimal",
-    "glass": "Navbar — Glass"
+    "glass": "Navbar — Glass",
+    "e-commerce-mega-nav": "Navbar — E-Commerce Mega Nav"
   },
   "navigation-menu": {
     "minimal": "Navigation Menu — Minimal"
@@ -638,8 +645,8 @@
     "spotlight": "Newsletter — Spotlight",
     "issues": "Newsletter — Issues"
   },
-  "not-found-section": {
-    "hyperspace-404-section": "Not Found Section — Hyperspace 404 Section"
+  "not-found": {
+    "hyperspace-404-section": "Not Found — Hyperspace 404 Section"
   },
   "otp-input": {
     "otp-input": "OTP Input",
@@ -666,6 +673,7 @@
     "offset": "Popover — Offset"
   },
   "pricing": {
+    "selectable-workspace-plans": "Pricing — Selectable workspace plans",
     "tiered-cards": "Pricing — Tiered cards",
     "dot-matrix-cards": "Pricing — Dot matrix cards",
     "scale-cards": "Pricing — Scale cards",

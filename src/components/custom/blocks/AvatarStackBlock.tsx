@@ -148,6 +148,10 @@ export interface AvatarGroupProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   translate?: string | number;
   transition?: Transition;
   tooltipTransition?: Transition;
+  /** Whether to show the hover tooltip. Defaults to true. */
+  showTooltip?: boolean;
+  /** Alias for showTooltip. */
+  tooltip?: boolean;
 }
 
 interface TooltipItemData {
@@ -163,11 +167,14 @@ export const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
       translate = "-30%",
       transition = { type: "spring", stiffness: 300, damping: 17 },
       tooltipTransition = { type: "spring", stiffness: 300, damping: 35 },
+      showTooltip = true,
+      tooltip = true,
       className,
       ...props
     },
     ref,
   ) => {
+    const isTooltipEnabled = showTooltip && tooltip;
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [coords, setCoords] = useState<{ x: number; y: number } | null>(null);
     const [mounted, setMounted] = useState(false);
@@ -293,6 +300,7 @@ export const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
 
         {/* Floating tooltip portaled outside to document.body to prevent flex layout shifts */}
         {mounted &&
+          isTooltipEnabled &&
           typeof document !== "undefined" &&
           createPortal(
             <AnimatePresence>
@@ -318,7 +326,15 @@ export const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                   <div className="-translate-x-1/2 -translate-y-full flex flex-col items-center">
                     <div className="bg-primary text-primary-foreground z-50 w-fit max-w-xs rounded-md px-3.5 py-1.5 text-xs text-balance shadow-md flex items-center justify-center relative">
                       <div className="overflow-hidden whitespace-nowrap py-0.5">
-                        <div key={activeIndex} className="flex flex-col items-start text-left">
+                        <div
+                          key={activeIndex}
+                          className={cn(
+                            "flex flex-col",
+                            tooltips[activeIndex]?.designation
+                              ? "items-start text-left"
+                              : "items-center text-center",
+                          )}
+                        >
                           <motion.span
                             initial={{ opacity: 0, y: 6 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -374,7 +390,7 @@ export interface AvatarStackProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   variant?: "default" | "shift";
   /** Invert overlapping order so the first avatar appears on top. */
   invertOverlap?: boolean;
-  /** Vertical displacement for the shift variant (e.g. "-30%"). */
+  /** Vertical displacement when an avatar is hovered (e.g. "-30%"). */
   translate?: string | number;
   /** Faces shown before the rest fold into a count. */
   max?: number;
@@ -384,12 +400,18 @@ export interface AvatarStackProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   action?: React.ReactNode;
   /** Faces slide apart a little when the stack is hovered. */
   spreadOnHover?: boolean;
+  /** Pixel distance each subsequent avatar shifts to the right on hover. Defaults to 6. */
+  spreadDistance?: number;
+  /** Transition duration in milliseconds for slide/spread animations. Defaults to 500. */
+  transitionDuration?: number;
   /** A hovered face rises above its neighbours and grows a touch, so it can be seen whole. */
   liftOnHover?: boolean;
   /** Whether to show a tooltip with the avatar's alt text on hover. Defaults to true. */
   showTooltip?: boolean;
   /** Alias for showTooltip. */
   tooltip?: boolean;
+  /** Whether to display an arrow pointer on the tooltip. Defaults to false. */
+  showTooltipArrow?: boolean;
 }
 
 export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
@@ -399,23 +421,29 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
       size = "md",
       variant = "default",
       invertOverlap = true,
-      translate = "-30%",
+      translate,
       max = 4,
       ringClassName = "ring-background",
       action,
       spreadOnHover = false,
-      liftOnHover = false,
+      spreadDistance = 6,
+      transitionDuration = 500,
+      liftOnHover = true,
       showTooltip = true,
       tooltip = true,
+      showTooltipArrow = false,
       className,
       ...props
     },
     ref,
   ) => {
+    const [isHovered, setIsHovered] = useState(false);
+    const [hoveredAvatarIndex, setHoveredAvatarIndex] = useState<number | string | null>(null);
     const s = SIZES[size] ?? SIZES.md;
     const shown = avatars.slice(0, max);
     const rest = avatars.length - shown.length;
     const enableTooltip = showTooltip && tooltip;
+    const dist = spreadDistance;
 
     // Shift on hover variant (matches animate-ui behavior)
     if (variant === "shift") {
@@ -423,7 +451,8 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
         <AvatarGroup
           ref={ref}
           invertOverlap={invertOverlap}
-          translate={translate}
+          translate={translate ?? "-30%"}
+          showTooltip={enableTooltip}
           className={className}
           {...props}
         >
@@ -456,42 +485,82 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
       );
     }
 
-    // Default variant
-    // Layering comes from `--as-z` so a hover class can still win over it.
-    const disc = cn(
-      "relative z-[var(--as-z)] grid shrink-0 place-items-center overflow-hidden rounded-full ring-2 transition-transform duration-300 ease-out cursor-pointer",
-      s.box,
-      ringClassName,
-      liftOnHover && "hover:z-50 hover:scale-115",
-    );
-
+    // Default variant: smooth rightward fan-out spread on hover & z-index elevation on hover
     return (
       <div
         ref={ref}
         className={cn("group flex items-center", s.overlap, className)}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => {
+          setIsHovered(false);
+          setHoveredAvatarIndex(null);
+        }}
         {...props}
       >
         {shown.map((a, i) => {
+          const shiftX = isHovered && spreadOnHover ? i * dist : 0;
+          const isThisHovered = hoveredAvatarIndex === i;
+          const currentZIndex = isThisHovered ? 50 : shown.length - i;
+          const shiftY = isThisHovered && translate ? (typeof translate === "number" ? `${translate}px` : translate) : "0px";
           const avatarElement = (
             <span
               key={a.src}
-              className={cn(disc, "bg-muted")}
-              // Each face slides a touch further than the last, so the row fans out.
-              style={{ "--as-shift": `${i * 3}px`, "--as-z": shown.length - i } as React.CSSProperties}
+              onMouseEnter={() => setHoveredAvatarIndex(i)}
+              onMouseLeave={() => setHoveredAvatarIndex(null)}
+              className={cn(
+                "relative grid shrink-0 place-items-center overflow-hidden rounded-full ring-2 cursor-pointer bg-muted outline-none",
+                s.box,
+                ringClassName,
+              )}
+              style={
+                enableTooltip
+                  ? {
+                      transform: liftOnHover && isThisHovered ? "scale(1.15)" : "scale(1)",
+                      transition: `transform ${transitionDuration}ms cubic-bezier(0.16, 1, 0.3, 1)`,
+                    }
+                  : {
+                      transform: `translateX(${shiftX}px) translateY(${shiftY}) ${liftOnHover && isThisHovered ? "scale(1.15)" : "scale(1)"}`,
+                      zIndex: currentZIndex,
+                      transition: `transform ${transitionDuration}ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms ease, z-index 0ms`,
+                    }
+              }
             >
-              <img src={a.src} alt={a.alt ?? a.name ?? ""} className="h-full w-full object-cover" />
+              <img src={a.src} alt={a.alt ?? ""} className="h-full w-full object-cover" />
             </span>
           );
 
-          if (enableTooltip && (a.tooltip || a.alt || a.name)) {
+          const title = a.name ?? a.alt ?? a.tooltip;
+          const designation = a.designation ?? a.role;
+
+          if (enableTooltip && title) {
             return (
-              <Tooltip key={a.src}>
-                <TooltipTrigger asChild>{avatarElement}</TooltipTrigger>
-                <TooltipContent side="top">
-                  <div className="flex flex-col items-center">
-                    <span className="font-semibold text-xs">{a.name || a.tooltip || a.alt}</span>
-                    {(a.designation || a.role) && (
-                      <span className="text-[10px] text-muted-foreground mt-0.5">{a.designation || a.role}</span>
+              <Tooltip key={a.src} delayDuration={50}>
+                <TooltipTrigger
+                  className={cn("inline-block relative outline-none", isThisHovered && "!z-50")}
+                  style={{
+                    transform: `translateX(${shiftX}px) translateY(${shiftY})`,
+                    zIndex: currentZIndex,
+                    transition: `transform ${transitionDuration}ms cubic-bezier(0.16, 1, 0.3, 1), z-index 0ms`,
+                  }}
+                  onMouseEnter={() => setHoveredAvatarIndex(i)}
+                  onMouseLeave={() => setHoveredAvatarIndex(null)}
+                >
+                  {avatarElement}
+                </TooltipTrigger>
+                <TooltipContent
+                  side="top"
+                  showArrow={showTooltipArrow}
+                  animated={showTooltipArrow ? "pop" : undefined}
+                >
+                  <div
+                    className={cn(
+                      "flex flex-col",
+                      designation ? "items-start text-left" : "items-center text-center",
+                    )}
+                  >
+                    <span className="font-semibold text-xs leading-tight whitespace-nowrap">{title}</span>
+                    {designation && (
+                      <span className="text-[10px] opacity-80 whitespace-nowrap mt-0.5">{designation}</span>
                     )}
                   </div>
                 </TooltipContent>
@@ -501,18 +570,81 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
 
           return avatarElement;
         })}
-        {rest > 0 && (
-          <span
-            className={cn(disc, "bg-primary font-semibold text-primary-foreground", s.text)}
-            style={{ "--as-shift": `${shown.length * 3}px`, "--as-z": 0 } as React.CSSProperties}
-          >
-            +{rest}
-          </span>
-        )}
+        {rest > 0 && (() => {
+          const shiftRestX = isHovered && spreadOnHover ? shown.length * dist : 0;
+          const isRestHovered = hoveredAvatarIndex === "rest";
+          const shiftRestY = isRestHovered && translate ? (typeof translate === "number" ? `${translate}px` : translate) : "0px";
+          const restElement = (
+            <span
+              onMouseEnter={() => setHoveredAvatarIndex("rest")}
+              onMouseLeave={() => setHoveredAvatarIndex(null)}
+              className={cn(
+                "relative grid shrink-0 place-items-center overflow-hidden rounded-full ring-2 cursor-pointer bg-primary font-semibold text-primary-foreground outline-none",
+                s.box,
+                s.text,
+                ringClassName,
+              )}
+              style={
+                enableTooltip
+                  ? {
+                      transform: liftOnHover && isRestHovered ? "scale(1.15)" : "scale(1)",
+                      transition: `transform ${transitionDuration}ms cubic-bezier(0.16, 1, 0.3, 1)`,
+                    }
+                  : {
+                      transform: `translateX(${shiftRestX}px) translateY(${shiftRestY}) ${liftOnHover && isRestHovered ? "scale(1.15)" : "scale(1)"}`,
+                      zIndex: isRestHovered ? 50 : 0,
+                      transition: `transform ${transitionDuration}ms cubic-bezier(0.16, 1, 0.3, 1)`,
+                    }
+              }
+            >
+              +{rest}
+            </span>
+          );
+
+          if (enableTooltip) {
+            return (
+              <Tooltip key="rest-count" delayDuration={50}>
+                <TooltipTrigger
+                  className={cn("inline-block relative outline-none", isRestHovered && "!z-50")}
+                  style={{
+                    transform: `translateX(${shiftRestX}px) translateY(${shiftRestY})`,
+                    zIndex: isRestHovered ? 50 : 0,
+                    transition: `transform ${transitionDuration}ms cubic-bezier(0.16, 1, 0.3, 1), z-index 0ms`,
+                  }}
+                  onMouseEnter={() => setHoveredAvatarIndex("rest")}
+                  onMouseLeave={() => setHoveredAvatarIndex(null)}
+                >
+                  {restElement}
+                </TooltipTrigger>
+                <TooltipContent
+                  side="top"
+                  showArrow={showTooltipArrow}
+                  animated={showTooltipArrow ? "pop" : undefined}
+                >
+                  <div className="flex flex-col items-center text-center">
+                    <span className="font-semibold text-xs leading-tight whitespace-nowrap">+{rest} more</span>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            );
+          }
+
+          return restElement;
+        })()}
         {action && (
           <span
-            className={cn(disc, "overflow-visible ring-0")}
-            style={{ "--as-shift": `${(shown.length + (rest > 0 ? 1 : 0)) * 3}px`, "--as-z": 0 } as React.CSSProperties}
+            onMouseEnter={() => setHoveredAvatarIndex("action")}
+            onMouseLeave={() => setHoveredAvatarIndex(null)}
+            className={cn(
+              "relative grid shrink-0 place-items-center overflow-visible rounded-full ring-0 cursor-pointer",
+              s.box,
+              hoveredAvatarIndex === "action" && "scale-110",
+            )}
+            style={{
+              transform: `translateX(${isHovered && spreadOnHover ? (shown.length + (rest > 0 ? 1 : 0)) * dist : 0}px) translateY(${hoveredAvatarIndex === "action" && translate ? (typeof translate === "number" ? `${translate}px` : translate) : "0px"})`,
+              zIndex: hoveredAvatarIndex === "action" ? 50 : 0,
+              transition: `transform ${transitionDuration}ms cubic-bezier(0.16, 1, 0.3, 1)`,
+            }}
           >
             {action}
           </span>

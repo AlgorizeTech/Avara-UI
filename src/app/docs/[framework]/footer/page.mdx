@@ -7,9 +7,9 @@ import { extractCode } from "@/lib/code";
 
 # Footer
 
-A collection of 4 production-ready, high-capacity, fully responsive Footer components designed for modern web applications, SaaS platforms, e-commerce stores, and enterprise products.
+A collection of 5 production-ready, high-capacity, fully responsive Footer components designed for modern web applications, SaaS platforms, e-commerce stores, and enterprise products.
 
-`Footer` adapts seamlessly across mobile screens, tablets, and desktop viewports, with support for centered layouts, frosted glass docks, cyberpunk neon glow pulses, and quantum particle beams.
+`Footer` adapts seamlessly across mobile screens, tablets, and desktop viewports, with support for centered layouts, frosted glass docks, cyberpunk neon glow pulses, quantum particle beams, and snapshot studio polaroid piles.
 
 export const usageSimple = `import { Footer } from "@/components/custom/blocks/FooterBlock";
 
@@ -35,15 +35,31 @@ export default function QuantumBeamFooterDemo() {
   return <Footer variant="quantum-particle-beam" />;
 }`;
 
+export const usageSnapshot = `import { Footer } from "@/components/custom/blocks/FooterBlock";
+
+export default function SnapshotFooterDemo() {
+  return (
+    <Footer
+      variant="snapshot"
+      brandName="Avara UI"
+      snapshot={{
+        headingLines: ["Design freely.", "Ship extraordinary apps."],
+        taglineLines: ["Modern components.", "Infinite creativity.", "Built for everyone."],
+        address: ["Avara Studio", "Level 4, Innovation Park", "Dhaka 1212, Bangladesh", "+880 1700 000 000"],
+      }}
+    />
+  );
+}`;
+
 <ExampleShowcase
   name="footer"
   columns={1}
   examples={[
     {
-      title: "Simple Centered Footer",
-      propNotes: [{ lead: "Use", prop: "variant", value: '"simple-centered"', effect: "for clean, spacious centered brand logo and navigation pills." }],
-      props: { variant: "simple-centered" },
-      usage: usageSimple,
+      title: "Snapshot Footer",
+      propNotes: [{ lead: "Use", prop: "variant", value: '"snapshot"', effect: "a modern studio footer with sunken interactive cards and an animated say hi sticker that lifts out on hover." }],
+      props: { variant: "snapshot" },
+      usage: usageSnapshot,
       code: extractCode("src/components/custom/blocks/FooterBlock.tsx"),
     },
   ]}
@@ -59,6 +75,12 @@ export default function QuantumBeamFooterDemo() {
   name="footer"
   columns={1}
   examples={[
+    {
+      title: "Simple Centered Footer",
+      propNotes: [{ lead: "Use", prop: "variant", value: '"simple-centered"', effect: "for clean, spacious centered brand logo and navigation pills." }],
+      props: { variant: "simple-centered" },
+      usage: usageSimple,
+    },
     {
       title: "Glass Dock Footer",
       propNotes: [{ lead: "Use", prop: "variant", value: '"glass-dock"', effect: "floating glassmorphism bar dock card with backdrop blur." }],
@@ -86,8 +108,8 @@ Discover the key capabilities of the `Footer` component:
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">4 High-Performance Responsive Variants</h3>
-    <p className="text-muted-foreground text-sm">Includes Simple Centered, Glass Dock, Neon Glow Pulse, and Quantum Particle Beam.</p>
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">5 High-Performance Responsive Variants</h3>
+    <p className="text-muted-foreground text-sm">Includes Simple Centered, Glass Dock, Neon Glow Pulse, Quantum Particle Beam, and Snapshot.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">100% Screen & Device Responsive</h3>
@@ -111,8 +133,26 @@ Discover the key capabilities of the `Footer` component:
       <tr>
         <td><code>variant</code></td>
         <td><code>FooterVariant</code></td>
-        <td><code>"simple-centered"</code></td>
-        <td>Selects from the 4 active responsive footer variants (<code>"simple-centered"</code>, <code>"glass-dock"</code>, <code>"neon-glow-pulse"</code>, <code>"quantum-particle-beam"</code>).</td>
+        <td><code>"snapshot"</code></td>
+        <td>Selects from the 5 footer variants (<code>"snapshot"</code>, <code>"simple-centered"</code>, <code>"glass-dock"</code>, <code>"neon-glow-pulse"</code>, <code>"quantum-particle-beam"</code>).</td>
+      </tr>
+      <tr>
+        <td><code>color</code></td>
+        <td><code>string</code></td>
+        <td><code>"primary"</code></td>
+        <td>Accent theme color (e.g. <code>"indigo"</code>, <code>"rose"</code>, <code>"emerald"</code>, <code>"lavender"</code>, or hex). Bridges with the active color picker to style interactive stickers, badges, and glows.</td>
+      </tr>
+      <tr>
+        <td><code>snapshot</code></td>
+        <td><code>SnapshotFooterContent</code></td>
+        <td>Marlo Studio demo copy</td>
+        <td>Content for <code>variant="snapshot"</code>: <code>headingLines</code>, <code>description</code>, <code>taglineLines</code>, five <code>photos</code> (<code>&#123; src, caption &#125;</code>), note card <code>address</code>, <code>hours</code>, <code>stickerText</code> and <code>legalLinks</code>. Every field is optional.</td>
+      </tr>
+      <tr>
+        <td><code>sections</code></td>
+        <td><code>FooterLinkSection[]</code></td>
+        <td>Per-variant columns</td>
+        <td>Link columns. A link may carry a <code>badge</code> (e.g. <code>3</code>), shown as a count pill by <code>snapshot</code>.</td>
       </tr>
       <tr>
         <td><code>brandName</code></td>
