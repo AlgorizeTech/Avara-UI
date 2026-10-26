@@ -85,9 +85,9 @@ function presetColors(preset: ThemePreset): ThemeCustomizerState["colors"] {
 
 function getInitialState(): ThemeCustomizerState {
   return {
-    colors: presetColors(getDefaultPreset()),
     radius: 0.625,
     activePreset: DEFAULT_PRESET,
+    colors: presetColors(getDefaultPreset()),
   };
 }
 
@@ -265,7 +265,9 @@ export function ThemeCustomizerProvider({
     if (!hydrated) return;
     const modeColors = state.colors[currentMode];
     injectCSSVariables(modeColors, state.radius);
-    saveState(state);
+    if (window.parent === window) {
+      saveState(state);
+    }
   }, [state, currentMode, hydrated]);
 
   // ─── Actions ─────────────────────────────────────────────────

@@ -666,6 +666,7 @@
     "offset": "Popover — Offset"
   },
   "pricing": {
+    "selectable-workspace-plans": "Pricing — Selectable workspace plans",
     "tiered-cards": "Pricing — Tiered cards",
     "dot-matrix-cards": "Pricing — Dot matrix cards",
     "scale-cards": "Pricing — Scale cards",

@@ -555,7 +555,12 @@ const rawNavigation: NavigationItem[] = [
         addedOn: "2026-09-16",
         keywords: ["platform", "grid", "features", "tiles", "bento", "tools", "catalog", "spotlight"],
       },
-      { label: "Pricing Section", slug: "pricing" },
+      {
+        label: "Pricing Section",
+        slug: "pricing",
+        badge: "New",
+        addedOn: "2026-10-26",
+      },
       { label: "Product Details", slug: "product-details" },
       {
         label: "Profile Page",

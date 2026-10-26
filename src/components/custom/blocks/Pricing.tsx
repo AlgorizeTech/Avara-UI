@@ -27,7 +27,12 @@ export type PricingVariant =
   | "plans-pro"
   | "elegant"
   | "minimal"
-  | "bordered";
+  | "bordered"
+  | "builder"
+  | "table"
+  | "slider"
+  | "typographic"
+  | "plans";
 
 // Two-tone leaf tree icon matching uploaded image (yellow/amber left leaf, bright green right leaf, dark trunk)
 const SproutIcon = ({ className }: { className?: string }) => (
@@ -215,24 +220,118 @@ export function PricingCards({
     );
   }
 
+  if (variant === "plans-pro") {
+    return (
+      <PricingPlansPro
+        title={title}
+        subtitle={subtitle}
+        badgeText={badgeText}
+        color={color}
+        counting={counting}
+        linkComponent={LinkComp}
+      />
+    );
+  }
+
+  const defaultHeaders: Record<
+    string,
+    { badge: string; title: string; subtitle: string }
+  > = {
+    default: {
+      badge: "Subscription Tiers",
+      title: "Flexible plans built for every stage of growth",
+      subtitle:
+        "Start small and upgrade as your audience expands. Switch between monthly and annual billing anytime.",
+    },
+    elegant: {
+      badge: "Curated Editions",
+      title: "Refined pricing for modern teams",
+      subtitle:
+        "Thoughtfully structured tiers with priority support and zero hidden platform fees.",
+    },
+    minimal: {
+      badge: "01 / PRICING",
+      title: "Pay only for what matters",
+      subtitle:
+        "No bloat, no complex contracts — straightforward monthly or annual subscriptions.",
+    },
+    bordered: {
+      badge: "NO-NONSENSE PRICING",
+      title: "Bold plans with zero surprises",
+      subtitle:
+        "Hard-hitting features, transparent flat rates, and instant setup for ambitious builders.",
+    },
+  };
+
+  const fallbackHeader = defaultHeaders[variant] || defaultHeaders.default;
+  const resolvedBadge = badgeText ?? fallbackHeader.badge;
+  const resolvedTitle = title ?? fallbackHeader.title;
+  const resolvedSubtitle = subtitle ?? fallbackHeader.subtitle;
+
   return (
-    <div className="w-full max-w-6xl mx-auto py-8 sm:py-12" style={style}>
-      {(title || subtitle || badgeText) && (
+    <div className="w-full h-full max-w-6xl mx-auto py-8 sm:py-12" style={style}>
+      {(resolvedTitle || resolvedSubtitle || resolvedBadge) && (
         <div className="text-center space-y-3 sm:space-y-4 max-w-2xl mx-auto mb-8 sm:mb-12">
-          {badgeText && (
-            <div className={cn("inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border text-[11px] font-semibold tracking-wide shadow-2xs transition-colors", theme.bgSoft, theme.border)}>
-              <Sparkles className={cn("w-3.5 h-3.5 fill-current", theme.text)} />
-              <span>{badgeText}</span>
-            </div>
+          {resolvedBadge && (
+            <>
+              {variant === "elegant" ? (
+                <div
+                  className={cn(
+                    "inline-flex items-center gap-3 px-4 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] transition-colors",
+                    theme.text,
+                  )}
+                >
+                  <span className="w-6 h-px bg-current opacity-40" />
+                  <Star className="w-3 h-3 fill-current shrink-0" />
+                  <span>{resolvedBadge}</span>
+                  <span className="w-6 h-px bg-current opacity-40" />
+                </div>
+              ) : variant === "minimal" ? (
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md border border-border bg-muted/40 font-mono text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  <span className={cn("w-1.5 h-1.5 rounded-xs", theme.bg)} />
+                  <span>{resolvedBadge}</span>
+                </div>
+              ) : variant === "bordered" ? (
+                <div
+                  className={cn(
+                    "inline-flex items-center gap-1.5 px-3.5 py-1 rounded-lg border-2 border-foreground text-[11px] font-extrabold uppercase tracking-wider shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] dark:shadow-[3px_3px_0px_0px_rgba(255,255,255,1)]",
+                    theme.bg,
+                  )}
+                >
+                  <Zap className="w-3.5 h-3.5 fill-current" />
+                  <span>{resolvedBadge}</span>
+                </div>
+              ) : (
+                <div
+                  className={cn(
+                    "inline-flex items-center gap-1.5 px-3.5 py-1 rounded-lg border text-[11px] font-semibold tracking-wide shadow-2xs transition-colors",
+                    theme.bgSoft,
+                    theme.border,
+                  )}
+                >
+                  <Rocket className={cn("w-3.5 h-3.5", theme.text)} />
+                  <span>{resolvedBadge}</span>
+                </div>
+              )}
+            </>
           )}
-          {title && (
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-foreground leading-[1.15]">
-              {title}
+          {resolvedTitle && (
+            <h2
+              className={cn(
+                "text-3xl sm:text-4xl md:text-5xl tracking-tight text-foreground leading-[1.15]",
+                variant === "elegant"
+                  ? "font-medium"
+                  : variant === "bordered"
+                    ? "font-extrabold uppercase tracking-tighter"
+                    : "font-semibold",
+              )}
+            >
+              {resolvedTitle}
             </h2>
           )}
-          {subtitle && (
-            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-              {subtitle}
+          {resolvedSubtitle && (
+            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-xl mx-auto">
+              {resolvedSubtitle}
             </p>
           )}
         </div>
@@ -250,9 +349,10 @@ export function PricingCards({
               if (id) setActiveTab(id);
             }}
             aria-label="Billing period"
+            className="rounded-lg"
           >
             {data.tabs.map((tab) => (
-              <ToggleGroupItem key={tab.id} value={tab.id} className="font-semibold">
+              <ToggleGroupItem key={tab.id} value={tab.id} className="font-semibold rounded-md">
                 {tab.label}
               </ToggleGroupItem>
             ))}
@@ -269,7 +369,7 @@ export function PricingCards({
             <div
               key={plan.id}
               className={cn(
-                "relative rounded-3xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 bg-background",
+                "relative rounded-lg p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 bg-background",
                 variant === "default" &&
                   (isPopular
                     ? cn("border-2", theme.border, "scale-105 z-10 shadow-none hover:shadow-lg")
@@ -296,7 +396,7 @@ export function PricingCards({
               {isPopular && (
                 <div
                   className={cn(
-                    "absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider shadow-sm",
+                    "absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider shadow-sm",
                     theme.bg,
                   )}
                 >
@@ -308,7 +408,7 @@ export function PricingCards({
                 <div className="flex items-center gap-3.5 mb-4">
                   <div
                     className={cn(
-                      "p-3 rounded-2xl shrink-0",
+                      "p-3 rounded-lg shrink-0",
                       isPopular ? theme.bgSoft : "bg-muted",
                     )}
                   >
@@ -350,7 +450,7 @@ export function PricingCards({
               <LinkComp
                 href="#"
                 className={cn(
-                  "w-full py-3 rounded-xl font-semibold text-sm text-center transition-all cursor-pointer block",
+                  "w-full py-3 rounded-lg font-semibold text-sm text-center transition-all cursor-pointer block",
                   isPopular
                     ? cn(theme.bg, "shadow-md hover:opacity-90")
                     : variant === "minimal"
@@ -378,6 +478,8 @@ export interface PricingBuilderModule {
 }
 
 export interface PricingBuilderProps {
+  variant?: PricingVariant;
+  badgeText?: string;
   title?: string;
   subtitle?: string;
   basePrice?: number;
@@ -398,6 +500,7 @@ const DEFAULT_BUILDER_MODULES: PricingBuilderModule[] = [
 ];
 
 export function PricingBuilder({
+  badgeText = "Modular Stack",
   title = "Custom Quote Builder",
   subtitle = "Select only the modules you need for your project.",
   basePrice = 29,
@@ -424,14 +527,27 @@ export function PricingBuilder({
 
   return (
     <div
-      className={cn("w-full max-w-4xl mx-auto p-6 sm:p-10 bg-background border border-border rounded-3xl shadow-sm", className)}
+      className={cn("w-full h-full max-w-4xl mx-auto p-6 sm:p-10 bg-background border border-border rounded-lg shadow-sm", className)}
       style={style}
     >
-      <div className="text-center mb-8 sm:mb-12">
-        <h3 className="text-2xl sm:text-3xl font-semibold text-foreground mb-2">
+      <div className="text-center space-y-2.5 mb-8 sm:mb-12 max-w-xl mx-auto">
+        {badgeText && (
+          <div
+            className={cn(
+              "inline-flex items-center gap-1.5 px-3 py-1 rounded-md border border-dashed text-[11px] font-mono font-semibold uppercase tracking-widest",
+              theme.border,
+              theme.text,
+              theme.bgSoft,
+            )}
+          >
+            <Code2 className="w-3.5 h-3.5 shrink-0" />
+            <span>{badgeText}</span>
+          </div>
+        )}
+        <h3 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-foreground">
           {title}
         </h3>
-        <p className="text-sm sm:text-base text-muted-foreground">
+        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
           {subtitle}
         </p>
       </div>
@@ -445,7 +561,7 @@ export function PricingBuilder({
                 key={mod.id}
                 onClick={() => toggleModule(mod.id)}
                 className={cn(
-                  "p-4 rounded-2xl border transition-all cursor-pointer flex items-center justify-between",
+                  "p-4 rounded-lg border transition-all cursor-pointer flex items-center justify-between",
                   isSelected
                     ? cn(theme.border, theme.bgSoft, "shadow-sm")
                     : "border-border bg-background hover:bg-muted/50",
@@ -474,7 +590,7 @@ export function PricingBuilder({
           })}
         </div>
 
-        <div className="bg-muted/40 p-6 sm:p-8 rounded-3xl border border-border flex flex-col justify-between h-full min-h-[300px]">
+        <div className="bg-muted/40 p-6 sm:p-8 rounded-lg border border-border flex flex-col justify-between h-full min-h-[300px]">
           <div>
             <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 block">
               Estimated Total
@@ -492,7 +608,7 @@ export function PricingBuilder({
 
           <button
             className={cn(
-              "w-full py-3.5 rounded-xl font-semibold text-sm transition-all cursor-pointer shadow-md hover:opacity-90",
+              "w-full py-3.5 rounded-lg font-semibold text-sm transition-all cursor-pointer shadow-md hover:opacity-90",
               theme.bg,
             )}
           >
@@ -528,6 +644,10 @@ export interface PricingTableData {
 }
 
 export interface PricingTableProps {
+  variant?: PricingVariant;
+  badgeText?: string;
+  title?: string;
+  subtitle?: string;
   data: PricingTableData;
   color?: PricingColor;
   counting?: boolean;
@@ -535,6 +655,9 @@ export interface PricingTableProps {
 }
 
 export function PricingTable({
+  badgeText = "Feature Matrix",
+  title = "Compare every plan in detail",
+  subtitle = "Inspect limits, security controls, and support SLAs side by side across all tiers.",
   data,
   color = "primary",
   counting = true,
@@ -570,20 +693,40 @@ export function PricingTable({
 
   const ctaClass = (featured?: boolean) =>
     cn(
-      "w-full py-2.5 rounded-xl font-semibold transition-all text-sm cursor-pointer",
+      "w-full py-2.5 rounded-lg font-semibold transition-all text-sm cursor-pointer",
       featured
         ? cn(theme.bg, theme.shadow)
         : "border border-border bg-background text-foreground",
     );
 
   return (
-    <div className="@container/pricing w-full max-w-6xl mx-auto" style={style}>
-      <div className="flex flex-col gap-6 @min-[52rem]/pricing:hidden">
+    <div className="@container/pricing w-full h-full" style={style}>
+      <div className="flex flex-col gap-6 @min-[52rem]/pricing:hidden w-full h-full">
+        {(badgeText || title || subtitle) && (
+          <div className="p-6 rounded-lg border border-border bg-background shadow-sm space-y-2.5 text-left">
+            {badgeText && (
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-muted border border-border text-[11px] font-semibold uppercase tracking-wider text-foreground">
+                <CheckCircle2 className={cn("w-3.5 h-3.5", theme.text)} />
+                <span>{badgeText}</span>
+              </div>
+            )}
+            {title && (
+              <h3 className="text-2xl font-bold tracking-tight text-foreground">
+                {title}
+              </h3>
+            )}
+            {subtitle && (
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                {subtitle}
+              </p>
+            )}
+          </div>
+        )}
         {data.plans.map((plan, pIdx) => (
           <div
             key={plan.id}
             className={cn(
-              "overflow-hidden rounded-2xl border bg-background shadow-sm",
+              "overflow-hidden rounded-lg border bg-background shadow-sm",
               plan.featured
                 ? theme.border
                 : "border-border",
@@ -637,9 +780,31 @@ export function PricingTable({
         ))}
       </div>
 
-      <div className="hidden @min-[52rem]/pricing:block overflow-hidden border border-border rounded-2xl bg-background shadow-sm">
-        <div className="overflow-x-auto">
-          <div className="min-w-[800px]">
+      <div className="hidden @min-[52rem]/pricing:block w-full h-full overflow-hidden border border-border rounded-lg bg-background shadow-sm">
+        {(badgeText || title || subtitle) && (
+          <div className="px-6 py-6 bg-card border-b border-border flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div className="space-y-2 max-w-2xl">
+              {badgeText && (
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-muted border border-border text-[11px] font-semibold uppercase tracking-wider text-foreground">
+                  <CheckCircle2 className={cn("w-3.5 h-3.5", theme.text)} />
+                  <span>{badgeText}</span>
+                </div>
+              )}
+              {title && (
+                <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground leading-tight">
+                  {title}
+                </h2>
+              )}
+              {subtitle && (
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  {subtitle}
+                </p>
+              )}
+            </div>
+          </div>
+        )}
+        <div className="w-full h-full overflow-x-auto">
+          <div className="w-full h-full min-w-[800px]">
             <div className="grid grid-cols-4 bg-muted border-b border-border">
               <div className="p-6 flex items-end">
                 <h3 className="font-semibold text-xl text-foreground">
@@ -723,6 +888,8 @@ export function PricingTable({
 // 4. USAGE SLIDER
 // ==========================================
 export interface PricingSliderProps {
+  variant?: PricingVariant;
+  badgeText?: string;
   title?: string;
   subtitle?: string;
   basePrice?: number;
@@ -736,6 +903,7 @@ export interface PricingSliderProps {
 }
 
 export function PricingSlider({
+  badgeText = "Pay As You Grow",
   title = "Usage Based Pricing",
   subtitle = "Scale your pricing as your traffic grows.",
   basePrice = 29,
@@ -756,13 +924,23 @@ export function PricingSlider({
 
   return (
     <div
-      className={cn("w-full max-w-2xl mx-auto p-5 sm:p-8 md:p-12 bg-background border border-border rounded-3xl shadow-sm text-center", className)}
+      className={cn("w-full h-full max-w-4xl mx-auto p-5 sm:p-8 md:p-12 bg-background border border-border rounded-lg shadow-sm text-center", className)}
       style={style}
     >
-      <h3 className="text-xl sm:text-2xl font-semibold text-foreground mb-2">
+      {badgeText && (
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-muted/80 border border-border text-[11px] font-semibold uppercase tracking-[0.14em] text-foreground mb-3">
+          <span className="inline-flex items-end gap-0.5 h-3">
+            <span className={cn("w-1 h-1.5 rounded-xs opacity-50", theme.bg)} />
+            <span className={cn("w-1 h-2.5 rounded-xs opacity-80", theme.bg)} />
+            <span className={cn("w-1 h-3 rounded-xs", theme.bg)} />
+          </span>
+          <span>{badgeText}</span>
+        </div>
+      )}
+      <h3 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-foreground mb-2">
         {title}
       </h3>
-      <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-10">
+      <p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-10 max-w-lg mx-auto leading-relaxed">
         {subtitle}
       </p>
       <div className="mb-6 sm:mb-12">
@@ -818,7 +996,7 @@ export function PricingSlider({
       </div>
       <button
         className={cn(
-          "w-full py-3.5 sm:py-4 rounded-xl font-semibold text-sm sm:text-lg transition-all active:scale-[0.98] cursor-pointer shadow-lg",
+          "w-full py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-lg transition-all active:scale-[0.98] cursor-pointer shadow-lg",
           theme.bg,
         )}
       >
@@ -861,6 +1039,7 @@ export type PricingTypographicPackages =
   | PricingTypographicGroups;
 
 export interface PricingTypographicProps {
+  variant?: PricingVariant;
   packages: PricingTypographicPackages;
   color?: PricingColor;
   counting?: boolean;
@@ -926,7 +1105,7 @@ export function PricingTypographic({
 
   if (!packages) {
     return (
-      <section className="py-16 sm:py-32 bg-background flex justify-center items-center min-h-[300px] sm:min-h-[500px] rounded-3xl border border-border">
+      <section className="py-16 sm:py-32 bg-background flex justify-center items-center min-h-[300px] sm:min-h-[500px] rounded-lg border border-border">
         <div
           className={cn(
             "w-8 h-8 border-4 border-t-transparent rounded-full animate-spin",
@@ -939,7 +1118,7 @@ export function PricingTypographic({
 
   if (!activePlans.length) {
     return (
-      <section className="py-16 sm:py-32 bg-background text-center text-muted-foreground text-sm font-mono rounded-3xl border border-border">
+      <section className="py-16 sm:py-32 bg-background text-center text-muted-foreground text-sm font-mono rounded-lg border border-border">
         No pricing plans available.
       </section>
     );
@@ -952,7 +1131,7 @@ export function PricingTypographic({
         backgroundColor: "color-mix(in srgb, var(--pricing-accent, currentColor) 3%, var(--background, transparent))",
       }}
       className={cn(
-        "py-8 sm:py-16 md:py-24 px-4 sm:px-6 text-foreground font-sans antialiased overflow-hidden rounded-3xl border border-border w-full transition-colors duration-300 relative",
+        "py-8 sm:py-16 md:py-24 px-4 sm:px-6 text-foreground font-sans antialiased overflow-hidden rounded-lg border border-border w-full h-full transition-colors duration-300 relative",
         "selection:bg-[var(--pricing-accent)] selection:text-[var(--pricing-on)]",
       )}
     >
@@ -1004,13 +1183,13 @@ export function PricingTypographic({
                 if (cycle) handleToggleCycle(cycle as "monthly" | "yearly");
               }}
               aria-label="Billing cycle"
-              className="shrink-0"
+              className="shrink-0 rounded-lg"
             >
               {(["monthly", "yearly"] as const).map((cycle) => (
                 <ToggleGroupItem
                   key={cycle}
                   value={cycle}
-                  className="font-semibold uppercase tracking-widest"
+                  className="font-semibold uppercase tracking-widest rounded-md"
                 >
                   {cycle}
                 </ToggleGroupItem>
@@ -1043,7 +1222,7 @@ export function PricingTypographic({
                     {plan.isFeatured && (
                       <span
                         className={cn(
-                          "inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-mono tracking-widest uppercase font-extrabold border transition-all duration-300 mb-2.5 shadow-2xs",
+                          "inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-[10px] font-mono tracking-widest uppercase font-extrabold border transition-all duration-300 mb-2.5 shadow-2xs",
                           isActive
                             ? cn(theme.bgSoft, theme.border, theme.text)
                             : "border-border bg-muted/60 text-muted-foreground group-hover:border-primary/40 group-hover:text-foreground",
@@ -1092,7 +1271,7 @@ export function PricingTypographic({
                   {activePlan.isFeatured && (
                     <div
                       className={cn(
-                        "inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest mb-4 rounded-full border",
+                        "inline-flex items-center gap-1.5 px-3 py-1 text-[10px] font-semibold uppercase tracking-widest mb-4 rounded-lg border",
                         theme.bgSoft,
                         theme.border,
                         theme.text,
@@ -1138,7 +1317,7 @@ export function PricingTypographic({
                 <LinkComp
                   href="#"
                   className={cn(
-                    "group mt-auto w-max py-4 px-8 rounded-full text-sm font-semibold uppercase tracking-widest flex items-center justify-center gap-3 relative overflow-hidden z-10",
+                    "group mt-auto w-max py-4 px-8 rounded-lg text-sm font-semibold uppercase tracking-widest flex items-center justify-center gap-3 relative overflow-hidden z-10",
                     activePlan.isFeatured
                       ? theme.bg
                       : "bg-muted text-foreground",
@@ -1146,7 +1325,7 @@ export function PricingTypographic({
                 >
                   <div
                     className={cn(
-                      "absolute inset-0 translate-y-[100%] rounded-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]",
+                      "absolute inset-0 translate-y-[100%] rounded-lg group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]",
                       activePlan.isFeatured ? "bg-black/20" : theme.bg,
                     )}
                   />
@@ -1198,7 +1377,7 @@ export function PricingTypographic({
                     {plan.isFeatured && (
                       <span
                         className={cn(
-                          "inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[9px] font-mono tracking-widest uppercase font-extrabold border transition-all duration-300 mb-1.5 w-max",
+                          "inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg text-[9px] font-mono tracking-widest uppercase font-extrabold border transition-all duration-300 mb-1.5 w-max",
                           isActive
                             ? cn(theme.bgSoft, theme.border, theme.text)
                             : "border-border bg-muted/60 text-muted-foreground",
@@ -1281,7 +1460,7 @@ export function PricingTypographic({
                       <LinkComp
                         href="#"
                         className={cn(
-                          "group w-full py-4 rounded-xl text-sm font-semibold uppercase tracking-widest flex items-center justify-center gap-3 relative overflow-hidden z-10",
+                          "group w-full py-4 rounded-lg text-sm font-semibold uppercase tracking-widest flex items-center justify-center gap-3 relative overflow-hidden z-10",
                           plan.isFeatured
                             ? theme.bg
                             : "bg-muted text-foreground",
@@ -1289,7 +1468,7 @@ export function PricingTypographic({
                       >
                         <div
                           className={cn(
-                            "absolute inset-0 translate-y-[100%] rounded-xl group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]",
+                            "absolute inset-0 translate-y-[100%] rounded-lg group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]",
                             plan.isFeatured ? "bg-black/20" : theme.bg,
                           )}
                         />
@@ -1329,6 +1508,8 @@ export interface PricingServiceOption {
 }
 
 export interface PricingPlansProps {
+  variant?: PricingVariant;
+  badgeText?: string;
   title?: string;
   subtitle?: string;
   highlightText?: string;
@@ -1446,6 +1627,7 @@ const POWER3_OUT =
   "linear(0, .1945, .3591, .4971, .6115, .7052, .7808, .8409, .8877, .9233, .9497, .9686, .9816, .9901, .9952, .998, .9994, .9999, 1, 1)";
 
 export function PricingPlans({
+  badgeText = "Tailored Studio",
   title = "Pricing Plans",
   subtitle = "For each plan we",
   highlightText = "Outperform",
@@ -1487,9 +1669,21 @@ export function PricingPlans({
   }, [activePlans]);
 
   return (
-    <section className="w-full bg-background text-foreground py-6 md:py-12 px-4 sm:px-6 font-sans transition-colors duration-300" style={style}>
-      <div className="max-w-6xl mx-auto">
-        <header className="mb-8 sm:mb-12 space-y-2 sm:space-y-3">
+    <section className="w-full h-full bg-background text-foreground py-6 md:py-12 px-4 sm:px-6 font-sans transition-colors duration-300 rounded-l-lg" style={style}>
+      <div className="w-full h-full max-w-6xl mx-auto">
+        <header className="mb-8 sm:mb-12 space-y-2.5 sm:space-y-3">
+          {badgeText && (
+            <div
+              className={cn(
+                "inline-flex items-center gap-2 pl-2.5 pr-3 py-1 rounded-r-md border-l-2 bg-muted/60 text-xs font-semibold uppercase tracking-widest",
+                theme.border,
+                theme.text,
+              )}
+            >
+              <PenTool className="w-3.5 h-3.5 shrink-0" />
+              <span>{badgeText}</span>
+            </div>
+          )}
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-foreground">
             {title}
           </h2>
@@ -1519,12 +1713,12 @@ export function PricingPlans({
                 return (
                   <div
                     key={service.id}
-                    className="flex items-center justify-between bg-card border border-border p-4 sm:p-6 rounded-2xl transition-colors gap-3 sm:gap-5 shadow-sm"
+                    className="flex items-center justify-between bg-card border border-border p-4 sm:p-6 rounded-lg transition-colors gap-3 sm:gap-5 shadow-sm"
                   >
                     <div className="flex items-center gap-3 sm:gap-5 min-w-0">
                       <div
                         className={cn(
-                          "p-2.5 sm:p-3.5 rounded-xl transition-colors shrink-0",
+                          "p-2.5 sm:p-3.5 rounded-lg transition-colors shrink-0",
                           isActive
                             ? theme.bgSoft
                             : "bg-muted text-muted-foreground",
@@ -1563,7 +1757,7 @@ export function PricingPlans({
             </div>
           </div>
 
-          <div className="bg-card border border-border rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-10 shadow-sm relative flex flex-col justify-between min-h-[400px] sm:min-h-[500px] transition-colors">
+          <div className="bg-card border border-border rounded-lg p-5 sm:p-8 md:p-10 shadow-sm relative flex flex-col justify-between min-h-[400px] sm:min-h-[500px] transition-colors">
             <div ref={cardContentRef}>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 sm:mb-8">
                 <h4 className={cn("text-xl sm:text-2xl font-semibold transition-colors duration-300", hasSelection ? "text-foreground" : "text-muted-foreground")}>
@@ -1572,7 +1766,7 @@ export function PricingPlans({
                 {cardData.tag && (
                   <span
                     className={cn(
-                      "px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full text-xs sm:text-sm font-semibold tracking-wide border self-start sm:self-auto transition-colors duration-300",
+                      "px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-lg text-xs sm:text-sm font-semibold tracking-wide border self-start sm:self-auto transition-colors duration-300",
                       theme.bgSoft,
                       theme.border,
                     )}
@@ -1616,7 +1810,7 @@ export function PricingPlans({
             <Link
               href={hasSelection ? ctaHref : "#"}
               className={cn(
-                "w-full text-center transition-all duration-300 font-semibold text-base sm:text-lg md:text-xl py-3.5 sm:py-5 rounded-xl mt-auto flex items-center justify-center",
+                "w-full text-center transition-all duration-300 font-semibold text-base sm:text-lg md:text-xl py-3.5 sm:py-5 rounded-lg mt-auto flex items-center justify-center",
                 hasSelection
                   ? cn(theme.bg, "shadow-lg")
                   : "bg-muted text-muted-foreground/50 cursor-not-allowed pointer-events-none shadow-none",
@@ -1649,6 +1843,7 @@ export interface ScalePlanItem {
 }
 
 export interface PricingScaleProps {
+  variant?: PricingVariant;
   badgeText?: string;
   title?: string;
   subtitle?: string;
@@ -1775,7 +1970,7 @@ export function PricingScale({
         {/* Header */}
         <div className="text-center space-y-3 sm:space-y-4 max-w-2xl mx-auto">
           {badgeText && (
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-border bg-card text-[11px] font-semibold tracking-wider text-muted-foreground uppercase shadow-2xs">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border border-border bg-card text-[11px] font-semibold tracking-wider text-muted-foreground uppercase shadow-2xs">
               <span className={cn("w-1.5 h-1.5 rounded-full bg-current", theme.text)} />
               {badgeText}
             </div>
@@ -1816,14 +2011,14 @@ export function PricingScale({
         </div>
 
         {/* Card Container Grid */}
-        <div className="bg-muted/70 p-3 sm:p-4 rounded-[32px] border border-border grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 shadow-xs">
+        <div className="bg-muted/70 p-3 sm:p-4 rounded-lg border border-border grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 shadow-xs">
           {currentPlans.map((plan) => {
             const isPopular = plan.popular;
             return (
               <div
                 key={plan.id}
                 className={cn(
-                  "relative rounded-[24px] p-6 sm:p-8 flex flex-col justify-between transition-all duration-300",
+                  "relative rounded-lg p-6 sm:p-8 flex flex-col justify-between transition-all duration-300",
                   isPopular
                     ? cn("bg-card ring-2 shadow-lg shadow-slate-200/50 dark:shadow-none", theme.ring)
                     : "bg-muted/60 border-0 shadow-none"
@@ -1833,7 +2028,7 @@ export function PricingScale({
                 <div>
                   <div className="flex items-center justify-between mb-6">
                     <div className={cn(
-                      "w-10 h-10 rounded-xl flex items-center justify-center border shadow-2xs",
+                      "w-10 h-10 rounded-lg flex items-center justify-center border shadow-2xs",
                       isPopular
                         ? "bg-muted border-border"
                         : "bg-card border-border"
@@ -1846,7 +2041,7 @@ export function PricingScale({
                     </div>
 
                     {isPopular && (
-                      <div className="inline-flex items-center gap-1 px-3 py-1 rounded-full border border-border bg-muted text-xs font-semibold text-foreground shadow-2xs">
+                      <div className="inline-flex items-center gap-1 px-3 py-1 rounded-lg border border-border bg-muted text-xs font-semibold text-foreground shadow-2xs">
                         <Star className={cn("w-3.5 h-3.5 fill-current", theme.text)} />
                         <span>{plan.popularBadgeText || "Most Popular"}</span>
                       </div>
@@ -1892,7 +2087,7 @@ export function PricingScale({
                 <LinkComp
                   href="#"
                   className={cn(
-                    "w-full py-3.5 px-4 rounded-full text-xs sm:text-sm font-semibold text-center shadow-md hover:opacity-95 transition-all duration-200 cursor-pointer block",
+                    "w-full py-3.5 px-4 rounded-lg text-xs sm:text-sm font-semibold text-center shadow-md hover:opacity-95 transition-all duration-200 cursor-pointer block",
                     isPopular
                       ? theme.bg
                       : "bg-gradient-to-b from-foreground/85 to-foreground text-background"
@@ -1906,7 +2101,7 @@ export function PricingScale({
         </div>
 
         {/* Footer Banner */}
-        <div className="bg-muted/80 border border-border rounded-[24px] p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xs">
+        <div className="bg-muted/80 border border-border rounded-lg p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xs">
           <div className="text-center sm:text-left">
             <h4 className="text-base sm:text-lg font-semibold text-foreground">
               {footerTitle}
@@ -1918,7 +2113,7 @@ export function PricingScale({
           <LinkComp
             href={footerCtaHref}
             className={cn(
-              "inline-flex items-center gap-2 px-5 py-3 rounded-full text-xs sm:text-sm font-semibold shadow-md hover:opacity-95 transition-all duration-200 whitespace-nowrap cursor-pointer",
+              "inline-flex items-center gap-2 px-5 py-3 rounded-lg text-xs sm:text-sm font-semibold shadow-md hover:opacity-95 transition-all duration-200 whitespace-nowrap cursor-pointer",
               theme.bg
             )}
           >
@@ -1948,6 +2143,7 @@ export interface DotPatternPlanItem {
 }
 
 export interface PricingDotPatternProps {
+  variant?: PricingVariant;
   badgeText?: string;
   title?: string;
   subtitle?: string;
@@ -2028,7 +2224,7 @@ export function PricingDotPattern({
         {/* Header */}
         <div className="text-center space-y-3 sm:space-y-4 max-w-2xl mx-auto">
           {badgeText && (
-            <div className={cn("inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full border text-[11px] font-semibold tracking-wide shadow-2xs transition-colors", theme.bgSoft, theme.border)}>
+            <div className={cn("inline-flex items-center gap-1.5 px-3.5 py-1 rounded-lg border text-[11px] font-semibold tracking-wide shadow-2xs transition-colors", theme.bgSoft, theme.border)}>
               <Sparkles className={cn("w-3.5 h-3.5 fill-current", theme.text)} />
               <span>{badgeText}</span>
             </div>
@@ -2049,7 +2245,7 @@ export function PricingDotPattern({
               <div
                 key={plan.id}
                 className={cn(
-                  "relative rounded-2xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 bg-card/60 backdrop-blur-xs shadow-none overflow-hidden",
+                  "relative rounded-lg p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 bg-card/60 backdrop-blur-xs shadow-none overflow-hidden",
                   isFeatured
                     ? cn("border", theme.border)
                     : "border border-border"
@@ -2075,25 +2271,25 @@ export function PricingDotPattern({
                 {/* 4 Corner Angle Brackets following rounded card edges */}
                 <div
                   className={cn(
-                    "absolute top-0 left-0 w-3.5 h-3.5 border-t-2 border-l-2 rounded-tl-xl pointer-events-none transition-colors",
+                    "absolute top-0 left-0 w-3.5 h-3.5 border-t-2 border-l-2 rounded-tl-lg pointer-events-none transition-colors",
                     isFeatured ? "border-[var(--pricing-accent)]" : "border-foreground/30"
                   )}
                 />
                 <div
                   className={cn(
-                    "absolute top-0 right-0 w-3.5 h-3.5 border-t-2 border-r-2 rounded-tr-xl pointer-events-none transition-colors",
+                    "absolute top-0 right-0 w-3.5 h-3.5 border-t-2 border-r-2 rounded-tr-lg pointer-events-none transition-colors",
                     isFeatured ? "border-[var(--pricing-accent)]" : "border-foreground/30"
                   )}
                 />
                 <div
                   className={cn(
-                    "absolute bottom-0 left-0 w-3.5 h-3.5 border-b-2 border-l-2 rounded-bl-xl pointer-events-none transition-colors",
+                    "absolute bottom-0 left-0 w-3.5 h-3.5 border-b-2 border-l-2 rounded-bl-lg pointer-events-none transition-colors",
                     isFeatured ? "border-[var(--pricing-accent)]" : "border-foreground/30"
                   )}
                 />
                 <div
                   className={cn(
-                    "absolute bottom-0 right-0 w-3.5 h-3.5 border-b-2 border-r-2 rounded-br-xl pointer-events-none transition-colors",
+                    "absolute bottom-0 right-0 w-3.5 h-3.5 border-b-2 border-r-2 rounded-br-lg pointer-events-none transition-colors",
                     isFeatured ? "border-[var(--pricing-accent)]" : "border-foreground/30"
                   )}
                 />
@@ -2132,7 +2328,7 @@ export function PricingDotPattern({
                     <LinkComp
                       href={plan.ctaHref || "#"}
                       className={cn(
-                        "w-full py-3.5 px-4 rounded-xl text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 shadow-md hover:opacity-95 transition-all duration-200 cursor-pointer mb-10",
+                        "w-full py-3.5 px-4 rounded-lg text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 shadow-md hover:opacity-95 transition-all duration-200 cursor-pointer mb-10",
                         isFeatured
                           ? theme.bg
                           : "bg-gradient-to-b from-foreground/85 to-foreground text-background"
@@ -2189,7 +2385,10 @@ export interface PlansProItem {
 }
 
 export interface PricingPlansProProps {
+  variant?: PricingVariant;
+  badgeText?: string;
   title?: string;
+  subtitle?: string;
   monthlyLabel?: string;
   yearlyLabel?: string;
   discountBadge?: string;
@@ -2297,7 +2496,9 @@ const defaultPlansProItems: PlansProItem[] = [
 ];
 
 export function PricingPlansPro({
+  badgeText = "Workspace Tiers",
   title = "Choose Your Workspace",
+  subtitle = "Configure your billing cycle, pick a workspace tier, and scale team seats effortlessly as you grow.",
   monthlyLabel = "Monthly",
   yearlyLabel = "Annual",
   discountBadge = "SAVE 20%",
@@ -2449,7 +2650,7 @@ export function PricingPlansPro({
         </div>
       </div>
 
-      <div className="inline-flex items-center justify-between rounded-[10px] bg-muted/70 border border-border px-1.5 py-1 min-w-[96px] sm:min-w-[108px] h-[38px] shrink-0">
+      <div className="inline-flex items-center justify-between rounded-lg bg-muted/70 border border-border px-1.5 py-1 min-w-[96px] sm:min-w-[108px] h-[38px] shrink-0">
         <button
           type="button"
           aria-label="Decrease users"
@@ -2477,7 +2678,7 @@ export function PricingPlansPro({
 
   const renderOrderButton = (fullWidth = false) => {
     const btnClasses = cn(
-      "rounded-[12px] font-sans text-[13.5px] font-semibold px-7 py-3.5 inline-flex items-center justify-center gap-2.5 transition-all duration-200 cursor-pointer shadow-sm hover:opacity-95 active:scale-[0.99]",
+      "rounded-lg font-sans text-[13.5px] font-semibold px-7 py-3.5 inline-flex items-center justify-center gap-2.5 transition-all duration-200 cursor-pointer shadow-sm hover:opacity-95 active:scale-[0.99]",
       fullWidth ? "w-full" : "w-full sm:w-auto sm:min-w-[172px]",
       theme.bg,
     );
@@ -2507,30 +2708,52 @@ export function PricingPlansPro({
     >
       <div
         className={cn(
-          "mx-auto bg-card text-card-foreground rounded-[24px] border border-border shadow-[0_6px_30px_rgba(0,0,0,0.04)] dark:shadow-[0_6px_30px_rgba(0,0,0,0.3)] p-6 sm:p-8 md:p-9 transition-all",
+          "w-full mx-auto bg-card text-card-foreground rounded-lg border border-border shadow-[0_6px_30px_rgba(0,0,0,0.04)] dark:shadow-[0_6px_30px_rgba(0,0,0,0.3)] p-6 sm:p-8 md:p-9 transition-all",
           layoutMode === "vertical"
             ? "max-w-[380px]"
             : layoutMode === "horizontal"
-              ? "max-w-[780px]"
-              : "max-w-[380px] md:max-w-[780px]",
+              ? "max-w-4xl"
+              : "max-w-[380px] md:max-w-4xl",
         )}
       >
-        {/* Title */}
-        <h2 className="font-sans text-[22px] sm:text-[25px] font-bold tracking-[-0.02em] text-foreground leading-tight mb-4 sm:mb-5 text-left">
-          {title}
-        </h2>
+        {/* Header: Badge + Title + Description */}
+        <div className="mb-5 sm:mb-6 text-left space-y-2">
+          {badgeText && (
+            <div
+              className={cn(
+                "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-semibold uppercase tracking-wider border",
+                theme.bgSoft,
+                theme.border,
+                theme.text,
+              )}
+            >
+              <Users className="w-3.5 h-3.5 shrink-0" />
+              <span>{badgeText}</span>
+            </div>
+          )}
+          {title && (
+            <h2 className="font-sans text-[22px] sm:text-[26px] font-bold tracking-[-0.02em] text-foreground leading-tight">
+              {title}
+            </h2>
+          )}
+          {subtitle && (
+            <p className="font-sans text-xs sm:text-sm text-muted-foreground leading-relaxed max-w-2xl">
+              {subtitle}
+            </p>
+          )}
+        </div>
 
         {/* Segmented Billing Cycle Switch */}
         <div
           role="tablist"
           aria-label="Billing cycle"
-          className="relative w-full rounded-[14px] bg-muted/70 border border-border p-1.5 grid grid-cols-2 mb-6 sm:mb-7"
+          className="relative w-full rounded-lg bg-muted/70 border border-border p-1.5 grid grid-cols-2 mb-6 sm:mb-7"
         >
           {/* Sliding Active Pill Background */}
           <span
             aria-hidden="true"
             className={cn(
-              "pointer-events-none absolute top-1.5 bottom-1.5 left-1.5 w-[calc(50%-6px)] rounded-[10px] bg-card shadow-xs border border-border/80 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform",
+              "pointer-events-none absolute top-1.5 bottom-1.5 left-1.5 w-[calc(50%-6px)] rounded-md bg-card shadow-xs border border-border/80 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform",
               billingCycle === "yearly" ? "translate-x-full" : "translate-x-0",
             )}
           />
@@ -2541,7 +2764,7 @@ export function PricingPlansPro({
             aria-selected={billingCycle === "monthly"}
             onClick={() => setBillingCycle("monthly")}
             className={cn(
-              "relative z-10 py-2.5 sm:py-3 px-3 rounded-[10px] font-sans text-[13.5px] transition-colors duration-300 flex items-center justify-center cursor-pointer select-none",
+              "relative z-10 py-2.5 sm:py-3 px-3 rounded-md font-sans text-[13.5px] transition-colors duration-300 flex items-center justify-center cursor-pointer select-none",
               billingCycle === "monthly"
                 ? "text-foreground font-semibold"
                 : "text-muted-foreground font-medium hover:text-foreground",
@@ -2556,17 +2779,17 @@ export function PricingPlansPro({
             aria-selected={billingCycle === "yearly"}
             onClick={() => setBillingCycle("yearly")}
             className={cn(
-              "relative z-10 py-2.5 sm:py-3 px-2.5 sm:px-3 rounded-[10px] font-sans text-[13.5px] transition-colors duration-300 flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer select-none",
+              "relative z-10 py-2.5 sm:py-3 px-2.5 sm:px-3 rounded-md font-sans text-[13.5px] transition-colors duration-300 flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer select-none",
               billingCycle === "yearly"
                 ? "text-foreground font-semibold"
                 : "text-muted-foreground font-medium hover:text-foreground",
             )}
           >
-            <span>{yearlyLabel}</span>
+            <span className="leading-none">{yearlyLabel}</span>
             {discountBadge && (
               <span
                 className={cn(
-                  "px-2.5 py-0.5 rounded-full text-[10px] sm:text-[10.5px] font-semibold tracking-tight leading-none whitespace-nowrap transition-colors",
+                  "inline-flex items-center justify-center px-2.5 pt-[4px] pb-[3px] rounded-md text-[10px] sm:text-[10.5px] font-semibold tracking-tight leading-none whitespace-nowrap transition-colors",
                   theme.bg,
                 )}
               >
@@ -2621,7 +2844,7 @@ export function PricingPlansPro({
                     }
                   }}
                   className={cn(
-                    "relative rounded-[16px] p-5 cursor-pointer transition-[transform,opacity,border-color,box-shadow] duration-[950ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform flex flex-col justify-between bg-card outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                    "relative rounded-lg p-5 cursor-pointer transition-[transform,opacity,border-color,box-shadow] duration-[950ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-transform flex flex-col justify-between bg-card outline-none focus-visible:ring-2 focus-visible:ring-primary",
                     isCenterCard
                       ? "z-20"
                       : isSelected && cardsSpread
@@ -2648,12 +2871,12 @@ export function PricingPlansPro({
                     <div
                       aria-hidden="true"
                       className={cn(
-                        "pointer-events-none absolute inset-[-1px] rounded-[16px]",
+                        "pointer-events-none absolute inset-[-1px] rounded-lg",
                         theme.text,
                       )}
                     >
                       <span
-                        className="absolute inset-0 overflow-hidden rounded-[16px] p-[2px]"
+                        className="absolute inset-0 overflow-hidden rounded-lg p-[2px]"
                         style={PLANS_PRO_RING_MASK}
                       >
                         <span
@@ -2753,7 +2976,7 @@ export function PricingPlansPro({
                     }
                   }}
                   className={cn(
-                    "relative rounded-[16px] px-4 sm:px-5 py-4 cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] bg-card outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                    "relative rounded-lg px-4 sm:px-5 py-4 cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] bg-card outline-none focus-visible:ring-2 focus-visible:ring-primary",
                     isSelected
                       ? "border border-border shadow-xs"
                       : "border border-border hover:border-foreground/30",
@@ -2771,12 +2994,12 @@ export function PricingPlansPro({
                     <div
                       aria-hidden="true"
                       className={cn(
-                        "pointer-events-none absolute inset-[-1px] rounded-[16px]",
+                        "pointer-events-none absolute inset-[-1px] rounded-lg",
                         theme.text,
                       )}
                     >
                       <span
-                        className="absolute inset-0 overflow-hidden rounded-[16px] p-[2px]"
+                        className="absolute inset-0 overflow-hidden rounded-lg p-[2px]"
                         style={PLANS_PRO_RING_MASK}
                       >
                         <span

@@ -187,6 +187,7 @@ export function SandboxClient({ name }: { name: string }) {
       name === "designs-toolkit" ||
       name === "falling-tags" ||
       name === "navbar" ||
+      name === "pricing" ||
       name === "top-destinations"
     )
       return;
@@ -272,6 +273,7 @@ export function SandboxClient({ name }: { name: string }) {
     name === "designs-toolkit" ||
     name === "falling-tags" ||
     name === "navbar" ||
+    name === "pricing" ||
     name === "top-destinations";
 
   return (
