@@ -599,9 +599,9 @@ export const META: Record<string, ItemMeta> = {
   },
   footer: {
     description:
-      "A collection of 6 modern, animated, fully responsive Footer components for web applications, SaaS platforms, and marketing landing pages.",
+      "A collection of 7 modern, animated, fully responsive Footer components for web applications, SaaS platforms, and marketing landing pages.",
     categories: ["marketing", "navigation", "layout"],
-    docs: "Named export: Footer. Accepts `variant` (6 responsive variants: snapshot, modern-stack, simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `color`, `brandName`, `tagline`, `logo`, `socialLinks`, `snapshot`, `className`. All variants adapt across mobile, tablet, and desktop screens.",
+    docs: "Named export: Footer. Accepts `variant` (7 responsive variants: snapshot, modern-stack, wordmark-glow, simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `color`, `brandName`, `tagline`, `logo`, `socialLinks`, `snapshot`, `wordmarkFooter`, `wordmark`, `className`. All variants adapt across mobile, tablet, and desktop screens.",
   },
   "booking-card": {
     usageDependencies: ["glass-panel"],
@@ -1223,8 +1223,9 @@ export const META: Record<string, ItemMeta> = {
   },
   "particle-canvas": {
     description:
-      "A high-performance HTML Canvas component that converts text or images into thousands of animated particles with multiple visual variants and interactive mouse mechanics.",
+      "A high-performance text canvas component with organic repulsion physics and wordmark glow variants featuring cursor tracking and scroll-driven rising animations.",
     categories: ["media", "data-display"],
+    docs: "Named exports: ParticleCanvas, WordmarkGlowCanvas. Default export: ParticleCanvas. Variants: repel | wordmark-glow. Features 2D particle physics, cursor repulsion, scroll-timeline rising letters, and pointer-following radial glow.",
   },
   "split-flap": {
     title: "Split-Flap Display",

@@ -16,10 +16,11 @@ const useIsMounted = () =>
 
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
+import { accentStyle } from "@/lib/accent";
 
 export interface ParticleCanvasProps extends React.HTMLAttributes<HTMLDivElement> {
   content?: string;
-  variant?: "repel" | (string & {});
+  variant?: "repel" | "wordmark-glow" | (string & {});
   particleSize?: number;
   particleGap?: number;
   speed?: number;
@@ -61,8 +62,107 @@ function resolveColorAccent(color?: string): string | null {
   return PRESET_ACCENT_HEX[color] ?? color;
 }
 
+const wordmarkGlowKeyframes = `
+@keyframes particle-canvas-word-rise {
+  from { transform: translateY(70%); }
+  to { transform: none; }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .particle-canvas-word-letter {
+      animation: particle-canvas-word-rise linear both;
+      animation-timeline: view();
+      animation-range: entry calc(var(--i) * 4%) entry 100%;
+    }
+  }
+}
+`;
+
+export interface WordmarkGlowProps extends React.HTMLAttributes<HTMLDivElement> {
+  content?: string;
+  color?: string;
+  className?: string;
+}
+
+export function WordmarkGlowCanvas({
+  content = "AlgorizeTech",
+  color,
+  className,
+  style,
+  ...props
+}: WordmarkGlowProps) {
+  const wrapRef = useRef<HTMLDivElement>(null);
+
+  // Writes pointer position as --mx / --my for the radial glow
+  useEffect(() => {
+    const node = wrapRef.current;
+    if (!node || typeof window === "undefined" || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return undefined;
+    let frame = 0;
+    let x = 0;
+    let y = 0;
+    const onMove = (event: PointerEvent) => {
+      const rect = node.getBoundingClientRect();
+      x = event.clientX - rect.left;
+      y = event.clientY - rect.top;
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        node.style.setProperty("--mx", `${x}px`);
+        node.style.setProperty("--my", `${y}px`);
+      });
+    };
+    node.addEventListener("pointermove", onMove);
+    return () => {
+      node.removeEventListener("pointermove", onMove);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  const dynamicAccent = accentStyle(color);
+  const charRatio = content ? Math.max(content.length * 0.56, 2.5) : 4.5;
+
+  return (
+    <div
+      ref={wrapRef}
+      style={{ ...dynamicAccent, ...style }}
+      className={cn(
+        "group/word relative isolate flex w-full h-full min-h-[450px] items-center justify-center overflow-hidden px-4 select-none bg-background text-foreground transition-colors [container-type:inline-size]",
+        className
+      )}
+      {...props}
+    >
+      <style>{wordmarkGlowKeyframes}</style>
+
+      {/* Glow behind the letters; follows mouse pointer and glows with active theme / primary color */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(380px_circle_at_var(--mx,50%)_var(--my,50%),color-mix(in_oklab,var(--primary)_45%,transparent),transparent_70%)] opacity-60 transition-opacity duration-300 group-hover/word:opacity-100"
+      />
+
+      <p
+        aria-hidden="true"
+        style={{
+          fontSize: `clamp(3.5rem, calc(88cqi / ${charRatio}), 19rem)`,
+        }}
+        className="pointer-events-none flex w-full select-none justify-center whitespace-nowrap text-[clamp(3.5rem,calc(88vw/4.5),19rem)] font-semibold leading-[0.85] tracking-[-0.035em]"
+      >
+        {[...content].map((letter, index) => (
+          <span
+            key={index}
+            style={{ "--i": index } as React.CSSProperties}
+            className="particle-canvas-word-letter inline-block px-[0.02em] last:pr-[0.14em] bg-gradient-to-b from-foreground/25 to-foreground/[0.03] to-85% bg-clip-text text-transparent"
+          >
+            {letter}
+          </span>
+        ))}
+      </p>
+    </div>
+  );
+}
+
 export function ParticleCanvas({
   content = "AlgorizeTech",
+  variant = "repel",
   particleSize = 2.5,
   particleGap = 5,
   speed = 1,
@@ -74,6 +174,17 @@ export function ParticleCanvas({
   className,
   ...props
 }: ParticleCanvasProps) {
+  if (variant === "wordmark-glow") {
+    return (
+      <WordmarkGlowCanvas
+        content={content}
+        color={color}
+        className={className}
+        {...props}
+      />
+    );
+  }
+
   const { resolvedTheme } = useTheme();
   const mounted = useIsMounted();
   const [themePrimaryColor, setThemePrimaryColor] = useState<string>("currentColor");

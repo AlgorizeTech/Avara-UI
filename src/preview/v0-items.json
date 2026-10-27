@@ -446,6 +446,7 @@
   "footer": {
     "snapshot-footer": "Footer — Snapshot Footer",
     "modern-stack-footer": "Footer — Modern Stack Footer",
+    "wordmark-glow-footer": "Footer — Wordmark Glow Footer",
     "simple-centered-footer": "Footer — Simple Centered Footer",
     "glass-dock-footer": "Footer — Glass Dock Footer",
     "neon-glow-pulse-cyberpunk-footer": "Footer — Neon Glow Pulse Cyberpunk Footer",
@@ -662,7 +663,8 @@
     "in-a-data-table": "Pagination — In a data table"
   },
   "particle-canvas": {
-    "text-particle-repel": "Particle Canvas — Text Particle Repel"
+    "text-particle-repel": "Particle Canvas — Text Particle Repel",
+    "wordmark-glow-canvas": "Particle Canvas — Wordmark Glow Canvas"
   },
   "piano": {
     "playable-synthesizer-piano": "Piano — Playable Synthesizer Piano"

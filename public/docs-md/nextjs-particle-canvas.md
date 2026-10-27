@@ -14,6 +14,14 @@ export default function ParticleCanvasDemo() {
   );
 }`;
 
+export const usageWordmarkGlow = `"use client";
+
+export default function WordmarkGlowDemo() {
+  return (
+
+  );
+}`;
+
 ## Installation
 
 Add the component by URL — no setup needed:
@@ -59,6 +67,11 @@ Discover the key capabilities that make this component an excellent choice for m
         Type
         Default
         Description
+
+        variant
+        "repel" | "wordmark-glow"
+        "repel"
+        Visual mode. "repel" renders 2D particle physics scattering text dots. "wordmark-glow" renders an expansive scroll-driven wordmark with dynamic cursor-following radial glow.
 
         content
         string
