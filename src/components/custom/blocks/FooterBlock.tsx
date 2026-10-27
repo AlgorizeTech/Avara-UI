@@ -21,7 +21,9 @@ export type FooterVariant =
   | "glass-dock"
   | "neon-glow-pulse"
   | "quantum-particle-beam"
-  | "snapshot";
+  | "snapshot"
+  | "modern-stack"
+  | "snapshot-stack";
 
 export interface FooterLinkSection {
   title: string;
@@ -43,6 +45,12 @@ export interface SnapshotCardData {
   footerLabel?: string;
   footerValue?: string;
   stickerText?: string;
+  /** Custom icon node for the circular sticker badge. */
+  stickerIcon?: React.ReactNode;
+  /** Background color for modern stack card styling (e.g. "#F7C844"). */
+  bgColor?: string;
+  /** Foreground/text color for modern stack card styling (e.g. "#2B1C06"). */
+  textColor?: string;
 }
 
 /** Content for the `snapshot` variant. Every field is optional. */
@@ -177,6 +185,74 @@ const DEFAULT_SECTIONS_BY_VARIANT: Record<FooterVariant, FooterLinkSection[]> = 
       ],
     },
   ],
+  "modern-stack": [
+    {
+      title: "Components",
+      links: [
+        { label: "Buttons", href: "#" },
+        { label: "Bento Grid", href: "#" },
+        { label: "Dialog", href: "#" },
+        { label: "Carousel", href: "#" },
+        { label: "Navigation", href: "#" },
+        { label: "Footer", href: "#", badge: "New" },
+        { label: "All Catalog", href: "#" },
+      ],
+    },
+    {
+      title: "Resources",
+      links: [
+        { label: "Documentation", href: "#" },
+        { label: "Templates", href: "#" },
+        { label: "Changelog", href: "#" },
+        { label: "Roadmap", href: "#" },
+        { label: "FAQ", href: "#" },
+      ],
+    },
+    {
+      title: "Community",
+      links: [
+        { label: "GitHub", href: "#" },
+        { label: "Discord", href: "#" },
+        { label: "X / Twitter", href: "#" },
+        { label: "YouTube", href: "#" },
+        { label: "LinkedIn", href: "#" },
+      ],
+    },
+  ],
+  "snapshot-stack": [
+    {
+      title: "Components",
+      links: [
+        { label: "Buttons", href: "#" },
+        { label: "Bento Grid", href: "#" },
+        { label: "Dialog", href: "#" },
+        { label: "Carousel", href: "#" },
+        { label: "Navigation", href: "#" },
+        { label: "Footer", href: "#", badge: "New" },
+        { label: "All Catalog", href: "#" },
+      ],
+    },
+    {
+      title: "Resources",
+      links: [
+        { label: "Documentation", href: "#" },
+        { label: "Templates", href: "#" },
+        { label: "Changelog", href: "#" },
+        { label: "Roadmap", href: "#" },
+        { label: "FAQ", href: "#" },
+      ],
+    },
+    {
+      title: "Community",
+      links: [
+        { label: "GitHub", href: "#" },
+        { label: "Discord", href: "#" },
+        { label: "X / Twitter", href: "#" },
+        { label: "YouTube", href: "#" },
+        { label: "LinkedIn", href: "#" },
+      ],
+    },
+  ],
 };
 
 /* -------------------------------------------------------------------------- */
@@ -264,6 +340,121 @@ const DEFAULT_SNAPSHOT_CARDS: SnapshotCardData[] = [
     footerValue: "Weekly",
   },
 ];
+
+/** Multi-colored modern stack cards matching the vivid, lively palette of ModernScrollStackBlock with rounded badges on all cards. */
+export const DEFAULT_MODERN_STACK_CARDS: SnapshotCardData[] = [
+  {
+    bgColor: "#98E3AD",
+    textColor: "#1A4325",
+    dotColor: "bg-[#1A4325]",
+    tag: "DESIGN SYSTEM",
+    meta: "V4.2",
+    title: "Precision Craft",
+    lines: [
+      "Pixel-perfect tokens,",
+      "Tailwind CSS v4 & React 19,",
+      "accessible by default.",
+    ],
+    footerLabel: "STATUS",
+    footerValue: "Production",
+    stickerText: "craft!",
+    stickerIcon: <Sparkles className="size-4 min-[810px]:size-6" />,
+  },
+  {
+    bgColor: "#EB5E30",
+    textColor: "#FFFDF9",
+    dotColor: "bg-white",
+    tag: "COMPONENTS",
+    meta: "60+",
+    title: "Modular Blocks",
+    lines: [
+      "Copy-paste ready,",
+      "zero bloat architecture,",
+      "fluid spring physics.",
+    ],
+    footerLabel: "LIBRARY",
+    footerValue: "TypeScript",
+    stickerText: "blocks!",
+    stickerIcon: <Layers className="size-4 min-[810px]:size-6" />,
+  },
+  {
+    bgColor: "#F7C844",
+    textColor: "#2B1C06",
+    dotColor: "bg-[#2B1C06]",
+    tag: "AVARA STUDIO",
+    meta: "HQ • 2026",
+    title: "Avara Studio",
+    lines: [
+      "Level 4, Innovation Park",
+      "Dhaka 1212, Bangladesh",
+      "+880 1700 000 000",
+    ],
+    footerLabel: "HOURS",
+    footerValue: "Mon–Fri, 9–6",
+    stickerText: "say hi!",
+    stickerIcon: <SnapshotWaveHandIcon />,
+  },
+  {
+    bgColor: "#4086D6",
+    textColor: "#FFFFFF",
+    dotColor: "bg-white",
+    tag: "PERFORMANCE",
+    meta: "60 FPS",
+    title: "Silky Motion",
+    lines: [
+      "GPU accelerated,",
+      "reduced-motion aware,",
+      "smooth micro-interactions.",
+    ],
+    footerLabel: "ENGINE",
+    footerValue: "Framer Motion",
+    stickerText: "60 fps!",
+    stickerIcon: <Zap className="size-4 min-[810px]:size-6 fill-current" />,
+  },
+  {
+    bgColor: "#1E1B4B",
+    textColor: "#EEF2FF",
+    dotColor: "bg-indigo-300",
+    tag: "OPEN SOURCE",
+    meta: "FREE",
+    title: "Community First",
+    lines: [
+      "MIT licensed forever,",
+      "built by developers,",
+      "for ambitious creators.",
+    ],
+    footerLabel: "LICENSE",
+    footerValue: "MIT Free",
+    stickerText: "free!",
+    stickerIcon: <Heart className="size-4 min-[810px]:size-6 fill-current" />,
+  },
+  {
+    bgColor: "#065F46",
+    textColor: "#ECFDF5",
+    dotColor: "bg-emerald-300",
+    tag: "ECOSYSTEM",
+    meta: "24/7",
+    title: "Active Support",
+    lines: [
+      "Discord & GitHub community,",
+      "regular monthly drops,",
+      "developer-first docs.",
+    ],
+    footerLabel: "UPDATES",
+    footerValue: "Weekly",
+    stickerText: "join!",
+    stickerIcon: <GlobeIcon className="size-4 min-[810px]:size-6" />,
+  },
+];
+
+function isDarkColor(hex?: string): boolean {
+  if (!hex || !hex.startsWith("#")) return false;
+  const c = hex.replace("#", "");
+  const r = parseInt(c.substring(0, 2), 16) || 0;
+  const g = parseInt(c.substring(2, 4), 16) || 0;
+  const b = parseInt(c.substring(4, 6), 16) || 0;
+  return (r * 299 + g * 587 + b * 114) / 1000 < 140;
+}
 
 const SNAPSHOT_DEFAULTS: Required<SnapshotFooterContent> = {
   headingLines: ["Design freely.", "Ship extraordinary apps."],
@@ -442,44 +633,109 @@ function SnapshotWaveHandIcon() {
   );
 }
 
-/** Sleek modern studio card: clean hierarchy, active status, and interactive animated "say hi!" sticker. */
+/** Sleek modern studio card: clean hierarchy, active status, optional custom background/palette, and interactive animated "say hi!" sticker. */
 function SnapshotStudioCard({
   card,
   bp,
+  isModernStack,
 }: {
   card: SnapshotCardData;
   bp: SnapshotBreakpoint;
+  isModernStack?: boolean;
 }) {
   const isMobile = bp === "phone";
-  const dotColorClass = card.dotColor ?? "bg-primary";
   const isStudioHQ = Boolean(card.stickerText);
+  const hasCustomBg = Boolean(card.bgColor);
+  const isDarkCard = hasCustomBg ? isDarkColor(card.bgColor) : false;
 
   return (
-    <div className="relative size-full select-none">
+    <div className="relative size-full select-none cursor-pointer">
       {/* Sleek Modern Studio Card */}
-      <div className="size-full flex flex-col justify-between overflow-hidden rounded-2xl border border-zinc-200/90 dark:border-zinc-800 bg-white dark:bg-zinc-900/95 p-3.5 min-[810px]:p-5 shadow-[0_12px_32px_-8px_rgba(0,0,0,0.08),0_2px_6px_-1px_rgba(0,0,0,0.04)] dark:shadow-[0_12px_32px_-8px_rgba(0,0,0,0.6)] transition-colors">
+      <div
+        className={cn(
+          "size-full flex flex-col justify-between overflow-hidden rounded-2xl p-3.5 min-[810px]:p-5 transition-all cursor-pointer",
+          isModernStack
+            ? "border"
+            : hasCustomBg
+            ? "border shadow-[0_16px_36px_-10px_rgba(0,0,0,0.18),0_2px_8px_-1px_rgba(0,0,0,0.06)] dark:shadow-[0_16px_36px_-10px_rgba(0,0,0,0.65)]"
+            : "border border-zinc-200/90 dark:border-zinc-800 bg-white dark:bg-zinc-900/95 shadow-[0_12px_32px_-8px_rgba(0,0,0,0.08),0_2px_6px_-1px_rgba(0,0,0,0.04)] dark:shadow-[0_12px_32px_-8px_rgba(0,0,0,0.6)]"
+        )}
+        style={
+          hasCustomBg
+            ? {
+                backgroundColor: card.bgColor,
+                color: card.textColor ?? (isDarkCard ? "#FFFFFF" : "#18181b"),
+                borderColor: isDarkCard
+                  ? "rgba(255, 255, 255, 0.18)"
+                  : "rgba(0, 0, 0, 0.12)",
+              }
+            : undefined
+        }
+      >
         {/* Top Header Row */}
         <div>
-          <div className="flex items-center justify-between pb-2 min-[810px]:pb-2.5 border-b border-zinc-100 dark:border-zinc-800/80">
+          <div
+            className="flex items-center justify-between pb-2 min-[810px]:pb-2.5 border-b"
+            style={{
+              borderColor: hasCustomBg
+                ? isDarkCard
+                  ? "rgba(255,255,255,0.16)"
+                  : "rgba(0,0,0,0.1)"
+                : undefined,
+            }}
+          >
             <div className="flex items-center gap-1.5 overflow-hidden">
-              <span className={cn("size-2 shrink-0 rounded-full animate-pulse", dotColorClass)} />
+              <span
+                className={cn(
+                  "size-2 shrink-0 rounded-full animate-pulse",
+                  !hasCustomBg && (card.dotColor ?? "bg-primary"),
+                  hasCustomBg && card.dotColor
+                )}
+                style={
+                  hasCustomBg && !card.dotColor
+                    ? { backgroundColor: card.textColor ?? "currentColor" }
+                    : undefined
+                }
+              />
               <span
                 className={cn(
                   "text-[9.5px] min-[810px]:text-[11px] font-semibold tracking-wider uppercase font-sans truncate",
-                  isStudioHQ ? "text-primary" : "text-zinc-600 dark:text-zinc-300"
+                  !hasCustomBg &&
+                    (isStudioHQ ? "text-primary" : "text-zinc-600 dark:text-zinc-300")
                 )}
+                style={
+                  hasCustomBg
+                    ? { color: card.textColor ?? "inherit", opacity: 0.95 }
+                    : undefined
+                }
               >
                 {card.tag}
               </span>
             </div>
-            <span className="text-[9px] min-[810px]:text-[10px] font-mono tracking-tight text-zinc-400 dark:text-zinc-500 uppercase shrink-0 pl-1">
+            <span
+              className={cn(
+                "text-[9px] min-[810px]:text-[10px] font-mono tracking-tight uppercase shrink-0 pl-1",
+                !hasCustomBg && "text-zinc-400 dark:text-zinc-500"
+              )}
+              style={
+                hasCustomBg
+                  ? { color: card.textColor ?? "inherit", opacity: 0.72 }
+                  : undefined
+              }
+            >
               {card.meta}
             </span>
           </div>
 
           {/* Details / Content */}
           <div className="mt-2.5 min-[810px]:mt-3 flex flex-col gap-1 text-left font-sans">
-            <h4 className="text-[12.5px] min-[810px]:text-[15px] font-bold text-zinc-900 dark:text-zinc-100 tracking-tight leading-tight">
+            <h4
+              className={cn(
+                "text-[12.5px] min-[810px]:text-[15px] font-bold tracking-tight leading-tight",
+                !hasCustomBg && "text-zinc-900 dark:text-zinc-100"
+              )}
+              style={hasCustomBg ? { color: card.textColor ?? "inherit" } : undefined}
+            >
               {card.title}
             </h4>
             {card.lines.map((line, idx) => (
@@ -487,10 +743,26 @@ function SnapshotStudioCard({
                 key={idx}
                 className={cn(
                   "text-[10px] min-[810px]:text-[12px] leading-snug",
-                  idx === card.lines.length - 1 && line.startsWith("+")
-                    ? "font-semibold text-zinc-800 dark:text-zinc-200 pt-0.5"
-                    : "text-zinc-600 dark:text-zinc-400"
+                  !hasCustomBg &&
+                    (idx === card.lines.length - 1 && line.startsWith("+")
+                      ? "font-semibold text-zinc-800 dark:text-zinc-200 pt-0.5"
+                      : "text-zinc-600 dark:text-zinc-400")
                 )}
+                style={
+                  hasCustomBg
+                    ? {
+                        color: card.textColor ?? "inherit",
+                        opacity:
+                          idx === card.lines.length - 1 && line.startsWith("+")
+                            ? 1
+                            : 0.82,
+                        fontWeight:
+                          idx === card.lines.length - 1 && line.startsWith("+")
+                            ? 600
+                            : 400,
+                      }
+                    : undefined
+                }
               >
                 {line}
               </p>
@@ -500,17 +772,50 @@ function SnapshotStudioCard({
 
         {/* Operating / Metric Row */}
         {(card.footerLabel || card.footerValue) && (
-          <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between font-sans">
-            <span className="text-[9px] min-[810px]:text-[10px] uppercase tracking-wider text-zinc-400 dark:text-zinc-500 font-medium">
+          <div
+            className="pt-2 border-t flex items-center justify-between font-sans"
+            style={{
+              borderColor: hasCustomBg
+                ? isDarkCard
+                  ? "rgba(255,255,255,0.16)"
+                  : "rgba(0,0,0,0.1)"
+                : undefined,
+            }}
+          >
+            <span
+              className={cn(
+                "text-[9px] min-[810px]:text-[10px] uppercase tracking-wider font-medium",
+                !hasCustomBg && "text-zinc-400 dark:text-zinc-500"
+              )}
+              style={
+                hasCustomBg
+                  ? { color: card.textColor ?? "inherit", opacity: 0.7 }
+                  : undefined
+              }
+            >
               {card.footerLabel ?? "Status"}
             </span>
             <span
               className={cn(
                 "text-[9.5px] min-[810px]:text-[11px] font-medium px-2 py-0.5 rounded-full transition-colors",
-                isStudioHQ
-                  ? "text-primary bg-primary/10 border border-primary/20"
-                  : "text-zinc-700 dark:text-zinc-300 bg-zinc-100/90 dark:bg-zinc-800"
+                !hasCustomBg &&
+                  (isStudioHQ
+                    ? "text-primary bg-primary/10 border border-primary/20"
+                    : "text-zinc-700 dark:text-zinc-300 bg-zinc-100/90 dark:bg-zinc-800")
               )}
+              style={
+                hasCustomBg
+                  ? {
+                      backgroundColor: isDarkCard
+                        ? "rgba(255, 255, 255, 0.16)"
+                        : "rgba(0, 0, 0, 0.08)",
+                      border: isDarkCard
+                        ? "1px solid rgba(255, 255, 255, 0.22)"
+                        : "1px solid rgba(0, 0, 0, 0.12)",
+                      color: card.textColor ?? "inherit",
+                    }
+                  : undefined
+              }
             >
               {card.footerValue}
             </span>
@@ -522,15 +827,30 @@ function SnapshotStudioCard({
       {card.stickerText && (
         <motion.div
           variants={{
-            rest: { y: 0, rotate: -24 },
-            hover: { y: isMobile ? -176 : -244, rotate: -8 },
+            rest: { y: 0, rotate: isModernStack ? -20 : -24 },
+            hover: {
+              y: isModernStack
+                ? (isMobile ? -132 : -188)
+                : (isMobile ? -176 : -244),
+              rotate: isModernStack ? -7 : -8,
+            },
           }}
           transition={{ type: "spring", bounce: 0.45, delay: 0.05, duration: 0.6 }}
-          className="absolute -left-2 top-[246px] size-[70px] min-[810px]:-left-3.5 min-[810px]:top-[336px] min-[810px]:size-[92px] flex flex-col items-center justify-center rounded-full border-4 min-[810px]:border-[5px] border-white dark:border-zinc-900 bg-primary text-primary-foreground shadow-[0_14px_28px_-6px_color-mix(in_oklab,var(--primary)_50%,transparent)] cursor-pointer z-20 pointer-events-none"
+          className={cn(
+            "absolute -left-2 top-[246px] flex flex-col items-center justify-center rounded-full border-white dark:border-zinc-900 bg-primary text-primary-foreground cursor-pointer z-20 pointer-events-none",
+            isModernStack
+              ? "size-[64px] min-[810px]:-left-3 min-[810px]:top-[336px] min-[810px]:size-[82px] border-3 min-[810px]:border-4 shadow-none"
+              : "size-[70px] min-[810px]:-left-3.5 min-[810px]:top-[336px] min-[810px]:size-[92px] border-4 min-[810px]:border-[5px] shadow-[0_12px_24px_-6px_color-mix(in_oklab,var(--primary)_50%,transparent)]"
+          )}
         >
-          <SnapshotWaveHandIcon />
+          {card.stickerIcon ?? <SnapshotWaveHandIcon />}
           <span
-            className="mt-0.5 text-[11px] min-[810px]:text-[13px] leading-none text-primary-foreground font-bold tracking-tight uppercase"
+            className={cn(
+              "mt-0.5 leading-none text-primary-foreground font-bold tracking-tight uppercase",
+              isModernStack
+                ? "text-[10px] min-[810px]:text-[11.5px]"
+                : "text-[11px] min-[810px]:text-[13px]"
+            )}
             style={{ fontFamily: '"Plus Jakarta Sans", sans-serif' }}
           >
             {card.stickerText}
@@ -542,7 +862,7 @@ function SnapshotStudioCard({
 }
 
 /**
- * Studio footer with a pile of photos sunk behind the divider. Each photo sits
+ * Studio footer with a pile of cards sunk behind the divider. Each card sits
  * mostly below the fold of the top section and rises on hover/press.
  */
 function SnapshotFooter({
@@ -551,12 +871,16 @@ function SnapshotFooter({
   copyrightText,
   sections,
   content,
+  isModernStack,
+  socialLinks = DEFAULT_SOCIAL_LINKS,
 }: {
   brandName: string;
   logo?: React.ReactNode;
   copyrightText?: string;
   sections: FooterLinkSection[];
   content?: SnapshotFooterContent;
+  isModernStack?: boolean;
+  socialLinks?: SocialLink[];
 }) {
   const c = { ...SNAPSHOT_DEFAULTS, ...content };
   const bp = useSnapshotBreakpoint();
@@ -568,6 +892,10 @@ function SnapshotFooter({
   const [line1, line2, line3] = c.taglineLines;
   let wordIndex = 0;
 
+  const baseCards =
+    content?.cards ??
+    (isModernStack ? DEFAULT_MODERN_STACK_CARDS : DEFAULT_SNAPSHOT_CARDS);
+
   return (
     <div
       className="w-full bg-[#faf8f5] dark:bg-[#0c0c0e] text-[#18181b] dark:text-[#f4f4f5] antialiased transition-colors"
@@ -578,47 +906,90 @@ function SnapshotFooter({
       {/* Top: intro + photo pile, clipped at the divider */}
       <div className="relative flex w-full justify-center overflow-hidden">
         <div className="flex w-full max-w-[1440px] flex-col items-center gap-11 px-5 pt-[72px] min-[810px]:gap-14 min-[810px]:px-8 min-[810px]:pt-24 min-[1200px]:gap-16 min-[1200px]:px-10 min-[1200px]:pt-[120px]">
-          <div className="flex w-full flex-col gap-4 min-[810px]:gap-5 min-[1200px]:flex-row min-[1200px]:gap-10">
-            <h2 className="text-[34px] min-[810px]:text-[44px] min-[1200px]:flex-1 min-[1200px]:text-[48px] font-medium leading-[1.05] tracking-[-0.035em] text-[#09090b] dark:text-zinc-100">
-              {c.headingLines.map((line, li) => (
-                <React.Fragment key={li}>
-                  {li > 0 && <br />}
-                  {line.split(" ").map((word, wi) => {
-                    const i = wordIndex++;
-                    return (
-                      <React.Fragment key={wi}>
-                        {wi > 0 && " "}
-                        <motion.span
-                          className="inline-block"
-                          initial={reduceMotion ? false : { opacity: 0, y: 14, filter: "blur(6px)" }}
-                          whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                          viewport={{ once: true, amount: 0.6 }}
-                          transition={{ duration: 0.7, delay: i * 0.05, ease: SNAPSHOT_EASE }}
-                        >
-                          {word}
-                        </motion.span>
-                      </React.Fragment>
-                    );
-                  })}
-                </React.Fragment>
-              ))}
-            </h2>
-            <motion.p
-              initial={reduceMotion ? false : { opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.6 }}
-              transition={{ duration: 0.9, delay: 0.3, ease: SNAPSHOT_EASE }}
-              className="w-full text-[15px] min-[810px]:max-w-[560px] min-[1200px]:w-[460px] min-[1200px]:max-w-none min-[1200px]:shrink-0 min-[1200px]:text-base leading-[1.55] tracking-[-0.01em] text-[#52525b] dark:text-zinc-400 [text-wrap:pretty]"
-            >
-              {c.description}
-            </motion.p>
-          </div>
+          {isModernStack ? (
+            <div className="flex w-full flex-col gap-6 min-[810px]:gap-8 min-[1200px]:flex-row min-[1200px]:items-end min-[1200px]:justify-between min-[1200px]:gap-12">
+              <div className="flex flex-col gap-3.5 min-[1200px]:flex-1">
+                <motion.div
+                  initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.6 }}
+                  transition={{ duration: 0.6, ease: SNAPSHOT_EASE }}
+                  className="flex items-center gap-2"
+                >
+                  <span className="size-2 rounded-full bg-primary" />
+                  <span className="text-[11px] font-mono font-semibold uppercase tracking-[0.14em] text-primary">
+                    Curated Component Library
+                  </span>
+                </motion.div>
+
+                <h2 className="text-[36px] min-[810px]:text-[48px] min-[1200px]:text-[56px] font-bold leading-[1.04] tracking-[-0.04em] text-zinc-950 dark:text-zinc-50">
+                  {c.headingLines.map((line, li) => (
+                    <React.Fragment key={li}>
+                      {li > 0 && <br />}
+                      <span className={li === c.headingLines.length - 1 ? "text-primary font-bold" : undefined}>
+                        {line}
+                      </span>
+                    </React.Fragment>
+                  ))}
+                </h2>
+              </div>
+
+              <motion.div
+                initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.6 }}
+                transition={{ duration: 0.8, delay: 0.2, ease: SNAPSHOT_EASE }}
+                className="w-full min-[810px]:max-w-[560px] min-[1200px]:w-[480px] min-[1200px]:max-w-none min-[1200px]:shrink-0 border-l-2 border-primary/25 pl-5 min-[810px]:pl-6"
+              >
+                <p className="text-[15px] min-[1200px]:text-[16px] leading-[1.65] text-zinc-600 dark:text-zinc-400 font-normal tracking-[-0.01em] [text-wrap:pretty]">
+                  {c.description}
+                </p>
+              </motion.div>
+            </div>
+          ) : (
+            <div className="flex w-full flex-col gap-4 min-[810px]:gap-5 min-[1200px]:flex-row min-[1200px]:gap-10">
+              <h2 className="text-[34px] min-[810px]:text-[44px] min-[1200px]:flex-1 min-[1200px]:text-[48px] font-medium leading-[1.05] tracking-[-0.035em] text-[#09090b] dark:text-zinc-100">
+                {c.headingLines.map((line, li) => (
+                  <React.Fragment key={li}>
+                    {li > 0 && <br />}
+                    {line.split(" ").map((word, wi) => {
+                      const i = wordIndex++;
+                      return (
+                        <React.Fragment key={wi}>
+                          {wi > 0 && " "}
+                          <motion.span
+                            className="inline-block"
+                            initial={reduceMotion ? false : { opacity: 0, y: 14, filter: "blur(6px)" }}
+                            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                            viewport={{ once: true, amount: 0.6 }}
+                            transition={{ duration: 0.7, delay: i * 0.05, ease: SNAPSHOT_EASE }}
+                          >
+                            {word}
+                          </motion.span>
+                        </React.Fragment>
+                      );
+                    })}
+                  </React.Fragment>
+                ))}
+              </h2>
+              <motion.p
+                initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.6 }}
+                transition={{ duration: 0.9, delay: 0.3, ease: SNAPSHOT_EASE }}
+                className="w-full text-[15px] min-[810px]:max-w-[560px] min-[1200px]:w-[460px] min-[1200px]:max-w-none min-[1200px]:shrink-0 min-[1200px]:text-base leading-[1.55] tracking-[-0.01em] text-[#52525b] dark:text-zinc-400 [text-wrap:pretty]"
+              >
+                {c.description}
+              </motion.p>
+            </div>
+          )}
 
           {/* Card pocket pile */}
           <div className="relative h-[200px] w-full max-w-[420px] min-[810px]:h-[250px] min-[810px]:max-w-[820px] min-[1200px]:h-[280px] min-[1200px]:max-w-[1240px] select-none">
             {SNAPSHOT_PILE.map((item, idx) => {
               const cardData =
-                (c.cards && c.cards[item.cardIndex]) ?? DEFAULT_SNAPSHOT_CARDS[item.cardIndex];
+                (content?.cards && content.cards[item.cardIndex]) ??
+                baseCards[item.cardIndex];
               if (!cardData) return null;
 
               // Merge studio address/hours/sticker onto center card if customized
@@ -657,9 +1028,13 @@ function SnapshotFooter({
                       },
                     }}
                     transition={SNAPSHOT_HOVER_SPRING}
-                    className="size-full cursor-default outline-none"
+                    className="size-full cursor-pointer outline-none"
                   >
-                    <SnapshotStudioCard card={resolvedCard} bp={bp} />
+                    <SnapshotStudioCard
+                      card={resolvedCard}
+                      bp={bp}
+                      isModernStack={isModernStack}
+                    />
                   </motion.div>
                 </motion.div>
               );
@@ -670,102 +1045,229 @@ function SnapshotFooter({
 
       <div className="h-px w-full bg-[#e5e2da] dark:bg-zinc-800/80" />
 
-      {/* Bottom: brand, link columns, legal */}
-      <div className="flex w-full justify-center">
-        <div className="flex w-full max-w-[1440px] flex-col gap-12 px-5 pt-12 pb-7 min-[810px]:gap-16 min-[810px]:px-8 min-[810px]:pt-16 min-[810px]:pb-8 min-[1200px]:gap-[88px] min-[1200px]:px-10 min-[1200px]:pt-[72px] min-[1200px]:pb-9">
-          <div className="flex flex-col gap-12 min-[810px]:gap-14 min-[1200px]:flex-row min-[1200px]:gap-10">
-            <div className="flex flex-col gap-7 min-[810px]:gap-10 min-[1200px]:flex-1 min-[1200px]:justify-between min-[1200px]:self-stretch">
-              <a
-                href="#"
-                onClick={(e) => e.preventDefault()}
-                className="flex w-fit items-center gap-2.5 no-underline cursor-pointer"
+      {/* Bottom section: conditioned on isModernStack */}
+      {isModernStack ? (
+        /* Modern Stack enhanced bottom (Clean, Flat, Zero Shadow) */
+        <div className="relative flex w-full justify-center overflow-hidden">
+          <div className="relative z-10 flex w-full max-w-[1440px] flex-col gap-12 px-5 pt-12 pb-7 min-[810px]:gap-16 min-[810px]:px-8 min-[810px]:pt-16 min-[810px]:pb-8 min-[1200px]:gap-[72px] min-[1200px]:px-10 min-[1200px]:pt-[72px] min-[1200px]:pb-9">
+            <div className="flex flex-col gap-12 min-[810px]:gap-14 min-[1200px]:flex-row min-[1200px]:justify-between min-[1200px]:gap-12">
+              {/* Left: Brand & bold tagline */}
+              <div className="flex flex-col gap-6 min-[810px]:gap-7 min-[1200px]:max-w-[460px]">
+                {/* Brand without version badge */}
+                <a
+                  href="#"
+                  onClick={(e) => e.preventDefault()}
+                  className="group flex w-fit items-center gap-3 no-underline cursor-pointer"
+                >
+                  {logo ?? (
+                    <img
+                      src="/favicon/android-chrome-192x192.png"
+                      alt={brandName}
+                      width={28}
+                      height={28}
+                      className="size-7 rounded-[7px] object-cover transition-transform duration-200 group-hover:scale-105"
+                    />
+                  )}
+                  <span className="text-[22px] font-bold tracking-tight text-zinc-950 dark:text-zinc-50 font-sans">
+                    {wordmark}
+                  </span>
+                </a>
+
+                {/* Typographic Tagline with crisp contrast */}
+                <div className="flex flex-col gap-3">
+                  <p className="text-[30px] min-[810px]:text-[38px] font-bold leading-[1.08] tracking-[-0.04em] text-zinc-950 dark:text-zinc-50">
+                    <span>{line1}</span>
+                    {line2 && (
+                      <>
+                        <br />
+                        <span>{line2}</span>
+                      </>
+                    )}
+                    {line3 && (
+                      <>
+                        <br />
+                        <span className="text-primary font-bold">{line3}</span>
+                      </>
+                    )}
+                  </p>
+                  <p className="text-[14.5px] leading-relaxed text-zinc-500 dark:text-zinc-400 max-w-[420px] font-normal tracking-[-0.01em]">
+                    Crafted with precision tokens, silky micro-interactions, and zero-bloat architecture for ambitious builders.
+                  </p>
+                </div>
+              </div>
+
+              {/* Right: Modern structured navigation columns with theme color hover effects */}
+              <nav
+                aria-label="Footer Navigation"
+                className="grid w-full grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-3 min-[810px]:gap-x-10 min-[1200px]:w-auto min-[1200px]:gap-x-12"
               >
-                {logo ?? (
-                  <img
-                    src="/favicon/android-chrome-192x192.png"
-                    alt={brandName}
-                    width={22}
-                    height={22}
-                    className="size-[22px] rounded-[5px]"
-                  />
-                )}
-                <span className="text-[20px] font-semibold leading-none tracking-[-0.03em] text-[#09090b] dark:text-zinc-100">
-                  {wordmark}
-                </span>
-              </a>
-              <p className="text-[26px] min-[810px]:text-[28px] font-medium leading-[1.15] tracking-[-0.03em]">
-                <span className="text-[#09090b] dark:text-zinc-100">{line1}</span>
-                {line2 && (
-                  <>
-                    <br />
-                    <span className="text-[#09090b] dark:text-zinc-100">{line2}</span>
-                  </>
-                )}
-                {line3 && (
-                  <>
-                    <br />
-                    <span className="text-primary font-medium">{line3}</span>
-                  </>
-                )}
-              </p>
+                {sections.map((col) => (
+                  <div
+                    key={col.title}
+                    className="flex flex-col gap-4 min-[810px]:w-[180px] min-[1200px]:w-[195px]"
+                  >
+                    <div className="flex items-center gap-2 pb-2.5 border-b border-zinc-200/80 dark:border-zinc-800/80">
+                      <span className="size-2 rounded-full bg-primary" />
+                      <p className="text-[11px] font-bold uppercase leading-none tracking-[0.1em] text-zinc-900 dark:text-zinc-200">
+                        {col.title}
+                      </p>
+                    </div>
+                    <ul className="flex flex-col gap-1">
+                      {col.links.map((link) => (
+                        <li key={link.label}>
+                          <a
+                            href={link.href}
+                            onClick={(e) => {
+                              if (link.href === "#" || !link.href) e.preventDefault();
+                            }}
+                            className="group flex items-center justify-between py-1.5 px-2.5 -mx-2.5 rounded-lg text-[13.5px] font-medium text-zinc-600 dark:text-zinc-400 no-underline transition-all duration-200 cursor-pointer border border-transparent hover:bg-primary/10 dark:hover:bg-primary/15 hover:text-primary dark:hover:text-primary hover:border-primary/20"
+                          >
+                            <span className="group-hover:translate-x-1 transition-transform duration-200 flex items-center gap-1.5">
+                              <ChevronRight className="size-3 text-primary opacity-0 -ml-2 group-hover:opacity-100 group-hover:ml-0 transition-all duration-200 shrink-0" />
+                              <span>{link.label}</span>
+                            </span>
+                            {link.badge !== undefined && (
+                              <span className="rounded-full bg-primary text-primary-foreground px-2 py-0.5 text-[9.5px] font-bold leading-none uppercase tracking-wide">
+                                {link.badge}
+                              </span>
+                            )}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </nav>
             </div>
 
-            <nav
-              aria-label="Footer"
-              className="grid w-full grid-cols-2 gap-x-5 gap-y-10 min-[810px]:flex min-[810px]:gap-0 min-[1200px]:w-auto"
-            >
-              {sections.map((col) => (
-                <div
-                  key={col.title}
-                  className="flex flex-col gap-[22px] min-[810px]:flex-1 min-[1200px]:w-[190px] min-[1200px]:flex-none"
-                >
-                  <p className="text-[11px] font-medium uppercase leading-none tracking-[0.08em] text-[#84827c] dark:text-zinc-400">
-                    {col.title}
-                  </p>
-                  <ul className="flex flex-col gap-3">
-                    {col.links.map((link) => (
-                      <li key={link.label} className="flex items-center gap-2">
-                        <a
-                          href={link.href}
-                          onClick={(e) => {
-                            if (link.href === "#" || !link.href) e.preventDefault();
-                          }}
-                          className="text-[15px] leading-[1.4] tracking-[-0.01em] text-[#18181b] dark:text-zinc-200 no-underline transition-colors duration-200 hover:text-primary dark:hover:text-primary cursor-pointer"
-                        >
-                          {link.label}
-                        </a>
-                        {link.badge !== undefined && (
-                          <span className="rounded-[20px] bg-primary px-1.5 py-0.5 text-[11px] font-semibold leading-none tabular-nums text-primary-foreground">
-                            {link.badge}
-                          </span>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </nav>
-          </div>
+            {/* Bottom Bar: Copyright, Social Icons & Legal with Theme Color Hover */}
+            <div className="pt-8 border-t border-zinc-200/80 dark:border-zinc-800/80 flex flex-col gap-6 sm:gap-4 min-[810px]:flex-row min-[810px]:items-center min-[810px]:justify-between text-[13px] text-zinc-500 dark:text-zinc-400">
+              <div className="flex items-center gap-2">
+                <p className="leading-none">{copyright}</p>
+              </div>
 
-          <div className="flex flex-col items-start gap-3 min-[810px]:flex-row min-[810px]:items-center min-[810px]:justify-between">
-            <p className="text-[13px] leading-none text-[#84827c] dark:text-zinc-500">{copyright}</p>
-            <div className="flex items-center gap-6">
-              {c.legalLinks.map((link) => (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  onClick={(e) => {
-                    if (link.href === "#" || !link.href) e.preventDefault();
-                  }}
-                  className="text-[13px] leading-none text-[#84827c] dark:text-zinc-400 no-underline transition-colors duration-200 hover:text-primary dark:hover:text-primary cursor-pointer"
-                >
-                  {link.label}
-                </a>
-              ))}
+              <SocialLinks
+                links={socialLinks}
+                size="sm"
+                variant="ghost"
+                className="justify-start min-[810px]:justify-center [&_a:hover]:bg-primary/10 [&_a:hover]:text-primary [&_a]:transition-all [&_a]:duration-200 hover:[&_a]:scale-110"
+              />
+
+              <div className="flex items-center gap-5">
+                {c.legalLinks.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    onClick={(e) => {
+                      if (link.href === "#" || !link.href) e.preventDefault();
+                    }}
+                    className="leading-none text-zinc-500 dark:text-zinc-400 no-underline transition-colors duration-150 hover:text-primary dark:hover:text-primary cursor-pointer text-xs font-medium"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      ) : (
+        /* Original Snapshot variant bottom section */
+        <div className="flex w-full justify-center">
+          <div className="flex w-full max-w-[1440px] flex-col gap-12 px-5 pt-12 pb-7 min-[810px]:gap-16 min-[810px]:px-8 min-[810px]:pt-16 min-[810px]:pb-8 min-[1200px]:gap-[88px] min-[1200px]:px-10 min-[1200px]:pt-[72px] min-[1200px]:pb-9">
+            <div className="flex flex-col gap-12 min-[810px]:gap-14 min-[1200px]:flex-row min-[1200px]:gap-10">
+              <div className="flex flex-col gap-7 min-[810px]:gap-10 min-[1200px]:flex-1 min-[1200px]:justify-between min-[1200px]:self-stretch">
+                <a
+                  href="#"
+                  onClick={(e) => e.preventDefault()}
+                  className="flex w-fit items-center gap-2.5 no-underline cursor-pointer"
+                >
+                  {logo ?? (
+                    <img
+                      src="/favicon/android-chrome-192x192.png"
+                      alt={brandName}
+                      width={22}
+                      height={22}
+                      className="size-[22px] rounded-[5px]"
+                    />
+                  )}
+                  <span className="text-[20px] font-semibold leading-none tracking-[-0.03em] text-[#09090b] dark:text-zinc-100">
+                    {wordmark}
+                  </span>
+                </a>
+                <p className="text-[26px] min-[810px]:text-[28px] font-medium leading-[1.15] tracking-[-0.03em]">
+                  <span className="text-[#09090b] dark:text-zinc-100">{line1}</span>
+                  {line2 && (
+                    <>
+                      <br />
+                      <span className="text-[#09090b] dark:text-zinc-100">{line2}</span>
+                    </>
+                  )}
+                  {line3 && (
+                    <>
+                      <br />
+                      <span className="text-primary font-medium">{line3}</span>
+                    </>
+                  )}
+                </p>
+              </div>
+
+              <nav
+                aria-label="Footer"
+                className="grid w-full grid-cols-2 gap-x-5 gap-y-10 min-[810px]:flex min-[810px]:gap-0 min-[1200px]:w-auto"
+              >
+                {sections.map((col) => (
+                  <div
+                    key={col.title}
+                    className="flex flex-col gap-[22px] min-[810px]:flex-1 min-[1200px]:w-[190px] min-[1200px]:flex-none"
+                  >
+                    <p className="text-[11px] font-medium uppercase leading-none tracking-[0.08em] text-[#84827c] dark:text-zinc-400">
+                      {col.title}
+                    </p>
+                    <ul className="flex flex-col gap-3">
+                      {col.links.map((link) => (
+                        <li key={link.label} className="flex items-center gap-2">
+                          <a
+                            href={link.href}
+                            onClick={(e) => {
+                              if (link.href === "#" || !link.href) e.preventDefault();
+                            }}
+                            className="text-[15px] leading-[1.4] tracking-[-0.01em] text-[#18181b] dark:text-zinc-200 no-underline transition-colors duration-200 hover:text-primary dark:hover:text-primary cursor-pointer"
+                          >
+                            {link.label}
+                          </a>
+                          {link.badge !== undefined && (
+                            <span className="rounded-[20px] bg-primary px-1.5 py-0.5 text-[11px] font-semibold leading-none tabular-nums text-primary-foreground">
+                              {link.badge}
+                            </span>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </nav>
+            </div>
+
+            <div className="flex flex-col items-start gap-3 min-[810px]:flex-row min-[810px]:items-center min-[810px]:justify-between">
+              <p className="text-[13px] leading-none text-[#84827c] dark:text-zinc-500">{copyright}</p>
+              <div className="flex items-center gap-6">
+                {c.legalLinks.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    onClick={(e) => {
+                      if (link.href === "#" || !link.href) e.preventDefault();
+                    }}
+                    className="text-[13px] leading-none text-[#84827c] dark:text-zinc-400 no-underline transition-colors duration-200 hover:text-primary dark:hover:text-primary cursor-pointer"
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -820,7 +1322,8 @@ export function Footer({
     copyrightText ??
     `© ${new Date().getFullYear()} ${brandName}. All rights reserved.`;
 
-  if (variant === "snapshot") {
+  if (variant === "snapshot" || variant === "modern-stack" || variant === "snapshot-stack") {
+    const isModernStack = variant === "modern-stack" || variant === "snapshot-stack";
     return (
       <footer style={dynamicAccent} className={cn("w-full overflow-hidden transition-colors", className)}>
         <SnapshotFooter
@@ -829,6 +1332,8 @@ export function Footer({
           copyrightText={copyrightText}
           sections={linkSections}
           content={snapshot}
+          isModernStack={isModernStack}
+          socialLinks={socialLinks}
         />
       </footer>
     );
