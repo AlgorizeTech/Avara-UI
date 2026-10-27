@@ -20,6 +20,7 @@ import {
 import React, { useEffect, useRef, useState } from "react";
 import { type PricingColor, getThemeStyles } from "./pricing-theme";
 import { ToggleGroup, ToggleGroupItem } from "./ToggleGroupBlock";
+import Button from "./Button";
 export type PricingVariant =
   | "default"
   | "dot-pattern"
@@ -449,16 +450,20 @@ export function PricingCards({
 
               <LinkComp
                 href="#"
-                className={cn(
-                  "w-full py-3 rounded-lg font-semibold text-sm text-center transition-all cursor-pointer block",
-                  isPopular
-                    ? cn(theme.bg, "shadow-md hover:opacity-90")
-                    : variant === "minimal"
-                    ? "border border-border bg-background hover:bg-muted text-foreground"
-                    : "bg-muted text-foreground hover:bg-muted/80",
-                )}
+                className="w-full block no-underline"
               >
-                {plan.buttonText}
+                <Button
+                  variant={
+                    isPopular
+                      ? "pricing-primary"
+                      : variant === "minimal"
+                      ? "pricing-outline"
+                      : "pricing-muted"
+                  }
+                  className={cn("w-full", isPopular && theme.bg)}
+                >
+                  {plan.buttonText}
+                </Button>
               </LinkComp>
             </div>
           );
@@ -606,14 +611,12 @@ export function PricingBuilder({
             </p>
           </div>
 
-          <button
-            className={cn(
-              "w-full py-3.5 rounded-lg font-semibold text-sm transition-all cursor-pointer shadow-md hover:opacity-90",
-              theme.bg,
-            )}
+          <Button
+            variant="pricing-primary"
+            className={cn("w-full shadow-md", theme.bg)}
           >
             {buttonText}
-          </button>
+          </Button>
         </div>
       </div>
     </div>
@@ -752,9 +755,12 @@ export function PricingTable({
                 {plan.price.startsWith("$") ? "$" : ""}
                 <AnimatedPrice value={plan.price} counting={counting} />
               </div>
-              <button className={ctaClass(plan.featured)}>
+              <Button
+                variant={plan.featured ? "pricing-glow" : "pricing-outline"}
+                className={cn("w-full", plan.featured && theme.bg)}
+              >
                 {plan.buttonText}
-              </button>
+              </Button>
             </div>
             {data.sections.map((section, sIdx) => (
               <div key={sIdx}>
@@ -838,9 +844,12 @@ export function PricingTable({
                     {plan.price.startsWith("$") ? "$" : ""}
                     <AnimatedPrice value={plan.price} counting={counting} />
                   </div>
-                  <button className={ctaClass(plan.featured)}>
+                  <Button
+                    variant={plan.featured ? "pricing-glow" : "pricing-outline"}
+                    className={cn("w-full", plan.featured && theme.bg)}
+                  >
                     {plan.buttonText}
-                  </button>
+                  </Button>
                 </div>
               ))}
             </div>
@@ -994,14 +1003,15 @@ export function PricingSlider({
           </div>
         </div>
       </div>
-      <button
+      <Button
+        variant="pricing-primary"
         className={cn(
-          "w-full py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-lg transition-all active:scale-[0.98] cursor-pointer shadow-lg",
+          "w-full py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base transition-all cursor-pointer shadow-lg",
           theme.bg,
         )}
       >
         {buttonText}
-      </button>
+      </Button>
       <p className="text-xs text-muted-foreground mt-3 sm:mt-4">
         No credit card required. Cancel anytime.
       </p>
@@ -1316,44 +1326,18 @@ export function PricingTypographic({
 
                 <LinkComp
                   href="#"
-                  className={cn(
-                    "group mt-auto w-max py-4 px-8 rounded-lg text-sm font-semibold uppercase tracking-widest flex items-center justify-center gap-3 relative overflow-hidden z-10",
-                    activePlan.isFeatured
-                      ? theme.bg
-                      : "bg-muted text-foreground",
-                  )}
+                  className="no-underline inline-block mt-auto z-10"
                 >
-                  <div
+                  <Button
+                    variant={activePlan.isFeatured ? "pricing-typographic" : "pricing-typographic-muted"}
+                    showArrow
                     className={cn(
-                      "absolute inset-0 translate-y-[100%] rounded-lg group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]",
-                      activePlan.isFeatured ? "bg-black/20" : theme.bg,
-                    )}
-                  />
-                  <span
-                    className={cn(
-                      "relative z-10 transition-colors duration-500",
-                      !activePlan.isFeatured &&
-                        "group-hover:text-[var(--pricing-on)]",
+                      "w-max",
+                      activePlan.isFeatured && theme.bg,
                     )}
                   >
                     Initiate Project
-                  </span>
-                  <div className="relative z-10 w-4 h-4 overflow-hidden flex items-center">
-                    <ArrowRight
-                      className={cn(
-                        "absolute w-4 h-4 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]",
-                        !activePlan.isFeatured &&
-                          "group-hover:text-[var(--pricing-on)]",
-                      )}
-                    />
-                    <ArrowRight
-                      className={cn(
-                        "absolute w-4 h-4 translate-x-0 group-hover:translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]",
-                        !activePlan.isFeatured &&
-                          "group-hover:text-[var(--pricing-on)]",
-                      )}
-                    />
-                  </div>
+                  </Button>
                 </LinkComp>
               </div>
             )}
@@ -1459,28 +1443,18 @@ export function PricingTypographic({
 
                       <LinkComp
                         href="#"
-                        className={cn(
-                          "group w-full py-4 rounded-lg text-sm font-semibold uppercase tracking-widest flex items-center justify-center gap-3 relative overflow-hidden z-10",
-                          plan.isFeatured
-                            ? theme.bg
-                            : "bg-muted text-foreground",
-                        )}
+                        className="no-underline w-full block z-10"
                       >
-                        <div
+                        <Button
+                          variant={plan.isFeatured ? "pricing-typographic" : "pricing-typographic-muted"}
+                          showArrow
                           className={cn(
-                            "absolute inset-0 translate-y-[100%] rounded-lg group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]",
-                            plan.isFeatured ? "bg-black/20" : theme.bg,
-                          )}
-                        />
-                        <span
-                          className={cn(
-                            "relative z-10 transition-colors duration-500",
-                            !plan.isFeatured &&
-                              "group-hover:text-[var(--pricing-on)]",
+                            "w-full justify-center",
+                            plan.isFeatured && theme.bg,
                           )}
                         >
                           Initiate Project
-                        </span>
+                        </Button>
                       </LinkComp>
                     </div>
                   </div>
@@ -1809,14 +1783,20 @@ export function PricingPlans({
 
             <Link
               href={hasSelection ? ctaHref : "#"}
-              className={cn(
-                "w-full text-center transition-all duration-300 font-semibold text-base sm:text-lg md:text-xl py-3.5 sm:py-5 rounded-lg mt-auto flex items-center justify-center",
-                hasSelection
-                  ? cn(theme.bg, "shadow-lg")
-                  : "bg-muted text-muted-foreground/50 cursor-not-allowed pointer-events-none shadow-none",
-              )}
+              className="w-full block no-underline mt-auto"
             >
-              {ctaText}
+              <Button
+                variant="pricing-primary"
+                showArrow
+                className={cn(
+                  "w-full py-4 text-base shadow-lg",
+                  hasSelection
+                    ? theme.bg
+                    : "opacity-40 cursor-not-allowed pointer-events-none shadow-none"
+                )}
+              >
+                {ctaText}
+              </Button>
             </Link>
           </div>
         </div>
@@ -2086,14 +2066,17 @@ export function PricingScale({
                 {/* Button */}
                 <LinkComp
                   href="#"
-                  className={cn(
-                    "w-full py-3.5 px-4 rounded-lg text-xs sm:text-sm font-semibold text-center shadow-md hover:opacity-95 transition-all duration-200 cursor-pointer block",
-                    isPopular
-                      ? theme.bg
-                      : "bg-gradient-to-b from-foreground/85 to-foreground text-background"
-                  )}
+                  className="w-full block no-underline"
                 >
-                  {plan.buttonText}
+                  <Button
+                    variant={isPopular ? "pricing-primary" : "pricing-dark"}
+                    className={cn(
+                      "w-full py-3.5 px-4 rounded-lg text-xs sm:text-sm font-semibold text-center shadow-md",
+                      isPopular && theme.bg
+                    )}
+                  >
+                    {plan.buttonText}
+                  </Button>
                 </LinkComp>
               </div>
             );
@@ -2112,13 +2095,15 @@ export function PricingScale({
           </div>
           <LinkComp
             href={footerCtaHref}
-            className={cn(
-              "inline-flex items-center gap-2 px-5 py-3 rounded-lg text-xs sm:text-sm font-semibold shadow-md hover:opacity-95 transition-all duration-200 whitespace-nowrap cursor-pointer",
-              theme.bg
-            )}
+            className="no-underline inline-block"
           >
-            <span>{footerCtaText}</span>
-            <ArrowRight className="w-4 h-4" />
+            <Button
+              variant="pricing-primary"
+              showArrow
+              className={cn("whitespace-nowrap shadow-md", theme.bg)}
+            >
+              {footerCtaText}
+            </Button>
           </LinkComp>
         </div>
       </div>
@@ -2327,15 +2312,15 @@ export function PricingDotPattern({
                     {/* Button */}
                     <LinkComp
                       href={plan.ctaHref || "#"}
-                      className={cn(
-                        "w-full py-3.5 px-4 rounded-lg text-xs sm:text-sm font-semibold flex items-center justify-center gap-2 shadow-md hover:opacity-95 transition-all duration-200 cursor-pointer mb-10",
-                        isFeatured
-                          ? theme.bg
-                          : "bg-gradient-to-b from-foreground/85 to-foreground text-background"
-                      )}
+                      className="w-full block no-underline mb-10"
                     >
-                      <span>{plan.buttonText}</span>
-                      <ArrowRight className="w-4 h-4 shrink-0" />
+                      <Button
+                        variant={isFeatured ? "pricing-primary" : "pricing-dark"}
+                        showArrow
+                        className={cn("w-full shadow-md", isFeatured && theme.bg)}
+                      >
+                        {plan.buttonText}
+                      </Button>
                     </LinkComp>
 
                     {/* Features List Header */}
@@ -2678,25 +2663,34 @@ export function PricingPlansPro({
 
   const renderOrderButton = (fullWidth = false) => {
     const btnClasses = cn(
-      "rounded-lg font-sans text-[13.5px] font-semibold px-7 py-3.5 inline-flex items-center justify-center gap-2.5 transition-all duration-200 cursor-pointer shadow-sm hover:opacity-95 active:scale-[0.99]",
       fullWidth ? "w-full" : "w-full sm:w-auto sm:min-w-[172px]",
       theme.bg,
     );
 
     if (orderHref) {
       return (
-        <LinkComp href={orderHref} onClick={handleOrder} className={btnClasses}>
-          <span>{orderButtonText}</span>
-          <ArrowRight className="w-4 h-4 stroke-[2]" />
+        <LinkComp href={orderHref} onClick={handleOrder} className={fullWidth ? "w-full" : "w-full sm:w-auto"}>
+          <Button
+            variant="pricing-primary"
+            showArrow
+            className={btnClasses}
+          >
+            {orderButtonText}
+          </Button>
         </LinkComp>
       );
     }
 
     return (
-      <button type="button" onClick={handleOrder} className={btnClasses}>
-        <span>{orderButtonText}</span>
-        <ArrowRight className="w-4 h-4 stroke-[2]" />
-      </button>
+      <Button
+        type="button"
+        variant="pricing-primary"
+        showArrow
+        onClick={handleOrder}
+        className={btnClasses}
+      >
+        {orderButtonText}
+      </Button>
     );
   };
 

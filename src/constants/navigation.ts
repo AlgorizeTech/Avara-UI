@@ -133,7 +133,7 @@ const rawNavigation: NavigationItem[] = [
         keywords: ["booking", "appointment", "schedule", "calendar", "slots", "time picker", "reservation"],
       },
       { label: "Breadcrumb", slug: "breadcrumb" },
-      { label: "Buttons", slug: "button" },
+      { label: "Buttons", slug: "button", badge: "New", addedOn: "2026-10-27" },
       { label: "Calendar", slug: "calendar" },
       { label: "Card", slug: "card" },
       {
