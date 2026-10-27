@@ -19,6 +19,7 @@ export default function NavbarDemo({
   logoText?: string;
 }) {
   const isEcommerce = variant === "ecommerce-mega-nav";
+  const isSpotlight = variant === "spotlight";
   const { theme, style } = getThemeStyles(color);
 
   return (
@@ -35,8 +36,12 @@ export default function NavbarDemo({
       <div
         style={style}
         className={cn(
-          "relative w-full flex flex-col items-center transition-colors duration-300 rounded-2xl border border-border bg-background z-0",
-          isEcommerce ? "min-h-[680px] overflow-visible" : "min-h-[400px] overflow-hidden",
+          "relative w-full flex flex-col items-center transition-colors duration-300 rounded-2xl border border-border bg-[color-mix(in_oklab,var(--navbar-accent)_5%,var(--background))] z-0",
+          isEcommerce
+            ? "min-h-[680px] overflow-visible bg-background"
+            : isSpotlight
+              ? "h-[420px] overflow-y-auto overflow-x-hidden"
+              : "min-h-[400px] overflow-hidden",
         )}
       >
       {/* Decorative Orbs to show off the glass blur. These sit UNDER the navbar. */}
@@ -91,12 +96,31 @@ export default function NavbarDemo({
             </div>
           </div>
         </div>
+      ) : isSpotlight ? (
+        /* Scrollable skeleton stage (shrink-0 so it overflows h-[420px] and scrolls smoothly) */
+        <div className="w-full max-w-5xl mx-auto shrink-0 mt-6 pb-12 px-8 flex flex-col gap-5 relative z-0 select-none">
+          <div className="text-xs font-medium text-muted-foreground/75 text-center pb-1">
+            Scroll down inside this preview to see the navbar shrink &amp; blur ↓
+          </div>
+          <div className="w-28 h-6 rounded-full bg-[color-mix(in_oklab,var(--navbar-accent)_20%,transparent)] pointer-events-none" />
+          <div className="w-2/3 h-12 rounded-2xl bg-[color-mix(in_oklab,var(--navbar-accent)_18%,transparent)] pointer-events-none" />
+          <div className="w-1/2 h-6 rounded-lg bg-[color-mix(in_oklab,var(--navbar-accent)_12%,transparent)] pointer-events-none" />
+          <div className="w-full h-56 rounded-3xl mt-1 bg-[color-mix(in_oklab,var(--navbar-accent)_14%,transparent)] border border-[color-mix(in_oklab,var(--navbar-accent)_22%,transparent)] pointer-events-none" />
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-2 pointer-events-none">
+            <div className="h-36 rounded-2xl bg-[color-mix(in_oklab,var(--navbar-accent)_14%,transparent)] border border-[color-mix(in_oklab,var(--navbar-accent)_20%,transparent)]" />
+            <div className="h-36 rounded-2xl bg-[color-mix(in_oklab,var(--navbar-accent)_14%,transparent)] border border-[color-mix(in_oklab,var(--navbar-accent)_20%,transparent)]" />
+            <div className="h-36 rounded-2xl bg-[color-mix(in_oklab,var(--navbar-accent)_14%,transparent)] border border-[color-mix(in_oklab,var(--navbar-accent)_20%,transparent)]" />
+          </div>
+          <div className="w-3/4 h-10 rounded-xl mt-4 bg-[color-mix(in_oklab,var(--navbar-accent)_18%,transparent)] pointer-events-none" />
+          <div className="w-1/2 h-6 rounded-lg bg-[color-mix(in_oklab,var(--navbar-accent)_12%,transparent)] pointer-events-none" />
+          <div className="w-full h-48 rounded-3xl mt-2 bg-[color-mix(in_oklab,var(--navbar-accent)_14%,transparent)] border border-[color-mix(in_oklab,var(--navbar-accent)_22%,transparent)] pointer-events-none" />
+        </div>
       ) : (
-        /* Dummy content pushed down so it sits below the standard navbar */
-        <div className="w-full max-w-5xl mx-auto mt-28 px-8 flex flex-col gap-6 opacity-40 pointer-events-none relative z-0">
-          <div className="w-2/3 h-12 bg-foreground/20 rounded-xl" />
-          <div className="w-1/2 h-6 bg-foreground/20 rounded-lg" />
-          <div className="w-full h-32 bg-foreground/20 rounded-2xl mt-8" />
+        /* Theme-tinted skeleton content to show the navbar sitting over a real page */
+        <div className="w-full max-w-5xl mx-auto mt-28 px-8 flex flex-col gap-5 pointer-events-none select-none relative z-0">
+          <div className="w-2/3 h-12 rounded-2xl bg-[color-mix(in_oklab,var(--navbar-accent)_18%,transparent)]" />
+          <div className="w-1/2 h-6 rounded-lg bg-[color-mix(in_oklab,var(--navbar-accent)_12%,transparent)]" />
+          <div className="w-full h-32 rounded-2xl mt-4 bg-[color-mix(in_oklab,var(--navbar-accent)_14%,transparent)] border border-[color-mix(in_oklab,var(--navbar-accent)_22%,transparent)]" />
         </div>
       )}
       </div>

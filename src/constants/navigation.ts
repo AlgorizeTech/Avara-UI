@@ -121,7 +121,7 @@ const rawNavigation: NavigationItem[] = [
         label: "Avatar Stack",
         slug: "avatar-stack",
         badge: "New",
-        addedOn: "2026-09-16",
+        addedOn: "2026-10-26",
         keywords: ["avatar", "avatars", "faces", "group", "stack", "overlap", "social proof", "people"],
       },
       { label: "Book Flip", slug: "book-flip" },
@@ -472,7 +472,12 @@ const rawNavigation: NavigationItem[] = [
         addedOn: "2026-09-16",
         keywords: ["data", "flow", "pipeline", "sources", "diagram", "connectors", "ai", "intelligence", "process"],
       },
-      { label: "Footer", slug: "footer" },
+      {
+        label: "Footer",
+        slug: "footer",
+        badge: "New",
+        addedOn: "2026-10-26",
+      },
       {
         label: "FAQ Section",
         slug: "faq-section",
@@ -493,11 +498,12 @@ const rawNavigation: NavigationItem[] = [
         ],
       },
       {
-        label: "Error Section",
-        slug: "error-section",
+        label: "Error",
+        slug: "error",
         badge: "New",
         addedOn: "2026-10-12",
         keywords: [
+          "error",
           "error section",
           "error page",
           "500",
@@ -512,13 +518,13 @@ const rawNavigation: NavigationItem[] = [
         ],
       },
       {
-        label: "Not Found Section",
-        slug: "not-found-section",
+        label: "Not Found",
+        slug: "not-found",
         badge: "New",
         addedOn: "2026-10-12",
         keywords: [
-          "not found section",
           "not found",
+          "not found section",
           "404",
           "404 page",
           "lost in hyperspace",
@@ -545,7 +551,7 @@ const rawNavigation: NavigationItem[] = [
         label: "Navbar",
         slug: "navbar",
         badge: "New",
-        addedOn: "2026-10-24",
+        addedOn: "2026-10-26",
         keywords: ["navbar", "header", "mega menu", "mega nav", "ecommerce", "navigation", "top bar"],
       },
       {
@@ -555,7 +561,12 @@ const rawNavigation: NavigationItem[] = [
         addedOn: "2026-09-16",
         keywords: ["platform", "grid", "features", "tiles", "bento", "tools", "catalog", "spotlight"],
       },
-      { label: "Pricing Section", slug: "pricing" },
+      {
+        label: "Pricing Section",
+        slug: "pricing",
+        badge: "New",
+        addedOn: "2026-10-26",
+      },
       { label: "Product Details", slug: "product-details" },
       {
         label: "Profile Page",

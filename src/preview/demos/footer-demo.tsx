@@ -1,15 +1,21 @@
 "use client";
 
 import { Footer, type FooterVariant } from "@/components/custom/blocks/FooterBlock";
+import { accentStyle } from "@/lib/accent";
 
 export default function FooterDemo({
-  variant = "simple-centered",
+  variant = "snapshot",
+  color,
 }: {
   variant?: FooterVariant;
+  color?: string;
 }) {
   return (
-    <div className="w-full flex items-center justify-center">
-      <Footer variant={variant} />
+    <div
+      style={accentStyle(color)}
+      className="w-full flex items-center justify-center transition-colors"
+    >
+      <Footer variant={variant} color={color} />
     </div>
   );
 }

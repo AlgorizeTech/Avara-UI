@@ -34,6 +34,7 @@ export type NavbarVariant =
   | "centered"
   | "minimal"
   | "glass"
+  | "spotlight"
   | "ecommerce-mega-nav";
 
 export interface NavbarProps {
@@ -1295,6 +1296,234 @@ function StandardNavbar({
   );
 }
 
+function SpotlightRollupButton({
+  themeBg,
+  label = "Get Started",
+  href = "#",
+  className,
+  onClick,
+  linkComponent: Link,
+}: {
+  themeBg: string;
+  label?: string;
+  href?: string;
+  className?: string;
+  onClick?: () => void;
+  linkComponent: React.ElementType;
+}) {
+  return (
+    <Link
+      href={href}
+      onClick={onClick}
+      className={cn(
+        "relative inline-flex items-center justify-center px-6 py-3 text-sm font-medium rounded-full overflow-hidden group border border-[var(--navbar-accent)] transition-shadow duration-300 hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--navbar-accent)]",
+        themeBg,
+        className,
+      )}
+    >
+      <span className="absolute inset-0 bg-[#282828] translate-y-full transition-transform duration-300 ease-out group-hover:translate-y-0" />
+      <span className="relative block overflow-hidden h-[1em] leading-none">
+        <span className="flex justify-center items-center transition-transform duration-300 ease-out group-hover:-translate-y-full leading-none">
+          {label}
+        </span>
+        <span className="absolute left-0 right-0 top-full flex justify-center items-center text-gray-200 transition-transform duration-300 ease-out group-hover:-translate-y-full leading-none">
+          {label}
+        </span>
+      </span>
+    </Link>
+  );
+}
+
+function SpotlightNavbar({
+  color = "primary",
+  logoText = "Nexus",
+  linkComponent: Link = "a",
+}: {
+  color?: NavbarColor;
+  logoText?: string;
+  linkComponent?: React.ElementType;
+}) {
+  const { theme, style } = getThemeStyles(color);
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
+  const linksContainerRef = useRef<HTMLDivElement>(null);
+  const [pillRect, setPillRect] = useState<{
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    visible: boolean;
+  }>({ x: 0, y: 0, width: 0, height: 0, visible: false });
+
+  useEffect(() => {
+    const handleScroll = (e?: Event) => {
+      const target = e?.target;
+      if (
+        target instanceof HTMLElement &&
+        navRef.current &&
+        target.contains(navRef.current)
+      ) {
+        setScrolled(target.scrollTop > 40);
+        return;
+      }
+      setScrolled(window.scrollY > 40);
+    };
+    window.addEventListener("scroll", handleScroll, {
+      capture: true,
+      passive: true,
+    });
+    handleScroll();
+    return () =>
+      window.removeEventListener("scroll", handleScroll, { capture: true });
+  }, []);
+
+  const handleLinkEnter = (e: React.MouseEvent<HTMLElement>) => {
+    const container = linksContainerRef.current;
+    if (!container) return;
+    const itemRect = e.currentTarget.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+    setPillRect({
+      x: itemRect.left - containerRect.left,
+      y: itemRect.top - containerRect.top,
+      width: itemRect.width,
+      height: itemRect.height,
+      visible: true,
+    });
+  };
+
+  const handleContainerLeave = () => {
+    setPillRect((prev) => ({ ...prev, visible: false }));
+  };
+
+  return (
+    <nav
+      ref={navRef}
+      style={style}
+      className={cn(
+        "sticky top-0 z-50 w-full px-6 py-3 transition-all duration-300",
+        !scrolled && "bg-transparent",
+      )}
+    >
+      <div
+        className={cn(
+          "relative mx-auto flex items-center justify-between rounded-full px-4 py-1.5 transition-all duration-300",
+          scrolled
+            ? "max-w-3xl bg-foreground/[0.08] dark:bg-black/35 backdrop-blur-[10px] border border-foreground/10 shadow-sm"
+            : "max-w-4xl bg-transparent border border-transparent",
+        )}
+      >
+        {/* Left: Our Logo (shrinks smoothly on scroll) */}
+        <div className="flex items-center gap-2">
+          <Link href="#" className="flex items-center gap-2 group py-1">
+            <div
+              className={cn(
+                "rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-105",
+                scrolled ? "w-7 h-7" : "w-9 h-9",
+                theme.bg,
+              )}
+            >
+              <Command
+                className={cn(
+                  "transition-all duration-300",
+                  scrolled ? "w-3.5 h-3.5" : "w-4 h-4",
+                )}
+              />
+            </div>
+            <span
+              className={cn(
+                "font-bold tracking-tight text-foreground transition-all duration-300",
+                scrolled ? "text-lg" : "text-xl",
+              )}
+            >
+              {logoText}
+            </span>
+          </Link>
+        </div>
+
+        {/* Center: Desktop Nav Links with Sliding Hover Pill */}
+        <div
+          ref={linksContainerRef}
+          onMouseLeave={handleContainerLeave}
+          className="relative hidden md:flex items-center gap-2 ml-7"
+        >
+          <div
+            aria-hidden
+            className="absolute left-0 top-0 rounded-full bg-foreground/10 dark:bg-[#262626] z-0 pointer-events-none"
+            style={{
+              width: pillRect.width,
+              height: pillRect.height,
+              transform: `translate3d(${pillRect.x}px, ${pillRect.y}px, 0) scale(${pillRect.visible ? 1 : 0.95})`,
+              opacity: pillRect.visible ? 1 : 0,
+              transition:
+                "transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), width 0.3s cubic-bezier(0.22, 1, 0.36, 1), height 0.3s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease-out",
+            }}
+          />
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.name}
+              href={link.href}
+              onMouseEnter={handleLinkEnter}
+              className="nav-item relative z-10 px-4 py-2 text-sm rounded-full text-foreground"
+            >
+              {link.name}
+            </Link>
+          ))}
+        </div>
+
+        {/* Right: Animated Roll-Up Pill CTA Button */}
+        <div className="hidden md:block">
+          <SpotlightRollupButton
+            themeBg={theme.bg}
+            label="Get Started"
+            linkComponent={Link}
+          />
+        </div>
+
+        {/* Mobile Hamburger Button */}
+        <button
+          type="button"
+          onClick={() => setMobileMenuOpen((prev) => !prev)}
+          aria-label="Toggle menu"
+          className="md:hidden w-9 h-9 flex items-center justify-center rounded-full cursor-pointer bg-foreground/10 dark:bg-white/10"
+        >
+          {mobileMenuOpen ? (
+            <X className="w-5 h-5 text-foreground" />
+          ) : (
+            <span className="block w-5 h-[2px] bg-foreground relative">
+              <span className="absolute left-0 top-[-6px] w-5 h-[2px] bg-foreground" />
+              <span className="absolute left-0 top-[6px] w-5 h-[2px] bg-foreground" />
+            </span>
+          )}
+        </button>
+      </div>
+
+      {/* Mobile Dropdown Menu Card */}
+      {mobileMenuOpen && (
+        <div className="md:hidden absolute left-6 right-6 top-full mt-1 mx-auto max-w-4xl rounded-2xl bg-background/40 dark:bg-black/35 backdrop-blur-[12px] border border-foreground/10 p-6 space-y-2 flex flex-col shadow-lg animate-in fade-in slide-in-from-top-2 duration-200 z-50">
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.name}
+              href={link.href}
+              onClick={() => setMobileMenuOpen(false)}
+              className="block text-foreground text-sm font-medium px-4 py-3 rounded-lg hover:bg-foreground/10 dark:hover:bg-white/10 transition"
+            >
+              {link.name}
+            </Link>
+          ))}
+          <SpotlightRollupButton
+            themeBg={theme.bg}
+            label="Get Started"
+            className="w-full mt-4"
+            onClick={() => setMobileMenuOpen(false)}
+            linkComponent={Link}
+          />
+        </div>
+      )}
+    </nav>
+  );
+}
+
 export function NavbarBlock({
   variant = "default",
   color = "primary",
@@ -1306,6 +1535,16 @@ export function NavbarBlock({
       <EcommerceMegaNav
         color={color}
         logoText={logoText ?? "NUTRIFY"}
+        linkComponent={linkComponent}
+      />
+    );
+  }
+
+  if (variant === "spotlight") {
+    return (
+      <SpotlightNavbar
+        color={color}
+        logoText={logoText ?? "Nexus"}
         linkComponent={linkComponent}
       />
     );

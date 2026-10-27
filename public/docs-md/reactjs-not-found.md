@@ -1,12 +1,12 @@
-export const metadata = docsPageMetadata("not-found-section");
+export const metadata = docsPageMetadata("not-found");
 
-# Not Found Section
+# Not Found
 
 A responsive, full-page 404 Hyperspace website section featuring ambient radial glow, masked cyber grid backdrop, animated compass indicator, and customizable shortcuts.
 
 Designed as a drop-in replacement for Next.js `not-found.tsx` or standalone missing route pages.
 
-export const usageDefault = `import { NotFoundSection } from "@/components/custom/blocks/NotFoundSectionBlock";
+export const usageDefault = `import { NotFoundSection } from "@/components/custom/blocks/NotFoundBlock";
 
 export default function NotFound() {
   return (
@@ -19,14 +19,14 @@ export default function NotFound() {
 Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest add https://avaraui.com/r/not-found-section.json
+npx shadcn@latest add https://avaraui.com/r/not-found.json
 ```
 
 Or register the @avara-ui registry once per project and add it by name:
 
 ```bash
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/not-found-section
+npx shadcn@latest add @avara-ui/not-found
 ```
 
 ## Features
@@ -104,6 +104,6 @@ Discover the key capabilities of the `NotFoundSection` component:
 
 ---
 
-**Component Path:** `[framework]\not-found-section\page.mdx`
+**Component Path:** `[framework]\not-found\page.mdx`
 
 **Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.

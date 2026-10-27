@@ -50,6 +50,15 @@ export default function GlassHeader() {
   );
 }`;
 
+export const usageSpotlight = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
+
+export default function SpotlightHeader() {
+  // Sticky pill navbar that shrinks and blurs on scroll, with sliding hover indicator and roll-up CTA.
+  return (
+    
+  );
+}`;
+
 export const usageEcommerce = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
 
 export default function EcommerceHeader() {
@@ -86,7 +95,7 @@ npx shadcn@latest add @avara-ui/navbar
 
           variant
 
-          "default" | "floating" | "centered" | "minimal" | "glass" | "ecommerce-mega-nav"
+          "default" | "floating" | "centered" | "minimal" | "glass" | "spotlight" | "ecommerce-mega-nav"
 
           "default"
         

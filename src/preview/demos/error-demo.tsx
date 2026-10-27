@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import ErrorSection from "@/components/custom/blocks/ErrorSectionBlock";
+import ErrorSection from "@/components/custom/blocks/ErrorBlock";
 
 export default function ErrorSectionDemo({
   errorCode,

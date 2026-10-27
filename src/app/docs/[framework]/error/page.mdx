@@ -1,17 +1,17 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
 
-export const metadata = docsPageMetadata("error-section");
+export const metadata = docsPageMetadata("error");
 
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { extractCode } from "@/lib/code";
 
-# Error Section
+# Error
 
 A full-page, responsive Cyberpunk Diagnostic Terminal section designed for root application error boundaries, Next.js `error.tsx` / `global-error.tsx`, and dedicated maintenance pages.
 
 Features a full-width terminal enclosure, diagnostic monitors, adaptive light & dark mode styling, live stacktrace inspector, and one-click incident copying.
 
-export const usageDefault = `import { ErrorSection } from "@/components/custom/blocks/ErrorSectionBlock";
+export const usageDefault = `import { ErrorSection } from "@/components/custom/blocks/ErrorBlock";
 
 export default function ErrorPage() {
   return (
@@ -28,7 +28,7 @@ export default function ErrorPage() {
 }`;
 
 <ExampleShowcase
-  name="error-section"
+  name="error"
   columns={1}
   colorControl={false}
   minHeight={640}
@@ -54,14 +54,14 @@ export default function ErrorPage() {
         errorId: "ERR_0x9481FA",
       },
       usage: usageDefault,
-      code: extractCode("src/components/custom/blocks/ErrorSectionBlock.tsx"),
+      code: extractCode("src/components/custom/blocks/ErrorBlock.tsx"),
     },
   ]}
 />
 
 ## Installation
 
-<Installation name="error-section" />
+<Installation name="error" />
 
 ## Features
 

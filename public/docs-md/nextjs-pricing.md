@@ -4,7 +4,7 @@ export const metadata = docsPageMetadata("pricing");
 
 A collection of highly-converting, responsive pricing sections. Whether you need traditional tiered subscription cards, a detailed comparison table, or an interactive quote builder, these components are designed to maximize conversions.
 
-`Pricing.tsx` exports eight independent layouts — `PricingCards`, `PricingScale`, `PricingDotPattern`, `PricingBuilder`, `PricingTable`, `PricingSlider`, `PricingTypographic` and `PricingPlans` — that share one color engine. Pick the layout that matches your funnel, then use the theme control above the gallery to see the accent cascade through badges, gradients, glows and buttons.
+`Pricing.tsx` exports nine independent layouts — `PricingCards`, `PricingScale`, `PricingDotPattern`, `PricingPlansPro`, `PricingBuilder`, `PricingTable`, `PricingSlider`, `PricingTypographic` and `PricingPlans` — that share one color engine. Pick the layout that matches your funnel, then use the theme control above the gallery to see the accent cascade through badges, gradients, glows and buttons.
 
 export const pricingData = `const data: PricingData = {
   tabs: [
@@ -476,6 +476,61 @@ export default function ScalablePricing() {
   return ;
 }`;
 
+export const plansProData = `const plansProItems: PlansProItem[] = [
+  {
+    id: "starter",
+    title: "Starter",
+    subtitle: "creator",
+    monthlyPrice: 9.0,
+    yearlyPrice: 7.0,
+    monthlyPeriod: "Month",
+    yearlyPeriod: "Year",
+    features: [
+      "500GB Cloud Storage",
+      "14-day version history",
+      "End-to-end TLS encryption",
+    ],
+  },
+  {
+    id: "growth",
+    title: "Growth",
+    subtitle: "studio",
+    monthlyPrice: 15.0,
+    yearlyPrice: 12.0,
+    monthlyPeriod: "Month",
+    yearlyPeriod: "Year",
+    features: [
+      "2TB Cloud Storage",
+      "60-day version history",
+      "Custom domain & SSO",
+    ],
+  },
+  {
+    id: "scale",
+    title: "Scale",
+    subtitle: "agency",
+    monthlyPrice: 29.0,
+    yearlyPrice: 23.0,
+    monthlyPeriod: "Month",
+    yearlyPeriod: "Year",
+    features: [
+      "Unlimited Cloud Storage",
+      "365-day version history",
+      "Dedicated SLA & audit logs",
+    ],
+  },
+];`;
+
+export const usagePlansPro = `import { PricingPlansPro, type PlansProItem } from "@/components/custom/blocks/Pricing";
+
+${plansProData}
+
+export default function WorkspacePlanSelector() {
+  return (
+    
+  );
+}`;
+
 ## Installation
 
 Add the component by URL — no setup needed:
@@ -718,6 +773,36 @@ npx shadcn@latest add @avara-ui/pricing
           PricingColor
 
           Applies accent color to popular plan ring/badge, checkmarks, active toggle, and CTA buttons.
+
+          PricingPlansPro
+
+          plans
+
+          PlansProItem[]
+
+          defaultPlansProItems
+
+          Array of selectable plan tiers (Starter, Growth, Scale) with monthlyPrice, yearlyPrice, subtitle, and features.
+
+          PricingPlansPro
+
+          layoutMode
+
+          "responsive" | "horizontal" | "vertical"
+
+          "responsive"
+
+          Renders a 3-column horizontal grid on desktop and automatically switches to a vertical expandable radio stack on mobile screens.
+
+          PricingPlansPro
+
+          scalePriceWithUsers
+
+          boolean
+
+          true
+
+          Multiplies each plan's displayed price dynamically as the user adjusts the seat counter stepper.
 
 ---
 

@@ -81,8 +81,8 @@ export const NAME_OVERRIDES: Record<string, string> = {
   "ConfidentialFolderBlock.tsx": "confidential-folder",
   "SecureEnvelopeBlock.tsx": "secure-envelope",
   "ScrollSplitCardsBlock.tsx": "scroll-split-cards",
-  "ErrorSectionBlock.tsx": "error-section",
-  "NotFoundSectionBlock.tsx": "not-found-section",
+  "ErrorBlock.tsx": "error",
+  "NotFoundBlock.tsx": "not-found",
   "DesignsToolkitBlock.tsx": "designs-toolkit",
 };
 
@@ -94,15 +94,15 @@ export const META: Record<string, ItemMeta> = {
     categories: ["scroll", "marketing", "data-display"],
     docs: "Named export: ModernScrollStack (also default export), DEFAULT_MODERN_SCROLL_STACK_ITEMS, ModernScrollStackItem, and ModernScrollStackProps.",
   },
-  "not-found-section": {
-    title: "Not Found Section",
+  "not-found": {
+    title: "Not Found",
     description:
       "A responsive, full-page 404 Hyperspace website section with ambient radial glow, masked cyber grid backdrop, animated compass indicator, and customizable shortcuts.",
     categories: ["marketing", "layout", "feedback"],
     docs: "Named export: NotFoundSection (also default export) and NotFoundSectionProps. Ready for drop-in use in Next.js not-found.tsx or standalone 404 routes.",
   },
-  "error-section": {
-    title: "Error Section",
+  error: {
+    title: "Error",
     description:
       "A responsive, animated Cyberpunk Diagnostic Terminal Error Website Section with full Light and Dark mode adaptive styling, diagnostic monitors, and live stacktrace inspection.",
     categories: ["marketing", "layout", "feedback"],
@@ -472,7 +472,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A responsive marketing navbar with logo, links, mobile menu and GSAP entrance animation. Use it as the top bar of a landing page.",
     categories: ["navigation", "marketing"],
-    docs: "Named exports: NavbarBlock, getThemeStyles (from navbar-theme.ts, which installs alongside). Variants: default | floating | centered | minimal | glass | ecommerce-mega-nav. Links render through `linkComponent` (a plain `a` by default; pass next/link in Next.js). The mobile menu toggles are the `button` item, which installs alongside. For app chrome with dropdown panels, use `navigation-menu`.",
+    docs: "Named exports: NavbarBlock, getThemeStyles (from navbar-theme.ts, which installs alongside). Variants: default | floating | centered | minimal | glass | spotlight | ecommerce-mega-nav. Links render through `linkComponent` (a plain `a` by default; pass next/link in Next.js). The mobile menu toggles are the `button` item, which installs alongside. For app chrome with dropdown panels, use `navigation-menu`.",
   },
   command: {
     description:
