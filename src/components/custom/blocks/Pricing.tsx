@@ -694,14 +694,6 @@ export function PricingTable({
     </>
   );
 
-  const ctaClass = (featured?: boolean) =>
-    cn(
-      "w-full py-2.5 rounded-lg font-semibold transition-all text-sm cursor-pointer",
-      featured
-        ? cn(theme.bg, theme.shadow)
-        : "border border-border bg-background text-foreground",
-    );
-
   return (
     <div className="@container/pricing w-full h-full" style={style}>
       <div className="flex flex-col gap-6 @min-[52rem]/pricing:hidden w-full h-full">
