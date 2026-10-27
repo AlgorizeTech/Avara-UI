@@ -103,6 +103,24 @@ export default function LiquidGlassLoginPage() {
   );
 }`;
 
+export const usageLoginRibbonDrift = `import LoginForm, { LoginFormValues } from "@/components/custom/blocks/LoginForm";
+
+export default function RibbonDriftLoginPage() {
+  // "ribbon-drift" features dual floating infinite marquee ribbons, an animated drift backdrop, and interactive promo card.
+  const handleSubmit = async (values: LoginFormValues) => {
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    console.log(values);
+  };
+
+  const handleGoogleSignIn = () => {
+    console.log("Sign in with Google");
+  };
+
+  return (
+    
+  );
+}`;
+
 ### Install the login form
 
 Add the component by URL — no setup needed:
@@ -236,6 +254,24 @@ export default function LiquidGlassRegisterPage() {
   );
 }`;
 
+export const usageRegisterRibbonDrift = `import RegisterForm, { RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
+
+export default function RibbonDriftRegisterPage() {
+  // "ribbon-drift" features dual floating infinite marquee ribbons, an animated drift backdrop, and candidate showcase promo card.
+  const handleSubmit = async (values: RegisterFormValues) => {
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    console.log(values);
+  };
+
+  const handleGoogleSignUp = () => {
+    console.log("Sign up with Google");
+  };
+
+  return (
+    
+  );
+}`;
+
 ### Install the register form
 
 Add the component by URL — no setup needed:
@@ -353,11 +389,11 @@ Every example below is the same `RegisterForm` you just installed — only the p
 
           variant
 
-          "scenic" | "default" | "split" | "liquid-glass" | "glass" | "minimal"
+          "scenic" | "default" | "split" | "liquid-glass" | "glass" | "minimal" | "ribbon-drift"
 
           "default"
 
-          Distinct presentation presets. "scenic" renders a floating onboarding card over a landscape backdrop, "liquid-glass" wraps in an animated liquid SVG frosted glass stack, and "glass" renders translucent panels.
+          Distinct presentation presets. "scenic" renders a floating onboarding card over a landscape backdrop, "liquid-glass" wraps in an animated liquid SVG frosted glass stack, "glass" renders translucent panels, and "ribbon-drift" features dual infinite marquee ribbons with animated drift backdrop.
 
           color
 

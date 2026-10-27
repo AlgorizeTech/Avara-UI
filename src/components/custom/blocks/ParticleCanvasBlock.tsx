@@ -160,7 +160,7 @@ export function WordmarkGlowCanvas({
   );
 }
 
-export function ParticleCanvas({
+function StandardParticleCanvas({
   content = "AlgorizeTech",
   variant = "repel",
   particleSize = 2.5,
@@ -174,17 +174,6 @@ export function ParticleCanvas({
   className,
   ...props
 }: ParticleCanvasProps) {
-  if (variant === "wordmark-glow") {
-    return (
-      <WordmarkGlowCanvas
-        content={content}
-        color={color}
-        className={className}
-        {...props}
-      />
-    );
-  }
-
   const { resolvedTheme } = useTheme();
   const mounted = useIsMounted();
   const [themePrimaryColor, setThemePrimaryColor] = useState<string>("currentColor");
@@ -493,6 +482,13 @@ export function ParticleCanvas({
       <canvas ref={canvasRef} className="block w-full h-full" />
     </div>
   );
+}
+
+export function ParticleCanvas(props: ParticleCanvasProps) {
+  if (props.variant === "wordmark-glow") {
+    return <WordmarkGlowCanvas {...props} />;
+  }
+  return <StandardParticleCanvas {...props} />;
 }
 
 export default ParticleCanvas;
