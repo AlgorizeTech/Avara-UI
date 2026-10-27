@@ -1,11 +1,7 @@
 <div align="center">
 
 <h1>
-  <a href="https://avaraui.com" style="text-decoration: none !important; color: inherit !important;">
-    <img src="https://avaraui.com/favicon/android-chrome-192x192.png" width="34" height="34" alt="Avara UI" align="center" valign="middle" style="vertical-align: middle; margin-right: 4px; margin-bottom: 4px;" />
-    <span style="font-weight: 700; color: inherit; text-decoration: none;">Avara</span>
-    <span style="font-weight: 400; color: #9B8AFB; text-decoration: none;">UI</span>
-  </a>
+  <a href="https://avaraui.com"><img src="https://avaraui.com/favicon/android-chrome-192x192.png" width="34" height="34" alt="" align="center" valign="middle" style="vertical-align: middle; margin-right: 6px; margin-bottom: 3px;" /><picture><source media="(prefers-color-scheme: dark)" srcset="public/assets/avara-wordmark-dark.svg"><source media="(prefers-color-scheme: light)" srcset="public/assets/avara-wordmark-light.svg"><img src="public/assets/avara-wordmark-light.svg" alt="Avara UI" height="30" align="center" valign="middle" style="vertical-align: middle;" /></picture></a>
 </h1>
 
 <strong>A shadcn registry of animated React components you install straight into your own codebase.</strong>
