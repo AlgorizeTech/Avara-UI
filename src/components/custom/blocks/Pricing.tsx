@@ -21,6 +21,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { type PricingColor, getThemeStyles } from "./pricing-theme";
 import { ToggleGroup, ToggleGroupItem } from "./ToggleGroupBlock";
 import Button from "./Button";
+import { TiltedCard } from "./TiltedCardBlock";
 export type PricingVariant =
   | "default"
   | "dot-pattern"
@@ -366,38 +367,12 @@ export function PricingCards({
           const IconComponent = iconMap[plan.icon] || Zap;
           const isPopular = plan.popular;
 
-          return (
-            <div
-              key={plan.id}
-              className={cn(
-                "relative rounded-lg p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 bg-background",
-                variant === "default" &&
-                  (isPopular
-                    ? cn("border-2", theme.border, "scale-105 z-10 shadow-none hover:shadow-lg")
-                    : "border border-border shadow-none hover:shadow-lg"),
-
-                variant === "elegant" &&
-                  (isPopular
-                    ? cn("border border-border border-t-4", theme.border, "shadow-lg")
-                    : "border border-border hover:shadow-lg"),
-                variant === "minimal" &&
-                  (isPopular
-                    ? cn("border-2", theme.border, "shadow-sm z-10")
-                    : "border-0 shadow-none bg-transparent"),
-                variant === "bordered" &&
-                  (isPopular
-                    ? cn(
-                        "border-2",
-                        theme.border,
-                        "shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[10px_10px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-1 hover:-translate-y-1 z-10",
-                      )
-                    : "border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-1 hover:-translate-y-1"),
-              )}
-            >
+          const cardBody = (
+            <>
               {isPopular && (
                 <div
                   className={cn(
-                    "absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider shadow-sm",
+                    "absolute -top-3.5 left-1/2 -translate-x-1/2 px-3 py-1 rounded-lg text-xs font-semibold uppercase tracking-wider shadow-sm z-20",
                     theme.bg,
                   )}
                 >
@@ -465,6 +440,60 @@ export function PricingCards({
                   {plan.buttonText}
                 </Button>
               </LinkComp>
+            </>
+          );
+
+          if (variant === "default" && isPopular) {
+            return (
+              <div key={plan.id} className="relative z-10 w-full h-full">
+                <TiltedCard
+                  tiltIntensity={6}
+                  scaleOnHover={1.06}
+                  initialScale={1.05}
+                  glareOpacity={0.3}
+                  showShadow={false}
+                  className="w-full h-full"
+                  innerClassName="rounded-lg cursor-default"
+                  glareClassName="rounded-lg"
+                >
+                  <div
+                    className={cn(
+                      "relative rounded-lg p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 bg-background w-full h-full border-2 shadow-none hover:shadow-lg",
+                      theme.border,
+                    )}
+                  >
+                    {cardBody}
+                  </div>
+                </TiltedCard>
+              </div>
+            );
+          }
+
+          return (
+            <div
+              key={plan.id}
+              className={cn(
+                "relative rounded-lg p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 bg-background",
+                variant === "default" && "border border-border shadow-none hover:shadow-lg",
+                variant === "elegant" &&
+                  (isPopular
+                    ? cn("border border-border border-t-4", theme.border, "shadow-lg")
+                    : "border border-border hover:shadow-lg"),
+                variant === "minimal" &&
+                  (isPopular
+                    ? cn("border-2", theme.border, "shadow-sm z-10")
+                    : "border-0 shadow-none bg-transparent"),
+                variant === "bordered" &&
+                  (isPopular
+                    ? cn(
+                        "border-2",
+                        theme.border,
+                        "shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] dark:shadow-[6px_6px_0px_0px_rgba(255,255,255,1)] hover:shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[10px_10px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-1 hover:-translate-y-1 z-10",
+                      )
+                    : "border-2 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] dark:shadow-[4px_4px_0px_0px_rgba(255,255,255,1)] hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] dark:hover:shadow-[8px_8px_0px_0px_rgba(255,255,255,1)] hover:-translate-x-1 hover:-translate-y-1"),
+              )}
+            >
+              {cardBody}
             </div>
           );
         })}

@@ -3336,6 +3336,7 @@
       ],
       "registryDependencies": [
         "https://avaraui.com/r/button.json",
+        "https://avaraui.com/r/tilted-card.json",
         "https://avaraui.com/r/toggle-group.json",
         "utils"
       ],
@@ -3351,7 +3352,7 @@
           "target": "components/custom/blocks/pricing-theme.ts"
         }
       ],
-      "docs": "Named exports: PricingCards, PricingBuilder, PricingTable, PricingSlider, PricingTypographic, PricingPlans. The largest pricing item — variants include cards, builder, table, slider, typographic, and interactive service checklist. The typographic billing switch is the `toggle-group` item, which installs alongside."
+      "docs": "Named exports: PricingCards, PricingBuilder, PricingTable, PricingSlider, PricingTypographic, PricingPlans. The largest pricing item — variants include cards, builder, table, slider, typographic, and interactive service checklist. The tiered cards popular plan features subtle 3D tilt from tilted-card."
     },
     {
       "name": "pricing-plan",
