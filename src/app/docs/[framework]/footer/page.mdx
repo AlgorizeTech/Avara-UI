@@ -7,9 +7,9 @@ import { extractCode } from "@/lib/code";
 
 # Footer
 
-A collection of 5 production-ready, high-capacity, fully responsive Footer components designed for modern web applications, SaaS platforms, e-commerce stores, and enterprise products.
+A collection of 6 production-ready, high-capacity, fully responsive Footer components designed for modern web applications, SaaS platforms, e-commerce stores, and enterprise products.
 
-`Footer` adapts seamlessly across mobile screens, tablets, and desktop viewports, with support for centered layouts, frosted glass docks, cyberpunk neon glow pulses, quantum particle beams, and snapshot studio polaroid piles.
+`Footer` adapts seamlessly across mobile screens, tablets, and desktop viewports, with support for centered layouts, frosted glass docks, cyberpunk neon glow pulses, quantum particle beams, snapshot studio card piles, and colorful modern scroll stack cards.
 
 export const usageSimple = `import { Footer } from "@/components/custom/blocks/FooterBlock";
 
@@ -51,6 +51,22 @@ export default function SnapshotFooterDemo() {
   );
 }`;
 
+export const usageModernStack = `import { Footer } from "@/components/custom/blocks/FooterBlock";
+
+export default function ModernStackFooterDemo() {
+  return (
+    <Footer
+      variant="modern-stack"
+      brandName="Avara UI"
+      snapshot={{
+        headingLines: ["Design freely.", "Ship extraordinary apps."],
+        taglineLines: ["Modern components.", "Infinite creativity.", "Built for everyone."],
+        address: ["Avara Studio", "Level 4, Innovation Park", "Dhaka 1212, Bangladesh", "+880 1700 000 000"],
+      }}
+    />
+  );
+}`;
+
 <ExampleShowcase
   name="footer"
   columns={1}
@@ -60,6 +76,13 @@ export default function SnapshotFooterDemo() {
       propNotes: [{ lead: "Use", prop: "variant", value: '"snapshot"', effect: "a modern studio footer with sunken interactive cards and an animated say hi sticker that lifts out on hover." }],
       props: { variant: "snapshot" },
       usage: usageSnapshot,
+      code: extractCode("src/components/custom/blocks/FooterBlock.tsx"),
+    },
+    {
+      title: "Modern Stack Footer",
+      propNotes: [{ lead: "Use", prop: "variant", value: '"modern-stack"', effect: "studio footer with multi-colored cards inspired by modern scroll stack and interactive spring hover physics." }],
+      props: { variant: "modern-stack" },
+      usage: usageModernStack,
       code: extractCode("src/components/custom/blocks/FooterBlock.tsx"),
     },
   ]}
@@ -108,8 +131,8 @@ Discover the key capabilities of the `Footer` component:
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">5 High-Performance Responsive Variants</h3>
-    <p className="text-muted-foreground text-sm">Includes Simple Centered, Glass Dock, Neon Glow Pulse, Quantum Particle Beam, and Snapshot.</p>
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">6 High-Performance Responsive Variants</h3>
+    <p className="text-muted-foreground text-sm">Includes Snapshot, Modern Stack, Simple Centered, Glass Dock, Neon Glow Pulse, and Quantum Particle Beam.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">100% Screen & Device Responsive</h3>
@@ -134,7 +157,7 @@ Discover the key capabilities of the `Footer` component:
         <td><code>variant</code></td>
         <td><code>FooterVariant</code></td>
         <td><code>"snapshot"</code></td>
-        <td>Selects from the 5 footer variants (<code>"snapshot"</code>, <code>"simple-centered"</code>, <code>"glass-dock"</code>, <code>"neon-glow-pulse"</code>, <code>"quantum-particle-beam"</code>).</td>
+        <td>Selects from the 6 footer variants (<code>"snapshot"</code>, <code>"modern-stack"</code>, <code>"simple-centered"</code>, <code>"glass-dock"</code>, <code>"neon-glow-pulse"</code>, <code>"quantum-particle-beam"</code>).</td>
       </tr>
       <tr>
         <td><code>color</code></td>

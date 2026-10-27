@@ -147,7 +147,8 @@
     "dark-glass-parameter-control-panel-tiles": "Button — Dark Glass Parameter Control Panel Tiles",
     "interactive-sliding-icon-text-motion-variants": "Button — Interactive Sliding Icon & Text Motion Variants",
     "icon-only": "Button — Icon only",
-    "social-login": "Button — Social login"
+    "social-login": "Button — Social login",
+    "pricing-action-cta-buttons": "Button — Pricing & Action CTA Buttons"
   },
   "calendar": {
     "calendar-dashboard": "Calendar — Calendar dashboard",
@@ -444,6 +445,7 @@
   },
   "footer": {
     "snapshot-footer": "Footer — Snapshot Footer",
+    "modern-stack-footer": "Footer — Modern Stack Footer",
     "simple-centered-footer": "Footer — Simple Centered Footer",
     "glass-dock-footer": "Footer — Glass Dock Footer",
     "neon-glow-pulse-cyberpunk-footer": "Footer — Neon Glow Pulse Cyberpunk Footer",

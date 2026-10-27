@@ -599,9 +599,9 @@ export const META: Record<string, ItemMeta> = {
   },
   footer: {
     description:
-      "A collection of 4 modern, animated, fully responsive Footer components for web applications, SaaS platforms, and marketing landing pages.",
+      "A collection of 6 modern, animated, fully responsive Footer components for web applications, SaaS platforms, and marketing landing pages.",
     categories: ["marketing", "navigation", "layout"],
-    docs: "Named export: Footer. Accepts `variant` (4 responsive variants: simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `brandName`, `tagline`, `logo`, `socialLinks`, `className`. The social row is the `social-links` item, which installs alongside. All variants adapt across mobile, tablet, and desktop screens.",
+    docs: "Named export: Footer. Accepts `variant` (6 responsive variants: snapshot, modern-stack, simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `color`, `brandName`, `tagline`, `logo`, `socialLinks`, `snapshot`, `className`. All variants adapt across mobile, tablet, and desktop screens.",
   },
   "booking-card": {
     usageDependencies: ["glass-panel"],
