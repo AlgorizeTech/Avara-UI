@@ -156,6 +156,34 @@ export default function LiquidGlassLoginPage() {
   );
 }`;
 
+export const usageLoginRibbonDrift = `import LoginForm, { LoginFormValues } from "@/components/custom/blocks/LoginForm";
+
+export default function RibbonDriftLoginPage() {
+  // "ribbon-drift" features dual floating infinite marquee ribbons, an animated drift backdrop, and interactive promo card.
+  const handleSubmit = async (values: LoginFormValues) => {
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    console.log(values);
+  };
+
+  const handleGoogleSignIn = () => {
+    console.log("Sign in with Google");
+  };
+
+  return (
+    <LoginForm
+      variant="ribbon-drift"
+      color="indigo"
+      heading="Welcome back"
+      lead="Sign in to review your candidates, screening answers and interview recordings in one place."
+      image="https://res.cloudinary.com/dygyhxplr/image/upload/v1791725870/upload/update27-2-1791725870473.webp"
+      signupHref="#"
+      forgotPasswordHref="#"
+      onSubmit={handleSubmit}
+      onGoogle={handleGoogleSignIn}
+    />
+  );
+}`;
+
 <ExampleShowcase
   name="login-form"
   colorControl
@@ -293,6 +321,34 @@ Every example below is the same `LoginForm` you just installed — only the prop
           "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
       },
       usage: usageLoginLiquidGlass,
+    },
+    {
+      title: "Login — ribbon-drift",
+      id: "login-ribbon-drift",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"ribbon-drift"',
+          effect:
+            "to wrap the form in a split layout with infinite drifting marquee ribbons, dynamic ambient gradient glow, and an interactive floating promo card.",
+        },
+        {
+          prop: "image",
+          effect:
+            "Cloudinary or image URL positioned between the layered ribbons.",
+        },
+      ],
+      props: {
+        variant: "ribbon-drift",
+        heading: "Welcome back",
+        lead: "Sign in to review your candidates, screening answers and interview recordings in one place.",
+        image:
+          "https://res.cloudinary.com/dygyhxplr/image/upload/v1791725870/upload/update27-2-1791725870473.webp",
+        signupHref: "#",
+        forgotPasswordHref: "#",
+      },
+      usage: usageLoginRibbonDrift,
     },
   ]}
 />
@@ -477,6 +533,35 @@ export default function LiquidGlassRegisterPage() {
   );
 }`;
 
+export const usageRegisterRibbonDrift = `import RegisterForm, { RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
+
+export default function RibbonDriftRegisterPage() {
+  // "ribbon-drift" features dual floating infinite marquee ribbons, an animated drift backdrop, and candidate showcase promo card.
+  const handleSubmit = async (values: RegisterFormValues) => {
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    console.log(values);
+  };
+
+  const handleGoogleSignUp = () => {
+    console.log("Sign up with Google");
+  };
+
+  return (
+    <RegisterForm
+      variant="ribbon-drift"
+      color="indigo"
+      heading="Create your account"
+      lead="Set up a role, add your screening questions, and let AI interview every qualified applicant."
+      image="/assets/auth/register-hero.png"
+      loginHref="#"
+      termsHref="#"
+      privacyHref="#"
+      onSubmit={handleSubmit}
+      onGoogle={handleGoogleSignUp}
+    />
+  );
+}`;
+
 <ExampleShowcase
   name="register-form"
   colorControl
@@ -644,6 +729,41 @@ Every example below is the same `RegisterForm` you just installed — only the p
           "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
       },
       usage: usageRegisterLiquidGlass,
+    },
+    {
+      title: "Register — ribbon-drift",
+      id: "register-ribbon-drift",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"ribbon-drift"',
+          effect:
+            "to wrap the register form in an animated silk drift background with dual infinite marquee ribbons, candidate showcase promo card, and full client-side validation.",
+        },
+        {
+          prop: "image",
+          effect: "Cloudinary or WebP illustration URL centered between the floating ribbons.",
+        },
+        {
+          prop: "heading",
+          effect: "Custom main headline shown on the registration card.",
+        },
+        {
+          prop: "lead",
+          effect: "Custom subtitle text displayed below the headline.",
+        },
+      ],
+      props: {
+        variant: "ribbon-drift",
+        heading: "Create your account",
+        lead: "Set up a role, add your screening questions, and let AI interview every qualified applicant.",
+        image: "/assets/auth/register-hero.png",
+        loginHref: "#",
+        termsHref: "#",
+        privacyHref: "#",
+      },
+      usage: usageRegisterRibbonDrift,
     },
   ]}
 />
@@ -819,13 +939,13 @@ Every example below is the same `RegisterForm` you just installed — only the p
           <code>variant</code>
         </td>
         <td>
-          <code>"scenic" | "default" | "split" | "liquid-glass" | "glass" | "minimal"</code>
+          <code>"scenic" | "default" | "split" | "liquid-glass" | "glass" | "minimal" | "ribbon-drift"</code>
         </td>
         <td>
           <code>"default"</code>
         </td>
         <td>
-          Distinct presentation presets. <code>"scenic"</code> renders a floating onboarding card over a landscape backdrop, <code>"liquid-glass"</code> wraps in an animated liquid SVG frosted glass stack, and <code>"glass"</code> renders translucent panels.
+          Distinct presentation presets. <code>"scenic"</code> renders a floating onboarding card over a landscape backdrop, <code>"liquid-glass"</code> wraps in an animated liquid SVG frosted glass stack, <code>"glass"</code> renders translucent panels, and <code>"ribbon-drift"</code> features dual infinite marquee ribbons with animated drift backdrop.
         </td>
       </tr>
       <tr>

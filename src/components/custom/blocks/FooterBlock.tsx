@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Globe as GlobeIcon,
   Sparkles,
@@ -23,7 +23,45 @@ export type FooterVariant =
   | "quantum-particle-beam"
   | "snapshot"
   | "modern-stack"
-  | "snapshot-stack";
+  | "snapshot-stack"
+  | "wordmark-glow";
+
+export interface WordmarkFooterColumnItem {
+  title: string;
+  link: string;
+}
+
+export interface WordmarkFooterColumn {
+  title: string;
+  children: WordmarkFooterColumnItem[];
+}
+
+export interface WordmarkFooterContact {
+  email?: string;
+  location?: string;
+}
+
+export interface WordmarkFooterLabels {
+  contact?: string;
+  location?: string;
+  social?: string;
+}
+
+export interface WordmarkFooterProps {
+  logo?: React.ReactNode | string;
+  logoDark?: string;
+  logoHref?: string;
+  tagline?: string;
+  columns?: WordmarkFooterColumn[];
+  contact?: WordmarkFooterContact;
+  social?: { title: string; link: string }[];
+  legal?: { title: string; link: string }[];
+  labels?: WordmarkFooterLabels;
+  copyright?: string;
+  bottomLine?: string;
+  wordmark?: string;
+  className?: string;
+}
 
 export interface FooterLinkSection {
   title: string;
@@ -84,6 +122,10 @@ export interface FooterProps {
   socialLinks?: SocialLink[];
   /** Copy, photos and note card for the `snapshot` variant. */
   snapshot?: SnapshotFooterContent;
+  /** Configuration and content for the `wordmark-glow` variant. */
+  wordmarkFooter?: WordmarkFooterProps;
+  /** Giant wordmark text for the `wordmark-glow` variant (default: "Algorize"). */
+  wordmark?: string;
   className?: string;
 }
 
@@ -253,7 +295,49 @@ const DEFAULT_SECTIONS_BY_VARIANT: Record<FooterVariant, FooterLinkSection[]> = 
       ],
     },
   ],
+  "wordmark-glow": DEFAULT_FOOTER_SECTIONS,
 };
+
+const DEFAULT_WORDMARK_COLUMNS: WordmarkFooterColumn[] = [
+  {
+    title: "Solutions",
+    children: [
+      { title: "Enterprise", link: "#" },
+      { title: "Business Process Outsourcing (BPO)", link: "#" },
+      { title: "Staffing Agencies", link: "#" },
+      { title: "Customer Service", link: "#" },
+      { title: "Software Engineering", link: "#" },
+      { title: "Consulting", link: "#" },
+      { title: "Retail", link: "#" },
+    ],
+  },
+  {
+    title: "Product",
+    children: [
+      { title: "Product", link: "#" },
+      { title: "Pricing", link: "#" },
+      { title: "Case Studies", link: "#" },
+      { title: "See Sample", link: "#" },
+      { title: "Become a Partner", link: "#" },
+      { title: "API", link: "#" },
+    ],
+  },
+];
+
+const DEFAULT_WORDMARK_CONTACT: WordmarkFooterContact = {
+  email: "hello@example.com",
+  location: "Remote-first team",
+};
+
+const DEFAULT_WORDMARK_SOCIAL = [
+  { title: "Threads", link: "#" },
+  { title: "LinkedIn", link: "#" },
+  { title: "YouTube", link: "#" },
+];
+
+const DEFAULT_WORDMARK_LEGAL = [
+  { title: "Legal Center", link: "#" },
+];
 
 /* -------------------------------------------------------------------------- */
 /*  Snapshot variant                                                          */
@@ -1272,35 +1356,255 @@ function SnapshotFooter({
   );
 }
 
+/* -------------------------------------------------------------------------- */
+/*  Wordmark variant (Giant rising wordmark with pointer glow)               */
+/* -------------------------------------------------------------------------- */
+
+const wordmarkHeadingClass = "mb-3 text-[0.8125rem] font-medium text-muted-foreground";
+const wordmarkLinkClass = "text-[0.9375rem] text-foreground/80 hover:text-foreground transition-colors";
+
+const wordmarkKeyframes = `
+@keyframes footer-block-rise { from { transform: translateY(70%); } to { transform: none; } }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .footer-block-letter {
+      animation: footer-block-rise linear both;
+      animation-timeline: view();
+      animation-range: entry calc(var(--i) * 4%) entry 100%;
+    }
+  }
+}
+`;
+
+export function WordmarkFooter({
+  logo,
+  logoDark,
+  logoHref = "/",
+  tagline = "AI first-round screening for recruiters. Algorize checks every applicant and runs the first interview, day or night.",
+  columns = DEFAULT_WORDMARK_COLUMNS,
+  contact = DEFAULT_WORDMARK_CONTACT,
+  social = DEFAULT_WORDMARK_SOCIAL,
+  legal = DEFAULT_WORDMARK_LEGAL,
+  labels = {},
+  copyright = "Avara UI",
+  bottomLine = "A person makes every hiring decision.",
+  wordmark = "Algorize",
+  className = "",
+}: WordmarkFooterProps) {
+  const { contact: contactLabel = "Talk to us", location: locationLabel = "Where we work", social: socialLabel = "Follow" } = labels;
+  const wrapRef = useRef<HTMLDivElement>(null);
+
+  // Writes the pointer position as --mx / --my for the glow, one write per frame.
+  useEffect(() => {
+    const node = wrapRef.current;
+    if (!node || typeof window === "undefined" || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return undefined;
+    let frame = 0;
+    let x = 0;
+    let y = 0;
+    const onMove = (event: PointerEvent) => {
+      const rect = node.getBoundingClientRect();
+      x = event.clientX - rect.left;
+      y = event.clientY - rect.top;
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        node.style.setProperty("--mx", `${x}px`);
+        node.style.setProperty("--my", `${y}px`);
+      });
+    };
+    node.addEventListener("pointermove", onMove);
+    return () => {
+      node.removeEventListener("pointermove", onMove);
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  const renderedLogo = logo ? (
+    typeof logo === "string" ? (
+      <img src={logo} alt="Logo" className={cn("h-8 w-auto object-contain", logoDark ? "dark:hidden" : "")} />
+    ) : (
+      logo
+    )
+  ) : (
+    <div className="flex items-center gap-2 select-none">
+      <div className="relative flex items-center justify-center">
+        <img
+          src="/favicon/android-chrome-192x192.png"
+          alt="Avara UI"
+          width={24}
+          height={24}
+          className="size-6 object-contain"
+        />
+      </div>
+      <span className="font-extrabold text-xl tracking-tight text-foreground flex items-center gap-1.5">
+        Avara{" "}
+        <span
+          className="font-normal"
+          style={{ color: "var(--brand, #9B8AFB)" }}
+        >
+          UI
+        </span>
+      </span>
+    </div>
+  );
+
+  const yearStr = String(new Date().getFullYear());
+  const displayCopyright = copyright.startsWith(yearStr)
+    ? copyright
+    : `${yearStr} ${copyright}`;
+  const charRatio = wordmark ? Math.max(wordmark.length * 0.56, 2.5) : 4.5;
+
+  return (
+    <footer className={cn("relative w-full bg-background pt-[72px] text-foreground transition-colors overflow-hidden", className)}>
+      <style>{wordmarkKeyframes}</style>
+
+      <div className="relative z-10 mx-auto w-full max-w-[1280px] px-5 sm:px-8">
+        <div className="grid gap-10 lg:grid-cols-[1.2fr_1.3fr_1fr]">
+          <div className="grid max-w-[352px] content-start gap-3.5">
+            <a href={logoHref} className="inline-flex w-fit items-center rounded-xl p-1.5 -ml-1.5">
+              {renderedLogo}
+              {logoDark && typeof logoDark === "string" && (
+                <img src={logoDark} alt="Logo" className="hidden h-8 w-auto object-contain dark:block" />
+              )}
+            </a>
+            {tagline && <p className="text-[0.9375rem] leading-relaxed text-muted-foreground">{tagline}</p>}
+          </div>
+
+          <div className="grid grid-cols-2 gap-8">
+            {columns.map((column, index) => (
+              <nav key={`${column.title}-${index}`} aria-label={column.title}>
+                <p className={wordmarkHeadingClass}>{column.title}</p>
+                <ul className="grid gap-2.5">
+                  {column.children?.map((item) => (
+                    <li key={`${item.title}-${item.link}`}>
+                      <a href={item.link} className={wordmarkLinkClass}>
+                        {item.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            ))}
+          </div>
+
+          {(contact || (social && social.length > 0)) && (
+            <div>
+              {contact?.email && (
+                <>
+                  <p className={wordmarkHeadingClass}>{contactLabel}</p>
+                  <a
+                    href={`mailto:${contact.email}`}
+                    className="text-xl font-medium underline decoration-current/35 underline-offset-[5px] transition-colors hover:text-primary"
+                  >
+                    {contact.email}
+                  </a>
+                </>
+              )}
+              {contact?.location && (
+                <>
+                  <p className={cn(wordmarkHeadingClass, "mt-5")}>{locationLabel}</p>
+                  <p className="text-[0.9375rem] leading-relaxed text-muted-foreground">{contact.location}</p>
+                </>
+              )}
+              {social && social.length > 0 && (
+                <>
+                  <p className={cn(wordmarkHeadingClass, "mt-5")}>{socialLabel}</p>
+                  <ul className="grid gap-2.5">
+                    {social.map((item) => (
+                      <li key={item.title}>
+                        <a href={item.link} target="_blank" rel="noopener noreferrer" className={wordmarkLinkClass}>
+                          {item.title}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
+            </div>
+          )}
+        </div>
+
+        <div className="mt-14 flex flex-wrap justify-between gap-x-6 gap-y-3 border-t border-border pt-6 text-[0.8125rem] text-muted-foreground">
+          <p>
+            © {displayCopyright}
+          </p>
+          <ul className="flex flex-wrap gap-4">
+            {legal.map((item) => (
+              <li key={`${item.title}-${item.link}`}>
+                <a href={item.link} className="transition-colors hover:text-primary">
+                  {item.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+          {bottomLine && <p>{bottomLine}</p>}
+        </div>
+      </div>
+
+      {wordmark && (
+        <div
+          ref={wrapRef}
+          className="group/word relative isolate mt-[calc(24px-var(--lift))] overflow-hidden px-2 pt-[var(--lift)] sm:px-4 [--lift:clamp(96px,10vw,160px)] lg:mt-[calc(40px-var(--lift))] [container-type:inline-size]"
+        >
+          {/* Glow behind the letters; it reaches up behind the bottom row and fades in. */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 -z-10 bg-[radial-gradient(320px_circle_at_var(--mx,50%)_var(--my,60%),color-mix(in_oklab,var(--primary)_42%,transparent),transparent_70%)] opacity-50 transition-opacity duration-300 [mask-image:linear-gradient(to_bottom,transparent,#000_calc(var(--lift)+48px))] group-hover/word:opacity-100"
+          />
+          <p
+            aria-hidden="true"
+            style={{
+              fontSize: `clamp(3.5rem, calc(88cqi / ${charRatio}), 19rem)`,
+            }}
+            className="pointer-events-none mb-[-0.025em] mt-6 flex w-full select-none justify-center whitespace-nowrap text-[clamp(3.5rem,calc(88vw/4.5),19rem)] font-semibold leading-[0.82] tracking-[-0.035em]"
+          >
+            {[...wordmark].map((letter, index) => (
+              <span
+                key={index}
+                style={{ "--i": index } as React.CSSProperties}
+                className="footer-block-letter inline-block px-[0.02em] last:pr-[0.14em] bg-gradient-to-b from-foreground/20 to-foreground/[0.02] to-85% bg-clip-text text-transparent"
+              >
+                {letter}
+              </span>
+            ))}
+          </p>
+        </div>
+      )}
+    </footer>
+  );
+}
+
+export { WordmarkFooter as FooterBlock };
+
 /** The wordmark, or whatever `logo` was passed instead of it. */
 function BrandLogo({ logo, brandName }: Pick<FooterProps, "logo" | "brandName">) {
+  const isAvara = !brandName || brandName === "Avara UI";
   return (
-  <div className="flex items-center gap-2.5 select-none">
-    {logo || (
-      <div className="relative flex items-center justify-center">
-        <svg
-          width="28"
-          height="28"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="size-[24px]"
+    <div className="flex items-center gap-2 select-none">
+      {logo || (
+        <div className="relative flex items-center justify-center">
+          <img
+            src="/favicon/android-chrome-192x192.png"
+            alt={brandName || "Avara UI"}
+            width={24}
+            height={24}
+            className="size-6 object-contain"
+          />
+        </div>
+      )}
+      <span className="font-extrabold text-base sm:text-lg tracking-tight text-foreground flex items-center gap-1.5">
+        {isAvara ? "Avara" : brandName}{" "}
+        <span
+          className="font-normal"
+          style={{ color: "var(--brand, #9B8AFB)" }}
         >
-          <rect x="3" y="3" width="7" height="7" rx="1.5" className="fill-foreground" />
-          <rect x="14" y="3" width="7" height="7" rx="1.5" className="fill-primary" />
-          <rect x="14" y="14" width="7" height="7" rx="1.5" className="fill-foreground" />
-          <rect x="3" y="14" width="7" height="7" rx="1.5" className="fill-primary" />
-        </svg>
-      </div>
-    )}
-    <span className="font-extrabold text-base sm:text-lg tracking-tight text-foreground flex items-center gap-1.5">
-      {brandName === "Avara UI" ? "Docs" : brandName}{" "}
-      <span className="text-primary font-normal">UI</span>
-      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 leading-none">
-        v1.0
+          UI
+        </span>
+        <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/20 leading-none">
+          v1.0
+        </span>
       </span>
-    </span>
-  </div>
+    </div>
   );
 }
 
@@ -1314,6 +1618,8 @@ export function Footer({
   sections,
   socialLinks = DEFAULT_SOCIAL_LINKS,
   snapshot,
+  wordmarkFooter,
+  wordmark,
   className,
 }: FooterProps) {
   const dynamicAccent = accentStyle(color);
@@ -1321,6 +1627,29 @@ export function Footer({
   const copyright =
     copyrightText ??
     `© ${new Date().getFullYear()} ${brandName}. All rights reserved.`;
+
+  if (variant === "wordmark-glow") {
+    return (
+      <div style={dynamicAccent} className={cn("w-full transition-colors", className)}>
+        <WordmarkFooter
+          logo={logo}
+          tagline={
+            tagline !== "Elevate your web applications with fluid, production-ready animated components."
+              ? tagline
+              : wordmarkFooter?.tagline ?? "AI first-round screening for recruiters. Algorize checks every applicant and runs the first interview, day or night."
+          }
+          columns={wordmarkFooter?.columns}
+          contact={wordmarkFooter?.contact}
+          social={wordmarkFooter?.social}
+          legal={wordmarkFooter?.legal}
+          labels={wordmarkFooter?.labels}
+          copyright={wordmarkFooter?.copyright ?? copyrightText ?? (brandName || "Avara UI")}
+          bottomLine={wordmarkFooter?.bottomLine}
+          wordmark={wordmark ?? wordmarkFooter?.wordmark ?? "Algorize"}
+        />
+      </div>
+    );
+  }
 
   if (variant === "snapshot" || variant === "modern-stack" || variant === "snapshot-stack") {
     const isModernStack = variant === "modern-stack" || variant === "snapshot-stack";

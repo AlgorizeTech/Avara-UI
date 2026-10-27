@@ -278,7 +278,7 @@ const rawNavigation: NavigationItem[] = [
       { label: "Network Graph", slug: "network-graph" },
       { label: "OTP Input", slug: "otp-input" },
       { label: "Pagination", slug: "pagination" },
-      { label: "Particle Canvas", slug: "particle-canvas" },
+      { label: "Particle Canvas", slug: "particle-canvas", badge: "New", addedOn: "2026-10-27" },
       { label: "Playable Piano", slug: "piano" },
       { label: "Popover", slug: "popover" },
       { label: "Progress", slug: "progress" },

@@ -402,15 +402,15 @@ export const META: Record<string, ItemMeta> = {
   },
   "login-form": {
     description:
-      "A sign-in form with social buttons, password reveal, remember-me and four layout variants. Use it as the entry point of an authenticated app.",
+      "A sign-in form with social buttons, password reveal, remember-me and multiple layout variants including ribbon-drift and liquid-glass. Use it as the entry point of an authenticated app.",
     categories: ["authentication", "forms"],
-    docs: "Default export: LoginForm. Also exports getThemeStyles (from login-form-theme.ts, which installs alongside) and the LoginFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated credentials; without it the form simulates a round trip. `signupHref` points at the matching `register-form` page. Validation is client-side presentation only — enforce it again on your server.",
+    docs: "Default export: LoginForm. Also exports LoginBlock, getThemeStyles (from login-form-theme.ts, which installs alongside) and the LoginFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal | liquid-glass | ribbon-drift. `onSubmit` receives the validated credentials; without it the form simulates a round trip. `signupHref` points at the matching `register-form` page. Validation is client-side presentation only — enforce it again on your server.",
   },
   "register-form": {
     description:
-      "A sign-up form with paired name fields, password confirmation, a terms checkbox and four layout variants. Use it wherever new accounts are created.",
+      "A sign-up form with paired name fields, password confirmation, a terms checkbox and multiple layout variants including ribbon-drift and liquid-glass. Use it wherever new accounts are created.",
     categories: ["authentication", "forms"],
-    docs: "Default export: RegisterForm. Also exports getThemeStyles (from register-form-theme.ts, which installs alongside) and the RegisterFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated fields; without it the form simulates a round trip. `loginHref` points at the matching `login-form` page, and `minPasswordLength` sets the client-side minimum. Validation is client-side presentation only — enforce it again on your server.",
+    docs: "Default export: RegisterForm. Also exports RegisterBlock, getThemeStyles (from register-form-theme.ts, which installs alongside) and the RegisterFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal | scenic | liquid-glass | ribbon-drift. `onSubmit` receives the validated fields; without it the form simulates a round trip. `loginHref` points at the matching `login-form` page, and `minPasswordLength` sets the client-side minimum. Validation is client-side presentation only — enforce it again on your server.",
   },
   "signup-form": {
     description:
@@ -599,9 +599,9 @@ export const META: Record<string, ItemMeta> = {
   },
   footer: {
     description:
-      "A collection of 6 modern, animated, fully responsive Footer components for web applications, SaaS platforms, and marketing landing pages.",
+      "A collection of 7 modern, animated, fully responsive Footer components for web applications, SaaS platforms, and marketing landing pages.",
     categories: ["marketing", "navigation", "layout"],
-    docs: "Named export: Footer. Accepts `variant` (6 responsive variants: snapshot, modern-stack, simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `color`, `brandName`, `tagline`, `logo`, `socialLinks`, `snapshot`, `className`. All variants adapt across mobile, tablet, and desktop screens.",
+    docs: "Named export: Footer. Accepts `variant` (7 responsive variants: snapshot, modern-stack, wordmark-glow, simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `color`, `brandName`, `tagline`, `logo`, `socialLinks`, `snapshot`, `wordmarkFooter`, `wordmark`, `className`. All variants adapt across mobile, tablet, and desktop screens.",
   },
   "booking-card": {
     usageDependencies: ["glass-panel"],
@@ -943,7 +943,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A complete pricing system with plan cards, a comparison table, an interactive plan builder and an interactive service checklist.",
     categories: ["commerce", "marketing"],
-    docs: "Named exports: PricingCards, PricingBuilder, PricingTable, PricingSlider, PricingTypographic, PricingPlans. The largest pricing item — variants include cards, builder, table, slider, typographic, and interactive service checklist. The typographic billing switch is the `toggle-group` item, which installs alongside.",
+    docs: "Named exports: PricingCards, PricingBuilder, PricingTable, PricingSlider, PricingTypographic, PricingPlans. The largest pricing item — variants include cards, builder, table, slider, typographic, and interactive service checklist. The tiered cards popular plan features subtle 3D tilt from tilted-card.",
   },
   "pricing-plan": {
     description:
@@ -1223,8 +1223,9 @@ export const META: Record<string, ItemMeta> = {
   },
   "particle-canvas": {
     description:
-      "A high-performance HTML Canvas component that converts text or images into thousands of animated particles with multiple visual variants and interactive mouse mechanics.",
+      "A high-performance text canvas component with organic repulsion physics and wordmark glow variants featuring cursor tracking and scroll-driven rising animations.",
     categories: ["media", "data-display"],
+    docs: "Named exports: ParticleCanvas, WordmarkGlowCanvas. Default export: ParticleCanvas. Variants: repel | wordmark-glow. Features 2D particle physics, cursor repulsion, scroll-timeline rising letters, and pointer-following radial glow.",
   },
   "split-flap": {
     title: "Split-Flap Display",

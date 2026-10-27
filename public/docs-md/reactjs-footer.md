@@ -2,9 +2,9 @@ export const metadata = docsPageMetadata("footer");
 
 # Footer
 
-A collection of 6 production-ready, high-capacity, fully responsive Footer components designed for modern web applications, SaaS platforms, e-commerce stores, and enterprise products.
+A collection of 7 production-ready, high-capacity, fully responsive Footer components designed for modern web applications, SaaS platforms, e-commerce stores, and enterprise products.
 
-`Footer` adapts seamlessly across mobile screens, tablets, and desktop viewports, with support for centered layouts, frosted glass docks, cyberpunk neon glow pulses, quantum particle beams, snapshot studio card piles, and colorful modern scroll stack cards.
+`Footer` adapts seamlessly across mobile screens, tablets, and desktop viewports, with support for centered layouts, frosted glass docks, cyberpunk neon glow pulses, quantum particle beams, snapshot studio card piles, colorful modern scroll stack cards, and giant glowing scroll-reveal wordmarks.
 
 export const usageSimple = `import { Footer } from "@/components/custom/blocks/FooterBlock";
 
@@ -46,6 +46,14 @@ export default function ModernStackFooterDemo() {
   );
 }`;
 
+export const usageWordmark = `import { Footer } from "@/components/custom/blocks/FooterBlock";
+
+export default function WordmarkFooterDemo() {
+  return (
+    
+  );
+}`;
+
 ## Installation
 
 Add the component by URL — no setup needed:
@@ -67,8 +75,8 @@ npx shadcn@latest add @avara-ui/footer
 
 Discover the key capabilities of the `Footer` component:
 
-    6 High-Performance Responsive Variants
-    Includes Snapshot, Modern Stack, Simple Centered, Glass Dock, Neon Glow Pulse, and Quantum Particle Beam.
+    7 High-Performance Responsive Variants
+    Includes Snapshot, Modern Stack, Wordmark Glow, Simple Centered, Glass Dock, Neon Glow Pulse, and Quantum Particle Beam.
 
     100% Screen & Device Responsive
     Fluid Tailwind CSS grid and flex layouts built to adapt from 320px mobile viewports up to 4K ultra-wide screens.

@@ -9,6 +9,10 @@ export interface TiltedCardProps extends React.HTMLAttributes<HTMLDivElement> {
   tiltIntensity?: number; // Maximum rotation in degrees (e.g., 15)
   glareOpacity?: number; // Maximum opacity of the glare effect (0 to 1)
   scaleOnHover?: number; // Scale factor when hovered (e.g., 1.05)
+  initialScale?: number; // Starting scale factor (e.g., 1 or 1.05 for featured cards)
+  innerClassName?: string;
+  glareClassName?: string;
+  showShadow?: boolean;
 }
 
 // Pointer tilt: every frame the tilt chases the pointer through this spring,
@@ -25,7 +29,7 @@ const mapRange = (v: number, from: number, to: number) => {
 };
 
 const glareBackground = (x: number, y: number) =>
-  `radial-gradient(circle at ${x}% ${y}%, var(--theme-color,var(--primary)), transparent 65%)`;
+  `radial-gradient(circle at ${x}% ${y}%, var(--theme-color,var(--pricing-accent,var(--primary))), transparent 65%)`;
 
 export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
   (
@@ -35,6 +39,10 @@ export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
       tiltIntensity = 15,
       glareOpacity = 0.2,
       scaleOnHover = 1.02,
+      initialScale = 1,
+      innerClassName,
+      glareClassName,
+      showShadow = true,
       ...props
     },
     ref,
@@ -45,8 +53,8 @@ export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
     React.useImperativeHandle(ref, () => cardRef.current as HTMLDivElement);
 
     // Read at paint time, so a changed prop applies from the next frame.
-    const latest = useRef({ tiltIntensity, scaleOnHover });
-    latest.current = { tiltIntensity, scaleOnHover };
+    const latest = useRef({ tiltIntensity, scaleOnHover, initialScale });
+    latest.current = { tiltIntensity, scaleOnHover, initialScale };
 
     const springs = useRef<{
       x: SpringFollower;
@@ -83,8 +91,10 @@ export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
       springs.current = {
         x: createSpringFollower(0, paint, TILT_SPRING),
         y: createSpringFollower(0, paint, TILT_SPRING),
-        scale: createSpringFollower(1, paint, HOVER_SPRING),
+        scale: createSpringFollower(initialScale, paint, HOVER_SPRING),
       };
+
+      paint();
 
       return () => {
         springs.current?.x.destroy();
@@ -92,7 +102,7 @@ export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
         springs.current?.scale.destroy();
         springs.current = null;
       };
-    }, []);
+    }, [initialScale]);
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
       if (!cardRef.current) return;
@@ -116,7 +126,7 @@ export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
 
     const handlePointerLeave = (e: React.PointerEvent<HTMLDivElement>) => {
       if (e.pointerType === "touch") return;
-      springs.current?.scale.set(1);
+      springs.current?.scale.set(latest.current.initialScale);
     };
 
     return (
@@ -132,8 +142,14 @@ export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
           onPointerLeave={handlePointerLeave}
           style={{
             transformStyle: "preserve-3d",
+            transform: initialScale !== 1 ? `scale(${initialScale})` : undefined,
           }}
-          className="relative w-full h-full rounded-2xl overflow-visible shadow-[0_10px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.5)] transition-shadow duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.14)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.7)] group cursor-pointer"
+          className={cn(
+            "relative w-full h-full rounded-2xl overflow-visible transition-shadow duration-300 group cursor-pointer",
+            showShadow &&
+              "shadow-[0_10px_30px_rgba(0,0,0,0.08)] dark:shadow-[0_10px_30px_rgba(0,0,0,0.5)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.14)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.7)]",
+            innerClassName,
+          )}
         >
           <div
             className="relative w-full h-full z-10"
@@ -149,7 +165,10 @@ export const TiltedCard = React.forwardRef<HTMLDivElement, TiltedCardProps>(
             {/* Dynamic Theme Color Glare Overlay */}
             <div
               ref={glareRef}
-              className="absolute inset-0 z-50 pointer-events-none opacity-0 group-hover:opacity-[var(--glare-opacity)] transition-opacity duration-300 rounded-2xl"
+              className={cn(
+                "absolute inset-0 z-50 pointer-events-none opacity-0 group-hover:opacity-[var(--glare-opacity)] transition-opacity duration-300 rounded-2xl",
+                glareClassName,
+              )}
               style={{ background: glareBackground(50, 50) }}
             />
           </div>

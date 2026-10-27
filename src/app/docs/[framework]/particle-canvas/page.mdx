@@ -20,10 +20,27 @@ export default function ParticleCanvasDemo() {
   return (
     <div className="relative w-full h-[650px] min-h-max bg-background rounded-xl overflow-hidden flex items-center justify-center border border-border">
       <ParticleCanvas
+        variant="repel"
         content="AlgorizeTech"
         particleSize={2.5}
         particleGap={5}
         speed={1}
+        className="w-full h-full min-h-[650px]"
+      />
+    </div>
+  );
+}`;
+
+export const usageWordmarkGlow = `"use client";
+
+import { ParticleCanvas } from "@/components/custom/blocks/ParticleCanvasBlock";
+
+export default function WordmarkGlowDemo() {
+  return (
+    <div className="relative w-full h-[650px] min-h-max bg-background rounded-xl overflow-hidden flex items-center justify-center border border-border">
+      <ParticleCanvas
+        variant="wordmark-glow"
+        content="AlgorizeTech"
         className="w-full h-full min-h-[650px]"
       />
     </div>
@@ -36,8 +53,14 @@ export default function ParticleCanvasDemo() {
   examples={[
     {
       title: "Text Particle Repel",
-      props: { content: "AlgorizeTech" },
+      props: { variant: "repel", content: "AlgorizeTech" },
       usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/ParticleCanvasBlock.tsx"),
+    },
+    {
+      title: "Wordmark Glow Canvas",
+      props: { variant: "wordmark-glow", content: "AlgorizeTech" },
+      usage: usageWordmarkGlow,
       code: extractCode("src/components/custom/blocks/ParticleCanvasBlock.tsx"),
     },
   ]}
@@ -96,6 +119,12 @@ Discover the key capabilities that make this component an excellent choice for m
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"repel" | "wordmark-glow"</code></td>
+        <td><code>"repel"</code></td>
+        <td>Visual mode. <code>"repel"</code> renders 2D particle physics scattering text dots. <code>"wordmark-glow"</code> renders an expansive scroll-driven wordmark with dynamic cursor-following radial glow.</td>
+      </tr>
       <tr>
         <td><code>content</code></td>
         <td><code>string</code></td>
