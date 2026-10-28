@@ -146,6 +146,56 @@ export default function ControlButtonsDemo() {
   );
 }`;
 
+export const usagePricing = `import Button from "@/components/custom/blocks/Button";
+
+export default function PricingButtonsDemo() {
+  return (
+    
+      {/* 1. Primary CTA - with and without arrow */}
+      
+        Primary with Icon
+
+        Primary
+
+      {/* 2. Dark Gradient CTA - with and without arrow */}
+      
+        Dark with Icon
+
+        Dark
+
+      {/* 3. Outline CTA - with and without arrow */}
+      
+        Outline with Icon
+
+        Outline
+
+      {/* 3. Glowing Pro CTA - with and without arrow */}
+      
+        Glow Pro with Icon
+
+        Glow Pro
+
+      {/* 4. Muted Flat CTA - Contact Sales */}
+      
+        Contact Sales with Icon
+
+        Contact Sales
+
+      {/* 5. Typographic High-Contrast Curtain CTA - with and without arrow */}
+      
+        Initiate Project with Icon
+
+        Initiate Project
+
+      {/* 6. Typographic Muted Curtain CTA - with and without arrow */}
+      
+        Muted Project with Icon
+
+        Muted Project
+
+  );
+};`;
+
 ## Installation
 
 Add the component by URL — no setup needed:
@@ -160,6 +210,8 @@ Or register the @avara-ui registry once per project and add it by name:
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/button
 ```
+
+## Examples
 
 ## Features
 
@@ -181,11 +233,11 @@ npx shadcn@latest add @avara-ui/button
 
           variant
 
-          "outline" | "slide-icon" | "slide-icon-loop" | "slide-text" | "3d" | "shards-control"
+          "outline" | "slide-icon" | "slide-icon-loop" | "slide-text" | "3d" | "shards-control" | "pricing-primary" | "pricing-dark" | "pricing-outline" | "pricing-glow" | "pricing-muted" | "pricing-typographic" | "pricing-typographic-muted" | ...
 
           "outline"
         
-        Choose between 4-side border glow, sliding rounded icon, looping rounded icon, vertical text roll, raised 3D press, or dark glass parameter control tile.
+        Choose between 4-side border glow, sliding rounded icon, looping rounded icon, vertical text roll, raised 3D press, parameter control tiles, or pricing CTA surfaces ("pricing-primary", "pricing-dark", "pricing-outline", "pricing-glow", "pricing-muted", "pricing-typographic", "pricing-typographic-muted").
 
           controlType
 
@@ -258,6 +310,14 @@ npx shadcn@latest add @avara-ui/button
           undefined
         
         Renders an icon or element to the right of the text.
+
+          showArrow
+
+          boolean
+
+          false
+
+          If true, automatically displays an interactive trailing arrow icon (ArrowRightIcon) without needing to supply iconRight.
 
 ---
 

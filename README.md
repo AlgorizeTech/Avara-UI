@@ -1,6 +1,8 @@
 <div align="center">
 
-<h1>Avara UI</h1>
+<h1>
+  <a href="https://avaraui.com"><img src="https://avaraui.com/favicon/android-chrome-192x192.png" width="34" height="34" alt="" align="center" valign="middle" style="vertical-align: middle; margin-bottom: 3px;" /><picture><source media="(prefers-color-scheme: dark)" srcset="public/assets/avara-wordmark-dark.svg"><source media="(prefers-color-scheme: light)" srcset="public/assets/avara-wordmark-light.svg"><img src="public/assets/avara-wordmark-light.svg" alt="Avara UI" height="30" align="center" valign="middle" style="vertical-align: middle;" /></picture></a>
+</h1>
 
 <strong>A shadcn registry of animated React components you install straight into your own codebase.</strong>
 <br />
@@ -56,9 +58,9 @@ That is the same as adding this to `components.json` yourself:
 
 ```json
 {
-  "registries": {
-    "@avara-ui": "https://avaraui.com/r/{name}.json"
-  }
+	"registries": {
+		"@avara-ui": "https://avaraui.com/r/{name}.json"
+	}
 }
 ```
 
@@ -79,26 +81,26 @@ npx shadcn@latest search @avara-ui --query pricing
 
 ## Supported frameworks
 
-| Framework | Supported versions | Guide |
-| :-------- | :----------------- | :---- |
-| **Next.js** (App Router) | Next.js 14, 15 and 16 · React 18 and 19 · Tailwind CSS v3.4+ or v4 | [Installation](https://avaraui.com/docs/nextjs/installation) · [Quick start](https://avaraui.com/docs/nextjs/first-app) |
-| **React + Vite** | Vite 5 to 8 · React 18 and 19 · Tailwind CSS v4 | [Installation](https://avaraui.com/docs/reactjs/installation) · [Quick start](https://avaraui.com/docs/reactjs/first-app) |
+| Framework                | Supported versions                                                 | Guide                                                                                                                     |
+| :----------------------- | :----------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------ |
+| **Next.js** (App Router) | Next.js 14, 15 and 16 · React 18 and 19 · Tailwind CSS v3.4+ or v4 | [Installation](https://avaraui.com/docs/nextjs/installation) · [Quick start](https://avaraui.com/docs/nextjs/first-app)   |
+| **React + Vite**         | Vite 5 to 8 · React 18 and 19 · Tailwind CSS v4                    | [Installation](https://avaraui.com/docs/reactjs/installation) · [Quick start](https://avaraui.com/docs/reactjs/first-app) |
 
 Both need the `@/*` path alias. TypeScript is recommended, but plain JavaScript projects work too. The components also work in Create React App and React Router projects.
 
 ## Categories
 
-| Category | Items | | Category | Items |
-| :------- | ----: |-| :------- | ----: |
-| Marketing | 63 | | Commerce | 11 |
-| Data display | 40 | | Communication | 10 |
-| Layout | 34 | | Actions | 7 |
-| Media | 31 | | Feedback | 7 |
-| Forms | 28 | | Overlays | 7 |
-| Navigation | 19 | | Typography | 6 |
-| Utilities | 19 | | Code | 5 |
-| Scroll | 13 | | Authentication | 4 |
-| Maps | 2 | | Dates | 4 |
+| Category     | Items |     | Category       | Items |
+| :----------- | ----: | --- | :------------- | ----: |
+| Marketing    |    63 |     | Commerce       |    11 |
+| Data display |    40 |     | Communication  |    10 |
+| Layout       |    34 |     | Actions        |     7 |
+| Media        |    31 |     | Feedback       |     7 |
+| Forms        |    28 |     | Overlays       |     7 |
+| Navigation   |    19 |     | Typography     |     6 |
+| Utilities    |    19 |     | Code           |     5 |
+| Scroll       |    13 |     | Authentication |     4 |
+| Maps         |     2 |     | Dates          |     4 |
 
 Some items belong to more than one category, so the counts add up to more than the item total.
 
@@ -119,16 +121,16 @@ The optional `.env` settings (site URL, analytics, verification tokens and so on
 
 ### Where things live
 
-| Path | What it is |
-| :--- | :--------- |
-| `src/components/custom/blocks/` | The components and sections the registry ships. |
-| `src/components/custom/ui/`, `src/components/ui/` | Base UI primitives, also shipped. |
-| `src/app/docs/[framework]/` | One MDX docs page per component, shared by the Next.js and React docs. |
-| `src/preview/demos/` | Live demos rendered on the docs pages. |
-| `src/scripts/` | Registry generator, drift checks and Markdown export. |
-| `registry.json`, `public/r/` | The generated registry. Don't edit by hand. |
-| `api/v0.ts` | The site's only serverless function, which serves themed items to v0. |
-| `mcp/` | An MCP server for AI coding agents (standalone package, not yet published). |
+| Path                                              | What it is                                                                  |
+| :------------------------------------------------ | :-------------------------------------------------------------------------- |
+| `src/components/custom/blocks/`                   | The components and sections the registry ships.                             |
+| `src/components/custom/ui/`, `src/components/ui/` | Base UI primitives, also shipped.                                           |
+| `src/app/docs/[framework]/`                       | One MDX docs page per component, shared by the Next.js and React docs.      |
+| `src/preview/demos/`                              | Live demos rendered on the docs pages.                                      |
+| `src/scripts/`                                    | Registry generator, drift checks and Markdown export.                       |
+| `registry.json`, `public/r/`                      | The generated registry. Don't edit by hand.                                 |
+| `api/v0.ts`                                       | The site's only serverless function, which serves themed items to v0.       |
+| `mcp/`                                            | An MCP server for AI coding agents (standalone package, not yet published). |
 
 ## Contributing
 

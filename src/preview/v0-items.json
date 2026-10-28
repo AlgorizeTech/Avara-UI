@@ -100,7 +100,8 @@
     "login-split": "Login Form — Login — split",
     "login-minimal": "Login Form — Login — minimal",
     "login-glass": "Login Form — Login — glass",
-    "login-liquid-glass": "Login Form — Login — liquid-glass"
+    "login-liquid-glass": "Login Form — Login — liquid-glass",
+    "login-ribbon-drift": "Login Form — Login — ribbon-drift"
   },
   "register-form": {
     "register": "Register Form — Register",
@@ -108,7 +109,8 @@
     "register-split": "Register Form — Register — split",
     "register-minimal": "Register Form — Register — minimal",
     "register-glass": "Register Form — Register — glass",
-    "register-liquid-glass": "Register Form — Register — liquid-glass"
+    "register-liquid-glass": "Register Form — Register — liquid-glass",
+    "register-ribbon-drift": "Register Form — Register — ribbon-drift"
   },
   "avatar-stack": {
     "avatar-group-shift-on-hover": "Avatar Stack — Avatar Group (Shift on hover)",
@@ -147,7 +149,8 @@
     "dark-glass-parameter-control-panel-tiles": "Button — Dark Glass Parameter Control Panel Tiles",
     "interactive-sliding-icon-text-motion-variants": "Button — Interactive Sliding Icon & Text Motion Variants",
     "icon-only": "Button — Icon only",
-    "social-login": "Button — Social login"
+    "social-login": "Button — Social login",
+    "pricing-action-cta-buttons": "Button — Pricing & Action CTA Buttons"
   },
   "calendar": {
     "calendar-dashboard": "Calendar — Calendar dashboard",
@@ -444,6 +447,8 @@
   },
   "footer": {
     "snapshot-footer": "Footer — Snapshot Footer",
+    "modern-stack-footer": "Footer — Modern Stack Footer",
+    "wordmark-glow-footer": "Footer — Wordmark Glow Footer",
     "simple-centered-footer": "Footer — Simple Centered Footer",
     "glass-dock-footer": "Footer — Glass Dock Footer",
     "neon-glow-pulse-cyberpunk-footer": "Footer — Neon Glow Pulse Cyberpunk Footer",
@@ -660,7 +665,8 @@
     "in-a-data-table": "Pagination — In a data table"
   },
   "particle-canvas": {
-    "text-particle-repel": "Particle Canvas — Text Particle Repel"
+    "text-particle-repel": "Particle Canvas — Text Particle Repel",
+    "wordmark-glow-canvas": "Particle Canvas — Wordmark Glow Canvas"
   },
   "piano": {
     "playable-synthesizer-piano": "Piano — Playable Synthesizer Piano"

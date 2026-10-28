@@ -609,6 +609,20 @@ export default function WorkspacePlanSelector() {
       usage: usagePlansPro,
       code: extractCode("src/components/custom/blocks/Pricing.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="pricing" />
+
+## Examples
+
+<ExampleShowcase
+  name="pricing"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Tiered cards",
       subheading: "One card per plan, with a billing-cycle tab strip above them.",
@@ -630,7 +644,7 @@ export default function WorkspacePlanSelector() {
           prop: "popular",
           value: '{true}',
           effect:
-            "on a plan scales that card up and accents it.",
+            "on a plan scales that card up, accents it with the theme border, and adds a subtle 3D tilt hover effect.",
         },
       ],
       props: { layout: "cards", variant: "default", counting: true },
@@ -681,20 +695,6 @@ export default function WorkspacePlanSelector() {
       usage: usageScale,
       code: extractCode("src/components/custom/blocks/Pricing.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="pricing" />
-
-## Examples
-
-<ExampleShowcase
-  name="pricing"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Elegant cards",
       propNotes: [

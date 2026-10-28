@@ -4,12 +4,14 @@ import { ParticleCanvas } from "@/components/custom/blocks/ParticleCanvasBlock";
 import { toBlockColor } from "@/lib/accent";
 
 export default function ParticleCanvasDemo({
+  variant = "repel",
   content = "AlgorizeTech",
   particleSize = 2.5,
   particleGap = 5,
   speed = 1,
   color: pickedColor,
 }: {
+  variant?: "repel" | "wordmark-glow";
   content?: string;
   particleSize?: number;
   particleGap?: number;
@@ -20,6 +22,7 @@ export default function ParticleCanvasDemo({
   return (
     <div className="relative w-full h-[650px] min-h-max bg-background rounded-xl overflow-hidden flex items-center justify-center border border-border">
       <ParticleCanvas
+        variant={variant}
         content={content}
         particleSize={particleSize}
         particleGap={particleGap}
