@@ -67,6 +67,7 @@
     "src/components/custom/blocks/CopyButtonBlock.tsx",
     "src/components/custom/blocks/CounterBlock.tsx",
     "src/components/custom/blocks/CounterSectionBlock.tsx",
+    "src/components/custom/blocks/CtaSectionBlock.tsx",
     "src/components/custom/blocks/CursorAnimationBlock.tsx",
     "src/components/custom/blocks/CurvedCarouselBlock.tsx",
     "src/components/custom/blocks/CustomCodeBlock.tsx",

@@ -277,6 +277,11 @@
     "3-halftone-cinema-architectural": "Counter Section — 3. Halftone Cinema (Architectural)",
     "4-spotlight-gradient-interactive-pointer": "Counter Section — 4. Spotlight Gradient (Interactive Pointer)"
   },
+  "cta-section": {
+    "brand-pillars-interactive-scorecard": "Cta Section — Brand Pillars (Interactive Scorecard)",
+    "split-banner-cta": "Cta Section — Split Banner CTA",
+    "centered-minimal-cta": "Cta Section — Centered Minimal CTA"
+  },
   "cursor-animation": {
     "image-trail-cursor": "Cursor Animation — Image Trail Cursor",
     "glow-cursor": "Cursor Animation — Glow Cursor",

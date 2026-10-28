@@ -76,6 +76,7 @@ export const NAME_OVERRIDES: Record<string, string> = {
   "DesignComponentsFolder.tsx": "design-components-folder",
   "DesignFolderBox.tsx": "design-folder-box",
   "CounterSectionBlock.tsx": "counter-section",
+  "CtaSectionBlock.tsx": "cta-section",
   "WalletBlock.tsx": "wallet",
   "FAQSectionBlock.tsx": "faq-section",
   "ConfidentialFolderBlock.tsx": "confidential-folder",
@@ -167,6 +168,12 @@ export const META: Record<string, ItemMeta> = {
       "A collection of 4 animated high-impact Counter and Stats Sections with viewport-triggered count-up easing, zero shadows, and full adaptive styling.",
     categories: ["marketing", "data-display"],
     docs: "Named export: CounterSection. Accepts variant ('cyber-hud' | 'minimal-slash' | 'halftone-cinema' | 'spotlight-gradient') and custom stats array with value, prefix, suffix, decimals, label, sublabel, and tag.",
+  },
+  "cta-section": {
+    description:
+      "An interconnected Brand Pillars call-to-action component featuring interactive service cards, a synchronized scorecard with animated progress meters, and a highlight popover bar.",
+    categories: ["marketing", "layout"],
+    docs: "Named exports: CTASection, CtaSection, and the PillarItem type. Accepts variant ('brand-pillars' | 'minimal' | 'split'), pillars array, custom heading, statement, summary metrics, and active accent color.",
   },
   globe: {
     description:

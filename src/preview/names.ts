@@ -43,6 +43,7 @@ export const sandboxNames = [
   "copy-button",
   "counter",
   "counter-section",
+  "cta-section",
   "cursor-animation",
   "curved-carousel",
   "custom-code-block",

@@ -459,6 +459,16 @@ const rawNavigation: NavigationItem[] = [
         ],
       },
       {
+        label: "CTA Section",
+        slug: "cta-section",
+        badge: "New",
+        addedOn: "2026-10-28",
+        keywords: [
+          "cta", "call to action", "brand pillars", "pillars", "scorecard",
+          "conversion", "marketing", "features", "framer", "services",
+        ],
+      },
+      {
         label: "Flavour Carousel",
         slug: "flavour-carousel",
         badge: "New",

@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-10-27T17:52:41.257Z
-**Total files:** 315
+**Generated at:** 2026-10-28T02:42:46.722Z
+**Total files:** 317
 
 ## Available Files
 
@@ -43,6 +43,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/copy-button](/docs/nextjs-copy-button.md) - Source: `[framework]\copy-button\page.mdx`
 - [nextjs/counter](/docs/nextjs-counter.md) - Source: `[framework]\counter\page.mdx`
 - [nextjs/counter-section](/docs/nextjs-counter-section.md) - Source: `[framework]\counter-section\page.mdx`
+- [nextjs/cta-section](/docs/nextjs-cta-section.md) - Source: `[framework]\cta-section\page.mdx`
 - [nextjs/cursor-animation](/docs/nextjs-cursor-animation.md) - Source: `[framework]\cursor-animation\page.mdx`
 - [nextjs/curved-carousel](/docs/nextjs-curved-carousel.md) - Source: `[framework]\curved-carousel\page.mdx`
 - [nextjs/custom-code-block](/docs/nextjs-custom-code-block.md) - Source: `[framework]\custom-code-block\page.mdx`
@@ -201,6 +202,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/copy-button](/docs/reactjs-copy-button.md) - Source: `[framework]\copy-button\page.mdx`
 - [reactjs/counter](/docs/reactjs-counter.md) - Source: `[framework]\counter\page.mdx`
 - [reactjs/counter-section](/docs/reactjs-counter-section.md) - Source: `[framework]\counter-section\page.mdx`
+- [reactjs/cta-section](/docs/reactjs-cta-section.md) - Source: `[framework]\cta-section\page.mdx`
 - [reactjs/cursor-animation](/docs/reactjs-cursor-animation.md) - Source: `[framework]\cursor-animation\page.mdx`
 - [reactjs/curved-carousel](/docs/reactjs-curved-carousel.md) - Source: `[framework]\curved-carousel\page.mdx`
 - [reactjs/custom-code-block](/docs/reactjs-custom-code-block.md) - Source: `[framework]\custom-code-block\page.mdx`
