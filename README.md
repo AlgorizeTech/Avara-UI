@@ -1,7 +1,7 @@
 <div align="center">
 
 <h1>
-  <a href="https://avaraui.com"><img src="https://avaraui.com/favicon/apple-touch-icon.png" width="34" height="34" alt="" align="center" valign="middle" style="vertical-align: middle; margin-bottom: 3px; background-color: transparent;" /><picture><source media="(prefers-color-scheme: dark)" srcset="public/assets/avara-wordmark-dark.svg"><source media="(prefers-color-scheme: light)" srcset="public/assets/avara-wordmark-light.svg"><img src="public/assets/avara-wordmark-light.svg" alt="Avara UI" height="30" align="center" valign="middle" style="vertical-align: middle;" /></picture></a>
+  <a href="https://avaraui.com"><img src="/public/favicon/readme-icon.png" width="34" height="34" alt="" align="center" valign="middle" style="vertical-align: middle; margin-bottom: 3px; background-color: transparent;" /><picture><source media="(prefers-color-scheme: dark)" srcset="public/assets/avara-wordmark-dark.svg"><source media="(prefers-color-scheme: light)" srcset="public/assets/avara-wordmark-light.svg"><img src="public/assets/avara-wordmark-light.svg" alt="Avara UI" height="30" align="center" valign="middle" style="vertical-align: middle;" /></picture></a>
 </h1>
 
 <strong>A shadcn registry of animated React components you install straight into your own codebase.</strong>
