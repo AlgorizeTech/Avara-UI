@@ -2118,6 +2118,7 @@
         "motion"
       ],
       "registryDependencies": [
+        "https://avaraui.com/r/button.json",
         "https://avaraui.com/r/social-links.json",
         "utils"
       ],

@@ -9,12 +9,23 @@ import {
   Layers,
   Cpu,
   Zap,
+  Mail,
+  Send,
+  ShieldCheck,
+  Lock,
+  Code2,
+  Terminal,
+  ArrowUpRight,
+  CheckCircle2,
+  FileText,
+  Database,
 } from "lucide-react";
-import { motion, useReducedMotion } from "motion/react";
+import { motion, useReducedMotion, AnimatePresence } from "motion/react";
 
 import { cn } from "@/lib/utils";
 import { accentStyle } from "@/lib/accent";
 import { SocialLinks, type SocialLink } from "./SocialLinksBlock";
+import CustomButton from "./Button";
 
 export type FooterVariant =
   | "simple-centered"
@@ -24,7 +35,9 @@ export type FooterVariant =
   | "snapshot"
   | "modern-stack"
   | "snapshot-stack"
-  | "wordmark-glow";
+  | "wordmark-glow"
+  | "editorial-card"
+  | "tilted-cta";
 
 export interface WordmarkFooterColumnItem {
   title: string;
@@ -109,6 +122,18 @@ export interface SnapshotFooterContent {
   legalLinks?: { label: string; href: string }[];
 }
 
+export interface EditorialFooterProps {
+  headline?: string;
+  buttonText?: string;
+  buttonHref?: string;
+  onButtonClick?: () => void;
+  city?: string;
+  menuLinks?: { label: string; href?: string; disabled?: boolean }[];
+  socialLinks?: { label: string; href: string }[];
+  copyright?: string;
+  rightsText?: string;
+}
+
 export interface FooterProps {
   variant?: FooterVariant;
   /** Active accent color from the theme or color picker (e.g. "lavender", "indigo", "rose", "emerald", hex). */
@@ -126,6 +151,8 @@ export interface FooterProps {
   wordmarkFooter?: WordmarkFooterProps;
   /** Giant wordmark text for the `wordmark-glow` variant (default: "Algorize"). */
   wordmark?: string;
+  /** Content and CTA config for the `editorial-card` / `tilted-cta` variant. */
+  editorialCta?: EditorialFooterProps;
   className?: string;
 }
 
@@ -296,6 +323,8 @@ const DEFAULT_SECTIONS_BY_VARIANT: Record<FooterVariant, FooterLinkSection[]> = 
     },
   ],
   "wordmark-glow": DEFAULT_FOOTER_SECTIONS,
+  "editorial-card": DEFAULT_FOOTER_SECTIONS,
+  "tilted-cta": DEFAULT_FOOTER_SECTIONS,
 };
 
 const DEFAULT_WORDMARK_COLUMNS: WordmarkFooterColumn[] = [
@@ -1576,6 +1605,729 @@ export function WordmarkFooter({
 
 export { WordmarkFooter as FooterBlock };
 
+/* -------------------------------------------------------------------------- */
+/*  Editorial Tilted Card variant (Husham Sam inspired architectural footer)  */
+/* -------------------------------------------------------------------------- */
+
+function WireframeGlobeIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className ?? "size-6 text-neutral-600 dark:text-neutral-400"}
+      viewBox="0 0 35 28"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M17.5 0C7.84989 0 0 6.27799 0 14C0 21.722 7.84989 28 17.5 28C27.1501 28 35 21.722 35 14C35 6.27799 27.1501 0 17.5 0ZM16.7266 2.28491V7.5283C15.1575 7.50629 13.6373 7.41384 12.206 7.26415C13.6817 5.0673 15.5264 3.31069 16.7266 2.28491ZM16.7266 8.96793V13.2824H9.89459C10.0279 11.6314 10.5969 10.0553 11.3837 8.62013C13.0639 8.82704 14.8686 8.94591 16.731 8.97233L16.7266 8.96793ZM16.7266 14.7176V19.0321C14.8641 19.0585 13.0594 19.1774 11.3792 19.3843C10.5969 17.9491 10.0235 16.373 9.89459 14.722H16.7266V14.7176ZM16.7266 20.4673V25.7151C15.5264 24.6893 13.6773 22.9327 12.2015 20.7358C13.6328 20.5818 15.1575 20.4893 16.7266 20.4673ZM18.2779 25.7107V20.4673C19.8336 20.4893 21.3538 20.5862 22.794 20.7447C21.3183 22.9371 19.478 24.6893 18.2779 25.7151V25.7107ZM18.2779 19.0277V14.7132H25.1099C24.9765 16.3686 24.4075 17.9447 23.6208 19.3799C21.9406 19.173 20.1403 19.0497 18.2779 19.0233V19.0277ZM18.2779 13.278V8.96352C20.1403 8.93711 21.9406 8.81384 23.6208 8.60692C24.4075 10.0421 24.981 11.6226 25.1099 13.2736H18.2779V13.278ZM18.2779 7.5283V2.28491C19.478 3.31069 21.3183 5.06289 22.794 7.25535C21.3538 7.41384 19.8336 7.50629 18.2779 7.5327V7.5283ZM19.7314 1.56289C23.643 1.99434 27.1057 3.55283 29.5726 5.80252C28.2036 6.32201 26.4522 6.74025 24.4831 7.03522C23.0118 4.67107 21.1049 2.76478 19.7314 1.56289ZM10.5124 7.04843C8.54331 6.75346 6.80086 6.33522 5.41847 5.81132C7.88545 3.55283 11.3526 1.99434 15.2731 1.55849C13.8995 2.76478 11.9882 4.67547 10.5169 7.04403L10.5124 7.04843ZM9.76124 8.38679C9.00114 9.88805 8.45441 11.5346 8.33439 13.278H1.57798C1.74689 10.9358 2.73368 8.76541 4.3161 6.93836C5.76962 7.54591 7.63208 8.03899 9.76124 8.38679ZM8.33439 14.7176C8.45441 16.461 9.00114 18.1075 9.76124 19.6088C7.63652 19.9566 5.77407 20.4453 4.3161 21.0572C2.73368 19.2302 1.74689 17.0597 1.57798 14.7176H8.32995H8.33439ZM10.5124 20.9472C11.9882 23.3157 13.8951 25.2264 15.2686 26.4327C11.3481 25.9969 7.881 24.4384 5.41402 22.1799C6.80086 21.656 8.53886 21.2377 10.508 20.9428L10.5124 20.9472ZM24.4787 20.9604C26.4522 21.2553 28.1991 21.678 29.5682 22.1931C27.1012 24.4428 23.6386 26.0013 19.7269 26.4327C21.1005 25.2264 23.0029 23.3201 24.4787 20.9604ZM25.2388 19.6132C26.0033 18.1075 26.55 16.461 26.6701 14.7132H33.422C33.2531 17.0597 32.2619 19.2346 30.675 21.066C29.2259 20.4541 27.3635 19.961 25.2388 19.6132ZM26.6701 13.278C26.55 11.5346 26.0033 9.88365 25.2388 8.37799C27.3635 8.03019 29.2215 7.53711 30.675 6.92516C32.2619 8.7566 33.2531 10.9314 33.422 13.278H26.6701Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
+}
+
+function ForwardArrowIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className ?? "size-4"}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+    >
+      <path d="M18.3 13.5H0v-3h18.3L9.9 2.1 12 0l12 12-12 12-2.1-2.1L18.3 13.5z" />
+    </svg>
+  );
+}
+
+const DEFAULT_EDITORIAL_MENU = [
+  { label: "NEWSLETTER", href: "#", disabled: true },
+  { label: "COLOPHON", href: "#" },
+  { label: "PRIVACY POLICY", href: "#" },
+];
+
+const DEFAULT_EDITORIAL_SOCIALS = [
+  { label: "LINKEDIN", href: "#" },
+  { label: "INSTAGRAM", href: "#" },
+  { label: "DRIBBBLE", href: "#" },
+];
+
+type EditorialTabKey = "newsletter" | "colophon" | "privacy";
+
+const TAB_THEMES: Record<
+  EditorialTabKey,
+  {
+    bg: string;
+    textColor: string;
+    border: string;
+    activeTabBg: string;
+    activeTabText: string;
+    activeTabBorder: string;
+    dotColor: string;
+  }
+> = {
+  newsletter: {
+    bg: "bg-[#4086D6]", // Modern stack: Azure Blue
+    textColor: "text-white",
+    border: "border-[#2f6cb2] dark:border-[#5295e2]",
+    activeTabBg: "bg-[#4086D6]/15 dark:bg-[#4086D6]/25",
+    activeTabText: "text-[#2662a5] dark:text-[#5295e2]",
+    activeTabBorder: "border-l-[#4086D6]",
+    dotColor: "bg-[#4086D6]",
+  },
+  colophon: {
+    bg: "bg-[#EB5E30]", // Modern stack: Vibrant Terracotta / Coral
+    textColor: "text-white",
+    border: "border-[#c9491f] dark:border-[#f2754d]",
+    activeTabBg: "bg-[#EB5E30]/15 dark:bg-[#EB5E30]/25",
+    activeTabText: "text-[#EB5E30] dark:text-[#f2754d]",
+    activeTabBorder: "border-l-[#EB5E30]",
+    dotColor: "bg-[#EB5E30]",
+  },
+  privacy: {
+    bg: "bg-[#059669]", // Rich Vibrant Emerald Green
+    textColor: "text-white",
+    border: "border-[#047857] dark:border-[#10b981]",
+    activeTabBg: "bg-[#059669]/15 dark:bg-[#059669]/25",
+    activeTabText: "text-[#059669] dark:text-[#10b981]",
+    activeTabBorder: "border-l-[#059669]",
+    dotColor: "bg-[#059669]",
+  },
+};
+
+function NewsletterSubscriptionField({
+  buttonText,
+  onSubmit,
+}: {
+  buttonText?: string;
+  onSubmit?: (e: React.FormEvent) => void;
+}) {
+  const [email, setEmail] = React.useState("");
+  const [status, setStatus] = React.useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = React.useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email.trim() || !email.includes("@") || !email.includes(".")) {
+      setStatus("error");
+      setErrorMessage("Please enter a valid email address.");
+      return;
+    }
+    setStatus("loading");
+    setErrorMessage("");
+    setTimeout(() => {
+      setStatus("success");
+      setEmail("");
+      if (onSubmit) onSubmit(e);
+    }, 600);
+  };
+
+  if (status === "success") {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.96 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="w-full mt-3 p-3 rounded-xl bg-white/25 border border-white/40 text-white flex items-center justify-between text-xs"
+      >
+        <span className="flex items-center gap-2">
+          <CheckCircle2 className="size-4 shrink-0 text-white" />
+          <span className="font-medium text-white text-xs sm:text-[13px]">
+            Subscribed! Issue #042 is on its way.
+          </span>
+        </span>
+        <button
+          type="button"
+          onClick={() => setStatus("idle")}
+          className="text-[11px] font-mono underline hover:opacity-80 transition-opacity ml-2 shrink-0 cursor-pointer text-white"
+        >
+          Reset
+        </button>
+      </motion.div>
+    );
+  }
+
+  return (
+    <div className="w-full mt-3 sm:mt-4">
+      <form
+        onSubmit={handleSubmit}
+        className={cn(
+          "w-full p-1.5 rounded-xl border bg-white/20 border-white/35 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 transition-all",
+          status === "error"
+            ? "border-red-300 bg-red-500/20"
+            : "focus-within:border-white focus-within:bg-white/25"
+        )}
+      >
+        <div className="flex items-center gap-2.5 px-3 py-1.5 flex-1 min-w-0 text-xs text-white">
+          <Mail className="size-4 text-white shrink-0" />
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (status === "error") setStatus("idle");
+            }}
+            placeholder="developer@company.com"
+            disabled={status === "loading"}
+            className="w-full bg-transparent text-xs text-white placeholder:text-white/70 focus:outline-none"
+          />
+        </div>
+        <button
+          type="submit"
+          disabled={status === "loading"}
+          className="w-full sm:w-auto px-4 py-2 rounded-lg bg-white hover:bg-neutral-100 text-[#1D4E89] font-bold text-xs tracking-wider uppercase flex items-center justify-center gap-1.5 active:scale-[0.98] transition-all shrink-0 cursor-pointer disabled:opacity-50"
+        >
+          {status === "loading" ? (
+            <span className="size-3.5 border-2 border-[#1D4E89] border-t-transparent rounded-full animate-spin" />
+          ) : (
+            <>
+              <span>{buttonText ?? "SUBSCRIBE"}</span>
+              <ArrowUpRight className="size-3.5" />
+            </>
+          )}
+        </button>
+      </form>
+      {status === "error" && (
+        <p className="text-[11px] text-white/90 font-mono mt-1.5 pl-1">{errorMessage}</p>
+      )}
+    </div>
+  );
+}
+
+function EditorialTabCardContent({
+  activeTab,
+  editorialCta,
+}: {
+  activeTab: EditorialTabKey;
+  editorialCta?: EditorialFooterProps;
+}) {
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={activeTab}
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -8 }}
+        transition={{ duration: 0.22, ease: "easeOut" }}
+        className="w-full flex-1 flex flex-col justify-between"
+      >
+        {activeTab === "newsletter" && (
+          <div className="w-full h-full flex flex-col justify-between text-white">
+            <div className="flex flex-col gap-3 sm:gap-3.5">
+              {/* Responsive Header Row - Never wraps awkwardly */}
+              <div className="flex items-center justify-between pb-2.5 border-b border-white/20 gap-2 min-w-0">
+                <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                  <span className="size-2 rounded-full bg-white animate-pulse shrink-0" />
+                  <span className="text-[10px] sm:text-[11px] font-mono font-bold tracking-wider uppercase text-white truncate whitespace-nowrap">
+                    NEWSLETTER
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                  <span className="text-[9.5px] sm:text-[10px] font-mono uppercase text-white/80 whitespace-nowrap">
+                    ISSUE #042
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-white/20 text-white flex items-center gap-1 shrink-0 whitespace-nowrap">
+                    <Sparkles className="size-2.5 shrink-0" />
+                    <span>drop!</span>
+                  </span>
+                </div>
+              </div>
+
+              {/* Title & Description with Distinct Uppercase Style (1 Line on Large Screens) */}
+              <div className="space-y-1.5 sm:space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded bg-white/20 text-white font-mono text-[9px] sm:text-[10px] font-bold tracking-widest uppercase shrink-0">
+                    01 • DISPATCH
+                  </span>
+                  <span className="h-px flex-1 bg-white/20" />
+                </div>
+                <h3 className="text-base sm:text-lg lg:text-xl xl:text-[21px] font-black uppercase tracking-tight text-white leading-tight lg:truncate lg:whitespace-nowrap">
+                  CURATED MOTION & FLUID PRIMITIVES
+                </h3>
+                <div className="border-l-2 border-white/40 pl-3 py-0.5">
+                  <p className="text-xs sm:text-[13px] text-white/90 leading-relaxed font-normal">
+                    Production-ready React components, zero-dependency mechanics, and copy-paste recipes delivered every second Thursday.
+                  </p>
+                </div>
+              </div>
+
+              {/* Working Interactive Input Field Module */}
+              <div className="p-3 sm:p-3.5 rounded-xl bg-white/15 border border-white/25">
+                <NewsletterSubscriptionField buttonText="JOIN" />
+                <div className="flex flex-col sm:flex-row sm:flex-wrap items-start sm:items-center gap-1.5 sm:gap-3 mt-2.5 text-[10.5px] sm:text-[11px] text-white/90 font-mono">
+                  <span>✓ Pure React 19 & Tailwind</span>
+                  <span>✓ Zero spam guarantee</span>
+                </div>
+              </div>
+
+              {/* Footer Status Row */}
+              <div className="pt-2 border-t border-white/20 flex items-center justify-between text-xs font-mono">
+                <span className="text-[10px] uppercase text-white/75">STATUS</span>
+                <span className="text-[10.5px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-white/20 text-white">
+                  Active Broadcast
+                </span>
+              </div>
+            </div>
+
+            {/* Bottom Action Button - Using Pricing Primary Button */}
+            <div className="pt-3.5 mt-auto">
+              <CustomButton
+                variant="pricing-primary"
+                showArrow
+                className="w-full h-11 text-xs uppercase tracking-wider font-bold rounded-xl justify-center bg-white text-[#1D4E89] hover:bg-neutral-100 hover:text-black border-0 cursor-pointer"
+                onClick={() => {
+                  editorialCta?.onButtonClick?.();
+                  if (editorialCta?.buttonHref && editorialCta.buttonHref !== "#") {
+                    window.location.href = editorialCta.buttonHref;
+                  }
+                }}
+              >
+                <span>{editorialCta?.buttonText ?? "SUBSCRIBE TO DISPATCH"}</span>
+              </CustomButton>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "colophon" && (
+          <div className="w-full h-full flex flex-col justify-between text-white">
+            <div className="flex flex-col gap-3 sm:gap-3.5">
+              {/* Responsive Header Row - Never wraps awkwardly */}
+              <div className="flex items-center justify-between pb-2.5 border-b border-white/20 gap-2 min-w-0">
+                <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                  <span className="size-2 rounded-full bg-white animate-pulse shrink-0" />
+                  <span className="text-[10px] sm:text-[11px] font-mono font-bold tracking-wider uppercase text-white truncate whitespace-nowrap">
+                    SPECIFICATION
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                  <span className="text-[9.5px] sm:text-[10px] font-mono uppercase text-white/80 whitespace-nowrap">
+                    V2.4 ENGINE
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-white/20 text-white flex items-center gap-1 shrink-0 whitespace-nowrap">
+                    <Layers className="size-2.5 shrink-0" />
+                    <span>blocks!</span>
+                  </span>
+                </div>
+              </div>
+
+              {/* Title & Description with Distinct Uppercase Style (1 Line on Large Screens) */}
+              <div className="space-y-1.5 sm:space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded bg-white/20 text-white font-mono text-[9px] sm:text-[10px] font-bold tracking-widest uppercase shrink-0">
+                    02 • ARCHITECTURE
+                  </span>
+                  <span className="h-px flex-1 bg-white/20" />
+                </div>
+                <h3 className="text-base sm:text-lg lg:text-xl xl:text-[21px] font-black uppercase tracking-tight text-white leading-tight lg:truncate lg:whitespace-nowrap">
+                  ENGINEERED FOR 60FPS FLUIDITY
+                </h3>
+                <div className="border-l-2 border-white/40 pl-3 py-0.5">
+                  <p className="text-xs sm:text-[13px] text-white/90 leading-relaxed font-normal">
+                    Built with hardware-accelerated transforms, fluid OKLCH design tokens, and semantic accessibility standards.
+                  </p>
+                </div>
+              </div>
+
+              {/* Spec Rows Grid - 4 Responsive Items */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-white">
+                <div className="p-2.5 sm:p-3 rounded-xl bg-white/15 border border-white/25 flex items-center justify-between">
+                  <div>
+                    <div className="text-[10px] font-mono uppercase text-white/75">Framework</div>
+                    <div className="font-bold text-xs sm:text-[12.5px] mt-0.5">Next 15 + React 19</div>
+                  </div>
+                  <Zap className="size-4 text-white shrink-0" />
+                </div>
+                <div className="p-2.5 sm:p-3 rounded-xl bg-white/15 border border-white/25 flex items-center justify-between">
+                  <div>
+                    <div className="text-[10px] font-mono uppercase text-white/75">Design Tokens</div>
+                    <div className="font-bold text-xs sm:text-[12.5px] mt-0.5">Tailwind v3 OKLCH</div>
+                  </div>
+                  <Code2 className="size-4 text-white shrink-0" />
+                </div>
+                <div className="p-2.5 sm:p-3 rounded-xl bg-white/15 border border-white/25 flex items-center justify-between">
+                  <div>
+                    <div className="text-[10px] font-mono uppercase text-white/75">Motion Engine</div>
+                    <div className="font-bold text-xs sm:text-[12.5px] mt-0.5">Framer Motion 12</div>
+                  </div>
+                  <Terminal className="size-4 text-white shrink-0" />
+                </div>
+                <div className="p-2.5 sm:p-3 rounded-xl bg-white/15 border border-white/25 flex items-center justify-between">
+                  <div>
+                    <div className="text-[10px] font-mono uppercase text-white/75">Typography</div>
+                    <div className="font-bold text-xs sm:text-[12.5px] mt-0.5">Anton & Geist Sans</div>
+                  </div>
+                  <Cpu className="size-4 text-white shrink-0" />
+                </div>
+              </div>
+
+              {/* Footer Status Row */}
+              <div className="pt-2 border-t border-white/20 flex items-center justify-between text-xs font-mono">
+                <span className="text-[10px] uppercase text-white/75">FRAME RATE</span>
+                <span className="text-[10.5px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-white/20 text-white">
+                  60 FPS Locked
+                </span>
+              </div>
+            </div>
+
+            {/* Bottom Action Button - Using Pricing Primary Button */}
+            <div className="pt-3.5 mt-auto">
+              <CustomButton
+                variant="pricing-primary"
+                showArrow
+                className="w-full h-11 text-xs uppercase tracking-wider font-bold rounded-xl justify-center bg-white text-[#943110] hover:bg-neutral-100 hover:text-black border-0 cursor-pointer"
+                onClick={() => {
+                  editorialCta?.onButtonClick?.();
+                }}
+              >
+                <span>INSPECT SYSTEM TOKENS & METRICS</span>
+              </CustomButton>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "privacy" && (
+          <div className="w-full h-full flex flex-col justify-between text-white">
+            <div className="flex flex-col gap-3 sm:gap-3.5">
+              {/* Responsive Header Row - Never wraps awkwardly */}
+              <div className="flex items-center justify-between pb-2.5 border-b border-white/20 gap-2 min-w-0">
+                <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                  <span className="size-2 rounded-full bg-white animate-pulse shrink-0" />
+                  <span className="text-[10px] sm:text-[11px] font-mono font-bold tracking-wider uppercase text-white truncate whitespace-nowrap">
+                    PRIVACY MANIFEST
+                  </span>
+                </div>
+                <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                  <span className="text-[9.5px] sm:text-[10px] font-mono uppercase text-white/80 whitespace-nowrap">
+                    AUDITED 2026
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-white/20 text-white flex items-center gap-1 shrink-0 whitespace-nowrap">
+                    <ShieldCheck className="size-2.5 shrink-0" />
+                    <span>craft!</span>
+                  </span>
+                </div>
+              </div>
+
+              {/* Title & Description with Distinct Uppercase Style (1 Line on Large Screens) */}
+              <div className="space-y-1.5 sm:space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded bg-white/20 text-white font-mono text-[9px] sm:text-[10px] font-bold tracking-widest uppercase shrink-0">
+                    03 • DATA INTEGRITY
+                  </span>
+                  <span className="h-px flex-1 bg-white/20" />
+                </div>
+                <h3 className="text-base sm:text-lg lg:text-xl xl:text-[21px] font-black uppercase tracking-tight text-white leading-tight lg:truncate lg:whitespace-nowrap">
+                  100% SELF-HOSTED & ZERO TRACKERS
+                </h3>
+                <div className="border-l-2 border-white/40 pl-3 py-0.5">
+                  <p className="text-xs sm:text-[13px] text-white/90 leading-relaxed font-normal">
+                    Software privacy is an engineering requirement. Your user code never touches remote trackers or analytics.
+                  </p>
+                </div>
+              </div>
+
+              {/* 3 Privacy Assurance Rows */}
+              <div className="space-y-2 text-white">
+                <div className="p-2 sm:p-2.5 rounded-xl bg-white/15 border border-white/25 flex items-start gap-2.5">
+                  <Lock className="size-4 text-white shrink-0 mt-0.5" />
+                  <div className="min-w-0">
+                    <div className="font-bold text-xs sm:text-[13px]">
+                      Zero Remote Network Requests
+                    </div>
+                    <div className="text-[11px] text-white/80 leading-normal">
+                      All components execute completely offline in your local React bundle.
+                    </div>
+                  </div>
+                </div>
+                <div className="p-2 sm:p-2.5 rounded-xl bg-white/15 border border-white/25 flex items-start gap-2.5">
+                  <Database className="size-4 text-white shrink-0 mt-0.5" />
+                  <div className="min-w-0">
+                    <div className="font-bold text-xs sm:text-[13px]">
+                      No Cookies or Browser Fingerprinting
+                    </div>
+                    <div className="text-[11px] text-white/80 leading-normal">
+                      Zero tracking pixels, analytics beacons, or behavioral monitoring.
+                    </div>
+                  </div>
+                </div>
+                <div className="p-2 sm:p-2.5 rounded-xl bg-white/15 border border-white/25 flex items-start gap-2.5">
+                  <FileText className="size-4 text-white shrink-0 mt-0.5" />
+                  <div className="min-w-0">
+                    <div className="font-bold text-xs sm:text-[13px]">
+                      Permissive Open Source MIT License
+                    </div>
+                    <div className="text-[11px] text-white/80 leading-normal">
+                      Free for commercial and personal apps with no royalties or vendor locks.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer Status Row */}
+              <div className="pt-2 border-t border-white/20 flex items-center justify-between text-xs font-mono">
+                <span className="text-[10px] uppercase text-white/75">OUTBOUND CALLS</span>
+                <span className="text-[10.5px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-white/20 text-white">
+                  0 Telemetry
+                </span>
+              </div>
+            </div>
+
+            {/* Bottom Action Button - Using Pricing Primary Button */}
+            <div className="pt-3.5 mt-auto">
+              <CustomButton
+                variant="pricing-primary"
+                showArrow
+                className="w-full h-11 text-xs uppercase tracking-wider font-bold rounded-xl justify-center bg-white text-[#047857] hover:bg-neutral-100 hover:text-black border-0 cursor-pointer"
+                onClick={() => {
+                  editorialCta?.onButtonClick?.();
+                }}
+              >
+                <span>VIEW DATA INTEGRITY SPECIFICATION</span>
+              </CustomButton>
+            </div>
+          </div>
+        )}
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
+export function EditorialCardFooter({
+  brandName = "HS",
+  copyrightText,
+  tagline,
+  editorialCta,
+  socialLinks,
+  color,
+  className,
+}: {
+  brandName?: string;
+  copyrightText?: string;
+  tagline?: string;
+  editorialCta?: EditorialFooterProps;
+  socialLinks?: SocialLink[];
+  color?: string;
+  className?: string;
+}) {
+  const [activeTab, setActiveTab] = React.useState<EditorialTabKey>("newsletter");
+  const [timeStr, setTimeStr] = React.useState("11:52:19");
+  const [dateStr, setDateStr] = React.useState("Wednesday Oct 28 2026");
+
+  React.useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, "0");
+      const minutes = String(now.getMinutes()).padStart(2, "0");
+      const seconds = String(now.getSeconds()).padStart(2, "0");
+      setTimeStr(`${hours}:${minutes}:${seconds}`);
+
+      const options: Intl.DateTimeFormatOptions = {
+        weekday: "long",
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      };
+      setDateStr(now.toLocaleDateString("en-US", options).replace(/,/g, ""));
+    };
+
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const copyright =
+    editorialCta?.copyright ??
+    copyrightText ??
+    `${brandName || "HS"} © ${new Date().getFullYear()}`;
+  const rightsText = editorialCta?.rightsText ?? "All Rights Reserved";
+
+  const rawSocials =
+    editorialCta?.socialLinks ??
+    (socialLinks && socialLinks.length > 0
+      ? socialLinks.map((s) => ({
+          label: s.network.toUpperCase(),
+          href: "#",
+        }))
+      : DEFAULT_EDITORIAL_SOCIALS);
+
+  const socials = rawSocials
+    .filter(
+      (s) =>
+        s.label.toLowerCase() !== "x" &&
+        s.label.toLowerCase() !== "twitter"
+    )
+    .map((s) => ({
+      ...s,
+      href: "#",
+    }));
+
+  const TAB_ITEMS: { key: EditorialTabKey; label: string }[] = [
+    { key: "newsletter", label: "NEWSLETTER" },
+    { key: "colophon", label: "COLOPHON" },
+    { key: "privacy", label: "PRIVACY POLICY" },
+  ];
+
+  return (
+    <div
+      style={accentStyle(color)}
+      className={cn(
+        "w-full bg-[#f6f6f6] dark:bg-[#0c0c0e] text-[#1a1a1a] dark:text-[#f4f4f5] border border-dashed border-neutral-300 dark:border-neutral-800 relative overflow-hidden flex flex-col justify-between min-h-0 lg:min-h-[760px] xl:min-h-[820px] transition-colors select-none",
+        className
+      )}
+    >
+        
+        {/* Continuous Full-Height Vertical Guide Lines (Edge-to-Edge Top to Bottom) */}
+        <div className="absolute inset-0 pointer-events-none grid grid-cols-1 md:grid-cols-[minmax(360px,1.3fr)_1fr] lg:grid-cols-[minmax(390px,1.4fr)_0.85fr_1fr_1.35fr] z-0">
+          <div className="border-r border-dashed border-neutral-300 dark:border-neutral-800 h-full hidden md:block" />
+          <div className="border-r border-dashed border-neutral-300 dark:border-neutral-800 h-full hidden md:block" />
+          <div className="border-r border-dashed border-neutral-300 dark:border-neutral-800 h-full hidden lg:block" />
+          <div className="h-full" />
+        </div>
+
+        {/* Top Empty Architectural Grid Space (Tall luxury empty cell on desktop, responsive on mobile) */}
+        <div className="w-full h-8 sm:h-14 lg:h-[200px] xl:h-[240px] relative z-10 flex-1" />
+
+        {/* Middle Main Content Row (Full-Width Horizontal Border restored at the very top) */}
+        <div className="w-full border-t border-dashed border-neutral-300 dark:border-neutral-800 relative z-10">
+          <div className="w-full grid grid-cols-1 md:grid-cols-[minmax(360px,1.3fr)_1fr] lg:grid-cols-[minmax(390px,1.4fr)_0.85fr_1fr_1.35fr]">
+            
+            {/* Column 1: Interactive Tabs & Spacer Boxes (NEWSLETTER, COLOPHON, PRIVACY POLICY) */}
+            <div className="flex flex-col md:row-span-2 lg:row-span-1">
+              {/* Empty Spacer Box above NEWSLETTER (Bounded by main top horizontal line above) */}
+              <div className="w-full h-8 sm:h-11 lg:h-14" />
+
+              {/* Tabs with Individual Dashed Borders (NEWSLETTER top border is strictly in Column 1) */}
+              {TAB_ITEMS.map((tab) => {
+                const isSelected = activeTab === tab.key;
+                const tabTheme = TAB_THEMES[tab.key];
+                return (
+                  <button
+                    key={tab.key}
+                    type="button"
+                    onClick={() => setActiveTab(tab.key)}
+                    className={cn(
+                      "w-full text-left px-5 sm:px-6 py-4 sm:py-6 min-h-[52px] sm:min-h-[66px] flex items-center justify-between text-xs tracking-wider uppercase transition-all duration-200 cursor-pointer outline-none border-t border-dashed border-neutral-300 dark:border-neutral-800 shadow-none",
+                      isSelected
+                        ? cn(tabTheme.activeTabBg, tabTheme.activeTabText, "border-l-4 font-bold shadow-none", tabTheme.activeTabBorder)
+                        : "bg-transparent text-neutral-600 dark:text-neutral-400 font-semibold hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50 shadow-none"
+                    )}
+                  >
+                    <span>{tab.label}</span>
+                    {isSelected && (
+                      <span className={cn("size-2 rounded-full animate-pulse shrink-0 ml-2", tabTheme.dotColor)} />
+                    )}
+                  </button>
+                );
+              })}
+
+              {/* Empty Spacer Box below PRIVACY POLICY (Strictly in Left Column) */}
+              <div className="w-full h-8 sm:h-11 lg:h-14 border-t border-dashed border-neutral-300 dark:border-neutral-800" />
+            </div>
+
+            {/* Column 2: Empty architectural grid space (Box 2) */}
+            <div className="hidden lg:block" />
+
+            {/* Column 3: Live Time & Date (Box 3) */}
+            <div className="flex flex-col justify-start pt-4 sm:pt-5 pb-5 px-5 sm:px-6 border-t md:border-t-0 border-dashed border-neutral-300 dark:border-neutral-800">
+              <div className="text-xs sm:text-[13px] font-mono tracking-tight text-neutral-800 dark:text-neutral-200">
+                <div className="flex items-center gap-2">
+                  <span className="size-2 rounded-full bg-primary animate-pulse shrink-0" />
+                  <span className="font-semibold text-neutral-950 dark:text-white">
+                    {timeStr}
+                  </span>
+                </div>
+                <span className="block text-neutral-500 dark:text-neutral-400 mt-1 pl-4">
+                  {dateStr}
+                </span>
+              </div>
+            </div>
+
+            {/* Column 4: Globe Icon & Copyright (Box 4) */}
+            <div className="flex flex-col justify-start pt-4 sm:pt-5 pb-5 px-5 sm:px-6 border-t md:border-t-0 border-dashed border-neutral-300 dark:border-neutral-800">
+              <div className="flex items-start gap-3">
+                <div className="p-1.5 rounded-lg bg-primary/10 text-primary border border-primary/20 shrink-0 mt-0.5">
+                  <WireframeGlobeIcon className="size-5" />
+                </div>
+                <div className="text-xs sm:text-[13px] font-medium leading-tight text-neutral-800 dark:text-neutral-200">
+                  <div className="font-semibold">{copyright}</div>
+                  <div className="text-neutral-500 dark:text-neutral-400 mt-0.5">
+                    {rightsText}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Socials Row (Full-Width Horizontal Border) */}
+        <div className="w-full border-t border-dashed border-neutral-300 dark:border-neutral-800 px-5 sm:px-6 min-h-[56px] sm:min-h-[66px] flex flex-wrap items-center gap-4 sm:gap-6 relative z-10">
+          {socials.map((s, idx) => (
+            <a
+              key={idx}
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+              }}
+              className="inline-flex items-center text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-neutral-600 dark:text-neutral-400 hover:text-primary dark:hover:text-primary transition-colors leading-none cursor-pointer"
+            >
+              {s.label}
+            </a>
+          ))}
+        </div>
+
+        {/* Desktop Tilted Interactive CTA Card (Spans from right edge to the border left of Avara UI) */}
+        <div className="hidden lg:grid absolute inset-x-0 bottom-0 top-0 pointer-events-none grid-cols-[minmax(390px,1.4fr)_0.85fr_1fr_1.35fr] z-20">
+          <div className="col-start-3 col-end-5 relative flex flex-col justify-end pointer-events-none">
+            <motion.div
+              initial="rest"
+              whileHover="hover"
+              animate="rest"
+              variants={{
+                rest: {
+                  rotate: 7,
+                  y: "68%",
+                  x: 0,
+                  transition: {
+                    duration: 0.5,
+                    ease: [0.25, 1, 0.5, 1],
+                  },
+                },
+                hover: {
+                  rotate: 0,
+                  y: "0%",
+                  x: 0,
+                  transition: {
+                    duration: 0.55,
+                    ease: [0.16, 1, 0.3, 1],
+                  },
+                },
+              }}
+              style={{ transformOrigin: "bottom right" }}
+              className={cn(
+                "w-full h-[510px] xl:h-[570px] pointer-events-auto flex flex-col justify-between p-7 xl:p-9 border cursor-pointer relative overflow-hidden rounded-2xl transition-all duration-500",
+                TAB_THEMES[activeTab].bg,
+                TAB_THEMES[activeTab].border,
+                TAB_THEMES[activeTab].textColor,
+              )}
+            >
+              <EditorialTabCardContent activeTab={activeTab} editorialCta={editorialCta} />
+            </motion.div>
+          </div>
+        </div>
+
+        {/* Mobile / Tablet Inline CTA Card (NO SHADOW, responsive rounded card) */}
+        <div className="lg:hidden w-full p-4 sm:p-6 border-t border-dashed border-neutral-300 dark:border-neutral-800 relative z-10">
+          <motion.div
+            initial={{ rotate: 0 }}
+            className={cn(
+              "w-full flex flex-col justify-between p-4 sm:p-6 border relative overflow-hidden rounded-2xl transition-all duration-500",
+              TAB_THEMES[activeTab].bg,
+              TAB_THEMES[activeTab].border,
+              TAB_THEMES[activeTab].textColor,
+            )}
+          >
+            <EditorialTabCardContent activeTab={activeTab} editorialCta={editorialCta} />
+          </motion.div>
+        </div>
+      </div>
+  );
+}
+
 /** The wordmark, or whatever `logo` was passed instead of it. */
 function BrandLogo({ logo, brandName }: Pick<FooterProps, "logo" | "brandName">) {
   const isAvara = !brandName || brandName === "Avara UI";
@@ -1620,6 +2372,7 @@ export function Footer({
   snapshot,
   wordmarkFooter,
   wordmark,
+  editorialCta,
   className,
 }: FooterProps) {
   const dynamicAccent = accentStyle(color);
@@ -1627,6 +2380,22 @@ export function Footer({
   const copyright =
     copyrightText ??
     `© ${new Date().getFullYear()} ${brandName}. All rights reserved.`;
+
+  if (variant === "editorial-card" || variant === "tilted-cta") {
+    return (
+      <footer style={dynamicAccent} className="w-full transition-colors">
+        <EditorialCardFooter
+          brandName={brandName}
+          copyrightText={copyrightText}
+          tagline={tagline}
+          editorialCta={editorialCta}
+          socialLinks={socialLinks}
+          color={color}
+          className={className}
+        />
+      </footer>
+    );
+  }
 
   if (variant === "wordmark-glow") {
     return (
