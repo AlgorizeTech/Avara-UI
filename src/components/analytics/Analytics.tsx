@@ -3,31 +3,14 @@
 import { useEffect } from 'react'
 import { usePathname, useSearchParams } from 'next/navigation'
 
-/**
- * Google Analytics measurement ID, from `NEXT_PUBLIC_GA_ID`.
- *
- * There is no fallback on purpose. This file previously hardcoded a property
- * belonging to the template this site was built from, so every page view was
- * reported to a third party. With no ID configured, nothing is sent.
- */
-const GA_ID = process.env.NEXT_PUBLIC_GA_ID
-
 // Enhanced analytics for better SEO insights
 export function Analytics() {
   const pathname = usePathname()
   const searchParams = useSearchParams()
 
   useEffect(() => {
-    // Track page views
-    if (typeof window !== 'undefined' && window.gtag && GA_ID) {
-      window.gtag('config', GA_ID, {
-        page_path: pathname,
-        custom_map: {
-          custom_parameter_1: 'component_category',
-          custom_parameter_2: 'user_journey_stage'
-        }
-      })
-
+    // Page views and web vitals are handled by GoogleAnalytics / WebVitals
+    if (typeof window !== 'undefined' && window.gtag) {
       // Enhanced tracking for component pages
       if (pathname.startsWith('/docs/') && pathname !== '/docs') {
         const componentName = pathname.split('/').pop()
@@ -46,9 +29,6 @@ export function Analytics() {
           page_path: pathname
         })
       }
-
-      // Track user engagement for Core Web Vitals
-      trackWebVitals()
     }
   }, [pathname, searchParams])
 
@@ -71,55 +51,6 @@ function getComponentCategory(componentName: string): string {
     }
   }
   return 'Other'
-}
-
-// Core Web Vitals tracking for SEO
-function trackWebVitals() {
-  if (typeof window === 'undefined') return
-
-  // Track Largest Contentful Paint (LCP)
-  new PerformanceObserver((entryList) => {
-    for (const entry of entryList.getEntries()) {
-      if (entry.entryType === 'largest-contentful-paint') {
-        window.gtag('event', 'web_vitals', {
-          metric_name: 'LCP',
-          metric_value: Math.round(entry.startTime),
-          metric_rating: entry.startTime > 4000 ? 'poor' : entry.startTime > 2500 ? 'needs_improvement' : 'good'
-        })
-      }
-    }
-  }).observe({ entryTypes: ['largest-contentful-paint'] })
-
-  // Track First Input Delay (FID)
-  new PerformanceObserver((entryList) => {
-    for (const entry of entryList.getEntries()) {
-      if (entry.entryType === 'first-input') {
-        const fidEntry = entry as PerformanceEntry & { processingStart: number }
-        const fid = fidEntry.processingStart - entry.startTime
-        window.gtag('event', 'web_vitals', {
-          metric_name: 'FID',
-          metric_value: Math.round(fid),
-          metric_rating: fid > 300 ? 'poor' : fid > 100 ? 'needs_improvement' : 'good'
-        })
-      }
-    }
-  }).observe({ entryTypes: ['first-input'] })
-
-  // Track Cumulative Layout Shift (CLS)
-  let clsValue = 0
-  new PerformanceObserver((entryList) => {
-    for (const entry of entryList.getEntries()) {
-      const clsEntry = entry as PerformanceEntry & { hadRecentInput?: boolean; value: number }
-      if (!clsEntry.hadRecentInput) {
-        clsValue += clsEntry.value
-      }
-    }
-    window.gtag('event', 'web_vitals', {
-      metric_name: 'CLS',
-      metric_value: Math.round(clsValue * 1000),
-      metric_rating: clsValue > 0.25 ? 'poor' : clsValue > 0.1 ? 'needs_improvement' : 'good'
-    })
-  }).observe({ entryTypes: ['layout-shift'] })
 }
 
 // Declare gtag for TypeScript
