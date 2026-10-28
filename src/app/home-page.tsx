@@ -28,7 +28,7 @@ import {
 	AvatarImage,
 	AvatarFallback,
 } from "@/components/custom/blocks/AvatarStackBlock";
-import { ComponentWall } from "@/components/custom/blocks/ComponentWallBlock";
+import { HomepageHero } from "@/components/site/HomepageHero";
 import { AnimatedFAQBlock } from "@/components/custom/blocks/AnimatedFAQBlock";
 import { GitHubIcon } from "@/components/custom/blocks/Icons";
 import { WALL_ITEMS, WallStack } from "@/constants/component-wall";
@@ -694,16 +694,7 @@ const STACK_LABEL = (
 function HeroSection() {
 	return (
 		<section className="relative w-full overflow-hidden">
-			{/* Links are passed explicitly rather than relying on the block's
-			    defaults: ComponentWall ships in the registry, so its defaults
-			    have to make sense in a consumer's project, where this site's
-			    routes do not exist. The wall's cards are this site's own
-			    sections, and the install line names whichever one a camera
-			    has just landed on — the centred layout puts the copy between
-			    two walls, one camera resting high and the other low. */}
-			<ComponentWall
-				layout="center"
-				compactWall={false}
+			<HomepageHero
 				badge={{ label: "Next-gen React components", href: "/docs/nextjs/index" }}
 				heading="Build interactive {word}."
 				headingWords={["interfaces", "components", "experiences", "animations", "dashboards"]}

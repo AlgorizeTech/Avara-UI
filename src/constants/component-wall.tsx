@@ -44,8 +44,8 @@ const wall = (slug: string, title: string): ComponentWallItem => ({
 });
 
 export const WALL_ITEMS: ComponentWallItem[] = [
-  wall("bento-showcase", "Bento showcase"),
-  wall("hero", "Word bounce hero"),
+  wall("calendar", "Calendar"),
+  wall("support-hero", "Support hero"),
   wall("pricing", "Product showcase"),
   wall("book-appointment", "Book appointment"),
   wall("collage-hero", "Collage hero"),
@@ -56,7 +56,6 @@ export const WALL_ITEMS: ComponentWallItem[] = [
   wall("newsletter", "Newsletter"),
   wall("waitlist", "Waitlist"),
   wall("footer", "Footer"),
-  wall("support-hero", "Support hero"),
   wall("platform-grid", "Platform grid"),
   wall("profile-page", "Profile page"),
   wall("data-flow", "Data flow"),
@@ -65,7 +64,7 @@ export const WALL_ITEMS: ComponentWallItem[] = [
   wall("chart", "Chart"),
   wall("product-details", "Product details"),
   wall("reviews", "Reviews"),
-  wall("calendar", "Calendar"),
+  wall("bento-showcase", "Bento showcase"),
   wall("invoice", "Invoice"),
   wall("data-grid", "Data grid"),
 ];
