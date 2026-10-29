@@ -260,7 +260,6 @@ function BrandPillarsCta({
 
   // Active flying animations to ensure moving cards are always on top of EVERYTHING
   const [activeFlyingCards, setActiveFlyingCards] = useState<Record<string, "toSlot" | "toDeck">>({});
-  const [lastClickedDirection, setLastClickedDirection] = useState<"toSlot" | "toDeck" | null>(null);
   const flyingTimersRef = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
 
   // Toggle or place card
@@ -269,7 +268,6 @@ function BrandPillarsCta({
     const direction: "toSlot" | "toDeck" = isCurrentlyPlaced ? "toDeck" : "toSlot";
 
     // Elevate moving card above all other elements
-    setLastClickedDirection(direction);
     setActiveFlyingCards((prev) => ({ ...prev, [id]: direction }));
 
     if (flyingTimersRef.current[id]) {
@@ -281,7 +279,6 @@ function BrandPillarsCta({
         delete next[id];
         return next;
       });
-      setLastClickedDirection((prev) => (prev === direction ? null : prev));
     }, 700);
 
     setPlacedCardIds((prev) => {
@@ -299,8 +296,6 @@ function BrandPillarsCta({
 
   // Unplaced cards remaining in the floating deck
   const unplacedPillars = pillars.filter((p) => !placedCardIds.includes(p.id));
-
-  const isAnyFlying = Object.keys(activeFlyingCards).length > 0;
 
   return (
     <section

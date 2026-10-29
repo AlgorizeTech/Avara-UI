@@ -14,22 +14,6 @@ export default function BrandPillarsExample() {
   );
 }`;
 
-export const usageSplit = `import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
-
-export default function SplitCtaExample() {
-  return (
-    
-  );
-}`;
-
-export const usageMinimal = `import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
-
-export default function MinimalCtaExample() {
-  return (
-    
-  );
-}`;
-
 ## Installation
 
 Add the component by URL — no setup needed:

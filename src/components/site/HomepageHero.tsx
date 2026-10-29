@@ -235,7 +235,7 @@ function StaticImageWall({
             left={card.left + dx * width}
             top={card.top + dy * height}
             copy={copy}
-            isFocus={!copy && i === 0}
+            isFocus={!copy && (card.title === "Collage hero" || card.title === "Bento showcase" || i === 0)}
           />
         ));
       }),
@@ -689,20 +689,6 @@ export const HomepageHero = forwardRef<HTMLElement, HomepageHeroProps>(
           </div>
         )}
 
-        {/* Below lg: single static wall band */}
-        {desktop === false && items.length > 0 && (
-          <div
-            className="mt-10 h-64 w-screen max-w-none shrink-0 self-center sm:h-80 lg:hidden pointer-events-none select-none"
-            aria-hidden
-          >
-            <StaticImageWall
-              items={items}
-              columns={4}
-              anchor={MIDDLE}
-              className="h-full [mask-image:linear-gradient(to_bottom,transparent,black_18%,black_82%,transparent)]"
-            />
-          </div>
-        )}
 
         {stack && (
           <div style={riseAt()} className="cw-rise mt-8 w-full max-w-md lg:mt-12">

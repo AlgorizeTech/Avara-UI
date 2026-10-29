@@ -10,7 +10,6 @@ import {
   Cpu,
   Zap,
   Mail,
-  Send,
   ShieldCheck,
   Lock,
   Code2,
@@ -1625,24 +1624,6 @@ function WireframeGlobeIcon({ className }: { className?: string }) {
   );
 }
 
-function ForwardArrowIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className ?? "size-4"}
-      viewBox="0 0 24 24"
-      fill="currentColor"
-    >
-      <path d="M18.3 13.5H0v-3h18.3L9.9 2.1 12 0l12 12-12 12-2.1-2.1L18.3 13.5z" />
-    </svg>
-  );
-}
-
-const DEFAULT_EDITORIAL_MENU = [
-  { label: "NEWSLETTER", href: "#", disabled: true },
-  { label: "COLOPHON", href: "#" },
-  { label: "PRIVACY POLICY", href: "#" },
-];
-
 const DEFAULT_EDITORIAL_SOCIALS = [
   { label: "LINKEDIN", href: "#" },
   { label: "INSTAGRAM", href: "#" },
@@ -2090,7 +2071,6 @@ function EditorialTabCardContent({
 export function EditorialCardFooter({
   brandName = "HS",
   copyrightText,
-  tagline,
   editorialCta,
   socialLinks,
   color,

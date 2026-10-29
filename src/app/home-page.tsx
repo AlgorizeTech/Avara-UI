@@ -1,8 +1,5 @@
 "use client";
 
-import DraggableCardList, {
-	DraggableCardItem,
-} from "@/components/custom/draggable-card-list";
 import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
 import {
 	Folder,
@@ -29,6 +26,7 @@ import {
 	AvatarFallback,
 } from "@/components/custom/blocks/AvatarStackBlock";
 import { HomepageHero } from "@/components/site/HomepageHero";
+import { PricingPlansPro } from "@/components/custom/blocks/Pricing";
 import { AnimatedFAQBlock } from "@/components/custom/blocks/AnimatedFAQBlock";
 import { GitHubIcon } from "@/components/custom/blocks/Icons";
 import { WALL_ITEMS, WallStack } from "@/constants/component-wall";
@@ -68,14 +66,13 @@ import { motion, useInView } from "motion/react";
 // The motion demos (CardStack) read their config from motion's context.
 import { MotionConfig } from "motion/react";
 import Link from "next/link";
-import {
-	useLayoutEffect,
-	useRef,
-	useState,
-	type ReactNode,
-} from "react";
+import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
 import { COMPONENT_COUNT, links } from "@/config/site";
-import { REGISTRY_ADD_ARGS, REGISTRY_NAMESPACE, REGISTRY_URL_TEMPLATE } from "@/lib/registry";
+import {
+	REGISTRY_ADD_ARGS,
+	REGISTRY_NAMESPACE,
+	REGISTRY_URL_TEMPLATE,
+} from "@/lib/registry";
 
 /* ═══════════════════════════════════════════════
    SAMPLE DATA
@@ -138,55 +135,6 @@ const sampleCaseFiles: FolderFile[] = [
 	{ name: "Timeline_v3.xlsx" },
 	{ name: "Court_filing_draft.pdf" },
 	{ name: "Evidence_log.csv" },
-];
-
-const sampleTasks: DraggableCardItem[] = [
-	{
-		id: "1",
-		title: "Perf Audit",
-		description: "Split bundles, cut LCP to 0.8s",
-		date: "2026-08-30",
-		badge: "PERF",
-		badgeStyle:
-			"bg-amber-500/10 text-amber-700 dark:text-amber-300 border border-amber-500/30",
-		accentColor: "from-amber-400 via-orange-500 to-yellow-500",
-		hoverBorderColor: "hover:border-amber-500/80 dark:hover:border-amber-400/80",
-	},
-	{
-		id: "2",
-		title: "Security Patch",
-		description: "Upgrade deps, rotate API tokens",
-		date: "2026-08-30",
-		badge: "SECURITY",
-		badgeStyle:
-			"bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30",
-		accentColor: "from-emerald-400 via-teal-500 to-cyan-500",
-		hoverBorderColor:
-			"hover:border-emerald-500/80 dark:hover:border-emerald-400/80",
-	},
-	{
-		id: "3",
-		title: "UI Kit v2.4",
-		description: "Dark mode tokens and aria roles",
-		date: "2026-08-30",
-		badge: "LIBRARY",
-		badgeStyle:
-			"bg-purple-500/10 text-purple-700 dark:text-purple-300 border border-purple-500/30",
-		accentColor: "from-purple-400 via-indigo-500 to-violet-500",
-		hoverBorderColor:
-			"hover:border-purple-500/80 dark:hover:border-purple-400/80",
-	},
-	{
-		id: "4",
-		title: "DB Migration",
-		description: "Zero-downtime Postgres indexing",
-		date: "2026-08-30",
-		badge: "DATABASE",
-		badgeStyle:
-			"bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/30",
-		accentColor: "from-blue-400 via-indigo-500 to-cyan-500",
-		hoverBorderColor: "hover:border-blue-500/80 dark:hover:border-blue-400/80",
-	},
 ];
 
 const sampleCarouselItems: CarouselItem[] = [
@@ -646,8 +594,10 @@ const SECTION_EYEBROW =
 	"inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-foreground/30 mb-3";
 const SECTION_H2 =
 	"font-serif font-normal text-[clamp(26px,3.6vw,46px)] leading-[1.15] tracking-[-0.02em] text-foreground mb-3";
-const SECTION_SUB = "text-[15px] leading-[1.65] text-foreground/45 max-w-[490px]";
-const CARD_TITLE = " text-[16px] lg:text-[18px] font-semibold text-foreground mb-[7px]";
+const SECTION_SUB =
+	"text-[15px] leading-[1.65] text-foreground/45 max-w-[490px]";
+const CARD_TITLE =
+	" text-[16px] lg:text-[18px] font-semibold text-foreground mb-[7px]";
 const CARD_COPY = "text-[13px] leading-[1.65] text-foreground/45";
 const CARD_SURFACE = "border border-foreground/[0.06] bg-card";
 const EYEBROW_PILL =
@@ -688,21 +638,33 @@ const HERO_TYPE = [
 
 /* The "Built with" label over the tool strip, in the section eyebrow's voice. */
 const STACK_LABEL = (
-	<span className="text-[11px] uppercase tracking-[0.12em] text-foreground/40">Built with</span>
+	<span className="text-[11px] uppercase tracking-[0.12em] text-foreground/40">
+		Built with
+	</span>
 );
 
 function HeroSection() {
 	return (
 		<section className="relative w-full overflow-hidden">
 			<HomepageHero
-				badge={{ label: "Next-gen React components", href: "/docs/nextjs/index" }}
+				badge={{
+					label: "Next-gen React components",
+					href: "/docs/nextjs/index",
+				}}
 				heading="Build interactive {word}."
-				headingWords={["interfaces", "components", "experiences", "animations", "dashboards"]}
+				headingWords={[
+					"interfaces",
+					"components",
+					"experiences",
+					"animations",
+					"dashboards",
+				]}
 				accent="interactive"
 				description={
 					<>
-						A meticulous library of React components and interactive blocks, engineered for seamless
-						performance with Tailwind CSS, TypeScript, GSAP and Motion — delivered through the{" "}
+						A meticulous library of React components and interactive blocks,
+						engineered for seamless performance with Tailwind CSS, TypeScript,
+						GSAP and Motion — delivered through the{" "}
 						{/* The one phrase a reader should leave with: shadcn's own face,
 						    then the words picked out as an iOS selection. Kept on one line
 						    so the avatar, the handles and the full stop never wrap apart. */}
@@ -724,8 +686,13 @@ function HeroSection() {
 						</span>
 					</>
 				}
-				install={{ command: `npx shadcn@latest add ${REGISTRY_NAMESPACE}/{item}` }}
-				primaryAction={{ label: "Browse components", href: "/docs/nextjs/all-components" }}
+				install={{
+					command: `npx shadcn@latest add ${REGISTRY_NAMESPACE}/{item}`,
+				}}
+				primaryAction={{
+					label: "Browse components",
+					href: "/docs/nextjs/all-components",
+				}}
 				secondaryAction={{ label: "Get Started", href: "/docs/nextjs/index" }}
 				items={WALL_ITEMS}
 				stack={<WallStack variant="compact" label={STACK_LABEL} />}
@@ -759,7 +726,11 @@ function FitToWidth({
 }) {
 	const outerRef = useRef<HTMLDivElement>(null);
 	const innerRef = useRef<HTMLDivElement>(null);
-	const [fit, setFit] = useState({ scale: fixedScale ?? 1, width: 0, height: 0 });
+	const [fit, setFit] = useState({
+		scale: fixedScale ?? 1,
+		width: 0,
+		height: 0,
+	});
 
 	useLayoutEffect(() => {
 		const outer = outerRef.current;
@@ -768,9 +739,12 @@ function FitToWidth({
 		const measure = () => {
 			const columnWidth = outer.clientWidth;
 			const natural =
-				(typeof width === "function" ? width(window.innerWidth) : width) ?? columnWidth;
+				(typeof width === "function" ? width(window.innerWidth) : width) ??
+				columnWidth;
 			const scale = fixedScale ?? Math.min(1, columnWidth / natural);
-			const layoutWidth = fixedScale ? Math.floor(columnWidth / fixedScale) : natural;
+			const layoutWidth = fixedScale
+				? Math.floor(columnWidth / fixedScale)
+				: natural;
 			// offsetHeight ignores the transform, so this is the natural height.
 			const height = Math.ceil(inner.offsetHeight * scale);
 			setFit((f) =>
@@ -787,7 +761,10 @@ function FitToWidth({
 	}, [width, fixedScale]);
 
 	return (
-		<div ref={outerRef} className="relative w-full" style={{ height: fit.height }}>
+		<div
+			ref={outerRef}
+			className="relative w-full"
+			style={{ height: fit.height }}>
 			<div
 				ref={innerRef}
 				className="absolute left-1/2 top-0 origin-top"
@@ -799,7 +776,10 @@ function FitToWidth({
 				    its own, scaled ones: map the pointer into them so motion drags
 				    (the stack swipe) keep up with the pointer. */}
 				<MotionConfig
-					transformPagePoint={(p) => ({ x: p.x / fit.scale, y: p.y / fit.scale })}>
+					transformPagePoint={(p) => ({
+						x: p.x / fit.scale,
+						y: p.y / fit.scale,
+					})}>
 					{children}
 				</MotionConfig>
 			</div>
@@ -824,11 +804,10 @@ function ComponentShowcase() {
 							<Layers className="size-3.5" />
 							Live Interactive Components
 						</span>
-						<h2 className={SECTION_H2}>
-							Real Motion &amp; Interactive Blocks
-						</h2>
+						<h2 className={SECTION_H2}>Real Motion &amp; Interactive Blocks</h2>
 						<p className={SECTION_SUB}>
-							Featuring Wallet, Card Stack, Magnifying Dock, and 3D Motion Carousel.
+							Featuring Wallet, Card Stack, Magnifying Dock, and 3D Motion
+							Carousel.
 						</p>
 					</div>
 					<Link
@@ -853,9 +832,7 @@ function ComponentShowcase() {
 									<CreditCard className="size-3.5 shrink-0 text-primary" />
 									<span className="truncate">Wallet</span>
 								</span>
-								<span className={CHIP}>
-									Hover &amp; Flip
-								</span>
+								<span className={CHIP}>Hover &amp; Flip</span>
 							</div>
 							<FitToWidth width={380}>
 								<Wallet className="p-0 sm:p-0" />
@@ -868,9 +845,7 @@ function ComponentShowcase() {
 									<GalleryVerticalEnd className="size-3.5 shrink-0 text-primary" />
 									<span className="truncate">Card Stack</span>
 								</span>
-								<span className={CHIP}>
-									Swipe to Discard
-								</span>
+								<span className={CHIP}>Swipe to Discard</span>
 							</div>
 							<FitToWidth scale={0.7}>
 								<CardStack
@@ -907,9 +882,7 @@ function ComponentShowcase() {
 									<Layers className="size-3.5 shrink-0 text-primary" />
 									<span className="truncate">3D Fanned Carousel</span>
 								</span>
-								<span className={CHIP}>
-									Interactive
-								</span>
+								<span className={CHIP}>Interactive</span>
 							</div>
 							{/* The carousel lays out wide enough for the fanned side cards,
 							    then scales down to the column. */}
@@ -924,9 +897,7 @@ function ComponentShowcase() {
 									<FolderOpen className="size-3.5 shrink-0 text-primary" />
 									<span className="truncate">Design Components Folder</span>
 								</span>
-								<span className={CHIP}>
-									Auto Loop
-								</span>
+								<span className={CHIP}>Auto Loop</span>
 							</div>
 							{/* The stage is sized by viewport breakpoints (up to 960×700), so it
 							    is laid out at 840px wide and scaled down to the column. */}
@@ -941,9 +912,7 @@ function ComponentShowcase() {
 									<Compass className="size-3.5 shrink-0 text-primary" />
 									<span className="truncate">Magnifying macOS Dock</span>
 								</span>
-								<span className={CHIP}>
-									Interactive Hover
-								</span>
+								<span className={CHIP}>Interactive Hover</span>
 							</div>
 							{/* Laid out wide enough for the dock at full magnification, so
 							    a narrow column scales it rather than clipping its ends. */}
@@ -966,14 +935,14 @@ function ComponentShowcase() {
 									<Users className="size-3.5 shrink-0 text-primary" />
 									<span className="truncate">Avatar Group</span>
 								</span>
-								<span className={CHIP}>
-									Shift on Hover
-								</span>
+								<span className={CHIP}>Shift on Hover</span>
 							</div>
 							<div className="flex items-center justify-center pt-6 pb-1">
 								<AvatarGroup>
 									{sampleGroupAvatars.map((avatar, index) => (
-										<Avatar key={index} className="size-12 border-[3px] border-background ring-0 cursor-pointer">
+										<Avatar
+											key={index}
+											className="size-12 border-[3px] border-background ring-0 cursor-pointer">
 											<AvatarImage src={avatar.src} alt={avatar.alt} />
 											<AvatarFallback>{avatar.fallback}</AvatarFallback>
 											<AvatarGroupTooltip designation={avatar.designation}>
@@ -998,9 +967,7 @@ function ComponentShowcase() {
 									<FolderOpen className="size-3.5 shrink-0 text-primary" />
 									<span className="truncate">Folder</span>
 								</span>
-								<span className={CHIP}>
-									Fan on Hover
-								</span>
+								<span className={CHIP}>Fan on Hover</span>
 							</div>
 							{/* Headroom above, not around: the fan lifts the file cards well
 							    above the folder's top edge and the name tooltip sits above that. */}
@@ -1014,19 +981,26 @@ function ComponentShowcase() {
 							</div>
 						</div>
 
-						<div className="showcase-card rounded-2xl border border-foreground/[0.06] bg-card p-2 overflow-hidden">
-							<div className="px-3 py-2 border-b border-foreground/[0.06] flex items-center justify-between gap-3 text-[14px] text-foreground/40 font-medium">
+						<div className="showcase-card rounded-2xl border border-foreground/[0.06] bg-card p-5 overflow-hidden">
+							<div className="flex items-center justify-between gap-3 mb-4 text-[14px] text-foreground/40 font-medium">
 								<span className="flex min-w-0 items-center gap-1.5 text-foreground font-semibold">
-									<GripVertical className="size-3.5 shrink-0 text-primary" />
-									<span className="truncate">Draggable Card List</span>
+									<Sparkles className="size-3.5 shrink-0 text-primary" />
+									<span className="truncate">Plans Pro</span>
 								</span>
-								<span className={CHIP}>
-									Drag to Reorder
-								</span>
+								<span className={CHIP}>Interactive Accordion</span>
 							</div>
-							<div className="p-3">
-								<FitToWidth scale={0.85}>
-									<DraggableCardList variant="classic" items={sampleTasks} />
+							<div>
+								<FitToWidth scale={0.82}>
+									<PricingPlansPro
+										compact
+										layoutMode="vertical"
+										badgeText=""
+										title=""
+										subtitle=""
+										orderHref="/docs/nextjs/pricing"
+										color="primary"
+										counting={true}
+									/>
 								</FitToWidth>
 							</div>
 						</div>
@@ -1062,9 +1036,7 @@ function WhyChooseUsSection() {
 					animate={isInView ? { opacity: 1, y: 0 } : {}}
 					transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
 					className="text-center mb-10 md:mb-12">
-					<h2 className={SECTION_H2}>
-						Why Avara UI?
-					</h2>
+					<h2 className={SECTION_H2}>Why Avara UI?</h2>
 					<p className={cn(SECTION_SUB, "mx-auto")}>
 						Engineered to explore unique interaction patterns—from 3D
 						displacement hover effects to beautiful physics animations and
@@ -1079,7 +1051,10 @@ function WhyChooseUsSection() {
 						initial={{ opacity: 0, y: 40 }}
 						animate={isInView ? { opacity: 1, y: 0 } : {}}
 						transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-						className={cn("group flex flex-col p-6 md:p-8 rounded-2xl hover:border-primary/30 transition-all duration-700", CARD_SURFACE)}>
+						className={cn(
+							"group flex flex-col p-6 md:p-8 rounded-2xl hover:border-primary/30 transition-all duration-700",
+							CARD_SURFACE,
+						)}>
 						<div className="mb-6">
 							<h3 className={CARD_TITLE}>
 								Components You Won&apos;t Find Anywhere
@@ -1117,11 +1092,12 @@ function WhyChooseUsSection() {
 						initial={{ opacity: 0, y: 40 }}
 						animate={isInView ? { opacity: 1, y: 0 } : {}}
 						transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-						className={cn("group flex flex-col p-6 md:p-8 rounded-2xl hover:border-primary/30 transition-all duration-700", CARD_SURFACE)}>
+						className={cn(
+							"group flex flex-col p-6 md:p-8 rounded-2xl hover:border-primary/30 transition-all duration-700",
+							CARD_SURFACE,
+						)}>
 						<div className="mb-6">
-							<h3 className={CARD_TITLE}>
-								Built with Modern Frameworks
-							</h3>
+							<h3 className={CARD_TITLE}>Built with Modern Frameworks</h3>
 							<p className={cn(CARD_COPY, "max-w-sm")}>
 								Designed to work seamlessly with Next.js, React, and Tailwind
 								CSS. Engineered for rapid integration into real-world production
@@ -1172,11 +1148,12 @@ function WhyChooseUsSection() {
 						initial={{ opacity: 0, y: 40 }}
 						animate={isInView ? { opacity: 1, y: 0 } : {}}
 						transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-						className={cn("group flex flex-col p-6 md:p-8 rounded-2xl hover:border-primary/30 transition-all duration-700", CARD_SURFACE)}>
+						className={cn(
+							"group flex flex-col p-6 md:p-8 rounded-2xl hover:border-primary/30 transition-all duration-700",
+							CARD_SURFACE,
+						)}>
 						<div className="mb-6">
-							<h3 className={CARD_TITLE}>
-								Open Source With Story
-							</h3>
+							<h3 className={CARD_TITLE}>Open Source With Story</h3>
 							<p className={cn(CARD_COPY, "max-w-sm")}>
 								Every component is crafted with intention. Each block explores a
 								unique interaction pattern and the reasoning behind its
@@ -1234,11 +1211,12 @@ function WhyChooseUsSection() {
 						initial={{ opacity: 0, y: 40 }}
 						animate={isInView ? { opacity: 1, y: 0 } : {}}
 						transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-						className={cn("group flex flex-col p-6 md:p-8 rounded-2xl hover:border-primary/30 transition-all duration-700", CARD_SURFACE)}>
+						className={cn(
+							"group flex flex-col p-6 md:p-8 rounded-2xl hover:border-primary/30 transition-all duration-700",
+							CARD_SURFACE,
+						)}>
 						<div className="mb-6">
-							<h3 className={CARD_TITLE}>
-								Build Landing Pages Faster
-							</h3>
+							<h3 className={CARD_TITLE}>Build Landing Pages Faster</h3>
 							<p className={cn(CARD_COPY, "max-w-sm")}>
 								Launch polished interfaces in minutes using pre-built UI blocks
 								designed for speed. Skip repetitive scaffolding and focus on
@@ -1510,7 +1488,9 @@ function MiniatureIllustration({
 								<div className="text-[6px] font-semibold text-muted-foreground truncate">
 									Free
 								</div>
-								<div className="text-[8px] font-semibold text-foreground">$0</div>
+								<div className="text-[8px] font-semibold text-foreground">
+									$0
+								</div>
 								<div className="h-1.5 w-full rounded bg-muted text-[5px] font-semibold text-muted-foreground flex items-center justify-center">
 									Free
 								</div>
@@ -1531,7 +1511,9 @@ function MiniatureIllustration({
 								<div className="text-[6px] font-semibold text-muted-foreground truncate">
 									Enterprise
 								</div>
-								<div className="text-[8px] font-semibold text-foreground">$99</div>
+								<div className="text-[8px] font-semibold text-foreground">
+									$99
+								</div>
 								<div className="h-1.5 w-full rounded bg-muted text-[5px] font-semibold text-muted-foreground flex items-center justify-center">
 									VIP
 								</div>
@@ -1704,7 +1686,9 @@ function MiniatureIllustration({
 
 				{type === "auth" && (
 					<div className="w-full max-w-[130px] p-2 rounded-xl bg-background border border-border shadow-xs space-y-1.5 text-center my-auto">
-						<div className="text-[8px] font-semibold text-foreground">Sign In</div>
+						<div className="text-[8px] font-semibold text-foreground">
+							Sign In
+						</div>
 						<div className="h-3 w-full bg-muted border border-border rounded flex items-center px-1 text-[7px] text-muted-foreground">
 							email@app.com
 						</div>
@@ -1751,7 +1735,9 @@ function MiniatureIllustration({
 							<span className="size-4 rounded bg-muted border border-border font-semibold text-[9px] flex items-center justify-center text-foreground">
 								-
 							</span>
-							<span className="text-sm font-semibold text-primary px-1">99+</span>
+							<span className="text-sm font-semibold text-primary px-1">
+								99+
+							</span>
 							<span className="size-4 rounded bg-primary text-primary-foreground font-semibold text-[9px] flex items-center justify-center">
 								+
 							</span>
@@ -1820,7 +1806,9 @@ function MiniatureIllustration({
 					<div className="w-full grid grid-cols-3 gap-1 my-auto px-0.5">
 						<div className="space-y-1">
 							<div className="h-10 rounded-lg bg-primary/20 border border-primary/40 p-1 flex items-end">
-								<span className="text-[5px] font-semibold text-primary">#01</span>
+								<span className="text-[5px] font-semibold text-primary">
+									#01
+								</span>
 							</div>
 							<div className="h-6 rounded-lg bg-muted border border-border" />
 						</div>
@@ -1834,7 +1822,9 @@ function MiniatureIllustration({
 						</div>
 						<div className="space-y-1">
 							<div className="h-12 rounded-lg bg-primary/10 border border-primary/20 p-1 flex items-end">
-								<span className="text-[5px] font-semibold text-primary">#03</span>
+								<span className="text-[5px] font-semibold text-primary">
+									#03
+								</span>
 							</div>
 						</div>
 					</div>
@@ -1908,10 +1898,14 @@ function MiniatureIllustration({
 				{type === "magic-bento" && (
 					<div className="w-full grid grid-cols-2 gap-1 my-auto px-1">
 						<div className="h-10 rounded-lg bg-primary/20 border border-primary/40 p-1 flex flex-col justify-between">
-							<span className="text-[7px] font-semibold text-primary">Glow</span>
+							<span className="text-[7px] font-semibold text-primary">
+								Glow
+							</span>
 						</div>
 						<div className="h-10 rounded-lg bg-card border border-border p-1 flex flex-col justify-between">
-							<span className="text-[7px] font-semibold text-foreground">Tilt</span>
+							<span className="text-[7px] font-semibold text-foreground">
+								Tilt
+							</span>
 						</div>
 					</div>
 				)}
@@ -2268,7 +2262,9 @@ function MiniatureIllustration({
 					<div className="w-full p-1.5 rounded-xl bg-background border border-border shadow-md space-y-1 my-auto text-[6.5px]">
 						<div className="flex items-center gap-1 border-b border-border/40 pb-1 px-1">
 							<span className="text-[7.5px] text-primary">🔍</span>
-							<span className="font-semibold text-foreground">Search docs...</span>
+							<span className="font-semibold text-foreground">
+								Search docs...
+							</span>
 							<span className="ml-auto text-[5.5px] px-1 bg-muted rounded border border-border text-muted-foreground">
 								⌘K
 							</span>
@@ -2644,7 +2640,9 @@ function MiniatureIllustration({
 										</span>
 									</div>
 								</div>
-								<span className="text-[5.5px] text-primary font-semibold">▲</span>
+								<span className="text-[5.5px] text-primary font-semibold">
+									▲
+								</span>
 							</div>
 
 							{/* Realistic Floating Popover Dropdown Card with Live Selection */}
@@ -2667,7 +2665,9 @@ function MiniatureIllustration({
 									<span className="size-3 rounded hover:bg-background flex items-center justify-center font-semibold text-muted-foreground cursor-pointer">
 										‹
 									</span>
-									<span className="font-semibold text-foreground">August 2026</span>
+									<span className="font-semibold text-foreground">
+										August 2026
+									</span>
 									<span className="size-3 rounded hover:bg-background flex items-center justify-center font-semibold text-muted-foreground cursor-pointer">
 										›
 									</span>
@@ -2993,7 +2993,9 @@ function MiniatureIllustration({
 									Event Triggered
 								</span>
 							</div>
-							<span className="text-[5.5px] text-primary font-semibold">Undo</span>
+							<span className="text-[5.5px] text-primary font-semibold">
+								Undo
+							</span>
 						</div>
 					</div>
 				)}
@@ -3133,7 +3135,9 @@ function MiniatureIllustration({
 				{type === "wizard" && (
 					<div className="w-full space-y-1.5 my-auto px-0.5 text-[6px]">
 						<div className="flex justify-between items-center font-extrabold text-foreground border-b border-border/40 pb-0.5">
-							<span className="text-primary font-semibold">Step 2: Profile</span>
+							<span className="text-primary font-semibold">
+								Step 2: Profile
+							</span>
 							<span className="text-[5.5px] text-muted-foreground">2 of 4</span>
 						</div>
 						<div className="h-1.5 w-full bg-muted rounded-full overflow-hidden">
@@ -3242,9 +3246,7 @@ function ComponentPreviewGridSection() {
 	const isInView = useInView(ref, { once: true, margin: "-60px" });
 
 	return (
-		<section
-			ref={ref}
-			className="py-12 md:py-16 bg-foreground/[0.02]">
+		<section ref={ref} className="py-12 md:py-16 bg-foreground/[0.02]">
 			<div className={SECTION_INNER}>
 				{/* Section Title */}
 				<motion.div
@@ -3256,9 +3258,7 @@ function ComponentPreviewGridSection() {
 						<LayoutGrid className="size-3.5" />
 						Component Preview Catalog
 					</span>
-					<h2 className={SECTION_H2}>
-						Explore Built-in Component Previews
-					</h2>
+					<h2 className={SECTION_H2}>Explore Built-in Component Previews</h2>
 					<p className={cn(SECTION_SUB, "mx-auto")}>
 						Click any component card below to inspect interactive live previews,
 						installation guides, and full source code.
@@ -3402,7 +3402,8 @@ const FEEDBACK: FeedbackItem[] = [
 		role: "Frontend Engineer",
 		company: "Techvence",
 		initials: "SR",
-		avatarGradient: "from-blue-500/20 to-indigo-500/20 text-blue-600 dark:text-blue-400 border-blue-500/30",
+		avatarGradient:
+			"from-blue-500/20 to-indigo-500/20 text-blue-600 dark:text-blue-400 border-blue-500/30",
 		content: `Ran the 'npx shadcn@latest add ${REGISTRY_NAMESPACE}/...' command in my Next.js 15 app. The code dropped directly into my components folder with zero dependency issues. Pure bliss.`,
 		rating: 5,
 		createdAt: "2026-10-03T10:00:00Z",
@@ -3413,8 +3414,10 @@ const FEEDBACK: FeedbackItem[] = [
 		role: "Full Stack Developer",
 		company: "Helen AI",
 		initials: "AM",
-		avatarGradient: "from-emerald-500/20 to-teal-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
-		content: "Finally a component collection where motion design feels purposeful, not distracting. The hover states, button springs, and tabs have so much character.",
+		avatarGradient:
+			"from-emerald-500/20 to-teal-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-500/30",
+		content:
+			"Finally a component collection where motion design feels purposeful, not distracting. The hover states, button springs, and tabs have so much character.",
 		rating: 5,
 		createdAt: "2026-10-01T14:30:00Z",
 	},
@@ -3424,8 +3427,10 @@ const FEEDBACK: FeedbackItem[] = [
 		role: "Software Engineer",
 		company: "Victory Vector",
 		initials: "SS",
-		avatarGradient: "from-purple-500/20 to-pink-500/20 text-purple-600 dark:text-purple-400 border-purple-500/30",
-		content: "The way these components leverage Tailwind CSS variables makes theme customization so simple. It matched our existing design tokens in minutes.",
+		avatarGradient:
+			"from-purple-500/20 to-pink-500/20 text-purple-600 dark:text-purple-400 border-purple-500/30",
+		content:
+			"The way these components leverage Tailwind CSS variables makes theme customization so simple. It matched our existing design tokens in minutes.",
 		rating: 5,
 		createdAt: "2026-09-28T09:15:00Z",
 	},
@@ -3484,7 +3489,7 @@ function FeedbackCard({ item }: { item: FeedbackItem }) {
 						<div
 							className={cn(
 								"size-10 sm:size-11 rounded-full bg-gradient-to-br flex items-center justify-center font-bold text-[13px] sm:text-[14px] tracking-tight border shadow-xs transition-all duration-300 group-hover:scale-105",
-								item.avatarGradient
+								item.avatarGradient,
 							)}>
 							{item.initials}
 						</div>
@@ -3564,11 +3569,10 @@ function FeedbackSection() {
 						<MessageCircle className="size-3.5 text-primary" />
 						Developer Feedback
 					</div>
-					<h2 className={SECTION_H2}>
-						What developers are saying
-					</h2>
+					<h2 className={SECTION_H2}>What developers are saying</h2>
 					<p className={cn(SECTION_SUB, "mx-auto")}>
-						Real impressions and feedback from developers and designers exploring Avara UI.
+						Real impressions and feedback from developers and designers
+						exploring Avara UI.
 					</p>
 				</motion.div>
 			</div>
@@ -3578,7 +3582,10 @@ function FeedbackSection() {
 				initial={{ opacity: 0 }}
 				animate={isInView ? { opacity: 1 } : {}}
 				transition={{ duration: 0.8, delay: 0.2 }}
-				className={cn(SECTION_INNER, "grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3")}>
+				className={cn(
+					SECTION_INNER,
+					"grid grid-cols-1 gap-4 sm:gap-5 md:grid-cols-3",
+				)}>
 				{FEEDBACK.map((item) => (
 					<FeedbackCard key={item.id} item={item} />
 				))}
@@ -3616,13 +3623,11 @@ function AnimatedFAQSection() {
 						Common Queries
 					</div>
 
-					<h2 className={SECTION_H2}>
-						Frequently Asked Questions
-					</h2>
+					<h2 className={SECTION_H2}>Frequently Asked Questions</h2>
 
 					<p className={cn(SECTION_SUB, "mx-auto")}>
-						Everything you need to know about using Avara UI, component integration,
-						licensing, and custom styling.
+						Everything you need to know about using Avara UI, component
+						integration, licensing, and custom styling.
 					</p>
 				</motion.div>
 
@@ -3651,7 +3656,7 @@ function NpmTabIcon({ active }: { active: boolean }) {
 		<svg
 			className={cn(
 				"size-3.5 shrink-0 transition-colors",
-				active ? "text-[#E53E3E]" : "text-muted-foreground"
+				active ? "text-[#E53E3E]" : "text-muted-foreground",
 			)}
 			viewBox="0 0 24 24"
 			fill="none"
@@ -3671,7 +3676,7 @@ function PnpmTabIcon({ active }: { active: boolean }) {
 		<svg
 			className={cn(
 				"size-3.5 shrink-0 transition-colors",
-				active ? "text-foreground" : "text-muted-foreground"
+				active ? "text-foreground" : "text-muted-foreground",
 			)}
 			viewBox="0 0 24 24"
 			fill="none"
@@ -3691,7 +3696,7 @@ function YarnTabIcon({ active }: { active: boolean }) {
 		<svg
 			className={cn(
 				"size-3.5 shrink-0 transition-colors",
-				active ? "text-foreground" : "text-muted-foreground"
+				active ? "text-foreground" : "text-muted-foreground",
 			)}
 			viewBox="0 0 24 24"
 			fill="none"
@@ -3712,7 +3717,7 @@ function BunTabIcon({ active }: { active: boolean }) {
 		<svg
 			className={cn(
 				"size-3.5 shrink-0 transition-colors",
-				active ? "text-foreground" : "text-muted-foreground"
+				active ? "text-foreground" : "text-muted-foreground",
 			)}
 			viewBox="0 0 24 24"
 			fill="none"
@@ -3728,7 +3733,9 @@ function BunTabIcon({ active }: { active: boolean }) {
 function CTASection() {
 	const ref = useRef(null);
 	const isInView = useInView(ref, { once: true, margin: "-40px" });
-	const [activePkg, setActivePkg] = useState<"npm" | "pnpm" | "yarn" | "bun">("npm");
+	const [activePkg, setActivePkg] = useState<"npm" | "pnpm" | "yarn" | "bun">(
+		"npm",
+	);
 	const [copied, setCopied] = useState(false);
 
 	const PKG_MANAGERS = [
@@ -3827,10 +3834,12 @@ function CTASection() {
 
 						{/* Subtitle / Description mentioning shadcn/ui */}
 						<p className="text-[15px] sm:text-[16px] leading-[1.65] text-muted-foreground max-w-2xl mb-8">
-							An open collection of {COMPONENT_COUNT} animated UI components built on top of{" "}
+							An open collection of {COMPONENT_COUNT} animated UI components
+							built on top of{" "}
 							<span className="text-foreground font-semibold">shadcn/ui</span>,
-							Tailwind CSS, and TypeScript. Copy clean, battle-tested code straight
-							into your codebase with zero dependency lock-in and zero runtime bloat.
+							Tailwind CSS, and TypeScript. Copy clean, battle-tested code
+							straight into your codebase with zero dependency lock-in and zero
+							runtime bloat.
 						</p>
 
 						{/* Flat Multi-Package CLI Bar (4 Packages with Icons, active indicator & Copy Icon ONLY) */}
@@ -3849,7 +3858,7 @@ function CTASection() {
 												"flex items-center gap-2 py-2.5 text-xs sm:text-[13px] font-medium transition-colors relative cursor-pointer",
 												active
 													? "text-foreground font-semibold"
-													: "text-muted-foreground hover:text-foreground"
+													: "text-muted-foreground hover:text-foreground",
 											)}>
 											<Icon active={active} />
 											<span>{pkg.label}</span>
@@ -3864,7 +3873,9 @@ function CTASection() {
 							{/* Command Snippet Row with Copy Icon ONLY */}
 							<div className="flex items-center justify-between gap-3 px-4 py-3 font-mono text-xs sm:text-[13px] bg-background">
 								<div className="flex items-center gap-2.5 min-w-0 overflow-hidden">
-									<span className="text-primary font-bold select-none shrink-0">$</span>
+									<span className="text-primary font-bold select-none shrink-0">
+										$
+									</span>
 									<span className="font-medium text-foreground truncate select-all">
 										{currentCommand}
 									</span>
@@ -3918,8 +3929,8 @@ function CTASection() {
 								Built on shadcn/ui
 							</h4>
 							<p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
-								Native compatibility with components.json, Tailwind CSS, and the shadcn
-								CLI registry ecosystem.
+								Native compatibility with components.json, Tailwind CSS, and the
+								shadcn CLI registry ecosystem.
 							</p>
 						</div>
 
@@ -3944,8 +3955,8 @@ function CTASection() {
 								Full Stack Compatibility
 							</h4>
 							<p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
-								Engineered and tested for Next.js 15 App Router, React 19, and Tailwind
-								CSS v4 & v3.
+								Engineered and tested for Next.js 15 App Router, React 19, and
+								Tailwind CSS v4 & v3.
 							</p>
 						</div>
 					</div>
@@ -4057,7 +4068,10 @@ function FooterSection() {
 					</span>
 					<div className="flex flex-wrap items-center gap-x-4 gap-y-2">
 						<span>Free and open source.</span>
-						<span aria-hidden className="hidden sm:block h-3 w-px bg-foreground/15" />
+						<span
+							aria-hidden
+							className="hidden sm:block h-3 w-px bg-foreground/15"
+						/>
 						<ul className="flex items-center gap-1">
 							{FOOTER_SOCIALS.map(({ label, href, ariaLabel, Icon }) => (
 								<li key={label}>
@@ -4083,7 +4097,11 @@ function FooterSection() {
 
 function FooterXIcon({ className }: { className?: string }) {
 	return (
-		<svg viewBox="0 0 300 271" fill="currentColor" aria-hidden className={className}>
+		<svg
+			viewBox="0 0 300 271"
+			fill="currentColor"
+			aria-hidden
+			className={className}>
 			<path d="m236 0h46l-101 115 118 156h-92.6l-72.5-94.8-83 94.8h-46l107-123-113-148h94.9l65.5 86.6zm-16.1 244h25.5l-165-218h-27.4z" />
 		</svg>
 	);
@@ -4091,7 +4109,11 @@ function FooterXIcon({ className }: { className?: string }) {
 
 function FooterLinkedInIcon({ className }: { className?: string }) {
 	return (
-		<svg viewBox="3.28 3.3 17.17 17.15" fill="currentColor" aria-hidden className={className}>
+		<svg
+			viewBox="3.28 3.3 17.17 17.15"
+			fill="currentColor"
+			aria-hidden
+			className={className}>
 			<path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45z" />
 		</svg>
 	);
