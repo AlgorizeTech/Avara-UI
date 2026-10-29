@@ -32,15 +32,96 @@ export default function NotFound() {
   );
 }`;
 
+export const usageAnimatedBeam = `import { NotFoundSection } from "@/components/custom/blocks/NotFoundBlock";
+
+export default function NotFound() {
+  return (
+    <NotFoundSection
+      variant="animated-beam-border"
+      code="404"
+      badge="System Telemetry • Route Dropped"
+      title="Lost in the Cyber Void?"
+      description="The requested coordinate cannot be located across the cluster network. The page may have shifted to a new dimension or expired."
+      primaryAction={{
+        label: "Explore Components",
+        href: "/docs",
+      }}
+      secondaryAction={{
+        label: "Return Home",
+        href: "/",
+      }}
+      showShortcuts={true}
+    />
+  );
+}`;
+
+export const usageHyperspace = `import { NotFoundSection } from "@/components/custom/blocks/NotFoundBlock";
+
+export default function NotFound() {
+  return (
+    <NotFoundSection
+      variant="hyperspace"
+      code="404"
+      badge="Error 404 • Page Not Found"
+      title="Lost in Hyperspace?"
+      description="The page you are looking for doesn't exist, was relocated, or is temporarily unavailable in this documentation."
+      primaryAction={{
+        label: "Explore Documentation",
+        href: "/docs",
+      }}
+      secondaryAction={{
+        label: "Back to Home",
+        href: "/",
+      }}
+      showShortcuts={true}
+    />
+  );
+}`;
+
 <ExampleShowcase
   name="not-found"
   columns={1}
-  colorControl={false}
-  minHeight={640}
+  colorControl={true}
+  minHeight={660}
   examples={[
+    {
+      title: "Animated Gradient Beam Border",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"animated-beam-border"',
+          effect: "activates the 360° rotating neon conic laser border with shifting color gradient portal.",
+        },
+        {
+          prop: "code",
+          value: '"404"',
+          effect: "large floating numerical display with fluid animated linear-gradient spectrum.",
+        },
+        {
+          prop: "showShortcuts",
+          value: "true",
+          effect: "displays interactive quick-action shortcut route matrix.",
+        },
+      ],
+      props: {
+        variant: "animated-beam-border",
+        code: "404",
+        badge: "System Telemetry • Route Dropped",
+        title: "Lost in the Cyber Void?",
+        description: "The requested coordinate cannot be located across the cluster network. The page may have shifted to a new dimension or expired.",
+        showShortcuts: true,
+      },
+      usage: usageAnimatedBeam,
+      code: extractCode("src/components/custom/blocks/NotFoundBlock.tsx"),
+    },
     {
       title: "Hyperspace 404 Section",
       propNotes: [
+        {
+          prop: "variant",
+          value: '"hyperspace"',
+          effect: "classic celestial cosmic grid backdrop with ambient radial glow and rotating compass.",
+        },
         {
           prop: "code",
           value: '"404"',
@@ -51,20 +132,16 @@ export default function NotFound() {
           value: '"Error 404 • Page Not Found"',
           effect: "floating status badge with animated rotating compass icon.",
         },
-        {
-          prop: "showShortcuts",
-          value: "true",
-          effect: "toggles quick navigation shortcuts grid at the bottom.",
-        },
       ],
       props: {
+        variant: "hyperspace",
         code: "404",
         badge: "Error 404 • Page Not Found",
         title: "Lost in Hyperspace?",
         description: "The page you are looking for doesn't exist, was relocated, or is temporarily unavailable in this documentation.",
         showShortcuts: true,
       },
-      usage: usageDefault,
+      usage: usageHyperspace,
       code: extractCode("src/components/custom/blocks/NotFoundBlock.tsx"),
     },
   ]}
@@ -80,6 +157,14 @@ Discover the key capabilities of the `NotFoundSection` component:
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Animated Conic Laser Border & Halo</h3>
+    <p className="text-muted-foreground text-sm">360° rotating high-speed conic gradient beam border paired with a diffuse outer glow halo for a futuristic cyberpunk visual presence.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Shifting Multi-Color Typography</h3>
+    <p className="text-muted-foreground text-sm">Floating 404 heading with animated chromatic color wave transition and real-time diffuse projection reflections.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">Ambient Radial Glow & Cyber Grid</h3>
     <p className="text-muted-foreground text-sm">Dual glowing radial light sources with a subtle masked 24px cyber grid overlay for a cosmic depth effect.</p>
   </div>
@@ -88,12 +173,12 @@ Discover the key capabilities of the `NotFoundSection` component:
     <p className="text-muted-foreground text-sm">Adaptive fluid clamp typography and flexible touch-friendly action buttons that fit effortlessly on 320px mobile up to 4K displays.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Animated Compass Indicator</h3>
-    <p className="text-muted-foreground text-sm">Continuous subtle gyro rotation inside the status pill gives the missing page an engaging, alive feel.</p>
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Diagnostic Telemetry Bar</h3>
+    <p className="text-muted-foreground text-sm">High-tech monospace route drop monitor with real-time pulsing signal beacon indicating network coordinates status.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Quick Navigation Shortcuts</h3>
-    <p className="text-muted-foreground text-sm">Built-in side-by-side shortcut pills help users immediately jump to documentation, components, or search.</p>
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Theme Accent Color Switching</h3>
+    <p className="text-muted-foreground text-sm">Full live CSS variable integration (`--primary`), allowing interactive accent palette switching across light and dark modes.</p>
   </div>
 </div>
 
@@ -111,10 +196,22 @@ Discover the key capabilities of the `NotFoundSection` component:
     </thead>
     <tbody>
       <tr>
+        <td><code>variant</code></td>
+        <td><code>"hyperspace" | "animated-beam-border"</code></td>
+        <td><code>"hyperspace"</code></td>
+        <td>Visual style variant: classic cosmic hyperspace or rotating neon laser beam border with shifting color.</td>
+      </tr>
+      <tr>
+        <td><code>color</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Custom theme accent color applied live across borders, badges, buttons, and glow effects.</td>
+      </tr>
+      <tr>
         <td><code>code</code></td>
         <td><code>string</code></td>
         <td><code>"404"</code></td>
-        <td>Primary numerical status code heading rendered in elegant serif typography.</td>
+        <td>Primary numerical status code heading rendered in elegant serif typography or shifting gradient.</td>
       </tr>
       <tr>
         <td><code>badge</code></td>

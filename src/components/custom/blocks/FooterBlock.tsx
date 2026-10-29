@@ -2381,11 +2381,18 @@ export function IsometricWireframeCube({
   className?: string;
   brandLetter?: string;
 }) {
-  const facetClass =
-    "fill-white dark:fill-neutral-900 hover:fill-primary dark:hover:fill-primary stroke-neutral-900 dark:stroke-white transition-colors duration-150 cursor-pointer";
+  const [hoveredFacet, setHoveredFacet] = React.useState<string | null>(null);
+
+  const isHighlighted = (facetId: string) => hoveredFacet === facetId;
 
   return (
-    <div className={cn("relative flex items-center justify-center select-none", className)}>
+    <div
+      onMouseEnter={() => {
+        if (!hoveredFacet) setHoveredFacet("left-face");
+      }}
+      onMouseLeave={() => setHoveredFacet(null)}
+      className={cn("relative flex items-center justify-center select-none cursor-pointer group", className)}
+    >
       <svg
         viewBox="0 0 160 160"
         className="w-24 h-24 sm:w-28 sm:h-28 text-neutral-900 dark:text-neutral-100"
@@ -2395,7 +2402,15 @@ export function IsometricWireframeCube({
         {/* Top of Left Pillar Segment */}
         <polygon
           points="44,56 56.6,49.7 92.6,67.7 80,74"
-          className={facetClass}
+          onMouseEnter={(e) => {
+            e.stopPropagation();
+            setHoveredFacet("top-left");
+          }}
+          style={{ fill: isHighlighted("top-left") ? "var(--primary, #ff3b00)" : undefined }}
+          className={cn(
+            "stroke-neutral-900 dark:stroke-white transition-colors duration-150 cursor-pointer",
+            isHighlighted("top-left") ? "fill-primary" : "fill-white dark:fill-neutral-900"
+          )}
           strokeWidth="3.2"
           strokeLinejoin="round"
         />
@@ -2403,7 +2418,15 @@ export function IsometricWireframeCube({
         {/* Top of Right Pillar Segment */}
         <polygon
           points="67.4,44.3 80,38 116,56 103.4,62.3"
-          className={facetClass}
+          onMouseEnter={(e) => {
+            e.stopPropagation();
+            setHoveredFacet("top-right");
+          }}
+          style={{ fill: isHighlighted("top-right") ? "var(--primary, #ff3b00)" : undefined }}
+          className={cn(
+            "stroke-neutral-900 dark:stroke-white transition-colors duration-150 cursor-pointer",
+            isHighlighted("top-right") ? "fill-primary" : "fill-white dark:fill-neutral-900"
+          )}
           strokeWidth="3.2"
           strokeLinejoin="round"
         />
@@ -2411,7 +2434,15 @@ export function IsometricWireframeCube({
         {/* Notch Floor (Crossbar Top inside upper notch) */}
         <polygon
           points="56.6,67.9 67.4,62.5 103.4,80.5 92.6,85.9"
-          className={facetClass}
+          onMouseEnter={(e) => {
+            e.stopPropagation();
+            setHoveredFacet("notch-floor");
+          }}
+          style={{ fill: isHighlighted("notch-floor") ? "var(--primary, #ff3b00)" : undefined }}
+          className={cn(
+            "stroke-neutral-900 dark:stroke-white transition-colors duration-150 cursor-pointer",
+            isHighlighted("notch-floor") ? "fill-primary" : "fill-white dark:fill-neutral-900"
+          )}
           strokeWidth="3.2"
           strokeLinejoin="round"
         />
@@ -2419,23 +2450,47 @@ export function IsometricWireframeCube({
         {/* Notch Left Inner Wall Segment */}
         <polygon
           points="56.6,49.7 92.6,67.7 92.6,85.9 56.6,67.9"
-          className={facetClass}
+          onMouseEnter={(e) => {
+            e.stopPropagation();
+            setHoveredFacet("notch-wall");
+          }}
+          style={{ fill: isHighlighted("notch-wall") ? "var(--primary, #ff3b00)" : undefined }}
+          className={cn(
+            "stroke-neutral-900 dark:stroke-white transition-colors duration-150 cursor-pointer",
+            isHighlighted("notch-wall") ? "fill-primary" : "fill-white dark:fill-neutral-900"
+          )}
           strokeWidth="3.2"
           strokeLinejoin="round"
         />
 
-        {/* Left Face Box / Segment: All white by default, turns orange on hover */}
+        {/* Left Face Box / Segment: Turns vibrant orange / primary on hover! */}
         <polygon
           points="44,56 80,74 80,122 44,104"
-          className={facetClass}
+          onMouseEnter={(e) => {
+            e.stopPropagation();
+            setHoveredFacet("left-face");
+          }}
+          style={{ fill: isHighlighted("left-face") ? "var(--primary, #ff3b00)" : undefined }}
+          className={cn(
+            "stroke-neutral-900 dark:stroke-white transition-colors duration-150 cursor-pointer",
+            isHighlighted("left-face") ? "fill-primary" : "fill-white dark:fill-neutral-900"
+          )}
           strokeWidth="3.2"
           strokeLinejoin="round"
         />
 
-        {/* Front-Right H Face Box / Segment: All white by default, turns orange on hover */}
+        {/* Front-Right H Face Box / Segment */}
         <polygon
           points="80,74 92.6,67.7 92.6,85.9 103.4,80.5 103.4,62.3 116,56 116,104 103.4,110.3 103.4,92.1 92.6,97.5 92.6,115.7 80,122"
-          className={facetClass}
+          onMouseEnter={(e) => {
+            e.stopPropagation();
+            setHoveredFacet("front-h");
+          }}
+          style={{ fill: isHighlighted("front-h") ? "var(--primary, #ff3b00)" : undefined }}
+          className={cn(
+            "stroke-neutral-900 dark:stroke-white transition-colors duration-150 cursor-pointer",
+            isHighlighted("front-h") ? "fill-primary" : "fill-white dark:fill-neutral-900"
+          )}
           strokeWidth="3.2"
           strokeLinejoin="round"
         />
@@ -2709,6 +2764,7 @@ export function ArchitecturalLiquidWordmark({
   const uid = React.useId().replace(/[:]/g, "");
   const containerRef = useRef<HTMLDivElement>(null);
   const animFrameRef = useRef<number | null>(null);
+  const laserDotRef = useRef<SVGRectElement>(null);
 
   const resolvedText = React.useMemo(() => (text || "algorize").toUpperCase(), [text]);
 
@@ -2739,11 +2795,27 @@ export function ArchitecturalLiquidWordmark({
 
   const timeRef = useRef(0);
 
-  // Large font size: bold, impactful, fills the stage
-  const fontSize = React.useMemo(() => {
-    const len = Math.max(1, resolvedText.length);
-    return Math.min(185, Math.max(80, Math.floor(1180 / (len * 0.72))));
-  }, [resolvedText]);
+  // Layout calculation for authentic CAD drafting blueprint glyphs
+  const len = Math.max(1, resolvedText.length);
+  const letterSpacing = Math.min(136, Math.floor(1080 / len));
+  const letterWidth = Math.min(94, Math.floor(letterSpacing * 0.74));
+  const totalW = (len - 1) * letterSpacing;
+  const startX = 600 - totalW / 2;
+
+  const glyphList = React.useMemo(() => {
+    return resolvedText.split("").map((ch, idx) => {
+      const cx = startX + idx * letterSpacing;
+      return getArchitecturalGlyph(ch, cx, 120, letterWidth);
+    });
+  }, [resolvedText, startX, letterSpacing, letterWidth]);
+
+  const combinedFillD = React.useMemo(() => {
+    return glyphList.map((g) => g.fillD).join(" ");
+  }, [glyphList]);
+
+  const combinedStrokeD = React.useMemo(() => {
+    return glyphList.map((g) => g.strokeD).join(" ");
+  }, [glyphList]);
 
   // Total 36 organic metaball nodes:
   // 5 core nodes + 12 perimeter octopus tentacle lobes + 8 chained trail nodes + 6 satellite droplets + 5 inner inlets
@@ -2763,15 +2835,15 @@ export function ArchitecturalLiquidWordmark({
 
       // Viscous liquid easing - creeps slowly, smoothly oozing like thick ink
       if (ptr.active) {
-        ptr.x += (ptr.targetX - ptr.x) * 0.075;
-        ptr.y += (ptr.targetY - ptr.y) * 0.075;
-        // Large radius (165px radius = 330px diameter) covering 2-3 letters at once
-        ptr.targetRadius = 165;
+        ptr.x += (ptr.targetX - ptr.x) * 0.065;
+        ptr.y += (ptr.targetY - ptr.y) * 0.065;
+        // Large radius (175px radius = 350px diameter) covering 2-3 letters at once
+        ptr.targetRadius = 175;
       } else {
         ptr.targetRadius = 0;
       }
       // Slow organic soaking / dissipation easing
-      ptr.radius += (ptr.targetRadius - ptr.radius) * (ptr.targetRadius > 0 ? 0.055 : 0.035);
+      ptr.radius += (ptr.targetRadius - ptr.radius) * (ptr.targetRadius > 0 ? 0.05 : 0.032);
 
       // Movement velocity & heading (for octopus tentacles reaching in direction of travel)
       const velX = ptr.x - ptr.prevX;
@@ -2781,12 +2853,23 @@ export function ArchitecturalLiquidWordmark({
       ptr.prevX = ptr.x;
       ptr.prevY = ptr.y;
 
+      // Update tiny red CAD laser indicator dot at pointer position
+      if (laserDotRef.current) {
+        if (ptr.active && ptr.radius > 2) {
+          laserDotRef.current.setAttribute("x", (ptr.x - 2.5).toFixed(1));
+          laserDotRef.current.setAttribute("y", (ptr.y - 2.5).toFixed(1));
+          laserDotRef.current.setAttribute("opacity", "1");
+        } else {
+          laserDotRef.current.setAttribute("opacity", "0");
+        }
+      }
+
       // 8-stage chained viscous trail (tentacles stretching and dragging behind like an octopus)
       let leadX = ptr.x;
       let leadY = ptr.y;
       for (let k = 0; k < trail.length; k++) {
         const p = trail[k];
-        const followSpeed = Math.max(0.04, 0.15 - k * 0.013);
+        const followSpeed = Math.max(0.035, 0.13 - k * 0.012);
         p.vx = (p.vx + (leadX - p.x) * followSpeed) * 0.62;
         p.vy = (p.vy + (leadY - p.y) * followSpeed) * 0.62;
         p.x += p.vx;
@@ -2824,10 +2907,10 @@ export function ArchitecturalLiquidWordmark({
         if (moveSpeed > 0.4) {
           const alignment = Math.cos(currentAngle - moveAngle);
           if (alignment > 0) {
-            stretch = alignment * Math.min(0.42, moveSpeed * 0.035);
+            stretch = alignment * Math.min(0.48, moveSpeed * 0.038);
           } else {
             // Drag backward slightly
-            stretch = alignment * Math.min(0.22, moveSpeed * 0.02);
+            stretch = alignment * Math.min(0.24, moveSpeed * 0.02);
           }
         }
 
@@ -2983,70 +3066,53 @@ export function ArchitecturalLiquidWordmark({
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          {/* Defs: Normal Large Typography ClipPath & Liquid Gooey Metaball Filter */}
+          {/* Defs: CAD Silhouette ClipPath & Turbulent Fluid Liquid Filter */}
           <defs>
-            {/* Real SVG text clip-path: Large, bold, normal typography without chopped corners */}
-            <clipPath id={`text-clip-${uid}`}>
-              <text
-                x="50%"
-                y="54%"
-                textAnchor="middle"
-                dominantBaseline="central"
-                className="font-black uppercase select-none"
-                style={{
-                  fontSize: `${fontSize}px`,
-                  letterSpacing: "0.08em",
-                  fontFamily:
-                    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-                }}
-              >
-                {resolvedText}
-              </text>
+            {/* The CAD Glyph Silhouette Clip-Path (EvenOdd rule ensures holes in O, G, A, R stay transparent) */}
+            <clipPath id={`cad-letters-clip-${uid}`} clipRule="evenodd">
+              <path d={combinedFillD} fillRule="evenodd" />
             </clipPath>
 
-            {/* Gooey filter for authentic liquid ink / octopus fluid surface tension */}
+            {/* Gooey filter with fractal turbulence displacement for organic liquid ink dispersion */}
             <filter
               id={`liquid-goo-${uid}`}
-              x="-50%"
-              y="-50%"
-              width="200%"
-              height="200%"
+              x="-40%"
+              y="-40%"
+              width="180%"
+              height="180%"
               colorInterpolationFilters="sRGB"
             >
-              <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur" />
+              <feGaussianBlur in="SourceGraphic" stdDeviation="11" result="blur" />
               <feColorMatrix
                 in="blur"
                 mode="matrix"
-                values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 32 -13"
+                values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 28 -10"
                 result="goo"
+              />
+              <feTurbulence
+                type="fractalNoise"
+                baseFrequency="0.038"
+                numOctaves="2"
+                seed="7"
+                result="noise"
+              />
+              <feDisplacementMap
+                in="goo"
+                in2="noise"
+                scale="13"
+                xChannelSelector="R"
+                yChannelSelector="G"
+                result="displaced"
               />
             </filter>
           </defs>
 
-          {/* Layer 1: Normal Large Clean Typography Outline (Base state when unhovered) */}
-          <text
-            x="50%"
-            y="54%"
-            textAnchor="middle"
-            dominantBaseline="central"
-            className="font-black uppercase select-none fill-none stroke-neutral-900/40 dark:stroke-neutral-100/40 pointer-events-none"
-            strokeWidth="2"
-            style={{
-              fontSize: `${fontSize}px`,
-              letterSpacing: "0.08em",
-              fontFamily:
-                '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
-            }}
-          >
-            {resolvedText}
-          </text>
-
-          {/* Layer 2: Clipped Paintbrush Ink Splatter that splashes under hover */}
-          <g clipPath={`url(#text-clip-${uid})`}>
-            {/* Underneath: Solid Gray Meniscus Shadow Splatter Layer */}
+          {/* Layer 1: Clipped Paintbrush Liquid Ink Splatter that flows under hover */}
+          <g clipPath={`url(#cad-letters-clip-${uid})`}>
+            {/* Underneath: Solid Gray Meniscus Shadow Fluid Layer */}
             <g
               filter={`url(#liquid-goo-${uid})`}
-              className="fill-[#b4b4b4] dark:fill-[#525252] transition-colors duration-150"
+              className="fill-neutral-400 dark:fill-neutral-500 transition-colors duration-150"
             >
               {Array.from({ length: TOTAL_CIRCLES }).map((_, idx) => (
                 <circle
@@ -3061,10 +3127,10 @@ export function ArchitecturalLiquidWordmark({
               ))}
             </g>
 
-            {/* On Top: Solid Black Core Ink Splatter */}
+            {/* On Top: Solid Dark Ink Core Layer */}
             <g
               filter={`url(#liquid-goo-${uid})`}
-              className="fill-[#1c1c1c] dark:fill-[#f4f4f5] transition-colors duration-150"
+              className="fill-[#1b1b1b] dark:fill-[#fafafa] transition-colors duration-150"
             >
               {Array.from({ length: TOTAL_CIRCLES }).map((_, idx) => (
                 <circle
@@ -3079,6 +3145,27 @@ export function ArchitecturalLiquidWordmark({
               ))}
             </g>
           </g>
+
+          {/* Layer 2: CAD Blueprint Stroke Lines (Persistent technical drafting spec with tick marks) */}
+          <path
+            d={combinedStrokeD}
+            className="stroke-neutral-800/80 dark:stroke-neutral-200/80 pointer-events-none transition-colors duration-150"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          {/* Layer 3: CAD Laser Tracking Dot (Tiny red/orange square at pointer position) */}
+          <rect
+            ref={laserDotRef}
+            x="-20"
+            y="-20"
+            width="5"
+            height="5"
+            opacity="0"
+            className="fill-primary pointer-events-none"
+            style={{ fill: "var(--primary, #ff3b00)" }}
+          />
         </svg>
       </div>
 

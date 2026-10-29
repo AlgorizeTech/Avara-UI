@@ -3172,6 +3172,11 @@
           "path": "src/components/custom/blocks/NotFoundBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/NotFoundBlock.tsx"
+        },
+        {
+          "path": "src/lib/accent.ts",
+          "type": "registry:component",
+          "target": "lib/accent.ts"
         }
       ],
       "docs": "Named export: NotFoundSection (also default export) and NotFoundSectionProps. Ready for drop-in use in Next.js not-found.tsx or standalone 404 routes."
