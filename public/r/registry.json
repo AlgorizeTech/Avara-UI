@@ -2675,7 +2675,7 @@
       "type": "registry:component",
       "title": "Loader",
       "author": "AlgorizeTech",
-      "description": "A loading indicator in five shapes — spinner, dots, pulse, ring and bar — with an optional caption. Use it for inline and full-panel pending states.",
+      "description": "A loading indicator in six shapes — spinner, orbit, dots, pulse, ring and bar — with an optional caption. Use it for inline and full-panel pending states.",
       "categories": [
         "feedback"
       ],
