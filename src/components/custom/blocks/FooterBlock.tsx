@@ -36,7 +36,30 @@ export type FooterVariant =
   | "snapshot-stack"
   | "wordmark-glow"
   | "editorial-card"
-  | "tilted-cta";
+  | "tilted-cta"
+  | "architectural-liquid"
+  | "heron-blueprint"
+  | "blueprint-liquid";
+
+export interface ArchitecturalLiquidFooterProps {
+  headline?: string;
+  brandWordmark?: string;
+  brandName?: string;
+  color?: string;
+  subscribeText?: string;
+  addressLines?: string[];
+  directionHref?: string;
+  businessEmail?: string;
+  inquiryEmail?: string;
+  navColumns?: {
+    title?: string;
+    links: { label: string; href: string; active?: boolean }[];
+  }[];
+  socials?: { label: string; href: string }[];
+  legalLinks?: { label: string; href: string }[];
+  copyrightText?: string;
+  className?: string;
+}
 
 export interface WordmarkFooterColumnItem {
   title: string;
@@ -152,6 +175,10 @@ export interface FooterProps {
   wordmark?: string;
   /** Content and CTA config for the `editorial-card` / `tilted-cta` variant. */
   editorialCta?: EditorialFooterProps;
+  /** Content and layout config for the `architectural-liquid` blueprint variant. */
+  architecturalLiquid?: ArchitecturalLiquidFooterProps;
+  /** Custom wordmark text for the architectural liquid wordmark (default: "AVARA UI"). */
+  blueprintWordmark?: string;
   className?: string;
 }
 
@@ -324,6 +351,9 @@ const DEFAULT_SECTIONS_BY_VARIANT: Record<FooterVariant, FooterLinkSection[]> = 
   "wordmark-glow": DEFAULT_FOOTER_SECTIONS,
   "editorial-card": DEFAULT_FOOTER_SECTIONS,
   "tilted-cta": DEFAULT_FOOTER_SECTIONS,
+  "architectural-liquid": DEFAULT_FOOTER_SECTIONS,
+  "heron-blueprint": DEFAULT_FOOTER_SECTIONS,
+  "blueprint-liquid": DEFAULT_FOOTER_SECTIONS,
 };
 
 const DEFAULT_WORDMARK_COLUMNS: WordmarkFooterColumn[] = [
@@ -2340,6 +2370,1013 @@ function BrandLogo({ logo, brandName }: Pick<FooterProps, "logo" | "brandName">)
   );
 }
 
+// ============================================================================
+// ARCHITECTURAL BLUEPRINT & LIQUID INK WORDMARK FOOTER (HERON AI INSPIRED)
+// ============================================================================
+
+export function IsometricWireframeCube({
+  className,
+  brandLetter: _brandLetter = "H",
+}: {
+  className?: string;
+  brandLetter?: string;
+}) {
+  const facetClass =
+    "fill-white dark:fill-neutral-900 hover:fill-primary dark:hover:fill-primary stroke-neutral-900 dark:stroke-white transition-colors duration-150 cursor-pointer";
+
+  return (
+    <div className={cn("relative flex items-center justify-center select-none", className)}>
+      <svg
+        viewBox="0 0 160 160"
+        className="w-24 h-24 sm:w-28 sm:h-28 text-neutral-900 dark:text-neutral-100"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        {/* Top of Left Pillar Segment */}
+        <polygon
+          points="44,56 56.6,49.7 92.6,67.7 80,74"
+          className={facetClass}
+          strokeWidth="3.2"
+          strokeLinejoin="round"
+        />
+
+        {/* Top of Right Pillar Segment */}
+        <polygon
+          points="67.4,44.3 80,38 116,56 103.4,62.3"
+          className={facetClass}
+          strokeWidth="3.2"
+          strokeLinejoin="round"
+        />
+
+        {/* Notch Floor (Crossbar Top inside upper notch) */}
+        <polygon
+          points="56.6,67.9 67.4,62.5 103.4,80.5 92.6,85.9"
+          className={facetClass}
+          strokeWidth="3.2"
+          strokeLinejoin="round"
+        />
+
+        {/* Notch Left Inner Wall Segment */}
+        <polygon
+          points="56.6,49.7 92.6,67.7 92.6,85.9 56.6,67.9"
+          className={facetClass}
+          strokeWidth="3.2"
+          strokeLinejoin="round"
+        />
+
+        {/* Left Face Box / Segment: All white by default, turns orange on hover */}
+        <polygon
+          points="44,56 80,74 80,122 44,104"
+          className={facetClass}
+          strokeWidth="3.2"
+          strokeLinejoin="round"
+        />
+
+        {/* Front-Right H Face Box / Segment: All white by default, turns orange on hover */}
+        <polygon
+          points="80,74 92.6,67.7 92.6,85.9 103.4,80.5 103.4,62.3 116,56 116,104 103.4,110.3 103.4,92.1 92.6,97.5 92.6,115.7 80,122"
+          className={facetClass}
+          strokeWidth="3.2"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </div>
+  );
+}
+
+// ============================================================================
+// ARCHITECTURAL CAD GLYPH PATH DEFINITIONS (HERON AI CAD DRAFTING SPEC)
+// ============================================================================
+
+export function getArchitecturalGlyph(
+  char: string,
+  cx: number,
+  cy = 120,
+  letterW = 92
+): { fillD: string; strokeD: string } {
+  const y1 = 46;
+  const y2 = 194;
+  const x1 = cx - letterW / 2;
+  const x2 = cx + letterW / 2;
+  const T = 22; // stroke thickness
+  const C = 26; // chamfer for octagonal O, G
+  const OS = 5; // corner drafting extension overshoot
+
+  switch (char.toUpperCase()) {
+    case "O": {
+      // Outer octagonal chamfer + inner octagonal chamfer hole
+      const fillD = [
+        `M ${x1 + C} ${y1} L ${x2 - C} ${y1} L ${x2} ${y1 + C} L ${x2} ${y2 - C} L ${x2 - C} ${y2} L ${x1 + C} ${y2} L ${x1} ${y2 - C} L ${x1} ${y1 + C} Z`,
+        `M ${x1 + T + C * 0.6} ${y1 + T} L ${x2 - T - C * 0.6} ${y1 + T} L ${x2 - T} ${y1 + T + C * 0.6} L ${x2 - T} ${y2 - T - C * 0.6} L ${x2 - T - C * 0.6} ${y2 - T} L ${x1 + T + C * 0.6} ${y2 - T} L ${x1 + T} ${y2 - T - C * 0.6} L ${x1 + T} ${y1 + T + C * 0.6} Z`,
+      ].join(" ");
+      const strokeD = [
+        `M ${x1 + C} ${y1} L ${x2 - C} ${y1} L ${x2} ${y1 + C} L ${x2} ${y2 - C} L ${x2 - C} ${y2} L ${x1 + C} ${y2} L ${x1} ${y2 - C} L ${x1} ${y1 + C} Z`,
+        `M ${x1 + T + C * 0.6} ${y1 + T} L ${x2 - T - C * 0.6} ${y1 + T} L ${x2 - T} ${y1 + T + C * 0.6} L ${x2 - T} ${y2 - T - C * 0.6} L ${x2 - T - C * 0.6} ${y2 - T} L ${x1 + T + C * 0.6} ${y2 - T} L ${x1 + T} ${y2 - T - C * 0.6} L ${x1 + T} ${y1 + T + C * 0.6} Z`,
+        // Center crosshair inside hole
+        `M ${cx - 5} ${cy} L ${cx + 5} ${cy} M ${cx} ${cy - 5} L ${cx} ${cy + 5}`,
+        // Top and bottom registration ticks
+        `M ${cx} ${y1 - OS} L ${cx} ${y1 + OS} M ${cx} ${y2 - OS} L ${cx} ${y2 + OS}`,
+        `M ${x1 - OS} ${cy} L ${x1 + OS} ${cy} M ${x2 - OS} ${cy} L ${x2 + OS} ${cy}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "A": {
+      const topHalfW = 16;
+      const fillD = [
+        `M ${cx - topHalfW} ${y1} L ${cx + topHalfW} ${y1} L ${x2} ${y2} L ${x2 - T * 1.15} ${y2} L ${cx + 14} 150 L ${cx - 14} 150 L ${x1 + T * 1.15} ${y2} L ${x1} ${y2} Z`,
+        `M ${cx} 78 L ${cx + 12} 130 L ${cx - 12} 130 Z`,
+      ].join(" ");
+      const strokeD = [
+        `M ${x1 - OS} ${y2} L ${x2 + OS} ${y2}`,
+        `M ${x1} ${y2 + OS} L ${cx - topHalfW} ${y1}`,
+        `M ${x2} ${y2 + OS} L ${cx + topHalfW} ${y1}`,
+        `M ${cx - topHalfW - OS} ${y1} L ${cx + topHalfW + OS} ${y1}`,
+        `M ${x1 + T * 1.15} ${y2} L ${cx - 14} 150 L ${cx + 14} 150 L ${x2 - T * 1.15} ${y2}`,
+        `M ${cx - 12 - OS} 130 L ${cx + 12 + OS} 130`,
+        `M ${cx - 12} 130 L ${cx} 78 L ${cx + 12} 130`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "L": {
+      const fillD = `M ${x1} ${y1} L ${x1 + T} ${y1} L ${x1 + T} ${y2 - T} L ${x2} ${y2 - T} L ${x2} ${y2} L ${x1} ${y2} Z`;
+      const strokeD = [
+        `M ${x1} ${y1 - OS} L ${x1} ${y2 + OS}`,
+        `M ${x1 - OS} ${y1} L ${x1 + T + OS} ${y1}`,
+        `M ${x1 + T} ${y1 - OS} L ${x1 + T} ${y2 - T}`,
+        `M ${x1 + T} ${y2 - T} L ${x2 + OS} ${y2 - T}`,
+        `M ${x2} ${y2 - T - OS} L ${x2} ${y2 + OS}`,
+        `M ${x1 - OS} ${y2} L ${x2 + OS} ${y2}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "G": {
+      // 4 authentic 45-degree chamfered corners (kona) perfectly matching octagonal O:
+      // Top-left, Top-right, Bottom-right, Bottom-left!
+      const inC = C * 0.6; // matching inner chamfer of O
+
+      const fillD = [
+        `M ${x1} ${y1 + C}`,
+        `L ${x1 + C} ${y1}`,
+        `L ${x2 - C} ${y1}`,
+        `L ${x2} ${y1 + C}`,
+        `L ${x2 - T} ${y1 + C}`,
+        `L ${(x2 - T - inC).toFixed(1)} ${y1 + T}`,
+        `L ${(x1 + T + inC).toFixed(1)} ${y1 + T}`,
+        `L ${x1 + T} ${(y1 + T + inC).toFixed(1)}`,
+        `L ${x1 + T} ${(y2 - T - inC).toFixed(1)}`,
+        `L ${(x1 + T + inC).toFixed(1)} ${y2 - T}`,
+        `L ${(x2 - T - inC).toFixed(1)} ${y2 - T}`,
+        `L ${x2 - T} ${(y2 - T - inC).toFixed(1)}`,
+        `L ${x2 - T} ${cy + T / 2}`,
+        `L ${cx + 2} ${cy + T / 2}`,
+        `L ${cx + 2} ${cy - T / 2}`,
+        `L ${x2} ${cy - T / 2}`,
+        `L ${x2} ${y2 - C}`,
+        `L ${x2 - C} ${y2}`,
+        `L ${x1 + C} ${y2}`,
+        `L ${x1} ${y2 - C}`,
+        `Z`,
+      ].join(" ");
+
+      const strokeD = [
+        // Top outer horizontal
+        `M ${x1 + C - OS} ${y1} L ${x2 - C + OS} ${y1}`,
+        // Top-right outer 45-degree chamfer
+        `M ${x2 - C} ${y1} L ${x2} ${y1 + C}`,
+        // Top terminal horizontal cut
+        `M ${x2 - T - OS} ${y1 + C} L ${x2 + OS} ${y1 + C}`,
+        // Inner top-right 45-degree chamfer
+        `M ${x2 - T} ${y1 + C} L ${x2 - T - inC} ${y1 + T}`,
+        // Inner top horizontal
+        `M ${x1 + T + inC - OS} ${y1 + T} L ${x2 - T - inC + OS} ${y1 + T}`,
+        // Inner top-left 45-degree chamfer
+        `M ${x1 + T + inC} ${y1 + T} L ${x1 + T} ${y1 + T + inC}`,
+        // Inner left vertical
+        `M ${x1 + T} ${y1 + T + inC - OS} L ${x1 + T} ${y2 - T - inC + OS}`,
+        // Inner bottom-left 45-degree chamfer
+        `M ${x1 + T} ${y2 - T - inC} L ${x1 + T + inC} ${y2 - T}`,
+        // Inner bottom horizontal
+        `M ${x1 + T + inC - OS} ${y2 - T} L ${x2 - T - inC + OS} ${y2 - T}`,
+        // Inner bottom-right 45-degree chamfer
+        `M ${x2 - T - inC} ${y2 - T} L ${x2 - T} ${y2 - T - inC}`,
+        // Inner right vertical up to crossbar
+        `M ${x2 - T} ${y2 - T - inC + OS} L ${x2 - T} ${cy + T / 2 - OS}`,
+        // Crossbar bottom horizontal
+        `M ${cx + 2 - OS} ${cy + T / 2} L ${x2 - T + OS} ${cy + T / 2}`,
+        // Crossbar tip vertical
+        `M ${cx + 2} ${cy + T / 2 + OS} L ${cx + 2} ${cy - T / 2 - OS}`,
+        // Crossbar top horizontal
+        `M ${cx + 2 - OS} ${cy - T / 2} L ${x2 + OS} ${cy - T / 2}`,
+        // Outer right vertical below crossbar
+        `M ${x2} ${cy - T / 2 - OS} L ${x2} ${y2 - C + OS}`,
+        // Outer bottom-right 45-degree chamfer
+        `M ${x2} ${y2 - C} L ${x2 - C} ${y2}`,
+        // Outer bottom horizontal
+        `M ${x2 - C + OS} ${y2} L ${x1 + C - OS} ${y2}`,
+        // Outer bottom-left 45-degree chamfer
+        `M ${x1 + C} ${y2} L ${x1} ${y2 - C}`,
+        // Outer left vertical
+        `M ${x1} ${y2 - C + OS} L ${x1} ${y1 + C - OS}`,
+        // Outer top-left 45-degree chamfer
+        `M ${x1} ${y1 + C} L ${x1 + C} ${y1}`,
+        // Center crosshair and registration ticks
+        `M ${cx - 5} ${cy} L ${cx + 5} ${cy} M ${cx} ${cy - 5} L ${cx} ${cy + 5}`,
+        `M ${cx} ${y1 - OS} L ${cx} ${y1 + OS} M ${cx} ${y2 - OS} L ${cx} ${y2 + OS}`,
+        `M ${x1 - OS} ${cy} L ${x1 + OS} ${cy}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "R": {
+      const loopY = 120;
+      const fillD = [
+        `M ${x1} ${y1} L ${x2 - 16} ${y1} Q ${x2} ${y1} ${x2} ${(y1 + loopY) / 2} Q ${x2} ${loopY} ${x2 - 16} ${loopY} L ${x1 + T} ${loopY} L ${cx + 6} ${loopY} L ${x2} ${y2} L ${x2 - T * 1.15} ${y2} L ${cx - 4} ${loopY} L ${x1 + T} ${loopY} L ${x1 + T} ${y2} L ${x1} ${y2} Z`,
+        `M ${x1 + T} ${y1 + T} L ${x2 - 20} ${y1 + T} Q ${x2 - T} ${y1 + T} ${x2 - T} ${(y1 + loopY) / 2} Q ${x2 - T} ${loopY - T} ${x2 - 20} ${loopY - T} L ${x1 + T} ${loopY - T} Z`,
+      ].join(" ");
+      const strokeD = [
+        `M ${x1} ${y1 - OS} L ${x1} ${y2 + OS}`,
+        `M ${x1 + T} ${y1} L ${x1 + T} ${y2 + OS}`,
+        `M ${x1 - OS} ${y1} L ${x2 - 16} ${y1} Q ${x2} ${y1} ${x2} ${(y1 + loopY) / 2} Q ${x2} ${loopY} ${x2 - 16} ${loopY} L ${x1 - OS} ${loopY}`,
+        `M ${x1 + T} ${y1 + T} L ${x2 - 20} ${y1 + T} Q ${x2 - T} ${y1 + T} ${x2 - T} ${(y1 + loopY) / 2} Q ${x2 - T} ${loopY - T} ${x2 - 20} ${loopY - T} L ${x1 + T} ${loopY - T}`,
+        `M ${cx - 4} ${loopY} L ${x2 - T * 1.15} ${y2 + OS}`,
+        `M ${cx + 6} ${loopY} L ${x2} ${y2 + OS}`,
+        `M ${x1 - OS} ${y2} L ${x1 + T + OS} ${y2}`,
+        `M ${x2 - T * 1.15 - OS} ${y2} L ${x2 + OS} ${y2}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "I": {
+      const halfT = T / 2;
+      const fillD = `M ${cx - halfT} ${y1} L ${cx + halfT} ${y1} L ${cx + halfT} ${y2} L ${cx - halfT} ${y2} Z`;
+      const strokeD = [
+        `M ${cx - halfT} ${y1 - OS} L ${cx - halfT} ${y2 + OS}`,
+        `M ${cx + halfT} ${y1 - OS} L ${cx + halfT} ${y2 + OS}`,
+        `M ${cx - halfT - OS} ${y1} L ${cx + halfT + OS} ${y1}`,
+        `M ${cx - halfT - OS} ${y2} L ${cx + halfT + OS} ${y2}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "Z": {
+      const fillD = `M ${x1} ${y1} L ${x2} ${y1} L ${x2} ${y1 + T} L ${x1 + T * 1.25} ${y2 - T} L ${x2} ${y2 - T} L ${x2} ${y2} L ${x1} ${y2} L ${x1} ${y2 - T} L ${x2 - T * 1.25} ${y1 + T} L ${x1} ${y1 + T} Z`;
+      const strokeD = [
+        `M ${x1 - OS} ${y1} L ${x2 + OS} ${y1}`,
+        `M ${x1} ${y1 - OS} L ${x1} ${y1 + T}`,
+        `M ${x2} ${y1 - OS} L ${x2} ${y1 + T}`,
+        `M ${x1 - OS} ${y1 + T} L ${x2 - T * 1.25} ${y1 + T} L ${x1} ${y2 - T} L ${x1 - OS} ${y2 - T}`,
+        `M ${x2} ${y1 + T} L ${x1 + T * 1.25} ${y2 - T} L ${x2 + OS} ${y2 - T}`,
+        `M ${x1 - OS} ${y2} L ${x2 + OS} ${y2}`,
+        `M ${x1} ${y2 - T} L ${x1} ${y2 + OS}`,
+        `M ${x2} ${y2 - T} L ${x2} ${y2 + OS}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "E": {
+      const midY = (y1 + y2) / 2;
+      const fillD = `M ${x1} ${y1} L ${x2} ${y1} L ${x2} ${y1 + T} L ${x1 + T} ${y1 + T} L ${x1 + T} ${midY - T / 2} L ${x2 - 14} ${midY - T / 2} L ${x2 - 14} ${midY + T / 2} L ${x1 + T} ${midY + T / 2} L ${x1 + T} ${y2 - T} L ${x2} ${y2 - T} L ${x2} ${y2} L ${x1} ${y2} Z`;
+      const strokeD = [
+        `M ${x1} ${y1 - OS} L ${x1} ${y2 + OS}`,
+        `M ${x1 - OS} ${y1} L ${x2 + OS} ${y1}`,
+        `M ${x2} ${y1 - OS} L ${x2} ${y1 + T + OS}`,
+        `M ${x1 + T} ${y1 + T - OS} L ${x2 + OS} ${y1 + T}`,
+        `M ${x1 + T} ${y1 + T} L ${x1 + T} ${y2 - T}`,
+        `M ${x1 + T - OS} ${midY - T / 2} L ${x2 - 14 + OS} ${midY - T / 2}`,
+        `M ${x2 - 14} ${midY - T / 2 - OS} L ${x2 - 14} ${midY + T / 2 + OS}`,
+        `M ${x1 + T - OS} ${midY + T / 2} L ${x2 - 14 + OS} ${midY + T / 2}`,
+        `M ${x1 + T - OS} ${y2 - T} L ${x2 + OS} ${y2 - T}`,
+        `M ${x2} ${y2 - T - OS} L ${x2} ${y2 + OS}`,
+        `M ${x1 - OS} ${y2} L ${x2 + OS} ${y2}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "H": {
+      const midY = (y1 + y2) / 2;
+      const fillD = `M ${x1} ${y1} L ${x1 + T} ${y1} L ${x1 + T} ${midY - T / 2} L ${x2 - T} ${midY - T / 2} L ${x2 - T} ${y1} L ${x2} ${y1} L ${x2} ${y2} L ${x2 - T} ${y2} L ${x2 - T} ${midY + T / 2} L ${x1 + T} ${midY + T / 2} L ${x1 + T} ${y2} L ${x1} ${y2} Z`;
+      const strokeD = [
+        `M ${x1} ${y1 - OS} L ${x1} ${y2 + OS}`,
+        `M ${x1 + T} ${y1 - OS} L ${x1 + T} ${y2 + OS}`,
+        `M ${x1 - OS} ${y1} L ${x1 + T + OS} ${y1}`,
+        `M ${x1 - OS} ${y2} L ${x1 + T + OS} ${y2}`,
+        `M ${x2 - T} ${y1 - OS} L ${x2 - T} ${y2 + OS}`,
+        `M ${x2} ${y1 - OS} L ${x2} ${y2 + OS}`,
+        `M ${x2 - T - OS} ${y1} L ${x2 + OS} ${y1}`,
+        `M ${x2 - T - OS} ${y2} L ${x2 + OS} ${y2}`,
+        `M ${x1 + T - OS} ${midY - T / 2} L ${x2 - T + OS} ${midY - T / 2}`,
+        `M ${x1 + T - OS} ${midY + T / 2} L ${x2 - T + OS} ${midY + T / 2}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "N": {
+      const fillD = `M ${x1} ${y1} L ${x1 + T} ${y1} L ${x2 - T} ${y2 - 20} L ${x2 - T} ${y1} L ${x2} ${y1} L ${x2} ${y2} L ${x2 - T} ${y2} L ${x1 + T} ${y1 + 20} L ${x1 + T} ${y2} L ${x1} ${y2} Z`;
+      const strokeD = [
+        `M ${x1} ${y1 - OS} L ${x1} ${y2 + OS}`,
+        `M ${x1 + T} ${y1 - OS} L ${x1 + T} ${y2 + OS}`,
+        `M ${x1 - OS} ${y1} L ${x1 + T + OS} ${y1}`,
+        `M ${x1 - OS} ${y2} L ${x1 + T + OS} ${y2}`,
+        `M ${x2 - T} ${y1 - OS} L ${x2 - T} ${y2 + OS}`,
+        `M ${x2} ${y1 - OS} L ${x2} ${y2 + OS}`,
+        `M ${x2 - T - OS} ${y1} L ${x2 + OS} ${y1}`,
+        `M ${x2 - T - OS} ${y2} L ${x2 + OS} ${y2}`,
+        `M ${x1} ${y1} L ${x2 - T} ${y2}`,
+        `M ${x1 + T} ${y1} L ${x2} ${y2}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    default: {
+      // Fallback: standard clean geometric rectangular glyph
+      const fillD = `M ${x1} ${y1} L ${x2} ${y1} L ${x2} ${y2} L ${x1} ${y2} Z`;
+      const strokeD = `M ${x1 - OS} ${y1} L ${x2 + OS} ${y1} M ${x2} ${y1 - OS} L ${x2} ${y2 + OS} M ${x2 + OS} ${y2} L ${x1 - OS} ${y2} M ${x1} ${y2 + OS} L ${x1} ${y1 - OS}`;
+      return { fillD, strokeD };
+    }
+  }
+}
+
+export function ArchitecturalLiquidWordmark({
+  text = "algorize",
+  className,
+}: {
+  text?: string;
+  className?: string;
+}) {
+  const uid = React.useId().replace(/[:]/g, "");
+  const containerRef = useRef<HTMLDivElement>(null);
+  const animFrameRef = useRef<number | null>(null);
+
+  const resolvedText = React.useMemo(() => (text || "algorize").toUpperCase(), [text]);
+
+  // Pointer position in SVG coordinate space (0-1200, 0-240)
+  const pointerRef = useRef({
+    x: 600,
+    y: 120,
+    targetX: -9999,
+    targetY: -9999,
+    prevX: 600,
+    prevY: 120,
+    active: false,
+    radius: 0,
+    targetRadius: 0,
+  });
+
+  // 8-stage viscous trailing body chain (octopus tentacles trailing behind like living fluid)
+  const trailRef = useRef([
+    { x: 600, y: 120, vx: 0, vy: 0, r: 0 },
+    { x: 600, y: 120, vx: 0, vy: 0, r: 0 },
+    { x: 600, y: 120, vx: 0, vy: 0, r: 0 },
+    { x: 600, y: 120, vx: 0, vy: 0, r: 0 },
+    { x: 600, y: 120, vx: 0, vy: 0, r: 0 },
+    { x: 600, y: 120, vx: 0, vy: 0, r: 0 },
+    { x: 600, y: 120, vx: 0, vy: 0, r: 0 },
+    { x: 600, y: 120, vx: 0, vy: 0, r: 0 },
+  ]);
+
+  const timeRef = useRef(0);
+
+  // Large font size: bold, impactful, fills the stage
+  const fontSize = React.useMemo(() => {
+    const len = Math.max(1, resolvedText.length);
+    return Math.min(185, Math.max(80, Math.floor(1180 / (len * 0.72))));
+  }, [resolvedText]);
+
+  // Total 36 organic metaball nodes:
+  // 5 core nodes + 12 perimeter octopus tentacle lobes + 8 chained trail nodes + 6 satellite droplets + 5 inner inlets
+  const TOTAL_CIRCLES = 36;
+  const grayCirclesRef = useRef<(SVGCircleElement | null)[]>([]);
+  const blackCirclesRef = useRef<(SVGCircleElement | null)[]>([]);
+
+  // 60 FPS Organic Octopus Fluid Liquid Simulation
+  useEffect(() => {
+    const render = () => {
+      const ptr = pointerRef.current;
+      const trail = trailRef.current;
+
+      // Update fluid undulation time (gentle organic pulsation)
+      timeRef.current += 0.038;
+      const t = timeRef.current;
+
+      // Viscous liquid easing - creeps slowly, smoothly oozing like thick ink
+      if (ptr.active) {
+        ptr.x += (ptr.targetX - ptr.x) * 0.075;
+        ptr.y += (ptr.targetY - ptr.y) * 0.075;
+        // Large radius (165px radius = 330px diameter) covering 2-3 letters at once
+        ptr.targetRadius = 165;
+      } else {
+        ptr.targetRadius = 0;
+      }
+      // Slow organic soaking / dissipation easing
+      ptr.radius += (ptr.targetRadius - ptr.radius) * (ptr.targetRadius > 0 ? 0.055 : 0.035);
+
+      // Movement velocity & heading (for octopus tentacles reaching in direction of travel)
+      const velX = ptr.x - ptr.prevX;
+      const velY = ptr.y - ptr.prevY;
+      const moveSpeed = Math.hypot(velX, velY);
+      const moveAngle = Math.atan2(velY, velX);
+      ptr.prevX = ptr.x;
+      ptr.prevY = ptr.y;
+
+      // 8-stage chained viscous trail (tentacles stretching and dragging behind like an octopus)
+      let leadX = ptr.x;
+      let leadY = ptr.y;
+      for (let k = 0; k < trail.length; k++) {
+        const p = trail[k];
+        const followSpeed = Math.max(0.04, 0.15 - k * 0.013);
+        p.vx = (p.vx + (leadX - p.x) * followSpeed) * 0.62;
+        p.vy = (p.vy + (leadY - p.y) * followSpeed) * 0.62;
+        p.x += p.vx;
+        p.y += p.vy;
+        const decay = Math.max(0.18, 0.58 - k * 0.052);
+        p.r = ptr.radius * decay;
+        leadX = p.x;
+        leadY = p.y;
+      }
+
+      let circleIdx = 0;
+      const R = ptr.radius;
+
+      // 1. Central Heavy Liquid Nucleus (5 nodes)
+      updateCircle(circleIdx++, ptr.x, ptr.y, R * 0.76);
+      const coreAngles = [0, Math.PI / 2, Math.PI, (3 * Math.PI) / 2];
+      for (let c = 0; c < 4; c++) {
+        const ca = coreAngles[c] + Math.sin(t * 1.5 + c) * 0.2;
+        const cd = R * (0.24 + 0.08 * Math.cos(t * 2.0 + c));
+        updateCircle(circleIdx++, ptr.x + Math.cos(ca) * cd, ptr.y + Math.sin(ca) * cd * 0.7, R * 0.58);
+      }
+
+      // 2. 12 Undulating Octopus Tentacle Lobes (Deep organic "akabaka" wavy perimeter)
+      for (let i = 0; i < 12; i++) {
+        const baseAngle = (i * 2 * Math.PI) / 12;
+        const angleWobble = Math.sin(t * 1.4 + i * 1.2) * 0.14;
+        const currentAngle = baseAngle + angleWobble;
+
+        // Base distance irregularity
+        const irregularity = i % 3 === 0 ? 1.22 : i % 2 === 0 ? 0.88 : 1.08;
+        const wave = 0.22 * Math.sin(t * 1.8 + i * 1.5) + 0.12 * Math.cos(t * 2.4 + i * 2.2);
+
+        // Forward stretching: tentacles pointing towards direction of motion reach forward
+        let stretch = 0;
+        if (moveSpeed > 0.4) {
+          const alignment = Math.cos(currentAngle - moveAngle);
+          if (alignment > 0) {
+            stretch = alignment * Math.min(0.42, moveSpeed * 0.035);
+          } else {
+            // Drag backward slightly
+            stretch = alignment * Math.min(0.22, moveSpeed * 0.02);
+          }
+        }
+
+        const reach = R * (0.84 * irregularity + wave + stretch);
+        const lx = ptr.x + Math.cos(currentAngle) * reach;
+        const ly = ptr.y + Math.sin(currentAngle) * reach * 0.72; // flattened slightly for 240px stage height
+        const lobeR = R * (0.34 + 0.10 * Math.sin(t * 2.1 + i * 1.1));
+        updateCircle(circleIdx++, lx, ly, lobeR);
+      }
+
+      // 3. 8 Chained Viscous Drag Body Nodes (The trailing octopus body)
+      for (let k = 0; k < trail.length; k++) {
+        const p = trail[k];
+        updateCircle(circleIdx++, p.x, p.y, p.r);
+      }
+
+      // 4. 6 Outer Satellite Droplets / Pseudopods (Organic detachment flecks)
+      for (let s = 0; s < 6; s++) {
+        const satAngle = (s * 2 * Math.PI) / 6 + 0.35 + Math.sin(t * 1.2 + s) * 0.18;
+        const satReach = R * (1.28 + 0.24 * Math.sin(t * 1.7 + s * 1.6));
+        const sx = ptr.x + Math.cos(satAngle) * satReach;
+        const sy = ptr.y + Math.sin(satAngle) * satReach * 0.72;
+        const sr = R * (0.19 + 0.06 * Math.cos(t * 2.2 + s));
+        updateCircle(circleIdx++, sx, sy, sr);
+      }
+
+      // 5. 5 Micro-splash Inlets (Creating deep negative crevices and fluid inlets)
+      for (let m = 0; m < 5; m++) {
+        const mAngle = (m * 2 * Math.PI) / 5 + 0.6;
+        const mReach = R * (0.52 + 0.14 * Math.sin(t * 2.0 + m * 1.8));
+        const mx = ptr.x + Math.cos(mAngle) * mReach;
+        const my = ptr.y + Math.sin(mAngle) * mReach * 0.72;
+        const mr = R * 0.24;
+        updateCircle(circleIdx++, mx, my, mr);
+      }
+
+      animFrameRef.current = requestAnimationFrame(render);
+    };
+
+    const updateCircle = (idx: number, cx: number, cy: number, r: number) => {
+      const gEl = grayCirclesRef.current[idx];
+      const bEl = blackCirclesRef.current[idx];
+      if (!gEl || !bEl) return;
+
+      if (r <= 1.0) {
+        gEl.setAttribute("r", "0");
+        bEl.setAttribute("r", "0");
+      } else {
+        gEl.setAttribute("cx", cx.toFixed(1));
+        gEl.setAttribute("cy", cy.toFixed(1));
+        // Solid gray shadow rim extends +14px beyond black core
+        gEl.setAttribute("r", (r + 14).toFixed(1));
+
+        bEl.setAttribute("cx", cx.toFixed(1));
+        bEl.setAttribute("cy", cy.toFixed(1));
+        bEl.setAttribute("r", r.toFixed(1));
+      }
+    };
+
+    animFrameRef.current = requestAnimationFrame(render);
+    return () => {
+      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+    };
+  }, []);
+
+  // Pointer event handlers - activates paintbrush splatter where cursor hovers
+  const updatePointer = (clientX: number, clientY: number) => {
+    const container = containerRef.current;
+    if (!container) return;
+    const rect = container.getBoundingClientRect();
+
+    if (
+      clientX < rect.left ||
+      clientX > rect.right ||
+      clientY < rect.top ||
+      clientY > rect.bottom
+    ) {
+      pointerRef.current.active = false;
+      return;
+    }
+
+    const relX = (clientX - rect.left) / rect.width;
+    const relY = (clientY - rect.top) / rect.height;
+    const svgX = relX * 1200;
+    const svgY = relY * 240;
+
+    // Active over the wordmark area
+    if (svgY < 20 || svgY > 220) {
+      pointerRef.current.active = false;
+      return;
+    }
+
+    pointerRef.current.targetX = svgX;
+    pointerRef.current.targetY = svgY;
+    if (!pointerRef.current.active) {
+      pointerRef.current.active = true;
+      pointerRef.current.x = svgX;
+      pointerRef.current.y = svgY;
+    }
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    updatePointer(e.clientX, e.clientY);
+  };
+
+  const handlePointerLeave = () => {
+    pointerRef.current.active = false;
+  };
+
+  const handleTouch = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (e.touches[0]) {
+      updatePointer(e.touches[0].clientX, e.touches[0].clientY);
+    }
+  };
+
+  return (
+    <div className={cn("relative w-full flex flex-col select-none", className)}>
+      {/* Top Measuring Ruler Bar */}
+      <div className="w-full flex items-center justify-between border-y border-neutral-300 dark:border-neutral-800 px-3 py-1 font-mono text-[9px] text-neutral-400 dark:text-neutral-600 bg-neutral-200/20 dark:bg-neutral-900/30">
+        <span className="font-bold text-primary dark:text-primary">+</span>
+        <div className="flex-1 mx-3 overflow-hidden flex items-center justify-between opacity-70">
+          {Array.from({ length: 80 }).map((_, i) => (
+            <span
+              key={i}
+              className={cn(
+                "inline-block shrink-0",
+                i % 10 === 0
+                  ? "h-2 w-px bg-neutral-500 dark:bg-neutral-500"
+                  : i % 5 === 0
+                  ? "h-1.5 w-px bg-neutral-400 dark:bg-neutral-600"
+                  : "h-1 w-px bg-neutral-300 dark:bg-neutral-800"
+              )}
+            />
+          ))}
+        </div>
+        <span className="font-bold text-primary dark:text-primary">+</span>
+      </div>
+
+      {/* Main Interactive Liquid Wordmark Stage */}
+      <div
+        ref={containerRef}
+        onPointerMove={handlePointerMove}
+        onPointerEnter={handlePointerMove}
+        onPointerLeave={handlePointerLeave}
+        onTouchStart={handleTouch}
+        onTouchMove={handleTouch}
+        onTouchEnd={handlePointerLeave}
+        className="relative w-full h-[180px] min-[420px]:h-[220px] sm:h-[280px] md:h-[340px] flex items-center justify-center overflow-hidden text-neutral-900 dark:text-neutral-100 cursor-crosshair"
+      >
+        <svg
+          viewBox="0 0 1200 240"
+          className="w-full h-full"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          {/* Defs: Normal Large Typography ClipPath & Liquid Gooey Metaball Filter */}
+          <defs>
+            {/* Real SVG text clip-path: Large, bold, normal typography without chopped corners */}
+            <clipPath id={`text-clip-${uid}`}>
+              <text
+                x="50%"
+                y="54%"
+                textAnchor="middle"
+                dominantBaseline="central"
+                className="font-black uppercase select-none"
+                style={{
+                  fontSize: `${fontSize}px`,
+                  letterSpacing: "0.08em",
+                  fontFamily:
+                    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                }}
+              >
+                {resolvedText}
+              </text>
+            </clipPath>
+
+            {/* Gooey filter for authentic liquid ink / octopus fluid surface tension */}
+            <filter
+              id={`liquid-goo-${uid}`}
+              x="-50%"
+              y="-50%"
+              width="200%"
+              height="200%"
+              colorInterpolationFilters="sRGB"
+            >
+              <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur" />
+              <feColorMatrix
+                in="blur"
+                mode="matrix"
+                values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 32 -13"
+                result="goo"
+              />
+            </filter>
+          </defs>
+
+          {/* Layer 1: Normal Large Clean Typography Outline (Base state when unhovered) */}
+          <text
+            x="50%"
+            y="54%"
+            textAnchor="middle"
+            dominantBaseline="central"
+            className="font-black uppercase select-none fill-none stroke-neutral-900/40 dark:stroke-neutral-100/40 pointer-events-none"
+            strokeWidth="2"
+            style={{
+              fontSize: `${fontSize}px`,
+              letterSpacing: "0.08em",
+              fontFamily:
+                '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+            }}
+          >
+            {resolvedText}
+          </text>
+
+          {/* Layer 2: Clipped Paintbrush Ink Splatter that splashes under hover */}
+          <g clipPath={`url(#text-clip-${uid})`}>
+            {/* Underneath: Solid Gray Meniscus Shadow Splatter Layer */}
+            <g
+              filter={`url(#liquid-goo-${uid})`}
+              className="fill-[#b4b4b4] dark:fill-[#525252] transition-colors duration-150"
+            >
+              {Array.from({ length: TOTAL_CIRCLES }).map((_, idx) => (
+                <circle
+                  key={`gray-circle-${idx}`}
+                  ref={(el) => {
+                    grayCirclesRef.current[idx] = el;
+                  }}
+                  cx="-500"
+                  cy="-500"
+                  r="0"
+                />
+              ))}
+            </g>
+
+            {/* On Top: Solid Black Core Ink Splatter */}
+            <g
+              filter={`url(#liquid-goo-${uid})`}
+              className="fill-[#1c1c1c] dark:fill-[#f4f4f5] transition-colors duration-150"
+            >
+              {Array.from({ length: TOTAL_CIRCLES }).map((_, idx) => (
+                <circle
+                  key={`black-circle-${idx}`}
+                  ref={(el) => {
+                    blackCirclesRef.current[idx] = el;
+                  }}
+                  cx="-500"
+                  cy="-500"
+                  r="0"
+                />
+              ))}
+            </g>
+          </g>
+        </svg>
+      </div>
+
+      {/* Bottom Measuring Ruler Bar */}
+      <div className="w-full flex items-center justify-between border-y border-neutral-300 dark:border-neutral-800 px-3 py-1 font-mono text-[9px] text-neutral-400 dark:text-neutral-600 bg-neutral-200/20 dark:bg-neutral-900/30">
+        <span className="font-bold text-primary dark:text-primary">+</span>
+        <div className="flex-1 mx-3 overflow-hidden flex items-center justify-between opacity-70">
+          {Array.from({ length: 80 }).map((_, i) => (
+            <span
+              key={i}
+              className={cn(
+                "inline-block shrink-0",
+                i % 10 === 0
+                  ? "h-2 w-px bg-neutral-500 dark:bg-neutral-500"
+                  : i % 5 === 0
+                  ? "h-1.5 w-px bg-neutral-400 dark:bg-neutral-600"
+                  : "h-1 w-px bg-neutral-300 dark:bg-neutral-800"
+              )}
+            />
+          ))}
+        </div>
+        <span className="font-bold text-primary dark:text-primary">+</span>
+      </div>
+    </div>
+  );
+}
+
+const DEFAULT_ARCHITECTURAL_NAV = [
+  {
+    links: [
+      { label: "Home", href: "#", active: true },
+      { label: "About us", href: "#" },
+      { label: "Contact us", href: "#" },
+    ],
+  },
+  {
+    links: [
+      { label: "Components", href: "#" },
+      { label: "Templates", href: "#" },
+      { label: "Pricing", href: "#" },
+    ],
+  },
+  {
+    links: [
+      { label: "Documentation", href: "#" },
+      { label: "Showcase", href: "#" },
+      { label: "Changelog", href: "#" },
+    ],
+  },
+];
+
+const DEFAULT_ARCHITECTURAL_SOCIALS = [
+  { label: "Website", href: "#" },
+  { label: "Dribbble", href: "#" },
+  { label: "FWA", href: "#" },
+  { label: "Awwwards", href: "#" },
+  { label: "Instagram", href: "#" },
+  { label: "Linkedin", href: "#" },
+];
+
+const DEFAULT_ARCHITECTURAL_LEGAL = [
+  { label: "Privacy Policy", href: "#" },
+  { label: "Terms & Conditions", href: "#" },
+  { label: "Cookie Policy", href: "#" },
+];
+
+export function ArchitecturalLiquidFooter({
+  headline = "CRAFTED FOR EXTRAORDINARY INTERFACES",
+  brandWordmark = "algorize",
+  brandName = "Algorize",
+  color,
+  subscribeText = "Want to see more cool websites like this? Sign up for occasional updates from Avara UI.",
+  addressLines = ["60 Martin Pl, Sydney,", "NSW 2000, Australia"],
+  directionHref = "#",
+  businessEmail = "business@avara.ui",
+  inquiryEmail = "hello@avara.ui",
+  navColumns = DEFAULT_ARCHITECTURAL_NAV,
+  socials = DEFAULT_ARCHITECTURAL_SOCIALS,
+  legalLinks = DEFAULT_ARCHITECTURAL_LEGAL,
+  copyrightText,
+  className,
+}: ArchitecturalLiquidFooterProps & { className?: string }) {
+  const dynamicAccent = accentStyle(color);
+  const [email, setEmail] = React.useState("");
+  const [isSubscribed, setIsSubscribed] = React.useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+    setIsSubscribed(true);
+    setTimeout(() => {
+      setEmail("");
+      setIsSubscribed(false);
+    }, 3000);
+  };
+
+  const resolvedCopyright =
+    copyrightText ||
+    `©${new Date().getFullYear()} ${brandName.toUpperCase()}. ALL RIGHTS RESERVED. CONCEPT CRAFTED BY ${brandName.toUpperCase()}`;
+
+  return (
+    <footer
+      style={dynamicAccent}
+      className={cn(
+        "w-full bg-[#f4f3ef] dark:bg-[#0c0d10] text-neutral-900 dark:text-neutral-100 border-t border-neutral-300 dark:border-neutral-800 transition-colors select-none font-sans",
+        className
+      )}
+    >
+      {/* ============================================================== */}
+      {/* ROW 1: TOP HEADLINE & MULTI-COLUMN NAVIGATION GRID             */}
+      {/* ============================================================== */}
+      <div className="grid grid-cols-1 md:grid-cols-12 border-b border-neutral-300 dark:border-neutral-800">
+        {/* Cell 1: Bold Statement Banner */}
+        <div className="md:col-span-4 p-6 sm:p-10 border-b md:border-b-0 md:border-r border-neutral-300 dark:border-neutral-800 flex flex-col justify-between">
+          <div className="space-y-2">
+            <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-primary/80 dark:text-primary block font-bold">
+              CAD SPEC // MISSION
+            </span>
+            <h2 className="font-black text-2xl sm:text-3xl lg:text-4xl tracking-tight uppercase leading-[0.95] text-neutral-900 dark:text-white">
+              {headline}
+            </h2>
+          </div>
+          <div className="hidden md:flex items-center gap-2 pt-6 font-mono text-[10px] text-neutral-400">
+            <span className="text-primary font-bold">[+]</span>
+            <span>01_ROOT</span>
+            <span>--</span>
+            <span>SYSTEM DRAFT</span>
+          </div>
+        </div>
+
+        {/* Navigation Columns */}
+        {navColumns.map((col, idx) => (
+          <div
+            key={idx}
+            className="md:col-span-2 p-6 sm:p-8 border-b md:border-b-0 md:border-r border-neutral-300 dark:border-neutral-800 flex flex-col justify-between"
+          >
+            {col.title && (
+              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-neutral-400 mb-4 block">
+                {col.title}
+              </span>
+            )}
+            <ul className="space-y-3 sm:space-y-4">
+              {col.links.map((link, lIdx) => (
+                <li key={lIdx}>
+                  <a
+                    href={link.href}
+                    className={cn(
+                      "text-xs sm:text-sm font-semibold transition-colors duration-200 block",
+                      link.active
+                        ? "text-primary font-bold"
+                        : "text-neutral-700 dark:text-neutral-300 hover:text-primary dark:hover:text-primary"
+                    )}
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+
+        {/* Cell 5: Isometric 3D Wireframe Brand Cube */}
+        <div className="md:col-span-2 p-6 flex flex-col items-center justify-center bg-neutral-200/30 dark:bg-neutral-900/40">
+          <IsometricWireframeCube brandLetter={brandName.charAt(0) || "A"} />
+          <span className="font-mono text-[8px] uppercase tracking-widest text-neutral-400 dark:text-neutral-500 mt-2 block">
+            <span className="text-primary font-bold">[+]</span> 3D CAD SPEC
+          </span>
+        </div>
+      </div>
+
+      {/* ============================================================== */}
+      {/* ROW 2: SUBSCRIBE, ADDRESS, INQUIRIES & SOCIAL DETAILS GRID      */}
+      {/* ============================================================== */}
+      <div className="grid grid-cols-1 md:grid-cols-12 border-b border-neutral-300 dark:border-neutral-800">
+        {/* Cell 1: Subscribe Form Box */}
+        <div className="md:col-span-3 p-6 sm:p-8 border-b md:border-b-0 md:border-r border-neutral-300 dark:border-neutral-800 flex flex-col justify-between space-y-4">
+          <div className="space-y-1.5">
+            <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-primary/80 dark:text-primary block font-bold">
+              SUBSCRIBE
+            </span>
+            <p className="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
+              {subscribeText}
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="flex items-center w-full mt-2">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder={isSubscribed ? "Subscribed successfully!" : "Enter your email"}
+              disabled={isSubscribed}
+              className="flex-1 bg-transparent border border-neutral-300 dark:border-neutral-700 px-3 py-2 text-xs text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 outline-none focus:border-primary dark:focus:border-primary focus:ring-1 focus:ring-primary/40 transition-colors"
+            />
+            <button
+              type="submit"
+              disabled={isSubscribed}
+              className="px-3.5 py-2 border-y border-r border-neutral-300 dark:border-neutral-700 bg-neutral-900 text-white dark:bg-white dark:text-black hover:bg-primary hover:text-primary-foreground dark:hover:bg-primary dark:hover:text-primary-foreground transition-colors text-xs font-bold cursor-pointer"
+            >
+              →
+            </button>
+          </form>
+        </div>
+
+        {/* Cell 2: Physical Address & Direction */}
+        <div className="md:col-span-3 p-6 sm:p-8 border-b md:border-b-0 md:border-r border-neutral-300 dark:border-neutral-800 flex flex-col justify-between space-y-4">
+          <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-primary/80 dark:text-primary block font-bold">
+            ADDRESS
+          </span>
+          <div className="text-xs sm:text-sm text-neutral-700 dark:text-neutral-300 font-medium leading-relaxed">
+            {addressLines.map((line, lIdx) => (
+              <div key={lIdx}>{line}</div>
+            ))}
+          </div>
+          <div>
+            <a
+              href={directionHref}
+              className="text-xs font-semibold underline underline-offset-4 hover:text-primary dark:hover:text-primary transition-colors"
+            >
+              Direction
+            </a>
+          </div>
+        </div>
+
+        {/* Cell 3: Business & General Inquiries */}
+        <div className="md:col-span-3 p-6 sm:p-8 border-b md:border-b-0 md:border-r border-neutral-300 dark:border-neutral-800 flex flex-col justify-between space-y-4">
+          <div className="space-y-1">
+            <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-primary/80 dark:text-primary block font-bold">
+              NEW BUSINESS
+            </span>
+            <a
+              href={`mailto:${businessEmail}`}
+              className="text-xs sm:text-sm font-semibold hover:text-primary dark:hover:text-primary transition-colors block"
+            >
+              {businessEmail}
+            </a>
+          </div>
+
+          <div className="space-y-1">
+            <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-primary/80 dark:text-primary block font-bold">
+              GENERAL INQUIRIES
+            </span>
+            <a
+              href={`mailto:${inquiryEmail}`}
+              className="text-xs sm:text-sm font-semibold hover:text-primary dark:hover:text-primary transition-colors block"
+            >
+              {inquiryEmail}
+            </a>
+          </div>
+        </div>
+
+        {/* Cell 4: Social Network Grid */}
+        <div className="md:col-span-3 p-6 sm:p-8 flex flex-col justify-between space-y-3">
+          <span className="font-mono text-[9px] uppercase tracking-[0.25em] text-primary/80 dark:text-primary block font-bold">
+            SOCIAL
+          </span>
+          <div className="grid grid-cols-2 gap-y-2 gap-x-4 text-xs sm:text-sm font-medium">
+            {socials.map((soc, sIdx) => (
+              <a
+                key={sIdx}
+                href={soc.href}
+                className="hover:text-primary dark:hover:text-primary transition-colors duration-150"
+              >
+                {soc.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ============================================================== */}
+      {/* ROW 3: INTERACTIVE ARCHITECTURAL LIQUID INK WORDMARK           */}
+      {/* ============================================================== */}
+      <ArchitecturalLiquidWordmark text={brandWordmark} />
+
+      {/* ============================================================== */}
+      {/* ROW 4: BOTTOM LEGAL & COPYRIGHT SUB-BAR                        */}
+      {/* ============================================================== */}
+      <div className="grid grid-cols-1 md:grid-cols-12 text-xs">
+        <div className="md:col-span-8 p-4 sm:p-6 md:border-r border-b md:border-b-0 border-neutral-300 dark:border-neutral-800 flex items-center font-mono text-[10px] sm:text-xs text-neutral-600 dark:text-neutral-400">
+          <span>{resolvedCopyright}</span>
+        </div>
+        <div className="md:col-span-4 p-4 sm:p-6 flex items-center justify-start md:justify-end gap-4 sm:gap-6 font-sans text-[11px] sm:text-xs font-medium text-neutral-600 dark:text-neutral-400">
+          {legalLinks.map((leg, legIdx) => (
+            <a
+              key={legIdx}
+              href={leg.href}
+              className="hover:text-primary dark:hover:text-primary transition-colors whitespace-nowrap"
+            >
+              {leg.label}
+            </a>
+          ))}
+        </div>
+      </div>
+    </footer>
+  );
+}
+
 export function Footer({
   variant = "simple-centered",
   color,
@@ -2353,6 +3390,8 @@ export function Footer({
   wordmarkFooter,
   wordmark,
   editorialCta,
+  architecturalLiquid,
+  blueprintWordmark,
   className,
 }: FooterProps) {
   const dynamicAccent = accentStyle(color);
@@ -2360,6 +3399,38 @@ export function Footer({
   const copyright =
     copyrightText ??
     `© ${new Date().getFullYear()} ${brandName}. All rights reserved.`;
+
+  if (
+    variant === "architectural-liquid" ||
+    variant === "heron-blueprint" ||
+    variant === "blueprint-liquid"
+  ) {
+    return (
+      <footer style={dynamicAccent} className="w-full transition-colors">
+        <ArchitecturalLiquidFooter
+          color={color}
+          headline={architecturalLiquid?.headline}
+          brandWordmark={
+            blueprintWordmark ??
+            wordmark ??
+            architecturalLiquid?.brandWordmark ??
+            "algorize"
+          }
+          brandName={brandName}
+          subscribeText={architecturalLiquid?.subscribeText}
+          addressLines={architecturalLiquid?.addressLines}
+          directionHref={architecturalLiquid?.directionHref}
+          businessEmail={architecturalLiquid?.businessEmail}
+          inquiryEmail={architecturalLiquid?.inquiryEmail}
+          navColumns={architecturalLiquid?.navColumns}
+          socials={architecturalLiquid?.socials}
+          legalLinks={architecturalLiquid?.legalLinks}
+          copyrightText={copyrightText ?? architecturalLiquid?.copyrightText}
+          className={className}
+        />
+      </footer>
+    );
+  }
 
   if (variant === "editorial-card" || variant === "tilted-cta") {
     return (

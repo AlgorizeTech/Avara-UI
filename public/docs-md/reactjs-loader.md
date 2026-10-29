@@ -4,7 +4,7 @@ export const metadata = docsPageMetadata("loader");
 
 A premium, dependency-free loading indicator component.
 
-Different parts of your UI require different types of loading states. A full-page data fetch might require an indeterminate `bar` or `pulse`, while a small button state might only fit a `sm` size `spinner` or `dots`. This component consolidates 5 distinct, ultra-smooth animations into a single block.
+Different parts of your UI require different types of loading states. A full-page data fetch might require an indeterminate `bar` or `pulse`, while a small button state might only fit a `sm` size `spinner` or `dots`, or an eye-catching `orbit` dual-ring spinner for prominent async states. This component consolidates 6 distinct, ultra-smooth animations into a single block.
 
 Explore the different variations of the Loader component — each example shows a live preview with the exact code to copy.
 
@@ -32,6 +32,14 @@ export default function BarLoader() {
   return ;
 }`;
 
+export const usageOrbit = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
+
+export default function OrbitLoader() {
+  return (
+    
+  );
+}`;
+
 ## Installation
 
 Add the component by URL — no setup needed:
@@ -49,34 +57,6 @@ npx shadcn@latest add @avara-ui/loader
 
 ## Examples
 
-## Usage
-
-Import the component and pass your desired variant and size.
-
-```tsx
-
-export default function LoadingState() {
-  return (
-
-  );
-}
-```
-
-## Features
-Discover the Loader component's animated states, offering various spinner styles and sizes for indicating background processes.
-
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
-
 ## Best Practices & Guidelines
 
     Usage Guidelines
@@ -91,11 +71,28 @@ Discover the Loader component's animated states, offering various spinner styles
 
           variant
 
-          "spinner" | "dots" | "pulse" | "ring" | "bar"
+          "spinner" | "orbit" | "dots" | "pulse" | "ring" | "bar"
 
           "spinner"
         
-        The architectural style of the loading animation.
+        The architectural style of the loading animation. "orbit" (and "ring") renders the signature dual-ring concentric spinner with counter-rotating arc and pulsing core.
+
+          direction
+
+          "single" | "dual"
+
+          "single"
+
+          Rotation direction for concentric rings in "orbit" and "ring" variants. "single" spins both rings in the same direction; "dual" enables opposite counter-spinning.
+
+          secondaryColor
+
+            "primary" | "indigo" | "rose" | "emerald" | "amber" | "blue" |
+            "zinc" | string
+
+          "#10b981"
+
+          Accent color for the inner counter-rotating orbit in "orbit" and "ring" variants. Defaults to emerald (#10b981).
 
           size
 
