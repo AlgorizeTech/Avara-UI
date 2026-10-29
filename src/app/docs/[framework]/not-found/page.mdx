@@ -39,15 +39,38 @@ export default function NotFound() {
     <NotFoundSection
       variant="animated-beam-border"
       code="404"
-      badge="System Telemetry • Route Dropped"
-      title="Lost in the Cyber Void?"
-      description="The requested coordinate cannot be located across the cluster network. The page may have shifted to a new dimension or expired."
+      badge="CAD SPEC // 0x404 ROUTE EXCEPTION"
+      title="Lost in the Digital Architecture?"
+      description="The requested navigation vector has collapsed or relocated to an unindexed partition. Re-anchor to safety using the architectural directory below."
       primaryAction={{
-        label: "Explore Components",
+        label: "Explore Documentation",
         href: "/docs",
       }}
       secondaryAction={{
-        label: "Return Home",
+        label: "Return to Homepage",
+        href: "/",
+      }}
+      showShortcuts={true}
+    />
+  );
+}`;
+
+export const usageQuantumHologram = `import { NotFoundSection } from "@/components/custom/blocks/NotFoundBlock";
+
+export default function NotFound() {
+  return (
+    <NotFoundSection
+      variant="quantum-hologram"
+      code="404"
+      badge="QUANTUM ROUTE ANOMALY // 0x404"
+      title="Lost in the Quantum Singularity?"
+      description="The spacetime coordinates of this page have drifted into an unmapped event horizon. Re-align your navigational trajectory via the recovery vectors below."
+      primaryAction={{
+        label: "Re-anchor to Orbit",
+        href: "/docs",
+      }}
+      secondaryAction={{
+        label: "Return to Base",
         href: "/",
       }}
       showShortcuts={true}
@@ -85,30 +108,30 @@ export default function NotFound() {
   minHeight={660}
   examples={[
     {
-      title: "Animated Gradient Beam Border",
+      title: "Architectural CAD Blueprint 404 (Zero Shadow)",
       propNotes: [
         {
           prop: "variant",
           value: '"animated-beam-border"',
-          effect: "activates the 360° rotating neon conic laser border with shifting color gradient portal.",
+          effect: "activates zero-shadow architectural modular CAD blueprint layout with clean modular grid division and precision drafting details.",
         },
         {
           prop: "code",
           value: '"404"',
-          effect: "large floating numerical display with fluid animated linear-gradient spectrum.",
+          effect: "monumental typographic drafting display with drafting ticks ruler bar and protocol telemetry spec.",
         },
         {
           prop: "showShortcuts",
           value: "true",
-          effect: "displays interactive quick-action shortcut route matrix.",
+          effect: "displays tactical navigation directory with pure white icon hover transitions.",
         },
       ],
       props: {
         variant: "animated-beam-border",
         code: "404",
-        badge: "System Telemetry • Route Dropped",
-        title: "Lost in the Cyber Void?",
-        description: "The requested coordinate cannot be located across the cluster network. The page may have shifted to a new dimension or expired.",
+        badge: "CAD SPEC // 0x404 ROUTE EXCEPTION",
+        title: "Lost in the Digital Architecture?",
+        description: "The requested navigation vector has collapsed or relocated to an unindexed partition. Re-anchor to safety using the architectural directory below.",
         showShortcuts: true,
       },
       usage: usageAnimatedBeam,
@@ -142,6 +165,36 @@ export default function NotFound() {
         showShortcuts: true,
       },
       usage: usageHyperspace,
+      code: extractCode("src/components/custom/blocks/NotFoundBlock.tsx"),
+    },
+    {
+      title: "Quantum Hologram 404 (Advanced Animated)",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"quantum-hologram"',
+          effect: "activates 3D gyroscopic orbital singularity with chromatic glitch aberration and quantum radar telemetry.",
+        },
+        {
+          prop: "code",
+          value: '"404"',
+          effect: "tri-layer chromatic glitch headline with audio frequency bars and HUD coordinate brackets.",
+        },
+        {
+          prop: "showShortcuts",
+          value: "true",
+          effect: "displays holographic trajectory recovery grid with live telemetry nodes and pure white icon hover transitions.",
+        },
+      ],
+      props: {
+        variant: "quantum-hologram",
+        code: "404",
+        badge: "QUANTUM ROUTE ANOMALY // 0x404",
+        title: "Lost in the Quantum Singularity?",
+        description: "The spacetime coordinates of this page have drifted into an unmapped event horizon. Re-align your navigational trajectory via the recovery vectors below.",
+        showShortcuts: true,
+      },
+      usage: usageQuantumHologram,
       code: extractCode("src/components/custom/blocks/NotFoundBlock.tsx"),
     },
   ]}

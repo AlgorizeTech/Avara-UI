@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import NotFoundSection, { NotFoundVariant } from "@/components/custom/blocks/NotFoundBlock";
-import { BookOpen, Home, LayoutGrid, Compass, ShieldCheck } from "lucide-react";
+import { BookOpen, Home, LayoutGrid } from "lucide-react";
 
 export default function NotFoundSectionDemo({
   variant,
