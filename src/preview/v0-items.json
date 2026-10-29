@@ -570,6 +570,7 @@
   },
   "loader": {
     "spinner": "Loader — Spinner",
+    "orbit-concentric-rings-pulse-variant-orbit": "Loader — Orbit (Concentric Rings & Pulse) — variant=\"orbit\"",
     "dots": "Loader — Dots",
     "pulse": "Loader — Pulse",
     "bar": "Loader — Bar"
