@@ -2,6 +2,7 @@
 
 import { Footer, type FooterVariant } from "@/components/custom/blocks/FooterBlock";
 import { accentStyle } from "@/lib/accent";
+import { cn } from "@/lib/utils";
 
 export default function FooterDemo({
   variant = "snapshot",
@@ -10,6 +11,8 @@ export default function FooterDemo({
   variant?: FooterVariant;
   color?: string;
 }) {
+  const isEditorial = variant === "editorial-card" || variant === "tilted-cta";
+
   return (
     <div
       style={accentStyle(color)}

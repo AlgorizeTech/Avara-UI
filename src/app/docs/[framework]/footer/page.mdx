@@ -7,9 +7,25 @@ import { extractCode } from "@/lib/code";
 
 # Footer
 
-A collection of 7 production-ready, high-capacity, fully responsive Footer components designed for modern web applications, SaaS platforms, e-commerce stores, and enterprise products.
+A collection of 8 production-ready, high-capacity, fully responsive Footer components designed for modern web applications, SaaS platforms, e-commerce stores, and enterprise products.
 
-`Footer` adapts seamlessly across mobile screens, tablets, and desktop viewports, with support for centered layouts, frosted glass docks, cyberpunk neon glow pulses, quantum particle beams, snapshot studio card piles, colorful modern scroll stack cards, and giant glowing scroll-reveal wordmarks.
+`Footer` adapts seamlessly across mobile screens, tablets, and desktop viewports, with support for centered layouts, frosted glass docks, cyberpunk neon glow pulses, quantum particle beams, snapshot studio card piles, colorful modern scroll stack cards, giant glowing scroll-reveal wordmarks, and architectural editorial tilted CTA cards.
+
+export const usageEditorial = `import { Footer } from "@/components/custom/blocks/FooterBlock";
+
+export default function EditorialFooterDemo() {
+  return (
+    <Footer
+      variant="editorial-card"
+      brandName="HS"
+      editorialCta={{
+        headline: "LET'S BUILD SOMETHING MEANINGFUL TOGETHER.",
+        buttonText: "START A PROJECT",
+        buttonHref: "#",
+      }}
+    />
+  );
+}`;
 
 export const usageSimple = `import { Footer } from "@/components/custom/blocks/FooterBlock";
 
@@ -85,6 +101,13 @@ export default function WordmarkFooterDemo() {
   columns={1}
   examples={[
     {
+      title: "Editorial Tilted Card Footer",
+      propNotes: [{ lead: "Use", prop: "variant", value: '"editorial-card"', effect: "an architectural grid studio footer with interactive tabs (Newsletter, Colophon, Privacy Policy), live real-time clock, wireframe globe badge, and a shadow-free tilted CTA card that straightens and lifts on hover." }],
+      props: { variant: "editorial-card" },
+      usage: usageEditorial,
+      code: extractCode("src/components/custom/blocks/FooterBlock.tsx"),
+    },
+    {
       title: "Snapshot Footer",
       propNotes: [{ lead: "Use", prop: "variant", value: '"snapshot"', effect: "a modern studio footer with sunken interactive cards and an animated say hi sticker that lifts out on hover." }],
       props: { variant: "snapshot" },
@@ -151,8 +174,8 @@ Discover the key capabilities of the `Footer` component:
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">7 High-Performance Responsive Variants</h3>
-    <p className="text-muted-foreground text-sm">Includes Snapshot, Modern Stack, Wordmark Glow, Simple Centered, Glass Dock, Neon Glow Pulse, and Quantum Particle Beam.</p>
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">8 High-Performance Responsive Variants</h3>
+    <p className="text-muted-foreground text-sm">Includes Editorial Tilted Card, Snapshot, Modern Stack, Wordmark Glow, Simple Centered, Glass Dock, Neon Glow Pulse, and Quantum Particle Beam.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">100% Screen & Device Responsive</h3>
@@ -177,7 +200,7 @@ Discover the key capabilities of the `Footer` component:
         <td><code>variant</code></td>
         <td><code>FooterVariant</code></td>
         <td><code>"snapshot"</code></td>
-        <td>Selects from the 6 footer variants (<code>"snapshot"</code>, <code>"modern-stack"</code>, <code>"simple-centered"</code>, <code>"glass-dock"</code>, <code>"neon-glow-pulse"</code>, <code>"quantum-particle-beam"</code>).</td>
+        <td>Selects from the 8 footer variants (<code>"editorial-card"</code>, <code>"snapshot"</code>, <code>"modern-stack"</code>, <code>"wordmark-glow"</code>, <code>"simple-centered"</code>, <code>"glass-dock"</code>, <code>"neon-glow-pulse"</code>, <code>"quantum-particle-beam"</code>).</td>
       </tr>
       <tr>
         <td><code>color</code></td>
@@ -190,6 +213,12 @@ Discover the key capabilities of the `Footer` component:
         <td><code>SnapshotFooterContent</code></td>
         <td>Marlo Studio demo copy</td>
         <td>Content for <code>variant="snapshot"</code>: <code>headingLines</code>, <code>description</code>, <code>taglineLines</code>, five <code>photos</code> (<code>&#123; src, caption &#125;</code>), note card <code>address</code>, <code>hours</code>, <code>stickerText</code> and <code>legalLinks</code>. Every field is optional.</td>
+      </tr>
+      <tr>
+        <td><code>editorialCta</code></td>
+        <td><code>EditorialFooterProps</code></td>
+        <td>Husham Sam inspired editorial defaults</td>
+        <td>Content for <code>variant="editorial-card"</code>: <code>headline</code>, <code>buttonText</code>, <code>buttonHref</code>, <code>menuLinks</code>, <code>copyright</code>, and <code>rightsText</code>.</td>
       </tr>
       <tr>
         <td><code>sections</code></td>

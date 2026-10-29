@@ -2,9 +2,17 @@ export const metadata = docsPageMetadata("footer");
 
 # Footer
 
-A collection of 7 production-ready, high-capacity, fully responsive Footer components designed for modern web applications, SaaS platforms, e-commerce stores, and enterprise products.
+A collection of 8 production-ready, high-capacity, fully responsive Footer components designed for modern web applications, SaaS platforms, e-commerce stores, and enterprise products.
 
-`Footer` adapts seamlessly across mobile screens, tablets, and desktop viewports, with support for centered layouts, frosted glass docks, cyberpunk neon glow pulses, quantum particle beams, snapshot studio card piles, colorful modern scroll stack cards, and giant glowing scroll-reveal wordmarks.
+`Footer` adapts seamlessly across mobile screens, tablets, and desktop viewports, with support for centered layouts, frosted glass docks, cyberpunk neon glow pulses, quantum particle beams, snapshot studio card piles, colorful modern scroll stack cards, giant glowing scroll-reveal wordmarks, and architectural editorial tilted CTA cards.
+
+export const usageEditorial = `import { Footer } from "@/components/custom/blocks/FooterBlock";
+
+export default function EditorialFooterDemo() {
+  return (
+    
+  );
+}`;
 
 export const usageSimple = `import { Footer } from "@/components/custom/blocks/FooterBlock";
 
@@ -75,8 +83,8 @@ npx shadcn@latest add @avara-ui/footer
 
 Discover the key capabilities of the `Footer` component:
 
-    7 High-Performance Responsive Variants
-    Includes Snapshot, Modern Stack, Wordmark Glow, Simple Centered, Glass Dock, Neon Glow Pulse, and Quantum Particle Beam.
+    8 High-Performance Responsive Variants
+    Includes Editorial Tilted Card, Snapshot, Modern Stack, Wordmark Glow, Simple Centered, Glass Dock, Neon Glow Pulse, and Quantum Particle Beam.
 
     100% Screen & Device Responsive
     Fluid Tailwind CSS grid and flex layouts built to adapt from 320px mobile viewports up to 4K ultra-wide screens.
@@ -91,7 +99,7 @@ Discover the key capabilities of the `Footer` component:
         variant
         FooterVariant
         "snapshot"
-        Selects from the 6 footer variants ("snapshot", "modern-stack", "simple-centered", "glass-dock", "neon-glow-pulse", "quantum-particle-beam").
+        Selects from the 8 footer variants ("editorial-card", "snapshot", "modern-stack", "wordmark-glow", "simple-centered", "glass-dock", "neon-glow-pulse", "quantum-particle-beam").
 
         color
         string
@@ -102,6 +110,11 @@ Discover the key capabilities of the `Footer` component:
         SnapshotFooterContent
         Marlo Studio demo copy
         Content for variant="snapshot": headingLines, description, taglineLines, five photos (&#123; src, caption &#125;), note card address, hours, stickerText and legalLinks. Every field is optional.
+
+        editorialCta
+        EditorialFooterProps
+        Husham Sam inspired editorial defaults
+        Content for variant="editorial-card": headline, buttonText, buttonHref, menuLinks, copyright, and rightsText.
 
         sections
         FooterLinkSection[]
