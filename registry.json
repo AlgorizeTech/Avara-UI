@@ -1202,6 +1202,32 @@
       "docs": "Named export: CounterSection. Accepts variant ('cyber-hud' | 'minimal-slash' | 'halftone-cinema' | 'spotlight-gradient') and custom stats array with value, prefix, suffix, decimals, label, sublabel, and tag."
     },
     {
+      "name": "cta-section",
+      "type": "registry:component",
+      "title": "Cta Section",
+      "author": "AlgorizeTech",
+      "description": "An interconnected Brand Pillars call-to-action component featuring interactive service cards, a synchronized scorecard with animated progress meters, and a highlight popover bar.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/CtaSectionBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/CtaSectionBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: CTASection, CtaSection, and the PillarItem type. Accepts variant ('brand-pillars' | 'minimal' | 'split'), pillars array, custom heading, statement, summary metrics, and active accent color."
+    },
+    {
       "name": "cursor-animation",
       "type": "registry:component",
       "title": "Cursor Animation",
@@ -2092,6 +2118,7 @@
         "motion"
       ],
       "registryDependencies": [
+        "https://avaraui.com/r/button.json",
         "https://avaraui.com/r/social-links.json",
         "utils"
       ],

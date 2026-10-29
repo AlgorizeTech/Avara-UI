@@ -1,12 +1,12 @@
 <div align="center">
 
 <h1>
-  <a href="https://avaraui.com"><img src="https://avaraui.com/favicon/android-chrome-192x192.png" width="34" height="34" alt="" align="center" valign="middle" style="vertical-align: middle; margin-bottom: 3px;" /><picture><source media="(prefers-color-scheme: dark)" srcset="public/assets/avara-wordmark-dark.svg"><source media="(prefers-color-scheme: light)" srcset="public/assets/avara-wordmark-light.svg"><img src="public/assets/avara-wordmark-light.svg" alt="Avara UI" height="30" align="center" valign="middle" style="vertical-align: middle;" /></picture></a>
+  <a href="https://avaraui.com"><img src="/public/favicon/readme-icon.png" width="34" height="34" alt="" align="center" valign="middle" style="vertical-align: middle; margin-bottom: 3px; background-color: transparent;" /><picture><source media="(prefers-color-scheme: dark)" srcset="public/assets/avara-wordmark-dark.svg"><source media="(prefers-color-scheme: light)" srcset="public/assets/avara-wordmark-light.svg"><img src="public/assets/avara-wordmark-light.svg" alt="Avara UI" height="30" align="center" valign="middle" style="vertical-align: middle;" /></picture></a>
 </h1>
 
 <strong>A shadcn registry of animated React components you install straight into your own codebase.</strong>
 <br />
-<sub><!-- component-count -->189<!-- /component-count --> components and website sections · Next.js and React (Vite) · themed with CSS variables · MIT licensed</sub>
+<sub><!-- component-count -->190<!-- /component-count --> components and website sections · Next.js and React (Vite) · themed with CSS variables · MIT licensed</sub>
 
 <br />
 <br />
@@ -16,7 +16,7 @@
 [![Registry](https://img.shields.io/badge/shadcn-registry-9B8AFB?style=flat-square)](https://avaraui.com/r/registry.json)
 [![License](https://img.shields.io/badge/License-MIT-9B8AFB?style=flat-square)](LICENSE)
 
-[**Browse components →**](https://avaraui.com/docs/nextjs/all-components) · [**Get started →**](https://avaraui.com/docs/nextjs/installation) · [**Build a theme →**](https://avaraui.com/themes)
+[**Browse components →**](https://avaraui.com/docs/nextjs/all-components) · [**Get started →**](https://avaraui.com/docs/nextjs/installation) · [**Build a theme**](https://avaraui.com/themes)
 
 </div>
 
@@ -30,7 +30,7 @@ There is no wrapper package to keep up to date and nothing to eject from later.
 
 ## What you get
 
-- **<!-- component-count -->189<!-- /component-count --> components**, from base UI primitives to full page sections. Run `npx shadcn@latest list @avara-ui` for the live list.
+- **<!-- component-count -->190<!-- /component-count --> components**, from base UI primitives to full page sections. Run `npx shadcn@latest list @avara-ui` for the live list.
 - **Full website sections as well as primitives.** Heroes, pricing, footers, dashboards, auth forms, carousels, maps, media players and more, in 18 categories.
 - **One source for two frameworks.** No shipped component imports from `next/*`, so the same file compiles in a Next.js App Router project and in a Vite React app. Components that render links or images accept a `linkComponent` / `imageComponent` prop, so Next.js users can pass `next/link` and `next/image`.
 - **Themes as CSS variables.** Colours, radius and fonts come from CSS variables, not hard-coded classes. The [Themes page](https://avaraui.com/themes) has 14 presets and a customiser, and it exports a block you paste into your global stylesheet.

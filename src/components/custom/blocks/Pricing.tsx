@@ -2413,6 +2413,8 @@ export interface PricingPlansProProps {
   color?: PricingColor;
   counting?: boolean;
   linkComponent?: React.ElementType;
+  className?: string;
+  compact?: boolean;
   onOrder?: (payload: {
     plan: PlansProItem;
     billingCycle: "monthly" | "yearly";
@@ -2523,6 +2525,8 @@ export function PricingPlansPro({
   color = "primary",
   counting = true,
   linkComponent: LinkComp = "a",
+  className,
+  compact = false,
   onOrder,
 }: PricingPlansProProps = {}) {
   const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">(
@@ -2718,12 +2722,19 @@ export function PricingPlansPro({
   return (
     <section
       ref={sectionRef}
-      className="w-full h-full py-6 sm:py-8 px-3 sm:px-6 font-sans transition-colors duration-300"
+      className={cn(
+        "w-full h-full font-sans transition-colors duration-300",
+        compact ? "p-0" : "py-6 sm:py-8 px-3 sm:px-6",
+        className,
+      )}
       style={style}
     >
       <div
         className={cn(
-          "w-full mx-auto bg-card text-card-foreground rounded-lg border border-border shadow-[0_6px_30px_rgba(0,0,0,0.04)] dark:shadow-[0_6px_30px_rgba(0,0,0,0.3)] p-6 sm:p-8 md:p-9 transition-all",
+          "w-full mx-auto text-card-foreground transition-all",
+          compact
+            ? "bg-transparent border-0 shadow-none p-0"
+            : "bg-card rounded-lg border border-border shadow-[0_6px_30px_rgba(0,0,0,0.04)] dark:shadow-[0_6px_30px_rgba(0,0,0,0.3)] p-6 sm:p-8 md:p-9",
           layoutMode === "vertical"
             ? "max-w-[380px]"
             : layoutMode === "horizontal"
@@ -2732,7 +2743,8 @@ export function PricingPlansPro({
         )}
       >
         {/* Header: Badge + Title + Description */}
-        <div className="mb-5 sm:mb-6 text-left space-y-2">
+        {(badgeText || title || subtitle) && (
+          <div className="mb-5 sm:mb-6 text-left space-y-2">
           {badgeText && (
             <div
               className={cn(
@@ -2757,6 +2769,7 @@ export function PricingPlansPro({
             </p>
           )}
         </div>
+        )}
 
         {/* Segmented Billing Cycle Switch */}
         <div
@@ -2991,7 +3004,7 @@ export function PricingPlansPro({
                     }
                   }}
                   className={cn(
-                    "relative rounded-lg px-4 sm:px-5 py-4 cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] bg-card outline-none focus-visible:ring-2 focus-visible:ring-primary",
+                    "relative rounded-lg px-4 sm:px-5 py-5 sm:py-5.5 cursor-pointer transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] bg-card outline-none focus-visible:ring-2 focus-visible:ring-primary",
                     isSelected
                       ? "border border-border shadow-xs"
                       : "border border-border hover:border-foreground/30",
