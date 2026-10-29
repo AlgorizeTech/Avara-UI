@@ -8,9 +8,23 @@ import { extractCode } from "@/lib/code";
 
 # CTA Section
 
-An interconnected, conversion-focused **Brand Pillars** call-to-action component built for agencies, SaaS platforms, and studios. Rather than presenting services or value propositions as plain bullet points, this section transforms them into an interactive ecosystem with synchronized animated scorecards, live progress meters, and active highlight popovers.
+An interconnected, conversion-focused call-to-action block designed for modern web applications, agencies, and SaaS platforms. Features high-impact interactive systems including the **Concentric Portal** (scroll-driven expanding circular lens with gyroscopic monospace orbital text and segmented actions inspired by contentarchitecture.dev) and **Brand Pillars** (synchronized animated scorecards and live synergy meters).
 
-Hovering or tapping any pillar card on the left automatically synchronizes with the right scorecard canvas, animating scores and progress bars to illustrate holistic brand synergy.
+export const usageConcentricPortal = `import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
+
+export default function ConcentricPortalExample() {
+  return (
+    <CTASection
+      variant="concentric-portal"
+      heading="The next 5 days are yours."
+      subheading="Access Portal"
+      phrase="THE CONTENT ARCHITECTURE"
+      ctaText="GET ACCESS"
+      ctaHref="#"
+      autoRotate={true}
+    />
+  );
+}`;
 
 export const usageBrandPillars = `import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
 
@@ -32,7 +46,56 @@ export default function BrandPillarsExample() {
   columns={1}
   examples={[
     {
-      title: "Brand Pillars (Interactive Scorecard)",
+      title: 'Concentric Portal — variant="concentric-portal"',
+      subheading: "Pass `variant=\"concentric-portal\"` for the scroll-driven expanding circular lens with continuous gyroscopic orbital text rings.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "variant",
+          value: '"concentric-portal"',
+          effect: "Selects the concentric orbital portal experience with scroll-scrubbed expansion.",
+        },
+        {
+          lead: "Set",
+          prop: "autoRotate",
+          value: "true",
+          effect: "Enables automatic gyroscopic rotation for all concentric text orbits (set to false to keep static).",
+        },
+        {
+          lead: "Set",
+          prop: "phrase",
+          value: '"THE CONTENT ARCHITECTURE"',
+          effect: "Defines the repeating monospace text string orbiting around the portal.",
+        },
+      ],
+      props: {
+        variant: "concentric-portal",
+        heading: "The next 5 days are yours.",
+        subheading: "Access Portal",
+        phrase: "THE CONTENT ARCHITECTURE",
+        ctaText: "GET ACCESS",
+        autoRotate: true,
+      },
+      usage: usageConcentricPortal,
+      code: extractCode("src/components/custom/blocks/CtaSectionBlock.tsx"),
+    },
+    {
+      title: 'Brand Pillars — variant="brand-pillars"',
+      subheading: "Pass `variant=\"brand-pillars\"` for the interactive synchronized scorecard with dynamic progress metrics.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "variant",
+          value: '"brand-pillars"',
+          effect: "Selects the multi-pillar brand scorecard layout with live score recalculation.",
+        },
+        {
+          lead: "Set",
+          prop: "color",
+          value: '"#f95716"',
+          effect: "Sets the signature brand accent color for active cards, meters, and badges.",
+        },
+      ],
       props: {
         variant: "brand-pillars",
         color: "#f95716",
@@ -90,9 +153,27 @@ Discover the key capabilities that make this component an excellent choice for m
     <tbody>
       <tr>
         <td><code>variant</code></td>
-        <td><code>"brand-pillars" | "minimal" | "split"</code></td>
+        <td><code>"brand-pillars" | "minimal" | "split" | "concentric-portal" | "orbital-lens"</code></td>
         <td><code>"brand-pillars"</code></td>
-        <td>Visual mode. <code>"brand-pillars"</code> renders the interactive two-panel system with scorecard.</td>
+        <td>Visual mode. <code>"concentric-portal"</code> renders the scroll-driven expanding circular lens with gyroscopic monospace orbital text and segmented actions; <code>"brand-pillars"</code> renders the interactive scorecard ecosystem.</td>
+      </tr>
+      <tr>
+        <td><code>phrase</code></td>
+        <td><code>string</code></td>
+        <td><code>"THE CONTENT ARCHITECTURE"</code></td>
+        <td>Monospace uppercase text string repeated around the concentric orbital rings in <code>concentric-portal</code> variant.</td>
+      </tr>
+      <tr>
+        <td><code>autoRotate</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Controls continuous automatic ambient spinning of the concentric text rings. Set to <code>false</code> to keep them static.</td>
+      </tr>
+      <tr>
+        <td><code>scrollProgress</code></td>
+        <td><code>number</code></td>
+        <td><code>undefined</code></td>
+        <td>Optional manual scroll progress (<code>0</code> to <code>1</code>). When provided, locks the concentric portal expansion to a specific progression without requiring scroll track.</td>
       </tr>
       <tr>
         <td><code>color</code></td>
