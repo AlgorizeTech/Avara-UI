@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useId, useMemo } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import {
   Palette,
   Monitor,
@@ -14,9 +14,6 @@ import {
 import {
   motion,
   AnimatePresence,
-  useTransform,
-  useSpring,
-  useMotionValue,
 } from "motion/react";
 import { cn } from "@/lib/utils";
 
@@ -962,6 +959,12 @@ function SplitCta({
 // ==========================================
 // CONCENTRIC PORTAL / ORBITAL LENS CTA (Reference: contentarchitecture.dev)
 // ==========================================
+// Performance model:
+//  - All orbital text + dotted orbits are drawn on ONE <canvas> from pre-rendered glyph
+//    sprites (no SVG <textPath>, no per-ring components, no per-frame React work).
+//  - A single rAF loop smooths scroll progress, repaints the canvas and writes the portal's
+//    transform/opacity straight to the DOM, so scrubbing never triggers a React re-render.
+//  - The loop sleeps when the section is off-screen or nothing is animating.
 const PORTAL_RINGS = [
   { id: "ring-1", radius: 75, direction: "cw" as const, duration: 55, scrollAngle: 45 },
   { id: "ring-2", radius: 130, direction: "ccw" as const, duration: 70, scrollAngle: -60 },
@@ -984,62 +987,81 @@ const PORTAL_DOTTED_ORBITS = [
   45, 102, 160, 222, 290, 362, 440, 522, 610, 702, 800, 902, 1010, 1122, 1240, 1365,
 ];
 
-function getRingPhrase(text: string, radius: number, fontSize = 18.5): string {
-  const circumference = 2 * Math.PI * radius;
-  const charWidth = fontSize * 0.72;
-  const neededChars = Math.ceil(circumference / charWidth);
-  const cleanPhrase = (text.trim() || "THE CONTENT ARCHITECTURE");
+const PORTAL_FONT_FAMILY = "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace";
+const PORTAL_TEXT_COLOR = "rgba(255, 255, 255, 0.94)";
+const PORTAL_DOT_COLOR = "rgba(255, 255, 255, 0.22)";
+const PORTAL_GLYPH_ADVANCE = 0.74; // em: 0.6em monospace glyph + 0.14em letter-spacing
+const PORTAL_MIN_SCALE = 0.94;
+const PORTAL_MAX_SCALE = 1.22;
+const PORTAL_SMOOTHING = 14; // higher = snappier follow of the scroll target (1/s)
 
-  // Dense text with short 3-dot dividers (text is frequent and prominent)
-  const unit = cleanPhrase + " · · · ";
-  const repeats = Math.max(1, Math.ceil(neededChars / unit.length));
-  return unit.repeat(repeats);
+const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
+const portalLinesScale = (p: number) =>
+  PORTAL_MIN_SCALE + (PORTAL_MAX_SCALE - PORTAL_MIN_SCALE) * clamp01(p / 0.85);
+const portalCircleScale = (p: number) =>
+  p <= 0.03 ? 0 : 1 - Math.pow(1 - clamp01((p - 0.03) / 0.72), 2.4);
+
+interface PortalRingLayout {
+  radius: number;
+  fontSize: number;
+  step: number; // radians between neighbouring glyphs
+  chars: string[];
+  sprites: Int16Array; // atlas index per glyph (-1 = blank)
+  direction: 1 | -1;
+  periodMs: number;
+  scrollRad: number;
 }
 
-function OrbitalTextRing({
-  ring,
-  idPrefix,
-  smoothProgress,
-  phrase,
-  autoRotate = true,
-}: {
-  ring: (typeof PORTAL_RINGS)[number];
-  idPrefix: string;
-  smoothProgress: any; // MotionValue<number>
-  phrase: string;
-  autoRotate?: boolean;
-}) {
-  const scrollRotate = useTransform(smoothProgress, [0, 1], [0, ring.scrollAngle]);
-  const fontSize = ring.radius < 180 ? 16 : 18.5;
-  const textContent = useMemo(
-    () => getRingPhrase(phrase, ring.radius, fontSize),
-    [phrase, ring.radius, fontSize]
-  );
+interface GlyphAtlas {
+  canvas: HTMLCanvasElement;
+  cellW: number;
+  cellH: number;
+  baseline: number;
+  index: Map<string, number>;
+}
 
-  return (
-    <motion.g style={{ rotate: scrollRotate, transformOrigin: "0px 0px" }}>
-      <g
-        style={{
-          transformOrigin: "0px 0px",
-          animation: autoRotate
-            ? `portal-orbit-${ring.direction} ${ring.duration}s linear infinite`
-            : "none",
-        }}
-      >
-        <text
-          fill="rgba(255, 255, 255, 0.94)"
-          fontSize={fontSize}
-          fontWeight="700"
-          fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
-          letterSpacing="0.14em"
-        >
-          <textPath href={`#${idPrefix}-${ring.id}`} startOffset="0%">
-            {textContent}
-          </textPath>
-        </text>
-      </g>
-    </motion.g>
-  );
+function buildRingLayouts(phrase: string): PortalRingLayout[] {
+  const unit = `${phrase.trim() || "THE CONTENT ARCHITECTURE"} · · · `;
+  return PORTAL_RINGS.map((ring) => {
+    const fontSize = ring.radius < 180 ? 16 : 18.5;
+    // Whole number of phrase units per ring so the text wraps seamlessly (no cut-off at the seam)
+    const natural = (2 * Math.PI * ring.radius) / (fontSize * PORTAL_GLYPH_ADVANCE);
+    const count = unit.length * Math.max(1, Math.round(natural / unit.length));
+    return {
+      radius: ring.radius,
+      fontSize,
+      step: (2 * Math.PI) / count,
+      chars: Array.from({ length: count }, (_, i) => unit[i % unit.length]),
+      sprites: new Int16Array(count),
+      direction: ring.direction === "cw" ? 1 : -1,
+      periodMs: ring.duration * 1000,
+      scrollRad: (ring.scrollAngle * Math.PI) / 180,
+    };
+  });
+}
+
+// Renders each distinct character once; frames then blit + rotate sprites (GPU textured quads).
+function buildGlyphAtlas(chars: string[], fontSize: number, pxScale: number): GlyphAtlas {
+  const unique = Array.from(new Set(chars)).filter((c) => c.trim() !== "");
+  const cellW = Math.ceil(fontSize * 0.9 * pxScale);
+  const cellH = Math.ceil(fontSize * 1.4 * pxScale);
+  const baseline = Math.ceil(fontSize * 1.08 * pxScale);
+  const canvas = document.createElement("canvas");
+  canvas.width = cellW * Math.max(1, unique.length);
+  canvas.height = cellH;
+  const index = new Map<string, number>();
+  const ctx = canvas.getContext("2d");
+  if (ctx) {
+    ctx.font = `700 ${fontSize * pxScale}px ${PORTAL_FONT_FAMILY}`;
+    ctx.fillStyle = PORTAL_TEXT_COLOR;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "alphabetic";
+    unique.forEach((c, i) => {
+      ctx.fillText(c, i * cellW + cellW / 2, baseline);
+      index.set(c, i);
+    });
+  }
+  return { canvas, cellW, cellH, baseline, index };
 }
 
 export function ConcentricPortalCta({
@@ -1058,82 +1080,16 @@ export function ConcentricPortalCta({
   ...props
 }: CtaSectionProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const idPrefix = useId().replace(/:/g, "_");
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const circleRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const hintRef = useRef<HTMLDivElement>(null);
 
-  // Local scroll-driven progress (starts strictly at 0, no React re-render lag)
-  const progressRef = useRef(scrollProgress !== undefined ? scrollProgress : 0);
-  const manualMotionProgress = useMotionValue(progressRef.current);
-
-  useEffect(() => {
-    if (scrollProgress !== undefined) {
-      manualMotionProgress.set(scrollProgress);
-      progressRef.current = scrollProgress;
-    }
-  }, [scrollProgress, manualMotionProgress]);
-
-  // Wheel scrubbing: scroll over the section smoothly scrubs 0 -> 1 without triggering React re-renders
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-
-    const onWheel = (e: WheelEvent) => {
-      const cur = progressRef.current;
-      const delta = e.deltaY * 0.0014;
-      const next = Math.min(1, Math.max(0, cur + delta));
-
-      // Intercept wheel while expanding (down < 0.99) or collapsing (up > 0.01)
-      if ((e.deltaY > 0 && cur < 0.99) || (e.deltaY < 0 && cur > 0.01)) {
-        e.preventDefault();
-        progressRef.current = next;
-        manualMotionProgress.set(next);
-      }
-    };
-
-    el.addEventListener("wheel", onWheel, { passive: false });
-    return () => el.removeEventListener("wheel", onWheel);
-  }, [manualMotionProgress]);
-
-  // Touch swipe support for mobile
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-
-    let touchStartY = 0;
-
-    const onTouchStart = (e: TouchEvent) => {
-      touchStartY = e.touches[0].clientY;
-    };
-
-    const onTouchMove = (e: TouchEvent) => {
-      const currentY = e.touches[0].clientY;
-      const diff = touchStartY - currentY;
-      const cur = progressRef.current;
-      const delta = diff * 0.0035;
-      const next = Math.min(1, Math.max(0, cur + delta));
-
-      if ((diff > 0 && cur < 0.99) || (diff < 0 && cur > 0.01)) {
-        if (e.cancelable) e.preventDefault();
-        progressRef.current = next;
-        manualMotionProgress.set(next);
-      }
-      touchStartY = currentY;
-    };
-
-    el.addEventListener("touchstart", onTouchStart, { passive: true });
-    el.addEventListener("touchmove", onTouchMove, { passive: false });
-    return () => {
-      el.removeEventListener("touchstart", onTouchStart);
-      el.removeEventListener("touchmove", onTouchMove);
-    };
-  }, [manualMotionProgress]);
-
-  // High-performance spring: zero lag, snappy responsiveness, zero jitter
-  const smoothProgress = useSpring(manualMotionProgress, {
-    stiffness: 220,
-    damping: 32,
-    mass: 0.35,
-    restDelta: 0.0001,
-  });
+  // Scroll target (0..1). The render loop eases the displayed progress toward it.
+  const targetRef = useRef(scrollProgress !== undefined ? clamp01(scrollProgress) : 0);
+  const autoRotateRef = useRef(autoRotate);
+  const maxDiameterRef = useRef(520);
+  const loopRef = useRef<{ wake: () => void } | null>(null);
 
   // Screen-responsive max diameter
   const [maxDiameter, setMaxDiameter] = useState(520);
@@ -1153,24 +1109,280 @@ export function ConcentricPortalCta({
     return () => window.removeEventListener("resize", updateMax);
   }, []);
 
-  // Zoom in/out effect for the orbital lines as the center portal bursts through
-  const linesScale = useTransform(smoothProgress, [0, 0.85], [0.94, 1.22]);
+  useEffect(() => {
+    maxDiameterRef.current = maxDiameter;
+    loopRef.current?.wake();
+  }, [maxDiameter]);
 
-  // Scale & opacity: GPU-accelerated scaling (zero reflow/layout recalc)
-  const circleScale = useTransform(smoothProgress, (p) => {
-    if (p <= 0.03) return 0;
-    const t = Math.min(1, Math.max(0, (p - 0.03) / 0.72));
-    return 1 - Math.pow(1 - t, 2.4);
-  });
-  const circleOpacity = useTransform(smoothProgress, [0.03, 0.08], [0, 1]);
-  const circleDisplay = useTransform(smoothProgress, (p) => (p <= 0.03 ? "none" : "flex"));
+  useEffect(() => {
+    autoRotateRef.current = autoRotate;
+    loopRef.current?.wake();
+  }, [autoRotate]);
 
-  // Content opacity & scale inside circle
-  const contentOpacity = useTransform(smoothProgress, [0.32, 0.6], [0, 1]);
-  const contentScale = useTransform(smoothProgress, [0.32, 0.6], [0.88, 1]);
+  useEffect(() => {
+    if (scrollProgress !== undefined) {
+      targetRef.current = clamp01(scrollProgress);
+      loopRef.current?.wake();
+    }
+  }, [scrollProgress]);
 
-  // Bottom scroll cue opacity
-  const scrollHintOpacity = useTransform(smoothProgress, [0, 0.08], [1, 0]);
+  // Render loop: smoothing + canvas painting + direct DOM writes (no React re-renders)
+  useEffect(() => {
+    const section = containerRef.current;
+    const canvas = canvasRef.current;
+    const circle = circleRef.current;
+    const content = contentRef.current;
+    const hint = hintRef.current;
+    if (!section || !canvas || !circle || !content || !hint) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const layouts = buildRingLayouts(phrase);
+    const dotsCanvas = document.createElement("canvas");
+    const dotsCtx = dotsCanvas.getContext("2d");
+    let atlases = new Map<number, GlyphAtlas>();
+    let dotsKey = "";
+
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
+
+    let p = targetRef.current;
+    let appliedP = -1;
+    let ambientMs = 0;
+    let lastTs = 0;
+    let raf = 0;
+    let inView = true;
+
+    const rebuildAtlases = () => {
+      atlases = new Map();
+      for (const layout of layouts) {
+        let atlas = atlases.get(layout.fontSize);
+        if (!atlas) {
+          const chars = layouts
+            .filter((l) => l.fontSize === layout.fontSize)
+            .flatMap((l) => l.chars);
+          atlas = buildGlyphAtlas(chars, layout.fontSize, dpr * PORTAL_MAX_SCALE);
+          atlases.set(layout.fontSize, atlas);
+        }
+        for (let i = 0; i < layout.chars.length; i++) {
+          layout.sprites[i] = atlas.index.get(layout.chars[i]) ?? -1;
+        }
+      }
+    };
+
+    const applyProgress = (value: number) => {
+      const c = clamp01((value - 0.32) / 0.28);
+      circle.style.transform = `scale(${portalCircleScale(value)})`;
+      circle.style.opacity = String(clamp01((value - 0.03) / 0.05));
+      circle.style.visibility = value <= 0.03 ? "hidden" : "visible";
+      content.style.opacity = String(c);
+      content.style.transform = `scale(${0.88 + 0.12 * c})`;
+      hint.style.opacity = String(1 - clamp01(value / 0.08));
+    };
+
+    // Dotted orbits only change with the zoom level, so cache them between frames.
+    const drawDots = (scale: number, reach: number) => {
+      if (!dotsCtx) return;
+      const key = `${canvas.width}x${canvas.height}:${scale.toFixed(4)}`;
+      if (key !== dotsKey) {
+        if (dotsCanvas.width !== canvas.width || dotsCanvas.height !== canvas.height) {
+          dotsCanvas.width = canvas.width;
+          dotsCanvas.height = canvas.height;
+        }
+        dotsCtx.setTransform(1, 0, 0, 1, 0, 0);
+        dotsCtx.clearRect(0, 0, dotsCanvas.width, dotsCanvas.height);
+        dotsCtx.setTransform(dpr * scale, 0, 0, dpr * scale, (width / 2) * dpr, (height / 2) * dpr);
+        dotsCtx.strokeStyle = PORTAL_DOT_COLOR;
+        dotsCtx.lineWidth = 1;
+        dotsCtx.setLineDash([2, 7]);
+        for (const r of PORTAL_DOTTED_ORBITS) {
+          if (r * scale > reach) break;
+          dotsCtx.beginPath();
+          dotsCtx.arc(0, 0, r, 0, Math.PI * 2);
+          dotsCtx.stroke();
+        }
+        dotsKey = key;
+      }
+      ctx.drawImage(dotsCanvas, 0, 0);
+    };
+
+    const draw = (value: number) => {
+      if (!width || !height) return;
+      const scale = portalLinesScale(value);
+      const cx = width / 2;
+      const cy = height / 2;
+      const reach = Math.hypot(cx, cy) + 30; // farthest visible distance from center
+      const circleR = value > 0.08 ? (maxDiameterRef.current / 2) * portalCircleScale(value) : 0;
+      const k = scale * dpr;
+      const margin = 24;
+
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawDots(scale, reach);
+
+      for (const layout of layouts) {
+        const rs = layout.radius * scale;
+        if (rs > reach) continue; // ring is fully outside the section
+        if (rs + layout.fontSize * 1.1 * scale < circleR) continue; // hidden under the portal
+        const atlas = atlases.get(layout.fontSize);
+        if (!atlas) continue;
+
+        const ambient = autoRotateRef.current
+          ? layout.direction * ((ambientMs / layout.periodMs) % 1) * Math.PI * 2
+          : 0;
+        const base = ambient + layout.scrollRad * value;
+        const dw = atlas.cellW / (dpr * PORTAL_MAX_SCALE);
+        const dh = atlas.cellH / (dpr * PORTAL_MAX_SCALE);
+        const dy = -atlas.baseline / (dpr * PORTAL_MAX_SCALE);
+
+        for (let i = 0; i < layout.sprites.length; i++) {
+          const sprite = layout.sprites[i];
+          if (sprite < 0) continue;
+          const a = base + i * layout.step;
+          const sn = Math.sin(a);
+          const cs = Math.cos(a);
+          const x = cx + sn * rs;
+          const y = cy - cs * rs;
+          if (x < -margin || x > width + margin || y < -margin || y > height + margin) continue;
+          ctx.setTransform(cs * k, sn * k, -sn * k, cs * k, x * dpr, y * dpr);
+          ctx.drawImage(
+            atlas.canvas,
+            sprite * atlas.cellW,
+            0,
+            atlas.cellW,
+            atlas.cellH,
+            -dw / 2,
+            dy,
+            dw,
+            dh
+          );
+        }
+      }
+    };
+
+    // Returns true while another frame is needed
+    const step = (now: number) => {
+      const dt = lastTs ? Math.min(0.064, (now - lastTs) / 1000) : 0;
+      lastTs = now;
+
+      const target = targetRef.current;
+      if (p !== target) {
+        p += (target - p) * (1 - Math.exp(-dt * PORTAL_SMOOTHING));
+        if (Math.abs(target - p) < 0.0004) p = target;
+      }
+      if (autoRotateRef.current) ambientMs += dt * 1000;
+
+      if (p !== appliedP) {
+        applyProgress(p);
+        appliedP = p;
+      }
+      draw(p);
+      return p !== target || autoRotateRef.current;
+    };
+
+    const tick = (now: number) => {
+      raf = 0;
+      if (step(now) && inView) {
+        raf = requestAnimationFrame(tick);
+      } else {
+        lastTs = 0;
+      }
+    };
+
+    const wake = () => {
+      if (!raf && inView) raf = requestAnimationFrame(tick);
+    };
+    loopRef.current = { wake };
+
+    const resize = () => {
+      const nextDpr = Math.min(window.devicePixelRatio || 1, 2);
+      width = section.clientWidth;
+      height = section.clientHeight;
+      canvas.width = Math.max(1, Math.round(width * nextDpr));
+      canvas.height = Math.max(1, Math.round(height * nextDpr));
+      dotsKey = "";
+      if (nextDpr !== dpr || atlases.size === 0) {
+        dpr = nextDpr;
+        rebuildAtlases();
+      }
+      draw(p); // resizing clears the canvas; repaint immediately to avoid a flash
+      wake();
+    };
+
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(section);
+    const intersectionObserver = new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      if (inView) wake();
+    });
+    intersectionObserver.observe(section);
+
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    rebuildAtlases();
+    resize();
+
+    return () => {
+      loopRef.current = null;
+      if (raf) cancelAnimationFrame(raf);
+      resizeObserver.disconnect();
+      intersectionObserver.disconnect();
+    };
+  }, [phrase]);
+
+  // Wheel scrubbing: scroll over the section smoothly scrubs 0 -> 1 without React re-renders
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const onWheel = (e: WheelEvent) => {
+      const cur = targetRef.current;
+      const next = clamp01(cur + e.deltaY * 0.0014);
+
+      // Intercept wheel while expanding (down < 0.99) or collapsing (up > 0.01)
+      if ((e.deltaY > 0 && cur < 0.99) || (e.deltaY < 0 && cur > 0.01)) {
+        e.preventDefault();
+        targetRef.current = next;
+        loopRef.current?.wake();
+      }
+    };
+
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, []);
+
+  // Touch swipe support for mobile
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    let touchStartY = 0;
+
+    const onTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      const currentY = e.touches[0].clientY;
+      const diff = touchStartY - currentY;
+      const cur = targetRef.current;
+      const next = clamp01(cur + diff * 0.0035);
+
+      if ((diff > 0 && cur < 0.99) || (diff < 0 && cur > 0.01)) {
+        if (e.cancelable) e.preventDefault();
+        targetRef.current = next;
+        loopRef.current?.wake();
+      }
+      touchStartY = currentY;
+    };
+
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
+    return () => {
+      el.removeEventListener("touchstart", onTouchStart);
+      el.removeEventListener("touchmove", onTouchMove);
+    };
+  }, []);
 
   // Split CTA text into [ Left ] [ Right • ] segments
   const [leftLabel, rightLabel] = useMemo(() => {
@@ -1196,18 +1408,6 @@ export function ConcentricPortalCta({
       {...props}
     >
       <div className="relative w-full h-full flex items-center justify-center overflow-hidden bg-[#08080a] text-white">
-        {/* Dynamic Keyframes for smooth continuous ambient rotation */}
-        <style>{`
-          @keyframes portal-orbit-cw {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-          }
-          @keyframes portal-orbit-ccw {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(-360deg); }
-          }
-        `}</style>
-
         {/* Top Monospace Code Matrix Texture */}
         <div className="absolute inset-x-0 top-0 h-44 sm:h-56 pointer-events-none overflow-hidden select-none opacity-20 font-mono text-[9px] sm:text-[11px] text-neutral-400 z-10">
           <div className="p-3 sm:p-5 space-y-1.5 uppercase tracking-[0.22em] leading-relaxed">
@@ -1227,131 +1427,95 @@ export function ConcentricPortalCta({
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#08080a]/50 to-[#08080a]" />
         </div>
 
-        {/* Concentric Orbital Rings & Monospace Text (with smooth zoom in/out effect) */}
-        <motion.div
-          style={{ scale: linesScale }}
-          className="absolute inset-0 flex items-center justify-center pointer-events-none select-none origin-center"
-        >
-          <svg
-            viewBox="-1400 -1400 2800 2800"
-            className="w-[1800px] h-[1800px] sm:w-[2400px] sm:h-[2400px] lg:w-[2800px] lg:h-[2800px] shrink-0"
-          >
-            <defs>
-              {PORTAL_RINGS.map((ring) => (
-                <path
-                  key={ring.id}
-                  id={`${idPrefix}-${ring.id}`}
-                  d={`M 0 -${ring.radius} A ${ring.radius} ${ring.radius} 0 1 1 0 ${ring.radius} A ${ring.radius} ${ring.radius} 0 1 1 0 -${ring.radius}`}
-                />
-              ))}
-            </defs>
-
-            {/* Dotted Circular Orbits */}
-            {PORTAL_DOTTED_ORBITS.map((r, i) => (
-              <circle
-                key={`orbit-dot-${i}`}
-                cx="0"
-                cy="0"
-                r={r}
-                fill="none"
-                stroke="rgba(255, 255, 255, 0.22)"
-                strokeWidth="1"
-                strokeDasharray="2 7"
-              />
-            ))}
-
-            {/* Rotating Text Rings */}
-            {PORTAL_RINGS.map((ring) => (
-              <OrbitalTextRing
-                key={ring.id}
-                ring={ring}
-                idPrefix={idPrefix}
-                smoothProgress={smoothProgress}
-                phrase={phrase}
-                autoRotate={autoRotate}
-              />
-            ))}
-          </svg>
-        </motion.div>
+        {/* Concentric orbital rings & monospace text (single canvas, zoom handled in the draw loop) */}
+        <canvas
+          ref={canvasRef}
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full pointer-events-none select-none"
+        />
 
         {/* Expanding White/Cream Circle Portal ("The Eye") */}
-        <motion.div
-          style={{
-            width: maxDiameter,
-            height: maxDiameter,
-            scale: circleScale,
-            opacity: circleOpacity,
-            display: circleDisplay,
-            willChange: "transform, opacity",
-          }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#f1eee7] text-neutral-900 flex-col items-center justify-center text-center shadow-[0_0_80px_rgba(0,0,0,0.85)] z-20 pointer-events-auto select-none overflow-hidden origin-center"
-        >
-          <motion.div
-            style={{ opacity: contentOpacity, scale: contentScale }}
-            className="flex flex-col items-center justify-center max-w-[360px] sm:max-w-[440px] w-full p-6 sm:p-10"
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+          <div
+            ref={circleRef}
+            style={{
+              width: maxDiameter,
+              height: maxDiameter,
+              transform: "scale(0)",
+              opacity: 0,
+              visibility: "hidden",
+              willChange: "transform, opacity",
+            }}
+            className="shrink-0 rounded-full bg-[#f1eee7] text-neutral-900 flex flex-col items-center justify-center text-center shadow-[0_0_80px_rgba(0,0,0,0.85)] pointer-events-auto select-none overflow-hidden"
           >
-            {/* Elegant Eyebrow Pill with Sparkles Icon */}
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-900/[0.06] border border-neutral-900/10 mb-3 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
-              <Sparkles className="size-3 text-neutral-800 animate-pulse" />
-              <span className="text-[10px] sm:text-xs font-mono font-medium tracking-wider text-neutral-700 uppercase">
-                {subheading || "Access Portal"}
-              </span>
-            </div>
+            <div
+              ref={contentRef}
+              style={{ opacity: 0, transform: "scale(0.88)" }}
+              className="flex flex-col items-center justify-center max-w-[360px] sm:max-w-[440px] w-full p-6 sm:p-10"
+            >
+              {/* Elegant Eyebrow Pill with Sparkles Icon */}
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-900/[0.06] border border-neutral-900/10 mb-3 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+                <Sparkles className="size-3 text-neutral-800 animate-pulse" />
+                <span className="text-[10px] sm:text-xs font-mono font-medium tracking-wider text-neutral-700 uppercase">
+                  {subheading || "Access Portal"}
+                </span>
+              </div>
 
-            {/* Core Heading */}
-            <h2 className="text-2xl sm:text-4xl md:text-[42px] font-bold text-neutral-950 tracking-tight leading-[1.12]">
-              {heading}
-            </h2>
+              {/* Core Heading */}
+              <h2 className="text-2xl sm:text-4xl md:text-[42px] font-bold text-neutral-950 tracking-tight leading-[1.12]">
+                {heading}
+              </h2>
 
-            {/* Optional Statement / Subtext */}
-            {statement ? (
-              <p className="mt-2 text-xs sm:text-sm text-neutral-600 line-clamp-2 max-w-[320px] font-normal leading-relaxed">
-                {statement}
-              </p>
-            ) : null}
+              {/* Optional Statement / Subtext */}
+              {statement ? (
+                <p className="mt-2 text-xs sm:text-sm text-neutral-600 line-clamp-2 max-w-[320px] font-normal leading-relaxed">
+                  {statement}
+                </p>
+              ) : null}
 
-            {/* High-Tech Action Button & Micro-Trust Footnote */}
-            <div className="mt-5 sm:mt-7 flex flex-col items-center gap-2.5">
-              <a
-                href={ctaHref}
-                onClick={(e) => {
-                  if (ctaHref === "#") e.preventDefault();
-                  onCtaClick?.();
-                }}
-                className="inline-flex items-center gap-2 rounded-full bg-neutral-900 hover:bg-neutral-800 text-white pl-4 pr-1.5 py-1.5 shadow-[0_4px_16px_rgba(0,0,0,0.2)] border border-neutral-700/50 transition-all duration-200 active:scale-95 group cursor-pointer"
-              >
-                <div className="flex items-center gap-2 font-mono text-xs sm:text-sm font-semibold tracking-wider uppercase">
-                  <span>{leftLabel}</span>
-                  <span className="h-3 w-px bg-neutral-700" />
-                  <span className="flex items-center gap-1.5">
-                    <span>{rightLabel}</span>
-                    <span
-                      className="size-1.5 rounded-full animate-pulse"
-                      style={{ backgroundColor: activeAccent }}
-                    />
-                  </span>
+              {/* High-Tech Action Button & Micro-Trust Footnote */}
+              <div className="mt-5 sm:mt-7 flex flex-col items-center gap-2.5">
+                <a
+                  href={ctaHref}
+                  onClick={(e) => {
+                    if (ctaHref === "#") e.preventDefault();
+                    onCtaClick?.();
+                  }}
+                  className="inline-flex items-center gap-2 rounded-full bg-neutral-900 hover:bg-neutral-800 text-white pl-4 pr-1.5 py-1.5 shadow-[0_4px_16px_rgba(0,0,0,0.2)] border border-neutral-700/50 transition-all duration-200 active:scale-95 group cursor-pointer"
+                >
+                  <div className="flex items-center gap-2 font-mono text-xs sm:text-sm font-semibold tracking-wider uppercase">
+                    <span>{leftLabel}</span>
+                    <span className="h-3 w-px bg-neutral-700" />
+                    <span className="flex items-center gap-1.5">
+                      <span>{rightLabel}</span>
+                      <span
+                        className="size-1.5 rounded-full animate-pulse"
+                        style={{ backgroundColor: activeAccent }}
+                      />
+                    </span>
+                  </div>
+                  <div className="size-7 sm:size-8 rounded-full bg-neutral-800 group-hover:bg-neutral-700 flex items-center justify-center transition-colors">
+                    <ArrowRight className="size-3.5 sm:size-4 stroke-[2.5] text-neutral-200 group-hover:text-white group-hover:translate-x-0.5 transition-transform" />
+                  </div>
+                </a>
+
+                <div className="flex items-center gap-1.5 text-[10px] sm:text-[11px] font-mono text-neutral-500 font-medium">
+                  <Check className="size-3 text-emerald-600 stroke-[3]" />
+                  <span>No credit card required · Instant setup</span>
                 </div>
-                <div className="size-7 sm:size-8 rounded-full bg-neutral-800 group-hover:bg-neutral-700 flex items-center justify-center transition-colors">
-                  <ArrowRight className="size-3.5 sm:size-4 stroke-[2.5] text-neutral-200 group-hover:text-white group-hover:translate-x-0.5 transition-transform" />
-                </div>
-              </a>
-
-              <div className="flex items-center gap-1.5 text-[10px] sm:text-[11px] font-mono text-neutral-500 font-medium">
-                <Check className="size-3 text-emerald-600 stroke-[3]" />
-                <span>No credit card required · Instant setup</span>
               </div>
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
         {/* Bottom Scroll Cue */}
-        <motion.div
-          style={{ opacity: scrollHintOpacity }}
+        <div
+          ref={hintRef}
           className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-neutral-500 text-[10px] tracking-widest font-mono uppercase pointer-events-none select-none z-10"
         >
           <span>Scroll to expand</span>
           <ChevronDown className="size-3.5 animate-bounce" />
-        </motion.div>
+        </div>
       </div>
     </section>
   );
