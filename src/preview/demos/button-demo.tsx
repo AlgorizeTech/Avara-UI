@@ -37,7 +37,7 @@ export default function ButtonDemo({
   layout = "basic",
   color = "primary",
 }: {
-  layout?: "basic" | "slide-icon" | "slide-text" | "icon-only" | "social" | "shards-panel" | "pricing";
+  layout?: "basic" | "slide-icon" | "slide-text" | "icon-only" | "social" | "shards-panel" | "pricing" | "auth-glass";
   color?: string;
 }) {
   const themeStyle = getButtonThemeStyle(color);
@@ -325,6 +325,38 @@ export default function ButtonDemo({
           </Button>
           <Button variant="pricing-typographic-muted">
             Muted Typographic
+          </Button>
+        </div>
+      )}
+
+      {layout === "auth-glass" && (
+        <div className="flex flex-wrap items-center justify-center gap-4 max-w-4xl mx-auto py-6">
+          <Button variant="auth-social" iconLeft={<GitHubIcon />}>
+            Auth Social
+          </Button>
+          <Button variant="glass-social" iconLeft={<GoogleIcon />}>
+            Glass Social
+          </Button>
+          <Button variant="liquid-glass-primary" showArrow>
+            Liquid Glass Primary
+          </Button>
+          <Button variant="liquid-glass-social" iconLeft={<GoogleIcon />}>
+            Liquid Glass Social
+          </Button>
+          <Button variant="scenic-primary" showArrow>
+            Scenic Primary
+          </Button>
+          <Button variant="scenic-secondary">
+            Scenic Secondary
+          </Button>
+          <Button variant="scenic-option" iconLeft={<AppleIcon />}>
+            Scenic Option
+          </Button>
+          <Button variant="ribbon-primary" showArrow>
+            Ribbon Primary
+          </Button>
+          <Button variant="ribbon-social" iconLeft={<GoogleIcon />}>
+            Ribbon Social
           </Button>
         </div>
       )}

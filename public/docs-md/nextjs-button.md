@@ -196,6 +196,37 @@ export default function PricingButtonsDemo() {
   );
 };`;
 
+export const usageAuthGlass = `import Button from "@/components/custom/blocks/Button";
+
+export default function AuthAndGlassButtonsDemo() {
+  return (
+    
+      }>
+        Auth Social
+      
+      }>
+        Glass Social
+
+        Liquid Glass Primary
+      
+      }>
+        Liquid Glass Social
+
+        Scenic Primary
+
+        Scenic Secondary
+      
+      }>
+        Scenic Option
+
+        Ribbon Primary
+      
+      }>
+        Ribbon Social
+
+  );
+};`;
+
 ## Installation
 
 Add the component by URL — no setup needed:
@@ -233,11 +264,11 @@ npx shadcn@latest add @avara-ui/button
 
           variant
 
-          "outline" | "slide-icon" | "slide-icon-loop" | "slide-text" | "3d" | "shards-control" | "pricing-primary" | "pricing-dark" | "pricing-outline" | "pricing-glow" | "pricing-muted" | "pricing-typographic" | "pricing-typographic-muted" | ...
+          "outline" | "default" | "secondary" | "destructive" | "ghost" | "link" | "slide-icon" | "slide-icon-loop" | "slide-text" | "3d" | "shards-control" | "auth-social" | "glass-social" | "liquid-glass-primary" | "liquid-glass-social" | "scenic-primary" | "scenic-secondary" | "scenic-option" | "ribbon-primary" | "ribbon-social" | "pricing-primary" | "pricing-dark" | "pricing-outline" | "pricing-glow" | "pricing-muted" | "pricing-typographic" | "pricing-typographic-muted" | ...
 
           "outline"
         
-        Choose between 4-side border glow, sliding rounded icon, looping rounded icon, vertical text roll, raised 3D press, parameter control tiles, or pricing CTA surfaces ("pricing-primary", "pricing-dark", "pricing-outline", "pricing-glow", "pricing-muted", "pricing-typographic", "pricing-typographic-muted").
+        Choose between 4-side border glow, sliding/looping icon, vertical text roll, raised 3D press, parameter control tiles, Auth &amp; Glass surfaces ("auth-social", "glass-social", "liquid-glass-primary", "liquid-glass-social", "scenic-primary", "scenic-secondary", "scenic-option", "ribbon-primary", "ribbon-social"), or pricing CTA surfaces ("pricing-primary", "pricing-dark", "pricing-outline", "pricing-glow", "pricing-muted", "pricing-typographic", "pricing-typographic-muted").
 
           controlType
 
