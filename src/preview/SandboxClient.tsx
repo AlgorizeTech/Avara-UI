@@ -272,6 +272,7 @@ export function SandboxClient({ name }: { name: string }) {
   const isZeroPadded =
     name === "designs-toolkit" ||
     name === "falling-tags" ||
+    name === "hero-breathe" ||
     name === "navbar" ||
     name === "pricing" ||
     name === "top-destinations";

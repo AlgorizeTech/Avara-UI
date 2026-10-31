@@ -895,19 +895,28 @@ export default function Hero() {
 }
 `;
 
+export const usageBreathe = `import Link from "next/link";
+
+export default function Hero() {
+  return (
+
+  );
+}
+`;
+
 ### Installation
 
 Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest add https://avaraui.com/r/bento-cascade-hero.json
+npx shadcn@latest add https://avaraui.com/r/breathe-hero.json
 ```
 
 Or register the @avara-ui registry once per project and add it by name:
 
 ```bash
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/bento-cascade-hero
+npx shadcn@latest add @avara-ui/breathe-hero
 ```
 
 ### Props Reference
@@ -919,11 +928,11 @@ npx shadcn@latest add @avara-ui/bento-cascade-hero
 
           variant
 
-          "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "facility" | "vortex" | "orbit" | "bento-cascade"
+          "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "facility" | "vortex" | "orbit" | "bento-cascade" | "breathe"
 
           "bounce"
 
-          The layout & animation style. "bento-cascade" renders an infinite vertical bento marquee with staggered columns, rich media tiles, and soft edge fade masks; "orbit" / "orbit-gallery" renders revolving 3D circular photo ring with upright cards & smooth hover pause; "bounce" uses spring word motion; "typing" uses typewriter effect; "slider" renders split 2-column hero with continuous marquee; "glow-arc" / "pet-shop" renders pet care hero; "doctor" renders medical test kits hero; "facility" renders architectural CAD blueprint grid hero with interactive morphing shape; "vortex" renders atmospheric cyclone radar simulation with animated rotating canvas and telemetry HUD.
+          The layout & animation style. "breathe" renders an elegant serif headline with a staggered 5-card curved arch and scroll-zoom focus motion; "bento-cascade" renders an infinite vertical bento marquee with staggered columns, rich media tiles, and soft edge fade masks; "orbit" / "orbit-gallery" renders revolving 3D circular photo ring with upright cards & smooth hover pause; "bounce" uses spring word motion; "typing" uses typewriter effect; "slider" renders split 2-column hero with continuous marquee; "glow-arc" / "pet-shop" renders pet care hero; "doctor" renders medical test kits hero; "facility" renders architectural CAD blueprint grid hero with interactive morphing shape; "vortex" renders atmospheric cyclone radar simulation with animated rotating canvas and telemetry HUD.
 
           typingWords
 

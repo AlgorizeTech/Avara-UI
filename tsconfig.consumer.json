@@ -48,6 +48,7 @@
     "src/components/custom/blocks/BookAppointmentBlock.tsx",
     "src/components/custom/blocks/BookingCardBlock.tsx",
     "src/components/custom/blocks/BreadcrumbBlock.tsx",
+    "src/components/custom/blocks/BreatheHeroBlock.tsx",
     "src/components/custom/blocks/Button.tsx",
     "src/components/custom/blocks/Calendar.tsx",
     "src/components/custom/blocks/CardBlock.tsx",

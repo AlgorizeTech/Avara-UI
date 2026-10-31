@@ -6,7 +6,7 @@ export const metadata = pageMetadata({
 
 # Documentation
 
-Avara UI is a library of 191 React components installed straight
+Avara UI is a library of 192 React components installed straight
 into your project by the shadcn CLI — no wrapper package, no lock-in.
 
     Introduction

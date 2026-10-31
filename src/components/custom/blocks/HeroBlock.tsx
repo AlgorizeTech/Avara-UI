@@ -4,6 +4,7 @@ import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState } from 
 import { cn } from "@/lib/utils";
 import { AnimatedTypographyBlock, type PrefixPosition } from "./AnimatedTypographyBlock";
 import { BentoCascadeHero, type BentoCascadeCardItem } from "./BentoCascadeHeroBlock";
+import { BreatheHero } from "./BreatheHeroBlock";
 import { ArrowRight, ArrowUpRight, Check, Copy, Sparkles, Terminal, Star, Code, Mail, FileText, Heart, ShieldCheck, ShoppingBag, Package } from "lucide-react";
 
 /* ═══════════════════════════════════════════════
@@ -53,7 +54,11 @@ export interface HeroBlockProps extends React.HTMLAttributes<HTMLElement> {
     | "orbit-ring"
     | "orbit-hero"
     | "bento-cascade"
-    | "cascade";
+    | "cascade"
+    | "breathe"
+    | "hero-breathe"
+    | "curved-cards"
+    | "arch";
   /** Optional badge text displayed inside the top pill badge */
   badgeText?: string;
   /** Badge link URL */
@@ -648,6 +653,75 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
           secondaryActionHref={secondaryActionHref === "https://github.com/AlgorizeTech" ? "#destinations" : secondaryActionHref}
           cards={cards}
           images={bentoImages}
+          accent={color}
+          linkComponent={Link}
+          imageComponent={imageComponent}
+          className={className}
+          style={style}
+          {...props}
+        />
+      );
+    }
+
+    /* ═════════════════════════════════════════
+       VARIANT: BREATHE CURVED ARCH MOTION HERO
+       ═════════════════════════════════════════ */
+    if (
+      variant === "breathe" ||
+      variant === "hero-breathe" ||
+      variant === "curved-cards" ||
+      variant === "arch"
+    ) {
+      const breatheImages =
+        images && images.length > 0
+          ? images
+          : sliderImages && sliderImages !== DEFAULT_SLIDER_IMAGES
+            ? sliderImages
+            : undefined;
+
+      const breatheBadgeText =
+        badgeText === "Next-Gen React Components"
+          ? "Interactive Motion Architecture"
+          : badgeText;
+      const breatheBadgeHref = badgeHref || "/docs";
+      const breatheSecLabel =
+        secondaryActionLabel === "Explore Blocks"
+          ? "View Showroom"
+          : secondaryActionLabel;
+      const breatheSecHref =
+        secondaryActionHref === "#features" ? "#showroom" : secondaryActionHref;
+
+      return (
+        <BreatheHero
+          ref={ref as any}
+          title={
+            title ||
+            (titlePrefix === "Build " ? "Crafted for depth," : titlePrefix) ||
+            "Crafted for depth,"
+          }
+          titleAccent={
+            titleAccent || (titleSuffix ? titleSuffix : "built for motion.")
+          }
+          badgeText={breatheBadgeText}
+          badgeHref={breatheBadgeHref}
+          description={
+            subtitle ===
+            "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion."
+              ? "Create immersive digital experiences where fluid scroll choreography, spatial architecture, and tactile visual polish move in effortless harmony."
+              : subtitle
+          }
+          buttonLabel={
+            primaryActionLabel === "Browse Components"
+              ? "Start Exploring"
+              : primaryActionLabel
+          }
+          buttonHref={
+            primaryActionHref === "/docs" ? "/docs" : primaryActionHref
+          }
+          secondaryButtonLabel={breatheSecLabel}
+          secondaryButtonHref={breatheSecHref}
+          cards={cards as any}
+          images={breatheImages}
           accent={color}
           linkComponent={Link}
           imageComponent={imageComponent}
@@ -1950,4 +2024,6 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
 );
 
 HeroBlock.displayName = "HeroBlock";
+export { BentoCascadeHero, type BentoCascadeCardItem } from "./BentoCascadeHeroBlock";
+export { BreatheHero, type BreatheCardItem, type BreatheHeroProps } from "./BreatheHeroBlock";
 export default HeroBlock;

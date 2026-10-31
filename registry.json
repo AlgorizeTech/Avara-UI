@@ -563,6 +563,39 @@
       "docs": "Named exports: BreadcrumbBlock, getThemeStyles (from breadcrumb-theme.ts, which installs alongside). `items` take { label, href?, icon? }; `maxItems` collapses the middle into an ellipsis past that count. Separator styles: classic | slash | solid | ghost. Renders next/link, so it needs edits outside Next.js."
     },
     {
+      "name": "breathe-hero",
+      "type": "registry:component",
+      "title": "Breathe Arch Stagger Hero",
+      "author": "AlgorizeTech",
+      "description": "An ethereal hero section featuring an elegant serif headline and a staggered 5-card curved arch. On scroll, the center card scales up to 1.4x while surrounding cards gently drift outward and dim, creating a breathtaking focal zoom.",
+      "categories": [
+        "marketing",
+        "layout",
+        "scroll"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://avaraui.com/r/button.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/BreatheHeroBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/BreatheHeroBlock.tsx"
+        },
+        {
+          "path": "src/lib/accent.ts",
+          "type": "registry:component",
+          "target": "lib/accent.ts"
+        }
+      ],
+      "docs": "Named export: BreatheHero (also available as variant='breathe' in HeroBlock). Pass `title`, `titleAccent`, `description`, `buttonLabel`, `buttonHref`, `cards`, `images`, `scrollMode`, `scrollScale`, `stagger`, `captions`, and `accent`."
+    },
+    {
       "name": "button",
       "type": "registry:component",
       "title": "Button",
@@ -2337,6 +2370,7 @@
       "registryDependencies": [
         "https://avaraui.com/r/animated-typography.json",
         "https://avaraui.com/r/bento-cascade-hero.json",
+        "https://avaraui.com/r/breathe-hero.json",
         "utils"
       ],
       "files": [

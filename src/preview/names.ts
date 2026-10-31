@@ -85,6 +85,7 @@ export const sandboxNames = [
   "half-stars",
   "heart-signal",
   "hero-bento-cascade",
+  "hero-breathe",
   "hero-carousel",
   "hero-data",
   "hero",
