@@ -2,9 +2,15 @@ export const metadata = docsPageMetadata("cta-section");
 
 # CTA Section
 
-An interconnected, conversion-focused **Brand Pillars** call-to-action component built for agencies, SaaS platforms, and studios. Rather than presenting services or value propositions as plain bullet points, this section transforms them into an interactive ecosystem with synchronized animated scorecards, live progress meters, and active highlight popovers.
+An interconnected, conversion-focused call-to-action block designed for modern web applications, agencies, and SaaS platforms. Features high-impact interactive systems including the **Concentric Portal** (scroll-driven expanding circular lens with gyroscopic monospace orbital text and segmented actions inspired by contentarchitecture.dev) and **Brand Pillars** (synchronized animated scorecards and live synergy meters).
 
-Hovering or tapping any pillar card on the left automatically synchronizes with the right scorecard canvas, animating scores and progress bars to illustrate holistic brand synergy.
+export const usageConcentricPortal = `import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
+
+export default function ConcentricPortalExample() {
+  return (
+    
+  );
+}`;
 
 export const usageBrandPillars = `import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
 
@@ -53,9 +59,24 @@ Discover the key capabilities that make this component an excellent choice for m
         Description
 
         variant
-        "brand-pillars" | "minimal" | "split"
+        "brand-pillars" | "minimal" | "split" | "concentric-portal" | "orbital-lens"
         "brand-pillars"
-        Visual mode. "brand-pillars" renders the interactive two-panel system with scorecard.
+        Visual mode. "concentric-portal" renders the scroll-driven expanding circular lens with gyroscopic monospace orbital text and segmented actions; "brand-pillars" renders the interactive scorecard ecosystem.
+
+        phrase
+        string
+        "THE CONTENT ARCHITECTURE"
+        Monospace uppercase text string repeated around the concentric orbital rings in concentric-portal variant.
+
+        autoRotate
+        boolean
+        true
+        Controls continuous automatic ambient spinning of the concentric text rings. Set to false to keep them static.
+
+        scrollProgress
+        number
+        undefined
+        Optional manual scroll progress (0 to 1). When provided, locks the concentric portal expansion to a specific progression without requiring scroll track.
 
         color
         string

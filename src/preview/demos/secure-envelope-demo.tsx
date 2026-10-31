@@ -37,7 +37,7 @@ export default function SecureEnvelopeDemo({
   return (
     <div
       style={containerStyle}
-      className="w-full flex items-center justify-center min-h-[250px] min-[400px]:min-h-[280px] sm:min-h-[540px] p-2 sm:p-4 py-3 sm:py-8 overflow-visible"
+      className="w-full flex items-center justify-center min-h-[270px] min-[400px]:min-h-[295px] sm:min-h-[540px] px-1 sm:px-4 py-4 sm:py-8 overflow-visible"
     >
       <SecureEnvelope {...props} />
     </div>

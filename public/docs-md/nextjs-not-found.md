@@ -14,6 +14,30 @@ export default function NotFound() {
   );
 }`;
 
+export const usageAnimatedBeam = `import { NotFoundSection } from "@/components/custom/blocks/NotFoundBlock";
+
+export default function NotFound() {
+  return (
+    
+  );
+}`;
+
+export const usageQuantumHologram = `import { NotFoundSection } from "@/components/custom/blocks/NotFoundBlock";
+
+export default function NotFound() {
+  return (
+    
+  );
+}`;
+
+export const usageHyperspace = `import { NotFoundSection } from "@/components/custom/blocks/NotFoundBlock";
+
+export default function NotFound() {
+  return (
+    
+  );
+}`;
+
 ## Installation
 
 Add the component by URL — no setup needed:
@@ -33,17 +57,23 @@ npx shadcn@latest add @avara-ui/not-found
 
 Discover the key capabilities of the `NotFoundSection` component:
 
+    Animated Conic Laser Border & Halo
+    360° rotating high-speed conic gradient beam border paired with a diffuse outer glow halo for a futuristic cyberpunk visual presence.
+
+    Shifting Multi-Color Typography
+    Floating 404 heading with animated chromatic color wave transition and real-time diffuse projection reflections.
+
     Ambient Radial Glow & Cyber Grid
     Dual glowing radial light sources with a subtle masked 24px cyber grid overlay for a cosmic depth effect.
 
     100% Screen & Device Responsive
     Adaptive fluid clamp typography and flexible touch-friendly action buttons that fit effortlessly on 320px mobile up to 4K displays.
 
-    Animated Compass Indicator
-    Continuous subtle gyro rotation inside the status pill gives the missing page an engaging, alive feel.
+    Diagnostic Telemetry Bar
+    High-tech monospace route drop monitor with real-time pulsing signal beacon indicating network coordinates status.
 
-    Quick Navigation Shortcuts
-    Built-in side-by-side shortcut pills help users immediately jump to documentation, components, or search.
+    Theme Accent Color Switching
+    Full live CSS variable integration (`--primary`), allowing interactive accent palette switching across light and dark modes.
 
 ## Props Reference
 
@@ -52,10 +82,20 @@ Discover the key capabilities of the `NotFoundSection` component:
         Default
         Description
 
+        variant
+        "hyperspace" | "animated-beam-border"
+        "hyperspace"
+        Visual style variant: classic cosmic hyperspace or rotating neon laser beam border with shifting color.
+
+        color
+        string
+        undefined
+        Custom theme accent color applied live across borders, badges, buttons, and glow effects.
+
         code
         string
         "404"
-        Primary numerical status code heading rendered in elegant serif typography.
+        Primary numerical status code heading rendered in elegant serif typography or shifting gradient.
 
         badge
         string

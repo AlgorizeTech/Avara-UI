@@ -1,14 +1,23 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useId, useMemo } from "react";
 import {
   Palette,
   Monitor,
   MessageSquare,
   TrendingUp,
   ArrowRight,
+  ChevronDown,
+  Sparkles,
+  Check,
 } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import {
+  motion,
+  AnimatePresence,
+  useTransform,
+  useSpring,
+  useMotionValue,
+} from "motion/react";
 import { cn } from "@/lib/utils";
 
 // Animated counter for scores and summary percentage
@@ -70,7 +79,12 @@ export interface PillarItem {
   icon?: React.ReactNode;
 }
 
-export type CtaSectionVariant = "brand-pillars" | "minimal" | "split";
+export type CtaSectionVariant =
+  | "brand-pillars"
+  | "minimal"
+  | "split"
+  | "concentric-portal"
+  | "orbital-lens";
 
 export interface CtaSectionProps extends React.HTMLAttributes<HTMLElement> {
   variant?: CtaSectionVariant;
@@ -88,6 +102,10 @@ export interface CtaSectionProps extends React.HTMLAttributes<HTMLElement> {
   onPillarChange?: (id: string) => void;
   rounded?: string | number;
   className?: string;
+  // Concentric Portal / Orbital Lens props
+  phrase?: string;
+  scrollProgress?: number;
+  autoRotate?: boolean;
 }
 
 // ==========================================
@@ -942,6 +960,407 @@ function SplitCta({
 }
 
 // ==========================================
+// CONCENTRIC PORTAL / ORBITAL LENS CTA (Reference: contentarchitecture.dev)
+// ==========================================
+const PORTAL_RINGS = [
+  { id: "ring-1", radius: 75, direction: "cw" as const, duration: 55, scrollAngle: 45 },
+  { id: "ring-2", radius: 130, direction: "ccw" as const, duration: 70, scrollAngle: -60 },
+  { id: "ring-3", radius: 190, direction: "cw" as const, duration: 85, scrollAngle: 75 },
+  { id: "ring-4", radius: 255, direction: "ccw" as const, duration: 105, scrollAngle: -95 },
+  { id: "ring-5", radius: 325, direction: "cw" as const, duration: 125, scrollAngle: 115 },
+  { id: "ring-6", radius: 400, direction: "ccw" as const, duration: 150, scrollAngle: -135 },
+  { id: "ring-7", radius: 480, direction: "cw" as const, duration: 175, scrollAngle: 155 },
+  { id: "ring-8", radius: 565, direction: "ccw" as const, duration: 205, scrollAngle: -175 },
+  { id: "ring-9", radius: 655, direction: "cw" as const, duration: 235, scrollAngle: 195 },
+  { id: "ring-10", radius: 750, direction: "ccw" as const, duration: 270, scrollAngle: -215 },
+  { id: "ring-11", radius: 850, direction: "cw" as const, duration: 310, scrollAngle: 235 },
+  { id: "ring-12", radius: 955, direction: "ccw" as const, duration: 350, scrollAngle: -255 },
+  { id: "ring-13", radius: 1065, direction: "cw" as const, duration: 395, scrollAngle: 275 },
+  { id: "ring-14", radius: 1180, direction: "ccw" as const, duration: 445, scrollAngle: -295 },
+  { id: "ring-15", radius: 1300, direction: "cw" as const, duration: 500, scrollAngle: 315 },
+];
+
+const PORTAL_DOTTED_ORBITS = [
+  45, 102, 160, 222, 290, 362, 440, 522, 610, 702, 800, 902, 1010, 1122, 1240, 1365,
+];
+
+function getRingPhrase(text: string, radius: number, fontSize = 18.5): string {
+  const circumference = 2 * Math.PI * radius;
+  const charWidth = fontSize * 0.72;
+  const neededChars = Math.ceil(circumference / charWidth);
+  const cleanPhrase = (text.trim() || "THE CONTENT ARCHITECTURE");
+
+  // Dense text with short 3-dot dividers (text is frequent and prominent)
+  const unit = cleanPhrase + " · · · ";
+  const repeats = Math.max(1, Math.ceil(neededChars / unit.length));
+  return unit.repeat(repeats);
+}
+
+function OrbitalTextRing({
+  ring,
+  idPrefix,
+  smoothProgress,
+  phrase,
+  autoRotate = true,
+}: {
+  ring: (typeof PORTAL_RINGS)[number];
+  idPrefix: string;
+  smoothProgress: any; // MotionValue<number>
+  phrase: string;
+  autoRotate?: boolean;
+}) {
+  const scrollRotate = useTransform(smoothProgress, [0, 1], [0, ring.scrollAngle]);
+  const fontSize = ring.radius < 180 ? 16 : 18.5;
+  const textContent = useMemo(
+    () => getRingPhrase(phrase, ring.radius, fontSize),
+    [phrase, ring.radius, fontSize]
+  );
+
+  return (
+    <motion.g style={{ rotate: scrollRotate, transformOrigin: "0px 0px" }}>
+      <g
+        style={{
+          transformOrigin: "0px 0px",
+          animation: autoRotate
+            ? `portal-orbit-${ring.direction} ${ring.duration}s linear infinite`
+            : "none",
+        }}
+      >
+        <text
+          fill="rgba(255, 255, 255, 0.94)"
+          fontSize={fontSize}
+          fontWeight="700"
+          fontFamily="ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace"
+          letterSpacing="0.14em"
+        >
+          <textPath href={`#${idPrefix}-${ring.id}`} startOffset="0%">
+            {textContent}
+          </textPath>
+        </text>
+      </g>
+    </motion.g>
+  );
+}
+
+export function ConcentricPortalCta({
+  heading = "The next 5 days are yours.",
+  subheading,
+  statement,
+  phrase = "THE CONTENT ARCHITECTURE",
+  ctaText = "GET ACCESS",
+  ctaHref = "#",
+  onCtaClick,
+  color,
+  scrollProgress,
+  autoRotate = true,
+  className,
+  style,
+  ...props
+}: CtaSectionProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const idPrefix = useId().replace(/:/g, "_");
+
+  // Local scroll-driven progress (starts strictly at 0, no React re-render lag)
+  const progressRef = useRef(scrollProgress !== undefined ? scrollProgress : 0);
+  const manualMotionProgress = useMotionValue(progressRef.current);
+
+  useEffect(() => {
+    if (scrollProgress !== undefined) {
+      manualMotionProgress.set(scrollProgress);
+      progressRef.current = scrollProgress;
+    }
+  }, [scrollProgress, manualMotionProgress]);
+
+  // Wheel scrubbing: scroll over the section smoothly scrubs 0 -> 1 without triggering React re-renders
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const onWheel = (e: WheelEvent) => {
+      const cur = progressRef.current;
+      const delta = e.deltaY * 0.0014;
+      const next = Math.min(1, Math.max(0, cur + delta));
+
+      // Intercept wheel while expanding (down < 0.99) or collapsing (up > 0.01)
+      if ((e.deltaY > 0 && cur < 0.99) || (e.deltaY < 0 && cur > 0.01)) {
+        e.preventDefault();
+        progressRef.current = next;
+        manualMotionProgress.set(next);
+      }
+    };
+
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, [manualMotionProgress]);
+
+  // Touch swipe support for mobile
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    let touchStartY = 0;
+
+    const onTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      const currentY = e.touches[0].clientY;
+      const diff = touchStartY - currentY;
+      const cur = progressRef.current;
+      const delta = diff * 0.0035;
+      const next = Math.min(1, Math.max(0, cur + delta));
+
+      if ((diff > 0 && cur < 0.99) || (diff < 0 && cur > 0.01)) {
+        if (e.cancelable) e.preventDefault();
+        progressRef.current = next;
+        manualMotionProgress.set(next);
+      }
+      touchStartY = currentY;
+    };
+
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
+    return () => {
+      el.removeEventListener("touchstart", onTouchStart);
+      el.removeEventListener("touchmove", onTouchMove);
+    };
+  }, [manualMotionProgress]);
+
+  // High-performance spring: zero lag, snappy responsiveness, zero jitter
+  const smoothProgress = useSpring(manualMotionProgress, {
+    stiffness: 220,
+    damping: 32,
+    mass: 0.35,
+    restDelta: 0.0001,
+  });
+
+  // Screen-responsive max diameter
+  const [maxDiameter, setMaxDiameter] = useState(520);
+  useEffect(() => {
+    const updateMax = () => {
+      const w = typeof window !== "undefined" ? window.innerWidth : 1200;
+      if (w < 480) {
+        setMaxDiameter(Math.min(320, w - 32));
+      } else if (w < 640) {
+        setMaxDiameter(Math.min(420, w - 48));
+      } else {
+        setMaxDiameter(520);
+      }
+    };
+    updateMax();
+    window.addEventListener("resize", updateMax);
+    return () => window.removeEventListener("resize", updateMax);
+  }, []);
+
+  // Zoom in/out effect for the orbital lines as the center portal bursts through
+  const linesScale = useTransform(smoothProgress, [0, 0.85], [0.94, 1.22]);
+
+  // Scale & opacity: GPU-accelerated scaling (zero reflow/layout recalc)
+  const circleScale = useTransform(smoothProgress, (p) => {
+    if (p <= 0.03) return 0;
+    const t = Math.min(1, Math.max(0, (p - 0.03) / 0.72));
+    return 1 - Math.pow(1 - t, 2.4);
+  });
+  const circleOpacity = useTransform(smoothProgress, [0.03, 0.08], [0, 1]);
+  const circleDisplay = useTransform(smoothProgress, (p) => (p <= 0.03 ? "none" : "flex"));
+
+  // Content opacity & scale inside circle
+  const contentOpacity = useTransform(smoothProgress, [0.32, 0.6], [0, 1]);
+  const contentScale = useTransform(smoothProgress, [0.32, 0.6], [0.88, 1]);
+
+  // Bottom scroll cue opacity
+  const scrollHintOpacity = useTransform(smoothProgress, [0, 0.08], [1, 0]);
+
+  // Split CTA text into [ Left ] [ Right • ] segments
+  const [leftLabel, rightLabel] = useMemo(() => {
+    if (ctaText && ctaText.includes(" ")) {
+      const parts = ctaText.trim().split(/\s+/);
+      return [parts[0], parts.slice(1).join(" ")];
+    }
+    return [ctaText || "GET", "ACCESS"];
+  }, [ctaText]);
+
+  const activeAccent = color
+    ? COLOR_MAP[color]?.bg || color
+    : "#f59e0b";
+
+  return (
+    <section
+      ref={containerRef}
+      className={cn(
+        "relative w-full h-[600px] sm:h-[680px] bg-[#08080a] overflow-hidden select-none",
+        className
+      )}
+      style={{ ...style }}
+      {...props}
+    >
+      <div className="relative w-full h-full flex items-center justify-center overflow-hidden bg-[#08080a] text-white">
+        {/* Dynamic Keyframes for smooth continuous ambient rotation */}
+        <style>{`
+          @keyframes portal-orbit-cw {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+          @keyframes portal-orbit-ccw {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(-360deg); }
+          }
+        `}</style>
+
+        {/* Top Monospace Code Matrix Texture */}
+        <div className="absolute inset-x-0 top-0 h-44 sm:h-56 pointer-events-none overflow-hidden select-none opacity-20 font-mono text-[9px] sm:text-[11px] text-neutral-400 z-10">
+          <div className="p-3 sm:p-5 space-y-1.5 uppercase tracking-[0.22em] leading-relaxed">
+            <p className="truncate">
+              NEXT 16.X · ASTRO 7.X · SANITY V3 · TS: STRICT · AGENTS.MD: LOADED · AGENT-BROWSER: HEADLESS · DRIFT: 0 · LLMS.TXT · SKILLS · PORTABLE TEXT · DRAFT · PUBLISHED · REVALIDATE
+            </p>
+            <p className="truncate">
+              THE CONTENT ARCHITECTURE · SCHEMA · GROQ · PAGE BUILDER · SECTIONS · TYPEGEN · NEXT 16.X · ASTRO 7.X · SANITY V3 · TS: STRICT · AGENTS.MD: LOADED · AGENT-BROWSER: HEADLESS
+            </p>
+            <p className="truncate">
+              DRIFT: 0 · LLMS.TXT · SKILLS · PORTABLE TEXT · DRAFT · PUBLISHED · REVALIDATE · THE CONTENT ARCHITECTURE · SCHEMA · GROQ · PAGE BUILDER · SECTIONS · TYPEGEN
+            </p>
+            <p className="truncate">
+              AGENTS.MD: LOADED · AGENT-BROWSER: HEADLESS · DRIFT: 0 · LLMS.TXT · SKILLS · PORTABLE TEXT · DRAFT · PUBLISHED · REVALIDATE · THE CONTENT ARCHITECTURE
+            </p>
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#08080a]/50 to-[#08080a]" />
+        </div>
+
+        {/* Concentric Orbital Rings & Monospace Text (with smooth zoom in/out effect) */}
+        <motion.div
+          style={{ scale: linesScale }}
+          className="absolute inset-0 flex items-center justify-center pointer-events-none select-none origin-center"
+        >
+          <svg
+            viewBox="-1400 -1400 2800 2800"
+            className="w-[1800px] h-[1800px] sm:w-[2400px] sm:h-[2400px] lg:w-[2800px] lg:h-[2800px] shrink-0"
+          >
+            <defs>
+              {PORTAL_RINGS.map((ring) => (
+                <path
+                  key={ring.id}
+                  id={`${idPrefix}-${ring.id}`}
+                  d={`M 0 -${ring.radius} A ${ring.radius} ${ring.radius} 0 1 1 0 ${ring.radius} A ${ring.radius} ${ring.radius} 0 1 1 0 -${ring.radius}`}
+                />
+              ))}
+            </defs>
+
+            {/* Dotted Circular Orbits */}
+            {PORTAL_DOTTED_ORBITS.map((r, i) => (
+              <circle
+                key={`orbit-dot-${i}`}
+                cx="0"
+                cy="0"
+                r={r}
+                fill="none"
+                stroke="rgba(255, 255, 255, 0.22)"
+                strokeWidth="1"
+                strokeDasharray="2 7"
+              />
+            ))}
+
+            {/* Rotating Text Rings */}
+            {PORTAL_RINGS.map((ring) => (
+              <OrbitalTextRing
+                key={ring.id}
+                ring={ring}
+                idPrefix={idPrefix}
+                smoothProgress={smoothProgress}
+                phrase={phrase}
+                autoRotate={autoRotate}
+              />
+            ))}
+          </svg>
+        </motion.div>
+
+        {/* Expanding White/Cream Circle Portal ("The Eye") */}
+        <motion.div
+          style={{
+            width: maxDiameter,
+            height: maxDiameter,
+            scale: circleScale,
+            opacity: circleOpacity,
+            display: circleDisplay,
+            willChange: "transform, opacity",
+          }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#f1eee7] text-neutral-900 flex-col items-center justify-center text-center shadow-[0_0_80px_rgba(0,0,0,0.85)] z-20 pointer-events-auto select-none overflow-hidden origin-center"
+        >
+          <motion.div
+            style={{ opacity: contentOpacity, scale: contentScale }}
+            className="flex flex-col items-center justify-center max-w-[360px] sm:max-w-[440px] w-full p-6 sm:p-10"
+          >
+            {/* Elegant Eyebrow Pill with Sparkles Icon */}
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-neutral-900/[0.06] border border-neutral-900/10 mb-3 shadow-[0_1px_2px_rgba(0,0,0,0.04)]">
+              <Sparkles className="size-3 text-neutral-800 animate-pulse" />
+              <span className="text-[10px] sm:text-xs font-mono font-medium tracking-wider text-neutral-700 uppercase">
+                {subheading || "Access Portal"}
+              </span>
+            </div>
+
+            {/* Core Heading */}
+            <h2 className="text-2xl sm:text-4xl md:text-[42px] font-bold text-neutral-950 tracking-tight leading-[1.12]">
+              {heading}
+            </h2>
+
+            {/* Optional Statement / Subtext */}
+            {statement ? (
+              <p className="mt-2 text-xs sm:text-sm text-neutral-600 line-clamp-2 max-w-[320px] font-normal leading-relaxed">
+                {statement}
+              </p>
+            ) : null}
+
+            {/* High-Tech Action Button & Micro-Trust Footnote */}
+            <div className="mt-5 sm:mt-7 flex flex-col items-center gap-2.5">
+              <a
+                href={ctaHref}
+                onClick={(e) => {
+                  if (ctaHref === "#") e.preventDefault();
+                  onCtaClick?.();
+                }}
+                className="inline-flex items-center gap-2 rounded-full bg-neutral-900 hover:bg-neutral-800 text-white pl-4 pr-1.5 py-1.5 shadow-[0_4px_16px_rgba(0,0,0,0.2)] border border-neutral-700/50 transition-all duration-200 active:scale-95 group cursor-pointer"
+              >
+                <div className="flex items-center gap-2 font-mono text-xs sm:text-sm font-semibold tracking-wider uppercase">
+                  <span>{leftLabel}</span>
+                  <span className="h-3 w-px bg-neutral-700" />
+                  <span className="flex items-center gap-1.5">
+                    <span>{rightLabel}</span>
+                    <span
+                      className="size-1.5 rounded-full animate-pulse"
+                      style={{ backgroundColor: activeAccent }}
+                    />
+                  </span>
+                </div>
+                <div className="size-7 sm:size-8 rounded-full bg-neutral-800 group-hover:bg-neutral-700 flex items-center justify-center transition-colors">
+                  <ArrowRight className="size-3.5 sm:size-4 stroke-[2.5] text-neutral-200 group-hover:text-white group-hover:translate-x-0.5 transition-transform" />
+                </div>
+              </a>
+
+              <div className="flex items-center gap-1.5 text-[10px] sm:text-[11px] font-mono text-neutral-500 font-medium">
+                <Check className="size-3 text-emerald-600 stroke-[3]" />
+                <span>No credit card required · Instant setup</span>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+
+        {/* Bottom Scroll Cue */}
+        <motion.div
+          style={{ opacity: scrollHintOpacity }}
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 text-neutral-500 text-[10px] tracking-widest font-mono uppercase pointer-events-none select-none z-10"
+        >
+          <span>Scroll to expand</span>
+          <ChevronDown className="size-3.5 animate-bounce" />
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// Alias for ConcentricPortalCta
+export const OrbitalLensCta = ConcentricPortalCta;
+
+// ==========================================
 // MAIN CTA SECTION ROUTER
 // ==========================================
 export function CTASection({
@@ -953,6 +1372,9 @@ export function CTASection({
       return <MinimalCta {...props} />;
     case "split":
       return <SplitCta {...props} />;
+    case "concentric-portal":
+    case "orbital-lens":
+      return <ConcentricPortalCta {...props} />;
     case "brand-pillars":
     default:
       return <BrandPillarsCta {...props} />;

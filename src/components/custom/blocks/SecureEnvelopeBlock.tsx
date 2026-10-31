@@ -465,8 +465,8 @@ export function VerticalBarcode({
 }) {
   const bars = [2, 1, 3, 1, 2, 4, 1, 2, 3, 1, 4, 2, 1, 3, 2, 1, 4, 2, 3, 1, 2, 4, 1, 3, 2, 1, 2, 3];
   return (
-    <div className={cn("flex items-center gap-0.5 select-none", className)}>
-      <div className="flex flex-col gap-[1.2px] min-[400px]:gap-[1.5px] sm:gap-[2.2px] h-16 min-[400px]:h-20 sm:h-32 justify-between">
+    <div className={cn("flex items-center gap-0.5 select-none shrink-0", className)}>
+      <div className="flex flex-col gap-[1px] min-[400px]:gap-[1.5px] sm:gap-[2.2px] h-10 min-[400px]:h-16 sm:h-32 justify-between">
         {bars.map((w, i) => (
           <div
             key={i}
@@ -475,7 +475,7 @@ export function VerticalBarcode({
           />
         ))}
       </div>
-      <span className="[writing-mode:vertical-lr] rotate-180 font-mono text-[4.5px] min-[400px]:text-[5.5px] sm:text-[8px] font-semibold text-foreground/80 tracking-wider transition-colors duration-300">
+      <span className="[writing-mode:vertical-lr] rotate-180 font-mono text-[4px] min-[400px]:text-[5.5px] sm:text-[8px] font-semibold text-foreground/80 tracking-wider transition-colors duration-300">
         {code}
       </span>
     </div>
@@ -488,6 +488,9 @@ export function VerticalBarcode({
 export type ConfidentialFolderInteractionMode = "auto-flip" | "step-flip";
 export type ConfidentialFolderCardDesign =
   | "classified"
+  | "confidential-folder"
+  | "slide-out-sleeve"
+  | "stay-hungry"
   | "train-ticket"
   | "smart-card"
   | "keycard"
@@ -505,6 +508,13 @@ export interface CouponCardData {
   // Sleeve info
   sleeveTitle?: string;
   sleeveSubtitle?: string;
+
+  // Confidential Folder / Stay Hungry Specific Fields
+  idNumber?: string;
+  tagline?: string;
+  subTagline?: string;
+  stampBadge?: string;
+  dossierNumber?: string;
 
   // Keycard / VIP Black Metal Card Specific Fields
   holderName?: string;
@@ -628,6 +638,12 @@ export interface ConfidentialFolderProps
   flightRoute?: string;
   eticketNumber?: string;
   airlineCompany?: string;
+  // Confidential Folder / Stay Hungry Specific Props
+  idNumber?: string;
+  tagline?: string;
+  subTagline?: string;
+  stampBadge?: string;
+  dossierNumber?: string;
   // Keycard Specific Props
   holderName?: string;
   accessId?: string;
@@ -699,6 +715,12 @@ export function ConfidentialFolder({
   centerIcon,
   sleeveTitle,
   sleeveSubtitle,
+  // Confidential Folder / Stay Hungry Specific Defaults
+  idNumber,
+  tagline,
+  subTagline,
+  stampBadge,
+  dossierNumber,
   // Keycard Specific Defaults
   holderName = "Kaelen Vance",
   accessId = "SEC-8940-QUANTUM",
@@ -776,12 +798,33 @@ export function ConfidentialFolder({
   cardClassName,
   ...props
 }: ConfidentialFolderProps) {
+  const isDesignVal = (v?: string): v is ConfidentialFolderCardDesign =>
+    v === "classified" ||
+    v === "confidential-folder" ||
+    v === "slide-out-sleeve" ||
+    v === "stay-hungry" ||
+    v === "train-ticket" ||
+    v === "smart-card" ||
+    v === "keycard" ||
+    v === "cyber-card" ||
+    v === "boarding-pass" ||
+    v === "vip-card" ||
+    v === "black-card";
+
   const activeMode: ConfidentialFolderInteractionMode =
-    mode ?? variant ?? interactionMode ?? "auto-flip";
+    mode ?? (!isDesignVal(variant) ? variant : undefined) ?? interactionMode ?? "auto-flip";
 
   const activeDesign: ConfidentialFolderCardDesign =
-    cardType ?? designVariant ?? cardDesign ?? "classified";
+    (isDesignVal(variant) ? variant : undefined) ??
+    cardType ??
+    designVariant ??
+    cardDesign ??
+    "classified";
 
+  const isConfidentialFolder =
+    activeDesign === "confidential-folder" ||
+    activeDesign === "slide-out-sleeve" ||
+    activeDesign === "stay-hungry";
   const isTrainTicket = activeDesign === "train-ticket";
   const isBoardingPass = activeDesign === "boarding-pass";
   const isKeycard =
@@ -989,6 +1032,13 @@ export function ConfidentialFolder({
     hashSignature ??
     "SHA-512 : 9f8a42e7b9104c8f2a6e...c27e80";
 
+  // Confidential Folder / Stay Hungry Resolved Values
+  const resolvedIdNumber = activeData?.idNumber ?? idNumber ?? "ID · 0042";
+  const resolvedTagline = activeData?.tagline ?? tagline ?? "STAY\nHUNGRY";
+  const resolvedSubTagline = activeData?.subTagline ?? subTagline ?? "STAY FOOLISH · CLASSIFIED";
+  const resolvedStampBadge = activeData?.stampBadge ?? stampBadge ?? "CONFIDENTIAL";
+  const resolvedDossierNumber = activeData?.dossierNumber ?? dossierNumber ?? "DOSSIER // SEC-0042";
+
   const resolvedPassengerName =
     activeData?.passengerName ??
     passengerName ??
@@ -1034,7 +1084,9 @@ export function ConfidentialFolder({
   const resolvedSleeveTitle =
     activeData?.sleeveTitle ??
     sleeveTitle ??
-    (isKeycard
+    (isConfidentialFolder
+      ? "Confidential Folder"
+      : isKeycard
       ? "Quantum Key Vault"
       : isBoardingPass
       ? "Boarding Pass Wallet"
@@ -1044,7 +1096,9 @@ export function ConfidentialFolder({
   const resolvedSleeveSubtitle =
     activeData?.sleeveSubtitle ??
     sleeveSubtitle ??
-    (isKeycard
+    (isConfidentialFolder
+      ? "Restricted Access · Authorized Personnel Only"
+      : isKeycard
       ? "Biometric Smartcard & Encrypted NFC Protocol"
       : isBoardingPass
       ? "First Class Priority Boarding • Gate G-14"
@@ -1176,7 +1230,7 @@ export function ConfidentialFolder({
   return (
     <div
       className={cn(
-        "relative flex items-center justify-center p-2 sm:p-8 select-none cf-theme-scope overflow-visible",
+        "relative flex items-center justify-center p-2 pt-4 sm:p-8 select-none cf-theme-scope overflow-visible",
         className
       )}
       style={{
@@ -1191,13 +1245,53 @@ export function ConfidentialFolder({
           --cf-initial-peek: ${Math.round(resolvedInitialPeek * 0.35)}px;
           --cf-hover-peek: ${Math.round(resolvedHoverPeek * 0.35)}px;
           --cf-base: var(--cf-override, var(--primary, #0284c7));
-          --cf-flap: ${isBoardingPass || isTrainTicket ? "oklch(from var(--cf-base) 0.93 calc(c * 0.25) h)" : "oklch(from var(--cf-base) 0.88 calc(c * 0.4) h)"};
-          --cf-plate: ${isBoardingPass || isTrainTicket ? "oklch(from var(--cf-base) 0.82 calc(c * 0.35) h)" : "oklch(from var(--cf-base) 0.80 calc(c * 0.5) h)"};
-          --cf-ink: ${isBoardingPass || isTrainTicket ? "oklch(from var(--cf-base) 0.15 calc(c * 0.6) h)" : "oklch(from var(--cf-base) 0.22 calc(c * 0.5) h)"};
-          --cf-ink-muted: ${isBoardingPass || isTrainTicket ? "oklch(from var(--cf-base) 0.35 calc(c * 0.35) h)" : "oklch(from var(--cf-base) 0.45 calc(c * 0.35) h)"};
-          --cf-spiro: "oklch(from var(--cf-base) 0.38 calc(c * 0.5) h / 0.75)";
-          --cf-stroke-flap: ${isBoardingPass || isTrainTicket ? "oklch(from var(--cf-base) 0.68 calc(c * 0.3) h / 0.5)" : "oklch(from var(--cf-base) 0.68 calc(c * 0.3) h / 0.5)"};
-          --cf-stroke-plate: ${isBoardingPass || isTrainTicket ? "oklch(from var(--cf-base) 0.60 calc(c * 0.3) h / 0.4)" : "oklch(from var(--cf-base) 0.60 calc(c * 0.3) h / 0.4)"};
+          --cf-flap: ${
+            isConfidentialFolder
+              ? "#fde047"
+              : isBoardingPass || isTrainTicket
+              ? "oklch(from var(--cf-base) 0.93 calc(c * 0.25) h)"
+              : "oklch(from var(--cf-base) 0.88 calc(c * 0.4) h)"
+          };
+          --cf-plate: ${
+            isConfidentialFolder
+              ? "#facc15"
+              : isBoardingPass || isTrainTicket
+              ? "oklch(from var(--cf-base) 0.82 calc(c * 0.35) h)"
+              : "oklch(from var(--cf-base) 0.80 calc(c * 0.5) h)"
+          };
+          --cf-ink: ${
+            isConfidentialFolder
+              ? "#78350f"
+              : isBoardingPass || isTrainTicket
+              ? "oklch(from var(--cf-base) 0.15 calc(c * 0.6) h)"
+              : "oklch(from var(--cf-base) 0.22 calc(c * 0.5) h)"
+          };
+          --cf-ink-muted: ${
+            isConfidentialFolder
+              ? "#92400e"
+              : isBoardingPass || isTrainTicket
+              ? "oklch(from var(--cf-base) 0.35 calc(c * 0.35) h)"
+              : "oklch(from var(--cf-base) 0.45 calc(c * 0.35) h)"
+          };
+          --cf-spiro: ${
+            isConfidentialFolder
+              ? "rgba(180, 83, 9, 0.4)"
+              : "oklch(from var(--cf-base) 0.38 calc(c * 0.5) h / 0.75)"
+          };
+          --cf-stroke-flap: ${
+            isConfidentialFolder
+              ? "#eab308"
+              : isBoardingPass || isTrainTicket
+              ? "oklch(from var(--cf-base) 0.68 calc(c * 0.3) h / 0.5)"
+              : "oklch(from var(--cf-base) 0.68 calc(c * 0.3) h / 0.5)"
+          };
+          --cf-stroke-plate: ${
+            isConfidentialFolder
+              ? "#ca8a04"
+              : isBoardingPass || isTrainTicket
+              ? "oklch(from var(--cf-base) 0.60 calc(c * 0.3) h / 0.4)"
+              : "oklch(from var(--cf-base) 0.60 calc(c * 0.3) h / 0.4)"
+          };
           --cf-card-bg: var(--card, #ffffff);
           --cf-card-border: var(--border, rgba(0, 0, 0, 0.12));
           --cf-card-text: var(--foreground, #0f172a);
@@ -1213,13 +1307,41 @@ export function ConfidentialFolder({
         }
         :is(.dark, .dark *) .cf-theme-scope,
         .cf-theme-scope:is(.dark, .dark *) {
-          --cf-flap: ${isBoardingPass || isTrainTicket ? "oklch(from var(--cf-base) 0.22 calc(c * 0.35) h)" : "oklch(from var(--cf-base) 0.22 calc(c * 0.35) h)"};
-          --cf-plate: ${isBoardingPass || isTrainTicket ? "oklch(from var(--cf-base) 0.15 calc(c * 0.25) h)" : "oklch(from var(--cf-base) 0.15 calc(c * 0.25) h)"};
-          --cf-ink: "#ffffff";
-          --cf-ink-muted: "oklch(from var(--cf-base) 0.82 calc(c * 0.12) h)";
-          --cf-spiro: "oklch(from var(--cf-base) 0.85 calc(c * 0.35) h / 0.85)";
-          --cf-stroke-flap: "rgba(255, 255, 255, 0.16)";
-          --cf-stroke-plate: "rgba(255, 255, 255, 0.08)";
+          --cf-flap: ${
+            isConfidentialFolder
+              ? "#fde047"
+              : isBoardingPass || isTrainTicket
+              ? "oklch(from var(--cf-base) 0.22 calc(c * 0.35) h)"
+              : "oklch(from var(--cf-base) 0.22 calc(c * 0.35) h)"
+          };
+          --cf-plate: ${
+            isConfidentialFolder
+              ? "#facc15"
+              : isBoardingPass || isTrainTicket
+              ? "oklch(from var(--cf-base) 0.15 calc(c * 0.25) h)"
+              : "oklch(from var(--cf-base) 0.15 calc(c * 0.25) h)"
+          };
+          --cf-ink: ${isConfidentialFolder ? "#78350f" : "#ffffff"};
+          --cf-ink-muted: ${
+            isConfidentialFolder
+              ? "#92400e"
+              : "oklch(from var(--cf-base) 0.82 calc(c * 0.12) h)"
+          };
+          --cf-spiro: ${
+            isConfidentialFolder
+              ? "rgba(180, 83, 9, 0.4)"
+              : "oklch(from var(--cf-base) 0.85 calc(c * 0.35) h / 0.85)"
+          };
+          --cf-stroke-flap: ${
+            isConfidentialFolder
+              ? "#eab308"
+              : "rgba(255, 255, 255, 0.16)"
+          };
+          --cf-stroke-plate: ${
+            isConfidentialFolder
+              ? "#ca8a04"
+              : "rgba(255, 255, 255, 0.08)"
+          };
           --cf-card-bg: var(--card, oklch(from var(--cf-base) 0.16 calc(c * 0.15) h));
           --cf-card-border: var(--border, rgba(255, 255, 255, 0.12));
           --cf-card-text: #ffffff;
@@ -1245,7 +1367,8 @@ export function ConfidentialFolder({
           borderRadius: "var(--radius, 1.25rem)",
         }}
         className={cn(
-          "relative w-[160px] min-[400px]:w-[185px] sm:w-[360px] h-[215px] min-[400px]:h-[247px] sm:h-[480px] cursor-pointer outline-none select-none shadow-[0_0_15px_rgba(0,0,0,0.05)] dark:shadow-[0_0_20px_rgba(0,0,0,0.35)]",
+          "relative w-[160px] min-[400px]:w-[185px] sm:w-[360px] h-[215px] min-[400px]:h-[247px] sm:h-[480px] cursor-pointer outline-none select-none",
+          !isConfidentialFolder && "shadow-[0_0_15px_rgba(0,0,0,0.05)] dark:shadow-[0_0_20px_rgba(0,0,0,0.35)]",
           "focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-4 focus-visible:ring-offset-background",
           sleeveClassName
         )}
@@ -1261,6 +1384,20 @@ export function ConfidentialFolder({
             borderColor: "var(--cf-stroke-plate)",
           }}
         />
+
+        {/* Manila Folder Tab for Confidential Folder Variant */}
+        {isConfidentialFolder && (
+          <div
+            className="absolute -top-3 sm:-top-5 left-3 sm:left-6 w-14 sm:w-24 h-3.5 sm:h-5.5 rounded-t-md sm:rounded-t-lg border-t border-x flex items-center justify-center font-mono text-[4px] min-[400px]:text-[5px] sm:text-[8.5px] font-bold uppercase tracking-wider transition-colors duration-300 z-10"
+            style={{
+              backgroundColor: "var(--cf-plate)",
+              borderColor: "var(--cf-stroke-plate)",
+              color: "var(--cf-ink)",
+            }}
+          >
+            DOSSIER
+          </div>
+        )}
 
         {/* ============================================================== */}
         {/* LAYER 2: THE CARD (Dual-Sided 3D Flipping Ticket)              */}
@@ -1290,11 +1427,60 @@ export function ConfidentialFolder({
               color: isAdaptive ? "var(--cf-card-text)" : "#0f172a",
             }}
             className={cn(
-              "absolute inset-0 shadow-[0_0_14px_rgba(0,0,0,0.07)] dark:shadow-[0_0_16px_rgba(0,0,0,0.35)] flex flex-col justify-between select-none transition-colors duration-300",
-              isTrainTicket || isBoardingPass ? "p-0 bg-transparent border-0" : isKeycard ? "p-0 bg-card border border-border" : "p-2 min-[400px]:p-2.5 sm:p-5 border bg-card border-border"
+              "absolute inset-0 flex flex-col justify-between select-none transition-colors duration-300",
+              !isConfidentialFolder && "shadow-[0_0_14px_rgba(0,0,0,0.07)] dark:shadow-[0_0_16px_rgba(0,0,0,0.35)]",
+              isConfidentialFolder || isTrainTicket || isBoardingPass ? "p-0 bg-transparent border-0 overflow-hidden" : isKeycard ? "p-0 bg-card border border-border" : "p-2 min-[400px]:p-2.5 sm:p-5 border bg-card border-border"
             )}
           >
-            {isKeycard ? (
+            {isConfidentialFolder ? (
+              /* -------------------------------------------------------- */
+              /* CONFIDENTIAL FOLDER / STAY HUNGRY SLIDE-OUT CARD (FRONT) */
+              /* -------------------------------------------------------- */
+              <div className="relative w-full h-full flex flex-col justify-between text-white select-none overflow-hidden rounded-[calc(var(--radius,1.25rem)-2px)] bg-gradient-to-br from-[#ff007f] via-[#f43f5e] to-[#e11d48] p-2.5 min-[400px]:p-4 sm:p-7">
+                {/* Subtle Vector Classified Seal Watermark */}
+                <ClassifiedSeal
+                  size={200}
+                  strokeWidth={1.2}
+                  className="absolute right-0 bottom-0 w-[120px] h-[120px] sm:w-[240px] sm:h-[240px] text-white/10 pointer-events-none"
+                />
+
+                {/* Top Header: ID & Classified Status Badge */}
+                <div className="relative z-10 flex items-center justify-between">
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                    <span className="font-mono font-bold text-[6px] min-[400px]:text-[7.5px] sm:text-[12px] tracking-[0.2em] uppercase text-white/90">
+                      {resolvedIdNumber}
+                    </span>
+                  </div>
+                  <div className="px-2 sm:px-3 py-0.5 rounded-full bg-white/20 backdrop-blur-xs border border-white/30 text-white font-mono font-black text-[5px] min-[400px]:text-[6px] sm:text-[9.5px] uppercase tracking-widest">
+                    TOP SECRET
+                  </div>
+                </div>
+
+                {/* Mid Section: Mission Metadata */}
+                <div className="relative z-10 my-auto flex flex-col space-y-1 sm:space-y-2 py-1.5 sm:py-2">
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <span className="h-px w-5 sm:w-12 bg-white/40" />
+                    <span className="font-mono text-[4px] min-[400px]:text-[5.5px] sm:text-[9px] font-bold text-white/80 uppercase tracking-widest">
+                      SPECIAL INITIATIVE // CODENAME
+                    </span>
+                  </div>
+                  <p className="font-sans font-medium text-[6px] min-[400px]:text-[8px] sm:text-[13px] text-white/90 leading-tight max-w-[240px] line-clamp-2 sm:line-clamp-none">
+                    {bSubtitle || "Crafted for individuals who challenge the status quo and think differently."}
+                  </p>
+                </div>
+
+                {/* Bottom Section: Giant Iconic Bold STAY HUNGRY Typography */}
+                <div className="relative z-10 flex flex-col items-end text-right mt-auto pt-1 sm:pt-2">
+                  <span className="font-mono text-[4px] min-[400px]:text-[5.5px] sm:text-[9.5px] font-bold text-white/70 uppercase tracking-[0.2em] sm:tracking-[0.25em] mb-0.5 sm:mb-1">
+                    {resolvedSubTagline}
+                  </span>
+                  <h2 className="font-sans font-black text-[20px] min-[400px]:text-[28px] sm:text-[54px] tracking-tight leading-[0.88] uppercase text-white whitespace-pre-line">
+                    {resolvedTagline}
+                  </h2>
+                </div>
+              </div>
+            ) : isKeycard ? (
               /* -------------------------------------------------------- */
               /* MODERN BIOMETRIC NFC SMARTCARD (FRONT FACE)              */
               /* -------------------------------------------------------- */
@@ -1382,7 +1568,7 @@ export function ConfidentialFolder({
               /* -------------------------------------------------------- */
               /* AIRLINE BOARDING PASS (FRONT FACE)                       */
               /* -------------------------------------------------------- */
-              <div className="relative w-full h-full flex flex-col justify-between text-foreground select-none">
+              <div className="relative w-full h-full flex flex-col justify-between text-foreground select-none overflow-hidden rounded-[calc(var(--radius,1.25rem)-2px)]">
                 {/* Vector Card Shell with Inward Curved Notch Cutouts */}
                 <svg
                   viewBox="0 0 340 440"
@@ -1545,12 +1731,12 @@ export function ConfidentialFolder({
               /* -------------------------------------------------------- */
               /* EXACT 1:1 REPLICA OF LEFT TICKET (FRONT FACE)            */
               /* -------------------------------------------------------- */
-              <div className="relative w-full h-full flex flex-col justify-between text-foreground select-none">
+              <div className="relative w-full h-full flex flex-col justify-between text-foreground select-none overflow-hidden rounded-[calc(var(--radius,1.25rem)-2px)]">
                 {/* 100% Vector Card Shell with Inward Curved Notch Borders (All-Time Transparent Cutouts) */}
                 <svg
                   viewBox="0 0 340 440"
                   preserveAspectRatio="none"
-                  className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible text-border/80"
+                  className="absolute inset-0 w-full h-full pointer-events-none z-0 text-border/80"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
@@ -1563,64 +1749,64 @@ export function ConfidentialFolder({
                 </svg>
 
                 {/* Card Content (Layered over the SVG Shell) */}
-                <div className="relative z-10 w-full h-full flex flex-col justify-between">
+                <div className="relative z-10 w-full h-full flex flex-col justify-between overflow-hidden">
                   {/* Upper Section */}
                   <div>
                     {/* 1. Top Blue/Primary Pill Banner Tab */}
-                    <div className="w-full flex justify-center px-3 pt-1.5 sm:pt-3">
-                      <div className="w-full sm:w-[94%] py-1 sm:py-2 px-2 rounded-b-xl sm:rounded-b-2xl bg-primary text-primary-foreground text-center font-sans font-black tracking-wider text-[7px] min-[400px]:text-[8.5px] sm:text-[14px] uppercase shadow-xs transition-colors duration-300">
+                    <div className="w-full flex justify-center px-2 min-[400px]:px-3 pt-1 min-[400px]:pt-1.5 sm:pt-3">
+                      <div className="w-full sm:w-[94%] py-0.5 min-[400px]:py-1 sm:py-2 px-1.5 sm:px-2 rounded-b-lg sm:rounded-b-2xl bg-primary text-primary-foreground text-center font-sans font-black tracking-wider text-[6.5px] min-[400px]:text-[8.5px] sm:text-[14px] uppercase shadow-xs transition-colors duration-300">
                         {resolvedTicketTitle}
                       </div>
                     </div>
 
                     {/* 2. Upper Passenger & Trip Info Grid */}
-                    <div className="px-3 min-[400px]:px-4 sm:px-6 py-1 sm:py-2 flex items-center justify-between">
-                      <div className="flex flex-col text-left space-y-1 sm:space-y-2">
+                    <div className="px-2 min-[400px]:px-4 sm:px-6 py-0.5 min-[400px]:py-1 sm:py-2 flex items-center justify-between">
+                      <div className="flex flex-col text-left space-y-0.5 min-[400px]:space-y-1 sm:space-y-2">
                         {/* Passenger Name */}
                         <div>
-                          <span className="block font-sans text-[4.5px] min-[400px]:text-[5.5px] sm:text-[9px] font-bold text-muted-foreground uppercase tracking-wide">
+                          <span className="block font-sans text-[4px] min-[400px]:text-[5.5px] sm:text-[9px] font-bold text-muted-foreground uppercase tracking-wide">
                             PASSENGER NAME
                           </span>
-                          <span className="block font-sans text-[6px] min-[400px]:text-[7.5px] sm:text-[13px] font-semibold text-foreground leading-tight">
+                          <span className="block font-sans text-[5.5px] min-[400px]:text-[7.5px] sm:text-[13px] font-semibold text-foreground leading-tight">
                             {resolvedPassengerName}
                           </span>
                         </div>
 
                         {/* Date & Departure */}
-                        <div className="flex items-center gap-2 sm:gap-6">
+                        <div className="flex items-center gap-1.5 min-[400px]:gap-2 sm:gap-6">
                           <div>
-                            <span className="block font-sans text-[4.5px] min-[400px]:text-[5.5px] sm:text-[8.5px] font-bold text-muted-foreground uppercase">
+                            <span className="block font-sans text-[4px] min-[400px]:text-[5.5px] sm:text-[8.5px] font-bold text-muted-foreground uppercase">
                               DATE
                             </span>
-                            <span className="block font-sans text-[5.5px] min-[400px]:text-[7px] sm:text-[11.5px] font-medium text-foreground">
+                            <span className="block font-sans text-[5px] min-[400px]:text-[7px] sm:text-[11.5px] font-medium text-foreground">
                               {resolvedDate}
                             </span>
                           </div>
                           <div>
-                            <span className="block font-sans text-[4.5px] min-[400px]:text-[5.5px] sm:text-[8.5px] font-bold text-muted-foreground uppercase">
+                            <span className="block font-sans text-[4px] min-[400px]:text-[5.5px] sm:text-[8.5px] font-bold text-muted-foreground uppercase">
                               DEPARTURE
                             </span>
-                            <span className="block font-sans text-[5.5px] min-[400px]:text-[7px] sm:text-[11.5px] font-medium text-foreground">
+                            <span className="block font-sans text-[5px] min-[400px]:text-[7px] sm:text-[11.5px] font-medium text-foreground">
                               {resolvedDepartureTime}
                             </span>
                           </div>
                         </div>
 
                         {/* Seat & Train */}
-                        <div className="flex items-center gap-3 sm:gap-8">
+                        <div className="flex items-center gap-2 min-[400px]:gap-3 sm:gap-8">
                           <div>
-                            <span className="block font-sans text-[4.5px] min-[400px]:text-[5.5px] sm:text-[8.5px] font-bold text-muted-foreground uppercase">
+                            <span className="block font-sans text-[4px] min-[400px]:text-[5.5px] sm:text-[8.5px] font-bold text-muted-foreground uppercase">
                               SEAT
                             </span>
-                            <span className="block font-sans text-[8px] min-[400px]:text-[10px] sm:text-[17px] font-black text-foreground leading-none mt-0.5">
+                            <span className="block font-sans text-[7px] min-[400px]:text-[10px] sm:text-[17px] font-black text-foreground leading-none mt-0.5">
                               {resolvedSeatNumber}
                             </span>
                           </div>
                           <div>
-                            <span className="block font-sans text-[4.5px] min-[400px]:text-[5.5px] sm:text-[8.5px] font-bold text-muted-foreground uppercase">
+                            <span className="block font-sans text-[4px] min-[400px]:text-[5.5px] sm:text-[8.5px] font-bold text-muted-foreground uppercase">
                               TRAIN
                             </span>
-                            <span className="block font-sans text-[8px] min-[400px]:text-[10px] sm:text-[17px] font-black text-foreground leading-none mt-0.5">
+                            <span className="block font-sans text-[7px] min-[400px]:text-[10px] sm:text-[17px] font-black text-foreground leading-none mt-0.5">
                               {resolvedTrainNumber}
                             </span>
                           </div>
@@ -1634,38 +1820,38 @@ export function ConfidentialFolder({
                     </div>
 
                     {/* 3. Middle Primary Station Banner with Watermark */}
-                    <div className="relative w-full bg-primary py-1 sm:py-2.5 px-3 flex items-center justify-center overflow-hidden transition-colors duration-300">
+                    <div className="relative w-full bg-primary py-0.5 min-[400px]:py-1 sm:py-2.5 px-2 sm:px-3 flex items-center justify-center overflow-hidden transition-colors duration-300">
                       <TrainWatermark className="absolute inset-0 w-full h-full object-cover text-primary-foreground opacity-30" />
-                      <span className="relative z-10 text-primary-foreground font-sans font-black tracking-wider text-[8px] min-[400px]:text-[10px] sm:text-[16px] uppercase truncate drop-shadow-xs">
+                      <span className="relative z-10 text-primary-foreground font-sans font-black tracking-wider text-[7px] min-[400px]:text-[10px] sm:text-[16px] uppercase truncate drop-shadow-xs">
                         {resolvedRouteText}
                       </span>
                     </div>
                   </div>
 
                   {/* Dotted Perforation Line (Extends seamlessly from Left Notch to Right Notch) */}
-                  <div className="relative w-full flex items-center justify-between px-3 sm:px-4 my-auto select-none">
+                  <div className="relative w-full flex items-center justify-between px-2 sm:px-4 my-auto select-none">
                     <div className="w-full border-t-2 border-dotted border-border/80" />
                   </div>
 
                   {/* 4. Bottom Tear-Off Stub (Lower Section) */}
-                  <div className="px-3 min-[400px]:px-4 sm:px-6 pb-2 pt-0.5 sm:pb-3.5 flex flex-col justify-between">
+                  <div className="px-2 min-[400px]:px-4 sm:px-6 pb-1 min-[400px]:pb-2 pt-0.5 sm:pb-3.5 flex flex-col justify-between">
                     {/* Mini Primary banner */}
-                    <div className="w-full bg-primary text-primary-foreground text-center font-sans font-bold tracking-wider text-[5px] min-[400px]:text-[6.5px] sm:text-[10.5px] py-0.5 sm:py-1 rounded-sm uppercase mb-1 transition-colors duration-300">
+                    <div className="w-full bg-primary text-primary-foreground text-center font-sans font-bold tracking-wider text-[4.5px] min-[400px]:text-[6.5px] sm:text-[10.5px] py-0.5 sm:py-1 rounded-xs sm:rounded-sm uppercase mb-0.5 sm:mb-1 transition-colors duration-300">
                       {resolvedTicketTitle}
                     </div>
 
                     <div className="flex items-center justify-between">
                       <div className="flex flex-col space-y-0.5 sm:space-y-1">
                         <div>
-                          <span className="block font-sans text-[4px] min-[400px]:text-[5px] sm:text-[7.5px] font-bold text-muted-foreground uppercase">
+                          <span className="block font-sans text-[3.5px] min-[400px]:text-[5px] sm:text-[7.5px] font-bold text-muted-foreground uppercase">
                             PASSENGER NAME
                           </span>
-                          <span className="block font-sans text-[5px] min-[400px]:text-[6.5px] sm:text-[10.5px] font-semibold text-foreground">
+                          <span className="block font-sans text-[4.5px] min-[400px]:text-[6.5px] sm:text-[10.5px] font-semibold text-foreground">
                             {resolvedPassengerName}
                           </span>
                         </div>
 
-                        <div className="flex items-center gap-1.5 sm:gap-3 text-[4px] min-[400px]:text-[5px] sm:text-[8px] text-muted-foreground">
+                        <div className="flex items-center gap-1 min-[400px]:gap-1.5 sm:gap-3 text-[3.5px] min-[400px]:text-[5px] sm:text-[8px] text-muted-foreground">
                           <div>
                             <span className="font-bold text-foreground">SEAT:</span> {resolvedSeatNumber}
                           </div>
@@ -1678,14 +1864,14 @@ export function ConfidentialFolder({
                         </div>
 
                         {/* Solid Station Badge */}
-                        <div className="mt-0.5 sm:mt-1 bg-zinc-950 dark:bg-black text-white px-1 sm:px-2 py-0.5 rounded-sm font-sans font-bold text-[5px] min-[400px]:text-[6px] sm:text-[9.5px] tracking-wider uppercase inline-block">
+                        <div className="mt-0.5 sm:mt-1 bg-zinc-950 dark:bg-black text-white px-1 sm:px-2 py-0.5 rounded-xs sm:rounded-sm font-sans font-bold text-[4.5px] min-[400px]:text-[6px] sm:text-[9.5px] tracking-wider uppercase inline-block">
                           {resolvedRouteText}
                         </div>
                       </div>
 
                       {/* Mini Vertical Barcode */}
                       <div className="shrink-0 pl-1">
-                        <VerticalBarcode code={resolvedBarcodeNumber} className="scale-75 sm:scale-90 origin-right" />
+                        <VerticalBarcode code={resolvedBarcodeNumber} className="scale-60 min-[400px]:scale-75 sm:scale-90 origin-right" />
                       </div>
                     </div>
                   </div>
@@ -1777,11 +1963,80 @@ export function ConfidentialFolder({
               color: isAdaptive ? "var(--cf-card-text)" : "#0f172a",
             }}
             className={cn(
-              "absolute inset-0 shadow-[0_0_14px_rgba(0,0,0,0.07)] dark:shadow-[0_0_16px_rgba(0,0,0,0.35)] flex flex-col justify-between select-none transition-colors duration-300",
-              isTrainTicket || isBoardingPass ? "p-0 bg-transparent border-0" : isKeycard ? "p-0 bg-card border border-border" : "p-2 min-[400px]:p-2.5 sm:p-5 border bg-card border-border"
+              "absolute inset-0 flex flex-col justify-between select-none transition-colors duration-300",
+              !isConfidentialFolder && "shadow-[0_0_14px_rgba(0,0,0,0.07)] dark:shadow-[0_0_16px_rgba(0,0,0,0.35)]",
+              isConfidentialFolder || isTrainTicket || isBoardingPass ? "p-0 bg-transparent border-0 overflow-hidden" : isKeycard ? "p-0 bg-card border border-border" : "p-2 min-[400px]:p-2.5 sm:p-5 border bg-card border-border"
             )}
           >
-            {isKeycard ? (
+            {isConfidentialFolder ? (
+              /* -------------------------------------------------------- */
+              /* CONFIDENTIAL FOLDER / MEMORANDUM & MANIFESTO (BACK)     */
+              /* -------------------------------------------------------- */
+              <div className="relative w-full h-full flex flex-col justify-between text-white select-none overflow-hidden rounded-[calc(var(--radius,1.25rem)-2px)] bg-gradient-to-br from-[#1c0512] via-[#2f081f] to-[#18020f] border border-rose-500/30 p-2.5 min-[400px]:p-4 sm:p-7">
+                {/* Top Header */}
+                <div className="relative z-10 flex items-center justify-between border-b border-rose-500/30 pb-1 sm:pb-3">
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping" />
+                    <span className="font-mono font-bold text-[5.5px] min-[400px]:text-[7px] sm:text-[11px] tracking-[0.18em] uppercase text-rose-300">
+                      {resolvedDossierNumber}
+                    </span>
+                  </div>
+                  <span className="font-mono font-bold text-[5px] min-[400px]:text-[6px] sm:text-[9px] uppercase tracking-wider text-rose-400 bg-rose-950/60 border border-rose-500/40 px-2 py-0.5 rounded-full">
+                    CLEARANCE // LEVEL 05
+                  </span>
+                </div>
+
+                {/* Center Manifesto / Memorandum */}
+                <div className="relative z-10 my-auto py-0.5 sm:py-2 flex flex-col space-y-1 min-[400px]:space-y-1.5 sm:space-y-3">
+                  <div>
+                    <span className="font-mono text-[4px] min-[400px]:text-[5px] sm:text-[8px] font-bold text-rose-400/80 uppercase tracking-widest block">
+                      EXECUTIVE MEMORANDUM
+                    </span>
+                    <h4 className="font-sans font-black text-[9.5px] min-[400px]:text-[12px] sm:text-[20px] text-white tracking-tight uppercase leading-tight mt-0.5">
+                      {bTitle || "The Crazy Ones"}
+                    </h4>
+                  </div>
+
+                  <p className="font-sans text-[5.5px] min-[400px]:text-[7.5px] sm:text-[12px] leading-tight sm:leading-relaxed text-rose-100/80 line-clamp-2 min-[400px]:line-clamp-3 sm:line-clamp-none">
+                    {bStatement || "Here's to the crazy ones. The misfits. The rebels. The troublemakers. The round pegs in the square holes. The ones who see things differently."}
+                  </p>
+
+                  {/* 3 Metric Pillars */}
+                  <div className="grid grid-cols-3 gap-1 sm:gap-2 pt-0.5 sm:pt-1">
+                    <div className="bg-rose-950/40 border border-rose-500/30 p-0.5 sm:p-1.5 rounded-sm text-center">
+                      <span className="block font-mono text-[3.5px] min-[400px]:text-[4.5px] sm:text-[7px] text-rose-400/80 uppercase">CLEARANCE</span>
+                      <span className="block font-mono font-bold text-[5px] min-[400px]:text-[6.5px] sm:text-[10px] text-rose-200">OMEGA-4</span>
+                    </div>
+                    <div className="bg-rose-950/40 border border-rose-500/30 p-0.5 sm:p-1.5 rounded-sm text-center">
+                      <span className="block font-mono text-[3.5px] min-[400px]:text-[4.5px] sm:text-[7px] text-rose-400/80 uppercase">STATUS</span>
+                      <span className="block font-mono font-bold text-[5px] min-[400px]:text-[6.5px] sm:text-[10px] text-emerald-400">ACTIVE</span>
+                    </div>
+                    <div className="bg-rose-950/40 border border-rose-500/30 p-0.5 sm:p-1.5 rounded-sm text-center">
+                      <span className="block font-mono text-[3.5px] min-[400px]:text-[4.5px] sm:text-[7px] text-rose-400/80 uppercase">ENCRYPTION</span>
+                      <span className="block font-mono font-bold text-[5px] min-[400px]:text-[6.5px] sm:text-[10px] text-rose-200">AES-256</span>
+                    </div>
+                  </div>
+
+                  {/* Barcode Strip */}
+                  <div className="pt-0.5 sm:pt-1 flex flex-col items-center">
+                    <div className="h-2 min-[400px]:h-3.5 sm:h-6 flex items-center gap-[1.5px] sm:gap-[2.5px] opacity-80 text-white">
+                      {[2, 4, 1, 3, 2, 5, 2, 1, 4, 3, 1, 5, 2, 3, 4, 2, 1, 3, 5, 2, 4, 1, 3, 2, 4].map((w, i) => (
+                        <div key={i} className="h-full bg-current rounded-full" style={{ width: `${w}px` }} />
+                      ))}
+                    </div>
+                    <span className="font-mono text-[4px] min-[400px]:text-[5.5px] sm:text-[8px] text-rose-400 tracking-[0.25em] uppercase mt-0.5 sm:mt-1">
+                      * 0042-STAY-HUNGRY-ALPHA *
+                    </span>
+                  </div>
+                </div>
+
+                {/* Bottom Footer */}
+                <div className="relative z-10 pt-1 sm:pt-2 border-t border-rose-500/30 flex items-center justify-between text-[4.5px] min-[400px]:text-[5.5px] sm:text-[8.5px] text-rose-300 font-mono">
+                  <span>✦ AUTHORIZED DOSSIER</span>
+                  <span className="text-white/80">STEVE J. // MANIFESTO</span>
+                </div>
+              </div>
+            ) : isKeycard ? (
               /* -------------------------------------------------------- */
               /* MODERN BIOMETRIC SMARTCARD REVERSE (MAGNETIC & TELEMETRY)*/
               /* -------------------------------------------------------- */
@@ -1847,7 +2102,7 @@ export function ConfidentialFolder({
               /* -------------------------------------------------------- */
               /* AIRLINE VIP LOUNGE & PASS PRIVILEGES (BACK FACE)         */
               /* -------------------------------------------------------- */
-              <div className="relative w-full h-full flex flex-col justify-between text-foreground select-none">
+              <div className="relative w-full h-full flex flex-col justify-between text-foreground select-none overflow-hidden rounded-[calc(var(--radius,1.25rem)-2px)]">
                 {/* Vector Card Shell */}
                 <svg
                   viewBox="0 0 340 440"
@@ -1931,12 +2186,12 @@ export function ConfidentialFolder({
               /* -------------------------------------------------------- */
               /* EXACT 1:1 REPLICA OF RIGHT TICKET (BACK FACE)            */
               /* -------------------------------------------------------- */
-              <div className="relative w-full h-full flex flex-col justify-between text-foreground select-none">
+              <div className="relative w-full h-full flex flex-col justify-between text-foreground select-none overflow-hidden rounded-[calc(var(--radius,1.25rem)-2px)]">
                 {/* 100% Vector Card Shell with Inward Curved Notch Borders (All-Time Transparent Cutouts) */}
                 <svg
                   viewBox="0 0 340 440"
                   preserveAspectRatio="none"
-                  className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible text-border/80"
+                  className="absolute inset-0 w-full h-full pointer-events-none z-0 text-border/80"
                   xmlns="http://www.w3.org/2000/svg"
                 >
                   {/* Top Half: Card background */}
@@ -1960,36 +2215,36 @@ export function ConfidentialFolder({
                 </svg>
 
                 {/* Card Content (Layered over the SVG Shell) */}
-                <div className="relative z-10 w-full h-full flex flex-col justify-between">
+                <div className="relative z-10 w-full h-full flex flex-col justify-between overflow-hidden">
                   {/* Upper White/Card Section: Train Logo & Slogan */}
-                  <div className="p-3 min-[400px]:p-4 sm:p-8 flex flex-col items-center justify-center text-center my-auto">
-                    <HyperboltTrainLogo className="w-16 min-[400px]:w-20 sm:w-36 text-foreground transition-colors duration-300" />
-                    <h3 className="font-sans font-black text-[8px] min-[400px]:text-[10px] sm:text-[16px] tracking-wider text-foreground uppercase mt-1 sm:mt-2 transition-colors duration-300">
+                  <div className="p-2 min-[400px]:p-4 sm:p-8 flex flex-col items-center justify-center text-center my-auto">
+                    <HyperboltTrainLogo className="w-12 min-[400px]:w-16 sm:w-36 text-foreground transition-colors duration-300" />
+                    <h3 className="font-sans font-black text-[7px] min-[400px]:text-[10px] sm:text-[16px] tracking-wider text-foreground uppercase mt-0.5 sm:mt-2 transition-colors duration-300">
                       {resolvedTrainCompany}
                     </h3>
-                    <p className="font-sans font-semibold text-[5px] min-[400px]:text-[6.5px] sm:text-[10.5px] tracking-wide text-muted-foreground uppercase max-w-[120px] min-[400px]:max-w-[150px] sm:max-w-[240px] mt-1 sm:mt-2 leading-tight transition-colors duration-300">
+                    <p className="font-sans font-semibold text-[4.5px] min-[400px]:text-[6.5px] sm:text-[10.5px] tracking-wide text-muted-foreground uppercase max-w-[110px] min-[400px]:max-w-[150px] sm:max-w-[240px] mt-0.5 sm:mt-2 leading-tight transition-colors duration-300">
                       {resolvedSlogan}
                     </p>
                   </div>
 
                   {/* Dotted Perforation Line (Extends seamlessly from Left Notch to Right Notch) */}
-                  <div className="relative w-full flex items-center justify-between px-3 sm:px-4 my-0 select-none z-20">
+                  <div className="relative w-full flex items-center justify-between px-2 sm:px-4 my-0 select-none z-20">
                     <div className="w-full border-t-2 border-dotted border-border/80" />
                   </div>
 
                   {/* Lower Primary Banner Section with Station Name */}
-                  <div className="relative w-full p-2.5 min-[400px]:p-3 sm:p-6 flex flex-col items-center justify-center overflow-hidden">
+                  <div className="relative w-full p-2 min-[400px]:p-3 sm:p-6 flex flex-col items-center justify-center overflow-hidden">
                     <TrainWatermark className="absolute inset-0 w-full h-full object-cover text-primary-foreground opacity-30" />
 
                     {/* Black Station Box */}
-                    <div className="relative z-10 w-full bg-zinc-950 dark:bg-black text-white py-1 sm:py-2 px-2 text-center rounded-sm shadow-md">
-                      <span className="font-sans font-bold text-[7px] min-[400px]:text-[8.5px] sm:text-[14px] uppercase tracking-wider">
+                    <div className="relative z-10 w-full bg-zinc-950 dark:bg-black text-white py-0.5 min-[400px]:py-1 sm:py-2 px-1.5 sm:px-2 text-center rounded-xs sm:rounded-sm shadow-md">
+                      <span className="font-sans font-bold text-[6px] min-[400px]:text-[8.5px] sm:text-[14px] uppercase tracking-wider">
                         {resolvedRouteText}
                       </span>
                     </div>
 
                     {/* Website link */}
-                    <span className="relative z-10 font-sans text-[4px] min-[400px]:text-[5px] sm:text-[8px] text-primary-foreground/90 uppercase tracking-widest mt-1 sm:mt-2 font-semibold">
+                    <span className="relative z-10 font-sans text-[3.5px] min-[400px]:text-[5px] sm:text-[8px] text-primary-foreground/90 uppercase tracking-widest mt-0.5 sm:mt-2 font-semibold">
                       {resolvedWebsiteUrl}
                     </span>
                   </div>
@@ -2144,7 +2399,19 @@ export function ConfidentialFolder({
         >
           {/* Top Floating Badge */}
           <div className="flex items-center justify-between">
-            {isKeycard ? (
+            {isConfidentialFolder ? (
+              <div
+                className="px-2.5 py-0.5 sm:py-1 rounded-full font-mono text-[5px] min-[400px]:text-[6.5px] sm:text-[10px] font-bold uppercase tracking-wider backdrop-blur-xs border transition-colors duration-300 shadow-xs flex items-center gap-1.5"
+                style={{
+                  backgroundColor: "rgba(254, 240, 138, 0.95)",
+                  color: "#78350f",
+                  borderColor: "#eab308",
+                }}
+              >
+                <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+                <span>{resolvedDossierNumber}</span>
+              </div>
+            ) : isKeycard ? (
               <div
                 className="px-2.5 py-0.5 sm:py-1 rounded-full font-mono text-[5px] min-[400px]:text-[6.5px] sm:text-[10px] font-bold uppercase tracking-wider backdrop-blur-xs border transition-colors duration-300 shadow-xs flex items-center gap-1.5"
                 style={{
@@ -2189,6 +2456,24 @@ export function ConfidentialFolder({
               <div className="w-[80px] h-[80px] min-[400px]:w-[105px] min-[400px]:h-[105px] sm:w-[265px] sm:h-[265px] flex items-center justify-center transition-colors duration-300">
                 {centerIcon}
               </div>
+            ) : isConfidentialFolder ? (
+              <div className="flex flex-col items-center justify-center my-auto py-2 sm:py-4 w-full">
+                {/* Angled Stamped Badge (No shadow, matching colors in light & dark mode) */}
+                <div className="transform -rotate-6 border-2 sm:border-3 border-rose-600 px-3 sm:px-6 py-1 sm:py-2.5 rounded-sm sm:rounded-md bg-rose-500/10 flex flex-col items-center select-none">
+                  <span className="font-sans font-black text-[12px] min-[400px]:text-[15px] sm:text-[28px] tracking-[0.2em] sm:tracking-[0.25em] text-rose-600 uppercase leading-none">
+                    {resolvedStampBadge}
+                  </span>
+                  <span className="font-mono text-[4.5px] min-[400px]:text-[5.5px] sm:text-[9px] font-bold tracking-[0.3em] text-rose-600/80 uppercase mt-0.5 sm:mt-1">
+                    RESTRICTED EYES ONLY
+                  </span>
+                </div>
+
+                {/* Folder Index Marking Lines (Matching the preview catalog illustration, identical in light & dark mode) */}
+                <div className="w-full max-w-[120px] min-[400px]:max-w-[150px] sm:max-w-[280px] mt-3 sm:mt-6 space-y-1 sm:space-y-2">
+                  <div className="h-1 sm:h-2 w-3/4 rounded-full bg-amber-900/25" />
+                  <div className="h-1 sm:h-2 w-1/2 rounded-full bg-amber-900/25" />
+                </div>
+              </div>
             ) : isKeycard ? (
               <CyberNexusSeal
                 size={265}
@@ -2220,7 +2505,10 @@ export function ConfidentialFolder({
           {/* Bottom Title & Subtitle with Crystal Clear High Contrast Vector Typography */}
           <div className="text-left w-full pr-1 sm:pr-4 overflow-hidden">
             <h2
-              className="text-[11px] min-[400px]:text-[13.5px] sm:text-[23px] font-bold tracking-tight leading-tight transition-colors duration-300 whitespace-nowrap truncate drop-shadow-xs"
+              className={cn(
+                "text-[11px] min-[400px]:text-[13.5px] sm:text-[23px] font-bold tracking-tight leading-tight transition-colors duration-300 whitespace-nowrap truncate",
+                !isConfidentialFolder && "drop-shadow-xs"
+              )}
               style={{ color: "var(--cf-ink)" }}
             >
               {resolvedSleeveTitle}

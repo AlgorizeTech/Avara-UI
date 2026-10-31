@@ -859,7 +859,7 @@ export const META: Record<string, ItemMeta> = {
   },
   loader: {
     description:
-      "A loading indicator in five shapes — spinner, dots, pulse, ring and bar — with an optional caption. Use it for inline and full-panel pending states.",
+      "A loading indicator in six shapes — spinner, orbit, dots, pulse, ring and bar — with an optional caption. Use it for inline and full-panel pending states.",
     categories: ["feedback"],
     docs: "Named exports: LoaderBlock, getThemeColor. `variant` picks the shape, `size` is sm | md | lg | xl, and `text` renders a caption beneath. Pure CSS animation with no runtime dependencies. For content-shaped placeholders, use `skeleton`.",
   },
