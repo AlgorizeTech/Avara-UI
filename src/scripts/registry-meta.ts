@@ -699,12 +699,19 @@ export const META: Record<string, ItemMeta> = {
     categories: ["media", "scroll", "layout"],
     docs: "Named export: Gallery (also exports OrbitGallery for backward compatibility). Default export: Gallery. Variants: orbit | bento | reel | pill | arc. Pass items ({ image, alt, title?, subtitle?, href? }), speed/duration, orientation, aspect, autoSlide, and radius/gap options.",
   },
+  "bento-cascade-hero": {
+    title: "Bento Cascade Hero",
+    description:
+      "An infinite vertical bento marquee hero section that loops seamlessly on the browser compositor. Staggered multi-column cards, rich media tiles, soft edge fade masks, and responsive motion with zero visible reset jumps.",
+    categories: ["marketing", "layout", "scroll"],
+    docs: "Named export: BentoCascadeHero (also available as variant='bento-cascade' in HeroBlock). Pass `title`, `titleAccent`, `subtitle`, `badgeText`, `primaryActionLabel`, `secondaryActionLabel`, `cards`, `images`, `speed`, and `pauseOnHover`.",
+  },
   "hero-bento-cascade": {
     title: "Bento Cascade Hero",
     description:
       "An infinite vertical bento marquee hero section that loops seamlessly on the browser compositor. Staggered multi-column cards, rich media tiles, soft edge fade masks, and responsive motion with zero visible reset jumps.",
-    categories: ["marketing", "layout", "animation"],
-    docs: "Named export: BentoCascadeHero (also available as variant='bento-cascade' in HeroBlock). Pass `title`, `titleAccent`, `subtitle`, `badgeText`, `primaryActionLabel`, `secondaryActionLabel`, `columns`, `speed`, `fadeMode`, and `tiles`.",
+    categories: ["marketing", "layout", "scroll"],
+    docs: "Named export: BentoCascadeHero (also available as variant='bento-cascade' in HeroBlock). Pass `title`, `titleAccent`, `subtitle`, `badgeText`, `primaryActionLabel`, `secondaryActionLabel`, `cards`, `images`, `speed`, and `pauseOnHover`.",
   },
   "hero-carousel": {
     description:

@@ -3,7 +3,7 @@
 import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { AnimatedTypographyBlock, type PrefixPosition } from "./AnimatedTypographyBlock";
-import { BentoCascadeHero } from "./BentoCascadeHeroBlock";
+import { BentoCascadeHero, type BentoCascadeCardItem } from "./BentoCascadeHeroBlock";
 import { ArrowRight, ArrowUpRight, Check, Copy, Sparkles, Terminal, Star, Code, Mail, FileText, Heart, ShieldCheck, ShoppingBag, Package } from "lucide-react";
 
 /* ═══════════════════════════════════════════════
@@ -122,8 +122,12 @@ export interface HeroBlockProps extends React.HTMLAttributes<HTMLElement> {
   rotationSpeed?: number;
   /** Custom accent color (CSS color or tailwind var) */
   color?: string;
-  /** Array of image URLs for the revolving circular photo ring (used in "orbit" variant) */
+  /** Array of image URLs for the revolving circular photo ring (used in "orbit" variant) or bento cascade variant */
   images?: string[];
+  /** Array of custom card objects for the bento cascade variant */
+  cards?: BentoCascadeCardItem[];
+  /** Optional custom image rendering component (e.g. Next.js next/image) */
+  imageComponent?: React.ElementType;
   /** Seconds for one full orbit revolution (used in "orbit" variant, default: 36) */
   duration?: number;
   /** Dotted bullet highlights under actions (used in "orbit" variant) */
@@ -532,6 +536,8 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
       rotationSpeed,
       color,
       images,
+      cards,
+      imageComponent,
       duration = 36,
       highlights,
       className,
@@ -619,22 +625,32 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
        VARIANT: BENTO CASCADE INFINITE MOTION HERO
        ═══════════════════════════════════════════════ */
     if (variant === "bento-cascade" || variant === "cascade") {
+      const bentoImages =
+        images && images.length > 0
+          ? images
+          : sliderImages && sliderImages !== DEFAULT_SLIDER_IMAGES
+            ? sliderImages
+            : undefined;
+
       return (
         <BentoCascadeHero
           ref={ref as any}
-          title={title || (titlePrefix === "Build " ? "Search any doctors & plan" : titlePrefix) || "Search any doctors & plan"}
-          titleAccent={titleAccent || (titleSuffix ? titleSuffix : "your next visit")}
+          title={title || (titlePrefix === "Build " ? "Explore wild nature & plan" : titlePrefix) || "Explore wild nature & plan"}
+          titleAccent={titleAccent || (titleSuffix ? titleSuffix : "your next escape")}
           subtitle={
             subtitle === "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion."
-              ? "Experience leading healthcare services with expert treatments tailored to your work needs"
+              ? "Discover handpicked alpine sanctuaries, secluded glacial lakes, and ancient redwood trails tailored for unforgettable outdoor journeys."
               : subtitle
           }
-          primaryActionLabel={primaryActionLabel === "Browse Components" ? "Contact us" : primaryActionLabel}
-          primaryActionHref={primaryActionHref === "/docs" ? "#contact" : primaryActionHref}
-          secondaryActionLabel={secondaryActionLabel === "Star on GitHub" ? "What we do" : secondaryActionLabel}
-          secondaryActionHref={secondaryActionHref === "https://github.com/AlgorizeTech" ? "#services" : secondaryActionHref}
+          primaryActionLabel={primaryActionLabel === "Browse Components" ? "Start exploring" : primaryActionLabel}
+          primaryActionHref={primaryActionHref === "/docs" ? "#explore" : primaryActionHref}
+          secondaryActionLabel={secondaryActionLabel === "Star on GitHub" ? "View journeys" : secondaryActionLabel}
+          secondaryActionHref={secondaryActionHref === "https://github.com/AlgorizeTech" ? "#destinations" : secondaryActionHref}
+          cards={cards}
+          images={bentoImages}
           accent={color}
           linkComponent={Link}
+          imageComponent={imageComponent}
           className={className}
           style={style}
           {...props}

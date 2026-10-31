@@ -43,6 +43,7 @@
     "src/components/custom/blocks/AppleSelectBlock.tsx",
     "src/components/custom/blocks/AudioPlayerBlock.tsx",
     "src/components/custom/blocks/AvatarStackBlock.tsx",
+    "src/components/custom/blocks/BentoCascadeHeroBlock.tsx",
     "src/components/custom/blocks/BentoShowcaseBlock.tsx",
     "src/components/custom/blocks/BookAppointmentBlock.tsx",
     "src/components/custom/blocks/BookingCardBlock.tsx",

@@ -5,7 +5,7 @@ export const metadata = docsPageMetadata("index", {
 
 # Introduction
 
-Avara UI is a library of **190 animated, responsive React
+Avara UI is a library of **191 animated, responsive React
 components** — from buttons and inputs to dashboards, carousels and full
 marketing sections.
 

@@ -18,21 +18,21 @@ export default function HeroBentoCascadeDemo({
     <div
       className={
         rounded
-          ? "w-full my-4 sm:my-6 overflow-hidden rounded-2xl border border-border bg-background"
+          ? "w-full my-4 sm:my-6 overflow-hidden rounded-[var(--radius-2xl,1rem)] border border-border bg-background"
           : "w-full overflow-hidden bg-background"
       }
     >
       <BentoCascadeHero
         accent={color}
-        title="Search any doctors & plan"
-        titleAccent="your next visit"
-        subtitle="Experience leading healthcare services with expert treatments tailored to your work needs"
-        primaryActionLabel="Contact us"
-        primaryActionHref="#contact"
-        secondaryActionLabel="What we do"
-        secondaryActionHref="#services"
+        title="Explore wild nature & plan"
+        titleAccent="your next escape"
+        subtitle="Discover handpicked alpine sanctuaries, secluded glacial lakes, and ancient redwood trails tailored for unforgettable outdoor journeys."
+        primaryActionLabel="Start exploring"
+        primaryActionHref="#explore"
+        secondaryActionLabel="View journeys"
+        secondaryActionHref="#destinations"
         speed={30}
-        className="w-full py-12 sm:py-16 lg:py-20"
+        className="w-full py-8 sm:py-12 lg:py-16"
       />
     </div>
   );

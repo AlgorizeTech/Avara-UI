@@ -391,12 +391,18 @@
       "type": "registry:component",
       "title": "Bento Cascade Hero",
       "author": "AlgorizeTech",
-      "description": "TODO: describe bento-cascade-hero. Generated placeholder.",
-      "categories": [],
+      "description": "An infinite vertical bento marquee hero section that loops seamlessly on the browser compositor. Staggered multi-column cards, rich media tiles, soft edge fade masks, and responsive motion with zero visible reset jumps.",
+      "categories": [
+        "marketing",
+        "layout",
+        "scroll"
+      ],
       "dependencies": [
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://avaraui.com/r/avatar-stack.json",
+        "https://avaraui.com/r/button.json",
         "utils"
       ],
       "files": [
@@ -410,7 +416,8 @@
           "type": "registry:component",
           "target": "lib/accent.ts"
         }
-      ]
+      ],
+      "docs": "Named export: BentoCascadeHero (also available as variant='bento-cascade' in HeroBlock). Pass `title`, `titleAccent`, `subtitle`, `badgeText`, `primaryActionLabel`, `secondaryActionLabel`, `cards`, `images`, `speed`, and `pauseOnHover`."
     },
     {
       "name": "bento-showcase",
