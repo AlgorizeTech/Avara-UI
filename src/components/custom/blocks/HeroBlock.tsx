@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { AnimatedTypographyBlock, type PrefixPosition } from "./AnimatedTypographyBlock";
 import { BentoCascadeHero, type BentoCascadeCardItem } from "./BentoCascadeHeroBlock";
 import { BreatheHero } from "./BreatheHeroBlock";
+import { SolarSnapshotHero } from "./SolarSnapshotHeroBlock";
 import { ArrowRight, ArrowUpRight, Check, Copy, Sparkles, Terminal, Star, Code, Mail, FileText, Heart, ShieldCheck, ShoppingBag, Package } from "lucide-react";
 
 /* ═══════════════════════════════════════════════
@@ -58,7 +59,10 @@ export interface HeroBlockProps extends React.HTMLAttributes<HTMLElement> {
     | "breathe"
     | "hero-breathe"
     | "curved-cards"
-    | "arch";
+    | "arch"
+    | "solar-snapshot"
+    | "sun-cursor"
+    | "solar";
   /** Optional badge text displayed inside the top pill badge */
   badgeText?: string;
   /** Badge link URL */
@@ -725,6 +729,55 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
           accent={color}
           linkComponent={Link}
           imageComponent={imageComponent}
+          className={className}
+          style={style}
+          {...props}
+        />
+      );
+    }
+
+    /* ═════════════════════════════════════════
+       VARIANT: SOLAR SNAPSHOT SUN CURSOR HERO
+       ═════════════════════════════════════════ */
+    if (
+      variant === "solar-snapshot" ||
+      variant === "sun-cursor" ||
+      variant === "solar"
+    ) {
+      return (
+        <SolarSnapshotHero
+          ref={ref as any}
+          title={
+            title ||
+            (titlePrefix === "Build "
+              ? "Where natural light meets"
+              : titlePrefix) ||
+            "Where natural light meets"
+          }
+          titleAccent={
+            titleAccent ||
+            (titleSuffix ? titleSuffix : "expressive digital craft.")
+          }
+          description={
+            subtitle ===
+            "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion."
+              ? "Guide the radiant sun across the canvas with your cursor and click anywhere to capture an instant live snapshot of the stage."
+              : subtitle
+          }
+          primaryActionLabel={
+            primaryActionLabel === "Browse Components"
+              ? "Initiate Project"
+              : primaryActionLabel
+          }
+          primaryActionHref={primaryActionHref}
+          secondaryActionLabel={
+            secondaryActionLabel === "Star on GitHub"
+              ? "Explore Studio"
+              : secondaryActionLabel
+          }
+          secondaryActionHref={secondaryActionHref}
+          accent={color}
+          linkComponent={Link}
           className={className}
           style={style}
           {...props}

@@ -535,6 +535,9 @@
   "hero-breathe": {
     "breathe-arch-stagger-hero": "Hero — Breathe Arch Stagger Hero"
   },
+  "hero-solar-snapshot": {
+    "solar-snapshot-sun-cursor-hero": "Hero — Solar Snapshot Sun-Cursor Hero"
+  },
   "image-compare": {
     "classic-slider": "Image Compare — Classic Slider",
     "split-handle": "Image Compare — Split Handle",

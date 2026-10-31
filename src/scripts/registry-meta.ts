@@ -1290,5 +1290,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["marketing", "data-display"],
     docs: "Named exports: DesignsToolkitBlock (default), ToolkitItem.",
   },
+  "solar-snapshot-hero": {
+    title: "Solar Snapshot Hero",
+    description:
+      "A lightweight interactive hero section featuring a pointer-following sun orb, animated action buttons, an avatar stack, and a click-to-capture Polaroid screenshot stack in the bottom-right where each captured frame auto-clears after 10 seconds.",
+    categories: ["marketing", "layout", "media"],
+    docs: "Named exports: SolarSnapshotHero (default), DEFAULT_SOLAR_AVATARS, SolarSnapshotItem, and SolarSnapshotHeroProps.",
+  },
 };
 

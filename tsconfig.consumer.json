@@ -163,6 +163,7 @@
     "src/components/custom/blocks/SignupForm.tsx",
     "src/components/custom/blocks/SkeletonBlock.tsx",
     "src/components/custom/blocks/SocialLinksBlock.tsx",
+    "src/components/custom/blocks/SolarSnapshotHeroBlock.tsx",
     "src/components/custom/blocks/SonnerBlock.tsx",
     "src/components/custom/blocks/SplitScrollStackBlock.tsx",
     "src/components/custom/blocks/SplitStepperBlock.tsx",

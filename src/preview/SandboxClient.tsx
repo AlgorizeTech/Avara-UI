@@ -273,6 +273,7 @@ export function SandboxClient({ name }: { name: string }) {
     name === "designs-toolkit" ||
     name === "falling-tags" ||
     name === "hero-breathe" ||
+    name === "hero-solar-snapshot" ||
     name === "navbar" ||
     name === "pricing" ||
     name === "top-destinations";

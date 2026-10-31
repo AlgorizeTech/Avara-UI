@@ -919,6 +919,30 @@ npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/breathe-hero
 ```
 
+export const usageSolarSnapshot = `import Link from "next/link";
+
+export default function Hero() {
+  return (
+    
+  );
+}
+`;
+
+### Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/solar-snapshot-hero.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/solar-snapshot-hero
+```
+
 ### Props Reference
 
         Prop

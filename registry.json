@@ -2371,6 +2371,7 @@
         "https://avaraui.com/r/animated-typography.json",
         "https://avaraui.com/r/bento-cascade-hero.json",
         "https://avaraui.com/r/breathe-hero.json",
+        "https://avaraui.com/r/solar-snapshot-hero.json",
         "utils"
       ],
       "files": [
@@ -4176,6 +4177,39 @@
         }
       ],
       "docs": "Named export: SocialLinks (plus the SocialLink and SocialNetwork types). `links` is { network, href, label? }[]; `variant` is tile | outline | ghost, `size` is sm | md | lg. Links open in a new tab unless `external` is false; mailto links never do. Brand marks are inline SVG, so no icon package is needed."
+    },
+    {
+      "name": "solar-snapshot-hero",
+      "type": "registry:component",
+      "title": "Solar Snapshot Hero",
+      "author": "AlgorizeTech",
+      "description": "A lightweight interactive hero section featuring a pointer-following sun orb, animated action buttons, an avatar stack, and a click-to-capture Polaroid screenshot stack in the bottom-right where each captured frame auto-clears after 10 seconds.",
+      "categories": [
+        "marketing",
+        "layout",
+        "media"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://avaraui.com/r/avatar-stack.json",
+        "https://avaraui.com/r/button.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/SolarSnapshotHeroBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/SolarSnapshotHeroBlock.tsx"
+        },
+        {
+          "path": "src/lib/accent.ts",
+          "type": "registry:component",
+          "target": "lib/accent.ts"
+        }
+      ],
+      "docs": "Named exports: SolarSnapshotHero (default), DEFAULT_SOLAR_AVATARS, SolarSnapshotItem, and SolarSnapshotHeroProps."
     },
     {
       "name": "sonner",

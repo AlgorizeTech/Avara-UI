@@ -1747,6 +1747,66 @@ export default function Hero() {
 
 <Installation name="breathe-hero" showSetupPath={false} />
 
+export const usageSolarSnapshot = `import Link from "next/link";
+import { SolarSnapshotHero } from "@/components/custom/blocks/SolarSnapshotHeroBlock";
+
+export default function Hero() {
+  return (
+    <SolarSnapshotHero
+      title="Where natural light meets"
+      titleAccent="expressive digital craft."
+      description="Guide the radiant sun across the canvas with your cursor and click anywhere to capture an instant live snapshot of the stage."
+      primaryActionLabel="Initiate Project"
+      primaryActionHref="#explore"
+      primaryButtonVariant="pricing-typographic"
+      secondaryActionLabel="Explore Studio"
+      secondaryActionHref="#lightbox"
+      secondaryButtonVariant="pricing-typographic-muted"
+      snapshotDurationMs={10000}
+      linkComponent={Link}
+    />
+  );
+}
+`;
+
+<ExampleShowcase
+  name="hero-solar-snapshot"
+  colorControl
+  columns={1}
+  minHeight={750}
+  examples={[
+    {
+      title: "Solar Snapshot Sun-Cursor Hero",
+      subheading: "A lightweight interactive hero with a pointer-following sun orb, Typographic Curtain CTA buttons, an interactive Avatar Group, and a click-to-capture Polaroid section screenshot stack in the bottom-right where each frame auto-clears 10 seconds after capture.",
+      props: { variant: "solar-snapshot" },
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"solar-snapshot"',
+          effect: "for the interactive sun-cursor & click-to-capture Polaroid section screenshot hero.",
+        },
+        {
+          prop: "snapshotDurationMs",
+          value: "10000",
+          effect: "time in milliseconds (10s) before each captured Polaroid frame automatically disappears from the bottom-right stack.",
+        },
+        {
+          prop: "primaryButtonVariant",
+          value: '"pricing-typographic"',
+          effect: "configures the animated button style from our Button component.",
+        },
+      ],
+      usage: nextAndReact(usageSolarSnapshot),
+      code: extractCode("src/components/custom/blocks/SolarSnapshotHeroBlock.tsx"),
+    },
+  ]}
+/>
+
+### Installation
+
+<Installation name="solar-snapshot-hero" showSetupPath={false} />
+
 ### Props Reference
 
 <div className="overflow-x-auto mb-8">

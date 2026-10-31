@@ -94,6 +94,7 @@ export const sandboxNames = [
   "hero-minimal",
   "hero-orbit",
   "hero-saas",
+  "hero-solar-snapshot",
   "hero-vortex",
   "homepage-hero",
   "homepage-hero-glow-arc",
