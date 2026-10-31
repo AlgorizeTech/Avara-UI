@@ -9,7 +9,8 @@ Every hero section in the library, on one page. Each is its own registry item wi
   Fashion HeroStaggered columns of looks on flat colour — lookbook, store, editorial.
   Support HeroA frosted bento of cards and counting figures — SaaS and AI products.
   Collage HeroA photo collage under a turning badge — school, studio, workshop.
-  Hero BlockComprehensive variants from one component — orbit ring, bounce, typing, slider, pet shop, doctor, facility, and rotating vortex cyclone radar.
+  Bento Cascade HeroAn infinite vertical bento marquee with seamless looping and soft edge fades — SaaS, AI, and creative platforms.
+  Hero BlockComprehensive variants from one component — bento cascade, orbit ring, bounce, typing, slider, pet shop, doctor, facility, and rotating vortex cyclone radar.
 
 ## Honeycomb Hero
 
@@ -881,19 +882,65 @@ export default function OrbitHeroExample() {
 }
 `;
 
+## Bento Cascade Hero
+
+An infinite vertical bento marquee hero section that loops seamlessly on the browser compositor. Features staggered multi-column cards, rich media tiles, soft top and bottom edge fade masks, and responsive motion with zero visible reset jumps — inspired by Framer's Bento Cascade.
+
+export const usageBentoCascade = `"use client";
+
+export default function Hero() {
+  return (
+    
+  );
+}
+`;
+
+export const usageBreathe = `import Link from "next/link";
+
+export default function Hero() {
+  return (
+
+  );
+}
+`;
+
 ### Installation
 
 Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest add https://avaraui.com/r/hero.json
+npx shadcn@latest add https://avaraui.com/r/breathe-hero.json
 ```
 
 Or register the @avara-ui registry once per project and add it by name:
 
 ```bash
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/hero
+npx shadcn@latest add @avara-ui/breathe-hero
+```
+
+export const usageSolarSnapshot = `import Link from "next/link";
+
+export default function Hero() {
+  return (
+    
+  );
+}
+`;
+
+### Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/solar-snapshot-hero.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/solar-snapshot-hero
 ```
 
 ### Props Reference
@@ -905,11 +952,11 @@ npx shadcn@latest add @avara-ui/hero
 
           variant
 
-          "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "facility" | "vortex" | "orbit"
+          "bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "facility" | "vortex" | "orbit" | "bento-cascade" | "breathe"
 
           "bounce"
 
-          The layout & animation style. "orbit" / "orbit-gallery" renders revolving 3D circular photo ring with upright cards & smooth hover pause; "bounce" uses spring word motion; "typing" uses typewriter effect; "slider" renders split 2-column hero with continuous marquee; "glow-arc" / "pet-shop" renders pet care hero; "doctor" renders medical test kits hero; "facility" renders architectural CAD blueprint grid hero with interactive morphing shape; "vortex" renders atmospheric cyclone radar simulation with animated rotating canvas and telemetry HUD.
+          The layout & animation style. "breathe" renders an elegant serif headline with a staggered 5-card curved arch and scroll-zoom focus motion; "bento-cascade" renders an infinite vertical bento marquee with staggered columns, rich media tiles, and soft edge fade masks; "orbit" / "orbit-gallery" renders revolving 3D circular photo ring with upright cards & smooth hover pause; "bounce" uses spring word motion; "typing" uses typewriter effect; "slider" renders split 2-column hero with continuous marquee; "glow-arc" / "pet-shop" renders pet care hero; "doctor" renders medical test kits hero; "facility" renders architectural CAD blueprint grid hero with interactive morphing shape; "vortex" renders atmospheric cyclone radar simulation with animated rotating canvas and telemetry HUD.
 
           typingWords
 

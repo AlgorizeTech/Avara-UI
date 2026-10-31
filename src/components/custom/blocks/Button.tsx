@@ -129,7 +129,16 @@ export type ButtonVariant =
   | "pricing-pill"
   | "pricing-dark"
   | "pricing-typographic"
-  | "pricing-typographic-muted";
+  | "pricing-typographic-muted"
+  | "auth-social"
+  | "glass-social"
+  | "liquid-glass-social"
+  | "liquid-glass-primary"
+  | "ribbon-primary"
+  | "ribbon-social"
+  | "scenic-primary"
+  | "scenic-secondary"
+  | "scenic-option";
 type ButtonSize = "default" | "sm" | "lg";
 
 /**
@@ -174,6 +183,24 @@ const PLAIN_VARIANTS: Record<string, string> = {
     "rounded-lg font-sans text-xs sm:text-sm font-semibold uppercase tracking-widest px-8 py-4 bg-primary text-primary-foreground border-transparent shadow-md active:scale-[0.99] transition-all duration-300",
   "pricing-typographic-muted":
     "rounded-lg font-sans text-xs sm:text-sm font-semibold uppercase tracking-widest px-8 py-4 bg-muted text-foreground border-transparent shadow-none active:scale-[0.99] transition-all duration-300",
+  "auth-social":
+    "h-11 px-5 rounded-xl border border-border/80 bg-card/70 backdrop-blur-md text-foreground hover:bg-card hover:text-foreground shadow-xs transition-all duration-200",
+  "glass-social":
+    "h-11 px-5 rounded-xl border border-foreground/15 bg-background/55 backdrop-blur-lg text-foreground hover:bg-background/80 hover:text-foreground shadow-xs transition-all duration-200",
+  "liquid-glass-social":
+    "h-11 px-5 rounded-xl border border-white/20 bg-zinc-900/75 dark:bg-white/15 backdrop-blur-md text-white hover:bg-zinc-900/90 dark:hover:bg-white/25 hover:text-white shadow-sm transition-all duration-200",
+  "liquid-glass-primary":
+    "h-11 px-6 rounded-xl font-semibold bg-white text-zinc-950 border border-zinc-200/80 dark:border-transparent hover:bg-zinc-50 dark:hover:bg-white/90 shadow-md shadow-black/10 dark:shadow-black/20 transition-all duration-200",
+  "ribbon-primary":
+    "relative isolate h-11 sm:h-12 overflow-hidden rounded-full px-6 text-[14px] sm:text-[15px] font-medium bg-foreground text-background border-transparent shadow-lg hover:bg-foreground hover:text-white before:absolute before:inset-0 before:-z-10 before:bg-gradient-to-br before:from-primary before:to-[var(--brand-secondary,var(--brand,#9B8AFB))] before:opacity-0 before:transition-opacity before:duration-300 hover:before:opacity-100 transition-all duration-200",
+  "ribbon-social":
+    "relative isolate h-11 sm:h-12 overflow-hidden rounded-full px-6 text-[14px] sm:text-[15px] font-medium border-0 bg-white ring-1 ring-black/10 hover:bg-gray-50/80 dark:bg-[#1d1d20] dark:ring-white/10 dark:hover:bg-[#252529] text-foreground shadow-xs transition-all duration-200",
+  "scenic-primary":
+    "h-11 sm:h-12 px-6 rounded-2xl font-semibold text-sm sm:text-base bg-primary text-primary-foreground border-transparent hover:bg-primary/90 shadow-sm transition-all duration-200",
+  "scenic-secondary":
+    "h-11 px-6 rounded-2xl text-xs sm:text-sm font-medium bg-zinc-100/90 text-zinc-700 hover:bg-zinc-200/90 border border-zinc-200/60 dark:bg-white/[0.08] dark:text-white/85 dark:hover:bg-white/[0.14] dark:border-white/5 shadow-none transition-all duration-200",
+  "scenic-option":
+    "h-12 px-5 rounded-2xl font-medium text-[15px] bg-zinc-100 hover:bg-zinc-200/90 text-zinc-900 border border-zinc-200/80 shadow-xs dark:bg-[#1e1f21] dark:hover:bg-[#282a2d] dark:text-white dark:border-white/[0.08] transition-all duration-200",
 };
 
 export interface ButtonProps
@@ -286,7 +313,7 @@ const ColorPickerPopover: React.FC<{
   onChange: (hex: string) => void;
   onClose: () => void;
 }> = ({ color, onChange, onClose }) => {
-  const initialHsv = React.useMemo(() => hexToHsv(color), []);
+  const initialHsv = React.useMemo(() => hexToHsv(color), [color]);
   const [hue, setHue] = useState(initialHsv.h);
   const [sat, setSat] = useState(initialHsv.s);
   const [val, setVal] = useState(initialHsv.v);
@@ -1445,6 +1472,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       const isPricingVariant = typeof variant === "string" && variant.startsWith("pricing-");
       const isTypographic = variant === "pricing-typographic" || variant === "pricing-typographic-muted";
       const isTypographicMuted = variant === "pricing-typographic-muted";
+      const isFlexCol = typeof className === "string" && className.includes("flex-col");
+      const isJustifyBetween = typeof className === "string" && className.includes("justify-between");
       return (
         <button
           className={cn(
@@ -1477,6 +1506,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           <span
             className={cn(
               "relative z-10 inline-flex items-center justify-center gap-3 transition-colors duration-500",
+              isJustifyBetween && "w-full justify-between",
+              isFlexCol && "w-full h-full flex-col items-stretch justify-between gap-0",
               isTypographicMuted && "group-hover:text-primary-foreground",
             )}
           >

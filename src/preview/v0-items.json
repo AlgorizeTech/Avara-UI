@@ -150,6 +150,7 @@
     "interactive-sliding-icon-text-motion-variants": "Button — Interactive Sliding Icon & Text Motion Variants",
     "icon-only": "Button — Icon only",
     "social-login": "Button — Social login",
+    "auth-glass-liquid-glass-scenic-ribbon-buttons": "Button — Auth, Glass, Liquid-Glass, Scenic & Ribbon Buttons",
     "pricing-action-cta-buttons": "Button — Pricing & Action CTA Buttons"
   },
   "calendar": {
@@ -528,6 +529,15 @@
   },
   "hero-orbit": {
     "orbit-ring-hero": "Hero — Orbit Ring Hero"
+  },
+  "hero-bento-cascade": {
+    "bento-cascade-infinite-motion-hero": "Hero — Bento Cascade Infinite Motion Hero"
+  },
+  "hero-breathe": {
+    "breathe-arch-stagger-hero": "Hero — Breathe Arch Stagger Hero"
+  },
+  "hero-solar-snapshot": {
+    "solar-snapshot-sun-cursor-hero": "Hero — Solar Snapshot Sun-Cursor Hero"
   },
   "image-compare": {
     "classic-slider": "Image Compare — Classic Slider",

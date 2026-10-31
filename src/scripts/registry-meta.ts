@@ -699,6 +699,34 @@ export const META: Record<string, ItemMeta> = {
     categories: ["media", "scroll", "layout"],
     docs: "Named export: Gallery (also exports OrbitGallery for backward compatibility). Default export: Gallery. Variants: orbit | bento | reel | pill | arc. Pass items ({ image, alt, title?, subtitle?, href? }), speed/duration, orientation, aspect, autoSlide, and radius/gap options.",
   },
+  "bento-cascade-hero": {
+    title: "Bento Cascade Hero",
+    description:
+      "An infinite vertical bento marquee hero section that loops seamlessly on the browser compositor. Staggered multi-column cards, rich media tiles, soft edge fade masks, and responsive motion with zero visible reset jumps.",
+    categories: ["marketing", "layout", "scroll"],
+    docs: "Named export: BentoCascadeHero (also available as variant='bento-cascade' in HeroBlock). Pass `title`, `titleAccent`, `subtitle`, `badgeText`, `primaryActionLabel`, `secondaryActionLabel`, `cards`, `images`, `speed`, and `pauseOnHover`.",
+  },
+  "hero-bento-cascade": {
+    title: "Bento Cascade Hero",
+    description:
+      "An infinite vertical bento marquee hero section that loops seamlessly on the browser compositor. Staggered multi-column cards, rich media tiles, soft edge fade masks, and responsive motion with zero visible reset jumps.",
+    categories: ["marketing", "layout", "scroll"],
+    docs: "Named export: BentoCascadeHero (also available as variant='bento-cascade' in HeroBlock). Pass `title`, `titleAccent`, `subtitle`, `badgeText`, `primaryActionLabel`, `secondaryActionLabel`, `cards`, `images`, `speed`, and `pauseOnHover`.",
+  },
+  "breathe-hero": {
+    title: "Breathe Arch Stagger Hero",
+    description:
+      "An ethereal hero section featuring an elegant serif headline and a staggered 5-card curved arch. On scroll, the center card scales up to 1.4x while surrounding cards gently drift outward and dim, creating a breathtaking focal zoom.",
+    categories: ["marketing", "layout", "scroll"],
+    docs: "Named export: BreatheHero (also available as variant='breathe' in HeroBlock). Pass `title`, `titleAccent`, `description`, `buttonLabel`, `buttonHref`, `cards`, `images`, `scrollMode`, `scrollScale`, `stagger`, `captions`, and `accent`.",
+  },
+  "hero-breathe": {
+    title: "Breathe Arch Stagger Hero",
+    description:
+      "An ethereal hero section featuring an elegant serif headline and a staggered 5-card curved arch. On scroll, the center card scales up to 1.4x while surrounding cards gently drift outward and dim, creating a breathtaking focal zoom.",
+    categories: ["marketing", "layout", "scroll"],
+    docs: "Named export: BreatheHero (also available as variant='breathe' in HeroBlock). Pass `title`, `titleAccent`, `description`, `buttonLabel`, `buttonHref`, `cards`, `images`, `scrollMode`, `scrollScale`, `stagger`, `captions`, and `accent`.",
+  },
   "hero-carousel": {
     description:
       "A full-bleed photo hero with a queue of cards: the front card is the slide on screen, the ones behind it are what comes next. Every five seconds or on a click the queue slides forward, the photograph behind crossfades and the headline and caption follow. A glass panel carries the faces of past guests, an intro and the call to action.",
@@ -1261,6 +1289,13 @@ export const META: Record<string, ItemMeta> = {
       "A pinned resource toolkit grid featuring authentic 3D pushpins, staggered cards, brand icon badges, and connected corkboard path lines.",
     categories: ["marketing", "data-display"],
     docs: "Named exports: DesignsToolkitBlock (default), ToolkitItem.",
+  },
+  "solar-snapshot-hero": {
+    title: "Solar Snapshot Hero",
+    description:
+      "A lightweight interactive hero section featuring a pointer-following sun orb, animated action buttons, an avatar stack, and a click-to-capture Polaroid screenshot stack in the bottom-right where each captured frame auto-clears after 10 seconds.",
+    categories: ["marketing", "layout", "media"],
+    docs: "Named exports: SolarSnapshotHero (default), DEFAULT_SOLAR_AVATARS, SolarSnapshotItem, and SolarSnapshotHeroProps.",
   },
 };
 
