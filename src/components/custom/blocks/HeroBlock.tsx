@@ -3,6 +3,7 @@
 import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { AnimatedTypographyBlock, type PrefixPosition } from "./AnimatedTypographyBlock";
+import { BentoCascadeHero } from "./BentoCascadeHeroBlock";
 import { ArrowRight, ArrowUpRight, Check, Copy, Sparkles, Terminal, Star, Code, Mail, FileText, Heart, ShieldCheck, ShoppingBag, Package } from "lucide-react";
 
 /* ═══════════════════════════════════════════════
@@ -34,7 +35,7 @@ export interface OrbitHighlight {
 }
 
 export interface HeroBlockProps extends React.HTMLAttributes<HTMLElement> {
-  /** Animation variant: "bounce", "typing", "slider", "glow-arc", "pet-shop", "doctor", "facility", "geometric", "vortex", "radar", "orbit", "orbit-gallery", "orbit-ring" */
+  /** Animation variant: "bounce", "typing", "slider", "glow-arc", "pet-shop", "doctor", "facility", "geometric", "vortex", "radar", "orbit", "orbit-gallery", "orbit-ring", "bento-cascade" */
   variant?:
     | "bounce"
     | "typing"
@@ -50,7 +51,9 @@ export interface HeroBlockProps extends React.HTMLAttributes<HTMLElement> {
     | "orbit"
     | "orbit-gallery"
     | "orbit-ring"
-    | "orbit-hero";
+    | "orbit-hero"
+    | "bento-cascade"
+    | "cascade";
   /** Optional badge text displayed inside the top pill badge */
   badgeText?: string;
   /** Badge link URL */
@@ -611,6 +614,33 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
           }
         : {}),
     } as React.CSSProperties;
+
+    /* ═══════════════════════════════════════════════
+       VARIANT: BENTO CASCADE INFINITE MOTION HERO
+       ═══════════════════════════════════════════════ */
+    if (variant === "bento-cascade" || variant === "cascade") {
+      return (
+        <BentoCascadeHero
+          ref={ref as any}
+          title={title || (titlePrefix === "Build " ? "Search any doctors & plan" : titlePrefix) || "Search any doctors & plan"}
+          titleAccent={titleAccent || (titleSuffix ? titleSuffix : "your next visit")}
+          subtitle={
+            subtitle === "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion."
+              ? "Experience leading healthcare services with expert treatments tailored to your work needs"
+              : subtitle
+          }
+          primaryActionLabel={primaryActionLabel === "Browse Components" ? "Contact us" : primaryActionLabel}
+          primaryActionHref={primaryActionHref === "/docs" ? "#contact" : primaryActionHref}
+          secondaryActionLabel={secondaryActionLabel === "Star on GitHub" ? "What we do" : secondaryActionLabel}
+          secondaryActionHref={secondaryActionHref === "https://github.com/AlgorizeTech" ? "#services" : secondaryActionHref}
+          accent={color}
+          linkComponent={Link}
+          className={className}
+          style={style}
+          {...props}
+        />
+      );
+    }
 
     /* ═══════════════════════════════════════════════
        VARIANT: ORBIT 3D PHOTO RING HERO

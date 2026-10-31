@@ -16,7 +16,8 @@ Every hero section in the library, on one page. Each is its own registry item wi
   <a href="#fashion-hero" className="rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] px-4 py-3 hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors"><strong className="block text-[14px] font-semibold text-foreground">Fashion Hero</strong><span className="text-[13px] leading-relaxed text-foreground/50">Staggered columns of looks on flat colour — lookbook, store, editorial.</span></a>
   <a href="#support-hero" className="rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] px-4 py-3 hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors"><strong className="block text-[14px] font-semibold text-foreground">Support Hero</strong><span className="text-[13px] leading-relaxed text-foreground/50">A frosted bento of cards and counting figures — SaaS and AI products.</span></a>
   <a href="#collage-hero" className="rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] px-4 py-3 hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors"><strong className="block text-[14px] font-semibold text-foreground">Collage Hero</strong><span className="text-[13px] leading-relaxed text-foreground/50">A photo collage under a turning badge — school, studio, workshop.</span></a>
-  <a href="#hero-block" className="rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] px-4 py-3 hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors"><strong className="block text-[14px] font-semibold text-foreground">Hero Block</strong><span className="text-[13px] leading-relaxed text-foreground/50">Comprehensive variants from one component — orbit ring, bounce, typing, slider, pet shop, doctor, facility, and rotating vortex cyclone radar.</span></a>
+  <a href="#bento-cascade-hero" className="rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] px-4 py-3 hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors"><strong className="block text-[14px] font-semibold text-foreground">Bento Cascade Hero</strong><span className="text-[13px] leading-relaxed text-foreground/50">An infinite vertical bento marquee with seamless looping and soft edge fades — SaaS, AI, and creative platforms.</span></a>
+  <a href="#hero-block" className="rounded-xl bg-foreground/[0.03] border border-foreground/[0.06] px-4 py-3 hover:bg-foreground/[0.05] hover:border-primary/30 transition-colors"><strong className="block text-[14px] font-semibold text-foreground">Hero Block</strong><span className="text-[13px] leading-relaxed text-foreground/50">Comprehensive variants from one component — bento cascade, orbit ring, bounce, typing, slider, pet shop, doctor, facility, and rotating vortex cyclone radar.</span></a>
 </div>
 
 ## Honeycomb Hero
@@ -1620,6 +1621,67 @@ export default function OrbitHeroExample() {
   ]}
 />
 
+## Bento Cascade Hero
+
+An infinite vertical bento marquee hero section that loops seamlessly on the browser compositor. Features staggered multi-column cards, rich media tiles, soft top and bottom edge fade masks, and responsive motion with zero visible reset jumps — inspired by Framer's Bento Cascade.
+
+export const usageBentoCascade = `"use client";
+
+import Link from "next/link";
+import { BentoCascadeHero } from "@/components/custom/blocks/BentoCascadeHeroBlock";
+
+export default function Hero() {
+  return (
+    <BentoCascadeHero
+      title="Search any doctors & plan"
+      titleAccent="your next visit"
+      subtitle="Experience leading healthcare services with expert treatments tailored to your work needs"
+      primaryActionLabel="Contact us"
+      primaryActionHref="#contact"
+      secondaryActionLabel="What we do"
+      secondaryActionHref="#services"
+      speed={30}
+      pauseOnHover={true}
+      linkComponent={Link}
+    />
+  );
+}
+`;
+
+<ExampleShowcase
+  name="hero-bento-cascade"
+  colorControl
+  columns={1}
+  minHeight={620}
+  examples={[
+    {
+      title: "Bento Cascade Infinite Motion Hero",
+      subheading: "Left column presents the avatar stack, 5-star review score, headline, description, pill CTA button, inline text link, and 24/7 care support badges. Right column features an infinite seamless 2-column bento cascade with wide cards, staggered arches, soft edge fade masks, and hover pause.",
+      props: { variant: "bento-cascade" },
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"bento-cascade"',
+          effect: "for the infinite vertical bento marquee cascade hero layout.",
+        },
+        {
+          prop: "speed",
+          value: "30",
+          effect: "seconds for one complete seamless vertical loop cycle.",
+        },
+        {
+          prop: "pauseOnHover",
+          value: "true",
+          effect: "smoothly pauses the continuous cascade animation at the exact position when hovering over any card, resuming seamlessly when the cursor leaves.",
+        },
+      ],
+      usage: nextAndReact(usageBentoCascade),
+      code: extractCode("src/components/custom/blocks/BentoCascadeHeroBlock.tsx"),
+    },
+  ]}
+/>
+
 ### Installation
 
 <Installation name="hero" showSetupPath={false} />
@@ -1642,13 +1704,13 @@ export default function OrbitHeroExample() {
           <code>variant</code>
         </td>
         <td>
-          <code>"bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "facility" | "vortex" | "orbit"</code>
+          <code>"bounce" | "typing" | "slider" | "glow-arc" | "pet-shop" | "doctor" | "facility" | "vortex" | "orbit" | "bento-cascade"</code>
         </td>
         <td>
           <code>"bounce"</code>
         </td>
         <td>
-          The layout & animation style. <code>"orbit"</code> / <code>"orbit-gallery"</code> renders revolving 3D circular photo ring with upright cards & smooth hover pause; <code>"bounce"</code> uses spring word motion; <code>"typing"</code> uses typewriter effect; <code>"slider"</code> renders split 2-column hero with continuous marquee; <code>"glow-arc"</code> / <code>"pet-shop"</code> renders pet care hero; <code>"doctor"</code> renders medical test kits hero; <code>"facility"</code> renders architectural CAD blueprint grid hero with interactive morphing shape; <code>"vortex"</code> renders atmospheric cyclone radar simulation with animated rotating canvas and telemetry HUD.
+          The layout & animation style. <code>"bento-cascade"</code> renders an infinite vertical bento marquee with staggered columns, rich media tiles, and soft edge fade masks; <code>"orbit"</code> / <code>"orbit-gallery"</code> renders revolving 3D circular photo ring with upright cards & smooth hover pause; <code>"bounce"</code> uses spring word motion; <code>"typing"</code> uses typewriter effect; <code>"slider"</code> renders split 2-column hero with continuous marquee; <code>"glow-arc"</code> / <code>"pet-shop"</code> renders pet care hero; <code>"doctor"</code> renders medical test kits hero; <code>"facility"</code> renders architectural CAD blueprint grid hero with interactive morphing shape; <code>"vortex"</code> renders atmospheric cyclone radar simulation with animated rotating canvas and telemetry HUD.
         </td>
       </tr>
       <tr>

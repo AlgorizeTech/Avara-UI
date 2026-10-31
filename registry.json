@@ -387,6 +387,32 @@
       "docs": "Named export: AvatarStack. `avatars` are { src, alt? }; `size` sm | md | lg; `max` faces before the +N disc; `ringClassName` is the gap colour; `action` renders last at face size; `spreadOnHover` fans the faces apart under the pointer; `liftOnHover` raises the hovered face above its neighbours; `showTooltip` controls hover tooltips."
     },
     {
+      "name": "bento-cascade-hero",
+      "type": "registry:component",
+      "title": "Bento Cascade Hero",
+      "author": "AlgorizeTech",
+      "description": "TODO: describe bento-cascade-hero. Generated placeholder.",
+      "categories": [],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/BentoCascadeHeroBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/BentoCascadeHeroBlock.tsx"
+        },
+        {
+          "path": "src/lib/accent.ts",
+          "type": "registry:component",
+          "target": "lib/accent.ts"
+        }
+      ]
+    },
+    {
       "name": "bento-showcase",
       "type": "registry:component",
       "title": "Bento Showcase",
@@ -2303,6 +2329,7 @@
       ],
       "registryDependencies": [
         "https://avaraui.com/r/animated-typography.json",
+        "https://avaraui.com/r/bento-cascade-hero.json",
         "utils"
       ],
       "files": [
