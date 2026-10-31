@@ -172,7 +172,7 @@ export default function ControlButtonsDemo() {
   const [effectMode, setEffectMode] = useState<ShardsEffectMode>("once");
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
       {/* 0. Effect mode picker: one-time plays or continuous loops */}
       <Button
         variant="shards-control"
@@ -183,7 +183,6 @@ export default function ControlButtonsDemo() {
         onValueChange={(label) => setEffectMode(EFFECT_MODES[label])}
         className="sm:col-span-2 lg:col-span-1"
       />
-      <div className="hidden lg:block lg:col-span-3" />
 
       {/* 1. Color Picker Button - shimmer on every pick, tinted with the colour */}
       <Button
@@ -232,6 +231,70 @@ export default function ControlButtonsDemo() {
   );
 }`;
 
+export const usagePricing = `import Button from "@/components/custom/blocks/Button";
+
+export default function PricingButtonsDemo() {
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-4">
+      {/* 1. Primary CTA - with and without arrow */}
+      <Button variant="pricing-primary" showArrow>
+        Primary with Icon
+      </Button>
+      <Button variant="pricing-primary">
+        Primary
+      </Button>
+
+      {/* 2. Dark Gradient CTA - with and without arrow */}
+      <Button variant="pricing-dark" showArrow>
+        Dark with Icon
+      </Button>
+      <Button variant="pricing-dark">
+        Dark
+      </Button>
+
+      {/* 3. Outline CTA - with and without arrow */}
+      <Button variant="pricing-outline" showArrow>
+        Outline with Icon
+      </Button>
+      <Button variant="pricing-outline">
+        Outline
+      </Button>
+
+      {/* 3. Glowing Pro CTA - with and without arrow */}
+      <Button variant="pricing-glow" showArrow>
+        Glow Pro with Icon
+      </Button>
+      <Button variant="pricing-glow">
+        Glow Pro
+      </Button>
+
+      {/* 4. Muted Flat CTA - Contact Sales */}
+      <Button variant="pricing-muted" showArrow>
+        Contact Sales with Icon
+      </Button>
+      <Button variant="pricing-muted">
+        Contact Sales
+      </Button>
+
+      {/* 5. Typographic High-Contrast Curtain CTA - with and without arrow */}
+      <Button variant="pricing-typographic" showArrow>
+        Initiate Project with Icon
+      </Button>
+      <Button variant="pricing-typographic">
+        Initiate Project
+      </Button>
+
+      {/* 6. Typographic Muted Curtain CTA - with and without arrow */}
+      <Button variant="pricing-typographic-muted" showArrow>
+        Muted Project with Icon
+      </Button>
+      <Button variant="pricing-typographic-muted">
+        Muted Project
+      </Button>
+    </div>
+  );
+};`;
+
 <ExampleShowcase
   name="button"
   colorControl
@@ -244,6 +307,20 @@ export default function ControlButtonsDemo() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/Button.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="button" />
+
+## Examples
+
+<ExampleShowcase
+  name="button"
+  colorControl
+  columns={1}
+  examples={[
     {
       title: "Dark Glass Parameter Control Panel Tiles",
       description: "Interactive dark glass control tiles for parameter panels (Color pickers, dropdown selects, sliders, and toggle switches).",
@@ -284,12 +361,25 @@ export default function ControlButtonsDemo() {
       usage: usageSocial,
       code: extractCode("src/components/custom/blocks/Button.tsx"),
     },
+    {
+      title: "Pricing & Action CTA Buttons",
+      description: "Clean high-converting pricing call-to-action buttons styled for modern pricing tiers, supporting automatic trailing arrows via the showArrow prop or clean text-only states.",
+      propNotes: [
+        { lead: "Primary", prop: "variant", value: '"pricing-primary"', effect: "clean solid primary theme button with subtle scale press physics." },
+        { lead: "Dark Gradient", prop: "variant", value: '"pricing-dark"', effect: "high-contrast dark gradient button with white text matching Dot Matrix and Scale cards." },
+        { lead: "Outline", prop: "variant", value: '"pricing-outline"', effect: "subtle card border with muted background hover effect." },
+        { lead: "Glow Pro", prop: "variant", value: '"pricing-glow"', effect: "ambient theme-colored glow shadow for popular or enterprise tiers." },
+        { lead: "Muted Flat", prop: "variant", value: '"pricing-muted"', effect: "flat muted card button commonly used for secondary or Contact Sales actions." },
+        { lead: "Typographic Primary", prop: "variant", value: '"pricing-typographic"', effect: "featured primary typographic button with slide-up curtain effect and dual looping arrow motion." },
+        { lead: "Typographic Muted", prop: "variant", value: '"pricing-typographic-muted"', effect: "muted typographic button with primary curtain slide-up on hover and dual looping arrow motion." },
+        { lead: "Icon Toggle", prop: "showArrow", value: 'true | false', effect: "toggles trailing arrow icon cleanly without extra boilerplate." },
+      ],
+      props: { layout: "pricing" },
+      usage: usagePricing,
+      code: extractCode("src/components/custom/blocks/Button.tsx"),
+    },
   ]}
 />
-
-## Installation
-
-<Installation name="button" />
 
 ## Features
 
@@ -320,12 +410,12 @@ export default function ControlButtonsDemo() {
           <code>variant</code>
         </td>
         <td>
-          <code>"outline" | "slide-icon" | "slide-icon-loop" | "slide-text" | "3d" | "shards-control"</code>
+          <code>"outline" | "slide-icon" | "slide-icon-loop" | "slide-text" | "3d" | "shards-control" | "pricing-primary" | "pricing-dark" | "pricing-outline" | "pricing-glow" | "pricing-muted" | "pricing-typographic" | "pricing-typographic-muted" | ...</code>
         </td>
         <td>
           <code>"outline"</code>
         </td>
-        <td>Choose between 4-side border glow, sliding rounded icon, looping rounded icon, vertical text roll, raised 3D press, or dark glass parameter control tile.</td>
+        <td>Choose between 4-side border glow, sliding rounded icon, looping rounded icon, vertical text roll, raised 3D press, parameter control tiles, or pricing CTA surfaces (<code>"pricing-primary"</code>, <code>"pricing-dark"</code>, <code>"pricing-outline"</code>, <code>"pricing-glow"</code>, <code>"pricing-muted"</code>, <code>"pricing-typographic"</code>, <code>"pricing-typographic-muted"</code>).</td>
       </tr>
       <tr>
         <td>
@@ -442,6 +532,20 @@ export default function ControlButtonsDemo() {
           <code>undefined</code>
         </td>
         <td>Renders an icon or element to the right of the text.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>showArrow</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          If true, automatically displays an interactive trailing arrow icon (<code>ArrowRightIcon</code>) without needing to supply <code>iconRight</code>.
+        </td>
       </tr>
     </tbody>
   </table>

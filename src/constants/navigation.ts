@@ -74,9 +74,11 @@ const expireNewBadges = (items: NavigationItem[]): NavigationItem[] =>
   items.map((group) => ({
     ...group,
     children: group.children.map((child) =>
-      child.badge === "New" && child.addedOn && !isFreshlyAdded(child.addedOn)
+      child.badge && ["new", "updated"].includes(child.badge.toLowerCase())
         ? { ...child, badge: undefined }
-        : child,
+        : child.badge === "New" && child.addedOn && !isFreshlyAdded(child.addedOn)
+          ? { ...child, badge: undefined }
+          : child,
     ),
   }));
 
@@ -88,7 +90,6 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Installation",
         slug: "installation",
-        badge: "Updated",
       },
       { label: "Quick Start", slug: "first-app" },
       { label: "MCP", slug: "mcp" },
@@ -108,28 +109,24 @@ const rawNavigation: NavigationItem[] = [
     label: "Ui Components",
     children: [
       { label: "3D Carousel", slug: "3d-carousel" },
-      { label: "Accordion", slug: "accordion", badge: "New", addedOn: "2026-10-17" },
+      { label: "Accordion", slug: "accordion" },
       { label: "Ai-Chat", slug: "ai-chat" },
       { label: "Alert", slug: "alert" },
       { label: "Animated List", slug: "animated-list" },
       { label: "Animated Timeline", slug: "animated-timeline" },
       { label: "Animated Typography", slug: "animated-typography" },
       { label: "Api Playground", slug: "api-playground" },
-      { label: "Apple Select", slug: "apple-select", badge: "New", addedOn: "2026-09-13" },
-      { label: "Audio Player", slug: "audio-player", badge: "New", addedOn: "2026-09-15" },
+      { label: "Apple Select", slug: "apple-select" },
+      { label: "Audio Player", slug: "audio-player" },
       {
         label: "Avatar Stack",
         slug: "avatar-stack",
-        badge: "New",
-        addedOn: "2026-09-16",
         keywords: ["avatar", "avatars", "faces", "group", "stack", "overlap", "social proof", "people"],
       },
       { label: "Book Flip", slug: "book-flip" },
       {
         label: "Booking Card",
         slug: "booking-card",
-        badge: "New",
-        addedOn: "2026-09-16",
         keywords: ["booking", "appointment", "schedule", "calendar", "slots", "time picker", "reservation"],
       },
       { label: "Breadcrumb", slug: "breadcrumb" },
@@ -139,8 +136,6 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Card Stack",
         slug: "card-stack",
-        badge: "New",
-        addedOn: "2026-09-26",
         keywords: ["card stack", "cards", "swipe", "drag", "stack", "discard", "deck", "layered"],
       },
       { label: "Carousel", slug: "carousel" },
@@ -151,8 +146,6 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Circular Text",
         slug: "circular-text",
-        badge: "New",
-        addedOn: "2026-09-16",
         keywords: ["circular", "circle", "text", "rotating", "spinning", "badge", "stamp", "textpath", "ring"],
       },
       { label: "Collapsible", slug: "collapsible" },
@@ -162,8 +155,6 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Designs Toolkit",
         slug: "designs-toolkit",
-        badge: "New",
-        addedOn: "2026-10-18",
         keywords: [
           "toolkit",
           "pinned cards",
@@ -177,8 +168,8 @@ const rawNavigation: NavigationItem[] = [
         ],
       },
       { label: "ContextMenu", slug: "context-menu" },
-      { label: "Conversation Timeline", slug: "conversation-timeline", badge: "New", addedOn: "2026-09-15" },
-      { label: "Copy Button", slug: "copy-button", badge: "New", addedOn: "2026-09-14" },
+      { label: "Conversation Timeline", slug: "conversation-timeline" },
+      { label: "Copy Button", slug: "copy-button" },
       { label: "Counter", slug: "counter" },
       { label: "Cursor Animation", slug: "cursor-animation" },
       { label: "Curved Carousel", slug: "curved-carousel" },
@@ -194,8 +185,6 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Falling Tags",
         slug: "falling-tags",
-        badge: "New",
-        addedOn: "2026-10-18",
         keywords: [
           "falling tags",
           "physics",
@@ -212,19 +201,16 @@ const rawNavigation: NavigationItem[] = [
       { label: "File Upload", slug: "file-upload" },
       { label: "Floating ContactButton", slug: "floating-contact-button" },
       { label: "Flow Gallery", slug: "flow-gallery" },
-      { label: "Folder", slug: "folder", badge: "New", addedOn: "2026-09-13" },
+      { label: "Folder", slug: "folder" },
       { label: "Form", slug: "form" },
       {
         label: "Gallery",
         slug: "gallery",
-        badge: "Updated",
         keywords: ["gallery", "orbit", "bento", "reel", "pill carousel", "arc carousel", "cards", "3d", "revolving"],
       },
       {
         label: "Glass Panel",
         slug: "glass-panel",
-        badge: "New",
-        addedOn: "2026-09-16",
         keywords: ["glass", "glassmorphism", "frosted", "aurora", "bento", "panel", "card", "backdrop"],
       },
       { label: "Half Stars", slug: "half-stars" },
@@ -233,15 +219,11 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Image Viewer",
         slug: "image-viewer",
-        badge: "New",
-        addedOn: "2026-09-23",
         keywords: ["image", "viewer", "zoom", "magnifier", "gallery", "product", "e-commerce", "lens", "lightbox", "slider"],
       },
       {
         label: "Image Wall",
         slug: "image-wall",
-        badge: "New",
-        addedOn: "2026-09-21",
         keywords: ["image", "wall", "carousel", "screenshots", "camera", "zoom", "gallery", "grid", "masonry", "showcase"],
       },
       { label: "Infrastructure Topology", slug: "infrastructure-topology" },
@@ -262,8 +244,6 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Modern Scroll Stack",
         slug: "modern-scroll-stack",
-        badge: "New",
-        addedOn: "2026-10-24",
         keywords: [
           "modern scroll stack",
           "scroll stack",
@@ -290,8 +270,6 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Scroll Split Cards",
         slug: "scroll-split-cards",
-        badge: "New",
-        addedOn: "2026-09-30",
         keywords: [
           "scroll split cards",
           "split cards",
@@ -305,15 +283,11 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Scroll Stack",
         slug: "scroll-stack",
-        badge: "New",
-        addedOn: "2026-10-17",
         keywords: ["fan stack", "card cascade", "deal cards", "stacked cards", "scroll stack"],
       },
       {
         label: "Secure Envelope",
         slug: "secure-envelope",
-        badge: "New",
-        addedOn: "2026-09-29",
         keywords: [
           "secure envelope",
           "envelope",
@@ -331,13 +305,11 @@ const rawNavigation: NavigationItem[] = [
         ],
       },
       { label: "Select", slug: "select" },
-      { label: "Selection Frame", slug: "selection-frame", badge: "New", addedOn: "2026-09-13" },
+      { label: "Selection Frame", slug: "selection-frame" },
       { label: "Skeleton", slug: "skeleton" },
       {
         label: "Social Links",
         slug: "social-links",
-        badge: "New",
-        addedOn: "2026-09-16",
         keywords: ["social", "share", "follow", "github", "linkedin", "x", "twitter", "instagram", "youtube", "brand icons"],
       },
       { label: "Sonner", slug: "sonner" },
@@ -345,8 +317,6 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Split-Flap Display",
         slug: "split-flap",
-        badge: "New",
-        addedOn: "2026-09-27",
         keywords: [
           "split-flap",
           "split flap",
@@ -362,13 +332,11 @@ const rawNavigation: NavigationItem[] = [
       },
       { label: "Stepper", slug: "stepper" },
       { label: "Table", slug: "table" },
-      { label: "Table of Contents", slug: "table-of-contents", badge: "New", addedOn: "2026-09-07" },
+      { label: "Table of Contents", slug: "table-of-contents" },
       { label: "Tabs", slug: "vertical-tabs" },
       {
         label: "Tech Stack",
         slug: "tech-stack",
-        badge: "New",
-        addedOn: "2026-09-28",
         keywords: ["tech stack", "built with", "tools", "logos", "logo strip", "brands", "technologies", "powered by"],
       },
       { label: "Theme Switcher", slug: "theme-switcher" },
@@ -385,8 +353,6 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Wallet",
         slug: "wallet",
-        badge: "New",
-        addedOn: "2026-09-24",
         keywords: [
           "wallet", "cards", "credit card", "fintech", "payment",
           "staggered", "scoop", "reveal balance", "euros", "pounds",
@@ -418,29 +384,21 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Bento Showcase",
         slug: "bento-showcase",
-        badge: "New",
-        addedOn: "2026-09-16",
         keywords: ["bento", "showcase", "marketing", "grid", "marquee", "scroll", "outsourcing", "agency", "landing"],
       },
       {
         label: "Book Appointment",
         slug: "book-appointment",
-        badge: "New",
-        addedOn: "2026-09-13",
         keywords: ["booking", "appointment", "schedule", "calendar", "slots", "doctor", "clinic", "reservation"],
       },
       {
         label: "Component Wall",
         slug: "component-wall",
-        badge: "New",
-        addedOn: "2026-10-17",
         keywords: ["hero", "wall", "screenshots", "camera", "zoom", "library", "landing", "showcase", "grid"],
       },
       {
         label: "Dashboard",
         slug: "dashboard",
-        badge: "New",
-        addedOn: "2026-10-01",
         keywords: [
           "dashboard", "admin", "overview", "analytics", "metrics", "kpi",
           "chart", "activity", "feed", "traffic", "sources", "countries",
@@ -450,8 +408,6 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Counter Section",
         slug: "counter-section",
-        badge: "New",
-        addedOn: "2026-09-24",
         keywords: [
           "counter", "stats", "metrics", "numbers", "kpi",
           "revenue", "satisfaction", "odometer", "ticker", "bento",
@@ -459,25 +415,30 @@ const rawNavigation: NavigationItem[] = [
         ],
       },
       {
+        label: "CTA Section",
+        slug: "cta-section",
+        keywords: [
+          "cta", "call to action", "brand pillars", "pillars", "scorecard",
+          "conversion", "marketing", "features", "framer", "services",
+        ],
+      },
+      {
         label: "Flavour Carousel",
         slug: "flavour-carousel",
-        badge: "New",
-        addedOn: "2026-09-20",
         keywords: ["carousel", "flavour", "flavor", "matcha", "product", "hero", "cup", "drink", "cart", "picker", "ring"],
       },
       {
         label: "Data Flow",
         slug: "data-flow",
-        badge: "New",
-        addedOn: "2026-09-16",
         keywords: ["data", "flow", "pipeline", "sources", "diagram", "connectors", "ai", "intelligence", "process"],
       },
-      { label: "Footer", slug: "footer" },
+      {
+        label: "Footer",
+        slug: "footer",
+      },
       {
         label: "FAQ Section",
         slug: "faq-section",
-        badge: "New",
-        addedOn: "2026-09-27",
         keywords: [
           "faq",
           "faq section",
@@ -493,11 +454,10 @@ const rawNavigation: NavigationItem[] = [
         ],
       },
       {
-        label: "Error Section",
-        slug: "error-section",
-        badge: "New",
-        addedOn: "2026-10-12",
+        label: "Error",
+        slug: "error",
         keywords: [
+          "error",
           "error section",
           "error page",
           "500",
@@ -512,13 +472,11 @@ const rawNavigation: NavigationItem[] = [
         ],
       },
       {
-        label: "Not Found Section",
-        slug: "not-found-section",
-        badge: "New",
-        addedOn: "2026-10-12",
+        label: "Not Found",
+        slug: "not-found",
         keywords: [
-          "not found section",
           "not found",
+          "not found section",
           "404",
           "404 page",
           "lost in hyperspace",
@@ -530,7 +488,6 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Hero",
         slug: "hero",
-        badge: "Updated",
         keywords: [
           "hero", "landing", "banner", "above the fold",
           "honeycomb", "hexagon", "mosaic", "norway", "travel", "nature",
@@ -544,24 +501,21 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Navbar",
         slug: "navbar",
-        badge: "New",
-        addedOn: "2026-10-24",
         keywords: ["navbar", "header", "mega menu", "mega nav", "ecommerce", "navigation", "top bar"],
       },
       {
         label: "Platform Grid",
         slug: "platform-grid",
-        badge: "New",
-        addedOn: "2026-09-16",
         keywords: ["platform", "grid", "features", "tiles", "bento", "tools", "catalog", "spotlight"],
       },
-      { label: "Pricing Section", slug: "pricing" },
+      {
+        label: "Pricing Section",
+        slug: "pricing",
+      },
       { label: "Product Details", slug: "product-details" },
       {
         label: "Profile Page",
         slug: "profile-page",
-        badge: "New",
-        addedOn: "2026-09-13",
         keywords: ["profile", "user profile", "member", "team", "bento", "glass", "glassmorphism"],
       },
       { label: "Review Section", slug: "reviews" },
@@ -570,20 +524,15 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Newsletter",
         slug: "newsletter",
-        badge: "New",
-        addedOn: "2026-09-15",
         keywords: ["newsletter", "subscribe", "signup", "email", "mailing list"],
       },
       {
         label: "Top Destinations",
         slug: "top-destinations",
-        badge: "New",
-        addedOn: "2026-10-17",
         keywords: [
           "top destinations",
           "destinations",
           "travel",
-          "exploreo",
           "marquee",
           "parallax",
           "scroll",
@@ -596,8 +545,6 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Waitlist",
         slug: "waitlist",
-        badge: "New",
-        addedOn: "2026-09-17",
         keywords: ["waitlist", "early access", "coming soon", "launch", "countdown", "signup", "email", "pre-launch", "queue"],
       },
     ],
@@ -608,8 +555,6 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Overview",
         slug: "third-party",
-        badge: "New",
-        addedOn: "2026-09-09",
         keywords: ["integration", "third party", "library", "ecosystem"],
       },
       {

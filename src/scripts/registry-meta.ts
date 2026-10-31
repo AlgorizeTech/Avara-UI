@@ -76,13 +76,14 @@ export const NAME_OVERRIDES: Record<string, string> = {
   "DesignComponentsFolder.tsx": "design-components-folder",
   "DesignFolderBox.tsx": "design-folder-box",
   "CounterSectionBlock.tsx": "counter-section",
+  "CtaSectionBlock.tsx": "cta-section",
   "WalletBlock.tsx": "wallet",
   "FAQSectionBlock.tsx": "faq-section",
   "ConfidentialFolderBlock.tsx": "confidential-folder",
   "SecureEnvelopeBlock.tsx": "secure-envelope",
   "ScrollSplitCardsBlock.tsx": "scroll-split-cards",
-  "ErrorSectionBlock.tsx": "error-section",
-  "NotFoundSectionBlock.tsx": "not-found-section",
+  "ErrorBlock.tsx": "error",
+  "NotFoundBlock.tsx": "not-found",
   "DesignsToolkitBlock.tsx": "designs-toolkit",
 };
 
@@ -94,15 +95,15 @@ export const META: Record<string, ItemMeta> = {
     categories: ["scroll", "marketing", "data-display"],
     docs: "Named export: ModernScrollStack (also default export), DEFAULT_MODERN_SCROLL_STACK_ITEMS, ModernScrollStackItem, and ModernScrollStackProps.",
   },
-  "not-found-section": {
-    title: "Not Found Section",
+  "not-found": {
+    title: "Not Found",
     description:
       "A responsive, full-page 404 Hyperspace website section with ambient radial glow, masked cyber grid backdrop, animated compass indicator, and customizable shortcuts.",
     categories: ["marketing", "layout", "feedback"],
     docs: "Named export: NotFoundSection (also default export) and NotFoundSectionProps. Ready for drop-in use in Next.js not-found.tsx or standalone 404 routes.",
   },
-  "error-section": {
-    title: "Error Section",
+  error: {
+    title: "Error",
     description:
       "A responsive, animated Cyberpunk Diagnostic Terminal Error Website Section with full Light and Dark mode adaptive styling, diagnostic monitors, and live stacktrace inspection.",
     categories: ["marketing", "layout", "feedback"],
@@ -167,6 +168,12 @@ export const META: Record<string, ItemMeta> = {
       "A collection of 4 animated high-impact Counter and Stats Sections with viewport-triggered count-up easing, zero shadows, and full adaptive styling.",
     categories: ["marketing", "data-display"],
     docs: "Named export: CounterSection. Accepts variant ('cyber-hud' | 'minimal-slash' | 'halftone-cinema' | 'spotlight-gradient') and custom stats array with value, prefix, suffix, decimals, label, sublabel, and tag.",
+  },
+  "cta-section": {
+    description:
+      "An interconnected Brand Pillars call-to-action component featuring interactive service cards, a synchronized scorecard with animated progress meters, and a highlight popover bar.",
+    categories: ["marketing", "layout"],
+    docs: "Named exports: CTASection, CtaSection, and the PillarItem type. Accepts variant ('brand-pillars' | 'minimal' | 'split'), pillars array, custom heading, statement, summary metrics, and active accent color.",
   },
   globe: {
     description:
@@ -402,15 +409,15 @@ export const META: Record<string, ItemMeta> = {
   },
   "login-form": {
     description:
-      "A sign-in form with social buttons, password reveal, remember-me and four layout variants. Use it as the entry point of an authenticated app.",
+      "A sign-in form with social buttons, password reveal, remember-me and multiple layout variants including ribbon-drift and liquid-glass. Use it as the entry point of an authenticated app.",
     categories: ["authentication", "forms"],
-    docs: "Default export: LoginForm. Also exports getThemeStyles (from login-form-theme.ts, which installs alongside) and the LoginFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated credentials; without it the form simulates a round trip. `signupHref` points at the matching `register-form` page. Validation is client-side presentation only — enforce it again on your server.",
+    docs: "Default export: LoginForm. Also exports LoginBlock, getThemeStyles (from login-form-theme.ts, which installs alongside) and the LoginFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal | liquid-glass | ribbon-drift. `onSubmit` receives the validated credentials; without it the form simulates a round trip. `signupHref` points at the matching `register-form` page. Validation is client-side presentation only — enforce it again on your server.",
   },
   "register-form": {
     description:
-      "A sign-up form with paired name fields, password confirmation, a terms checkbox and four layout variants. Use it wherever new accounts are created.",
+      "A sign-up form with paired name fields, password confirmation, a terms checkbox and multiple layout variants including ribbon-drift and liquid-glass. Use it wherever new accounts are created.",
     categories: ["authentication", "forms"],
-    docs: "Default export: RegisterForm. Also exports getThemeStyles (from register-form-theme.ts, which installs alongside) and the RegisterFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated fields; without it the form simulates a round trip. `loginHref` points at the matching `login-form` page, and `minPasswordLength` sets the client-side minimum. Validation is client-side presentation only — enforce it again on your server.",
+    docs: "Default export: RegisterForm. Also exports RegisterBlock, getThemeStyles (from register-form-theme.ts, which installs alongside) and the RegisterFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal | scenic | liquid-glass | ribbon-drift. `onSubmit` receives the validated fields; without it the form simulates a round trip. `loginHref` points at the matching `login-form` page, and `minPasswordLength` sets the client-side minimum. Validation is client-side presentation only — enforce it again on your server.",
   },
   "signup-form": {
     description:
@@ -472,7 +479,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A responsive marketing navbar with logo, links, mobile menu and GSAP entrance animation. Use it as the top bar of a landing page.",
     categories: ["navigation", "marketing"],
-    docs: "Named exports: NavbarBlock, getThemeStyles (from navbar-theme.ts, which installs alongside). Variants: default | floating | centered | minimal | glass | ecommerce-mega-nav. Links render through `linkComponent` (a plain `a` by default; pass next/link in Next.js). The mobile menu toggles are the `button` item, which installs alongside. For app chrome with dropdown panels, use `navigation-menu`.",
+    docs: "Named exports: NavbarBlock, getThemeStyles (from navbar-theme.ts, which installs alongside). Variants: default | floating | centered | minimal | glass | spotlight | ecommerce-mega-nav. Links render through `linkComponent` (a plain `a` by default; pass next/link in Next.js). The mobile menu toggles are the `button` item, which installs alongside. For app chrome with dropdown panels, use `navigation-menu`.",
   },
   command: {
     description:
@@ -599,9 +606,9 @@ export const META: Record<string, ItemMeta> = {
   },
   footer: {
     description:
-      "A collection of 4 modern, animated, fully responsive Footer components for web applications, SaaS platforms, and marketing landing pages.",
+      "A collection of 7 modern, animated, fully responsive Footer components for web applications, SaaS platforms, and marketing landing pages.",
     categories: ["marketing", "navigation", "layout"],
-    docs: "Named export: Footer. Accepts `variant` (4 responsive variants: simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `brandName`, `tagline`, `logo`, `socialLinks`, `className`. The social row is the `social-links` item, which installs alongside. All variants adapt across mobile, tablet, and desktop screens.",
+    docs: "Named export: Footer. Accepts `variant` (7 responsive variants: snapshot, modern-stack, wordmark-glow, simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `color`, `brandName`, `tagline`, `logo`, `socialLinks`, `snapshot`, `wordmarkFooter`, `wordmark`, `className`. All variants adapt across mobile, tablet, and desktop screens.",
   },
   "booking-card": {
     usageDependencies: ["glass-panel"],
@@ -852,7 +859,7 @@ export const META: Record<string, ItemMeta> = {
   },
   loader: {
     description:
-      "A loading indicator in five shapes — spinner, dots, pulse, ring and bar — with an optional caption. Use it for inline and full-panel pending states.",
+      "A loading indicator in six shapes — spinner, orbit, dots, pulse, ring and bar — with an optional caption. Use it for inline and full-panel pending states.",
     categories: ["feedback"],
     docs: "Named exports: LoaderBlock, getThemeColor. `variant` picks the shape, `size` is sm | md | lg | xl, and `text` renders a caption beneath. Pure CSS animation with no runtime dependencies. For content-shaped placeholders, use `skeleton`.",
   },
@@ -943,7 +950,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A complete pricing system with plan cards, a comparison table, an interactive plan builder and an interactive service checklist.",
     categories: ["commerce", "marketing"],
-    docs: "Named exports: PricingCards, PricingBuilder, PricingTable, PricingSlider, PricingTypographic, PricingPlans. The largest pricing item — variants include cards, builder, table, slider, typographic, and interactive service checklist. The typographic billing switch is the `toggle-group` item, which installs alongside.",
+    docs: "Named exports: PricingCards, PricingBuilder, PricingTable, PricingSlider, PricingTypographic, PricingPlans. The largest pricing item — variants include cards, builder, table, slider, typographic, and interactive service checklist. The tiered cards popular plan features subtle 3D tilt from tilted-card.",
   },
   "pricing-plan": {
     description:
@@ -1223,8 +1230,9 @@ export const META: Record<string, ItemMeta> = {
   },
   "particle-canvas": {
     description:
-      "A high-performance HTML Canvas component that converts text or images into thousands of animated particles with multiple visual variants and interactive mouse mechanics.",
+      "A high-performance text canvas component with organic repulsion physics and wordmark glow variants featuring cursor tracking and scroll-driven rising animations.",
     categories: ["media", "data-display"],
+    docs: "Named exports: ParticleCanvas, WordmarkGlowCanvas. Default export: ParticleCanvas. Variants: repel | wordmark-glow. Features 2D particle physics, cursor repulsion, scroll-timeline rising letters, and pointer-following radial glow.",
   },
   "split-flap": {
     title: "Split-Flap Display",

@@ -14,6 +14,8 @@ import { CriticalCSS } from '@/components/performance/critical-css';
 import { MetaTags } from '@/components/seo/MetaTags';
 import { StructuredData } from '@/components/seo/StructuredData';
 import { GoogleAnalytics } from '@/components/analytics/GoogleAnalytics';
+import { Analytics } from '@/components/analytics/Analytics';
+import { Suspense } from 'react';
 import { metadata } from '@/lib/metadata';
 import Header from '@/components/site/header';
 import { SolidProgressBar } from '@/components/ui/solid-progress-bar';
@@ -61,6 +63,9 @@ export default function RootLayout({
 
         {/* Load analytics after initial render */}
         <GoogleAnalytics />
+        <Suspense fallback={null}>
+          <Analytics />
+        </Suspense>
       </body>
     </html>
   );

@@ -9,7 +9,7 @@ import { extractCode } from "@/lib/code";
 
 A premium, dependency-free loading indicator component.
 
-Different parts of your UI require different types of loading states. A full-page data fetch might require an indeterminate `bar` or `pulse`, while a small button state might only fit a `sm` size `spinner` or `dots`. This component consolidates 5 distinct, ultra-smooth animations into a single block.
+Different parts of your UI require different types of loading states. A full-page data fetch might require an indeterminate `bar` or `pulse`, while a small button state might only fit a `sm` size `spinner` or `dots`, or an eye-catching `orbit` dual-ring spinner for prominent async states. This component consolidates 6 distinct, ultra-smooth animations into a single block.
 
 Explore the different variations of the Loader component — each example shows a live preview with the exact code to copy.
 
@@ -35,6 +35,20 @@ export const usageBar = `import { LoaderBlock } from "@/components/custom/blocks
 
 export default function BarLoader() {
   return <LoaderBlock variant="bar" />;
+}`;
+
+export const usageOrbit = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
+
+export default function OrbitLoader() {
+  return (
+    <LoaderBlock
+      variant="orbit"
+      size="md"
+      color="primary"
+      secondaryColor="#10b981"
+      direction="single"
+    />
+  );
 }`;
 
 <ExampleShowcase
@@ -75,6 +89,32 @@ export default function BarLoader() {
   colorControl
   columns={1}
   examples={[
+    {
+      title: 'Orbit (Concentric Rings & Pulse) — variant="orbit"',
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"orbit"',
+          effect:
+            "for our signature concentric dual-ring spinner with synchronized arcs and a glowing pulsing core (also aliased to \"ring\").",
+        },
+        {
+          prop: "direction",
+          value: '"single"',
+          effect:
+            "Controls spin direction. Defaults to `\"single\"` (both rings rotate in the same direction). Set to `\"dual\"` for opposite counter-rotation.",
+        },
+        {
+          prop: "secondaryColor",
+          value: '"#10b981"',
+          effect:
+            "Tints the inner ring. Defaults to emerald `#10b981` for the signature dual-tone aesthetic.",
+        },
+      ],
+      props: { variant: "orbit", direction: "single" },
+      usage: usageOrbit,
+    },
     {
       title: "Dots",
       propNotes: [
@@ -120,49 +160,6 @@ export default function BarLoader() {
   ]}
 />
 
-## Usage
-
-Import the component and pass your desired variant and size.
-
-```tsx
-import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
-
-export default function LoadingState() {
-  return (
-    <div className="w-full h-64 flex flex-col items-center justify-center border rounded-xl">
-      <LoaderBlock
-        variant="ring"
-        size="lg"
-        color="#FF00AA"
-        text="Authenticating..."
-      />
-    </div>
-  );
-}
-```
-
-## Features
-Discover the Loader component's animated states, offering various spinner styles and sizes for indicating background processes.
-
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
-    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
-    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
-    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
-    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </div>
-</div>
-
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
@@ -190,12 +187,43 @@ Discover the Loader component's animated states, offering various spinner styles
           <code>variant</code>
         </td>
         <td>
-          <code>"spinner" | "dots" | "pulse" | "ring" | "bar"</code>
+          <code>"spinner" | "orbit" | "dots" | "pulse" | "ring" | "bar"</code>
         </td>
         <td>
           <code>"spinner"</code>
         </td>
-        <td>The architectural style of the loading animation.</td>
+        <td>The architectural style of the loading animation. <code>"orbit"</code> (and <code>"ring"</code>) renders the signature dual-ring concentric spinner with counter-rotating arc and pulsing core.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>direction</code>
+        </td>
+        <td>
+          <code>"single" | "dual"</code>
+        </td>
+        <td>
+          <code>"single"</code>
+        </td>
+        <td>
+          Rotation direction for concentric rings in <code>"orbit"</code> and <code>"ring"</code> variants. <code>"single"</code> spins both rings in the same direction; <code>"dual"</code> enables opposite counter-spinning.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>secondaryColor</code>
+        </td>
+        <td>
+          <code>
+            "primary" | "indigo" | "rose" | "emerald" | "amber" | "blue" |
+            "zinc" | string
+          </code>
+        </td>
+        <td>
+          <code>"#10b981"</code>
+        </td>
+        <td>
+          Accent color for the inner counter-rotating orbit in <code>"orbit"</code> and <code>"ring"</code> variants. Defaults to emerald (<code>#10b981</code>).
+        </td>
       </tr>
       <tr>
         <td>

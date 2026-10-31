@@ -100,7 +100,8 @@
     "login-split": "Login Form — Login — split",
     "login-minimal": "Login Form — Login — minimal",
     "login-glass": "Login Form — Login — glass",
-    "login-liquid-glass": "Login Form — Login — liquid-glass"
+    "login-liquid-glass": "Login Form — Login — liquid-glass",
+    "login-ribbon-drift": "Login Form — Login — ribbon-drift"
   },
   "register-form": {
     "register": "Register Form — Register",
@@ -108,11 +109,17 @@
     "register-split": "Register Form — Register — split",
     "register-minimal": "Register Form — Register — minimal",
     "register-glass": "Register Form — Register — glass",
-    "register-liquid-glass": "Register Form — Register — liquid-glass"
+    "register-liquid-glass": "Register Form — Register — liquid-glass",
+    "register-ribbon-drift": "Register Form — Register — ribbon-drift"
   },
   "avatar-stack": {
     "avatar-group-shift-on-hover": "Avatar Stack — Avatar Group (Shift on hover)",
     "without-tooltip": "Avatar Stack — Without tooltip",
+    "with-tooltip-zoom-on-hover": "Avatar Stack — With tooltip (Zoom on hover)",
+    "with-tooltip-arrow-zoom-on-hover": "Avatar Stack — With tooltip arrow (Zoom on hover)",
+    "spread-on-hover-expand-width": "Avatar Stack — Spread on hover (Expand width)",
+    "spread-with-tooltip": "Avatar Stack — Spread with tooltip",
+    "spread-with-tooltip-arrow": "Avatar Stack — Spread with tooltip arrow",
     "with-an-action": "Avatar Stack — With an action",
     "folded-count": "Avatar Stack — Folded count",
     "sizes": "Avatar Stack — Sizes"
@@ -142,7 +149,8 @@
     "dark-glass-parameter-control-panel-tiles": "Button — Dark Glass Parameter Control Panel Tiles",
     "interactive-sliding-icon-text-motion-variants": "Button — Interactive Sliding Icon & Text Motion Variants",
     "icon-only": "Button — Icon only",
-    "social-login": "Button — Social login"
+    "social-login": "Button — Social login",
+    "pricing-action-cta-buttons": "Button — Pricing & Action CTA Buttons"
   },
   "calendar": {
     "calendar-dashboard": "Calendar — Calendar dashboard",
@@ -269,6 +277,10 @@
     "3-halftone-cinema-architectural": "Counter Section — 3. Halftone Cinema (Architectural)",
     "4-spotlight-gradient-interactive-pointer": "Counter Section — 4. Spotlight Gradient (Interactive Pointer)"
   },
+  "cta-section": {
+    "concentric-portal-variant-concentric-portal": "Cta Section — Concentric Portal — variant=\"concentric-portal\"",
+    "brand-pillars-variant-brand-pillars": "Cta Section — Brand Pillars — variant=\"brand-pillars\""
+  },
   "cursor-animation": {
     "image-trail-cursor": "Cursor Animation — Image Trail Cursor",
     "glow-cursor": "Cursor Animation — Glow Cursor",
@@ -369,8 +381,8 @@
     "glass": "Email — Glass",
     "liquid-glass": "Email — Liquid Glass"
   },
-  "error-section": {
-    "cyberpunk-terminal-section": "Error Section — Cyberpunk Terminal Section"
+  "error": {
+    "cyberpunk-terminal-section": "Error — Cyberpunk Terminal Section"
   },
   "falling-tags": {
     "interactive-physics-arena": "Falling Tags — Interactive physics arena",
@@ -438,6 +450,11 @@
     "accent-color": "Flowchart — Accent color"
   },
   "footer": {
+    "architectural-blueprint-liquid-ink-footer-heron-ai-inspired": "Footer — Architectural Blueprint & Liquid Ink Footer (Heron AI Inspired)",
+    "editorial-tilted-card-footer": "Footer — Editorial Tilted Card Footer",
+    "snapshot-footer": "Footer — Snapshot Footer",
+    "modern-stack-footer": "Footer — Modern Stack Footer",
+    "wordmark-glow-footer": "Footer — Wordmark Glow Footer",
     "simple-centered-footer": "Footer — Simple Centered Footer",
     "glass-dock-footer": "Footer — Glass Dock Footer",
     "neon-glow-pulse-cyberpunk-footer": "Footer — Neon Glow Pulse Cyberpunk Footer",
@@ -554,6 +571,7 @@
   },
   "loader": {
     "spinner": "Loader — Spinner",
+    "orbit-concentric-rings-pulse-variant-orbit": "Loader — Orbit (Concentric Rings & Pulse) — variant=\"orbit\"",
     "dots": "Loader — Dots",
     "pulse": "Loader — Pulse",
     "bar": "Loader — Bar"
@@ -615,12 +633,13 @@
     "centered-stacked-pile": "Modern Scroll Stack — Centered Stacked Pile"
   },
   "navbar": {
-    "e-commerce-mega-nav": "Navbar — E-Commerce Mega Nav",
+    "spotlight-pill-navbar": "Navbar — Spotlight Pill Navbar",
     "navbar": "Navbar",
     "centered": "Navbar — Centered",
     "floating": "Navbar — Floating",
     "minimal": "Navbar — Minimal",
-    "glass": "Navbar — Glass"
+    "glass": "Navbar — Glass",
+    "e-commerce-mega-nav": "Navbar — E-Commerce Mega Nav"
   },
   "navigation-menu": {
     "minimal": "Navigation Menu — Minimal"
@@ -638,8 +657,10 @@
     "spotlight": "Newsletter — Spotlight",
     "issues": "Newsletter — Issues"
   },
-  "not-found-section": {
-    "hyperspace-404-section": "Not Found Section — Hyperspace 404 Section"
+  "not-found": {
+    "architectural-cad-blueprint-404-zero-shadow": "Not Found — Architectural CAD Blueprint 404 (Zero Shadow)",
+    "hyperspace-404-section": "Not Found — Hyperspace 404 Section",
+    "quantum-hologram-404-advanced-animated": "Not Found — Quantum Hologram 404 (Advanced Animated)"
   },
   "otp-input": {
     "otp-input": "OTP Input",
@@ -653,7 +674,8 @@
     "in-a-data-table": "Pagination — In a data table"
   },
   "particle-canvas": {
-    "text-particle-repel": "Particle Canvas — Text Particle Repel"
+    "text-particle-repel": "Particle Canvas — Text Particle Repel",
+    "wordmark-glow-canvas": "Particle Canvas — Wordmark Glow Canvas"
   },
   "piano": {
     "playable-synthesizer-piano": "Piano — Playable Synthesizer Piano"
@@ -666,6 +688,7 @@
     "offset": "Popover — Offset"
   },
   "pricing": {
+    "selectable-workspace-plans": "Pricing — Selectable workspace plans",
     "tiered-cards": "Pricing — Tiered cards",
     "dot-matrix-cards": "Pricing — Dot matrix cards",
     "scale-cards": "Pricing — Scale cards",
@@ -765,6 +788,7 @@
     "horizontal-rail-track": "Horizontal Scroll Stack — Shorter Rail"
   },
   "secure-envelope": {
+    "confidential-folder-slide-out-sleeve-stay-hungry-variant": "Secure Envelope — Confidential Folder (Slide-Out Sleeve / Stay Hungry Variant)",
     "biometric-nfc-smartcard-quantum-vault-variant": "Secure Envelope — Biometric NFC SmartCard (Quantum Vault Variant)",
     "auto-flip-classic-voucher-classified": "Secure Envelope — Auto Flip (Classic Voucher / Classified)",
     "train-online-ticket-hyperbolt-express-variant": "Secure Envelope — Train Online Ticket (Hyperbolt Express Variant)"

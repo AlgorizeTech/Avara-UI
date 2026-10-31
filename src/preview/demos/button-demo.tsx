@@ -28,7 +28,6 @@ import {
 } from "@/components/custom/blocks/Icons";
 import { useState } from "react";
 
-/** The mode picker's labels, mapped to `effectMode`. */
 const EFFECT_MODES: Record<string, ShardsEffectMode> = {
   "One time": "once",
   Continuous: "continuous",
@@ -38,7 +37,7 @@ export default function ButtonDemo({
   layout = "basic",
   color = "primary",
 }: {
-  layout?: "basic" | "slide-icon" | "slide-text" | "icon-only" | "social" | "shards-panel";
+  layout?: "basic" | "slide-icon" | "slide-text" | "icon-only" | "social" | "shards-panel" | "pricing";
   color?: string;
 }) {
   const themeStyle = getButtonThemeStyle(color);
@@ -50,8 +49,8 @@ export default function ButtonDemo({
       style={themeStyle}
     >
       {layout === "shards-panel" && (
-        <div className="w-full max-w-4xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-sans py-4 pb-[200px]">
-          {/* 0. Effect mode picker — drives the four tiles below */}
+        <div className="w-full max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5 xl:gap-4 font-sans py-4 pb-48">
+          {/* 0. Effect mode picker */}
           <Button
             variant="shards-control"
             controlType="select"
@@ -61,7 +60,6 @@ export default function ButtonDemo({
             onValueChange={(label) => setEffectMode(EFFECT_MODES[label])}
             className="sm:col-span-2 lg:col-span-1"
           />
-          <div className="hidden lg:block lg:col-span-3" />
 
           {/* 1. Color Picker Button */}
           <Button
@@ -267,6 +265,66 @@ export default function ButtonDemo({
           </Button>
           <Button variant="default" className="w-full sm:w-auto justify-center bg-background text-foreground border border-border hover:bg-primary/10 hover:border-primary/30 hover:text-primary transition-colors duration-200" iconLeft={<LinkedInIcon />}>
             Login with LinkedIn
+          </Button>
+        </div>
+      )}
+
+      {layout === "pricing" && (
+        <div className="flex flex-wrap items-center justify-center gap-4 max-w-4xl mx-auto py-6">
+          {/* Primary CTA */}
+          <Button variant="pricing-primary" showArrow>
+            Primary with Icon
+          </Button>
+          <Button variant="pricing-primary">
+            Primary
+          </Button>
+
+          {/* Dark Gradient CTA (Dot Pattern & Scale) */}
+          <Button variant="pricing-dark" showArrow>
+            Dark with Icon
+          </Button>
+          <Button variant="pricing-dark">
+            Dark
+          </Button>
+
+          {/* Outline CTA */}
+          <Button variant="pricing-outline" showArrow>
+            Outline with Icon
+          </Button>
+          <Button variant="pricing-outline">
+            Outline
+          </Button>
+
+          {/* Glowing Pro CTA */}
+          <Button variant="pricing-glow" showArrow>
+            Glow Pro with Icon
+          </Button>
+          <Button variant="pricing-glow">
+            Glow Pro
+          </Button>
+
+          {/* Muted Flat CTA (Contact Sales) */}
+          <Button variant="pricing-muted" showArrow>
+            Contact Sales with Icon
+          </Button>
+          <Button variant="pricing-muted">
+            Contact Sales
+          </Button>
+
+          {/* Typographic Featured CTA (Initiate Project - Featured) */}
+          <Button variant="pricing-typographic" showArrow>
+            Initiate Project with Icon
+          </Button>
+          <Button variant="pricing-typographic">
+            Initiate Project
+          </Button>
+
+          {/* Typographic Muted CTA (Initiate Project - Non-Featured) */}
+          <Button variant="pricing-typographic-muted" showArrow>
+            Muted Typographic with Icon
+          </Button>
+          <Button variant="pricing-typographic-muted">
+            Muted Typographic
           </Button>
         </div>
       )}

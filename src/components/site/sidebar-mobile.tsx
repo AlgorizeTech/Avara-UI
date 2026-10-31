@@ -43,11 +43,15 @@ const transformNavigation = (): MenuItem[] => {
   return navigation.map(section => ({
     label: section.label,
     slug: section.children[0]?.slug ?? '',
-    children: section.children.map(child => ({
-      label: child.label,
-      slug: child.slug,
-      badge: child.badge,
-    })),
+    children: section.children.map(child => {
+      const isExcludedBadge =
+        child.badge && ['new', 'updated'].includes(child.badge.trim().toLowerCase());
+      return {
+        label: child.label,
+        slug: child.slug,
+        badge: isExcludedBadge ? undefined : child.badge,
+      };
+    }),
   }));
 };
 

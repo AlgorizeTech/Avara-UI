@@ -71,6 +71,19 @@ export default function GlassHeader() {
   );
 }`;
 
+export const usageSpotlight = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
+
+export default function SpotlightHeader() {
+  // Sticky pill navbar that shrinks and blurs on scroll, with sliding hover indicator and roll-up CTA.
+  return (
+    <NavbarBlock
+      variant="spotlight"
+      color="primary"
+      logoText="Nexus"
+    />
+  );
+}`;
+
 export const usageEcommerce = `import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
 
 export default function EcommerceHeader() {
@@ -89,37 +102,30 @@ export default function EcommerceHeader() {
   name="navbar"
   colorControl
   columns={1}
+  minHeight={0}
   examples={[
     {
-      title: "E-Commerce Mega Nav",
+      title: "Spotlight Pill Navbar",
       subheading:
-        "A conversion-focused e-commerce navigation inspired by Framer's E-Commerce Mega Nav. Features a top announcement bar, product-rich mega menus with direct product previews and promotional cards, live search, cart badge with mini-cart, and a responsive mobile drawer with drill-down categories.",
+        "A sticky pill navbar that smoothly narrows and gains a frosted glass backdrop on scroll, paired with a sliding pill hover indicator behind navigation links and an interactive roll-up CTA button.",
       propNotes: [
         {
           lead: "Set",
           prop: "variant",
-          value: '"ecommerce-mega-nav"',
+          value: '"spotlight"',
           effect:
-            "activates the comprehensive e-commerce navigation with announcement bar, multi-category mega menus, product cards, promo banners, cart indicator, and mobile drawer.",
-        },
-        {
-          lead: "Pass",
-          prop: "logoText",
-          value: '"NUTRIFY"',
-          effect:
-            "sets the brand name in both the desktop bar and mobile drawer.",
+            "activates the scroll-reactive shrink and blur pill container, sliding hover pill indicator, and dual-layer roll-up CTA button.",
         },
         {
           lead: "Customize",
           prop: "color",
           effect:
-            "themes the announcement bar, badges, active indicators, and checkout CTA buttons.",
+            "themes the logo mark icon and roll-up CTA button.",
         },
       ],
-      props: { variant: "ecommerce-mega-nav", color: "primary", logoText: "NUTRIFY" },
-      usage: usageEcommerce,
+      props: { variant: "spotlight", color: "primary", logoText: "Nexus" },
+      usage: usageSpotlight,
       code: extractCode("src/components/custom/blocks/NavbarBlock.tsx"),
-      minHeight: 620,
     },
   ]}
 />
@@ -134,6 +140,7 @@ export default function EcommerceHeader() {
   name="navbar"
   colorControl
   columns={1}
+  minHeight={0}
   examples={[
     {
       title: "Navbar",
@@ -206,6 +213,35 @@ export default function EcommerceHeader() {
       props: { variant: "glass" },
       usage: usageGlass,
     },
+    {
+      title: "E-Commerce Mega Nav",
+      subheading:
+        "A conversion-focused e-commerce navigation inspired by Framer's E-Commerce Mega Nav. Features a top announcement bar, product-rich mega menus with direct product previews and promotional cards, live search, cart badge with mini-cart, and a responsive mobile drawer with drill-down categories.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"ecommerce-mega-nav"',
+          effect:
+            "activates the comprehensive e-commerce navigation with announcement bar, multi-category mega menus, product cards, promo banners, cart indicator, and mobile drawer.",
+        },
+        {
+          lead: "Pass",
+          prop: "logoText",
+          value: '"NUTRIFY"',
+          effect:
+            "sets the brand name in both the desktop bar and mobile drawer.",
+        },
+        {
+          lead: "Customize",
+          prop: "color",
+          effect:
+            "themes the announcement bar, badges, active indicators, and checkout CTA buttons.",
+        },
+      ],
+      props: { variant: "ecommerce-mega-nav", color: "primary", logoText: "NUTRIFY" },
+      usage: usageEcommerce,
+    },
   ]}
 />
 
@@ -227,7 +263,7 @@ export default function EcommerceHeader() {
           <code>variant</code>
         </td>
         <td>
-          <code>"default" | "floating" | "centered" | "minimal" | "glass" | "ecommerce-mega-nav"</code>
+          <code>"default" | "floating" | "centered" | "minimal" | "glass" | "spotlight" | "ecommerce-mega-nav"</code>
         </td>
         <td>
           <code>"default"</code>

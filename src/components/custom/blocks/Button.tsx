@@ -21,7 +21,26 @@ const Loader2: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 );
 
-type ButtonVariant =
+const ArrowRightIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+    aria-hidden="true"
+  >
+    <path d="M5 12h14" />
+    <path d="m12 5 7 7-7 7" />
+  </svg>
+);
+
+export type ButtonVariant =
   | "outline"
   | "spin-border"
   | "pulse-glow"
@@ -102,7 +121,15 @@ type ButtonVariant =
   | "destructive"
   | "secondary"
   | "ghost"
-  | "link";
+  | "link"
+  | "pricing-primary"
+  | "pricing-outline"
+  | "pricing-glow"
+  | "pricing-muted"
+  | "pricing-pill"
+  | "pricing-dark"
+  | "pricing-typographic"
+  | "pricing-typographic-muted";
 type ButtonSize = "default" | "sm" | "lg";
 
 /**
@@ -131,6 +158,22 @@ const PLAIN_VARIANTS: Record<string, string> = {
   ghost:
     "bg-transparent text-foreground border-transparent shadow-none hover:bg-accent hover:text-accent-foreground",
   link: "bg-transparent text-primary border-transparent shadow-none underline-offset-4 hover:underline",
+  "pricing-primary":
+    "rounded-lg font-sans text-[13.5px] font-semibold px-7 py-3.5 bg-primary text-primary-foreground border-transparent shadow-xs hover:bg-primary/90 hover:shadow-md hover:shadow-primary/20 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-200",
+  "pricing-outline":
+    "rounded-lg font-sans text-[13.5px] font-semibold px-6 py-3 border border-border bg-muted/50 dark:bg-card text-foreground hover:bg-muted/80 dark:hover:bg-muted/40 hover:border-foreground/15 dark:hover:border-foreground/25 hover:shadow-xs hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-200",
+  "pricing-glow":
+    "rounded-lg font-sans text-sm font-semibold px-7 py-3.5 bg-primary text-primary-foreground border border-primary/30 shadow-[0_0_20px_-3px_color-mix(in_oklab,var(--primary)_45%,transparent)] hover:shadow-[0_0_32px_-1px_color-mix(in_oklab,var(--primary)_70%,transparent)] hover:brightness-105 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-200",
+  "pricing-muted":
+    "rounded-lg font-sans text-[13.5px] font-semibold px-7 py-3.5 bg-muted text-foreground border-transparent shadow-2xs hover:bg-muted/70 hover:shadow-xs hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-200",
+  "pricing-pill":
+    "rounded-lg font-sans text-xs sm:text-[13px] font-bold uppercase tracking-wider px-8 py-3.5 bg-primary text-primary-foreground border-transparent shadow-md hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/25 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-200",
+  "pricing-dark":
+    "rounded-lg font-sans text-xs sm:text-[13.5px] font-semibold px-7 py-3.5 bg-gradient-to-b from-foreground/85 to-foreground text-background border-transparent shadow-md hover:from-foreground/95 hover:to-foreground hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all duration-200",
+  "pricing-typographic":
+    "rounded-lg font-sans text-xs sm:text-sm font-semibold uppercase tracking-widest px-8 py-4 bg-primary text-primary-foreground border-transparent shadow-md active:scale-[0.99] transition-all duration-300",
+  "pricing-typographic-muted":
+    "rounded-lg font-sans text-xs sm:text-sm font-semibold uppercase tracking-widest px-8 py-4 bg-muted text-foreground border-transparent shadow-none active:scale-[0.99] transition-all duration-300",
 };
 
 export interface ButtonProps
@@ -141,6 +184,8 @@ export interface ButtonProps
   color?: string;
   iconLeft?: React.ReactNode;
   iconRight?: React.ReactNode;
+  /** Whether to show a default trailing arrow icon (e.g. for pricing CTAs like "Continue →"). */
+  showArrow?: boolean;
 
   /* Props for "shards-control" glass dark parameter tile variant */
   controlType?: "color" | "select" | "slider" | "toggle";
@@ -1166,7 +1211,7 @@ const ShardsControlTile = ({
         {effectLayers}
 
         {/* Label on Left */}
-        <span className="relative z-10 text-foreground/90 font-semibold tracking-wide truncate max-w-[45%] transition-colors duration-200 pointer-events-none">
+        <span className="relative z-10 text-foreground/90 font-semibold tracking-wide truncate max-w-[60%] transition-colors duration-200 pointer-events-none">
           {displayLabel}
         </span>
 
@@ -1303,6 +1348,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       onClick,
       iconLeft,
       iconRight,
+      showArrow,
       style,
       controlType = "select",
       label,
@@ -1396,13 +1442,19 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     // The plain surfaces short-circuit ahead of every animated variant: they
     // share one render and differ only by the token classes above.
     if (PLAIN_VARIANTS[variant]) {
+      const isPricingVariant = typeof variant === "string" && variant.startsWith("pricing-");
+      const isTypographic = variant === "pricing-typographic" || variant === "pricing-typographic-muted";
+      const isTypographicMuted = variant === "pricing-typographic-muted";
       return (
         <button
           className={cn(
-            "relative inline-flex items-center justify-center rounded-xl border text-sm font-semibold transition-all duration-300 shadow-xs overflow-hidden cursor-pointer",
+            "group relative inline-flex items-center justify-center border text-sm font-semibold transition-all duration-300 overflow-hidden cursor-pointer",
             "focus:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-            "disabled:opacity-50 disabled:pointer-events-none active:scale-[0.97]",
-            sizeClasses[size],
+            "disabled:opacity-50 disabled:pointer-events-none",
+            isPricingVariant
+              ? "gap-2.5 font-sans rounded-lg"
+              : "rounded-xl shadow-xs active:scale-[0.97]",
+            !isPricingVariant && sizeClasses[size],
             PLAIN_VARIANTS[variant],
             className,
           )}
@@ -1412,14 +1464,38 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           style={combinedStyle}
           {...props}
         >
-          <span className="relative z-10 inline-flex items-center justify-center gap-2">
+          {/* Typographic sliding curtain effect */}
+          {isTypographic && (
+            <div
+              className={cn(
+                "absolute inset-0 translate-y-[100%] rounded-[inherit] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] pointer-events-none",
+                isTypographicMuted ? "bg-primary" : "bg-black/20",
+              )}
+            />
+          )}
+
+          <span
+            className={cn(
+              "relative z-10 inline-flex items-center justify-center gap-3 transition-colors duration-500",
+              isTypographicMuted && "group-hover:text-primary-foreground",
+            )}
+          >
             {loading && <Loader2 className="h-4 w-4 animate-spin" />}
             {!loading && iconLeft && (
               <span className="inline-flex items-center">{iconLeft}</span>
             )}
             {children}
-            {!loading && iconRight && (
-              <span className="inline-flex items-center">{iconRight}</span>
+            {!loading && (iconRight || (showArrow && !iconRight)) && (
+              isTypographic && !iconRight ? (
+                <div className="relative z-10 w-4 h-4 overflow-hidden flex items-center">
+                  <ArrowRightIcon className="absolute w-4 h-4 -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" />
+                  <ArrowRightIcon className="absolute w-4 h-4 translate-x-0 group-hover:translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" />
+                </div>
+              ) : (
+                <span className="inline-flex items-center transition-transform duration-200 group-hover:translate-x-1">
+                  {iconRight ?? <ArrowRightIcon className="w-4 h-4 stroke-[2] transition-transform duration-200 group-hover:translate-x-1" />}
+                </span>
+              )
             )}
           </span>
 

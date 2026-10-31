@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-25T09:22:21.760Z",
-  "totalFiles": 315,
+  "generatedAt": "2026-10-29T13:15:19.094Z",
+  "totalFiles": 317,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -219,6 +219,12 @@
       "originalMdx": "[framework]\\counter-section\\page.mdx"
     },
     {
+      "name": "nextjs/cta-section",
+      "path": "/docs/nextjs-cta-section.md",
+      "url": "/docs/nextjs/cta-section",
+      "originalMdx": "[framework]\\cta-section\\page.mdx"
+    },
+    {
       "name": "nextjs/cursor-animation",
       "path": "/docs/nextjs-cursor-animation.md",
       "url": "/docs/nextjs/cursor-animation",
@@ -315,10 +321,10 @@
       "originalMdx": "[framework]\\email\\page.mdx"
     },
     {
-      "name": "nextjs/error-section",
-      "path": "/docs/nextjs-error-section.md",
-      "url": "/docs/nextjs/error-section",
-      "originalMdx": "[framework]\\error-section\\page.mdx"
+      "name": "nextjs/error",
+      "path": "/docs/nextjs-error.md",
+      "url": "/docs/nextjs/error",
+      "originalMdx": "[framework]\\error\\page.mdx"
     },
     {
       "name": "nextjs/examples",
@@ -591,10 +597,10 @@
       "originalMdx": "[framework]\\newsletter\\page.mdx"
     },
     {
-      "name": "nextjs/not-found-section",
-      "path": "/docs/nextjs-not-found-section.md",
-      "url": "/docs/nextjs/not-found-section",
-      "originalMdx": "[framework]\\not-found-section\\page.mdx"
+      "name": "nextjs/not-found",
+      "path": "/docs/nextjs-not-found.md",
+      "url": "/docs/nextjs/not-found",
+      "originalMdx": "[framework]\\not-found\\page.mdx"
     },
     {
       "name": "nextjs/otp-input",
@@ -1167,6 +1173,12 @@
       "originalMdx": "[framework]\\counter-section\\page.mdx"
     },
     {
+      "name": "reactjs/cta-section",
+      "path": "/docs/reactjs-cta-section.md",
+      "url": "/docs/reactjs/cta-section",
+      "originalMdx": "[framework]\\cta-section\\page.mdx"
+    },
+    {
       "name": "reactjs/cursor-animation",
       "path": "/docs/reactjs-cursor-animation.md",
       "url": "/docs/reactjs/cursor-animation",
@@ -1263,10 +1275,10 @@
       "originalMdx": "[framework]\\email\\page.mdx"
     },
     {
-      "name": "reactjs/error-section",
-      "path": "/docs/reactjs-error-section.md",
-      "url": "/docs/reactjs/error-section",
-      "originalMdx": "[framework]\\error-section\\page.mdx"
+      "name": "reactjs/error",
+      "path": "/docs/reactjs-error.md",
+      "url": "/docs/reactjs/error",
+      "originalMdx": "[framework]\\error\\page.mdx"
     },
     {
       "name": "reactjs/examples",
@@ -1539,10 +1551,10 @@
       "originalMdx": "[framework]\\newsletter\\page.mdx"
     },
     {
-      "name": "reactjs/not-found-section",
-      "path": "/docs/reactjs-not-found-section.md",
-      "url": "/docs/reactjs/not-found-section",
-      "originalMdx": "[framework]\\not-found-section\\page.mdx"
+      "name": "reactjs/not-found",
+      "path": "/docs/reactjs-not-found.md",
+      "url": "/docs/reactjs/not-found",
+      "originalMdx": "[framework]\\not-found\\page.mdx"
     },
     {
       "name": "reactjs/otp-input",

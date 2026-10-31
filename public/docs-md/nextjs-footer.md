@@ -2,9 +2,25 @@ export const metadata = docsPageMetadata("footer");
 
 # Footer
 
-A collection of 4 production-ready, high-capacity, fully responsive Footer components designed for modern web applications, SaaS platforms, e-commerce stores, and enterprise products.
+A collection of 9 production-ready, high-capacity, fully responsive Footer components designed for modern web applications, SaaS platforms, e-commerce stores, and enterprise products.
 
-`Footer` adapts seamlessly across mobile screens, tablets, and desktop viewports, with support for centered layouts, frosted glass docks, cyberpunk neon glow pulses, and quantum particle beams.
+`Footer` adapts seamlessly across mobile screens, tablets, and desktop viewports, with support for architectural blueprint drafting grids with interactive liquid ink typography, centered layouts, frosted glass docks, cyberpunk neon glow pulses, quantum particle beams, snapshot studio card piles, colorful modern scroll stack cards, giant glowing scroll-reveal wordmarks, and architectural editorial tilted CTA cards.
+
+export const usageArchitecturalLiquid = `import { Footer } from "@/components/custom/blocks/FooterBlock";
+
+export default function ArchitecturalLiquidFooterDemo() {
+  return (
+    
+  );
+}`;
+
+export const usageEditorial = `import { Footer } from "@/components/custom/blocks/FooterBlock";
+
+export default function EditorialFooterDemo() {
+  return (
+    
+  );
+}`;
 
 export const usageSimple = `import { Footer } from "@/components/custom/blocks/FooterBlock";
 
@@ -30,6 +46,30 @@ export default function QuantumBeamFooterDemo() {
   return ;
 }`;
 
+export const usageSnapshot = `import { Footer } from "@/components/custom/blocks/FooterBlock";
+
+export default function SnapshotFooterDemo() {
+  return (
+    
+  );
+}`;
+
+export const usageModernStack = `import { Footer } from "@/components/custom/blocks/FooterBlock";
+
+export default function ModernStackFooterDemo() {
+  return (
+    
+  );
+}`;
+
+export const usageWordmark = `import { Footer } from "@/components/custom/blocks/FooterBlock";
+
+export default function WordmarkFooterDemo() {
+  return (
+    
+  );
+}`;
+
 ## Installation
 
 Add the component by URL — no setup needed:
@@ -51,8 +91,8 @@ npx shadcn@latest add @avara-ui/footer
 
 Discover the key capabilities of the `Footer` component:
 
-    4 High-Performance Responsive Variants
-    Includes Simple Centered, Glass Dock, Neon Glow Pulse, and Quantum Particle Beam.
+    9 High-Performance Responsive Variants
+    Includes Architectural Blueprint Liquid, Editorial Tilted Card, Snapshot, Modern Stack, Wordmark Glow, Simple Centered, Glass Dock, Neon Glow Pulse, and Quantum Particle Beam.
 
     100% Screen & Device Responsive
     Fluid Tailwind CSS grid and flex layouts built to adapt from 320px mobile viewports up to 4K ultra-wide screens.
@@ -66,8 +106,38 @@ Discover the key capabilities of the `Footer` component:
 
         variant
         FooterVariant
-        "simple-centered"
-        Selects from the 4 active responsive footer variants ("simple-centered", "glass-dock", "neon-glow-pulse", "quantum-particle-beam").
+        "snapshot"
+        Selects from the 9 footer variants ("architectural-liquid", "editorial-card", "snapshot", "modern-stack", "wordmark-glow", "simple-centered", "glass-dock", "neon-glow-pulse", "quantum-particle-beam").
+
+        blueprintWordmark
+        string
+        "AVARA UI"
+        Custom text for the architectural blueprint wordmark with interactive liquid ink hover physics in variant="architectural-liquid".
+
+        architecturalLiquid
+        ArchitecturalLiquidFooterProps
+        Heron AI architectural layout copy
+        Customization options for the "architectural-liquid" variant: headline, brandWordmark, subscribeText, addressLines, directionHref, businessEmail, inquiryEmail, navColumns, socials, and legalLinks.
+
+        color
+        string
+        "primary"
+        Accent theme color (e.g. "indigo", "rose", "emerald", "lavender", or hex). Bridges with the active color picker to style interactive stickers, badges, and glows.
+
+        snapshot
+        SnapshotFooterContent
+        Marlo Studio demo copy
+        Content for variant="snapshot": headingLines, description, taglineLines, five photos (&#123; src, caption &#125;), note card address, hours, stickerText and legalLinks. Every field is optional.
+
+        editorialCta
+        EditorialFooterProps
+        Husham Sam inspired editorial defaults
+        Content for variant="editorial-card": headline, buttonText, buttonHref, menuLinks, copyright, and rightsText.
+
+        sections
+        FooterLinkSection[]
+        Per-variant columns
+        Link columns. A link may carry a badge (e.g. 3), shown as a count pill by snapshot.
 
         brandName
         string

@@ -212,6 +212,7 @@ const COMPONENT_META: Record<
 	"tech-stack": { countText: "Built-With Logo Groups", illustrationType: "tech-stack" },
 	wallet: { countText: "Fintech Cardholder", illustrationType: "wallet" },
 	"counter-section": { countText: "4 Stats Layouts", illustrationType: "counter-section" },
+	"cta-section": { countText: "Brand Pillars & Scorecard", illustrationType: "cta-section" },
 	"flavour-carousel": { countText: "Product Flavour Hero", illustrationType: "flavour-carousel" },
 	"faq-section": { countText: "Accordion & Photo Canvas", illustrationType: "faq-section" },
 	dashboard: { countText: "Analytics Overview", illustrationType: "dashboard" },
@@ -329,7 +330,7 @@ const COMPONENT_TYPES = {
 		description: "Features, stats, pricing, social proof and sign-ups.",
 		icon: Megaphone,
 		kind: "section",
-		slugs: ["bento-showcase", "platform-grid", "data-flow", "counter-section", "pricing", "reviews", "faq-section", "newsletter", "waitlist"],
+		slugs: ["bento-showcase", "platform-grid", "data-flow", "counter-section", "cta-section", "pricing", "reviews", "faq-section", "newsletter", "waitlist"],
 	},
 	chrome: {
 		label: "Headers & Footers",
@@ -4066,6 +4067,33 @@ function MiniatureIllustration({
 									</div>
 								</div>
 							))}
+						</div>
+					</div>
+				)}
+
+				{type === "cta-section" && (
+					<div className="w-full my-auto px-1 space-y-1.5">
+						<div className="flex items-center justify-between">
+							<span className="text-[6px] font-semibold uppercase tracking-[0.2em] text-[#f95716]">
+								Brand Pillars
+							</span>
+							<span className="h-px flex-1 ml-2 bg-border" />
+						</div>
+						<div className="grid grid-cols-2 gap-1.5">
+							<div className="p-1.5 rounded bg-muted/40 border border-border/60 space-y-1">
+								<div className="h-1 w-3/4 rounded bg-foreground/70" />
+								<div className="h-0.5 w-full rounded bg-muted-foreground/30" />
+								<div className="h-0.5 w-1/2 rounded bg-muted-foreground/30" />
+							</div>
+							<div className="p-1.5 rounded bg-muted/60 border border-border/80 flex flex-col justify-between">
+								<div className="flex items-center justify-between">
+									<span className="text-[5px] text-muted-foreground">Score</span>
+									<span className="text-[8px] font-black text-[#f95716]">100%</span>
+								</div>
+								<div className="h-1 w-full rounded-full bg-muted-foreground/20 overflow-hidden">
+									<div className="h-full w-full bg-[#f95716] rounded-full" />
+								</div>
+							</div>
 						</div>
 					</div>
 				)}

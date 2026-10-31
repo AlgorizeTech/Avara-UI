@@ -1202,6 +1202,32 @@
       "docs": "Named export: CounterSection. Accepts variant ('cyber-hud' | 'minimal-slash' | 'halftone-cinema' | 'spotlight-gradient') and custom stats array with value, prefix, suffix, decimals, label, sublabel, and tag."
     },
     {
+      "name": "cta-section",
+      "type": "registry:component",
+      "title": "Cta Section",
+      "author": "AlgorizeTech",
+      "description": "An interconnected Brand Pillars call-to-action component featuring interactive service cards, a synchronized scorecard with animated progress meters, and a highlight popover bar.",
+      "categories": [
+        "marketing",
+        "layout"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/CtaSectionBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/CtaSectionBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: CTASection, CtaSection, and the PillarItem type. Accepts variant ('brand-pillars' | 'minimal' | 'split'), pillars array, custom heading, statement, summary metrics, and active accent color."
+    },
+    {
       "name": "cursor-animation",
       "type": "registry:component",
       "title": "Cursor Animation",
@@ -1708,9 +1734,9 @@
       "docs": "Named exports: EmailApp, plus Email, EmailLabel and Attachment types. The largest block in the registry — a complete application layout with demo data to replace, not a single element. Variants: default | minimal | glass."
     },
     {
-      "name": "error-section",
+      "name": "error",
       "type": "registry:component",
-      "title": "Error Section",
+      "title": "Error",
       "author": "AlgorizeTech",
       "description": "A responsive, animated Cyberpunk Diagnostic Terminal Error Website Section with full Light and Dark mode adaptive styling, diagnostic monitors, and live stacktrace inspection.",
       "categories": [
@@ -1726,9 +1752,9 @@
       ],
       "files": [
         {
-          "path": "src/components/custom/blocks/ErrorSectionBlock.tsx",
+          "path": "src/components/custom/blocks/ErrorBlock.tsx",
           "type": "registry:component",
-          "target": "components/custom/blocks/ErrorSectionBlock.tsx"
+          "target": "components/custom/blocks/ErrorBlock.tsx"
         }
       ],
       "docs": "Named export: ErrorSection (also default export) and ErrorSectionProps. Designed to serve as a full-page 500, 404, or runtime error boundary with light & dark theme support, one-click incident copying, and reboot action triggers."
@@ -2081,16 +2107,18 @@
       "type": "registry:component",
       "title": "Footer",
       "author": "AlgorizeTech",
-      "description": "A collection of 4 modern, animated, fully responsive Footer components for web applications, SaaS platforms, and marketing landing pages.",
+      "description": "A collection of 7 modern, animated, fully responsive Footer components for web applications, SaaS platforms, and marketing landing pages.",
       "categories": [
         "marketing",
         "navigation",
         "layout"
       ],
       "dependencies": [
-        "lucide-react"
+        "lucide-react",
+        "motion"
       ],
       "registryDependencies": [
+        "https://avaraui.com/r/button.json",
         "https://avaraui.com/r/social-links.json",
         "utils"
       ],
@@ -2099,9 +2127,14 @@
           "path": "src/components/custom/blocks/FooterBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/FooterBlock.tsx"
+        },
+        {
+          "path": "src/lib/accent.ts",
+          "type": "registry:component",
+          "target": "lib/accent.ts"
         }
       ],
-      "docs": "Named export: Footer. Accepts `variant` (4 responsive variants: simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `brandName`, `tagline`, `logo`, `socialLinks`, `className`. The social row is the `social-links` item, which installs alongside. All variants adapt across mobile, tablet, and desktop screens."
+      "docs": "Named export: Footer. Accepts `variant` (7 responsive variants: snapshot, modern-stack, wordmark-glow, simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `color`, `brandName`, `tagline`, `logo`, `socialLinks`, `snapshot`, `wordmarkFooter`, `wordmark`, `className`. All variants adapt across mobile, tablet, and desktop screens."
     },
     {
       "name": "form",
@@ -2642,7 +2675,7 @@
       "type": "registry:component",
       "title": "Loader",
       "author": "AlgorizeTech",
-      "description": "A loading indicator in five shapes — spinner, dots, pulse, ring and bar — with an optional caption. Use it for inline and full-panel pending states.",
+      "description": "A loading indicator in six shapes — spinner, orbit, dots, pulse, ring and bar — with an optional caption. Use it for inline and full-panel pending states.",
       "categories": [
         "feedback"
       ],
@@ -2669,7 +2702,7 @@
       "type": "registry:component",
       "title": "Login Form",
       "author": "AlgorizeTech",
-      "description": "A sign-in form with social buttons, password reveal, remember-me and four layout variants. Use it as the entry point of an authenticated app.",
+      "description": "A sign-in form with social buttons, password reveal, remember-me and multiple layout variants including ribbon-drift and liquid-glass. Use it as the entry point of an authenticated app.",
       "categories": [
         "authentication",
         "forms"
@@ -2696,7 +2729,7 @@
           "target": "components/custom/blocks/login-form-theme.ts"
         }
       ],
-      "docs": "Default export: LoginForm. Also exports getThemeStyles (from login-form-theme.ts, which installs alongside) and the LoginFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated credentials; without it the form simulates a round trip. `signupHref` points at the matching `register-form` page. Validation is client-side presentation only — enforce it again on your server."
+      "docs": "Default export: LoginForm. Also exports LoginBlock, getThemeStyles (from login-form-theme.ts, which installs alongside) and the LoginFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal | liquid-glass | ribbon-drift. `onSubmit` receives the validated credentials; without it the form simulates a round trip. `signupHref` points at the matching `register-form` page. Validation is client-side presentation only — enforce it again on your server."
     },
     {
       "name": "magic-bento",
@@ -2988,7 +3021,7 @@
           "target": "components/custom/blocks/navbar-theme.ts"
         }
       ],
-      "docs": "Named exports: NavbarBlock, getThemeStyles (from navbar-theme.ts, which installs alongside). Variants: default | floating | centered | minimal | glass | ecommerce-mega-nav. Links render through `linkComponent` (a plain `a` by default; pass next/link in Next.js). The mobile menu toggles are the `button` item, which installs alongside. For app chrome with dropdown panels, use `navigation-menu`."
+      "docs": "Named exports: NavbarBlock, getThemeStyles (from navbar-theme.ts, which installs alongside). Variants: default | floating | centered | minimal | glass | spotlight | ecommerce-mega-nav. Links render through `linkComponent` (a plain `a` by default; pass next/link in Next.js). The mobile menu toggles are the `button` item, which installs alongside. For app chrome with dropdown panels, use `navigation-menu`."
     },
     {
       "name": "navigation-menu",
@@ -3118,9 +3151,9 @@
       "docs": "Motion build of `newsletter` — same props, markup and install path; install one or the other. Named export: Newsletter, with parts Heading, Intro, Form, Proof, Ticker and Issues. Composed from the input, button, marquee and tilted-card items, which install alongside it. `variant` is portraits | spotlight | issues, each styled for light and dark mode; `portraits` takes up to four faces; `Form` takes `onSubscribe(email)` (a promise holds the busy state), `action`, `successTitle`/`successText`; `accent` pins the glow and button colour; `reveal` is in-view or immediate."
     },
     {
-      "name": "not-found-section",
+      "name": "not-found",
       "type": "registry:component",
-      "title": "Not Found Section",
+      "title": "Not Found",
       "author": "AlgorizeTech",
       "description": "A responsive, full-page 404 Hyperspace website section with ambient radial glow, masked cyber grid backdrop, animated compass indicator, and customizable shortcuts.",
       "categories": [
@@ -3136,9 +3169,14 @@
       ],
       "files": [
         {
-          "path": "src/components/custom/blocks/NotFoundSectionBlock.tsx",
+          "path": "src/components/custom/blocks/NotFoundBlock.tsx",
           "type": "registry:component",
-          "target": "components/custom/blocks/NotFoundSectionBlock.tsx"
+          "target": "components/custom/blocks/NotFoundBlock.tsx"
+        },
+        {
+          "path": "src/lib/accent.ts",
+          "type": "registry:component",
+          "target": "lib/accent.ts"
         }
       ],
       "docs": "Named export: NotFoundSection (also default export) and NotFoundSectionProps. Ready for drop-in use in Next.js not-found.tsx or standalone 404 routes."
@@ -3200,7 +3238,7 @@
       "type": "registry:component",
       "title": "Particle Canvas",
       "author": "AlgorizeTech",
-      "description": "A high-performance HTML Canvas component that converts text or images into thousands of animated particles with multiple visual variants and interactive mouse mechanics.",
+      "description": "A high-performance text canvas component with organic repulsion physics and wordmark glow variants featuring cursor tracking and scroll-driven rising animations.",
       "categories": [
         "media",
         "data-display"
@@ -3216,8 +3254,14 @@
           "path": "src/components/custom/blocks/ParticleCanvasBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/ParticleCanvasBlock.tsx"
+        },
+        {
+          "path": "src/lib/accent.ts",
+          "type": "registry:component",
+          "target": "lib/accent.ts"
         }
-      ]
+      ],
+      "docs": "Named exports: ParticleCanvas, WordmarkGlowCanvas. Default export: ParticleCanvas. Variants: repel | wordmark-glow. Features 2D particle physics, cursor repulsion, scroll-timeline rising letters, and pointer-following radial glow."
     },
     {
       "name": "payment",
@@ -3329,6 +3373,8 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://avaraui.com/r/button.json",
+        "https://avaraui.com/r/tilted-card.json",
         "https://avaraui.com/r/toggle-group.json",
         "utils"
       ],
@@ -3344,7 +3390,7 @@
           "target": "components/custom/blocks/pricing-theme.ts"
         }
       ],
-      "docs": "Named exports: PricingCards, PricingBuilder, PricingTable, PricingSlider, PricingTypographic, PricingPlans. The largest pricing item — variants include cards, builder, table, slider, typographic, and interactive service checklist. The typographic billing switch is the `toggle-group` item, which installs alongside."
+      "docs": "Named exports: PricingCards, PricingBuilder, PricingTable, PricingSlider, PricingTypographic, PricingPlans. The largest pricing item — variants include cards, builder, table, slider, typographic, and interactive service checklist. The tiered cards popular plan features subtle 3D tilt from tilted-card."
     },
     {
       "name": "pricing-plan",
@@ -3658,7 +3704,7 @@
       "type": "registry:component",
       "title": "Register Form",
       "author": "AlgorizeTech",
-      "description": "A sign-up form with paired name fields, password confirmation, a terms checkbox and four layout variants. Use it wherever new accounts are created.",
+      "description": "A sign-up form with paired name fields, password confirmation, a terms checkbox and multiple layout variants including ribbon-drift and liquid-glass. Use it wherever new accounts are created.",
       "categories": [
         "authentication",
         "forms"
@@ -3685,7 +3731,7 @@
           "target": "components/custom/blocks/register-form-theme.ts"
         }
       ],
-      "docs": "Default export: RegisterForm. Also exports getThemeStyles (from register-form-theme.ts, which installs alongside) and the RegisterFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal — split renders a gradient side panel. `onSubmit` receives the validated fields; without it the form simulates a round trip. `loginHref` points at the matching `login-form` page, and `minPasswordLength` sets the client-side minimum. Validation is client-side presentation only — enforce it again on your server."
+      "docs": "Default export: RegisterForm. Also exports RegisterBlock, getThemeStyles (from register-form-theme.ts, which installs alongside) and the RegisterFormValues type. Fields and buttons are the library's input and button items, which install alongside it. `variant` is default | split | glass | minimal | scenic | liquid-glass | ribbon-drift. `onSubmit` receives the validated fields; without it the form simulates a round trip. `loginHref` points at the matching `login-form` page, and `minPasswordLength` sets the client-side minimum. Validation is client-side presentation only — enforce it again on your server."
     },
     {
       "name": "resizable",

@@ -23,25 +23,23 @@ export default function TopDestinationsDemo({
   }, []);
 
   return (
-    <div className="w-full rounded-2xl border border-border bg-background/80 relative overflow-hidden shadow-sm">
-      {/* Internal scroll viewport */}
-      <div
-        ref={viewportRef}
-        className="w-full h-[750px] overflow-y-auto overflow-x-hidden custom-scrollbar relative"
-      >
-        <div className="h-12" />
-
-        <TopDestinations
-          title={title}
-          subtitle={subtitle}
-          scrollOffset={scrollOffset}
-          scrollerRef={mounted ? viewportRef : undefined}
-          onExplore={(item) => {
-            console.log("Selected destination:", item.title);
-          }}
-        />
-
-        <div className="h-16" />
+    <div className="w-full pl-[15px] pt-[15px] pb-[15px] pr-0">
+      <div className="w-full rounded-l-2xl border-y border-l border-border bg-background/80 relative overflow-hidden shadow-sm">
+        {/* Internal scroll viewport */}
+        <div
+          ref={viewportRef}
+          className="w-full h-[560px] sm:h-[750px] overflow-y-auto overflow-x-hidden custom-scrollbar relative"
+        >
+          <TopDestinations
+            title={title}
+            subtitle={subtitle}
+            scrollOffset={scrollOffset}
+            scrollerRef={mounted ? viewportRef : undefined}
+            onExplore={(item) => {
+              console.log("Selected destination:", item.title);
+            }}
+          />
+        </div>
       </div>
     </div>
   );

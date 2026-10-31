@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-10-25T09:22:21.830Z
-**Total files:** 315
+**Generated at:** 2026-10-29T13:15:19.199Z
+**Total files:** 317
 
 ## Available Files
 
@@ -43,6 +43,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/copy-button](/docs/nextjs-copy-button.md) - Source: `[framework]\copy-button\page.mdx`
 - [nextjs/counter](/docs/nextjs-counter.md) - Source: `[framework]\counter\page.mdx`
 - [nextjs/counter-section](/docs/nextjs-counter-section.md) - Source: `[framework]\counter-section\page.mdx`
+- [nextjs/cta-section](/docs/nextjs-cta-section.md) - Source: `[framework]\cta-section\page.mdx`
 - [nextjs/cursor-animation](/docs/nextjs-cursor-animation.md) - Source: `[framework]\cursor-animation\page.mdx`
 - [nextjs/curved-carousel](/docs/nextjs-curved-carousel.md) - Source: `[framework]\curved-carousel\page.mdx`
 - [nextjs/custom-code-block](/docs/nextjs-custom-code-block.md) - Source: `[framework]\custom-code-block\page.mdx`
@@ -59,7 +60,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/draggable-card-list](/docs/nextjs-draggable-card-list.md) - Source: `[framework]\draggable-card-list\page.mdx`
 - [nextjs/drawer](/docs/nextjs-drawer.md) - Source: `[framework]\drawer\page.mdx`
 - [nextjs/email](/docs/nextjs-email.md) - Source: `[framework]\email\page.mdx`
-- [nextjs/error-section](/docs/nextjs-error-section.md) - Source: `[framework]\error-section\page.mdx`
+- [nextjs/error](/docs/nextjs-error.md) - Source: `[framework]\error\page.mdx`
 - [nextjs/examples](/docs/nextjs-examples.md) - Source: `[framework]\examples\page.mdx`
 - [nextjs/examples/button](/docs/nextjs-examples-button.md) - Source: `[framework]\examples\button\page.mdx`
 - [nextjs/examples/counter](/docs/nextjs-examples-counter.md) - Source: `[framework]\examples\counter\page.mdx`
@@ -105,7 +106,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/navigation](/docs/nextjs-navigation.md) - Source: `[framework]\navigation\page.mdx`
 - [nextjs/network-graph](/docs/nextjs-network-graph.md) - Source: `[framework]\network-graph\page.mdx`
 - [nextjs/newsletter](/docs/nextjs-newsletter.md) - Source: `[framework]\newsletter\page.mdx`
-- [nextjs/not-found-section](/docs/nextjs-not-found-section.md) - Source: `[framework]\not-found-section\page.mdx`
+- [nextjs/not-found](/docs/nextjs-not-found.md) - Source: `[framework]\not-found\page.mdx`
 - [nextjs/otp-input](/docs/nextjs-otp-input.md) - Source: `[framework]\otp-input\page.mdx`
 - [nextjs/pagination](/docs/nextjs-pagination.md) - Source: `[framework]\pagination\page.mdx`
 - [nextjs/particle-canvas](/docs/nextjs-particle-canvas.md) - Source: `[framework]\particle-canvas\page.mdx`
@@ -201,6 +202,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/copy-button](/docs/reactjs-copy-button.md) - Source: `[framework]\copy-button\page.mdx`
 - [reactjs/counter](/docs/reactjs-counter.md) - Source: `[framework]\counter\page.mdx`
 - [reactjs/counter-section](/docs/reactjs-counter-section.md) - Source: `[framework]\counter-section\page.mdx`
+- [reactjs/cta-section](/docs/reactjs-cta-section.md) - Source: `[framework]\cta-section\page.mdx`
 - [reactjs/cursor-animation](/docs/reactjs-cursor-animation.md) - Source: `[framework]\cursor-animation\page.mdx`
 - [reactjs/curved-carousel](/docs/reactjs-curved-carousel.md) - Source: `[framework]\curved-carousel\page.mdx`
 - [reactjs/custom-code-block](/docs/reactjs-custom-code-block.md) - Source: `[framework]\custom-code-block\page.mdx`
@@ -217,7 +219,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/draggable-card-list](/docs/reactjs-draggable-card-list.md) - Source: `[framework]\draggable-card-list\page.mdx`
 - [reactjs/drawer](/docs/reactjs-drawer.md) - Source: `[framework]\drawer\page.mdx`
 - [reactjs/email](/docs/reactjs-email.md) - Source: `[framework]\email\page.mdx`
-- [reactjs/error-section](/docs/reactjs-error-section.md) - Source: `[framework]\error-section\page.mdx`
+- [reactjs/error](/docs/reactjs-error.md) - Source: `[framework]\error\page.mdx`
 - [reactjs/examples](/docs/reactjs-examples.md) - Source: `[framework]\examples\page.mdx`
 - [reactjs/examples/button](/docs/reactjs-examples-button.md) - Source: `[framework]\examples\button\page.mdx`
 - [reactjs/examples/counter](/docs/reactjs-examples-counter.md) - Source: `[framework]\examples\counter\page.mdx`
@@ -263,7 +265,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/navigation](/docs/reactjs-navigation.md) - Source: `[framework]\navigation\page.mdx`
 - [reactjs/network-graph](/docs/reactjs-network-graph.md) - Source: `[framework]\network-graph\page.mdx`
 - [reactjs/newsletter](/docs/reactjs-newsletter.md) - Source: `[framework]\newsletter\page.mdx`
-- [reactjs/not-found-section](/docs/reactjs-not-found-section.md) - Source: `[framework]\not-found-section\page.mdx`
+- [reactjs/not-found](/docs/reactjs-not-found.md) - Source: `[framework]\not-found\page.mdx`
 - [reactjs/otp-input](/docs/reactjs-otp-input.md) - Source: `[framework]\otp-input\page.mdx`
 - [reactjs/pagination](/docs/reactjs-pagination.md) - Source: `[framework]\pagination\page.mdx`
 - [reactjs/particle-canvas](/docs/reactjs-particle-canvas.md) - Source: `[framework]\particle-canvas\page.mdx`

@@ -47,12 +47,16 @@ export interface MenuItemType {
 }
 
 // 1. Recursive transformation: cleanly maps unlimited nesting depths
-const transformItem = (item: any): MenuItemType => ({
-  label: item.label,
-  slug: item.slug ?? item.children?.[0]?.slug ?? "",
-  badge: item.badge,
-  children: item.children ? item.children.map(transformItem) : undefined,
-});
+const transformItem = (item: any): MenuItemType => {
+  const isExcludedBadge =
+    item.badge && ["new", "updated"].includes(item.badge.trim().toLowerCase());
+  return {
+    label: item.label,
+    slug: item.slug ?? item.children?.[0]?.slug ?? "",
+    badge: isExcludedBadge ? undefined : item.badge,
+    children: item.children ? item.children.map(transformItem) : undefined,
+  };
+};
 
 const transformNavigation = (): MenuItemType[] => {
   return navigation.map((section) => ({

@@ -2,7 +2,7 @@ export const metadata = docsPageMetadata("top-destinations");
 
 # Top Destinations
 
-A dual-row scroll-driven destination showcase inspired by the **Exploreo** travel template. As the user scrolls down the page, two parallel rows of destination cards travel in opposite directions via **GSAP ScrollTrigger** scrub animation.
+A dual-row scroll-driven destination showcase. As the user scrolls down the page, two parallel rows of destination cards travel in opposite directions via **GSAP ScrollTrigger** scrub animation.
 
 Each card features full-bleed photography, subtle vertical typography by default, smooth hover scaling, and an interactive bordered overlay revealing place counts, tags, and an "Explore" action.
 
@@ -140,7 +140,7 @@ npx shadcn@latest add @avara-ui/top-destinations
 
         subtitle
         string
-        Exploreo lead copy
+        Lead description copy
         Secondary descriptive paragraph beneath the title.
 
         badgeText

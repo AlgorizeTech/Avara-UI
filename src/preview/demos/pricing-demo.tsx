@@ -1,12 +1,13 @@
 "use client";
 
-import { PricingBuilder, PricingCards, PricingData, PricingDotPattern, PricingPlans, PricingScale, PricingSlider, PricingTable, PricingTableData, PricingTypographic, PricingVariant } from "@/components/custom/blocks/Pricing";
+import { PricingBuilder, PricingCards, PricingData, PricingDotPattern, PricingPlans, PricingPlansPro, PricingScale, PricingSlider, PricingTable, PricingTableData, PricingTypographic, PricingVariant } from "@/components/custom/blocks/Pricing";
 import { PricingColor } from "@/components/custom/blocks/pricing-theme";
 
 type LayoutType =
   | "cards"
   | "scale"
   | "dot-pattern"
+  | "plans-pro"
   | "builder"
   | "table"
   | "slider"
@@ -255,48 +256,59 @@ export default function PricingDemo({
   color?: PricingColor;
   counting?: boolean;
 }) {
+  const isFlushLayout = layout === "typographic" || layout === "table" || layout === "plans";
+
   return (
-    <div
-      className={`w-full py-4 md:py-8 transition-colors duration-300 ${layout === "typographic" ? "bg-transparent rounded-3xl" : "rounded-3xl"}`}
-      style={{
-        backgroundColor: layout === "typographic" ? "transparent" : "color-mix(in srgb, var(--pricing-accent, #6366f1) 3%, var(--background, transparent))",
-      }}
-    >
-      {layout === "cards" && (
-        <PricingCards
-          key={`cards-${variant}-${color}-${counting}`}
-          variant={variant}
-          color={color}
-          counting={counting}
-          data={sampleCardsData}
-        />
-      )}
-      {layout === "builder" && (
-        <PricingBuilder key={`builder-${color}-${counting}`} color={color} counting={counting} />
-      )}
-      {layout === "table" && (
-        <PricingTable key={`table-${color}-${counting}`} color={color} counting={counting} data={sampleTableData} />
-      )}
-      {layout === "slider" && (
-        <PricingSlider key={`slider-${color}-${counting}`} color={color} counting={counting} />
-      )}
-      {layout === "typographic" && (
-        <PricingTypographic
-          key={`type-${color}-${counting}`}
-          packages={sampleTypographicData}
-          color={color}
-          counting={counting}
-        />
-      )}
-      {layout === "plans" && (
-        <PricingPlans key={`plans-${color}-${counting}`} color={color} counting={counting} />
-      )}
-      {layout === "scale" && (
-        <PricingScale key={`scale-${color}-${counting}`} color={color} counting={counting} />
-      )}
-      {layout === "dot-pattern" && (
-        <PricingDotPattern key={`dot-${color}-${counting}`} color={color} counting={counting} />
-      )}
+    <div className="w-full h-full pl-[15px] pt-[15px] pb-[15px] pr-0 box-border">
+      <div
+        className={`w-full h-full transition-colors duration-300 ${isFlushLayout ? "p-0 bg-transparent rounded-l-lg" : "py-4 md:py-8 rounded-l-lg"}`}
+        style={{
+          backgroundColor:
+            isFlushLayout
+              ? "transparent"
+              : "color-mix(in srgb, var(--pricing-accent, #6366f1) 3%, var(--background, transparent))",
+        }}
+      >
+        {layout === "cards" && (
+          <PricingCards
+            key={`cards-${variant}-${color}-${counting}`}
+            variant={variant}
+            color={color}
+            counting={counting}
+            data={sampleCardsData}
+          />
+        )}
+        {layout === "builder" && (
+          <PricingBuilder key={`builder-${color}-${counting}`} variant={variant} color={color} counting={counting} />
+        )}
+        {layout === "table" && (
+          <PricingTable key={`table-${color}-${counting}`} variant={variant} color={color} counting={counting} data={sampleTableData} />
+        )}
+        {layout === "slider" && (
+          <PricingSlider key={`slider-${color}-${counting}`} variant={variant} color={color} counting={counting} />
+        )}
+        {layout === "typographic" && (
+          <PricingTypographic
+            key={`type-${color}-${counting}`}
+            variant={variant}
+            packages={sampleTypographicData}
+            color={color}
+            counting={counting}
+          />
+        )}
+        {layout === "plans" && (
+          <PricingPlans key={`plans-${color}-${counting}`} variant={variant} color={color} counting={counting} />
+        )}
+        {layout === "scale" && (
+          <PricingScale key={`scale-${color}-${counting}`} variant={variant} color={color} counting={counting} />
+        )}
+        {layout === "dot-pattern" && (
+          <PricingDotPattern key={`dot-${color}-${counting}`} variant={variant} color={color} counting={counting} />
+        )}
+        {layout === "plans-pro" && (
+          <PricingPlansPro key={`plans-pro-${color}-${counting}`} variant={variant} color={color} counting={counting} />
+        )}
+      </div>
     </div>
   );
 }

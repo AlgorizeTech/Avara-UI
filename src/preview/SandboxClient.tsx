@@ -183,7 +183,14 @@ export function SandboxClient({ name }: { name: string }) {
   // wrappers. A bordered component capped narrower than the stage (a card, a
   // badge) has its own size, and keeps its border.
   useEffect(() => {
-    if (name === "designs-toolkit" || name === "falling-tags" || name === "navbar") return;
+    if (
+      name === "designs-toolkit" ||
+      name === "falling-tags" ||
+      name === "navbar" ||
+      name === "pricing" ||
+      name === "top-destinations"
+    )
+      return;
     const content = contentRef.current;
     if (!content) return;
 
@@ -263,7 +270,11 @@ export function SandboxClient({ name }: { name: string }) {
   // as their viewport instead of a strip the height of the trigger. Taller
   // demos push the wrapper past the screen and the frame grows to fit them.
   const isZeroPadded =
-    name === "designs-toolkit" || name === "falling-tags" || name === "navbar";
+    name === "designs-toolkit" ||
+    name === "falling-tags" ||
+    name === "navbar" ||
+    name === "pricing" ||
+    name === "top-destinations";
 
   return (
     <div

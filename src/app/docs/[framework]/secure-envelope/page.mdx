@@ -12,6 +12,28 @@ An interactive classified envelope sleeve & travel pass component featuring a se
 
 `SecureEnvelope` brings tactile physical curiosity to train online tickets, travel booking passes, security dossiers, coupon reward vouchers, and VIP cards.
 
+export const usageConfidentialFolder = `import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
+
+const confidentialData: SecureEnvelopeData = {
+  idNumber: "ID · 0042",
+  tagline: "STAY\\nHUNGRY",
+  subTagline: "STAY FOOLISH · CLASSIFIED",
+  stampBadge: "CONFIDENTIAL",
+  dossierNumber: "DOSSIER // SEC-0042",
+};
+
+export default function ConfidentialFolderExample() {
+  return (
+    <div className="w-full flex items-center justify-center py-12">
+      <SecureEnvelope
+        cardDesign="confidential-folder"
+        interactionMode="step-flip"
+        data={confidentialData}
+      />
+    </div>
+  );
+}`;
+
 export const usageSmartCard = `import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
 
 const smartCardData: SecureEnvelopeData = {
@@ -77,6 +99,48 @@ export default function TrainOnlineTicketExample() {
   colorControl
   columns={1}
   examples={[
+    {
+      title: "Confidential Folder (Slide-Out Sleeve / Stay Hungry Variant)",
+      subheading:
+        "The signature confidential manila folder and hot pink slide-out card design from the catalog preview. Features golden amber dossier folder with top tab, stamped -rotate-6 CONFIDENTIAL badge, folder index lines, vibrant hot pink STAY HUNGRY card, and back manifesto memorandum.",
+      propNotes: [
+        {
+          lead: "Design Variant",
+          prop: "cardDesign",
+          value: '"confidential-folder"',
+          effect:
+            "activates the golden manila folder with top tab, red stamped badge, and vibrant hot pink Stay Hungry slide-out card.",
+        },
+        {
+          lead: "Data Object",
+          prop: "data",
+          value: "confidentialData",
+          effect:
+            "passes custom ID, bold tagline, sub-tagline, and folder dossier identifiers.",
+        },
+        {
+          lead: "Interaction",
+          prop: "interactionMode",
+          value: '"step-flip"',
+          effect:
+            "Click 1 slides out the hot pink card onto the folder, Click 2 flips to the executive memorandum manifesto, Click 3 returns inside.",
+        },
+      ],
+      props: {
+        cardDesign: "confidential-folder",
+        interactionMode: "step-flip",
+        data: {
+          idNumber: "ID · 0042",
+          tagline: "STAY\nHUNGRY",
+          subTagline: "STAY FOOLISH · CLASSIFIED",
+          stampBadge: "CONFIDENTIAL",
+          dossierNumber: "DOSSIER // SEC-0042",
+        },
+      },
+      usage: usageConfidentialFolder,
+      code: extractCode("src/components/custom/blocks/SecureEnvelopeBlock.tsx"),
+      minHeight: 580,
+    },
     {
       title: "Biometric NFC SmartCard (Quantum Vault Variant)",
       subheading:
@@ -256,9 +320,9 @@ export default function TrainOnlineTicketExample() {
       </tr>
       <tr>
         <td><code>cardDesign</code></td>
-        <td><code>"classified" | "train-ticket" | "smart-card"</code></td>
+        <td><code>"confidential-folder" | "smart-card" | "train-ticket" | "classified"</code></td>
         <td><code>"classified"</code></td>
-        <td>Selects the visual template: <code>"smart-card"</code> for biometric NFC smartcards, <code>"train-ticket"</code> for European railway tickets, or <code>"classified"</code> for confidential dossiers.</td>
+        <td>Selects the visual template: <code>"confidential-folder"</code> for the signature manila folder & hot-pink Stay Hungry card, <code>"smart-card"</code> for biometric NFC smartcards, <code>"train-ticket"</code> for European railway tickets, or <code>"classified"</code> for vintage dossiers.</td>
       </tr>
       <tr>
         <td><code>interactionMode</code></td>

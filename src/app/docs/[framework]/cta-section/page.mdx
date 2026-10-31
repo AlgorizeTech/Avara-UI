@@ -1,0 +1,246 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("cta-section");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { Installation } from "@/components/site/installation";
+import { extractCode } from "@/lib/code";
+
+# CTA Section
+
+An interconnected, conversion-focused call-to-action block designed for modern web applications, agencies, and SaaS platforms. Features high-impact interactive systems including the **Concentric Portal** (scroll-driven expanding circular lens with gyroscopic monospace orbital text and segmented actions inspired by contentarchitecture.dev) and **Brand Pillars** (synchronized animated scorecards and live synergy meters).
+
+export const usageConcentricPortal = `import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
+
+export default function ConcentricPortalExample() {
+  return (
+    <CTASection
+      variant="concentric-portal"
+      heading="The next 5 days are yours."
+      subheading="Access Portal"
+      phrase="THE CONTENT ARCHITECTURE"
+      ctaText="GET ACCESS"
+      ctaHref="#"
+      autoRotate={true}
+    />
+  );
+}`;
+
+export const usageBrandPillars = `import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
+
+export default function BrandPillarsExample() {
+  return (
+    <CTASection
+      variant="brand-pillars"
+      color="#f95716"
+      statement="A strong brand isn't built from a single element. Branding, website, social, and data reinforce each other — together creating a brand that's recognizable, consistent, and effective."
+      summaryText='One complete, consistent brand" — 100%'
+      ctaText="Boek a demo"
+      ctaHref="#"
+    />
+  );
+}`;
+
+<ExampleShowcase
+  name="cta-section"
+  columns={1}
+  examples={[
+    {
+      title: 'Concentric Portal — variant="concentric-portal"',
+      subheading: "Pass `variant=\"concentric-portal\"` for the scroll-driven expanding circular lens with continuous gyroscopic orbital text rings.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "variant",
+          value: '"concentric-portal"',
+          effect: "Selects the concentric orbital portal experience with scroll-scrubbed expansion.",
+        },
+        {
+          lead: "Set",
+          prop: "autoRotate",
+          value: "true",
+          effect: "Enables automatic gyroscopic rotation for all concentric text orbits (set to false to keep static).",
+        },
+        {
+          lead: "Set",
+          prop: "phrase",
+          value: '"THE CONTENT ARCHITECTURE"',
+          effect: "Defines the repeating monospace text string orbiting around the portal.",
+        },
+      ],
+      props: {
+        variant: "concentric-portal",
+        heading: "The next 5 days are yours.",
+        subheading: "Access Portal",
+        phrase: "THE CONTENT ARCHITECTURE",
+        ctaText: "GET ACCESS",
+        autoRotate: true,
+      },
+      usage: usageConcentricPortal,
+      code: extractCode("src/components/custom/blocks/CtaSectionBlock.tsx"),
+    },
+    {
+      title: 'Brand Pillars — variant="brand-pillars"',
+      subheading: "Pass `variant=\"brand-pillars\"` for the interactive synchronized scorecard with dynamic progress metrics.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "variant",
+          value: '"brand-pillars"',
+          effect: "Selects the multi-pillar brand scorecard layout with live score recalculation.",
+        },
+        {
+          lead: "Set",
+          prop: "color",
+          value: '"#f95716"',
+          effect: "Sets the signature brand accent color for active cards, meters, and badges.",
+        },
+      ],
+      props: {
+        variant: "brand-pillars",
+        color: "#f95716",
+        statement:
+          "A strong brand isn't built from a single element. Branding, website, social, and data reinforce each other — together creating a brand that's recognizable, consistent, and effective.",
+        summaryText: 'One complete, consistent brand" — 100%',
+        ctaText: "Boek a demo",
+        ctaHref: "#",
+      },
+      usage: usageBrandPillars,
+      code: extractCode("src/components/custom/blocks/CtaSectionBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="cta-section" />
+
+## Features
+
+Discover the key capabilities that make this component an excellent choice for modern interactive user interfaces.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Synchronized Scorecard</h3>
+    <p className="text-muted-foreground text-sm">Selecting any feature or service card on the left automatically synchronizes with the right scorecard canvas, animating scores and progress meters.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Signature 3D Popover</h3>
+    <p className="text-muted-foreground text-sm">Features an eye-catching floating active badge with vibrant accent gradients, bold typography, and smooth transitions.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Design Token Integration</h3>
+    <p className="text-muted-foreground text-sm">Seamlessly respects <code>var(--radius)</code> corner rounding and brand accent tokens across Light and Dark themes.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Fully Responsive</h3>
+    <p className="text-muted-foreground text-sm">Adapts effortlessly from expansive two-column desktop layouts to stacked, touch-friendly mobile flows without horizontal overflow.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"brand-pillars" | "minimal" | "split" | "concentric-portal" | "orbital-lens"</code></td>
+        <td><code>"brand-pillars"</code></td>
+        <td>Visual mode. <code>"concentric-portal"</code> renders the scroll-driven expanding circular lens with gyroscopic monospace orbital text and segmented actions; <code>"brand-pillars"</code> renders the interactive scorecard ecosystem.</td>
+      </tr>
+      <tr>
+        <td><code>phrase</code></td>
+        <td><code>string</code></td>
+        <td><code>"THE CONTENT ARCHITECTURE"</code></td>
+        <td>Monospace uppercase text string repeated around the concentric orbital rings in <code>concentric-portal</code> variant.</td>
+      </tr>
+      <tr>
+        <td><code>autoRotate</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Controls continuous automatic ambient spinning of the concentric text rings. Set to <code>false</code> to keep them static.</td>
+      </tr>
+      <tr>
+        <td><code>scrollProgress</code></td>
+        <td><code>number</code></td>
+        <td><code>undefined</code></td>
+        <td>Optional manual scroll progress (<code>0</code> to <code>1</code>). When provided, locks the concentric portal expansion to a specific progression without requiring scroll track.</td>
+      </tr>
+      <tr>
+        <td><code>color</code></td>
+        <td><code>string</code></td>
+        <td><code>"#f95716"</code></td>
+        <td>Primary accent color. Accepts hex colors (e.g. <code>"#f95716"</code>), CSS variables (<code>"var(--primary)"</code>), or preset names (<code>"orange"</code>, <code>"primary"</code>, <code>"indigo"</code>, <code>"rose"</code>, <code>"emerald"</code>).</td>
+      </tr>
+      <tr>
+        <td><code>heading</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Optional main section heading.</td>
+      </tr>
+      <tr>
+        <td><code>subheading</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Optional eyebrow label above the heading.</td>
+      </tr>
+      <tr>
+        <td><code>statement</code></td>
+        <td><code>string</code></td>
+        <td>Standard statement</td>
+        <td>The primary bold philosophy statement rendered on the scorecard panel.</td>
+      </tr>
+      <tr>
+        <td><code>pillars</code></td>
+        <td><code>PillarItem[]</code></td>
+        <td><code>DEFAULT_PILLARS</code></td>
+        <td>Array of 4 pillar objects containing <code>id</code>, <code>eyebrow</code>, <code>title</code>, <code>description</code>, <code>score</code>, and optional <code>icon</code>.</td>
+      </tr>
+      <tr>
+        <td><code>summaryText</code></td>
+        <td><code>string</code></td>
+        <td><code>'One complete, consistent brand" — 100%'</code></td>
+        <td>Text displayed inside the bottom summary bar.</td>
+      </tr>
+      <tr>
+        <td><code>summaryScore</code></td>
+        <td><code>string | number</code></td>
+        <td><code>"50%"</code></td>
+        <td>Metric or score shown on the summary bar.</td>
+      </tr>
+      <tr>
+        <td><code>ctaText</code></td>
+        <td><code>string</code></td>
+        <td><code>"Get Started"</code></td>
+        <td>Call-to-action button label.</td>
+      </tr>
+      <tr>
+        <td><code>ctaHref</code></td>
+        <td><code>string</code></td>
+        <td><code>"#"</code></td>
+        <td>Link destination for the CTA button.</td>
+      </tr>
+      <tr>
+        <td><code>rounded</code></td>
+        <td><code>string | number</code></td>
+        <td><code>"var(--radius, 16px)"</code></td>
+        <td>Corner rounding radius for the cards, panels, and buttons.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Custom Tailwind CSS classes applied to the root section element.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
