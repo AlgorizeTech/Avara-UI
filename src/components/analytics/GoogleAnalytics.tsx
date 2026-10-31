@@ -4,11 +4,8 @@ import Script from "next/script";
 import { integrations } from "@/config/site";
 
 /**
- * Loads Google Analytics, but only when `NEXT_PUBLIC_GA_ID` is set.
- *
- * The measurement ID used to be hardcoded to the property of the template this
- * site was built from, so every page view was reported to a third party. With
- * no ID configured, the scripts are not loaded at all.
+ * Loads Google Analytics using `integrations.gaId` (config/site.ts), which is
+ * `NEXT_PUBLIC_GA_ID` when set and this site's own property otherwise.
  */
 export function GoogleAnalytics() {
   const gaId = integrations.gaId;
