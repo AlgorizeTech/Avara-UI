@@ -492,9 +492,6 @@
   "honeycomb-hero": {
     "wander-the-fjords": "Honeycomb Hero — Wander the fjords"
   },
-  "hero-bento-cascade": {
-    "infinite-bento-cascade-marquee": "Bento Cascade Hero — Infinite Bento Cascade Marquee"
-  },
   "hero-carousel": {
     "watch-the-dawn-from-the-summit": "Hero Carousel — Watch the dawn from the summit"
   },
@@ -531,6 +528,9 @@
   },
   "hero-orbit": {
     "orbit-ring-hero": "Hero — Orbit Ring Hero"
+  },
+  "hero-bento-cascade": {
+    "bento-cascade-infinite-motion-hero": "Hero — Bento Cascade Infinite Motion Hero"
   },
   "image-compare": {
     "classic-slider": "Image Compare — Classic Slider",
