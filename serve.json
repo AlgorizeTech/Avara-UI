@@ -1,7 +1,16 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "directoryListing": false,
   "headers": [
+    {
+      "source": "/r/**",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }]
+    },
+    {
+      "source": "/docs-md/**",
+      "headers": [{ "key": "X-Robots-Tag", "value": "noindex" }]
+    },
     {
       "source": "/_next/static/**",
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
