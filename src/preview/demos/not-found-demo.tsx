@@ -1,16 +1,20 @@
 "use client";
 
 import React, { useState } from "react";
-import NotFoundSection from "@/components/custom/blocks/NotFoundBlock";
-import { BookOpen, Home, LayoutGrid, Compass, ShieldCheck } from "lucide-react";
+import NotFoundSection, { NotFoundVariant } from "@/components/custom/blocks/NotFoundBlock";
+import { BookOpen, Home, LayoutGrid } from "lucide-react";
 
 export default function NotFoundSectionDemo({
+  variant,
+  color,
   code,
   badge,
   title,
   description,
   showShortcuts = true,
 }: {
+  variant?: NotFoundVariant;
+  color?: string;
   code?: string;
   badge?: string;
   title?: string;
@@ -34,6 +38,8 @@ export default function NotFoundSectionDemo({
 
       <div className="w-full">
         <NotFoundSection
+          variant={variant}
+          color={color}
           code={code}
           badge={badge}
           title={title}

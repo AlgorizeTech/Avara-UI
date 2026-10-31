@@ -7,9 +7,21 @@ import { extractCode } from "@/lib/code";
 
 # Footer
 
-A collection of 8 production-ready, high-capacity, fully responsive Footer components designed for modern web applications, SaaS platforms, e-commerce stores, and enterprise products.
+A collection of 9 production-ready, high-capacity, fully responsive Footer components designed for modern web applications, SaaS platforms, e-commerce stores, and enterprise products.
 
-`Footer` adapts seamlessly across mobile screens, tablets, and desktop viewports, with support for centered layouts, frosted glass docks, cyberpunk neon glow pulses, quantum particle beams, snapshot studio card piles, colorful modern scroll stack cards, giant glowing scroll-reveal wordmarks, and architectural editorial tilted CTA cards.
+`Footer` adapts seamlessly across mobile screens, tablets, and desktop viewports, with support for architectural blueprint drafting grids with interactive liquid ink typography, centered layouts, frosted glass docks, cyberpunk neon glow pulses, quantum particle beams, snapshot studio card piles, colorful modern scroll stack cards, giant glowing scroll-reveal wordmarks, and architectural editorial tilted CTA cards.
+
+export const usageArchitecturalLiquid = `import { Footer } from "@/components/custom/blocks/FooterBlock";
+
+export default function ArchitecturalLiquidFooterDemo() {
+  return (
+    <Footer
+      variant="architectural-liquid"
+      blueprintWordmark="algorize"
+      heroTitle="CRAFTED FOR EXTRAORDINARY INTERFACES"
+    />
+  );
+}`;
 
 export const usageEditorial = `import { Footer } from "@/components/custom/blocks/FooterBlock";
 
@@ -101,6 +113,31 @@ export default function WordmarkFooterDemo() {
   columns={1}
   examples={[
     {
+      title: "Architectural Blueprint & Liquid Ink Footer (Heron AI Inspired)",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"architectural-liquid"',
+          effect:
+            "an architectural blueprint drafting grid footer featuring 3D isometric brand cube, technical metrics, and interactive liquid ink typography that organically fills and ripples with fluid physics strictly when hovering directly over the text.",
+        },
+        {
+          lead: "Wordmark",
+          prop: "blueprintWordmark",
+          value: '"algorize"',
+          effect:
+            "pass any custom wordmark text directly from usage props (defaults to 'algorize').",
+        },
+      ],
+      props: {
+        variant: "architectural-liquid",
+        blueprintWordmark: "algorize",
+      },
+      usage: usageArchitecturalLiquid,
+      code: extractCode("src/components/custom/blocks/FooterBlock.tsx"),
+    },
+    {
       title: "Editorial Tilted Card Footer",
       propNotes: [{ lead: "Use", prop: "variant", value: '"editorial-card"', effect: "an architectural grid studio footer with interactive tabs (Newsletter, Colophon, Privacy Policy), live real-time clock, wireframe globe badge, and a shadow-free tilted CTA card that straightens and lifts on hover." }],
       props: { variant: "editorial-card" },
@@ -174,8 +211,8 @@ Discover the key capabilities of the `Footer` component:
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">8 High-Performance Responsive Variants</h3>
-    <p className="text-muted-foreground text-sm">Includes Editorial Tilted Card, Snapshot, Modern Stack, Wordmark Glow, Simple Centered, Glass Dock, Neon Glow Pulse, and Quantum Particle Beam.</p>
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">9 High-Performance Responsive Variants</h3>
+    <p className="text-muted-foreground text-sm">Includes Architectural Blueprint Liquid, Editorial Tilted Card, Snapshot, Modern Stack, Wordmark Glow, Simple Centered, Glass Dock, Neon Glow Pulse, and Quantum Particle Beam.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">100% Screen & Device Responsive</h3>
@@ -200,7 +237,19 @@ Discover the key capabilities of the `Footer` component:
         <td><code>variant</code></td>
         <td><code>FooterVariant</code></td>
         <td><code>"snapshot"</code></td>
-        <td>Selects from the 8 footer variants (<code>"editorial-card"</code>, <code>"snapshot"</code>, <code>"modern-stack"</code>, <code>"wordmark-glow"</code>, <code>"simple-centered"</code>, <code>"glass-dock"</code>, <code>"neon-glow-pulse"</code>, <code>"quantum-particle-beam"</code>).</td>
+        <td>Selects from the 9 footer variants (<code>"architectural-liquid"</code>, <code>"editorial-card"</code>, <code>"snapshot"</code>, <code>"modern-stack"</code>, <code>"wordmark-glow"</code>, <code>"simple-centered"</code>, <code>"glass-dock"</code>, <code>"neon-glow-pulse"</code>, <code>"quantum-particle-beam"</code>).</td>
+      </tr>
+      <tr>
+        <td><code>blueprintWordmark</code></td>
+        <td><code>string</code></td>
+        <td><code>"AVARA UI"</code></td>
+        <td>Custom text for the architectural blueprint wordmark with interactive liquid ink hover physics in <code>variant="architectural-liquid"</code>.</td>
+      </tr>
+      <tr>
+        <td><code>architecturalLiquid</code></td>
+        <td><code>ArchitecturalLiquidFooterProps</code></td>
+        <td>Heron AI architectural layout copy</td>
+        <td>Customization options for the <code>"architectural-liquid"</code> variant: <code>headline</code>, <code>brandWordmark</code>, <code>subscribeText</code>, <code>addressLines</code>, <code>directionHref</code>, <code>businessEmail</code>, <code>inquiryEmail</code>, <code>navColumns</code>, <code>socials</code>, and <code>legalLinks</code>.</td>
       </tr>
       <tr>
         <td><code>color</code></td>

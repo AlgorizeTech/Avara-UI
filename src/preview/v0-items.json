@@ -278,7 +278,8 @@
     "4-spotlight-gradient-interactive-pointer": "Counter Section — 4. Spotlight Gradient (Interactive Pointer)"
   },
   "cta-section": {
-    "brand-pillars-interactive-scorecard": "Cta Section — Brand Pillars (Interactive Scorecard)"
+    "concentric-portal-variant-concentric-portal": "Cta Section — Concentric Portal — variant=\"concentric-portal\"",
+    "brand-pillars-variant-brand-pillars": "Cta Section — Brand Pillars — variant=\"brand-pillars\""
   },
   "cursor-animation": {
     "image-trail-cursor": "Cursor Animation — Image Trail Cursor",
@@ -449,6 +450,7 @@
     "accent-color": "Flowchart — Accent color"
   },
   "footer": {
+    "architectural-blueprint-liquid-ink-footer-heron-ai-inspired": "Footer — Architectural Blueprint & Liquid Ink Footer (Heron AI Inspired)",
     "editorial-tilted-card-footer": "Footer — Editorial Tilted Card Footer",
     "snapshot-footer": "Footer — Snapshot Footer",
     "modern-stack-footer": "Footer — Modern Stack Footer",
@@ -569,6 +571,7 @@
   },
   "loader": {
     "spinner": "Loader — Spinner",
+    "orbit-concentric-rings-pulse-variant-orbit": "Loader — Orbit (Concentric Rings & Pulse) — variant=\"orbit\"",
     "dots": "Loader — Dots",
     "pulse": "Loader — Pulse",
     "bar": "Loader — Bar"
@@ -655,7 +658,9 @@
     "issues": "Newsletter — Issues"
   },
   "not-found": {
-    "hyperspace-404-section": "Not Found — Hyperspace 404 Section"
+    "architectural-cad-blueprint-404-zero-shadow": "Not Found — Architectural CAD Blueprint 404 (Zero Shadow)",
+    "hyperspace-404-section": "Not Found — Hyperspace 404 Section",
+    "quantum-hologram-404-advanced-animated": "Not Found — Quantum Hologram 404 (Advanced Animated)"
   },
   "otp-input": {
     "otp-input": "OTP Input",
@@ -783,6 +788,7 @@
     "horizontal-rail-track": "Horizontal Scroll Stack — Shorter Rail"
   },
   "secure-envelope": {
+    "confidential-folder-slide-out-sleeve-stay-hungry-variant": "Secure Envelope — Confidential Folder (Slide-Out Sleeve / Stay Hungry Variant)",
     "biometric-nfc-smartcard-quantum-vault-variant": "Secure Envelope — Biometric NFC SmartCard (Quantum Vault Variant)",
     "auto-flip-classic-voucher-classified": "Secure Envelope — Auto Flip (Classic Voucher / Classified)",
     "train-online-ticket-hyperbolt-express-variant": "Secure Envelope — Train Online Ticket (Hyperbolt Express Variant)"

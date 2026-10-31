@@ -6,6 +6,22 @@ An interactive classified envelope sleeve & travel pass component featuring a se
 
 `SecureEnvelope` brings tactile physical curiosity to train online tickets, travel booking passes, security dossiers, coupon reward vouchers, and VIP cards.
 
+export const usageConfidentialFolder = `import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
+
+const confidentialData: SecureEnvelopeData = {
+  idNumber: "ID · 0042",
+  tagline: "STAY\\nHUNGRY",
+  subTagline: "STAY FOOLISH · CLASSIFIED",
+  stampBadge: "CONFIDENTIAL",
+  dossierNumber: "DOSSIER // SEC-0042",
+};
+
+export default function ConfidentialFolderExample() {
+  return (
+
+  );
+}`;
+
 export const usageSmartCard = `import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
 
 const smartCardData: SecureEnvelopeData = {
@@ -102,9 +118,9 @@ npx shadcn@latest add @avara-ui/secure-envelope
         Structured data object containing all ticket, pass, keycard, voucher, and card metric properties. Can also be passed as an array.
 
         cardDesign
-        "classified" | "train-ticket" | "smart-card"
+        "confidential-folder" | "smart-card" | "train-ticket" | "classified"
         "classified"
-        Selects the visual template: "smart-card" for biometric NFC smartcards, "train-ticket" for European railway tickets, or "classified" for confidential dossiers.
+        Selects the visual template: "confidential-folder" for the signature manila folder & hot-pink Stay Hungry card, "smart-card" for biometric NFC smartcards, "train-ticket" for European railway tickets, or "classified" for vintage dossiers.
 
         interactionMode
         "auto-flip" | "step-flip"

@@ -94,8 +94,11 @@ export const socialLinks: string[] = [
 
 /** Optional third-party integrations. Empty means "do not load it at all". */
 export const integrations = {
-  /** Google Analytics measurement ID, e.g. G-XXXXXXXXXX. */
-  gaId: env(process.env.NEXT_PUBLIC_GA_ID),
+  /**
+   * Google Analytics measurement ID. `NEXT_PUBLIC_GA_ID` overrides it; otherwise
+   * this site's own property is used.
+   */
+  gaId: env(process.env.NEXT_PUBLIC_GA_ID) ?? "G-FQF19Y9R8T",
   /** Endpoint backing AI search. It receives user queries — use your own. */
   aiSearchEndpoint: env(process.env.NEXT_PUBLIC_AI_SEARCH_ENDPOINT),
   /** Search Console / Yandex ownership tokens. */

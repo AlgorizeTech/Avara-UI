@@ -14,8 +14,15 @@ export type LoaderColor =
   | "blue"
   | "amber"
   | string;
-export type LoaderVariant = "spinner" | "dots" | "pulse" | "ring" | "bar";
+export type LoaderVariant =
+  | "spinner"
+  | "dots"
+  | "pulse"
+  | "ring"
+  | "bar"
+  | "orbit";
 export type LoaderSize = "sm" | "md" | "lg" | "xl";
+export type LoaderDirection = "single" | "dual";
 
 // ==========================================
 // PROPS & MAIN COMPONENT
@@ -24,6 +31,8 @@ export interface LoaderBlockProps {
   variant?: LoaderVariant;
   size?: LoaderSize;
   color?: LoaderColor;
+  secondaryColor?: LoaderColor;
+  direction?: LoaderDirection;
   text?: string;
   className?: string;
 }
@@ -32,16 +41,30 @@ export function LoaderBlock({
   variant = "spinner",
   size = "md",
   color = "primary",
+  secondaryColor,
+  direction = "single",
   text,
   className,
 }: LoaderBlockProps) {
   const themeColor = getThemeColor(color);
+  const secondaryThemeColor = secondaryColor
+    ? getThemeColor(secondaryColor)
+    : color === "emerald"
+    ? "#6366f1"
+    : "#10b981";
 
   const sizeClasses = {
     sm: "w-4 h-4",
     md: "w-8 h-8",
     lg: "w-12 h-12",
     xl: "w-16 h-16",
+  };
+
+  const orbitSizeClasses = {
+    sm: "w-5 h-5",
+    md: "w-10 h-10",
+    lg: "w-14 h-14",
+    xl: "w-20 h-20",
   };
 
   const barSizeClasses = {
@@ -59,7 +82,11 @@ export function LoaderBlock({
   };
 
   const currentSize =
-    variant === "bar" ? barSizeClasses[size] : sizeClasses[size];
+    variant === "bar"
+      ? barSizeClasses[size]
+      : variant === "orbit" || variant === "ring"
+      ? orbitSizeClasses[size]
+      : sizeClasses[size];
 
   return (
     <div
@@ -86,19 +113,35 @@ export function LoaderBlock({
           0% { transform: rotate(360deg); }
           100% { transform: rotate(0deg); }
         }
+        @keyframes spin-fast {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
         .animate-wave { animation: wave 1.2s ease-in-out infinite; }
         .animate-indet { animation: indeterminate 1.5s infinite linear; }
         .animate-spin-slow { animation: spin-slow 3s linear infinite; }
-        .animate-spin-reverse { animation: spin-reverse 2s linear infinite; }
+        .animate-spin-reverse { animation: spin-reverse 0.85s linear infinite; }
+        .animate-spin-fast { animation: spin-fast 0.85s linear infinite; }
       `}</style>
 
       <div
-        className={cn("relative flex items-center justify-center", currentSize)}
+        className={cn(
+          "relative flex items-center justify-center",
+          (variant === "orbit" || variant === "ring") &&
+            "aspect-square rounded-full shrink-0",
+          currentSize,
+        )}
       >
         {variant === "spinner" && <Spinner color={themeColor} />}
         {variant === "dots" && <Dots color={themeColor} />}
         {variant === "pulse" && <Pulse color={themeColor} />}
-        {variant === "ring" && <Ring color={themeColor} />}
+        {(variant === "orbit" || variant === "ring") && (
+          <OrbitRing
+            color={themeColor}
+            secondaryColor={secondaryThemeColor}
+            direction={direction}
+          />
+        )}
         {variant === "bar" && <Bar color={themeColor} />}
       </div>
 
@@ -179,21 +222,89 @@ function Pulse({ color }: { color: string }) {
   );
 }
 
-function Ring({ color }: { color: string }) {
+function OrbitRing({
+  color,
+  secondaryColor,
+  direction = "single",
+}: {
+  color: string;
+  secondaryColor: string;
+  direction?: LoaderDirection;
+}) {
+  const isDual = direction === "dual";
+
   return (
-    <div className="relative w-full h-full flex items-center justify-center">
-      <div
-        className="absolute w-full h-full rounded-full border-[3px] border-transparent border-t-current animate-spin-slow opacity-80"
-        style={{ color }}
-      />
-      <div
-        className="absolute w-[70%] h-[70%] rounded-full border-[3px] border-transparent border-b-current animate-spin-reverse opacity-60"
-        style={{ color }}
-      />
-      <div
-        className="absolute w-[40%] h-[40%] rounded-full"
-        style={{ backgroundColor: color }}
-      />
+    <div className="relative w-full h-full aspect-square rounded-full flex items-center justify-center shrink-0">
+      {/* Outer Orbit: Full Faint Track & Rounded Active Arc */}
+      <svg
+        className="animate-spin absolute inset-0 w-full h-full aspect-square overflow-visible"
+        viewBox="0 0 48 48"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle
+          cx="24"
+          cy="24"
+          r="21"
+          stroke={color}
+          strokeWidth="3.2"
+          className="opacity-25"
+        />
+        <circle
+          cx="24"
+          cy="24"
+          r="21"
+          stroke={color}
+          strokeWidth="3.2"
+          strokeDasharray="34 98"
+          strokeLinecap="round"
+        />
+      </svg>
+
+      {/* Inner Orbit: Full Faint Track & Rounded Arc (Single: same direction, Dual: counter-spin) */}
+      <svg
+        className={cn(
+          "absolute inset-0 w-full h-full aspect-square overflow-visible",
+          isDual ? "animate-spin-reverse" : "animate-spin-fast",
+        )}
+        viewBox="0 0 48 48"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle
+          cx="24"
+          cy="24"
+          r="13"
+          stroke={secondaryColor}
+          strokeWidth="2.6"
+          className="opacity-35"
+        />
+        <circle
+          cx="24"
+          cy="24"
+          r="13"
+          stroke={secondaryColor}
+          strokeWidth="2.6"
+          strokeDasharray="25 57"
+          strokeLinecap="round"
+        />
+      </svg>
+
+      {/* Core Center: Mathematically Perfect Pulsing Rounded Circle Dot */}
+      <svg
+        className="absolute inset-0 w-full h-full aspect-square pointer-events-none"
+        viewBox="0 0 48 48"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle
+          cx="24"
+          cy="24"
+          r="3.6"
+          fill={color}
+          className="animate-pulse"
+        />
+      </svg>
     </div>
   );
 }

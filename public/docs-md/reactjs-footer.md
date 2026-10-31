@@ -2,9 +2,17 @@ export const metadata = docsPageMetadata("footer");
 
 # Footer
 
-A collection of 8 production-ready, high-capacity, fully responsive Footer components designed for modern web applications, SaaS platforms, e-commerce stores, and enterprise products.
+A collection of 9 production-ready, high-capacity, fully responsive Footer components designed for modern web applications, SaaS platforms, e-commerce stores, and enterprise products.
 
-`Footer` adapts seamlessly across mobile screens, tablets, and desktop viewports, with support for centered layouts, frosted glass docks, cyberpunk neon glow pulses, quantum particle beams, snapshot studio card piles, colorful modern scroll stack cards, giant glowing scroll-reveal wordmarks, and architectural editorial tilted CTA cards.
+`Footer` adapts seamlessly across mobile screens, tablets, and desktop viewports, with support for architectural blueprint drafting grids with interactive liquid ink typography, centered layouts, frosted glass docks, cyberpunk neon glow pulses, quantum particle beams, snapshot studio card piles, colorful modern scroll stack cards, giant glowing scroll-reveal wordmarks, and architectural editorial tilted CTA cards.
+
+export const usageArchitecturalLiquid = `import { Footer } from "@/components/custom/blocks/FooterBlock";
+
+export default function ArchitecturalLiquidFooterDemo() {
+  return (
+    
+  );
+}`;
 
 export const usageEditorial = `import { Footer } from "@/components/custom/blocks/FooterBlock";
 
@@ -83,8 +91,8 @@ npx shadcn@latest add @avara-ui/footer
 
 Discover the key capabilities of the `Footer` component:
 
-    8 High-Performance Responsive Variants
-    Includes Editorial Tilted Card, Snapshot, Modern Stack, Wordmark Glow, Simple Centered, Glass Dock, Neon Glow Pulse, and Quantum Particle Beam.
+    9 High-Performance Responsive Variants
+    Includes Architectural Blueprint Liquid, Editorial Tilted Card, Snapshot, Modern Stack, Wordmark Glow, Simple Centered, Glass Dock, Neon Glow Pulse, and Quantum Particle Beam.
 
     100% Screen & Device Responsive
     Fluid Tailwind CSS grid and flex layouts built to adapt from 320px mobile viewports up to 4K ultra-wide screens.
@@ -99,7 +107,17 @@ Discover the key capabilities of the `Footer` component:
         variant
         FooterVariant
         "snapshot"
-        Selects from the 8 footer variants ("editorial-card", "snapshot", "modern-stack", "wordmark-glow", "simple-centered", "glass-dock", "neon-glow-pulse", "quantum-particle-beam").
+        Selects from the 9 footer variants ("architectural-liquid", "editorial-card", "snapshot", "modern-stack", "wordmark-glow", "simple-centered", "glass-dock", "neon-glow-pulse", "quantum-particle-beam").
+
+        blueprintWordmark
+        string
+        "AVARA UI"
+        Custom text for the architectural blueprint wordmark with interactive liquid ink hover physics in variant="architectural-liquid".
+
+        architecturalLiquid
+        ArchitecturalLiquidFooterProps
+        Heron AI architectural layout copy
+        Customization options for the "architectural-liquid" variant: headline, brandWordmark, subscribeText, addressLines, directionHref, businessEmail, inquiryEmail, navColumns, socials, and legalLinks.
 
         color
         string
