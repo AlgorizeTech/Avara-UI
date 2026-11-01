@@ -460,7 +460,7 @@ export function HeroCarousel({
             {(avatars?.length || avatarsLabel) && (
               <div className="flex items-center gap-3">
                 {avatars && avatars.length > 0 && (
-                  <AvatarStack avatars={avatars} size="md" max={4} ringClassName="ring-white/30" spreadOnHover />
+                  <AvatarStack avatars={avatars} size="md" max={4} ringClassName="ring-white/30" spreadOnHover className="m-0 p-0" />
                 )}
                 {avatarsLabel && <span className="text-[13px] font-medium text-white/90">{avatarsLabel}</span>}
               </div>

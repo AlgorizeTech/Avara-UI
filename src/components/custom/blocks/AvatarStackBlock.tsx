@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence, type Transition } from "motion/react";
+import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import {
@@ -33,6 +34,8 @@ export interface StackAvatar {
 }
 
 export type AvatarStackSize = "sm" | "md" | "lg" | "xl";
+export type AvatarStackVariant = "default" | "shift" | "zoom" | "spread";
+export type AvatarStackType = "default" | "tooltip" | "tooltip-arrow";
 
 export interface AvatarProps
   extends React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root> {
@@ -222,7 +225,7 @@ export const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
         <div
           ref={ref}
           data-slot="avatar-group"
-          className={cn("relative flex items-center h-12 -space-x-3 my-6", className)}
+          className={cn("relative flex w-fit mx-auto items-center justify-center h-12 -space-x-3 py-20 px-6", className)}
           onMouseLeave={() => setActiveIndex(null)}
           {...props}
         >
@@ -383,21 +386,35 @@ AvatarGroup.displayName = "AvatarGroup";
 // AVATAR STACK
 // ==========================================
 
+export type AvatarStackAction =
+  | boolean
+  | ((event: React.MouseEvent<HTMLElement>) => void)
+  | { onClick?: (event: React.MouseEvent<HTMLElement>) => void; label?: string }
+  | React.ReactNode;
+
 export interface AvatarStackProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "translate"> {
   avatars: StackAvatar[];
   size?: AvatarStackSize;
-  /** Presentation variant: `default` (smooth fan out) or `shift` (spring lift with tooltip). */
-  variant?: "default" | "shift";
+  /** Presentation variant: `shift` (spring lift), `zoom` (scale up on hover, fixed gap), or `spread` (fan out to the right on hover). */
+  variant?: AvatarStackVariant;
+  /** Tooltip presentation type for `zoom` and `spread` variants: `default` (no tooltip), `tooltip` (clean tooltip), or `tooltip-arrow` (arrow pointer tooltip). */
+  type?: AvatarStackType;
   /** Invert overlapping order so the first avatar appears on top. */
   invertOverlap?: boolean;
   /** Vertical displacement when an avatar is hovered (e.g. "-30%"). */
   translate?: string | number;
   /** Faces shown before the rest fold into a count. */
   max?: number;
+  /** Optional click handler when the folded `+N` counter disc is clicked. */
+  onMoreClick?: (
+    restCount: number,
+    hiddenAvatars: StackAvatar[],
+    event: React.MouseEvent<HTMLElement>,
+  ) => void;
   /** Colour of the gap between faces — match the surface they sit on. */
   ringClassName?: string;
-  /** A trailing element that shares the stack's size, e.g. a "+" button. */
-  action?: React.ReactNode;
+  /** Trailing "+" action button: pass an `onClick` function `() => void`, `{ onClick, label }`, `true`, or custom `ReactNode`. */
+  action?: AvatarStackAction;
   /** Faces slide apart a little when the stack is hovered. */
   spreadOnHover?: boolean;
   /** Pixel distance each subsequent avatar shifts to the right on hover. Defaults to 6. */
@@ -420,18 +437,20 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
       avatars,
       size = "md",
       variant = "default",
+      type,
       invertOverlap = true,
       translate,
       max = 4,
+      onMoreClick,
       ringClassName = "ring-background",
       action,
-      spreadOnHover = false,
+      spreadOnHover,
       spreadDistance = 6,
       transitionDuration = 500,
-      liftOnHover = true,
-      showTooltip = true,
-      tooltip = true,
-      showTooltipArrow = false,
+      liftOnHover,
+      showTooltip,
+      tooltip,
+      showTooltipArrow,
       className,
       ...props
     },
@@ -441,8 +460,70 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
     const [hoveredAvatarIndex, setHoveredAvatarIndex] = useState<number | string | null>(null);
     const s = SIZES[size] ?? SIZES.md;
     const shown = avatars.slice(0, max);
+    const hiddenAvatars = avatars.slice(max);
     const rest = avatars.length - shown.length;
-    const enableTooltip = showTooltip && tooltip;
+
+    const handleMoreClick = (e: React.MouseEvent<HTMLElement>) => {
+      onMoreClick?.(rest, hiddenAvatars, e);
+    };
+
+    const isActionConfigObject =
+      typeof action === "object" &&
+      action !== null &&
+      !React.isValidElement(action) &&
+      ("onClick" in action || "label" in action);
+
+    const resolvedActionClick =
+      typeof action === "function"
+        ? action
+        : isActionConfigObject
+          ? (action as { onClick?: (event: React.MouseEvent<HTMLElement>) => void }).onClick
+          : undefined;
+
+    const resolvedActionLabel = isActionConfigObject
+      ? (action as { label?: string }).label ?? "Join the community"
+      : "Join the community";
+
+    const isCustomActionElement = React.isValidElement(action);
+    const hasAction = Boolean(action);
+
+    const renderedActionNode = isCustomActionElement ? (
+      action
+    ) : hasAction ? (
+      <button
+        type="button"
+        aria-label={resolvedActionLabel}
+        onClick={resolvedActionClick}
+        className={cn(
+          "group/action grid size-full place-items-center rounded-full bg-primary text-primary-foreground ring-2 transition-transform duration-300 hover:scale-110 cursor-pointer",
+          ringClassName,
+        )}
+      >
+        <Plus
+          size={size === "sm" ? 13 : size === "lg" || size === "xl" ? 18 : 16}
+          className="transition-transform duration-300 group-hover/action:rotate-90"
+        />
+      </button>
+    ) : null;
+
+    const isSpreadVariant = variant === "spread";
+    const effectiveSpreadOnHover = spreadOnHover ?? isSpreadVariant;
+    const effectiveLiftOnHover = liftOnHover ?? !isSpreadVariant;
+    const effectiveTranslate = translate ?? (isSpreadVariant ? "-30%" : undefined);
+
+    const resolvedShowTooltip =
+      showTooltip !== undefined
+        ? showTooltip
+        : tooltip !== undefined
+          ? tooltip
+          : type === "default"
+            ? false
+            : true;
+    const enableTooltip = resolvedShowTooltip && (tooltip ?? true);
+    const effectiveShowTooltipArrow =
+      showTooltipArrow !== undefined
+        ? showTooltipArrow
+        : type === "tooltip-arrow";
     const dist = spreadDistance;
 
     // Shift on hover variant (matches animate-ui behavior)
@@ -459,7 +540,7 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
           {shown.map((a, i) => (
             <Avatar
               key={i}
-              className={cn(s.box, "border-3 border-background ring-0 cursor-pointer", ringClassName)}
+              className={cn(s.box, "border-[3px] border-background ring-0 cursor-pointer", ringClassName)}
             >
               <img src={a.src} alt={a.alt ?? a.name ?? ""} className="h-full w-full object-cover" />
               {(enableTooltip && (a.tooltip || a.alt || a.name)) && (
@@ -471,16 +552,33 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
           ))}
           {rest > 0 && (
             <Avatar
+              onClick={handleMoreClick}
               className={cn(
                 s.box,
-                "border-3 border-background ring-0 bg-muted text-muted-foreground font-semibold text-xs flex items-center justify-center cursor-pointer",
+                "border-[3px] border-background ring-0 bg-muted text-muted-foreground font-semibold text-xs flex items-center justify-center cursor-pointer",
                 ringClassName,
               )}
             >
               +{rest}
+              {enableTooltip && (
+                <AvatarGroupTooltip>+{rest} more</AvatarGroupTooltip>
+              )}
             </Avatar>
           )}
-          {action}
+          {renderedActionNode && (
+            <Avatar
+              className={cn(
+                s.box,
+                "border-[3px] border-background ring-0 bg-transparent flex items-center justify-center cursor-pointer overflow-visible",
+                ringClassName,
+              )}
+            >
+              {renderedActionNode}
+              {enableTooltip && resolvedActionLabel && (
+                <AvatarGroupTooltip>{resolvedActionLabel}</AvatarGroupTooltip>
+              )}
+            </Avatar>
+          )}
         </AvatarGroup>
       );
     }
@@ -489,7 +587,7 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
     return (
       <div
         ref={ref}
-        className={cn("group flex items-center", s.overlap, className)}
+        className={cn("group flex w-fit mx-auto items-center justify-center py-20 px-6", s.overlap, className)}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => {
           setIsHovered(false);
@@ -498,10 +596,10 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
         {...props}
       >
         {shown.map((a, i) => {
-          const shiftX = isHovered && spreadOnHover ? i * dist : 0;
+          const shiftX = isHovered && effectiveSpreadOnHover ? i * dist : 0;
           const isThisHovered = hoveredAvatarIndex === i;
           const currentZIndex = isThisHovered ? 50 : shown.length - i;
-          const shiftY = isThisHovered && translate ? (typeof translate === "number" ? `${translate}px` : translate) : "0px";
+          const shiftY = isThisHovered && effectiveTranslate ? (typeof effectiveTranslate === "number" ? `${effectiveTranslate}px` : effectiveTranslate) : "0px";
           const avatarElement = (
             <span
               key={a.src}
@@ -515,11 +613,11 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
               style={
                 enableTooltip
                   ? {
-                      transform: liftOnHover && isThisHovered ? "scale(1.15)" : "scale(1)",
+                      transform: effectiveLiftOnHover && isThisHovered ? "scale(1.15)" : "scale(1)",
                       transition: `transform ${transitionDuration}ms cubic-bezier(0.16, 1, 0.3, 1)`,
                     }
                   : {
-                      transform: `translateX(${shiftX}px) translateY(${shiftY}) ${liftOnHover && isThisHovered ? "scale(1.15)" : "scale(1)"}`,
+                      transform: `translateX(${shiftX}px) translateY(${shiftY}) ${effectiveLiftOnHover && isThisHovered ? "scale(1.15)" : "scale(1)"}`,
                       zIndex: currentZIndex,
                       transition: `transform ${transitionDuration}ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms ease, z-index 0ms`,
                     }
@@ -549,8 +647,8 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
                 </TooltipTrigger>
                 <TooltipContent
                   side="top"
-                  showArrow={showTooltipArrow}
-                  animated={showTooltipArrow ? "pop" : undefined}
+                  showArrow={effectiveShowTooltipArrow}
+                  animated={effectiveShowTooltipArrow ? "pop" : undefined}
                 >
                   <div
                     className={cn(
@@ -571,11 +669,13 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
           return avatarElement;
         })}
         {rest > 0 && (() => {
-          const shiftRestX = isHovered && spreadOnHover ? shown.length * dist : 0;
+          const shiftRestX = isHovered && effectiveSpreadOnHover ? shown.length * dist : 0;
           const isRestHovered = hoveredAvatarIndex === "rest";
-          const shiftRestY = isRestHovered && translate ? (typeof translate === "number" ? `${translate}px` : translate) : "0px";
+          const shiftRestY = isRestHovered && effectiveTranslate ? (typeof effectiveTranslate === "number" ? `${effectiveTranslate}px` : effectiveTranslate) : "0px";
           const restElement = (
-            <span
+            <button
+              type="button"
+              onClick={handleMoreClick}
               onMouseEnter={() => setHoveredAvatarIndex("rest")}
               onMouseLeave={() => setHoveredAvatarIndex(null)}
               className={cn(
@@ -587,18 +687,18 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
               style={
                 enableTooltip
                   ? {
-                      transform: liftOnHover && isRestHovered ? "scale(1.15)" : "scale(1)",
+                      transform: effectiveLiftOnHover && isRestHovered ? "scale(1.15)" : "scale(1)",
                       transition: `transform ${transitionDuration}ms cubic-bezier(0.16, 1, 0.3, 1)`,
                     }
                   : {
-                      transform: `translateX(${shiftRestX}px) translateY(${shiftRestY}) ${liftOnHover && isRestHovered ? "scale(1.15)" : "scale(1)"}`,
+                      transform: `translateX(${shiftRestX}px) translateY(${shiftRestY}) ${effectiveLiftOnHover && isRestHovered ? "scale(1.15)" : "scale(1)"}`,
                       zIndex: isRestHovered ? 50 : 0,
                       transition: `transform ${transitionDuration}ms cubic-bezier(0.16, 1, 0.3, 1)`,
                     }
               }
             >
               +{rest}
-            </span>
+            </button>
           );
 
           if (enableTooltip) {
@@ -618,8 +718,8 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
                 </TooltipTrigger>
                 <TooltipContent
                   side="top"
-                  showArrow={showTooltipArrow}
-                  animated={showTooltipArrow ? "pop" : undefined}
+                  showArrow={effectiveShowTooltipArrow}
+                  animated={effectiveShowTooltipArrow ? "pop" : undefined}
                 >
                   <div className="flex flex-col items-center text-center">
                     <span className="font-semibold text-xs leading-tight whitespace-nowrap">+{rest} more</span>
@@ -631,7 +731,7 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
 
           return restElement;
         })()}
-        {action && (
+        {renderedActionNode && (
           <span
             onMouseEnter={() => setHoveredAvatarIndex("action")}
             onMouseLeave={() => setHoveredAvatarIndex(null)}
@@ -641,12 +741,12 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
               hoveredAvatarIndex === "action" && "scale-110",
             )}
             style={{
-              transform: `translateX(${isHovered && spreadOnHover ? (shown.length + (rest > 0 ? 1 : 0)) * dist : 0}px) translateY(${hoveredAvatarIndex === "action" && translate ? (typeof translate === "number" ? `${translate}px` : translate) : "0px"})`,
+              transform: `translateX(${isHovered && effectiveSpreadOnHover ? (shown.length + (rest > 0 ? 1 : 0)) * dist : 0}px) translateY(${hoveredAvatarIndex === "action" && effectiveTranslate ? (typeof effectiveTranslate === "number" ? `${effectiveTranslate}px` : effectiveTranslate) : "0px"})`,
               zIndex: hoveredAvatarIndex === "action" ? 50 : 0,
               transition: `transform ${transitionDuration}ms cubic-bezier(0.16, 1, 0.3, 1)`,
             }}
           >
-            {action}
+            {renderedActionNode}
           </span>
         )}
       </div>
