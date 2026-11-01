@@ -3,6 +3,9 @@
 import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { AnimatedTypographyBlock, type PrefixPosition } from "./AnimatedTypographyBlock";
+import { BentoCascadeHero, type BentoCascadeCardItem } from "./BentoCascadeHeroBlock";
+import { BreatheHero } from "./BreatheHeroBlock";
+import { SolarSnapshotHero } from "./SolarSnapshotHeroBlock";
 import { ArrowRight, ArrowUpRight, Check, Copy, Sparkles, Terminal, Star, Code, Mail, FileText, Heart, ShieldCheck, ShoppingBag, Package } from "lucide-react";
 
 /* ═══════════════════════════════════════════════
@@ -34,7 +37,7 @@ export interface OrbitHighlight {
 }
 
 export interface HeroBlockProps extends React.HTMLAttributes<HTMLElement> {
-  /** Animation variant: "bounce", "typing", "slider", "glow-arc", "pet-shop", "doctor", "facility", "geometric", "vortex", "radar", "orbit", "orbit-gallery", "orbit-ring" */
+  /** Animation variant: "bounce", "typing", "slider", "glow-arc", "pet-shop", "doctor", "facility", "geometric", "vortex", "radar", "orbit", "orbit-gallery", "orbit-ring", "bento-cascade" */
   variant?:
     | "bounce"
     | "typing"
@@ -50,7 +53,16 @@ export interface HeroBlockProps extends React.HTMLAttributes<HTMLElement> {
     | "orbit"
     | "orbit-gallery"
     | "orbit-ring"
-    | "orbit-hero";
+    | "orbit-hero"
+    | "bento-cascade"
+    | "cascade"
+    | "breathe"
+    | "hero-breathe"
+    | "curved-cards"
+    | "arch"
+    | "solar-snapshot"
+    | "sun-cursor"
+    | "solar";
   /** Optional badge text displayed inside the top pill badge */
   badgeText?: string;
   /** Badge link URL */
@@ -119,8 +131,12 @@ export interface HeroBlockProps extends React.HTMLAttributes<HTMLElement> {
   rotationSpeed?: number;
   /** Custom accent color (CSS color or tailwind var) */
   color?: string;
-  /** Array of image URLs for the revolving circular photo ring (used in "orbit" variant) */
+  /** Array of image URLs for the revolving circular photo ring (used in "orbit" variant) or bento cascade variant */
   images?: string[];
+  /** Array of custom card objects for the bento cascade variant */
+  cards?: BentoCascadeCardItem[];
+  /** Optional custom image rendering component (e.g. Next.js next/image) */
+  imageComponent?: React.ElementType;
   /** Seconds for one full orbit revolution (used in "orbit" variant, default: 36) */
   duration?: number;
   /** Dotted bullet highlights under actions (used in "orbit" variant) */
@@ -529,6 +545,8 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
       rotationSpeed,
       color,
       images,
+      cards,
+      imageComponent,
       duration = 36,
       highlights,
       className,
@@ -611,6 +629,161 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
           }
         : {}),
     } as React.CSSProperties;
+
+    /* ═══════════════════════════════════════════════
+       VARIANT: BENTO CASCADE INFINITE MOTION HERO
+       ═══════════════════════════════════════════════ */
+    if (variant === "bento-cascade" || variant === "cascade") {
+      const bentoImages =
+        images && images.length > 0
+          ? images
+          : sliderImages && sliderImages !== DEFAULT_SLIDER_IMAGES
+            ? sliderImages
+            : undefined;
+
+      return (
+        <BentoCascadeHero
+          ref={ref as any}
+          title={title || (titlePrefix === "Build " ? "Explore wild nature & plan" : titlePrefix) || "Explore wild nature & plan"}
+          titleAccent={titleAccent || (titleSuffix ? titleSuffix : "your next escape")}
+          subtitle={
+            subtitle === "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion."
+              ? "Discover handpicked alpine sanctuaries, secluded glacial lakes, and ancient redwood trails tailored for unforgettable outdoor journeys."
+              : subtitle
+          }
+          primaryActionLabel={primaryActionLabel === "Browse Components" ? "Start exploring" : primaryActionLabel}
+          primaryActionHref={primaryActionHref === "/docs" ? "#explore" : primaryActionHref}
+          secondaryActionLabel={secondaryActionLabel === "Star on GitHub" ? "View journeys" : secondaryActionLabel}
+          secondaryActionHref={secondaryActionHref === "https://github.com/AlgorizeTech" ? "#destinations" : secondaryActionHref}
+          cards={cards}
+          images={bentoImages}
+          accent={color}
+          linkComponent={Link}
+          imageComponent={imageComponent}
+          className={className}
+          style={style}
+          {...props}
+        />
+      );
+    }
+
+    /* ═════════════════════════════════════════
+       VARIANT: BREATHE CURVED ARCH MOTION HERO
+       ═════════════════════════════════════════ */
+    if (
+      variant === "breathe" ||
+      variant === "hero-breathe" ||
+      variant === "curved-cards" ||
+      variant === "arch"
+    ) {
+      const breatheImages =
+        images && images.length > 0
+          ? images
+          : sliderImages && sliderImages !== DEFAULT_SLIDER_IMAGES
+            ? sliderImages
+            : undefined;
+
+      const breatheBadgeText =
+        badgeText === "Next-Gen React Components"
+          ? "Interactive Motion Architecture"
+          : badgeText;
+      const breatheBadgeHref = badgeHref || "/docs";
+      const breatheSecLabel =
+        secondaryActionLabel === "Explore Blocks"
+          ? "View Showroom"
+          : secondaryActionLabel;
+      const breatheSecHref =
+        secondaryActionHref === "#features" ? "#showroom" : secondaryActionHref;
+
+      return (
+        <BreatheHero
+          ref={ref as any}
+          title={
+            title ||
+            (titlePrefix === "Build " ? "Crafted for depth," : titlePrefix) ||
+            "Crafted for depth,"
+          }
+          titleAccent={
+            titleAccent || (titleSuffix ? titleSuffix : "built for motion.")
+          }
+          badgeText={breatheBadgeText}
+          badgeHref={breatheBadgeHref}
+          description={
+            subtitle ===
+            "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion."
+              ? "Create immersive digital experiences where fluid scroll choreography, spatial architecture, and tactile visual polish move in effortless harmony."
+              : subtitle
+          }
+          buttonLabel={
+            primaryActionLabel === "Browse Components"
+              ? "Start Exploring"
+              : primaryActionLabel
+          }
+          buttonHref={
+            primaryActionHref === "/docs" ? "/docs" : primaryActionHref
+          }
+          secondaryButtonLabel={breatheSecLabel}
+          secondaryButtonHref={breatheSecHref}
+          cards={cards as any}
+          images={breatheImages}
+          accent={color}
+          linkComponent={Link}
+          imageComponent={imageComponent}
+          className={className}
+          style={style}
+          {...props}
+        />
+      );
+    }
+
+    /* ═════════════════════════════════════════
+       VARIANT: SOLAR SNAPSHOT SUN CURSOR HERO
+       ═════════════════════════════════════════ */
+    if (
+      variant === "solar-snapshot" ||
+      variant === "sun-cursor" ||
+      variant === "solar"
+    ) {
+      return (
+        <SolarSnapshotHero
+          ref={ref as any}
+          title={
+            title ||
+            (titlePrefix === "Build "
+              ? "Where natural light meets"
+              : titlePrefix) ||
+            "Where natural light meets"
+          }
+          titleAccent={
+            titleAccent ||
+            (titleSuffix ? titleSuffix : "expressive digital craft.")
+          }
+          description={
+            subtitle ===
+            "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion."
+              ? "Guide the radiant sun across the canvas with your cursor and click anywhere to capture an instant live snapshot of the stage."
+              : subtitle
+          }
+          primaryActionLabel={
+            primaryActionLabel === "Browse Components"
+              ? "Initiate Project"
+              : primaryActionLabel
+          }
+          primaryActionHref={primaryActionHref}
+          secondaryActionLabel={
+            secondaryActionLabel === "Star on GitHub"
+              ? "Explore Studio"
+              : secondaryActionLabel
+          }
+          secondaryActionHref={secondaryActionHref}
+          accent={color}
+          linkComponent={Link}
+          className={className}
+          style={style}
+          {...props}
+        />
+      );
+    }
 
     /* ═══════════════════════════════════════════════
        VARIANT: ORBIT 3D PHOTO RING HERO
@@ -1904,4 +2077,6 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
 );
 
 HeroBlock.displayName = "HeroBlock";
+export { BentoCascadeHero, type BentoCascadeCardItem } from "./BentoCascadeHeroBlock";
+export { BreatheHero, type BreatheCardItem, type BreatheHeroProps } from "./BreatheHeroBlock";
 export default HeroBlock;
