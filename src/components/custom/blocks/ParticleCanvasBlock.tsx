@@ -15,6 +15,7 @@ const useIsMounted = () =>
   );
 
 import { useTheme } from "next-themes";
+import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { accentStyle } from "@/lib/accent";
 
@@ -62,22 +63,6 @@ function resolveColorAccent(color?: string): string | null {
   return PRESET_ACCENT_HEX[color] ?? color;
 }
 
-const wordmarkGlowKeyframes = `
-@keyframes particle-canvas-word-rise {
-  from { transform: translateY(70%); }
-  to { transform: none; }
-}
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .particle-canvas-word-letter {
-      animation: particle-canvas-word-rise linear both;
-      animation-timeline: view();
-      animation-range: entry calc(var(--i) * 4%) entry 100%;
-    }
-  }
-}
-`;
-
 export interface WordmarkGlowProps extends React.HTMLAttributes<HTMLDivElement> {
   content?: string;
   color?: string;
@@ -92,6 +77,33 @@ export function WordmarkGlowCanvas({
   ...props
 }: WordmarkGlowProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
+  const measureRef = useRef<HTMLSpanElement>(null);
+  const [fontSize, setFontSize] = useState<number | null>(null);
+  const reduceMotion = useReducedMotion();
+
+  const updateFontSize = useCallback(() => {
+    if (!wrapRef.current || !measureRef.current) return;
+    const containerWidth = wrapRef.current.clientWidth;
+    const widthAt100 = measureRef.current.offsetWidth;
+    if (containerWidth > 0 && widthAt100 > 0) {
+      // Fill full width edge-to-edge safely without any clipping on left or right
+      const targetWidth = Math.min(containerWidth - 24, containerWidth * 0.95);
+      const computedSize = (targetWidth / widthAt100) * 100;
+      setFontSize(Math.min(Math.max(computedSize, 16), 340));
+    }
+  }, []);
+
+  useEffect(() => {
+    updateFontSize();
+    if (typeof document !== "undefined" && document.fonts) {
+      document.fonts.ready.then(updateFontSize);
+    }
+    const node = wrapRef.current;
+    if (!node) return;
+    const observer = new ResizeObserver(() => updateFontSize());
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [updateFontSize, content]);
 
   // Writes pointer position as --mx / --my for the radial glow
   useEffect(() => {
@@ -119,43 +131,80 @@ export function WordmarkGlowCanvas({
   }, []);
 
   const dynamicAccent = accentStyle(color);
-  const charRatio = content ? Math.max(content.length * 0.56, 2.5) : 4.5;
+  const charRatio = content ? Math.max(content.length * 0.58, 2.5) : 4.5;
 
   return (
     <div
       ref={wrapRef}
       style={{ ...dynamicAccent, ...style }}
       className={cn(
-        "group/word relative isolate flex w-full h-full min-h-[450px] items-center justify-center overflow-hidden px-4 select-none bg-background text-foreground transition-colors [container-type:inline-size]",
+        "group/word relative isolate flex w-full h-full min-h-[240px] items-end justify-center overflow-hidden px-3 pt-10 pb-0 select-none bg-background text-foreground transition-colors [container-type:inline-size]",
         className
       )}
       {...props}
     >
-      <style>{wordmarkGlowKeyframes}</style>
+      {/* Invisible measurement element to compute 100% exact full-width font scaling */}
+      <span
+        ref={measureRef}
+        aria-hidden="true"
+        className="invisible absolute left-0 top-0 pointer-events-none select-none whitespace-nowrap font-semibold leading-[0.82] tracking-[-0.035em]"
+        style={{ fontSize: "100px" }}
+      >
+        {[...content].map((letter, i) => (
+          <span key={i} className="inline-block px-[0.02em] last:pr-[0.14em]">
+            {letter}
+          </span>
+        ))}
+      </span>
 
       {/* Glow behind the letters; follows mouse pointer and glows with active theme / primary color */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(380px_circle_at_var(--mx,50%)_var(--my,50%),color-mix(in_oklab,var(--primary)_45%,transparent),transparent_70%)] opacity-60 transition-opacity duration-300 group-hover/word:opacity-100"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(380px_circle_at_var(--mx,50%)_var(--my,65%),color-mix(in_oklab,var(--primary)_45%,transparent),transparent_70%)] opacity-60 transition-opacity duration-300 group-hover/word:opacity-100"
       />
 
-      <p
+      <motion.p
         aria-hidden="true"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, amount: 0.25 }}
         style={{
-          fontSize: `clamp(3.5rem, calc(88cqi / ${charRatio}), 19rem)`,
+          fontSize: fontSize ? `${fontSize}px` : `clamp(1.75rem, calc(92cqi / ${charRatio}), 19rem)`,
         }}
-        className="pointer-events-none flex w-full select-none justify-center whitespace-nowrap text-[clamp(3.5rem,calc(88vw/4.5),19rem)] font-semibold leading-[0.85] tracking-[-0.035em]"
+        className="pointer-events-none mb-[-0.025em] flex w-full max-w-full select-none justify-center whitespace-nowrap font-semibold leading-[0.82] tracking-[-0.035em]"
       >
         {[...content].map((letter, index) => (
-          <span
+          <motion.span
             key={index}
-            style={{ "--i": index } as React.CSSProperties}
-            className="particle-canvas-word-letter inline-block px-[0.02em] last:pr-[0.14em] bg-gradient-to-b from-foreground/25 to-foreground/[0.03] to-85% bg-clip-text text-transparent"
+            variants={
+              reduceMotion
+                ? undefined
+                : {
+                    hidden: {
+                      y: "75%",
+                      opacity: 0,
+                      scale: 0.94,
+                    },
+                    visible: {
+                      y: "0%",
+                      opacity: 1,
+                      scale: 1,
+                      transition: {
+                        type: "spring",
+                        stiffness: 95,
+                        damping: 14,
+                        mass: 1.25,
+                        delay: index * 0.08,
+                      },
+                    },
+                  }
+            }
+            className="inline-block px-[0.02em] last:pr-[0.14em] bg-gradient-to-b from-foreground/25 to-foreground/[0.03] to-85% bg-clip-text text-transparent"
           >
             {letter}
-          </span>
+          </motion.span>
         ))}
-      </p>
+      </motion.p>
     </div>
   );
 }
@@ -286,8 +335,19 @@ function StandardParticleCanvas({
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
 
-        const calcFontSize = fontSize || Math.min((width * 0.92) / (content.length * 0.58), height * 0.42);
+        const maxTextWidth = Math.max(40, width * (width < 768 ? 0.86 : 0.9));
+        let calcFontSize = fontSize || Math.min(maxTextWidth / (content.length * 0.58), height * 0.42);
         ctx.font = `bold ${calcFontSize}px ${fontFamily}`;
+
+        // Ensure text never clips on the left or right on small screens
+        if (!fontSize) {
+          const measuredWidth = ctx.measureText(content).width;
+          if (measuredWidth > maxTextWidth && measuredWidth > 0) {
+            calcFontSize = Math.floor(calcFontSize * (maxTextWidth / measuredWidth));
+            ctx.font = `bold ${calcFontSize}px ${fontFamily}`;
+          }
+        }
+
         ctx.fillText(content, width / 2, height / 2);
 
         const imgData = ctx.getImageData(0, 0, width, height);

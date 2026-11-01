@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import {
   Globe as GlobeIcon,
   Sparkles,
@@ -1421,19 +1421,6 @@ function SnapshotFooter({
 const wordmarkHeadingClass = "mb-3 text-[0.8125rem] font-medium text-muted-foreground";
 const wordmarkLinkClass = "text-[0.9375rem] text-foreground/80 hover:text-foreground transition-colors";
 
-const wordmarkKeyframes = `
-@keyframes footer-block-rise { from { transform: translateY(70%); } to { transform: none; } }
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .footer-block-letter {
-      animation: footer-block-rise linear both;
-      animation-timeline: view();
-      animation-range: entry calc(var(--i) * 4%) entry 100%;
-    }
-  }
-}
-`;
-
 export function WordmarkFooter({
   logo,
   logoDark,
@@ -1451,6 +1438,33 @@ export function WordmarkFooter({
 }: WordmarkFooterProps) {
   const { contact: contactLabel = "Talk to us", location: locationLabel = "Where we work", social: socialLabel = "Follow" } = labels;
   const wrapRef = useRef<HTMLDivElement>(null);
+  const measureRef = useRef<HTMLSpanElement>(null);
+  const [fontSize, setFontSize] = useState<number | null>(null);
+  const reduceMotion = useReducedMotion();
+
+  const updateFontSize = useCallback(() => {
+    if (!wrapRef.current || !measureRef.current) return;
+    const containerWidth = wrapRef.current.clientWidth;
+    const widthAt100 = measureRef.current.offsetWidth;
+    if (containerWidth > 0 && widthAt100 > 0) {
+      // Fill full width edge-to-edge safely without any clipping on left or right
+      const targetWidth = Math.min(containerWidth - 24, containerWidth * 0.95);
+      const computedSize = (targetWidth / widthAt100) * 100;
+      setFontSize(Math.min(Math.max(computedSize, 18), 340));
+    }
+  }, []);
+
+  useEffect(() => {
+    updateFontSize();
+    if (typeof document !== "undefined" && document.fonts) {
+      document.fonts.ready.then(updateFontSize);
+    }
+    const node = wrapRef.current;
+    if (!node) return;
+    const observer = new ResizeObserver(() => updateFontSize());
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [updateFontSize, wordmark]);
 
   // Writes the pointer position as --mx / --my for the glow, one write per frame.
   useEffect(() => {
@@ -1510,12 +1524,10 @@ export function WordmarkFooter({
   const displayCopyright = copyright.startsWith(yearStr)
     ? copyright
     : `${yearStr} ${copyright}`;
-  const charRatio = wordmark ? Math.max(wordmark.length * 0.56, 2.5) : 4.5;
+  const charRatio = wordmark ? Math.max(wordmark.length * 0.62, 2.5) : 4.5;
 
   return (
     <footer className={cn("relative w-full bg-background pt-[72px] text-foreground transition-colors overflow-hidden", className)}>
-      <style>{wordmarkKeyframes}</style>
-
       <div className="relative z-10 mx-auto w-full max-w-[1280px] px-5 sm:px-8">
         <div className="grid gap-10 lg:grid-cols-[1.2fr_1.3fr_1fr]">
           <div className="grid max-w-[352px] content-start gap-3.5">
@@ -1604,28 +1616,67 @@ export function WordmarkFooter({
           ref={wrapRef}
           className="group/word relative isolate mt-[calc(24px-var(--lift))] overflow-hidden px-2 pt-[var(--lift)] sm:px-4 [--lift:clamp(96px,10vw,160px)] lg:mt-[calc(40px-var(--lift))] [container-type:inline-size]"
         >
+          {/* Invisible measurement element to compute 100% exact full-width font scaling */}
+          <span
+            ref={measureRef}
+            aria-hidden="true"
+            className="invisible absolute left-0 top-0 pointer-events-none select-none whitespace-nowrap font-semibold leading-[0.82] tracking-[-0.035em]"
+            style={{ fontSize: "100px" }}
+          >
+            {[...wordmark].map((letter, i) => (
+              <span key={i} className="inline-block px-[0.02em] last:pr-[0.14em]">
+                {letter}
+              </span>
+            ))}
+          </span>
+
           {/* Glow behind the letters; it reaches up behind the bottom row and fades in. */}
           <div
             aria-hidden="true"
             className="absolute inset-0 -z-10 bg-[radial-gradient(320px_circle_at_var(--mx,50%)_var(--my,60%),color-mix(in_oklab,var(--primary)_42%,transparent),transparent_70%)] opacity-50 transition-opacity duration-300 [mask-image:linear-gradient(to_bottom,transparent,#000_calc(var(--lift)+48px))] group-hover/word:opacity-100"
           />
-          <p
+          <motion.p
             aria-hidden="true"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.25 }}
             style={{
-              fontSize: `clamp(3.5rem, calc(88cqi / ${charRatio}), 19rem)`,
+              fontSize: fontSize ? `${fontSize}px` : `clamp(1.75rem, calc(92cqi / ${charRatio}), 19rem)`,
             }}
-            className="pointer-events-none mb-[-0.025em] mt-6 flex w-full select-none justify-center whitespace-nowrap text-[clamp(3.5rem,calc(88vw/4.5),19rem)] font-semibold leading-[0.82] tracking-[-0.035em]"
+            className="pointer-events-none mb-[-0.025em] mt-6 flex w-full max-w-full select-none justify-center whitespace-nowrap font-semibold leading-[0.82] tracking-[-0.035em]"
           >
             {[...wordmark].map((letter, index) => (
-              <span
+              <motion.span
                 key={index}
-                style={{ "--i": index } as React.CSSProperties}
-                className="footer-block-letter inline-block px-[0.02em] last:pr-[0.14em] bg-gradient-to-b from-foreground/20 to-foreground/[0.02] to-85% bg-clip-text text-transparent"
+                variants={
+                  reduceMotion
+                    ? undefined
+                    : {
+                        hidden: {
+                          y: "75%",
+                          opacity: 0,
+                          scale: 0.94,
+                        },
+                        visible: {
+                          y: "0%",
+                          opacity: 1,
+                          scale: 1,
+                          transition: {
+                            type: "spring",
+                            stiffness: 95,
+                            damping: 14,
+                            mass: 1.25,
+                            delay: index * 0.08,
+                          },
+                        },
+                      }
+                }
+                className="inline-block px-[0.02em] last:pr-[0.14em] bg-gradient-to-b from-foreground/20 to-foreground/[0.02] to-85% bg-clip-text text-transparent"
               >
                 {letter}
-              </span>
+              </motion.span>
             ))}
-          </p>
+          </motion.p>
         </div>
       )}
     </footer>
