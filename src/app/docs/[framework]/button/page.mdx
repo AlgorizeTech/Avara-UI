@@ -295,6 +295,43 @@ export default function PricingButtonsDemo() {
   );
 };`;
 
+export const usageAuthGlass = `import Button from "@/components/custom/blocks/Button";
+import { AppleIcon, GitHubIcon, GoogleIcon } from "@/components/custom/blocks/Icons";
+
+export default function AuthAndGlassButtonsDemo() {
+  return (
+    <div className="flex flex-wrap items-center justify-center gap-4">
+      <Button variant="auth-social" iconLeft={<GitHubIcon />}>
+        Auth Social
+      </Button>
+      <Button variant="glass-social" iconLeft={<GoogleIcon />}>
+        Glass Social
+      </Button>
+      <Button variant="liquid-glass-primary" showArrow>
+        Liquid Glass Primary
+      </Button>
+      <Button variant="liquid-glass-social" iconLeft={<GoogleIcon />}>
+        Liquid Glass Social
+      </Button>
+      <Button variant="scenic-primary" showArrow>
+        Scenic Primary
+      </Button>
+      <Button variant="scenic-secondary">
+        Scenic Secondary
+      </Button>
+      <Button variant="scenic-option" iconLeft={<AppleIcon />}>
+        Scenic Option
+      </Button>
+      <Button variant="ribbon-primary" showArrow>
+        Ribbon Primary
+      </Button>
+      <Button variant="ribbon-social" iconLeft={<GoogleIcon />}>
+        Ribbon Social
+      </Button>
+    </div>
+  );
+};`;
+
 <ExampleShowcase
   name="button"
   colorControl
@@ -362,6 +399,21 @@ export default function PricingButtonsDemo() {
       code: extractCode("src/components/custom/blocks/Button.tsx"),
     },
     {
+      title: "Auth, Glass, Liquid-Glass, Scenic & Ribbon Buttons",
+      description: "Dedicated button surfaces used across Auth Forms (Default, Split, Minimal, Frosted Glass, Liquid Glass, Scenic Onboarding, and Ribbon Drift) — available standalone for any glassmorphic or multi-step UI.",
+      propNotes: [
+        { lead: "Auth Social", prop: "variant", value: '"auth-social"', effect: "subtle bordered card button for GitHub/Google social sign-in." },
+        { lead: "Frosted Glass Social", prop: "variant", value: '"glass-social"', effect: "translucent backdrop-blur button with crisp hover border for frosted glass cards." },
+        { lead: "Liquid Glass Primary", prop: "variant", value: '"liquid-glass-primary"', effect: "primary refractive glass CTA with specular top highlight and ambient glow." },
+        { lead: "Liquid Glass Social", prop: "variant", value: '"liquid-glass-social"', effect: "translucent white/12 refractive glass button with inset highlight for dark/image backdrops." },
+        { lead: "Scenic Primary & Secondary", prop: "variant", value: '"scenic-primary" | "scenic-secondary" | "scenic-option"', effect: "rounded 2xl action, secondary pill, and 52px social/email option buttons from Scenic auth flows." },
+        { lead: "Ribbon Drift", prop: "variant", value: '"ribbon-primary" | "ribbon-social"', effect: "full-pill gradient-hover primary CTA and ringed social button from Ribbon Drift." },
+      ],
+      props: { layout: "auth-glass" },
+      usage: usageAuthGlass,
+      code: extractCode("src/components/custom/blocks/Button.tsx"),
+    },
+    {
       title: "Pricing & Action CTA Buttons",
       description: "Clean high-converting pricing call-to-action buttons styled for modern pricing tiers, supporting automatic trailing arrows via the showArrow prop or clean text-only states.",
       propNotes: [
@@ -410,12 +462,12 @@ export default function PricingButtonsDemo() {
           <code>variant</code>
         </td>
         <td>
-          <code>"outline" | "slide-icon" | "slide-icon-loop" | "slide-text" | "3d" | "shards-control" | "pricing-primary" | "pricing-dark" | "pricing-outline" | "pricing-glow" | "pricing-muted" | "pricing-typographic" | "pricing-typographic-muted" | ...</code>
+          <code>"outline" | "default" | "secondary" | "destructive" | "ghost" | "link" | "slide-icon" | "slide-icon-loop" | "slide-text" | "3d" | "shards-control" | "auth-social" | "glass-social" | "liquid-glass-primary" | "liquid-glass-social" | "scenic-primary" | "scenic-secondary" | "scenic-option" | "ribbon-primary" | "ribbon-social" | "pricing-primary" | "pricing-dark" | "pricing-outline" | "pricing-glow" | "pricing-muted" | "pricing-typographic" | "pricing-typographic-muted" | ...</code>
         </td>
         <td>
           <code>"outline"</code>
         </td>
-        <td>Choose between 4-side border glow, sliding rounded icon, looping rounded icon, vertical text roll, raised 3D press, parameter control tiles, or pricing CTA surfaces (<code>"pricing-primary"</code>, <code>"pricing-dark"</code>, <code>"pricing-outline"</code>, <code>"pricing-glow"</code>, <code>"pricing-muted"</code>, <code>"pricing-typographic"</code>, <code>"pricing-typographic-muted"</code>).</td>
+        <td>Choose between 4-side border glow, sliding/looping icon, vertical text roll, raised 3D press, parameter control tiles, Auth &amp; Glass surfaces (<code>"auth-social"</code>, <code>"glass-social"</code>, <code>"liquid-glass-primary"</code>, <code>"liquid-glass-social"</code>, <code>"scenic-primary"</code>, <code>"scenic-secondary"</code>, <code>"scenic-option"</code>, <code>"ribbon-primary"</code>, <code>"ribbon-social"</code>), or pricing CTA surfaces (<code>"pricing-primary"</code>, <code>"pricing-dark"</code>, <code>"pricing-outline"</code>, <code>"pricing-glow"</code>, <code>"pricing-muted"</code>, <code>"pricing-typographic"</code>, <code>"pricing-typographic-muted"</code>).</td>
       </tr>
       <tr>
         <td>

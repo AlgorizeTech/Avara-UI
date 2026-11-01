@@ -250,15 +250,11 @@ const Header = () => {
               href={links.github}
               target="_blank"
               rel="noopener noreferrer"
-              className="pointer-events-auto hidden sm:flex items-center justify-center gap-2 size-10 lg:w-auto lg:px-3.5 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 text-foreground/80 hover:text-foreground hover:border-border/70 transition-all text-[12.5px] font-medium"
+              className="pointer-events-auto flex items-center justify-center gap-2 size-10 lg:w-auto lg:px-3.5 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 text-foreground/80 hover:text-foreground hover:border-border/70 transition-all text-[12.5px] font-medium"
               aria-label="View project on GitHub"
             >
               <GitHubIcon className="w-4 h-4 fill-current" />
               <span className="hidden lg:inline text-[12px] font-semibold text-foreground">GitHub</span>
-              {/* <span className="hidden lg:block w-px h-3.5 bg-border/60 mx-0.5" />
-              <span className="hidden lg:inline text-[11px] font-semibold text-foreground/50">
-                2.1k
-              </span> */}
             </Link>
 
             {/* Dynamic System Theme Core Engine Toggle */}

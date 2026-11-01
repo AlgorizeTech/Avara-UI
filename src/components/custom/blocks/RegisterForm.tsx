@@ -307,6 +307,7 @@ export default function RegisterForm({
     theme.focusRing
   );
   const scenicPrimaryButtonClasses = cn(
+    "w-full",
     theme.bg,
     theme.panelFg,
     focusButtonClasses
@@ -596,32 +597,34 @@ export default function RegisterForm({
 
       <div className="grid grid-cols-1 xs:grid-cols-2 gap-2.5 sm:gap-3 mb-5 sm:mb-6">
         <Button
-          variant="ghost"
+          variant={
+            isLiquidGlass
+              ? "liquid-glass-social"
+              : variant === "glass"
+                ? "glass-social"
+                : "auth-social"
+          }
           type="button"
           color={color}
           onClick={() => onSocialSignUp?.("github")}
           iconLeft={<GitHubIcon size={18} />}
-          className={cn(
-            "w-full h-11 border transition-colors",
-            isLiquidGlass
-              ? "border-white/20 bg-white/15 backdrop-blur-md text-white hover:bg-white/25 hover:text-white"
-              : "border-border/80 bg-card/70 backdrop-blur-md hover:bg-card hover:text-foreground",
-          )}
+          className={cn("w-full", isLiquidGlass && "bg-white/15 hover:bg-white/25")}
         >
           GitHub
         </Button>
         <Button
-          variant="ghost"
+          variant={
+            isLiquidGlass
+              ? "liquid-glass-social"
+              : variant === "glass"
+                ? "glass-social"
+                : "auth-social"
+          }
           type="button"
           color={color}
           onClick={() => onSocialSignUp?.("google")}
           iconLeft={<GoogleIcon size={18} />}
-          className={cn(
-            "w-full h-11 border transition-colors",
-            isLiquidGlass
-              ? "border-white/20 bg-white/15 backdrop-blur-md text-white hover:bg-white/25 hover:text-white"
-              : "border-border/80 bg-card/70 backdrop-blur-md hover:bg-card hover:text-foreground",
-          )}
+          className={cn("w-full", isLiquidGlass && "bg-white/15 hover:bg-white/25")}
         >
           Google
         </Button>
@@ -751,14 +754,12 @@ export default function RegisterForm({
 
         <Button
           type="submit"
-          variant="default"
+          variant={isLiquidGlass ? "liquid-glass-primary" : "default"}
           color={color}
           loading={loading}
           className={cn(
             "w-full h-11 mt-4 shadow-lg",
-            isLiquidGlass
-              ? "bg-white text-zinc-950 hover:bg-white/90 shadow-black/20"
-              : "shadow-black/5",
+            !isLiquidGlass && "shadow-black/5",
           )}
         >
           {loading ? "Please wait..." : "Create Account"}
@@ -1252,30 +1253,26 @@ export default function RegisterForm({
                   }}
                 >
                   {/* Primary Button */}
-                  <button
+                  <Button
                     type="button"
+                    variant="scenic-primary"
+                    color={color}
                     onClick={() => setScenicStep("options")}
-                    className={cn(
-                      "w-full h-12 rounded-xl sm:rounded-2xl font-semibold text-sm sm:text-base transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center",
-                      scenicPrimaryButtonClasses
-                    )}
+                    className={scenicPrimaryButtonClasses}
                   >
                     {getStartedLabel}
-                  </button>
+                  </Button>
 
                   {/* Secondary Button */}
-                  <a
-                    href={loginHref}
-                    className={cn(
-                      "w-full h-11 flex items-center justify-center rounded-xl sm:rounded-2xl text-xs sm:text-sm font-medium transition-all duration-200 active:scale-[0.98]",
-                      // Light mode: subtle light tint
-                      "bg-zinc-100/90 text-zinc-700 hover:bg-zinc-200/90 border border-zinc-200/60",
-                      // Dark mode: translucent dark pill from screenshot
-                      "dark:bg-white/[0.08] dark:text-white/85 dark:hover:bg-white/[0.14] dark:border-white/5",
-                      focusButtonClasses
-                    )}
-                  >
-                    {alreadyAccountLabel}
+                  <a href={loginHref} className="w-full block">
+                    <Button
+                      type="button"
+                      variant="scenic-secondary"
+                      color={color}
+                      className={cn("w-full", focusButtonClasses)}
+                    >
+                      {alreadyAccountLabel}
+                    </Button>
                   </a>
                 </div>
               </div>
@@ -1291,14 +1288,16 @@ export default function RegisterForm({
                       "scenic-slide-right 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.04s backwards",
                   }}
                 >
-                  <button
+                  <Button
                     type="button"
+                    variant="ghost"
+                    size="sm"
                     onClick={() => setScenicStep("welcome")}
-                    className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                    iconLeft={<ArrowLeft size={14} />}
+                    className="h-auto px-1.5 py-1 text-xs font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-transparent dark:hover:bg-transparent shadow-none"
                   >
-                    <ArrowLeft size={14} />
-                    <span>Back</span>
-                  </button>
+                    Back
+                  </Button>
                   <div className="flex items-center gap-1.5">
                     {brandIcon || (
                       <DocsUiIcon className="w-4 h-4 text-zinc-900 dark:text-white" />
@@ -1334,64 +1333,57 @@ export default function RegisterForm({
                 {/* Staggered action buttons */}
                 <div className="w-full flex flex-col gap-3">
                   {/* Google Button */}
-                  <button
+                  <Button
                     type="button"
+                    variant="scenic-option"
+                    color={color}
                     onClick={() => onSocialSignUp?.("google")}
                     style={{
                       animation:
                         "scenic-stagger-rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.22s backwards",
                     }}
-                    className={cn(
-                      "w-full h-[52px] rounded-2xl flex items-center justify-center gap-3 px-4 font-medium text-[15px] transition-all duration-200 active:scale-[0.98]",
-                      "bg-zinc-100 hover:bg-zinc-200/90 text-zinc-900 border border-zinc-200/80 shadow-sm",
-                      "dark:bg-[#1e1f21] dark:hover:bg-[#282a2d] dark:text-white dark:border-white/[0.08]",
-                      focusButtonClasses
-                    )}
+                    iconLeft={<GoogleIcon size={19} className="shrink-0" />}
+                    className={cn("w-full", focusButtonClasses)}
                   >
-                    <GoogleIcon size={19} className="shrink-0" />
-                    <span>Continue with Google</span>
-                  </button>
+                    Continue with Google
+                  </Button>
 
                   {/* Apple Button */}
-                  <button
+                  <Button
                     type="button"
+                    variant="scenic-option"
+                    color={color}
                     onClick={() => onSocialSignUp?.("apple")}
                     style={{
                       animation:
                         "scenic-stagger-rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.30s backwards",
                     }}
-                    className={cn(
-                      "w-full h-[52px] rounded-2xl flex items-center justify-center gap-3 px-4 font-medium text-[15px] transition-all duration-200 active:scale-[0.98]",
-                      "bg-zinc-100 hover:bg-zinc-200/90 text-zinc-900 border border-zinc-200/80 shadow-sm",
-                      "dark:bg-[#1e1f21] dark:hover:bg-[#282a2d] dark:text-white dark:border-white/[0.08]",
-                      focusButtonClasses
-                    )}
+                    iconLeft={
+                      <AppleBrandIcon
+                        size={19}
+                        className="shrink-0 text-zinc-900 dark:text-white"
+                      />
+                    }
+                    className={cn("w-full", focusButtonClasses)}
                   >
-                    <AppleBrandIcon
-                      size={19}
-                      className="shrink-0 text-zinc-900 dark:text-white"
-                    />
-                    <span>Continue with Apple</span>
-                  </button>
+                    Continue with Apple
+                  </Button>
 
                   {/* Email Button */}
-                  <button
+                  <Button
                     type="button"
+                    variant="scenic-option"
+                    color={color}
                     onClick={() => setScenicStep("email")}
                     style={{
                       animation:
                         "scenic-stagger-rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.38s backwards",
                     }}
-                    className={cn(
-                      "w-full h-[52px] rounded-2xl flex items-center justify-center gap-3 px-4 font-medium text-[15px] transition-all duration-200 active:scale-[0.98]",
-                      "bg-zinc-100 hover:bg-zinc-200/90 text-zinc-900 border border-zinc-200/80 shadow-sm",
-                      "dark:bg-[#1e1f21] dark:hover:bg-[#282a2d] dark:text-white dark:border-white/[0.08]",
-                      focusButtonClasses
-                    )}
+                    iconLeft={<Mail size={19} className="shrink-0 text-current" />}
+                    className={cn("w-full", focusButtonClasses)}
                   >
-                    <Mail size={19} className="shrink-0 text-current" />
-                    <span>Continue with Email</span>
-                  </button>
+                    Continue with Email
+                  </Button>
                 </div>
 
                 {/* Footer link */}
@@ -1425,14 +1417,16 @@ export default function RegisterForm({
                       "scenic-slide-right 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.04s backwards",
                   }}
                 >
-                  <button
+                  <Button
                     type="button"
+                    variant="ghost"
+                    size="sm"
                     onClick={() => setScenicStep("options")}
-                    className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                    iconLeft={<ArrowLeft size={14} />}
+                    className="h-auto px-1.5 py-1 text-xs font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-transparent dark:hover:bg-transparent shadow-none"
                   >
-                    <ArrowLeft size={14} />
-                    <span>Back</span>
-                  </button>
+                    Back
+                  </Button>
                   <div className="flex items-center gap-1.5">
                     {brandIcon || (
                       <DocsUiIcon className="w-4 h-4 text-zinc-900 dark:text-white" />
@@ -1615,20 +1609,18 @@ export default function RegisterForm({
                         "scenic-stagger-rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.50s backwards",
                     }}
                   >
-                    <button
+                    <Button
                       type="submit"
-                      disabled={loading}
+                      variant="scenic-primary"
+                      color={color}
+                      loading={loading}
                       className={cn(
-                        "w-full h-11 rounded-xl font-semibold text-sm transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center gap-2 mt-2 disabled:opacity-60",
+                        "h-11 rounded-xl text-sm mt-2",
                         scenicPrimaryButtonClasses
                       )}
                     >
-                      {loading ? (
-                        <span className="inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                      ) : (
-                        "Create Account"
-                      )}
-                    </button>
+                      Create Account
+                    </Button>
                   </div>
                 </form>
 
@@ -1664,14 +1656,16 @@ export default function RegisterForm({
                       "scenic-slide-right 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.04s backwards",
                   }}
                 >
-                  <button
+                  <Button
                     type="button"
+                    variant="ghost"
+                    size="sm"
                     onClick={() => setScenicStep("email")}
-                    className="absolute left-0 inline-flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                    className="absolute left-0 h-auto p-1 text-xs text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-transparent dark:hover:bg-transparent shadow-none"
                     aria-label="Back to email form"
                   >
                     <ArrowLeft size={16} />
-                  </button>
+                  </Button>
                   <div className="flex items-center gap-2">
                     {brandIcon || (
                       <DocsUiIcon className="w-5 h-5 text-zinc-900 dark:text-white" />
@@ -1747,16 +1741,15 @@ export default function RegisterForm({
                       "scenic-stagger-rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.32s backwards",
                   }}
                 >
-                  <button
+                  <Button
                     type="button"
+                    variant="scenic-primary"
+                    color={color}
                     onClick={() => setScenicStep("onboarding-intro")}
-                    className={cn(
-                      "w-full h-12 rounded-2xl font-semibold text-sm sm:text-base transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center",
-                      scenicPrimaryButtonClasses
-                    )}
+                    className={scenicPrimaryButtonClasses}
                   >
                     Verify &amp; Continue
-                  </button>
+                  </Button>
                 </div>
 
                 {/* Resend & Change email */}
@@ -1767,21 +1760,25 @@ export default function RegisterForm({
                       "scenic-stagger-rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.40s backwards",
                   }}
                 >
-                  <button
+                  <Button
                     type="button"
+                    variant="ghost"
+                    size="sm"
                     onClick={() => setScenicStep("email")}
-                    className="hover:underline transition-colors text-zinc-600 dark:text-zinc-300"
+                    className="h-auto p-0 hover:underline transition-colors text-xs font-normal text-zinc-600 dark:text-zinc-300 hover:bg-transparent dark:hover:bg-transparent shadow-none"
                   >
                     Change email
-                  </button>
+                  </Button>
                   <span>•</span>
-                  <button
+                  <Button
                     type="button"
+                    variant="ghost"
+                    size="sm"
                     onClick={() => alert("A new 6-digit code has been sent!")}
-                    className="font-medium text-zinc-900 dark:text-white hover:underline transition-colors"
+                    className="h-auto p-0 font-medium text-xs text-zinc-900 dark:text-white hover:underline transition-colors hover:bg-transparent dark:hover:bg-transparent shadow-none"
                   >
                     Resend code
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}
@@ -1797,14 +1794,16 @@ export default function RegisterForm({
                       "scenic-slide-right 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.04s backwards",
                   }}
                 >
-                  <button
+                  <Button
                     type="button"
+                    variant="ghost"
+                    size="sm"
                     onClick={() => setScenicStep("otp")}
-                    className="absolute left-0 inline-flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                    className="absolute left-0 h-auto p-1 text-xs text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-transparent dark:hover:bg-transparent shadow-none"
                     aria-label="Back to OTP"
                   >
                     <ArrowLeft size={16} />
-                  </button>
+                  </Button>
                   <div className="flex items-center gap-2">
                     {brandIcon || (
                       <DocsUiIcon className="w-5 h-5 text-zinc-900 dark:text-white" />
@@ -1865,16 +1864,15 @@ export default function RegisterForm({
                       "scenic-stagger-rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.32s backwards",
                   }}
                 >
-                  <button
+                  <Button
                     type="button"
+                    variant="scenic-primary"
+                    color={color}
                     onClick={() => setScenicStep("goals")}
-                    className={cn(
-                      "w-full h-12 rounded-2xl font-semibold text-sm sm:text-base transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center",
-                      scenicPrimaryButtonClasses
-                    )}
+                    className={scenicPrimaryButtonClasses}
                   >
                     Let's start
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}
@@ -1890,14 +1888,16 @@ export default function RegisterForm({
                       "scenic-slide-right 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.04s backwards",
                   }}
                 >
-                  <button
+                  <Button
                     type="button"
+                    variant="ghost"
+                    size="sm"
                     onClick={() => setScenicStep("onboarding-intro")}
-                    className="absolute left-0 inline-flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                    className="absolute left-0 h-auto p-1 text-xs text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-transparent dark:hover:bg-transparent shadow-none"
                     aria-label="Back to intro"
                   >
                     <ArrowLeft size={16} />
-                  </button>
+                  </Button>
                   <div className="flex items-center gap-2">
                     {brandIcon || (
                       <DocsUiIcon className="w-5 h-5 text-zinc-900 dark:text-white" />
@@ -1935,15 +1935,16 @@ export default function RegisterForm({
                   {focusOptions.map((opt, idx) => {
                     const isSelected = selectedAreas.includes(opt.label);
                     return (
-                      <button
+                      <Button
                         key={opt.id}
                         type="button"
+                        variant="ghost"
                         onClick={() => toggleFocusArea(opt.label)}
                         style={{
                           animation: `scenic-stagger-rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) ${0.20 + idx * 0.04}s backwards`,
                         }}
                         className={cn(
-                          "relative flex flex-col justify-between p-3 sm:p-3.5 rounded-2xl text-left min-h-[76px] sm:min-h-[88px] transition-all duration-200 active:scale-[0.97]",
+                          "relative flex flex-col items-stretch justify-between p-3 sm:p-3.5 rounded-2xl text-left h-auto min-h-[76px] sm:min-h-[88px] transition-all duration-200 active:scale-[0.97] shadow-none",
                           !isSelected && [
                             "bg-zinc-100/90 text-zinc-800 border border-zinc-200/80 hover:bg-zinc-200/70",
                             "dark:bg-[#1e1f21] dark:text-white/90 dark:border-white/[0.08] dark:hover:bg-[#25272a] dark:hover:border-white/15",
@@ -1970,7 +1971,7 @@ export default function RegisterForm({
                             {isSelected && <Check size={10} strokeWidth={3} />}
                           </div>
                         </div>
-                      </button>
+                      </Button>
                     );
                   })}
                 </div>
@@ -1996,16 +1997,15 @@ export default function RegisterForm({
                       "scenic-stagger-rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.50s backwards",
                   }}
                 >
-                  <button
+                  <Button
                     type="button"
+                    variant="scenic-primary"
+                    color={color}
                     onClick={() => setScenicStep("finances")}
-                    className={cn(
-                      "w-full h-12 rounded-2xl font-semibold text-sm sm:text-base transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center",
-                      scenicPrimaryButtonClasses
-                    )}
+                    className={scenicPrimaryButtonClasses}
                   >
                     Continue
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}
@@ -2021,14 +2021,16 @@ export default function RegisterForm({
                       "scenic-slide-right 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.04s backwards",
                   }}
                 >
-                  <button
+                  <Button
                     type="button"
+                    variant="ghost"
+                    size="sm"
                     onClick={() => setScenicStep("goals")}
-                    className="absolute left-0 inline-flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                    className="absolute left-0 h-auto p-1 text-xs text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-transparent dark:hover:bg-transparent shadow-none"
                     aria-label="Back to goals"
                   >
                     <ArrowLeft size={16} />
-                  </button>
+                  </Button>
                   <div className="flex items-center gap-2">
                     {brandIcon || (
                       <DocsUiIcon className="w-5 h-5 text-zinc-900 dark:text-white" />
@@ -2127,8 +2129,9 @@ export default function RegisterForm({
                       <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1.5">
                         Employment status
                       </label>
-                      <button
+                      <Button
                         type="button"
+                        variant="ghost"
                         onClick={() =>
                           setActiveDropdown({
                             title: "Employment Status",
@@ -2149,14 +2152,15 @@ export default function RegisterForm({
                       >
                         <span className="truncate">{finances.employmentStatus}</span>
                         <ChevronDown size={15} className={cn("opacity-70 shrink-0 transition-colors", theme.text)} />
-                      </button>
+                      </Button>
                     </div>
                     <div>
                       <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1.5">
                         Household
                       </label>
-                      <button
+                      <Button
                         type="button"
+                        variant="ghost"
                         onClick={() =>
                           setActiveDropdown({
                             title: "Household",
@@ -2170,7 +2174,7 @@ export default function RegisterForm({
                       >
                         <span className="truncate">{finances.household}</span>
                         <ChevronDown size={15} className={cn("opacity-70 shrink-0 transition-colors", theme.text)} />
-                      </button>
+                      </Button>
                     </div>
                   </div>
 
@@ -2184,8 +2188,9 @@ export default function RegisterForm({
                     <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1.5">
                       Dependents
                     </label>
-                    <button
+                    <Button
                       type="button"
+                      variant="ghost"
                       onClick={() =>
                         setActiveDropdown({
                           title: "Dependents",
@@ -2199,7 +2204,7 @@ export default function RegisterForm({
                     >
                       <span className="truncate">{finances.dependents}</span>
                       <ChevronDown size={15} className={cn("opacity-70 shrink-0 transition-colors", theme.text)} />
-                    </button>
+                    </Button>
                   </div>
                 </div>
 
@@ -2211,16 +2216,15 @@ export default function RegisterForm({
                       "scenic-stagger-rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.46s backwards",
                   }}
                 >
-                  <button
+                  <Button
                     type="button"
+                    variant="scenic-primary"
+                    color={color}
                     onClick={() => setScenicStep("confidence")}
-                    className={cn(
-                      "w-full h-12 rounded-2xl font-semibold text-sm sm:text-base transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center",
-                      scenicPrimaryButtonClasses
-                    )}
+                    className={scenicPrimaryButtonClasses}
                   >
                     Continue
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}
@@ -2236,14 +2240,16 @@ export default function RegisterForm({
                       "scenic-slide-right 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.04s backwards",
                   }}
                 >
-                  <button
+                  <Button
                     type="button"
+                    variant="ghost"
+                    size="sm"
                     onClick={() => setScenicStep("finances")}
-                    className="absolute left-0 inline-flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                    className="absolute left-0 h-auto p-1 text-xs text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-transparent dark:hover:bg-transparent shadow-none"
                     aria-label="Back to finances"
                   >
                     <ArrowLeft size={16} />
-                  </button>
+                  </Button>
                   <div className="flex items-center gap-2">
                     {brandIcon || (
                       <DocsUiIcon className="w-5 h-5 text-zinc-900 dark:text-white" />
@@ -2293,9 +2299,10 @@ export default function RegisterForm({
                         const isSelected =
                           confidenceRatings.expenseCover === val;
                         return (
-                          <button
+                          <Button
                             key={val}
                             type="button"
+                            variant="ghost"
                             onClick={() =>
                               setConfidenceRatings((prev) => ({
                                 ...prev,
@@ -2303,7 +2310,7 @@ export default function RegisterForm({
                               }))
                             }
                             className={cn(
-                              "h-11 rounded-xl text-xs sm:text-sm font-medium transition-all duration-150 active:scale-95 flex items-center justify-center",
+                              "h-11 px-0 rounded-xl text-xs sm:text-sm font-medium transition-all duration-150 active:scale-95 flex items-center justify-center shadow-none",
                               focusButtonClasses,
                               !isSelected && [
                                 "bg-zinc-100 text-zinc-700 hover:bg-zinc-200/80 border border-zinc-200/80",
@@ -2317,7 +2324,7 @@ export default function RegisterForm({
                             )}
                           >
                             {val}
-                          </button>
+                          </Button>
                         );
                       })}
                     </div>
@@ -2338,9 +2345,10 @@ export default function RegisterForm({
                         const isSelected =
                           confidenceRatings.monthlyControl === val;
                         return (
-                          <button
+                          <Button
                             key={val}
                             type="button"
+                            variant="ghost"
                             onClick={() =>
                               setConfidenceRatings((prev) => ({
                                 ...prev,
@@ -2348,7 +2356,7 @@ export default function RegisterForm({
                               }))
                             }
                             className={cn(
-                              "h-11 rounded-xl text-xs sm:text-sm font-medium transition-all duration-150 active:scale-95 flex items-center justify-center",
+                              "h-11 px-0 rounded-xl text-xs sm:text-sm font-medium transition-all duration-150 active:scale-95 flex items-center justify-center shadow-none",
                               focusButtonClasses,
                               !isSelected && [
                                 "bg-zinc-100 text-zinc-700 hover:bg-zinc-200/80 border border-zinc-200/80",
@@ -2362,7 +2370,7 @@ export default function RegisterForm({
                             )}
                           >
                             {val}
-                          </button>
+                          </Button>
                         );
                       })}
                     </div>
@@ -2383,9 +2391,10 @@ export default function RegisterForm({
                         const isSelected =
                           confidenceRatings.futurePlan === val;
                         return (
-                          <button
+                          <Button
                             key={val}
                             type="button"
+                            variant="ghost"
                             onClick={() =>
                               setConfidenceRatings((prev) => ({
                                 ...prev,
@@ -2393,7 +2402,7 @@ export default function RegisterForm({
                               }))
                             }
                             className={cn(
-                              "h-11 rounded-xl text-xs sm:text-sm font-medium transition-all duration-150 active:scale-95 flex items-center justify-center",
+                              "h-11 px-0 rounded-xl text-xs sm:text-sm font-medium transition-all duration-150 active:scale-95 flex items-center justify-center shadow-none",
                               focusButtonClasses,
                               !isSelected && [
                                 "bg-zinc-100 text-zinc-700 hover:bg-zinc-200/80 border border-zinc-200/80",
@@ -2407,7 +2416,7 @@ export default function RegisterForm({
                             )}
                           >
                             {val}
-                          </button>
+                          </Button>
                         );
                       })}
                     </div>
@@ -2422,16 +2431,15 @@ export default function RegisterForm({
                       "scenic-stagger-rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.46s backwards",
                   }}
                 >
-                  <button
+                  <Button
                     type="button"
+                    variant="scenic-primary"
+                    color={color}
                     onClick={() => setScenicStep("emergency-fund")}
-                    className={cn(
-                      "w-full h-12 rounded-2xl font-semibold text-sm sm:text-base transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center",
-                      scenicPrimaryButtonClasses
-                    )}
+                    className={scenicPrimaryButtonClasses}
                   >
                     Continue
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}
@@ -2447,14 +2455,16 @@ export default function RegisterForm({
                       "scenic-slide-right 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.04s backwards",
                   }}
                 >
-                  <button
+                  <Button
                     type="button"
+                    variant="ghost"
+                    size="sm"
                     onClick={() => setScenicStep("confidence")}
-                    className="absolute left-0 inline-flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                    className="absolute left-0 h-auto p-1 text-xs text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-transparent dark:hover:bg-transparent shadow-none"
                     aria-label="Back to confidence"
                   >
                     <ArrowLeft size={16} />
-                  </button>
+                  </Button>
                   <div className="flex items-center gap-2">
                     {brandIcon || (
                       <DocsUiIcon className="w-5 h-5 text-zinc-900 dark:text-white" />
@@ -2495,13 +2505,14 @@ export default function RegisterForm({
                       "scenic-stagger-rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.22s backwards",
                   }}
                 >
-                  <button
+                  <Button
                     type="button"
+                    variant="ghost"
                     onClick={() =>
                       setEmergencyFund((prev) => ({ ...prev, hasFund: true }))
                     }
                     className={cn(
-                      "h-12 rounded-2xl px-4 flex items-center justify-between text-xs sm:text-sm font-medium transition-all duration-200 active:scale-[0.98]",
+                      "h-12 rounded-2xl px-4 flex items-center justify-between text-xs sm:text-sm font-medium transition-all duration-200 active:scale-[0.98] shadow-none",
                       focusButtonClasses,
                       emergencyFund.hasFund
                         ? [
@@ -2528,15 +2539,16 @@ export default function RegisterForm({
                         <Check size={10} strokeWidth={3} />
                       )}
                     </div>
-                  </button>
+                  </Button>
 
-                  <button
+                  <Button
                     type="button"
+                    variant="ghost"
                     onClick={() =>
                       setEmergencyFund((prev) => ({ ...prev, hasFund: false }))
                     }
                     className={cn(
-                      "h-12 rounded-2xl px-4 flex items-center justify-between text-xs sm:text-sm font-medium transition-all duration-200 active:scale-[0.98]",
+                      "h-12 rounded-2xl px-4 flex items-center justify-between text-xs sm:text-sm font-medium transition-all duration-200 active:scale-[0.98] shadow-none",
                       focusButtonClasses,
                       !emergencyFund.hasFund
                         ? [
@@ -2563,7 +2575,7 @@ export default function RegisterForm({
                         <Check size={10} strokeWidth={3} />
                       )}
                     </div>
-                  </button>
+                  </Button>
                 </div>
 
                 {/* Amount inputs */}
@@ -2631,16 +2643,15 @@ export default function RegisterForm({
                       "scenic-stagger-rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.46s backwards",
                   }}
                 >
-                  <button
+                  <Button
                     type="button"
+                    variant="scenic-primary"
+                    color={color}
                     onClick={() => setScenicStep("first-goal")}
-                    className={cn(
-                      "w-full h-12 rounded-2xl font-semibold text-sm sm:text-base transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center",
-                      scenicPrimaryButtonClasses
-                    )}
+                    className={scenicPrimaryButtonClasses}
                   >
                     Continue
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}
@@ -2656,14 +2667,16 @@ export default function RegisterForm({
                       "scenic-slide-right 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.04s backwards",
                   }}
                 >
-                  <button
+                  <Button
                     type="button"
+                    variant="ghost"
+                    size="sm"
                     onClick={() => setScenicStep("emergency-fund")}
-                    className="absolute left-0 inline-flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                    className="absolute left-0 h-auto p-1 text-xs text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-transparent dark:hover:bg-transparent shadow-none"
                     aria-label="Back to emergency fund"
                   >
                     <ArrowLeft size={16} />
-                  </button>
+                  </Button>
                   <div className="flex items-center gap-2">
                     {brandIcon || (
                       <DocsUiIcon className="w-5 h-5 text-zinc-900 dark:text-white" />
@@ -2708,8 +2721,9 @@ export default function RegisterForm({
                     <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1.5">
                       Goal
                     </label>
-                    <button
+                    <Button
                       type="button"
+                      variant="ghost"
                       onClick={() =>
                         setActiveDropdown({
                           title: "Goal",
@@ -2728,7 +2742,7 @@ export default function RegisterForm({
                     >
                       <span className="truncate">{firstGoal.goalType}</span>
                       <ChevronDown size={15} className={cn("opacity-70 shrink-0 transition-colors", theme.text)} />
-                    </button>
+                    </Button>
                   </div>
 
                   {/* Current net worth */}
@@ -2797,8 +2811,9 @@ export default function RegisterForm({
                     <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1.5">
                       Target date
                     </label>
-                    <button
+                    <Button
                       type="button"
+                      variant="ghost"
                       onClick={openDatePicker}
                       className={scenicDropdownButtonClasses(isDatePickerOpen)}
                     >
@@ -2807,7 +2822,7 @@ export default function RegisterForm({
                         <Calendar size={14} className={cn("shrink-0 transition-colors", theme.text)} />
                       </span>
                       <ChevronDown size={15} className={cn("opacity-70 shrink-0 transition-colors", theme.text)} />
-                    </button>
+                    </Button>
                   </div>
 
                   {/* Monthly contribution */}
@@ -2847,16 +2862,15 @@ export default function RegisterForm({
                       "scenic-stagger-rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.52s backwards",
                   }}
                 >
-                  <button
+                  <Button
                     type="button"
+                    variant="scenic-primary"
+                    color={color}
                     onClick={() => setScenicStep("summary")}
-                    className={cn(
-                      "w-full h-12 rounded-2xl font-semibold text-sm sm:text-base transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center",
-                      scenicPrimaryButtonClasses
-                    )}
+                    className={scenicPrimaryButtonClasses}
                   >
                     Create Goal
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}
@@ -2872,14 +2886,16 @@ export default function RegisterForm({
                       "scenic-slide-right 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.04s backwards",
                   }}
                 >
-                  <button
+                  <Button
                     type="button"
+                    variant="ghost"
+                    size="sm"
                     onClick={() => setScenicStep("first-goal")}
-                    className="absolute left-0 inline-flex items-center gap-1 text-xs text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                    className="absolute left-0 h-auto p-1 text-xs text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white hover:bg-transparent dark:hover:bg-transparent shadow-none"
                     aria-label="Back to first goal"
                   >
                     <ArrowLeft size={16} />
-                  </button>
+                  </Button>
                   <div className="flex items-center gap-2">
                     {brandIcon || (
                       <DocsUiIcon className="w-5 h-5 text-zinc-900 dark:text-white" />
@@ -3015,21 +3031,20 @@ export default function RegisterForm({
                       "scenic-stagger-rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.48s backwards",
                   }}
                 >
-                  <button
+                  <Button
                     type="button"
+                    variant="scenic-primary"
+                    color={color}
                     onClick={() => {
                       if (onSubmit) {
                         onSubmit(formData);
                       }
                       setScenicStep("completed");
                     }}
-                    className={cn(
-                      "w-full h-12 rounded-2xl font-semibold text-sm sm:text-base transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center",
-                      scenicPrimaryButtonClasses
-                    )}
+                    className={scenicPrimaryButtonClasses}
                   >
                     Go to Dashboard
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}
@@ -3094,19 +3109,18 @@ export default function RegisterForm({
                       "scenic-stagger-rise 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.30s backwards",
                   }}
                 >
-                  <button
+                  <Button
                     type="button"
+                    variant="scenic-primary"
+                    color={color}
                     onClick={() => {
                       setScenicStep("welcome");
                       setOtp(["", "", "", "", "", ""]);
                     }}
-                    className={cn(
-                      "w-full h-12 rounded-2xl font-semibold text-sm sm:text-base transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center",
-                      scenicPrimaryButtonClasses
-                    )}
+                    className={scenicPrimaryButtonClasses}
                   >
                     Restart Demo Flow
-                  </button>
+                  </Button>
                 </div>
               </div>
             )}
@@ -3136,13 +3150,15 @@ export default function RegisterForm({
                     Select one option
                   </p>
                 </div>
-                <button
+                <Button
                   type="button"
+                  variant="ghost"
+                  size="sm"
                   onClick={() => setActiveDropdown(null)}
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/10 transition-colors"
+                  className="w-8 h-8 p-0 rounded-full flex items-center justify-center text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/10 transition-colors shadow-none"
                 >
                   <X size={16} />
-                </button>
+                </Button>
               </div>
 
               <div className="max-h-[280px] overflow-y-auto space-y-1.5 py-1 pr-1">
@@ -3152,9 +3168,10 @@ export default function RegisterForm({
                       ? firstGoal.goalType === opt
                       : finances[activeDropdown.field] === opt;
                   return (
-                    <button
+                    <Button
                       key={opt}
                       type="button"
+                      variant="ghost"
                       onClick={() => {
                         if (activeDropdown.field === "goalType") {
                           setFirstGoal((prev) => ({ ...prev, goalType: opt }));
@@ -3167,7 +3184,7 @@ export default function RegisterForm({
                         setActiveDropdown(null);
                       }}
                       className={cn(
-                        "w-full px-4 py-3 rounded-2xl text-xs sm:text-sm font-medium flex items-center justify-between transition-all duration-150 text-left",
+                        "w-full h-auto px-4 py-3 rounded-2xl text-xs sm:text-sm font-medium flex items-center justify-between transition-all duration-150 text-left shadow-none",
                         focusButtonClasses,
                         isSelected
                           ? cn(theme.bg, theme.panelFg, "shadow-sm")
@@ -3176,7 +3193,7 @@ export default function RegisterForm({
                     >
                       <span>{opt}</span>
                       {isSelected && <Check size={16} strokeWidth={2.5} className={theme.panelFg} />}
-                    </button>
+                    </Button>
                   );
                 })}
               </div>
@@ -3208,36 +3225,42 @@ export default function RegisterForm({
                     Month and year for your goal
                   </p>
                 </div>
-                <button
+                <Button
                   type="button"
+                  variant="ghost"
+                  size="sm"
                   onClick={() => setIsDatePickerOpen(false)}
-                  className="w-8 h-8 rounded-full flex items-center justify-center text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/10 transition-colors"
+                  className="w-8 h-8 p-0 rounded-full flex items-center justify-center text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-white/10 transition-colors shadow-none"
                 >
                   <X size={16} />
-                </button>
+                </Button>
               </div>
 
               {/* Year Navigation */}
               <div className="flex items-center justify-between px-2 py-1 bg-zinc-100/80 dark:bg-white/[0.05] rounded-xl">
-                <button
+                <Button
                   type="button"
+                  variant="ghost"
+                  size="sm"
                   onClick={() => setDatePickerYear((y) => y - 1)}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-white/10 transition-colors"
+                  className="w-8 h-8 p-0 rounded-lg flex items-center justify-center text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-white/10 transition-colors shadow-none"
                   aria-label="Previous year"
                 >
                   <ChevronLeft size={16} />
-                </button>
+                </Button>
                 <span className="font-semibold text-sm text-zinc-900 dark:text-white">
                   {datePickerYear}
                 </span>
-                <button
+                <Button
                   type="button"
+                  variant="ghost"
+                  size="sm"
                   onClick={() => setDatePickerYear((y) => y + 1)}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-white/10 transition-colors"
+                  className="w-8 h-8 p-0 rounded-lg flex items-center justify-center text-zinc-600 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-white/10 transition-colors shadow-none"
                   aria-label="Next year"
                 >
                   <ChevronRight size={16} />
-                </button>
+                </Button>
               </div>
 
               {/* 12 Months Grid */}
@@ -3258,12 +3281,14 @@ export default function RegisterForm({
                 ].map((m) => {
                   const isSelected = datePickerMonth === m;
                   return (
-                    <button
+                    <Button
                       key={m}
                       type="button"
+                      variant="ghost"
+                      size="sm"
                       onClick={() => setDatePickerMonth(m)}
                       className={cn(
-                        "h-10 rounded-xl text-xs font-medium transition-all duration-150 flex items-center justify-center",
+                        "h-10 px-0 rounded-xl text-xs font-medium transition-all duration-150 flex items-center justify-center shadow-none",
                         focusButtonClasses,
                         isSelected
                           ? cn(theme.bg, theme.panelFg, "font-semibold shadow-sm")
@@ -3271,15 +3296,17 @@ export default function RegisterForm({
                       )}
                     >
                       {m.slice(0, 3)}
-                    </button>
+                    </Button>
                   );
                 })}
               </div>
 
               {/* Actions Footer */}
               <div className="flex items-center gap-2 pt-2 border-t border-zinc-100 dark:border-white/[0.08]">
-                <button
+                <Button
                   type="button"
+                  variant="scenic-secondary"
+                  color={color}
                   onClick={() => setIsDatePickerOpen(false)}
                   className={cn(
                     "flex-1 h-10 rounded-xl text-xs sm:text-sm font-medium bg-zinc-100 text-zinc-700 hover:bg-zinc-200/80 dark:bg-white/[0.05] dark:text-zinc-300 dark:hover:bg-white/10 transition-colors",
@@ -3287,9 +3314,11 @@ export default function RegisterForm({
                   )}
                 >
                   Cancel
-                </button>
-                <button
+                </Button>
+                <Button
                   type="button"
+                  variant="scenic-primary"
+                  color={color}
                   onClick={() => {
                     setFirstGoal((prev) => ({
                       ...prev,
@@ -3303,7 +3332,7 @@ export default function RegisterForm({
                   )}
                 >
                   Apply Date
-                </button>
+                </Button>
               </div>
             </div>
           </div>
@@ -3663,14 +3692,16 @@ export function RegisterBlock({
                   error={errors.password}
                   icon={<LockIcon />}
                   trailing={
-                    <button
+                    <Button
                       type="button"
+                      variant="ghost"
+                      size="sm"
                       onClick={() => setShowPassword((v) => !v)}
                       aria-label={showPassword ? "Hide password" : "Show password"}
-                      className="grid size-8 sm:size-9 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground [&_svg]:size-4 sm:[&_svg]:size-[18px]"
+                      className="grid size-8 sm:size-9 p-0 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground shadow-none [&_svg]:size-4 sm:[&_svg]:size-[18px]"
                     >
                       {showPassword ? <EyeOffIcon /> : <EyeIcon />}
-                    </button>
+                    </Button>
                   }
                 >
                   <input
@@ -3728,23 +3759,15 @@ export function RegisterBlock({
                   )}
                 </div>
 
-                <button
+                <Button
                   type="submit"
-                  disabled={pending}
-                  className={cn(
-                    blockButtonClass,
-                    blockPrimaryButtonClass,
-                    "mt-1.5 cursor-pointer flex items-center justify-center",
-                  )}
+                  variant="ribbon-primary"
+                  color={color}
+                  loading={pending}
+                  className="w-full mt-1.5"
                 >
-                  {pending && (
-                    <span
-                      aria-hidden="true"
-                      className="size-4 animate-spin rounded-full border-2 border-current/35 border-t-current mr-2"
-                    />
-                  )}
-                  <span>{pending ? "Creating account..." : "Sign up"}</span>
-                </button>
+                  {pending ? "Creating account..." : "Sign up"}
+                </Button>
               </form>
 
               {onGoogle && (
@@ -3752,17 +3775,16 @@ export function RegisterBlock({
                   <div className="my-4 sm:my-5 flex items-center gap-3.5 text-[13px] text-muted-foreground before:h-px before:flex-1 before:bg-border after:h-px after:flex-1 after:bg-border">
                     or
                   </div>
-                  <button
+                  <Button
                     type="button"
+                    variant="ribbon-social"
+                    color={color}
                     onClick={onGoogle}
-                    className={cn(
-                      blockButtonClass,
-                      "cursor-pointer flex items-center justify-center gap-2.5 border-0 bg-white ring-1 ring-black/10 hover:bg-gray-50/80 dark:bg-[#1d1d20] dark:ring-white/10 dark:hover:bg-[#252529] text-foreground",
-                    )}
+                    iconLeft={<GoogleColoredIcon />}
+                    className="w-full"
                   >
-                    <GoogleColoredIcon />
-                    <span>Continue with Google</span>
-                  </button>
+                    Continue with Google
+                  </Button>
                 </>
               )}
 
@@ -3911,10 +3933,6 @@ const blockInputClass =
   "h-full flex-1 rounded-none border-0 bg-transparent px-3 sm:px-4 text-[14px] sm:text-[15px] shadow-none placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 dark:bg-transparent text-foreground";
 const blockLinkClass =
   "font-medium text-foreground underline decoration-current/30 underline-offset-[3px] transition-colors hover:decoration-current";
-const blockButtonClass =
-  "relative isolate h-11 sm:h-12 w-full overflow-hidden rounded-full px-5 text-[14px] sm:text-[15px] font-medium transition-all duration-200 select-none";
-const blockPrimaryButtonClass =
-  "bg-foreground text-background shadow-lg hover:bg-foreground hover:text-white before:absolute before:inset-0 before:-z-10 before:bg-gradient-to-br before:from-primary before:to-[var(--brand-secondary,var(--brand,#9B8AFB))] before:opacity-0 before:transition-opacity before:duration-300 hover:before:opacity-100";
 
 function BlockLogo({
   href = "#",

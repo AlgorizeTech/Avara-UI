@@ -326,32 +326,34 @@ export default function LoginForm({
 
       <div className="grid grid-cols-1 xs:grid-cols-2 gap-2.5 sm:gap-3 mb-5 sm:mb-6">
         <Button
-          variant="ghost"
+          variant={
+            isLiquidGlass
+              ? "liquid-glass-social"
+              : variant === "glass"
+                ? "glass-social"
+                : "auth-social"
+          }
           type="button"
           color={color}
           onClick={() => onSocialSignIn?.("github")}
           iconLeft={<GitHubIcon size={18} />}
-          className={cn(
-            "w-full h-11 border transition-colors",
-            isLiquidGlass
-              ? "border-white/20 bg-white/15 backdrop-blur-md text-white hover:bg-white/25 hover:text-white"
-              : "border-border/80 bg-card/70 backdrop-blur-md hover:bg-card hover:text-foreground",
-          )}
+          className={cn("w-full", isLiquidGlass && "bg-white/15 hover:bg-white/25")}
         >
           GitHub
         </Button>
         <Button
-          variant="ghost"
+          variant={
+            isLiquidGlass
+              ? "liquid-glass-social"
+              : variant === "glass"
+                ? "glass-social"
+                : "auth-social"
+          }
           type="button"
           color={color}
           onClick={() => onSocialSignIn?.("google")}
           iconLeft={<GoogleIcon size={18} />}
-          className={cn(
-            "w-full h-11 border transition-colors",
-            isLiquidGlass
-              ? "border-white/20 bg-white/15 backdrop-blur-md text-white hover:bg-white/25 hover:text-white"
-              : "border-border/80 bg-card/70 backdrop-blur-md hover:bg-card hover:text-foreground",
-          )}
+          className={cn("w-full", isLiquidGlass && "bg-white/15 hover:bg-white/25")}
         >
           Google
         </Button>
@@ -428,14 +430,12 @@ export default function LoginForm({
 
         <Button
           type="submit"
-          variant="default"
+          variant={isLiquidGlass ? "liquid-glass-primary" : "default"}
           color={color}
           loading={loading}
           className={cn(
             "w-full h-11 mt-4 shadow-lg",
-            isLiquidGlass
-              ? "bg-white text-zinc-950 hover:bg-white/90 shadow-black/20"
-              : "shadow-black/5",
+            !isLiquidGlass && "shadow-black/5",
           )}
         >
           {loading ? "Please wait..." : "Sign In"}
@@ -778,30 +778,29 @@ export default function LoginForm({
               {/* Actions */}
               <div className="w-full flex flex-col gap-3">
                 {/* Primary Button */}
-                <button
+                <Button
                   type="button"
+                  variant="scenic-primary"
+                  color={color}
                   onClick={() => setScenicStep("form")}
                   className={cn(
-                    "w-full h-12 rounded-xl sm:rounded-2xl font-semibold text-sm sm:text-base transition-all duration-200 active:scale-[0.98] shadow-sm",
-                    "bg-zinc-900 text-white hover:bg-zinc-800",
-                    "dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100",
+                    "w-full bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100",
                     focusButtonClasses
                   )}
                 >
                   {loginLabel}
-                </button>
+                </Button>
 
                 {/* Secondary Button */}
-                <a
-                  href={signupHref}
-                  className={cn(
-                    "w-full h-11 flex items-center justify-center rounded-xl sm:rounded-2xl text-xs sm:text-sm font-medium transition-all duration-200 active:scale-[0.98]",
-                    "bg-zinc-100/90 text-zinc-700 hover:bg-zinc-200/90 border border-zinc-200/60",
-                    "dark:bg-white/[0.08] dark:text-white/85 dark:hover:bg-white/[0.14] dark:border-white/5",
-                    focusButtonClasses
-                  )}
-                >
-                  {createAccountLabel}
+                <a href={signupHref} className="w-full block">
+                  <Button
+                    type="button"
+                    variant="scenic-secondary"
+                    color={color}
+                    className={cn("w-full", focusButtonClasses)}
+                  >
+                    {createAccountLabel}
+                  </Button>
                 </a>
               </div>
             </div>
@@ -809,14 +808,16 @@ export default function LoginForm({
             <div>
               {/* Header with Back button */}
               <div className="flex items-center justify-between mb-4 pb-3 border-b border-zinc-200/60 dark:border-white/10">
-                <button
+                <Button
                   type="button"
+                  variant="ghost"
+                  size="sm"
                   onClick={() => setScenicStep("welcome")}
-                  className="inline-flex items-center gap-1.5 text-xs font-medium text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+                  iconLeft={<ArrowLeft size={14} />}
+                  className="h-auto px-0 py-0 text-xs font-medium text-zinc-500 hover:text-zinc-900 hover:bg-transparent dark:text-zinc-400 dark:hover:text-white dark:hover:bg-transparent"
                 >
-                  <ArrowLeft size={14} />
-                  <span>Back</span>
-                </button>
+                  Back
+                </Button>
                 <div className="flex items-center gap-1.5">
                   {brandIcon || (
                     <DocsUiIcon className="w-4 h-4 text-zinc-900 dark:text-white" />
@@ -886,22 +887,18 @@ export default function LoginForm({
                   </a>
                 </div>
 
-                <button
+                <Button
                   type="submit"
-                  disabled={loading}
+                  variant="scenic-primary"
+                  color={color}
+                  loading={loading}
                   className={cn(
-                    "w-full h-11 rounded-xl font-semibold text-sm transition-all duration-200 active:scale-[0.98] shadow-sm flex items-center justify-center gap-2 mt-2",
-                    "bg-zinc-900 text-white hover:bg-zinc-800 disabled:opacity-60",
-                    "dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100",
+                    "w-full h-11 rounded-xl text-sm mt-2 bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100",
                     focusButtonClasses
                   )}
                 >
-                  {loading ? (
-                    <span className="inline-block w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                  ) : (
-                    "Sign in"
-                  )}
-                </button>
+                  {loading ? "Signing in..." : "Sign in"}
+                </Button>
               </form>
 
               <div className="mt-4 text-center">
@@ -1241,14 +1238,15 @@ export function LoginBlock({
                   error={errors.password}
                   icon={<LockIcon />}
                   trailing={
-                    <button
+                    <Button
                       type="button"
+                      variant="ghost"
+                      size="sm"
                       onClick={() => setShowPassword((v) => !v)}
                       aria-label={showPassword ? "Hide password" : "Show password"}
-                      className="grid size-8 sm:size-9 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground [&_svg]:size-4 sm:[&_svg]:size-[18px]"
-                    >
-                      {showPassword ? <EyeOffIcon /> : <EyeIcon />}
-                    </button>
+                      iconLeft={showPassword ? <EyeOffIcon /> : <EyeIcon />}
+                      className="size-8 sm:size-9 p-0 rounded-full text-muted-foreground hover:bg-foreground/5 hover:text-foreground [&_svg]:size-4 sm:[&_svg]:size-[18px]"
+                    />
                   }
                 >
                   <input
@@ -1285,23 +1283,15 @@ export function LoginBlock({
                   </a>
                 </div>
 
-                <button
+                <Button
                   type="submit"
-                  disabled={pending}
-                  className={cn(
-                    blockButtonClass,
-                    blockPrimaryButtonClass,
-                    "mt-1.5 cursor-pointer flex items-center justify-center",
-                  )}
+                  variant="ribbon-primary"
+                  color={color}
+                  loading={pending}
+                  className="w-full mt-1.5"
                 >
-                  {pending && (
-                    <span
-                      aria-hidden="true"
-                      className="size-4 animate-spin rounded-full border-2 border-current/35 border-t-current mr-2"
-                    />
-                  )}
-                  <span>{pending ? "Signing in..." : "Sign in"}</span>
-                </button>
+                  {pending ? "Signing in..." : "Sign in"}
+                </Button>
               </form>
 
               {onGoogle && (
@@ -1309,17 +1299,16 @@ export function LoginBlock({
                   <div className="my-4 sm:my-5 flex items-center gap-3.5 text-[13px] text-muted-foreground before:h-px before:flex-1 before:bg-border after:h-px after:flex-1 after:bg-border">
                     or
                   </div>
-                  <button
+                  <Button
                     type="button"
+                    variant="ribbon-social"
+                    color={color}
                     onClick={onGoogle}
-                    className={cn(
-                      blockButtonClass,
-                      "cursor-pointer flex items-center justify-center gap-2.5 border-0 bg-white ring-1 ring-black/10 hover:bg-gray-50/80 dark:bg-[#1d1d20] dark:ring-white/10 dark:hover:bg-[#252529] text-foreground",
-                    )}
+                    iconLeft={<GoogleColoredIcon />}
+                    className="w-full"
                   >
-                    <GoogleColoredIcon />
-                    <span>Continue with Google</span>
-                  </button>
+                    Continue with Google
+                  </Button>
                 </>
               )}
 
@@ -1468,10 +1457,6 @@ const blockInputClass =
   "h-full flex-1 rounded-none border-0 bg-transparent px-3 sm:px-4 text-[14px] sm:text-[15px] shadow-none placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 dark:bg-transparent text-foreground";
 const blockLinkClass =
   "font-medium text-foreground underline decoration-current/30 underline-offset-[3px] transition-colors hover:decoration-current";
-const blockButtonClass =
-  "relative isolate h-11 sm:h-12 w-full overflow-hidden rounded-full px-5 text-[14px] sm:text-[15px] font-medium transition-all duration-200 select-none";
-const blockPrimaryButtonClass =
-  "bg-foreground text-background shadow-lg hover:bg-foreground hover:text-white before:absolute before:inset-0 before:-z-10 before:bg-gradient-to-br before:from-primary before:to-[var(--brand-secondary,var(--brand,#9B8AFB))] before:opacity-0 before:transition-opacity before:duration-300 hover:before:opacity-100";
 
 function BlockLogo({
   href = "#",
