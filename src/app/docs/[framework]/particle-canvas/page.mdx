@@ -37,11 +37,11 @@ import { ParticleCanvas } from "@/components/custom/blocks/ParticleCanvasBlock";
 
 export default function WordmarkGlowDemo() {
   return (
-    <div className="relative w-full h-[650px] min-h-max bg-background rounded-xl overflow-hidden flex items-center justify-center border border-border">
+    <div className="relative w-full h-[260px] min-h-max bg-background rounded-xl overflow-hidden flex items-end justify-center border border-border">
       <ParticleCanvas
         variant="wordmark-glow"
         content="AlgorizeTech"
-        className="w-full h-full min-h-[650px]"
+        className="w-full h-full min-h-[260px]"
       />
     </div>
   );
@@ -53,15 +53,50 @@ export default function WordmarkGlowDemo() {
   examples={[
     {
       title: "Text Particle Repel",
+      subheading:
+        "An interactive 2D HTML Canvas that rasterizes your text into thousands of responsive dots that scatter on pointer hover and spring back smoothly.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"repel"',
+          effect:
+            "renders the 2D particle physics engine where dots scatter organically away from the pointer and spring back to their text positions.",
+        },
+        {
+          prop: "content",
+          value: '"AlgorizeTech"',
+          effect:
+            "sets the custom text string to convert into interactive particles.",
+        },
+      ],
       props: { variant: "repel", content: "AlgorizeTech" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ParticleCanvasBlock.tsx"),
     },
     {
       title: "Wordmark Glow Canvas",
+      subheading:
+        "A bottom-anchored giant wordmark banner where each letter rises with a slow, smooth spring bounce on scroll alongside a pointer-tracking radial glow.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"wordmark-glow"',
+          effect:
+            "renders a compact bottom-aligned wordmark banner with staggered scroll-triggered spring bounce letters and a cursor-following radial glow.",
+        },
+        {
+          prop: "content",
+          value: '"AlgorizeTech"',
+          effect:
+            "sets the wordmark text displayed across the bottom of the container.",
+        },
+      ],
       props: { variant: "wordmark-glow", content: "AlgorizeTech" },
       usage: usageWordmarkGlow,
       code: extractCode("src/components/custom/blocks/ParticleCanvasBlock.tsx"),
+      minHeight: 260,
     },
   ]}
 />

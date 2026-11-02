@@ -938,7 +938,7 @@ function ComponentShowcase() {
 								<span className={CHIP}>Shift on Hover</span>
 							</div>
 							<div className="flex items-center justify-center pt-6 pb-1">
-								<AvatarGroup>
+								<AvatarGroup className="m-0 p-0">
 									{sampleGroupAvatars.map((avatar, index) => (
 										<Avatar
 											key={index}

@@ -671,7 +671,7 @@ export const SolarSnapshotHero = forwardRef<HTMLElement, SolarSnapshotHeroProps>
                 data-no-snapshot
                 className="mb-7 sm:mb-9 inline-flex items-center justify-center sm:gap-3.5 rounded-full border border-border/70 bg-card/75 hover:bg-card/95 p-1.5 sm:pr-4 text-xs shadow-[0_2px_12px_-4px_rgba(0,0,0,0.05)] backdrop-blur-md transition-colors cursor-auto"
               >
-                <AvatarGroup showTooltip={true} className="my-0 h-8 -space-x-2">
+                <AvatarGroup showTooltip={true} className="m-0 p-0 h-8 -space-x-2">
                   {resolvedAvatars.map((avatar, index) => (
                     <Avatar
                       key={index}
