@@ -1635,6 +1635,8 @@ export default function CalendarDashboard({
               </h2>
               <div className={cn("flex gap-1", variant === "liquid-glass" ? "text-white/80" : variant === "glass" ? "text-neutral-700 dark:text-white/80" : "text-muted-foreground")}>
                 <button
+                  type="button"
+                  aria-label="Previous period"
                   onClick={prevPeriod}
                   className={cn(
                     "p-1 rounded transition-colors cursor-pointer",
@@ -1648,6 +1650,8 @@ export default function CalendarDashboard({
                   <ChevronLeft className="w-4 h-4 cursor-pointer" />
                 </button>
                 <button
+                  type="button"
+                  aria-label="Next period"
                   onClick={nextPeriod}
                   className={cn(
                     "p-1 rounded transition-colors cursor-pointer",
@@ -1827,6 +1831,8 @@ export default function CalendarDashboard({
                 </button>
                 <div className={cn("flex gap-1", variant === "liquid-glass" ? "text-white/80" : variant === "glass" ? "text-neutral-700 dark:text-white/80" : "text-muted-foreground")}>
                   <button
+                    type="button"
+                    aria-label="Previous period"
                     onClick={prevPeriod}
                     className={cn(
                       "p-1 rounded transition-colors cursor-pointer",
@@ -1840,6 +1846,8 @@ export default function CalendarDashboard({
                     <ChevronLeft className="w-4 h-4 cursor-pointer" />
                   </button>
                   <button
+                    type="button"
+                    aria-label="Next period"
                     onClick={nextPeriod}
                     className={cn(
                       "p-1 rounded transition-colors cursor-pointer",

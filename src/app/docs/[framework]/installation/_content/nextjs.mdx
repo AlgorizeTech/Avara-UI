@@ -121,9 +121,9 @@ export default config;
 ```
 
 <div className="flex gap-3 rounded-xl border border-primary/15 bg-primary/5 p-4 my-6 not-prose">
-  <p className="text-[13px] leading-relaxed text-foreground/60">
+  <div className="text-[13px] leading-relaxed text-foreground/60">
     <span className="font-semibold text-primary">Keep it the first line.</span> An <code>@import</code> below other rules is silently ignored, and your root layout must import <code>globals.css</code> — otherwise every component renders unstyled.
-  </p>
+  </div>
 </div>
 
 Upgrading from Tailwind v3? Run `npx @tailwindcss/upgrade`. Components use
@@ -133,15 +133,15 @@ v4-only syntax.
 
 <div className="flex flex-col gap-3 my-6 not-prose">
   <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
-    <h4 className="text-[14px] font-semibold text-foreground mb-1">Components render unstyled</h4>
+    <h3 data-toc-skip className="text-[14px] font-semibold text-foreground mb-1">Components render unstyled</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Check that <code>@import "tailwindcss";</code> is the first line of <code>globals.css</code>, that your root layout imports that file, and that <code>tailwind.css</code> in <code>components.json</code> points at it.</p>
   </div>
   <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
-    <h4 className="text-[14px] font-semibold text-foreground mb-1">Unknown registry "{REGISTRY_NAMESPACE}"</h4>
+    <h3 data-toc-skip className="text-[14px] font-semibold text-foreground mb-1">Unknown registry "{REGISTRY_NAMESPACE}"</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Run <a href="#step-2-register-the-registry" className="text-primary hover:underline">Step 2</a>, or switch the command to <strong>URL</strong>, which needs no setup.</p>
   </div>
   <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
-    <h4 className="text-[14px] font-semibold text-foreground mb-1">Cannot find module <code>@/lib/utils</code></h4>
+    <h3 data-toc-skip className="text-[14px] font-semibold text-foreground mb-1">Cannot find module <code>@/lib/utils</code></h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Run Step 1, and make sure <code>tsconfig.json</code> has a <code>paths</code> entry for <code>@/*</code>.</p>
   </div>
 </div>

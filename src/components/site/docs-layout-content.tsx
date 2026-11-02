@@ -5,6 +5,7 @@ import { TableOfContents } from "@/components/site/table-of-contents";
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
 import { DocsPagination } from "@/components/site/DocsPagination";
+import { DocsBreadcrumbJsonLd } from "@/components/seo/DocsBreadcrumbJsonLd";
 
 export function DocsLayoutContent({ children }: { children: ReactNode }) {
   return (
@@ -48,6 +49,7 @@ export function DocsLayoutContent({ children }: { children: ReactNode }) {
           </div>
 
           <DocsPagination />
+          <DocsBreadcrumbJsonLd />
         </main>
 
         {/* Right Table of Contents */}

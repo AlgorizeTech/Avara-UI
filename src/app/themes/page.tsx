@@ -23,6 +23,10 @@ export default function ThemesPage() {
 
       {/* Live Preview — scrollable right panel */}
       <main className="flex-1 min-w-0 bg-background">
+        {/* The page's heading for screen readers and the document outline; the
+            visible titles are the panel headings ("Customize", "Preview
+            Components"). Without it the only h1 is the calendar demo's. */}
+        <h1 className="sr-only">Theme Customizer</h1>
         <ThemePreview />
       </main>
     </div>

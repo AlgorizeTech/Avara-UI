@@ -16,7 +16,12 @@ import { countComponents } from "@/lib/component-count";
 import { FORKED_SLUGS, type Framework } from "@/lib/framework";
 import { REGISTRY_NAMESPACE } from "@/lib/registry";
 
-type RegistryItem = { name: string; description?: string };
+type RegistryItem = {
+  name: string;
+  description?: string;
+  dependencies?: string[];
+  registryDependencies?: string[];
+};
 
 export const DOCS_DIR = path.join(process.cwd(), "src/app/docs/[framework]");
 
@@ -29,6 +34,26 @@ export const registryItems = (
 export const itemsByName = new Map(registryItems.map((item) => [item.name, item]));
 
 export const COMPONENT_COUNT = countComponents(registryItems);
+
+/** `https://…/r/button.json` and `button` both name the item `button`. */
+const depName = (dep: string) => dep.replace(/^.*\/r\//, "").replace(/\.json$/, "");
+
+/**
+ * Whether an item animates with GSAP — directly, or through an item it
+ * installs (a section built on a GSAP card still needs GSAP).
+ */
+export function usesGsap(name: string, seen = new Set<string>()): boolean {
+  if (seen.has(name)) return false;
+  seen.add(name);
+  const item = itemsByName.get(name);
+  if (!item) return false;
+  if (item.dependencies?.some((d) => d === "gsap" || d.startsWith("gsap@") || d.startsWith("@gsap/")))
+    return true;
+  return (item.registryDependencies ?? []).some((d) => usesGsap(depName(d), seen));
+}
+
+/** Motion builds only exist as `<name>-motion` twins of a GSAP item. */
+export const hasMotionTwin = (name: string) => itemsByName.has(`${name}-motion`);
 
 /** Below this, a lead sentence is a teaser rather than a description. */
 const MIN_SUMMARY_LENGTH = 80;

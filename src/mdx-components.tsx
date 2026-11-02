@@ -1,3 +1,4 @@
+import { Children, Fragment, isValidElement, type ReactNode } from 'react';
 import type { MDXComponents } from 'mdx/types';
 import { createSlug } from './lib/utils';
 import { CodeBlock } from './components/ui/code-block';
@@ -19,8 +20,32 @@ import {
   BunTabContent,
 } from './components/site/package-manager-tabs';
 
+/** Elements HTML allows inside a <p>, among those MDX prose produces. */
+const INLINE_TAGS = new Set([
+  'a', 'abbr', 'b', 'br', 'code', 'del', 'em', 'i', 'img', 'kbd',
+  'mark', 's', 'small', 'span', 'strong', 'sub', 'sup', 'u',
+]);
+
+/**
+ * Whether `children` may sit inside a <p>.
+ *
+ * MDX wraps any line of prose in a paragraph, including a line holding a
+ * component that renders a <div> or a <p> — and a <p> around those is invalid
+ * HTML that React cannot hydrate. Components not known to be inline count as
+ * block, so a doubtful paragraph falls back to a <div> rather than breaking.
+ */
+function isPhrasing(children: ReactNode, inline: ReadonlySet<unknown>): boolean {
+  return Children.toArray(children).every((child) => {
+    if (!isValidElement(child)) return true;
+    const { type } = child;
+    const allowed =
+      type === Fragment || (typeof type === 'string' ? INLINE_TAGS.has(type) : inline.has(type));
+    return allowed && isPhrasing((child.props as { children?: ReactNode }).children, inline);
+  });
+}
+
 export function useMDXComponents(components: MDXComponents): MDXComponents {
-  return {
+  const mapped: MDXComponents = {
     ...components,
 
     h1: ({ children, ...props }: React.ComponentProps<'h1'>) => {
@@ -71,9 +96,17 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
       );
     },
 
+    // A real <p> wherever the HTML allows one, so search engines and screen
+    // readers see paragraphs. Lines that hold a block component stay a <div>
+    // with the same look (see isPhrasing).
     p: ({ children, ...props }: React.ComponentProps<'p'>) => {
-      return (
-        <div className="mb-6 text-[15px] leading-[1.8] text-foreground/60" {...props}>
+      const className = "mb-6 text-[15px] leading-[1.8] text-foreground/60";
+      return isPhrasing(children, inline) ? (
+        <p className={className} {...props}>
+          {children}
+        </p>
+      ) : (
+        <div className={className} {...props}>
           {children}
         </div>
       );
@@ -106,7 +139,7 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     blockquote: ({ children, ...props }: React.ComponentProps<'blockquote'>) => {
       return (
         <blockquote
-          className="my-6 rounded-xl border border-primary/15 bg-primary/5 p-4 text-[13px] leading-relaxed text-foreground/50 font-normal not-italic [&_p]:mb-0 [&_p]:before:content-none [&_p]:after:content-none [&_p]:text-[13px] [&_p]:leading-relaxed [&_p]:text-foreground/50 [&_strong]:font-medium [&_strong]:text-primary"
+          className="my-6 rounded-xl border border-primary/15 bg-primary/5 p-4 text-[13px] leading-relaxed text-foreground/50 font-normal not-italic [&_p]:before:content-none [&_p]:after:content-none [&_strong]:font-medium [&_strong]:text-primary"
           {...props}
         >
           {children}
@@ -316,4 +349,21 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     YarnTabContent,
     BunTabContent,
   };
+
+  // The mapped components that render phrasing content, so a paragraph made of
+  // them can be a real <p>.
+  const inline = new Set<unknown>([
+    mapped.a,
+    mapped.code,
+    mapped.strong,
+    mapped.em,
+    mapped.del,
+    mapped.kbd,
+    mapped.mark,
+    mapped.sub,
+    mapped.sup,
+    DocLink,
+  ]);
+
+  return mapped;
 }

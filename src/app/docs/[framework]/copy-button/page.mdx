@@ -143,7 +143,7 @@ export default function CustomLabels() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase headingLevel={2}
   name="copy-button"
   colorControl
   columns={1}
@@ -317,11 +317,11 @@ Discover the Copy Button's capabilities for confirming a clipboard write without
 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Say what was copied</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Say what was copied</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Prefer specific labels — <em>Copy Link</em>, <em>Code copied</em> — over a bare <em>Copy</em> when more than one thing on the screen could be copied.</p>
   </div>
   <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Don't close the surface on copy</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Don't close the surface on copy</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Let the confirmation play before dismissing a dialog or popover — closing on click hides the only feedback the user gets.</p>
   </div>
 </div>

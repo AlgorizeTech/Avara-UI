@@ -47,7 +47,7 @@ export default function WordmarkGlowDemo() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase headingLevel={2}
   name="particle-canvas"
   columns={1}
   examples={[
@@ -132,11 +132,11 @@ Discover the key capabilities that make this component an excellent choice for m
 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Canvas Breakpoint Scaling</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Canvas Breakpoint Scaling</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Automatically adapts particle parameters based on screen size: <strong>Large (&gt;=1024px)</strong> uses <code>particleGap = 5px, particleSize = 2.5px</code>, <strong>MD (768px-1023px)</strong> uses <code>particleGap = 4px, particleSize = 2px</code>, and <strong>Small (&lt;768px)</strong> uses <code>particleGap = 3px, particleSize = 1.5px</code>.</p>
   </div>
   <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Container Height & Layout</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Container Height & Layout</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Wrap the component in a fixed or responsive height container (e.g. <code>h-[650px]</code> or <code>h-screen</code>). The canvas automatically resizes to fill 100% of its parent element.</p>
   </div>
 </div>

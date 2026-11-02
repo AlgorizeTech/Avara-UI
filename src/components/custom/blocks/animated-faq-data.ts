@@ -1,6 +1,8 @@
 // Sample data and item shape for AnimatedFAQBlock. Kept out of the component
 // file so it stays a components-only module (React Fast Refresh).
 
+import type { ReactNode } from "react";
+
 export interface FAQItem {
   id: string;
   question: string;
@@ -14,6 +16,8 @@ export interface FAQItem {
   height: number;
   maxWidth: number;
   clipCut: string;
+  /** Replaces the built-in visual (or the photo) shown on the canvas for this item. */
+  visual?: ReactNode;
 }
 
 export const FAQ_ITEMS: FAQItem[] = [

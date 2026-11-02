@@ -122,7 +122,9 @@ const Header = () => {
           </Link>
 
           <button
+            type="button"
             onClick={() => setSidebarOpen(false)}
+            aria-label="Close navigation menu"
             className="p-1 rounded-md text-foreground/55 hover:text-foreground hover:bg-muted transition-colors cursor-pointer"
           >
             <X className="size-4" />

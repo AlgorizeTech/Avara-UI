@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 
 import { SITE_NAME, siteConfig } from "@/config/site";
-import { pageHeading, pageSource, pageSummary } from "@/lib/docs-source";
+import { pageHeading, pageSource } from "@/lib/docs-source";
+import { clampDescription, pageSeo } from "@/lib/page-seo";
 import {
   DEFAULT_FRAMEWORK,
   type Framework,
@@ -21,18 +22,6 @@ const OG_IMAGE = {
   alt: siteConfig.fullName,
   type: "image/png",
 };
-
-/** Search engines cut descriptions at roughly this many characters. */
-const MAX_DESCRIPTION = 160;
-
-/** Shortens to whole sentences, or failing that whole words, within the limit. */
-function clampDescription(text: string): string {
-  if (text.length <= MAX_DESCRIPTION) return text;
-  const head = text.slice(0, MAX_DESCRIPTION);
-  const sentenceEnd = Math.max(head.lastIndexOf(". "), head.lastIndexOf("! "), head.lastIndexOf("? "));
-  if (sentenceEnd > 80) return head.slice(0, sentenceEnd + 1);
-  return `${head.slice(0, head.lastIndexOf(" ", MAX_DESCRIPTION - 1)).replace(/[,;:—–-]$/, "")}…`;
-}
 
 /**
  * Title, description, canonical and social cards, all from the same values.
@@ -74,10 +63,11 @@ export function pageMetadata({
  *
  *   export const metadata = docsPageMetadata("accordion");
  *
- * The title is the page's H1 and the description its lead sentences (or the
- * registry description of what it installs), so the search snippet always says
- * what the page says. Pass `title` / `description` only where the page's own
- * words are not the right snippet.
+ * Title, description and keywords come from src/lib/page-seo.ts, which builds
+ * them from the page's sidebar group, H1 and lead sentences (or the registry
+ * description of what it installs), so the search snippet always says what the
+ * page says. Pass `title` (the page's name) / `description` only where the
+ * page's own words are not the right snippet.
  *
  * The canonical is the default framework's URL on both frameworks. Component
  * pages are the same document at two addresses — the components import nothing
@@ -91,14 +81,17 @@ export function docsPageMetadata(
 ): Metadata {
   const source = pageSource(slug, DEFAULT_FRAMEWORK) ?? "";
   const heading = overrides.title ?? pageHeading(source) ?? slug;
+  const seo = pageSeo(slug, heading, source, overrides.description);
 
-  return pageMetadata({
-    title: `${heading} - ${SITE_NAME}`,
-    description: clampDescription(
-      overrides.description ?? pageSummary(source) ?? siteConfig.description,
-    ),
-    url: docsHref(DEFAULT_FRAMEWORK, slug),
-  });
+  return {
+    ...pageMetadata({
+      title: seo.title,
+      description: seo.description ?? siteConfig.description,
+      url: docsHref(DEFAULT_FRAMEWORK, slug),
+    }),
+    // Always set, even empty, so a page never inherits the homepage's terms.
+    keywords: seo.keywords,
+  };
 }
 
 /**
@@ -112,6 +105,9 @@ export function docsPageMetadata(
  * describe different scaffolders and answer a query the other cannot, so
  * pointing them at each other would tell Google to drop the only pages a Vite
  * reader is searching for.
+ *
+ * `title` is the search title without the brand, which is appended; it should
+ * name the framework, since that is what tells the two pages apart.
  */
 export function buildDocsMetadata({
   framework,
@@ -128,7 +124,9 @@ export function buildDocsMetadata({
 }): Metadata {
   return {
     ...pageMetadata({
-      title: `${title} (${FRAMEWORK_META[framework].label}) - ${SITE_NAME}`,
+      title: title.includes(FRAMEWORK_META[framework].label)
+        ? `${title} - ${SITE_NAME}`
+        : `${title} (${FRAMEWORK_META[framework].label}) - ${SITE_NAME}`,
       description: clampDescription(description),
       url: docsHref(framework, slug),
     }),

@@ -905,10 +905,13 @@ button {
   cursor: pointer;
 }
 
-/* Global rule: Hide "Features" section in all doc pages without taking any layout space */
+/* Global rule: Hide "Features" section in all doc pages without taking any layout space.
+   The `#features + p` and `#features + p + .grid` selectors that used to sit
+   here stopped matching on 2026-10-15, when MDX paragraphs became <div>s, so
+   the intro line and cards under the heading have been visible since. They
+   are left out now that paragraphs are <p> again, to keep the pages exactly
+   as they look today. Add them back to hide the whole section. */
 #features,
-#features + p,
-#features + p + .grid,
 #features + .grid {
   display: none !important;
 }

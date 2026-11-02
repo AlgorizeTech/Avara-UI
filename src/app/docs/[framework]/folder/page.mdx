@@ -105,7 +105,7 @@ export default function SummerTrip() {
   return <Folder files={photos} label="Summer trip" count="6 photos" icon={Camera} />;
 }`;
 
-<ExampleShowcase
+<ExampleShowcase headingLevel={2}
   name="folder"
   colorControl
   columns={1}
@@ -221,11 +221,11 @@ Discover the Folder's capabilities for presenting a group of files as one tactil
 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Leave headroom above the folder</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Leave headroom above the folder</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">The fan lifts cards roughly half the folder's height above it and the arrows sit just outside its width. Give the folder that space, and avoid <code>overflow-hidden</code> on its immediate parent.</p>
   </div>
   <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Do not double up the click</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Do not double up the click</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">An <code>interactive</code> folder spends its click on the file picker, so tap-to-toggle is off there. If an ancestor already handles clicks, pass <code>toggleOnClick={false}</code> and <code>focusable</code> so the fan stays keyboard-reachable.</p>
   </div>
 </div>

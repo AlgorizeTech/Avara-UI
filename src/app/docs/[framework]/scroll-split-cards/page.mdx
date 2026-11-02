@@ -116,7 +116,7 @@ export default function SlowTransitionExample() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase headingLevel={2}
   name="scroll-split-cards"
   columns={1}
   colorControl={false}
@@ -290,15 +290,15 @@ export default function SlowTransitionExample() {
 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Scroll Choreography & Layout Containment</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Scroll Choreography & Layout Containment</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Place <code>ScrollSplitCards</code> in a standard vertical flow without conflicting parent <code>overflow-hidden</code> constraints. Both mousewheel scroll and touch drag gestures naturally advance the animation through each stage.</p>
   </div>
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Panoramic Image Selection</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Panoramic Image Selection</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">For the most dramatic visual impact, use wide landscape photography (recommended aspect ratio 21:9 or ~2.4:1) with a resolution of at least 2400×1000px. High-contrast horizon or architectural imagery splits cleanly across the panels.</p>
   </div>
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Editorial Card Content & Legibility</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Editorial Card Content & Legibility</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Keep narrative copy concise: 1–2 sentences per card along with an optional metric callout and kicker. Contrast-tested background colors ensure text remains easily legible on all viewports.</p>
   </div>
 </div>

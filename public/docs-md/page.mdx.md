@@ -1,5 +1,5 @@
 export const metadata = pageMetadata({
-  title: `Documentation - Avara UI`,
+  title: `Documentation - Shadcn UI Components & Blocks - Avara UI`,
   description: `Documentation for the Avara UI component library: installation guides, component pages with live previews, and props references.`,
   url: '/docs',
 });
