@@ -38,7 +38,7 @@ import {
 import { SandboxFrame } from "@/components/site/SandboxFrame";
 import { prefetchHighlight, warmHighlighter } from "@/components/custom/ui/code-renderer-core";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
-import { toBlockColor } from "@/lib/accent";
+import { isDefaultAccent, toBlockColor } from "@/lib/accent";
 import { slugify } from "@/lib/open-in-v0";
 import { OpenInV0Button, v0ItemFor } from "@/components/site/open-in-v0-button";
 import {
@@ -991,6 +991,12 @@ const generateFallbackUsage = (
 
   const propEntries = props
     ? Object.entries(props)
+        .filter(([key, val]) => {
+          if (key === "color" && (val === undefined || isDefaultAccent(val as string))) {
+            return false;
+          }
+          return true;
+        })
         .map(([key, val]) => {
           if (typeof val === "string") return `${key}="${val}"`;
           if (typeof val === "boolean") return val ? key : `${key}={false}`;
@@ -1007,6 +1013,52 @@ export default function ${cleanTitle}Demo() {
   return <${pascalName}${propString} className="w-full" />;
 }`;
 };
+
+/**
+ * Injects or strips the active theme color into an authored usage code snippet.
+ * When on "Default" / primary theme, removes any color prop so consumer gets clean default code.
+ * When a specific color is picked (e.g. "indigo", "rose", hex), dynamically reflects it in the code snippet.
+ */
+function applyUsageColor(
+  usage: string,
+  color: string | undefined,
+  colorProp: string = "color",
+): string {
+  const colorAttrRegex = new RegExp(
+    `([ \\t]*)${colorProp}=(?:\\{"[^"]*"\\}|"[^"]*"|\\{'[^']*'\\}|'[^']*'|\\{[^}]*\\})`,
+    "g",
+  );
+
+  if (isDefaultAccent(color)) {
+    return usage
+      .replace(colorAttrRegex, "")
+      .replace(/\n[ \t]*\n([ \t]*\/>)/g, "\n$1");
+  }
+
+  const resolvedColor = color!;
+
+  // If color prop already exists in snippet, update it
+  if (colorAttrRegex.test(usage)) {
+    return usage.replace(colorAttrRegex, `$1${colorProp}="${resolvedColor}"`);
+  }
+
+  // Find the primary component JSX tag (first element starting with uppercase)
+  const tagMatch = usage.match(/<([A-Z][A-Za-z0-9_]*)([\s\S]*?)(\/?>)/);
+  if (!tagMatch) return usage;
+
+  const [fullMatch, compName, inner, closeTag] = tagMatch;
+
+  if (inner.includes("\n")) {
+    const indentMatch = inner.match(/\n([ \t]+)/);
+    const indent = indentMatch ? indentMatch[1] : "  ";
+    const replacement = `<${compName}\n${indent}${colorProp}="${resolvedColor}"${inner}${closeTag}`;
+    return usage.replace(fullMatch, replacement);
+  }
+
+  const trimmedInner = inner.trimEnd();
+  const replacement = `<${compName}${trimmedInner ? ` ${trimmedInner.trim()}` : ""} ${colorProp}="${resolvedColor}" ${closeTag.trim()}`;
+  return usage.replace(fullMatch, replacement);
+}
 
 /** Demos that have a Motion twin (`<name>-motion`). */
 const DUAL_DEMOS = new Set(
@@ -1166,15 +1218,25 @@ export function ExampleShowcase({
 
           // The demos know the picker's "lavender" id, the blocks don't — so the
           // snippet a reader copies spells it as the hex it stands for.
-          const effectiveUsage =
+          const rawUsage =
             resolveUsage(pick(example.usage), framework) ??
             generateFallbackUsage(
               name,
               example.title,
               colorControl
-                ? { ...effectiveProps, [colorProp]: toBlockColor(color) }
+                ? {
+                    ...effectiveProps,
+                    [colorProp]: isDefaultAccent(color)
+                      ? undefined
+                      : toBlockColor(color),
+                  }
                 : effectiveProps,
             );
+
+          const effectiveUsage =
+            rawUsage && colorControl
+              ? applyUsageColor(rawUsage, color, colorProp)
+              : rawUsage;
 
           const effectiveCode = resolveSnippet(pick(example.code), framework) ?? fallbackCode;
 
