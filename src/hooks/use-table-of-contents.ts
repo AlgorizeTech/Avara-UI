@@ -64,7 +64,12 @@ export function useTableOfContents() {
 
         usedIds.add(id);
 
-        const level = parseInt(heading.tagName.charAt(1));
+        // `data-toc-level` lets a heading take its correct document level (an
+        // example title directly under the H1 is an h2) while keeping the
+        // indent it has always had in this list.
+        const level =
+          Number((heading as HTMLElement).dataset.tocLevel) ||
+          parseInt(heading.tagName.charAt(1));
         tocItems.push({ id, text, level });
       });
 

@@ -156,7 +156,7 @@ ${wizardSteps}
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase headingLevel={2}
   name="wizard"
   colorControl
   columns={1}
@@ -255,7 +255,7 @@ Learn about the Wizard component's multi-step capabilities, providing state mana
 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">State Management</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">State Management</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Since `WizardStep` components act as independent layout blocks, keep your actual form state (e.g., using React Hook Form or standard state) lifted up to the parent component wrapping the `WizardContainer`.</p>
   </div>
 </div>

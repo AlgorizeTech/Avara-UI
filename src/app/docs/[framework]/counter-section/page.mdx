@@ -326,7 +326,7 @@ export default function SpotlightGradientCounter() {
 }
 `;
 
-<ExampleShowcase
+<ExampleShowcase headingLevel={2}
   name="counter-section"
   columns={1}
   examples={[
@@ -423,15 +423,15 @@ export default function SpotlightGradientCounter() {
 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Layout & Placement</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Layout & Placement</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Place counter sections below the hero fold or immediately after high-level feature highlights. The animated count-up runs automatically when the section intersects the viewport (using <code>useInView</code>), making it ideal for social proof and conversion trust anchors.</p>
   </div>
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Variant Selection</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Variant Selection</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Choose <code>variant="cyber-hud"</code> for developer tools, Web3, security, and fintech telemetry; <code>variant="minimal-slash"</code> for modern agencies, SaaS, and portfolios; <code>variant="halftone-cinema"</code> for architecture and editorial brands; and <code>variant="spotlight-gradient"</code> for interactive consumer tech and modern AI applications.</p>
   </div>
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Custom Data & Precision</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Custom Data & Precision</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Always specify the <code>decimals</code> prop on stats when dealing with floating-point metrics (e.g., <code>decimals: 1</code> for <code>2.4</code> or <code>decimals: 3</code> for <code>99.999</code>). This prevents awkward integer rounding during the count-up animation.</p>
   </div>
 </div>

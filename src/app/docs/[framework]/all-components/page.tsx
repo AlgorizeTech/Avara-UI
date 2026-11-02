@@ -6,47 +6,12 @@ import {
 	AllComponentsCatalog,
 	type AnimationLibrary,
 } from "@/components/site/all-components-catalog";
-import { SITE_NAME } from "@/config/site";
 import { docsPageMetadata } from "@/lib/docs-metadata";
-import registry from "../../../../../registry.json";
+import { hasMotionTwin, usesGsap } from "@/lib/docs-source";
 
-// No MDX to read a title from, so it is given here. Without it the page
-// inherits the homepage's title, description and social card.
-export const metadata = docsPageMetadata("all-components", {
-	title: "All Components",
-	description: `Every ${SITE_NAME} component and website section in one catalog, grouped by type and filterable by GSAP or Motion animation.`,
-});
-
-type RegistryItem = {
-	name: string;
-	dependencies?: string[];
-	registryDependencies?: string[];
-};
-
-const ITEMS = new Map(
-	(registry.items as RegistryItem[]).map((item) => [item.name, item]),
-);
-
-/** `https://…/r/button.json` and `button` both name the item `button`. */
-const depName = (dep: string) =>
-	dep.replace(/^.*\/r\//, "").replace(/\.json$/, "");
-
-/**
- * Whether an item animates with GSAP — directly, or through an item it
- * installs (a section built on a GSAP card still needs GSAP).
- */
-function usesGsap(name: string, seen = new Set<string>()): boolean {
-	if (seen.has(name)) return false;
-	seen.add(name);
-	const item = ITEMS.get(name);
-	if (!item) return false;
-	if (item.dependencies?.some((d) => d === "gsap" || d.startsWith("gsap@") || d.startsWith("@gsap/")))
-		return true;
-	return (item.registryDependencies ?? []).some((d) => usesGsap(depName(d), seen));
-}
-
-/** Motion builds only exist as `<name>-motion` twins of a GSAP item. */
-const hasMotionTwin = (name: string) => ITEMS.has(`${name}-motion`);
+// No MDX to read a title from; its title and description live in
+// src/lib/page-seo.ts with the other hub pages'.
+export const metadata = docsPageMetadata("all-components");
 
 /**
  * The libraries a docs page's components animate with, read from the

@@ -39,13 +39,17 @@ const FooterSection = dynamic(() =>
 export default function HomePage() {
 	return (
 		<div className="min-h-screen bg-background text-foreground selection:bg-primary/20 overflow-x-hidden font-site-sans">
-			<HeroSection />
-			<ComponentShowcase />
-			<WhyChooseUsSection />
-			<ComponentPreviewGridSection />
-			<FeedbackSection />
-			<AnimatedFAQSection />
-			<CTASection />
+			{/* The page's main landmark, for screen-reader "skip to main" and for
+			    crawlers; the footer stays outside it so it keeps its own role. */}
+			<main>
+				<HeroSection />
+				<ComponentShowcase />
+				<WhyChooseUsSection />
+				<ComponentPreviewGridSection />
+				<FeedbackSection />
+				<AnimatedFAQSection />
+				<CTASection />
+			</main>
 			<FooterSection />
 		</div>
 	);

@@ -278,11 +278,11 @@ Explore the QR Code Generator's customizable features, allowing for different co
 <div id="generator-docs-best-practices">
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Color Contrast</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Color Contrast</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Ensure a high contrast between the background and foreground colors. A light background (e.g., <code>#FFFFFF</code>) with a dark foreground (e.g., <code>#000000</code>) is recommended for optimal scannability by smartphone cameras.</p>
   </div>
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Error Correction Level</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Error Correction Level</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Use <strong>L (Low)</strong> for simple URLs to keep the QR code visually clean and sparse. Use <strong>H (High)</strong> if you plan to overlay a custom logo in the center, as it allows up to 30% of the code to be obscured without breaking.</p>
   </div>
 </div>
@@ -291,11 +291,11 @@ Explore the QR Code Generator's customizable features, allowing for different co
 <div id="reader-docs-best-practices">
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Error Handling</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Error Handling</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">The reader automatically handles invalid or unreadable images. Consider adding UI feedback (e.g., a toast notification) if the <code>onRead</code> callback isn't triggered after a user uploads an invalid file.</p>
   </div>
   <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Accessibility (a11y)</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Accessibility (a11y)</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">The drag-and-drop area is keyboard accessible, but ensure any surrounding labels or descriptions clearly instruct the user to upload a valid QR code image.</p>
   </div>
 </div>

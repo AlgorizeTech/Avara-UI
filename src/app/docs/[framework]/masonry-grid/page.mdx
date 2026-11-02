@@ -223,7 +223,7 @@ export default function StaticWall() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase headingLevel={2}
   name="masonry-grid"
   colorControl
   columns={1}
@@ -344,7 +344,7 @@ Discover the Masonry Grid's dynamic layout features, seamlessly arranging varyin
 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Break-Inside-Avoid</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Break-Inside-Avoid</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Because CSS columns natively try to break content across columns, it is crucial that the wrapper `div` of your rendered item has `break-inside: avoid` (in Tailwind: `break-inside-avoid`). The headless component handles this on the outer container, but keep this in mind if you add complex nested layouts.</p>
   </div>
 </div>

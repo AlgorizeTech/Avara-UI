@@ -2449,6 +2449,13 @@ export function EditorialCardFooter({
   );
 }
 
+/**
+ * Where the brand mark links. A plain <a>, not next/link: this file installs
+ * into Vite projects too, where next/link does not exist. Held in a constant
+ * because Next's lint rule flags a literal internal href on an <a>.
+ */
+const HOME_HREF = "/";
+
 /** The wordmark, or whatever `logo` was passed instead of it. */
 function BrandLogo({ logo, brandName }: Pick<FooterProps, "logo" | "brandName">) {
   const isAvara = !brandName || brandName === "Avara UI";
@@ -2456,7 +2463,7 @@ function BrandLogo({ logo, brandName }: Pick<FooterProps, "logo" | "brandName">)
   if (logo) {
     if (typeof logo === "string") {
       return (
-        <a href="/" className="inline-flex items-center">
+        <a href={HOME_HREF} className="inline-flex items-center">
           <img src={logo} alt={brandName || "Logo"} className="h-7 w-auto object-contain" />
         </a>
       );

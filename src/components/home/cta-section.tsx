@@ -287,9 +287,9 @@ export function CTASection() {
 							<span className="text-[11px] font-mono text-primary font-semibold tracking-wider uppercase">
 								01 / FOUNDATION
 							</span>
-							<h4 className="text-sm font-bold text-foreground mt-2">
+							<h3 className="text-sm font-bold text-foreground mt-2">
 								Built on shadcn/ui
-							</h4>
+							</h3>
 							<p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
 								Native compatibility with components.json, Tailwind CSS, and the
 								shadcn CLI registry ecosystem.
@@ -300,9 +300,9 @@ export function CTASection() {
 							<span className="text-[11px] font-mono text-primary font-semibold tracking-wider uppercase">
 								02 / INTERACTION
 							</span>
-							<h4 className="text-sm font-bold text-foreground mt-2">
+							<h3 className="text-sm font-bold text-foreground mt-2">
 								Hardware Accelerated
-							</h4>
+							</h3>
 							<p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
 								Silky 60 FPS transitions powered by Motion springs and native
 								Tailwind CSS transforms.
@@ -313,9 +313,9 @@ export function CTASection() {
 							<span className="text-[11px] font-mono text-primary font-semibold tracking-wider uppercase">
 								03 / ECOSYSTEM
 							</span>
-							<h4 className="text-sm font-bold text-foreground mt-2">
+							<h3 className="text-sm font-bold text-foreground mt-2">
 								Full Stack Compatibility
-							</h4>
+							</h3>
 							<p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">
 								Engineered and tested for Next.js 15 App Router, React 19, and
 								Tailwind CSS v4 & v3.

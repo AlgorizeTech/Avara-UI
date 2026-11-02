@@ -1,6 +1,6 @@
 export const metadata = docsPageMetadata("faq-section", {
   title: "FAQ Section",
-  description: "An animated, editorial FAQ website section pairing a responsive section header with an interactive nature photography canvas and an expandable question accordion."
+  description: "An animated FAQ section: a responsive section header, an expandable question accordion and an interactive nature photography canvas."
 });
 
 # FAQ Section

@@ -61,9 +61,9 @@ fight the layout utilities components rely on.
 Also delete `src/App.css` and its import in `src/App.tsx`.
 
 <div className="flex gap-3 rounded-xl border border-primary/15 bg-primary/5 p-4 my-6 not-prose">
-  <p className="text-[13px] leading-relaxed text-foreground/60">
+  <div className="text-[13px] leading-relaxed text-foreground/60">
     <span className="font-semibold text-primary">Keep it the first line.</span> An <code>@import</code> below other rules is silently ignored, and <code>src/main.tsx</code> must import <code>index.css</code> — otherwise every component renders unstyled.
-  </p>
+  </div>
 </div>
 
 ## Configure the path alias
@@ -166,19 +166,19 @@ client-side navigation.
 
 <div className="flex flex-col gap-3 my-6 not-prose">
   <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
-    <h4 className="text-[14px] font-semibold text-foreground mb-1">Failed to resolve import <code>@/lib/utils</code></h4>
+    <h3 data-toc-skip className="text-[14px] font-semibold text-foreground mb-1">Failed to resolve import <code>@/lib/utils</code></h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">The alias is set in TypeScript but not in Vite, or the reverse. <a href="#configure-the-path-alias" className="text-primary hover:underline">Both need it</a>.</p>
   </div>
   <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
-    <h4 className="text-[14px] font-semibold text-foreground mb-1">Components render unstyled</h4>
+    <h3 data-toc-skip className="text-[14px] font-semibold text-foreground mb-1">Components render unstyled</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Check that <code>@import "tailwindcss";</code> is the first line of <code>src/index.css</code>, that <code>src/main.tsx</code> imports it, and that <code>tailwind.css</code> in <code>components.json</code> points at it.</p>
   </div>
   <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
-    <h4 className="text-[14px] font-semibold text-foreground mb-1">"Module level directives cause errors when bundled"</h4>
+    <h3 data-toc-skip className="text-[14px] font-semibold text-foreground mb-1">"Module level directives cause errors when bundled"</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">A harmless Rollup warning about the <code>"use client"</code> line at the top of components. Vite ignores the directive and the build succeeds.</p>
   </div>
   <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
-    <h4 className="text-[14px] font-semibold text-foreground mb-1">Unknown registry "{REGISTRY_NAMESPACE}"</h4>
+    <h3 data-toc-skip className="text-[14px] font-semibold text-foreground mb-1">Unknown registry "{REGISTRY_NAMESPACE}"</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Run <a href="#step-2-register-the-registry" className="text-primary hover:underline">Step 2</a>, or switch the command to <strong>URL</strong>, which needs no setup.</p>
   </div>
 </div>

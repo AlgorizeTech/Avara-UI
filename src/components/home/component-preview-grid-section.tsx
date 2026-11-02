@@ -2056,13 +2056,13 @@ export function ComponentPreviewGridSection() {
 										{/* Card Info */}
 										<div className="flex items-center justify-between pt-1">
 											<div>
-												<h4
+												<h3
 													className={cn(
 														"font-sans text-[14px] font-semibold text-foreground transition-colors",
 														!isLastRow && "group-hover:text-primary",
 													)}>
 													{item.title}
-												</h4>
+												</h3>
 												<p className="text-[13px] leading-[1.65] text-foreground/45 mt-0.5">
 													{item.countText}
 												</p>

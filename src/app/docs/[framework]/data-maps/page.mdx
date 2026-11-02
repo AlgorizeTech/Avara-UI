@@ -95,7 +95,7 @@ export default function ColoredMap() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase headingLevel={2}
   name="data-maps"
   colorControl
   colorLabel="Accent Color"
@@ -200,11 +200,11 @@ Learn about the Data Maps component's geographic visualization features, mapping
 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Dynamic Imports</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Dynamic Imports</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Leaflet reads the browser's <code>window</code> at import time, so the component defers loading it until after mount. <ForFramework only="nextjs">That is why any component wrapping <code>react-leaflet</code> must stay off the server — this one already does, so you can render it directly without a <code>{"{ ssr: false }"}</code> wrapper of your own.</ForFramework><ForFramework only="reactjs">A Vite SPA has no server render, so there is nothing to opt out of — import and render it directly.</ForFramework></p>
   </div>
   <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">GeoJSON Caching</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">GeoJSON Caching</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">By default, the map fetches the world map GeoJSON from a remote CDN. For production environments, it is highly recommended to download the <code>custom.geo.json</code> file and host it locally in your <code>public</code> directory to reduce latency.</p>
   </div>
 </div>

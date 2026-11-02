@@ -10,7 +10,7 @@ import { extractCode } from "@/lib/code";
 A powerful, fully-featured data table component built on top of [Table](./table) primitives. It provides built-in state management for **Global Searching, Multi-Column Sorting, Pagination, Row Selection, and Batch Actions** — giving you complete control over your table layout without forcing any data transformation.
 
 
-<ExampleShowcase
+<ExampleShowcase headingLevel={2}
   name="data-table-soft"
   columns={1}
   minHeight={640}
@@ -270,11 +270,11 @@ export default function UserTable() {
 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">The parts that come with it</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">The parts that come with it</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50"><code>DataTableTabs</code>, <code>DataTableFilter</code> and <code>DataTableReset</code> filter and clear; <code>TableAction</code> is the toolbar button (primary, secondary, ghost); <code>TableRowAction</code> is a round icon button that needs a <code>label</code>; <code>TableBadge</code> is a status pill (<code>tone</code>) or, without its dot, a tag; <code>TablePerson</code> draws an avatar with a name and a second line; <code>DataTableBatchAction</code> goes inside the batch bar. They work in every variant and take the soft look inside a soft table.</p>
   </div>
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Empty results explain themselves</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Empty results explain themselves</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Give <code>DataTableEmpty</code> an <code>icon</code>, <code>title</code>, <code>description</code> and <code>action</code>, and read <code>search</code>, <code>isFiltered</code> and <code>resetAll</code> from <code>useDataTable</code> (in <code>table-core</code>) to say whether nothing matched or nothing exists yet — the example's <code>NoUsers</code> does exactly that.</p>
   </div>
 </div>
@@ -305,15 +305,15 @@ export default function UserTable() {
 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Give rows a stable id</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Give rows a stable id</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Selection is tracked by id, not by index, so it survives sorting and paging. If your rows have no natural key, derive one before passing the array in — an array index will unselect the wrong row as soon as the order changes.</p>
   </div>
   <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Client-side by design</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Client-side by design</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Search, sort and paging all run over the array you pass in. For server-driven datasets, use the plain Table primitives and drive the query yourself — or keep DataTable for the current page only and supply your own footer.</p>
   </div>
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Give a function sortBy an id</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Give a function sortBy an id</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">A string sortBy doubles as its own identity. When you pass an accessor function, add sortId so the active-sort indicator stays stable across re-renders.</p>
   </div>
 </div>

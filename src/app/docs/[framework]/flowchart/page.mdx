@@ -217,7 +217,7 @@ export default function AccentedPipeline() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase headingLevel={2}
   name="flowchart"
   columns={1}
   examples={[
@@ -300,11 +300,11 @@ export default function AccentedPipeline() {
 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Keep ports and paths in sync</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Keep ports and paths in sync</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Node positions come from Tailwind <code>left-[…]</code> / <code>top-[…]</code> classes and the routes are raw SVG coordinates, so the two are only aligned because you made them align. When you move a node, move the matching <code>M</code>/<code>L</code> coordinates with it.</p>
   </div>
   <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Split long routes into segments</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Split long routes into segments</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Several <code>FlowConnection</code>s can share the same <code>id</code>. Splitting a branch into per-hop segments lets the stream animation restart at each node instead of sweeping the whole diagram at once.</p>
   </div>
 </div>

@@ -104,7 +104,7 @@ export default function BrandRevealShowcase() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase headingLevel={2}
   name="accordion"
   columns={1}
   examples={[
@@ -378,7 +378,7 @@ Single or multiple open panels, a one-time stack entrance, and five variants tha
 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Use <code>animation="stack"</code> once per page, on the accordion you want people to notice; two decks dealing at the same time cancel each other out. Give it at least three items so the pile reads as a deck, and keep <code>defaultValue</code> set so the open card is part of the deal.</p>
   </div>
 </div>
