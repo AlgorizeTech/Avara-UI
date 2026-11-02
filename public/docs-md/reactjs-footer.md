@@ -120,6 +120,7 @@ npx shadcn@latest add @avara-ui/footer
       ],
       props: { variant: "simple-centered" },
       usage: usageSimple,
+      code: extractCode("src/components/custom/blocks/FooterBlock.tsx"),
     },
     {
       title: "Glass Dock Footer",
@@ -129,6 +130,7 @@ npx shadcn@latest add @avara-ui/footer
       ],
       props: { variant: "glass-dock" },
       usage: usageGlassDock,
+      code: extractCode("src/components/custom/blocks/FooterBlock.tsx"),
     },
     {
       title: "Neon Glow Pulse Cyberpunk Footer",
@@ -138,6 +140,7 @@ npx shadcn@latest add @avara-ui/footer
       ],
       props: { variant: "neon-glow-pulse" },
       usage: usageNeonGlow,
+      code: extractCode("src/components/custom/blocks/FooterBlock.tsx"),
     },
     {
       title: "Quantum Particle Beam Lines Footer",
@@ -147,6 +150,7 @@ npx shadcn@latest add @avara-ui/footer
       ],
       props: { variant: "quantum-particle-beam" },
       usage: usageQuantumBeam,
+      code: extractCode("src/components/custom/blocks/FooterBlock.tsx"),
     },
   ]}
 />
