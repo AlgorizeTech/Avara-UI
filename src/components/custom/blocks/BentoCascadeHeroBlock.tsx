@@ -48,6 +48,7 @@ export interface BentoCascadeHeroProps
   speed?: number; // seconds for one complete loop cycle
   pauseOnHover?: boolean;
   accent?: string;
+  color?: string;
   radius?: string | number;
   linkComponent?: React.ElementType;
   imageComponent?: React.ElementType;
@@ -260,6 +261,7 @@ export const BentoCascadeHero = forwardRef<HTMLElement, BentoCascadeHeroProps>(
       speed = 30,
       pauseOnHover = true,
       accent,
+      color,
       radius,
       linkComponent: LinkComp,
       imageComponent,
@@ -327,7 +329,7 @@ export const BentoCascadeHero = forwardRef<HTMLElement, BentoCascadeHeroProps>(
     };
 
     const customStyle: React.CSSProperties = {
-      ...accentTokens(accent),
+      ...accentTokens(accent || color),
       ...(radius !== undefined
         ? {
             "--radius": typeof radius === "number" ? `${radius}px` : radius,

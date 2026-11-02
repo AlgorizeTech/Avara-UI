@@ -56,6 +56,7 @@ export interface SolarSnapshotHeroProps
   snapshotDurationMs?: number;
   maxSnapshots?: number;
   accent?: string;
+  color?: string;
   linkComponent?: React.ElementType;
 }
 
@@ -440,6 +441,7 @@ export const SolarSnapshotHero = forwardRef<HTMLElement, SolarSnapshotHeroProps>
       snapshotDurationMs = 10000,
       maxSnapshots = 8,
       accent,
+      color,
       linkComponent: LinkComp = "a",
       className,
       style,
@@ -583,7 +585,7 @@ export const SolarSnapshotHero = forwardRef<HTMLElement, SolarSnapshotHeroProps>
     );
 
     const customStyle: React.CSSProperties = {
-      ...accentTokens(accent),
+      ...accentTokens(accent || color),
       ...style,
     };
 

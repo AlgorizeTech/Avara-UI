@@ -583,17 +583,40 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
       );
     }
 
+    const totalItemsCount = shown.length + (rest > 0 ? 1 : 0) + (renderedActionNode ? 1 : 0);
+    const maxSpreadShift = isHovered && effectiveSpreadOnHover && totalItemsCount > 1
+      ? (totalItemsCount - 1) * dist
+      : 0;
+
+    const combinedTransition = [
+      props.style?.transition,
+      effectiveSpreadOnHover ? `margin-right ${transitionDuration}ms cubic-bezier(0.16, 1, 0.3, 1)` : null,
+    ].filter(Boolean).join(", ") || undefined;
+
     // Default variant: smooth rightward fan-out spread on hover & z-index elevation on hover
     return (
       <div
         ref={ref}
+        {...props}
         className={cn("group flex w-fit mx-auto items-center justify-center py-20 px-6", s.overlap, className)}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => {
+        style={{
+          ...props.style,
+          ...(effectiveSpreadOnHover
+            ? {
+                marginRight: `${maxSpreadShift}px`,
+                transition: combinedTransition,
+              }
+            : {}),
+        }}
+        onMouseEnter={(e) => {
+          setIsHovered(true);
+          props.onMouseEnter?.(e);
+        }}
+        onMouseLeave={(e) => {
           setIsHovered(false);
           setHoveredAvatarIndex(null);
+          props.onMouseLeave?.(e);
         }}
-        {...props}
       >
         {shown.map((a, i) => {
           const shiftX = isHovered && effectiveSpreadOnHover ? i * dist : 0;
