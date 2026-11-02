@@ -44,7 +44,6 @@ export default function OrbitLoader() {
     <LoaderBlock
       variant="orbit"
       size="md"
-      color="primary"
       secondaryColor="#10b981"
       direction="single"
     />
@@ -277,6 +276,20 @@ export default function OrbitLoader() {
       </tr>
       <tr>
         <td>
+          <code>py</code>
+        </td>
+        <td>
+          <code>string | number</code>
+        </td>
+        <td>
+          <code>"py-5"</code> (20px)
+        </td>
+        <td>
+          Top and bottom vertical padding so the loader never sticks flush against the screen edge upon install. Accepts Tailwind classes (e.g. <code>"py-2"</code>, <code>"py-8"</code>, <code>"py-0"</code>), numbers (e.g. <code>10</code>), or pixel strings (e.g. <code>"30px"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
           <code>className</code>
         </td>
         <td>
@@ -286,7 +299,7 @@ export default function OrbitLoader() {
           <code>undefined</code>
         </td>
         <td>
-          Optional CSS classes to apply to the outermost wrapper container.
+          Optional CSS classes to apply to the outermost wrapper container (can also be used to override padding, e.g. <code>"py-2"</code>, <code>"py-10"</code>).
         </td>
       </tr>
     </tbody>
