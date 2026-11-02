@@ -17,7 +17,7 @@ const useIsMounted = () =>
 import { useTheme } from "next-themes";
 import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
-import { accentStyle } from "@/lib/accent";
+import { accentStyle, resolveAccent } from "@/lib/accent";
 
 export interface ParticleCanvasProps extends React.HTMLAttributes<HTMLDivElement> {
   content?: string;
@@ -49,18 +49,29 @@ interface Particle {
 }
 
 const PRESET_ACCENT_HEX: Record<string, string> = {
+  lavender: "#9b8afb",
   indigo: "#6366f1",
   rose: "#f43f5e",
   emerald: "#10b981",
   zinc: "#18181b",
   amber: "#f59e0b",
   blue: "#3b82f6",
+  violet: "#8b5cf6",
+  purple: "#a855f7",
+  cyan: "#06b6d4",
+  teal: "#14b8a6",
+  orange: "#f97316",
+  red: "#ef4444",
+  pink: "#ec4899",
+  yellow: "#eab308",
+  green: "#22c55e",
 };
 
 /** Turns a preset accent name or custom hex string into a CSS color, or null for default theme. */
 function resolveColorAccent(color?: string): string | null {
   if (!color || color === "primary" || color === "default") return null;
-  return PRESET_ACCENT_HEX[color] ?? color;
+  const normalized = color.toLowerCase();
+  return PRESET_ACCENT_HEX[normalized] ?? resolveAccent(color) ?? color;
 }
 
 export interface WordmarkGlowProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -221,6 +232,7 @@ function StandardParticleCanvas({
   fontSize,
   fontFamily = "system-ui, -apple-system, sans-serif",
   className,
+  style,
   ...props
 }: ParticleCanvasProps) {
   const { resolvedTheme } = useTheme();
@@ -507,24 +519,38 @@ function StandardParticleCanvas({
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current || !interactive) return;
     const rect = containerRef.current.getBoundingClientRect();
-    mouseRef.current.x = e.clientX - rect.left;
-    mouseRef.current.y = e.clientY - rect.top;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    mouseRef.current.x = x;
+    mouseRef.current.y = y;
     mouseRef.current.active = true;
+    containerRef.current.style.setProperty("--mx", `${x}px`);
+    containerRef.current.style.setProperty("--my", `${y}px`);
   };
 
   const handleMouseLeave = () => {
     mouseRef.current.active = false;
     mouseRef.current.x = -9999;
     mouseRef.current.y = -9999;
+    if (containerRef.current) {
+      containerRef.current.style.removeProperty("--mx");
+      containerRef.current.style.removeProperty("--my");
+    }
   };
 
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
     if (!containerRef.current || !interactive || e.touches.length === 0) return;
     const rect = containerRef.current.getBoundingClientRect();
-    mouseRef.current.x = e.touches[0].clientX - rect.left;
-    mouseRef.current.y = e.touches[0].clientY - rect.top;
+    const x = e.touches[0].clientX - rect.left;
+    const y = e.touches[0].clientY - rect.top;
+    mouseRef.current.x = x;
+    mouseRef.current.y = y;
     mouseRef.current.active = true;
+    containerRef.current.style.setProperty("--mx", `${x}px`);
+    containerRef.current.style.setProperty("--my", `${y}px`);
   };
+
+  const dynamicAccent = accentStyle(color);
 
   return (
     <div
@@ -533,8 +559,9 @@ function StandardParticleCanvas({
       onMouseLeave={handleMouseLeave}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleMouseLeave}
+      style={{ ...dynamicAccent, ...style }}
       className={cn(
-        "relative w-full h-full min-h-[600px] overflow-hidden select-none cursor-crosshair",
+        "group/canvas relative w-full h-full min-h-[600px] overflow-hidden select-none cursor-crosshair transition-colors",
         className
       )}
       {...props}

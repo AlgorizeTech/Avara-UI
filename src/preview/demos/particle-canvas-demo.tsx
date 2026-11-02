@@ -1,7 +1,7 @@
 "use client";
 
 import { ParticleCanvas } from "@/components/custom/blocks/ParticleCanvasBlock";
-import { toBlockColor } from "@/lib/accent";
+import { accentStyle, toBlockColor } from "@/lib/accent";
 
 export default function ParticleCanvasDemo({
   variant = "repel",
@@ -23,10 +23,11 @@ export default function ParticleCanvasDemo({
 
   return (
     <div
+      style={accentStyle(color)}
       className={
         isWordmark
-          ? "relative w-full h-[260px] min-h-max bg-background rounded-xl overflow-hidden flex items-end justify-center border border-border"
-          : "relative w-full h-[650px] min-h-max bg-background rounded-xl overflow-hidden flex items-center justify-center border border-border"
+          ? "relative w-full h-[260px] min-h-max bg-background rounded-xl overflow-hidden flex items-end justify-center border border-border transition-colors"
+          : "relative w-full h-[650px] min-h-max bg-background rounded-xl overflow-hidden flex items-center justify-center border border-border transition-colors"
       }
     >
       <ParticleCanvas
