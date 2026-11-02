@@ -34,7 +34,10 @@ export interface LoaderBlockProps {
   secondaryColor?: LoaderColor;
   direction?: LoaderDirection;
   text?: string;
+  /** Vertical padding for top and bottom (default: "py-5" / 20px). Accepts Tailwind class (e.g. "py-2", "py-8") or numeric/pixel value. */
+  py?: string | number;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 export function LoaderBlock({
@@ -44,7 +47,9 @@ export function LoaderBlock({
   secondaryColor,
   direction = "single",
   text,
+  py,
   className,
+  style,
 }: LoaderBlockProps) {
   const themeColor = getThemeColor(color);
   const secondaryThemeColor = secondaryColor
@@ -52,6 +57,18 @@ export function LoaderBlock({
     : color === "emerald"
     ? "#6366f1"
     : "#10b981";
+
+  const pyClass =
+    typeof py === "string" && !py.endsWith("px") && !py.endsWith("rem") && !py.endsWith("em")
+      ? py
+      : undefined;
+
+  const pyInlineStyle =
+    typeof py === "number"
+      ? { paddingTop: `${py}px`, paddingBottom: `${py}px` }
+      : typeof py === "string" && (py.endsWith("px") || py.endsWith("rem") || py.endsWith("em"))
+      ? { paddingTop: py, paddingBottom: py }
+      : undefined;
 
   const sizeClasses = {
     sm: "w-4 h-4",
@@ -90,8 +107,10 @@ export function LoaderBlock({
 
   return (
     <div
+      style={{ ...pyInlineStyle, ...style }}
       className={cn(
-        "flex flex-col items-center justify-center gap-3",
+        "flex flex-col items-center justify-center gap-3 py-5",
+        pyClass,
         className,
       )}
     >

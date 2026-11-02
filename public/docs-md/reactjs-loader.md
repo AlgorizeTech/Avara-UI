@@ -124,13 +124,21 @@ npx shadcn@latest add @avara-ui/loader
           Optional text to display beneath the loader. It automatically receives
           a subtle pulsing animation.
 
+          py
+
+          string | number
+
+          "py-5" (20px)
+
+          Top and bottom vertical padding so the loader never sticks flush against the screen edge upon install. Accepts Tailwind classes (e.g. "py-2", "py-8", "py-0"), numbers (e.g. 10), or pixel strings (e.g. "30px").
+
           className
 
           string
 
           undefined
 
-          Optional CSS classes to apply to the outermost wrapper container.
+          Optional CSS classes to apply to the outermost wrapper container (can also be used to override padding, e.g. "py-2", "py-10").
 
 ---
 

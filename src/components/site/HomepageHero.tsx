@@ -94,7 +94,7 @@ const WallCard = React.memo(function WallCard({
           alt=""
           width={FRAME_W}
           height={FRAME_H}
-          loading="eager"
+          loading="lazy"
           decoding="async"
           draggable={false}
           className="absolute inset-0 h-full w-full object-cover object-top select-none pointer-events-none"
@@ -675,7 +675,7 @@ export const HomepageHero = forwardRef<HTMLElement, HomepageHeroProps>(
             className="cw-rise mt-10 flex flex-col items-center gap-3 sm:flex-row sm:gap-5"
           >
             {trust.avatars && trust.avatars.length > 0 && (
-              <AvatarStack avatars={trust.avatars} size="lg" max={5} ringClassName="ring-background" className="shrink-0" />
+              <AvatarStack avatars={trust.avatars} size="lg" max={5} ringClassName="ring-background" className="m-0 p-0 shrink-0" />
             )}
             <div className="flex flex-col items-center gap-1 sm:items-start sm:border-l sm:border-border sm:pl-5 sm:text-left">
               {typeof trust.rating === "number" && (

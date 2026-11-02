@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import {
   Globe as GlobeIcon,
   Sparkles,
@@ -26,6 +26,9 @@ import { accentStyle } from "@/lib/accent";
 import { SocialLinks, type SocialLink } from "./SocialLinksBlock";
 import CustomButton from "./Button";
 
+/** Constant year to prevent Next.js "unstable value new Date() in a Client Component" warnings */
+const CURRENT_YEAR = 2026;
+
 export type FooterVariant =
   | "simple-centered"
   | "glass-dock"
@@ -43,8 +46,11 @@ export type FooterVariant =
 
 export interface ArchitecturalLiquidFooterProps {
   headline?: string;
+  heroTitle?: string;
   brandWordmark?: string;
+  blueprintWordmark?: string;
   brandName?: string;
+  logo?: React.ReactNode | string;
   color?: string;
   subscribeText?: string;
   addressLines?: string[];
@@ -95,6 +101,7 @@ export interface WordmarkFooterProps {
   copyright?: string;
   bottomLine?: string;
   wordmark?: string;
+  color?: string;
   className?: string;
 }
 
@@ -161,8 +168,10 @@ export interface FooterProps {
   /** Active accent color from the theme or color picker (e.g. "lavender", "indigo", "rose", "emerald", hex). */
   color?: string;
   brandName?: string;
-  logo?: React.ReactNode;
+  logo?: React.ReactNode | string;
   tagline?: string;
+  /** Hero headline for the architectural liquid variant (alias for architecturalLiquid.headline). */
+  heroTitle?: string;
   copyrightText?: string;
   sections?: FooterLinkSection[];
   /** The social row. Defaults to X, GitHub, LinkedIn, YouTube and Instagram pointing at `#`. */
@@ -1004,6 +1013,32 @@ function SnapshotStudioCard({
 }
 
 /**
+ * Self-contained vector SVG logo icon for Avara UI.
+ * Embedded directly to prevent broken / missing asset errors when consumers install the component.
+ */
+export function DefaultBrandIcon({ className = "size-6" }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 810 810"
+      className={cn("size-6 rounded-[6px] shrink-0", className)}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect width="810" height="810" rx="160" fill="var(--brand, #8c52ff)" />
+      <g fill="#000000" fillOpacity={0.35} transform="translate(168.704335, 726.778189)">
+        <path d="M 67.21875 -12.15625 L 67.21875 -26.25 C 67.21875 -34.351562 63.164062 -38.40625 55.0625 -38.40625 L 40.96875 -38.40625 C 32.863281 -38.40625 28.8125 -42.460938 28.8125 -50.578125 L 28.8125 -160.6875 C 28.8125 -168.789062 32.863281 -172.84375 40.96875 -172.84375 L 189.5 -172.84375 C 197.601562 -172.84375 201.65625 -168.789062 201.65625 -160.6875 L 201.65625 -50.578125 C 201.65625 -42.460938 205.710938 -38.40625 213.828125 -38.40625 L 227.90625 -38.40625 C 236.019531 -38.40625 240.078125 -42.460938 240.078125 -50.578125 L 240.078125 -64.65625 C 240.078125 -72.769531 244.128906 -76.828125 252.234375 -76.828125 L 273.359375 -76.828125 C 281.472656 -76.828125 285.53125 -80.878906 285.53125 -88.984375 L 285.53125 -241.34375 C 285.53125 -249.457031 281.472656 -253.515625 273.359375 -253.515625 L 259.28125 -253.515625 C 251.164062 -253.515625 247.109375 -257.566406 247.109375 -265.671875 L 247.109375 -279.765625 C 247.109375 -287.867188 243.054688 -291.921875 234.953125 -291.921875 L 124.84375 -291.921875 C 116.726562 -291.921875 112.671875 -295.976562 112.671875 -304.09375 L 112.671875 -318.171875 C 112.671875 -326.285156 108.617188 -330.34375 100.515625 -330.34375 L 86.421875 -330.34375 C 78.316406 -330.34375 74.265625 -334.394531 74.265625 -342.5 L 74.265625 -355.9375 C 74.265625 -364.476562 69.992188 -368.75 61.453125 -368.75 L 48.65625 -368.75 C 40.113281 -368.75 35.84375 -373.015625 35.84375 -381.546875 L 35.84375 -509.59375 C 35.84375 -518.113281 40.113281 -522.375 48.65625 -522.375 L 61.453125 -522.375 C 69.992188 -522.375 74.265625 -526.644531 74.265625 -535.1875 L 74.265625 -548.625 C 74.265625 -556.726562 78.316406 -560.78125 86.421875 -560.78125 L 100.515625 -560.78125 C 108.617188 -560.78125 112.671875 -564.835938 112.671875 -572.953125 L 112.671875 -587.03125 C 112.671875 -595.144531 116.726562 -599.203125 124.84375 -599.203125 L 362.984375 -599.203125 C 371.097656 -599.203125 375.15625 -595.144531 375.15625 -587.03125 L 375.15625 -572.953125 C 375.15625 -564.835938 379.207031 -560.78125 387.3125 -560.78125 L 433.40625 -560.78125 C 441.519531 -560.78125 445.578125 -556.726562 445.578125 -548.625 L 445.578125 -438.53125 C 445.578125 -430.414062 441.519531 -426.359375 433.40625 -426.359375 L 336.09375 -426.359375 C 327.988281 -426.359375 323.9375 -430.414062 323.9375 -438.53125 L 323.9375 -452.609375 C 323.9375 -460.722656 319.878906 -464.78125 311.765625 -464.78125 L 297.6875 -464.78125 C 289.582031 -464.78125 285.53125 -468.832031 285.53125 -476.9375 L 285.53125 -548.625 C 285.53125 -556.726562 281.472656 -560.78125 273.359375 -560.78125 L 259.28125 -560.78125 C 251.164062 -560.78125 247.109375 -556.726562 247.109375 -548.625 L 247.109375 -534.546875 C 247.109375 -526.429688 243.054688 -522.375 234.953125 -522.375 L 220.859375 -522.375 C 212.753906 -522.375 208.703125 -518.328125 208.703125 -510.234375 L 208.703125 -380.90625 C 208.703125 -372.800781 212.753906 -368.75 220.859375 -368.75 L 241.34375 -368.75 C 249.457031 -368.75 253.515625 -364.691406 253.515625 -356.578125 L 253.515625 -342.5 C 253.515625 -334.394531 257.566406 -330.34375 265.671875 -330.34375 L 369.390625 -330.34375 C 377.492188 -330.34375 381.546875 -326.285156 381.546875 -318.171875 L 381.546875 -304.09375 C 381.546875 -295.976562 385.601562 -291.921875 393.71875 -291.921875 L 407.796875 -291.921875 C 415.910156 -291.921875 419.96875 -287.867188 419.96875 -279.765625 L 419.96875 -266.3125 C 419.96875 -257.78125 424.234375 -253.515625 432.765625 -253.515625 L 445.578125 -253.515625 C 454.109375 -253.515625 458.375 -249.242188 458.375 -240.703125 L 458.375 -89.625 C 458.375 -81.09375 454.109375 -76.828125 445.578125 -76.828125 L 432.765625 -76.828125 C 424.234375 -76.828125 419.96875 -72.554688 419.96875 -64.015625 L 419.96875 -50.578125 C 419.96875 -42.460938 415.910156 -38.40625 407.796875 -38.40625 L 393.71875 -38.40625 C 385.601562 -38.40625 381.546875 -34.351562 381.546875 -26.25 L 381.546875 -12.15625 C 381.546875 -4.050781 377.707031 0 370.03125 0 L 78.75 0 C 71.0625 0 67.21875 -4.050781 67.21875 -12.15625 Z" />
+      </g>
+      <g fill="#ffffff" transform="translate(158.204336, 714.699315)">
+        <path d="M 67.21875 -12.15625 L 67.21875 -26.25 C 67.21875 -34.351562 63.164062 -38.40625 55.0625 -38.40625 L 40.96875 -38.40625 C 32.863281 -38.40625 28.8125 -42.460938 28.8125 -50.578125 L 28.8125 -160.6875 C 28.8125 -168.789062 32.863281 -172.84375 40.96875 -172.84375 L 189.5 -172.84375 C 197.601562 -172.84375 201.65625 -168.789062 201.65625 -160.6875 L 201.65625 -50.578125 C 201.65625 -42.460938 205.710938 -38.40625 213.828125 -38.40625 L 227.90625 -38.40625 C 236.019531 -38.40625 240.078125 -42.460938 240.078125 -50.578125 L 240.078125 -64.65625 C 240.078125 -72.769531 244.128906 -76.828125 252.234375 -76.828125 L 273.359375 -76.828125 C 281.472656 -76.828125 285.53125 -80.878906 285.53125 -88.984375 L 285.53125 -241.34375 C 285.53125 -249.457031 281.472656 -253.515625 273.359375 -253.515625 L 259.28125 -253.515625 C 251.164062 -253.515625 247.109375 -257.566406 247.109375 -265.671875 L 247.109375 -279.765625 C 247.109375 -287.867188 243.054688 -291.921875 234.953125 -291.921875 L 124.84375 -291.921875 C 116.726562 -291.921875 112.671875 -295.976562 112.671875 -304.09375 L 112.671875 -318.171875 C 112.671875 -326.285156 108.617188 -330.34375 100.515625 -330.34375 L 86.421875 -330.34375 C 78.316406 -330.34375 74.265625 -334.394531 74.265625 -342.5 L 74.265625 -355.9375 C 74.265625 -364.476562 69.992188 -368.75 61.453125 -368.75 L 48.65625 -368.75 C 40.113281 -368.75 35.84375 -373.015625 35.84375 -381.546875 L 35.84375 -509.59375 C 35.84375 -518.113281 40.113281 -522.375 48.65625 -522.375 L 61.453125 -522.375 C 69.992188 -522.375 74.265625 -526.644531 74.265625 -535.1875 L 74.265625 -548.625 C 74.265625 -556.726562 78.316406 -560.78125 86.421875 -560.78125 L 100.515625 -560.78125 C 108.617188 -560.78125 112.671875 -564.835938 112.671875 -572.953125 L 112.671875 -587.03125 C 112.671875 -595.144531 116.726562 -599.203125 124.84375 -599.203125 L 362.984375 -599.203125 C 371.097656 -599.203125 375.15625 -595.144531 375.15625 -587.03125 L 375.15625 -572.953125 C 375.15625 -564.835938 379.207031 -560.78125 387.3125 -560.78125 L 433.40625 -560.78125 C 441.519531 -560.78125 445.578125 -556.726562 445.578125 -548.625 L 445.578125 -438.53125 C 445.578125 -430.414062 441.519531 -426.359375 433.40625 -426.359375 L 336.09375 -426.359375 C 327.988281 -426.359375 323.9375 -430.414062 323.9375 -438.53125 L 323.9375 -452.609375 C 323.9375 -460.722656 319.878906 -464.78125 311.765625 -464.78125 L 297.6875 -464.78125 C 289.582031 -464.78125 285.53125 -468.832031 285.53125 -476.9375 L 285.53125 -548.625 C 285.53125 -556.726562 281.472656 -560.78125 273.359375 -560.78125 L 259.28125 -560.78125 C 251.164062 -560.78125 247.109375 -556.726562 247.109375 -548.625 L 247.109375 -534.546875 C 247.109375 -526.429688 243.054688 -522.375 234.953125 -522.375 L 220.859375 -522.375 C 212.753906 -522.375 208.703125 -518.328125 208.703125 -510.234375 L 208.703125 -380.90625 C 208.703125 -372.800781 212.753906 -368.75 220.859375 -368.75 L 241.34375 -368.75 C 249.457031 -368.75 253.515625 -364.691406 253.515625 -356.578125 L 253.515625 -342.5 C 253.515625 -334.394531 257.566406 -330.34375 265.671875 -330.34375 L 369.390625 -330.34375 C 377.492188 -330.34375 381.546875 -326.285156 381.546875 -318.171875 L 381.546875 -304.09375 C 381.546875 -295.976562 385.601562 -291.921875 393.71875 -291.921875 L 407.796875 -291.921875 C 415.910156 -291.921875 419.96875 -287.867188 419.96875 -279.765625 L 419.96875 -266.3125 C 419.96875 -257.78125 424.234375 -253.515625 432.765625 -253.515625 L 445.578125 -253.515625 C 454.109375 -253.515625 458.375 -249.242188 458.375 -240.703125 L 458.375 -89.625 C 458.375 -81.09375 454.109375 -76.828125 445.578125 -76.828125 L 432.765625 -76.828125 C 424.234375 -76.828125 419.96875 -72.554688 419.96875 -64.015625 L 419.96875 -50.578125 C 419.96875 -42.460938 415.910156 -38.40625 407.796875 -38.40625 L 393.71875 -38.40625 C 385.601562 -38.40625 381.546875 -34.351562 381.546875 -26.25 L 381.546875 -12.15625 C 381.546875 -4.050781 377.707031 0 370.03125 0 L 78.75 0 C 71.0625 0 67.21875 -4.050781 67.21875 -12.15625 Z" />
+      </g>
+      <g fill="#ffffff" transform="translate(158.204336, 714.699315)">
+        <path d="M 67.21875 -12.15625 L 67.21875 -26.25 C 67.21875 -34.351562 63.164062 -38.40625 55.0625 -38.40625 L 40.96875 -38.40625 C 32.863281 -38.40625 28.8125 -42.460938 28.8125 -50.578125 L 28.8125 -160.6875 C 28.8125 -168.789062 32.863281 -172.84375 40.96875 -172.84375 L 189.5 -172.84375 C 197.601562 -172.84375 201.65625 -168.789062 201.65625 -160.6875 L 201.65625 -50.578125 C 201.65625 -42.460938 205.710938 -38.40625 213.828125 -38.40625 L 227.90625 -38.40625 C 236.019531 -38.40625 240.078125 -42.460938 240.078125 -50.578125 L 240.078125 -64.65625 C 240.078125 -72.769531 244.128906 -76.828125 252.234375 -76.828125 L 273.359375 -76.828125 C 281.472656 -76.828125 285.53125 -80.878906 285.53125 -88.984375 L 285.53125 -241.34375 C 285.53125 -249.457031 281.472656 -253.515625 273.359375 -253.515625 L 259.28125 -253.515625 C 251.164062 -253.515625 247.109375 -257.566406 247.109375 -265.671875 L 247.109375 -279.765625 C 247.109375 -287.867188 243.054688 -291.921875 234.953125 -291.921875 L 124.84375 -291.921875 C 116.726562 -291.921875 112.671875 -295.976562 112.671875 -304.09375 L 112.671875 -318.171875 C 112.671875 -326.285156 108.617188 -330.34375 100.515625 -330.34375 L 86.421875 -330.34375 C 78.316406 -330.34375 74.265625 -334.394531 74.265625 -342.5 L 74.265625 -355.9375 C 74.265625 -364.476562 69.992188 -368.75 61.453125 -368.75 L 48.65625 -368.75 C 40.113281 -368.75 35.84375 -373.015625 35.84375 -381.546875 L 35.84375 -509.59375 C 35.84375 -518.113281 40.113281 -522.375 48.65625 -522.375 L 61.453125 -522.375 C 69.992188 -522.375 74.265625 -526.644531 74.265625 -535.1875 L 74.265625 -548.625 C 74.265625 -556.726562 78.316406 -560.78125 86.421875 -560.78125 L 100.515625 -560.78125 C 108.617188 -560.78125 112.671875 -564.835938 112.671875 -572.953125 L 112.671875 -587.03125 C 112.671875 -595.144531 116.726562 -599.203125 124.84375 -599.203125 L 362.984375 -599.203125 C 371.097656 -599.203125 375.15625 -595.144531 375.15625 -587.03125 L 375.15625 -572.953125 C 375.15625 -564.835938 379.207031 -560.78125 387.3125 -560.78125 L 433.40625 -560.78125 C 441.519531 -560.78125 445.578125 -556.726562 445.578125 -548.625 L 445.578125 -438.53125 C 445.578125 -430.414062 441.519531 -426.359375 433.40625 -426.359375 L 336.09375 -426.359375 C 327.988281 -426.359375 323.9375 -430.414062 323.9375 -438.53125 L 323.9375 -452.609375 C 323.9375 -460.722656 319.878906 -464.78125 311.765625 -464.78125 L 297.6875 -464.78125 C 289.582031 -464.78125 285.53125 -468.832031 285.53125 -476.9375 L 285.53125 -548.625 C 285.53125 -556.726562 281.472656 -560.78125 273.359375 -560.78125 L 259.28125 -560.78125 C 251.164062 -560.78125 247.109375 -556.726562 247.109375 -548.625 L 247.109375 -534.546875 C 247.109375 -526.429688 243.054688 -522.375 234.953125 -522.375 L 220.859375 -522.375 C 212.753906 -522.375 208.703125 -518.328125 208.703125 -510.234375 L 208.703125 -380.90625 C 208.703125 -372.800781 212.753906 -368.75 220.859375 -368.75 L 241.34375 -368.75 C 249.457031 -368.75 253.515625 -364.691406 253.515625 -356.578125 L 253.515625 -342.5 C 253.515625 -334.394531 257.566406 -330.34375 265.671875 -330.34375 L 369.390625 -330.34375 C 377.492188 -330.34375 381.546875 -326.285156 381.546875 -318.171875 L 381.546875 -304.09375 C 381.546875 -295.976562 385.601562 -291.921875 393.71875 -291.921875 L 407.796875 -291.921875 C 415.910156 -291.921875 419.96875 -287.867188 419.96875 -279.765625 L 419.96875 -266.3125 C 419.96875 -257.78125 424.234375 -253.515625 432.765625 -253.515625 L 445.578125 -253.515625 C 454.109375 -253.515625 458.375 -249.242188 458.375 -240.703125 L 458.375 -89.625 C 458.375 -81.09375 454.109375 -76.828125 445.578125 -76.828125 L 432.765625 -76.828125 C 424.234375 -76.828125 419.96875 -72.554688 419.96875 -64.015625 L 419.96875 -50.578125 C 419.96875 -42.460938 415.910156 -38.40625 407.796875 -38.40625 L 393.71875 -38.40625 C 385.601562 -38.40625 381.546875 -34.351562 381.546875 -26.25 L 381.546875 -12.15625 C 381.546875 -4.050781 377.707031 0 370.03125 0 L 78.75 0 C 71.0625 0 67.21875 -4.050781 67.21875 -12.15625 Z" />
+      </g>
+    </svg>
+  );
+}
+
+/**
  * Studio footer with a pile of cards sunk behind the divider. Each card sits
  * mostly below the fold of the top section and rises on hover/press.
  */
@@ -1014,14 +1049,16 @@ function SnapshotFooter({
   sections,
   content,
   isModernStack,
+  color,
   socialLinks = DEFAULT_SOCIAL_LINKS,
 }: {
   brandName: string;
-  logo?: React.ReactNode;
+  logo?: React.ReactNode | string;
   copyrightText?: string;
   sections: FooterLinkSection[];
   content?: SnapshotFooterContent;
   isModernStack?: boolean;
+  color?: string;
   socialLinks?: SocialLink[];
 }) {
   const c = { ...SNAPSHOT_DEFAULTS, ...content };
@@ -1030,7 +1067,7 @@ function SnapshotFooter({
   const wordmark = brandName;
   const copyright =
     copyrightText ??
-    `© ${new Date().getFullYear()} ${brandName}. All rights reserved.`;
+    `© ${CURRENT_YEAR} ${brandName}. All rights reserved.`;
   const [line1, line2, line3] = c.taglineLines;
   let wordIndex = 0;
 
@@ -1041,7 +1078,10 @@ function SnapshotFooter({
   return (
     <div
       className="w-full bg-[#faf8f5] dark:bg-[#0c0c0e] text-[#18181b] dark:text-[#f4f4f5] antialiased transition-colors"
-      style={{ fontFamily: '"Switzer", "Inter", ui-sans-serif, system-ui, sans-serif' }}
+      style={{
+        fontFamily: '"Switzer", "Inter", ui-sans-serif, system-ui, sans-serif',
+        ...accentStyle(color),
+      }}
     >
       <style>{`@import url('https://api.fontshare.com/v2/css?f[]=switzer@400,500,600&display=swap');@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap');`}</style>
 
@@ -1201,18 +1241,24 @@ function SnapshotFooter({
                   onClick={(e) => e.preventDefault()}
                   className="group flex w-fit items-center gap-3 no-underline cursor-pointer"
                 >
-                  {logo ?? (
-                    <img
-                      src="/favicon/android-chrome-192x192.png"
-                      alt={brandName}
-                      width={28}
-                      height={28}
-                      className="size-7 rounded-[7px] object-cover transition-transform duration-200 group-hover:scale-105"
-                    />
+                  {logo ? (
+                    typeof logo === "string" ? (
+                      <img
+                        src={logo}
+                        alt={brandName || "Logo"}
+                        className="h-8 w-auto object-contain"
+                      />
+                    ) : (
+                      logo
+                    )
+                  ) : (
+                    <div className="flex items-center gap-3">
+                      <DefaultBrandIcon className="size-7 rounded-[7px] object-cover transition-transform duration-200 group-hover:scale-105" />
+                      <span className="text-[22px] font-bold tracking-tight text-zinc-950 dark:text-zinc-50 font-sans">
+                        {wordmark}
+                      </span>
+                    </div>
                   )}
-                  <span className="text-[22px] font-bold tracking-tight text-zinc-950 dark:text-zinc-50 font-sans">
-                    {wordmark}
-                  </span>
                 </a>
 
                 {/* Typographic Tagline with crisp contrast */}
@@ -1323,18 +1369,24 @@ function SnapshotFooter({
                   onClick={(e) => e.preventDefault()}
                   className="flex w-fit items-center gap-2.5 no-underline cursor-pointer"
                 >
-                  {logo ?? (
-                    <img
-                      src="/favicon/android-chrome-192x192.png"
-                      alt={brandName}
-                      width={22}
-                      height={22}
-                      className="size-[22px] rounded-[5px]"
-                    />
+                  {logo ? (
+                    typeof logo === "string" ? (
+                      <img
+                        src={logo}
+                        alt={brandName || "Logo"}
+                        className="h-7 w-auto object-contain"
+                      />
+                    ) : (
+                      logo
+                    )
+                  ) : (
+                    <div className="flex items-center gap-2.5">
+                      <DefaultBrandIcon className="size-[22px] rounded-[5px]" />
+                      <span className="text-[20px] font-semibold leading-none tracking-[-0.03em] text-[#09090b] dark:text-zinc-100">
+                        {wordmark}
+                      </span>
+                    </div>
                   )}
-                  <span className="text-[20px] font-semibold leading-none tracking-[-0.03em] text-[#09090b] dark:text-zinc-100">
-                    {wordmark}
-                  </span>
                 </a>
                 <p className="text-[26px] min-[810px]:text-[28px] font-medium leading-[1.15] tracking-[-0.03em]">
                   <span className="text-[#09090b] dark:text-zinc-100">{line1}</span>
@@ -1419,20 +1471,7 @@ function SnapshotFooter({
 /* -------------------------------------------------------------------------- */
 
 const wordmarkHeadingClass = "mb-3 text-[0.8125rem] font-medium text-muted-foreground";
-const wordmarkLinkClass = "text-[0.9375rem] text-foreground/80 hover:text-foreground transition-colors";
-
-const wordmarkKeyframes = `
-@keyframes footer-block-rise { from { transform: translateY(70%); } to { transform: none; } }
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .footer-block-letter {
-      animation: footer-block-rise linear both;
-      animation-timeline: view();
-      animation-range: entry calc(var(--i) * 4%) entry 100%;
-    }
-  }
-}
-`;
+const wordmarkLinkClass = "text-[0.9375rem] text-foreground/80 hover:text-primary transition-colors";
 
 export function WordmarkFooter({
   logo,
@@ -1447,10 +1486,38 @@ export function WordmarkFooter({
   copyright = "Avara UI",
   bottomLine = "A person makes every hiring decision.",
   wordmark = "Algorize",
+  color,
   className = "",
 }: WordmarkFooterProps) {
   const { contact: contactLabel = "Talk to us", location: locationLabel = "Where we work", social: socialLabel = "Follow" } = labels;
   const wrapRef = useRef<HTMLDivElement>(null);
+  const measureRef = useRef<HTMLSpanElement>(null);
+  const [fontSize, setFontSize] = useState<number | null>(null);
+  const reduceMotion = useReducedMotion();
+
+  const updateFontSize = useCallback(() => {
+    if (!wrapRef.current || !measureRef.current) return;
+    const containerWidth = wrapRef.current.clientWidth;
+    const widthAt100 = measureRef.current.offsetWidth;
+    if (containerWidth > 0 && widthAt100 > 0) {
+      // Fill full width edge-to-edge safely without any clipping on left or right
+      const targetWidth = Math.min(containerWidth - 24, containerWidth * 0.95);
+      const computedSize = (targetWidth / widthAt100) * 100;
+      setFontSize(Math.min(Math.max(computedSize, 18), 340));
+    }
+  }, []);
+
+  useEffect(() => {
+    updateFontSize();
+    if (typeof document !== "undefined" && document.fonts) {
+      document.fonts.ready.then(updateFontSize);
+    }
+    const node = wrapRef.current;
+    if (!node) return;
+    const observer = new ResizeObserver(() => updateFontSize());
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [updateFontSize, wordmark]);
 
   // Writes the pointer position as --mx / --my for the glow, one write per frame.
   useEffect(() => {
@@ -1486,13 +1553,7 @@ export function WordmarkFooter({
   ) : (
     <div className="flex items-center gap-2 select-none">
       <div className="relative flex items-center justify-center">
-        <img
-          src="/favicon/android-chrome-192x192.png"
-          alt="Avara UI"
-          width={24}
-          height={24}
-          className="size-6 object-contain"
-        />
+        <DefaultBrandIcon className="size-6" />
       </div>
       <span className="font-extrabold text-xl tracking-tight text-foreground flex items-center gap-1.5">
         Avara{" "}
@@ -1506,16 +1567,17 @@ export function WordmarkFooter({
     </div>
   );
 
-  const yearStr = String(new Date().getFullYear());
+  const yearStr = String(CURRENT_YEAR);
   const displayCopyright = copyright.startsWith(yearStr)
     ? copyright
     : `${yearStr} ${copyright}`;
-  const charRatio = wordmark ? Math.max(wordmark.length * 0.56, 2.5) : 4.5;
+  const charRatio = wordmark ? Math.max(wordmark.length * 0.62, 2.5) : 4.5;
 
   return (
-    <footer className={cn("relative w-full bg-background pt-[72px] text-foreground transition-colors overflow-hidden", className)}>
-      <style>{wordmarkKeyframes}</style>
-
+    <footer
+      style={accentStyle(color)}
+      className={cn("relative w-full bg-background pt-[72px] text-foreground transition-colors overflow-hidden", className)}
+    >
       <div className="relative z-10 mx-auto w-full max-w-[1280px] px-5 sm:px-8">
         <div className="grid gap-10 lg:grid-cols-[1.2fr_1.3fr_1fr]">
           <div className="grid max-w-[352px] content-start gap-3.5">
@@ -1604,28 +1666,67 @@ export function WordmarkFooter({
           ref={wrapRef}
           className="group/word relative isolate mt-[calc(24px-var(--lift))] overflow-hidden px-2 pt-[var(--lift)] sm:px-4 [--lift:clamp(96px,10vw,160px)] lg:mt-[calc(40px-var(--lift))] [container-type:inline-size]"
         >
+          {/* Invisible measurement element to compute 100% exact full-width font scaling */}
+          <span
+            ref={measureRef}
+            aria-hidden="true"
+            className="invisible absolute left-0 top-0 pointer-events-none select-none whitespace-nowrap font-semibold leading-[0.82] tracking-[-0.035em]"
+            style={{ fontSize: "100px" }}
+          >
+            {[...wordmark].map((letter, i) => (
+              <span key={i} className="inline-block px-[0.02em] last:pr-[0.14em]">
+                {letter}
+              </span>
+            ))}
+          </span>
+
           {/* Glow behind the letters; it reaches up behind the bottom row and fades in. */}
           <div
             aria-hidden="true"
             className="absolute inset-0 -z-10 bg-[radial-gradient(320px_circle_at_var(--mx,50%)_var(--my,60%),color-mix(in_oklab,var(--primary)_42%,transparent),transparent_70%)] opacity-50 transition-opacity duration-300 [mask-image:linear-gradient(to_bottom,transparent,#000_calc(var(--lift)+48px))] group-hover/word:opacity-100"
           />
-          <p
+          <motion.p
             aria-hidden="true"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.25 }}
             style={{
-              fontSize: `clamp(3.5rem, calc(88cqi / ${charRatio}), 19rem)`,
+              fontSize: fontSize ? `${fontSize}px` : `clamp(1.75rem, calc(92cqi / ${charRatio}), 19rem)`,
             }}
-            className="pointer-events-none mb-[-0.025em] mt-6 flex w-full select-none justify-center whitespace-nowrap text-[clamp(3.5rem,calc(88vw/4.5),19rem)] font-semibold leading-[0.82] tracking-[-0.035em]"
+            className="pointer-events-none mb-[-0.025em] mt-6 flex w-full max-w-full select-none justify-center whitespace-nowrap font-semibold leading-[0.82] tracking-[-0.035em]"
           >
             {[...wordmark].map((letter, index) => (
-              <span
+              <motion.span
                 key={index}
-                style={{ "--i": index } as React.CSSProperties}
-                className="footer-block-letter inline-block px-[0.02em] last:pr-[0.14em] bg-gradient-to-b from-foreground/20 to-foreground/[0.02] to-85% bg-clip-text text-transparent"
+                variants={
+                  reduceMotion
+                    ? undefined
+                    : {
+                        hidden: {
+                          y: "75%",
+                          opacity: 0,
+                          scale: 0.94,
+                        },
+                        visible: {
+                          y: "0%",
+                          opacity: 1,
+                          scale: 1,
+                          transition: {
+                            type: "spring",
+                            stiffness: 95,
+                            damping: 14,
+                            mass: 1.25,
+                            delay: index * 0.08,
+                          },
+                        },
+                      }
+                }
+                className="inline-block px-[0.02em] last:pr-[0.14em] bg-gradient-to-b from-foreground/20 to-foreground/[0.02] to-85% bg-clip-text text-transparent"
               >
                 {letter}
-              </span>
+              </motion.span>
             ))}
-          </p>
+          </motion.p>
         </div>
       )}
     </footer>
@@ -2100,6 +2201,7 @@ function EditorialTabCardContent({
 
 export function EditorialCardFooter({
   brandName = "HS",
+  logo,
   copyrightText,
   editorialCta,
   socialLinks,
@@ -2107,6 +2209,7 @@ export function EditorialCardFooter({
   className,
 }: {
   brandName?: string;
+  logo?: React.ReactNode | string;
   copyrightText?: string;
   tagline?: string;
   editorialCta?: EditorialFooterProps;
@@ -2143,7 +2246,7 @@ export function EditorialCardFooter({
   const copyright =
     editorialCta?.copyright ??
     copyrightText ??
-    `${brandName || "HS"} © ${new Date().getFullYear()}`;
+    `${brandName || "HS"} © ${CURRENT_YEAR}`;
   const rightsText = editorialCta?.rightsText ?? "All Rights Reserved";
 
   const rawSocials =
@@ -2214,7 +2317,7 @@ export function EditorialCardFooter({
                       "w-full text-left px-5 sm:px-6 py-4 sm:py-6 min-h-[52px] sm:min-h-[66px] flex items-center justify-between text-xs tracking-wider uppercase transition-all duration-200 cursor-pointer outline-none border-t border-dashed border-neutral-300 dark:border-neutral-800 shadow-none",
                       isSelected
                         ? cn(tabTheme.activeTabBg, tabTheme.activeTabText, "border-l-4 font-bold shadow-none", tabTheme.activeTabBorder)
-                        : "bg-transparent text-neutral-600 dark:text-neutral-400 font-semibold hover:bg-neutral-200/50 dark:hover:bg-neutral-800/50 shadow-none"
+                        : "bg-transparent text-neutral-600 dark:text-neutral-400 font-semibold hover:bg-primary/10 hover:text-primary dark:hover:bg-primary/15 dark:hover:text-primary shadow-none"
                     )}
                   >
                     <span>{tab.label}</span>
@@ -2237,11 +2340,11 @@ export function EditorialCardFooter({
               <div className="text-xs sm:text-[13px] font-mono tracking-tight text-neutral-800 dark:text-neutral-200">
                 <div className="flex items-center gap-2">
                   <span className="size-2 rounded-full bg-primary animate-pulse shrink-0" />
-                  <span className="font-semibold text-neutral-950 dark:text-white">
+                  <span suppressHydrationWarning className="font-semibold text-neutral-950 dark:text-white">
                     {timeStr}
                   </span>
                 </div>
-                <span className="block text-neutral-500 dark:text-neutral-400 mt-1 pl-4">
+                <span suppressHydrationWarning className="block text-neutral-500 dark:text-neutral-400 mt-1 pl-4">
                   {dateStr}
                 </span>
               </div>
@@ -2250,9 +2353,17 @@ export function EditorialCardFooter({
             {/* Column 4: Globe Icon & Copyright (Box 4) */}
             <div className="flex flex-col justify-start pt-4 sm:pt-5 pb-5 px-5 sm:px-6 border-t md:border-t-0 border-dashed border-neutral-300 dark:border-neutral-800">
               <div className="flex items-start gap-3">
-                <div className="p-1.5 rounded-lg bg-primary/10 text-primary border border-primary/20 shrink-0 mt-0.5">
-                  <WireframeGlobeIcon className="size-5" />
-                </div>
+                {logo ? (
+                  typeof logo === "string" ? (
+                    <img src={logo} alt={brandName || "Logo"} className="h-7 w-auto object-contain shrink-0 mt-0.5" />
+                  ) : (
+                    <div className="shrink-0 mt-0.5">{logo}</div>
+                  )
+                ) : (
+                  <div className="p-1.5 rounded-lg bg-primary/10 text-primary border border-primary/20 shrink-0 mt-0.5">
+                    <WireframeGlobeIcon className="size-5" />
+                  </div>
+                )}
                 <div className="text-xs sm:text-[13px] font-medium leading-tight text-neutral-800 dark:text-neutral-200">
                   <div className="font-semibold">{copyright}</div>
                   <div className="text-neutral-500 dark:text-neutral-400 mt-0.5">
@@ -2341,19 +2452,23 @@ export function EditorialCardFooter({
 /** The wordmark, or whatever `logo` was passed instead of it. */
 function BrandLogo({ logo, brandName }: Pick<FooterProps, "logo" | "brandName">) {
   const isAvara = !brandName || brandName === "Avara UI";
+
+  if (logo) {
+    if (typeof logo === "string") {
+      return (
+        <a href="/" className="inline-flex items-center">
+          <img src={logo} alt={brandName || "Logo"} className="h-7 w-auto object-contain" />
+        </a>
+      );
+    }
+    return <div className="inline-flex items-center">{logo}</div>;
+  }
+
   return (
     <div className="flex items-center gap-2 select-none">
-      {logo || (
-        <div className="relative flex items-center justify-center">
-          <img
-            src="/favicon/android-chrome-192x192.png"
-            alt={brandName || "Avara UI"}
-            width={24}
-            height={24}
-            className="size-6 object-contain"
-          />
-        </div>
-      )}
+      <div className="relative flex items-center justify-center">
+        <DefaultBrandIcon className="size-6" />
+      </div>
       <span className="font-extrabold text-base sm:text-lg tracking-tight text-foreground flex items-center gap-1.5">
         {isAvara ? "Avara" : brandName}{" "}
         <span
@@ -2515,18 +2630,24 @@ export function getArchitecturalGlyph(
   const x2 = cx + letterW / 2;
   const T = 22; // stroke thickness
   const C = 26; // chamfer for octagonal O, G
+  const inC = C * 0.6;
   const OS = 5; // corner drafting extension overshoot
+  const midY = (y1 + y2) / 2;
 
   switch (char.toUpperCase()) {
+    case " ": {
+      return { fillD: "", strokeD: "" };
+    }
+
     case "O": {
       // Outer octagonal chamfer + inner octagonal chamfer hole
       const fillD = [
         `M ${x1 + C} ${y1} L ${x2 - C} ${y1} L ${x2} ${y1 + C} L ${x2} ${y2 - C} L ${x2 - C} ${y2} L ${x1 + C} ${y2} L ${x1} ${y2 - C} L ${x1} ${y1 + C} Z`,
-        `M ${x1 + T + C * 0.6} ${y1 + T} L ${x2 - T - C * 0.6} ${y1 + T} L ${x2 - T} ${y1 + T + C * 0.6} L ${x2 - T} ${y2 - T - C * 0.6} L ${x2 - T - C * 0.6} ${y2 - T} L ${x1 + T + C * 0.6} ${y2 - T} L ${x1 + T} ${y2 - T - C * 0.6} L ${x1 + T} ${y1 + T + C * 0.6} Z`,
+        `M ${x1 + T + inC} ${y1 + T} L ${x2 - T - inC} ${y1 + T} L ${x2 - T} ${y1 + T + inC} L ${x2 - T} ${y2 - T - inC} L ${x2 - T - inC} ${y2 - T} L ${x1 + T + inC} ${y2 - T} L ${x1 + T} ${y2 - T - inC} L ${x1 + T} ${y1 + T + inC} Z`,
       ].join(" ");
       const strokeD = [
         `M ${x1 + C} ${y1} L ${x2 - C} ${y1} L ${x2} ${y1 + C} L ${x2} ${y2 - C} L ${x2 - C} ${y2} L ${x1 + C} ${y2} L ${x1} ${y2 - C} L ${x1} ${y1 + C} Z`,
-        `M ${x1 + T + C * 0.6} ${y1 + T} L ${x2 - T - C * 0.6} ${y1 + T} L ${x2 - T} ${y1 + T + C * 0.6} L ${x2 - T} ${y2 - T - C * 0.6} L ${x2 - T - C * 0.6} ${y2 - T} L ${x1 + T + C * 0.6} ${y2 - T} L ${x1 + T} ${y2 - T - C * 0.6} L ${x1 + T} ${y1 + T + C * 0.6} Z`,
+        `M ${x1 + T + inC} ${y1 + T} L ${x2 - T - inC} ${y1 + T} L ${x2 - T} ${y1 + T + inC} L ${x2 - T} ${y2 - T - inC} L ${x2 - T - inC} ${y2 - T} L ${x1 + T + inC} ${y2 - T} L ${x1 + T} ${y2 - T - inC} L ${x1 + T} ${y1 + T + inC} Z`,
         // Center crosshair inside hole
         `M ${cx - 5} ${cy} L ${cx + 5} ${cy} M ${cx} ${cy - 5} L ${cx} ${cy + 5}`,
         // Top and bottom registration ticks
@@ -2554,24 +2675,93 @@ export function getArchitecturalGlyph(
       return { fillD, strokeD };
     }
 
-    case "L": {
-      const fillD = `M ${x1} ${y1} L ${x1 + T} ${y1} L ${x1 + T} ${y2 - T} L ${x2} ${y2 - T} L ${x2} ${y2} L ${x1} ${y2} Z`;
+    case "B": {
+      const fillD = [
+        `M ${x1} ${y1} L ${x2 - C} ${y1} L ${x2} ${y1 + C} L ${x2} ${midY - 6} L ${cx + 10} ${midY} L ${x2} ${midY + 6} L ${x2} ${y2 - C} L ${x2 - C} ${y2} L ${x1} ${y2} Z`,
+        `M ${x1 + T} ${y1 + T} L ${x2 - T - inC} ${y1 + T} L ${x2 - T} ${y1 + T + inC} L ${x2 - T} ${midY - T / 2 - 4} L ${x2 - T - inC} ${midY - T / 2} L ${x1 + T} ${midY - T / 2} Z`,
+        `M ${x1 + T} ${midY + T / 2} L ${x2 - T - inC} ${midY + T / 2} L ${x2 - T} ${midY + T / 2 + inC} L ${x2 - T} ${y2 - T - inC} L ${x2 - T - inC} ${y2 - T} L ${x1 + T} ${y2 - T} Z`,
+      ].join(" ");
       const strokeD = [
         `M ${x1} ${y1 - OS} L ${x1} ${y2 + OS}`,
-        `M ${x1 - OS} ${y1} L ${x1 + T + OS} ${y1}`,
-        `M ${x1 + T} ${y1 - OS} L ${x1 + T} ${y2 - T}`,
-        `M ${x1 + T} ${y2 - T} L ${x2 + OS} ${y2 - T}`,
+        `M ${x1 + T} ${y1} L ${x1 + T} ${y2}`,
+        `M ${x1 - OS} ${y1} L ${x2 - C + OS} ${y1}`,
+        `M ${x2 - C} ${y1} L ${x2} ${y1 + C} L ${x2} ${midY - 6} L ${cx + 10} ${midY}`,
+        `M ${cx + 10} ${midY} L ${x2} ${midY + 6} L ${x2} ${y2 - C} L ${x2 - C} ${y2}`,
+        `M ${x1 - OS} ${y2} L ${x2 - C + OS} ${y2}`,
+        `M ${x1 + T} ${midY} L ${cx + 10} ${midY}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "C": {
+      const fillD = [
+        `M ${x2} ${y1 + C} L ${x2 - C} ${y1} L ${x1 + C} ${y1} L ${x1} ${y1 + C} L ${x1} ${y2 - C} L ${x1 + C} ${y2} L ${x2 - C} ${y2} L ${x2} ${y2 - C}`,
+        `L ${x2 - T} ${y2 - C} L ${x2 - T - inC} ${y2 - T} L ${x1 + T + inC} ${y2 - T} L ${x1 + T} ${y2 - T - inC} L ${x1 + T} ${y1 + T + inC} L ${x1 + T + inC} ${y1 + T} L ${x2 - T - inC} ${y1 + T} L ${x2 - T} ${y1 + C} Z`,
+      ].join(" ");
+      const strokeD = [
+        `M ${x1 + C - OS} ${y1} L ${x2 - C + OS} ${y1}`,
+        `M ${x1 + C - OS} ${y2} L ${x2 - C + OS} ${y2}`,
+        `M ${x1} ${y1 + C - OS} L ${x1} ${y2 - C + OS}`,
+        `M ${x1 + C} ${y1} L ${x1} ${y1 + C}`,
+        `M ${x1 + C} ${y2} L ${x1} ${y2 - C}`,
+        `M ${x2 - C} ${y1} L ${x2} ${y1 + C}`,
+        `M ${x2 - C} ${y2} L ${x2} ${y2 - C}`,
+        `M ${x1 + T} ${y1 + T + inC} L ${x1 + T} ${y2 - T - inC}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "D": {
+      const fillD = [
+        `M ${x1} ${y1} L ${x2 - C * 1.5} ${y1} L ${x2} ${y1 + C * 1.5} L ${x2} ${y2 - C * 1.5} L ${x2 - C * 1.5} ${y2} L ${x1} ${y2} Z`,
+        `M ${x1 + T} ${y1 + T} L ${x2 - T - inC * 1.5} ${y1 + T} L ${x2 - T} ${y1 + T + inC * 1.5} L ${x2 - T} ${y2 - T - inC * 1.5} L ${x2 - T - inC * 1.5} ${y2 - T} L ${x1 + T} ${y2 - T} Z`,
+      ].join(" ");
+      const strokeD = [
+        `M ${x1} ${y1 - OS} L ${x1} ${y2 + OS}`,
+        `M ${x1 + T} ${y1 - OS} L ${x1 + T} ${y2 + OS}`,
+        `M ${x1 - OS} ${y1} L ${x2 - C * 1.5 + OS} ${y1}`,
+        `M ${x1 - OS} ${y2} L ${x2 - C * 1.5 + OS} ${y2}`,
+        `M ${x2 - C * 1.5} ${y1} L ${x2} ${y1 + C * 1.5} L ${x2} ${y2 - C * 1.5} L ${x2 - C * 1.5} ${y2}`,
+        `M ${cx - 5} ${cy} L ${cx + 5} ${cy} M ${cx} ${cy - 5} L ${cx} ${cy + 5}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "E": {
+      const fillD = `M ${x1} ${y1} L ${x2} ${y1} L ${x2} ${y1 + T} L ${x1 + T} ${y1 + T} L ${x1 + T} ${midY - T / 2} L ${x2 - 14} ${midY - T / 2} L ${x2 - 14} ${midY + T / 2} L ${x1 + T} ${midY + T / 2} L ${x1 + T} ${y2 - T} L ${x2} ${y2 - T} L ${x2} ${y2} L ${x1} ${y2} Z`;
+      const strokeD = [
+        `M ${x1} ${y1 - OS} L ${x1} ${y2 + OS}`,
+        `M ${x1 - OS} ${y1} L ${x2 + OS} ${y1}`,
+        `M ${x2} ${y1 - OS} L ${x2} ${y1 + T + OS}`,
+        `M ${x1 + T} ${y1 + T - OS} L ${x2 + OS} ${y1 + T}`,
+        `M ${x1 + T} ${y1 + T} L ${x1 + T} ${y2 - T}`,
+        `M ${x1 + T - OS} ${midY - T / 2} L ${x2 - 14 + OS} ${midY - T / 2}`,
+        `M ${x2 - 14} ${midY - T / 2 - OS} L ${x2 - 14} ${midY + T / 2 + OS}`,
+        `M ${x1 + T - OS} ${midY + T / 2} L ${x2 - 14 + OS} ${midY + T / 2}`,
+        `M ${x1 + T - OS} ${y2 - T} L ${x2 + OS} ${y2 - T}`,
         `M ${x2} ${y2 - T - OS} L ${x2} ${y2 + OS}`,
         `M ${x1 - OS} ${y2} L ${x2 + OS} ${y2}`,
       ].join(" ");
       return { fillD, strokeD };
     }
 
-    case "G": {
-      // 4 authentic 45-degree chamfered corners (kona) perfectly matching octagonal O:
-      // Top-left, Top-right, Bottom-right, Bottom-left!
-      const inC = C * 0.6; // matching inner chamfer of O
+    case "F": {
+      const fillD = `M ${x1} ${y1} L ${x2} ${y1} L ${x2} ${y1 + T} L ${x1 + T} ${y1 + T} L ${x1 + T} ${midY - T / 2} L ${x2 - 14} ${midY - T / 2} L ${x2 - 14} ${midY + T / 2} L ${x1 + T} ${midY + T / 2} L ${x1 + T} ${y2} L ${x1} ${y2} Z`;
+      const strokeD = [
+        `M ${x1} ${y1 - OS} L ${x1} ${y2 + OS}`,
+        `M ${x1 - OS} ${y1} L ${x2 + OS} ${y1}`,
+        `M ${x2} ${y1 - OS} L ${x2} ${y1 + T + OS}`,
+        `M ${x1 + T} ${y1 + T - OS} L ${x2 + OS} ${y1 + T}`,
+        `M ${x1 + T} ${y1 + T} L ${x1 + T} ${y2 + OS}`,
+        `M ${x1 + T - OS} ${midY - T / 2} L ${x2 - 14 + OS} ${midY - T / 2}`,
+        `M ${x2 - 14} ${midY - T / 2 - OS} L ${x2 - 14} ${midY + T / 2 + OS}`,
+        `M ${x1 + T - OS} ${midY + T / 2} L ${x2 - 14 + OS} ${midY + T / 2}`,
+        `M ${x1 - OS} ${y2} L ${x1 + T + OS} ${y2}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
 
+    case "G": {
       const fillD = [
         `M ${x1} ${y1 + C}`,
         `L ${x1 + C} ${y1}`,
@@ -2597,50 +2787,164 @@ export function getArchitecturalGlyph(
       ].join(" ");
 
       const strokeD = [
-        // Top outer horizontal
         `M ${x1 + C - OS} ${y1} L ${x2 - C + OS} ${y1}`,
-        // Top-right outer 45-degree chamfer
         `M ${x2 - C} ${y1} L ${x2} ${y1 + C}`,
-        // Top terminal horizontal cut
         `M ${x2 - T - OS} ${y1 + C} L ${x2 + OS} ${y1 + C}`,
-        // Inner top-right 45-degree chamfer
         `M ${x2 - T} ${y1 + C} L ${x2 - T - inC} ${y1 + T}`,
-        // Inner top horizontal
         `M ${x1 + T + inC - OS} ${y1 + T} L ${x2 - T - inC + OS} ${y1 + T}`,
-        // Inner top-left 45-degree chamfer
         `M ${x1 + T + inC} ${y1 + T} L ${x1 + T} ${y1 + T + inC}`,
-        // Inner left vertical
         `M ${x1 + T} ${y1 + T + inC - OS} L ${x1 + T} ${y2 - T - inC + OS}`,
-        // Inner bottom-left 45-degree chamfer
         `M ${x1 + T} ${y2 - T - inC} L ${x1 + T + inC} ${y2 - T}`,
-        // Inner bottom horizontal
         `M ${x1 + T + inC - OS} ${y2 - T} L ${x2 - T - inC + OS} ${y2 - T}`,
-        // Inner bottom-right 45-degree chamfer
         `M ${x2 - T - inC} ${y2 - T} L ${x2 - T} ${y2 - T - inC}`,
-        // Inner right vertical up to crossbar
         `M ${x2 - T} ${y2 - T - inC + OS} L ${x2 - T} ${cy + T / 2 - OS}`,
-        // Crossbar bottom horizontal
         `M ${cx + 2 - OS} ${cy + T / 2} L ${x2 - T + OS} ${cy + T / 2}`,
-        // Crossbar tip vertical
         `M ${cx + 2} ${cy + T / 2 + OS} L ${cx + 2} ${cy - T / 2 - OS}`,
-        // Crossbar top horizontal
         `M ${cx + 2 - OS} ${cy - T / 2} L ${x2 + OS} ${cy - T / 2}`,
-        // Outer right vertical below crossbar
         `M ${x2} ${cy - T / 2 - OS} L ${x2} ${y2 - C + OS}`,
-        // Outer bottom-right 45-degree chamfer
         `M ${x2} ${y2 - C} L ${x2 - C} ${y2}`,
-        // Outer bottom horizontal
         `M ${x2 - C + OS} ${y2} L ${x1 + C - OS} ${y2}`,
-        // Outer bottom-left 45-degree chamfer
         `M ${x1 + C} ${y2} L ${x1} ${y2 - C}`,
-        // Outer left vertical
         `M ${x1} ${y2 - C + OS} L ${x1} ${y1 + C - OS}`,
-        // Outer top-left 45-degree chamfer
         `M ${x1} ${y1 + C} L ${x1 + C} ${y1}`,
-        // Center crosshair and registration ticks
         `M ${cx - 5} ${cy} L ${cx + 5} ${cy} M ${cx} ${cy - 5} L ${cx} ${cy + 5}`,
         `M ${cx} ${y1 - OS} L ${cx} ${y1 + OS} M ${cx} ${y2 - OS} L ${cx} ${y2 + OS}`,
         `M ${x1 - OS} ${cy} L ${x1 + OS} ${cy}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "H": {
+      const fillD = `M ${x1} ${y1} L ${x1 + T} ${y1} L ${x1 + T} ${midY - T / 2} L ${x2 - T} ${midY - T / 2} L ${x2 - T} ${y1} L ${x2} ${y1} L ${x2} ${y2} L ${x2 - T} ${y2} L ${x2 - T} ${midY + T / 2} L ${x1 + T} ${midY + T / 2} L ${x1 + T} ${y2} L ${x1} ${y2} Z`;
+      const strokeD = [
+        `M ${x1} ${y1 - OS} L ${x1} ${y2 + OS}`,
+        `M ${x1 + T} ${y1 - OS} L ${x1 + T} ${y2 + OS}`,
+        `M ${x1 - OS} ${y1} L ${x1 + T + OS} ${y1}`,
+        `M ${x1 - OS} ${y2} L ${x1 + T + OS} ${y2}`,
+        `M ${x2 - T} ${y1 - OS} L ${x2 - T} ${y2 + OS}`,
+        `M ${x2} ${y1 - OS} L ${x2} ${y2 + OS}`,
+        `M ${x2 - T - OS} ${y1} L ${x2 + OS} ${y1}`,
+        `M ${x2 - T - OS} ${y2} L ${x2 + OS} ${y2}`,
+        `M ${x1 + T - OS} ${midY - T / 2} L ${x2 - T + OS} ${midY - T / 2}`,
+        `M ${x1 + T - OS} ${midY + T / 2} L ${x2 - T + OS} ${midY + T / 2}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "I": {
+      const halfT = T / 2;
+      const fillD = `M ${cx - halfT} ${y1} L ${cx + halfT} ${y1} L ${cx + halfT} ${y2} L ${cx - halfT} ${y2} Z`;
+      const strokeD = [
+        `M ${cx - halfT} ${y1 - OS} L ${cx - halfT} ${y2 + OS}`,
+        `M ${cx + halfT} ${y1 - OS} L ${cx + halfT} ${y2 + OS}`,
+        `M ${cx - halfT - OS} ${y1} L ${cx + halfT + OS} ${y1}`,
+        `M ${cx - halfT - OS} ${y2} L ${cx + halfT + OS} ${y2}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "J": {
+      const fillD = `M ${x2 - T} ${y1} L ${x2} ${y1} L ${x2} ${y2 - C} L ${x2 - C} ${y2} L ${x1 + C} ${y2} L ${x1} ${y2 - C} L ${x1} ${y2 - 38} L ${x1 + T} ${y2 - 38} L ${x1 + T} ${y2 - T - inC} L ${x1 + T + inC} ${y2 - T} L ${x2 - T - inC} ${y2 - T} L ${x2 - T} ${y2 - T - inC} Z`;
+      const strokeD = [
+        `M ${x2 - T} ${y1 - OS} L ${x2 - T} ${y2 - T - inC}`,
+        `M ${x2} ${y1 - OS} L ${x2} ${y2 - C + OS}`,
+        `M ${x2 - T - OS} ${y1} L ${x2 + OS} ${y1}`,
+        `M ${x2} ${y2 - C} L ${x2 - C} ${y2} L ${x1 + C} ${y2} L ${x1} ${y2 - C} L ${x1} ${y2 - 38}`,
+        `M ${x1 - OS} ${y2 - 38} L ${x1 + T + OS} ${y2 - 38}`,
+        `M ${x1 + T} ${y2 - 38} L ${x1 + T} ${y2 - T - inC} L ${x1 + T + inC} ${y2 - T} L ${x2 - T - inC} ${y2 - T} L ${x2 - T} ${y2 - T - inC}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "K": {
+      const fillD = `M ${x1} ${y1} L ${x1 + T} ${y1} L ${x1 + T} ${midY - 14} L ${x2 - T * 1.1} ${y1} L ${x2} ${y1} L ${cx - 2} ${midY} L ${x2} ${y2} L ${x2 - T * 1.15} ${y2} L ${x1 + T} ${midY + 14} L ${x1 + T} ${y2} L ${x1} ${y2} Z`;
+      const strokeD = [
+        `M ${x1} ${y1 - OS} L ${x1} ${y2 + OS}`,
+        `M ${x1 + T} ${y1 - OS} L ${x1 + T} ${y2 + OS}`,
+        `M ${x1 - OS} ${y1} L ${x1 + T + OS} ${y1}`,
+        `M ${x1 - OS} ${y2} L ${x1 + T + OS} ${y2}`,
+        `M ${x1 + T} ${midY} L ${x2 + OS} ${y1 - OS}`,
+        `M ${cx} ${midY} L ${x2 + OS} ${y2 + OS}`,
+        `M ${x2 - T * 1.1 - OS} ${y1} L ${x2 + OS} ${y1}`,
+        `M ${x2 - T * 1.15 - OS} ${y2} L ${x2 + OS} ${y2}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "L": {
+      const fillD = `M ${x1} ${y1} L ${x1 + T} ${y1} L ${x1 + T} ${y2 - T} L ${x2} ${y2 - T} L ${x2} ${y2} L ${x1} ${y2} Z`;
+      const strokeD = [
+        `M ${x1} ${y1 - OS} L ${x1} ${y2 + OS}`,
+        `M ${x1 - OS} ${y1} L ${x1 + T + OS} ${y1}`,
+        `M ${x1 + T} ${y1 - OS} L ${x1 + T} ${y2 - T}`,
+        `M ${x1 + T} ${y2 - T} L ${x2 + OS} ${y2 - T}`,
+        `M ${x2} ${y2 - T - OS} L ${x2} ${y2 + OS}`,
+        `M ${x1 - OS} ${y2} L ${x2 + OS} ${y2}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "M": {
+      const fillD = `M ${x1} ${y1} L ${x1 + T} ${y1} L ${cx} 140 L ${x2 - T} ${y1} L ${x2} ${y1} L ${x2} ${y2} L ${x2 - T} ${y2} L ${x2 - T} 105 L ${cx} 165 L ${x1 + T} 105 L ${x1 + T} ${y2} L ${x1} ${y2} Z`;
+      const strokeD = [
+        `M ${x1} ${y1 - OS} L ${x1} ${y2 + OS}`,
+        `M ${x1 + T} ${y1} L ${x1 + T} ${y2 + OS}`,
+        `M ${x2 - T} ${y1} L ${x2 - T} ${y2 + OS}`,
+        `M ${x2} ${y1 - OS} L ${x2} ${y2 + OS}`,
+        `M ${x1 - OS} ${y1} L ${x1 + T + OS} ${y1}`,
+        `M ${x2 - T - OS} ${y1} L ${x2 + OS} ${y1}`,
+        `M ${x1 - OS} ${y2} L ${x1 + T + OS} ${y2}`,
+        `M ${x2 - T - OS} ${y2} L ${x2 + OS} ${y2}`,
+        `M ${x1} ${y1} L ${cx} 165 L ${x2} ${y1}`,
+        `M ${cx} 160 L ${cx} 175`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "N": {
+      const fillD = `M ${x1} ${y1} L ${x1 + T} ${y1} L ${x2 - T} ${y2 - 20} L ${x2 - T} ${y1} L ${x2} ${y1} L ${x2} ${y2} L ${x2 - T} ${y2} L ${x1 + T} ${y1 + 20} L ${x1 + T} ${y2} L ${x1} ${y2} Z`;
+      const strokeD = [
+        `M ${x1} ${y1 - OS} L ${x1} ${y2 + OS}`,
+        `M ${x1 + T} ${y1 - OS} L ${x1 + T} ${y2 + OS}`,
+        `M ${x1 - OS} ${y1} L ${x1 + T + OS} ${y1}`,
+        `M ${x1 - OS} ${y2} L ${x1 + T + OS} ${y2}`,
+        `M ${x2 - T} ${y1 - OS} L ${x2 - T} ${y2 + OS}`,
+        `M ${x2} ${y1 - OS} L ${x2} ${y2 + OS}`,
+        `M ${x2 - T - OS} ${y1} L ${x2 + OS} ${y1}`,
+        `M ${x2 - T - OS} ${y2} L ${x2 + OS} ${y2}`,
+        `M ${x1} ${y1} L ${x2 - T} ${y2}`,
+        `M ${x1 + T} ${y1} L ${x2} ${y2}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "P": {
+      const loopB = midY + 12;
+      const fillD = [
+        `M ${x1} ${y1} L ${x2 - C} ${y1} L ${x2} ${y1 + C} L ${x2} ${loopB - C} L ${x2 - C} ${loopB} L ${x1 + T} ${loopB} L ${x1 + T} ${y2} L ${x1} ${y2} Z`,
+        `M ${x1 + T} ${y1 + T} L ${x2 - T - inC} ${y1 + T} L ${x2 - T} ${y1 + T + inC} L ${x2 - T} ${loopB - T - inC} L ${x2 - T - inC} ${loopB - T} L ${x1 + T} ${loopB - T} Z`,
+      ].join(" ");
+      const strokeD = [
+        `M ${x1} ${y1 - OS} L ${x1} ${y2 + OS}`,
+        `M ${x1 + T} ${y1} L ${x1 + T} ${y2 + OS}`,
+        `M ${x1 - OS} ${y1} L ${x2 - C + OS} ${y1}`,
+        `M ${x2 - C} ${y1} L ${x2} ${y1 + C} L ${x2} ${loopB - C} L ${x2 - C} ${loopB}`,
+        `M ${x1 - OS} ${loopB} L ${x2 - C + OS} ${loopB}`,
+        `M ${x1 - OS} ${y2} L ${x1 + T + OS} ${y2}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "Q": {
+      const fillD = [
+        `M ${x1 + C} ${y1} L ${x2 - C} ${y1} L ${x2} ${y1 + C} L ${x2} ${y2 - C} L ${x2 - C} ${y2} L ${x1 + C} ${y2} L ${x1} ${y2 - C} L ${x1} ${y1 + C} Z`,
+        `M ${x1 + T + inC} ${y1 + T} L ${x2 - T - inC} ${y1 + T} L ${x2 - T} ${y1 + T + inC} L ${x2 - T} ${y2 - T - inC} L ${x2 - T - inC} ${y2 - T} L ${x1 + T + inC} ${y2 - T} L ${x1 + T} ${y2 - T - inC} L ${x1 + T} ${y1 + T + inC} Z`,
+        `M ${cx + 4} ${cy + 10} L ${x2 + 10} ${y2 + 6} L ${x2 + 2} ${y2 + 12} L ${cx - 4} ${cy + 16} Z`,
+      ].join(" ");
+      const strokeD = [
+        `M ${x1 + C} ${y1} L ${x2 - C} ${y1} L ${x2} ${y1 + C} L ${x2} ${y2 - C} L ${x2 - C} ${y2} L ${x1 + C} ${y2} L ${x1} ${y2 - C} L ${x1} ${y1 + C} Z`,
+        `M ${x1 + T + inC} ${y1 + T} L ${x2 - T - inC} ${y1 + T} L ${x2 - T} ${y1 + T + inC} L ${x2 - T} ${y2 - T - inC} L ${x2 - T - inC} ${y2 - T} L ${x1 + T + inC} ${y2 - T} L ${x1 + T} ${y2 - T - inC} L ${x1 + T} ${y1 + T + inC} Z`,
+        `M ${cx} ${cy} L ${x2 + 12} ${y2 + 12}`,
       ].join(" ");
       return { fillD, strokeD };
     }
@@ -2664,13 +2968,94 @@ export function getArchitecturalGlyph(
       return { fillD, strokeD };
     }
 
-    case "I": {
-      const halfT = T / 2;
-      const fillD = `M ${cx - halfT} ${y1} L ${cx + halfT} ${y1} L ${cx + halfT} ${y2} L ${cx - halfT} ${y2} Z`;
+    case "S": {
+      const fillD = [
+        `M ${x2} ${y1 + C} L ${x2 - C} ${y1} L ${x1 + C} ${y1} L ${x1} ${y1 + C} L ${x1} ${midY - 6} L ${x2 - C} ${midY + 6} L ${x2} ${midY + 16} L ${x2} ${y2 - C} L ${x2 - C} ${y2} L ${x1 + C} ${y2} L ${x1} ${y2 - C} L ${x1 + T} ${y2 - C} L ${x1 + T + inC} ${y2 - T} L ${x2 - T - inC} ${y2 - T} L ${x2 - T} ${midY + 16} L ${x1 + C} ${midY - 6} L ${x1 + T} ${y1 + T + inC} L ${x1 + T + inC} ${y1 + T} L ${x2 - T - inC} ${y1 + T} L ${x2 - T} ${y1 + C} Z`,
+      ].join(" ");
       const strokeD = [
-        `M ${cx - halfT} ${y1 - OS} L ${cx - halfT} ${y2 + OS}`,
-        `M ${cx + halfT} ${y1 - OS} L ${cx + halfT} ${y2 + OS}`,
-        `M ${cx - halfT - OS} ${y1} L ${cx + halfT + OS} ${y1}`,
+        `M ${x1 + C - OS} ${y1} L ${x2 - C + OS} ${y1}`,
+        `M ${x1 + C} ${y1} L ${x1} ${y1 + C} L ${x1} ${midY - 6} L ${x2} ${midY + 16} L ${x2} ${y2 - C} L ${x2 - C} ${y2}`,
+        `M ${x1 + C - OS} ${y2} L ${x2 - C + OS} ${y2}`,
+        `M ${x1} ${midY - 6} L ${x2} ${midY + 6}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "T": {
+      const halfT = T / 2;
+      const fillD = `M ${x1} ${y1} L ${x2} ${y1} L ${x2} ${y1 + T} L ${cx + halfT} ${y1 + T} L ${cx + halfT} ${y2} L ${cx - halfT} ${y2} L ${cx - halfT} ${y1 + T} L ${x1} ${y1 + T} Z`;
+      const strokeD = [
+        `M ${x1 - OS} ${y1} L ${x2 + OS} ${y1}`,
+        `M ${x1} ${y1 - OS} L ${x1} ${y1 + T + OS}`,
+        `M ${x2} ${y1 - OS} L ${x2} ${y1 + T + OS}`,
+        `M ${x1 - OS} ${y1 + T} L ${x2 + OS} ${y1 + T}`,
+        `M ${cx - halfT} ${y1 + T} L ${cx - halfT} ${y2 + OS}`,
+        `M ${cx + halfT} ${y1 + T} L ${cx + halfT} ${y2 + OS}`,
+        `M ${cx - halfT - OS} ${y2} L ${cx + halfT + OS} ${y2}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "U": {
+      const fillD = [
+        `M ${x1} ${y1} L ${x1 + T} ${y1} L ${x1 + T} ${y2 - T - inC} L ${x1 + T + inC} ${y2 - T} L ${x2 - T - inC} ${y2 - T} L ${x2 - T} ${y2 - T - inC} L ${x2 - T} ${y1} L ${x2} ${y1} L ${x2} ${y2 - C} L ${x2 - C} ${y2} L ${x1 + C} ${y2} L ${x1} ${y2 - C} Z`,
+      ].join(" ");
+      const strokeD = [
+        `M ${x1} ${y1 - OS} L ${x1} ${y2 - C + OS}`,
+        `M ${x1 + T} ${y1 - OS} L ${x1 + T} ${y2 - T - inC}`,
+        `M ${x2 - T} ${y1 - OS} L ${x2 - T} ${y2 - T - inC}`,
+        `M ${x2} ${y1 - OS} L ${x2} ${y2 - C + OS}`,
+        `M ${x1 - OS} ${y1} L ${x1 + T + OS} ${y1}`,
+        `M ${x2 - T - OS} ${y1} L ${x2 + OS} ${y1}`,
+        `M ${x1} ${y2 - C} L ${x1 + C} ${y2} L ${x2 - C} ${y2} L ${x2} ${y2 - C}`,
+        `M ${cx - 5} ${y2 - T / 2} L ${cx + 5} ${y2 - T / 2}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "V": {
+      const fillD = `M ${x1} ${y1} L ${cx - 6} ${y2} L ${cx + 6} ${y2} L ${x2} ${y1} L ${x2 - T * 1.15} ${y1} L ${cx} ${y2 - 24} L ${x1 + T * 1.15} ${y1} Z`;
+      const strokeD = [
+        `M ${x1 - OS} ${y1} L ${x1 + T * 1.15 + OS} ${y1}`,
+        `M ${x2 - T * 1.15 - OS} ${y1} L ${x2 + OS} ${y1}`,
+        `M ${x1} ${y1 - OS} L ${cx} ${y2 + OS}`,
+        `M ${x2} ${y1 - OS} L ${cx} ${y2 + OS}`,
+        `M ${cx - 8} ${y2} L ${cx + 8} ${y2}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "W": {
+      const fillD = `M ${x1} ${y1} L ${cx - 24} ${y2} L ${cx - 10} ${y2} L ${cx} ${midY + 14} L ${cx + 10} ${y2} L ${cx + 24} ${y2} L ${x2} ${y1} L ${x2 - T} ${y1} L ${cx + 16} ${y2 - 20} L ${cx} ${midY - 4} L ${cx - 16} ${y2 - 20} L ${x1 + T} ${y1} Z`;
+      const strokeD = [
+        `M ${x1 - OS} ${y1} L ${x1 + T + OS} ${y1}`,
+        `M ${x2 - T - OS} ${y1} L ${x2 + OS} ${y1}`,
+        `M ${x1} ${y1} L ${cx - 18} ${y2}`,
+        `M ${cx - 18} ${y2} L ${cx} ${midY + 14}`,
+        `M ${cx} ${midY + 14} L ${cx + 18} ${y2}`,
+        `M ${cx + 18} ${y2} L ${x2} ${y1}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "X": {
+      const fillD = `M ${x1} ${y1} L ${cx} ${midY - 14} L ${x2} ${y1} L ${x2 + 2} ${y1 + 10} L ${cx + 14} ${midY} L ${x2 + 2} ${y2 - 10} L ${x2} ${y2} L ${cx} ${midY + 14} L ${x1} ${y2} L ${x1 - 2} ${y2 - 10} L ${cx - 14} ${midY} L ${x1 - 2} ${y1 + 10} Z`;
+      const strokeD = [
+        `M ${x1 - OS} ${y1 - OS} L ${x2 + OS} ${y2 + OS}`,
+        `M ${x2 + OS} ${y1 - OS} L ${x1 - OS} ${y2 + OS}`,
+        `M ${cx - 6} ${cy} L ${cx + 6} ${cy} M ${cx} ${cy - 6} L ${cx} ${cy + 6}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "Y": {
+      const halfT = T / 2;
+      const fillD = `M ${x1} ${y1} L ${cx - halfT} ${midY + 6} L ${cx - halfT} ${y2} L ${cx + halfT} ${y2} L ${cx + halfT} ${midY + 6} L ${x2} ${y1} L ${x2 - T * 1.15} ${y1} L ${cx} ${midY - 6} L ${x1 + T * 1.15} ${y1} Z`;
+      const strokeD = [
+        `M ${x1} ${y1 - OS} L ${cx} ${midY + 6}`,
+        `M ${x2} ${y1 - OS} L ${cx} ${midY + 6}`,
+        `M ${cx - halfT} ${midY + 6} L ${cx - halfT} ${y2 + OS}`,
+        `M ${cx + halfT} ${midY + 6} L ${cx + halfT} ${y2 + OS}`,
         `M ${cx - halfT - OS} ${y2} L ${cx + halfT + OS} ${y2}`,
       ].join(" ");
       return { fillD, strokeD };
@@ -2691,64 +3076,161 @@ export function getArchitecturalGlyph(
       return { fillD, strokeD };
     }
 
-    case "E": {
-      const midY = (y1 + y2) / 2;
-      const fillD = `M ${x1} ${y1} L ${x2} ${y1} L ${x2} ${y1 + T} L ${x1 + T} ${y1 + T} L ${x1 + T} ${midY - T / 2} L ${x2 - 14} ${midY - T / 2} L ${x2 - 14} ${midY + T / 2} L ${x1 + T} ${midY + T / 2} L ${x1 + T} ${y2 - T} L ${x2} ${y2 - T} L ${x2} ${y2} L ${x1} ${y2} Z`;
+    case "0": {
+      const fillD = [
+        `M ${x1 + C} ${y1} L ${x2 - C} ${y1} L ${x2} ${y1 + C} L ${x2} ${y2 - C} L ${x2 - C} ${y2} L ${x1 + C} ${y2} L ${x1} ${y2 - C} L ${x1} ${y1 + C} Z`,
+        `M ${x1 + T + inC} ${y1 + T} L ${x2 - T - inC} ${y1 + T} L ${x2 - T} ${y1 + T + inC} L ${x2 - T} ${y2 - T - inC} L ${x2 - T - inC} ${y2 - T} L ${x1 + T + inC} ${y2 - T} L ${x1 + T} ${y2 - T - inC} L ${x1 + T} ${y1 + T + inC} Z`,
+      ].join(" ");
       const strokeD = [
-        `M ${x1} ${y1 - OS} L ${x1} ${y2 + OS}`,
-        `M ${x1 - OS} ${y1} L ${x2 + OS} ${y1}`,
-        `M ${x2} ${y1 - OS} L ${x2} ${y1 + T + OS}`,
-        `M ${x1 + T} ${y1 + T - OS} L ${x2 + OS} ${y1 + T}`,
-        `M ${x1 + T} ${y1 + T} L ${x1 + T} ${y2 - T}`,
-        `M ${x1 + T - OS} ${midY - T / 2} L ${x2 - 14 + OS} ${midY - T / 2}`,
-        `M ${x2 - 14} ${midY - T / 2 - OS} L ${x2 - 14} ${midY + T / 2 + OS}`,
-        `M ${x1 + T - OS} ${midY + T / 2} L ${x2 - 14 + OS} ${midY + T / 2}`,
-        `M ${x1 + T - OS} ${y2 - T} L ${x2 + OS} ${y2 - T}`,
-        `M ${x2} ${y2 - T - OS} L ${x2} ${y2 + OS}`,
+        `M ${x1 + C} ${y1} L ${x2 - C} ${y1} L ${x2} ${y1 + C} L ${x2} ${y2 - C} L ${x2 - C} ${y2} L ${x1 + C} ${y2} L ${x1} ${y2 - C} L ${x1} ${y1 + C} Z`,
+        `M ${x1 + T + inC} ${y1 + T} L ${x2 - T - inC} ${y1 + T} L ${x2 - T} ${y1 + T + inC} L ${x2 - T} ${y2 - T - inC} L ${x2 - T - inC} ${y2 - T} L ${x1 + T + inC} ${y2 - T} L ${x1 + T} ${y2 - T - inC} L ${x1 + T} ${y1 + T + inC} Z`,
+        `M ${x1 + T} ${y2 - T} L ${x2 - T} ${y1 + T}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "1": {
+      const halfT = T / 2;
+      const fillD = `M ${cx - 20} ${y1 + 24} L ${cx + halfT} ${y1} L ${cx + halfT} ${y2} L ${cx - halfT} ${y2} L ${cx - halfT} ${y1 + 20} L ${cx - 18} ${y1 + 32} Z`;
+      const strokeD = [
+        `M ${cx - 20} ${y1 + 24} L ${cx + halfT} ${y1} L ${cx + halfT} ${y2 + OS}`,
+        `M ${cx - halfT} ${y1 + 20} L ${cx - halfT} ${y2 + OS}`,
+        `M ${cx - 24} ${y2} L ${cx + 24} ${y2}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "2": {
+      const fillD = `M ${x1} ${y1 + C} L ${x1 + C} ${y1} L ${x2 - C} ${y1} L ${x2} ${y1 + C} L ${x2} ${midY - 4} L ${x1 + T * 1.2} ${y2 - T} L ${x2} ${y2 - T} L ${x2} ${y2} L ${x1} ${y2} L ${x1} ${y2 - T} L ${x2 - T * 1.2} ${midY} L ${x2 - T} ${y1 + T + inC} L ${x2 - T - inC} ${y1 + T} L ${x1 + T + inC} ${y1 + T} L ${x1 + T} ${y1 + C} Z`;
+      const strokeD = [
+        `M ${x1 + C} ${y1} L ${x2 - C} ${y1} L ${x2} ${y1 + C} L ${x2} ${midY - 4} L ${x1} ${y2 - T} L ${x1} ${y2 + OS}`,
         `M ${x1 - OS} ${y2} L ${x2 + OS} ${y2}`,
       ].join(" ");
       return { fillD, strokeD };
     }
 
-    case "H": {
-      const midY = (y1 + y2) / 2;
-      const fillD = `M ${x1} ${y1} L ${x1 + T} ${y1} L ${x1 + T} ${midY - T / 2} L ${x2 - T} ${midY - T / 2} L ${x2 - T} ${y1} L ${x2} ${y1} L ${x2} ${y2} L ${x2 - T} ${y2} L ${x2 - T} ${midY + T / 2} L ${x1 + T} ${midY + T / 2} L ${x1 + T} ${y2} L ${x1} ${y2} Z`;
+    case "3": {
+      const fillD = [
+        `M ${x1} ${y1} L ${x2} ${y1} L ${x2} ${y2 - C} L ${x2 - C} ${y2} L ${x1} ${y2} L ${x1} ${y2 - T} L ${x2 - T - inC} ${y2 - T} L ${x2 - T} ${y2 - T - inC} L ${x2 - T} ${midY + T / 2} L ${cx} ${midY + T / 2} L ${cx} ${midY - T / 2} L ${x2 - T} ${midY - T / 2} L ${x2 - T} ${y1 + T} L ${x1} ${y1 + T} Z`,
+      ].join(" ");
       const strokeD = [
-        `M ${x1} ${y1 - OS} L ${x1} ${y2 + OS}`,
-        `M ${x1 + T} ${y1 - OS} L ${x1 + T} ${y2 + OS}`,
-        `M ${x1 - OS} ${y1} L ${x1 + T + OS} ${y1}`,
-        `M ${x1 - OS} ${y2} L ${x1 + T + OS} ${y2}`,
-        `M ${x2 - T} ${y1 - OS} L ${x2 - T} ${y2 + OS}`,
-        `M ${x2} ${y1 - OS} L ${x2} ${y2 + OS}`,
-        `M ${x2 - T - OS} ${y1} L ${x2 + OS} ${y1}`,
-        `M ${x2 - T - OS} ${y2} L ${x2 + OS} ${y2}`,
-        `M ${x1 + T - OS} ${midY - T / 2} L ${x2 - T + OS} ${midY - T / 2}`,
-        `M ${x1 + T - OS} ${midY + T / 2} L ${x2 - T + OS} ${midY + T / 2}`,
+        `M ${x1 - OS} ${y1} L ${x2 + OS} ${y1}`,
+        `M ${x2} ${y1 - OS} L ${x2} ${y2 - C}`,
+        `M ${x2} ${y2 - C} L ${x2 - C} ${y2} L ${x1 - OS} ${y2}`,
+        `M ${cx} ${midY} L ${x2} ${midY}`,
       ].join(" ");
       return { fillD, strokeD };
     }
 
-    case "N": {
-      const fillD = `M ${x1} ${y1} L ${x1 + T} ${y1} L ${x2 - T} ${y2 - 20} L ${x2 - T} ${y1} L ${x2} ${y1} L ${x2} ${y2} L ${x2 - T} ${y2} L ${x1 + T} ${y1 + 20} L ${x1 + T} ${y2} L ${x1} ${y2} Z`;
+    case "4": {
+      const stemX = x2 - T * 1.3;
+      const fillD = `M ${x1 + 10} ${y1} L ${stemX} ${y1} L ${stemX} ${midY} L ${x2} ${midY} L ${x2} ${midY + T} L ${stemX} ${midY + T} L ${stemX} ${y2} L ${stemX - T} ${y2} L ${stemX - T} ${midY + T} L ${x1} ${midY + T} L ${x1} ${midY} Z`;
       const strokeD = [
-        `M ${x1} ${y1 - OS} L ${x1} ${y2 + OS}`,
-        `M ${x1 + T} ${y1 - OS} L ${x1 + T} ${y2 + OS}`,
-        `M ${x1 - OS} ${y1} L ${x1 + T + OS} ${y1}`,
-        `M ${x1 - OS} ${y2} L ${x1 + T + OS} ${y2}`,
-        `M ${x2 - T} ${y1 - OS} L ${x2 - T} ${y2 + OS}`,
-        `M ${x2} ${y1 - OS} L ${x2} ${y2 + OS}`,
-        `M ${x2 - T - OS} ${y1} L ${x2 + OS} ${y1}`,
-        `M ${x2 - T - OS} ${y2} L ${x2 + OS} ${y2}`,
-        `M ${x1} ${y1} L ${x2 - T} ${y2}`,
-        `M ${x1 + T} ${y1} L ${x2} ${y2}`,
+        `M ${stemX} ${y1 - OS} L ${stemX} ${y2 + OS}`,
+        `M ${stemX - T} ${y1 - OS} L ${stemX - T} ${y2 + OS}`,
+        `M ${x1 - OS} ${midY + T} L ${x2 + OS} ${midY + T}`,
+        `M ${x1} ${midY} L ${stemX - T} ${y1}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "5": {
+      const fillD = `M ${x1} ${y1} L ${x2} ${y1} L ${x2} ${y1 + T} L ${x1 + T} ${y1 + T} L ${x1 + T} ${midY - 8} L ${x2 - C} ${midY - 8} L ${x2} ${midY + C - 8} L ${x2} ${y2 - C} L ${x2 - C} ${y2} L ${x1} ${y2} L ${x1} ${y2 - T} L ${x2 - T - inC} ${y2 - T} L ${x2 - T} ${y2 - T - inC} L ${x2 - T} ${midY + T - 4} L ${x1} ${midY + T - 4} Z`;
+      const strokeD = [
+        `M ${x1 - OS} ${y1} L ${x2 + OS} ${y1}`,
+        `M ${x1} ${y1 - OS} L ${x1} ${midY + T - 4}`,
+        `M ${x1} ${midY - 8} L ${x2 - C} ${midY - 8} L ${x2} ${midY + C - 8} L ${x2} ${y2 - C} L ${x2 - C} ${y2} L ${x1 - OS} ${y2}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "6": {
+      const fillD = [
+        `M ${x2 - C} ${y1} L ${x1 + C} ${y1} L ${x1} ${y1 + C} L ${x1} ${y2 - C} L ${x1 + C} ${y2} L ${x2 - C} ${y2} L ${x2} ${y2 - C} L ${x2} ${midY} L ${x1 + T} ${midY} L ${x1 + T} ${y1 + T + inC} L ${x1 + T + inC} ${y1 + T} L ${x2 - C} ${y1 + T} Z`,
+        `M ${x1 + T} ${midY + T} L ${x2 - T - inC} ${midY + T} L ${x2 - T} ${midY + T + inC} L ${x2 - T} ${y2 - T - inC} L ${x2 - T - inC} ${y2 - T} L ${x1 + T + inC} ${y2 - T} L ${x1 + T} ${y2 - T - inC} Z`,
+      ].join(" ");
+      const strokeD = [
+        `M ${x2 - C} ${y1} L ${x1 + C} ${y1} L ${x1} ${y1 + C} L ${x1} ${y2 - C} L ${x1 + C} ${y2} L ${x2 - C} ${y2} L ${x2} ${y2 - C} L ${x2} ${midY} L ${x1} ${midY}`,
+        `M ${x1 + T} ${midY + T} L ${x2 - T - inC} ${midY + T} L ${x2 - T} ${midY + T + inC} L ${x2 - T} ${y2 - T - inC} L ${x2 - T - inC} ${y2 - T} L ${x1 + T + inC} ${y2 - T} L ${x1 + T} ${y2 - T - inC} Z`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "7": {
+      const fillD = `M ${x1} ${y1} L ${x2} ${y1} L ${x2} ${y1 + T} L ${x1 + T * 1.5} ${y2} L ${x1} ${y2} L ${x2 - T * 1.5} ${y1 + T} L ${x1} ${y1 + T} Z`;
+      const strokeD = [
+        `M ${x1 - OS} ${y1} L ${x2 + OS} ${y1}`,
+        `M ${x2} ${y1 - OS} L ${x1 + T * 1.5} ${y2 + OS}`,
+        `M ${x1 - OS} ${y1 + T} L ${x2 - T * 1.5} ${y1 + T}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "8": {
+      const fillD = [
+        `M ${x1 + C} ${y1} L ${x2 - C} ${y1} L ${x2} ${y1 + C} L ${x2} ${midY - 4} L ${x1} ${midY - 4} L ${x1} ${y1 + C} Z`,
+        `M ${x1} ${midY + 4} L ${x2} ${midY + 4} L ${x2} ${y2 - C} L ${x2 - C} ${y2} L ${x1 + C} ${y2} L ${x1} ${y2 - C} Z`,
+        `M ${x1 + T + inC} ${y1 + T} L ${x2 - T - inC} ${y1 + T} L ${x2 - T} ${y1 + T + inC} L ${x2 - T} ${midY - 4 - T} L ${x1 + T} ${midY - 4 - T} Z`,
+        `M ${x1 + T} ${midY + 4 + T} L ${x2 - T} ${midY + 4 + T} L ${x2 - T} ${y2 - T - inC} L ${x2 - T - inC} ${y2 - T} L ${x1 + T + inC} ${y2 - T} L ${x1 + T} ${y2 - T - inC} Z`,
+      ].join(" ");
+      const strokeD = [
+        `M ${x1 + C} ${y1} L ${x2 - C} ${y1} L ${x2} ${y1 + C} L ${x2} ${y2 - C} L ${x2 - C} ${y2} L ${x1 + C} ${y2} L ${x1} ${y2 - C} L ${x1} ${y1 + C} Z`,
+        `M ${x1 - OS} ${midY} L ${x2 + OS} ${midY}`,
+        `M ${x1 + T} ${y1 + T} L ${x2 - T} ${y1 + T} L ${x2 - T} ${midY - T} L ${x1 + T} ${midY - T} Z`,
+        `M ${x1 + T} ${midY + T} L ${x2 - T} ${midY + T} L ${x2 - T} ${y2 - T} L ${x1 + T} ${y2 - T} Z`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "9": {
+      const fillD = [
+        `M ${x1 + C} ${y1} L ${x2 - C} ${y1} L ${x2} ${y1 + C} L ${x2} ${y2 - C} L ${x2 - C} ${y2} L ${x1 + C} ${y2} L ${x1} ${y2 - T} L ${x2 - T - inC} ${y2 - T} L ${x2 - T} ${midY} L ${x1} ${midY} L ${x1} ${y1 + C} Z`,
+        `M ${x1 + T + inC} ${y1 + T} L ${x2 - T - inC} ${y1 + T} L ${x2 - T} ${y1 + T + inC} L ${x2 - T} ${midY - T} L ${x1 + T} ${midY - T} L ${x1 + T} ${y1 + T + inC} Z`,
+      ].join(" ");
+      const strokeD = [
+        `M ${x1 + C} ${y1} L ${x2 - C} ${y1} L ${x2} ${y1 + C} L ${x2} ${y2 - C} L ${x2 - C} ${y2} L ${x1 - OS} ${y2}`,
+        `M ${x1 - OS} ${midY} L ${x2} ${midY}`,
+        `M ${x1 + T} ${y1 + T} L ${x2 - T} ${y1 + T} L ${x2 - T} ${midY - T} L ${x1 + T} ${midY - T} Z`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case "-": {
+      const fillD = `M ${x1} ${midY - T / 2} L ${x2} ${midY - T / 2} L ${x2} ${midY + T / 2} L ${x1} ${midY + T / 2} Z`;
+      const strokeD = [
+        `M ${x1 - OS} ${midY - T / 2} L ${x2 + OS} ${midY - T / 2}`,
+        `M ${x1 - OS} ${midY + T / 2} L ${x2 + OS} ${midY + T / 2}`,
+        `M ${x1} ${midY - T / 2 - OS} L ${x1} ${midY + T / 2 + OS}`,
+        `M ${x2} ${midY - T / 2 - OS} L ${x2} ${midY + T / 2 + OS}`,
+      ].join(" ");
+      return { fillD, strokeD };
+    }
+
+    case ".": {
+      const fillD = `M ${cx - T / 2} ${y2 - T} L ${cx + T / 2} ${y2 - T} L ${cx + T / 2} ${y2} L ${cx - T / 2} ${y2} Z`;
+      const strokeD = [
+        `M ${cx - T / 2 - OS} ${y2 - T} L ${cx + T / 2 + OS} ${y2 - T}`,
+        `M ${cx - T / 2 - OS} ${y2} L ${cx + T / 2 + OS} ${y2}`,
+        `M ${cx - T / 2} ${y2 - T - OS} L ${cx - T / 2} ${y2 + OS}`,
+        `M ${cx + T / 2} ${y2 - T - OS} L ${cx + T / 2} ${y2 + OS}`,
       ].join(" ");
       return { fillD, strokeD };
     }
 
     default: {
-      // Fallback: standard clean geometric rectangular glyph
-      const fillD = `M ${x1} ${y1} L ${x2} ${y1} L ${x2} ${y2} L ${x1} ${y2} Z`;
-      const strokeD = `M ${x1 - OS} ${y1} L ${x2 + OS} ${y1} M ${x2} ${y1 - OS} L ${x2} ${y2 + OS} M ${x2 + OS} ${y2} L ${x1 - OS} ${y2} M ${x1} ${y2 + OS} L ${x1} ${y1 - OS}`;
+      // Hollow CAD framing glyph with corner crosshair drafting lines
+      const fillD = [
+        `M ${x1} ${y1} L ${x2} ${y1} L ${x2} ${y2} L ${x1} ${y2} Z`,
+        `M ${x1 + T} ${y1 + T} L ${x2 - T} ${y1 + T} L ${x2 - T} ${y2 - T} L ${x1 + T} ${y2 - T} Z`,
+      ].join(" ");
+      const strokeD = [
+        `M ${x1 - OS} ${y1} L ${x2 + OS} ${y1}`,
+        `M ${x2} ${y1 - OS} L ${x2} ${y2 + OS}`,
+        `M ${x2 + OS} ${y2} L ${x1 - OS} ${y2}`,
+        `M ${x1} ${y2 + OS} L ${x1} ${y1 - OS}`,
+        `M ${x1 + T} ${y1 + T} L ${x2 - T} ${y1 + T} L ${x2 - T} ${y2 - T} L ${x1 + T} ${y2 - T} Z`,
+        `M ${cx - 5} ${cy} L ${cx + 5} ${cy} M ${cx} ${cy - 5} L ${cx} ${cy + 5}`,
+      ].join(" ");
       return { fillD, strokeD };
     }
   }
@@ -3109,10 +3591,11 @@ export function ArchitecturalLiquidWordmark({
 
           {/* Layer 1: Clipped Paintbrush Liquid Ink Splatter that flows under hover */}
           <g clipPath={`url(#cad-letters-clip-${uid})`}>
-            {/* Underneath: Solid Gray Meniscus Shadow Fluid Layer */}
+            {/* Underneath: Solid Gray Meniscus Shadow Fluid Layer with Active Theme Tint */}
             <g
               filter={`url(#liquid-goo-${uid})`}
               className="fill-neutral-400 dark:fill-neutral-500 transition-colors duration-150"
+              style={{ fill: "var(--primary, #a1a1aa)" }}
             >
               {Array.from({ length: TOTAL_CIRCLES }).map((_, idx) => (
                 <circle
@@ -3233,9 +3716,12 @@ const DEFAULT_ARCHITECTURAL_LEGAL = [
 ];
 
 export function ArchitecturalLiquidFooter({
-  headline = "CRAFTED FOR EXTRAORDINARY INTERFACES",
-  brandWordmark = "algorize",
+  headline: rawHeadline,
+  heroTitle,
+  brandWordmark: rawBrandWordmark,
+  blueprintWordmark,
   brandName = "Algorize",
+  logo,
   color,
   subscribeText = "Want to see more cool websites like this? Sign up for occasional updates from Avara UI.",
   addressLines = ["60 Martin Pl, Sydney,", "NSW 2000, Australia"],
@@ -3248,6 +3734,8 @@ export function ArchitecturalLiquidFooter({
   copyrightText,
   className,
 }: ArchitecturalLiquidFooterProps & { className?: string }) {
+  const headline = heroTitle ?? rawHeadline ?? "CRAFTED FOR EXTRAORDINARY INTERFACES";
+  const brandWordmark = blueprintWordmark ?? rawBrandWordmark ?? "algorize";
   const dynamicAccent = accentStyle(color);
   const [email, setEmail] = React.useState("");
   const [isSubscribed, setIsSubscribed] = React.useState(false);
@@ -3264,7 +3752,7 @@ export function ArchitecturalLiquidFooter({
 
   const resolvedCopyright =
     copyrightText ||
-    `©${new Date().getFullYear()} ${brandName.toUpperCase()}. ALL RIGHTS RESERVED. CONCEPT CRAFTED BY ${brandName.toUpperCase()}`;
+    `©${CURRENT_YEAR} ${brandName.toUpperCase()}. ALL RIGHTS RESERVED. CONCEPT CRAFTED BY ${brandName.toUpperCase()}`;
 
   return (
     <footer
@@ -3327,12 +3815,22 @@ export function ArchitecturalLiquidFooter({
           </div>
         ))}
 
-        {/* Cell 5: Isometric 3D Wireframe Brand Cube */}
+        {/* Cell 5: Isometric 3D Wireframe Brand Cube or Custom Logo */}
         <div className="md:col-span-2 p-6 flex flex-col items-center justify-center bg-neutral-200/30 dark:bg-neutral-900/40">
-          <IsometricWireframeCube brandLetter={brandName.charAt(0) || "A"} />
-          <span className="font-mono text-[8px] uppercase tracking-widest text-neutral-400 dark:text-neutral-500 mt-2 block">
-            <span className="text-primary font-bold">[+]</span> 3D CAD SPEC
-          </span>
+          {logo ? (
+            typeof logo === "string" ? (
+              <img src={logo} alt={brandName || "Logo"} className="h-10 w-auto object-contain" />
+            ) : (
+              logo
+            )
+          ) : (
+            <>
+              <IsometricWireframeCube brandLetter={brandName.charAt(0) || "A"} />
+              <span className="font-mono text-[8px] uppercase tracking-widest text-neutral-400 dark:text-neutral-500 mt-2 block">
+                <span className="text-primary font-bold">[+]</span> 3D CAD SPEC
+              </span>
+            </>
+          )}
         </div>
       </div>
 
@@ -3471,6 +3969,7 @@ export function Footer({
   logo,
   tagline = "Elevate your web applications with fluid, production-ready animated components.",
   copyrightText,
+  heroTitle,
   sections,
   socialLinks = DEFAULT_SOCIAL_LINKS,
   snapshot,
@@ -3485,7 +3984,7 @@ export function Footer({
   const linkSections = sections ?? DEFAULT_SECTIONS_BY_VARIANT[variant];
   const copyright =
     copyrightText ??
-    `© ${new Date().getFullYear()} ${brandName}. All rights reserved.`;
+    `© ${CURRENT_YEAR} ${brandName}. All rights reserved.`;
 
   if (
     variant === "architectural-liquid" ||
@@ -3496,7 +3995,8 @@ export function Footer({
       <footer style={dynamicAccent} className="w-full transition-colors">
         <ArchitecturalLiquidFooter
           color={color}
-          headline={architecturalLiquid?.headline}
+          heroTitle={heroTitle ?? architecturalLiquid?.heroTitle}
+          headline={heroTitle ?? architecturalLiquid?.heroTitle ?? architecturalLiquid?.headline}
           brandWordmark={
             blueprintWordmark ??
             wordmark ??
@@ -3504,6 +4004,7 @@ export function Footer({
             "algorize"
           }
           brandName={brandName}
+          logo={logo}
           subscribeText={architecturalLiquid?.subscribeText}
           addressLines={architecturalLiquid?.addressLines}
           directionHref={architecturalLiquid?.directionHref}
@@ -3524,6 +4025,7 @@ export function Footer({
       <footer style={dynamicAccent} className="w-full transition-colors">
         <EditorialCardFooter
           brandName={brandName}
+          logo={logo}
           copyrightText={copyrightText}
           tagline={tagline}
           editorialCta={editorialCta}
@@ -3539,6 +4041,7 @@ export function Footer({
     return (
       <div style={dynamicAccent} className={cn("w-full transition-colors", className)}>
         <WordmarkFooter
+          color={color}
           logo={logo}
           tagline={
             tagline !== "Elevate your web applications with fluid, production-ready animated components."
@@ -3563,6 +4066,7 @@ export function Footer({
     return (
       <footer style={dynamicAccent} className={cn("w-full overflow-hidden transition-colors", className)}>
         <SnapshotFooter
+          color={color}
           brandName={brandName}
           logo={logo}
           copyrightText={copyrightText}
@@ -3578,7 +4082,11 @@ export function Footer({
   return (
     <footer
       style={dynamicAccent}
-      className={cn("w-full bg-background border-t border-border/80 text-foreground transition-all overflow-hidden", className)}
+      className={cn(
+        "w-full bg-background text-foreground transition-all overflow-hidden",
+        variant !== "neon-glow-pulse" && "border-t border-border/80",
+        className
+      )}
     >
       {/* 1. SIMPLE CENTERED */}
       {variant === "simple-centered" && (
@@ -3597,7 +4105,7 @@ export function Footer({
                 <a
                   key={idx}
                   href={link.href}
-                  className="px-3.5 py-2 rounded-xl text-xs font-semibold text-muted-foreground hover:text-primary hover:bg-background transition-all flex items-center gap-1.5 group"
+                  className="px-3.5 py-2 rounded-xl text-xs font-semibold text-muted-foreground hover:text-primary hover:bg-primary/10 border border-transparent hover:border-primary/20 transition-all flex items-center gap-1.5 group"
                 >
                   <ChevronRight className="size-3 text-primary/60 group-hover:text-primary group-hover:translate-x-0.5 transition-transform" />
                   <span>{link.label}</span>
@@ -3606,7 +4114,7 @@ export function Footer({
           </div>
 
           <div className="pt-2">
-            <SocialLinks links={socialLinks} className="justify-center sm:justify-start" />
+            <SocialLinks links={socialLinks} className="justify-center sm:justify-start [&_a:hover]:bg-primary/10 [&_a:hover]:text-primary [&_a:hover]:border-primary/30" />
           </div>
 
           <div className="w-full border-t border-border/60 pt-6 sm:pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground text-center sm:text-left">
@@ -3635,7 +4143,7 @@ export function Footer({
                 <BrandLogo logo={logo} brandName={brandName} />
                 <p className="text-xs sm:text-sm text-muted-foreground max-w-md">{tagline}</p>
               </div>
-              <SocialLinks links={socialLinks} className="justify-center sm:justify-start" />
+              <SocialLinks links={socialLinks} className="justify-center sm:justify-start [&_a:hover]:bg-primary/10 [&_a:hover]:text-primary [&_a:hover]:border-primary/30" />
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-6 border-t border-border/80 text-xs sm:text-sm">
@@ -3666,7 +4174,7 @@ export function Footer({
 
       {/* 3. NEON GLOW PULSE (Supports both Day Mode & Night Mode Theme Adaptively) */}
       {variant === "neon-glow-pulse" && (
-        <div className="w-full bg-primary/5 text-foreground py-16 sm:py-24 px-4 border-t border-primary/30 transition-colors">
+        <div className="w-full bg-primary/5 text-foreground p-8 sm:p-12 lg:p-16 transition-colors">
           <div className="max-w-7xl mx-auto p-8 sm:p-12 rounded-3xl bg-card/90 border border-primary/40 shadow-[0_0_40px_color-mix(in_oklab,var(--primary)_15%,transparent)] dark:shadow-[0_0_50px_color-mix(in_oklab,var(--primary)_20%,transparent)] space-y-10">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 pb-6 border-b border-primary/20">
               <BrandLogo logo={logo} brandName={brandName} />
@@ -3695,7 +4203,7 @@ export function Footer({
 
             <div className="border-t border-primary/20 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground text-center sm:text-left">
               <span>{copyright}</span>
-              <SocialLinks links={socialLinks} className="justify-center sm:justify-start" />
+              <SocialLinks links={socialLinks} className="justify-center sm:justify-start [&_a:hover]:bg-primary/10 [&_a:hover]:text-primary [&_a:hover]:border-primary/30" />
             </div>
           </div>
         </div>
@@ -3710,7 +4218,7 @@ export function Footer({
                 <BrandLogo logo={logo} brandName={brandName} />
                 <p className="text-xs sm:text-sm text-muted-foreground max-w-md">{tagline}</p>
               </div>
-              <SocialLinks links={socialLinks} className="justify-center sm:justify-start" />
+              <SocialLinks links={socialLinks} className="justify-center sm:justify-start [&_a:hover]:bg-primary/10 [&_a:hover]:text-primary [&_a:hover]:border-primary/30" />
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 pt-6 border-t border-primary/20 text-xs sm:text-sm">

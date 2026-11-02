@@ -1,7 +1,7 @@
 "use client";
 
 import { ParticleCanvas } from "@/components/custom/blocks/ParticleCanvasBlock";
-import { toBlockColor } from "@/lib/accent";
+import { accentStyle, toBlockColor } from "@/lib/accent";
 
 export default function ParticleCanvasDemo({
   variant = "repel",
@@ -19,8 +19,17 @@ export default function ParticleCanvasDemo({
   color?: string;
 }) {
   const color = toBlockColor(pickedColor);
+  const isWordmark = variant === "wordmark-glow";
+
   return (
-    <div className="relative w-full h-[650px] min-h-max bg-background rounded-xl overflow-hidden flex items-center justify-center border border-border">
+    <div
+      style={accentStyle(color)}
+      className={
+        isWordmark
+          ? "relative w-full h-[260px] min-h-max bg-background rounded-xl overflow-hidden flex items-end justify-center border border-border transition-colors"
+          : "relative w-full h-[650px] min-h-max bg-background rounded-xl overflow-hidden flex items-center justify-center border border-border transition-colors"
+      }
+    >
       <ParticleCanvas
         variant={variant}
         content={content}
@@ -28,7 +37,7 @@ export default function ParticleCanvasDemo({
         particleGap={particleGap}
         speed={speed}
         color={color}
-        className="w-full h-full min-h-[650px]"
+        className={isWordmark ? "w-full h-full min-h-[260px]" : "w-full h-full min-h-[650px]"}
       />
     </div>
   );

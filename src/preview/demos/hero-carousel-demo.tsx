@@ -1,6 +1,7 @@
 "use client";
 
 import { HeroCarousel, type HeroSlide } from "@/components/custom/blocks/HeroCarouselBlock";
+import { resolveAccent } from "@/lib/accent";
 
 const SLIDES: HeroSlide[] = [
   {
@@ -59,17 +60,43 @@ const SLIDES: HeroSlide[] = [
 ];
 
 const AVATARS = [
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg", alt: "" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-2-1790148865112.jpg", alt: "" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg", alt: "" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-4-1790148865113.jpg", alt: "" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg", alt: "" },
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg",
+    alt: "Elena Vance",
+    name: "Elena Vance",
+    designation: "Alpine Trekker",
+  },
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg",
+    alt: "Tom Hardy",
+    name: "Tom Hardy",
+    designation: "Summit Guide",
+  },
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg",
+    alt: "Mara Jade",
+    name: "Mara Jade",
+    designation: "Trail Explorer",
+  },
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg",
+    alt: "Leo Silva",
+    name: "Leo Silva",
+    designation: "Photographer",
+  },
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790082180/pexels-photo-1520760-1790082180553.jpg",
+    alt: "June Carter",
+    name: "June Carter",
+    designation: "Mountain Guide",
+  },
 ];
 
 export default function HeroCarouselDemo({
   reveal = "immediate",
   interval = 5000,
   accent,
+  color,
 }: {
   /** In the docs the section is already on screen, so play at once. */
   reveal?: "in-view" | "immediate";
@@ -77,12 +104,15 @@ export default function HeroCarouselDemo({
   interval?: number;
   /** Pins the accent; the theme's primary by default. */
   accent?: string;
+  color?: string;
 }) {
+  const resolvedAccent = accent ?? resolveAccent(color) ?? undefined;
+
   return (
     <HeroCarousel
       reveal={reveal}
       interval={interval}
-      accent={accent}
+      accent={resolvedAccent}
       eyebrow="Small-group treks in the mountains"
       heading={
         <>

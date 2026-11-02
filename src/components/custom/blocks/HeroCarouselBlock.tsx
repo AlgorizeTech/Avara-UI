@@ -48,6 +48,7 @@ export interface HeroCarouselProps extends Omit<React.HTMLAttributes<HTMLElement
   onChange?: (index: number) => void;
   /** Sets `--primary` for the section: the eyebrow pip, the arrow on the call to action, the progress line, the focus rings and a tint in the ground. */
   accent?: string;
+  color?: string;
   reveal?: "in-view" | "immediate";
   /** Pass `next/link` to keep client-side navigation on the CTA. */
   linkComponent?: React.ElementType;
@@ -112,6 +113,39 @@ function play(el: Element, keyframes: Keyframe[], options: KeyframeAnimationOpti
 // The progress line fills once per slide; its end moves the queue.
 const PROGRESS_CSS = "@keyframes hc-progress { from { transform: scaleX(0); } to { transform: scaleX(1); } }";
 
+export const DEFAULT_CAROUSEL_AVATARS: StackAvatar[] = [
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg",
+    alt: "Elena Vance",
+    name: "Elena Vance",
+    designation: "Alpine Trekker",
+  },
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg",
+    alt: "Tom Hardy",
+    name: "Tom Hardy",
+    designation: "Summit Guide",
+  },
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg",
+    alt: "Mara Jade",
+    name: "Mara Jade",
+    designation: "Trail Explorer",
+  },
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg",
+    alt: "Leo Silva",
+    name: "Leo Silva",
+    designation: "Photographer",
+  },
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790082180/pexels-photo-1520760-1790082180553.jpg",
+    alt: "June Carter",
+    name: "June Carter",
+    designation: "Mountain Guide",
+  },
+];
+
 // ------------------------------------------
 // Root
 // ------------------------------------------
@@ -120,13 +154,14 @@ export function HeroCarousel({
   eyebrow,
   heading,
   intro,
-  avatars,
+  avatars = DEFAULT_CAROUSEL_AVATARS,
   avatarsLabel,
   cta,
   interval = 5000,
   defaultIndex = 0,
   onChange,
   accent,
+  color,
   reveal = "in-view",
   linkComponent: Link = "a",
   className,
@@ -388,7 +423,8 @@ export function HeroCarousel({
     if (Math.abs(dx) > 40) go(dx < 0 ? active + 1 : active - 1);
   };
 
-  const vars = { ...(accent ? { "--primary": accent } : {}) } as React.CSSProperties;
+  const resolvedAccent = accent || color;
+  const vars = { ...(resolvedAccent ? { "--primary": resolvedAccent } : {}) } as React.CSSProperties;
   const front = slides[active];
   const railHeight = metrics ? metrics.railH : 320;
 
@@ -452,7 +488,7 @@ export function HeroCarousel({
         </div>
 
         {/* ---- Panel and rail ---- */}
-        <div className="mt-10 grid items-end gap-6 sm:mt-12 lg:mt-auto lg:grid-cols-[minmax(17rem,21rem)_minmax(0,1fr)] lg:gap-10">
+        <div className="mt-10 grid items-end gap-6 sm:mt-12 lg:mt-auto lg:grid-cols-[minmax(19rem,23rem)_minmax(0,1fr)] lg:gap-10">
           <div
             data-hc-panel=""
             className="order-2 w-full max-w-[28rem] rounded-[26px] border border-white/15 bg-white/10 p-5 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.6)] backdrop-blur-xl sm:p-6 lg:order-1 lg:max-w-none"
@@ -460,9 +496,21 @@ export function HeroCarousel({
             {(avatars?.length || avatarsLabel) && (
               <div className="flex items-center gap-3">
                 {avatars && avatars.length > 0 && (
-                  <AvatarStack avatars={avatars} size="md" max={4} ringClassName="ring-white/30" spreadOnHover />
+                  <AvatarStack
+                    avatars={avatars}
+                    variant="spread"
+                    type="tooltip-arrow"
+                    size="md"
+                    max={4}
+                    ringClassName="ring-white/30"
+                    className="m-0 p-0 py-0 px-0"
+                  />
                 )}
-                {avatarsLabel && <span className="text-[13px] font-medium text-white/90">{avatarsLabel}</span>}
+                {avatarsLabel && (
+                  <span className="shrink-0 text-[13px] font-medium leading-snug text-white/90 transition-all duration-500 ease-[cubic-bezier(0.16,1,0.3,1)]">
+                    {avatarsLabel}
+                  </span>
+                )}
               </div>
             )}
             {intro && <p className="mt-4 max-w-[34ch] text-[14px] leading-[1.6] text-white/80">{intro}</p>}

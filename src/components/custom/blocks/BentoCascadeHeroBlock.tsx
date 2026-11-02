@@ -48,6 +48,7 @@ export interface BentoCascadeHeroProps
   speed?: number; // seconds for one complete loop cycle
   pauseOnHover?: boolean;
   accent?: string;
+  color?: string;
   radius?: string | number;
   linkComponent?: React.ElementType;
   imageComponent?: React.ElementType;
@@ -260,6 +261,7 @@ export const BentoCascadeHero = forwardRef<HTMLElement, BentoCascadeHeroProps>(
       speed = 30,
       pauseOnHover = true,
       accent,
+      color,
       radius,
       linkComponent: LinkComp,
       imageComponent,
@@ -327,7 +329,7 @@ export const BentoCascadeHero = forwardRef<HTMLElement, BentoCascadeHeroProps>(
     };
 
     const customStyle: React.CSSProperties = {
-      ...accentTokens(accent),
+      ...accentTokens(accent || color),
       ...(radius !== undefined
         ? {
             "--radius": typeof radius === "number" ? `${radius}px` : radius,
@@ -462,7 +464,7 @@ export const BentoCascadeHero = forwardRef<HTMLElement, BentoCascadeHeroProps>(
               {/* Top Row: 1st Preview AvatarGroup (Shift on hover with spring physics) + Stars + Reviews */}
               <div className="mb-5 sm:mb-6 flex flex-wrap items-center gap-3.5 sm:gap-5">
                 {/* Avara UI AvatarGroup (1st Preview - Shift on hover with spring physics) */}
-                <AvatarGroup showTooltip={true} className="my-0 h-10 -space-x-2.5">
+                <AvatarGroup showTooltip={true} className="m-0 p-0 h-10 -space-x-2.5">
                   {stackAvatars.map((av, index) => (
                     <Avatar
                       key={index}

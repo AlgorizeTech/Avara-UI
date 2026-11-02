@@ -108,6 +108,13 @@ export function HyperspaceNotFoundSection({
       ? "inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-foreground px-7 py-3 text-[14px] font-semibold tracking-[0.3px] text-background transition-all hover:bg-foreground/90 active:scale-[0.98] cursor-pointer"
       : "inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-foreground/[0.04] px-7 py-3 text-[14px] font-medium text-foreground transition-all hover:bg-foreground/10 active:scale-[0.98] cursor-pointer";
 
+    const defaultIcon = isPrimary ? (
+      <BookOpen className="h-4 w-4" />
+    ) : (
+      <Home className="h-4 w-4" />
+    );
+    const actionIcon = action.icon !== undefined ? action.icon : defaultIcon;
+
     if (action.href) {
       return (
         <a
@@ -120,7 +127,7 @@ export function HyperspaceNotFoundSection({
           }}
           className={baseClass}
         >
-          {action.icon}
+          {actionIcon}
           <span>{action.label}</span>
         </a>
       );
@@ -132,7 +139,7 @@ export function HyperspaceNotFoundSection({
         onClick={action.onClick}
         className={baseClass}
       >
-        {action.icon}
+        {actionIcon}
         <span>{action.label}</span>
       </button>
     );
@@ -304,6 +311,13 @@ export function AnimatedBeamNotFoundSection({
       ? "group relative inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-[var(--radius-xl,0.875rem)] bg-primary text-primary-foreground font-semibold px-5 sm:px-6 py-2.5 text-xs sm:text-sm hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer select-none"
       : "relative inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-[var(--radius-xl,0.875rem)] border border-border bg-background hover:bg-muted hover:border-primary/40 hover:scale-[1.02] text-foreground font-medium px-5 sm:px-6 py-2.5 text-xs sm:text-sm active:scale-[0.98] transition-all duration-200 cursor-pointer select-none";
 
+    const defaultIcon = isPrimary ? (
+      <BookOpen className="h-4 w-4" />
+    ) : (
+      <Home className="h-4 w-4" />
+    );
+    const actionIcon = action.icon !== undefined ? action.icon : defaultIcon;
+
     if (action.href) {
       return (
         <a
@@ -316,7 +330,7 @@ export function AnimatedBeamNotFoundSection({
           }}
           className={baseClass}
         >
-          {action.icon}
+          {actionIcon}
           <span>{action.label}</span>
           {isPrimary && (
             <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1.5" />
@@ -327,7 +341,7 @@ export function AnimatedBeamNotFoundSection({
 
     return (
       <button type="button" onClick={action.onClick} className={baseClass}>
-        {action.icon}
+        {actionIcon}
         <span>{action.label}</span>
         {isPrimary && (
           <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1.5" />
@@ -660,6 +674,13 @@ export function QuantumHologramNotFoundSection({
       ? "group relative inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-[var(--radius-xl,1rem)] bg-primary text-primary-foreground font-semibold px-6 py-3 text-xs sm:text-sm shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer select-none"
       : "relative inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-[var(--radius-xl,1rem)] border border-border/80 bg-background/80 hover:bg-muted text-foreground font-medium px-6 py-3 text-xs sm:text-sm hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer backdrop-blur-md select-none";
 
+    const defaultIcon = isPrimary ? (
+      <Sparkles className="h-4 w-4" />
+    ) : (
+      <Home className="h-4 w-4" />
+    );
+    const actionIcon = action.icon !== undefined ? action.icon : defaultIcon;
+
     if (action.href) {
       return (
         <a
@@ -672,7 +693,7 @@ export function QuantumHologramNotFoundSection({
           }}
           className={baseClass}
         >
-          {action.icon}
+          {actionIcon}
           <span>{action.label}</span>
           {isPrimary && (
             <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1.5" />
@@ -683,7 +704,7 @@ export function QuantumHologramNotFoundSection({
 
     return (
       <button type="button" onClick={action.onClick} className={baseClass}>
-        {action.icon}
+        {actionIcon}
         <span>{action.label}</span>
         {isPrimary && (
           <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1.5" />

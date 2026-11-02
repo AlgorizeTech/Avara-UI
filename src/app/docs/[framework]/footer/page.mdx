@@ -146,21 +146,30 @@ export default function WordmarkFooterDemo() {
     },
     {
       title: "Snapshot Footer",
-      propNotes: [{ lead: "Use", prop: "variant", value: '"snapshot"', effect: "a modern studio footer with sunken interactive cards and an animated say hi sticker that lifts out on hover." }],
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"snapshot"', effect: "a modern studio footer with sunken interactive cards and an animated say hi sticker that lifts out on hover." },
+        { lead: "Logo", prop: "logo", value: '<img src="/my-logo.svg" />', effect: "replaces default brand mark with your full custom company logo (image string or JSX element)." },
+      ],
       props: { variant: "snapshot" },
       usage: usageSnapshot,
       code: extractCode("src/components/custom/blocks/FooterBlock.tsx"),
     },
     {
       title: "Modern Stack Footer",
-      propNotes: [{ lead: "Use", prop: "variant", value: '"modern-stack"', effect: "studio footer with multi-colored cards inspired by modern scroll stack and interactive spring hover physics." }],
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"modern-stack"', effect: "studio footer with multi-colored cards inspired by modern scroll stack and interactive spring hover physics." },
+        { lead: "Logo", prop: "logo", value: '<img src="/my-logo.svg" />', effect: "replaces default brand mark with your full custom company logo (image string or JSX element)." },
+      ],
       props: { variant: "modern-stack" },
       usage: usageModernStack,
       code: extractCode("src/components/custom/blocks/FooterBlock.tsx"),
     },
     {
       title: "Wordmark Glow Footer",
-      propNotes: [{ lead: "Use", prop: "variant", value: '"wordmark-glow"', effect: "a brand footer with solutions columns, direct contact info, legal row, and giant scroll-rising wordmark with soft pointer glow." }],
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"wordmark-glow"', effect: "a brand footer with solutions columns, direct contact info, legal row, and a giant wordmark that animates in with a staggered spring bounce on scroll alongside a soft pointer glow." },
+        { lead: "Logo", prop: "logo", value: '<img src="/my-logo.svg" />', effect: "full brand logo displayed in top header area; customize via logo or brandName." },
+      ],
       props: { variant: "wordmark-glow" },
       usage: usageWordmark,
       code: extractCode("src/components/custom/blocks/FooterBlock.tsx"),
@@ -180,27 +189,43 @@ export default function WordmarkFooterDemo() {
   examples={[
     {
       title: "Simple Centered Footer",
-      propNotes: [{ lead: "Use", prop: "variant", value: '"simple-centered"', effect: "for clean, spacious centered brand logo and navigation pills." }],
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"simple-centered"', effect: "for clean, spacious centered brand logo and navigation pills." },
+        { lead: "Logo", prop: "logo", value: '<img src="/my-logo.svg" />', effect: "replaces default brand icon & text with your full custom logo component or image string." },
+      ],
       props: { variant: "simple-centered" },
       usage: usageSimple,
+      code: extractCode("src/components/custom/blocks/FooterBlock.tsx"),
     },
     {
       title: "Glass Dock Footer",
-      propNotes: [{ lead: "Use", prop: "variant", value: '"glass-dock"', effect: "floating glassmorphism bar dock card with backdrop blur." }],
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"glass-dock"', effect: "floating glassmorphism bar dock card with backdrop blur." },
+        { lead: "Logo", prop: "logo", value: '<img src="/my-logo.svg" />', effect: "replaces default brand icon & text with your full custom logo component or image string." },
+      ],
       props: { variant: "glass-dock" },
       usage: usageGlassDock,
+      code: extractCode("src/components/custom/blocks/FooterBlock.tsx"),
     },
     {
       title: "Neon Glow Pulse Cyberpunk Footer",
-      propNotes: [{ lead: "Use", prop: "variant", value: '"neon-glow-pulse"', effect: "dark cyberpunk theme with glowing border pulse effect." }],
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"neon-glow-pulse"', effect: "dark cyberpunk theme with glowing border pulse effect." },
+        { lead: "Logo", prop: "logo", value: '<img src="/my-logo.svg" />', effect: "replaces default brand icon & text with your full custom logo component or image string." },
+      ],
       props: { variant: "neon-glow-pulse" },
       usage: usageNeonGlow,
+      code: extractCode("src/components/custom/blocks/FooterBlock.tsx"),
     },
     {
       title: "Quantum Particle Beam Lines Footer",
-      propNotes: [{ lead: "Use", prop: "variant", value: '"quantum-particle-beam"', effect: "high-energy quantum particle beam lines with glowing neon nodes." }],
+      propNotes: [
+        { lead: "Use", prop: "variant", value: '"quantum-particle-beam"', effect: "high-energy quantum particle beam lines with glowing neon nodes." },
+        { lead: "Logo", prop: "logo", value: '<img src="/my-logo.svg" />', effect: "replaces default brand icon & text with your full custom logo component or image string." },
+      ],
       props: { variant: "quantum-particle-beam" },
       usage: usageQuantumBeam,
+      code: extractCode("src/components/custom/blocks/FooterBlock.tsx"),
     },
   ]}
 />
@@ -243,7 +268,13 @@ Discover the key capabilities of the `Footer` component:
         <td><code>blueprintWordmark</code></td>
         <td><code>string</code></td>
         <td><code>"AVARA UI"</code></td>
-        <td>Custom text for the architectural blueprint wordmark with interactive liquid ink hover physics in <code>variant="architectural-liquid"</code>.</td>
+        <td>Custom text for the architectural blueprint wordmark with interactive liquid ink hover physics in <code>variant="architectural-liquid"</code>. Supports all alphanumeric characters and symbols.</td>
+      </tr>
+      <tr>
+        <td><code>heroTitle</code></td>
+        <td><code>string</code></td>
+        <td><code>"CRAFTED FOR EXTRAORDINARY INTERFACES"</code></td>
+        <td>Top headline statement for <code>variant="architectural-liquid"</code>.</td>
       </tr>
       <tr>
         <td><code>architecturalLiquid</code></td>
@@ -289,9 +320,9 @@ Discover the key capabilities of the `Footer` component:
       </tr>
       <tr>
         <td><code>logo</code></td>
-        <td><code>React.ReactNode</code></td>
-        <td><code>undefined</code></td>
-        <td>Custom logo icon component.</td>
+        <td><code>React.ReactNode | string</code></td>
+        <td>Built-in Vector Logo</td>
+        <td>Custom logo component or image URL string. When provided, replaces the default brand logo area completely across all variants without requiring local icon assets.</td>
       </tr>
       <tr>
         <td><code>socialLinks</code></td>

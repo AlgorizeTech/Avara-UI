@@ -9,10 +9,12 @@ Several sections used to hand-roll this row; Fashion Hero uses this one.
 export const usageDefault = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
 
 const PEOPLE = [
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy", designation: "Co-Founder & CTO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara Jade", designation: "Managing Director" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo Silva", designation: "Chairman & Co-Founder" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790082180/pexels-photo-1520760-1790082180553.jpg", alt: "June Carter", designation: "President & Co-Founder" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145141/pexels-photo-6311475-1790145143489.jpg", alt: "Sam Wilson", designation: "Chief Executive Officer" },
 ];
 
 export default function BasicAvatarStack() {
@@ -21,23 +23,7 @@ export default function BasicAvatarStack() {
   );
 }`;
 
-export const usageAction = `import { Plus } from "lucide-react";
-
-const PEOPLE = [
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara" },
-];
-
-export default function Community() {
-  return (
-
-      }
-    />
-  );
-}`;
-
-export const usageCount = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
+export const usageTooltip = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
 
 const PEOPLE = [
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },
@@ -48,9 +34,108 @@ const PEOPLE = [
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145141/pexels-photo-6311475-1790145143489.jpg", alt: "Sam Wilson", designation: "Chief Executive Officer" },
 ];
 
+export default function TooltipZoomAvatarStack() {
+  return (
+    
+  );
+}`;
+
+export const usageTooltipArrow = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
+
+const PEOPLE = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy", designation: "Co-Founder & CTO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara Jade", designation: "Managing Director" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo Silva", designation: "Chairman & Co-Founder" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790082180/pexels-photo-1520760-1790082180553.jpg", alt: "June Carter", designation: "President & Co-Founder" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145141/pexels-photo-6311475-1790145143489.jpg", alt: "Sam Wilson", designation: "Chief Executive Officer" },
+];
+
+export default function TooltipArrowAvatarStack() {
+  return (
+    
+  );
+}`;
+
+export const usageSpread = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
+
+const PEOPLE = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy", designation: "Co-Founder & CTO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara Jade", designation: "Managing Director" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo Silva", designation: "Chairman & Co-Founder" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790082180/pexels-photo-1520760-1790082180553.jpg", alt: "June Carter", designation: "President & Co-Founder" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145141/pexels-photo-6311475-1790145143489.jpg", alt: "Sam Wilson", designation: "Chief Executive Officer" },
+];
+
+export default function SpreadOnHover() {
+  return (
+    
+  );
+}`;
+
+export const usageSpreadTooltip = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
+
+const PEOPLE = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy", designation: "Co-Founder & CTO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara Jade", designation: "Managing Director" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo Silva", designation: "Chairman & Co-Founder" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790082180/pexels-photo-1520760-1790082180553.jpg", alt: "June Carter", designation: "President & Co-Founder" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145141/pexels-photo-6311475-1790145143489.jpg", alt: "Sam Wilson", designation: "Chief Executive Officer" },
+];
+
+export default function SpreadWithTooltip() {
+  return (
+    
+  );
+}`;
+
+export const usageSpreadTooltipArrow = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
+
+const PEOPLE = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy", designation: "Co-Founder & CTO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara Jade", designation: "Managing Director" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo Silva", designation: "Chairman & Co-Founder" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790082180/pexels-photo-1520760-1790082180553.jpg", alt: "June Carter", designation: "President & Co-Founder" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145141/pexels-photo-6311475-1790145143489.jpg", alt: "Sam Wilson", designation: "Chief Executive Officer" },
+];
+
+export default function SpreadWithTooltipArrow() {
+  return (
+    
+  );
+}`;
+
+export const usageAction = `const PEOPLE = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy", designation: "Co-Founder & CTO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara Jade", designation: "Managing Director" },
+];
+
+export default function Community() {
+  return (
+     console.log("Action clicked")}
+    />
+  );
+}`;
+
+export const usageCount = `const PEOPLE = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy", designation: "Co-Founder & CTO" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara Jade", designation: "Managing Director" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo Silva", designation: "Chairman & Co-Founder" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790082180/pexels-photo-1520760-1790082180553.jpg", alt: "June Carter", designation: "President & Co-Founder" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145141/pexels-photo-6311475-1790145143489.jpg", alt: "Sam Wilson", designation: "Chief Executive Officer" },
+];
+
 export default function JoinedThisMonth() {
   return (
-
+    
+       console.log(\`Clicked +\${restCount} more\`)}
+      />
+      
         2,400+ people joined this month
 
   );
@@ -63,6 +148,8 @@ const PEOPLE = [
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy", designation: "Co-Founder & CTO" },
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara Jade", designation: "Managing Director" },
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo Silva", designation: "Chairman & Co-Founder" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790082180/pexels-photo-1520760-1790082180553.jpg", alt: "June Carter", designation: "President & Co-Founder" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145141/pexels-photo-6311475-1790145143489.jpg", alt: "Sam Wilson", designation: "Chief Executive Officer" },
 ];
 
 export default function SizesDemo() {
@@ -77,138 +164,37 @@ export default function SizesDemo() {
   );
 }`;
 
-export const usageTooltip = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
+export const usageAvatarGroup = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
 
 const PEOPLE = [
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy", designation: "Co-Founder & CTO" },
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara Jade", designation: "Managing Director" },
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo Silva", designation: "Chairman & Co-Founder" },
-];
-
-export default function TooltipZoomAvatarStack() {
-  // Zoom on hover with tooltip, gap remains fixed
-  return (
-    
-  );
-}`;
-
-export const usageTooltipArrow = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
-
-const PEOPLE = [
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy", designation: "Co-Founder & CTO" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara Jade", designation: "Managing Director" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo Silva", designation: "Chairman & Co-Founder" },
-];
-
-export default function TooltipArrowAvatarStack() {
-  // Tooltip with pointing arrow and zoom on hover
-  return (
-    
-  );
-}`;
-
-export const usageSpread = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
-
-const PEOPLE = [
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo" },
-];
-
-export default function SpreadOnHover() {
-  // Width expands to the right on hover and hovered face shifts slightly upward (-30%) without zoom
-  return (
-    
-  );
-}`;
-
-export const usageSpreadTooltip = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
-
-const PEOPLE = [
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy", designation: "Co-Founder & CTO" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara Jade", designation: "Managing Director" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo Silva", designation: "Chairman & Co-Founder" },
-];
-
-export default function SpreadWithTooltip() {
-  // Width expands to the right on hover, hovered face shifts up (-30%) and reveals tooltip without arrow
-  return (
-    
-  );
-}`;
-
-export const usageSpreadTooltipArrow = `import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
-
-const PEOPLE = [
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy", designation: "Co-Founder & CTO" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara Jade", designation: "Managing Director" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo Silva", designation: "Chairman & Co-Founder" },
-];
-
-export default function SpreadWithTooltipArrow() {
-  // Width expands to the right on hover, hovered face shifts up (-30%) and reveals tooltip with pointing arrow popup
-  return (
-    
-  );
-}`;
-
-export const usageAvatarGroup = `import {
-  AvatarGroup,
-  AvatarGroupTooltip,
-  Avatar,
-  AvatarImage,
-  AvatarFallback,
-} from "@/components/custom/blocks/AvatarStackBlock";
-
-const PEOPLE = [
-  {
-    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg",
-    alt: "Ana Watson",
-    name: "Ana Watson",
-    fallback: "AW",
-    designation: "Founder & CEO",
-  },
-  {
-    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg",
-    alt: "Tom Hardy",
-    name: "Tom Hardy",
-    fallback: "TH",
-    designation: "Co-Founder & CTO",
-  },
-  {
-    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg",
-    alt: "Mara Jade",
-    name: "Mara Jade",
-    fallback: "MJ",
-    designation: "Managing Director",
-  },
-  {
-    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg",
-    alt: "Leo Silva",
-    name: "Leo Silva",
-    fallback: "LS",
-    designation: "Chairman & Co-Founder",
-  },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790082180/pexels-photo-1520760-1790082180553.jpg", alt: "June Carter", designation: "President & Co-Founder" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145141/pexels-photo-6311475-1790145143489.jpg", alt: "Sam Wilson", designation: "Chief Executive Officer" },
 ];
 
 export default function AvatarGroupDemo() {
   return (
     
-      {PEOPLE.map((avatar, index) => (
-
-          {avatar.fallback}
-          
-            {avatar.name}
-
-      ))}
-    
   );
 }`;
+
+ void to handle clicks on the +N counter disc.",
+        },
+        {
+          prop: "action",
+          effect: "optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it if not needed.",
+        },
+      ],
+      props: { example: "avatar-group", showTooltip: true },
+      usage: usageAvatarGroup,
+      code: extractCode("src/components/custom/blocks/AvatarStackBlock.tsx"),
+      minHeight: 260,
+    },
+  ]}
+/>
 
 ## Installation
 
@@ -226,6 +212,247 @@ npx shadcn@latest add @avara-ui/avatar-stack
 ```
 
 ## Examples
+
+ void (or true) to append a trailing '+' action button, or omit it.",
+        },
+      ],
+      props: { example: "default", variant: "zoom", type: "default" },
+      usage: usageDefault,
+      minHeight: 240,
+    },
+    {
+      title: "With tooltip (Zoom on hover)",
+      subheading:
+        "Hovering an avatar displays its name in a tooltip and zooms the face upward, keeping the row's gap fixed.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"zoom"',
+          effect: "raises and zooms the hovered avatar above its neighbours while keeping the spacing fixed.",
+        },
+        {
+          prop: "type",
+          value: '"tooltip"',
+          effect: "displays the avatar's name and designation in a clean floating tooltip on hover.",
+        },
+        {
+          prop: "max",
+          value: "4",
+          effect: "sets the maximum visible faces before folding the rest into a +N badge (supports onMoreClick).",
+        },
+        {
+          prop: "action",
+          effect: "optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it.",
+        },
+      ],
+      props: { example: "tooltip", variant: "zoom", type: "tooltip" },
+      usage: usageTooltip,
+      minHeight: 240,
+    },
+    {
+      title: "With tooltip arrow (Zoom on hover)",
+      subheading:
+        "Displays an anchored pointer arrow underneath the tooltip card with a lively spring popup animation as avatars smoothly zoom on hover.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"zoom"',
+          effect: "raises and zooms the hovered avatar above its neighbours while keeping the spacing fixed.",
+        },
+        {
+          prop: "type",
+          value: '"tooltip-arrow"',
+          effect: "renders a floating tooltip with a pointer arrow anchoring to the top of the avatar circle.",
+        },
+        {
+          prop: "max",
+          value: "4",
+          effect: "sets the maximum visible faces before folding the rest into a +N badge (supports onMoreClick).",
+        },
+        {
+          prop: "action",
+          effect: "optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it.",
+        },
+      ],
+      props: { example: "tooltip-arrow", variant: "zoom", type: "tooltip-arrow" },
+      usage: usageTooltipArrow,
+      minHeight: 240,
+    },
+    {
+      title: "Spread on hover (Expand width)",
+      subheading:
+        "Hovering over the stack smoothly fans the avatars out to the right and subtly shifts the hovered face upward without zooming.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"spread"',
+          effect: "smoothly shifts subsequent avatars to the right on hover (6px) and elevates the hovered face by -30% without scaling.",
+        },
+        {
+          prop: "type",
+          value: '"default"',
+          effect: "disables tooltips so the avatars fan out cleanly without info popups.",
+        },
+        {
+          prop: "max",
+          value: "4",
+          effect: "sets the maximum visible faces before folding the rest into a +N badge (supports onMoreClick).",
+        },
+        {
+          prop: "action",
+          effect: "optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it.",
+        },
+      ],
+      props: { example: "spread", variant: "spread", type: "default" },
+      usage: usageSpread,
+      minHeight: 240,
+    },
+    {
+      title: "Spread with tooltip",
+      subheading:
+        "Hovering over the stack widens the avatar gap to the right, elevates the hovered face by -30%, and displays a clean floating tooltip above it.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"spread"',
+          effect: "smoothly shifts subsequent avatars to the right on hover and elevates the hovered face by -30%.",
+        },
+        {
+          prop: "type",
+          value: '"tooltip"',
+          effect: "displays a clean floating tooltip without a pointer arrow on hover.",
+        },
+        {
+          prop: "max",
+          value: "4",
+          effect: "sets the maximum visible faces before folding the rest into a +N badge (supports onMoreClick).",
+        },
+        {
+          prop: "action",
+          effect: "optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it.",
+        },
+      ],
+      props: { example: "spread-tooltip", variant: "spread", type: "tooltip" },
+      usage: usageSpreadTooltip,
+      minHeight: 240,
+    },
+    {
+      title: "Spread with tooltip arrow",
+      subheading:
+        "Hovering widens the stack to the right, subtly raises the hovered face, and reveals a spring popup tooltip with an anchored pointer arrow.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"spread"',
+          effect: "smoothly shifts subsequent avatars to the right on hover and elevates the hovered face by -30%.",
+        },
+        {
+          prop: "type",
+          value: '"tooltip-arrow"',
+          effect: "renders a floating tooltip with an anchored pointer arrow underneath and spring popup animation.",
+        },
+        {
+          prop: "max",
+          value: "4",
+          effect: "sets the maximum visible faces before folding the rest into a +N badge (supports onMoreClick).",
+        },
+        {
+          prop: "action",
+          effect: "optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it.",
+        },
+      ],
+      props: { example: "spread-tooltip-arrow", variant: "spread", type: "tooltip-arrow" },
+      usage: usageSpreadTooltipArrow,
+      minHeight: 240,
+    },
+    {
+      title: "With an action",
+      subheading: "Three faces using the zoom variant with clean tooltips and a trailing plus action button that triggers an onClick handler.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"zoom"',
+          effect: "raises and zooms the hovered avatar above its neighbours while keeping the spacing fixed.",
+        },
+        {
+          prop: "type",
+          value: '"tooltip"',
+          effect: "displays the avatar's name and designation in a clean floating tooltip on hover.",
+        },
+        {
+          prop: "action",
+          value: "() => void",
+          effect:
+            "renders the built-in '+' action button at the end of the stack and triggers your onClick function when clicked.",
+        },
+      ],
+      props: { example: "action", variant: "zoom", type: "tooltip" },
+      usage: usageAction,
+      minHeight: 240,
+    },
+    {
+      title: "Folded count",
+      subheading: "Six people, three shown — the rest become a clickable +3 disc. Hovering faces or the counter disc displays arrow tooltips.",
+      propNotes: [
+        {
+          prop: "max",
+          value: "3",
+          effect: "is how many faces show before the rest fold into a +N count disc.",
+        },
+        {
+          prop: "onMoreClick",
+          value: "(restCount, hiddenAvatars) => void",
+          effect: "triggers your onClick callback when the +N counter disc is clicked.",
+        },
+        {
+          prop: "variant",
+          value: '"zoom"',
+          effect: "raises and zooms the hovered face or counter disc above its neighbours.",
+        },
+        {
+          prop: "type",
+          value: '"tooltip-arrow"',
+          effect: "displays tooltips with pointer arrows and lively pop animations on hover.",
+        },
+        {
+          prop: "action",
+          effect: "optional — pass an onClick function () => void alongside max if you want both a +N counter and a trailing '+' button.",
+        },
+      ],
+      props: { example: "count", variant: "zoom", type: "tooltip-arrow", max: 3 },
+      usage: usageCount,
+      minHeight: 240,
+    },
+    {
+      title: "Sizes",
+      subheading:
+        "sm, md and lg — 28, 36 and 44 pixels. The small stack shows a clean tooltip (type=\"tooltip\"), the middle stack shows without tooltip (type=\"default\"), and the large stack displays tooltips with pointing arrows (type=\"tooltip-arrow\").",
+      propNotes: [
+        {
+          prop: "size",
+          effect: "controls the avatar circle dimensions: sm (28px), md (36px), lg (44px), or xl (48px).",
+        },
+        {
+          prop: "variant",
+          value: '"zoom"',
+          effect: "scales the hovered avatar upward while keeping the row's spacing fixed.",
+        },
+        {
+          prop: "type",
+          effect: "configures each stack's tooltip style: \"tooltip\" (sm), \"default\" (md), and \"tooltip-arrow\" (lg).",
+        },
+        {
+          prop: "ringClassName",
+          effect:
+            "is the gap colour between faces (`ring-background` by default). Match it to the surface the stack sits on.",
+        },
+      ],
+      props: { example: "sizes" },
+      usage: usageSizes,
+      minHeight: 260,
+    },
+  ]}
+/>
 
 ## Best Practices & Guidelines
 
@@ -288,9 +515,14 @@ npx shadcn@latest add @avara-ui/avatar-stack
         The list of faces in order. Hover tooltips display the avatar's name/alt, and optionally designation/role beneath it if provided.
 
         variant
-        "default" | "shift"
+        "default" | "shift" | "zoom" | "spread"
         "default"
-        Presentation style: default (smooth fan out) or shift (animate-ui spring shift upward with pointer tooltip).
+        Presentation style: shift (animate-ui spring shift upward with pointer tooltip), zoom (scale up on hover with fixed gap), or spread (smoothly fan out to the right and elevate on hover).
+
+        type
+        "default" | "tooltip" | "tooltip-arrow"
+        "tooltip"
+        Tooltip presentation type for zoom and spread variants: default (no tooltip), tooltip (clean floating tooltip), or tooltip-arrow (tooltip with anchored pointer arrow).
 
         size
         "sm" | "md" | "lg" | "xl"
@@ -300,7 +532,12 @@ npx shadcn@latest add @avara-ui/avatar-stack
         max
         number
         4
-        Maximum faces shown before the rest fold into a +N count disc.
+        Maximum faces shown before the rest fold into a +N count disc. Can be customized on any variant.
+
+        onMoreClick
+        (restCount: number, hiddenAvatars: StackAvatar[], event: MouseEvent) =&gt; void
+        —
+        Click handler triggered when the folded +N counter disc is clicked.
 
         ringClassName
         string
@@ -308,9 +545,9 @@ npx shadcn@latest add @avara-ui/avatar-stack
         Border/gap colour between overlapping faces. Defaults to theme background.
 
         action
-        ReactNode
+        ((event: MouseEvent) =&gt; void) | &#123; onClick?: (event: MouseEvent) =&gt; void; label?: string &#125; | boolean | ReactNode
         —
-        A trailing element (such as an add/join button) rendered at the same size as an avatar.
+        Single prop for the trailing + action button: pass an onClick function () =&gt; void, &#123; onClick, label &#125;, true, or custom ReactNode.
 
         spreadOnHover
         boolean

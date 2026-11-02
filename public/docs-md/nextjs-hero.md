@@ -10,7 +10,9 @@ Every hero section in the library, on one page. Each is its own registry item wi
   Support HeroA frosted bento of cards and counting figures — SaaS and AI products.
   Collage HeroA photo collage under a turning badge — school, studio, workshop.
   Bento Cascade HeroAn infinite vertical bento marquee with seamless looping and soft edge fades — SaaS, AI, and creative platforms.
-  Hero BlockComprehensive variants from one component — bento cascade, orbit ring, bounce, typing, slider, pet shop, doctor, facility, and rotating vortex cyclone radar.
+  Hero BlockComprehensive variants from one component — orbit ring, bounce, typing, slider, pet shop, doctor, facility, and rotating vortex cyclone radar.
+  Breathe HeroCurved 5-card arch hero with dynamic focal zoom and scroll choreography.
+  Solar Snapshot HeroPointer-tracking radiant sun with interactive live Polaroid screenshot stack.
 
 ## Honeycomb Hero
 
@@ -173,12 +175,45 @@ const SLIDES = [
   },
 ];
 
+const AVATARS = [
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg",
+    alt: "Elena Vance",
+    name: "Elena Vance",
+    designation: "Alpine Trekker",
+  },
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg",
+    alt: "Tom Hardy",
+    name: "Tom Hardy",
+    designation: "Summit Guide",
+  },
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg",
+    alt: "Mara Jade",
+    name: "Mara Jade",
+    designation: "Trail Explorer",
+  },
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg",
+    alt: "Leo Silva",
+    name: "Leo Silva",
+    designation: "Photographer",
+  },
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790082180/pexels-photo-1520760-1790082180553.jpg",
+    alt: "June Carter",
+    name: "June Carter",
+    designation: "Mountain Guide",
+  },
+];
+
 export default function Hero() {
   return (
     Watch the dawnfrom the summit}
       slides={SLIDES}
       intro="Three days in the mountains with a local guide who knows every path."
-      avatars={[{ src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-2-1790148865112.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-4-1790148865113.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg" }]}
+      avatars={AVATARS}
       avatarsLabel="50+ travellers this season"
       cta={{ label: "Reserve a spot", href: "/book" }}
       linkComponent={Link}
@@ -882,6 +917,21 @@ export default function OrbitHeroExample() {
 }
 `;
 
+### Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/hero.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/hero
+```
+
 ## Bento Cascade Hero
 
 An infinite vertical bento marquee hero section that loops seamlessly on the browser compositor. Features staggered multi-column cards, rich media tiles, soft top and bottom edge fade masks, and responsive motion with zero visible reset jumps — inspired by Framer's Bento Cascade.
@@ -895,7 +945,26 @@ export default function Hero() {
 }
 `;
 
-export const usageBreathe = `import Link from "next/link";
+### Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/bento-cascade-hero.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/bento-cascade-hero
+```
+
+## Breathe Hero
+
+An ethereal hero featuring an elegant serif headline and a staggered 5-card curved arch. On scroll, the center card scales up to 1.35x while surrounding cards gently drift outward and dim, creating a breathtaking focal zoom.
+
+export const usageBreathe = `"use client";
 
 export default function Hero() {
   return (
@@ -919,7 +988,11 @@ npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/breathe-hero
 ```
 
-export const usageSolarSnapshot = `import Link from "next/link";
+## Solar Snapshot Hero
+
+A lightweight interactive hero with a pointer-following sun orb, Typographic Curtain CTA buttons, an interactive Avatar Group, and a click-to-capture Polaroid section screenshot stack.
+
+export const usageSolarSnapshot = `"use client";
 
 export default function Hero() {
   return (

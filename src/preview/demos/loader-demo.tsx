@@ -10,6 +10,7 @@ export default function LoaderDemo({
   direction = "single",
   showText = false,
   showAll,
+  py,
 }: {
   variant?: "spinner" | "dots" | "pulse" | "ring" | "bar" | "orbit";
   size?: "sm" | "md" | "lg" | "xl";
@@ -19,6 +20,7 @@ export default function LoaderDemo({
   showText?: boolean;
   /** Render-all mode: every size in one frame. */
   showAll?: "sizes";
+  py?: string | number;
 }) {
   // Scalar prop — every size shares a single frame.
   if (showAll === "sizes") {
@@ -32,6 +34,7 @@ export default function LoaderDemo({
             secondaryColor={secondaryColor}
             direction={direction}
             size={s}
+            py={py}
           />
         ))}
       </div>
@@ -41,12 +44,13 @@ export default function LoaderDemo({
   return (
     <div className="w-full flex items-center justify-center min-h-[300px] relative z-10">
       <LoaderBlock
-        key={`${variant}-${color}-${size}-${direction}-${showText}`}
+        key={`${variant}-${color}-${size}-${direction}-${showText}-${py}`}
         variant={variant}
         color={color}
         secondaryColor={secondaryColor}
         direction={direction}
         size={size}
+        py={py}
         text={showText ? "Processing data..." : undefined}
       />
     </div>

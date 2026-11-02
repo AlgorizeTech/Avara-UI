@@ -223,6 +223,7 @@ export function FashionHero({
                 size="md"
                 max={3}
                 ringClassName="ring-background"
+                className="m-0 p-0"
                 action={
                   avatarsHref ? (
                     <Link

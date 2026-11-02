@@ -579,7 +579,7 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
             )}
           >
             {trust.avatars && trust.avatars.length > 0 && (
-              <AvatarStack avatars={trust.avatars} size="lg" max={5} ringClassName="ring-background" className="shrink-0" />
+              <AvatarStack avatars={trust.avatars} size="lg" max={5} ringClassName="ring-background" className="m-0 p-0 shrink-0" />
             )}
             <div className={cn("flex flex-col gap-1 sm:border-l sm:border-border sm:pl-5", centered && "items-center sm:items-start sm:text-left")}>
               {typeof trust.rating === "number" && (

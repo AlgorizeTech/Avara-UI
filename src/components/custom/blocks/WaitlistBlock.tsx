@@ -419,6 +419,7 @@ function Proof({ avatars, className, children, ...props }: WaitlistProofProps) {
           max={4}
           spreadOnHover={false}
           ringClassName={RING[variant]}
+          className="m-0 p-0"
           avatars={avatars.map((src) => ({ src }))}
         />
         <span>{children}</span>
