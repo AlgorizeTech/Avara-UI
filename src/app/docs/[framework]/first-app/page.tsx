@@ -23,15 +23,18 @@ export async function generateMetadata({
   return buildDocsMetadata({
     framework,
     slug: "first-app",
-    title: "Quick Start",
+    title:
+      framework === "reactjs"
+        ? "Quick Start: Shadcn Components in React + Vite"
+        : "Quick Start: Shadcn Components in Next.js",
     description:
       framework === "reactjs"
         ? `Get your first ${SITE_NAME} component on screen in a new React + Vite app — scaffold, install a component, and render it.`
         : `Get your first ${SITE_NAME} component on screen in a new Next.js app — scaffold, install a component, and render it.`,
     keywords:
       framework === "reactjs"
-        ? ["React quick start", "Vite tutorial", "first React app", "React component library tutorial"]
-        : ["Next.js quick start", "first Next.js app", "Next.js tutorial"],
+        ? ["shadcn vite quick start", "shadcn react tutorial", "first shadcn component", "vite react tailwind"]
+        : ["shadcn next.js quick start", "shadcn tutorial", "first shadcn component", "next.js tailwind"],
   });
 }
 

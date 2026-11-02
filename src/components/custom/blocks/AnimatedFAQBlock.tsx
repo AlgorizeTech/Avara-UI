@@ -14,6 +14,7 @@ import {
 export type { FAQItem };
 
 function renderItemVisual(item: FAQItem) {
+  if (item.visual) return item.visual;
   switch (item.id) {
     case "installation":
       return <CLIInstallationVisual />;

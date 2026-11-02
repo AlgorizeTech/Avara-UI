@@ -1084,9 +1084,16 @@ export function ExampleShowcase({
   colorLabel = "Active Color",
   controls = [],
   motionVariants,
+  headingLevel = 3,
 }: {
   /** Registry name of the demo (src/preview/registry.tsx). */
   name: string;
+  /**
+   * Document level of each example's title. 2 for a gallery that sits
+   * directly under the page's H1, before any `##`, so the outline does not
+   * jump from h1 to h3. The table of contents keeps its usual indent.
+   */
+  headingLevel?: 2 | 3;
   examples: ShowcaseExample[];
   /** Previews per row on large screens. Default 2. */
   columns?: 1 | 2;
@@ -1256,6 +1263,7 @@ export function ExampleShowcase({
               options={example.options ?? options}
               minHeight={example.minHeight ?? minHeight}
               maxHeight={example.maxHeight ?? maxHeight}
+              headingLevel={headingLevel}
             />
           );
         })}
@@ -1273,8 +1281,10 @@ function ExampleCard({
   options,
   minHeight,
   maxHeight,
+  headingLevel,
 }: {
   name: string;
+  headingLevel: 2 | 3;
   /** Draw the GSAP / Motion switch in the preview bar. */
   motionSwitch?: boolean;
   example: ResolvedShowcaseExample;
@@ -1289,6 +1299,7 @@ function ExampleCard({
   // `code` feeds the Code tab below, hidden for now — rename back to `code` with it.
   const { title, subheading, propNotes, props, usage, code: _code } = example;
   const anchor = example.id ?? slugify(title);
+  const Heading = headingLevel === 2 ? "h2" : "h3";
 
   // The Sandbox (and its iframe) mounts only once the card nears the viewport.
   const [mounted, setMounted] = useState(false);
@@ -1331,15 +1342,16 @@ function ExampleCard({
     <section ref={rootRef} aria-labelledby={anchor} className="flex flex-col min-w-0">
       {/* Title + optional subheading */}
       <div>
-        <h3
+        <Heading
           id={anchor}
+          data-toc-level={headingLevel === 2 ? 3 : undefined}
           className="scroll-m-20 group text-lg font-semibold text-foreground"
         >
           <a href={`#${anchor}`} className="inline-flex items-center gap-2">
             {title}
             <LinkIcon className="w-3.5 h-3.5 text-foreground/40 opacity-0 group-hover:opacity-100 transition-opacity" />
           </a>
-        </h3>
+        </Heading>
         {subheading && (
           <p className="mt-1 text-sm text-foreground/55">
             {renderInline(subheading)}

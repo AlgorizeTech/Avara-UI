@@ -81,9 +81,9 @@ Ask your assistant:
 - "Build a pricing page using components from {REGISTRY_NAMESPACE}"
 
 <div className="flex gap-3 rounded-xl border border-primary/15 bg-primary/5 p-4 my-6 not-prose">
-  <p className="text-[13px] leading-relaxed text-foreground/60">
+  <div className="text-[13px] leading-relaxed text-foreground/60">
     <span className="font-semibold text-primary">Name the registry.</span> Include <code>{REGISTRY_NAMESPACE}</code> in your prompt. Without it the assistant may search only the default shadcn/ui registry.
-  </p>
+  </div>
 </div>
 
 ## Configuration
@@ -183,19 +183,19 @@ only the file differs.
 
 <div className="flex flex-col gap-3 my-6 not-prose">
   <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
-    <h4 className="text-[14px] font-semibold text-foreground mb-1">The assistant can't find {SITE_NAME} components</h4>
+    <h3 data-toc-skip className="text-[14px] font-semibold text-foreground mb-1">The assistant can't find {SITE_NAME} components</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Check that <code>components.json</code> has the <code>{REGISTRY_NAMESPACE}</code> entry from Step 1, and mention <code>{REGISTRY_NAMESPACE}</code> in your prompt.</p>
   </div>
   <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
-    <h4 className="text-[14px] font-semibold text-foreground mb-1">The server doesn't respond</h4>
+    <h3 data-toc-skip className="text-[14px] font-semibold text-foreground mb-1">The server doesn't respond</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Check the config file for typos, restart your client, and make sure you can reach <code>{SITE_URL}</code>.</p>
   </div>
   <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
-    <h4 className="text-[14px] font-semibold text-foreground mb-1">"No tools" message</h4>
+    <h3 data-toc-skip className="text-[14px] font-semibold text-foreground mb-1">"No tools" message</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Clear the npx cache with <code>npx clear-npx-cache</code>, re-enable the server, and read your client's MCP output log.</p>
   </div>
   <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
-    <h4 className="text-[14px] font-semibold text-foreground mb-1">Installs fail</h4>
+    <h3 data-toc-skip className="text-[14px] font-semibold text-foreground mb-1">Installs fail</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Make sure <code>components.json</code> exists (<DocLink to="installation" className="text-primary hover:underline">run <code>init</code></DocLink>) and you have write access to the project folders.</p>
   </div>
 </div>

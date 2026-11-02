@@ -129,7 +129,7 @@ export default function FlowGalleryVerticalDownDemo() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase headingLevel={2}
   name="flow-gallery"
   colorControl={false}
   columns={1}
@@ -188,11 +188,11 @@ Discover the key capabilities that make this component an excellent choice for m
 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Image Resolution & Aspect Ratios</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Image Resolution & Aspect Ratios</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Use square or near-square images (800x800) so that card items maintain crisp aspect ratios when rendered in the 3D plane.</p>
   </div>
   <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Performance & GPU Acceleration</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Performance & GPU Acceleration</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">The stream plane uses hardware-accelerated <code>transform: translate3d()</code> properties to maintain 60fps performance across devices.</p>
   </div>
 </div>

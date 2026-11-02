@@ -42,7 +42,7 @@ export default function DropdownSwitcher() {
   return <ThemeSwitcher variant="dropdown" />;
 }`;
 
-<ExampleShowcase
+<ExampleShowcase headingLevel={2}
   name="theme-switcher"
   colorControl={false}
   columns={1}
@@ -167,7 +167,7 @@ Explore the Theme Switcher's dark mode capabilities, featuring the circular reve
 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">SSR Considerations</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">SSR Considerations</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Since `next-themes` relies on `localStorage` which isn't available during Server-Side Rendering, always wrap the component's inner rendering logic in a `mounted` check to prevent hydration mismatch flashes.</p>
   </div>
 </div>

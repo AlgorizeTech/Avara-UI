@@ -1,7 +1,7 @@
 import { pageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = pageMetadata({
-  title: `Documentation - ${SITE_NAME}`,
+  title: `Documentation - Shadcn UI Components & Blocks - ${SITE_NAME}`,
   description: `Documentation for the ${SITE_NAME} component library: installation guides, component pages with live previews, and props references.`,
   url: '/docs',
 });
@@ -25,28 +25,28 @@ into your project by the shadcn CLI — no wrapper package, no lock-in.
 
 <div className="not-prose grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
   <DocLink to="index" className="group block p-5 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] hover:bg-foreground/[0.07] transition-colors">
-    <h3 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors mb-[7px]">Introduction</h3>
+    <h2 data-toc-level="3" className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors mb-[7px]">Introduction</h2>
     <span className="block text-[13px] leading-[1.65] text-foreground/45">
       What the library is, how the registry install model works, and what ships in it.
     </span>
   </DocLink>
 
   <DocLink to="installation" className="group block p-5 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] hover:bg-foreground/[0.07] transition-colors">
-    <h3 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors mb-[7px]">Installation</h3>
+    <h2 data-toc-level="3" className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors mb-[7px]">Installation</h2>
     <span className="block text-[13px] leading-[1.65] text-foreground/45">
       Requirements, initializing the CLI, and where installed files land.
     </span>
   </DocLink>
 
   <DocLink to="first-app" className="group block p-5 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] hover:bg-foreground/[0.07] transition-colors">
-    <h3 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors mb-[7px]">Quick Start</h3>
+    <h2 data-toc-level="3" className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors mb-[7px]">Quick Start</h2>
     <span className="block text-[13px] leading-[1.65] text-foreground/45">
       Go from an empty project to a rendered component in four steps.
     </span>
   </DocLink>
 
   <DocLink to="all-components" className="group block p-5 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] hover:bg-foreground/[0.07] transition-colors">
-    <h3 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors mb-[7px]">Browse Components</h3>
+    <h2 data-toc-level="3" className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors mb-[7px]">Browse Components</h2>
     <span className="block text-[13px] leading-[1.65] text-foreground/45">
       All of them, each with live previews, prop notes and an install command.
     </span>
@@ -65,17 +65,17 @@ into your project by the shadcn CLI — no wrapper package, no lock-in.
   <TabsContent value="components">
     <div className="not-prose grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
       <DocLink to="button" className="group block p-4 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] hover:bg-foreground/[0.07] transition-colors">
-        <h4 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">Button</h4>
+        <h3 data-toc-skip className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">Button</h3>
         <span className="block text-[12px] text-foreground/40 mt-1">Customizable button with multiple variants</span>
       </DocLink>
       
       <DocLink to="card" className="group block p-4 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] hover:bg-foreground/[0.07] transition-colors">
-        <h4 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">Card</h4>
+        <h3 data-toc-skip className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">Card</h3>
         <span className="block text-[12px] text-foreground/40 mt-1">Flexible container for content</span>
       </DocLink>
       
       <DocLink to="vertical-tabs" className="group block p-4 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] hover:bg-foreground/[0.07] transition-colors">
-        <h4 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">Tabs</h4>
+        <h3 data-toc-skip className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">Tabs</h3>
         <span className="block text-[12px] text-foreground/40 mt-1">Accessible tab interface</span>
       </DocLink>
     </div>
@@ -84,12 +84,12 @@ into your project by the shadcn CLI — no wrapper package, no lock-in.
   <TabsContent value="hooks">
     <div className="not-prose grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
       <div className="p-4 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03]">
-        <h4 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">useToast</h4>
+        <h3 data-toc-skip className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">useToast</h3>
         <p className="text-[12px] text-foreground/40 mt-1">Display notifications to users</p>
       </div>
       
       <div className="p-4 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03]">
-        <h4 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">useMediaQuery</h4>
+        <h3 data-toc-skip className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">useMediaQuery</h3>
         <p className="text-[12px] text-foreground/40 mt-1">Responsive design helpers</p>
       </div>
     </div>
@@ -98,12 +98,12 @@ into your project by the shadcn CLI — no wrapper package, no lock-in.
   <TabsContent value="utilities">
     <div className="not-prose grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
       <div className="p-4 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03]">
-        <h4 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">cn</h4>
+        <h3 data-toc-skip className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">cn</h3>
         <p className="text-[12px] text-foreground/40 mt-1">Class name merging utility</p>
       </div>
       
       <div className="p-4 rounded-xl border border-foreground/[0.06] bg-foreground/[0.03]">
-        <h4 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">createSlug</h4>
+        <h3 data-toc-skip className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">createSlug</h3>
         <p className="text-[12px] text-foreground/40 mt-1">URL-friendly string generator</p>
       </div>
     </div>

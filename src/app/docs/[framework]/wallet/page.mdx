@@ -107,7 +107,7 @@ export default function CustomWalletExample() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase headingLevel={2}
   name="wallet"
   columns={1}
   examples={[
@@ -173,15 +173,15 @@ export default function CustomWalletExample() {
 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Touch & Mobile Support</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Touch & Mobile Support</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">On touchscreens without hover capability, tapping the wallet triggers the staggered cards reveal so mobile users have the identical tactile experience.</p>
   </div>
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Custom Datasets</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Custom Datasets</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Pass a custom <code>cards</code> array to customize the name, balance, currency, card number, and gradient classes for each of the 3 cards to match your company's product lineup.</p>
   </div>
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Individual Card Hover</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Individual Card Hover</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">When cards are fanned out, hovering over an individual card raises it an extra 18px and adjusts scale to highlight that specific card.</p>
   </div>
 </div>

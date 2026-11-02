@@ -35,15 +35,18 @@ export async function generateMetadata({
   return buildDocsMetadata({
     framework,
     slug: "installation",
-    title: "Installation Guide",
+    title:
+      framework === "reactjs"
+        ? "Install Shadcn UI Components in React + Vite"
+        : "Install Shadcn UI Components in Next.js",
     description:
       framework === "reactjs"
         ? `Install ${SITE_NAME} in a React + Vite project — Tailwind setup, path aliases, and the shadcn registry.`
         : `Install ${SITE_NAME} in a Next.js project — Tailwind setup, shadcn init, and the registry.`,
     keywords:
       framework === "reactjs"
-        ? ["React installation", "Vite setup", "React component library", "shadcn registry Vite", "Tailwind Vite"]
-        : ["Next.js installation", "React framework setup", "Next.js setup", "Next.js components"],
+        ? ["shadcn vite", "install shadcn components", "shadcn react vite", "shadcn registry vite", "tailwind css v4 vite"]
+        : ["shadcn next.js", "install shadcn components", "shadcn ui next.js", "shadcn registry", "tailwind css v4 next.js"],
   });
 }
 

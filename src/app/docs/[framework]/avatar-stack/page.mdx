@@ -251,7 +251,7 @@ export default function AvatarGroupDemo() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase headingLevel={2}
   name="avatar-stack"
   colorControl={false}
   columns={1}
@@ -565,19 +565,19 @@ export default function AvatarGroupDemo() {
 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Optimal Avatar Count</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Optimal Avatar Count</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Limit visible avatars to 3–5 items using the <code>max</code> prop. Folding excess avatars into a <code>+N</code> counter keeps your layout balanced, avoids horizontal overflow on mobile screens, and maintains clean visual hierarchy.</p>
   </div>
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Smooth Hover Motion</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Smooth Hover Motion</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">When enabling <code>spreadOnHover</code>, keep <code>spreadDistance</code> subtle (4–8px) and <code>transitionDuration</code> around 500ms. Pair with <code>translate="-30%"</code> to gently elevate the hovered avatar above its neighbors without jarring layout shifts.</p>
   </div>
   <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">Tooltip Accessibility & Text Alignment</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Tooltip Accessibility & Text Alignment</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Always provide accessible <code>alt</code> or <code>name</code> attributes for every avatar. When a <code>designation</code> or subtitle is provided, tooltips automatically align text to the left; otherwise, titles stay cleanly centered for single-line labels.</p>
   </div>
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Ring Contrast & Background Matching</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Ring Contrast & Background Matching</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Ensure <code>ringClassName</code> matches the surface the avatars rest upon (defaults to <code>ring-background</code>). A matching border ring creates clean visual separation between overlapping faces in both light and dark modes.</p>
   </div>
 </div>

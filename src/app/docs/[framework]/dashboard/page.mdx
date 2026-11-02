@@ -22,7 +22,7 @@ An admin dashboard home on its own canvas: a greeting with all-time totals, a pe
 
 Three looks read the same props: **classic**, solid panels on a light canvas; **glass**, milky panes over soft colour blobs; and **liquid-glass**, fluid refractive glass powered by `LiquidGlassWrapper`, `LiquidGlassBackground`, and `LiquidGlassSvgFilter`.
 
-<ExampleShowcase
+<ExampleShowcase headingLevel={2}
   name="dashboard"
   columns={1}
   minHeight={900}
@@ -137,15 +137,15 @@ Three looks read the same props: **classic**, solid panels on a light canvas; **
 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Send the change with the series</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Send the change with the series</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">The badges show <code>change[period]</code> as given — compute it on your side the way your business reads it (raw totals, or the current period's pace against the last). Leave it out for a period and the tab shows no badge.</p>
   </div>
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Keep the series the same length</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Keep the series the same length</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">The built-in Export writes one CSV row per point with a column per metric, so give every metric the same buckets for a period. Pass <code>onExport</code> to produce your own report instead.</p>
   </div>
   <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-primary mb-1">It sizes to its container</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">It sizes to its container</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Panels stack on phones, pair up on tablets and settle into the 8 + 4 / 4 + 4 + 4 grid from 1280px. Inside an app shell with a sidebar, give the section the content column and override its radius with <code>className</code> if it should sit flush.</p>
   </div>
 </div>

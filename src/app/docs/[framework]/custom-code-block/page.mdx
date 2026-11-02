@@ -226,7 +226,7 @@ export default function MultiFileSnippet() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase headingLevel={2}
   name="custom-code-block"
   colorControl={false}
   columns={1}
@@ -332,7 +332,7 @@ Explore the Custom Code Block's syntax highlighting features, complete with copy
 
 <div className="flex flex-col gap-4 my-6 not-prose">
   <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h4 className="font-sans text-[14px] font-semibold text-foreground mb-1">Language Prop Mapping</h4>
+    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Language Prop Mapping</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Make sure to pass the correct <code>language</code> prop (e.g., <code>"tsx"</code>, <code>"bash"</code>, <code>"css"</code>). This prop drives both the regex syntax highlighting engine and the language icon rendered in the header.</p>
   </div>
 </div>
