@@ -1,16 +1,23 @@
 "use client";
 
 import React, { useState } from "react";
-import NotFoundSection, { NotFoundVariant } from "@/components/custom/blocks/NotFoundBlock";
-import { BookOpen, Home, LayoutGrid } from "lucide-react";
+import NotFoundSection, {
+  NotFoundAction,
+  NotFoundVariant,
+  ShortcutItem,
+} from "@/components/custom/blocks/NotFoundBlock";
+import { Activity, BookOpen, Cpu, Home, LayoutGrid, Sparkles } from "lucide-react";
 
 export default function NotFoundSectionDemo({
-  variant,
+  variant = "hyperspace",
   color,
   code,
   badge,
   title,
   description,
+  primaryAction,
+  secondaryAction,
+  shortcuts,
   showShortcuts = true,
 }: {
   variant?: NotFoundVariant;
@@ -19,6 +26,9 @@ export default function NotFoundSectionDemo({
   badge?: string;
   title?: string;
   description?: string;
+  primaryAction?: NotFoundAction;
+  secondaryAction?: NotFoundAction;
+  shortcuts?: ShortcutItem[];
   showShortcuts?: boolean;
 }) {
   const [notice, setNotice] = useState<string | null>(null);
@@ -27,6 +37,113 @@ export default function NotFoundSectionDemo({
     setNotice(msg);
     setTimeout(() => setNotice(null), 2500);
   };
+
+  // Derive variant-authentic default actions matching usage snippets exactly
+  const resolvedPrimaryAction: NotFoundAction = primaryAction
+    ? {
+        ...primaryAction,
+        onClick: () =>
+          showNotice(`Action triggered: ${primaryAction.label}`),
+      }
+    : variant === "quantum-hologram"
+    ? {
+        label: "Re-anchor to Orbit",
+        icon: <Sparkles className="h-4 w-4" />,
+        onClick: () => showNotice("Action triggered: Re-anchoring to Orbit..."),
+      }
+    : {
+        label: "Explore Documentation",
+        icon: <BookOpen className="h-4 w-4" />,
+        onClick: () => showNotice("Action triggered: Navigating to documentation..."),
+      };
+
+  const resolvedSecondaryAction: NotFoundAction = secondaryAction
+    ? {
+        ...secondaryAction,
+        onClick: () =>
+          showNotice(`Action triggered: ${secondaryAction.label}`),
+      }
+    : variant === "quantum-hologram"
+    ? {
+        label: "Return to Base",
+        icon: <Home className="h-4 w-4" />,
+        onClick: () => showNotice("Action triggered: Returning to Base..."),
+      }
+    : variant === "animated-beam-border"
+    ? {
+        label: "Return to Homepage",
+        icon: <Home className="h-4 w-4" />,
+        onClick: () => showNotice("Action triggered: Returning to Homepage..."),
+      }
+    : {
+        label: "Back to Home",
+        icon: <Home className="h-4 w-4" />,
+        onClick: () => showNotice("Action triggered: Redirecting to homepage..."),
+      };
+
+  const resolvedShortcuts: ShortcutItem[] | undefined = shortcuts
+    ? shortcuts.map((s) => ({
+        ...s,
+        onClick: () => showNotice(`Shortcut clicked: ${s.label}`),
+      }))
+    : variant === "quantum-hologram"
+    ? [
+        {
+          label: "Component Matrix",
+          icon: <LayoutGrid className="h-4 w-4" />,
+          onClick: () => showNotice("Shortcut clicked: Component Matrix"),
+        },
+        {
+          label: "System Quickstart",
+          icon: <BookOpen className="h-4 w-4" />,
+          onClick: () => showNotice("Shortcut clicked: System Quickstart"),
+        },
+        {
+          label: "Telemetry Hub",
+          icon: <Cpu className="h-4 w-4" />,
+          onClick: () => showNotice("Shortcut clicked: Telemetry Hub"),
+        },
+        {
+          label: "Live Changelog",
+          icon: <Activity className="h-4 w-4" />,
+          onClick: () => showNotice("Shortcut clicked: Live Changelog"),
+        },
+      ]
+    : variant === "animated-beam-border"
+    ? [
+        {
+          label: "All Components",
+          icon: <LayoutGrid className="h-4 w-4" />,
+          onClick: () => showNotice("Shortcut clicked: All Components"),
+        },
+        {
+          label: "Installation Guide",
+          icon: <BookOpen className="h-4 w-4" />,
+          onClick: () => showNotice("Shortcut clicked: Installation Guide"),
+        },
+        {
+          label: "Templates Library",
+          icon: <Sparkles className="h-4 w-4" />,
+          onClick: () => showNotice("Shortcut clicked: Templates Library"),
+        },
+        {
+          label: "Live Changelog",
+          icon: <Activity className="h-4 w-4" />,
+          onClick: () => showNotice("Shortcut clicked: Live Changelog"),
+        },
+      ]
+    : [
+        {
+          label: "All Components",
+          icon: <LayoutGrid className="h-3.5 w-3.5 shrink-0 text-primary" />,
+          onClick: () => showNotice("Shortcut clicked: All Components"),
+        },
+        {
+          label: "Installation",
+          icon: <BookOpen className="h-3.5 w-3.5 shrink-0 text-primary" />,
+          onClick: () => showNotice("Shortcut clicked: Installation"),
+        },
+      ];
 
   return (
     <div className="relative -my-6 -mx-4 w-[calc(100%+2rem)] min-w-[calc(100%+2rem)] max-w-none flex flex-col items-center justify-center overflow-hidden">
@@ -45,28 +162,9 @@ export default function NotFoundSectionDemo({
           title={title}
           description={description}
           showShortcuts={showShortcuts}
-          primaryAction={{
-            label: "Explore Documentation",
-            icon: <BookOpen className="h-4 w-4" />,
-            onClick: () => showNotice("Action triggered: Navigating to documentation..."),
-          }}
-          secondaryAction={{
-            label: "Back to Home",
-            icon: <Home className="h-4 w-4" />,
-            onClick: () => showNotice("Action triggered: Redirecting to homepage..."),
-          }}
-          shortcuts={[
-            {
-              label: "All Components",
-              icon: <LayoutGrid className="h-3.5 w-3.5 shrink-0 text-primary" />,
-              onClick: () => showNotice("Shortcut clicked: All Components"),
-            },
-            {
-              label: "Installation",
-              icon: <BookOpen className="h-3.5 w-3.5 shrink-0 text-primary" />,
-              onClick: () => showNotice("Shortcut clicked: Installation"),
-            },
-          ]}
+          primaryAction={resolvedPrimaryAction}
+          secondaryAction={resolvedSecondaryAction}
+          shortcuts={resolvedShortcuts}
           className="w-full min-h-[580px] sm:min-h-[640px]"
         />
       </div>
