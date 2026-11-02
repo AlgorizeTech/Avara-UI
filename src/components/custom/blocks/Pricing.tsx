@@ -3063,7 +3063,7 @@ export function PricingPlansPro({
 
                   {/* Smooth Animated Expand/Collapse Content for Mobile/Vertical */}
                   <div
-                    aria-hidden={!isSelected}
+                    inert={!isSelected}
                     className={cn(
                       "grid transition-[grid-template-rows,opacity,margin-top] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
                       isSelected

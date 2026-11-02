@@ -23,13 +23,23 @@ import { createPortal } from "react-dom";
  */
 
 /**
- * Visible stage, in CSS pixels. Its height follows the demo between these two
- * bounds: a button is a strip, a pricing section is a page, and a fixed box
+ * Visible stage, in CSS pixels. Its height follows the demo between a floor and
+ * a ceiling: a button is a strip, a pricing section is a page, and a fixed box
  * would either strand one in empty space or crop the other.
+ *
+ * Both bounds are measured from the viewport (see `measureStage`) rather than
+ * fixed. The floors below are the old 460 / 160–300 stage grown by 50%, so the
+ * preview is never smaller than that on any screen that has the room; larger
+ * screens get more, up to the ceilings.
  */
-const STAGE_WIDTH = 460;
-const STAGE_MIN_HEIGHT = 160;
-const STAGE_MAX_HEIGHT = 300;
+const STAGE_MIN_WIDTH = 690;
+const STAGE_MAX_WIDTH = 920;
+/** Share of the viewport width the stage aims for before the clamps apply. */
+const STAGE_WIDTH_RATIO = 0.46;
+const STAGE_MIN_HEIGHT = 240;
+const STAGE_FLOOR_MAX_HEIGHT = 450;
+const STAGE_CEIL_MAX_HEIGHT = 640;
+const STAGE_HEIGHT_RATIO = 0.5;
 const HEADER_HEIGHT = 34;
 
 /**
@@ -44,22 +54,53 @@ const VIEWPORT_MARGIN = 12;
 /** Reveal the frame even if a crashed demo never signals ready. */
 const READY_TIMEOUT_MS = 6000;
 
-const PANEL_WIDTH = STAGE_WIDTH;
-/** Scale that maps the demo viewport onto the stage width. */
-const BASE_SCALE = STAGE_WIDTH / PREVIEW_VIEWPORT_WIDTH;
 /**
  * Ceiling on the demo height taken into account. Past this a full-page section
  * shrinks into an unreadable smudge, so it is cropped instead.
  */
 const MAX_CONTENT_HEIGHT = 1200;
 /** Assume a stage-filling demo until it reports its real height. */
-const INITIAL_CONTENT_HEIGHT = Math.round(STAGE_MAX_HEIGHT / BASE_SCALE);
+const INITIAL_CONTENT_HEIGHT = Math.round(
+  STAGE_FLOOR_MAX_HEIGHT / (STAGE_MIN_WIDTH / PREVIEW_VIEWPORT_WIDTH),
+);
 
 const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 const clamp = (value: number, min: number, max: number) =>
   Math.min(Math.max(value, min), Math.max(min, max));
+
+type StageSize = { width: number; minHeight: number; maxHeight: number };
+
+/**
+ * Sizes the stage from the viewport. The hard caps come last so a small window
+ * shrinks the panel below its 50%-larger floor rather than letting it hang off
+ * the screen or past the fold.
+ */
+function measureStage(vw: number, vh: number): StageSize {
+  const width = Math.min(
+    clamp(Math.round(vw * STAGE_WIDTH_RATIO), STAGE_MIN_WIDTH, STAGE_MAX_WIDTH),
+    vw - VIEWPORT_MARGIN * 2,
+  );
+  const maxHeight = Math.min(
+    clamp(
+      Math.round(vh * STAGE_HEIGHT_RATIO),
+      STAGE_FLOOR_MAX_HEIGHT,
+      STAGE_CEIL_MAX_HEIGHT,
+    ),
+    vh - HEADER_HEIGHT - VIEWPORT_MARGIN * 2,
+  );
+  return {
+    width,
+    minHeight: Math.min(STAGE_MIN_HEIGHT, maxHeight),
+    maxHeight,
+  };
+}
+
+const readStage = () =>
+  typeof window === "undefined"
+    ? measureStage(1440, 900)
+    : measureStage(window.innerWidth, window.innerHeight);
 
 export type ComponentPreview = {
   /** Registry name of the demo (src/preview/registry.tsx). */
@@ -137,20 +178,33 @@ export function ComponentPreviewTooltip({
     left: number;
   } | null>(null);
 
+  const [stage, setStage] = useState(readStage);
+
+  // Re-measured on resize so the panel follows the window while it is open.
+  useIsomorphicLayoutEffect(() => {
+    const onResize = () => setStage(readStage());
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  const panelWidth = stage.width;
+  /** Scale that maps the demo viewport onto the stage width. */
+  const baseScale = panelWidth / PREVIEW_VIEWPORT_WIDTH;
+
   // The stage takes the demo's own height where it fits, and scales the demo
   // down past that rather than cropping it — a hero cut off at the fold
   // previews nothing useful.
   const frameHeight = clamp(contentHeight, 1, MAX_CONTENT_HEIGHT);
   const stageHeight = Math.round(
-    clamp(frameHeight * BASE_SCALE, STAGE_MIN_HEIGHT, STAGE_MAX_HEIGHT),
+    clamp(frameHeight * baseScale, stage.minHeight, stage.maxHeight),
   );
-  const stageScale = Math.min(BASE_SCALE, stageHeight / frameHeight);
+  const stageScale = Math.min(baseScale, stageHeight / frameHeight);
   const scaledWidth = PREVIEW_VIEWPORT_WIDTH * stageScale;
   const scaledHeight = frameHeight * stageScale;
   const panelHeight = stageHeight + HEADER_HEIGHT;
 
   // Sit beside the card where there is room, and fall back to below/above when
-  // neither flank fits — a 460px panel next to a card in the last column would
+  // neither flank fits — a wide panel next to a card in the last column would
   // otherwise hang off the screen.
   useIsomorphicLayoutEffect(() => {
     const update = () => {
@@ -158,8 +212,8 @@ export function ComponentPreviewTooltip({
       const { innerWidth: vw, innerHeight: vh } = window;
 
       const fitsRight =
-        rect.right + ANCHOR_GAP + PANEL_WIDTH <= vw - VIEWPORT_MARGIN;
-      const fitsLeft = rect.left - ANCHOR_GAP - PANEL_WIDTH >= VIEWPORT_MARGIN;
+        rect.right + ANCHOR_GAP + panelWidth <= vw - VIEWPORT_MARGIN;
+      const fitsLeft = rect.left - ANCHOR_GAP - panelWidth >= VIEWPORT_MARGIN;
 
       let left: number;
       let top: number;
@@ -167,10 +221,10 @@ export function ComponentPreviewTooltip({
       if (fitsRight || fitsLeft) {
         left = fitsRight
           ? rect.right + ANCHOR_GAP
-          : rect.left - ANCHOR_GAP - PANEL_WIDTH;
+          : rect.left - ANCHOR_GAP - panelWidth;
         top = rect.top + rect.height / 2 - panelHeight / 2;
       } else {
-        left = rect.left + rect.width / 2 - PANEL_WIDTH / 2;
+        left = rect.left + rect.width / 2 - panelWidth / 2;
         const below = rect.bottom + ANCHOR_GAP;
         top =
           below + panelHeight <= vh - VIEWPORT_MARGIN
@@ -179,7 +233,7 @@ export function ComponentPreviewTooltip({
       }
 
       setPosition({
-        left: clamp(left, VIEWPORT_MARGIN, vw - PANEL_WIDTH - VIEWPORT_MARGIN),
+        left: clamp(left, VIEWPORT_MARGIN, vw - panelWidth - VIEWPORT_MARGIN),
         top: clamp(top, VIEWPORT_MARGIN, vh - panelHeight - VIEWPORT_MARGIN),
       });
     };
@@ -192,7 +246,7 @@ export function ComponentPreviewTooltip({
       window.removeEventListener("scroll", update, true);
       window.removeEventListener("resize", update);
     };
-  }, [anchor, panelHeight]);
+  }, [anchor, panelHeight, panelWidth]);
 
   useEffect(() => {
     setReady(false);
@@ -247,7 +301,7 @@ export function ComponentPreviewTooltip({
       style={{
         top: position?.top ?? 0,
         left: position?.left ?? 0,
-        width: PANEL_WIDTH,
+        width: panelWidth,
         height: panelHeight,
         visibility: position ? "visible" : "hidden",
       }}
@@ -282,7 +336,7 @@ export function ComponentPreviewTooltip({
           style={{
             // Offsets are in unscaled space; transform-origin is the top-left
             // corner, so the scaled box lands centred in the stage.
-            left: (STAGE_WIDTH - scaledWidth) / 2,
+            left: (panelWidth - scaledWidth) / 2,
             top: (stageHeight - scaledHeight) / 2,
             width: PREVIEW_VIEWPORT_WIDTH,
             height: frameHeight,

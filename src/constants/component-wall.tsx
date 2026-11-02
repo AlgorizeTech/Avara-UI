@@ -37,10 +37,16 @@ const WALL_IMAGES: Record<string, string> = {
   "waitlist": "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516059/waitlist-1790516064503.jpg",
 };
 
+// The wall draws each screenshot at roughly 330px wide, but the originals are
+// 850-1200px. Ask Cloudinary for 720px (2x for retina) instead of the full size.
+const WALL_IMAGE_WIDTH = 720;
+const sized = (url: string) =>
+  url.replace("/f_webp,q_auto/", `/f_webp,q_auto,w_${WALL_IMAGE_WIDTH},c_limit/`);
+
 const wall = (slug: string, title: string): ComponentWallItem => ({
   slug,
   title,
-  image: WALL_IMAGES[slug],
+  image: sized(WALL_IMAGES[slug]),
 });
 
 export const WALL_ITEMS: ComponentWallItem[] = [
