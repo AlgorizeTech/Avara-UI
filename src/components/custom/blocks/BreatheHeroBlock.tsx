@@ -68,6 +68,7 @@ export interface BreatheHeroProps
   cardRadius?: number | string;
   gap?: number;
   accent?: string;
+  color?: string;
   internalScroll?: boolean;
   containerHeight?: number | string;
   scrollDistance?: number | string;
@@ -408,6 +409,7 @@ export const BreatheHero = forwardRef<HTMLElement, BreatheHeroProps>(
       cardRadius = "var(--radius-2xl, 22px)",
       gap = 14,
       accent,
+      color,
       internalScroll = true,
       containerHeight,
       scrollDistance,
@@ -504,7 +506,7 @@ export const BreatheHero = forwardRef<HTMLElement, BreatheHeroProps>(
     const Comp = LinkComp || "a";
 
     const customStyle: React.CSSProperties = {
-      ...accentTokens(accent),
+      ...accentTokens(accent || color),
       ...style,
     };
 

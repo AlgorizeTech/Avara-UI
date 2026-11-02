@@ -56,6 +56,7 @@ export interface HoneycombHeroProps extends Omit<React.HTMLAttributes<HTMLElemen
    * call to action. The theme's primary by default.
    */
   accent?: string;
+  color?: string;
   /** The tone for photographs without their own; a deep shade of the primary by default. */
   background?: string;
   /** Pass `next/link` to keep client-side navigation. */
@@ -217,6 +218,7 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
       interval = 4000,
       onChange,
       accent,
+      color,
       background = DEFAULT_BACKGROUND,
       linkComponent: Link = "a",
       className,
@@ -374,7 +376,7 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
         onKeyDown={onKeyDown}
         // `--hc-bg` is the featured photograph's tone; everything painted with it
         // eases to the next one as the queue turns.
-        style={{ ...(accent ? { "--primary": accent } : {}), "--hc-bg": tone, ...style } as React.CSSProperties}
+        style={{ ...((accent || color) ? { "--primary": accent || color } : {}), "--hc-bg": tone, ...style } as React.CSSProperties}
         className={cn(
           // No `dark` class here: it would redeclare `--primary` from the
           // stylesheet and cut the section off from a theme set on <html>.
