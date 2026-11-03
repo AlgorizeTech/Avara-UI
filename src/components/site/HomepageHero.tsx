@@ -257,7 +257,11 @@ function StaticImageWall({
       aria-label="Static component wall"
       {...props}
       ref={wrapRef}
-      className={cn("relative h-96 w-full overflow-hidden", className)}
+      // The wall is decoration: its canvas only gets its translate/scale once
+      // hydrated, so its cards sit somewhere else at restore time than when the
+      // scroll position was saved. Kept out of scroll anchoring so a refresh
+      // can't use them as the anchor and drift the page.
+      className={cn("relative h-96 w-full overflow-hidden [overflow-anchor:none]", className)}
     >
       <div
         ref={canvasRef}
@@ -313,7 +317,13 @@ const STYLES = `
 @keyframes cw-name-in { from { opacity: 0; transform: translateY(110%); } }
 @keyframes cw-name-out { to { opacity: 0; transform: translateY(-110%); } }
 @media (prefers-reduced-motion: no-preference) {
-  .cw-rise-group:not([data-in-view]) .cw-rise { opacity: 0; transform: translateY(14px); }
+  /* Hidden until in view. No translateY here: it is invisible anyway (opacity
+     0) and the cw-rise keyframes carry the same 14px start, so the entrance is
+     unchanged. But a refresh restores scroll by anchoring to a visible element,
+     and Chrome measures that element transform included. It was saved at its
+     resting place and found 14px lower while still hidden, so every reload
+     scrolled the page a little further down (14px, then ~67, then ~81...). */
+  .cw-rise-group:not([data-in-view]) .cw-rise { opacity: 0; }
   .cw-rise-group[data-in-view] .cw-rise { animation: cw-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--cw-i) * 0.1s) backwards; }
   .cw-tools-in { animation: cw-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.5s backwards; }
 }

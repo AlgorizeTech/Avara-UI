@@ -14,11 +14,12 @@ export const dynamic = "force-static";
 /**
  * Routes that exist but should not be advertised to search engines.
  *
- * `/docs/<framework>` only redirects to its `index` page, and a sitemap must
- * list final URLs, not redirects.
+ * `/docs/<framework>/index` is the Introduction's source route, but the host
+ * 301s it to `/docs/<framework>`, and a sitemap must list final URLs, not
+ * redirects.
  */
 const EXCLUDED = new Set<string>(
-  BUILT_FRAMEWORKS.map((framework) => `/docs/${framework}`),
+  BUILT_FRAMEWORKS.map((framework) => `/docs/${framework}/index`),
 );
 
 /**
@@ -143,7 +144,7 @@ function collectRoutes(): string[] {
 function priorityFor(route: string): number {
   if (route === "/") return 1;
   if (route === "/docs") return 0.9;
-  if (/^\/docs\/[^/]+\/(index|installation|first-app)$/.test(route))
+  if (/^\/docs\/[^/]+\/(installation|first-app)$|^\/docs\/[^/]+$/.test(route))
     return 0.8;
   if (route.startsWith("/docs/")) return 0.7;
   return 0.5;

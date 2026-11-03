@@ -77,7 +77,9 @@ export const isFramework = (value: string): value is Framework =>
 
 /** `("reactjs", "accordion")` → `/docs/reactjs/accordion`. */
 export const docsHref = (framework: Framework, slug: string) =>
-  `/docs/${framework}/${slug}`;
+  // The Introduction lives at the framework root: the host redirects `/…/index`
+  // to its parent, so the `/index` form is never a final URL.
+  slug === "index" ? `/docs/${framework}` : `/docs/${framework}/${slug}`;
 
 /**
  * Reads the framework out of a docs pathname.
@@ -101,7 +103,7 @@ export const frameworkFromPathname = (pathname: string): Framework => {
  * the framework segment becomes dynamic, and silently returns false forever.
  */
 export const slugFromPathname = (pathname: string) =>
-  pathname.replace(/\/+$/, "").split("/").slice(3).join("/");
+  pathname.replace(/\/+$/, "").split("/").slice(3).join("/") || "index";
 
 /**
  * Retargets a docs link that names a framework explicitly.

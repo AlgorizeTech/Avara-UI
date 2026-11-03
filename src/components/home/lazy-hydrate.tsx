@@ -13,6 +13,16 @@ const INPUT_EVENTS = ["scroll", "wheel", "touchstart", "pointerdown", "keydown"]
 /** The wrapper adds no box of its own, so layout is exactly what it was without it. */
 const CONTENTS: CSSProperties = { display: "contents" };
 
+/**
+ * Sections reveal themselves on scroll: until then their markup is hidden with
+ * a translateY offset. On a refresh Chrome restores the scroll position by
+ * anchoring to a visible element, measured transform included, so an element
+ * saved at its resting place and found 30px lower while still hidden made the
+ * page land a little further down, and compound on every reload. Opting the
+ * sections out of anchoring restores the exact pixel offset instead.
+ */
+const NO_ANCHOR = "[overflow-anchor:none]";
+
 let settled: Promise<void> | undefined;
 
 /**
@@ -138,14 +148,14 @@ export function LazyHydrate({ load, server, rootMargin = "600px 0px", className 
 	if (isServer) {
 		const Server = server;
 		return (
-			<div ref={wrapRef} className={className}>
+			<div ref={wrapRef} className={[NO_ANCHOR, className].filter(Boolean).join(" ")}>
 				<div style={CONTENTS}>{Server ? <Server /> : null}</div>
 			</div>
 		);
 	}
 
 	return (
-		<div ref={wrapRef} className={className}>
+		<div ref={wrapRef} className={[NO_ANCHOR, className].filter(Boolean).join(" ")}>
 			{Live ? (
 				<div key="live" style={CONTENTS}>
 					<Live />

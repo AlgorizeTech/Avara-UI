@@ -62,7 +62,7 @@ export function HeroSection() {
 			<HomepageHero
 				badge={{
 					label: "Next-gen React components",
-					href: "/docs/nextjs/index",
+					href: "/docs/nextjs",
 				}}
 				heading="Build interactive {word}."
 				headingWords={[
@@ -101,7 +101,7 @@ export function HeroSection() {
 					label: "Browse components",
 					href: "/docs/nextjs/all-components",
 				}}
-				secondaryAction={{ label: "Get Started", href: "/docs/nextjs/index" }}
+				secondaryAction={{ label: "Get Started", href: "/docs/nextjs" }}
 				items={WALL_ITEMS}
 				stack={<WallStack variant="compact" label={STACK_LABEL} />}
 				interval={4500}
