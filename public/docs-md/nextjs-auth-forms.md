@@ -12,7 +12,7 @@ Both share the same `variant` and `color` surface, so a login page and a registe
 
 Email, password, remember-me and a forgot-password link. `signupHref` points at wherever the register form lives.
 
-export const usageLogin = `import LoginForm, { LoginFormValues } from "@/components/custom/blocks/LoginForm";
+export const usageLogin = `"use client";
 
 export default function LoginPage() {
   const handleSubmit = async (values: LoginFormValues) => {
@@ -31,7 +31,7 @@ export default function LoginPage() {
   );
 }`;
 
-export const usageLoginSplit = `import LoginForm, { LoginFormValues } from "@/components/custom/blocks/LoginForm";
+export const usageLoginSplit = `"use client";
 
 export default function SplitLoginPage() {
   // "split" pairs the form with a full-height marketing panel on large screens.
@@ -49,7 +49,7 @@ export default function SplitLoginPage() {
   );
 }`;
 
-export const usageLoginMinimal = `import LoginForm, { LoginFormValues } from "@/components/custom/blocks/LoginForm";
+export const usageLoginMinimal = `"use client";
 
 export default function MinimalLoginPage() {
   // "minimal" strips the card, leaving just the fields on your own background.
@@ -67,7 +67,7 @@ export default function MinimalLoginPage() {
   );
 }`;
 
-export const usageLoginGlass = `import LoginForm, { LoginFormValues } from "@/components/custom/blocks/LoginForm";
+export const usageLoginGlass = `"use client";
 
 export default function GlassLoginPage() {
   // "glass" provides a self-contained full-bleed background with a floating frosted card.
@@ -85,7 +85,7 @@ export default function GlassLoginPage() {
   );
 }`;
 
-export const usageLoginLiquidGlass = `import LoginForm, { LoginFormValues } from "@/components/custom/blocks/LoginForm";
+export const usageLoginLiquidGlass = `"use client";
 
 export default function LiquidGlassLoginPage() {
   // "liquid-glass" uses SVG displacement turbulence, specular edge highlights, and high-contrast frosted styling.
@@ -103,7 +103,7 @@ export default function LiquidGlassLoginPage() {
   );
 }`;
 
-export const usageLoginRibbonDrift = `import LoginForm, { LoginFormValues } from "@/components/custom/blocks/LoginForm";
+export const usageLoginRibbonDrift = `"use client";
 
 export default function RibbonDriftLoginPage() {
   // "ribbon-drift" features dual floating infinite marquee ribbons, an animated drift backdrop, and interactive promo card.
@@ -144,7 +144,7 @@ Every example below is the same `LoginForm` you just installed — only the prop
 
 Paired name fields, email, password with confirmation, and a terms checkbox whose links you point at your own policies. `loginHref` closes the loop back to the login form.
 
-export const usageRegister = `import RegisterForm, { RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
+export const usageRegister = `"use client";
 
 export default function RegisterPage() {
   const handleSubmit = async (values: RegisterFormValues) => {
@@ -163,7 +163,7 @@ export default function RegisterPage() {
   );
 }`;
 
-export const usageRegisterScenic = `import RegisterForm, { RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
+export const usageRegisterScenic = `"use client";
 
 export default function ScenicRegisterPage() {
   // "scenic" renders a floating onboarding card over a nature landscape backdrop.
@@ -182,7 +182,7 @@ export default function ScenicRegisterPage() {
   );
 }`;
 
-export const usageRegisterSplit = `import RegisterForm, { RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
+export const usageRegisterSplit = `"use client";
 
 export default function SplitRegisterPage() {
   // "split" pairs the form with a full-height marketing panel on large screens.
@@ -200,7 +200,7 @@ export default function SplitRegisterPage() {
   );
 }`;
 
-export const usageRegisterMinimal = `import RegisterForm, { RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
+export const usageRegisterMinimal = `"use client";
 
 export default function MinimalRegisterPage() {
   // "minimal" strips the card, leaving just the fields on your own background.
@@ -218,7 +218,7 @@ export default function MinimalRegisterPage() {
   );
 }`;
 
-export const usageRegisterGlass = `import RegisterForm, { RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
+export const usageRegisterGlass = `"use client";
 
 export default function GlassRegisterPage() {
   // "glass" provides a self-contained full-bleed background with a floating frosted card.
@@ -236,7 +236,7 @@ export default function GlassRegisterPage() {
   );
 }`;
 
-export const usageRegisterLiquidGlass = `import RegisterForm, { RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
+export const usageRegisterLiquidGlass = `"use client";
 
 export default function LiquidGlassRegisterPage() {
   // "liquid-glass" uses SVG displacement turbulence, specular edge highlights, and high-contrast frosted styling.
@@ -254,7 +254,7 @@ export default function LiquidGlassRegisterPage() {
   );
 }`;
 
-export const usageRegisterRibbonDrift = `import RegisterForm, { RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
+export const usageRegisterRibbonDrift = `"use client";
 
 export default function RibbonDriftRegisterPage() {
   // "ribbon-drift" features dual floating infinite marquee ribbons, an animated drift backdrop, and candidate showcase promo card.

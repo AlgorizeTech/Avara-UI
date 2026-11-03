@@ -1105,7 +1105,7 @@ export function LoginBlock({
   const [localErrors, setLocalErrors] = useState<Record<string, string>>({});
   const errors = { ...localErrors, ...fieldErrors };
 
-  const themeStyle = getThemeStyles(color);
+  const { style: themeStyle } = getThemeStyles(color);
 
   const formattedRadius = formatRadius(rounded);
   const dynamicRadiusStyle: React.CSSProperties = {
