@@ -33,19 +33,13 @@ export function ResourcePreloader({
         <link key={script} rel="preload" href={script} as="script" />
       ))}
 
-      {/* DNS prefetch for external domains */}
-      <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+      {/* Imagery on the home page and the docs examples is served from
+          Cloudinary. Next's fonts are self-hosted, so the Google Fonts
+          origins this used to preconnect to were never contacted. */}
+      <link rel="preconnect" href="https://res.cloudinary.com" />
       <link rel="dns-prefetch" href="//i.postimg.cc" />
       <link rel="dns-prefetch" href="//i.pinimg.com" />
       <link rel="dns-prefetch" href="//avatars.githubusercontent.com" />
-
-      {/* Preconnect to critical origins */}
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link
-        rel="preconnect"
-        href="https://fonts.gstatic.com"
-        crossOrigin="anonymous"
-      />
     </>
   );
 }

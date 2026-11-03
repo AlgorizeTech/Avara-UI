@@ -140,6 +140,8 @@ function CarouselCard({
           <img
             src={item.image}
             alt={item.title}
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover pointer-events-none transition-transform duration-700 hover:scale-105"
           />
 

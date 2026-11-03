@@ -16,13 +16,23 @@ import {
   Search,
   X,
 } from "lucide-react";
-import { AnimatePresence, motion } from "motion/react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { SearchModal } from "./search-modal";
-import { SidebarMobile } from "./sidebar-mobile";
+import { useCallback, useEffect, useState } from "react";
 import { ThemeSwitcher } from "./theme";
+
+/**
+ * The command palette (its search index, motion, markdown renderer) and the
+ * mobile nav drawer (the whole navigation tree) are only ever needed after a
+ * click or a keystroke, so neither is in the page's first-load bundle. Each is
+ * fetched when the reader shows intent — hovering, focusing or touching its
+ * trigger — and kept mounted after that.
+ */
+const loadSearchModal = () => import("./search-modal").then((m) => m.SearchModal);
+const loadSidebarMobile = () => import("./sidebar-mobile").then((m) => m.SidebarMobile);
+const SearchModal = dynamic(loadSearchModal, { ssr: false });
+const SidebarMobile = dynamic(loadSidebarMobile, { ssr: false });
 
 /**
  * The guide pages, in sidebar order. "Docs" opens the first of them rather than
@@ -56,6 +66,21 @@ const Header = () => {
   const pathname = usePathname() || "";
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  // Flipped on the first intent (or open) so the heavy pieces load on demand.
+  const [searchMounted, setSearchMounted] = useState(false);
+  const [sidebarMounted, setSidebarMounted] = useState(false);
+
+  const openSearch = useCallback(() => {
+    setSearchMounted(true);
+    setSearchOpen(true);
+  }, []);
+  const warmSearch = useCallback(() => {
+    void loadSearchModal();
+  }, []);
+  const warmSidebar = useCallback(() => {
+    setSidebarMounted(true);
+    void loadSidebarMobile();
+  }, []);
 
   // Close sidebar drawer on route change
   useEffect(() => {
@@ -67,12 +92,12 @@ const Header = () => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
         e.preventDefault();
-        setSearchOpen(true);
+        openSearch();
       }
     };
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [openSearch]);
 
   // Embedded preview sandbox should not render the global header
   if (pathname.startsWith("/preview")) {
@@ -81,25 +106,28 @@ const Header = () => {
 
   return (
     <>
-      {/* Mobile Drawer Backdrop Overlay */}
-      <AnimatePresence>
-        {sidebarOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            exit={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm md:hidden"
-            onClick={() => setSidebarOpen(false)}
-          />
+      {/* Mobile Drawer Backdrop Overlay. Plain CSS transitions carry the same
+          timings the motion version had: a 0.3s linear opacity fade, with
+          `visibility` held back on close so the fade-out is still seen. */}
+      <div
+        aria-hidden="true"
+        className={cn(
+          "fixed inset-0 z-50 bg-black/40 backdrop-blur-sm md:hidden",
+          sidebarOpen
+            ? "visible opacity-100 [transition:opacity_300ms_linear,visibility_0s]"
+            : "invisible opacity-0 [transition:opacity_300ms_linear,visibility_0s_linear_300ms]"
         )}
-      </AnimatePresence>
+        onClick={() => setSidebarOpen(false)}
+      />
 
-      {/* Mobile Sidebar Navigation Drawer */}
-      <motion.div
-        initial={{ x: "-100%" }}
-        animate={{ x: sidebarOpen ? "0%" : "-100%" }}
-        transition={{ duration: 0.25, ease: "easeInOut" }}
-        className="fixed top-0 left-0 z-50 h-full w-[280px] bg-background border-r border-border md:hidden shadow-2xl"
+      {/* Mobile Sidebar Navigation Drawer: slides in over 0.25s, ease-in-out.
+          `inert` while closed keeps its links out of the tab order. */}
+      <div
+        inert={!sidebarOpen}
+        className={cn(
+          "fixed top-0 left-0 z-50 h-full w-[280px] bg-background border-r border-border md:hidden shadow-2xl transition-transform duration-[250ms] ease-in-out",
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        )}
       >
         <div className="w-full px-5 h-14 flex items-center justify-between border-b border-border">
           <Link
@@ -109,7 +137,7 @@ const Header = () => {
           >
             <div className="relative flex items-center justify-center">
               <img
-                src="/favicon/android-chrome-192x192.png"
+                src="/favicon/logo-80x80.png"
                 alt=""
                 width={24}
                 height={24}
@@ -130,8 +158,8 @@ const Header = () => {
             <X className="size-4" />
           </button>
         </div>
-        <SidebarMobile onClose={() => setSidebarOpen(false)} />
-      </motion.div>
+        {sidebarMounted && <SidebarMobile onClose={() => setSidebarOpen(false)} />}
+      </div>
 
       {/* Global Floating Segmented Sticky Navigation Shell */}
       <div className="w-full sticky top-0 z-50 pointer-events-none py-2 px-3 sm:px-6 md:px-8">
@@ -140,7 +168,14 @@ const Header = () => {
           <div className="pointer-events-auto flex items-center gap-2 sm:gap-2.5 h-10 px-3 sm:px-3.5 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 transition-all">
             {pathname !== "/" && (
               <button
-                onClick={() => setSidebarOpen(true)}
+                onClick={() => {
+                  warmSidebar();
+                  setSidebarOpen(true);
+                }}
+                onPointerEnter={warmSidebar}
+                onFocus={warmSidebar}
+                onTouchStart={warmSidebar}
+                aria-expanded={sidebarOpen}
                 className="flex flex-col gap-1 md:hidden p-1 hover:bg-foreground/10 rounded-full transition-colors cursor-pointer"
                 aria-label="Open navigation menu"
               >
@@ -157,7 +192,7 @@ const Header = () => {
             >
               <div className="relative flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
                 <img
-                  src="/favicon/android-chrome-192x192.png"
+                  src="/favicon/logo-80x80.png"
                   alt=""
                   width={20}
                   height={20}
@@ -218,7 +253,10 @@ const Header = () => {
             {/* Command Palette Omni Button — icon-only below 1240px, where the
                 full pill would run under the centred nav. */}
             <button
-              onClick={() => setSearchOpen(true)}
+              onClick={openSearch}
+              onPointerEnter={warmSearch}
+              onFocus={warmSearch}
+              onTouchStart={warmSearch}
               className="pointer-events-auto flex items-center justify-center gap-2.5 size-10 min-[1240px]:w-auto min-[1240px]:justify-start min-[1240px]:pl-3.5 min-[1240px]:pr-5 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 text-foreground/80 hover:text-foreground hover:border-border/70 transition-all text-left cursor-pointer"
               aria-label="Open command palette search"
             >
@@ -267,7 +305,9 @@ const Header = () => {
         </header>
       </div>
 
-      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+      {searchMounted && (
+        <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+      )}
     </>
   );
 };
