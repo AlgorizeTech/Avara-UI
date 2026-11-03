@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import { ArrowRight, Check, Copy, Github, Sparkles } from "lucide-react";
 import { motion, useInView } from "motion/react";
-import Link from "next/link";
+import Link from "@/components/site/intent-link";
 import { useRef, useState } from "react";
 import { COMPONENT_COUNT, links } from "@/config/site";
 import { REGISTRY_ADD_ARGS } from "@/lib/registry";

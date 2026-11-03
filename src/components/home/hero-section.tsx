@@ -1,10 +1,10 @@
 "use client";
 
 import { AppleSelect } from "@/components/custom/blocks/AppleSelectBlock";
-import { Avatar } from "@/components/custom/blocks/AvatarStackBlock";
+import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import { HomepageHero } from "@/components/site/HomepageHero";
 import { WALL_ITEMS, WallStack } from "@/constants/component-wall";
-import Link from "next/link";
+import Link from "@/components/site/intent-link";
 import { REGISTRY_NAMESPACE } from "@/lib/registry";
 
 /* ═══════════════════════════════════════════════
@@ -33,6 +33,21 @@ const HERO_TYPE = [
 	// Secondary action: an ink-tint pill
 	"[&_h1~div>a:nth-child(2)]:h-11 [&_h1~div>a:nth-child(2)]:rounded-full [&_h1~div>a:nth-child(2)]:border-transparent [&_h1~div>a:nth-child(2)]:bg-foreground/[0.04] [&_h1~div>a:nth-child(2)]:px-7 [&_h1~div>a:nth-child(2)]:text-[14px] [&_h1~div>a:nth-child(2)]:font-medium [&_h1~div>a:nth-child(2)]:text-foreground [&_h1~div>a:nth-child(2)]:hover:bg-foreground/10",
 ].join(" ");
+
+/* shadcn's face in the description. It is AvatarStackBlock's `Avatar`
+   (size "md") drawn straight from the Radix primitive: importing the block
+   itself pulled the whole motion library, which the avatar stack and group in
+   that file use, into the page's first-load bundle for one static disc. */
+function ShadcnAvatar({ src, className }: { src: string; className?: string }) {
+	return (
+		<AvatarPrimitive.Root
+			data-slot="avatar"
+			className={`relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted ring-2 cursor-pointer transition-shadow size-9 ring-background ${className ?? ""}`}>
+			<AvatarPrimitive.Image src={src} alt="" className="aspect-square h-full w-full object-cover" />
+			<AvatarPrimitive.Fallback className="bg-muted flex h-full w-full items-center justify-center rounded-full text-xs font-medium" />
+		</AvatarPrimitive.Root>
+	);
+}
 
 /* The "Built with" label over the tool strip, in the section eyebrow's voice. */
 const STACK_LABEL = (
@@ -67,12 +82,7 @@ export function HeroSection() {
 						    then the words picked out as an iOS selection. Kept on one line
 						    so the avatar, the handles and the full stop never wrap apart. */}
 						<span className="whitespace-nowrap">
-							<Avatar
-								src="/assets/tech-icons/shadcn-avatar.jpg"
-								size="md"
-								ringClassName="ring-background"
-								className="mr-2 align-middle shadow-sm"
-							/>
+							<ShadcnAvatar src="/assets/tech-icons/shadcn-avatar.jpg" className="mr-2 align-middle shadow-sm" />
 							<AppleSelect
 								as="span"
 								text="shadcn CLI"

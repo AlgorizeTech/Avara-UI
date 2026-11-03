@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils";
 import { ArrowRight, LayoutGrid } from "lucide-react";
 import { motion, useInView } from "motion/react";
-import Link from "next/link";
+import Link from "@/components/site/intent-link";
 import { useRef } from "react";
 import { SECTION_INNER, SECTION_EYEBROW, SECTION_H2, SECTION_SUB, BTN_CLAY } from "@/components/home/shared";
 
