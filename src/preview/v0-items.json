@@ -408,7 +408,8 @@
     "filled": "Input — Filled",
     "underlined": "Input — Underlined",
     "password": "Input — Password",
-    "autocomplete": "Input — Autocomplete"
+    "autocomplete": "Input — Autocomplete",
+    "input-pill": "Input — Pill badge"
   },
   "folder": {
     "folder-drop-target": "Folder — Folder drop target",

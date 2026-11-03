@@ -7,7 +7,7 @@ import { extractCode } from "@/lib/code";
 
 # Input
 
-A multi-purpose Input component with password toggles, autocomplete suggestions, and four layout variants.
+A multi-purpose Input component with password toggles, autocomplete suggestions, and five layout variants.
 
 Pass `suggestions` and the field lists them the way a select menu would — typing narrows the list, and choosing one writes the text straight into the field. The drag-and-drop file mode lives on its own page: see <DocLink to="file-upload">File upload</DocLink>.
 
@@ -49,6 +49,36 @@ export default function UnderlinedInput() {
       placeholder="Enter your email..."
       helperText="We'll never share your data."
     />
+  );
+}`;
+
+export const usagePill = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
+import { Lock, Mail, User } from "lucide-react";
+
+export default function PillInputs() {
+  return (
+    <div className="flex flex-col gap-4 max-w-sm">
+      <InputBlock
+        variant="pill"
+        label="Full Name"
+        placeholder="Enter your full name"
+        leftIcon={<User className="w-4 h-4" />}
+      />
+      <InputBlock
+        variant="pill"
+        type="email"
+        label="Email Address"
+        placeholder="Enter your email"
+        leftIcon={<Mail className="w-4 h-4" />}
+      />
+      <InputBlock
+        variant="pill"
+        type="password"
+        label="Password"
+        placeholder="Enter your password"
+        leftIcon={<Lock className="w-4 h-4" />}
+      />
+    </div>
   );
 }`;
 
@@ -204,6 +234,28 @@ export default function DestinationInput() {
       usage: usageAutocomplete,
       minHeight: 460,
     },
+    {
+      title: "Pill badge",
+      id: "input-pill",
+      subheading: "Capsule-shaped fields featuring isolated left icon badges and smooth accent glow.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"pill"',
+          effect:
+            "to wrap the input in a capsule silhouette with a vertical divider for the leading icon.",
+        },
+        {
+          prop: "leftIcon",
+          effect:
+            "renders inside the segregated badge on the left.",
+        },
+      ],
+      props: { example: "pill", variant: "pill" },
+      usage: usagePill,
+      minHeight: 450,
+    },
   ]}
 />
 
@@ -334,7 +386,7 @@ This component extends `React.InputHTMLAttributes<HTMLInputElement>`, meaning yo
           <code>variant</code>
         </td>
         <td>
-          <code>"default" | "filled" | "underlined" | "glow"</code>
+          <code>"default" | "filled" | "underlined" | "glow" | "pill"</code>
         </td>
         <td>
           <code>"default"</code>

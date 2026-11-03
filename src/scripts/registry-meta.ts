@@ -319,7 +319,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A text input with label, helper text, error state, icon slots and password reveal. Reach for it as the default field in any form.",
     categories: ["forms"],
-    docs: "Named exports: InputBlock, getThemeStyles (from input-theme.ts, which installs alongside). Accepts type (text | password | email | number | file), variant (default | filled | underlined | glow), inputSize, and a color token (indigo | rose | emerald | zinc, or your own). Pass `error` to switch it into the invalid state; `helperText` renders below when there is no error.",
+    docs: "Named exports: InputBlock, getThemeStyles (from input-theme.ts, which installs alongside). Accepts type (text | password | email | number | file), variant (default | filled | underlined | glow | pill), inputSize, and a color token (indigo | rose | emerald | zinc, or your own). Pass `error` to switch it into the invalid state; `helperText` renders below when there is no error.",
   },
   select: {
     description:

@@ -3523,7 +3523,6 @@ export function RegisterBlock({
   footerCopyright,
   footerBadge,
 }: RegisterBlockProps) {
-  const [showPassword, setShowPassword] = useState(false);
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [localErrors, setLocalErrors] = useState<Record<string, string>>({});
   const errors = { ...localErrors, ...fieldErrors };
@@ -3652,68 +3651,41 @@ export function RegisterBlock({
                   </p>
                 )}
 
-                <BlockField
+                <InputBlock
+                  variant="pill"
+                  color={color}
                   id="register-name"
-                  label="Full Name"
+                  name="name"
+                  type="text"
+                  autoComplete="name"
+                  placeholder="Enter your full name"
+                  leftIcon={<UserIcon />}
                   error={errors.name}
-                  icon={<UserIcon />}
-                >
-                  <input
-                    id="register-name"
-                    name="name"
-                    type="text"
-                    autoComplete="name"
-                    placeholder="Enter your full name"
-                    aria-invalid={errors.name ? true : undefined}
-                    className={blockInputClass}
-                  />
-                </BlockField>
+                />
 
-                <BlockField
+                <InputBlock
+                  variant="pill"
+                  color={color}
                   id="register-email-input"
-                  label="Email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  placeholder="Enter your email"
+                  leftIcon={<MailIcon />}
                   error={errors.email}
-                  icon={<MailIcon />}
-                >
-                  <input
-                    id="register-email-input"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    placeholder="Enter your email"
-                    aria-invalid={errors.email ? true : undefined}
-                    className={blockInputClass}
-                  />
-                </BlockField>
+                />
 
-                <BlockField
+                <InputBlock
+                  variant="pill"
+                  color={color}
                   id="register-password-input"
-                  label="Password"
+                  name="password"
+                  type="password"
+                  autoComplete="new-password"
+                  placeholder="Enter Password"
+                  leftIcon={<LockIcon />}
                   error={errors.password}
-                  icon={<LockIcon />}
-                  trailing={
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setShowPassword((v) => !v)}
-                      aria-label={showPassword ? "Hide password" : "Show password"}
-                      className="grid size-8 sm:size-9 p-0 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground shadow-none [&_svg]:size-4 sm:[&_svg]:size-[18px]"
-                    >
-                      {showPassword ? <EyeOffIcon /> : <EyeIcon />}
-                    </Button>
-                  }
-                >
-                  <input
-                    id="register-password-input"
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    autoComplete="new-password"
-                    placeholder="Enter Password"
-                    aria-invalid={errors.password ? true : undefined}
-                    className={blockInputClass}
-                  />
-                </BlockField>
+                />
 
                 <div className="flex flex-col gap-1 px-1">
                   <label
@@ -3929,8 +3901,6 @@ export function RegisterBlock({
   );
 }
 
-const blockInputClass =
-  "h-full flex-1 rounded-none border-0 bg-transparent px-3 sm:px-4 text-[14px] sm:text-[15px] shadow-none placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 dark:bg-transparent text-foreground";
 const blockLinkClass =
   "font-medium text-foreground underline decoration-current/30 underline-offset-[3px] transition-colors hover:decoration-current";
 
@@ -3991,46 +3961,6 @@ function BlockLogo({
         </>
       )}
     </a>
-  );
-}
-
-function BlockField({
-  id,
-  label,
-  icon,
-  trailing,
-  error,
-  children,
-}: {
-  id: string;
-  label: string;
-  icon: React.ReactNode;
-  trailing?: React.ReactNode;
-  error?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div>
-      <div
-        data-invalid={error ? "" : undefined}
-        className="group flex h-11 sm:h-12 items-center rounded-full border border-transparent bg-white shadow-sm ring-1 ring-black/10 transition-all focus-within:border-primary/70 focus-within:ring-4 focus-within:ring-primary/20 data-[invalid]:border-destructive/65 dark:bg-[#1d1d20] dark:ring-white/10"
-      >
-        <label htmlFor={id} className="sr-only">
-          {label}
-        </label>
-        <span
-          aria-hidden="true"
-          className="grid h-[24px] sm:h-[26px] w-[46px] sm:w-[54px] shrink-0 place-items-center border-r border-border text-muted-foreground transition-colors [&_svg]:size-[16px] sm:[&_svg]:size-[18px] group-focus-within:text-primary"
-        >
-          {icon}
-        </span>
-        {children}
-        {trailing && <span className="flex items-center pr-2">{trailing}</span>}
-      </div>
-      {error && (
-        <p className="pl-5 pt-1.5 text-[13px] text-destructive">{error}</p>
-      )}
-    </div>
   );
 }
 
@@ -4126,6 +4056,7 @@ const blockSvgProps = {
   strokeWidth: 2,
   strokeLinecap: "round" as const,
   strokeLinejoin: "round" as const,
+  className: "size-4 sm:size-[18px]",
 };
 
 const UserIcon = () => (
@@ -4146,20 +4077,6 @@ const LockIcon = () => (
   <svg {...blockSvgProps}>
     <rect width="18" height="11" x="3" y="11" rx="2" />
     <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-  </svg>
-);
-
-const EyeIcon = () => (
-  <svg {...blockSvgProps}>
-    <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z" />
-    <circle cx="12" cy="12" r="3" />
-  </svg>
-);
-
-const EyeOffIcon = () => (
-  <svg {...blockSvgProps}>
-    <path d="M9.9 4.24A9.1 9.1 0 0 1 12 4c6.4 0 10 8 10 8a13.2 13.2 0 0 1-1.67 2.68M6.61 6.61A13.5 13.5 0 0 0 2 12s3.6 8 10 8a9.7 9.7 0 0 0 5.39-1.61M2 2l20 20" />
-    <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24" />
   </svg>
 );
 
