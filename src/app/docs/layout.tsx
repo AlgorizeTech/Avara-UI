@@ -1,3 +1,4 @@
+import "../globals.css";
 import { ReactNode } from "react";
 import { TOCProvider } from "@/contexts/toc-context";
 import { MotionLibraryProvider } from "@/contexts/motion-library-context";

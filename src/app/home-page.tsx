@@ -1,22 +1,9 @@
 "use client";
 
-import dynamic from "next/dynamic";
-
 import { HeroSection } from "@/components/home/hero-section";
 import { LazyHydrate } from "@/components/home/lazy-hydrate";
 
-/* The showcase hydrates with the page, exactly as it always did. Its demos sit
-   in FitToWidth, which the server can only render at height 0 until a layout
-   effect measures it, so as static HTML the section is ~1.6k px shorter than
-   it really is. Left static, the document grows and everything below it moves
-   the moment it comes alive; after a refresh the restored scroll position then
-   lands in the wrong place. next/dynamic keeps its HTML inline and fixes the
-   measurements during the first hydration. */
-const ComponentShowcase = dynamic(() =>
-	import("@/components/home/component-showcase").then((m) => m.ComponentShowcase),
-);
-
-/* Every other section below the hero is its own chunk. LazyHydrate renders each section
+/* Every section below the hero is its own chunk. LazyHydrate renders each section
    as ordinary inline HTML on the server (so crawlers, first paint and the
    document's full height are all exactly as before) and loads its code only as
    it nears the viewport, once the first paint has settled.
@@ -29,6 +16,9 @@ const ComponentShowcase = dynamic(() =>
      of section code was fetched before the hero had painted.)
    - `load`: the dynamic import the browser runs when the section is needed. */
 /* eslint-disable @typescript-eslint/no-require-imports */
+const SHOWCASE = typeof window === "undefined"
+	? (require("@/components/home/component-showcase") as typeof import("@/components/home/component-showcase")).ComponentShowcase
+	: null;
 const WHY = typeof window === "undefined"
 	? (require("@/components/home/why-choose-us-section") as typeof import("@/components/home/why-choose-us-section")).WhyChooseUsSection
 	: null;
@@ -60,10 +50,16 @@ export default function HomePage() {
 			    crawlers; the footer stays outside it so it keeps its own role. */}
 			<main>
 				<HeroSection />
-				{/* Same scroll-anchoring opt-out LazyHydrate gives the other sections. */}
-				<div className="[overflow-anchor:none]">
-					<ComponentShowcase />
-				</div>
+				{/* Eager: the showcase's demos are sized by FitToWidth after mount, so
+				    its server HTML is ~1.6k px shorter than the live section (varies with
+				    the viewport, so it can't be reserved). It comes alive as soon as the
+				    first paint has settled instead of waiting to be scrolled near, but
+				    no longer holds up the hero's hydration or preloads its ~150 KB. */}
+				<LazyHydrate
+					eager
+					server={SHOWCASE}
+					load={() => import("@/components/home/component-showcase").then((m) => m.ComponentShowcase)}
+				/>
 				<LazyHydrate
 					server={WHY}
 					load={() => import("@/components/home/why-choose-us-section").then((m) => m.WhyChooseUsSection)}

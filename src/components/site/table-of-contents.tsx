@@ -197,14 +197,9 @@ export const TableOfContents: React.FC = () => {
                       )}
                     >
                       {isRootActive && (
-                        <motion.div
-                          layoutId="active-toc-pill"
-                          className="absolute left-[14px] w-[3px] h-5 rounded-full bg-primary z-10"
-                          transition={{
-                            type: "spring",
-                            stiffness: 380,
-                            damping: 30,
-                          }}
+                        <span
+                          aria-hidden
+                          className="absolute left-[14px] w-[3px] h-5 rounded-full bg-primary z-10 animate-in fade-in zoom-in-50 duration-200 motion-reduce:animate-none"
                         />
                       )}
                       <span className="truncate">{chapter.root.text}</span>
@@ -245,14 +240,9 @@ export const TableOfContents: React.FC = () => {
                               )}
                             >
                               {isActive && (
-                                <motion.div
-                                  layoutId="active-toc-pill"
-                                  className="absolute left-[14px] w-[3px] h-4 rounded-full bg-primary z-10"
-                                  transition={{
-                                    type: "spring",
-                                    stiffness: 380,
-                                    damping: 30,
-                                  }}
+                                <span
+                                  aria-hidden
+                                  className="absolute left-[14px] w-[3px] h-4 rounded-full bg-primary z-10 animate-in fade-in zoom-in-50 duration-200 motion-reduce:animate-none"
                                 />
                               )}
                               {isChild && (

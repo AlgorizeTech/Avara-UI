@@ -27,6 +27,11 @@ const AvatarStack = lazy(() =>
   import("@/components/custom/blocks/AvatarStackBlock").then((m) => ({ default: m.AvatarStack })),
 );
 
+// The wall images are Cloudinary URLs asked for at 720px wide, which is 2x for
+// the ~330px cards. A 1x screen only needs half that, so it gets a 360px
+// version through srcSet and a retina screen still gets the 720px one.
+const wall1x = (url: string) => url.replace(/,w_\d+,/, ",w_360,");
+
 // ------------------------------------------
 // Geometry matching original ImageWall
 // ------------------------------------------
@@ -100,6 +105,7 @@ const WallCard = React.memo(function WallCard({
       >
         <img
           src={card.image}
+          srcSet={`${wall1x(card.image)} 1x, ${card.image} 2x`}
           alt=""
           width={FRAME_W}
           height={FRAME_H}
@@ -326,6 +332,19 @@ const STYLES = `
   .cw-rise-group:not([data-in-view]) .cw-rise { opacity: 0; }
   .cw-rise-group[data-in-view] .cw-rise { animation: cw-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--cw-i) * 0.1s) backwards; }
   .cw-tools-in { animation: cw-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.5s backwards; }
+}
+/* Below lg (the breakpoint where the image walls appear) nothing in the hero
+   has to line up with JavaScript: there is no wall to enter with the copy. So
+   the same entrance, with the same timings, starts on first paint instead of
+   after hydration, which on a phone is seconds later and is what the largest
+   contentful paint was waiting for. Same animation shorthand as the in-view
+   rule above, so when hydration sets data-in-view nothing restarts. From lg up
+   the wall is positioned by script, so the hero still waits for it and
+   everything keeps entering together. */
+@media (prefers-reduced-motion: no-preference) and (max-width: 1023.98px) {
+  .cw-rise-group:not([data-in-view]) .cw-rise { opacity: 1; animation: cw-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--cw-i) * 0.1s) backwards; }
+  .cw-rise-group [data-text-animation-state="hidden"],
+  .cw-rise-group [data-text-animation-state="hidden"] [data-text-animation-token] { animation-play-state: running; }
 }
 .cw-word-in { animation: cw-word-in 0.6s cubic-bezier(0, 0, 0.58, 1) backwards; }
 .cw-word-out { animation: cw-word-out 0.6s cubic-bezier(0, 0, 0.58, 1) forwards; }
@@ -726,6 +745,22 @@ export const HomepageHero = forwardRef<HTMLElement, HomepageHeroProps>(
         {...props}
       >
         <style>{STYLES}</style>
+        {/* The wall's images are lazy and only come into view once hydration
+            moves the canvas, so the browser used to discover the first ones a
+            second late and the largest paint waited on them. The ones on screen
+            at the start are preloaded for desktop only (the wall is hidden
+            below lg, where nothing should download them). */}
+        {items.length > 0 &&
+          [...startItems.slice(0, 8), ...endItems.slice(0, 11)].map((item) => (
+            <link
+              key={item.image}
+              rel="preload"
+              as="image"
+              href={item.image}
+              imageSrcSet={`${wall1x(item.image)} 1x, ${item.image} 2x`}
+              media="(min-width: 1024px)"
+            />
+          ))}
         <div className="relative flex w-full flex-col items-center lg:min-h-[46rem] lg:justify-center">
           {/* Static Left Wall (Desktop) — Zero motion animation */}
           {desktop !== false && items.length > 0 && (

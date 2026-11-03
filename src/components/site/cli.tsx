@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useId, useState } from "react";
+import React, { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
+import { useSlidingPill } from "@/components/site/sliding-pill";
 import { Copy, Check } from "lucide-react";
 import { PACKAGE_MANAGER_ICONS } from "./package-manager-icons";
 import {
@@ -110,6 +111,10 @@ const FORM_TITLE: Record<RegistryForm, string> = {
   url: "Install by URL — works in any project, nothing to set up",
 };
 
+/** The accent rule under the selected package manager, and the form highlight. */
+const PM_UNDERLINE = "rounded-full bg-primary shadow-[0_0_8px] shadow-primary/40";
+const FORM_PILL = "rounded-md bg-primary/15";
+
 export const Cli = ({ command }: CliProps) => {
   const {
     packageManager: pm,
@@ -119,22 +124,20 @@ export const Cli = ({ command }: CliProps) => {
   } = usePackageManager();
   const [copied, setCopied] = useState(false);
   const reduceMotion = useReducedMotion();
-  // A page can carry several <Cli> blocks; each needs its own layoutId or the
-  // active-form highlight would fly between blocks instead of within one.
-  const id = useId();
+  // A page can carry several <Cli> blocks; each owns its own pair of sliding
+  // highlights, so one never flies between blocks instead of within one.
+  const pmPill = useSlidingPill(pm);
+  const formPill = useSlidingPill(form);
 
   // The form toggle only makes sense on a command that installs one of our
   // items; `init`, `install gsap` and `registry add` read the same either way.
   const hasOwnItems = ownItemArgs(command).length > 0;
 
-  // One shared feel for the highlight sliding and the text swapping, so the
-  // two read as a single change. Reduced motion collapses both to a cut.
+  // The text swap's feel. The highlights slide with a CSS transition of their
+  // own (sliding-pill.tsx); reduced motion collapses both to a cut.
   const swap = reduceMotion
     ? { duration: 0 }
     : { duration: 0.16, ease: [0.22, 1, 0.36, 1] as const };
-  const slide = reduceMotion
-    ? { duration: 0 }
-    : { type: "spring" as const, stiffness: 520, damping: 42, mass: 0.8 };
 
   const segments = resolveSegments(command, pm, form);
   const fullCommand = segments.map((s) => s.text).join(" ");
@@ -160,8 +163,10 @@ export const Cli = ({ command }: CliProps) => {
         <div
           role="tablist"
           aria-label="Package manager"
-          className="flex h-10 items-stretch gap-x-3 sm:gap-x-4"
+          ref={pmPill.ref}
+          className="relative flex h-10 items-stretch gap-x-3 sm:gap-x-4"
         >
+          {pmPill.pill(PM_UNDERLINE, "bottom")}
           {(Object.keys(PM_COMMANDS) as PackageManager[]).map((name) => {
             const isActive = name === pm;
             const PmIcon = PACKAGE_MANAGER_ICONS[name].Icon;
@@ -177,6 +182,7 @@ export const Cli = ({ command }: CliProps) => {
                     : "text-foreground/40 hover:text-foreground/70",
                 )}
                 aria-selected={isActive}
+                data-pill-active={isActive || undefined}
                 role="tab"
                 tabIndex={isActive ? 0 : -1}
               >
@@ -187,12 +193,10 @@ export const Cli = ({ command }: CliProps) => {
                   color={isActive ? PACKAGE_MANAGER_ICONS[name].color : "currentColor"}
                 />
                 {name}
-                {isActive && (
-                  <motion.span
-                    layoutId={`${id}-pm-underline`}
-                    transition={slide}
+                {isActive && !pmPill.ready && (
+                  <span
                     aria-hidden
-                    className="absolute inset-x-0 bottom-0 h-0.5 rounded-full bg-primary shadow-[0_0_8px] shadow-primary/40"
+                    className={cn("absolute inset-x-0 bottom-0 h-0.5", PM_UNDERLINE)}
                   />
                 )}
               </button>
@@ -222,8 +226,10 @@ export const Cli = ({ command }: CliProps) => {
                 ) as HTMLButtonElement | null)?.focus();
               }
             }}
-            className="ml-auto flex shrink-0 items-center gap-0.5 rounded-lg bg-foreground/[0.04] p-0.5"
+            ref={formPill.ref}
+            className="relative ml-auto flex shrink-0 items-center gap-0.5 rounded-lg bg-foreground/[0.04] p-0.5"
           >
+            {formPill.pill(FORM_PILL)}
             {REGISTRY_FORMS.map((candidate) => {
               const isActive = candidate === form;
               return (
@@ -232,6 +238,7 @@ export const Cli = ({ command }: CliProps) => {
                   type="button"
                   role="radio"
                   data-form={candidate}
+                  data-pill-active={isActive || undefined}
                   aria-checked={isActive}
                   tabIndex={isActive ? 0 : -1}
                   title={FORM_TITLE[candidate]}
@@ -242,16 +249,9 @@ export const Cli = ({ command }: CliProps) => {
                     isActive
                       ? "text-primary"
                       : "text-foreground/40 hover:text-foreground/70",
+                    isActive && !formPill.ready && FORM_PILL,
                   )}
                 >
-                  {isActive && (
-                    <motion.span
-                      layoutId={`${id}-form-highlight`}
-                      transition={slide}
-                      aria-hidden
-                      className="absolute inset-0 rounded-md bg-primary/15"
-                    />
-                  )}
                   <span className="relative">{FORM_LABEL[candidate]}</span>
                 </button>
               );

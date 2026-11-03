@@ -224,6 +224,24 @@ for (const page of docPages()) {
 }
 
 // ---------------------------------------------------------------------------
+// 6. Every docs page carries its structured data.
+//
+// `<DocsJsonLd slug="<slug>" />` (src/components/seo/DocsJsonLd.tsx) emits the
+// page's TechArticle, and SoftwareSourceCode where it ships code. A page
+// without it is invisible to the rich-result and AI crawlers that read JSON-LD.
+// ---------------------------------------------------------------------------
+for (const page of docPages()) {
+  const slug = path.relative(DOCS_DIR, path.dirname(page)).replace(/\\/g, "/");
+  if (!read(page).includes(`<DocsJsonLd slug="${slug}" />`)) {
+    fail(
+      `${path.relative(ROOT, page)} has no structured data. Add ` +
+        `\`import { DocsJsonLd } from "@/components/seo/DocsJsonLd";\` and ` +
+        `\`<DocsJsonLd slug="${slug}" />\` at the end of the page.`,
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
 
 for (const w of warnings) console.warn(`WARN  ${w}`);
 for (const f of failures) console.error(`FAIL  ${f}`);

@@ -62,6 +62,14 @@ interface LazyHydrateProps {
 	server: ComponentType | null;
 	/** How far ahead of the viewport the section comes alive. */
 	rootMargin?: string;
+	/**
+	 * Come alive as soon as the first paint has settled, wherever the section
+	 * is, instead of waiting until it is near the viewport. For a section that
+	 * is not static-safe: its server HTML is a different height from the live
+	 * one, so it has to be live before a scroll position can land correctly
+	 * around it.
+	 */
+	eager?: boolean;
 	className?: string;
 }
 
@@ -89,7 +97,7 @@ interface LazyHydrateProps {
  * thousand DOM nodes of React work, plus each section's effects and observers,
  * all on the main thread while the visitor was still reading the hero.
  */
-export function LazyHydrate({ load, server, rootMargin = "600px 0px", className }: LazyHydrateProps) {
+export function LazyHydrate({ load, server, rootMargin = "600px 0px", eager = false, className }: LazyHydrateProps) {
 	const wrapRef = useRef<HTMLDivElement>(null);
 	const loadRef = useRef(load);
 	loadRef.current = load;
@@ -105,7 +113,7 @@ export function LazyHydrate({ load, server, rootMargin = "600px 0px", className 
 			io?.disconnect();
 			loadRef.current().then((Component) => setLive(() => Component));
 		};
-		let near = false;
+		let near = eager;
 		let quiet = false;
 		const tryStart = () => {
 			if (near && quiet) start();
@@ -143,7 +151,7 @@ export function LazyHydrate({ load, server, rootMargin = "600px 0px", className 
 			el.removeEventListener("focusin", early);
 			el.removeEventListener("touchstart", early);
 		};
-	}, [rootMargin]);
+	}, [rootMargin, eager]);
 
 	if (isServer) {
 		const Server = server;

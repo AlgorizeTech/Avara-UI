@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useId } from "react";
+import React from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@/lib/utils";
+import { useSlidingPill } from "@/components/site/sliding-pill";
 import {
   ClaudeIcon,
   CursorIcon,
@@ -65,11 +66,12 @@ export const McpClientPanel = ({ children }: PanelProps) => <>{children}</>;
  * config has no OpenCode entry) shows its first tab instead and leaves the
  * shared choice alone.
  */
+/** The accent pill behind the selected client. */
+const CLIENT_PILL = "rounded-md bg-primary/15";
+
 export const McpClientTabs = ({ children }: { children: React.ReactNode }) => {
   const { client, setClient } = useMcpClient();
   const reduceMotion = useReducedMotion();
-  // One highlight per switch, so two switches on a page never trade it.
-  const id = useId();
 
   const panels = React.Children.toArray(children).filter(
     (child): child is React.ReactElement<PanelProps> =>
@@ -77,6 +79,8 @@ export const McpClientTabs = ({ children }: { children: React.ReactNode }) => {
   );
   const clients = panels.map((panel) => panel.props.client);
   const active = clients.includes(client) ? client : clients[0];
+  // One highlight per switch, so two switches on a page never trade it.
+  const pill = useSlidingPill(active);
   const activePanel = panels.find((panel) => panel.props.client === active);
 
   return (
@@ -97,8 +101,10 @@ export const McpClientTabs = ({ children }: { children: React.ReactNode }) => {
               `[data-client="${next}"]`,
             ) as HTMLButtonElement | null)?.focus();
           }}
-          className="inline-flex shrink-0 items-center gap-0.5 rounded-lg bg-foreground/[0.04] p-0.5"
+          ref={pill.ref}
+          className="relative inline-flex shrink-0 items-center gap-0.5 rounded-lg bg-foreground/[0.04] p-0.5"
         >
+          {pill.pill(CLIENT_PILL)}
           {clients.map((name) => {
             const isActive = name === active;
             return (
@@ -112,24 +118,14 @@ export const McpClientTabs = ({ children }: { children: React.ReactNode }) => {
                 aria-checked={isActive}
                 tabIndex={isActive ? 0 : -1}
                 onClick={() => setClient(name)}
+                data-pill-active={isActive || undefined}
                 className={cn(
                   "relative flex cursor-pointer items-center gap-2 rounded-md px-3 py-1.5 text-[14px] sm:px-3.5 font-medium whitespace-nowrap transition-colors duration-150 motion-reduce:transition-none",
                   "focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60",
                   isActive ? "text-primary" : "text-foreground/40 hover:text-foreground/70",
+                  isActive && !pill.ready && CLIENT_PILL,
                 )}
               >
-                {isActive && (
-                  <motion.span
-                    layoutId={`${id}-mcp-client`}
-                    aria-hidden
-                    transition={
-                      reduceMotion
-                        ? { duration: 0 }
-                        : { type: "spring", stiffness: 520, damping: 42, mass: 0.8 }
-                    }
-                    className="absolute inset-0 rounded-md bg-primary/15"
-                  />
-                )}
                 <ClientMark client={name} active={isActive} />
                 {/* Logos only below `sm`; the name stays for screen readers. */}
                 <span className="relative hidden sm:inline">{MCP_CLIENT_LABEL[name]}</span>

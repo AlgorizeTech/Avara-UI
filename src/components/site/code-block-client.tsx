@@ -10,8 +10,15 @@ import { JSXIcon } from "@/assets/icons/jsx";
 import { JavaScriptIcon } from "@/assets/icons/javascript";
 import type { ReactElement } from "react";
 import { useState, useEffect, useRef } from "react";
-import { transformTsxToJsx } from "@/lib/tsx-to-jsx-transformer";
 import { cn } from "@/lib/utils";
+
+/**
+ * The TSX → JS converter drags in Babel and Prettier (~575 KB), which a reader
+ * only needs after flipping the TS/JS switch. Imported on demand so no docs
+ * page pays for it up front.
+ */
+const transformTsxToJsx = (code: string) =>
+  import("@/lib/tsx-to-jsx-transformer").then((m) => m.transformTsxToJsx(code));
 
 /**
  * Re-skins the shared <CodeBlocks> viewer as the docs code panel: 13px/1.7

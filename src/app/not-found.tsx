@@ -1,3 +1,4 @@
+import "./globals.css";
 import React from "react";
 import Link from "next/link";
 import { BookOpen, Home, LayoutGrid, Compass } from "lucide-react";
