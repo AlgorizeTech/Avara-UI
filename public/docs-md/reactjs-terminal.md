@@ -2,7 +2,7 @@ export const metadata = docsPageMetadata("terminal");
 
 # Terminal Snippet
 
-A beautiful, dependency-free code display block inspired by Mac OS windows.
+A dependency-free terminal window for showing code, inspired by Mac OS windows.
 
 If you are building a documentation site, a developer portfolio, or writing technical blog posts, you need a sleek way to present code. This `TerminalBlock` handles the structural styling, Mac-like window controls, built-in "Copy to Clipboard" functionality, and dynamic language badging without relying on heavy third-party syntax highlighters.
 

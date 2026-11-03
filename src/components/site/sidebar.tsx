@@ -193,9 +193,9 @@ const MenuItem: React.FC<{
         <Link href={item.href || docsHref(framework, item.slug || "")} className={baseClasses}>
           {/* Active indicator pill ONLY renders on the exact active child leaf */}
           {isExactActive && (
-            <motion.div
-              layoutId="sidebar-active-indicator"
-              className="absolute left-0 w-[3px] h-[16px] bg-primary rounded-full -ml-[7px]"
+            <span
+              aria-hidden
+              className="absolute left-0 w-[3px] h-[16px] bg-primary rounded-full -ml-[7px] animate-in fade-in zoom-in-50 duration-200 motion-reduce:animate-none"
             />
           )}
           {triggerContent}

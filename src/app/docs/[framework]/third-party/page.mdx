@@ -152,3 +152,7 @@ APIs at import time, which matters only under server rendering:
   the `"use client"` directive at the top of the file.
 - The lightbox measures the viewport on open. It renders nothing until `open` is
   true, so there is no server-render hazard.
+
+import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+
+<DocsJsonLd slug="third-party" />

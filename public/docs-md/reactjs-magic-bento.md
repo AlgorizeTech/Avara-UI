@@ -2,7 +2,7 @@ export const metadata = docsPageMetadata("magic-bento");
 
 # Magic Bento
 
-A premium grid layout system featuring CSS masking, continuously spinning gradient borders, and a real-time mouse-tracking spotlight effect.
+A bento grid layout system featuring CSS masking, continuously spinning gradient borders, and a real-time mouse-tracking spotlight effect.
 
 This component writes pointer coordinates straight into CSS variables
 without triggering heavy React state re-renders, ensuring the volumetric

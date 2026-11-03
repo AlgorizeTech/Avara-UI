@@ -122,7 +122,7 @@ export function FooterSection() {
 										target="_blank"
 										rel={badge.rel}
 										title={badge.title}
-										className="flex w-fit rounded-xl opacity-90 transition duration-200 hover:-translate-y-0.5 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50">
+										className="flex w-fit opacity-90 transition duration-200 hover:-translate-y-0.5 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50">
 										<img
 											src={badge.src}
 											alt={badge.alt}
@@ -130,7 +130,7 @@ export function FooterSection() {
 											height={badge.height}
 											loading="lazy"
 											decoding="async"
-											className="h-11 w-auto rounded-xl"
+											className="h-11 w-auto"
 										/>
 									</a>
 								</li>

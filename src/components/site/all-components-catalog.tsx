@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useId, useMemo, useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import React, { useMemo, useState } from "react";
+import { useSlidingPill } from "@/components/site/sliding-pill";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { docsHref, frameworkFromPathname } from "@/lib/framework";
@@ -4215,8 +4215,7 @@ function AnimationTabs({
 	onChange: (value: AnimationFilter) => void;
 }) {
 	// One highlight per switch, so it never trades with a sandbox's switch.
-	const id = useId();
-	const reduceMotion = useReducedMotion();
+	const pill = useSlidingPill(value);
 	const enabled = ANIMATION_FILTERS.filter((f) => counts[f] > 0 || f === value);
 
 	return (
@@ -4234,7 +4233,9 @@ function AnimationTabs({
 					`[data-filter="${next}"]`,
 				) as HTMLButtonElement | null)?.focus();
 			}}
-			className="flex h-9 w-fit shrink-0 items-center gap-0.5 rounded-lg bg-foreground/[0.04] p-0.5">
+			ref={pill.ref}
+			className="relative flex h-9 w-fit shrink-0 items-center gap-0.5 rounded-lg bg-foreground/[0.04] p-0.5">
+			{pill.pill("rounded-md bg-primary/15")}
 			{ANIMATION_FILTERS.map((candidate) => {
 				const isActive = candidate === value;
 				const label = candidate === "all" ? "All" : ANIMATION_LABEL[candidate];
@@ -4245,6 +4246,7 @@ function AnimationTabs({
 						type="button"
 						role="radio"
 						data-filter={candidate}
+						data-pill-active={isActive || undefined}
 						aria-checked={isActive}
 						tabIndex={isActive ? 0 : -1}
 						disabled={!enabled.includes(candidate)}
@@ -4253,19 +4255,8 @@ function AnimationTabs({
 							"relative flex h-full cursor-pointer items-center gap-1.5 rounded-md px-2.5 text-[12px] font-medium whitespace-nowrap transition-colors duration-150 motion-reduce:transition-none disabled:cursor-not-allowed disabled:opacity-40",
 							"focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60",
 							isActive ? "text-primary" : "text-foreground/40 hover:text-foreground/70",
+							isActive && !pill.ready && "bg-primary/15",
 						)}>
-						{isActive && (
-							<motion.span
-								layoutId={`${id}-animation-filter`}
-								aria-hidden
-								transition={
-									reduceMotion
-										? { duration: 0 }
-										: { type: "spring", stiffness: 520, damping: 42, mass: 0.8 }
-								}
-								className="absolute inset-0 rounded-md bg-primary/15"
-							/>
-						)}
 						{Icon && (
 							<Icon
 								aria-hidden

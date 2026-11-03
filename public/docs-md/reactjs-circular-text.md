@@ -2,7 +2,7 @@ export const metadata = docsPageMetadata("circular-text");
 
 # Circular Text
 
-Words set on a circle, turning slowly, with room in the middle for a mark, a play button or a link. The ring is an SVG `textPath`, so it stays crisp at any size and the words are real text — screen readers get them once, from an sr-only copy, rather than letter by letter around the ring.
+Circular text: words set on a circle, turning slowly, with room in the middle for a mark, a play button or a link. The ring is an SVG `textPath`, so it stays crisp at any size and the words are real text — screen readers get them once, from an sr-only copy, rather than letter by letter around the ring.
 
 The text repeats as many times as fit the circumference by default, so a short phrase fills the ring and a long one goes round once. Both Collage Hero and Fashion Hero use it as their badge.
 

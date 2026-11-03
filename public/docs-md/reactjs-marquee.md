@@ -2,7 +2,7 @@ export const metadata = docsPageMetadata("marquee");
 
 # Marquee
 
-An infinite, seamless scrolling container ideal for logos, testimonials, and image galleries.
+An infinite, seamless scrolling marquee ideal for logos, testimonials, and image galleries.
 
 This `MarqueeBlock` is engineered to be **flawless**. By exactly duplicating the content and using a precise CSS calculation (`calc(-100% - gap)`), the animation loops infinitely without any stuttering, lagging, or "snap back" resets that plague older implementations.
 
