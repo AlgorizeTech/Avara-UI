@@ -1,5 +1,7 @@
 "use client";
 
+import "./globals.css";
+
 import { useEffect } from "react";
 import SiteErrorView from "@/components/site/SiteErrorView";
 

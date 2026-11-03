@@ -1,4 +1,3 @@
-import './globals.css';
 import { ThemeProvider } from 'next-themes';
 import { cooper, dmSans, geistMono } from '@/assets/fonts';
 import { cooper as cooperItalic } from '@/assets/fonts/cooper-italic';

@@ -1,3 +1,4 @@
+import "../../globals.css";
 import { sandboxNames } from "@/preview/names";
 import { SandboxClient } from "@/preview/SandboxClient";
 

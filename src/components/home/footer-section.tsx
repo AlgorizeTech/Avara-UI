@@ -37,11 +37,9 @@ const FOOTER_GROUPS: {
 
 // The two StartupBase badges are light/dark variants of one slot: only the one
 // matching the active theme is shown, next to the OpenHunts badge.
-// Every badge is forced into the same 165x44 box so the row is perfectly even.
-// StartupBase's badges are already 15:4, but OpenHunts' is ~4.6:1, so it is
-// stretched slightly to fit (it is the only one that isn't natively this ratio).
-const BADGE_WIDTH = 165;
-const BADGE_HEIGHT = 44;
+// Every badge shares one 44px height; the width follows each image's own aspect
+// ratio so nothing is stretched. The width/height attributes carry that ratio
+// (StartupBase 300x80, OpenHunts 486x105) to reserve space before load.
 const STARTUPBASE_URL = "https://startupbase.io/products/avaraui";
 
 const FOOTER_BADGES: {
@@ -61,8 +59,8 @@ const FOOTER_BADGES: {
 		scheme: "light",
 		src: "https://statics.startupbase.io/site/badges/launched-on-sb.svg",
 		alt: "Launched on StartupBase",
-		width: BADGE_WIDTH,
-		height: BADGE_HEIGHT,
+		width: 300,
+		height: 80,
 	},
 	{
 		href: `${STARTUPBASE_URL}?utm_source=startupbase&utm_medium=badge&utm_campaign=featured-badge-dark`,
@@ -70,8 +68,8 @@ const FOOTER_BADGES: {
 		scheme: "dark",
 		src: "https://statics.startupbase.io/site/badges/featured-on-sb-dark.svg",
 		alt: "Featured on StartupBase",
-		width: BADGE_WIDTH,
-		height: BADGE_HEIGHT,
+		width: 300,
+		height: 80,
 	},
 	{
 		// No noreferrer here: OpenHunts' snippet omits it, presumably so it can
@@ -81,8 +79,8 @@ const FOOTER_BADGES: {
 		title: "OpenHunts Club",
 		src: "https://cdn.openhunts.com/badges/club.webp",
 		alt: "OpenHunts Club Member",
-		width: BADGE_WIDTH,
-		height: BADGE_HEIGHT,
+		width: 486,
+		height: 105,
 	},
 ];
 
@@ -91,10 +89,10 @@ export function FooterSection() {
 		<footer className="border-t border-foreground/[0.06] bg-background overflow-hidden">
 			<div className={cn(SECTION_INNER, "pt-16 pb-6")}>
 				<div className="flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
-					<div className="max-w-[345px]">
+					<div className="max-w-[400px]">
 						<div className="flex items-center gap-2.5">
 							<img
-								src="/favicon/logo-80x80.png"
+								src="/favicon/logo-64x64.png"
 								alt=""
 								width={28}
 								height={28}
@@ -132,7 +130,7 @@ export function FooterSection() {
 											height={badge.height}
 											loading="lazy"
 											decoding="async"
-											className="h-11 w-[165px] rounded-xl object-fill"
+											className="h-11 w-auto rounded-xl"
 										/>
 									</a>
 								</li>
