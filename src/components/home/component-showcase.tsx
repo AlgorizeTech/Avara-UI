@@ -217,7 +217,7 @@ export function ComponentShowcase() {
 						</p>
 					</div>
 					<Link
-						href="/docs/nextjs/index"
+						href="/docs/nextjs"
 						className="group flex items-center gap-1.5 text-[13px] font-medium text-foreground/70 hover:text-foreground transition-colors shrink-0">
 						View all components
 						<ArrowUpRight className="size-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />

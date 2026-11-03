@@ -37,7 +37,7 @@ export default function NotFound() {
         {/* Primary Action Buttons */}
         <div className="mt-7 flex w-full flex-col items-center justify-center gap-2.5 sm:flex-row">
           <Link
-            href="/docs/nextjs/index"
+            href="/docs/nextjs"
             className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-foreground px-7 py-3 text-[14px] font-semibold tracking-[0.3px] text-background transition-all hover:bg-foreground/90 active:scale-[0.98] sm:w-auto"
           >
             <BookOpen className="h-4 w-4" />
