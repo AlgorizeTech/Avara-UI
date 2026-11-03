@@ -1,11 +1,12 @@
 import './globals.css';
 import { ThemeProvider } from 'next-themes';
 import { cooper, dmSans, geistMono } from '@/assets/fonts';
+import { cooper as cooperItalic } from '@/assets/fonts/cooper-italic';
 import { PackageManagerProvider } from '@/contexts/package-manager-context';
 import { McpClientProvider } from '@/contexts/mcp-client-context';
 import { ThemeContextProvider } from '@/contexts/theme-context';
 import { ThemeCustomizerProvider } from '@/contexts/theme-customizer-context';
-import { ThemeControl } from '@/components/theme-control/theme-control';
+import { ThemeControlGate } from '@/components/theme-control/theme-control-gate';
 import { ThemeInitScript } from '@/components/theme-control/theme-init-script';
 import { PerformanceMonitor } from '@/components/performance/PerformanceMonitor';
 import { WebVitals } from '@/components/performance/web-vitals';
@@ -29,7 +30,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dmSans.variable} ${cooper.variable}`}
+      className={`${dmSans.variable} ${cooper.variable} ${cooperItalic.variable}`}
       suppressHydrationWarning
     >
       <head>
@@ -52,7 +53,7 @@ export default function RootLayout({
 
                   <Header />
                   {children}
-                  <ThemeControl />
+                  <ThemeControlGate />
                   <PerformanceMonitor />
                   <WebVitals />
                 </McpClientProvider>

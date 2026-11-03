@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import Link from "next/link";
+import Link from "@/components/site/intent-link";
 import { links } from "@/config/site";
 import { SECTION_INNER } from "@/components/home/shared";
 
@@ -43,7 +43,7 @@ export function FooterSection() {
 					<div className="max-w-[280px]">
 						<div className="flex items-center gap-2.5">
 							<img
-								src="/favicon/android-chrome-192x192.png"
+								src="/favicon/logo-80x80.png"
 								alt=""
 								width={28}
 								height={28}
@@ -53,7 +53,7 @@ export function FooterSection() {
 								Avara <span className="text-brand">UI</span>
 							</span>
 						</div>
-						<p className="mt-3 text-[13px] leading-[1.65] text-foreground/45">
+						<p className="mt-3 text-[13px] leading-[1.65] text-foreground/60">
 							React components and interactive blocks, installed through the
 							shadcn CLI.
 						</p>
@@ -64,7 +64,7 @@ export function FooterSection() {
 						className="grid grid-cols-2 gap-x-12 gap-y-8 sm:gap-x-16">
 						{FOOTER_GROUPS.map((group) => (
 							<div key={group.label}>
-								<p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.05em] text-foreground/40">
+								<p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.05em] text-foreground/60">
 									{group.label}
 								</p>
 								<ul className="flex flex-col">
@@ -94,7 +94,7 @@ export function FooterSection() {
 					Avara <span className="text-brand opacity-80">UI</span>
 				</div>
 
-				<div className="mt-6 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between text-[12px] text-foreground/40">
+				<div className="mt-6 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between text-[12px] text-foreground/60">
 					<span>
 						Built by{" "}
 						<Link
