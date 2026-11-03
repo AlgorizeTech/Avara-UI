@@ -74,11 +74,9 @@ const expireNewBadges = (items: NavigationItem[]): NavigationItem[] =>
   items.map((group) => ({
     ...group,
     children: group.children.map((child) =>
-      child.badge && ["new", "updated"].includes(child.badge.toLowerCase())
+      child.badge === "New" && child.addedOn && !isFreshlyAdded(child.addedOn)
         ? { ...child, badge: undefined }
-        : child.badge === "New" && child.addedOn && !isFreshlyAdded(child.addedOn)
-          ? { ...child, badge: undefined }
-          : child,
+        : child,
     ),
   }));
 
@@ -266,6 +264,22 @@ const rawNavigation: NavigationItem[] = [
       { label: "Radial Orbital Timeline", slug: "radial-orbital-timeline" },
       { label: "Range Date Picker", slug: "range-date-picker" },
       { label: "Resizable", slug: "resizable" },
+      {
+        label: "Ribbon Drift",
+        slug: "ribbon-drift",
+        badge: "New",
+        addedOn: "2026-11-03",
+        keywords: [
+          "ribbon drift",
+          "ribbon card",
+          "marquee ribbon",
+          "ambient drift",
+          "promo card",
+          "showcase card",
+          "hero card",
+          "drift card",
+        ],
+      },
       { label: "Scroll Area", slug: "scroll-area" },
       {
         label: "Scroll Split Cards",

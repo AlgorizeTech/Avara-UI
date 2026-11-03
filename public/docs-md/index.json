@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-03T05:47:26.548Z",
-  "totalFiles": 317,
+  "generatedAt": "2026-11-03T10:57:02.150Z",
+  "totalFiles": 319,
   "files": [
     {
       "name": "nextjs/3d-carousel",
@@ -691,6 +691,12 @@
       "path": "/docs/nextjs-reviews.md",
       "url": "/docs/nextjs/reviews",
       "originalMdx": "[framework]\\reviews\\page.mdx"
+    },
+    {
+      "name": "nextjs/ribbon-drift",
+      "path": "/docs/nextjs-ribbon-drift.md",
+      "url": "/docs/nextjs/ribbon-drift",
+      "originalMdx": "[framework]\\ribbon-drift\\page.mdx"
     },
     {
       "name": "nextjs/scroll-area",
@@ -1645,6 +1651,12 @@
       "path": "/docs/reactjs-reviews.md",
       "url": "/docs/reactjs/reviews",
       "originalMdx": "[framework]\\reviews\\page.mdx"
+    },
+    {
+      "name": "reactjs/ribbon-drift",
+      "path": "/docs/reactjs-ribbon-drift.md",
+      "url": "/docs/reactjs/ribbon-drift",
+      "originalMdx": "[framework]\\ribbon-drift\\page.mdx"
     },
     {
       "name": "reactjs/scroll-area",

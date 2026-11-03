@@ -7,8 +7,6 @@ export function generateStaticParams() {
   return sandboxNames.map((name) => ({ name }));
 }
 
-export const dynamicParams = false;
-
 // Internal preview stage, not a page: never index it.
 export const metadata = {
   robots: { index: false, follow: false },

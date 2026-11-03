@@ -144,6 +144,7 @@ export const sandboxNames = [
   "register-form",
   "resizable",
   "reviews",
+  "ribbon-drift",
   "scroll-accordion",
   "scroll-area",
   "scroll-split-cards",

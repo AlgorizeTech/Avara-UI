@@ -3859,6 +3859,31 @@
       ]
     },
     {
+      "name": "ribbon-drift",
+      "type": "registry:component",
+      "title": "Ribbon Drift",
+      "author": "AlgorizeTech",
+      "description": "A hero showcase card featuring dual floating infinite marquee ribbons, an animated gradient drift backdrop, center 3D illustration, and interactive frosted promo card.",
+      "categories": [
+        "marketing",
+        "media",
+        "data-display"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "https://avaraui.com/r/avatar-stack.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/RibbonDriftBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/RibbonDriftBlock.tsx"
+        }
+      ],
+      "docs": "Default export: RibbonDriftBlock. Also exports RibbonDriftCard and the RibbonDriftProps type. Features dual counter-rotating marquee ribbons with smooth seamless looping, animated ambient gradient drift, top-right brand pill badge, and bottom floating frosted promo card with avatar stack."
+    },
+    {
       "name": "scroll-accordion-showcase",
       "type": "registry:component",
       "title": "Scroll Accordion Showcase",

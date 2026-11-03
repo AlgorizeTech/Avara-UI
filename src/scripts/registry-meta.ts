@@ -1113,6 +1113,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["layout", "media"],
     docs: "Named export: MasonryGrid. Generic over your item type — pass `items` and a `renderItem` callback. Column count and gaps come from `columnsClassName` and `gapClassName`, so responsive behaviour is plain Tailwind. CSS columns fill top-to-bottom per column, so visual order differs from DOM order.",
   },
+  "ribbon-drift": {
+    description:
+      "A hero showcase card featuring dual floating infinite marquee ribbons, an animated gradient drift backdrop, center 3D illustration, and interactive frosted promo card.",
+    categories: ["marketing", "media", "data-display"],
+    docs: "Default export: RibbonDriftBlock. Also exports RibbonDriftCard and the RibbonDriftProps type. Features dual counter-rotating marquee ribbons with smooth seamless looping, animated ambient gradient drift, top-right brand pill badge, and bottom floating frosted promo card with avatar stack.",
+  },
   "tilted-card": {
     description:
       "A card that tilts in 3D toward the pointer with a moving glare highlight. Use it to make a single feature or product card feel tactile.",
