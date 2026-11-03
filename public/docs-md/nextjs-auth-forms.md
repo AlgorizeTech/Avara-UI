@@ -302,13 +302,13 @@ Every example below is the same `RegisterForm` you just installed — only the p
 
           variant
 
-          "default" | "split" | "liquid-glass" | "glass" | "minimal"
+          "default" | "split" | "liquid-glass" | "glass" | "minimal" | "ribbon-drift"
 
           "default"
 
-          Applies overarching structural layouts. split wraps the
-          form in a full-width marketing panel, liquid-glass adds an interactive liquid SVG glass stack, while glass adds
-          translucent styling.
+          Applies overarching structural layouts. "split" wraps the
+          form in a full-width marketing panel, "liquid-glass" adds an interactive liquid SVG glass stack, "glass" adds
+          translucent styling, and "ribbon-drift" features dual infinite marquee ribbons with animated ambient gradient drift backdrop.
 
           color
 
@@ -343,6 +343,30 @@ Every example below is the same `RegisterForm` you just installed — only the p
           Cloudinary image
 
           Custom background image URL for glass and liquid-glass variants.
+
+          image
+
+          string
+
+          Cloudinary illustration
+
+          Hero illustration or 3D asset centered in the ribbon-drift panel.
+
+          ribbonsTop / ribbonsBottom
+
+          string[]
+
+          See defaults
+
+          Items rendered inside the top (-7deg) and bottom (+5deg) infinite floating marquee ribbons in ribbon-drift.
+
+          promo
+
+          object
+
+          See defaults
+
+          Interactive frosted promo card at the bottom of ribbon-drift featuring title, body, href, and avatars.
 
           signupHref
 
@@ -444,6 +468,30 @@ Every example below is the same `RegisterForm` you just installed — only the p
           Cloudinary landscape
 
           Custom background image URL for the scenic variant.
+
+          image
+
+          string
+
+          Cloudinary illustration
+
+          Hero illustration or 3D asset centered in the ribbon-drift panel.
+
+          ribbonsTop / ribbonsBottom
+
+          string[]
+
+          See defaults
+
+          Items rendered inside the top (-7deg) and bottom (+5deg) infinite floating marquee ribbons in ribbon-drift.
+
+          promo
+
+          object
+
+          See defaults
+
+          Interactive frosted promo card at the bottom of ribbon-drift featuring title, body, href, and avatars.
 
           initialStep
 

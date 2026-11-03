@@ -125,6 +125,15 @@ const colorMap: Record<string, { primary: string; secondary: string }> = {
   zinc: { primary: "#71717a", secondary: "#a1a1aa" },
 };
 
+const fallbackProfiles = [
+  { name: "Ana Watson", designation: "Founder & CEO" },
+  { name: "Tom Hardy", designation: "Co-Founder & CTO" },
+  { name: "Mara Jade", designation: "Managing Director" },
+  { name: "Sarah Miller", designation: "Product Lead" },
+  { name: "David Chen", designation: "Design Lead" },
+  { name: "Elena Rostova", designation: "Talent Acquisition" },
+];
+
 export function RibbonDriftBlock({
   image = defaultImage,
   imageAlt = "Feature illustration",
@@ -342,15 +351,18 @@ function PromoCard({
     : undefined;
 
   const rawAvatars = promo.avatars ?? defaultPromo.avatars ?? [];
-  const normalizedAvatars: StackAvatar[] = rawAvatars.map((item, idx) =>
-    typeof item === "string"
-      ? {
-          src: item,
-          alt: `User ${idx + 1}`,
-          name: `User ${idx + 1}`,
-        }
-      : item,
-  );
+  const normalizedAvatars: StackAvatar[] = rawAvatars.map((item, idx) => {
+    if (typeof item === "string") {
+      const profile = fallbackProfiles[idx % fallbackProfiles.length];
+      return {
+        src: item,
+        alt: profile.name,
+        name: profile.name,
+        designation: profile.designation,
+      };
+    }
+    return item;
+  });
 
   const content = (
     <>

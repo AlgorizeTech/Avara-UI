@@ -7,6 +7,7 @@ import { GitHubIcon, GoogleIcon } from "./Icons";
 import { InputBlock } from "./InputBlock";
 import { useState } from "react";
 import { getThemeStyles } from "./login-form-theme";
+import { RibbonDriftBlock } from "./RibbonDriftBlock";
 
 // ==========================================
 // DYNAMIC THEME ENGINE
@@ -81,7 +82,7 @@ export interface LoginFormProps {
     title?: string;
     body?: string;
     href?: string;
-    avatars?: string[];
+    avatars?: (string | { src: string; alt?: string; name?: string; designation?: string })[];
   };
   /** Top marquee ribbon items for ribbon-drift variant */
   ribbonsTop?: string[];
@@ -1070,9 +1071,24 @@ const defaultPromo = {
   body: "See who qualified while you were away",
   href: "#",
   avatars: [
-    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg",
-    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg",
-    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg",
+    {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg",
+      alt: "Ana Watson",
+      name: "Ana Watson",
+      designation: "Founder & CEO",
+    },
+    {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg",
+      alt: "Tom Hardy",
+      name: "Tom Hardy",
+      designation: "Co-Founder & CTO",
+    },
+    {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg",
+      alt: "Mara Jade",
+      name: "Mara Jade",
+      designation: "Managing Director",
+    },
   ],
 };
 
@@ -1146,8 +1162,6 @@ export function LoginBlock({
       )}
       style={{ ...themeStyle, ...style }}
     >
-      <style>{loginKeyframes}</style>
-
       <div
         className={cn(
           "grid flex-1 gap-3 sm:gap-4 items-stretch w-full max-w-full min-w-0",
@@ -1311,81 +1325,20 @@ export function LoginBlock({
 
         {image && (
           <div className="hidden lg:flex flex-col w-full h-full min-w-0 overflow-hidden">
-            <aside
-              className={cn(
-                "relative isolate w-full max-w-full min-w-0 flex-1 h-full min-h-[440px] sm:min-h-[500px] lg:min-h-[540px] overflow-hidden bg-[#d8d8de] dark:bg-[#0d0d10] border border-black/5 dark:border-white/5 shadow-sm",
-                typeof rounded === "string" && !formatRadius(rounded)
-                  ? rounded
-                  : "",
-              )}
-              style={dynamicRadiusStyle}
-            >
-              <div
-                aria-hidden="true"
-                className="absolute inset-0 animate-[login-drift_24s_ease-in-out_infinite_alternate] bg-[length:140%_140%] bg-[radial-gradient(70%_55%_at_15%_20%,color-mix(in_oklab,var(--primary)_70%,transparent),transparent_70%),radial-gradient(65%_55%_at_90%_85%,color-mix(in_oklab,var(--brand-secondary,var(--brand,#9B8AFB))_75%,transparent),transparent_70%),linear-gradient(160deg,#f6f6f9,#b4b4c2_40%,#fff_60%,#73738a)] motion-reduce:animate-none dark:bg-[radial-gradient(70%_55%_at_15%_20%,color-mix(in_oklab,var(--primary)_35%,transparent),transparent_70%),radial-gradient(65%_55%_at_90%_85%,color-mix(in_oklab,var(--brand-secondary,var(--brand,#9B8AFB))_28%,transparent),transparent_70%),linear-gradient(160deg,#34343f,#0b0b0f_40%,#5a5a6c_60%,#040406)]"
-              />
-              <BlockRibbon
-                items={ribbonsTop}
-                className="top-[50%] z-[1] -rotate-[7deg]"
-              />
-              <div className="absolute inset-[4%_6%_10%] z-[2] pointer-events-none flex items-end justify-center">
-                <img
-                  src={image}
-                  alt="Illustration"
-                  className="size-full object-contain object-bottom drop-shadow-[0_28px_36px_rgba(20,12,60,0.28)] select-none"
-                />
-              </div>
-              <BlockRibbon
-                items={ribbonsBottom}
-                className="top-[63%] z-[3] rotate-[5deg]"
-                reverse
-              />
-
-              <div className="absolute right-3.5 top-3.5 z-[5] flex items-center rounded-full border border-white/70 bg-white/70 px-4 py-2 backdrop-blur-xl shadow-sm dark:border-white/15 dark:bg-[#131316]/70">
-                <BlockLogo
-                  href={logoHref}
-                  logo={logo}
-                  logoDark={logoDark}
-                  compact
-                />
-              </div>
-
-              {promo && (
-                <a
-                  href="#"
-                  onClick={(e) => e.preventDefault()}
-                  className="group absolute inset-x-2.5 sm:inset-x-3.5 bottom-2.5 sm:bottom-3.5 z-[4] flex items-center gap-2.5 sm:gap-3.5 border border-white/30 bg-[#15151c]/60 py-2.5 sm:py-3.5 pl-3 sm:pl-4 pr-2.5 sm:pr-3.5 text-white backdrop-blur-xl transition-colors hover:bg-[#15151c]/70 shadow-lg"
-                  style={promoRadiusStyle}
-                >
-                  {promo.avatars && promo.avatars.length > 0 && (
-                    <div className="flex -space-x-2 shrink-0">
-                      {promo.avatars.map((src, i) => (
-                        <img
-                          key={i}
-                          src={src}
-                          alt=""
-                          className="size-7 sm:size-8 rounded-full border-2 border-[#15151c] object-cover ring-1 ring-white/20"
-                        />
-                      ))}
-                    </div>
-                  )}
-                  <span className="flex min-w-0 flex-1 flex-col">
-                    <span className="text-xs sm:text-sm font-semibold truncate leading-tight text-white">
-                      {promo.title}
-                    </span>
-                    <span className="mt-0.5 text-[11px] sm:text-[12px] text-white/75 truncate">
-                      {promo.body}
-                    </span>
-                  </span>
-                  <span
-                    aria-hidden="true"
-                    className="grid size-9 sm:size-10 shrink-0 place-items-center rounded-full border border-white/50 bg-white/10 transition-all duration-300 group-hover:rotate-45 group-hover:border-transparent group-hover:bg-primary [&_svg]:size-3.5 sm:[&_svg]:size-4"
-                  >
-                    <ArrowIcon />
-                  </span>
-                </a>
-              )}
-            </aside>
+            <RibbonDriftBlock
+              image={image}
+              logoConfig={{
+                logo,
+                logoDark,
+                href: logoHref,
+              }}
+              ribbonsTop={ribbonsTop}
+              ribbonsBottom={ribbonsBottom}
+              promo={promo}
+              color={color}
+              rounded={rounded}
+              className="h-full min-h-[440px] sm:min-h-[500px] lg:min-h-[540px]"
+            />
           </div>
         )}
       </div>
@@ -1533,52 +1486,6 @@ function BlockCheckbox({
   );
 }
 
-function BlockRibbon({
-  items,
-  className = "",
-  reverse = false,
-}: {
-  items: string[];
-  className?: string;
-  reverse?: boolean;
-}) {
-  if (!items.length) return null;
-  const row = [...items, ...items, ...items];
-  return (
-    <div
-      className={cn(
-        "pointer-events-none absolute -left-[10%] w-[120%] sm:-left-[15%] sm:w-[130%] max-w-[130%] overflow-hidden whitespace-nowrap border-y border-white/70 bg-white/60 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-[#1b1b22] backdrop-blur-md dark:border-white/15 dark:bg-[#131316]/60 dark:text-[#ececf1] select-none",
-        className,
-      )}
-    >
-      <div
-        className={cn(
-          "flex w-max animate-[login-ribbon_48s_linear_infinite] motion-reduce:animate-none",
-          reverse && "[animation-direction:reverse]",
-        )}
-      >
-        {[0, 1].map((half) => (
-          <span key={half} className="flex" aria-hidden={half === 1}>
-            {row.map((text, i) => (
-              <span key={i} className="inline-flex items-center">
-                {text}
-                <span className="mx-[18px] bg-gradient-to-br from-primary to-[var(--brand-secondary,var(--brand,#9B8AFB))] bg-clip-text text-transparent">
-                  ✦
-                </span>
-              </span>
-            ))}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-const loginKeyframes = `
-@keyframes login-drift { from { background-position: 0% 0%; } to { background-position: 100% 100%; } }
-@keyframes login-ribbon { to { transform: translateX(-50%); } }
-`;
-
 const svgProps = {
   viewBox: "0 0 24 24",
   fill: "none",
@@ -1600,12 +1507,6 @@ const LockIcon = () => (
   <svg {...svgProps}>
     <rect width="18" height="11" x="3" y="11" rx="2" />
     <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-  </svg>
-);
-
-const ArrowIcon = () => (
-  <svg {...svgProps}>
-    <path d="M7 7h10v10M7 17 17 7" />
   </svg>
 );
 

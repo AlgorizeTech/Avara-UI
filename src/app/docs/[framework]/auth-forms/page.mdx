@@ -578,7 +578,7 @@ export default function RibbonDriftRegisterPage() {
       color="indigo"
       heading="Create your account"
       lead="Set up a role, add your screening questions, and let AI interview every qualified applicant."
-      image="/assets/auth/register-hero.png"
+      image="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1793701432/register-hero-1793701431524.png"
       loginHref="#"
       termsHref="#"
       privacyHref="#"
@@ -784,7 +784,8 @@ Every example below is the same `RegisterForm` you just installed — only the p
         variant: "ribbon-drift",
         heading: "Create your account",
         lead: "Set up a role, add your screening questions, and let AI interview every qualified applicant.",
-        image: "/assets/auth/register-hero.png",
+        image:
+          "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1793701432/register-hero-1793701431524.png",
         loginHref: "#",
         termsHref: "#",
         privacyHref: "#",
@@ -814,15 +815,15 @@ Every example below is the same `RegisterForm` you just installed — only the p
           <code>variant</code>
         </td>
         <td>
-          <code>"default" | "split" | "liquid-glass" | "glass" | "minimal"</code>
+          <code>"default" | "split" | "liquid-glass" | "glass" | "minimal" | "ribbon-drift"</code>
         </td>
         <td>
           <code>"default"</code>
         </td>
         <td>
-          Applies overarching structural layouts. <code>split</code> wraps the
-          form in a full-width marketing panel, <code>liquid-glass</code> adds an interactive liquid SVG glass stack, while <code>glass</code> adds
-          translucent styling.
+          Applies overarching structural layouts. <code>"split"</code> wraps the
+          form in a full-width marketing panel, <code>"liquid-glass"</code> adds an interactive liquid SVG glass stack, <code>"glass"</code> adds
+          translucent styling, and <code>"ribbon-drift"</code> features dual infinite marquee ribbons with animated ambient gradient drift backdrop.
         </td>
       </tr>
       <tr>
@@ -881,6 +882,48 @@ Every example below is the same `RegisterForm` you just installed — only the p
         </td>
         <td>
           Custom background image URL for <code>glass</code> and <code>liquid-glass</code> variants.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>image</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          Cloudinary illustration
+        </td>
+        <td>
+          Hero illustration or 3D asset centered in the <code>ribbon-drift</code> panel.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ribbonsTop</code> / <code>ribbonsBottom</code>
+        </td>
+        <td>
+          <code>string[]</code>
+        </td>
+        <td>
+          See defaults
+        </td>
+        <td>
+          Items rendered inside the top (-7deg) and bottom (+5deg) infinite floating marquee ribbons in <code>ribbon-drift</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>promo</code>
+        </td>
+        <td>
+          <code>object</code>
+        </td>
+        <td>
+          See defaults
+        </td>
+        <td>
+          Interactive frosted promo card at the bottom of <code>ribbon-drift</code> featuring <code>title</code>, <code>body</code>, <code>href</code>, and <code>avatars</code>.
         </td>
       </tr>
       <tr>
@@ -1058,6 +1101,48 @@ Every example below is the same `RegisterForm` you just installed — only the p
         </td>
         <td>
           Custom background image URL for the <code>scenic</code> variant.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>image</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          Cloudinary illustration
+        </td>
+        <td>
+          Hero illustration or 3D asset centered in the <code>ribbon-drift</code> panel.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ribbonsTop</code> / <code>ribbonsBottom</code>
+        </td>
+        <td>
+          <code>string[]</code>
+        </td>
+        <td>
+          See defaults
+        </td>
+        <td>
+          Items rendered inside the top (-7deg) and bottom (+5deg) infinite floating marquee ribbons in <code>ribbon-drift</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>promo</code>
+        </td>
+        <td>
+          <code>object</code>
+        </td>
+        <td>
+          See defaults
+        </td>
+        <td>
+          Interactive frosted promo card at the bottom of <code>ribbon-drift</code> featuring <code>title</code>, <code>body</code>, <code>href</code>, and <code>avatars</code>.
         </td>
       </tr>
       <tr>
