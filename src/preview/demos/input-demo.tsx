@@ -195,7 +195,7 @@ export default function InputDemo({
           inputSize={inputSize}
           disabled={isDisabled}
           leftIcon={
-            inputType === "email" || variant === "pill" ? (
+            inputType === "email" || (variant as string) === "pill" ? (
               <Mail
                 className={
                   inputSize === "sm"

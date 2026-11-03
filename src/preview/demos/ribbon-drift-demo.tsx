@@ -4,7 +4,6 @@ import {
   RibbonDriftBlock,
   type RibbonDriftProps,
 } from "@/components/custom/blocks/RibbonDriftBlock";
-import { cn } from "@/lib/utils";
 
 export default function RibbonDriftDemo({
   color = "primary",

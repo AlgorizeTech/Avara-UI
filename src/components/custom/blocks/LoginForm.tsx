@@ -1032,7 +1032,7 @@ export interface LoginBlockProps {
     title?: string;
     body?: string;
     href?: string;
-    avatars?: string[];
+    avatars?: (string | { src: string; alt?: string; name?: string; designation?: string })[];
   };
   ribbonsTop?: string[];
   ribbonsBottom?: string[];
@@ -1129,12 +1129,6 @@ export function LoginBlock({
         ? formattedRadius
         : "calc(var(--radius, 0.625rem) * 2.8)",
     WebkitMaskImage: "-webkit-radial-gradient(white, black)",
-  };
-  const promoRadiusStyle: React.CSSProperties = {
-    borderRadius:
-      formattedRadius !== undefined
-        ? formattedRadius
-        : "calc(var(--radius, 0.625rem) * 2.2)",
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
