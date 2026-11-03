@@ -1,7 +1,9 @@
 "use client";
 
 import React, {
+  Suspense,
   forwardRef,
+  lazy,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -12,11 +14,18 @@ import React, {
 } from "react";
 import { Terminal } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { AvatarStack, type StackAvatar } from "@/components/custom/blocks/AvatarStackBlock";
+import type { StackAvatar } from "@/components/custom/blocks/AvatarStackBlock";
 import { CopyButton } from "@/components/custom/blocks/CopyButtonBlock";
 import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
 import { TextAnimation } from "@/components/custom/blocks/TextAnimationBlock";
 import type { WallItem } from "@/components/custom/blocks/ImageWallBlock";
+
+// AvatarStack is only used by the optional `trust` row, which the home page
+// doesn't render. Importing it statically pulled the motion library into every
+// visit's first-load bundle, so it is fetched only when a `trust` row exists.
+const AvatarStack = lazy(() =>
+  import("@/components/custom/blocks/AvatarStackBlock").then((m) => ({ default: m.AvatarStack })),
+);
 
 // ------------------------------------------
 // Geometry matching original ImageWall
@@ -675,7 +684,9 @@ export const HomepageHero = forwardRef<HTMLElement, HomepageHeroProps>(
             className="cw-rise mt-10 flex flex-col items-center gap-3 sm:flex-row sm:gap-5"
           >
             {trust.avatars && trust.avatars.length > 0 && (
-              <AvatarStack avatars={trust.avatars} size="lg" max={5} ringClassName="ring-background" className="m-0 p-0 shrink-0" />
+              <Suspense fallback={null}>
+                <AvatarStack avatars={trust.avatars} size="lg" max={5} ringClassName="ring-background" className="m-0 p-0 shrink-0" />
+              </Suspense>
             )}
             <div className="flex flex-col items-center gap-1 sm:items-start sm:border-l sm:border-border sm:pl-5 sm:text-left">
               {typeof trust.rating === "number" && (

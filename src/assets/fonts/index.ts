@@ -18,7 +18,8 @@ export const dmSans = DM_Sans({
 /**
  * Cooper* — the heading font, self-hosted from /public/fonts. Both files are
  * variable fonts spanning wght 400–900, so one face per style covers every
- * weight the site uses.
+ * weight the site uses. The italic lives in ./cooper-italic.ts so it isn't
+ * preloaded with the upright.
  */
 export const cooper = localFont({
   src: [
@@ -26,11 +27,6 @@ export const cooper = localFont({
       path: "../../../public/fonts/Cooperwght.woff",
       weight: "400 900",
       style: "normal",
-    },
-    {
-      path: "../../../public/fonts/Cooper-Italicwght.woff",
-      weight: "400 900",
-      style: "italic",
     },
   ],
   variable: "--font-cooper",
