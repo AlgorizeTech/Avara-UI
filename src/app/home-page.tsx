@@ -3,7 +3,7 @@
 import { HeroSection } from "@/components/home/hero-section";
 import { LazyHydrate } from "@/components/home/lazy-hydrate";
 
-/* Everything below the hero is its own chunk. LazyHydrate renders each section
+/* Every section below the hero is its own chunk. LazyHydrate renders each section
    as ordinary inline HTML on the server (so crawlers, first paint and the
    document's full height are all exactly as before) and loads its code only as
    it nears the viewport, once the first paint has settled.
@@ -50,7 +50,13 @@ export default function HomePage() {
 			    crawlers; the footer stays outside it so it keeps its own role. */}
 			<main>
 				<HeroSection />
+				{/* Eager: the showcase's demos are sized by FitToWidth after mount, so
+				    its server HTML is ~1.6k px shorter than the live section (varies with
+				    the viewport, so it can't be reserved). It comes alive as soon as the
+				    first paint has settled instead of waiting to be scrolled near, but
+				    no longer holds up the hero's hydration or preloads its ~150 KB. */}
 				<LazyHydrate
+					eager
 					server={SHOWCASE}
 					load={() => import("@/components/home/component-showcase").then((m) => m.ComponentShowcase)}
 				/>

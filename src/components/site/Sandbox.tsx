@@ -17,7 +17,7 @@ import {
   CodeBlockClient,
   isTransformable,
 } from "@/components/site/code-block-client";
-import { motion, useReducedMotion } from "motion/react";
+import { useSlidingPill } from "@/components/site/sliding-pill";
 import CodeCopy from "@/components/site/code-copy";
 import { useCodeLanguage } from "@/contexts/code-language-context";
 import {
@@ -88,6 +88,12 @@ const DEVICE_PRESETS: Record<Device, number> = {
   tablet: 768,
   mobile: 375,
 };
+
+/** The sliding highlights behind the active tab and the active device. */
+const TAB_PILL =
+  "rounded-lg bg-background shadow-[0_1px_2px_rgb(0_0_0/0.06)] ring-1 ring-foreground/[0.06]";
+const DEVICE_PILL =
+  "rounded-md bg-background shadow-[0_1px_2px_rgb(0_0_0/0.06)] ring-1 ring-foreground/[0.06]";
 
 const TAB_ICONS: Record<string, React.ReactNode> = {
   preview: <MonitorPlay className="w-4 h-4" />,
@@ -255,13 +261,9 @@ export function Sandbox({
   const [isDragging, setIsDragging] = useState(false);
   const [resetKey, setResetKey] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  // The active tab and device each get a pill that slides between options.
-  // A page shows several cards, so the layoutIds are scoped per instance.
-  const pillId = useId();
-  const reduceMotion = useReducedMotion();
-  const pillTransition = reduceMotion
-    ? { duration: 0 }
-    : { type: "spring" as const, stiffness: 420, damping: 34 };
+  // The active tab and device each get a pill that slides between options
+  // (plain CSS, see sliding-pill.tsx). Each card owns its own pair.
+  const tabPill = useSlidingPill(activeTab);
   const areaRef = useRef<HTMLDivElement>(null);
   const closeFullscreenRef = useRef<HTMLButtonElement>(null);
 
@@ -282,15 +284,17 @@ export function Sandbox({
     setIsFullscreen(true);
   };
 
-  // Highlight every code tab while the reader is still on the preview, so
-  // opening Usage or Code paints coloured on its first frame instead of
-  // flashing raw text and reflowing when Shiki lands. Runs during idle time.
-  useEffect(() => {
+  // Highlight the code tabs just before they open, so Usage or Code paints
+  // coloured on its first frame instead of flashing raw text and reflowing
+  // when Shiki lands. Booting Shiki (its WASM engine) is ~0.7 s of main-thread
+  // work, so it waits for the reader's first hover/focus/touch on a code tab
+  // instead of running on every page load.
+  const warmCodeTabs = () => {
     warmHighlighter();
     for (const tab of tabs) {
       if (tab.code) prefetchHighlight(tab.code, tab.lang ?? "tsx");
     }
-  }, [tabs]);
+  };
 
   // Track the available area width for icon sync / clamping / scale-to-fit.
   useEffect(() => {
@@ -415,6 +419,8 @@ export function Sandbox({
     },
   ];
 
+  const devicePill = useSlidingPill(activeDevice);
+
   // Visual box of the (possibly scaled) frame
   const visualWidth =
     viewportWidth === null ? null : Math.round(viewportWidth * visualScale);
@@ -443,28 +449,25 @@ export function Sandbox({
       {/* Top Header Bar */}
       <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 min-h-12 py-2 pl-2 pr-2.5">
         {/* Left: tab pills */}
-        <div className="flex items-center gap-0.5">
+        <div ref={tabPill.ref} className="relative flex items-center gap-0.5">
+          {tabPill.pill(TAB_PILL)}
           {tabs.map((tab) => {
             const isActive = activeTab === tab.id;
             return (
               <button
                 key={tab.id}
+                data-pill-active={isActive || undefined}
                 onClick={() => setActiveTab(tab.id)}
+                onPointerEnter={tab.code ? warmCodeTabs : undefined}
+                onFocus={tab.code ? warmCodeTabs : undefined}
                 className={cn(
                   "relative flex items-center gap-1.5 sm:gap-2 h-8 px-2.5 sm:px-3 text-[13px] font-medium rounded-lg transition-colors cursor-pointer capitalize",
                   isActive
                     ? "text-foreground"
                     : "text-foreground/45 hover:text-foreground/80",
+                  isActive && !tabPill.ready && TAB_PILL,
                 )}
               >
-                {isActive && (
-                  <motion.span
-                    layoutId={`${pillId}-tab`}
-                    transition={pillTransition}
-                    aria-hidden
-                    className="absolute inset-0 rounded-lg bg-background shadow-[0_1px_2px_rgb(0_0_0/0.06)] ring-1 ring-foreground/[0.06]"
-                  />
-                )}
                 <span
                   className={cn(
                     "relative flex items-center [&_svg]:size-3.5 transition-colors",
@@ -521,29 +524,24 @@ export function Sandbox({
             </span>
 
             {deviceSwitcher && (
-              <div className="flex items-center gap-0.5 bg-foreground/[0.04] p-0.5 rounded-lg">
+              <div ref={devicePill.ref} className="relative flex items-center gap-0.5 bg-foreground/[0.04] p-0.5 rounded-lg">
+                {devicePill.pill(DEVICE_PILL)}
                 {deviceButtons.map(({ device, icon, label }) => (
                   <button
                     key={device}
                     onClick={() => setPreviewWidth(DEVICE_PRESETS[device])}
+                    data-pill-active={activeDevice === device || undefined}
                     className={cn(
                       "relative p-1.5 rounded-md transition-colors cursor-pointer",
                       activeDevice === device
                         ? "text-foreground"
                         : "text-foreground/45 hover:text-foreground/80",
+                      activeDevice === device && !devicePill.ready && DEVICE_PILL,
                     )}
                     title={label}
                     aria-label={label}
                     aria-pressed={activeDevice === device}
                   >
-                    {activeDevice === device && (
-                      <motion.span
-                        layoutId={`${pillId}-device`}
-                        transition={pillTransition}
-                        aria-hidden
-                        className="absolute inset-0 rounded-md bg-background shadow-[0_1px_2px_rgb(0_0_0/0.06)] ring-1 ring-foreground/[0.06]"
-                      />
-                    )}
                     <span className="relative flex">{icon}</span>
                   </button>
                 ))}
@@ -1312,17 +1310,48 @@ function ExampleCard({
       setMounted(true);
       return;
     }
+    // Each preview is a whole second page (its own Next.js runtime, GSAP, the
+    // demo), so booting one while the docs page itself is still hydrating
+    // doubles the main-thread work at the worst moment. Once the card is near
+    // the viewport it waits for an idle moment after the page's own load.
+    let idleHandle: number | undefined;
+    let loadListener: (() => void) | undefined;
+    const mountWhenIdle = () => {
+      const mount = () => {
+        const w = window as Window & {
+          requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+        };
+        if (typeof w.requestIdleCallback === "function") {
+          idleHandle = w.requestIdleCallback(() => setMounted(true), { timeout: 1500 });
+        } else {
+          idleHandle = window.setTimeout(() => setMounted(true), 300);
+        }
+      };
+      if (document.readyState === "complete") mount();
+      else {
+        loadListener = mount;
+        window.addEventListener("load", mount, { once: true });
+      }
+    };
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setMounted(true);
           observer.disconnect();
+          mountWhenIdle();
         }
       },
       { rootMargin: "200px" },
     );
     observer.observe(el);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      if (loadListener) window.removeEventListener("load", loadListener);
+      if (idleHandle !== undefined) {
+        const w = window as Window & { cancelIdleCallback?: (h: number) => void };
+        if (typeof w.cancelIdleCallback === "function") w.cancelIdleCallback(idleHandle);
+        window.clearTimeout(idleHandle);
+      }
+    };
   }, [mounted]);
 
   const tabs: SandboxTab[] = [

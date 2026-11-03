@@ -1,7 +1,6 @@
 "use client";
 
-import { useId } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { useSlidingPill } from "@/components/site/sliding-pill";
 import { cn } from "@/lib/utils";
 import { GsapIcon, MotionIcon } from "@/components/custom/blocks/Icons";
 import {
@@ -32,6 +31,9 @@ function LibraryMark({ library, active }: { library: MotionLibrary; active: bool
   );
 }
 
+/** The accent pill behind the selected build. */
+const LIBRARY_PILL = "rounded-md bg-primary shadow-sm";
+
 /**
  * The GSAP / Motion switch for a component that ships both builds.
  *
@@ -53,8 +55,7 @@ export function MotionLibraryTabs({
 }) {
   const { library, setLibrary } = useMotionLibrary();
   // One highlight per switch, so two switches on a page never trade it.
-  const id = useId();
-  const reduceMotion = useReducedMotion();
+  const pill = useSlidingPill(library);
 
   return (
     <div
@@ -73,11 +74,13 @@ export function MotionLibraryTabs({
           `[data-library="${next}"]`,
         ) as HTMLButtonElement | null)?.focus();
       }}
+      ref={pill.ref}
       className={cn(
-        "flex shrink-0 items-center gap-0.5 rounded-lg bg-foreground/[0.06] p-0.5 ring-foreground/10",
+        "relative flex shrink-0 items-center gap-0.5 rounded-lg bg-foreground/[0.06] p-0.5 ring-foreground/10",
         className,
       )}
     >
+      {pill.pill(LIBRARY_PILL)}
       {MOTION_LIBRARIES.map((candidate) => {
         const isActive = candidate === library;
         const label = MOTION_LIBRARY_LABEL[candidate];
@@ -92,26 +95,16 @@ export function MotionLibraryTabs({
             tabIndex={isActive ? 0 : -1}
             title={`Show the ${label} build`}
             onClick={() => setLibrary(candidate)}
+            data-pill-active={isActive || undefined}
             className={cn(
               "relative flex cursor-pointer items-center gap-1.5 rounded-md px-2 py-1 text-[12px] font-medium whitespace-nowrap transition-colors duration-150 motion-reduce:transition-none sm:px-2.5",
               "focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60",
               isActive
                 ? "text-primary-foreground"
                 : "text-foreground/60 hover:bg-foreground/[0.05] hover:text-foreground",
+              isActive && !pill.ready && LIBRARY_PILL,
             )}
           >
-            {isActive && (
-              <motion.span
-                layoutId={`${id}-motion-library`}
-                aria-hidden
-                transition={
-                  reduceMotion
-                    ? { duration: 0 }
-                    : { type: "spring", stiffness: 520, damping: 42, mass: 0.8 }
-                }
-                className="absolute inset-0 rounded-md bg-primary shadow-sm"
-              />
-            )}
             <LibraryMark library={candidate} active={isActive} />
             <span className={cn("relative", compact && "hidden sm:inline")}>{label}</span>
           </button>

@@ -137,7 +137,7 @@ const Header = () => {
           >
             <div className="relative flex items-center justify-center">
               <img
-                src="/favicon/logo-80x80.png"
+                src="/favicon/logo-64x64.png"
                 alt=""
                 width={24}
                 height={24}
@@ -192,7 +192,7 @@ const Header = () => {
             >
               <div className="relative flex items-center justify-center transition-transform duration-200 group-hover:scale-105">
                 <img
-                  src="/favicon/logo-80x80.png"
+                  src="/favicon/logo-64x64.png"
                   alt=""
                   width={20}
                   height={20}
@@ -258,7 +258,7 @@ const Header = () => {
               onFocus={warmSearch}
               onTouchStart={warmSearch}
               className="pointer-events-auto flex items-center justify-center gap-2.5 size-10 min-[1240px]:w-auto min-[1240px]:justify-start min-[1240px]:pl-3.5 min-[1240px]:pr-5 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 text-foreground/80 hover:text-foreground hover:border-border/70 transition-all text-left cursor-pointer"
-              aria-label="Open command palette search"
+              aria-label="Search components and documentation"
             >
               <Search className="size-4 min-[1240px]:size-3.5 min-[1240px]:text-foreground/50 shrink-0" />
               <span className="hidden min-[1240px]:inline text-[12.5px] text-foreground/50">

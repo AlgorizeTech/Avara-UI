@@ -2,7 +2,7 @@ export const metadata = docsPageMetadata("input");
 
 # Input
 
-A multi-purpose Input component with password toggles, autocomplete suggestions, and four layout variants.
+A multi-purpose Input component with password toggles, autocomplete suggestions, and five layout variants.
 
 Pass `suggestions` and the field lists them the way a select menu would — typing narrows the list, and choosing one writes the text straight into the field. The drag-and-drop file mode lives on its own page: see File upload.
 
@@ -28,6 +28,21 @@ export const usageUnderlined = `import { InputBlock } from "@/components/custom/
 
 export default function UnderlinedInput() {
   return (
+    
+  );
+}`;
+
+export const usagePill = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
+export default function PillInputs() {
+  return (
+    
+      }
+      />
+      }
+      />
+      }
+      />
     
   );
 }`;
@@ -159,7 +174,7 @@ This component extends `React.InputHTMLAttributes`, meaning you can pass any sta
 
           variant
 
-          "default" | "filled" | "underlined" | "glow"
+          "default" | "filled" | "underlined" | "glow" | "pill"
 
           "default"
 

@@ -16,7 +16,7 @@ const FOOTER_GROUPS: {
 	{
 		label: "Docs",
 		links: [
-			{ label: "Documentation", href: "/docs/nextjs/index" },
+			{ label: "Documentation", href: "/docs/nextjs" },
 			{ label: "All components", href: "/docs/nextjs/all-components" },
 			{ label: "Installation", href: "/docs/nextjs/installation" },
 		],
@@ -35,15 +35,64 @@ const FOOTER_GROUPS: {
 	},
 ];
 
+// The two StartupBase badges are light/dark variants of one slot: only the one
+// matching the active theme is shown, next to the OpenHunts badge.
+// Every badge shares one 44px height; the width follows each image's own aspect
+// ratio so nothing is stretched. The width/height attributes carry that ratio
+// (StartupBase 300x80, OpenHunts 486x105) to reserve space before load.
+const STARTUPBASE_URL = "https://startupbase.io/products/avaraui";
+
+const FOOTER_BADGES: {
+	href: string;
+	rel: string;
+	title?: string;
+	/** Only show in this colour scheme; omit to show in both. */
+	scheme?: "light" | "dark";
+	src: string;
+	alt: string;
+	width: number;
+	height: number;
+}[] = [
+	{
+		href: `${STARTUPBASE_URL}?utm_source=startupbase&utm_medium=badge&utm_campaign=launch-badge-light`,
+		rel: "noopener noreferrer",
+		scheme: "light",
+		src: "https://statics.startupbase.io/site/badges/launched-on-sb.svg",
+		alt: "Launched on StartupBase",
+		width: 300,
+		height: 80,
+	},
+	{
+		href: `${STARTUPBASE_URL}?utm_source=startupbase&utm_medium=badge&utm_campaign=featured-badge-dark`,
+		rel: "noopener noreferrer",
+		scheme: "dark",
+		src: "https://statics.startupbase.io/site/badges/featured-on-sb-dark.svg",
+		alt: "Featured on StartupBase",
+		width: 300,
+		height: 80,
+	},
+	{
+		// No noreferrer here: OpenHunts' snippet omits it, presumably so it can
+		// see the referral.
+		href: "https://openhunts.com",
+		rel: "noopener",
+		title: "OpenHunts Club",
+		src: "https://cdn.openhunts.com/badges/club.webp",
+		alt: "OpenHunts Club Member",
+		width: 486,
+		height: 105,
+	},
+];
+
 export function FooterSection() {
 	return (
 		<footer className="border-t border-foreground/[0.06] bg-background overflow-hidden">
 			<div className={cn(SECTION_INNER, "pt-16 pb-6")}>
 				<div className="flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
-					<div className="max-w-[280px]">
+					<div className="max-w-[400px]">
 						<div className="flex items-center gap-2.5">
 							<img
-								src="/favicon/logo-80x80.png"
+								src="/favicon/logo-64x64.png"
 								alt=""
 								width={28}
 								height={28}
@@ -53,10 +102,40 @@ export function FooterSection() {
 								Avara <span className="text-brand">UI</span>
 							</span>
 						</div>
-						<p className="mt-3 text-[13px] leading-[1.65] text-foreground/60">
+						<p className="mt-3 max-w-[280px] text-[13px] leading-[1.65] text-foreground/60">
 							React components and interactive blocks, installed through the
 							shadcn CLI.
 						</p>
+						{/* Launch-platform badges */}
+						<ul
+							aria-label="Launch platforms"
+							className="mt-6 flex w-fit max-w-full flex-wrap items-center gap-3">
+							{FOOTER_BADGES.map((badge) => (
+								<li
+									key={badge.alt}
+									className={cn(
+										badge.scheme === "light" && "dark:hidden",
+										badge.scheme === "dark" && "hidden dark:block",
+									)}>
+									<a
+										href={badge.href}
+										target="_blank"
+										rel={badge.rel}
+										title={badge.title}
+										className="flex w-fit opacity-90 transition duration-200 hover:-translate-y-0.5 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50">
+										<img
+											src={badge.src}
+											alt={badge.alt}
+											width={badge.width}
+											height={badge.height}
+											loading="lazy"
+											decoding="async"
+											className="h-11 w-auto"
+										/>
+									</a>
+								</li>
+							))}
+						</ul>
 					</div>
 
 					<nav

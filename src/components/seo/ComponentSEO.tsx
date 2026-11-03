@@ -16,7 +16,7 @@ export function ComponentSEO({
 }: ComponentSEOProps) {
   const breadcrumbs = [
     { name: 'Home', url: '/' },
-    { name: 'Documentation', url: '/docs/nextjs/index' },
+    { name: 'Documentation', url: '/docs/nextjs' },
     { name: componentName, url: `/docs/nextjs/${componentName.toLowerCase()}` }
   ]
 

@@ -1,6 +1,5 @@
 "use client";
-import { useId } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { useSlidingPill } from "@/components/site/sliding-pill";
 import { cn } from "@/lib/utils";
 
 export type LanguageType = 'tsx' | 'jsx';
@@ -29,6 +28,9 @@ const LANGUAGES: Array<{
   },
 ];
 
+/** The accent pill behind the selected language. */
+const LANGUAGE_PILL = "rounded-md bg-primary/15";
+
 /**
  * TS/JS switch for a code panel.
  *
@@ -48,16 +50,17 @@ const CodeCopy = ({
   onLanguageChange?: (language: LanguageType) => void;
 }) => {
   // One highlight per switch, so two panels on a page never trade it.
-  const id = useId();
-  const reduceMotion = useReducedMotion();
+  const pill = useSlidingPill(selectedLanguage);
 
   return (
     <div
+      ref={pill.ref}
       className={cn(
-        "flex items-center gap-0.5 rounded-lg bg-foreground/[0.04] p-0.5 animate-in fade-in duration-200",
+        "relative flex items-center gap-0.5 rounded-lg bg-foreground/[0.04] p-0.5 animate-in fade-in duration-200",
         className,
       )}
     >
+      {pill.pill(LANGUAGE_PILL)}
       {LANGUAGES.map(({ value, label, badge, badgeClass, textClass }) => {
         const isActive = selectedLanguage === value;
         return (
@@ -66,6 +69,7 @@ const CodeCopy = ({
             type="button"
             onClick={() => onLanguageChange?.(value)}
             aria-pressed={isActive}
+            data-pill-active={isActive || undefined}
             // Keeps the full name for screen readers once the word is hidden.
             aria-label={label}
             className={cn(
@@ -73,20 +77,9 @@ const CodeCopy = ({
               isActive
                 ? "text-primary"
                 : "text-foreground/40 hover:text-foreground/70",
+              isActive && !pill.ready && LANGUAGE_PILL,
             )}
           >
-            {isActive && (
-              <motion.span
-                layoutId={`${id}-language`}
-                aria-hidden
-                transition={
-                  reduceMotion
-                    ? { duration: 0 }
-                    : { type: "spring", stiffness: 520, damping: 42, mass: 0.8 }
-                }
-                className="absolute inset-0 rounded-md bg-primary/15"
-              />
-            )}
             <div
               className={cn(
                 "relative w-3.5 h-3.5 rounded-[3px] flex items-center justify-center shrink-0 transition-[filter,opacity]",

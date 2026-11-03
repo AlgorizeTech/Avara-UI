@@ -1,0 +1,326 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("ribbon-drift");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Ribbon Drift
+
+A dynamic hero showcase card featuring dual floating infinite marquee ribbons, an animated ambient gradient drift backdrop, center 3D illustration, and an interactive frosted glass promo card.
+
+Originally created as the signature visual counterpart for authentication layouts, it is completely decoupled as a standalone visual card that works across landing pages, feature highlights, onboarding heroes, and product showcase sections.
+
+export const usageDefault = `import { RibbonDriftBlock } from "@/components/custom/blocks/RibbonDriftBlock";
+
+const AVATARS = [
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg",
+    alt: "Ana Watson",
+    name: "Ana Watson",
+    designation: "Founder & CEO",
+  },
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg",
+    alt: "Tom Hardy",
+    name: "Tom Hardy",
+    designation: "Co-Founder & CTO",
+  },
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg",
+    alt: "Mara Jade",
+    name: "Mara Jade",
+    designation: "Managing Director",
+  },
+];
+
+export default function RibbonDriftCardExample() {
+  return (
+    <div className="w-full max-w-2xl mx-auto">
+      <RibbonDriftBlock
+        color="primary"
+        image="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1793701432/register-hero-1793701431524.png"
+        ribbonsTop={[
+          "Interviews run day and night",
+          "Every applicant, the same questions",
+          "Recordings ready for your review",
+        ]}
+        ribbonsBottom={[
+          "Qualified candidates, interviewed in minutes",
+          "Your first round, handled",
+          "You make every hiring decision",
+        ]}
+        promo={{
+          title: "Interviews run day and night",
+          body: "See who qualified while you were away",
+          href: "#",
+          avatars: AVATARS,
+        }}
+      />
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  name="ribbon-drift"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Ribbon Drift Card",
+      subheading:
+        "Dual infinite marquee ribbons, central 3D character, ambient gradient drift, and frosted promo card.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "color",
+          value: '"primary" | "indigo" | "rose" | "emerald" | "amber" | "violet" | "zinc"',
+          effect: "tunes the ambient glow gradient, diamond separators, and hover accents.",
+        },
+        {
+          prop: "ribbonsTop",
+          effect: "items rendered in the top ribbon (-7deg tilt, drifting left).",
+        },
+        {
+          prop: "ribbonsBottom",
+          effect: "items rendered in the bottom ribbon (+5deg tilt, drifting right).",
+        },
+      ],
+      props: {
+        color: "primary",
+      },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/RibbonDriftBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="ribbon-drift" />
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>RibbonDriftBlock</code>
+        </td>
+        <td>
+          <code>image</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>defaultImage</code>
+        </td>
+        <td>
+          Central illustration URL positioned between the layered ribbons.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>RibbonDriftBlock</code>
+        </td>
+        <td>
+          <code>imageAlt</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Feature illustration"</code>
+        </td>
+        <td>
+          Accessible alt text for the central illustration.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>RibbonDriftBlock</code>
+        </td>
+        <td>
+          <code>ribbonsTop</code>
+        </td>
+        <td>
+          <code>string[]</code>
+        </td>
+        <td>
+          <code>defaultRibbonsTop</code>
+        </td>
+        <td>
+          Items scrolling in the upper ribbon (tilted at -7deg, drifting left).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>RibbonDriftBlock</code>
+        </td>
+        <td>
+          <code>ribbonsBottom</code>
+        </td>
+        <td>
+          <code>string[]</code>
+        </td>
+        <td>
+          <code>defaultRibbonsBottom</code>
+        </td>
+        <td>
+          Items scrolling in the lower ribbon (tilted at +5deg in reverse direction).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>RibbonDriftBlock</code>
+        </td>
+        <td>
+          <code>promo</code>
+        </td>
+        <td>
+          <code>RibbonDriftPromo | null</code>
+        </td>
+        <td>
+          <code>defaultPromo</code>
+        </td>
+        <td>
+          Floating frosted badge at the bottom featuring an interactive AvatarStack (spring-shift on hover with tooltip) and arrow link (pass <code>null</code> to hide).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>RibbonDriftBlock</code>
+        </td>
+        <td>
+          <code>color</code>
+        </td>
+        <td>
+          <code>RibbonDriftColor</code>
+        </td>
+        <td>
+          <code>"primary"</code>
+        </td>
+        <td>
+          Color theme palette (<code>"primary"</code>, <code>"indigo"</code>, <code>"rose"</code>, <code>"emerald"</code>, <code>"amber"</code>, <code>"violet"</code>, <code>"zinc"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>RibbonDriftBlock</code>
+        </td>
+        <td>
+          <code>badge</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom badge or logo node rendered in the top-right frosted pill.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>RibbonDriftBlock</code>
+        </td>
+        <td>
+          <code>logoConfig</code>
+        </td>
+        <td>
+          <code>RibbonDriftLogo</code>
+        </td>
+        <td>
+          <code>&#123; brandName: "Avara", brandAccent: "UI" &#125;</code>
+        </td>
+        <td>
+          Configuration options for the top-right pill badge.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>RibbonDriftBlock</code>
+        </td>
+        <td>
+          <code>rounded</code>
+        </td>
+        <td>
+          <code>string | number</code>
+        </td>
+        <td>
+          <code>"rounded-3xl"</code>
+        </td>
+        <td>
+          Corner radius for the outer card and promo card (e.g. <code>24</code>, <code>"2rem"</code>, <code>"rounded-3xl"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>RibbonDriftBlock</code>
+        </td>
+        <td>
+          <code>marqueeDuration</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>48</code>
+        </td>
+        <td>
+          Loop duration in seconds for the marquee ribbons.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>RibbonDriftBlock</code>
+        </td>
+        <td>
+          <code>pauseOnHover</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          Whether the marquee animation pauses when hovering over the card.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>RibbonDriftBlock</code>
+        </td>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom Tailwind CSS classes applied to the root card container.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+
+<DocsJsonLd slug="ribbon-drift" />

@@ -2663,7 +2663,7 @@
           "target": "components/custom/blocks/input-theme.ts"
         }
       ],
-      "docs": "Named exports: InputBlock, getThemeStyles (from input-theme.ts, which installs alongside). Accepts type (text | password | email | number | file), variant (default | filled | underlined | glow), inputSize, and a color token (indigo | rose | emerald | zinc, or your own). Pass `error` to switch it into the invalid state; `helperText` renders below when there is no error."
+      "docs": "Named exports: InputBlock, getThemeStyles (from input-theme.ts, which installs alongside). Accepts type (text | password | email | number | file), variant (default | filled | underlined | glow | pill), inputSize, and a color token (indigo | rose | emerald | zinc, or your own). Pass `error` to switch it into the invalid state; `helperText` renders below when there is no error."
     },
     {
       "name": "invoice",
@@ -2784,6 +2784,7 @@
         "https://avaraui.com/r/button.json",
         "https://avaraui.com/r/icons.json",
         "https://avaraui.com/r/input.json",
+        "https://avaraui.com/r/ribbon-drift.json",
         "https://avaraui.com/r/ui-liquid-glass.json",
         "utils"
       ],
@@ -3787,6 +3788,7 @@
         "https://avaraui.com/r/button.json",
         "https://avaraui.com/r/icons.json",
         "https://avaraui.com/r/input.json",
+        "https://avaraui.com/r/ribbon-drift.json",
         "https://avaraui.com/r/ui-liquid-glass.json",
         "utils"
       ],
@@ -3857,6 +3859,31 @@
           "target": "components/custom/blocks/motion-curves.ts"
         }
       ]
+    },
+    {
+      "name": "ribbon-drift",
+      "type": "registry:component",
+      "title": "Ribbon Drift",
+      "author": "AlgorizeTech",
+      "description": "A hero showcase card featuring dual floating infinite marquee ribbons, an animated gradient drift backdrop, center 3D illustration, and interactive frosted promo card.",
+      "categories": [
+        "marketing",
+        "media",
+        "data-display"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "https://avaraui.com/r/avatar-stack.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/RibbonDriftBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/RibbonDriftBlock.tsx"
+        }
+      ],
+      "docs": "Default export: RibbonDriftBlock. Also exports RibbonDriftCard and the RibbonDriftProps type. Features dual counter-rotating marquee ribbons with smooth seamless looping, animated ambient gradient drift, top-right brand pill badge, and bottom floating frosted promo card with avatar stack."
     },
     {
       "name": "scroll-accordion-showcase",

@@ -319,7 +319,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A text input with label, helper text, error state, icon slots and password reveal. Reach for it as the default field in any form.",
     categories: ["forms"],
-    docs: "Named exports: InputBlock, getThemeStyles (from input-theme.ts, which installs alongside). Accepts type (text | password | email | number | file), variant (default | filled | underlined | glow), inputSize, and a color token (indigo | rose | emerald | zinc, or your own). Pass `error` to switch it into the invalid state; `helperText` renders below when there is no error.",
+    docs: "Named exports: InputBlock, getThemeStyles (from input-theme.ts, which installs alongside). Accepts type (text | password | email | number | file), variant (default | filled | underlined | glow | pill), inputSize, and a color token (indigo | rose | emerald | zinc, or your own). Pass `error` to switch it into the invalid state; `helperText` renders below when there is no error.",
   },
   select: {
     description:
@@ -1112,6 +1112,12 @@ export const META: Record<string, ItemMeta> = {
       "A CSS-column masonry layout with staggered entrance animation. Use it for image galleries and card walls of uneven height.",
     categories: ["layout", "media"],
     docs: "Named export: MasonryGrid. Generic over your item type — pass `items` and a `renderItem` callback. Column count and gaps come from `columnsClassName` and `gapClassName`, so responsive behaviour is plain Tailwind. CSS columns fill top-to-bottom per column, so visual order differs from DOM order.",
+  },
+  "ribbon-drift": {
+    description:
+      "A hero showcase card featuring dual floating infinite marquee ribbons, an animated gradient drift backdrop, center 3D illustration, and interactive frosted promo card.",
+    categories: ["marketing", "media", "data-display"],
+    docs: "Default export: RibbonDriftBlock. Also exports RibbonDriftCard and the RibbonDriftProps type. Features dual counter-rotating marquee ribbons with smooth seamless looping, animated ambient gradient drift, top-right brand pill badge, and bottom floating frosted promo card with avatar stack.",
   },
   "tilted-card": {
     description:

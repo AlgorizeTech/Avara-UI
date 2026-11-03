@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-11-02T14:41:48.445Z
-**Total files:** 317
+**Generated at:** 2026-11-03T14:26:44.300Z
+**Total files:** 319
 
 ## Available Files
 
@@ -122,6 +122,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/range-date-picker](/docs/nextjs-range-date-picker.md) - Source: `[framework]\range-date-picker\page.mdx`
 - [nextjs/resizable](/docs/nextjs-resizable.md) - Source: `[framework]\resizable\page.mdx`
 - [nextjs/reviews](/docs/nextjs-reviews.md) - Source: `[framework]\reviews\page.mdx`
+- [nextjs/ribbon-drift](/docs/nextjs-ribbon-drift.md) - Source: `[framework]\ribbon-drift\page.mdx`
 - [nextjs/scroll-area](/docs/nextjs-scroll-area.md) - Source: `[framework]\scroll-area\page.mdx`
 - [nextjs/scroll-split-cards](/docs/nextjs-scroll-split-cards.md) - Source: `[framework]\scroll-split-cards\page.mdx`
 - [nextjs/scroll-stack](/docs/nextjs-scroll-stack.md) - Source: `[framework]\scroll-stack\page.mdx`
@@ -281,6 +282,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/range-date-picker](/docs/reactjs-range-date-picker.md) - Source: `[framework]\range-date-picker\page.mdx`
 - [reactjs/resizable](/docs/reactjs-resizable.md) - Source: `[framework]\resizable\page.mdx`
 - [reactjs/reviews](/docs/reactjs-reviews.md) - Source: `[framework]\reviews\page.mdx`
+- [reactjs/ribbon-drift](/docs/reactjs-ribbon-drift.md) - Source: `[framework]\ribbon-drift\page.mdx`
 - [reactjs/scroll-area](/docs/reactjs-scroll-area.md) - Source: `[framework]\scroll-area\page.mdx`
 - [reactjs/scroll-split-cards](/docs/reactjs-scroll-split-cards.md) - Source: `[framework]\scroll-split-cards\page.mdx`
 - [reactjs/scroll-stack](/docs/reactjs-scroll-stack.md) - Source: `[framework]\scroll-stack\page.mdx`

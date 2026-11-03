@@ -1,3 +1,4 @@
+import "../../globals.css";
 import { sandboxNames } from "@/preview/names";
 import { SandboxClient } from "@/preview/SandboxClient";
 
@@ -6,8 +7,6 @@ import { SandboxClient } from "@/preview/SandboxClient";
 export function generateStaticParams() {
   return sandboxNames.map((name) => ({ name }));
 }
-
-export const dynamicParams = false;
 
 // Internal preview stage, not a page: never index it.
 export const metadata = {
