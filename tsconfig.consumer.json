@@ -151,6 +151,7 @@
     "src/components/custom/blocks/RegisterForm.tsx",
     "src/components/custom/blocks/ResizableBlock.tsx",
     "src/components/custom/blocks/ReviewsBlock.tsx",
+    "src/components/custom/blocks/RibbonDriftBlock.tsx",
     "src/components/custom/blocks/ScrollAccordionShowcaseBlock.tsx",
     "src/components/custom/blocks/ScrollAreaBlock.tsx",
     "src/components/custom/blocks/ScrollSplitCardsBlock.tsx",

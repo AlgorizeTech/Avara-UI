@@ -408,7 +408,8 @@
     "filled": "Input — Filled",
     "underlined": "Input — Underlined",
     "password": "Input — Password",
-    "autocomplete": "Input — Autocomplete"
+    "autocomplete": "Input — Autocomplete",
+    "input-pill": "Input — Pill badge"
   },
   "folder": {
     "folder-drop-target": "Folder — Folder drop target",
@@ -759,6 +760,9 @@
     "updown-vertical-marquee": "Reviews — UpDown Vertical Marquee",
     "3d-stacked-cards-carousel-with-rolling-motion-arrows": "Reviews — 3D Stacked Cards Carousel with Rolling Motion & Arrows",
     "interactive-brand-logo-carousel": "Reviews — Interactive Brand Logo Carousel"
+  },
+  "ribbon-drift": {
+    "ribbon-drift-card": "Ribbon Drift — Ribbon Drift Card"
   },
   "scroll-area": {
     "scroll-area": "Scroll Area",

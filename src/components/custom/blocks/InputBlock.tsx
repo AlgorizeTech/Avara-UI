@@ -26,7 +26,7 @@ import { getThemeStyles } from "./input-theme";
 // DYNAMIC THEME ENGINE
 // ==========================================
 export type InputColor = "indigo" | "rose" | "emerald" | "zinc" | string;
-export type InputVariant = "default" | "filled" | "underlined" | "glow";
+export type InputVariant = "default" | "filled" | "underlined" | "glow" | "pill";
 export type InputSize = "sm" | "md" | "lg";
 
 // ==========================================
@@ -303,12 +303,22 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
             baseWrapper,
             "border border-red-500 bg-background",
             variant === "underlined" && "border-0 border-b-2 rounded-none",
-            variant !== "underlined" && "rounded-xl",
+            variant === "pill" && "rounded-full",
+            variant !== "underlined" && variant !== "pill" && "rounded-xl",
           ),
           active: "focus-within:ring-4 focus-within:ring-red-500/10",
         };
 
       switch (variant) {
+        case "pill":
+          return {
+            wrapper: cn(
+              baseWrapper,
+              "rounded-full border border-border bg-background shadow-xs",
+              leftIcon && "pl-1.5",
+            ),
+            active: cn("focus-within:ring-4 transition-all", theme.ring),
+          };
         case "filled":
           return {
             wrapper: cn(
@@ -593,12 +603,15 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
           ref={fieldRef}
           className={cn("relative", hasSuggestions && "z-10")}
         >
-        <div className={cn(styles.wrapper, styles.active)}>
+        <div className={cn("group", styles.wrapper, styles.active)}>
           {leftIcon && (
             <div
               className={cn(
-                "shrink-0 pl-4 text-muted-foreground",
-                variant === "underlined" && "pl-0 pr-3",
+                "shrink-0 text-muted-foreground transition-colors flex items-center justify-center [&_svg]:shrink-0",
+                variant !== "underlined" && variant !== "pill" && "pl-4 [&_svg]:size-4",
+                variant === "underlined" && "pl-0 pr-3 [&_svg]:size-4",
+                variant === "pill" &&
+                  "grid h-[24px] sm:h-[26px] w-[46px] sm:w-[54px] shrink-0 place-items-center border-r border-border pl-0 pr-0 mr-3 text-muted-foreground group-focus-within:text-primary [&_svg]:size-[16px] sm:[&_svg]:size-[18px]",
               )}
             >
               {leftIcon}
@@ -612,7 +625,8 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
             className={cn(
               "w-full h-full bg-transparent border-none outline-none text-foreground placeholder:text-muted-foreground/70 transition-colors",
               s.text,
-              leftIcon && variant !== "underlined" ? "pl-2.5" : "pl-0",
+              leftIcon && variant !== "underlined" && variant !== "pill" ? "pl-2.5" : "pl-0",
+              variant === "pill" && !leftIcon && "pl-1",
               variant === "underlined" && !leftIcon && "pl-0",
               rightIcon || isPassword ? "pr-2.5" : "pr-0",
             )}
@@ -651,6 +665,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
               className={cn(
                 "shrink-0 pr-4 text-muted-foreground hover:text-muted-foreground transition-colors disabled:opacity-50",
                 variant === "underlined" && "pr-0 pl-3",
+                variant === "pill" && "pr-3.5",
               )}
             >
               {showPassword ? (
@@ -663,8 +678,9 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
           {rightIcon && !isPassword && (
             <div
               className={cn(
-                "shrink-0 pr-4 text-muted-foreground",
+                "shrink-0 pr-4 text-muted-foreground flex items-center justify-center [&_svg]:size-4 [&_svg]:shrink-0",
                 variant === "underlined" && "pr-0 pl-3",
+                variant === "pill" && "pr-3.5",
               )}
             >
               {rightIcon}

@@ -12,9 +12,7 @@ Both share the same `variant` and `color` surface, so a login page and a registe
 
 Email, password, remember-me and a forgot-password link. `signupHref` points at wherever the register form lives.
 
-export const usageLogin = `import LoginForm, { LoginFormValues } from "@/components/custom/blocks/LoginForm";
-
-export default function LoginPage() {
+export const usageLogin = `export default function LoginPage() {
   const handleSubmit = async (values: LoginFormValues) => {
     // Swap this for your auth call. The button stays in its loading state
     // until the promise settles, so return the real one.
@@ -31,9 +29,7 @@ export default function LoginPage() {
   );
 }`;
 
-export const usageLoginSplit = `import LoginForm, { LoginFormValues } from "@/components/custom/blocks/LoginForm";
-
-export default function SplitLoginPage() {
+export const usageLoginSplit = `export default function SplitLoginPage() {
   // "split" pairs the form with a full-height marketing panel on large screens.
   const handleSubmit = async (values: LoginFormValues) => {
     await new Promise((resolve) => setTimeout(resolve, 600));
@@ -49,9 +45,7 @@ export default function SplitLoginPage() {
   );
 }`;
 
-export const usageLoginMinimal = `import LoginForm, { LoginFormValues } from "@/components/custom/blocks/LoginForm";
-
-export default function MinimalLoginPage() {
+export const usageLoginMinimal = `export default function MinimalLoginPage() {
   // "minimal" strips the card, leaving just the fields on your own background.
   const handleSubmit = async (values: LoginFormValues) => {
     await new Promise((resolve) => setTimeout(resolve, 600));
@@ -67,9 +61,7 @@ export default function MinimalLoginPage() {
   );
 }`;
 
-export const usageLoginGlass = `import LoginForm, { LoginFormValues } from "@/components/custom/blocks/LoginForm";
-
-export default function GlassLoginPage() {
+export const usageLoginGlass = `export default function GlassLoginPage() {
   // "glass" provides a self-contained full-bleed background with a floating frosted card.
   const handleSubmit = async (values: LoginFormValues) => {
     await new Promise((resolve) => setTimeout(resolve, 600));
@@ -85,9 +77,7 @@ export default function GlassLoginPage() {
   );
 }`;
 
-export const usageLoginLiquidGlass = `import LoginForm, { LoginFormValues } from "@/components/custom/blocks/LoginForm";
-
-export default function LiquidGlassLoginPage() {
+export const usageLoginLiquidGlass = `export default function LiquidGlassLoginPage() {
   // "liquid-glass" uses SVG displacement turbulence, specular edge highlights, and high-contrast frosted styling.
   const handleSubmit = async (values: LoginFormValues) => {
     await new Promise((resolve) => setTimeout(resolve, 600));
@@ -103,9 +93,7 @@ export default function LiquidGlassLoginPage() {
   );
 }`;
 
-export const usageLoginRibbonDrift = `import LoginForm, { LoginFormValues } from "@/components/custom/blocks/LoginForm";
-
-export default function RibbonDriftLoginPage() {
+export const usageLoginRibbonDrift = `export default function RibbonDriftLoginPage() {
   // "ribbon-drift" features dual floating infinite marquee ribbons, an animated drift backdrop, and interactive promo card.
   const handleSubmit = async (values: LoginFormValues) => {
     await new Promise((resolve) => setTimeout(resolve, 600));
@@ -144,9 +132,7 @@ Every example below is the same `LoginForm` you just installed — only the prop
 
 Paired name fields, email, password with confirmation, and a terms checkbox whose links you point at your own policies. `loginHref` closes the loop back to the login form.
 
-export const usageRegister = `import RegisterForm, { RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
-
-export default function RegisterPage() {
+export const usageRegister = `export default function RegisterPage() {
   const handleSubmit = async (values: RegisterFormValues) => {
     // values: firstName, lastName, email, password, confirmPassword, agreeToTerms.
     // Re-validate every one of them on your server.
@@ -163,9 +149,7 @@ export default function RegisterPage() {
   );
 }`;
 
-export const usageRegisterScenic = `import RegisterForm, { RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
-
-export default function ScenicRegisterPage() {
+export const usageRegisterScenic = `export default function ScenicRegisterPage() {
   // "scenic" renders a floating onboarding card over a nature landscape backdrop.
   // Seamlessly adapts between light mode (frosted card) and dark mode (dark charcoal card).
   const handleSubmit = async (values: RegisterFormValues) => {
@@ -182,9 +166,7 @@ export default function ScenicRegisterPage() {
   );
 }`;
 
-export const usageRegisterSplit = `import RegisterForm, { RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
-
-export default function SplitRegisterPage() {
+export const usageRegisterSplit = `export default function SplitRegisterPage() {
   // "split" pairs the form with a full-height marketing panel on large screens.
   const handleSubmit = async (values: RegisterFormValues) => {
     await new Promise((resolve) => setTimeout(resolve, 600));
@@ -200,9 +182,7 @@ export default function SplitRegisterPage() {
   );
 }`;
 
-export const usageRegisterMinimal = `import RegisterForm, { RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
-
-export default function MinimalRegisterPage() {
+export const usageRegisterMinimal = `export default function MinimalRegisterPage() {
   // "minimal" strips the card, leaving just the fields on your own background.
   const handleSubmit = async (values: RegisterFormValues) => {
     await new Promise((resolve) => setTimeout(resolve, 600));
@@ -218,9 +198,7 @@ export default function MinimalRegisterPage() {
   );
 }`;
 
-export const usageRegisterGlass = `import RegisterForm, { RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
-
-export default function GlassRegisterPage() {
+export const usageRegisterGlass = `export default function GlassRegisterPage() {
   // "glass" provides a self-contained full-bleed background with a floating frosted card.
   const handleSubmit = async (values: RegisterFormValues) => {
     await new Promise((resolve) => setTimeout(resolve, 600));
@@ -236,9 +214,7 @@ export default function GlassRegisterPage() {
   );
 }`;
 
-export const usageRegisterLiquidGlass = `import RegisterForm, { RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
-
-export default function LiquidGlassRegisterPage() {
+export const usageRegisterLiquidGlass = `export default function LiquidGlassRegisterPage() {
   // "liquid-glass" uses SVG displacement turbulence, specular edge highlights, and high-contrast frosted styling.
   const handleSubmit = async (values: RegisterFormValues) => {
     await new Promise((resolve) => setTimeout(resolve, 600));
@@ -254,9 +230,7 @@ export default function LiquidGlassRegisterPage() {
   );
 }`;
 
-export const usageRegisterRibbonDrift = `import RegisterForm, { RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
-
-export default function RibbonDriftRegisterPage() {
+export const usageRegisterRibbonDrift = `export default function RibbonDriftRegisterPage() {
   // "ribbon-drift" features dual floating infinite marquee ribbons, an animated drift backdrop, and candidate showcase promo card.
   const handleSubmit = async (values: RegisterFormValues) => {
     await new Promise((resolve) => setTimeout(resolve, 600));
@@ -302,13 +276,13 @@ Every example below is the same `RegisterForm` you just installed — only the p
 
           variant
 
-          "default" | "split" | "liquid-glass" | "glass" | "minimal"
+          "default" | "split" | "liquid-glass" | "glass" | "minimal" | "ribbon-drift"
 
           "default"
 
-          Applies overarching structural layouts. split wraps the
-          form in a full-width marketing panel, liquid-glass adds an interactive liquid SVG glass stack, while glass adds
-          translucent styling.
+          Applies overarching structural layouts. "split" wraps the
+          form in a full-width marketing panel, "liquid-glass" adds an interactive liquid SVG glass stack, "glass" adds
+          translucent styling, and "ribbon-drift" features dual infinite marquee ribbons with animated ambient gradient drift backdrop.
 
           color
 
@@ -343,6 +317,30 @@ Every example below is the same `RegisterForm` you just installed — only the p
           Cloudinary image
 
           Custom background image URL for glass and liquid-glass variants.
+
+          image
+
+          string
+
+          Cloudinary illustration
+
+          Hero illustration or 3D asset centered in the ribbon-drift panel.
+
+          ribbonsTop / ribbonsBottom
+
+          string[]
+
+          See defaults
+
+          Items rendered inside the top (-7deg) and bottom (+5deg) infinite floating marquee ribbons in ribbon-drift.
+
+          promo
+
+          object
+
+          See defaults
+
+          Interactive frosted promo card at the bottom of ribbon-drift featuring title, body, href, and avatars.
 
           signupHref
 
@@ -444,6 +442,30 @@ Every example below is the same `RegisterForm` you just installed — only the p
           Cloudinary landscape
 
           Custom background image URL for the scenic variant.
+
+          image
+
+          string
+
+          Cloudinary illustration
+
+          Hero illustration or 3D asset centered in the ribbon-drift panel.
+
+          ribbonsTop / ribbonsBottom
+
+          string[]
+
+          See defaults
+
+          Items rendered inside the top (-7deg) and bottom (+5deg) infinite floating marquee ribbons in ribbon-drift.
+
+          promo
+
+          object
+
+          See defaults
+
+          Interactive frosted promo card at the bottom of ribbon-drift featuring title, body, href, and avatars.
 
           initialStep
 

@@ -7,6 +7,7 @@ import { GitHubIcon, GoogleIcon } from "./Icons";
 import { InputBlock } from "./InputBlock";
 import { useEffect, useRef, useState } from "react";
 import { getThemeStyles } from "./register-form-theme";
+import { RibbonDriftBlock } from "./RibbonDriftBlock";
 
 // ==========================================
 // DYNAMIC THEME ENGINE
@@ -100,7 +101,7 @@ export interface RegisterFormProps {
     title?: string;
     body?: string;
     href?: string;
-    avatars?: string[];
+    avatars?: (string | { src: string; alt?: string; name?: string; designation?: string })[];
   };
   /** Custom top ribbon items for ribbon-drift variant */
   ribbonsTop?: string[];
@@ -3453,7 +3454,7 @@ export interface RegisterBlockProps {
     title?: string;
     body?: string;
     href?: string;
-    avatars?: string[];
+    avatars?: (string | { src: string; alt?: string; name?: string; designation?: string })[];
   };
   ribbonsTop?: string[];
   ribbonsBottom?: string[];
@@ -3473,7 +3474,8 @@ export interface RegisterBlockProps {
   footerBadge?: React.ReactNode;
 }
 
-const defaultRegisterImage = "/assets/auth/register-hero.png";
+const defaultRegisterImage =
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1793701432/register-hero-1793701431524.png";
 
 const defaultRegisterRibbonsTop = [
   "Screening questions auto-graded",
@@ -3492,9 +3494,24 @@ const defaultRegisterPromo = {
   body: "Screening and AI interviews, 24/7",
   href: "#",
   avatars: [
-    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg",
-    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg",
-    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg",
+    {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg",
+      alt: "Ana Watson",
+      name: "Ana Watson",
+      designation: "Founder & CEO",
+    },
+    {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg",
+      alt: "Tom Hardy",
+      name: "Tom Hardy",
+      designation: "Co-Founder & CTO",
+    },
+    {
+      src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg",
+      alt: "Mara Jade",
+      name: "Mara Jade",
+      designation: "Managing Director",
+    },
   ],
 };
 
@@ -3523,7 +3540,6 @@ export function RegisterBlock({
   footerCopyright,
   footerBadge,
 }: RegisterBlockProps) {
-  const [showPassword, setShowPassword] = useState(false);
   const [agreeToTerms, setAgreeToTerms] = useState(false);
   const [localErrors, setLocalErrors] = useState<Record<string, string>>({});
   const errors = { ...localErrors, ...fieldErrors };
@@ -3537,12 +3553,6 @@ export function RegisterBlock({
         ? formattedRadius
         : "calc(var(--radius, 0.625rem) * 2.8)",
     WebkitMaskImage: "-webkit-radial-gradient(white, black)",
-  };
-  const promoRadiusStyle: React.CSSProperties = {
-    borderRadius:
-      formattedRadius !== undefined
-        ? formattedRadius
-        : "calc(var(--radius, 0.625rem) * 2.2)",
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -3584,8 +3594,6 @@ export function RegisterBlock({
       )}
       style={{ ...themeStyle, ...style }}
     >
-      <style>{registerKeyframes}</style>
-
       <div
         className={cn(
           "grid flex-1 gap-3 sm:gap-4 items-stretch w-full max-w-full min-w-0",
@@ -3652,68 +3660,41 @@ export function RegisterBlock({
                   </p>
                 )}
 
-                <BlockField
+                <InputBlock
+                  variant="pill"
+                  color={color}
                   id="register-name"
-                  label="Full Name"
+                  name="name"
+                  type="text"
+                  autoComplete="name"
+                  placeholder="Enter your full name"
+                  leftIcon={<UserIcon />}
                   error={errors.name}
-                  icon={<UserIcon />}
-                >
-                  <input
-                    id="register-name"
-                    name="name"
-                    type="text"
-                    autoComplete="name"
-                    placeholder="Enter your full name"
-                    aria-invalid={errors.name ? true : undefined}
-                    className={blockInputClass}
-                  />
-                </BlockField>
+                />
 
-                <BlockField
+                <InputBlock
+                  variant="pill"
+                  color={color}
                   id="register-email-input"
-                  label="Email"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  placeholder="Enter your email"
+                  leftIcon={<MailIcon />}
                   error={errors.email}
-                  icon={<MailIcon />}
-                >
-                  <input
-                    id="register-email-input"
-                    name="email"
-                    type="email"
-                    autoComplete="email"
-                    placeholder="Enter your email"
-                    aria-invalid={errors.email ? true : undefined}
-                    className={blockInputClass}
-                  />
-                </BlockField>
+                />
 
-                <BlockField
+                <InputBlock
+                  variant="pill"
+                  color={color}
                   id="register-password-input"
-                  label="Password"
+                  name="password"
+                  type="password"
+                  autoComplete="new-password"
+                  placeholder="Enter Password"
+                  leftIcon={<LockIcon />}
                   error={errors.password}
-                  icon={<LockIcon />}
-                  trailing={
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => setShowPassword((v) => !v)}
-                      aria-label={showPassword ? "Hide password" : "Show password"}
-                      className="grid size-8 sm:size-9 p-0 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground shadow-none [&_svg]:size-4 sm:[&_svg]:size-[18px]"
-                    >
-                      {showPassword ? <EyeOffIcon /> : <EyeIcon />}
-                    </Button>
-                  }
-                >
-                  <input
-                    id="register-password-input"
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    autoComplete="new-password"
-                    placeholder="Enter Password"
-                    aria-invalid={errors.password ? true : undefined}
-                    className={blockInputClass}
-                  />
-                </BlockField>
+                />
 
                 <div className="flex flex-col gap-1 px-1">
                   <label
@@ -3809,81 +3790,20 @@ export function RegisterBlock({
 
         {image && (
           <div className="hidden lg:flex flex-col w-full h-full min-w-0 overflow-hidden">
-            <aside
-              className={cn(
-                "relative isolate w-full max-w-full min-w-0 flex-1 h-full min-h-[440px] sm:min-h-[500px] lg:min-h-[540px] overflow-hidden bg-[#d8d8de] dark:bg-[#0d0d10] border border-black/5 dark:border-white/5 shadow-sm",
-                typeof rounded === "string" && !formatRadius(rounded)
-                  ? rounded
-                  : "",
-              )}
-              style={dynamicRadiusStyle}
-            >
-              <div
-                aria-hidden="true"
-                className="absolute inset-0 animate-[register-drift_24s_ease-in-out_infinite_alternate] bg-[length:140%_140%] bg-[radial-gradient(70%_55%_at_15%_20%,color-mix(in_oklab,var(--primary)_70%,transparent),transparent_70%),radial-gradient(65%_55%_at_90%_85%,color-mix(in_oklab,var(--brand-secondary,var(--brand,#9B8AFB))_75%,transparent),transparent_70%),linear-gradient(160deg,#f6f6f9,#b4b4c2_40%,#fff_60%,#73738a)] motion-reduce:animate-none dark:bg-[radial-gradient(70%_55%_at_15%_20%,color-mix(in_oklab,var(--primary)_35%,transparent),transparent_70%),radial-gradient(65%_55%_at_90%_85%,color-mix(in_oklab,var(--brand-secondary,var(--brand,#9B8AFB))_28%,transparent),transparent_70%),linear-gradient(160deg,#34343f,#0b0b0f_40%,#5a5a6c_60%,#040406)]"
-              />
-              <BlockRibbon
-                items={ribbonsTop}
-                className="top-[50%] z-[1] -rotate-[7deg]"
-              />
-              <div className="absolute inset-[4%_6%_10%] z-[2] pointer-events-none flex items-end justify-center">
-                <img
-                  src={image}
-                  alt="Illustration"
-                  className="size-full object-contain object-bottom drop-shadow-[0_28px_36px_rgba(20,12,60,0.28)] select-none"
-                />
-              </div>
-              <BlockRibbon
-                items={ribbonsBottom}
-                className="top-[63%] z-[3] rotate-[5deg]"
-                reverse
-              />
-
-              <div className="absolute right-3.5 top-3.5 z-[5] flex items-center rounded-full border border-white/70 bg-white/70 px-4 py-2 backdrop-blur-xl shadow-sm dark:border-white/15 dark:bg-[#131316]/70">
-                <BlockLogo
-                  href={logoHref}
-                  logo={logo}
-                  logoDark={logoDark}
-                  compact
-                />
-              </div>
-
-              {promo && (
-                <a
-                  href="#"
-                  onClick={(e) => e.preventDefault()}
-                  className="group absolute inset-x-2.5 sm:inset-x-3.5 bottom-2.5 sm:bottom-3.5 z-[4] flex items-center gap-2.5 sm:gap-3.5 border border-white/30 bg-[#15151c]/60 py-2.5 sm:py-3.5 pl-3 sm:pl-4 pr-2.5 sm:pr-3.5 text-white backdrop-blur-xl transition-colors hover:bg-[#15151c]/70 shadow-lg"
-                  style={promoRadiusStyle}
-                >
-                  {promo.avatars && promo.avatars.length > 0 && (
-                    <div className="flex -space-x-2 shrink-0">
-                      {promo.avatars.map((src, i) => (
-                        <img
-                          key={i}
-                          src={src}
-                          alt=""
-                          className="size-7 sm:size-8 rounded-full border-2 border-[#15151c] object-cover ring-1 ring-white/20"
-                        />
-                      ))}
-                    </div>
-                  )}
-                  <span className="flex min-w-0 flex-1 flex-col">
-                    <span className="text-xs sm:text-sm font-semibold truncate leading-tight text-white">
-                      {promo.title}
-                    </span>
-                    <span className="mt-0.5 text-[11px] sm:text-[12px] text-white/75 truncate">
-                      {promo.body}
-                    </span>
-                  </span>
-                  <span
-                    aria-hidden="true"
-                    className="grid size-9 sm:size-10 shrink-0 place-items-center rounded-full border border-white/50 bg-white/10 transition-all duration-300 group-hover:rotate-45 group-hover:border-transparent group-hover:bg-primary [&_svg]:size-3.5 sm:[&_svg]:size-4"
-                  >
-                    <ArrowIcon />
-                  </span>
-                </a>
-              )}
-            </aside>
+            <RibbonDriftBlock
+              image={image}
+              logoConfig={{
+                logo,
+                logoDark,
+                href: logoHref,
+              }}
+              ribbonsTop={ribbonsTop}
+              ribbonsBottom={ribbonsBottom}
+              promo={promo}
+              color={color}
+              rounded={rounded}
+              className="h-full min-h-[440px] sm:min-h-[500px] lg:min-h-[540px]"
+            />
           </div>
         )}
       </div>
@@ -3929,8 +3849,6 @@ export function RegisterBlock({
   );
 }
 
-const blockInputClass =
-  "h-full flex-1 rounded-none border-0 bg-transparent px-3 sm:px-4 text-[14px] sm:text-[15px] shadow-none placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-0 dark:bg-transparent text-foreground";
 const blockLinkClass =
   "font-medium text-foreground underline decoration-current/30 underline-offset-[3px] transition-colors hover:decoration-current";
 
@@ -3994,46 +3912,6 @@ function BlockLogo({
   );
 }
 
-function BlockField({
-  id,
-  label,
-  icon,
-  trailing,
-  error,
-  children,
-}: {
-  id: string;
-  label: string;
-  icon: React.ReactNode;
-  trailing?: React.ReactNode;
-  error?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div>
-      <div
-        data-invalid={error ? "" : undefined}
-        className="group flex h-11 sm:h-12 items-center rounded-full border border-transparent bg-white shadow-sm ring-1 ring-black/10 transition-all focus-within:border-primary/70 focus-within:ring-4 focus-within:ring-primary/20 data-[invalid]:border-destructive/65 dark:bg-[#1d1d20] dark:ring-white/10"
-      >
-        <label htmlFor={id} className="sr-only">
-          {label}
-        </label>
-        <span
-          aria-hidden="true"
-          className="grid h-[24px] sm:h-[26px] w-[46px] sm:w-[54px] shrink-0 place-items-center border-r border-border text-muted-foreground transition-colors [&_svg]:size-[16px] sm:[&_svg]:size-[18px] group-focus-within:text-primary"
-        >
-          {icon}
-        </span>
-        {children}
-        {trailing && <span className="flex items-center pr-2">{trailing}</span>}
-      </div>
-      {error && (
-        <p className="pl-5 pt-1.5 text-[13px] text-destructive">{error}</p>
-      )}
-    </div>
-  );
-}
-
 function BlockCheckbox({
   id,
   checked,
@@ -4073,52 +3951,6 @@ function BlockCheckbox({
   );
 }
 
-function BlockRibbon({
-  items,
-  className = "",
-  reverse = false,
-}: {
-  items: string[];
-  className?: string;
-  reverse?: boolean;
-}) {
-  if (!items.length) return null;
-  const row = [...items, ...items, ...items];
-  return (
-    <div
-      className={cn(
-        "pointer-events-none absolute -left-[10%] w-[120%] sm:-left-[15%] sm:w-[130%] max-w-[130%] overflow-hidden whitespace-nowrap border-y border-white/70 bg-white/60 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-[#1b1b22] backdrop-blur-md dark:border-white/15 dark:bg-[#131316]/60 dark:text-[#ececf1] select-none",
-        className,
-      )}
-    >
-      <div
-        className={cn(
-          "flex w-max animate-[register-ribbon_48s_linear_infinite] motion-reduce:animate-none",
-          reverse && "[animation-direction:reverse]",
-        )}
-      >
-        {[0, 1].map((half) => (
-          <span key={half} className="flex" aria-hidden={half === 1}>
-            {row.map((text, i) => (
-              <span key={i} className="inline-flex items-center">
-                {text}
-                <span className="mx-[18px] bg-gradient-to-br from-primary to-[var(--brand-secondary,var(--brand,#9B8AFB))] bg-clip-text text-transparent">
-                  ✦
-                </span>
-              </span>
-            ))}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
-
-const registerKeyframes = `
-@keyframes register-drift { from { background-position: 0% 0%; } to { background-position: 100% 100%; } }
-@keyframes register-ribbon { to { transform: translateX(-50%); } }
-`;
-
 const blockSvgProps = {
   viewBox: "0 0 24 24",
   fill: "none",
@@ -4126,6 +3958,7 @@ const blockSvgProps = {
   strokeWidth: 2,
   strokeLinecap: "round" as const,
   strokeLinejoin: "round" as const,
+  className: "size-4 sm:size-[18px]",
 };
 
 const UserIcon = () => (
@@ -4146,26 +3979,6 @@ const LockIcon = () => (
   <svg {...blockSvgProps}>
     <rect width="18" height="11" x="3" y="11" rx="2" />
     <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-  </svg>
-);
-
-const EyeIcon = () => (
-  <svg {...blockSvgProps}>
-    <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z" />
-    <circle cx="12" cy="12" r="3" />
-  </svg>
-);
-
-const EyeOffIcon = () => (
-  <svg {...blockSvgProps}>
-    <path d="M9.9 4.24A9.1 9.1 0 0 1 12 4c6.4 0 10 8 10 8a13.2 13.2 0 0 1-1.67 2.68M6.61 6.61A13.5 13.5 0 0 0 2 12s3.6 8 10 8a9.7 9.7 0 0 0 5.39-1.61M2 2l20 20" />
-    <path d="M14.12 14.12a3 3 0 1 1-4.24-4.24" />
-  </svg>
-);
-
-const ArrowIcon = () => (
-  <svg {...blockSvgProps}>
-    <path d="M7 7h10v10M7 17 17 7" />
   </svg>
 );
 
