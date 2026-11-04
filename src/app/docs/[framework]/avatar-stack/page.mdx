@@ -280,7 +280,7 @@ export default function AvatarGroupDemo() {
           effect: "optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it if not needed.",
         },
       ],
-      props: { example: "avatar-group", showTooltip: true },
+      props: { example: "avatar-group", showTooltip: true, max: 4 },
       usage: usageAvatarGroup,
       code: extractCode("src/components/custom/blocks/AvatarStackBlock.tsx"),
       minHeight: 260,
@@ -323,7 +323,7 @@ export default function AvatarGroupDemo() {
           effect: "optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it.",
         },
       ],
-      props: { example: "default", variant: "zoom", type: "default" },
+      props: { example: "default", variant: "zoom", type: "default", max: 4 },
       usage: usageDefault,
       minHeight: 240,
     },
@@ -352,7 +352,7 @@ export default function AvatarGroupDemo() {
           effect: "optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it.",
         },
       ],
-      props: { example: "tooltip", variant: "zoom", type: "tooltip" },
+      props: { example: "tooltip", variant: "zoom", type: "tooltip", max: 4 },
       usage: usageTooltip,
       minHeight: 240,
     },
@@ -381,19 +381,19 @@ export default function AvatarGroupDemo() {
           effect: "optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it.",
         },
       ],
-      props: { example: "tooltip-arrow", variant: "zoom", type: "tooltip-arrow" },
+      props: { example: "tooltip-arrow", variant: "zoom", type: "tooltip-arrow", max: 4 },
       usage: usageTooltipArrow,
       minHeight: 240,
     },
     {
       title: "Spread on hover (Expand width)",
       subheading:
-        "Hovering over the stack smoothly fans the avatars out to the right and subtly shifts the hovered face upward without zooming.",
+        "Hovering over the stack smoothly fans the avatars out symmetrically from the center and subtly shifts the hovered face upward without zooming.",
       propNotes: [
         {
           prop: "variant",
           value: '"spread"',
-          effect: "smoothly shifts subsequent avatars to the right on hover (6px) and elevates the hovered face by -30% without scaling.",
+          effect: "smoothly expands the avatar stack symmetrically from the center on hover (6px) and elevates the hovered face by -30% without scaling.",
         },
         {
           prop: "type",
@@ -410,19 +410,19 @@ export default function AvatarGroupDemo() {
           effect: "optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it.",
         },
       ],
-      props: { example: "spread", variant: "spread", type: "default" },
+      props: { example: "spread", variant: "spread", type: "default", max: 4 },
       usage: usageSpread,
       minHeight: 240,
     },
     {
       title: "Spread with tooltip",
       subheading:
-        "Hovering over the stack widens the avatar gap to the right, elevates the hovered face by -30%, and displays a clean floating tooltip above it.",
+        "Hovering over the stack widens the avatar gap symmetrically from the center, elevates the hovered face by -30%, and displays a clean floating tooltip above it.",
       propNotes: [
         {
           prop: "variant",
           value: '"spread"',
-          effect: "smoothly shifts subsequent avatars to the right on hover and elevates the hovered face by -30%.",
+          effect: "smoothly expands the avatars symmetrically from the center on hover and elevates the hovered face by -30%.",
         },
         {
           prop: "type",
@@ -439,19 +439,19 @@ export default function AvatarGroupDemo() {
           effect: "optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it.",
         },
       ],
-      props: { example: "spread-tooltip", variant: "spread", type: "tooltip" },
+      props: { example: "spread-tooltip", variant: "spread", type: "tooltip", max: 4 },
       usage: usageSpreadTooltip,
       minHeight: 240,
     },
     {
       title: "Spread with tooltip arrow",
       subheading:
-        "Hovering widens the stack to the right, subtly raises the hovered face, and reveals a spring popup tooltip with an anchored pointer arrow.",
+        "Hovering widens the stack symmetrically from the center, subtly raises the hovered face, and reveals a spring popup tooltip with an anchored pointer arrow.",
       propNotes: [
         {
           prop: "variant",
           value: '"spread"',
-          effect: "smoothly shifts subsequent avatars to the right on hover and elevates the hovered face by -30%.",
+          effect: "smoothly expands the avatars symmetrically from the center on hover and elevates the hovered face by -30%.",
         },
         {
           prop: "type",
@@ -468,7 +468,7 @@ export default function AvatarGroupDemo() {
           effect: "optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it.",
         },
       ],
-      props: { example: "spread-tooltip-arrow", variant: "spread", type: "tooltip-arrow" },
+      props: { example: "spread-tooltip-arrow", variant: "spread", type: "tooltip-arrow", max: 4 },
       usage: usageSpreadTooltipArrow,
       minHeight: 240,
     },
@@ -554,7 +554,7 @@ export default function AvatarGroupDemo() {
             "is the gap colour between faces (`ring-background` by default). Match it to the surface the stack sits on.",
         },
       ],
-      props: { example: "sizes" },
+      props: { example: "sizes", max: 4 },
       usage: usageSizes,
       minHeight: 260,
     },
@@ -671,8 +671,8 @@ export default function AvatarGroupDemo() {
       <tr>
         <td><code>max</code></td>
         <td><code>number</code></td>
-        <td><code>4</code></td>
-        <td>Maximum faces shown before the rest fold into a <code>+N</code> count disc. Can be customized on any variant.</td>
+        <td><code>—</code></td>
+        <td>Maximum faces shown before the rest fold into a <code>+N</code> count disc. If omitted, all avatars in the list are displayed.</td>
       </tr>
       <tr>
         <td><code>onMoreClick</code></td>
