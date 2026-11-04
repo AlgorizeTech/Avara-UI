@@ -8,6 +8,7 @@ import {
   type Framework,
   FRAMEWORK_META,
   docsHref,
+  docsMarkdownHref,
 } from "@/lib/framework";
 
 /**
@@ -31,15 +32,21 @@ export function pageMetadata({
   title,
   description,
   url,
+  markdown,
 }: {
   title: string;
   description: string;
   url: string;
+  /** The page's Markdown mirror, advertised so AI agents can find it. */
+  markdown?: string;
 }): Metadata {
   return {
     title,
     description,
-    alternates: { canonical: url },
+    alternates: {
+      canonical: url,
+      ...(markdown ? { types: { "text/markdown": markdown } } : {}),
+    },
     openGraph: {
       type: "article",
       siteName: SITE_NAME,
@@ -88,6 +95,7 @@ export function docsPageMetadata(
       title: seo.title,
       description: seo.description ?? siteConfig.description,
       url: docsHref(DEFAULT_FRAMEWORK, slug),
+      markdown: docsMarkdownHref(DEFAULT_FRAMEWORK, slug),
     }),
     // Always set, even empty, so a page never inherits the homepage's terms.
     keywords: seo.keywords,
@@ -129,6 +137,7 @@ export function buildDocsMetadata({
         : `${title} (${FRAMEWORK_META[framework].label}) - ${SITE_NAME}`,
       description: clampDescription(description),
       url: docsHref(framework, slug),
+      markdown: docsMarkdownHref(framework, slug),
     }),
     keywords,
   };

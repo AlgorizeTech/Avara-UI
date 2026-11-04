@@ -1,4 +1,8 @@
-export const metadata = docsPageMetadata("network-graph");
+---
+title: "Network Graph"
+description: "A network graph of avatars: a layered orbital visual that spreads items evenly across concentric rings. Free shadcn/ui component for React and Tailwind CSS."
+url: https://avaraui.com/docs/nextjs/network-graph
+---
 
 # Network Graph
 
@@ -10,11 +14,27 @@ Unlike static canvases or heavy physics engines, this component dynamically hand
 
 Assign each node a `ring` index and the component spaces that ring evenly across a full 360°. Hover an avatar for its tooltip, or hit the reload button to replay the staggered spring entrance.
 
-export const networkNodes = `const users: NetworkNode[] = [
+## Interactive rings
+
+Drag the sliders above to reshape the orbits live, then copy the numbers straight into your own `NetworkGraph`.
+
+- `ringCount` is how many orbits draw. A node whose `ring` exceeds this is **not rendered at all**.
+- `baseRadius` is the first ring's radius as a percentage of the square container, so it scales with the box.
+- `ringGap` is the percentage added for each subsequent ring.
+- `orbitSpeed` multiplies the rotation rate — `2` is twice as fast, `0.5` half. Rings still alternate direction for depth.
+- Set `animateOrbit={false}` to stop the planetary motion. `animateIn` is separate, so the entrance still plays.
+
+```tsx
+import {
+  NetworkGraph,
+  type NetworkNode,
+} from "@/components/custom/blocks/NetworkGraphBlock";
+
+const users: NetworkNode[] = [
   // Ring 1 (inner)
   { id: "1", ring: 1, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg", label: "Sarah J." },
   { id: "2", ring: 1, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg", label: "David B." },
-  // No image? \`fallback\` renders the initials tile instead.
+  // No image? `fallback` renders the initials tile instead.
   { id: "3", ring: 1, fallback: "JW", label: "James W." },
   { id: "4", ring: 1, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg", label: "Lisa M." },
 
@@ -37,24 +57,25 @@ export const networkNodes = `const users: NetworkNode[] = [
   { id: "18", ring: 3, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790150482/photo-1524504388940-b1c1722653e1-1790150482279.jpg", label: "Owen G.", size: "sm" },
   { id: "19", ring: 3, fallback: "TR", label: "Tara R.", size: "sm" },
   { id: "20", ring: 3, image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158814/photo-1522075469751-3a6694fb2f61-1790158812213.jpg", label: "Felix Q.", size: "sm" },
-];`;
-
-export const usageInteractive = `import {
-  NetworkGraph,
-  type NetworkNode,
-} from "@/components/custom/blocks/NetworkGraphBlock";
-
-${networkNodes}
+];
 
 export default function OrbitGraph() {
-  // \`ringCount\` decides how many orbits render; \`baseRadius\` is the first
-  // ring's radius and \`ringGap\` the distance to each next one — both as a
+  // `ringCount` decides how many orbits render; `baseRadius` is the first
+  // ring's radius and `ringGap` the distance to each next one — both as a
   // percentage of the square container, so the layout scales on any screen.
-  // \`orbitSpeed\` multiplies the rotation rate.
+  // `orbitSpeed` multiplies the rotation rate.
   return (
-    
+    <NetworkGraph
+      nodes={users}
+      ringCount={3}
+      baseRadius={18}
+      ringGap={16}
+      orbitSpeed={1}
+      centerNode={{ image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790150481/photo-1517841905240-472988babdf9-1790150482277.jpg", label: "You" }}
+    />
   );
-}`;
+}
+```
 
 ## Installation
 
@@ -74,109 +95,52 @@ npx shadcn@latest add @avara-ui/network-graph
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
 
-    Fluid Animations
-    Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
+### Fluid Animations
 
-    Highly Customizable
-    Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
+Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
 
-    Responsive Design
-    Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
+### Highly Customizable
 
-    Accessible
-    Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
+Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
+
+### Responsive Design
+
+Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
+
+### Accessible
+
+Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
 
 ## Best Practices & Guidelines
 
-    Usage Guidelines
-    Keep outer rings denser than inner ones — nodes are spaced by count, so a ring holding two avatars leaves a large visual gap. Give distant rings size="sm" so the composition reads as depth rather than clutter.
+### Usage Guidelines
+
+Keep outer rings denser than inner ones — nodes are spaced by count, so a ring holding two avatars leaves a large visual gap. Give distant rings `size="sm"` so the composition reads as depth rather than clutter.
 
 ## Props Reference
 
-        Prop
-        Type
-        Default
-        Description
-
-        nodes
-        NetworkNode[]
-        Required
-        The avatars to place. Each node is grouped by its ring and spaced evenly around that orbit.
-
-        centerNode
-        &#123; image?, fallback?, label? &#125;
-        undefined
-        Optional hub avatar rendered at the centre of every ring.
-
-        ringCount
-        number
-        3
-        How many orbits to draw. Nodes whose ring exceeds this are not rendered.
-
-        baseRadius
-        number
-        15
-        Radius of the first ring, as a percentage of the square container.
-
-        ringGap
-        number
-        15
-        Percentage added to the radius for each subsequent ring.
-
-        animateIn
-        boolean
-        true
-        Plays the staggered spring entrance on mount.
-
-        animateOrbit
-        boolean
-        true
-        Continuously rotates each ring, alternating direction per ring while counter-rotating the avatars so they stay upright.
-
-        orbitSpeed
-        number
-        1
-        Speed multiplier for the orbit — 2 is twice as fast.
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `nodes` | `NetworkNode[]` | Required | The avatars to place. Each node is grouped by its `ring` and spaced evenly around that orbit. |
+| `centerNode` | `&#123; image?, fallback?, label? &#125;` | `undefined` | Optional hub avatar rendered at the centre of every ring. |
+| `ringCount` | `number` | `3` | How many orbits to draw. Nodes whose `ring` exceeds this are not rendered. |
+| `baseRadius` | `number` | `15` | Radius of the first ring, as a percentage of the square container. |
+| `ringGap` | `number` | `15` | Percentage added to the radius for each subsequent ring. |
+| `animateIn` | `boolean` | `true` | Plays the staggered spring entrance on mount. |
+| `animateOrbit` | `boolean` | `true` | Continuously rotates each ring, alternating direction per ring while counter-rotating the avatars so they stay upright. |
+| `orbitSpeed` | `number` | `1` | Speed multiplier for the orbit — `2` is twice as fast. |
 
 ### NetworkNode Object
 
-        Property
-        Type
-        Default
-        Description
-
-        id
-        string
-        Required
-        Stable React key for the node.
-
-        ring
-        number
-        Required
-        Which orbit the node belongs to — 1 is innermost.
-
-        image
-        string
-        undefined
-        Avatar image URL.
-
-        fallback
-        string
-        undefined
-        Initials shown when no image is given.
-
-        label
-        string
-        undefined
-        Tooltip text revealed on hover.
-
-        size
-        "sm" | "md" | "lg"
-        "md"
-        Avatar diameter — use smaller sizes on outer rings to suggest depth.
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `id` | `string` | Required | Stable React key for the node. |
+| `ring` | `number` | Required | Which orbit the node belongs to — `1` is innermost. |
+| `image` | `string` | `undefined` | Avatar image URL. |
+| `fallback` | `string` | `undefined` | Initials shown when no `image` is given. |
+| `label` | `string` | `undefined` | Tooltip text revealed on hover. |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Avatar diameter — use smaller sizes on outer rings to suggest depth. |
 
 ---
 
-**Component Path:** `[framework]\network-graph\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/network-graph

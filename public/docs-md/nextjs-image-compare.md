@@ -1,4 +1,8 @@
-export const metadata = docsPageMetadata("image-compare");
+---
+title: "Image Compare"
+description: "A before-and-after image comparison slider with 10 comparison modes, touch and mouse dragging, custom labels and colours from your theme."
+url: https://avaraui.com/docs/nextjs/image-compare
+---
 
 # Image Compare
 
@@ -6,65 +10,18 @@ An interactive, responsive image comparison slider component featuring 10 distin
 
 `ImageCompare` allows users to seamlessly compare before-and-after visual states for photo editing, design variations, AI enhancements, or product upgrades.
 
-export const usageClassic = `import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
+## Classic Slider
+
+- `beforeImage` and `afterImage` are the two URLs; `beforeLabel` and `afterLabel` caption them.
+- `variant="classic-slider"` is the default — a horizontal handle with dual arrows and drag physics.
+
+```tsx
+import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
 
 export default function ClassicImageCompareDemo() {
-  return ;
-}`;
-
-export const usageSplitHandle = `import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
-
-export default function SplitHandleDemo() {
-  return ;
-}`;
-
-export const usageGlowingDivider = `import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
-
-export default function GlowingDividerDemo() {
-  return ;
-}`;
-
-export const usageBadgeOverlay = `import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
-
-export default function BadgeOverlayDemo() {
-  return ;
-}`;
-
-export const usageMinimalLine = `import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
-
-export default function MinimalLineDemo() {
-  return ;
-}`;
-
-export const usageHoverReveal = `import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
-
-export default function HoverRevealDemo() {
-  return ;
-}`;
-
-export const usageVerticalSlide = `import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
-
-export default function VerticalSlideDemo() {
-  return ;
-}`;
-
-export const usageCircleMagnifier = `import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
-
-export default function CircleMagnifierDemo() {
-  return ;
-}`;
-
-export const usageGlassHandle = `import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
-
-export default function GlassHandleDemo() {
-  return ;
-}`;
-
-export const usageDiagonalSplit = `import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
-
-export default function DiagonalSplitDemo() {
-  return ;
-}`;
+  return <ImageCompare variant="classic-slider" color="primary" className="w-full" />;
+}
+```
 
 ## Installation
 
@@ -83,98 +40,151 @@ npx shadcn@latest add @avara-ui/image-compare
 
 ## Examples
 
+### Split Handle
+
+- Use `variant="split-handle"` for a pill badge handle carrying high-contrast action text.
+
+```tsx
+import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
+
+export default function SplitHandleDemo() {
+  return <ImageCompare variant="split-handle" color="primary" className="w-full" />;
+}
+```
+
+### Glowing Divider
+
+- Use `variant="glowing-divider"` for a continuous ambient glow along the split edge.
+
+```tsx
+import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
+
+export default function GlowingDividerDemo() {
+  return <ImageCompare variant="glowing-divider" color="primary" className="w-full" />;
+}
+```
+
+### Badge Overlay Percentage
+
+- Use `variant="badge-overlay"` to float a pill showing the drag position as a percentage.
+
+```tsx
+import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
+
+export default function BadgeOverlayDemo() {
+  return <ImageCompare variant="badge-overlay" color="primary" className="w-full" />;
+}
+```
+
+### Minimalist Thin Line
+
+- Use `variant="minimal-line"` for an ultra-thin divider with a small centred dot handle.
+
+```tsx
+import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
+
+export default function MinimalLineDemo() {
+  return <ImageCompare variant="minimal-line" color="primary" className="w-full" />;
+}
+```
+
+### Hover Pointer Reveal
+
+- Use `variant="hover-reveal"` to follow the pointer directly — no click-and-drag needed.
+
+```tsx
+import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
+
+export default function HoverRevealDemo() {
+  return <ImageCompare variant="hover-reveal" color="primary" className="w-full" />;
+}
+```
+
+### Vertical Slide Compare
+
+- Use `variant="vertical-slide"` to split top-to-bottom instead, for height-focused comparisons.
+
+```tsx
+import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
+
+export default function VerticalSlideDemo() {
+  return <ImageCompare variant="vertical-slide" color="primary" className="w-full" />;
+}
+```
+
+### Circular Magnifier Lens
+
+- Use `variant="circle-magnifier"` for a circular scope that clips the after image to a lens.
+
+```tsx
+import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
+
+export default function CircleMagnifierDemo() {
+  return <ImageCompare variant="circle-magnifier" color="primary" className="w-full" />;
+}
+```
+
+### Glassmorphic Handle
+
+- Use `variant="glass-handle"` for a translucent backdrop-blur pill with layer icons.
+
+```tsx
+import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
+
+export default function GlassHandleDemo() {
+  return <ImageCompare variant="glass-handle" color="primary" className="w-full" />;
+}
+```
+
+### Diagonal Diamond Split
+
+- Use `variant="diagonal-split"` for a 45-degree split with a diamond crosshair handle.
+
+```tsx
+import { ImageCompare } from "@/components/custom/blocks/ImageCompareBlock";
+
+export default function DiagonalSplitDemo() {
+  return <ImageCompare variant="diagonal-split" color="primary" className="w-full" />;
+}
+```
+
 ## Features
 
-    10 Unique Interaction Variants
-    Includes classic sliders, split badges, glowing lines, hover reveals, vertical slides, and circular lens scopes.
+### 10 Unique Interaction Variants
 
-    100% Theme Color Engine
-    Integrates with site primary CSS variable var(--primary) or explicit color swatches.
+Includes classic sliders, split badges, glowing lines, hover reveals, vertical slides, and circular lens scopes.
 
-    Touch & Gesture Responsive
-    Smooth dragging for mobile touch screens, trackpads, and mouse pointers.
+### 100% Theme Color Engine
 
-    Custom Labels & Images
-    Pass custom Before/After labels and image URLs through flexible props.
+Integrates with site primary CSS variable `var(--primary)` or explicit color swatches.
+
+### Touch & Gesture Responsive
+
+Smooth dragging for mobile touch screens, trackpads, and mouse pointers.
+
+### Custom Labels & Images
+
+Pass custom Before/After labels and image URLs through flexible props.
 
 ## Best Practices & Guidelines
 
-    When to Use
-    Use ImageCompare to showcase photo retouching, AI enhancement models, design redrafts, dark mode vs light mode UI previews, or product quality upgrades.
+### When to Use
+
+Use `ImageCompare` to showcase photo retouching, AI enhancement models, design redrafts, dark mode vs light mode UI previews, or product quality upgrades.
 
 ## Props Reference
 
-        Prop
-        Type
-        Default
-        Description
-
-          variant
-
-          "classic-slider" | "split-handle" | "glowing-divider" | "badge-overlay" | "minimal-line" | "hover-reveal" | "vertical-slide" | "circle-magnifier" | "glass-handle" | "diagonal-split"
-
-          "classic-slider"
-        
-        Selects the image comparison interaction mode and handle style.
-
-          beforeImage
-
-          string
-
-          Unsplash Preset
-        
-        URL of the base before image displayed on the left/top.
-
-          afterImage
-
-          string
-
-          Unsplash Preset
-        
-        URL of the enhanced after image revealed by dragging.
-
-          beforeLabel
-
-          string
-
-          "Original"
-        
-        Label badge text for the before state image.
-
-          afterLabel
-
-          string
-
-          "Enhanced"
-        
-        Label badge text for the after state image.
-
-          initialPosition
-
-          number
-
-          50
-        
-        Starting percentage position of the slider handle (0 - 100).
-
-          color
-
-          ImageCompareColor | string
-
-          "primary"
-        
-        Applies dynamic theme color palettes ("primary" | "indigo" | "rose" | "emerald" | "zinc" or custom hex).
-
-          className
-
-          string
-
-          ""
-        
-        Custom Tailwind CSS classes applied to the root container.
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `"classic-slider" \| "split-handle" \| "glowing-divider" \| "badge-overlay" \| "minimal-line" \| "hover-reveal" \| "vertical-slide" \| "circle-magnifier" \| "glass-handle" \| "diagonal-split"` | `"classic-slider"` | Selects the image comparison interaction mode and handle style. |
+| `beforeImage` | `string` | `Unsplash Preset` | URL of the base before image displayed on the left/top. |
+| `afterImage` | `string` | `Unsplash Preset` | URL of the enhanced after image revealed by dragging. |
+| `beforeLabel` | `string` | `"Original"` | Label badge text for the before state image. |
+| `afterLabel` | `string` | `"Enhanced"` | Label badge text for the after state image. |
+| `initialPosition` | `number` | `50` | Starting percentage position of the slider handle (0 - 100). |
+| `color` | `ImageCompareColor \| string` | `"primary"` | Applies dynamic theme color palettes (`"primary" \| "indigo" \| "rose" \| "emerald" \| "zinc"` or custom hex). |
+| `className` | `string` | `""` | Custom Tailwind CSS classes applied to the root container. |
 
 ---
 
-**Component Path:** `[framework]\image-compare\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/image-compare

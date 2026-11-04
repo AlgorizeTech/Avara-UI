@@ -14,7 +14,7 @@ import path from "node:path";
 import { SITE_NAME } from "@/config/site";
 import { countComponents } from "@/lib/component-count";
 import { FORKED_SLUGS, type Framework } from "@/lib/framework";
-import { REGISTRY_NAMESPACE } from "@/lib/registry";
+import { REGISTRY_ADD_ARGS, REGISTRY_NAMESPACE } from "@/lib/registry";
 
 type RegistryItem = {
   name: string;
@@ -101,12 +101,13 @@ const PAGE_CONSTANTS: Record<string, string> = {
   COMPONENT_COUNT: String(COMPONENT_COUNT),
   SITE_NAME,
   REGISTRY_NAMESPACE,
+  REGISTRY_ADD_ARGS,
 };
 
 /** Markdown and JSX reduced to the plain text a reader sees. */
 const plainText = (text: string) =>
   text
-    .replace(/\{(COMPONENT_COUNT|SITE_NAME|REGISTRY_NAMESPACE)\}/g, (_, name: string) => PAGE_CONSTANTS[name])
+    .replace(/\{(COMPONENT_COUNT|SITE_NAME|REGISTRY_NAMESPACE|REGISTRY_ADD_ARGS)\}/g, (_, name: string) => PAGE_CONSTANTS[name])
     .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
     .replace(/\*\*([^*]+)\*\*/g, "$1")
     // JSX goes; a tag quoted in inline code (`<select>`) is prose and stays.
@@ -142,8 +143,9 @@ export function leadSentence(source: string): string | undefined {
     if (!paragraph.length) {
       // A self-closing component on its own line (the framework switch note).
       if (/^<[A-Z][^>]*\/>$/.test(line)) continue;
-      // Anything but prose under the heading means the page has no lead.
-      if (/^[<{#`|>*-]|^(import|export)\s/.test(line)) break;
+      // Anything but prose under the heading means the page has no lead. A
+      // printed constant, as in "{SITE_NAME} is a library…", is prose.
+      if (/^(?!\{(?:SITE_NAME|COMPONENT_COUNT)\})[<{#`|>*-]|^(import|export)\s/.test(line)) break;
     } else if (/^(```|<|\{)|^(import|export)\s/.test(line)) {
       break;
     }
@@ -159,6 +161,20 @@ export function leadSentence(source: string): string | undefined {
     if (summary.length >= MIN_SUMMARY_LENGTH) break;
   }
   return summary;
+}
+
+/**
+ * The question-and-answer pairs on a page: every H2 that ends in a question
+ * mark, with the prose under it. Read from the page so that its FAQPage
+ * structured data cannot say anything the page does not.
+ */
+export function pageQuestions(source: string): { question: string; answer: string }[] {
+  return [...source.matchAll(/^## (.+\?)\r?\n([\s\S]*?)(?=^## |^import |(?![\s\S]))/gm)].map(
+    ([, question, body]) => ({
+      question: plainText(question),
+      answer: plainText(body.replace(/^<[A-Z][^>]*\/>$/gm, "")).replace(/`/g, ""),
+    }),
+  );
 }
 
 /** Registry items a page installs, in the order it lists them. */

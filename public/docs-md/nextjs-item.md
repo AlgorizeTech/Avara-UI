@@ -1,4 +1,8 @@
-export const metadata = docsPageMetadata("item");
+---
+title: "Item"
+description: "A versatile layout component for displaying structured content featuring media, titles, descriptions, and actions. Free shadcn/ui Item component."
+url: https://avaraui.com/docs/nextjs/item
+---
 
 # Item
 
@@ -8,32 +12,28 @@ Instead of writing complex Flexbox or Grid classes every time you need to build 
 
 `title` is the only required prop — `media`, `description` and `actions` are slots you fill as needed.
 
-export const usageDefault = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
+## Item
+
+- Pass `title` plus an optional `description`, and a `media` slot on the leading edge.
+
+```tsx
+import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
 
 export default function SettingsRow() {
   return (
-
+    <ItemBlock
+      variant="default"
+      title="System Configuration"
+      description="Manage your environment variables, build settings, and deployment hooks for this specific project instance."
+      media={
+        <div className="w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full">
+          <Settings className="w-5 h-5" />
+        </div>
       }
     />
   );
-}`;
-
-export const usageCard = `import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
-
-export default function FeatureCard() {
-  return (
-    // "card" stacks the slots vertically and pins actions to the bottom —
-    // drop it straight into a grid.
-
-      }
-      actions={
-        
-          Configure
-        
-      }
-    />
-  );
-}`;
+}
+```
 
 ## Installation
 
@@ -52,91 +52,73 @@ npx shadcn@latest add @avara-ui/item
 
 ## Examples
 
+### Card
+
+- Set `variant="card"` to stack the slots vertically and pin `actions` to the bottom instead of the side.
+
+```tsx
+import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
+
+export default function FeatureCard() {
+  return (
+    // "card" stacks the slots vertically and pins actions to the bottom —
+    // drop it straight into a grid.
+    <ItemBlock
+      variant="card"
+      title="System Configuration"
+      description="Manage your environment variables, build settings, and deployment hooks for this specific project instance."
+      media={
+        <div className="w-14 h-14 flex items-center justify-center bg-primary/10 text-primary rounded-full">
+          <Settings className="w-7 h-7" />
+        </div>
+      }
+      actions={
+        <button className="ml-auto px-4 py-1.5 bg-primary text-primary-foreground text-sm font-medium rounded-lg">
+          Configure
+        </button>
+      }
+    />
+  );
+}
+```
+
 ## Features
 Discover the Item component's structural layout features, designed for lists, dropdowns, and menus with proper spacing.
 
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
+### Customizable
 
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+Easily adapt the component's styling and behavior to fit your application's unique design system.
 
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+### Accessible
 
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
+Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+### Responsive
+
+Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+### Performant
+
+Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 
-    Usage Guidelines
-    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+### Usage Guidelines
+
+Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
 ## Props Reference
 
-        Prop
-        Type
-        Default
-        Description
-
-          title
-
-          ReactNode
-
-          -
-        
-        The primary title text or element displayed in the item block (required).
-
-          description
-
-          ReactNode
-
-          undefined
-        
-        Secondary description text or content displayed below the title.
-
-          media
-
-          ReactNode
-
-          undefined
-        
-        Visual media element such as an icon, avatar, or thumbnail.
-
-          actions
-
-          ReactNode
-
-          undefined
-        
-        Action elements like buttons or icons placed on the trailing edge or bottom.
-
-          variant
-
-          "default" | "compact" | "card" | "bordered"
-
-          "default"
-        
-        Applies structural layout and visual styling variant.
-
-          onClick
-
-          () => void
-
-          undefined
-        
-        Optional click event handler. Transforms the container into an interactive button.
-
-          className
-
-          string
-
-          undefined
-        
-        Additional CSS class names to apply custom styles.
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `title` | `ReactNode` | `-` | The primary title text or element displayed in the item block (required). |
+| `description` | `ReactNode` | `undefined` | Secondary description text or content displayed below the title. |
+| `media` | `ReactNode` | `undefined` | Visual media element such as an icon, avatar, or thumbnail. |
+| `actions` | `ReactNode` | `undefined` | Action elements like buttons or icons placed on the trailing edge or bottom. |
+| `variant` | `"default" \| "compact" \| "card" \| "bordered"` | `"default"` | Applies structural layout and visual styling variant. |
+| `onClick` | `() => void` | `undefined` | Optional click event handler. Transforms the container into an interactive button. |
+| `className` | `string` | `undefined` | Additional CSS class names to apply custom styles. |
 
 ---
 
-**Component Path:** `[framework]\item\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/item

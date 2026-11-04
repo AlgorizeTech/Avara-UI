@@ -1,4 +1,8 @@
-export const metadata = docsPageMetadata("top-destinations");
+---
+title: "Top Destinations"
+description: "A travel destination showcase whose two rows of cards move in opposite directions as you scroll, with GSAP ScrollTrigger and reduced-motion support."
+url: https://avaraui.com/docs/nextjs/top-destinations
+---
 
 # Top Destinations
 
@@ -6,7 +10,16 @@ A dual-row scroll-driven destination showcase. As the user scrolls down the page
 
 Each card features full-bleed photography, subtle vertical typography by default, smooth hover scaling, and an interactive bordered overlay revealing place counts, tags, and an "Explore" action.
 
-export const usageDestinations = `const customDestinations: DestinationItem[] = [
+## Dual-row parallax travel
+
+Scroll down to watch top and bottom rows travel in opposite directions across the screen.
+
+- `scrollOffset=450` controls the horizontal travel distance in pixels scrubbed by the scrollbar.
+- `items` accepts an array of destination objects with title, country, image, placesCount, and tag.
+- `onExplore` callback fired when a card's Explore action button is activated.
+
+```tsx
+const customDestinations: DestinationItem[] = [
   {
     id: "bali",
     title: "Bali",
@@ -91,11 +104,16 @@ export const usageDestinations = `const customDestinations: DestinationItem[] = 
 
 export default function DestinationsShowcase() {
   return (
-     console.log("Exploring:", item.title)}
+    <TopDestinations
+      title="Top Destinations"
+      subtitle="Experience our Instagram moments, where we share team activities, product stories, and memorable events that showcase our brand's journey."
+      items={customDestinations}
+      scrollOffset={450}
+      onExplore={(item) => console.log("Exploring:", item.title)}
     />
   );
 }
-`;
+```
 
 ### Installation
 
@@ -114,77 +132,37 @@ npx shadcn@latest add @avara-ui/top-destinations
 
 ## Features
 
-    Opposite Direction Scrub
-    Row 1 and Row 2 glide in opposite directions as the viewport scrolls, creating an immersive cinematic depth effect.
+### Opposite Direction Scrub
 
-    Interactive Hover Frame
-    Hovering over any card dims the background, smoothly frames the destination with a frosted border, and displays place count and explore CTA.
+Row 1 and Row 2 glide in opposite directions as the viewport scrolls, creating an immersive cinematic depth effect.
 
-    Flexible Split or Unified Rows
-    Pass a single unified items array to automatically split across rows, or supply row1Items and row2Items explicitly.
+### Interactive Hover Frame
 
-    Reduced Motion Safe
-    Automatically respects user motion preferences, gracefully falling back to a clean horizontal carousel without jarring animations.
+Hovering over any card dims the background, smoothly frames the destination with a frosted border, and displays place count and explore CTA.
+
+### Flexible Split or Unified Rows
+
+Pass a single unified `items` array to automatically split across rows, or supply `row1Items` and `row2Items` explicitly.
+
+### Reduced Motion Safe
+
+Automatically respects user motion preferences, gracefully falling back to a clean horizontal carousel without jarring animations.
 
 ## Props Reference
 
-        Prop
-        Type
-        Default
-        Description
-
-        title
-        string
-        "Top Destinations"
-        Section main heading displayed above the card rows.
-
-        subtitle
-        string
-        Lead description copy
-        Secondary descriptive paragraph beneath the title.
-
-        badgeText
-        string
-        "Top Destinations"
-        Text rendered in the circular map pin badge header.
-
-        badgeIcon
-        ReactNode
-        &lt;MapPin /&gt;
-        Custom icon placed inside the badge pill.
-
-        items
-        DestinationItem[]
-        DEFAULT_DESTINATIONS
-        Complete list of destinations, automatically split 50/50 between the two rows.
-
-        row1Items
-        DestinationItem[]
-        First half
-        Explicit destination items for the top row (travels towards the left).
-
-        row2Items
-        DestinationItem[]
-        Second half
-        Explicit destination items for the bottom row (travels towards the right).
-
-        scrollOffset
-        number
-        450
-        Horizontal travel distance in pixels as the section traverses the viewport.
-
-        scrollerRef
-        RefObject&lt;HTMLElement&gt;
-        undefined
-        Custom scroll parent element driving ScrollTrigger (useful inside sandboxes and modals).
-
-        onExplore
-        (item) =&gt; void
-        undefined
-        Click handler triggered when a user explores a specific destination.
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `title` | `string` | `"Top Destinations"` | Section main heading displayed above the card rows. |
+| `subtitle` | `string` | Lead description copy | Secondary descriptive paragraph beneath the title. |
+| `badgeText` | `string` | `"Top Destinations"` | Text rendered in the circular map pin badge header. |
+| `badgeIcon` | `ReactNode` | `<MapPin />` | Custom icon placed inside the badge pill. |
+| `items` | `DestinationItem[]` | `DEFAULT_DESTINATIONS` | Complete list of destinations, automatically split 50/50 between the two rows. |
+| `row1Items` | `DestinationItem[]` | First half | Explicit destination items for the top row (travels towards the left). |
+| `row2Items` | `DestinationItem[]` | Second half | Explicit destination items for the bottom row (travels towards the right). |
+| `scrollOffset` | `number` | `450` | Horizontal travel distance in pixels as the section traverses the viewport. |
+| `scrollerRef` | `RefObject<HTMLElement>` | `undefined` | Custom scroll parent element driving ScrollTrigger (useful inside sandboxes and modals). |
+| `onExplore` | `(item) => void` | `undefined` | Click handler triggered when a user explores a specific destination. |
 
 ---
 
-**Component Path:** `[framework]\top-destinations\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/top-destinations

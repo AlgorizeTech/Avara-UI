@@ -1,4 +1,8 @@
-export const metadata = docsPageMetadata("curved-carousel");
+---
+title: "Curved Carousel"
+description: "A full-width 3D curved arc carousel with an auto-sway motion, Motion spring physics, perspective-depth cards and colours from your site theme."
+url: https://avaraui.com/docs/nextjs/curved-carousel
+---
 
 # Curved Carousel
 
@@ -6,7 +10,12 @@ An interactive, 100% full-width 3D curved arc carousel featuring left-to-right o
 
 `CurvedCarousel` transforms standard image galleries into an immersive, fanned 3D arc deck with customizable speed, touch/drag controls, and dark mode support.
 
-export const usageArcSweep = `import { CurvedCarousel, type CurvedCarouselCard } from "@/components/custom/blocks/CurvedCarouselBlock";
+## 3D Curved Arc Sway Deck
+
+- Use `variant="arc-sweep"` to lay the cards along a 3D curved arc with a continuous left-to-right sway. It is the default.
+
+```tsx
+import { CurvedCarousel, type CurvedCarouselCard } from "@/components/custom/blocks/CurvedCarouselBlock";
 
 const items: CurvedCarouselCard[] = [
   { id: "card-1", title: "Misty Pine Forest", code: "001", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg" },
@@ -25,11 +34,24 @@ const items: CurvedCarouselCard[] = [
 
 export default function CurvedCarouselDemo() {
   return (
-    
+    <CurvedCarousel
+      variant="arc-sweep"
+      autoPlay={true}
+      speed={1}
+      color="primary"
+      items={items}
+      className="w-full"
+    />
   );
-}`;
+}
+```
 
-export const usageInfiniteMarquee = `import { CurvedCarousel, type CurvedCarouselCard } from "@/components/custom/blocks/CurvedCarouselBlock";
+## Continuous 3D Concave Arc Marquee
+
+- Use `variant="infinite-marquee"` for an all-time continuous Right-to-Left infinite Marquee movement arranged in a 3D concave curved arc deck.
+
+```tsx
+import { CurvedCarousel, type CurvedCarouselCard } from "@/components/custom/blocks/CurvedCarouselBlock";
 
 const items: CurvedCarouselCard[] = [
   { id: "card-1", title: "Misty Pine Forest", code: "001", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg" },
@@ -48,9 +70,17 @@ const items: CurvedCarouselCard[] = [
 
 export default function InfiniteMarqueeDemo() {
   return (
-    
+    <CurvedCarousel
+      variant="infinite-marquee"
+      autoPlay={true}
+      speed={1}
+      color="primary"
+      items={items}
+      className="w-full"
+    />
   );
-}`;
+}
+```
 
 ## Installation
 
@@ -69,80 +99,39 @@ npx shadcn@latest add @avara-ui/curved-carousel
 
 ## Features
 
-    Oscillating Auto-Sway
-    Cards automatically sway left and right in a continuous, smooth oscillating loop.
+### Oscillating Auto-Sway
 
-    3D Curved Arc Geometry
-    Calculates precise 3D Y-rotation, Z-rotation, and Y-translation to form a realistic curved arc deck.
+Cards automatically sway left and right in a continuous, smooth oscillating loop.
 
-    100% Theme Color Engine
-    Binds directly to site primary CSS variable var(--primary) or explicit color swatches.
+### 3D Curved Arc Geometry
 
-    Fluid Responsive & Touch
-    Fully responsive container sizing with click-to-center navigation and hover pause controls.
+Calculates precise 3D Y-rotation, Z-rotation, and Y-translation to form a realistic curved arc deck.
+
+### 100% Theme Color Engine
+
+Binds directly to site primary CSS variable `var(--primary)` or explicit color swatches.
+
+### Fluid Responsive & Touch
+
+Fully responsive container sizing with click-to-center navigation and hover pause controls.
 
 ## Best Practices & Guidelines
 
-    When to Use
-    Use CurvedCarousel on hero sections, portfolio showcases, product galleries, or brand story cards to capture high user engagement with fluid 3D motion.
+### When to Use
+
+Use `CurvedCarousel` on hero sections, portfolio showcases, product galleries, or brand story cards to capture high user engagement with fluid 3D motion.
 
 ## Props Reference
 
-        Prop
-        Type
-        Default
-        Description
-
-          variant
-
-          "arc-sweep" | "infinite-marquee"
-
-          "arc-sweep"
-        
-        Selects the active 3D curve layout architecture and movement style.
-
-          items
-
-          CurvedCarouselCard[]
-
-          Preset Array
-        
-        Array of objects containing id, title, code, and image.
-
-          autoPlay
-
-          boolean
-
-          true
-        
-        Enables or disables continuous automatic left-to-right sway animation.
-
-          speed
-
-          number
-
-          1
-        
-        Oscillation sway step speed multiplier.
-
-          color
-
-          "primary" | "indigo" | "rose" | "emerald" | "zinc" | string
-
-          "primary"
-        
-        Applies dynamic theme color palettes ("primary" | "indigo" | "rose" | "emerald" | "zinc" or custom hex).
-
-          className
-
-          string
-
-          ""
-        
-        Custom Tailwind CSS classes applied to the root container.
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `"arc-sweep" \| "infinite-marquee"` | `"arc-sweep"` | Selects the active 3D curve layout architecture and movement style. |
+| `items` | `CurvedCarouselCard[]` | `Preset Array` | Array of objects containing `id`, `title`, `code`, and `image`. |
+| `autoPlay` | `boolean` | `true` | Enables or disables continuous automatic left-to-right sway animation. |
+| `speed` | `number` | `1` | Oscillation sway step speed multiplier. |
+| `color` | `"primary" \| "indigo" \| "rose" \| "emerald" \| "zinc" \| string` | `"primary"` | Applies dynamic theme color palettes (`"primary" \| "indigo" \| "rose" \| "emerald" \| "zinc"` or custom hex). |
+| `className` | `string` | `""` | Custom Tailwind CSS classes applied to the root container. |
 
 ---
 
-**Component Path:** `[framework]\curved-carousel\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/curved-carousel

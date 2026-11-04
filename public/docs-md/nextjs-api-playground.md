@@ -1,4 +1,8 @@
-export const metadata = docsPageMetadata("api-playground");
+---
+title: "API Playground"
+description: "A highly advanced, interactive split-pane block for testing API requests directly inside documentation. Free shadcn/ui component for React and Tailwind CSS."
+url: https://avaraui.com/docs/nextjs/api-playground
+---
 
 # API Playground
 
@@ -10,7 +14,15 @@ Crucially, this `ApiPlaygroundBlock` uses a `mockHandler` pattern. It does not b
 
 Each playground below is fully interactive: edit params, headers or the JSON body, then hit **Send**. Nothing leaves the browser — a `mockHandler` decides the response.
 
-export const usageDefault = `import {
+## API playground
+
+A split-pane request builder.
+
+- Pass `mockHandler` an async function — it receives the method, url, headers, params and body, and returns { status, timeMs, data } for the response pane to render.
+- `defaultUrl` seeds the address bar the reader lands on.
+
+```tsx
+import {
   ApiPlaygroundBlock,
   type ApiMockHandler,
 } from "@/components/custom/blocks/ApiPlaygroundBlock";
@@ -47,9 +59,14 @@ export default function UsersEndpointDocs() {
   };
 
   return (
-    
+    <ApiPlaygroundBlock
+      defaultUrl="https://api.acme.com/v1/customers"
+      defaultMethod="POST"
+      mockHandler={handleApiMock}
+    />
   );
-}`;
+}
+```
 
 ## Installation
 
@@ -69,75 +86,44 @@ npx shadcn@latest add @avara-ui/api-playground
 ## Features & Core Capabilities
 Explore the interactive API Playground component capabilities designed to elevate API documentation:
 
-    Split-Pane Architecture
-    Interactive dual-panel interface with real-time HTTP Request Builder on the left and Live JSON Response Viewer on the right.
+### Split-Pane Architecture
 
-    CORS-Safe Mock Handler
-    Uses a client-side `mockHandler` async function to simulate network latency, dynamic endpoints, and custom status codes safely without CORS issues.
+Interactive dual-panel interface with real-time HTTP Request Builder on the left and Live JSON Response Viewer on the right.
 
-    Full Header & Query Params Editor
-    Add, enable/disable, or remove HTTP headers and query parameters dynamically before executing API calls.
+### CORS-Safe Mock Handler
 
-    JSON Body Payload & Syntax Highlighting
-    Built-in raw JSON request body editor with syntax highlighting, automatic JSON formatting, error handling, and response timing metrics.
+Uses a client-side `mockHandler` async function to simulate network latency, dynamic endpoints, and custom status codes safely without CORS issues.
+
+### Full Header & Query Params Editor
+
+Add, enable/disable, or remove HTTP headers and query parameters dynamically before executing API calls.
+
+### JSON Body Payload & Syntax Highlighting
+
+Built-in raw JSON request body editor with syntax highlighting, automatic JSON formatting, error handling, and response timing metrics.
 
 ## Best Practices & Guidelines
 
-    Usage Guidelines
-    Provide realistic mock handlers with simulated delays (e.g. 100ms - 500ms) to give users an authentic API testing experience directly inside your documentation.
+### Usage Guidelines
+
+Provide realistic mock handlers with simulated delays (e.g. 100ms - 500ms) to give users an authentic API testing experience directly inside your documentation.
 
 ## Props Reference
 
-        Prop
-        Type
-        Default
-        Description
-
-          defaultUrl
-
-          string
-
-          "https://api.example.com/v1/users"
-        
-        Initial API URL displayed in the request address bar.
-
-          defaultMethod
-
-          "GET" | "POST" | "PUT" | "PATCH" | "DELETE"
-
-          "GET"
-        
-        Initial HTTP method selected in the method dropdown.
-
-          color
-
-          ApiColor
-
-          "primary"
-        
-        Accent color theme ("primary" | "indigo" | "rose" | "emerald" | "zinc" or custom hex).
-
-          mockHandler
-
-          ApiMockHandler
-
-          undefined
-        
-        Async function that receives request details and returns simulated API response data.
-
-          className
-
-          string
-
-          undefined
-        
-        Additional CSS classes applied to the root container.
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `defaultUrl` | `string` | `"https://api.example.com/v1/users"` | Initial API URL displayed in the request address bar. |
+| `defaultMethod` | `"GET" \| "POST" \| "PUT" \| "PATCH" \| "DELETE"` | `"GET"` | Initial HTTP method selected in the method dropdown. |
+| `color` | `ApiColor` | `"primary"` | Accent color theme (`"primary" \| "indigo" \| "rose" \| "emerald" \| "zinc"` or custom hex). |
+| `mockHandler` | `ApiMockHandler` | `undefined` | Async function that receives request details and returns simulated API response data. |
+| `className` | `string` | `undefined` | Additional CSS classes applied to the root container. |
 
 ### mockHandler Object Signatures
 
 When you provide a mockHandler, your function receives a Request object and must return a Promise that resolves to a Response object. Both shapes are exported, so annotate the whole handler and TypeScript infers the rest — no need to restate them:
 
 ```tsx
+import type { ApiMockHandler } from "@/components/custom/blocks/ApiPlaygroundBlock";
 
 const handleApiMock: ApiMockHandler = async (req) => {
   // req is an ApiPlaygroundRequest; the return value must be an ApiResponse.
@@ -151,8 +137,8 @@ The Request Object — exported as `ApiPlaygroundRequest` (passed to your functi
 {
   method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   url: string;
-  headers: Array;
-  params: Array;
+  headers: Array<{ id: string; key: string; value: string; enabled: boolean }>;
+  params: Array<{ id: string; key: string; value: string; enabled: boolean }>;
   body: string; // The raw JSON string from the text area
 }
 ```
@@ -169,6 +155,4 @@ The Response Object — exported as `ApiResponse` (required return type):
 
 ---
 
-**Component Path:** `[framework]\api-playground\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/api-playground

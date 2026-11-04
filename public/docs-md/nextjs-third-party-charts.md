@@ -1,7 +1,8 @@
-export const metadata = docsPageMetadata("third-party/charts", {
-  title: "Charts",
-  description: `Integrate Recharts and Chart.js with Avara UI — design tokens bridged into both, in light and dark themes.`
-});
+---
+title: "Charts"
+description: "Recharts and Chart.js are the two React charting libraries most projects actually reach for, and they take opposite approaches: Recharts composes SVG out of…"
+url: https://avaraui.com/docs/nextjs/third-party/charts
+---
 
 # Charts
 
@@ -17,7 +18,16 @@ Both examples read their colours from one small `useChartTokens` hook — the
 whole of it is in [the theme bridge](#the-theme-bridge) below the install
 commands.
 
-export const usageRecharts = `import {
+### Area chart in a Card
+
+Recharts draws the plot; the card, the title, the badge and the tooltip surface are all Avara UI. The chart library never renders anything the design system already owns.
+
+- Pass `stroke` and `fill` the resolved token values — `tokens.border` for the grid, `tokens.muted` for axis ticks.
+- `contentStyle` is how the built-in `Tooltip` is repainted; it takes inline style, so `tokens.card` and `tokens.border` go straight in.
+- `ResponsiveContainer` needs a parent with a real height — `h-[280px]` here. A percentage height inside an auto-height parent collapses to zero.
+
+```tsx
+import {
   Area,
   AreaChart,
   CartesianGrid,
@@ -38,7 +48,7 @@ const revenue = [
   { month: "Aug", mrr: 29800, expansion: 5300 },
 ];
 
-const currency = (value: number) => \`$\${(value / 1000).toFixed(1)}k\`;
+const currency = (value: number) => `$${(value / 1000).toFixed(1)}k`;
 
 /**
  * Recharts draws the plot; the surrounding chrome — card, title, legend,
@@ -49,17 +59,86 @@ export default function RechartsRevenue({ color }: { color?: string } = {}) {
   const tokens = useChartTokens(color);
 
   return (
-
-            Recurring revenue
-            Monthly recurring revenue and expansion
-
+    <Card className="w-full max-w-3xl min-w-0 overflow-hidden" style={accentStyle(color)}>
+      <CardHeader className="p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
+          <div>
+            <CardTitle className="text-base sm:text-lg">Recurring revenue</CardTitle>
+            <CardDescription className="text-xs sm:text-sm">Monthly recurring revenue and expansion</CardDescription>
+          </div>
+          <Badge variant="outline" className="w-fit border-primary/25 bg-primary/10 text-primary font-medium text-xs">
             +18.4%
+          </Badge>
+        </div>
+      </CardHeader>
 
-               currency(Number(value))}
+      <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
+        <div className="h-[220px] sm:h-[280px] w-full min-w-0">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={revenue} margin={{ top: 8, right: 6, bottom: 0, left: -14 }}>
+              <defs>
+                <linearGradient id="mrrFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor={tokens.series[0]} stopOpacity={0.35} />
+                  <stop offset="100%" stopColor={tokens.series[0]} stopOpacity={0} />
+                </linearGradient>
+                <linearGradient id="expansionFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor={tokens.series[1]} stopOpacity={0.3} />
+                  <stop offset="100%" stopColor={tokens.series[1]} stopOpacity={0} />
+                </linearGradient>
+              </defs>
+
+              <CartesianGrid strokeDasharray="4 4" stroke={tokens.border} vertical={false} />
+              <XAxis
+                dataKey="month"
+                tickLine={false}
+                axisLine={false}
+                tick={{ fill: tokens.muted, fontSize: 11 }}
+                interval="preserveStartEnd"
+                minTickGap={6}
               />
-
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                tickFormatter={currency}
+                tick={{ fill: tokens.muted, fontSize: 11 }}
+                width={38}
+              />
+              <Tooltip
+                cursor={{ stroke: tokens.border }}
+                contentStyle={{
+                  background: tokens.card,
+                  border: `1px solid ${tokens.border}`,
+                  borderRadius: 12,
+                  color: tokens.foreground,
+                  fontSize: 11,
+                  padding: "8px 12px",
+                }}
+                formatter={(value) => currency(Number(value))}
+              />
+              <Area
+                type="monotone"
+                dataKey="mrr"
+                name="MRR"
+                stroke={tokens.series[0]}
+                strokeWidth={2}
+                fill="url(#mrrFill)"
+              />
+              <Area
+                type="monotone"
+                dataKey="expansion"
+                name="Expansion"
+                stroke={tokens.series[1]}
+                strokeWidth={2}
+                fill="url(#expansionFill)"
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      </CardContent>
+    </Card>
   );
-}`;
+}
+```
 
 ### Installation
 
@@ -70,12 +149,13 @@ your project does not already have:
 
 A chart cannot read `text-muted-foreground`. Recharts needs a `stroke` string,
 Chart.js needs a `borderColor` for a canvas, and AG Grid — on the
-Data Tables page — needs the same
+[Data Tables](https://avaraui.com/docs/nextjs/third-party/tables) page — needs the same
 values again. So the token lookup lives in one small hook rather than in each
 chart:
 
 ```ts
 // src/lib/chart-tokens.ts
+import { useEffect, useState } from "react";
 
 /**
  * Bridges the design tokens in CSS into the plain strings third-party chart
@@ -83,7 +163,7 @@ chart:
  *
  * Recharts, Chart.js, AG Grid and friends take colours as values, not as
  * classes, so `text-muted-foreground` means nothing to them. Reading the
- * custom properties off `` keeps one source of truth: change a token in
+ * custom properties off `<html>` keeps one source of truth: change a token in
  * globals.css and every chart follows, in both themes.
  */
 export type ChartTokens = {
@@ -136,11 +216,11 @@ function readTokens(color?: string): ChartTokens {
 
 /**
  * Re-reads on theme change. next-themes (and most theme switchers) toggle a
- * class on ``, so watching that attribute is enough — no context, no
+ * class on `<html>`, so watching that attribute is enough — no context, no
  * provider, and it works the same in a Vite app as in Next.js.
  */
 export function useChartTokens(color?: string): ChartTokens {
-  const [tokens, setTokens] = useState(() => readTokens(color));
+  const [tokens, setTokens] = useState<ChartTokens>(() => readTokens(color));
 
   useEffect(() => {
     const sync = () => setTokens(readTokens(color));
@@ -177,7 +257,17 @@ on this page follows.
 
 ## Chart.js
 
-export const usageChartJs = `import { useMemo } from "react";
+### Bar and doughnut
+
+Chart.js is tree-shaken, so every scale, element and plugin has to be registered once. Do it at module scope — a `ChartJS.register` call in a render body runs on every update.
+
+- Wrap `options` in `useMemo` keyed on the tokens. Rebuilding the options object is what makes a canvas chart follow the theme switch; it cannot inherit anything from CSS.
+- `maintainAspectRatio={false}` lets the chart fill its container instead of forcing a 2:1 box. Pair it with a fixed-height wrapper.
+- `borderColor` on the doughnut is set to `tokens.card`, so the gap between arcs is the card surface rather than white in dark mode.
+
+```tsx
+import { useMemo } from "react";
+
 
 /**
  * Chart.js is tree-shaken: every scale, element and plugin you use has to be
@@ -197,7 +287,7 @@ export default function ChartJsTraffic({ color }: { color?: string } = {}) {
    * chart follow the theme switch — Chart.js paints to a canvas and cannot
    * inherit anything from CSS.
    */
-  const barOptions = useMemo>(
+  const barOptions = useMemo<ChartOptions<"bar">>(
     () => ({
       responsive: true,
       maintainAspectRatio: false,
@@ -240,7 +330,7 @@ export default function ChartJsTraffic({ color }: { color?: string } = {}) {
     [tokens],
   );
 
-  const doughnutOptions = useMemo>(
+  const doughnutOptions = useMemo<ChartOptions<"doughnut">>(
     () => ({
       responsive: true,
       maintainAspectRatio: false,
@@ -273,15 +363,62 @@ export default function ChartJsTraffic({ color }: { color?: string } = {}) {
   );
 
   return (
+    <div className="grid w-full max-w-4xl gap-4 md:grid-cols-2 min-w-0" style={accentStyle(color)}>
+      <Card className="min-w-0 overflow-hidden">
+        <CardHeader className="p-4 sm:p-6">
+          <CardTitle className="text-base sm:text-lg">Sessions by channel</CardTitle>
+          <CardDescription className="text-xs sm:text-sm">Last 30 days</CardDescription>
+        </CardHeader>
+        <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
+          <div className="relative h-[220px] sm:h-[260px] w-full min-w-0">
+            <Bar
+              options={barOptions}
+              data={{
+                labels: channels,
+                datasets: [
+                  {
+                    label: "Sessions",
+                    data: sessions,
+                    backgroundColor: tokens.series[0],
+                    hoverBackgroundColor: tokens.series[5],
+                    borderRadius: 6,
+                    maxBarThickness: 36,
+                  },
+                ],
+              }}
+            />
+          </div>
+        </CardContent>
+      </Card>
 
-          Sessions by channel
-          Last 30 days
-
-          Share of traffic
-          Same data, proportional view
-
+      <Card className="min-w-0 overflow-hidden">
+        <CardHeader className="p-4 sm:p-6">
+          <CardTitle className="text-base sm:text-lg">Share of traffic</CardTitle>
+          <CardDescription className="text-xs sm:text-sm">Same data, proportional view</CardDescription>
+        </CardHeader>
+        <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
+          <div className="relative h-[220px] sm:h-[260px] w-full min-w-0">
+            <Doughnut
+              options={doughnutOptions}
+              data={{
+                labels: channels,
+                datasets: [
+                  {
+                    data: sessions,
+                    backgroundColor: tokens.series,
+                    borderColor: tokens.card,
+                    borderWidth: 3,
+                  },
+                ],
+              }}
+            />
+          </div>
+        </CardContent>
+      </Card>
+    </div>
   );
-}`;
+}
+```
 
 ### Installation
 
@@ -290,28 +427,13 @@ your project does not already have:
 
 ## Which one
 
-        Recharts
-        Chart.js
-
-        Renders
-        SVG elements
-        Canvas
-
-        Composition
-        React children ({''}, {''})
-        One config object
-
-        Custom marks
-        Any React component
-        Plugin API
-
-        Many points
-        Slows down — every point is a DOM node
-        Stays fast
-
-        Theme change
-        Re-renders like any React tree
-        Needs the options object rebuilt
+|  | Recharts | Chart.js |
+| --- | --- | --- |
+| Renders | SVG elements | Canvas |
+| Composition | React children (`{'<Area>'}`, `{'<XAxis>'}`) | One config object |
+| Custom marks | Any React component | Plugin API |
+| Many points | Slows down — every point is a DOM node | Stays fast |
+| Theme change | Re-renders like any React tree | Needs the options object rebuilt |
 
 Reach for Recharts when the chart is part of the component tree and you want to
 drop your own React nodes into it. Reach for Chart.js when the series are long
@@ -324,6 +446,4 @@ rather than passing hex into each component.
 
 ---
 
-**Component Path:** `[framework]\third-party\charts\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/third-party/charts

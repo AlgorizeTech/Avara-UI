@@ -5,6 +5,7 @@ import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import { HomepageHero } from "@/components/site/HomepageHero";
 import { WALL_ITEMS, WallStack } from "@/constants/component-wall";
 import Link from "@/components/site/intent-link";
+import { SITE_NAME } from "@/config/site";
 import { REGISTRY_NAMESPACE } from "@/lib/registry";
 
 /* ═══════════════════════════════════════════════
@@ -75,7 +76,7 @@ export function HeroSection() {
 				accent="interactive"
 				description={
 					<>
-						A meticulous library of React components and interactive blocks,
+						{SITE_NAME} is a free library of React components and interactive blocks,
 						engineered for seamless performance with Tailwind CSS, TypeScript,
 						GSAP and Motion — delivered through the{" "}
 						{/* The one phrase a reader should leave with: shadcn's own face,

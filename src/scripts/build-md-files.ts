@@ -2,8 +2,16 @@ import "./load-env";
 import fs from "fs";
 import path from "path";
 import { glob } from "glob";
-import { BUILT_FRAMEWORKS } from "../lib/framework";
-import { SITE_NAME, SITE_URL } from "../config/site";
+import ts from "typescript";
+import {
+  BUILT_FRAMEWORKS,
+  DEFAULT_FRAMEWORK,
+  FORKED_SLUGS,
+  docsHref,
+  isFramework,
+  type Framework,
+} from "../lib/framework";
+import { SITE_NAME, SITE_URL, links } from "../config/site";
 import {
   REGISTRY_ADD_ARGS,
   REGISTRY_BASE_URL,
@@ -13,7 +21,10 @@ import {
   addArgsFor,
   resolveAddArg,
 } from "../lib/registry";
-import { stripUseClient } from "../lib/snippet";
+import { resolveMotion, resolveUsage, type ShowcaseSnippet } from "../lib/snippet";
+import { extractCode, extractMotionCode } from "../lib/code";
+import { pageHeading } from "../lib/docs-source";
+import { pageSeo } from "../lib/page-seo";
 import registry from "../../registry.json";
 import { countComponents } from "../lib/component-count";
 
@@ -82,19 +93,6 @@ const expandCliShorthand = (command: string) => {
 };
 
 /**
- * Applies the page's React rule to a whole markdown document.
- *
- * The mirror is a dump of the MDX source, so a directive shows up as the first
- * line inside a snippet's template literal — ``usageDefault = `"use client";``.
- * Only the opening of each literal is handed to the shared stripper, so prose
- * that merely *mentions* the directive is never touched.
- */
-const stripUseClientFromSnippets = (md: string) =>
-  md.replace(/(=\s*`)((?:[^\n]*\n){0,2})/g, (_match, opener: string, head: string) =>
-    opener + stripUseClient(head),
-  );
-
-/**
  * Expands one MDX file into the URL paths it is actually published at.
  *
  * The docs tree lives under a dynamic `[framework]` segment, so the on-disk path
@@ -126,32 +124,173 @@ interface MdxFile {
   urlPath: string;
 }
 
-/**
- * Converts MDX content to plain Markdown by removing:
- * - React imports
- * - Export statements
- * - JSX components and replacing with markdown equivalents
- * - Metadata exports
- */
-function convertMdxToMd(content: string, componentPath: string): string {
-  let mdContent = content;
+/** One example from a page's `<ExampleShowcase examples={[…]}>`. */
+type ShowcaseExample = {
+  title?: string;
+  subheading?: string;
+  description?: string;
+  propNotes?: { lead?: string; prop: string; value?: string; effect: string }[];
+  usage?: ShowcaseSnippet;
+};
 
-  // Remove export statements for metadata
-  mdContent = mdContent.replace(/^export\s+const\s+metadata\s*=\s*{[\s\S]*?};/gm, '');
-  
+/** Stands in for anything a page imports that the mirror has no use for: icons, components, helpers. */
+const placeholder: unknown = new Proxy(function () {}, {
+  get: (_, key) => (key === Symbol.toPrimitive ? () => "" : placeholder),
+  apply: () => placeholder,
+  construct: () => placeholder as object,
+});
+
+/**
+ * Runs a page's exports and returns the value of each expression.
+ *
+ * A page's usage snippets are ordinary JavaScript: template literals that include
+ * each other, and helpers such as `bentoJsx(onAction)`. Running them is the only
+ * way to get the exact strings the page renders.
+ */
+function evaluatePage(statements: string[], expressions: string[]): unknown[] {
+  const script = `${statements.join("\n")}\n__results = [${expressions.join(",\n")}];`;
+  const { outputText } = ts.transpileModule(script, {
+    fileName: "page.tsx",
+    compilerOptions: {
+      target: ts.ScriptTarget.ES2020,
+      module: ts.ModuleKind.None,
+      jsx: ts.JsxEmit.React,
+      alwaysStrict: false,
+    },
+  });
+  const values: Record<PropertyKey, unknown> = { ...PAGE_CONSTANTS, links, extractCode, extractMotionCode };
+  const scope = new Proxy(values, {
+    has: () => true,
+    get(target, key) {
+      if (key === Symbol.unscopables) return undefined;
+      if (key in target) return target[key];
+      return key in globalThis ? (globalThis as Record<PropertyKey, unknown>)[key] : placeholder;
+    },
+    set(target, key, value) {
+      target[key] = value;
+      return true;
+    },
+  });
+  new Function("scope", `with (scope) {\n${outputText}\n}`)(scope);
+  return values.__results as unknown[];
+}
+
+/** An example as the page shows it: heading, summary, prop notes, then its Usage tab. */
+function exampleToMarkdown(example: ShowcaseExample, level: number, framework: Framework): string {
+  const lines = [`${"#".repeat(level)} ${example.title ?? ""}`];
+  const summary = example.subheading ?? example.description;
+  if (summary) lines.push(summary);
+  if (example.propNotes?.length) {
+    lines.push(
+      example.propNotes
+        .map(({ lead, prop, value, effect }) => {
+          const code = value ? `${prop}=${value}` : prop;
+          return `- ${lead ? `${lead} ` : ""}\`${code}\` ${effect}`;
+        })
+        .join("\n"),
+    );
+  }
+  const usage = resolveUsage(resolveMotion(example.usage, "gsap"), framework);
+  if (typeof usage === "string") lines.push("```tsx\n" + usage.trim() + "\n```");
+  return lines.join("\n\n");
+}
+
+const parseAt = (source: string, start: number) =>
+  ts.createSourceFile("page.tsx", source.slice(start), ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+
+/**
+ * A JSX `<table>` as a Markdown table. Tags go before code comes back, or a type
+ * such as `Partial<Record<K, V>>` would be read as one. Pipes are escaped, or
+ * they would end a cell.
+ */
+function tableToMarkdown(table: string, restore: (text: string) => string): string {
+  const rows = [...table.matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/g)].map(([, row]) =>
+    [...row.matchAll(/<t[hd][^>]*>([\s\S]*?)<\/t[hd]>/g)].map(([, cell]) =>
+      restore(cell.replace(/\{" "\}/g, " ").replace(/<\/?[A-Za-z][^<>]*>/g, ""))
+        .replace(/\s+/g, " ")
+        .trim()
+        .replace(/\|/g, "\\|"),
+    ),
+  );
+  if (!rows.length) return "";
+  const line = (cells: string[]) => `| ${cells.join(" | ")} |`;
+  return [line(rows[0]), line(rows[0].map(() => "---")), ...rows.slice(1).map(line)].join("\n");
+}
+
+/** A link wrapping a whole card holds headings and paragraphs; Markdown link text is one line. */
+const linkText = (text: string) =>
+  text.replace(/<\/?[A-Za-z][^<>]*>/g, " ").replace(/\s+/g, " ").trim();
+
+/**
+ * Converts MDX to plain Markdown for one framework.
+ *
+ * Code is set aside first and put back last, so what strips JSX from the prose
+ * never reaches a snippet. Stripping it from snippets is how the mirror used to
+ * publish `return ( );` where a page shows `<Accordion … />`.
+ */
+function convertMdxToMd(content: string, framework: Framework): string {
+  const held: string[] = [];
+  const hold = (text: string) => `\u0000${held.push(text) - 1}\u0000`;
+  const restore = (text: string): string =>
+    text.includes("\u0000")
+      ? restore(text.replace(/\u0000(\d+)\u0000/g, (_, index: string) => held[Number(index)]))
+      : text;
+
+  let mdContent = content.replace(/```[\s\S]*?```/g, hold);
+
   // Remove import statements
   mdContent = mdContent.replace(/^import\s+.*?from\s+.*?;?\s*$/gm, '');
-  
-  // Remove JSX component imports that are on separate lines
   mdContent = mdContent.replace(/^import\s+.*?\{[\s\S]*?\}\s+from\s+.*?;?\s*$/gm, '');
-  
+
+  // Take the exports out of the prose; the examples below read them.
+  const statements: string[] = [];
+  for (;;) {
+    const match = /^export\s+const\s+(\w+)/m.exec(mdContent);
+    if (!match) break;
+    const statement = parseAt(mdContent, match.index).statements[0];
+    if (match[1] !== "metadata") statements.push(statement.getText().replace(/^export\s+/, ""));
+    mdContent = mdContent.slice(0, match.index) + mdContent.slice(match.index + statement.end);
+  }
+
+  // Each <ExampleShowcase> becomes its examples, once the exports have run.
+  const showcases: { marker: string; expression: string; level: number }[] = [];
+  for (let index = mdContent.indexOf("<ExampleShowcase"); index >= 0; ) {
+    const file = parseAt(mdContent, index);
+    const first = file.statements[0];
+    const element = first && ts.isExpressionStatement(first) ? first.expression : undefined;
+    if (!element || !ts.isJsxSelfClosingElement(element)) {
+      index = mdContent.indexOf("<ExampleShowcase", index + 1);
+      continue;
+    }
+    const attribute = (name: string) =>
+      element.attributes.properties.find(
+        (prop): prop is ts.JsxAttribute => ts.isJsxAttribute(prop) && prop.name.getText(file) === name,
+      )?.initializer;
+    const examples = attribute("examples");
+    const level = attribute("headingLevel")?.getText(file) === "{2}" ? 2 : 3;
+    const marker = `\u0001${showcases.length}\u0001`;
+    if (examples && ts.isJsxExpression(examples) && examples.expression) {
+      showcases.push({ marker, expression: examples.expression.getText(file), level });
+    }
+    mdContent = mdContent.slice(0, index) + marker + mdContent.slice(index + element.end);
+    index = mdContent.indexOf("<ExampleShowcase", index);
+  }
+  const results = evaluatePage(statements, showcases.map((showcase) => showcase.expression));
+  showcases.forEach(({ marker, level }, position) => {
+    const examples = results[position] as ShowcaseExample[];
+    mdContent = mdContent.replace(
+      marker,
+      () => hold(examples.map((example) => exampleToMarkdown(example, level, framework)).join("\n\n")),
+    );
+  });
+
   // Resolve the site values the page prints through JSX expressions.
   mdContent = resolvePageConstants(mdContent);
 
   // <RegistryConfig /> renders the components.json entry `registry add` writes.
   mdContent = mdContent.replace(
     /<RegistryConfig\s*\/>/g,
-    '```json\n' + REGISTRY_COMPONENTS_JSON + '\n```'
+    () => hold('```json\n' + REGISTRY_COMPONENTS_JSON + '\n```')
   );
 
   // Convert JSX components to markdown equivalents
@@ -216,7 +355,7 @@ function convertMdxToMd(content: string, componentPath: string): string {
   // or the markdown would tell a reader to run a command the CLI rejects.
   mdContent = mdContent.replace(
     /<Cli\s+command=\{`([^`]+)`\}\s*\/>/g,
-    (_, command: string) => '```bash\nnpx shadcn@latest ' + expandCliShorthand(command) + '\n```'
+    (_, command: string) => hold('```bash\nnpx shadcn@latest ' + expandCliShorthand(command) + '\n```')
   );
 
   // Convert <Installation name="…"> to the command it renders. The web
@@ -224,7 +363,7 @@ function convertMdxToMd(content: string, componentPath: string): string {
   // installs those itself, so the command alone is enough here.
   mdContent = mdContent.replace(
     /<Installation\s+name="([^"]+)"[^>]*\/>/g,
-    (_, name: string) =>
+    (_, name: string) => hold(
       'Add the component by URL — no setup needed:\n\n' +
       '```bash\n' +
       `npx shadcn@latest ${addArgsFor(name, "url")}\n` +
@@ -240,7 +379,7 @@ function convertMdxToMd(content: string, componentPath: string): string {
           '```bash\n' +
           `npx shadcn@latest ${addArgsFor(`${name}-motion`, "url")}\n` +
           '```'
-        : '')
+        : ''))
   );
   // <InstallGroup> only wraps several <Installation>s; drop the wrapper.
   mdContent = mdContent.replace(/<\/?InstallGroup>/g, '');
@@ -257,17 +396,72 @@ function convertMdxToMd(content: string, componentPath: string): string {
     '*Interactive component preview available in the web version.*'
   );
   
+  // Inline code joins the fenced code, then the JSX that means something in
+  // Markdown becomes its equivalent.
+  mdContent = mdContent.replace(/\{\/\*[\s\S]*?\*\/\}/g, '');
+  mdContent = mdContent.replace(/<code[^>]*>([\s\S]*?)<\/code>/g, (_, code: string) =>
+    // `{`a<b>`}` is how JSX spells text that would otherwise parse as a tag.
+    hold(`\`${code.trim().replace(/^\{[`"]([\s\S]*)[`"]\}$/, "$1").replace(/&lt;/g, "<").replace(/&gt;/g, ">")}\``),
+  );
+  mdContent = mdContent.replace(/\{`([^`\n]*)`\}/g, "$1");
+  mdContent = mdContent.replace(/`[^`\n]+`/g, hold);
+  mdContent = mdContent.replace(
+    /<ForFramework\s+only="(\w+)"\s*>([\s\S]*?)<\/ForFramework>/g,
+    (_, only: string, inner: string) => (only === framework ? inner : ''),
+  );
+  mdContent = mdContent.replace(
+    /<DocLink\s+to="([^"#]+)(#[^"]*)?"[^>]*>([\s\S]*?)<\/DocLink>/g,
+    (_, slug: string, hash: string | undefined, text: string) =>
+      `[${linkText(text)}](${SITE_URL}${docsHref(framework, slug)}${hash ?? ''})`,
+  );
+  mdContent = mdContent.replace(
+    /<a\s[^>]*?href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g,
+    (_, href: string, text: string) => `[${linkText(text)}](${href.startsWith('/') ? SITE_URL + href : href})`,
+  );
+  mdContent = mdContent.replace(/<table[\s\S]*?<\/table>/g, (table) => hold(tableToMarkdown(table, restore)));
+  mdContent = mdContent.replace(
+    /<h([1-6])[^>]*>([\s\S]*?)<\/h\1>/g,
+    (_, level: string, text: string) => `\n${'#'.repeat(Number(level))} ${text.trim()}\n`,
+  );
+  mdContent = mdContent.replace(/<McpClientPanel\s+client="(\w+)"[^>]*>/g, '\n**Client: $1**\n');
+
   // Remove any remaining JSX tags and convert to markdown where possible
-  mdContent = mdContent.replace(/<[^>]+>/g, '');
-  
+  mdContent = mdContent.replace(/<\/?[A-Za-z][^<>]*>/g, '');
+  mdContent = mdContent.replace(/\{" "\}/g, ' ');
+
+  // Indentation left by JSX would read as a code block. List nesting stays.
+  mdContent = mdContent.replace(/^[ \t]+(?![-*\d])/gm, '');
+
   // Clean up extra whitespace
   mdContent = mdContent.replace(/\n\s*\n\s*\n/g, '\n\n');
-  mdContent = mdContent.trim();
-  
-  // Add component path reference
-  const pathReference = `\n\n---\n\n**Component Path:** \`${componentPath}\`\n\n**Web Version:** Visit the corresponding URL on the ${SITE_NAME} documentation site for live previews and interactive examples.\n`;
-  
-  return mdContent + pathReference;
+
+  return restore(mdContent).trim();
+}
+
+/** What a mirror is and where the page it mirrors lives, for a reader given only this file. */
+function withFrontMatter(markdown: string, source: string, urlPath: string, framework: Framework): string {
+  const slug = urlPath.split('/').slice(1).join('/') || undefined;
+  const heading = pageHeading(source) ?? slug ?? SITE_NAME;
+  const pathname = !slug
+    ? '/docs'
+    : docsHref(FORKED_SLUGS.includes(slug) ? framework : DEFAULT_FRAMEWORK, slug);
+  const description = slug ? pageSeo(slug, heading, source).description : undefined;
+  const url = `${SITE_URL}${pathname}`;
+
+  return [
+    '---',
+    `title: ${JSON.stringify(heading)}`,
+    ...(description ? [`description: ${JSON.stringify(description)}`] : []),
+    `url: ${url}`,
+    '---',
+    '',
+    markdown,
+    '',
+    '---',
+    '',
+    `Live previews and every example: ${url}`,
+    '',
+  ].join('\n');
 }
 
 /**
@@ -295,6 +489,8 @@ async function findMdxFiles(): Promise<MdxFile[]> {
     const relativePath = path.relative(docsPath, filePath);
     // Extract component name from path (remove \page.mdx and normalize slashes)
     let urlPath = relativePath.replace(/\\page\.mdx$/, '').replace(/\/page\.mdx$/, '').replace(/\\/g, '/');
+    // The docs landing page sits at the root, with no segment to strip.
+    if (urlPath === 'page.mdx') urlPath = '';
 
     // `[framework]/installation/_content/reactjs.mdx` publishes at
     // `reactjs/installation`: the private folder drops out and the filename is
@@ -349,39 +545,41 @@ async function buildMdFiles(): Promise<void> {
       originalMdx: string;
     }> = [];
     
+    const failures: string[] = [];
+
     for (const mdxFile of mdxFiles) {
       try {
-        const mdContent = convertMdxToMd(mdxFile.content, mdxFile.relativePath);
-
         // Ensure output directory exists
         if (!fs.existsSync(mdOutputPath)) {
           fs.mkdirSync(mdOutputPath, { recursive: true });
         }
 
-        // One source file publishes at one URL per built framework. The content
-        // is identical until snippets resolve per framework; emitting both now
-        // means ai-button — which derives the filename straight from the current
-        // pathname — resolves on either route with no special-casing.
+        // One source file publishes at one URL per built framework, converted
+        // for each: `"use client"` and <ForFramework> branches differ. Emitting
+        // both means ai-button — which derives the filename straight from the
+        // current pathname — resolves on either route with no special-casing.
         for (const urlPath of urlPathsFor(mdxFile.urlPath)) {
           // Create the output path with clean naming that matches the URL structure
           const cleanName = urlPath === '' ? 'index' : urlPath.replace(/\//g, '-');
           const outputFileName = `${cleanName}.md`;
           const outputPath = path.join(mdOutputPath, outputFileName);
 
-          // The page renders `"use client"` only for Next.js (see resolveUsage
-          // in lib/snippet.ts); the mirror has to make the same edit, or the
-          // React markdown would disagree with the React page it mirrors.
-          const frameworkContent = urlPath.startsWith("nextjs")
-            ? mdContent
-            : stripUseClientFromSnippets(mdContent);
+          const segment = urlPath.split('/')[0];
+          const framework = isFramework(segment) ? segment : DEFAULT_FRAMEWORK;
+          const mdContent = withFrontMatter(
+            convertMdxToMd(mdxFile.content, framework),
+            mdxFile.content,
+            urlPath,
+            framework,
+          );
 
           // Write the MD file
-          safeWriteFileSync(outputPath, frameworkContent, 'utf-8');
+          safeWriteFileSync(outputPath, mdContent, 'utf-8');
 
           // Add to index
           mdIndex.push({
             name: urlPath || 'docs',
-            path: `/docs/${outputFileName}`,
+            path: `/docs-md/${outputFileName}`,
             url: `/docs/${urlPath}`,
             originalMdx: mdxFile.relativePath
           });
@@ -390,9 +588,14 @@ async function buildMdFiles(): Promise<void> {
         }
       } catch (error) {
         console.error(`❌ Error processing ${mdxFile.relativePath}:`, error);
+        failures.push(mdxFile.relativePath);
       }
     }
     
+    if (failures.length > 0) {
+      throw new Error(`build-md-files: could not convert ${failures.join(', ')}`);
+    }
+
     // Both of these are green-build failures otherwise: the per-file catch above
     // logs and continues, so a docs-tree rename that stops the glob matching, or
     // a dynamic segment that never got expanded, would leave the script
@@ -440,8 +643,8 @@ ${mdIndex.map(file => `- [${file.name}](${file.path}) - Source: \`${file.origina
 ## Usage
 
 You can access these files directly via URL:
-- Base URL: \`/docs/{filename}.md\`
-- Example: \`/docs/button.md\` for the button component documentation
+- Base URL: \`/docs-md/{framework}-{page}.md\`
+- Example: \`/docs-md/nextjs-button.md\` for the button component documentation
 
 ## Note
 

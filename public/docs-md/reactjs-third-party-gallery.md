@@ -1,7 +1,8 @@
-export const metadata = docsPageMetadata("third-party/gallery", {
-  title: "Gallery & Lightbox",
-  description: `Integrate react-photo-album and yet-another-react-lightbox with Avara UI — justified rows, masonry columns, captions, thumbnails and zoom inside a Card.`
-});
+---
+title: "Gallery & Lightbox"
+description: "A photo gallery is really two problems, and they are best solved by two libraries."
+url: https://avaraui.com/docs/nextjs/third-party/gallery
+---
 
 # Gallery & Lightbox
 
@@ -16,7 +17,23 @@ unchanged.
 
 ## Rows layout
 
-export const usageRows = `import { useState } from "react";
+### Justified rows with captions
+
+Click any photo to open it. Arrow keys move, Escape closes, the counter and thumbnail strip come from plugins — and the card around it all is Avara UI.
+
+- Give every photo a `width` and `height`. The album computes its layout from the aspect ratio before the images load — omit them and the rows reflow as each one arrives.
+- `srcSet` is what keeps a grid of 1600px originals from being downloaded at full size. The album picks the right entry for the rendered width.
+- `targetRowHeight` is a target, not a rule — the last row and narrow viewports both bend it to avoid cropping.
+- `slides` on the lightbox accepts the same array, so `title` and `description` on a photo become the caption with no second data shape.
+
+```tsx
+import { useState } from "react";
+
+
+
+
+
+
 
 import "react-photo-album/rows.css";
 import "yet-another-react-lightbox/styles.css";
@@ -27,7 +44,7 @@ import "yet-another-react-lightbox/plugins/thumbnails.css";
 type GalleryPhoto = Photo & { title: string; description: string };
 
 const sized = (url: string, width: number) =>
-  url.replace("/upload/", \`/upload/w_\${width},c_limit/\`);
+  url.replace("/upload/", `/upload/w_${width},c_limit/`);
 
 const source = [
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790146210/photo-1506905925346-21bda4d32df4-1790146212208.jpg", width: 1600, height: 1067, title: "Coastline at dawn", description: "Tropical shoreline, long exposure" },
@@ -39,9 +56,9 @@ const source = [
 ];
 
 /**
- * \`react-photo-album\` solves the layout — it fits photos into rows of equal
+ * `react-photo-album` solves the layout — it fits photos into rows of equal
  * height without cropping — and the lightbox solves the viewer. Neither owns
- * the page chrome, so the whole gallery drops inside a \`Card\` unchanged.
+ * the page chrome, so the whole gallery drops inside a `Card` unchanged.
  */
 const photos: GalleryPhoto[] = source.map((photo) => ({
   src: sized(photo.src, 1600),
@@ -61,16 +78,25 @@ export default function PhotoAlbumLightbox() {
   const [index, setIndex] = useState(-1);
 
   return (
-
-        Field notes
-        
+    <Card className="w-full max-w-4xl">
+      <CardHeader>
+        <CardTitle>Field notes</CardTitle>
+        <CardDescription>
           Click any photo — arrow keys, pinch-zoom and Escape all work
+        </CardDescription>
+      </CardHeader>
 
-         setIndex(clicked)}
+      <CardContent className="pb-6">
+        <RowsPhotoAlbum
+          photos={photos}
+          targetRowHeight={180}
+          spacing={8}
+          onClick={({ index: clicked }) => setIndex(clicked)}
           componentsProps={{ image: { loading: "lazy" } }}
         />
 
-        = 0}
+        <Lightbox
+          open={index >= 0}
           index={index}
           close={() => setIndex(-1)}
           slides={photos}
@@ -94,9 +120,11 @@ export default function PhotoAlbumLightbox() {
             thumbnail: { backgroundColor: "transparent", border: "none" },
           }}
         />
-
+      </CardContent>
+    </Card>
   );
-}`;
+}
+```
 
 ### Installation
 
@@ -110,13 +138,30 @@ uneven heights into columns, and the lightbox is opened from a hover affordance
 rather than the whole tile — so the overlay button is yours while the album's own
 image element stays untouched.
 
-export const usageMasonry = `import { useState } from "react";
+### Masonry columns with a hover control
+
+Column count responds to the container, not the viewport. Fullscreen, slideshow, zoom and download are four plugin imports.
+
+- Pass `columns` a function of the container width. Reading the container rather than the viewport is what keeps the album correct inside a sidebar or a modal.
+- `render.extras` layers your own markup over a tile without replacing the image element — the hover overlay here.
+- `componentsProps.button` puts `group relative` on the tile's own button, which is what lets `group-hover` drive that overlay.
+- `plugins` are additive and each ships its own CSS where it needs it — `captions.css`, `counter.css`, `thumbnails.css`. Zoom and fullscreen need none.
+
+```tsx
+import { useState } from "react";
+
+
+
+
+
+
+
 
 import "react-photo-album/masonry.css";
 import "yet-another-react-lightbox/styles.css";
 
 const sized = (url: string, width: number) =>
-  url.replace("/upload/", \`/upload/w_\${width},c_limit/\`);
+  url.replace("/upload/", `/upload/w_${width},c_limit/`);
 
 const source = [
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790166050/photo-1504674900247-0877df9cc836-1790166052224.jpg", width: 1600, height: 1067, alt: "Plated dish" },
@@ -141,25 +186,35 @@ const photos: Photo[] = source.map((photo) => ({
 }));
 
 /**
- * The same two libraries in a different arrangement: \`MasonryPhotoAlbum\`
+ * The same two libraries in a different arrangement: `MasonryPhotoAlbum`
  * packs uneven aspect ratios into columns, and the lightbox is opened from a
  * hover affordance instead of the whole tile — so the overlay button is
- * yours, and \`render\` keeps the album's own image element untouched.
+ * yours, and `render` keeps the album's own image element untouched.
  */
 export default function MasonryLightbox() {
   const [index, setIndex] = useState(-1);
 
   return (
+    <Card className="w-full max-w-4xl">
+      <CardHeader>
+        <CardTitle>Menu photography</CardTitle>
+        <CardDescription>Masonry columns, slideshow and download enabled</CardDescription>
+      </CardHeader>
 
-        Menu photography
-        Masonry columns, slideshow and download enabled
-
-         (containerWidth  setIndex(clicked)}
+      <CardContent className="pb-6">
+        <MasonryPhotoAlbum
+          photos={photos}
+          columns={(containerWidth) => (containerWidth < 480 ? 2 : containerWidth < 900 ? 3 : 4)}
+          spacing={8}
+          onClick={({ index: clicked }) => setIndex(clicked)}
           render={{
             extras: (_, { index: photoIndex }) => (
-
-                  Open photo {photoIndex + 1}
-
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-md bg-black/0 opacity-0 transition group-hover:bg-black/30 group-hover:opacity-100">
+                <span className="rounded-full bg-background/90 p-2 text-foreground shadow-sm">
+                  <Maximize2 className="h-4 w-4" aria-hidden />
+                  <span className="sr-only">Open photo {photoIndex + 1}</span>
+                </span>
+              </div>
             ),
           }}
           componentsProps={{
@@ -168,7 +223,8 @@ export default function MasonryLightbox() {
           }}
         />
 
-        = 0}
+        <Lightbox
+          open={index >= 0}
           index={index}
           close={() => setIndex(-1)}
           slides={photos}
@@ -186,9 +242,11 @@ export default function MasonryLightbox() {
             },
           }}
         />
-
+      </CardContent>
+    </Card>
   );
-}`;
+}
+```
 
 ### Installation
 
@@ -200,59 +258,24 @@ inside them, so there is nothing new to add:
 `react-photo-album` exports three album components, all taking the same photo
 array:
 
-        Component
-        Arrangement
-        Good for
-
-        {'RowsPhotoAlbum'}
-        Justified rows of equal height
-        Mixed landscape and portrait, editorial feel
-
-        {'ColumnsPhotoAlbum'}
-        Fixed columns, photos in order
-        Reading order matters
-
-        {'MasonryPhotoAlbum'}
-        Columns balanced by height
-        Tall and wide mixed, no gaps
+| Component | Arrangement | Good for |
+| --- | --- | --- |
+| `{'RowsPhotoAlbum'}` | Justified rows of equal height | Mixed landscape and portrait, editorial feel |
+| `{'ColumnsPhotoAlbum'}` | Fixed columns, photos in order | Reading order matters |
+| `{'MasonryPhotoAlbum'}` | Columns balanced by height | Tall and wide mixed, no gaps |
 
 The lightbox is plugin-based, and each plugin is opt-in:
 
-        Plugin
-        Adds
-        Extra CSS
-
-        {'Captions'}
-        Title and description overlay
-        {'captions.css'}
-
-        {'Counter'}
-        "3 / 12" position
-        {'counter.css'}
-
-        {'Thumbnails'}
-        Filmstrip
-        {'thumbnails.css'}
-
-        {'Zoom'}
-        Pinch and wheel zoom
-        —
-
-        {'Fullscreen'}
-        Fullscreen API
-        —
-
-        {'Slideshow'}
-        Timed auto-advance
-        —
-
-        {'Download'}
-        Save the original
-        —
-
-        {'Video'}
-        Video slides alongside photos
-        —
+| Plugin | Adds | Extra CSS |
+| --- | --- | --- |
+| `{'Captions'}` | Title and description overlay | `{'captions.css'}` |
+| `{'Counter'}` | "3 / 12" position | `{'counter.css'}` |
+| `{'Thumbnails'}` | Filmstrip | `{'thumbnails.css'}` |
+| `{'Zoom'}` | Pinch and wheel zoom | — |
+| `{'Fullscreen'}` | Fullscreen API | — |
+| `{'Slideshow'}` | Timed auto-advance | — |
+| `{'Download'}` | Save the original | — |
+| `{'Video'}` | Video slides alongside photos | — |
 
 ## Notes
 
@@ -264,12 +287,10 @@ backdrop (`backdrop-filter: blur(16px)`).
 safe anywhere. The album has a dedicated `react-photo-album/ssr` entry point for
 server-rendered layout if the first paint matters to you.
 
-**Next.js images.** Both examples use a plain `` so the code runs unchanged
+**Next.js images.** Both examples use a plain `<img>` so the code runs unchanged
 in any React app. To route through `next/image`, pass a custom image renderer via
 the album's `render.image` — the layout maths is unaffected.
 
 ---
 
-**Component Path:** `[framework]\third-party\gallery\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/third-party/gallery

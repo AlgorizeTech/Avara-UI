@@ -1413,6 +1413,16 @@ function ExampleCard({
             <div className="h-5 w-5 rounded-full border-2 border-foreground/15 border-t-transparent animate-spin" />
           </div>
         )}
+        {/* The Usage tab only exists once the Sandbox mounts, which takes
+            JavaScript. Readers without it, AI crawlers among them, get the
+            snippet here instead of a spinner. */}
+        {!mounted && usage && (
+          <noscript>
+            <pre>
+              <code>{usage}</code>
+            </pre>
+          </noscript>
+        )}
       </div>
     </section>
   );

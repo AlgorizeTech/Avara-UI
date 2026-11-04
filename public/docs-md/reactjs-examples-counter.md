@@ -1,3 +1,9 @@
+---
+title: "Interactive Counter Example"
+description: "This example demonstrates a simple counter component using React's useState hook in a Next.js application."
+url: https://avaraui.com/docs/nextjs/examples/counter
+---
+
 # Interactive Counter Example
 
 This example demonstrates a simple counter component using React's useState hook in a Next.js application.
@@ -32,22 +38,30 @@ See implementation in: `src/app/docs/[framework]/examples/counter/app-page.tsx`
 // src/app/docs/[framework]/examples/counter/counter.tsx
 'use client'
 
+import { useState } from 'react'
+
 export default function Counter() {
   const [count, setCount] = useState(0)
   
   return (
-    
-      Simple Counter
-      {count}
-      
-         setCount(count + 1)}
+    <div className="p-6 rounded-lg border border-border max-w-md mx-auto">
+      <h2 className="text-2xl font-semibold mb-4">Simple Counter</h2>
+      <p className="text-4xl font-semibold text-center my-6">{count}</p>
+      <div className="flex justify-center gap-4">
+        <button 
+          className="px-4 py-2 bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors"
+          onClick={() => setCount(count + 1)}
         >
           Increment
-        
-         setCount(0)}
+        </button>
+        <button 
+          className="px-4 py-2 bg-muted text-foreground rounded hover:bg-foreground/10 transition-colors"
+          onClick={() => setCount(0)}
         >
           Reset
-
+        </button>
+      </div>
+    </div>
   )
 }
 ```
@@ -58,14 +72,18 @@ export default function Counter() {
 
 ```tsx
 // src/app/docs/[framework]/examples/counter/app-page.tsx
+import Counter from './counter-component'
+import { Button } from '@/components/ui/button'
 
 export default function CounterApp() {
   return (
-    
-      Counter App
-
-        Get Started
-
+    <div className="p-6 rounded-lg border border-border max-w-md mx-auto">
+      <h1 className="text-3xl font-semibold mb-6 text-center">Counter App</h1>
+      <Counter />
+      <div className="mt-6 text-center">
+        <Button variant="primary">Get Started</Button>
+      </div>
+    </div>
   )
 }
 ```
@@ -76,6 +94,9 @@ export default function CounterApp() {
 // src/app/docs/[framework]/examples/counter/counter-component.tsx
 'use client'
 
+import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+
 interface CounterProps {
   initialCount?: number
 }
@@ -84,13 +105,14 @@ export default function Counter({ initialCount = 0 }: CounterProps) {
   const [count, setCount] = useState(initialCount)
   
   return (
-    
-      {count}
-      
-         setCount(count + 1)}>Increment
-         setCount(count - 1)}>Decrement
-         setCount(initialCount)}>Reset
-
+    <div className="text-center">
+      <p className="text-5xl font-semibold my-6">{count}</p>
+      <div className="flex justify-center gap-3">
+        <Button onClick={() => setCount(count + 1)}>Increment</Button>
+        <Button variant="secondary" onClick={() => setCount(count - 1)}>Decrement</Button>
+        <Button variant="outline" onClick={() => setCount(initialCount)}>Reset</Button>
+      </div>
+    </div>
   )
 }
 ```
@@ -101,7 +123,10 @@ export default function Counter({ initialCount = 0 }: CounterProps) {
 // src/app/docs/[framework]/examples/counter/button-component.tsx
 'use client'
 
-interface ButtonProps extends ButtonHTMLAttributes {
+import { ButtonHTMLAttributes } from 'react'
+import { cn } from '@/lib/utils'
+
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'outline'
 }
 
@@ -120,9 +145,12 @@ export function Button({
   }
   
   return (
-    
+    <button
+      className={cn(baseClasses, variantClasses[variant], className)}
+      {...props}
+    >
       {children}
-    
+    </button>
   )
 }
 ```
@@ -147,6 +175,4 @@ export function Button({
 
 ---
 
-**Component Path:** `[framework]\examples\counter\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/examples/counter

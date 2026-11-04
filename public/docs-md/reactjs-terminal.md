@@ -1,4 +1,8 @@
-export const metadata = docsPageMetadata("terminal");
+---
+title: "Terminal Snippet"
+description: "A dependency-free terminal window in the macOS style for code in any language, in glass and minimal styles, with optional header controls."
+url: https://avaraui.com/docs/nextjs/terminal
+---
 
 # Terminal Snippet
 
@@ -8,74 +12,30 @@ If you are building a documentation site, a developer portfolio, or writing tech
 
 Pass a raw `code` string and the block handles the window chrome, language badge, overflow scrolling and copy button.
 
-export const pythonSource = `const source = \`import httpx
+## Terminal
 
-def fetch(url: str) -> dict:
-    response = httpx.get(url, timeout=10)
-    response.raise_for_status()
-    return response.json()
+Mac-style window controls, a language badge and a copy button, all from one string.
 
-if __name__ == "__main__":
-    print(fetch("https://api.example.com/status"))\`;`;
+- Pass `code` as the whole snippet — newlines in the string become terminal lines.
+- `copyable` is on by default and renders the copy button.
 
-export const tsxSource = `const source = \`import { cn } from "@/lib/utils";
+```tsx
+import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
 
-export function Button({ className, ...props }) {
-  return (
-    
-  );
-}\`;`;
-
-export const usageDefault = `import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
-
-const installCommand = \`npx create-next-app@latest my-app --typescript --tailwind
+const installCommand = `npx create-next-app@latest my-app --typescript --tailwind
 cd my-app
-npm run dev\`;
+npm run dev`;
 
 export default function Docs() {
   return (
-    
+    <TerminalBlock
+      code={installCommand}
+      language="bash"
+      filename="terminal"
+    />
   );
-}`;
-
-export const usageLanguages = `import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
-
-${pythonSource}
-
-export default function PythonTerminal() {
-  // \`language\` drives the badge; the block never ships a heavyweight
-  // highlighter, so any language string is safe to pass.
-  return ;
-}`;
-
-export const usageGlass = `import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
-
-${tsxSource}
-
-export default function GlassTerminal() {
-  return (
-    // Backdrop-blurred chrome — put it over a gradient.
-
-  );
-}`;
-
-export const usageMinimal = `import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
-
-${tsxSource}
-
-export default function MinimalTerminal() {
-  // Drops the window controls and the border for inline snippets.
-  return ;
-}`;
-
-export const usageBare = `import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
-
-${tsxSource}
-
-export default function BareTerminal() {
-  // No filename header, no copy button — just the code.
-  return ;
-}`;
+}
+```
 
 ## Installation
 
@@ -94,76 +54,132 @@ npx shadcn@latest add @avara-ui/terminal
 
 ## Examples
 
+### Any language
+
+- `language="python"` sets the badge and highlighting. Defaults to `bash`; the block ships no heavyweight highlighter, so any string is safe.
+- `filename` is the label beside the badge.
+
+```tsx
+import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
+
+const source = `import httpx
+
+def fetch(url: str) -> dict:
+    response = httpx.get(url, timeout=10)
+    response.raise_for_status()
+    return response.json()
+
+if __name__ == "__main__":
+    print(fetch("https://api.example.com/status"))`;
+
+export default function PythonTerminal() {
+  // `language` drives the badge; the block never ships a heavyweight
+  // highlighter, so any language string is safe to pass.
+  return <TerminalBlock code={source} language="python" filename="main.py" />;
+}
+```
+
+### Glass
+
+- Set `variant="glass"` to blur whatever sits behind the window — ideal over imagery.
+
+```tsx
+import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
+
+const source = `import { cn } from "@/lib/utils";
+
+export function Button({ className, ...props }) {
+  return (
+    <button
+      className={cn(
+        "h-10 rounded-lg bg-zinc-900 px-4 text-sm font-medium text-white",
+        className,
+      )}
+      {...props}
+    />
+  );
+}`;
+
+export default function GlassTerminal() {
+  return (
+    // Backdrop-blurred chrome — put it over a gradient.
+    <div className="p-12 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
+      <TerminalBlock
+        code={source}
+        language="tsx"
+        filename="Button.tsx"
+        variant="glass"
+      />
+    </div>
+  );
+}
+```
+
+### Minimal
+
+- Set `variant="minimal"` to strip the chrome down to the code itself.
+
+```tsx
+import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
+
+const source = `import { cn } from "@/lib/utils";
+
+export function Button({ className, ...props }) {
+  return (
+    <button
+      className={cn(
+        "h-10 rounded-lg bg-zinc-900 px-4 text-sm font-medium text-white",
+        className,
+      )}
+      {...props}
+    />
+  );
+}`;
+
+export default function MinimalTerminal() {
+  // Drops the window controls and the border for inline snippets.
+  return <TerminalBlock code={source} language="tsx" variant="minimal" />;
+}
+```
+
+### Without header controls
+
+- Omit `filename` and set `copyable={false}` for a bare, read-only block.
+
+```tsx
+import { TerminalBlock } from "@/components/custom/blocks/TerminalBlock";
+
+const source = `import { cn } from "@/lib/utils";
+
+export function Button({ className, ...props }) {
+  return (
+    <button
+      className={cn(
+        "h-10 rounded-lg bg-zinc-900 px-4 text-sm font-medium text-white",
+        className,
+      )}
+      {...props}
+    />
+  );
+}`;
+
+export default function BareTerminal() {
+  // No filename header, no copy button — just the code.
+  return <TerminalBlock code={source} language="tsx" copyable={false} />;
+}
+```
+
 ## Props Reference
 
-        Component
-        Prop
-        Type
-        Default
-        Description
-
-          TerminalBlock
-
-          code
-
-          {`string`}
-
-          {`Required`}
-
-          The snippet rendered inside the window. Newlines in the string become terminal lines.
-
-          TerminalBlock
-
-          language
-
-          {`string`}
-
-          {`"bash"`}
-
-          Drives the syntax highlighting and the badge shown in the header.
-
-          TerminalBlock
-
-          filename
-
-          {`string`}
-
-          {`undefined`}
-
-          Label beside the badge. Omit it and the header keeps only the window controls.
-
-          TerminalBlock
-
-          copyable
-
-          {`boolean`}
-
-          {`true`}
-
-          Renders the copy button. Set it false for a read-only block.
-
-          TerminalBlock
-
-          variant
-
-          {`"default" | "glass" | "minimal"`}
-
-          {`"default"`}
-
-          Surface treatment of the window chrome.
-
-          TerminalBlock
-
-          color
-
-          {`"primary" | "indigo" | "rose" | "emerald" | "zinc" | string`}
-
-          {`"primary"`}
-
-          Accent for the language badge and border. Unrecognised values fall back to "primary".
+| Component | Prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `TerminalBlock` | `code` | `string` | `Required` | The snippet rendered inside the window. Newlines in the string become terminal lines. |
+| `TerminalBlock` | `language` | `string` | `"bash"` | Drives the syntax highlighting and the badge shown in the header. |
+| `TerminalBlock` | `filename` | `string` | `undefined` | Label beside the badge. Omit it and the header keeps only the window controls. |
+| `TerminalBlock` | `copyable` | `boolean` | `true` | Renders the copy button. Set it false for a read-only block. |
+| `TerminalBlock` | `variant` | `"default" \| "glass" \| "minimal"` | `"default"` | Surface treatment of the window chrome. |
+| `TerminalBlock` | `color` | `"primary" \| "indigo" \| "rose" \| "emerald" \| "zinc" \| string` | `"primary"` | Accent for the language badge and border. Unrecognised values fall back to `"primary"`. |
 
 ---
 
-**Component Path:** `[framework]\terminal\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/terminal

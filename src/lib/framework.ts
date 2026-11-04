@@ -81,6 +81,10 @@ export const docsHref = (framework: Framework, slug: string) =>
   // to its parent, so the `/index` form is never a final URL.
   slug === "index" ? `/docs/${framework}` : `/docs/${framework}/${slug}`;
 
+/** A docs page's Markdown mirror, which src/scripts/build-md-files.ts publishes. */
+export const docsMarkdownHref = (framework: Framework, slug: string) =>
+  `/docs-md/${framework}-${slug.replace(/\//g, "-")}.md`;
+
 /**
  * Reads the framework out of a docs pathname.
  *

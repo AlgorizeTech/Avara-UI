@@ -1,7 +1,8 @@
-export const metadata = docsPageMetadata("third-party", {
-  title: "Third Party Integration",
-  description: `Worked examples pairing Avara UI with the most widely used React charting, table, carousel, select and lightbox libraries.`
-});
+---
+title: "Third Party Integration"
+description: "Avara UI does not try to be every library. Where a problem already has a well-solved, widely used answer — charting, virtualised data grids, gesture carousels…"
+url: https://avaraui.com/docs/nextjs/third-party
+---
 
 # Third Party Integration
 
@@ -16,29 +17,13 @@ copy it, install the packages listed on the page, and it runs.
 
 ## What each page covers
 
-        Page
-        Libraries
-        The integration point
-
-        Charts
-        Recharts, Chart.js
-        Design tokens read out of CSS and handed to the chart as plain colour values
-
-        Data Tables
-        TanStack Table, AG Grid
-        A headless table rendered entirely with the {'Table'} primitives; AG Grid themed through its Theming API
-
-        Carousels
-        Embla, Swiper
-        {'Card'} slides and {'Button'} controls, with Swiper's own chrome re-pointed at the tokens
-
-        Select
-        react-select
-        {'unstyled'} plus {'classNames'}, so the combobox matches {'Input'} with no CSS overrides
-
-        Gallery & Lightbox
-        react-photo-album, yet-another-react-lightbox
-        Album layout and viewer dropped inside a {'Card'}, with your own hover affordance
+| Page | Libraries | The integration point |
+| --- | --- | --- |
+| [Charts](https://avaraui.com/docs/nextjs/third-party/charts) | Recharts, Chart.js | Design tokens read out of CSS and handed to the chart as plain colour values |
+| [Data Tables](https://avaraui.com/docs/nextjs/third-party/tables) | TanStack Table, AG Grid | A headless table rendered entirely with the `{'Table'}` primitives; AG Grid themed through its Theming API |
+| [Carousels](https://avaraui.com/docs/nextjs/third-party/carousel) | Embla, Swiper | `{'Card'}` slides and `{'Button'}` controls, with Swiper's own chrome re-pointed at the tokens |
+| [Select](https://avaraui.com/docs/nextjs/third-party/select) | react-select | `{'unstyled'}` plus `{'classNames'}`, so the combobox matches `{'Input'}` with no CSS overrides |
+| [Gallery & Lightbox](https://avaraui.com/docs/nextjs/third-party/gallery) | react-photo-album, yet-another-react-lightbox | Album layout and viewer dropped inside a `{'Card'}`, with your own hover affordance |
 
 ## The pattern behind all of them
 
@@ -54,7 +39,7 @@ design system it can contradict.
 **Bridge tokens as values, not classes.** A canvas chart or a grid theme cannot
 read `text-muted-foreground`. Read the custom property once and hand the library
 the resolved value — see the shared `useChartTokens` hook on the
-Charts page, which the AG Grid
+[Charts](https://avaraui.com/docs/nextjs/third-party/charts) page, which the AG Grid
 example reuses unchanged.
 
 **Prefer the library's unstyled or headless mode.** `unstyled` on react-select,
@@ -68,35 +53,17 @@ Each page repeats the install command for its own libraries. The whole set is:
 
 You almost certainly do not want all of them — install per page.
 
-        Package
-        Version tested
-
-        {'recharts'}
-        3.x
-
-        {'chart.js'} / {'react-chartjs-2'}
-        4.x / 5.x
-
-        {'@tanstack/react-table'}
-        9.x
-
-        {'ag-grid-react'} / {'ag-grid-community'}
-        36.x
-
-        {'swiper'}
-        14.x
-
-        {'embla-carousel-react'}
-        8.x
-
-        {'react-select'}
-        5.x
-
-        {'yet-another-react-lightbox'}
-        3.x
-
-        {'react-photo-album'}
-        3.x
+| Package | Version tested |
+| --- | --- |
+| `{'recharts'}` | 3.x |
+| `{'chart.js'}` / `{'react-chartjs-2'}` | 4.x / 5.x |
+| `{'@tanstack/react-table'}` | 9.x |
+| `{'ag-grid-react'}` / `{'ag-grid-community'}` | 36.x |
+| `{'swiper'}` | 14.x |
+| `{'embla-carousel-react'}` | 8.x |
+| `{'react-select'}` | 5.x |
+| `{'yet-another-react-lightbox'}` | 3.x |
+| `{'react-photo-album'}` | 3.x |
 
 Where a major version changed something these examples depend on — TanStack
 Table v9's explicit feature registration, AG Grid v33's move from CSS themes to
@@ -109,13 +76,11 @@ a Vite app and in the Next.js App Router. Two of the libraries touch browser-onl
 APIs at import time, which matters only under server rendering:
 
 - **Chart.js** registers its scales and elements on the module, and **AG Grid**
-  registers its modules the same way. Both are safe in a client component; keep
-  the `"use client"` directive at the top of the file.
+registers its modules the same way. Both are safe in a client component; keep
+the `"use client"` directive at the top of the file.
 - The lightbox measures the viewport on open. It renders nothing until `open` is
-  true, so there is no server-render hazard.
+true, so there is no server-render hazard.
 
 ---
 
-**Component Path:** `[framework]\third-party\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/third-party

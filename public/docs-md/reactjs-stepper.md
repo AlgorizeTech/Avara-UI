@@ -1,4 +1,8 @@
-export const metadata = docsPageMetadata("stepper");
+---
+title: "Stepper"
+description: "A production-grade, highly animated multi-step stepper and wizard component built on plain CSS transitions and the Web Animations API — no animation library."
+url: https://avaraui.com/docs/nextjs/stepper
+---
 
 # Stepper
 
@@ -8,42 +12,17 @@ Unlike basic UI placeholders, this engine is designed to handle **real form stat
 
 `Stepper` (the tracker) and `StepperContent` (the sliding payload) are decoupled — they only share the `steps` array and a `currentStep` number that you own, so `Stepper` also works alone as a progress header above content you lay out yourself. Validation, submission and error handling stay in your component.
 
-export const stepperPanels = `// The three step bodies — swap them for your own fields.
-function Field({
-  label,
-  placeholder,
-}: {
-  label: string;
-  placeholder: string;
-}) {
-  return (
-    
-      {label}
+## Stepper
 
-  );
-}
+Per-step validation blocks Next, and the Review step can simulate a failed submit.
 
-function ProfileForm() {
-  return (
+- Pass `steps` as `{ id, title }[]` — `description`, `icon` and `content` are optional per step.
+- `currentStep` is the zero-indexed active step, and drives the progress line fill.
+- `onStepChange` makes the circles clickable. Omit it and they become static indicators.
+- `color` takes any CSS colour — hex, `rgb()`, `oklch()`, `var(--token)` — applied inline. A Tailwind class works for the line and circles, but the pulse ring is skipped, since its border colour would need a class Tailwind's scanner never sees.
 
-  );
-}
-
-function WorkspaceForm() {
-  return (
-
-  );
-}
-
-function ReviewPanel() {
-  return (
-    
-      Everything looks good — hit Submit to finish setting up your workspace.
-    
-  );
-}`;
-
-export const usageFlow = `// The Workspace step picks a role with the Select block:
+```tsx
+// The Workspace step picks a role with the Select block:
 //   npx shadcn@latest add @avara-ui/select
 
 const PRIMARY_ROLE_OPTIONS = [
@@ -77,13 +56,20 @@ function Field({
   type?: string;
 }) {
   return (
-
-        {label} *
-
+    <label className="flex flex-col gap-1.5 w-full">
+      <span className="text-xs font-semibold text-foreground uppercase tracking-wider">
+        {label} <span className="text-destructive">*</span>
+      </span>
+      <div className="relative flex items-center">
         {Icon && (
-
+          <div className="absolute left-3.5 text-muted-foreground pointer-events-none">
+            <Icon className="w-4 h-4" />
+          </div>
         )}
-         onChange(e.target.value)}
+        <input
+          type={type}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           className={cn(
             // Focus is a soft primary glow: the border takes the colour and a
@@ -95,13 +81,14 @@ function Field({
               : "border-input hover:border-foreground/20 focus:border-primary/65 focus:shadow-[0_0_0_4px_color-mix(in_oklab,var(--primary)_16%,transparent)]",
           )}
         />
-      
+      </div>
       {error && (
-
+        <span className="flex items-center gap-1 text-xs font-semibold text-destructive mt-0.5">
+          <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
           {error}
-        
+        </span>
       )}
-    
+    </label>
   );
 }
 
@@ -116,12 +103,13 @@ function StepCard({
   children: React.ReactNode;
 }) {
   return (
-
-        {title}
-        {subtitle}
-      
+    <div className="w-full p-6 sm:p-8 bg-card text-card-foreground rounded-2xl border border-foreground/[0.06] shadow-[0_1px_2px_rgb(0_0_0/0.04),0_8px_24px_-12px_rgb(0_0_0/0.12)] flex flex-col gap-5">
+      <div>
+        <h3 className="text-lg font-semibold text-foreground">{title}</h3>
+        <p className="text-xs text-muted-foreground">{subtitle}</p>
+      </div>
       {children}
-    
+    </div>
   );
 }
 
@@ -133,11 +121,11 @@ type FormData = {
   password: string;
   confirmPassword: string;
 };
-type Errors = Partial>;
+type Errors = Partial<Record<keyof FormData, string>>;
 
 export default function OnboardingWizard() {
   const [step, setStep] = useState(0);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     fullName: "",
     email: "",
     company: "",
@@ -145,7 +133,7 @@ export default function OnboardingWizard() {
     password: "",
     confirmPassword: "",
   });
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<Errors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [simulateError, setSimulateError] = useState(false);
   const [submitError, setSubmitError] = useState("");
@@ -192,7 +180,26 @@ export default function OnboardingWizard() {
       description: "Personal details",
       icon: User,
       content: (
-
+        <StepCard title="Personal Information" subtitle="Enter your contact details to begin setting up your account.">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field
+              label="Full Name"
+              icon={User}
+              placeholder="e.g. Alex Rivera"
+              value={formData.fullName}
+              onChange={set("fullName")}
+              error={errors.fullName}
+            />
+            <Field
+              label="Work Email"
+              icon={Mail}
+              type="email"
+              placeholder="alex@company.com"
+              value={formData.email}
+              onChange={set("email")}
+            />
+          </div>
+        </StepCard>
       ),
     },
     {
@@ -201,9 +208,30 @@ export default function OnboardingWizard() {
       description: "Organization",
       icon: Building2,
       content: (
-
+        <StepCard title="Workspace Setup" subtitle="Name your organization and select your primary role.">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field
+              label="Company Name"
+              icon={Building2}
+              placeholder="e.g. Acme Corp"
+              value={formData.company}
+              onChange={set("company")}
+              error={errors.company}
+            />
+            <div className="flex flex-col gap-1.5 w-full">
+              <label className="text-xs font-semibold text-foreground uppercase tracking-wider">
                 Primary Role
-
+              </label>
+              <SelectBlock
+                options={PRIMARY_ROLE_OPTIONS}
+                value={formData.role}
+                onChange={set("role")}
+                variant="default"
+                placeholder="Select your role"
+              />
+            </div>
+          </div>
+        </StepCard>
       ),
     },
     {
@@ -212,7 +240,27 @@ export default function OnboardingWizard() {
       description: "Credentials",
       icon: ShieldCheck,
       content: (
-
+        <StepCard title="Security Credentials" subtitle="Create a secure password for your workspace access.">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field
+              label="Password"
+              icon={Lock}
+              type="password"
+              placeholder="Min 6 characters"
+              value={formData.password}
+              onChange={set("password")}
+              error={errors.password}
+            />
+            <Field
+              label="Confirm Password"
+              icon={Lock}
+              type="password"
+              placeholder="Re-type password"
+              value={formData.confirmPassword}
+              onChange={set("confirmPassword")}
+            />
+          </div>
+        </StepCard>
       ),
     },
     {
@@ -221,33 +269,49 @@ export default function OnboardingWizard() {
       description: "Confirm & Submit",
       icon: CheckCircle2,
       content: (
-
-              Name:
-              {formData.fullName || "—"}
-
-              Email:
-              {formData.email || "—"}
-
-              Company:
-              {formData.company || "—"}
-
-              Role:
-              {formData.role || "—"}
+        <StepCard title="Review Summary" subtitle="Please verify your details before submitting the onboarding payload.">
+          <div className="grid grid-cols-2 gap-4 bg-muted/50 p-4 rounded-xl border border-border text-xs">
+            <div>
+              <span className="text-muted-foreground block font-semibold">Name:</span>
+              <span className="font-semibold text-foreground text-sm">{formData.fullName || "—"}</span>
+            </div>
+            <div>
+              <span className="text-muted-foreground block font-semibold">Email:</span>
+              <span className="font-semibold text-foreground text-sm truncate block">{formData.email || "—"}</span>
+            </div>
+            <div>
+              <span className="text-muted-foreground block font-semibold">Company:</span>
+              <span className="font-semibold text-foreground text-sm">{formData.company || "—"}</span>
+            </div>
+            <div>
+              <span className="text-muted-foreground block font-semibold">Role:</span>
+              <span className="font-semibold text-foreground text-sm">{formData.role || "—"}</span>
+            </div>
+          </div>
 
           {submitError && (
-
-                Submission Failed
-                {submitError}
-
+            <div className="p-4 bg-destructive/10 border border-destructive/30 rounded-xl flex items-start gap-3 text-destructive">
+              <XCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+              <div className="text-xs">
+                <strong className="font-semibold block mb-0.5">Submission Failed</strong>
+                <span>{submitError}</span>
+              </div>
+            </div>
           )}
 
-               setSimulateError(e.target.checked)}
+          <div className="pt-2 border-t border-border flex items-center justify-between">
+            <label className="flex items-center gap-2 cursor-pointer select-none text-xs font-semibold text-muted-foreground">
+              <input
+                type="checkbox"
+                checked={simulateError}
+                onChange={(e) => setSimulateError(e.target.checked)}
                 className="rounded border-input accent-primary"
               />
               Simulate Server Error on Submit
-            
-            DEBUG_MODE
-
+            </label>
+            <span className="text-[10px] text-muted-foreground font-mono">DEBUG_MODE</span>
+          </div>
+        </StepCard>
       ),
     },
   ];
@@ -255,39 +319,59 @@ export default function OnboardingWizard() {
   return (
     // A whisper of the primary on the shell separates it from a white page;
     // the white step cards float on it.
-    
+    <div className="max-w-3xl mx-auto flex flex-col gap-8 rounded-3xl p-6 sm:p-10 border bg-[oklch(from_var(--primary)_0.975_calc(c*0.12)_h)] border-[oklch(from_var(--primary)_0.91_calc(c*0.2)_h)] dark:bg-[oklch(from_var(--primary)_0.21_calc(c*0.1)_h)] dark:border-foreground/10 shadow-[0_1px_2px_rgb(0_0_0/0.04),0_20px_48px_-20px_rgb(0_0_0/0.18)]">
       {/* onStepChange is what makes the circles clickable — gate it on validation */}
-       {
-          if (target 
+      <Stepper
+        steps={steps}
+        currentStep={step}
+        onStepChange={(target) => {
+          if (target < step || validateStep(step)) setStep(target);
+        }}
+      />
 
-         setStep((s) => s - 1)}
+      <StepperContent steps={steps} currentStep={step} />
+
+      <div className="flex items-center justify-between pt-6 border-t border-border">
+        <button
+          type="button"
+          onClick={() => setStep((s) => s - 1)}
           disabled={step === 0 || isSubmitting}
           className={BACK_BTN}
         >
-          
+          <ChevronLeft className="w-4 h-4" />
           Back
+        </button>
 
         {step === steps.length - 1 ? (
-          
+          <button
+            type="button"
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+            className={NEXT_BTN}
+          >
             {isSubmitting ? (
               <>
-                
-                Submitting...
-              
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span>Submitting...</span>
+              </>
             ) : (
               <>
-                Submit Onboarding
-
+                <span>Submit Onboarding</span>
+                <Check className="w-4 h-4 stroke-[3]" />
+              </>
             )}
-          
+          </button>
         ) : (
-          
-            Next Step
-
+          <button type="button" onClick={handleNext} className={NEXT_BTN}>
+            <span>Next Step</span>
+            <ChevronRight className="w-4 h-4" />
+          </button>
         )}
-
+      </div>
+    </div>
   );
-}`;
+}
+```
 
 ## Installation
 
@@ -307,22 +391,27 @@ npx shadcn@latest add @avara-ui/stepper
 ## Features
 Learn about the Stepper component's linear progression features, providing clear visual feedback for multi-step forms and processes.
 
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
+### Customizable
 
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+Easily adapt the component's styling and behavior to fit your application's unique design system.
 
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+### Accessible
 
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
+Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+### Responsive
+
+Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+### Performant
+
+Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 
-    Usage Guidelines
-    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+### Usage Guidelines
+
+Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
 ## Props Reference
 
@@ -330,135 +419,36 @@ Learn about the Stepper component's linear progression features, providing clear
 
 The visual navigation header component that renders step indicators and the animated progress fill line.
 
-        Prop
-        Type
-        Default
-        Description
-
-          steps
-
-          Step[]
-
-          Required
-
-          An array of step objects defining the sequence. Each object requires an id and title. description, icon, and content are optional.
-
-          currentStep
-
-          number
-
-          Required
-
-          The active zero-indexed step of the sequence. Controls the progress line fill and active/completed indicator states.
-
-          onStepChange
-
-          (step: number) =&gt; void
-
-          undefined
-
-          Callback fired when a user clicks directly on a step circle in the header. If omitted, the steps become static visual indicators.
-
-          color
-
-          string
-
-          "var(--primary)"
-
-          The active theme color for the progress line, active/completed circles and pulse ring. Supports any CSS color value or Tailwind background class.
-
-          className
-
-          string
-
-          undefined
-
-          Custom Tailwind CSS classes to apply to the outermost navigation header wrapper.
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `steps` | `Step[]` | Required | An array of step objects defining the sequence. Each object requires an `id` and `title`. `description`, `icon`, and `content` are optional. |
+| `currentStep` | `number` | Required | The active zero-indexed step of the sequence. Controls the progress line fill and active/completed indicator states. |
+| `onStepChange` | `(step: number) => void` | `undefined` | Callback fired when a user clicks directly on a step circle in the header. If omitted, the steps become static visual indicators. |
+| `color` | `string` | `"var(--primary)"` | The active theme color for the progress line, active/completed circles and pulse ring. Supports any CSS color value or Tailwind background class. |
+| `className` | `string` | `undefined` | Custom Tailwind CSS classes to apply to the outermost navigation header wrapper. |
 
 ### StepperContent
 
 The sliding content container component that handles the animated sliding entrance of each step payload.
 
-        Prop
-        Type
-        Default
-        Description
-
-          steps
-
-          Step[]
-
-          Required
-
-          The identical array passed to the header component. Renders the active step's content node.
-
-          currentStep
-
-          number
-
-          Required
-
-          The active zero-indexed step used to identify which payload to render and determine the sliding transition direction.
-
-          className
-
-          string
-
-          undefined
-
-          Custom Tailwind CSS classes applied to the sliding content wrapper container.
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `steps` | `Step[]` | Required | The identical array passed to the header component. Renders the active step's `content` node. |
+| `currentStep` | `number` | Required | The active zero-indexed step used to identify which payload to render and determine the sliding transition direction. |
+| `className` | `string` | `undefined` | Custom Tailwind CSS classes applied to the sliding content wrapper container. |
 
 ### Step (TypeScript Interface)
 
-The TypeScript interface defining the structure of each object in the steps array prop.
+The TypeScript interface defining the structure of each object in the `steps` array prop.
 
-        Property
-        Type
-        Required
-        Description
-
-          id
-
-          string
-
-          Yes
-
-          A unique identifier string required for safe React list rendering.
-
-          title
-
-          string
-
-          Yes
-
-          Primary headline text displayed prominently below the step circle indicator.
-
-          description
-
-          string
-
-          No
-
-          Optional secondary helper text displayed directly underneath the step title on larger screens.
-
-          icon
-
-          React.ElementType
-
-          No
-
-          Optional Lucide React icon or custom SVG component rendered inside the step circle indicator instead of a default number.
-
-          content
-
-          React.ReactNode
-
-          No
-
-          The JSX/UI payload (e.g., input forms, review summaries) rendered inside StepperContent when this step is active.
+| Property | Type | Required | Description |
+| --- | --- | --- | --- |
+| `id` | `string` | Yes | A unique identifier string required for safe React list rendering. |
+| `title` | `string` | Yes | Primary headline text displayed prominently below the step circle indicator. |
+| `description` | `string` | No | Optional secondary helper text displayed directly underneath the step title on larger screens. |
+| `icon` | `React.ElementType` | No | Optional Lucide React icon or custom SVG component rendered inside the step circle indicator instead of a default number. |
+| `content` | `React.ReactNode` | No | The JSX/UI payload (e.g., input forms, review summaries) rendered inside `StepperContent` when this step is active. |
 
 ---
 
-**Component Path:** `[framework]\stepper\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/stepper

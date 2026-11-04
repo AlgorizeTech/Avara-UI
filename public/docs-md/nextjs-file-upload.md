@@ -1,8 +1,12 @@
-export const metadata = docsPageMetadata("file-upload");
+---
+title: "UX Engineered Upload Flow"
+description: "A file upload dropzone with an upload queue and upload states, plus a simple file input and a folder drop target. GSAP and Motion builds."
+url: https://avaraui.com/docs/nextjs/file-upload
+---
 
 # UX Engineered Upload Flow
 
-A highly-orchestrated, premium file upload component suite based on modern UX engineering principles. It goes far beyond a native `` by addressing five distinct user feedback signals.
+A highly-orchestrated, premium file upload component suite based on modern UX engineering principles. It goes far beyond a native `<input type="file">` by addressing five distinct user feedback signals.
 
 1. **Drag Feedback:** The dropzone reacts physically (glow, border shift, icon scale) to drag events.
 2. **Honest Progress:** Replaces mystery spinners with exact percentage tracking, dynamic time estimations, and file metadata.
@@ -14,11 +18,22 @@ The suite is two pieces you compose yourself: a `Dropzone` that hands you `File[
 
 Three upload surfaces live on this page, and each installs separately: the `Dropzone` + `UploadItem` suite, the `Input` block's built-in file mode for simple forms, and the `Folder` block as a playful drop target. Each section below ends with its own install.
 
-export const usageDropzone = `"use client";
+## Dropzone and upload queue
+
+The full suite: a `Dropzone` that hands you `File[]`, and an `UploadItem` for each row of your own queue state.
+
+### Dropzone
+
+- Use `accept` with a native input accept string such as `"image/*,application/pdf"` to restrict types.
+- `maxSize={50}` is the limit in **megabytes**, and is echoed in the helper text automatically.
+
+```tsx
+"use client";
+
 
 // Rows fade up in; a removed row fades up out and closes its gap, so the
-// rows under it slide up. \`animationend\` then drops it from state.
-const queueCss = \`
+// rows under it slide up. `animationend` then drops it from state.
+const queueCss = `
 .upload-row { display: grid; grid-template-rows: 1fr; margin-top: 8px;
   animation: upload-row-in 0.3s cubic-bezier(0, 0, 0.58, 1) backwards; }
 .upload-row > * { min-height: 0; }
@@ -27,11 +42,11 @@ const queueCss = \`
 @keyframes upload-row-out {
   to { opacity: 0; transform: translateY(-20px); grid-template-rows: 0fr; margin-top: 0; }
 }
-\`;
+`;
 
 export default function FileUploader() {
-  const [files, setFiles] = useState([]);
-  const [leaving, setLeaving] = useState([]);
+  const [files, setFiles] = useState<FileUploadState[]>([]);
+  const [leaving, setLeaving] = useState<string[]>([]);
 
   const handleFilesDrop = (droppedFiles: File[]) => {
     const newItems: FileUploadState[] = droppedFiles.map((file) => ({
@@ -56,27 +71,49 @@ export default function FileUploader() {
   };
 
   return (
+    <div className="w-full max-w-md flex flex-col gap-6 mx-auto">
+      <Dropzone
+        onFilesDrop={handleFilesDrop}
+        accept="image/*,application/pdf"
+        maxSize={5}
+      />
 
       {files.length > 0 && (
-        
-          {queueCss}
-          
-            Uploaded Files ({files.length - leaving.length})
+        <div className="flex flex-col">
+          <style>{queueCss}</style>
+          <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground px-1">
+            <span>Uploaded Files ({files.length - leaving.length})</span>
+          </div>
 
           {files.map((item) => (
-             {
+            <div
+              key={item.id}
+              className="upload-row"
+              data-leaving={leaving.includes(item.id) || undefined}
+              onAnimationEnd={(e) => {
                 if (e.target === e.currentTarget && leaving.includes(item.id)) handleGone(item.id);
               }}
             >
-
+              <div>
+                <UploadItem item={item} onRemove={handleRemove} />
+              </div>
+            </div>
           ))}
-        
+        </div>
       )}
-    
+    </div>
   );
-}`;
+}
+```
 
-export const usageStates = `"use client";
+### Upload states
+
+- `status` drives the whole row — `idle`, `uploading`, `paused`, `error` and `success` each pick their own colours, icon and messaging.
+- `onRetry` is what the inline Retry button calls after an `error`; `onRemove` backs the X.
+
+```tsx
+"use client";
+
 
 // status is the state machine that drives every colour, icon and action
 // on the row. progress/timeLeft/errorMessage come along for the ride.
@@ -112,19 +149,19 @@ const queue: FileUploadState[] = [
 
 export default function UploadStates() {
   return (
-    
+    <div className="flex flex-col gap-3">
       {queue.map((item) => (
-         {}}
+        <UploadItem
+          key={item.id}
+          item={item}
+          onRetry={() => {}}
           onRemove={() => {}}
         />
       ))}
-    
+    </div>
   );
-}`;
-
-## Dropzone and upload queue
-
-The full suite: a `Dropzone` that hands you `File[]`, and an `UploadItem` for each row of your own queue state.
+}
+```
 
 ### Install the upload suite
 
@@ -143,20 +180,37 @@ npx shadcn@latest add @avara-ui/upload
 
 The dropzone example animates its queue with a few lines of CSS in the example itself — no extra package. It is optional; `UploadItem` renders fine without it.
 
-export const usageFileInput = `"use client";
+## Simple file input
+
+For a form that just needs files attached, the `Input` block has a file mode with previews and removal built in. It has no dependency on the upload suite.
+
+### Simple file input
+
+For a form that just needs files attached: the `Input` block in file mode, with previews and removal built in.
+
+- Set `type="file"` on `InputBlock` to turn the field into a drag-and-drop zone with previews.
+- `onFilesChange` returns native `File[]` on drop, selection and removal.
+- `multiple` and `accept` pass through; `accept` takes the standard HTML string such as `"image/*"`.
+
+```tsx
+"use client";
+
 
 export default function FileUploadInput() {
   // type="file" turns the Input block into a drag-and-drop zone with
   // previews, sizes and remove buttons — no queue state to manage.
   return (
-     console.log("Uploaded files:", files)}
+    <InputBlock
+      type="file"
+      multiple
+      accept="image/*"
+      label="Upload Portfolio"
+      helperText="Attach your files here."
+      onFilesChange={(files) => console.log("Uploaded files:", files)}
     />
   );
-}`;
-
-## Simple file input
-
-For a form that just needs files attached, the `Input` block has a file mode with previews and removal built in. It has no dependency on the upload suite.
+}
+```
 
 ### Install the input block
 
@@ -173,11 +227,28 @@ npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/input
 ```
 
-export const usageFolder = `"use client";
+## Folder drop target
+
+The `Folder` block as an upload surface — a playful alternative to a dropzone for a handful of files.
+
+### Folder drop target
+
+The `Folder` block as an upload surface, tinted with the theme colour: drop files on it or click to browse. It starts empty, each dropped file becomes a card with its own progress bar, the pocket tracks the overall figure, and an × removes a file.
+
+- Set `interactive` to enable drag-and-drop and click-to-browse. `onFiles` receives the dropped or picked `File[]`; `accept` and `multiple` pass through to the input.
+- `peek={0}` keeps the folder empty until the first drop — without it the folder shows three placeholder cards peeking out.
+- `progress` drives the bar across the pocket (0–100); a per-file `progress` draws a bar on that card. `onRemoveFile` adds an × to each fanned card.
+- `color` defaults to a soft tint of `--primary` (lightness 0.88, chroma at 40%), so the folder — body, pocket, icon and the peeking cards — follows your theme preset and the colour picker above without going heavy. Pass any CSS colour to pin one.
+
+```tsx
+"use client";
+
+
+
 
 export default function DropZone() {
-  const [files, setFiles] = useState([]);
-  const [progress, setProgress] = useState();
+  const [files, setFiles] = useState<FolderFile[]>([]);
+  const [progress, setProgress] = useState<number>();
 
   // Replace the timer with your real upload — set each file's progress and
   // the overall figure as bytes go out; the bars vanish once they reach 100.
@@ -194,21 +265,27 @@ export default function DropZone() {
     const id = setInterval(() => {
       p = Math.min(100, p + 4);
       setProgress(p);
-      setFiles((prev) => prev.map((f) => (f.progress! = 100) clearInterval(id);
+      setFiles((prev) => prev.map((f) => (f.progress! < 100 ? { ...f, progress: p } : f)));
+      if (p >= 100) clearInterval(id);
     }, 80);
   };
 
   return (
-    // The folder takes a soft tint of the theme colour by default; pass \`color\` to pin one.
-     setFiles((prev) => prev.filter((_, idx) => idx !== i))}
+    // The folder takes a soft tint of the theme colour by default; pass `color` to pin one.
+    <Folder
+      interactive
+      peek={0}
+      icon={Image}
+      label="Drop zone"
+      files={files}
+      progress={progress}
+      onFiles={onFiles}
+      onRemoveFile={(i) => setFiles((prev) => prev.filter((_, idx) => idx !== i))}
       accept="image/*,.pdf"
     />
   );
-}`;
-
-## Folder drop target
-
-The `Folder` block as an upload surface — a playful alternative to a dropzone for a handful of files.
+}
+```
 
 ### Install the folder block
 
@@ -234,157 +311,48 @@ npx shadcn@latest add https://avaraui.com/r/folder-motion.json
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
 
-    Fluid Animations
-    Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
+### Fluid Animations
 
-    Highly Customizable
-    Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
+Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
 
-    Responsive Design
-    Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
+### Highly Customizable
 
-    Accessible
-    Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
+Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
+
+### Responsive Design
+
+Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
+
+### Accessible
+
+Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
 
 ## Best Practices & Guidelines
 
-    Animation Performance
-    Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.
+### Animation Performance
 
-    State Management
-    When triggering animations via state changes, ensure you wrap state updates in startTransition or use lightweight stores to prevent React rendering bottlenecks during the animation tick.
+Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.
+
+### State Management
+
+When triggering animations via state changes, ensure you wrap state updates in `startTransition` or use lightweight stores to prevent React rendering bottlenecks during the animation tick.
 
 ## Props Reference
 
-        Component / Interface
-        Prop
-        Type
-        Default
-        Description
-
-          Dropzone
-
-          onFilesDrop
-
-          (files: File[]) =&gt; void
-
-          Required
-
-          Callback function triggered when the user successfully drops files
-          into the zone or selects them via the native file browser.
-
-          Dropzone
-
-          maxSize
-
-          number
-
-          50
-
-          The maximum allowed file size in Megabytes (MB). Displayed dynamically
-          in the helper text.
-
-          Dropzone
-
-          accept
-
-          string
-
-          undefined
-
-          Native HTML input accept string restricting file types (e.g.,{" "}
-          "image/*,application/pdf").
-
-          UploadItem
-
-          item
-
-          FileUploadState
-
-          Required
-
-          The data object tracking the specific file's progress, status, and
-          metadata.
-
-          UploadItem
-
-          onRetry
-
-          (id: string) =&gt; void
-
-          undefined
-
-          Callback fired when the user clicks the inline "Retry" button after a
-          file fails to upload.
-
-          UploadItem
-
-          onRemove
-
-          (id: string) =&gt; void
-
-          undefined
-
-          Callback fired when the user clicks the "X" button to cancel an upload
-          or clear a completed file from the queue.
-
-          FileUploadState
-
-          status
-
-          "idle" | "uploading" | "paused" | "error" | "success"
-
-          Required
-
-          The core state machine parameter that drives the UI colors, icons, and
-          messaging for the specific upload item.
-
-          InputBlock
-
-          type
-
-          "file"
-
-          "text"
-
-          Switches the Input block into the drag-and-drop zone shown in the
-          simple file input example.
-
-          InputBlock
-
-          onFilesChange
-
-          (files: File[]) =&gt; void
-
-          undefined
-
-          Fired when files are dropped, selected, or removed, with the current
-          native File[].
-
-          InputBlock
-
-          multiple / accept
-
-          boolean / string
-
-          false / undefined
-
-          Allow several files, and restrict types with the standard HTML accept
-          string (e.g. "image/*").
-
-          FileUploadState
-
-          previewUrl
-
-          string
-
-          undefined
-
-          Optional local Blob URL used to render instant client-side image
-          thumbnails before the upload completes.
+| Component / Interface | Prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `Dropzone` | `onFilesDrop` | `(files: File[]) => void` | Required | Callback function triggered when the user successfully drops files into the zone or selects them via the native file browser. |
+| `Dropzone` | `maxSize` | `number` | `50` | The maximum allowed file size in Megabytes (MB). Displayed dynamically in the helper text. |
+| `Dropzone` | `accept` | `string` | `undefined` | Native HTML input accept string restricting file types (e.g., `"image/*,application/pdf"`). |
+| `UploadItem` | `item` | `FileUploadState` | Required | The data object tracking the specific file's progress, status, and metadata. |
+| `UploadItem` | `onRetry` | `(id: string) => void` | `undefined` | Callback fired when the user clicks the inline "Retry" button after a file fails to upload. |
+| `UploadItem` | `onRemove` | `(id: string) => void` | `undefined` | Callback fired when the user clicks the "X" button to cancel an upload or clear a completed file from the queue. |
+| `FileUploadState` | `status` | `"idle" \| "uploading" \| "paused" \| "error" \| "success"` | Required | The core state machine parameter that drives the UI colors, icons, and messaging for the specific upload item. |
+| `InputBlock` | `type` | `"file"` | `"text"` | Switches the Input block into the drag-and-drop zone shown in the simple file input example. |
+| `InputBlock` | `onFilesChange` | `(files: File[]) => void` | `undefined` | Fired when files are dropped, selected, or removed, with the current native `File[]`. |
+| `InputBlock` | `multiple` / `accept` | `boolean` / `string` | `false` / `undefined` | Allow several files, and restrict types with the standard HTML accept string (e.g. `"image/*"`). |
+| `FileUploadState` | `previewUrl` | `string` | `undefined` | Optional local Blob URL used to render instant client-side image thumbnails before the upload completes. |
 
 ---
 
-**Component Path:** `[framework]\file-upload\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/file-upload

@@ -1,4 +1,8 @@
-export const metadata = docsPageMetadata("table");
+---
+title: "Table"
+description: "A set of composable table primitives. You write the rows; the component supplies the structure, spacing and theming. Free shadcn/ui Table component."
+url: https://avaraui.com/docs/nextjs/table
+---
 
 # Table
 
@@ -8,20 +12,137 @@ There is **no column config and no required row shape**. Whatever your API retur
 
 Every example below is live. Click a sortable header, expand a row, or hover the right edge of a row to reveal its actions.
 
-`Table` is the card. `TableContent` renders the scroll container and the `` element. Everything else maps one-to-one onto the HTML table tags, so `colSpan`, `scope` and any other native attribute pass straight through.
+## Soft variant
 
-export const invoiceType = `type Invoice = {
+A plain read-only table in the admin-dashboard look — a rounded panel on a hairline ring, a tinted header band, calm dividers and soft row hover. No search, filters or paging: just the rows.
+
+- Set `variant="soft"` once on `Table`; the heading, header band, cells and dividers read it from context. Every tint is mixed from the table colour.
+- `TablePerson` and `TableBadge` draw the avatar-and-email cell and the status pill, in any variant.
+
+```tsx
+"use client";
+
+import {
+  Table,
+  TableBadge,
+  type TableBadgeTone,
+  TableBody,
+  TableCell,
+  TableContent,
+  TableHead,
+  TableHeader,
+  TableHeading,
+  TablePerson,
+  TableRow,
+} from "@/components/custom/blocks/TableBlock";
+import { accentStyle } from "@/lib/accent";
+
+type Status = "paid" | "pending" | "failed";
+
+// Nested on purpose: the primitives render whatever shape your API returns.
+interface Invoice {
+  reference: string;
+  customer: { name: string; email: string };
+  amount: number;
+  status: Status;
+  /** ISO date. */
+  issuedAt: string;
+}
+
+const INVOICES: Invoice[] = [
+  { reference: "INV-3021", customer: { name: "Alice Freeman", email: "alice@northwind.io" }, amount: 3200, status: "paid", issuedAt: "2026-09-28" },
+  { reference: "INV-3022", customer: { name: "Bob Smith", email: "bob@lumen.studio" }, amount: 850.5, status: "pending", issuedAt: "2026-09-27" },
+  { reference: "INV-3023", customer: { name: "Charlie Davis", email: "charlie@acme.io" }, amount: 1420, status: "failed", issuedAt: "2026-09-26" },
+  { reference: "INV-3024", customer: { name: "Diana Prince", email: "diana@themyscira.co" }, amount: 940, status: "paid", issuedAt: "2026-09-25" },
+  { reference: "INV-3025", customer: { name: "Evan Wright", email: "evan@wright.design" }, amount: 2100, status: "paid", issuedAt: "2026-09-23" },
+  { reference: "INV-3026", customer: { name: "Fiona Gallagher", email: "fiona@southside.org" }, amount: 450, status: "pending", issuedAt: "2026-09-22" },
+];
+
+const STATUS_TONE: Record<Status, TableBadgeTone> = {
+  paid: "success",
+  pending: "warning",
+  failed: "danger",
+};
+
+const STATUS_LABEL: Record<Status, string> = {
+  paid: "Paid",
+  pending: "Pending",
+  failed: "Failed",
+};
+
+const money = (value: number) =>
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+/** "2026-09-04" → "Sep 4, 2026", the same on every machine. */
+const formatDate = (iso: string) => {
+  const [year, month, day] = iso.split("-").map(Number);
+  return `${MONTHS[(month ?? 1) - 1]} ${day}, ${year}`;
+};
+
+export default function InvoicesTable({ color }: { color?: string } = {}) {
+  return (
+    <div className="w-full" style={accentStyle(color)}>
+      <Table variant="soft" color={color}>
+      <TableHeading title="Recent invoices" description="Everything billed in the last 30 days." />
+      <TableContent aria-label="Recent invoices">
+        <TableHeader>
+          <TableRow isHeader>
+            <TableHead>Invoice</TableHead>
+            <TableHead className="min-w-60">Customer</TableHead>
+            <TableHead>Issued</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead align="right">Amount</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {INVOICES.map((invoice) => (
+            <TableRow key={invoice.reference}>
+              <TableCell className="whitespace-nowrap font-medium tabular-nums">
+                {invoice.reference}
+              </TableCell>
+              <TableCell className="min-w-60">
+                <TablePerson name={invoice.customer.name} description={invoice.customer.email} />
+              </TableCell>
+              <TableCell className="whitespace-nowrap tabular-nums text-muted-foreground">
+                <time dateTime={invoice.issuedAt}>{formatDate(invoice.issuedAt)}</time>
+              </TableCell>
+              <TableCell>
+                <TableBadge tone={STATUS_TONE[invoice.status]}>{STATUS_LABEL[invoice.status]}</TableBadge>
+              </TableCell>
+              <TableCell align="right" className="whitespace-nowrap font-medium tabular-nums">
+                {money(invoice.amount)}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </TableContent>
+    </Table>
+    </div>
+  );
+}
+```
+
+`Table` is the card. `TableContent` renders the scroll container and the `<table>` element. Everything else maps one-to-one onto the HTML table tags, so `colSpan`, `scope` and any other native attribute pass straight through.
+
+### Composable table
+
+- Map `rows` straight into JSX — nested values like customer.email need no transformation.
+
+```tsx
+"use client";
+
+
+
+type Invoice = {
   reference: string;
   customer: { name: string; email: string };
   amount: number;
   status: "completed" | "processing" | "failed";
   issuedAt: string;
   note?: string;
-};`;
-
-export const usageBasic = `"use client";
-
-${invoiceType}
+};
 
 const sampleInvoices: Invoice[] = [
   {
@@ -54,7 +175,7 @@ const sampleInvoices: Invoice[] = [
   },
 ];
 
-const STATUS_STYLES: Record = {
+const STATUS_STYLES: Record<Invoice["status"], string> = {
   completed:
     "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400",
   processing:
@@ -63,9 +184,11 @@ const STATUS_STYLES: Record = {
 };
 
 const StatusPill = ({ status }: { status: Invoice["status"] }) => (
-  
+  <span
+    className={`px-2.5 py-1 rounded-md text-[11px] font-semibold uppercase tracking-wider ${STATUS_STYLES[status]}`}
+  >
     {status}
-  
+  </span>
 );
 
 const money = (value: number) =>
@@ -77,633 +200,60 @@ export default function ComposableTable({
   invoices?: Invoice[];
 }) {
   return (
+    <Table>
+      <TableHeading
+        title="Invoices"
+        description="Composed from primitives — no column config anywhere."
+      />
 
-            Invoice
-            Customer
-            Amount
-            Status
-            Issued
+      <TableContent>
+        <TableHeader>
+          <TableRow isHeader>
+            <TableHead>Invoice</TableHead>
+            <TableHead>Customer</TableHead>
+            <TableHead align="right">Amount</TableHead>
+            <TableHead>Status</TableHead>
+            <TableHead align="right">Issued</TableHead>
+          </TableRow>
+        </TableHeader>
 
+        <TableBody>
           {invoices.map((invoice) => (
-
+            <TableRow key={invoice.reference}>
+              <TableCell className="font-mono text-xs">
                 {invoice.reference}
+              </TableCell>
 
+              <TableCell>
+                <div className="flex flex-col">
+                  <span className="font-semibold text-foreground">
                     {invoice.customer.name}
-
+                  </span>
+                  <span className="text-xs text-muted-foreground">
                     {invoice.customer.email}
+                  </span>
+                </div>
+              </TableCell>
 
+              <TableCell align="right" className="font-medium">
                 {money(invoice.amount)}
+              </TableCell>
 
+              <TableCell>
+                <StatusPill status={invoice.status} />
+              </TableCell>
+
+              <TableCell align="right" className="text-muted-foreground">
                 {invoice.issuedAt}
-
+              </TableCell>
+            </TableRow>
           ))}
-
+        </TableBody>
+      </TableContent>
+    </Table>
   );
-}`;
-
-export const usageMinimal = `"use client";
-
-${invoiceType}
-
-const sampleInvoices: Invoice[] = [
-  {
-    reference: "INV-3021",
-    customer: { name: "Alice Freeman", email: "alice@example.com" },
-    amount: 3200,
-    status: "completed",
-    issuedAt: "2023-10-24",
-  },
-  {
-    reference: "INV-3022",
-    customer: { name: "Bob Smith", email: "bob@example.com" },
-    amount: 850.5,
-    status: "processing",
-    issuedAt: "2023-10-24",
-  },
-  {
-    reference: "INV-3023",
-    customer: { name: "Charlie Davis", email: "charlie@example.com" },
-    amount: 1420,
-    status: "failed",
-    issuedAt: "2023-10-23",
-  },
-  {
-    reference: "INV-3024",
-    customer: { name: "Diana Prince", email: "diana@example.com" },
-    amount: 940,
-    status: "completed",
-    issuedAt: "2023-10-22",
-  },
-];
-
-const STATUS_STYLES: Record = {
-  completed:
-    "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400",
-  processing:
-    "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400",
-  failed: "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400",
-};
-
-const StatusPill = ({ status }: { status: Invoice["status"] }) => (
-  
-    {status}
-  
-);
-
-const money = (value: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
-
-export default function MinimalTable({
-  invoices = sampleInvoices,
-}: {
-  invoices?: Invoice[];
-}) {
-  return (
-
-            Invoice
-            Customer
-            Amount
-            Status
-            Issued
-
-          {invoices.map((invoice) => (
-
-                {invoice.reference}
-
-                    {invoice.customer.name}
-
-                    {invoice.customer.email}
-
-                {money(invoice.amount)}
-
-                {invoice.issuedAt}
-
-          ))}
-
-  );
-}`;
-
-export const usageSorting = `"use client";
-
-${invoiceType}
-
-const sampleInvoices: Invoice[] = [
-  {
-    reference: "INV-3021",
-    customer: { name: "Alice Freeman", email: "alice@example.com" },
-    amount: 3200,
-    status: "completed",
-    issuedAt: "2023-10-24",
-  },
-  {
-    reference: "INV-3022",
-    customer: { name: "Bob Smith", email: "bob@example.com" },
-    amount: 850.5,
-    status: "processing",
-    issuedAt: "2023-10-24",
-  },
-  {
-    reference: "INV-3023",
-    customer: { name: "Charlie Davis", email: "charlie@example.com" },
-    amount: 1420,
-    status: "failed",
-    issuedAt: "2023-10-23",
-  },
-  {
-    reference: "INV-3024",
-    customer: { name: "Diana Prince", email: "diana@example.com" },
-    amount: 940,
-    status: "completed",
-    issuedAt: "2023-10-22",
-  },
-  {
-    reference: "INV-3025",
-    customer: { name: "Evan Wright", email: "evan@example.com" },
-    amount: 2100,
-    status: "completed",
-    issuedAt: "2023-10-21",
-  },
-];
-
-const STATUS_STYLES: Record = {
-  completed:
-    "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400",
-  processing:
-    "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400",
-  failed: "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400",
-};
-
-const StatusPill = ({ status }: { status: Invoice["status"] }) => (
-  
-    {status}
-  
-);
-
-const money = (value: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
-
-type SortKey = "reference" | "customer" | "amount" | "issuedAt";
-
-const SORT_ACCESSORS = {
-  reference: (row: Invoice) => row.reference,
-  customer: (row: Invoice) => row.customer.name,
-  amount: (row: Invoice) => row.amount,
-  issuedAt: (row: Invoice) => row.issuedAt,
-} as const;
-
-export default function SortableTable({
-  invoices = sampleInvoices,
-}: {
-  invoices?: Invoice[];
-}) {
-  const [sort, setSort] = useState({ key: "reference", direction: "asc" });
-
-  const toggleSort = (key: SortKey) =>
-    setSort((prev) =>
-      prev && prev.key === key
-        ? { key, direction: prev.direction === "asc" ? "desc" : "asc" }
-        : { key, direction: "asc" },
-    );
-
-  const sorted = useMemo(() => {
-    if (!sort) return invoices;
-    const read = SORT_ACCESSORS[sort.key];
-    const factor = sort.direction === "asc" ? 1 : -1;
-    return [...invoices].sort((a, b) => {
-      const av = read(a);
-      const bv = read(b);
-      if (typeof av === "number" && typeof bv === "number")
-        return factor * (av - bv);
-      return factor * String(av).localeCompare(String(bv));
-    });
-  }, [invoices, sort]);
-
-  return (
-
-             toggleSort("reference")}
-            >
-              Invoice
-            
-             toggleSort("customer")}
-            >
-              Customer
-            
-             toggleSort("amount")}
-            >
-              Amount
-            
-            Status
-             toggleSort("issuedAt")}
-            >
-              Issued
-
-          {sorted.map((invoice) => (
-
-                {invoice.reference}
-
-                    {invoice.customer.name}
-
-                    {invoice.customer.email}
-
-                {money(invoice.amount)}
-
-                {invoice.issuedAt}
-
-          ))}
-
-  );
-}`;
-
-export const usageExpandable = `"use client";
-
-${invoiceType}
-
-const sampleInvoices: Invoice[] = [
-  {
-    reference: "INV-3021",
-    customer: { name: "Alice Freeman", email: "alice@example.com" },
-    amount: 3200,
-    status: "completed",
-    issuedAt: "2023-10-24",
-    note: "Payment processed via Stripe. Receipt emailed to the customer.",
-  },
-  {
-    reference: "INV-3022",
-    customer: { name: "Bob Smith", email: "bob@example.com" },
-    amount: 850.5,
-    status: "processing",
-    issuedAt: "2023-10-24",
-    note: "Waiting on bank confirmation — usually 2–3 business days.",
-  },
-  {
-    reference: "INV-3023",
-    customer: { name: "Charlie Davis", email: "charlie@example.com" },
-    amount: 1420,
-    status: "failed",
-    issuedAt: "2023-10-23",
-    note: "Card declined by issuer. Customer asked to update payment method.",
-  },
-  {
-    reference: "INV-3024",
-    customer: { name: "Diana Prince", email: "diana@example.com" },
-    amount: 940,
-    status: "completed",
-    issuedAt: "2023-10-22",
-    note: "Payment processed via PayPal.",
-  },
-];
-
-const STATUS_STYLES: Record = {
-  completed:
-    "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400",
-  processing:
-    "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400",
-  failed: "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400",
-};
-
-const StatusPill = ({ status }: { status: Invoice["status"] }) => (
-  
-    {status}
-  
-);
-
-const money = (value: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
-
-export default function ExpandableTable({
-  invoices = sampleInvoices,
-}: {
-  invoices?: Invoice[];
-}) {
-  const [expanded, setExpanded] = useState>(new Set(["INV-3021"]));
-
-  const toggleExpanded = (reference: string) =>
-    setExpanded((prev) => {
-      const next = new Set(prev);
-      if (next.has(reference)) next.delete(reference);
-      else next.add(reference);
-      return next;
-    });
-
-  const columnCount = 6;
-
-  return (
-
-            Invoice
-            Customer
-            Amount
-            Status
-            Issued
-
-          {invoices.map((invoice) => (
-
-                   toggleExpanded(invoice.reference)}
-                  />
-
-                  {invoice.reference}
-
-                      {invoice.customer.name}
-
-                      {invoice.customer.email}
-
-                  {money(invoice.amount)}
-
-                  {invoice.issuedAt}
-
-                  Transaction summary
-
-                  {invoice.note ??
-                    "No additional history recorded for this invoice."}
-
-          ))}
-
-  );
-}`;
-
-export const usagePagination = `"use client";
-
-${invoiceType}
-
-const sampleInvoices: Invoice[] = [
-  { reference: "INV-3021", customer: { name: "Alice Freeman", email: "alice@example.com" }, amount: 3200, status: "completed", issuedAt: "2023-10-24" },
-  { reference: "INV-3022", customer: { name: "Bob Smith", email: "bob@example.com" }, amount: 850.5, status: "processing", issuedAt: "2023-10-24" },
-  { reference: "INV-3023", customer: { name: "Charlie Davis", email: "charlie@example.com" }, amount: 1420, status: "failed", issuedAt: "2023-10-23" },
-  { reference: "INV-3024", customer: { name: "Diana Prince", email: "diana@example.com" }, amount: 940, status: "completed", issuedAt: "2023-10-22" },
-  { reference: "INV-3025", customer: { name: "Evan Wright", email: "evan@example.com" }, amount: 2100, status: "completed", issuedAt: "2023-10-21" },
-  { reference: "INV-3026", customer: { name: "Fiona Gallagher", email: "fiona@example.com" }, amount: 450, status: "processing", issuedAt: "2023-10-21" },
-  { reference: "INV-3027", customer: { name: "George Harris", email: "george@example.com" }, amount: 5500, status: "completed", issuedAt: "2023-10-20" },
-];
-
-const STATUS_STYLES: Record = {
-  completed: "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400",
-  processing: "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400",
-  failed: "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400",
-};
-
-const StatusPill = ({ status }: { status: Invoice["status"] }) => (
-  
-    {status}
-  
-);
-
-const money = (value: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
-
-export default function PaginatedTable({
-  invoices = sampleInvoices,
-}: {
-  invoices?: Invoice[];
-}) {
-  const pageSize = 4;
-  const [page, setPage] = useState(1);
-  const totalPages = Math.max(1, Math.ceil(invoices.length / pageSize));
-  const rows = invoices.slice((page - 1) * pageSize, page * pageSize);
-
-  return (
-
-            Invoice
-            Customer
-            Amount
-            Status
-            Issued
-
-          {rows.map((invoice) => (
-
-                {invoice.reference}
-
-                    {invoice.customer.name}
-
-                    {invoice.customer.email}
-
-                {money(invoice.amount)}
-
-                {invoice.issuedAt}
-
-          ))}
-
-          Page {page} of {totalPages}
-
-           setPage((p) => Math.max(1, p - 1))}
-            disabled={page === 1}
-            aria-label="Previous page"
-            className="p-1.5 rounded-md border border-border text-muted-foreground hover:border-primary/50 hover:text-primary hover:bg-primary/10 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
-          >
-
-           setPage((p) => Math.min(totalPages, p + 1))}
-            disabled={page === totalPages}
-            aria-label="Next page"
-            className="p-1.5 rounded-md border border-border text-muted-foreground hover:border-primary/50 hover:text-primary hover:bg-primary/10 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
-          >
-
-  );
-}`;
-
-export const usageActions = `"use client";
-
-${invoiceType}
-
-const sampleInvoices: Invoice[] = [
-  {
-    reference: "INV-3021",
-    customer: { name: "Alice Freeman", email: "alice@example.com" },
-    amount: 3200,
-    status: "completed",
-    issuedAt: "2023-10-24",
-  },
-  {
-    reference: "INV-3022",
-    customer: { name: "Bob Smith", email: "bob@example.com" },
-    amount: 850.5,
-    status: "processing",
-    issuedAt: "2023-10-24",
-  },
-  {
-    reference: "INV-3023",
-    customer: { name: "Charlie Davis", email: "charlie@example.com" },
-    amount: 1420,
-    status: "failed",
-    issuedAt: "2023-10-23",
-  },
-  {
-    reference: "INV-3024",
-    customer: { name: "Diana Prince", email: "diana@example.com" },
-    amount: 940,
-    status: "completed",
-    issuedAt: "2023-10-22",
-  },
-];
-
-const STATUS_STYLES: Record = {
-  completed:
-    "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400",
-  processing:
-    "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400",
-  failed: "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400",
-};
-
-const StatusPill = ({ status }: { status: Invoice["status"] }) => (
-  
-    {status}
-  
-);
-
-const money = (value: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
-
-export default function RowActionsTable({
-  invoices = sampleInvoices,
-}: {
-  invoices?: Invoice[];
-}) {
-  const handleEdit = (invoice: Invoice) => {
-    console.log("Editing invoice:", invoice.reference);
-  };
-
-  const handleDelete = (invoice: Invoice) => {
-    console.log("Deleting invoice:", invoice.reference);
-  };
-
-  return (
-
-            Invoice
-            Customer
-            Amount
-            Status
-            Issued
-            Actions
-
-          {invoices.map((invoice) => (
-
-                {invoice.reference}
-
-                    {invoice.customer.name}
-
-                    {invoice.customer.email}
-
-                {money(invoice.amount)}
-
-                {invoice.issuedAt}
-
-                   handleEdit(invoice)}
-                    aria-label={\`Edit \${invoice.reference}\`}
-                    className="p-1.5 rounded-md text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors cursor-pointer"
-                  >
-
-                   handleDelete(invoice)}
-                    aria-label={\`Delete \${invoice.reference}\`}
-                    className="p-1.5 rounded-md text-muted-foreground hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors cursor-pointer"
-                  >
-
-          ))}
-
-  );
-}`;
-
-export const usageSizes = `"use client";
-
-${invoiceType}
-
-const sampleInvoices: Invoice[] = [
-  {
-    reference: "INV-3021",
-    customer: { name: "Alice Freeman", email: "alice@example.com" },
-    amount: 3200,
-    status: "completed",
-    issuedAt: "2023-10-24",
-  },
-  {
-    reference: "INV-3022",
-    customer: { name: "Bob Smith", email: "bob@example.com" },
-    amount: 850.5,
-    status: "processing",
-    issuedAt: "2023-10-24",
-  },
-  {
-    reference: "INV-3023",
-    customer: { name: "Charlie Davis", email: "charlie@example.com" },
-    amount: 1420,
-    status: "failed",
-    issuedAt: "2023-10-23",
-  },
-];
-
-const STATUS_STYLES: Record = {
-  completed:
-    "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400",
-  processing:
-    "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400",
-  failed: "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400",
-};
-
-const StatusPill = ({ status }: { status: Invoice["status"] }) => (
-  
-    {status}
-  
-);
-
-const money = (value: number) =>
-  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
-
-const TABLE_SIZES = ["sm", "md", "lg"] as const;
-
-export default function TableSizesDemo({
-  invoices = sampleInvoices,
-}: {
-  invoices?: Invoice[];
-}) {
-  return (
-    
-      {TABLE_SIZES.map((size) => (
-
-            size=&quot;{size}&quot;
-
-                  Invoice
-                  Customer
-                  Amount
-                  Status
-
-                {invoices.map((invoice) => (
-
-                      {invoice.reference}
-                    
-                    {invoice.customer.name}
-                    
-                      {money(invoice.amount)}
-
-                ))}
-
-      ))}
-    
-  );
-}`;
-
-export const usageEmpty = `"use client";
-
-${invoiceType}
-
-export default function EmptyTableDemo() {
-  const rows: Invoice[] = [];
-
-  return (
-
-            Invoice
-            Customer
-            Amount
-            Status
-            Issued
-
-          {rows.length === 0 ? (
-            No invoices yet.
-          ) : (
-            rows.map((invoice) => (
-              
-                {invoice.reference}
-              
-            ))
-          )}
-
-  );
-}`;
+}
+```
 
 ## Installation
 
@@ -722,95 +272,309 @@ npx shadcn@latest add @avara-ui/table
 
 ## Examples
 
+### Comparison (soft)
+
+The same soft table as a plan comparison: features down the side, plans across the top, ticks and limits centred under their headers.
+
+- `align="center"` on both `TableHead` and `TableCell` lines the ticks and values up under each plan.
+
+```tsx
+"use client";
+
+import { Check, Minus } from "lucide-react";
+import {
+  Table,
+  TableBadge,
+  TableBody,
+  TableCell,
+  TableContent,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/custom/blocks/TableBlock";
+import { accentStyle } from "@/lib/accent";
+
+const PLANS = ["Free", "Pro", "Team"] as const;
+type Plan = (typeof PLANS)[number];
+
+// `true` is included, `false` is not, a string is the limit.
+type Value = boolean | string;
+
+const FEATURES: { feature: string; values: Record<Plan, Value> }[] = [
+  { feature: "Projects", values: { Free: "3", Pro: "Unlimited", Team: "Unlimited" } },
+  { feature: "Team members", values: { Free: "1", Pro: "5", Team: "Unlimited" } },
+  { feature: "Storage", values: { Free: "2 GB", Pro: "100 GB", Team: "1 TB" } },
+  { feature: "Custom domains", values: { Free: false, Pro: true, Team: true } },
+  { feature: "Analytics", values: { Free: "Basic", Pro: "Advanced", Team: "Advanced" } },
+  { feature: "Version history", values: { Free: "7 days", Pro: "90 days", Team: "Forever" } },
+  { feature: "Single sign-on", values: { Free: false, Pro: false, Team: true } },
+  { feature: "Priority support", values: { Free: false, Pro: true, Team: true } },
+];
+
+function PlanValue({ value }: { value: Value }) {
+  if (value === true) {
+    return (
+      <span className="inline-flex size-6 items-center justify-center rounded-full bg-primary/10 text-primary">
+        <Check className="size-3.5" strokeWidth={2.5} aria-hidden="true" />
+        <span className="sr-only">Included</span>
+      </span>
+    );
+  }
+  if (value === false) {
+    return (
+      <span className="inline-flex size-6 items-center justify-center text-muted-foreground/60">
+        <Minus className="size-3.5" aria-hidden="true" />
+        <span className="sr-only">Not included</span>
+      </span>
+    );
+  }
+  return <span className="text-foreground">{value}</span>;
+}
+
+export default function PlanComparison({ color }: { color?: string } = {}) {
+  return (
+    <div className="w-full" style={accentStyle(color)}>
+      <Table variant="soft" color={color}>
+      <TableContent aria-label="Compare plans">
+        <TableHeader>
+          <TableRow isHeader>
+            <TableHead className="min-w-44">Feature</TableHead>
+            {PLANS.map((plan) => (
+              <TableHead key={plan} align="center" className="min-w-28">
+                <span className="inline-flex items-center gap-2">
+                  {plan}
+                  {plan === "Pro" && (
+                    <TableBadge tone="info" dot={false} className="h-5 px-2 text-[10px] normal-case tracking-normal">
+                      Popular
+                    </TableBadge>
+                  )}
+                </span>
+              </TableHead>
+            ))}
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {FEATURES.map(({ feature, values }) => (
+            <TableRow key={feature}>
+              <TableCell className="font-medium">{feature}</TableCell>
+              {PLANS.map((plan) => (
+                <TableCell key={plan} align="center">
+                  <PlanValue value={values[plan]} />
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </TableContent>
+    </Table>
+    </div>
+  );
+}
+```
+
 ## Density
+
+### Sizes
+
+- Set `size="sm" | "md" | "lg"` on Table — every descendant reads it from context, so cells and headers stay in step.
+
+```tsx
+"use client";
+
+
+
+type Invoice = {
+  reference: string;
+  customer: { name: string; email: string };
+  amount: number;
+  status: "completed" | "processing" | "failed";
+  issuedAt: string;
+  note?: string;
+};
+
+const sampleInvoices: Invoice[] = [
+  {
+    reference: "INV-3021",
+    customer: { name: "Alice Freeman", email: "alice@example.com" },
+    amount: 3200,
+    status: "completed",
+    issuedAt: "2023-10-24",
+  },
+  {
+    reference: "INV-3022",
+    customer: { name: "Bob Smith", email: "bob@example.com" },
+    amount: 850.5,
+    status: "processing",
+    issuedAt: "2023-10-24",
+  },
+  {
+    reference: "INV-3023",
+    customer: { name: "Charlie Davis", email: "charlie@example.com" },
+    amount: 1420,
+    status: "failed",
+    issuedAt: "2023-10-23",
+  },
+];
+
+const STATUS_STYLES: Record<Invoice["status"], string> = {
+  completed:
+    "bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400",
+  processing:
+    "bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400",
+  failed: "bg-red-50 text-red-600 dark:bg-red-500/10 dark:text-red-400",
+};
+
+const StatusPill = ({ status }: { status: Invoice["status"] }) => (
+  <span
+    className={`px-2.5 py-1 rounded-md text-[11px] font-semibold uppercase tracking-wider ${STATUS_STYLES[status]}`}
+  >
+    {status}
+  </span>
+);
+
+const money = (value: number) =>
+  new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
+
+const TABLE_SIZES = ["sm", "md", "lg"] as const;
+
+export default function TableSizesDemo({
+  invoices = sampleInvoices,
+}: {
+  invoices?: Invoice[];
+}) {
+  return (
+    <div className="w-full flex flex-col gap-8">
+      {TABLE_SIZES.map((size) => (
+        <div key={size} className="flex flex-col gap-2">
+          <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+            size=&quot;{size}&quot;
+          </span>
+          <Table size={size}>
+            <TableContent>
+              <TableHeader>
+                <TableRow isHeader>
+                  <TableHead>Invoice</TableHead>
+                  <TableHead>Customer</TableHead>
+                  <TableHead align="right">Amount</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {invoices.map((invoice) => (
+                  <TableRow key={invoice.reference}>
+                    <TableCell className="font-mono text-xs font-medium">
+                      {invoice.reference}
+                    </TableCell>
+                    <TableCell>{invoice.customer.name}</TableCell>
+                    <TableCell align="right" className="font-medium">
+                      {money(invoice.amount)}
+                    </TableCell>
+                    <TableCell>
+                      <StatusPill status={invoice.status} />
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </TableContent>
+          </Table>
+        </div>
+      ))}
+    </div>
+  );
+}
+```
 
 ## Features
 
-    Any data shape
-    No column config and no required row shape. Nested objects, unusual key names and computed cells all work without a transformation step.
+### Any data shape
 
-    Real table markup
-    Each primitive renders its native element, so colSpan, scope and aria attributes pass straight through and screen readers get a genuine table.
+No column config and no required row shape. Nested objects, unusual key names and computed cells all work without a transformation step.
 
-    Themed by context
-    Variant, size and colour are set once on Table and read by every descendant, so a cell dropped three levels deep still matches.
+### Real table markup
 
-    Stateless by default
-    Sorting and expansion are controlled props. The table never reorders or hides your data on its own, so server-side sorting and paging drop in unchanged.
+Each primitive renders its native element, so colSpan, scope and aria attributes pass straight through and screen readers get a genuine table.
+
+### Themed by context
+
+Variant, size and colour are set once on Table and read by every descendant, so a cell dropped three levels deep still matches.
+
+### Stateless by default
+
+Sorting and expansion are controlled props. The table never reorders or hides your data on its own, so server-side sorting and paging drop in unchanged.
 
 ## Best Practices & Guidelines
 
-    Reach for the Data Table instead
-    These primitives are deliberately stateless. If you need search, pagination, row selection and batch actions wired up for you, use the Data Table — it composes the very same primitives and adds a state provider.
+### Reach for the Data Table instead
 
-    Keep colSpan honest
-    TableEmpty and TableExpandedRow both need a colSpan that matches your real column count. Derive it from a variable rather than hard-coding it, so conditional columns cannot drift out of sync.
+These primitives are deliberately stateless. If you need search, pagination, row selection and batch actions wired up for you, use the Data Table — it composes the very same primitives and adds a state provider.
+
+### Keep colSpan honest
+
+TableEmpty and TableExpandedRow both need a colSpan that matches your real column count. Derive it from a variable rather than hard-coding it, so conditional columns cannot drift out of sync.
 
 ## Props Reference
 
 ### Components
 
-      ComponentRendersPurpose
-
-      TabledivThe card wrapper. Provides variant, size and colour by context.
-      TableHeadingdivTitle bar above the table. Children align to the right as an action slot.
-      TableContentdiv &gt; tableHorizontal scroll container plus the table element.
-      TableHeadertheadPlain pass-through.
-      TableBodytbodyOptional staggered entrance animation.
-      TableRowtrBody row, or a header row with isHeader.
-      TableHeadthHeader cell, optionally sortable.
-      TableCelltdBody cell.
-      TableFooterdivFooter bar below the table — pagers, totals, bulk controls.
-      TableEmptytr &gt; tdFull-width empty state row.
-      TableExpandedRowtr &gt; tdAnimated detail panel beneath a row.
-      TableExpandTogglebuttonRotating chevron for the row above.
-      TableRowActionsdivReveals its buttons on row hover or keyboard focus (always visible in soft).
-      TableRowActionbuttonRound icon button for a row action; label is required, tone="danger" for deletes.
-      TableActionbuttonToolbar button in the table's look — variant primary, secondary or ghost.
-      TableBadgespanStatus pill with a dot (tone: neutral, success, warning, danger, info), or a tag with dot={"{false}"}.
-      TablePersondivAvatar (photo or initials), a name and a muted second line.
+| Component | Renders | Purpose |
+| --- | --- | --- |
+| `Table` | `div` | The card wrapper. Provides variant, size and colour by context. |
+| `TableHeading` | `div` | Title bar above the table. Children align to the right as an action slot. |
+| `TableContent` | `div > table` | Horizontal scroll container plus the table element. |
+| `TableHeader` | `thead` | Plain pass-through. |
+| `TableBody` | `tbody` | Optional staggered entrance animation. |
+| `TableRow` | `tr` | Body row, or a header row with `isHeader`. |
+| `TableHead` | `th` | Header cell, optionally sortable. |
+| `TableCell` | `td` | Body cell. |
+| `TableFooter` | `div` | Footer bar below the table — pagers, totals, bulk controls. |
+| `TableEmpty` | `tr > td` | Full-width empty state row. |
+| `TableExpandedRow` | `tr > td` | Animated detail panel beneath a row. |
+| `TableExpandToggle` | `button` | Rotating chevron for the row above. |
+| `TableRowActions` | `div` | Reveals its buttons on row hover or keyboard focus (always visible in `soft`). |
+| `TableRowAction` | `button` | Round icon button for a row action; `label` is required, `tone="danger"` for deletes. |
+| `TableAction` | `button` | Toolbar button in the table's look — `variant` primary, secondary or ghost. |
+| `TableBadge` | `span` | Status pill with a dot (`tone`: neutral, success, warning, danger, info), or a tag with `dot={"{false}"}`. |
+| `TablePerson` | `div` | Avatar (photo or initials), a name and a muted second line. |
 
 ### `Table`
 
-      PropTypeDefaultDescription
-
-      variant"default" | "minimal" | "glass" | "soft""default"Bordered card, bare table, frosted glass panel, or the admin-dashboard look (see Data Table for the full soft example).
-      size"sm" | "md" | "lg""md"Row density — cell padding and text size.
-      color"primary" | "indigo" | "rose" | "emerald" | "zinc" | (hex)"primary"Accent for selected rows and interactive affordances. Any #rrggbb works.
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `variant` | `"default" \| "minimal" \| "glass" \| "soft"` | `"default"` | Bordered card, bare table, frosted glass panel, or the admin-dashboard look (see [Data Table](https://avaraui.com/docs/nextjs/data-table) for the full soft example). |
+| `size` | `"sm" \| "md" \| "lg"` | `"md"` | Row density — cell padding and text size. |
+| `color` | `"primary" \| "indigo" \| "rose" \| "emerald" \| "zinc" \| (hex)` | `"primary"` | Accent for selected rows and interactive affordances. Any `#rrggbb` works. |
 
 ### `TableHead`
 
-      PropTypeDefaultDescription
-
-      align"left" | "center" | "right""left"Text alignment.
-      sortablebooleanfalseRenders the header as a sort button.
-      sortDirection"asc" | "desc" | nullnullControlled — drives the chevron and aria-sort.
-      onSort() =&gt; void—Fired on click. You reorder the data.
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `align` | `"left" \| "center" \| "right"` | `"left"` | Text alignment. |
+| `sortable` | `boolean` | `false` | Renders the header as a sort button. |
+| `sortDirection` | `"asc" \| "desc" \| null` | `null` | Controlled — drives the chevron and `aria-sort`. |
+| `onSort` | `() => void` | — | Fired on click. You reorder the data. |
 
 ### `TableRow`, `TableCell`, `TableBody`
 
-      ComponentPropTypeDescription
-
-      TableRowisHeaderbooleanApplies header styling instead of body row styling.
-      TableRowselectedbooleanApplies the selected background and sets data-selected.
-      TableCellalign"left" | "center" | "right"Text alignment.
-      TableBodyanimatebooleanStaggered entrance (Web Animations API) for direct child rows. Off by default.
-      TableBodyanimateKeyReact.KeyChange it to replay the entrance — e.g. on sort or page change.
+| Component | Prop | Type | Description |
+| --- | --- | --- | --- |
+| `TableRow` | `isHeader` | `boolean` | Applies header styling instead of body row styling. |
+| `TableRow` | `selected` | `boolean` | Applies the selected background and sets `data-selected`. |
+| `TableCell` | `align` | `"left" \| "center" \| "right"` | Text alignment. |
+| `TableBody` | `animate` | `boolean` | Staggered entrance (Web Animations API) for direct child rows. Off by default. |
+| `TableBody` | `animateKey` | `React.Key` | Change it to replay the entrance — e.g. on sort or page change. |
 
 ### `TableExpandedRow`, `TableEmpty`, `TableRowActions`
 
-      ComponentPropTypeDescription
-
-      TableExpandedRowopenbooleanGrid-animates the panel open or closed.
-      TableExpandedRowcolSpannumberRequired. Must match your column count.
-      TableEmptycolSpannumberRequired. Defaults its text to &ldquo;No data available.&rdquo;
-      TableRowActionsalign"left" | "center" | "right"Horizontal alignment inside the cell. Defaults to "right".
-      TableRowActionsalwaysVisiblebooleanSkip the hover reveal and keep the buttons visible. Defaults to visible in the soft variant.
+| Component | Prop | Type | Description |
+| --- | --- | --- | --- |
+| `TableExpandedRow` | `open` | `boolean` | Grid-animates the panel open or closed. |
+| `TableExpandedRow` | `colSpan` | `number` | Required. Must match your column count. |
+| `TableEmpty` | `colSpan` | `number` | Required. Defaults its text to &ldquo;No data available.&rdquo; |
+| `TableRowActions` | `align` | `"left" \| "center" \| "right"` | Horizontal alignment inside the cell. Defaults to `"right"`. |
+| `TableRowActions` | `alwaysVisible` | `boolean` | Skip the hover reveal and keep the buttons visible. Defaults to visible in the `soft` variant. |
 
 Every primitive also forwards its ref and accepts the native attributes of the element it renders.
 
 ---
 
-**Component Path:** `[framework]\table\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/table
