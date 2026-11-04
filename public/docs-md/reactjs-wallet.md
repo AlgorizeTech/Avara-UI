@@ -1,20 +1,23 @@
-export const metadata = docsPageMetadata("wallet");
+---
+title: "Wallet"
+description: "A wallet component with three cards that rise from a pocket in a spring-staggered sequence on hover, a thumb scoop and a balance privacy toggle."
+url: https://avaraui.com/docs/nextjs/wallet
+---
 
 # Wallet
 
 An interactive fintech cardholder wallet component featuring 3 serially staggered cards, an authentic physical thumb scoop, a solid enclosed pocket, and privacy balance toggle. When hovered, the 3 cards glide up smoothly in a spring-staggered sequence. Designed with complete dual-theme adaptivity—delivering a clean, crisp, modern light palette in Light Mode and a deep, luxurious violet finish in Dark Mode.
 
-export const usageDefault = `import { Wallet } from "@/components/custom/blocks/WalletBlock";
+## Interactive Cardholder Wallet
 
-export default function DefaultWalletExample() {
-  return (
-    
-      {/* 100% identical styling and cards ready out-of-the-box */}
+Hover over the wallet to smoothly slide out the 3 cards serially. Click any card to pull it high out of the wallet, then click it again to 3D-flip and reveal its back face (magnetic stripe, signature box & CVV). Moving the cursor away resets all cards back inside.
 
-  );
-}`;
+- Click `onClick` any card to elevate it high above the others. Click again to 3D flip between front face and back face (with magnetic stripe & CVV).
+- Toggle `allowReveal` the Eye icon button to reveal or conceal the balance amount.
+- Reusable `cards & props` all texts, cards, balances, tags, and disclaimers can be passed as props, or used zero-config out-of-the-box.
 
-export const usageCustom = `import { Wallet, type WalletCardItem } from "@/components/custom/blocks/WalletBlock";
+```tsx
+import { Wallet, type WalletCardItem } from "@/components/custom/blocks/WalletBlock";
 
 const myCards: WalletCardItem[] = [
   {
@@ -84,9 +87,22 @@ const myCards: WalletCardItem[] = [
 
 export default function CustomWalletExample() {
   return (
-
+    <div className="w-full flex items-center justify-center py-12">
+      <Wallet
+        cards={myCards}
+        overallBalance="$89,000.00"
+        overallLabel="Overall Balance"
+        revealText="Reveal balance"
+        concealText="Conceal balance"
+        maskedBalance="✱✱✱✱✱✱✱✱"
+        allowReveal={true}
+        defaultRevealed={false}
+        autoRevealOnHover={false}
+      />
+    </div>
   );
-}`;
+}
+```
 
 ## Installation
 
@@ -105,210 +121,79 @@ npx shadcn@latest add @avara-ui/wallet
 
 ## Features
 
-    Serially Staggered Cards
-    Hovering over the wallet smoothly slides out all 3 cards in a staggered spring sequence, allowing each card tier to reveal its currency and balance.
+### Serially Staggered Cards
 
-    100% Theme Adaptive (Light & Dark)
-    Renders a clean, elegant light wallet with crisp borders in Light Mode and switches automatically to deep violet luxury tones in Dark Mode.
+Hovering over the wallet smoothly slides out all 3 cards in a staggered spring sequence, allowing each card tier to reveal its currency and balance.
 
-    Completely Enclosed Pocket Base
-    Engineered with a solid pocket base ensuring cards are 100% hidden inside before hover and never poke through the bottom.
+### 100% Theme Adaptive (Light & Dark)
 
-    Interactive Balance Privacy Toggle
-    Users can toggle balance visibility with an animated eye icon button or auto-reveal the unmasked balance on hover.
+Renders a clean, elegant light wallet with crisp borders in Light Mode and switches automatically to deep violet luxury tones in Dark Mode.
+
+### Completely Enclosed Pocket Base
+
+Engineered with a solid pocket base ensuring cards are 100% hidden inside before hover and never poke through the bottom.
+
+### Interactive Balance Privacy Toggle
+
+Users can toggle balance visibility with an animated eye icon button or auto-reveal the unmasked balance on hover.
 
 ## Best Practices & Guidelines
 
-    Touch & Mobile Support
-    On touchscreens without hover capability, tapping the wallet triggers the staggered cards reveal so mobile users have the identical tactile experience.
+### Touch & Mobile Support
 
-    Custom Datasets
-    Pass a custom cards array to customize the name, balance, currency, card number, and gradient classes for each of the 3 cards to match your company's product lineup.
+On touchscreens without hover capability, tapping the wallet triggers the staggered cards reveal so mobile users have the identical tactile experience.
 
-    Individual Card Hover
-    When cards are fanned out, hovering over an individual card raises it an extra 18px and adjusts scale to highlight that specific card.
+### Custom Datasets
+
+Pass a custom `cards` array to customize the name, balance, currency, card number, and gradient classes for each of the 3 cards to match your company's product lineup.
+
+### Individual Card Hover
+
+When cards are fanned out, hovering over an individual card raises it an extra 18px and adjusts scale to highlight that specific card.
 
 ## Props Reference
 
-        Prop
-        Type
-        Default
-        Description
-
-        cards
-        WalletCardItem[]
-        DEFAULT_WALLET_CARDS
-        Array of cards with balances, names, chip states, and gradients.
-
-        overallBalance
-        string
-        "$89,000.00"
-        The total balance shown on the front face of the wallet.
-
-        overallLabel
-        string
-        "Overall Balance"
-        Subtitle text displayed underneath the overall balance.
-
-        revealText
-        string
-        "Reveal balance"
-        Label for the button when balance is concealed/masked.
-
-        concealText
-        string
-        "Conceal balance"
-        Label for the button when balance is revealed/visible.
-
-        maskedBalance
-        string
-        "✱✱✱✱✱✱✱✱"
-        Placeholder string rendered when balance is hidden.
-
-        allowReveal
-        boolean
-        true
-        Whether to show the Reveal/Conceal balance toggle button.
-
-        defaultRevealed
-        boolean
-        false
-        Initial visibility state of the balance (masked or unmasked).
-
-        autoRevealOnHover
-        boolean
-        false
-        Automatically unmask the balance when hovering over the wallet.
-
-        walletColor
-        string
-        "var(--primary)"
-        Base color or CSS variable. The sleeve and pocket wear a soft tint of it, with text in a deep shade of the same hue.
-
-        hint
-        string
-        "Hover to view cards"
-        Prompt shown above the closed wallet on pointer devices. Pass "" to hide.
-
-        touchHint
-        string
-        "Tap to view cards"
-        The same prompt on touch screens, where the wallet opens on tap.
-
-        openHint
-        string
-        "Click a card to view details"
-        Prompt shown while the cards are out, on pointer devices. Pass "" to hide.
-
-        touchOpenHint
-        string
-        "Tap a card to view details"
-        The open prompt on touch screens.
-
-        className
-        string
-        undefined
-        Optional wrapper container CSS classes.
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `cards` | `WalletCardItem[]` | `DEFAULT_WALLET_CARDS` | Array of cards with balances, names, chip states, and gradients. |
+| `overallBalance` | `string` | `"$89,000.00"` | The total balance shown on the front face of the wallet. |
+| `overallLabel` | `string` | `"Overall Balance"` | Subtitle text displayed underneath the overall balance. |
+| `revealText` | `string` | `"Reveal balance"` | Label for the button when balance is concealed/masked. |
+| `concealText` | `string` | `"Conceal balance"` | Label for the button when balance is revealed/visible. |
+| `maskedBalance` | `string` | `"✱✱✱✱✱✱✱✱"` | Placeholder string rendered when balance is hidden. |
+| `allowReveal` | `boolean` | `true` | Whether to show the Reveal/Conceal balance toggle button. |
+| `defaultRevealed` | `boolean` | `false` | Initial visibility state of the balance (masked or unmasked). |
+| `autoRevealOnHover` | `boolean` | `false` | Automatically unmask the balance when hovering over the wallet. |
+| `walletColor` | `string` | `"var(--primary)"` | Base color or CSS variable. The sleeve and pocket wear a soft tint of it, with text in a deep shade of the same hue. |
+| `hint` | `string` | `"Hover to view cards"` | Prompt shown above the closed wallet on pointer devices. Pass `""` to hide. |
+| `touchHint` | `string` | `"Tap to view cards"` | The same prompt on touch screens, where the wallet opens on tap. |
+| `openHint` | `string` | `"Click a card to view details"` | Prompt shown while the cards are out, on pointer devices. Pass `""` to hide. |
+| `touchOpenHint` | `string` | `"Tap a card to view details"` | The open prompt on touch screens. |
+| `className` | `string` | `undefined` | Optional wrapper container CSS classes. |
 
 ### WalletCardItem Object
 
-        Property
-        Type
-        Default
-        Description
-
-        name
-        string
-        Required
-        Card title or currency name (e.g., "Pounds", "Euros").
-
-        balance
-        string
-        Required
-        Formatted balance amount (e.g., "€46,000.00").
-
-        currency
-        string
-        undefined
-        Currency code (e.g., "GBP", "EUR", "USD").
-
-        tag
-        string
-        undefined
-        Small pill tag in top right (e.g., "SAVINGS", "PRIMARY").
-
-        cardNumber
-        string
-        "•••• 4829"
-        Masked card number displayed in the card footer.
-
-        expiry
-        string
-        "12/29"
-        Expiration date string (e.g., "08/29", "09/30").
-
-        issuer
-        string
-        "PINSTACK"
-        Card issuer or network brand name.
-
-        cvv
-        string
-        "832"
-        CVV security code shown on the back-face signature strip.
-
-        hasChip
-        boolean
-        false
-        Renders the metallic golden EMV chip on the card face.
-
-        gradientLight
-        string
-        undefined
-        Tailwind gradient classes for Light Mode card background.
-
-        gradientDark
-        string
-        undefined
-        Tailwind gradient classes for Dark Mode card background.
-
-        textColorLight
-        string
-        undefined
-        Text color class for Light Mode (e.g., "text-amber-950").
-
-        textColorDark
-        string
-        undefined
-        Text color class for Dark Mode (e.g., "text-white").
-
-        subtextColorLight
-        string
-        undefined
-        Secondary text color class for Light Mode.
-
-        subtextColorDark
-        string
-        undefined
-        Secondary text color class for Dark Mode.
-
-        backSignatureLabel
-        string
-        "AUTHORIZED SIGNATURE"
-        Label inside the back-face white signature strip.
-
-        backSubtitle
-        string
-        "GLOBAL SECURE ASSET CARD"
-        Header text printed on the card back footer.
-
-        backNotice
-        string
-        "NOT VALID UNLESS SIGNED..."
-        Legal disclaimer text printed on the card back footer.
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `name` | `string` | Required | Card title or currency name (e.g., "Pounds", "Euros"). |
+| `balance` | `string` | Required | Formatted balance amount (e.g., "€46,000.00"). |
+| `currency` | `string` | `undefined` | Currency code (e.g., "GBP", "EUR", "USD"). |
+| `tag` | `string` | `undefined` | Small pill tag in top right (e.g., "SAVINGS", "PRIMARY"). |
+| `cardNumber` | `string` | `"•••• 4829"` | Masked card number displayed in the card footer. |
+| `expiry` | `string` | `"12/29"` | Expiration date string (e.g., "08/29", "09/30"). |
+| `issuer` | `string` | `"PINSTACK"` | Card issuer or network brand name. |
+| `cvv` | `string` | `"832"` | CVV security code shown on the back-face signature strip. |
+| `hasChip` | `boolean` | `false` | Renders the metallic golden EMV chip on the card face. |
+| `gradientLight` | `string` | `undefined` | Tailwind gradient classes for Light Mode card background. |
+| `gradientDark` | `string` | `undefined` | Tailwind gradient classes for Dark Mode card background. |
+| `textColorLight` | `string` | `undefined` | Text color class for Light Mode (e.g., "text-amber-950"). |
+| `textColorDark` | `string` | `undefined` | Text color class for Dark Mode (e.g., "text-white"). |
+| `subtextColorLight` | `string` | `undefined` | Secondary text color class for Light Mode. |
+| `subtextColorDark` | `string` | `undefined` | Secondary text color class for Dark Mode. |
+| `backSignatureLabel` | `string` | `"AUTHORIZED SIGNATURE"` | Label inside the back-face white signature strip. |
+| `backSubtitle` | `string` | `"GLOBAL SECURE ASSET CARD"` | Header text printed on the card back footer. |
+| `backNotice` | `string` | `"NOT VALID UNLESS SIGNED..."` | Legal disclaimer text printed on the card back footer. |
 
 ---
 
-**Component Path:** `[framework]\wallet\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/wallet

@@ -1,7 +1,8 @@
-export const metadata = docsPageMetadata("qr-code-generator", {
-  title: "QR Code",
-  description: "A complete QR Code suite allowing you to easily generate high-quality QR codes and seamlessly scan/read uploaded QR code images."
-});
+---
+title: "QR Code Suite"
+description: "A premium, dual-purpose QR Code component suite built for Next.js applications. Free shadcn/ui QR Code component for React, Next.js and Tailwind CSS."
+url: https://avaraui.com/docs/nextjs/qr-code-generator
+---
 
 # QR Code Suite
 
@@ -13,31 +14,57 @@ Everything below runs client-side — type a new value and the SVG regenerates i
 
 ## QR generator
 
-export const usageGenerator = `"use client";
+### QR generator
+
+Type a value, pick an error-correction level, and export as PNG or PDF.
+
+- `value` is the data or URL encoded into the code — required, despite defaulting to an empty string.
+
+```tsx
+"use client";
+
+
+
 
 type Level = "L" | "M" | "Q" | "H";
 
 export default function GeneratorExample() {
   const [value, setValue] = useState("https://algorizetech.com");
-  const [level, setLevel] = useState("L");
+  const [level, setLevel] = useState<Level>("L");
 
-  // Only  ships with the component — the controls around it
+  // Only <QrCodeGenerator> ships with the component — the controls around it
   // are ordinary markup wired to your own state.
   return (
-
+    <div className="w-full flex flex-col lg:flex-row gap-8 bg-background p-8 md:p-12 border border-border rounded-2xl">
+      <div className="flex-1 flex flex-col gap-6">
+        <h3 className="text-lg font-medium text-muted-foreground">
           Generate QR codes from text or URLs.
+        </h3>
 
+        <div className="flex flex-col gap-2">
+          <label htmlFor="qr-input" className="block text-sm font-semibold text-foreground">
             Value:
-          
-           setValue(e.target.value)}
+          </label>
+          <input
+            id="qr-input"
+            type="text"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
             placeholder="https://algorizetech.com"
             className="w-full px-4 py-3 border border-input rounded-xl bg-muted focus:outline-none focus:ring-2 focus:ring-primary/20 text-sm transition-colors"
           />
+        </div>
 
+        <div className="flex flex-col gap-2 mt-2">
+          <label className="block text-sm font-semibold text-foreground mb-1">
             Correction Level:
-
+          </label>
+          <div className="grid grid-cols-4 sm:inline-flex rounded-xl border border-border bg-background overflow-hidden w-full sm:w-max">
             {(["L", "M", "Q", "H"] as const).map((lvl) => (
-               setLevel(lvl)}
+              <button
+                key={lvl}
+                type="button"
+                onClick={() => setLevel(lvl)}
                 className={
                   "flex-1 cursor-pointer px-3 sm:px-4 py-2 text-sm font-medium transition-colors border-r border-border last:border-r-0 text-center " +
                   (level === lvl
@@ -46,42 +73,40 @@ export default function GeneratorExample() {
                 }
               >
                 {lvl}
-              
+              </button>
             ))}
+          </div>
+        </div>
+      </div>
 
+      <div className="flex-1 flex flex-col gap-6">
+        <div className="flex items-center justify-center bg-muted/50 rounded-2xl border border-border p-8 min-h-[300px]">
+          <QrCodeGenerator
+            id="qr-wrapper"
+            value={value}
+            size={220}
+            level={level}
+            bgColor="transparent"
+            fgColor="currentColor"
+            className="text-primary"
+          />
+        </div>
+
+        <div className="flex flex-col sm:flex-row gap-3 w-full">
+          <button className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 transition-colors">
+            <ImageIcon className="w-4 h-4" />
             Save as PNG
-
+          </button>
+          <button className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium text-foreground bg-card border border-border hover:bg-muted rounded-xl transition-colors">
+            <FileText className="w-4 h-4" />
             Save as PDF
-
+          </button>
+        </div>
+      </div>
+    </div>
   );
-}`;
-
-export const usageGallery = `import { QrCodeGenerator } from "@/components/custom/blocks/QrCodeGeneratorBlock";
-
-const swatches = [
-  { size: 96, level: "L" as const },
-  { size: 140, level: "M" as const },
-  { size: 200, level: "H" as const },
-];
-
-export default function QrGallery() {
-  return (
-    
-      {swatches.map((s) => (
-
-            size={s.size} · level=&quot;{s.level}&quot;
-
-      ))}
-    
-  );
-}`;
-
-export const usageReader = `"use client";
-
-export default function ReaderExample() {
-  // Click or drag-and-drop a QR image; \`onRead\` fires with the decoded string.
-  return  console.log("Scanned QR:", data)} />;
-}`;
+}
+```
 
 ### Installation
 
@@ -100,9 +125,62 @@ npx shadcn@latest add @avara-ui/qr-code-generator
 
 ### More examples
 
+### Sizes & levels
+
+- `size={128}` is the box in pixels; the output is SVG, so it stays crisp at any of them.
+- `fgColor` colours the pattern and `bgColor` the backing — keep the contrast high or scanners fail.
+- `level` sets redundancy: `L`, `M`, `Q` or `H`. Higher survives more damage but packs the pattern denser.
+
+```tsx
+import { QrCodeGenerator } from "@/components/custom/blocks/QrCodeGeneratorBlock";
+
+const swatches = [
+  { size: 96, level: "L" as const },
+  { size: 140, level: "M" as const },
+  { size: 200, level: "H" as const },
+];
+
+export default function QrGallery() {
+  return (
+    <div className="flex flex-wrap items-end justify-center gap-10">
+      {swatches.map((s) => (
+        <div key={s.size} className="flex flex-col items-center gap-3">
+          <QrCodeGenerator
+            value="https://algorizetech.com"
+            size={s.size}
+            level={s.level}
+            bgColor="transparent"
+            // "currentColor" lets the pattern inherit any text colour class.
+            fgColor="currentColor"
+            className="text-primary"
+          />
+          <span className="text-xs font-semibold text-muted-foreground">
+            size={s.size} · level=&quot;{s.level}&quot;
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+```
+
 ## QR reader
 
 A separate component with its own dependencies — decoding happens entirely in the browser.
+
+### QR reader
+
+- `onRead` on `QrCodeReader` receives the decoded payload — the decode happens in the browser, nothing is uploaded.
+
+```tsx
+"use client";
+
+
+export default function ReaderExample() {
+  // Click or drag-and-drop a QR image; `onRead` fires with the decoded string.
+  return <QrCodeReader onRead={(data) => console.log("Scanned QR:", data)} />;
+}
+```
 
 ### Installation
 
@@ -122,81 +200,55 @@ npx shadcn@latest add @avara-ui/qr-code-reader
 ## Features
 Explore the QR Code Generator's customizable features, allowing for different colors, sizes, and embedded logos within the code.
 
-    Fully Client-side
-    Runs securely in the browser without relying on any external APIs.
+### Fully Client-side
 
-    High-Fidelity Output
-    Generates crisp, scalable SVG QR codes that never lose visual quality.
+Runs securely in the browser without relying on any external APIs.
 
-    Highly Customizable
-    Easily tweak foreground/background colors, sizes, and error correction levels.
+### High-Fidelity Output
 
-    Drag-and-Drop Scan
-    The reader supports both file selection and drag-and-drop for a premium UX.
+Generates crisp, scalable SVG QR codes that never lose visual quality.
+
+### Highly Customizable
+
+Easily tweak foreground/background colors, sizes, and error correction levels.
+
+### Drag-and-Drop Scan
+
+The reader supports both file selection and drag-and-drop for a premium UX.
 
 ## Best Practices & Guidelines
 
-    Color Contrast
-    Ensure a high contrast between the background and foreground colors. A light background (e.g., #FFFFFF) with a dark foreground (e.g., #000000) is recommended for optimal scannability by smartphone cameras.
+### Color Contrast
 
-    Error Correction Level
-    Use L (Low) for simple URLs to keep the QR code visually clean and sparse. Use H (High) if you plan to overlay a custom logo in the center, as it allows up to 30% of the code to be obscured without breaking.
+Ensure a high contrast between the background and foreground colors. A light background (e.g., `#FFFFFF`) with a dark foreground (e.g., `#000000`) is recommended for optimal scannability by smartphone cameras.
 
-    Error Handling
-    The reader automatically handles invalid or unreadable images. Consider adding UI feedback (e.g., a toast notification) if the onRead callback isn't triggered after a user uploads an invalid file.
+### Error Correction Level
 
-    Accessibility (a11y)
-    The drag-and-drop area is keyboard accessible, but ensure any surrounding labels or descriptions clearly instruct the user to upload a valid QR code image.
+Use L (Low) for simple URLs to keep the QR code visually clean and sparse. Use H (High) if you plan to overlay a custom logo in the center, as it allows up to 30% of the code to be obscured without breaking.
+
+### Error Handling
+
+The reader automatically handles invalid or unreadable images. Consider adding UI feedback (e.g., a toast notification) if the `onRead` callback isn't triggered after a user uploads an invalid file.
+
+### Accessibility (a11y)
+
+The drag-and-drop area is keyboard accessible, but ensure any surrounding labels or descriptions clearly instruct the user to upload a valid QR code image.
 
 ## Props Reference
 
-        Prop
-        Type
-        Default
-        Description
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | `""` | The data or URL to encode inside the QR code (Required). |
+| `size` | `number` | `128` | The width and height of the QR code in pixels. |
+| `bgColor` | `string` | `"#FFFFFF"` | Background color of the QR code (supports hex/rgba). |
+| `fgColor` | `string` | `"#000000"` | Foreground color (the dots/pattern) of the QR code. |
+| `level` | `"L" \| "M" \| "Q" \| "H"` | `"L"` | Error correction level (Low, Medium, Quartile, High). |
 
-        value
-        string
-        ""
-        The data or URL to encode inside the QR code (Required).
-
-        size
-        number
-        128
-        The width and height of the QR code in pixels.
-
-        bgColor
-        string
-        "#FFFFFF"
-        Background color of the QR code (supports hex/rgba).
-
-        fgColor
-        string
-        "#000000"
-        Foreground color (the dots/pattern) of the QR code.
-
-        level
-        "L" | "M" | "Q" | "H"
-        "L"
-        Error correction level (Low, Medium, Quartile, High).
-
-        Prop
-        Type
-        Default
-        Description
-
-        onRead
-        (data: string) =&gt; void
-        undefined
-        Callback function triggered upon successfully reading a QR code from an image.
-
-        className
-        string
-        undefined
-        Additional CSS classes applied to the outer wrapper of the reader component.
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `onRead` | `(data: string) => void` | `undefined` | Callback function triggered upon successfully reading a QR code from an image. |
+| `className` | `string` | `undefined` | Additional CSS classes applied to the outer wrapper of the reader component. |
 
 ---
 
-**Component Path:** `[framework]\qr-code-generator\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/qr-code-generator

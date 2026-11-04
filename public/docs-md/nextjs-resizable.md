@@ -1,4 +1,8 @@
-export const metadata = docsPageMetadata("resizable");
+---
+title: "Resizable"
+description: "A high-performance system for building resizable panel layouts, complete with keyboard accessibility and nested group support. Free shadcn/ui component."
+url: https://avaraui.com/docs/nextjs/resizable
+---
 
 # Resizable
 
@@ -8,155 +12,138 @@ Most UI frameworks rely on massive, complex external libraries to handle the mat
 
 Drag any handle to resize. Click a handle to focus it, then use the arrow keys — the engine ships with the ARIA separator semantics and keyboard stepping already wired.
 
-export const paneHelper = `// Panel bodies — swap these for your own content.
-function Pane({ label }: { label: string }) {
+## Resizable layout
+
+Groups nest, so a full IDE layout is a few lines.
+
+- `direction` on `ResizablePanelGroup` sets the axis for the group and every handle inside it.
+
+```tsx
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/custom/blocks/ResizableBlock";
+
+function Explorer() {
   return (
-    
-      {label}
-    
-  );
-}`;
-
-export const splitPanes = `${paneHelper}
-
-const PanelOne = () => ;
-const PanelTwo = () => ;`;
-
-export const sidebarPanes = `${paneHelper}
-
-const Sidebar = () => ;
-const Editor = () => ;`;
-
-export const studioPanes = `function Explorer() {
-  return (
-
+    <div className="p-4 flex flex-col h-full bg-muted/30">
+      <div className="text-xs font-extrabold uppercase tracking-wider text-primary mb-4">
         Explorer
-
+      </div>
+      <div className="space-y-2 flex-1">
+        <div className="w-full h-4 bg-muted rounded" />
+        <div className="w-3/4 h-4 bg-muted rounded" />
+        <div className="w-5/6 h-4 bg-muted rounded" />
+      </div>
+    </div>
   );
 }
 
 function Editor() {
   return (
-
-        page.tsx
-        
+    <div className="p-4 flex flex-col h-full bg-background overflow-y-auto">
+      <div className="text-xs font-semibold text-foreground mb-4 border-b border-border/60 pb-2 flex items-center justify-between shrink-0">
+        <span>page.tsx</span>
+        <span className="text-[10px] text-primary font-mono bg-primary/10 px-1.5 py-0.5 rounded">
           Active
-
-          export default function{" "}
-          Page() {"{"}
-        
-        return (
-        
-          &lt;div{" "}
-          className=
-          &quot;flex h-full w-full flex-col p-4&quot;
-          &gt;
-
-          &lt;h2{" "}
-          className=
-          &quot;text-2xl font-semibold&quot;
-          &gt;
-          John Doe
-          &lt;/h2&gt;
-
+        </span>
+      </div>
+      <div className="space-y-2 font-mono text-xs flex-1">
+        <div>
+          <span className="text-[#d73a49] dark:text-[#f97583] font-semibold">export default function</span>{" "}
+          <span className="text-[#6f42c1] dark:text-[#b392f0] font-semibold">Page</span>() {"{"}
+        </div>
+        <div className="pl-4 font-semibold text-[#d73a49] dark:text-[#f97583]">return (</div>
+        <div className="pl-8">
+          <span className="text-[#22863a] dark:text-[#85e89d]">&lt;div</span>{" "}
+          <span className="text-[#6f42c1] dark:text-[#b392f0]">className</span>=
+          <span className="text-[#032f62] dark:text-[#9ecbfc]">&quot;flex h-full w-full flex-col p-4&quot;</span>
+          <span className="text-[#22863a] dark:text-[#85e89d]">&gt;</span>
+        </div>
+        <div className="pl-12">
+          <span className="text-[#22863a] dark:text-[#85e89d]">&lt;h2</span>{" "}
+          <span className="text-[#6f42c1] dark:text-[#b392f0]">className</span>=
+          <span className="text-[#032f62] dark:text-[#9ecbfc]">&quot;text-2xl font-semibold&quot;</span>
+          <span className="text-[#22863a] dark:text-[#85e89d]">&gt;</span>
+          <span className="text-foreground font-semibold">John Doe</span>
+          <span className="text-[#22863a] dark:text-[#85e89d]">&lt;/h2&gt;</span>
+        </div>
+        <div className="pl-12 text-[#6a737d] dark:text-[#6a737d] italic">
           {"{/* Drag handle bars to resize panels live */}"}
-        
-        &lt;/div&gt;
-        );
-        {"}"}
-
+        </div>
+        <div className="pl-8 text-[#22863a] dark:text-[#85e89d]">&lt;/div&gt;</div>
+        <div className="pl-4 font-semibold text-[#d73a49] dark:text-[#f97583]">);</div>
+        <div>{"}"}</div>
+      </div>
+    </div>
   );
 }
 
 function TerminalPane() {
   return (
-
-        Terminal
-        bash
-
-        project@app:~${" "}
+    <div className="p-4 flex flex-col h-full bg-zinc-950 text-white border-t border-border/40">
+      <div className="text-xs font-semibold uppercase tracking-wider text-primary mb-2 flex items-center justify-between">
+        <span>Terminal</span>
+        <span className="text-[9px] text-muted-foreground">bash</span>
+      </div>
+      <div className="font-mono text-xs text-zinc-300">
+        <span className="text-emerald-400 font-semibold">project@app:~$</span>{" "}
         npm run dev
-        
-        ✓ Ready in 850ms
-
+        <br />
+        <span className="text-primary font-semibold">✓ Ready in 850ms</span>
+      </div>
+    </div>
   );
-}`;
-
-export const usageDefault = `import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/custom/blocks/ResizableBlock";
-
-${studioPanes}
+}
 
 export default function StudioLayout() {
   return (
     // Simulated Studio Window
-    
+    <div className="w-full h-[400px] sm:h-[460px] border border-border rounded-xl overflow-hidden shadow-xs bg-background flex flex-col">
       {/* Fake Header Bar */}
-
+      <div className="h-9 sm:h-10 border-b border-border/80 bg-muted/50 px-3 sm:px-4 flex items-center justify-between shrink-0">
+        <div className="flex items-center gap-2">
+          <div className="flex gap-1.5">
+            <div className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
+            <div className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
+            <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+          </div>
+          <span className="text-[11px] sm:text-xs font-semibold text-foreground ml-2">
             Nexus Studio
-
+          </span>
+        </div>
+        <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-primary/10 text-primary border border-primary/20">
           Resizable Layout
+        </span>
+      </div>
 
       {/* Main Resizable Workspace */}
+      <div className="flex-1 overflow-hidden">
+        <ResizablePanelGroup direction="horizontal">
+          <ResizablePanel defaultSize={22} minSize={15} maxSize={40}>
+            <Explorer />
+          </ResizablePanel>
 
+          <ResizableHandle withHandle />
+
+          <ResizablePanel defaultSize={78}>
+            <ResizablePanelGroup direction="vertical">
+              <ResizablePanel defaultSize={70} minSize={30}>
+                <Editor />
+              </ResizablePanel>
+              <ResizableHandle withHandle />
+              <ResizablePanel defaultSize={30} minSize={15}>
+                <TerminalPane />
+              </ResizablePanel>
+            </ResizablePanelGroup>
+          </ResizablePanel>
+        </ResizablePanelGroup>
+      </div>
+    </div>
   );
-}`;
-
-export const usageHorizontal = `import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/custom/blocks/ResizableBlock";
-
-${splitPanes}
-
-export default function HorizontalSplit() {
-  // A panel group is height:100%, so it collapses to nothing unless an ancestor
-  // is sized. Give it a fixed height, or h-screen to fill the viewport.
-  return (
-
-  );
-}`;
-
-export const usageVertical = `import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/custom/blocks/ResizableBlock";
-
-${splitPanes}
-
-export default function VerticalSplit() {
-  // \`direction\` sets the flex axis of the group and the drag axis of every
-  // handle inside it.
-  // A panel group is height:100%, so it collapses to nothing unless an ancestor
-  // is sized. Give it a fixed height, or h-screen to fill the viewport.
-  return (
-
-  );
-}`;
-
-export const usageConstraints = `import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "@/components/custom/blocks/ResizableBlock";
-
-${sidebarPanes}
-
-export default function ConstrainedSidebar() {
-  // A panel group is height:100%, so it collapses to nothing unless an ancestor
-  // is sized. Give it a fixed height, or h-screen to fill the viewport.
-  return (
-
-        {/* Percentages of the group. The engine clamps the drag so a panel can
-            never escape its bounds. */}
-
-  );
-}`;
+}
+```
 
 ## Installation
 
@@ -175,100 +162,173 @@ npx shadcn@latest add @avara-ui/resizable
 
 ## Examples
 
+### Horizontal split
+
+- `defaultSize` on each panel is a percentage of the group — two panels at 40 and 60 fill it.
+- `withHandle` on the handle renders the visible grip in the middle of the divider.
+
+```tsx
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/custom/blocks/ResizableBlock";
+
+// Panel bodies — swap these for your own content.
+function Pane({ label }: { label: string }) {
+  return (
+    <div className="flex h-full items-center justify-center bg-muted/40">
+      <span className="text-sm font-medium text-muted-foreground">{label}</span>
+    </div>
+  );
+}
+
+const PanelOne = () => <Pane label="Panel one" />;
+const PanelTwo = () => <Pane label="Panel two" />;
+
+export default function HorizontalSplit() {
+  // A panel group is height:100%, so it collapses to nothing unless an ancestor
+  // is sized. Give it a fixed height, or h-screen to fill the viewport.
+  return (
+    <div className="w-full h-[280px] sm:h-[320px] border rounded-xl overflow-hidden">
+      <ResizablePanelGroup direction="horizontal">
+        <ResizablePanel defaultSize={40}>
+          <PanelOne />
+        </ResizablePanel>
+        <ResizableHandle withHandle />
+        <ResizablePanel defaultSize={60}>
+          <PanelTwo />
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    </div>
+  );
+}
+```
+
+### Vertical split
+
+- Set `direction="vertical"` to stack the panels and turn the handle into a horizontal bar.
+
+```tsx
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/custom/blocks/ResizableBlock";
+
+// Panel bodies — swap these for your own content.
+function Pane({ label }: { label: string }) {
+  return (
+    <div className="flex h-full items-center justify-center bg-muted/40">
+      <span className="text-sm font-medium text-muted-foreground">{label}</span>
+    </div>
+  );
+}
+
+const PanelOne = () => <Pane label="Panel one" />;
+const PanelTwo = () => <Pane label="Panel two" />;
+
+export default function VerticalSplit() {
+  // `direction` sets the flex axis of the group and the drag axis of every
+  // handle inside it.
+  // A panel group is height:100%, so it collapses to nothing unless an ancestor
+  // is sized. Give it a fixed height, or h-screen to fill the viewport.
+  return (
+    <div className="w-full h-[280px] sm:h-[320px] border rounded-xl overflow-hidden">
+      <ResizablePanelGroup direction="vertical">
+        <ResizablePanel defaultSize={40}>
+          <PanelOne />
+        </ResizablePanel>
+        <ResizableHandle withHandle />
+        <ResizablePanel defaultSize={60}>
+          <PanelTwo />
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    </div>
+  );
+}
+```
+
+### Size constraints
+
+- `minSize={15}` and `maxSize` are percentages of the group; the drag clamps to them so a panel can never escape its bounds.
+
+```tsx
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup,
+} from "@/components/custom/blocks/ResizableBlock";
+
+// Panel bodies — swap these for your own content.
+function Pane({ label }: { label: string }) {
+  return (
+    <div className="flex h-full items-center justify-center bg-muted/40">
+      <span className="text-sm font-medium text-muted-foreground">{label}</span>
+    </div>
+  );
+}
+
+const Sidebar = () => <Pane label="min 15% · max 40%" />;
+const Editor = () => <Pane label="fills the rest" />;
+
+export default function ConstrainedSidebar() {
+  // A panel group is height:100%, so it collapses to nothing unless an ancestor
+  // is sized. Give it a fixed height, or h-screen to fill the viewport.
+  return (
+    <div className="w-full h-[280px] sm:h-[320px] border rounded-xl overflow-hidden">
+      <ResizablePanelGroup direction="horizontal">
+        {/* Percentages of the group. The engine clamps the drag so a panel can
+            never escape its bounds. */}
+        <ResizablePanel defaultSize={25} minSize={15} maxSize={40}>
+          <Sidebar />
+        </ResizablePanel>
+        <ResizableHandle withHandle />
+        <ResizablePanel>
+          <Editor />
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    </div>
+  );
+}
+```
+
 ## Features
 Learn about the Resizable component's panel layout capabilities, supporting drag handles, collapsible panes, and nested groups.
 
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
+### Customizable
 
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+Easily adapt the component's styling and behavior to fit your application's unique design system.
 
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+### Accessible
 
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
+Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+### Responsive
+
+Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+### Performant
+
+Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 
-    Usage Guidelines
-    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+### Usage Guidelines
+
+Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
 ## Props Reference
 
-        Component
-        Prop
-        Type
-        Default
-        Description
-
-          ResizablePanelGroup
-
-          direction
-
-          "horizontal" | "vertical"
-
-          "horizontal"
-
-          The layout orientation of the group. Panels inside will stack either
-          side-by-side or top-to-bottom.
-
-          ResizablePanel
-
-          defaultSize
-
-          number
-
-          50
-
-          The initial size of the panel, represented as a relative percentage of
-          its parent container.
-
-          ResizablePanel
-
-          minSize
-
-          number
-
-          0
-
-          The minimum allowed size (percentage) the panel can be shrunk to.
-
-          ResizablePanel
-
-          maxSize
-
-          number
-
-          100
-
-          The maximum allowed size (percentage) the panel can be grown to.
-
-          ResizableHandle
-
-          withHandle
-
-          boolean
-
-          false
-
-          If true, renders a small visual grip icon in the center of the
-          separator track.
-
-          All Components
-
-          className
-
-          string
-
-          undefined
-
-          Standard Tailwind CSS overrides. Useful for adding specific background
-          colors or padding to panels.
+| Component | Prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `ResizablePanelGroup` | `direction` | `"horizontal" \| "vertical"` | `"horizontal"` | The layout orientation of the group. Panels inside will stack either side-by-side or top-to-bottom. |
+| `ResizablePanel` | `defaultSize` | `number` | `50` | The initial size of the panel, represented as a relative percentage of its parent container. |
+| `ResizablePanel` | `minSize` | `number` | `0` | The minimum allowed size (percentage) the panel can be shrunk to. |
+| `ResizablePanel` | `maxSize` | `number` | `100` | The maximum allowed size (percentage) the panel can be grown to. |
+| `ResizableHandle` | `withHandle` | `boolean` | `false` | If true, renders a small visual grip icon in the center of the separator track. |
+| All Components | `className` | `string` | `undefined` | Standard Tailwind CSS overrides. Useful for adding specific background colors or padding to panels. |
 
 ---
 
-**Component Path:** `[framework]\resizable\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/resizable

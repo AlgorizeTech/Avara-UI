@@ -1,3 +1,9 @@
+---
+title: "Quick Start"
+description: "Get your first Avara UI component on screen in a new React + Vite app. For an existing project, follow the Installation guide instead."
+url: https://avaraui.com/docs/reactjs/first-app
+---
+
 # Quick Start
 
 Get your first Avara UI component on screen in a new React + Vite app. For an existing
@@ -19,6 +25,10 @@ npm install tailwindcss @tailwindcss/vite
 
 ```ts
 // vite.config.ts
+import path from "node:path";
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
@@ -54,7 +64,7 @@ npx shadcn@latest init --base radix --preset nova
 
 ## 4. Register the registry
 
-Tells the CLI where @avara-ui/… components live.
+Tells the CLI where `@avara-ui/…` components live.
 
 ```bash
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
@@ -72,15 +82,29 @@ This writes `src/components/custom/blocks/CardBlock.tsx` into your project.
 
 ```tsx
 // src/App.tsx
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/custom/blocks/CardBlock";
 
 export default function App() {
   return (
-
-          Welcome
-          Your first installed component.
-
+    <main className="p-24">
+      <Card variant="bordered" className="w-full max-w-sm">
+        <CardHeader>
+          <CardTitle>Welcome</CardTitle>
+          <CardDescription>Your first installed component.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm">
             Edit the file the CLI just wrote — it is yours now.
-
+          </p>
+        </CardContent>
+      </Card>
+    </main>
   );
 }
 ```
@@ -94,6 +118,4 @@ Run `npm run dev` and open `http://localhost:5173`.
 
 ---
 
-**Component Path:** `[framework]\first-app\_content\reactjs.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/reactjs/first-app

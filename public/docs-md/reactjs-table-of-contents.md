@@ -1,4 +1,8 @@
-export const metadata = docsPageMetadata("table-of-contents");
+---
+title: "Table of Contents"
+description: "An interactive, responsive Table of Contents navigation block engineered to sit on the left side of long documents, articles, or documentation pages."
+url: https://avaraui.com/docs/nextjs/table-of-contents
+---
 
 # Table of Contents
 
@@ -6,7 +10,16 @@ An interactive, responsive **Table of Contents** navigation block engineered to 
 
 Features a real-time scroll-spy, spring-animated section indicator, scroll progress bar, section search filter, and mobile navigation drawer.
 
-export const usageExample = `const previewItems: TOCItem[] = [
+## Table of Contents (Left Side Navigation)
+
+Sticky left-hand TOC navigation with automatic scroll-spy, progress indicator, and section filter.
+
+- `headings` Array of TOCHeading objects ({ id, title, level }) defining the document outline.
+- `showProgress` Displays an animated top progress bar reflecting current document scroll percentage.
+- `showSearch` Enables an inline search filter input inside the right-hand TOC sidebar.
+
+```tsx
+const previewItems: TOCItem[] = [
   {
     id: "overview",
     title: "Overview & Features",
@@ -49,15 +62,21 @@ export const usageExample = `const previewItems: TOCItem[] = [
     title: "Accessibility & ARIA",
     level: 1,
     description:
-      "Built with Web Content Accessibility Guidelines (WCAG 2.1) compliance in mind, the Table of Contents uses semantic HTML5 navigation landmarks () and explicit ARIA attributes like aria-label and aria-current.",
+      "Built with Web Content Accessibility Guidelines (WCAG 2.1) compliance in mind, the Table of Contents uses semantic HTML5 navigation landmarks (<nav>) and explicit ARIA attributes like aria-label and aria-current.",
   },
 ];
 
 export default function TableOfContentsDemo() {
   return (
-    
+    <TableOfContentsBlock
+      items={previewItems}
+      sidebarTitle="On this page"
+      showProgress={true}
+      showSearch={true}
+    />
   );
-}`;
+}
+```
 
 ## Installation
 
@@ -76,112 +95,41 @@ npx shadcn@latest add @avara-ui/table-of-contents
 
 ## Features
 
-    Right-Side Sticky Panel
-    Positions the TOC navigation cleanly on the right column while main content flows on the left.
+### Right-Side Sticky Panel
 
-    Scroll-Spy Tracking
-    Automatically detects active viewport headings and animates the active indicator smoothly along a spring curve, with no animation library.
+Positions the TOC navigation cleanly on the right column while main content flows on the left.
 
-    Section Search Filter
-    Filter long document section headers instantly with an embedded search input.
+### Scroll-Spy Tracking
 
-    Mobile Dropdown Menu
-    Collapses into a sticky mobile bar with drawer navigation on smaller devices.
+Automatically detects active viewport headings and animates the active indicator smoothly along a spring curve, with no animation library.
+
+### Section Search Filter
+
+Filter long document section headers instantly with an embedded search input.
+
+### Mobile Dropdown Menu
+
+Collapses into a sticky mobile bar with drawer navigation on smaller devices.
 
 ## Props Reference
 
-        Component / Object
-        Prop
-        Type
-        Default
-        Description
-
-        TableOfContentsBlock
-        items
-        TOCItem[]
-        DEFAULT_ITEMS
-        Array of section content blocks with titles, levels, descriptions, and optional code snippets.
-
-        TableOfContentsBlock
-        headings
-        TOCHeading[]
-        Derived from items
-        Custom outline structure containing id, title, and level (1 | 2 | 3).
-
-        TableOfContentsBlock
-        activeId
-        string
-        Controlled by scroll-spy
-        Manually override the currently highlighted active section ID.
-
-        TableOfContentsBlock
-        onSelectHeading
-        (id: string) =&gt; void
-        Smooth scroll to target
-        Callback fired when a user clicks on a section heading in the TOC sidebar.
-
-        TableOfContentsBlock
-        color
-        string
-        "var(--primary)"
-        Accent theme color for active indicator, progress bar, and search highlights (Hex, RGB, or CSS var).
-
-        TableOfContentsBlock
-        showProgress
-        boolean
-        true
-        Shows or hides the top reading progress indicator bar.
-
-        TableOfContentsBlock
-        showSearch
-        boolean
-        true
-        Shows or hides the inline section search filter input inside the sidebar.
-
-        TableOfContentsBlock
-        sidebarTitle
-        string
-        "On this page"
-        Header text displayed at the top of the sticky TOC sidebar.
-
-        TOCItem / TOCHeading
-        id
-        string
-        Required
-        Unique DOM element ID matching the section heading target.
-
-        TOCItem / TOCHeading
-        title
-        string
-        Required
-        Display title shown in the TOC sidebar and main content section.
-
-        TOCItem / TOCHeading
-        level
-        1 | 2 | 3
-        1
-        Indentation hierarchy level for sub-sections.
-
-        TOCItem
-        description
-        string
-        —
-        Body paragraph content associated with the section.
-
-        TOCItem
-        codeSnippet
-        string
-        —
-        Code snippet displayed inside the section card with a copy-to-clipboard button.
-
-        TOCItem
-        badge
-        string
-        —
-        Badge label shown next to the section title (e.g., "New", "Updated").
+| Component / Object | Prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `TableOfContentsBlock` | `items` | `TOCItem[]` | `DEFAULT_ITEMS` | Array of section content blocks with titles, levels, descriptions, and optional code snippets. |
+| `TableOfContentsBlock` | `headings` | `TOCHeading[]` | Derived from `items` | Custom outline structure containing `id`, `title`, and `level` (1 \| 2 \| 3). |
+| `TableOfContentsBlock` | `activeId` | `string` | Controlled by scroll-spy | Manually override the currently highlighted active section ID. |
+| `TableOfContentsBlock` | `onSelectHeading` | `(id: string) => void` | Smooth scroll to target | Callback fired when a user clicks on a section heading in the TOC sidebar. |
+| `TableOfContentsBlock` | `color` | `string` | `"var(--primary)"` | Accent theme color for active indicator, progress bar, and search highlights (Hex, RGB, or CSS var). |
+| `TableOfContentsBlock` | `showProgress` | `boolean` | `true` | Shows or hides the top reading progress indicator bar. |
+| `TableOfContentsBlock` | `showSearch` | `boolean` | `true` | Shows or hides the inline section search filter input inside the sidebar. |
+| `TableOfContentsBlock` | `sidebarTitle` | `string` | `"On this page"` | Header text displayed at the top of the sticky TOC sidebar. |
+| `TOCItem` / `TOCHeading` | `id` | `string` | Required | Unique DOM element ID matching the section heading target. |
+| `TOCItem` / `TOCHeading` | `title` | `string` | Required | Display title shown in the TOC sidebar and main content section. |
+| `TOCItem` / `TOCHeading` | `level` | `1 \| 2 \| 3` | `1` | Indentation hierarchy level for sub-sections. |
+| `TOCItem` | `description` | `string` | — | Body paragraph content associated with the section. |
+| `TOCItem` | `codeSnippet` | `string` | — | Code snippet displayed inside the section card with a copy-to-clipboard button. |
+| `TOCItem` | `badge` | `string` | — | Badge label shown next to the section title (e.g., "New", "Updated"). |
 
 ---
 
-**Component Path:** `[framework]\table-of-contents\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/table-of-contents

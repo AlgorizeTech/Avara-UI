@@ -1,4 +1,8 @@
-export const metadata = docsPageMetadata("accordion");
+---
+title: "Accordion"
+description: "A data-driven accordion built on the Radix primitive, with five list variants and an interactive Brand Logo Reveal showcase variant. Free shadcn/ui component."
+url: https://avaraui.com/docs/nextjs/accordion
+---
 
 # Accordion
 
@@ -6,7 +10,18 @@ A data-driven accordion built on the Radix primitive, with five list variants an
 
 You feed it an `accordionData` array — the wrapper maps it to items, icons and content for you. Switch on `animation="stack"` and the items start piled on the first one and deal down into place when the accordion scrolls into view.
 
-export const usageData = `const faqItems: AccordionDataItem[] = [
+## Accordion
+
+- Pass `accordionData` as an array of `{ value, title, icon, content }` — `content` is an array of paragraphs and `icon` a key of the block's `ICON_MAP`.
+- `type="single"` keeps one panel open at a time.
+- `collapsible` lets the open panel be closed again, leaving all of them shut.
+- `defaultValue="getting-started"` matches an item's `value` to decide which panel starts open.
+- Add `animation="stack"` to start the items piled on the first one and deal them into place when the accordion scrolls into view. Reload the preview to watch it again.
+
+```tsx
+import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+
+const faqItems: AccordionDataItem[] = [
   {
     value: "getting-started",
     title: "How do I get started?",
@@ -31,77 +46,46 @@ export const usageData = `const faqItems: AccordionDataItem[] = [
       "Your information is stored in secure data centers.",
     ],
   },
-];`;
-
-export const usageDefault = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
-
-${usageData}
+];
 
 export default function Faq() {
   // animation="stack" piles the items on the first one and deals them out
   // once the accordion scrolls into view. Leave it off for plain rendering.
   return (
-    
+    <Accordion
+      accordionData={faqItems}
+      type="single"
+      collapsible
+      animation="stack"
+      defaultValue="getting-started"
+    />
   );
-}`;
+}
+```
 
-export const usageMultiple = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+## Brand logo reveal
 
-${usageData}
+Accordion brand logo showcase with animated horizontal pleats, autoplay progress indicator, hover pause, and responsive stacking. Inspired by Framer Brand Logo Reveal.
 
-export default function MultiOpenFaq() {
-  // type="multiple" lets any number of panels stay open at once.
-  // defaultValue becomes an array in this mode.
-  return (
-    
-  );
-}`;
+- Pass `variant="brand-reveal"` to display an editorial horizontal brand accordion, or use `<BrandLogoAccordion />` directly.
+- `autoplay=true` cycles through client/partner brands on an automated timer.
+- `autoplayInterval=4000` duration in milliseconds before revealing the next brand.
+- `pauseOnHover=true` pauses autoplay when the cursor hovers over any panel.
 
-export const usageMandatory = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+```tsx
+import { BrandLogoAccordion, type BrandItem } from "@/components/custom/blocks/Accordion";
 
-${usageData}
-
-export default function AlwaysOpenFaq() {
-  // collapsible={false} stops the user closing the last open panel,
-  // so exactly one is always showing.
-  return (
-    
-  );
-}`;
-
-export const usageBrandReveal = `import { BrandLogoAccordion, type BrandItem } from "@/components/custom/blocks/Accordion";
-
-// Alternatively use 
+// Alternatively use <Accordion variant="brand-reveal" />
 export default function BrandRevealShowcase() {
   return (
-    
+    <BrandLogoAccordion
+      autoplay
+      autoplayInterval={4000}
+      pauseOnHover
+    />
   );
-}`;
-
-\` directly.",
-        },
-        {
-          prop: "autoplay",
-          value: "true",
-          effect: "cycles through client/partner brands on an automated timer.",
-        },
-        {
-          prop: "autoplayInterval",
-          value: "4000",
-          effect: "duration in milliseconds before revealing the next brand.",
-        },
-        {
-          prop: "pauseOnHover",
-          value: "true",
-          effect: "pauses autoplay when the cursor hovers over any panel.",
-        },
-      ],
-      props: { variant: "brand-reveal" },
-      usage: usageBrandReveal,
-      code: extractCode("src/components/custom/blocks/Accordion.tsx"),
-    },
-  ]}
-/>
+}
+```
 
 ## Installation
 
@@ -120,180 +104,307 @@ npx shadcn@latest add @avara-ui/accordion
 
 ## Examples
 
-export const usageMultiplePermanent = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+### Multiple open
 
-${usageData}
+- Set `type="multiple"` to let any number of panels stay open at once.
+- `defaultValue` becomes an **array** in this mode — passing a bare string silently opens nothing.
+
+```tsx
+import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+
+const faqItems: AccordionDataItem[] = [
+  {
+    value: "getting-started",
+    title: "How do I get started?",
+    icon: "HelpCircle", // any key of the block's ICON_MAP
+    content: [
+      "Getting started is easy! Simply sign up for an account.",
+      "We'll guide you through setting up your profile.",
+    ],
+  },
+  {
+    value: "pricing",
+    title: "What are your pricing plans?",
+    icon: "CreditCard",
+    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
+  },
+  {
+    value: "security",
+    title: "How secure is my data?",
+    icon: "Shield",
+    content: [
+      "Security is our top priority.",
+      "Your information is stored in secure data centers.",
+    ],
+  },
+];
+
+export default function MultiOpenFaq() {
+  // type="multiple" lets any number of panels stay open at once.
+  // defaultValue becomes an array in this mode.
+  return (
+    <Accordion
+      accordionData={faqItems}
+      type="multiple"
+      variant="bordered"
+      defaultValue={["getting-started"]}
+    />
+  );
+}
+```
+
+### Always one open
+
+- Set `collapsible={false}` to stop the user closing the last open panel, so exactly one is always showing. Pair it with a `defaultValue` or the accordion starts fully closed.
+
+```tsx
+import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+
+const faqItems: AccordionDataItem[] = [
+  {
+    value: "getting-started",
+    title: "How do I get started?",
+    icon: "HelpCircle", // any key of the block's ICON_MAP
+    content: [
+      "Getting started is easy! Simply sign up for an account.",
+      "We'll guide you through setting up your profile.",
+    ],
+  },
+  {
+    value: "pricing",
+    title: "What are your pricing plans?",
+    icon: "CreditCard",
+    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
+  },
+  {
+    value: "security",
+    title: "How secure is my data?",
+    icon: "Shield",
+    content: [
+      "Security is our top priority.",
+      "Your information is stored in secure data centers.",
+    ],
+  },
+];
+
+export default function AlwaysOpenFaq() {
+  // collapsible={false} stops the user closing the last open panel,
+  // so exactly one is always showing.
+  return (
+    <Accordion
+      accordionData={faqItems}
+      type="single"
+      collapsible={false}
+      variant="filled"
+      defaultValue="getting-started"
+    />
+  );
+}
+```
+
+### Multiple permanent open
+
+- Set `type="multiple"` and `collapsible={false}` to allow opening multiple panels, but preventing opened panels from being closed.
+
+```tsx
+import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+
+const faqItems: AccordionDataItem[] = [
+  {
+    value: "getting-started",
+    title: "How do I get started?",
+    icon: "HelpCircle", // any key of the block's ICON_MAP
+    content: [
+      "Getting started is easy! Simply sign up for an account.",
+      "We'll guide you through setting up your profile.",
+    ],
+  },
+  {
+    value: "pricing",
+    title: "What are your pricing plans?",
+    icon: "CreditCard",
+    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
+  },
+  {
+    value: "security",
+    title: "How secure is my data?",
+    icon: "Shield",
+    content: [
+      "Security is our top priority.",
+      "Your information is stored in secure data centers.",
+    ],
+  },
+];
 
 export default function PermanentMultiOpenFaq() {
   // type="multiple" and collapsible={false} allows opening multiple panels,
   // but once opened, a panel cannot be closed by clicking it again.
   return (
-    
+    <Accordion
+      accordionData={faqItems}
+      type="multiple"
+      collapsible={false}
+      variant="ghost"
+      defaultValue={["getting-started"]}
+    />
   );
-}`;
+}
+```
 
-export const usageStackElevated = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+### Stack entrance
 
-${usageData}
+The deal-out entrance on the `elevated` variant. It works with all five.
+
+- Set `animation="stack"` to pile the items on the first one and deal them down with a stagger. It runs once, when the accordion first scrolls into view, and is skipped when the visitor prefers reduced motion.
+- `variant="elevated"` keeps every item on its own card, so the open one rises on a primary ring instead of changing shape.
+
+```tsx
+import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+
+const faqItems: AccordionDataItem[] = [
+  {
+    value: "getting-started",
+    title: "How do I get started?",
+    icon: "HelpCircle", // any key of the block's ICON_MAP
+    content: [
+      "Getting started is easy! Simply sign up for an account.",
+      "We'll guide you through setting up your profile.",
+    ],
+  },
+  {
+    value: "pricing",
+    title: "What are your pricing plans?",
+    icon: "CreditCard",
+    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
+  },
+  {
+    value: "security",
+    title: "How secure is my data?",
+    icon: "Shield",
+    content: [
+      "Security is our top priority.",
+      "Your information is stored in secure data centers.",
+    ],
+  },
+];
 
 export default function StackedFaq() {
   // The entrance works with every variant. It waits for the accordion to
   // scroll into view, and is skipped for visitors who prefer reduced motion.
   return (
-    
+    <Accordion
+      accordionData={faqItems}
+      type="single"
+      collapsible
+      variant="elevated"
+      animation="stack"
+      defaultValue="getting-started"
+    />
   );
-}`;
+}
+```
 
-export const usageVariants = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+### All variants
 
-${usageData}
+Same data, five looks. Pick by how much the accordion should stand out from what surrounds it.
+
+- `variant="default"` keeps closed rows quiet and lifts the open one out as a card. Best on a plain page background.
+- `variant="bordered"` wraps everything in one outlined panel with a rail on the open row. Best inside cards and settings pages.
+- `variant="filled"` inverts the open item to your primary color. Loudest of the five.
+- `variant="ghost"` is type and hairlines only. Best for long editorial FAQs.
+
+```tsx
+import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+
+const faqItems: AccordionDataItem[] = [
+  {
+    value: "getting-started",
+    title: "How do I get started?",
+    icon: "HelpCircle", // any key of the block's ICON_MAP
+    content: [
+      "Getting started is easy! Simply sign up for an account.",
+      "We'll guide you through setting up your profile.",
+    ],
+  },
+  {
+    value: "pricing",
+    title: "What are your pricing plans?",
+    icon: "CreditCard",
+    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
+  },
+  {
+    value: "security",
+    title: "How secure is my data?",
+    icon: "Shield",
+    content: [
+      "Security is our top priority.",
+      "Your information is stored in secure data centers.",
+    ],
+  },
+];
 
 const variants = ["default", "bordered", "filled", "elevated", "ghost"] as const;
 
 export default function AccordionVariants() {
   return (
-    
+    <div className="flex flex-col gap-10">
       {variants.map((variant) => (
-        
+        <Accordion
+          key={variant}
+          variant={variant}
+          accordionData={faqItems}
+          type="single"
+          collapsible
+          defaultValue="pricing"
+        />
       ))}
-    
+    </div>
   );
-}`;
+}
+```
 
 ## Features
 Single or multiple open panels, a one-time stack entrance, and five variants that all read your theme tokens.
 
-    Follows your theme
-    Every variant is built from the shadcn tokens, so changing --primary restyles the open panel, the rail and the icon tile together.
+### Follows your theme
 
-    Accessible
-    Radix handles roles, arrow-key navigation and focus. The visible focus ring follows the shape of each variant, and the entrance respects reduced motion.
+Every variant is built from the shadcn tokens, so changing `--primary` restyles the open panel, the rail and the icon tile together.
 
-    Responsive
-    Rows wrap cleanly at phone width; the open card in the default variant only grows wider than the list from sm up.
+### Accessible
 
-    No animation library
-    The stack entrance uses the Web Animations API and runs once. The only dependency beyond Radix is lucide-react.
+Radix handles roles, arrow-key navigation and focus. The visible focus ring follows the shape of each variant, and the entrance respects reduced motion.
+
+### Responsive
+
+Rows wrap cleanly at phone width; the open card in the default variant only grows wider than the list from `sm` up.
+
+### No animation library
+
+The stack entrance uses the Web Animations API and runs once. The only dependency beyond Radix is `lucide-react`.
 
 ## Best Practices & Guidelines
 
-    Usage Guidelines
-    Use animation="stack" once per page, on the accordion you want people to notice; two decks dealing at the same time cancel each other out. Give it at least three items so the pile reads as a deck, and keep defaultValue set so the open card is part of the deal.
+### Usage Guidelines
+
+Use `animation="stack"` once per page, on the accordion you want people to notice; two decks dealing at the same time cancel each other out. Give it at least three items so the pile reads as a deck, and keep `defaultValue` set so the open card is part of the deal.
 
 ## Props Reference
 
-        Prop
-        Type
-        Default
-        Description
-
-          accordionData
-
-          AccordionDataItem[]
-
-          []
-
-          Array of objects defining value, title,{" "}
-          icon, and content.
-
-          variant
-
-          "default" | "bordered" | "filled" | "elevated" | "ghost" | "brand-reveal"
-
-          "default"
-
-          Which look to use. default lifts the open row out as a
-          card, bordered grows a rail on it, filled{" "}
-          inverts it to primary, elevated raises it on
-          a ring, ghost is type and hairlines only, and{" "}
-          brand-reveal renders an interactive horizontal brand showcase.
-
-          brands
-
-          BrandItem[]
-
-          DEFAULT_BRANDS
-
-          Used when variant="brand-reveal". Array of objects defining id, name, caption, and optional logo, link, and index.
-
-          animation
-
-          "none" | "stack"
-
-          "none"
-
-          "stack" piles the items on the first one and deals them
-          into place once the accordion scrolls into view. Runs once; skipped
-          under prefers-reduced-motion.
-
-          type
-
-          "single" | "multiple"
-
-          "single"
-
-          Determines if one or multiple panels can be open simultaneously.
-
-          collapsible
-
-          boolean
-
-          true
-
-          If type="single", allows closing the currently open
-          panel.
-
-          defaultValue
-
-          string | string[]
-
-          null
-
-          The value of the item(s) open by default.
-
-          expandIcon
-
-          ReactNode | string
-
-          null
-
-          Overrides the default chevron icon. Pass a lucide string like{" "}
-          "Plus".
-
-          className
-
-          string
-
-          ""
-        
-        Custom classes applied to the root container.
-
-          itemClassName
-
-          string
-
-          ""
-        
-        Custom classes applied to individual accordion items.
-
-          triggerClassName
-
-          string
-
-          ""
-        
-        Custom classes applied to the clickable trigger row.
-
-          contentClassName
-
-          string
-
-          ""
-        
-        Custom classes applied to the expanded content area.
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `accordionData` | `AccordionDataItem[]` | `[]` | Array of objects defining `value`, `title`, `icon`, and `content`. |
+| `variant` | `"default" \| "bordered" \| "filled" \| "elevated" \| "ghost" \| "brand-reveal"` | `"default"` | Which look to use. `default` lifts the open row out as a card, `bordered` grows a rail on it, `filled` inverts it to `primary`, `elevated` raises it on a ring, `ghost` is type and hairlines only, and `brand-reveal` renders an interactive horizontal brand showcase. |
+| `brands` | `BrandItem[]` | `DEFAULT_BRANDS` | Used when `variant="brand-reveal"`. Array of objects defining `id`, `name`, `caption`, and optional `logo`, `link`, and `index`. |
+| `animation` | `"none" \| "stack"` | `"none"` | `"stack"` piles the items on the first one and deals them into place once the accordion scrolls into view. Runs once; skipped under `prefers-reduced-motion`. |
+| `type` | `"single" \| "multiple"` | `"single"` | Determines if one or multiple panels can be open simultaneously. |
+| `collapsible` | `boolean` | `true` | If `type="single"`, allows closing the currently open panel. |
+| `defaultValue` | `string \| string[]` | `null` | The `value` of the item(s) open by default. |
+| `expandIcon` | `ReactNode \| string` | `null` | Overrides the default chevron icon. Pass a lucide string like `"Plus"`. |
+| `className` | `string` | `""` | Custom classes applied to the root container. |
+| `itemClassName` | `string` | `""` | Custom classes applied to individual accordion items. |
+| `triggerClassName` | `string` | `""` | Custom classes applied to the clickable trigger row. |
+| `contentClassName` | `string` | `""` | Custom classes applied to the expanded content area. |
 
 ---
 
-**Component Path:** `[framework]\accordion\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/accordion

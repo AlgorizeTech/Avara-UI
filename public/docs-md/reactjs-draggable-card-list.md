@@ -1,4 +1,8 @@
-export const metadata = docsPageMetadata("draggable-card-list");
+---
+title: "Draggable Card List"
+description: "A card list you reorder by dragging, with spring motion in a GSAP build and a Motion build, grip handles, accent bars and pastel badges. GSAP and Motion builds."
+url: https://avaraui.com/docs/nextjs/draggable-card-list
+---
 
 # Draggable Card List
 
@@ -6,7 +10,12 @@ An interactive, fluid **Draggable Card List** component featuring spring-driven 
 
 ## Variations
 
-export const usageClassic = `import DraggableCardList, { type DraggableCardItem } from "@/components/custom/draggable-card-list";
+### Classic Card List
+
+Reorderable cards with right-side drag grip handles, dynamic border hover color shift, and pastel bordered badges.
+
+```tsx
+import DraggableCardList, { type DraggableCardItem } from "@/components/custom/draggable-card-list";
 
 const sampleCards: DraggableCardItem[] = [
   {
@@ -51,11 +60,20 @@ const sampleCards: DraggableCardItem[] = [
 
 export default function DraggableCardListClassicDemo() {
   return (
-    
+    <DraggableCardList
+      items={sampleCards}
+      variant="classic"
+    />
   );
-}`;
+}
+```
 
-export const usageModern = `import DraggableCardList, { type DraggableCardItem } from "@/components/custom/draggable-card-list";
+### Modern Ambient Tint Card List
+
+Reorderable cards with subtle ambient gradient tones, glowing left accent bar, separated footer, floating grip handles, and dynamic hover border color shift.
+
+```tsx
+import DraggableCardList, { type DraggableCardItem } from "@/components/custom/draggable-card-list";
 
 const sampleCards: DraggableCardItem[] = [
   {
@@ -104,9 +122,13 @@ const sampleCards: DraggableCardItem[] = [
 
 export default function DraggableCardListModernDemo() {
   return (
-    
+    <DraggableCardList
+      items={sampleCards}
+      variant="modern"
+    />
   );
-}`;
+}
+```
 
 ## Installation
 
@@ -139,58 +161,18 @@ npx shadcn@latest add https://avaraui.com/r/draggable-card-list-motion.json
 
 ## Props Reference: DraggableCardList
 
-        Prop
-        Type
-        Default
-        Description
-
-        items
-        DraggableCardItem[]
-        DEFAULT_ITEMS
-        Array of card item objects to display and reorder.
-
-        variant
-        "classic" | "modern"
-        "classic"
-        Design style variant of the cards.
-
-        onReorder
-        {`(newItems: DraggableCardItem[]) => void`}
-        undefined
-        Callback fired when the list order changes.
-
-        onToggleComplete
-        {`(id: string | number, completed: boolean) => void`}
-        undefined
-        Callback fired when a card's completion checkbox is toggled.
-
-        title
-        string
-        undefined
-        Optional title heading text rendered above the list.
-
-        subtitle
-        string
-        undefined
-        Optional sub-heading text rendered under the title.
-
-        dragHandlePosition
-        "right" | "left"
-        "right"
-        Position of the grip handle icon on each card.
-
-        enableCheckboxes
-        boolean
-        false
-        Toggles completion checkboxes on cards.
-
-        enableBadges
-        boolean
-        true
-        Toggles category badges on cards.
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `items` | `DraggableCardItem[]` | `DEFAULT_ITEMS` | Array of card item objects to display and reorder. |
+| `variant` | `"classic" \| "modern"` | `"classic"` | Design style variant of the cards. |
+| `onReorder` | `(newItems: DraggableCardItem[]) => void` | `undefined` | Callback fired when the list order changes. |
+| `onToggleComplete` | `(id: string \| number, completed: boolean) => void` | `undefined` | Callback fired when a card's completion checkbox is toggled. |
+| `title` | `string` | `undefined` | Optional title heading text rendered above the list. |
+| `subtitle` | `string` | `undefined` | Optional sub-heading text rendered under the title. |
+| `dragHandlePosition` | `"right" \| "left"` | `"right"` | Position of the grip handle icon on each card. |
+| `enableCheckboxes` | `boolean` | `false` | Toggles completion checkboxes on cards. |
+| `enableBadges` | `boolean` | `true` | Toggles category badges on cards. |
 
 ---
 
-**Component Path:** `[framework]\draggable-card-list\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/draggable-card-list

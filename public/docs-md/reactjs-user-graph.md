@@ -1,4 +1,8 @@
-export const metadata = docsPageMetadata("user-graph");
+---
+title: "User Graph"
+description: "An interactive multi-tiered User & AI Agent Hierarchy Network Graph built for Next.js and React. Free shadcn/ui User Graph component for React and Tailwind CSS."
+url: https://avaraui.com/docs/nextjs/user-graph
+---
 
 # User Graph
 
@@ -6,7 +10,14 @@ An interactive multi-tiered User & AI Agent Hierarchy Network Graph built for Ne
 
 Three tiers stack top to bottom: an orbit of channel nodes around the user, the orchestrator, and the specialist sub-agents with their app badges. Below 640px the SVG hierarchy swaps itself for a vertical timeline — the component measures its own container, so it adapts inside the preview, not just at the window edge.
 
-export const usageDefault = `import { UserGraph, type OrbitTool, type SubAgent } from "@/components/custom/blocks/UserGraphBlock";
+## User graph
+
+Click any orbit node to move the highlight and its label tooltip.
+
+- `className` sizes the square container the orbits are laid out inside.
+
+```tsx
+import { UserGraph, type OrbitTool, type SubAgent } from "@/components/custom/blocks/UserGraphBlock";
 
 // Optional: Customize central orchestrator node
 const orchestrator = {
@@ -72,9 +83,17 @@ const subAgents: SubAgent[] = [
 
 export default function UserGraphDemo() {
   return (
-
+    <div className="w-full p-4 sm:p-8 bg-background flex justify-center">
+      <UserGraph
+        orchestrator={orchestrator}
+        orbitTools={orbitTools}
+        subAgents={subAgents}
+        defaultSelectedTool="phone"
+      />
+    </div>
   );
-}`;
+}
+```
 
 ## Installation
 
@@ -95,62 +114,39 @@ npx shadcn@latest add @avara-ui/user-graph
 
 Discover the key capabilities of the User Graph hierarchy tree:
 
-    Orbit Tool Cluster
-    Interactive orbiting ring featuring 10 integrated channels including Voice, Telegram, Email, and MCP plugins.
+### Orbit Tool Cluster
 
-    Dynamic SVG Curves
-    Cubic bezier SVG connecting paths with glowing animated pulses highlighting selected agent hierarchy paths.
+Interactive orbiting ring featuring 10 integrated channels including Voice, Telegram, Email, and MCP plugins.
 
-    Specialized Sub-Agents
-    Dedicated team nodes for Sales, Marketing, Support, Accounting, and Data Analytics with online status badges.
+### Dynamic SVG Curves
 
-    Light Mode First
-    Crafted with high-contrast slate and white light theme aesthetics, full dark mode support, and smooth responsiveness.
+Cubic bezier SVG connecting paths with glowing animated pulses highlighting selected agent hierarchy paths.
+
+### Specialized Sub-Agents
+
+Dedicated team nodes for Sales, Marketing, Support, Accounting, and Data Analytics with online status badges.
+
+### Light Mode First
+
+Crafted with high-contrast slate and white light theme aesthetics, full dark mode support, and smooth responsiveness.
 
 ## Best Practices & Guidelines
 
-    Hierarchy Organization
-    Ensure nodes are grouped logically into User, Orchestrator, and Sub-Agent tiers so the hierarchy flows naturally from top to bottom.
+### Hierarchy Organization
+
+Ensure nodes are grouped logically into User, Orchestrator, and Sub-Agent tiers so the hierarchy flows naturally from top to bottom.
 
 ## Props Reference
 
-        Prop
-        Type
-        Default
-        Description
-
-        color
-        string
-        "primary"
-        Accent for the avatar ring, the selected orbit node and the ambient glow. Takes "indigo", "rose", "emerald", "zinc", any hex string, or "primary" to follow your theme.
-
-        defaultSelectedTool
-        string
-        "phone"
-        The id of the orbit node highlighted on first render. Clicking another node takes over from there.
-
-        orbitTools
-        OrbitTool[]
-        11 sample channels
-        The ring of channel nodes. Each is {"{ id, name, icon }"}, where icon is any React component. They are spaced evenly, so the ring re-balances for any array length.
-
-        subAgents
-        SubAgent[]
-        5 sample agents
-        The bottom tier. Each entry carries title, role, avatarUrl, status, its apps badges, and two positions: percentX for the card and svgX for the connector curve in the 1000-wide viewBox.
-
-        orchestrator
-        {"{ name, role, avatarUrl }"}
-        sample lead
-        The middle-tier node linking the orbit to the sub-agents.
-
-        className
-        string
-        undefined
-        Merged onto the outer container. Every other div prop is spread there too.
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| color | string | "primary" | Accent for the avatar ring, the selected orbit node and the ambient glow. Takes `"indigo"`, `"rose"`, `"emerald"`, `"zinc"`, any hex string, or `"primary"` to follow your theme. |
+| defaultSelectedTool | string | "phone" | The `id` of the orbit node highlighted on first render. Clicking another node takes over from there. |
+| orbitTools | OrbitTool[] | 11 sample channels | The ring of channel nodes. Each is `{ id, name, icon }`, where `icon` is any React component. They are spaced evenly, so the ring re-balances for any array length. |
+| subAgents | SubAgent[] | 5 sample agents | The bottom tier. Each entry carries `title`, `role`, `avatarUrl`, `status`, its `apps` badges, and two positions: `percentX` for the card and `svgX` for the connector curve in the 1000-wide viewBox. |
+| orchestrator | {"{ name, role, avatarUrl }"} | sample lead | The middle-tier node linking the orbit to the sub-agents. |
+| className | string | undefined | Merged onto the outer container. Every other `div` prop is spread there too. |
 
 ---
 
-**Component Path:** `[framework]\user-graph\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/user-graph

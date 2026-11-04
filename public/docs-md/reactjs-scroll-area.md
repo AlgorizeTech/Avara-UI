@@ -1,4 +1,8 @@
-export const metadata = docsPageMetadata("scroll-area");
+---
+title: "Scroll Area"
+description: "Augments native scroll functionality for custom, cross-browser styling. Free shadcn/ui Scroll Area component for React, Next.js and Tailwind CSS."
+url: https://avaraui.com/docs/nextjs/scroll-area
+---
 
 # Scroll Area
 
@@ -8,13 +12,22 @@ This `ScrollAreaBlock` provides a beautiful, native-feeling scrollbar that works
 
 Give the block a height or width constraint and it takes over the scrollbar styling from there — same rendering in Webkit and Firefox.
 
-export const scrollAccent = `// The accent the preview themes its badges and pills with.
+## Scroll area
+
+The styled scrollbar is scoped to a generated class, so global scrollbars are untouched.
+
+- `className` is where the height or width constraint goes — without one there is nothing to scroll.
+
+```tsx
+import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
+
+// The accent the preview themes its badges and pills with.
 const accent = {
   badge: "bg-primary/10 text-primary border-primary/20",
   pill: "bg-primary text-primary-foreground",
-};`;
+};
 
-export const messagesSource = `const messages = [
+const messages = [
   {
     id: 1,
     name: "Elena Rostova",
@@ -127,31 +140,95 @@ export const messagesSource = `const messages = [
 
 function DirectMessages() {
   return (
-
+    <div className="pr-2 flex flex-col gap-2">
+      <div className="flex items-center justify-between pb-2 mb-1 border-b border-border">
+        <h4 className="text-sm font-semibold leading-none text-foreground">
           Direct Messages
-
+        </h4>
+        <span className={"text-[11px] px-2.5 py-0.5 rounded-full font-semibold border " + accent.badge}>
           3 Unread
+        </span>
+      </div>
 
       {messages.map((item) => (
+        <div
+          key={item.id}
+          className="group p-3 rounded-xl border cursor-pointer transition-all duration-200 flex items-start gap-3 bg-muted/60 border-border hover:border-foreground/20"
+        >
+          <div className="relative shrink-0">
+            <img
+              src={item.avatar}
+              alt={item.name}
+              className="w-9 h-9 rounded-full object-cover border border-border"
+            />
+            <span
+              className={
+                "absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-card " +
+                (item.status === "online" ? "bg-emerald-500" : "bg-muted-foreground")
+              }
+            />
+          </div>
 
-              {item.name}
-              
+          <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-xs font-semibold truncate">{item.name}</span>
+              <span className="text-[10px] whitespace-nowrap text-muted-foreground/70">
                 {item.time}
-
+              </span>
+            </div>
+            <p className="text-xs truncate leading-snug text-muted-foreground">
               {item.message}
+            </p>
+          </div>
 
           {item.unread > 0 && (
-            
+            <span className={"shrink-0 w-4 h-4 rounded-full text-[10px] font-semibold flex items-center justify-center " + accent.pill}>
               {item.unread}
-            
+            </span>
           )}
-        
+        </div>
       ))}
-    
+    </div>
   );
-}`;
+}
 
-export const artworkSource = `const artwork = [
+export default function MessageList() {
+  return (
+    <ScrollAreaBlock
+      className="rounded-2xl border bg-card text-card-foreground border-border shadow-sm h-[500px] w-full max-w-md sm:max-w-lg pl-4 pt-4 pb-4 pr-1"
+    >
+      <DirectMessages />
+    </ScrollAreaBlock>
+  );
+}
+```
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/scroll-area.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/scroll-area
+```
+
+## Examples
+
+### Horizontal
+
+- Set `orientation="horizontal"` to apply the matching overflow utilities and move the bar to the bottom edge. The inner row needs `w-max` to overflow.
+- `wheelToHorizontal={true}` is on by default here: a mouse wheel pans the row left and right. Once the row hits either end the wheel scrolls the page again.
+
+```tsx
+import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
+
+const artwork = [
   {
     id: 1,
     title: "Alpine Lake Reflection",
@@ -204,21 +281,70 @@ export const artworkSource = `const artwork = [
 
 function ArtworkRail() {
   return (
-    
+    <div className="flex w-max space-x-4 sm:space-x-5 pb-2.5 pt-2 px-1">
       {artwork.map((art) => (
-
+        <div
+          key={art.id}
+          className="group relative w-[200px] sm:w-[230px] shrink-0 rounded-2xl overflow-hidden border cursor-pointer transition-all duration-200 bg-card border-border hover:border-foreground/30"
+        >
+          <div className="relative h-[160px] sm:h-[190px] w-full overflow-hidden bg-muted">
+            <img
+              src={art.image}
+              alt={art.title}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-semibold tracking-wide uppercase bg-black/50 backdrop-blur-md text-white border border-white/20">
               {art.category}
+            </span>
+          </div>
 
-            {art.title}
-
+          <div className="p-3.5 sm:p-4 flex flex-col gap-2">
+            <h4 className="text-sm font-semibold truncate leading-snug">{art.title}</h4>
+            <div className="flex items-center gap-2 pt-1 border-t border-border">
+              <img
+                src={art.avatar}
+                alt={art.author}
+                className="w-5 h-5 rounded-full object-cover border border-border"
+              />
+              <span className="text-xs truncate text-muted-foreground">
                 {art.author}
-
+              </span>
+            </div>
+          </div>
+        </div>
       ))}
-    
+    </div>
   );
-}`;
+}
 
-export const boardSource = `const columns = [
+export default function ArtworkScroller() {
+  // A horizontal area needs content wider than the box - w-max on the row.
+  return (
+    <ScrollAreaBlock
+      orientation="horizontal"
+      className="rounded-2xl border bg-card text-card-foreground border-border shadow-sm w-full max-w-[650px] p-6"
+    >
+      <ArtworkRail />
+    </ScrollAreaBlock>
+  );
+}
+```
+
+### Both axes
+
+- Set `orientation="both"` to render and style a scrollbar on each axis.
+
+```tsx
+import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
+
+// The accent the preview themes its badges and pills with.
+const accent = {
+  badge: "bg-primary/10 text-primary border-primary/20",
+  pill: "bg-primary text-primary-foreground",
+};
+
+const columns = [
   {
     column: "Backlog",
     tasks: [
@@ -295,217 +421,662 @@ export const boardSource = `const columns = [
 
 function Board() {
   return (
-    
+    <div className="flex w-max space-x-5 pb-5 pr-5">
       {columns.map((col) => (
-
-            {col.column}
-            
+        <div key={col.column} className="flex flex-col gap-3.5 w-[210px] shrink-0">
+          <div className="flex items-center justify-between px-1">
+            <span className="text-xs font-semibold">{col.column}</span>
+            <span className={"text-[10px] px-2 py-0.5 rounded-full font-semibold border " + accent.badge}>
               {col.tasks.length}
+            </span>
+          </div>
 
           {col.tasks.map((task) => (
-
+            <div
+              key={task.name}
+              className="p-3.5 rounded-xl border cursor-pointer transition-all duration-200 flex flex-col gap-2 bg-muted/60 border-border hover:border-foreground/20 text-foreground"
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70">
                   {task.tag}
-
+                </span>
+                <span className="text-[10px] text-muted-foreground/70">
                   {task.size}
-
-              {task.name}
-            
+                </span>
+              </div>
+              <span className="text-xs font-semibold leading-snug">{task.name}</span>
+            </div>
           ))}
-        
+        </div>
       ))}
-    
+    </div>
   );
-}`;
-
-export const usageDefault = `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
-
-${scrollAccent}
-
-${messagesSource}
-
-export default function MessageList() {
-  return (
-
-  );
-}`;
-
-export const usageHorizontal = `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
-
-${artworkSource}
-
-export default function ArtworkScroller() {
-  // A horizontal area needs content wider than the box - w-max on the row.
-  return (
-
-  );
-}`;
-
-export const usageBoth = `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
-
-${scrollAccent}
-
-${boardSource}
+}
 
 export default function BoardScroller() {
   // Content taller AND wider than the box, so both bars appear.
   return (
-
+    <ScrollAreaBlock
+      orientation="both"
+      className="rounded-2xl border bg-card text-card-foreground border-border shadow-sm h-[500px] w-full p-6"
+    >
+      <Board />
+    </ScrollAreaBlock>
   );
-}`;
+}
+```
 
-export const usageMinimal = `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
+### Minimal
 
-${scrollAccent}
+- Set `variant="minimal"` to slim the thumb down for dense UI.
 
-${messagesSource}
+```tsx
+import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
+
+// The accent the preview themes its badges and pills with.
+const accent = {
+  badge: "bg-primary/10 text-primary border-primary/20",
+  pill: "bg-primary text-primary-foreground",
+};
+
+const messages = [
+  {
+    id: 1,
+    name: "Elena Rostova",
+    time: "12:45 PM",
+    unread: 2,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790158813/photo-1494790108377-be9c29b29330-1790158812212.jpg",
+    status: "online",
+    message: "Hey! Just pushed the updated Next.js typography engine.",
+  },
+  {
+    id: 2,
+    name: "Alex Rivers",
+    time: "11:30 AM",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790150480/photo-1507003211169-0a1dd7228f2d-1790150482276.jpg",
+    status: "online",
+    message: "The new scroll area components look super clean!",
+  },
+  {
+    id: 3,
+    name: "Sophia Chen",
+    time: "Yesterday",
+    unread: 1,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790150483/photo-1534528741775-53994a69daeb-1790150482280.jpg",
+    status: "offline",
+    message: "Can we review the Figma tokens for dark mode theme colors?",
+  },
+  {
+    id: 4,
+    name: "Marcus Vance",
+    time: "Yesterday",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790158814/photo-1500648767791-00dcc994a43e-1790158812212.jpg",
+    status: "online",
+    message: "Merged PR #108. All responsive unit tests are passing.",
+  },
+  {
+    id: 5,
+    name: "Aria Thorne",
+    time: "Aug 15",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790158814/photo-1438761681033-6461ffad8d80-1790158812210.jpg",
+    status: "offline",
+    message: "Great work on the 60fps cursor animation performance fix!",
+  },
+  {
+    id: 6,
+    name: "Lucas Meyer",
+    time: "Aug 14",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790158813/photo-1472099645785-5658abf4ff4e-1790158812210.jpg",
+    status: "offline",
+    message: "Deployed the latest documentation suite to production.",
+  },
+  {
+    id: 7,
+    name: "Daniel Kim",
+    time: "Aug 13",
+    unread: 3,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790159965/photo-1519085360753-af0119f7cbe7-1790159970113.jpg",
+    status: "online",
+    message: "Updated GraphQL schema resolvers for real-time notifications.",
+  },
+  {
+    id: 8,
+    name: "Maya Lin",
+    time: "Aug 12",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790150481/photo-1517841905240-472988babdf9-1790150482277.jpg",
+    status: "online",
+    message: "Added automated E2E test suites for all interactive blocks.",
+  },
+  {
+    id: 9,
+    name: "Liam O'Connor",
+    time: "Aug 11",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790150480/photo-1506794778202-cad84cf45f1d-1790150482275.jpg",
+    status: "offline",
+    message: "Optimized bundle size by tree-shaking icon dependencies.",
+  },
+  {
+    id: 10,
+    name: "Nina Patel",
+    time: "Aug 10",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790150482/photo-1524504388940-b1c1722653e1-1790150482279.jpg",
+    status: "online",
+    message: "Configured Vercel Analytics and Sentry error monitoring.",
+  },
+  {
+    id: 11,
+    name: "Ethan Wright",
+    time: "Aug 09",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790158814/photo-1522075469751-3a6694fb2f61-1790158812213.jpg",
+    status: "offline",
+    message: "Refactored theme customizer with HSL CSS variables.",
+  },
+  {
+    id: 12,
+    name: "Olivia Zhang",
+    time: "Aug 08",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790150478/photo-1544005313-94ddf0286df2-1790150482273.jpg",
+    status: "offline",
+    message: "Published release notes for v2.4.0 UI component library.",
+  },
+];
+
+function DirectMessages() {
+  return (
+    <div className="pr-2 flex flex-col gap-2">
+      <div className="flex items-center justify-between pb-2 mb-1 border-b border-border">
+        <h4 className="text-sm font-semibold leading-none text-foreground">
+          Direct Messages
+        </h4>
+        <span className={"text-[11px] px-2.5 py-0.5 rounded-full font-semibold border " + accent.badge}>
+          3 Unread
+        </span>
+      </div>
+
+      {messages.map((item) => (
+        <div
+          key={item.id}
+          className="group p-3 rounded-xl border cursor-pointer transition-all duration-200 flex items-start gap-3 bg-muted/60 border-border hover:border-foreground/20"
+        >
+          <div className="relative shrink-0">
+            <img
+              src={item.avatar}
+              alt={item.name}
+              className="w-9 h-9 rounded-full object-cover border border-border"
+            />
+            <span
+              className={
+                "absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-card " +
+                (item.status === "online" ? "bg-emerald-500" : "bg-muted-foreground")
+              }
+            />
+          </div>
+
+          <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-xs font-semibold truncate">{item.name}</span>
+              <span className="text-[10px] whitespace-nowrap text-muted-foreground/70">
+                {item.time}
+              </span>
+            </div>
+            <p className="text-xs truncate leading-snug text-muted-foreground">
+              {item.message}
+            </p>
+          </div>
+
+          {item.unread > 0 && (
+            <span className={"shrink-0 w-4 h-4 rounded-full text-[10px] font-semibold flex items-center justify-center " + accent.pill}>
+              {item.unread}
+            </span>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function MinimalScroller() {
   // Thinner thumb, no track chrome.
   return (
-
+    <ScrollAreaBlock
+      variant="minimal"
+      className="rounded-2xl border bg-card text-card-foreground border-border shadow-sm h-[500px] w-full max-w-md sm:max-w-lg pl-4 pt-4 pb-4 pr-1"
+    >
+      <DirectMessages />
+    </ScrollAreaBlock>
   );
-}`;
+}
+```
 
-export const usageGlass = `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
+### Glass
 
-${scrollAccent}
+- Set `variant="glass"` to tint the bar for use over frosted surfaces.
 
-${messagesSource}
+```tsx
+import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
+
+// The accent the preview themes its badges and pills with.
+const accent = {
+  badge: "bg-primary/10 text-primary border-primary/20",
+  pill: "bg-primary text-primary-foreground",
+};
+
+const messages = [
+  {
+    id: 1,
+    name: "Elena Rostova",
+    time: "12:45 PM",
+    unread: 2,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790158813/photo-1494790108377-be9c29b29330-1790158812212.jpg",
+    status: "online",
+    message: "Hey! Just pushed the updated Next.js typography engine.",
+  },
+  {
+    id: 2,
+    name: "Alex Rivers",
+    time: "11:30 AM",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790150480/photo-1507003211169-0a1dd7228f2d-1790150482276.jpg",
+    status: "online",
+    message: "The new scroll area components look super clean!",
+  },
+  {
+    id: 3,
+    name: "Sophia Chen",
+    time: "Yesterday",
+    unread: 1,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790150483/photo-1534528741775-53994a69daeb-1790150482280.jpg",
+    status: "offline",
+    message: "Can we review the Figma tokens for dark mode theme colors?",
+  },
+  {
+    id: 4,
+    name: "Marcus Vance",
+    time: "Yesterday",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790158814/photo-1500648767791-00dcc994a43e-1790158812212.jpg",
+    status: "online",
+    message: "Merged PR #108. All responsive unit tests are passing.",
+  },
+  {
+    id: 5,
+    name: "Aria Thorne",
+    time: "Aug 15",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790158814/photo-1438761681033-6461ffad8d80-1790158812210.jpg",
+    status: "offline",
+    message: "Great work on the 60fps cursor animation performance fix!",
+  },
+  {
+    id: 6,
+    name: "Lucas Meyer",
+    time: "Aug 14",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790158813/photo-1472099645785-5658abf4ff4e-1790158812210.jpg",
+    status: "offline",
+    message: "Deployed the latest documentation suite to production.",
+  },
+  {
+    id: 7,
+    name: "Daniel Kim",
+    time: "Aug 13",
+    unread: 3,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790159965/photo-1519085360753-af0119f7cbe7-1790159970113.jpg",
+    status: "online",
+    message: "Updated GraphQL schema resolvers for real-time notifications.",
+  },
+  {
+    id: 8,
+    name: "Maya Lin",
+    time: "Aug 12",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790150481/photo-1517841905240-472988babdf9-1790150482277.jpg",
+    status: "online",
+    message: "Added automated E2E test suites for all interactive blocks.",
+  },
+  {
+    id: 9,
+    name: "Liam O'Connor",
+    time: "Aug 11",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790150480/photo-1506794778202-cad84cf45f1d-1790150482275.jpg",
+    status: "offline",
+    message: "Optimized bundle size by tree-shaking icon dependencies.",
+  },
+  {
+    id: 10,
+    name: "Nina Patel",
+    time: "Aug 10",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790150482/photo-1524504388940-b1c1722653e1-1790150482279.jpg",
+    status: "online",
+    message: "Configured Vercel Analytics and Sentry error monitoring.",
+  },
+  {
+    id: 11,
+    name: "Ethan Wright",
+    time: "Aug 09",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790158814/photo-1522075469751-3a6694fb2f61-1790158812213.jpg",
+    status: "offline",
+    message: "Refactored theme customizer with HSL CSS variables.",
+  },
+  {
+    id: 12,
+    name: "Olivia Zhang",
+    time: "Aug 08",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790150478/photo-1544005313-94ddf0286df2-1790150482273.jpg",
+    status: "offline",
+    message: "Published release notes for v2.4.0 UI component library.",
+  },
+];
+
+function DirectMessages() {
+  return (
+    <div className="pr-2 flex flex-col gap-2">
+      <div className="flex items-center justify-between pb-2 mb-1 border-b border-border">
+        <h4 className="text-sm font-semibold leading-none text-foreground">
+          Direct Messages
+        </h4>
+        <span className={"text-[11px] px-2.5 py-0.5 rounded-full font-semibold border " + accent.badge}>
+          3 Unread
+        </span>
+      </div>
+
+      {messages.map((item) => (
+        <div
+          key={item.id}
+          className="group p-3 rounded-xl border cursor-pointer transition-all duration-200 flex items-start gap-3 bg-muted/60 border-border hover:border-foreground/20"
+        >
+          <div className="relative shrink-0">
+            <img
+              src={item.avatar}
+              alt={item.name}
+              className="w-9 h-9 rounded-full object-cover border border-border"
+            />
+            <span
+              className={
+                "absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-card " +
+                (item.status === "online" ? "bg-emerald-500" : "bg-muted-foreground")
+              }
+            />
+          </div>
+
+          <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-xs font-semibold truncate">{item.name}</span>
+              <span className="text-[10px] whitespace-nowrap text-muted-foreground/70">
+                {item.time}
+              </span>
+            </div>
+            <p className="text-xs truncate leading-snug text-muted-foreground">
+              {item.message}
+            </p>
+          </div>
+
+          {item.unread > 0 && (
+            <span className={"shrink-0 w-4 h-4 rounded-full text-[10px] font-semibold flex items-center justify-center " + accent.pill}>
+              {item.unread}
+            </span>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function GlassScroller() {
   // The glass variant is translucent by design - put it over an image or a gradient.
   return (
-
+    <ScrollAreaBlock
+      variant="glass"
+      className="rounded-2xl border bg-white/10 dark:bg-black/20 backdrop-blur-xl border-white/20 dark:border-white/10 shadow-2xl h-[500px] w-full max-w-md sm:max-w-lg pl-4 pt-4 pb-4 pr-1"
+    >
+      <DirectMessages />
+    </ScrollAreaBlock>
   );
-}`;
+}
+```
 
-export const usageAutoHide = `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
+### Auto-hide
 
-${scrollAccent}
+- Set `autoHide` to fade the thumb out until the container is hovered or scrolled.
+- `hideTrack` removes the groove behind the thumb entirely.
 
-${messagesSource}
+```tsx
+import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock";
+
+// The accent the preview themes its badges and pills with.
+const accent = {
+  badge: "bg-primary/10 text-primary border-primary/20",
+  pill: "bg-primary text-primary-foreground",
+};
+
+const messages = [
+  {
+    id: 1,
+    name: "Elena Rostova",
+    time: "12:45 PM",
+    unread: 2,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790158813/photo-1494790108377-be9c29b29330-1790158812212.jpg",
+    status: "online",
+    message: "Hey! Just pushed the updated Next.js typography engine.",
+  },
+  {
+    id: 2,
+    name: "Alex Rivers",
+    time: "11:30 AM",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790150480/photo-1507003211169-0a1dd7228f2d-1790150482276.jpg",
+    status: "online",
+    message: "The new scroll area components look super clean!",
+  },
+  {
+    id: 3,
+    name: "Sophia Chen",
+    time: "Yesterday",
+    unread: 1,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790150483/photo-1534528741775-53994a69daeb-1790150482280.jpg",
+    status: "offline",
+    message: "Can we review the Figma tokens for dark mode theme colors?",
+  },
+  {
+    id: 4,
+    name: "Marcus Vance",
+    time: "Yesterday",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790158814/photo-1500648767791-00dcc994a43e-1790158812212.jpg",
+    status: "online",
+    message: "Merged PR #108. All responsive unit tests are passing.",
+  },
+  {
+    id: 5,
+    name: "Aria Thorne",
+    time: "Aug 15",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790158814/photo-1438761681033-6461ffad8d80-1790158812210.jpg",
+    status: "offline",
+    message: "Great work on the 60fps cursor animation performance fix!",
+  },
+  {
+    id: 6,
+    name: "Lucas Meyer",
+    time: "Aug 14",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790158813/photo-1472099645785-5658abf4ff4e-1790158812210.jpg",
+    status: "offline",
+    message: "Deployed the latest documentation suite to production.",
+  },
+  {
+    id: 7,
+    name: "Daniel Kim",
+    time: "Aug 13",
+    unread: 3,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790159965/photo-1519085360753-af0119f7cbe7-1790159970113.jpg",
+    status: "online",
+    message: "Updated GraphQL schema resolvers for real-time notifications.",
+  },
+  {
+    id: 8,
+    name: "Maya Lin",
+    time: "Aug 12",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790150481/photo-1517841905240-472988babdf9-1790150482277.jpg",
+    status: "online",
+    message: "Added automated E2E test suites for all interactive blocks.",
+  },
+  {
+    id: 9,
+    name: "Liam O'Connor",
+    time: "Aug 11",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790150480/photo-1506794778202-cad84cf45f1d-1790150482275.jpg",
+    status: "offline",
+    message: "Optimized bundle size by tree-shaking icon dependencies.",
+  },
+  {
+    id: 10,
+    name: "Nina Patel",
+    time: "Aug 10",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790150482/photo-1524504388940-b1c1722653e1-1790150482279.jpg",
+    status: "online",
+    message: "Configured Vercel Analytics and Sentry error monitoring.",
+  },
+  {
+    id: 11,
+    name: "Ethan Wright",
+    time: "Aug 09",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790158814/photo-1522075469751-3a6694fb2f61-1790158812213.jpg",
+    status: "offline",
+    message: "Refactored theme customizer with HSL CSS variables.",
+  },
+  {
+    id: 12,
+    name: "Olivia Zhang",
+    time: "Aug 08",
+    unread: 0,
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_100,c_limit/v1790150478/photo-1544005313-94ddf0286df2-1790150482273.jpg",
+    status: "offline",
+    message: "Published release notes for v2.4.0 UI component library.",
+  },
+];
+
+function DirectMessages() {
+  return (
+    <div className="pr-2 flex flex-col gap-2">
+      <div className="flex items-center justify-between pb-2 mb-1 border-b border-border">
+        <h4 className="text-sm font-semibold leading-none text-foreground">
+          Direct Messages
+        </h4>
+        <span className={"text-[11px] px-2.5 py-0.5 rounded-full font-semibold border " + accent.badge}>
+          3 Unread
+        </span>
+      </div>
+
+      {messages.map((item) => (
+        <div
+          key={item.id}
+          className="group p-3 rounded-xl border cursor-pointer transition-all duration-200 flex items-start gap-3 bg-muted/60 border-border hover:border-foreground/20"
+        >
+          <div className="relative shrink-0">
+            <img
+              src={item.avatar}
+              alt={item.name}
+              className="w-9 h-9 rounded-full object-cover border border-border"
+            />
+            <span
+              className={
+                "absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-card " +
+                (item.status === "online" ? "bg-emerald-500" : "bg-muted-foreground")
+              }
+            />
+          </div>
+
+          <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-xs font-semibold truncate">{item.name}</span>
+              <span className="text-[10px] whitespace-nowrap text-muted-foreground/70">
+                {item.time}
+              </span>
+            </div>
+            <p className="text-xs truncate leading-snug text-muted-foreground">
+              {item.message}
+            </p>
+          </div>
+
+          {item.unread > 0 && (
+            <span className={"shrink-0 w-4 h-4 rounded-full text-[10px] font-semibold flex items-center justify-center " + accent.pill}>
+              {item.unread}
+            </span>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function AutoHideScroller() {
   // autoHide fades the bar until you scroll or hover; hideTrack drops the groove.
   return (
-
+    <ScrollAreaBlock
+      autoHide
+      hideTrack
+      className="rounded-2xl border bg-card text-card-foreground border-border shadow-sm h-[500px] w-full max-w-md sm:max-w-lg pl-4 pt-4 pb-4 pr-1"
+    >
+      <DirectMessages />
+    </ScrollAreaBlock>
   );
-}`;
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/scroll-area.json
+}
 ```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/scroll-area
-```
-
-## Examples
 
 ## Features
 Explore the Scroll Area's custom scrollbar features, providing a unified, stylized scrolling experience across all operating systems.
 
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
+### Customizable
 
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+Easily adapt the component's styling and behavior to fit your application's unique design system.
 
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+### Accessible
 
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
+Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+### Responsive
+
+Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+### Performant
+
+Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 
-    Usage Guidelines
-    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+### Usage Guidelines
+
+Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
 ## Props Reference
 
-        Component
-        Prop
-        Type
-        Default
-        Description
-
-          ScrollAreaBlock
-
-          variant
-
-          "default" | "minimal" | "glass"
-
-          "default"
-
-          Determines the architectural style and thickness of the scroll track
-          and thumb.
-
-          ScrollAreaBlock
-
-          color
-
-          "indigo" | "rose" | "emerald" | "zinc" | string
-
-          "primary"
-
-          The color of the scrollbar thumb and hover states. Fully supports
-          dynamic custom hex codes.
-
-          ScrollAreaBlock
-
-          orientation
-
-          "vertical" | "horizontal" | "both"
-
-          "vertical"
-
-          Defines which axis should be scrollable. This automatically applies
-          the correct CSS overflow utilities.
-
-          ScrollAreaBlock
-
-          hideTrack
-
-          boolean
-
-          false
-
-          If true, forces the background scroll track to be completely
-          transparent, showing only the thumb.
-
-          ScrollAreaBlock
-
-          autoHide
-
-          boolean
-
-          false
-
-          If true, the scrollbar thumb fades to transparent when the container
-          is not being actively hovered.
-
-          ScrollAreaBlock
-
-          wheelToHorizontal
-
-          boolean
-
-          true
-
-          orientation="horizontal" only. A mouse wheel pans the
-          content sideways; trackpad swipes and shift+wheel keep their native
-          behaviour, and the wheel is handed back to the page at either end.
+| Component | Prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `ScrollAreaBlock` | `variant` | `"default" \| "minimal" \| "glass"` | `"default"` | Determines the architectural style and thickness of the scroll track and thumb. |
+| `ScrollAreaBlock` | `color` | `"indigo" \| "rose" \| "emerald" \| "zinc" \| string` | `"primary"` | The color of the scrollbar thumb and hover states. Fully supports dynamic custom hex codes. |
+| `ScrollAreaBlock` | `orientation` | `"vertical" \| "horizontal" \| "both"` | `"vertical"` | Defines which axis should be scrollable. This automatically applies the correct CSS overflow utilities. |
+| `ScrollAreaBlock` | `hideTrack` | `boolean` | `false` | If true, forces the background scroll track to be completely transparent, showing only the thumb. |
+| `ScrollAreaBlock` | `autoHide` | `boolean` | `false` | If true, the scrollbar thumb fades to transparent when the container is not being actively hovered. |
+| `ScrollAreaBlock` | `wheelToHorizontal` | `boolean` | `true` | `orientation="horizontal"` only. A mouse wheel pans the content sideways; trackpad swipes and shift+wheel keep their native behaviour, and the wheel is handed back to the page at either end. |
 
 ---
 
-**Component Path:** `[framework]\scroll-area\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/scroll-area

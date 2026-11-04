@@ -1,19 +1,25 @@
+---
+title: "Installation"
+description: "Set up a React + Vite project so you can install Avara UI components with the shadcn CLI."
+url: https://avaraui.com/docs/reactjs/installation
+---
+
 # Installation
 
 Set up a React + Vite project so you can install Avara UI components with the
 shadcn CLI.
 
-    Build tool
-    Vite
+Build tool
+Vite
 
-    React
-    18 or 19
+React
+ 18 or 19
 
-    Styling
-    Tailwind CSS v4
+Styling
+Tailwind CSS v4
 
-    Language
-    TypeScript or JS
+Language
+TypeScript or JS
 
 Components are plain React and never import from `next/*`, so they compile in a
 Vite app as-is.
@@ -47,7 +53,7 @@ fight the layout utilities components rely on.
 
 Also delete `src/App.css` and its import in `src/App.tsx`.
 
-    Keep it the first line. An @import below other rules is silently ignored, and src/main.tsx must import index.css — otherwise every component renders unstyled.
+Keep it the first line. An `@import` below other rules is silently ignored, and `src/main.tsx` must import `index.css` — otherwise every component renders unstyled.
 
 ## Configure the path alias
 
@@ -57,6 +63,10 @@ TypeScript and Vite.
 **`vite.config.ts`** — this also registers the Tailwind plugin:
 
 ```ts
+import path from "node:path";
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
@@ -101,7 +111,7 @@ Avara UI builds on Radix primitives. If you run `init` without flags, choose
 ### Step 2: Register the registry
 
 Optional, once per project. Components install by URL with no setup; this
-lets you install them by name instead (@avara-ui/hero):
+lets you install them by name instead (`@avara-ui/hero`):
 
 ```bash
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
@@ -155,17 +165,21 @@ client-side navigation.
 
 ## Troubleshooting
 
-    Failed to resolve import @/lib/utils
-    The alias is set in TypeScript but not in Vite, or the reverse. Both need it.
+### Failed to resolve import `@/lib/utils`
 
-    Components render unstyled
-    Check that @import "tailwindcss"; is the first line of src/index.css, that src/main.tsx imports it, and that tailwind.css in components.json points at it.
+The alias is set in TypeScript but not in Vite, or the reverse. [Both need it](#configure-the-path-alias).
 
-    "Module level directives cause errors when bundled"
-    A harmless Rollup warning about the "use client" line at the top of components. Vite ignores the directive and the build succeeds.
+### Components render unstyled
 
-    Unknown registry "@avara-ui"
-    Run Step 2, or switch the command to URL, which needs no setup.
+Check that `@import "tailwindcss";` is the first line of `src/index.css`, that `src/main.tsx` imports it, and that `tailwind.css` in `components.json` points at it.
+
+### "Module level directives cause errors when bundled"
+
+A harmless Rollup warning about the `"use client"` line at the top of components. Vite ignores the directive and the build succeeds.
+
+### Unknown registry "@avara-ui"
+
+Run [Step 2](#step-2-register-the-registry), or switch the command to URL, which needs no setup.
 
 ## Next steps
 
@@ -178,6 +192,4 @@ For anything beyond Avara UI, see the [Vite](https://vite.dev/guide/),
 
 ---
 
-**Component Path:** `[framework]\installation\_content\reactjs.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/reactjs/installation

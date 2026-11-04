@@ -1,12 +1,16 @@
+---
+title: "Next.js Examples"
+description: "Explore practical examples that demonstrate Next.js features and best practices."
+url: https://avaraui.com/docs/nextjs/examples
+---
+
 # Next.js Examples
 
 Explore practical examples that demonstrate Next.js features and best practices.
 
 ## Interactive Examples
 
-    Interactive Counter
-    
-      A simple counter component demonstrating state management with React hooks in Next.js.
+[Interactive Counter A simple counter component demonstrating state management with React hooks in Next.js.](https://avaraui.com/docs/nextjs/examples/counter)
 
 ## Learning Path
 
@@ -47,6 +51,4 @@ Have an example you'd like to share? We welcome contributions to our examples co
 
 ---
 
-**Component Path:** `[framework]\examples\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/examples

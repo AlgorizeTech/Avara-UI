@@ -1,4 +1,8 @@
-export const metadata = docsPageMetadata("secure-envelope");
+---
+title: "Secure Envelope"
+description: "An envelope card component: a pass slides out on hover and lifts onto the cover on click, with a thumb notch, crest seals and a 3D two-sided flip."
+url: https://avaraui.com/docs/nextjs/secure-envelope
+---
 
 # Secure Envelope
 
@@ -6,11 +10,20 @@ An interactive classified envelope sleeve & travel pass component featuring a se
 
 `SecureEnvelope` brings tactile physical curiosity to train online tickets, travel booking passes, security dossiers, coupon reward vouchers, and VIP cards.
 
-export const usageConfidentialFolder = `import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
+## Confidential Folder (Slide-Out Sleeve / Stay Hungry Variant)
+
+The signature confidential manila folder and hot pink slide-out card design from the catalog preview. Features golden amber dossier folder with top tab, stamped -rotate-6 CONFIDENTIAL badge, folder index lines, vibrant hot pink STAY HUNGRY card, and back manifesto memorandum.
+
+- Design Variant `cardDesign="confidential-folder"` activates the golden manila folder with top tab, red stamped badge, and vibrant hot pink Stay Hungry slide-out card.
+- Data Object `data=confidentialData` passes custom ID, bold tagline, sub-tagline, and folder dossier identifiers.
+- Interaction `interactionMode="step-flip"` Click 1 slides out the hot pink card onto the folder, Click 2 flips to the executive memorandum manifesto, Click 3 returns inside.
+
+```tsx
+import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
 
 const confidentialData: SecureEnvelopeData = {
   idNumber: "ID · 0042",
-  tagline: "STAY\\nHUNGRY",
+  tagline: "STAY\nHUNGRY",
   subTagline: "STAY FOOLISH · CLASSIFIED",
   stampBadge: "CONFIDENTIAL",
   dossierNumber: "DOSSIER // SEC-0042",
@@ -18,11 +31,27 @@ const confidentialData: SecureEnvelopeData = {
 
 export default function ConfidentialFolderExample() {
   return (
-
+    <div className="w-full flex items-center justify-center py-12">
+      <SecureEnvelope
+        cardDesign="confidential-folder"
+        interactionMode="step-flip"
+        data={confidentialData}
+      />
+    </div>
   );
-}`;
+}
+```
 
-export const usageSmartCard = `import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
+## Biometric NFC SmartCard (Quantum Vault Variant)
+
+High-tech biometric identity smartcard & encrypted key vault sleeve. Features golden EMV microchip, contactless NFC glyph, clearance level badge, encrypted magnetic stripe, and crypto signature panel with full light/dark theme adaptivity.
+
+- Design Variant `cardDesign="smart-card"` activates the Quantum Key Vault biometric smartcard layout and cyber nexus seal styling.
+- Data Object `data=smartCardData` passes essential holder name, role title, and clearance level. Chip serial, security keys, and cryptographic hashes use built-in defaults.
+- Interaction `interactionMode="step-flip"` splits the animation into 3 distinct clicks: Click 1 opens to front smartcard, Click 2 flips to encrypted magnetic stripe & credentials, Click 3 closes.
+
+```tsx
+import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
 
 const smartCardData: SecureEnvelopeData = {
   holderName: "Dr. Kaelen Vance",
@@ -32,11 +61,26 @@ const smartCardData: SecureEnvelopeData = {
 
 export default function CyberSmartCardExample() {
   return (
-
+    <div className="w-full flex items-center justify-center py-12">
+      <SecureEnvelope
+        cardDesign="smart-card"
+        interactionMode="step-flip"
+        data={smartCardData}
+      />
+    </div>
   );
-}`;
+}
+```
 
-export const usageAutoFlip = `import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
+## Auto Flip (Classic Voucher / Classified)
+
+1st click slides the card out from the sleeve, elevates onto the front, and automatically flips 180° in-place to reveal the back details. 2nd click flips back and returns inside the sleeve.
+
+- Data Object `data=voucherData` passes key title, subtitle, and discount quote while all badges, metric pillars, and seals use component defaults.
+- Interaction `interactionMode="auto-flip"` automatically executes the full slide-out and in-place 180° flip on first click.
+
+```tsx
+import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
 
 const voucherData: SecureEnvelopeData = {
   frontTitle: "Exclusive Access",
@@ -46,11 +90,26 @@ const voucherData: SecureEnvelopeData = {
 
 export default function AutoFlipSecureEnvelopeExample() {
   return (
-
+    <div className="w-full flex items-center justify-center py-12">
+      <SecureEnvelope
+        interactionMode="auto-flip"
+        data={voucherData}
+      />
+    </div>
   );
-}`;
+}
+```
 
-export const usageTrainTicket = `import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
+## Train Online Ticket (Hyperbolt Express Variant)
+
+Exact high-speed rail ticket and envelope design. Features the top blue pill header, passenger info, seat/train numbers, vertical barcode, watermarked station route bar, tear-off stub, and Hyperbolt bullet train box sleeve.
+
+- Data Object `data=ticketData` passes essential passenger name, route, seat, and train number. All other train details automatically use authentic built-in defaults.
+- Design Variant `cardDesign="train-ticket"` activates the Hyperbolt Express train online ticket layout for both the card and the outer sleeve box.
+- Interaction `interactionMode="step-flip"` splits the animation into 3 distinct clicks: Click 1 opens to front ticket, Click 2 flips to reverse route overview, Click 3 closes.
+
+```tsx
+import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
 
 const ticketData: SecureEnvelopeData = {
   passengerName: "Barbara M. Sandoval",
@@ -61,9 +120,16 @@ const ticketData: SecureEnvelopeData = {
 
 export default function TrainOnlineTicketExample() {
   return (
-
+    <div className="w-full flex items-center justify-center py-12">
+      <SecureEnvelope
+        cardDesign="train-ticket"
+        interactionMode="step-flip"
+        data={ticketData}
+      />
+    </div>
   );
-}`;
+}
+```
 
 ## Installation
 
@@ -82,133 +148,60 @@ npx shadcn@latest add @avara-ui/secure-envelope
 
 ## Features
 
-    Rail Tickets & Biometric SmartCards
-    Rich variety of real-world templates including Hyperbolt European train tickets, classic classified dossiers, and biometric NFC smartcards with EMV microchips and full light/dark theme adaptivity.
+### Rail Tickets & Biometric SmartCards
 
-    Two-Stage Flight Choreography
-    When clicked, the document slides out horizontally past the sleeve edge, elevates in front on the z-axis, and glides back down with a gentle tilt onto the front cover.
+Rich variety of real-world templates including Hyperbolt European train tickets, classic classified dossiers, and biometric NFC smartcards with EMV microchips and full light/dark theme adaptivity.
 
-    Vector Thumb Scoop Notch
-    Engineered with a clean, subpixel-sharp SVG inward scoop notch along the right edge, exposing the card inside exactly like a high-end physical envelope sleeve.
+### Two-Stage Flight Choreography
 
-    3D In-Place Flip Physics
-    Features seamless 180-degree in-place 3D card flips with true perspective, preserved backface visibility, and dynamic theme adaptivity.
+When clicked, the document slides out horizontally past the sleeve edge, elevates in front on the z-axis, and glides back down with a gentle tilt onto the front cover.
+
+### Vector Thumb Scoop Notch
+
+Engineered with a clean, subpixel-sharp SVG inward scoop notch along the right edge, exposing the card inside exactly like a high-end physical envelope sleeve.
+
+### 3D In-Place Flip Physics
+
+Features seamless 180-degree in-place 3D card flips with true perspective, preserved backface visibility, and dynamic theme adaptivity.
 
 ## Best Practices & Guidelines
 
-    Keyboard & Accessibility
-    SecureEnvelope supports keyboard navigation: focus it with Tab and trigger the opening/closing animation using Enter or Space, or close with Escape.
+### Keyboard & Accessibility
 
-    Mobile & Touch Interaction
-    On touch devices where hover is unavailable, tapping the folder launches the smooth opening flight sequence immediately.
+`SecureEnvelope` supports keyboard navigation: focus it with `Tab` and trigger the opening/closing animation using `Enter` or `Space`, or close with `Escape`.
 
-    Biometric SmartCards & Access Credentials
-    Pass cardDesign="smart-card" with custom clearance levels, holder name, and department for cybersecurity credentials, VIP access badges, and identity portals.
+### Mobile & Touch Interaction
+
+On touch devices where hover is unavailable, tapping the folder launches the smooth opening flight sequence immediately.
+
+### Biometric SmartCards & Access Credentials
+
+Pass `cardDesign="smart-card"` with custom clearance levels, holder name, and department for cybersecurity credentials, VIP access badges, and identity portals.
 
 ## Props Reference
 
-        Prop
-        Type
-        Default
-        Description
-
-        data
-        SecureEnvelopeData | SecureEnvelopeData[]
-        undefined
-        Structured data object containing all ticket, pass, keycard, voucher, and card metric properties. Can also be passed as an array.
-
-        cardDesign
-        "confidential-folder" | "smart-card" | "train-ticket" | "classified"
-        "classified"
-        Selects the visual template: "confidential-folder" for the signature manila folder & hot-pink Stay Hungry card, "smart-card" for biometric NFC smartcards, "train-ticket" for European railway tickets, or "classified" for vintage dossiers.
-
-        interactionMode
-        "auto-flip" | "step-flip"
-        "auto-flip"
-        Controls opening behavior: "auto-flip" opens and flips automatically on 1st click; "step-flip" splits the interaction into 3 clicks (Click 1 opens, Click 2 flips, Click 3 closes).
-
-        passengerName
-        string
-        "Barbara M. Sandoval"
-        Name of passenger printed on the train ticket.
-
-        routeText
-        string
-        "ZÜRICH HB - PARIS-EST"
-        Train route printed across the blue banner and solid black badge.
-
-        seatNumber
-        string
-        "18A"
-        Assigned train seat number.
-
-        trainNumber
-        string
-        "6"
-        Assigned train carriage/train number.
-
-        date
-        string
-        "25/11/2024"
-        Scheduled date of travel.
-
-        departureTime
-        string
-        "06.30"
-        Departure timestamp.
-
-        trainCompany
-        string
-        "HYPERBOLT EXPRESS"
-        Transit brand printed on the sleeve cover and ticket back.
-
-        slogan
-        string
-        "UNLEASH THE POWER OF SPEED WITH HYPERBOLT EXPRESS"
-        High-speed transit slogan on the sleeve and ticket back.
-
-        barcodeNumber
-        string
-        "0 734664 235788"
-        Code string for the vertical barcodes.
-
-        websiteUrl
-        string
-        "HYPERBOLTEXPRESS.COM"
-        Website URL printed on the sleeve and reverse side.
-
-        folderColor
-        string
-        undefined (var(--primary))
-        Optional custom theme color override for the folder sleeve and accents. Defaults to the active theme's primary color.
-
-        initialPeek
-        number
-        38
-        Horizontal pixel distance the card peeks out from the notch in resting idle state.
-
-        hoverPeek
-        number
-        88
-        Horizontal pixel distance the card glides out on hover before being clicked.
-
-        cardVariant
-        "adaptive" | "ivory"
-        "adaptive"
-        Switches between dynamic dual-theme adaptivity (light in Light Mode, dark in Dark Mode) and classic physical ivory cardstock.
-
-        defaultOpen
-        boolean
-        false
-        Whether the folder opens directly in its elevated resting state.
-
-        onOpenChange
-        (open: boolean) =&gt; void
-        undefined
-        Callback fired whenever the card opens or returns inside the sleeve.
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `data` | `SecureEnvelopeData \| SecureEnvelopeData[]` | `undefined` | Structured data object containing all ticket, pass, keycard, voucher, and card metric properties. Can also be passed as an array. |
+| `cardDesign` | `"confidential-folder" \| "smart-card" \| "train-ticket" \| "classified"` | `"classified"` | Selects the visual template: `"confidential-folder"` for the signature manila folder & hot-pink Stay Hungry card, `"smart-card"` for biometric NFC smartcards, `"train-ticket"` for European railway tickets, or `"classified"` for vintage dossiers. |
+| `interactionMode` | `"auto-flip" \| "step-flip"` | `"auto-flip"` | Controls opening behavior: `"auto-flip"` opens and flips automatically on 1st click; `"step-flip"` splits the interaction into 3 clicks (Click 1 opens, Click 2 flips, Click 3 closes). |
+| `passengerName` | `string` | `"Barbara M. Sandoval"` | Name of passenger printed on the train ticket. |
+| `routeText` | `string` | `"ZÜRICH HB - PARIS-EST"` | Train route printed across the blue banner and solid black badge. |
+| `seatNumber` | `string` | `"18A"` | Assigned train seat number. |
+| `trainNumber` | `string` | `"6"` | Assigned train carriage/train number. |
+| `date` | `string` | `"25/11/2024"` | Scheduled date of travel. |
+| `departureTime` | `string` | `"06.30"` | Departure timestamp. |
+| `trainCompany` | `string` | `"HYPERBOLT EXPRESS"` | Transit brand printed on the sleeve cover and ticket back. |
+| `slogan` | `string` | `"UNLEASH THE POWER OF SPEED WITH HYPERBOLT EXPRESS"` | High-speed transit slogan on the sleeve and ticket back. |
+| `barcodeNumber` | `string` | `"0 734664 235788"` | Code string for the vertical barcodes. |
+| `websiteUrl` | `string` | `"HYPERBOLTEXPRESS.COM"` | Website URL printed on the sleeve and reverse side. |
+| `folderColor` | `string` | `undefined (var(--primary))` | Optional custom theme color override for the folder sleeve and accents. Defaults to the active theme's primary color. |
+| `initialPeek` | `number` | `38` | Horizontal pixel distance the card peeks out from the notch in resting idle state. |
+| `hoverPeek` | `number` | `88` | Horizontal pixel distance the card glides out on hover before being clicked. |
+| `cardVariant` | `"adaptive" \| "ivory"` | `"adaptive"` | Switches between dynamic dual-theme adaptivity (light in Light Mode, dark in Dark Mode) and classic physical ivory cardstock. |
+| `defaultOpen` | `boolean` | `false` | Whether the folder opens directly in its elevated resting state. |
+| `onOpenChange` | `(open: boolean) => void` | `undefined` | Callback fired whenever the card opens or returns inside the sleeve. |
 
 ---
 
-**Component Path:** `[framework]\secure-envelope\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/secure-envelope

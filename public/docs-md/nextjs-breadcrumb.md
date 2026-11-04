@@ -1,4 +1,8 @@
-export const metadata = docsPageMetadata("breadcrumb");
+---
+title: "Breadcrumb"
+description: "A navigational aid that helps users understand their current location within a website's hierarchy. Free shadcn/ui component for React and Tailwind CSS."
+url: https://avaraui.com/docs/nextjs/breadcrumb
+---
 
 # Breadcrumb
 
@@ -8,7 +12,14 @@ This component features four distinct visual variants, seamless color theming, a
 
 You describe the trail as an `items` array; the component handles dividers, the active item and truncation.
 
-export const usageDefault = `import { BreadcrumbBlock, type BreadcrumbItem } from "@/components/custom/blocks/BreadcrumbBlock";
+## Breadcrumb
+
+- Pass `items` as an array of `{ label, href }` — the last entry is treated as the current page and is not linked.
+- `color` themes the active text and hover states — a named key or a hex string such as `#00FF00`.
+- `linkComponent` swaps the plain `a` each item renders for your router's link — pass `Link` from `next/link` to keep client-side navigation and prefetching.
+
+```tsx
+import { BreadcrumbBlock, type BreadcrumbItem } from "@/components/custom/blocks/BreadcrumbBlock";
 
 const items: BreadcrumbItem[] = [
   { label: "Docs", href: "/docs" },
@@ -18,38 +29,9 @@ const items: BreadcrumbItem[] = [
 
 export default function BreadcrumbDemo() {
   // The last item is rendered as the current page, not a link.
-  return ;
-}`;
-
-export const usageIcons = `import { BreadcrumbBlock, type BreadcrumbItem } from "@/components/custom/blocks/BreadcrumbBlock";
-
-const items: BreadcrumbItem[] = [
-  // icon takes the Lucide component itself, not a string
-  { label: "Home", href: "/", icon: Home },
-  { label: "Settings", href: "/settings", icon: Settings },
-  { label: "Profile", href: "/settings/profile" },
-];
-
-export default function BreadcrumbWithIcons() {
-  return ;
-}`;
-
-export const usageTruncated = `import { BreadcrumbBlock, type BreadcrumbItem } from "@/components/custom/blocks/BreadcrumbBlock";
-
-const deepPath: BreadcrumbItem[] = [
-  { label: "Home", href: "/", icon: Home },
-  { label: "Dashboard", href: "/dashboard" },
-  { label: "Projects", href: "/projects", icon: Folder },
-  { label: "Nexus UI Kit", href: "/projects/nexus" },
-  { label: "Components", href: "/projects/nexus/components" },
-  { label: "Breadcrumb.tsx", href: "#", icon: FileText },
-];
-
-export default function DeepBreadcrumb() {
-  // More items than maxItems? The middle collapses behind a "..." button
-  // that expands the full trail when clicked.
-  return ;
-}`;
+  return <BreadcrumbBlock items={items} />;
+}
+```
 
 ## Installation
 
@@ -68,83 +50,83 @@ npx shadcn@latest add @avara-ui/breadcrumb
 
 ## Examples
 
+### With icons
+
+- Give an item an `icon` — the Lucide component itself, not its name — to label it visually beside the text.
+
+```tsx
+import { BreadcrumbBlock, type BreadcrumbItem } from "@/components/custom/blocks/BreadcrumbBlock";
+
+const items: BreadcrumbItem[] = [
+  // icon takes the Lucide component itself, not a string
+  { label: "Home", href: "/", icon: Home },
+  { label: "Settings", href: "/settings", icon: Settings },
+  { label: "Profile", href: "/settings/profile" },
+];
+
+export default function BreadcrumbWithIcons() {
+  return <BreadcrumbBlock items={items} />;
+}
+```
+
+### Truncated path
+
+- `maxItems={4}` is the default — past that many links the middle collapses behind a `...` the reader can click to expand.
+
+```tsx
+import { BreadcrumbBlock, type BreadcrumbItem } from "@/components/custom/blocks/BreadcrumbBlock";
+
+const deepPath: BreadcrumbItem[] = [
+  { label: "Home", href: "/", icon: Home },
+  { label: "Dashboard", href: "/dashboard" },
+  { label: "Projects", href: "/projects", icon: Folder },
+  { label: "Nexus UI Kit", href: "/projects/nexus" },
+  { label: "Components", href: "/projects/nexus/components" },
+  { label: "Breadcrumb.tsx", href: "#", icon: FileText },
+];
+
+export default function DeepBreadcrumb() {
+  // More items than maxItems? The middle collapses behind a "..." button
+  // that expands the full trail when clicked.
+  return <BreadcrumbBlock items={deepPath} maxItems={4} />;
+}
+```
+
 ## Features
 Explore the Breadcrumb navigation features, including collapsible items, custom separators, and SEO-friendly structure.
 
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
+### Customizable
 
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+Easily adapt the component's styling and behavior to fit your application's unique design system.
 
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+### Accessible
 
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
+Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+### Responsive
+
+Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+### Performant
+
+Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 
-    Usage Guidelines
-    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+### Usage Guidelines
+
+Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
 ## Props Reference
 
-        Prop
-        Type
-        Default
-        Description
-
-          items
-
-          BreadcrumbItem[]
-
-          Required
-
-          An array of objects containing a label (string), optional{" "}
-          href (string), and optional icon (Lucide
-          Component).
-
-          variant
-
-          "classic" | "slash" | "solid" | "ghost"
-
-          "classic"
-
-          Determines the visual styling of the links and the dividers between
-          them.
-
-          color
-
-          "indigo" | "rose" | "emerald" | "zinc" | string
-
-          "indigo"
-
-          Applies global color themes to the active text and hover states.
-          Accepts valid hex codes (e.g. "#00FF00").
-
-          maxItems
-
-          number
-
-          4
-
-          The maximum number of links to display before automatically truncating
-          the middle of the path.
-
-          linkComponent
-
-          React.ElementType
-
-          "a"
-
-          The element each item renders as. It defaults to a plain{" "}
-          &lt;a&gt; so one source works in any React app — pass{" "}
-          Link from next/link to get client-side
-          navigation and prefetching back.
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `items` | `BreadcrumbItem[]` | Required | An array of objects containing a `label` (string), optional `href` (string), and optional `icon` (Lucide Component). |
+| `variant` | `"classic" \| "slash" \| "solid" \| "ghost"` | `"classic"` | Determines the visual styling of the links and the dividers between them. |
+| `color` | `"indigo" \| "rose" \| "emerald" \| "zinc" \| string` | `"indigo"` | Applies global color themes to the active text and hover states. Accepts valid hex codes (e.g. `"#00FF00"`). |
+| `maxItems` | `number` | `4` | The maximum number of links to display before automatically truncating the middle of the path. |
+| `linkComponent` | `React.ElementType` | `"a"` | The element each item renders as. It defaults to a plain `<a>` so one source works in any React app — pass `Link` from `next/link` to get client-side navigation and prefetching back. |
 
 ---
 
-**Component Path:** `[framework]\breadcrumb\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/breadcrumb

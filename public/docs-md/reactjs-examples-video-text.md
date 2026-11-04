@@ -1,3 +1,9 @@
+---
+title: "Video Text"
+description: "A text component with a video background."
+url: https://avaraui.com/docs/nextjs/examples/video-text
+---
+
 # Video Text 
 A text component with a video background. 
 
@@ -11,17 +17,15 @@ See implementation in: `src/app/docs/[framework]/examples/video-text/video-text.
 
 # Usage
 ```tsx
-
+import VideoText from "./video-text";
 ```
 
 ```tsx
-
-  Video Text
-
+<div className="relative h-[500px] w-full overflow-hidden">
+  <VideoText src="https://cdn.pixabay.com/video/2024/05/25/213616_large.mp4">Video Text</VideoText>
+</div>
 ```
 
 ---
 
-**Component Path:** `[framework]\examples\video-text\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/examples/video-text

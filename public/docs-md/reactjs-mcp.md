@@ -1,4 +1,8 @@
-export const metadata = docsPageMetadata("mcp");
+---
+title: "MCP Server"
+description: "Connect Claude Code, Cursor, VS Code, Codex or OpenCode to the Avara UI registry through the shadcn MCP server, and install components from a prompt."
+url: https://avaraui.com/docs/nextjs/mcp
+---
 
 # MCP Server
 
@@ -34,45 +38,55 @@ This adds the registry to `components.json`, which you can also write by hand:
 Pick your client and run the command in your project. Prefer to do it by hand? See
 [Configuration](#configuration).
 
-    **Run the following command** in your project:
+**Client: claude**
 
-    ```bash
+ **Run the following command** in your project:
+
+```bash
 npx shadcn@latest mcp init --client claude
 ```
 
-    Restart Claude Code and run `/mcp` to check the connection.
+Restart Claude Code and run `/mcp` to check the connection.
 
-    **Run the following command** in your project:
+**Client: cursor**
 
-    ```bash
+ **Run the following command** in your project:
+
+```bash
 npx shadcn@latest mcp init --client cursor
 ```
 
-    Open **Cursor Settings** and **Enable** the MCP server for shadcn.
+Open **Cursor Settings** and **Enable** the MCP server for shadcn.
 
-    **Run the following command** in your project:
+**Client: vscode**
 
-    ```bash
+ **Run the following command** in your project:
+
+```bash
 npx shadcn@latest mcp init --client vscode
 ```
 
-    Open `.vscode/mcp.json` and click **Start** beside the shadcn server.
+Open `.vscode/mcp.json` and click **Start** beside the shadcn server.
 
-    **Run the following command** in your project:
+**Client: codex**
 
-    ```bash
+ **Run the following command** in your project:
+
+```bash
 npx shadcn@latest mcp init --client codex
 ```
 
-    Restart Codex to load the server.
+Restart Codex to load the server.
 
-    **Run the following command** in your project:
+**Client: opencode**
 
-    ```bash
+ **Run the following command** in your project:
+
+```bash
 npx shadcn@latest mcp init --client opencode
 ```
 
-    Restart OpenCode to load the server.
+Restart OpenCode to load the server.
 
 ### Step 3: Try it
 
@@ -82,16 +96,18 @@ Ask your assistant:
 - "Add the hero and navbar from @avara-ui to my project"
 - "Build a pricing page using components from @avara-ui"
 
-    Name the registry. Include @avara-ui in your prompt. Without it the assistant may search only the default shadcn/ui registry.
+Name the registry. Include `@avara-ui` in your prompt. Without it the assistant may search only the default shadcn/ui registry.
 
 ## Configuration
 
 Add the server to your client's MCP config. The command is the same everywhere —
 only the file differs.
 
-    Add to `.mcp.json`, then run `/mcp` to check the connection:
+**Client: claude**
 
-    ```json
+Add to `.mcp.json`, then run `/mcp` to check the connection:
+
+```json
     {
       "mcpServers": {
         "shadcn": {
@@ -102,10 +118,12 @@ only the file differs.
     }
     ```
 
-    Add to `.cursor/mcp.json`, then enable the server in Cursor Settings. A green dot
-    means it is connected:
+**Client: cursor**
 
-    ```json
+Add to `.cursor/mcp.json`, then enable the server in Cursor Settings. A green dot
+means it is connected:
+
+```json
     {
       "mcpServers": {
         "shadcn": {
@@ -116,10 +134,12 @@ only the file differs.
     }
     ```
 
-    Add to `.vscode/mcp.json`, then click **Start** beside the server. VS Code uses
-    `servers` rather than `mcpServers`:
+**Client: vscode**
 
-    ```json
+Add to `.vscode/mcp.json`, then click **Start** beside the server. VS Code uses
+`servers` rather than `mcpServers`:
+
+```json
     {
       "servers": {
         "shadcn": {
@@ -130,17 +150,21 @@ only the file differs.
     }
     ```
 
-    Add to `.codex/config.toml` in your project (or `~/.codex/config.toml` for every project), then restart Codex:
+**Client: codex**
 
-    ```toml
+Add to `.codex/config.toml` in your project (or `~/.codex/config.toml` for every project), then restart Codex:
+
+```toml
     [mcp_servers.shadcn]
     command = "npx"
     args = ["shadcn@latest", "mcp"]
     ```
 
-    Add to `opencode.json`, then restart OpenCode:
+**Client: opencode**
 
-    ```json
+Add to `opencode.json`, then restart OpenCode:
+
+```json
     {
       "$schema": "https://opencode.ai/config.json",
       "mcp": {
@@ -171,28 +195,30 @@ only the file differs.
 
 ## Troubleshooting
 
-    The assistant can't find Avara UI components
-    Check that components.json has the @avara-ui entry from Step 1, and mention @avara-ui in your prompt.
+### The assistant can't find Avara UI components
 
-    The server doesn't respond
-    Check the config file for typos, restart your client, and make sure you can reach https://avaraui.com.
+Check that `components.json` has the `@avara-ui` entry from Step 1, and mention `@avara-ui` in your prompt.
 
-    "No tools" message
-    Clear the npx cache with npx clear-npx-cache, re-enable the server, and read your client's MCP output log.
+### The server doesn't respond
 
-    Installs fail
-    Make sure components.json exists (run init) and you have write access to the project folders.
+Check the config file for typos, restart your client, and make sure you can reach `https://avaraui.com`.
+
+### "No tools" message
+
+Clear the npx cache with `npx clear-npx-cache`, re-enable the server, and read your client's MCP output log.
+
+### Installs fail
+
+Make sure `components.json` exists ([run `init`](https://avaraui.com/docs/reactjs/installation)) and you have write access to the project folders.
 
 ## Next steps
 
-- Installation — set up a project for Avara UI
-- All components — browse the library
+- [Installation](https://avaraui.com/docs/reactjs/installation) — set up a project for Avara UI
+- [All components](https://avaraui.com/docs/reactjs/all-components) — browse the library
 
 For the full server reference, see the
 [shadcn MCP docs](https://ui.shadcn.com/docs/mcp).
 
 ---
 
-**Component Path:** `[framework]\mcp\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/mcp

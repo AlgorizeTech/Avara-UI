@@ -1,4 +1,8 @@
-export const metadata = docsPageMetadata("piano");
+---
+title: "Playable Piano"
+description: "A playable piano with synthesised Web Audio sound, computer-keyboard key bindings, a volume slider and optional key labels. Free shadcn/ui component."
+url: https://avaraui.com/docs/nextjs/piano
+---
 
 # Playable Piano
 
@@ -6,11 +10,19 @@ An interactive, responsive **Playable Piano** component featuring synthesized ac
 
 ## Variations
 
-export const usageDefault = `import { Piano } from "@/components/custom/piano";
+### Playable Synthesizer Piano
+
+Interactive playable piano keyboard powered by Web Audio API synthesizers. Play using mouse clicks or typing physical keyboard keys (`A-S-D-F-G-H-J-K-L-;` and `W-E-T-Y-U-O-P`).
+
+- Pass `defaultVolume=0.8` sets default master volume level (0 to 1).
+
+```tsx
+import { Piano } from "@/components/custom/piano";
 
 export default function PianoDemo() {
-  return ;
-}`;
+  return <Piano defaultVolume={0.8} defaultShowKeys={true} />;
+}
+```
 
 ## Installation
 
@@ -39,37 +51,12 @@ Discover the interactive capabilities of the `Piano` component:
 
 ## Props Reference: Piano
 
-        Prop
-        Type
-        Default
-        Description
-
-          defaultVolume
-
-          number
-
-          0.8
-        
-        Initial master volume level between 0 and 1.
-
-          defaultShowKeys
-
-          boolean
-
-          true
-        
-        Whether key trigger labels are shown over piano keys.
-
-          className
-
-          string
-
-          undefined
-        
-        Custom CSS classes for container styling.
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `defaultVolume` | `number` | `0.8` | Initial master volume level between 0 and 1. |
+| `defaultShowKeys` | `boolean` | `true` | Whether key trigger labels are shown over piano keys. |
+| `className` | `string` | `undefined` | Custom CSS classes for container styling. |
 
 ---
 
-**Component Path:** `[framework]\piano\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/piano
