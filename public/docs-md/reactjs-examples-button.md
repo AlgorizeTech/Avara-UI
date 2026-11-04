@@ -1,3 +1,9 @@
+---
+title: "Buttons"
+description: "A customizable and interactive button component with a built-in ripple effect. Free shadcn/ui Buttons component for React, Next.js and Tailwind CSS."
+url: https://avaraui.com/docs/nextjs/examples/button
+---
+
 # Buttons 
 A customizable and interactive button component with a built-in ripple effect.
 
@@ -92,7 +98,7 @@ npx shadcn@latest add @avara-ui/button
 Then import it:
 
 ```tsx
-
+import Button from "@/components/custom/blocks/Button";
 ```
 
 ## Basic Usage
@@ -100,7 +106,7 @@ Then import it:
 Here's the most basic way to use the component:
 
 ```tsx live
-Click Me
+<Button variant="default">Click Me</Button>
 ```
 
 ## Variants
@@ -112,7 +118,7 @@ The button comes in several variants to suit different UI contexts.
 The standard, primary button for your application.
 
 ```tsx live
-Default Button
+<Button variant="default">Default Button</Button>
 ```
 
 ## Destructive
@@ -120,7 +126,7 @@ Default Button
 Use this for actions that could have destructive consequences, like deleting data.
 
 ```tsx live
-Delete Action
+<Button variant="destructive">Delete Action</Button>
 ```
 
 ## Outline
@@ -128,7 +134,7 @@ Delete Action
 A lower-emphasis button with a transparent background and a border.
 
 ```tsx live
-Outline Button
+<Button variant="outline">Outline Button</Button>
 ```
 
 ## Secondary
@@ -136,7 +142,7 @@ Outline Button
 For actions that are secondary to the main call-to-action on a page.
 
 ```tsx live
-Secondary Button
+<Button variant="secondary">Secondary Button</Button>
 ```
 
 ## Ghost
@@ -144,7 +150,7 @@ Secondary Button
 The lowest-emphasis button, used for supplemental actions that need to be available but not prominent.
 
 ```tsx live
-Ghost Button
+<Button variant="ghost">Ghost Button</Button>
 ```
 
 ## Link
@@ -152,7 +158,7 @@ Ghost Button
 A button that looks and behaves like a hyperlink.
 
 ```tsx live
-Link Button
+<Button variant="link">Link Button</Button>
 ```
 
 ## Sizes
@@ -160,11 +166,11 @@ Link Button
 The button is available in three sizes.
 
 ```tsx live
-
-  Small
-  Default
-  Large
-
+<div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+  <Button variant="default" size="sm">Small</Button>
+  <Button variant="default" size="default">Default</Button>
+  <Button variant="default" size="lg">Large</Button>
+</div>
 ```
 
 ## Loading State
@@ -172,10 +178,10 @@ The button is available in three sizes.
 You can put the button into a loading state, which disables it and shows a spinner. This is useful for indicating that an action (like a form submission) is in progress.
 
 ```tsx live
-
-    Loading...
-    Loading...
-
+<div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+    <Button variant="default" loading>Loading...</Button>
+    <Button variant="outline" loading>Loading...</Button>
+</div>
 ```
 
 # Props
@@ -185,10 +191,8 @@ You can put the button into a loading state, which disables it and shows a spinn
 | `variant`   | `'default'` \| `'destructive'` \| `'outline'` \| `'secondary'` \| `'ghost'` \| `'link'`            | `'default'`   | The visual style of the button.                                                                                      |
 | `size`      | `'default'` \| `'sm'` \| `'lg'`                                                                    | `'default'`   | The size of the button.                                                                                              |
 | `loading`   | `boolean`                                                                                          | `false`       | If `true`, the button will be disabled and show a loading spinner.                                                  |
-| `...props`  | `React.ButtonHTMLAttributes`                                                   | —             | Any other standard `button` attributes (e.g., `onClick`, `disabled`, `className`) will be passed through.           |
+| `...props`  | `React.ButtonHTMLAttributes<HTMLButtonElement>`                                                   | —             | Any other standard `button` attributes (e.g., `onClick`, `disabled`, `className`) will be passed through.           |
 
 ---
 
-**Component Path:** `[framework]\examples\button\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/examples/button

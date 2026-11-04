@@ -52,6 +52,8 @@ const graph = {
       codeRepository: links.github,
       programmingLanguage: ["TypeScript", "React"],
       license: "https://opensource.org/licenses/MIT",
+      isAccessibleForFree: true,
+      sameAs: [links.github, links.productHunt],
       author: { "@id": organization["@id"] },
     },
   ],

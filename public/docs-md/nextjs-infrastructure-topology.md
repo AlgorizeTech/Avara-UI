@@ -1,4 +1,8 @@
-export const metadata = docsPageMetadata("infrastructure-topology");
+---
+title: "Infrastructure Topology"
+description: "An animated infrastructure diagram simulating live data flowing between microservices and a central router, with SVG beam pipelines and live metrics."
+url: https://avaraui.com/docs/nextjs/infrastructure-topology
+---
 
 # Infrastructure Topology
 
@@ -6,7 +10,12 @@ An interactive, fluid **Infrastructure Topology** component simulating live data
 
 ## Variations
 
-export const usageDefault = `import InfrastructureTopology, { type TopologyNode } from "@/components/custom/infrastructure-topology";
+### Infrastructure Topology Showcase
+
+Live animated data flow canvas with pulsing central neural mesh router, peripheral service cards, and telemetry metrics.
+
+```tsx
+import InfrastructureTopology, { type TopologyNode } from "@/components/custom/infrastructure-topology";
 
 const customNodes: TopologyNode[] = [
   {
@@ -15,7 +24,7 @@ const customNodes: TopologyNode[] = [
     subtitle: "OAUTH 2.0",
     badgeText: "SECURED",
     badgeVariant: "blue",
-    icon: ,
+    icon: <UserCheck className="w-4 h-4 md:w-4.5 md:h-4.5 text-blue-500" />,
     color: "blue",
     strokeColor: "#3b82f6",
     position: "top-left",
@@ -26,7 +35,7 @@ const customNodes: TopologyNode[] = [
     subtitle: "LAYER 7",
     badgeText: "ONLINE",
     badgeVariant: "rose",
-    icon: ,
+    icon: <ShieldAlert className="w-4 h-4 md:w-4.5 md:h-4.5 text-rose-500" />,
     color: "rose",
     strokeColor: "#f43f5e",
     position: "bottom-left",
@@ -37,7 +46,7 @@ const customNodes: TopologyNode[] = [
     subtitle: "PRIMARY DB",
     badgeText: "ONLINE",
     badgeVariant: "purple",
-    icon: ,
+    icon: <Database className="w-4 h-4 md:w-4.5 md:h-4.5 text-purple-500" />,
     color: "purple",
     strokeColor: "#a855f7",
     position: "top-right",
@@ -48,7 +57,7 @@ const customNodes: TopologyNode[] = [
     subtitle: "US-EAST-1",
     badgeText: "ACTIVE",
     badgeVariant: "amber",
-    icon: ,
+    icon: <Cloud className="w-4 h-4 md:w-4.5 md:h-4.5 text-amber-500" />,
     color: "amber",
     strokeColor: "#f59e0b",
     position: "middle-right",
@@ -59,7 +68,7 @@ const customNodes: TopologyNode[] = [
     subtitle: "STRIPE V3",
     badgeText: "ONLINE",
     badgeVariant: "emerald",
-    icon: ,
+    icon: <CreditCard className="w-4 h-4 md:w-4.5 md:h-4.5 text-emerald-500" />,
     color: "emerald",
     strokeColor: "#10b981",
     position: "bottom-right",
@@ -68,9 +77,21 @@ const customNodes: TopologyNode[] = [
 
 export default function InfrastructureTopologyDemo() {
   return (
-    
+    <InfrastructureTopology
+      headerTitle="Infrastructure Topology"
+      headerSubtitle="LIVE DATA FLOW · 6 SERVICES · 5 ROUTES"
+      statusBadge="ALL SYSTEMS"
+      bandwidthBadge="10 GBPS"
+      centerTitle="NEURAL MESH"
+      centerSubtitle="CORE ROUTER · V4.2"
+      centerColor="cyan"
+      nodes={customNodes}
+      animated={true}
+      interactive={true}
+    />
   );
-}`;
+}
+```
 
 ## Installation
 
@@ -97,68 +118,20 @@ npx shadcn@latest add @avara-ui/infrastructure-topology
 
 ## Props Reference: InfrastructureTopology
 
-        Prop
-        Type
-        Default
-        Description
-
-        headerTitle
-        string
-        "Infrastructure Topology"
-        Main headline text in the header bar.
-
-        headerSubtitle
-        string
-        "LIVE DATA FLOW · 6 SERVICES · 5 ROUTES"
-        Monospaced subtitle text in the header bar.
-
-        statusBadge
-        string
-        "ALL SYSTEMS"
-        System status pill badge text.
-
-        bandwidthBadge
-        string
-        "10 GBPS"
-        Bandwidth speed status badge text.
-
-        centerTitle
-        string
-        "NEURAL MESH"
-        Title of the central core router node.
-
-        centerSubtitle
-        string
-        "CORE ROUTER · V4.2"
-        Subtitle of the central core router node.
-
-        centerColor
-        "cyan" | "emerald" | "indigo" | "rose" | "purple"
-        "cyan"
-        Theme color palette of the central core router.
-
-        nodes
-        TopologyNode[]
-        DEFAULT_NODES
-        Array of peripheral service node objects.
-
-        metrics
-        MetricItem[]
-        DEFAULT_METRICS
-        Array of telemetry metric pill objects.
-
-        animated
-        boolean
-        true
-        Toggles SVG connection beam laser animations.
-
-        interactive
-        boolean
-        true
-        Toggles hover route highlighting animations.
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `headerTitle` | `string` | `"Infrastructure Topology"` | Main headline text in the header bar. |
+| `headerSubtitle` | `string` | `"LIVE DATA FLOW · 6 SERVICES · 5 ROUTES"` | Monospaced subtitle text in the header bar. |
+| `statusBadge` | `string` | `"ALL SYSTEMS"` | System status pill badge text. |
+| `bandwidthBadge` | `string` | `"10 GBPS"` | Bandwidth speed status badge text. |
+| `centerTitle` | `string` | `"NEURAL MESH"` | Title of the central core router node. |
+| `centerSubtitle` | `string` | `"CORE ROUTER · V4.2"` | Subtitle of the central core router node. |
+| `centerColor` | `"cyan" \| "emerald" \| "indigo" \| "rose" \| "purple"` | `"cyan"` | Theme color palette of the central core router. |
+| `nodes` | `TopologyNode[]` | `DEFAULT_NODES` | Array of peripheral service node objects. |
+| `metrics` | `MetricItem[]` | `DEFAULT_METRICS` | Array of telemetry metric pill objects. |
+| `animated` | `boolean` | `true` | Toggles SVG connection beam laser animations. |
+| `interactive` | `boolean` | `true` | Toggles hover route highlighting animations. |
 
 ---
 
-**Component Path:** `[framework]\infrastructure-topology\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/infrastructure-topology

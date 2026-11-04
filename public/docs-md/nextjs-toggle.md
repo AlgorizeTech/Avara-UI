@@ -1,4 +1,8 @@
-export const metadata = docsPageMetadata("toggle");
+---
+title: "Toggle"
+description: "A two-state button that can be either on or off. Free shadcn/ui Toggle component for React, Next.js and Tailwind CSS."
+url: https://avaraui.com/docs/nextjs/toggle
+---
 
 # Toggle
 
@@ -8,56 +12,29 @@ Toggles are primarily used to manage interface states (like text formatting in a
 
 Explore the different variations of the Toggle component — each example shows a live preview with the exact code to copy.
 
-export const usageSizes = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+## Sizes
+
+- Use `size` to change the hit area and icon scale.
+
+```tsx
+import { Toggle } from "@/components/custom/blocks/ToggleBlock";
 
 export default function ToggleSizes() {
   return (
-
+    <div className="flex items-center gap-4">
+      <Toggle size="sm" aria-label="Toggle bold">
+        <Bold className="w-4 h-4" />
+      </Toggle>
+      <Toggle size="md" aria-label="Toggle bold">
+        <Bold className="w-4 h-4" />
+      </Toggle>
+      <Toggle size="lg" aria-label="Toggle bold">
+        <Bold className="w-4 h-4" />
+      </Toggle>
+    </div>
   );
-}`;
-
-export const usageText = `"use client";
-
-export default function MuteToggle() {
-  const [muted, setMuted] = useState(false);
-
-  return (
-    
-      {muted ?  : }
-      {muted ? "Unmute" : "Mute"}
-    
-  );
-}`;
-
-export const usageToolbar = `"use client";
-
-export default function FormattingToolbar() {
-  const [format, setFormat] = useState({ bold: false, italic: true, underline: false });
-
-  return (
-    
-       setFormat({ ...format, bold: v })}
-        aria-label="Toggle bold"
-      >
-
-       setFormat({ ...format, italic: v })}
-        aria-label="Toggle italic"
-      >
-
-       setFormat({ ...format, underline: v })}
-        aria-label="Toggle underline"
-      >
-
-  );
-}`;
-
-export const usageDisabled = `import { Toggle } from "@/components/custom/blocks/ToggleBlock";
-
-export default function DisabledToggle() {
-  return (
-
-  );
-}`;
+}
+```
 
 ## Installation
 
@@ -76,6 +53,85 @@ npx shadcn@latest add @avara-ui/toggle
 
 ## Examples
 
+### With text
+
+- `children` can hold an icon and a label together when the toggle drives a named action.
+
+```tsx
+"use client";
+
+
+
+
+export default function MuteToggle() {
+  const [muted, setMuted] = useState(false);
+
+  return (
+    <Toggle pressed={muted} onPressedChange={setMuted}>
+      {muted ? <MicOff className="w-4 h-4 mr-2" /> : <Mic className="w-4 h-4 mr-2" />}
+      {muted ? "Unmute" : "Mute"}
+    </Toggle>
+  );
+}
+```
+
+### Toolbar
+
+- `pressed` is per-toggle — a toolbar is just independent toggles side by side, not a group component.
+
+```tsx
+"use client";
+
+
+
+
+export default function FormattingToolbar() {
+  const [format, setFormat] = useState({ bold: false, italic: true, underline: false });
+
+  return (
+    <div className="flex items-center p-1 rounded-lg border border-border">
+      <Toggle
+        pressed={format.bold}
+        onPressedChange={(v) => setFormat({ ...format, bold: v })}
+        aria-label="Toggle bold"
+      >
+        <Bold className="w-4 h-4" />
+      </Toggle>
+      <Toggle
+        pressed={format.italic}
+        onPressedChange={(v) => setFormat({ ...format, italic: v })}
+        aria-label="Toggle italic"
+      >
+        <Italic className="w-4 h-4" />
+      </Toggle>
+      <Toggle
+        pressed={format.underline}
+        onPressedChange={(v) => setFormat({ ...format, underline: v })}
+        aria-label="Toggle underline"
+      >
+        <Underline className="w-4 h-4" />
+      </Toggle>
+    </div>
+  );
+}
+```
+
+### Disabled
+
+- Set `disabled` to lock the toggle in whatever state it is currently in.
+
+```tsx
+import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+
+export default function DisabledToggle() {
+  return (
+    <Toggle disabled pressed aria-label="Toggle bold">
+      <Bold className="w-4 h-4" />
+    </Toggle>
+  );
+}
+```
+
 ## Usage
 
 ### Uncontrolled (Simple)
@@ -83,10 +139,14 @@ npx shadcn@latest add @avara-ui/toggle
 If you don't need to tightly bind the component to React state, you can let it manage its own internal state and just provide a `defaultPressed` value.
 
 ```tsx
+import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+import { Star } from "lucide-react";
 
 export default function SimpleToggle() {
   return (
-
+    <Toggle defaultPressed aria-label="Toggle star">
+      <Star className="w-4 h-4" />
+    </Toggle>
   );
 }
 ```
@@ -96,12 +156,23 @@ export default function SimpleToggle() {
 If you are building complex interfaces (like a Rich Text Editor), you should control the state directly using the pressed and onPressedChange prop
 
 ```tsx
+import { useState } from "react";
+import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+import { Bold } from "lucide-react";
 
 export default function Toolbar() {
   const [isBold, setIsBold] = useState(false);
 
   return (
-
+    <div className="flex gap-1 border p-1 rounded-md">
+      <Toggle
+        pressed={isBold}
+        onPressedChange={setIsBold}
+        aria-label="Toggle bold"
+      >
+        <Bold className="w-4 h-4" />
+      </Toggle>
+    </div>
   );
 }
 ```
@@ -109,96 +180,39 @@ export default function Toolbar() {
 ## Features
 Explore the Toggle button's simple two-state functionality, perfect for on/off switches and boolean preferences with smooth transitions.
 
-    Customizable
-    Easily adapt the component's styling and behavior to fit your application's unique design system.
+### Customizable
 
-    Accessible
-    Built with accessibility in mind, ensuring all users can interact with your application effectively.
+Easily adapt the component's styling and behavior to fit your application's unique design system.
 
-    Responsive
-    Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+### Accessible
 
-    Performant
-    Optimized for maximum performance with minimal re-renders and efficient state management.
+Built with accessibility in mind, ensuring all users can interact with your application effectively.
+
+### Responsive
+
+Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+
+### Performant
+
+Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
 
-    Usage Guidelines
-    Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+### Usage Guidelines
+
+Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
 ## Props Reference
 
-        Component
-        Prop
-        Type
-        Default
-        Description
-
-          Toggle
-
-          pressed
-
-          boolean
-
-          undefined
-
-          The controlled pressed state of the toggle. If provided, the component
-          relies entirely on this value.
-
-          Toggle
-
-          defaultPressed
-
-          boolean
-
-          false
-        
-        The starting state when the component is uncontrolled.
-
-          Toggle
-
-          onPressedChange
-
-          {`(pressed: boolean) => void`}
-
-          undefined
-
-          Event handler called when the pressed state of the toggle changes.
-
-          Toggle
-
-          variant
-
-          "default" | "outline" | "ghost"
-
-          "default"
-
-          The visual style variant. ghost is highly recommended
-          when clustering multiple toggles together in a toolbar.
-
-          Toggle
-
-          size
-
-          "sm" | "md" | "lg"
-
-          "md"
-
-          Adjusts the height, horizontal padding, and text-size of the toggle
-          button.
-
-          Toggle
-
-          className
-
-          string
-
-          undefined
-        
-        Standard Tailwind CSS overrides.
+| Component | Prop | Type | Default | Description |
+| --- | --- | --- | --- | --- |
+| `Toggle` | `pressed` | `boolean` | `undefined` | The controlled pressed state of the toggle. If provided, the component relies entirely on this value. |
+| `Toggle` | `defaultPressed` | `boolean` | `false` | The starting state when the component is uncontrolled. |
+| `Toggle` | `onPressedChange` | `(pressed: boolean) => void` | `undefined` | Event handler called when the pressed state of the toggle changes. |
+| `Toggle` | `variant` | `"default" \| "outline" \| "ghost"` | `"default"` | The visual style variant. `ghost` is highly recommended when clustering multiple toggles together in a toolbar. |
+| `Toggle` | `size` | `"sm" \| "md" \| "lg"` | `"md"` | Adjusts the height, horizontal padding, and text-size of the toggle button. |
+| `Toggle` | `className` | `string` | `undefined` | Standard Tailwind CSS overrides. |
 
 ---
 
-**Component Path:** `[framework]\toggle\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/toggle

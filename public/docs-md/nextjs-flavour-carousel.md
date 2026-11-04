@@ -1,4 +1,8 @@
-export const metadata = docsPageMetadata("flavour-carousel");
+---
+title: "Flavour Carousel"
+description: "A product hero for anything that comes in flavours — a matcha latte here, but ice cream, juice or a candle would do. Free shadcn/ui Flavour Carousel block."
+url: https://avaraui.com/docs/nextjs/flavour-carousel
+---
 
 # Flavour Carousel
 
@@ -6,12 +10,24 @@ A product hero for anything that comes in flavours — a matcha latte here, but 
 
 When the section first appears only the cup is there; the ring rises from behind the powder already spinning, one continuous turn that eases to a stop on the first flavour in a little over two seconds, and the price, cart and headline fade up as it lands. The scene is three layers — a backdrop, the cup, and a transparent cutout of the powder laid in front of the cup so the glass stands in it — positioned in fractions of the stage, measured from the design. One component serves both themes: the scene is the same in both, and in dark mode only the tiles change, from cream to a translucent black that sits into the ground. Without pictures the scene is drawn — moss with a heap of powder. Every move is a spring, so a click in the middle of a turn simply redirects it; a tile two steps away is walked to one step at a time, at a quicker pace, so the ring always behaves like a carousel; and a tile only ever leaves on its own side of the cup and arrives from the other — nothing is seen crossing the stage. The pictures of the product are stacked and the newest fades in over the one before, so the cup never dips or flickers mid-change; the ring holds while the pointer or keyboard focus is on it, while the tab is hidden and while the section is off screen. Under `prefers-reduced-motion` every change is a cut.
 
-`FlavourCarousel` is built from library pieces: the cart button is Button.
+`FlavourCarousel` is built from library pieces: the cart button is [Button](https://avaraui.com/docs/nextjs/button).
 
-export const usageSection = `"use client";
+## Choose your matcha tea
+
+Eight flavours around one cup on a mountain of powder. The ring spins up from behind the powder and settles; then wait five seconds or click a tile: it slides into the cup and the cup's contents change with it. Four tiles on tablets and up, two on phones; switch the site theme to see the tiles go dark. Arrow keys turn the ring when it has focus; hovering holds it.
+
+- `flavours` are `{ name, price?, tint?, product, tile }` in ring order. `product` is the picture of the product with that flavour inside — cut every one with the same geometry so only the contents change — and `tile` is what sits on the cream tile. `tint` colours the glow behind the product.
+- `reveal="in-view"` (the default) plays the entrance the first time the section is on screen; the docs pass `"immediate"`, and `"none"` renders the ring in place. Under prefers-reduced-motion the ring is simply there.
+- `interval=5000` is the rest between turns in milliseconds; `0` turns autoplay off and leaves the tiles to the user.
+- `onAdd` renders the cart button under the price pill and receives the chosen flavour; leave it out and only the pill remains. The pill shows the `price` (the name when there is none) and announces the name to screen readers. `onChange` reports every turn.
+- `foregroundImage` is the powder — a transparent cutout with its peak at the horizontal centre — anchored to the foot of the stage in front of the cup, `foregroundHeight` (default `0.41`) of the stage tall. `backgroundImage` covers the section behind everything. Leave both out and the scene is drawn from `background`, `mound` (`[light, dark]`) and `paper`.
+
+```tsx
+"use client";
+
 
 // Every product image must share the same crop, so only the contents appear to change.
-const ASSETS: Record = {
+const ASSETS: Record<string, string> = {
   "cup-berry": "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790509366/cup-berry-1790509374064.webp",
   "cup-chocolate": "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790509366/cup-chocolate-1790509374067.webp",
   "cup-cookie": "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790509366/cup-cookie-1790509374068.webp",
@@ -50,11 +66,17 @@ export default function Flavours() {
   const addToCart = (name: string) => console.log("Added " + name + " to cart");
 
   return (
-     addToCart(flavour.name)}
+    <FlavourCarousel
+      flavours={FLAVOURS}
+      heading="Choose your matcha tea"
+      backgroundImage={asset("green-background-matcha")}
+      foregroundImage={asset("matcha-powder")}
+      interval={5000}
+      onAdd={(flavour) => addToCart(flavour.name)}
     />
   );
 }
-`;
+```
 
 ## Installation
 
@@ -77,97 +99,41 @@ The trick that makes the cup look untouched is that every `product` picture is t
 
 ## Features
 
-    The product never moves
-    The pictures are stacked and the newest fades in over the one before, so there is no dip, no flicker and no jump — only the contents change.
+### The product never moves
 
-    Springs, and no crossings
-    Every tile animates to its resting place with a spring, so clicking during a turn redirects the motion instead of restarting it. A far tile is reached step by step at double pace, and a tile remembers which side of the cup it is on: it leaves on that side and comes back in from the other, never across the stage.
+The pictures are stacked and the newest fades in over the one before, so there is no dip, no flicker and no jump — only the contents change.
 
-    One entrance, then it holds still when it should
-    The ring spins up from behind the powder once, as a single decelerating turn, and hands over to the springs where it stops. After that autoplay pauses while the pointer or focus is on the ring, while the tab is hidden and while the section is scrolled out of view.
+### Springs, and no crossings
 
-    Keyboard and screen readers
-    Tiles are buttons with a pressed state, the arrow keys turn the ring, the tag is a live region and the cart button names the flavour it adds. Reduced motion turns every change into a cut.
+Every tile animates to its resting place with a spring, so clicking during a turn redirects the motion instead of restarting it. A far tile is reached step by step at double pace, and a tile remembers which side of the cup it is on: it leaves on that side and comes back in from the other, never across the stage.
+
+### One entrance, then it holds still when it should
+
+The ring spins up from behind the powder once, as a single decelerating turn, and hands over to the springs where it stops. After that autoplay pauses while the pointer or focus is on the ring, while the tab is hidden and while the section is scrolled out of view.
+
+### Keyboard and screen readers
+
+Tiles are buttons with a pressed state, the arrow keys turn the ring, the tag is a live region and the cart button names the flavour it adds. Reduced motion turns every change into a cut.
 
 ## Props Reference
 
-        Prop
-        Type
-        Default
-        Description
-
-        flavours
-        &#123; name: string; price?: string; tint?: string; product: string; tile: string; alt?: string &#125;[]
-        —
-        The flavours in ring order. product is the picture with that flavour inside, tile the ingredient on the tile.
-
-        heading
-        ReactNode
-        —
-        The headline low over the mound.
-
-        initial
-        number
-        0
-        The flavour in the cup at the start.
-
-        reveal
-        "in-view" | "immediate" | "none"
-        "in-view"
-        When the entrance plays: the ring rises from behind the powder, spinning, and settles on initial.
-
-        interval
-        number
-        5000
-        Milliseconds between turns; 0 turns autoplay off.
-
-        onChange
-        (index, flavour) =&gt; void
-        —
-        Called after every turn.
-
-        onAdd, addLabel
-        (flavour, index) =&gt; void, string
-        —, "Add to cart"
-        Renders the cart button under the price; the label names it for assistive technology.
-
-        backgroundImage
-        string
-        —
-        The backdrop, covering the section. Without it the ground is drawn.
-
-        backgroundPosition
-        string
-        "50% 50%"
-        object-position for the backdrop.
-
-        foregroundImage
-        string
-        —
-        The powder cutout, anchored to the foot of the stage in front of the cup.
-
-        foregroundHeight
-        number
-        0.41
-        The powder's height as a share of the stage; anything wider than the stage is clipped.
-
-        background
-        string
-        "#3b4726"
-        The drawn ground when there is no backdrop.
-
-        mound
-        [string, string]
-        ["#7a9550", "#465b2b"]
-        The drawn powder mound, light and dark.
-
-        paper
-        string
-        "#f4f1e7"
-        The cream of the tiles (light mode), the price pill and the cart.
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `flavours` | `&#123; name: string; price?: string; tint?: string; product: string; tile: string; alt?: string &#125;[]` | — | The flavours in ring order. `product` is the picture with that flavour inside, `tile` the ingredient on the tile. |
+| `heading` | `ReactNode` | — | The headline low over the mound. |
+| `initial` | `number` | `0` | The flavour in the cup at the start. |
+| `reveal` | `"in-view" \| "immediate" \| "none"` | `"in-view"` | When the entrance plays: the ring rises from behind the powder, spinning, and settles on `initial`. |
+| `interval` | `number` | `5000` | Milliseconds between turns; `0` turns autoplay off. |
+| `onChange` | `(index, flavour) => void` | — | Called after every turn. |
+| `onAdd`, `addLabel` | `(flavour, index) => void`, `string` | —, `"Add to cart"` | Renders the cart button under the price; the label names it for assistive technology. |
+| `backgroundImage` | `string` | — | The backdrop, covering the section. Without it the ground is drawn. |
+| `backgroundPosition` | `string` | `"50% 50%"` | `object-position` for the backdrop. |
+| `foregroundImage` | `string` | — | The powder cutout, anchored to the foot of the stage in front of the cup. |
+| `foregroundHeight` | `number` | `0.41` | The powder's height as a share of the stage; anything wider than the stage is clipped. |
+| `background` | `string` | `"#3b4726"` | The drawn ground when there is no backdrop. |
+| `mound` | `[string, string]` | `["#7a9550", "#465b2b"]` | The drawn powder mound, light and dark. |
+| `paper` | `string` | `"#f4f1e7"` | The cream of the tiles (light mode), the price pill and the cart. |
 
 ---
 
-**Component Path:** `[framework]\flavour-carousel\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/flavour-carousel

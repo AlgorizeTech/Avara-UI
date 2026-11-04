@@ -1,4 +1,8 @@
-export const metadata = docsPageMetadata("pagination");
+---
+title: "Pagination"
+description: "A complex navigation component that intelligently handles page rendering, ellipsis calculation, and edge bounds. Free shadcn/ui Pagination component."
+url: https://avaraui.com/docs/nextjs/pagination
+---
 
 # Pagination
 
@@ -8,72 +12,27 @@ Building pagination logic from scratch is notoriously difficult. If you have 100
 
 Click through the page numbers in each preview to watch the ellipses shift.
 
-export const usageDefault = `export default function BasicPagination() {
+## Pagination
+
+Hold `currentPage` yourself and update it from `onPageChange`.
+
+- `currentPage` and `totalPages` are both required — the component holds no state of its own.
+- `onPageChange` returns the target page number from a number click or the prev/next buttons.
+
+```tsx
+export default function BasicPagination() {
   // You own the page state — the component only reports the new number.
   const [currentPage, setCurrentPage] = useState(1);
 
   return (
-    
-  );
-}`;
-
-export const usageSiblingCount = `export default function TightPagination() {
-  const [currentPage, setCurrentPage] = useState(50);
-
-  // siblingCount is how many numbers sit either side of the active page.
-  // 1 keeps the control narrow on mobile; the default is 2.
-  return (
-    
-  );
-}`;
-
-export const usageControls = `export default function ControlledPagination() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(10);
-  const totalItems = 240;
-  const totalPages = Math.ceil(totalItems / pageSize);
-
-  return (
-     {
-        setPageSize(size);
-        setCurrentPage(1);
-      }}
+    <Pagination
+      currentPage={currentPage}
+      totalPages={10}
+      onPageChange={setCurrentPage}
     />
   );
-}`;
-
-export const usagePageSelect = `export default function DropdownJump() {
-  const [currentPage, setCurrentPage] = useState(7);
-
-  // Every page is listed in a ; best when totalPages stays modest.
-  return (
-    
-  );
-}`;
-
-export const usageTable = `export default function CustomerDirectory() {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
-  const totalItems = 50;
-  const totalPages = Math.ceil(totalItems / pageSize);
-
-  const start = (currentPage - 1) * pageSize + 1;
-  const end = Math.min(currentPage * pageSize, totalItems);
-
-  return (
-
-          Customer Directory
-          
-            Showing {start} to {end} of {totalItems} entries
-
-       {
-          setPageSize(size);
-          setCurrentPage(1);
-        }}
-      />
-    
-  );
-}`;
+}
+```
 
 ## Installation
 
@@ -92,122 +51,143 @@ npx shadcn@latest add @avara-ui/pagination
 
 ## Examples
 
+### Sibling count
+
+- `siblingCount={2}` is how many numbers flank the active page before an ellipsis. Raise it for wide desktop layouts.
+
+```tsx
+export default function TightPagination() {
+  const [currentPage, setCurrentPage] = useState(50);
+
+  // siblingCount is how many numbers sit either side of the active page.
+  // 1 keeps the control narrow on mobile; the default is 2.
+  return (
+    <Pagination
+      currentPage={currentPage}
+      totalPages={100}
+      onPageChange={setCurrentPage}
+      siblingCount={1}
+    />
+  );
+}
+```
+
+### Jump to page & rows per page
+
+Both controls are opt-in booleans; the page-size dropdown reports through `onPageSizeChange`.
+
+- `showPageJump` adds a number input — type a page and press Enter, tab away, or hit Go. Out-of-range values clamp to the edges.
+- `showPageSize` adds a rows-per-page dropdown. Pass `pageSize`, `pageSizeOptions` and `onPageSizeChange`, then re-derive `totalPages`.
+
+```tsx
+export default function ControlledPagination() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const totalItems = 240;
+  const totalPages = Math.ceil(totalItems / pageSize);
+
+  return (
+    <Pagination
+      currentPage={currentPage}
+      totalPages={totalPages}
+      onPageChange={setCurrentPage}
+      // "Go to page" number input — commits on Enter, blur, or the Go button.
+      showPageJump
+      // "Rows per page" dropdown. Reset to page 1 so the new range is valid.
+      showPageSize
+      pageSize={pageSize}
+      pageSizeOptions={[10, 20, 50, 100]}
+      onPageSizeChange={(size) => {
+        setPageSize(size);
+        setCurrentPage(1);
+      }}
+    />
+  );
+}
+```
+
+### Dropdown page picker
+
+- `pageJumpVariant="select"` swaps the free-typed input for a dropdown that lists every page — handy for smaller page counts.
+
+```tsx
+export default function DropdownJump() {
+  const [currentPage, setCurrentPage] = useState(7);
+
+  // Every page is listed in a <select>; best when totalPages stays modest.
+  return (
+    <Pagination
+      currentPage={currentPage}
+      totalPages={24}
+      onPageChange={setCurrentPage}
+      siblingCount={1}
+      showPageJump
+      pageJumpVariant="select"
+    />
+  );
+}
+```
+
+### In a data table
+
+- `totalPages` is yours to derive — `Math.ceil(rows.length / pageSize)` — and pairs naturally with a range readout.
+
+```tsx
+export default function CustomerDirectory() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(5);
+  const totalItems = 50;
+  const totalPages = Math.ceil(totalItems / pageSize);
+
+  const start = (currentPage - 1) * pageSize + 1;
+  const end = Math.min(currentPage * pageSize, totalItems);
+
+  return (
+    <div className="border rounded-xl p-6">
+      <div className="flex items-center justify-between mb-8 pb-4 border-b">
+        <div className="flex flex-col gap-1">
+          <h3 className="text-sm font-semibold">Customer Directory</h3>
+          <p className="text-xs text-muted-foreground">
+            Showing {start} to {end} of {totalItems} entries
+          </p>
+        </div>
+      </div>
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+        showPageJump
+        showPageSize
+        pageSize={pageSize}
+        pageSizeOptions={[5, 10, 25]}
+        onPageSizeChange={(size) => {
+          setPageSize(size);
+          setCurrentPage(1);
+        }}
+      />
+    </div>
+  );
+}
+```
+
 ## Props Reference
 
-        Prop
-        Type
-        Default
-        Description
-
-          currentPage
-
-          number
-
-          Required
-
-          The currently active page number. Drives the active state styling and
-          ellipsis calculation.
-
-          totalPages
-
-          number
-
-          Required
-        
-        The absolute total number of pages available in your dataset.
-
-          onPageChange
-
-          {`(page: number) => void`}
-
-          undefined
-
-          Callback function fired when a user clicks a page number, or the
-          next/previous buttons. It returns the new target page number.
-
-          siblingCount
-
-          number
-
-          2
-
-          Determines how many page buttons to show on either side of the{" "}
-          currentPage before rendering an ellipsis. Increase this
-          for wider desktop screens.
-
-          showEdges
-
-          boolean
-
-          true
-
-          If true, renders the "Previous" and "Next" control buttons on the
-          extreme left and right of the pagination block.
-
-          showPageJump
-
-          boolean
-
-          false
-
-          Shows a "Go to page" control. Values outside{" "}
-          1..totalPages are clamped before{" "}
-          onPageChange fires.
-
-          pageJumpVariant
-
-          "input" | "select"
-
-          "input"
-
-          "input" is a number field with a Go button;{" "}
-          "select" is a dropdown listing every page.
-
-          showPageSize
-
-          boolean
-
-          false
-
-          Shows a "Rows per page" dropdown. Requires pageSize and{" "}
-          onPageSizeChange.
-
-          pageSize
-
-          number
-
-          10
-
-          The currently selected rows-per-page value. If it isn't in{" "}
-          pageSizeOptions it is added to the list.
-
-          pageSizeOptions
-
-          number[]
-
-          [10, 20, 50, 100]
-        
-        The choices offered in the rows-per-page dropdown.
-
-          onPageSizeChange
-
-          {`(pageSize: number) => void`}
-
-          undefined
-
-          Fired when the user picks a new rows-per-page value. Recompute{" "}
-          totalPages and usually reset currentPage to 1.
-
-          color
-
-          string
-
-          undefined
-
-          Themes the active page, focus rings, hover states, and dropdown selection highlights — supports preset names (e.g. "indigo", "rose", "emerald", "lavender") or a custom hex string.
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `currentPage` | `number` | Required | The currently active page number. Drives the active state styling and ellipsis calculation. |
+| `totalPages` | `number` | Required | The absolute total number of pages available in your dataset. |
+| `onPageChange` | `(page: number) => void` | `undefined` | Callback function fired when a user clicks a page number, or the next/previous buttons. It returns the new target page number. |
+| `siblingCount` | `number` | `2` | Determines how many page buttons to show on either side of the `currentPage` before rendering an ellipsis. Increase this for wider desktop screens. |
+| `showEdges` | `boolean` | `true` | If true, renders the "Previous" and "Next" control buttons on the extreme left and right of the pagination block. |
+| `showPageJump` | `boolean` | `false` | Shows a "Go to page" control. Values outside `1..totalPages` are clamped before `onPageChange` fires. |
+| `pageJumpVariant` | `"input" \| "select"` | `"input"` | `"input"` is a number field with a Go button; `"select"` is a dropdown listing every page. |
+| `showPageSize` | `boolean` | `false` | Shows a "Rows per page" dropdown. Requires `pageSize` and `onPageSizeChange`. |
+| `pageSize` | `number` | `10` | The currently selected rows-per-page value. If it isn't in `pageSizeOptions` it is added to the list. |
+| `pageSizeOptions` | `number[]` | `[10, 20, 50, 100]` | The choices offered in the rows-per-page dropdown. |
+| `onPageSizeChange` | `(pageSize: number) => void` | `undefined` | Fired when the user picks a new rows-per-page value. Recompute `totalPages` and usually reset `currentPage` to 1. |
+| `color` | `string` | `undefined` | Themes the active page, focus rings, hover states, and dropdown selection highlights — supports preset names (e.g. `"indigo"`, `"rose"`, `"emerald"`, `"lavender"`) or a custom hex string. |
 
 ---
 
-**Component Path:** `[framework]\pagination\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/pagination

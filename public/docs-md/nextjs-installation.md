@@ -1,19 +1,25 @@
+---
+title: "Installation"
+description: "Set up a Next.js project so you can install Avara UI components with the shadcn CLI."
+url: https://avaraui.com/docs/nextjs/installation
+---
+
 # Installation
 
 Set up a Next.js project so you can install Avara UI components with the
 shadcn CLI.
 
-    Framework
-    Next.js App Router
+Framework
+Next.js App Router
 
-    React
-    18 or 19
+React
+ 18 or 19
 
-    Styling
-    Tailwind CSS v4
+Styling
+Tailwind CSS v4
 
-    Language
-    TypeScript or JS
+Language
+TypeScript or JS
 
 ## Create a project
 
@@ -43,7 +49,7 @@ Avara UI builds on Radix primitives. If you run `init` without flags, choose
 ### Step 2: Register the registry
 
 Optional, once per project. Components install by URL with no setup; this
-lets you install them by name instead (@avara-ui/hero):
+lets you install them by name instead (`@avara-ui/hero`):
 
 ```bash
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
@@ -119,21 +125,24 @@ export default config;
 @import "tailwindcss";
 ```
 
-    Keep it the first line. An @import below other rules is silently ignored, and your root layout must import globals.css — otherwise every component renders unstyled.
+Keep it the first line. An `@import` below other rules is silently ignored, and your root layout must import `globals.css` — otherwise every component renders unstyled.
 
 Upgrading from Tailwind v3? Run `npx @tailwindcss/upgrade`. Components use
 v4-only syntax.
 
 ## Troubleshooting
 
-    Components render unstyled
-    Check that @import "tailwindcss"; is the first line of globals.css, that your root layout imports that file, and that tailwind.css in components.json points at it.
+### Components render unstyled
 
-    Unknown registry "@avara-ui"
-    Run Step 2, or switch the command to URL, which needs no setup.
+Check that `@import "tailwindcss";` is the first line of `globals.css`, that your root layout imports that file, and that `tailwind.css` in `components.json` points at it.
 
-    Cannot find module @/lib/utils
-    Run Step 1, and make sure tsconfig.json has a paths entry for @/*.
+### Unknown registry "@avara-ui"
+
+Run [Step 2](#step-2-register-the-registry), or switch the command to URL, which needs no setup.
+
+### Cannot find module `@/lib/utils`
+
+Run Step 1, and make sure `tsconfig.json` has a `paths` entry for `@/*`.
 
 ## Next steps
 
@@ -147,6 +156,4 @@ For anything beyond Avara UI, see the
 
 ---
 
-**Component Path:** `[framework]\installation\_content\nextjs.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/installation

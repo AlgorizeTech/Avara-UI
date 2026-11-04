@@ -1,4 +1,8 @@
-export const metadata = docsPageMetadata("radial-orbital-timeline");
+---
+title: "Radial Orbital Timeline"
+description: "A dynamic orbital visualization component that displays nodes in a circular pattern around a central point. Free shadcn/ui component for React and Tailwind CSS."
+url: https://avaraui.com/docs/nextjs/radial-orbital-timeline
+---
 
 # Radial Orbital Timeline
 
@@ -6,7 +10,12 @@ A dynamic orbital visualization component that displays nodes in a circular patt
 
 The `RadialOrbitalTimeline` places event nodes along a circular orbit surrounding a glowing central nucleus. Clicking any node expands a detail card showing completion status, dates, descriptions, energy level progress meters, and interactive connected node links.
 
-export const defaultUsage = `import RadialOrbitalTimeline, { type TimelineItem } from "@/components/custom/blocks/RadialOrbitalTimeline";
+## Dual Orbit Timeline (Default)
+
+Renders 2 concentric counter-rotating orbital lines for dense timeline items.
+
+```tsx
+import RadialOrbitalTimeline, { type TimelineItem } from "@/components/custom/blocks/RadialOrbitalTimeline";
 
 const outerOrbitItems: TimelineItem[] = [
   {
@@ -136,11 +145,40 @@ const innerOrbitItems: TimelineItem[] = [
 
 export default function ReusableTimelineExample() {
   return (
-
+    <div className="w-full flex items-center justify-center p-4">
+      <RadialOrbitalTimeline
+        orbitCount={2}
+        outerOrbitItems={outerOrbitItems}
+        innerOrbitItems={innerOrbitItems}
+      />
+    </div>
   );
-}`;
+}
+```
 
-export const singleOrbitUsage = `import RadialOrbitalTimeline, { type TimelineItem } from "@/components/custom/blocks/RadialOrbitalTimeline";
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/radial-orbital-timeline.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/radial-orbital-timeline
+```
+
+## Single Orbit Variant
+
+### Single Orbit Timeline
+
+Pass `orbitCount={1}` to render a clean single circular orbit ring.
+
+```tsx
+import RadialOrbitalTimeline, { type TimelineItem } from "@/components/custom/blocks/RadialOrbitalTimeline";
 
 const singleOrbitItems: TimelineItem[] = [
   {
@@ -207,76 +245,26 @@ const singleOrbitItems: TimelineItem[] = [
 
 export default function SingleOrbitExample() {
   return (
-
+    <div className="w-full flex items-center justify-center p-4">
+      <RadialOrbitalTimeline
+        orbitCount={1}
+        outerOrbitItems={singleOrbitItems}
+      />
+    </div>
   );
-}`;
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/radial-orbital-timeline.json
+}
 ```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/radial-orbital-timeline
-```
-
-## Single Orbit Variant
 
 ## Props Reference: RadialOrbitalTimeline
 
-        Prop
-        Type
-        Default
-        Description
-
-          orbitCount
-
-          1 | 2
-
-          2
-
-          Controls whether the timeline renders 1 single orbital line or 2 concentric counter-rotating orbital lines.
-
-          outerOrbitItems
-
-          TimelineItem[]
-
-          undefined
-
-          Dedicated array of timeline items placed on the 1st Outer Orbit Line (rotates CCW).
-
-          innerOrbitItems
-
-          TimelineItem[]
-
-          undefined
-
-          Dedicated array of timeline items placed on the 2nd Inner Orbit Line (rotates CW).
-
-          timelineData
-
-          TimelineItem[]
-
-          DEFAULT_TIMELINE_DATA
-
-          Combined array of items. Each item can take optional layer: "outer" | "inner" or be auto-distributed across dual orbits.
-
-          className
-
-          string
-
-          undefined
-
-          Additional Tailwind CSS class names for custom container styling.
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `orbitCount` | `1 \| 2` | `2` | Controls whether the timeline renders `1` single orbital line or `2` concentric counter-rotating orbital lines. |
+| `outerOrbitItems` | `TimelineItem[]` | `undefined` | Dedicated array of timeline items placed on the 1st Outer Orbit Line (rotates CCW). |
+| `innerOrbitItems` | `TimelineItem[]` | `undefined` | Dedicated array of timeline items placed on the 2nd Inner Orbit Line (rotates CW). |
+| `timelineData` | `TimelineItem[]` | `DEFAULT_TIMELINE_DATA` | Combined array of items. Each item can take optional `layer: "outer" \| "inner"` or be auto-distributed across dual orbits. |
+| `className` | `string` | `undefined` | Additional Tailwind CSS class names for custom container styling. |
 
 ---
 
-**Component Path:** `[framework]\radial-orbital-timeline\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/radial-orbital-timeline

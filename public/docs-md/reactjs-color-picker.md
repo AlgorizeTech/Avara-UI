@@ -1,4 +1,8 @@
-export const metadata = docsPageMetadata("color-picker");
+---
+title: "Color Picker & Palette"
+description: "A 360° colour wheel and gradient generator with lightness and opacity sliders, shades and tints, colour harmonies, an angle dial and one-click CSS copy."
+url: https://avaraui.com/docs/nextjs/color-picker
+---
 
 # Color Picker & Palette
 
@@ -6,25 +10,52 @@ An advanced, feature-rich **360° Color Spectrum Wheel** and **Gradient Studio G
 
 ## Variations
 
-export const usageStandalone = `import { ColorPicker } from "@/components/custom/color-picker";
+### 360° Color Wheel Studio with Harmonies & Shades
+
+Advanced 360° canvas spectrum wheel featuring real-time drag tracking, lightness & opacity sliders, live 5-step shades & tints, and 5-color harmony generator.
+
+- Pass `variant="standalone"` renders the 360° spectrum wheel with shades, color harmonies, format selector, and preset swatches.
+- `format="hex" | "rgb" | "hsl"` controls the starting active color format displayed in the input field and clipboard output.
+
+```tsx
+import { ColorPicker } from "@/components/custom/color-picker";
 
 export default function ColorWheelStudioDemo() {
   const [color, setColor] = useState("#d0ff00");
 
   return (
-    
+    <ColorPicker
+      value={color}
+      onChange={setColor}
+      format="hex"
+      variant="standalone"
+      showShades={true}
+    />
   );
-}`;
+}
+```
 
-export const usageGradient = `import { ColorPicker } from "@/components/custom/color-picker";
+### Gradient Studio & CSS Generator
+
+High-tech gradient studio featuring linear/radial/conic gradient modes, 2-stop or 3-stop color selectors, randomize generator, angle compass dial, and one-click CSS copy.
+
+- Pass `variant="gradient"` renders the multi-stop gradient generator widget with preset gallery and CSS copy.
+
+```tsx
+import { ColorPicker } from "@/components/custom/color-picker";
 
 export default function GradientStudioDemo() {
   const [gradient, setGradient] = useState("linear-gradient(135deg, #8b5cf6, #ec4899)");
 
   return (
-    
+    <ColorPicker
+      variant="gradient"
+      value={gradient}
+      onChange={setGradient}
+    />
   );
-}`;
+}
+```
 
 ## Installation
 
@@ -55,85 +86,18 @@ Discover the advanced capabilities of the `ColorPicker` component:
 
 ## Props Reference: ColorPicker
 
-        Prop
-        Type
-        Default
-        Description
-
-          value
-
-          string
-
-          "#d0ff00"
-        
-        The active hex or color string value.
-
-          onChange
-
-          (color: string) =&gt; void
-
-          undefined
-        
-        Callback function fired when color changes.
-
-          format
-
-          "hex" | "rgb" | "hsl"
-
-          "hex"
-        
-        Initial color format displayed in the input field and copy output.
-
-          variant
-
-          "standalone" | "gradient"
-
-          "standalone"
-        
-        Display variant: 360° Color Wheel Studio or Gradient Studio Generator.
-
-          showShades
-
-          boolean
-
-          true
-        
-        Whether to show the 5-step shades & tints spectrum row.
-
-          showHarmonies
-
-          boolean
-
-          true
-        
-        Whether to show the 5-color harmony generator row (Comp, Ana 1/2, Tri 1/2).
-
-          showPresets
-
-          boolean
-
-          true
-        
-        Whether to show the preset color swatches row.
-
-          showAlpha
-
-          boolean
-
-          true
-        
-        Whether to show the transparency opacity slider.
-
-          showEyeDropper
-
-          boolean
-
-          true
-        
-        Whether to show the screen EyeDropper pipette button when supported.
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `value` | `string` | `"#d0ff00"` | The active hex or color string value. |
+| `onChange` | `(color: string) => void` | `undefined` | Callback function fired when color changes. |
+| `format` | `"hex" \| "rgb" \| "hsl"` | `"hex"` | Initial color format displayed in the input field and copy output. |
+| `variant` | `"standalone" \| "gradient"` | `"standalone"` | Display variant: 360° Color Wheel Studio or Gradient Studio Generator. |
+| `showShades` | `boolean` | `true` | Whether to show the 5-step shades & tints spectrum row. |
+| `showHarmonies` | `boolean` | `true` | Whether to show the 5-color harmony generator row (Comp, Ana 1/2, Tri 1/2). |
+| `showPresets` | `boolean` | `true` | Whether to show the preset color swatches row. |
+| `showAlpha` | `boolean` | `true` | Whether to show the transparency opacity slider. |
+| `showEyeDropper` | `boolean` | `true` | Whether to show the screen EyeDropper pipette button when supported. |
 
 ---
 
-**Component Path:** `[framework]\color-picker\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/color-picker

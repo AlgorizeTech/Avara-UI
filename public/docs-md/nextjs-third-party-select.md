@@ -1,7 +1,8 @@
-export const metadata = docsPageMetadata("third-party/select", {
-  title: "Select",
-  description: `Integrate react-select with Avara UI — unstyled plus classNames, so a searchable multi-select matches your Input exactly.`
-});
+---
+title: "Select"
+description: "react-select is what people usually mean when they ask for \"Select2 in React\": searchable, multi-select, async loading, creatable options, grouped menus, and a…"
+url: https://avaraui.com/docs/nextjs/third-party/select
+---
 
 # Select
 
@@ -9,7 +10,7 @@ react-select is what people usually mean when they ask for "Select2 in React":
 searchable, multi-select, async loading, creatable options, grouped menus, and a
 combobox that is keyboard- and screen-reader-correct out of the box.
 
-Avara UI ships its own Select for the ordinary
+Avara UI ships its own [Select](https://avaraui.com/docs/nextjs/select) for the ordinary
 case. Reach for react-select when you need the search, the async loading or the
 tag input — and then make it look like everything else.
 
@@ -18,10 +19,21 @@ tag input — and then make it look like everything else.
 The whole integration is two props. `unstyled` switches off every emotion style
 react-select injects, leaving a fully accessible but visually blank combobox.
 `classNames` then paints each internal slot with Tailwind classes, so the control
-ends up matching Input exactly — with no CSS
+ends up matching [Input](https://avaraui.com/docs/nextjs/input) exactly — with no CSS
 overrides and no specificity fights.
 
-export const usageSelect = `import { useState } from "react";
+### Single and multi, on design tokens
+
+Type to filter, arrow keys to move, Enter to pick. The control, the menu, the option rows and the multi-value chips are all painted from the same tokens as the rest of the form.
+
+- Use `unstyled` before anything else. Without it you are layering classes on top of emotion styles and losing to them.
+- `classNames` over `styles`. Both exist; `classNames` keeps the styling in Tailwind where the rest of the app is, and each slot receives the live state (`isFocused`, `isSelected`, `isDisabled`).
+- `components` swaps a single internal part — here `Option`, to add the hint line and the tick — while leaving the behaviour untouched.
+- `inputId` is what a `<label htmlFor>` points at. `id` lands on the wrapper, not the input, so a label wired to it does nothing.
+
+```tsx
+import { useState } from "react";
+
 
 type Option = { value: string; label: string; hint?: string };
 
@@ -42,13 +54,16 @@ const regions: Option[] = [
 ];
 
 /**
- * \`unstyled\` switches off every emotion style react-select injects, leaving a
- * fully accessible but visually blank combobox. \`classNames\` then paints each
+ * `unstyled` switches off every emotion style react-select injects, leaving a
+ * fully accessible but visually blank combobox. `classNames` then paints each
  * internal slot with Tailwind classes — so the control ends up matching the
- * \`Input\` and \`SelectBlock\` components exactly, with no CSS overrides and no
+ * `Input` and `SelectBlock` components exactly, with no CSS overrides and no
  * specificity fights.
  */
-function createClassNames(): ClassNamesConfig
+function createClassNames<IsMulti extends boolean>(): ClassNamesConfig<
+  Option,
+  IsMulti,
+  GroupBase<Option>
 > {
   return {
     control: ({ isFocused, isDisabled }) =>
@@ -87,67 +102,103 @@ function createClassNames(): ClassNamesConfig
 }
 
 /**
- * Built once per selection mode. react-select infers \`IsMulti\` from the
- * \`isMulti\` prop, and a single \`boolean\`-typed config would widen \`onChange\`
+ * Built once per selection mode. react-select infers `IsMulti` from the
+ * `isMulti` prop, and a single `boolean`-typed config would widen `onChange`
  * to "one option or many" at every call site.
  */
-const singleClassNames = createClassNames();
-const multiClassNames = createClassNames();
+const singleClassNames = createClassNames<false>();
+const multiClassNames = createClassNames<true>();
 
 /**
  * Option renderers are plain components, so the hint line and the tick are
- * ours. Note the inner wrapper: even under \`unstyled\`, react-select keeps a
+ * ours. Note the inner wrapper: even under `unstyled`, react-select keeps a
  * few functional emotion rules on the option element itself — one of them
- * sets \`display: block\` — so lay the row out one level in rather than
- * fighting the cascade with \`!flex\`.
+ * sets `display: block` — so lay the row out one level in rather than
+ * fighting the cascade with `!flex`.
  */
-const Option_ = (props: OptionProps>) => (
-
-        {props.data.label}
+const Option_ = (props: OptionProps<Option, false, GroupBase<Option>>) => (
+  <components.Option {...props} className={cn(props.className, "!cursor-pointer cursor-pointer select-none")}>
+    <span className="flex w-full items-center justify-between gap-2 !cursor-pointer cursor-pointer select-none">
+      <span className="flex flex-col !cursor-pointer cursor-pointer select-none">
+        <span className="!cursor-pointer cursor-pointer">{props.data.label}</span>
         {props.data.hint && (
-          {props.data.hint}
+          <span className="text-xs text-muted-foreground !cursor-pointer cursor-pointer">{props.data.hint}</span>
         )}
-      
-      {props.isSelected && }
-
+      </span>
+      {props.isSelected && <Check className="h-4 w-4 shrink-0 text-primary" aria-hidden />}
+    </span>
+  </components.Option>
 );
 
 export default function ReactSelectThemed() {
-  const [framework, setFramework] = useState(frameworks[0]);
-  const [deployRegions, setDeployRegions] = useState([regions[0], regions[1]]);
+  const [framework, setFramework] = useState<Option | null>(frameworks[0]);
+  const [deployRegions, setDeployRegions] = useState<readonly Option[]>([regions[0], regions[1]]);
 
   return (
+    <Card className="w-full max-w-lg">
+      <CardHeader>
+        <CardTitle>Deployment target</CardTitle>
+        <CardDescription>react-select, unstyled and repainted with design tokens</CardDescription>
+      </CardHeader>
 
-        Deployment target
-        react-select, unstyled and repainted with design tokens
-
+      <CardContent className="flex flex-col gap-5 pb-6">
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="framework" className="text-sm font-medium text-foreground">
             Framework
+          </label>
+          <Select
+            inputId="framework"
+            unstyled
+            isClearable
+            options={frameworks}
+            value={framework}
+            onChange={setFramework}
+            classNames={singleClassNames}
+            components={{ Option: Option_ }}
+            placeholder="Pick a framework…"
+          />
+        </div>
 
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="regions" className="text-sm font-medium text-foreground">
             Regions
-
+          </label>
+          <Select
+            inputId="regions"
+            unstyled
+            isMulti
+            closeMenuOnSelect={false}
+            options={regions}
+            value={deployRegions}
+            onChange={setDeployRegions}
+            classNames={multiClassNames}
+            placeholder="Select one or more…"
+          />
+          <p className="text-xs text-muted-foreground">
             Chips reuse the same geometry as the Badge component.
+          </p>
+        </div>
 
-          Deploying to
+        <div className="flex flex-wrap items-center gap-2 border-t border-border pt-4">
+          <span className="text-xs text-muted-foreground">Deploying to</span>
           {deployRegions.length === 0 && (
-            nowhere yet
+            <span className="text-xs text-muted-foreground">nowhere yet</span>
           )}
           {deployRegions.map((region) => (
-            
+            <Badge
+              key={region.value}
+              variant="outline"
+              className="border-primary/25 bg-primary/10 text-primary font-medium"
+            >
               {region.label}
-            
+            </Badge>
           ))}
-
+        </div>
+      </CardContent>
+    </Card>
   );
-}`;
-
-` points at. `id` lands on the wrapper, not the input, so a label wired to it does nothing.',
-        },
-      ],
-      usage: usageSelect,
-      code: extractCode("src/components/custom/blocks/SelectBlock.tsx"),
-    },
-  ]}
-/>
+}
+```
 
 ### Installation
 
@@ -158,7 +209,7 @@ your project does not already have:
 
 **A `boolean`-typed `classNames` config widens `onChange` everywhere.** react-select
 infers `IsMulti` from the `isMulti` prop, and a config annotated
-`ClassNamesConfig` drags that `boolean` back into the
+`ClassNamesConfig<Option, boolean, ...>` drags that `boolean` back into the
 component's own inference — so `onChange` starts handing you "one option or
 many" at every call site. Build the config from a small generic factory instead
 and instantiate it once per mode, as the snippet does.
@@ -172,26 +223,18 @@ level in, inside your own wrapper element, rather than reaching for `!flex`.
 
 Everything below is the same `classNames` config with a different entry point:
 
-        Need
-        Import
-
-        Options loaded from an API as you type
-        {'AsyncSelect'} from {'react-select/async'}
-
-        Let people add options that do not exist
-        {'CreatableSelect'} from {'react-select/creatable'}
-
-        Both
-        {'AsyncCreatableSelect'} from {'react-select/async-creatable'}
+| Need | Import |
+| --- | --- |
+| Options loaded from an API as you type | `{'AsyncSelect'}` from `{'react-select/async'}` |
+| Let people add options that do not exist | `{'CreatableSelect'}` from `{'react-select/creatable'}` |
+| Both | `{'AsyncCreatableSelect'}` from `{'react-select/async-creatable'}` |
 
 Each takes the same `unstyled`, `classNames` and `components` props, so the
 styling above carries over unchanged — only the data source differs.
 
 For a plain dropdown with no search and no tags, the built-in
-Select is smaller and needs no configuration.
+[Select](https://avaraui.com/docs/nextjs/select) is smaller and needs no configuration.
 
 ---
 
-**Component Path:** `[framework]\third-party\select\page.mdx`
-
-**Web Version:** Visit the corresponding URL on the Avara UI documentation site for live previews and interactive examples.
+Live previews and every example: https://avaraui.com/docs/nextjs/third-party/select

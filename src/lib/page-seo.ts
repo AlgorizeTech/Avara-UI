@@ -168,6 +168,18 @@ const PAGE_SEO: Record<string, Seo> = {
     description: `Connect Claude Code, Cursor, VS Code, Codex or OpenCode to the ${SITE_NAME} registry through the shadcn MCP server, and install components from a prompt.`,
     keywords: ["shadcn mcp", "shadcn mcp server", "mcp server", "claude code shadcn", "cursor shadcn", "ai coding agent ui components"],
   },
+  faq: {
+    title: `FAQ: Free Shadcn UI Component Library - ${SITE_NAME}`,
+    description: `What ${SITE_NAME} is, what it costs, how it differs from shadcn/ui, how to install it, and whether it works with Next.js, Vite and AI agents.`,
+    keywords: [
+      `what is ${SITE_NAME.toLowerCase()}`,
+      `is ${SITE_NAME.toLowerCase()} free`,
+      `${SITE_NAME.toLowerCase()} vs shadcn`,
+      "shadcn registry faq",
+      "free shadcn ui components",
+      "shadcn components next js vite",
+    ],
+  },
   "all-components": {
     title: `All Shadcn UI Components & Blocks - ${SITE_NAME}`,
     description: `Every ${SITE_NAME} component and website section in one catalog, grouped by type and filterable by GSAP or Motion animation.`,
