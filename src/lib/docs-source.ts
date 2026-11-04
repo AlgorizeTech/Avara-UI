@@ -21,6 +21,7 @@ type RegistryItem = {
   description?: string;
   dependencies?: string[];
   registryDependencies?: string[];
+  files?: { path: string }[];
 };
 
 export const DOCS_DIR = path.join(process.cwd(), "src/app/docs/[framework]");
@@ -54,6 +55,30 @@ export function usesGsap(name: string, seen = new Set<string>()): boolean {
 
 /** Motion builds only exist as `<name>-motion` twins of a GSAP item. */
 export const hasMotionTwin = (name: string) => itemsByName.has(`${name}-motion`);
+
+/**
+ * What in a source file means something really moves: an animation library, a
+ * keyframe animation, a frame loop, or a transition on transform or opacity.
+ * A hover `transition-colors` does not count, and neither does one lone
+ * `transition-all`, which is usually a hover state too.
+ */
+const ANIMATION_IN_SOURCE =
+  /from ["'](?:gsap|motion|framer-motion)(?:\/[^"']*)?["']|@keyframes|\banimate-[a-z[]|\.animate\(|requestAnimationFrame|\btransition-(?:transform|opacity|\[)|\btransition:\s/;
+
+const sourceAnimates = (source: string) =>
+  ANIMATION_IN_SOURCE.test(source) || (source.match(/\btransition-all\b/g) ?? []).length > 1;
+
+/**
+ * Whether an item animates, read from its own files. Items it installs are not
+ * followed: a table is not animated because its button can show a spinner.
+ */
+export function animates(name: string): boolean {
+  if (usesGsap(name) || hasMotionTwin(name)) return true;
+  return (itemsByName.get(name)?.files ?? []).some((file) => {
+    const full = path.join(process.cwd(), file.path);
+    return fs.existsSync(full) && sourceAnimates(fs.readFileSync(full, "utf8"));
+  });
+}
 
 /** Below this, a lead sentence is a teaser rather than a description. */
 const MIN_SUMMARY_LENGTH = 80;

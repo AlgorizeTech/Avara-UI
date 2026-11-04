@@ -20,11 +20,15 @@ export interface WallItem {
   image: string;
 }
 
-export interface ImageWallProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onFocus"> {
+export interface ImageWallProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onFocus" | "draggable"> {
   /** The cards on the wall, in reading order down the columns. */
   items: WallItem[];
   /** Staggered columns in one tile. */
   columns?: number;
+  /** Gap between cards in pixels in all directions (horizontal and vertical). Defaults to 16. */
+  gap?: number;
+  /** Vertical stagger offset between alternate columns. Set to 0 for a uniform grid with equal 16px gap on all sides. Defaults to 72. */
+  stagger?: number;
   /** Milliseconds the camera rests on a card before moving on. `0` holds still. */
   interval?: number;
   /**
@@ -51,13 +55,18 @@ export interface ImageWallProps extends Omit<React.HTMLAttributes<HTMLDivElement
   anchor?: { x?: number; y?: number };
   /** Called with the index of the card the camera has settled on. */
   onFocus?: (index: number) => void;
+  /** Whether the user can drag and pan the wall infinitely in all 4 directions. Defaults to true. */
+  draggable?: boolean;
+  /** Ambient continuous slow drift when not dragging. Set to true, or pass custom velocity `{ x, y }`. */
+  drift?: boolean | { x?: number; y?: number };
+  /** Resting dim of cards when not in focus. Defaults to 0.55 (or 0.88 in fullscreen). */
+  cardDim?: number;
 }
 
 // ------------------------------------------
-// The wall's geometry, in wall units: 400 per column, 384-wide cards, 16
-// between rows; every other column starts 72 lower so the rows stagger.
+// The wall's geometry, in wall units: 384-wide cards, 16px gap between cards
+// in all directions (horizontal and vertical).
 // ------------------------------------------
-const COL_W = 400;
 const CARD_W = 384;
 const GAP = 16;
 const STAGGER = 72;
@@ -81,15 +90,37 @@ interface Placed extends WallItem {
   top: number;
 }
 
-function layout(items: WallItem[], columns: number) {
-  const bottoms = Array.from({ length: columns }, (_, c) => (c % 2 ? STAGGER : 0));
-  const placed: Placed[] = items.map((item, i) => {
+function layout(items: WallItem[], columns: number, gap: number = GAP, stagger: number = STAGGER) {
+  const colW = CARD_W + gap;
+  // Pad items so that every column has the exact same number of cards, avoiding empty trailing gaps
+  const remainder = items.length % columns;
+  const fullItems =
+    remainder === 0 || items.length === 0
+      ? items
+      : items.concat(items.slice(0, columns - remainder));
+
+  const rowsPerCol = Math.ceil(fullItems.length / columns);
+  // Masonry column offsets: creates an organic staggered wall without identical row heights
+  const pattern = [0, 1, 0.42, 1.25, 0.65, 1.1, 0.25, 0.85];
+  const colOffsets = Array.from({ length: columns }, (_, c) =>
+    stagger > 0 ? Math.round((pattern[c % pattern.length] ?? 0) * stagger) : 0,
+  );
+
+  const bottoms = [...colOffsets];
+  const placed: Placed[] = fullItems.map((item, i) => {
     const c = i % columns;
-    const card = { ...item, left: c * COL_W, top: bottoms[c] };
-    bottoms[c] += CARD_H + GAP;
+    const card = { ...item, left: c * colW, top: bottoms[c] };
+    bottoms[c] += CARD_H + gap;
     return card;
   });
-  return { placed, width: columns * COL_W, height: Math.max(...bottoms) };
+
+  // Vertical repeat period MUST be exactly rowsPerCol * (CARD_H + gap).
+  // Because card.top = colOffsets[c] + r * (CARD_H + gap),
+  // (card.top + height) - (card_last.top + CARD_H) = gap (exactly 16px) across infinite tile repeats for EVERY column!
+  const height = rowsPerCol * (CARD_H + gap);
+  const width = columns * colW;
+
+  return { placed, width, height };
 }
 
 // ------------------------------------------
@@ -277,32 +308,44 @@ const WallCard = React.memo(function WallCard({
   left,
   top,
   copy,
+  dim = REST_DIM,
   isFocus,
+  isCenter,
 }: {
   card: Placed;
   left: number;
   top: number;
   copy: boolean;
+  dim?: number;
   isFocus: boolean;
+  isCenter?: boolean;
 }) {
   return (
     <figure
       aria-hidden={copy || undefined}
-      className="absolute flex flex-col gap-1.5 overflow-hidden rounded-xl border border-foreground/10 bg-muted p-1.5 shadow-sm transition-[opacity,transform] duration-500 ease-out"
+      className="absolute flex flex-col gap-1.5 overflow-hidden rounded-xl border border-foreground/10 bg-muted p-1.5 shadow-sm transition-[opacity,transform,filter,box-shadow] duration-500 ease-out select-none pointer-events-none"
       style={{
         left,
         top,
         width: CARD_W,
         height: CARD_H,
-        opacity: isFocus ? 1 : REST_DIM,
-        transform: isFocus ? "scale(1.012)" : "none",
+        opacity: isFocus ? 1 : dim,
+        filter: isFocus ? "none" : "grayscale(40%)",
+        transform: isFocus ? (isCenter ? "scale(1.03)" : "scale(1.018)") : "none",
+        zIndex: isCenter ? 14 : isFocus ? 10 : 1,
+        boxShadow: isFocus ? "0 10px 30px -10px rgba(0,0,0,0.3)" : undefined,
       }}
     >
-      <figcaption className="flex h-4 shrink-0 items-center px-1 font-mono text-[9px] leading-none text-muted-foreground">
+      <figcaption
+        className={cn(
+          "flex h-4 shrink-0 items-center px-1 font-mono text-[9px] leading-none select-none transition-colors duration-500",
+          isFocus ? "font-semibold text-foreground" : "text-muted-foreground",
+        )}
+      >
         {card.title}
       </figcaption>
       <div
-        className="relative min-h-0 overflow-hidden rounded-lg border border-foreground/10 bg-card"
+        className="relative min-h-0 overflow-hidden rounded-lg border border-foreground/10 bg-card select-none"
         style={{ height: FRAME_H }}
       >
         <img
@@ -315,7 +358,7 @@ const WallCard = React.memo(function WallCard({
           // URLs anyway.
           decoding="async"
           draggable={false}
-          className="absolute inset-0 h-full w-full object-cover object-top"
+          className="absolute inset-0 h-full w-full object-cover object-top select-none pointer-events-none"
         />
       </div>
     </figure>
@@ -341,6 +384,8 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
     {
       items,
       columns = 4,
+      gap = 16,
+      stagger = 72,
       interval = 4500,
       order = "serial",
       zoom = 1.35,
@@ -348,6 +393,9 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
       intro = 0,
       anchor,
       onFocus,
+      draggable = true,
+      drift = false,
+      cardDim = REST_DIM,
       className,
       ...props
     },
@@ -360,21 +408,31 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
     const cameraRef = useRef({ x: 0, y: 0, s: zoom });
     const flightRef = useRef<Flight | null>(null);
 
-    const { placed, width, height } = useMemo(() => layout(items, columns), [items, columns]);
+    const { placed, width, height } = useMemo(
+      () => layout(items, columns, gap, stagger),
+      [items, columns, gap, stagger],
+    );
     const n = placed.length;
 
     const [focus, setFocus] = useState(0);
     const focusRef = useRef(0);
     focusRef.current = focus;
+    const [centerKey, setCenterKey] = useState<string>("");
+    const centerKeyRef = useRef<string>("");
+    const [focusKeys, setFocusKeys] = useState<Set<string>>(() => new Set());
+    const focusKeysRef = useRef<string>("");
+    const hasInteractedRef = useRef(false);
+    const onFocusRef = useRef(onFocus);
+    onFocusRef.current = onFocus;
+    const placedRef = useRef(placed);
+    placedRef.current = placed;
     const [flying, setFlying] = useState(false);
     const [hover, setHover] = useState(false);
     const [hidden, setHidden] = useState(false);
     const [onScreen, setOnScreen] = useState(true);
 
-    // ---- Which copies of the tile are drawn. The wall is its tile and eight
-    // neighbours so the camera never sees an edge, but the window only ever
-    // overlaps a few of them: render those (plus a card's width of margin),
-    // and re-render only when the set changes, not on every camera frame.
+    // ---- Which copies of the tile are drawn. The wall is its tile and infinite
+    // neighbours so dragging in any of the 4 directions never finds an edge.
     const tileRef = useRef({ width, height });
     tileRef.current = { width, height };
     const [tiles, setTiles] = useState(CENTER_TILE);
@@ -393,53 +451,309 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
       ro.observe(wrap);
       return () => ro.disconnect();
     }, []);
+
     const cull = useCallback(() => {
       const wrap = wrapRef.current;
       if (!wrap) return;
       const { x, y, s } = cameraRef.current;
       const { width: tw, height: th } = tileRef.current;
+      if (!tw || !th) return;
+
       let { w, h } = sizeRef.current;
       if (!w || !h) {
         w = wrap.clientWidth;
         h = wrap.clientHeight;
       }
-      // The window in canvas coordinates, where the centre tile spans 0..tw.
-      // A copy joins once it is within a card of the window but only leaves
-      // once it is two cards clear, so a camera resting near a tile's edge
-      // never mounts and unmounts the same copy back and forth.
-      const near = (dx: number, dy: number, m: number) =>
-        dx * tw < (w - x) / s + m &&
-        (dx + 1) * tw > -x / s - m &&
-        dy * th < (h - y) / s + m &&
-        (dy + 1) * th > -y / s - m;
-      const current = new Set(tilesRef.current.split("|"));
+      if (!w || !h) return;
+
+      // In canvas coordinates, visible viewport range with 1 card width margin for infinite 4-way panning:
+      const margin = CARD_W;
+      const minX = -x / s - margin;
+      const maxX = (w - x) / s + margin;
+      const minY = -y / s - margin;
+      const maxY = (h - y) / s + margin;
+
+      const minDx = Math.floor(minX / tw);
+      const maxDx = Math.floor(maxX / tw);
+      const minDy = Math.floor(minY / th);
+      const maxDy = Math.floor(maxY / th);
+
       const keep: string[] = [];
-      for (let dy = -1; dy <= 1; dy++) {
-        for (let dx = -1; dx <= 1; dx++) {
-          const id = `${dx},${dy}`;
-          if (near(dx, dy, CARD_W) || (current.has(id) && near(dx, dy, CARD_W * 2))) keep.push(id);
+      for (let dy = minDy; dy <= maxDy; dy++) {
+        for (let dx = minDx; dx <= maxDx; dx++) {
+          keep.push(`${dx},${dy}`);
         }
       }
+
       const key = keep.join("|") || CENTER_TILE;
       if (key !== tilesRef.current) {
         tilesRef.current = key;
         setTiles(key);
       }
-    }, []);
+
+      // Find the card closest to the viewport center focus point (ax, ay)
+      const centerCanvasX = (w * ax - x) / s;
+      const centerCanvasY = (h * ay - y) / s;
+
+      const baseDx = Math.floor(centerCanvasX / tw);
+      const baseDy = Math.floor(centerCanvasY / th);
+
+      const placedList = placedRef.current;
+      const halfW = CARD_W / 2;
+      const halfH = CARD_H / 2;
+
+      // 1. Center card
+      let centerDist = Infinity;
+      let centerKey = "";
+      let centerIndex = 0;
+      let centerCx = 0;
+      let centerCy = 0;
+
+      for (let cdy = baseDy - 1; cdy <= baseDy + 1; cdy++) {
+        for (let cdx = baseDx - 1; cdx <= baseDx + 1; cdx++) {
+          const offsetX = cdx * tw;
+          const offsetY = cdy * th;
+          for (let i = 0; i < placedList.length; i++) {
+            const card = placedList[i];
+            const cx = card.left + offsetX + halfW;
+            const cy = card.top + offsetY + halfH;
+            const dist = (cx - centerCanvasX) ** 2 + (cy - centerCanvasY) ** 2;
+            if (dist < centerDist) {
+              centerDist = dist;
+              centerKey = `${cdx},${cdy},${i}`;
+              centerIndex = i;
+              centerCx = cx;
+              centerCy = cy;
+            }
+          }
+        }
+      }
+
+      // 2. Find Top, Bottom, Left, Right cards around the Center card
+      const targetTop = { x: centerCx, y: centerCy - (CARD_H + gap) };
+      const targetBottom = { x: centerCx, y: centerCy + (CARD_H + gap) };
+      const targetLeft = { x: centerCx - (CARD_W + gap), y: centerCy };
+      const targetRight = { x: centerCx + (CARD_W + gap), y: centerCy };
+
+      let topDist = Infinity, topKey = "";
+      let bottomDist = Infinity, bottomKey = "";
+      let leftDist = Infinity, leftKey = "";
+      let rightDist = Infinity, rightKey = "";
+
+      for (let cdy = baseDy - 2; cdy <= baseDy + 2; cdy++) {
+        for (let cdx = baseDx - 2; cdx <= baseDx + 2; cdx++) {
+          const offsetX = cdx * tw;
+          const offsetY = cdy * th;
+          for (let i = 0; i < placedList.length; i++) {
+            const key = `${cdx},${cdy},${i}`;
+            if (key === centerKey) continue;
+            const card = placedList[i];
+            const cx = card.left + offsetX + halfW;
+            const cy = card.top + offsetY + halfH;
+
+            const dTop = (cx - targetTop.x) ** 2 + (cy - targetTop.y) ** 2;
+            if (dTop < topDist) {
+              topDist = dTop;
+              topKey = key;
+            }
+
+            const dBottom = (cx - targetBottom.x) ** 2 + (cy - targetBottom.y) ** 2;
+            if (dBottom < bottomDist) {
+              bottomDist = dBottom;
+              bottomKey = key;
+            }
+
+            const dLeft = (cx - targetLeft.x) ** 2 + (cy - targetLeft.y) ** 2;
+            if (dLeft < leftDist) {
+              leftDist = dLeft;
+              leftKey = key;
+            }
+
+            const dRight = (cx - targetRight.x) ** 2 + (cy - targetRight.y) ** 2;
+            if (dRight < rightDist) {
+              rightDist = dRight;
+              rightKey = key;
+            }
+          }
+        }
+      }
+
+      const focusList = [centerKey, topKey, bottomKey, leftKey, rightKey].filter(Boolean);
+      const focusKeysStr = focusList.slice().sort().join("|");
+
+      if (focusKeysStr && focusKeysStr !== focusKeysRef.current) {
+        focusKeysRef.current = focusKeysStr;
+        centerKeyRef.current = centerKey;
+        setCenterKey(centerKey);
+        setFocusKeys(new Set(focusList));
+        onFocusRef.current?.(items.length > 0 ? centerIndex % items.length : centerIndex);
+      }
+    }, [ax, ay, items.length, gap]);
 
     const paint = useCallback(() => {
       const el = canvasRef.current;
       if (!el) return;
       const { x, y, s } = cameraRef.current;
-      // `translate` then `scale`, about the top-left corner — the transform
-      // translate3d(x, y, 0) scale(s), split into the two properties the
-      // flights animate.
       el.style.translate = `${x}px ${y}px`;
       el.style.scale = String(s);
-      // The server renders the canvas invisible: it has no camera until now.
       el.style.opacity = "1";
       cull();
     }, [cull]);
+
+    // ---- Interactive Drag / Pan & Ambient Drift in all 4 directions ----
+    const [isDragging, setIsDragging] = useState(false);
+    const dragRef = useRef({
+      active: false,
+      startX: 0,
+      startY: 0,
+      camStartX: 0,
+      camStartY: 0,
+      lastX: 0,
+      lastY: 0,
+      lastTime: 0,
+      vx: 0,
+      vy: 0,
+      moved: false,
+    });
+    const momentumAnimRef = useRef<number | null>(null);
+    const driftAnimRef = useRef<number | null>(null);
+
+    const startAmbientDrift = useCallback(() => {
+      if (!drift || prefersReducedMotion()) return;
+      if (momentumAnimRef.current) return;
+      if (driftAnimRef.current) cancelAnimationFrame(driftAnimRef.current);
+
+      const dx = typeof drift === "object" ? (drift.x ?? -0.35) : -0.35;
+      const dy = typeof drift === "object" ? (drift.y ?? -0.15) : -0.15;
+
+      const tickDrift = () => {
+        if (dragRef.current.active) {
+          driftAnimRef.current = null;
+          return;
+        }
+        cameraRef.current.x += dx;
+        cameraRef.current.y += dy;
+        const el = canvasRef.current;
+        if (el) {
+          el.style.translate = `${cameraRef.current.x}px ${cameraRef.current.y}px`;
+        }
+        cull();
+        driftAnimRef.current = requestAnimationFrame(tickDrift);
+      };
+      driftAnimRef.current = requestAnimationFrame(tickDrift);
+    }, [drift, cull]);
+
+    const handlePointerDown = useCallback(
+      (e: React.PointerEvent<HTMLDivElement>) => {
+        if (!draggable || e.button !== 0) return;
+        hasInteractedRef.current = true;
+        flightRef.current?.kill();
+        if (momentumAnimRef.current) {
+          cancelAnimationFrame(momentumAnimRef.current);
+          momentumAnimRef.current = null;
+        }
+        if (driftAnimRef.current) {
+          cancelAnimationFrame(driftAnimRef.current);
+          driftAnimRef.current = null;
+        }
+
+        const d = dragRef.current;
+        d.active = true;
+        d.startX = e.clientX;
+        d.startY = e.clientY;
+        d.lastX = e.clientX;
+        d.lastY = e.clientY;
+        d.camStartX = cameraRef.current.x;
+        d.camStartY = cameraRef.current.y;
+        d.lastTime = performance.now();
+        d.vx = 0;
+        d.vy = 0;
+        d.moved = false;
+
+        setIsDragging(true);
+        try {
+          (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+        } catch {}
+      },
+      [draggable],
+    );
+
+    const handlePointerMove = useCallback(
+      (e: React.PointerEvent<HTMLDivElement>) => {
+        const d = dragRef.current;
+        if (!d.active) return;
+
+        const deltaX = e.clientX - d.startX;
+        const deltaY = e.clientY - d.startY;
+        if (!d.moved && Math.hypot(deltaX, deltaY) > 4) {
+          d.moved = true;
+        }
+
+        const now = performance.now();
+        const dt = Math.max(1, now - d.lastTime);
+        const stepX = e.clientX - d.lastX;
+        const stepY = e.clientY - d.lastY;
+
+        d.vx = (stepX / dt) * 16.67;
+        d.vy = (stepY / dt) * 16.67;
+        d.lastX = e.clientX;
+        d.lastY = e.clientY;
+        d.lastTime = now;
+
+        cameraRef.current.x = d.camStartX + deltaX;
+        cameraRef.current.y = d.camStartY + deltaY;
+
+        const el = canvasRef.current;
+        if (el) {
+          el.style.translate = `${cameraRef.current.x}px ${cameraRef.current.y}px`;
+        }
+        cull();
+      },
+      [cull],
+    );
+
+    const handlePointerUp = useCallback(
+      (e: React.PointerEvent<HTMLDivElement>) => {
+        const d = dragRef.current;
+        if (!d.active) return;
+        d.active = false;
+        setIsDragging(false);
+        try {
+          (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+        } catch {}
+
+        const maxV = 28;
+        let vx = Math.max(-maxV, Math.min(maxV, d.vx || 0));
+        let vy = Math.max(-maxV, Math.min(maxV, d.vy || 0));
+
+        const tickMomentum = () => {
+          if (Math.abs(vx) < 0.15 && Math.abs(vy) < 0.15) {
+            momentumAnimRef.current = null;
+            startAmbientDrift();
+            return;
+          }
+
+          cameraRef.current.x += vx;
+          cameraRef.current.y += vy;
+          vx *= 0.93;
+          vy *= 0.93;
+
+          const el = canvasRef.current;
+          if (el) {
+            el.style.translate = `${cameraRef.current.x}px ${cameraRef.current.y}px`;
+          }
+          cull();
+          momentumAnimRef.current = requestAnimationFrame(tickMomentum);
+        };
+
+        if (Math.hypot(vx, vy) > 0.5) {
+          momentumAnimRef.current = requestAnimationFrame(tickMomentum);
+        } else {
+          startAmbientDrift();
+        }
+      },
+      [cull, startAmbientDrift],
+    );
 
     // A flight's callbacks: follow the camera for culling (the animations
     // paint it), or paint it where a killed flight stops.
@@ -512,15 +826,15 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
         setFlying(true);
         // x and y drift over the whole intro plus a second (power1.inOut);
         // the scale holds, then settles in over that last second (power2.inOut).
-        const drift = intro / 1000;
-        const duration = drift + 1;
+        const driftDur = intro / 1000;
+        const duration = driftDur + 1;
         flightRef.current = canvasRef.current
           ? fly(
               canvasRef.current,
               {
                 x: inOut(cam.x, target.x, 0, duration, 1),
                 y: inOut(cam.y, target.y, 0, duration, 1),
-                s: [{ at: 0, value: cam.s, ease: "linear" }, ...inOut(cam.s, target.s, drift, duration, 2)],
+                s: [{ at: 0, value: cam.s, ease: "linear" }, ...inOut(cam.s, target.s, driftDur, duration, 2)],
                 duration,
               },
               flightHooks(() => {
@@ -528,14 +842,27 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
                 cameraRef.current = restFor(focusRef.current);
                 paint();
                 setFlying(false);
+                startAmbientDrift();
               }),
             )
           : null;
-      } else {
+      } else if (!introDone.current) {
         introDone.current = true;
         snap();
+        startAmbientDrift();
+      } else {
+        if (drift && !driftAnimRef.current && !momentumAnimRef.current && !dragRef.current.active) {
+          startAmbientDrift();
+        }
       }
-      const ro = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(snap);
+      const handleResize = () => {
+        if (hasInteractedRef.current || drift) {
+          cull();
+          return;
+        }
+        snap();
+      };
+      const ro = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(handleResize);
       ro?.observe(wrap);
       return () => {
         ro?.disconnect();
@@ -549,7 +876,7 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
           setFlying(false);
         }
       };
-    }, [restFor, paint, flightHooks, intro, n]);
+    }, [restFor, paint, flightHooks, intro, n, startAmbientDrift]);
 
     // ---- The flight: pull back while gliding, then settle in.
     const flyTo = useCallback(
@@ -590,8 +917,8 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
     );
 
     useEffect(() => {
-      onFocus?.(focus);
-    }, [focus, onFocus]);
+      onFocus?.(items.length > 0 ? focus % items.length : focus);
+    }, [focus, onFocus, items.length]);
 
     // ---- Rest, then move on. In `serial` the next card is simply the next
     // one; in `shuffle` a round is a random permutation and every card gets
@@ -651,31 +978,52 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
 
     const paused = hover || hidden || !onScreen || scrolling;
     useEffect(() => {
-      if (interval <= 0 || n < 2 || paused || flying) return;
+      if (interval <= 0 || n < 2 || paused || flying || hasInteractedRef.current || drift) return;
       const t = window.setTimeout(() => flyTo(nextCard()), interval);
       return () => window.clearTimeout(t);
-    }, [focus, interval, n, paused, flying, flyTo, nextCard]);
+    }, [focus, interval, n, paused, flying, flyTo, nextCard, drift]);
 
     useEffect(
       () => () => {
         flightRef.current?.kill();
+        if (momentumAnimRef.current) cancelAnimationFrame(momentumAnimRef.current);
+        if (driftAnimRef.current) cancelAnimationFrame(driftAnimRef.current);
       },
       [],
     );
 
     useEffect(() => {
-      const onVisibility = () => setHidden(document.hidden);
+      const onVisibility = () => {
+        const isHidden = document.hidden;
+        setHidden(isHidden);
+        if (isHidden) {
+          if (driftAnimRef.current) cancelAnimationFrame(driftAnimRef.current);
+        } else {
+          startAmbientDrift();
+        }
+      };
       document.addEventListener("visibilitychange", onVisibility);
       return () => document.removeEventListener("visibilitychange", onVisibility);
-    }, []);
+    }, [startAmbientDrift]);
 
     useEffect(() => {
       const el = wrapRef.current;
       if (!el || typeof IntersectionObserver === "undefined") return;
-      const io = new IntersectionObserver((entries) => setOnScreen(entries.some((e) => e.isIntersecting)), { threshold: 0.15 });
+      const io = new IntersectionObserver(
+        (entries) => {
+          const visible = entries.some((e) => e.isIntersecting);
+          setOnScreen(visible);
+          if (visible) {
+            startAmbientDrift();
+          } else if (driftAnimRef.current) {
+            cancelAnimationFrame(driftAnimRef.current);
+          }
+        },
+        { threshold: 0.15 },
+      );
       io.observe(el);
       return () => io.disconnect();
-    }, []);
+    }, [startAmbientDrift]);
 
     // The copies of the tile the camera can currently see (see `cull`).
     const offsets = useMemo(
@@ -694,18 +1042,25 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
       () =>
         offsets.map(({ dx, dy }) => {
           const copy = dx !== 0 || dy !== 0;
-          return placed.map((card, i) => (
-            <WallCard
-              key={`${dx},${dy},${i}`}
-              card={card}
-              left={card.left + dx * width}
-              top={card.top + dy * height}
-              copy={copy}
-              isFocus={!copy && i === lit}
-            />
-          ));
+          return placed.map((card, i) => {
+            const key = `${dx},${dy},${i}`;
+            const isFocus = focusKeys.size > 0 ? focusKeys.has(key) : (!copy && i === lit);
+            const isCenter = key === centerKey;
+            return (
+              <WallCard
+                key={key}
+                card={card}
+                left={card.left + dx * width}
+                top={card.top + dy * height}
+                copy={copy}
+                dim={cardDim}
+                isFocus={isFocus}
+                isCenter={isCenter}
+              />
+            );
+          });
         }),
-      [offsets, placed, width, height, lit],
+      [offsets, placed, width, height, lit, cardDim, centerKey, focusKeys],
     );
 
     return (
@@ -718,6 +1073,10 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
           if (typeof ref === "function") ref(node);
           else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node;
         }}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
         onMouseEnter={(e) => {
           setHover(true);
           props.onMouseEnter?.(e);
@@ -726,7 +1085,11 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
           setHover(false);
           props.onMouseLeave?.(e);
         }}
-        className={cn("relative h-96 w-full overflow-hidden", className)}
+        className={cn(
+          "relative h-96 w-full overflow-hidden select-none touch-none",
+          draggable && (isDragging ? "cursor-grabbing" : "cursor-grab"),
+          className,
+        )}
       >
         <div
           ref={canvasRef}

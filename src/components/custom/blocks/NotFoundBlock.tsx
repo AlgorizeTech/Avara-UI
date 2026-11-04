@@ -73,7 +73,7 @@ export function HyperspaceNotFoundSection({
   description = "The page you are looking for doesn't exist, was relocated, or is temporarily unavailable in this documentation.",
   primaryAction = {
     label: "Explore Documentation",
-    href: "/docs",
+    href: "#",
     icon: <BookOpen className="h-4 w-4" />,
   },
   secondaryAction = {
@@ -85,12 +85,12 @@ export function HyperspaceNotFoundSection({
   shortcuts = [
     {
       label: "All Components",
-      href: "/docs",
+      href: "#",
       icon: <LayoutGrid className="h-3.5 w-3.5 shrink-0 text-primary" />,
     },
     {
       label: "Installation",
-      href: "/docs",
+      href: "#",
       icon: <BookOpen className="h-3.5 w-3.5 shrink-0 text-primary" />,
     },
   ],
@@ -218,7 +218,12 @@ export function HyperspaceNotFoundSection({
                   <ItemTag
                     key={idx}
                     href={shortcut.href}
-                    onClick={shortcut.onClick}
+                    onClick={(e) => {
+                      if (shortcut.onClick) {
+                        e.preventDefault();
+                        shortcut.onClick();
+                      }
+                    }}
                     className="flex items-center gap-2.5 rounded-lg bg-foreground/[0.04] p-2.5 text-left text-[13px] text-foreground/70 transition-all hover:bg-foreground/[0.07] hover:text-foreground cursor-pointer border border-transparent hover:border-foreground/[0.04]"
                   >
                     {shortcut.icon}
@@ -257,7 +262,7 @@ export function AnimatedBeamNotFoundSection({
   description = "The requested navigation vector has collapsed or relocated to an unindexed partition. Re-anchor to safety using the architectural directory below.",
   primaryAction = {
     label: "Explore Documentation",
-    href: "/docs",
+    href: "#",
     icon: <BookOpen className="h-4 w-4" />,
   },
   secondaryAction = {
@@ -269,22 +274,22 @@ export function AnimatedBeamNotFoundSection({
   shortcuts = [
     {
       label: "All Components",
-      href: "/docs",
+      href: "#",
       icon: <LayoutGrid className="h-4 w-4" />,
     },
     {
       label: "Installation Guide",
-      href: "/docs",
+      href: "#",
       icon: <BookOpen className="h-4 w-4" />,
     },
     {
       label: "Templates Library",
-      href: "/docs",
+      href: "#",
       icon: <Sparkles className="h-4 w-4" />,
     },
     {
       label: "Live Changelog",
-      href: "/",
+      href: "#",
       icon: <Activity className="h-4 w-4" />,
     },
   ],
@@ -531,7 +536,12 @@ export function AnimatedBeamNotFoundSection({
                       <ItemTag
                         key={idx}
                         href={shortcut.href}
-                        onClick={shortcut.onClick}
+                        onClick={(e) => {
+                          if (shortcut.onClick) {
+                            e.preventDefault();
+                            shortcut.onClick();
+                          }
+                        }}
                         className="group relative flex items-center justify-between gap-3 p-3 rounded-[var(--radius-lg,0.5rem)] border border-border bg-background hover:bg-muted/70 hover:border-primary/50 hover:translate-x-0.5 transition-all duration-200 cursor-pointer text-left"
                       >
                         <div className="flex items-center gap-2.5 min-w-0">
@@ -620,7 +630,7 @@ export function QuantumHologramNotFoundSection({
   description = "The spacetime coordinates of this page have drifted into an unmapped event horizon. Re-align your navigational trajectory via the recovery vectors below.",
   primaryAction = {
     label: "Re-anchor to Orbit",
-    href: "/docs",
+    href: "#",
     icon: <Sparkles className="h-4 w-4" />,
   },
   secondaryAction = {
@@ -632,22 +642,22 @@ export function QuantumHologramNotFoundSection({
   shortcuts = [
     {
       label: "Component Matrix",
-      href: "/docs",
+      href: "#",
       icon: <LayoutGrid className="h-4 w-4" />,
     },
     {
       label: "System Quickstart",
-      href: "/docs",
+      href: "#",
       icon: <BookOpen className="h-4 w-4" />,
     },
     {
       label: "Telemetry Hub",
-      href: "/docs",
+      href: "#",
       icon: <Cpu className="h-4 w-4" />,
     },
     {
       label: "Live Changelog",
-      href: "/",
+      href: "#",
       icon: <Activity className="h-4 w-4" />,
     },
   ],
@@ -908,7 +918,12 @@ export function QuantumHologramNotFoundSection({
                   <ItemTag
                     key={idx}
                     href={shortcut.href}
-                    onClick={shortcut.onClick}
+                    onClick={(e) => {
+                      if (shortcut.onClick) {
+                        e.preventDefault();
+                        shortcut.onClick();
+                      }
+                    }}
                     className="group relative flex items-center justify-between gap-3 p-3 sm:p-3.5 rounded-[var(--radius-xl,1rem)] border border-border/80 bg-card/60 hover:bg-card hover:border-primary/60 transition-all duration-200 hover:scale-[1.02] cursor-pointer text-left backdrop-blur-md shadow-xs hover:shadow-primary/10"
                   >
                     <div className="flex items-center gap-2.5 min-w-0">

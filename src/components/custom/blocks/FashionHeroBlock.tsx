@@ -8,6 +8,7 @@ import { CircularText } from "./CircularTextBlock";
 import { Dialog, DialogContent, DialogTrigger } from "./DialogBlock";
 import { TextAnimation } from "./TextAnimationBlock";
 import { TiltedCard } from "./TiltedCardBlock";
+import { accentTokens } from "@/lib/accent";
 
 // ==========================================
 // FASHION HERO
@@ -51,6 +52,7 @@ export interface FashionHeroProps extends React.HTMLAttributes<HTMLElement> {
   teaser?: { index: string; label: string; title: string; href: string };
   /** Sets `--primary` for the section; the theme's primary by default. Used by the play badge, the plus, the button, the teaser arrow and the rings. */
   accent?: string;
+  color?: string;
   reveal?: "in-view" | "immediate";
   /** Anchor or router link for the hrefs. */
   linkComponent?: React.ElementType;
@@ -103,12 +105,36 @@ function LookCard({ look, className }: { look: Look; className?: string }) {
 }
 
 // ------------------------------------------
+// Default Avatars
+// ------------------------------------------
+export const DEFAULT_FASHION_AVATARS: StackAvatar[] = [
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790145139/pexels-photo-1036623-1790145143487.jpg",
+    alt: "Elena Vance",
+    name: "Elena Vance",
+    role: "Member",
+  },
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790145142/pexels-photo-2043590-1790145143488.jpg",
+    alt: "Marcus Chen",
+    name: "Marcus Chen",
+    role: "Shopper",
+  },
+  {
+    src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790145139/pexels-photo-1587009-1790145143488.jpg",
+    alt: "Sarah Jenkins",
+    name: "Sarah Jenkins",
+    role: "Stylist",
+  },
+];
+
+// ------------------------------------------
 // Root
 // ------------------------------------------
 export function FashionHero({
   heading,
   video,
-  avatars = [],
+  avatars = DEFAULT_FASHION_AVATARS,
   avatarsHref,
   avatarsLabel = "Become a member",
   looks,
@@ -116,6 +142,7 @@ export function FashionHero({
   quote,
   teaser,
   accent,
+  color,
   reveal = "in-view",
   linkComponent: Link = "a",
   className,
@@ -125,6 +152,16 @@ export function FashionHero({
   const rootRef = useRef<HTMLElement>(null);
   const [inView, setInView] = useState(reveal === "immediate");
   const [l0, l1, l2, l3, l4, l5, l6] = looks;
+
+  const resolvedAvatars: StackAvatar[] = (avatars.length > 0 ? avatars : DEFAULT_FASHION_AVATARS).map((a, i) => {
+    const fallback = DEFAULT_FASHION_AVATARS[i % DEFAULT_FASHION_AVATARS.length];
+    return {
+      ...a,
+      name: a.name ?? (a.alt && a.alt !== "Shopper" ? a.alt : fallback.name),
+      alt: a.alt ?? a.name ?? fallback.alt,
+      role: a.role ?? a.designation ?? fallback.role,
+    };
+  });
 
   useEffect(() => {
     if (inView) return;
@@ -173,7 +210,7 @@ export function FashionHero({
     root.setAttribute("data-lb-reveal", "");
   }, [inView]);
 
-  const vars = (accent ? { "--primary": accent } : {}) as React.CSSProperties;
+  const vars = accentTokens(accent || color);
 
   return (
     <section
@@ -217,9 +254,9 @@ export function FashionHero({
           </div>
 
           <div data-lb-side="" className="justify-self-end lg:order-3">
-            {avatars.length > 0 && (
+            {resolvedAvatars.length > 0 && (
               <AvatarStack
-                avatars={avatars}
+                avatars={resolvedAvatars}
                 size="md"
                 max={3}
                 ringClassName="ring-background"

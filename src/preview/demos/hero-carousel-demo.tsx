@@ -106,13 +106,12 @@ export default function HeroCarouselDemo({
   accent?: string;
   color?: string;
 }) {
-  const resolvedAccent = accent ?? resolveAccent(color) ?? undefined;
-
   return (
     <HeroCarousel
       reveal={reveal}
       interval={interval}
-      accent={resolvedAccent}
+      accent={accent}
+      color={color}
       eyebrow="Small-group treks in the mountains"
       heading={
         <>

@@ -45,7 +45,7 @@ export default function AvatarStackDemo({
   variant,
   type,
   size = "md",
-  max = 4,
+  max,
   spreadOnHover,
   spreadDistance = 6,
   transitionDuration = 500,
@@ -191,9 +191,9 @@ export default function AvatarStackDemo({
   if (example === "sizes") {
     return (
       <div className="flex min-h-[220px] w-full flex-col items-center justify-center gap-6 px-6">
-        <AvatarStack avatars={PEOPLE} variant="zoom" type="tooltip" size="sm" max={4} className="m-0 p-0" />
-        <AvatarStack avatars={PEOPLE} variant="zoom" type="default" size="md" max={4} className="m-0 p-0" />
-        <AvatarStack avatars={PEOPLE} variant="zoom" type="tooltip-arrow" size="lg" max={4} className="m-0 p-0" />
+        <AvatarStack avatars={PEOPLE} variant="zoom" type="tooltip" size="sm" max={max ?? 4} className="m-0 p-0" />
+        <AvatarStack avatars={PEOPLE} variant="zoom" type="default" size="md" max={max ?? 4} className="m-0 p-0" />
+        <AvatarStack avatars={PEOPLE} variant="zoom" type="tooltip-arrow" size="lg" max={max ?? 4} className="m-0 p-0" />
       </div>
     );
   }
