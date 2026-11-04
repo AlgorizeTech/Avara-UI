@@ -120,8 +120,8 @@ export const siteConfig = {
   /** The homepage snippet, under the ~160 characters Google shows. */
   description:
     `${COMPONENT_COUNT ? `${COMPONENT_COUNT} free` : "Free"} Shadcn UI components and blocks ` +
-    "for React and Tailwind CSS, with GSAP and Motion animations. Install with " +
-    "the shadcn CLI or your AI agent via MCP.",
+    "for React, Next.js and Tailwind CSS, with GSAP and Motion animations. Install with " +
+    "the shadcn CLI or AI agents via MCP.",
   /** One line, for cards and social summaries. */
   tagline: `${COMPONENT_COUNT} React components you install into your own codebase.`,
   url: SITE_URL,

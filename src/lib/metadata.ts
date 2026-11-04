@@ -110,23 +110,90 @@ export const metadata: Metadata = {
   classification: "React Component Library",
 };
 
+/** What the library as a whole is searched for. On the homepage and every component page. */
+export const LIBRARY_KEYWORDS = [
+  "free shadcn ui components",
+  "free shadcn components",
+  "shadcn components",
+  "react beautiful components",
+  "nextjs beautiful components",
+  "free ui components",
+];
+
 /**
- * The homepage's search terms, phrased the way people search for shadcn
- * registries (ReUI and shadcn.io target the same queries). Each one describes
+ * The homepage's search terms. Most are phrases Google Autocomplete suggests
+ * for these seeds (see SEO.md), so people do type them. Each describes
  * something the site ships; "shadcn mcp" is the MCP guide. Kept off the root
  * metadata so docs pages do not inherit homepage-only terms.
  */
 const homeKeywords = [
+  ...LIBRARY_KEYWORDS,
+  // Shadcn
   "shadcn ui",
   "shadcn ui components",
-  "shadcn components",
-  "free shadcn components",
+  "shadcn components free",
+  "shadcn ui components free",
+  "shadcn components library",
+  "shadcn ui components library",
+  "shadcn components list",
+  "shadcn components examples",
   "shadcn blocks",
   "shadcn ui blocks",
+  "shadcn blocks free",
+  "free shadcn blocks",
+  "free shadcn ui blocks",
   "shadcn registry",
   "shadcn mcp",
+  "shadcn mcp server",
+  // Animated, modern, smooth, beautiful
   "animated shadcn components",
+  "free animated shadcn components",
+  "animated shadcn components library",
+  "animated shadcn ui",
+  "animated shadcn blocks",
+  "modern shadcn components",
+  "free modern shadcn components",
+  "smooth shadcn components",
+  "free smooth shadcn components",
+  "beautiful shadcn components",
+  "beautiful shadcn blocks",
+  "beautiful react components",
+  "beautiful react components library",
+  "beautiful react ui components",
+  "next js beautiful components",
+  "modern react components",
+  "modern react components library",
+  "modern react ui components",
+  "animated react components",
+  "animated react components library",
+  "react animated components free",
+  "animated ui components",
+  "animated ui components for react",
+  "animated ui components for next js",
+  "animated ui components free",
+  "nextjs animated components",
   "gsap react components",
+  // Free UI components
+  "free ui components library",
+  "free ui components for react",
+  "free ui components for nextjs",
+  "free ui components tailwind",
+  "free react components",
+  "free react components library",
+  "free react components with tailwind",
+  "free nextjs components",
+  "free nextjs ui components",
+  "free tailwind components",
+  "free tailwind components react",
+  "copy paste react components",
+  "copy paste ui components",
+  // Libraries
+  "ui component library free",
+  "ui component library for react",
+  "ui component library shadcn",
+  "react ui library shadcn",
+  "react ui library free",
+  "react ui library with tailwind",
   "react components",
   "tailwind css components",
   "next.js components",

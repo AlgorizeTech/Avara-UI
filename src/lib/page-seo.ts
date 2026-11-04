@@ -21,12 +21,14 @@
 import { SITE_NAME } from "@/config/site";
 import { type NavigationChild, navigation } from "@/constants/navigation";
 import {
+  animates,
   hasMotionTwin,
   installedItems,
   itemsByName,
   leadSentence,
   usesGsap,
 } from "@/lib/docs-source";
+import { LIBRARY_KEYWORDS } from "@/lib/metadata";
 
 const MAX_TITLE = 60;
 const MAX_DESCRIPTION = 160;
@@ -95,6 +97,8 @@ const DESCRIPTIONS: Record<string, string> = {
   "top-destinations": "A travel destination showcase whose two rows of cards move in opposite directions as you scroll, with GSAP ScrollTrigger and reduced-motion support.",
   "vertical-tabs": "Tabs in horizontal and vertical layouts with underline, segmented, soft, elevated, minimal, bordered and glass styles, and keyboard navigation.",
   // Leads that run past the snippet length, restated shorter.
+  "data-maps": "A React-Leaflet choropleth map for geographic data and user distributions, with no external map tiles. Leaflet loads after mount, so it is SSR safe.",
+  "ribbon-drift": "A hero showcase card with two floating marquee ribbons, an animated gradient backdrop, a 3D illustration and a frosted glass promo card.",
   "ai-chat": "An AI chat interface with conversation history, typing indicators, editable titles, a model picker, file and @mention tools and voice dictation.",
   "animated-list": "A list that staggers its items into view with 3D perspective transforms and no animation library, plus a glassmorphic spotlight that follows the mouse.",
   "bento-showcase": "A six-card marketing bento grid: a hero with a live chat, case studies on a laptop, scrolling figures, plans on a phone and a team strip.",
@@ -134,17 +138,19 @@ const DESCRIPTIONS: Record<string, string> = {
   wizard: "A Typeform-style multi-step form wizard with vertical slide transitions in plain CSS, keyboard navigation and a progress bar.",
 };
 
-/** Keywords where the generated phrasing reads badly (a name with "&" in it). */
+/** The name to build keywords from, where the title's reads badly in them ("&"). */
+const KEYWORD_NAMES: Record<string, string> = {
+  "auth-forms": "Login Form",
+};
+
+/** Keywords a page needs beyond the generated ones. */
 const KEYWORDS: Record<string, string[]> = {
   "auth-forms": [
-    "shadcn login form",
     "shadcn signup form",
+    "free shadcn signup form",
     "shadcn auth form",
-    "react login form",
     "react register form",
-    "tailwind login form",
     "next.js login page",
-    SITE_NAME.toLowerCase(),
   ],
 };
 
@@ -165,7 +171,23 @@ const PAGE_SEO: Record<string, Seo> = {
   "all-components": {
     title: `All Shadcn UI Components & Blocks - ${SITE_NAME}`,
     description: `Every ${SITE_NAME} component and website section in one catalog, grouped by type and filterable by GSAP or Motion animation.`,
-    keywords: ["shadcn ui components", "shadcn components", "shadcn blocks", "free shadcn components", "animated shadcn components", "react components", "tailwind css components"],
+    keywords: [
+      ...LIBRARY_KEYWORDS,
+      "shadcn ui components",
+      "shadcn components list",
+      "shadcn components library",
+      "shadcn components examples",
+      "shadcn blocks",
+      "free shadcn blocks",
+      "animated shadcn components",
+      "free animated shadcn components",
+      "modern shadcn components",
+      "smooth shadcn components",
+      "beautiful shadcn components",
+      "react components",
+      "tailwind css components",
+      SITE_NAME.toLowerCase(),
+    ],
   },
   "third-party": {
     title: `Third-Party React Libraries with Shadcn UI - ${SITE_NAME}`,
@@ -228,44 +250,88 @@ const fitTitle = (candidates: string[]) =>
  * that is true of the page: it is free shadcn/ui code, and — only where the
  * page installs them — it animates with GSAP and ships a Motion build.
  */
-function describe(summary: string, noun: string, gsap: boolean, motion: boolean): string {
+function describe(summary: string, name: string, noun: string, gsap: boolean, motion: boolean): string {
   let base = summary.trim();
   if (base && !/[.!?…]$/.test(base)) base += ".";
   if (base.length > MAX_DESCRIPTION) {
     const first = firstSentence(base);
     base = first.length <= MAX_DESCRIPTION ? first : clampDescription(base);
   }
+  // The page's name where it fits: Google bolds the words of the search in a
+  // snippet, so "Free shadcn/ui Accordion component" answers the query on sight.
+  const thing = SELF_DESCRIBING.test(name) ? name : `${name} ${noun}`;
   const suffixes = [
-    ...(motion ? [`Free shadcn/ui ${noun} with GSAP and Motion builds.`, "GSAP and Motion builds."] : []),
-    ...(gsap && !motion ? [`Free shadcn/ui ${noun} animated with GSAP.`, "Animated with GSAP."] : []),
+    ...(motion
+      ? [
+          `Free shadcn/ui ${thing} with GSAP and Motion builds.`,
+          `Free shadcn/ui ${noun} with GSAP and Motion builds.`,
+          "GSAP and Motion builds.",
+        ]
+      : []),
+    ...(gsap && !motion
+      ? [
+          `Free shadcn/ui ${thing} animated with GSAP.`,
+          `Free shadcn/ui ${noun} animated with GSAP.`,
+          "Animated with GSAP.",
+        ]
+      : []),
+    `Free shadcn/ui ${thing} for React, Next.js and Tailwind CSS.`,
+    `Free shadcn/ui ${thing} for React and Tailwind CSS.`,
     `Free shadcn/ui ${noun} for React and Tailwind CSS.`,
+    `Free shadcn/ui ${thing}.`,
     `Free shadcn/ui ${noun}.`,
   ];
   const suffix = suffixes.find((s) => `${base} ${s}`.length <= MAX_DESCRIPTION);
   return suffix ? `${base} ${suffix}` : base;
 }
 
+/** Describes how a component looks, so it fits every page. */
+const STYLE_WORDS = ["modern"];
+/** Claim that it moves, so they go only on pages whose components do. */
+const MOTION_WORDS = ["animated", "smooth"];
+
 /**
- * Search terms a page genuinely answers: its name in the forms people type
- * ("shadcn x", "react x component", "tailwind x"), the animation library only
- * when it uses one, and the sidebar's own synonyms ("login", "sign up" for
- * the auth forms).
+ * Search terms a page answers: its name in the forms Google Autocomplete shows
+ * people typing ("shadcn x component", "shadcn x examples", "x component react",
+ * "tailwind x component"), the same with "free" and the style words, the
+ * animation library only when it uses one, the sidebar's own synonyms ("login",
+ * "sign up" for the auth forms) and what the library as a whole is searched for.
+ *
+ * "component" stays in the varied forms because the bare ones leave software:
+ * "free accordion" is sheet music and "animated hero" a cartoon.
  */
-function keywordsFor(name: string, kind: "component" | "block", gsap: boolean, motion: boolean, synonyms: string[] = []) {
+function keywordsFor(
+  name: string,
+  kind: "component" | "block",
+  { gsap, motion, moving }: { gsap: boolean; motion: boolean; moving: boolean },
+  synonyms: string[] = [],
+) {
   const n = name.toLowerCase();
   const typed = SELF_DESCRIBING.test(n);
+  const thing = typed ? n : `${n} component`;
+  // "animated shadcn animated timeline component" says nothing new.
+  const words = [...(moving ? MOTION_WORDS : []), ...STYLE_WORDS].filter((word) => !n.includes(word));
   const terms = [
+    `shadcn ${thing}`,
+    `free shadcn ${thing}`,
+    ...words.flatMap((word) => [`${word} shadcn ${thing}`, `free ${word} shadcn ${thing}`]),
     `shadcn ${n}`,
-    ...(typed ? [] : [`shadcn ${n} ${kind}`]),
-    typed ? `react ${n}` : `react ${n} ${kind === "block" ? "section" : "component"}`,
-    `tailwind ${n}`,
-    `next.js ${n}`,
-    ...(gsap || motion ? [`animated ${n}`] : []),
+    `shadcn ${n} examples`,
+    ...(kind === "block" && !typed ? [`shadcn ${n} block`, `shadcn ${n} section`, `react ${n} section`] : []),
+    thing,
+    `react ${thing}`,
+    `${thing} react`,
+    `nextjs ${thing}`,
+    `tailwind ${thing}`,
+    `react ${n} tailwind`,
+    ...(typed ? [] : [`${n} ui component`]),
+    ...(moving && !n.includes("animated") ? [`animated ${n} react`] : []),
     ...(gsap ? [`gsap ${n}`] : []),
     ...(motion ? [`framer motion ${n}`] : []),
     // The first few sidebar synonyms are what the page is also called; later
     // ones tend to describe a demo's content ("norway", "travel"), not the page.
     ...synonyms.slice(0, 4).map((s) => s.toLowerCase()),
+    ...LIBRARY_KEYWORDS,
     SITE_NAME.toLowerCase(),
   ];
   return [...new Set(terms)];
@@ -313,6 +379,8 @@ export function pageSeo(
   const name = (SEARCH_NAMES[slug] ?? heading).replace(/^Shadcn\s+/i, "");
   const gsap = items.some((item) => usesGsap(item));
   const motion = items.some(hasMotionTwin);
+  // The code, or the page's own words for what the component does.
+  const moving = items.some(animates) || /\b(animat|transition|spring|physics)/i.test(summary);
   const label = kind === "block" ? "Block" : "Component";
   // Leave the label off a name that already says what it is ("FAQ Section").
   const named = SELF_DESCRIBING.test(name) ? name : `${name} ${label}`;
@@ -324,7 +392,12 @@ export function pageSeo(
       `Shadcn ${named} - ${SITE_NAME}`,
       `Shadcn ${name} - ${SITE_NAME}`,
     ]),
-    description: summary ? describe(summary, kind, gsap, motion) : undefined,
-    keywords: KEYWORDS[slug] ?? keywordsFor(name, kind, gsap, motion, place?.child.keywords),
+    description: summary ? describe(summary, name, kind, gsap, motion) : undefined,
+    keywords: [
+      ...new Set([
+        ...(KEYWORDS[slug] ?? []),
+        ...keywordsFor(KEYWORD_NAMES[slug] ?? name, kind, { gsap, motion, moving }, place?.child.keywords),
+      ]),
+    ],
   };
 }
