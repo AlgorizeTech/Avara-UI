@@ -1,10 +1,10 @@
 ---
-title: "Mobile Mockups"
-description: "A stunning, fully responsive collection of mobile device mockups engineered for Next.js, allowing you to present your app designs, images, or autoplaying…"
+title: "Shadcn Mobile Mockups"
+description: "Shadcn Mobile Mockups. A stunning, fully responsive collection of mobile device mockups engineered for Next.js, allowing you to present your app designs."
 url: https://avaraui.com/docs/nextjs/mobile-mockup
 ---
 
-# Mobile Mockups
+# Shadcn Mobile Mockups
 
 A stunning, fully responsive collection of mobile device mockups engineered for Next.js, allowing you to present your app designs, images, or autoplaying videos in gorgeous, high-fidelity hardware frames.
 

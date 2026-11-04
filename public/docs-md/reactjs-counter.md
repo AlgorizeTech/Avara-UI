@@ -1,10 +1,10 @@
 ---
-title: "Counter Block"
+title: "Shadcn Counter"
 description: "Animated counters: a slide countdown, steppers in several styles, an animated number ticker, circular progress and a countdown timer. Free shadcn/ui component."
 url: https://avaraui.com/docs/nextjs/counter
 ---
 
-# Counter Block
+# Shadcn Counter
 
 A multi-purpose, highly animated Counter component. Whether you need a user-interactive Stepper for e-commerce, an animated statistics ticker, a circular progress tracker, or a promotional countdown timer, this block handles it all with built-in fluid animations. The countdown comes in two designs: framed figures under a pill, or `slide` — soft tiles where only the figure that changed slides, the same countdown the [Waitlist](https://avaraui.com/docs/reactjs/waitlist) launch panel uses.
 

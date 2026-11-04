@@ -3,7 +3,7 @@
   "name": "ui-liquid-glass",
   "title": "UI Liquid Glass",
   "author": "AlgorizeTech",
-  "description": "TODO: describe ui-liquid-glass. Generated placeholder.",
+  "description": "The liquid glass surface behind the glass variants: an SVG refraction filter, a background layer and a wrapper. Install it only if you want the effect on your own elements.",
   "dependencies": [],
   "registryDependencies": [
     "utils"
@@ -16,6 +16,9 @@
       "target": "components/custom/ui/liquid-glass.tsx"
     }
   ],
-  "categories": [],
+  "docs": "Named exports: LiquidGlassWrapper, LiquidGlassBackground, LiquidGlassSvgFilter. Render LiquidGlassSvgFilter once on the page so the wrappers can reference its filter.",
+  "categories": [
+    "utilities"
+  ],
   "type": "registry:ui"
 }

@@ -1,10 +1,10 @@
 ---
-title: "Drawer"
+title: "Shadcn Drawer"
 description: "An animated, responsive drawer with a bottom-sheet variant and an option to open on mount. Free shadcn/ui Drawer component for React, Next.js and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/drawer
 ---
 
-# Drawer
+# Shadcn Drawer
 
 A highly animated, responsive drawer component. Built entirely from scratch, with plain CSS transitions for butter-smooth entering and exiting animations — no animation library. It supports sliding in from all four screen edges (top, bottom, left, right) and safely locks the background document from scrolling while open.
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState, useCallback } from "react";
 import {
   Globe as GlobeIcon,
   Sparkles,
@@ -19,10 +19,16 @@ import {
   FileText,
   Database,
 } from "lucide-react";
-import { motion, useReducedMotion, AnimatePresence } from "motion/react";
 
 import { cn } from "@/lib/utils";
 import { accentStyle } from "@/lib/accent";
+import {
+  bounceTiming,
+  prefersReducedMotion,
+  springTiming,
+  useInView,
+  usePrefersReducedMotion,
+} from "@/lib/animate";
 import { SocialLinks, type SocialLink } from "./SocialLinksBlock";
 import CustomButton from "./Button";
 
@@ -462,7 +468,7 @@ const DEFAULT_SNAPSHOT_CARDS: SnapshotCardData[] = [
       "smooth micro-interactions.",
     ],
     footerLabel: "ENGINE",
-    footerValue: "Framer Motion",
+    footerValue: "GSAP",
   },
   {
     dotColor: "bg-violet-500",
@@ -558,7 +564,7 @@ export const DEFAULT_MODERN_STACK_CARDS: SnapshotCardData[] = [
       "smooth micro-interactions.",
     ],
     footerLabel: "ENGINE",
-    footerValue: "Framer Motion",
+    footerValue: "GSAP",
     stickerText: "60 fps!",
     stickerIcon: <Zap className="size-4 min-[810px]:size-6 fill-current" />,
   },
@@ -644,8 +650,135 @@ function useSnapshotBreakpoint(): SnapshotBreakpoint {
   return bp;
 }
 
-const SNAPSHOT_HOVER_SPRING = { type: "spring", bounce: 0.22, duration: 0.45 } as const;
-const SNAPSHOT_EASE = [0.22, 1, 0.36, 1] as const;
+const SNAPSHOT_HOVER_SPRING = bounceTiming(0.45, 0.22);
+const SNAPSHOT_ENTER_SPRING = bounceTiming(0.9, 0.22);
+const SNAPSHOT_STICKER_SPRING = bounceTiming(0.6, 0.45);
+const SNAPSHOT_EASE = "cubic-bezier(0.22, 1, 0.36, 1)";
+const WORDMARK_LETTER_SPRING = springTiming({ stiffness: 95, damping: 14, mass: 1.25 });
+
+/** A wordmark letter rising into place, each one 80ms after the one before. */
+function wordmarkLetterStyle(inView: boolean, index: number): React.CSSProperties {
+  if (!inView) return { opacity: 0, transform: "translateY(75%) scale(0.94)" };
+  const timing = `${WORDMARK_LETTER_SPRING.duration}ms ${WORDMARK_LETTER_SPRING.easing} ${index * 80}ms`;
+  return { opacity: 1, transition: `transform ${timing}, opacity ${timing}` };
+}
+
+/** Fades and rises in the first time most of it is on screen. */
+function SnapshotReveal({
+  as = "div",
+  y,
+  blur,
+  duration,
+  delay = 0,
+  className,
+  children,
+}: {
+  as?: "div" | "span" | "p";
+  y: number;
+  blur?: number;
+  duration: number;
+  delay?: number;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  const Tag = as as React.ElementType;
+  const ref = useRef<HTMLElement>(null);
+  const seen = useInView(ref, { once: true, amount: 0.6 });
+  const reduceMotion = usePrefersReducedMotion();
+  const hidden = !seen && !reduceMotion;
+  const timing = `${duration}s ${SNAPSHOT_EASE} ${delay}s`;
+
+  return (
+    <Tag
+      ref={ref}
+      className={className}
+      style={{
+        opacity: hidden ? 0 : 1,
+        transform: hidden ? `translateY(${y}px)` : undefined,
+        filter: hidden && blur ? `blur(${blur}px)` : undefined,
+        transition: reduceMotion
+          ? undefined
+          : `opacity ${timing}, transform ${timing}${blur ? `, filter ${timing}` : ""}`,
+      }}
+    >
+      {children}
+    </Tag>
+  );
+}
+
+/** One card in the pile: deals in once, then lifts on hover, press or keyboard focus. */
+function SnapshotPileCard({
+  item,
+  card,
+  bp,
+  isModernStack,
+}: {
+  item: SnapshotPileItem;
+  card: SnapshotCardData;
+  bp: SnapshotBreakpoint;
+  isModernStack?: boolean;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const seen = useInView(ref, { once: true, amount: 0.1 });
+  const reduceMotion = usePrefersReducedMotion();
+  const [hovered, setHovered] = useState(false);
+  const [pressed, setPressed] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const lifted = hovered || pressed || focused;
+  const entered = seen || reduceMotion;
+
+  return (
+    <div
+      ref={ref}
+      className={cn("absolute hover:z-20 focus-within:z-20", item.className)}
+      style={{
+        transform: `${item.isCenter ? "" : "translateX(-50%) "}translateY(${entered ? 0 : item.enterY}px) rotate(${entered ? item.rest : -6}deg)`,
+        transition: reduceMotion
+          ? undefined
+          : `transform ${SNAPSHOT_ENTER_SPRING.duration}ms ${SNAPSHOT_ENTER_SPRING.easing} ${item.delay}s`,
+      }}
+    >
+      <div
+        tabIndex={0}
+        onPointerEnter={(e) => {
+          if (e.pointerType === "mouse") setHovered(true);
+        }}
+        onPointerLeave={() => {
+          setHovered(false);
+          setPressed(false);
+        }}
+        onPointerDown={() => setPressed(true)}
+        onPointerUp={() => setPressed(false)}
+        onPointerCancel={() => setPressed(false)}
+        onFocus={(e) => setFocused(e.currentTarget.matches(":focus-visible"))}
+        onBlur={() => setFocused(false)}
+        style={{
+          transform: lifted
+            ? `translateY(${item.lift[bp]}px) scale(1.02) rotate(${item.hoverRotate - item.rest}deg)`
+            : undefined,
+          transition: reduceMotion
+            ? undefined
+            : `transform ${SNAPSHOT_HOVER_SPRING.duration}ms ${SNAPSHOT_HOVER_SPRING.easing}`,
+        }}
+        className="size-full cursor-pointer outline-none"
+      >
+        <SnapshotStudioCard card={card} bp={bp} isModernStack={isModernStack} lifted={lifted} />
+      </div>
+    </div>
+  );
+}
+
+/** The newsletter's confirmation pops in over the form it replaces. */
+function popIn(el: HTMLDivElement | null) {
+  if (!el || prefersReducedMotion()) return;
+  el.animate(
+    [
+      { opacity: 0, transform: "scale(0.96)" },
+      { opacity: 1, transform: "none" },
+    ],
+    { duration: 300, easing: "ease-out" },
+  );
+}
 
 interface SnapshotPileItem {
   cardIndex: number;
@@ -789,10 +922,13 @@ function SnapshotStudioCard({
   card,
   bp,
   isModernStack,
+  lifted = false,
 }: {
   card: SnapshotCardData;
   bp: SnapshotBreakpoint;
   isModernStack?: boolean;
+  /** Whether the pile has lifted this card, which sends its sticker up further. */
+  lifted?: boolean;
 }) {
   const isMobile = bp === "phone";
   const isStudioHQ = Boolean(card.stickerText);
@@ -976,18 +1112,15 @@ function SnapshotStudioCard({
 
       {/* Floating Circular Sticker if card has stickerText */}
       {card.stickerText && (
-        <motion.div
-          variants={{
-            rest: { y: 0, rotate: isModernStack ? -20 : -24 },
-            hover: {
-              y: isModernStack
-                ? (isMobile ? -132 : -188)
-                : (isMobile ? -176 : -244),
-              rotate: isModernStack ? -7 : -8,
-            },
+        <div
+          style={{
+            transform: lifted
+              ? `translateY(${isModernStack ? (isMobile ? -132 : -188) : isMobile ? -176 : -244}px) rotate(${isModernStack ? -7 : -8}deg)`
+              : `translateY(0px) rotate(${isModernStack ? -20 : -24}deg)`,
+            transition: `transform ${SNAPSHOT_STICKER_SPRING.duration}ms ${SNAPSHOT_STICKER_SPRING.easing} 0.05s`,
           }}
-          transition={{ type: "spring", bounce: 0.45, delay: 0.05, duration: 0.6 }}
           className={cn(
+            "motion-reduce:transition-none",
             "absolute -left-2 top-[246px] flex flex-col items-center justify-center rounded-full border-white dark:border-zinc-900 bg-primary text-primary-foreground cursor-pointer z-20 pointer-events-none",
             isModernStack
               ? "size-[64px] min-[810px]:-left-3 min-[810px]:top-[336px] min-[810px]:size-[82px] border-3 min-[810px]:border-4 shadow-none"
@@ -1006,7 +1139,7 @@ function SnapshotStudioCard({
           >
             {card.stickerText}
           </span>
-        </motion.div>
+        </div>
       )}
     </div>
   );
@@ -1063,7 +1196,6 @@ function SnapshotFooter({
 }) {
   const c = { ...SNAPSHOT_DEFAULTS, ...content };
   const bp = useSnapshotBreakpoint();
-  const reduceMotion = useReducedMotion();
   const wordmark = brandName;
   const copyright =
     copyrightText ??
@@ -1091,18 +1223,12 @@ function SnapshotFooter({
           {isModernStack ? (
             <div className="flex w-full flex-col gap-6 min-[810px]:gap-8 min-[1200px]:flex-row min-[1200px]:items-end min-[1200px]:justify-between min-[1200px]:gap-12">
               <div className="flex flex-col gap-3.5 min-[1200px]:flex-1">
-                <motion.div
-                  initial={reduceMotion ? false : { opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.6 }}
-                  transition={{ duration: 0.6, ease: SNAPSHOT_EASE }}
-                  className="flex items-center gap-2"
-                >
+                <SnapshotReveal y={10} duration={0.6} className="flex items-center gap-2">
                   <span className="size-2 rounded-full bg-primary" />
                   <span className="text-[11px] font-mono font-semibold uppercase tracking-[0.14em] text-primary">
                     Curated Component Library
                   </span>
-                </motion.div>
+                </SnapshotReveal>
 
                 <h2 className="text-[36px] min-[810px]:text-[48px] min-[1200px]:text-[56px] font-bold leading-[1.04] tracking-[-0.04em] text-zinc-950 dark:text-zinc-50">
                   {c.headingLines.map((line, li) => (
@@ -1116,17 +1242,16 @@ function SnapshotFooter({
                 </h2>
               </div>
 
-              <motion.div
-                initial={reduceMotion ? false : { opacity: 0, y: 14 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.6 }}
-                transition={{ duration: 0.8, delay: 0.2, ease: SNAPSHOT_EASE }}
+              <SnapshotReveal
+                y={14}
+                duration={0.8}
+                delay={0.2}
                 className="w-full min-[810px]:max-w-[560px] min-[1200px]:w-[480px] min-[1200px]:max-w-none min-[1200px]:shrink-0 border-l-2 border-primary/25 pl-5 min-[810px]:pl-6"
               >
                 <p className="text-[15px] min-[1200px]:text-[16px] leading-[1.65] text-zinc-600 dark:text-zinc-400 font-normal tracking-[-0.01em] [text-wrap:pretty]">
                   {c.description}
                 </p>
-              </motion.div>
+              </SnapshotReveal>
             </div>
           ) : (
             <div className="flex w-full flex-col gap-4 min-[810px]:gap-5 min-[1200px]:flex-row min-[1200px]:gap-10">
@@ -1139,30 +1264,31 @@ function SnapshotFooter({
                       return (
                         <React.Fragment key={wi}>
                           {wi > 0 && " "}
-                          <motion.span
+                          <SnapshotReveal
+                            as="span"
                             className="inline-block"
-                            initial={reduceMotion ? false : { opacity: 0, y: 14, filter: "blur(6px)" }}
-                            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                            viewport={{ once: true, amount: 0.6 }}
-                            transition={{ duration: 0.7, delay: i * 0.05, ease: SNAPSHOT_EASE }}
+                            y={14}
+                            blur={6}
+                            duration={0.7}
+                            delay={i * 0.05}
                           >
                             {word}
-                          </motion.span>
+                          </SnapshotReveal>
                         </React.Fragment>
                       );
                     })}
                   </React.Fragment>
                 ))}
               </h2>
-              <motion.p
-                initial={reduceMotion ? false : { opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.6 }}
-                transition={{ duration: 0.9, delay: 0.3, ease: SNAPSHOT_EASE }}
+              <SnapshotReveal
+                as="p"
+                y={16}
+                duration={0.9}
+                delay={0.3}
                 className="w-full text-[15px] min-[810px]:max-w-[560px] min-[1200px]:w-[460px] min-[1200px]:max-w-none min-[1200px]:shrink-0 min-[1200px]:text-base leading-[1.55] tracking-[-0.01em] text-[#52525b] dark:text-zinc-400 [text-wrap:pretty]"
               >
                 {c.description}
-              </motion.p>
+              </SnapshotReveal>
             </div>
           )}
 
@@ -1186,39 +1312,13 @@ function SnapshotFooter({
                   : cardData;
 
               return (
-                <motion.div
+                <SnapshotPileCard
                   key={idx}
-                  className={cn("absolute hover:z-20 focus-within:z-20", item.className)}
-                  style={!item.isCenter ? { x: "-50%" } : undefined}
-                  initial={reduceMotion ? false : { y: item.enterY, rotate: -6 }}
-                  whileInView={{ y: 0, rotate: item.rest }}
-                  viewport={{ once: true, amount: 0.1 }}
-                  transition={{ type: "spring", bounce: 0.22, duration: 0.9, delay: item.delay }}
-                >
-                  <motion.div
-                    tabIndex={0}
-                    initial="rest"
-                    whileHover="hover"
-                    whileTap="hover"
-                    whileFocus="hover"
-                    variants={{
-                      rest: { y: 0, rotate: 0 },
-                      hover: {
-                        y: item.lift[bp],
-                        rotate: item.hoverRotate - item.rest,
-                        scale: 1.02,
-                      },
-                    }}
-                    transition={SNAPSHOT_HOVER_SPRING}
-                    className="size-full cursor-pointer outline-none"
-                  >
-                    <SnapshotStudioCard
-                      card={resolvedCard}
-                      bp={bp}
-                      isModernStack={isModernStack}
-                    />
-                  </motion.div>
-                </motion.div>
+                  item={item}
+                  card={resolvedCard}
+                  bp={bp}
+                  isModernStack={isModernStack}
+                />
               );
             })}
           </div>
@@ -1493,7 +1593,9 @@ export function WordmarkFooter({
   const wrapRef = useRef<HTMLDivElement>(null);
   const measureRef = useRef<HTMLSpanElement>(null);
   const [fontSize, setFontSize] = useState<number | null>(null);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = usePrefersReducedMotion();
+  const lettersRef = useRef<HTMLParagraphElement>(null);
+  const lettersInView = useInView(lettersRef, { amount: 0.25 });
 
   const updateFontSize = useCallback(() => {
     if (!wrapRef.current || !measureRef.current) return;
@@ -1685,48 +1787,24 @@ export function WordmarkFooter({
             aria-hidden="true"
             className="absolute inset-0 -z-10 bg-[radial-gradient(320px_circle_at_var(--mx,50%)_var(--my,60%),color-mix(in_oklab,var(--primary)_42%,transparent),transparent_70%)] opacity-50 transition-opacity duration-300 [mask-image:linear-gradient(to_bottom,transparent,#000_calc(var(--lift)+48px))] group-hover/word:opacity-100"
           />
-          <motion.p
+          <p
+            ref={lettersRef}
             aria-hidden="true"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: false, amount: 0.25 }}
             style={{
               fontSize: fontSize ? `${fontSize}px` : `clamp(1.75rem, calc(92cqi / ${charRatio}), 19rem)`,
             }}
             className="pointer-events-none mb-[-0.025em] mt-6 flex w-full max-w-full select-none justify-center whitespace-nowrap font-semibold leading-[0.82] tracking-[-0.035em]"
           >
             {[...wordmark].map((letter, index) => (
-              <motion.span
+              <span
                 key={index}
-                variants={
-                  reduceMotion
-                    ? undefined
-                    : {
-                        hidden: {
-                          y: "75%",
-                          opacity: 0,
-                          scale: 0.94,
-                        },
-                        visible: {
-                          y: "0%",
-                          opacity: 1,
-                          scale: 1,
-                          transition: {
-                            type: "spring",
-                            stiffness: 95,
-                            damping: 14,
-                            mass: 1.25,
-                            delay: index * 0.08,
-                          },
-                        },
-                      }
-                }
+                style={reduceMotion ? undefined : wordmarkLetterStyle(lettersInView, index)}
                 className="inline-block px-[0.02em] last:pr-[0.14em] bg-gradient-to-b from-foreground/20 to-foreground/[0.02] to-85% bg-clip-text text-transparent"
               >
                 {letter}
-              </motion.span>
+              </span>
             ))}
-          </motion.p>
+          </p>
         </div>
       )}
     </footer>
@@ -1833,9 +1911,8 @@ function NewsletterSubscriptionField({
 
   if (status === "success") {
     return (
-      <motion.div
-        initial={{ opacity: 0, scale: 0.96 }}
-        animate={{ opacity: 1, scale: 1 }}
+      <div
+        ref={popIn}
         className="w-full mt-3 p-3 rounded-xl bg-white/25 border border-white/40 text-white flex items-center justify-between text-xs"
       >
         <span className="flex items-center gap-2">
@@ -1851,7 +1928,7 @@ function NewsletterSubscriptionField({
         >
           Reset
         </button>
-      </motion.div>
+      </div>
     );
   }
 
@@ -1903,22 +1980,47 @@ function NewsletterSubscriptionField({
 }
 
 function EditorialTabCardContent({
-  activeTab,
+  activeTab: requestedTab,
   editorialCta,
 }: {
   activeTab: EditorialTabKey;
   editorialCta?: EditorialFooterProps;
 }) {
+  // The old tab finishes leaving before the new one comes in.
+  const [activeTab, setShownTab] = useState(requestedTab);
+  const paneRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (requestedTab === activeTab) return;
+    const pane = paneRef.current;
+    if (!pane || prefersReducedMotion()) {
+      setShownTab(requestedTab);
+      return;
+    }
+    const leaving = pane.animate(
+      [
+        { opacity: 1, transform: "none" },
+        { opacity: 0, transform: "translateY(-8px)" },
+      ],
+      { duration: 220, easing: "ease-out", fill: "forwards" },
+    );
+    leaving.onfinish = () => setShownTab(requestedTab);
+    return () => leaving.cancel();
+  }, [requestedTab, activeTab]);
+
+  useLayoutEffect(() => {
+    if (prefersReducedMotion()) return;
+    paneRef.current?.animate(
+      [
+        { opacity: 0, transform: "translateY(8px)" },
+        { opacity: 1, transform: "none" },
+      ],
+      { duration: 220, easing: "ease-out" },
+    );
+  }, [activeTab]);
+
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={activeTab}
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -8 }}
-        transition={{ duration: 0.22, ease: "easeOut" }}
-        className="w-full flex-1 flex flex-col justify-between"
-      >
+    <div ref={paneRef} key={activeTab} className="w-full flex-1 flex flex-col justify-between">
         {activeTab === "newsletter" && (
           <div className="w-full h-full flex flex-col justify-between text-white">
             <div className="flex flex-col gap-3 sm:gap-3.5">
@@ -2055,7 +2157,7 @@ function EditorialTabCardContent({
                 <div className="p-2.5 sm:p-3 rounded-xl bg-white/15 border border-white/25 flex items-center justify-between">
                   <div>
                     <div className="text-[10px] font-mono uppercase text-white/75">Motion Engine</div>
-                    <div className="font-bold text-xs sm:text-[12.5px] mt-0.5">Framer Motion 12</div>
+                    <div className="font-bold text-xs sm:text-[12.5px] mt-0.5">GSAP 3</div>
                   </div>
                   <Terminal className="size-4 text-white shrink-0" />
                 </div>
@@ -2194,8 +2296,7 @@ function EditorialTabCardContent({
             </div>
           </div>
         )}
-      </motion.div>
-    </AnimatePresence>
+    </div>
   );
 }
 
@@ -2218,6 +2319,8 @@ export function EditorialCardFooter({
   className?: string;
 }) {
   const [activeTab, setActiveTab] = React.useState<EditorialTabKey>("newsletter");
+  const [ctaHovered, setCtaHovered] = React.useState(false);
+  const reduceMotion = usePrefersReducedMotion();
   const [timeStr, setTimeStr] = React.useState("11:52:19");
   const [dateStr, setDateStr] = React.useState("Wednesday Oct 28 2026");
 
@@ -2394,47 +2497,40 @@ export function EditorialCardFooter({
         {/* Desktop Tilted Interactive CTA Card (Spans from right edge to the border left of Avara UI) */}
         <div className="hidden lg:grid absolute inset-x-0 bottom-0 top-0 pointer-events-none grid-cols-[minmax(390px,1.4fr)_0.85fr_1fr_1.35fr] z-20">
           <div className="col-start-3 col-end-5 relative flex flex-col justify-end pointer-events-none">
-            <motion.div
-              initial="rest"
-              whileHover="hover"
-              animate="rest"
-              variants={{
-                rest: {
-                  rotate: 7,
-                  y: "68%",
-                  x: 0,
-                  transition: {
-                    duration: 0.5,
-                    ease: [0.25, 1, 0.5, 1],
-                  },
-                },
-                hover: {
-                  rotate: 0,
-                  y: "0%",
-                  x: 0,
-                  transition: {
-                    duration: 0.55,
-                    ease: [0.16, 1, 0.3, 1],
-                  },
-                },
+            <div
+              onPointerEnter={() => setCtaHovered(true)}
+              onPointerLeave={() => setCtaHovered(false)}
+              style={{
+                transformOrigin: "bottom right",
+                transform: ctaHovered ? undefined : "translateY(68%) rotate(7deg)",
+                transition: [
+                  ...(reduceMotion
+                    ? []
+                    : [
+                        ctaHovered
+                          ? "transform 0.55s cubic-bezier(0.16, 1, 0.3, 1)"
+                          : "transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)",
+                      ]),
+                  "background-color 0.5s",
+                  "border-color 0.5s",
+                  "color 0.5s",
+                ].join(", "),
               }}
-              style={{ transformOrigin: "bottom right" }}
               className={cn(
-                "w-full h-[510px] xl:h-[570px] pointer-events-auto flex flex-col justify-between p-7 xl:p-9 border cursor-pointer relative overflow-hidden rounded-2xl transition-all duration-500",
+                "w-full h-[510px] xl:h-[570px] pointer-events-auto flex flex-col justify-between p-7 xl:p-9 border cursor-pointer relative overflow-hidden rounded-2xl",
                 TAB_THEMES[activeTab].bg,
                 TAB_THEMES[activeTab].border,
                 TAB_THEMES[activeTab].textColor,
               )}
             >
               <EditorialTabCardContent activeTab={activeTab} editorialCta={editorialCta} />
-            </motion.div>
+            </div>
           </div>
         </div>
 
         {/* Mobile / Tablet Inline CTA Card (NO SHADOW, responsive rounded card) */}
         <div className="lg:hidden w-full p-4 sm:p-6 border-t border-dashed border-neutral-300 dark:border-neutral-800 relative z-10">
-          <motion.div
-            initial={{ rotate: 0 }}
+          <div
             className={cn(
               "w-full flex flex-col justify-between p-4 sm:p-6 border relative overflow-hidden rounded-2xl transition-all duration-500",
               TAB_THEMES[activeTab].bg,
@@ -2443,7 +2539,7 @@ export function EditorialCardFooter({
             )}
           >
             <EditorialTabCardContent activeTab={activeTab} editorialCta={editorialCta} />
-          </motion.div>
+          </div>
         </div>
       </div>
   );

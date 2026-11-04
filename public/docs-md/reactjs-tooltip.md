@@ -1,10 +1,10 @@
 ---
-title: "Tooltip"
+title: "Shadcn Tooltip"
 description: "A context-aware popup that displays information when an element receives keyboard focus or a mouse hover. Free shadcn/ui component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/tooltip
 ---
 
-# Tooltip
+# Shadcn Tooltip
 
 A context-aware popup that displays information when an element receives keyboard focus or a mouse hover.
 

@@ -1,10 +1,10 @@
 ---
-title: "Error"
+title: "Shadcn Error Page"
 description: "A full-page error section in a terminal style, built for Next.js error.tsx and global-error.tsx boundaries and for maintenance pages. Free shadcn/ui Error Page."
 url: https://avaraui.com/docs/nextjs/error
 ---
 
-# Error
+# Shadcn Error Page
 
 A full-page, responsive Cyberpunk Diagnostic Terminal section designed for root application error boundaries, Next.js `error.tsx` / `global-error.tsx`, and dedicated maintenance pages.
 

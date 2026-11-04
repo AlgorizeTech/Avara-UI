@@ -1,10 +1,10 @@
 ---
-title: "Audio Player"
-description: "An audio player with artwork, transport, scrubber and volume — in a hero card, a compact bar, or wrapped around the browser's native controls."
+title: "Shadcn Audio Player"
+description: "Shadcn Audio Player. An audio player with artwork, transport, scrubber and volume — in a hero card, a compact bar."
 url: https://avaraui.com/docs/nextjs/audio-player
 ---
 
-# Audio Player
+# Shadcn Audio Player
 
 An audio player with artwork, transport, scrubber and volume — in a hero card, a compact bar, or wrapped around the browser's native controls. Built on a plain `<audio>` element with no player library.
 

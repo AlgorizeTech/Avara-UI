@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useMemo } from "react";
+import React, { useState, useRef, useEffect, useLayoutEffect, useMemo } from "react";
 import {
   Palette,
   Monitor,
@@ -11,11 +11,77 @@ import {
   Sparkles,
   Check,
 } from "lucide-react";
-import {
-  motion,
-  AnimatePresence,
-} from "motion/react";
 import { cn } from "@/lib/utils";
+import { prefersReducedMotion, springTiming, usePrefersReducedMotion } from "@/lib/animate";
+
+/** How a card travels: quick into a slot, slow and weighty back to the deck. */
+const TO_SLOT = springTiming({ stiffness: 240, damping: 25 });
+const TO_DECK = springTiming({ stiffness: 75, damping: 16, mass: 1.1 });
+
+/** A card's centre, size and tilt as drawn right now, even part-way through a flight. */
+function measureCard(el: HTMLElement) {
+  const rect = el.getBoundingClientRect();
+  const matrix = new DOMMatrixReadOnly(getComputedStyle(el).transform);
+  return {
+    x: rect.left + rect.width / 2,
+    y: rect.top + rect.height / 2,
+    width: el.offsetWidth,
+    height: el.offsetHeight,
+    rotate: (Math.atan2(matrix.b, matrix.a) * 180) / Math.PI,
+  };
+}
+
+/** The "drag the cards" pill drops in after the cards have landed. */
+function enterPill(el: HTMLDivElement | null) {
+  if (!el || prefersReducedMotion()) return;
+  el.animate(
+    [
+      { opacity: 0, transform: "translateY(-10px)" },
+      { opacity: 1, transform: "none" },
+    ],
+    { duration: 500, delay: 1500, easing: "ease-in-out", fill: "backwards" },
+  );
+}
+
+/** Rises in when `show` turns true, and stays mounted until it has fallen back out. */
+function RisePresence({
+  show,
+  className,
+  children,
+}: {
+  show: boolean;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  const [present, setPresent] = useState(show);
+  if (show && !present) setPresent(true);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (prefersReducedMotion()) {
+      if (!show) setPresent(false);
+      return;
+    }
+    const shown = { opacity: 1, transform: "none" };
+    const animation = el.animate(
+      show
+        ? [{ opacity: 0, transform: "translateY(18px) scale(0.95)" }, shown]
+        : [shown, { opacity: 0, transform: "translateY(12px) scale(0.95)" }],
+      { duration: 350, easing: "ease-out", fill: "both" },
+    );
+    if (!show) animation.onfinish = () => setPresent(false);
+    return () => animation.cancel();
+  }, [show, present]);
+
+  if (!present) return null;
+  return (
+    <div ref={ref} className={className}>
+      {children}
+    </div>
+  );
+}
 
 // Animated counter for scores and summary percentage
 function AnimatedNumber({
@@ -273,6 +339,65 @@ function BrandPillarsCta({
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
+  const reduceMotion = usePrefersReducedMotion();
+  const sectionRef = useRef<HTMLElement>(null);
+  const flightFrom = useRef<({ id: string } & ReturnType<typeof measureCard>) | null>(null);
+  const findCard = (id: string) =>
+    [...(sectionRef.current?.querySelectorAll<HTMLElement>("[data-pillar-card]") ?? [])].find(
+      (el) => el.dataset.pillarCard === id,
+    );
+
+  // Cards rain into the deck on load, right to left.
+  useLayoutEffect(() => {
+    if (!hasMounted || prefersReducedMotion()) return;
+    sectionRef.current?.querySelectorAll<HTMLElement>("[data-pillar-card]").forEach((el) => {
+      const y = Number(el.dataset.restY);
+      const rotate = Number(el.dataset.restRotate);
+      el.animate(
+        [
+          { opacity: 0, transform: `translateY(-750px) rotate(${rotate * 2}deg) scale(0.9)` },
+          { opacity: 1, transform: `translateY(${y}px) rotate(${rotate}deg) scale(1)` },
+        ],
+        { ...TO_DECK, delay: (RAIN_DELAYS[el.dataset.pillarCard ?? ""] ?? 0) * 1000, fill: "backwards" },
+      );
+    });
+  }, [hasMounted]);
+
+  // A placed or returned card is a new element in a new spot. It starts at the
+  // old one's position and size and flies to its own. Width and height animate
+  // rather than scale, so the text on the card never stretches.
+  useLayoutEffect(() => {
+    const from = flightFrom.current;
+    flightFrom.current = null;
+    if (!from || prefersReducedMotion()) return;
+    const el = findCard(from.id);
+    if (!el) return;
+    const to = measureCard(el);
+    const restY = Number(el.dataset.restY);
+    const left = el.offsetLeft;
+    const dx = from.x - (to.x - to.width / 2) - from.width / 2;
+    const dy = from.y - (to.y - restY - to.height / 2) - from.height / 2;
+    el.animate(
+      [
+        {
+          left: `${left}px`,
+          right: "auto",
+          width: `${from.width}px`,
+          height: `${from.height}px`,
+          transform: `translate(${dx}px, ${dy}px) rotate(${from.rotate}deg)`,
+        },
+        {
+          left: `${left}px`,
+          right: "auto",
+          width: `${to.width}px`,
+          height: `${to.height}px`,
+          transform: `translate(0px, ${restY}px) rotate(${to.rotate}deg)`,
+        },
+      ],
+      el.dataset.restSlot ? TO_SLOT : TO_DECK,
+    );
+  }, [placedCardIds]);
+
   // Active flying animations to ensure moving cards are always on top of EVERYTHING
   const [activeFlyingCards, setActiveFlyingCards] = useState<Record<string, "toSlot" | "toDeck">>({});
   const flyingTimersRef = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
@@ -281,6 +406,9 @@ function BrandPillarsCta({
   const handlePlaceCard = (id: string) => {
     const isCurrentlyPlaced = placedCardIds.includes(id);
     const direction: "toSlot" | "toDeck" = isCurrentlyPlaced ? "toDeck" : "toSlot";
+
+    const card = findCard(id);
+    if (card) flightFrom.current = { id, ...measureCard(card) };
 
     // Elevate moving card above all other elements
     setActiveFlyingCards((prev) => ({ ...prev, [id]: direction }));
@@ -314,6 +442,7 @@ function BrandPillarsCta({
 
   return (
     <section
+      ref={sectionRef}
       className={cn(
         "relative w-full overflow-x-clip overflow-y-visible bg-muted/40 dark:bg-muted/20 pt-8 sm:pt-12 pb-24 sm:pb-32 text-foreground transition-colors",
         className
@@ -421,11 +550,10 @@ function BrandPillarsCta({
 
                     {/* Shared Layout Card when placed - Sits directly ON TOP ("agular uporer jaiya boshbe") */}
                     {isPlaced && (
-                      <motion.div
-                        layoutId={`card-${pillar.id}`}
-                        initial={false}
-                        animate={{ x: 0, y: 0, rotate: 0 }}
-                        transition={{ type: "spring", stiffness: 240, damping: 25 }}
+                      <div
+                        data-pillar-card={pillar.id}
+                        data-rest-y={0}
+                        data-rest-slot=""
                         onClick={() => handlePlaceCard(pillar.id)}
                         className={cn(
                           "absolute inset-0 cursor-pointer p-5 sm:p-5.5 select-none border w-full h-full",
@@ -481,7 +609,7 @@ function BrandPillarsCta({
                             </p>
                           </div>
                         </div>
-                      </motion.div>
+                      </div>
                     )}
                   </div>
                 );
@@ -579,12 +707,10 @@ function BrandPillarsCta({
                                     : "rgba(28, 26, 23, 0.08)",
                             }}
                           >
-                            <motion.div
-                              initial={false}
-                              animate={{ width: isPlaced ? "100%" : `${pillar.baselineScore ?? 25}%` }}
-                              transition={{ duration: 0.8, ease: "easeOut" }}
-                              className="h-full rounded-full"
+                            <div
+                              className="h-full rounded-full transition-[width] duration-[800ms] ease-out motion-reduce:transition-none"
                               style={{
+                                width: isPlaced ? "100%" : `${pillar.baselineScore ?? 25}%`,
                                 backgroundColor: isDataSlot ? "#FFFFFF" : activeAccent,
                               }}
                             />
@@ -630,10 +756,9 @@ function BrandPillarsCta({
             >
               {/* Floating Orange Instruction Pill with Down Arrow - disappears once any card is picked */}
               {placedCardIds.length === 0 && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.5, duration: 0.5 }}
+                <div
+                  ref={enterPill}
+                  style={hasMounted ? undefined : { opacity: 0 }}
                   className="flex flex-col items-center mb-1 select-none pointer-events-auto transition-opacity duration-300"
                 >
                   <div
@@ -649,7 +774,7 @@ function BrandPillarsCta({
                   >
                     ↓
                   </span>
-                </motion.div>
+                </div>
               )}
 
               {/* Cards Container: Stacked According to Index (Desktop: Horizontal line, Mobile: Stacked underneath each other) */}
@@ -665,7 +790,6 @@ function BrandPillarsCta({
                   const isOrangeCard = pillar.id === "data";
                   const isCardFlying = Boolean(activeFlyingCards[pillar.id]);
                   const pct = cfg.pctOffset;
-                  const rainDelay = RAIN_DELAYS[pillar.id] ?? 0;
                   const currentRotate = isMobile
                     ? (MOBILE_ROTATIONS[pillar.id] ?? (index % 2 === 0 ? -5 : 5))
                     : cfg.rotate;
@@ -673,28 +797,11 @@ function BrandPillarsCta({
                   const currentY = isMobile ? (index * 5) : cfg.offsetY;
 
                   return (
-                    <motion.div
+                    <div
                       key={pillar.id}
-                      layout
-                      layoutId={`card-${pillar.id}`}
-                      initial={
-                        !hasMounted
-                          ? { y: -750, opacity: 0, rotate: currentRotate * 2, scale: 0.9 }
-                          : false
-                      }
-                      animate={{
-                        y: currentY,
-                        opacity: 1,
-                        rotate: currentRotate,
-                        scale: 1,
-                      }}
-                      transition={{
-                        type: "spring",
-                        stiffness: 75,
-                        damping: 16,
-                        mass: 1.1,
-                        delay: !hasMounted ? rainDelay : 0,
-                      }}
+                      data-pillar-card={pillar.id}
+                      data-rest-y={currentY}
+                      data-rest-rotate={currentRotate}
                       onClick={() => handlePlaceCard(pillar.id)}
                       className={cn(
                         "absolute top-0 cursor-pointer select-none",
@@ -709,6 +816,11 @@ function BrandPillarsCta({
                         backgroundColor: isOrangeCard ? activeAccent : undefined,
                         borderRadius: dynamicRadius,
                         zIndex: isCardFlying ? 9999 : cfg.zIndex,
+                        opacity: hasMounted ? 1 : 0,
+                        transform: hasMounted
+                          ? `translateY(${currentY}px) rotate(${currentRotate}deg)`
+                          : `translateY(-750px) rotate(${currentRotate * 2}deg) scale(0.9)`,
+                        transition: reduceMotion ? undefined : `transform ${TO_DECK.duration}ms ${TO_DECK.easing}`,
                       }}
                       title="Click to place card in slot"
                     >
@@ -753,7 +865,7 @@ function BrandPillarsCta({
                           </p>
                         </div>
                       </div>
-                    </motion.div>
+                    </div>
                   );
                 })}
               </div>
@@ -764,32 +876,22 @@ function BrandPillarsCta({
         {/* ======================================================== */}
         {/* BOTTOM CTA BUTTON (Matches Framer when 100% complete) */}
         {/* ======================================================== */}
-        <AnimatePresence>
-          {isAllPlaced && (
-            <motion.div
-              initial={{ opacity: 0, y: 18, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 12, scale: 0.95 }}
-              transition={{ duration: 0.35, ease: "easeOut" }}
-              className="mt-8 flex justify-center"
+        <RisePresence show={isAllPlaced} className="mt-8 flex justify-center">
+            <a
+              href={ctaHref}
+              onClick={(e) => {
+                if (ctaHref === "#") e.preventDefault();
+                onCtaClick?.();
+              }}
+              className="inline-flex items-center gap-3 pl-6 pr-2.5 py-2.5 rounded-full text-white font-semibold text-sm sm:text-base transition-transform duration-200 hover:scale-[1.03] active:scale-[0.98]"
+              style={{ backgroundColor: activeAccent }}
             >
-              <a
-                href={ctaHref}
-                onClick={(e) => {
-                  if (ctaHref === "#") e.preventDefault();
-                  onCtaClick?.();
-                }}
-                className="inline-flex items-center gap-3 pl-6 pr-2.5 py-2.5 rounded-full text-white font-semibold text-sm sm:text-base transition-transform duration-200 hover:scale-[1.03] active:scale-[0.98]"
-                style={{ backgroundColor: activeAccent }}
-              >
-                <span>{ctaText}</span>
-                <span className="size-8 rounded-full bg-white flex items-center justify-center shrink-0">
-                  <ArrowRight className="size-4 stroke-[2.5]" style={{ color: activeAccent }} />
-                </span>
-              </a>
-            </motion.div>
-          )}
-        </AnimatePresence>
+              <span>{ctaText}</span>
+              <span className="size-8 rounded-full bg-white flex items-center justify-center shrink-0">
+                <ArrowRight className="size-4 stroke-[2.5]" style={{ color: activeAccent }} />
+              </span>
+            </a>
+        </RisePresence>
       </div>
     </section>
   );

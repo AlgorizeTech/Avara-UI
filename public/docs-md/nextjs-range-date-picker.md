@@ -1,10 +1,10 @@
 ---
-title: "Range Date Picker"
-description: "An interactive Range Date Picker component featuring single month, dual-month, and rate-priced calendar layouts for hotel or flight booking applications."
+title: "Shadcn Range Date Picker"
+description: "Shadcn Range Date Picker. An interactive Range Date Picker component featuring single month, dual-month."
 url: https://avaraui.com/docs/nextjs/range-date-picker
 ---
 
-# Range Date Picker
+# Shadcn Range Date Picker
 
 An interactive **Range Date Picker** component featuring single month, dual-month, and rate-priced calendar layouts for hotel or flight booking applications.
 

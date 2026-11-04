@@ -1,10 +1,10 @@
 ---
-title: "Popover"
+title: "Shadcn Popover"
 description: "Displays rich, interactive content in a portal, triggered by a click. Free shadcn/ui Popover component for React, Next.js and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/popover
 ---
 
-# Popover
+# Shadcn Popover
 
 Displays rich, interactive content in a portal, triggered by a click.
 

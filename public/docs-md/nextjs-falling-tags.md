@@ -1,10 +1,10 @@
 ---
-title: "Falling Tags"
+title: "Shadcn Falling Tags"
 description: "A physics-based interactive tags playground inspired by the viral Falling Tags Framer component by Guo. Free shadcn/ui component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/falling-tags
 ---
 
-# Falling Tags
+# Shadcn Falling Tags
 
 A physics-based interactive tags playground inspired by the viral **Falling Tags** Framer component by Guo. When the section scrolls into view, tags fade in floating gently near the top, hover weightlessly for a moment, then lose their footing, drop, tumble, collide realistically, and pile up naturally at the bottom.
 

@@ -1,10 +1,10 @@
 ---
-title: "Shopping Cart"
+title: "Shadcn Shopping Cart"
 description: "A shopping cart for online stores in three layouts: a slide-out drawer, a modal and a full cart page. Free shadcn/ui component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/cart
 ---
 
-# Shopping Cart
+# Shadcn Shopping Cart
 
 A complete, production-ready Cart component designed for modern e-commerce applications. It comes with built-in item state management (increment, decrement, remove), automatic subtotal calculations, and three distinct structural layouts.
 

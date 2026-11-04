@@ -1,10 +1,10 @@
 ---
-title: "Circular Text"
+title: "Shadcn Circular Text"
 description: "Circular text: words set on a circle, turning slowly, with room in the middle for a mark, a play button or a link. Free shadcn/ui Circular Text component."
 url: https://avaraui.com/docs/nextjs/circular-text
 ---
 
-# Circular Text
+# Shadcn Circular Text
 
 Circular text: words set on a circle, turning slowly, with room in the middle for a mark, a play button or a link. The ring is an SVG `textPath`, so it stays crisp at any size and the words are real text — screen readers get them once, from an sr-only copy, rather than letter by letter around the ring.
 

@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "qr-code-qr-reader",
   "type": "registry:block",
-  "title": "QR Code Suite — QR reader",
+  "title": "Shadcn QR Code — QR reader",
   "description": "The \"QR reader\" example from the Avara UI docs.",
   "dependencies": [
     "jsqr",

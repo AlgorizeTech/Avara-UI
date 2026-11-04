@@ -1,10 +1,10 @@
 ---
-title: "Book Appointment"
-description: "A booking section with a practitioner's profile, star ratings, two small charts and a day-and-time slot picker that confirms the appointment."
+title: "Shadcn Book Appointment"
+description: "Shadcn Book Appointment. A booking section with a practitioner's profile, star ratings."
 url: https://avaraui.com/docs/nextjs/book-appointment
 ---
 
-# Book Appointment
+# Shadcn Book Appointment
 
 A booking flow for a page that ends in an appointment: a practitioner's portrait and contact details, their scores as stars, two small charts, and a booking panel with a strip of days, time slots in groups, a button that reads back the choice, and a confirmation that draws itself in once the booking is made.
 

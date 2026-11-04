@@ -1,10 +1,10 @@
 ---
-title: "Apple Select"
+title: "Shadcn Apple Select"
 description: "Recreates the iOS text-selection look — a translucent highlight with a lollipop handle on either end — over any string you give it. Free shadcn/ui component."
 url: https://avaraui.com/docs/nextjs/apple-select
 ---
 
-# Apple Select
+# Shadcn Apple Select
 
 Recreates the iOS text-selection look — a translucent highlight with a lollipop handle on either end — over any string you give it.
 

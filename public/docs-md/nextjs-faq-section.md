@@ -1,10 +1,10 @@
 ---
-title: "FAQ Section"
+title: "Shadcn FAQ Section"
 description: "An animated, editorial FAQ section designed for modern landing pages, SaaS platforms, and digital agencies. Free shadcn/ui block for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/faq-section
 ---
 
-# FAQ Section
+# Shadcn FAQ Section
 
 An animated, editorial FAQ section designed for modern landing pages, SaaS platforms, and digital agencies. Pairs a centered section header with an interactive nature photography canvas that dynamically morphs its height and width and crossfades photos with each active question, alongside a keyboard-accessible, smooth accordion list.
 

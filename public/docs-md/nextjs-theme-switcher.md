@@ -1,10 +1,10 @@
 ---
-title: "Theme Switcher"
+title: "Shadcn Theme Switcher"
 description: "A premium, animated dark mode toggle component built specifically for Next.js applications using `next-themes`. Free shadcn/ui Theme Switcher component."
 url: https://avaraui.com/docs/nextjs/theme-switcher
 ---
 
-# Theme Switcher
+# Shadcn Theme Switcher
 
 A premium, animated dark mode toggle component built specifically for Next.js applications using `next-themes`.
 

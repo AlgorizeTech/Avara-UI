@@ -1,10 +1,10 @@
 ---
-title: "Form Engine"
+title: "Shadcn Form"
 description: "A high-fidelity Form toolkit engineered for both simple landing pages and complex enterprise dashboards. Free shadcn/ui Form for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/form
 ---
 
-# Form Engine
+# Shadcn Form
 
 A high-fidelity Form toolkit engineered for both simple landing pages and complex enterprise dashboards.
 

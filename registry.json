@@ -370,8 +370,7 @@
       ],
       "dependencies": [
         "@radix-ui/react-avatar",
-        "lucide-react",
-        "motion"
+        "lucide-react"
       ],
       "registryDependencies": [
         "https://avaraui.com/r/tooltip.json",
@@ -383,6 +382,11 @@
           "path": "src/components/custom/blocks/AvatarStackBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/AvatarStackBlock.tsx"
+        },
+        {
+          "path": "src/lib/animate.ts",
+          "type": "registry:component",
+          "target": "lib/animate.ts"
         }
       ],
       "docs": "Named export: AvatarStack. `avatars` are { src, alt? }; `size` sm | md | lg; `max` faces before the +N disc; `ringClassName` is the gap colour; `action` renders last at face size; `spreadOnHover` fans the faces apart under the pointer; `liftOnHover` raises the hovered face above its neighbours; `showTooltip` controls hover tooltips."
@@ -575,8 +579,7 @@
         "scroll"
       ],
       "dependencies": [
-        "lucide-react",
-        "motion"
+        "lucide-react"
       ],
       "registryDependencies": [
         "https://avaraui.com/r/button.json",
@@ -592,6 +595,11 @@
           "path": "src/lib/accent.ts",
           "type": "registry:component",
           "target": "lib/accent.ts"
+        },
+        {
+          "path": "src/lib/animate.ts",
+          "type": "registry:component",
+          "target": "lib/animate.ts"
         }
       ],
       "docs": "Named export: BreatheHero (also available as variant='breathe' in HeroBlock). Pass `title`, `titleAccent`, `description`, `buttonLabel`, `buttonHref`, `cards`, `images`, `scrollMode`, `scrollScale`, `stagger`, `captions`, and `accent`."
@@ -1284,8 +1292,7 @@
         "layout"
       ],
       "dependencies": [
-        "lucide-react",
-        "motion"
+        "lucide-react"
       ],
       "registryDependencies": [
         "utils"
@@ -1295,6 +1302,11 @@
           "path": "src/components/custom/blocks/CtaSectionBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/CtaSectionBlock.tsx"
+        },
+        {
+          "path": "src/lib/animate.ts",
+          "type": "registry:component",
+          "target": "lib/animate.ts"
         }
       ],
       "docs": "Named exports: CTASection, CtaSection, and the PillarItem type. Accepts variant ('brand-pillars' | 'minimal' | 'split'), pillars array, custom heading, statement, summary metrics, and active accent color."
@@ -1382,8 +1394,7 @@
         "layout"
       ],
       "dependencies": [
-        "lucide-react",
-        "motion"
+        "lucide-react"
       ],
       "registryDependencies": [
         "https://avaraui.com/r/chart.json",
@@ -2191,8 +2202,7 @@
         "layout"
       ],
       "dependencies": [
-        "lucide-react",
-        "motion"
+        "lucide-react"
       ],
       "registryDependencies": [
         "https://avaraui.com/r/button.json",
@@ -2209,6 +2219,11 @@
           "path": "src/lib/accent.ts",
           "type": "registry:component",
           "target": "lib/accent.ts"
+        },
+        {
+          "path": "src/lib/animate.ts",
+          "type": "registry:component",
+          "target": "lib/animate.ts"
         }
       ],
       "docs": "Named export: Footer. Accepts `variant` (7 responsive variants: snapshot, modern-stack, wordmark-glow, simple-centered, glass-dock, neon-glow-pulse, quantum-particle-beam), `color`, `brandName`, `tagline`, `logo`, `socialLinks`, `snapshot`, `wordmarkFooter`, `wordmark`, `className`. All variants adapt across mobile, tablet, and desktop screens."
@@ -3335,7 +3350,6 @@
         "data-display"
       ],
       "dependencies": [
-        "motion",
         "next-themes"
       ],
       "registryDependencies": [
@@ -3351,6 +3365,11 @@
           "path": "src/lib/accent.ts",
           "type": "registry:component",
           "target": "lib/accent.ts"
+        },
+        {
+          "path": "src/lib/animate.ts",
+          "type": "registry:component",
+          "target": "lib/animate.ts"
         }
       ],
       "docs": "Named exports: ParticleCanvas, WordmarkGlowCanvas. Default export: ParticleCanvas. Variants: repel | wordmark-glow. Features 2D particle physics, cursor repulsion, scroll-timeline rising letters, and pointer-following radial glow."
@@ -5195,8 +5214,10 @@
       "type": "registry:ui",
       "title": "UI Liquid Glass",
       "author": "AlgorizeTech",
-      "description": "TODO: describe ui-liquid-glass. Generated placeholder.",
-      "categories": [],
+      "description": "The liquid glass surface behind the glass variants: an SVG refraction filter, a background layer and a wrapper. Install it only if you want the effect on your own elements.",
+      "categories": [
+        "utilities"
+      ],
       "dependencies": [],
       "registryDependencies": [
         "utils"
@@ -5207,7 +5228,8 @@
           "type": "registry:ui",
           "target": "components/custom/ui/liquid-glass.tsx"
         }
-      ]
+      ],
+      "docs": "Named exports: LiquidGlassWrapper, LiquidGlassBackground, LiquidGlassSvgFilter. Render LiquidGlassSvgFilter once on the page so the wrappers can reference its filter."
     },
     {
       "name": "ui-multi-select",

@@ -1,10 +1,10 @@
 ---
-title: "Navigation Menu"
+title: "Shadcn Navigation Menu"
 description: "A highly composable, accessible, and smoothly animated navigation menu built for modern React applications. Free shadcn/ui component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/navigation
 ---
 
-# Navigation Menu
+# Shadcn Navigation Menu
 
 A highly composable, accessible, and smoothly animated navigation menu built for modern React applications.
 

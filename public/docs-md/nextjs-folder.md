@@ -1,10 +1,10 @@
 ---
-title: "Folder"
+title: "Shadcn Folder"
 description: "A tactile folder — unified skeleton cards (or your own photos) tuck behind a frosted-glass front pocket. Free shadcn/ui component with GSAP and Motion builds."
 url: https://avaraui.com/docs/nextjs/folder
 ---
 
-# Folder
+# Shadcn Folder
 
 A tactile folder — unified skeleton cards (or your own photos) tuck behind a frosted-glass front pocket.
 

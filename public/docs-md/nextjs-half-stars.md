@@ -1,10 +1,10 @@
 ---
-title: "Half Stars Rating"
-description: "A sleek, customizable star rating component for Next.js applications that supports exact decimal ratings (e.g., 3.7 or 4.5) through SVG clip paths."
+title: "Shadcn Half Star Rating"
+description: "Shadcn Half Star Rating. A sleek, customizable star rating component for Next.js applications that supports exact decimal ratings (e.g.."
 url: https://avaraui.com/docs/nextjs/half-stars
 ---
 
-# Half Stars Rating
+# Shadcn Half Star Rating
 
 A sleek, customizable star rating component for Next.js applications that supports exact decimal ratings (e.g., 3.7 or 4.5) through SVG clip paths. It also supports interactive mode, allowing users to hover and click to set their own rating.
 

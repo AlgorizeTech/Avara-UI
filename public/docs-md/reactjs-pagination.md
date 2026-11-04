@@ -1,10 +1,10 @@
 ---
-title: "Pagination"
+title: "Shadcn Pagination"
 description: "A complex navigation component that intelligently handles page rendering, ellipsis calculation, and edge bounds. Free shadcn/ui Pagination component."
 url: https://avaraui.com/docs/nextjs/pagination
 ---
 
-# Pagination
+# Shadcn Pagination
 
 A complex navigation component that intelligently handles page rendering, ellipsis calculation, and edge bounds.
 

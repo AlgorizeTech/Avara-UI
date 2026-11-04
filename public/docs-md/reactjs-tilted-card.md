@@ -1,10 +1,10 @@
 ---
-title: "Tilted Card"
+title: "Shadcn Tilted Card"
 description: "A 3D tilt card with parallax, adjustable tilt strength, an optional glare and a lift on hover. Free shadcn/ui Tilted Card component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/tilted-card
 ---
 
-# Tilted Card
+# Shadcn Tilted Card
 
 A deeply interactive, parallax-driven 3D tilt component. It calculates the relative pointer coordinates and eases the card toward them through a small spring of its own (no animation library) to rotate it along the X and Y axes, mimicking a physical object held in space.
 

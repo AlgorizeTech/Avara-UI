@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "table-soft-comparison-comparison-soft",
   "type": "registry:block",
-  "title": "Table — Comparison (soft)",
+  "title": "Shadcn Table — Comparison (soft)",
   "description": "The same soft table as a plan comparison: features down the side, plans across the top, ticks and limits centred under their headers.",
   "dependencies": [
     "lucide-react",

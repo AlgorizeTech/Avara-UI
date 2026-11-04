@@ -15,9 +15,18 @@ const useIsMounted = () =>
   );
 
 import { useTheme } from "next-themes";
-import { motion, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 import { accentStyle, resolveAccent } from "@/lib/accent";
+import { springTiming, useInView, usePrefersReducedMotion } from "@/lib/animate";
+
+const LETTER_SPRING = springTiming({ stiffness: 95, damping: 14, mass: 1.25 });
+
+/** A wordmark letter rising into place, each one 80ms after the one before. */
+function letterStyle(inView: boolean, index: number): React.CSSProperties {
+  if (!inView) return { opacity: 0, transform: "translateY(75%) scale(0.94)" };
+  const timing = `${LETTER_SPRING.duration}ms ${LETTER_SPRING.easing} ${index * 80}ms`;
+  return { opacity: 1, transition: `transform ${timing}, opacity ${timing}` };
+}
 
 export interface ParticleCanvasProps extends React.HTMLAttributes<HTMLDivElement> {
   content?: string;
@@ -90,7 +99,9 @@ export function WordmarkGlowCanvas({
   const wrapRef = useRef<HTMLDivElement>(null);
   const measureRef = useRef<HTMLSpanElement>(null);
   const [fontSize, setFontSize] = useState<number | null>(null);
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = usePrefersReducedMotion();
+  const lettersRef = useRef<HTMLParagraphElement>(null);
+  const lettersInView = useInView(lettersRef, { amount: 0.25 });
 
   const updateFontSize = useCallback(() => {
     if (!wrapRef.current || !measureRef.current) return;
@@ -174,48 +185,24 @@ export function WordmarkGlowCanvas({
         className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(380px_circle_at_var(--mx,50%)_var(--my,65%),color-mix(in_oklab,var(--primary)_45%,transparent),transparent_70%)] opacity-60 transition-opacity duration-300 group-hover/word:opacity-100"
       />
 
-      <motion.p
+      <p
+        ref={lettersRef}
         aria-hidden="true"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: false, amount: 0.25 }}
         style={{
           fontSize: fontSize ? `${fontSize}px` : `clamp(1.75rem, calc(92cqi / ${charRatio}), 19rem)`,
         }}
         className="pointer-events-none mb-[-0.025em] flex w-full max-w-full select-none justify-center whitespace-nowrap font-semibold leading-[0.82] tracking-[-0.035em]"
       >
         {[...content].map((letter, index) => (
-          <motion.span
+          <span
             key={index}
-            variants={
-              reduceMotion
-                ? undefined
-                : {
-                    hidden: {
-                      y: "75%",
-                      opacity: 0,
-                      scale: 0.94,
-                    },
-                    visible: {
-                      y: "0%",
-                      opacity: 1,
-                      scale: 1,
-                      transition: {
-                        type: "spring",
-                        stiffness: 95,
-                        damping: 14,
-                        mass: 1.25,
-                        delay: index * 0.08,
-                      },
-                    },
-                  }
-            }
+            style={reduceMotion ? undefined : letterStyle(lettersInView, index)}
             className="inline-block px-[0.02em] last:pr-[0.14em] bg-gradient-to-b from-foreground/25 to-foreground/[0.03] to-85% bg-clip-text text-transparent"
           >
             {letter}
-          </motion.span>
+          </span>
         ))}
-      </motion.p>
+      </p>
     </div>
   );
 }

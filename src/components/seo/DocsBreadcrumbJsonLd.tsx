@@ -3,33 +3,8 @@
 import { usePathname } from "next/navigation";
 
 import { SITE_NAME, SITE_URL } from "@/config/site";
-import { type NavigationChild, navigation } from "@/constants/navigation";
+import { breadcrumbLabel, breadcrumbSlug } from "@/lib/breadcrumb";
 import { DEFAULT_FRAMEWORK, docsHref } from "@/lib/framework";
-
-/**
- * Sidebar labels that read badly as a breadcrumb in a search result. The
- * sidebar itself keeps them; only the structured data uses these.
- */
-const BREADCRUMB_NAMES: Record<string, string> = {
-  "ai-chat": "AI Chat",
-  "api-playground": "API Playground",
-  "context-menu": "Context Menu",
-  "floating-contact-button": "Floating Contact Button",
-};
-
-function labelFor(slug: string): string | undefined {
-  const walk = (children: NavigationChild[]): string | undefined => {
-    for (const child of children) {
-      if (child.slug === slug) return child.label;
-      const hit = child.children && walk(child.children);
-      if (hit) return hit;
-    }
-  };
-  for (const group of navigation) {
-    const hit = walk(group.children);
-    if (hit) return hit;
-  }
-}
 
 /**
  * schema.org BreadcrumbList for a docs page: Home › Docs › Page, so search
@@ -42,8 +17,8 @@ function labelFor(slug: string): string | undefined {
  */
 export function DocsBreadcrumbJsonLd() {
   const pathname = usePathname() ?? "";
-  const slug = pathname.match(/^\/docs\/[^/]+\/(.+?)\/?$/)?.[1];
-  const label = slug && (BREADCRUMB_NAMES[slug] ?? labelFor(slug));
+  const slug = breadcrumbSlug(pathname);
+  const label = slug && breadcrumbLabel(slug);
   if (!slug || !label) return null;
 
   const data = {

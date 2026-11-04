@@ -1,10 +1,10 @@
 ---
-title: "Toggle"
+title: "Shadcn Toggle"
 description: "A two-state button that can be either on or off. Free shadcn/ui Toggle component for React, Next.js and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/toggle
 ---
 
-# Toggle
+# Shadcn Toggle
 
 A two-state button that can be either on or off.
 

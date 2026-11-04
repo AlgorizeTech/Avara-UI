@@ -1,10 +1,10 @@
 ---
-title: "Calendar Dashboard"
-description: "A calendar dashboard with event management, filtering and month, week and day views, in default, minimal, glass and liquid-glass styles."
+title: "Shadcn Calendar"
+description: "Shadcn Calendar. A calendar dashboard with event management, filtering and month, week and day views, in default, minimal, glass and liquid-glass styles."
 url: https://avaraui.com/docs/nextjs/calendar
 ---
 
-# Calendar Dashboard
+# Shadcn Calendar
 
 A comprehensive, interactive calendar dashboard and date-picker system. Includes built-in event management, filtering, dynamic views (Month/Week/Day), and animated popover modals.
 

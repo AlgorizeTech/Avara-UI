@@ -1,10 +1,10 @@
 ---
-title: "Resizable"
+title: "Shadcn Resizable"
 description: "A high-performance system for building resizable panel layouts, complete with keyboard accessibility and nested group support. Free shadcn/ui component."
 url: https://avaraui.com/docs/nextjs/resizable
 ---
 
-# Resizable
+# Shadcn Resizable
 
 A high-performance system for building resizable panel layouts, complete with keyboard accessibility and nested group support.
 

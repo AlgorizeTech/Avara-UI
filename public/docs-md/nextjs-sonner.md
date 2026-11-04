@@ -1,10 +1,10 @@
 ---
-title: "Sonner (Toast Stack)"
+title: "Shadcn Sonner Toast"
 description: "An opinionated, dependency-free toast component that mimics the famous \"Sonner\" library aesthetic. Free shadcn/ui component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/sonner
 ---
 
-# Sonner (Toast Stack)
+# Shadcn Sonner Toast
 
 An opinionated, dependency-free toast component that mimics the famous "Sonner" library aesthetic.
 

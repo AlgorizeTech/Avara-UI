@@ -1,10 +1,10 @@
 ---
-title: "Invoice Dashboard"
-description: "A complete, fully functional, and editable Invoice dashboard component featuring 3 distinct design variants: Default, Corporate Executive, and Neo-Brutalist."
+title: "Shadcn Invoice Dashboard"
+description: "Shadcn Invoice Dashboard. A complete, fully functional, and editable Invoice dashboard component featuring 3 distinct design variants."
 url: https://avaraui.com/docs/nextjs/invoice
 ---
 
-# Invoice Dashboard
+# Shadcn Invoice Dashboard
 
 A complete, fully functional, and editable Invoice dashboard component featuring 3 distinct design variants: Default, Corporate Executive, and Neo-Brutalist.
 

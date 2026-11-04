@@ -1,10 +1,10 @@
 ---
-title: "Playable Piano"
+title: "Shadcn Playable Piano"
 description: "A playable piano with synthesised Web Audio sound, computer-keyboard key bindings, a volume slider and optional key labels. Free shadcn/ui component."
 url: https://avaraui.com/docs/nextjs/piano
 ---
 
-# Playable Piano
+# Shadcn Playable Piano
 
 An interactive, responsive **Playable Piano** component featuring synthesized acoustic Web Audio API sounds, physical keyboard keybindings, volume control slider, and toggleable key label indicators.
 

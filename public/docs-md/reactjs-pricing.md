@@ -1,10 +1,10 @@
 ---
-title: "Pricing Components"
-description: "Pricing sections: tiered, dot-matrix, scale, elegant, minimal and bordered plan cards, a quote builder, a comparison table and a usage slider."
+title: "Shadcn Pricing Section"
+description: "Shadcn Pricing Section. Pricing sections: tiered, dot-matrix, scale, elegant, minimal and bordered plan cards, a quote builder."
 url: https://avaraui.com/docs/nextjs/pricing
 ---
 
-# Pricing Components
+# Shadcn Pricing Section
 
 A collection of highly-converting, responsive pricing sections. Whether you need traditional tiered subscription cards, a detailed comparison table, or an interactive quote builder, these components are designed to maximize conversions.
 

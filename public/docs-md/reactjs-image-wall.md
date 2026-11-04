@@ -1,10 +1,10 @@
 ---
-title: "Image Wall"
+title: "Shadcn Image Wall"
 description: "A wall of screenshots that never ends, and a camera hanging over it. Free shadcn/ui Image Wall component for React, Next.js and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/image-wall
 ---
 
-# Image Wall
+# Shadcn Image Wall
 
 A wall of screenshots that never ends, and a camera hanging over it. The camera rests zoomed in on one card; every few seconds it pulls back, glides to the next card and settles on it, brightening that card while the rest stay dimmed. Hovering the wall holds the camera where it is.
 

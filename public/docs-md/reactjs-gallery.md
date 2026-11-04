@@ -1,10 +1,10 @@
 ---
-title: "Gallery"
-description: "Six interactive gallery layouts: a 3D photo orbit ring, a 3D video sphere, a self-rearranging bento grid, a reel dial, a pill carousel and a curved arc."
+title: "Shadcn Gallery"
+description: "Shadcn Gallery. Six interactive gallery layouts: a 3D photo orbit ring, a 3D video sphere, a self-rearranging bento grid, a reel dial."
 url: https://avaraui.com/docs/nextjs/gallery
 ---
 
-# Gallery
+# Shadcn Gallery
 
 A dynamic visual showcase featuring six interactive variants: a revolving 3D circular photo orbit ring, an interactive 3D video sphere gallery, a GSAP Flip self-rearranging moving bento grid, an interactive circular reel dial spinner, a 3D layered pill carousel, and a Framer-inspired 3D curved arc carousel gallery.
 

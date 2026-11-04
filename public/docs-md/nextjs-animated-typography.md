@@ -1,10 +1,10 @@
 ---
-title: "Animated Typography"
-description: "A highly accessible, semantic typography engine that supports all standard HTML text tags with advanced, staggered visual effects and deep layout controls."
+title: "Shadcn Animated Typography"
+description: "Shadcn Animated Typography. A highly accessible, semantic typography engine that supports all standard HTML text tags with advanced."
 url: https://avaraui.com/docs/nextjs/animated-typography
 ---
 
-# Animated Typography
+# Shadcn Animated Typography
 
 A highly accessible, semantic typography engine that supports all standard HTML text tags with advanced, staggered visual effects and deep layout controls.
 

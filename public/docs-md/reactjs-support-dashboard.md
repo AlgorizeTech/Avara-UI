@@ -1,10 +1,10 @@
 ---
-title: "Support Dashboard"
+title: "Shadcn Support Dashboard"
 description: "A helpdesk and support dashboard with a ticket workspace and a table view, in default, glass and liquid-glass styles. Free shadcn/ui Support Dashboard."
 url: https://avaraui.com/docs/nextjs/support-dashboard
 ---
 
-# Support Dashboard
+# Shadcn Support Dashboard
 
 A complete, production-ready Helpdesk and Support Dashboard interface.
 

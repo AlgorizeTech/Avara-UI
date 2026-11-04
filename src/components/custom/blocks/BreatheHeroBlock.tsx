@@ -1,18 +1,11 @@
 "use client";
 
 import React, { forwardRef, useEffect, useRef } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useSpring,
-  useMotionValue,
-  useReducedMotion,
-} from "motion/react";
 import { ArrowRight, ArrowUpRight, Check, Sparkles, Star } from "lucide-react";
 import Button from "./Button";
 import { cn } from "@/lib/utils";
 import { accentTokens } from "@/lib/accent";
+import { usePrefersReducedMotion } from "@/lib/animate";
 
 /* ═══════════════════════════════════════════════
    TYPES & INTERFACES
@@ -132,17 +125,100 @@ export const DEFAULT_BREATHE_FEATURES: string[] = [
 ];
 
 const PARALLAX_FACTORS = [0.35, 0.9, 0.15, 0.7, 0.5];
-const EASING_CUBIC: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const EASING_CUBIC = "cubic-bezier(0.16, 1, 0.3, 1)";
+
+/** Scroll animations run across this much of the scroll progress. */
+const SCROLL_END = 0.85;
+
+/** The spring smoothing scroll progress into card movement. */
+const SCROLL_SPRING = { stiffness: 90, damping: 26, mass: 0.5 };
+
+/**
+ * Where a card sits at a given scroll progress.
+ *
+ * - "grow" (Exact 1:1 Hero Breathe Framer effect): all 5 cards share the same
+ *   base height and sit at stepped Y offsets (baseY = absOffset * stagger): Card
+ *   3 at y=0, Cards 2&4 at y=28px, Cards 1&5 at y=56px. On scroll, ONLY the Center
+ *   Card scales up (1 -> scrollScale, e.g. 1.28x), while Cards 1&2 shift left
+ *   together and Cards 4&5 shift right together to clear its expanded width,
+ *   keeping the inter-card gap tight and uniform. ZERO rotation at all times!
+ * - "parallax": cards glide vertically at differentiated speeds.
+ * - "spread": cards fan out horizontally.
+ */
+function cardTransform(
+  index: number,
+  offset: number,
+  progress: number,
+  scrollMode: BreatheScrollMode,
+  scrollScale: number,
+  stagger: number,
+): string {
+  const absOffset = Math.abs(offset);
+  const signOffset = Math.sign(offset);
+  const baseY = absOffset * stagger;
+  const t = Math.min(Math.max(progress / SCROLL_END, 0), 1);
+  const mix = (from: number, to: number) => from + (to - from) * t;
+
+  switch (scrollMode) {
+    case "grow": {
+      const targetX = offset === 0 ? 0 : signOffset * (absOffset === 1 ? 18 : 22);
+      return `translate3d(${mix(0, targetX)}%, ${baseY}px, 0) scale(${mix(1, offset === 0 ? scrollScale : 1)})`;
+    }
+    case "parallax": {
+      const factor = PARALLAX_FACTORS[index % PARALLAX_FACTORS.length];
+      return `translate3d(0, ${mix(baseY, baseY - (60 + factor * 170))}px, 0)`;
+    }
+    case "spread":
+      return `translate3d(${mix(0, signOffset * absOffset * 12)}%, ${mix(baseY, baseY + absOffset * 10)}px, 0)`;
+    default:
+      return `translateY(${baseY}px)`;
+  }
+}
+
+/** An entrance played once by CSS, so text never waits on JavaScript to appear. */
+function introStyle(
+  enabled: boolean,
+  { delay, duration, y, blur = 0, scale = 1 }: { delay: number; duration: number; y: number; blur?: number; scale?: number },
+): React.CSSProperties | undefined {
+  if (!enabled) return undefined;
+  return {
+    "--intro-y": `${y}px`,
+    "--intro-blur": `${blur}px`,
+    "--intro-scale": scale,
+    animation: `breathe-intro ${duration}s ${EASING_CUBIC} ${delay}s backwards`,
+  } as React.CSSProperties;
+}
+
+const BREATHE_MOTION_CSS = `
+@keyframes breathe-intro {
+  from { opacity: 0; transform: translateY(var(--intro-y, 0px)) scale(var(--intro-scale, 1)); filter: blur(var(--intro-blur, 0px)); }
+}
+@keyframes breathe-card-in {
+  from { transform: translate(var(--intro-x, 0px), var(--intro-y, 0px)) scale(var(--intro-scale, 1)); }
+}
+@keyframes breathe-fade-in { from { opacity: 0; } }
+@keyframes breathe-underline {
+  0% { stroke-dasharray: 0 1; stroke-dashoffset: 0; opacity: 0.45; }
+  45%, 70% { stroke-dasharray: 1 1; stroke-dashoffset: 0; opacity: 1; }
+  100% { stroke-dasharray: 0 1; stroke-dashoffset: -1; opacity: 0.45; }
+}
+.breathe-underline { animation: breathe-underline 3.2s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  [data-breathe-intro] { animation: none !important; }
+  .breathe-underline { animation: none; stroke-dasharray: 1 1; opacity: 0.7; }
+}
+`;
 
 /* ═══════════════════════════════════════════════
-   CARD ARCH ITEM COMPONENT WITH MOTION SPRINGS
+   CARD ARCH ITEM COMPONENT
    ═══════════════════════════════════════════════ */
 
 interface BreatheCardProps {
   card: BreatheCardItem;
   index: number;
   offset: number;
-  progress: any;
+  /** Receives the element the scroll animation moves. */
+  cardRef: (node: HTMLDivElement | null) => void;
   scrollMode: BreatheScrollMode;
   introMode: BreatheIntroMode;
   hoverMode: BreatheHoverMode;
@@ -161,7 +237,7 @@ function BreatheCard({
   card,
   index,
   offset,
-  progress,
+  cardRef,
   scrollMode,
   introMode,
   hoverMode,
@@ -177,88 +253,17 @@ function BreatheCard({
 }: BreatheCardProps) {
   const isCenter = offset === 0;
   const absOffset = Math.abs(offset);
-  const signOffset = Math.sign(offset);
-  const baseY = absOffset * stagger;
   const isOuter = absOffset >= 2;
 
-  // Scroll animations mapped between [0, 0.85] of scroll progress
-  const scrollRange = [0, 0.85];
-
-  // 1. "grow" scroll animation (Exact 1:1 Hero Breathe Framer effect):
-  // - All 5 cards share the same base height and sit at stepped Y offsets (baseY = absOffset * stagger):
-  //   Card 3 at y=0, Cards 2&4 at y=28px, Cards 1&5 at y=56px.
-  // - On scroll: ONLY Center Card (Card 3) scales up (1 -> scrollScale, e.g. 1.28x),
-  //   while Cards 1&2 shift left together and Cards 4&5 shift right together to clear Card 3's expanded width,
-  //   keeping the inter-card gap tight and uniform.
-  // - ZERO rotation at all times!
-  const targetXPercent = isCenter
-    ? 0
-    : signOffset * (absOffset === 1 ? 18 : 22);
-  const xGrow = useTransform(progress, scrollRange, [
-    "0%",
-    `${targetXPercent}%`,
-  ]);
-  const yGrow = useTransform(progress, scrollRange, [
-    baseY,
-    baseY,
-  ]);
-  const scaleGrow = useTransform(progress, scrollRange, [
-    1,
-    isCenter ? scrollScale : 1,
-  ]);
-  const opacityGrow = useTransform(progress, scrollRange, [
-    1,
-    1,
-  ]);
-
-  // 2. "parallax" scroll mode: cards glide vertically at differentiated speeds
-  const factor = PARALLAX_FACTORS[index % PARALLAX_FACTORS.length];
-  const yParallax = useTransform(progress, scrollRange, [
-    baseY,
-    baseY - (60 + factor * 170),
-  ]);
-
-  // 3. "spread" scroll mode: cards fan out horizontally
-  const xSpread = useTransform(progress, scrollRange, [
-    "0%",
-    `${signOffset * absOffset * 12}%`,
-  ]);
-  const ySpread = useTransform(progress, scrollRange, [
-    baseY,
-    baseY + absOffset * 10,
-  ]);
-
-  // Dynamic style based on scrollMode: rotate is strictly 0 in grow mode
-  const motionStyle = prefersReducedMotion || scrollMode === "none"
-    ? { y: baseY }
-    : scrollMode === "grow"
-    ? { x: xGrow, y: yGrow, scale: scaleGrow, opacity: opacityGrow }
-    : scrollMode === "parallax"
-    ? { y: yParallax }
-    : scrollMode === "spread"
-    ? { x: xSpread, y: ySpread }
-    : { y: baseY };
-
-  // Entrance variants: completely upright (rotate: 0)
-  const getInitial = () => {
-    if (prefersReducedMotion || introMode === "none") return false;
-    switch (introMode) {
-      case "fan":
-        return {
-          opacity: 0,
-          x: `${-offset * 25}%`,
-          y: 30,
-          rotate: 0,
-          scale: 0.97,
-        };
-      case "rise":
-        return { opacity: 0, x: "0%", y: 50, rotate: 0, scale: 1 };
-      case "scale":
-        return { opacity: 0, x: "0%", y: 20, rotate: 0, scale: 0.92 };
-      default:
-        return false;
-    }
-  };
+  // Entrance: completely upright (rotate: 0). The keyframes read these values.
+  const entrance: React.CSSProperties | undefined =
+    introMode === "fan"
+      ? ({ "--intro-x": `${-offset * 25}%`, "--intro-y": "30px", "--intro-scale": 0.97 } as React.CSSProperties)
+      : introMode === "rise"
+        ? ({ "--intro-y": "50px" } as React.CSSProperties)
+        : introMode === "scale"
+          ? ({ "--intro-y": "20px", "--intro-scale": 0.92 } as React.CSSProperties)
+          : undefined;
 
   const delay = (introMode === "fan" ? 0.35 : 0.2) + absOffset * 0.08;
 
@@ -270,14 +275,8 @@ function BreatheCard({
     "h-[185px] sm:h-[240px] md:h-[285px] lg:h-[315px]";
 
   return (
-    <motion.div
-      initial={getInitial()}
-      animate={{ opacity: 1, x: "0%", y: 0, rotate: 0, scale: 1 }}
-      transition={{
-        default: { duration: 1.2, delay, ease: EASING_CUBIC },
-        opacity: { duration: 0.6, delay, ease: "easeOut" },
-        y: { duration: 1.1, delay, ease: EASING_CUBIC },
-      }}
+    <div
+      data-breathe-intro={entrance ? "" : undefined}
       className={cn(
         "relative transition-all will-change-transform flex items-start justify-center shrink-0",
         isOuter ? "hidden md:flex" : "flex"
@@ -288,6 +287,10 @@ function BreatheCard({
         maxWidth: isCenter ? 250 : 210,
         zIndex: 10 - absOffset,
         transformOrigin: "50% 42%",
+        ...entrance,
+        animation: entrance
+          ? `breathe-card-in 1.2s ${EASING_CUBIC} ${delay}s backwards, breathe-fade-in 0.6s ease-out ${delay}s backwards`
+          : undefined,
       }}
     >
       {/* Outer hover wrapper for lift & zoom interactions */}
@@ -299,9 +302,17 @@ function BreatheCard({
             "hover:-translate-y-2.5"
         )}
       >
-        <motion.div
+        <div
+          ref={cardRef}
           style={{
-            ...motionStyle,
+            transform: cardTransform(
+              index,
+              offset,
+              0,
+              prefersReducedMotion ? "none" : scrollMode,
+              scrollScale,
+              stagger,
+            ),
             borderRadius: cardRadius,
             transformOrigin: "50% 42%",
             ...(cardHeight ? { height: cardHeight } : {}),
@@ -362,9 +373,9 @@ function BreatheCard({
               {card.caption}
             </span>
           )}
-        </motion.div>
+        </div>
       </Comp>
-    </motion.div>
+    </div>
   );
 }
 
@@ -423,70 +434,9 @@ export const BreatheHero = forwardRef<HTMLElement, BreatheHeroProps>(
   ) => {
     const containerRef = useRef<HTMLElement>(null);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
-    const prefersReducedMotion = useReducedMotion() ?? false;
-
-    // Viewport & Section Scroll Trackers: works both when scrolling inside the section and when scrolling the page
-    const { scrollYProgress: windowScrollProgress } = useScroll({
-      target: containerRef,
-      offset: ["start start", "end start"],
-    });
-
-    const { scrollYProgress: internalScrollProgress } = useScroll({
-      container: internalScroll ? scrollContainerRef : undefined,
-    });
-
-    // Support iframe preview scroll (when not using internal scroll)
-    const iframeScrollProgress = useMotionValue(0);
-
-    useEffect(() => {
-      if (typeof window === "undefined") return;
-      const isIframe = window.parent && window.parent !== window;
-      if (!isIframe) return;
-
-      let parentWin: Window = window;
-      try {
-        if (window.parent.location.origin === window.location.origin) {
-          parentWin = window.parent;
-        }
-      } catch {
-        return;
-      }
-
-      const onParentScroll = () => {
-        try {
-          const frame = window.frameElement as HTMLElement | null;
-          if (!frame) return;
-          const rect = frame.getBoundingClientRect();
-          const vh = parentWin.innerHeight || 800;
-          const top = rect.top;
-          const start = vh * 0.45;
-          const end = -rect.height * 0.35;
-          const p = Math.min(Math.max((start - top) / (start - end), 0), 1);
-          iframeScrollProgress.set(p);
-        } catch {}
-      };
-
-      parentWin.addEventListener("scroll", onParentScroll, { passive: true });
-      onParentScroll();
-      return () => parentWin.removeEventListener("scroll", onParentScroll);
-    }, [iframeScrollProgress]);
-
-    const effectiveProgress = useTransform(
-      [internalScrollProgress, windowScrollProgress, iframeScrollProgress],
-      ([sInternal, sWindow, sIframe]) =>
-        Math.max(
-          internalScroll ? (sInternal as number) : 0,
-          sWindow as number,
-          sIframe as number
-        )
-    );
-
-    const smoothProgress = useSpring(effectiveProgress, {
-      stiffness: 90,
-      damping: 26,
-      mass: 0.5,
-      restDelta: 0.0005,
-    });
+    const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const prefersReducedMotion = usePrefersReducedMotion();
+    const textIntroOn = textIntro !== "none";
 
     // Resolve 5 cards
     const resolvedCards: BreatheCardItem[] = React.useMemo(() => {
@@ -505,6 +455,91 @@ export const BreatheHero = forwardRef<HTMLElement, BreatheHeroProps>(
     const centerIndex = Math.floor(resolvedCards.length / 2);
     const Comp = LinkComp || "a";
 
+    // Scroll progress, smoothed by a spring and written straight to the cards. It
+    // works when scrolling inside the section, scrolling the page, and scrolling
+    // the page around an iframe preview. The loop runs only while cards are moving.
+    useEffect(() => {
+      if (prefersReducedMotion || scrollMode === "none") return;
+      const section = containerRef.current;
+      if (!section) return;
+      const scroller = internalScroll ? scrollContainerRef.current : null;
+
+      let parentWin: Window | null = null;
+      try {
+        if (window.parent !== window && window.parent.location.origin === window.location.origin) {
+          parentWin = window.parent;
+        }
+      } catch {
+        parentWin = null;
+      }
+
+      const clamp = (value: number) => Math.min(Math.max(value, 0), 1);
+      const readProgress = () => {
+        const rect = section.getBoundingClientRect();
+        const page = rect.height ? clamp(-rect.top / rect.height) : 0;
+        const inner = scroller
+          ? clamp(scroller.scrollTop / (scroller.scrollHeight - scroller.clientHeight || 1))
+          : 0;
+        let framed = 0;
+        const frame = parentWin ? (window.frameElement as HTMLElement | null) : null;
+        if (parentWin && frame) {
+          const frameRect = frame.getBoundingClientRect();
+          const start = (parentWin.innerHeight || 800) * 0.45;
+          const end = -frameRect.height * 0.35;
+          framed = clamp((start - frameRect.top) / (start - end));
+        }
+        return Math.max(page, inner, framed);
+      };
+
+      const paint = (progress: number) => {
+        cardRefs.current.forEach((node, index) => {
+          if (!node) return;
+          node.style.transform = cardTransform(index, index - centerIndex, progress, scrollMode, scrollScale, stagger);
+        });
+      };
+
+      let goal = readProgress();
+      let position = goal;
+      let velocity = 0;
+      let raf = 0;
+      let last = 0;
+      paint(position);
+
+      const tick = (now: number) => {
+        const dt = Math.min((now - last) / 1000, 1 / 40);
+        last = now;
+        const { stiffness, damping, mass } = SCROLL_SPRING;
+        velocity += ((stiffness * (goal - position) - damping * velocity) / mass) * dt;
+        position += velocity * dt;
+        if (Math.abs(goal - position) < 0.0005 && Math.abs(velocity) < 0.0005) {
+          position = goal;
+          velocity = 0;
+          raf = 0;
+          paint(position);
+          return;
+        }
+        paint(position);
+        raf = requestAnimationFrame(tick);
+      };
+
+      const wake = () => {
+        goal = readProgress();
+        if (raf || goal === position) return;
+        last = performance.now();
+        raf = requestAnimationFrame(tick);
+      };
+
+      window.addEventListener("scroll", wake, { passive: true, capture: true });
+      window.addEventListener("resize", wake);
+      parentWin?.addEventListener("scroll", wake, { passive: true });
+      return () => {
+        cancelAnimationFrame(raf);
+        window.removeEventListener("scroll", wake, { capture: true });
+        window.removeEventListener("resize", wake);
+        parentWin?.removeEventListener("scroll", wake);
+      };
+    }, [prefersReducedMotion, scrollMode, scrollScale, stagger, internalScroll, centerIndex]);
+
     const customStyle: React.CSSProperties = {
       ...accentTokens(accent || color),
       ...style,
@@ -517,27 +552,17 @@ export const BreatheHero = forwardRef<HTMLElement, BreatheHeroProps>(
               1. REFINED GLASSMORPHIC ANNOUNCEMENT PILL BADGE
               ═════════════════════════════════════════ */}
           {badge ? (
-            <motion.div
-              initial={
-                prefersReducedMotion || textIntro === "none"
-                  ? false
-                  : { opacity: 0, y: -10, filter: "blur(6px)" }
-              }
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 0.9, delay: 0.05, ease: EASING_CUBIC }}
+            <div
+              data-breathe-intro=""
+              style={introStyle(textIntroOn, { duration: 0.9, delay: 0.05, y: -10, blur: 6 })}
               className="mb-4 sm:mb-6"
             >
               {badge}
-            </motion.div>
+            </div>
           ) : badgeText ? (
-            <motion.div
-              initial={
-                prefersReducedMotion || textIntro === "none"
-                  ? false
-                  : { opacity: 0, y: -10, filter: "blur(6px)" }
-              }
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 0.9, delay: 0.05, ease: EASING_CUBIC }}
+            <div
+              data-breathe-intro=""
+              style={introStyle(textIntroOn, { duration: 0.9, delay: 0.05, y: -10, blur: 6 })}
               className="mb-4 sm:mb-6 max-w-full"
             >
               <Comp
@@ -561,31 +586,21 @@ export const BreatheHero = forwardRef<HTMLElement, BreatheHeroProps>(
                 </span>
                 <ArrowUpRight className="size-3 sm:size-3.5 text-primary/80 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 shrink-0" />
               </Comp>
-            </motion.div>
+            </div>
           ) : null}
 
           {/* ═════════════════════════════════════════
               2. COHESIVE MODERN DISPLAY HEADLINE (100% RESPONSIVE)
               ═════════════════════════════════════════ */}
-          <motion.h1
-            initial={
-              prefersReducedMotion || textIntro === "none"
-                ? false
-                : { opacity: 0, y: 18, filter: "blur(8px)" }
-            }
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{ duration: 1.1, delay: 0.12, ease: EASING_CUBIC }}
-            style={
-              titleStyle === "serif"
-                ? {
-                    fontFamily:
-                      '"Playfair Display", "Newsreader", var(--font-cooper), Georgia, serif',
-                  }
-                : {
-                    fontFamily:
-                      '"Plus Jakarta Sans", "Inter", var(--font-sans), system-ui, sans-serif',
-                  }
-            }
+          <h1
+            data-breathe-intro=""
+            style={{
+              ...introStyle(textIntroOn, { duration: 1.1, delay: 0.12, y: 18, blur: 8 }),
+              fontFamily:
+                titleStyle === "serif"
+                  ? '"Playfair Display", "Newsreader", var(--font-cooper), Georgia, serif'
+                  : '"Plus Jakarta Sans", "Inter", var(--font-sans), system-ui, sans-serif',
+            }}
             className="max-w-4xl px-1 sm:px-0 text-[1.75rem] sm:text-5xl md:text-6xl lg:text-[4.25rem] xl:text-[4.65rem] font-bold tracking-[-0.035em] text-foreground leading-[1.15] sm:leading-[1.08] text-balance"
           >
             <span className="block text-foreground">{title}</span>
@@ -616,49 +631,30 @@ export const BreatheHero = forwardRef<HTMLElement, BreatheHeroProps>(
                     strokeLinecap="round"
                     className="opacity-15"
                   />
-                  <motion.path
+                  <path
                     d="M3 9C62 2.5 178 2.5 237 9"
                     stroke="currentColor"
                     strokeWidth="3"
                     strokeLinecap="round"
-                    initial={{ pathLength: 0, pathOffset: 0, opacity: 0.5 }}
-                    animate={
-                      prefersReducedMotion
-                        ? { pathLength: 1, opacity: 0.7 }
-                        : {
-                            pathLength: [0, 1, 1, 0],
-                            pathOffset: [0, 0, 0, 1],
-                            opacity: [0.45, 1, 1, 0.45],
-                          }
-                    }
-                    transition={{
-                      duration: 3.2,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      times: [0, 0.45, 0.7, 1],
-                    }}
+                    pathLength={1}
+                    className="breathe-underline"
                   />
                 </svg>
               </span>
             )}
-          </motion.h1>
+          </h1>
 
           {/* ═════════════════════════════════════════
               3. REFINED SUBTITLE DESCRIPTION
               ═════════════════════════════════════════ */}
           {description && (
-            <motion.p
-              initial={
-                prefersReducedMotion || textIntro === "none"
-                  ? false
-                  : { opacity: 0, y: 14, filter: "blur(6px)" }
-              }
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 1.1, delay: 0.24, ease: EASING_CUBIC }}
+            <p
+              data-breathe-intro=""
+              style={introStyle(textIntroOn, { duration: 1.1, delay: 0.24, y: 14, blur: 6 })}
               className="mt-3 sm:mt-5 max-w-xl sm:max-w-2xl px-2 sm:px-0 text-xs sm:text-base md:text-[1.0625rem] text-muted-foreground/90 leading-relaxed font-normal tracking-[-0.01em] text-balance"
             >
               {description}
-            </motion.p>
+            </p>
           )}
 
           {/* ═════════════════════════════════════════
@@ -666,14 +662,9 @@ export const BreatheHero = forwardRef<HTMLElement, BreatheHeroProps>(
               (FOLLOWS GLOBAL THEME --radius DYNAMICALLY)
               ═════════════════════════════════════════ */}
           {(buttonLabel || secondaryButtonLabel) && (
-            <motion.div
-              initial={
-                prefersReducedMotion || textIntro === "none"
-                  ? false
-                  : { opacity: 0, y: 12, scale: 0.96 }
-              }
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 1.1, delay: 0.36, ease: EASING_CUBIC }}
+            <div
+              data-breathe-intro=""
+              style={introStyle(textIntroOn, { duration: 1.1, delay: 0.36, y: 12, scale: 0.96 })}
               className="mt-6 sm:mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto"
             >
               {buttonLabel && (
@@ -705,21 +696,16 @@ export const BreatheHero = forwardRef<HTMLElement, BreatheHeroProps>(
                   </Button>
                 </Comp>
               )}
-            </motion.div>
+            </div>
           )}
 
           {/* ═════════════════════════════════════════
               5. OPTIONAL TRUST RATING & CLIENT AVATARS
               ═════════════════════════════════════════ */}
           {showTrust && (
-            <motion.div
-              initial={
-                prefersReducedMotion || textIntro === "none"
-                  ? false
-                  : { opacity: 0, y: 10, filter: "blur(4px)" }
-              }
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 1.1, delay: 0.46, ease: EASING_CUBIC }}
+            <div
+              data-breathe-intro=""
+              style={introStyle(textIntroOn, { duration: 1.1, delay: 0.46, y: 10, blur: 4 })}
               className="mt-6 sm:mt-7 flex flex-wrap items-center justify-center gap-2.5 sm:gap-3 text-xs sm:text-sm text-muted-foreground"
             >
               {trustAvatars && trustAvatars.length > 0 && (
@@ -753,21 +739,16 @@ export const BreatheHero = forwardRef<HTMLElement, BreatheHeroProps>(
                   <span className="text-muted-foreground">({trustCount})</span>
                 )}
               </div>
-            </motion.div>
+            </div>
           )}
 
           {/* ═════════════════════════════════════════
               6. OPTIONAL FEATURE HIGHLIGHT CHIPS
               ═════════════════════════════════════════ */}
           {features && features.length > 0 && (
-            <motion.div
-              initial={
-                prefersReducedMotion || textIntro === "none"
-                  ? false
-                  : { opacity: 0, y: 8 }
-              }
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.54, ease: EASING_CUBIC }}
+            <div
+              data-breathe-intro=""
+              style={introStyle(textIntroOn, { duration: 1, delay: 0.54, y: 8 })}
               className="mt-5 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs font-medium text-muted-foreground"
             >
               {features.map((feat, idx) => (
@@ -779,7 +760,7 @@ export const BreatheHero = forwardRef<HTMLElement, BreatheHeroProps>(
                   <span>{feat}</span>
                 </div>
               ))}
-            </motion.div>
+            </div>
           )}
 
           {/* ═════════════════════════════════════════
@@ -798,7 +779,9 @@ export const BreatheHero = forwardRef<HTMLElement, BreatheHeroProps>(
                 card={card}
                 index={index}
                 offset={index - centerIndex}
-                progress={smoothProgress}
+                cardRef={(node) => {
+                  cardRefs.current[index] = node;
+                }}
                 scrollMode={scrollMode}
                 introMode={introMode}
                 hoverMode={hoverMode}
@@ -836,6 +819,7 @@ export const BreatheHero = forwardRef<HTMLElement, BreatheHeroProps>(
         {/* Display & Editorial Web Fonts */}
         <style>{`
           @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap');
+          ${BREATHE_MOTION_CSS}
         `}</style>
 
         {internalScroll ? (

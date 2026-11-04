@@ -1,10 +1,10 @@
 ---
-title: "Social Links"
-description: "Social media icon links for X, GitHub, LinkedIn, YouTube, Instagram, Facebook, Discord, Dribbble and email, each named for screen readers."
+title: "Shadcn Social Links"
+description: "Shadcn Social Links. Social media icon links for X, GitHub, LinkedIn, YouTube, Instagram, Facebook, Discord, Dribbble and email, each named for screen readers."
 url: https://avaraui.com/docs/nextjs/social-links
 ---
 
-# Social Links
+# Shadcn Social Links
 
 A row of brand marks that link out. Hand it the networks you have — X, GitHub, LinkedIn, YouTube, Instagram, Facebook, Discord, Dribbble, email — and it draws one tile per link, each with an accessible name, opening off-site links in a new tab.
 

@@ -1,10 +1,10 @@
 ---
-title: "Premium Animated List"
-description: "A list that staggers its items into view with 3D perspective transforms and no animation library, plus a glassmorphic spotlight that follows the mouse."
+title: "Shadcn Animated List"
+description: "Shadcn Animated List. A list that staggers its items into view with 3D perspective transforms and no animation library."
 url: https://avaraui.com/docs/nextjs/animated-list
 ---
 
-# Premium Animated List
+# Shadcn Animated List
 
 A hyper-polished list component that staggers its children into view using 3D perspective transforms (no animation library), complete with a mouse-tracking glassmorphic spotlight hover effect.
 
