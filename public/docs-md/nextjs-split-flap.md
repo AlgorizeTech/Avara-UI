@@ -1,10 +1,10 @@
 ---
-title: "Split-Flap Display"
-description: "A split-flap (Solari board) display with 3D flipping cards, split creases, hinge notches and synthesised click sounds. Animated with GSAP."
+title: "Shadcn Split-Flap Display"
+description: "A split-flap (Solari board) display with 3D flipping cards, split creases, hinge notches and synthesised click sounds. Shadcn/ui, animated with GSAP."
 url: https://avaraui.com/docs/nextjs/split-flap
 ---
 
-# Split-Flap Display
+# Shadcn Split-Flap Display
 
 An authentic, physics-driven **Split-Flap Display** component (Solari board) simulating retro-mechanical flap cards, 3D perspective flips (`rotateX`), horizontal split creases, mechanical hinge notches, and realistic synthesized click sounds.
 

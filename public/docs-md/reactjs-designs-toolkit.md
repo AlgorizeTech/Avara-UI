@@ -1,10 +1,10 @@
 ---
-title: "Designs Toolkit"
+title: "Shadcn Designs Toolkit"
 description: "A pinned resource toolkit grid inspired by creative studio moodboards and curated design directories. Free shadcn/ui component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/designs-toolkit
 ---
 
-# Designs Toolkit
+# Shadcn Designs Toolkit
 
 A pinned resource toolkit grid inspired by creative studio moodboards and curated design directories. Cards feature authentic glossy **3D pushpins**, custom brand icon badges, staggered column vertical rhythm, and connected corkboard path lines across a subtle blueprint grid.
 

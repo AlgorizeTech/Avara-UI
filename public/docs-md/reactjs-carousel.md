@@ -1,10 +1,10 @@
 ---
-title: "Carousel"
+title: "Shadcn Carousel"
 description: "A collection of highly interactive carousel components for image galleries, hero sections, and fluid presentations. Free shadcn/ui Carousel component."
 url: https://avaraui.com/docs/nextjs/carousel
 ---
 
-# Carousel
+# Shadcn Carousel
 
 A collection of highly interactive carousel components for image galleries, hero sections, and fluid presentations.
 

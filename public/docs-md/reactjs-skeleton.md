@@ -1,10 +1,10 @@
 ---
-title: "Skeleton Loader"
-description: "Skeleton loading placeholders for cards, profiles, text, rectangles and circles, with a pulse or no animation, and custom compositions."
+title: "Shadcn Skeleton"
+description: "Shadcn Skeleton. Skeleton loading placeholders for cards, profiles, text, rectangles and circles, with a pulse or no animation, and custom compositions."
 url: https://avaraui.com/docs/nextjs/skeleton
 ---
 
-# Skeleton Loader
+# Shadcn Skeleton
 
 A skeleton loader: a high-performance visual placeholder system used to reduce perceived loading times.
 

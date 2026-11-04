@@ -1,10 +1,16 @@
 "use client";
 
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useEffect, useLayoutEffect, useCallback, useMemo } from "react";
 import { createPortal } from "react-dom";
-import { motion, AnimatePresence, type Transition } from "motion/react";
 import { Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+  prefersReducedMotion,
+  springTiming,
+  usePrefersReducedMotion,
+  type SpringOptions,
+  type Timing,
+} from "@/lib/animate";
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import {
   Tooltip,
@@ -145,12 +151,141 @@ export function AvatarGroupTooltipArrow({ className, ...props }: AvatarGroupTool
 }
 AvatarGroupTooltipArrow.displayName = "AvatarGroupTooltipArrow";
 
+/** A spring, or a fixed `duration` in seconds with a CSS easing or cubic-bezier points. */
+export type AvatarTransition =
+  | (SpringOptions & { type?: "spring" })
+  | { duration: number; ease?: string | [number, number, number, number] };
+
+const SHIFT_SPRING: AvatarTransition = { type: "spring", stiffness: 300, damping: 17 };
+const TOOLTIP_SPRING: AvatarTransition = { type: "spring", stiffness: 300, damping: 35 };
+
+function timingOf(transition: AvatarTransition): Timing {
+  if ("duration" in transition) {
+    const { duration, ease = "ease" } = transition;
+    return {
+      duration: duration * 1000,
+      easing: Array.isArray(ease) ? `cubic-bezier(${ease.join(",")})` : ease,
+    };
+  }
+  return springTiming(transition);
+}
+
+const TOOLTIP_TEXT_CSS = `
+@keyframes avatar-tooltip-text { from { opacity: 0; transform: translateY(6px); } }
+@media (prefers-reduced-motion: reduce) { [data-avatar-tooltip-text] { animation: none !important; } }
+`;
+
+/**
+ * The tooltip, kept on screen through its exit: `tip` goes null the moment the
+ * pointer leaves, and the last content stays until the animation out finishes.
+ */
+function FloatingTooltip({
+  tip,
+  tipKey,
+  coords,
+  timing,
+}: {
+  tip: TooltipItemData | null;
+  tipKey: number | null;
+  coords: { x: number; y: number } | null;
+  timing: Timing;
+}) {
+  const [present, setPresent] = useState(false);
+  if (tip && !present) setPresent(true);
+
+  const last = useRef<{ tip: TooltipItemData; tipKey: number | null; x: number; y: number } | null>(null);
+  if (tip && coords) last.current = { tip, tipKey, x: coords.x, y: coords.y };
+
+  const ref = useRef<HTMLDivElement>(null);
+  const running = useRef<Animation | null>(null);
+  const open = Boolean(tip);
+  const x = last.current?.x;
+  const y = last.current?.y;
+
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el || x === undefined || y === undefined) return;
+    const pose = (opacity: number, scale: number, lift: number) => ({
+      opacity,
+      transform: `translate3d(${x}px, ${y + lift}px, 0) scale(${scale})`,
+    });
+    const hidden = pose(0, 0.85, -4);
+    // Interrupted mid-way, it carries on from where it is rather than restarting.
+    const computed = getComputedStyle(el);
+    const from = running.current ? { opacity: computed.opacity, transform: computed.transform } : hidden;
+    running.current?.cancel();
+    const animation = el.animate([from, open ? pose(1, 1, -14) : hidden], {
+      ...timing,
+      duration: prefersReducedMotion() ? 0 : timing.duration,
+      fill: "both",
+    });
+    running.current = animation;
+    if (!open) {
+      animation.onfinish = () => {
+        running.current = null;
+        setPresent(false);
+      };
+    }
+  }, [open, x, y, timing]);
+
+  const shown = last.current;
+  if (!present || !shown) return null;
+
+  return (
+    <div
+      ref={ref}
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        pointerEvents: "none",
+        zIndex: 9999,
+      }}
+    >
+      <style>{TOOLTIP_TEXT_CSS}</style>
+      <div className="-translate-x-1/2 -translate-y-full flex flex-col items-center">
+        <div className="bg-primary text-primary-foreground z-50 w-fit max-w-xs rounded-md px-3.5 py-1.5 text-xs text-balance shadow-md flex items-center justify-center relative">
+          <div className="overflow-hidden whitespace-nowrap py-0.5">
+            <div
+              key={shown.tipKey}
+              className={cn(
+                "flex flex-col",
+                shown.tip.designation ? "items-start text-left" : "items-center text-center",
+              )}
+            >
+              <span
+                data-avatar-tooltip-text
+                style={{ animation: "avatar-tooltip-text 0.36s cubic-bezier(0.16, 1, 0.3, 1) 0.06s backwards" }}
+                className="font-semibold text-xs leading-tight tracking-tight text-primary-foreground whitespace-nowrap"
+              >
+                {shown.tip.title}
+              </span>
+              {shown.tip.designation && (
+                <span
+                  data-avatar-tooltip-text
+                  style={{ animation: "avatar-tooltip-text 0.38s cubic-bezier(0.16, 1, 0.3, 1) 0.18s backwards" }}
+                  className="text-[11px] text-primary-foreground/85 leading-tight mt-1 whitespace-nowrap"
+                >
+                  {shown.tip.designation}
+                </span>
+              )}
+            </div>
+          </div>
+          <span
+            className="fill-primary size-2.5 absolute -bottom-1 left-1/2 -translate-x-1/2 rotate-45 bg-primary pointer-events-none"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export interface AvatarGroupProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "translate"> {
   children?: React.ReactNode;
   invertOverlap?: boolean;
   translate?: string | number;
-  transition?: Transition;
-  tooltipTransition?: Transition;
+  transition?: AvatarTransition;
+  tooltipTransition?: AvatarTransition;
   /** Whether to show the hover tooltip. Defaults to true. */
   showTooltip?: boolean;
   /** Alias for showTooltip. */
@@ -168,8 +303,8 @@ export const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
       children,
       invertOverlap = true,
       translate = "-30%",
-      transition = { type: "spring", stiffness: 300, damping: 17 },
-      tooltipTransition = { type: "spring", stiffness: 300, damping: 35 },
+      transition = SHIFT_SPRING,
+      tooltipTransition = TOOLTIP_SPRING,
       showTooltip = true,
       tooltip = true,
       className,
@@ -182,6 +317,10 @@ export const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
     const [coords, setCoords] = useState<{ x: number; y: number } | null>(null);
     const [mounted, setMounted] = useState(false);
     const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const reduceMotion = usePrefersReducedMotion();
+    const shift = useMemo(() => timingOf(transition), [transition]);
+    const tooltipTiming = useMemo(() => timingOf(tooltipTransition), [tooltipTransition]);
+    const lift = typeof translate === "number" ? `${translate}px` : translate;
 
     useEffect(() => {
       setMounted(true);
@@ -290,12 +429,14 @@ export const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
                   }
                 }}
               >
-                <motion.div
-                  animate={{ y: isHovered ? translate : 0 }}
-                  transition={transition}
+                <div
+                  style={{
+                    transform: isHovered ? `translateY(${lift})` : undefined,
+                    transition: reduceMotion ? undefined : `transform ${shift.duration}ms ${shift.easing}`,
+                  }}
                 >
                   {cleanChild}
-                </motion.div>
+                </div>
               </div>
             );
           })}
@@ -306,74 +447,12 @@ export const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
           isTooltipEnabled &&
           typeof document !== "undefined" &&
           createPortal(
-            <AnimatePresence>
-              {activeIndex !== null && coords && tooltips[activeIndex] && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.85, x: coords.x, y: coords.y - 4 }}
-                  animate={{
-                    opacity: 1,
-                    scale: 1,
-                    x: coords.x,
-                    y: coords.y - 14,
-                  }}
-                  exit={{ opacity: 0, scale: 0.85, x: coords.x, y: coords.y - 4 }}
-                  transition={tooltipTransition}
-                  style={{
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    pointerEvents: "none",
-                    zIndex: 9999,
-                  }}
-                >
-                  <div className="-translate-x-1/2 -translate-y-full flex flex-col items-center">
-                    <div className="bg-primary text-primary-foreground z-50 w-fit max-w-xs rounded-md px-3.5 py-1.5 text-xs text-balance shadow-md flex items-center justify-center relative">
-                      <div className="overflow-hidden whitespace-nowrap py-0.5">
-                        <div
-                          key={activeIndex}
-                          className={cn(
-                            "flex flex-col",
-                            tooltips[activeIndex]?.designation
-                              ? "items-start text-left"
-                              : "items-center text-center",
-                          )}
-                        >
-                          <motion.span
-                            initial={{ opacity: 0, y: 6 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{
-                              duration: 0.36,
-                              ease: [0.16, 1, 0.3, 1],
-                              delay: 0.06,
-                            }}
-                            className="font-semibold text-xs leading-tight tracking-tight text-primary-foreground whitespace-nowrap"
-                          >
-                            {tooltips[activeIndex]?.title}
-                          </motion.span>
-                          {tooltips[activeIndex]?.designation && (
-                            <motion.span
-                              initial={{ opacity: 0, y: 6 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{
-                                duration: 0.38,
-                                ease: [0.16, 1, 0.3, 1],
-                                delay: 0.18,
-                              }}
-                              className="text-[11px] text-primary-foreground/85 leading-tight mt-1 whitespace-nowrap"
-                            >
-                              {tooltips[activeIndex]?.designation}
-                            </motion.span>
-                          )}
-                        </div>
-                      </div>
-                      <span
-                        className="fill-primary size-2.5 absolute -bottom-1 left-1/2 -translate-x-1/2 rotate-45 bg-primary pointer-events-none"
-                      />
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>,
+            <FloatingTooltip
+              tip={activeIndex !== null && coords ? tooltips[activeIndex] : null}
+              tipKey={activeIndex}
+              coords={coords}
+              timing={tooltipTiming}
+            />,
             document.body,
           )}
       </>

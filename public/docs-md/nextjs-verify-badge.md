@@ -1,10 +1,10 @@
 ---
-title: "Verify Badge"
-description: "A versatile verified badge component that can be customized with various styles (blue, gold, dark, gray), sizes, and an optional subtle pulse animation for…"
+title: "Shadcn Verify Badge"
+description: "Shadcn Verify Badge. A versatile verified badge component that can be customized with various styles (blue, gold, dark, gray), sizes."
 url: https://avaraui.com/docs/nextjs/verify-badge
 ---
 
-# Verify Badge
+# Shadcn Verify Badge
 
 A versatile verified badge component that can be customized with various styles (blue, gold, dark, gray), sizes, and an optional subtle pulse animation for premium aesthetics.
 

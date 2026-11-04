@@ -1,10 +1,10 @@
 ---
-title: "Card"
+title: "Shadcn Card"
 description: "A flexible container used to group related information and actions together in a visually distinct box. Free shadcn/ui component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/card
 ---
 
-# Card
+# Shadcn Card
 
 A flexible container used to group related information and actions together in a visually distinct box.
 

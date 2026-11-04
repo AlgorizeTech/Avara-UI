@@ -1,10 +1,10 @@
 ---
-title: "Flow Gallery"
-description: "Horizontal and diagonal 3D cascading gallery stream with continuous auto-flow motion, drag inertia physics, and isometric perspective options."
+title: "Shadcn Flow Gallery"
+description: "Shadcn Flow Gallery. Horizontal and diagonal 3D cascading gallery stream with continuous auto-flow motion, drag inertia physics."
 url: https://avaraui.com/docs/nextjs/flow-gallery
 ---
 
-# Flow Gallery
+# Shadcn Flow Gallery
 
 Horizontal and diagonal 3D cascading gallery stream with continuous auto-flow motion, drag inertia physics, and isometric perspective options.
 

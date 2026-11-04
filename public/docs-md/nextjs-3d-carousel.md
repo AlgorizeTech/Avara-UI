@@ -1,10 +1,10 @@
 ---
-title: "3D Carousel"
+title: "Shadcn 3D Carousel"
 description: "A 3D carousel with a fanned card layout, a configurable deck length and optional arrows and dots. Free shadcn/ui component with GSAP and Motion builds."
 url: https://avaraui.com/docs/nextjs/3d-carousel
 ---
 
-# 3D Carousel
+# Shadcn 3D Carousel
 
 A premium 3D carousel with a fanned layout, smooth interactive animations, and a sleek adaptive aesthetic. It features physics-based touch and mouse drag gestures, keyboard arrow navigation, circular endless fanning, and an auto-play timer that intelligently pauses on hover.
 

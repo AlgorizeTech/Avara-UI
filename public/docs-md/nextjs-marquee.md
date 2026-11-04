@@ -1,10 +1,10 @@
 ---
-title: "Marquee"
+title: "Shadcn Marquee"
 description: "An infinite, seamless scrolling marquee ideal for logos, testimonials, and image galleries. Free shadcn/ui Marquee component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/marquee
 ---
 
-# Marquee
+# Shadcn Marquee
 
 An infinite, seamless scrolling marquee ideal for logos, testimonials, and image galleries.
 

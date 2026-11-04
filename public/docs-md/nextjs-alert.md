@@ -1,10 +1,10 @@
 ---
-title: "Alerts"
+title: "Shadcn Alert"
 description: "A highly versatile Alert component designed to communicate states and important information to your users. Free shadcn/ui component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/alert
 ---
 
-# Alerts
+# Shadcn Alert
 
 A highly versatile Alert component designed to communicate states and important information to your users.
 

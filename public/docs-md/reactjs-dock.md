@@ -1,10 +1,10 @@
 ---
-title: "Dock"
-description: "A macOS-style dock that magnifies icons under the pointer, with label tooltips, active-app indicators, notification badges and a touch-safe mobile layout."
+title: "Shadcn Dock"
+description: "Shadcn Dock. A macOS-style dock that magnifies icons under the pointer, with label tooltips, active-app indicators."
 url: https://avaraui.com/docs/nextjs/dock
 ---
 
-# Dock
+# Shadcn Dock
 
 A premium, macOS-inspired navigation dock featuring real-time physics magnification, floating label tooltips, active application indicators, and notification badges. Highly customizable via direct layout and physics props, it adapts seamlessly between desktop floating tooltips and touch-safe mobile layouts.
 

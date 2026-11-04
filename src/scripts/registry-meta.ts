@@ -1209,6 +1209,12 @@ export const META: Record<string, ItemMeta> = {
   // shadcn/ui (MIT, Copyright (c) 2023 shadcn). See THIRD-PARTY-NOTICES.md.
   // The attribution is repeated in each item's `docs` so it reaches the
   // consumer at install time, not only in a file in our repo.
+  "ui-liquid-glass": {
+    description:
+      "The liquid glass surface behind the glass variants: an SVG refraction filter, a background layer and a wrapper. Install it only if you want the effect on your own elements.",
+    categories: ["utilities"],
+    docs: "Named exports: LiquidGlassWrapper, LiquidGlassBackground, LiquidGlassSvgFilter. Render LiquidGlassSvgFilter once on the page so the wrappers can reference its filter.",
+  },
   "ui-accordion": {
     description:
       "The Radix-backed accordion primitive that the higher-level Accordion block composes. Install it only if you want the unstyled base directly.",

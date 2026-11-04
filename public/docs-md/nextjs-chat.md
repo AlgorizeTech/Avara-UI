@@ -1,10 +1,10 @@
 ---
-title: "Chat Application"
-description: "A chat app interface with search filtering, simulated typing and replies, unread badges and auto-scroll, in default, minimal, glass and liquid-glass styles."
+title: "Shadcn Chat Application"
+description: "Shadcn Chat Application. A chat app interface with search filtering, simulated typing and replies, unread badges and auto-scroll, in default, minimal."
 url: https://avaraui.com/docs/nextjs/chat
 ---
 
-# Chat Application
+# Shadcn Chat Application
 
 A fully interactive, encapsulated chat interface. Features include search filtering, simulated typing/replies, dynamic unread badges, auto-scrolling, and a responsive mobile drawer sidebar.
 

@@ -1,10 +1,10 @@
 ---
-title: "Loader"
+title: "Shadcn Loader"
 description: "Dependency-free loading indicators: a spinner, dots, a pulse and a bar. Free shadcn/ui Loader component for React, Next.js and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/loader
 ---
 
-# Loader
+# Shadcn Loader
 
 A premium, dependency-free loading indicator component.
 

@@ -1,10 +1,10 @@
 ---
-title: "Modal"
+title: "Shadcn Modal"
 description: "A versatile, accessible dialog component with built-in design variants. Free shadcn/ui Modal component for React, Next.js and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/modal
 ---
 
-# Modal
+# Shadcn Modal
 
 A versatile, accessible dialog component with built-in design variants. Choose from pre-configured variants (`standard`, `confirmation`, `form`, `fullscreen`, `glass`, `liquid-glass`) to instantly get complete layout, responsive sizing, and interactive buttons—or use composable subcomponents for custom dialogs.
 

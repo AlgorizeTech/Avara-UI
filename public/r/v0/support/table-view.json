@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "support-table-view",
   "type": "registry:block",
-  "title": "Support Dashboard — Table view",
+  "title": "Shadcn Support Dashboard — Table view",
   "description": "The \"Table view\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",

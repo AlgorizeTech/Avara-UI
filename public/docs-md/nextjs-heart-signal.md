@@ -1,10 +1,10 @@
 ---
-title: "Heart Signal"
-description: "A heartbeat and pulse visualisation with three animation variants (ECG line, pulse heart, cardiac wave), a live BPM badge and theme colour support."
+title: "Shadcn Heart Signal"
+description: "Shadcn Heart Signal. A heartbeat and pulse visualisation with three animation variants (ECG line, pulse heart, cardiac wave)."
 url: https://avaraui.com/docs/nextjs/heart-signal
 ---
 
-# Heart Signal
+# Shadcn Heart Signal
 
 A slow, ultra-smooth cardiac telemetry and pulse visualization component with 3 distinct animation variants (`ecg-line`, `pulse-heart`, and `cardiac-wave`), live BPM badge, and active theme color integration.
 

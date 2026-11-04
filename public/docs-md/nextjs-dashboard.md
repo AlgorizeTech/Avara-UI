@@ -1,10 +1,10 @@
 ---
-title: "Dashboard"
-description: "An admin dashboard page: totals, a period switch, an overview chart per metric, an activity feed, traffic sources, visitors by country and top authors."
+title: "Shadcn Dashboard"
+description: "Shadcn Dashboard. An admin dashboard page: totals, a period switch, an overview chart per metric, an activity feed, traffic sources."
 url: https://avaraui.com/docs/nextjs/dashboard
 ---
 
-# Dashboard
+# Shadcn Dashboard
 
 An admin dashboard home on its own canvas: a greeting with all-time totals, a period switch, an overview chart with a tab per metric, the activity feed, traffic sources, visitors by country and the top authors. Every number arrives through props, so you point it at your API and the layout, the empty states and the narrow-screen stacking take care of themselves.
 

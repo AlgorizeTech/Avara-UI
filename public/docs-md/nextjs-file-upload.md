@@ -1,10 +1,10 @@
 ---
-title: "UX Engineered Upload Flow"
-description: "A file upload dropzone with an upload queue and upload states, plus a simple file input and a folder drop target. GSAP and Motion builds."
+title: "Shadcn File Upload"
+description: "A file upload dropzone with an upload queue and upload states, plus a simple file input and a folder drop target. Shadcn/ui with GSAP and Motion builds."
 url: https://avaraui.com/docs/nextjs/file-upload
 ---
 
-# UX Engineered Upload Flow
+# Shadcn File Upload
 
 A highly-orchestrated, premium file upload component suite based on modern UX engineering principles. It goes far beyond a native `<input type="file">` by addressing five distinct user feedback signals.
 

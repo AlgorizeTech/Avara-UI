@@ -1,10 +1,10 @@
 ---
-title: "Particle Canvas"
-description: "A 2D canvas component that turns text into thousands of interactive particles that scatter from the pointer and follow your theme colour."
+title: "Shadcn Particle Canvas"
+description: "Shadcn Particle Canvas. A 2D canvas component that turns text into thousands of interactive particles that scatter from the pointer and follow your theme…"
 url: https://avaraui.com/docs/nextjs/particle-canvas
 ---
 
-# Particle Canvas
+# Shadcn Particle Canvas
 
 An ultra-responsive, high-performance 2D HTML Canvas component that converts text into thousands of interactive particles with fluid, organic repulsion physics matching your active theme color.
 

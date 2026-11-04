@@ -1,10 +1,10 @@
 ---
-title: "Component Wall"
-description: "A landing hero for a component library: a headline that keeps one word changing, an install command and two actions between two walls of screenshots."
+title: "Shadcn Component Wall"
+description: "Shadcn Component Wall. A landing hero for a component library: a headline that keeps one word changing."
 url: https://avaraui.com/docs/nextjs/component-wall
 ---
 
-# Component Wall
+# Shadcn Component Wall
 
 A landing hero for a component library. In the middle, the copy — a small badge, a headline that blurs in word by word and keeps one word changing, a lead, an install command, two actions, a line of trust and, closing the column, the tools it is built with: a label, then two rows of marks — an odd batch staggers as three over four — one batch of related tools at a time. On either side, a wall of screenshots that never ends: a camera hangs over each, zoomed in on one card, and every few seconds pulls back, glides to the next card and settles on it — the left camera resting high, the right one low. On phones there is a single wall instead: a band of every card between the copy and the tools. A second layout puts the copy on the left and a single wall on the right, with the tools over its lower edge.
 

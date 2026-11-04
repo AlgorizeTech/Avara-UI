@@ -1,10 +1,10 @@
 ---
-title: "Stepper"
-description: "A production-grade, highly animated multi-step stepper and wizard component built on plain CSS transitions and the Web Animations API — no animation library."
+title: "Shadcn Stepper"
+description: "Shadcn Stepper. A production-grade, highly animated multi-step stepper and wizard component built on plain CSS transitions and the Web Animations API — no…"
 url: https://avaraui.com/docs/nextjs/stepper
 ---
 
-# Stepper
+# Shadcn Stepper
 
 A production-grade, highly animated multi-step stepper and wizard component built on plain **CSS transitions and the Web Animations API** — no animation library. It splits the layout into two decoupled blocks: the visual progress tracker and the bidirectional sliding content payload.
 

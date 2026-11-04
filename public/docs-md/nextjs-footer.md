@@ -1,10 +1,10 @@
 ---
-title: "Footer"
+title: "Shadcn Footer"
 description: "Nine responsive footer layouts for web apps, SaaS platforms, e-commerce stores and enterprise products. Free shadcn/ui Footer block for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/footer
 ---
 
-# Footer
+# Shadcn Footer
 
 A collection of 9 production-ready, high-capacity, fully responsive Footer components designed for modern web applications, SaaS platforms, e-commerce stores, and enterprise products.
 

@@ -1,10 +1,10 @@
 ---
-title: "Table"
+title: "Shadcn Table"
 description: "A set of composable table primitives. You write the rows; the component supplies the structure, spacing and theming. Free shadcn/ui Table component."
 url: https://avaraui.com/docs/nextjs/table
 ---
 
-# Table
+# Shadcn Table
 
 A set of composable table primitives. You write the rows; the component supplies the structure, spacing and theming.
 

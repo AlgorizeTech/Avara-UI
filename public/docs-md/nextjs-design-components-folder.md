@@ -1,10 +1,10 @@
 ---
-title: "Components Folder"
-description: "A multi-tab folder showing live AI Chat, Analytics, Auth Form and Terminal components in a desktop window, animated with CSS transitions only."
+title: "Shadcn Components Folder"
+description: "Shadcn Components Folder. A multi-tab folder showing live AI Chat, Analytics, Auth Form and Terminal components in a desktop window."
 url: https://avaraui.com/docs/nextjs/design-components-folder
 ---
 
-# Components Folder
+# Shadcn Components Folder
 
 An interactive multi-tab component folder showcasing live AI Chat, Real-time Analytics, Auth Form, and CLI Terminal components inside a sleek desktop window interface. Built with Tailwind CSS and native CSS transitions — no animation library.
 

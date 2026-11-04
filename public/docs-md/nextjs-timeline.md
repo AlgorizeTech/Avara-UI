@@ -1,10 +1,10 @@
 ---
-title: "Advanced Timeline"
+title: "Shadcn Timeline"
 description: "A robust, multi-layout vertical timeline component for tracking complex events, order statuses, and company histories. Free shadcn/ui Timeline component."
 url: https://avaraui.com/docs/nextjs/timeline
 ---
 
-# Advanced Timeline
+# Shadcn Timeline
 
 A robust, multi-layout vertical timeline component for tracking complex events, order statuses, and company histories.
 

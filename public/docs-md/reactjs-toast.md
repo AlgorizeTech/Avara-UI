@@ -1,10 +1,10 @@
 ---
-title: "Toast / Notification"
+title: "Shadcn Toast"
 description: "A toast notification system with typed variants, action buttons, custom durations and glow, glass, stacked and minimal styles. Free shadcn/ui Toast component."
 url: https://avaraui.com/docs/nextjs/toast
 ---
 
-# Toast / Notification
+# Shadcn Toast
 
 A robust, highly-animated notification system. Popups and alerts are essential for user feedback, but most libraries are heavy, difficult to style, or lack smooth animations.
 

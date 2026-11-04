@@ -1,10 +1,10 @@
 ---
-title: "Date Picker"
+title: "Shadcn Date Picker"
 description: "A dependency-free date picker with an error state, disabled past dates and a date-and-time mode. Free shadcn/ui component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/date-picker
 ---
 
-# Date Picker
+# Shadcn Date Picker
 
 A completely custom, dependency-free Date Picker component. Native HTML `<input type="date">` elements vary wildly between browsers and operating systems, often breaking the visual consistency of your application.
 

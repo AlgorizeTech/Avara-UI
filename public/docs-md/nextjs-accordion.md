@@ -1,10 +1,10 @@
 ---
-title: "Accordion"
+title: "Shadcn Accordion"
 description: "A data-driven accordion built on the Radix primitive, with five list variants and an interactive Brand Logo Reveal showcase variant. Free shadcn/ui component."
 url: https://avaraui.com/docs/nextjs/accordion
 ---
 
-# Accordion
+# Shadcn Accordion
 
 A data-driven accordion built on the Radix primitive, with five list variants and an interactive **Brand Logo Reveal** showcase variant. The open panel is the only thing that gets the accent: it lifts out as a card, inverts to your primary color, grows a rail down its edge, or expands into an editorial brand showcase.
 

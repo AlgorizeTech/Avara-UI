@@ -1,10 +1,10 @@
 ---
-title: "Network Graph"
+title: "Shadcn Network Graph"
 description: "A network graph of avatars: a layered orbital visual that spreads items evenly across concentric rings. Free shadcn/ui component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/network-graph
 ---
 
-# Network Graph
+# Shadcn Network Graph
 
 A network graph of avatars: a layered orbital visual that spreads items evenly across concentric rings. It works well for community showcases, team maps, social proof sections, and dense relationship-driven hero layouts.
 

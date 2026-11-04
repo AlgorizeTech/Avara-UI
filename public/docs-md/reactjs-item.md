@@ -1,10 +1,10 @@
 ---
-title: "Item"
+title: "Shadcn Item"
 description: "A versatile layout component for displaying structured content featuring media, titles, descriptions, and actions. Free shadcn/ui Item component."
 url: https://avaraui.com/docs/nextjs/item
 ---
 
-# Item
+# Shadcn Item
 
 A versatile layout component for displaying structured content featuring media, titles, descriptions, and actions.
 

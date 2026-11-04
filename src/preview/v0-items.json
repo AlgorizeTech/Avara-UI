@@ -324,7 +324,7 @@
     "zoomable": "Data Maps — Zoomable"
   },
   "data-table-soft": {
-    "soft-variant": "Data Table — Soft variant"
+    "soft-variant": "Shadcn Data Table — Soft variant"
   },
   "advanced-table": {
     "searchable-datatable": "Advanced Table — Searchable DataTable"
@@ -430,9 +430,9 @@
     "choose-your-matcha-tea": "Flavour Carousel — Choose your matcha tea"
   },
   "fleet": {
-    "fleet-tracker": "Fleet Tracker Map — Fleet tracker",
-    "minimal": "Fleet Tracker Map — Minimal",
-    "modern": "Fleet Tracker Map — Modern"
+    "fleet-tracker": "Shadcn Fleet Tracker Map — Fleet tracker",
+    "minimal": "Shadcn Fleet Tracker Map — Minimal",
+    "modern": "Shadcn Fleet Tracker Map — Modern"
   },
   "floating-contact-button": {
     "floating-contact-button": "Floating Contact Button",
@@ -511,35 +511,35 @@
     "word-bounce-hero": "Homepage Hero — Word bounce hero"
   },
   "homepage-hero-typing": {
-    "typing-hero": "Hero — Typing hero",
-    "typing-hero-fixed-title": "Hero — Typing hero, fixed title"
+    "typing-hero": "Shadcn Hero — Typing hero",
+    "typing-hero-fixed-title": "Shadcn Hero — Typing hero, fixed title"
   },
   "homepage-hero-slider": {
-    "split-marquee-slider-hero": "Hero — Split marquee slider hero"
+    "split-marquee-slider-hero": "Shadcn Hero — Split marquee slider hero"
   },
   "homepage-hero-glow-arc": {
-    "pet-shop-animal-care-hero": "Hero — Pet Shop & Animal Care Hero"
+    "pet-shop-animal-care-hero": "Shadcn Hero — Pet Shop & Animal Care Hero"
   },
   "hero-doctor": {
-    "doctor-portal-healthcare-hero": "Hero — Doctor Portal & Healthcare Hero"
+    "doctor-portal-healthcare-hero": "Shadcn Hero — Doctor Portal & Healthcare Hero"
   },
   "hero-facility": {
-    "precision-facility-cad-grid-hero": "Hero — Precision Facility & CAD Grid Hero"
+    "precision-facility-cad-grid-hero": "Shadcn Hero — Precision Facility & CAD Grid Hero"
   },
   "hero-vortex": {
-    "atmospheric-cyclone-radar-hero": "Hero — Atmospheric Cyclone Radar Hero"
+    "atmospheric-cyclone-radar-hero": "Shadcn Hero — Atmospheric Cyclone Radar Hero"
   },
   "hero-orbit": {
-    "orbit-ring-hero": "Hero — Orbit Ring Hero"
+    "orbit-ring-hero": "Shadcn Hero — Orbit Ring Hero"
   },
   "hero-bento-cascade": {
-    "bento-cascade-infinite-motion-hero": "Hero — Bento Cascade Infinite Motion Hero"
+    "bento-cascade-infinite-motion-hero": "Shadcn Hero — Bento Cascade Infinite Motion Hero"
   },
   "hero-breathe": {
-    "breathe-arch-stagger-hero": "Hero — Breathe Arch Stagger Hero"
+    "breathe-arch-stagger-hero": "Shadcn Hero — Breathe Arch Stagger Hero"
   },
   "hero-solar-snapshot": {
-    "solar-snapshot-sun-cursor-hero": "Hero — Solar Snapshot Sun-Cursor Hero"
+    "solar-snapshot-sun-cursor-hero": "Shadcn Hero — Solar Snapshot Sun-Cursor Hero"
   },
   "image-compare": {
     "classic-slider": "Image Compare — Classic Slider",
@@ -734,9 +734,9 @@
     "stage-colours": "Progress — Stage colours"
   },
   "qr-code": {
-    "qr-generator": "QR Code Suite — QR generator",
-    "sizes-levels": "QR Code Suite — Sizes & levels",
-    "qr-reader": "QR Code Suite — QR reader"
+    "qr-generator": "Shadcn QR Code — QR generator",
+    "sizes-levels": "Shadcn QR Code — Sizes & levels",
+    "qr-reader": "Shadcn QR Code — QR reader"
   },
   "radial-orbital-timeline": {
     "dual-orbit-timeline-default": "Radial Orbital Timeline — Dual Orbit Timeline (Default)",
@@ -875,13 +875,13 @@
     "stepper": "Stepper"
   },
   "support": {
-    "ticket-workspace": "Support Dashboard — Ticket workspace",
-    "table-view": "Support Dashboard — Table view",
-    "glass": "Support Dashboard — Glass",
-    "support-liquid-glass": "Support Dashboard — Liquid glass"
+    "ticket-workspace": "Shadcn Support Dashboard — Ticket workspace",
+    "table-view": "Shadcn Support Dashboard — Table view",
+    "glass": "Shadcn Support Dashboard — Glass",
+    "support-liquid-glass": "Shadcn Support Dashboard — Liquid glass"
   },
   "table-soft": {
-    "soft-variant": "Table — Soft variant"
+    "soft-variant": "Shadcn Table — Soft variant"
   },
   "table": {
     "composable-table": "Table — Composable table",
@@ -893,7 +893,7 @@
     "sizes": "Table — Sizes"
   },
   "table-soft-comparison": {
-    "comparison-soft": "Table — Comparison (soft)"
+    "comparison-soft": "Shadcn Table — Comparison (soft)"
   },
   "table-of-contents": {
     "table-of-contents-left-side-navigation": "Table Of Contents — Table of Contents (Left Side Navigation)"

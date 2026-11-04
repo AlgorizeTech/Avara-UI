@@ -1,10 +1,10 @@
 ---
-title: "Radial Orbital Timeline"
+title: "Shadcn Radial Orbital Timeline"
 description: "A dynamic orbital visualization component that displays nodes in a circular pattern around a central point. Free shadcn/ui component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/radial-orbital-timeline
 ---
 
-# Radial Orbital Timeline
+# Shadcn Radial Orbital Timeline
 
 A dynamic orbital visualization component that displays nodes in a circular pattern around a central point. Each node represents a data point with title, status, and energy level.
 

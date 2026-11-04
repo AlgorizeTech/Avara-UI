@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "table-soft-soft-variant",
   "type": "registry:block",
-  "title": "Table — Soft variant",
+  "title": "Shadcn Table — Soft variant",
   "description": "A plain read-only table in the admin-dashboard look — a rounded panel on a hairline ring, a tinted header band, calm dividers and soft row hover. No search, filters or paging: just the rows.",
   "dependencies": [
     "lucide-react",

@@ -1,10 +1,10 @@
 ---
-title: "Image Viewer"
+title: "Shadcn Image Viewer"
 description: "Four responsive product image viewers for online stores, with lens zoom, a 3–10× floating loupe, arrow sliders and thumbnail strips. Free shadcn/ui component."
 url: https://avaraui.com/docs/nextjs/image-viewer
 ---
 
-# Image Viewer
+# Shadcn Image Viewer
 
 A collection of 4 production-ready, interactive, fully responsive E-commerce Product Image Viewer components featuring inner lens magnifying zoom, 3–10x floating zoom loupe, floating arrow carousel sliders, and active thumbnail strips.
 

@@ -5,6 +5,7 @@ import { TableOfContents } from "@/components/site/table-of-contents";
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
 import { DocsPagination } from "@/components/site/DocsPagination";
+import { DocsBreadcrumb } from "@/components/site/DocsBreadcrumb";
 import { DocsBreadcrumbJsonLd } from "@/components/seo/DocsBreadcrumbJsonLd";
 
 export function DocsLayoutContent({ children }: { children: ReactNode }) {
@@ -26,6 +27,7 @@ export function DocsLayoutContent({ children }: { children: ReactNode }) {
               at 60%. Every grey is the ink at an alpha, so the scale follows
               the theme customizer. The prose-* modifiers win over the classes
               in mdx-components.tsx, so sizes live here, not there. */}
+          <DocsBreadcrumb />
           <div
             className="prose w-full min-w-0 max-w-full text-foreground/60
             prose-headings:font-serif prose-headings:font-normal prose-headings:text-foreground prose-headings:tracking-normal

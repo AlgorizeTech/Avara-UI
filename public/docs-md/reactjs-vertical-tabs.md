@@ -1,10 +1,10 @@
 ---
-title: "Tabs"
-description: "Tabs in horizontal and vertical layouts with underline, segmented, soft, elevated, minimal, bordered and glass styles, and keyboard navigation."
+title: "Shadcn Tabs"
+description: "Shadcn Tabs. Tabs in horizontal and vertical layouts with underline, segmented, soft, elevated, minimal, bordered and glass styles, and keyboard navigation."
 url: https://avaraui.com/docs/nextjs/vertical-tabs
 ---
 
-# Tabs
+# Shadcn Tabs
 
 A sleek, responsive tab navigation component. By default the rail runs across the top as a pill bar, with the active content pane below it — and when the tabs outgrow the width they scroll sideways instead of squashing. Set `orientation="vertical"` and the same rail becomes a sidebar menu beside the pane, stacking above it on narrow screens.
 

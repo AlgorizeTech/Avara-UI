@@ -1,6 +1,6 @@
 ---
 title: "Scroll Accordion Showcase"
-description: "A scroll-driven section of numbered accordion cards: the active step expands as you scroll while a sticky mockup beside it cross-fades to match."
+description: "Shadcn Scroll Accordion Showcase. A scroll-driven section of numbered accordion cards: the active step expands as you scroll while a sticky mockup beside it…"
 url: https://avaraui.com/docs/nextjs/split-scroll-stepper
 ---
 

@@ -1,10 +1,10 @@
 ---
-title: "Fleet Tracker Map"
+title: "Shadcn Fleet Tracker Map"
 description: "An interactive, responsive fleet management dashboard featuring a synchronized sidebar and live map integration using React Leaflet. Free shadcn/ui component."
 url: https://avaraui.com/docs/nextjs/fleet-tracker
 ---
 
-# Fleet Tracker Map
+# Shadcn Fleet Tracker Map
 
 An interactive, responsive fleet management dashboard featuring a synchronized sidebar and live map integration using React Leaflet.
 

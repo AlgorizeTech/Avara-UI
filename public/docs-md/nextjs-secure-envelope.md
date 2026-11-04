@@ -1,10 +1,10 @@
 ---
-title: "Secure Envelope"
-description: "An envelope card component: a pass slides out on hover and lifts onto the cover on click, with a thumb notch, crest seals and a 3D two-sided flip."
+title: "Shadcn Secure Envelope"
+description: "Shadcn Secure Envelope. An envelope card component: a pass slides out on hover and lifts onto the cover on click, with a thumb notch."
 url: https://avaraui.com/docs/nextjs/secure-envelope
 ---
 
-# Secure Envelope
+# Shadcn Secure Envelope
 
 An interactive classified envelope sleeve & travel pass component featuring a secret card that glides out horizontally on hover and elevates gracefully onto the cover on click. Designed with a vector-precise thumb notch, authentic security crest seals, and luxurious 3D dual-sided flip physics.
 

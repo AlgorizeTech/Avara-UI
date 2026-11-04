@@ -1,10 +1,10 @@
 ---
-title: "Scroll Stack"
-description: "A premium collection of scroll-driven 3D card stacking layouts engineered exclusively with GSAP's ScrollTrigger plugin. GSAP and Motion builds."
+title: "Shadcn Scroll Stack"
+description: "A premium collection of scroll-driven 3D card stacking layouts engineered exclusively with GSAP's ScrollTrigger plugin. Shadcn/ui with GSAP and Motion builds."
 url: https://avaraui.com/docs/nextjs/scroll-stack
 ---
 
-# Scroll Stack
+# Shadcn Scroll Stack
 
 A premium collection of scroll-driven 3D card stacking layouts engineered exclusively with **GSAP's ScrollTrigger plugin**. As users scroll down the page, feature cards stick to the viewport while the next card slides up to cover them, creating a simulated 3D deck with silky 60fps performance across both light and dark modes.
 

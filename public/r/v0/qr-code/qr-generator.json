@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "qr-code-qr-generator",
   "type": "registry:block",
-  "title": "QR Code Suite — QR generator",
+  "title": "Shadcn QR Code — QR generator",
   "description": "Type a value, pick an error-correction level, and export as PNG or PDF.",
   "dependencies": [
     "lucide-react",

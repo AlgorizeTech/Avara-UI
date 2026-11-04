@@ -1,10 +1,10 @@
 ---
-title: "Scroll Area"
+title: "Shadcn Scroll Area"
 description: "Augments native scroll functionality for custom, cross-browser styling. Free shadcn/ui Scroll Area component for React, Next.js and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/scroll-area
 ---
 
-# Scroll Area
+# Shadcn Scroll Area
 
 Augments native scroll functionality for custom, cross-browser styling.
 

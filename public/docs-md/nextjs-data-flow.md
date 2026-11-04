@@ -1,10 +1,10 @@
 ---
-title: "Data Flow"
-description: "A section showing data sources feeding one central node that fans out to results, with measured connector curves that draw themselves in on scroll."
+title: "Shadcn Data Flow"
+description: "Shadcn Data Flow. A section showing data sources feeding one central node that fans out to results."
 url: https://avaraui.com/docs/nextjs/data-flow
 ---
 
-# Data Flow
+# Shadcn Data Flow
 
 A section that shows where the data comes from and what comes out: source cards on the left feed one node in the middle, which fans out to result cards on the right. The connectors are real curves measured from the cards, so they hold at any width; when the section first scrolls into view the sources arrive, the lines draw themselves to the core, the core lands, the lines draw on and the results arrive — then a dash keeps moving along every line.
 

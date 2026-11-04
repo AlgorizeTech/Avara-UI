@@ -1,10 +1,10 @@
 ---
-title: "Newsletter"
-description: "A sign-up section in three layouts. Portraits puts four readers' faces around a centred form on a soft panel and lets them drift with the pointer."
+title: "Shadcn Newsletter"
+description: "Shadcn Newsletter block. A sign-up section in three layouts."
 url: https://avaraui.com/docs/nextjs/newsletter
 ---
 
-# Newsletter
+# Shadcn Newsletter
 
 A sign-up section in three layouts. **Portraits** puts four readers' faces around a centred form on a soft panel and lets them drift with the pointer. **Spotlight** is the same form with a glow under the cursor and a ticker of who just joined. Every layout follows your site's colour scheme — soft grounds by day, near-black by night. **Issues** sets the form beside a fanned stack of recent issues, the top one on a tilting card. One reveal when the section first appears; a form that turns into a thank-you when your promise resolves; nothing else moves unless the reader does.
 

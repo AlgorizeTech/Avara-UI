@@ -1,10 +1,10 @@
 ---
-title: "Magic Bento"
-description: "A bento grid layout system featuring CSS masking, continuously spinning gradient borders, and a real-time mouse-tracking spotlight effect."
+title: "Shadcn Magic Bento"
+description: "Shadcn Magic Bento. A bento grid layout system featuring CSS masking, continuously spinning gradient borders, and a real-time mouse-tracking spotlight effect."
 url: https://avaraui.com/docs/nextjs/magic-bento
 ---
 
-# Magic Bento
+# Shadcn Magic Bento
 
 A bento grid layout system featuring CSS masking, continuously spinning gradient borders, and a real-time mouse-tracking spotlight effect.
 

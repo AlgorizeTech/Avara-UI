@@ -1,10 +1,10 @@
 ---
-title: "User Graph"
+title: "Shadcn User Graph"
 description: "An interactive multi-tiered User & AI Agent Hierarchy Network Graph built for Next.js and React. Free shadcn/ui User Graph component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/user-graph
 ---
 
-# User Graph
+# Shadcn User Graph
 
 An interactive multi-tiered User & AI Agent Hierarchy Network Graph built for Next.js and React. It features an interactive orbiting tool cluster around the main user node, SVG connecting curves, specialized sub-agent team nodes, app integration badges, and full light mode design.
 

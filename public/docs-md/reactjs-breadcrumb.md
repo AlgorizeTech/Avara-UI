@@ -1,10 +1,10 @@
 ---
-title: "Breadcrumb"
+title: "Shadcn Breadcrumb"
 description: "A navigational aid that helps users understand their current location within a website's hierarchy. Free shadcn/ui component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/breadcrumb
 ---
 
-# Breadcrumb
+# Shadcn Breadcrumb
 
 A navigational aid that helps users understand their current location within a website's hierarchy.
 

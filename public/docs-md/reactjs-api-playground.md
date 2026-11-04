@@ -1,10 +1,10 @@
 ---
-title: "API Playground"
+title: "Shadcn API Playground"
 description: "A highly advanced, interactive split-pane block for testing API requests directly inside documentation. Free shadcn/ui component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/api-playground
 ---
 
-# API Playground
+# Shadcn API Playground
 
 A highly advanced, interactive split-pane block for testing API requests directly inside documentation.
 

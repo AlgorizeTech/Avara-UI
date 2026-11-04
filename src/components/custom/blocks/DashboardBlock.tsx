@@ -27,7 +27,6 @@ import React, {
   useState,
   useSyncExternalStore,
 } from "react";
-import { motion } from "motion/react";
 import { ChartBlock } from "./ChartBlock";
 import { Popover, PopoverContent, PopoverTrigger } from "./PopoverBlock";
 import { ToggleGroup, ToggleGroupItem } from "./ToggleGroupBlock";
@@ -1168,6 +1167,19 @@ function ActivityPanel({
 }) {
   const id = useId();
   const [tab, setTab] = useState<string>("all");
+  const tabPaneRef = useRef<HTMLDivElement>(null);
+
+  // Each tab's list rises in as it replaces the last one.
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    tabPaneRef.current?.animate(
+      [
+        { opacity: 0, transform: "translateY(3px)" },
+        { opacity: 1, transform: "none" },
+      ],
+      { duration: 220, easing: "cubic-bezier(0.16, 1, 0.3, 1)" },
+    );
+  }, [tab]);
   const current = ACTIVITY_TABS.find((option) => option.value === tab) ?? ACTIVITY_TABS[0];
   const feed = useMemo(
     () =>
@@ -1223,13 +1235,7 @@ function ActivityPanel({
       </div>
       {/* Permanently fixed height matching all 6 items: zero shrinkage, zero expansion */}
       <div className="mt-5 h-[420px] min-h-[420px] flex-1 overflow-hidden">
-        <motion.div
-          key={tab}
-          initial={{ opacity: 0, y: 3 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.22, ease: [0.16, 1, 0.3, 1] }}
-          className="h-full min-h-[435px]"
-        >
+        <div ref={tabPaneRef} key={tab} className="h-full min-h-[435px]">
           {items.length ? (
               <div className="space-y-5">
                 {groups.map((group) => (
@@ -1300,7 +1306,7 @@ function ActivityPanel({
                 New events show up here as they happen.
               </EmptyState>
             )}
-          </motion.div>
+          </div>
       </div>
     </section>
   );

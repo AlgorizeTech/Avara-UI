@@ -1,10 +1,10 @@
 ---
-title: "Navbar / Header"
+title: "Shadcn Navbar"
 description: "Responsive navbars and headers: a spotlight pill, centered, floating, minimal and glass navbars, and an e-commerce mega menu. Free shadcn/ui Navbar block."
 url: https://avaraui.com/docs/nextjs/navbar
 ---
 
-# Navbar / Header
+# Shadcn Navbar
 
 A highly responsive, production-ready Navigation Bar. It manages pure CSS dropdowns for complex desktop menus, and uses CSS transitions to smoothly animate a beautiful slide-out drawer on mobile devices.
 

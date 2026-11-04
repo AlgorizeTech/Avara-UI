@@ -1,10 +1,10 @@
 ---
-title: "Kbd (Keyboard)"
+title: "Shadcn Kbd"
 description: "A specialized typography component used to display keyboard buttons, shortcuts, and commands. Free shadcn/ui Kbd component for React, Next.js and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/kbd
 ---
 
-# Kbd (Keyboard)
+# Shadcn Kbd
 
 A specialized typography component used to display keyboard buttons, shortcuts, and commands.
 

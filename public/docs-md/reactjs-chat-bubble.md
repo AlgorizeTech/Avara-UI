@@ -1,10 +1,10 @@
 ---
-title: "Animated Chat Bubble"
+title: "Shadcn Chat Bubble"
 description: "A complete, CSS-animated compound component system for building highly customized chat interfaces, messengers, and support widgets. Free shadcn/ui component."
 url: https://avaraui.com/docs/nextjs/chat-bubble
 ---
 
-# Animated Chat Bubble
+# Shadcn Chat Bubble
 
 A complete, CSS-animated compound component system for building highly customized chat interfaces, messengers, and support widgets.
 

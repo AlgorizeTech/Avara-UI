@@ -1,10 +1,10 @@
 ---
-title: "Menubar"
+title: "Shadcn Menubar"
 description: "A visually persistent, OS-style menu component that provides quick access to a consistent set of commands. Free shadcn/ui component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/menubar
 ---
 
-# Menubar
+# Shadcn Menubar
 
 A visually persistent, OS-style menu component that provides quick access to a consistent set of commands.
 

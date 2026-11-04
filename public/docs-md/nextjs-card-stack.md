@@ -1,10 +1,10 @@
 ---
-title: "Card Stack"
-description: "A layered deck of cards featuring fluid drag-to-discard gestures, button-driven directional slide animations, and realistic depth perspective."
+title: "Shadcn Card Stack"
+description: "Shadcn Card Stack. A layered deck of cards featuring fluid drag-to-discard gestures, button-driven directional slide animations."
 url: https://avaraui.com/docs/nextjs/card-stack
 ---
 
-# Card Stack
+# Shadcn Card Stack
 
 A layered deck of cards featuring fluid drag-to-discard gestures, button-driven directional slide animations, and realistic depth perspective. Users can swipe cards left or right to review and discard them, with the next cards seamlessly stepping forward.
 

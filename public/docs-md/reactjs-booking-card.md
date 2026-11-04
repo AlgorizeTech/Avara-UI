@@ -1,10 +1,10 @@
 ---
-title: "Booking Card"
-description: "A booking panel for any card: a week-paged strip of days, grouped time slots, a button that reads the choice back, and an animated confirmation."
+title: "Shadcn Booking Card"
+description: "Shadcn Booking Card. A booking panel for any card: a week-paged strip of days, grouped time slots, a button that reads the choice back."
 url: https://avaraui.com/docs/nextjs/booking-card
 ---
 
-# Booking Card
+# Shadcn Booking Card
 
 A booking panel that goes inside any card: a strip of days paged a week at a time, time slots in groups, a button that reads the choice back before anyone confirms, and a confirmation that draws itself in over the form once the booking is made.
 

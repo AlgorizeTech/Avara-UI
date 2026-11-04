@@ -1,10 +1,10 @@
 ---
-title: "Toggle Group"
+title: "Shadcn Toggle Group"
 description: "A set of segmented, two-state buttons that can be toggled on or off, perfect for configuration settings and rich text editors. Free shadcn/ui component."
 url: https://avaraui.com/docs/nextjs/toggle-group
 ---
 
-# Toggle Group
+# Shadcn Toggle Group
 
 A set of segmented, two-state buttons that can be toggled on or off, perfect for configuration settings and rich text editors.
 

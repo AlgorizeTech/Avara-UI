@@ -1,10 +1,10 @@
 ---
-title: "Profile Page"
-description: "A person as a page: an aurora backdrop, frosted panels in four shapes, and a 24-hour dial that shows when they are at work — live, in their own time zone."
+title: "Shadcn Profile Page"
+description: "Shadcn Profile Page. A person as a page: an aurora backdrop, frosted panels in four shapes, and a 24-hour dial that shows when they are at work — live."
 url: https://avaraui.com/docs/nextjs/profile-page
 ---
 
-# Profile Page
+# Shadcn Profile Page
 
 A person as a page: an aurora backdrop, frosted panels in four shapes, and a 24-hour dial that shows when they are at work — live, in their own time zone.
 

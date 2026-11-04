@@ -1,10 +1,10 @@
 ---
-title: "Copy Button"
-description: "A button that puts text on the clipboard and says so — the icon pops from a clipboard to a check, the label rises from \"Copy\" to \"Copied!\", and both settle…"
+title: "Shadcn Copy Button"
+description: "Shadcn Copy Button. A button that puts text on the clipboard and says so — the icon pops from a clipboard to a check, the label rises from \"Copy\" to \"Copied!\"."
 url: https://avaraui.com/docs/nextjs/copy-button
 ---
 
-# Copy Button
+# Shadcn Copy Button
 
 A button that puts text on the clipboard and says so — the icon pops from a clipboard to a check, the label rises from "Copy" to "Copied!", and both settle back after a moment.
 

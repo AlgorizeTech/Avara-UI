@@ -1,10 +1,10 @@
 ---
-title: "Squircle Carousel"
+title: "Shadcn Squircle Carousel"
 description: "Horizontal flowing carousel where images are masked behind a grid of rounded cubes with snap physics and smooth inertia. Free shadcn/ui component."
 url: https://avaraui.com/docs/nextjs/squircle-carousel
 ---
 
-# Squircle Carousel
+# Shadcn Squircle Carousel
 
 Horizontal flowing carousel where images are masked behind a grid of rounded cubes with snap physics and smooth inertia.
 

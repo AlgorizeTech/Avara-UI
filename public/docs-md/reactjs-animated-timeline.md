@@ -1,10 +1,10 @@
 ---
-title: "Animated Timeline"
+title: "Shadcn Animated Timeline"
 description: "A highly dynamic, scroll-aware timeline engine featuring Intersection Observers and multiple 3D/2D entry animations. Free shadcn/ui Animated Timeline component."
 url: https://avaraui.com/docs/nextjs/animated-timeline
 ---
 
-# Animated Timeline
+# Shadcn Animated Timeline
 
 A highly dynamic, scroll-aware timeline engine featuring Intersection Observers and multiple 3D/2D entry animations.
 

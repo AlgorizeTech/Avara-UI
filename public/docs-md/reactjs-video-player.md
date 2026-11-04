@@ -1,10 +1,10 @@
 ---
-title: "Video Player"
+title: "Shadcn Video Player"
 description: "An embeddable, hardware-accelerated video hero for landing pages and high-conversion sections. Free shadcn/ui Video Player component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/video-player
 ---
 
-# Video Player
+# Shadcn Video Player
 
 An embeddable, hardware-accelerated video hero for landing pages and high-conversion sections. Features a glassmorphism CTA, automatic dark/light mode responsiveness, and full keyboard accessibility.
 

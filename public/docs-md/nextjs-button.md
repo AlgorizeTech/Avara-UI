@@ -1,10 +1,10 @@
 ---
-title: "Button"
+title: "Shadcn Button"
 description: "An animated button with a glowing line that runs around its border, a click ripple, loading states and colours that follow your theme. Free shadcn/ui component."
 url: https://avaraui.com/docs/nextjs/button
 ---
 
-# Button
+# Shadcn Button
 
 An animated glowing-border Button component engineered with a spinning conic-gradient line tracking the 4 edges of the button, smooth click ripple physics, loading states, and full theme synchronization.
 

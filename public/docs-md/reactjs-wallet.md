@@ -1,10 +1,10 @@
 ---
-title: "Wallet"
-description: "A wallet component with three cards that rise from a pocket in a spring-staggered sequence on hover, a thumb scoop and a balance privacy toggle."
+title: "Shadcn Wallet"
+description: "Shadcn Wallet. A wallet component with three cards that rise from a pocket in a spring-staggered sequence on hover, a thumb scoop and a balance privacy toggle."
 url: https://avaraui.com/docs/nextjs/wallet
 ---
 
-# Wallet
+# Shadcn Wallet
 
 An interactive fintech cardholder wallet component featuring 3 serially staggered cards, an authentic physical thumb scoop, a solid enclosed pocket, and privacy balance toggle. When hovered, the 3 cards glide up smoothly in a spring-staggered sequence. Designed with complete dual-theme adaptivity—delivering a clean, crisp, modern light palette in Light Mode and a deep, luxurious violet finish in Dark Mode.
 

@@ -1,10 +1,10 @@
 ---
-title: "Memories Card"
-description: "A premium, interactive card stack component featuring real-time 3D tilt physics, a dynamic \"fan\" background spread, and smooth swipe-to-next gestures."
+title: "Shadcn Memories Card"
+description: "Shadcn Memories Card. A premium, interactive card stack component featuring real-time 3D tilt physics, a dynamic \"fan\" background spread."
 url: https://avaraui.com/docs/nextjs/memories-card
 ---
 
-# Memories Card
+# Shadcn Memories Card
 
 A premium, interactive card stack component featuring real-time 3D tilt physics, a dynamic "fan" background spread, and smooth swipe-to-next gestures. Perfect for showcasing travel memories, feature highlights, or curated photo galleries.
 

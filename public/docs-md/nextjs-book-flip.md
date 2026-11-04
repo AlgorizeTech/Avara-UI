@@ -1,10 +1,10 @@
 ---
-title: "Book Flip"
+title: "Shadcn Book Flip"
 description: "A 3D book component with realistic page turns, spine shifts, centre-fold shadows, leaf peeking and a toolbar of page controls. Free shadcn/ui component."
 url: https://avaraui.com/docs/nextjs/book-flip
 ---
 
-# Book Flip
+# Shadcn Book Flip
 
 An interactive 3D **Book Flip** component simulating realistic book page turns, dynamic spine shifts, center fold shadows, leaf peeking, and bottom icon toolbar controls.
 

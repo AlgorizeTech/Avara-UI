@@ -1,10 +1,10 @@
 ---
-title: "Infrastructure Topology"
-description: "An animated infrastructure diagram simulating live data flowing between microservices and a central router, with SVG beam pipelines and live metrics."
+title: "Shadcn Infrastructure Topology"
+description: "Shadcn Infrastructure Topology. An animated infrastructure diagram simulating live data flowing between microservices and a central router."
 url: https://avaraui.com/docs/nextjs/infrastructure-topology
 ---
 
-# Infrastructure Topology
+# Shadcn Infrastructure Topology
 
 An interactive, fluid **Infrastructure Topology** component simulating live data flows across microservices, central neural mesh core routers, connected SVG beam pipelines, and real-time telemetry metrics.
 

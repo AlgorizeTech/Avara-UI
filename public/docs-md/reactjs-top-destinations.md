@@ -1,10 +1,10 @@
 ---
-title: "Top Destinations"
-description: "A travel destination showcase whose two rows of cards move in opposite directions as you scroll, with GSAP ScrollTrigger and reduced-motion support."
+title: "Shadcn Top Destinations"
+description: "Shadcn Top Destinations. A travel destination showcase whose two rows of cards move in opposite directions as you scroll."
 url: https://avaraui.com/docs/nextjs/top-destinations
 ---
 
-# Top Destinations
+# Shadcn Top Destinations
 
 A dual-row scroll-driven destination showcase. As the user scrolls down the page, two parallel rows of destination cards travel in opposite directions via **GSAP ScrollTrigger** scrub animation.
 
