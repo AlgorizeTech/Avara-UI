@@ -35,11 +35,15 @@ const FOOTER_GROUPS: {
 	},
 ];
 
-// The two StartupBase badges are light/dark variants of one slot: only the one
-// matching the active theme is shown, next to the OpenHunts badge.
-// Every badge shares one 44px height; the width follows each image's own aspect
-// ratio so nothing is stretched. The width/height attributes carry that ratio
-// (StartupBase 300x80, OpenHunts 486x105) to reserve space before load.
+// StartupBase and Product Hunt each ship light/dark variants of one badge: only
+// the one matching the active theme is shown. Every badge shares one 44px
+// height; the width follows each image's own aspect ratio so nothing is
+// stretched. The width/height attributes carry that ratio (StartupBase 300x80,
+// Product Hunt 250x54, OpenHunts 486x105) to reserve space before load.
+const PRODUCT_HUNT_URL =
+	"https://www.producthunt.com/products/avaraui?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-avaraui";
+const PRODUCT_HUNT_BADGE =
+	"https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1303384";
 const STARTUPBASE_URL = "https://startupbase.io/products/avaraui";
 
 const FOOTER_BADGES: {
@@ -72,6 +76,24 @@ const FOOTER_BADGES: {
 		height: 80,
 	},
 	{
+		href: PRODUCT_HUNT_URL,
+		rel: "noopener noreferrer",
+		scheme: "light",
+		src: `${PRODUCT_HUNT_BADGE}&theme=light&t=1793733316234`,
+		alt: "AvaraUI - Modern UI Components for React & Next.js | Product Hunt",
+		width: 250,
+		height: 54,
+	},
+	{
+		href: PRODUCT_HUNT_URL,
+		rel: "noopener noreferrer",
+		scheme: "dark",
+		src: `${PRODUCT_HUNT_BADGE}&theme=dark&t=1793733316234`,
+		alt: "AvaraUI - Modern UI Components for React & Next.js | Product Hunt",
+		width: 250,
+		height: 54,
+	},
+	{
 		// No noreferrer here: OpenHunts' snippet omits it, presumably so it can
 		// see the referral.
 		href: "https://openhunts.com",
@@ -89,7 +111,7 @@ export function FooterSection() {
 		<footer className="border-t border-foreground/[0.06] bg-background overflow-hidden">
 			<div className={cn(SECTION_INNER, "pt-16 pb-6")}>
 				<div className="flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
-					<div className="max-w-[400px]">
+					<div className="max-w-[400px] xl:max-w-[560px]">
 						<div className="flex items-center gap-2.5">
 							<img
 								src="/favicon/logo-64x64.png"
@@ -112,7 +134,7 @@ export function FooterSection() {
 							className="mt-6 flex w-fit max-w-full flex-wrap items-center gap-3">
 							{FOOTER_BADGES.map((badge) => (
 								<li
-									key={badge.alt}
+									key={badge.src}
 									className={cn(
 										badge.scheme === "light" && "dark:hidden",
 										badge.scheme === "dark" && "hidden dark:block",
@@ -130,7 +152,7 @@ export function FooterSection() {
 											height={badge.height}
 											loading="lazy"
 											decoding="async"
-											className="h-11 w-auto"
+											className="h-11 w-auto xl:h-10"
 										/>
 									</a>
 								</li>
