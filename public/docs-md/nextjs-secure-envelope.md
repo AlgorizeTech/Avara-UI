@@ -195,7 +195,8 @@ Pass `cardDesign="smart-card"` with custom clearance levels, holder name, and de
 | `slogan` | `string` | `"UNLEASH THE POWER OF SPEED WITH HYPERBOLT EXPRESS"` | High-speed transit slogan on the sleeve and ticket back. |
 | `barcodeNumber` | `string` | `"0 734664 235788"` | Code string for the vertical barcodes. |
 | `websiteUrl` | `string` | `"HYPERBOLTEXPRESS.COM"` | Website URL printed on the sleeve and reverse side. |
-| `folderColor` | `string` | `undefined (var(--primary))` | Optional custom theme color override for the folder sleeve and accents. Defaults to the active theme's primary color. |
+| `color` | `string` | `undefined (var(--primary))` | Custom theme accent color override for the envelope sleeve and accents. Accepts preset names (`"emerald"`, `"indigo"`, `"rose"`, `"lavender"`, `"zinc"`) or any valid CSS hex/color. |
+| `folderColor` | `string` | `undefined` | Alias for `color`. Optional custom theme color override for the folder sleeve and accents. |
 | `initialPeek` | `number` | `38` | Horizontal pixel distance the card peeks out from the notch in resting idle state. |
 | `hoverPeek` | `number` | `88` | Horizontal pixel distance the card glides out on hover before being clicked. |
 | `cardVariant` | `"adaptive" \| "ivory"` | `"adaptive"` | Switches between dynamic dual-theme adaptivity (light in Light Mode, dark in Dark Mode) and classic physical ivory cardstock. |

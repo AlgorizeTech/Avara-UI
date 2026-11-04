@@ -20,7 +20,7 @@ Email, password, remember-me and a forgot-password link. `signupHref` points at 
 
 Email and password with a remember-me checkbox and a forgot-password link, all validated on submit.
 
-- Set `color="indigo" | "rose" | "emerald" | "zinc" | "primary" | "#hex"` themes the primary submit button, input focus rings, and remember-me checkbox.
+- Set `color="lavender" | "indigo" | "rose" | "emerald" | "zinc" | "primary" | "#hex"` themes the primary submit button, input focus rings, and remember-me checkbox.
 - `onSubmit` receives the validated credentials. Leave it off and the block simulates a round trip, so the preview works before any auth provider exists.
 
 ```tsx
@@ -45,8 +45,8 @@ export default function LoginPage() {
       color="indigo"
       title="Welcome back"
       subtitle="Enter your details to access your account."
-      signupHref="/register"
-      forgotPasswordHref="/forgot-password"
+      signupHref="#"
+      forgotPasswordHref="#"
       onSubmit={handleSubmit}
       onSocialSignIn={handleSocialSignIn}
     />
@@ -99,8 +99,8 @@ export default function SplitLoginPage() {
       brandName="Acme Inc."
       title="Welcome back. Pick up where you left off."
       subtitle="Your projects, deployments and team are exactly as you left them. Sign in to get straight back to work."
-      signupHref="/register"
-      forgotPasswordHref="/forgot-password"
+      signupHref="#"
+      forgotPasswordHref="#"
       onSubmit={handleSubmit}
       onSocialSignIn={handleSocialSignIn}
     />
@@ -133,8 +133,8 @@ export default function MinimalLoginPage() {
       color="indigo"
       title="Welcome back"
       subtitle="Enter your details to access your account."
-      signupHref="/register"
-      forgotPasswordHref="/forgot-password"
+      signupHref="#"
+      forgotPasswordHref="#"
       onSubmit={handleSubmit}
       onSocialSignIn={handleSocialSignIn}
     />
@@ -169,8 +169,8 @@ export default function GlassLoginPage() {
       title="Welcome back"
       subtitle="Enter your details to access your account."
       bgImage="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg"
-      signupHref="/register"
-      forgotPasswordHref="/forgot-password"
+      signupHref="#"
+      forgotPasswordHref="#"
       onSubmit={handleSubmit}
       onSocialSignIn={handleSocialSignIn}
     />
@@ -205,8 +205,8 @@ export default function LiquidGlassLoginPage() {
       title="Welcome back"
       subtitle="Enter your details to access your account."
       bgImage="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg"
-      signupHref="/register"
-      forgotPasswordHref="/forgot-password"
+      signupHref="#"
+      forgotPasswordHref="#"
       onSubmit={handleSubmit}
       onSocialSignIn={handleSocialSignIn}
     />
@@ -258,7 +258,7 @@ Paired name fields, email, password with confirmation, and a terms checkbox whos
 
 Name fields, a confirm-password field and a terms checkbox, all validated on submit.
 
-- Set `color="indigo" | "rose" | "emerald" | "zinc" | "primary" | "#hex"` themes the primary submit button, input focus rings, terms checkbox, and policy links.
+- Set `color="lavender" | "indigo" | "rose" | "emerald" | "zinc" | "primary" | "#hex"` themes the primary submit button, input focus rings, terms checkbox, and policy links.
 - `minPasswordLength` sets the client-side minimum (8 by default). It stops an obviously-too-short password before a round trip — your server still enforces the real policy.
 
 ```tsx
@@ -283,9 +283,9 @@ export default function RegisterPage() {
       color="indigo"
       title="Create an account"
       subtitle="Start your 14-day free trial. No credit card required."
-      loginHref="/login"
-      termsHref="/legal/terms"
-      privacyHref="/legal/privacy"
+      loginHref="#"
+      termsHref="#"
+      privacyHref="#"
       onSubmit={handleSubmit}
       onSocialSignUp={handleSocialSignUp}
     />
@@ -342,9 +342,9 @@ export default function ScenicRegisterPage() {
       bgImage="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg"
       getStartedLabel="Get Started"
       alreadyAccountLabel="I already have an account"
-      loginHref="/login"
-      termsHref="/legal/terms"
-      privacyHref="/legal/privacy"
+      loginHref="#"
+      termsHref="#"
+      privacyHref="#"
       onSubmit={handleSubmit}
       onSocialSignUp={handleSocialSignUp}
     />
@@ -378,9 +378,9 @@ export default function SplitRegisterPage() {
       brandName="Acme Inc."
       title="Start building your next big idea."
       subtitle="Join thousands of developers who are already using our platform to build the future of software."
-      loginHref="/login"
-      termsHref="/legal/terms"
-      privacyHref="/legal/privacy"
+      loginHref="#"
+      termsHref="#"
+      privacyHref="#"
       onSubmit={handleSubmit}
       onSocialSignUp={handleSocialSignUp}
     />
@@ -413,9 +413,9 @@ export default function MinimalRegisterPage() {
       color="indigo"
       title="Create an account"
       subtitle="Start your 14-day free trial. No credit card required."
-      loginHref="/login"
-      termsHref="/legal/terms"
-      privacyHref="/legal/privacy"
+      loginHref="#"
+      termsHref="#"
+      privacyHref="#"
       onSubmit={handleSubmit}
       onSocialSignUp={handleSocialSignUp}
     />
@@ -450,9 +450,9 @@ export default function GlassRegisterPage() {
       title="Create an account"
       subtitle="Start your 14-day free trial. No credit card required."
       bgImage="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg"
-      loginHref="/login"
-      termsHref="/legal/terms"
-      privacyHref="/legal/privacy"
+      loginHref="#"
+      termsHref="#"
+      privacyHref="#"
       onSubmit={handleSubmit}
       onSocialSignUp={handleSocialSignUp}
     />
@@ -487,9 +487,9 @@ export default function LiquidGlassRegisterPage() {
       title="Create an account"
       subtitle="Start your 14-day free trial. No credit card required."
       bgImage="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg"
-      loginHref="/login"
-      termsHref="/legal/terms"
-      privacyHref="/legal/privacy"
+      loginHref="#"
+      termsHref="#"
+      privacyHref="#"
       onSubmit={handleSubmit}
       onSocialSignUp={handleSocialSignUp}
     />
@@ -543,7 +543,7 @@ export default function RibbonDriftRegisterPage() {
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `variant` | `"default" \| "split" \| "liquid-glass" \| "glass" \| "minimal" \| "ribbon-drift"` | `"default"` | Applies overarching structural layouts. `"split"` wraps the form in a full-width marketing panel, `"liquid-glass"` adds an interactive liquid SVG glass stack, `"glass"` adds translucent styling, and `"ribbon-drift"` features dual infinite marquee ribbons with animated ambient gradient drift backdrop. |
-| `color` | `"primary" \| "indigo" \| "rose" \| "emerald" \| "zinc" \| string` | `"primary"` | Applies global color themes to the primary button, focus rings and the remember-me checkbox. Accepts valid hex codes (e.g. `"#8b5cf6"`). |
+| `color` | `"primary" \| "lavender" \| "indigo" \| "rose" \| "emerald" \| "zinc" \| string` | `"primary"` | Applies global color themes to the primary button, focus rings and the remember-me checkbox. Accepts valid hex codes (e.g. `"#8b5cf6"`). |
 | `brandName` | `string` | `"Acme Inc."` | Brand name text displayed in the header of the `split` variant marketing panel. |
 | `title` / `subtitle` | `string` | See defaults | Customizable headline and description displayed across all variants and the `split` marketing panel. |
 | `bgImage` | `string` | Cloudinary image | Custom background image URL for `glass` and `liquid-glass` variants. |
@@ -560,7 +560,7 @@ export default function RibbonDriftRegisterPage() {
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `variant` | `"scenic" \| "default" \| "split" \| "liquid-glass" \| "glass" \| "minimal" \| "ribbon-drift"` | `"default"` | Distinct presentation presets. `"scenic"` renders a floating onboarding card over a landscape backdrop, `"liquid-glass"` wraps in an animated liquid SVG frosted glass stack, `"glass"` renders translucent panels, and `"ribbon-drift"` features dual infinite marquee ribbons with animated drift backdrop. |
-| `color` | `"primary" \| "indigo" \| "rose" \| "emerald" \| "zinc" \| string` | `"primary"` | Applies global color themes to the primary button, focus rings, the terms checkbox and the policy links. Accepts valid hex codes (e.g. `"#8b5cf6"`). |
+| `color` | `"primary" \| "lavender" \| "indigo" \| "rose" \| "emerald" \| "zinc" \| string` | `"primary"` | Applies global color themes to the primary button, focus rings, the terms checkbox and the policy links. Accepts valid hex codes (e.g. `"#8b5cf6"`). |
 | `brandName` | `string` | `"Docs UI"` | Brand name text displayed in the header of the `scenic` variant card. |
 | `title` / `subtitle` | `string` | See defaults | Customizable headline and description displayed on the `scenic` onboarding card. |
 | `getStartedLabel` | `string` | `"Get Started"` | Label on the primary CTA button in the `scenic` welcome card. |
