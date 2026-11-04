@@ -6,6 +6,7 @@ import NotFoundSection, {
   NotFoundVariant,
   ShortcutItem,
 } from "@/components/custom/blocks/NotFoundBlock";
+import { accentStyle } from "@/lib/accent";
 import { Activity, BookOpen, Cpu, Home, LayoutGrid, Sparkles } from "lucide-react";
 
 export default function NotFoundSectionDemo({
@@ -48,11 +49,13 @@ export default function NotFoundSectionDemo({
     : variant === "quantum-hologram"
     ? {
         label: "Re-anchor to Orbit",
+        href: "#",
         icon: <Sparkles className="h-4 w-4" />,
         onClick: () => showNotice("Action triggered: Re-anchoring to Orbit..."),
       }
     : {
         label: "Explore Documentation",
+        href: "#",
         icon: <BookOpen className="h-4 w-4" />,
         onClick: () => showNotice("Action triggered: Navigating to documentation..."),
       };
@@ -66,17 +69,20 @@ export default function NotFoundSectionDemo({
     : variant === "quantum-hologram"
     ? {
         label: "Return to Base",
+        href: "/",
         icon: <Home className="h-4 w-4" />,
         onClick: () => showNotice("Action triggered: Returning to Base..."),
       }
     : variant === "animated-beam-border"
     ? {
         label: "Return to Homepage",
+        href: "/",
         icon: <Home className="h-4 w-4" />,
         onClick: () => showNotice("Action triggered: Returning to Homepage..."),
       }
     : {
         label: "Back to Home",
+        href: "/",
         icon: <Home className="h-4 w-4" />,
         onClick: () => showNotice("Action triggered: Redirecting to homepage..."),
       };
@@ -90,21 +96,25 @@ export default function NotFoundSectionDemo({
     ? [
         {
           label: "Component Matrix",
+          href: "#",
           icon: <LayoutGrid className="h-4 w-4" />,
           onClick: () => showNotice("Shortcut clicked: Component Matrix"),
         },
         {
           label: "System Quickstart",
+          href: "#",
           icon: <BookOpen className="h-4 w-4" />,
           onClick: () => showNotice("Shortcut clicked: System Quickstart"),
         },
         {
           label: "Telemetry Hub",
+          href: "#",
           icon: <Cpu className="h-4 w-4" />,
           onClick: () => showNotice("Shortcut clicked: Telemetry Hub"),
         },
         {
           label: "Live Changelog",
+          href: "#",
           icon: <Activity className="h-4 w-4" />,
           onClick: () => showNotice("Shortcut clicked: Live Changelog"),
         },
@@ -113,21 +123,25 @@ export default function NotFoundSectionDemo({
     ? [
         {
           label: "All Components",
+          href: "#",
           icon: <LayoutGrid className="h-4 w-4" />,
           onClick: () => showNotice("Shortcut clicked: All Components"),
         },
         {
           label: "Installation Guide",
+          href: "#",
           icon: <BookOpen className="h-4 w-4" />,
           onClick: () => showNotice("Shortcut clicked: Installation Guide"),
         },
         {
           label: "Templates Library",
+          href: "#",
           icon: <Sparkles className="h-4 w-4" />,
           onClick: () => showNotice("Shortcut clicked: Templates Library"),
         },
         {
           label: "Live Changelog",
+          href: "#",
           icon: <Activity className="h-4 w-4" />,
           onClick: () => showNotice("Shortcut clicked: Live Changelog"),
         },
@@ -135,18 +149,23 @@ export default function NotFoundSectionDemo({
     : [
         {
           label: "All Components",
+          href: "#",
           icon: <LayoutGrid className="h-3.5 w-3.5 shrink-0 text-primary" />,
           onClick: () => showNotice("Shortcut clicked: All Components"),
         },
         {
           label: "Installation",
+          href: "#",
           icon: <BookOpen className="h-3.5 w-3.5 shrink-0 text-primary" />,
           onClick: () => showNotice("Shortcut clicked: Installation"),
         },
       ];
 
   return (
-    <div className="relative -my-6 -mx-4 w-[calc(100%+2rem)] min-w-[calc(100%+2rem)] max-w-none flex flex-col items-center justify-center overflow-hidden">
+    <div
+      style={accentStyle(color)}
+      className="relative -my-6 -mx-4 w-[calc(100%+2rem)] min-w-[calc(100%+2rem)] max-w-none flex flex-col items-center justify-center overflow-hidden"
+    >
       {notice && (
         <div className="absolute top-6 z-50 text-xs px-4 py-1.5 rounded-full bg-primary/10 text-primary border border-primary/20 font-mono shadow-lg backdrop-blur-md">
           {notice}
