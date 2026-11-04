@@ -12,7 +12,7 @@
 <br />
 
 [![Website](https://img.shields.io/badge/Website-avaraui.com-9B8AFB?style=flat-square)](https://avaraui.com)
-[![Docs](https://img.shields.io/badge/Docs-read-9B8AFB?style=flat-square)](https://avaraui.com/docs/nextjs/index)
+[![Docs](https://img.shields.io/badge/Docs-read-9B8AFB?style=flat-square)](https://avaraui.com/docs/nextjs)
 [![Registry](https://img.shields.io/badge/shadcn-registry-9B8AFB?style=flat-square)](https://avaraui.com/r/registry.json)
 [![License](https://img.shields.io/badge/License-MIT-9B8AFB?style=flat-square)](LICENSE)
 
@@ -145,3 +145,5 @@ Runtime libraries the components use, such as Radix UI, Lucide, GSAP and Motion,
 ## License
 
 Avara UI is free for personal and commercial use under the [MIT License](LICENSE). Copyright © 2025–2026 AlgorizeTech.
+
+The names and logos are not covered by that license: see [TRADEMARKS.md](TRADEMARKS.md).
