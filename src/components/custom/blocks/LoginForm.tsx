@@ -14,6 +14,7 @@ import { RibbonDriftBlock } from "./RibbonDriftBlock";
 // ==========================================
 export type LoginColor =
   | "primary"
+  | "lavender"
   | "indigo"
   | "rose"
   | "emerald"
@@ -257,6 +258,12 @@ export default function LoginForm({
     theme.focusBorder,
     theme.focusRing
   );
+  const scenicPrimaryButtonClasses = cn(
+    "w-full",
+    theme.bg,
+    theme.panelFg,
+    focusButtonClasses
+  );
   const [scenicStep, setScenicStep] = useState<"welcome" | "form">(initialStep);
 
   const [formData, setFormData] = useState<LoginFormValues>({
@@ -420,6 +427,9 @@ export default function LoginForm({
           />
           <a
             href={forgotPasswordHref}
+            onClick={(e) => {
+              if (!forgotPasswordHref || forgotPasswordHref === "#") e.preventDefault();
+            }}
             className={cn(
               "text-xs font-semibold hover:underline transition-all shrink-0",
               isLiquidGlass ? "text-white/90 hover:text-white" : theme.text,
@@ -453,6 +463,9 @@ export default function LoginForm({
           Don&apos;t have an account?{" "}
           <a
             href={signupHref}
+            onClick={(e) => {
+              if (!signupHref || signupHref === "#") e.preventDefault();
+            }}
             className={cn(
               "font-semibold hover:underline transition-all",
               isLiquidGlass ? "text-white hover:text-white/90" : theme.text,
@@ -784,16 +797,19 @@ export default function LoginForm({
                   variant="scenic-primary"
                   color={color}
                   onClick={() => setScenicStep("form")}
-                  className={cn(
-                    "w-full bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100",
-                    focusButtonClasses
-                  )}
+                  className={scenicPrimaryButtonClasses}
                 >
                   {loginLabel}
                 </Button>
 
                 {/* Secondary Button */}
-                <a href={signupHref} className="w-full block">
+                <a
+                  href={signupHref}
+                  onClick={(e) => {
+                    if (!signupHref || signupHref === "#") e.preventDefault();
+                  }}
+                  className="w-full block"
+                >
                   <Button
                     type="button"
                     variant="scenic-secondary"
@@ -882,6 +898,9 @@ export default function LoginForm({
                   />
                   <a
                     href={forgotPasswordHref}
+                    onClick={(e) => {
+                      if (!forgotPasswordHref || forgotPasswordHref === "#") e.preventDefault();
+                    }}
                     className="font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors"
                   >
                     Forgot password?
@@ -894,8 +913,8 @@ export default function LoginForm({
                   color={color}
                   loading={loading}
                   className={cn(
-                    "w-full h-11 rounded-xl text-sm mt-2 bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100",
-                    focusButtonClasses
+                    "w-full h-11 rounded-xl text-sm mt-2",
+                    scenicPrimaryButtonClasses
                   )}
                 >
                   {loading ? "Signing in..." : "Sign in"}
@@ -907,6 +926,9 @@ export default function LoginForm({
                   Don't have an account?{" "}
                   <a
                     href={signupHref}
+                    onClick={(e) => {
+                      if (!signupHref || signupHref === "#") e.preventDefault();
+                    }}
                     className="font-semibold text-zinc-900 dark:text-white hover:underline"
                   >
                     Sign up

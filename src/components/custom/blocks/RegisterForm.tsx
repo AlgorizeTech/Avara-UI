@@ -14,6 +14,7 @@ import { RibbonDriftBlock } from "./RibbonDriftBlock";
 // ==========================================
 export type RegisterColor =
   | "primary"
+  | "lavender"
   | "indigo"
   | "rose"
   | "emerald"
@@ -727,6 +728,9 @@ export default function RegisterForm({
                 I agree to the{" "}
                 <a
                   href={termsHref}
+                  onClick={(e) => {
+                    if (!termsHref || termsHref === "#") e.preventDefault();
+                  }}
                   className={cn(
                     "font-semibold hover:underline",
                     isLiquidGlass ? "text-white hover:text-white/90" : theme.text,
@@ -737,6 +741,9 @@ export default function RegisterForm({
                 and{" "}
                 <a
                   href={privacyHref}
+                  onClick={(e) => {
+                    if (!privacyHref || privacyHref === "#") e.preventDefault();
+                  }}
                   className={cn(
                     "font-semibold hover:underline",
                     isLiquidGlass ? "text-white hover:text-white/90" : theme.text,
@@ -777,6 +784,9 @@ export default function RegisterForm({
           Already have an account?{" "}
           <a
             href={loginHref}
+            onClick={(e) => {
+              if (!loginHref || loginHref === "#") e.preventDefault();
+            }}
             className={cn(
               "font-semibold hover:underline transition-all",
               isLiquidGlass ? "text-white hover:text-white/90" : theme.text,
@@ -1265,7 +1275,13 @@ export default function RegisterForm({
                   </Button>
 
                   {/* Secondary Button */}
-                  <a href={loginHref} className="w-full block">
+                  <a
+                    href={loginHref}
+                    onClick={(e) => {
+                      if (!loginHref || loginHref === "#") e.preventDefault();
+                    }}
+                    className="w-full block"
+                  >
                     <Button
                       type="button"
                       variant="scenic-secondary"
@@ -1399,6 +1415,9 @@ export default function RegisterForm({
                     Already have an account?{" "}
                     <a
                       href={loginHref}
+                      onClick={(e) => {
+                        if (!loginHref || loginHref === "#") e.preventDefault();
+                      }}
                       className="font-semibold text-zinc-900 dark:text-white hover:underline transition-colors ml-0.5"
                     >
                       Log in
@@ -1582,6 +1601,9 @@ export default function RegisterForm({
                           I agree to the{" "}
                           <a
                             href={termsHref}
+                            onClick={(e) => {
+                              if (!termsHref || termsHref === "#") e.preventDefault();
+                            }}
                             className={cn(
                               "underline underline-offset-2",
                               theme.text
@@ -1592,6 +1614,9 @@ export default function RegisterForm({
                           and{" "}
                           <a
                             href={privacyHref}
+                            onClick={(e) => {
+                              if (!privacyHref || privacyHref === "#") e.preventDefault();
+                            }}
                             className={cn(
                               "underline underline-offset-2",
                               theme.text
@@ -1637,6 +1662,9 @@ export default function RegisterForm({
                     Already have an account?{" "}
                     <a
                       href={loginHref}
+                      onClick={(e) => {
+                        if (!loginHref || loginHref === "#") e.preventDefault();
+                      }}
                       className="font-semibold text-zinc-900 dark:text-white hover:underline transition-colors ml-0.5"
                     >
                       Log in
