@@ -7,7 +7,9 @@ import {
   DEFAULT_FRAMEWORK,
   FORKED_SLUGS,
   docsHref,
+  type Framework,
 } from "@/lib/framework";
+import { docsPageModified, lastCommit } from "@/lib/last-modified";
 
 export const dynamic = "force-static";
 
@@ -150,15 +152,25 @@ function priorityFor(route: string): number {
   return 0.5;
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  // A fixed date, not `new Date()`: a build-time "now" tells crawlers every URL
-  // changed on every deploy, which is noise rather than signal.
-  const lastModified = new Date("2026-08-18");
+/** When a route last changed, from git. Undefined leaves `lastmod` out rather than guessing. */
+function modifiedFor(route: string): string | undefined {
+  if (route === "/") {
+    return lastCommit("src/app/page.tsx", "src/app/home-page.tsx", "src/components/home");
+  }
+  if (route === "/docs") return lastCommit("src/app/docs/page.mdx");
+  const docs = route.match(/^\/docs\/([^/]+)(?:\/(.+))?$/);
+  if (docs) return docsPageModified(docs[2] ?? "index", docs[1] as Framework);
+  return lastCommit(`src/app${route}`);
+}
 
-  return collectRoutes().map((route) => ({
-    url: `${SITE_URL}${route === "/" ? "" : route}`,
-    lastModified,
-    changeFrequency: route.startsWith("/docs") ? ("weekly" as const) : ("monthly" as const),
-    priority: priorityFor(route),
-  }));
+export default function sitemap(): MetadataRoute.Sitemap {
+  return collectRoutes().map((route) => {
+    const lastModified = modifiedFor(route);
+    return {
+      url: `${SITE_URL}${route === "/" ? "" : route}`,
+      ...(lastModified ? { lastModified } : {}),
+      changeFrequency: route.startsWith("/docs") ? ("weekly" as const) : ("monthly" as const),
+      priority: priorityFor(route),
+    };
+  });
 }

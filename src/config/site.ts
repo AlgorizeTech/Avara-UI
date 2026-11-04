@@ -77,6 +77,8 @@ export const links = {
   twitterHandle: env(process.env.NEXT_PUBLIC_TWITTER_HANDLE),
   discord: env(process.env.NEXT_PUBLIC_DISCORD_URL),
   npm: env(process.env.NEXT_PUBLIC_NPM_URL),
+  /** The library's Product Hunt listing — schema.org `sameAs` on the library. */
+  productHunt: env(process.env.NEXT_PUBLIC_PRODUCT_HUNT_URL) ?? "https://www.producthunt.com/products/avaraui",
   /** Where "report an issue" and "contribute" point. Defaults to the repo. */
   issues:
     env(process.env.NEXT_PUBLIC_ISSUES_URL) ??

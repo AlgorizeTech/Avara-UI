@@ -1,4 +1,4 @@
-import { SITE_NAME, SITE_URL, links } from "@/config/site";
+import { SITE_NAME, SITE_URL, links, siteConfig } from "@/config/site";
 import { navigation } from "@/constants/navigation";
 import { isMotionTwin } from "@/lib/component-count";
 import {
@@ -16,7 +16,7 @@ import {
   FORKED_SLUGS,
   FRAMEWORK_META,
   docsHref,
-  type Framework,
+  docsMarkdownHref,
 } from "@/lib/framework";
 import {
   REGISTRY_ADD_ARGS,
@@ -37,15 +37,11 @@ export const dynamic = "force-static";
 
 const absolute = (pathname: string) => `${SITE_URL}${pathname}`;
 
-/** The Markdown mirror of a docs page, which build-md-files.ts publishes. */
-const markdownUrl = (framework: Framework, slug: string) =>
-  absolute(`/docs-md/${framework}-${slug.replace(/\//g, "-")}.md`);
-
 /** One `- [Label](url): notes` line for a docs page. */
 function pageLine(label: string, slug: string, framework = DEFAULT_FRAMEWORK) {
   const source = pageSource(slug, framework);
   const url = source
-    ? markdownUrl(framework, slug)
+    ? absolute(docsMarkdownHref(framework, slug))
     : absolute(docsHref(framework, slug));
 
   const items = source ? installedItems(source) : [];
@@ -110,10 +106,12 @@ function build(): string {
   const header = [
     `# ${SITE_NAME}`,
     "",
-    `> ${SITE_NAME} is a library of ${COMPONENT_COUNT} animated, responsive React components, ` +
+    `> ${SITE_NAME} is a free, MIT-licensed library of ${COMPONENT_COUNT} animated, responsive React components, ` +
       "published as a shadcn registry. The shadcn CLI copies each component's source into your " +
       "project — there is no npm package to install. Components are built with React, " +
       "TypeScript and Tailwind CSS v4.",
+    "",
+    `Maintainer: ${siteConfig.author}. No account, license key or API key is needed.`,
     "",
     `Install rule: register the registry once per project with \`npx shadcn@latest ${REGISTRY_ADD_ARGS}\`, ` +
       `then add items as \`npx shadcn@latest add ${REGISTRY_NAMESPACE}/<name>\`. ` +
@@ -128,7 +126,8 @@ function build(): string {
       "Installation and Quick Start are separate guides per framework; component pages are shared, and components import nothing from `next/*`.",
     "",
     "Markdown: every docs page is also published as Markdown at " +
-      `\`${SITE_URL}/docs-md/<framework>-<page>.md\`. The links below point to those files.`,
+      `\`${SITE_URL}/docs-md/<framework>-<page>.md\`. The links below point to those files. ` +
+      "To cite a page, use the `url` in the file's front matter, which is the page itself.",
     "",
   ];
 
