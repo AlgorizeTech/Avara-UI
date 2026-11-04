@@ -80,7 +80,21 @@ export const wallNoMobile = {
   layout: "center",
   showMobileWall: false,
   stackVariant: ' variant="compact"',
-  comment: `// Hides the background image animation on mobile and small screens (
+  comment: `// Hides the background image animation on mobile and small screens ( `"use client";
+
+${wallData}
+
+export default function FullscreenWallHero() {
+  return (
+    
+  );
+}
+`;
+
+export const usageFullscreen = {
+  nextjs: wallFullscreenUsage(),
+  reactjs: wallFullscreenUsage(),
+};
 
 ## Installation
 
@@ -131,7 +145,7 @@ npx shadcn@latest add @avara-ui/component-wall
         heading
         string
         —
-        The headline, revealed word by word. &#123;word&#125; is where headingWords take turns.
+        The headline, revealed word by word. &#123;word&#125; is where headingWords take turns. Optional when layout="fullscreen".
 
         headingWords
         string[]
@@ -209,9 +223,9 @@ npx shadcn@latest add @avara-ui/component-wall
         Called when the camera settles on a card.
 
         layout
-        "split" | "center" | "center-background"
+        "split" | "center" | "center-background" | "fullscreen" | "wall-only"
         "split"
-        The copy on the left and the wall on the right, or the copy centred between two walls — the left camera resting high, the right one low — with the tools under the copy. Below lg a single band of every card sits between the copy and the tools.
+        "split": copy on the left and wall on the right; "center": copy centred between two walls; "center-background": walls in the background across all screens; "fullscreen" (or "wall-only"): renders a single continuous edge-to-edge wall across the entire screen with all cards included and no copy.
 
         showMobileWall
         boolean

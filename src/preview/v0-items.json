@@ -241,7 +241,8 @@
     "build-interactive-interfaces": "Component Wall — Build interactive interfaces",
     "centred-with-persistent-background": "Component Wall — Centred with persistent background",
     "clean-mobile-view-no-background-animation": "Component Wall — Clean mobile view (no background animation)",
-    "copy-beside-the-wall": "Component Wall — Copy beside the wall"
+    "copy-beside-the-wall": "Component Wall — Copy beside the wall",
+    "fullscreen-wall-no-copy": "Component Wall — Fullscreen wall (no copy)"
   },
   "context-menu": {
     "labels-shortcuts-disabled": "Context Menu — Labels, shortcuts & disabled"

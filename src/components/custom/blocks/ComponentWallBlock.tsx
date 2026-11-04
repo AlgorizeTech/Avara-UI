@@ -42,15 +42,15 @@ export interface ComponentWallItem extends WallItem {
 }
 
 export interface ComponentWallProps
-  extends Omit<React.HTMLAttributes<HTMLElement>, "onFocus">,
-    Pick<ImageWallProps, "columns" | "interval" | "order" | "zoom" | "mobileZoom" | "intro" | "onFocus"> {
+  extends Omit<React.HTMLAttributes<HTMLElement>, "onFocus" | "draggable">,
+    Pick<ImageWallProps, "columns" | "interval" | "order" | "zoom" | "mobileZoom" | "intro" | "onFocus" | "gap" | "stagger" | "draggable" | "drift" | "cardDim"> {
   /** The small link above the headline. */
   badge?: { label: string; href?: string };
   /**
    * The headline, revealed word by word. Write `{word}` where `headingWords`
    * take turns: `"Build interactive {word}."`.
    */
-  heading: string;
+  heading?: string;
   /** Words that take turns at `{word}`, each blurring in the way the headline did. */
   headingWords?: string[];
   /** Milliseconds each of `headingWords` stays. */
@@ -85,8 +85,10 @@ export interface ComponentWallProps
    * Below `lg` there is a single wall instead: a band of every card
    * between the copy and the tools. `center-background`: keeps the walls
    * anchored in the background layer behind the copy across all screens.
+   * `fullscreen` / `wall-only`: renders a single unified edge-to-edge wall of
+   * all cards across the screen without copy or text.
    */
-  layout?: "split" | "center" | "center-background";
+  layout?: "split" | "center" | "center-background" | "fullscreen" | "wall-only";
   /**
    * When true (or with layout="center-background"), the animated screenshot
    * walls stay in the background layer behind the copy on small screens instead
@@ -327,7 +329,7 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
   (
     {
       badge,
-      heading,
+      heading = "",
       headingWords,
       wordInterval = 2400,
       accent,
@@ -339,10 +341,15 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
       items,
       stack,
       columns,
+      gap,
+      stagger,
       interval,
       order,
       zoom,
       mobileZoom,
+      draggable,
+      drift,
+      cardDim,
       // Long enough for the headline and the lines under it to have risen.
       intro = 1800,
       onFocus,
@@ -358,6 +365,9 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
     ref,
   ) => {
     const reduceMotion = useReducedMotion();
+    const isWallOnly = layout === "fullscreen" || layout === "wall-only";
+    const wallStagger = stagger !== undefined ? stagger : 72;
+    const wallGap = gap !== undefined ? gap : 16;
     const isPersistent = persistentBackground || layout === "center-background";
     const centered = layout === "center" || isPersistent;
     const desktop = useMinWidth(1024);
@@ -467,10 +477,15 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
     const isSmallScreen = desktop === false;
     const wallProps = {
       columns,
+      gap: wallGap,
+      stagger: wallStagger,
       interval,
       order,
-      zoom: zoom ?? (centered ? CENTER_ZOOM : undefined),
-      mobileZoom: isSmallScreen ? (mobileZoom ?? (isPersistent ? 0.30 : 0.32)) : undefined,
+      zoom: zoom ?? (isWallOnly ? 1 : (centered ? CENTER_ZOOM : undefined)),
+      mobileZoom: isSmallScreen ? (mobileZoom ?? (isPersistent ? 0.30 : (isWallOnly ? 0.5 : 0.32))) : undefined,
+      draggable,
+      drift,
+      cardDim,
     };
 
     // Each line that rises takes the next place in line, skipping the absent ones.
@@ -501,17 +516,19 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
           </div>
         )}
 
-        <TextAnimation
-          as="h1"
-          variant="blur-in-up"
-          text={heading}
-          renderWord={renderWord}
-          delay={0}
-          className={cn(
-            "max-w-[14ch] gap-y-0 font-serif text-[2.6rem] font-medium leading-[1.02] tracking-[-0.02em] text-foreground sm:text-[3.4rem] xl:text-[4rem]",
-            centered && "justify-center",
-          )}
-        />
+        {heading ? (
+          <TextAnimation
+            as="h1"
+            variant="blur-in-up"
+            text={heading}
+            renderWord={renderWord}
+            delay={0}
+            className={cn(
+              "max-w-[14ch] gap-y-0 font-serif text-[2.6rem] font-medium leading-[1.02] tracking-[-0.02em] text-foreground sm:text-[3.4rem] xl:text-[4rem]",
+              centered && "justify-center",
+            )}
+          />
+        ) : null}
 
         {description && (
           <p style={riseAt()} className="cw-rise mt-6 max-w-[52ch] text-pretty text-[15px] leading-[1.65] text-muted-foreground sm:text-base">
@@ -623,6 +640,38 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
         )}
       </div>
     );
+
+    if (isWallOnly) {
+      return (
+        <section
+          ref={ref}
+          className={cn(
+            "relative w-full h-[520px] sm:h-[640px] lg:h-[760px] overflow-hidden bg-background text-foreground select-none",
+            className,
+          )}
+          {...props}
+        >
+          <style>{STYLES}</style>
+          <ImageWall
+            columns={columns}
+            gap={wallGap}
+            stagger={wallStagger}
+            interval={interval ?? 0}
+            order={order}
+            zoom={zoom ?? 1}
+            mobileZoom={mobileZoom ?? 0.5}
+            items={items}
+            intro={intro ?? 0}
+            anchor={{ x: 0.5, y: 0.5 }}
+            onFocus={onFocus}
+            draggable={draggable ?? true}
+            drift={drift ?? { x: -0.35, y: -0.18 }}
+            cardDim={cardDim ?? 0.52}
+            className="size-full [mask-image:linear-gradient(to_bottom,transparent,black_5%,black_95%,transparent)]"
+          />
+        </section>
+      );
+    }
 
     if (centered) {
       return (

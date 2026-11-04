@@ -333,7 +333,11 @@ async function buildMdFiles(): Promise<void> {
     // exactly like a current one.
     if (fs.existsSync(mdOutputPath)) {
       for (const stale of fs.readdirSync(mdOutputPath)) {
-        if (stale.endsWith('.md')) fs.unlinkSync(path.join(mdOutputPath, stale));
+        if (stale.endsWith('.md') && stale !== 'README.md') {
+          try {
+            fs.unlinkSync(path.join(mdOutputPath, stale));
+          } catch {}
+        }
       }
     }
     
