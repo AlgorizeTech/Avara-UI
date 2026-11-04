@@ -4049,6 +4049,11 @@
           "path": "src/components/custom/blocks/SecureEnvelopeBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/SecureEnvelopeBlock.tsx"
+        },
+        {
+          "path": "src/lib/accent.ts",
+          "type": "registry:component",
+          "target": "lib/accent.ts"
         }
       ],
       "docs": "Named export: SecureEnvelope (also ConfidentialFolder)."

@@ -391,10 +391,16 @@ export default function TrainOnlineTicketExample() {
         <td>Website URL printed on the sleeve and reverse side.</td>
       </tr>
       <tr>
-        <td><code>folderColor</code></td>
+        <td><code>color</code></td>
         <td><code>string</code></td>
         <td><code>undefined (var(--primary))</code></td>
-        <td>Optional custom theme color override for the folder sleeve and accents. Defaults to the active theme's primary color.</td>
+        <td>Custom theme accent color override for the envelope sleeve and accents. Accepts preset names (<code>"emerald"</code>, <code>"indigo"</code>, <code>"rose"</code>, <code>"lavender"</code>, <code>"zinc"</code>) or any valid CSS hex/color.</td>
+      </tr>
+      <tr>
+        <td><code>folderColor</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Alias for <code>color</code>. Optional custom theme color override for the folder sleeve and accents.</td>
       </tr>
       <tr>
         <td><code>initialPeek</code></td>
