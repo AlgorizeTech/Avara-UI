@@ -45,7 +45,7 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
     {
       linkComponent: Link = "a",
       badgeText = "Next-Gen React Components",
-      badgeHref = "/docs",
+      badgeHref = "#",
       titlePrefix = "Build ",
       typingWords = [
         "Interfaces",
@@ -59,9 +59,9 @@ export const HomepageHeroBlock = forwardRef<HTMLElement, HomepageHeroBlockProps>
       subtitle = "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion.",
       cliCommand = "npx shadcn@latest add @avara-ui/button",
       primaryActionLabel = "Browse Components",
-      primaryActionHref = "/docs",
+      primaryActionHref = "#",
       secondaryActionLabel = "Star on GitHub",
-      secondaryActionHref = "https://github.com/AlgorizeTech",
+      secondaryActionHref = "#",
       className,
       ...props
     },

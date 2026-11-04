@@ -3,6 +3,7 @@
 import React, { forwardRef, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight, Compass } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { accentTokens } from "@/lib/accent";
 
 // ==========================================
 // HONEYCOMB HERO
@@ -376,7 +377,7 @@ export const HoneycombHero = forwardRef<HTMLElement, HoneycombHeroProps>(
         onKeyDown={onKeyDown}
         // `--hc-bg` is the featured photograph's tone; everything painted with it
         // eases to the next one as the queue turns.
-        style={{ ...((accent || color) ? { "--primary": accent || color } : {}), "--hc-bg": tone, ...style } as React.CSSProperties}
+        style={{ ...accentTokens(accent || color), "--hc-bg": tone, ...style } as React.CSSProperties}
         className={cn(
           // No `dark` class here: it would redeclare `--primary` from the
           // stylesheet and cut the section off from a theme set on <html>.

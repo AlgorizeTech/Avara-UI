@@ -63,7 +63,7 @@ export default function Hero() {
       titleAccent="Fjords"
       subtitle="Waterfalls that drop straight into the sea, red cabins at the water's edge and skies that glow green after dark — small-group journeys through the far north."
       primaryActionLabel={"Plan\\nyour trip"}
-      primaryActionHref="/tours"
+      primaryActionHref="#"
       images={IMAGES}
       socialLinks={[
         { label: "Instagram", href: "#" },
@@ -79,6 +79,7 @@ export default function Hero() {
 
 <ExampleShowcase
   name="honeycomb-hero"
+  colorControl
   columns={1}
   minHeight={600}
   examples={[
@@ -300,7 +301,7 @@ export default function Hero() {
       intro="Three days in the mountains with a local guide who knows every path."
       avatars={AVATARS}
       avatarsLabel="50+ travellers this season"
-      cta={{ label: "Reserve a spot", href: "/book" }}
+      cta={{ label: "Reserve a spot", href: "#" }}
       linkComponent={Link}
       interval={5000}
     />
@@ -493,20 +494,26 @@ const LOOKS = [
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Man wearing a dark leather jacket", tone: "#2e9c82" },
 ];
 
+const AVATARS = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790145139/pexels-photo-1036623-1790145143487.jpg", name: "Elena Vance", role: "Member" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790145142/pexels-photo-2043590-1790145143488.jpg", name: "Marcus Chen", role: "Shopper" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790145139/pexels-photo-1587009-1790145143488.jpg", name: "Sarah Jenkins", role: "Stylist" },
+];
+
 export default function Hero() {
   return (
     <FashionHero
       heading="Refresh Your Look With Daring Designs"
       video={{ badge: "Get to know us in this short film", url: "https://www.youtube.com/embed/…" }}
-      avatars={[{ src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790145139/pexels-photo-1036623-1790145143487.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790145142/pexels-photo-2043590-1790145143488.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790145139/pexels-photo-1587009-1790145143488.jpg" }]}
-      avatarsHref="/community"
+      avatars={AVATARS}
+      avatarsHref="#"
       looks={LOOKS}
-      cta={{ label: "Shop new arrivals", href: "/collections" }}
+      cta={{ label: "Shop new arrivals", href: "#" }}
       quote={{
         text: "Moda Lane pieces feel modern and confident, just the refresh my closet was missing. Great fabrics, great feel!",
         author: "Nadia K.",
       }}
-      teaser={{ index: "01", label: "Journal", title: "Update Your Wardrobe With New-Season Picks", href: "/stories/latest-trends" }}
+      teaser={{ index: "01", label: "Journal", title: "Update Your Wardrobe With New-Season Picks", href: "#" }}
       linkComponent={Link}
     />
   );
@@ -687,7 +694,7 @@ export default function Hero() {
     <SupportHero
       heading="AI-Driven Support To Boost Your Business Growth"
       subtitle="A platform that helps customer service leaders provide efficient, high-quality support at scale with an AI agent, improving speed and quality across all channels, 24/7."
-      cta={{ label: "Book a demo", href: "/demo" }}
+      cta={{ label: "Book a demo", href: "#" }}
     >
       <SupportHero.Integrations
         icons={[<DiscordIcon key="d" />, <SlackIcon key="s" />, <GoogleCalendarIcon key="c" />]}
@@ -728,6 +735,7 @@ export default function Hero() {
 
 <ExampleShowcase
   name="support-hero"
+  colorControl
   columns={1}
   examples={[
     {
@@ -1228,15 +1236,15 @@ export default function Page() {
     <HeroBlock
       variant="bounce"
       badgeText="Next-Gen React Components"
-      badgeHref="/docs"
+      badgeHref="#"
       titlePrefix="Build Interactive "
       typingWords={["Interfaces", "Components", "Experiences", "Animations"]}
       subtitle="A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion."
       cliCommand="npx shadcn@latest add button"
       primaryActionLabel="Browse Components"
-      primaryActionHref="/docs"
+      primaryActionHref="#"
       secondaryActionLabel="Star on GitHub"
-      secondaryActionHref="https://github.com/AlgorizeTech"
+      secondaryActionHref="#"
     />
   );
 }`;
@@ -1270,7 +1278,7 @@ export default function Page() {
     <HeroBlock
       variant="typing"
       badgeText="Next-Gen React Components"
-      badgeHref="/docs"
+      badgeHref="#"
       titlePrefix="Build Interactive "
       typingWords={[
         "Interfaces",
@@ -1282,9 +1290,9 @@ export default function Page() {
       subtitle="A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion."
       cliCommand="npx shadcn@latest add ${REGISTRY_NAMESPACE}/button"
       primaryActionLabel="Browse Components"
-      primaryActionHref="/docs"
+      primaryActionHref="#"
       secondaryActionLabel="Star on GitHub"
-      secondaryActionHref="https://github.com/AlgorizeTech"
+      secondaryActionHref="#"
     />
   );
 }`;
@@ -1297,7 +1305,7 @@ export default function Page() {
       variant="typing"
       prefixPosition="fixed"
       badgeText="Next-Gen React Components"
-      badgeHref="/docs"
+      badgeHref="#"
       titlePrefix="Build Interactive "
       typingWords={[
         "Interfaces",
@@ -1309,9 +1317,9 @@ export default function Page() {
       subtitle="A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion."
       cliCommand="npx shadcn@latest add ${REGISTRY_NAMESPACE}/button"
       primaryActionLabel="Browse Components"
-      primaryActionHref="/docs"
+      primaryActionHref="#"
       secondaryActionLabel="Star on GitHub"
-      secondaryActionHref="https://github.com/AlgorizeTech"
+      secondaryActionHref="#"
     />
   );
 }`;
@@ -1358,14 +1366,14 @@ export default function Page() {
     <HeroBlock
       variant="slider"
       badgeText="Full-Stack Software Engineer"
-      badgeHref="/docs"
+      badgeHref="#"
       titlePrefix="Building & Engineering "
       titleSuffix="Full-Stack Digital Products"
       subtitle="Full-stack software engineer dedicated to building scalable web applications, modern SaaS platforms, and high-performance digital experiences."
       primaryActionLabel="Explore Projects"
-      primaryActionHref="/projects"
+      primaryActionHref="#"
       secondaryActionLabel="Contact Me"
-      secondaryActionHref="#contact"
+      secondaryActionHref="#"
       mainImage="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150482/photo-1524504388940-b1c1722653e1-1790150482279.jpg"
       sliderImages={[
         "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
@@ -1409,9 +1417,9 @@ export default function Page() {
       subtitle="Discover nutritionist-crafted organic meals, orthopedic beds, durable interactive toys, and instant 24/7 vet consultations."
       categories={["Dry Food", "Toys", "Grooming", "Wellness", "Subscription"]}
       primaryActionLabel="Shop Dog Supplies"
-      primaryActionHref="/shop/dog"
+      primaryActionHref="#"
       secondaryActionLabel="Shop Cat Care"
-      secondaryActionHref="/shop/cat"
+      secondaryActionHref="#"
       petImage="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150479/photo-1543466835-00a7907e9de1-1790150482273.jpg"
       secondaryPetImage="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150481/photo-1514888286974-6c03e2ca1dba-1790150482276.jpg"
     />
@@ -1449,9 +1457,9 @@ export default function Page() {
       titleSuffix="Real Results"
       subtitle="Order medical-grade test kits, return by mail, and get fast, accurate, secure results online — anytime, anywhere, hassle-free."
       primaryActionLabel="Order Kit"
-      primaryActionHref="/order"
+      primaryActionHref="#"
       secondaryActionLabel="See How Its Work"
-      secondaryActionHref="/how-it-works"
+      secondaryActionHref="#"
       ratingText="100%"
       featurePillText="98%"
       badgeTags={["Safe & Private Results", "Satisfaction rate"]}
@@ -1492,7 +1500,7 @@ export default function Page() {
       titlePrefix="Precision facility services. Certified. For environments that can't fail."
       subtitle="Certified, data-driven facility services across mission-critical environments."
       primaryActionLabel="Request a facility audit"
-      primaryActionHref="#audit"
+      primaryActionHref="#"
     />
   );
 }`;
@@ -1551,7 +1559,7 @@ export default function VortexHeroExample() {
 
 <ExampleShowcase
   name="hero-vortex"
-  colorControl={false}
+  colorControl
   columns={1}
   minHeight={580}
   examples={[
@@ -1599,14 +1607,14 @@ export default function OrbitHeroExample() {
     <HeroBlock
       variant="orbit"
       badgeText="Identity & animation studio"
-      badgeHref="/about"
+      badgeHref="#"
       title="Movement is what"
       titleAccent="people notice first."
       subtitle="We design brand identities and the animation that brings them to life — from early sketches to the live release."
       primaryActionLabel="Work with us"
-      primaryActionHref="/contact"
+      primaryActionHref="#"
       secondaryActionLabel="View projects"
-      secondaryActionHref="/work"
+      secondaryActionHref="#"
       images={IMAGES}
       highlights={[
         { label: "15 hand-picked scenes" },

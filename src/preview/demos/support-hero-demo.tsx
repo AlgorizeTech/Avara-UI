@@ -14,14 +14,20 @@ const AVATARS = [
 export default function SupportHeroDemo({
   reveal = "immediate",
   rounded = true,
+  accent,
+  color,
 }: {
   /** In the docs the section is already on screen, so play at once. */
   reveal?: "in-view" | "immediate";
   rounded?: boolean;
+  accent?: string;
+  color?: string;
 }) {
   return (
     <SupportHero
       reveal={reveal}
+      accent={accent}
+      color={color}
       heading="AI-Driven Support To Boost Your Business Growth"
       subtitle="A platform that helps customer service leaders provide efficient, high-quality support at scale with an AI agent, improving speed and quality across all channels, 24/7."
       cta={{ label: "Book a demo", onClick: () => {} }}

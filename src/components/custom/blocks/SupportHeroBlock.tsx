@@ -7,6 +7,7 @@ import Button from "./Button";
 import { CounterBlock } from "./CounterBlock";
 import { GlassBackdrop, GlassPanel, type GlassPanelProps } from "./GlassPanelBlock";
 import { TextAnimation } from "./TextAnimationBlock";
+import { accentTokens } from "@/lib/accent";
 
 // ==========================================
 // SUPPORT HERO
@@ -269,6 +270,8 @@ export interface SupportHeroProps extends React.HTMLAttributes<HTMLDivElement> {
   aurora?: [string, string, string];
   /** Play the reveal when the section enters the viewport (default) or immediately. */
   reveal?: "in-view" | "immediate";
+  accent?: string;
+  color?: string;
   children: React.ReactNode;
 }
 
@@ -282,7 +285,10 @@ export function SupportHero({
     "color-mix(in oklab, var(--primary) 14%, var(--muted))",
   ],
   reveal = "in-view",
+  accent,
+  color,
   className,
+  style,
   children,
   ...props
 }: SupportHeroProps) {
@@ -339,7 +345,12 @@ export function SupportHero({
   };
 
   return (
-    <div ref={rootRef} className={cn("w-full", className)} {...props}>
+    <div
+      ref={rootRef}
+      className={cn("w-full", className)}
+      style={{ ...accentTokens(accent || color), ...style }}
+      {...props}
+    >
       <style>{REVEAL_CSS}</style>
       <GlassBackdrop
         aurora={aurora}

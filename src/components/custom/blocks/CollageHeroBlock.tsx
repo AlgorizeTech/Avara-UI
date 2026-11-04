@@ -7,6 +7,7 @@ import { AnimatedTypographyBlock } from "./AnimatedTypographyBlock";
 import Button from "./Button";
 import { CircularText } from "./CircularTextBlock";
 import { Dialog, DialogContent, DialogTrigger } from "./DialogBlock";
+import { accentTokens } from "@/lib/accent";
 
 // ==========================================
 // COLLAGE HERO
@@ -50,6 +51,7 @@ export interface CollageHeroProps extends React.HTMLAttributes<HTMLElement> {
   video?: { eyebrow?: string; text: string; url: string; title?: string };
   /** Accent colour — sets `--primary` for the section; the theme's primary by default. */
   accent?: string;
+  color?: string;
   /** The second colour, for the second <em> and the highlight pills. */
   highlight?: string;
   reveal?: "in-view" | "immediate";
@@ -132,6 +134,7 @@ export function CollageHero({
   scrollTo,
   video,
   accent,
+  color,
   highlight = "#f5c542",
   reveal = "in-view",
   className,
@@ -205,7 +208,7 @@ export function CollageHero({
   };
 
   const vars = {
-    ...(accent ? { "--primary": accent } : {}),
+    ...accentTokens(accent || color),
     "--kg-highlight": highlight,
   } as React.CSSProperties;
 
