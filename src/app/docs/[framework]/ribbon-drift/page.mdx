@@ -74,7 +74,7 @@ export default function RibbonDriftCardExample() {
         {
           lead: "Set",
           prop: "color",
-          value: '"primary" | "indigo" | "rose" | "emerald" | "amber" | "violet" | "zinc"',
+          value: '"primary" | "indigo" | "rose" | "emerald" | "lavender" | "amber" | "violet" | "zinc"',
           effect: "tunes the ambient glow gradient, diamond separators, and hover accents.",
         },
         {
@@ -212,7 +212,7 @@ export default function RibbonDriftCardExample() {
           <code>"primary"</code>
         </td>
         <td>
-          Color theme palette (<code>"primary"</code>, <code>"indigo"</code>, <code>"rose"</code>, <code>"emerald"</code>, <code>"amber"</code>, <code>"violet"</code>, <code>"zinc"</code>).
+          Color theme palette (<code>"primary"</code>, <code>"indigo"</code>, <code>"rose"</code>, <code>"emerald"</code>, <code>"lavender"</code>, <code>"amber"</code>, <code>"violet"</code>, <code>"zinc"</code>).
         </td>
       </tr>
       <tr>
@@ -229,7 +229,92 @@ export default function RibbonDriftCardExample() {
           <code>undefined</code>
         </td>
         <td>
-          Custom badge or logo node rendered in the top-right frosted pill.
+          Custom badge or logo node rendered in the top-right frosted pill (overrides the entire pill content).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>RibbonDriftBlock</code>
+        </td>
+        <td>
+          <code>logo</code>
+        </td>
+        <td>
+          <code>ReactNode | string</code>
+        </td>
+        <td>
+          <code>DefaultBrandIcon</code>
+        </td>
+        <td>
+          Brand logo image URL string or custom ReactNode / SVG. Defaults to the built-in self-contained vector Avara logo.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>RibbonDriftBlock</code>
+        </td>
+        <td>
+          <code>logoDark</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional dark mode brand logo image URL (swapped automatically in dark mode).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>RibbonDriftBlock</code>
+        </td>
+        <td>
+          <code>brandName</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Avara"</code>
+        </td>
+        <td>
+          Brand name text displayed next to the logo.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>RibbonDriftBlock</code>
+        </td>
+        <td>
+          <code>brandAccent</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"UI"</code>
+        </td>
+        <td>
+          Accent word styled with the active theme color (e.g. <code>"UI"</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>RibbonDriftBlock</code>
+        </td>
+        <td>
+          <code>logoHref</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"#"</code>
+        </td>
+        <td>
+          Target link URL for the logo badge.
         </td>
       </tr>
       <tr>
@@ -246,7 +331,7 @@ export default function RibbonDriftCardExample() {
           <code>&#123; brandName: "Avara", brandAccent: "UI" &#125;</code>
         </td>
         <td>
-          Configuration options for the top-right pill badge.
+          Optional grouped configuration object for the top-right logo badge.
         </td>
       </tr>
       <tr>
