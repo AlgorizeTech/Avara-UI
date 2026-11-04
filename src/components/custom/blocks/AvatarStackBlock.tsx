@@ -440,7 +440,7 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
       type,
       invertOverlap = true,
       translate,
-      max = 4,
+      max,
       onMoreClick,
       ringClassName = "ring-background",
       action,
@@ -459,8 +459,9 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
     const [isHovered, setIsHovered] = useState(false);
     const [hoveredAvatarIndex, setHoveredAvatarIndex] = useState<number | string | null>(null);
     const s = SIZES[size] ?? SIZES.md;
-    const shown = avatars.slice(0, max);
-    const hiddenAvatars = avatars.slice(max);
+    const hasMax = typeof max === "number" && max > 0;
+    const shown = hasMax ? avatars.slice(0, max) : avatars;
+    const hiddenAvatars = hasMax ? avatars.slice(max) : [];
     const rest = avatars.length - shown.length;
 
     const handleMoreClick = (e: React.MouseEvent<HTMLElement>) => {
@@ -584,30 +585,15 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
     }
 
     const totalItemsCount = shown.length + (rest > 0 ? 1 : 0) + (renderedActionNode ? 1 : 0);
-    const maxSpreadShift = isHovered && effectiveSpreadOnHover && totalItemsCount > 1
-      ? (totalItemsCount - 1) * dist
-      : 0;
+    const centerIndex = (totalItemsCount - 1) / 2;
 
-    const combinedTransition = [
-      props.style?.transition,
-      effectiveSpreadOnHover ? `margin-right ${transitionDuration}ms cubic-bezier(0.16, 1, 0.3, 1)` : null,
-    ].filter(Boolean).join(", ") || undefined;
-
-    // Default variant: smooth rightward fan-out spread on hover & z-index elevation on hover
+    // Default variant: smooth centered fan-out spread on hover & z-index elevation on hover
     return (
       <div
         ref={ref}
         {...props}
         className={cn("group flex w-fit mx-auto items-center justify-center py-20 px-6", s.overlap, className)}
-        style={{
-          ...props.style,
-          ...(effectiveSpreadOnHover
-            ? {
-                marginRight: `${maxSpreadShift}px`,
-                transition: combinedTransition,
-              }
-            : {}),
-        }}
+        style={props.style}
         onMouseEnter={(e) => {
           setIsHovered(true);
           props.onMouseEnter?.(e);
@@ -619,7 +605,7 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
         }}
       >
         {shown.map((a, i) => {
-          const shiftX = isHovered && effectiveSpreadOnHover ? i * dist : 0;
+          const shiftX = isHovered && effectiveSpreadOnHover ? (i - centerIndex) * dist : 0;
           const isThisHovered = hoveredAvatarIndex === i;
           const currentZIndex = isThisHovered ? 50 : shown.length - i;
           const shiftY = isThisHovered && effectiveTranslate ? (typeof effectiveTranslate === "number" ? `${effectiveTranslate}px` : effectiveTranslate) : "0px";
@@ -692,7 +678,8 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
           return avatarElement;
         })}
         {rest > 0 && (() => {
-          const shiftRestX = isHovered && effectiveSpreadOnHover ? shown.length * dist : 0;
+          const restIndex = shown.length;
+          const shiftRestX = isHovered && effectiveSpreadOnHover ? (restIndex - centerIndex) * dist : 0;
           const isRestHovered = hoveredAvatarIndex === "rest";
           const shiftRestY = isRestHovered && effectiveTranslate ? (typeof effectiveTranslate === "number" ? `${effectiveTranslate}px` : effectiveTranslate) : "0px";
           const restElement = (
@@ -754,24 +741,28 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
 
           return restElement;
         })()}
-        {renderedActionNode && (
-          <span
-            onMouseEnter={() => setHoveredAvatarIndex("action")}
-            onMouseLeave={() => setHoveredAvatarIndex(null)}
-            className={cn(
-              "relative grid shrink-0 place-items-center overflow-visible rounded-full ring-0 cursor-pointer",
-              s.box,
-              hoveredAvatarIndex === "action" && "scale-110",
-            )}
-            style={{
-              transform: `translateX(${isHovered && effectiveSpreadOnHover ? (shown.length + (rest > 0 ? 1 : 0)) * dist : 0}px) translateY(${hoveredAvatarIndex === "action" && effectiveTranslate ? (typeof effectiveTranslate === "number" ? `${effectiveTranslate}px` : effectiveTranslate) : "0px"})`,
-              zIndex: hoveredAvatarIndex === "action" ? 50 : 0,
-              transition: `transform ${transitionDuration}ms cubic-bezier(0.16, 1, 0.3, 1)`,
-            }}
-          >
-            {renderedActionNode}
-          </span>
-        )}
+        {renderedActionNode && (() => {
+          const actionIndex = shown.length + (rest > 0 ? 1 : 0);
+          const shiftActionX = isHovered && effectiveSpreadOnHover ? (actionIndex - centerIndex) * dist : 0;
+          return (
+            <span
+              onMouseEnter={() => setHoveredAvatarIndex("action")}
+              onMouseLeave={() => setHoveredAvatarIndex(null)}
+              className={cn(
+                "relative grid shrink-0 place-items-center overflow-visible rounded-full ring-0 cursor-pointer",
+                s.box,
+                hoveredAvatarIndex === "action" && "scale-110",
+              )}
+              style={{
+                transform: `translateX(${shiftActionX}px) translateY(${hoveredAvatarIndex === "action" && effectiveTranslate ? (typeof effectiveTranslate === "number" ? `${effectiveTranslate}px` : effectiveTranslate) : "0px"})`,
+                zIndex: hoveredAvatarIndex === "action" ? 50 : 0,
+                transition: `transform ${transitionDuration}ms cubic-bezier(0.16, 1, 0.3, 1)`,
+              }}
+            >
+              {renderedActionNode}
+            </span>
+          );
+        })()}
       </div>
     );
   },

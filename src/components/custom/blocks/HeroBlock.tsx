@@ -510,7 +510,7 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
       variant = "bounce",
       linkComponent: Link = "a",
       badgeText = "Next-Gen React Components",
-      badgeHref = "/docs",
+      badgeHref = "#",
       eyebrow,
       titlePrefix = "Build ",
       title,
@@ -527,9 +527,9 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
       subtitle = "A meticulous library of React components & interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP, and Motion.",
       cliCommand = "npx shadcn@latest add @avara-ui/button",
       primaryActionLabel = "Browse Components",
-      primaryActionHref = "/docs",
+      primaryActionHref = "#",
       secondaryActionLabel = "Star on GitHub",
-      secondaryActionHref = "https://github.com/AlgorizeTech",
+      secondaryActionHref = "#",
       sliderImages = DEFAULT_SLIDER_IMAGES,
       mainImage = DEFAULT_MAIN_IMAGE,
       petImage,
@@ -687,13 +687,18 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
         badgeText === "Next-Gen React Components"
           ? "Interactive Motion Architecture"
           : badgeText;
-      const breatheBadgeHref = badgeHref || "/docs";
+      const breatheBadgeHref =
+        !badgeHref || badgeHref === "/docs" || badgeHref === "#"
+          ? "#explore"
+          : badgeHref;
       const breatheSecLabel =
         secondaryActionLabel === "Explore Blocks"
           ? "View Showroom"
           : secondaryActionLabel;
       const breatheSecHref =
-        secondaryActionHref === "#features" ? "#showroom" : secondaryActionHref;
+        secondaryActionHref === "#features" || secondaryActionHref === "#"
+          ? "#showroom"
+          : secondaryActionHref;
 
       return (
         <BreatheHero
@@ -720,7 +725,9 @@ export const HeroBlock = forwardRef<HTMLElement, HeroBlockProps>(
               : primaryActionLabel
           }
           buttonHref={
-            primaryActionHref === "/docs" ? "/docs" : primaryActionHref
+            !primaryActionHref || primaryActionHref === "/docs" || primaryActionHref === "#"
+              ? "#get-started"
+              : primaryActionHref
           }
           secondaryButtonLabel={breatheSecLabel}
           secondaryButtonHref={breatheSecHref}

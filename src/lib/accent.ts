@@ -15,6 +15,7 @@ const PRESET_HEX: Record<string, string> = {
   indigo: "#6366f1",
   rose: "#f43f5e",
   emerald: "#10b981",
+  zinc: "#18181b",
 };
 
 /** True when the picker sits on "Default" — the page theme should win. */

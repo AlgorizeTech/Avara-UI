@@ -29,7 +29,8 @@ export default function CollageHeroDemo({
   return (
     <CollageHero
       reveal={reveal}
-      accent={accent ?? (color?.startsWith("#") ? color : undefined)}
+      accent={accent}
+      color={color}
       brand="PlayMeadow"
       heading={
         <>

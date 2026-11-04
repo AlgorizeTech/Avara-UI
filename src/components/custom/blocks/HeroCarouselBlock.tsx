@@ -5,6 +5,7 @@ import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AnimatedTypographyBlock } from "./AnimatedTypographyBlock";
 import { AvatarStack, type StackAvatar } from "./AvatarStackBlock";
+import { accentTokens } from "@/lib/accent";
 
 // ==========================================
 // HERO CAROUSEL
@@ -423,8 +424,7 @@ export function HeroCarousel({
     if (Math.abs(dx) > 40) go(dx < 0 ? active + 1 : active - 1);
   };
 
-  const resolvedAccent = accent || color;
-  const vars = { ...(resolvedAccent ? { "--primary": resolvedAccent } : {}) } as React.CSSProperties;
+  const vars = accentTokens(accent || color);
   const front = slides[active];
   const railHeight = metrics ? metrics.railH : 320;
 
