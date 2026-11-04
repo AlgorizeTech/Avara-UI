@@ -1,10 +1,10 @@
 ---
-title: "Conversation Timeline"
+title: "Shadcn Conversation Timeline"
 description: "A dense rail of thin marks, one per message, that expands into a labelled list on hover. Free shadcn/ui component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/conversation-timeline
 ---
 
-# Conversation Timeline
+# Shadcn Conversation Timeline
 
 A dense rail of thin marks, one per message, that expands into a labelled list on hover.
 

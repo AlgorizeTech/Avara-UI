@@ -1,10 +1,10 @@
 ---
-title: "Data Table"
+title: "Shadcn Data Table"
 description: "A powerful, fully-featured data table component built on top of Table primitives. Free shadcn/ui Data Table component for React, Next.js and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/data-table
 ---
 
-# Data Table
+# Shadcn Data Table
 
 A powerful, fully-featured data table component built on top of [Table](./table) primitives. It provides built-in state management for **Global Searching, Multi-Column Sorting, Pagination, Row Selection, and Batch Actions** — giving you complete control over your table layout without forcing any data transformation.
 

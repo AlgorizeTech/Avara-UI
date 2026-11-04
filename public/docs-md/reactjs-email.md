@@ -1,10 +1,10 @@
 ---
-title: "Email Dashboard"
+title: "Shadcn Email Dashboard"
 description: "An interactive email client dashboard in default, minimal, glass and liquid-glass styles. Free shadcn/ui Email Dashboard for React, Next.js and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/email
 ---
 
-# Email Dashboard
+# Shadcn Email Dashboard
 
 A premium, fully interactive email client featuring a modern SaaS aesthetic. It includes out-of-the-box state management for reading, starring, archiving, deleting, and composing emails, alongside a fully responsive mobile drawer sidebar.
 

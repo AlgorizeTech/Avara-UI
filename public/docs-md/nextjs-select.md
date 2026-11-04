@@ -1,10 +1,10 @@
 ---
-title: "Select / Dropdown"
-description: "A completely custom, headless-style dropdown component. Native HTML `<select>` elements are notoriously difficult to style consistently across browsers."
+title: "Shadcn Select"
+description: "Shadcn Select component. A completely custom, headless-style dropdown component."
 url: https://avaraui.com/docs/nextjs/select
 ---
 
-# Select / Dropdown
+# Shadcn Select
 
 A completely custom, headless-style dropdown component. Native HTML `<select>` elements are notoriously difficult to style consistently across browsers.
 

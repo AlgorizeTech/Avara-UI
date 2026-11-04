@@ -1,10 +1,10 @@
 ---
-title: "Table of Contents"
-description: "An interactive, responsive Table of Contents navigation block engineered to sit on the left side of long documents, articles, or documentation pages."
+title: "Shadcn Table of Contents"
+description: "Shadcn Table of Contents. An interactive, responsive Table of Contents navigation block engineered to sit on the left side of long documents, articles."
 url: https://avaraui.com/docs/nextjs/table-of-contents
 ---
 
-# Table of Contents
+# Shadcn Table of Contents
 
 An interactive, responsive **Table of Contents** navigation block engineered to sit on the left side of long documents, articles, or documentation pages.
 

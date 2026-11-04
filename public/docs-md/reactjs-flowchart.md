@@ -1,6 +1,6 @@
 ---
 title: "Flowchart / Node Builder"
-description: "A declarative flowchart with responsive column channels, node action anchors and connector lines that draw themselves in with plain CSS animation."
+description: "Shadcn Flowchart / Node Builder. A declarative flowchart with responsive column channels."
 url: https://avaraui.com/docs/nextjs/flowchart
 ---
 

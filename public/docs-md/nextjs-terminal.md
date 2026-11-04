@@ -1,6 +1,6 @@
 ---
 title: "Terminal Snippet"
-description: "A dependency-free terminal window in the macOS style for code in any language, in glass and minimal styles, with optional header controls."
+description: "Shadcn Terminal Snippet. A dependency-free terminal window in the macOS style for code in any language, in glass and minimal styles."
 url: https://avaraui.com/docs/nextjs/terminal
 ---
 

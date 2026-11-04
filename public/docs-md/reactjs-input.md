@@ -1,10 +1,10 @@
 ---
-title: "Input"
+title: "Shadcn Input"
 description: "A multi-purpose Input component with password toggles, autocomplete suggestions, and five layout variants. Free shadcn/ui component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/input
 ---
 
-# Input
+# Shadcn Input
 
 A multi-purpose Input component with password toggles, autocomplete suggestions, and five layout variants.
 

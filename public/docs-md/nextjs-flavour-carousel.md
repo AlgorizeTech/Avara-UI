@@ -1,10 +1,10 @@
 ---
-title: "Flavour Carousel"
+title: "Shadcn Flavour Carousel"
 description: "A product hero for anything that comes in flavours — a matcha latte here, but ice cream, juice or a candle would do. Free shadcn/ui Flavour Carousel block."
 url: https://avaraui.com/docs/nextjs/flavour-carousel
 ---
 
-# Flavour Carousel
+# Shadcn Flavour Carousel
 
 A product hero for anything that comes in flavours — a matcha latte here, but ice cream, juice or a candle would do. The product stands in a mountain of matcha powder against a moss-green backdrop and its flavours flank it on four tilted cream tiles. Every five seconds, or when a tile is clicked, the ring turns: the chosen tile slides into the cup and shrinks away, and the cup — which never moves — cross-fades to the picture with that flavour inside. A soft glow behind the cup takes the flavour's colour; a price pill and an add-to-cart button hang under the cup, and the headline sits low over the powder.
 

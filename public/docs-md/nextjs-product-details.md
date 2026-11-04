@@ -1,10 +1,10 @@
 ---
-title: "Product Details"
-description: "Four responsive product details sections for online stores, with bento hero layouts, glass cards and images that switch with the selected colour."
+title: "Shadcn Product Details"
+description: "Shadcn Product Details. Four responsive product details sections for online stores, with bento hero layouts."
 url: https://avaraui.com/docs/nextjs/product-details
 ---
 
-# Product Details
+# Shadcn Product Details
 
 A collection of 4 production-ready, high-converting, fully responsive E-commerce Product Details components designed with unique layout architectures, glassmorphism cards, bento hero showcases, and colorway image synchronization.
 

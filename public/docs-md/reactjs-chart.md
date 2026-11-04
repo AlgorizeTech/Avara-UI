@@ -1,10 +1,10 @@
 ---
-title: "Chart"
-description: "A custom charting component with bar, line, pie, donut and stacked bar charts, a traffic gauge, visitors by country and metric overview tabs."
+title: "Shadcn Chart"
+description: "Shadcn Chart. A custom charting component with bar, line, pie, donut and stacked bar charts, a traffic gauge, visitors by country and metric overview tabs."
 url: https://avaraui.com/docs/nextjs/chart
 ---
 
-# Chart
+# Shadcn Chart
 
 A beautiful, completely custom charting engine built from the ground up for modern React applications.
 

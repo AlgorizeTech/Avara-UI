@@ -23,23 +23,14 @@ import { createPortal } from "react-dom";
  */
 
 /**
- * Visible stage, in CSS pixels. Its height follows the demo between a floor and
- * a ceiling: a button is a strip, a pricing section is a page, and a fixed box
- * would either strand one in empty space or crop the other.
- *
- * Both bounds are measured from the viewport (see `measureStage`) rather than
- * fixed. The floors below are the old 460 / 160–300 stage grown by 50%, so the
- * preview is never smaller than that on any screen that has the room; larger
- * screens get more, up to the ceilings.
+ * Visible stage, in CSS pixels. It is a fixed size: the panel opens at this
+ * size, stays at it while the demo loads and reports its height, and never
+ * resizes afterwards. Demos are centred inside it and scaled down to fit when
+ * taller than the stage, never cropped. Only a window too small to hold it
+ * shrinks it (see `measureStage`).
  */
-const STAGE_MIN_WIDTH = 690;
-const STAGE_MAX_WIDTH = 920;
-/** Share of the viewport width the stage aims for before the clamps apply. */
-const STAGE_WIDTH_RATIO = 0.46;
-const STAGE_MIN_HEIGHT = 240;
-const STAGE_FLOOR_MAX_HEIGHT = 450;
-const STAGE_CEIL_MAX_HEIGHT = 640;
-const STAGE_HEIGHT_RATIO = 0.5;
+const STAGE_WIDTH = 620;
+const STAGE_HEIGHT = 405;
 const HEADER_HEIGHT = 34;
 
 /**
@@ -61,7 +52,7 @@ const READY_TIMEOUT_MS = 6000;
 const MAX_CONTENT_HEIGHT = 1200;
 /** Assume a stage-filling demo until it reports its real height. */
 const INITIAL_CONTENT_HEIGHT = Math.round(
-  STAGE_FLOOR_MAX_HEIGHT / (STAGE_MIN_WIDTH / PREVIEW_VIEWPORT_WIDTH),
+  STAGE_HEIGHT / (STAGE_WIDTH / PREVIEW_VIEWPORT_WIDTH),
 );
 
 const useIsomorphicLayoutEffect =
@@ -70,30 +61,13 @@ const useIsomorphicLayoutEffect =
 const clamp = (value: number, min: number, max: number) =>
   Math.min(Math.max(value, min), Math.max(min, max));
 
-type StageSize = { width: number; minHeight: number; maxHeight: number };
+type StageSize = { width: number; height: number };
 
-/**
- * Sizes the stage from the viewport. The hard caps come last so a small window
- * shrinks the panel below its 50%-larger floor rather than letting it hang off
- * the screen or past the fold.
- */
+/** Fixed stage, capped so a small window never pushes the panel off screen. */
 function measureStage(vw: number, vh: number): StageSize {
-  const width = Math.min(
-    clamp(Math.round(vw * STAGE_WIDTH_RATIO), STAGE_MIN_WIDTH, STAGE_MAX_WIDTH),
-    vw - VIEWPORT_MARGIN * 2,
-  );
-  const maxHeight = Math.min(
-    clamp(
-      Math.round(vh * STAGE_HEIGHT_RATIO),
-      STAGE_FLOOR_MAX_HEIGHT,
-      STAGE_CEIL_MAX_HEIGHT,
-    ),
-    vh - HEADER_HEIGHT - VIEWPORT_MARGIN * 2,
-  );
   return {
-    width,
-    minHeight: Math.min(STAGE_MIN_HEIGHT, maxHeight),
-    maxHeight,
+    width: Math.min(STAGE_WIDTH, vw - VIEWPORT_MARGIN * 2),
+    height: Math.min(STAGE_HEIGHT, vh - HEADER_HEIGHT - VIEWPORT_MARGIN * 2),
   };
 }
 
@@ -191,12 +165,15 @@ export function ComponentPreviewTooltip({
   /** Scale that maps the demo viewport onto the stage width. */
   const baseScale = panelWidth / PREVIEW_VIEWPORT_WIDTH;
 
-  // The stage takes the demo's own height where it fits, and scales the demo
-  // down past that rather than cropping it — a hero cut off at the fold
-  // previews nothing useful.
-  const frameHeight = clamp(contentHeight, 1, MAX_CONTENT_HEIGHT);
-  const stageHeight = Math.round(
-    clamp(frameHeight * baseScale, stage.minHeight, stage.maxHeight),
+  // The stage never changes size. The frame is at least as tall as the stage
+  // at base scale, so the sandbox (which centres the demo in its viewport)
+  // keeps the demo centred; a demo taller than that scales down to fit rather
+  // than being cropped.
+  const stageHeight = stage.height;
+  const frameHeight = clamp(
+    Math.max(contentHeight, stageHeight / baseScale),
+    1,
+    MAX_CONTENT_HEIGHT,
   );
   const stageScale = Math.min(baseScale, stageHeight / frameHeight);
   const scaledWidth = PREVIEW_VIEWPORT_WIDTH * stageScale;
@@ -293,10 +270,6 @@ export function ComponentPreviewTooltip({
         "fixed z-[60] pointer-events-none overflow-hidden rounded-xl",
         "border border-foreground/[0.08] bg-popover shadow-2xl shadow-black/20",
         "animate-in fade-in zoom-in-95 duration-200",
-        // The panel opens at its full height and settles onto the demo's own
-        // once it reports; animating that reads as the preview arriving rather
-        // than as the panel glitching.
-        "transition-[height,top] duration-200 ease-out",
       )}
       style={{
         top: position?.top ?? 0,

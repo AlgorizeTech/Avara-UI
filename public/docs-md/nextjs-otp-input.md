@@ -1,10 +1,10 @@
 ---
-title: "OTP Input"
+title: "Shadcn OTP Input"
 description: "A fully accessible, developer-friendly multi-box input designed for One-Time Passwords and 2FA codes. Free shadcn/ui component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/otp-input
 ---
 
-# OTP Input
+# Shadcn OTP Input
 
 A fully accessible, developer-friendly multi-box input designed for One-Time Passwords and 2FA codes.
 

@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "qr-code-sizes-levels",
   "type": "registry:block",
-  "title": "QR Code Suite — Sizes & levels",
+  "title": "Shadcn QR Code — Sizes & levels",
   "description": "The \"Sizes & levels\" example from the Avara UI docs.",
   "dependencies": [
     "qrcode.react",

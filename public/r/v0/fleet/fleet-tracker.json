@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "fleet-fleet-tracker",
   "type": "registry:block",
-  "title": "Fleet Tracker Map — Fleet tracker",
+  "title": "Shadcn Fleet Tracker Map — Fleet tracker",
   "description": "The \"Fleet tracker\" example from the Avara UI docs.",
   "dependencies": [
     "leaflet",

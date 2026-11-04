@@ -1,10 +1,10 @@
 ---
-title: "Dialog (Modal)"
+title: "Shadcn Dialog"
 description: "A window overlaid on either the primary window or another dialog window, rendering the background content underneath inert. Free shadcn/ui Dialog component."
 url: https://avaraui.com/docs/nextjs/dialog
 ---
 
-# Dialog (Modal)
+# Shadcn Dialog
 
 A window overlaid on either the primary window or another dialog window, rendering the background content underneath inert.
 

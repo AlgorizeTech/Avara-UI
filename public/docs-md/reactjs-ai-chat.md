@@ -1,10 +1,10 @@
 ---
-title: "AI Assistant Chat"
-description: "An AI chat interface with conversation history, typing indicators, editable titles, a model picker, file and @mention tools and voice dictation."
+title: "Shadcn AI Chat"
+description: "Shadcn AI Chat. An AI chat interface with conversation history, typing indicators, editable titles, a model picker, file and @mention tools and voice dictation."
 url: https://avaraui.com/docs/nextjs/ai-chat
 ---
 
-# AI Assistant Chat
+# Shadcn AI Chat
 
 A premium, interactive LLM chat interface featuring conversation history management, real-time typing indicators, editable chat titles, and a full prompt composer — a **+** menu for files and `@Mention` tools, a rocket upload indicator, a model picker, a Faster ↔ Smarter effort slider, and voice dictation with a live waveform.
 

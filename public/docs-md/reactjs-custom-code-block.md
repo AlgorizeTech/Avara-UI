@@ -1,10 +1,10 @@
 ---
-title: "Custom Code Block"
+title: "Shadcn Custom Code Block"
 description: "A beautiful, robust code block component with manual syntax highlighting, automatic language icons, and clipboard copy functionality. Free shadcn/ui component."
 url: https://avaraui.com/docs/nextjs/custom-code-block
 ---
 
-# Custom Code Block
+# Shadcn Custom Code Block
 
 A beautiful, robust code block component with manual syntax highlighting, automatic language icons, and clipboard copy functionality.
 

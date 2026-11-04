@@ -39,7 +39,7 @@ const MAX_DESCRIPTION = 160;
  * (Modal)"), or names the demo rather than the component ("UX Engineered
  * Upload Flow" is a file upload).
  */
-const SEARCH_NAMES: Record<string, string> = {
+export const SEARCH_NAMES: Record<string, string> = {
   "ai-chat": "AI Chat",
   alert: "Alert",
   "animated-list": "Animated List",
@@ -182,7 +182,7 @@ const PAGE_SEO: Record<string, Seo> = {
   },
   "all-components": {
     title: `All Shadcn UI Components & Blocks - ${SITE_NAME}`,
-    description: `Every ${SITE_NAME} component and website section in one catalog, grouped by type and filterable by GSAP or Motion animation.`,
+    description: `Browse every free shadcn/ui component and website section in ${SITE_NAME}, grouped by type and filterable by GSAP or Motion animation.`,
     keywords: [
       ...LIBRARY_KEYWORDS,
       "shadcn ui components",
@@ -277,14 +277,14 @@ function describe(summary: string, name: string, noun: string, gsap: boolean, mo
       ? [
           `Free shadcn/ui ${thing} with GSAP and Motion builds.`,
           `Free shadcn/ui ${noun} with GSAP and Motion builds.`,
-          "GSAP and Motion builds.",
+          "Shadcn/ui with GSAP and Motion builds.",
         ]
       : []),
     ...(gsap && !motion
       ? [
           `Free shadcn/ui ${thing} animated with GSAP.`,
           `Free shadcn/ui ${noun} animated with GSAP.`,
-          "Animated with GSAP.",
+          "Shadcn/ui, animated with GSAP.",
         ]
       : []),
     `Free shadcn/ui ${thing} for React, Next.js and Tailwind CSS.`,
@@ -294,7 +294,35 @@ function describe(summary: string, name: string, noun: string, gsap: boolean, mo
     `Free shadcn/ui ${noun}.`,
   ];
   const suffix = suffixes.find((s) => `${base} ${s}`.length <= MAX_DESCRIPTION);
-  return suffix ? `${base} ${suffix}` : base;
+  if (suffix) return `${base} ${suffix}`;
+
+  // A summary this long leaves no room after it, so the keyword goes first, as
+  // ReUI's do ("Browse 7 production-ready shadcn gantt components…"): a short
+  // "Shadcn Dock component." opener, with the summary cut at its last whole
+  // clause if it still does not fit.
+  const first = firstSentence(base);
+  for (const body of new Set([base, first])) {
+    for (const opener of [`Shadcn ${thing}.`, `Shadcn ${name}.`]) {
+      if (`${opener} ${body}`.length <= MAX_DESCRIPTION) return `${opener} ${body}`;
+    }
+  }
+  const opener = `Shadcn ${name}.`;
+  return `${opener} ${clauseWithin(first, MAX_DESCRIPTION - opener.length - 1)}`;
+}
+
+/** Shortens to the last whole clause that fits, so a list ends rather than trails off. */
+function clauseWithin(text: string, max: number): string {
+  if (text.length <= max) return text;
+  const head = text.slice(0, max);
+  const comma = head.lastIndexOf(", ");
+  if (comma > 40) {
+    let kept = head.slice(0, comma);
+    // "…3 design variants: Default" names one item of a list; stop at the colon.
+    const colon = kept.lastIndexOf(": ");
+    if (colon > 40 && kept.length - colon < 25) kept = kept.slice(0, colon);
+    return `${kept}.`;
+  }
+  return `${head.slice(0, head.lastIndexOf(" ")).replace(/[,;:—–-]$/, "")}…`;
 }
 
 /** Describes how a component looks, so it fits every page. */

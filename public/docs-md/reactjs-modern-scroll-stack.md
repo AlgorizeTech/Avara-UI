@@ -1,10 +1,10 @@
 ---
-title: "Modern Scroll Stack"
+title: "Shadcn Modern Scroll Stack"
 description: "A scroll-driven section where service cards slide up from the bottom of the viewport, offset and tilted, and stack into a sticky deck. Free shadcn/ui component."
 url: https://avaraui.com/docs/nextjs/modern-scroll-stack
 ---
 
-# Modern Scroll Stack
+# Shadcn Modern Scroll Stack
 
 A tactile scroll-driven card stacking section where individual service cards slide up from the bottom of the viewport with staggered horizontal offsets and smoothly tilt into organic resting angles (`0°`, `+3.5°`, `-4.5°`, `+3.5°`) as they lock into the sticky deck.
 

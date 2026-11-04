@@ -1,10 +1,10 @@
 ---
-title: "Review Section"
+title: "Shadcn Review Section"
 description: "A review and testimonial section with either a rotating 3D globe marquee or a 3D stacked portrait carousel with arrow navigation. Free shadcn/ui Review Section."
 url: https://avaraui.com/docs/nextjs/reviews
 ---
 
-# Review Section
+# Shadcn Review Section
 
 A high-converting Review / Testimonial website section featuring a 3D WebGL rotating background globe marquee or an interactive 3D stacked portrait carousel with smooth rolling motion and arrow navigation.
 

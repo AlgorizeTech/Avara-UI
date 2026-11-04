@@ -1,10 +1,10 @@
 ---
-title: "Curved Carousel"
-description: "A full-width 3D curved arc carousel with an auto-sway motion, Motion spring physics, perspective-depth cards and colours from your site theme."
+title: "Shadcn Curved Carousel"
+description: "Shadcn Curved Carousel. A full-width 3D curved arc carousel with an auto-sway motion, Motion spring physics."
 url: https://avaraui.com/docs/nextjs/curved-carousel
 ---
 
-# Curved Carousel
+# Shadcn Curved Carousel
 
 An interactive, 100% full-width 3D curved arc carousel featuring left-to-right oscillating auto-sway motion, smooth Motion spring physics, perspective depth cards, and dynamic site theme color binding.
 

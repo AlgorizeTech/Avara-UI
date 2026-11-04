@@ -1,10 +1,10 @@
 ---
-title: "Command"
+title: "Shadcn Command"
 description: "A powerful, composable command menu palette for searching data and triggering quick actions. Free shadcn/ui Command component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/command
 ---
 
-# Command
+# Shadcn Command
 
 A powerful, composable command menu palette for searching data and triggering quick actions.
 

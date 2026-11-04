@@ -1,10 +1,10 @@
 ---
-title: "Not Found"
+title: "Shadcn 404 Page"
 description: "A full-page 404 section with a radial glow, a masked grid backdrop, an animated compass and customisable shortcut links. Free shadcn/ui 404 Page."
 url: https://avaraui.com/docs/nextjs/not-found
 ---
 
-# Not Found
+# Shadcn 404 Page
 
 A responsive, full-page 404 Hyperspace website section featuring ambient radial glow, masked cyber grid backdrop, animated compass indicator, and customizable shortcuts.
 

@@ -1,10 +1,10 @@
 ---
-title: "Color Picker & Palette"
-description: "A 360° colour wheel and gradient generator with lightness and opacity sliders, shades and tints, colour harmonies, an angle dial and one-click CSS copy."
+title: "Shadcn Color Picker"
+description: "Shadcn Color Picker. A 360° colour wheel and gradient generator with lightness and opacity sliders, shades and tints, colour harmonies."
 url: https://avaraui.com/docs/nextjs/color-picker
 ---
 
-# Color Picker & Palette
+# Shadcn Color Picker
 
 An advanced, feature-rich **360° Color Spectrum Wheel** and **Gradient Studio Generator** component suite featuring real-time 2D color wheel spectrum tracking, lightness & opacity sliders, live shades & tints scale, color harmonies generator, dual/triple stop gradient creator, angle dial, and one-click CSS copy.
 

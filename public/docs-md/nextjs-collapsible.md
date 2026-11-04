@@ -1,10 +1,10 @@
 ---
-title: "Collapsible"
+title: "Shadcn Collapsible"
 description: "An interactive component which expands/collapses a panel. Free shadcn/ui Collapsible component for React, Next.js and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/collapsible
 ---
 
-# Collapsible
+# Shadcn Collapsible
 
 An interactive component which expands/collapses a panel.
 

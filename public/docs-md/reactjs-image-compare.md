@@ -1,10 +1,10 @@
 ---
-title: "Image Compare"
-description: "A before-and-after image comparison slider with 10 comparison modes, touch and mouse dragging, custom labels and colours from your theme."
+title: "Shadcn Image Compare"
+description: "Shadcn Image Compare. A before-and-after image comparison slider with 10 comparison modes, touch and mouse dragging, custom labels and colours from your theme."
 url: https://avaraui.com/docs/nextjs/image-compare
 ---
 
-# Image Compare
+# Shadcn Image Compare
 
 An interactive, responsive image comparison slider component featuring 10 distinct visual comparison modes, fluid touch/mouse drag physics, custom label badges, and dynamic site theme color binding.
 

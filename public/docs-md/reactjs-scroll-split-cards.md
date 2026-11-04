@@ -1,10 +1,10 @@
 ---
-title: "Scroll Split Cards"
-description: "A cinematic scroll-driven storytelling component featuring a unified panoramic landscape that splits into three distinct physical card panels upon scrolling."
+title: "Shadcn Scroll Split Cards"
+description: "Shadcn Scroll Split Cards. A cinematic scroll-driven storytelling component featuring a unified panoramic landscape that splits into three distinct physical…"
 url: https://avaraui.com/docs/nextjs/scroll-split-cards
 ---
 
-# Scroll Split Cards
+# Shadcn Scroll Split Cards
 
 A cinematic scroll-driven storytelling component featuring a unified panoramic landscape that splits into three distinct physical card panels upon scrolling. As the user continues downward, the cards separate, execute a perspective-rich 180° 3D flip to reveal curated editorial narratives, and finally settle cleanly in place.
 

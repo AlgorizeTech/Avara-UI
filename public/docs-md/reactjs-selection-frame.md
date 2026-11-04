@@ -1,10 +1,10 @@
 ---
-title: "Selection Frame"
+title: "Shadcn Selection Frame"
 description: "That box Figma draws around a selected layer — four corner handles and a crisp accent stroke — wrapped around any text span or block. Free shadcn/ui component."
 url: https://avaraui.com/docs/nextjs/selection-frame
 ---
 
-# Selection Frame
+# Shadcn Selection Frame
 
 That box Figma draws around a selected layer — four corner handles and a crisp accent stroke — wrapped around any text span or block.
 

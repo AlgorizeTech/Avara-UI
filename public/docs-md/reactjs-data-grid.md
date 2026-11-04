@@ -1,10 +1,10 @@
 ---
-title: "Data Grid"
+title: "Shadcn Data Grid"
 description: "A high-performance, fully keyboard-navigable data table with Excel-style inline editing. Free shadcn/ui Data Grid component for React, Next.js and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/data-grid
 ---
 
-# Data Grid
+# Shadcn Data Grid
 
 A high-performance, fully keyboard-navigable data table with Excel-style inline editing.
 

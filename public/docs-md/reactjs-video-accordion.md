@@ -1,10 +1,10 @@
 ---
-title: "Video Accordion"
+title: "Shadcn Video Accordion"
 description: "A cinematic video accordion, an expanding gallery component animated with plain CSS transitions — no animation library. Free shadcn/ui component."
 url: https://avaraui.com/docs/nextjs/video-accordion
 ---
 
-# Video Accordion
+# Shadcn Video Accordion
 
 A cinematic video accordion, an expanding gallery component animated with plain **CSS transitions** — no animation library. It keeps one panel visually dominant and plays its assigned video, while the rest seamlessly compress into an obscured track-rail and pause.
 

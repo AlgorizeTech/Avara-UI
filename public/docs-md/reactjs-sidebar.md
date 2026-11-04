@@ -1,10 +1,10 @@
 ---
-title: "Sidebar"
+title: "Shadcn Sidebar"
 description: "A composable sidebar that handles the mobile flyout and the desktop collapse, with a collapsed icon-rail variant. Free shadcn/ui Sidebar block."
 url: https://avaraui.com/docs/nextjs/sidebar
 ---
 
-# Sidebar
+# Shadcn Sidebar
 
 A powerful, composable sidebar component that automatically manages mobile flyout states and desktop collapse logic.
 

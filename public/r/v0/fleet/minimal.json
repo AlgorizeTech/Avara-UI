@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "fleet-minimal",
   "type": "registry:block",
-  "title": "Fleet Tracker Map — Minimal",
+  "title": "Shadcn Fleet Tracker Map — Minimal",
   "description": "The \"Minimal\" example from the Avara UI docs.",
   "dependencies": [
     "leaflet",

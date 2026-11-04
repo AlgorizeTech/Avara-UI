@@ -1,10 +1,10 @@
 ---
-title: "Masonry Grid"
+title: "Shadcn Masonry Grid"
 description: "A high-performance masonry layout that tightly packs items of varying heights. Free shadcn/ui Masonry Grid component with GSAP and Motion builds."
 url: https://avaraui.com/docs/nextjs/masonry-grid
 ---
 
-# Masonry Grid
+# Shadcn Masonry Grid
 
 A high-performance masonry layout that tightly packs items of varying heights. Rather than relying on heavy JavaScript calculations or absolute positioning frameworks, this component utilizes standard CSS multi-column layout (`columns-N`) to flow items naturally.
 

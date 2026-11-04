@@ -1,10 +1,10 @@
 ---
-title: "Draggable Card List"
-description: "A card list you reorder by dragging, with spring motion in a GSAP build and a Motion build, grip handles, accent bars and pastel badges. GSAP and Motion builds."
+title: "Shadcn Draggable Card List"
+description: "Shadcn Draggable Card List. A card list you reorder by dragging, with spring motion in a GSAP build and a Motion build, grip handles."
 url: https://avaraui.com/docs/nextjs/draggable-card-list
 ---
 
-# Draggable Card List
+# Shadcn Draggable Card List
 
 An interactive, fluid **Draggable Card List** component featuring spring-driven reordering (in a GSAP build and a Motion build that move identically), right-side grip handles, light pastel badges with borders, left accent bars, and dynamic hover border color shifts.
 

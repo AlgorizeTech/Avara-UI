@@ -1,10 +1,10 @@
 ---
-title: "Progress Wizard"
+title: "Shadcn Progress Wizard"
 description: "A Typeform-style multi-step form wizard with vertical slide transitions in plain CSS, keyboard navigation and a progress bar. Free shadcn/ui component."
 url: https://avaraui.com/docs/nextjs/wizard
 ---
 
-# Progress Wizard
+# Shadcn Progress Wizard
 
 A "Typeform" style multi-step wizard featuring buttery smooth vertical slide transitions powered by plain CSS transitions, native keyboard navigation, and an interactive progress bar.
 

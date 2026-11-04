@@ -1,10 +1,10 @@
 ---
-title: "Authentication Forms"
+title: "Shadcn Login & Signup Form"
 description: "Two production-ready authentication blocks: a Login Form for returning users and a Register Form for new ones. Free shadcn/ui block for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/auth-forms
 ---
 
-# Authentication Forms
+# Shadcn Login & Signup Form
 
 Two production-ready authentication blocks: a **Login Form** for returning users and a **Register Form** for new ones. Both ship comprehensive client-side validation, error state handling, simulated loading states, password visibility toggles and social auth button templates.
 

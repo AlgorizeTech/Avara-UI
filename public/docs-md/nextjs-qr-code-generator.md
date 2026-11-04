@@ -1,10 +1,10 @@
 ---
-title: "QR Code Suite"
+title: "Shadcn QR Code"
 description: "A premium, dual-purpose QR Code component suite built for Next.js applications. Free shadcn/ui QR Code component for React, Next.js and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/qr-code-generator
 ---
 
-# QR Code Suite
+# Shadcn QR Code
 
 A premium, dual-purpose QR Code component suite built for Next.js applications.
 

@@ -1,10 +1,10 @@
 ---
-title: "Data Maps"
-description: "A React-Leaflet choropleth map for geographic data and user distributions, with no external map tiles. Leaflet loads after mount, so it is SSR safe."
+title: "Shadcn Data Maps"
+description: "Shadcn Data Maps component. A React-Leaflet choropleth map for geographic data and user distributions, with no external map tiles."
 url: https://avaraui.com/docs/nextjs/data-maps
 ---
 
-# Data Maps
+# Shadcn Data Maps
 
 A powerful, highly-customizable React-Leaflet based choropleth map component designed for beautifully visualizing geographic data, user distributions, and global trends without the need for clunky external map tiles. Built with SSR safety in mind: the component defers Leaflet until after mount, so it renders correctly whether or not your framework prerenders on a server — no hydration mismatches, no broken renders, and nothing for you to wrap.
 

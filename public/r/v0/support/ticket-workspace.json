@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "support-ticket-workspace",
   "type": "registry:block",
-  "title": "Support Dashboard — Ticket workspace",
+  "title": "Shadcn Support Dashboard — Ticket workspace",
   "description": "A 3-pane drill-down: inbox, conversation thread and a collapsible properties pane.",
   "dependencies": [
     "lucide-react",

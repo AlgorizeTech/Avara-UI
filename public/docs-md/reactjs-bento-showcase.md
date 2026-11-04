@@ -1,10 +1,10 @@
 ---
-title: "Bento Showcase"
+title: "Shadcn Bento Showcase"
 description: "A six-card marketing bento grid: a hero with a live chat, case studies on a laptop, scrolling figures, plans on a phone and a team strip. Free shadcn/ui block."
 url: https://avaraui.com/docs/nextjs/bento-showcase
 ---
 
-# Bento Showcase
+# Shadcn Bento Showcase
 
 A six-card marketing bento grid for agency and services landing pages: a hero with a live chat and a headline, a laptop of case studies, one line that says what you do, figures that scroll up, the plans on a phone, and a strip of the team that scrolls left. Flat cards, no borders, no shadows — colour is the only thing separating them. One component, both themes: pastels on white in light mode, the same hues deepened on black in dark mode, switched by the `dark` class like the rest of the library.
 

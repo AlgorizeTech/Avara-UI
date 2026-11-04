@@ -1,10 +1,10 @@
 ---
-title: "Ribbon Drift"
-description: "A hero showcase card with two floating marquee ribbons, an animated gradient backdrop, a 3D illustration and a frosted glass promo card."
+title: "Shadcn Ribbon Drift"
+description: "Shadcn Ribbon Drift. A hero showcase card with two floating marquee ribbons, an animated gradient backdrop, a 3D illustration and a frosted glass promo card."
 url: https://avaraui.com/docs/nextjs/ribbon-drift
 ---
 
-# Ribbon Drift
+# Shadcn Ribbon Drift
 
 A dynamic hero showcase card featuring dual floating infinite marquee ribbons, an animated ambient gradient drift backdrop, center 3D illustration, and an interactive frosted glass promo card.
 

@@ -1,10 +1,10 @@
 ---
-title: "Cursor Animation"
-description: "A custom cursor component with 10 animation variants, including fluid physics, particle trails, magnetic targeting, spotlight masking and crosshairs."
+title: "Shadcn Cursor Animation"
+description: "Shadcn Cursor Animation. A custom cursor component with 10 animation variants, including fluid physics, particle trails, magnetic targeting."
 url: https://avaraui.com/docs/nextjs/cursor-animation
 ---
 
-# Cursor Animation
+# Shadcn Cursor Animation
 
 An interactive, 100% full-width and responsive custom cursor component with 10 distinct animation variants including fluid physics, particle trails, magnetic targeting, spotlight masking, and precision crosshairs.
 

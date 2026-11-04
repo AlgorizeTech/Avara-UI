@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "support-support-liquid-glass",
   "type": "registry:block",
-  "title": "Support Dashboard — Liquid glass",
+  "title": "Shadcn Support Dashboard — Liquid glass",
   "description": "The \"Liquid glass\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",

@@ -1,10 +1,10 @@
 ---
-title: "Floating Contact Button"
+title: "Shadcn Floating Contact Button"
 description: "A high-converting, interactive floating support widget that anchors to any screen corner. Free shadcn/ui component for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/floating-contact-button
 ---
 
-# Floating Contact Button
+# Shadcn Floating Contact Button
 
 A high-converting, interactive floating support widget that anchors to any screen corner. Clicking the button expands a sleek glassmorphic chat interface animated with plain CSS (no animation library), featuring simulated agent replies, instantaneous `localStorage` theme coloring, and mobile-first responsiveness.
 
