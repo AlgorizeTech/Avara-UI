@@ -3920,6 +3920,11 @@
           "path": "src/components/custom/blocks/RibbonDriftBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/RibbonDriftBlock.tsx"
+        },
+        {
+          "path": "src/lib/accent.ts",
+          "type": "registry:component",
+          "target": "lib/accent.ts"
         }
       ],
       "docs": "Default export: RibbonDriftBlock. Also exports RibbonDriftCard and the RibbonDriftProps type. Features dual counter-rotating marquee ribbons with smooth seamless looping, animated ambient gradient drift, top-right brand pill badge, and bottom floating frosted promo card with avatar stack."
@@ -4049,6 +4054,11 @@
           "path": "src/components/custom/blocks/SecureEnvelopeBlock.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/SecureEnvelopeBlock.tsx"
+        },
+        {
+          "path": "src/lib/accent.ts",
+          "type": "registry:component",
+          "target": "lib/accent.ts"
         }
       ],
       "docs": "Named export: SecureEnvelope (also ConfidentialFolder)."

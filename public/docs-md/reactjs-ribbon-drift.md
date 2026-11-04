@@ -14,7 +14,7 @@ Originally created as the signature visual counterpart for authentication layout
 
 Dual infinite marquee ribbons, central 3D character, ambient gradient drift, and frosted promo card.
 
-- Set `color="primary" | "indigo" | "rose" | "emerald" | "amber" | "violet" | "zinc"` tunes the ambient glow gradient, diamond separators, and hover accents.
+- Set `color="primary" | "indigo" | "rose" | "emerald" | "lavender" | "amber" | "violet" | "zinc"` tunes the ambient glow gradient, diamond separators, and hover accents.
 - `ribbonsTop` items rendered in the top ribbon (-7deg tilt, drifting left).
 - `ribbonsBottom` items rendered in the bottom ribbon (+5deg tilt, drifting right).
 
@@ -94,9 +94,14 @@ npx shadcn@latest add @avara-ui/ribbon-drift
 | `RibbonDriftBlock` | `ribbonsTop` | `string[]` | `defaultRibbonsTop` | Items scrolling in the upper ribbon (tilted at -7deg, drifting left). |
 | `RibbonDriftBlock` | `ribbonsBottom` | `string[]` | `defaultRibbonsBottom` | Items scrolling in the lower ribbon (tilted at +5deg in reverse direction). |
 | `RibbonDriftBlock` | `promo` | `RibbonDriftPromo \| null` | `defaultPromo` | Floating frosted badge at the bottom featuring an interactive AvatarStack (spring-shift on hover with tooltip) and arrow link (pass `null` to hide). |
-| `RibbonDriftBlock` | `color` | `RibbonDriftColor` | `"primary"` | Color theme palette (`"primary"`, `"indigo"`, `"rose"`, `"emerald"`, `"amber"`, `"violet"`, `"zinc"`). |
-| `RibbonDriftBlock` | `badge` | `ReactNode` | `undefined` | Custom badge or logo node rendered in the top-right frosted pill. |
-| `RibbonDriftBlock` | `logoConfig` | `RibbonDriftLogo` | `&#123; brandName: "Avara", brandAccent: "UI" &#125;` | Configuration options for the top-right pill badge. |
+| `RibbonDriftBlock` | `color` | `RibbonDriftColor` | `"primary"` | Color theme palette (`"primary"`, `"indigo"`, `"rose"`, `"emerald"`, `"lavender"`, `"amber"`, `"violet"`, `"zinc"`). |
+| `RibbonDriftBlock` | `badge` | `ReactNode` | `undefined` | Custom badge or logo node rendered in the top-right frosted pill (overrides the entire pill content). |
+| `RibbonDriftBlock` | `logo` | `ReactNode \| string` | `DefaultBrandIcon` | Brand logo image URL string or custom ReactNode / SVG. Defaults to the built-in self-contained vector Avara logo. |
+| `RibbonDriftBlock` | `logoDark` | `string` | `undefined` | Optional dark mode brand logo image URL (swapped automatically in dark mode). |
+| `RibbonDriftBlock` | `brandName` | `string` | `"Avara"` | Brand name text displayed next to the logo. |
+| `RibbonDriftBlock` | `brandAccent` | `string` | `"UI"` | Accent word styled with the active theme color (e.g. `"UI"`). |
+| `RibbonDriftBlock` | `logoHref` | `string` | `"#"` | Target link URL for the logo badge. |
+| `RibbonDriftBlock` | `logoConfig` | `RibbonDriftLogo` | `&#123; brandName: "Avara", brandAccent: "UI" &#125;` | Optional grouped configuration object for the top-right logo badge. |
 | `RibbonDriftBlock` | `rounded` | `string \| number` | `"rounded-3xl"` | Corner radius for the outer card and promo card (e.g. `24`, `"2rem"`, `"rounded-3xl"`). |
 | `RibbonDriftBlock` | `marqueeDuration` | `number` | `48` | Loop duration in seconds for the marquee ribbons. |
 | `RibbonDriftBlock` | `pauseOnHover` | `boolean` | `false` | Whether the marquee animation pauses when hovering over the card. |
