@@ -7,12 +7,10 @@ import {
   MessageSquare,
   TrendingUp,
   ArrowRight,
-  ArrowUpRight,
   ChevronDown,
   Sparkles,
   Check,
   Star,
-  ShieldCheck,
   Play,
   Signal,
   Wifi,
@@ -2346,26 +2344,10 @@ export function MobileAppCta({
   const phoneShiftX = Math.round(shiftDeltaX * (1 - ease));
   const phoneShiftY = 0; // Strictly vertically centered at all stages of motion
 
-  // Section 1 fade out
-  const sec1Opacity = Math.max(0, 1 - progress * 2.5);
-
   // Section 2 card background & right content reveal
   const sec2Opacity = Math.max(0, Math.min(1, (progress - 0.12) / 0.88));
   const sec2Ease = 1 - Math.pow(1 - sec2Opacity, 3);
   const contentShiftX = Math.round((1 - sec2Ease) * (phonePosition === "left" ? 35 : -35));
-
-  // Split heading by headingAccent to apply the italic serif accent
-  const headingParts = useMemo(() => {
-    if (!headingAccent || !heading.includes(headingAccent)) {
-      return { before: heading, accent: null, after: "" };
-    }
-    const idx = heading.indexOf(headingAccent);
-    return {
-      before: heading.slice(0, idx),
-      accent: headingAccent,
-      after: heading.slice(idx + headingAccent.length),
-    };
-  }, [heading, headingAccent]);
 
   // Split heading into 2 clean lines: Upper line shorter width, Lower line wider width
   const heading2Lines = useMemo(() => {
