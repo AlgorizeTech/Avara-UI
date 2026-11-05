@@ -1369,6 +1369,8 @@ function ExampleCard({
 
   return (
     <section ref={rootRef} aria-labelledby={anchor} className="flex flex-col min-w-0">
+      {controlCard && <div className="mb-6">{controlCard}</div>}
+
       {/* Title + optional subheading */}
       <div>
         <Heading
@@ -1388,8 +1390,6 @@ function ExampleCard({
         )}
         {propNotes && propNotes.length > 0 && <PropNotes notes={propNotes} />}
       </div>
-
-      {controlCard && <div className="mt-4">{controlCard}</div>}
 
       {/* Sandbox has its own my-8 — tighten it to the heading. */}
       <div className="flex-1 [&>div]:!my-4">
