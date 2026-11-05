@@ -18,6 +18,7 @@ export default function ComponentWallDemo({
   draggable,
   drift,
   cardDim,
+  highlightFocus,
 }: {
   /** Milliseconds the camera rests on a card; 0 holds still. */
   interval?: number;
@@ -43,6 +44,8 @@ export default function ComponentWallDemo({
   drift?: boolean | { x?: number; y?: number };
   /** Opacity of resting background cards (e.g. 0.52 for dusky aesthetic). */
   cardDim?: number;
+  /** Whether to highlight center/focused cards and dim others. */
+  highlightFocus?: boolean;
 }) {
   return (
     <div className="w-full overflow-hidden rounded-2xl border border-border">
@@ -70,6 +73,7 @@ export default function ComponentWallDemo({
         draggable={draggable}
         drift={drift}
         cardDim={cardDim}
+        highlightFocus={highlightFocus}
       />
     </div>
   );
