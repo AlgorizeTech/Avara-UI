@@ -7,13 +7,20 @@ import {
   MessageSquare,
   TrendingUp,
   ArrowRight,
+  ArrowUpRight,
   ChevronDown,
   Sparkles,
   Check,
+  Star,
   ShieldCheck,
+  Play,
+  Signal,
+  Wifi,
+  Battery,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { prefersReducedMotion, springTiming, usePrefersReducedMotion } from "@/lib/animate";
+import { Iphone17ProMaxMockup } from "./MobileMockupBlock";
 
 /** How a card travels: quick into a slot, slow and weighty back to the deck. */
 const TO_SLOT = springTiming({ stiffness: 240, damping: 25 });
@@ -150,12 +157,17 @@ export type CtaSectionVariant =
   | "concentric-portal"
   | "orbital-lens"
   | "offer-showcase"
-  | "cta-offer-showcase";
+  | "cta-offer-showcase"
+  | "mobile-app"
+  | "app-showcase"
+  | "mobile-showcase"
+  | "mobile-mockup";
 
 export interface CtaSectionProps extends React.HTMLAttributes<HTMLElement> {
   variant?: CtaSectionVariant;
   color?: string;
   heading?: string;
+  headingAccent?: string;
   subheading?: string;
   statement?: string;
   pillars?: PillarItem[];
@@ -168,6 +180,18 @@ export interface CtaSectionProps extends React.HTMLAttributes<HTMLElement> {
   onPillarChange?: (id: string) => void;
   rounded?: string | number;
   className?: string;
+  // Mobile App Showcase props
+  appleStoreHref?: string;
+  googlePlayHref?: string;
+  showAppStoreBadges?: boolean;
+  userName?: string;
+  userAvatar?: string;
+  featuredWorkoutTitle?: string;
+  featuredWorkoutImage?: string;
+  workoutDuration?: string;
+  workoutCalories?: string;
+  phonePosition?: "left" | "right";
+  cardBackground?: string;
   // Concentric Portal / Orbital Lens props
   phrase?: string;
   scrollProgress?: number;
@@ -240,6 +264,16 @@ const COLOR_MAP: Record<string, { bg: string; text: string; gradient: string }> 
     text: "var(--primary)",
     gradient: "from-primary to-primary/80",
   },
+  default: {
+    bg: "var(--primary)",
+    text: "var(--primary)",
+    gradient: "from-primary to-primary/80",
+  },
+  lavender: {
+    bg: "#9b8afb",
+    text: "#9b8afb",
+    gradient: "from-[#a99bfb] to-[#8d7bf9]",
+  },
   indigo: {
     bg: "#6366f1",
     text: "#6366f1",
@@ -255,7 +289,31 @@ const COLOR_MAP: Record<string, { bg: string; text: string; gradient: string }> 
     text: "#10b981",
     gradient: "from-emerald-500 to-emerald-600",
   },
+  zinc: {
+    bg: "#18181b",
+    text: "#18181b",
+    gradient: "from-zinc-800 to-zinc-950",
+  },
 };
+
+/**
+ * Universal theme color resolver:
+ * Safely resolves 'default', 'primary', theme swatch names, or hex strings into concrete CSS values
+ */
+export function resolveThemeColor(color?: string, fallback = "var(--primary)"): string {
+  if (!color || color === "default" || color === "primary") return fallback;
+  const PRESET_HEX_MAP: Record<string, string> = {
+    lavender: "#9b8afb",
+    indigo: "#6366f1",
+    rose: "#f43f5e",
+    emerald: "#10b981",
+    orange: "#f95716",
+    zinc: "#18181b",
+    primary: fallback,
+    default: fallback,
+  };
+  return PRESET_HEX_MAP[color] || COLOR_MAP[color]?.bg || color;
+}
 
 // Deck card placement & rotation offsets:
 // 1 line absolute at bottom, spanning across the component
@@ -322,9 +380,7 @@ function BrandPillarsCta({
   const [placedCardIds, setPlacedCardIds] = useState<string[]>([]);
 
   // Use CSS theme variable var(--primary) by default so theme switcher changes it across the entire component
-  const activeAccent = color
-    ? COLOR_MAP[color]?.bg || color
-    : "var(--primary)";
+  const activeAccent = resolveThemeColor(color, "var(--primary)");
   // Dynamic radius bound to global --radius token from the theme customizer sidebar
   const dynamicRadius =
     rounded !== undefined
@@ -915,7 +971,7 @@ function BrandPillarsCta({
 // MINIMAL CTA VARIANT
 // ==========================================
 function MinimalCta({
-  color = "#f95716",
+  color,
   heading = "Transform your brand into a growth engine",
   statement = "Start building unified identity, conversion-driven websites, and data-backed marketing systems today.",
   ctaText = "Get Started",
@@ -926,13 +982,13 @@ function MinimalCta({
   style,
   ...props
 }: CtaSectionProps) {
-  const activeAccent = COLOR_MAP[color]?.bg || color;
+  const activeAccent = resolveThemeColor(color, "var(--primary)");
   const dynamicRadius =
     rounded !== undefined
       ? typeof rounded === "number"
         ? `${rounded}px`
         : rounded
-      : "16px";
+      : "var(--radius, 1rem)";
 
   return (
     <section
@@ -976,7 +1032,7 @@ function MinimalCta({
 // SPLIT CTA VARIANT
 // ==========================================
 function SplitCta({
-  color = "#f95716",
+  color,
   heading = "One team for your complete brand ecosystem",
   statement = "From brand strategy to custom web development and growth content, everything connects seamlessly.",
   ctaText = "Book a Call",
@@ -988,13 +1044,13 @@ function SplitCta({
   style,
   ...props
 }: CtaSectionProps) {
-  const activeAccent = COLOR_MAP[color]?.bg || color;
+  const activeAccent = resolveThemeColor(color, "var(--primary)");
   const dynamicRadius =
     rounded !== undefined
       ? typeof rounded === "number"
         ? `${rounded}px`
         : rounded
-      : "20px";
+      : "var(--radius, 1rem)";
 
   return (
     <section
@@ -1509,9 +1565,7 @@ export function ConcentricPortalCta({
     return [ctaText || "GET", "ACCESS"];
   }, [ctaText]);
 
-  const activeAccent = color
-    ? COLOR_MAP[color]?.bg || color
-    : "#f59e0b";
+  const activeAccent = resolveThemeColor(color, "var(--primary)");
 
   return (
     <section
@@ -1771,12 +1825,22 @@ export function OfferShowcaseCta({
   footnote = "Secure checkout · 14-day refund",
   mediaItems,
   images,
+  color,
+  rounded,
   className,
   style,
   ...props
 }: CtaSectionProps) {
   const [leftHovered, setLeftHovered] = useState(false);
   const [rightHovered, setRightHovered] = useState(false);
+
+  const activeAccent = resolveThemeColor(color, "var(--primary)");
+  const dynamicRadius =
+    rounded !== undefined
+      ? typeof rounded === "number"
+        ? `${rounded}px`
+        : rounded
+      : "var(--radius, 1rem)";
 
   const numPrice = typeof price === "number" ? price : parseFloat(String(price)) || 149;
   const descriptionText = statement || subheading;
@@ -1823,10 +1887,10 @@ export function OfferShowcaseCta({
           100% { transform: translateY(0); }
         }
         .animate-cta-reel-up {
-          animation: cta-reel-up 32s linear infinite;
+          animation: cta-reel-up 54s linear infinite;
         }
         .animate-cta-reel-down {
-          animation: cta-reel-down 36s linear infinite;
+          animation: cta-reel-down 62s linear infinite;
         }
         @keyframes cta-dot-ping {
           0% { box-shadow: 0 0 0 0 rgba(232, 84, 46, 0.55); }
@@ -1863,7 +1927,7 @@ export function OfferShowcaseCta({
             <ReelLane
               images={safeLane1}
               direction="up"
-              duration={28}
+              duration={52}
               isSlowed={leftHovered}
               className="w-[84px] xs:w-[94px] sm:w-[130px] md:w-[160px] lg:w-[190px]"
             />
@@ -1871,7 +1935,7 @@ export function OfferShowcaseCta({
             <ReelLane
               images={safeLane2}
               direction="down"
-              duration={34}
+              duration={62}
               isSlowed={leftHovered}
               className="hidden sm:block sm:w-[130px] md:w-[160px] lg:w-[190px]"
             />
@@ -1902,7 +1966,7 @@ export function OfferShowcaseCta({
             <ReelLane
               images={safeLane3}
               direction="down"
-              duration={30}
+              duration={56}
               isSlowed={rightHovered}
               className="w-[84px] xs:w-[94px] sm:w-[130px] md:w-[160px] lg:w-[190px]"
             />
@@ -1910,7 +1974,7 @@ export function OfferShowcaseCta({
             <ReelLane
               images={safeLane4}
               direction="up"
-              duration={36}
+              duration={66}
               isSlowed={rightHovered}
               className="hidden sm:block sm:w-[130px] md:w-[160px] lg:w-[190px]"
             />
@@ -1938,8 +2002,10 @@ export function OfferShowcaseCta({
       <div className="relative z-20 w-full max-w-[min(468px,calc(100%-20px))] sm:max-w-[420px] md:max-w-[468px] mx-auto filter drop-shadow-[0_28px_56px_rgba(20,20,20,0.08)] dark:drop-shadow-[0_28px_56px_rgba(0,0,0,0.6)] flex flex-col items-center text-center">
         {/* Top Half of Card: Badge, Heading, Subtitle */}
         <div
-          className="w-full bg-white dark:bg-[#18181B] border border-[rgba(20,20,20,0.10)] dark:border-[rgba(255,255,255,0.10)] border-b-0 rounded-t-[26px] p-5 xs:p-6 sm:p-8 pb-3.5 sm:pb-5 flex flex-col items-center"
+          className="w-full bg-white dark:bg-[#18181B] border border-[rgba(20,20,20,0.10)] dark:border-[rgba(255,255,255,0.10)] border-b-0 p-5 xs:p-6 sm:p-8 pb-3.5 sm:pb-5 flex flex-col items-center"
           style={{
+            borderTopLeftRadius: dynamicRadius,
+            borderTopRightRadius: dynamicRadius,
             WebkitMaskImage: "radial-gradient(circle at 0% 100%, transparent 12px, #000 12.5px), radial-gradient(circle at 100% 100%, transparent 12px, #000 12.5px)",
             maskImage: "radial-gradient(circle at 0% 100%, transparent 12px, #000 12.5px), radial-gradient(circle at 100% 100%, transparent 12px, #000 12.5px)",
             WebkitMaskComposite: "source-in",
@@ -1947,8 +2013,11 @@ export function OfferShowcaseCta({
           }}
         >
           {badge && (
-            <span className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border border-[rgba(20,20,20,0.10)] dark:border-[rgba(255,255,255,0.12)] bg-neutral-50/60 dark:bg-white/5 text-[11px] sm:text-[13px] font-medium text-[#141414] dark:text-[#F4F4F2] mb-3 sm:mb-4">
-              <span className="size-[7px] rounded-full bg-[#E8542E] shrink-0 animate-cta-dot-ping" />
+            <span
+              style={{ borderRadius: dynamicRadius }}
+              className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 border border-[rgba(20,20,20,0.10)] dark:border-[rgba(255,255,255,0.12)] bg-neutral-50/60 dark:bg-white/5 text-[11px] sm:text-[13px] font-medium text-[#141414] dark:text-[#F4F4F2] mb-3 sm:mb-4"
+            >
+              <span className="size-[7px] rounded-full shrink-0 animate-cta-dot-ping" style={{ backgroundColor: activeAccent }} />
               <span>{badge}</span>
             </span>
           )}
@@ -1966,8 +2035,10 @@ export function OfferShowcaseCta({
 
         {/* Bottom Half of Card: Price, Savings Chip, CTA Button, Footnote */}
         <div
-          className="relative w-full bg-white dark:bg-[#18181B] border border-[rgba(20,20,20,0.10)] dark:border-[rgba(255,255,255,0.10)] border-t-0 rounded-b-[26px] p-5 xs:p-6 sm:p-8 pt-3.5 sm:pt-5 flex flex-col items-center"
+          className="relative w-full bg-white dark:bg-[#18181B] border border-[rgba(20,20,20,0.10)] dark:border-[rgba(255,255,255,0.10)] border-t-0 p-5 xs:p-6 sm:p-8 pt-3.5 sm:pt-5 flex flex-col items-center"
           style={{
+            borderBottomLeftRadius: dynamicRadius,
+            borderBottomRightRadius: dynamicRadius,
             WebkitMaskImage: "radial-gradient(circle at 0% 0%, transparent 12px, #000 12.5px), radial-gradient(circle at 100% 0%, transparent 12px, #000 12.5px)",
             maskImage: "radial-gradient(circle at 0% 0%, transparent 12px, #000 12.5px), radial-gradient(circle at 100% 0%, transparent 12px, #000 12.5px)",
             WebkitMaskComposite: "source-in",
@@ -2004,7 +2075,10 @@ export function OfferShowcaseCta({
                 </s>
               )}
               {savingsText && (
-                <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] sm:text-[12px] font-semibold text-[#E8542E] dark:text-[#FF7A4D] bg-[color-mix(in_srgb,#E8542E_14%,transparent)] dark:bg-[color-mix(in_srgb,#FF7A4D_18%,transparent)]">
+                <span
+                  style={{ borderRadius: dynamicRadius }}
+                  className="inline-flex items-center px-2.5 py-1 text-[11px] sm:text-[12px] font-semibold text-[#E8542E] dark:text-[#FF7A4D] bg-[color-mix(in_srgb,#E8542E_14%,transparent)] dark:bg-[color-mix(in_srgb,#FF7A4D_18%,transparent)]"
+                >
                   {savingsText}
                 </span>
               )}
@@ -2018,7 +2092,8 @@ export function OfferShowcaseCta({
               if (ctaHref === "#") e.preventDefault();
               onCtaClick?.();
             }}
-            className="mt-4 sm:mt-5 w-full py-3 sm:py-3.5 px-6 rounded-[14px] sm:rounded-[16px] font-semibold text-xs sm:text-[15px] bg-[#141414] hover:bg-black dark:bg-[#F4F4F2] dark:hover:bg-white text-white dark:text-[#0E0E10] transition-transform duration-300 hover:-translate-y-0.5 active:scale-[0.985] flex items-center justify-center gap-2.5 group cursor-pointer"
+            style={{ borderRadius: dynamicRadius }}
+            className="mt-4 sm:mt-5 w-full py-3 sm:py-3.5 px-6 font-semibold text-xs sm:text-[15px] bg-[#141414] hover:bg-black dark:bg-[#F4F4F2] dark:hover:bg-white text-white dark:text-[#0E0E10] transition-transform duration-300 hover:-translate-y-0.5 active:scale-[0.985] flex items-center justify-center gap-2.5 group cursor-pointer"
           >
             <span>{ctaText}</span>
             <svg
@@ -2051,6 +2126,596 @@ export function OfferShowcaseCta({
 }
 
 // ==========================================
+// MOBILE APP SHOWCASE CTA (IPHONE MOCKUP)
+// Two-Section Transition: Section 1 (Center Phone) -> Section 2 (Left Phone + Right Content)
+// Driven by Parent Scroll / Wheel / Touch / Stepper
+// ==========================================
+export function MobileAppCta({
+  heading = "Aura Clearmind..\nYour partner in wellness.",
+  headingAccent = "Your partner",
+  subheading = "Find and book your favorite yoga classes, guided meditation, and daily mindful wellness sessions from anywhere with our all-in-one mobile app, designed to bring balance, clarity, and peace to your life.",
+  statement,
+  badge = "Mobile App Available",
+  appleStoreHref = "#",
+  googlePlayHref = "#",
+  showAppStoreBadges = true,
+  userName = "Alicia Regis",
+  userAvatar = "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790145142/pexels-photo-2043590-1790145143488.jpg",
+  featuredWorkoutTitle = "Wellness Workshops",
+  featuredWorkoutImage = "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+  workoutDuration = "10 Min",
+  workoutCalories = "300 Kcal",
+  color,
+  scrollProgress,
+  phonePosition = "left",
+  cardBackground,
+  rounded,
+  className,
+  style,
+  ...props
+}: CtaSectionProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const phoneColRef = useRef<HTMLDivElement>(null);
+
+  const [progress, setProgress] = useState(
+    scrollProgress !== undefined ? Math.max(0, Math.min(1, scrollProgress)) : 0,
+  );
+  const targetProgressRef = useRef(
+    scrollProgress !== undefined ? Math.max(0, Math.min(1, scrollProgress)) : 0,
+  );
+  const [shiftDeltaX, setShiftDeltaX] = useState(290);
+
+  const activeAccent = resolveThemeColor(color, "var(--primary)");
+  const descriptionText = subheading || statement;
+
+  // Dynamic radius variables bound directly to global --radius token from the theme customizer sidebar
+  const dynamicRadius =
+    rounded !== undefined
+      ? typeof rounded === "number"
+        ? `${rounded}px`
+        : rounded
+      : "var(--radius, 1rem)";
+  const containerRadius = dynamicRadius;
+  const cardRadius = dynamicRadius;
+  const buttonRadius = dynamicRadius;
+  const pillRadius = dynamicRadius;
+  const iconRadius = dynamicRadius;
+
+  // Sync if external scrollProgress prop is passed
+  useEffect(() => {
+    if (scrollProgress !== undefined) {
+      targetProgressRef.current = Math.max(0, Math.min(1, scrollProgress));
+    }
+  }, [scrollProgress]);
+
+  // Dynamically calculate exact pixel distance from side column to center of stage
+  useLayoutEffect(() => {
+    const updateDelta = () => {
+      if (stageRef.current && phoneColRef.current) {
+        const stageRect = stageRef.current.getBoundingClientRect();
+        const colRect = phoneColRef.current.getBoundingClientRect();
+        const stageCenter = stageRect.left + stageRect.width / 2;
+        const colCenter = colRect.left + colRect.width / 2;
+        const isDesktop = window.innerWidth >= 1024;
+        setShiftDeltaX(isDesktop ? Math.round(stageCenter - colCenter) : 0);
+      }
+    };
+
+    updateDelta();
+    const timer1 = setTimeout(updateDelta, 60);
+    const timer2 = setTimeout(updateDelta, 240);
+    window.addEventListener("resize", updateDelta);
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      window.removeEventListener("resize", updateDelta);
+    };
+  }, [phonePosition]);
+
+  // 60FPS RAF Spring Lerp loop for buttery-smooth transition
+  useEffect(() => {
+    let current = targetProgressRef.current;
+    let active = true;
+    let rafId: number | null = null;
+
+    const tick = () => {
+      if (!active) return;
+      const target = targetProgressRef.current;
+      const diff = target - current;
+      if (Math.abs(diff) > 0.0006) {
+        current += diff * 0.18;
+        setProgress(current);
+      } else if (current !== target) {
+        current = target;
+        setProgress(target);
+      }
+      rafId = requestAnimationFrame(tick);
+    };
+    rafId = requestAnimationFrame(tick);
+
+    return () => {
+      active = false;
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  // 1. Direct Mouse Wheel listener with passive: false to drive the animation immediately
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) < 1) return;
+
+      const current = targetProgressRef.current;
+      // Smooth scrubbing sensitivity: ~3 gentle wheel notches transition fully
+      const step = e.deltaY * 0.0022;
+      const next = Math.max(0, Math.min(1, current + step));
+
+      const isScrollingDown = step > 0;
+      const isScrollingUp = step < 0;
+
+      // While between 0 and 1, intercept wheel to animate transition smoothly
+      if (
+        (isScrollingDown && current < 0.99) ||
+        (isScrollingUp && current > 0.01)
+      ) {
+        e.preventDefault();
+        e.stopPropagation();
+        targetProgressRef.current = next;
+      }
+    };
+
+    container.addEventListener("wheel", onWheel, { passive: false });
+    return () => {
+      container.removeEventListener("wheel", onWheel);
+    };
+  }, []);
+
+  // 2. Touch gesture listener for mobile and tablets
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    let touchStartY = 0;
+
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        touchStartY = e.touches[0].clientY;
+      }
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 0) return;
+      const currentY = e.touches[0].clientY;
+      const deltaY = touchStartY - currentY;
+      if (Math.abs(deltaY) < 4) return;
+
+      const current = targetProgressRef.current;
+      const step = deltaY * 0.0035;
+      const next = Math.max(0, Math.min(1, current + step));
+
+      const isScrollingDown = step > 0;
+      const isScrollingUp = step < 0;
+
+      if (
+        (isScrollingDown && current < 0.99) ||
+        (isScrollingUp && current > 0.01)
+      ) {
+        if (e.cancelable) e.preventDefault();
+        targetProgressRef.current = next;
+        touchStartY = currentY;
+      }
+    };
+
+    container.addEventListener("touchstart", onTouchStart, { passive: true });
+    container.addEventListener("touchmove", onTouchMove, { passive: false });
+    return () => {
+      container.removeEventListener("touchstart", onTouchStart);
+      container.removeEventListener("touchmove", onTouchMove);
+    };
+  }, []);
+
+  // 3. Fallback: Page scroll observer when placed inside a standard tall website page
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const onScroll = () => {
+      if (scrollProgress !== undefined) return;
+      const rect = container.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const triggerStart = vh * 0.8;
+      const triggerEnd = vh * 0.2;
+      const dist = triggerStart - triggerEnd;
+      if (dist > 0 && rect.top <= triggerStart && rect.bottom >= triggerEnd) {
+        const p = Math.max(0, Math.min(1, (triggerStart - rect.top) / dist));
+        targetProgressRef.current = p;
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [scrollProgress]);
+
+  // Easing computations
+  const ease = 1 - Math.pow(1 - progress, 3);
+  const phoneShiftX = Math.round(shiftDeltaX * (1 - ease));
+  const phoneShiftY = 0; // Strictly vertically centered at all stages of motion
+
+  // Section 1 fade out
+  const sec1Opacity = Math.max(0, 1 - progress * 2.5);
+
+  // Section 2 card background & right content reveal
+  const sec2Opacity = Math.max(0, Math.min(1, (progress - 0.12) / 0.88));
+  const sec2Ease = 1 - Math.pow(1 - sec2Opacity, 3);
+  const contentShiftX = Math.round((1 - sec2Ease) * (phonePosition === "left" ? 35 : -35));
+
+  // Split heading by headingAccent to apply the italic serif accent
+  const headingParts = useMemo(() => {
+    if (!headingAccent || !heading.includes(headingAccent)) {
+      return { before: heading, accent: null, after: "" };
+    }
+    const idx = heading.indexOf(headingAccent);
+    return {
+      before: heading.slice(0, idx),
+      accent: headingAccent,
+      after: heading.slice(idx + headingAccent.length),
+    };
+  }, [heading, headingAccent]);
+
+  // Split heading into 2 clean lines: Upper line shorter width, Lower line wider width
+  const heading2Lines = useMemo(() => {
+    if (heading.includes("\n")) {
+      const [l1, ...rest] = heading.split("\n");
+      return { line1: l1.trim(), line2: rest.join(" ").trim() };
+    }
+    if (heading.includes(",")) {
+      const idx = heading.indexOf(",");
+      return {
+        line1: heading.slice(0, idx + 1).trim(),
+        line2: heading.slice(idx + 1).trim(),
+      };
+    }
+    const words = heading.split(" ");
+    const splitIndex = Math.max(1, Math.floor(words.length * 0.35));
+    return {
+      line1: words.slice(0, splitIndex).join(" "),
+      line2: words.slice(splitIndex).join(" "),
+    };
+  }, [heading]);
+
+  const isPhoneOnLeft = phonePosition === "left";
+
+  return (
+    <div
+      ref={containerRef}
+      className={cn(
+        "relative w-full max-w-6xl mx-auto select-none overflow-hidden min-h-[580px] sm:min-h-[620px] lg:h-[640px] flex items-center justify-center transition-colors border border-neutral-200/60 dark:border-white/10",
+        className,
+      )}
+      style={{
+        borderRadius: containerRadius,
+        ...style,
+      }}
+      {...props}
+    >
+      {/* =========================================
+          SECTION 2 (SHOWCASE PHASE: AUTHENTIC WELLNESS SAGE CARD)
+          ========================================= */}
+      <div
+        className="absolute inset-0 pointer-events-none transition-all duration-500 shadow-xl overflow-hidden"
+        style={{
+          opacity: sec2Ease,
+          transform: `scale(${0.96 + 0.04 * sec2Ease})`,
+          borderRadius: containerRadius,
+          background: cardBackground
+            ? cardBackground
+            : `linear-gradient(135deg, ${activeAccent} 0%, color-mix(in srgb, ${activeAccent} 78%, #0f1c12) 100%)`,
+        }}
+        aria-hidden="true"
+      >
+        {/* Dark mode overlay so custom colors blend smoothly in dark mode */}
+        <div
+          className="absolute inset-0 hidden dark:block bg-black/60 pointer-events-none"
+          style={{ borderRadius: containerRadius }}
+        />
+
+        {/* Soft Ambient Radial Lighting */}
+        <div
+          className="absolute -right-20 -bottom-20 w-[450px] h-[450px] rounded-full blur-[80px] opacity-30 pointer-events-none bg-white/20 dark:bg-white/5"
+          aria-hidden="true"
+        />
+      </div>
+
+      {/* =========================================
+          STAGE CONTENT GRID
+          ========================================= */}
+      <div
+        ref={stageRef}
+        className="relative z-10 w-full h-full grid grid-cols-1 lg:grid-cols-12 items-center gap-8 p-6 sm:p-8 md:p-10 overflow-hidden"
+      >
+        {/* =========================================
+            PHONE COLUMN (MOCKUP WITH SMOOTH GLIDE MOTION)
+            Glides smoothly from Center (Section 1) to Side (Section 2)
+            ========================================= */}
+        <div
+          ref={phoneColRef}
+          className={cn(
+            "flex justify-center items-center relative z-20 my-auto self-center",
+            isPhoneOnLeft
+              ? "lg:col-span-5 lg:order-1"
+              : "lg:col-start-8 lg:col-span-5 lg:order-2",
+          )}
+        >
+          {/* Circular backdrop disc behind the phone (matching screenshot) */}
+          <div
+            className="absolute size-[320px] sm:size-[360px] rounded-full border border-white/20 dark:border-white/5 pointer-events-none transition-opacity duration-500 shadow-inner"
+            style={{
+              opacity: sec2Ease,
+              backgroundColor: `color-mix(in srgb, ${activeAccent} 80%, white)`,
+            }}
+            aria-hidden="true"
+          />
+
+          {/* iPhone Mockup Container with Motion */}
+          <div
+            style={{
+              transform: `translate(${phoneShiftX}px, ${phoneShiftY}px)`,
+              willChange: "transform",
+              transition: "none",
+            }}
+            className="relative flex items-center justify-center"
+          >
+            <div className="scale-[0.82] xs:scale-[0.88] sm:scale-[0.94] lg:scale-100 origin-center transition-transform">
+              <Iphone17ProMaxMockup
+                className="w-[270px] xs:w-[280px] sm:w-[295px] h-[480px] xs:h-[500px] sm:h-[520px] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.35)] dark:shadow-[0_25px_70px_-20px_rgba(0,0,0,0.85)]"
+              >
+                {/* Screen Content: Authentic Yoga & Wellness App Interface */}
+                <div className="relative w-full h-full flex flex-col justify-between bg-white dark:bg-[#141418] text-neutral-900 dark:text-neutral-100 p-4 pt-11 pb-4 select-none font-sans overflow-hidden">
+                  {/* Status Bar */}
+                  <div className="absolute top-2.5 inset-x-0 px-6 flex items-center justify-between text-[11px] font-semibold text-neutral-800 dark:text-neutral-200 z-30 pointer-events-none">
+                    <span>9:41</span>
+                    <div className="flex items-center gap-1.5 text-neutral-700 dark:text-neutral-300">
+                      <Signal size={11} />
+                      <Wifi size={11} />
+                      <Battery size={13} className="fill-current" />
+                    </div>
+                  </div>
+
+                  {/* Main App Feed */}
+                  <div className="space-y-3">
+                    {/* Greeting & Avatar */}
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <span className="text-[10px] font-medium text-neutral-500 dark:text-neutral-400 block">
+                          Hello
+                        </span>
+                        <h4 className="text-sm sm:text-base font-bold text-neutral-950 dark:text-white tracking-tight">
+                          {userName}
+                        </h4>
+                      </div>
+                      <div className="size-8 rounded-full bg-gradient-to-tr from-emerald-600 to-lime-500 p-0.5 shadow-sm">
+                        <img
+                          src={userAvatar}
+                          alt={userName}
+                          className="size-full rounded-full object-cover"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Level / Filter Pills */}
+                    <div className="flex items-center gap-1.5">
+                      {["Beginner", "Intermediate", "Advanced"].map((level, i) => (
+                        <span
+                          key={level}
+                          style={{ borderRadius: pillRadius }}
+                          className={cn(
+                            "text-[9px] sm:text-[10px] font-medium px-2.5 py-1 transition-colors cursor-pointer",
+                            i === 1
+                              ? "bg-[#172e1b] text-white font-semibold shadow-xs"
+                              : "bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700",
+                          )}
+                        >
+                          {level}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Popular Workouts Card */}
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[11px] sm:text-xs font-bold text-neutral-900 dark:text-white">
+                          Popular Workouts
+                        </span>
+                        <span className="text-[9px] text-neutral-400 hover:text-neutral-900 dark:hover:text-white cursor-pointer">
+                          See all
+                        </span>
+                      </div>
+
+                      <div
+                        className="relative w-full h-32 overflow-hidden shadow-sm group cursor-pointer"
+                        style={{ borderRadius: cardRadius }}
+                      >
+                        <img
+                          src={featuredWorkoutImage}
+                          alt={featuredWorkoutTitle}
+                          className="size-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-3 flex flex-col justify-between text-white">
+                          <span className="text-[11px] sm:text-xs font-bold tracking-tight">
+                            {featuredWorkoutTitle}
+                          </span>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-1.5 text-[9px] font-medium">
+                              <span
+                                style={{ borderRadius: pillRadius }}
+                                className="px-2 py-0.5 bg-[#ebf071] text-[#172e1b] font-semibold"
+                              >
+                                {workoutDuration}
+                              </span>
+                              <span
+                                style={{ borderRadius: pillRadius }}
+                                className="px-2 py-0.5 bg-[#ebf071] text-[#172e1b] font-semibold"
+                              >
+                                {workoutCalories}
+                              </span>
+                            </div>
+                            <div
+                              style={{ borderRadius: pillRadius }}
+                              className="size-6 bg-white text-black grid place-items-center shadow-md"
+                            >
+                              <Play size={10} className="fill-current translate-x-0.5" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Today's Plan Item */}
+                    <div className="space-y-1">
+                      <span className="text-[11px] sm:text-xs font-bold text-neutral-900 dark:text-white">
+                        Today Plan
+                      </span>
+                      <div
+                        style={{ borderRadius: cardRadius }}
+                        className="flex items-center gap-2.5 p-2 border border-neutral-200/80 dark:border-white/10 bg-neutral-50/80 dark:bg-white/[0.03]"
+                      >
+                        <div
+                          style={{ borderRadius: iconRadius }}
+                          className="size-8 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 grid place-items-center shrink-0"
+                        >
+                          <Sparkles size={14} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <span className="block text-[10px] sm:text-[11px] font-semibold text-neutral-900 dark:text-white truncate">
+                            Morning Mindfulness
+                          </span>
+                          <span className="block text-[8px] sm:text-[9px] text-neutral-500 dark:text-neutral-400">
+                            15 mins · Guided Audio
+                          </span>
+                        </div>
+                        <span className="text-[9px] sm:text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                          85%
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Iphone17ProMaxMockup>
+            </div>
+          </div>
+        </div>
+
+        {/* =========================================
+            EDITORIAL CONTENT COLUMN (SECTION 2 REVEAL)
+            Reveals on the side as Section 2 emerges
+            ========================================= */}
+        <div
+          className={cn(
+            "flex flex-col items-start text-left z-10 max-w-xl",
+            isPhoneOnLeft
+              ? "lg:col-span-7 lg:order-2 lg:pl-4 xl:pl-8"
+              : "lg:col-span-7 lg:order-1 lg:pr-4 xl:pr-8",
+          )}
+          style={{
+            opacity: sec2Ease,
+            transform: `translateX(${contentShiftX}px)`,
+            pointerEvents: sec2Opacity > 0.6 ? "auto" : "none",
+            willChange: "transform, opacity",
+            transition: "none",
+          }}
+        >
+          {/* Top Pill Badge */}
+          {badge && (
+            <div
+              style={{ borderRadius: pillRadius }}
+              className="inline-flex items-center gap-2.5 px-3.5 py-1.5 border border-black/10 dark:border-white/15 bg-white/75 dark:bg-white/10 backdrop-blur-md text-xs font-semibold text-[#142918] dark:text-neutral-200 shadow-[0_2px_8px_rgba(0,0,0,0.04)] mb-5"
+            >
+              <span className="relative flex size-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
+                <span className="relative inline-flex rounded-full size-2 bg-emerald-600 dark:bg-emerald-400" />
+              </span>
+              <span className="tracking-tight">{badge}</span>
+            </div>
+          )}
+
+          {/* Main Editorial Headline: Bold, Large 2-Line High-Impact Typography */}
+          <h2 className="text-3xl xs:text-4xl sm:text-5xl lg:text-[44px] xl:text-[46px] font-bold tracking-tight text-[#0d2212] dark:text-white leading-[1.12] w-full">
+            <span className="block whitespace-nowrap">{heading2Lines.line1}</span>
+            <span className="block mt-1 sm:mt-1.5 whitespace-nowrap">{heading2Lines.line2}</span>
+          </h2>
+
+          {/* Subheading: Strictly in 2 Clean Balanced Lines */}
+          {descriptionText && (
+            <p className="mt-4 sm:mt-5 text-sm sm:text-base lg:text-[16px] text-[#243d29] dark:text-neutral-300 leading-relaxed font-normal max-w-[560px] tracking-normal">
+              {descriptionText}
+            </p>
+          )}
+
+          {/* App Store & Google Play Store Badges */}
+          {showAppStoreBadges && (
+            <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-3.5 w-full sm:w-auto">
+              {/* Apple App Store Badge */}
+              <a
+                href={appleStoreHref}
+                style={{ borderRadius: buttonRadius }}
+                className="inline-flex items-center gap-3 px-4 sm:px-5 py-2.5 sm:py-3 bg-black text-white hover:bg-neutral-900 border border-neutral-800 shadow-[0_4px_14px_rgba(0,0,0,0.22)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.32)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer group"
+                aria-label="Download on the App Store"
+              >
+                <svg className="size-5 sm:size-6 fill-current shrink-0 group-hover:scale-105 transition-transform" viewBox="0 0 170 170" aria-hidden="true">
+                  <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.03-7.61-7.79-11.73-14.28-5.88-9.25-10.4-19.46-13.56-30.64-3.17-11.18-4.75-21.84-4.75-31.98 0-14.18 3.65-26.06 10.96-35.63 7.3-9.58 16.5-14.48 27.59-14.72 5.02 0 10.44 1.25 16.27 3.75 5.82 2.5 9.77 3.78 11.83 3.83 1.85 0 5.96-1.33 12.33-3.98 6.37-2.66 11.96-3.88 16.78-3.67 12.56.63 22.84 5.38 30.84 14.25-11.04 6.72-16.43 15.93-16.18 27.63.26 9.38 3.84 17.29 10.74 23.72 6.9 6.43 15.11 10.15 24.63 11.16-2.22 6.84-4.88 13.7-7.98 20.59zM119.22 33.02c0-7.39 2.66-14.28 7.98-20.67 5.32-6.39 11.75-10.51 19.3-12.35 1.05 7.6-1.16 14.77-6.63 21.5-5.47 6.73-12.35 10.57-20.65 11.52z" />
+                </svg>
+                <div className="flex flex-col text-left leading-none">
+                  <span className="text-[9px] sm:text-[10px] text-neutral-300 font-sans tracking-wide">Download on the</span>
+                  <span className="text-xs sm:text-sm font-semibold tracking-tight text-white mt-0.5">App Store</span>
+                </div>
+              </a>
+
+              {/* Google Play Store Badge */}
+              <a
+                href={googlePlayHref}
+                style={{ borderRadius: buttonRadius }}
+                className="inline-flex items-center gap-3 px-4 sm:px-5 py-2.5 sm:py-3 bg-black text-white hover:bg-neutral-900 border border-neutral-800 shadow-[0_4px_14px_rgba(0,0,0,0.22)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.32)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer group"
+                aria-label="Get it on Google Play"
+              >
+                <svg className="size-5 sm:size-6 shrink-0 group-hover:scale-105 transition-transform" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="#EA4335" d="M3.6 1.48L14.07 12 3.6 22.52c-.37-.41-.6-.97-.6-1.61V3.09c0-.64.23-1.2.6-1.61z" />
+                  <path fill="#FBBC04" d="M17.58 8.52L14.07 12l3.51 3.48 4.02-2.3c.7-.4.7-1.96 0-2.36l-4.02-2.3z" />
+                  <path fill="#4285F4" d="M14.07 12L3.6 1.48C4.08 1.15 4.7 1.05 5.3 1.4l12.28 7.12L14.07 12z" />
+                  <path fill="#34A853" d="M14.07 12l3.51 3.48L5.3 22.6c-.6.35-1.22.25-1.7-.08L14.07 12z" />
+                </svg>
+                <div className="flex flex-col text-left leading-none">
+                  <span className="text-[9px] sm:text-[10px] text-neutral-300 font-sans tracking-wide uppercase">Get it on</span>
+                  <span className="text-xs sm:text-sm font-semibold tracking-tight text-white mt-0.5">Google Play</span>
+                </div>
+              </a>
+            </div>
+          )}
+
+          {/* Social Proof / Rating Trust Divider & Ratings */}
+          <div className="mt-6 sm:mt-8 pt-4 sm:pt-5 border-t border-black/10 dark:border-white/10 flex flex-wrap items-center gap-2.5 sm:gap-3 text-xs text-[#1c3320] dark:text-neutral-300 w-full">
+            <div className="flex items-center gap-1 text-amber-500">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} size={13} className="fill-current text-amber-500" />
+              ))}
+            </div>
+            <span className="font-bold text-[#102414] dark:text-white tracking-tight">4.9 / 5.0</span>
+            <span className="text-black/25 dark:text-white/20">·</span>
+            <span className="text-[#243d29] dark:text-neutral-400">24k+ reviews</span>
+            <span className="text-black/25 dark:text-white/20">·</span>
+            <span className="font-semibold text-[#142e18] dark:text-emerald-400">100k+ Active Members</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ==========================================
 // MAIN CTA SECTION ROUTER
 // ==========================================
 export function CTASection({
@@ -2068,6 +2733,11 @@ export function CTASection({
     case "offer-showcase":
     case "cta-offer-showcase":
       return <OfferShowcaseCta {...props} />;
+    case "mobile-app":
+    case "app-showcase":
+    case "mobile-showcase":
+    case "mobile-mockup":
+      return <MobileAppCta {...props} />;
     case "brand-pillars":
     default:
       return <BrandPillarsCta {...props} />;

@@ -1295,6 +1295,7 @@
         "lucide-react"
       ],
       "registryDependencies": [
+        "https://avaraui.com/r/mobile-mockup.json",
         "utils"
       ],
       "files": [
