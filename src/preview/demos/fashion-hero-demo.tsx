@@ -12,7 +12,7 @@ const LOOKS: Look[] = [
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Model in a blush dress, chin resting on her hand", tone: "#f4b7c5", blend: false, position: "50% 15%" },
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790150484/pexels-photo-1462637-1790150482282.jpg", alt: "Model in a blue pinstripe shirt, mid-gesture", tone: "#8cc4ee", position: "50% 20%" },
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790150480/pexels-photo-9558236-1790150482273.jpg", alt: "Model in a coral shirtdress, hands tucked in pockets", tone: "#f9a875", position: "50% 20%" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790150480/pexels-photo-6311613-1790145143488.jpg", alt: "Model in a grey hooded top, hood raised", tone: "#bfe4c6", position: "50% 15%" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790150480/pexels-photo-6311613-1790150482272.jpg", alt: "Model in a grey hooded top, hood raised", tone: "#bfe4c6", position: "50% 15%" },
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Man wearing a dark leather jacket", tone: "#2e9c82", position: "50% 25%" },
 ];
 

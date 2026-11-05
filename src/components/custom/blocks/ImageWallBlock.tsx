@@ -61,6 +61,8 @@ export interface ImageWallProps extends Omit<React.HTMLAttributes<HTMLDivElement
   drift?: boolean | { x?: number; y?: number };
   /** Resting dim of cards when not in focus. Defaults to 0.55 (or 0.88 in fullscreen). */
   cardDim?: number;
+  /** Whether to highlight center/focused cards and dim others. Defaults to true. */
+  highlightFocus?: boolean;
 }
 
 // ------------------------------------------
@@ -311,6 +313,7 @@ const WallCard = React.memo(function WallCard({
   dim = REST_DIM,
   isFocus,
   isCenter,
+  highlightFocus = true,
 }: {
   card: Placed;
   left: number;
@@ -319,27 +322,39 @@ const WallCard = React.memo(function WallCard({
   dim?: number;
   isFocus: boolean;
   isCenter?: boolean;
+  highlightFocus?: boolean;
 }) {
+  const activeFocus = highlightFocus && isFocus;
+  const activeCenter = highlightFocus && isCenter;
+  const opacity = highlightFocus ? (activeFocus ? 1 : dim) : 1;
+  const filter = highlightFocus ? (activeFocus ? "none" : "grayscale(40%)") : "none";
+  const transform = highlightFocus ? (activeFocus ? (activeCenter ? "scale(1.03)" : "scale(1.018)") : "none") : "none";
+  const zIndex = highlightFocus ? (activeCenter ? 14 : activeFocus ? 10 : 1) : 1;
+  const boxShadow = highlightFocus ? (activeFocus ? "0 10px 30px -10px rgba(0,0,0,0.3)" : undefined) : undefined;
+
   return (
     <figure
       aria-hidden={copy || undefined}
-      className="absolute flex flex-col gap-1.5 overflow-hidden rounded-xl border border-foreground/10 bg-muted p-1.5 shadow-sm transition-[opacity,transform,filter,box-shadow] duration-500 ease-out select-none pointer-events-none"
+      data-card
+      data-card-x={left}
+      data-card-y={top}
+      className="absolute flex flex-col gap-1.5 overflow-hidden rounded-2xl border border-foreground/12 bg-card p-2 shadow-xl shadow-black/20 dark:shadow-black/55 transition-[opacity,transform,filter,box-shadow] duration-500 ease-out select-none pointer-events-none will-change-transform"
       style={{
         left,
         top,
         width: CARD_W,
         height: CARD_H,
-        opacity: isFocus ? 1 : dim,
-        filter: isFocus ? "none" : "grayscale(40%)",
-        transform: isFocus ? (isCenter ? "scale(1.03)" : "scale(1.018)") : "none",
-        zIndex: isCenter ? 14 : isFocus ? 10 : 1,
-        boxShadow: isFocus ? "0 10px 30px -10px rgba(0,0,0,0.3)" : undefined,
+        opacity,
+        filter,
+        transform,
+        zIndex,
+        boxShadow,
       }}
     >
       <figcaption
         className={cn(
           "flex h-4 shrink-0 items-center px-1 font-mono text-[9px] leading-none select-none transition-colors duration-500",
-          isFocus ? "font-semibold text-foreground" : "text-muted-foreground",
+          activeFocus ? "font-semibold text-foreground" : "text-muted-foreground",
         )}
       >
         {card.title}
@@ -396,6 +411,7 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
       draggable = true,
       drift = false,
       cardDim = REST_DIM,
+      highlightFocus = true,
       className,
       ...props
     },
@@ -489,6 +505,10 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
       if (key !== tilesRef.current) {
         tilesRef.current = key;
         setTiles(key);
+      }
+
+      if (!highlightFocus) {
+        return;
       }
 
       // Find the card closest to the viewport center focus point (ax, ay)
@@ -588,7 +608,7 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
         setFocusKeys(new Set(focusList));
         onFocusRef.current?.(items.length > 0 ? centerIndex % items.length : centerIndex);
       }
-    }, [ax, ay, items.length, gap]);
+    }, [ax, ay, items.length, gap, highlightFocus]);
 
     const paint = useCallback(() => {
       const el = canvasRef.current;
@@ -1044,8 +1064,8 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
           const copy = dx !== 0 || dy !== 0;
           return placed.map((card, i) => {
             const key = `${dx},${dy},${i}`;
-            const isFocus = focusKeys.size > 0 ? focusKeys.has(key) : (!copy && i === lit);
-            const isCenter = key === centerKey;
+            const isFocus = highlightFocus ? (focusKeys.size > 0 ? focusKeys.has(key) : (!copy && i === lit)) : false;
+            const isCenter = highlightFocus ? (key === centerKey) : false;
             return (
               <WallCard
                 key={key}
@@ -1056,11 +1076,12 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
                 dim={cardDim}
                 isFocus={isFocus}
                 isCenter={isCenter}
+                highlightFocus={highlightFocus}
               />
             );
           });
         }),
-      [offsets, placed, width, height, lit, cardDim, centerKey, focusKeys],
+      [offsets, placed, width, height, lit, cardDim, centerKey, focusKeys, highlightFocus],
     );
 
     return (

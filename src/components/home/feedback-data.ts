@@ -32,7 +32,8 @@ export interface FeedbackItem {
 	media?: FeedbackMedia;
 }
 
-const CLOUDINARY = "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto";
+const CLOUDINARY =
+	"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto";
 
 export const FEEDBACK: FeedbackItem[] = [
 	{
@@ -54,7 +55,8 @@ export const FEEDBACK: FeedbackItem[] = [
 			type: "video",
 			src: "https://res.cloudinary.com/dodndg7ai/video/upload/v1793704596/ic-ay7eptvhd-ace-1793704646032.mp4",
 			/* Cloudinary renders the first frame when the same asset is asked for as an image. */
-			poster: "https://res.cloudinary.com/dodndg7ai/video/upload/f_webp,q_auto,so_0/v1793704596/ic-ay7eptvhd-ace-1793704646032.jpg",
+			poster:
+				"https://res.cloudinary.com/dodndg7ai/video/upload/f_webp,q_auto,so_0/v1793704596/ic-ay7eptvhd-ace-1793704646032.jpg",
 			alt: "Wallet card component built with Avara UI",
 			width: 640,
 			height: 360,
@@ -89,7 +91,8 @@ export const FEEDBACK: FeedbackItem[] = [
 	{
 		id: "tirtha-sarker",
 		name: "Tirtha Sarker",
-		message: "This looks amazing ! Love the large variety of choices you have here.",
+		message:
+			"This looks amazing ! Love the large variety of choices you have here.",
 		url: "https://x.com/tirthaexe/status/2115462972550353152",
 		profile: "https://x.com/tirthaexe",
 		avatar: `${CLOUDINARY}/v1793701736/tirthaexe-1793701787286.jpg`,
@@ -126,5 +129,103 @@ export const FEEDBACK: FeedbackItem[] = [
 		url: "https://x.com/ivantinkers/status/2115562602134921443",
 		profile: "https://x.com/ivantinkers",
 		avatar: `${CLOUDINARY}/v1793701811/ivantinkers-1793701862411.png`,
+	},
+	{
+		id: "satyam_twt01",
+		name: "Satyam Kushwaha",
+		message: "Bookmarked for next project 🙌",
+		url: "https://x.com/satyam_twt01/status/2115457821760455051",
+		profile: "https://x.com/satyam_twt01",
+		avatar: `${CLOUDINARY}/v1793847686/dsrfjszd_400x400-1793847685951.jpg`,
+	},
+	{
+		id: "solyatic",
+		name: "Sol",
+		message:
+			"aaaaa beautiful UI components",
+		url: "https://x.com/solyatic/status/2115466150263828893",
+		profile: "https://x.com/solyatic",
+		avatar: `${CLOUDINARY}/v1793851529/gxeanqut_400x400-1793851528824.jpg`,
+	},
+	{
+		id: "charlesordo",
+		name: "Charles Ordowski",
+		message: "That super helpful 🙏",
+		url: "https://x.com/charlesordo/status/2115561733955944567",
+		profile: "https://x.com/charlesordo",
+		avatar: `${CLOUDINARY}/v1793848542/ea3vchmn_400x400-1793848542141.jpg`,
+	},
+	{
+		id: "BertrandDiouly",
+		name: "bertranddo",
+		message: "Thanks for the share, thats a great library!",
+		url: "https://x.com/BertrandDiouly/status/2115468687075610824",
+		profile: "https://x.com/BertrandDiouly",
+		avatar: `${CLOUDINARY}/v1793848722/qfc_jtvl_400x400-1793848723243.jpg`,
+	},
+	{
+		id: "niuniu_dev",
+		name: "Sean Mu | NiuNiu AI",
+		message:
+			"If you’re building with react or nextjs, check out this new ui library from @Pranto39 . packed with creative components and ready-to-use website sections, plus mcp support for ai coding agents.",
+		url: "https://x.com/niuniu_dev/status/2115457725702500852",
+		profile: "https://x.com/niuniu_dev",
+		avatar: `${CLOUDINARY}/v1793848930/apojsknr_400x400-1793848931829.jpg`,
+	},
+	{
+		id: "iamspiggle",
+		name: "Dez | Web Architect & Spiggle Author",
+		message: "I'm going to check it out rn 👍",
+		url: "https://x.com/iamspiggle/status/2115463098001670361",
+		profile: "https://x.com/iamspiggle",
+		avatar: `${CLOUDINARY}/v1793849071/ajw88l2b_400x400-1793849071637.jpg`,
+	},
+	{
+		id: "thenowhereway",
+		name: "Devansh",
+		message: `This is the kind of tooling vibe coders need 👀
+
+189 redesigned shadcn components + 24 ready-made sections, available directly to your AI agent via MCP.
+
+Less time fighting UI. More time shipping.
+
+Congrats on the launch @Pranto39 🙌`,
+		url: "https://x.com/thenowhereway/status/2115460002567852408",
+		profile: "https://x.com/thenowhereway",
+		avatar: `${CLOUDINARY}/v1793850546/tk1nhp8v_400x400-1793850546148.jpg`,
+	},
+	{
+		id: "bidyut_io",
+		name: "bidyut",
+		message: `hand-picking UI components is getting old 
+
+ready-to-use components + MCP support for AI agents?
+
+could save devs a lot of time.
+
+check out @Pranto39's new UI library if you're building with react or next.js.`,
+		url: "https://x.com/bidyut_io/status/2115459135152242772",
+		profile: "https://x.com/bidyut_io",
+		avatar: `${CLOUDINARY}/v1793850793/csiqgdlv_400x400-1793850793441.jpg`,
+	},
+	{
+		id: "rashem48",
+		name: "Rashem Pandit",
+		message: `My bro really cooked with this one. Makes building beautiful interfaces so much easier and faster 🤩
+Congratulations @Pranto39 🥳`,
+		url: "https://x.com/rashem48/status/2115785697374208366",
+		profile: "https://x.com/rashem48",
+		avatar: `${CLOUDINARY}/v1793850966/n-xuat0v_400x400-1793850967501.jpg`,
+	},
+	{
+		id: "code_bytein",
+		name: "Vikash Singh Tomar",
+		message: `Still hand picking UI components?
+Now no need to do it .
+Check out Avara UI.
+@Pranto39`,
+		url: "https://x.com/code_bytein/status/2115457295249559869",
+		profile: "https://x.com/code_bytein",
+		avatar: `${CLOUDINARY}/v1793851077/lrwctooy_400x400-1793851078615.jpg`,
 	},
 ];
