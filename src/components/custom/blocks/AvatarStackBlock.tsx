@@ -184,11 +184,13 @@ function FloatingTooltip({
   tipKey,
   coords,
   timing,
+  style,
 }: {
   tip: TooltipItemData | null;
   tipKey: number | null;
   coords: { x: number; y: number } | null;
   timing: Timing;
+  style?: React.CSSProperties;
 }) {
   const [present, setPresent] = useState(false);
   if (tip && !present) setPresent(true);
@@ -240,6 +242,7 @@ function FloatingTooltip({
         left: 0,
         pointerEvents: "none",
         zIndex: 9999,
+        ...style,
       }}
     >
       <style>{TOOLTIP_TEXT_CSS}</style>
@@ -290,6 +293,8 @@ export interface AvatarGroupProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   showTooltip?: boolean;
   /** Alias for showTooltip. */
   tooltip?: boolean;
+  /** Custom inline style passed to the floating tooltip container. */
+  tooltipStyle?: React.CSSProperties;
 }
 
 interface TooltipItemData {
@@ -307,6 +312,8 @@ export const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
       tooltipTransition = TOOLTIP_SPRING,
       showTooltip = true,
       tooltip = true,
+      tooltipStyle,
+      style,
       className,
       ...props
     },
@@ -315,6 +322,7 @@ export const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
     const isTooltipEnabled = showTooltip && tooltip;
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
     const [coords, setCoords] = useState<{ x: number; y: number } | null>(null);
+    const [computedTheme, setComputedTheme] = useState<React.CSSProperties>({});
     const [mounted, setMounted] = useState(false);
     const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
     const reduceMotion = usePrefersReducedMotion();
@@ -338,6 +346,17 @@ export const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
           x: rect.left + rect.width / 2 + (typeof window !== "undefined" ? window.scrollX : 0),
           y: rect.top + (typeof window !== "undefined" ? window.scrollY : 0),
         });
+        if (typeof window !== "undefined") {
+          const computed = window.getComputedStyle(el);
+          const primary = computed.getPropertyValue("--primary").trim();
+          const primaryFg = computed.getPropertyValue("--primary-foreground").trim();
+          if (primary) {
+            setComputedTheme({
+              ["--primary" as string]: primary,
+              ...(primaryFg ? { ["--primary-foreground" as string]: primaryFg } : {}),
+            });
+          }
+        }
       }
     }, []);
 
@@ -452,6 +471,7 @@ export const AvatarGroup = React.forwardRef<HTMLDivElement, AvatarGroupProps>(
               tipKey={activeIndex}
               coords={coords}
               timing={tooltipTiming}
+              style={{ ...computedTheme, ...style, ...tooltipStyle }}
             />,
             document.body,
           )}
@@ -508,6 +528,8 @@ export interface AvatarStackProps extends Omit<React.HTMLAttributes<HTMLDivEleme
   tooltip?: boolean;
   /** Whether to display an arrow pointer on the tooltip. Defaults to false. */
   showTooltipArrow?: boolean;
+  /** Custom inline style passed to the floating tooltip container. */
+  tooltipStyle?: React.CSSProperties;
 }
 
 export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
@@ -530,7 +552,9 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
       showTooltip,
       tooltip,
       showTooltipArrow,
+      tooltipStyle,
       className,
+      style,
       ...props
     },
     ref,
@@ -615,6 +639,8 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
           translate={translate ?? "-30%"}
           showTooltip={enableTooltip}
           className={className}
+          style={style}
+          tooltipStyle={tooltipStyle ?? style}
           {...props}
         >
           {shown.map((a, i) => (
@@ -672,7 +698,7 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
         ref={ref}
         {...props}
         className={cn("group flex w-fit mx-auto items-center justify-center py-20 px-6", s.overlap, className)}
-        style={props.style}
+        style={style}
         onMouseEnter={(e) => {
           setIsHovered(true);
           props.onMouseEnter?.(e);
@@ -737,6 +763,7 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
                   side="top"
                   showArrow={effectiveShowTooltipArrow}
                   animated={effectiveShowTooltipArrow ? "pop" : undefined}
+                  style={tooltipStyle ?? style}
                 >
                   <div
                     className={cn(
@@ -809,6 +836,7 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
                   side="top"
                   showArrow={effectiveShowTooltipArrow}
                   animated={effectiveShowTooltipArrow ? "pop" : undefined}
+                  style={tooltipStyle ?? style}
                 >
                   <div className="flex flex-col items-center text-center">
                     <span className="font-semibold text-xs leading-tight whitespace-nowrap">+{rest} more</span>

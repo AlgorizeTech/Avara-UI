@@ -2,6 +2,7 @@
 
 import React, { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { accentStyle, resolveAccent } from "@/lib/accent";
 
 // ============================================================================
 // CLASSIFIED SECURITY CREST SEAL SVG
@@ -607,6 +608,8 @@ export interface ConfidentialFolderProps
   extends React.HTMLAttributes<HTMLDivElement> {
   /** Structured data object or array for all ticket, voucher, and card fields. */
   data?: CouponCardData | CouponCardData[];
+  /** Custom theme accent color (preset name or hex string) */
+  color?: string;
   folderColor?: string;
   interactionMode?: ConfidentialFolderInteractionMode;
   mode?: ConfidentialFolderInteractionMode;
@@ -705,6 +708,7 @@ export interface ConfidentialFolderProps
 
 export function ConfidentialFolder({
   data,
+  color,
   folderColor,
   interactionMode = "step-flip",
   mode,
@@ -1227,6 +1231,10 @@ export function ConfidentialFolder({
     metric3Value ??
     "Active";
 
+  const effectiveColor = folderColor ?? color;
+  const resolvedAccentHex = resolveAccent(effectiveColor);
+  const dynamicAccent = accentStyle(effectiveColor);
+
   return (
     <div
       className={cn(
@@ -1234,7 +1242,19 @@ export function ConfidentialFolder({
         className
       )}
       style={{
-        ...(folderColor ? ({ "--cf-override": folderColor } as React.CSSProperties) : {}),
+        ...dynamicAccent,
+        ...(resolvedAccentHex
+          ? ({
+              "--cf-override": resolvedAccentHex,
+              "--cf-override-plate": `color-mix(in oklab, ${resolvedAccentHex} 90%, black 10%)`,
+              "--cf-override-ink": `color-mix(in oklab, ${resolvedAccentHex} 25%, black 75%)`,
+              "--cf-override-ink-muted": `color-mix(in oklab, ${resolvedAccentHex} 40%, black 60%)`,
+              "--cf-override-stroke-flap": `color-mix(in oklab, ${resolvedAccentHex} 80%, black 20%)`,
+              "--cf-override-stroke-plate": `color-mix(in oklab, ${resolvedAccentHex} 70%, black 30%)`,
+            } as React.CSSProperties)
+          : effectiveColor
+          ? ({ "--cf-override": effectiveColor } as React.CSSProperties)
+          : {}),
         ...props.style,
       }}
       {...props}
@@ -1247,28 +1267,28 @@ export function ConfidentialFolder({
           --cf-base: var(--cf-override, var(--primary, #0284c7));
           --cf-flap: ${
             isConfidentialFolder
-              ? "#fde047"
+              ? "var(--cf-override, #fde047)"
               : isBoardingPass || isTrainTicket
               ? "oklch(from var(--cf-base) 0.93 calc(c * 0.25) h)"
               : "oklch(from var(--cf-base) 0.88 calc(c * 0.4) h)"
           };
           --cf-plate: ${
             isConfidentialFolder
-              ? "#facc15"
+              ? "var(--cf-override-plate, #facc15)"
               : isBoardingPass || isTrainTicket
               ? "oklch(from var(--cf-base) 0.82 calc(c * 0.35) h)"
               : "oklch(from var(--cf-base) 0.80 calc(c * 0.5) h)"
           };
           --cf-ink: ${
             isConfidentialFolder
-              ? "#78350f"
+              ? "var(--cf-override-ink, #78350f)"
               : isBoardingPass || isTrainTicket
               ? "oklch(from var(--cf-base) 0.15 calc(c * 0.6) h)"
               : "oklch(from var(--cf-base) 0.22 calc(c * 0.5) h)"
           };
           --cf-ink-muted: ${
             isConfidentialFolder
-              ? "#92400e"
+              ? "var(--cf-override-ink-muted, #92400e)"
               : isBoardingPass || isTrainTicket
               ? "oklch(from var(--cf-base) 0.35 calc(c * 0.35) h)"
               : "oklch(from var(--cf-base) 0.45 calc(c * 0.35) h)"
@@ -1280,14 +1300,14 @@ export function ConfidentialFolder({
           };
           --cf-stroke-flap: ${
             isConfidentialFolder
-              ? "#eab308"
+              ? "var(--cf-override-stroke-flap, #eab308)"
               : isBoardingPass || isTrainTicket
               ? "oklch(from var(--cf-base) 0.68 calc(c * 0.3) h / 0.5)"
               : "oklch(from var(--cf-base) 0.68 calc(c * 0.3) h / 0.5)"
           };
           --cf-stroke-plate: ${
             isConfidentialFolder
-              ? "#ca8a04"
+              ? "var(--cf-override-stroke-plate, #ca8a04)"
               : isBoardingPass || isTrainTicket
               ? "oklch(from var(--cf-base) 0.60 calc(c * 0.3) h / 0.4)"
               : "oklch(from var(--cf-base) 0.60 calc(c * 0.3) h / 0.4)"

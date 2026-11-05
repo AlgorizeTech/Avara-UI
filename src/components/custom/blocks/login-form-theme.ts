@@ -1,6 +1,17 @@
 "use client";
 
 const colorThemes: Record<string, Record<string, string>> = {
+  lavender: {
+    bg: "bg-[#9b8afb] hover:bg-[#8b75f8]",
+    text: "text-[#9b8afb]",
+    border: "border-[#9b8afb]",
+    ring: "focus:ring-[#9b8afb]",
+    focusBorder: "focus:border-[#9b8afb] focus-visible:border-[#9b8afb]",
+    focusRing: "focus:ring-2 focus:ring-[#9b8afb]/25 focus-visible:ring-2 focus-visible:ring-[#9b8afb]/25",
+    hoverBorder: "hover:border-[#9b8afb]/60",
+    gradient: "from-[#9b8afb] to-[#7c66f6]",
+    panelFg: "text-white",
+  },
   indigo: {
     bg: "bg-indigo-600 hover:bg-indigo-700",
     text: "text-indigo-600 dark:text-indigo-400",
@@ -47,6 +58,42 @@ const colorThemes: Record<string, Record<string, string>> = {
   },
 };
 
+const PRESET_HEX: Record<
+  string,
+  { hex: string; rgb: string; secondary: string; panelFg: string }
+> = {
+  lavender: {
+    hex: "#9b8afb",
+    rgb: "155, 138, 251",
+    secondary: "#c4b5fd",
+    panelFg: "#ffffff",
+  },
+  indigo: {
+    hex: "#6366f1",
+    rgb: "99, 102, 241",
+    secondary: "#a855f7",
+    panelFg: "#ffffff",
+  },
+  rose: {
+    hex: "#f43f5e",
+    rgb: "244, 63, 94",
+    secondary: "#fb7185",
+    panelFg: "#ffffff",
+  },
+  emerald: {
+    hex: "#10b981",
+    rgb: "16, 185, 129",
+    secondary: "#34d399",
+    panelFg: "#ffffff",
+  },
+  zinc: {
+    hex: "#18181b",
+    rgb: "24, 24, 27",
+    secondary: "#71717a",
+    panelFg: "#fafafa",
+  },
+};
+
 const contrastingForeground = (rgb: string) => {
   const [r, g, b] = rgb.split(",").map((v) => parseInt(v.trim(), 10));
   const channel = (v: number) => {
@@ -72,44 +119,67 @@ const hexToRgb = (hex: string) => {
 };
 
 export const getThemeStyles = (color: string) => {
-  if (color === "primary" || color === "default" || !colorThemes[color]) {
-    if (color && color.startsWith("#")) {
-      const rgb = hexToRgb(color);
-      return {
-        theme: {
-          bg: "bg-[var(--theme-color)] text-white hover:opacity-90",
-          text: "text-[var(--theme-color)]",
-          border: "border-[var(--theme-color)]",
-          ring: "focus:ring-[var(--theme-color)]",
-          focusBorder: "focus:border-[var(--theme-color)] focus-visible:border-[var(--theme-color)]",
-          focusRing: "focus:ring-2 focus:ring-[rgba(var(--theme-color-rgb),0.25)] focus-visible:ring-2 focus-visible:ring-[rgba(var(--theme-color-rgb),0.25)]",
-          hoverBorder: "hover:border-[var(--theme-color)]/60",
-          gradient:
-            "from-[var(--theme-color)] to-[rgba(var(--theme-color-rgb),0.6)]",
-          panelFg: "text-[var(--panel-fg)]",
-        },
-        style: {
-          "--theme-color": color,
+  if (colorThemes[color]) {
+    const preset = PRESET_HEX[color];
+    const hex = preset?.hex;
+    const rgb = preset?.rgb;
+    const secondary = preset?.secondary || hex;
+    const style: React.CSSProperties = hex
+      ? ({
+          "--primary": hex,
+          "--primary-foreground": preset?.panelFg || "#ffffff",
+          "--ring": hex,
+          "--theme-color": hex,
           "--theme-color-rgb": rgb,
-          "--panel-fg": contrastingForeground(rgb),
-        } as React.CSSProperties,
-      };
-    }
+          "--panel-fg": preset?.panelFg || "#ffffff",
+          "--brand": hex,
+          "--brand-secondary": secondary,
+        } as React.CSSProperties)
+      : {};
+    return { theme: colorThemes[color], style };
+  }
+
+  if (color && color.startsWith("#")) {
+    const rgb = hexToRgb(color);
+    const fg = contrastingForeground(rgb);
     return {
       theme: {
-        bg: "bg-primary text-primary-foreground hover:bg-primary/90",
-        text: "text-primary",
-        border: "border-primary",
-        ring: "focus:ring-primary",
-        focusBorder: "focus:border-primary focus-visible:border-primary",
-        focusRing: "focus:ring-2 focus:ring-primary/25 focus-visible:ring-2 focus-visible:ring-primary/25",
-        hoverBorder: "hover:border-primary/60",
-        gradient: "from-primary to-primary/70",
-        // The token designed to be legible on --primary, which inverts by theme.
-        panelFg: "text-primary-foreground",
+        bg: "bg-[var(--theme-color)] text-white hover:opacity-90",
+        text: "text-[var(--theme-color)]",
+        border: "border-[var(--theme-color)]",
+        ring: "focus:ring-[var(--theme-color)]",
+        focusBorder: "focus:border-[var(--theme-color)] focus-visible:border-[var(--theme-color)]",
+        focusRing: "focus:ring-2 focus:ring-[rgba(var(--theme-color-rgb),0.25)] focus-visible:ring-2 focus-visible:ring-[rgba(var(--theme-color-rgb),0.25)]",
+        hoverBorder: "hover:border-[var(--theme-color)]/60",
+        gradient:
+          "from-[var(--theme-color)] to-[rgba(var(--theme-color-rgb),0.6)]",
+        panelFg: "text-[var(--panel-fg)]",
       },
-      style: {} as React.CSSProperties,
+      style: {
+        "--primary": color,
+        "--primary-foreground": fg,
+        "--ring": color,
+        "--theme-color": color,
+        "--theme-color-rgb": rgb,
+        "--panel-fg": fg,
+        "--brand": color,
+        "--brand-secondary": color,
+      } as React.CSSProperties,
     };
   }
-  return { theme: colorThemes[color], style: {} };
+
+  return {
+    theme: {
+      bg: "bg-primary text-primary-foreground hover:bg-primary/90",
+      text: "text-primary",
+      border: "border-primary",
+      ring: "focus:ring-primary",
+      focusBorder: "focus:border-primary focus-visible:border-primary",
+      focusRing: "focus:ring-2 focus:ring-primary/25 focus-visible:ring-2 focus-visible:ring-primary/25",
+      hoverBorder: "hover:border-primary/60",
+      gradient: "from-primary to-primary/70",
+      panelFg: "text-primary-foreground",
+    },
+    style: {} as React.CSSProperties,
+  };
 };
