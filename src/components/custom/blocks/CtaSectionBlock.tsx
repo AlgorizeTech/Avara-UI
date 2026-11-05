@@ -10,9 +10,15 @@ import {
   ChevronDown,
   Sparkles,
   Check,
+  Star,
+  Play,
+  Signal,
+  Wifi,
+  Battery,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { prefersReducedMotion, springTiming, usePrefersReducedMotion } from "@/lib/animate";
+import { Iphone17ProMaxMockup } from "./MobileMockupBlock";
 
 /** How a card travels: quick into a slot, slow and weighty back to the deck. */
 const TO_SLOT = springTiming({ stiffness: 240, damping: 25 });
@@ -147,12 +153,19 @@ export type CtaSectionVariant =
   | "minimal"
   | "split"
   | "concentric-portal"
-  | "orbital-lens";
+  | "orbital-lens"
+  | "offer-showcase"
+  | "cta-offer-showcase"
+  | "mobile-app"
+  | "app-showcase"
+  | "mobile-showcase"
+  | "mobile-mockup";
 
 export interface CtaSectionProps extends React.HTMLAttributes<HTMLElement> {
   variant?: CtaSectionVariant;
   color?: string;
   heading?: string;
+  headingAccent?: string;
   subheading?: string;
   statement?: string;
   pillars?: PillarItem[];
@@ -165,10 +178,33 @@ export interface CtaSectionProps extends React.HTMLAttributes<HTMLElement> {
   onPillarChange?: (id: string) => void;
   rounded?: string | number;
   className?: string;
+  // Mobile App Showcase props
+  appleStoreHref?: string;
+  googlePlayHref?: string;
+  showAppStoreBadges?: boolean;
+  userName?: string;
+  userAvatar?: string;
+  featuredWorkoutTitle?: string;
+  featuredWorkoutImage?: string;
+  workoutDuration?: string;
+  workoutCalories?: string;
+  phonePosition?: "left" | "right";
+  cardBackground?: string;
   // Concentric Portal / Orbital Lens props
   phrase?: string;
   scrollProgress?: number;
   autoRotate?: boolean;
+  // Offer Showcase props
+  badge?: string;
+  price?: number | string;
+  compareAtPrice?: number | string;
+  currency?: string;
+  period?: string;
+  savingsText?: string;
+  footnote?: string;
+  mediaItems?: string[];
+  images?: string[];
+  enableHoverSlowdown?: boolean;
 }
 
 // ==========================================
@@ -226,6 +262,16 @@ const COLOR_MAP: Record<string, { bg: string; text: string; gradient: string }> 
     text: "var(--primary)",
     gradient: "from-primary to-primary/80",
   },
+  default: {
+    bg: "var(--primary)",
+    text: "var(--primary)",
+    gradient: "from-primary to-primary/80",
+  },
+  lavender: {
+    bg: "#9b8afb",
+    text: "#9b8afb",
+    gradient: "from-[#a99bfb] to-[#8d7bf9]",
+  },
   indigo: {
     bg: "#6366f1",
     text: "#6366f1",
@@ -241,7 +287,31 @@ const COLOR_MAP: Record<string, { bg: string; text: string; gradient: string }> 
     text: "#10b981",
     gradient: "from-emerald-500 to-emerald-600",
   },
+  zinc: {
+    bg: "#18181b",
+    text: "#18181b",
+    gradient: "from-zinc-800 to-zinc-950",
+  },
 };
+
+/**
+ * Universal theme color resolver:
+ * Safely resolves 'default', 'primary', theme swatch names, or hex strings into concrete CSS values
+ */
+export function resolveThemeColor(color?: string, fallback = "var(--primary)"): string {
+  if (!color || color === "default" || color === "primary") return fallback;
+  const PRESET_HEX_MAP: Record<string, string> = {
+    lavender: "#9b8afb",
+    indigo: "#6366f1",
+    rose: "#f43f5e",
+    emerald: "#10b981",
+    orange: "#f95716",
+    zinc: "#18181b",
+    primary: fallback,
+    default: fallback,
+  };
+  return PRESET_HEX_MAP[color] || COLOR_MAP[color]?.bg || color;
+}
 
 // Deck card placement & rotation offsets:
 // 1 line absolute at bottom, spanning across the component
@@ -308,9 +378,7 @@ function BrandPillarsCta({
   const [placedCardIds, setPlacedCardIds] = useState<string[]>([]);
 
   // Use CSS theme variable var(--primary) by default so theme switcher changes it across the entire component
-  const activeAccent = color
-    ? COLOR_MAP[color]?.bg || color
-    : "var(--primary)";
+  const activeAccent = resolveThemeColor(color, "var(--primary)");
   // Dynamic radius bound to global --radius token from the theme customizer sidebar
   const dynamicRadius =
     rounded !== undefined
@@ -901,7 +969,7 @@ function BrandPillarsCta({
 // MINIMAL CTA VARIANT
 // ==========================================
 function MinimalCta({
-  color = "#f95716",
+  color,
   heading = "Transform your brand into a growth engine",
   statement = "Start building unified identity, conversion-driven websites, and data-backed marketing systems today.",
   ctaText = "Get Started",
@@ -912,13 +980,13 @@ function MinimalCta({
   style,
   ...props
 }: CtaSectionProps) {
-  const activeAccent = COLOR_MAP[color]?.bg || color;
+  const activeAccent = resolveThemeColor(color, "var(--primary)");
   const dynamicRadius =
     rounded !== undefined
       ? typeof rounded === "number"
         ? `${rounded}px`
         : rounded
-      : "16px";
+      : "var(--radius, 1rem)";
 
   return (
     <section
@@ -962,7 +1030,7 @@ function MinimalCta({
 // SPLIT CTA VARIANT
 // ==========================================
 function SplitCta({
-  color = "#f95716",
+  color,
   heading = "One team for your complete brand ecosystem",
   statement = "From brand strategy to custom web development and growth content, everything connects seamlessly.",
   ctaText = "Book a Call",
@@ -974,13 +1042,13 @@ function SplitCta({
   style,
   ...props
 }: CtaSectionProps) {
-  const activeAccent = COLOR_MAP[color]?.bg || color;
+  const activeAccent = resolveThemeColor(color, "var(--primary)");
   const dynamicRadius =
     rounded !== undefined
       ? typeof rounded === "number"
         ? `${rounded}px`
         : rounded
-      : "20px";
+      : "var(--radius, 1rem)";
 
   return (
     <section
@@ -1495,9 +1563,7 @@ export function ConcentricPortalCta({
     return [ctaText || "GET", "ACCESS"];
   }, [ctaText]);
 
-  const activeAccent = color
-    ? COLOR_MAP[color]?.bg || color
-    : "#f59e0b";
+  const activeAccent = resolveThemeColor(color, "var(--primary)");
 
   return (
     <section
@@ -1627,6 +1693,1011 @@ export function ConcentricPortalCta({
 export const OrbitalLensCta = ConcentricPortalCta;
 
 // ==========================================
+// CTA OFFER SHOWCASE VARIANT (FRAMER REPLICA)
+// Central high-impact offer card flanked by moving nature reels
+// ==========================================
+export const DEFAULT_OFFER_NATURE_IMAGES: string[] = [
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145142/photo-1511671782779-c97d3d27a1d4-1790145143493.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1550684848-fac1c5b4e853-1790145143489.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/pexels-photo-7688336-1790166052227.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/pexels-photo-8867434-1790166052229.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/pexels-photo-7658387-1790166052226.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/pexels-photo-7709086-1790166052228.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145139/pexels-photo-7709208-1790145143489.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145139/pexels-photo-1036623-1790145143487.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145142/pexels-photo-2043590-1790145143488.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145139/pexels-photo-1587009-1790145143488.jpg",
+];
+
+function ReelLane({
+  images,
+  direction = "up",
+  duration = 32,
+  isSlowed = false,
+  className,
+}: {
+  images: string[];
+  direction?: "up" | "down";
+  duration?: number;
+  isSlowed?: boolean;
+  className?: string;
+}) {
+  const laneRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!laneRef.current) return;
+    const anims = laneRef.current.getAnimations({ subtree: true });
+    anims.forEach((a) => {
+      a.playbackRate = isSlowed ? 0.25 : 1;
+    });
+  }, [isSlowed]);
+
+  // Ensure minimum 8 images in a set so that the set height comfortably exceeds the entire viewport
+  const setImages = useMemo(() => {
+    if (!images || images.length === 0) return DEFAULT_OFFER_NATURE_IMAGES.slice(0, 8);
+    let list = [...images];
+    while (list.length < 8) {
+      list = [...list, ...images];
+    }
+    return list;
+  }, [images]);
+
+  return (
+    <div
+      ref={laneRef}
+      className={cn(
+        "relative overflow-hidden h-full min-h-[720px] xs:min-h-[820px] sm:min-h-[960px] md:min-h-[1100px] shrink-0 select-none pointer-events-auto",
+        className,
+      )}
+    >
+      <div
+        className={cn(
+          "flex flex-col will-change-transform",
+          direction === "up" ? "animate-cta-reel-up" : "animate-cta-reel-down",
+        )}
+        style={{
+          animationDuration: `${duration}s`,
+          animationTimingFunction: "linear",
+          animationIterationCount: "infinite",
+        }}
+      >
+        {/* Set 1: Full set with trailing gap via padding-bottom */}
+        <div className="flex flex-col gap-3 sm:gap-3.5 pb-3 sm:pb-3.5 shrink-0">
+          {setImages.map((src, i) => (
+            <div
+              key={`s1-${i}`}
+              className="w-full aspect-[3/4] rounded-2xl overflow-hidden border border-border/40 dark:border-white/10 bg-muted/40 shadow-sm shrink-0 select-none"
+            >
+              <img
+                src={src}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                className="size-full object-cover select-none pointer-events-none"
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* Set 2: Exact identical duplicate set with matching trailing gap so loop is 100% seamless with zero jumps */}
+        <div className="flex flex-col gap-3 sm:gap-3.5 pb-3 sm:pb-3.5 shrink-0" aria-hidden="true">
+          {setImages.map((src, i) => (
+            <div
+              key={`s2-${i}`}
+              className="w-full aspect-[3/4] rounded-2xl overflow-hidden border border-border/40 dark:border-white/10 bg-muted/40 shadow-sm shrink-0 select-none"
+            >
+              <img
+                src={src}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                className="size-full object-cover select-none pointer-events-none"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function OfferShowcaseCta({
+  badge = "Limited launch offer",
+  heading = "Everything you need, one payment",
+  subheading = "Lifetime access to every current and future release. No subscription, no renewals.",
+  statement,
+  price = 149,
+  compareAtPrice = 349,
+  currency = "$",
+  period = "one-time",
+  savingsText = "Save 57%",
+  ctaText = "Claim the offer",
+  ctaHref = "#",
+  onCtaClick,
+  footnote = "Secure checkout · 14-day refund",
+  mediaItems,
+  images,
+  color,
+  rounded,
+  className,
+  style,
+  ...props
+}: CtaSectionProps) {
+  const [leftHovered, setLeftHovered] = useState(false);
+  const [rightHovered, setRightHovered] = useState(false);
+
+  const activeAccent = resolveThemeColor(color, "var(--primary)");
+  const dynamicRadius =
+    rounded !== undefined
+      ? typeof rounded === "number"
+        ? `${rounded}px`
+        : rounded
+      : "var(--radius, 1rem)";
+
+  const numPrice = typeof price === "number" ? price : parseFloat(String(price)) || 149;
+  const descriptionText = statement || subheading;
+
+  // Prefer images, then mediaItems, falling back to default Cloudinary nature collection
+  const rawList = images && images.length > 0 ? images : (mediaItems && mediaItems.length > 0 ? mediaItems : DEFAULT_OFFER_NATURE_IMAGES);
+  const items = rawList.length >= 4 ? rawList : DEFAULT_OFFER_NATURE_IMAGES;
+
+  // Distribute items across the 4 vertical lanes evenly
+  const lane1: string[] = [];
+  const lane2: string[] = [];
+  const lane3: string[] = [];
+  const lane4: string[] = [];
+
+  items.forEach((src, idx) => {
+    const laneIdx = idx % 4;
+    if (laneIdx === 0) lane1.push(src);
+    else if (laneIdx === 1) lane2.push(src);
+    else if (laneIdx === 2) lane3.push(src);
+    else lane4.push(src);
+  });
+
+  const safeLane1 = lane1.length > 0 ? lane1 : DEFAULT_OFFER_NATURE_IMAGES.slice(0, 4);
+  const safeLane2 = lane2.length > 0 ? lane2 : DEFAULT_OFFER_NATURE_IMAGES.slice(4, 8);
+  const safeLane3 = lane3.length > 0 ? lane3 : DEFAULT_OFFER_NATURE_IMAGES.slice(8, 12);
+  const safeLane4 = lane4.length > 0 ? lane4 : DEFAULT_OFFER_NATURE_IMAGES.slice(12, 16);
+
+  return (
+    <section
+      className={cn(
+        "group/cta-showcase relative w-full min-h-[560px] xs:min-h-[620px] sm:min-h-[720px] lg:min-h-[780px] overflow-hidden bg-[#F3F1EC] dark:bg-[#0E0E10] text-[#141414] dark:text-[#F4F4F2] flex items-center justify-center py-12 sm:py-20 px-3 sm:px-6 select-none",
+        className,
+      )}
+      style={style}
+      {...props}
+    >
+      <style>{`
+        @keyframes cta-reel-up {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(-50%); }
+        }
+        @keyframes cta-reel-down {
+          0% { transform: translateY(-50%); }
+          100% { transform: translateY(0); }
+        }
+        .animate-cta-reel-up {
+          animation: cta-reel-up 54s linear infinite;
+        }
+        .animate-cta-reel-down {
+          animation: cta-reel-down 62s linear infinite;
+        }
+        @keyframes cta-dot-ping {
+          0% { box-shadow: 0 0 0 0 rgba(232, 84, 46, 0.55); }
+          75%, 100% { box-shadow: 0 0 0 7px transparent; }
+        }
+        .animate-cta-dot-ping {
+          animation: cta-dot-ping 2.4s cubic-bezier(0.3, 0, 0.2, 1) infinite;
+        }
+      `}</style>
+
+      {/* 3D Flanking Media Reels Container */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
+        {/* Left Side (3D Perspective tilt with rotateY & rotate, exactly matching Framer) */}
+        <div
+          className="absolute top-0 bottom-0 left-0 w-1/2 pointer-events-auto"
+          style={{
+            perspective: "1100px",
+            perspectiveOrigin: "0% 50%",
+            WebkitMaskImage: "linear-gradient(to right, #000 22%, transparent 82%), linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%)",
+            maskImage: "linear-gradient(to right, #000 22%, transparent 82%), linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%)",
+            WebkitMaskComposite: "source-in",
+            maskComposite: "intersect",
+          }}
+          onMouseEnter={() => setLeftHovered(true)}
+          onMouseLeave={() => setLeftHovered(false)}
+        >
+          <div
+            className="absolute -top-[25%] h-[150%] flex gap-2.5 sm:gap-3.5 left-2.5 xs:left-4 sm:left-7 md:left-9 origin-[0%_50%]"
+            style={{
+              transform: "rotate(-6deg) rotateY(14deg)",
+            }}
+          >
+            {/* Lane 1: Primary visible lane on mobile & desktop */}
+            <ReelLane
+              images={safeLane1}
+              direction="up"
+              duration={52}
+              isSlowed={leftHovered}
+              className="w-[84px] xs:w-[94px] sm:w-[130px] md:w-[160px] lg:w-[190px]"
+            />
+            {/* Lane 2: Outer lane on desktop (hidden on small mobile screens <=720px exactly per Framer spec) */}
+            <ReelLane
+              images={safeLane2}
+              direction="down"
+              duration={62}
+              isSlowed={leftHovered}
+              className="hidden sm:block sm:w-[130px] md:w-[160px] lg:w-[190px]"
+            />
+          </div>
+        </div>
+
+        {/* Right Side (3D Perspective tilt with rotateY & rotate, exactly matching Framer) */}
+        <div
+          className="absolute top-0 bottom-0 right-0 w-1/2 pointer-events-auto"
+          style={{
+            perspective: "1100px",
+            perspectiveOrigin: "100% 50%",
+            WebkitMaskImage: "linear-gradient(to left, #000 22%, transparent 82%), linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%)",
+            maskImage: "linear-gradient(to left, #000 22%, transparent 82%), linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%)",
+            WebkitMaskComposite: "source-in",
+            maskComposite: "intersect",
+          }}
+          onMouseEnter={() => setRightHovered(true)}
+          onMouseLeave={() => setRightHovered(false)}
+        >
+          <div
+            className="absolute -top-[25%] h-[150%] flex flex-row-reverse gap-2.5 sm:gap-3.5 right-2.5 xs:right-4 sm:right-7 md:right-9 origin-[100%_50%]"
+            style={{
+              transform: "rotate(6deg) rotateY(-14deg)",
+            }}
+          >
+            {/* Lane 3: Primary visible lane on mobile & desktop */}
+            <ReelLane
+              images={safeLane3}
+              direction="down"
+              duration={56}
+              isSlowed={rightHovered}
+              className="w-[84px] xs:w-[94px] sm:w-[130px] md:w-[160px] lg:w-[190px]"
+            />
+            {/* Lane 4: Outer lane on desktop (hidden on small mobile screens <=720px exactly per Framer spec) */}
+            <ReelLane
+              images={safeLane4}
+              direction="up"
+              duration={66}
+              isSlowed={rightHovered}
+              className="hidden sm:block sm:w-[130px] md:w-[160px] lg:w-[190px]"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Edge gradient vignettes (top & bottom smooth fade to section background) */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-24 sm:h-36 bg-gradient-to-b from-[#F3F1EC] dark:from-[#0E0E10] via-[#F3F1EC]/90 dark:via-[#0E0E10]/90 to-transparent z-10"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-24 sm:h-36 bg-gradient-to-t from-[#F3F1EC] dark:from-[#0E0E10] via-[#F3F1EC]/90 dark:via-[#0E0E10]/90 to-transparent z-10"
+        aria-hidden="true"
+      />
+
+      {/* Vertical center wash running top-to-bottom behind the card across all screens (ComponentWall 2nd variant style) */}
+      <div
+        className="pointer-events-none absolute inset-y-0 left-1/2 w-full max-w-[42rem] sm:max-w-[52rem] -translate-x-1/2 bg-[radial-gradient(closest-side,#F3F1EC_60%,transparent)] dark:bg-[radial-gradient(closest-side,#0E0E10_60%,transparent)] z-10"
+        aria-hidden="true"
+      />
+
+      {/* Central High-Impact Ticket Offer Card (Clean Minimalist Ticket with real radial-gradient bite notches) */}
+      <div className="relative z-20 w-full max-w-[min(468px,calc(100%-20px))] sm:max-w-[420px] md:max-w-[468px] mx-auto filter drop-shadow-[0_28px_56px_rgba(20,20,20,0.08)] dark:drop-shadow-[0_28px_56px_rgba(0,0,0,0.6)] flex flex-col items-center text-center">
+        {/* Top Half of Card: Badge, Heading, Subtitle */}
+        <div
+          className="w-full bg-white dark:bg-[#18181B] border border-[rgba(20,20,20,0.10)] dark:border-[rgba(255,255,255,0.10)] border-b-0 p-5 xs:p-6 sm:p-8 pb-3.5 sm:pb-5 flex flex-col items-center"
+          style={{
+            borderTopLeftRadius: dynamicRadius,
+            borderTopRightRadius: dynamicRadius,
+            WebkitMaskImage: "radial-gradient(circle at 0% 100%, transparent 12px, #000 12.5px), radial-gradient(circle at 100% 100%, transparent 12px, #000 12.5px)",
+            maskImage: "radial-gradient(circle at 0% 100%, transparent 12px, #000 12.5px), radial-gradient(circle at 100% 100%, transparent 12px, #000 12.5px)",
+            WebkitMaskComposite: "source-in",
+            maskComposite: "intersect",
+          }}
+        >
+          {badge && (
+            <span
+              style={{ borderRadius: dynamicRadius }}
+              className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 border border-[rgba(20,20,20,0.10)] dark:border-[rgba(255,255,255,0.12)] bg-neutral-50/60 dark:bg-white/5 text-[11px] sm:text-[13px] font-medium text-[#141414] dark:text-[#F4F4F2] mb-3 sm:mb-4"
+            >
+              <span className="size-[7px] rounded-full shrink-0 animate-cta-dot-ping" style={{ backgroundColor: activeAccent }} />
+              <span>{badge}</span>
+            </span>
+          )}
+
+          <h2 className="text-xl xs:text-2xl sm:text-[34px] md:text-[36px] font-semibold tracking-[-0.02em] text-[#141414] dark:text-[#F4F4F2] leading-[1.12]">
+            {heading}
+          </h2>
+
+          {descriptionText && (
+            <p className="mt-2 text-xs xs:text-[13px] sm:text-[15px] text-[#6E6A64] dark:text-[#9C9CA3] leading-[1.5] max-w-[340px] sm:max-w-[380px]">
+              {descriptionText}
+            </p>
+          )}
+        </div>
+
+        {/* Bottom Half of Card: Price, Savings Chip, CTA Button, Footnote */}
+        <div
+          className="relative w-full bg-white dark:bg-[#18181B] border border-[rgba(20,20,20,0.10)] dark:border-[rgba(255,255,255,0.10)] border-t-0 p-5 xs:p-6 sm:p-8 pt-3.5 sm:pt-5 flex flex-col items-center"
+          style={{
+            borderBottomLeftRadius: dynamicRadius,
+            borderBottomRightRadius: dynamicRadius,
+            WebkitMaskImage: "radial-gradient(circle at 0% 0%, transparent 12px, #000 12.5px), radial-gradient(circle at 100% 0%, transparent 12px, #000 12.5px)",
+            maskImage: "radial-gradient(circle at 0% 0%, transparent 12px, #000 12.5px), radial-gradient(circle at 100% 0%, transparent 12px, #000 12.5px)",
+            WebkitMaskComposite: "source-in",
+            maskComposite: "intersect",
+          }}
+        >
+          {/* Dashed Perforation Line Connecting the Left & Right Notches */}
+          <div
+            className="absolute top-0 left-5 right-5 border-t-[1.5px] border-dashed border-[rgba(20,20,20,0.15)] dark:border-[rgba(255,255,255,0.15)] pointer-events-none"
+            aria-hidden="true"
+          />
+
+          {/* Price display with superscript currency */}
+          <div className="flex items-baseline justify-center text-[#141414] dark:text-[#F4F4F2]">
+            <span className="text-xl xs:text-2xl sm:text-3xl font-semibold -translate-y-1 sm:-translate-y-2 mr-0.5 font-sans">
+              {currency}
+            </span>
+            <span className="text-4xl xs:text-5xl sm:text-[62px] font-semibold tracking-[-0.035em] leading-none tabular-nums font-sans">
+              <AnimatedNumber value={numPrice} duration={1} />
+            </span>
+            {period && (
+              <span className="text-xs sm:text-[14px] font-medium text-[#6E6A64] dark:text-[#9C9CA3] ml-2 font-sans">
+                {period}
+              </span>
+            )}
+          </div>
+
+          {/* Strikethrough & Savings Tag */}
+          {(compareAtPrice || savingsText) && (
+            <div className="mt-2.5 flex items-center justify-center gap-2.5">
+              {compareAtPrice && (
+                <s className="text-sm sm:text-[16px] text-[#6E6A64] dark:text-[#9C9CA3] font-normal decoration-[1.5px]">
+                  {currency}{compareAtPrice}
+                </s>
+              )}
+              {savingsText && (
+                <span
+                  style={{ borderRadius: dynamicRadius }}
+                  className="inline-flex items-center px-2.5 py-1 text-[11px] sm:text-[12px] font-semibold text-[#E8542E] dark:text-[#FF7A4D] bg-[color-mix(in_srgb,#E8542E_14%,transparent)] dark:bg-[color-mix(in_srgb,#FF7A4D_18%,transparent)]"
+                >
+                  {savingsText}
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* CTA Button */}
+          <a
+            href={ctaHref}
+            onClick={(e) => {
+              if (ctaHref === "#") e.preventDefault();
+              onCtaClick?.();
+            }}
+            style={{ borderRadius: dynamicRadius }}
+            className="mt-4 sm:mt-5 w-full py-3 sm:py-3.5 px-6 font-semibold text-xs sm:text-[15px] bg-[#141414] hover:bg-black dark:bg-[#F4F4F2] dark:hover:bg-white text-white dark:text-[#0E0E10] transition-transform duration-300 hover:-translate-y-0.5 active:scale-[0.985] flex items-center justify-center gap-2.5 group cursor-pointer"
+          >
+            <span>{ctaText}</span>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              className="size-3.5 sm:size-4 transition-transform duration-300 group-hover:translate-x-1"
+            >
+              <path
+                d="M3 8h10M9 4l4 4-4 4"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </a>
+
+          {/* Footnote */}
+          {footnote && (
+            <p className="mt-3 text-[11px] sm:text-[12px] text-[#6E6A64] dark:text-[#9C9CA3] font-normal">
+              {footnote}
+            </p>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ==========================================
+// MOBILE APP SHOWCASE CTA (IPHONE MOCKUP)
+// Two-Section Transition: Section 1 (Center Phone) -> Section 2 (Left Phone + Right Content)
+// Driven by Parent Scroll / Wheel / Touch / Stepper
+// ==========================================
+export function MobileAppCta({
+  heading = "Aura Clearmind..\nYour partner in wellness.",
+  headingAccent = "Your partner",
+  subheading = "Find and book your favorite yoga classes, guided meditation, and daily mindful wellness sessions from anywhere with our all-in-one mobile app, designed to bring balance, clarity, and peace to your life.",
+  statement,
+  badge = "Mobile App Available",
+  appleStoreHref = "#",
+  googlePlayHref = "#",
+  showAppStoreBadges = true,
+  userName = "Alicia Regis",
+  userAvatar = "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790145142/pexels-photo-2043590-1790145143488.jpg",
+  featuredWorkoutTitle = "Wellness Workshops",
+  featuredWorkoutImage = "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+  workoutDuration = "10 Min",
+  workoutCalories = "300 Kcal",
+  color,
+  scrollProgress,
+  phonePosition = "left",
+  cardBackground,
+  rounded,
+  className,
+  style,
+  ...props
+}: CtaSectionProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const phoneColRef = useRef<HTMLDivElement>(null);
+
+  const [progress, setProgress] = useState(
+    scrollProgress !== undefined ? Math.max(0, Math.min(1, scrollProgress)) : 0,
+  );
+  const targetProgressRef = useRef(
+    scrollProgress !== undefined ? Math.max(0, Math.min(1, scrollProgress)) : 0,
+  );
+  const [shiftDeltaX, setShiftDeltaX] = useState(290);
+
+  const activeAccent = resolveThemeColor(color, "var(--primary)");
+  const descriptionText = subheading || statement;
+
+  // Dynamic radius variables bound directly to global --radius token from the theme customizer sidebar
+  const dynamicRadius =
+    rounded !== undefined
+      ? typeof rounded === "number"
+        ? `${rounded}px`
+        : rounded
+      : "var(--radius, 1rem)";
+  const containerRadius = dynamicRadius;
+  const cardRadius = dynamicRadius;
+  const buttonRadius = dynamicRadius;
+  const pillRadius = dynamicRadius;
+  const iconRadius = dynamicRadius;
+
+  // Sync if external scrollProgress prop is passed
+  useEffect(() => {
+    if (scrollProgress !== undefined) {
+      targetProgressRef.current = Math.max(0, Math.min(1, scrollProgress));
+    }
+  }, [scrollProgress]);
+
+  // Dynamically calculate exact pixel distance from side column to center of stage
+  useLayoutEffect(() => {
+    const updateDelta = () => {
+      if (stageRef.current && phoneColRef.current) {
+        const stageRect = stageRef.current.getBoundingClientRect();
+        const colRect = phoneColRef.current.getBoundingClientRect();
+        const stageCenter = stageRect.left + stageRect.width / 2;
+        const colCenter = colRect.left + colRect.width / 2;
+        const isDesktop = window.innerWidth >= 1024;
+        setShiftDeltaX(isDesktop ? Math.round(stageCenter - colCenter) : 0);
+      }
+    };
+
+    updateDelta();
+    const timer1 = setTimeout(updateDelta, 60);
+    const timer2 = setTimeout(updateDelta, 240);
+    window.addEventListener("resize", updateDelta);
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+      window.removeEventListener("resize", updateDelta);
+    };
+  }, [phonePosition]);
+
+  // 60FPS RAF Spring Lerp loop for buttery-smooth transition
+  useEffect(() => {
+    let current = targetProgressRef.current;
+    let active = true;
+    let rafId: number | null = null;
+
+    const tick = () => {
+      if (!active) return;
+      const target = targetProgressRef.current;
+      const diff = target - current;
+      if (Math.abs(diff) > 0.0006) {
+        current += diff * 0.18;
+        setProgress(current);
+      } else if (current !== target) {
+        current = target;
+        setProgress(target);
+      }
+      rafId = requestAnimationFrame(tick);
+    };
+    rafId = requestAnimationFrame(tick);
+
+    return () => {
+      active = false;
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  // 1. Direct Mouse Wheel listener with passive: false to drive the animation immediately
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) < 1) return;
+
+      const current = targetProgressRef.current;
+      // Smooth scrubbing sensitivity: ~3 gentle wheel notches transition fully
+      const step = e.deltaY * 0.0022;
+      const next = Math.max(0, Math.min(1, current + step));
+
+      const isScrollingDown = step > 0;
+      const isScrollingUp = step < 0;
+
+      // While between 0 and 1, intercept wheel to animate transition smoothly
+      if (
+        (isScrollingDown && current < 0.99) ||
+        (isScrollingUp && current > 0.01)
+      ) {
+        e.preventDefault();
+        e.stopPropagation();
+        targetProgressRef.current = next;
+      }
+    };
+
+    container.addEventListener("wheel", onWheel, { passive: false });
+    return () => {
+      container.removeEventListener("wheel", onWheel);
+    };
+  }, []);
+
+  // 2. Touch gesture listener for mobile and tablets
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    let touchStartY = 0;
+
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        touchStartY = e.touches[0].clientY;
+      }
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 0) return;
+      const currentY = e.touches[0].clientY;
+      const deltaY = touchStartY - currentY;
+      if (Math.abs(deltaY) < 4) return;
+
+      const current = targetProgressRef.current;
+      const step = deltaY * 0.0035;
+      const next = Math.max(0, Math.min(1, current + step));
+
+      const isScrollingDown = step > 0;
+      const isScrollingUp = step < 0;
+
+      if (
+        (isScrollingDown && current < 0.99) ||
+        (isScrollingUp && current > 0.01)
+      ) {
+        if (e.cancelable) e.preventDefault();
+        targetProgressRef.current = next;
+        touchStartY = currentY;
+      }
+    };
+
+    container.addEventListener("touchstart", onTouchStart, { passive: true });
+    container.addEventListener("touchmove", onTouchMove, { passive: false });
+    return () => {
+      container.removeEventListener("touchstart", onTouchStart);
+      container.removeEventListener("touchmove", onTouchMove);
+    };
+  }, []);
+
+  // 3. Fallback: Page scroll observer when placed inside a standard tall website page
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const onScroll = () => {
+      if (scrollProgress !== undefined) return;
+      const rect = container.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const triggerStart = vh * 0.8;
+      const triggerEnd = vh * 0.2;
+      const dist = triggerStart - triggerEnd;
+      if (dist > 0 && rect.top <= triggerStart && rect.bottom >= triggerEnd) {
+        const p = Math.max(0, Math.min(1, (triggerStart - rect.top) / dist));
+        targetProgressRef.current = p;
+      }
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, [scrollProgress]);
+
+  // Easing computations
+  const ease = 1 - Math.pow(1 - progress, 3);
+  const phoneShiftX = Math.round(shiftDeltaX * (1 - ease));
+  const phoneShiftY = 0; // Strictly vertically centered at all stages of motion
+
+  // Section 2 card background & right content reveal
+  const sec2Opacity = Math.max(0, Math.min(1, (progress - 0.12) / 0.88));
+  const sec2Ease = 1 - Math.pow(1 - sec2Opacity, 3);
+  const contentShiftX = Math.round((1 - sec2Ease) * (phonePosition === "left" ? 35 : -35));
+
+  // Split heading into 2 clean lines: Upper line shorter width, Lower line wider width
+  const heading2Lines = useMemo(() => {
+    if (heading.includes("\n")) {
+      const [l1, ...rest] = heading.split("\n");
+      return { line1: l1.trim(), line2: rest.join(" ").trim() };
+    }
+    if (heading.includes(",")) {
+      const idx = heading.indexOf(",");
+      return {
+        line1: heading.slice(0, idx + 1).trim(),
+        line2: heading.slice(idx + 1).trim(),
+      };
+    }
+    const words = heading.split(" ");
+    const splitIndex = Math.max(1, Math.floor(words.length * 0.35));
+    return {
+      line1: words.slice(0, splitIndex).join(" "),
+      line2: words.slice(splitIndex).join(" "),
+    };
+  }, [heading]);
+
+  const isPhoneOnLeft = phonePosition === "left";
+
+  return (
+    <div
+      ref={containerRef}
+      className={cn(
+        "relative w-full max-w-6xl mx-auto select-none overflow-hidden min-h-[580px] sm:min-h-[620px] lg:h-[640px] flex items-center justify-center transition-colors border border-neutral-200/60 dark:border-white/10",
+        className,
+      )}
+      style={{
+        borderRadius: containerRadius,
+        ...style,
+      }}
+      {...props}
+    >
+      {/* =========================================
+          SECTION 2 (SHOWCASE PHASE: AUTHENTIC WELLNESS SAGE CARD)
+          ========================================= */}
+      <div
+        className="absolute inset-0 pointer-events-none transition-all duration-500 shadow-xl overflow-hidden"
+        style={{
+          opacity: sec2Ease,
+          transform: `scale(${0.96 + 0.04 * sec2Ease})`,
+          borderRadius: containerRadius,
+          background: cardBackground
+            ? cardBackground
+            : `linear-gradient(135deg, ${activeAccent} 0%, color-mix(in srgb, ${activeAccent} 78%, #0f1c12) 100%)`,
+        }}
+        aria-hidden="true"
+      >
+        {/* Dark mode overlay so custom colors blend smoothly in dark mode */}
+        <div
+          className="absolute inset-0 hidden dark:block bg-black/60 pointer-events-none"
+          style={{ borderRadius: containerRadius }}
+        />
+
+        {/* Soft Ambient Radial Lighting */}
+        <div
+          className="absolute -right-20 -bottom-20 w-[450px] h-[450px] rounded-full blur-[80px] opacity-30 pointer-events-none bg-white/20 dark:bg-white/5"
+          aria-hidden="true"
+        />
+      </div>
+
+      {/* =========================================
+          STAGE CONTENT GRID
+          ========================================= */}
+      <div
+        ref={stageRef}
+        className="relative z-10 w-full h-full grid grid-cols-1 lg:grid-cols-12 items-center gap-8 p-6 sm:p-8 md:p-10 overflow-hidden"
+      >
+        {/* =========================================
+            PHONE COLUMN (MOCKUP WITH SMOOTH GLIDE MOTION)
+            Glides smoothly from Center (Section 1) to Side (Section 2)
+            ========================================= */}
+        <div
+          ref={phoneColRef}
+          className={cn(
+            "flex justify-center items-center relative z-20 my-auto self-center",
+            isPhoneOnLeft
+              ? "lg:col-span-5 lg:order-1"
+              : "lg:col-start-8 lg:col-span-5 lg:order-2",
+          )}
+        >
+          {/* Circular backdrop disc behind the phone (matching screenshot) */}
+          <div
+            className="absolute size-[320px] sm:size-[360px] rounded-full border border-white/20 dark:border-white/5 pointer-events-none transition-opacity duration-500 shadow-inner"
+            style={{
+              opacity: sec2Ease,
+              backgroundColor: `color-mix(in srgb, ${activeAccent} 80%, white)`,
+            }}
+            aria-hidden="true"
+          />
+
+          {/* iPhone Mockup Container with Motion */}
+          <div
+            style={{
+              transform: `translate(${phoneShiftX}px, ${phoneShiftY}px)`,
+              willChange: "transform",
+              transition: "none",
+            }}
+            className="relative flex items-center justify-center"
+          >
+            <div className="scale-[0.82] xs:scale-[0.88] sm:scale-[0.94] lg:scale-100 origin-center transition-transform">
+              <Iphone17ProMaxMockup
+                className="w-[270px] xs:w-[280px] sm:w-[295px] h-[480px] xs:h-[500px] sm:h-[520px] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.35)] dark:shadow-[0_25px_70px_-20px_rgba(0,0,0,0.85)]"
+              >
+                {/* Screen Content: Authentic Yoga & Wellness App Interface */}
+                <div className="relative w-full h-full flex flex-col justify-between bg-white dark:bg-[#141418] text-neutral-900 dark:text-neutral-100 p-4 pt-11 pb-4 select-none font-sans overflow-hidden">
+                  {/* Status Bar */}
+                  <div className="absolute top-2.5 inset-x-0 px-6 flex items-center justify-between text-[11px] font-semibold text-neutral-800 dark:text-neutral-200 z-30 pointer-events-none">
+                    <span>9:41</span>
+                    <div className="flex items-center gap-1.5 text-neutral-700 dark:text-neutral-300">
+                      <Signal size={11} />
+                      <Wifi size={11} />
+                      <Battery size={13} className="fill-current" />
+                    </div>
+                  </div>
+
+                  {/* Main App Feed */}
+                  <div className="space-y-3">
+                    {/* Greeting & Avatar */}
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <span className="text-[10px] font-medium text-neutral-500 dark:text-neutral-400 block">
+                          Hello
+                        </span>
+                        <h4 className="text-sm sm:text-base font-bold text-neutral-950 dark:text-white tracking-tight">
+                          {userName}
+                        </h4>
+                      </div>
+                      <div className="size-8 rounded-full bg-gradient-to-tr from-emerald-600 to-lime-500 p-0.5 shadow-sm">
+                        <img
+                          src={userAvatar}
+                          alt={userName}
+                          className="size-full rounded-full object-cover"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Level / Filter Pills */}
+                    <div className="flex items-center gap-1.5">
+                      {["Beginner", "Intermediate", "Advanced"].map((level, i) => (
+                        <span
+                          key={level}
+                          style={{ borderRadius: pillRadius }}
+                          className={cn(
+                            "text-[9px] sm:text-[10px] font-medium px-2.5 py-1 transition-colors cursor-pointer",
+                            i === 1
+                              ? "bg-[#172e1b] text-white font-semibold shadow-xs"
+                              : "bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700",
+                          )}
+                        >
+                          {level}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Popular Workouts Card */}
+                    <div className="space-y-1">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[11px] sm:text-xs font-bold text-neutral-900 dark:text-white">
+                          Popular Workouts
+                        </span>
+                        <span className="text-[9px] text-neutral-400 hover:text-neutral-900 dark:hover:text-white cursor-pointer">
+                          See all
+                        </span>
+                      </div>
+
+                      <div
+                        className="relative w-full h-32 overflow-hidden shadow-sm group cursor-pointer"
+                        style={{ borderRadius: cardRadius }}
+                      >
+                        <img
+                          src={featuredWorkoutImage}
+                          alt={featuredWorkoutTitle}
+                          className="size-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent p-3 flex flex-col justify-between text-white">
+                          <span className="text-[11px] sm:text-xs font-bold tracking-tight">
+                            {featuredWorkoutTitle}
+                          </span>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-1.5 text-[9px] font-medium">
+                              <span
+                                style={{ borderRadius: pillRadius }}
+                                className="px-2 py-0.5 bg-[#ebf071] text-[#172e1b] font-semibold"
+                              >
+                                {workoutDuration}
+                              </span>
+                              <span
+                                style={{ borderRadius: pillRadius }}
+                                className="px-2 py-0.5 bg-[#ebf071] text-[#172e1b] font-semibold"
+                              >
+                                {workoutCalories}
+                              </span>
+                            </div>
+                            <div
+                              style={{ borderRadius: pillRadius }}
+                              className="size-6 bg-white text-black grid place-items-center shadow-md"
+                            >
+                              <Play size={10} className="fill-current translate-x-0.5" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Today's Plan Item */}
+                    <div className="space-y-1">
+                      <span className="text-[11px] sm:text-xs font-bold text-neutral-900 dark:text-white">
+                        Today Plan
+                      </span>
+                      <div
+                        style={{ borderRadius: cardRadius }}
+                        className="flex items-center gap-2.5 p-2 border border-neutral-200/80 dark:border-white/10 bg-neutral-50/80 dark:bg-white/[0.03]"
+                      >
+                        <div
+                          style={{ borderRadius: iconRadius }}
+                          className="size-8 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 grid place-items-center shrink-0"
+                        >
+                          <Sparkles size={14} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <span className="block text-[10px] sm:text-[11px] font-semibold text-neutral-900 dark:text-white truncate">
+                            Morning Mindfulness
+                          </span>
+                          <span className="block text-[8px] sm:text-[9px] text-neutral-500 dark:text-neutral-400">
+                            15 mins · Guided Audio
+                          </span>
+                        </div>
+                        <span className="text-[9px] sm:text-[10px] font-bold text-emerald-600 dark:text-emerald-400">
+                          85%
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Iphone17ProMaxMockup>
+            </div>
+          </div>
+        </div>
+
+        {/* =========================================
+            EDITORIAL CONTENT COLUMN (SECTION 2 REVEAL)
+            Reveals on the side as Section 2 emerges
+            ========================================= */}
+        <div
+          className={cn(
+            "flex flex-col items-start text-left z-10 max-w-xl",
+            isPhoneOnLeft
+              ? "lg:col-span-7 lg:order-2 lg:pl-4 xl:pl-8"
+              : "lg:col-span-7 lg:order-1 lg:pr-4 xl:pr-8",
+          )}
+          style={{
+            opacity: sec2Ease,
+            transform: `translateX(${contentShiftX}px)`,
+            pointerEvents: sec2Opacity > 0.6 ? "auto" : "none",
+            willChange: "transform, opacity",
+            transition: "none",
+          }}
+        >
+          {/* Top Pill Badge */}
+          {badge && (
+            <div
+              style={{ borderRadius: pillRadius }}
+              className="inline-flex items-center gap-2.5 px-3.5 py-1.5 border border-black/10 dark:border-white/15 bg-white/75 dark:bg-white/10 backdrop-blur-md text-xs font-semibold text-[#142918] dark:text-neutral-200 shadow-[0_2px_8px_rgba(0,0,0,0.04)] mb-5"
+            >
+              <span className="relative flex size-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
+                <span className="relative inline-flex rounded-full size-2 bg-emerald-600 dark:bg-emerald-400" />
+              </span>
+              <span className="tracking-tight">{badge}</span>
+            </div>
+          )}
+
+          {/* Main Editorial Headline: Bold, Large 2-Line High-Impact Typography */}
+          <h2 className="text-3xl xs:text-4xl sm:text-5xl lg:text-[44px] xl:text-[46px] font-bold tracking-tight text-[#0d2212] dark:text-white leading-[1.12] w-full">
+            <span className="block whitespace-nowrap">{heading2Lines.line1}</span>
+            <span className="block mt-1 sm:mt-1.5 whitespace-nowrap">{heading2Lines.line2}</span>
+          </h2>
+
+          {/* Subheading: Strictly in 2 Clean Balanced Lines */}
+          {descriptionText && (
+            <p className="mt-4 sm:mt-5 text-sm sm:text-base lg:text-[16px] text-[#243d29] dark:text-neutral-300 leading-relaxed font-normal max-w-[560px] tracking-normal">
+              {descriptionText}
+            </p>
+          )}
+
+          {/* App Store & Google Play Store Badges */}
+          {showAppStoreBadges && (
+            <div className="mt-6 sm:mt-8 flex flex-wrap items-center gap-3.5 w-full sm:w-auto">
+              {/* Apple App Store Badge */}
+              <a
+                href={appleStoreHref}
+                style={{ borderRadius: buttonRadius }}
+                className="inline-flex items-center gap-3 px-4 sm:px-5 py-2.5 sm:py-3 bg-black text-white hover:bg-neutral-900 border border-neutral-800 shadow-[0_4px_14px_rgba(0,0,0,0.22)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.32)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer group"
+                aria-label="Download on the App Store"
+              >
+                <svg className="size-5 sm:size-6 fill-current shrink-0 group-hover:scale-105 transition-transform" viewBox="0 0 170 170" aria-hidden="true">
+                  <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.03-7.61-7.79-11.73-14.28-5.88-9.25-10.4-19.46-13.56-30.64-3.17-11.18-4.75-21.84-4.75-31.98 0-14.18 3.65-26.06 10.96-35.63 7.3-9.58 16.5-14.48 27.59-14.72 5.02 0 10.44 1.25 16.27 3.75 5.82 2.5 9.77 3.78 11.83 3.83 1.85 0 5.96-1.33 12.33-3.98 6.37-2.66 11.96-3.88 16.78-3.67 12.56.63 22.84 5.38 30.84 14.25-11.04 6.72-16.43 15.93-16.18 27.63.26 9.38 3.84 17.29 10.74 23.72 6.9 6.43 15.11 10.15 24.63 11.16-2.22 6.84-4.88 13.7-7.98 20.59zM119.22 33.02c0-7.39 2.66-14.28 7.98-20.67 5.32-6.39 11.75-10.51 19.3-12.35 1.05 7.6-1.16 14.77-6.63 21.5-5.47 6.73-12.35 10.57-20.65 11.52z" />
+                </svg>
+                <div className="flex flex-col text-left leading-none">
+                  <span className="text-[9px] sm:text-[10px] text-neutral-300 font-sans tracking-wide">Download on the</span>
+                  <span className="text-xs sm:text-sm font-semibold tracking-tight text-white mt-0.5">App Store</span>
+                </div>
+              </a>
+
+              {/* Google Play Store Badge */}
+              <a
+                href={googlePlayHref}
+                style={{ borderRadius: buttonRadius }}
+                className="inline-flex items-center gap-3 px-4 sm:px-5 py-2.5 sm:py-3 bg-black text-white hover:bg-neutral-900 border border-neutral-800 shadow-[0_4px_14px_rgba(0,0,0,0.22)] hover:shadow-[0_6px_20px_rgba(0,0,0,0.32)] hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 cursor-pointer group"
+                aria-label="Get it on Google Play"
+              >
+                <svg className="size-5 sm:size-6 shrink-0 group-hover:scale-105 transition-transform" viewBox="0 0 24 24" aria-hidden="true">
+                  <path fill="#EA4335" d="M3.6 1.48L14.07 12 3.6 22.52c-.37-.41-.6-.97-.6-1.61V3.09c0-.64.23-1.2.6-1.61z" />
+                  <path fill="#FBBC04" d="M17.58 8.52L14.07 12l3.51 3.48 4.02-2.3c.7-.4.7-1.96 0-2.36l-4.02-2.3z" />
+                  <path fill="#4285F4" d="M14.07 12L3.6 1.48C4.08 1.15 4.7 1.05 5.3 1.4l12.28 7.12L14.07 12z" />
+                  <path fill="#34A853" d="M14.07 12l3.51 3.48L5.3 22.6c-.6.35-1.22.25-1.7-.08L14.07 12z" />
+                </svg>
+                <div className="flex flex-col text-left leading-none">
+                  <span className="text-[9px] sm:text-[10px] text-neutral-300 font-sans tracking-wide uppercase">Get it on</span>
+                  <span className="text-xs sm:text-sm font-semibold tracking-tight text-white mt-0.5">Google Play</span>
+                </div>
+              </a>
+            </div>
+          )}
+
+          {/* Social Proof / Rating Trust Divider & Ratings */}
+          <div className="mt-6 sm:mt-8 pt-4 sm:pt-5 border-t border-black/10 dark:border-white/10 flex flex-wrap items-center gap-2.5 sm:gap-3 text-xs text-[#1c3320] dark:text-neutral-300 w-full">
+            <div className="flex items-center gap-1 text-amber-500">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} size={13} className="fill-current text-amber-500" />
+              ))}
+            </div>
+            <span className="font-bold text-[#102414] dark:text-white tracking-tight">4.9 / 5.0</span>
+            <span className="text-black/25 dark:text-white/20">·</span>
+            <span className="text-[#243d29] dark:text-neutral-400">24k+ reviews</span>
+            <span className="text-black/25 dark:text-white/20">·</span>
+            <span className="font-semibold text-[#142e18] dark:text-emerald-400">100k+ Active Members</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ==========================================
 // MAIN CTA SECTION ROUTER
 // ==========================================
 export function CTASection({
@@ -1641,6 +2712,14 @@ export function CTASection({
     case "concentric-portal":
     case "orbital-lens":
       return <ConcentricPortalCta {...props} />;
+    case "offer-showcase":
+    case "cta-offer-showcase":
+      return <OfferShowcaseCta {...props} />;
+    case "mobile-app":
+    case "app-showcase":
+    case "mobile-showcase":
+    case "mobile-mockup":
+      return <MobileAppCta {...props} />;
     case "brand-pillars":
     default:
       return <BrandPillarsCta {...props} />;

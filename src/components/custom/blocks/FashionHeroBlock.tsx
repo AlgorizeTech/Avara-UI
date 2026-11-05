@@ -113,18 +113,21 @@ export const DEFAULT_FASHION_AVATARS: StackAvatar[] = [
     alt: "Elena Vance",
     name: "Elena Vance",
     role: "Member",
+    designation: "Member",
   },
   {
     src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790145142/pexels-photo-2043590-1790145143488.jpg",
     alt: "Marcus Chen",
     name: "Marcus Chen",
     role: "Shopper",
+    designation: "Shopper",
   },
   {
     src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790145139/pexels-photo-1587009-1790145143488.jpg",
     alt: "Sarah Jenkins",
     name: "Sarah Jenkins",
     role: "Stylist",
+    designation: "Stylist",
   },
 ];
 
@@ -160,6 +163,7 @@ export function FashionHero({
       name: a.name ?? (a.alt && a.alt !== "Shopper" ? a.alt : fallback.name),
       alt: a.alt ?? a.name ?? fallback.alt,
       role: a.role ?? a.designation ?? fallback.role,
+      designation: a.designation ?? a.role ?? fallback.designation ?? fallback.role,
     };
   });
 
@@ -257,16 +261,18 @@ export function FashionHero({
             {resolvedAvatars.length > 0 && (
               <AvatarStack
                 avatars={resolvedAvatars}
+                variant="shift"
+                showTooltip={true}
                 size="md"
                 max={3}
                 ringClassName="ring-background"
-                className="m-0 p-0"
+                className="m-0 p-0 h-auto"
                 action={
                   avatarsHref ? (
                     <Link
                       href={avatarsHref}
                       aria-label={avatarsLabel}
-                      className="group/plus grid size-9 place-items-center rounded-full bg-primary text-primary-foreground ring-2 ring-background transition-transform duration-300 hover:scale-110"
+                      className="group/plus grid size-full place-items-center rounded-full bg-primary text-primary-foreground transition-transform duration-300 hover:scale-110"
                     >
                       <Plus size={16} className="transition-transform duration-300 group-hover/plus:rotate-90" />
                     </Link>
