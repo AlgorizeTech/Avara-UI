@@ -10,6 +10,7 @@ import {
   ChevronDown,
   Sparkles,
   Check,
+  ShieldCheck,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { prefersReducedMotion, springTiming, usePrefersReducedMotion } from "@/lib/animate";
@@ -147,7 +148,9 @@ export type CtaSectionVariant =
   | "minimal"
   | "split"
   | "concentric-portal"
-  | "orbital-lens";
+  | "orbital-lens"
+  | "offer-showcase"
+  | "cta-offer-showcase";
 
 export interface CtaSectionProps extends React.HTMLAttributes<HTMLElement> {
   variant?: CtaSectionVariant;
@@ -169,6 +172,17 @@ export interface CtaSectionProps extends React.HTMLAttributes<HTMLElement> {
   phrase?: string;
   scrollProgress?: number;
   autoRotate?: boolean;
+  // Offer Showcase props
+  badge?: string;
+  price?: number | string;
+  compareAtPrice?: number | string;
+  currency?: string;
+  period?: string;
+  savingsText?: string;
+  footnote?: string;
+  mediaItems?: string[];
+  images?: string[];
+  enableHoverSlowdown?: boolean;
 }
 
 // ==========================================
@@ -1627,6 +1641,416 @@ export function ConcentricPortalCta({
 export const OrbitalLensCta = ConcentricPortalCta;
 
 // ==========================================
+// CTA OFFER SHOWCASE VARIANT (FRAMER REPLICA)
+// Central high-impact offer card flanked by moving nature reels
+// ==========================================
+export const DEFAULT_OFFER_NATURE_IMAGES: string[] = [
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145142/photo-1511671782779-c97d3d27a1d4-1790145143493.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1550684848-fac1c5b4e853-1790145143489.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/pexels-photo-7688336-1790166052227.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/pexels-photo-8867434-1790166052229.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/pexels-photo-7658387-1790166052226.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/pexels-photo-7709086-1790166052228.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145139/pexels-photo-7709208-1790145143489.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145139/pexels-photo-1036623-1790145143487.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145142/pexels-photo-2043590-1790145143488.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145139/pexels-photo-1587009-1790145143488.jpg",
+];
+
+function ReelLane({
+  images,
+  direction = "up",
+  duration = 32,
+  isSlowed = false,
+  className,
+}: {
+  images: string[];
+  direction?: "up" | "down";
+  duration?: number;
+  isSlowed?: boolean;
+  className?: string;
+}) {
+  const laneRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!laneRef.current) return;
+    const anims = laneRef.current.getAnimations({ subtree: true });
+    anims.forEach((a) => {
+      a.playbackRate = isSlowed ? 0.25 : 1;
+    });
+  }, [isSlowed]);
+
+  // Ensure minimum 8 images in a set so that the set height comfortably exceeds the entire viewport
+  const setImages = useMemo(() => {
+    if (!images || images.length === 0) return DEFAULT_OFFER_NATURE_IMAGES.slice(0, 8);
+    let list = [...images];
+    while (list.length < 8) {
+      list = [...list, ...images];
+    }
+    return list;
+  }, [images]);
+
+  return (
+    <div
+      ref={laneRef}
+      className={cn(
+        "relative overflow-hidden h-full min-h-[720px] xs:min-h-[820px] sm:min-h-[960px] md:min-h-[1100px] shrink-0 select-none pointer-events-auto",
+        className,
+      )}
+    >
+      <div
+        className={cn(
+          "flex flex-col will-change-transform",
+          direction === "up" ? "animate-cta-reel-up" : "animate-cta-reel-down",
+        )}
+        style={{
+          animationDuration: `${duration}s`,
+          animationTimingFunction: "linear",
+          animationIterationCount: "infinite",
+        }}
+      >
+        {/* Set 1: Full set with trailing gap via padding-bottom */}
+        <div className="flex flex-col gap-3 sm:gap-3.5 pb-3 sm:pb-3.5 shrink-0">
+          {setImages.map((src, i) => (
+            <div
+              key={`s1-${i}`}
+              className="w-full aspect-[3/4] rounded-2xl overflow-hidden border border-border/40 dark:border-white/10 bg-muted/40 shadow-sm shrink-0 select-none"
+            >
+              <img
+                src={src}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                className="size-full object-cover select-none pointer-events-none"
+              />
+            </div>
+          ))}
+        </div>
+
+        {/* Set 2: Exact identical duplicate set with matching trailing gap so loop is 100% seamless with zero jumps */}
+        <div className="flex flex-col gap-3 sm:gap-3.5 pb-3 sm:pb-3.5 shrink-0" aria-hidden="true">
+          {setImages.map((src, i) => (
+            <div
+              key={`s2-${i}`}
+              className="w-full aspect-[3/4] rounded-2xl overflow-hidden border border-border/40 dark:border-white/10 bg-muted/40 shadow-sm shrink-0 select-none"
+            >
+              <img
+                src={src}
+                alt=""
+                loading="lazy"
+                decoding="async"
+                className="size-full object-cover select-none pointer-events-none"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function OfferShowcaseCta({
+  badge = "Limited launch offer",
+  heading = "Everything you need, one payment",
+  subheading = "Lifetime access to every current and future release. No subscription, no renewals.",
+  statement,
+  price = 149,
+  compareAtPrice = 349,
+  currency = "$",
+  period = "one-time",
+  savingsText = "Save 57%",
+  ctaText = "Claim the offer",
+  ctaHref = "#",
+  onCtaClick,
+  footnote = "Secure checkout · 14-day refund",
+  mediaItems,
+  images,
+  className,
+  style,
+  ...props
+}: CtaSectionProps) {
+  const [leftHovered, setLeftHovered] = useState(false);
+  const [rightHovered, setRightHovered] = useState(false);
+
+  const numPrice = typeof price === "number" ? price : parseFloat(String(price)) || 149;
+  const descriptionText = statement || subheading;
+
+  // Prefer images, then mediaItems, falling back to default Cloudinary nature collection
+  const rawList = images && images.length > 0 ? images : (mediaItems && mediaItems.length > 0 ? mediaItems : DEFAULT_OFFER_NATURE_IMAGES);
+  const items = rawList.length >= 4 ? rawList : DEFAULT_OFFER_NATURE_IMAGES;
+
+  // Distribute items across the 4 vertical lanes evenly
+  const lane1: string[] = [];
+  const lane2: string[] = [];
+  const lane3: string[] = [];
+  const lane4: string[] = [];
+
+  items.forEach((src, idx) => {
+    const laneIdx = idx % 4;
+    if (laneIdx === 0) lane1.push(src);
+    else if (laneIdx === 1) lane2.push(src);
+    else if (laneIdx === 2) lane3.push(src);
+    else lane4.push(src);
+  });
+
+  const safeLane1 = lane1.length > 0 ? lane1 : DEFAULT_OFFER_NATURE_IMAGES.slice(0, 4);
+  const safeLane2 = lane2.length > 0 ? lane2 : DEFAULT_OFFER_NATURE_IMAGES.slice(4, 8);
+  const safeLane3 = lane3.length > 0 ? lane3 : DEFAULT_OFFER_NATURE_IMAGES.slice(8, 12);
+  const safeLane4 = lane4.length > 0 ? lane4 : DEFAULT_OFFER_NATURE_IMAGES.slice(12, 16);
+
+  return (
+    <section
+      className={cn(
+        "group/cta-showcase relative w-full min-h-[560px] xs:min-h-[620px] sm:min-h-[720px] lg:min-h-[780px] overflow-hidden bg-[#F3F1EC] dark:bg-[#0E0E10] text-[#141414] dark:text-[#F4F4F2] flex items-center justify-center py-12 sm:py-20 px-3 sm:px-6 select-none",
+        className,
+      )}
+      style={style}
+      {...props}
+    >
+      <style>{`
+        @keyframes cta-reel-up {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(-50%); }
+        }
+        @keyframes cta-reel-down {
+          0% { transform: translateY(-50%); }
+          100% { transform: translateY(0); }
+        }
+        .animate-cta-reel-up {
+          animation: cta-reel-up 32s linear infinite;
+        }
+        .animate-cta-reel-down {
+          animation: cta-reel-down 36s linear infinite;
+        }
+        @keyframes cta-dot-ping {
+          0% { box-shadow: 0 0 0 0 rgba(232, 84, 46, 0.55); }
+          75%, 100% { box-shadow: 0 0 0 7px transparent; }
+        }
+        .animate-cta-dot-ping {
+          animation: cta-dot-ping 2.4s cubic-bezier(0.3, 0, 0.2, 1) infinite;
+        }
+      `}</style>
+
+      {/* 3D Flanking Media Reels Container */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden select-none">
+        {/* Left Side (3D Perspective tilt with rotateY & rotate, exactly matching Framer) */}
+        <div
+          className="absolute top-0 bottom-0 left-0 w-1/2 pointer-events-auto"
+          style={{
+            perspective: "1100px",
+            perspectiveOrigin: "0% 50%",
+            WebkitMaskImage: "linear-gradient(to right, #000 22%, transparent 82%), linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%)",
+            maskImage: "linear-gradient(to right, #000 22%, transparent 82%), linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%)",
+            WebkitMaskComposite: "source-in",
+            maskComposite: "intersect",
+          }}
+          onMouseEnter={() => setLeftHovered(true)}
+          onMouseLeave={() => setLeftHovered(false)}
+        >
+          <div
+            className="absolute -top-[25%] h-[150%] flex gap-2.5 sm:gap-3.5 left-2.5 xs:left-4 sm:left-7 md:left-9 origin-[0%_50%]"
+            style={{
+              transform: "rotate(-6deg) rotateY(14deg)",
+            }}
+          >
+            {/* Lane 1: Primary visible lane on mobile & desktop */}
+            <ReelLane
+              images={safeLane1}
+              direction="up"
+              duration={28}
+              isSlowed={leftHovered}
+              className="w-[84px] xs:w-[94px] sm:w-[130px] md:w-[160px] lg:w-[190px]"
+            />
+            {/* Lane 2: Outer lane on desktop (hidden on small mobile screens <=720px exactly per Framer spec) */}
+            <ReelLane
+              images={safeLane2}
+              direction="down"
+              duration={34}
+              isSlowed={leftHovered}
+              className="hidden sm:block sm:w-[130px] md:w-[160px] lg:w-[190px]"
+            />
+          </div>
+        </div>
+
+        {/* Right Side (3D Perspective tilt with rotateY & rotate, exactly matching Framer) */}
+        <div
+          className="absolute top-0 bottom-0 right-0 w-1/2 pointer-events-auto"
+          style={{
+            perspective: "1100px",
+            perspectiveOrigin: "100% 50%",
+            WebkitMaskImage: "linear-gradient(to left, #000 22%, transparent 82%), linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%)",
+            maskImage: "linear-gradient(to left, #000 22%, transparent 82%), linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%)",
+            WebkitMaskComposite: "source-in",
+            maskComposite: "intersect",
+          }}
+          onMouseEnter={() => setRightHovered(true)}
+          onMouseLeave={() => setRightHovered(false)}
+        >
+          <div
+            className="absolute -top-[25%] h-[150%] flex flex-row-reverse gap-2.5 sm:gap-3.5 right-2.5 xs:right-4 sm:right-7 md:right-9 origin-[100%_50%]"
+            style={{
+              transform: "rotate(6deg) rotateY(-14deg)",
+            }}
+          >
+            {/* Lane 3: Primary visible lane on mobile & desktop */}
+            <ReelLane
+              images={safeLane3}
+              direction="down"
+              duration={30}
+              isSlowed={rightHovered}
+              className="w-[84px] xs:w-[94px] sm:w-[130px] md:w-[160px] lg:w-[190px]"
+            />
+            {/* Lane 4: Outer lane on desktop (hidden on small mobile screens <=720px exactly per Framer spec) */}
+            <ReelLane
+              images={safeLane4}
+              direction="up"
+              duration={36}
+              isSlowed={rightHovered}
+              className="hidden sm:block sm:w-[130px] md:w-[160px] lg:w-[190px]"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Edge gradient vignettes (top & bottom smooth fade to section background) */}
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-24 sm:h-36 bg-gradient-to-b from-[#F3F1EC] dark:from-[#0E0E10] via-[#F3F1EC]/90 dark:via-[#0E0E10]/90 to-transparent z-10"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-24 sm:h-36 bg-gradient-to-t from-[#F3F1EC] dark:from-[#0E0E10] via-[#F3F1EC]/90 dark:via-[#0E0E10]/90 to-transparent z-10"
+        aria-hidden="true"
+      />
+
+      {/* Vertical center wash running top-to-bottom behind the card across all screens (ComponentWall 2nd variant style) */}
+      <div
+        className="pointer-events-none absolute inset-y-0 left-1/2 w-full max-w-[42rem] sm:max-w-[52rem] -translate-x-1/2 bg-[radial-gradient(closest-side,#F3F1EC_60%,transparent)] dark:bg-[radial-gradient(closest-side,#0E0E10_60%,transparent)] z-10"
+        aria-hidden="true"
+      />
+
+      {/* Central High-Impact Ticket Offer Card (Clean Minimalist Ticket with real radial-gradient bite notches) */}
+      <div className="relative z-20 w-full max-w-[min(468px,calc(100%-20px))] sm:max-w-[420px] md:max-w-[468px] mx-auto filter drop-shadow-[0_28px_56px_rgba(20,20,20,0.08)] dark:drop-shadow-[0_28px_56px_rgba(0,0,0,0.6)] flex flex-col items-center text-center">
+        {/* Top Half of Card: Badge, Heading, Subtitle */}
+        <div
+          className="w-full bg-white dark:bg-[#18181B] border border-[rgba(20,20,20,0.10)] dark:border-[rgba(255,255,255,0.10)] border-b-0 rounded-t-[26px] p-5 xs:p-6 sm:p-8 pb-3.5 sm:pb-5 flex flex-col items-center"
+          style={{
+            WebkitMaskImage: "radial-gradient(circle at 0% 100%, transparent 12px, #000 12.5px), radial-gradient(circle at 100% 100%, transparent 12px, #000 12.5px)",
+            maskImage: "radial-gradient(circle at 0% 100%, transparent 12px, #000 12.5px), radial-gradient(circle at 100% 100%, transparent 12px, #000 12.5px)",
+            WebkitMaskComposite: "source-in",
+            maskComposite: "intersect",
+          }}
+        >
+          {badge && (
+            <span className="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border border-[rgba(20,20,20,0.10)] dark:border-[rgba(255,255,255,0.12)] bg-neutral-50/60 dark:bg-white/5 text-[11px] sm:text-[13px] font-medium text-[#141414] dark:text-[#F4F4F2] mb-3 sm:mb-4">
+              <span className="size-[7px] rounded-full bg-[#E8542E] shrink-0 animate-cta-dot-ping" />
+              <span>{badge}</span>
+            </span>
+          )}
+
+          <h2 className="text-xl xs:text-2xl sm:text-[34px] md:text-[36px] font-semibold tracking-[-0.02em] text-[#141414] dark:text-[#F4F4F2] leading-[1.12]">
+            {heading}
+          </h2>
+
+          {descriptionText && (
+            <p className="mt-2 text-xs xs:text-[13px] sm:text-[15px] text-[#6E6A64] dark:text-[#9C9CA3] leading-[1.5] max-w-[340px] sm:max-w-[380px]">
+              {descriptionText}
+            </p>
+          )}
+        </div>
+
+        {/* Bottom Half of Card: Price, Savings Chip, CTA Button, Footnote */}
+        <div
+          className="relative w-full bg-white dark:bg-[#18181B] border border-[rgba(20,20,20,0.10)] dark:border-[rgba(255,255,255,0.10)] border-t-0 rounded-b-[26px] p-5 xs:p-6 sm:p-8 pt-3.5 sm:pt-5 flex flex-col items-center"
+          style={{
+            WebkitMaskImage: "radial-gradient(circle at 0% 0%, transparent 12px, #000 12.5px), radial-gradient(circle at 100% 0%, transparent 12px, #000 12.5px)",
+            maskImage: "radial-gradient(circle at 0% 0%, transparent 12px, #000 12.5px), radial-gradient(circle at 100% 0%, transparent 12px, #000 12.5px)",
+            WebkitMaskComposite: "source-in",
+            maskComposite: "intersect",
+          }}
+        >
+          {/* Dashed Perforation Line Connecting the Left & Right Notches */}
+          <div
+            className="absolute top-0 left-5 right-5 border-t-[1.5px] border-dashed border-[rgba(20,20,20,0.15)] dark:border-[rgba(255,255,255,0.15)] pointer-events-none"
+            aria-hidden="true"
+          />
+
+          {/* Price display with superscript currency */}
+          <div className="flex items-baseline justify-center text-[#141414] dark:text-[#F4F4F2]">
+            <span className="text-xl xs:text-2xl sm:text-3xl font-semibold -translate-y-1 sm:-translate-y-2 mr-0.5 font-sans">
+              {currency}
+            </span>
+            <span className="text-4xl xs:text-5xl sm:text-[62px] font-semibold tracking-[-0.035em] leading-none tabular-nums font-sans">
+              <AnimatedNumber value={numPrice} duration={1} />
+            </span>
+            {period && (
+              <span className="text-xs sm:text-[14px] font-medium text-[#6E6A64] dark:text-[#9C9CA3] ml-2 font-sans">
+                {period}
+              </span>
+            )}
+          </div>
+
+          {/* Strikethrough & Savings Tag */}
+          {(compareAtPrice || savingsText) && (
+            <div className="mt-2.5 flex items-center justify-center gap-2.5">
+              {compareAtPrice && (
+                <s className="text-sm sm:text-[16px] text-[#6E6A64] dark:text-[#9C9CA3] font-normal decoration-[1.5px]">
+                  {currency}{compareAtPrice}
+                </s>
+              )}
+              {savingsText && (
+                <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] sm:text-[12px] font-semibold text-[#E8542E] dark:text-[#FF7A4D] bg-[color-mix(in_srgb,#E8542E_14%,transparent)] dark:bg-[color-mix(in_srgb,#FF7A4D_18%,transparent)]">
+                  {savingsText}
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* CTA Button */}
+          <a
+            href={ctaHref}
+            onClick={(e) => {
+              if (ctaHref === "#") e.preventDefault();
+              onCtaClick?.();
+            }}
+            className="mt-4 sm:mt-5 w-full py-3 sm:py-3.5 px-6 rounded-[14px] sm:rounded-[16px] font-semibold text-xs sm:text-[15px] bg-[#141414] hover:bg-black dark:bg-[#F4F4F2] dark:hover:bg-white text-white dark:text-[#0E0E10] transition-transform duration-300 hover:-translate-y-0.5 active:scale-[0.985] flex items-center justify-center gap-2.5 group cursor-pointer"
+          >
+            <span>{ctaText}</span>
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              className="size-3.5 sm:size-4 transition-transform duration-300 group-hover:translate-x-1"
+            >
+              <path
+                d="M3 8h10M9 4l4 4-4 4"
+                stroke="currentColor"
+                strokeWidth="1.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </a>
+
+          {/* Footnote */}
+          {footnote && (
+            <p className="mt-3 text-[11px] sm:text-[12px] text-[#6E6A64] dark:text-[#9C9CA3] font-normal">
+              {footnote}
+            </p>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ==========================================
 // MAIN CTA SECTION ROUTER
 // ==========================================
 export function CTASection({
@@ -1641,6 +2065,9 @@ export function CTASection({
     case "concentric-portal":
     case "orbital-lens":
       return <ConcentricPortalCta {...props} />;
+    case "offer-showcase":
+    case "cta-offer-showcase":
+      return <OfferShowcaseCta {...props} />;
     case "brand-pillars":
     default:
       return <BrandPillarsCta {...props} />;

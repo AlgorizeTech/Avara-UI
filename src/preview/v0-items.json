@@ -280,6 +280,7 @@
     "4-spotlight-gradient-interactive-pointer": "Counter Section — 4. Spotlight Gradient (Interactive Pointer)"
   },
   "cta-section": {
+    "offer-showcase-variant-offer-showcase": "Cta Section — Offer Showcase — variant=\"offer-showcase\"",
     "concentric-portal-variant-concentric-portal": "Cta Section — Concentric Portal — variant=\"concentric-portal\"",
     "brand-pillars-variant-brand-pillars": "Cta Section — Brand Pillars — variant=\"brand-pillars\""
   },

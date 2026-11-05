@@ -41,10 +41,118 @@ export default function BrandPillarsExample() {
   );
 }`;
 
+export const natureImages = [
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145142/photo-1511671782779-c97d3d27a1d4-1790145143493.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1550684848-fac1c5b4e853-1790145143489.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/pexels-photo-7688336-1790166052227.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/pexels-photo-8867434-1790166052229.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/pexels-photo-7658387-1790166052226.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/pexels-photo-7709086-1790166052228.jpg",
+];
+
+export const usageOfferShowcase = `import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
+
+// Cloudinary Nature Imagery Collection
+const natureImages = [
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145142/photo-1511671782779-c97d3d27a1d4-1790145143493.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1550684848-fac1c5b4e853-1790145143489.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/pexels-photo-7688336-1790166052227.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/pexels-photo-8867434-1790166052229.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/pexels-photo-7658387-1790166052226.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/pexels-photo-7709086-1790166052228.jpg",
+];
+
+export default function OfferShowcaseExample() {
+  return (
+    <CTASection
+      variant="offer-showcase"
+      badge="Limited launch offer"
+      heading="Everything you need, one payment"
+      subheading="Lifetime access to every current and future release. No subscription, no renewals."
+      price={149}
+      compareAtPrice={349}
+      savingsText="Save 57%"
+      ctaText="Claim the offer"
+      ctaHref="#"
+      footnote="Secure checkout · 14-day refund"
+      images={natureImages}
+    />
+  );
+}`;
+
 <ExampleShowcase headingLevel={2}
   name="cta-section"
   columns={1}
   examples={[
+    {
+      title: 'Offer Showcase — variant="offer-showcase"',
+      subheading: "Pass `variant=\"offer-showcase\"` for a high-impact central promotional offer card flanked by moving nature reels with animated price count-up.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "variant",
+          value: '"offer-showcase"',
+          effect: "Selects the offer showcase layout with continuously moving background nature reels and elevated central card.",
+        },
+        {
+          lead: "Pass",
+          prop: "images",
+          value: "natureImages",
+          effect: "Passes an array of Cloudinary nature image URLs displayed in the 4 continuous vertical moving reels.",
+        },
+        {
+          lead: "Set",
+          prop: "badge",
+          value: '"Limited launch offer"',
+          effect: "Renders a prominent pill badge with an animated pulsing live status dot.",
+        },
+        {
+          lead: "Set",
+          prop: "price",
+          value: "149",
+          effect: "Sets the numerical offer price with animated count-up and currency symbol.",
+        },
+        {
+          lead: "Set",
+          prop: "compareAtPrice",
+          value: "349",
+          effect: "Displays the original price with strikethrough styling.",
+        },
+        {
+          lead: "Set",
+          prop: "savingsText",
+          value: '"Save 57%"',
+          effect: "Renders the highlighted savings discount badge next to the compare-at price.",
+        },
+      ],
+      props: {
+        variant: "offer-showcase",
+        badge: "Limited launch offer",
+        heading: "Everything you need, one payment",
+        subheading: "Lifetime access to every current and future release. No subscription, no renewals.",
+        price: 149,
+        compareAtPrice: 349,
+        savingsText: "Save 57%",
+        ctaText: "Claim the offer",
+        ctaHref: "#",
+        footnote: "Secure checkout · 14-day refund",
+        images: natureImages,
+      },
+      usage: usageOfferShowcase,
+      code: extractCode("src/components/custom/blocks/CtaSectionBlock.tsx"),
+    },
     {
       title: 'Concentric Portal — variant="concentric-portal"',
       subheading: "Pass `variant=\"concentric-portal\"` for the scroll-driven expanding circular lens with continuous gyroscopic orbital text rings.",
