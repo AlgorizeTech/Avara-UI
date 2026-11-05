@@ -571,10 +571,13 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
       onMoreClick?.(rest, hiddenAvatars, e);
     };
 
+    const isCustomActionElement = React.isValidElement(action);
+    const hasAction = Boolean(action);
+
     const isActionConfigObject =
       typeof action === "object" &&
       action !== null &&
-      !React.isValidElement(action) &&
+      !isCustomActionElement &&
       ("onClick" in action || "label" in action);
 
     const resolvedActionClick =
@@ -584,12 +587,13 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
           ? (action as { onClick?: (event: React.MouseEvent<HTMLElement>) => void }).onClick
           : undefined;
 
-    const resolvedActionLabel = isActionConfigObject
-      ? (action as { label?: string }).label ?? "Join the community"
-      : "Join the community";
-
-    const isCustomActionElement = React.isValidElement(action);
-    const hasAction = Boolean(action);
+    const resolvedActionLabel = isCustomActionElement
+      ? (((action as React.ReactElement).props as Record<string, any>)?.[
+          "aria-label"
+        ] as string) ?? "Join the community"
+      : isActionConfigObject
+        ? (action as { label?: string }).label ?? "Join the community"
+        : "Join the community";
 
     const renderedActionNode = isCustomActionElement ? (
       action
@@ -638,7 +642,7 @@ export const AvatarStack = React.forwardRef<HTMLDivElement, AvatarStackProps>(
           invertOverlap={invertOverlap}
           translate={translate ?? "-30%"}
           showTooltip={enableTooltip}
-          className={className}
+          className={cn(s.overlap, className)}
           style={style}
           tooltipStyle={tooltipStyle ?? style}
           {...props}

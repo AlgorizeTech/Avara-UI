@@ -119,30 +119,35 @@ export const DEFAULT_CAROUSEL_AVATARS: StackAvatar[] = [
     src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg",
     alt: "Elena Vance",
     name: "Elena Vance",
+    role: "Alpine Trekker",
     designation: "Alpine Trekker",
   },
   {
     src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg",
     alt: "Tom Hardy",
     name: "Tom Hardy",
+    role: "Summit Guide",
     designation: "Summit Guide",
   },
   {
     src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg",
     alt: "Mara Jade",
     name: "Mara Jade",
+    role: "Trail Explorer",
     designation: "Trail Explorer",
   },
   {
     src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg",
     alt: "Leo Silva",
     name: "Leo Silva",
+    role: "Photographer",
     designation: "Photographer",
   },
   {
     src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790082180/pexels-photo-1520760-1790082180553.jpg",
     alt: "June Carter",
     name: "June Carter",
+    role: "Mountain Guide",
     designation: "Mountain Guide",
   },
 ];
@@ -188,6 +193,17 @@ export function HeroCarousel({
   const [hover, setHover] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [onScreen, setOnScreen] = useState(true);
+
+  const resolvedAvatars: StackAvatar[] = (avatars && avatars.length > 0 ? avatars : DEFAULT_CAROUSEL_AVATARS).map((a, i) => {
+    const fallback = DEFAULT_CAROUSEL_AVATARS[i % DEFAULT_CAROUSEL_AVATARS.length];
+    return {
+      ...a,
+      name: a.name ?? (a.alt && a.alt !== "Traveller" ? a.alt : fallback.name),
+      alt: a.alt ?? a.name ?? fallback.alt,
+      role: a.role ?? a.designation ?? fallback.designation ?? fallback.role,
+      designation: a.designation ?? a.role ?? fallback.designation ?? fallback.role,
+    };
+  });
 
   const metrics = railWidth > 0 ? railMetrics(railWidth) : null;
 
@@ -493,17 +509,17 @@ export function HeroCarousel({
             data-hc-panel=""
             className="order-2 w-full max-w-[28rem] rounded-[26px] border border-white/15 bg-white/10 p-5 shadow-[0_30px_60px_-30px_rgba(0,0,0,0.6)] backdrop-blur-xl sm:p-6 lg:order-1 lg:max-w-none"
           >
-            {(avatars?.length || avatarsLabel) && (
+            {(resolvedAvatars.length > 0 || avatarsLabel) && (
               <div className="flex items-center gap-3">
-                {avatars && avatars.length > 0 && (
+                {resolvedAvatars.length > 0 && (
                   <AvatarStack
-                    avatars={avatars}
-                    variant="spread"
-                    type="tooltip-arrow"
+                    avatars={resolvedAvatars}
+                    variant="shift"
+                    showTooltip={true}
                     size="md"
                     max={4}
-                    ringClassName="ring-white/30"
-                    className="m-0 p-0 py-0 px-0"
+                    ringClassName="border-white/30 ring-0"
+                    className="m-0 p-0 py-0 px-0 h-auto"
                   />
                 )}
                 {avatarsLabel && (
