@@ -36,10 +36,11 @@ const FOOTER_GROUPS: {
 ];
 
 // StartupBase, Product Hunt and BuildHop each ship light/dark variants of one
-// badge: only the one matching the active theme is shown. Every badge shares one 44px
-// height; the width follows each image's own aspect ratio so nothing is
+// badge: only the one matching the active theme is shown. Every badge shares one
+// height (44px from lg up, where all four fit on a single row; 36px below, where
+// the row wraps); the width follows each image's own aspect ratio so nothing is
 // stretched. The width/height attributes carry that ratio (StartupBase 300x80,
-// Product Hunt 250x54, OpenHunts 486x105) to reserve space before load.
+// Product Hunt 250x54, BuildHop 236x52, OpenHunts 486x105) to reserve space.
 const PRODUCT_HUNT_URL =
 	"https://www.producthunt.com/products/avara-ui?utm_source=badge-follow&utm_medium=badge&utm_source=badge-avara-ui";
 const PRODUCT_HUNT_BADGE =
@@ -185,15 +186,12 @@ export function FooterSection() {
 				{/* Launch-platform badges */}
 				<ul
 					aria-label="Launch platforms"
-					className="mt-12 flex w-full max-w-[808px] flex-nowrap items-center gap-2 sm:gap-3">
+					className="mt-12 flex max-w-full flex-wrap items-center gap-x-3 gap-y-3">
 					{FOOTER_BADGES.map((badge) => (
 						<li
 							key={badge.src}
-							// Grow in proportion to aspect ratio so every badge ends up the
-							// same height; the row's max-width caps that height at 44px.
-							style={{ flex: `${badge.width / badge.height} 1 0%` }}
 							className={cn(
-								"min-w-0",
+								"max-w-full",
 								badge.scheme === "light" && "dark:hidden",
 								badge.scheme === "dark" && "hidden dark:block",
 							)}>
@@ -210,7 +208,7 @@ export function FooterSection() {
 									height={badge.height}
 									loading="lazy"
 									decoding="async"
-									className="h-auto w-full"
+									className="h-9 w-auto max-w-full lg:h-11"
 								/>
 							</a>
 						</li>
