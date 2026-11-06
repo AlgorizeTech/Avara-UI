@@ -35,15 +35,22 @@ const FOOTER_GROUPS: {
 	},
 ];
 
-// StartupBase and Product Hunt each ship light/dark variants of one badge: only
-// the one matching the active theme is shown. Every badge shares one 44px
-// height; the width follows each image's own aspect ratio so nothing is
+// StartupBase, Product Hunt and BuildHop each ship light/dark variants of one
+// badge: only the one matching the active theme is shown. Every badge shares one
+// height (44px from lg up, where all four fit on a single row; 36px below, where
+// the row wraps); the width follows each image's own aspect ratio so nothing is
 // stretched. The width/height attributes carry that ratio (StartupBase 300x80,
-// Product Hunt 250x54, OpenHunts 486x105) to reserve space before load.
+// Product Hunt 250x54, BuildHop 236x52, OpenHunts 486x105) to reserve space.
 const PRODUCT_HUNT_URL =
-	"https://www.producthunt.com/products/avaraui?embed=true&utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-avaraui";
+	"https://www.producthunt.com/products/avara-ui?utm_source=badge-follow&utm_medium=badge&utm_source=badge-avara-ui";
 const PRODUCT_HUNT_BADGE =
-	"https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1303384";
+	"https://api.producthunt.com/widgets/embed-image/v1/follow.svg?product_id=1368796";
+const PRODUCT_HUNT_ALT =
+	"Avara UI - Free Animated shadcn/ui Components & Blocks | Product Hunt";
+const BUILDHOP_URL =
+	"https://buildhop.io/discover/avara-ui-9b2ee1c9-750f-41b9-9e73-f5538fe5c797";
+const BUILDHOP_BADGE =
+	"https://buildhop.io/api/badges/launch/9b2ee1c9-750f-41b9-9e73-f5538fe5c797";
 const STARTUPBASE_URL = "https://startupbase.io/products/avaraui";
 
 const FOOTER_BADGES: {
@@ -77,21 +84,39 @@ const FOOTER_BADGES: {
 	},
 	{
 		href: PRODUCT_HUNT_URL,
-		rel: "noopener noreferrer",
+		rel: "noopener",
 		scheme: "light",
-		src: `${PRODUCT_HUNT_BADGE}&theme=light&t=1793733316234`,
-		alt: "AvaraUI - Modern UI Components for React & Next.js | Product Hunt",
+		src: `${PRODUCT_HUNT_BADGE}&theme=light`,
+		alt: PRODUCT_HUNT_ALT,
 		width: 250,
 		height: 54,
 	},
 	{
 		href: PRODUCT_HUNT_URL,
-		rel: "noopener noreferrer",
+		rel: "noopener",
 		scheme: "dark",
-		src: `${PRODUCT_HUNT_BADGE}&theme=dark&t=1793733316234`,
-		alt: "AvaraUI - Modern UI Components for React & Next.js | Product Hunt",
+		src: `${PRODUCT_HUNT_BADGE}&theme=dark`,
+		alt: PRODUCT_HUNT_ALT,
 		width: 250,
 		height: 54,
+	},
+	{
+		href: BUILDHOP_URL,
+		rel: "noopener noreferrer",
+		scheme: "light",
+		src: `${BUILDHOP_BADGE}?theme=light`,
+		alt: "Trending on BuildHop: Avara UI",
+		width: 236,
+		height: 52,
+	},
+	{
+		href: BUILDHOP_URL,
+		rel: "noopener noreferrer",
+		scheme: "dark",
+		src: `${BUILDHOP_BADGE}?theme=dark`,
+		alt: "Trending on BuildHop: Avara UI",
+		width: 236,
+		height: 52,
 	},
 	{
 		// No noreferrer here: OpenHunts' snippet omits it, presumably so it can
@@ -111,7 +136,7 @@ export function FooterSection() {
 		<footer className="border-t border-foreground/[0.06] bg-background overflow-hidden">
 			<div className={cn(SECTION_INNER, "pt-16 pb-6")}>
 				<div className="flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
-					<div className="max-w-[400px] xl:max-w-[560px]">
+					<div className="max-w-[280px]">
 						<div className="flex items-center gap-2.5">
 							<img
 								src="/favicon/logo-64x64.png"
@@ -124,40 +149,10 @@ export function FooterSection() {
 								Avara <span className="text-brand">UI</span>
 							</span>
 						</div>
-						<p className="mt-3 max-w-[280px] text-[13px] leading-[1.65] text-foreground/60">
+						<p className="mt-3 text-[13px] leading-[1.65] text-foreground/60">
 							React components and interactive blocks, installed through the
 							shadcn CLI.
 						</p>
-						{/* Launch-platform badges */}
-						<ul
-							aria-label="Launch platforms"
-							className="mt-6 flex w-fit max-w-full flex-wrap items-center gap-3">
-							{FOOTER_BADGES.map((badge) => (
-								<li
-									key={badge.src}
-									className={cn(
-										badge.scheme === "light" && "dark:hidden",
-										badge.scheme === "dark" && "hidden dark:block",
-									)}>
-									<a
-										href={badge.href}
-										target="_blank"
-										rel={badge.rel}
-										title={badge.title}
-										className="flex w-fit opacity-90 transition duration-200 hover:-translate-y-0.5 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50">
-										<img
-											src={badge.src}
-											alt={badge.alt}
-											width={badge.width}
-											height={badge.height}
-											loading="lazy"
-											decoding="async"
-											className="h-11 w-auto xl:h-10"
-										/>
-									</a>
-								</li>
-							))}
-						</ul>
 					</div>
 
 					<nav
@@ -187,6 +182,38 @@ export function FooterSection() {
 						))}
 					</nav>
 				</div>
+
+				{/* Launch-platform badges */}
+				<ul
+					aria-label="Launch platforms"
+					className="mt-12 flex max-w-full flex-wrap items-center gap-x-3 gap-y-3">
+					{FOOTER_BADGES.map((badge) => (
+						<li
+							key={badge.src}
+							className={cn(
+								"max-w-full",
+								badge.scheme === "light" && "dark:hidden",
+								badge.scheme === "dark" && "hidden dark:block",
+							)}>
+							<a
+								href={badge.href}
+								target="_blank"
+								rel={badge.rel}
+								title={badge.title}
+								className="block opacity-90 transition duration-200 hover:-translate-y-0.5 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50">
+								<img
+									src={badge.src}
+									alt={badge.alt}
+									width={badge.width}
+									height={badge.height}
+									loading="lazy"
+									decoding="async"
+									className="h-9 w-auto max-w-full lg:h-11"
+								/>
+							</a>
+						</li>
+					))}
+				</ul>
 
 				{/* Wordmark */}
 				<div

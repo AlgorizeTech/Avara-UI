@@ -6,7 +6,88 @@ url: https://avaraui.com/docs/nextjs/cta-section
 
 # Shadcn CTA Section
 
-An interconnected, conversion-focused call-to-action block designed for modern web applications, agencies, and SaaS platforms. Features high-impact interactive systems including the **Concentric Portal** (scroll-driven expanding circular lens with gyroscopic monospace orbital text and segmented actions inspired by contentarchitecture.dev) and **Brand Pillars** (synchronized animated scorecards and live synergy meters).
+An interconnected, conversion-focused call-to-action block designed for modern web applications, agencies, and SaaS platforms. Features high-impact interactive systems including **Mobile App Showcase** (interactive smartphone experience with live workout tracking, app store CTAs, and responsive previews), **Concentric Portal** (scroll-driven expanding circular lens with gyroscopic monospace orbital text), and **Offer Showcase** (promotional pricing card with moving nature reels).
+
+## Mobile App Showcase — variant="mobile-app"
+
+Pass `variant="mobile-app"` for a scroll-driven app showcase CTA. Initially displays only the iPhone 17 Pro Max centered in the viewport; scrolling smoothly glides the phone down and to the left while the editorial headline, description, and official app store badges reveal on the right.
+
+- Pass `variant="mobile-app"` Selects the mobile app showcase layout with an upright iPhone 17 Pro Max mockup.
+- Set `headingAccent="your partner"` Applies an elegant serif italic treatment to the highlighted phrase in the headline.
+- Set `userName="Alicia Regis"` Customizes the greeting header inside the phone screen feed.
+- Set `featuredWorkoutTitle="Wellness Workshops"` Sets the title of the hero video/image card within the mobile feed.
+- Set `showAppStoreBadges=true` Displays official Apple App Store and Google Play store download buttons.
+
+```tsx
+import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
+
+export default function MobileAppExample() {
+  return (
+    <CTASection
+      variant="mobile-app"
+      badge="Mobile App Available"
+      heading={"Aura Clearmind..
+Your partner in wellness."}
+      subheading="Find and book your favorite yoga classes, guided meditation, and daily mindful wellness sessions from anywhere with our all-in-one mobile app, designed to bring balance, clarity, and peace to your life."
+      appleStoreHref="#"
+      googlePlayHref="#"
+      userName="Alicia Regis"
+      featuredWorkoutTitle="Wellness Workshops"
+      workoutDuration="10 Min"
+      workoutCalories="300 Kcal"
+    />
+  );
+};
+```
+
+## Offer Showcase — variant="offer-showcase"
+
+Pass `variant="offer-showcase"` for a high-impact central promotional offer card flanked by moving nature reels with animated price count-up.
+
+- Pass `variant="offer-showcase"` Selects the offer showcase layout with continuously moving background nature reels and elevated central card.
+- Pass `images=natureImages` Passes an array of Cloudinary nature image URLs displayed in the 4 continuous vertical moving reels.
+- Set `badge="Limited launch offer"` Renders a prominent pill badge with an animated pulsing live status dot.
+- Set `price=149` Sets the numerical offer price with animated count-up and currency symbol.
+- Set `compareAtPrice=349` Displays the original price with strikethrough styling.
+- Set `savingsText="Save 57%"` Renders the highlighted savings discount badge next to the compare-at price.
+
+```tsx
+import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
+
+// Cloudinary Nature Imagery Collection
+const natureImages = [
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145142/photo-1511671782779-c97d3d27a1d4-1790145143493.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1550684848-fac1c5b4e853-1790145143489.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/pexels-photo-7688336-1790166052227.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/pexels-photo-8867434-1790166052229.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/pexels-photo-7658387-1790166052226.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/pexels-photo-7709086-1790166052228.jpg",
+];
+
+export default function OfferShowcaseExample() {
+  return (
+    <CTASection
+      variant="offer-showcase"
+      badge="Limited launch offer"
+      heading="Everything you need, one payment"
+      subheading="Lifetime access to every current and future release. No subscription, no renewals."
+      price={149}
+      compareAtPrice={349}
+      savingsText="Save 57%"
+      ctaText="Claim the offer"
+      ctaHref="#"
+      footnote="Secure checkout · 14-day refund"
+      images={natureImages}
+    />
+  );
+}
+```
 
 ## Concentric Portal — variant="concentric-portal"
 

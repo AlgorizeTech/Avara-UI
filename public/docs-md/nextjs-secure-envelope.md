@@ -42,7 +42,24 @@ export default function ConfidentialFolderExample() {
 }
 ```
 
-## Biometric NFC SmartCard (Quantum Vault Variant)
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/secure-envelope.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/secure-envelope
+```
+
+## More Examples
+
+### Biometric NFC SmartCard (Quantum Vault Variant)
 
 High-tech biometric identity smartcard & encrypted key vault sleeve. Features golden EMV microchip, contactless NFC glyph, clearance level badge, encrypted magnetic stripe, and crypto signature panel with full light/dark theme adaptivity.
 
@@ -72,7 +89,7 @@ export default function CyberSmartCardExample() {
 }
 ```
 
-## Auto Flip (Classic Voucher / Classified)
+### Auto Flip (Classic Voucher / Classified)
 
 1st click slides the card out from the sleeve, elevates onto the front, and automatically flips 180° in-place to reveal the back details. 2nd click flips back and returns inside the sleeve.
 
@@ -100,7 +117,7 @@ export default function AutoFlipSecureEnvelopeExample() {
 }
 ```
 
-## Train Online Ticket (Hyperbolt Express Variant)
+### Train Online Ticket (Hyperbolt Express Variant)
 
 Exact high-speed rail ticket and envelope design. Features the top blue pill header, passenger info, seat/train numbers, vertical barcode, watermarked station route bar, tear-off stub, and Hyperbolt bullet train box sleeve.
 
@@ -129,21 +146,6 @@ export default function TrainOnlineTicketExample() {
     </div>
   );
 }
-```
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/secure-envelope.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/secure-envelope
 ```
 
 ## Features

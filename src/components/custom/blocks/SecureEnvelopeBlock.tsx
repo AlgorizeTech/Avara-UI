@@ -2,7 +2,7 @@
 
 import React, { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import { accentStyle, resolveAccent } from "@/lib/accent";
+import { accentStyle, isDefaultAccent, resolveAccent } from "@/lib/accent";
 
 // ============================================================================
 // CLASSIFIED SECURITY CREST SEAL SVG
@@ -1232,6 +1232,7 @@ export function ConfidentialFolder({
     "Active";
 
   const effectiveColor = folderColor ?? color;
+  const isDefault = isDefaultAccent(effectiveColor);
   const resolvedAccentHex = resolveAccent(effectiveColor);
   const dynamicAccent = accentStyle(effectiveColor);
 
@@ -1242,8 +1243,8 @@ export function ConfidentialFolder({
         className
       )}
       style={{
-        ...dynamicAccent,
-        ...(resolvedAccentHex
+        ...(!isConfidentialFolder ? dynamicAccent : {}),
+        ...(!isConfidentialFolder && resolvedAccentHex
           ? ({
               "--cf-override": resolvedAccentHex,
               "--cf-override-plate": `color-mix(in oklab, ${resolvedAccentHex} 90%, black 10%)`,
@@ -1252,8 +1253,15 @@ export function ConfidentialFolder({
               "--cf-override-stroke-flap": `color-mix(in oklab, ${resolvedAccentHex} 80%, black 20%)`,
               "--cf-override-stroke-plate": `color-mix(in oklab, ${resolvedAccentHex} 70%, black 30%)`,
             } as React.CSSProperties)
-          : effectiveColor
-          ? ({ "--cf-override": effectiveColor } as React.CSSProperties)
+          : !isConfidentialFolder && !isDefault && effectiveColor
+          ? ({
+              "--cf-override": effectiveColor,
+              "--cf-override-plate": `color-mix(in oklab, ${effectiveColor} 90%, black 10%)`,
+              "--cf-override-ink": `color-mix(in oklab, ${effectiveColor} 25%, black 75%)`,
+              "--cf-override-ink-muted": `color-mix(in oklab, ${effectiveColor} 40%, black 60%)`,
+              "--cf-override-stroke-flap": `color-mix(in oklab, ${effectiveColor} 80%, black 20%)`,
+              "--cf-override-stroke-plate": `color-mix(in oklab, ${effectiveColor} 70%, black 30%)`,
+            } as React.CSSProperties)
           : {}),
         ...props.style,
       }}
@@ -1267,28 +1275,28 @@ export function ConfidentialFolder({
           --cf-base: var(--cf-override, var(--primary, #0284c7));
           --cf-flap: ${
             isConfidentialFolder
-              ? "var(--cf-override, #fde047)"
+              ? "#fde047"
               : isBoardingPass || isTrainTicket
               ? "oklch(from var(--cf-base) 0.93 calc(c * 0.25) h)"
               : "oklch(from var(--cf-base) 0.88 calc(c * 0.4) h)"
           };
           --cf-plate: ${
             isConfidentialFolder
-              ? "var(--cf-override-plate, #facc15)"
+              ? "#facc15"
               : isBoardingPass || isTrainTicket
               ? "oklch(from var(--cf-base) 0.82 calc(c * 0.35) h)"
               : "oklch(from var(--cf-base) 0.80 calc(c * 0.5) h)"
           };
           --cf-ink: ${
             isConfidentialFolder
-              ? "var(--cf-override-ink, #78350f)"
+              ? "#78350f"
               : isBoardingPass || isTrainTicket
               ? "oklch(from var(--cf-base) 0.15 calc(c * 0.6) h)"
               : "oklch(from var(--cf-base) 0.22 calc(c * 0.5) h)"
           };
           --cf-ink-muted: ${
             isConfidentialFolder
-              ? "var(--cf-override-ink-muted, #92400e)"
+              ? "#92400e"
               : isBoardingPass || isTrainTicket
               ? "oklch(from var(--cf-base) 0.35 calc(c * 0.35) h)"
               : "oklch(from var(--cf-base) 0.45 calc(c * 0.35) h)"
@@ -1300,14 +1308,14 @@ export function ConfidentialFolder({
           };
           --cf-stroke-flap: ${
             isConfidentialFolder
-              ? "var(--cf-override-stroke-flap, #eab308)"
+              ? "#eab308"
               : isBoardingPass || isTrainTicket
               ? "oklch(from var(--cf-base) 0.68 calc(c * 0.3) h / 0.5)"
               : "oklch(from var(--cf-base) 0.68 calc(c * 0.3) h / 0.5)"
           };
           --cf-stroke-plate: ${
             isConfidentialFolder
-              ? "var(--cf-override-stroke-plate, #ca8a04)"
+              ? "#ca8a04"
               : isBoardingPass || isTrainTicket
               ? "oklch(from var(--cf-base) 0.60 calc(c * 0.3) h / 0.4)"
               : "oklch(from var(--cf-base) 0.60 calc(c * 0.3) h / 0.4)"
@@ -1465,14 +1473,14 @@ export function ConfidentialFolder({
                 />
 
                 {/* Top Header: ID & Classified Status Badge */}
-                <div className="relative z-10 flex items-center justify-between">
-                  <div className="flex items-center gap-1.5 sm:gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                    <span className="font-mono font-bold text-[6px] min-[400px]:text-[7.5px] sm:text-[12px] tracking-[0.2em] uppercase text-white/90">
+                <div className="relative z-10 flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse shrink-0" />
+                    <span className="font-mono font-bold text-[5.5px] min-[400px]:text-[7.5px] sm:text-[12px] tracking-[0.12em] sm:tracking-[0.2em] uppercase text-white/90 whitespace-nowrap truncate">
                       {resolvedIdNumber}
                     </span>
                   </div>
-                  <div className="px-2 sm:px-3 py-0.5 rounded-full bg-white/20 backdrop-blur-xs border border-white/30 text-white font-mono font-black text-[5px] min-[400px]:text-[6px] sm:text-[9.5px] uppercase tracking-widest">
+                  <div className="px-2 sm:px-3 py-0.5 rounded-full bg-white/20 backdrop-blur-xs border border-white/30 text-white font-mono font-black text-[5px] min-[400px]:text-[6px] sm:text-[9.5px] uppercase tracking-widest whitespace-nowrap shrink-0">
                     TOP SECRET
                   </div>
                 </div>
@@ -1992,68 +2000,71 @@ export function ConfidentialFolder({
               /* -------------------------------------------------------- */
               /* CONFIDENTIAL FOLDER / MEMORANDUM & MANIFESTO (BACK)     */
               /* -------------------------------------------------------- */
-              <div className="relative w-full h-full flex flex-col justify-between text-white select-none overflow-hidden rounded-[calc(var(--radius,1.25rem)-2px)] bg-gradient-to-br from-[#1c0512] via-[#2f081f] to-[#18020f] border border-rose-500/30 p-2.5 min-[400px]:p-4 sm:p-7">
+              <div className="relative w-full h-full flex flex-col justify-between text-white select-none overflow-hidden rounded-[calc(var(--radius,1.25rem)-2px)] bg-gradient-to-br from-[#ff007f] via-[#f43f5e] to-[#e11d48] border border-white/20 p-2.5 min-[400px]:p-4 sm:p-7 shadow-inner">
+                {/* Subtle Vector Classified Seal Watermark */}
+                <ClassifiedSeal
+                  size={200}
+                  className="absolute -right-12 -top-12 text-white opacity-[0.08] pointer-events-none"
+                />
+
                 {/* Top Header */}
-                <div className="relative z-10 flex items-center justify-between border-b border-rose-500/30 pb-1 sm:pb-3">
-                  <div className="flex items-center gap-1.5 sm:gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping" />
-                    <span className="font-mono font-bold text-[5.5px] min-[400px]:text-[7px] sm:text-[11px] tracking-[0.18em] uppercase text-rose-300">
+                <div className="relative z-10 flex items-center justify-between border-b border-white/20 pb-1 sm:pb-3">
+                  <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping shrink-0" />
+                    <span className="font-mono font-bold text-[5.5px] min-[400px]:text-[7px] sm:text-[11px] tracking-[0.15em] sm:tracking-[0.2em] uppercase text-white/90 whitespace-nowrap">
                       {resolvedDossierNumber}
                     </span>
                   </div>
-                  <span className="font-mono font-bold text-[5px] min-[400px]:text-[6px] sm:text-[9px] uppercase tracking-wider text-rose-400 bg-rose-950/60 border border-rose-500/40 px-2 py-0.5 rounded-full">
-                    CLEARANCE // LEVEL 05
-                  </span>
                 </div>
 
                 {/* Center Manifesto / Memorandum */}
                 <div className="relative z-10 my-auto py-0.5 sm:py-2 flex flex-col space-y-1 min-[400px]:space-y-1.5 sm:space-y-3">
                   <div>
-                    <span className="font-mono text-[4px] min-[400px]:text-[5px] sm:text-[8px] font-bold text-rose-400/80 uppercase tracking-widest block">
+                    <span className="font-mono text-[4px] min-[400px]:text-[5px] sm:text-[8px] font-bold text-white/75 uppercase tracking-widest block">
                       EXECUTIVE MEMORANDUM
                     </span>
-                    <h4 className="font-sans font-black text-[9.5px] min-[400px]:text-[12px] sm:text-[20px] text-white tracking-tight uppercase leading-tight mt-0.5">
+                    <h4 className="font-sans font-black text-[9.5px] min-[400px]:text-[12px] sm:text-[20px] text-white tracking-tight uppercase leading-tight mt-0.5 drop-shadow-sm">
                       {bTitle || "The Crazy Ones"}
                     </h4>
                   </div>
 
-                  <p className="font-sans text-[5.5px] min-[400px]:text-[7.5px] sm:text-[12px] leading-tight sm:leading-relaxed text-rose-100/80 line-clamp-2 min-[400px]:line-clamp-3 sm:line-clamp-none">
+                  <p className="font-sans text-[5.5px] min-[400px]:text-[7.5px] sm:text-[12px] leading-tight sm:leading-relaxed text-white/85 line-clamp-2 min-[400px]:line-clamp-3 sm:line-clamp-none">
                     {bStatement || "Here's to the crazy ones. The misfits. The rebels. The troublemakers. The round pegs in the square holes. The ones who see things differently."}
                   </p>
 
                   {/* 3 Metric Pillars */}
                   <div className="grid grid-cols-3 gap-1 sm:gap-2 pt-0.5 sm:pt-1">
-                    <div className="bg-rose-950/40 border border-rose-500/30 p-0.5 sm:p-1.5 rounded-sm text-center">
-                      <span className="block font-mono text-[3.5px] min-[400px]:text-[4.5px] sm:text-[7px] text-rose-400/80 uppercase">CLEARANCE</span>
-                      <span className="block font-mono font-bold text-[5px] min-[400px]:text-[6.5px] sm:text-[10px] text-rose-200">OMEGA-4</span>
+                    <div className="bg-black/20 backdrop-blur-md border border-white/20 p-0.5 sm:p-1.5 rounded-sm text-center">
+                      <span className="block font-mono text-[3.5px] min-[400px]:text-[4.5px] sm:text-[7px] text-white/70 uppercase">CLEARANCE</span>
+                      <span className="block font-mono font-bold text-[5px] min-[400px]:text-[6.5px] sm:text-[10px] text-white">OMEGA-4</span>
                     </div>
-                    <div className="bg-rose-950/40 border border-rose-500/30 p-0.5 sm:p-1.5 rounded-sm text-center">
-                      <span className="block font-mono text-[3.5px] min-[400px]:text-[4.5px] sm:text-[7px] text-rose-400/80 uppercase">STATUS</span>
-                      <span className="block font-mono font-bold text-[5px] min-[400px]:text-[6.5px] sm:text-[10px] text-emerald-400">ACTIVE</span>
+                    <div className="bg-black/20 backdrop-blur-md border border-white/20 p-0.5 sm:p-1.5 rounded-sm text-center">
+                      <span className="block font-mono text-[3.5px] min-[400px]:text-[4.5px] sm:text-[7px] text-white/70 uppercase">STATUS</span>
+                      <span className="block font-mono font-bold text-[5px] min-[400px]:text-[6.5px] sm:text-[10px] text-[#4ade80] font-black">ACTIVE</span>
                     </div>
-                    <div className="bg-rose-950/40 border border-rose-500/30 p-0.5 sm:p-1.5 rounded-sm text-center">
-                      <span className="block font-mono text-[3.5px] min-[400px]:text-[4.5px] sm:text-[7px] text-rose-400/80 uppercase">ENCRYPTION</span>
-                      <span className="block font-mono font-bold text-[5px] min-[400px]:text-[6.5px] sm:text-[10px] text-rose-200">AES-256</span>
+                    <div className="bg-black/20 backdrop-blur-md border border-white/20 p-0.5 sm:p-1.5 rounded-sm text-center">
+                      <span className="block font-mono text-[3.5px] min-[400px]:text-[4.5px] sm:text-[7px] text-white/70 uppercase">ENCRYPTION</span>
+                      <span className="block font-mono font-bold text-[5px] min-[400px]:text-[6.5px] sm:text-[10px] text-white">AES-256</span>
                     </div>
                   </div>
 
                   {/* Barcode Strip */}
                   <div className="pt-0.5 sm:pt-1 flex flex-col items-center">
-                    <div className="h-2 min-[400px]:h-3.5 sm:h-6 flex items-center gap-[1.5px] sm:gap-[2.5px] opacity-80 text-white">
+                    <div className="h-2 min-[400px]:h-3.5 sm:h-6 flex items-center gap-[1.5px] sm:gap-[2.5px] text-white opacity-95">
                       {[2, 4, 1, 3, 2, 5, 2, 1, 4, 3, 1, 5, 2, 3, 4, 2, 1, 3, 5, 2, 4, 1, 3, 2, 4].map((w, i) => (
                         <div key={i} className="h-full bg-current rounded-full" style={{ width: `${w}px` }} />
                       ))}
                     </div>
-                    <span className="font-mono text-[4px] min-[400px]:text-[5.5px] sm:text-[8px] text-rose-400 tracking-[0.25em] uppercase mt-0.5 sm:mt-1">
+                    <span className="font-mono text-[4px] min-[400px]:text-[5.5px] sm:text-[8px] text-white/80 tracking-[0.25em] uppercase mt-0.5 sm:mt-1">
                       * 0042-STAY-HUNGRY-ALPHA *
                     </span>
                   </div>
                 </div>
 
                 {/* Bottom Footer */}
-                <div className="relative z-10 pt-1 sm:pt-2 border-t border-rose-500/30 flex items-center justify-between text-[4.5px] min-[400px]:text-[5.5px] sm:text-[8.5px] text-rose-300 font-mono">
+                <div className="relative z-10 pt-1 sm:pt-2 border-t border-white/20 flex items-center justify-between text-[4.5px] min-[400px]:text-[5.5px] sm:text-[8.5px] text-white/80 font-mono">
                   <span>✦ AUTHORIZED DOSSIER</span>
-                  <span className="text-white/80">STEVE J. // MANIFESTO</span>
+                  <span className="text-white font-medium">STEVE J. // MANIFESTO</span>
                 </div>
               </div>
             ) : isKeycard ? (
