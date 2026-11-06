@@ -137,7 +137,10 @@ export function Wallet({
   ...props
 }: WalletProps) {
   const activeCards = cards.length > 0 ? cards : DEFAULT_WALLET_CARDS;
-  const baseColor = walletColor || "var(--primary, #6366f1)";
+  const baseColor =
+    !walletColor || walletColor === "primary" || walletColor === "default"
+      ? "var(--primary, #6366f1)"
+      : walletColor;
   // The wallet wears a soft tint of the colour rather than the colour itself
   // (the same OKLCH recipe as Folder), with a deep ink of the same hue on it.
   const flapColor = `oklch(from ${baseColor} 0.88 calc(c * 0.4) h)`;

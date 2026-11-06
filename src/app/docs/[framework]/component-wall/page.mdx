@@ -27,7 +27,15 @@ const ITEMS: ComponentWallItem[] = [
   // … as many as you like; four columns of six reads well
 ];
 
-const AVATARS = [{ src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-2-1790148865112.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-3-1790148865112.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-4-1790148865113.jpg" }, { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148865/80-1790148865113.jpg" }];`;
+// Faces for the trust line — shown as an Avatar Group (shift on hover, name tooltip).
+const AVATARS = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara Jade" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo Silva" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790082180/pexels-photo-1520760-1790082180553.jpg", alt: "June Carter" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145141/pexels-photo-6311475-1790145143489.jpg", alt: "Sam Wilson" },
+];`;
 
 export const wallGroups = `    <TechStackGroup>
       <TechStackTool name="React" icon={<ReactIcon />} />
@@ -206,6 +214,20 @@ export const usageFullscreen = {
       usage,
       code: extractCode("src/components/custom/blocks/ComponentWallBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="component-wall" />
+
+## More Examples
+
+<ExampleShowcase
+  name="component-wall"
+  columns={1}
+  minHeight={760}
+  examples={[
     {
       title: "Centred with persistent background",
       subheading:
@@ -296,19 +318,6 @@ export const usageFullscreen = {
       props: { layout: "center", showMobileWall: false },
       usage: usageNoMobile,
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="component-wall" />
-
-## Examples
-
-<ExampleShowcase
-  name="component-wall"
-  columns={1}
-  examples={[
     {
       title: "Copy beside the wall",
       subheading: "The copy on the left, one wall filling the right and fading under it. One camera, so the install line follows it card by card; the tools sit over the lower edge of the wall.",
