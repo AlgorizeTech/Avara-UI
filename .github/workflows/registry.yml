@@ -17,7 +17,9 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # Pinned to the patched release (Oct 2026 security release, includes the
+          # Brotli CVE-2026-111497 fix). Keep in step with NODE_VERSION in the Dockerfile.
+          node-version: 22.23.4
           cache: npm
 
       - run: npm ci

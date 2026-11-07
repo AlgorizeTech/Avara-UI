@@ -1,0 +1,27 @@
+# Keeps the build context small: this is sent to the builder on every build.
+.git
+.github
+.githooks
+node_modules
+mcp/node_modules
+.next
+out
+.vercel
+.vscode
+.idea
+.kilo
+graphify-out
+coverage
+tsconfig.tsbuildinfo
+*.log
+.DS_Store
+Thumbs.db
+
+# Docker files are not needed inside the image.
+Dockerfile
+.dockerignore
+
+# Build-time values come in as build args, never from a local file.
+.env
+.env.*
+!.env.example
