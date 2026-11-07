@@ -41,7 +41,7 @@ export function WhyChooseUsSection() {
 					animate={isInView ? { opacity: 1, y: 0 } : {}}
 					transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
 					className="text-center mb-10 md:mb-12">
-					<h2 className={SECTION_H2}>Why Avara UI?</h2>
+					<h2 className={SECTION_H2}>Why Avara UIIII?</h2>
 					<p className={cn(SECTION_SUB, "mx-auto")}>
 						Engineered to explore unique interaction patterns—from 3D
 						displacement hover effects to beautiful physics animations and
