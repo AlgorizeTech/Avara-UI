@@ -177,9 +177,13 @@ interface PhysicsTag {
   item: FallingTagItem;
   x: number;
   y: number;
+  prevX: number;
+  prevY: number;
+  prevAngle: number;
   vx: number;
   vy: number;
   angle: number;
+  baseAngle: number;
   angularVelocity: number;
   width: number;
   height: number;
@@ -192,69 +196,140 @@ interface PhysicsTag {
   floatSpeed: number;
   styleClass: { bg: string; text: string; border: string };
   initialTargetY: number;
+  isSleeping: boolean;
+  sleepFrames: number;
+  isSupported: boolean;
+  supportLeft: boolean;
+  supportRight: boolean;
 }
 
 function clamp(v: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, v));
 }
 
-// Distance between two 2D line segments
-function closestPointsSegments(
-  p1: { x: number; y: number },
-  p2: { x: number; y: number },
-  q1: { x: number; y: number },
-  q2: { x: number; y: number },
-): { c1: { x: number; y: number }; c2: { x: number; y: number }; distSq: number } {
-  const d1x = p2.x - p1.x;
-  const d1y = p2.y - p1.y;
-  const d2x = q2.x - q1.x;
-  const d2y = q2.y - q1.y;
-  const rx = p1.x - q1.x;
-  const ry = p1.y - q1.y;
+function getOBBVertices(
+  t: { x: number; y: number; width: number; height: number; angle: number },
+  extraGap = 0,
+): { x: number; y: number }[] {
+  const hw = t.width * 0.5 + extraGap * 0.5;
+  const hh = t.height * 0.5 + extraGap * 0.5;
+  const c = Math.cos(t.angle);
+  const s = Math.sin(t.angle);
+  const ux = hw * c;
+  const uy = hw * s;
+  const vx = -hh * s;
+  const vy = hh * c;
+  return [
+    { x: t.x - ux - vx, y: t.y - uy - vy },
+    { x: t.x + ux - vx, y: t.y + uy - vy },
+    { x: t.x + ux + vx, y: t.y + uy + vy },
+    { x: t.x - ux + vx, y: t.y - uy + vy },
+  ];
+}
 
-  const a = d1x * d1x + d1y * d1y;
-  const e = d2x * d2x + d2y * d2y;
-  const f = d2x * ry - d2y * rx;
+function getBoxExtents(t: { x: number; y: number; width: number; height: number; angle: number }) {
+  const hw = t.width * 0.5;
+  const hh = t.height * 0.5;
+  const c = Math.abs(Math.cos(t.angle));
+  const s = Math.abs(Math.sin(t.angle));
+  const ex = hw * c + hh * s;
+  const ey = hw * s + hh * c;
+  return {
+    minX: t.x - ex,
+    maxX: t.x + ex,
+    minY: t.y - ey,
+    maxY: t.y + ey,
+    ex,
+    ey,
+  };
+}
 
-  let s = 0;
-  let t = 0;
+// Exact 2D Oriented Bounding Box (OBB) SAT Collision Detection + Support Contact Point
+function checkOBBCollision(
+  a: PhysicsTag,
+  b: PhysicsTag,
+  extraGap = 1.5,
+): { collided: boolean; nx: number; ny: number; pen: number; cx: number; cy: number } {
+  const hwA = a.width * 0.5 + extraGap * 0.5;
+  const hhA = a.height * 0.5 + extraGap * 0.5;
+  const hwB = b.width * 0.5 + extraGap * 0.5;
+  const hhB = b.height * 0.5 + extraGap * 0.5;
 
-  if (a <= 0.0001 && e <= 0.0001) {
-    return { c1: p1, c2: q1, distSq: rx * rx + ry * ry };
+  const cosA = Math.cos(a.angle);
+  const sinA = Math.sin(a.angle);
+  const cosB = Math.cos(b.angle);
+  const sinB = Math.sin(b.angle);
+
+  const axes = [
+    { x: cosA, y: sinA },
+    { x: -sinA, y: cosA },
+    { x: cosB, y: sinB },
+    { x: -sinB, y: cosB },
+  ];
+
+  const dx = b.x - a.x;
+  const dy = b.y - a.y;
+
+  let minOverlap = Infinity;
+  let bestAxis = { x: 0, y: -1 };
+  let bestAxisIndex = 0;
+
+  for (let i = 0; i < 4; i++) {
+    const L = axes[i];
+    const rA = hwA * Math.abs(cosA * L.x + sinA * L.y) + hhA * Math.abs(-sinA * L.x + cosA * L.y);
+    const rB = hwB * Math.abs(cosB * L.x + sinB * L.y) + hhB * Math.abs(-sinB * L.x + cosB * L.y);
+    const dist = Math.abs(dx * L.x + dy * L.y);
+    const overlap = rA + rB - dist;
+
+    if (overlap <= 0) {
+      return { collided: false, nx: 0, ny: 0, pen: 0, cx: 0, cy: 0 };
+    }
+
+    if (overlap < minOverlap) {
+      minOverlap = overlap;
+      const sign = dx * L.x + dy * L.y >= 0 ? 1 : -1;
+      bestAxis = { x: L.x * sign, y: L.y * sign };
+      bestAxisIndex = i;
+    }
   }
 
-  if (a <= 0.0001) {
-    s = 0;
-    t = clamp((d2x * -rx + d2y * -ry) / e, 0, 1);
-  } else {
-    const c = d1x * rx + d1y * ry;
-    if (e <= 0.0001) {
-      t = 0;
-      s = clamp(-c / a, 0, 1);
-    } else {
-      const b = d1x * d2x + d1y * d2y;
-      const denom = a * e - b * b;
-      if (denom !== 0) {
-        s = clamp((b * f - c * e) / denom, 0, 1);
-      } else {
-        s = 0;
+  const nx = bestAxis.x;
+  const ny = bestAxis.y;
+  let cx = (a.x + b.x) * 0.5;
+  let cy = (a.y + b.y) * 0.5;
+
+  if (bestAxisIndex < 2) {
+    const vertsB = getOBBVertices(b, 0);
+    let minProj = Infinity;
+    for (let k = 0; k < 4; k++) {
+      const p = vertsB[k].x * nx + vertsB[k].y * ny;
+      if (p < minProj) {
+        minProj = p;
+        cx = vertsB[k].x;
+        cy = vertsB[k].y;
       }
-      t = (b * s + f) / e;
-      if (t < 0) {
-        t = 0;
-        s = clamp(-c / a, 0, 1);
-      } else if (t > 1) {
-        t = 1;
-        s = clamp((b - c) / a, 0, 1);
+    }
+  } else {
+    const vertsA = getOBBVertices(a, 0);
+    let maxProj = -Infinity;
+    for (let k = 0; k < 4; k++) {
+      const p = vertsA[k].x * nx + vertsA[k].y * ny;
+      if (p > maxProj) {
+        maxProj = p;
+        cx = vertsA[k].x;
+        cy = vertsA[k].y;
       }
     }
   }
 
-  const c1 = { x: p1.x + d1x * s, y: p1.y + d1y * s };
-  const c2 = { x: q1.x + d2x * t, y: q1.y + d2y * t };
-  const dx = c1.x - c2.x;
-  const dy = c1.y - c2.y;
-  return { c1, c2, distSq: dx * dx + dy * dy };
+  return {
+    collided: true,
+    nx,
+    ny,
+    pen: minOverlap,
+    cx,
+    cy,
+  };
 }
 
 export default function FallingTagsBlock({
@@ -264,7 +339,7 @@ export default function FallingTagsBlock({
   bounce = 0.48,
   friction = 0.985,
   hoverDuration = 1.4,
-  height = 540,
+  height = 520,
   showControls = false,
   autoStartOnView = true,
   interactive = true,
@@ -290,6 +365,7 @@ export default function FallingTagsBlock({
   const stateRef = useRef<{
     phase: "floating" | "falling" | "zeroG";
     startTime: number;
+    fallStartTime: number;
     hoverDuration: number;
     gravity: number;
     activeGravity: boolean;
@@ -309,6 +385,7 @@ export default function FallingTagsBlock({
   }>({
     phase: "floating",
     startTime: performance.now(),
+    fallStartTime: performance.now(),
     hoverDuration,
     gravity,
     activeGravity: true,
@@ -345,53 +422,117 @@ export default function FallingTagsBlock({
     });
   }, [tags]);
 
+  // Measure exact unrotated rendered DOM dimensions
+  const measureTags = useCallback(() => {
+    let measuredAny = false;
+    physicsTagsRef.current.forEach((t) => {
+      const el = tagElementsRef.current.get(t.id);
+      if (el) {
+        const w = el.offsetWidth;
+        const h = el.offsetHeight;
+        if (w > 0 && h > 0) {
+          if (Math.abs(t.width - w) >= 1 || Math.abs(t.height - h) >= 1) {
+            t.width = w;
+            t.height = h;
+            t.radius = h / 2;
+            t.mass = (w * h) / 1000;
+            t.invMass = 1 / t.mass;
+            t.inertia = (t.mass * (w * w + h * h)) / 12;
+            t.invInertia = 1 / t.inertia;
+            t.isSleeping = false;
+            t.sleepFrames = 0;
+            measuredAny = true;
+          }
+        }
+      }
+    });
+
+    if (measuredAny && stateRef.current.phase === "floating") {
+      const W = stateRef.current.width;
+      const leftX = 8;
+      const rightX = W - 8;
+      const ceilingY = 8;
+      const list = physicsTagsRef.current;
+      for (let pre = 0; pre < 6; pre++) {
+        for (let i = 0; i < list.length; i++) {
+          for (let j = i + 1; j < list.length; j++) {
+            const col = checkOBBCollision(list[i], list[j], 3);
+            if (col.collided) {
+              list[i].x -= col.nx * col.pen * 0.5;
+              list[i].y -= col.ny * col.pen * 0.5;
+              list[j].x += col.nx * col.pen * 0.5;
+              list[j].y += col.ny * col.pen * 0.5;
+            }
+          }
+          const ext = getBoxExtents(list[i]);
+          if (ext.minX < leftX) list[i].x += leftX - ext.minX;
+          if (ext.maxX > rightX) list[i].x -= ext.maxX - rightX;
+          if (ext.minY < ceilingY) list[i].y += ceilingY - ext.minY;
+          list[i].initialTargetY = list[i].y;
+        }
+      }
+    }
+
+    return measuredAny;
+  }, []);
+
   // Initialize tags
-  const initTags = useCallback(() => {
+  const initTags = useCallback((quickDrop = false) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
-    const width = Math.max(rect.width, 320);
-    const h = typeof height === "number" ? height : (rect.height || 520);
+    const rawW = containerRef.current.clientWidth || rect.width;
+    const rawH = containerRef.current.clientHeight || rect.height;
+    const width = Math.max(rawW, 280);
+    const h = typeof height === "number" ? height : (rawH || 520);
     stateRef.current.width = width;
     stateRef.current.height = h;
     setArenaDimensions({ width, height: h });
 
+    const isSmallScreen = width < 520;
     const paletteList = PALETTES[palette] || PALETTES.default;
-    const padding = 20;
+    const padding = isSmallScreen ? 10 : 16;
     const availableWidth = width - padding * 2;
 
-    // Approximate width based on character count and padding
     const items: PhysicsTag[] = [];
-    const rows = 4;
-    const tagsPerRow = Math.ceil(normalizedTags.length / rows);
+    const tagsPerRow = isSmallScreen ? 3 : 6;
 
     normalizedTags.forEach((item, index) => {
       const rowIndex = Math.floor(index / tagsPerRow);
       const colIndex = index % tagsPerRow;
 
-      // Tag dimension estimation (height: 38px, width based on text)
-      const approxCharWidth = 8.5;
-      const tagW = Math.max(Math.min(item.label.length * approxCharWidth + 36, width * 0.7), 74);
-      const tagH = 38;
+      const el = tagElementsRef.current.get(item.id);
+      const scale = isSmallScreen ? 0.88 : 1.0;
+      const tagW =
+        el && el.offsetWidth > 0
+          ? el.offsetWidth
+          : Math.round(Math.max(Math.min((item.label.length * 8.2 + 32) * scale, width * 0.65), 64));
+      const tagH = el && el.offsetHeight > 0 ? el.offsetHeight : isSmallScreen ? 32 : 36;
       const tagRadius = tagH / 2;
       const mass = (tagW * tagH) / 1000;
       const inertia = (mass * (tagW * tagW + tagH * tagH)) / 12;
 
-      // Distribute in upper floating zone
       const colStep = availableWidth / Math.max(tagsPerRow, 1);
-      const startX = padding + colIndex * colStep + colStep * 0.5 + (Math.random() - 0.5) * 20;
-      const startY = 40 + rowIndex * 48 + (Math.random() - 0.5) * 15;
+      const staggerX = (rowIndex % 2 === 1) ? colStep * 0.28 : -colStep * 0.14;
+      const startX = padding + colIndex * colStep + colStep * 0.5 + staggerX + (Math.random() - 0.5) * 14;
+      const startY = 36 + rowIndex * (isSmallScreen ? 36 : 42) + (Math.random() - 0.5) * 8;
+      const baseAngle = (Math.random() - 0.5) * 0.28;
 
       const styleClass = paletteList[index % paletteList.length];
+      const clampedX = clamp(startX, tagW / 2 + 8, width - tagW / 2 - 8);
 
       items.push({
         id: item.id,
         item,
-        x: clamp(startX, tagW / 2 + 10, width - tagW / 2 - 10),
+        x: clampedX,
         y: startY,
-        vx: (Math.random() - 0.5) * 0.8,
+        prevX: clampedX,
+        prevY: startY,
+        prevAngle: baseAngle,
+        vx: (Math.random() - 0.5) * 1.2,
         vy: 0,
-        angle: (Math.random() - 0.5) * 0.12,
-        angularVelocity: (Math.random() - 0.5) * 0.02,
+        angle: baseAngle,
+        baseAngle,
+        angularVelocity: (Math.random() - 0.5) * 0.025,
         width: tagW,
         height: tagH,
         radius: tagRadius,
@@ -400,18 +541,53 @@ export default function FallingTagsBlock({
         inertia,
         invInertia: 1 / inertia,
         floatPhase: Math.random() * Math.PI * 2,
-        floatSpeed: 1.5 + Math.random() * 1.5,
+        floatSpeed: 1.2 + Math.random() * 1.2,
         styleClass,
         initialTargetY: startY,
+        isSleeping: false,
+        sleepFrames: 0,
+        isSupported: false,
+        supportLeft: false,
+        supportRight: false,
       });
     });
 
+    // Pre-separate initial floating tags
+    const leftX = 8;
+    const rightX = width - 8;
+    const ceilingY = 8;
+    for (let pre = 0; pre < 8; pre++) {
+      for (let i = 0; i < items.length; i++) {
+        for (let j = i + 1; j < items.length; j++) {
+          const col = checkOBBCollision(items[i], items[j], 3);
+          if (col.collided) {
+            items[i].x -= col.nx * col.pen * 0.5;
+            items[i].y -= col.ny * col.pen * 0.5;
+            items[j].x += col.nx * col.pen * 0.5;
+            items[j].y += col.ny * col.pen * 0.5;
+          }
+        }
+        const ext = getBoxExtents(items[i]);
+        if (ext.minX < leftX) items[i].x += leftX - ext.minX;
+        if (ext.maxX > rightX) items[i].x -= ext.maxX - rightX;
+        if (ext.minY < ceilingY) items[i].y += ceilingY - ext.minY;
+        items[i].initialTargetY = items[i].y;
+      }
+    }
+
     physicsTagsRef.current = items;
     setActiveTagsCount(items.length);
+    const now = performance.now();
+    const effectiveHover = quickDrop ? Math.min(0.25, stateRef.current.hoverDuration) : stateRef.current.hoverDuration;
     stateRef.current.phase = "floating";
-    stateRef.current.startTime = performance.now();
+    stateRef.current.startTime = now - (stateRef.current.hoverDuration - effectiveHover) * 1000;
+    stateRef.current.fallStartTime = now + effectiveHover * 1000;
     setPhase("floating");
-  }, [normalizedTags, height, palette]);
+
+    requestAnimationFrame(() => {
+      measureTags();
+    });
+  }, [normalizedTags, height, palette, measureTags]);
 
   // Main Physics Simulation Loop
   useEffect(() => {
@@ -430,7 +606,12 @@ export default function FallingTagsBlock({
       // Phase Transition: Floating -> Falling
       if (state.phase === "floating" && elapsed >= state.hoverDuration) {
         state.phase = "falling";
+        state.fallStartTime = currentTime;
         setPhase("falling");
+        for (let i = 0; i < tags.length; i++) {
+          tags[i].vx = (Math.random() - 0.5) * 1.2;
+          tags[i].angularVelocity = (Math.random() - 0.5) * 0.025;
+        }
       }
 
       // Check prefers-reduced-motion
@@ -438,17 +619,39 @@ export default function FallingTagsBlock({
         typeof window !== "undefined" &&
         window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      // 1. UPDATE BODIES
+      // Boundary floor and wall coordinates
+      const floorY = H - 8;
+      const leftX = 8;
+      const rightX = W - 8;
+      const ceilingY = 8;
+      const gap = 1.5; // Tight 1.5px visual separation so boxes take ONLY their exact width & height
+      const elapsedAfterHover = Math.max(0, (currentTime - state.fallStartTime) / 1000);
+      const fallFrame = Math.floor(elapsedAfterHover * 60);
+
+      // Keep DOM dimensions synced to actual rendered offsetWidth & offsetHeight
+      if (elapsed < 2.5 || elapsedAfterHover < 2.5) {
+        measureTags();
+      }
+
+      // 1. UPDATE BODIES (Integration & Floating)
       for (let i = 0; i < tags.length; i++) {
         const t = tags[i];
+        t.prevX = t.x;
+        t.prevY = t.y;
+        t.prevAngle = t.angle;
+
         const isBeingDragged = state.isDragging && state.draggedId === t.id;
 
         if (isBeingDragged) {
-          // Direct drag follower with momentum calculation
+          t.isSleeping = false;
+          t.sleepFrames = 0;
+          t.isSupported = false;
+          t.supportLeft = false;
+          t.supportRight = false;
           const targetX = state.mousePos.x - state.dragOffset.x;
           const targetY = state.mousePos.y - state.dragOffset.y;
-          t.vx = (targetX - t.x) * 18;
-          t.vy = (targetY - t.y) * 18;
+          t.vx = (targetX - t.x) * 0.45;
+          t.vy = (targetY - t.y) * 0.45;
           t.x = targetX;
           t.y = targetY;
           t.angularVelocity *= 0.85;
@@ -456,195 +659,329 @@ export default function FallingTagsBlock({
         }
 
         if (prefersReduced) {
-          // Instantly settle at bottom in neat rows
           continue;
         }
 
         if (state.phase === "floating") {
-          // Gentle floating wave / anti-gravity levitation
-          const floatOffset = Math.sin(currentTime * 0.002 * t.floatSpeed + t.floatPhase) * 6;
+          t.isSleeping = false;
+          t.sleepFrames = 0;
+          t.isSupported = false;
+          t.supportLeft = false;
+          t.supportRight = false;
+          const floatOffset = Math.sin(currentTime * 0.002 * t.floatSpeed + t.floatPhase) * 4;
           t.y = t.initialTargetY + floatOffset;
-          t.angle = Math.sin(currentTime * 0.0015 * t.floatSpeed + t.floatPhase) * 0.06;
-          t.vx *= 0.95;
+          t.angle = t.baseAngle + Math.sin(currentTime * 0.0015 * t.floatSpeed + t.floatPhase) * 0.04;
           t.vy = 0;
-          t.angularVelocity *= 0.95;
+          continue;
+        }
+
+        // Falling phase: if sleeping peacefully, keep 100% rock-solid still
+        if (t.isSleeping) {
+          t.isSupported = true;
+          continue;
+        }
+
+        if (state.activeGravity) {
+          const dropStagger = Math.max(
+            0,
+            Math.min(1, elapsedAfterHover * 3.2 - (tags.length - 1 - i) * 0.03),
+          );
+          if (dropStagger <= 0) {
+            const floatOffset = Math.sin(currentTime * 0.002 * t.floatSpeed + t.floatPhase) * 4;
+            t.y = t.initialTargetY + floatOffset;
+            continue;
+          }
+          const wasSupported = t.isSupported && Math.hypot(t.vx, t.vy) < 0.6;
+          t.vy += state.gravity * (wasSupported ? 0.25 : 0.88) * dropStagger;
         } else {
-          // Gravity & Integration
-          if (state.activeGravity) {
-            // Apply slight random stagger so they don't all drop like a flat board
-            const dropStagger = Math.max(0, Math.min(1, (elapsed - state.hoverDuration) * 3 - i * 0.04));
-            t.vy += state.gravity * 0.9 * dropStagger;
-          } else {
-            // Zero-G float
-            t.vx += (Math.random() - 0.5) * 0.05;
-            t.vy += (Math.random() - 0.5) * 0.05;
-          }
-
-          t.x += t.vx;
-          t.y += t.vy;
-          t.angle += t.angularVelocity;
-
-          // Friction / Damping
-          t.vx *= state.friction;
-          t.vy *= state.friction;
-          t.angularVelocity *= 0.97;
+          t.vx += (Math.random() - 0.5) * 0.04;
+          t.vy += (Math.random() - 0.5) * 0.04;
         }
 
-        // 2. WALL COLLISIONS (LEFT, RIGHT, FLOOR, CEILING)
-        const halfL = Math.max(0, t.width / 2 - t.radius);
-        const cos = Math.cos(t.angle);
-        const sin = Math.sin(t.angle);
-        const p1x = t.x - halfL * cos;
-        const p1y = t.y - halfL * sin;
-        const p2x = t.x + halfL * cos;
-        const p2y = t.y + halfL * sin;
+        t.x += t.vx;
+        t.y += t.vy;
+        t.angle += t.angularVelocity;
+        // Allow up to ~62° (1.08 rad) so tags can wedge diagonally ("baka") into narrow gaps or lie flat ("soza")
+        t.angle = clamp(t.angle, -1.08, 1.08);
 
-        const minX = Math.min(p1x, p2x) - t.radius;
-        const maxX = Math.max(p1x, p2x) + t.radius;
-        const minY = Math.min(p1y, p2y) - t.radius;
-        const maxY = Math.max(p1y, p2y) + t.radius;
-
-        const wallBounce = state.bounce;
-
-        // Left Wall
-        if (minX < 8) {
-          const pen = 8 - minX;
-          t.x += pen;
-          t.vx = Math.abs(t.vx) * wallBounce;
-          t.angularVelocity *= 0.8;
-        }
-        // Right Wall
-        if (maxX > W - 8) {
-          const pen = maxX - (W - 8);
-          t.x -= pen;
-          t.vx = -Math.abs(t.vx) * wallBounce;
-          t.angularVelocity *= 0.8;
-        }
-        // Floor
-        if (maxY > H - 8) {
-          const pen = maxY - (H - 8);
-          t.y -= pen;
-          if (Math.abs(t.vy) > 0.4) {
-            t.vy = -Math.abs(t.vy) * wallBounce;
-          } else {
-            t.vy = 0;
-          }
-          // Floor friction
-          t.vx *= 0.94;
-          // Angular impulse to align flat with floor naturally
-          const targetAngle = Math.round(t.angle / Math.PI) * Math.PI;
-          t.angularVelocity += (targetAngle - t.angle) * 0.06;
-          t.angularVelocity *= 0.88;
-        }
-        // Ceiling (open or bounce softly)
-        if (minY < 8 && t.vy < 0) {
-          t.y += 8 - minY;
-          t.vy = Math.abs(t.vy) * wallBounce;
-        }
+        t.vx *= 0.94;
+        t.vy *= 0.98;
+        t.angularVelocity *= 0.88;
+        t.isSupported = false;
+        t.supportLeft = false;
+        t.supportRight = false;
       }
 
-      // 3. TAG-TO-TAG COLLISIONS (Iterative solver for high fidelity)
-      const iterations = state.phase === "floating" ? 1 : 4;
-      for (let iter = 0; iter < iterations; iter++) {
-        for (let i = 0; i < tags.length; i++) {
-          const a = tags[i];
-          const halfLa = Math.max(0, a.width / 2 - a.radius);
-          const cosa = Math.cos(a.angle);
-          const sina = Math.sin(a.angle);
-          const ap1 = { x: a.x - halfLa * cosa, y: a.y - halfLa * sina };
-          const ap2 = { x: a.x + halfLa * cosa, y: a.y + halfLa * sina };
+      // 2. ADAPTIVE OBB SOLVER ("Soza Paile Soza, Baka Paile Baka" — Flat where flat space exists, tilted into gaps!)
+      if (state.phase !== "floating" && !prefersReduced) {
+        const solverIterations = 16;
 
-          for (let j = i + 1; j < tags.length; j++) {
-            const b = tags[j];
-            const halfLb = Math.max(0, b.width / 2 - b.radius);
-            const cosb = Math.cos(b.angle);
-            const sinb = Math.sin(b.angle);
-            const bp1 = { x: b.x - halfLb * cosb, y: b.y - halfLb * sinb };
-            const bp2 = { x: b.x + halfLb * cosb, y: b.y + halfLb * sinb };
+        for (let iter = 0; iter < solverIterations; iter++) {
+          // A. Floor & Wall Constraints
+          for (let i = 0; i < tags.length; i++) {
+            const t = tags[i];
+            const isBeingDragged = state.isDragging && state.draggedId === t.id;
+            if (t.isSleeping && !isBeingDragged) continue;
 
-            // Broadphase quick distance reject
-            const dx = b.x - a.x;
-            const dy = b.y - a.y;
-            const maxRadius = Math.max(a.width, a.height) + Math.max(b.width, b.height);
-            if (dx * dx + dy * dy > maxRadius * maxRadius) continue;
+            const verts = getOBBVertices(t, 0);
+            let maxPenY = 0;
+            let floorContactX = 0;
+            let floorVerts = 0;
 
-            const res = closestPointsSegments(ap1, ap2, bp1, bp2);
-            const targetDist = a.radius + b.radius;
+            for (let k = 0; k < 4; k++) {
+              const penY = verts[k].y - floorY;
+              if (penY >= -1.5 && state.activeGravity) {
+                t.isSupported = true;
+                floorVerts++;
+                floorContactX += verts[k].x;
+                if (verts[k].x <= t.x + 6) t.supportLeft = true;
+                if (verts[k].x >= t.x - 6) t.supportRight = true;
+              }
+              if (penY > maxPenY) {
+                maxPenY = penY;
+              }
+            }
 
-            if (res.distSq < targetDist * targetDist) {
-              const dist = Math.sqrt(res.distSq) || 0.001;
-              const pen = targetDist - dist;
+            if (maxPenY > 0) {
+              t.y -= maxPenY;
+              if (t.vy > 0) t.vy = 0;
+              t.vx *= 0.82;
+              t.angularVelocity *= 0.78;
+            }
 
-              // Collision normal from A to B
-              let nx = (res.c2.x - res.c1.x) / dist;
-              let ny = (res.c2.y - res.c1.y) / dist;
+            // If touching floor on 1 corner with open space around it, gravity torque rotates raised end down to floor ("soza")
+            if (state.activeGravity && iter === 0 && floorVerts === 1 && fallFrame < 140 && !isBeingDragged) {
+              const leverX = t.x - floorContactX;
+              t.angularVelocity += clamp(leverX * 0.0018, -0.035, 0.035);
+              if (Math.abs(t.angle) < 0.35) {
+                t.angle *= 0.85;
+              }
+            }
 
-              if (dist <= 0.001) {
-                nx = 0;
-                ny = -1;
+            const ext = getBoxExtents(t);
+            if (ext.minX < leftX) {
+              t.x += leftX - ext.minX;
+              if (t.vx < 0) t.vx = 0;
+            }
+            if (ext.maxX > rightX) {
+              t.x -= ext.maxX - rightX;
+              if (t.vx > 0) t.vx = 0;
+            }
+            if (ext.minY < ceilingY) {
+              t.y += ceilingY - ext.minY;
+              if (t.vy < 0) t.vy = 0;
+            }
+          }
+
+          // B. Pairwise OBB SAT Collisions
+          for (let i = 0; i < tags.length; i++) {
+            const a = tags[i];
+            const isDraggingA = state.isDragging && state.draggedId === a.id;
+
+            for (let j = i + 1; j < tags.length; j++) {
+              const b = tags[j];
+              const isDraggingB = state.isDragging && state.draggedId === b.id;
+
+              if (a.isSleeping && b.isSleeping && !isDraggingA && !isDraggingB) continue;
+
+              if (Math.abs(b.x - a.x) > (a.width + b.width) * 0.65) continue;
+              if (Math.abs(b.y - a.y) > (a.width + b.width) * 0.65) continue;
+
+              const col = checkOBBCollision(a, b, gap);
+              if (!col.collided) {
+                if (state.activeGravity) {
+                  const supCol = checkOBBCollision(a, b, gap + 2.8);
+                  if (supCol.collided) {
+                    const top = a.y < b.y ? a : b;
+                    const bot = a.y < b.y ? b : a;
+                    if (bot.isSupported || bot.isSleeping) {
+                      top.isSupported = true;
+                      if (supCol.cx <= top.x + 8) top.supportLeft = true;
+                      if (supCol.cx >= top.x - 8) top.supportRight = true;
+                    }
+                  }
+                }
+                continue;
               }
 
-              // Contact points relative to center of masses
-              const rAx = res.c1.x - a.x;
-              const rAy = res.c1.y - a.y;
-              const rBx = res.c2.x - b.x;
-              const rBy = res.c2.y - b.y;
+              const nx = col.nx;
+              const ny = col.ny;
+              const pen = col.pen;
 
-              // Relative velocity at contact points
-              const vAx = a.vx - a.angularVelocity * rAy;
-              const vAy = a.vy + a.angularVelocity * rAx;
-              const vBx = b.vx - b.angularVelocity * rBy;
-              const vBy = b.vy + b.angularVelocity * rBx;
+              const top = a.y <= b.y ? a : b;
+              const bot = a.y <= b.y ? b : a;
+              const isTopDragging = top.id === a.id ? isDraggingA : isDraggingB;
 
-              const relVx = vBx - vAx;
-              const relVy = vBy - vAy;
-              const velAlongNormal = relVx * nx + relVy * ny;
+              if (state.activeGravity && (bot.isSupported || bot.isSleeping)) {
+                top.isSupported = true;
+                if (col.cx <= top.x + 8) top.supportLeft = true;
+                if (col.cx >= top.x - 8) top.supportRight = true;
+              }
 
-              // Impulse resolution
-              if (velAlongNormal < 0) {
-                const e = state.bounce;
-                const rAxCrossN = rAx * ny - rAy * nx;
-                const rBxCrossN = rBx * ny - rBy * nx;
+              if (pen <= 0.01) continue;
 
-                const invMassSum =
-                  a.invMass +
-                  b.invMass +
-                  rAxCrossN * rAxCrossN * a.invInertia +
-                  rBxCrossN * rBxCrossN * b.invInertia;
+              if (a.isSleeping && (isDraggingB || Math.min(pen, 2) > 0.6)) {
+                a.isSleeping = false;
+                a.sleepFrames = 0;
+              }
+              if (b.isSleeping && (isDraggingA || Math.min(pen, 2) > 0.6)) {
+                b.isSleeping = false;
+                b.sleepFrames = 0;
+              }
 
-                if (invMassSum > 0) {
-                  const jScalar = (-(1 + e) * velAlongNormal) / invMassSum;
-                  const impulseX = jScalar * nx;
-                  const impulseY = jScalar * ny;
+              // Upward Unjamming on later iterations (iter >= 10) if horizontally wedged between walls
+              if (iter >= 10 && pen > 0.8 && !top.isSleeping && !isTopDragging) {
+                top.y -= pen * 0.9;
+                if (Math.abs(ny) < 0.45 && fallFrame < 140) {
+                  const tiltDir = top.x >= bot.x ? -1 : 1;
+                  top.angle = clamp(top.angle + tiltDir * 0.04, -1.05, 1.05);
+                }
+                continue;
+              }
 
-                  if (!(state.isDragging && state.draggedId === a.id)) {
-                    a.vx -= impulseX * a.invMass;
-                    a.vy -= impulseY * a.invMass;
-                    a.angularVelocity -= (rAx * impulseY - rAy * impulseX) * a.invInertia;
+              let wA = a.isSleeping || isDraggingA ? 0 : a.invMass;
+              let wB = b.isSleeping || isDraggingB ? 0 : b.invMass;
+              if (wA > 0 && a.isSupported && a.y > b.y) wA *= 0.25;
+              if (wB > 0 && b.isSupported && b.y > a.y) wB *= 0.25;
+
+              const sumW = wA + wB;
+              if (sumW <= 0) continue;
+
+              const rA = wA / sumW;
+              const rB = wB / sumW;
+
+              a.x -= nx * pen * rA;
+              a.y -= ny * pen * rA;
+              b.x += nx * pen * rB;
+              b.y += ny * pen * rB;
+
+              // Lever-arm rotation so tags naturally tilt ("baka hoye") into gaps when off-center
+              const rAx = col.cx - a.x;
+              const rAy = col.cy - a.y;
+              const rBx = col.cx - b.x;
+              const rBy = col.cy - b.y;
+              const crossA = rAx * ny - rAy * nx;
+              const crossB = rBx * ny - rBy * nx;
+
+              if (wA > 0 && fallFrame < 145) {
+                a.angle = clamp(a.angle - crossA * pen * a.invInertia * 0.22 * rA, -1.05, 1.05);
+              }
+              if (wB > 0 && fallFrame < 145) {
+                b.angle = clamp(b.angle + crossB * pen * b.invInertia * 0.22 * rB, -1.05, 1.05);
+              }
+
+              if (iter === 0) {
+                const rvx = b.vx - a.vx;
+                const rvy = b.vy - a.vy;
+                const vn = rvx * nx + rvy * ny;
+                if (vn < 0) {
+                  const imp = -vn;
+                  if (wA > 0) {
+                    a.vx -= imp * nx * rA;
+                    a.vy -= imp * ny * rA;
+                    a.vx *= 0.85;
+                    a.vy *= 0.85;
                   }
-                  if (!(state.isDragging && state.draggedId === b.id)) {
-                    b.vx += impulseX * b.invMass;
-                    b.vy += impulseY * b.invMass;
-                    b.angularVelocity += (rBx * impulseY - rBy * impulseX) * b.invInertia;
+                  if (wB > 0) {
+                    b.vx += imp * nx * rB;
+                    b.vy += imp * ny * rB;
+                    b.vx *= 0.85;
+                    b.vy *= 0.85;
                   }
                 }
               }
+            }
+          }
 
-              // Positional Separation
-              const percent = 0.55;
-              const slop = 0.2;
-              const corr = (Math.max(pen - slop, 0) / (a.invMass + b.invMass)) * percent;
-              const corrX = corr * nx;
-              const corrY = corr * ny;
+          // C. Adaptive Gravity Tipping into Gaps ("Soza Paile Soza, Baka Paile Baka"):
+          // If a tag is supported on ONLY ONE side (overhanging into an empty gap!),
+          // tip its unsupported end DOWNWARD into the gap AND slide it into the gap so it wedges in diagonally or drops flat!
+          if (state.activeGravity && iter === 0 && fallFrame < 140) {
+            for (let i = 0; i < tags.length; i++) {
+              const t = tags[i];
+              const isBeingDragged = state.isDragging && state.draggedId === t.id;
+              if (t.isSleeping || !t.isSupported || isBeingDragged) continue;
 
-              if (!(state.isDragging && state.draggedId === a.id)) {
-                a.x -= corrX * a.invMass;
-                a.y -= corrY * a.invMass;
+              if (t.supportLeft && !t.supportRight) {
+                // Supported on left, empty gap on right -> tip right end DOWN (+angle) and slide right into gap
+                t.angularVelocity += 0.018;
+                t.vx += 0.45;
+              } else if (t.supportRight && !t.supportLeft) {
+                // Supported on right, empty gap on left -> tip left end DOWN (-angle) and slide left into gap
+                t.angularVelocity -= 0.018;
+                t.vx -= 0.45;
+              } else if (t.supportLeft && t.supportRight && Math.abs(t.angle) < 0.22) {
+                // Supported on both sides and nearly flat -> settle cleanly flat ("soza")
+                t.angle *= 0.85;
+                t.angularVelocity *= 0.6;
               }
-              if (!(state.isDragging && state.draggedId === b.id)) {
-                b.x += corrX * b.invMass;
-                b.y += corrY * b.invMass;
+            }
+          }
+
+          // D. Final Wall & Floor Clamp Inside Solver
+          for (let i = 0; i < tags.length; i++) {
+            const t = tags[i];
+            const isBeingDragged = state.isDragging && state.draggedId === t.id;
+            if (t.isSleeping && !isBeingDragged) continue;
+
+            const ext = getBoxExtents(t);
+            if (ext.maxY > floorY) {
+              t.y -= ext.maxY - floorY;
+              if (t.vy > 0) t.vy = 0;
+              if (state.activeGravity) t.isSupported = true;
+            }
+            if (ext.minX < leftX) {
+              t.x += leftX - ext.minX;
+              if (t.vx < 0) t.vx = 0;
+            }
+            if (ext.maxX > rightX) {
+              t.x -= ext.maxX - rightX;
+              if (t.vx > 0) t.vx = 0;
+            }
+            if (ext.minY < ceilingY) {
+              t.y += ceilingY - ext.minY;
+              if (t.vy < 0) t.vy = 0;
+            }
+          }
+        }
+
+        // 3. SLEEP EVALUATION (100% Rock-Solid Stillness Once Settled)
+        if (state.activeGravity) {
+          for (let i = 0; i < tags.length; i++) {
+            const t = tags[i];
+            if (t.isSleeping) continue;
+            if (state.isDragging && state.draggedId === t.id) continue;
+
+            const dropStagger = Math.max(
+              0,
+              Math.min(1, elapsedAfterHover * 3.2 - (tags.length - 1 - i) * 0.03),
+            );
+            if (dropStagger < 1) continue;
+
+            const netDx = t.x - t.prevX;
+            const netDy = t.y - t.prevY;
+            const netDa = t.angle - t.prevAngle;
+            const netMotion = Math.hypot(netDx, netDy) + Math.abs(netDa) * 25;
+
+            if (t.isSupported || fallFrame > 140) {
+              t.vx = t.vx * 0.5 + netDx * 0.5;
+              t.vy = t.vy * 0.5 + netDy * 0.5;
+              t.angularVelocity = t.angularVelocity * 0.5 + netDa * 0.5;
+            }
+
+            if ((fallFrame > 142 || (t.isSupported && fallFrame > 95)) && netMotion < 0.5) {
+              t.sleepFrames++;
+              t.vx *= 0.4;
+              t.vy *= 0.4;
+              t.angularVelocity *= 0.4;
+              if (t.sleepFrames >= 6) {
+                t.isSleeping = true;
+                t.vx = 0;
+                t.vy = 0;
+                t.angularVelocity = 0;
               }
+            } else {
+              t.sleepFrames = Math.max(0, t.sleepFrames - 1);
             }
           }
         }
@@ -655,7 +992,7 @@ export default function FallingTagsBlock({
         const t = tags[i];
         const el = tagElementsRef.current.get(t.id);
         if (el) {
-          el.style.transform = `translate3d(${t.x.toFixed(2)}px, ${t.y.toFixed(2)}px, 0) rotate(${t.angle.toFixed(4)}rad) translate(-50%, -50%)`;
+          el.style.transform = `translate3d(${t.x.toFixed(2)}px, ${t.y.toFixed(2)}px, 0) translate(-50%, -50%) rotate(${t.angle.toFixed(4)}rad)`;
         }
       }
 
@@ -668,21 +1005,51 @@ export default function FallingTagsBlock({
     return () => {
       cancelAnimationFrame(animFrame);
     };
-  }, [isMounted]);
+  }, [isMounted, measureTags]);
 
   // Viewport Intersection Observer & Resize handling
   useEffect(() => {
     if (!isMounted || !containerRef.current) return;
     const el = containerRef.current;
+    let resizeTimer: ReturnType<typeof setTimeout> | null = null;
 
     // Resize Observer
     const ro = new ResizeObserver((entries) => {
       for (const entry of entries) {
         const { width, height: h } = entry.contentRect;
         if (width > 0 && h > 0) {
-          stateRef.current.width = width;
-          stateRef.current.height = h;
-          setArenaDimensions({ width, height: h });
+          const prevW = stateRef.current.width;
+          const prevH = stateRef.current.height;
+          const widthDiff = Math.abs(width - prevW);
+          const heightDiff = Math.abs(h - prevH);
+
+          if (widthDiff > 2 || heightDiff > 2) {
+            stateRef.current.width = width;
+            stateRef.current.height = h;
+            setArenaDimensions({ width, height: h });
+
+            // Immediately re-measure DOM dimensions (in case responsive sm: breakpoint changed)
+            measureTags();
+
+            // Proportionally scale X positions so tags don't jam against one wall during live drag
+            const scaleX = prevW > 0 ? width / prevW : 1;
+            stateRef.current.fallStartTime = performance.now() - 800;
+            physicsTagsRef.current.forEach((t) => {
+              t.x = clamp(t.x * scaleX, t.width * 0.5 + 8, width - t.width * 0.5 - 8);
+              t.prevX = t.x;
+              t.isSleeping = false;
+              t.sleepFrames = 0;
+            });
+
+            // When switching between screen sizes (e.g. Large -> Small or dragging resize handle),
+            // cleanly re-initialize for the new container width once resize settles (same as reload!)
+            if (widthDiff > 6) {
+              if (resizeTimer) clearTimeout(resizeTimer);
+              resizeTimer = setTimeout(() => {
+                initTags(true);
+              }, 120);
+            }
+          }
         }
       }
     });
@@ -708,10 +1075,11 @@ export default function FallingTagsBlock({
     }
 
     return () => {
+      if (resizeTimer) clearTimeout(resizeTimer);
       ro.disconnect();
       if (observer) observer.disconnect();
     };
-  }, [isMounted, autoStartOnView, initTags]);
+  }, [isMounted, autoStartOnView, initTags, measureTags]);
 
   // Pointer Interaction (Mouse & Touch Grab & Throw)
   const handlePointerDown = (id: string, e: React.PointerEvent) => {
@@ -729,6 +1097,9 @@ export default function FallingTagsBlock({
     stateRef.current.dragOffset = { x: clientX - tag.x, y: clientY - tag.y };
     stateRef.current.mousePos = { x: clientX, y: clientY };
     stateRef.current.mouseHistory = [{ x: clientX, y: clientY, time: performance.now() }];
+    stateRef.current.fallStartTime = performance.now() - 1000;
+    tag.isSleeping = false;
+    tag.sleepFrames = 0;
 
     const onPointerMove = (moveEvt: PointerEvent) => {
       const mx = moveEvt.clientX - rect.left;
@@ -753,16 +1124,17 @@ export default function FallingTagsBlock({
         const prev = history[0];
         const dt = (last.time - prev.time) / 1000;
         if (dt > 0.01) {
-          const vx = (last.x - prev.x) / dt * 0.035;
-          const vy = (last.y - prev.y) / dt * 0.035;
-          tag.vx = clamp(vx, -22, 22);
-          tag.vy = clamp(vy, -22, 22);
-          tag.angularVelocity = (Math.random() - 0.5) * 0.35 + tag.vx * 0.02;
+          const vx = ((last.x - prev.x) / dt) * 0.035;
+          const vy = ((last.y - prev.y) / dt) * 0.035;
+          tag.vx = clamp(vx, -18, 18);
+          tag.vy = clamp(vy, -18, 18);
+          tag.angularVelocity = clamp((Math.random() - 0.5) * 0.2 + tag.vx * 0.015, -0.25, 0.25);
         }
       }
 
       stateRef.current.isDragging = false;
       stateRef.current.draggedId = null;
+      stateRef.current.fallStartTime = performance.now() - 800;
     };
 
     window.addEventListener("pointermove", onPointerMove);
@@ -772,15 +1144,21 @@ export default function FallingTagsBlock({
 
   // Actions
   const handleDropAgain = () => {
-    initTags();
+    initTags(false);
   };
 
   const handleScatter = () => {
     const tags = physicsTagsRef.current;
+    stateRef.current.fallStartTime = performance.now() - 800;
     tags.forEach((t) => {
-      t.vy = -8 - Math.random() * 12;
-      t.vx = (Math.random() - 0.5) * 16;
-      t.angularVelocity = (Math.random() - 0.5) * 0.4;
+      t.isSleeping = false;
+      t.sleepFrames = 0;
+      t.isSupported = false;
+      t.supportLeft = false;
+      t.supportRight = false;
+      t.vy = -8 - Math.random() * 10;
+      t.vx = (Math.random() - 0.5) * 14;
+      t.angularVelocity = (Math.random() - 0.5) * 0.25;
     });
     if (stateRef.current.phase === "floating") {
       stateRef.current.phase = "falling";
@@ -792,6 +1170,14 @@ export default function FallingTagsBlock({
     const next = !activeGravity;
     setActiveGravity(next);
     stateRef.current.activeGravity = next;
+    stateRef.current.fallStartTime = performance.now() - 800;
+    physicsTagsRef.current.forEach((t) => {
+      t.isSleeping = false;
+      t.sleepFrames = 0;
+      t.isSupported = false;
+      t.supportLeft = false;
+      t.supportRight = false;
+    });
     if (!next) {
       // Float tags gently upwards
       physicsTagsRef.current.forEach((t) => {
@@ -892,7 +1278,7 @@ export default function FallingTagsBlock({
               }}
               onPointerDown={(e) => handlePointerDown(item.id, e)}
               className={cn(
-                "absolute left-0 top-0 will-change-transform flex items-center justify-center gap-1.5 px-4 py-2 text-xs sm:text-sm font-semibold tracking-wide border rounded-[var(--radius)] shadow-xs transition-[box-shadow,filter] cursor-grab active:cursor-grabbing select-none leading-none",
+                "absolute left-0 top-0 will-change-transform flex items-center justify-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-semibold tracking-wide border rounded-[var(--radius)] shadow-xs transition-[box-shadow,filter] cursor-grab active:cursor-grabbing select-none leading-none whitespace-nowrap",
                 item.bg || style.bg,
                 item.text || style.text,
                 item.border || style.border,
@@ -900,6 +1286,7 @@ export default function FallingTagsBlock({
                 interactive && "hover:shadow-md hover:brightness-105",
               )}
               style={{
+                transformOrigin: "center center",
                 touchAction: "none",
                 WebkitUserSelect: "none",
                 userSelect: "none",
