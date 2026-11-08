@@ -636,7 +636,7 @@ export const HomepageHero = forwardRef<HTMLElement, HomepageHeroProps>(
         {description && (
           <p
             style={riseAt()}
-            className="cw-rise mt-6 max-w-[52ch] text-pretty text-[15px] leading-[1.65] text-muted-foreground sm:text-base"
+            className="cw-rise mt-6 max-w-[39em] text-pretty text-[15px] leading-[1.65] text-muted-foreground sm:text-base"
           >
             {description}
           </p>
@@ -710,7 +710,7 @@ export const HomepageHero = forwardRef<HTMLElement, HomepageHeroProps>(
                   <span className="text-sm font-semibold tabular-nums leading-none text-foreground">{trust.rating.toFixed(1)}</span>
                 </div>
               )}
-              <p className="max-w-[36ch] text-balance text-[13px] leading-snug text-muted-foreground">{trust.text}</p>
+              <p className="max-w-[27em] text-balance text-[13px] leading-snug text-muted-foreground">{trust.text}</p>
             </div>
           </div>
         )}

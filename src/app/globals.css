@@ -706,6 +706,20 @@ html body[data-scroll-locked] {
   margin-right: 0 !important;
 }
 
+/* Stand-in for Cooper until its file arrives. next/font's generated fallback
+   scales Arial to 90.3%, which is ~6% narrower than Cooper, so headlines
+   re-wrapped when the real font swapped in (the hero shifted ~0.1 CLS on a
+   throttled desktop load). Arial at 96% matches Cooper's measured widths to
+   within ~2%; the vertical overrides are next/font's, rescaled by 90.3/96. */
+@font-face {
+  font-family: "Cooper Fit";
+  src: local("Arial"), local("Helvetica"), local("Liberation Sans");
+  size-adjust: 96%;
+  ascent-override: 130.2%;
+  descent-override: 44.3%;
+  line-gap-override: 0%;
+}
+
 @theme {
   /* DM Sans for body/UI text, Cooper (self-hosted, see src/assets/fonts) for
      headings — see the h1–h4 rule in @layer base. Tailwind's preflight puts
@@ -713,7 +727,8 @@ html body[data-scroll-locked] {
      site-wide by setting --font-sans inline on <html>; headings keep Cooper. */
   --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-serif: var(--font-cooper), ui-serif, Georgia, serif;
+  --font-serif: "cooper", "Cooper Fit", var(--font-cooper), ui-serif, Georgia,
+    serif;
   --default-mono-font-family: "Geist Mono", ui-monospace, SFMono-Regular,
     Roboto Mono, Menlo, Monaco, Liberation Mono, DejaVu Sans Mono, Courier New,
     monospace;
