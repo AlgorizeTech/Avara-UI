@@ -3380,10 +3380,6 @@ export function ArchitecturalLiquidWordmark({
 
   const timeRef = useRef(0);
 
-  // Dynamic font size calculation so any custom wordmark text scales nicely inside the 1200x240 canvas
-  const len = Math.max(1, resolvedText.length);
-  const fontSize = Math.min(148, Math.max(68, Math.floor(960 / Math.max(5, len * 0.95))));
-
   // Total 36 organic metaball nodes:
   // 5 core nodes + 12 perimeter octopus tentacle lobes + 8 chained trail nodes + 6 satellite droplets + 5 inner inlets
   const TOTAL_CIRCLES = 36;
