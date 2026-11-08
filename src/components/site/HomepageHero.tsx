@@ -322,30 +322,16 @@ const STYLES = `
 @keyframes cw-word-out { to { opacity: 0; transform: translateY(-20px); filter: blur(8px); } }
 @keyframes cw-name-in { from { opacity: 0; transform: translateY(110%); } }
 @keyframes cw-name-out { to { opacity: 0; transform: translateY(-110%); } }
-@media (prefers-reduced-motion: no-preference) {
-  /* Hidden until in view. No translateY here: it is invisible anyway (opacity
-     0) and the cw-rise keyframes carry the same 14px start, so the entrance is
-     unchanged. But a refresh restores scroll by anchoring to a visible element,
-     and Chrome measures that element transform included. It was saved at its
-     resting place and found 14px lower while still hidden, so every reload
-     scrolled the page a little further down (14px, then ~67, then ~81...). */
-  .cw-rise-group:not([data-in-view]) .cw-rise { opacity: 0; }
-  .cw-rise-group[data-in-view] .cw-rise { animation: cw-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--cw-i) * 0.1s) backwards; }
-  .cw-tools-in { animation: cw-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.5s backwards; }
-}
-/* Below lg (the breakpoint where the image walls appear) nothing in the hero
-   has to line up with JavaScript: there is no wall to enter with the copy. So
-   the same entrance, with the same timings, starts on first paint instead of
-   after hydration, which on a phone is seconds later and is what the largest
-   contentful paint was waiting for. Same animation shorthand as the in-view
-   rule above, so when hydration sets data-in-view nothing restarts. From lg up
-   the wall is positioned by script, so the hero still waits for it and
-   everything keeps entering together. */
-@media (prefers-reduced-motion: no-preference) and (max-width: 1023.98px) {
-  .cw-rise-group:not([data-in-view]) .cw-rise { opacity: 1; animation: cw-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) calc(var(--cw-i) * 0.1s) backwards; }
-  .cw-rise-group [data-text-animation-state="hidden"],
-  .cw-rise-group [data-text-animation-state="hidden"] [data-text-animation-token] { animation-play-state: running; }
-}
+/* SEO / LCP: the hero copy (badge, h1, description, install command, buttons,
+   tool strip) is fully visible in the server HTML and on first paint, with no
+   entrance animation and no delay, on every viewport. It used to sit at opacity 0
+   until hydration (desktop) or fade in on a 0.1s-per-element stagger, so the
+   largest contentful paint, and what a crawler's renderer screenshots, waited for
+   JavaScript. Only the rotating word in the h1 keeps animating, and only after load. */
+.cw-rise-group .cw-rise,
+.cw-tools-in { opacity: 1; animation: none; }
+.cw-rise-group h1[data-text-animation],
+.cw-rise-group h1 [data-text-animation-token] { animation: none; }
 .cw-word-in { animation: cw-word-in 0.6s cubic-bezier(0, 0, 0.58, 1) backwards; }
 .cw-word-out { animation: cw-word-out 0.6s cubic-bezier(0, 0, 0.58, 1) forwards; }
 .cw-name-in { animation: cw-name-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) backwards; }

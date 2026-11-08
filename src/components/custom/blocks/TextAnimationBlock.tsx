@@ -242,18 +242,21 @@ export const TextAnimation = React.forwardRef<
               className={cn("flex flex-wrap gap-[0.25em]", className)}
             >
               {text.split(" ").map((word, index) => (
-                <span key={index} className="inline-flex">
-                  {word.split("").map((char, i) => (
-                    <span
-                      key={i}
-                      data-text-animation-token=""
-                      className="inline-block"
-                      style={{ animationDelay: delayAt(delay, charIndex++, stagger) }}
-                    >
-                      {char}
-                    </span>
-                  ))}
-                </span>
+                <React.Fragment key={index}>
+                  {index > 0 && " "}
+                  <span className="inline-flex">
+                    {word.split("").map((char, i) => (
+                      <span
+                        key={i}
+                        data-text-animation-token=""
+                        className="inline-block"
+                        style={{ animationDelay: delayAt(delay, charIndex++, stagger) }}
+                      >
+                        {char}
+                      </span>
+                    ))}
+                  </span>
+                </React.Fragment>
               ))}
             </Component>
           );
@@ -275,15 +278,20 @@ export const TextAnimation = React.forwardRef<
                 className,
               )}
             >
+              {/* A real space between the word tokens: in this flex container it
+                  takes up no room, but without it the text a crawler, a copy or a
+                  screen reader gets is "Buildinteractiveinterfaces". */}
               {text.split(" ").map((word, index) => (
-                <span
-                  key={index}
-                  data-text-animation-token=""
-                  className={cn("inline-block", variant === "flip" && "origin-bottom")}
-                  style={{ animationDelay: delayAt(delay, index, stagger) }}
-                >
-                  {renderWord ? renderWord(word, index) : word}
-                </span>
+                <React.Fragment key={index}>
+                  {index > 0 && " "}
+                  <span
+                    data-text-animation-token=""
+                    className={cn("inline-block", variant === "flip" && "origin-bottom")}
+                    style={{ animationDelay: delayAt(delay, index, stagger) }}
+                  >
+                    {renderWord ? renderWord(word, index) : word}
+                  </span>
+                </React.Fragment>
               ))}
             </Component>
           );

@@ -1270,6 +1270,62 @@ export function ExampleShowcase({
   );
 }
 
+/* Live previews are the heaviest thing on a docs page: each is a whole second
+   page (its own Next.js runtime, GSAP or Motion, the demo). They are not content
+   a crawler needs (the usage snippet is in <noscript>), so they stay out of the
+   load window entirely:
+   - nothing boots until the visitor shows up (first input) or PREVIEW_FALLBACK_MS
+     after `load`, whichever comes first;
+   - then previews boot one at a time, PREVIEW_GAP_MS apart, each on an idle
+     callback, instead of all the near-viewport ones at once;
+   - clicking a placeholder boots that preview immediately. */
+const PREVIEW_FALLBACK_MS = 5000;
+const PREVIEW_GAP_MS = 400;
+const PREVIEW_INPUT_EVENTS = ["pointerdown", "pointermove", "keydown", "scroll", "touchstart", "wheel"] as const;
+
+let previewsAllowed: Promise<void> | undefined;
+let previewQueue: Promise<void> = Promise.resolve();
+
+function whenPreviewsAllowed(): Promise<void> {
+  previewsAllowed ??= new Promise<void>((resolve) => {
+    let timer: number | undefined;
+    const done = () => {
+      window.clearTimeout(timer);
+      window.removeEventListener("load", arm);
+      PREVIEW_INPUT_EVENTS.forEach((type) => window.removeEventListener(type, done));
+      resolve();
+    };
+    const arm = () => {
+      timer = window.setTimeout(done, PREVIEW_FALLBACK_MS);
+    };
+    PREVIEW_INPUT_EVENTS.forEach((type) =>
+      window.addEventListener(type, done, { once: true, passive: true }),
+    );
+    if (document.readyState === "complete") arm();
+    else window.addEventListener("load", arm, { once: true });
+  });
+  return previewsAllowed;
+}
+
+/** Resolves when it is this preview's turn: after the one queued before it, on an idle moment. */
+function nextPreviewSlot(): Promise<void> {
+  const turn = previewQueue.then(
+    () =>
+      new Promise<void>((resolve) => {
+        const w = window as Window & {
+          requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
+        };
+        const idle = (cb: () => void) =>
+          typeof w.requestIdleCallback === "function"
+            ? w.requestIdleCallback(cb, { timeout: 1500 })
+            : window.setTimeout(cb, 50);
+        idle(() => window.setTimeout(resolve, PREVIEW_GAP_MS));
+      }),
+  );
+  previewQueue = turn;
+  return turn;
+}
+
 function ExampleCard({
   name,
   motionSwitch,
@@ -1310,47 +1366,25 @@ function ExampleCard({
       setMounted(true);
       return;
     }
-    // Each preview is a whole second page (its own Next.js runtime, GSAP, the
-    // demo), so booting one while the docs page itself is still hydrating
-    // doubles the main-thread work at the worst moment. Once the card is near
-    // the viewport it waits for an idle moment after the page's own load.
-    let idleHandle: number | undefined;
-    let loadListener: (() => void) | undefined;
-    const mountWhenIdle = () => {
-      const mount = () => {
-        const w = window as Window & {
-          requestIdleCallback?: (cb: () => void, opts?: { timeout: number }) => number;
-        };
-        if (typeof w.requestIdleCallback === "function") {
-          idleHandle = w.requestIdleCallback(() => setMounted(true), { timeout: 1500 });
-        } else {
-          idleHandle = window.setTimeout(() => setMounted(true), 300);
-        }
-      };
-      if (document.readyState === "complete") mount();
-      else {
-        loadListener = mount;
-        window.addEventListener("load", mount, { once: true });
-      }
-    };
+    // Near the viewport, then after the visitor's first input (or the fallback
+    // timer), then in this preview's turn in the queue: see whenPreviewsAllowed.
+    let cancelled = false;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          observer.disconnect();
-          mountWhenIdle();
-        }
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
+        whenPreviewsAllowed()
+          .then(nextPreviewSlot)
+          .then(() => {
+            if (!cancelled) setMounted(true);
+          });
       },
       { rootMargin: "200px" },
     );
     observer.observe(el);
     return () => {
+      cancelled = true;
       observer.disconnect();
-      if (loadListener) window.removeEventListener("load", loadListener);
-      if (idleHandle !== undefined) {
-        const w = window as Window & { cancelIdleCallback?: (h: number) => void };
-        if (typeof w.cancelIdleCallback === "function") w.cancelIdleCallback(idleHandle);
-        window.clearTimeout(idleHandle);
-      }
     };
   }, [mounted]);
 
@@ -1406,12 +1440,15 @@ function ExampleCard({
             v0Item={v0ItemFor(name, anchor)}
           />
         ) : (
-          <div
-            className="my-8 w-full rounded-2xl ring-1 ring-inset ring-foreground/[0.05] flex items-center justify-center bg-foreground/[0.03]"
+          <button
+            type="button"
+            onClick={() => setMounted(true)}
+            aria-label={`Load the ${title} live preview`}
+            className="my-8 w-full cursor-pointer rounded-2xl ring-1 ring-inset ring-foreground/[0.05] flex items-center justify-center bg-foreground/[0.03] outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
             style={{ minHeight: (minHeight || 420) + 54 /* 48px bar + 6px inset */ }}
           >
-            <div className="h-5 w-5 rounded-full border-2 border-foreground/15 border-t-transparent animate-spin" />
-          </div>
+            <span className="h-5 w-5 rounded-full border-2 border-foreground/15 border-t-transparent animate-spin motion-reduce:animate-none" />
+          </button>
         )}
         {/* The Usage tab only exists once the Sandbox mounts, which takes
             JavaScript. Readers without it, AI crawlers among them, get the
