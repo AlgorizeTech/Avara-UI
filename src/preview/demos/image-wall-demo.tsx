@@ -1,7 +1,6 @@
 "use client";
 
 import { ImageWall, type WallItem } from "@/components/custom/blocks/ImageWallBlock";
-import { cn } from "@/lib/utils";
 
 // Screenshots of this library's own sections, captured from their previews.
 const WALL_IMAGES: Record<string, string> = {
@@ -64,14 +63,20 @@ const ITEMS: WallItem[] = [
 ];
 
 export default function ImageWallDemo({
-  interval = 4500,
+  interval = true,
+  intervalTime = 5500,
   order = "serial",
   zoom = 1.35,
   columns = 4,
   example = "window",
+  highlightFocus = true,
+  focus,
+  draggable = false,
 }: {
-  /** Milliseconds the camera rests on a card; 0 holds still. */
-  interval?: number;
+  /** Milliseconds the camera rests on a card, or boolean (`true` = `intervalTime` / 5500ms, `false` = off). */
+  interval?: number | boolean;
+  /** Custom interval time in milliseconds when `interval={true}`. Defaults to 5500. */
+  intervalTime?: number;
   /** Card by card, or every card once per round in a random order. */
   order?: "serial" | "shuffle";
   /** The camera's resting scale. */
@@ -80,16 +85,29 @@ export default function ImageWallDemo({
   columns?: number;
   /** `window` is a tall box, one card at a time; `band` a short strip that shows a few. */
   example?: "window" | "band";
+  /** Whether the center card is bright while surrounding cards are slightly dimmed. */
+  highlightFocus?: boolean;
+  /** Alias for `highlightFocus`. */
+  focus?: boolean;
+  /** Whether the user can drag and pan the wall infinitely in all 4 directions. */
+  draggable?: boolean;
 }) {
+  const isFocusable = focus ?? highlightFocus;
+  const isIntervalEnabled = interval !== false && interval !== 0;
+  const resolvedMs = typeof interval === "number" && interval > 0 ? interval : intervalTime;
+
   return (
     <div className="w-full overflow-hidden rounded-2xl border border-border bg-background">
       <ImageWall
         items={ITEMS}
-        interval={interval}
+        interval={isIntervalEnabled ? resolvedMs : false}
+        intervalTime={resolvedMs}
         order={order}
-        zoom={zoom}
+        zoom={example === "band" && zoom === 1.35 ? 0.72 : zoom}
         columns={columns}
-        className={cn(example === "band" ? "h-56 sm:h-64" : "h-[28rem] sm:h-[32rem]")}
+        highlightFocus={isFocusable}
+        draggable={draggable}
+        className="h-[38rem] sm:h-[44rem]"
       />
     </div>
   );

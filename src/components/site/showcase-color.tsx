@@ -9,6 +9,12 @@ interface ShowcaseColorContextValue {
   color: string;
   setColor: (color: string) => void;
   /**
+   * Shared numerical slider values across all `ExampleShowcase` sections on the
+   * same page so a single top slider card updates every preview below it.
+   */
+  sharedControls: Record<string, number>;
+  setSharedControl: (name: string, value: number) => void;
+  /**
    * First caller wins and becomes the page's picker. Idempotent — the same id
    * keeps ownership across re-renders, so React can retry a render freely.
    */
@@ -32,6 +38,7 @@ const ShowcaseColorContext = createContext<ShowcaseColorContextValue | null>(nul
 export function ShowcaseColorProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [color, setColor] = useState(DEFAULT_SHOWCASE_COLOR);
+  const [sharedControls, setSharedControls] = useState<Record<string, number>>({});
   const pickerOwnerRef = useRef<string | null>(null);
   const sharedCodeRef = useRef(new Map<string, unknown>());
   const prevPathname = useRef(pathname);
@@ -44,7 +51,12 @@ export function ShowcaseColorProvider({ children }: { children: React.ReactNode 
 
   useEffect(() => {
     setColor(DEFAULT_SHOWCASE_COLOR);
+    setSharedControls({});
   }, [pathname]);
+
+  const setSharedControl = useCallback((name: string, value: number) => {
+    setSharedControls((prev) => (prev[name] === value ? prev : { ...prev, [name]: value }));
+  }, []);
 
   const claimPicker = useCallback((id: string) => {
     if (pickerOwnerRef.current === null) pickerOwnerRef.current = id;
@@ -52,9 +64,16 @@ export function ShowcaseColorProvider({ children }: { children: React.ReactNode 
   }, []);
 
   const value = useMemo(
-    () => ({ color, setColor, claimPicker, sharedCode: sharedCodeRef.current }),
+    () => ({
+      color,
+      setColor,
+      sharedControls,
+      setSharedControl,
+      claimPicker,
+      sharedCode: sharedCodeRef.current,
+    }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [color, claimPicker, pathname],
+    [color, sharedControls, setSharedControl, claimPicker, pathname],
   );
 
   return (

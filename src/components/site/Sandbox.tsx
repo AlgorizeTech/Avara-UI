@@ -1058,6 +1058,20 @@ function applyUsageColor(
   return usage.replace(fullMatch, replacement);
 }
 
+function applyUsageControls(
+  usage: string,
+  controls: Record<string, number>,
+): string {
+  let next = usage;
+  for (const [propName, val] of Object.entries(controls)) {
+    const propRegex = new RegExp(`(\\b${propName}=\\{)[0-9.]+(\\})`, "g");
+    if (propRegex.test(next)) {
+      next = next.replace(propRegex, `$1${val}$2`);
+    }
+  }
+  return next;
+}
+
 /** Demos that have a Motion twin (`<name>-motion`). */
 const DUAL_DEMOS = new Set(
   sandboxNames
@@ -1178,7 +1192,18 @@ export function ExampleShowcase({
 
   const handleControlChange = (name: string, value: number) => {
     setControlValues((prev) => ({ ...prev, [name]: value }));
+    shared?.setSharedControl(name, value);
   };
+
+  useEffect(() => {
+    if (!shared || controls.length === 0) return;
+    controls.forEach((ctrl) => {
+      if (shared.sharedControls[ctrl.name] === undefined) {
+        shared.setSharedControl(ctrl.name, ctrl.defaultValue);
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shared]);
 
   // Handed to the FIRST example so the card sits directly above its preview —
   // the controls read as part of that demo rather than as page furniture.
@@ -1200,8 +1225,13 @@ export function ExampleShowcase({
             values={controlValues}
             onChange={handleControlChange}
             // One or two sliders fit the right half; more than that need the
-            // full width, so they take their own row under the picker.
-            className={cn((!ownsPicker || controls.length > 2) && "lg:col-span-2")}
+            // full width, so they take their own row under the picker. A single
+            // slider matches ThemeColorPicker's compact sm:max-w-sm width.
+            className={cn(
+              controls.length === 1
+                ? "sm:max-w-sm"
+                : (!ownsPicker || controls.length > 2) && "lg:col-span-2",
+            )}
           />
         )}
       </ShowcaseControlCard>
@@ -1216,7 +1246,21 @@ export function ExampleShowcase({
         )}
       >
         {examples.map((example, index) => {
-          const effectiveProps = { ...example.props, ...controlValues };
+          const mergedControls = {
+            ...(shared?.sharedControls ?? {}),
+            ...controlValues,
+          };
+          const filteredControls: Record<string, number> = {};
+          for (const [k, v] of Object.entries(mergedControls)) {
+            if (k === "intervalTime" && (example.props?.interval === false || example.props?.interval === 0)) {
+              continue;
+            }
+            filteredControls[k] = v;
+          }
+          const effectiveProps = {
+            ...example.props,
+            ...filteredControls,
+          };
           if (colorControl) {
             effectiveProps[colorProp] = color;
           }
@@ -1238,10 +1282,20 @@ export function ExampleShowcase({
                 : effectiveProps,
             );
 
-          const effectiveUsage =
+          const colorAppliedUsage =
             rawUsage && colorControl
               ? applyUsageColor(rawUsage, color, colorProp)
               : rawUsage;
+
+          const effectiveUsage = colorAppliedUsage
+            ? applyUsageControls(colorAppliedUsage, filteredControls)
+            : colorAppliedUsage;
+
+          const effectivePropNotes = example.propNotes?.map((note) =>
+            note.prop in filteredControls && note.value !== undefined
+              ? { ...note, value: String(filteredControls[note.prop]) }
+              : note,
+          );
 
           const effectiveCode = resolveSnippet(pick(example.code), framework) ?? fallbackCode;
 
@@ -1252,6 +1306,7 @@ export function ExampleShowcase({
               motionSwitch={isDual}
               example={{
                 ...example,
+                propNotes: effectivePropNotes,
                 props: effectiveProps,
                 usage: effectiveUsage,
                 code: effectiveCode,

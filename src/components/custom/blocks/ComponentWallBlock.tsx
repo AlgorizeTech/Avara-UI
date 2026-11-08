@@ -455,7 +455,7 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
       },
       [handleFocus, shift, items.length],
     );
-    const restInterval = interval ?? 4500;
+    const restInterval = typeof interval === "boolean" ? (interval ? 4500 : 0) : (interval ?? 4500);
 
     // `npx shadcn@latest add @avara-ui/{item}` splits into what comes before
     // the name and after it; the last word before it (`@avara-ui/`) stays on
@@ -486,8 +486,9 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
       mobileZoom: isSmallScreen ? (mobileZoom ?? (isPersistent ? 0.30 : (isWallOnly ? 0.5 : 0.32))) : undefined,
       draggable,
       drift,
-      cardDim: cardDim ?? (isWallOnly ? 1 : undefined),
-      highlightFocus: highlightFocus ?? (isWallOnly ? false : undefined),
+      cardDim: cardDim ?? (isWallOnly ? 1 : 0.55),
+      highlightFocus: highlightFocus ?? (isWallOnly ? false : true),
+      cardShadow: true,
     };
 
     // Each line that rises takes the next place in line, skipping the absent ones.
@@ -722,6 +723,7 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
             drift={drift ?? { x: -0.35, y: -0.18 }}
             cardDim={cardDim ?? 1}
             highlightFocus={highlightFocus ?? false}
+            cardShadow={true}
             className="relative z-10 size-full [mask-image:radial-gradient(ellipse_78%_68%_at_50%_50%,black_45%,rgba(0,0,0,0.85)_75%,transparent_100%)]"
           />
 
