@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import { ArrowRight, Check, Copy, Github, Sparkles } from "lucide-react";
-import { motion, useInView } from "motion/react";
 import Link from "@/components/site/intent-link";
 import { useRef, useState } from "react";
 import { COMPONENT_COUNT, links } from "@/config/site";
@@ -94,7 +93,6 @@ function BunTabIcon({ active }: { active: boolean }) {
 
 export function CTASection() {
 	const ref = useRef(null);
-	const isInView = useInView(ref, { once: true, margin: "-40px" });
 	const [activePkg, setActivePkg] = useState<"npm" | "pnpm" | "yarn" | "bun">(
 		"npm",
 	);
@@ -152,10 +150,7 @@ export function CTASection() {
 		<section
 			ref={ref}
 			className="py-16 md:py-24 relative bg-background border-t border-border/60">
-			<motion.div
-				initial={{ opacity: 0, y: 25 }}
-				animate={isInView ? { opacity: 1, y: 0 } : {}}
-				transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+			<div
 				className={cn(SECTION_INNER, "relative z-10")}>
 				{/* Clean Architectural Container — 100% Shadow Free */}
 				<div className="rounded-3xl border border-border bg-card/50 overflow-hidden">
@@ -323,7 +318,7 @@ export function CTASection() {
 						</div>
 					</div>
 				</div>
-			</motion.div>
+			</div>
 		</section>
 	);
 }

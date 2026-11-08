@@ -4,7 +4,6 @@ import { AnimatedFAQBlock } from "@/components/custom/blocks/AnimatedFAQBlock";
 import { HOME_FAQ_GROUPS } from "@/components/home/faq-data";
 import { cn } from "@/lib/utils";
 import { Sparkles } from "lucide-react";
-import { motion, useInView } from "motion/react";
 import { useRef, useState } from "react";
 import { SECTION_H2, SECTION_SUB, EYEBROW_PILL } from "@/components/home/shared";
 
@@ -29,7 +28,6 @@ const FAQ_JSON_LD = JSON.stringify({
 
 export function AnimatedFAQSection() {
 	const ref = useRef(null);
-	const isInView = useInView(ref, { once: true, margin: "-40px" });
 	const [tab, setTab] = useState(HOME_FAQ_GROUPS[0].id);
 	const group = HOME_FAQ_GROUPS.find((g) => g.id === tab) ?? HOME_FAQ_GROUPS[0];
 
@@ -45,10 +43,7 @@ export function AnimatedFAQSection() {
 
 			<div className="max-w-[1320px] mx-auto px-6 md:px-8">
 				{/* Section Header */}
-				<motion.div
-					initial={{ opacity: 0, y: 20 }}
-					animate={isInView ? { opacity: 1, y: 0 } : {}}
-					transition={{ duration: 0.6 }}
+				<div
 					className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
 					<div className={cn(EYEBROW_PILL, "mb-4")}>
 						<Sparkles className="size-3.5 text-primary" />
@@ -61,13 +56,10 @@ export function AnimatedFAQSection() {
 						Everything you need to know about using Avara UI, component
 						integration, licensing, and custom styling.
 					</p>
-				</motion.div>
+				</div>
 
 				{/* Animated FAQ Block */}
-				<motion.div
-					initial={{ opacity: 0, y: 25 }}
-					animate={isInView ? { opacity: 1, y: 0 } : {}}
-					transition={{ duration: 0.7, delay: 0.15 }}>
+				<div>
 					{/* Topic tabs — a short list per tab keeps the canvas from standing empty */}
 					<div
 						role="tablist"
@@ -103,7 +95,7 @@ export function AnimatedFAQSection() {
 							showDimensions={false}
 						/>
 					</div>
-				</motion.div>
+				</div>
 			</div>
 		</section>
 	);

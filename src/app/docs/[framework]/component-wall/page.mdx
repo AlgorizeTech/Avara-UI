@@ -50,7 +50,7 @@ export const wallGroups = `    <TechStackGroup>
 
 {/* One snippet per framework: Next.js passes next/link so the wall's links route client-side; anywhere else the default <a> is the right thing and needs no import. */}
 
-export const wallUsage = ({ next, layout, comment, stackVariant, persistentBackground, showMobileWall }) => `"use client";
+export const wallUsage = ({ next, layout, comment, stackVariant, persistentBackground, showMobileWall, interval = true, draggable, focus = true }) => `"use client";
 
 ${next ? 'import Link from "next/link";\n' : ""}import { ComponentWall, type ComponentWallItem } from "@/components/custom/blocks/ComponentWallBlock";
 import { TechStack, TechStackGroup, TechStackTool } from "@/components/custom/blocks/TechStackBlock";
@@ -79,7 +79,7 @@ export default function Hero() {
       trust={{ text: "Loved by developers shipping real products with it", avatars: AVATARS, rating: 5 }}
       items={ITEMS}
       stack={STACK}
-      interval={4500}${next ? "\n      linkComponent={Link}" : ""}
+      interval={${interval}}${interval ? "\n      intervalTime={5500}" : ""}${draggable !== undefined ? `\n      draggable={${draggable}}` : ""}${focus !== undefined ? `\n      highlightFocus={${focus}}` : ""}${next ? "\n      linkComponent={Link}" : ""}
     />
   );
 }
@@ -88,6 +88,9 @@ export default function Hero() {
 export const wallCenter = {
   layout: "center",
   stackVariant: ' variant="compact"',
+  interval: true,
+  draggable: false,
+  focus: true,
   comment: `// Four to eight related tools per group; an odd group sits three over four. Add
 // more <TechStackGroup>s and they take turns. Any node works as the icon — an <img> too.
 // The centred column is narrow, so the compact variant (marks only) fits it.`,
@@ -97,6 +100,9 @@ export const wallPersistent = {
   layout: "center",
   persistentBackground: true,
   stackVariant: ' variant="compact"',
+  interval: false,
+  draggable: true,
+  focus: true,
   comment: `// Keeps the animated screenshot walls in the background layer behind the copy
 // across all screen sizes (mobile and desktop) instead of dropping below the buttons.`,
 };
@@ -105,6 +111,9 @@ export const wallNoMobile = {
   layout: "center",
   showMobileWall: false,
   stackVariant: ' variant="compact"',
+  interval: true,
+  draggable: true,
+  focus: true,
   comment: `// Hides the background image animation on mobile and small screens (<lg),
 // keeping the hero clean and focused while retaining full animation on desktop.
 // You can use showMobileWall={false} across ALL variants (center, split, persistentBackground).`,
@@ -113,6 +122,9 @@ export const wallNoMobile = {
 export const wallSplit = {
   layout: "split",
   stackVariant: "",
+  interval: true,
+  draggable: false,
+  focus: true,
   comment: `// Beside the wall there is room for names from xl up, so the labelled
 // (default) TechStack variant fits here.`,
 };
@@ -148,6 +160,11 @@ export default function FullscreenWallHero() {
     <ComponentWall
       layout="fullscreen"
       items={ITEMS}
+      interval={true}
+      intervalTime={5500}
+      draggable={true}
+      highlightFocus={false}
+      order="shuffle"
     />
   );
 }
@@ -162,6 +179,9 @@ export const usageFullscreen = {
   name="component-wall"
   columns={1}
   minHeight={760}
+  controls={[
+    { name: "intervalTime", label: "Interval Time", min: 1000, max: 10000, step: 100, defaultValue: 5500, unit: "ms" },
+  ]}
   examples={[
     {
       title: "Build interactive interfaces",
@@ -172,6 +192,18 @@ export const usageFullscreen = {
           value: '"center"',
           effect:
             "centres the copy between two walls, each half the width and fading in under it. The left camera rests high and towards the outside, the right one low, so the two resting cards never mirror each other across the headline. The walls split `items` — the first half on the left, the rest on the right — so each draws half the cards. Below `lg` there is one wall instead — a band of every card between the copy and the tools. `\"split\"`, the default, is the copy on the left and one wall on the right — see Examples.",
+        },
+        {
+          prop: "interval",
+          value: "true",
+          effect:
+            "enables the auto-slide camera flight (defaults to `5500ms`, or pass `intervalTime` / a custom millisecond value). Pass `false` (or `0`) to turn auto-sliding off.",
+        },
+        {
+          prop: "intervalTime",
+          value: "5500",
+          effect:
+            "sets the custom interval time in milliseconds when `interval={true}` (default `5500`).",
         },
         {
           prop: "install",
@@ -210,7 +242,7 @@ export const usageFullscreen = {
             "is this layout's default: each wall is half the width, so a smaller resting card keeps it clear of the copy. Pass `zoom` to override it.",
         },
       ],
-      props: { layout: "center" },
+      props: { layout: "center", interval: true, intervalTime: 5500, draggable: false, highlightFocus: true },
       usage,
       code: extractCode("src/components/custom/blocks/ComponentWallBlock.tsx"),
     },
@@ -246,6 +278,18 @@ export const usageFullscreen = {
             "ensures the animated walls remain anchored in the background behind the content on small screens, preventing the cards from dropping down below the call-to-action buttons.",
         },
         {
+          prop: "interval",
+          value: "false",
+          effect:
+            "disables automatic camera gliding, keeping both walls stationary while remaining draggable.",
+        },
+        {
+          prop: "draggable",
+          value: "true",
+          effect:
+            "allows users to drag and explore the background cards freely.",
+        },
+        {
           prop: "install",
           effect:
             "is the command in the box. Live-updates with the card slug the camera lands on.",
@@ -254,12 +298,6 @@ export const usageFullscreen = {
           prop: "items",
           effect:
             "are the cards dealt into the walls. The left wall draws the first half, the right wall the second half.",
-        },
-        {
-          prop: "interval",
-          value: "4500",
-          effect:
-            "is how long each camera rests on a card; the right one lands half an interval after the left.",
         },
         {
           prop: "mobileZoom",
@@ -273,7 +311,7 @@ export const usageFullscreen = {
             "renders the Tech Stack in compact mode below the trust statement in the center column.",
         },
       ],
-      props: { layout: "center", persistentBackground: true },
+      props: { layout: "center", persistentBackground: true, interval: false, draggable: true, highlightFocus: true },
       usage: usagePersistent,
     },
     {
@@ -286,6 +324,18 @@ export const usageFullscreen = {
           value: "false",
           effect:
             "completely hides the background screenshot animations on small screens and phones (<lg). Supported across all layout variants (center, split, and center-background). Desktop retains full dual-wall interactive animation.",
+        },
+        {
+          prop: "interval",
+          value: "true",
+          effect:
+            "enables automatic dual camera flights across both walls on desktop.",
+        },
+        {
+          prop: "draggable",
+          value: "true",
+          effect:
+            "allows interactive dragging and panning across the dual walls.",
         },
         {
           prop: "layout",
@@ -304,18 +354,12 @@ export const usageFullscreen = {
             "are the cards dealt into the walls.",
         },
         {
-          prop: "interval",
-          value: "4500",
-          effect:
-            "is how long each camera rests on a card.",
-        },
-        {
           prop: "stack",
           effect:
             "renders the Tech Stack in compact mode below the trust statement in the center column.",
         },
       ],
-      props: { layout: "center", showMobileWall: false },
+      props: { layout: "center", showMobileWall: false, interval: true, intervalTime: 5500, draggable: true, highlightFocus: true },
       usage: usageNoMobile,
     },
     {
@@ -329,6 +373,18 @@ export const usageFullscreen = {
             "is the default: the copy takes the left 44–46% on desktop and the wall the right 56–58%, fading in under the copy. Below `lg` the wall is a band under the copy.",
         },
         {
+          prop: "interval",
+          value: "true",
+          effect:
+            "glides the single wall camera from card to card automatically.",
+        },
+        {
+          prop: "draggable",
+          value: "false",
+          effect:
+            "disables dragging so the camera controls all navigation.",
+        },
+        {
           prop: "stack",
           effect:
             "sits over the lower wall on desktop and under the band on smaller screens; the wall blurs and fades beneath the marks. A labelled Tech Stack (the default variant) fits here: from `xl` up names sit beside the marks; below that only the marks show.",
@@ -339,7 +395,7 @@ export const usageFullscreen = {
           effect: "is the default here: one wall has room for a larger resting card.",
         },
       ],
-      props: { layout: "split" },
+      props: { layout: "split", interval: true, intervalTime: 5500, draggable: false, highlightFocus: true },
       usage: usageSplit,
       minHeight: 720,
     },
@@ -355,16 +411,34 @@ export const usageFullscreen = {
             "renders an edge-to-edge single canvas across the full screen with all cards included in a masonry column style, without dividing into left/right halves and without copy or text overlays.",
         },
         {
+          prop: "interval",
+          value: "true",
+          effect:
+            "glides the camera continuously across the infinite masonry canvas.",
+        },
+        {
           prop: "draggable",
           value: "true",
           effect:
             "allows users to click and drag the entire canvas in all 4 directions with inertial momentum physics and touch support, scrolling infinitely in 2D.",
         },
         {
-          prop: "drift",
+          prop: "highlightFocus",
+          value: "false",
+          effect:
+            "renders all cards at uniform clarity across the fullscreen canvas without dimming outer cards.",
+        },
+        {
+          prop: "order",
+          value: '"shuffle"',
+          effect:
+            "takes turns card by card across the canvas in dynamic, multi-directional flight paths rather than a single fixed direction.",
+        },
+        {
+          prop: "itemModal",
           value: "true",
           effect:
-            "enables continuous gentle ambient floating drift across the screen when not being actively dragged.",
+            "enables the interactive full-details modal on click, presenting card preview on the left and full details with action buttons on the right.",
         },
         {
           prop: "stagger",
@@ -384,7 +458,7 @@ export const usageFullscreen = {
             "all cards rendered within the single unified wall with infinite repeating tiles across the entire 2D plane.",
         },
       ],
-      props: { layout: "fullscreen" },
+      props: { layout: "fullscreen", interval: true, intervalTime: 5500, draggable: true, highlightFocus: false, order: "shuffle" },
       usage: usageFullscreen,
       minHeight: 640,
     },

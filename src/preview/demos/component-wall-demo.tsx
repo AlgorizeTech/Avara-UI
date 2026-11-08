@@ -7,7 +7,8 @@ import { WALL_AVATARS, WALL_ITEMS, WallStack } from "@/constants/component-wall"
 
 export default function ComponentWallDemo({
   interval,
-  order = "serial",
+  intervalTime = 5500,
+  order,
   layout = "center",
   persistentBackground = false,
   showMobileWall = true,
@@ -19,9 +20,13 @@ export default function ComponentWallDemo({
   drift,
   cardDim,
   highlightFocus,
+  cardShadow,
+  itemModal,
 }: {
-  /** Milliseconds the camera rests on a card; 0 holds still. */
-  interval?: number;
+  /** Milliseconds the camera rests on a card, or boolean (`true` = auto-slide, `false` = still). */
+  interval?: number | boolean;
+  /** Custom interval duration in milliseconds when `interval={true}`. Defaults to 5500. */
+  intervalTime?: number;
   /** Card by card, or every card once per round in a random order. */
   order?: "serial" | "shuffle";
   /** Copy on the left and the wall on the right, copy between two walls, or full-width wall without copy. */
@@ -46,7 +51,14 @@ export default function ComponentWallDemo({
   cardDim?: number;
   /** Whether to highlight center/focused cards and dim others. */
   highlightFocus?: boolean;
+  /** Whether cards render with elevated drop shadows. Defaults to true only for fullscreen/wall-only layout. */
+  cardShadow?: boolean;
+  /** Whether clicking a card item opens the full details modal. Defaults to true in fullscreen layout. */
+  itemModal?: boolean;
 }) {
+  const isWallOnly = layout === "fullscreen" || layout === "wall-only";
+  const defaultInterval = isWallOnly ? false : 5500;
+  const resolvedInterval = interval ?? defaultInterval;
   return (
     <div className="w-full overflow-hidden rounded-2xl border border-border">
       <ComponentWall
@@ -61,7 +73,8 @@ export default function ComponentWallDemo({
         trust={{ text: "Loved by developers shipping real products with it", avatars: WALL_AVATARS, rating: 5 }}
         items={WALL_ITEMS}
         stack={<WallStack variant={layout === "split" ? "labelled" : "compact"} />}
-        interval={interval ?? (layout === "fullscreen" || layout === "wall-only" ? 0 : 4500)}
+        interval={resolvedInterval}
+        intervalTime={intervalTime}
         order={order}
         layout={layout}
         persistentBackground={persistentBackground}
@@ -74,6 +87,8 @@ export default function ComponentWallDemo({
         drift={drift}
         cardDim={cardDim}
         highlightFocus={highlightFocus}
+        cardShadow={cardShadow}
+        itemModal={itemModal}
       />
     </div>
   );

@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import { ArrowUpRight, Maximize, MessageCircle, Pause, Play } from "lucide-react";
-import { MotionConfig, motion, useInView } from "motion/react";
 import { Fragment, Suspense, lazy, useRef, useState, type ReactNode } from "react";
 import { SITE_NAME } from "@/config/site";
 import { SECTION_INNER, SECTION_H2, SECTION_SUB, EYEBROW_PILL } from "@/components/home/shared";
@@ -456,7 +455,6 @@ function FeedbackCard({ item }: { item: FeedbackItem }) {
 
 export function FeedbackSection() {
 	const ref = useRef(null);
-	const isInView = useInView(ref, { once: true, margin: "-40px" });
 
 	return (
 		<section ref={ref} className="py-13 md:py-16 relative overflow-hidden bg-background">
@@ -464,12 +462,9 @@ export function FeedbackSection() {
 			<div className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-primary/5 rounded-full blur-3xl opacity-70" />
 			<div className="pointer-events-none absolute bottom-0 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl opacity-50" />
 
-			<MotionConfig reducedMotion="user">
+			<>
 				<div className={cn(SECTION_INNER, "mb-10 sm:mb-12")}>
-					<motion.div
-						initial={{ opacity: 0, y: 20 }}
-						animate={isInView ? { opacity: 1, y: 0 } : {}}
-						transition={{ duration: 0.6 }}
+					<div
 						className="text-center max-w-3xl mx-auto">
 						<div className={cn(EYEBROW_PILL, "mb-4")}>
 							<MessageCircle className="size-3.5 text-primary" />
@@ -480,23 +475,20 @@ export function FeedbackSection() {
 							Real impressions and feedback from developers and designers
 							exploring {SITE_NAME}.
 						</p>
-					</motion.div>
+					</div>
 				</div>
 
 				{/* CSS columns give the masonry with no JS and identical server/client HTML. */}
 				<div className={cn(SECTION_INNER, "columns-1 gap-4 sm:columns-2 sm:gap-5 lg:columns-3")}>
-					{FEEDBACK.map((item, index) => (
-						<motion.div
+					{FEEDBACK.map((item) => (
+						<div
 							key={item.id}
-							initial={{ opacity: 0, y: 24 }}
-							animate={isInView ? { opacity: 1, y: 0 } : {}}
-							transition={{ duration: 0.6, delay: 0.1 + (index % 6) * 0.07, ease: [0.22, 1, 0.36, 1] }}
 							className="mb-4 break-inside-avoid sm:mb-5">
 							<FeedbackCard item={item} />
-						</motion.div>
+						</div>
 					))}
 				</div>
-			</MotionConfig>
+			</>
 		</section>
 	);
 }
