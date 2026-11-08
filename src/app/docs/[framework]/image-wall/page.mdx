@@ -15,14 +15,29 @@ The wall is one tile of cards in staggered columns, repeated around itself eight
 
 export const wallItems = `const ITEMS: WallItem[] = [
   { title: "Word bounce hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/hero-1790516064495.jpg" },
-  { title: "Pricing plans", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/pricing-1790516064500.jpg" },
+  { title: "Product showcase", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/pricing-1790516064500.jpg" },
   { title: "Bento showcase", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/bento-showcase-1790516064489.jpg" },
   { title: "Book appointment", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/book-appointment-1790516064490.jpg" },
   { title: "Collage hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/collage-hero-1790516064493.jpg" },
   { title: "Fashion hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/fashion-hero-1790516064495.jpg" },
   { title: "Hero carousel", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516059/hero-carousel-1790516064496.jpg" },
   { title: "Honeycomb hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516059/honeycomb-hero-1790516064497.jpg" },
-  // … as many as you like; four columns of six reads well
+  { title: "Gallery", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/orbit-gallery-1790516064499.jpg" },
+  { title: "Newsletter", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/newsletter-1790516064499.jpg" },
+  { title: "Waitlist", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516059/waitlist-1790516064503.jpg" },
+  { title: "Footer", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/footer-1790516064495.jpg" },
+  { title: "Support hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516059/support-hero-1790516064502.jpg" },
+  { title: "Platform grid", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/platform-grid-1790516064500.jpg" },
+  { title: "Profile page", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/profile-page-1790516064501.jpg" },
+  { title: "Data flow", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516056/data-flow-1790516064493.jpg" },
+  { title: "Navbar", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/navbar-1790516064499.jpg" },
+  { title: "Login form", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/login-form-1790516064498.jpg" },
+  { title: "Chart", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516056/chart-1790516064492.jpg" },
+  { title: "Product details", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/product-details-1790516064500.jpg" },
+  { title: "Reviews", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516059/reviews-1790516064502.jpg" },
+  { title: "Calendar", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/calendar-1790516064491.jpg" },
+  { title: "Invoice", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516059/invoice-1790516064498.jpg" },
+  { title: "Data grid", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516056/data-grid-1790516064494.jpg" },
 ];`;
 
 export const usage = `"use client";
@@ -32,8 +47,18 @@ import { ImageWall, type WallItem } from "@/components/custom/blocks/ImageWallBl
 ${wallItems}
 
 export default function Showcase() {
-  // The wall fills its box — give it a height.
-  return <ImageWall items={ITEMS} interval={4500} className="h-[32rem] rounded-2xl" />;
+  return (
+    <div className="w-full overflow-hidden rounded-2xl border border-border bg-background">
+      <ImageWall
+        items={ITEMS}
+        interval={true}
+        intervalTime={5500}
+        highlightFocus={true}
+        draggable={false}
+        className="h-[38rem] sm:h-[44rem]"
+      />
+    </div>
+  );
 }
 `;
 
@@ -44,26 +69,41 @@ import { ImageWall, type WallItem } from "@/components/custom/blocks/ImageWallBl
 ${wallItems}
 
 export default function Band() {
-  // Under 420px tall the camera eases back so a few cards show at once.
-  return <ImageWall items={ITEMS} order="shuffle" className="h-64" />;
+  return (
+    <div className="w-full overflow-hidden rounded-2xl border border-border bg-background">
+      <ImageWall
+        items={ITEMS}
+        order="shuffle"
+        zoom={0.72}
+        interval={false}
+        highlightFocus={false}
+        draggable={true}
+        className="h-[38rem] sm:h-[44rem]"
+      />
+    </div>
+  );
 }
 `;
 
 export const usageStill = `"use client";
 
-import { useState } from "react";
 import { ImageWall, type WallItem } from "@/components/custom/blocks/ImageWallBlock";
 
 ${wallItems}
 
 export default function Still() {
-  const [current, setCurrent] = useState(0);
-  // interval={0} holds the camera on the first card; onFocus reports whichever card is in view.
   return (
-    <>
-      <ImageWall items={ITEMS} interval={0} zoom={1.2} onFocus={setCurrent} className="h-96" />
-      <p className="mt-2 text-sm text-muted-foreground">{ITEMS[current].title}</p>
-    </>
+    <div className="w-full overflow-hidden rounded-2xl border border-border bg-background">
+      <ImageWall
+        items={ITEMS}
+        interval={true}
+        intervalTime={5500}
+        zoom={1.2}
+        highlightFocus={true}
+        draggable={true}
+        className="h-[38rem] sm:h-[44rem]"
+      />
+    </div>
   );
 }
 `;
@@ -72,7 +112,10 @@ export default function Still() {
   name="image-wall"
   colorControl={false}
   columns={1}
-  minHeight={560}
+  minHeight={760}
+  controls={[
+    { name: "intervalTime", label: "Interval Time", min: 1000, max: 10000, step: 100, defaultValue: 5500, unit: "ms" },
+  ]}
   examples={[
     {
       title: "A camera over the wall",
@@ -85,9 +128,27 @@ export default function Still() {
         },
         {
           prop: "interval",
-          value: "4500",
+          value: "true",
           effect:
-            "is how long the camera rests on a card. It holds while the wall is hovered, while the tab is hidden and while the wall is off screen; `0` keeps the camera still on the first card.",
+            "enables the auto-slide camera flight (defaults to `5500ms` per card, or pass `intervalTime` / a custom millisecond value). Pass `false` (or `0`) to turn auto-sliding off.",
+        },
+        {
+          prop: "intervalTime",
+          value: "5500",
+          effect:
+            "sets the custom interval time in milliseconds when `interval={true}` (default `5500`).",
+        },
+        {
+          prop: "highlightFocus",
+          value: "true",
+          effect:
+            "keeps the center card at full clarity while dimming the surrounding cards (`0.55` opacity); set to `false` to show all cards clearly.",
+        },
+        {
+          prop: "draggable",
+          value: "false",
+          effect:
+            "disables drag-to-pan so the camera handles all movement on its own; set to `true` to let the user drag and pan the wall in any direction.",
         },
         {
           prop: "zoom",
@@ -105,7 +166,7 @@ export default function Still() {
             "in milliseconds makes the camera start pulled back and off to one side, drifting towards the first card with nothing in focus, and land on it only when the time is up — room for copy beside the wall to arrive first. The canvas is invisible until the camera has painted once, so the server-rendered wall never flashes unpositioned.",
         },
       ],
-      props: { example: "window" },
+      props: { example: "window", interval: true, intervalTime: 5500, highlightFocus: true, draggable: false },
       usage,
       code: extractCode("src/components/custom/blocks/ImageWallBlock.tsx"),
     },
@@ -122,6 +183,7 @@ export default function Still() {
   name="image-wall"
   colorControl={false}
   columns={1}
+  minHeight={760}
   examples={[
     {
       title: "A band, shuffled",
@@ -134,32 +196,62 @@ export default function Still() {
             "visits every card once per round in a random order; `\"serial\"` walks them one after another. Either way a card never comes round again before all the others have had a turn.",
         },
         {
+          prop: "interval",
+          value: "false",
+          effect: "turns off automatic camera sliding so the wall stays still unless dragged; set to `true` (or milliseconds) to enable auto-sliding.",
+        },
+        {
+          prop: "highlightFocus",
+          value: "false",
+          effect: "shows every card at full clarity; set to `true` to focus the center card and dim the surrounding ones.",
+        },
+        {
+          prop: "draggable",
+          value: "true",
+          effect: "lets the user grab and pan the wall infinitely in all four directions; set to `false` to turn dragging off.",
+        },
+        {
           lead: "A box under",
           prop: "420px",
           effect: "tall caps the zoom at 0.72 whatever `zoom` says, so the band shows neighbours instead of one card spilling out; a box under 640px wide caps it at 0.5.",
         },
       ],
-      props: { example: "band", order: "shuffle" },
+      props: { example: "band", order: "shuffle", interval: false, highlightFocus: false, draggable: true },
       usage: usageBand,
-      minHeight: 300,
+      minHeight: 760,
     },
     {
       title: "Held still",
-      subheading: "interval={0} parks the camera on the first card; the wall becomes a framed screenshot with its neighbours dimmed around it.",
+      subheading: "interval={true} with highlightFocus={true} and draggable={true} combines automatic camera flights with interactive drag-to-pan.",
       propNotes: [
         {
           prop: "interval",
-          value: "0",
-          effect: "never moves the camera. Pair it with a smaller `zoom` to show more of the wall at rest.",
+          value: "true",
+          effect: "enables automatic camera flights from card to card (default `5500ms`). Set to `false` (or `0`) to stop automatic movement.",
+        },
+        {
+          prop: "intervalTime",
+          value: "5500",
+          effect: "sets the custom interval time in milliseconds when `interval={true}` (default `5500`).",
+        },
+        {
+          prop: "highlightFocus",
+          value: "true",
+          effect: "keeps the center card at full clarity while dimming the surrounding cards (`0.55` opacity); set to `false` to show all cards clearly.",
+        },
+        {
+          prop: "draggable",
+          value: "true",
+          effect: "lets the user grab and pan the wall infinitely in all four directions; set to `false` to lock it in place.",
         },
         {
           prop: "onFocus",
-          effect: "is called with the index of the card the camera has settled on — the first card here — so you can caption or link it outside the wall.",
+          effect: "is called with the index of the card the camera has settled on so you can caption or link it outside the wall.",
         },
       ],
-      props: { example: "window", interval: 0, zoom: 1.2 },
+      props: { example: "window", interval: true, intervalTime: 5500, zoom: 1.2, highlightFocus: true, draggable: true },
       usage: usageStill,
-      minHeight: 560,
+      minHeight: 760,
     },
   ]}
 />
@@ -218,9 +310,15 @@ export default function Still() {
       </tr>
       <tr>
         <td><code>interval</code></td>
+        <td><code>number | boolean</code></td>
+        <td><code>5500</code></td>
+        <td>Milliseconds the camera rests on a card, or <code>boolean</code> (<code>true</code> = <code>intervalTime</code> / <code>5500</code>ms, <code>false</code> = <code>0</code>). <code>false</code> or <code>0</code> disables automatic sliding.</td>
+      </tr>
+      <tr>
+        <td><code>intervalTime</code></td>
         <td><code>number</code></td>
-        <td><code>4500</code></td>
-        <td>Milliseconds the camera rests; <code>0</code> holds still.</td>
+        <td><code>5500</code></td>
+        <td>Custom interval duration in milliseconds when <code>interval=&#123;true&#125;</code>.</td>
       </tr>
       <tr>
         <td><code>zoom</code></td>
@@ -239,6 +337,18 @@ export default function Still() {
         <td><code>&#123; x?: number; y?: number &#125;</code></td>
         <td><code>&#123; x: 0.5, y: 0.5 &#125;</code></td>
         <td>Where in the box the resting card sits, as shares of its width and height. Two walls side by side read better with one resting high and the other low.</td>
+      </tr>
+      <tr>
+        <td><code>highlightFocus</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>When <code>true</code>, the center card stays at full clarity while surrounding cards are slightly dimmed. Set to <code>false</code> to show all cards clearly.</td>
+      </tr>
+      <tr>
+        <td><code>draggable</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>When <code>true</code>, the user can grab and pan the wall infinitely in all four directions. Set to <code>false</code> to disable dragging.</td>
       </tr>
       <tr>
         <td><code>onFocus</code></td>
