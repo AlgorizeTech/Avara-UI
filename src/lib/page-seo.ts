@@ -168,6 +168,21 @@ const PAGE_SEO: Record<string, Seo> = {
     description: `Connect Claude Code, Cursor, VS Code, Codex or OpenCode to the ${SITE_NAME} registry through the shadcn MCP server, and install components from a prompt.`,
     keywords: ["shadcn mcp", "shadcn mcp server", "mcp server", "claude code shadcn", "cursor shadcn", "ai coding agent ui components"],
   },
+  blocks: {
+    title: `Shadcn Blocks: Free Website Sections - ${SITE_NAME}`,
+    description: `Free shadcn/ui blocks for React and Tailwind CSS: hero, pricing, footer, FAQ and app page sections you install with the shadcn CLI.`,
+    keywords: [...LIBRARY_KEYWORDS, "shadcn blocks", "free shadcn blocks", "shadcn ui blocks", "shadcn hero blocks", "shadcn pricing section", "shadcn footer", "tailwind website sections", "react landing page sections"],
+  },
+  "gsap-components": {
+    title: `Shadcn GSAP Components: Free & Animated - ${SITE_NAME}`,
+    description: `Free shadcn/ui components animated with GSAP for React and Tailwind CSS. Many also ship a Motion build. Install them with the shadcn CLI.`,
+    keywords: ["shadcn gsap components", "gsap react components", "gsap shadcn", "animated shadcn components", "free animated shadcn components", "gsap tailwind components", "gsap scrolltrigger react components", "gsap vs framer motion components"],
+  },
+  "agent-skills": {
+    title: `Agent Skill for Shadcn UI Components - ${SITE_NAME}`,
+    description: `Install a free agent skill so Claude Code, Cursor, Codex or Copilot plans, finds, installs and checks ${SITE_NAME} components without inventing props.`,
+    keywords: ["shadcn agent skill", "claude code skill ui components", "cursor rules shadcn", "agents.md shadcn", "ai coding agent ui components", "shadcn registry ai"],
+  },
   faq: {
     title: `FAQ: Free Shadcn UI Component Library - ${SITE_NAME}`,
     description: `What ${SITE_NAME} is, what it costs, how it differs from shadcn/ui, how to install it, and whether it works with Next.js, Vite and AI agents.`,

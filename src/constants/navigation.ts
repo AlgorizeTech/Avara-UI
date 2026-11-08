@@ -91,6 +91,7 @@ const rawNavigation: NavigationItem[] = [
       },
       { label: "Quick Start", slug: "first-app" },
       { label: "MCP", slug: "mcp" },
+      { label: "Agent Skill", slug: "agent-skills" },
       { label: "FAQ", slug: "faq" },
     ],
   },
@@ -102,6 +103,8 @@ const rawNavigation: NavigationItem[] = [
     label: "Components",
     children: [
       { label: "All Components", slug: "all-components", badge: "All" },
+      { label: "Blocks", slug: "blocks" },
+      { label: "GSAP Components", slug: "gsap-components" },
     ],
   },
   {
@@ -200,6 +203,7 @@ const rawNavigation: NavigationItem[] = [
       { label: "File Upload", slug: "file-upload" },
       { label: "Floating ContactButton", slug: "floating-contact-button" },
       { label: "Flow Gallery", slug: "flow-gallery" },
+      { label: "Flowchart", slug: "flowchart" },
       { label: "Folder", slug: "folder" },
       { label: "Form", slug: "form" },
       {
@@ -345,6 +349,8 @@ const rawNavigation: NavigationItem[] = [
           "3d flip",
         ],
       },
+      { label: "Split Scroll Stepper", slug: "split-scroll-stepper" },
+      { label: "Split Stepper", slug: "split-stepper" },
       { label: "Stepper", slug: "stepper" },
       { label: "Table", slug: "table" },
       { label: "Table of Contents", slug: "table-of-contents" },
@@ -354,6 +360,8 @@ const rawNavigation: NavigationItem[] = [
         slug: "tech-stack",
         keywords: ["tech stack", "built with", "tools", "logos", "logo strip", "brands", "technologies", "powered by"],
       },
+      { label: "Terminal", slug: "terminal" },
+      { label: "Text Animation", slug: "text-animation" },
       { label: "Theme Switcher", slug: "theme-switcher" },
       { label: "Tilted Card", slug: "tilted-card" },
       { label: "Timeline", slug: "timeline" },

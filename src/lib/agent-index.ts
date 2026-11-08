@@ -127,3 +127,49 @@ export function agentIndex() {
   };
 }
 
+
+/** Which pages a hub lists: every website section, or every page that animates with GSAP. */
+export type HubKind = "sections" | "gsap";
+
+/** A page summary cut at its last whole sentence that fits, for a list row. */
+export function shortSummary(summary: string, max = 150): string {
+  if (summary.length <= max) return summary;
+  const cut = summary.slice(0, max);
+  const stop = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("; "));
+  if (stop > 60) return `${cut.slice(0, stop)}.`;
+  return `${cut.slice(0, cut.lastIndexOf(" "))}…`;
+}
+
+/** The hub's pages grouped by category, in the order the "All components" page lists them. */
+export function hubGroups(kind: HubKind) {
+  const entries = agentEntries().filter((entry) =>
+    kind === "sections" ? entry.kind === "section" : entry.animation.includes("gsap"),
+  );
+  const order = Object.keys(COMPONENT_TYPES);
+  const groups = new Map<ComponentTypeId, { label: string; entries: AgentEntry[] }>();
+  for (const entry of entries) {
+    const group = groups.get(entry.category) ?? { label: entry.categoryLabel, entries: [] };
+    group.entries.push(entry);
+    groups.set(entry.category, group);
+  }
+  return [...groups.entries()]
+    .sort(([a], [b]) => order.indexOf(a) - order.indexOf(b))
+    .map(([, group]) => group);
+}
+
+/** The hub list as Markdown, for the page's Markdown mirror. */
+export function hubMarkdown(kind: HubKind): string {
+  return hubGroups(kind)
+    .map(
+      (group) =>
+        `**${group.label}**\n\n` +
+        group.entries
+          .map((entry) => {
+            const summary = shortSummary(entry.summary);
+            const motion = entry.motionItems.length ? " (Motion build available)" : "";
+            return `- [${entry.name}](${entry.markdownUrl})${summary ? `: ${summary}` : ""}${motion}`;
+          })
+          .join("\n"),
+    )
+    .join("\n\n");
+}

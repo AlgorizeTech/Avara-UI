@@ -2,14 +2,15 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-11-05T19:35:49.636Z
-**Total files:** 321
+**Generated at:** 2026-11-08T14:25:11.163Z
+**Total files:** 327
 
 ## Available Files
 
 - [docs](/docs-md/index.md) - Source: `page.mdx`
 - [nextjs/3d-carousel](/docs-md/nextjs-3d-carousel.md) - Source: `[framework]\3d-carousel\page.mdx`
 - [nextjs/accordion](/docs-md/nextjs-accordion.md) - Source: `[framework]\accordion\page.mdx`
+- [nextjs/agent-skills](/docs-md/nextjs-agent-skills.md) - Source: `[framework]\agent-skills\page.mdx`
 - [nextjs/ai-chat](/docs-md/nextjs-ai-chat.md) - Source: `[framework]\ai-chat\page.mdx`
 - [nextjs/alert](/docs-md/nextjs-alert.md) - Source: `[framework]\alert\page.mdx`
 - [nextjs/animated-list](/docs-md/nextjs-animated-list.md) - Source: `[framework]\animated-list\page.mdx`
@@ -21,6 +22,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/auth-forms](/docs-md/nextjs-auth-forms.md) - Source: `[framework]\auth-forms\page.mdx`
 - [nextjs/avatar-stack](/docs-md/nextjs-avatar-stack.md) - Source: `[framework]\avatar-stack\page.mdx`
 - [nextjs/bento-showcase](/docs-md/nextjs-bento-showcase.md) - Source: `[framework]\bento-showcase\page.mdx`
+- [nextjs/blocks](/docs-md/nextjs-blocks.md) - Source: `[framework]\blocks\page.mdx`
 - [nextjs/book-appointment](/docs-md/nextjs-book-appointment.md) - Source: `[framework]\book-appointment\page.mdx`
 - [nextjs/book-flip](/docs-md/nextjs-book-flip.md) - Source: `[framework]\book-flip\page.mdx`
 - [nextjs/booking-card](/docs-md/nextjs-booking-card.md) - Source: `[framework]\booking-card\page.mdx`
@@ -81,6 +83,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/form](/docs-md/nextjs-form.md) - Source: `[framework]\form\page.mdx`
 - [nextjs/gallery](/docs-md/nextjs-gallery.md) - Source: `[framework]\gallery\page.mdx`
 - [nextjs/glass-panel](/docs-md/nextjs-glass-panel.md) - Source: `[framework]\glass-panel\page.mdx`
+- [nextjs/gsap-components](/docs-md/nextjs-gsap-components.md) - Source: `[framework]\gsap-components\page.mdx`
 - [nextjs/half-stars](/docs-md/nextjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`
 - [nextjs/heart-signal](/docs-md/nextjs-heart-signal.md) - Source: `[framework]\heart-signal\page.mdx`
 - [nextjs/hero](/docs-md/nextjs-hero.md) - Source: `[framework]\hero\page.mdx`
@@ -170,6 +173,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/wizard](/docs-md/nextjs-wizard.md) - Source: `[framework]\wizard\page.mdx`
 - [reactjs/3d-carousel](/docs-md/reactjs-3d-carousel.md) - Source: `[framework]\3d-carousel\page.mdx`
 - [reactjs/accordion](/docs-md/reactjs-accordion.md) - Source: `[framework]\accordion\page.mdx`
+- [reactjs/agent-skills](/docs-md/reactjs-agent-skills.md) - Source: `[framework]\agent-skills\page.mdx`
 - [reactjs/ai-chat](/docs-md/reactjs-ai-chat.md) - Source: `[framework]\ai-chat\page.mdx`
 - [reactjs/alert](/docs-md/reactjs-alert.md) - Source: `[framework]\alert\page.mdx`
 - [reactjs/animated-list](/docs-md/reactjs-animated-list.md) - Source: `[framework]\animated-list\page.mdx`
@@ -181,6 +185,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/auth-forms](/docs-md/reactjs-auth-forms.md) - Source: `[framework]\auth-forms\page.mdx`
 - [reactjs/avatar-stack](/docs-md/reactjs-avatar-stack.md) - Source: `[framework]\avatar-stack\page.mdx`
 - [reactjs/bento-showcase](/docs-md/reactjs-bento-showcase.md) - Source: `[framework]\bento-showcase\page.mdx`
+- [reactjs/blocks](/docs-md/reactjs-blocks.md) - Source: `[framework]\blocks\page.mdx`
 - [reactjs/book-appointment](/docs-md/reactjs-book-appointment.md) - Source: `[framework]\book-appointment\page.mdx`
 - [reactjs/book-flip](/docs-md/reactjs-book-flip.md) - Source: `[framework]\book-flip\page.mdx`
 - [reactjs/booking-card](/docs-md/reactjs-booking-card.md) - Source: `[framework]\booking-card\page.mdx`
@@ -241,6 +246,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/form](/docs-md/reactjs-form.md) - Source: `[framework]\form\page.mdx`
 - [reactjs/gallery](/docs-md/reactjs-gallery.md) - Source: `[framework]\gallery\page.mdx`
 - [reactjs/glass-panel](/docs-md/reactjs-glass-panel.md) - Source: `[framework]\glass-panel\page.mdx`
+- [reactjs/gsap-components](/docs-md/reactjs-gsap-components.md) - Source: `[framework]\gsap-components\page.mdx`
 - [reactjs/half-stars](/docs-md/reactjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`
 - [reactjs/heart-signal](/docs-md/reactjs-heart-signal.md) - Source: `[framework]\heart-signal\page.mdx`
 - [reactjs/hero](/docs-md/reactjs-hero.md) - Source: `[framework]\hero\page.mdx`
