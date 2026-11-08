@@ -12,7 +12,6 @@ import {
 	Cpu,
 	GitPullRequest,
 } from "lucide-react";
-import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 import { SECTION_INNER, SECTION_H2, SECTION_SUB, CARD_TITLE, CARD_COPY, CARD_SURFACE } from "@/components/home/shared";
 
@@ -22,7 +21,6 @@ import { SECTION_INNER, SECTION_H2, SECTION_SUB, CARD_TITLE, CARD_COPY, CARD_SUR
 
 export function WhyChooseUsSection() {
 	const ref = useRef(null);
-	const isInView = useInView(ref, { once: true, margin: "-100px" });
 
 	return (
 		<section
@@ -36,10 +34,7 @@ export function WhyChooseUsSection() {
 
 			<div className={cn(SECTION_INNER, "relative z-10")}>
 				{/* Section Header */}
-				<motion.div
-					initial={{ opacity: 0, y: 30 }}
-					animate={isInView ? { opacity: 1, y: 0 } : {}}
-					transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+				<div
 					className="text-center mb-10 md:mb-12">
 					<h2 className={SECTION_H2}>Why Avara UI?</h2>
 					<p className={cn(SECTION_SUB, "mx-auto")}>
@@ -47,15 +42,12 @@ export function WhyChooseUsSection() {
 						displacement hover effects to beautiful physics animations and
 						scalable layouts.
 					</p>
-				</motion.div>
+				</div>
 
 				{/* 2x2 Bento Grid - Scaled down for breathing room */}
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-5">
 					{/* Card 1: Components You Won't Find Anywhere */}
-					<motion.div
-						initial={{ opacity: 0, y: 40 }}
-						animate={isInView ? { opacity: 1, y: 0 } : {}}
-						transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+					<div
 						className={cn(
 							"group flex flex-col p-6 md:p-8 rounded-2xl hover:border-primary/30 transition-all duration-700",
 							CARD_SURFACE,
@@ -90,13 +82,10 @@ export function WhyChooseUsSection() {
 								</p>
 							</div>
 						</div>
-					</motion.div>
+					</div>
 
 					{/* Card 2: Built with Modern Frameworks */}
-					<motion.div
-						initial={{ opacity: 0, y: 40 }}
-						animate={isInView ? { opacity: 1, y: 0 } : {}}
-						transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+					<div
 						className={cn(
 							"group flex flex-col p-6 md:p-8 rounded-2xl hover:border-primary/30 transition-all duration-700",
 							CARD_SURFACE,
@@ -146,13 +135,10 @@ export function WhyChooseUsSection() {
 								))}
 							</div>
 						</div>
-					</motion.div>
+					</div>
 
 					{/* Card 3: Open Source With Story */}
-					<motion.div
-						initial={{ opacity: 0, y: 40 }}
-						animate={isInView ? { opacity: 1, y: 0 } : {}}
-						transition={{ duration: 0.7, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+					<div
 						className={cn(
 							"group flex flex-col p-6 md:p-8 rounded-2xl hover:border-primary/30 transition-all duration-700",
 							CARD_SURFACE,
@@ -209,13 +195,10 @@ export function WhyChooseUsSection() {
 								</div>
 							</div>
 						</div>
-					</motion.div>
+					</div>
 
 					{/* Card 4: Build Landing Pages Faster */}
-					<motion.div
-						initial={{ opacity: 0, y: 40 }}
-						animate={isInView ? { opacity: 1, y: 0 } : {}}
-						transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+					<div
 						className={cn(
 							"group flex flex-col p-6 md:p-8 rounded-2xl hover:border-primary/30 transition-all duration-700",
 							CARD_SURFACE,
@@ -251,7 +234,7 @@ export function WhyChooseUsSection() {
 								</div>
 							</div>
 						</div>
-					</motion.div>
+					</div>
 				</div>
 			</div>
 		</section>
