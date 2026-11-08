@@ -25,6 +25,9 @@ const WHY = typeof window === "undefined"
 const GRID = typeof window === "undefined"
 	? (require("@/components/home/component-preview-grid-section") as typeof import("@/components/home/component-preview-grid-section")).ComponentPreviewGridSection
 	: null;
+const DIRECTORY = typeof window === "undefined"
+	? (require("@/components/home/component-directory-section") as typeof import("@/components/home/component-directory-section")).ComponentDirectorySection
+	: null;
 const FEEDBACK = typeof window === "undefined"
 	? (require("@/components/home/feedback-section") as typeof import("@/components/home/feedback-section")).FeedbackSection
 	: null;
@@ -70,6 +73,12 @@ export default function HomePage() {
 						import("@/components/home/component-preview-grid-section").then(
 							(m) => m.ComponentPreviewGridSection,
 						)
+					}
+				/>
+				<LazyHydrate
+					server={DIRECTORY}
+					load={() =>
+						import("@/components/home/component-directory-section").then((m) => m.ComponentDirectorySection)
 					}
 				/>
 				<LazyHydrate

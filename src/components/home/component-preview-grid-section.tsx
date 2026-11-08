@@ -2,7 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import { ArrowRight, LayoutGrid } from "lucide-react";
-import { motion, useInView } from "motion/react";
 import Link from "@/components/site/intent-link";
 import { useRef } from "react";
 import { SECTION_INNER, SECTION_EYEBROW, SECTION_H2, SECTION_SUB, BTN_CLAY } from "@/components/home/shared";
@@ -1997,16 +1996,12 @@ function MiniatureIllustration({
 
 export function ComponentPreviewGridSection() {
 	const ref = useRef(null);
-	const isInView = useInView(ref, { once: true, margin: "-60px" });
 
 	return (
 		<section ref={ref} className="py-12 md:py-16 bg-foreground/[0.02]">
 			<div className={SECTION_INNER}>
 				{/* Section Title */}
-				<motion.div
-					initial={{ opacity: 0, y: 30 }}
-					animate={isInView ? { opacity: 1, y: 0 } : {}}
-					transition={{ duration: 0.6 }}
+				<div
 					className="text-center mb-10">
 					<span className={SECTION_EYEBROW}>
 						<LayoutGrid className="size-3.5" />
@@ -2017,13 +2012,10 @@ export function ComponentPreviewGridSection() {
 						Click any component card below to inspect interactive live previews,
 						installation guides, and full source code.
 					</p>
-				</motion.div>
+				</div>
 
 				{/* Flat Grid for Featured 12 Components with Bottom Gradient Blur Overlay */}
-				<motion.div
-					initial={{ opacity: 0, y: 30 }}
-					animate={isInView ? { opacity: 1, y: 0 } : {}}
-					transition={{ duration: 0.5 }}
+				<div
 					className="relative">
 					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-5 py-2">
 						{featuredHomepageComponents.map((item, index) => {
@@ -2091,7 +2083,7 @@ export function ComponentPreviewGridSection() {
 							<ArrowRight className="size-4 transition-transform group-hover/btn:translate-x-1" />
 						</Link>
 					</div>
-				</motion.div>
+				</div>
 			</div>
 		</section>
 	);

@@ -33,7 +33,6 @@ import {
 	GalleryVerticalEnd,
 	Users,
 } from "lucide-react";
-import { motion, useInView } from "motion/react";
 import Link from "@/components/site/intent-link";
 import { useRef } from "react";
 import { SECTION_INNER, SECTION_EYEBROW, SECTION_H2, SECTION_SUB, CHIP } from "@/components/home/shared";
@@ -195,15 +194,11 @@ const sampleStackItems: CardStackItem[] = [
 
 export function ComponentShowcase() {
 	const ref = useRef(null);
-	const isInView = useInView(ref, { once: true, margin: "-80px" });
 
 	return (
 		<section ref={ref} className="py-13 md:py-16">
 			<div className={SECTION_INNER}>
-				<motion.div
-					initial={{ opacity: 0, y: 30 }}
-					animate={isInView ? { opacity: 1, y: 0 } : {}}
-					transition={{ duration: 0.6 }}
+				<div
 					className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
 					<div>
 						<span className={SECTION_EYEBROW}>
@@ -222,15 +217,12 @@ export function ComponentShowcase() {
 						View all components
 						<ArrowUpRight className="size-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
 					</Link>
-				</motion.div>
+				</div>
 
 				{/* 3-COLUMN LAYOUT */}
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
 					{/* Column 1 */}
-					<motion.div
-						initial={{ opacity: 0, y: 40 }}
-						animate={isInView ? { opacity: 1, y: 0 } : {}}
-						transition={{ duration: 0.5, delay: 0.1 }}
+					<div
 						className="flex flex-col gap-6">
 						<div className="showcase-card rounded-2xl border border-foreground/[0.06] bg-card p-5 overflow-hidden">
 							<div className="flex items-center justify-between gap-3 mb-4">
@@ -274,13 +266,10 @@ export function ComponentShowcase() {
 							</div>
 							<CommandSearchBlock />
 						</div>
-					</motion.div>
+					</div>
 
 					{/* Column 2 */}
-					<motion.div
-						initial={{ opacity: 0, y: 40 }}
-						animate={isInView ? { opacity: 1, y: 0 } : {}}
-						transition={{ duration: 0.5, delay: 0.2 }}
+					<div
 						className="flex flex-col gap-6">
 						<div className="showcase-card rounded-2xl border border-foreground/[0.06] bg-card p-5 overflow-hidden">
 							<div className="flex items-center justify-between gap-3 mb-4">
@@ -359,13 +348,10 @@ export function ComponentShowcase() {
 								</AvatarGroup>
 							</div>
 						</div>
-					</motion.div>
+					</div>
 
 					{/* Column 3 */}
-					<motion.div
-						initial={{ opacity: 0, y: 40 }}
-						animate={isInView ? { opacity: 1, y: 0 } : {}}
-						transition={{ duration: 0.5, delay: 0.3 }}
+					<div
 						className="flex flex-col gap-6">
 						<div className="showcase-card rounded-2xl border border-foreground/[0.06] bg-card p-5 overflow-hidden">
 							<div className="flex items-center justify-between gap-3 mb-4">
@@ -410,7 +396,7 @@ export function ComponentShowcase() {
 								</FitToWidth>
 							</div>
 						</div>
-					</motion.div>
+					</div>
 				</div>
 			</div>
 		</section>
