@@ -280,8 +280,8 @@
     "4-spotlight-gradient-interactive-pointer": "Counter Section — 4. Spotlight Gradient (Interactive Pointer)"
   },
   "cta-section": {
-    "mobile-app-showcase-variant-mobile-app": "Cta Section — Mobile App Showcase — variant=\"mobile-app\"",
     "offer-showcase-variant-offer-showcase": "Cta Section — Offer Showcase — variant=\"offer-showcase\"",
+    "mobile-app-showcase-variant-mobile-app": "Cta Section — Mobile App Showcase — variant=\"mobile-app\"",
     "concentric-portal-variant-concentric-portal": "Cta Section — Concentric Portal — variant=\"concentric-portal\"",
     "brand-pillars-variant-brand-pillars": "Cta Section — Brand Pillars — variant=\"brand-pillars\""
   },

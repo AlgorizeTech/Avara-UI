@@ -186,7 +186,7 @@ export interface FooterProps {
   snapshot?: SnapshotFooterContent;
   /** Configuration and content for the `wordmark-glow` variant. */
   wordmarkFooter?: WordmarkFooterProps;
-  /** Giant wordmark text for the `wordmark-glow` variant (default: "Algorize"). */
+  /** Giant wordmark text for the `wordmark-glow` variant (default: "Avara UI"). */
   wordmark?: string;
   /** Content and CTA config for the `editorial-card` / `tilted-cta` variant. */
   editorialCta?: EditorialFooterProps;
@@ -1577,7 +1577,7 @@ export function WordmarkFooter({
   logo,
   logoDark,
   logoHref = "/",
-  tagline = "AI first-round screening for recruiters. Algorize checks every applicant and runs the first interview, day or night.",
+  tagline = "AI first-round screening for recruiters. Avara UI checks every applicant and runs the first interview, day or night.",
   columns = DEFAULT_WORDMARK_COLUMNS,
   contact = DEFAULT_WORDMARK_CONTACT,
   social = DEFAULT_WORDMARK_SOCIAL,
@@ -1585,7 +1585,7 @@ export function WordmarkFooter({
   labels = {},
   copyright = "Avara UI",
   bottomLine = "A person makes every hiring decision.",
-  wordmark = "Algorize",
+  wordmark = "Avara UI",
   color,
   className = "",
 }: WordmarkFooterProps) {
@@ -3340,7 +3340,7 @@ export function getArchitecturalGlyph(
 }
 
 export function ArchitecturalLiquidWordmark({
-  text = "algorize",
+  text = "Avara UI",
   className,
 }: {
   text?: string;
@@ -3351,7 +3351,7 @@ export function ArchitecturalLiquidWordmark({
   const animFrameRef = useRef<number | null>(null);
   const laserDotRef = useRef<SVGRectElement>(null);
 
-  const resolvedText = React.useMemo(() => (text || "algorize").toUpperCase(), [text]);
+  const resolvedText = React.useMemo(() => (text || "Avara UI").toUpperCase(), [text]);
 
   // Pointer position in SVG coordinate space (0-1200, 0-240)
   const pointerRef = useRef({
@@ -3380,27 +3380,9 @@ export function ArchitecturalLiquidWordmark({
 
   const timeRef = useRef(0);
 
-  // Layout calculation for authentic CAD drafting blueprint glyphs
+  // Dynamic font size calculation so any custom wordmark text scales nicely inside the 1200x240 canvas
   const len = Math.max(1, resolvedText.length);
-  const letterSpacing = Math.min(136, Math.floor(1080 / len));
-  const letterWidth = Math.min(94, Math.floor(letterSpacing * 0.74));
-  const totalW = (len - 1) * letterSpacing;
-  const startX = 600 - totalW / 2;
-
-  const glyphList = React.useMemo(() => {
-    return resolvedText.split("").map((ch, idx) => {
-      const cx = startX + idx * letterSpacing;
-      return getArchitecturalGlyph(ch, cx, 120, letterWidth);
-    });
-  }, [resolvedText, startX, letterSpacing, letterWidth]);
-
-  const combinedFillD = React.useMemo(() => {
-    return glyphList.map((g) => g.fillD).join(" ");
-  }, [glyphList]);
-
-  const combinedStrokeD = React.useMemo(() => {
-    return glyphList.map((g) => g.strokeD).join(" ");
-  }, [glyphList]);
+  const fontSize = Math.min(148, Math.max(68, Math.floor(960 / Math.max(5, len * 0.95))));
 
   // Total 36 organic metaball nodes:
   // 5 core nodes + 12 perimeter octopus tentacle lobes + 8 chained trail nodes + 6 satellite droplets + 5 inner inlets
@@ -3651,11 +3633,27 @@ export function ArchitecturalLiquidWordmark({
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          {/* Defs: CAD Silhouette ClipPath & Turbulent Fluid Liquid Filter */}
+          {/* Defs: Stylish Real Typography ClipPath & Turbulent Fluid Liquid Filter */}
           <defs>
-            {/* The CAD Glyph Silhouette Clip-Path (EvenOdd rule ensures holes in O, G, A, R stay transparent) */}
-            <clipPath id={`cad-letters-clip-${uid}`} clipRule="evenodd">
-              <path d={combinedFillD} fillRule="evenodd" />
+            {/* Real SVG text clip-path: Edge-to-edge full width stylish geometric typography */}
+            <clipPath id={`cad-letters-clip-${uid}`}>
+              <text
+                x="50%"
+                y="52%"
+                textAnchor="middle"
+                dominantBaseline="central"
+                textLength="1160"
+                lengthAdjust="spacingAndGlyphs"
+                className="font-black uppercase select-none tracking-[0.04em]"
+                style={{
+                  fontSize: "172px",
+                  fontFamily:
+                    'var(--font-dm-sans), var(--font-geist-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                  fontWeight: 900,
+                }}
+              >
+                {resolvedText}
+              </text>
             </clipPath>
 
             {/* Gooey filter with fractal turbulence displacement for organic liquid ink dispersion */}
@@ -3692,7 +3690,29 @@ export function ArchitecturalLiquidWordmark({
             </filter>
           </defs>
 
-          {/* Layer 1: Clipped Paintbrush Liquid Ink Splatter that flows under hover */}
+          {/* Layer 1: Base State - Clean stylish outlined letters stretched edge-to-edge */}
+          <text
+            x="50%"
+            y="52%"
+            textAnchor="middle"
+            dominantBaseline="central"
+            textLength="1160"
+            lengthAdjust="spacingAndGlyphs"
+            className="font-black uppercase select-none tracking-[0.04em] fill-none stroke-neutral-800/80 dark:stroke-neutral-200/80 pointer-events-none transition-colors duration-150"
+            strokeWidth="1.8"
+            strokeLinejoin="round"
+            strokeLinecap="round"
+            style={{
+              fontSize: "172px",
+              fontFamily:
+                'var(--font-dm-sans), var(--font-geist-sans), system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+              fontWeight: 900,
+            }}
+          >
+            {resolvedText}
+          </text>
+
+          {/* Layer 2: Clipped Paintbrush Liquid Ink Splatter that flows under hover */}
           <g clipPath={`url(#cad-letters-clip-${uid})`}>
             {/* Underneath: Solid Gray Meniscus Shadow Fluid Layer with Active Theme Tint */}
             <g
@@ -3731,15 +3751,6 @@ export function ArchitecturalLiquidWordmark({
               ))}
             </g>
           </g>
-
-          {/* Layer 2: CAD Blueprint Stroke Lines (Persistent technical drafting spec with tick marks) */}
-          <path
-            d={combinedStrokeD}
-            className="stroke-neutral-800/80 dark:stroke-neutral-200/80 pointer-events-none transition-colors duration-150"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
 
           {/* Layer 3: CAD Laser Tracking Dot (Tiny red/orange square at pointer position) */}
           <rect
@@ -3823,7 +3834,7 @@ export function ArchitecturalLiquidFooter({
   heroTitle,
   brandWordmark: rawBrandWordmark,
   blueprintWordmark,
-  brandName = "Algorize",
+  brandName = "Avara UI",
   logo,
   color,
   subscribeText = "Want to see more cool websites like this? Sign up for occasional updates from Avara UI.",
@@ -3838,7 +3849,7 @@ export function ArchitecturalLiquidFooter({
   className,
 }: ArchitecturalLiquidFooterProps & { className?: string }) {
   const headline = heroTitle ?? rawHeadline ?? "CRAFTED FOR EXTRAORDINARY INTERFACES";
-  const brandWordmark = blueprintWordmark ?? rawBrandWordmark ?? "algorize";
+  const brandWordmark = blueprintWordmark ?? rawBrandWordmark ?? "Avara UI";
   const dynamicAccent = accentStyle(color);
   const [email, setEmail] = React.useState("");
   const [isSubscribed, setIsSubscribed] = React.useState(false);
@@ -4104,7 +4115,7 @@ export function Footer({
             blueprintWordmark ??
             wordmark ??
             architecturalLiquid?.brandWordmark ??
-            "algorize"
+            "Avara UI"
           }
           brandName={brandName}
           logo={logo}
@@ -4149,7 +4160,7 @@ export function Footer({
           tagline={
             tagline !== "Elevate your web applications with fluid, production-ready animated components."
               ? tagline
-              : wordmarkFooter?.tagline ?? "AI first-round screening for recruiters. Algorize checks every applicant and runs the first interview, day or night."
+              : wordmarkFooter?.tagline ?? "AI first-round screening for recruiters. Avara UI checks every applicant and runs the first interview, day or night."
           }
           columns={wordmarkFooter?.columns}
           contact={wordmarkFooter?.contact}
@@ -4158,7 +4169,7 @@ export function Footer({
           labels={wordmarkFooter?.labels}
           copyright={wordmarkFooter?.copyright ?? copyrightText ?? (brandName || "Avara UI")}
           bottomLine={wordmarkFooter?.bottomLine}
-          wordmark={wordmark ?? wordmarkFooter?.wordmark ?? "Algorize"}
+          wordmark={wordmark ?? wordmarkFooter?.wordmark ?? "Avara UI"}
         />
       </div>
     );

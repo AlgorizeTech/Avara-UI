@@ -10,56 +10,6 @@ import { extractCode } from "@/lib/code";
 
 An interconnected, conversion-focused call-to-action block designed for modern web applications, agencies, and SaaS platforms. Features high-impact interactive systems including **Mobile App Showcase** (interactive smartphone experience with live workout tracking, app store CTAs, and responsive previews), **Concentric Portal** (scroll-driven expanding circular lens with gyroscopic monospace orbital text), and **Offer Showcase** (promotional pricing card with moving nature reels).
 
-export const usageMobileApp = `import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
-
-export default function MobileAppExample() {
-  return (
-    <CTASection
-      variant="mobile-app"
-      badge="Mobile App Available"
-      heading={"Aura Clearmind..\nYour partner in wellness."}
-      subheading="Find and book your favorite yoga classes, guided meditation, and daily mindful wellness sessions from anywhere with our all-in-one mobile app, designed to bring balance, clarity, and peace to your life."
-      appleStoreHref="#"
-      googlePlayHref="#"
-      userName="Alicia Regis"
-      featuredWorkoutTitle="Wellness Workshops"
-      workoutDuration="10 Min"
-      workoutCalories="300 Kcal"
-    />
-  );
-};`;
-
-export const usageConcentricPortal = `import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
-
-export default function ConcentricPortalExample() {
-  return (
-    <CTASection
-      variant="concentric-portal"
-      heading="The next 5 days are yours."
-      subheading="Access Portal"
-      phrase="THE CONTENT ARCHITECTURE"
-      ctaText="GET ACCESS"
-      ctaHref="#"
-      autoRotate={true}
-    />
-  );
-}`;
-
-export const usageBrandPillars = `import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
-
-export default function BrandPillarsExample() {
-  return (
-    <CTASection
-      variant="brand-pillars"
-      color="#f95716"
-      statement="A strong brand isn't built from a single element. Branding, website, social, and data reinforce each other — together creating a brand that's recognizable, consistent, and effective."
-      summaryText='One complete, consistent brand" — 100%'
-      ctaText="Boek a demo"
-      ctaHref="#"
-    />
-  );
-}`;
-
 export const natureImages = [
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
@@ -111,63 +61,60 @@ export default function OfferShowcaseExample() {
   );
 }`;
 
+export const usageMobileApp = `import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
+
+export default function MobileAppExample() {
+  return (
+    <CTASection
+      variant="mobile-app"
+      badge="Mobile App Available"
+      heading={"Aura Clearmind..\nYour partner in wellness."}
+      subheading="Find and book your favorite yoga classes, guided meditation, and daily mindful wellness sessions from anywhere with our all-in-one mobile app, designed to bring balance, clarity, and peace to your life."
+      appleStoreHref="#"
+      googlePlayHref="#"
+      userName="Alicia Regis"
+      featuredWorkoutTitle="Wellness Workshops"
+      workoutDuration="10 Min"
+      workoutCalories="300 Kcal"
+    />
+  );
+};`;
+
+export const usageConcentricPortal = `import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
+
+export default function ConcentricPortalExample() {
+  return (
+    <CTASection
+      variant="concentric-portal"
+      heading="The next 5 days are yours."
+      subheading="Access Portal"
+      phrase="THE CONTENT ARCHITECTURE"
+      ctaText="GET ACCESS"
+      ctaHref="#"
+      autoRotate={true}
+    />
+  );
+}`;
+
+export const usageBrandPillars = `import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
+
+export default function BrandPillarsExample() {
+  return (
+    <CTASection
+      variant="brand-pillars"
+      color="#f95716"
+      statement="A strong brand isn't built from a single element. Branding, website, social, and data reinforce each other — together creating a brand that's recognizable, consistent, and effective."
+      summaryText='One complete, consistent brand" — 100%'
+      ctaText="Boek a demo"
+      ctaHref="#"
+    />
+  );
+};`;
+
 <ExampleShowcase headingLevel={2}
   name="cta-section"
   columns={1}
   examples={[
-    {
-      title: 'Mobile App Showcase — variant="mobile-app"',
-      subheading:
-        "Pass `variant=\"mobile-app\"` for a scroll-driven app showcase CTA. Initially displays only the iPhone 17 Pro Max centered in the viewport; scrolling smoothly glides the phone down and to the left while the editorial headline, description, and official app store badges reveal on the right.",
-      propNotes: [
-        {
-          lead: "Pass",
-          prop: "variant",
-          value: '"mobile-app"',
-          effect: "Selects the mobile app showcase layout with an upright iPhone 17 Pro Max mockup.",
-        },
-        {
-          lead: "Set",
-          prop: "headingAccent",
-          value: '"your partner"',
-          effect: "Applies an elegant serif italic treatment to the highlighted phrase in the headline.",
-        },
-        {
-          lead: "Set",
-          prop: "userName",
-          value: '"Alicia Regis"',
-          effect: "Customizes the greeting header inside the phone screen feed.",
-        },
-        {
-          lead: "Set",
-          prop: "featuredWorkoutTitle",
-          value: '"Wellness Workshops"',
-          effect: "Sets the title of the hero video/image card within the mobile feed.",
-        },
-        {
-          lead: "Set",
-          prop: "showAppStoreBadges",
-          value: "true",
-          effect: "Displays official Apple App Store and Google Play store download buttons.",
-        },
-      ],
-      props: {
-        variant: "mobile-app",
-        badge: "Mobile App Available",
-        heading: "Aura Clearmind..\nYour partner in wellness.",
-        subheading:
-          "Find and book your favorite yoga classes, guided meditation, and daily mindful wellness sessions from anywhere with our all-in-one mobile app, designed to bring balance, clarity, and peace to your life.",
-        appleStoreHref: "#",
-        googlePlayHref: "#",
-        showAppStoreBadges: true,
-        userName: "Alicia Regis",
-        featuredWorkoutTitle: "Wellness Workshops",
-        workoutDuration: "10 Min",
-        workoutCalories: "300 Kcal",
-      },
-      usage: usageMobileApp,
-      code: extractCode("src/components/custom/blocks/CtaSectionBlock.tsx"),
-    },
     {
       title: 'Offer Showcase — variant="offer-showcase"',
       subheading: "Pass `variant=\"offer-showcase\"` for a high-impact central promotional offer card flanked by moving nature reels with animated price count-up.",
@@ -223,6 +170,59 @@ export default function OfferShowcaseExample() {
         images: natureImages,
       },
       usage: usageOfferShowcase,
+      code: extractCode("src/components/custom/blocks/CtaSectionBlock.tsx"),
+    },
+    {
+      title: 'Mobile App Showcase — variant="mobile-app"',
+      subheading:
+        "Pass `variant=\"mobile-app\"` for a scroll-driven app showcase CTA. Initially displays only the Google Pixel 8 Android frame centered in the viewport; scrolling smoothly glides the phone down and to the left while the editorial headline, description, and official app store badges reveal on the right.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "variant",
+          value: '"mobile-app"',
+          effect: "Selects the mobile app showcase layout with an upright Android Google Pixel 8 mockup.",
+        },
+        {
+          lead: "Set",
+          prop: "headingAccent",
+          value: '"your partner"',
+          effect: "Applies an elegant serif italic treatment to the highlighted phrase in the headline.",
+        },
+        {
+          lead: "Set",
+          prop: "userName",
+          value: '"Alicia Regis"',
+          effect: "Customizes the greeting header inside the phone screen feed.",
+        },
+        {
+          lead: "Set",
+          prop: "featuredWorkoutTitle",
+          value: '"Wellness Workshops"',
+          effect: "Sets the title of the hero video/image card within the mobile feed.",
+        },
+        {
+          lead: "Set",
+          prop: "showAppStoreBadges",
+          value: "true",
+          effect: "Displays official Apple App Store and Google Play store download buttons.",
+        },
+      ],
+      props: {
+        variant: "mobile-app",
+        badge: "Mobile App Available",
+        heading: "Aura Clearmind..\nYour partner in wellness.",
+        subheading:
+          "Find and book your favorite yoga classes, guided meditation, and daily mindful wellness sessions from anywhere with our all-in-one mobile app, designed to bring balance, clarity, and peace to your life.",
+        appleStoreHref: "#",
+        googlePlayHref: "#",
+        showAppStoreBadges: true,
+        userName: "Alicia Regis",
+        featuredWorkoutTitle: "Wellness Workshops",
+        workoutDuration: "10 Min",
+        workoutCalories: "300 Kcal",
+      },
+      usage: usageMobileApp,
       code: extractCode("src/components/custom/blocks/CtaSectionBlock.tsx"),
     },
     {
