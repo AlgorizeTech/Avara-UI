@@ -56,6 +56,16 @@ const nextConfig: NextConfig = {
       "@radix-ui/react-icons",
     ],
     scrollRestoration: true,
+
+    // Lower peak RAM during `next build`, so it fits on a small VPS builder.
+    // The webpack build worker runs the compile in its own process and frees
+    // its memory before the type check and lint start. It is off by default
+    // whenever a custom webpack config exists, and @next/mdx plus the bundle
+    // analyzer both add one, so it has to be switched on explicitly.
+    webpackBuildWorker: true,
+    // Trades a little compile time for a lower memory peak (low-risk per the
+    // Next.js memory guide).
+    webpackMemoryOptimizations: true,
   },
 
   // Webpack configuration
