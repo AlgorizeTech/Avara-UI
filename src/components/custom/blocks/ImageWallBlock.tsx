@@ -57,6 +57,8 @@ export interface ImageWallProps extends Omit<React.HTMLAttributes<HTMLDivElement
   anchor?: { x?: number; y?: number };
   /** Called with the index of the card the camera has settled on. */
   onFocus?: (index: number) => void;
+  /** Called when a card item is clicked/tapped (distinguished from dragging). */
+  onItemClick?: (item: WallItem, index: number) => void;
   /** Whether the user can drag and pan the wall infinitely in all 4 directions. Defaults to true. */
   draggable?: boolean;
   /** Ambient continuous slow drift when not dragging. Set to true, or pass custom velocity `{ x, y }`. */
@@ -321,6 +323,7 @@ const WallCard = React.memo(function WallCard({
   isCenter,
   highlightFocus = true,
   cardShadow = false,
+  hasItemClick = false,
 }: {
   card: Placed;
   left: number;
@@ -331,6 +334,7 @@ const WallCard = React.memo(function WallCard({
   isCenter?: boolean;
   highlightFocus?: boolean;
   cardShadow?: boolean;
+  hasItemClick?: boolean;
 }) {
   const activeFocus = highlightFocus && (cardShadow ? isFocus : Boolean(isCenter));
   const activeCenter = highlightFocus && isCenter;
@@ -347,7 +351,10 @@ const WallCard = React.memo(function WallCard({
       data-card-x={left}
       data-card-y={top}
       className={cn(
-        "absolute flex flex-col gap-1.5 overflow-hidden rounded-2xl border border-foreground/12 p-2 transition-[opacity,transform,filter,box-shadow] duration-500 ease-out select-none pointer-events-none will-change-transform",
+        "absolute flex flex-col gap-1.5 overflow-hidden rounded-2xl border border-foreground/12 p-2 transition-[opacity,transform,filter,box-shadow] duration-500 ease-out select-none will-change-transform",
+        hasItemClick
+          ? "pointer-events-auto cursor-pointer"
+          : "pointer-events-none",
         cardShadow ? "bg-card shadow-xl shadow-black/20 dark:shadow-black/55" : "bg-muted",
       )}
       style={{
@@ -420,6 +427,7 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
       intro = 0,
       anchor,
       onFocus,
+      onItemClick,
       draggable = true,
       drift = false,
       cardDim = REST_DIM,
@@ -758,6 +766,52 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
           (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
         } catch {}
 
+        if (!d.moved && onItemClick) {
+          const wrap = wrapRef.current;
+          if (wrap) {
+            const rect = wrap.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const clickY = e.clientY - rect.top;
+            const { x, y, s } = cameraRef.current;
+            const canvasX = (clickX - x) / s;
+            const canvasY = (clickY - y) / s;
+            const tw = tileRef.current.width;
+            const th = tileRef.current.height;
+            const baseDx = Math.floor(canvasX / tw);
+            const baseDy = Math.floor(canvasY / th);
+            const placedList = placedRef.current;
+            let clickedIndex = -1;
+
+            for (let cdy = baseDy - 1; cdy <= baseDy + 1; cdy++) {
+              for (let cdx = baseDx - 1; cdx <= baseDx + 1; cdx++) {
+                const offsetX = cdx * tw;
+                const offsetY = cdy * th;
+                for (let i = 0; i < placedList.length; i++) {
+                  const c = placedList[i];
+                  const left = c.left + offsetX;
+                  const top = c.top + offsetY;
+                  if (
+                    canvasX >= left &&
+                    canvasX <= left + CARD_W &&
+                    canvasY >= top &&
+                    canvasY <= top + CARD_H
+                  ) {
+                    clickedIndex = items.length > 0 ? i % items.length : i;
+                    break;
+                  }
+                }
+                if (clickedIndex >= 0) break;
+              }
+              if (clickedIndex >= 0) break;
+            }
+
+            if (clickedIndex >= 0) {
+              const rawItem = items[clickedIndex] ?? placedList[clickedIndex];
+              onItemClick(rawItem, clickedIndex);
+            }
+          }
+        }
+
         const maxV = 28;
         let vx = Math.max(-maxV, Math.min(maxV, d.vx || 0));
         let vy = Math.max(-maxV, Math.min(maxV, d.vy || 0));
@@ -788,7 +842,7 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
           startAmbientDrift();
         }
       },
-      [cull, startAmbientDrift],
+      [cull, startAmbientDrift, onItemClick, items],
     );
 
     // A flight's callbacks: follow the camera for culling (the animations
@@ -892,7 +946,7 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
         }
       }
       const handleResize = () => {
-        if (hasInteractedRef.current || drift) {
+        if (hasInteractedRef.current || drift || flightRef.current) {
           cull();
           return;
         }
@@ -902,13 +956,9 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
       ro?.observe(wrap);
       return () => {
         ro?.disconnect();
-        // Torn down mid-intro — React's rehearsal unmount in development, or the
-        // geometry changing under it — stop it and let the next run start it
-        // afresh. Left alone, a killed intro never clears `flying`, and the
-        // camera never moves again.
+        // Torn down mid-intro — stop flight and clear flying flag
         if (introLive) {
           flightRef.current?.kill();
-          introDone.current = false;
           setFlying(false);
         }
       };
@@ -1118,11 +1168,12 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
                 isCenter={isCenter}
                 highlightFocus={highlightFocus}
                 cardShadow={cardShadow}
+                hasItemClick={Boolean(onItemClick)}
               />
             );
           });
         }),
-      [offsets, placed, width, height, lit, cardDim, centerKey, focusKeys, highlightFocus, cardShadow, drift],
+      [offsets, placed, width, height, lit, cardDim, centerKey, focusKeys, highlightFocus, cardShadow, drift, onItemClick],
     );
 
     return (
