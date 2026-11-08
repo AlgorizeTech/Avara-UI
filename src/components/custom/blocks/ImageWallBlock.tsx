@@ -29,8 +29,10 @@ export interface ImageWallProps extends Omit<React.HTMLAttributes<HTMLDivElement
   gap?: number;
   /** Vertical stagger offset between alternate columns. Set to 0 for a uniform grid with equal 16px gap on all sides. Defaults to 72. */
   stagger?: number;
-  /** Milliseconds the camera rests on a card before moving on. `0` holds still. */
-  interval?: number;
+  /** Milliseconds the camera rests on a card before moving on, or a boolean (`true` = `intervalTime` / 5500ms, `false` = 0/off). Defaults to 5500. */
+  interval?: number | boolean;
+  /** Custom interval duration in milliseconds when `interval={true}`. Defaults to 5500. */
+  intervalTime?: number;
   /**
    * How the camera walks the wall: `serial` goes card by card in order;
    * `shuffle` visits every card once per round in a random order. Either
@@ -59,10 +61,14 @@ export interface ImageWallProps extends Omit<React.HTMLAttributes<HTMLDivElement
   draggable?: boolean;
   /** Ambient continuous slow drift when not dragging. Set to true, or pass custom velocity `{ x, y }`. */
   drift?: boolean | { x?: number; y?: number };
-  /** Resting dim of cards when not in focus. Defaults to 0.55 (or 0.88 in fullscreen). */
+  /** Resting dim of cards when not in focus. Defaults to 0.55. */
   cardDim?: number;
-  /** Whether to highlight center/focused cards and dim others. Defaults to true. */
+  /** Whether to highlight the center/focused card and dim others. Defaults to true. */
   highlightFocus?: boolean;
+  /** Alias for `highlightFocus` — set true to focus center card and dim others, or false to keep all cards clear. */
+  focus?: boolean;
+  /** Whether cards render with elevated drop shadows. Defaults to false. */
+  cardShadow?: boolean;
 }
 
 // ------------------------------------------
@@ -314,6 +320,7 @@ const WallCard = React.memo(function WallCard({
   isFocus,
   isCenter,
   highlightFocus = true,
+  cardShadow = false,
 }: {
   card: Placed;
   left: number;
@@ -323,14 +330,15 @@ const WallCard = React.memo(function WallCard({
   isFocus: boolean;
   isCenter?: boolean;
   highlightFocus?: boolean;
+  cardShadow?: boolean;
 }) {
-  const activeFocus = highlightFocus && isFocus;
+  const activeFocus = highlightFocus && (cardShadow ? isFocus : Boolean(isCenter));
   const activeCenter = highlightFocus && isCenter;
   const opacity = highlightFocus ? (activeFocus ? 1 : dim) : 1;
-  const filter = highlightFocus ? (activeFocus ? "none" : "grayscale(40%)") : "none";
-  const transform = highlightFocus ? (activeFocus ? (activeCenter ? "scale(1.03)" : "scale(1.018)") : "none") : "none";
+  const filter = cardShadow && highlightFocus ? (activeFocus ? "none" : "grayscale(40%)") : "none";
+  const transform = cardShadow && highlightFocus ? (activeFocus ? (activeCenter ? "scale(1.03)" : "scale(1.018)") : "none") : "none";
   const zIndex = highlightFocus ? (activeCenter ? 14 : activeFocus ? 10 : 1) : 1;
-  const boxShadow = highlightFocus ? (activeFocus ? "0 10px 30px -10px rgba(0,0,0,0.3)" : undefined) : undefined;
+  const boxShadow = cardShadow && highlightFocus && activeFocus ? "0 10px 30px -10px rgba(0,0,0,0.3)" : undefined;
 
   return (
     <figure
@@ -338,7 +346,10 @@ const WallCard = React.memo(function WallCard({
       data-card
       data-card-x={left}
       data-card-y={top}
-      className="absolute flex flex-col gap-1.5 overflow-hidden rounded-2xl border border-foreground/12 bg-card p-2 shadow-xl shadow-black/20 dark:shadow-black/55 transition-[opacity,transform,filter,box-shadow] duration-500 ease-out select-none pointer-events-none will-change-transform"
+      className={cn(
+        "absolute flex flex-col gap-1.5 overflow-hidden rounded-2xl border border-foreground/12 p-2 transition-[opacity,transform,filter,box-shadow] duration-500 ease-out select-none pointer-events-none will-change-transform",
+        cardShadow ? "bg-card shadow-xl shadow-black/20 dark:shadow-black/55" : "bg-muted",
+      )}
       style={{
         left,
         top,
@@ -354,7 +365,7 @@ const WallCard = React.memo(function WallCard({
       <figcaption
         className={cn(
           "flex h-4 shrink-0 items-center px-1 font-mono text-[9px] leading-none select-none transition-colors duration-500",
-          activeFocus ? "font-semibold text-foreground" : "text-muted-foreground",
+          cardShadow && activeFocus ? "font-semibold text-foreground" : "text-muted-foreground",
         )}
       >
         {card.title}
@@ -401,7 +412,8 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
       columns = 4,
       gap = 16,
       stagger = 72,
-      interval = 4500,
+      interval: intervalProp = 5500,
+      intervalTime = 5500,
       order = "serial",
       zoom = 1.35,
       mobileZoom,
@@ -411,12 +423,16 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
       draggable = true,
       drift = false,
       cardDim = REST_DIM,
-      highlightFocus = true,
+      highlightFocus: highlightFocusProp = true,
+      focus: focusProp,
+      cardShadow = false,
       className,
       ...props
     },
     ref,
   ) => {
+    const interval = typeof intervalProp === "boolean" ? (intervalProp ? intervalTime : 0) : intervalProp;
+    const highlightFocus = focusProp ?? highlightFocusProp;
     const ax = anchor?.x ?? 0.5;
     const ay = anchor?.y ?? 0.5;
     const wrapRef = useRef<HTMLDivElement | null>(null);
@@ -601,7 +617,7 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
       const focusList = [centerKey, topKey, bottomKey, leftKey, rightKey].filter(Boolean);
       const focusKeysStr = focusList.slice().sort().join("|");
 
-      if (focusKeysStr && focusKeysStr !== focusKeysRef.current) {
+      if (focusKeysStr && (focusKeysStr !== focusKeysRef.current || centerKey !== centerKeyRef.current)) {
         focusKeysRef.current = focusKeysStr;
         centerKeyRef.current = centerKey;
         setCenterKey(centerKey);
@@ -901,6 +917,22 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
     // ---- The flight: pull back while gliding, then settle in.
     const flyTo = useCallback(
       (i: number) => {
+        const { width: tw, height: th } = tileRef.current;
+        if (tw > 0 && th > 0) {
+          const wrap = wrapRef.current;
+          const W = wrap?.clientWidth ?? 0;
+          const H = wrap?.clientHeight ?? 0;
+          const s = cameraRef.current.s || 1;
+          const centerCanvasX = (W * ax - cameraRef.current.x) / s;
+          const centerCanvasY = (H * ay - cameraRef.current.y) / s;
+          const tileDx = Math.floor(centerCanvasX / tw);
+          const tileDy = Math.floor(centerCanvasY / th);
+          if (tileDx !== 0 || tileDy !== 0) {
+            cameraRef.current.x += tileDx * tw * s;
+            cameraRef.current.y += tileDy * th * s;
+          }
+        }
+        hasInteractedRef.current = false;
         const target = restFor(i);
         flightRef.current?.kill();
         if (prefersReducedMotion()) {
@@ -914,15 +946,17 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
         setFlying(true);
         const cam = cameraRef.current;
         const pull = target.s * FLIGHT_PULL;
-        // Two seconds, power2.inOut throughout: x and y glide the whole way,
-        // the scale pulls back over the first second and settles over the second.
+        const flightDuration = interval > 0 ? Math.max(0.9, Math.min(4, (interval / 5500) * 2)) : 2;
+        const halfDur = flightDuration / 2;
+        // power2.inOut throughout: x and y glide the whole way,
+        // the scale pulls back over the first half and settles over the second.
         flightRef.current = fly(
           canvas,
           {
-            x: inOut(cam.x, target.x, 0, 2, 2),
-            y: inOut(cam.y, target.y, 0, 2, 2),
-            s: [...inOut(cam.s, pull, 0, 1, 2).slice(0, -1), ...inOut(pull, target.s, 1, 2, 2)],
-            duration: 2,
+            x: inOut(cam.x, target.x, 0, flightDuration, 2),
+            y: inOut(cam.y, target.y, 0, flightDuration, 2),
+            s: [...inOut(cam.s, pull, 0, halfDur, 2).slice(0, -1), ...inOut(pull, target.s, halfDur, flightDuration, 2)],
+            duration: flightDuration,
           },
           flightHooks(() => {
             // Land where the card is *now*: the box may have resized mid-flight.
@@ -933,7 +967,7 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
           }),
         );
       },
-      [restFor, paint, flightHooks],
+      [restFor, paint, flightHooks, ax, ay, interval],
     );
 
     useEffect(() => {
@@ -998,10 +1032,10 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
 
     const paused = hover || hidden || !onScreen || scrolling;
     useEffect(() => {
-      if (interval <= 0 || n < 2 || paused || flying || hasInteractedRef.current || drift) return;
+      if (interval <= 0 || n < 2 || paused || flying || isDragging || drift) return;
       const t = window.setTimeout(() => flyTo(nextCard()), interval);
       return () => window.clearTimeout(t);
-    }, [focus, interval, n, paused, flying, flyTo, nextCard, drift]);
+    }, [focus, interval, n, paused, flying, isDragging, flyTo, nextCard, drift]);
 
     useEffect(
       () => () => {
@@ -1065,7 +1099,13 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
           return placed.map((card, i) => {
             const key = `${dx},${dy},${i}`;
             const isFocus = highlightFocus ? (focusKeys.size > 0 ? focusKeys.has(key) : (!copy && i === lit)) : false;
-            const isCenter = highlightFocus ? (key === centerKey) : false;
+            const isCenter = highlightFocus
+              ? cardShadow
+                ? key === centerKey
+                : hasInteractedRef.current || Boolean(drift)
+                  ? key === centerKey
+                  : !copy && i === lit
+              : false;
             return (
               <WallCard
                 key={key}
@@ -1077,11 +1117,12 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
                 isFocus={isFocus}
                 isCenter={isCenter}
                 highlightFocus={highlightFocus}
+                cardShadow={cardShadow}
               />
             );
           });
         }),
-      [offsets, placed, width, height, lit, cardDim, centerKey, focusKeys, highlightFocus],
+      [offsets, placed, width, height, lit, cardDim, centerKey, focusKeys, highlightFocus, cardShadow, drift],
     );
 
     return (
@@ -1120,7 +1161,7 @@ const ImageWallInner = forwardRef<HTMLDivElement, ImageWallProps>(
           {/* The flight dim: one layer fading, not every card. */}
           <div
             className="absolute inset-0 transition-opacity duration-500 ease-out"
-            style={{ opacity: flying ? FLIGHT_DIM : 1 }}
+            style={{ opacity: highlightFocus && flying ? FLIGHT_DIM : 1 }}
           >
             {cards}
           </div>
