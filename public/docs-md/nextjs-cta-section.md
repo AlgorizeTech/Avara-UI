@@ -8,38 +8,6 @@ url: https://avaraui.com/docs/nextjs/cta-section
 
 An interconnected, conversion-focused call-to-action block designed for modern web applications, agencies, and SaaS platforms. Features high-impact interactive systems including **Mobile App Showcase** (interactive smartphone experience with live workout tracking, app store CTAs, and responsive previews), **Concentric Portal** (scroll-driven expanding circular lens with gyroscopic monospace orbital text), and **Offer Showcase** (promotional pricing card with moving nature reels).
 
-## Mobile App Showcase — variant="mobile-app"
-
-Pass `variant="mobile-app"` for a scroll-driven app showcase CTA. Initially displays only the iPhone 17 Pro Max centered in the viewport; scrolling smoothly glides the phone down and to the left while the editorial headline, description, and official app store badges reveal on the right.
-
-- Pass `variant="mobile-app"` Selects the mobile app showcase layout with an upright iPhone 17 Pro Max mockup.
-- Set `headingAccent="your partner"` Applies an elegant serif italic treatment to the highlighted phrase in the headline.
-- Set `userName="Alicia Regis"` Customizes the greeting header inside the phone screen feed.
-- Set `featuredWorkoutTitle="Wellness Workshops"` Sets the title of the hero video/image card within the mobile feed.
-- Set `showAppStoreBadges=true` Displays official Apple App Store and Google Play store download buttons.
-
-```tsx
-import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
-
-export default function MobileAppExample() {
-  return (
-    <CTASection
-      variant="mobile-app"
-      badge="Mobile App Available"
-      heading={"Aura Clearmind..
-Your partner in wellness."}
-      subheading="Find and book your favorite yoga classes, guided meditation, and daily mindful wellness sessions from anywhere with our all-in-one mobile app, designed to bring balance, clarity, and peace to your life."
-      appleStoreHref="#"
-      googlePlayHref="#"
-      userName="Alicia Regis"
-      featuredWorkoutTitle="Wellness Workshops"
-      workoutDuration="10 Min"
-      workoutCalories="300 Kcal"
-    />
-  );
-};
-```
-
 ## Offer Showcase — variant="offer-showcase"
 
 Pass `variant="offer-showcase"` for a high-impact central promotional offer card flanked by moving nature reels with animated price count-up.
@@ -89,6 +57,38 @@ export default function OfferShowcaseExample() {
 }
 ```
 
+## Mobile App Showcase — variant="mobile-app"
+
+Pass `variant="mobile-app"` for a scroll-driven app showcase CTA. Initially displays only the Google Pixel 8 Android frame centered in the viewport; scrolling smoothly glides the phone down and to the left while the editorial headline, description, and official app store badges reveal on the right.
+
+- Pass `variant="mobile-app"` Selects the mobile app showcase layout with an upright Android Google Pixel 8 mockup.
+- Set `headingAccent="your partner"` Applies an elegant serif italic treatment to the highlighted phrase in the headline.
+- Set `userName="Alicia Regis"` Customizes the greeting header inside the phone screen feed.
+- Set `featuredWorkoutTitle="Wellness Workshops"` Sets the title of the hero video/image card within the mobile feed.
+- Set `showAppStoreBadges=true` Displays official Apple App Store and Google Play store download buttons.
+
+```tsx
+import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
+
+export default function MobileAppExample() {
+  return (
+    <CTASection
+      variant="mobile-app"
+      badge="Mobile App Available"
+      heading={"Aura Clearmind..
+Your partner in wellness."}
+      subheading="Find and book your favorite yoga classes, guided meditation, and daily mindful wellness sessions from anywhere with our all-in-one mobile app, designed to bring balance, clarity, and peace to your life."
+      appleStoreHref="#"
+      googlePlayHref="#"
+      userName="Alicia Regis"
+      featuredWorkoutTitle="Wellness Workshops"
+      workoutDuration="10 Min"
+      workoutCalories="300 Kcal"
+    />
+  );
+};
+```
+
 ## Concentric Portal — variant="concentric-portal"
 
 Pass `variant="concentric-portal"` for the scroll-driven expanding circular lens with continuous gyroscopic orbital text rings.
@@ -136,7 +136,7 @@ export default function BrandPillarsExample() {
       ctaHref="#"
     />
   );
-}
+};
 ```
 
 ## Installation

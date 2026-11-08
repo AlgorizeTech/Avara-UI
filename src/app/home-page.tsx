@@ -46,6 +46,14 @@ const FOOTER = typeof window === "undefined"
    MAIN PAGE ENTRY POINT
    ═══════════════════════════════════════════════ */
 
+/* Everything below the showcase is skipped by the renderer until it nears the
+   viewport (`content-visibility: auto`): without it, the first style + layout
+   pass covered all ~3.6k elements of the static HTML in one ~600 ms task, which
+   is most of the page's blocking time. `contain-intrinsic-size: auto <px>` keeps
+   the document's height close to the real one meanwhile (the numbers are the
+   measured section heights at <768, 768 and 1024+ px) and the browser
+   remembers the real height once a section has been shown. The class names are
+   spelled out in full so the home stylesheet generator can see them. */
 export default function HomePage() {
 	return (
 		<div className="min-h-screen bg-background text-foreground selection:bg-primary/20 overflow-x-hidden font-site-sans">
@@ -65,10 +73,12 @@ export default function HomePage() {
 				/>
 				<LazyHydrate
 					server={WHY}
+					className="[content-visibility:auto] [contain-intrinsic-size:auto_1750px] md:[contain-intrinsic-size:auto_2050px] lg:[contain-intrinsic-size:auto_1190px]"
 					load={() => import("@/components/home/why-choose-us-section").then((m) => m.WhyChooseUsSection)}
 				/>
 				<LazyHydrate
 					server={GRID}
+					className="[content-visibility:auto] [contain-intrinsic-size:auto_3270px] md:[contain-intrinsic-size:auto_1770px] lg:[contain-intrinsic-size:auto_1290px]"
 					load={() =>
 						import("@/components/home/component-preview-grid-section").then(
 							(m) => m.ComponentPreviewGridSection,
@@ -77,25 +87,30 @@ export default function HomePage() {
 				/>
 				<LazyHydrate
 					server={DIRECTORY}
+					className="[content-visibility:auto] [contain-intrinsic-size:auto_3200px] md:[contain-intrinsic-size:auto_1730px] lg:[contain-intrinsic-size:auto_1440px]"
 					load={() =>
 						import("@/components/home/component-directory-section").then((m) => m.ComponentDirectorySection)
 					}
 				/>
 				<LazyHydrate
 					server={FEEDBACK}
+					className="[content-visibility:auto] [contain-intrinsic-size:auto_4700px] md:[contain-intrinsic-size:auto_2700px] lg:[contain-intrinsic-size:auto_1990px]"
 					load={() => import("@/components/home/feedback-section").then((m) => m.FeedbackSection)}
 				/>
 				<LazyHydrate
 					server={FAQ}
+					className="[content-visibility:auto] [contain-intrinsic-size:auto_1700px] md:[contain-intrinsic-size:auto_1560px] lg:[contain-intrinsic-size:auto_1090px]"
 					load={() => import("@/components/home/faq-section").then((m) => m.AnimatedFAQSection)}
 				/>
 				<LazyHydrate
 					server={CTA}
+					className="[content-visibility:auto] [contain-intrinsic-size:auto_1330px] md:[contain-intrinsic-size:auto_1040px] lg:[contain-intrinsic-size:auto_1015px]"
 					load={() => import("@/components/home/cta-section").then((m) => m.CTASection)}
 				/>
 			</main>
 			<LazyHydrate
 				server={FOOTER}
+				className="[content-visibility:auto] [contain-intrinsic-size:auto_630px] md:[contain-intrinsic-size:auto_485px] lg:[contain-intrinsic-size:auto_540px]"
 				load={() => import("@/components/home/footer-section").then((m) => m.FooterSection)}
 			/>
 		</div>

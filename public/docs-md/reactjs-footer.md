@@ -13,7 +13,7 @@ A collection of 9 production-ready, high-capacity, fully responsive Footer compo
 ## Architectural Blueprint & Liquid Ink Footer (Heron AI Inspired)
 
 - Use `variant="architectural-liquid"` an architectural blueprint drafting grid footer featuring 3D isometric brand cube, technical metrics, and interactive liquid ink typography that organically fills and ripples with fluid physics strictly when hovering directly over the text.
-- Wordmark `blueprintWordmark="algorize"` pass any custom wordmark text directly from usage props (defaults to 'algorize').
+- Wordmark `blueprintWordmark="Avara UI"` pass any custom wordmark text directly from usage props (defaults to 'Avara UI').
 
 ```tsx
 import { Footer } from "@/components/custom/blocks/FooterBlock";
@@ -22,7 +22,7 @@ export default function ArchitecturalLiquidFooterDemo() {
   return (
     <Footer
       variant="architectural-liquid"
-      blueprintWordmark="algorize"
+      blueprintWordmark="Avara UI"
       heroTitle="CRAFTED FOR EXTRAORDINARY INTERFACES"
     />
   );
@@ -110,8 +110,8 @@ export default function WordmarkFooterDemo() {
     <Footer
       variant="wordmark-glow"
       brandName="Avara UI"
-      tagline="AI first-round screening for recruiters. Algorize checks every applicant and runs the first interview, day or night."
-      wordmark="Algorize"
+      tagline="AI first-round screening for recruiters. Avara UI checks every applicant and runs the first interview, day or night."
+      wordmark="Avara UI"
     />
   );
 }

@@ -48,9 +48,9 @@ const PRODUCT_HUNT_BADGE =
 const PRODUCT_HUNT_ALT =
 	"Avara UI - Free Animated shadcn/ui Components & Blocks | Product Hunt";
 const BUILDHOP_URL =
-	"https://buildhop.io/discover/avara-ui-9b2ee1c9-750f-41b9-9e73-f5538fe5c797";
+	"https://buildhop.io/discover/avara-ui-cd7bf0e3-4d1c-4aad-b795-038c7eb9b721";
 const BUILDHOP_BADGE =
-	"https://buildhop.io/api/badges/launch/9b2ee1c9-750f-41b9-9e73-f5538fe5c797";
+	"https://buildhop.io/api/badges/launch/cd7bf0e3-4d1c-4aad-b795-038c7eb9b721";
 const STARTUPBASE_URL = "https://startupbase.io/products/avaraui";
 
 const FOOTER_BADGES: {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ComponentType, type CSSProperties } from "react";
+import { startTransition, useEffect, useRef, useState, type ComponentType, type CSSProperties } from "react";
 
 const isServer = typeof window === "undefined";
 
@@ -111,7 +111,10 @@ export function LazyHydrate({ load, server, rootMargin = "600px 0px", eager = fa
 			if (started) return;
 			started = true;
 			io?.disconnect();
-			loadRef.current().then((Component) => setLive(() => Component));
+			// A transition, so React builds the live tree in time-sliced chunks that
+			// yield to the browser, rather than one long task. The showcase alone is
+			// hundreds of components, and a one-piece render counted as blocking time.
+			loadRef.current().then((Component) => startTransition(() => setLive(() => Component)));
 		};
 		let near = eager;
 		let quiet = false;

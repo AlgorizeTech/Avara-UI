@@ -1,6 +1,7 @@
 "use client";
 
 import React, {
+  type CSSProperties,
   Suspense,
   forwardRef,
   lazy,
@@ -145,6 +146,18 @@ function StaticImageWall({
   const cameraRef = useRef({ x: 0, y: 0, s: zoom });
 
   const { placed, width, height } = useMemo(() => layout(items, columns), [items, columns]);
+
+  // The camera as CSS variables, for `.cw-wall-canvas`. Same rules as `restFor`:
+  // a given `mobileZoom` always wins, then phone-width wrappers, then short ones.
+  const wallVars = {
+    "--wall-ax": ax,
+    "--wall-ay": ay,
+    "--wall-cx": `${CARD_W / 2}px`,
+    "--wall-cy": `${CARD_H / 2}px`,
+    "--wall-s": mobileZoom ?? zoom,
+    "--wall-s-narrow": mobileZoom ?? Math.min(zoom, PHONE_ZOOM),
+    "--wall-s-band": mobileZoom ?? Math.min(zoom, BAND_ZOOM),
+  } as CSSProperties;
   const tileRef = useRef({ width, height });
   tileRef.current = { width, height };
 
@@ -183,16 +196,6 @@ function StaticImageWall({
     }
   }, []);
 
-  const paint = useCallback(() => {
-    const el = canvasRef.current;
-    if (!el) return;
-    const { x, y, s } = cameraRef.current;
-    el.style.translate = `${x}px ${y}px`;
-    el.style.scale = String(s);
-    el.style.opacity = "1";
-    cull();
-  }, [cull]);
-
   const restFor = useCallback(
     (i: number) => {
       const wrap = wrapRef.current;
@@ -215,20 +218,28 @@ function StaticImageWall({
     [placed, zoom, mobileZoom, ax, ay],
   );
 
-  useLayoutEffect(() => {
+  // The canvas is positioned by CSS (see `.cw-wall-canvas`), so it is already
+  // in place on the first paint, before any script runs. This only tracks the
+  // same camera numerically to decide which tiles to render. It runs from the
+  // ResizeObserver, which reports after layout is done, instead of a layout
+  // effect: that read the wrapper's size during hydration and forced a
+  // synchronous layout of the whole page.
+  useEffect(() => {
     const wrap = wrapRef.current;
     if (!wrap) return;
-    sizeRef.current = { w: wrap.clientWidth, h: wrap.clientHeight };
     const snap = () => {
       sizeRef.current = { w: wrap.clientWidth, h: wrap.clientHeight };
       cameraRef.current = restFor(0);
-      paint();
+      cull();
     };
-    snap();
-    const ro = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(snap);
-    ro?.observe(wrap);
-    return () => ro?.disconnect();
-  }, [restFor, paint]);
+    if (typeof ResizeObserver === "undefined") {
+      snap();
+      return;
+    }
+    const ro = new ResizeObserver(snap);
+    ro.observe(wrap);
+    return () => ro.disconnect();
+  }, [restFor, cull]);
 
   const offsets = useMemo(
     () =>
@@ -267,12 +278,12 @@ function StaticImageWall({
       // hydrated, so its cards sit somewhere else at restore time than when the
       // scroll position was saved. Kept out of scroll anchoring so a refresh
       // can't use them as the anchor and drift the page.
-      className={cn("relative h-96 w-full overflow-hidden [overflow-anchor:none]", className)}
+      className={cn("cw-wall relative h-96 w-full overflow-hidden [overflow-anchor:none]", className)}
     >
       <div
         ref={canvasRef}
-        className="absolute left-0 top-0 opacity-0 transition-opacity duration-300 will-change-transform"
-        style={{ width, height, transformOrigin: "0 0" }}
+        className="cw-wall-canvas absolute left-0 top-0 will-change-transform"
+        style={{ width, height, transformOrigin: "0 0", ...wallVars }}
       >
         <div className="absolute inset-0">
           {cards}
@@ -332,6 +343,21 @@ const STYLES = `
 .cw-tools-in { opacity: 1; animation: none; }
 .cw-rise-group h1[data-text-animation],
 .cw-rise-group h1 [data-text-animation-token] { animation: none; }
+/* SPEED INDEX: the wall is placed by CSS, not by script. The wrapper is a size
+   container, so the canvas's translate is expressed in its own cqw / cqh and is
+   right on the first paint (and on every resize) without waiting for hydration.
+   Mirrors the camera maths in StaticImageWall: translate = size * anchor - zoom *
+   the centre of the first card; zoom drops at phone-width and short wrappers. */
+.cw-wall { container-type: size; }
+.cw-wall-canvas {
+  --wall-s-now: var(--wall-s);
+  translate:
+    calc(var(--wall-ax) * 100cqw - var(--wall-s-now) * var(--wall-cx))
+    calc(var(--wall-ay) * 100cqh - var(--wall-s-now) * var(--wall-cy));
+  scale: var(--wall-s-now);
+}
+@container (max-height: 419px) { .cw-wall-canvas { --wall-s-now: var(--wall-s-band); } }
+@container (max-width: 640px) { .cw-wall-canvas { --wall-s-now: var(--wall-s-narrow); } }
 .cw-word-in { animation: cw-word-in 0.6s cubic-bezier(0, 0, 0.58, 1) backwards; }
 .cw-word-out { animation: cw-word-out 0.6s cubic-bezier(0, 0, 0.58, 1) forwards; }
 .cw-name-in { animation: cw-name-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) backwards; }
