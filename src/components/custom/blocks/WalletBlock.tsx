@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Eye, EyeOff, Nfc } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { springLinear } from "./motion-curves";
@@ -30,11 +30,25 @@ function useBalanceSwap(masked: boolean) {
   const phase: BalancePhase = leaving ? "leaving" : entering ? "from" : "shown";
 
   // Coming in: each balance mounts afresh (its own key) at the starting
-  // look; once that is committed, transition to the resting one.
+  // look; once a frame has painted that look, transition to the resting one.
+  // Two animation frames rather than reading `offsetWidth`: that read forces a
+  // synchronous layout of the whole page at the moment the balance mounts,
+  // which is expensive when the wallet is hydrated inside a large document.
+  const frame = useRef(0);
   const enter = useCallback((node: HTMLDivElement | null) => {
     if (!node) return;
-    void node.offsetWidth;
-    setEntering(false);
+    const token = ++frame.current;
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() => {
+        if (frame.current === token) setEntering(false);
+      }),
+    );
+  }, []);
+  useEffect(() => {
+    return () => {
+      // Invalidates any frame still pending when the wallet unmounts.
+      frame.current = -1;
+    };
   }, []);
 
   const settle = () => {

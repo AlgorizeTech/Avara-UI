@@ -15,6 +15,8 @@ The copy and the walls talk to each other. The install line ends in the name of 
 The copy in the middle, a wall on each side. Wait a few seconds: the left camera glides to another card, then the right one, and the install line changes to name whichever just landed. Hovering a wall holds its camera.
 
 - `layout="center"` centres the copy between two walls, each half the width and fading in under it. The left camera rests high and towards the outside, the right one low, so the two resting cards never mirror each other across the headline. The walls split `items` — the first half on the left, the rest on the right — so each draws half the cards. Below `lg` there is one wall instead — a band of every card between the copy and the tools. `"split"`, the default, is the copy on the left and one wall on the right — see Examples.
+- `interval=true` enables the auto-slide camera flight (defaults to `5500ms`, or pass `intervalTime` / a custom millisecond value). Pass `false` (or `0`) to turn auto-sliding off.
+- `intervalTime=5500` sets the custom interval time in milliseconds when `interval={true}` (default `5500`).
 - `install` is the command in the box. Write `{item}` where the card's name goes — `"npx shadcn@latest add @avara-ui/{item}"` — and the card a camera has just landed on fills it in with its `slug`, sliding to the next name as the next camera lands. The copy button copies the whole resolved line. On phones only the last word before the name (`@avara-ui/`) stays.
 - `heading` is a string, revealed word by word with the library's blur-in-up text animation. Write `{word}` where `headingWords` take turns — each new word blurs in the same way, every `wordInterval` ms — and name one word in `accent` to set it in the primary colour. Keep it short: it's set large in `font-serif` and wraps at about fourteen characters per line.
 - `items` are the cards, dealt into `columns` in order. Each has a mono `title`, an `image` cropped into the same 493:332 frame, and an optional `slug` for the install line (default: the title in kebab-case). The right wall deals the same list from halfway through, so the two walls never show the same card; `onFocus` always reports an index into `items`.
@@ -85,7 +87,10 @@ export default function Hero() {
       trust={{ text: "Loved by developers shipping real products with it", avatars: AVATARS, rating: 5 }}
       items={ITEMS}
       stack={STACK}
-      interval={4500}
+      interval={true}
+      intervalTime={5500}
+      draggable={false}
+      highlightFocus={true}
       linkComponent={Link}
     />
   );
@@ -115,9 +120,10 @@ The copy in the middle between two gliding screenshot walls. On mobile and small
 
 - `layout="center"` centres the copy between two walls, each half the width and fading in under it.
 - `persistentBackground=true` ensures the animated walls remain anchored in the background behind the content on small screens, preventing the cards from dropping down below the call-to-action buttons.
+- `interval=false` disables automatic camera gliding, keeping both walls stationary while remaining draggable.
+- `draggable=true` allows users to drag and explore the background cards freely.
 - `install` is the command in the box. Live-updates with the card slug the camera lands on.
 - `items` are the cards dealt into the walls. The left wall draws the first half, the right wall the second half.
-- `interval=4500` is how long each camera rests on a card; the right one lands half an interval after the left.
 - `mobileZoom=0.30` controls the scale of the background cards on small screens and phones, rendering them delightfully compact and unobtrusive.
 - `stack` renders the Tech Stack in compact mode below the trust statement in the center column.
 
@@ -183,7 +189,9 @@ export default function Hero() {
       trust={{ text: "Loved by developers shipping real products with it", avatars: AVATARS, rating: 5 }}
       items={ITEMS}
       stack={STACK}
-      interval={4500}
+      interval={false}
+      draggable={true}
+      highlightFocus={true}
       linkComponent={Link}
     />
   );
@@ -195,10 +203,11 @@ export default function Hero() {
 Centred hero layout with background image animations completely hidden on mobile and small screens (<lg). Pass showMobileWall={false} (or mobileBackground={false}) across ALL variants (center, split, and center-background) to keep mobile screens clean and distraction-free while retaining full interactive animation on desktop.
 
 - `showMobileWall=false` completely hides the background screenshot animations on small screens and phones (<lg). Supported across all layout variants (center, split, and center-background). Desktop retains full dual-wall interactive animation.
+- `interval=true` enables automatic dual camera flights across both walls on desktop.
+- `draggable=true` allows interactive dragging and panning across the dual walls.
 - `layout="center"` centres the copy between two walls on desktop.
 - `install` is the command in the box. Live-updates with the card slug the camera lands on.
 - `items` are the cards dealt into the walls.
-- `interval=4500` is how long each camera rests on a card.
 - `stack` renders the Tech Stack in compact mode below the trust statement in the center column.
 
 ```tsx
@@ -264,7 +273,10 @@ export default function Hero() {
       trust={{ text: "Loved by developers shipping real products with it", avatars: AVATARS, rating: 5 }}
       items={ITEMS}
       stack={STACK}
-      interval={4500}
+      interval={true}
+      intervalTime={5500}
+      draggable={true}
+      highlightFocus={true}
       linkComponent={Link}
     />
   );
@@ -276,6 +288,8 @@ export default function Hero() {
 The copy on the left, one wall filling the right and fading under it. One camera, so the install line follows it card by card; the tools sit over the lower edge of the wall.
 
 - `layout="split"` is the default: the copy takes the left 44–46% on desktop and the wall the right 56–58%, fading in under the copy. Below `lg` the wall is a band under the copy.
+- `interval=true` glides the single wall camera from card to card automatically.
+- `draggable=false` disables dragging so the camera controls all navigation.
 - `stack` sits over the lower wall on desktop and under the band on smaller screens; the wall blurs and fades beneath the marks. A labelled Tech Stack (the default variant) fits here: from `xl` up names sit beside the marks; below that only the marks show.
 - `zoom=1.35` is the default here: one wall has room for a larger resting card.
 
@@ -340,7 +354,10 @@ export default function Hero() {
       trust={{ text: "Loved by developers shipping real products with it", avatars: AVATARS, rating: 5 }}
       items={ITEMS}
       stack={STACK}
-      interval={4500}
+      interval={true}
+      intervalTime={5500}
+      draggable={false}
+      highlightFocus={true}
       linkComponent={Link}
     />
   );
@@ -352,8 +369,11 @@ export default function Hero() {
 An edge-to-edge continuous infinite canvas in a masonry layout without copy or text. Click & drag anywhere in all 4 directions (left, right, up, down) with smooth momentum physics and ambient floating drift — it wraps infinitely without ever ending.
 
 - `layout="fullscreen"` renders an edge-to-edge single canvas across the full screen with all cards included in a masonry column style, without dividing into left/right halves and without copy or text overlays.
+- `interval=true` glides the camera continuously across the infinite masonry canvas.
 - `draggable=true` allows users to click and drag the entire canvas in all 4 directions with inertial momentum physics and touch support, scrolling infinitely in 2D.
-- `drift=true` enables continuous gentle ambient floating drift across the screen when not being actively dragged.
+- `highlightFocus=false` renders all cards at uniform clarity across the fullscreen canvas without dimming outer cards.
+- `order="shuffle"` takes turns card by card across the canvas in dynamic, multi-directional flight paths rather than a single fixed direction.
+- `itemModal=true` enables the interactive full-details modal on click, presenting card preview on the left and full details with action buttons on the right.
 - `stagger=72` controls the vertical masonry stagger offset between columns, giving the wall an organic masonry waterfall flow where rows don't line up uniformly.
 - `gap=16` controls the spacing in pixels between cards in all directions (top, bottom, left, right, defaults to 16).
 - `items` all cards rendered within the single unified wall with infinite repeating tiles across the entire 2D plane.
@@ -390,6 +410,11 @@ export default function FullscreenWallHero() {
     <ComponentWall
       layout="fullscreen"
       items={ITEMS}
+      interval={true}
+      intervalTime={5500}
+      draggable={true}
+      highlightFocus={false}
+      order="shuffle"
     />
   );
 }
