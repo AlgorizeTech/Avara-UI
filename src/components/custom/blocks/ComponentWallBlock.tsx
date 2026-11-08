@@ -564,7 +564,7 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
         ) : null}
 
         {description && (
-          <p style={riseAt()} className="cw-rise mt-6 max-w-[52ch] text-pretty text-[15px] leading-[1.65] text-muted-foreground sm:text-base">
+          <p style={riseAt()} className="cw-rise mt-6 max-w-[39em] text-pretty text-[15px] leading-[1.65] text-muted-foreground sm:text-base">
             {description}
           </p>
         )}
@@ -646,7 +646,7 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
                   <span className="text-sm font-semibold tabular-nums leading-none text-foreground">{trust.rating.toFixed(1)}</span>
                 </div>
               )}
-              <p className={cn("max-w-[36ch] text-[13px] leading-snug text-muted-foreground", centered && "text-balance")}>{trust.text}</p>
+              <p className={cn("max-w-[27em] text-[13px] leading-snug text-muted-foreground", centered && "text-balance")}>{trust.text}</p>
             </div>
           </div>
         )}
