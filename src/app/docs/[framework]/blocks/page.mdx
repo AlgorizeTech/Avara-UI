@@ -1,0 +1,41 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("blocks");
+
+import { DocLink } from "@/components/site/doc-link";
+import { PageIndex } from "@/components/site/page-index";
+import { SITE_NAME } from "@/config/site";
+import { REGISTRY_NAMESPACE } from "@/lib/registry";
+
+# Shadcn Blocks
+
+Website sections for React and Tailwind CSS that you install with the shadcn CLI:
+heroes, pricing, footers, FAQs, sign-in forms and whole app pages. Each block is
+built from {SITE_NAME}'s own components, so installing one also installs its pieces.
+
+## All blocks
+
+<PageIndex kind="sections" />
+
+## What is a shadcn block?
+
+A block is a larger piece of an interface than a single component: a hero, a
+pricing table, a footer or a dashboard page. {SITE_NAME} lists these as website
+sections. Like every other {SITE_NAME} item, a block is copied into your project
+as source code, so you can edit it like any other file.
+
+## How do I install a block?
+
+Register the registry once with the shadcn CLI, then add a block by name with
+<code>npx shadcn@latest add {REGISTRY_NAMESPACE}/name</code>. The CLI installs the
+npm packages and the other {SITE_NAME} components that block uses. The
+<DocLink to="installation">Installation guide</DocLink> has the one-time setup.
+
+## Are the blocks free?
+
+Yes. Every block is free and MIT-licensed, and needs no account or license key.
+
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
+
+<DocsJsonLd slug="blocks" />
+<FaqJsonLd slug="blocks" />

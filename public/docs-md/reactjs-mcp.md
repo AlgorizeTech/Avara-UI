@@ -177,6 +177,10 @@ Add to `opencode.json`, then restart OpenCode:
     }
     ```
 
+## Add the agent skill
+
+The MCP server lets an assistant browse and install. The [agent skill](https://avaraui.com/docs/reactjs/agent-skills) tells it how to choose, which Markdown to read before writing code, and what to check afterwards, so it stops inventing props and hard-coding colours. It is free and takes one command.
+
 ## Example prompts
 
 **Browse and search**
@@ -213,6 +217,7 @@ Make sure `components.json` exists ([run `init`](https://avaraui.com/docs/reactj
 
 ## Next steps
 
+- [Agent Skill](https://avaraui.com/docs/reactjs/agent-skills) — teach your agent the build workflow
 - [Installation](https://avaraui.com/docs/reactjs/installation) — set up a project for Avara UI
 - [All components](https://avaraui.com/docs/reactjs/all-components) — browse the library
 

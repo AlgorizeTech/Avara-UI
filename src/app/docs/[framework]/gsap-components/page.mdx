@@ -1,0 +1,43 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("gsap-components");
+
+import { DocLink } from "@/components/site/doc-link";
+import { PageIndex } from "@/components/site/page-index";
+import { SITE_NAME } from "@/config/site";
+import { REGISTRY_NAMESPACE } from "@/lib/registry";
+
+# Shadcn GSAP Components
+
+Free shadcn/ui components and blocks animated with GSAP, for React and Tailwind
+CSS. Motion that follows the pointer, the scroll position, a drag or the layout
+runs on GSAP; many of these also ship a Motion build that you install instead.
+
+## All GSAP components
+
+<PageIndex kind="gsap" />
+
+## Which components use GSAP?
+
+The ones listed above. {SITE_NAME} uses plain CSS for motion that has fixed
+values, and adds GSAP only where a pointer, scroll, drag or layout calls for a
+library. A component that lists a Motion build can be installed either way.
+
+## Can I use Motion instead of GSAP?
+
+Where a component shows a Motion build, yes. Install the Motion build, named like
+<code>{REGISTRY_NAMESPACE}/name-motion</code>, in place of the default one. They
+write the same file, so install one or the other, never both. Each component's
+page has GSAP and Motion tabs with the code for both.
+
+## How do I install a GSAP component?
+
+Register the registry once, then add the component with
+<code>npx shadcn@latest add {REGISTRY_NAMESPACE}/name</code>. The CLI also installs
+the <code>gsap</code> package it needs. See the
+<DocLink to="installation">Installation guide</DocLink> for the one-time setup.
+
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
+
+<DocsJsonLd slug="gsap-components" />
+<FaqJsonLd slug="gsap-components" />

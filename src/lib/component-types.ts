@@ -44,7 +44,7 @@ export const COMPONENT_TYPES = {
 		description: "Fields, pickers and multi-step flows for collecting input.",
 		icon: TextCursorInput,
 		kind: "ui",
-		slugs: ["input", "form", "select", "otp-input", "date-picker", "range-date-picker", "calendar", "booking-card", "color-picker", "file-upload", "half-stars", "stepper", "wizard"],
+		slugs: ["input", "form", "select", "otp-input", "date-picker", "range-date-picker", "calendar", "booking-card", "color-picker", "file-upload", "half-stars", "stepper", "split-stepper", "split-scroll-stepper", "wizard"],
 	},
 	navigation: {
 		label: "Navigation & Menus",
@@ -79,14 +79,14 @@ export const COMPONENT_TYPES = {
 		description: "Tables, timelines, counters and readouts.",
 		icon: Table,
 		kind: "ui",
-		slugs: ["table", "data-table", "data-grid", "invoice", "counter", "split-flap", "avatar-stack", "timeline", "animated-timeline", "radial-orbital-timeline", "custom-code-block", "api-playground", "tech-stack", "qr-code-generator"],
+		slugs: ["table", "data-table", "data-grid", "invoice", "counter", "split-flap", "avatar-stack", "timeline", "animated-timeline", "radial-orbital-timeline", "custom-code-block", "terminal", "api-playground", "tech-stack", "qr-code-generator"],
 	},
 	charts: {
 		label: "Charts, Maps & Graphs",
 		description: "Data visualisation, maps and node graphs.",
 		icon: ChartSpline,
 		kind: "ui",
-		slugs: ["chart", "data-maps", "fleet-tracker", "user-graph", "network-graph", "infrastructure-topology"],
+		slugs: ["chart", "data-maps", "fleet-tracker", "user-graph", "network-graph", "infrastructure-topology", "flowchart"],
 	},
 	media: {
 		label: "Media & Carousels",
@@ -107,7 +107,7 @@ export const COMPONENT_TYPES = {
 		description: "Animated type, cursors, particles and decorative motion.",
 		icon: Sparkles,
 		kind: "ui",
-		slugs: ["animated-typography", "animated-list", "circular-text", "cursor-animation", "particle-canvas", "heart-signal", "selection-frame", "apple-select"],
+		slugs: ["animated-typography", "animated-list", "circular-text", "cursor-animation", "particle-canvas", "heart-signal", "selection-frame", "apple-select", "text-animation"],
 	},
 	"more-ui": {
 		label: "More Components",

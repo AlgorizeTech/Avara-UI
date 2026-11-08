@@ -1,4 +1,6 @@
 import { SITE_NAME, SITE_URL, links, siteConfig } from "@/config/site";
+import { SKILL_NAME } from "@/lib/agent-index";
+import { SKILL_FILES } from "@/lib/agent-skill";
 import { navigation } from "@/constants/navigation";
 import { isMotionTwin } from "@/lib/component-count";
 import {
@@ -100,6 +102,15 @@ function gettingStarted(): string[] {
   return ["## Documentation", "", ...lines, ""];
 }
 
+/** What each skill file is for, as the index prints it. */
+const SKILL_NOTES: Record<string, string> = {
+  "SKILL.md": "The workflow: plan, find, install, read, adapt, check. Start here.",
+  "components.md": "The categories and which pages are in each.",
+  "animation.md": "GSAP or Motion builds, and how to choose.",
+  "theming.md": "Theme tokens and how to restyle.",
+  "checklist.md": "The final check before finishing a UI task.",
+};
+
 function build(): string {
   const motionTwins = registryItems.filter((item) => isMotionTwin(item.name));
 
@@ -139,6 +150,22 @@ function build(): string {
     );
   }
 
+  const agents = [
+    "## For AI agents",
+    "",
+    `- [Agent index](${absolute("/agent/components.json")}): Every component and website section as JSON, with its summary, install command and Markdown URL. Search this instead of guessing names.`,
+    ...Object.keys(SKILL_FILES)
+      .filter((file) => file.endsWith(".md"))
+      .map((file) => `- [Agent skill: ${file}](${absolute(`/skills/${SKILL_NAME}/${file}`)}): ${SKILL_NOTES[file] ?? ""}`.trimEnd()),
+    pageExists("agent-skills")
+      ? `- [Agent Skill guide](${absolute(docsMarkdownHref(DEFAULT_FRAMEWORK, "agent-skills"))}): How to install the skill for Claude Code, Cursor, Codex, Copilot and OpenCode.`
+      : "",
+    pageExists("mcp")
+      ? `- [MCP server guide](${absolute(docsMarkdownHref(DEFAULT_FRAMEWORK, "mcp"))}): Connect an agent to the registry through the shadcn MCP server.`
+      : "",
+    "",
+  ].filter((line, index, all) => line !== "" || all[index - 1] !== "");
+
   const optional = [
     "## Optional",
     "",
@@ -155,6 +182,7 @@ function build(): string {
     ...section("UI Components", "Ui Components"),
     ...section("Website Sections", "Website Sections"),
     ...section("Third-party Integrations", "Third Party Integration"),
+    ...agents,
     ...optional,
   ].join("\n");
 }

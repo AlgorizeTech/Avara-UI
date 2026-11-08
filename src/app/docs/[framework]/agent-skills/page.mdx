@@ -1,0 +1,110 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("agent-skills");
+
+import { Cli } from "@/components/site/cli";
+import { DocLink } from "@/components/site/doc-link";
+import { McpClientTabs, McpClientPanel } from "@/components/site/mcp-client-tabs";
+import { SITE_NAME, SITE_URL } from "@/config/site";
+import { REGISTRY_ADD_ARGS, REGISTRY_NAMESPACE } from "@/lib/registry";
+
+# Agent Skill
+
+Teach your AI coding agent how to build with {SITE_NAME}. The skill is a few
+Markdown files: a workflow the agent follows (plan, find, install, read, adapt,
+check) and the rules that stop it inventing props or hard-coding colours. It is
+free, needs no account, and works with or without the <DocLink to="mcp">MCP server</DocLink>.
+
+## What the agent gets
+
+- **A workflow.** Plan the page, find the right pieces, install them with the CLI, read each one's Markdown for its real props, adapt the sample data, then run a final check.
+- **A searchable index.** <code>{SITE_URL}/agent/components.json</code> lists every component and website section with its summary, install command and Markdown URL, so an agent can pick by what a page does without a search server.
+- **Rules.** Theme tokens instead of hard-coded colours, one animation library per component, no `next/*` imports, and respect for `prefers-reduced-motion`.
+
+## Install the skill
+
+Run once from your project root. Pick the agent you use.
+
+<McpClientTabs>
+  <McpClientPanel client="claude">
+    Claude Code reads skills from `.claude/skills/`:
+
+    <SkillInstall client="claude" />
+
+    The agent loads `SKILL.md` when a task matches its description, and opens the other files only when it needs them.
+  </McpClientPanel>
+  <McpClientPanel client="cursor">
+    Cursor reads rules from `.cursor/rules/`:
+
+    <SkillInstall client="cursor" />
+  </McpClientPanel>
+  <McpClientPanel client="vscode">
+    GitHub Copilot in VS Code reads `.github/copilot-instructions.md`. Add this block to it:
+
+    <SkillInstall client="agents" />
+  </McpClientPanel>
+  <McpClientPanel client="codex">
+    Codex reads `AGENTS.md` in the project root. Add this block to it:
+
+    <SkillInstall client="agents" />
+  </McpClientPanel>
+  <McpClientPanel client="opencode">
+    OpenCode reads `AGENTS.md` in the project root. Add this block to it:
+
+    <SkillInstall client="agents" />
+  </McpClientPanel>
+</McpClientTabs>
+
+The files are plain text, so read them before you add them to a repository. They
+are generated from this site's own registry, so they only name components that
+exist.
+
+## Use it
+
+Register the registry once, then describe the interface in plain language and
+name {REGISTRY_NAMESPACE} so the agent looks in the right place:
+
+<Cli command={REGISTRY_ADD_ARGS} />
+
+- "Using {REGISTRY_NAMESPACE}, build a pricing page with a hero, the plans and an FAQ."
+- "Add a {REGISTRY_NAMESPACE} data table of orders with sorting and pagination, wired to `/api/orders`."
+- "Use {REGISTRY_NAMESPACE} to add a command palette and a dock to this app shell."
+- "Replace this footer with the {REGISTRY_NAMESPACE} footer, keeping our links."
+
+## How the workflow runs
+
+1. **Plan.** The agent writes the page's sections and states (empty, loading, error) before any code.
+2. **Find.** It searches the index or <code>{SITE_URL}/llms.txt</code> and picks by summary. If nothing fits, it composes the screen from smaller components.
+3. **Install.** It runs <code>npx shadcn@latest add {REGISTRY_NAMESPACE}/name --yes</code>.
+4. **Read.** It fetches the item's Markdown for the props and import path.
+5. **Adapt.** It swaps in your data and keeps the component's structure and styling.
+6. **Check.** It runs the checklist: tokens only, keyboard access, dark mode, reduced motion, and a passing build.
+
+## Do I need the skill if I use the MCP server?
+
+No, but they work well together. The <DocLink to="mcp">MCP server</DocLink> lets
+an agent browse and install from the registry. The skill tells it how to choose,
+what to read before writing code, and what to check afterwards.
+
+## Which agents can use it?
+
+Claude Code and Cursor read the files directly. Any agent that reads `AGENTS.md`
+(Codex, OpenCode, Copilot and others) gets the short block instead, which links
+to the full workflow. An agent that can fetch URLs can also read the skill straight from this site: the
+block above links to it.
+
+## Is the skill free?
+
+Yes. It is part of the MIT-licensed {SITE_NAME} project, with no account, license
+key or API key. The components it points to are free as well.
+
+## Next steps
+
+- <DocLink to="mcp">MCP server</DocLink> — connect an agent to the registry
+- <DocLink to="installation">Installation</DocLink> — set up a project for {SITE_NAME}
+- <DocLink to="all-components">All components</DocLink> — browse the library
+
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
+
+<DocsJsonLd slug="agent-skills" />
+<FaqJsonLd slug="agent-skills" />

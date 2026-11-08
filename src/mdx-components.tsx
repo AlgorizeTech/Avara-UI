@@ -11,6 +11,8 @@ import { ForFramework } from './components/site/for-framework';
 import { InjectablePropNote } from './components/site/injectable-prop-note';
 import { OtherFrameworkGuide } from './components/site/other-framework-guide';
 import { RegistryConfig } from './components/site/registry-config';
+import { PageIndex } from './components/site/page-index';
+import { SkillInstall } from './components/site/agent-skill-install';
 import {
   PackageManagerTabs as PMTabs,
   PMTabContent,
@@ -342,6 +344,8 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     InjectablePropNote,
     OtherFrameworkGuide,
     RegistryConfig,
+    SkillInstall,
+    PageIndex,
     PMTabs,
     PMTabContent,
     NPMTabContent,
