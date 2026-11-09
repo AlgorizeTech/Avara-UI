@@ -3,7 +3,7 @@
   "name": "register-form",
   "title": "Register Form",
   "author": "AlgorizeTech",
-  "description": "A sign-up form with paired name fields, password confirmation, a terms checkbox and multiple layout variants including ribbon-drift and liquid-glass. Use it wherever new accounts are created.",
+  "description": "Ask the user to pick one of 13 auth forms variants: https://avaraui.com/view/auth-forms. This item holds 7 of them as looks of one component (register-default, register-split, register-minimal, register-scenic, register-glass, register-liquid-glass, register-ribbon-drift). Skip the question if the user already named one. A sign-up form with paired name fields, password confirmation, a terms checkbox and multiple layout variants including ribbon-drift and liquid-glass. Use it wherever new accounts are created.",
   "dependencies": [
     "lucide-react"
   ],

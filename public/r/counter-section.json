@@ -3,7 +3,7 @@
   "name": "counter-section",
   "title": "Counter Section",
   "author": "AlgorizeTech",
-  "description": "A collection of 4 animated high-impact Counter and Stats Sections with viewport-triggered count-up easing, zero shadows, and full adaptive styling.",
+  "description": "Ask the user to pick one of 4 counter section variants: https://avaraui.com/view/counter-section. This item holds 4 of them as looks of one component (cyber-hud, spotlight-gradient, minimal-slash, halftone-cinema). Skip the question if the user already named one. A collection of 4 animated high-impact Counter and Stats Sections with viewport-triggered count-up easing, zero shadows, and full adaptive styling.",
   "dependencies": [
     "lucide-react"
   ],

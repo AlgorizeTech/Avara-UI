@@ -10,6 +10,122 @@ A collection of highly-converting, responsive pricing sections. Whether you need
 
 `Pricing.tsx` exports nine independent layouts — `PricingCards`, `PricingScale`, `PricingDotPattern`, `PricingPlansPro`, `PricingBuilder`, `PricingTable`, `PricingSlider`, `PricingTypographic` and `PricingPlans` — that share one color engine. Pick the layout that matches your funnel, then use the theme control above the gallery to see the accent cascade through badges, gradients, glows and buttons.
 
+## For AI agents
+
+**Ask before you pick.** This page has 12 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 12 options as live previews: https://avaraui.com/view/pricing
+
+**When to use it.** A pricing section. Twelve designs of one component: four card styles, three distinctive card layouts, three interactive calculators and builders, and two comparison or editorial formats.
+
+**When to use something else:**
+
+- [CTA Section](https://avaraui.com/docs/reactjs/cta-section): for a closing call to action rather than a price list.
+
+**Gotchas:**
+
+- All twelve are looks of the one `pricing` item: install it once and set the `layout` and `variant` props from the index. Do not install it again per look.
+- Each look takes its plans in its own shape (`plans`, `tabs`, a `{ monthly, annually }` pair, modules for the builder). Read the page's Markdown for the data shape of the chosen look.
+
+### The 12 variants
+
+1. **Tiered cards** (`tiered-cards`): The classic three-column subscription layout: one card per plan with a billing-cycle tab strip above.
+   - Live: https://avaraui.com/view/pricing/tiered-cards
+   - Best for: a standard subscription pricing page
+   - Avoid if: you want an interactive calculator or a feature-by-feature comparison
+   - Traits: one card per plan, billing-cycle tabs, popular plan scales up with a tilt on hover
+   - Install: `npx shadcn@latest add @avara-ui/pricing`
+   - Set these props: `{"layout":"cards","variant":"default"}`
+   - Docs: https://avaraui.com/docs/nextjs/pricing#tiered-cards
+2. **Elegant cards** (`elegant-cards`): Tiered cards with a lighter type scale and a top-border accent that lifts on hover.
+   - Live: https://avaraui.com/view/pricing/elegant-cards
+   - Best for: refined brands that want a quieter pricing section
+   - Avoid if: you want a bold, high-contrast pricing section
+   - Traits: light type, top-border accent, static numbers (no price counting)
+   - Install: `npx shadcn@latest add @avara-ui/pricing`
+   - Set these props: `{"layout":"cards","variant":"elegant"}`
+   - Docs: https://avaraui.com/docs/nextjs/pricing#elegant-cards
+3. **Minimal cards** (`minimal-cards`): Tiered cards with the borders dropped; the popular plan is marked by a single ring.
+   - Live: https://avaraui.com/view/pricing/minimal-cards
+   - Best for: clean pages where heavy card chrome would compete with the content
+   - Avoid if: you want each plan boxed and clearly separated
+   - Traits: no card borders, ring on the popular plan
+   - Install: `npx shadcn@latest add @avara-ui/pricing`
+   - Set these props: `{"layout":"cards","variant":"minimal"}`
+   - Docs: https://avaraui.com/docs/nextjs/pricing#minimal-cards
+4. **Bordered cards** (`bordered-cards`): A neo-brutalist take: square corners, thick borders and offset shadows.
+   - Live: https://avaraui.com/view/pricing/bordered-cards
+   - Best for: bold, playful or developer-leaning brands
+   - Avoid if: your brand is soft, formal or luxury
+   - Traits: square corners, thick borders, offset shadows
+   - Install: `npx shadcn@latest add @avara-ui/pricing`
+   - Set these props: `{"layout":"cards","variant":"bordered"}`
+   - Docs: https://avaraui.com/docs/nextjs/pricing#bordered-cards
+5. **Dot matrix cards** (`dot-matrix-cards`): Minimalist cards with a dot-matrix header pattern, corner angle brackets and a glow on the featured plan.
+   - Live: https://avaraui.com/view/pricing/dot-matrix-cards
+   - Best for: technical and developer products that want a crafted, minimalist look
+   - Avoid if: you want conventional, friendly cards
+   - Traits: dot-matrix pattern, corner frame accents, featured glow
+   - Install: `npx shadcn@latest add @avara-ui/pricing`
+   - Set these props: `{"layout":"dot-pattern","variant":"dot-pattern"}`
+   - Docs: https://avaraui.com/docs/nextjs/pricing#dot-matrix-cards
+6. **Scale cards** (`scale-cards`): Two-plan launch and scale cards with a monthly or annual toggle and a strategy-call banner below.
+   - Live: https://avaraui.com/view/pricing/scale-cards
+   - Best for: services or products with two clear plans and a sales call as the next step
+   - Avoid if: you have three or more plans
+   - Traits: two plans, monthly and annual toggle, bottom call-to-action banner
+   - Install: `npx shadcn@latest add @avara-ui/pricing`
+   - Set these props: `{"layout":"scale","variant":"scale"}`
+   - Docs: https://avaraui.com/docs/nextjs/pricing#scale-cards
+7. **Selectable workspace plans** (`selectable-plans`): Selectable plans with a monthly or annual switch, a team-seat stepper and an orbiting border on the chosen plan.
+   - Live: https://avaraui.com/view/pricing/selectable-plans
+   - Best for: team products priced per seat, where the visitor picks a plan and a team size
+   - Avoid if: your pricing is not per seat
+   - Traits: selectable plans, monthly and annual switch, seat stepper, mobile accordion view
+   - Install: `npx shadcn@latest add @avara-ui/pricing`
+   - Set these props: `{"layout":"plans-pro","variant":"plans-pro"}`
+   - Docs: https://avaraui.com/docs/nextjs/pricing#selectable-workspace-plans
+8. **Quote builder** (`quote-builder`): A modular quote calculator: pick modules and an animated total recalculates.
+   - Live: https://avaraui.com/view/pricing/quote-builder
+   - Best for: custom-priced services where the visitor assembles the scope
+   - Avoid if: you have fixed plans with set prices
+   - Traits: modules, animated total, interactive
+   - Install: `npx shadcn@latest add @avara-ui/pricing`
+   - Set these props: `{"layout":"builder","variant":"builder"}`
+   - Docs: https://avaraui.com/docs/nextjs/pricing#quote-builder
+9. **Interactive service checklist** (`service-checklist`): A checklist of services the visitor toggles, with a live quote card that estimates the cost.
+   - Live: https://avaraui.com/view/pricing/service-checklist
+   - Best for: agencies and studios that price by selected services
+   - Avoid if: you have fixed subscription plans
+   - Traits: service toggles, live quote card, estimated cost
+   - Install: `npx shadcn@latest add @avara-ui/pricing`
+   - Set these props: `{"layout":"plans","variant":"plans"}`
+   - Docs: https://avaraui.com/docs/nextjs/pricing#interactive-service-checklist
+10. **Usage slider** (`usage-slider`): A volume range slider: dragging updates the tier, the price and the included limits together.
+   - Live: https://avaraui.com/view/pricing/usage-slider
+   - Best for: usage-based products priced by volume tiers
+   - Avoid if: you charge a flat price per plan
+   - Traits: range slider, volume tiers, live price and limits
+   - Install: `npx shadcn@latest add @avara-ui/pricing`
+   - Set these props: `{"layout":"slider","variant":"slider"}`
+   - Docs: https://avaraui.com/docs/nextjs/pricing#usage-slider
+11. **Comparison table** (`comparison-table`): A multi-column feature matrix: plans as columns, features as grouped rows with ticks, crosses or text.
+   - Live: https://avaraui.com/view/pricing/comparison-table
+   - Best for: products with many features where buyers compare plans line by line
+   - Avoid if: you have only a few features per plan
+   - Traits: plans as columns, grouped feature rows, true, false or text values
+   - Install: `npx shadcn@latest add @avara-ui/pricing`
+   - Set these props: `{"layout":"table","variant":"table"}`
+   - Docs: https://avaraui.com/docs/nextjs/pricing#comparison-table
+12. **Typographic menu** (`typographic-menu`): An editorial horizontal list of plans, with a monthly or yearly toggle.
+   - Live: https://avaraui.com/view/pricing/typographic-menu
+   - Best for: design-led or editorial sites that want pricing set like a menu
+   - Avoid if: you want boxed cards that stand out visually
+   - Traits: editorial list, billing-cycle toggle, type-led
+   - Install: `npx shadcn@latest add @avara-ui/pricing`
+   - Set these props: `{"layout":"typographic","variant":"typographic"}`
+   - Docs: https://avaraui.com/docs/nextjs/pricing#typographic-menu
+
 ## Selectable workspace plans
 
 Interactive radio-selectable plans with Monthly/Annual toggle, team seat stepper, and responsive mobile accordion view.

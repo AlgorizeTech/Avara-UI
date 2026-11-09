@@ -339,7 +339,7 @@
       "type": "registry:component",
       "title": "Audio Player",
       "author": "AlgorizeTech",
-      "description": "An audio player with artwork, transport, scrubber and volume, in a hero card, a compact bar, or wrapped around the browser's native controls.",
+      "description": "Ask the user to pick one of 4 audio player variants: https://avaraui.com/view/audio-player. This item holds 3 of them as looks of one component (hero, bar, native). Skip the question if the user already named one. An audio player with artwork, transport, scrubber and volume, in a hero card, a compact bar, or wrapped around the browser's native controls.",
       "categories": [
         "marketing",
         "media"
@@ -396,7 +396,7 @@
       "type": "registry:component",
       "title": "Bento Cascade Hero",
       "author": "AlgorizeTech",
-      "description": "An infinite vertical bento marquee hero section that loops seamlessly on the browser compositor. Staggered multi-column cards, rich media tiles, soft edge fade masks, and responsive motion with zero visible reset jumps.",
+      "description": "Ask the user to pick one of 16 hero variants: https://avaraui.com/view/hero. This is the Bento cascade hero. Skip the question if the user already named one. An infinite vertical bento marquee hero section that loops seamlessly on the browser compositor. Staggered multi-column cards, rich media tiles, soft edge fade masks, and responsive motion with zero visible reset jumps.",
       "categories": [
         "marketing",
         "layout",
@@ -459,7 +459,7 @@
       "type": "registry:component",
       "title": "Book Appointment",
       "author": "AlgorizeTech",
-      "description": "A practitioner's page that ends in an appointment: portrait and contact, scores as stars, two small charts, and a booking panel — glass or solid. Use it for clinics, salons, consultations.",
+      "description": "Ask the user to pick one of 2 book appointment variants: https://avaraui.com/view/book-appointment. This item holds 2 of them as looks of one component (glass, solid). Skip the question if the user already named one. A practitioner's page that ends in an appointment: portrait and contact, scores as stars, two small charts, and a booking panel — glass or solid. Use it for clinics, salons, consultations.",
       "categories": [
         "forms",
         "marketing"
@@ -572,7 +572,7 @@
       "type": "registry:component",
       "title": "Breathe Arch Stagger Hero",
       "author": "AlgorizeTech",
-      "description": "An ethereal hero section featuring an elegant serif headline and a staggered 5-card curved arch. On scroll, the center card scales up to 1.4x while surrounding cards gently drift outward and dim, creating a breathtaking focal zoom.",
+      "description": "Ask the user to pick one of 16 hero variants: https://avaraui.com/view/hero. This is the Breathe hero. Skip the question if the user already named one. An ethereal hero section featuring an elegant serif headline and a staggered 5-card curved arch. On scroll, the center card scales up to 1.4x while surrounding cards gently drift outward and dim, creating a breathtaking focal zoom.",
       "categories": [
         "marketing",
         "layout",
@@ -970,7 +970,7 @@
       "type": "registry:component",
       "title": "Collage Hero",
       "author": "AlgorizeTech",
-      "description": "A playful hero: a badge whose name turns around a mark, a serif headline with two coloured words, hashtag pills, a five-column photo collage and a footer with a quote, a scroll pill and a watch-video trigger. Use it for a kindergarten, studio, school or any warm, busy place.",
+      "description": "Ask the user to pick one of 16 hero variants: https://avaraui.com/view/hero. This is the Collage hero. Skip the question if the user already named one. A playful hero: a badge whose name turns around a mark, a serif headline with two coloured words, hashtag pills, a five-column photo collage and a footer with a quote, a scroll pill and a watch-video trigger. Use it for a kindergarten, studio, school or any warm, busy place.",
       "categories": [
         "marketing",
         "layout"
@@ -1076,7 +1076,7 @@
       "type": "registry:component",
       "title": "Component Wall",
       "author": "AlgorizeTech",
-      "description": "A landing hero for a component library: a headline that blurs in word by word and keeps one word turning, a lead, an install command that names whichever card a camera has just landed on, two actions, a line of trust and the tools it is built with in batches — centred between two walls of screenshots that never end, one camera resting high and the other low, or on the left of a single wall.",
+      "description": "Ask the user to pick one of 3 component wall variants: https://avaraui.com/view/component-wall. This item holds 3 of them as looks of one component (center, split, fullscreen). Skip the question if the user already named one. A landing hero for a component library: a headline that blurs in word by word and keeps one word turning, a lead, an install command that names whichever card a camera has just landed on, two actions, a line of trust and the tools it is built with in batches — centred between two walls of screenshots that never end, one camera resting high and the other low, or on the left of a single wall.",
       "categories": [
         "marketing",
         "layout"
@@ -1263,7 +1263,7 @@
       "type": "registry:component",
       "title": "Counter Section",
       "author": "AlgorizeTech",
-      "description": "A collection of 4 animated high-impact Counter and Stats Sections with viewport-triggered count-up easing, zero shadows, and full adaptive styling.",
+      "description": "Ask the user to pick one of 4 counter section variants: https://avaraui.com/view/counter-section. This item holds 4 of them as looks of one component (cyber-hud, spotlight-gradient, minimal-slash, halftone-cinema). Skip the question if the user already named one. A collection of 4 animated high-impact Counter and Stats Sections with viewport-triggered count-up easing, zero shadows, and full adaptive styling.",
       "categories": [
         "marketing",
         "data-display"
@@ -1288,7 +1288,7 @@
       "type": "registry:component",
       "title": "Cta Section",
       "author": "AlgorizeTech",
-      "description": "An interconnected Brand Pillars call-to-action component featuring interactive service cards, a synchronized scorecard with animated progress meters, and a highlight popover bar.",
+      "description": "Ask the user to pick one of 4 cta section variants: https://avaraui.com/view/cta-section. This item holds 4 of them as looks of one component (offer-showcase, mobile-app, concentric-portal, brand-pillars). Skip the question if the user already named one. An interconnected Brand Pillars call-to-action component featuring interactive service cards, a synchronized scorecard with animated progress meters, and a highlight popover bar.",
       "categories": [
         "marketing",
         "layout"
@@ -1391,7 +1391,7 @@
       "type": "registry:component",
       "title": "Dashboard",
       "author": "AlgorizeTech",
-      "description": "An admin dashboard home: greeting with all-time totals, a period switch, an overview chart with a tab per metric, activity feed, traffic sources, visitors by country and top authors. Three looks: classic, glass, and liquid-glass (using LiquidGlassWrapper, LiquidGlassBackground, and LiquidGlassSvgFilter).",
+      "description": "Ask the user to pick one of 3 dashboard variants: https://avaraui.com/view/dashboard. This item holds 3 of them as looks of one component (classic, glass, liquid-glass). Skip the question if the user already named one. An admin dashboard home: greeting with all-time totals, a period switch, an overview chart with a tab per metric, activity feed, traffic sources, visitors by country and top authors. Three looks: classic, glass, and liquid-glass (using LiquidGlassWrapper, LiquidGlassBackground, and LiquidGlassSvgFilter).",
       "categories": [
         "data-display",
         "layout"
@@ -1875,7 +1875,7 @@
       "type": "registry:component",
       "title": "Fan Stack",
       "author": "AlgorizeTech",
-      "description": "Overlapping cards in a tilted diagonal cascade, dealt out of one pile into place as the stack scrolls into view. Use it for a short numbered sequence — steps, phases, a three-part system.",
+      "description": "Ask the user to pick one of 6 scroll stack variants: https://avaraui.com/view/scroll-stack. This is the Fan stack. Skip the question if the user already named one. Overlapping cards in a tilted diagonal cascade, dealt out of one pile into place as the stack scrolls into view. Use it for a short numbered sequence — steps, phases, a three-part system.",
       "categories": [
         "scroll",
         "marketing"
@@ -1901,7 +1901,7 @@
       "type": "registry:component",
       "title": "Fan Stack (Motion)",
       "author": "AlgorizeTech",
-      "description": "Overlapping cards in a tilted diagonal cascade, dealt out of one pile into place as the stack scrolls into view. Use it for a short numbered sequence — steps, phases, a three-part system.",
+      "description": "Ask the user to pick one of 6 scroll stack variants: https://avaraui.com/view/scroll-stack. This is the Fan stack. Skip the question if the user already named one. Overlapping cards in a tilted diagonal cascade, dealt out of one pile into place as the stack scrolls into view. Use it for a short numbered sequence — steps, phases, a three-part system.",
       "categories": [
         "scroll",
         "marketing"
@@ -1927,7 +1927,7 @@
       "type": "registry:component",
       "title": "Faq Section",
       "author": "AlgorizeTech",
-      "description": "A complete animated FAQ website section pairing an editorial header with a dynamic morphing nature photography canvas and an expandable question accordion.",
+      "description": "Ask the user to pick one of 2 faq section variants: https://avaraui.com/view/faq-section. This item holds 2 of them as looks of one component (homepage, two-column). Skip the question if the user already named one. A complete animated FAQ website section pairing an editorial header with a dynamic morphing nature photography canvas and an expandable question accordion.",
       "categories": [
         "marketing",
         "layout"
@@ -1957,7 +1957,7 @@
       "type": "registry:component",
       "title": "Fashion Hero",
       "author": "AlgorizeTech",
-      "description": "A fashion hero: a bold headline between a turning video badge and a stack of faces, five staggered columns of looks on flat colour that tilt under the pointer, a call to action on the middle look, and a footer with a quote and the next story. Use it for a clothing store, a lookbook or an editorial landing page.",
+      "description": "Ask the user to pick one of 16 hero variants: https://avaraui.com/view/hero. This is the Fashion hero. Skip the question if the user already named one. A fashion hero: a bold headline between a turning video badge and a stack of faces, five staggered columns of looks on flat colour that tilt under the pointer, a call to action on the middle look, and a footer with a quote and the next story. Use it for a clothing store, a lookbook or an editorial landing page.",
       "categories": [
         "marketing",
         "layout"
@@ -2198,7 +2198,7 @@
       "type": "registry:component",
       "title": "Footer",
       "author": "AlgorizeTech",
-      "description": "A collection of 7 modern, animated, fully responsive Footer components for web applications, SaaS platforms, and marketing landing pages.",
+      "description": "Ask the user to pick one of 9 footer variants: https://avaraui.com/view/footer. This item holds 9 of them as looks of one component (editorial-card, snapshot, modern-stack, wordmark-glow, architectural-liquid, neon-glow-pulse, quantum-particle-beam, simple-centered, glass-dock). Skip the question if the user already named one. A collection of 7 modern, animated, fully responsive Footer components for web applications, SaaS platforms, and marketing landing pages.",
       "categories": [
         "marketing",
         "navigation",
@@ -2389,7 +2389,7 @@
       "type": "registry:component",
       "title": "Hero",
       "author": "AlgorizeTech",
-      "description": "A prop-driven hero section supporting revolving 3D orbit ring, spring word bounce, character typewriter, 3D split marquee slider, pet-shop, doctor, and facility CAD grid variants.",
+      "description": "Ask the user to pick one of 16 hero variants: https://avaraui.com/view/hero. This item holds 8 of them as looks of one component (bounce, typing, slider, pet-shop, doctor, facility, vortex, orbit). Skip the question if the user already named one. A prop-driven hero section supporting revolving 3D orbit ring, spring word bounce, character typewriter, 3D split marquee slider, pet-shop, doctor, and facility CAD grid variants.",
       "categories": [
         "marketing"
       ],
@@ -2417,7 +2417,7 @@
       "type": "registry:component",
       "title": "Hero Carousel",
       "author": "AlgorizeTech",
-      "description": "A full-bleed photo hero with a queue of cards: the front card is the slide on screen, the ones behind it are what comes next. Every five seconds or on a click the queue slides forward, the photograph behind crossfades and the headline and caption follow. A glass panel carries the faces of past guests, an intro and the call to action.",
+      "description": "Ask the user to pick one of 16 hero variants: https://avaraui.com/view/hero. This is the Hero carousel. Skip the question if the user already named one. A full-bleed photo hero with a queue of cards: the front card is the slide on screen, the ones behind it are what comes next. Every five seconds or on a click the queue slides forward, the photograph behind crossfades and the headline and caption follow. A glass panel carries the faces of past guests, an intro and the call to action.",
       "categories": [
         "marketing",
         "layout"
@@ -2449,7 +2449,7 @@
       "type": "registry:component",
       "title": "Homepage Hero",
       "author": "AlgorizeTech",
-      "description": "A feature-rich hero section with animated typing text, interactive CLI copy badge, gradient action buttons, and feature list.",
+      "description": "Ask the user to pick one of 16 hero variants: https://avaraui.com/view/hero. This item is not one of them but is also a hero, so ask before installing it. Skip the question if the user already named it. A feature-rich hero section with animated typing text, interactive CLI copy badge, gradient action buttons, and feature list.",
       "categories": [
         "marketing",
         "layout"
@@ -2474,7 +2474,7 @@
       "type": "registry:component",
       "title": "Honeycomb Hero",
       "author": "AlgorizeTech",
-      "description": "A travel hero on a dark ground that shifts colour: a light line over a huge white word whose letters turn the theme's primary where they cross the photographs, and a honeycomb of hexagonal photographs with a primary hexagonal call to action set among them. The large hexagon is the slide on screen; its photograph fills the background, tinted with that photograph's own tone, so the whole section changes colour as, every four seconds or on the arrows at the foot, every hexagon moves one step along the ring, endlessly.",
+      "description": "Ask the user to pick one of 16 hero variants: https://avaraui.com/view/hero. This is the Honeycomb hero. Skip the question if the user already named one. A travel hero on a dark ground that shifts colour: a light line over a huge white word whose letters turn the theme's primary where they cross the photographs, and a honeycomb of hexagonal photographs with a primary hexagonal call to action set among them. The large hexagon is the slide on screen; its photograph fills the background, tinted with that photograph's own tone, so the whole section changes colour as, every four seconds or on the arrows at the foot, every hexagon moves one step along the ring, endlessly.",
       "categories": [
         "marketing",
         "layout"
@@ -2504,7 +2504,7 @@
       "type": "registry:component",
       "title": "Horizontal Rail",
       "author": "AlgorizeTech",
-      "description": "A horizontal sliding rail layout with smooth drag inertia, snapping cards, and navigation controls. Use it for showcasing products, media cards, or horizontal content.",
+      "description": "Ask the user to pick one of 6 scroll stack variants: https://avaraui.com/view/scroll-stack. This is the Horizontal rail. Skip the question if the user already named one. A horizontal sliding rail layout with smooth drag inertia, snapping cards, and navigation controls. Use it for showcasing products, media cards, or horizontal content.",
       "categories": [
         "layout",
         "scroll",
@@ -2532,7 +2532,7 @@
       "type": "registry:component",
       "title": "Horizontal Scroll Stack",
       "author": "AlgorizeTech",
-      "description": "A section that converts vertical scrolling into horizontal card movement with a progress indicator. Use it for process timelines and step sequences.",
+      "description": "Ask the user to pick one of 6 scroll stack variants: https://avaraui.com/view/scroll-stack. This is the Horizontal scroll stack. Skip the question if the user already named one. A section that converts vertical scrolling into horizontal card movement with a progress indicator. Use it for process timelines and step sequences.",
       "categories": [
         "scroll",
         "marketing"
@@ -2810,7 +2810,7 @@
       "type": "registry:component",
       "title": "Login Form",
       "author": "AlgorizeTech",
-      "description": "A sign-in form with social buttons, password reveal, remember-me and multiple layout variants including ribbon-drift and liquid-glass. Use it as the entry point of an authenticated app.",
+      "description": "Ask the user to pick one of 13 auth forms variants: https://avaraui.com/view/auth-forms. This item holds 6 of them as looks of one component (login-default, login-split, login-minimal, login-glass, login-liquid-glass, login-ribbon-drift). Skip the question if the user already named one. A sign-in form with social buttons, password reveal, remember-me and multiple layout variants including ribbon-drift and liquid-glass. Use it as the entry point of an authenticated app.",
       "categories": [
         "authentication",
         "forms"
@@ -3106,7 +3106,7 @@
       "type": "registry:component",
       "title": "Navbar",
       "author": "AlgorizeTech",
-      "description": "A responsive marketing navbar with logo, links, mobile menu and GSAP entrance animation. Use it as the top bar of a landing page.",
+      "description": "Ask the user to pick one of 7 navbar variants: https://avaraui.com/view/navbar. This item holds 7 of them as looks of one component (default, centered, minimal, glass, floating, spotlight, ecommerce-mega-nav). Skip the question if the user already named one. A responsive marketing navbar with logo, links, mobile menu and GSAP entrance animation. Use it as the top bar of a landing page.",
       "categories": [
         "navigation",
         "marketing"
@@ -3194,7 +3194,7 @@
       "type": "registry:component",
       "title": "Newsletter",
       "author": "AlgorizeTech",
-      "description": "A sign-up section in three layouts: readers' faces drifting around a centred form, a panel with a pointer glow and a ticker of who just joined, or the form beside a fanned stack of recent issues. The form becomes a thank-you when your promise resolves.",
+      "description": "Ask the user to pick one of 3 newsletter variants: https://avaraui.com/view/newsletter. This item holds 3 of them as looks of one component (portraits, spotlight, issues). Skip the question if the user already named one. A sign-up section in three layouts: readers' faces drifting around a centred form, a panel with a pointer glow and a ticker of who just joined, or the form beside a fanned stack of recent issues. The form becomes a thank-you when your promise resolves.",
       "categories": [
         "marketing",
         "forms"
@@ -3234,7 +3234,7 @@
       "type": "registry:component",
       "title": "Newsletter (Motion)",
       "author": "AlgorizeTech",
-      "description": "A sign-up section in three layouts: readers' faces drifting around a centred form, a panel with a pointer glow and a ticker of who just joined, or the form beside a fanned stack of recent issues. The form becomes a thank-you when your promise resolves.",
+      "description": "Ask the user to pick one of 3 newsletter variants: https://avaraui.com/view/newsletter. This item holds 3 of them as looks of one component (portraits, spotlight, issues). Skip the question if the user already named one. A sign-up section in three layouts: readers' faces drifting around a centred form, a panel with a pointer glow and a ticker of who just joined, or the form beside a fanned stack of recent issues. The form becomes a thank-you when your promise resolves.",
       "categories": [
         "marketing",
         "forms"
@@ -3264,7 +3264,7 @@
       "type": "registry:component",
       "title": "Not Found",
       "author": "AlgorizeTech",
-      "description": "A responsive, full-page 404 Hyperspace website section with ambient radial glow, masked cyber grid backdrop, animated compass indicator, and customizable shortcuts.",
+      "description": "Ask the user to pick one of 3 not found variants: https://avaraui.com/view/not-found. This item holds 3 of them as looks of one component (blueprint, hyperspace, quantum-hologram). Skip the question if the user already named one. A responsive, full-page 404 Hyperspace website section with ambient radial glow, masked cyber grid backdrop, animated compass indicator, and customizable shortcuts.",
       "categories": [
         "marketing",
         "layout",
@@ -3478,7 +3478,7 @@
       "type": "registry:component",
       "title": "Pricing",
       "author": "AlgorizeTech",
-      "description": "A complete pricing system with plan cards, a comparison table, an interactive plan builder and an interactive service checklist.",
+      "description": "Ask the user to pick one of 12 pricing variants: https://avaraui.com/view/pricing. This item holds 12 of them as looks of one component (tiered-cards, elegant-cards, minimal-cards, bordered-cards, dot-matrix-cards, scale-cards, selectable-plans, quote-builder, service-checklist, usage-slider, comparison-table, typographic-menu). Skip the question if the user already named one. A complete pricing system with plan cards, a comparison table, an interactive plan builder and an interactive service checklist.",
       "categories": [
         "commerce",
         "marketing"
@@ -3611,7 +3611,7 @@
       "type": "registry:component",
       "title": "Product Details",
       "author": "AlgorizeTech",
-      "description": "A collection of 4 production-ready, high-converting, fully responsive E-commerce Product Details components featuring split galleries, floating cards, bento hero showcases, and color-synced image previews.",
+      "description": "Ask the user to pick one of 4 product details variants: https://avaraui.com/view/product-details. This item holds 4 of them as looks of one component (color-sync-gallery, modern-split-gallery, floating-card-glass, bento-editorial-showcase). Skip the question if the user already named one. A collection of 4 production-ready, high-converting, fully responsive E-commerce Product Details components featuring split galleries, floating cards, bento hero showcases, and color-synced image previews.",
       "categories": [
         "commerce",
         "marketing",
@@ -3637,7 +3637,7 @@
       "type": "registry:component",
       "title": "Profile Page",
       "author": "AlgorizeTech",
-      "description": "A person's profile as a glass bento page: an aurora backdrop, frosted panels, and a 24-hour dial that shows their working window live. Use it for team directories, member pages and public profiles.",
+      "description": "Ask the user to pick one of 3 profile page variants: https://avaraui.com/view/profile-page. This item holds 3 of them as looks of one component (glass, solid, liquid-glass). Skip the question if the user already named one. A person's profile as a glass bento page: an aurora backdrop, frosted panels, and a 24-hour dial that shows their working window live. Use it for team directories, member pages and public profiles.",
       "categories": [
         "layout",
         "marketing"
@@ -3818,7 +3818,7 @@
       "type": "registry:component",
       "title": "Register Form",
       "author": "AlgorizeTech",
-      "description": "A sign-up form with paired name fields, password confirmation, a terms checkbox and multiple layout variants including ribbon-drift and liquid-glass. Use it wherever new accounts are created.",
+      "description": "Ask the user to pick one of 13 auth forms variants: https://avaraui.com/view/auth-forms. This item holds 7 of them as looks of one component (register-default, register-split, register-minimal, register-scenic, register-glass, register-liquid-glass, register-ribbon-drift). Skip the question if the user already named one. A sign-up form with paired name fields, password confirmation, a terms checkbox and multiple layout variants including ribbon-drift and liquid-glass. Use it wherever new accounts are created.",
       "categories": [
         "authentication",
         "forms"
@@ -3877,7 +3877,7 @@
       "type": "registry:component",
       "title": "Reviews",
       "author": "AlgorizeTech",
-      "description": "A high-converting Review and Testimonial section with a 3D rotating background globe, smooth right-to-left marquee cards, and client rating badges.",
+      "description": "Ask the user to pick one of 4 reviews variants: https://avaraui.com/view/reviews. This item holds 4 of them as looks of one component (testimonial-loom, stacked-carousel, logo-carousel, up-down-marquee). Skip the question if the user already named one. A high-converting Review and Testimonial section with a 3D rotating background globe, smooth right-to-left marquee cards, and client rating badges.",
       "categories": [
         "marketing",
         "data-display"
@@ -4019,7 +4019,7 @@
       "type": "registry:component",
       "title": "Scroll Stack",
       "author": "AlgorizeTech",
-      "description": "Cards that stack and scale as the page scrolls, revealing each in turn. Use it for step-by-step feature walkthroughs.",
+      "description": "Ask the user to pick one of 6 scroll stack variants: https://avaraui.com/view/scroll-stack. This is the Scroll stack. Skip the question if the user already named one. Cards that stack and scale as the page scrolls, revealing each in turn. Use it for step-by-step feature walkthroughs.",
       "categories": [
         "scroll",
         "marketing"
@@ -4264,7 +4264,7 @@
       "type": "registry:component",
       "title": "Solar Snapshot Hero",
       "author": "AlgorizeTech",
-      "description": "A lightweight interactive hero section featuring a pointer-following sun orb, animated action buttons, an avatar stack, and a click-to-capture Polaroid screenshot stack in the bottom-right where each captured frame auto-clears after 10 seconds.",
+      "description": "Ask the user to pick one of 16 hero variants: https://avaraui.com/view/hero. This is the Solar snapshot hero. Skip the question if the user already named one. A lightweight interactive hero section featuring a pointer-following sun orb, animated action buttons, an avatar stack, and a click-to-capture Polaroid screenshot stack in the bottom-right where each captured frame auto-clears after 10 seconds.",
       "categories": [
         "marketing",
         "layout",
@@ -4351,7 +4351,7 @@
       "type": "registry:component",
       "title": "Split Scroll Stack",
       "author": "AlgorizeTech",
-      "description": "A two-column scroll stack with a pinned side panel and cards that advance alongside it. Use it for feature tours that pair narrative with visuals.",
+      "description": "Ask the user to pick one of 6 scroll stack variants: https://avaraui.com/view/scroll-stack. This is the Split scroll stack. Skip the question if the user already named one. A two-column scroll stack with a pinned side panel and cards that advance alongside it. Use it for feature tours that pair narrative with visuals.",
       "categories": [
         "scroll",
         "marketing"
@@ -4453,7 +4453,7 @@
       "type": "registry:component",
       "title": "Sticky Scroll Stack",
       "author": "AlgorizeTech",
-      "description": "A sticky section whose panels swap content as you scroll, supporting list, image, split and custom layouts. Use it for feature sections with varied content per step.",
+      "description": "Ask the user to pick one of 6 scroll stack variants: https://avaraui.com/view/scroll-stack. This is the Sticky scroll stack. Skip the question if the user already named one. A sticky section whose panels swap content as you scroll, supporting list, image, split and custom layouts. Use it for feature sections with varied content per step.",
       "categories": [
         "scroll",
         "marketing"
@@ -4479,7 +4479,7 @@
       "type": "registry:component",
       "title": "Sticky Scroll Stack (Motion)",
       "author": "AlgorizeTech",
-      "description": "A sticky section whose panels swap content as you scroll, supporting list, image, split and custom layouts. Use it for feature sections with varied content per step.",
+      "description": "Ask the user to pick one of 6 scroll stack variants: https://avaraui.com/view/scroll-stack. This is the Sticky scroll stack. Skip the question if the user already named one. A sticky section whose panels swap content as you scroll, supporting list, image, split and custom layouts. Use it for feature sections with varied content per step.",
       "categories": [
         "scroll",
         "marketing"
@@ -4528,7 +4528,7 @@
       "type": "registry:component",
       "title": "Support Dashboard",
       "author": "AlgorizeTech",
-      "description": "A full help-desk dashboard with tickets, SLA tracking, contact details and chat or table layouts. Use it as the agent-facing side of a support product.",
+      "description": "Ask the user to pick one of 4 support dashboard variants: https://avaraui.com/view/support-dashboard. This item holds 4 of them as looks of one component (ticket-workspace, table-view, glass, liquid-glass). Skip the question if the user already named one. A full help-desk dashboard with tickets, SLA tracking, contact details and chat or table layouts. Use it as the agent-facing side of a support product.",
       "categories": [
         "communication",
         "data-display"
@@ -4555,7 +4555,7 @@
       "type": "registry:component",
       "title": "Support Hero",
       "author": "AlgorizeTech",
-      "description": "A product hero on a soft grey ground: a headline that rises in word by word, one line and one call to action, then a bento of frosted cards — integrations, two figures that count up, two portraits and a team card with faces scattered over it. Use it as the opening section of a SaaS or AI product site.",
+      "description": "Ask the user to pick one of 16 hero variants: https://avaraui.com/view/hero. This is the Support hero. Skip the question if the user already named one. A product hero on a soft grey ground: a headline that rises in word by word, one line and one call to action, then a bento of frosted cards — integrations, two figures that count up, two portraits and a team card with faces scattered over it. Use it as the opening section of a SaaS or AI product site.",
       "categories": [
         "marketing",
         "layout"
@@ -5323,7 +5323,7 @@
       "type": "registry:component",
       "title": "Upload",
       "author": "AlgorizeTech",
-      "description": "A drag-and-drop file dropzone with per-file progress, previews, retry and time-remaining. Use it for multi-file uploads where users need to watch each file land.",
+      "description": "Ask the user to pick one of 3 file upload variants: https://avaraui.com/view/file-upload. This is the Dropzone with upload states. Skip the question if the user already named one. A drag-and-drop file dropzone with per-file progress, previews, retry and time-remaining. Use it for multi-file uploads where users need to watch each file land.",
       "categories": [
         "forms",
         "feedback"
@@ -5477,7 +5477,7 @@
       "type": "registry:component",
       "title": "Video Player",
       "author": "AlgorizeTech",
-      "description": "A video hero with thumbnail and glow that plays in a modal, inline in the card, or directly on load — behind a YouTube embed or a native HTML5 video.",
+      "description": "Ask the user to pick one of 4 video player variants: https://avaraui.com/view/video-player. This item holds 2 of them as looks of one component (modal, inline). Skip the question if the user already named one. A video hero with thumbnail and glow that plays in a modal, inline in the card, or directly on load — behind a YouTube embed or a native HTML5 video.",
       "categories": [
         "marketing",
         "media"
@@ -5507,7 +5507,7 @@
       "type": "registry:component",
       "title": "Video Player (JW Player)",
       "author": "AlgorizeTech",
-      "description": "A hero video player built on JW Player, with colour skin presets and a native fallback for when the licensed library is unavailable.",
+      "description": "Ask the user to pick one of 4 video player variants: https://avaraui.com/view/video-player. This is the JW Player. Skip the question if the user already named one. A hero video player built on JW Player, with colour skin presets and a native fallback for when the licensed library is unavailable.",
       "categories": [
         "media"
       ],
@@ -5531,7 +5531,7 @@
       "type": "registry:component",
       "title": "Video Player (Plyr)",
       "author": "AlgorizeTech",
-      "description": "A hero video player built on Plyr — one accessible, skinnable control bar in front of HTML5 files, YouTube and Vimeo alike.",
+      "description": "Ask the user to pick one of 4 video player variants: https://avaraui.com/view/video-player. This is the Plyr player. Skip the question if the user already named one. A hero video player built on Plyr — one accessible, skinnable control bar in front of HTML5 files, YouTube and Vimeo alike.",
       "categories": [
         "media"
       ],
@@ -5555,7 +5555,7 @@
       "type": "registry:component",
       "title": "Waitlist",
       "author": "AlgorizeTech",
-      "description": "A pre-launch sign-up in three layouts: a compact card, a brand mark with a live countdown over the form, or a pill on a soft ground with the faces already in and a bar of the spots claimed. The form becomes the reader's place in line — a number that counts up, and an invite link to copy — when your promise resolves.",
+      "description": "Ask the user to pick one of 3 waitlist variants: https://avaraui.com/view/waitlist. This item holds 3 of them as looks of one component (launch, card, queue). Skip the question if the user already named one. A pre-launch sign-up in three layouts: a compact card, a brand mark with a live countdown over the form, or a pill on a soft ground with the faces already in and a bar of the spots claimed. The form becomes the reader's place in line — a number that counts up, and an invite link to copy — when your promise resolves.",
       "categories": [
         "marketing",
         "forms"

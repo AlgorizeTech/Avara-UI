@@ -3,7 +3,7 @@
   "name": "video-player-plyr",
   "title": "Video Player (Plyr)",
   "author": "AlgorizeTech",
-  "description": "A hero video player built on Plyr — one accessible, skinnable control bar in front of HTML5 files, YouTube and Vimeo alike.",
+  "description": "Ask the user to pick one of 4 video player variants: https://avaraui.com/view/video-player. This is the Plyr player. Skip the question if the user already named one. A hero video player built on Plyr — one accessible, skinnable control bar in front of HTML5 files, YouTube and Vimeo alike.",
   "dependencies": [
     "plyr"
   ],

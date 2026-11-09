@@ -18,6 +18,43 @@ The suite is two pieces you compose yourself: a `Dropzone` that hands you `File[
 
 Three upload surfaces live on this page, and each installs separately: the `Dropzone` + `UploadItem` suite, the `Input` block's built-in file mode for simple forms, and the `Folder` block as a playful drop target. Each section below ends with its own install.
 
+## For AI agents
+
+**Ask before you pick.** This page has 3 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 3 options as live previews: https://avaraui.com/view/file-upload
+
+**When to use it.** Ways to let a visitor attach files. Three designs: a full dropzone with per-file progress, a plain file field with previews inside a form, and a folder you drop files onto.
+
+**Gotchas:**
+
+- `input` and `folder` are general components used for much more than uploads. Install the one that matches the chosen design and set its props from the index.
+
+### The 3 variants
+
+1. **Dropzone with upload states** (`dropzone`): A drag-and-drop zone with a row per file: progress, pause, retry, time remaining and success or error states.
+   - Live: https://avaraui.com/view/file-upload/dropzone
+   - Best for: multi-file uploads where users need to watch each file land
+   - Avoid if: you only need to attach one file to a form
+   - Traits: drag feedback, per-file progress, retry, size limit in megabytes
+   - Install: `npx shadcn@latest add @avara-ui/upload`
+   - Docs: https://avaraui.com/docs/nextjs/file-upload#dropzone
+2. **File input with previews** (`file-input`): The Input block in file mode: a drag-and-drop field with previews and removal, built to sit inside a form.
+   - Live: https://avaraui.com/view/file-upload/file-input
+   - Best for: a form that just needs files attached
+   - Avoid if: users need to see progress and retry for each file
+   - Traits: inside a form, previews, removal, returns native File[]
+   - Install: `npx shadcn@latest add @avara-ui/input`
+   - Set these props: `{"inputType":"file"}`
+   - Docs: https://avaraui.com/docs/nextjs/file-upload#simple-file-input
+3. **Folder drop target** (`folder-drop`): A tactile frosted-glass folder that takes dropped or picked files; each file becomes a card with its own progress bar.
+   - Live: https://avaraui.com/view/file-upload/folder-drop
+   - Best for: galleries and file groups where a folder metaphor fits
+   - Avoid if: you want a plain form field
+   - Traits: folder metaphor, cards per file, progress bar, follows the theme colour
+   - Install: `npx shadcn@latest add @avara-ui/folder`
+   - Docs: https://avaraui.com/docs/nextjs/file-upload#folder-drop-target
+
 ## Dropzone and upload queue
 
 The full suite: a `Dropzone` that hands you `File[]`, and an `UploadItem` for each row of your own queue state.

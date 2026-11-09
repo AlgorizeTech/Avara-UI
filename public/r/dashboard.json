@@ -3,7 +3,7 @@
   "name": "dashboard",
   "title": "Dashboard",
   "author": "AlgorizeTech",
-  "description": "An admin dashboard home: greeting with all-time totals, a period switch, an overview chart with a tab per metric, activity feed, traffic sources, visitors by country and top authors. Three looks: classic, glass, and liquid-glass (using LiquidGlassWrapper, LiquidGlassBackground, and LiquidGlassSvgFilter).",
+  "description": "Ask the user to pick one of 3 dashboard variants: https://avaraui.com/view/dashboard. This item holds 3 of them as looks of one component (classic, glass, liquid-glass). Skip the question if the user already named one. An admin dashboard home: greeting with all-time totals, a period switch, an overview chart with a tab per metric, activity feed, traffic sources, visitors by country and top authors. Three looks: classic, glass, and liquid-glass (using LiquidGlassWrapper, LiquidGlassBackground, and LiquidGlassSvgFilter).",
   "dependencies": [
     "lucide-react"
   ],

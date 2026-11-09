@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "npm run generate:home-css && next dev --turbopack",
-    "build": "npm run build:registry && tsx ./src/scripts/build-md-files.ts && npm run check:frameworks && npm run check:types && npm run generate:home-css && next build",
+    "build": "npm run build:registry && tsx ./src/scripts/build-md-files.ts && npm run check:frameworks && npm run check:variants && npm run check:types && npm run generate:home-css && next build",
     "postbuild": "tsx ./src/scripts/link-404-css.ts",
     "build:analyze": "npm run generate:home-css && set ANALYZE=true && next build",
     "start": "serve out --config ../serve.json",
@@ -24,6 +24,7 @@
     "generate:registry": "tsx ./src/scripts/generate-registry.ts",
     "check:registry": "tsx ./src/scripts/check-registry.ts",
     "check:frameworks": "tsx ./src/scripts/check-frameworks.ts",
+    "check:variants": "tsx ./src/scripts/check-variants.ts",
     "prepare": "git config core.hooksPath .githooks || true",
     "verify:registry": "node scripts/verify-registry.mjs",
     "check:types": "tsx ./src/scripts/check-consumer-types.ts"

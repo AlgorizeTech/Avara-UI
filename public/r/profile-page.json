@@ -3,7 +3,7 @@
   "name": "profile-page",
   "title": "Profile Page",
   "author": "AlgorizeTech",
-  "description": "A person's profile as a glass bento page: an aurora backdrop, frosted panels, and a 24-hour dial that shows their working window live. Use it for team directories, member pages and public profiles.",
+  "description": "Ask the user to pick one of 3 profile page variants: https://avaraui.com/view/profile-page. This item holds 3 of them as looks of one component (glass, solid, liquid-glass). Skip the question if the user already named one. A person's profile as a glass bento page: an aurora backdrop, frosted panels, and a 24-hour dial that shows their working window live. Use it for team directories, member pages and public profiles.",
   "dependencies": [],
   "registryDependencies": [
     "https://avaraui.com/r/glass-panel.json",

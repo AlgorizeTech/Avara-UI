@@ -10,6 +10,53 @@ A high-converting Review / Testimonial website section featuring a 3D WebGL rota
 
 Designed to showcase client feedback, agency trust signals, and social proof with maximum visual impact and dynamic theme color integration.
 
+## For AI agents
+
+**Ask before you pick.** This page has 4 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 4 options as live previews: https://avaraui.com/view/reviews
+
+**When to use it.** A testimonials section. Four designs: an envelope that opens to a letter, rolling stacked cards, a logo-tab carousel with a quote card, and a wall of vertical marquee columns.
+
+**Gotchas:**
+
+- All four are looks of the one `reviews` item: install it once and set `variant` from the index.
+
+### The 4 variants
+
+1. **Testimonial loom (envelope carousel)** (`testimonial-loom`): A 3D envelope opens, a ruled testimonial letter slides out and settles on the front with a postmark.
+   - Live: https://avaraui.com/view/reviews/testimonial-loom
+   - Best for: a few strong, personal testimonials that deserve a moment each
+   - Avoid if: you have many short reviews to show at once
+   - Traits: 3D envelope flap, letter card, rubber postmark, carousel
+   - Install: `npx shadcn@latest add @avara-ui/reviews`
+   - Set these props: `{"variant":"testimonial-loom"}`
+   - Docs: https://avaraui.com/docs/nextjs/reviews#testimonial-loom-pro-envelope-carousel
+2. **3D stacked cards carousel** (`stacked-carousel`): Three stacked portrait cards that roll into place with arrow navigation.
+   - Live: https://avaraui.com/view/reviews/stacked-carousel
+   - Best for: testimonials that come with a portrait of the person
+   - Avoid if: you have no portraits or photos of reviewers
+   - Traits: 3 stacked portrait cards, rolling rotation, arrow navigation
+   - Install: `npx shadcn@latest add @avara-ui/reviews`
+   - Set these props: `{"variant":"stacked-carousel"}`
+   - Docs: https://avaraui.com/docs/nextjs/reviews#3d-stacked-cards-carousel-with-rolling-motion-arrows
+3. **Interactive brand logo carousel** (`logo-carousel`): Company logo tabs that switch a split testimonial quote card with the author's portrait.
+   - Live: https://avaraui.com/view/reviews/logo-carousel
+   - Best for: B2B proof: quotes from named companies, led by their logos
+   - Avoid if: your reviewers are individuals with no company logos
+   - Traits: company logo tabs, split quote card, author portrait
+   - Install: `npx shadcn@latest add @avara-ui/reviews`
+   - Set these props: `{"variant":"logo-carousel"}`
+   - Docs: https://avaraui.com/docs/nextjs/reviews#interactive-brand-logo-carousel
+4. **Up-down vertical marquee** (`up-down-marquee`): Four infinite vertical columns of reviews scrolling up and down, pausing on hover.
+   - Live: https://avaraui.com/view/reviews/up-down-marquee
+   - Best for: a wall of many short reviews that shows volume
+   - Avoid if: you have only a few reviews; you want visitors to read each one at their own pace
+   - Traits: 4 infinite columns, alternating directions, pauses on hover
+   - Install: `npx shadcn@latest add @avara-ui/reviews`
+   - Set these props: `{"variant":"up-down-vertical-marquee"}`
+   - Docs: https://avaraui.com/docs/nextjs/reviews#updown-vertical-marquee
+
 ## Testimonial Loom Pro (Envelope Carousel)
 
 - 4-Stage Envelope Choreography `variant="testimonial-loom"` opens the 3D top envelope flap, extracts the ruled testimonial letter card upward out of the pocket, and settles it onto the front of the envelope with a rubber postmark and mini-envelope thumbnail selector.

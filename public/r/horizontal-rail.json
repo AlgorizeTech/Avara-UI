@@ -3,7 +3,7 @@
   "name": "horizontal-rail",
   "title": "Horizontal Rail",
   "author": "AlgorizeTech",
-  "description": "A horizontal sliding rail layout with smooth drag inertia, snapping cards, and navigation controls. Use it for showcasing products, media cards, or horizontal content.",
+  "description": "Ask the user to pick one of 6 scroll stack variants: https://avaraui.com/view/scroll-stack. This is the Horizontal rail. Skip the question if the user already named one. A horizontal sliding rail layout with smooth drag inertia, snapping cards, and navigation controls. Use it for showcasing products, media cards, or horizontal content.",
   "dependencies": [],
   "registryDependencies": [
     "utils"

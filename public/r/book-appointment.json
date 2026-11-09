@@ -3,7 +3,7 @@
   "name": "book-appointment",
   "title": "Book Appointment",
   "author": "AlgorizeTech",
-  "description": "A practitioner's page that ends in an appointment: portrait and contact, scores as stars, two small charts, and a booking panel — glass or solid. Use it for clinics, salons, consultations.",
+  "description": "Ask the user to pick one of 2 book appointment variants: https://avaraui.com/view/book-appointment. This item holds 2 of them as looks of one component (glass, solid). Skip the question if the user already named one. A practitioner's page that ends in an appointment: portrait and contact, scores as stars, two small charts, and a booking panel — glass or solid. Use it for clinics, salons, consultations.",
   "dependencies": [
     "lucide-react"
   ],

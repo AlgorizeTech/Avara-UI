@@ -3,7 +3,7 @@
   "name": "collage-hero",
   "title": "Collage Hero",
   "author": "AlgorizeTech",
-  "description": "A playful hero: a badge whose name turns around a mark, a serif headline with two coloured words, hashtag pills, a five-column photo collage and a footer with a quote, a scroll pill and a watch-video trigger. Use it for a kindergarten, studio, school or any warm, busy place.",
+  "description": "Ask the user to pick one of 16 hero variants: https://avaraui.com/view/hero. This is the Collage hero. Skip the question if the user already named one. A playful hero: a badge whose name turns around a mark, a serif headline with two coloured words, hashtag pills, a five-column photo collage and a footer with a quote, a scroll pill and a watch-video trigger. Use it for a kindergarten, studio, school or any warm, busy place.",
   "dependencies": [
     "lucide-react"
   ],

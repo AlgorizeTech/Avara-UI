@@ -34,6 +34,9 @@ jobs:
       - name: Registry drift checks
         run: npm run check:registry
 
+      - name: Variant data checks
+        run: npm run check:variants
+
       # If regenerating changed anything, the committed artifacts were stale.
       # Fail loudly rather than letting a stale registry.json or public/r/ ship.
       - name: Fail if generated artifacts are stale

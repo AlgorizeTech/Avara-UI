@@ -3,7 +3,7 @@
   "name": "fan-stack",
   "title": "Fan Stack",
   "author": "AlgorizeTech",
-  "description": "Overlapping cards in a tilted diagonal cascade, dealt out of one pile into place as the stack scrolls into view. Use it for a short numbered sequence — steps, phases, a three-part system.",
+  "description": "Ask the user to pick one of 6 scroll stack variants: https://avaraui.com/view/scroll-stack. This is the Fan stack. Skip the question if the user already named one. Overlapping cards in a tilted diagonal cascade, dealt out of one pile into place as the stack scrolls into view. Use it for a short numbered sequence — steps, phases, a three-part system.",
   "dependencies": [
     "gsap",
     "lucide-react"

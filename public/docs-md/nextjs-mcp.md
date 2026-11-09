@@ -177,6 +177,14 @@ Add to `opencode.json`, then restart OpenCode:
     }
     ```
 
+## Add the agent skill
+
+The MCP server lets an assistant browse and install. The [agent skill](https://avaraui.com/docs/nextjs/agent-skills) tells it how to choose, which Markdown to read before writing code, and what to check afterwards, so it stops inventing props and hard-coding colours. It is free and takes one command.
+
+## Designs the assistant asks about
+
+Some sections come in several designs, like the sixteen heroes. An assistant that follows our instructions will not pick one for you. When it searches the registry, the description of each of these items opens with a request to ask you first, plus a link to a page that shows every design live. Tell it which one you want ("the honeycomb hero") or say "pick the best one for me" and it will choose and explain why. Sections with only one design are installed without a question.
+
 ## Example prompts
 
 **Browse and search**
@@ -213,6 +221,7 @@ Make sure `components.json` exists ([run `init`](https://avaraui.com/docs/nextjs
 
 ## Next steps
 
+- [Agent Skill](https://avaraui.com/docs/nextjs/agent-skills) — teach your agent the build workflow
 - [Installation](https://avaraui.com/docs/nextjs/installation) — set up a project for Avara UI
 - [All components](https://avaraui.com/docs/nextjs/all-components) — browse the library
 

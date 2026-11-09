@@ -3,7 +3,7 @@
   "name": "reviews",
   "title": "Reviews",
   "author": "AlgorizeTech",
-  "description": "A high-converting Review and Testimonial section with a 3D rotating background globe, smooth right-to-left marquee cards, and client rating badges.",
+  "description": "Ask the user to pick one of 4 reviews variants: https://avaraui.com/view/reviews. This item holds 4 of them as looks of one component (testimonial-loom, stacked-carousel, logo-carousel, up-down-marquee). Skip the question if the user already named one. A high-converting Review and Testimonial section with a 3D rotating background globe, smooth right-to-left marquee cards, and client rating badges.",
   "dependencies": [
     "lucide-react"
   ],

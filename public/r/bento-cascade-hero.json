@@ -3,7 +3,7 @@
   "name": "bento-cascade-hero",
   "title": "Bento Cascade Hero",
   "author": "AlgorizeTech",
-  "description": "An infinite vertical bento marquee hero section that loops seamlessly on the browser compositor. Staggered multi-column cards, rich media tiles, soft edge fade masks, and responsive motion with zero visible reset jumps.",
+  "description": "Ask the user to pick one of 16 hero variants: https://avaraui.com/view/hero. This is the Bento cascade hero. Skip the question if the user already named one. An infinite vertical bento marquee hero section that loops seamlessly on the browser compositor. Staggered multi-column cards, rich media tiles, soft edge fade masks, and responsive motion with zero visible reset jumps.",
   "dependencies": [
     "lucide-react"
   ],

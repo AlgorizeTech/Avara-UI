@@ -10,6 +10,49 @@ A sign-up section in three layouts. **Portraits** puts four readers' faces aroun
 
 `Newsletter` is built from library pieces: the field is [Input](https://avaraui.com/docs/nextjs/input), the action is [Button](https://avaraui.com/docs/nextjs/button), the ticker is [Marquee](https://avaraui.com/docs/nextjs/marquee) and the top issue sits on a [Tilted Card](https://avaraui.com/docs/nextjs/tilted-card). Every piece of copy is a named part — `Heading`, `Intro`, `Form`, `Proof`, `Ticker`, `Issues` — so the words are yours.
 
+## For AI agents
+
+**Ask before you pick.** This page has 3 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 3 options as live previews: https://avaraui.com/view/newsletter
+
+**When to use it.** An email sign-up section in three layouts: faces around the form, a pointer glow with a ticker of recent sign-ups, or the latest issues fanned beside the form.
+
+**When to use something else:**
+
+- [Waitlist](https://avaraui.com/docs/nextjs/waitlist): for a pre-launch sign-up that gives a place in line rather than a subscription.
+
+**Gotchas:**
+
+- All three are layouts of the one `newsletter` item: install it once and set `variant` from the index.
+
+### The 3 variants
+
+1. **Portraits** (`portraits`): Four readers' faces around a centred form on a soft panel, drifting with the pointer; the button becomes a thank-you.
+   - Live: https://avaraui.com/view/newsletter/portraits
+   - Best for: a newsletter with a community feel, where showing real readers builds trust
+   - Avoid if: you have no portraits of readers to show
+   - Traits: four drifting portraits, centred form, thank-you animation, avatar proof line
+   - Install: `npx shadcn@latest add @avara-ui/newsletter`
+   - Set these props: `{"variant":"portraits"}`
+   - Docs: https://avaraui.com/docs/nextjs/newsletter#portraits
+2. **Spotlight** (`spotlight`): A glow in the accent colour follows the pointer, with a ticker of who just joined running along the foot.
+   - Live: https://avaraui.com/view/newsletter/spotlight
+   - Best for: a product or community that wants live social proof next to the sign-up
+   - Avoid if: you have no recent sign-ups to show in the ticker
+   - Traits: pointer-following glow, who-just-joined ticker, light and dark mode
+   - Install: `npx shadcn@latest add @avara-ui/newsletter`
+   - Set these props: `{"variant":"spotlight"}`
+   - Docs: https://avaraui.com/docs/nextjs/newsletter#spotlight
+3. **Issues** (`issues`): Copy and form on the left, the latest three issues fanned on the right; the stack spreads on hover.
+   - Live: https://avaraui.com/view/newsletter/issues
+   - Best for: a publication with past issues to show before asking for the sign-up
+   - Avoid if: you have no issues yet to display
+   - Traits: two columns, three fanned issue cards, tilting front card, white ground
+   - Install: `npx shadcn@latest add @avara-ui/newsletter`
+   - Set these props: `{"variant":"issues"}`
+   - Docs: https://avaraui.com/docs/nextjs/newsletter#issues
+
 ## Portraits
 
 Four faces around the form, drifting with the pointer. Type an address and press Subscribe — the pill becomes a thank-you with a check that draws itself.

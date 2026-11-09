@@ -24,6 +24,9 @@ import {
 import { resolveMotion, resolveUsage, type ShowcaseSnippet } from "../lib/snippet";
 import { extractCode, extractMotionCode } from "../lib/code";
 import { pageHeading } from "../lib/docs-source";
+import { skillInstallCommand, type SkillClient } from "../lib/agent-skill";
+import { hubMarkdown, type HubKind } from "../lib/agent-index";
+import { agentBlockForSlug, agentBlockMarkdown } from "../agent/variants/render";
 import { pageSeo } from "../lib/page-seo";
 import registry from "../../registry.json";
 import { countComponents } from "../lib/component-count";
@@ -292,6 +295,22 @@ function convertMdxToMd(content: string, framework: Framework): string {
     /<RegistryConfig\s*\/>/g,
     () => hold('```json\n' + REGISTRY_COMPONENTS_JSON + '\n```')
   );
+
+  // <SkillInstall client="claude" /> prints the commands that install the agent skill.
+  mdContent = mdContent.replace(/<SkillInstall\s+client="(\w+)"\s*\/>/g, (_, client: string) => {
+    const { lang, code } = skillInstallCommand(client as SkillClient);
+    return hold('```' + lang + '\n' + code + '\n```');
+  });
+
+  // <PageIndex kind="sections" /> prints a hub page's list.
+  mdContent = mdContent.replace(/<PageIndex\s+kind="(\w+)"\s*\/>/g, (_, kind: string) => hold(hubMarkdown(kind as HubKind)));
+
+  // <AgentVariants slug="…" /> prints the "For AI agents" block: the ask-first rule and every variant with its live link.
+  mdContent = mdContent.replace(/<AgentVariants\s+slug="([^"]+)"\s*\/>/g, (_, pageSlug: string) => {
+    const block = agentBlockForSlug(pageSlug);
+    if (!block) throw new Error(`<AgentVariants slug="${pageSlug}"> has no variants file in src/agent/variants/`);
+    return hold(agentBlockMarkdown(block, (target) => `${SITE_URL}${docsHref(framework, target)}`));
+  });
 
   // Convert JSX components to markdown equivalents
 

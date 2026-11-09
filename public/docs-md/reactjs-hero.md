@@ -8,6 +8,142 @@ url: https://avaraui.com/docs/nextjs/hero
 
 Every hero section in the library, on one page. Each is its own registry item with its own preview, install command and props — pick the one that suits the site and install only that. They run from the most opinionated layouts to the general-purpose `HeroBlock` and its five variants at the foot.
 
+## For AI agents
+
+**Ask before you pick.** This page has 16 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 16 options as live previews: https://avaraui.com/view/hero
+
+**When to use it.** The first screen of a landing page. Sixteen designs, from photo-led travel and lookbook heroes to SaaS bentos and a healthcare portal; each is a different layout, not a restyle.
+
+**When to use something else:**
+
+- [CTA Section](https://avaraui.com/docs/reactjs/cta-section): for a closing call to action lower down the page rather than the first screen.
+- [Navbar](https://avaraui.com/docs/reactjs/navbar): for the site header; every hero here assumes the navigation is separate.
+
+**Gotchas:**
+
+- The `hero` item is one component with eight looks (bounce, typing, slider, pet-shop, doctor, facility, vortex, orbit). Install it once and pick the look with the `variant` prop.
+- HeroBlock's `bento-cascade`, `breathe` and `solar-snapshot` values only hand off to the standalone Bento Cascade, Breathe and Solar Snapshot heroes. Install those through their own items, not through `hero`.
+- Hero Carousel takes the height its content needs (about 44rem) and uses no viewport units. For a screen-tall hero, size it from outside, for example `className="lg:h-svh"`.
+- Fashion Hero expects a person on a flat colour. A photo that already has a coloured background should be passed with `blend: false` and a `tone` that matches its edges.
+- Honeycomb Hero tints the whole section with each photograph's `tone`, so give every photograph a deep tone.
+
+### The 16 variants
+
+1. **Honeycomb hero** (`honeycomb`): Dark travel hero: a huge word on the left, a turning honeycomb of hexagonal photographs on the right.
+   - Live: https://avaraui.com/view/hero/honeycomb
+   - Best for: travel, outdoor and expedition brands with strong photography; a hero whose colour changes with each photograph
+   - Avoid if: you have fewer than a handful of good photographs; you want a light, minimal first screen
+   - Traits: image-heavy, autoplay carousel, dark background, arrows and keyboard, tone-tinted background
+   - Install: `npx shadcn@latest add @avara-ui/honeycomb-hero`
+   - Docs: https://avaraui.com/docs/nextjs/hero#wander-the-fjords
+2. **Hero carousel** (`carousel`): Full-bleed photo hero with a queue of cards and a glass panel; the front card is the slide on screen.
+   - Live: https://avaraui.com/view/hero/carousel
+   - Best for: destinations, hotels and experiences sold by place; showing several offers in one hero that visitors can click through
+   - Avoid if: you have no photographs; you need a hero that fills the screen height without any extra styling
+   - Traits: image-heavy, autoplay carousel, card queue, avatar stack, swipe and keyboard
+   - Install: `npx shadcn@latest add @avara-ui/hero-carousel`
+   - Docs: https://avaraui.com/docs/nextjs/hero#watch-the-dawn-from-the-summit
+3. **Fashion hero** (`fashion`): Staggered columns of looks on flat colour, with a video badge, a tilt-on-hover effect and a story teaser.
+   - Live: https://avaraui.com/view/hero/fashion
+   - Best for: fashion, lookbook and store landing pages; editorial brands with people photographed on a plain background
+   - Avoid if: your images are not people or products on a plain background; you need a text-only or product-UI hero
+   - Traits: image-heavy, five staggered columns, pointer tilt, video dialog
+   - Install: `npx shadcn@latest add @avara-ui/fashion-hero`
+   - Docs: https://avaraui.com/docs/nextjs/hero#daring-designs
+4. **Support hero** (`support`): Soft grey product hero: animated headline, one call to action, then a frosted bento of stats and integrations.
+   - Live: https://avaraui.com/view/hero/support
+   - Best for: SaaS and AI products that want to show integrations, figures and a team in the first screen; products that can name a few integrations and two headline figures
+   - Avoid if: you have no figures or integrations to show; you want a photo-led hero
+   - Traits: bento cards, glass panels, counting stats, one call to action, light background
+   - Install: `npx shadcn@latest add @avara-ui/support-hero`
+   - Docs: https://avaraui.com/docs/nextjs/hero#headline-call-to-action-six-cards
+5. **Collage hero** (`collage`): Warm, busy hero: a turning badge, a serif headline, hashtag pills and a collage of seven photographs.
+   - Live: https://avaraui.com/view/hero/collage
+   - Best for: schools, kindergartens, studios and workshops; friendly local businesses with plenty of candid photographs
+   - Avoid if: you have fewer than seven photographs; the brand is serious or corporate
+   - Traits: image-heavy, photo collage, turning badge, video dialog, two theme colours
+   - Install: `npx shadcn@latest add @avara-ui/collage-hero`
+   - Docs: https://avaraui.com/docs/nextjs/hero#a-bright-place
+6. **Bento cascade hero** (`bento-cascade`): Copy and calls to action on the left, an infinite vertical bento marquee of image cards on the right.
+   - Live: https://avaraui.com/view/hero/bento-cascade
+   - Best for: products and travel brands that want a lot of visual motion beside the pitch; heroes that show a review score and avatar stack next to the headline
+   - Avoid if: you prefer little motion; you have only a few images to fill the cards
+   - Traits: image-heavy, infinite marquee, pauses on hover, avatar stack, two buttons
+   - Install: `npx shadcn@latest add @avara-ui/bento-cascade-hero`
+   - Docs: https://avaraui.com/docs/nextjs/hero#bento-cascade-infinite-motion-hero
+7. **Breathe hero** (`breathe`): Serif headline over a curved arch of five cards; the centre card zooms and the others drift on scroll.
+   - Live: https://avaraui.com/view/hero/breathe
+   - Best for: calm, premium brands: wellness, interiors, hospitality; a scroll-driven first impression with a small set of images
+   - Avoid if: you need more than five visuals in the hero; scroll-driven motion does not suit the page
+   - Traits: five image cards, scroll-driven zoom, serif headline, arch layout
+   - Install: `npx shadcn@latest add @avara-ui/breathe-hero`
+   - Docs: https://avaraui.com/docs/nextjs/hero#breathe-arch-stagger-hero
+8. **Solar snapshot hero** (`solar-snapshot`): Light, playful hero: a sun orb that follows the pointer, curtain-style buttons and a click-to-capture Polaroid stack.
+   - Live: https://avaraui.com/view/hero/solar-snapshot
+   - Best for: creative, consumer and community products that want a playful, interactive first screen; pages that can show a team or customers as an avatar group
+   - Avoid if: most visitors are on touch devices and the pointer effect would be lost; you want a static, quiet hero
+   - Traits: pointer-tracking, interactive, avatar group, polaroid capture
+   - Install: `npx shadcn@latest add @avara-ui/solar-snapshot-hero`
+   - Docs: https://avaraui.com/docs/nextjs/hero#solar-snapshot-sun-cursor-hero
+9. **Word bounce hero** (`bounce`): Centred headline whose key word is swapped with a spring bounce loop; text only, no images required.
+   - Live: https://avaraui.com/view/hero/bounce
+   - Best for: SaaS and startup pages that lead with a short pitch; any site with no photography yet
+   - Avoid if: you want an image or product shot in the hero; you want the headline to stay still
+   - Traits: text-only, rotating words, CSS animation, no photographs needed, uses the `hero` item
+   - Install: `npx shadcn@latest add @avara-ui/hero`
+   - Docs: https://avaraui.com/docs/nextjs/hero#word-bounce-hero
+10. **Typing hero** (`typing`): Centred headline where one word types and deletes character by character, like a typewriter.
+   - Live: https://avaraui.com/view/hero/typing
+   - Best for: developer tools and products that list several use cases in one line; text-only pages with no images
+   - Avoid if: you want an image or product shot in the hero; you need the headline to stay still
+   - Traits: text-only, typewriter effect, CSS animation, no photographs needed, uses the `hero` item
+   - Install: `npx shadcn@latest add @avara-ui/hero`
+   - Docs: https://avaraui.com/docs/nextjs/hero#typing-hero
+11. **Split marquee slider hero** (`slider`): Two columns: copy on one side, a continuous right-to-left thumbnail slider with floating visual cards on the other.
+   - Live: https://avaraui.com/view/hero/slider
+   - Best for: products and catalogues that want to show many thumbnails; a text-and-visuals hero with continuous motion
+   - Avoid if: you have no images to put in the slider; you prefer little motion
+   - Traits: image-heavy, continuous marquee, two columns, uses the `hero` item
+   - Install: `npx shadcn@latest add @avara-ui/hero`
+   - Docs: https://avaraui.com/docs/nextjs/hero#split-marquee-slider-hero
+12. **Pet shop hero** (`pet-shop`): Clean, minimal e-commerce hero with a circular image showcase and feature badges.
+   - Live: https://avaraui.com/view/hero/pet-shop
+   - Best for: small shops and e-commerce, such as pet care; friendly consumer brands with a few product or portrait images
+   - Avoid if: you want a dark or technical look; you have no images for the circular showcase
+   - Traits: minimal, circular image showcase, feature badges, uses the `hero` item
+   - Install: `npx shadcn@latest add @avara-ui/hero`
+   - Docs: https://avaraui.com/docs/nextjs/hero#pet-shop-animal-care-hero
+13. **Doctor portal hero** (`doctor`): Clean medical hero with a specialist doctor showcase and an appointment-booking call to action.
+   - Live: https://avaraui.com/view/hero/doctor
+   - Best for: clinics, hospitals and healthcare portals; services where the main action is booking an appointment
+   - Avoid if: the site is not about healthcare or appointments; you do not have a doctor or specialist image to show
+   - Traits: healthcare, appointment call to action, specialist showcase, uses the `hero` item
+   - Install: `npx shadcn@latest add @avara-ui/hero`
+   - Docs: https://avaraui.com/docs/nextjs/hero#doctor-portal-healthcare-hero
+14. **Facility CAD grid hero** (`facility`): Architectural blueprint grid with a shape that morphs as the pointer moves over the left and right grid zones.
+   - Live: https://avaraui.com/view/hero/facility
+   - Best for: architecture, engineering, construction and facilities businesses; technical brands that want a drafting-table look
+   - Avoid if: the brand is warm or playful; most visitors are on touch devices and the hover morph would be lost
+   - Traits: blueprint grid, pointer-reactive shape, technical, uses the `hero` item
+   - Install: `npx shadcn@latest add @avara-ui/hero`
+   - Docs: https://avaraui.com/docs/nextjs/hero#precision-facility-cad-grid-hero
+15. **Cyclone radar hero** (`vortex`): High-tech radar hero: an animated rotating cyclone vortex with a HUD telemetry overlay and parcel metrics.
+   - Live: https://avaraui.com/view/hero/vortex
+   - Best for: climate-risk, weather, geospatial and data-platform products; data-heavy landing pages that lead with a few headline figures
+   - Avoid if: the product has no data or monitoring story; you want a friendly, image-led hero
+   - Traits: animated vortex, telemetry overlay, metrics, colour from the `color` prop, uses the `hero` item
+   - Install: `npx shadcn@latest add @avara-ui/hero`
+   - Docs: https://avaraui.com/docs/nextjs/hero#atmospheric-cyclone-radar-hero
+16. **Orbit ring hero** (`orbit`): Copy and actions on the left, a revolving 3D circular photo orbit ring on the right that pauses on hover.
+   - Live: https://avaraui.com/view/hero/orbit
+   - Best for: products, travel and portfolios with a set of photographs to show in one motion; a general-purpose hero with a strong visual on the right
+   - Avoid if: you have no images for the ring; you want little motion
+   - Traits: image-heavy, 3D orbit, pauses on hover, dotted highlights, uses the `hero` item
+   - Install: `npx shadcn@latest add @avara-ui/hero`
+   - Docs: https://avaraui.com/docs/nextjs/hero#orbit-ring-hero
+
 [Honeycomb Hero A turning honeycomb of hexagonal photographs on a ground that changes colour with each slide — travel, nature, tours.](#honeycomb-hero)
 [Hero Carousel A full-bleed photo hero with a queue of cards and a glass panel.](#hero-carousel)
 [Fashion Hero Staggered columns of looks on flat colour — lookbook, store, editorial.](#fashion-hero)

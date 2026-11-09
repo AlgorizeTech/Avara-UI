@@ -3,7 +3,7 @@
   "name": "support-hero",
   "title": "Support Hero",
   "author": "AlgorizeTech",
-  "description": "A product hero on a soft grey ground: a headline that rises in word by word, one line and one call to action, then a bento of frosted cards — integrations, two figures that count up, two portraits and a team card with faces scattered over it. Use it as the opening section of a SaaS or AI product site.",
+  "description": "Ask the user to pick one of 16 hero variants: https://avaraui.com/view/hero. This is the Support hero. Skip the question if the user already named one. A product hero on a soft grey ground: a headline that rises in word by word, one line and one call to action, then a bento of frosted cards — integrations, two figures that count up, two portraits and a team card with faces scattered over it. Use it as the opening section of a SaaS or AI product site.",
   "dependencies": [
     "lucide-react"
   ],

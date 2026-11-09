@@ -23,6 +23,7 @@ import {
   pageSummary,
   usesGsap,
 } from "@/lib/docs-source";
+import { agentBlockForSlug, type AgentVariantRow } from "@/agent/variants/render";
 import { DEFAULT_FRAMEWORK, docsHref, docsMarkdownHref } from "@/lib/framework";
 import { REGISTRY_ADD_ARGS, REGISTRY_BASE_URL, REGISTRY_NAMESPACE } from "@/lib/registry";
 
@@ -41,10 +42,22 @@ export type AgentEntry = {
   /** Items with a Motion build, which install as `<name>-motion`. */
   motionItems: string[];
   animation: ("gsap" | "motion")[];
-  /** The command that installs the page's items. */
+  /**
+   * The command that installs the page's items. Empty on a page with
+   * `choose: true`: install one variant's `install` instead, never all of them.
+   */
   install: string;
   docsUrl: string;
   markdownUrl: string;
+  /**
+   * Present only when the page offers 2+ variants. Ask the user which one they
+   * want before installing, unless they named one or asked you to choose.
+   */
+  choose?: true;
+  /** One page showing every variant live. Present with `choose`. */
+  galleryUrl?: string;
+  /** Present with `choose`: what to show the user, and what to install for each. */
+  variants?: AgentVariantRow[];
 };
 
 /** The skill folder name: the registry namespace without its `@`. */
@@ -72,6 +85,7 @@ export function agentEntries(): AgentEntry[] {
       const items = installedItems(source);
       const category = TYPE_OF_SLUG.get(slug) ?? group.fallback;
       const motionItems = items.filter(hasMotionTwin);
+      const block = agentBlockForSlug(slug);
       const animation: AgentEntry["animation"] = [];
       if (items.some((item) => usesGsap(item))) animation.push("gsap");
       if (motionItems.length) animation.push("motion");
@@ -86,9 +100,13 @@ export function agentEntries(): AgentEntry[] {
         items,
         motionItems,
         animation,
-        install: items.length ? `npx shadcn@latest add ${items.map((item) => `${REGISTRY_NAMESPACE}/${item}`).join(" ")}` : "",
+        install:
+          items.length && !block
+            ? `npx shadcn@latest add ${items.map((item) => `${REGISTRY_NAMESPACE}/${item}`).join(" ")}`
+            : "",
         docsUrl: `${SITE_URL}${docsHref(DEFAULT_FRAMEWORK, slug)}`,
         markdownUrl: `${SITE_URL}${docsMarkdownHref(DEFAULT_FRAMEWORK, slug)}`,
+        ...(block ? { choose: true as const, galleryUrl: block.galleryUrl, variants: block.variants } : {}),
       });
     }
   }
@@ -116,6 +134,7 @@ export function agentIndex() {
       "Install one build per component: the default GSAP build, or the Motion build `<name>-motion`. Both write the same file.",
       "Components import nothing from next/*; links and images arrive as linkComponent / imageComponent props.",
       "Read a page's Markdown (markdownUrl) for its props and usage before writing code against it.",
+      "Ask before you pick. An entry with `choose: true` offers several designs of the same section. If the user has not named one and has not asked you to choose, ask which they want before installing or writing code, and show each option's `viewUrl` (or the page's `galleryUrl`). Its `install` is empty: install the chosen variant's own `install`, never all of the page's items. If the user asks you to choose, pick from each variant's `bestFor` and `avoidIf` against their brief and say why. An entry without `choose` has one option: install it without asking.",
     ],
     counts: {
       components: entries.filter((entry) => entry.kind === "component").length,
@@ -127,3 +146,49 @@ export function agentIndex() {
   };
 }
 
+
+/** Which pages a hub lists: every website section, or every page that animates with GSAP. */
+export type HubKind = "sections" | "gsap";
+
+/** A page summary cut at its last whole sentence that fits, for a list row. */
+export function shortSummary(summary: string, max = 150): string {
+  if (summary.length <= max) return summary;
+  const cut = summary.slice(0, max);
+  const stop = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("; "));
+  if (stop > 60) return `${cut.slice(0, stop)}.`;
+  return `${cut.slice(0, cut.lastIndexOf(" "))}…`;
+}
+
+/** The hub's pages grouped by category, in the order the "All components" page lists them. */
+export function hubGroups(kind: HubKind) {
+  const entries = agentEntries().filter((entry) =>
+    kind === "sections" ? entry.kind === "section" : entry.animation.includes("gsap"),
+  );
+  const order = Object.keys(COMPONENT_TYPES);
+  const groups = new Map<ComponentTypeId, { label: string; entries: AgentEntry[] }>();
+  for (const entry of entries) {
+    const group = groups.get(entry.category) ?? { label: entry.categoryLabel, entries: [] };
+    group.entries.push(entry);
+    groups.set(entry.category, group);
+  }
+  return [...groups.entries()]
+    .sort(([a], [b]) => order.indexOf(a) - order.indexOf(b))
+    .map(([, group]) => group);
+}
+
+/** The hub list as Markdown, for the page's Markdown mirror. */
+export function hubMarkdown(kind: HubKind): string {
+  return hubGroups(kind)
+    .map(
+      (group) =>
+        `**${group.label}**\n\n` +
+        group.entries
+          .map((entry) => {
+            const summary = shortSummary(entry.summary);
+            const motion = entry.motionItems.length ? " (Motion build available)" : "";
+            return `- [${entry.name}](${entry.markdownUrl})${summary ? `: ${summary}` : ""}${motion}`;
+          })
+          .join("\n"),
+    )
+    .join("\n\n");
+}

@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-05T19:35:49.558Z",
-  "totalFiles": 321,
+  "generatedAt": "2026-11-09T07:02:50.950Z",
+  "totalFiles": 327,
   "files": [
     {
       "name": "docs",
@@ -19,6 +19,12 @@
       "path": "/docs-md/nextjs-accordion.md",
       "url": "/docs/nextjs/accordion",
       "originalMdx": "[framework]\\accordion\\page.mdx"
+    },
+    {
+      "name": "nextjs/agent-skills",
+      "path": "/docs-md/nextjs-agent-skills.md",
+      "url": "/docs/nextjs/agent-skills",
+      "originalMdx": "[framework]\\agent-skills\\page.mdx"
     },
     {
       "name": "nextjs/ai-chat",
@@ -85,6 +91,12 @@
       "path": "/docs-md/nextjs-bento-showcase.md",
       "url": "/docs/nextjs/bento-showcase",
       "originalMdx": "[framework]\\bento-showcase\\page.mdx"
+    },
+    {
+      "name": "nextjs/blocks",
+      "path": "/docs-md/nextjs-blocks.md",
+      "url": "/docs/nextjs/blocks",
+      "originalMdx": "[framework]\\blocks\\page.mdx"
     },
     {
       "name": "nextjs/book-appointment",
@@ -445,6 +457,12 @@
       "path": "/docs-md/nextjs-glass-panel.md",
       "url": "/docs/nextjs/glass-panel",
       "originalMdx": "[framework]\\glass-panel\\page.mdx"
+    },
+    {
+      "name": "nextjs/gsap-components",
+      "path": "/docs-md/nextjs-gsap-components.md",
+      "url": "/docs/nextjs/gsap-components",
+      "originalMdx": "[framework]\\gsap-components\\page.mdx"
     },
     {
       "name": "nextjs/half-stars",
@@ -981,6 +999,12 @@
       "originalMdx": "[framework]\\accordion\\page.mdx"
     },
     {
+      "name": "reactjs/agent-skills",
+      "path": "/docs-md/reactjs-agent-skills.md",
+      "url": "/docs/reactjs/agent-skills",
+      "originalMdx": "[framework]\\agent-skills\\page.mdx"
+    },
+    {
       "name": "reactjs/ai-chat",
       "path": "/docs-md/reactjs-ai-chat.md",
       "url": "/docs/reactjs/ai-chat",
@@ -1045,6 +1069,12 @@
       "path": "/docs-md/reactjs-bento-showcase.md",
       "url": "/docs/reactjs/bento-showcase",
       "originalMdx": "[framework]\\bento-showcase\\page.mdx"
+    },
+    {
+      "name": "reactjs/blocks",
+      "path": "/docs-md/reactjs-blocks.md",
+      "url": "/docs/reactjs/blocks",
+      "originalMdx": "[framework]\\blocks\\page.mdx"
     },
     {
       "name": "reactjs/book-appointment",
@@ -1405,6 +1435,12 @@
       "path": "/docs-md/reactjs-glass-panel.md",
       "url": "/docs/reactjs/glass-panel",
       "originalMdx": "[framework]\\glass-panel\\page.mdx"
+    },
+    {
+      "name": "reactjs/gsap-components",
+      "path": "/docs-md/reactjs-gsap-components.md",
+      "url": "/docs/reactjs/gsap-components",
+      "originalMdx": "[framework]\\gsap-components\\page.mdx"
     },
     {
       "name": "reactjs/half-stars",

@@ -3,7 +3,7 @@
   "name": "login-form",
   "title": "Login Form",
   "author": "AlgorizeTech",
-  "description": "A sign-in form with social buttons, password reveal, remember-me and multiple layout variants including ribbon-drift and liquid-glass. Use it as the entry point of an authenticated app.",
+  "description": "Ask the user to pick one of 13 auth forms variants: https://avaraui.com/view/auth-forms. This item holds 6 of them as looks of one component (login-default, login-split, login-minimal, login-glass, login-liquid-glass, login-ribbon-drift). Skip the question if the user already named one. A sign-in form with social buttons, password reveal, remember-me and multiple layout variants including ribbon-drift and liquid-glass. Use it as the entry point of an authenticated app.",
   "dependencies": [
     "lucide-react"
   ],

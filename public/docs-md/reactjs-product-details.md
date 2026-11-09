@@ -10,6 +10,53 @@ A collection of 4 production-ready, high-converting, fully responsive E-commerce
 
 `ProductDetails` adapts seamlessly across mobile screens, tablets, and desktop viewports, with support for image slider arrows, color-synced previews, stock urgency bars, specs tabs, and checkout CTAs.
 
+## For AI agents
+
+**Ask before you pick.** This page has 4 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 4 options as live previews: https://avaraui.com/view/product-details
+
+**When to use it.** An e-commerce product page section. Four layouts, each with its own structure: two gallery-led layouts, a floating glass card and a full-bleed editorial showcase.
+
+**Gotchas:**
+
+- All four are layouts of the one `product-details` item: install it once and set `variant` from the index.
+
+### The 4 variants
+
+1. **Colour swatch synced gallery** (`color-sync-gallery`): Choosing a colour swatch updates the main product image, with no sliders or thumbnails; inner or side HD zoom.
+   - Live: https://avaraui.com/view/product-details/color-sync-gallery
+   - Best for: products sold in several colourways, where each colour has its own photo
+   - Avoid if: your product comes in one colour
+   - Traits: colour swatches, image follows the swatch, inner or side-portal zoom
+   - Install: `npx shadcn@latest add @avara-ui/product-details`
+   - Set these props: `{"variant":"color-sync-gallery"}`
+   - Docs: https://avaraui.com/docs/nextjs/product-details#color-swatch-synced-image-gallery-details
+2. **Modern split gallery slider** (`modern-split-gallery`): A split layout with arrows floating over the main image, colourways, a stock-urgency bar and spec tabs.
+   - Live: https://avaraui.com/view/product-details/modern-split-gallery
+   - Best for: a conventional product page with several photos, stock urgency and a specs section
+   - Avoid if: you have a single product photo
+   - Traits: floating slider arrows, colourways, stock urgency bar, spec tabs
+   - Install: `npx shadcn@latest add @avara-ui/product-details`
+   - Set these props: `{"variant":"modern-split-gallery"}`
+   - Docs: https://avaraui.com/docs/nextjs/product-details#modern-split-gallery-slider-details
+3. **Floating glassmorphism card** (`floating-card-glass`): A clean floating glass card with shoe-size pills and express shipping.
+   - Live: https://avaraui.com/view/product-details/floating-card-glass
+   - Best for: footwear and apparel, where picking a size is the main action
+   - Avoid if: your product has no sizes; you need a gallery of many photos
+   - Traits: floating glass card, US shoe-size pills, express shipping
+   - Install: `npx shadcn@latest add @avara-ui/product-details`
+   - Set these props: `{"variant":"floating-card-glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/product-details#floating-glassmorphism-card-details
+4. **Bento editorial showcase** (`bento-editorial-showcase`): A full-bleed dark hero image behind a compact buy panel, laid out as an editorial bento.
+   - Live: https://avaraui.com/view/product-details/bento-editorial-showcase
+   - Best for: a hero product with one standout photograph
+   - Avoid if: you only have small or low-resolution product images
+   - Traits: full-bleed dark hero image, compact buy panel, editorial bento
+   - Install: `npx shadcn@latest add @avara-ui/product-details`
+   - Set these props: `{"variant":"bento-editorial-showcase"}`
+   - Docs: https://avaraui.com/docs/nextjs/product-details#bento-editorial-showcase-details
+
 ## Color Swatch Synced Image Gallery Details
 
 - Use `variant="color-sync-gallery"` selecting a colorway swatch dynamically updates the main product image without sliders or thumbnails.

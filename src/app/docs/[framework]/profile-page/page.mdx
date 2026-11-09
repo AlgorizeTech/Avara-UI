@@ -11,6 +11,8 @@ A person as a page: an aurora backdrop, frosted panels in four shapes, and a 24-
 
 The page is primitives rather than one monolith. `ProfilePage` is the backdrop and a 12-column grid; `GlassPanel` — from <DocLink to="glass-panel">Glass Panel</DocLink>, which installs alongside — is one glass recipe with a `shape` that encodes hierarchy (a `slab` for the hero, a `tile` for content, a `disc` for a single number, a `capsule` for chips); `WorkdayDial` is the one element that moves; `useLocalTime` is the hook under it. Compose them with your own data — nothing has to be reshaped to fit. The example page also drops in two other library pieces where a profile wants them: a <DocLink to="verify-badge">Verify Badge</DocLink> beside the name and a row of <DocLink to="social-links">Social Links</DocLink> under the contact details.
 
+<AgentVariants slug="profile-page" />
+
 export const usagePage = `"use client";
 
 import { useState } from "react";

@@ -3,7 +3,7 @@
   "name": "newsletter-motion",
   "title": "Newsletter (Motion)",
   "author": "AlgorizeTech",
-  "description": "A sign-up section in three layouts: readers' faces drifting around a centred form, a panel with a pointer glow and a ticker of who just joined, or the form beside a fanned stack of recent issues. The form becomes a thank-you when your promise resolves.",
+  "description": "Ask the user to pick one of 3 newsletter variants: https://avaraui.com/view/newsletter. This item holds 3 of them as looks of one component (portraits, spotlight, issues). Skip the question if the user already named one. A sign-up section in three layouts: readers' faces drifting around a centred form, a panel with a pointer glow and a ticker of who just joined, or the form beside a fanned stack of recent issues. The form becomes a thank-you when your promise resolves.",
   "dependencies": [
     "lucide-react",
     "motion"

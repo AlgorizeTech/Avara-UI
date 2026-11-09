@@ -3,7 +3,7 @@
   "name": "video-player",
   "title": "Video Player",
   "author": "AlgorizeTech",
-  "description": "A video hero with thumbnail and glow that plays in a modal, inline in the card, or directly on load — behind a YouTube embed or a native HTML5 video.",
+  "description": "Ask the user to pick one of 4 video player variants: https://avaraui.com/view/video-player. This item holds 2 of them as looks of one component (modal, inline). Skip the question if the user already named one. A video hero with thumbnail and glow that plays in a modal, inline in the card, or directly on load — behind a YouTube embed or a native HTML5 video.",
   "dependencies": [
     "lucide-react"
   ],

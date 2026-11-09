@@ -35,6 +35,7 @@ import fs from "fs";
 import path from "path";
 import { META, NAME_OVERRIDES, CATEGORIES, type ItemMeta } from "./registry-meta";
 import { REGISTRY_NAMESPACE, SITE_URL, siteConfig } from "../config/site";
+import { itemNotice } from "../agent/variants/render";
 
 const ROOT = path.resolve(__dirname, "../..");
 const BLOCKS_DIR = path.join(ROOT, "src/components/custom/blocks");
@@ -383,6 +384,17 @@ function metaFor(s: Source): ItemMeta | undefined {
   };
 }
 
+/**
+ * Prefixes the ask-first notice (src/agent/variants/render.ts) to the
+ * description of an item that is one variant of a page. A placeholder is left
+ * bare so the missing-metadata check still sees it.
+ */
+function withVariantNotice(name: string, description: string | undefined): string {
+  if (!description) return `TODO: describe ${name}. Generated placeholder.`;
+  const notice = itemNotice(name);
+  return notice ? `${notice} ${description}` : description;
+}
+
 const items: BuiltItem[] = sources.map((s) => {
   const dependencies = new Set<string>();
   const devDependencies = new Set<string>();
@@ -461,8 +473,9 @@ const items: BuiltItem[] = sources.map((s) => {
     type: fileType,
     title: titleFor(s.name, meta),
     author: AUTHOR,
-    description:
-      meta?.description ?? `TODO: describe ${s.name}. Generated placeholder.`,
+    // A variant of a page that offers a choice opens with the ask-first rule
+    // and the viewer link: the CLI search shows only the first 80 characters.
+    description: withVariantNotice(s.name, meta?.description),
     categories: meta?.categories ?? [],
     dependencies: [...dependencies].sort(),
     ...(devDependencies.size
