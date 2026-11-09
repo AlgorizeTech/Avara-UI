@@ -1,3 +1,4 @@
+import { Award } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SECTION_EYEBROW, SECTION_INNER } from "@/components/home/shared";
 
@@ -8,9 +9,10 @@ import { SECTION_EYEBROW, SECTION_INNER } from "@/components/home/shared";
 
 // StartupBase, Product Hunt, BuildHop and Peerlist each ship light/dark
 // variants of one badge: only the one matching the active theme is shown. Every
-// badge shares one height (it grows with the viewport) and the width follows
-// each image's own aspect ratio, so nothing is stretched. width/height, where
-// known, only reserve space before the image loads.
+// badge shares one height below lg (it grows with the viewport). From lg up the
+// row is a five-column grid and each image fills its column at its own aspect
+// ratio, so the badges grow with the available width. Nothing is stretched.
+// width/height, where known, only reserve space before the image loads.
 const PRODUCT_HUNT_URL =
 	"https://www.producthunt.com/products/avara-ui?utm_source=badge-follow&utm_medium=badge&utm_source=badge-avara-ui";
 const PRODUCT_HUNT_BADGE =
@@ -129,9 +131,10 @@ export function FeaturedOnSection() {
 				<h2
 					id="featured-on-heading"
 					className={cn(SECTION_EYEBROW, "mb-5")}>
+					<Award className="size-3.5" />
 					Featured on
 				</h2>
-				<ul className="flex max-w-full flex-wrap items-center gap-x-3 gap-y-4 md:gap-x-4">
+				<ul className="flex max-w-full flex-wrap items-center gap-x-3 gap-y-4 md:gap-x-4 lg:grid lg:grid-cols-5 lg:gap-x-4 xl:gap-x-5">
 					{BADGES.map((badge) => (
 						<li
 							key={badge.src}
@@ -153,7 +156,7 @@ export function FeaturedOnSection() {
 									height={badge.height}
 									loading="lazy"
 									decoding="async"
-									className="h-9 w-auto max-w-full md:h-10 xl:h-11"
+									className="h-9 w-auto max-w-full md:h-10 lg:h-auto lg:w-full"
 								/>
 							</a>
 						</li>
