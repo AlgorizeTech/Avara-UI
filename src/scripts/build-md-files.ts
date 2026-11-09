@@ -26,6 +26,7 @@ import { extractCode, extractMotionCode } from "../lib/code";
 import { pageHeading } from "../lib/docs-source";
 import { skillInstallCommand, type SkillClient } from "../lib/agent-skill";
 import { hubMarkdown, type HubKind } from "../lib/agent-index";
+import { agentBlockForSlug, agentBlockMarkdown } from "../agent/variants/render";
 import { pageSeo } from "../lib/page-seo";
 import registry from "../../registry.json";
 import { countComponents } from "../lib/component-count";
@@ -303,6 +304,13 @@ function convertMdxToMd(content: string, framework: Framework): string {
 
   // <PageIndex kind="sections" /> prints a hub page's list.
   mdContent = mdContent.replace(/<PageIndex\s+kind="(\w+)"\s*\/>/g, (_, kind: string) => hold(hubMarkdown(kind as HubKind)));
+
+  // <AgentVariants slug="…" /> prints the "For AI agents" block: the ask-first rule and every variant with its live link.
+  mdContent = mdContent.replace(/<AgentVariants\s+slug="([^"]+)"\s*\/>/g, (_, pageSlug: string) => {
+    const block = agentBlockForSlug(pageSlug);
+    if (!block) throw new Error(`<AgentVariants slug="${pageSlug}"> has no variants file in src/agent/variants/`);
+    return hold(agentBlockMarkdown(block, (target) => `${SITE_URL}${docsHref(framework, target)}`));
+  });
 
   // Convert JSX components to markdown equivalents
 

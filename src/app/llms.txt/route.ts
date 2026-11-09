@@ -1,6 +1,7 @@
 import { SITE_NAME, SITE_URL, links, siteConfig } from "@/config/site";
 import { SKILL_NAME } from "@/lib/agent-index";
 import { SKILL_FILES } from "@/lib/agent-skill";
+import { agentBlockForSlug } from "@/agent/variants/render";
 import { navigation } from "@/constants/navigation";
 import { isMotionTwin } from "@/lib/component-count";
 import {
@@ -48,13 +49,18 @@ function pageLine(label: string, slug: string, framework = DEFAULT_FRAMEWORK) {
 
   const items = source ? installedItems(source) : [];
   const summary = source ? pageSummary(source) : undefined;
+  const choice = framework === DEFAULT_FRAMEWORK ? agentBlockForSlug(slug) : undefined;
 
   const install = items.flatMap((name) =>
     itemsByName.has(`${name}-motion`) ? [name, `${name}-motion`] : [name],
   );
-  const installNote = install.length
-    ? ` Install: ${install.map((name) => `\`${REGISTRY_NAMESPACE}/${name}\``).join(", ")}.`
-    : "";
+  // A page with variants lists its items too, but they are alternatives: the
+  // reader must ask which one, not install them all.
+  const installNote = choice
+    ? ` Ask the user which of its ${choice.variants.length} variants they want before installing, unless they named one (live: ${choice.galleryUrl}). Each variant's install command is in the page's Markdown and the agent index.`
+    : install.length
+      ? ` Install: ${install.map((name) => `\`${REGISTRY_NAMESPACE}/${name}\``).join(", ")}.`
+      : "";
 
   const notes = `${summary ?? ""}${installNote}`.trim();
   return `- [${label}](${url})${notes ? `: ${notes}` : ""}`;
@@ -104,7 +110,8 @@ function gettingStarted(): string[] {
 
 /** What each skill file is for, as the index prints it. */
 const SKILL_NOTES: Record<string, string> = {
-  "SKILL.md": "The workflow: plan, find, install, read, adapt, check. Start here.",
+  "SKILL.md": "The workflow: plan, decide, install, read, adapt, check. Start here.",
+  "variants.md": "Ask the user which design of a section they want, with live links, and how to choose for them.",
   "components.md": "The categories and which pages are in each.",
   "animation.md": "GSAP or Motion builds, and how to choose.",
   "theming.md": "Theme tokens and how to restyle.",
@@ -128,6 +135,11 @@ function build(): string {
       `then add items as \`npx shadcn@latest add ${REGISTRY_NAMESPACE}/<name>\`. ` +
       `Without registering, add by URL: \`npx shadcn@latest add ${REGISTRY_BASE_URL}/<name>.json\`. ` +
       "The CLI installs each item's npm dependencies and any registry items it depends on.",
+    "",
+    "Ask before you pick: some pages offer several designs of one section (today the hero; more as they are added). " +
+      "If the user has not named one and has not asked you to choose, ask which they want before installing or writing code, " +
+      "and show each option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines and say why. " +
+      "A page that offers a choice says so below; every other page has one option and is installed without asking.",
     "",
     `Project setup: Tailwind CSS v4 must be working, and \`npx shadcn@latest init\` must have created ` +
       "`components.json` and the `cn` helper in `lib/utils.ts`. Components import through the `@/` path alias. " +

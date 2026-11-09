@@ -11,13 +11,14 @@ import { REGISTRY_ADD_ARGS, REGISTRY_NAMESPACE } from "@/lib/registry";
 # Agent Skill
 
 Teach your AI coding agent how to build with {SITE_NAME}. The skill is a few
-Markdown files: a workflow the agent follows (plan, find, install, read, adapt,
+Markdown files: a workflow the agent follows (plan, decide, install, read, adapt,
 check) and the rules that stop it inventing props or hard-coding colours. It is
 free, needs no account, and works with or without the <DocLink to="mcp">MCP server</DocLink>.
 
 ## What the agent gets
 
-- **A workflow.** Plan the page, find the right pieces, install them with the CLI, read each one's Markdown for its real props, adapt the sample data, then run a final check.
+- **A workflow.** Plan the page, decide which pieces to use, install them with the CLI, read each one's Markdown for its real props, adapt the sample data, then run a final check.
+- **A question before it picks.** Where a section comes in several designs (today the hero, with more to come), the agent shows you every design with a live link and waits for your answer. Name one, or tell it to pick the best for you and it will choose and say why.
 - **A searchable index.** <code>{SITE_URL}/agent/components.json</code> lists every component and website section with its summary, install command and Markdown URL, so an agent can pick by what a page does without a search server.
 - **Rules.** Theme tokens instead of hard-coded colours, one animation library per component, no `next/*` imports, and respect for `prefers-reduced-motion`.
 
@@ -74,11 +75,15 @@ name {REGISTRY_NAMESPACE} so the agent looks in the right place:
 ## How the workflow runs
 
 1. **Plan.** The agent writes the page's sections and states (empty, loading, error) before any code.
-2. **Find.** It searches the index or <code>{SITE_URL}/llms.txt</code> and picks by summary. If nothing fits, it composes the screen from smaller components.
+2. **Decide.** It searches the index or <code>{SITE_URL}/llms.txt</code> and matches by summary. If nothing fits, it composes the screen from smaller components. For each section that comes in several designs, it asks you which one first, with a live link for every option, unless you already named one.
 3. **Install.** It runs <code>npx shadcn@latest add {REGISTRY_NAMESPACE}/name --yes</code>.
 4. **Read.** It fetches the item's Markdown for the props and import path.
 5. **Adapt.** It swaps in your data and keeps the component's structure and styling.
 6. **Check.** It runs the checklist: tokens only, keyboard access, dark mode, reduced motion, and a passing build.
+
+## Does the agent ask before it picks a design?
+
+Yes, when a section has several designs. It lists each one with what it suits and a link to see it live, and installs nothing until you answer. Reply with a design's name, or "pick the best one for me": then it chooses from each design's best-for and avoid-if notes against your brief, tells you which and why, and gives the link so you can swap. A section with one design is installed without a question. The rule lives in `variants.md`, one of the skill's files.
 
 ## Do I need the skill if I use the MCP server?
 
