@@ -3,7 +3,7 @@
   "name": "hero",
   "title": "Hero",
   "author": "AlgorizeTech",
-  "description": "A prop-driven hero section supporting revolving 3D orbit ring, spring word bounce, character typewriter, 3D split marquee slider, pet-shop, doctor, and facility CAD grid variants.",
+  "description": "Ask the user to pick one of 16 hero variants: https://avaraui.com/view/hero. This item holds 8 of them as looks of one component (bounce, typing, slider, pet-shop, doctor, facility, vortex, orbit). Skip the question if the user already named one. A prop-driven hero section supporting revolving 3D orbit ring, spring word bounce, character typewriter, 3D split marquee slider, pet-shop, doctor, and facility CAD grid variants.",
   "dependencies": [
     "lucide-react"
   ],

@@ -3,7 +3,7 @@
   "name": "breathe-hero",
   "title": "Breathe Arch Stagger Hero",
   "author": "AlgorizeTech",
-  "description": "An ethereal hero section featuring an elegant serif headline and a staggered 5-card curved arch. On scroll, the center card scales up to 1.4x while surrounding cards gently drift outward and dim, creating a breathtaking focal zoom.",
+  "description": "Ask the user to pick one of 16 hero variants: https://avaraui.com/view/hero. This is the Breathe hero. Skip the question if the user already named one. An ethereal hero section featuring an elegant serif headline and a staggered 5-card curved arch. On scroll, the center card scales up to 1.4x while surrounding cards gently drift outward and dim, creating a breathtaking focal zoom.",
   "dependencies": [
     "lucide-react"
   ],

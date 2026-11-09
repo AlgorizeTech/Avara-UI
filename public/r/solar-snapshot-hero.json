@@ -3,7 +3,7 @@
   "name": "solar-snapshot-hero",
   "title": "Solar Snapshot Hero",
   "author": "AlgorizeTech",
-  "description": "A lightweight interactive hero section featuring a pointer-following sun orb, animated action buttons, an avatar stack, and a click-to-capture Polaroid screenshot stack in the bottom-right where each captured frame auto-clears after 10 seconds.",
+  "description": "Ask the user to pick one of 16 hero variants: https://avaraui.com/view/hero. This is the Solar snapshot hero. Skip the question if the user already named one. A lightweight interactive hero section featuring a pointer-following sun orb, animated action buttons, an avatar stack, and a click-to-capture Polaroid screenshot stack in the bottom-right where each captured frame auto-clears after 10 seconds.",
   "dependencies": [
     "lucide-react"
   ],
