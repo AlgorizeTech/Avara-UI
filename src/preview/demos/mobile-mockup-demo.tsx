@@ -14,6 +14,7 @@ import {
   Wifi,
 } from "lucide-react";
 import {
+  Iphone16ProMockup,
   Iphone17ProMaxMockup,
   Iphone14ProMaxMockup,
   Iphone12ProMaxMockup,
@@ -230,6 +231,8 @@ function HeroScreen({ homeIndicator = true }: { homeIndicator?: boolean }) {
 }
 
 const DEVICES = {
+  iphone16: Iphone16ProMockup,
+  iphone16pro: Iphone16ProMockup,
   iphone17: Iphone17ProMaxMockup,
   iphone14: Iphone14ProMaxMockup,
   iphone12: Iphone12ProMaxMockup,
@@ -240,11 +243,11 @@ const DEVICES = {
 } as const;
 
 export default function MobileMockupDemo({
-  activeDevice = "iphone17",
+  activeDevice = "iphone16",
 }: {
   activeDevice?: keyof typeof DEVICES;
 }) {
-  const Mockup = DEVICES[activeDevice] ?? DEVICES.iphone17;
+  const Mockup = DEVICES[activeDevice] ?? DEVICES.iphone16;
 
   return (
     <div className="flex items-center justify-center w-full min-h-[780px] p-8">

@@ -7,6 +7,46 @@ export interface MockupProps extends React.HTMLAttributes<HTMLDivElement> {
   videoSrc?: string;
 }
 
+export const Iphone16ProMockup = React.forwardRef<HTMLDivElement, MockupProps>(
+  ({ children, src, videoSrc, className, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "relative mx-auto w-[330px] h-[680px] rounded-[3.5rem] border-[3px] border-zinc-700/80 dark:border-zinc-800 bg-black flex-shrink-0",
+          "ring-[4px] ring-zinc-300/40 dark:ring-zinc-800/60 shadow-2xl",
+          className
+        )}
+        {...props}
+      >
+        {/* Uniform bezel and screen container */}
+        <div className="relative w-full h-full rounded-[3.3rem] border-[8px] border-black bg-black overflow-hidden z-10">
+          {/* Dynamic Island */}
+          <div className="absolute top-[10px] inset-x-0 mx-auto w-[88px] h-[27px] bg-black rounded-full z-20 flex justify-between items-center px-2.5 shadow-sm">
+            <div className="w-[8px] h-[8px] bg-zinc-950 rounded-full"></div>
+            <div className="w-[11px] h-[11px] bg-zinc-950 rounded-full flex items-center justify-center relative shadow-[inset_0_0_2px_rgba(255,255,255,0.1)]">
+              <div className="w-[5px] h-[5px] bg-blue-900/40 rounded-full relative">
+                <div className="absolute inset-0 m-auto w-[2px] h-[2px] bg-blue-300/60 rounded-full"></div>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative w-full h-full rounded-[2.8rem] overflow-hidden bg-background">
+            {videoSrc ? (
+              <video src={videoSrc} autoPlay loop muted playsInline className="w-full h-full object-cover" />
+            ) : src ? (
+              <img src={src} alt="Mockup" className="w-full h-full object-cover" />
+            ) : (
+              children
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+);
+Iphone16ProMockup.displayName = "Iphone16ProMockup";
+
 export const Iphone17ProMaxMockup = React.forwardRef<HTMLDivElement, MockupProps>(
   ({ children, src, videoSrc, className, ...props }, ref) => {
     return (

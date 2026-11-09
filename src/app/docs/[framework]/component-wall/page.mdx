@@ -151,32 +151,6 @@ export const usageSplit = {
   reactjs: wallUsage({ ...wallSplit, next: false }),
 };
 
-export const wallFullscreenUsage = () => `"use client";
-
-import { ComponentWall } from "@/components/custom/blocks/ComponentWallBlock";
-
-${wallData}
-
-export default function FullscreenWallHero() {
-  return (
-    <ComponentWall
-      layout="fullscreen"
-      items={ITEMS}
-      interval={true}
-      intervalTime={5500}
-      draggable={true}
-      highlightFocus={false}
-      order="shuffle"
-    />
-  );
-}
-`;
-
-export const usageFullscreen = {
-  nextjs: wallFullscreenUsage(),
-  reactjs: wallFullscreenUsage(),
-};
-
 <ExampleShowcase headingLevel={2}
   name="component-wall"
   columns={1}
@@ -401,69 +375,6 @@ export const usageFullscreen = {
       usage: usageSplit,
       minHeight: 720,
     },
-    {
-      title: "Fullscreen wall (no copy)",
-      subheading:
-        "An edge-to-edge continuous infinite canvas in a masonry layout without copy or text. Click & drag anywhere in all 4 directions (left, right, up, down) with smooth momentum physics and ambient floating drift — it wraps infinitely without ever ending.",
-      propNotes: [
-        {
-          prop: "layout",
-          value: '"fullscreen"',
-          effect:
-            "renders an edge-to-edge single canvas across the full screen with all cards included in a masonry column style, without dividing into left/right halves and without copy or text overlays.",
-        },
-        {
-          prop: "interval",
-          value: "true",
-          effect:
-            "glides the camera continuously across the infinite masonry canvas.",
-        },
-        {
-          prop: "draggable",
-          value: "true",
-          effect:
-            "allows users to click and drag the entire canvas in all 4 directions with inertial momentum physics and touch support, scrolling infinitely in 2D.",
-        },
-        {
-          prop: "highlightFocus",
-          value: "false",
-          effect:
-            "renders all cards at uniform clarity across the fullscreen canvas without dimming outer cards.",
-        },
-        {
-          prop: "order",
-          value: '"shuffle"',
-          effect:
-            "takes turns card by card across the canvas in dynamic, multi-directional flight paths rather than a single fixed direction.",
-        },
-        {
-          prop: "itemModal",
-          value: "true",
-          effect:
-            "enables the interactive full-details modal on click, presenting card preview on the left and full details with action buttons on the right.",
-        },
-        {
-          prop: "stagger",
-          value: "72",
-          effect:
-            "controls the vertical masonry stagger offset between columns, giving the wall an organic masonry waterfall flow where rows don't line up uniformly.",
-        },
-        {
-          prop: "gap",
-          value: "16",
-          effect:
-            "controls the spacing in pixels between cards in all directions (top, bottom, left, right, defaults to 16).",
-        },
-        {
-          prop: "items",
-          effect:
-            "all cards rendered within the single unified wall with infinite repeating tiles across the entire 2D plane.",
-        },
-      ],
-      props: { layout: "fullscreen", interval: true, intervalTime: 5500, draggable: true, highlightFocus: false, order: "shuffle" },
-      usage: usageFullscreen,
-      minHeight: 640,
-    },
   ]}
 />
 
@@ -515,7 +426,7 @@ export const usageFullscreen = {
         <td><code>heading</code></td>
         <td><code>string</code></td>
         <td>—</td>
-        <td>The headline, revealed word by word. <code>&#123;word&#125;</code> is where <code>headingWords</code> take turns. Optional when <code>layout="fullscreen"</code>.</td>
+        <td>The headline, revealed word by word. <code>&#123;word&#125;</code> is where <code>headingWords</code> take turns.</td>
       </tr>
       <tr>
         <td><code>headingWords</code></td>
@@ -609,9 +520,9 @@ export const usageFullscreen = {
       </tr>
       <tr>
         <td><code>layout</code></td>
-        <td><code>"split" | "center" | "center-background" | "fullscreen" | "wall-only"</code></td>
+        <td><code>"split" | "center" | "center-background"</code></td>
         <td><code>"split"</code></td>
-        <td><code>"split"</code>: copy on the left and wall on the right; <code>"center"</code>: copy centred between two walls; <code>"center-background"</code>: walls in the background across all screens; <code>"fullscreen"</code> (or <code>"wall-only"</code>): renders a single continuous edge-to-edge wall across the entire screen with all cards included and no copy.</td>
+        <td><code>"split"</code>: copy on the left and wall on the right; <code>"center"</code>: copy centred between two walls; <code>"center-background"</code>: walls in the background across all screens.</td>
       </tr>
       <tr>
         <td><code>showMobileWall</code></td>

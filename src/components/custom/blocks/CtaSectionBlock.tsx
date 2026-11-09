@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { prefersReducedMotion, springTiming, usePrefersReducedMotion } from "@/lib/animate";
-import { GooglePixel8Mockup } from "./MobileMockupBlock";
+import { Iphone16ProMockup } from "./MobileMockupBlock";
 
 /** How a card travels: quick into a slot, slow and weighty back to the deck. */
 const TO_SLOT = springTiming({ stiffness: 240, damping: 25 });
@@ -2376,7 +2376,7 @@ export function MobileAppCta({
     <div
       ref={containerRef}
       className={cn(
-        "relative w-full max-w-6xl mx-auto select-none overflow-hidden min-h-[580px] sm:min-h-[620px] lg:h-[640px] flex items-center justify-center transition-colors border border-neutral-200/60 dark:border-white/10",
+        "relative w-full max-w-6xl mx-auto select-none overflow-hidden min-h-[700px] sm:min-h-[720px] lg:min-h-[740px] flex items-center justify-center transition-colors border border-neutral-200/60 dark:border-white/10",
         className,
       )}
       style={{
@@ -2435,7 +2435,7 @@ export function MobileAppCta({
         >
           {/* Circular backdrop disc behind the phone (matching screenshot) */}
           <div
-            className="absolute size-[320px] sm:size-[360px] rounded-full border border-white/20 dark:border-white/5 pointer-events-none transition-opacity duration-500 shadow-inner"
+            className="absolute size-[360px] sm:size-[420px] rounded-full border border-white/20 dark:border-white/5 pointer-events-none transition-opacity duration-500 shadow-inner"
             style={{
               opacity: sec2Ease,
               backgroundColor: `color-mix(in srgb, ${activeAccent} 80%, white)`,
@@ -2453,13 +2453,13 @@ export function MobileAppCta({
             className="relative flex items-center justify-center"
           >
             <div className="scale-[0.82] xs:scale-[0.88] sm:scale-[0.94] lg:scale-100 origin-center transition-transform">
-              <GooglePixel8Mockup
-                className="w-[270px] xs:w-[280px] sm:w-[295px] h-[480px] xs:h-[500px] sm:h-[520px] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.35)] dark:shadow-[0_25px_70px_-20px_rgba(0,0,0,0.85)]"
+              <Iphone16ProMockup
+                className="w-[330px] h-[680px] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.35)] dark:shadow-[0_25px_70px_-20px_rgba(0,0,0,0.85)]"
               >
                 {/* Screen Content: Authentic Yoga & Wellness App Interface */}
-                <div className="relative w-full h-full flex flex-col justify-between bg-white dark:bg-[#141418] text-neutral-900 dark:text-neutral-100 p-4 pt-9 pb-4 select-none font-sans overflow-hidden">
+                <div className="relative w-full h-full flex flex-col justify-between bg-white dark:bg-[#141418] text-neutral-900 dark:text-neutral-100 p-4 pt-11 pb-4 select-none font-sans overflow-hidden">
                   {/* Status Bar */}
-                  <div className="absolute top-2 inset-x-0 px-5 flex items-center justify-between text-[11px] font-semibold text-neutral-800 dark:text-neutral-200 z-30 pointer-events-none">
+                  <div className="absolute top-2.5 inset-x-0 px-6 flex items-center justify-between text-[11px] font-semibold text-neutral-800 dark:text-neutral-200 z-30 pointer-events-none">
                     <span>9:41</span>
                     <div className="flex items-center gap-1.5 text-neutral-700 dark:text-neutral-300">
                       <Signal size={11} />
@@ -2587,7 +2587,7 @@ export function MobileAppCta({
                     </div>
                   </div>
                 </div>
-              </GooglePixel8Mockup>
+              </Iphone16ProMockup>
             </div>
           </div>
         </div>

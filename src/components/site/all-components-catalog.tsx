@@ -186,6 +186,7 @@ const COMPONENT_META: Record<
 	"bento-showcase": { countText: "Six-Card Marketing Bento", illustrationType: "bento-showcase" },
 	"book-appointment": { countText: "Practitioner Booking Flow", illustrationType: "book-appointment" },
 	"component-wall": { countText: "Camera Over a Screenshot Wall", illustrationType: "component-wall" },
+	"portfolio-showcase": { countText: "Infinite Masonry Canvas", illustrationType: "component-wall" },
 	gallery: { countText: "5 Carousel & Gallery Variants", illustrationType: "gallery" },
 	"data-flow": { countText: "Sources → Node → Results", illustrationType: "data-flow" },
 	"platform-grid": { countText: "Hairline Feature Grid", illustrationType: "platform-grid" },

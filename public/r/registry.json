@@ -1086,12 +1086,10 @@
       ],
       "registryDependencies": [
         "https://avaraui.com/r/avatar-stack.json",
-        "https://avaraui.com/r/button.json",
         "https://avaraui.com/r/copy-button.json",
         "https://avaraui.com/r/half-stars.json",
         "https://avaraui.com/r/icons.json",
         "https://avaraui.com/r/image-wall.json",
-        "https://avaraui.com/r/modal.json",
         "https://avaraui.com/r/tech-stack.json",
         "https://avaraui.com/r/text-animation.json",
         "utils"
@@ -3050,7 +3048,7 @@
           "target": "components/custom/blocks/MobileMockupBlock.tsx"
         }
       ],
-      "docs": "Named exports: Iphone17ProMaxMockup, Iphone14ProMaxMockup, Iphone12ProMaxMockup, Iphone5Mockup, SamsungS24UltraMockup, GooglePixel8Mockup, GooglePixel10Mockup. Each takes `src`, `videoSrc`, or arbitrary children rendered inside the screen. Pure CSS and SVG — no images to ship."
+      "docs": "Named exports: Iphone16ProMockup, Iphone17ProMaxMockup, Iphone14ProMaxMockup, Iphone12ProMaxMockup, Iphone5Mockup, SamsungS24UltraMockup, GooglePixel8Mockup, GooglePixel10Mockup. Each takes `src`, `videoSrc`, or arbitrary children rendered inside the screen. Pure CSS and SVG — no images to ship."
     },
     {
       "name": "modal",
@@ -3472,6 +3470,34 @@
         }
       ],
       "docs": "Named exports: Popover, PopoverTrigger, PopoverContent. `side` and `align` set the preferred placement; `avoidCollisions` flips it near a viewport edge, with `collisionPadding` as the margin. Zero runtime dependencies — positioning is hand-rolled, not Floating UI. For hover labels use `tooltip`, for right-click use `context-menu`."
+    },
+    {
+      "name": "portfolio-showcase",
+      "type": "registry:component",
+      "title": "Portfolio Showcase",
+      "author": "AlgorizeTech",
+      "description": "An infinite continuous 2D draggable masonry canvas with momentum physics, smooth camera glide, and interactive project modal for creative portfolios.",
+      "categories": [
+        "media",
+        "marketing"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://avaraui.com/r/button.json",
+        "https://avaraui.com/r/image-wall.json",
+        "https://avaraui.com/r/modal.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/PortfolioShowcaseBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/PortfolioShowcaseBlock.tsx"
+        }
+      ],
+      "docs": "Named export: PortfolioShowcase (plus PortfolioItem type). Renders an edge-to-edge infinite masonry canvas with 4-directional kinetic drag, auto-glide camera, and full-details modal."
     },
     {
       "name": "pricing",

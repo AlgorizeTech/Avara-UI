@@ -242,7 +242,7 @@ const rawNavigation: NavigationItem[] = [
       { label: "Masonry Grid", slug: "masonry-grid" },
       { label: "Memories Card", slug: "memories-card" },
       { label: "Menubar", slug: "menubar" },
-      { label: "Mobile Mockups", slug: "mobile-mockup" },
+      { label: "Mobile Mockups", slug: "mobile-mockup", badge: "New" },
       { label: "Modal", slug: "modal" },
       {
         label: "Modern Scroll Stack",
@@ -420,6 +420,12 @@ const rawNavigation: NavigationItem[] = [
         keywords: ["hero", "wall", "screenshots", "camera", "zoom", "library", "landing", "showcase", "grid"],
       },
       {
+        label: "Portfolio Showcase",
+        slug: "portfolio-showcase",
+        badge: "New",
+        keywords: ["portfolio", "showcase", "masonry", "infinite canvas", "draggable", "gallery"],
+      },
+      {
         label: "Dashboard",
         slug: "dashboard",
         keywords: [
@@ -440,6 +446,7 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "CTA Section",
         slug: "cta-section",
+        badge: "Updated",
         keywords: [
           "cta", "call to action", "brand pillars", "pillars", "scorecard",
           "conversion", "marketing", "features", "framer", "services",
