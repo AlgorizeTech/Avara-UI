@@ -134,6 +134,7 @@ export const sandboxNames = [
   "piano",
   "platform-grid",
   "popover",
+  "portfolio-showcase",
   "pricing",
   "product-details",
   "profile-page",

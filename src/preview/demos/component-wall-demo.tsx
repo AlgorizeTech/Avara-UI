@@ -21,7 +21,6 @@ export default function ComponentWallDemo({
   cardDim,
   highlightFocus,
   cardShadow,
-  itemModal,
 }: {
   /** Milliseconds the camera rests on a card, or boolean (`true` = auto-slide, `false` = still). */
   interval?: number | boolean;
@@ -29,8 +28,8 @@ export default function ComponentWallDemo({
   intervalTime?: number;
   /** Card by card, or every card once per round in a random order. */
   order?: "serial" | "shuffle";
-  /** Copy on the left and the wall on the right, copy between two walls, or full-width wall without copy. */
-  layout?: "split" | "center" | "center-background" | "fullscreen" | "wall-only";
+  /** Copy on the left and the wall on the right, copy between two walls, or center background. */
+  layout?: "split" | "center" | "center-background";
   /** Keep wall in the background on mobile instead of dropping as a bottom band. */
   persistentBackground?: boolean;
   /** Whether to show wall animations on mobile/small screens (<lg). Defaults to true. */
@@ -51,14 +50,10 @@ export default function ComponentWallDemo({
   cardDim?: number;
   /** Whether to highlight center/focused cards and dim others. */
   highlightFocus?: boolean;
-  /** Whether cards render with elevated drop shadows. Defaults to true only for fullscreen/wall-only layout. */
+  /** Whether cards render with elevated drop shadows. */
   cardShadow?: boolean;
-  /** Whether clicking a card item opens the full details modal. Defaults to true in fullscreen layout. */
-  itemModal?: boolean;
 }) {
-  const isWallOnly = layout === "fullscreen" || layout === "wall-only";
-  const defaultInterval = isWallOnly ? false : 5500;
-  const resolvedInterval = interval ?? defaultInterval;
+  const resolvedInterval = interval ?? 5500;
   return (
     <div className="w-full overflow-hidden rounded-2xl border border-border">
       <ComponentWall
@@ -88,7 +83,6 @@ export default function ComponentWallDemo({
         cardDim={cardDim}
         highlightFocus={highlightFocus}
         cardShadow={cardShadow}
-        itemModal={itemModal}
       />
     </div>
   );

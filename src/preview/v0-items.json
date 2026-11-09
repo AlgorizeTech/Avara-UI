@@ -241,8 +241,7 @@
     "build-interactive-interfaces": "Component Wall — Build interactive interfaces",
     "centred-with-persistent-background": "Component Wall — Centred with persistent background",
     "clean-mobile-view-no-background-animation": "Component Wall — Clean mobile view (no background animation)",
-    "copy-beside-the-wall": "Component Wall — Copy beside the wall",
-    "fullscreen-wall-no-copy": "Component Wall — Fullscreen wall (no copy)"
+    "copy-beside-the-wall": "Component Wall — Copy beside the wall"
   },
   "context-menu": {
     "labels-shortcuts-disabled": "Context Menu — Labels, shortcuts & disabled"
@@ -701,6 +700,9 @@
   "popover": {
     "account-menu": "Popover — Account menu",
     "offset": "Popover — Offset"
+  },
+  "portfolio-showcase": {
+    "masonry-portfolio-variant-masonry-portfolio": "Portfolio Showcase — Masonry Portfolio — variant=\"masonry-portfolio\""
   },
   "pricing": {
     "selectable-workspace-plans": "Pricing — Selectable workspace plans",

@@ -121,7 +121,7 @@ export const COMPONENT_TYPES = {
 		description: "Above-the-fold openers for landing pages.",
 		icon: LayoutTemplate,
 		kind: "section",
-		slugs: ["hero", "component-wall", "flavour-carousel"],
+		slugs: ["hero", "component-wall", "portfolio-showcase", "flavour-carousel"],
 	},
 	marketing: {
 		label: "Marketing Sections",

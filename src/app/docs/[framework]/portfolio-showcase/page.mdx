@@ -1,0 +1,309 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+
+export const metadata = docsPageMetadata("portfolio-showcase", {
+  title: "Portfolio Showcase",
+  description: "An infinite continuous 2D draggable masonry canvas with momentum physics, smooth camera glide, and interactive project modal for modern portfolios.",
+});
+
+# Portfolio Showcase
+
+An edge-to-edge continuous infinite canvas in an organic masonry waterfall layout engineered for creative agencies, design studios, and freelance portfolios.
+
+The component pairs smooth 4-directional inertial drag physics (touch, trackpad, and mouse) with an ambient floating drift and automatic camera flights that glide gracefully from card to card. Clicking any project card opens a high-fidelity modal detailing project specifications, deliverables, and interactive action triggers.
+
+export const usageMasonryPortfolio = `"use client";
+
+import { PortfolioShowcase } from "@/components/custom/blocks/PortfolioShowcaseBlock";
+
+const PROJECTS = [
+  {
+    slug: "fintech-aura",
+    title: "Aura Fintech Banking",
+    category: "Mobile App & Design System",
+    client: "Aura Global Financial",
+    year: "2026",
+    description: "An ultra-modern mobile banking experience and comprehensive design system with real-time liquidity visualization.",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/bento-showcase-1790516064489.jpg",
+    tags: ["Mobile", "Fintech", "Design System"],
+  },
+  {
+    slug: "minimal-studio",
+    title: "Studio Arch Minimal",
+    category: "Architecture & Editorial",
+    client: "Atelier Architekten",
+    year: "2026",
+    description: "Monolithic editorial portfolio website for an international architectural studio with spatial photography.",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/collage-hero-1790516064493.jpg",
+    tags: ["Architecture", "Editorial", "Web Design"],
+  },
+  {
+    slug: "lumina-health",
+    title: "Lumina Telehealth AI",
+    category: "Healthcare & AI Assistant",
+    client: "Lumina Care Systems",
+    year: "2025",
+    description: "Intelligent diagnostic consultation and care booking workflow connecting patients to certified specialists.",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/book-appointment-1790516064490.jpg",
+    tags: ["AI", "Healthcare", "Web App"],
+  },
+  {
+    slug: "atelier-fashion",
+    title: "Maison Haute Couture",
+    category: "Luxury Fashion & Ecommerce",
+    client: "Maison Parisienne",
+    year: "2026",
+    description: "Sensory runway collection showcase and high-converting ecommerce storefront with fluid magnetic carousels.",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/fashion-hero-1790516064495.jpg",
+    tags: ["Fashion", "Ecommerce", "Creative"],
+  },
+  {
+    slug: "cloud-metrics",
+    title: "Pulse Cloud Observability",
+    category: "Developer Tools & SaaS",
+    client: "Pulse Metrics Inc",
+    year: "2025",
+    description: "Zero-latency Kubernetes cluster monitoring dashboard with live metrics telemetry.",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516056/data-flow-1790516064493.jpg",
+    tags: ["SaaS", "Dashboard", "DevTools"],
+  },
+  {
+    slug: "sound-craft",
+    title: "Sonic Spatial Experience",
+    category: "Interactive Audio & WebGL",
+    client: "Sonic Labs Zurich",
+    year: "2026",
+    description: "Immersive three-dimensional audio-reactive web landscape transforming organic sound frequencies into light sculptures.",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/hero-1790516064495.jpg",
+    tags: ["WebGL", "Audio", "Interactive"],
+  },
+];
+
+export default function PortfolioShowcaseExample() {
+  return (
+    <PortfolioShowcase
+      variant="masonry-portfolio"
+      items={PROJECTS}
+      interval={true}
+      intervalTime={5500}
+      draggable={true}
+      highlightFocus={false}
+      order="shuffle"
+      stagger={72}
+      gap={16}
+    />
+  );
+}
+`;
+
+<ExampleShowcase headingLevel={2}
+  name="portfolio-showcase"
+  columns={1}
+  minHeight={760}
+  controls={[
+    { name: "intervalTime", label: "Interval Time", min: 1000, max: 10000, step: 100, defaultValue: 5500, unit: "ms" },
+    { name: "gap", label: "Grid Gap", min: 8, max: 32, step: 2, defaultValue: 16, unit: "px" },
+    { name: "stagger", label: "Masonry Stagger", min: 0, max: 120, step: 4, defaultValue: 72, unit: "px" },
+  ]}
+  examples={[
+    {
+      title: 'Masonry Portfolio — variant="masonry-portfolio"',
+      subheading:
+        "Pass `variant=\"masonry-portfolio\"` for an edge-to-edge continuous infinite canvas in a masonry layout. Click & drag anywhere in all 4 directions with smooth momentum physics and ambient floating drift — it wraps infinitely without ever ending.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "variant",
+          value: '"masonry-portfolio"',
+          effect:
+            "Selects the edge-to-edge infinite masonry canvas showcasing all cards with smooth inertial physics and centered 3D ambient elevation.",
+        },
+        {
+          lead: "Set",
+          prop: "draggable",
+          value: "true",
+          effect:
+            "Enables interactive 4-directional mouse and touch dragging with spring physics and kinetic momentum damping.",
+        },
+        {
+          lead: "Set",
+          prop: "interval",
+          value: "true",
+          effect:
+            "Activates automatic ambient camera glide from project card to card, pausing automatically during user hover or drag interactions.",
+        },
+        {
+          lead: "Set",
+          prop: "intervalTime",
+          value: "5500",
+          effect: "Configures how long the camera settles on a project card in milliseconds before initiating flight to the next.",
+        },
+        {
+          lead: "Set",
+          prop: "order",
+          value: '"shuffle"',
+          effect:
+            "Takes flights in dynamic multi-directional paths across the masonry canvas rather than a single fixed axis.",
+        },
+        {
+          lead: "Set",
+          prop: "stagger",
+          value: "72",
+          effect:
+            "Controls the vertical masonry offset between alternate columns, producing an organic waterfall layout where cards do not align rigidly.",
+        },
+        {
+          lead: "Set",
+          prop: "gap",
+          value: "16",
+          effect: "Specifies the uniform spacing between adjacent cards in pixels.",
+        },
+        {
+          lead: "Set",
+          prop: "itemModal",
+          value: "true",
+          effect:
+            "Opens the high-resolution project modal upon card selection, providing media zoom, client metadata, deliverables, and external actions.",
+        },
+      ],
+      props: {
+        variant: "masonry-portfolio",
+        interval: true,
+        intervalTime: 5500,
+        draggable: true,
+        highlightFocus: false,
+        order: "shuffle",
+        stagger: 72,
+        gap: 16,
+      },
+      usage: usageMasonryPortfolio,
+      code: extractCode("src/components/custom/blocks/PortfolioShowcaseBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="portfolio-showcase" />
+
+## Features
+
+Discover the key capabilities that make Portfolio Showcase the ultimate display engine for creative work.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">2D Infinite Canvas</h3>
+    <p className="text-muted-foreground text-sm">Cards seamlessly wrap around all 4 screen boundaries with zero stutter or boundaries, creating an uninterrupted endless browsing experience.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Inertial Momentum Physics</h3>
+    <p className="text-muted-foreground text-sm">Natural kinetic friction and velocity tracking respond to mouse flings and touch swipes, smoothly decelerating like a physical surface.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Organic Masonry Stagger</h3>
+    <p className="text-muted-foreground text-sm">Configurable column offsets produce an asymmetric waterfall composition that highlights projects without rigid row constraints.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Rich Project Inspection Modal</h3>
+    <p className="text-muted-foreground text-sm">Clicking any work card pops open an accessible, responsive presentation dialog with client specs, deliverables, and live project triggers.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"masonry-portfolio" | "fullscreen"</code></td>
+        <td><code>"masonry-portfolio"</code></td>
+        <td>Layout presentation style. Defaults to <code>"masonry-portfolio"</code> with 3D ambient center cushion and edge-to-edge canvas.</td>
+      </tr>
+      <tr>
+        <td><code>items</code></td>
+        <td><code>PortfolioItem[]</code></td>
+        <td><code>DEFAULT_PORTFOLIO_ITEMS</code></td>
+        <td>Array of project objects containing <code>title</code>, <code>image</code>, <code>category</code>, <code>client</code>, <code>year</code>, and <code>description</code>.</td>
+      </tr>
+      <tr>
+        <td><code>draggable</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Enables 4-way mouse, trackpad, and touch panning across the entire canvas with kinetic inertia.</td>
+      </tr>
+      <tr>
+        <td><code>interval</code></td>
+        <td><code>boolean | number</code></td>
+        <td><code>true</code></td>
+        <td>Controls automatic camera navigation. Set to <code>false</code> to disable auto-flights.</td>
+      </tr>
+      <tr>
+        <td><code>intervalTime</code></td>
+        <td><code>number</code></td>
+        <td><code>5500</code></td>
+        <td>Duration in milliseconds the camera settles on a card before transitioning to the next destination.</td>
+      </tr>
+      <tr>
+        <td><code>order</code></td>
+        <td><code>"serial" | "shuffle"</code></td>
+        <td><code>"shuffle"</code></td>
+        <td>Camera path sequence: sequential ordering or non-linear multi-directional random flights.</td>
+      </tr>
+      <tr>
+        <td><code>stagger</code></td>
+        <td><code>number</code></td>
+        <td><code>72</code></td>
+        <td>Vertical masonry displacement in pixels between alternating column tracks.</td>
+      </tr>
+      <tr>
+        <td><code>gap</code></td>
+        <td><code>number</code></td>
+        <td><code>16</code></td>
+        <td>Spacing in pixels between adjacent cards horizontally and vertically.</td>
+      </tr>
+      <tr>
+        <td><code>zoom</code></td>
+        <td><code>number</code></td>
+        <td><code>1</code></td>
+        <td>Scale multiplier for resting cards on desktop viewports.</td>
+      </tr>
+      <tr>
+        <td><code>mobileZoom</code></td>
+        <td><code>number</code></td>
+        <td><code>0.5</code></td>
+        <td>Scale multiplier for cards rendered on compact mobile displays.</td>
+      </tr>
+      <tr>
+        <td><code>itemModal</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>When true, clicking any card launches the comprehensive project details dialog.</td>
+      </tr>
+      <tr>
+        <td><code>cardShadow</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Renders subtle realistic drop shadows beneath each project card.</td>
+      </tr>
+      <tr>
+        <td><code>highlightFocus</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>When true, selectively highlights the active card while subtly dimming outer cards.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<DocsJsonLd slug="portfolio-showcase" />
