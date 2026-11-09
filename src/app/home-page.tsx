@@ -1,5 +1,6 @@
 "use client";
 
+import { FeaturedOnSection } from "@/components/home/featured-on-section";
 import { HeroSection } from "@/components/home/hero-section";
 import { LazyHydrate } from "@/components/home/lazy-hydrate";
 
@@ -61,6 +62,7 @@ export default function HomePage() {
 			    crawlers; the footer stays outside it so it keeps its own role. */}
 			<main>
 				<HeroSection />
+				<FeaturedOnSection />
 				{/* Eager: the showcase's demos are sized by FitToWidth after mount, so
 				    its server HTML is ~1.6k px shorter than the live section (varies with
 				    the viewport, so it can't be reserved). It comes alive as soon as the
