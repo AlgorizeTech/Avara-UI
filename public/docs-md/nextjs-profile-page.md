@@ -10,6 +10,44 @@ A person as a page: an aurora backdrop, frosted panels in four shapes, and a 24-
 
 The page is primitives rather than one monolith. `ProfilePage` is the backdrop and a 12-column grid; `GlassPanel` — from [Glass Panel](https://avaraui.com/docs/nextjs/glass-panel), which installs alongside — is one glass recipe with a `shape` that encodes hierarchy (a `slab` for the hero, a `tile` for content, a `disc` for a single number, a `capsule` for chips); `WorkdayDial` is the one element that moves; `useLocalTime` is the hook under it. Compose them with your own data — nothing has to be reshaped to fit. The example page also drops in two other library pieces where a profile wants them: a [Verify Badge](https://avaraui.com/docs/nextjs/verify-badge) beside the name and a row of [Social Links](https://avaraui.com/docs/nextjs/social-links) under the contact details.
 
+## For AI agents
+
+**Ask before you pick.** This page has 3 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 3 options as live previews: https://avaraui.com/view/profile-page
+
+**When to use it.** A person as a page: a bento of panels with a 24-hour dial showing when they work, live in their own time zone. Three treatments of the same page.
+
+**Gotchas:**
+
+- All three are looks of the one `profile-page` item: install it once and set `variant` from the index (the default glass look needs no `variant`).
+
+### The 3 variants
+
+1. **Glass profile page** (`glass`): An aurora backdrop with frosted panels in four shapes and a live 24-hour working-hours dial.
+   - Live: https://avaraui.com/view/profile-page/glass
+   - Best for: a team member or founder page that should feel soft and atmospheric
+   - Avoid if: you want flat, ordinary cards with no blur
+   - Traits: aurora backdrop, frosted panels, 24-hour dial, uses the `profile-page` item
+   - Install: `npx shadcn@latest add @avara-ui/profile-page`
+   - Docs: https://avaraui.com/docs/nextjs/profile-page#profile-page
+2. **Solid profile page** (`solid`): The same page with no glass: white cards, an ordinary shadow and a flat ground.
+   - Live: https://avaraui.com/view/profile-page/solid
+   - Best for: a clean, conventional page where blur effects would be distracting
+   - Avoid if: you want the aurora and glass atmosphere
+   - Traits: no glass, ordinary shadow, no aurora, uses the `profile-page` item
+   - Install: `npx shadcn@latest add @avara-ui/profile-page`
+   - Set these props: `{"variant":"solid"}`
+   - Docs: https://avaraui.com/docs/nextjs/profile-page#solid
+3. **Liquid glass profile page** (`liquid-glass`): Fluid SVG displacement refraction, specular highlights and a deep backdrop blur behind the bento grid.
+   - Live: https://avaraui.com/view/profile-page/liquid-glass
+   - Best for: a showpiece profile where a rich glass effect is part of the brand
+   - Avoid if: you want a quiet, conventional page
+   - Traits: liquid glass, SVG displacement refraction, specular highlights, uses the `profile-page` item
+   - Install: `npx shadcn@latest add @avara-ui/profile-page`
+   - Set these props: `{"variant":"liquid-glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/profile-page#liquid-glass
+
 ## Profile page
 
 The full page. Open it fullscreen to see it as a page — the dial reads Farah's local time, so the marker and the working state are honest wherever it is viewed.

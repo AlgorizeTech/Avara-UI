@@ -10,6 +10,36 @@ A booking flow for a page that ends in an appointment: a practitioner's portrait
 
 `BookAppointment` is a section built from library pieces. The surface is [Glass Panel](https://avaraui.com/docs/reactjs/glass-panel) (`GlassBackdrop` and `GlassPanel`), the scores are [Half Stars](https://avaraui.com/docs/reactjs/half-stars), and the booking panel is [Booking Card](https://avaraui.com/docs/reactjs/booking-card) — a compound component that can be dropped into any panel on any page. Hand it a `practitioner`, some `slotGroups` and an `onBook`, and it lays the page out.
 
+## For AI agents
+
+**Ask before you pick.** This page has 2 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 2 options as live previews: https://avaraui.com/view/book-appointment
+
+**When to use it.** A booking page for a practitioner: portrait and contact details, scores as stars, two small charts and a day and time booker. Two surface treatments.
+
+**Gotchas:**
+
+- Both are looks of the one `book-appointment` item: install it once and set `variant` from the index (the glass look needs none). The booker itself is the same in both.
+
+### The 2 variants
+
+1. **Glass booking page** (`glass`): The booking page on frosted panels over an aurora backdrop.
+   - Live: https://avaraui.com/view/book-appointment/glass
+   - Best for: a clinic, studio or practice that wants a soft, atmospheric page
+   - Avoid if: you want flat white cards
+   - Traits: frosted panels, aurora backdrop, day and time booker
+   - Install: `npx shadcn@latest add @avara-ui/book-appointment`
+   - Docs: https://avaraui.com/docs/nextjs/book-appointment#clinic-booking-page
+2. **Solid booking page** (`solid`): The same booking on white cards with an ordinary shadow; no glass and no aurora.
+   - Live: https://avaraui.com/view/book-appointment/solid
+   - Best for: a clean, conventional page where blur effects would distract
+   - Avoid if: you want the soft glass atmosphere
+   - Traits: white cards, ordinary shadow, no aurora
+   - Install: `npx shadcn@latest add @avara-ui/book-appointment`
+   - Set these props: `{"variant":"solid"}`
+   - Docs: https://avaraui.com/docs/nextjs/book-appointment#solid
+
 ## Clinic booking page
 
 Pick a day and a time, press Book — the button stays busy while your onBook promise runs, then the check draws itself and the details rise in.

@@ -15,6 +15,53 @@ It now features a **dual-layout system**:
 
 Both layouts read the **same** `data` object — swapping `layout` re-presents the identical tickets, so you can route `/inbox` to the table and `/inbox/[id]` to the chat view without duplicating state. Every preview is live: open a ticket, reply to it, or create a new one.
 
+## For AI agents
+
+**Ask before you pick.** This page has 4 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 4 options as live previews: https://avaraui.com/view/support-dashboard
+
+**When to use it.** A helpdesk and support dashboard. Two layouts (a three-pane ticket workspace, or a sortable table under metric cards) and two translucent glass styles.
+
+**Gotchas:**
+
+- All four are looks of the one `support-dashboard` item: install it once and set `layout` and `variant` from the index (the default ticket workspace needs neither).
+- The glass colour is a fixed set of presets, not a hex value; an unrecognised value falls back to `indigo`.
+
+### The 4 variants
+
+1. **Ticket workspace** (`ticket-workspace`): A three-pane drill-down: inbox, conversation thread and a collapsible properties pane.
+   - Live: https://avaraui.com/view/support-dashboard/ticket-workspace
+   - Best for: agents who work through tickets one conversation at a time
+   - Avoid if: you want an overview of many tickets at once
+   - Traits: inbox, conversation thread, properties pane, uses the `support-dashboard` item
+   - Install: `npx shadcn@latest add @avara-ui/support-dashboard`
+   - Docs: https://avaraui.com/docs/nextjs/support-dashboard#ticket-workspace
+2. **Table view** (`table-view`): The same tickets as a sortable list under metric cards that are computed from the ticket data.
+   - Live: https://avaraui.com/view/support-dashboard/table-view
+   - Best for: managers who want an overview and sortable list of tickets
+   - Avoid if: agents need to read and reply to conversations in place
+   - Traits: sortable table, metric cards, uses the `support-dashboard` item
+   - Install: `npx shadcn@latest add @avara-ui/support-dashboard`
+   - Set these props: `{"layout":"table"}`
+   - Docs: https://avaraui.com/docs/nextjs/support-dashboard#table-view
+3. **Glass workspace** (`glass`): The ticket workspace with translucent panes and a backdrop blur.
+   - Live: https://avaraui.com/view/support-dashboard/glass
+   - Best for: an atmospheric dashboard over a gradient or image background
+   - Avoid if: you want flat, opaque panes
+   - Traits: translucent panes, backdrop blur, uses the `support-dashboard` item
+   - Install: `npx shadcn@latest add @avara-ui/support-dashboard`
+   - Set these props: `{"variant":"glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/support-dashboard#glass
+4. **Liquid glass workspace** (`liquid-glass`): The ticket workspace in layered liquid glass with animated displacement waves and specular edge highlights.
+   - Live: https://avaraui.com/view/support-dashboard/liquid-glass
+   - Best for: a showpiece dashboard where a rich glass effect is part of the brand
+   - Avoid if: you want a plain, dense working tool
+   - Traits: liquid glass, SVG displacement waves, specular highlights, uses the `support-dashboard` item
+   - Install: `npx shadcn@latest add @avara-ui/support-dashboard`
+   - Set these props: `{"variant":"liquid-glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/support-dashboard#support-liquid-glass
+
 ## Ticket workspace
 
 A 3-pane drill-down: inbox, conversation thread and a collapsible properties pane.

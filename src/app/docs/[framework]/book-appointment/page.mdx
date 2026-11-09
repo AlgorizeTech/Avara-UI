@@ -11,6 +11,8 @@ A booking flow for a page that ends in an appointment: a practitioner's portrait
 
 `BookAppointment` is a section built from library pieces. The surface is <DocLink to="glass-panel">Glass Panel</DocLink> (`GlassBackdrop` and `GlassPanel`), the scores are <DocLink to="half-stars">Half Stars</DocLink>, and the booking panel is <DocLink to="booking-card">Booking Card</DocLink> — a compound component that can be dropped into any panel on any page. Hand it a `practitioner`, some `slotGroups` and an `onBook`, and it lays the page out.
 
+<AgentVariants slug="book-appointment" />
+
 export const usagePage = `"use client";
 
 import { BookAppointment } from "@/components/custom/blocks/BookAppointmentBlock";

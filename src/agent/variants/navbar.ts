@@ -1,0 +1,125 @@
+import type { PageVariants } from "./types";
+
+/**
+ * Navbar: 7 looks of one registry item (`navbar`), chosen with the `variant`
+ * prop. Every look has a titled example with a live preview on the docs page.
+ * Claims come from src/app/docs/[framework]/navbar/page.mdx.
+ */
+export const navbar: PageVariants = {
+  slug: "navbar",
+  intro:
+    "The site header. Seven designs of one responsive navigation bar, from a plain bar with dropdowns to a full e-commerce mega menu; each handles desktop dropdowns and a mobile drawer.",
+  whenNot: [
+    {
+      use: "Sidebar",
+      slug: "sidebar",
+      reason: "for navigation down the side of an app rather than across the top",
+    },
+  ],
+  gotchas: [
+    "All seven are looks of the one `navbar` item: install it once and set `variant` from the index. Do not install it again per look.",
+  ],
+  variants: [
+    // --- Everyday bars --------------------------------------------------------
+    {
+      id: "default",
+      group: "Everyday bars",
+      label: "Default navbar",
+      summary: "The default bar: wordmark, desktop links with dropdowns, and a mobile drawer.",
+      bestFor: ["most sites that need a standard header"],
+      avoidIf: ["you want the header to float over a hero or to carry a mega menu"],
+      traits: ["wordmark", "dropdown menus", "mobile drawer", "themed call to action"],
+      item: "navbar",
+      demo: "navbar",
+      example: "Navbar",
+      props: { variant: "default" },
+      setProps: { variant: "default" },
+    },
+    {
+      id: "centered",
+      group: "Everyday bars",
+      label: "Centred navbar",
+      summary: "Balances the logo in the middle with links either side.",
+      bestFor: ["brand-led sites, portfolios and studios where the logo should anchor the header"],
+      avoidIf: ["you have many links (they split across two sides)"],
+      traits: ["logo in the middle", "links either side", "mobile drawer"],
+      item: "navbar",
+      demo: "navbar",
+      example: "Centered",
+      props: { variant: "centered" },
+      setProps: { variant: "centered" },
+    },
+    {
+      id: "minimal",
+      group: "Everyday bars",
+      label: "Minimal navbar",
+      summary: "Drops the border and background entirely so the links sit directly on the page.",
+      bestFor: ["clean, content-first pages and hero sections that run to the top edge"],
+      avoidIf: ["the page behind the bar is busy (links have no backing)"],
+      traits: ["no border", "no background", "mobile drawer"],
+      item: "navbar",
+      demo: "navbar",
+      example: "Minimal",
+      props: { variant: "minimal" },
+      setProps: { variant: "minimal" },
+    },
+    {
+      id: "glass",
+      group: "Everyday bars",
+      label: "Glass navbar",
+      summary: "A full-width bar that blurs whatever scrolls beneath it.",
+      bestFor: ["long pages with imagery, where the bar should stay readable as content passes under it"],
+      avoidIf: ["you want a floating pill rather than a full-width bar"],
+      traits: ["full width", "backdrop blur", "mobile drawer"],
+      item: "navbar",
+      demo: "navbar",
+      example: "Glass",
+      props: { variant: "glass" },
+      setProps: { variant: "glass" },
+    },
+
+    // --- Statement bars -------------------------------------------------------
+    {
+      id: "floating",
+      group: "Statement bars",
+      label: "Floating navbar",
+      summary: "A pill-shaped glass bar that hovers over the hero.",
+      bestFor: ["landing pages with a full-bleed hero the header should sit on top of"],
+      avoidIf: ["you want a header that fills the full width"],
+      traits: ["pill shape", "glass", "hovers over content"],
+      item: "navbar",
+      demo: "navbar",
+      example: "Floating",
+      props: { variant: "floating" },
+      setProps: { variant: "floating" },
+    },
+    {
+      id: "spotlight",
+      group: "Statement bars",
+      label: "Spotlight pill navbar",
+      summary: "A pill that shrinks and blurs as you scroll, with a sliding hover indicator and a roll-up call-to-action button.",
+      bestFor: ["product and agency sites that want a polished, animated header"],
+      avoidIf: ["you want a static header with no scroll-reactive behaviour"],
+      traits: ["scroll-reactive shrink", "blur", "sliding hover pill", "roll-up call to action"],
+      item: "navbar",
+      demo: "navbar",
+      example: "Spotlight Pill Navbar",
+      props: { variant: "spotlight", logoText: "Nexus" },
+      setProps: { variant: "spotlight" },
+    },
+    {
+      id: "ecommerce-mega-nav",
+      group: "Statement bars",
+      label: "E-commerce mega nav",
+      summary: "An announcement bar, mega menus with product cards and promo banners, a cart indicator and a mobile drawer.",
+      bestFor: ["online stores with several product categories"],
+      avoidIf: ["your site has a handful of pages and no catalogue"],
+      traits: ["announcement bar", "mega menus", "product cards", "promo banners", "cart indicator"],
+      item: "navbar",
+      demo: "navbar",
+      example: "E-Commerce Mega Nav",
+      props: { variant: "ecommerce-mega-nav", logoText: "NUTRIFY" },
+      setProps: { variant: "ecommerce-mega-nav" },
+    },
+  ],
+};

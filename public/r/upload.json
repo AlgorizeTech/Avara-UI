@@ -3,7 +3,7 @@
   "name": "upload",
   "title": "Upload",
   "author": "AlgorizeTech",
-  "description": "A drag-and-drop file dropzone with per-file progress, previews, retry and time-remaining. Use it for multi-file uploads where users need to watch each file land.",
+  "description": "Ask the user to pick one of 3 file upload variants: https://avaraui.com/view/file-upload. This is the Dropzone with upload states. Skip the question if the user already named one. A drag-and-drop file dropzone with per-file progress, previews, retry and time-remaining. Use it for multi-file uploads where users need to watch each file land.",
   "dependencies": [
     "lucide-react"
   ],

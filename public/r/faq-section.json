@@ -3,7 +3,7 @@
   "name": "faq-section",
   "title": "Faq Section",
   "author": "AlgorizeTech",
-  "description": "A complete animated FAQ website section pairing an editorial header with a dynamic morphing nature photography canvas and an expandable question accordion.",
+  "description": "Ask the user to pick one of 2 faq section variants: https://avaraui.com/view/faq-section. This item holds 2 of them as looks of one component (homepage, two-column). Skip the question if the user already named one. A complete animated FAQ website section pairing an editorial header with a dynamic morphing nature photography canvas and an expandable question accordion.",
   "dependencies": [
     "lucide-react"
   ],

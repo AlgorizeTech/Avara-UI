@@ -10,6 +10,49 @@ A responsive, full-page 404 Hyperspace website section featuring ambient radial 
 
 Designed as a drop-in replacement for Next.js `not-found.tsx` or standalone missing route pages.
 
+## For AI agents
+
+**Ask before you pick.** This page has 3 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 3 options as live previews: https://avaraui.com/view/not-found
+
+**When to use it.** A full-page 404 section in three looks: an architectural blueprint, a hyperspace grid, and an animated quantum hologram.
+
+**When to use something else:**
+
+- [Error](https://avaraui.com/docs/reactjs/error): for a runtime error page rather than a missing page.
+
+**Gotchas:**
+
+- All three are looks of the one `not-found` item: install it once and set `variant` from the index.
+
+### The 3 variants
+
+1. **Architectural CAD blueprint** (`blueprint`): A zero-shadow modular CAD blueprint with a drafting ruler bar, protocol telemetry and a navigation directory.
+   - Live: https://avaraui.com/view/not-found/blueprint
+   - Best for: architecture, engineering and design-led sites
+   - Avoid if: you want a playful or cosmic 404
+   - Traits: blueprint grid, no shadows, typographic drafting display, navigation directory
+   - Install: `npx shadcn@latest add @avara-ui/not-found`
+   - Set these props: `{"variant":"animated-beam-border"}`
+   - Docs: https://avaraui.com/docs/nextjs/not-found#architectural-cad-blueprint-404-zero-shadow
+2. **Hyperspace** (`hyperspace`): A celestial cosmic grid backdrop with ambient radial glow, a rotating compass badge and a serif status code.
+   - Live: https://avaraui.com/view/not-found/hyperspace
+   - Best for: a classic, atmospheric 404 that fits most tech and product sites
+   - Avoid if: your brand is flat and light
+   - Traits: masked cyber grid, radial glow, rotating compass, customisable shortcuts
+   - Install: `npx shadcn@latest add @avara-ui/not-found`
+   - Set these props: `{"variant":"hyperspace"}`
+   - Docs: https://avaraui.com/docs/nextjs/not-found#hyperspace-404-section
+3. **Quantum hologram** (`quantum-hologram`): A 3D gyroscopic orbital singularity with a chromatic glitch headline, audio frequency bars and HUD brackets.
+   - Live: https://avaraui.com/view/not-found/quantum-hologram
+   - Best for: sci-fi, gaming and showpiece sites where the 404 can be a moment
+   - Avoid if: you want a calm, quick-to-read error page
+   - Traits: 3D orbital animation, chromatic glitch headline, radar telemetry, most animated of the three
+   - Install: `npx shadcn@latest add @avara-ui/not-found`
+   - Set these props: `{"variant":"quantum-hologram"}`
+   - Docs: https://avaraui.com/docs/nextjs/not-found#quantum-hologram-404-advanced-animated
+
 ## Architectural CAD Blueprint 404 (Zero Shadow)
 
 - `variant="animated-beam-border"` activates zero-shadow architectural modular CAD blueprint layout with clean modular grid division and precision drafting details.

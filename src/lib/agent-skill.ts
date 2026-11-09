@@ -40,7 +40,7 @@ ${SITE_NAME} is a free, MIT-licensed library of ${COMPONENT_COUNT} animated Reac
 Follow these in order. Do not skip the reading step: this is what keeps you from inventing props.
 
 1. **Plan.** Before any UI code, write a short plan: the page's sections, the density, and the empty, loading and error states. Say which library pieces cover which section.
-2. **Decide.** Search the agent index (\`${SITE_URL}/agent/components.json\`) or \`${SITE_URL}/llms.txt\` for the pieces. Each entry has a summary, the install command and a Markdown URL. Match by what the summary says, not by the name. If nothing fits, compose the screen from smaller components and say so; do not force the nearest match. **Then, for every entry with \`choose: true\`, stop and ask the user which variant they want before you install or write anything** (for example the hero: a section that comes in several designs). Show each option with its live link, and offer "pick the best for me". If the user already named a variant, use it without asking. An entry without \`choose\` has one option: install it. The exact question, and how to choose for the user when they ask you to, are in \`variants.md\`. Never pick a variant on your own taste.
+2. **Decide.** Search the agent index (\`${SITE_URL}/agent/components.json\`) or \`${SITE_URL}/llms.txt\` for the pieces. Each entry has a summary, the install command and a Markdown URL. Match by what the summary says, not by the name. If nothing fits, compose the screen from smaller components and say so; do not force the nearest match. **Then, for every entry with \`choose: true\`, stop and ask the user which variant they want before you install or write anything** (for example the hero: a section that comes in several designs). Show each option with its live link, and offer "pick the best for me". If your client has a click-to-pick question tool (Claude Code's \`AskUserQuestion\`), use it so the user answers by clicking; \`variants.md\` says how to fit more than 4 options into it. If the user already named a variant, use it without asking. An entry without \`choose\` has one option: install it. The exact question, and how to choose for the user when they ask you to, are in \`variants.md\`. Never pick a variant on your own taste.
 3. **Register once.** If \`components.json\` has no \`${ns}\` entry, run \`npx shadcn@latest ${REGISTRY_ADD_ARGS}\`.
 4. **Install.** Run \`npx shadcn@latest add ${ns}/<name> --yes\`. Add several items in one command. The CLI installs npm dependencies and any registry items the item needs. For a \`choose\` entry, use the chosen variant's own \`install\` command, never every item the page lists.
 5. **Read.** Fetch the item's Markdown (\`markdownUrl\` in the index). It lists the props, usage and the exact import path. Write code against that, not against memory.
@@ -118,6 +118,7 @@ The user decides which design their site gets, because it is their brand. You do
 | --- | --- |
 | The entry has \`choose: true\` and the user has not named a variant | **Ask.** List every variant with its live link. Do not install or write code first. |
 | The user named one ("the honeycomb hero") | Use it. No question. |
+| The request already narrows the choice ("a login page" on a page that has login and register designs) | Offer only the designs that match. If that leaves one, use it. |
 | The user said "pick the best", "your choice", "whatever fits" | Choose by the procedure below, say which and why, and give its live link so they can swap. |
 | The entry has no \`choose\` | One option. Install it. No question. |
 | You do not know enough to choose (no purpose, no content, no brand) | Ask the brief questions first, then the variant question. |
@@ -126,9 +127,18 @@ The user decides which design their site gets, because it is their brand. You do
 
 ## How to ask
 
-Every option carries its live link. An option without a link is not allowed. Use the client's own way to ask (Claude Code's question picker, a numbered list elsewhere). If a picker cannot hold every option, use a numbered list in the message and give the page's \`galleryUrl\`, which shows all of them live.
+Every option carries its live link. An option without a link is not allowed.
 
-For each variant give its label, its \`summary\`, who it suits (\`bestFor\`) and its \`viewUrl\`. Add a last option: "Pick the best one for me". For example:
+**If your client has a click-to-pick question tool, use it, and make the user answer by clicking, never by typing a name or a number.** Claude Code has \`AskUserQuestion\`; other clients have an options dialog or a question tool. Send one short message first with the page's \`galleryUrl\`, so every option can be opened live. These tools hold 2 to 4 options per question, so:
+
+- **3 variants or fewer:** one question. One option per variant (label: the variant's label; description: its \`summary\`, the first \`bestFor\` line and its \`viewUrl\`), plus a last option "Pick the best one for me".
+- **4 variants or more** (each variant has a \`group\`; at most 4 groups, at most 4 variants in each): ask in two rounds.
+  1. **Round one, one call with two questions.** Question 1, "How should I choose the <section>?", with the options "I'll pick one" and "Pick the best one for me". Question 2, "Which group of <section>s do you want to see?", with one option per group (label: the group; description: the labels of its variants). Tell the user to ignore question 2 if they pick "Pick the best one for me".
+  2. **Round two, only if they chose "I'll pick one".** One question with one option per variant in the chosen group, each described as above, with its \`viewUrl\`.
+- **Several sections with variants on one page** (a hero and a footer): put each section's round-one questions in the same call, up to the tool's limit of 4 questions. Past that, do the sections one after another.
+- The tool's own "Other" box is a fallback, not the plan. Do not ask the user to type.
+
+**If your client has no such tool,** print a numbered list in the message and wait for the answer. Give each variant its label, its \`summary\`, who it suits (\`bestFor\`) and its \`viewUrl\`. Add a last option: "Pick the best one for me". For example:
 
 \`\`\`text
 Which hero do you want? All of them live: ${sample ? viewUrl(sample.slug) : `${SITE_URL}/view/<page>`}
@@ -139,7 +149,7 @@ ${listed}
 Or tell me to pick the best one for you.
 \`\`\`
 
-Then stop. Install nothing until the user answers.
+Then stop, whether you used the picker or the list. Install nothing until the user answers.
 
 ## Choosing for the user
 
@@ -152,7 +162,7 @@ Only when the user asked you to choose, or picked "Pick the best one for me".
 
 ## After the answer
 
-Install the chosen variant's own \`install\` command from the index. Several looks of one component can share one install item (the \`hero\` item holds eight looks): install it once, then read the page's Markdown for how to select the look. Do not install every item a page lists.
+Install the chosen variant's own \`install\` command from the index. Several looks of one component can share one install item (the \`hero\` item holds eight looks): install it once, then set the variant's \`props\` from the index on the component (the footer is \`variant="glass-dock"\` and so on; its default is not the look the user may have chosen) and read the page's Markdown for the rest. Do not install every item a page lists.
 
 ## Pages with variants today
 
@@ -229,7 +239,7 @@ This project uses ${SITE_NAME} (\`${ns}\`), a free shadcn registry of animated R
 - Register once: \`npx shadcn@latest ${REGISTRY_ADD_ARGS}\`. Install with \`npx shadcn@latest add ${ns}/<name> --yes\`.
 - Find components in ${SITE_URL}/agent/components.json (or ${SITE_URL}/llms.txt). Read an item's Markdown for its props before writing code against it.
 - Follow the workflow in ${BASE}/SKILL.md: plan, decide, install, read, adapt, check.
-- Ask before you pick. An index entry with \`choose: true\` has several designs of one section (for example the hero). If the user has not named one, ask which they want, with each option's live link, before installing. If they say to choose, pick from \`bestFor\` / \`avoidIf\` and say why. Never pick a variant on your own. See ${BASE}/variants.md.
+- Ask before you pick. An index entry with \`choose: true\` has several designs of one section (for example the hero). If the user has not named one, ask which they want, with each option's live link, before installing. If they say to choose, pick from \`bestFor\` / \`avoidIf\` and say why. Use your client's click-to-pick question tool if it has one, so the user answers by clicking, not typing. Never pick a variant on your own. See ${BASE}/variants.md.
 - Style with theme tokens only. Install the GSAP or the Motion build of a component, never both.`;
 
 /** Where each client reads the skill from, and the text that puts it there. */

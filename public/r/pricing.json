@@ -3,7 +3,7 @@
   "name": "pricing",
   "title": "Pricing",
   "author": "AlgorizeTech",
-  "description": "A complete pricing system with plan cards, a comparison table, an interactive plan builder and an interactive service checklist.",
+  "description": "Ask the user to pick one of 12 pricing variants: https://avaraui.com/view/pricing. This item holds 12 of them as looks of one component (tiered-cards, elegant-cards, minimal-cards, bordered-cards, dot-matrix-cards, scale-cards, selectable-plans, quote-builder, service-checklist, usage-slider, comparison-table, typographic-menu). Skip the question if the user already named one. A complete pricing system with plan cards, a comparison table, an interactive plan builder and an interactive service checklist.",
   "dependencies": [
     "lucide-react"
   ],

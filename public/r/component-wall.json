@@ -3,7 +3,7 @@
   "name": "component-wall",
   "title": "Component Wall",
   "author": "AlgorizeTech",
-  "description": "A landing hero for a component library: a headline that blurs in word by word and keeps one word turning, a lead, an install command that names whichever card a camera has just landed on, two actions, a line of trust and the tools it is built with in batches — centred between two walls of screenshots that never end, one camera resting high and the other low, or on the left of a single wall.",
+  "description": "Ask the user to pick one of 3 component wall variants: https://avaraui.com/view/component-wall. This item holds 3 of them as looks of one component (center, split, fullscreen). Skip the question if the user already named one. A landing hero for a component library: a headline that blurs in word by word and keeps one word turning, a lead, an install command that names whichever card a camera has just landed on, two actions, a line of trust and the tools it is built with in batches — centred between two walls of screenshots that never end, one camera resting high and the other low, or on the left of a single wall.",
   "dependencies": [
     "lucide-react"
   ],

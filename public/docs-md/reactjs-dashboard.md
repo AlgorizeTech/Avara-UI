@@ -10,6 +10,48 @@ An admin dashboard home on its own canvas: a greeting with all-time totals, a pe
 
 Three looks read the same props: **classic**, solid panels on a light canvas; **glass**, milky panes over soft colour blobs; and **liquid-glass**, fluid refractive glass powered by `LiquidGlassWrapper`, `LiquidGlassBackground`, and `LiquidGlassSvgFilter`.
 
+## For AI agents
+
+**Ask before you pick.** This page has 3 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 3 options as live previews: https://avaraui.com/view/dashboard
+
+**When to use it.** An admin analytics dashboard: period switch, metric tabs, a chart, an activity feed and breakdown panels. Three looks of the same dashboard.
+
+**When to use something else:**
+
+- [Support dashboard](https://avaraui.com/docs/reactjs/support-dashboard): for a helpdesk with tickets rather than analytics.
+
+**Gotchas:**
+
+- All three are looks of the one `dashboard` item: install it once and set `variant` from the index (the classic look needs none). All three read the same `metrics`, `activity`, `sources`, `countries` and `authors` data.
+
+### The 3 variants
+
+1. **Classic admin overview** (`classic`): Period switch, metric tabs, a chart that flips between columns and a trend line, and a filterable activity feed.
+   - Live: https://avaraui.com/view/dashboard/classic
+   - Best for: a conventional admin or analytics screen
+   - Avoid if: you want translucent panes over a backdrop
+   - Traits: period switch, metric tabs, column and trend chart, activity filter, gauge and barcode panels
+   - Install: `npx shadcn@latest add @avara-ui/dashboard`
+   - Docs: https://avaraui.com/docs/nextjs/dashboard#admin-overview
+2. **Glass dashboard** (`glass`): Milky glass panes on a soft canvas; the same data re-presented with a payments table and shortcut tiles.
+   - Live: https://avaraui.com/view/dashboard/glass
+   - Best for: a softer dashboard that sits over a gradient or image
+   - Avoid if: you want flat, dense panels
+   - Traits: milky glass panes, capsule columns, half ring, optional payments table and shortcut tiles
+   - Install: `npx shadcn@latest add @avara-ui/dashboard`
+   - Set these props: `{"variant":"glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/dashboard#dashboard-glass
+3. **Liquid glass dashboard** (`liquid-glass`): Fluid refractive glass from SVG displacement filters, with specular highlights and an ambient backdrop.
+   - Live: https://avaraui.com/view/dashboard/liquid-glass
+   - Best for: a showpiece dashboard where the glass effect is part of the brand
+   - Avoid if: you want a plain, dense working screen
+   - Traits: liquid glass, SVG displacement filters, specular highlights, ambient backdrop
+   - Install: `npx shadcn@latest add @avara-ui/dashboard`
+   - Set these props: `{"variant":"liquid-glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/dashboard#dashboard-liquid-glass
+
 ## Admin overview
 
 Switch Daily, Weekly and Monthly, open a metric tab, flip the chart between columns and a trend line, filter the activity feed, and hover the gauge, the barcode or a legend row to light up a share.

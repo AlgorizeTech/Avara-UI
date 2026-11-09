@@ -136,9 +136,9 @@ function build(): string {
       `Without registering, add by URL: \`npx shadcn@latest add ${REGISTRY_BASE_URL}/<name>.json\`. ` +
       "The CLI installs each item's npm dependencies and any registry items it depends on.",
     "",
-    "Ask before you pick: some pages offer several designs of one section (today the hero; more as they are added). " +
+    "Ask before you pick: some pages offer several designs of one section (today the hero and the footer; more as they are added). " +
       "If the user has not named one and has not asked you to choose, ask which they want before installing or writing code, " +
-      "and show each option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines and say why. " +
+      "and show each option with its live link. Use your client's click-to-pick question tool if it has one (Claude Code: AskUserQuestion; it holds 4 options per question, so offer the page's groups first, then one group's variants; see variants.md). If they ask you to choose, pick from each variant's best-for and avoid-if lines and say why. " +
       "A page that offers a choice says so below; every other page has one option and is installed without asking.",
     "",
     `Project setup: Tailwind CSS v4 must be working, and \`npx shadcn@latest init\` must have created ` +

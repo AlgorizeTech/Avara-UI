@@ -3,7 +3,7 @@
   "name": "cta-section",
   "title": "Cta Section",
   "author": "AlgorizeTech",
-  "description": "An interconnected Brand Pillars call-to-action component featuring interactive service cards, a synchronized scorecard with animated progress meters, and a highlight popover bar.",
+  "description": "Ask the user to pick one of 4 cta section variants: https://avaraui.com/view/cta-section. This item holds 4 of them as looks of one component (offer-showcase, mobile-app, concentric-portal, brand-pillars). Skip the question if the user already named one. An interconnected Brand Pillars call-to-action component featuring interactive service cards, a synchronized scorecard with animated progress meters, and a highlight popover bar.",
   "dependencies": [
     "lucide-react"
   ],

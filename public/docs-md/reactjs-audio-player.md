@@ -10,6 +10,53 @@ An audio player with artwork, transport, scrubber and volume — in a hero card,
 
 `AudioPlayer` is a separate component with the same visual language. It wraps a plain `<audio>` element and mirrors that element's events, so the UI stays correct when a media key, the OS, or the native controls change playback.
 
+## For AI agents
+
+**Ask before you pick.** This page has 4 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 4 options as live previews: https://avaraui.com/view/audio-player
+
+**When to use it.** Playing audio on a page. Choose between a hero card with artwork, a compact bar, the browser's own controls, or Plyr's control bar.
+
+**Gotchas:**
+
+- Three of the four are one item (`audio-player`), chosen with its `variant` prop. The Plyr audio player is a separate item, `video-player-plyr`.
+
+### The 4 variants
+
+1. **Audio hero** (`hero`): The default: artwork beside its own transport, scrubber and volume.
+   - Live: https://avaraui.com/view/audio-player/hero
+   - Best for: a podcast or track page where the artwork matters
+   - Avoid if: you only have room for a single row
+   - Traits: artwork, transport, skip-back and forward jumps, uses the `audio-player` item
+   - Install: `npx shadcn@latest add @avara-ui/audio-player`
+   - Set these props: `{"variant":"hero"}`
+   - Docs: https://avaraui.com/docs/nextjs/audio-player#audio-hero
+2. **Compact bar** (`bar`): Artwork, copy and transport collapsed into a single row; the volume slider hides on narrow screens.
+   - Live: https://avaraui.com/view/audio-player/bar
+   - Best for: a list of tracks or a sticky player where space is tight
+   - Avoid if: you want large artwork to lead
+   - Traits: single row, compact, uses the `audio-player` item
+   - Install: `npx shadcn@latest add @avara-ui/audio-player`
+   - Set these props: `{"variant":"bar"}`
+   - Docs: https://avaraui.com/docs/nextjs/audio-player#compact-bar
+3. **Native controls** (`native`): The browser's own audio controls inside the card, with platform features such as playback speed for free.
+   - Live: https://avaraui.com/view/audio-player/native
+   - Best for: the most accessible default with nothing custom to maintain
+   - Avoid if: you want a branded transport that looks the same in every browser
+   - Traits: browser controls, platform features, uses the `audio-player` item
+   - Install: `npx shadcn@latest add @avara-ui/audio-player`
+   - Set these props: `{"variant":"native"}`
+   - Docs: https://avaraui.com/docs/nextjs/audio-player#native-controls
+4. **Plyr audio** (`plyr`): Plyr's control bar in its audio layout, with no video frame.
+   - Live: https://avaraui.com/view/audio-player/plyr
+   - Best for: a site that already uses Plyr for video and wants matching audio controls
+   - Avoid if: you want no extra library
+   - Traits: Plyr library, audio layout, colourable controls
+   - Install: `npx shadcn@latest add @avara-ui/video-player-plyr`
+   - Set these props: `{"mediaType":"audio"}`
+   - Docs: https://avaraui.com/docs/nextjs/audio-player#plyr-audio
+
 ## Audio hero
 
 Artwork, transport, scrubber and volume in a full hero card. Built on a plain `<audio>` element.

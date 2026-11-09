@@ -8,6 +8,58 @@ url: https://avaraui.com/docs/nextjs/cta-section
 
 An interconnected, conversion-focused call-to-action block designed for modern web applications, agencies, and SaaS platforms. Features high-impact interactive systems including **Mobile App Showcase** (interactive smartphone experience with live workout tracking, app store CTAs, and responsive previews), **Concentric Portal** (scroll-driven expanding circular lens with gyroscopic monospace orbital text), and **Offer Showcase** (promotional pricing card with moving nature reels).
 
+## For AI agents
+
+**Ask before you pick.** This page has 4 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 4 options as live previews: https://avaraui.com/view/cta-section
+
+**When to use it.** A closing call-to-action block. Four designs, from a promotional offer card to a mobile app showcase, a scroll-driven portal and a brand scorecard.
+
+**When to use something else:**
+
+- [Pricing](https://avaraui.com/docs/reactjs/pricing): when the next step is choosing a plan and the prices need to be shown.
+- [Newsletter](https://avaraui.com/docs/reactjs/newsletter): when the action is an email sign-up.
+
+**Gotchas:**
+
+- All four are looks of the one `cta-section` item: install it once and set `variant` from the index. The default, if you set none, is `brand-pillars`.
+
+### The 4 variants
+
+1. **Offer showcase** (`offer-showcase`): A central promotional offer card with an animated price count-up, flanked by moving image reels.
+   - Live: https://avaraui.com/view/cta-section/offer-showcase
+   - Best for: a launch offer, lifetime deal or limited-time promotion
+   - Avoid if: you have no offer or price to promote; you have no images for the reels
+   - Traits: animated price count-up, compare-at price and discount badge, four moving image reels
+   - Install: `npx shadcn@latest add @avara-ui/cta-section`
+   - Set these props: `{"variant":"offer-showcase"}`
+   - Docs: https://avaraui.com/docs/nextjs/cta-section#offer-showcase-variant-offer-showcase
+2. **Mobile app showcase** (`mobile-app`): An upright Android phone mockup showing your app, with a serif italic highlight in the headline and store buttons.
+   - Live: https://avaraui.com/view/cta-section/mobile-app
+   - Best for: driving downloads of a mobile app
+   - Avoid if: you do not have a mobile app
+   - Traits: Pixel 8 phone mockup, App Store and Google Play buttons, serif italic headline phrase
+   - Install: `npx shadcn@latest add @avara-ui/cta-section`
+   - Set these props: `{"variant":"mobile-app"}`
+   - Docs: https://avaraui.com/docs/nextjs/cta-section#mobile-app-showcase-variant-mobile-app
+3. **Concentric portal** (`concentric-portal`): A scroll-driven circular lens that expands, ringed by slowly rotating orbital text.
+   - Live: https://avaraui.com/view/cta-section/concentric-portal
+   - Best for: a memorable closing moment for a launch or event page
+   - Avoid if: you want a plain, quick-to-read call to action
+   - Traits: scroll-scrubbed expansion, rotating text orbits, monospace orbit text
+   - Install: `npx shadcn@latest add @avara-ui/cta-section`
+   - Set these props: `{"variant":"concentric-portal"}`
+   - Docs: https://avaraui.com/docs/nextjs/cta-section#concentric-portal-variant-concentric-portal
+4. **Brand pillars** (`brand-pillars`): An interactive scorecard of brand pillars with live progress meters that recalculate as you choose.
+   - Live: https://avaraui.com/view/cta-section/brand-pillars
+   - Best for: agencies and services that want to show what they offer before the ask
+   - Avoid if: you want a single headline and button
+   - Traits: interactive pillars, live score recalculation, accent colour, the default variant
+   - Install: `npx shadcn@latest add @avara-ui/cta-section`
+   - Set these props: `{"variant":"brand-pillars"}`
+   - Docs: https://avaraui.com/docs/nextjs/cta-section#brand-pillars-variant-brand-pillars
+
 ## Offer Showcase — variant="offer-showcase"
 
 Pass `variant="offer-showcase"` for a high-impact central promotional offer card flanked by moving nature reels with animated price count-up.

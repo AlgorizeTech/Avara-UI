@@ -3,7 +3,7 @@
   "name": "horizontal-scroll-stack",
   "title": "Horizontal Scroll Stack",
   "author": "AlgorizeTech",
-  "description": "A section that converts vertical scrolling into horizontal card movement with a progress indicator. Use it for process timelines and step sequences.",
+  "description": "Ask the user to pick one of 6 scroll stack variants: https://avaraui.com/view/scroll-stack. This is the Horizontal scroll stack. Skip the question if the user already named one. A section that converts vertical scrolling into horizontal card movement with a progress indicator. Use it for process timelines and step sequences.",
   "dependencies": [],
   "registryDependencies": [
     "utils"

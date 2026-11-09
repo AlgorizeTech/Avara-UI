@@ -16,6 +16,52 @@ Three independent components live on this page, and each installs on its own:
 
 Reach for the first unless you need adaptive streaming, DRM or a shared control bar across providers — it adds no player dependency at all. Looking for audio? The [Audio Player](https://avaraui.com/docs/nextjs/audio-player) has its own page.
 
+## For AI agents
+
+**Ask before you pick.** This page has 4 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 4 options as live previews: https://avaraui.com/view/video-player
+
+**When to use it.** A video for a landing page or section. Choose how it plays: opened in a modal or in place with the built-in player, or through the Plyr or JW Player library.
+
+**Gotchas:**
+
+- The built-in `video-player` item also plays a self-hosted file (`source: "video"`) and can embed directly with no thumbnail (`playbackMode: "direct"`). Those are props, not separate designs.
+- JW Player loads JW's library script. The default points at JW's public docs library; replace it with your own player before shipping.
+
+### The 4 variants
+
+1. **Video hero, plays in a modal** (`modal`): A thumbnail with a glassmorphism call to action that opens the video in a centred dialog.
+   - Live: https://avaraui.com/view/video-player/modal
+   - Best for: a landing-page hero where the video should not push content around
+   - Avoid if: you want the video to play where it sits on the page
+   - Traits: thumbnail and glow, modal dialog, Esc closes, focus returns to the button, dialog size md to full
+   - Install: `npx shadcn@latest add @avara-ui/video-player`
+   - Set these props: `{"playbackMode":"modal"}`
+   - Docs: https://avaraui.com/docs/nextjs/video-player#modal-player
+2. **Video hero, plays inline** (`inline`): The player replaces the poster in place; nothing covers the page and body scrolling is untouched.
+   - Live: https://avaraui.com/view/video-player/inline
+   - Best for: a video mid-page, inside a scrolling column or a carousel slide
+   - Avoid if: you want a focused, full-attention viewing dialog
+   - Traits: plays in the card, no overlay, no scroll lock
+   - Install: `npx shadcn@latest add @avara-ui/video-player`
+   - Set these props: `{"playbackMode":"inline"}`
+   - Docs: https://avaraui.com/docs/nextjs/video-player#inline-player
+3. **Plyr player** (`plyr`): One accessible, skinnable control bar in front of HTML5 files, YouTube or Vimeo.
+   - Live: https://avaraui.com/view/video-player/plyr
+   - Best for: one consistent control bar across self-hosted video, YouTube and Vimeo
+   - Avoid if: you want no extra library (the built-in player needs none)
+   - Traits: Plyr library, HTML5, YouTube, Vimeo, colourable controls, choose which controls show
+   - Install: `npx shadcn@latest add @avara-ui/video-player-plyr`
+   - Docs: https://avaraui.com/docs/nextjs/video-player#plyr-youtube
+4. **JW Player** (`jw`): A video player built on JW Player, with colour skin presets and a native fallback if the library is unavailable.
+   - Live: https://avaraui.com/view/video-player/jw
+   - Best for: a site that already uses JW Player for streaming or playlists
+   - Avoid if: you have no JW Player library or licence
+   - Traits: JW Player library, skin presets, playlist or file source, native fallback
+   - Install: `npx shadcn@latest add @avara-ui/video-player-jw`
+   - Docs: https://avaraui.com/docs/nextjs/video-player#jw-player-skinned
+
 ## YouTube & native video
 
 Click the CTA in any preview to start playback. In `modal` mode `Esc` closes the dialog and focus returns to the play button.

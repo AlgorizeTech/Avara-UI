@@ -3,7 +3,7 @@
   "name": "footer",
   "title": "Footer",
   "author": "AlgorizeTech",
-  "description": "A collection of 7 modern, animated, fully responsive Footer components for web applications, SaaS platforms, and marketing landing pages.",
+  "description": "Ask the user to pick one of 9 footer variants: https://avaraui.com/view/footer. This item holds 9 of them as looks of one component (editorial-card, snapshot, modern-stack, wordmark-glow, architectural-liquid, neon-glow-pulse, quantum-particle-beam, simple-centered, glass-dock). Skip the question if the user already named one. A collection of 7 modern, animated, fully responsive Footer components for web applications, SaaS platforms, and marketing landing pages.",
   "dependencies": [
     "lucide-react"
   ],

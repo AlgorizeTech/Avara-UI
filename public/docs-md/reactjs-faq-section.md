@@ -10,6 +10,36 @@ An animated, editorial FAQ section designed for modern landing pages, SaaS platf
 
 Built with pure CSS keyframes and transitions — zero third-party animation library runtime dependencies, guaranteed 60fps performance, and full adaptive styling for both Light and Dark themes.
 
+## For AI agents
+
+**Ask before you pick.** This page has 2 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 2 options as live previews: https://avaraui.com/view/faq-section
+
+**When to use it.** An animated FAQ section with an expandable question accordion, in two layouts.
+
+**Gotchas:**
+
+- Both are layouts of the one `faq-section` item: install it once and set `variant` from the index (the homepage layout needs none).
+
+### The 2 variants
+
+1. **Homepage FAQ** (`homepage`): A section header with a pill badge, an expandable question accordion and an interactive nature photography canvas.
+   - Live: https://avaraui.com/view/faq-section/homepage
+   - Best for: a landing page FAQ that should feel like part of the page's design
+   - Avoid if: you have no photography for the canvas
+   - Traits: pill badge, accordion, photography canvas
+   - Install: `npx shadcn@latest add @avara-ui/faq-section`
+   - Docs: https://avaraui.com/docs/nextjs/faq-section#1-homepage-faq-section
+2. **Two-column support FAQ** (`two-column`): A sticky left-hand headline with a support team contact card beside the question list.
+   - Live: https://avaraui.com/view/faq-section/two-column
+   - Best for: a support or help page with many questions and a person to contact
+   - Avoid if: you have only a few questions; you have no support contact to show
+   - Traits: sticky headline column, support contact card, accordion
+   - Install: `npx shadcn@latest add @avara-ui/faq-section`
+   - Set these props: `{"variant":"two-column"}`
+   - Docs: https://avaraui.com/docs/nextjs/faq-section#2-two-column-support-faq
+
 ## 1. Homepage FAQ Section
 
 The complete homepage FAQ section. Features a centered header, ambient background glows, an architectural nature photography canvas that morphs dynamically with each open question, and an accessible accordion list.

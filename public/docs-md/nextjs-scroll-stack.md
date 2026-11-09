@@ -10,6 +10,68 @@ A premium collection of scroll-driven 3D card stacking layouts engineered exclus
 
 Five independent scroll-driven layouts share this page, each with its own block file. **Scroll inside a preview box** to drive its ScrollTrigger timeline.
 
+## For AI agents
+
+**Ask before you pick.** This page has 6 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 6 options as live previews: https://avaraui.com/view/scroll-stack
+
+**When to use it.** Scroll-driven card layouts built on GSAP ScrollTrigger: cards that stack, fan out, pin beside a column or travel sideways as the visitor scrolls. Six layouts, each a different structure.
+
+**When to use something else:**
+
+- [Modern Scroll Stack](https://avaraui.com/docs/nextjs/modern-scroll-stack): for a service-card stack with a different look.
+
+**Gotchas:**
+
+- Each layout is its own registry item: install only the chosen one, not the whole page.
+- Install the GSAP build. A Motion build exists for some layouts; never install both builds of one layout.
+
+### The 6 variants
+
+1. **Fan stack** (`fan-stack`): Three numbered steps dealt from one pile into a tilted cascade as the stack scrolls into view.
+   - Live: https://avaraui.com/view/scroll-stack/fan-stack
+   - Best for: a short numbered sequence: steps, phases, a three-part system
+   - Avoid if: you have many steps or long copy per step (it suits a short sequence)
+   - Traits: GSAP, numbered cards, tilted cascade, photo can hang off a card edge
+   - Install: `npx shadcn@latest add @avara-ui/fan-stack`
+   - Docs: https://avaraui.com/docs/nextjs/scroll-stack#fan-stack
+2. **Scroll stack** (`scroll-stack`): Cards stick to the viewport and the next slides up over them, offset by a pixel gap so titles stay readable.
+   - Live: https://avaraui.com/view/scroll-stack/scroll-stack
+   - Best for: step-by-step feature walkthroughs
+   - Avoid if: each step needs a different kind of content (the sticky stack takes lists, images and splits)
+   - Traits: GSAP ScrollTrigger, 3D deck, adjustable card gap, per-card background colour
+   - Install: `npx shadcn@latest add @avara-ui/scroll-stack`
+   - Docs: https://avaraui.com/docs/nextjs/scroll-stack#card-gap
+3. **Sticky scroll stack** (`sticky-stack`): A headed section where each card sticks and the next overlaps it; a card body can be a list, image, split or custom.
+   - Live: https://avaraui.com/view/scroll-stack/sticky-stack
+   - Best for: feature sections with varied content per step
+   - Avoid if: every step looks the same (the plain scroll stack is simpler)
+   - Traits: GSAP, headed section, list, image, split or custom bodies, tunable scale and offset
+   - Install: `npx shadcn@latest add @avara-ui/sticky-scroll-stack`
+   - Docs: https://avaraui.com/docs/nextjs/scroll-stack#sticky-stack
+4. **Split scroll stack** (`split-stack`): Two columns: one column pins while the cards stack and advance in the other; it pins left or right.
+   - Live: https://avaraui.com/view/scroll-stack/split-stack
+   - Best for: feature tours that pair narrative with visuals
+   - Avoid if: you want a single full-width column
+   - Traits: GSAP, two columns, pinned side (left or right)
+   - Install: `npx shadcn@latest add @avara-ui/split-scroll-stack`
+   - Docs: https://avaraui.com/docs/nextjs/scroll-stack#pinned-right
+5. **Horizontal scroll stack** (`horizontal-stack`): The section pins and vertical scrolling turns into horizontal travel across the cards, with a progress indicator.
+   - Live: https://avaraui.com/view/scroll-stack/horizontal-stack
+   - Best for: process timelines and step sequences
+   - Avoid if: you do not want the page held in place while the cards move
+   - Traits: GSAP, pinned section, vertical-to-horizontal scroll, progress indicator
+   - Install: `npx shadcn@latest add @avara-ui/horizontal-scroll-stack`
+   - Docs: https://avaraui.com/docs/nextjs/scroll-stack#horizontal-scroll-stack
+6. **Horizontal rail** (`horizontal-rail`): A horizontal rail of cards that slide across the viewport without stacking.
+   - Live: https://avaraui.com/view/scroll-stack/horizontal-rail
+   - Best for: showcasing products, media cards or other horizontal content
+   - Avoid if: you want cards that pile on top of each other
+   - Traits: horizontal, no stacking, navigation controls
+   - Install: `npx shadcn@latest add @avara-ui/horizontal-rail`
+   - Docs: https://avaraui.com/docs/nextjs/scroll-stack#horizontal-rail-track
+
 ## Fan stack
 
 Overlapping cards in a tilted diagonal cascade, each with a photo hanging off its edge. As the stack scrolls into view the cards are dealt out of one pile into place, scrubbed by the scrollbar. It is built from small primitives, so a card holds whatever your data has.

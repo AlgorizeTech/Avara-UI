@@ -3,7 +3,7 @@
   "name": "audio-player",
   "title": "Audio Player",
   "author": "AlgorizeTech",
-  "description": "An audio player with artwork, transport, scrubber and volume, in a hero card, a compact bar, or wrapped around the browser's native controls.",
+  "description": "Ask the user to pick one of 4 audio player variants: https://avaraui.com/view/audio-player. This item holds 3 of them as looks of one component (hero, bar, native). Skip the question if the user already named one. An audio player with artwork, transport, scrubber and volume, in a hero card, a compact bar, or wrapped around the browser's native controls.",
   "dependencies": [
     "lucide-react"
   ],
