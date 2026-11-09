@@ -61,25 +61,6 @@ export default function OfferShowcaseExample() {
   );
 }`;
 
-export const usageMobileApp = `import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
-
-export default function MobileAppExample() {
-  return (
-    <CTASection
-      variant="mobile-app"
-      badge="Mobile App Available"
-      heading={"Aura Clearmind..\nYour partner in wellness."}
-      subheading="Find and book your favorite yoga classes, guided meditation, and daily mindful wellness sessions from anywhere with our all-in-one mobile app, designed to bring balance, clarity, and peace to your life."
-      appleStoreHref="#"
-      googlePlayHref="#"
-      userName="Alicia Regis"
-      featuredWorkoutTitle="Wellness Workshops"
-      workoutDuration="10 Min"
-      workoutCalories="300 Kcal"
-    />
-  );
-};`;
-
 export const usageConcentricPortal = `import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
 
 export default function ConcentricPortalExample() {
@@ -107,6 +88,25 @@ export default function BrandPillarsExample() {
       summaryText='One complete, consistent brand" — 100%'
       ctaText="Boek a demo"
       ctaHref="#"
+    />
+  );
+};`;
+
+export const usageMobileApp = `import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
+
+export default function MobileAppExample() {
+  return (
+    <CTASection
+      variant="mobile-app"
+      badge="Mobile App Available"
+      heading={"Aura Clearmind..\nYour partner in wellness."}
+      subheading="Find and book your favorite yoga classes, guided meditation, and daily mindful wellness sessions from anywhere with our all-in-one mobile app, designed to bring balance, clarity, and peace to your life."
+      appleStoreHref="#"
+      googlePlayHref="#"
+      userName="Alicia Regis"
+      featuredWorkoutTitle="Wellness Workshops"
+      workoutDuration="10 Min"
+      workoutCalories="300 Kcal"
     />
   );
 };`;
@@ -172,16 +172,90 @@ export default function BrandPillarsExample() {
       usage: usageOfferShowcase,
       code: extractCode("src/components/custom/blocks/CtaSectionBlock.tsx"),
     },
+  ]}
+/>
+
+## Installation
+
+<Installation name="cta-section" />
+
+## Examples
+
+<ExampleShowcase
+  name="cta-section"
+  columns={1}
+  examples={[
+    {
+      title: 'Concentric Portal — variant="concentric-portal"',
+      subheading: "Pass `variant=\"concentric-portal\"` for the scroll-driven expanding circular lens with continuous gyroscopic orbital text rings.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "variant",
+          value: '"concentric-portal"',
+          effect: "Selects the concentric orbital portal experience with scroll-scrubbed expansion.",
+        },
+        {
+          lead: "Set",
+          prop: "autoRotate",
+          value: "true",
+          effect: "Enables automatic gyroscopic rotation for all concentric text orbits (set to false to keep static).",
+        },
+        {
+          lead: "Set",
+          prop: "phrase",
+          value: '"THE CONTENT ARCHITECTURE"',
+          effect: "Defines the repeating monospace text string orbiting around the portal.",
+        },
+      ],
+      props: {
+        variant: "concentric-portal",
+        heading: "The next 5 days are yours.",
+        subheading: "Access Portal",
+        phrase: "THE CONTENT ARCHITECTURE",
+        ctaText: "GET ACCESS",
+        autoRotate: true,
+      },
+      usage: usageConcentricPortal,
+    },
+    {
+      title: 'Brand Pillars — variant="brand-pillars"',
+      subheading: "Pass `variant=\"brand-pillars\"` for the interactive synchronized scorecard with dynamic progress metrics.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "variant",
+          value: '"brand-pillars"',
+          effect: "Selects the multi-pillar brand scorecard layout with live score recalculation.",
+        },
+        {
+          lead: "Set",
+          prop: "color",
+          value: '"#f95716"',
+          effect: "Sets the signature brand accent color for active cards, meters, and badges.",
+        },
+      ],
+      props: {
+        variant: "brand-pillars",
+        color: "#f95716",
+        statement:
+          "A strong brand isn't built from a single element. Branding, website, social, and data reinforce each other — together creating a brand that's recognizable, consistent, and effective.",
+        summaryText: 'One complete, consistent brand" — 100%',
+        ctaText: "Boek a demo",
+        ctaHref: "#",
+      },
+      usage: usageBrandPillars,
+    },
     {
       title: 'Mobile App Showcase — variant="mobile-app"',
       subheading:
-        "Pass `variant=\"mobile-app\"` for a scroll-driven app showcase CTA. Initially displays only the Google Pixel 8 Android frame centered in the viewport; scrolling smoothly glides the phone down and to the left while the editorial headline, description, and official app store badges reveal on the right.",
+        "Pass `variant=\"mobile-app\"` for a scroll-driven app showcase CTA. Initially displays only the iPhone 16 Pro frame centered in the viewport; scrolling smoothly glides the phone down and to the left while the editorial headline, description, and official app store badges reveal on the right.",
       propNotes: [
         {
           lead: "Pass",
           prop: "variant",
           value: '"mobile-app"',
-          effect: "Selects the mobile app showcase layout with an upright Android Google Pixel 8 mockup.",
+          effect: "Selects the mobile app showcase layout with an upright iPhone 16 Pro mockup.",
         },
         {
           lead: "Set",
@@ -223,77 +297,9 @@ export default function BrandPillarsExample() {
         workoutCalories: "300 Kcal",
       },
       usage: usageMobileApp,
-      code: extractCode("src/components/custom/blocks/CtaSectionBlock.tsx"),
-    },
-    {
-      title: 'Concentric Portal — variant="concentric-portal"',
-      subheading: "Pass `variant=\"concentric-portal\"` for the scroll-driven expanding circular lens with continuous gyroscopic orbital text rings.",
-      propNotes: [
-        {
-          lead: "Pass",
-          prop: "variant",
-          value: '"concentric-portal"',
-          effect: "Selects the concentric orbital portal experience with scroll-scrubbed expansion.",
-        },
-        {
-          lead: "Set",
-          prop: "autoRotate",
-          value: "true",
-          effect: "Enables automatic gyroscopic rotation for all concentric text orbits (set to false to keep static).",
-        },
-        {
-          lead: "Set",
-          prop: "phrase",
-          value: '"THE CONTENT ARCHITECTURE"',
-          effect: "Defines the repeating monospace text string orbiting around the portal.",
-        },
-      ],
-      props: {
-        variant: "concentric-portal",
-        heading: "The next 5 days are yours.",
-        subheading: "Access Portal",
-        phrase: "THE CONTENT ARCHITECTURE",
-        ctaText: "GET ACCESS",
-        autoRotate: true,
-      },
-      usage: usageConcentricPortal,
-      code: extractCode("src/components/custom/blocks/CtaSectionBlock.tsx"),
-    },
-    {
-      title: 'Brand Pillars — variant="brand-pillars"',
-      subheading: "Pass `variant=\"brand-pillars\"` for the interactive synchronized scorecard with dynamic progress metrics.",
-      propNotes: [
-        {
-          lead: "Pass",
-          prop: "variant",
-          value: '"brand-pillars"',
-          effect: "Selects the multi-pillar brand scorecard layout with live score recalculation.",
-        },
-        {
-          lead: "Set",
-          prop: "color",
-          value: '"#f95716"',
-          effect: "Sets the signature brand accent color for active cards, meters, and badges.",
-        },
-      ],
-      props: {
-        variant: "brand-pillars",
-        color: "#f95716",
-        statement:
-          "A strong brand isn't built from a single element. Branding, website, social, and data reinforce each other — together creating a brand that's recognizable, consistent, and effective.",
-        summaryText: 'One complete, consistent brand" — 100%',
-        ctaText: "Boek a demo",
-        ctaHref: "#",
-      },
-      usage: usageBrandPillars,
-      code: extractCode("src/components/custom/blocks/CtaSectionBlock.tsx"),
     },
   ]}
 />
-
-## Installation
-
-<Installation name="cta-section" />
 
 ## Features
 

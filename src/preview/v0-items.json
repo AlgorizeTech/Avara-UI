@@ -281,9 +281,9 @@
   },
   "cta-section": {
     "offer-showcase-variant-offer-showcase": "Cta Section — Offer Showcase — variant=\"offer-showcase\"",
-    "mobile-app-showcase-variant-mobile-app": "Cta Section — Mobile App Showcase — variant=\"mobile-app\"",
     "concentric-portal-variant-concentric-portal": "Cta Section — Concentric Portal — variant=\"concentric-portal\"",
-    "brand-pillars-variant-brand-pillars": "Cta Section — Brand Pillars — variant=\"brand-pillars\""
+    "brand-pillars-variant-brand-pillars": "Cta Section — Brand Pillars — variant=\"brand-pillars\"",
+    "mobile-app-showcase-variant-mobile-app": "Cta Section — Mobile App Showcase — variant=\"mobile-app\""
   },
   "cursor-animation": {
     "image-trail-cursor": "Cursor Animation — Image Trail Cursor",
@@ -626,6 +626,7 @@
     "application-menubar": "Menubar — Application menubar"
   },
   "mobile-mockup": {
+    "iphone-16-pro": "Mobile Mockup — iPhone 16 Pro",
     "iphone-17-pro-max": "Mobile Mockup — iPhone 17 Pro Max",
     "iphone-14-pro-max": "Mobile Mockup — iPhone 14 Pro Max",
     "iphone-12-pro-max": "Mobile Mockup — iPhone 12 Pro Max",
