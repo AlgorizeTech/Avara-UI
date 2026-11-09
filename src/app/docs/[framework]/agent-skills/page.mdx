@@ -18,7 +18,7 @@ free, needs no account, and works with or without the <DocLink to="mcp">MCP serv
 ## What the agent gets
 
 - **A workflow.** Plan the page, decide which pieces to use, install them with the CLI, read each one's Markdown for its real props, adapt the sample data, then run a final check.
-- **A question before it picks.** Where a section comes in several designs (today the hero, with more to come), the agent shows you every design with a live link and waits for your answer. Name one, or tell it to pick the best for you and it will choose and say why.
+- **A question before it picks.** Where a section comes in several designs (today the hero and the footer, with more to come), the agent shows you every design with a live link and waits for your answer. Name one, or tell it to pick the best for you and it will choose and say why.
 - **A searchable index.** <code>{SITE_URL}/agent/components.json</code> lists every component and website section with its summary, install command and Markdown URL, so an agent can pick by what a page does without a search server.
 - **Rules.** Theme tokens instead of hard-coded colours, one animation library per component, no `next/*` imports, and respect for `prefers-reduced-motion`.
 
@@ -83,7 +83,7 @@ name {REGISTRY_NAMESPACE} so the agent looks in the right place:
 
 ## Does the agent ask before it picks a design?
 
-Yes, when a section has several designs. It lists each one with what it suits and a link to see it live, and installs nothing until you answer. Reply with a design's name, or "pick the best one for me": then it chooses from each design's best-for and avoid-if notes against your brief, tells you which and why, and gives the link so you can swap. A section with one design is installed without a question. The rule lives in `variants.md`, one of the skill's files.
+Yes, when a section has several designs. It lists each one with what it suits and a link to see it live, and installs nothing until you answer. In a client with a click-to-pick question tool (Claude Code, for one) you answer by clicking: a group first when there are many designs, then the design, or "Pick the best one for me". Reply with a design's name, or "pick the best one for me": then it chooses from each design's best-for and avoid-if notes against your brief, tells you which and why, and gives the link so you can swap. A section with one design is installed without a question. The rule lives in `variants.md`, one of the skill's files.
 
 ## Do I need the skill if I use the MCP server?
 

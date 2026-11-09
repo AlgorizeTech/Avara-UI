@@ -3,7 +3,7 @@
   "name": "sticky-scroll-stack-motion",
   "title": "Sticky Scroll Stack (Motion)",
   "author": "AlgorizeTech",
-  "description": "A sticky section whose panels swap content as you scroll, supporting list, image, split and custom layouts. Use it for feature sections with varied content per step.",
+  "description": "Ask the user to pick one of 6 scroll stack variants: https://avaraui.com/view/scroll-stack. This is the Sticky scroll stack. Skip the question if the user already named one. A sticky section whose panels swap content as you scroll, supporting list, image, split and custom layouts. Use it for feature sections with varied content per step.",
   "dependencies": [
     "lucide-react",
     "motion"

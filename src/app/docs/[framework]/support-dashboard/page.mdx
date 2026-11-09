@@ -16,6 +16,8 @@ It now features a **dual-layout system**:
 
 Both layouts read the **same** `data` object — swapping `layout` re-presents the identical tickets, so you can route `/inbox` to the table and `/inbox/[id]` to the chat view without duplicating state. Every preview is live: open a ticket, reply to it, or create a new one.
 
+<AgentVariants slug="support-dashboard" />
+
 export const supportData = `const data: SupportData = {
   header: { title: "Sales Tickets", subtitle: "All Open" },
   filters: [

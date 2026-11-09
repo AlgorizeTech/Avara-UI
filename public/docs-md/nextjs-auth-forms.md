@@ -12,6 +12,127 @@ They are separate components on purpose. Sign-in and sign-up are different pages
 
 Both share the same `variant` and `color` surface, so a login page and a register page match without any extra work. The fields are the library's [Input](https://avaraui.com/docs/nextjs/input) and the buttons its [Button](https://avaraui.com/docs/nextjs/button), each handed the same `color`, so the whole form follows one accent and picks up any change you make to those components.
 
+## For AI agents
+
+**Ask before you pick.** This page has 13 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 13 options as live previews: https://avaraui.com/view/auth-forms
+
+**When to use it.** Sign-in and sign-up screens. Two forms (login and register), each in several designs, from a plain centred card to forms laid over a photo, liquid glass or drifting ribbons. The user usually knows which form they need; the choice is the design.
+
+**Gotchas:**
+
+- Login and register are two registry items (`login-form`, `register-form`); each look is a `variant` prop on its item. Install only the form the user asked for.
+- If the user already said which form they need (login or register), offer only that form's designs.
+- `glass`, `liquid-glass` and the register `scenic` look need a backdrop image (`bgImage`); `ribbon-drift` takes an `image`. Without one they render on a plain background.
+
+### The 13 variants
+
+1. **Login, centred card** (`login-default`): A centred card form with client-side validation, error states and a simulated loading state.
+   - Live: https://avaraui.com/view/auth-forms/login-default
+   - Best for: a standard sign-in page
+   - Avoid if: you want a marketing panel or a photo behind the form
+   - Traits: card, validation, remember me, uses the `login-form` item
+   - Install: `npx shadcn@latest add @avara-ui/login-form`
+   - Set these props: `{"variant":"default"}`
+   - Docs: https://avaraui.com/docs/nextjs/auth-forms#login
+2. **Login, split with a marketing panel** (`login-split`): Pairs the form with a full-height marketing panel on large screens.
+   - Live: https://avaraui.com/view/auth-forms/login-split
+   - Best for: SaaS sign-in pages with a message or brand panel beside the form
+   - Avoid if: you have no copy or brand panel to show
+   - Traits: two panels on large screens, brand name, uses the `login-form` item
+   - Install: `npx shadcn@latest add @avara-ui/login-form`
+   - Set these props: `{"variant":"split"}`
+   - Docs: https://avaraui.com/docs/nextjs/auth-forms#login-split
+3. **Login, minimal** (`login-minimal`): Strips the card away and leaves the fields on your own background.
+   - Live: https://avaraui.com/view/auth-forms/login-minimal
+   - Best for: a sign-in embedded in your own page or dialog
+   - Avoid if: you want the form contained in a card
+   - Traits: no card, sits on your background, uses the `login-form` item
+   - Install: `npx shadcn@latest add @avara-ui/login-form`
+   - Set these props: `{"variant":"minimal"}`
+   - Docs: https://avaraui.com/docs/nextjs/auth-forms#login-minimal
+4. **Login, glass** (`login-glass`): A translucent form meant to sit over a photo or gradient.
+   - Live: https://avaraui.com/view/auth-forms/login-glass
+   - Best for: pages with a strong photo or gradient behind the form
+   - Avoid if: you have no backdrop image or gradient
+   - Traits: translucent, needs a backdrop image, uses the `login-form` item
+   - Install: `npx shadcn@latest add @avara-ui/login-form`
+   - Set these props: `{"variant":"glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/auth-forms#login-glass
+5. **Login, liquid glass** (`login-liquid-glass`): The form wrapped in layered liquid glass with animated displacement waves and specular edge highlights.
+   - Live: https://avaraui.com/view/auth-forms/login-liquid-glass
+   - Best for: a showpiece sign-in over a photo, where the effect is part of the brand
+   - Avoid if: you have no backdrop image; you want a quiet, conventional sign-in
+   - Traits: liquid glass effect, animated SVG displacement, needs a backdrop image, uses the `login-form` item
+   - Install: `npx shadcn@latest add @avara-ui/login-form`
+   - Set these props: `{"variant":"liquid-glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/auth-forms#login-liquid-glass
+6. **Login, ribbon drift** (`login-ribbon-drift`): A split layout with endlessly drifting marquee ribbons, an ambient gradient glow and a floating promo card.
+   - Live: https://avaraui.com/view/auth-forms/login-ribbon-drift
+   - Best for: a product sign-in that doubles as a showcase
+   - Avoid if: you want a quiet sign-in page; you have no illustration or image for the promo card
+   - Traits: drifting ribbons, gradient glow, promo card, split layout, uses the `login-form` item
+   - Install: `npx shadcn@latest add @avara-ui/login-form`
+   - Set these props: `{"variant":"ribbon-drift"}`
+   - Docs: https://avaraui.com/docs/nextjs/auth-forms#login-ribbon-drift
+7. **Register, centred card** (`register-default`): A centred card sign-up form with client-side validation and a password minimum.
+   - Live: https://avaraui.com/view/auth-forms/register-default
+   - Best for: a standard sign-up page
+   - Avoid if: you want a marketing panel or a photo behind the form
+   - Traits: card, validation, terms checkbox, uses the `register-form` item
+   - Install: `npx shadcn@latest add @avara-ui/register-form`
+   - Set these props: `{"variant":"default"}`
+   - Docs: https://avaraui.com/docs/nextjs/auth-forms#register
+8. **Register, split with a marketing panel** (`register-split`): Pairs the form with a full-height marketing panel on large screens; the illustration mirrors the fields.
+   - Live: https://avaraui.com/view/auth-forms/register-split
+   - Best for: SaaS sign-up pages with a message beside the form
+   - Avoid if: you have no copy or brand panel to show
+   - Traits: two panels on large screens, brand name, uses the `register-form` item
+   - Install: `npx shadcn@latest add @avara-ui/register-form`
+   - Set these props: `{"variant":"split"}`
+   - Docs: https://avaraui.com/docs/nextjs/auth-forms#register-split
+9. **Register, minimal** (`register-minimal`): Strips the card away and leaves the fields on your own background.
+   - Live: https://avaraui.com/view/auth-forms/register-minimal
+   - Best for: a sign-up embedded in your own page or dialog
+   - Avoid if: you want the form contained in a card
+   - Traits: no card, sits on your background, uses the `register-form` item
+   - Install: `npx shadcn@latest add @avara-ui/register-form`
+   - Set these props: `{"variant":"minimal"}`
+   - Docs: https://avaraui.com/docs/nextjs/auth-forms#register-minimal
+10. **Register, scenic welcome** (`register-scenic`): A floating onboarding card with an interactive welcome step before registration, over a full-bleed scenic backdrop.
+   - Live: https://avaraui.com/view/auth-forms/register-scenic
+   - Best for: consumer apps that want a gentle welcome before the form
+   - Avoid if: you want the whole sign-up on one screen; you have no backdrop image
+   - Traits: welcome, options and email steps, frosted card in light mode, charcoal in dark, needs a backdrop image, uses the `register-form` item
+   - Install: `npx shadcn@latest add @avara-ui/register-form`
+   - Set these props: `{"variant":"scenic"}`
+   - Docs: https://avaraui.com/docs/nextjs/auth-forms#register-scenic
+11. **Register, glass** (`register-glass`): A translucent sign-up form meant to sit over a photo or gradient.
+   - Live: https://avaraui.com/view/auth-forms/register-glass
+   - Best for: pages with a strong photo or gradient behind the form
+   - Avoid if: you have no backdrop image or gradient
+   - Traits: translucent, needs a backdrop image, uses the `register-form` item
+   - Install: `npx shadcn@latest add @avara-ui/register-form`
+   - Set these props: `{"variant":"glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/auth-forms#register-glass
+12. **Register, liquid glass** (`register-liquid-glass`): The sign-up form wrapped in layered liquid glass with animated displacement waves and specular edge highlights.
+   - Live: https://avaraui.com/view/auth-forms/register-liquid-glass
+   - Best for: a showpiece sign-up over a photo, where the effect is part of the brand
+   - Avoid if: you have no backdrop image; you want a quiet, conventional sign-up
+   - Traits: liquid glass effect, animated SVG displacement, needs a backdrop image, uses the `register-form` item
+   - Install: `npx shadcn@latest add @avara-ui/register-form`
+   - Set these props: `{"variant":"liquid-glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/auth-forms#register-liquid-glass
+13. **Register, ribbon drift** (`register-ribbon-drift`): The sign-up form over an animated silk drift background with two marquee ribbons and a promo card.
+   - Live: https://avaraui.com/view/auth-forms/register-ribbon-drift
+   - Best for: a product sign-up that doubles as a showcase
+   - Avoid if: you want a quiet sign-up page; you have no illustration or image for the promo card
+   - Traits: drifting ribbons, promo card, custom headline and subtitle, uses the `register-form` item
+   - Install: `npx shadcn@latest add @avara-ui/register-form`
+   - Set these props: `{"variant":"ribbon-drift"}`
+   - Docs: https://avaraui.com/docs/nextjs/auth-forms#register-ribbon-drift
+
 ## Login form
 
 Email, password, remember-me and a forgot-password link. `signupHref` points at wherever the register form lives.

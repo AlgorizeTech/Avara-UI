@@ -10,6 +10,46 @@ A landing hero for a component library. In the middle, the copy — a small badg
 
 The copy and the walls talk to each other. The install line ends in the name of the card a camera has just landed on, and slides to the next name as the next camera lands — so the hero is always showing something the reader can paste into a terminal. The walls are [Image Walls](https://avaraui.com/docs/nextjs/image-wall), the headline a [Text Animation](https://avaraui.com/docs/nextjs/text-animation), the copy control a [Copy Button](https://avaraui.com/docs/nextjs/copy-button), the faces an [Avatar Stack](https://avaraui.com/docs/nextjs/avatar-stack), the stars [Half Stars](https://avaraui.com/docs/nextjs/half-stars) and the tools a [Tech Stack](https://avaraui.com/docs/nextjs/tech-stack), passed in as `stack`. The headline is set in your theme's `font-serif`, the rest in `font-sans`; every colour is a theme token.
 
+## For AI agents
+
+**Ask before you pick.** This page has 3 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 3 options as live previews: https://avaraui.com/view/component-wall
+
+**When to use it.** A landing hero for a library or product: a wall of screenshot cards that a camera glides across, with an install command that follows the card it lands on. Three layouts.
+
+**Gotchas:**
+
+- All three are layouts of the one `component-wall` item: install it once and set `layout` from the index.
+- Showing or hiding the wall on phones is a prop (`showMobileWall`), not a separate design.
+
+### The 3 variants
+
+1. **Centred copy between two walls** (`center`): The copy sits in the middle with a wall of cards on each side; two cameras take turns gliding to a card.
+   - Live: https://avaraui.com/view/component-wall/center
+   - Best for: a library or product launch hero that wants the copy centred and the product shown on both sides
+   - Avoid if: you want the copy on one side only
+   - Traits: two walls, auto-sliding cameras, install line follows the card, uses the `component-wall` item
+   - Install: `npx shadcn@latest add @avara-ui/component-wall`
+   - Set these props: `{"layout":"center"}`
+   - Docs: https://avaraui.com/docs/nextjs/component-wall#build-interactive-interfaces
+2. **Copy beside one wall** (`split`): The copy on the left and a single wall filling the right, fading in under the copy.
+   - Live: https://avaraui.com/view/component-wall/split
+   - Best for: a conventional two-column hero with the wall as the visual
+   - Avoid if: you want the copy centred
+   - Traits: one wall, one camera, wall becomes a band under the copy on small screens, uses the `component-wall` item
+   - Install: `npx shadcn@latest add @avara-ui/component-wall`
+   - Set these props: `{"layout":"split"}`
+   - Docs: https://avaraui.com/docs/nextjs/component-wall#copy-beside-the-wall
+3. **Fullscreen wall, no copy** (`fullscreen`): An edge-to-edge draggable masonry canvas of cards with no copy over it; clicking a card opens its details.
+   - Live: https://avaraui.com/view/component-wall/fullscreen
+   - Best for: a gallery or showcase page where the wall itself is the content
+   - Avoid if: you need a headline and call to action on the section
+   - Traits: edge-to-edge, drag in all directions with momentum, details modal on click, uses the `component-wall` item
+   - Install: `npx shadcn@latest add @avara-ui/component-wall`
+   - Set these props: `{"layout":"fullscreen"}`
+   - Docs: https://avaraui.com/docs/nextjs/component-wall#fullscreen-wall-no-copy
+
 ## Build interactive interfaces
 
 The copy in the middle, a wall on each side. Wait a few seconds: the left camera glides to another card, then the right one, and the install line changes to name whichever just landed. Hovering a wall holds its camera.

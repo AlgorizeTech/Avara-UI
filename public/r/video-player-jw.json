@@ -3,7 +3,7 @@
   "name": "video-player-jw",
   "title": "Video Player (JW Player)",
   "author": "AlgorizeTech",
-  "description": "A hero video player built on JW Player, with colour skin presets and a native fallback for when the licensed library is unavailable.",
+  "description": "Ask the user to pick one of 4 video player variants: https://avaraui.com/view/video-player. This is the JW Player. Skip the question if the user already named one. A hero video player built on JW Player, with colour skin presets and a native fallback for when the licensed library is unavailable.",
   "dependencies": [
     "lucide-react"
   ],

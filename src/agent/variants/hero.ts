@@ -11,6 +11,9 @@ export const hero: PageVariants = {
   slug: "hero",
   intro:
     "The first screen of a landing page. Sixteen designs, from photo-led travel and lookbook heroes to SaaS bentos and a healthcare portal; each is a different layout, not a restyle.",
+  // A hero in the registry that is not on the hero page and not one of the 16.
+  // A search for "hero" finds it, so it carries the ask-first notice too.
+  relatedItems: ["homepage-hero"],
   whenNot: [
     {
       use: "CTA Section",
@@ -34,6 +37,7 @@ export const hero: PageVariants = {
     // --- Eight separate registry items --------------------------------------
     {
       id: "honeycomb",
+      group: "Photo-led",
       label: "Honeycomb hero",
       summary:
         "Dark travel hero: a huge word on the left, a turning honeycomb of hexagonal photographs on the right.",
@@ -52,6 +56,7 @@ export const hero: PageVariants = {
     },
     {
       id: "carousel",
+      group: "Photo-led",
       label: "Hero carousel",
       summary:
         "Full-bleed photo hero with a queue of cards and a glass panel; the front card is the slide on screen.",
@@ -70,6 +75,7 @@ export const hero: PageVariants = {
     },
     {
       id: "fashion",
+      group: "Photo-led",
       label: "Fashion hero",
       summary:
         "Staggered columns of looks on flat colour, with a video badge, a tilt-on-hover effect and a story teaser.",
@@ -88,6 +94,7 @@ export const hero: PageVariants = {
     },
     {
       id: "support",
+      group: "Product and text",
       label: "Support hero",
       summary:
         "Soft grey product hero: animated headline, one call to action, then a frosted bento of stats and integrations.",
@@ -106,6 +113,7 @@ export const hero: PageVariants = {
     },
     {
       id: "collage",
+      group: "Photo-led",
       label: "Collage hero",
       summary:
         "Warm, busy hero: a turning badge, a serif headline, hashtag pills and a collage of seven photographs.",
@@ -124,6 +132,7 @@ export const hero: PageVariants = {
     },
     {
       id: "bento-cascade",
+      group: "Photo motion",
       label: "Bento cascade hero",
       summary:
         "Copy and calls to action on the left, an infinite vertical bento marquee of image cards on the right.",
@@ -142,6 +151,7 @@ export const hero: PageVariants = {
     },
     {
       id: "breathe",
+      group: "Photo motion",
       label: "Breathe hero",
       summary:
         "Serif headline over a curved arch of five cards; the centre card zooms and the others drift on scroll.",
@@ -160,6 +170,7 @@ export const hero: PageVariants = {
     },
     {
       id: "solar-snapshot",
+      group: "Product and text",
       label: "Solar snapshot hero",
       summary:
         "Light, playful hero: a sun orb that follows the pointer, curtain-style buttons and a click-to-capture Polaroid stack.",
@@ -180,6 +191,7 @@ export const hero: PageVariants = {
     // --- Eight looks of the shared `hero` item (HeroBlock) ------------------
     {
       id: "bounce",
+      group: "Product and text",
       label: "Word bounce hero",
       summary:
         "Centred headline whose key word is swapped with a spring bounce loop; text only, no images required.",
@@ -198,6 +210,7 @@ export const hero: PageVariants = {
     },
     {
       id: "typing",
+      group: "Product and text",
       label: "Typing hero",
       summary:
         "Centred headline where one word types and deletes character by character, like a typewriter.",
@@ -216,6 +229,7 @@ export const hero: PageVariants = {
     },
     {
       id: "slider",
+      group: "Photo motion",
       label: "Split marquee slider hero",
       summary:
         "Two columns: copy on one side, a continuous right-to-left thumbnail slider with floating visual cards on the other.",
@@ -234,6 +248,7 @@ export const hero: PageVariants = {
     },
     {
       id: "pet-shop",
+      group: "Industry looks",
       label: "Pet shop hero",
       summary:
         "Clean, minimal e-commerce hero with a circular image showcase and feature badges.",
@@ -252,6 +267,7 @@ export const hero: PageVariants = {
     },
     {
       id: "doctor",
+      group: "Industry looks",
       label: "Doctor portal hero",
       summary:
         "Clean medical hero with a specialist doctor showcase and an appointment-booking call to action.",
@@ -270,6 +286,7 @@ export const hero: PageVariants = {
     },
     {
       id: "facility",
+      group: "Industry looks",
       label: "Facility CAD grid hero",
       summary:
         "Architectural blueprint grid with a shape that morphs as the pointer moves over the left and right grid zones.",
@@ -288,6 +305,7 @@ export const hero: PageVariants = {
     },
     {
       id: "vortex",
+      group: "Industry looks",
       label: "Cyclone radar hero",
       summary:
         "High-tech radar hero: an animated rotating cyclone vortex with a HUD telemetry overlay and parcel metrics.",
@@ -306,6 +324,7 @@ export const hero: PageVariants = {
     },
     {
       id: "orbit",
+      group: "Photo motion",
       label: "Orbit ring hero",
       summary:
         "Copy and actions on the left, a revolving 3D circular photo orbit ring on the right that pauses on hover.",

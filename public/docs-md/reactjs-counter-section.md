@@ -8,6 +8,57 @@ url: https://avaraui.com/docs/nextjs/counter-section
 
 A collection of 4 animated high-impact Counter and Stats Sections designed for modern landing pages, SaaS platforms, agency portfolios, and enterprise portals. From high-tech telemetry HUDs to clean agency minimalism with monospace slash labels, architectural halftone strips, and interactive cursor spotlights. All variants are built with viewport-triggered count-up animations, zero shadows, clean flat borders, and full adaptive styling for both Light and Dark modes.
 
+## For AI agents
+
+**Ask before you pick.** This page has 4 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 4 options as live previews: https://avaraui.com/view/counter-section
+
+**When to use it.** A stats row for a landing page: big animated numbers with labels. Four designs, from a developer terminal HUD to an architectural halftone strip.
+
+**When to use something else:**
+
+- [Counter](https://avaraui.com/docs/reactjs/counter): for a single animated number or stepper rather than a whole stats section.
+
+**Gotchas:**
+
+- All four are looks of the one `counter-section` item: install it once and set `variant` from the index. Pass your own numbers through the `stats` prop.
+
+### The 4 variants
+
+1. **Cyber HUD** (`cyber-hud`): A developer and fintech terminal HUD with corner crosshairs, scanlines, status LEDs and decrypting characters on reveal.
+   - Live: https://avaraui.com/view/counter-section/cyber-hud
+   - Best for: developer tools, fintech and security products
+   - Avoid if: your brand is warm, soft or editorial
+   - Traits: terminal look, scanlines, status LEDs, character scramble on reveal
+   - Install: `npx shadcn@latest add @avara-ui/counter-section`
+   - Set these props: `{"variant":"cyber-hud"}`
+   - Docs: https://avaraui.com/docs/nextjs/counter-section#1-cyber-hud-terminal-telemetry
+2. **Spotlight gradient** (`spotlight-gradient`): Floating cards lit by a radial spotlight that follows the cursor, with gradient accents, icon badges and trend metrics.
+   - Live: https://avaraui.com/view/counter-section/spotlight-gradient
+   - Best for: SaaS and product sites that want a polished, interactive stats row
+   - Avoid if: your visitors are mostly on touch devices (the spotlight follows a cursor)
+   - Traits: cursor-tracking spotlight, gradient accents, category icon badges, trend metrics
+   - Install: `npx shadcn@latest add @avara-ui/counter-section`
+   - Set these props: `{"variant":"spotlight-gradient"}`
+   - Docs: https://avaraui.com/docs/nextjs/counter-section#4-spotlight-gradient-interactive-pointer
+3. **Minimal slash** (`minimal-slash`): Clean typographic layout with floating Swiss cards, giant watermark numerals and monospace uppercase labels.
+   - Live: https://avaraui.com/view/counter-section/minimal-slash
+   - Best for: agencies and studios that want a confident, typographic stats row
+   - Avoid if: you want a techy or glowing look
+   - Traits: Swiss cards, watermark numerals, monospace labels, expanding accents
+   - Install: `npx shadcn@latest add @avara-ui/counter-section`
+   - Set these props: `{"variant":"minimal-slash"}`
+   - Docs: https://avaraui.com/docs/nextjs/counter-section#2-minimal-slash-agency-studio
+4. **Halftone cinema** (`halftone-cinema`): An atmospheric strip with a dot-matrix halftone texture, hairline column dividers and multi-line descriptions.
+   - Live: https://avaraui.com/view/counter-section/halftone-cinema
+   - Best for: architecture, design and premium brands that want an atmospheric strip
+   - Avoid if: you want bright, playful cards
+   - Traits: halftone dot-matrix texture, hairline dividers, multi-line descriptions
+   - Install: `npx shadcn@latest add @avara-ui/counter-section`
+   - Set these props: `{"variant":"halftone-cinema"}`
+   - Docs: https://avaraui.com/docs/nextjs/counter-section#3-halftone-cinema-architectural
+
 ## 1. Cyber HUD (Terminal & Telemetry)
 
 Developer and fintech terminal HUD with bracket corner crosshairs [+], subtle scanlines, live status LEDs, and character scramble decryption on reveal.

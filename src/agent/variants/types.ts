@@ -15,6 +15,14 @@ export type Variant = {
   id: string;
   /** "Honeycomb hero" */
   label: string;
+  /**
+   * Which group the variant sits in, so a click-to-pick question can offer
+   * groups first and then the few variants in one group (those tools hold 2 to
+   * 4 options per question). Required when the page has 4 or more variants:
+   * at most 4 groups, at most 4 variants in each. A short label such as
+   * "Photo-led".
+   */
+  group?: string;
   /** One line, at most 120 characters. */
   summary: string;
   /** At least one: "travel and outdoor brands with strong photography". */
@@ -49,6 +57,21 @@ export type Variant = {
    * For one-item pages: `{ variant: "simple-centered" }`.
    */
   props?: Record<string, unknown>;
+  /**
+   * The props an agent must set on the installed component to get this look
+   * (`{ variant: "glass-dock" }`). Goes into the agent index as `props`.
+   * Different from `props`, which only drives the preview and may hold
+   * example tuning or a demo switch that is not a real prop of the item.
+   * Omit when installing the item is the look.
+   */
+  setProps?: Record<string, unknown>;
+  /**
+   * True when `item` is a general-purpose component (a text input, a folder)
+   * that is also used for things unrelated to this page. Its registry
+   * description then does NOT get the ask-first notice, so an agent that only
+   * wants a plain text field is not asked about file uploads.
+   */
+  generalItem?: boolean;
 };
 
 export type PageVariants = {
@@ -58,6 +81,13 @@ export type PageVariants = {
   intro: string;
   /** Sibling components that fit better in some cases. `slug` is a docs page. */
   whenNot?: { use: string; slug: string; reason: string }[];
+  /**
+   * Registry items that are the same kind of section but not one of the
+   * variants (and so are not listed to the user). A search can still land on
+   * them, so their registry description gets the same ask-first notice.
+   * Namespace: `registry.json` item names.
+   */
+  relatedItems?: string[];
   /** Real mistakes, from the source. */
   gotchas?: string[];
   /** Two or more. */

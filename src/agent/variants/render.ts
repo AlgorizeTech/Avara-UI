@@ -26,6 +26,8 @@ export const pageNoun = (slug: string) => slug.replace(/-/g, " ");
 export type AgentVariantRow = {
   id: string;
   label: string;
+  /** For a click-to-pick question: offer the groups first, then one group's variants. */
+  group?: string;
   summary: string;
   bestFor: string[];
   avoidIf: string[];
@@ -33,6 +35,11 @@ export type AgentVariantRow = {
   /** The registry item to install. Several looks of one component share it. */
   item: string;
   install: string;
+  /**
+   * Props to set on the installed component to get this look, e.g.
+   * `{ "variant": "glass-dock" }`. Absent when the item itself is the look.
+   */
+  props?: Record<string, unknown>;
   /** The variant's own live page. */
   viewUrl: string;
   /** The docs section that shows it. */
@@ -42,12 +49,14 @@ export type AgentVariantRow = {
 export const variantRow = (page: PageVariants, variant: Variant): AgentVariantRow => ({
   id: variant.id,
   label: variant.label,
+  ...(variant.group ? { group: variant.group } : {}),
   summary: variant.summary,
   bestFor: variant.bestFor,
   avoidIf: variant.avoidIf,
   traits: variant.traits,
   item: variant.item,
   install: installCommand(variant.item),
+  ...(variant.setProps ? { props: variant.setProps } : {}),
   viewUrl: viewUrl(page.slug, variant.id),
   docsUrl: `${SITE_URL}${docsHrefFor(page, variant)}`,
 });
@@ -124,6 +133,7 @@ export function agentBlockMarkdown(
       `   - Avoid if: ${row.avoidIf.join("; ")}`,
       `   - Traits: ${row.traits.join(", ")}`,
       `   - Install: \`${row.install}\``,
+      ...(row.props ? [`   - Set these props: \`${JSON.stringify(row.props)}\``] : []),
       `   - Docs: ${row.docsUrl}`,
     );
   });
@@ -142,7 +152,10 @@ export function agentBlockMarkdown(
 export function itemNotice(itemName: string): string | undefined {
   const base = itemName.replace(/-motion$/, "");
   for (const page of pageVariants) {
-    const mine = page.variants.filter((variant) => variant.item === base);
+    if (page.relatedItems?.includes(base)) {
+      return `Ask the user to pick one of ${page.variants.length} ${pageNoun(page.slug)} variants: ${viewUrl(page.slug)}. This item is not one of them but is also a ${pageNoun(page.slug)}, so ask before installing it. Skip the question if the user already named it.`;
+    }
+    const mine = page.variants.filter((variant) => variant.item === base && !variant.generalItem);
     if (!mine.length) continue;
 
     const lead = `Ask the user to pick one of ${page.variants.length} ${pageNoun(page.slug)} variants: ${viewUrl(page.slug)}.`;

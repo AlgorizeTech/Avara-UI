@@ -10,6 +10,49 @@ A pre-launch sign-up in three layouts. **Card** is a compact card with the field
 
 `Waitlist` is built from library pieces: the countdown is the [Counter](https://avaraui.com/docs/nextjs/counter)'s slide variant, the field is [Input](https://avaraui.com/docs/nextjs/input), the action is [Button](https://avaraui.com/docs/nextjs/button), the faces are an [Avatar Stack](https://avaraui.com/docs/nextjs/avatar-stack), the spots bar is [Progress](https://avaraui.com/docs/nextjs/progress) and the invite link is a [Copy Button](https://avaraui.com/docs/nextjs/copy-button). Every piece of copy is a named part — `Mark`, `Countdown`, `Heading`, `Intro`, `Form`, `Proof`, `Spots` — so the words are yours.
 
+## For AI agents
+
+**Ask before you pick.** This page has 3 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 3 options as live previews: https://avaraui.com/view/waitlist
+
+**When to use it.** A pre-launch sign-up section in three layouts: a brand mark with a live countdown, a compact card, or a pill with a bar of early spots claimed.
+
+**When to use something else:**
+
+- [Newsletter](https://avaraui.com/docs/nextjs/newsletter): for an ongoing subscription rather than a place in line before launch.
+
+**Gotchas:**
+
+- All three are layouts of the one `waitlist` item: install it once and set `variant` from the index.
+
+### The 3 variants
+
+1. **Launch** (`launch`): Your mark, a live countdown to the opening date, and the form beside its button on a wide panel.
+   - Live: https://avaraui.com/view/waitlist/launch
+   - Best for: a product with a fixed launch date
+   - Avoid if: you have no launch date to count down to
+   - Traits: countdown to a date, place in line after joining, invite-link copy button, wide panel
+   - Install: `npx shadcn@latest add @avara-ui/waitlist`
+   - Set these props: `{"variant":"launch"}`
+   - Docs: https://avaraui.com/docs/nextjs/waitlist#launch
+2. **Card** (`card`): A compact card with the field over the button, for a sidebar, a footer or a modal.
+   - Live: https://avaraui.com/view/waitlist/card
+   - Best for: small spaces: a sidebar, a footer or a modal
+   - Avoid if: you want the sign-up to be a full section on the page
+   - Traits: compact, full-width button, validates an empty field
+   - Install: `npx shadcn@latest add @avara-ui/waitlist`
+   - Set these props: `{"variant":"card"}`
+   - Docs: https://avaraui.com/docs/nextjs/waitlist#card
+3. **Queue** (`queue`): A pill form on a soft ground, faces already in line under it, and a bar of early spots claimed that fills in.
+   - Live: https://avaraui.com/view/waitlist/queue
+   - Best for: limited early access, where scarcity and a visible crowd help
+   - Avoid if: there is no limit on spots
+   - Traits: spots claimed bar, faces in line, light and dark mode
+   - Install: `npx shadcn@latest add @avara-ui/waitlist`
+   - Set these props: `{"variant":"queue"}`
+   - Docs: https://avaraui.com/docs/nextjs/waitlist#queue
+
 ## Launch
 
 Your mark, a countdown to the opening date, and the form beside its button on a wide panel. Type an address and submit — the form becomes your place in line, counting up, with an invite link to copy.

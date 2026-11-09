@@ -14,7 +14,7 @@ free, needs no account, and works with or without the [MCP server](https://avara
 ## What the agent gets
 
 - **A workflow.** Plan the page, decide which pieces to use, install them with the CLI, read each one's Markdown for its real props, adapt the sample data, then run a final check.
-- **A question before it picks.** Where a section comes in several designs (today the hero, with more to come), the agent shows you every design with a live link and waits for your answer. Name one, or tell it to pick the best for you and it will choose and say why.
+- **A question before it picks.** Where a section comes in several designs (today the hero and the footer, with more to come), the agent shows you every design with a live link and waits for your answer. Name one, or tell it to pick the best for you and it will choose and say why.
 - **A searchable index.** `https://avaraui.com/agent/components.json` lists every component and website section with its summary, install command and Markdown URL, so an agent can pick by what a page does without a search server.
 - **Rules.** Theme tokens instead of hard-coded colours, one animation library per component, no `next/*` imports, and respect for `prefers-reduced-motion`.
 
@@ -59,7 +59,7 @@ This project uses Avara UI (`@avara-ui`), a free shadcn registry of animated Rea
 - Register once: `npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json`. Install with `npx shadcn@latest add @avara-ui/<name> --yes`.
 - Find components in https://avaraui.com/agent/components.json (or https://avaraui.com/llms.txt). Read an item's Markdown for its props before writing code against it.
 - Follow the workflow in https://avaraui.com/skills/avara-ui/SKILL.md: plan, decide, install, read, adapt, check.
-- Ask before you pick. An index entry with `choose: true` has several designs of one section (for example the hero). If the user has not named one, ask which they want, with each option's live link, before installing. If they say to choose, pick from `bestFor` / `avoidIf` and say why. Never pick a variant on your own. See https://avaraui.com/skills/avara-ui/variants.md.
+- Ask before you pick. An index entry with `choose: true` has several designs of one section (for example the hero). If the user has not named one, ask which they want, with each option's live link, before installing. If they say to choose, pick from `bestFor` / `avoidIf` and say why. Use your client's click-to-pick question tool if it has one, so the user answers by clicking, not typing. Never pick a variant on your own. See https://avaraui.com/skills/avara-ui/variants.md.
 - Style with theme tokens only. Install the GSAP or the Motion build of a component, never both.
 ```
 
@@ -75,7 +75,7 @@ This project uses Avara UI (`@avara-ui`), a free shadcn registry of animated Rea
 - Register once: `npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json`. Install with `npx shadcn@latest add @avara-ui/<name> --yes`.
 - Find components in https://avaraui.com/agent/components.json (or https://avaraui.com/llms.txt). Read an item's Markdown for its props before writing code against it.
 - Follow the workflow in https://avaraui.com/skills/avara-ui/SKILL.md: plan, decide, install, read, adapt, check.
-- Ask before you pick. An index entry with `choose: true` has several designs of one section (for example the hero). If the user has not named one, ask which they want, with each option's live link, before installing. If they say to choose, pick from `bestFor` / `avoidIf` and say why. Never pick a variant on your own. See https://avaraui.com/skills/avara-ui/variants.md.
+- Ask before you pick. An index entry with `choose: true` has several designs of one section (for example the hero). If the user has not named one, ask which they want, with each option's live link, before installing. If they say to choose, pick from `bestFor` / `avoidIf` and say why. Use your client's click-to-pick question tool if it has one, so the user answers by clicking, not typing. Never pick a variant on your own. See https://avaraui.com/skills/avara-ui/variants.md.
 - Style with theme tokens only. Install the GSAP or the Motion build of a component, never both.
 ```
 
@@ -91,7 +91,7 @@ This project uses Avara UI (`@avara-ui`), a free shadcn registry of animated Rea
 - Register once: `npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json`. Install with `npx shadcn@latest add @avara-ui/<name> --yes`.
 - Find components in https://avaraui.com/agent/components.json (or https://avaraui.com/llms.txt). Read an item's Markdown for its props before writing code against it.
 - Follow the workflow in https://avaraui.com/skills/avara-ui/SKILL.md: plan, decide, install, read, adapt, check.
-- Ask before you pick. An index entry with `choose: true` has several designs of one section (for example the hero). If the user has not named one, ask which they want, with each option's live link, before installing. If they say to choose, pick from `bestFor` / `avoidIf` and say why. Never pick a variant on your own. See https://avaraui.com/skills/avara-ui/variants.md.
+- Ask before you pick. An index entry with `choose: true` has several designs of one section (for example the hero). If the user has not named one, ask which they want, with each option's live link, before installing. If they say to choose, pick from `bestFor` / `avoidIf` and say why. Use your client's click-to-pick question tool if it has one, so the user answers by clicking, not typing. Never pick a variant on your own. See https://avaraui.com/skills/avara-ui/variants.md.
 - Style with theme tokens only. Install the GSAP or the Motion build of a component, never both.
 ```
 
@@ -124,7 +124,7 @@ npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 
 ## Does the agent ask before it picks a design?
 
-Yes, when a section has several designs. It lists each one with what it suits and a link to see it live, and installs nothing until you answer. Reply with a design's name, or "pick the best one for me": then it chooses from each design's best-for and avoid-if notes against your brief, tells you which and why, and gives the link so you can swap. A section with one design is installed without a question. The rule lives in `variants.md`, one of the skill's files.
+Yes, when a section has several designs. It lists each one with what it suits and a link to see it live, and installs nothing until you answer. In a client with a click-to-pick question tool (Claude Code, for one) you answer by clicking: a group first when there are many designs, then the design, or "Pick the best one for me". Reply with a design's name, or "pick the best one for me": then it chooses from each design's best-for and avoid-if notes against your brief, tells you which and why, and gives the link so you can swap. A section with one design is installed without a question. The rule lives in `variants.md`, one of the skill's files.
 
 ## Do I need the skill if I use the MCP server?
 

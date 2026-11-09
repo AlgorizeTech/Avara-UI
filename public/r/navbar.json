@@ -3,7 +3,7 @@
   "name": "navbar",
   "title": "Navbar",
   "author": "AlgorizeTech",
-  "description": "A responsive marketing navbar with logo, links, mobile menu and GSAP entrance animation. Use it as the top bar of a landing page.",
+  "description": "Ask the user to pick one of 7 navbar variants: https://avaraui.com/view/navbar. This item holds 7 of them as looks of one component (default, centered, minimal, glass, floating, spotlight, ecommerce-mega-nav). Skip the question if the user already named one. A responsive marketing navbar with logo, links, mobile menu and GSAP entrance animation. Use it as the top bar of a landing page.",
   "dependencies": [
     "lucide-react"
   ],

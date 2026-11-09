@@ -81,6 +81,24 @@ for (const page of pageVariants) {
     if (!w.use?.trim() || !w.reason?.trim()) fail(`${where}: whenNot[${n}] needs "use" and "reason"`);
     if (!hasDocsPage(w.slug)) fail(`${where}: whenNot[${n}].slug "${w.slug}" is not a docs page`);
   });
+  // A click-to-pick question holds 2 to 4 options, so a page with 4 or more
+  // variants is offered as groups first, then one group's variants.
+  if (page.variants.length >= 4) {
+    const byGroup = new Map<string, number>();
+    page.variants.forEach((v) => {
+      if (!v.group?.trim()) fail(`${where}: variant "${v.id}" needs a "group" (the page has ${page.variants.length} variants; a picker holds at most 4 options per question)`);
+      else byGroup.set(v.group, (byGroup.get(v.group) ?? 0) + 1);
+    });
+    if (byGroup.size > 4) fail(`${where}: ${byGroup.size} groups; a picker holds at most 4 (${[...byGroup.keys()].join(", ")})`);
+    for (const [name, count] of byGroup) {
+      if (count > 4) fail(`${where}: group "${name}" has ${count} variants; a picker holds at most 4`);
+      if (count < 2) fail(`${where}: group "${name}" has only ${count} variant; merge it into another group`);
+    }
+  }
+  (page.relatedItems ?? []).forEach((name, n) => {
+    if (!registryItems.has(name)) fail(`${where}: relatedItems[${n}] "${name}" is not in registry.json`);
+    if (page.variants.some((v) => v.item === name)) fail(`${where}: relatedItems[${n}] "${name}" is already a variant item`);
+  });
   (page.gotchas ?? []).forEach((g, n) => {
     if (!g.trim()) fail(`${where}: gotchas[${n}] is empty`);
   });
@@ -199,7 +217,7 @@ for (const page of pageVariants) {
 for (const item of registryList) {
   const notice = itemNotice(item.name);
   if (notice && !item.description?.startsWith(notice)) {
-    fail(`registry.json: "${item.name}" is a variant but its description does not open with the ask-first notice. Run: npm run generate:registry`);
+    fail(`registry.json: "${item.name}" needs the ask-first notice but its description does not open with the ask-first notice. Run: npm run generate:registry`);
   }
 }
 

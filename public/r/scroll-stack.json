@@ -3,7 +3,7 @@
   "name": "scroll-stack",
   "title": "Scroll Stack",
   "author": "AlgorizeTech",
-  "description": "Cards that stack and scale as the page scrolls, revealing each in turn. Use it for step-by-step feature walkthroughs.",
+  "description": "Ask the user to pick one of 6 scroll stack variants: https://avaraui.com/view/scroll-stack. This is the Scroll stack. Skip the question if the user already named one. Cards that stack and scale as the page scrolls, revealing each in turn. Use it for step-by-step feature walkthroughs.",
   "dependencies": [],
   "registryDependencies": [
     "utils"
