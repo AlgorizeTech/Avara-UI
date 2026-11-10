@@ -1,6 +1,8 @@
 import { CodeBlock } from "@/components/ui/code-block";
+import { Cli } from "@/components/site/cli";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/site/tabs";
 import {
+  SKILL_ITEM,
   type SkillClient,
   skillFileLinks,
   skillInstallCommand,
@@ -30,6 +32,7 @@ export function SkillInstall({ client, file }: { client: SkillClient; file?: str
       <Tabs defaultValue="agent">
         <TabsList aria-label="Install method">
           <TabsTrigger value="agent">Ask your agent</TabsTrigger>
+          {client !== "agents" && <TabsTrigger value="cli">shadcn CLI</TabsTrigger>}
           <TabsTrigger value="manual">Manual</TabsTrigger>
         </TabsList>
 
@@ -48,6 +51,20 @@ export function SkillInstall({ client, file }: { client: SkillClient; file?: str
             <code className="language-text">{skillInstallPrompt(client, file)}</code>
           </CodeBlock>
         </TabsContent>
+
+        {client !== "agents" && (
+          <TabsContent value="cli">
+            <p className={PARAGRAPH}>
+              Run this from your project root. It is the same shadcn command you use for components, so it works with
+              npm, pnpm, yarn and bun, on macOS, Linux and Windows. It writes{" "}
+              <code className={INLINE_CODE}>{targetOf(client)}</code>.
+            </p>
+            <Cli command={`add ${SKILL_ITEM[client]}.json`} />
+            <p className="mt-3 mb-2 text-[13px] leading-6 text-foreground/50">
+              To update later, run it again with <code className={INLINE_CODE}>--overwrite</code> at the end.
+            </p>
+          </TabsContent>
+        )}
 
         <TabsContent value="manual">
           {client === "agents" ? (
@@ -69,6 +86,12 @@ export function SkillInstall({ client, file }: { client: SkillClient; file?: str
   );
 }
 
+/** What an install writes: the one file, or the folder. */
+function targetOf(client: "claude" | "cursor") {
+  const { dir, files } = skillTarget(client);
+  return files.length === 1 ? `${dir}/${files[0]}` : `${dir}/`;
+}
+
 function ManualCommand({
   client,
   command,
@@ -76,8 +99,8 @@ function ManualCommand({
   client: "claude" | "cursor";
   command: { lang: string; code: string };
 }) {
-  const { dir, files } = skillTarget(client);
-  const target = files.length === 1 ? `${dir}/${files[0]}` : `${dir}/`;
+  const { files } = skillTarget(client);
+  const target = targetOf(client);
 
   return (
     <>

@@ -31,9 +31,11 @@ use yours.
 
 ## Install the skill
 
-Choose your agent. Each tab has two ways to install: **Ask your agent** is the
-easiest, because you paste one prompt and the agent does the rest on any system.
-**Manual** is one command (or one block to paste) if you prefer to do it yourself.
+Choose your agent. Each tab has the ways to install it. **Ask your agent** is the
+easiest: you paste one prompt and the agent does the rest on any system.
+**shadcn CLI** (Claude Code and Cursor) is the same `shadcn add` command you use for
+components. **Manual** is one command, or one block to paste, if you prefer to do
+it yourself.
 
 **Client: claude**
 
@@ -55,6 +57,16 @@ Install the Avara UI agent skill in this project.
 3. List the folder and tell me which files you saved.
 ```
 
+**shadcn CLI**
+
+Run this from your project root. It is the same shadcn command you use for components, so it works with npm, pnpm, yarn and bun, on macOS, Linux and Windows (use `pnpm dlx`, `yarn dlx` or `bunx` in place of `npx`). It writes `.claude/skills/avara-ui/`.
+
+```bash
+npx shadcn@latest add @avara-ui/agent-skill
+```
+
+To update later, run it again with `--overwrite` at the end.
+
 **Manual**
 
 Run this one line from your project root. It works the same in macOS and Linux terminals, Windows PowerShell, Command Prompt and Git Bash, and needs Node.js 18 or newer. It writes `.claude/skills/avara-ui/` (6 files).
@@ -74,7 +86,7 @@ Command blocked or no Node.js? Save each file yourself, creating the folders if 
 
  **Check that it worked.** Look in `.claude/skills/` for the skill folder. Then start a new Claude Code session in the project, because skills are read when a session starts. Ask "Using @avara-ui, add a pricing section": the agent should plan the page and check the component index before writing any markup.
 
- **Update or remove.** To update, install again: the files are overwritten with the current version. To remove, delete the skill folder.
+ **Update or remove.** To update, install again (add `--overwrite` to the shadcn command): the files are replaced with the current version. To remove, delete the skill folder.
 
 **Client: cursor**
 
@@ -91,6 +103,16 @@ Install the Avara UI agent skill in this project.
 3. List the folder and tell me which files you saved.
 ```
 
+**shadcn CLI**
+
+Run this from your project root. It is the same shadcn command you use for components, so it works with npm, pnpm, yarn and bun, on macOS, Linux and Windows (use `pnpm dlx`, `yarn dlx` or `bunx` in place of `npx`). It writes `.cursor/rules/avara-ui.mdc`.
+
+```bash
+npx shadcn@latest add @avara-ui/agent-skill-cursor
+```
+
+To update later, run it again with `--overwrite` at the end.
+
 **Manual**
 
 Run this one line from your project root. It works the same in macOS and Linux terminals, Windows PowerShell, Command Prompt and Git Bash, and needs Node.js 18 or newer. It writes `.cursor/rules/avara-ui.mdc`.
@@ -105,7 +127,7 @@ Command blocked or no Node.js? Save the file yourself, creating the folders if t
 
  **Check that it worked.** Look in `.cursor/rules/` for the `.mdc` file, or find it under Rules in Cursor Settings. Then start a new chat in the project, because rules are read when a chat starts. Ask "Using @avara-ui, add a pricing section": the agent should plan the page and check the component index before writing any markup.
 
- **Update or remove.** To update, install again: the file is overwritten with the current version. To remove, delete the file.
+ **Update or remove.** To update, install again (add `--overwrite` to the shadcn command): the file is replaced with the current version. To remove, delete the file.
 
 **Client: vscode**
 
@@ -236,7 +258,8 @@ exist.
 
 ### Troubleshooting
 
-- **`node` is not recognised, or `fetch is not defined`.** The manual command needs Node.js 18 or newer. Update it, or use "Ask your agent" instead, which needs no Node.js.
+- **`node` is not recognised, or `fetch is not defined`.** The manual command needs Node.js 18 or newer. Update it, or use the shadcn CLI or "Ask your agent" tab instead.
+- **"Skipped 1 file" from the shadcn command.** The files are already there and identical, or you are updating: add `--overwrite` to replace them.
 - **A 404 or a blocked download.** A proxy or firewall may be stopping the request. Use the file links under the manual command and save each file yourself.
 - **The agent ignores it.** Check that the files sit in the project root, not a subfolder, and start a new session.
 

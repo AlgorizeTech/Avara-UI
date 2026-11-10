@@ -34,9 +34,12 @@ const registry = JSON.parse(fs.readFileSync(REGISTRY, "utf-8")) as {
   items: RegistryItem[];
 };
 
+// Only source files compile: the agent skill items ship Markdown.
 const files = [
   ...new Set(registry.items.flatMap((item) => (item.files ?? []).map((f) => f.path))),
-].sort();
+]
+  .filter((f) => /\.[cm]?[jt]sx?$/.test(f))
+  .sort();
 
 const missing = files.filter((f) => !fs.existsSync(path.join(ROOT, f)));
 if (missing.length) {

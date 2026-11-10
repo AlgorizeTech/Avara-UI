@@ -249,6 +249,13 @@ export type SkillClient = "claude" | "cursor" | "agents";
 const topicFiles = () => Object.keys(SKILL_FILES).filter((file) => file.endsWith(".md"));
 const fileUrl = (file: string) => `${BASE}/${file}`;
 
+/**
+ * The registry items that install the skill with `shadcn add`, one per agent
+ * (they write to different folders, so one item would drop both). Published by
+ * src/scripts/generate-skill-items.ts.
+ */
+export const SKILL_ITEM = { claude: "agent-skill", cursor: "agent-skill-cursor" } as const;
+
 /** The folder and files a client's install writes. `agents` has none: it is a block to paste. */
 export function skillTarget(client: "claude" | "cursor"): { dir: string; files: string[] } {
   return client === "claude"

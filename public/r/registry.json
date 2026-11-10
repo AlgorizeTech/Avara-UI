@@ -51,6 +51,71 @@
       "docs": "Named exports: DataTable plus DataTableHeading/Content/Header/Body/Row/Head/Cell/Footer/Empty, DataTableSearch, DataTablePageSize, DataTableSelect, DataTableSelectAll, DataTableBatchBar, DataTableInfo, DataTablePagination, DataTableExpandToggle, DataTableExpandedRow, DataTableTabs, DataTableFilter, DataTableReset, DataTableBatchAction, TableAction, TableRowAction, TableBadge, TablePerson, useDataTable, resolveAccessor. `DataTableTabs` and `DataTableFilter` filter one field each by exact match (`by` is a dot path or accessor); `useDataTable` exposes `filters`, `isFiltered` and `resetAll`. `variant=\"soft\"` gives the admin-dashboard look. `DataTableBody` takes a render function receiving the current page of rows. `getRowId` defaults to id → _id → uuid; `sortBy` accepts a dot path or an accessor function (add `sortId` for functions). Builds on `table` and depends on `select` for the page-size control."
     },
     {
+      "name": "agent-skill",
+      "type": "registry:item",
+      "title": "Agent Skill (Claude Code)",
+      "author": "AlgorizeTech",
+      "description": "Teaches Claude Code to build with Avara UI: plan, find, install, read, adapt, check, and ask which design before picking one. Installs the skill into .claude/skills/avara-ui/. Not a component.",
+      "categories": [
+        "utilities"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry-skill/claude/SKILL.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/avara-ui/SKILL.md"
+        },
+        {
+          "path": "registry-skill/claude/variants.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/avara-ui/variants.md"
+        },
+        {
+          "path": "registry-skill/claude/components.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/avara-ui/components.md"
+        },
+        {
+          "path": "registry-skill/claude/animation.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/avara-ui/animation.md"
+        },
+        {
+          "path": "registry-skill/claude/theming.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/avara-ui/theming.md"
+        },
+        {
+          "path": "registry-skill/claude/checklist.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/avara-ui/checklist.md"
+        }
+      ],
+      "docs": "Start a new Claude Code session in this project so it loads the skill, then ask for something that uses the library."
+    },
+    {
+      "name": "agent-skill-cursor",
+      "type": "registry:item",
+      "title": "Agent Skill (Cursor)",
+      "author": "AlgorizeTech",
+      "description": "Teaches Cursor to build with Avara UI: plan, find, install, read, adapt, check, and ask which design before picking one. Installs the rule into .cursor/rules/. Not a component.",
+      "categories": [
+        "utilities"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry-skill/cursor/avara-ui.mdc",
+          "type": "registry:file",
+          "target": "~/.cursor/rules/avara-ui.mdc"
+        }
+      ],
+      "docs": "Start a new Cursor chat in this project so it loads the rule, then ask for something that uses the library."
+    },
+    {
       "name": "ai-chat",
       "type": "registry:component",
       "title": "AI Chat",
