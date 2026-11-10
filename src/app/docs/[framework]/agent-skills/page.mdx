@@ -18,41 +18,72 @@ free, needs no account, and works with or without the <DocLink to="mcp">MCP serv
 ## What the agent gets
 
 - **A workflow.** Plan the page, decide which pieces to use, install them with the CLI, read each one's Markdown for its real props, adapt the sample data, then run a final check.
-- **A question before it picks.** Where a section comes in several designs (today the hero and the footer, with more to come), the agent shows you every design with a live link and waits for your answer. Name one, or tell it to pick the best for you and it will choose and say why.
+- **A question before it picks.** Where a section or component comes in several designs (the hero, the footer, tabs, tables and many more), the agent shows you every design with a live link and waits for your answer. Name one, or tell it to pick the best for you and it will choose and say why.
 - **A searchable index.** <code>{SITE_URL}/agent/components.json</code> lists every component and website section with its summary, install command and Markdown URL, so an agent can pick by what a page does without a search server.
 - **Rules.** Theme tokens instead of hard-coded colours, one animation library per component, no `next/*` imports, and respect for `prefers-reduced-motion`.
 
+## Requirements
+
+- A project that uses shadcn/ui and Tailwind CSS. See <DocLink to="installation">Installation</DocLink> if it does not yet.
+- One of the agents below: Claude Code, Cursor, GitHub Copilot in VS Code, Codex or OpenCode.
+
+The skill is not an npm package, so there is nothing to `npm install`. It is a set
+of text files added to your project, and it works the same whether the project
+uses npm, pnpm, yarn or bun, on macOS, Linux or Windows. Your package manager
+only matters later, when the agent installs components, and the skill tells it to
+use yours.
+
 ## Install the skill
 
-Run once from your project root. Pick the agent you use.
+Choose your agent. Each tab has two ways to install: **Ask your agent** is the
+easiest, because you paste one prompt and the agent does the rest on any system.
+**Manual** is one command (or one block to paste) if you prefer to do it yourself.
 
 <McpClientTabs>
   <McpClientPanel client="claude">
-    Claude Code reads skills from `.claude/skills/`:
+    Claude Code reads skills from `.claude/skills/`. It loads `SKILL.md` when a task matches its description, and opens the other files only when it needs them.
 
     <SkillInstall client="claude" />
 
-    The agent loads `SKILL.md` when a task matches its description, and opens the other files only when it needs them.
+    **Check that it worked.** Look in `.claude/skills/` for the skill folder. Then start a new Claude Code session in the project, because skills are read when a session starts. Ask "Using {REGISTRY_NAMESPACE}, add a pricing section": the agent should plan the page and check the component index before writing any markup.
+
+    **Update or remove.** To update, install again: the files are overwritten with the current version. To remove, delete the skill folder.
   </McpClientPanel>
   <McpClientPanel client="cursor">
-    Cursor reads rules from `.cursor/rules/`:
+    Cursor reads rules from `.cursor/rules/`. One file holds the whole workflow.
 
     <SkillInstall client="cursor" />
+
+    **Check that it worked.** Look in `.cursor/rules/` for the `.mdc` file, or find it under Rules in Cursor Settings. Then start a new chat in the project, because rules are read when a chat starts. Ask "Using {REGISTRY_NAMESPACE}, add a pricing section": the agent should plan the page and check the component index before writing any markup.
+
+    **Update or remove.** To update, install again: the file is overwritten with the current version. To remove, delete the file.
   </McpClientPanel>
   <McpClientPanel client="vscode">
-    GitHub Copilot in VS Code reads `.github/copilot-instructions.md`. Add this block to it:
+    GitHub Copilot in VS Code reads `.github/copilot-instructions.md`.
 
-    <SkillInstall client="agents" />
+    <SkillInstall client="agents" file=".github/copilot-instructions.md" />
+
+    **Check that it worked.** Start a new Copilot chat in the project and ask "Using {REGISTRY_NAMESPACE}, add a pricing section". The agent should open the component index before writing any markup.
+
+    **Update or remove.** To update, replace the block with the current one from this page. To remove, delete the block from the file.
   </McpClientPanel>
   <McpClientPanel client="codex">
-    Codex reads `AGENTS.md` in the project root. Add this block to it:
+    Codex reads `AGENTS.md` in the project root.
 
-    <SkillInstall client="agents" />
+    <SkillInstall client="agents" file="AGENTS.md" />
+
+    **Check that it worked.** Start a new Codex session in the project and ask "Using {REGISTRY_NAMESPACE}, add a pricing section". The agent should open the component index before writing any markup.
+
+    **Update or remove.** To update, replace the block with the current one from this page. To remove, delete the block from the file.
   </McpClientPanel>
   <McpClientPanel client="opencode">
-    OpenCode reads `AGENTS.md` in the project root. Add this block to it:
+    OpenCode reads `AGENTS.md` in the project root.
 
-    <SkillInstall client="agents" />
+    <SkillInstall client="agents" file="AGENTS.md" />
+
+    **Check that it worked.** Start a new OpenCode session in the project and ask "Using {REGISTRY_NAMESPACE}, add a pricing section". The agent should open the component index before writing any markup.
+
+    **Update or remove.** To update, replace the block with the current one from this page. To remove, delete the block from the file.
   </McpClientPanel>
 </McpClientTabs>
 
@@ -60,23 +91,33 @@ The files are plain text, so read them before you add them to a repository. They
 are generated from this site's own registry, so they only name components that
 exist.
 
+### Troubleshooting
+
+- **`node` is not recognised, or `fetch is not defined`.** The manual command needs Node.js 18 or newer. Update it, or use "Ask your agent" instead, which needs no Node.js.
+- **A 404 or a blocked download.** A proxy or firewall may be stopping the request. Use the file links under the manual command and save each file yourself.
+- **The agent ignores it.** Check that the files sit in the project root, not a subfolder, and start a new session.
+
 ## Use it
 
-Register the registry once, then describe the interface in plain language and
-name {REGISTRY_NAMESPACE} so the agent looks in the right place:
-
-<Cli command={REGISTRY_ADD_ARGS} />
+There is nothing to register. {REGISTRY_NAMESPACE} is listed in the shadcn
+registry directory, so the shadcn CLI finds it by name. Describe the interface in
+plain language and name {REGISTRY_NAMESPACE} so the agent looks in the right place:
 
 - "Using {REGISTRY_NAMESPACE}, build a pricing page with a hero, the plans and an FAQ."
 - "Add a {REGISTRY_NAMESPACE} data table of orders with sorting and pagination, wired to `/api/orders`."
 - "Use {REGISTRY_NAMESPACE} to add a command palette and a dock to this app shell."
 - "Replace this footer with the {REGISTRY_NAMESPACE} footer, keeping our links."
 
+If the CLI ever answers "Unknown registry", your shadcn CLI is older than the
+directory lookup. Update it, or add the registry to the project once:
+
+<Cli command={REGISTRY_ADD_ARGS} />
+
 ## How the workflow runs
 
 1. **Plan.** The agent writes the page's sections and states (empty, loading, error) before any code.
 2. **Decide.** It searches the index or <code>{SITE_URL}/llms.txt</code> and matches by summary. If nothing fits, it composes the screen from smaller components. For each section that comes in several designs, it asks you which one first, with a live link for every option, unless you already named one.
-3. **Install.** It runs <code>npx shadcn@latest add {REGISTRY_NAMESPACE}/name --yes</code>.
+3. **Install.** It runs <code>npx shadcn@latest add {REGISTRY_NAMESPACE}/name --yes</code>, or the same command with `pnpm dlx`, `yarn dlx` or `bunx` if your project uses another package manager.
 4. **Read.** It fetches the item's Markdown for the props and import path.
 5. **Adapt.** It swaps in your data and keeps the component's structure and styling.
 6. **Check.** It runs the checklist: tokens only, keyboard access, dark mode, reduced motion, and a passing build.
