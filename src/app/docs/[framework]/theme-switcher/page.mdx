@@ -15,6 +15,8 @@ Switching runs the same circular reveal as the toggle in this site's header: the
 
 Each switcher below is live and writes through `next-themes`, so flipping one changes the theme for the whole docs site. The previews run in their own frame, and a View Transition can't cross documents, so here the demo hands the pick to the page through `applyTheme` — what you see is the header's own reveal, starting from the control you clicked. In your app the component does all of that itself.
 
+<AgentVariants slug="theme-switcher" />
+
 export const usageIcon = `import { ThemeSwitcher } from "@/components/custom/blocks/ThemeSwitcherBlock";
 
 export default function DashboardHeader() {
