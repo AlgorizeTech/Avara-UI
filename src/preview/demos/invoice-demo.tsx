@@ -108,6 +108,55 @@ const geometricSampleData = {
   },
 };
 
+const splitSampleData = {
+  invoiceNumber: "#123456",
+  dateIssued: "April 05, 2026",
+  companyName: "AVARA_UI",
+  tagline: "DESIGN SYSTEM ARCHITECTURE",
+  invoiceTo: {
+    name: "Jhone Doe.",
+    company: "Managing Director, Company ltd.",
+    phone: "+123 4567 8910",
+    email: "example@mail.com",
+    address: "7777 Mendez Plains, Brooklyn, CA 91905",
+  },
+  invoiceFrom: {
+    name: "Jhone Smith.",
+    company: "Managing Director, Company ltd.",
+    phone: "+123 4567 8910",
+    email: "example@mail.com",
+  },
+  items: [
+    { item: "Business Card Design", unitPrice: "$50", qty: "2", total: "$100.00" },
+    { item: "Interface Design", unitPrice: "$50", qty: "2", total: "$100.00" },
+    { item: "Dashboard Template", unitPrice: "$50", qty: "2", total: "$100.00" },
+    { item: "User Experience Design", unitPrice: "$50", qty: "2", total: "$100.00" },
+    { item: "Mobile Application Design", unitPrice: "$50", qty: "2", total: "$100.00" },
+    { item: "Affiliate Marketing", unitPrice: "$50", qty: "2", total: "$100.00" },
+  ],
+  subtotal: "$1000.00",
+  tax: "$100.00",
+  discount: "$0.00",
+  grandTotal: "$1100.00",
+  paymentMethod: {
+    accountNo: "1234 5678 910",
+    accountName: "Jhone Doe.",
+    branchName: "XYZ",
+  },
+  companyContact: {
+    phone: "+123 4567 8910",
+    email: "example@mail.com",
+    website: "www.sitename.com",
+  },
+  terms: [
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.",
+  ],
+  signatory: {
+    name: "AUTHORISED SIGN",
+    title: "",
+  },
+};
+
 export default function InvoiceDemo({
   variant = "default",
   color = "primary",
@@ -115,7 +164,12 @@ export default function InvoiceDemo({
   variant?: InvoiceVariant;
   color?: InvoiceColor | string;
 }) {
-  const activeData = variant === "geometric" ? geometricSampleData : sampleData;
+  const activeData =
+    variant === "split"
+      ? splitSampleData
+      : variant === "geometric"
+        ? geometricSampleData
+        : sampleData;
 
   return (
     <div className="w-full max-w-full overflow-hidden transition-all duration-500 relative p-0 bg-transparent">

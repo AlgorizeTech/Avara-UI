@@ -786,9 +786,9 @@ export const META: Record<string, ItemMeta> = {
   },
   invoice: {
     description:
-      "A printable invoice with line items, tax and totals, in four presentation styles including modern geometric fashion branding. Use it for billing summaries and receipt pages.",
+      "A printable invoice with line items, tax and totals, in five presentation styles including asymmetric split and modern geometric fashion branding. Use it for billing summaries and receipt pages.",
     categories: ["commerce", "data-display"],
-    docs: "Named exports: Invoice, getThemeStyles (from invoice-theme.ts, which installs alongside). `InvoiceData` carries invoiceNumber, parties, dates and an `items` array of { item, description?, hours|qty, unitPrice?, total }. Totals are computed for you. Variants: default | corporate | brutalist | geometric.",
+    docs: "Named exports: Invoice, getThemeStyles (from invoice-theme.ts, which installs alongside). `InvoiceData` carries invoiceNumber, parties, dates and an `items` array of { item, description?, hours|qty, unitPrice?, total }. Totals are computed for you. Variants: default | corporate | brutalist | geometric | split.",
   },
   cart: {
     description:

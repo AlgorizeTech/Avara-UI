@@ -571,6 +571,7 @@
   },
   "invoice": {
     "default-dashboard-invoice": "Invoice — Default Dashboard Invoice",
+    "asymmetric-split": "Invoice — Asymmetric Split",
     "modern-geometric": "Invoice — Modern Geometric",
     "corporate-executive": "Invoice — Corporate Executive",
     "neo-brutalist": "Invoice — Neo-Brutalist"
