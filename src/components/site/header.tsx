@@ -1,6 +1,7 @@
 "use client";
 
 import { GitHubIcon } from "@/assets/icons/github";
+// import { GitHubStarCount } from "@/components/home/github-star-count";
 import { links } from "@/config/site";
 import { cn } from "@/lib/utils";
 import {
@@ -20,6 +21,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { RESOURCE_SLUGS, ResourcesMenu } from "./resources-menu";
 import { ThemeSwitcher } from "./theme";
 
 /**
@@ -53,7 +55,11 @@ const docsEntryFor = (pathname: string) =>
  * path list would stop matching the moment a reader is on /docs/reactjs/... and
  * the wrong header item would highlight.
  */
-const GUIDE_SLUGS = new Set(["index", "installation", "first-app", "mcp"]);
+const GUIDE_SLUGS = new Set(["index", "installation", "first-app"]);
+
+/** True on the pages listed in the Resources dropdown (MCP, Agent skills). */
+const isResourcePath = (pathname: string) =>
+  pathname.startsWith("/docs/") && RESOURCE_SLUGS.has(slugFromPathname(pathname));
 
 /** True on the guide pages; everything else under /docs/ is a component page. */
 const isGuidePath = (pathname: string) =>
@@ -223,7 +229,9 @@ const Header = () => {
             <Link
               className={cn(
                 "flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all text-[12.5px] hover:bg-foreground/5",
-                pathname.startsWith("/docs/") && !isGuidePath(pathname)
+                pathname.startsWith("/docs/") &&
+                  !isGuidePath(pathname) &&
+                  !isResourcePath(pathname)
                   ? "font-semibold text-foreground"
                   : "font-medium text-foreground/80 hover:text-foreground"
               )}
@@ -233,6 +241,7 @@ const Header = () => {
               <LayoutGrid className="h-3.5 w-3.5" />
               Components
             </Link>
+            <ResourcesMenu active={isResourcePath(pathname)} />
             <Link
               className={cn(
                 "flex items-center gap-1.5 px-3.5 py-1.5 rounded-full transition-all text-[12.5px] hover:bg-foreground/5",
@@ -250,21 +259,21 @@ const Header = () => {
 
           {/* Right Area: Action Pills (Search, Socials, Theme) */}
           <div className="flex items-center gap-2">
-            {/* Command Palette Omni Button — icon-only below 1240px, where the
+            {/* Command Palette Omni Button — icon-only below 1536px, where the
                 full pill would run under the centred nav. */}
             <button
               onClick={openSearch}
               onPointerEnter={warmSearch}
               onFocus={warmSearch}
               onTouchStart={warmSearch}
-              className="pointer-events-auto flex items-center justify-center gap-2.5 size-10 min-[1240px]:w-auto min-[1240px]:justify-start min-[1240px]:pl-3.5 min-[1240px]:pr-5 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 text-foreground/80 hover:text-foreground hover:border-border/70 transition-all text-left cursor-pointer"
+              className="pointer-events-auto flex items-center justify-center gap-2.5 size-10 2xl:w-auto 2xl:justify-start 2xl:pl-3.5 2xl:pr-5 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 text-foreground/80 hover:text-foreground hover:border-border/70 transition-all text-left cursor-pointer"
               aria-label="Search components and documentation"
             >
-              <Search className="size-4 min-[1240px]:size-3.5 min-[1240px]:text-foreground/50 shrink-0" />
-              <span className="hidden min-[1240px]:inline text-[12.5px] text-foreground/50">
+              <Search className="size-4 2xl:size-3.5 2xl:text-foreground/50 shrink-0" />
+              <span className="hidden 2xl:inline text-[12.5px] text-foreground/50">
                 Search…
               </span>
-              <div className="hidden min-[1240px]:flex items-center gap-1 shrink-0 select-none ml-2.5">
+              <div className="hidden 2xl:flex items-center gap-1 shrink-0 select-none ml-2.5">
                 <kbd className="size-[19px] flex items-center justify-center rounded-[5px] border border-border/60 text-foreground/40 font-mono text-[10px] leading-none bg-foreground/5">
                   ⌘
                 </kbd>
@@ -295,8 +304,8 @@ const Header = () => {
             >
               <GitHubIcon className="w-4 h-4 fill-current" />
               <span className="hidden lg:inline text-[12px] font-semibold text-foreground">GitHub</span>
+              {/* <GitHubStarCount className="hidden lg:inline-flex" /> */}
             </Link>
-
             {/* Dynamic System Theme Core Engine Toggle */}
             <ThemeSwitcher
               className="pointer-events-auto size-10 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 hover:border-border/70 text-foreground transition-all"
