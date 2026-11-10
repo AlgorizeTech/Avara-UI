@@ -47,6 +47,67 @@ const sampleData = {
   note: "Note: It was a pleasure working with you and your team. We hope you will keep us in mind for future freelance projects. Thank You!",
 };
 
+const geometricSampleData = {
+  invoiceNumber: "INV-2026-4987",
+  dateIssued: "Thursday, 7 December 2026",
+  companyName: "AVARA_UI",
+  tagline: "Crafting Next-Gen Interfaces: Where Code Meets Design Elegance!",
+  invoiceTo: {
+    name: "Jordan Stevenson",
+    company: "Hall-Robbins PLC",
+    description: "Full-stack digital design systems and accessible React / Next.js component architectures.",
+    phone: "+1 (616) 865-4180",
+    address: "7777 Mendez Plains, Brooklyn, CA 91905",
+    email: "don85@johnson.com",
+  },
+  items: [
+    {
+      item: "Design System Architecture",
+      description: "Full-scale tokenized component library & theme presets",
+      unitPrice: "$1,200.00",
+      qty: "01",
+      total: "$1,200.00",
+    },
+    {
+      item: "Next.js Dashboard Blocks",
+      description: "Responsive layouts, data visualizations, and interactive forms",
+      unitPrice: "$850.00",
+      qty: "02",
+      total: "$1,700.00",
+    },
+    {
+      item: "Interactive Animations & Micro-Interactions",
+      description: "Smooth marquee drifts, scroll timelines, and spring motion",
+      unitPrice: "$650.00",
+      qty: "01",
+      total: "$650.00",
+    },
+    {
+      item: "Production Review & a11y Audit",
+      description: "WCAG contrast verification, dark mode testing & QA",
+      unitPrice: "$400.00",
+      qty: "01",
+      total: "$400.00",
+    },
+  ],
+  subtotal: "$3,950.00",
+  grandTotal: "$4,250.00",
+  terms: [
+    "Payment is due within 30 days of issuance via corporate ACH, wire, or card settlement.",
+    "All delivered component source files include perpetual commercial licensing under Avara UI.",
+  ],
+  signatory: {
+    name: "Tommy Shelby",
+    title: "OPERATIONS DIRECTOR",
+  },
+  companyContact: {
+    phone: "+1 (123) 456 7891",
+    email: "support@avaraui.com",
+    social: "avaraui.com",
+    address: "450 South Brand Brooklyn, CA 91905, USA",
+  },
+};
+
 export default function InvoiceDemo({
   variant = "default",
   color = "primary",
@@ -54,13 +115,15 @@ export default function InvoiceDemo({
   variant?: InvoiceVariant;
   color?: InvoiceColor | string;
 }) {
+  const activeData = variant === "geometric" ? geometricSampleData : sampleData;
+
   return (
     <div className="w-full max-w-full overflow-hidden transition-all duration-500 relative p-0 bg-transparent">
       <Invoice
         key={`${variant}-${color}`} // Force re-render to clear edit state on theme change
         variant={variant}
         color={color}
-        invoiceData={sampleData}
+        invoiceData={activeData}
       />
     </div>
   );
