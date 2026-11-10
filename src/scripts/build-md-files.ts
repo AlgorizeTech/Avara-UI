@@ -29,6 +29,7 @@ import {
   skillInstallCommand,
   skillInstallPrompt,
   skillTarget,
+  SKILL_ITEM,
   type SkillClient,
 } from "../lib/agent-skill";
 import { hubMarkdown, type HubKind } from "../lib/agent-index";
@@ -312,11 +313,16 @@ function convertMdxToMd(content: string, framework: Framework): string {
     }
     const { dir, files } = skillTarget(client as "claude" | "cursor");
     const target = files.length === 1 ? `${dir}/${files[0]}` : `${dir}/`;
+    const cli =
+      `\n\n**shadcn CLI**\n\nRun this from your project root. It is the same shadcn command you use for components, so it works with npm, pnpm, yarn and bun, on macOS, Linux and Windows (use \`pnpm dlx\`, \`yarn dlx\` or \`bunx\` in place of \`npx\`). It writes \`${target}\`.\n\n` +
+      '```bash\n' + `npx shadcn@latest add ${REGISTRY_NAMESPACE}/${SKILL_ITEM[client as "claude" | "cursor"]}` + '\n```' +
+      '\n\nTo update later, run it again with `--overwrite` at the end.';
     const links = skillFileLinks(client as "claude" | "cursor")
       .map(({ file: name, url, saveAs }) => `- [${name}](${url}) — save as \`${saveAs}\``)
       .join('\n');
     return hold(
       prompt +
+        cli +
         `\n\n**Manual**\n\nRun this one line from your project root. It works the same in macOS and Linux terminals, Windows PowerShell, Command Prompt and Git Bash, and needs Node.js 18 or newer. It writes \`${target}\`${files.length > 1 ? ` (${files.length} files)` : ''}.\n\n` +
         '```' + lang + '\n' + code + '\n```' +
         `\n\nCommand blocked or no Node.js? Save ${files.length > 1 ? 'each file' : 'the file'} yourself, creating the folders if they are missing:\n\n${links}`,

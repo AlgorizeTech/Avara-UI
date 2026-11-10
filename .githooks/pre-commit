@@ -19,8 +19,10 @@ staged=$(git diff --cached --name-only --diff-filter=ACMR)
 
 # The generator reads these: the three scanned component directories plus the
 # scripts that decide what is emitted. Keep in sync with generate-registry.ts.
+# The agent skill items (registry-skill/) are generated from the skill text, the
+# variants data and the sidebar, so those count as inputs too.
 inputs=$(printf '%s\n' "$staged" | grep -E \
-  '^src/components/custom/(blocks|ui)/|^src/components/ui/|^src/scripts/(generate-registry|registry-meta)\.ts$' \
+  '^src/components/custom/(blocks|ui)/|^src/components/ui/|^src/scripts/(generate-registry|generate-skill-items|registry-meta)\.ts$|^src/lib/agent-skill\.ts$|^src/agent/variants/|^src/constants/navigation\.ts$' \
   || true)
 
 [ -z "$inputs" ] && exit 0
@@ -45,9 +47,9 @@ if ! npm run build:registry >/dev/null 2>&1; then
   exit 1
 fi
 
-git add registry.json public/r
+git add registry.json public/r registry-skill
 
-if git diff --cached --quiet -- registry.json public/r; then
+if git diff --cached --quiet -- registry.json public/r registry-skill; then
   echo "pre-commit: registry already up to date."
 else
   echo "pre-commit: regenerated artifacts staged with this commit."

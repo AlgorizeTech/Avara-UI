@@ -75,6 +75,7 @@ const STYLED_JSX = /<style\s+jsx\b/;
 
 for (const item of registry.items) {
   for (const file of item.files ?? []) {
+    if (!/\.[cm]?[jt]sx?$/.test(file.path)) continue; // the skill items ship Markdown
     const abs = path.join(ROOT, file.path);
     if (!fs.existsSync(abs)) continue;
     const source = read(abs);
