@@ -3,7 +3,7 @@
   "name": "fleet-map",
   "title": "Fleet Map",
   "author": "AlgorizeTech",
-  "description": "A live fleet tracking view pairing a Leaflet map with a vehicle list and status filters. Use it for logistics and delivery dashboards.",
+  "description": "Ask the user to pick one of 3 fleet tracker variants: https://avaraui.com/view/fleet-tracker. This item holds 3 of them as looks of one component (default, minimal, modern). Skip the question if the user already named one. A live fleet tracking view pairing a Leaflet map with a vehicle list and status filters. Use it for logistics and delivery dashboards.",
   "dependencies": [
     "leaflet",
     "lucide-react",

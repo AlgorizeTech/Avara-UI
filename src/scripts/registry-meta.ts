@@ -199,11 +199,11 @@ export const META: Record<string, ItemMeta> = {
     docs: "Default export. Supports variant (default | destructive | outline | secondary | ghost | link), size (sm | lg), and a `loading` prop. Ripple keyframes are injected into document.head on mount, so no Tailwind config or global CSS changes are needed.",
   },
   card: {
-    usageDependencies: ["product-card"],
+    usageDependencies: ["product-card", "button"],
     description:
       "A composable surface with header, title, description, content, and footer slots. Use it to group related content into a bounded block.",
     categories: ["layout"],
-    docs: "Named exports: Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter. Compose them rather than passing props to a single element.",
+    docs: "Named exports: Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, ProjectCard (also ShowcaseCard). Compose primitives or use ProjectCard for rich two-column showcases.",
   },
   tooltip: {
     description:
@@ -674,6 +674,12 @@ export const META: Record<string, ItemMeta> = {
     usageDependencies: ["tech-stack", "icons"],
     docs: "Named export: ComponentWall (plus the ComponentWallItem type). Composed from the image-wall, text-animation, copy-button, avatar-stack and half-stars items, which install alongside it, and takes a tech-stack in its `stack` slot. Pass `badge` ({ label, href? }), `heading` (a string, revealed word by word; write `{word}` where `headingWords` take turns every `wordInterval` ms, and name one word in `accent` for the primary colour), `description` (a string or inline JSX — it renders inside a <p>), `install` ({ command } — write `{item}` where the focused card's `slug` goes, e.g. `npx shadcn@latest add " + REGISTRY_NAMESPACE + "/{item}`), `primaryAction`/`secondaryAction` ({ label, href, icon? }), `trust` ({ text, avatars?, rating? }), `items` ({ title, image, slug? }[] — every screenshot sits in the same 493:332 frame; slug defaults to the title in kebab-case) and `stack` (a node — a <TechStack> of <TechStackGroup>s of <TechStackTool name icon />: the tools over the lower wall on desktop and under the band on phones; in the centred layout it closes the copy column, where the compact variant fits). `columns`, `interval` (ms the camera rests; 0 holds still), `order` (serial | shuffle), `zoom`, `intro` (ms the camera drifts with nothing in focus while the copy arrives; default 1800) and `onFocus` pass straight to the wall; `layout` is split (copy left, wall right), center (copy between two walls — the left camera resting high, the right low, taking turns, the second wall dealing the same items from halfway through; the tools sit under the copy; zoom defaults to 0.9; below lg a single band of every card sits between the copy and the tools), or center-background (`persistentBackground`); `showMobileWall` (boolean, default true: set to false to completely hide wall animations on small screens <lg across all layouts); `linkComponent` takes next/link. The headline uses your theme's font-serif, the command font-mono; colours are theme tokens.",
   },
+  "portfolio-showcase": {
+    description:
+      "An infinite continuous 2D draggable masonry canvas with momentum physics, smooth camera glide, and interactive project modal for creative portfolios.",
+    categories: ["media", "marketing"],
+    docs: "Named export: PortfolioShowcase (plus PortfolioItem type). Renders an edge-to-edge infinite masonry canvas with 4-directional kinetic drag, auto-glide camera, and full-details modal.",
+  },
   "collage-hero": {
     description:
       "A playful hero: a badge whose name turns around a mark, a serif headline with two coloured words, hashtag pills, a five-column photo collage and a footer with a quote, a scroll pill and a watch-video trigger. Use it for a kindergarten, studio, school or any warm, busy place.",
@@ -780,9 +786,9 @@ export const META: Record<string, ItemMeta> = {
   },
   invoice: {
     description:
-      "A printable invoice with line items, tax and totals, in three presentation styles. Use it for billing summaries and receipt pages.",
+      "A printable invoice with line items, tax and totals, in four presentation styles including modern geometric fashion branding. Use it for billing summaries and receipt pages.",
     categories: ["commerce", "data-display"],
-    docs: "Named exports: Invoice, getThemeStyles (from invoice-theme.ts, which installs alongside). `InvoiceData` carries invoiceNumber, parties, dates and an `items` array of { item, description?, hours|qty, rate }. Totals are computed for you. Variants: default | minimal | glass.",
+    docs: "Named exports: Invoice, getThemeStyles (from invoice-theme.ts, which installs alongside). `InvoiceData` carries invoiceNumber, parties, dates and an `items` array of { item, description?, hours|qty, unitPrice?, total }. Totals are computed for you. Variants: default | corporate | brutalist | geometric.",
   },
   cart: {
     description:
@@ -812,7 +818,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "Device frames for iPhone (5 through 17 Pro Max), Samsung and Pixel that wrap a screenshot, video or live children. Use them to present an app on a marketing page.",
     categories: ["media", "marketing"],
-    docs: "Named exports: Iphone17ProMaxMockup, Iphone14ProMaxMockup, Iphone12ProMaxMockup, Iphone5Mockup, SamsungS24UltraMockup, GooglePixel8Mockup, GooglePixel10Mockup. Each takes `src`, `videoSrc`, or arbitrary children rendered inside the screen. Pure CSS and SVG — no images to ship.",
+    docs: "Named exports: Iphone16ProMockup, Iphone17ProMaxMockup, Iphone14ProMaxMockup, Iphone12ProMaxMockup, Iphone5Mockup, SamsungS24UltraMockup, GooglePixel8Mockup, GooglePixel10Mockup. Each takes `src`, `videoSrc`, or arbitrary children rendered inside the screen. Pure CSS and SVG — no images to ship.",
   },
   "image-wall": {
     description:
@@ -1115,9 +1121,9 @@ export const META: Record<string, ItemMeta> = {
   },
   "ribbon-drift": {
     description:
-      "A hero showcase card featuring dual floating infinite marquee ribbons, an animated gradient drift backdrop, center 3D illustration, and interactive frosted promo card.",
+      "A dynamic showcase component featuring dual floating infinite marquee ribbons with two variants: 3D illustration hero card with frosted promo, and criss-crossing brand logo ribbons over a warm yellow backdrop.",
     categories: ["marketing", "media", "data-display"],
-    docs: "Default export: RibbonDriftBlock. Also exports RibbonDriftCard and the RibbonDriftProps type. Features dual counter-rotating marquee ribbons with smooth seamless looping, animated ambient gradient drift, top-right brand pill badge, and bottom floating frosted promo card with avatar stack.",
+    docs: "Default export: RibbonDriftBlock. Also exports RibbonLogos, CrossRibbonLogos, RibbonDriftCard, and the RibbonDriftProps & RibbonLogosProps types. Supports variant='default' (3D illustration with frosted promo card) and variant='cross-logos' (dual counter-angled infinite brand marquee ribbons with leading brand SVGs).",
   },
   "tilted-card": {
     description:

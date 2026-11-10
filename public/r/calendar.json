@@ -3,7 +3,7 @@
   "name": "calendar",
   "title": "Calendar",
   "author": "AlgorizeTech",
-  "description": "A full month calendar with event dots, range selection and a dashboard layout. Reach for it when dates need to be seen in context rather than just entered.",
+  "description": "Ask the user to pick one of 4 calendar variants: https://avaraui.com/view/calendar. This item holds 4 of them as looks of one component (default, minimal, glass, liquid-glass). Skip the question if the user already named one. A full month calendar with event dots, range selection and a dashboard layout. Reach for it when dates need to be seen in context rather than just entered.",
   "dependencies": [
     "class-variance-authority",
     "lucide-react",

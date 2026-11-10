@@ -1,0 +1,40 @@
+---
+name: avara-ui
+description: Build React interfaces with Avara UI, a free shadcn registry of animated components and website sections. Use when the user asks for a UI, page, section or component in a project that uses shadcn/ui and Tailwind CSS, or names Avara UI or @avara-ui.
+---
+
+# Avara UI
+
+Avara UI is a free, MIT-licensed library of 195 animated React components and website sections, published as a shadcn registry. The shadcn CLI copies each component's source into the project, so the files are the user's to edit. There is no npm package, no account and no key.
+
+## Workflow
+
+Follow these in order. Do not skip the reading step: this is what keeps you from inventing props.
+
+1. **Plan.** Before any UI code, write a short plan: the page's sections, the density, and the empty, loading and error states. Say which library pieces cover which section.
+2. **Decide.** Search the agent index (`https://avaraui.com/agent/components.json`) or `https://avaraui.com/llms.txt` for the pieces. Each entry has a summary, the install command and a Markdown URL. Match by what the summary says, not by the name. If nothing fits, compose the screen from smaller components and say so; do not force the nearest match. **Then, for every entry with `choose: true`, stop and ask the user which variant they want before you install or write anything** (for example the hero: a section that comes in several designs). Show each option with its live link, and offer "pick the best for me". If your client has a click-to-pick question tool (Claude Code's `AskUserQuestion`), use it so the user answers by clicking; `variants.md` says how to fit more than 4 options into it. If the user already named a variant, use it without asking. An entry without `choose` has one option: install it. The exact question, and how to choose for the user when they ask you to, are in `variants.md`. Never pick a variant on your own taste.
+3. **Registry.** `@avara-ui` is listed in shadcn's registry directory, so `add @avara-ui/<name>` works with no setup. Only if the CLI answers "Unknown registry" (an older shadcn CLI), run `npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json` once, then retry.
+4. **Install.** Run `npx shadcn@latest add @avara-ui/<name> --yes`. Add several items in one command. The CLI installs npm dependencies and any registry items the item needs. For a `choose` entry, use the chosen variant's own `install` command, never every item the page lists.
+5. **Read.** Fetch the item's Markdown (`markdownUrl` in the index). It lists the props, usage and the exact import path. Write code against that, not against memory.
+6. **Adapt.** Replace the sample data with the user's. Keep the component's structure and styling: change content, props and theme tokens, not the layout the component was built around.
+7. **Check.** Run `checklist.md` before telling the user you are done.
+
+## Rules
+
+- Install, then import from the path the Markdown gives. Most items land in `components/custom/blocks/`.
+- Style with theme tokens (`bg-primary`, `text-foreground`, `border-border`), never hard-coded colours, so the user's theme restyles everything. See `theming.md`.
+- Each animated component ships a GSAP build; some also ship a Motion build installed as `<name>-motion`. Install one, never both, and never add the other animation library by hand. See `animation.md`.
+- Components import nothing from `next/*`. Pass `linkComponent` / `imageComponent` props when the project wants `next/link` or `next/image`.
+- If an item needs a prop the Markdown does not list, it does not exist. Read the source file the CLI wrote instead of guessing.
+- Honour `prefers-reduced-motion`. The components do; do not add animation that ignores it.
+- Commands here use `npx`. If the project uses another package manager (a `pnpm-lock.yaml`, `yarn.lock` or `bun.lock`), run the same command with its runner: `pnpm dlx`, `yarn dlx` or `bunx`.
+
+## More
+
+- `variants.md`: asking the user which design they want, and choosing for them when they ask you to.
+- `components.md`: the categories, to choose between pieces.
+- `animation.md`: GSAP or Motion, and how motion is switched off.
+- `theming.md`: tokens and how to restyle.
+- `checklist.md`: the final check.
+
+Registry: `https://avaraui.com/r/<name>.json`. Docs: https://avaraui.com/docs/nextjs.

@@ -1,7 +1,24 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Heart, Plus, Save, Send, Trash2, CheckCircle2, QrCode, Building2, Printer, Download, Edit3 } from "lucide-react";
+import {
+  Heart,
+  Plus,
+  Save,
+  Send,
+  Trash2,
+  CheckCircle2,
+  QrCode,
+  Building2,
+  Printer,
+  Download,
+  Edit3,
+  Phone,
+  MapPin,
+  Mail,
+  Globe,
+  CheckSquare,
+} from "lucide-react";
 import { useState } from "react";
 import { getThemeStyles } from "./invoice-theme";
 
@@ -11,7 +28,8 @@ import { getThemeStyles } from "./invoice-theme";
 export type InvoiceVariant =
   | "default"
   | "corporate"
-  | "brutalist";
+  | "brutalist"
+  | "geometric";
 
 export type InvoiceColor =
   | "indigo"
@@ -60,41 +78,71 @@ const invoiceVariants: Record<InvoiceVariant, Record<string, string>> = {
     blockBg:
       "bg-yellow-100 dark:bg-muted border-4 border-foreground p-4",
   },
+  geometric: {
+    wrapper: "bg-transparent",
+    invoicePanel:
+      "bg-card border border-border rounded-[var(--radius)] overflow-hidden font-sans w-full",
+    sidebarCard:
+      "bg-card border border-border shadow-sm rounded-2xl",
+    tableHeader:
+      "uppercase text-[11px] sm:text-xs font-bold tracking-wider",
+    tableRow:
+      "border-b border-border/60",
+    inputBg:
+      "bg-muted/60 border border-border",
+    blockBg:
+      "bg-muted/40",
+  },
 };
 
 export type InvoiceItem = {
   item: string;
-  description: string;
-  hours: number | string;
+  description?: string;
+  hours?: number | string;
   qty: number | string;
+  unitPrice?: string;
   total: string;
 };
 
 export type InvoiceData = {
   invoiceNumber: string;
   dateIssued: string;
-  dateDue: string;
+  dateDue?: string;
+  companyName?: string;
+  tagline?: string;
   invoiceTo: {
     name: string;
-    company: string;
-    address: string;
-    phone: string;
-    email: string;
+    company?: string;
+    address?: string;
+    phone?: string;
+    email?: string;
+    description?: string;
   };
-  billTo: {
-    totalDue: string;
-    bankName: string;
-    country: string;
-    iban: string;
-    swift: string;
+  billTo?: {
+    totalDue?: string;
+    bankName?: string;
+    country?: string;
+    iban?: string;
+    swift?: string;
   };
   items: InvoiceItem[];
   subtotal: string;
-  discount: string;
-  tax: string;
+  discount?: string;
+  tax?: string;
   grandTotal: string;
-  salesPerson: string;
-  note: string;
+  salesPerson?: string;
+  note?: string;
+  terms?: string[];
+  signatory?: {
+    name: string;
+    title: string;
+  };
+  companyContact?: {
+    phone?: string;
+    email?: string;
+    social?: string;
+    address?: string;
+  };
 };
 
 type EditableInputProps = {
@@ -134,6 +182,83 @@ function EditableInput({
         className,
       )}
     />
+  );
+}
+
+function GeometricTilePattern({
+  className = "",
+  themeBg = "bg-primary",
+  themeLight = "bg-primary/30",
+}: {
+  className?: string;
+  themeBg?: string;
+  themeLight?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "grid grid-cols-3 grid-rows-2 gap-0.5 w-24 h-16 sm:w-28 sm:h-18 overflow-hidden select-none rounded-[2px]",
+        className
+      )}
+      aria-hidden="true"
+    >
+      {/* Tile 1: Quarter circle curve */}
+      <div className={cn("relative overflow-hidden", themeLight)}>
+        <div className={cn("absolute top-0 left-0 w-full h-full rounded-br-full", themeBg)} />
+        <div className="absolute top-1 left-1 size-2 rounded-full bg-background" />
+      </div>
+      {/* Tile 2: Half moon / circle */}
+      <div className={cn("relative flex items-center justify-center", themeBg)}>
+        <div className={cn("w-3.5 h-7 rounded-r-full", themeLight)} />
+      </div>
+      {/* Tile 3: Top-Right quarter arc */}
+      <div className={cn("relative overflow-hidden", themeLight)}>
+        <div className={cn("absolute bottom-0 right-0 w-full h-full rounded-tl-full", themeBg)} />
+        <div className="absolute bottom-1 right-1 size-2 rounded-full bg-background" />
+      </div>
+      {/* Tile 4: Half circle facing left */}
+      <div className={cn("relative flex items-center justify-start", themeBg)}>
+        <div className="w-3 h-full bg-background/80 rounded-r-full" />
+      </div>
+      {/* Tile 5: Quarter leaf */}
+      <div className={cn("relative overflow-hidden", themeLight)}>
+        <div className={cn("absolute inset-0 rounded-tr-[80%] rounded-bl-[80%]", themeBg)} />
+      </div>
+      {/* Tile 6: Half circle facing right */}
+      <div className={cn("relative flex items-center justify-center", themeLight)}>
+        <div className="w-3.5 h-7 bg-background rounded-l-full" />
+      </div>
+    </div>
+  );
+}
+
+function WatermarkArcs({
+  className = "",
+  strokeClassName = "",
+}: {
+  className?: string;
+  strokeClassName?: string;
+}) {
+  return (
+    <svg
+      viewBox="0 0 160 160"
+      className={cn("pointer-events-none select-none overflow-visible", className)}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden="true"
+    >
+      {[28, 50, 72, 94, 116, 138, 160].map((r) => (
+        <circle
+          key={r}
+          cx="0"
+          cy="160"
+          r={r}
+          stroke="currentColor"
+          strokeWidth="1.5"
+          className={cn("transition-colors", strokeClassName)}
+        />
+      ))}
+    </svg>
   );
 }
 
@@ -687,6 +812,392 @@ export default function Invoice({
             >
               <Download className="w-4 h-4" /> Download JSON
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* 4. MODERN GEOMETRIC VARIANT (FASHION & CREATIVE BRANDING INVOICE) */}
+      {/* ========================================================================= */}
+      {variant === "geometric" && (
+        <div className="w-full bg-card border border-border rounded-[var(--radius)] overflow-hidden font-sans">
+          {/* Action Toolbar (hidden on print) */}
+          <div className="bg-muted text-foreground p-3 sm:px-6 sm:py-2.5 border-b border-border flex items-center justify-between print:hidden">
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Modern Geometric Invoice
+            </span>
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <button
+                onClick={() => setIsEditing(!isEditing)}
+                className={cn(
+                  "px-3 py-1.5 sm:px-3.5 sm:py-1.5 rounded-[var(--radius)] font-semibold text-xs flex items-center gap-1.5 transition-all cursor-pointer",
+                  theme.bg
+                )}
+                title={isEditing ? "Save Invoice" : "Edit Invoice"}
+              >
+                {isEditing ? <Save className="w-3.5 h-3.5" /> : <Edit3 className="w-3.5 h-3.5" />}
+                <span>{isEditing ? "Save" : "Edit"}</span>
+              </button>
+              <button
+                onClick={handlePrint}
+                className="px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-[var(--radius)] bg-background hover:bg-muted text-foreground border border-border font-semibold text-xs flex items-center gap-1.5 transition-all cursor-pointer"
+                title="Print PDF"
+              >
+                <Printer className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Print</span>
+              </button>
+              <button
+                onClick={handleDownload}
+                className="px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-[var(--radius)] bg-background hover:bg-muted text-foreground border border-border font-semibold text-xs flex items-center gap-1.5 transition-all cursor-pointer"
+                title="Export JSON"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">JSON</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="p-5 sm:p-8 md:p-12 space-y-6 sm:space-y-8">
+            {/* Top Header */}
+            <header className="relative">
+              <div className="flex flex-col sm:flex-row justify-between items-start gap-4 sm:gap-6">
+                {/* Left: Tagline + Decorative Tile */}
+                <div className="space-y-3">
+                  <GeometricTilePattern themeBg={theme.bg} themeLight={theme.lightBg} />
+                  <p className={cn("text-[10px] sm:text-xs font-semibold uppercase tracking-wide max-w-[260px] leading-relaxed", theme.text)}>
+                    {data.tagline || "Crafting Next-Gen Interfaces: Where Code Meets Design Elegance!"}
+                  </p>
+                </div>
+
+                {/* Right: Company Name & Logo */}
+                <div className="flex flex-col items-start sm:items-end gap-2 w-full sm:w-auto">
+                  <div className="flex items-center gap-2">
+                    <span className="font-extrabold uppercase tracking-wider text-xs sm:text-sm text-foreground">
+                      {data.companyName || "AVARA_UI"}
+                    </span>
+                    <div className={cn("size-6 rounded-[var(--radius)] flex items-center justify-center p-1", theme.bg)}>
+                      <svg viewBox="0 0 24 24" className={cn("size-3.5 fill-current", theme.fg)}>
+                        <path d="M12 2L2 19.5h5l5-9 5 9h5L12 2zm0 6l-2.5 4.5h5L12 8z" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div className="hidden sm:block">
+                    <GeometricTilePattern themeBg={theme.bg} themeLight={theme.lightBg} />
+                  </div>
+                </div>
+              </div>
+
+              {/* Center / Big "Invoice" Title with underline */}
+              <div className="mt-6 sm:mt-8">
+                <div className="flex items-center justify-between gap-4">
+                  <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-foreground">
+                    Invoice
+                  </h1>
+                  <div className="sm:hidden">
+                    <GeometricTilePattern className="w-20 h-14" themeBg={theme.bg} themeLight={theme.lightBg} />
+                  </div>
+                </div>
+                <div className={cn("h-[2px] sm:h-[3px] mt-1 sm:mt-2 w-full", theme.bg)} />
+              </div>
+            </header>
+
+            {/* Recipient ("Invoice To") & Metadata */}
+            <section className="flex justify-between items-start gap-4 sm:gap-8 pt-2">
+              {/* Left Column: Recipient info */}
+              <div className="flex-1 min-w-0 space-y-3">
+                <div className="inline-block border-b-2 border-border pb-0.5">
+                  <span className="text-xs sm:text-sm font-bold tracking-wider text-foreground">
+                    Invoice To
+                  </span>
+                </div>
+
+                {/* Recipient Solid Theme Badge */}
+                <div>
+                  <div className={cn("px-4 py-2 sm:px-5 sm:py-2.5 rounded-[var(--radius)] inline-block", theme.bg)}>
+                    <EditableInput
+                      isEditing={isEditing}
+                      value={data.invoiceTo.name}
+                      onChange={(e) => handleNestedChange("invoiceTo", "name", e.target.value)}
+                      placeholder="Client Name"
+                      inputBg={cn("border font-bold", theme.fgSoft, theme.fg)}
+                      className={cn("text-base sm:text-xl font-bold tracking-tight", theme.fg)}
+                    />
+                  </div>
+                </div>
+
+                {/* Description */}
+                <p className="text-xs sm:text-sm text-muted-foreground max-w-lg leading-relaxed">
+                  {data.invoiceTo.description || "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore."}
+                </p>
+
+                {/* Contact Pills */}
+                <div className="flex flex-wrap items-center gap-3 sm:gap-6 pt-1 text-xs sm:text-sm font-medium text-foreground">
+                  <div className="flex items-center gap-2">
+                    <span className={cn("size-5 rounded-full keep-rounded grid place-items-center shrink-0", theme.bg)}>
+                      <Phone className={cn("size-2.5", theme.fg)} />
+                    </span>
+                    <EditableInput
+                      isEditing={isEditing}
+                      value={data.invoiceTo.phone || "+123-456-7890"}
+                      onChange={(e) => handleNestedChange("invoiceTo", "phone", e.target.value)}
+                      className="text-xs sm:text-sm font-medium"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className={cn("size-5 rounded-full keep-rounded grid place-items-center shrink-0", theme.bg)}>
+                      <MapPin className={cn("size-2.5", theme.fg)} />
+                    </span>
+                    <EditableInput
+                      isEditing={isEditing}
+                      value={data.invoiceTo.address || "123 Your Address St., City Name,"}
+                      onChange={(e) => handleNestedChange("invoiceTo", "address", e.target.value)}
+                      className="text-xs sm:text-sm font-medium"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column: Invoice Number & Date */}
+              <div className="shrink-0 text-right space-y-2.5 sm:space-y-3">
+                <div>
+                  <span className="text-xs sm:text-sm font-bold text-foreground block">
+                    No. Invoice:
+                  </span>
+                  <EditableInput
+                    isEditing={isEditing}
+                    value={data.invoiceNumber}
+                    onChange={(e) => handleMainChange("invoiceNumber", e.target.value)}
+                    align="right"
+                    className="text-xs sm:text-sm text-muted-foreground font-medium text-right"
+                  />
+                </div>
+                <div>
+                  <span className="text-xs sm:text-sm font-bold text-foreground block">
+                    Date:
+                  </span>
+                  <EditableInput
+                    isEditing={isEditing}
+                    value={data.dateIssued}
+                    onChange={(e) => handleMainChange("dateIssued", e.target.value)}
+                    align="right"
+                    className="text-xs sm:text-sm text-muted-foreground font-medium text-right"
+                  />
+                </div>
+              </div>
+            </section>
+
+            {/* Items Table */}
+            <section className="relative z-0 rounded-[var(--radius)] overflow-hidden bg-card">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs sm:text-sm border-collapse min-w-[500px]">
+                  <thead className={cn("uppercase text-[11px] sm:text-xs font-bold tracking-wider", theme.bg)}>
+                    <tr>
+                      <th className={cn("py-3 px-3 sm:px-4 text-left", theme.fg)}>ITEM DESCRIPTION</th>
+                      <th className={cn("py-3 px-3 sm:px-4 text-right w-28", theme.fg)}>UNIT PRICE</th>
+                      <th className={cn("py-3 px-3 sm:px-4 text-center w-24", theme.fg)}>QUANTITY</th>
+                      <th className={cn("py-3 px-3 sm:px-4 text-right w-28", theme.fg)}>AMOUNT</th>
+                      {isEditing && <th className={cn("py-3 px-2 text-center w-12", theme.fg)}>ACT</th>}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.items.map((item, idx) => {
+                      const isEven = idx % 2 === 1;
+                      const unitPrice = item.unitPrice ?? item.total;
+                      return (
+                        <tr
+                          key={idx}
+                          className={cn(
+                            "border-b border-border/50 transition-colors",
+                            isEven ? "bg-muted/40" : "bg-card"
+                          )}
+                        >
+                          <td className="py-3 px-3 sm:px-4">
+                            <EditableInput
+                              isEditing={isEditing}
+                              value={item.item}
+                              onChange={(e) => handleItemChange(idx, "item", e.target.value)}
+                              className="font-bold text-xs sm:text-sm text-foreground"
+                            />
+                            {item.description && (
+                              <EditableInput
+                                isEditing={isEditing}
+                                value={item.description}
+                                onChange={(e) => handleItemChange(idx, "description", e.target.value)}
+                                className="text-[11px] text-muted-foreground"
+                              />
+                            )}
+                          </td>
+                          <td className="py-3 px-3 sm:px-4 text-right font-medium text-muted-foreground">
+                            <EditableInput
+                              isEditing={isEditing}
+                              value={unitPrice}
+                              onChange={(e) => handleItemChange(idx, "unitPrice", e.target.value)}
+                              align="right"
+                            />
+                          </td>
+                          <td className="py-3 px-3 sm:px-4 text-center font-mono font-medium text-muted-foreground">
+                            <EditableInput
+                              isEditing={isEditing}
+                              value={item.qty}
+                              onChange={(e) => handleItemChange(idx, "qty", e.target.value)}
+                              align="center"
+                            />
+                          </td>
+                          <td className="py-3 px-3 sm:px-4 text-right font-bold text-foreground">
+                            <EditableInput
+                              isEditing={isEditing}
+                              value={item.total}
+                              onChange={(e) => handleItemChange(idx, "total", e.target.value)}
+                              align="right"
+                            />
+                          </td>
+                          {isEditing && (
+                            <td className="py-3 px-2 text-center">
+                              <button
+                                onClick={() => removeItem(idx)}
+                                className="text-rose-500 hover:text-rose-700 p-1 cursor-pointer"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </td>
+                          )}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+
+              {isEditing && (
+                <div className="p-3 bg-muted/40 border-t border-border flex justify-start">
+                  <button
+                    onClick={addItem}
+                    className={cn(
+                      "flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-[var(--radius)] transition-all cursor-pointer",
+                      theme.bg
+                    )}
+                  >
+                    <Plus className="w-3.5 h-3.5" /> Add Product Item
+                  </button>
+                </div>
+              )}
+            </section>
+
+            {/* Calculations & Watermark Area */}
+            <section className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6 pt-4 pb-2">
+              {/* Left: Watermark Arcs in Theme Color (z-10) */}
+              <div className="relative w-44 h-24 hidden sm:block pointer-events-none z-10">
+                <WatermarkArcs
+                  className="absolute -bottom-4 left-0 w-44 h-44 z-10 pointer-events-none"
+                  strokeClassName={theme.text}
+                />
+              </div>
+
+              {/* Right: Subtotal and Grand Total */}
+              <div className="w-full md:w-auto md:min-w-[280px] space-y-2 text-right">
+                <div className="flex justify-between md:justify-end gap-6 text-xs sm:text-sm">
+                  <span className="font-bold text-foreground uppercase tracking-wider">
+                    SUB TOTAL
+                  </span>
+                  <EditableInput
+                    isEditing={isEditing}
+                    value={data.subtotal}
+                    onChange={(e) => handleMainChange("subtotal", e.target.value)}
+                    align="right"
+                    className="font-bold text-foreground"
+                  />
+                </div>
+                <div className="h-px bg-border my-1" />
+                <div className="flex justify-between md:justify-end items-baseline gap-6">
+                  <span className="font-extrabold text-xs sm:text-sm text-foreground uppercase tracking-wider">
+                    TOTAL
+                  </span>
+                  <EditableInput
+                    isEditing={isEditing}
+                    value={data.grandTotal}
+                    onChange={(e) => handleMainChange("grandTotal", e.target.value)}
+                    align="right"
+                    className={cn("text-2xl sm:text-4xl md:text-5xl font-black tracking-tight", theme.text)}
+                  />
+                </div>
+              </div>
+            </section>
+
+            {/* Solid Theme Footer with Terms & Signatory */}
+            <footer className={cn("p-5 sm:p-7 md:p-8 rounded-[var(--radius)] relative z-10 overflow-hidden space-y-6", theme.bg)}>
+              {/* Decorative Geometric Block in top-right of footer */}
+              <div className="absolute top-0 right-0 opacity-40 sm:opacity-75 pointer-events-none">
+                <GeometricTilePattern className="w-24 h-16 sm:w-28 sm:h-18" themeBg={theme.bg} themeLight={theme.lightBg} />
+              </div>
+
+              {/* Terms Section Header */}
+              <div>
+                <span className={cn("text-xs sm:text-sm font-bold tracking-wider uppercase inline-block border-b pb-0.5", theme.fg, theme.fgBorder)}>
+                  TERM & CONDITIONS
+                </span>
+              </div>
+
+              {/* Terms Boxes & Manager Signature */}
+              <div className="grid grid-cols-1 lg:grid-cols-[1fr,auto] gap-6 items-end relative z-10">
+                {/* Terms Boxes */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                  {(data.terms || [
+                    "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore.",
+                    "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore.",
+                  ]).map((term, i) => (
+                    <div
+                      key={i}
+                      className={cn(
+                        "flex items-start gap-2.5 p-3 sm:p-3.5 rounded-[var(--radius)] border text-[10px] sm:text-[11px] leading-relaxed",
+                        theme.fgSoft,
+                        theme.fg
+                      )}
+                    >
+                      <CheckSquare className={cn("size-4 shrink-0 mt-0.5", theme.fg)} />
+                      <span className={theme.fg}>{term}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Manager Signature */}
+                <div className="text-left sm:text-right lg:pl-6 pt-2 lg:pt-0">
+                  <div className={cn("font-bold text-base sm:text-lg", theme.fg)}>
+                    {data.signatory?.name || "Tommy Shelby"}
+                  </div>
+                  <div className={cn("text-[10px] sm:text-xs font-semibold tracking-widest uppercase", theme.fgMuted)}>
+                    {data.signatory?.title || "OPERATIONS DIRECTOR"}
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom Contact Strip */}
+              <div className={cn("border-t pt-4 flex flex-wrap items-center justify-between gap-3 text-[11px] sm:text-xs", theme.fgBorder, theme.fg)}>
+                <div className="flex items-center gap-1.5">
+                  <span className={cn("size-4 rounded-full keep-rounded border grid place-items-center text-[9px]", theme.fgBorder)}>
+                    <Phone className={cn("size-2.5", theme.fg)} />
+                  </span>
+                  <span className={theme.fg}>{data.companyContact?.phone || "+1 (123) 456 7891"}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className={cn("size-4 rounded-full keep-rounded border grid place-items-center text-[9px]", theme.fgBorder)}>
+                    <Mail className={cn("size-2.5", theme.fg)} />
+                  </span>
+                  <span className={theme.fg}>{data.companyContact?.email || "support@avaraui.com"}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className={cn("size-4 rounded-full keep-rounded border grid place-items-center text-[9px]", theme.fgBorder)}>
+                    <Globe className={cn("size-2.5", theme.fg)} />
+                  </span>
+                  <span className={theme.fg}>{data.companyContact?.social || "avaraui.com"}</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <span className={cn("size-4 rounded-full keep-rounded border grid place-items-center text-[9px]", theme.fgBorder)}>
+                    <MapPin className={cn("size-2.5", theme.fg)} />
+                  </span>
+                  <span className={theme.fg}>{data.companyContact?.address || "450 South Brand Brooklyn, CA 91905, USA"}</span>
+                </div>
+              </div>
+            </footer>
           </div>
         </div>
       )}

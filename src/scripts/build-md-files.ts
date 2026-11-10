@@ -24,7 +24,14 @@ import {
 import { resolveMotion, resolveUsage, type ShowcaseSnippet } from "../lib/snippet";
 import { extractCode, extractMotionCode } from "../lib/code";
 import { pageHeading } from "../lib/docs-source";
-import { skillInstallCommand, type SkillClient } from "../lib/agent-skill";
+import {
+  skillFileLinks,
+  skillInstallCommand,
+  skillInstallPrompt,
+  skillTarget,
+  SKILL_ITEM,
+  type SkillClient,
+} from "../lib/agent-skill";
 import { hubMarkdown, type HubKind } from "../lib/agent-index";
 import { agentBlockForSlug, agentBlockMarkdown } from "../agent/variants/render";
 import { pageSeo } from "../lib/page-seo";
@@ -296,10 +303,30 @@ function convertMdxToMd(content: string, framework: Framework): string {
     () => hold('```json\n' + REGISTRY_COMPONENTS_JSON + '\n```')
   );
 
-  // <SkillInstall client="claude" /> prints the commands that install the agent skill.
-  mdContent = mdContent.replace(/<SkillInstall\s+client="(\w+)"\s*\/>/g, (_, client: string) => {
+  // <SkillInstall client="claude" /> prints both ways to install the agent skill
+  // (the page shows them as the "Ask your agent" and "Manual" tabs).
+  mdContent = mdContent.replace(/<SkillInstall\s+client="(\w+)"(?:\s+file="([^"]+)")?\s*\/>/g, (_, client: string, file?: string) => {
+    const prompt = '**Ask your agent**\n\n```text\n' + skillInstallPrompt(client as SkillClient, file) + '\n```';
     const { lang, code } = skillInstallCommand(client as SkillClient);
-    return hold('```' + lang + '\n' + code + '\n```');
+    if (client === "agents") {
+      return hold(prompt + `\n\n**Manual**\n\nCreate \`${file ?? "AGENTS.md"}\` if it does not exist, then paste this block at the end:\n\n` + '```' + lang + '\n' + code + '\n```');
+    }
+    const { dir, files } = skillTarget(client as "claude" | "cursor");
+    const target = files.length === 1 ? `${dir}/${files[0]}` : `${dir}/`;
+    const cli =
+      `\n\n**shadcn CLI**\n\nRun this from your project root. It is the same shadcn command you use for components, so it works with npm, pnpm, yarn and bun, on macOS, Linux and Windows (use \`pnpm dlx\`, \`yarn dlx\` or \`bunx\` in place of \`npx\`). It writes \`${target}\`.\n\n` +
+      '```bash\n' + `npx shadcn@latest add ${REGISTRY_NAMESPACE}/${SKILL_ITEM[client as "claude" | "cursor"]}` + '\n```' +
+      '\n\nTo update later, run it again with `--overwrite` at the end.';
+    const links = skillFileLinks(client as "claude" | "cursor")
+      .map(({ file: name, url, saveAs }) => `- [${name}](${url}) — save as \`${saveAs}\``)
+      .join('\n');
+    return hold(
+      prompt +
+        cli +
+        `\n\n**Manual**\n\nRun this one line from your project root. It works the same in macOS and Linux terminals, Windows PowerShell, Command Prompt and Git Bash, and needs Node.js 18 or newer. It writes \`${target}\`${files.length > 1 ? ` (${files.length} files)` : ''}.\n\n` +
+        '```' + lang + '\n' + code + '\n```' +
+        `\n\nCommand blocked or no Node.js? Save ${files.length > 1 ? 'each file' : 'the file'} yourself, creating the folders if they are missing:\n\n${links}`,
+    );
   });
 
   // <PageIndex kind="sections" /> prints a hub page's list.

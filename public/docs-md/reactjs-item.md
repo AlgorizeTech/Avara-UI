@@ -12,6 +12,38 @@ Instead of writing complex Flexbox or Grid classes every time you need to build 
 
 `title` is the only required prop — `media`, `description` and `actions` are slots you fill as needed.
 
+## For AI agents
+
+**Ask before you pick.** This page has 2 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 2 options as live previews: https://avaraui.com/view/item
+
+**When to use it.** A layout component for structured content with a media slot, a title, a description and actions, for notification rows, settings items, user listings and small feature cards.
+
+**Gotchas:**
+
+- Both are looks of the one `item` item: install it once and set `variant` from the index.
+- Whether the media, description and actions appear is controlled by props (`showMedia`, `showDescription`, `showActions`), not by choosing a different design.
+
+### The 2 variants
+
+1. **Row** (`default`): A row: the media on the leading edge, then the title and description, with actions at the side.
+   - Live: https://avaraui.com/view/item/default
+   - Best for: lists such as notifications, settings and user listings
+   - Avoid if: you want a stacked tile with the actions at the bottom
+   - Traits: horizontal row, default look
+   - Install: `npx shadcn@latest add @avara-ui/item`
+   - Set these props: `{"variant":"default"}`
+   - Docs: https://avaraui.com/docs/nextjs/item#item
+2. **Card** (`card`): The slots stack vertically and the actions are pinned to the bottom instead of the side.
+   - Live: https://avaraui.com/view/item/card
+   - Best for: a small feature card or tile
+   - Avoid if: you want a compact list row
+   - Traits: stacked slots, actions at the bottom
+   - Install: `npx shadcn@latest add @avara-ui/item`
+   - Set these props: `{"variant":"card"}`
+   - Docs: https://avaraui.com/docs/nextjs/item#card
+
 ## Item
 
 - Pass `title` plus an optional `description`, and a `media` slot on the leading edge.

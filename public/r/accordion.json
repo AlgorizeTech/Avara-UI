@@ -3,7 +3,7 @@
   "name": "accordion",
   "title": "Accordion",
   "author": "AlgorizeTech",
-  "description": "A data-driven accordion taking an array of items, with five distinct variants and an optional stack entrance that deals the items into place. Use it for FAQs and any list of collapsible sections.",
+  "description": "Ask the user to pick one of 6 accordion variants: https://avaraui.com/view/accordion. This item holds 6 of them as looks of one component (default, ghost, bordered, elevated, filled, brand-reveal). Skip the question if the user already named one. A data-driven accordion taking an array of items, with five distinct variants and an optional stack entrance that deals the items into place. Use it for FAQs and any list of collapsible sections.",
   "dependencies": [
     "lucide-react"
   ],

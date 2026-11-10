@@ -3,7 +3,7 @@
   "name": "image-viewer",
   "title": "Image Viewer",
   "author": "AlgorizeTech",
-  "description": "A collection of 4 responsive E-commerce Image Viewer components featuring inner lens magnifying zoom, HD side portal projection, carousel sliders, and interactive thumbnail strips.",
+  "description": "Ask the user to pick one of 4 image viewer variants: https://avaraui.com/view/image-viewer. This item holds 4 of them as looks of one component (inner-zoom, side-zoom, slider, thumbnails). Skip the question if the user already named one. A collection of 4 responsive E-commerce Image Viewer components featuring inner lens magnifying zoom, HD side portal projection, carousel sliders, and interactive thumbnail strips.",
   "dependencies": [
     "lucide-react"
   ],

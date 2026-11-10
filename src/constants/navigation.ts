@@ -134,7 +134,7 @@ const rawNavigation: NavigationItem[] = [
       { label: "Breadcrumb", slug: "breadcrumb" },
       { label: "Buttons", slug: "button" },
       { label: "Calendar", slug: "calendar" },
-      { label: "Card", slug: "card" },
+      { label: "Card", slug: "card", badge: "New" },
       {
         label: "Card Stack",
         slug: "card-stack",
@@ -242,7 +242,7 @@ const rawNavigation: NavigationItem[] = [
       { label: "Masonry Grid", slug: "masonry-grid" },
       { label: "Memories Card", slug: "memories-card" },
       { label: "Menubar", slug: "menubar" },
-      { label: "Mobile Mockups", slug: "mobile-mockup" },
+      { label: "Mobile Mockups", slug: "mobile-mockup", badge: "New" },
       { label: "Modal", slug: "modal" },
       {
         label: "Modern Scroll Stack",
@@ -273,7 +273,6 @@ const rawNavigation: NavigationItem[] = [
         label: "Ribbon Drift",
         slug: "ribbon-drift",
         badge: "New",
-        addedOn: "2026-11-03",
         keywords: [
           "ribbon drift",
           "ribbon card",
@@ -420,6 +419,12 @@ const rawNavigation: NavigationItem[] = [
         keywords: ["hero", "wall", "screenshots", "camera", "zoom", "library", "landing", "showcase", "grid"],
       },
       {
+        label: "Portfolio Showcase",
+        slug: "portfolio-showcase",
+        badge: "New",
+        keywords: ["portfolio", "showcase", "masonry", "infinite canvas", "draggable", "gallery"],
+      },
+      {
         label: "Dashboard",
         slug: "dashboard",
         keywords: [
@@ -440,6 +445,7 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "CTA Section",
         slug: "cta-section",
+        badge: "Updated",
         keywords: [
           "cta", "call to action", "brand pillars", "pillars", "scorecard",
           "conversion", "marketing", "features", "framer", "services",

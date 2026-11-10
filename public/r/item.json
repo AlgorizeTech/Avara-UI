@@ -3,7 +3,7 @@
   "name": "item",
   "title": "Item",
   "author": "AlgorizeTech",
-  "description": "A row primitive pairing media, title, description and actions in one aligned layout. Use it to build list rows, notification entries and search results.",
+  "description": "Ask the user to pick one of 2 item variants: https://avaraui.com/view/item. This item holds 2 of them as looks of one component (default, card). Skip the question if the user already named one. A row primitive pairing media, title, description and actions in one aligned layout. Use it to build list rows, notification entries and search results.",
   "dependencies": [],
   "registryDependencies": [
     "utils"

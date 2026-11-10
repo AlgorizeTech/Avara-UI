@@ -21,7 +21,7 @@
     "perf:bundle": "npx bundle-analyzer .next/static/chunks/*.js",
     "perf:optimize": "node scripts/optimize-build.js",
     "generate:home-css": "tsx ./src/scripts/generate-home-css.ts",
-    "generate:registry": "tsx ./src/scripts/generate-registry.ts",
+    "generate:registry": "tsx ./src/scripts/generate-registry.ts && tsx ./src/scripts/generate-skill-items.ts",
     "check:registry": "tsx ./src/scripts/check-registry.ts",
     "check:frameworks": "tsx ./src/scripts/check-frameworks.ts",
     "check:variants": "tsx ./src/scripts/check-variants.ts",

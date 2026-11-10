@@ -3,7 +3,7 @@
   "name": "vertical-tabs",
   "title": "Tabs",
   "author": "AlgorizeTech",
-  "description": "A tab panel whose rail runs across the top or down the side, with GSAP transitions between panels. Use it for settings and documentation sections with long content.",
+  "description": "Ask the user to pick one of 8 vertical tabs variants: https://avaraui.com/view/vertical-tabs. This item holds 8 of them as looks of one component (default, soft, segmented, underline, minimal, bordered, elevated, glass). Skip the question if the user already named one. A tab panel whose rail runs across the top or down the side, with GSAP transitions between panels. Use it for settings and documentation sections with long content.",
   "dependencies": [],
   "registryDependencies": [
     "utils"

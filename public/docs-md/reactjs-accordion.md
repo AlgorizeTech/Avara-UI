@@ -10,6 +10,71 @@ A data-driven accordion built on the Radix primitive, with five list variants an
 
 You feed it an `accordionData` array — the wrapper maps it to items, icons and content for you. Switch on `animation="stack"` and the items start piled on the first one and deal down into place when the accordion scrolls into view.
 
+## For AI agents
+
+**Ask before you pick.** This page has 6 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 6 options as live previews: https://avaraui.com/view/accordion
+
+**When to use it.** A data-driven accordion with five list styles and an automated Brand Logo Reveal showcase. You pass an `accordionData` array and the open panel is the only thing that gets the accent.
+
+**Gotchas:**
+
+- All of them are looks of the one `accordion` item: install it once and set `variant` from the index.
+- How many panels may be open is the `interaction` prop (single, multiple, mandatory, non-collapsible), not a design; in multiple mode `defaultValue` must be an array.
+- `animation="stack"` deals the items down when the accordion scrolls into view and works with any list style.
+
+### The 6 variants
+
+1. **Default** (`default`): Closed rows stay quiet and the open one lifts out as a card.
+   - Live: https://avaraui.com/view/accordion/default
+   - Best for: a FAQ on a plain page background
+   - Avoid if: the accordion sits inside a card or panel that is already boxed
+   - Traits: open row becomes a card, quiet closed rows
+   - Install: `npx shadcn@latest add @avara-ui/accordion`
+   - Set these props: `{"variant":"default"}`
+   - Docs: https://avaraui.com/docs/nextjs/accordion#accordion
+2. **Ghost** (`ghost`): Type and hairlines only, with no boxes.
+   - Live: https://avaraui.com/view/accordion/ghost
+   - Best for: a long editorial FAQ
+   - Avoid if: you want the open item to stand out strongly
+   - Traits: hairlines, no cards
+   - Install: `npx shadcn@latest add @avara-ui/accordion`
+   - Set these props: `{"variant":"ghost"}`
+   - Docs: https://avaraui.com/docs/nextjs/accordion#multiple-permanent-open
+3. **Bordered** (`bordered`): Everything sits in one outlined panel, with a rail down the open row.
+   - Live: https://avaraui.com/view/accordion/bordered
+   - Best for: an accordion inside a card or a settings page
+   - Avoid if: it sits on a bare page where the outline looks heavy
+   - Traits: single outlined panel, rail on the open row
+   - Install: `npx shadcn@latest add @avara-ui/accordion`
+   - Set these props: `{"variant":"bordered"}`
+   - Docs: https://avaraui.com/docs/nextjs/accordion#multiple-open
+4. **Elevated** (`elevated`): Every item keeps its own card, and the open one rises on a primary ring instead of changing shape.
+   - Live: https://avaraui.com/view/accordion/elevated
+   - Best for: a stack of separate cards, especially with the stack entrance
+   - Avoid if: you want a compact list without a card per row
+   - Traits: card per item, primary ring on the open one
+   - Install: `npx shadcn@latest add @avara-ui/accordion`
+   - Set these props: `{"variant":"elevated"}`
+   - Docs: https://avaraui.com/docs/nextjs/accordion#stack-entrance
+5. **Filled** (`filled`): The open item inverts to your primary colour: the loudest of the five lists.
+   - Live: https://avaraui.com/view/accordion/filled
+   - Best for: a section where the open answer should be unmissable
+   - Avoid if: you want a calm, document-like list
+   - Traits: primary-colour open item, loudest list style
+   - Install: `npx shadcn@latest add @avara-ui/accordion`
+   - Set these props: `{"variant":"filled"}`
+   - Docs: https://avaraui.com/docs/nextjs/accordion#always-one-open
+6. **Brand logo reveal** (`brand-reveal`): An editorial horizontal brand accordion that cycles through client or partner brands on a timer.
+   - Live: https://avaraui.com/view/accordion/brand-reveal
+   - Best for: showing clients or partners as a feature, not answering questions
+   - Avoid if: you need a FAQ or any text-heavy list
+   - Traits: horizontal panels, autoplay on a timer, pauses on hover, also available as `<BrandLogoAccordion />`
+   - Install: `npx shadcn@latest add @avara-ui/accordion`
+   - Set these props: `{"variant":"brand-reveal"}`
+   - Docs: https://avaraui.com/docs/nextjs/accordion#brand-logo-reveal
+
 ## Accordion
 
 - Pass `accordionData` as an array of `{ value, title, icon, content }` — `content` is an array of paragraphs and `icon` a key of the block's `ICON_MAP`.

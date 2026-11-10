@@ -10,6 +10,46 @@ A complete, fully functional, and editable Invoice dashboard component featuring
 
 The component is fully encapsulated — hand it an `invoiceData` object and it owns the rest. Click **Edit** in the right sidebar of any preview to add items, change quantities and download the resulting JSON.
 
+## For AI agents
+
+**Ask before you pick.** This page has 3 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 3 options as live previews: https://avaraui.com/view/invoice
+
+**When to use it.** An editable invoice dashboard in three designs: a default dashboard, a corporate executive look and a neo-brutalist one. You hand it an `invoiceData` object and it owns the rest, including editing line items and downloading the JSON.
+
+**Gotchas:**
+
+- All three are looks of the one `invoice` item: install it once and set `variant` from the index.
+- The dates, addresses, billing details, line items, totals and notes all come from the one `invoiceData` object.
+
+### The 3 variants
+
+1. **Default dashboard** (`default`): The standard invoice dashboard, with your accent colour on the primary buttons and focus rings.
+   - Live: https://avaraui.com/view/invoice/default
+   - Best for: a SaaS or billing area that should match a general dashboard
+   - Avoid if: you want a stricter business look or a bold, graphic one
+   - Traits: dashboard layout, default look, editable with an Edit sidebar
+   - Install: `npx shadcn@latest add @avara-ui/invoice`
+   - Set these props: `{"variant":"default"}`
+   - Docs: https://avaraui.com/docs/nextjs/invoice#default-dashboard-invoice
+2. **Corporate executive** (`corporate`): A formal, business-style invoice.
+   - Live: https://avaraui.com/view/invoice/corporate
+   - Best for: a B2B or finance product where the invoice should look formal
+   - Avoid if: your brand is playful or casual
+   - Traits: formal styling
+   - Install: `npx shadcn@latest add @avara-ui/invoice`
+   - Set these props: `{"variant":"corporate"}`
+   - Docs: https://avaraui.com/docs/nextjs/invoice#corporate-executive
+3. **Neo-brutalist** (`brutalist`): A bold neo-brutalist invoice.
+   - Live: https://avaraui.com/view/invoice/brutalist
+   - Best for: a brand with a loud, graphic, neo-brutalist identity
+   - Avoid if: you need a conservative or corporate look
+   - Traits: neo-brutalist styling
+   - Install: `npx shadcn@latest add @avara-ui/invoice`
+   - Set these props: `{"variant":"brutalist"}`
+   - Docs: https://avaraui.com/docs/nextjs/invoice#neo-brutalist
+
 ## Default Dashboard Invoice
 
 Editing, totals, printing and JSON export are all handled internally.

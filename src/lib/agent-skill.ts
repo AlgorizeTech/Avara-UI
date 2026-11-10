@@ -41,7 +41,7 @@ Follow these in order. Do not skip the reading step: this is what keeps you from
 
 1. **Plan.** Before any UI code, write a short plan: the page's sections, the density, and the empty, loading and error states. Say which library pieces cover which section.
 2. **Decide.** Search the agent index (\`${SITE_URL}/agent/components.json\`) or \`${SITE_URL}/llms.txt\` for the pieces. Each entry has a summary, the install command and a Markdown URL. Match by what the summary says, not by the name. If nothing fits, compose the screen from smaller components and say so; do not force the nearest match. **Then, for every entry with \`choose: true\`, stop and ask the user which variant they want before you install or write anything** (for example the hero: a section that comes in several designs). Show each option with its live link, and offer "pick the best for me". If your client has a click-to-pick question tool (Claude Code's \`AskUserQuestion\`), use it so the user answers by clicking; \`variants.md\` says how to fit more than 4 options into it. If the user already named a variant, use it without asking. An entry without \`choose\` has one option: install it. The exact question, and how to choose for the user when they ask you to, are in \`variants.md\`. Never pick a variant on your own taste.
-3. **Register once.** If \`components.json\` has no \`${ns}\` entry, run \`npx shadcn@latest ${REGISTRY_ADD_ARGS}\`.
+3. **Registry.** \`${ns}\` is listed in shadcn's registry directory, so \`add ${ns}/<name>\` works with no setup. Only if the CLI answers "Unknown registry" (an older shadcn CLI), run \`npx shadcn@latest ${REGISTRY_ADD_ARGS}\` once, then retry.
 4. **Install.** Run \`npx shadcn@latest add ${ns}/<name> --yes\`. Add several items in one command. The CLI installs npm dependencies and any registry items the item needs. For a \`choose\` entry, use the chosen variant's own \`install\` command, never every item the page lists.
 5. **Read.** Fetch the item's Markdown (\`markdownUrl\` in the index). It lists the props, usage and the exact import path. Write code against that, not against memory.
 6. **Adapt.** Replace the sample data with the user's. Keep the component's structure and styling: change content, props and theme tokens, not the layout the component was built around.
@@ -55,6 +55,7 @@ Follow these in order. Do not skip the reading step: this is what keeps you from
 - Components import nothing from \`next/*\`. Pass \`linkComponent\` / \`imageComponent\` props when the project wants \`next/link\` or \`next/image\`.
 - If an item needs a prop the Markdown does not list, it does not exist. Read the source file the CLI wrote instead of guessing.
 - Honour \`prefers-reduced-motion\`. The components do; do not add animation that ignores it.
+- Commands here use \`npx\`. If the project uses another package manager (a \`pnpm-lock.yaml\`, \`yarn.lock\` or \`bun.lock\`), run the same command with its runner: \`pnpm dlx\`, \`yarn dlx\` or \`bunx\`.
 
 ## More
 
@@ -236,7 +237,7 @@ export const agentsBlock = () =>
 
 This project uses ${SITE_NAME} (\`${ns}\`), a free shadcn registry of animated React components and website sections.
 
-- Register once: \`npx shadcn@latest ${REGISTRY_ADD_ARGS}\`. Install with \`npx shadcn@latest add ${ns}/<name> --yes\`.
+- Install with \`npx shadcn@latest add ${ns}/<name> --yes\`. \`${ns}\` is in shadcn's registry directory, so no setup is needed; only if the CLI says "Unknown registry", run \`npx shadcn@latest ${REGISTRY_ADD_ARGS}\` once.
 - Find components in ${SITE_URL}/agent/components.json (or ${SITE_URL}/llms.txt). Read an item's Markdown for its props before writing code against it.
 - Follow the workflow in ${BASE}/SKILL.md: plan, decide, install, read, adapt, check.
 - Ask before you pick. An index entry with \`choose: true\` has several designs of one section (for example the hero). If the user has not named one, ask which they want, with each option's live link, before installing. If they say to choose, pick from \`bestFor\` / \`avoidIf\` and say why. Use your client's click-to-pick question tool if it has one, so the user answers by clicking, not typing. Never pick a variant on your own. See ${BASE}/variants.md.
@@ -248,20 +249,68 @@ export type SkillClient = "claude" | "cursor" | "agents";
 const topicFiles = () => Object.keys(SKILL_FILES).filter((file) => file.endsWith(".md"));
 const fileUrl = (file: string) => `${BASE}/${file}`;
 
+/**
+ * The registry items that install the skill with `shadcn add`, one per agent
+ * (they write to different folders, so one item would drop both). Published by
+ * src/scripts/generate-skill-items.ts.
+ */
+export const SKILL_ITEM = { claude: "agent-skill", cursor: "agent-skill-cursor" } as const;
+
+/** The folder and files a client's install writes. `agents` has none: it is a block to paste. */
+export function skillTarget(client: "claude" | "cursor"): { dir: string; files: string[] } {
+  return client === "claude"
+    ? { dir: `.claude/skills/${SKILL_NAME}`, files: topicFiles() }
+    : { dir: ".cursor/rules", files: [`${SKILL_NAME}.mdc`] };
+}
+
+/** The same files as links, for installing by hand. */
+export function skillFileLinks(client: "claude" | "cursor"): { file: string; url: string; saveAs: string }[] {
+  const { dir, files } = skillTarget(client);
+  return files.map((file) => ({ file, url: fileUrl(file), saveAs: `${dir}/${file}` }));
+}
+
+/**
+ * A prompt that has the user's own agent do the install: the easiest way, since
+ * it needs no shell syntax and works on every system. Claude Code and Cursor get
+ * the files to download; the others get the block to add to their instructions
+ * file (`file`).
+ */
+export function skillInstallPrompt(client: SkillClient, file = "AGENTS.md"): string {
+  if (client === "agents") {
+    return [
+      `Add the ${SITE_NAME} instructions below to ${file} in this project.`,
+      `Create the file if it does not exist, and keep everything already in it. Then tell me what you changed.`,
+      "",
+      agentsBlock(),
+    ].join("\n");
+  }
+  const { dir, files } = skillTarget(client);
+  return [
+    `Install the ${SITE_NAME} agent skill in this project.`,
+    "",
+    `1. Create the folder ${dir}/ if it does not exist.`,
+    `2. Download ${files.length > 1 ? "these files" : "this file"} into it, keeping the file names:`,
+    ...files.map((name) => `   - ${fileUrl(name)}`),
+    "3. List the folder and tell me which files you saved.",
+  ].join("\n");
+}
+
+/**
+ * The manual install: one line that runs the same in macOS, Linux, Windows
+ * PowerShell, Command Prompt and Git Bash, because Node.js (18 or newer) is the
+ * one tool every project here already has. Single quotes inside and double
+ * quotes outside keep it valid in all of those shells. `agents` is a block to
+ * paste, so it has no command.
+ */
 export function skillInstallCommand(client: SkillClient): { lang: string; code: string } {
-  if (client === "claude") {
-    const dir = `.claude/skills/${SKILL_NAME}`;
-    return {
-      lang: "bash",
-      code: [`mkdir -p ${dir}`, ...topicFiles().map((file) => `curl -fsSL ${fileUrl(file)} -o ${dir}/${file}`)].join("\n"),
-    };
-  }
-  if (client === "cursor") {
-    const file = `${SKILL_NAME}.mdc`;
-    return {
-      lang: "bash",
-      code: `mkdir -p .cursor/rules\ncurl -fsSL ${fileUrl(file)} -o .cursor/rules/${file}`,
-    };
-  }
-  return { lang: "markdown", code: agentsBlock() };
+  if (client === "agents") return { lang: "markdown", code: agentsBlock() };
+
+  const { dir, files } = skillTarget(client);
+  const list = files.map((file) => `'${file}'`).join(",");
+  const script = [
+    `const fs=require('fs'),d='${dir}'`,
+    `fs.mkdirSync(d,{recursive:true})`,
+    `for(const f of [${list}])fetch('${BASE}/'+f).then(r=>{if(!r.ok)throw new Error(f+' '+r.status);return r.text()}).then(t=>fs.writeFileSync(d+'/'+f,t)).catch(e=>{console.error(e.message);process.exitCode=1})`,
+  ].join(";");
+  return { lang: "bash", code: `node -e "${script}"` };
 }

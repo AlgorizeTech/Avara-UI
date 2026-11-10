@@ -12,6 +12,47 @@ This `ScrollAreaBlock` provides a beautiful, native-feeling scrollbar that works
 
 Give the block a height or width constraint and it takes over the scrollbar styling from there — same rendering in Webkit and Firefox.
 
+## For AI agents
+
+**Ask before you pick.** This page has 3 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 3 options as live previews: https://avaraui.com/view/scroll-area
+
+**When to use it.** A scroll container with a custom, cross-browser scrollbar built in pure CSS, in three styles: the default, a slim minimal bar and a tinted glass bar.
+
+**Gotchas:**
+
+- All three are looks of the one `scroll-area` item: install it once and set `variant` from the index.
+- The container needs a height or width constraint, or there is nothing to scroll.
+- Direction is `orientation` (vertical, horizontal or both) and fading the bar out is `autoHide`: both are props on any style.
+
+### The 3 variants
+
+1. **Default** (`default`): The standard custom scrollbar, styled to match your theme.
+   - Live: https://avaraui.com/view/scroll-area/default
+   - Best for: a general scrollable panel, list or code area
+   - Avoid if: the space is dense and a slimmer bar would suit better
+   - Traits: default look, vertical, horizontal or both axes
+   - Install: `npx shadcn@latest add @avara-ui/scroll-area`
+   - Set these props: `{"variant":"default"}`
+   - Docs: https://avaraui.com/docs/nextjs/scroll-area#scroll-area
+2. **Minimal** (`minimal`): The thumb is slimmed down for dense interfaces.
+   - Live: https://avaraui.com/view/scroll-area/minimal
+   - Best for: tables, menus and dense UI where the scrollbar should take little room
+   - Avoid if: a thin bar would be hard to grab
+   - Traits: slim thumb
+   - Install: `npx shadcn@latest add @avara-ui/scroll-area`
+   - Set these props: `{"variant":"minimal"}`
+   - Docs: https://avaraui.com/docs/nextjs/scroll-area#minimal
+3. **Glass** (`glass`): The bar is tinted for use over frosted surfaces.
+   - Live: https://avaraui.com/view/scroll-area/glass
+   - Best for: scroll areas inside glass panels or over imagery
+   - Avoid if: the surface is plain and solid
+   - Traits: tinted bar for frosted backgrounds
+   - Install: `npx shadcn@latest add @avara-ui/scroll-area`
+   - Set these props: `{"variant":"glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/scroll-area#glass
+
 ## Scroll area
 
 The styled scrollbar is scoped to a generated class, so global scrollbars are untouched.

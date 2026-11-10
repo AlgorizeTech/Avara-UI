@@ -3,7 +3,7 @@
   "name": "loader",
   "title": "Loader",
   "author": "AlgorizeTech",
-  "description": "A loading indicator in six shapes — spinner, orbit, dots, pulse, ring and bar — with an optional caption. Use it for inline and full-panel pending states.",
+  "description": "Ask the user to pick one of 5 loader variants: https://avaraui.com/view/loader. This item holds 5 of them as looks of one component (spinner, orbit, dots, pulse, bar). Skip the question if the user already named one. A loading indicator in six shapes — spinner, orbit, dots, pulse, ring and bar — with an optional caption. Use it for inline and full-panel pending states.",
   "dependencies": [],
   "registryDependencies": [
     "utils"

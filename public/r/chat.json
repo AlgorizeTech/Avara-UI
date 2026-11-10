@@ -3,7 +3,7 @@
   "name": "chat",
   "title": "Chat",
   "author": "AlgorizeTech",
-  "description": "A complete messaging interface with contact list, conversation pane and composer. Use it as the shell for a support or direct-messaging feature.",
+  "description": "Ask the user to pick one of 4 chat variants: https://avaraui.com/view/chat. This item holds 4 of them as looks of one component (default, minimal, glass, liquid-glass). Skip the question if the user already named one. A complete messaging interface with contact list, conversation pane and composer. Use it as the shell for a support or direct-messaging feature.",
   "dependencies": [
     "lucide-react"
   ],

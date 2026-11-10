@@ -12,6 +12,38 @@ Ships with **2 distinct handcrafted variants**: vintage ivory electro-mechanical
 
 ---
 
+## For AI agents
+
+**Ask before you pick.** This page has 2 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 2 options as live previews: https://avaraui.com/view/split-flap
+
+**When to use it.** A split-flap (Solari board) display with 3D flipping cards, a horizontal crease, hinge notches and synthesised click sounds, in two handcrafted casings: vintage ivory and minimalist architectural glass.
+
+**Gotchas:**
+
+- Both are looks of the one `split-flap` item: install it once and set `variant` from the index.
+- The click sounds are synthesised with the Web Audio API, so no audio files are needed.
+
+### The 2 variants
+
+1. **Ivory, classic mechanical** (`ivory`): An embossed molded bezel with warm off-white flap cards and rust-orange type, like a retro Solari board.
+   - Live: https://avaraui.com/view/split-flap/ivory
+   - Best for: a retro, mechanical, travel or departures-board feel
+   - Avoid if: your brand is clean and modern
+   - Traits: molded bezel, warm off-white flaps, rust-orange type, click sounds
+   - Install: `npx shadcn@latest add @avara-ui/split-flap`
+   - Set these props: `{"variant":"ivory"}`
+   - Docs: https://avaraui.com/docs/nextjs/split-flap#split-flap-ivory
+2. **Minimalist architectural** (`minimalist`): A frosted-glass architectural frame with clean backdrop blur.
+   - Live: https://avaraui.com/view/split-flap/minimalist
+   - Best for: a modern, design-led brand that wants the flip effect without the vintage styling
+   - Avoid if: you want the nostalgic retro-mechanical look
+   - Traits: frosted glass frame, backdrop blur
+   - Install: `npx shadcn@latest add @avara-ui/split-flap`
+   - Set these props: `{"variant":"minimalist"}`
+   - Docs: https://avaraui.com/docs/nextjs/split-flap#split-flap-minimalist
+
 ## Variants
 
 ### Split-Flap — Ivory (Classic Mechanical)

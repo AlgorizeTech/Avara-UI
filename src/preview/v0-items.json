@@ -160,6 +160,7 @@
     "liquid-glass": "Calendar — Liquid Glass"
   },
   "card": {
+    "project-showcase": "Card — Project showcase",
     "e-commerce-product-cards": "Card — E-commerce Product Cards",
     "standard-card": "Card — Standard Card",
     "interactive": "Card — Interactive",
@@ -241,8 +242,7 @@
     "build-interactive-interfaces": "Component Wall — Build interactive interfaces",
     "centred-with-persistent-background": "Component Wall — Centred with persistent background",
     "clean-mobile-view-no-background-animation": "Component Wall — Clean mobile view (no background animation)",
-    "copy-beside-the-wall": "Component Wall — Copy beside the wall",
-    "fullscreen-wall-no-copy": "Component Wall — Fullscreen wall (no copy)"
+    "copy-beside-the-wall": "Component Wall — Copy beside the wall"
   },
   "context-menu": {
     "labels-shortcuts-disabled": "Context Menu — Labels, shortcuts & disabled"
@@ -281,9 +281,9 @@
   },
   "cta-section": {
     "offer-showcase-variant-offer-showcase": "Cta Section — Offer Showcase — variant=\"offer-showcase\"",
-    "mobile-app-showcase-variant-mobile-app": "Cta Section — Mobile App Showcase — variant=\"mobile-app\"",
     "concentric-portal-variant-concentric-portal": "Cta Section — Concentric Portal — variant=\"concentric-portal\"",
-    "brand-pillars-variant-brand-pillars": "Cta Section — Brand Pillars — variant=\"brand-pillars\""
+    "brand-pillars-variant-brand-pillars": "Cta Section — Brand Pillars — variant=\"brand-pillars\"",
+    "mobile-app-showcase-variant-mobile-app": "Cta Section — Mobile App Showcase — variant=\"mobile-app\""
   },
   "cursor-animation": {
     "image-trail-cursor": "Cursor Animation — Image Trail Cursor",
@@ -571,6 +571,7 @@
   },
   "invoice": {
     "default-dashboard-invoice": "Invoice — Default Dashboard Invoice",
+    "modern-geometric": "Invoice — Modern Geometric",
     "corporate-executive": "Invoice — Corporate Executive",
     "neo-brutalist": "Invoice — Neo-Brutalist"
   },
@@ -626,6 +627,7 @@
     "application-menubar": "Menubar — Application menubar"
   },
   "mobile-mockup": {
+    "iphone-16-pro": "Mobile Mockup — iPhone 16 Pro",
     "iphone-17-pro-max": "Mobile Mockup — iPhone 17 Pro Max",
     "iphone-14-pro-max": "Mobile Mockup — iPhone 14 Pro Max",
     "iphone-12-pro-max": "Mobile Mockup — iPhone 12 Pro Max",
@@ -701,6 +703,9 @@
     "account-menu": "Popover — Account menu",
     "offset": "Popover — Offset"
   },
+  "portfolio-showcase": {
+    "masonry-portfolio-variant-masonry-portfolio": "Portfolio Showcase — Masonry Portfolio — variant=\"masonry-portfolio\""
+  },
   "pricing": {
     "selectable-workspace-plans": "Pricing — Selectable workspace plans",
     "tiered-cards": "Pricing — Tiered cards",
@@ -765,7 +770,8 @@
     "interactive-brand-logo-carousel": "Reviews — Interactive Brand Logo Carousel"
   },
   "ribbon-drift": {
-    "ribbon-drift-card": "Ribbon Drift — Ribbon Drift Card"
+    "cross-ribbon-logos": "Ribbon Drift — Cross Ribbon Logos",
+    "ribbon-drift-hero-card": "Ribbon Drift — Ribbon Drift Hero Card"
   },
   "scroll-area": {
     "scroll-area": "Scroll Area",

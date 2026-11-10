@@ -12,6 +12,63 @@ This upgraded `TimelineBlock` acts as a multi-tool for event visualization. It s
 
 Each item's `status` drives its own styling: `completed` fills the icon and solidifies the line above it, `current` pulses, and `upcoming` fades.
 
+## For AI agents
+
+**Ask before you pick.** This page has 5 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 5 options as live previews: https://avaraui.com/view/timeline
+
+**When to use it.** A vertical timeline for order statuses, company histories and event feeds, with action buttons and expandable detail, in five looks: three rail positions and two card surfaces.
+
+**Gotchas:**
+
+- All five are looks of the one `timeline` item: install it once and set `layout` or `variant` from the index.
+- The center layout folds back to one column below 576px, as a container query that tracks the column the timeline sits in.
+- `glass` needs something behind the cards to frost.
+
+### The 5 variants
+
+1. **Left rail** (`left`): The default rail on the left with the cards to its right.
+   - Live: https://avaraui.com/view/timeline/left
+   - Best for: an order tracker or activity feed in a normal content column
+   - Avoid if: you want cards alternating on both sides
+   - Traits: left rail, default look
+   - Install: `npx shadcn@latest add @avara-ui/timeline`
+   - Set these props: `{"layout":"left"}`
+   - Docs: https://avaraui.com/docs/nextjs/timeline#timeline
+2. **Center rail** (`center`): Cards alternate either side of a central rail.
+   - Live: https://avaraui.com/view/timeline/center
+   - Best for: a company history or roadmap with room to spread out
+   - Avoid if: it must stay a single compact column
+   - Traits: alternating cards, folds to one column when narrow
+   - Install: `npx shadcn@latest add @avara-ui/timeline`
+   - Set these props: `{"layout":"center"}`
+   - Docs: https://avaraui.com/docs/nextjs/timeline#center-layout
+3. **Right rail** (`right`): The mirror of the left rail, with the rail on the right.
+   - Live: https://avaraui.com/view/timeline/right
+   - Best for: a timeline beside content that already sits on the left, or right-to-left layouts
+   - Avoid if: you want the standard left rail
+   - Traits: right rail
+   - Install: `npx shadcn@latest add @avara-ui/timeline`
+   - Set these props: `{"layout":"right"}`
+   - Docs: https://avaraui.com/docs/nextjs/timeline#right-layout
+4. **Minimal** (`minimal`): The card chrome is removed for a lighter feed, so the rail and type carry the structure.
+   - Live: https://avaraui.com/view/timeline/minimal
+   - Best for: a quiet changelog or activity feed
+   - Avoid if: you want each event to sit in its own card
+   - Traits: no card chrome
+   - Install: `npx shadcn@latest add @avara-ui/timeline`
+   - Set these props: `{"variant":"minimal"}`
+   - Docs: https://avaraui.com/docs/nextjs/timeline#minimal
+5. **Glass** (`glass`): The cards are frosted, so put something behind them.
+   - Live: https://avaraui.com/view/timeline/glass
+   - Best for: a timeline over a photo or gradient
+   - Avoid if: the background is plain
+   - Traits: frosted cards
+   - Install: `npx shadcn@latest add @avara-ui/timeline`
+   - Set these props: `{"variant":"glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/timeline#glass
+
 ## Timeline
 
 Each item can carry an `icon`, a `status`, an inline `action` button and expandable `content`.

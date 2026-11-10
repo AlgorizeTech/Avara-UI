@@ -3,7 +3,7 @@
   "name": "otp-input",
   "title": "OTP Input",
   "author": "AlgorizeTech",
-  "description": "A segmented one-time-passcode field with auto-advance, paste handling, and backspace navigation. Use it for email or SMS verification steps.",
+  "description": "Ask the user to pick one of 2 otp input variants: https://avaraui.com/view/otp-input. This item holds 2 of them as looks of one component (default, underlined). Skip the question if the user already named one. A segmented one-time-passcode field with auto-advance, paste handling, and backspace navigation. Use it for email or SMS verification steps.",
   "dependencies": [],
   "registryDependencies": [
     "utils"

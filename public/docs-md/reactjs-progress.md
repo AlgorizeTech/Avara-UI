@@ -14,6 +14,36 @@ Colour carries state. `stages` changes the fill as thresholds are crossed — ne
 
 Each example shows a live preview with the exact code to copy.
 
+## For AI agents
+
+**Ask before you pick.** This page has 2 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 2 options as live previews: https://avaraui.com/view/progress
+
+**When to use it.** An animated progress indicator for loading, storage meters and step-by-step wizards. Every form fills from zero when it first appears and its numbers count up with it. Two forms: a linear bar and a circular ring.
+
+**Gotchas:**
+
+- Both are parts of the one `progress` item (`Progress` and `CircularProgress`): install it once.
+- Statuses, an indeterminate bar, step progress (a small `max`) and stage colours are props or usage of these two forms, not separate designs.
+
+### The 2 variants
+
+1. **Linear bar** (`bar`): A bar that fills along a track, with a percentage bubble on hover; `value` and `max` are all it needs.
+   - Live: https://avaraui.com/view/progress/bar
+   - Best for: loading states, storage meters and form steps
+   - Avoid if: you want a compact ring that fits a small tile
+   - Traits: horizontal fill, hover percentage tooltip, optional label and readout
+   - Install: `npx shadcn@latest add @avara-ui/progress`
+   - Docs: https://avaraui.com/docs/nextjs/progress#progress
+2. **Circular ring** (`circular`): The value drawn as an animated ring with a centred percentage, replaceable with a count or an icon.
+   - Live: https://avaraui.com/view/progress/circular
+   - Best for: a goal or completion figure on a card or dashboard tile
+   - Avoid if: you want to show progress along a line
+   - Traits: ring, custom centre content, adjustable diameter and thickness
+   - Install: `npx shadcn@latest add @avara-ui/progress`
+   - Docs: https://avaraui.com/docs/nextjs/progress#circular-progress
+
 ## Progress
 
 The bare bar. Drag the slider above to move it; hover the bar for the readout.

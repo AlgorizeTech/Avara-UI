@@ -3,7 +3,7 @@
   "name": "gallery",
   "title": "Gallery",
   "author": "AlgorizeTech",
-  "description": "A versatile, multi-variant interactive visual gallery featuring revolving 3D orbit rings, responsive bento grids, vertical continuous reels, 3D pill carousels, and perspective arc carousels. Use it for agencies, portfolios, product showcases, and creative hero sections.",
+  "description": "Ask the user to pick one of 6 gallery variants: https://avaraui.com/view/gallery. This item holds 6 of them as looks of one component (orbit-gallery, circular-reel, video-sphere, moving-bento, pill-carousel, arc-carousel). Skip the question if the user already named one. A versatile, multi-variant interactive visual gallery featuring revolving 3D orbit rings, responsive bento grids, vertical continuous reels, 3D pill carousels, and perspective arc carousels. Use it for agencies, portfolios, product showcases, and creative hero sections.",
   "dependencies": [
     "gsap",
     "lucide-react"

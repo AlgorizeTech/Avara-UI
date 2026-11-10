@@ -14,110 +14,278 @@ free, needs no account, and works with or without the [MCP server](https://avara
 ## What the agent gets
 
 - **A workflow.** Plan the page, decide which pieces to use, install them with the CLI, read each one's Markdown for its real props, adapt the sample data, then run a final check.
-- **A question before it picks.** Where a section comes in several designs (today the hero and the footer, with more to come), the agent shows you every design with a live link and waits for your answer. Name one, or tell it to pick the best for you and it will choose and say why.
+- **A question before it picks.** Where a section or component comes in several designs (the hero, the footer, tabs, tables and many more), the agent shows you every design with a live link and waits for your answer. Name one, or tell it to pick the best for you and it will choose and say why.
 - **A searchable index.** `https://avaraui.com/agent/components.json` lists every component and website section with its summary, install command and Markdown URL, so an agent can pick by what a page does without a search server.
 - **Rules.** Theme tokens instead of hard-coded colours, one animation library per component, no `next/*` imports, and respect for `prefers-reduced-motion`.
 
+## Requirements
+
+- A project that uses shadcn/ui and Tailwind CSS. See [Installation](https://avaraui.com/docs/nextjs/installation) if it does not yet.
+- One of the agents below: Claude Code, Cursor, GitHub Copilot in VS Code, Codex or OpenCode.
+
+The skill is not an npm package, so there is nothing to `npm install`. It is a set
+of text files added to your project, and it works the same whether the project
+uses npm, pnpm, yarn or bun, on macOS, Linux or Windows. Your package manager
+only matters later, when the agent installs components, and the skill tells it to
+use yours.
+
 ## Install the skill
 
-Run once from your project root. Pick the agent you use.
+Choose your agent. Each tab has the ways to install it. **Ask your agent** is the
+easiest: you paste one prompt and the agent does the rest on any system.
+**shadcn CLI** (Claude Code and Cursor) is the same `shadcn add` command you use for
+components. **Manual** is one command, or one block to paste, if you prefer to do
+it yourself.
 
 **Client: claude**
 
-Claude Code reads skills from `.claude/skills/`:
+Claude Code reads skills from `.claude/skills/`. It loads `SKILL.md` when a task matches its description, and opens the other files only when it needs them.
 
-```bash
-mkdir -p .claude/skills/avara-ui
-curl -fsSL https://avaraui.com/skills/avara-ui/SKILL.md -o .claude/skills/avara-ui/SKILL.md
-curl -fsSL https://avaraui.com/skills/avara-ui/variants.md -o .claude/skills/avara-ui/variants.md
-curl -fsSL https://avaraui.com/skills/avara-ui/components.md -o .claude/skills/avara-ui/components.md
-curl -fsSL https://avaraui.com/skills/avara-ui/animation.md -o .claude/skills/avara-ui/animation.md
-curl -fsSL https://avaraui.com/skills/avara-ui/theming.md -o .claude/skills/avara-ui/theming.md
-curl -fsSL https://avaraui.com/skills/avara-ui/checklist.md -o .claude/skills/avara-ui/checklist.md
+**Ask your agent**
+
+```text
+Install the Avara UI agent skill in this project.
+
+1. Create the folder .claude/skills/avara-ui/ if it does not exist.
+2. Download these files into it, keeping the file names:
+   - https://avaraui.com/skills/avara-ui/SKILL.md
+   - https://avaraui.com/skills/avara-ui/variants.md
+   - https://avaraui.com/skills/avara-ui/components.md
+   - https://avaraui.com/skills/avara-ui/animation.md
+   - https://avaraui.com/skills/avara-ui/theming.md
+   - https://avaraui.com/skills/avara-ui/checklist.md
+3. List the folder and tell me which files you saved.
 ```
 
-The agent loads `SKILL.md` when a task matches its description, and opens the other files only when it needs them.
+**shadcn CLI**
+
+Run this from your project root. It is the same shadcn command you use for components, so it works with npm, pnpm, yarn and bun, on macOS, Linux and Windows (use `pnpm dlx`, `yarn dlx` or `bunx` in place of `npx`). It writes `.claude/skills/avara-ui/`.
+
+```bash
+npx shadcn@latest add @avara-ui/agent-skill
+```
+
+To update later, run it again with `--overwrite` at the end.
+
+**Manual**
+
+Run this one line from your project root. It works the same in macOS and Linux terminals, Windows PowerShell, Command Prompt and Git Bash, and needs Node.js 18 or newer. It writes `.claude/skills/avara-ui/` (6 files).
+
+```bash
+node -e "const fs=require('fs'),d='.claude/skills/avara-ui';fs.mkdirSync(d,{recursive:true});for(const f of ['SKILL.md','variants.md','components.md','animation.md','theming.md','checklist.md'])fetch('https://avaraui.com/skills/avara-ui/'+f).then(r=>{if(!r.ok)throw new Error(f+' '+r.status);return r.text()}).then(t=>fs.writeFileSync(d+'/'+f,t)).catch(e=>{console.error(e.message);process.exitCode=1})"
+```
+
+Command blocked or no Node.js? Save each file yourself, creating the folders if they are missing:
+
+- [SKILL.md](https://avaraui.com/skills/avara-ui/SKILL.md) — save as `.claude/skills/avara-ui/SKILL.md`
+- [variants.md](https://avaraui.com/skills/avara-ui/variants.md) — save as `.claude/skills/avara-ui/variants.md`
+- [components.md](https://avaraui.com/skills/avara-ui/components.md) — save as `.claude/skills/avara-ui/components.md`
+- [animation.md](https://avaraui.com/skills/avara-ui/animation.md) — save as `.claude/skills/avara-ui/animation.md`
+- [theming.md](https://avaraui.com/skills/avara-ui/theming.md) — save as `.claude/skills/avara-ui/theming.md`
+- [checklist.md](https://avaraui.com/skills/avara-ui/checklist.md) — save as `.claude/skills/avara-ui/checklist.md`
+
+ **Check that it worked.** Look in `.claude/skills/` for the skill folder. Then start a new Claude Code session in the project, because skills are read when a session starts. Ask "Using @avara-ui, add a pricing section": the agent should plan the page and check the component index before writing any markup.
+
+ **Update or remove.** To update, install again (add `--overwrite` to the shadcn command): the files are replaced with the current version. To remove, delete the skill folder.
 
 **Client: cursor**
 
-Cursor reads rules from `.cursor/rules/`:
+Cursor reads rules from `.cursor/rules/`. One file holds the whole workflow.
+
+**Ask your agent**
+
+```text
+Install the Avara UI agent skill in this project.
+
+1. Create the folder .cursor/rules/ if it does not exist.
+2. Download this file into it, keeping the file names:
+   - https://avaraui.com/skills/avara-ui/avara-ui.mdc
+3. List the folder and tell me which files you saved.
+```
+
+**shadcn CLI**
+
+Run this from your project root. It is the same shadcn command you use for components, so it works with npm, pnpm, yarn and bun, on macOS, Linux and Windows (use `pnpm dlx`, `yarn dlx` or `bunx` in place of `npx`). It writes `.cursor/rules/avara-ui.mdc`.
 
 ```bash
-mkdir -p .cursor/rules
-curl -fsSL https://avaraui.com/skills/avara-ui/avara-ui.mdc -o .cursor/rules/avara-ui.mdc
+npx shadcn@latest add @avara-ui/agent-skill-cursor
 ```
+
+To update later, run it again with `--overwrite` at the end.
+
+**Manual**
+
+Run this one line from your project root. It works the same in macOS and Linux terminals, Windows PowerShell, Command Prompt and Git Bash, and needs Node.js 18 or newer. It writes `.cursor/rules/avara-ui.mdc`.
+
+```bash
+node -e "const fs=require('fs'),d='.cursor/rules';fs.mkdirSync(d,{recursive:true});for(const f of ['avara-ui.mdc'])fetch('https://avaraui.com/skills/avara-ui/'+f).then(r=>{if(!r.ok)throw new Error(f+' '+r.status);return r.text()}).then(t=>fs.writeFileSync(d+'/'+f,t)).catch(e=>{console.error(e.message);process.exitCode=1})"
+```
+
+Command blocked or no Node.js? Save the file yourself, creating the folders if they are missing:
+
+- [avara-ui.mdc](https://avaraui.com/skills/avara-ui/avara-ui.mdc) — save as `.cursor/rules/avara-ui.mdc`
+
+ **Check that it worked.** Look in `.cursor/rules/` for the `.mdc` file, or find it under Rules in Cursor Settings. Then start a new chat in the project, because rules are read when a chat starts. Ask "Using @avara-ui, add a pricing section": the agent should plan the page and check the component index before writing any markup.
+
+ **Update or remove.** To update, install again (add `--overwrite` to the shadcn command): the file is replaced with the current version. To remove, delete the file.
 
 **Client: vscode**
 
-GitHub Copilot in VS Code reads `.github/copilot-instructions.md`. Add this block to it:
+GitHub Copilot in VS Code reads `.github/copilot-instructions.md`.
+
+**Ask your agent**
+
+```text
+Add the Avara UI instructions below to .github/copilot-instructions.md in this project.
+Create the file if it does not exist, and keep everything already in it. Then tell me what you changed.
+
+## Avara UI
+
+This project uses Avara UI (`@avara-ui`), a free shadcn registry of animated React components and website sections.
+
+- Install with `npx shadcn@latest add @avara-ui/<name> --yes`. `@avara-ui` is in shadcn's registry directory, so no setup is needed; only if the CLI says "Unknown registry", run `npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json` once.
+- Find components in https://avaraui.com/agent/components.json (or https://avaraui.com/llms.txt). Read an item's Markdown for its props before writing code against it.
+- Follow the workflow in https://avaraui.com/skills/avara-ui/SKILL.md: plan, decide, install, read, adapt, check.
+- Ask before you pick. An index entry with `choose: true` has several designs of one section (for example the hero). If the user has not named one, ask which they want, with each option's live link, before installing. If they say to choose, pick from `bestFor` / `avoidIf` and say why. Use your client's click-to-pick question tool if it has one, so the user answers by clicking, not typing. Never pick a variant on your own. See https://avaraui.com/skills/avara-ui/variants.md.
+- Style with theme tokens only. Install the GSAP or the Motion build of a component, never both.
+```
+
+**Manual**
+
+Create `.github/copilot-instructions.md` if it does not exist, then paste this block at the end:
 
 ```markdown
 ## Avara UI
 
 This project uses Avara UI (`@avara-ui`), a free shadcn registry of animated React components and website sections.
 
-- Register once: `npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json`. Install with `npx shadcn@latest add @avara-ui/<name> --yes`.
+- Install with `npx shadcn@latest add @avara-ui/<name> --yes`. `@avara-ui` is in shadcn's registry directory, so no setup is needed; only if the CLI says "Unknown registry", run `npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json` once.
 - Find components in https://avaraui.com/agent/components.json (or https://avaraui.com/llms.txt). Read an item's Markdown for its props before writing code against it.
 - Follow the workflow in https://avaraui.com/skills/avara-ui/SKILL.md: plan, decide, install, read, adapt, check.
 - Ask before you pick. An index entry with `choose: true` has several designs of one section (for example the hero). If the user has not named one, ask which they want, with each option's live link, before installing. If they say to choose, pick from `bestFor` / `avoidIf` and say why. Use your client's click-to-pick question tool if it has one, so the user answers by clicking, not typing. Never pick a variant on your own. See https://avaraui.com/skills/avara-ui/variants.md.
 - Style with theme tokens only. Install the GSAP or the Motion build of a component, never both.
 ```
+
+ **Check that it worked.** Start a new Copilot chat in the project and ask "Using @avara-ui, add a pricing section". The agent should open the component index before writing any markup.
+
+ **Update or remove.** To update, replace the block with the current one from this page. To remove, delete the block from the file.
 
 **Client: codex**
 
-Codex reads `AGENTS.md` in the project root. Add this block to it:
+Codex reads `AGENTS.md` in the project root.
+
+**Ask your agent**
+
+```text
+Add the Avara UI instructions below to AGENTS.md in this project.
+Create the file if it does not exist, and keep everything already in it. Then tell me what you changed.
+
+## Avara UI
+
+This project uses Avara UI (`@avara-ui`), a free shadcn registry of animated React components and website sections.
+
+- Install with `npx shadcn@latest add @avara-ui/<name> --yes`. `@avara-ui` is in shadcn's registry directory, so no setup is needed; only if the CLI says "Unknown registry", run `npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json` once.
+- Find components in https://avaraui.com/agent/components.json (or https://avaraui.com/llms.txt). Read an item's Markdown for its props before writing code against it.
+- Follow the workflow in https://avaraui.com/skills/avara-ui/SKILL.md: plan, decide, install, read, adapt, check.
+- Ask before you pick. An index entry with `choose: true` has several designs of one section (for example the hero). If the user has not named one, ask which they want, with each option's live link, before installing. If they say to choose, pick from `bestFor` / `avoidIf` and say why. Use your client's click-to-pick question tool if it has one, so the user answers by clicking, not typing. Never pick a variant on your own. See https://avaraui.com/skills/avara-ui/variants.md.
+- Style with theme tokens only. Install the GSAP or the Motion build of a component, never both.
+```
+
+**Manual**
+
+Create `AGENTS.md` if it does not exist, then paste this block at the end:
 
 ```markdown
 ## Avara UI
 
 This project uses Avara UI (`@avara-ui`), a free shadcn registry of animated React components and website sections.
 
-- Register once: `npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json`. Install with `npx shadcn@latest add @avara-ui/<name> --yes`.
+- Install with `npx shadcn@latest add @avara-ui/<name> --yes`. `@avara-ui` is in shadcn's registry directory, so no setup is needed; only if the CLI says "Unknown registry", run `npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json` once.
 - Find components in https://avaraui.com/agent/components.json (or https://avaraui.com/llms.txt). Read an item's Markdown for its props before writing code against it.
 - Follow the workflow in https://avaraui.com/skills/avara-ui/SKILL.md: plan, decide, install, read, adapt, check.
 - Ask before you pick. An index entry with `choose: true` has several designs of one section (for example the hero). If the user has not named one, ask which they want, with each option's live link, before installing. If they say to choose, pick from `bestFor` / `avoidIf` and say why. Use your client's click-to-pick question tool if it has one, so the user answers by clicking, not typing. Never pick a variant on your own. See https://avaraui.com/skills/avara-ui/variants.md.
 - Style with theme tokens only. Install the GSAP or the Motion build of a component, never both.
 ```
+
+ **Check that it worked.** Start a new Codex session in the project and ask "Using @avara-ui, add a pricing section". The agent should open the component index before writing any markup.
+
+ **Update or remove.** To update, replace the block with the current one from this page. To remove, delete the block from the file.
 
 **Client: opencode**
 
-OpenCode reads `AGENTS.md` in the project root. Add this block to it:
+OpenCode reads `AGENTS.md` in the project root.
+
+**Ask your agent**
+
+```text
+Add the Avara UI instructions below to AGENTS.md in this project.
+Create the file if it does not exist, and keep everything already in it. Then tell me what you changed.
+
+## Avara UI
+
+This project uses Avara UI (`@avara-ui`), a free shadcn registry of animated React components and website sections.
+
+- Install with `npx shadcn@latest add @avara-ui/<name> --yes`. `@avara-ui` is in shadcn's registry directory, so no setup is needed; only if the CLI says "Unknown registry", run `npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json` once.
+- Find components in https://avaraui.com/agent/components.json (or https://avaraui.com/llms.txt). Read an item's Markdown for its props before writing code against it.
+- Follow the workflow in https://avaraui.com/skills/avara-ui/SKILL.md: plan, decide, install, read, adapt, check.
+- Ask before you pick. An index entry with `choose: true` has several designs of one section (for example the hero). If the user has not named one, ask which they want, with each option's live link, before installing. If they say to choose, pick from `bestFor` / `avoidIf` and say why. Use your client's click-to-pick question tool if it has one, so the user answers by clicking, not typing. Never pick a variant on your own. See https://avaraui.com/skills/avara-ui/variants.md.
+- Style with theme tokens only. Install the GSAP or the Motion build of a component, never both.
+```
+
+**Manual**
+
+Create `AGENTS.md` if it does not exist, then paste this block at the end:
 
 ```markdown
 ## Avara UI
 
 This project uses Avara UI (`@avara-ui`), a free shadcn registry of animated React components and website sections.
 
-- Register once: `npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json`. Install with `npx shadcn@latest add @avara-ui/<name> --yes`.
+- Install with `npx shadcn@latest add @avara-ui/<name> --yes`. `@avara-ui` is in shadcn's registry directory, so no setup is needed; only if the CLI says "Unknown registry", run `npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json` once.
 - Find components in https://avaraui.com/agent/components.json (or https://avaraui.com/llms.txt). Read an item's Markdown for its props before writing code against it.
 - Follow the workflow in https://avaraui.com/skills/avara-ui/SKILL.md: plan, decide, install, read, adapt, check.
 - Ask before you pick. An index entry with `choose: true` has several designs of one section (for example the hero). If the user has not named one, ask which they want, with each option's live link, before installing. If they say to choose, pick from `bestFor` / `avoidIf` and say why. Use your client's click-to-pick question tool if it has one, so the user answers by clicking, not typing. Never pick a variant on your own. See https://avaraui.com/skills/avara-ui/variants.md.
 - Style with theme tokens only. Install the GSAP or the Motion build of a component, never both.
 ```
+
+ **Check that it worked.** Start a new OpenCode session in the project and ask "Using @avara-ui, add a pricing section". The agent should open the component index before writing any markup.
+
+ **Update or remove.** To update, replace the block with the current one from this page. To remove, delete the block from the file.
 
 The files are plain text, so read them before you add them to a repository. They
 are generated from this site's own registry, so they only name components that
 exist.
 
+### Troubleshooting
+
+- **`node` is not recognised, or `fetch is not defined`.** The manual command needs Node.js 18 or newer. Update it, or use the shadcn CLI or "Ask your agent" tab instead.
+- **"Skipped 1 file" from the shadcn command.** The files are already there and identical, or you are updating: add `--overwrite` to replace them.
+- **A 404 or a blocked download.** A proxy or firewall may be stopping the request. Use the file links under the manual command and save each file yourself.
+- **The agent ignores it.** Check that the files sit in the project root, not a subfolder, and start a new session.
+
 ## Use it
 
-Register the registry once, then describe the interface in plain language and
-name @avara-ui so the agent looks in the right place:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-```
+There is nothing to register. @avara-ui is listed in the shadcn
+registry directory, so the shadcn CLI finds it by name. Describe the interface in
+plain language and name @avara-ui so the agent looks in the right place:
 
 - "Using @avara-ui, build a pricing page with a hero, the plans and an FAQ."
 - "Add a @avara-ui data table of orders with sorting and pagination, wired to `/api/orders`."
 - "Use @avara-ui to add a command palette and a dock to this app shell."
 - "Replace this footer with the @avara-ui footer, keeping our links."
 
+If the CLI ever answers "Unknown registry", your shadcn CLI is older than the
+directory lookup. Update it, or add the registry to the project once:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+```
+
 ## How the workflow runs
 
 1. **Plan.** The agent writes the page's sections and states (empty, loading, error) before any code.
 2. **Decide.** It searches the index or `https://avaraui.com/llms.txt` and matches by summary. If nothing fits, it composes the screen from smaller components. For each section that comes in several designs, it asks you which one first, with a live link for every option, unless you already named one.
-3. **Install.** It runs `npx shadcn@latest add @avara-ui/name --yes`.
+3. **Install.** It runs `npx shadcn@latest add @avara-ui/name --yes`, or the same command with `pnpm dlx`, `yarn dlx` or `bunx` if your project uses another package manager.
 4. **Read.** It fetches the item's Markdown for the props and import path.
 5. **Adapt.** It swaps in your data and keeps the component's structure and styling.
 6. **Check.** It runs the checklist: tokens only, keyboard access, dark mode, reduced motion, and a passing build.

@@ -8,7 +8,7 @@
       "type": "registry:component",
       "title": "Accordion",
       "author": "AlgorizeTech",
-      "description": "A data-driven accordion taking an array of items, with five distinct variants and an optional stack entrance that deals the items into place. Use it for FAQs and any list of collapsible sections.",
+      "description": "Ask the user to pick one of 6 accordion variants: https://avaraui.com/view/accordion. This item holds 6 of them as looks of one component (default, ghost, bordered, elevated, filled, brand-reveal). Skip the question if the user already named one. A data-driven accordion taking an array of items, with five distinct variants and an optional stack entrance that deals the items into place. Use it for FAQs and any list of collapsible sections.",
       "categories": [
         "layout"
       ],
@@ -51,11 +51,76 @@
       "docs": "Named exports: DataTable plus DataTableHeading/Content/Header/Body/Row/Head/Cell/Footer/Empty, DataTableSearch, DataTablePageSize, DataTableSelect, DataTableSelectAll, DataTableBatchBar, DataTableInfo, DataTablePagination, DataTableExpandToggle, DataTableExpandedRow, DataTableTabs, DataTableFilter, DataTableReset, DataTableBatchAction, TableAction, TableRowAction, TableBadge, TablePerson, useDataTable, resolveAccessor. `DataTableTabs` and `DataTableFilter` filter one field each by exact match (`by` is a dot path or accessor); `useDataTable` exposes `filters`, `isFiltered` and `resetAll`. `variant=\"soft\"` gives the admin-dashboard look. `DataTableBody` takes a render function receiving the current page of rows. `getRowId` defaults to id → _id → uuid; `sortBy` accepts a dot path or an accessor function (add `sortId` for functions). Builds on `table` and depends on `select` for the page-size control."
     },
     {
+      "name": "agent-skill",
+      "type": "registry:item",
+      "title": "Agent Skill (Claude Code)",
+      "author": "AlgorizeTech",
+      "description": "Teaches Claude Code to build with Avara UI: plan, find, install, read, adapt, check, and ask which design before picking one. Installs the skill into .claude/skills/avara-ui/. Not a component.",
+      "categories": [
+        "utilities"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry-skill/claude/SKILL.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/avara-ui/SKILL.md"
+        },
+        {
+          "path": "registry-skill/claude/variants.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/avara-ui/variants.md"
+        },
+        {
+          "path": "registry-skill/claude/components.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/avara-ui/components.md"
+        },
+        {
+          "path": "registry-skill/claude/animation.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/avara-ui/animation.md"
+        },
+        {
+          "path": "registry-skill/claude/theming.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/avara-ui/theming.md"
+        },
+        {
+          "path": "registry-skill/claude/checklist.md",
+          "type": "registry:file",
+          "target": "~/.claude/skills/avara-ui/checklist.md"
+        }
+      ],
+      "docs": "Start a new Claude Code session in this project so it loads the skill, then ask for something that uses the library."
+    },
+    {
+      "name": "agent-skill-cursor",
+      "type": "registry:item",
+      "title": "Agent Skill (Cursor)",
+      "author": "AlgorizeTech",
+      "description": "Teaches Cursor to build with Avara UI: plan, find, install, read, adapt, check, and ask which design before picking one. Installs the rule into .cursor/rules/. Not a component.",
+      "categories": [
+        "utilities"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "registry-skill/cursor/avara-ui.mdc",
+          "type": "registry:file",
+          "target": "~/.cursor/rules/avara-ui.mdc"
+        }
+      ],
+      "docs": "Start a new Cursor chat in this project so it loads the rule, then ask for something that uses the library."
+    },
+    {
       "name": "ai-chat",
       "type": "registry:component",
       "title": "AI Chat",
       "author": "AlgorizeTech",
-      "description": "An AI assistant interface with thread history sidebar, streaming-style responses and a prompt composer. Use it as the front end for an LLM feature.",
+      "description": "Ask the user to pick one of 5 ai chat variants: https://avaraui.com/view/ai-chat. This item holds 5 of them as looks of one component (default, compact, minimal, glass, liquid-glass). Skip the question if the user already named one. An AI assistant interface with thread history sidebar, streaming-style responses and a prompt composer. Use it as the front end for an LLM feature.",
       "categories": [
         "communication"
       ],
@@ -96,7 +161,7 @@
       "type": "registry:component",
       "title": "AI Chat (Motion)",
       "author": "AlgorizeTech",
-      "description": "An AI assistant interface with thread history sidebar, streaming-style responses and a prompt composer. Use it as the front end for an LLM feature.",
+      "description": "Ask the user to pick one of 5 ai chat variants: https://avaraui.com/view/ai-chat. This item holds 5 of them as looks of one component (default, compact, minimal, glass, liquid-glass). Skip the question if the user already named one. An AI assistant interface with thread history sidebar, streaming-style responses and a prompt composer. Use it as the front end for an LLM feature.",
       "categories": [
         "communication"
       ],
@@ -638,7 +703,7 @@
       "type": "registry:component",
       "title": "Calendar",
       "author": "AlgorizeTech",
-      "description": "A full month calendar with event dots, range selection and a dashboard layout. Reach for it when dates need to be seen in context rather than just entered.",
+      "description": "Ask the user to pick one of 4 calendar variants: https://avaraui.com/view/calendar. This item holds 4 of them as looks of one component (default, minimal, glass, liquid-glass). Skip the question if the user already named one. A full month calendar with event dots, range selection and a dashboard layout. Reach for it when dates need to be seen in context rather than just entered.",
       "categories": [
         "dates"
       ],
@@ -675,8 +740,11 @@
       "categories": [
         "layout"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [
+        "https://avaraui.com/r/button.json",
         "https://avaraui.com/r/product-card.json",
         "utils"
       ],
@@ -687,7 +755,7 @@
           "target": "components/custom/blocks/CardBlock.tsx"
         }
       ],
-      "docs": "Named exports: Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter. Compose them rather than passing props to a single element."
+      "docs": "Named exports: Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, ProjectCard (also ShowcaseCard). Compose primitives or use ProjectCard for rich two-column showcases."
     },
     {
       "name": "card-stack",
@@ -900,7 +968,7 @@
       "type": "registry:component",
       "title": "Chat",
       "author": "AlgorizeTech",
-      "description": "A complete messaging interface with contact list, conversation pane and composer. Use it as the shell for a support or direct-messaging feature.",
+      "description": "Ask the user to pick one of 4 chat variants: https://avaraui.com/view/chat. This item holds 4 of them as looks of one component (default, minimal, glass, liquid-glass). Skip the question if the user already named one. A complete messaging interface with contact list, conversation pane and composer. Use it as the shell for a support or direct-messaging feature.",
       "categories": [
         "communication"
       ],
@@ -1076,7 +1144,7 @@
       "type": "registry:component",
       "title": "Component Wall",
       "author": "AlgorizeTech",
-      "description": "Ask the user to pick one of 3 component wall variants: https://avaraui.com/view/component-wall. This item holds 3 of them as looks of one component (center, split, fullscreen). Skip the question if the user already named one. A landing hero for a component library: a headline that blurs in word by word and keeps one word turning, a lead, an install command that names whichever card a camera has just landed on, two actions, a line of trust and the tools it is built with in batches — centred between two walls of screenshots that never end, one camera resting high and the other low, or on the left of a single wall.",
+      "description": "Ask the user to pick one of 2 component wall variants: https://avaraui.com/view/component-wall. This item holds 2 of them as looks of one component (center, split). Skip the question if the user already named one. A landing hero for a component library: a headline that blurs in word by word and keeps one word turning, a lead, an install command that names whichever card a camera has just landed on, two actions, a line of trust and the tools it is built with in batches — centred between two walls of screenshots that never end, one camera resting high and the other low, or on the left of a single wall.",
       "categories": [
         "marketing",
         "layout"
@@ -1086,12 +1154,10 @@
       ],
       "registryDependencies": [
         "https://avaraui.com/r/avatar-stack.json",
-        "https://avaraui.com/r/button.json",
         "https://avaraui.com/r/copy-button.json",
         "https://avaraui.com/r/half-stars.json",
         "https://avaraui.com/r/icons.json",
         "https://avaraui.com/r/image-wall.json",
-        "https://avaraui.com/r/modal.json",
         "https://avaraui.com/r/tech-stack.json",
         "https://avaraui.com/r/text-animation.json",
         "utils"
@@ -1233,7 +1299,7 @@
       "type": "registry:component",
       "title": "Counter",
       "author": "AlgorizeTech",
-      "description": "A number component in four modes — stepper, count-up, circular progress and countdown. Use it for quantity inputs and animated statistics.",
+      "description": "Ask the user to pick one of 8 counter variants: https://avaraui.com/view/counter. This item holds 8 of them as looks of one component (stepper, outline-stepper, soft-stepper, vertical-stepper, countdown, slide-countdown, animated, circular). Skip the question if the user already named one. A number component in four modes — stepper, count-up, circular progress and countdown. Use it for quantity inputs and animated statistics.",
       "categories": [
         "data-display",
         "forms"
@@ -1319,7 +1385,7 @@
       "type": "registry:component",
       "title": "Cursor Animation",
       "author": "AlgorizeTech",
-      "description": "A custom cursor with magnetic, glow, trail, spotlight and crosshair effects, scoped to its children. Use it on portfolio and agency sites.",
+      "description": "Ask the user to pick one of 11 cursor animation variants: https://avaraui.com/view/cursor-animation. This item holds 11 of them as looks of one component (glow, pulse, sonar, ring, magnetic, crosshair, expand, spotlight, image-trail, trail, badge). Skip the question if the user already named one. A custom cursor with magnetic, glow, trail, spotlight and crosshair effects, scoped to its children. Use it on portfolio and agency sites.",
       "categories": [
         "utilities",
         "marketing"
@@ -1344,7 +1410,7 @@
       "type": "registry:component",
       "title": "Curved Carousel",
       "author": "AlgorizeTech",
-      "description": "A continuously scrolling carousel whose cards follow a curved arc path. Use it for logo walls and showcase strips that should feel ambient.",
+      "description": "Ask the user to pick one of 2 curved carousel variants: https://avaraui.com/view/curved-carousel. This item holds 2 of them as looks of one component (arc-sweep, infinite-marquee). Skip the question if the user already named one. A continuously scrolling carousel whose cards follow a curved arc path. Use it for logo walls and showcase strips that should feel ambient.",
       "categories": [
         "media",
         "marketing"
@@ -1477,7 +1543,7 @@
       "type": "registry:component",
       "title": "Data Maps",
       "author": "AlgorizeTech",
-      "description": "A choropleth world map colouring countries by metric, with fill and dot variants. Use it for geographic analytics and regional breakdowns.",
+      "description": "Ask the user to pick one of 2 data maps variants: https://avaraui.com/view/data-maps. This item holds 2 of them as looks of one component (fill, dots). Skip the question if the user already named one. A choropleth world map colouring countries by metric, with fill and dot variants. Use it for geographic analytics and regional breakdowns.",
       "categories": [
         "maps",
         "data-display"
@@ -1601,7 +1667,7 @@
       "type": "registry:component",
       "title": "Designs Toolkit",
       "author": "AlgorizeTech",
-      "description": "A pinned resource toolkit grid featuring authentic 3D pushpins, staggered cards, brand icon badges, and connected corkboard path lines.",
+      "description": "Ask the user to pick one of 2 designs toolkit variants: https://avaraui.com/view/designs-toolkit. This item holds 2 of them as looks of one component (corkboard, roadmap). Skip the question if the user already named one. A pinned resource toolkit grid featuring authentic 3D pushpins, staggered cards, brand icon badges, and connected corkboard path lines.",
       "categories": [
         "marketing",
         "data-display"
@@ -1714,7 +1780,7 @@
       "type": "registry:component",
       "title": "Draggable Card List",
       "author": "AlgorizeTech",
-      "description": "An interactive reorderable card list with 60fps Motion spring physics, right-side grip handles, and custom card metadata.",
+      "description": "Ask the user to pick one of 2 draggable card list variants: https://avaraui.com/view/draggable-card-list. This item holds 2 of them as looks of one component (classic, modern). Skip the question if the user already named one. An interactive reorderable card list with 60fps Motion spring physics, right-side grip handles, and custom card metadata.",
       "categories": [
         "data-display",
         "layout"
@@ -1750,7 +1816,7 @@
       "type": "registry:component",
       "title": "Draggable Card List (Motion)",
       "author": "AlgorizeTech",
-      "description": "An interactive reorderable card list with 60fps Motion spring physics, right-side grip handles, and custom card metadata.",
+      "description": "Ask the user to pick one of 2 draggable card list variants: https://avaraui.com/view/draggable-card-list. This item holds 2 of them as looks of one component (classic, modern). Skip the question if the user already named one. An interactive reorderable card list with 60fps Motion spring physics, right-side grip handles, and custom card metadata.",
       "categories": [
         "data-display",
         "layout"
@@ -1800,7 +1866,7 @@
       "type": "registry:component",
       "title": "Email",
       "author": "AlgorizeTech",
-      "description": "A full email client layout with folders, labels, message list, reading pane and attachments. Use it as the shell for an inbox or ticketing view.",
+      "description": "Ask the user to pick one of 4 email variants: https://avaraui.com/view/email. This item holds 4 of them as looks of one component (default, minimal, glass, liquid-glass). Skip the question if the user already named one. A full email client layout with folders, labels, message list, reading pane and attachments. Use it as the shell for an inbox or ticketing view.",
       "categories": [
         "communication"
       ],
@@ -2024,7 +2090,7 @@
       "type": "registry:component",
       "title": "Fleet Map",
       "author": "AlgorizeTech",
-      "description": "A live fleet tracking view pairing a Leaflet map with a vehicle list and status filters. Use it for logistics and delivery dashboards.",
+      "description": "Ask the user to pick one of 3 fleet tracker variants: https://avaraui.com/view/fleet-tracker. This item holds 3 of them as looks of one component (default, minimal, modern). Skip the question if the user already named one. A live fleet tracking view pairing a Leaflet map with a vehicle list and status filters. Use it for logistics and delivery dashboards.",
       "categories": [
         "maps",
         "data-display"
@@ -2264,7 +2330,7 @@
       "type": "registry:component",
       "title": "Gallery",
       "author": "AlgorizeTech",
-      "description": "A versatile, multi-variant interactive visual gallery featuring revolving 3D orbit rings, responsive bento grids, vertical continuous reels, 3D pill carousels, and perspective arc carousels. Use it for agencies, portfolios, product showcases, and creative hero sections.",
+      "description": "Ask the user to pick one of 6 gallery variants: https://avaraui.com/view/gallery. This item holds 6 of them as looks of one component (orbit-gallery, circular-reel, video-sphere, moving-bento, pill-carousel, arc-carousel). Skip the question if the user already named one. A versatile, multi-variant interactive visual gallery featuring revolving 3D orbit rings, responsive bento grids, vertical continuous reels, 3D pill carousels, and perspective arc carousels. Use it for agencies, portfolios, product showcases, and creative hero sections.",
       "categories": [
         "media",
         "scroll",
@@ -2291,7 +2357,7 @@
       "type": "registry:component",
       "title": "Glass Panel",
       "author": "AlgorizeTech",
-      "description": "A frosted surface in four shapes and the aurora ground it sits on. Use it for glass bento layouts, profile and booking pages — or flip it to solid cards with one prop.",
+      "description": "Ask the user to pick one of 3 glass panel variants: https://avaraui.com/view/glass-panel. This item holds 3 of them as looks of one component (glass, solid, liquid-glass). Skip the question if the user already named one. A frosted surface in four shapes and the aurora ground it sits on. Use it for glass bento layouts, profile and booking pages — or flip it to solid cards with one prop.",
       "categories": [
         "layout"
       ],
@@ -2364,7 +2430,7 @@
       "type": "registry:component",
       "title": "Heart Signal",
       "author": "AlgorizeTech",
-      "description": "A slow, ultra-smooth cardiac heart signal waveform component with 2 visual variants (realtime EKG line trace and fluid multi-lead cardiac wave).",
+      "description": "Ask the user to pick one of 3 heart signal variants: https://avaraui.com/view/heart-signal. This item holds 3 of them as looks of one component (ecg-line, pulse-heart, cardiac-wave). Skip the question if the user already named one. A slow, ultra-smooth cardiac heart signal waveform component with 2 visual variants (realtime EKG line trace and fluid multi-lead cardiac wave).",
       "categories": [
         "data-display",
         "media"
@@ -2581,7 +2647,7 @@
       "type": "registry:component",
       "title": "Image Compare",
       "author": "AlgorizeTech",
-      "description": "A before/after image slider with five handle styles and drag or click positioning. Use it for retouching, redesign and product comparison sections.",
+      "description": "Ask the user to pick one of 10 image compare variants: https://avaraui.com/view/image-compare. This item holds 10 of them as looks of one component (classic-slider, split-handle, glowing-divider, minimal-line, badge-overlay, glass-handle, hover-reveal, vertical-slide, circle-magnifier, diagonal-split). Skip the question if the user already named one. A before/after image slider with five handle styles and drag or click positioning. Use it for retouching, redesign and product comparison sections.",
       "categories": [
         "media"
       ],
@@ -2605,7 +2671,7 @@
       "type": "registry:component",
       "title": "Image Viewer",
       "author": "AlgorizeTech",
-      "description": "A collection of 4 responsive E-commerce Image Viewer components featuring inner lens magnifying zoom, HD side portal projection, carousel sliders, and interactive thumbnail strips.",
+      "description": "Ask the user to pick one of 4 image viewer variants: https://avaraui.com/view/image-viewer. This item holds 4 of them as looks of one component (inner-zoom, side-zoom, slider, thumbnails). Skip the question if the user already named one. A collection of 4 responsive E-commerce Image Viewer components featuring inner lens magnifying zoom, HD side portal projection, carousel sliders, and interactive thumbnail strips.",
       "categories": [
         "media",
         "commerce",
@@ -2708,7 +2774,7 @@
       "type": "registry:component",
       "title": "Invoice",
       "author": "AlgorizeTech",
-      "description": "A printable invoice with line items, tax and totals, in three presentation styles. Use it for billing summaries and receipt pages.",
+      "description": "Ask the user to pick one of 3 invoice variants: https://avaraui.com/view/invoice. This item holds 3 of them as looks of one component (default, corporate, brutalist). Skip the question if the user already named one. A printable invoice with line items, tax and totals, in three presentation styles. Use it for billing summaries and receipt pages.",
       "categories": [
         "commerce",
         "data-display"
@@ -2731,14 +2797,14 @@
           "target": "components/custom/blocks/invoice-theme.ts"
         }
       ],
-      "docs": "Named exports: Invoice, getThemeStyles (from invoice-theme.ts, which installs alongside). `InvoiceData` carries invoiceNumber, parties, dates and an `items` array of { item, description?, hours|qty, rate }. Totals are computed for you. Variants: default | minimal | glass."
+      "docs": "Named exports: Invoice, getThemeStyles (from invoice-theme.ts, which installs alongside). `InvoiceData` carries invoiceNumber, parties, dates and an `items` array of { item, description?, hours|qty, unitPrice?, total }. Totals are computed for you. Variants: default | corporate | brutalist | geometric."
     },
     {
       "name": "item",
       "type": "registry:component",
       "title": "Item",
       "author": "AlgorizeTech",
-      "description": "A row primitive pairing media, title, description and actions in one aligned layout. Use it to build list rows, notification entries and search results.",
+      "description": "Ask the user to pick one of 2 item variants: https://avaraui.com/view/item. This item holds 2 of them as looks of one component (default, card). Skip the question if the user already named one. A row primitive pairing media, title, description and actions in one aligned layout. Use it to build list rows, notification entries and search results.",
       "categories": [
         "layout",
         "data-display"
@@ -2783,7 +2849,7 @@
       "type": "registry:component",
       "title": "Loader",
       "author": "AlgorizeTech",
-      "description": "A loading indicator in six shapes — spinner, orbit, dots, pulse, ring and bar — with an optional caption. Use it for inline and full-panel pending states.",
+      "description": "Ask the user to pick one of 5 loader variants: https://avaraui.com/view/loader. This item holds 5 of them as looks of one component (spinner, orbit, dots, pulse, bar). Skip the question if the user already named one. A loading indicator in six shapes — spinner, orbit, dots, pulse, ring and bar — with an optional caption. Use it for inline and full-panel pending states.",
       "categories": [
         "feedback"
       ],
@@ -3050,7 +3116,7 @@
           "target": "components/custom/blocks/MobileMockupBlock.tsx"
         }
       ],
-      "docs": "Named exports: Iphone17ProMaxMockup, Iphone14ProMaxMockup, Iphone12ProMaxMockup, Iphone5Mockup, SamsungS24UltraMockup, GooglePixel8Mockup, GooglePixel10Mockup. Each takes `src`, `videoSrc`, or arbitrary children rendered inside the screen. Pure CSS and SVG — no images to ship."
+      "docs": "Named exports: Iphone16ProMockup, Iphone17ProMaxMockup, Iphone14ProMaxMockup, Iphone12ProMaxMockup, Iphone5Mockup, SamsungS24UltraMockup, GooglePixel8Mockup, GooglePixel10Mockup. Each takes `src`, `videoSrc`, or arbitrary children rendered inside the screen. Pure CSS and SVG — no images to ship."
     },
     {
       "name": "modal",
@@ -3082,7 +3148,7 @@
       "type": "registry:component",
       "title": "Modern Scroll Stack",
       "author": "AlgorizeTech",
-      "description": "A sticky scroll-driven service cards stack where cards slide up from below with horizontal fan offsets and smoothly tilt into resting angles as they lock into place.",
+      "description": "Ask the user to pick one of 2 modern scroll stack variants: https://avaraui.com/view/modern-scroll-stack. This item holds 2 of them as looks of one component (fan, stacked). Skip the question if the user already named one. A sticky scroll-driven service cards stack where cards slide up from below with horizontal fan offsets and smoothly tilt into resting angles as they lock into place.",
       "categories": [
         "scroll",
         "marketing",
@@ -3295,7 +3361,7 @@
       "type": "registry:component",
       "title": "OTP Input",
       "author": "AlgorizeTech",
-      "description": "A segmented one-time-passcode field with auto-advance, paste handling, and backspace navigation. Use it for email or SMS verification steps.",
+      "description": "Ask the user to pick one of 2 otp input variants: https://avaraui.com/view/otp-input. This item holds 2 of them as looks of one component (default, underlined). Skip the question if the user already named one. A segmented one-time-passcode field with auto-advance, paste handling, and backspace navigation. Use it for email or SMS verification steps.",
       "categories": [
         "forms",
         "authentication"
@@ -3347,7 +3413,7 @@
       "type": "registry:component",
       "title": "Particle Canvas",
       "author": "AlgorizeTech",
-      "description": "A high-performance text canvas component with organic repulsion physics and wordmark glow variants featuring cursor tracking and scroll-driven rising animations.",
+      "description": "Ask the user to pick one of 2 particle canvas variants: https://avaraui.com/view/particle-canvas. This item holds 2 of them as looks of one component (repel, wordmark-glow). Skip the question if the user already named one. A high-performance text canvas component with organic repulsion physics and wordmark glow variants featuring cursor tracking and scroll-driven rising animations.",
       "categories": [
         "media",
         "data-display"
@@ -3472,6 +3538,34 @@
         }
       ],
       "docs": "Named exports: Popover, PopoverTrigger, PopoverContent. `side` and `align` set the preferred placement; `avoidCollisions` flips it near a viewport edge, with `collisionPadding` as the margin. Zero runtime dependencies — positioning is hand-rolled, not Floating UI. For hover labels use `tooltip`, for right-click use `context-menu`."
+    },
+    {
+      "name": "portfolio-showcase",
+      "type": "registry:component",
+      "title": "Portfolio Showcase",
+      "author": "AlgorizeTech",
+      "description": "An infinite continuous 2D draggable masonry canvas with momentum physics, smooth camera glide, and interactive project modal for creative portfolios.",
+      "categories": [
+        "media",
+        "marketing"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://avaraui.com/r/button.json",
+        "https://avaraui.com/r/image-wall.json",
+        "https://avaraui.com/r/modal.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/PortfolioShowcaseBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/PortfolioShowcaseBlock.tsx"
+        }
+      ],
+      "docs": "Named export: PortfolioShowcase (plus PortfolioItem type). Renders an edge-to-edge infinite masonry canvas with 4-directional kinetic drag, auto-glide camera, and full-details modal."
     },
     {
       "name": "pricing",
@@ -3673,7 +3767,7 @@
       "type": "registry:component",
       "title": "Progress",
       "author": "AlgorizeTech",
-      "description": "A themeable progress bar in three forms — a single bar, a multi-segment track, and a ring — with an optional labelled field wrapper. Use it for determinate operations where percentage complete is known.",
+      "description": "Ask the user to pick one of 2 progress variants: https://avaraui.com/view/progress. This item holds 2 of them as looks of one component (bar, circular). Skip the question if the user already named one. A themeable progress bar in three forms — a single bar, a multi-segment track, and a ring — with an optional labelled field wrapper. Use it for determinate operations where percentage complete is known.",
       "categories": [
         "feedback"
       ],
@@ -3782,7 +3876,7 @@
       "type": "registry:component",
       "title": "Range Date Picker",
       "author": "AlgorizeTech",
-      "description": "An interactive Range Date Picker featuring single month, dual-month, and rate-priced calendar layouts with customizable theme colors.",
+      "description": "Ask the user to pick one of 4 range date picker variants: https://avaraui.com/view/range-date-picker. This item holds 4 of them as looks of one component (single, priced-single, dual, priced-dual). Skip the question if the user already named one. An interactive Range Date Picker featuring single month, dual-month, and rate-priced calendar layouts with customizable theme colors.",
       "categories": [
         "forms",
         "utilities"
@@ -3907,7 +4001,7 @@
       "type": "registry:component",
       "title": "Ribbon Drift",
       "author": "AlgorizeTech",
-      "description": "A hero showcase card featuring dual floating infinite marquee ribbons, an animated gradient drift backdrop, center 3D illustration, and interactive frosted promo card.",
+      "description": "A dynamic showcase component featuring dual floating infinite marquee ribbons with two variants: 3D illustration hero card with frosted promo, and criss-crossing brand logo ribbons over a warm yellow backdrop.",
       "categories": [
         "marketing",
         "media",
@@ -3930,7 +4024,7 @@
           "target": "lib/accent.ts"
         }
       ],
-      "docs": "Default export: RibbonDriftBlock. Also exports RibbonDriftCard and the RibbonDriftProps type. Features dual counter-rotating marquee ribbons with smooth seamless looping, animated ambient gradient drift, top-right brand pill badge, and bottom floating frosted promo card with avatar stack."
+      "docs": "Default export: RibbonDriftBlock. Also exports RibbonLogos, CrossRibbonLogos, RibbonDriftCard, and the RibbonDriftProps & RibbonLogosProps types. Supports variant='default' (3D illustration with frosted promo card) and variant='cross-logos' (dual counter-angled infinite brand marquee ribbons with leading brand SVGs)."
     },
     {
       "name": "scroll-accordion-showcase",
@@ -3962,7 +4056,7 @@
       "type": "registry:component",
       "title": "Scroll Area",
       "author": "AlgorizeTech",
-      "description": "A scroll container with styled, optionally auto-hiding scrollbars in either axis. Use it to keep scrollbar appearance consistent across browsers.",
+      "description": "Ask the user to pick one of 3 scroll area variants: https://avaraui.com/view/scroll-area. This item holds 3 of them as looks of one component (default, minimal, glass). Skip the question if the user already named one. A scroll container with styled, optionally auto-hiding scrollbars in either axis. Use it to keep scrollbar appearance consistent across browsers.",
       "categories": [
         "layout",
         "scroll"
@@ -4239,7 +4333,7 @@
       "type": "registry:component",
       "title": "Social Links",
       "author": "AlgorizeTech",
-      "description": "A row of brand marks that link out — X, GitHub, LinkedIn, YouTube, Instagram, Facebook, Discord, Dribbble, email. Use it in footers, profile cards and author bylines.",
+      "description": "Ask the user to pick one of 4 social links variants: https://avaraui.com/view/social-links. This item holds 4 of them as looks of one component (row, outline, expand-replace, expand-reveal). Skip the question if the user already named one. A row of brand marks that link out — X, GitHub, LinkedIn, YouTube, Instagram, Facebook, Discord, Dribbble, email. Use it in footers, profile cards and author bylines.",
       "categories": [
         "navigation",
         "marketing"
@@ -4326,7 +4420,7 @@
       "type": "registry:component",
       "title": "Split-Flap Display",
       "author": "AlgorizeTech",
-      "description": "An authentic, physics-driven Split-Flap Display component simulating retro-mechanical flap cards, 3D perspective flips, and synthesized click sounds with ivory and minimalist variants.",
+      "description": "Ask the user to pick one of 2 split flap variants: https://avaraui.com/view/split-flap. This item holds 2 of them as looks of one component (ivory, minimalist). Skip the question if the user already named one. An authentic, physics-driven Split-Flap Display component simulating retro-mechanical flap cards, 3D perspective flips, and synthesized click sounds with ivory and minimalist variants.",
       "categories": [
         "data-display",
         "media"
@@ -4613,7 +4707,7 @@
       "type": "registry:component",
       "title": "Table",
       "author": "AlgorizeTech",
-      "description": "Composable table primitives — you write the rows, so no column config and no required data shape. Use it for tabular data you want full control over.",
+      "description": "Ask the user to pick one of 3 table variants: https://avaraui.com/view/table. This item holds 3 of them as looks of one component (default, minimal, soft). Skip the question if the user already named one. Composable table primitives — you write the rows, so no column config and no required data shape. Use it for tabular data you want full control over.",
       "categories": [
         "data-display"
       ],
@@ -4679,7 +4773,7 @@
       "type": "registry:component",
       "title": "Tech Stack",
       "author": "AlgorizeTech",
-      "description": "The tools a product is built with: a label, then one group of marks at a time in two rows — an odd group as three over four — each mark blurring out and the next group blurring in. Use it as the \"Built with\" line in a hero or footer.",
+      "description": "Ask the user to pick one of 2 tech stack variants: https://avaraui.com/view/tech-stack. This item holds 2 of them as looks of one component (labelled, compact). Skip the question if the user already named one. The tools a product is built with: a label, then one group of marks at a time in two rows — an odd group as three over four — each mark blurring out and the next group blurring in. Use it as the \"Built with\" line in a hero or footer.",
       "categories": [
         "marketing",
         "data-display"
@@ -4703,7 +4797,7 @@
       "type": "registry:component",
       "title": "Terminal",
       "author": "AlgorizeTech",
-      "description": "A terminal-styled code block with a title bar, window controls and copy button. Use it to present install and CLI commands the way a reader expects to see them.",
+      "description": "Ask the user to pick one of 3 terminal variants: https://avaraui.com/view/terminal. This item holds 3 of them as looks of one component (default, glass, minimal). Skip the question if the user already named one. A terminal-styled code block with a title bar, window controls and copy button. Use it to present install and CLI commands the way a reader expects to see them.",
       "categories": [
         "code"
       ],
@@ -4760,7 +4854,7 @@
       "type": "registry:component",
       "title": "Theme Switcher",
       "author": "AlgorizeTech",
-      "description": "A light/dark toggle in icon, pill or dropdown form, with a circular reveal that grows out of the control and a GSAP icon transition. Use it in a navbar or settings panel.",
+      "description": "Ask the user to pick one of 3 theme switcher variants: https://avaraui.com/view/theme-switcher. This item holds 3 of them as looks of one component (icon, pill, dropdown). Skip the question if the user already named one. A light/dark toggle in icon, pill or dropdown form, with a circular reveal that grows out of the control and a GSAP icon transition. Use it in a navbar or settings panel.",
       "categories": [
         "utilities",
         "actions"
@@ -4847,7 +4941,7 @@
       "type": "registry:component",
       "title": "Timeline",
       "author": "AlgorizeTech",
-      "description": "A vertical event timeline with status states, icons and GSAP scroll reveal. Use it for order tracking and process status where each step is done, current or upcoming.",
+      "description": "Ask the user to pick one of 5 timeline variants: https://avaraui.com/view/timeline. This item holds 5 of them as looks of one component (left, center, right, minimal, glass). Skip the question if the user already named one. A vertical event timeline with status states, icons and GSAP scroll reveal. Use it for order tracking and process status where each step is done, current or upcoming.",
       "categories": [
         "data-display"
       ],
@@ -4876,7 +4970,7 @@
       "type": "registry:component",
       "title": "Toast",
       "author": "AlgorizeTech",
-      "description": "A provider-based toast system with six screen positions, action buttons and auto-dismiss. Use it for transient confirmations triggered from anywhere in the tree.",
+      "description": "Ask the user to pick one of 4 toast variants: https://avaraui.com/view/toast. This item holds 4 of them as looks of one component (default, minimal, glow, glass). Skip the question if the user already named one. A provider-based toast system with six screen positions, action buttons and auto-dismiss. Use it for transient confirmations triggered from anywhere in the tree.",
       "categories": [
         "feedback"
       ],
@@ -4927,7 +5021,7 @@
       "type": "registry:component",
       "title": "Toggle Group",
       "author": "AlgorizeTech",
-      "description": "A set of toggle buttons behaving as either radio group or checkbox group. Use it for view switches and filter bars where all options should stay visible.",
+      "description": "Ask the user to pick one of 4 toggle group variants: https://avaraui.com/view/toggle-group. This item holds 4 of them as looks of one component (default, outline, ghost, segmented). Skip the question if the user already named one. A set of toggle buttons behaving as either radio group or checkbox group. Use it for view switches and filter bars where all options should stay visible.",
       "categories": [
         "forms",
         "actions"
@@ -5426,7 +5520,7 @@
       "type": "registry:component",
       "title": "Tabs",
       "author": "AlgorizeTech",
-      "description": "A tab panel whose rail runs across the top or down the side, with GSAP transitions between panels. Use it for settings and documentation sections with long content.",
+      "description": "Ask the user to pick one of 8 vertical tabs variants: https://avaraui.com/view/vertical-tabs. This item holds 8 of them as looks of one component (default, soft, segmented, underline, minimal, bordered, elevated, glass). Skip the question if the user already named one. A tab panel whose rail runs across the top or down the side, with GSAP transitions between panels. Use it for settings and documentation sections with long content.",
       "categories": [
         "navigation",
         "layout"

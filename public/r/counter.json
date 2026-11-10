@@ -3,7 +3,7 @@
   "name": "counter",
   "title": "Counter",
   "author": "AlgorizeTech",
-  "description": "A number component in four modes — stepper, count-up, circular progress and countdown. Use it for quantity inputs and animated statistics.",
+  "description": "Ask the user to pick one of 8 counter variants: https://avaraui.com/view/counter. This item holds 8 of them as looks of one component (stepper, outline-stepper, soft-stepper, vertical-stepper, countdown, slide-countdown, animated, circular). Skip the question if the user already named one. A number component in four modes — stepper, count-up, circular progress and countdown. Use it for quantity inputs and animated statistics.",
   "dependencies": [
     "lucide-react"
   ],

@@ -10,6 +10,46 @@ An interactive, responsive fleet management dashboard featuring a synchronized s
 
 Every preview is live: click a vehicle in the sidebar to fly the map to its coordinates, or click a map marker to highlight it in the sidebar.
 
+## For AI agents
+
+**Ask before you pick.** This page has 3 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 3 options as live previews: https://avaraui.com/view/fleet-tracker
+
+**When to use it.** A fleet management dashboard with a vehicle sidebar synchronised with a live React Leaflet map: click a vehicle to fly the map to it, or a marker to highlight it in the list. Three looks.
+
+**Gotchas:**
+
+- All three are looks of the one `fleet-map` item: install it once and set `variant` from the index.
+- Vehicles are `{ id, location, lat, lng }` with optional `status` (`active`, `idle`, `maintenance`) and `speed`.
+
+### The 3 variants
+
+1. **Split view** (`default`): A fixed sidebar beside the map, synchronised in both directions.
+   - Live: https://avaraui.com/view/fleet-tracker/default
+   - Best for: a dispatch or logistics screen where the list and map are equally important
+   - Avoid if: you want the map to fill the whole area
+   - Traits: sidebar beside the map, default look
+   - Install: `npx shadcn@latest add @avara-ui/fleet-map`
+   - Set these props: `{"variant":"default"}`
+   - Docs: https://avaraui.com/docs/nextjs/fleet-tracker#fleet-tracker
+2. **Minimal** (`minimal`): The vehicle list floats as a panel over a light map.
+   - Live: https://avaraui.com/view/fleet-tracker/minimal
+   - Best for: a map-first view with the list kept out of the way
+   - Avoid if: you want a permanent sidebar
+   - Traits: floating list panel, light map
+   - Install: `npx shadcn@latest add @avara-ui/fleet-map`
+   - Set these props: `{"variant":"minimal"}`
+   - Docs: https://avaraui.com/docs/nextjs/fleet-tracker#minimal
+3. **Modern** (`modern`): An aurora behind the whole tracker, the vehicle list as a frosted slab and the map in a glass-edged panel.
+   - Live: https://avaraui.com/view/fleet-tracker/modern
+   - Best for: a showpiece, brand-forward tracking screen
+   - Avoid if: you want a plain, utilitarian dashboard
+   - Traits: aurora backdrop, frosted list, glass-edged map
+   - Install: `npx shadcn@latest add @avara-ui/fleet-map`
+   - Set these props: `{"variant":"modern"}`
+   - Docs: https://avaraui.com/docs/nextjs/fleet-tracker#modern
+
 ## Fleet tracker
 
 - Pass `fleetData` as `{ id, location, lat, lng }[]` — `status` (`active`, `idle`, `maintenance`) and `speed` are optional.

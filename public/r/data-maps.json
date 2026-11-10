@@ -3,7 +3,7 @@
   "name": "data-maps",
   "title": "Data Maps",
   "author": "AlgorizeTech",
-  "description": "A choropleth world map colouring countries by metric, with fill and dot variants. Use it for geographic analytics and regional breakdowns.",
+  "description": "Ask the user to pick one of 2 data maps variants: https://avaraui.com/view/data-maps. This item holds 2 of them as looks of one component (fill, dots). Skip the question if the user already named one. A choropleth world map colouring countries by metric, with fill and dot variants. Use it for geographic analytics and regional breakdowns.",
   "dependencies": [
     "geojson",
     "leaflet",

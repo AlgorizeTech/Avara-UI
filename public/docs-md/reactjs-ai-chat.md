@@ -10,6 +10,67 @@ A premium, interactive LLM chat interface featuring conversation history managem
 
 Every preview is live — send a prompt to see the simulated stream, rename a thread, or hit **New Chat**. Try the composer too: press **+** and pick *Photos & files* (or drop a file on the bar) and watch the rocket carry it to 100%, pick *Documents* or *Mail* to drop an `@Documents` mention into the prompt, switch the model, slide effort up to **Max** for the glowing prompt bar, or tap the mic and talk. `variant` changes the shell only — `compact` also drops the history sidebar — and everything else behaves identically in all four.
 
+## For AI agents
+
+**Ask before you pick.** This page has 5 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 5 options as live previews: https://avaraui.com/view/ai-chat
+
+**When to use it.** An LLM chat interface with conversation history, typing indicators, editable titles and a full prompt composer (a + menu for files and mentions, an upload indicator, a model picker), in five looks.
+
+**When to use something else:**
+
+- [Chat](https://avaraui.com/docs/reactjs/chat): for person-to-person messaging with a contact list rather than an AI assistant.
+
+**Gotchas:**
+
+- All five are looks of the one `ai-chat` item: install it once and set `variant` from the index.
+- To connect a real backend, pass your own upload and send handlers; the simulated stream and upload are the defaults.
+- `glass` and `liquid-glass` need a colourful backdrop behind them to read.
+
+### The 5 variants
+
+1. **Default** (`default`): The full assistant with a history sidebar of threads, grouped by date, beside the conversation.
+   - Live: https://avaraui.com/view/ai-chat/default
+   - Best for: an assistant where users return to earlier threads
+   - Avoid if: you want a single prompt box with no history
+   - Traits: history sidebar, default look, editable thread titles
+   - Install: `npx shadcn@latest add @avara-ui/ai-chat`
+   - Set these props: `{"variant":"default"}`
+   - Docs: https://avaraui.com/docs/nextjs/ai-chat#ai-assistant
+2. **Compact** (`compact`): No history sidebar: a hero title over the prompt bar until the first message, then the conversation.
+   - Live: https://avaraui.com/view/ai-chat/compact
+   - Best for: an assistant embedded in a page or a landing section
+   - Avoid if: users need to browse past conversations
+   - Traits: no sidebar, hero prompt before the first message, `heroTitle` and `heroSubtitle` copy
+   - Install: `npx shadcn@latest add @avara-ui/ai-chat`
+   - Set these props: `{"variant":"compact"}`
+   - Docs: https://avaraui.com/docs/nextjs/ai-chat#compact
+3. **Minimal** (`minimal`): Borders, shadows and dividers are stripped so the assistant blends into the surface around it.
+   - Live: https://avaraui.com/view/ai-chat/minimal
+   - Best for: an assistant inside a page or panel that already has its own frame
+   - Avoid if: you want it to read as a standalone card
+   - Traits: no borders or shadows
+   - Install: `npx shadcn@latest add @avara-ui/ai-chat`
+   - Set these props: `{"variant":"minimal"}`
+   - Docs: https://avaraui.com/docs/nextjs/ai-chat#minimal
+4. **Glass** (`glass`): Translucent panels with backdrop blur; the accent can be tinted to hold up against your backdrop.
+   - Live: https://avaraui.com/view/ai-chat/glass
+   - Best for: an assistant over a colourful or photographic background
+   - Avoid if: the background is plain
+   - Traits: translucent panels, backdrop blur, tintable accents
+   - Install: `npx shadcn@latest add @avara-ui/ai-chat`
+   - Set these props: `{"variant":"glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/ai-chat#glass
+5. **Liquid glass** (`liquid-glass`): Liquid-glass refraction using SVG displacement mapping, layered specular highlights and fluid reflections.
+   - Live: https://avaraui.com/view/ai-chat/liquid-glass
+   - Best for: a showpiece assistant over rich imagery
+   - Avoid if: you want a restrained look or a plain background
+   - Traits: refraction effect, specular highlights, tintable accents
+   - Install: `npx shadcn@latest add @avara-ui/ai-chat`
+   - Set these props: `{"variant":"liquid-glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/ai-chat#liquid-glass
+
 ## AI assistant
 
 - Pass `chatHistory` as `{ id, title, date }[]` — the `date` string is what the sidebar groups threads by.

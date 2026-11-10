@@ -10,6 +10,42 @@ The "Built with" line: a label, then the marks of the tools a product is made wi
 
 It is composed, not configured: a `TechStack` holds `TechStackGroup`s, and each group holds `TechStackTool`s, so your list of tools never has to take a particular shape. [Component Wall](https://avaraui.com/docs/nextjs/component-wall) takes one in its `stack` slot.
 
+## For AI agents
+
+**Ask before you pick.** This page has 2 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 2 options as live previews: https://avaraui.com/view/tech-stack
+
+**When to use it.** The "Built with" line: a label followed by the marks of the tools a product is made with, in two rows that take turns between groups, in two looks: labelled or compact.
+
+**When to use something else:**
+
+- [Component Wall](https://avaraui.com/docs/nextjs/component-wall): for a full hero that already includes a tech stack line.
+
+**Gotchas:**
+
+- Both are looks of the one `tech-stack` item: install it once and set `variant` from the index.
+- Compose it: a `TechStack` holds `TechStackGroup`s and each holds `TechStackTool`s, so your list of tools needs no particular shape. Four to eight tools per group read well.
+- With a single group nothing turns, so no timer runs.
+
+### The 2 variants
+
+1. **Labelled** (`labelled`): Each mark with its name shown beside it. The default.
+   - Live: https://avaraui.com/view/tech-stack/labelled
+   - Best for: a "Built with" line where recognising each tool by name matters
+   - Avoid if: space is tight and the marks are well known
+   - Traits: names visible, default look
+   - Install: `npx shadcn@latest add @avara-ui/tech-stack`
+   - Docs: https://avaraui.com/docs/nextjs/tech-stack#built-with
+2. **Compact** (`compact`): The names are hidden from view and become each mark's tooltip, still read to screen readers.
+   - Live: https://avaraui.com/view/tech-stack/compact
+   - Best for: a tight strip of recognisable logos
+   - Avoid if: visitors may not recognise the marks without names
+   - Traits: marks only, names as tooltips
+   - Install: `npx shadcn@latest add @avara-ui/tech-stack`
+   - Set these props: `{"variant":"compact"}`
+   - Docs: https://avaraui.com/docs/nextjs/tech-stack#compact
+
 ## Built with
 
 Two groups taking turns: seven front-end tools, three over four, then four services. Wait a few seconds for the swap. Names sit beside the marks on wide screens.

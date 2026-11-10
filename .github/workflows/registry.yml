@@ -38,12 +38,13 @@ jobs:
         run: npm run check:variants
 
       # If regenerating changed anything, the committed artifacts were stale.
-      # Fail loudly rather than letting a stale registry.json or public/r/ ship.
+      # Fail loudly rather than letting a stale registry.json, public/r/ or
+      # registry-skill/ (the agent skill items) ship.
       - name: Fail if generated artifacts are stale
         run: |
-          if ! git diff --exit-code -- registry.json public/r; then
+          if ! git diff --exit-code -- registry.json public/r registry-skill; then
             echo ""
-            echo "registry.json or public/r/ is out of date."
+            echo "registry.json, public/r/ or registry-skill/ is out of date."
             echo "Run 'npm run build:registry' locally and commit the result."
             exit 1
           fi
