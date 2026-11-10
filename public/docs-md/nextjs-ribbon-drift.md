@@ -10,7 +10,67 @@ A dynamic hero showcase card featuring dual floating infinite marquee ribbons, a
 
 Originally created as the signature visual counterpart for authentication layouts, it is completely decoupled as a standalone visual card that works across landing pages, feature highlights, onboarding heroes, and product showcase sections.
 
-### Ribbon Drift Card
+## For AI agents
+
+**Ask before you pick.** This page has 2 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 2 options as live previews: https://avaraui.com/view/ribbon-drift
+
+**When to use it.** Two infinite marquee ribbons over an ambient, drifting gradient background, in two looks: a brand-logo strip with criss-crossing ribbons, or a hero card with a central 3D character and a frosted promo.
+
+**Gotchas:**
+
+- Both are looks of the one `ribbon-drift` item: install it once and set `variant` from the index.
+- `color` tunes the ambient glow for either look; `bgColor` overrides the background with a custom colour.
+
+### The 2 variants
+
+1. **Cross ribbon logos** (`cross-logos`): Two criss-crossing logo marquees with frosted glass blur over an ambient drift background.
+   - Live: https://avaraui.com/view/ribbon-drift/cross-logos
+   - Best for: a trusted-by or partner strip that should feel animated
+   - Avoid if: you have no brand logos to show; you want a hero card with a central illustration
+   - Traits: criss-crossing ribbons, brand logos, frosted glass, ambient background
+   - Install: `npx shadcn@latest add @avara-ui/ribbon-drift`
+   - Set these props: `{"variant":"cross-logos"}`
+   - Docs: https://avaraui.com/docs/nextjs/ribbon-drift#cross-ribbon-logos
+2. **Hero card** (`default`): Two tilted marquee ribbons around a central 3D character, with a frosted promo card.
+   - Live: https://avaraui.com/view/ribbon-drift/default
+   - Best for: a hero or promotional banner with a focal illustration
+   - Avoid if: you only need a quiet logo strip
+   - Traits: tilted ribbons, 3D character, frosted promo card, ambient background
+   - Install: `npx shadcn@latest add @avara-ui/ribbon-drift`
+   - Set these props: `{"variant":"default"}`
+   - Docs: https://avaraui.com/docs/nextjs/ribbon-drift#ribbon-drift-hero-card
+
+### Cross Ribbon Logos
+
+Dual criss-crossing infinite marquee ribbons featuring leading brand logos with frosted glass blur and ambient drift background.
+
+- Set `variant="cross-logos"` switches to dual intersecting brand ribbon animation.
+- Set `color="primary" | "indigo" | "rose" | "emerald" | "lavender" | "amber" | "violet" | "zinc"` tunes the ambient glow gradient background.
+- `bgColor` optional custom background color override (e.g. #F8C83C for warm yellow).
+- `speed` marquee scrolling duration in seconds (default: 48).
+
+```tsx
+import { RibbonLogos } from "@/components/custom/blocks/RibbonDriftBlock";
+
+export default function CrossRibbonLogosExample() {
+  return (
+    <div className="w-full max-w-4xl mx-auto rounded-3xl overflow-hidden">
+      <RibbonLogos
+        title="Trusted by leading brands worldwide"
+        color="primary"
+        speed={48}
+        pauseOnHover={true}
+        // Optional custom background color override:
+        // bgColor="#F8C83C"
+      />
+    </div>
+  );
+}
+```
+
+### Ribbon Drift Hero Card
 
 Dual infinite marquee ribbons, central 3D character, ambient gradient drift, and frosted promo card.
 
@@ -44,7 +104,7 @@ const AVATARS = [
 
 export default function RibbonDriftCardExample() {
   return (
-    <div className="w-full max-w-2xl mx-auto">
+    <div className="w-full max-w-4xl mx-auto">
       <RibbonDriftBlock
         color="primary"
         image="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1793701432/register-hero-1793701431524.png"
@@ -89,6 +149,9 @@ npx shadcn@latest add @avara-ui/ribbon-drift
 
 | Component | Prop | Type | Default | Description |
 | --- | --- | --- | --- | --- |
+| `RibbonDriftBlock` / `RibbonLogos` | `variant` | `"default" \| "cross-logos"` | `"default"` | Display variant: `"default"` for the 3D illustration hero card with frosted promo, or `"cross-logos"` for dual criss-crossing infinite brand marquee ribbons. |
+| `RibbonLogos` | `title` | `ReactNode` | `"Trusted by leading brands worldwide"` | Heading text displayed centered above the crossing ribbons. |
+| `RibbonLogos` | `bgColor` | `string` | `undefined` | Optional custom background color override (e.g. `"#F8C83C"` for warm yellow). When omitted, uses the signature ambient drift background of the original variant. |
 | `RibbonDriftBlock` | `image` | `string` | `defaultImage` | Central illustration URL positioned between the layered ribbons. |
 | `RibbonDriftBlock` | `imageAlt` | `string` | `"Feature illustration"` | Accessible alt text for the central illustration. |
 | `RibbonDriftBlock` | `ribbonsTop` | `string[]` | `defaultRibbonsTop` | Items scrolling in the upper ribbon (tilted at -7deg, drifting left). |

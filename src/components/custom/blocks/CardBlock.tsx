@@ -5,11 +5,6 @@ import React, { useState } from "react";
 import { ArrowUpRight, Mail, Copy, Check } from "lucide-react";
 import Button from "./Button";
 
-const kebab = (s: string) =>
-  s
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
 
 // ==========================================
 // 1. ROOT CARD WRAPPER

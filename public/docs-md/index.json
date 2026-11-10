@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-09T07:02:50.950Z",
-  "totalFiles": 327,
+  "generatedAt": "2026-11-10T10:50:59.833Z",
+  "totalFiles": 329,
   "files": [
     {
       "name": "docs",
@@ -667,6 +667,12 @@
       "path": "/docs-md/nextjs-popover.md",
       "url": "/docs/nextjs/popover",
       "originalMdx": "[framework]\\popover\\page.mdx"
+    },
+    {
+      "name": "nextjs/portfolio-showcase",
+      "path": "/docs-md/nextjs-portfolio-showcase.md",
+      "url": "/docs/nextjs/portfolio-showcase",
+      "originalMdx": "[framework]\\portfolio-showcase\\page.mdx"
     },
     {
       "name": "nextjs/pricing",
@@ -1645,6 +1651,12 @@
       "path": "/docs-md/reactjs-popover.md",
       "url": "/docs/reactjs/popover",
       "originalMdx": "[framework]\\popover\\page.mdx"
+    },
+    {
+      "name": "reactjs/portfolio-showcase",
+      "path": "/docs-md/reactjs-portfolio-showcase.md",
+      "url": "/docs/reactjs/portfolio-showcase",
+      "originalMdx": "[framework]\\portfolio-showcase\\page.mdx"
     },
     {
       "name": "reactjs/pricing",
