@@ -309,7 +309,8 @@ export interface HomepageHeroProps extends React.HTMLAttributes<HTMLElement> {
   description?: React.ReactNode;
   install?: { command: string };
   primaryAction?: { label: string; href: string; icon?: React.ReactNode };
-  secondaryAction?: { label: string; href: string; icon?: React.ReactNode };
+  /** `external` opens the link in a new tab (a GitHub link, say). */
+  secondaryAction?: { label: string; href: string; icon?: React.ReactNode; external?: boolean };
   trust?: { text: string; avatars?: StackAvatar[]; rating?: number };
   items: HomepageHeroItem[];
   interval?: number;
@@ -710,6 +711,7 @@ export const HomepageHero = forwardRef<HTMLElement, HomepageHeroProps>(
             {secondaryAction && (
               <LinkComp
                 href={secondaryAction.href}
+                {...(secondaryAction.external && { target: "_blank", rel: "noopener noreferrer" })}
                 className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-border bg-background px-6 text-[15px] font-semibold text-foreground outline-none transition-[transform,background-color] duration-200 hover:bg-muted focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2 focus-visible:ring-offset-background active:scale-[0.98]"
               >
                 {secondaryAction.icon}
