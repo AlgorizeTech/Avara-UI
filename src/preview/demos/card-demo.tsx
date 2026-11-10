@@ -8,6 +8,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
+  ProjectCard,
 } from "@/components/custom/blocks/CardBlock";
 import { ProductCard, ProductColorOption } from "@/components/custom/blocks/ProductCardBlock";
 import { cn } from "@/lib/utils";
@@ -47,7 +48,8 @@ export default function CardDemo({
     | "profile"
     | "ticket"
     | "media"
-    | "shop";
+    | "shop"
+    | "project-showcase";
 }) {
   const [sneakerBg, setSneakerBg] = useState(
     "bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-amber-500/5 dark:from-amber-500/20 dark:to-card border-amber-500/30"
@@ -57,7 +59,24 @@ export default function CardDemo({
   );
 
   return (
-    <div className="w-full flex items-center justify-center min-h-[400px] p-4 relative z-10 overflow-hidden">
+    <div
+      style={
+        layout === "project-showcase"
+          ? {
+              paddingTop: "12px",
+              paddingBottom: "12px",
+              paddingLeft: "12px",
+              paddingRight: "0px",
+            }
+          : undefined
+      }
+      className={cn(
+        "w-full flex items-center justify-center min-h-[400px] relative z-10",
+        layout === "project-showcase"
+          ? "pt-[12px] pb-[12px] pl-[12px] pr-0 overflow-visible"
+          : "p-4 overflow-hidden",
+      )}
+    >
       {layout === "standard" && (
         <Card variant={variant} interactive={interactive} className="w-full max-w-sm">
           <CardHeader>
@@ -306,6 +325,20 @@ export default function CardDemo({
       {layout === "media" && <NowPlayingCard />}
 
       {layout === "shop" && <ShopCards interactive={interactive} />}
+
+      {layout === "project-showcase" && (
+        <ProjectCard
+          title="Platform grid"
+          image="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/platform-grid-1790516064500.jpg"
+          slug="platform-grid"
+          scope="avara-ui"
+          badge1="Component Block"
+          badge2="TypeScript & Tailwind"
+          description="A meticulously crafted, responsive interactive block built with modern animations, responsive layouts, and accessible standards. Ready to drop into your Next.js and React applications."
+          ctaLabel="Full View"
+          contactLabel="Contact"
+        />
+      )}
     </div>
   );
 }

@@ -199,11 +199,11 @@ export const META: Record<string, ItemMeta> = {
     docs: "Default export. Supports variant (default | destructive | outline | secondary | ghost | link), size (sm | lg), and a `loading` prop. Ripple keyframes are injected into document.head on mount, so no Tailwind config or global CSS changes are needed.",
   },
   card: {
-    usageDependencies: ["product-card"],
+    usageDependencies: ["product-card", "button"],
     description:
       "A composable surface with header, title, description, content, and footer slots. Use it to group related content into a bounded block.",
     categories: ["layout"],
-    docs: "Named exports: Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter. Compose them rather than passing props to a single element.",
+    docs: "Named exports: Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, ProjectCard (also ShowcaseCard). Compose primitives or use ProjectCard for rich two-column showcases.",
   },
   tooltip: {
     description:

@@ -134,7 +134,7 @@ const rawNavigation: NavigationItem[] = [
       { label: "Breadcrumb", slug: "breadcrumb" },
       { label: "Buttons", slug: "button" },
       { label: "Calendar", slug: "calendar" },
-      { label: "Card", slug: "card" },
+      { label: "Card", slug: "card", badge: "New" },
       {
         label: "Card Stack",
         slug: "card-stack",
