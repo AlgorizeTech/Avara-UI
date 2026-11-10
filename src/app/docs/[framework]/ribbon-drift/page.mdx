@@ -36,7 +36,7 @@ const AVATARS = [
 
 export default function RibbonDriftCardExample() {
   return (
-    <div className="w-full max-w-2xl mx-auto">
+    <div className="w-full max-w-4xl mx-auto">
       <RibbonDriftBlock
         color="primary"
         image="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1793701432/register-hero-1793701431524.png"
@@ -61,13 +61,63 @@ export default function RibbonDriftCardExample() {
   );
 }`;
 
+export const usageCrossLogos = `import { RibbonLogos } from "@/components/custom/blocks/RibbonDriftBlock";
+
+export default function CrossRibbonLogosExample() {
+  return (
+    <div className="w-full max-w-4xl mx-auto rounded-3xl overflow-hidden">
+      <RibbonLogos
+        title="Trusted by leading brands worldwide"
+        color="primary"
+        speed={48}
+        pauseOnHover={true}
+        // Optional custom background color override:
+        // bgColor="#F8C83C"
+      />
+    </div>
+  );
+}`;
+
 <ExampleShowcase
   name="ribbon-drift"
   colorControl
   columns={1}
   examples={[
     {
-      title: "Ribbon Drift Card",
+      title: "Cross Ribbon Logos",
+      subheading:
+        "Dual criss-crossing infinite marquee ribbons featuring leading brand logos with frosted glass blur and ambient drift background.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"cross-logos"',
+          effect: "switches to dual intersecting brand ribbon animation.",
+        },
+        {
+          lead: "Set",
+          prop: "color",
+          value: '"primary" | "indigo" | "rose" | "emerald" | "lavender" | "amber" | "violet" | "zinc"',
+          effect: "tunes the ambient glow gradient background.",
+        },
+        {
+          prop: "bgColor",
+          effect: "optional custom background color override (e.g. #F8C83C for warm yellow).",
+        },
+        {
+          prop: "speed",
+          effect: "marquee scrolling duration in seconds (default: 48).",
+        },
+      ],
+      props: {
+        variant: "cross-logos",
+        color: "primary",
+      },
+      usage: usageCrossLogos,
+      code: extractCode("src/components/custom/blocks/RibbonDriftBlock.tsx"),
+    },
+    {
+      title: "Ribbon Drift Hero Card",
       subheading:
         "Dual infinite marquee ribbons, central 3D character, ambient gradient drift, and frosted promo card.",
       propNotes: [
@@ -87,6 +137,7 @@ export default function RibbonDriftCardExample() {
         },
       ],
       props: {
+        variant: "default",
         color: "primary",
       },
       usage: usageDefault,
@@ -113,6 +164,57 @@ export default function RibbonDriftCardExample() {
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td>
+          <code>RibbonDriftBlock</code> / <code>RibbonLogos</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "cross-logos"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Display variant: <code>"default"</code> for the 3D illustration hero card with frosted promo, or <code>"cross-logos"</code> for dual criss-crossing infinite brand marquee ribbons.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>RibbonLogos</code>
+        </td>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>ReactNode</code>
+        </td>
+        <td>
+          <code>"Trusted by leading brands worldwide"</code>
+        </td>
+        <td>
+          Heading text displayed centered above the crossing ribbons.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>RibbonLogos</code>
+        </td>
+        <td>
+          <code>bgColor</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Optional custom background color override (e.g. <code>"#F8C83C"</code> for warm yellow). When omitted, uses the signature ambient drift background of the original variant.
+        </td>
+      </tr>
       <tr>
         <td>
           <code>RibbonDriftBlock</code>

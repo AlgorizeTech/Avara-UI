@@ -273,7 +273,6 @@ const rawNavigation: NavigationItem[] = [
         label: "Ribbon Drift",
         slug: "ribbon-drift",
         badge: "New",
-        addedOn: "2026-11-03",
         keywords: [
           "ribbon drift",
           "ribbon card",
