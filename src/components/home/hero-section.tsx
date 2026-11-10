@@ -5,7 +5,8 @@ import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import { HomepageHero } from "@/components/site/HomepageHero";
 import { WALL_ITEMS, WallStack } from "@/constants/component-wall";
 import Link from "@/components/site/intent-link";
-import { SITE_NAME } from "@/config/site";
+import { Github } from "lucide-react";
+import { SITE_NAME, links } from "@/config/site";
 import { REGISTRY_NAMESPACE } from "@/lib/registry";
 
 /* ═══════════════════════════════════════════════
@@ -102,7 +103,12 @@ export function HeroSection() {
 					label: "Browse components",
 					href: "/docs/nextjs/all-components",
 				}}
-				secondaryAction={{ label: "Get Started", href: "/docs/nextjs" }}
+				secondaryAction={{
+					label: "Star on GitHub",
+					href: links.github,
+					icon: <Github className="size-4" aria-hidden />,
+					external: true,
+				}}
 				items={WALL_ITEMS}
 				stack={<WallStack variant="compact" label={STACK_LABEL} />}
 				interval={4500}
