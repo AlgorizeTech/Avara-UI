@@ -1,0 +1,95 @@
+import type { PageVariants } from "./types";
+
+/**
+ * AI chat: 5 looks of one registry item (`ai-chat`), chosen with the `variant`
+ * prop. "Wired to your backend" is the default look with real handlers, so it
+ * is not listed. Claims come from src/app/docs/[framework]/ai-chat/page.mdx.
+ */
+export const aiChat: PageVariants = {
+  slug: "ai-chat",
+  intro: "An LLM chat interface with conversation history, typing indicators, editable titles and a full prompt composer (a + menu for files and mentions, an upload indicator, a model picker), in five looks.",
+  whenNot: [
+    {
+      use: "Chat",
+      slug: "chat",
+      reason: "for person-to-person messaging with a contact list rather than an AI assistant",
+    },
+  ],
+  gotchas: [
+    "All five are looks of the one `ai-chat` item: install it once and set `variant` from the index.",
+    "To connect a real backend, pass your own upload and send handlers; the simulated stream and upload are the defaults.",
+    "`glass` and `liquid-glass` need a colourful backdrop behind them to read.",
+  ],
+  variants: [
+    {
+      id: "default",
+      label: "Default",
+      group: "Layout",
+      summary: "The full assistant with a history sidebar of threads, grouped by date, beside the conversation.",
+      bestFor: ["an assistant where users return to earlier threads"],
+      avoidIf: ["you want a single prompt box with no history"],
+      traits: ["history sidebar", "default look", "editable thread titles"],
+      item: "ai-chat",
+      demo: "ai-chat",
+      example: "AI assistant",
+      props: { variant: "default" },
+      setProps: { variant: "default" },
+    },
+    {
+      id: "compact",
+      label: "Compact",
+      group: "Layout",
+      summary: "No history sidebar: a hero title over the prompt bar until the first message, then the conversation.",
+      bestFor: ["an assistant embedded in a page or a landing section"],
+      avoidIf: ["users need to browse past conversations"],
+      traits: ["no sidebar", "hero prompt before the first message", "`heroTitle` and `heroSubtitle` copy"],
+      item: "ai-chat",
+      demo: "ai-chat",
+      example: "Compact",
+      props: { variant: "compact" },
+      setProps: { variant: "compact" },
+    },
+    {
+      id: "minimal",
+      label: "Minimal",
+      group: "Surface",
+      summary: "Borders, shadows and dividers are stripped so the assistant blends into the surface around it.",
+      bestFor: ["an assistant inside a page or panel that already has its own frame"],
+      avoidIf: ["you want it to read as a standalone card"],
+      traits: ["no borders or shadows"],
+      item: "ai-chat",
+      demo: "ai-chat",
+      example: "Minimal",
+      props: { variant: "minimal" },
+      setProps: { variant: "minimal" },
+    },
+    {
+      id: "glass",
+      label: "Glass",
+      group: "Surface",
+      summary: "Translucent panels with backdrop blur; the accent can be tinted to hold up against your backdrop.",
+      bestFor: ["an assistant over a colourful or photographic background"],
+      avoidIf: ["the background is plain"],
+      traits: ["translucent panels", "backdrop blur", "tintable accents"],
+      item: "ai-chat",
+      demo: "ai-chat",
+      example: "Glass",
+      props: { variant: "glass" },
+      setProps: { variant: "glass" },
+    },
+    {
+      id: "liquid-glass",
+      label: "Liquid glass",
+      group: "Surface",
+      summary: "Liquid-glass refraction using SVG displacement mapping, layered specular highlights and fluid reflections.",
+      bestFor: ["a showpiece assistant over rich imagery"],
+      avoidIf: ["you want a restrained look or a plain background"],
+      traits: ["refraction effect", "specular highlights", "tintable accents"],
+      item: "ai-chat",
+      demo: "ai-chat",
+      example: "Liquid Glass",
+      props: { variant: "liquid-glass" },
+      setProps: { variant: "liquid-glass" },
+    },
+  ],
+};

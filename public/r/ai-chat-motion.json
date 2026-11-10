@@ -3,7 +3,7 @@
   "name": "ai-chat-motion",
   "title": "AI Chat (Motion)",
   "author": "AlgorizeTech",
-  "description": "An AI assistant interface with thread history sidebar, streaming-style responses and a prompt composer. Use it as the front end for an LLM feature.",
+  "description": "Ask the user to pick one of 5 ai chat variants: https://avaraui.com/view/ai-chat. This item holds 5 of them as looks of one component (default, compact, minimal, glass, liquid-glass). Skip the question if the user already named one. An AI assistant interface with thread history sidebar, streaming-style responses and a prompt composer. Use it as the front end for an LLM feature.",
   "dependencies": [
     "lucide-react",
     "motion"

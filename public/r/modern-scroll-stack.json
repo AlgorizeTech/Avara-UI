@@ -3,7 +3,7 @@
   "name": "modern-scroll-stack",
   "title": "Modern Scroll Stack",
   "author": "AlgorizeTech",
-  "description": "A sticky scroll-driven service cards stack where cards slide up from below with horizontal fan offsets and smoothly tilt into resting angles as they lock into place.",
+  "description": "Ask the user to pick one of 2 modern scroll stack variants: https://avaraui.com/view/modern-scroll-stack. This item holds 2 of them as looks of one component (fan, stacked). Skip the question if the user already named one. A sticky scroll-driven service cards stack where cards slide up from below with horizontal fan offsets and smoothly tilt into resting angles as they lock into place.",
   "dependencies": [],
   "registryDependencies": [
     "utils"

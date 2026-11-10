@@ -3,7 +3,7 @@
   "name": "draggable-card-list-motion",
   "title": "Draggable Card List (Motion)",
   "author": "AlgorizeTech",
-  "description": "An interactive reorderable card list with 60fps Motion spring physics, right-side grip handles, and custom card metadata.",
+  "description": "Ask the user to pick one of 2 draggable card list variants: https://avaraui.com/view/draggable-card-list. This item holds 2 of them as looks of one component (classic, modern). Skip the question if the user already named one. An interactive reorderable card list with 60fps Motion spring physics, right-side grip handles, and custom card metadata.",
   "dependencies": [
     "lucide-react",
     "motion"

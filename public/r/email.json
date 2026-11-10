@@ -3,7 +3,7 @@
   "name": "email",
   "title": "Email",
   "author": "AlgorizeTech",
-  "description": "A full email client layout with folders, labels, message list, reading pane and attachments. Use it as the shell for an inbox or ticketing view.",
+  "description": "Ask the user to pick one of 4 email variants: https://avaraui.com/view/email. This item holds 4 of them as looks of one component (default, minimal, glass, liquid-glass). Skip the question if the user already named one. A full email client layout with folders, labels, message list, reading pane and attachments. Use it as the shell for an inbox or ticketing view.",
   "dependencies": [
     "lucide-react"
   ],

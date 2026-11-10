@@ -3,7 +3,7 @@
   "name": "terminal",
   "title": "Terminal",
   "author": "AlgorizeTech",
-  "description": "A terminal-styled code block with a title bar, window controls and copy button. Use it to present install and CLI commands the way a reader expects to see them.",
+  "description": "Ask the user to pick one of 3 terminal variants: https://avaraui.com/view/terminal. This item holds 3 of them as looks of one component (default, glass, minimal). Skip the question if the user already named one. A terminal-styled code block with a title bar, window controls and copy button. Use it to present install and CLI commands the way a reader expects to see them.",
   "dependencies": [
     "lucide-react"
   ],

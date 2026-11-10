@@ -3,7 +3,7 @@
   "name": "scroll-area",
   "title": "Scroll Area",
   "author": "AlgorizeTech",
-  "description": "A scroll container with styled, optionally auto-hiding scrollbars in either axis. Use it to keep scrollbar appearance consistent across browsers.",
+  "description": "Ask the user to pick one of 3 scroll area variants: https://avaraui.com/view/scroll-area. This item holds 3 of them as looks of one component (default, minimal, glass). Skip the question if the user already named one. A scroll container with styled, optionally auto-hiding scrollbars in either axis. Use it to keep scrollbar appearance consistent across browsers.",
   "dependencies": [],
   "registryDependencies": [
     "utils"

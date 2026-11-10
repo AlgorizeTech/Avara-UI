@@ -3,7 +3,7 @@
   "name": "progress",
   "title": "Progress",
   "author": "AlgorizeTech",
-  "description": "A themeable progress bar in three forms — a single bar, a multi-segment track, and a ring — with an optional labelled field wrapper. Use it for determinate operations where percentage complete is known.",
+  "description": "Ask the user to pick one of 2 progress variants: https://avaraui.com/view/progress. This item holds 2 of them as looks of one component (bar, circular). Skip the question if the user already named one. A themeable progress bar in three forms — a single bar, a multi-segment track, and a ring — with an optional labelled field wrapper. Use it for determinate operations where percentage complete is known.",
   "dependencies": [
     "lucide-react"
   ],

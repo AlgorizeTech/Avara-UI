@@ -3,7 +3,7 @@
   "name": "social-links",
   "title": "Social Links",
   "author": "AlgorizeTech",
-  "description": "A row of brand marks that link out — X, GitHub, LinkedIn, YouTube, Instagram, Facebook, Discord, Dribbble, email. Use it in footers, profile cards and author bylines.",
+  "description": "Ask the user to pick one of 4 social links variants: https://avaraui.com/view/social-links. This item holds 4 of them as looks of one component (row, outline, expand-replace, expand-reveal). Skip the question if the user already named one. A row of brand marks that link out — X, GitHub, LinkedIn, YouTube, Instagram, Facebook, Discord, Dribbble, email. Use it in footers, profile cards and author bylines.",
   "dependencies": [
     "lucide-react"
   ],

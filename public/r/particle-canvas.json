@@ -3,7 +3,7 @@
   "name": "particle-canvas",
   "title": "Particle Canvas",
   "author": "AlgorizeTech",
-  "description": "A high-performance text canvas component with organic repulsion physics and wordmark glow variants featuring cursor tracking and scroll-driven rising animations.",
+  "description": "Ask the user to pick one of 2 particle canvas variants: https://avaraui.com/view/particle-canvas. This item holds 2 of them as looks of one component (repel, wordmark-glow). Skip the question if the user already named one. A high-performance text canvas component with organic repulsion physics and wordmark glow variants featuring cursor tracking and scroll-driven rising animations.",
   "dependencies": [
     "next-themes"
   ],
