@@ -3,7 +3,7 @@
   "name": "range-date-picker",
   "title": "Range Date Picker",
   "author": "AlgorizeTech",
-  "description": "An interactive Range Date Picker featuring single month, dual-month, and rate-priced calendar layouts with customizable theme colors.",
+  "description": "Ask the user to pick one of 4 range date picker variants: https://avaraui.com/view/range-date-picker. This item holds 4 of them as looks of one component (single, priced-single, dual, priced-dual). Skip the question if the user already named one. An interactive Range Date Picker featuring single month, dual-month, and rate-priced calendar layouts with customizable theme colors.",
   "dependencies": [
     "lucide-react"
   ],

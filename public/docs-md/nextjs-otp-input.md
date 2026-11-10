@@ -12,6 +12,37 @@ Building a multi-box input that actually feels good to use is notoriously diffic
 
 Explore the different variations of the OTP Input — each example shows a live preview with the exact code to copy. **Try copying a 6-digit number and pasting it directly into the first box.**
 
+## For AI agents
+
+**Ask before you pick.** This page has 2 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 2 options as live previews: https://avaraui.com/view/otp-input
+
+**When to use it.** A multi-box input for one-time passwords and 2FA codes with paste support, arrow-key navigation and backspace handling, in two styles: boxed or underlined.
+
+**Gotchas:**
+
+- Both are looks of the one `otp-input` item: install it once and set `variant` from the index.
+- `value` and `onChange` work with the assembled string, not an array; `onComplete` fires once every box is filled.
+
+### The 2 variants
+
+1. **Boxed** (`default`): A row of separate boxes, six by default. The default look.
+   - Live: https://avaraui.com/view/otp-input/default
+   - Best for: a verification step that should clearly read as a code entry
+   - Avoid if: you want a lighter, line-only field
+   - Traits: separate boxes, default look, `length` prop
+   - Install: `npx shadcn@latest add @avara-ui/otp-input`
+   - Docs: https://avaraui.com/docs/nextjs/otp-input#otp-input
+2. **Underlined** (`underlined`): Each box is reduced to a baseline rule.
+   - Live: https://avaraui.com/view/otp-input/underlined
+   - Best for: a minimal, editorial verification screen
+   - Avoid if: you want each digit in its own box
+   - Traits: baseline rules
+   - Install: `npx shadcn@latest add @avara-ui/otp-input`
+   - Set these props: `{"variant":"underlined"}`
+   - Docs: https://avaraui.com/docs/nextjs/otp-input#underlined
+
 ## OTP Input
 
 Paste, arrow-key and backspace handling are built in.

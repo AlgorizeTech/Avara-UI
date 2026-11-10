@@ -12,6 +12,54 @@ This component utilizes a React Context Provider to make composition incredibly 
 
 Explore the different variations of the Toggle Group — each example shows a live preview with the exact code to copy.
 
+## For AI agents
+
+**Ask before you pick.** This page has 4 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 4 options as live previews: https://avaraui.com/view/toggle-group
+
+**When to use it.** A set of segmented two-state buttons for settings and rich-text toolbars, in four looks: the default, outlined, ghost and a sliding pill track.
+
+**Gotchas:**
+
+- All four are looks of the one `toggle-group` item: install it once and set `variant` from the index.
+- Single or multiple selection is the `type` prop (`multiple` takes a string array as `value`), and `size` and `disabled` are props on any look.
+- The sliding pill track reads best with text labels and `type="single"`.
+
+### The 4 variants
+
+1. **Default** (`default`): The default segmented group, behaving like radio buttons in single mode.
+   - Live: https://avaraui.com/view/toggle-group/default
+   - Best for: a general settings or view switcher
+   - Avoid if: you want a border around the group or a sliding highlight
+   - Traits: default look, single or multiple selection
+   - Install: `npx shadcn@latest add @avara-ui/toggle-group`
+   - Docs: https://avaraui.com/docs/nextjs/toggle-group#toggle-group
+2. **Outline** (`outline`): A border is drawn around the segment.
+   - Live: https://avaraui.com/view/toggle-group/outline
+   - Best for: a toolbar where the group should be clearly bounded
+   - Avoid if: you want a lighter look
+   - Traits: bordered segment
+   - Install: `npx shadcn@latest add @avara-ui/toggle-group`
+   - Set these props: `{"variant":"outline"}`
+   - Docs: https://avaraui.com/docs/nextjs/toggle-group#outline
+3. **Ghost** (`ghost`): Items paint only when active, with no pill container.
+   - Live: https://avaraui.com/view/toggle-group/ghost
+   - Best for: a rich-text toolbar where the buttons should stay light
+   - Avoid if: you want the group to read as one control
+   - Traits: paints only when active, no container
+   - Install: `npx shadcn@latest add @avara-ui/toggle-group`
+   - Set these props: `{"variant":"ghost"}`
+   - Docs: https://avaraui.com/docs/nextjs/toggle-group#ghost
+4. **Segmented pill** (`segmented`): A pill track with a sliding highlight.
+   - Live: https://avaraui.com/view/toggle-group/segmented
+   - Best for: a text-labelled single choice such as a tab-like switcher
+   - Avoid if: you need multiple selection or icon-only items
+   - Traits: pill track, sliding highlight
+   - Install: `npx shadcn@latest add @avara-ui/toggle-group`
+   - Set these props: `{"variant":"segmented"}`
+   - Docs: https://avaraui.com/docs/nextjs/toggle-group#segmented
+
 ## Toggle Group
 
 Single selection — exactly one item stays active at a time.

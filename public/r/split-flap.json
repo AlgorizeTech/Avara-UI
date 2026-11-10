@@ -3,7 +3,7 @@
   "name": "split-flap",
   "title": "Split-Flap Display",
   "author": "AlgorizeTech",
-  "description": "An authentic, physics-driven Split-Flap Display component simulating retro-mechanical flap cards, 3D perspective flips, and synthesized click sounds with ivory and minimalist variants.",
+  "description": "Ask the user to pick one of 2 split flap variants: https://avaraui.com/view/split-flap. This item holds 2 of them as looks of one component (ivory, minimalist). Skip the question if the user already named one. An authentic, physics-driven Split-Flap Display component simulating retro-mechanical flap cards, 3D perspective flips, and synthesized click sounds with ivory and minimalist variants.",
   "dependencies": [
     "gsap"
   ],

@@ -3,7 +3,7 @@
   "name": "table",
   "title": "Table",
   "author": "AlgorizeTech",
-  "description": "Composable table primitives — you write the rows, so no column config and no required data shape. Use it for tabular data you want full control over.",
+  "description": "Ask the user to pick one of 3 table variants: https://avaraui.com/view/table. This item holds 3 of them as looks of one component (default, minimal, soft). Skip the question if the user already named one. Composable table primitives — you write the rows, so no column config and no required data shape. Use it for tabular data you want full control over.",
   "dependencies": [
     "lucide-react"
   ],

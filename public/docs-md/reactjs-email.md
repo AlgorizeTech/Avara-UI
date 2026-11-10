@@ -10,6 +10,54 @@ A premium, fully interactive email client featuring a modern SaaS aesthetic. It 
 
 The client is fully encapsulated — hand it `initialEmails` and reading, starring, archiving, deleting and composing all work. Try searching for a sender, starring a message to watch it move to the Starred folder, or opening Compose.
 
+## For AI agents
+
+**Ask before you pick.** This page has 4 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 4 options as live previews: https://avaraui.com/view/email
+
+**When to use it.** A self-contained email client: read, star, archive, delete and compose, with search and a mobile drawer sidebar, in four looks: the default shell, a flatter minimal one, frosted glass and liquid glass.
+
+**Gotchas:**
+
+- All four are looks of the one `email` item: install it once and set `variant` from the index.
+- You hand it `initialEmails` (each with a `folder`, `isRead` and `isStarred`) and the client owns every interaction.
+
+### The 4 variants
+
+1. **Default** (`default`): The modern SaaS shell with an elevated look, themed with your accent colour.
+   - Live: https://avaraui.com/view/email/default
+   - Best for: a mail view in an app or dashboard on a normal background
+   - Avoid if: you want a flatter, denser mailbox
+   - Traits: elevated shell, default look
+   - Install: `npx shadcn@latest add @avara-ui/email`
+   - Set these props: `{"variant":"default"}`
+   - Docs: https://avaraui.com/docs/nextjs/email#email-dashboard
+2. **Minimal** (`minimal`): Strips the elevated shell for a flatter, denser mailbox.
+   - Live: https://avaraui.com/view/email/minimal
+   - Best for: a mail view that sits inside an existing panel
+   - Avoid if: you want it to feel like a standalone product screen
+   - Traits: flat, denser
+   - Install: `npx shadcn@latest add @avara-ui/email`
+   - Set these props: `{"variant":"minimal"}`
+   - Docs: https://avaraui.com/docs/nextjs/email#minimal
+3. **Glass** (`glass`): Frosts the sidebar, the list and the overlays, the Compose modal included.
+   - Live: https://avaraui.com/view/email/glass
+   - Best for: a mail view over a colourful or photographic background
+   - Avoid if: the background is plain
+   - Traits: frosted sidebar, list and overlays
+   - Install: `npx shadcn@latest add @avara-ui/email`
+   - Set these props: `{"variant":"glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/email#glass
+4. **Liquid glass** (`liquid-glass`): Liquid-glass refraction using SVG displacement mapping, layered specular highlights and fluid reflections.
+   - Live: https://avaraui.com/view/email/liquid-glass
+   - Best for: a showpiece mail view over rich imagery
+   - Avoid if: you want a restrained look or a plain background
+   - Traits: refraction effect, specular highlights
+   - Install: `npx shadcn@latest add @avara-ui/email`
+   - Set these props: `{"variant":"liquid-glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/email#liquid-glass
+
 ## Email dashboard
 
 - Pass `initialEmails` as `Email[]` — each carries its own `folder` (`inbox`, `sent`…) plus `isRead` and `isStarred`, and the client owns every interaction from there.

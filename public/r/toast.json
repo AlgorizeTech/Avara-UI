@@ -3,7 +3,7 @@
   "name": "toast",
   "title": "Toast",
   "author": "AlgorizeTech",
-  "description": "A provider-based toast system with six screen positions, action buttons and auto-dismiss. Use it for transient confirmations triggered from anywhere in the tree.",
+  "description": "Ask the user to pick one of 4 toast variants: https://avaraui.com/view/toast. This item holds 4 of them as looks of one component (default, minimal, glow, glass). Skip the question if the user already named one. A provider-based toast system with six screen positions, action buttons and auto-dismiss. Use it for transient confirmations triggered from anywhere in the tree.",
   "dependencies": [
     "lucide-react"
   ],

@@ -10,6 +10,111 @@ An interactive, 100% full-width and responsive custom cursor component with 10 d
 
 `CursorAnimation` enhances pointer interactions over designated containers with customizable animations, seamless dark mode support, and fluid responsive physics for all devices.
 
+## For AI agents
+
+**Ask before you pick.** This page has 11 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 11 options as live previews: https://avaraui.com/view/cursor-animation
+
+**When to use it.** A custom cursor that works over a container, in eleven styles: a glow, a magnetic target, trails, a floating label, a spotlight mask, a crosshair, rings, a pulse and a sonar. It is a pointer effect, so it only does anything where there is a mouse or trackpad.
+
+**Gotchas:**
+
+- All eleven are looks of the one `cursor-animation` item: install it once and set `variant` from the index.
+- The cursor follows the pointer inside the component, so it adds nothing on touch-only devices.
+- `badge` reads a `label` prop (default `Explore`); no other style uses it.
+
+### The 11 variants
+
+1. **Glow** (`glow`): A blurred background glow trails the pointer on smooth physics. The default.
+   - Live: https://avaraui.com/view/cursor-animation/glow
+   - Best for: a soft, premium hover effect that does not get in the way of content
+   - Avoid if: you want the cursor itself to be a precise, visible mark
+   - Traits: blurred glow, smooth physics, default look
+   - Install: `npx shadcn@latest add @avara-ui/cursor-animation`
+   - Set these props: `{"variant":"glow"}`
+   - Docs: https://avaraui.com/docs/nextjs/cursor-animation#glow-cursor
+2. **Radial pulse** (`pulse`): A radial aura pulses around the pointer.
+   - Live: https://avaraui.com/view/cursor-animation/pulse
+   - Best for: a lively but gentle effect around the pointer
+   - Avoid if: you want something still or precise
+   - Traits: pulsing aura
+   - Install: `npx shadcn@latest add @avara-ui/cursor-animation`
+   - Set these props: `{"variant":"pulse"}`
+   - Docs: https://avaraui.com/docs/nextjs/cursor-animation#radial-pulse-cursor
+3. **Sonar wave** (`sonar`): Two concentric rings sweep outward in sync with the pointer's movement.
+   - Live: https://avaraui.com/view/cursor-animation/sonar
+   - Best for: a tech or data-themed page where movement should send out ripples
+   - Avoid if: you want a quiet cursor
+   - Traits: two concentric rings, reacts to movement
+   - Install: `npx shadcn@latest add @avara-ui/cursor-animation`
+   - Set these props: `{"variant":"sonar"}`
+   - Docs: https://avaraui.com/docs/nextjs/cursor-animation#sonar-wave-cursor
+4. **Smooth ring** (`ring`): A minimal ring that follows with a lag and contracts on click.
+   - Live: https://avaraui.com/view/cursor-animation/ring
+   - Best for: a clean, minimal custom cursor
+   - Avoid if: you want the cursor to show or change content
+   - Traits: single ring, lerped follow, contracts on click
+   - Install: `npx shadcn@latest add @avara-ui/cursor-animation`
+   - Set these props: `{"variant":"ring"}`
+   - Docs: https://avaraui.com/docs/nextjs/cursor-animation#smooth-ring-cursor
+5. **Magnetic target** (`magnetic`): A dashed target ring that rotates as the pointer moves.
+   - Live: https://avaraui.com/view/cursor-animation/magnetic
+   - Best for: a technical or game-like feel
+   - Avoid if: the page is calm and editorial
+   - Traits: dashed rotating ring, fluid physics
+   - Install: `npx shadcn@latest add @avara-ui/cursor-animation`
+   - Set these props: `{"variant":"magnetic"}`
+   - Docs: https://avaraui.com/docs/nextjs/cursor-animation#magnetic-target-cursor
+6. **Precision crosshair** (`crosshair`): Full-width and full-height guide lines run through the pointer.
+   - Live: https://avaraui.com/view/cursor-animation/crosshair
+   - Best for: design-tool, data or blueprint styled pages that want a precise feel
+   - Avoid if: you want a soft, friendly cursor
+   - Traits: full-span guide lines
+   - Install: `npx shadcn@latest add @avara-ui/cursor-animation`
+   - Set these props: `{"variant":"crosshair"}`
+   - Docs: https://avaraui.com/docs/nextjs/cursor-animation#precision-crosshair-cursor
+7. **Expand scaling** (`expand`): An inverted backdrop circle that scales up on hover and click.
+   - Live: https://avaraui.com/view/cursor-animation/expand
+   - Best for: a bold cursor that reacts clearly to interactive elements
+   - Avoid if: you want the cursor to stay small and unobtrusive
+   - Traits: inverted circle, scales on hover and click
+   - Install: `npx shadcn@latest add @avara-ui/cursor-animation`
+   - Set these props: `{"variant":"expand"}`
+   - Docs: https://avaraui.com/docs/nextjs/cursor-animation#expand-scaling-cursor
+8. **Spotlight mask** (`spotlight`): A radial spotlight masks the area, darkening everything the cursor is not on.
+   - Live: https://avaraui.com/view/cursor-animation/spotlight
+   - Best for: a dramatic focus effect on a hero or showcase
+   - Avoid if: people need to read or scan the whole area at once
+   - Traits: radial mask, darkens the rest
+   - Install: `npx shadcn@latest add @avara-ui/cursor-animation`
+   - Set these props: `{"variant":"spotlight"}`
+   - Docs: https://avaraui.com/docs/nextjs/cursor-animation#spotlight-mask-cursor
+9. **Image trail** (`image-trail`): Image cards spawn centred on the pointer as it moves, leaving a trail.
+   - Live: https://avaraui.com/view/cursor-animation/image-trail
+   - Best for: a creative or portfolio landing page with images to show
+   - Avoid if: you have no images for the trail
+   - Traits: spawned image cards, follows movement
+   - Install: `npx shadcn@latest add @avara-ui/cursor-animation`
+   - Set these props: `{"variant":"image-trail"}`
+   - Docs: https://avaraui.com/docs/nextjs/cursor-animation#image-trail-cursor
+10. **Particle trail** (`trail`): A trail of particles fades out behind the cursor.
+   - Live: https://avaraui.com/view/cursor-animation/trail
+   - Best for: a playful, energetic feel
+   - Avoid if: you want a calm page, or reduced motion matters to your audience
+   - Traits: fading particles
+   - Install: `npx shadcn@latest add @avara-ui/cursor-animation`
+   - Set these props: `{"variant":"trail"}`
+   - Docs: https://avaraui.com/docs/nextjs/cursor-animation#particle-trail-cursor
+11. **Badge label** (`badge`): A pill label floats beside the pointer; its text is the `label` prop, default `Explore`.
+   - Live: https://avaraui.com/view/cursor-animation/badge
+   - Best for: cards or galleries where the cursor should say what a click does, such as View Project
+   - Avoid if: you have no short action text to show
+   - Traits: floating pill, `label` text
+   - Install: `npx shadcn@latest add @avara-ui/cursor-animation`
+   - Set these props: `{"variant":"badge"}`
+   - Docs: https://avaraui.com/docs/nextjs/cursor-animation#badge-label-cursor
+
 ## Image Trail Cursor
 
 - Use `variant="image-trail"` to spawn interactive image cards dynamically centered on pointer movement.

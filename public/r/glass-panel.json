@@ -3,7 +3,7 @@
   "name": "glass-panel",
   "title": "Glass Panel",
   "author": "AlgorizeTech",
-  "description": "A frosted surface in four shapes and the aurora ground it sits on. Use it for glass bento layouts, profile and booking pages — or flip it to solid cards with one prop.",
+  "description": "Ask the user to pick one of 3 glass panel variants: https://avaraui.com/view/glass-panel. This item holds 3 of them as looks of one component (glass, solid, liquid-glass). Skip the question if the user already named one. A frosted surface in four shapes and the aurora ground it sits on. Use it for glass bento layouts, profile and booking pages — or flip it to solid cards with one prop.",
   "dependencies": [],
   "registryDependencies": [
     "https://avaraui.com/r/ui-liquid-glass.json",

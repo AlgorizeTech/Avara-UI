@@ -10,6 +10,41 @@ A tactile scroll-driven card stacking section where individual service cards sli
 
 Scroll inside the preview container below to watch each card rise over the previous one and fan out across the stage.
 
+## For AI agents
+
+**Ask before you pick.** This page has 2 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 2 options as live previews: https://avaraui.com/view/modern-scroll-stack
+
+**When to use it.** A scroll-driven section where service cards rise from the bottom of the viewport and tilt into organic resting angles as they lock into a sticky stack, in two arrangements.
+
+**When to use something else:**
+
+- [Scroll Stack](https://avaraui.com/docs/reactjs/scroll-stack): for the other scroll-stack designs, such as sticky stacks, fan stacks and scroll accordions.
+
+**Gotchas:**
+
+- Both are looks of the one `modern-scroll-stack` item: install it once and set `variant` from the index.
+
+### The 2 variants
+
+1. **Horizontal fan** (`fan`): Cards spread horizontally across the stage as each rises, so earlier cards stay visible beneath.
+   - Live: https://avaraui.com/view/modern-scroll-stack/fan
+   - Best for: a services section where every card should stay partly visible
+   - Avoid if: you want the cards piled in one spot
+   - Traits: horizontal spread, 78px offset per card by default, tilted resting angles
+   - Install: `npx shadcn@latest add @avara-ui/modern-scroll-stack`
+   - Set these props: `{"variant":"fan"}`
+   - Docs: https://avaraui.com/docs/nextjs/modern-scroll-stack#service-cards-horizontal-fan
+2. **Centred pile** (`stacked`): All cards lock at the centre on top of one another, each tilted so the layers peek out around the edges.
+   - Live: https://avaraui.com/view/modern-scroll-stack/stacked
+   - Best for: a compact pile that reads as a deck of cards
+   - Avoid if: you want each card's content to stay visible as the next arrives
+   - Traits: centred pile, distinct tilt per card
+   - Install: `npx shadcn@latest add @avara-ui/modern-scroll-stack`
+   - Set these props: `{"variant":"stacked"}`
+   - Docs: https://avaraui.com/docs/nextjs/modern-scroll-stack#centered-stacked-pile
+
 ## Service cards (Horizontal Fan)
 
 Each card slides up flat from the bottom-center and glides into its horizontal fan slot with a smooth tilt.

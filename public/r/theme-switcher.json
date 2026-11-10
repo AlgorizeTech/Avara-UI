@@ -3,7 +3,7 @@
   "name": "theme-switcher",
   "title": "Theme Switcher",
   "author": "AlgorizeTech",
-  "description": "A light/dark toggle in icon, pill or dropdown form, with a circular reveal that grows out of the control and a GSAP icon transition. Use it in a navbar or settings panel.",
+  "description": "Ask the user to pick one of 3 theme switcher variants: https://avaraui.com/view/theme-switcher. This item holds 3 of them as looks of one component (icon, pill, dropdown). Skip the question if the user already named one. A light/dark toggle in icon, pill or dropdown form, with a circular reveal that grows out of the control and a GSAP icon transition. Use it in a navbar or settings panel.",
   "dependencies": [
     "lucide-react",
     "next-themes"

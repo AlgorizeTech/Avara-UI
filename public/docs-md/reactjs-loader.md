@@ -12,6 +12,62 @@ Different parts of your UI require different types of loading states. A full-pag
 
 Explore the different variations of the Loader component — each example shows a live preview with the exact code to copy.
 
+## For AI agents
+
+**Ask before you pick.** This page has 5 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 5 options as live previews: https://avaraui.com/view/loader
+
+**When to use it.** A dependency-free loading indicator in five designs: a spinner, a dual-ring orbit, bouncing dots, a pulse and an indeterminate bar.
+
+**Gotchas:**
+
+- All five are looks of the one `loader` item: install it once and set `variant` from the index.
+- `bar` renders at a fixed width, so `w-full` will not stretch it.
+
+### The 5 variants
+
+1. **Spinner** (`spinner`): A rotating arc over a faint circle: the neutral default when you have no reason to pick another.
+   - Live: https://avaraui.com/view/loader/spinner
+   - Best for: a general-purpose loading state, including a small `sm` size inside a button
+   - Avoid if: you want something with more personality than a plain ring
+   - Traits: rotating arc, default look, takes a colour name or any hex
+   - Install: `npx shadcn@latest add @avara-ui/loader`
+   - Set these props: `{"variant":"spinner"}`
+   - Docs: https://avaraui.com/docs/nextjs/loader#spinner
+2. **Orbit** (`orbit`): Two concentric rings with synchronised arcs and a glowing pulsing core; also reachable as `ring`.
+   - Live: https://avaraui.com/view/loader/orbit
+   - Best for: a prominent async state that should feel like part of the brand
+   - Avoid if: the loader sits inline with text, where two rings are busy
+   - Traits: dual ring, glowing core, `direction` single or dual, inner ring defaults to emerald
+   - Install: `npx shadcn@latest add @avara-ui/loader`
+   - Set these props: `{"variant":"orbit"}`
+   - Docs: https://avaraui.com/docs/nextjs/loader#orbit-concentric-rings-pulse-variant-orbit
+3. **Dots** (`dots`): Three dots bouncing in sequence, 0.15s apart; legible at small sizes.
+   - Live: https://avaraui.com/view/loader/dots
+   - Best for: a short wait inline with text or inside a button
+   - Avoid if: you want a single centred loader for a whole page
+   - Traits: three bouncing dots, reads well small
+   - Install: `npx shadcn@latest add @avara-ui/loader`
+   - Set these props: `{"variant":"dots"}`
+   - Docs: https://avaraui.com/docs/nextjs/loader#dots
+4. **Pulse** (`pulse`): A half-size centre dot with a full-size halo pinging behind it: no rotation, no travel.
+   - Live: https://avaraui.com/view/loader/pulse
+   - Best for: a calm, low-motion loading state
+   - Avoid if: you need to show progress along a line
+   - Traits: breathing circle, no rotation, quietest of the five
+   - Install: `npx shadcn@latest add @avara-ui/loader`
+   - Set these props: `{"variant":"pulse"}`
+   - Docs: https://avaraui.com/docs/nextjs/loader#pulse
+5. **Bar** (`bar`): An indeterminate progress line: a zinc track with a half-width fill sweeping across on a 1.5s loop.
+   - Live: https://avaraui.com/view/loader/bar
+   - Best for: a full-page or section data fetch where a line along the top or bottom suits
+   - Avoid if: you need it to stretch to full width, since it has a fixed width
+   - Traits: indeterminate line, fixed width, the only non-square variant
+   - Install: `npx shadcn@latest add @avara-ui/loader`
+   - Set these props: `{"variant":"bar"}`
+   - Docs: https://avaraui.com/docs/nextjs/loader#bar
+
 ## Spinner
 
 - `variant="spinner"` is the default — a rotating arc over a faint circle. The neutral choice when you have no reason to pick another.

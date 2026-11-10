@@ -1,7 +1,7 @@
 "use client";
 
-import React, { forwardRef, useCallback, useMemo, useState } from "react";
-import { ExternalLink, Mail, Copy, Check, ArrowUpRight, Sparkles, FolderGit2 } from "lucide-react";
+import React, { forwardRef, useCallback, useState } from "react";
+import { Mail, Copy, Check, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Button from "./Button";
 import { ImageWall, type ImageWallProps, type WallItem } from "./ImageWallBlock";

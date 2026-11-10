@@ -10,6 +10,38 @@ An ultra-responsive, high-performance 2D HTML Canvas component that converts tex
 
 Move your cursor or touch across the canvas to push particles away; they scatter organically and spring back smoothly to their original text positions when the pointer moves away.
 
+## For AI agents
+
+**Ask before you pick.** This page has 2 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 2 options as live previews: https://avaraui.com/view/particle-canvas
+
+**When to use it.** A 2D canvas that turns text into thousands of interactive particles in your theme colour, in two looks: particles that scatter from the pointer, or a bottom-aligned wordmark banner with a glow.
+
+**Gotchas:**
+
+- Both are looks of the one `particle-canvas` item: install it once and set `variant` from the index.
+- The text comes from the `content` prop in both looks.
+
+### The 2 variants
+
+1. **Text particle repel** (`repel`): The text is made of dots that scatter away from the pointer and spring back to their positions.
+   - Live: https://avaraui.com/view/particle-canvas/repel
+   - Best for: a hero or showcase where a headline word should react to the cursor or touch
+   - Avoid if: you want a quiet, static wordmark
+   - Traits: thousands of particles, pointer repulsion, touch support
+   - Install: `npx shadcn@latest add @avara-ui/particle-canvas`
+   - Set these props: `{"variant":"repel"}`
+   - Docs: https://avaraui.com/docs/nextjs/particle-canvas#text-particle-repel
+2. **Wordmark glow** (`wordmark-glow`): A compact bottom-aligned wordmark banner whose letters spring in on scroll, with a radial glow that follows the cursor.
+   - Live: https://avaraui.com/view/particle-canvas/wordmark-glow
+   - Best for: a large wordmark along the bottom of a page or footer area
+   - Avoid if: you want the text itself to break apart under the pointer
+   - Traits: bottom-aligned banner, scroll-triggered spring letters, cursor-following glow
+   - Install: `npx shadcn@latest add @avara-ui/particle-canvas`
+   - Set these props: `{"variant":"wordmark-glow"}`
+   - Docs: https://avaraui.com/docs/nextjs/particle-canvas#wordmark-glow-canvas
+
 ## Text Particle Repel
 
 An interactive 2D HTML Canvas that rasterizes your text into thousands of responsive dots that scatter on pointer hover and spring back smoothly.

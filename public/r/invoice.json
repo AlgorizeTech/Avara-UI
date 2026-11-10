@@ -3,7 +3,7 @@
   "name": "invoice",
   "title": "Invoice",
   "author": "AlgorizeTech",
-  "description": "A printable invoice with line items, tax and totals, in three presentation styles. Use it for billing summaries and receipt pages.",
+  "description": "Ask the user to pick one of 3 invoice variants: https://avaraui.com/view/invoice. This item holds 3 of them as looks of one component (default, corporate, brutalist). Skip the question if the user already named one. A printable invoice with line items, tax and totals, in three presentation styles. Use it for billing summaries and receipt pages.",
   "dependencies": [
     "lucide-react"
   ],

@@ -8,11 +8,72 @@ url: https://avaraui.com/docs/nextjs/mobile-mockup
 
 A stunning, fully responsive collection of mobile device mockups engineered for Next.js, allowing you to present your app designs, images, or autoplaying videos in gorgeous, high-fidelity hardware frames.
 
-The suite ships with seven iconic models, led by the iPhone 17 Pro Max — a near-uniform bezel, a compact Dynamic Island and the flush Camera Control on the right rail. Behind it sit the iPhone 14 Pro Max, the flat-edged iPhone 12 Pro Max, the retro iPhone 5, the sleek Samsung S24 Ultra, the uniquely rounded Google Pixel 8, and the futuristic Google Pixel 10 — so you can evoke nostalgia with a classic home button or show off the newest glass, from the same API.
+The suite ships with eight iconic models, led by the sleek iPhone 16 Pro and iPhone 17 Pro Max. Behind them sit the iPhone 14 Pro Max, the flat-edged iPhone 12 Pro Max, the retro iPhone 5, the sleek Samsung S24 Ultra, the uniquely rounded Google Pixel 8, and the futuristic Google Pixel 10 — so you can evoke nostalgia with a classic home button or show off the newest glass, from the same API.
 
 Each device is its own exported component that wraps whatever you put inside it — a screenshot, an autoplaying video, or a live React tree. Every frame is pure CSS/SVG, so it stays crisp at any zoom. The screens below run this site's own hero section as live children rather than a screenshot: the headline word flips, and the install command copies.
 
-## iPhone 17 Pro Max
+## iPhone 16 Pro
+
+The modern flagship frame — sleek uniform bezel, flush seamless perimeter, and centered Dynamic Island. Running this site's hero section as live children.
+
+- Pass `children` to embed a real, interactive screen; `src` and `videoSrc` swap in a screenshot or a looping video instead.
+
+```tsx
+import { Iphone16ProMockup } from "@/components/custom/blocks/MobileMockupBlock";
+
+/**
+ * Your marketing hero, sized for a phone screen.
+ *
+ * Give an embedded screen a fixed type scale rather than Tailwind's responsive
+ * prefixes: those key off the viewport, so a `sm:` class still fires inside a
+ * 300px-wide frame on a desktop and blows the layout out.
+ */
+function HeroScreen() {
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center gap-2.5 px-4 text-center bg-background">
+      <span className="px-2.5 py-1 rounded-full bg-primary/10 border border-primary/30 text-[9px] font-semibold text-primary">
+        Next-Gen React Components
+      </span>
+      <h1 className="text-[19px] font-bold tracking-tight leading-tight text-foreground">
+        Build <span className="text-primary">Interactive</span> Interfaces
+      </h1>
+      <p className="text-[10px] leading-snug text-muted-foreground">
+        A meticulous library of React components and interactive blocks.
+      </p>
+      <button className="w-full max-w-[230px] h-9 rounded-xl bg-primary text-primary-foreground text-[10px] font-semibold">
+        Browse Components
+      </button>
+    </div>
+  );
+}
+
+export default function AppShowcase() {
+  return (
+    <Iphone16ProMockup>
+      <HeroScreen />
+    </Iphone16ProMockup>
+  );
+}
+```
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/mobile-mockup.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/mobile-mockup
+```
+
+## Examples
+
+### iPhone 17 Pro Max
 
 The flagship frame — near-uniform bezel, a compact Dynamic Island and the flush Camera Control. Running this site's hero section as live children.
 
@@ -55,23 +116,6 @@ export default function AppShowcase() {
   );
 }
 ```
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/mobile-mockup.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/mobile-mockup
-```
-
-## Examples
 
 ### iPhone 14 Pro Max
 
@@ -215,9 +259,9 @@ export default function Pixel10Showcase() {
 ## Features
 Learn about the Mobile Mockup component's realistic device framing, perfect for presenting app screenshots with proper bezels.
 
-### 7 Unique Devices
+### 8 Unique Devices
 
-Choose from a variety of iconic models, from the latest iPhone 17 Pro Max through the classic iPhones to Samsung Ultra and Google Pixel.
+Choose from a variety of iconic models, from the modern iPhone 16 Pro and iPhone 17 Pro Max through classic iPhones to Samsung Ultra and Google Pixel.
 
 ### Pure CSS/SVG
 
