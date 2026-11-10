@@ -12,6 +12,45 @@ If you are building a documentation site, a developer portfolio, or writing tech
 
 Pass a raw `code` string and the block handles the window chrome, language badge, overflow scrolling and copy button.
 
+## For AI agents
+
+**Ask before you pick.** This page has 3 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 3 options as live previews: https://avaraui.com/view/terminal
+
+**When to use it.** A dependency-free terminal window for showing code, with Mac-style window controls and a copy button, in three looks: the default, frosted glass and a stripped-down minimal one.
+
+**Gotchas:**
+
+- All three are looks of the one `terminal` item: install it once and set `variant` from the index.
+- The language, the filename label, the header controls and the copy button are props on any look; the block ships no heavyweight syntax highlighter.
+
+### The 3 variants
+
+1. **Default** (`default`): The standard window with Mac-like controls, a language badge and a copy button.
+   - Live: https://avaraui.com/view/terminal/default
+   - Best for: docs, portfolios and blog posts that show commands or code
+   - Avoid if: you want the code on its own, without window chrome
+   - Traits: window controls, copy button, default look
+   - Install: `npx shadcn@latest add @avara-ui/terminal`
+   - Docs: https://avaraui.com/docs/nextjs/terminal#terminal
+2. **Glass** (`glass`): The window blurs whatever sits behind it.
+   - Live: https://avaraui.com/view/terminal/glass
+   - Best for: a terminal over a photo or gradient
+   - Avoid if: the background is plain, since there is nothing to blur
+   - Traits: backdrop blur
+   - Install: `npx shadcn@latest add @avara-ui/terminal`
+   - Set these props: `{"variant":"glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/terminal#glass
+3. **Minimal** (`minimal`): The chrome is stripped down to the code itself.
+   - Live: https://avaraui.com/view/terminal/minimal
+   - Best for: a snippet that should sit quietly inside prose
+   - Avoid if: you want it to read clearly as a terminal window
+   - Traits: code only
+   - Install: `npx shadcn@latest add @avara-ui/terminal`
+   - Set these props: `{"variant":"minimal"}`
+   - Docs: https://avaraui.com/docs/nextjs/terminal#minimal
+
 ## Terminal
 
 Mac-style window controls, a language badge and a copy button, all from one string.

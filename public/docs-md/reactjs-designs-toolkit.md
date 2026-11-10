@@ -10,6 +10,37 @@ A pinned resource toolkit grid inspired by creative studio moodboards and curate
 
 Each card highlights a curated tool with bold numbering, custom accent-themed borders and glows, brand insignia, and customizable interactions. Built with pure React, Tailwind CSS, and zero external dependencies.
 
+## For AI agents
+
+**Ask before you pick.** This page has 2 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 2 options as live previews: https://avaraui.com/view/designs-toolkit
+
+**When to use it.** A pinned resource toolkit in the style of a studio moodboard: cards with glossy 3D pushpins, brand badges and bold numbering, in two layouts: a pinned corkboard grid or a winding roadmap.
+
+**Gotchas:**
+
+- Both are looks of the one `designs-toolkit` item: install it once and set `variant` from the index.
+- The grid look takes a `preset` (such as `creative` or `developer`) and `showDashedLine`; the dashed connecting lines can be turned off without choosing another design.
+
+### The 2 variants
+
+1. **Pinned corkboard grid** (`corkboard`): A staggered grid of pinned cards, with dashed paths joining them and an optional ruled grid behind.
+   - Live: https://avaraui.com/view/designs-toolkit/corkboard
+   - Best for: a curated list of tools, resources or features presented like a moodboard
+   - Avoid if: the items form a sequence that should read as a journey
+   - Traits: staggered columns, 3D pushpins, optional dashed connecting lines, default look
+   - Install: `npx shadcn@latest add @avara-ui/designs-toolkit`
+   - Docs: https://avaraui.com/docs/nextjs/designs-toolkit#pinned-toolkit-corkboard
+2. **Winding roadmap pathway** (`roadmap`): The cards follow an alternating winding S-curve path, with optional ruled lines across the board.
+   - Live: https://avaraui.com/view/designs-toolkit/roadmap
+   - Best for: steps, milestones or a process that should read as a path
+   - Avoid if: the items are an unordered collection
+   - Traits: alternating S-curve path, optional ruled lines
+   - Install: `npx shadcn@latest add @avara-ui/designs-toolkit`
+   - Set these props: `{"variant":"roadmap"}`
+   - Docs: https://avaraui.com/docs/nextjs/designs-toolkit#winding-roadmap-pathway
+
 ## Pinned toolkit corkboard
 
 Staggered 3-column pinned resource cards with 3D pushpins, custom icons, and connected dashed paths.

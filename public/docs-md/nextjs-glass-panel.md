@@ -10,6 +10,49 @@ A frosted surface in four shapes, and the aurora ground it sits on. `GlassBackdr
 
 Switch the backdrop to `variant="solid"` and every panel becomes a plain card with an ordinary shadow — nothing inside them changes. [Profile Page](https://avaraui.com/docs/nextjs/profile-page), [Book Appointment](https://avaraui.com/docs/nextjs/book-appointment) and [Booking Card](https://avaraui.com/docs/nextjs/booking-card) are all built on this pair.
 
+## For AI agents
+
+**Ask before you pick.** This page has 3 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 3 options as live previews: https://avaraui.com/view/glass-panel
+
+**When to use it.** A frosted surface in four shapes plus the aurora backdrop it sits on, laid out on a 12-column bento grid. The backdrop's `variant` decides whether the panels are glass, plain solid cards or liquid glass.
+
+**When to use something else:**
+
+- [Profile Page](https://avaraui.com/docs/nextjs/profile-page): for a finished profile built on this glass surface rather than the raw panels.
+
+**Gotchas:**
+
+- All three are looks of the one `glass-panel` item: install it once and set `variant` on `GlassBackdrop` from the index. Panels read it through context, and a single `GlassPanel` can override it.
+- The panel shape (`radius`: 32px, 24px, a circle, a pill) is chosen per panel and is not a separate design.
+
+### The 3 variants
+
+1. **Glass** (`glass`): Translucent frosted panels over three blurred colour blobs: the default.
+   - Live: https://avaraui.com/view/glass-panel/glass
+   - Best for: a modern dashboard or profile with a soft aurora background
+   - Avoid if: you want plain cards without a coloured backdrop
+   - Traits: blur and hairline edges, aurora backdrop of three colours, default look
+   - Install: `npx shadcn@latest add @avara-ui/glass-panel`
+   - Docs: https://avaraui.com/docs/nextjs/glass-panel#bento-layout
+2. **Solid** (`solid`): Every panel becomes a plain card with an ordinary shadow; nothing inside them changes.
+   - Live: https://avaraui.com/view/glass-panel/solid
+   - Best for: a conventional card layout using the same bento grid
+   - Avoid if: you want the frosted effect
+   - Traits: plain cards, ordinary shadow
+   - Install: `npx shadcn@latest add @avara-ui/glass-panel`
+   - Set these props: `{"variant":"solid"}`
+   - Docs: https://avaraui.com/docs/nextjs/glass-panel#solid
+3. **Liquid glass** (`liquid-glass`): Realistic fluid refraction with support for a background image and pure white glass panels.
+   - Live: https://avaraui.com/view/glass-panel/liquid-glass
+   - Best for: a showpiece layout over a rich background image
+   - Avoid if: you want a restrained look or no image behind
+   - Traits: fluid refraction, background image support, white glass panels
+   - Install: `npx shadcn@latest add @avara-ui/glass-panel`
+   - Set these props: `{"variant":"liquid-glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/glass-panel#liquid-glass
+
 ## Four shapes
 
 The same recipe with four corner treatments. Radius is the only difference, so it reads as hierarchy.

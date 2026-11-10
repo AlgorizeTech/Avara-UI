@@ -10,6 +10,91 @@ A multi-purpose, highly animated Counter component. Whether you need a user-inte
 
 Explore the different variations of the Counter component — each example shows a live preview with the exact code to copy.
 
+## For AI agents
+
+**Ask before you pick.** This page has 8 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 8 options as live previews: https://avaraui.com/view/counter
+
+**When to use it.** A multi-purpose animated counter: a quantity stepper, a promotional countdown, an animated statistics ticker or a circular progress ring. First find out which job it must do, then offer only the designs for that job.
+
+**When to use something else:**
+
+- [Counter Section](https://avaraui.com/docs/nextjs/counter-section): for a whole statistics section of several numbers rather than one counter.
+
+**Gotchas:**
+
+- Every look is the one `counter` item: install it once and set `type` (and `variant` where the index lists one) from the index.
+- The user's job decides the group: a quantity control, a countdown, or a number that counts up. Do not offer a stepper for a countdown.
+- A countdown's figures read `--` until the first tick so server and client paint the same.
+
+### The 8 variants
+
+1. **Stepper** (`stepper`): The plus/minus quantity control, with `min` and `max` clamping the value.
+   - Live: https://avaraui.com/view/counter/stepper
+   - Best for: a quantity selector in a shop or cart
+   - Avoid if: you need a countdown or a statistic
+   - Traits: plus and minus buttons, min and max, default stepper
+   - Install: `npx shadcn@latest add @avara-ui/counter`
+   - Set these props: `{"type":"stepper"}`
+   - Docs: https://avaraui.com/docs/nextjs/counter#stepper
+2. **Outline stepper** (`outline-stepper`): A bordered, transparent stepper.
+   - Live: https://avaraui.com/view/counter/outline-stepper
+   - Best for: a stepper that should sit lightly on a coloured or image background
+   - Avoid if: you want a filled button look
+   - Traits: bordered, transparent
+   - Install: `npx shadcn@latest add @avara-ui/counter`
+   - Set these props: `{"type":"stepper","variant":"outline"}`
+   - Docs: https://avaraui.com/docs/nextjs/counter#outline-stepper
+3. **Soft stepper** (`soft-stepper`): A tinted, low-contrast stepper.
+   - Live: https://avaraui.com/view/counter/soft-stepper
+   - Best for: a gentle stepper inside a card or sidebar
+   - Avoid if: it must stand out as the main call to action
+   - Traits: tinted, low contrast
+   - Install: `npx shadcn@latest add @avara-ui/counter`
+   - Set these props: `{"type":"stepper","variant":"soft"}`
+   - Docs: https://avaraui.com/docs/nextjs/counter#soft-stepper
+4. **Vertical stepper** (`vertical-stepper`): The controls are stacked, for tight sidebars.
+   - Live: https://avaraui.com/view/counter/vertical-stepper
+   - Best for: a narrow column where a horizontal stepper will not fit
+   - Avoid if: you have room for the usual horizontal control
+   - Traits: stacked controls
+   - Install: `npx shadcn@latest add @avara-ui/counter`
+   - Set these props: `{"type":"stepper","variant":"vertical"}`
+   - Docs: https://avaraui.com/docs/nextjs/counter#vertical-stepper
+5. **Countdown** (`countdown`): Ticks down to a target date: framed figures under a pill with a clock. The default countdown.
+   - Live: https://avaraui.com/view/counter/countdown
+   - Best for: a sale, launch or event deadline
+   - Avoid if: you are counting up or choosing a quantity
+   - Traits: framed figures, clock pill, target date or three days from mount
+   - Install: `npx shadcn@latest add @avara-ui/counter`
+   - Set these props: `{"type":"countdown"}`
+   - Docs: https://avaraui.com/docs/nextjs/counter#countdown
+6. **Slide countdown** (`slide-countdown`): A countdown in the sliding tile design.
+   - Live: https://avaraui.com/view/counter/slide-countdown
+   - Best for: a countdown that should feel like flipping tiles
+   - Avoid if: you prefer the framed-figures look
+   - Traits: tile design
+   - Install: `npx shadcn@latest add @avara-ui/counter`
+   - Set these props: `{"type":"countdown","variant":"slide"}`
+   - Docs: https://avaraui.com/docs/nextjs/counter#slide-countdown
+7. **Animated ticker** (`animated`): A number that counts up from zero to `targetValue` when it scrolls into view.
+   - Live: https://avaraui.com/view/counter/animated
+   - Best for: a headline statistic such as users or revenue
+   - Avoid if: you need a control or a deadline
+   - Traits: counts up on scroll
+   - Install: `npx shadcn@latest add @avara-ui/counter`
+   - Set these props: `{"type":"animated"}`
+   - Docs: https://avaraui.com/docs/nextjs/counter#animated-ticker
+8. **Circular progress** (`circular`): The value drawn as an animated SVG ring instead of a number alone.
+   - Live: https://avaraui.com/view/counter/circular
+   - Best for: a goal or completion figure that reads well as a ring
+   - Avoid if: you want a plain number
+   - Traits: animated ring
+   - Install: `npx shadcn@latest add @avara-ui/counter`
+   - Set these props: `{"type":"circular"}`
+   - Docs: https://avaraui.com/docs/nextjs/counter#circular-progress
+
 ## Slide countdown
 
 Days, hours, minutes and seconds to a date on soft tiles. Watch the seconds: only the figure that changed slides, the others hold still.

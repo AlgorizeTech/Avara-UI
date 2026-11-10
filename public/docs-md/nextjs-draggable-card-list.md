@@ -8,6 +8,38 @@ url: https://avaraui.com/docs/nextjs/draggable-card-list
 
 An interactive, fluid **Draggable Card List** component featuring spring-driven reordering (in a GSAP build and a Motion build that move identically), right-side grip handles, light pastel badges with borders, left accent bars, and dynamic hover border color shifts.
 
+## For AI agents
+
+**Ask before you pick.** This page has 2 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 2 options as live previews: https://avaraui.com/view/draggable-card-list
+
+**When to use it.** A reorderable card list with spring-driven dragging, right-side grip handles and left accent bars, in two card designs.
+
+**Gotchas:**
+
+- Both are looks of the one `draggable-card-list` item: install it once and set `variant` from the index.
+- A Motion build (`draggable-card-list-motion`) is also published and behaves the same; use it only if the project already uses Motion rather than GSAP.
+
+### The 2 variants
+
+1. **Classic card list** (`classic`): Cards with light pastel badges with borders, left accent bars and hover border colours.
+   - Live: https://avaraui.com/view/draggable-card-list/classic
+   - Best for: a task or checklist list where each row is a distinct card
+   - Avoid if: you want the cards tinted by an ambient colour
+   - Traits: pastel badges, left accent bar, grip handle
+   - Install: `npx shadcn@latest add @avara-ui/draggable-card-list`
+   - Set these props: `{"variant":"classic"}`
+   - Docs: https://avaraui.com/docs/nextjs/draggable-card-list#classic-card-list
+2. **Modern ambient tint** (`modern`): The same draggable list with cards tinted by an ambient colour.
+   - Live: https://avaraui.com/view/draggable-card-list/modern
+   - Best for: a more modern, colourful look for the same kind of list
+   - Avoid if: you want a neutral, pastel-badge style
+   - Traits: ambient tint, grip handle
+   - Install: `npx shadcn@latest add @avara-ui/draggable-card-list`
+   - Set these props: `{"variant":"modern"}`
+   - Docs: https://avaraui.com/docs/nextjs/draggable-card-list#modern-ambient-tint-card-list
+
 ## Variations
 
 ### Classic Card List

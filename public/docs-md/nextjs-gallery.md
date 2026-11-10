@@ -8,6 +8,74 @@ url: https://avaraui.com/docs/nextjs/gallery
 
 A dynamic visual showcase featuring six interactive variants: a revolving 3D circular photo orbit ring, an interactive 3D video sphere gallery, a GSAP Flip self-rearranging moving bento grid, an interactive circular reel dial spinner, a 3D layered pill carousel, and a Framer-inspired 3D curved arc carousel gallery.
 
+## For AI agents
+
+**Ask before you pick.** This page has 6 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 6 options as live previews: https://avaraui.com/view/gallery
+
+**When to use it.** A visual showcase in six interactive layouts: a 3D photo orbit, a self-rearranging bento grid, a circular reel dial, a layered pill carousel, a curved arc carousel and a 3D video sphere.
+
+**When to use something else:**
+
+- [Image Viewer](https://avaraui.com/docs/nextjs/image-viewer): for one image at a time with zoom, a slider or a thumbnail strip rather than a showcase.
+
+**Gotchas:**
+
+- All six are looks of the one `gallery` item: install it once and set `variant` from the index.
+- Each look takes its own item shape: the bento `{ id, title, description, image }`, the reel `{ id, name, category, description, image }`, the pill carousel `{ id, image, tooltipText, link }`, the arc carousel `{ id, image, title, subtitle, link }` and the sphere `{ id, type, src, poster, title, description, link }`.
+
+### The 6 variants
+
+1. **Orbit gallery** (`orbit-gallery`): Photo cards revolve on a 3D circular ring; one full revolution takes `duration` seconds.
+   - Live: https://avaraui.com/view/gallery/orbit-gallery
+   - Best for: a travel, nature or portfolio photo showcase with a hero moment
+   - Avoid if: you have only a few photos, since the ring spaces the cards evenly around
+   - Traits: 3D ring, any number of cards, accent colour or theme, default look
+   - Install: `npx shadcn@latest add @avara-ui/gallery`
+   - Set these props: `{"variant":"orbit-gallery"}`
+   - Docs: https://avaraui.com/docs/nextjs/gallery#orbit-gallery
+2. **Circular reel** (`circular-reel`): A scroll-driven circular dial of segmented items that idles in rotation and spins with the wheel or touch.
+   - Live: https://avaraui.com/view/gallery/circular-reel
+   - Best for: a set of named items with a category and description, such as projects or services
+   - Avoid if: you want visitors to browse by clicking through rather than spinning
+   - Traits: circular dial, wheel and touch scroll, idle rotation, name, category and description per item
+   - Install: `npx shadcn@latest add @avara-ui/gallery`
+   - Set these props: `{"variant":"circular-reel"}`
+   - Docs: https://avaraui.com/docs/nextjs/gallery#circular-reel
+3. **Video sphere** (`video-sphere`): Cards of images or video spread over a drifting 3D sphere; far cards blur, and a click can open a video modal.
+   - Live: https://avaraui.com/view/gallery/video-sphere
+   - Best for: a showcase that mixes images and video clips
+   - Avoid if: you have few items, since a sphere needs many cards to look full
+   - Traits: 3D sphere, images or videos, depth blur, optional video modal
+   - Install: `npx shadcn@latest add @avara-ui/gallery`
+   - Set these props: `{"variant":"video-sphere"}`
+   - Docs: https://avaraui.com/docs/nextjs/gallery#video-sphere-gallery
+4. **Moving bento** (`moving-bento`): A bento grid that swaps its cards' positions on a timer with a GSAP Flip animation.
+   - Live: https://avaraui.com/view/gallery/moving-bento
+   - Best for: a feature or project grid that should feel alive
+   - Avoid if: you want a static grid or one that visitors control
+   - Traits: bento grid, automatic position swaps, title and description per card
+   - Install: `npx shadcn@latest add @avara-ui/gallery`
+   - Set these props: `{"variant":"moving-bento"}`
+   - Docs: https://avaraui.com/docs/nextjs/gallery#moving-bento
+5. **3D pill carousel** (`pill-carousel`): Layered pill-shaped cards in 3D; they slide automatically and a click focuses one, ringed in your accent colour.
+   - Live: https://avaraui.com/view/gallery/pill-carousel
+   - Best for: a compact image carousel with a tooltip and link per card
+   - Avoid if: you need captions beyond a short tooltip
+   - Traits: layered 3D pills, auto slide or click-to-focus, tooltip and link per card
+   - Install: `npx shadcn@latest add @avara-ui/gallery`
+   - Set these props: `{"variant":"pill-carousel"}`
+   - Docs: https://avaraui.com/docs/nextjs/gallery#3d-pill-carousel
+6. **Arc carousel** (`arc-carousel`): Cards on a 3D curved arc that drifts on its own and can be dragged and spun with momentum.
+   - Live: https://avaraui.com/view/gallery/arc-carousel
+   - Best for: a product, collection or project row with a title and subtitle per card
+   - Avoid if: it must stay still, or you want a plain grid
+   - Traits: curved arc from concave to convex, drag with momentum, auto-drift (can be turned off), title, subtitle and link per card
+   - Install: `npx shadcn@latest add @avara-ui/gallery`
+   - Set these props: `{"variant":"arc-carousel"}`
+   - Docs: https://avaraui.com/docs/nextjs/gallery#arc-carousel-gallery
+
 ## Orbit Gallery
 
 Revolving 3D circular photo orbit ring with upright cards and smooth hover pause.

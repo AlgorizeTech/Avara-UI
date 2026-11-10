@@ -12,6 +12,50 @@ There is **no column config and no required row shape**. Whatever your API retur
 
 Every example below is live. Click a sortable header, expand a row, or hover the right edge of a row to reveal its actions.
 
+## For AI agents
+
+**Ask before you pick.** This page has 3 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 3 options as live previews: https://avaraui.com/view/table
+
+**When to use it.** A set of composable table primitives: you write the rows and the component supplies structure, spacing and theming, with no column config and no required row shape. Three looks: the default card, a minimal one and the soft admin-dashboard look.
+
+**When to use something else:**
+
+- [Data Table](https://avaraui.com/docs/nextjs/data-table): for a data table with search, filters and paging wired up for you.
+
+**Gotchas:**
+
+- All three are looks of the one `table` item: install it once and set `variant` on `Table` from the index.
+- Sortable headers, expandable rows, pagination and row actions are composition on any look; the table never reorders your data behind your back.
+- `size` on `Table` sets the spacing for every cell and header through context.
+
+### The 3 variants
+
+1. **Default card** (`default`): The table inside a card wrapper: the default look.
+   - Live: https://avaraui.com/view/table/default
+   - Best for: a data table on a plain page
+   - Avoid if: the table already sits in a container that supplies the frame
+   - Traits: card wrapper, default look
+   - Install: `npx shadcn@latest add @avara-ui/table`
+   - Docs: https://avaraui.com/docs/nextjs/table#composable-table
+2. **Minimal** (`minimal`): The card wrapper is dropped so the table sits directly on the page.
+   - Live: https://avaraui.com/view/table/minimal
+   - Best for: a table inside a layout that already provides the surface
+   - Avoid if: you want it to read as a self-contained card
+   - Traits: no card wrapper
+   - Install: `npx shadcn@latest add @avara-ui/table`
+   - Set these props: `{"variant":"minimal"}`
+   - Docs: https://avaraui.com/docs/nextjs/table#minimal
+3. **Soft** (`soft`): A read-only admin-dashboard look: rounded panel, tinted header band, calm dividers and soft row hover.
+   - Live: https://avaraui.com/view/table/soft
+   - Best for: an admin or settings area with a gentle, dashboard-style table
+   - Avoid if: you need search, filters or paging built in
+   - Traits: rounded panel on a hairline ring, tinted header band, tints mixed from the table colour
+   - Install: `npx shadcn@latest add @avara-ui/table`
+   - Set these props: `{"variant":"soft"}`
+   - Docs: https://avaraui.com/docs/nextjs/table#soft-variant
+
 ## Soft variant
 
 A plain read-only table in the admin-dashboard look — a rounded panel on a hairline ring, a tinted header band, calm dividers and soft row hover. No search, filters or paging: just the rows.

@@ -109,39 +109,24 @@ export default function OfferShowcaseExample() {
 }
 ```
 
-## Mobile App Showcase — variant="mobile-app"
+## Installation
 
-Pass `variant="mobile-app"` for a scroll-driven app showcase CTA. Initially displays only the Google Pixel 8 Android frame centered in the viewport; scrolling smoothly glides the phone down and to the left while the editorial headline, description, and official app store badges reveal on the right.
+Add the component by URL — no setup needed:
 
-- Pass `variant="mobile-app"` Selects the mobile app showcase layout with an upright Android Google Pixel 8 mockup.
-- Set `headingAccent="your partner"` Applies an elegant serif italic treatment to the highlighted phrase in the headline.
-- Set `userName="Alicia Regis"` Customizes the greeting header inside the phone screen feed.
-- Set `featuredWorkoutTitle="Wellness Workshops"` Sets the title of the hero video/image card within the mobile feed.
-- Set `showAppStoreBadges=true` Displays official Apple App Store and Google Play store download buttons.
-
-```tsx
-import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
-
-export default function MobileAppExample() {
-  return (
-    <CTASection
-      variant="mobile-app"
-      badge="Mobile App Available"
-      heading={"Aura Clearmind..
-Your partner in wellness."}
-      subheading="Find and book your favorite yoga classes, guided meditation, and daily mindful wellness sessions from anywhere with our all-in-one mobile app, designed to bring balance, clarity, and peace to your life."
-      appleStoreHref="#"
-      googlePlayHref="#"
-      userName="Alicia Regis"
-      featuredWorkoutTitle="Wellness Workshops"
-      workoutDuration="10 Min"
-      workoutCalories="300 Kcal"
-    />
-  );
-};
+```bash
+npx shadcn@latest add https://avaraui.com/r/cta-section.json
 ```
 
-## Concentric Portal — variant="concentric-portal"
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/cta-section
+```
+
+## Examples
+
+### Concentric Portal — variant="concentric-portal"
 
 Pass `variant="concentric-portal"` for the scroll-driven expanding circular lens with continuous gyroscopic orbital text rings.
 
@@ -167,7 +152,7 @@ export default function ConcentricPortalExample() {
 }
 ```
 
-## Brand Pillars — variant="brand-pillars"
+### Brand Pillars — variant="brand-pillars"
 
 Pass `variant="brand-pillars"` for the interactive synchronized scorecard with dynamic progress metrics.
 
@@ -191,19 +176,36 @@ export default function BrandPillarsExample() {
 };
 ```
 
-## Installation
+### Mobile App Showcase — variant="mobile-app"
 
-Add the component by URL — no setup needed:
+Pass `variant="mobile-app"` for a scroll-driven app showcase CTA. Initially displays only the iPhone 16 Pro frame centered in the viewport; scrolling smoothly glides the phone down and to the left while the editorial headline, description, and official app store badges reveal on the right.
 
-```bash
-npx shadcn@latest add https://avaraui.com/r/cta-section.json
-```
+- Pass `variant="mobile-app"` Selects the mobile app showcase layout with an upright iPhone 16 Pro mockup.
+- Set `headingAccent="your partner"` Applies an elegant serif italic treatment to the highlighted phrase in the headline.
+- Set `userName="Alicia Regis"` Customizes the greeting header inside the phone screen feed.
+- Set `featuredWorkoutTitle="Wellness Workshops"` Sets the title of the hero video/image card within the mobile feed.
+- Set `showAppStoreBadges=true` Displays official Apple App Store and Google Play store download buttons.
 
-Or register the @avara-ui registry once per project and add it by name:
+```tsx
+import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
 
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/cta-section
+export default function MobileAppExample() {
+  return (
+    <CTASection
+      variant="mobile-app"
+      badge="Mobile App Available"
+      heading={"Aura Clearmind..
+Your partner in wellness."}
+      subheading="Find and book your favorite yoga classes, guided meditation, and daily mindful wellness sessions from anywhere with our all-in-one mobile app, designed to bring balance, clarity, and peace to your life."
+      appleStoreHref="#"
+      googlePlayHref="#"
+      userName="Alicia Regis"
+      featuredWorkoutTitle="Wellness Workshops"
+      workoutDuration="10 Min"
+      workoutCalories="300 Kcal"
+    />
+  );
+};
 ```
 
 ## Features

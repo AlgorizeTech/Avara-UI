@@ -10,6 +10,57 @@ A collection of 4 production-ready, interactive, fully responsive E-commerce Pro
 
 `ImageViewer` isolates the image presentation layer for product showcases, galleries, and e-commerce catalogs with built-in fullscreen lightbox expansion and colorway synchronization.
 
+## For AI agents
+
+**Ask before you pick.** This page has 4 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 4 options as live previews: https://avaraui.com/view/image-viewer
+
+**When to use it.** A product image viewer for e-commerce pages with a fullscreen lightbox and colourway sync, in four styles: an inner magnifier, a floating zoom loupe, an arrow slider with dots and a thumbnail strip.
+
+**When to use something else:**
+
+- [Gallery](https://avaraui.com/docs/nextjs/gallery): for a decorative showcase of many images rather than one product's photos.
+
+**Gotchas:**
+
+- All four are looks of the one `image-viewer` item: install it once and set `variant` from the index.
+
+### The 4 variants
+
+1. **Inner lens zoom** (`inner-zoom`): Magnifies the product image inside its own frame on cursor hover, at 260% optical scale.
+   - Live: https://avaraui.com/view/image-viewer/inner-zoom
+   - Best for: a product page where detail matters and one image is shown at a time
+   - Avoid if: most visitors are on touch screens, where hover zoom does not apply
+   - Traits: in-frame magnifier, 260% scale on hover
+   - Install: `npx shadcn@latest add @avara-ui/image-viewer`
+   - Set these props: `{"variant":"inner-zoom"}`
+   - Docs: https://avaraui.com/docs/nextjs/image-viewer#inner-lens-magnifier-zoom-viewer
+2. **Floating zoom loupe** (`side-zoom`): A 3x loupe floats above the hovered or touched point, with a reticle marking the area it shows; it stays on screen.
+   - Live: https://avaraui.com/view/image-viewer/side-zoom
+   - Best for: product photos where seeing the exact spot being magnified helps, including on touch
+   - Avoid if: you want the zoom to happen inside the image frame itself
+   - Traits: 3x floating loupe, reticle, works on touch
+   - Install: `npx shadcn@latest add @avara-ui/image-viewer`
+   - Set these props: `{"variant":"side-zoom"}`
+   - Docs: https://avaraui.com/docs/nextjs/image-viewer#hd-side-portal-lens-zoom-viewer
+3. **Arrow slider with dots** (`slider`): Floating left and right chevrons with backdrop blur, bottom dot indicators and an expandable lightbox.
+   - Live: https://avaraui.com/view/image-viewer/slider
+   - Best for: a mobile-friendly product gallery with a few photos
+   - Avoid if: you want thumbnails visible so people can jump to a photo
+   - Traits: chevron buttons, dot indicators, lightbox
+   - Install: `npx shadcn@latest add @avara-ui/image-viewer`
+   - Set these props: `{"variant":"slider"}`
+   - Docs: https://avaraui.com/docs/nextjs/image-viewer#floating-arrow-slider-dots-viewer
+4. **Thumbnail strip** (`thumbnails`): A thumbnail preview strip beside the main image, with the active one marked, and an expandable lightbox.
+   - Live: https://avaraui.com/view/image-viewer/thumbnails
+   - Best for: a product with several photos that shoppers should be able to jump between
+   - Avoid if: horizontal space is tight
+   - Traits: thumbnail strip, `thumbnailPosition` option, lightbox
+   - Install: `npx shadcn@latest add @avara-ui/image-viewer`
+   - Set these props: `{"variant":"thumbnails"}`
+   - Docs: https://avaraui.com/docs/nextjs/image-viewer#interactive-thumbnail-strip-gallery-viewer
+
 ## Inner Lens Magnifier Zoom Viewer
 
 - Use `variant="inner-zoom"` magnifies the product image directly within the hero frame upon cursor hover (260% optical scale).

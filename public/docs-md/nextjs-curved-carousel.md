@@ -10,6 +10,41 @@ An interactive, 100% full-width 3D curved arc carousel featuring left-to-right o
 
 `CurvedCarousel` transforms standard image galleries into an immersive, fanned 3D arc deck with customizable speed, touch/drag controls, and dark mode support.
 
+## For AI agents
+
+**Ask before you pick.** This page has 2 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 2 options as live previews: https://avaraui.com/view/curved-carousel
+
+**When to use it.** A full-width 3D curved-arc image carousel with perspective depth cards, touch and drag controls and spring physics, in two motions: a left-to-right sway or a continuous marquee.
+
+**When to use something else:**
+
+- [Gallery](https://avaraui.com/docs/nextjs/gallery): for other showcase layouts such as a photo orbit, a bento grid or a video sphere.
+
+**Gotchas:**
+
+- Both are looks of the one `curved-carousel` item: install it once and set `variant` from the index.
+
+### The 2 variants
+
+1. **Arc sway deck** (`arc-sweep`): Cards lie along a 3D curved arc with a continuous left-to-right sway. The default.
+   - Live: https://avaraui.com/view/curved-carousel/arc-sweep
+   - Best for: a calm, immersive image deck that drifts back and forth
+   - Avoid if: you want constant one-direction scrolling like a marquee
+   - Traits: curved arc, left-to-right oscillating sway, default look
+   - Install: `npx shadcn@latest add @avara-ui/curved-carousel`
+   - Set these props: `{"variant":"arc-sweep"}`
+   - Docs: https://avaraui.com/docs/nextjs/curved-carousel#3d-curved-arc-sway-deck
+2. **Concave arc marquee** (`infinite-marquee`): A continuous right-to-left infinite marquee arranged on a 3D concave curved arc.
+   - Live: https://avaraui.com/view/curved-carousel/infinite-marquee
+   - Best for: a logo, product or photo strip that should keep moving
+   - Avoid if: you want the motion to turn back on itself
+   - Traits: continuous right-to-left movement, concave arc, infinite loop
+   - Install: `npx shadcn@latest add @avara-ui/curved-carousel`
+   - Set these props: `{"variant":"infinite-marquee"}`
+   - Docs: https://avaraui.com/docs/nextjs/curved-carousel#continuous-3d-concave-arc-marquee
+
 ## 3D Curved Arc Sway Deck
 
 - Use `variant="arc-sweep"` to lay the cards along a 3D curved arc with a continuous left-to-right sway. It is the default.

@@ -10,6 +10,59 @@ A fully interactive, encapsulated chat interface. Features include search filter
 
 Every preview is live — pick a contact, search the list, or send a message and watch the simulated reply come back. `variant` changes the shell only; the conversation state, search and typing simulation are identical across all three.
 
+## For AI agents
+
+**Ask before you pick.** This page has 4 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 4 options as live previews: https://avaraui.com/view/chat
+
+**When to use it.** A self-contained chat interface with a contact list, search, simulated replies, unread badges and a mobile drawer, in four shells: the default two-pane layout, a two-card minimal one, frosted glass and liquid glass.
+
+**When to use something else:**
+
+- [AI Chat](https://avaraui.com/docs/reactjs/ai-chat): for an assistant with a prompt composer, model picker, attachments and streamed answers.
+
+**Gotchas:**
+
+- All four are looks of the one `chat` item: install it once and set `variant` from the index.
+- `variant` changes only the shell; the conversation behaviour is the same in each.
+- `glass` and `liquid-glass` need a colourful or photographic backdrop behind them to read.
+
+### The 4 variants
+
+1. **Default** (`default`): The two-pane layout: the contact list beside the thread, collapsing to a drawer on narrow screens.
+   - Live: https://avaraui.com/view/chat/default
+   - Best for: a standard messaging screen on a normal background
+   - Avoid if: you want the list and thread as two separate cards
+   - Traits: two panes in one shell, default look, mobile drawer
+   - Install: `npx shadcn@latest add @avara-ui/chat`
+   - Set these props: `{"variant":"default"}`
+   - Docs: https://avaraui.com/docs/nextjs/chat#chat-application
+2. **Minimal** (`minimal`): Two bordered cards with a gap between them: the contact list on the left and the thread on the right.
+   - Live: https://avaraui.com/view/chat/minimal
+   - Best for: a dashboard where the chat sits among other cards
+   - Avoid if: you want a single unified shell
+   - Traits: two separate cards, gap between the panes
+   - Install: `npx shadcn@latest add @avara-ui/chat`
+   - Set these props: `{"variant":"minimal"}`
+   - Docs: https://avaraui.com/docs/nextjs/chat#minimal
+3. **Glass** (`glass`): Translucent panels with backdrop blur.
+   - Live: https://avaraui.com/view/chat/glass
+   - Best for: a chat over a colourful or photographic background
+   - Avoid if: the backdrop is plain, since there is nothing to blur
+   - Traits: translucent panels, backdrop blur
+   - Install: `npx shadcn@latest add @avara-ui/chat`
+   - Set these props: `{"variant":"glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/chat#glass
+4. **Liquid glass** (`liquid-glass`): Liquid-glass refraction using SVG displacement mapping, layered specular highlights and fluid reflections.
+   - Live: https://avaraui.com/view/chat/liquid-glass
+   - Best for: a showpiece interface over rich imagery
+   - Avoid if: the backdrop is plain or you want a restrained look
+   - Traits: refraction effect, specular highlights
+   - Install: `npx shadcn@latest add @avara-ui/chat`
+   - Set these props: `{"variant":"liquid-glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/chat#liquid-glass
+
 ## Chat application
 
 - Pass `contactsData` for the contact list and `currentUser` for the sender identity.

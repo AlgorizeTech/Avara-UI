@@ -14,6 +14,46 @@ Switching runs the same circular reveal as the toggle in this site's header: the
 
 Each switcher below is live and writes through `next-themes`, so flipping one changes the theme for the whole docs site. The previews run in their own frame, and a View Transition can't cross documents, so here the demo hands the pick to the page through `applyTheme` — what you see is the header's own reveal, starting from the control you clicked. In your app the component does all of that itself.
 
+## For AI agents
+
+**Ask before you pick.** This page has 3 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 3 options as live previews: https://avaraui.com/view/theme-switcher
+
+**When to use it.** An animated dark-mode toggle built on `next-themes`, in three layouts: a compact icon, a segmented pill and a dropdown menu.
+
+**Gotchas:**
+
+- All three are looks of the one `theme-switcher` item: install it once and set `variant` from the index.
+- Only `dropdown` offers the `system` option, so users can follow their OS setting.
+
+### The 3 variants
+
+1. **Icon** (`icon`): A compact icon button that toggles the theme: the default and the usual choice for a navbar.
+   - Live: https://avaraui.com/view/theme-switcher/icon
+   - Best for: a navbar or any tight space
+   - Avoid if: you want users to see the current mode spelled out or pick a system setting
+   - Traits: icon only, default look
+   - Install: `npx shadcn@latest add @avara-ui/theme-switcher`
+   - Set these props: `{"variant":"icon"}`
+   - Docs: https://avaraui.com/docs/nextjs/theme-switcher#icon
+2. **Pill** (`pill`): A segmented control with a sliding indicator that shows the current mode explicitly.
+   - Live: https://avaraui.com/view/theme-switcher/pill
+   - Best for: a settings page where the mode should be visible and selectable
+   - Avoid if: space is tight, as in a navbar
+   - Traits: segmented control, sliding indicator
+   - Install: `npx shadcn@latest add @avara-ui/theme-switcher`
+   - Set these props: `{"variant":"pill"}`
+   - Docs: https://avaraui.com/docs/nextjs/theme-switcher#pill
+3. **Dropdown** (`dropdown`): A menu of modes, and the only layout with the `system` option.
+   - Live: https://avaraui.com/view/theme-switcher/dropdown
+   - Best for: letting users defer to their operating system's theme
+   - Avoid if: you want a one-click toggle
+   - Traits: menu, includes `system`
+   - Install: `npx shadcn@latest add @avara-ui/theme-switcher`
+   - Set these props: `{"variant":"dropdown"}`
+   - Docs: https://avaraui.com/docs/nextjs/theme-switcher#dropdown
+
 ## Icon
 
 One button that flips between light and dark, with a spin micro-interaction on the icon and the circular reveal growing out of it.

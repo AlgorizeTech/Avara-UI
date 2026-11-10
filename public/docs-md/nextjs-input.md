@@ -12,6 +12,57 @@ Pass `suggestions` and the field lists them the way a select menu would — typi
 
 Explore the different variations of the Input component — each example shows a live preview with the exact code to copy.
 
+## For AI agents
+
+**Ask before you pick.** This page has 4 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 4 options as live previews: https://avaraui.com/view/input
+
+**When to use it.** A text field with labels, helper text, a password toggle and autocomplete suggestions, in four styles: bordered, filled, underlined and a pill badge.
+
+**When to use something else:**
+
+- [File Upload](https://avaraui.com/docs/nextjs/file-upload): for drag-and-drop or file selection fields.
+
+**Gotchas:**
+
+- All four are looks of the one `input` item: install it once and set `variant` from the index.
+- A password field is `inputType="password"` (the show/hide toggle comes with it) and autocomplete is the `suggestions` prop: neither is a different design.
+
+### The 4 variants
+
+1. **Bordered** (`default`): The default bordered box, with an optional label above and helper text below.
+   - Live: https://avaraui.com/view/input/default
+   - Best for: a standard form field that should look clearly like a field
+   - Avoid if: the form's design system calls for a flatter field
+   - Traits: bordered box, default look
+   - Install: `npx shadcn@latest add @avara-ui/input`
+   - Docs: https://avaraui.com/docs/nextjs/input#input
+2. **Filled** (`filled`): A solid, low-contrast field with no visible border at rest.
+   - Live: https://avaraui.com/view/input/filled
+   - Best for: a soft, modern form on a light background
+   - Avoid if: the field must stand out against a similar-coloured surface
+   - Traits: solid fill, no border at rest
+   - Install: `npx shadcn@latest add @avara-ui/input`
+   - Set these props: `{"variant":"filled"}`
+   - Docs: https://avaraui.com/docs/nextjs/input#filled
+3. **Underlined** (`underlined`): The chrome is reduced to a single baseline rule.
+   - Live: https://avaraui.com/view/input/underlined
+   - Best for: a minimal, editorial form
+   - Avoid if: fields must be easy to spot in a dense form
+   - Traits: baseline rule only
+   - Install: `npx shadcn@latest add @avara-ui/input`
+   - Set these props: `{"variant":"underlined"}`
+   - Docs: https://avaraui.com/docs/nextjs/input#underlined
+4. **Pill badge** (`pill`): The input sits in a capsule with a vertical divider after a leading icon in a segregated badge.
+   - Live: https://avaraui.com/view/input/pill
+   - Best for: a search or single-field sign-up with a leading icon
+   - Avoid if: you have a long multi-field form
+   - Traits: capsule shape, leading icon badge, vertical divider
+   - Install: `npx shadcn@latest add @avara-ui/input`
+   - Set these props: `{"variant":"pill"}`
+   - Docs: https://avaraui.com/docs/nextjs/input#input-pill
+
 ## Input
 
 A labelled text field with helper text and a leading icon.

@@ -12,18 +12,22 @@ The copy and the walls talk to each other. The install line ends in the name of 
 
 ## For AI agents
 
-**Ask before you pick.** This page has 3 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+**Ask before you pick.** This page has 2 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
 
-All 3 options as live previews: https://avaraui.com/view/component-wall
+All 2 options as live previews: https://avaraui.com/view/component-wall
 
-**When to use it.** A landing hero for a library or product: a wall of screenshot cards that a camera glides across, with an install command that follows the card it lands on. Three layouts.
+**When to use it.** A landing hero for a library or product: a wall of screenshot cards that a camera glides across, with an install command that follows the card it lands on. Two layouts.
+
+**When to use something else:**
+
+- [Portfolio Showcase](https://avaraui.com/docs/reactjs/portfolio-showcase): for an edge-to-edge draggable wall with no copy over it, where the wall itself is the content.
 
 **Gotchas:**
 
-- All three are layouts of the one `component-wall` item: install it once and set `layout` from the index.
+- Both are layouts of the one `component-wall` item: install it once and set `layout` from the index.
 - Showing or hiding the wall on phones is a prop (`showMobileWall`), not a separate design.
 
-### The 3 variants
+### The 2 variants
 
 1. **Centred copy between two walls** (`center`): The copy sits in the middle with a wall of cards on each side; two cameras take turns gliding to a card.
    - Live: https://avaraui.com/view/component-wall/center
@@ -41,14 +45,6 @@ All 3 options as live previews: https://avaraui.com/view/component-wall
    - Install: `npx shadcn@latest add @avara-ui/component-wall`
    - Set these props: `{"layout":"split"}`
    - Docs: https://avaraui.com/docs/nextjs/component-wall#copy-beside-the-wall
-3. **Fullscreen wall, no copy** (`fullscreen`): An edge-to-edge draggable masonry canvas of cards with no copy over it; clicking a card opens its details.
-   - Live: https://avaraui.com/view/component-wall/fullscreen
-   - Best for: a gallery or showcase page where the wall itself is the content
-   - Avoid if: you need a headline and call to action on the section
-   - Traits: edge-to-edge, drag in all directions with momentum, details modal on click, uses the `component-wall` item
-   - Install: `npx shadcn@latest add @avara-ui/component-wall`
-   - Set these props: `{"layout":"fullscreen"}`
-   - Docs: https://avaraui.com/docs/nextjs/component-wall#fullscreen-wall-no-copy
 
 ## Build interactive interfaces
 
@@ -388,59 +384,6 @@ export default function Hero() {
 }
 ```
 
-### Fullscreen wall (no copy)
-
-An edge-to-edge continuous infinite canvas in a masonry layout without copy or text. Click & drag anywhere in all 4 directions (left, right, up, down) with smooth momentum physics and ambient floating drift — it wraps infinitely without ever ending.
-
-- `layout="fullscreen"` renders an edge-to-edge single canvas across the full screen with all cards included in a masonry column style, without dividing into left/right halves and without copy or text overlays.
-- `interval=true` glides the camera continuously across the infinite masonry canvas.
-- `draggable=true` allows users to click and drag the entire canvas in all 4 directions with inertial momentum physics and touch support, scrolling infinitely in 2D.
-- `highlightFocus=false` renders all cards at uniform clarity across the fullscreen canvas without dimming outer cards.
-- `order="shuffle"` takes turns card by card across the canvas in dynamic, multi-directional flight paths rather than a single fixed direction.
-- `itemModal=true` enables the interactive full-details modal on click, presenting card preview on the left and full details with action buttons on the right.
-- `stagger=72` controls the vertical masonry stagger offset between columns, giving the wall an organic masonry waterfall flow where rows don't line up uniformly.
-- `gap=16` controls the spacing in pixels between cards in all directions (top, bottom, left, right, defaults to 16).
-- `items` all cards rendered within the single unified wall with infinite repeating tiles across the entire 2D plane.
-
-```tsx
-// slug is what the install line calls the card; it defaults to the title in kebab-case.
-const ITEMS: ComponentWallItem[] = [
-  { slug: "hero", title: "Word bounce hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/hero-1790516064495.jpg" },
-  { slug: "pricing", title: "Pricing plans", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/pricing-1790516064500.jpg" },
-  { slug: "bento-showcase", title: "Bento showcase", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/bento-showcase-1790516064489.jpg" },
-  { slug: "book-appointment", title: "Book appointment", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/book-appointment-1790516064490.jpg" },
-  { slug: "collage-hero", title: "Collage hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/collage-hero-1790516064493.jpg" },
-  { slug: "fashion-hero", title: "Fashion hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/fashion-hero-1790516064495.jpg" },
-  { slug: "hero-carousel", title: "Hero carousel", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516059/hero-carousel-1790516064496.jpg" },
-  { slug: "honeycomb-hero", title: "Honeycomb hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516059/honeycomb-hero-1790516064497.jpg" },
-  // … as many as you like; four columns of six reads well
-];
-
-// Faces for the trust line — shown as an Avatar Group (shift on hover, name tooltip).
-const AVATARS = [
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara Jade" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo Silva" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790082180/pexels-photo-1520760-1790082180553.jpg", alt: "June Carter" },
-  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145141/pexels-photo-6311475-1790145143489.jpg", alt: "Sam Wilson" },
-];
-
-export default function FullscreenWallHero() {
-  return (
-    <ComponentWall
-      layout="fullscreen"
-      items={ITEMS}
-      interval={true}
-      intervalTime={5500}
-      draggable={true}
-      highlightFocus={false}
-      order="shuffle"
-    />
-  );
-}
-```
-
 ## Features
 
 ### An install line that follows the camera
@@ -468,7 +411,7 @@ Background, text, the primary button and the stars all read theme tokens, so a p
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `badge` | `&#123; label: string; href?: string &#125;` | — | The small link above the headline. |
-| `heading` | `string` | — | The headline, revealed word by word. `&#123;word&#125;` is where `headingWords` take turns. Optional when `layout="fullscreen"`. |
+| `heading` | `string` | — | The headline, revealed word by word. `&#123;word&#125;` is where `headingWords` take turns. |
 | `headingWords` | `string[]` | — | Words that take turns at `&#123;word&#125;`, each blurring in like the headline did. |
 | `wordInterval` | `number` | `2400` | Milliseconds each heading word stays. |
 | `accent` | `string` | — | A word of the headline set in the primary colour. |
@@ -484,7 +427,7 @@ Background, text, the primary button and the stars all read theme tokens, so a p
 | `zoom` | `number` | `1.35` (`0.9` centred) | The camera's resting scale. |
 | `intro` | `number` | `1800` | Milliseconds the camera drifts with no card in focus while the copy arrives, before landing on the first card. `0` starts on it. |
 | `onFocus` | `(index: number) => void` | — | Called when the camera settles on a card. |
-| `layout` | `"split" \| "center" \| "center-background" \| "fullscreen" \| "wall-only"` | `"split"` | `"split"`: copy on the left and wall on the right; `"center"`: copy centred between two walls; `"center-background"`: walls in the background across all screens; `"fullscreen"` (or `"wall-only"`): renders a single continuous edge-to-edge wall across the entire screen with all cards included and no copy. |
+| `layout` | `"split" \| "center" \| "center-background"` | `"split"` | `"split"`: copy on the left and wall on the right; `"center"`: copy centred between two walls; `"center-background"`: walls in the background across all screens. |
 | `showMobileWall` | `boolean` | `true` | Whether to show the background image animations on mobile and small screens (&lt;lg). When `false`, the wall animations are completely hidden on small screens across all variants (`center`, `split`, and `center-background`), leaving only the clean content copy and tools on phones while retaining full interactive animations on desktop. |
 | `mobileBackground` | `boolean` | `true` | Alias for `showMobileWall`. Set to `false` to disable the background image animation on small screens across all variants. |
 | `persistentBackground` | `boolean` | `false` | When true (or with `layout="center-background"`), the animated screenshot walls remain in the background layer behind the copy on small screens instead of dropping below the action buttons as a separate band. |

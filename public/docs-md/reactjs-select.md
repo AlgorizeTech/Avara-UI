@@ -12,6 +12,41 @@ This component solves that by using React state and clever absolute positioning 
 
 Explore the different variations of the Select component — each example shows a live preview with the exact code to copy.
 
+## For AI agents
+
+**Ask before you pick.** This page has 2 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 2 options as live previews: https://avaraui.com/view/select
+
+**When to use it.** A custom dropdown that replaces the native `<select>`, matching the input styles, with optional search, grouping and multi-select, in two trigger styles: bordered and underlined.
+
+**When to use something else:**
+
+- [Input](https://avaraui.com/docs/reactjs/input): for free-text entry rather than choosing from a list.
+
+**Gotchas:**
+
+- Both are looks of the one `select` item: install it once and set `variant` from the index.
+- Searchable (`isSearchable`) and multi-select (`isMultiple`, with an array `value`) are props on either style.
+
+### The 2 variants
+
+1. **Bordered** (`default`): The default bordered trigger.
+   - Live: https://avaraui.com/view/select/default
+   - Best for: a standard form dropdown beside bordered inputs
+   - Avoid if: your form uses underlined fields
+   - Traits: bordered trigger, default look
+   - Install: `npx shadcn@latest add @avara-ui/select`
+   - Docs: https://avaraui.com/docs/nextjs/select#select
+2. **Underlined** (`underlined`): The trigger is reduced to a single baseline rule.
+   - Live: https://avaraui.com/view/select/underlined
+   - Best for: a minimal form that uses underlined inputs
+   - Avoid if: you mix it with bordered fields
+   - Traits: baseline rule
+   - Install: `npx shadcn@latest add @avara-ui/select`
+   - Set these props: `{"variant":"underlined"}`
+   - Docs: https://avaraui.com/docs/nextjs/select#underlined
+
 ## Select
 
 A labelled dropdown with helper text.

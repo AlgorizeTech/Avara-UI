@@ -10,6 +10,59 @@ A comprehensive, interactive calendar dashboard and date-picker system. Includes
 
 `CalendarDashboard` is fully encapsulated — modals, event editing, filtering and exporting are all handled internally, so the only thing you pass in is the seed data and the look.
 
+## For AI agents
+
+**Ask before you pick.** This page has 4 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 4 options as live previews: https://avaraui.com/view/calendar
+
+**When to use it.** A calendar dashboard with built-in event management, filtering, Month, Week and Day views and animated popover modals, in four looks: the default card, a flush minimal one, frosted glass and liquid glass.
+
+**When to use something else:**
+
+- [Date Picker](https://avaraui.com/docs/nextjs/date-picker): for choosing a single date in a form field rather than managing events.
+
+**Gotchas:**
+
+- All four are looks of the one `calendar` item: install it once and set `variant` from the index.
+- Event seed data is keyed `"YYYY-M-D"` with un-padded month and day.
+- `glass` and `liquid-glass` are meant to sit on a coloured or photographic surface.
+
+### The 4 variants
+
+1. **Default** (`default`): The full dashboard in its own card, with the accent colour on active states, buttons and focus rings.
+   - Live: https://avaraui.com/view/calendar/default
+   - Best for: a calendar page on a normal background
+   - Avoid if: it should sit flush inside another layout
+   - Traits: card chrome, default look, named or hex accent colour
+   - Install: `npx shadcn@latest add @avara-ui/calendar`
+   - Set these props: `{"variant":"default"}`
+   - Docs: https://avaraui.com/docs/nextjs/calendar#calendar-dashboard
+2. **Minimal** (`minimal`): Drops the card chrome so the dashboard sits flush in your own layout.
+   - Live: https://avaraui.com/view/calendar/minimal
+   - Best for: a calendar embedded in a page or panel that already has its own frame
+   - Avoid if: you want it to read as a self-contained card
+   - Traits: no card chrome
+   - Install: `npx shadcn@latest add @avara-ui/calendar`
+   - Set these props: `{"variant":"minimal"}`
+   - Docs: https://avaraui.com/docs/nextjs/calendar#minimal
+3. **Glass** (`glass`): Translucent, for a coloured or photographic surface.
+   - Live: https://avaraui.com/view/calendar/glass
+   - Best for: a calendar over a colourful or photographic background
+   - Avoid if: the background is plain
+   - Traits: translucent
+   - Install: `npx shadcn@latest add @avara-ui/calendar`
+   - Set these props: `{"variant":"glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/calendar#glass
+4. **Liquid glass** (`liquid-glass`): A physical fluid-glass distortion with layered refraction filters and specular bevels.
+   - Live: https://avaraui.com/view/calendar/liquid-glass
+   - Best for: a showpiece calendar over rich imagery
+   - Avoid if: you want a restrained look or a plain background
+   - Traits: refraction filters, specular bevels
+   - Install: `npx shadcn@latest add @avara-ui/calendar`
+   - Set these props: `{"variant":"liquid-glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/calendar#liquid-glass
+
 ## Calendar dashboard
 
 Everything past the initial events is internal state.

@@ -8,6 +8,58 @@ url: https://avaraui.com/docs/nextjs/range-date-picker
 
 An interactive **Range Date Picker** component featuring single month, dual-month, and rate-priced calendar layouts for hotel or flight booking applications.
 
+## For AI agents
+
+**Ask before you pick.** This page has 4 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 4 options as live previews: https://avaraui.com/view/range-date-picker
+
+**When to use it.** A date range picker for hotel or flight booking, in four layouts: one or two months, each with or without a price under every day.
+
+**When to use something else:**
+
+- [Date Picker](https://avaraui.com/docs/nextjs/date-picker): for choosing a single date in a form field.
+
+**Gotchas:**
+
+- All four are looks of the one `range-date-picker` item: install it once and set `variant` from the index.
+- Past dates are blocked with `disablePast` (and `minDate` / `maxDate` bound the window) and start and end times come from `showTime`: both are props on any layout.
+
+### The 4 variants
+
+1. **Single month** (`single`): One month at a time for choosing a start and end date.
+   - Live: https://avaraui.com/view/range-date-picker/single
+   - Best for: a compact picker in a narrow space or on mobile
+   - Avoid if: people often pick ranges that span two months
+   - Traits: one month, no prices
+   - Install: `npx shadcn@latest add @avara-ui/range-date-picker`
+   - Set these props: `{"variant":"single"}`
+   - Docs: https://avaraui.com/docs/nextjs/range-date-picker#single-month-range-date-picker
+2. **Single month with prices** (`priced-single`): One month with a price shown for each day.
+   - Live: https://avaraui.com/view/range-date-picker/priced-single
+   - Best for: a compact booking widget where the nightly or daily rate matters
+   - Avoid if: you have no per-day price to show
+   - Traits: one month, price per day
+   - Install: `npx shadcn@latest add @avara-ui/range-date-picker`
+   - Set these props: `{"variant":"priced-single"}`
+   - Docs: https://avaraui.com/docs/nextjs/range-date-picker#single-month-priced-range-date-picker
+3. **Dual month** (`dual`): Two months side by side, so a range across a month boundary is visible at once.
+   - Live: https://avaraui.com/view/range-date-picker/dual
+   - Best for: a desktop booking flow where ranges often span two months
+   - Avoid if: the space is narrow
+   - Traits: two months, no prices
+   - Install: `npx shadcn@latest add @avara-ui/range-date-picker`
+   - Set these props: `{"variant":"dual"}`
+   - Docs: https://avaraui.com/docs/nextjs/range-date-picker#dual-month-range-date-picker
+4. **Dual month with prices** (`priced-dual`): Two months side by side with a price on each day.
+   - Live: https://avaraui.com/view/range-date-picker/priced-dual
+   - Best for: a hotel or flight search where comparing prices across two months helps
+   - Avoid if: you have no per-day price to show, or the space is narrow
+   - Traits: two months, price per day
+   - Install: `npx shadcn@latest add @avara-ui/range-date-picker`
+   - Set these props: `{"variant":"priced-dual"}`
+   - Docs: https://avaraui.com/docs/nextjs/range-date-picker#dual-month-priced-range-date-picker
+
 ## Variations
 
 ### Single Month Range Date Picker
