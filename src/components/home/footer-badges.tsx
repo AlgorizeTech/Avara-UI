@@ -1,17 +1,15 @@
-import { Award } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { SECTION_EYEBROW, SECTION_INNER } from "@/components/home/shared";
 
 /* ═══════════════════════════════════════════════
-   FEATURED ON
-   Launch-platform badges, shown right under the hero, left-aligned like the other sections.
+   FOOTER BADGES
+   Launch-platform badges: one row in the footer, above the wordmark.
    ═══════════════════════════════════════════════ */
 
 // StartupBase, Product Hunt, BuildHop and Peerlist each ship light/dark
-// variants of one badge: only the one matching the active theme is shown. Every
-// badge shares one height below lg (it grows with the viewport). From lg up the
-// row is a five-column grid and each image fills its column at its own aspect
-// ratio, so the badges grow with the available width. Nothing is stretched.
+// variants of one badge: only the one matching the active theme is shown.
+// Every badge has the same height and keeps its own aspect ratio (`w-auto`),
+// so widths differ and nothing is stretched. The row is a single line on wide
+// screens and wraps below that, so it never scrolls sideways.
 // width/height, where known, only reserve space before the image loads.
 const PRODUCT_HUNT_URL =
 	"https://www.producthunt.com/products/avara-ui?utm_source=badge-follow&utm_medium=badge&utm_source=badge-avara-ui";
@@ -122,47 +120,40 @@ const BADGES: Badge[] = [
 	},
 ];
 
-export function FeaturedOnSection() {
+export function FooterBadges({ className }: { className?: string }) {
 	return (
-		<section
-			aria-labelledby="featured-on-heading"
-			className="border-y border-foreground/[0.06] py-10 md:py-12">
-			<div className={SECTION_INNER}>
-				<h2
-					id="featured-on-heading"
-					className={cn(SECTION_EYEBROW, "mb-5")}>
-					<Award className="size-3.5" />
-					Featured on
-				</h2>
-				<ul className="flex max-w-full flex-wrap items-center gap-x-3 gap-y-4 md:gap-x-4 lg:grid lg:grid-cols-5 lg:gap-x-4 xl:gap-x-5">
-					{BADGES.map((badge) => (
-						<li
-							key={badge.src}
-							className={cn(
-								"max-w-full",
-								badge.scheme === "light" && "dark:hidden",
-								badge.scheme === "dark" && "hidden dark:block",
-							)}>
-							<a
-								href={badge.href}
-								target="_blank"
-								rel={badge.rel}
-								title={badge.title}
-								className="block opacity-90 transition duration-200 hover:-translate-y-0.5 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50">
-								<img
-									src={badge.src}
-									alt={badge.alt}
-									width={badge.width}
-									height={badge.height}
-									loading="lazy"
-									decoding="async"
-									className="h-9 w-auto max-w-full md:h-10 lg:h-auto lg:w-full"
-								/>
-							</a>
-						</li>
-					))}
-				</ul>
-			</div>
-		</section>
+		<ul
+			aria-label="Featured on"
+			className={cn(
+				"flex max-w-full flex-wrap items-center gap-x-3 gap-y-4 md:gap-x-4 xl:flex-nowrap",
+				className,
+			)}>
+			{BADGES.map((badge) => (
+				<li
+					key={badge.src}
+					className={cn(
+						"max-w-full shrink-0",
+						badge.scheme === "light" && "dark:hidden",
+						badge.scheme === "dark" && "hidden dark:block",
+					)}>
+					<a
+						href={badge.href}
+						target="_blank"
+						rel={badge.rel}
+						title={badge.title}
+						className="block opacity-90 transition duration-200 hover:-translate-y-0.5 hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50">
+						<img
+							src={badge.src}
+							alt={badge.alt}
+							width={badge.width}
+							height={badge.height}
+							loading="lazy"
+							decoding="async"
+							className="h-9 w-auto max-w-full md:h-10"
+						/>
+					</a>
+				</li>
+			))}
+		</ul>
 	);
 }

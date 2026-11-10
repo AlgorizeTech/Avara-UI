@@ -1,6 +1,5 @@
 "use client";
 
-import { FeaturedOnSection } from "@/components/home/featured-on-section";
 import { HeroSection } from "@/components/home/hero-section";
 import { LazyHydrate } from "@/components/home/lazy-hydrate";
 
@@ -62,8 +61,7 @@ export default function HomePage() {
 			    crawlers; the footer stays outside it so it keeps its own role. */}
 			<main>
 				<HeroSection />
-				<FeaturedOnSection />
-				{/* Eager: the showcase's demos are sized by FitToWidth after mount, so
+								{/* Eager: the showcase's demos are sized by FitToWidth after mount, so
 				    its server HTML is ~1.6k px shorter than the live section (varies with
 				    the viewport, so it can't be reserved). It comes alive as soon as the
 				    first paint has settled instead of waiting to be scrolled near, but
@@ -112,7 +110,7 @@ export default function HomePage() {
 			</main>
 			<LazyHydrate
 				server={FOOTER}
-				className="[content-visibility:auto] [contain-intrinsic-size:auto_630px] md:[contain-intrinsic-size:auto_485px] lg:[contain-intrinsic-size:auto_540px]"
+				className="[content-visibility:auto] [contain-intrinsic-size:auto_715px] md:[contain-intrinsic-size:auto_510px] lg:[contain-intrinsic-size:auto_540px]"
 				load={() => import("@/components/home/footer-section").then((m) => m.FooterSection)}
 			/>
 		</div>

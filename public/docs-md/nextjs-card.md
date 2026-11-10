@@ -10,7 +10,51 @@ A flexible container used to group related information and actions together in a
 
 Building a UI entirely out of raw `div` tags quickly leads to inconsistent padding, mismatched border radiuses, and spaghetti code. The `CardBlock` and `ProductCardBlock` provide a set of highly composable components (`CardHeader`, `CardContent`, `CardFooter`, `ProductCard`) that automatically manage internal spacing and interactive states.
 
-## E-commerce Product Cards
+## Project showcase
+
+A responsive, full-width two-column showcase card matching the interactive block design: visual preview frame on the left, pairing with specifications, tags, branded action buttons, and copyable install command on the right.
+
+- Two-column grid `layout="project-showcase"` splits the card into an image preview on the left and full project details, specifications, actions, and install bar on the right.
+
+```tsx
+"use client";
+
+
+export default function ProjectShowcaseCardDemo() {
+  return (
+    <ProjectCard
+      title="Platform grid"
+      image="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/platform-grid-1790516064500.jpg"
+      slug="platform-grid"
+      scope="avara-ui"
+      badge1="Component Block"
+      badge2="TypeScript & Tailwind"
+      description="A meticulously crafted, responsive interactive block built with modern animations, responsive layouts, and accessible standards. Ready to drop into your Next.js and React applications."
+      ctaLabel="Full View"
+      contactLabel="Contact"
+    />
+  );
+}
+```
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/card.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/card
+```
+
+## Examples
+
+### E-commerce Product Cards
 
 Complete suite of 4 reusable product cards designed for online stores, shopping platforms, and flash deal showcases.
 
@@ -119,23 +163,6 @@ export default function EcommerceProductCardsDemo() {
   );
 }
 ```
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/card.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/card
-```
-
-## Examples
 
 ### Standard Card
 
@@ -933,6 +960,23 @@ Mix and match sub-components to create complex card layouts effortlessly.
 | `onBuyNow` | `() => void` | `undefined` | Callback triggered when clicking Buy Now button. |
 | `onQuickView` | `() => void` | `undefined` | Callback triggered when clicking Quick View button. |
 | `onFavoriteToggle` | `(isLiked: boolean) => void` | `undefined` | Callback when heart button is toggled. |
+
+### ProjectCard
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `title` | `string` | `"Platform grid"` | The primary title of the component or showcase. |
+| `image` | `string` | — | Image URL displayed in the left visual card presentation frame. |
+| `slug` | `string` | — | Component slug used in the CLI install bar and package name. |
+| `scope` | `string` | `"avara-ui"` | NPM scope prefix for the package and CLI command. |
+| `badge1` | `string` | `"Component Block"` | First category pill badge (rose outline style). |
+| `badge2` | `string` | `"TypeScript & Tailwind"` | Second category pill badge (amber/neutral style). |
+| `description` | `string` | — | Detailed editorial narrative of the component or block. |
+| `specs` | `ProjectCardSpec[]` | Default 2x2 grid | Array of `&#123; label, value &#125;` specifications displayed in the 2x2 rounded grid. |
+| `ctaLabel` | `string` | `"Full View"` | Label for the primary branded action button. |
+| `ctaHref` | `string` | `"#"` | Target URL when clicking the primary action. |
+| `contactLabel` | `string` | `"Contact"` | Label for the secondary outline contact button. |
+| `installCommand` | `string` | — | Custom CLI command string for the copyable bottom terminal bar. |
 
 ---
 

@@ -1,12 +1,12 @@
 ---
 title: "Shadcn Invoice Dashboard"
-description: "Shadcn Invoice Dashboard. A complete, fully functional, and editable Invoice dashboard component featuring 3 distinct design variants."
+description: "Shadcn Invoice Dashboard. A complete, fully functional, and editable Invoice dashboard component featuring 4 distinct design variants."
 url: https://avaraui.com/docs/nextjs/invoice
 ---
 
 # Shadcn Invoice Dashboard
 
-A complete, fully functional, and editable Invoice dashboard component featuring 3 distinct design variants: Default, Corporate Executive, and Neo-Brutalist.
+A complete, fully functional, and editable Invoice dashboard component featuring 4 distinct design variants: Default, Corporate Executive, Neo-Brutalist, and Modern Geometric.
 
 The component is fully encapsulated — hand it an `invoiceData` object and it owns the rest. Click **Edit** in the right sidebar of any preview to add items, change quantities and download the resulting JSON.
 
@@ -124,6 +124,79 @@ npx shadcn@latest add @avara-ui/invoice
 
 ## Variations
 
+### Modern Geometric
+
+Fashion & creative agency invoice featuring abstract geometric pattern tiles, solid navy recipient badge, zebra table rows, watermark arcs, and terms footer.
+
+```tsx
+import Invoice, { type InvoiceData } from "@/components/custom/blocks/Invoice";
+
+const invoiceData: InvoiceData = {
+  invoiceNumber: "INV-2026-4987",
+  dateIssued: "Thursday, 7 December 2026",
+  companyName: "AVARA_UI",
+  tagline: "Crafting Next-Gen Interfaces: Where Code Meets Design Elegance!",
+  invoiceTo: {
+    name: "Jordan Stevenson",
+    company: "Hall-Robbins PLC",
+    description: "Full-stack digital design systems and accessible React / Next.js component architectures.",
+    phone: "+1 (616) 865-4180",
+    address: "7777 Mendez Plains, Brooklyn, CA 91905",
+    email: "don85@johnson.com",
+  },
+  items: [
+    {
+      item: "Design System Architecture",
+      description: "Full-scale tokenized component library & theme presets",
+      unitPrice: "$1,200.00",
+      qty: "01",
+      total: "$1,200.00",
+    },
+    {
+      item: "Next.js Dashboard Blocks",
+      description: "Responsive layouts, data visualizations, and interactive forms",
+      unitPrice: "$850.00",
+      qty: "02",
+      total: "$1,700.00",
+    },
+    {
+      item: "Interactive Animations & Micro-Interactions",
+      description: "Smooth marquee drifts, scroll timelines, and spring motion",
+      unitPrice: "$650.00",
+      qty: "01",
+      total: "$650.00",
+    },
+    {
+      item: "Production Review & a11y Audit",
+      description: "WCAG contrast verification, dark mode testing & QA",
+      unitPrice: "$400.00",
+      qty: "01",
+      total: "$400.00",
+    },
+  ],
+  subtotal: "$3,950.00",
+  grandTotal: "$4,250.00",
+  terms: [
+    "Payment is due within 30 days of issuance via corporate ACH, wire, or card settlement.",
+    "All delivered component source files include perpetual commercial licensing under Avara UI.",
+  ],
+  signatory: {
+    name: "Tommy Shelby",
+    title: "OPERATIONS DIRECTOR",
+  },
+  companyContact: {
+    phone: "+1 (123) 456 7891",
+    email: "support@avaraui.com",
+    social: "avaraui.com",
+    address: "450 South Brand Brooklyn, CA 91905, USA",
+  },
+};
+
+export default function GeometricInvoice() {
+  return <Invoice variant="geometric" invoiceData={invoiceData} />;
+}
+```
+
 ### Corporate Executive
 
 High-contrast solid header banner layout for formal B2B billing and corporate accounts.
@@ -235,9 +308,9 @@ export default function BrutalistInvoice() {
 ## Features
 Explore the Invoice component's structured layout for displaying billing information, line items, and dynamic total calculations.
 
-### 3 Design Variants
+### 4 Design Variants
 
-Choose from Default, Corporate Executive, and Neo-Brutalist layout variants.
+Choose from Default, Corporate Executive, Neo-Brutalist, and Modern Geometric layout variants.
 
 ### Interactive Edit & Export
 
@@ -256,7 +329,7 @@ Seamless support for custom color themes across primary buttons, focus rings, an
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `invoiceData` | `InvoiceData` | Required | The core data object containing all fields (dates, addresses, billing details, array of items, totals, and notes). |
-| `variant` | `"default" \| "corporate" \| "brutalist"` | `"default"` | Applies overarching structural layouts, including borders, backdrop blurs, and shadows. |
+| `variant` | `"default" \| "corporate" \| "brutalist" \| "geometric"` | `"default"` | Applies overarching structural layouts, including borders, backdrop blurs, shadows, or geometric styling. |
 | `color` | `"primary" \| "indigo" \| "rose" \| "emerald" \| "zinc"` | `"primary"` | Applies global color themes to buttons, focus rings, and highlights. |
 
 ---

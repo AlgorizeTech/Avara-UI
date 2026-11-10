@@ -146,7 +146,7 @@ export type InvoiceData = {
 };
 
 type EditableInputProps = {
-  value: string | number;
+  value?: string | number;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   placeholder?: string;
   className?: string;
@@ -172,7 +172,7 @@ function EditableInput({
 
   return (
     <input
-      value={value}
+      value={value ?? ""}
       onChange={onChange}
       placeholder={placeholder}
       className={cn(
@@ -409,9 +409,9 @@ export default function Invoice({
             </div>
             <div className="p-4 rounded-xl bg-card border border-border shadow-sm space-y-1">
               <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground block mb-2">Settlement Account</span>
-              <EditableInput isEditing={isEditing} value={data.billTo.bankName} onChange={(e) => handleNestedChange("billTo", "bankName", e.target.value)} className="text-xs text-muted-foreground font-semibold" />
-              <EditableInput isEditing={isEditing} value={data.billTo.iban} onChange={(e) => handleNestedChange("billTo", "iban", e.target.value)} className="text-xs font-mono text-muted-foreground break-all" />
-              <EditableInput isEditing={isEditing} value={data.billTo.swift} onChange={(e) => handleNestedChange("billTo", "swift", e.target.value)} className="text-xs font-mono text-muted-foreground break-all" />
+              <EditableInput isEditing={isEditing} value={data.billTo?.bankName} onChange={(e) => handleNestedChange("billTo", "bankName", e.target.value)} className="text-xs text-muted-foreground font-semibold" />
+              <EditableInput isEditing={isEditing} value={data.billTo?.iban} onChange={(e) => handleNestedChange("billTo", "iban", e.target.value)} className="text-xs font-mono text-muted-foreground break-all" />
+              <EditableInput isEditing={isEditing} value={data.billTo?.swift} onChange={(e) => handleNestedChange("billTo", "swift", e.target.value)} className="text-xs font-mono text-muted-foreground break-all" />
             </div>
           </div>
 
@@ -598,8 +598,8 @@ export default function Invoice({
               <div className={cn("p-4 border-4 border-foreground shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] text-foreground space-y-1", theme.lightBg)}>
                 <span className="font-bold uppercase text-xs block mb-1">PAYMENT_TERMS:</span>
                 <p className="text-xs font-semibold">DUE: <EditableInput isEditing={isEditing} value={data.dateDue} onChange={(e) => handleMainChange("dateDue", e.target.value)} /></p>
-                <p className="text-xs">BANK: <EditableInput isEditing={isEditing} value={data.billTo.bankName} onChange={(e) => handleNestedChange("billTo", "bankName", e.target.value)} /></p>
-                <p className="text-xs font-mono break-all">IBAN: <EditableInput isEditing={isEditing} value={data.billTo.iban} onChange={(e) => handleNestedChange("billTo", "iban", e.target.value)} /></p>
+                <p className="text-xs">BANK: <EditableInput isEditing={isEditing} value={data.billTo?.bankName} onChange={(e) => handleNestedChange("billTo", "bankName", e.target.value)} /></p>
+                <p className="text-xs font-mono break-all">IBAN: <EditableInput isEditing={isEditing} value={data.billTo?.iban} onChange={(e) => handleNestedChange("billTo", "iban", e.target.value)} /></p>
               </div>
             </div>
 
@@ -717,13 +717,13 @@ export default function Invoice({
                 <div className={cn("p-3.5 sm:p-4 rounded-lg space-y-2.5 sm:space-y-3 text-xs sm:text-sm", invoiceVariants[variant].blockBg)}>
                   <div className="flex justify-between items-center pb-2.5 sm:pb-3 border-b border-border">
                     <span className="font-medium text-muted-foreground">Total Due:</span>
-                    <EditableInput isEditing={isEditing} inputBg={invoiceVariants[variant].inputBg} focusRing={theme.focusRing} value={data.billTo.totalDue} onChange={(e) => handleNestedChange("billTo", "totalDue", e.target.value)} align="right" className={cn("font-semibold text-base sm:text-lg", theme.text)} />
+                    <EditableInput isEditing={isEditing} inputBg={invoiceVariants[variant].inputBg} focusRing={theme.focusRing} value={data.billTo?.totalDue} onChange={(e) => handleNestedChange("billTo", "totalDue", e.target.value)} align="right" className={cn("font-semibold text-base sm:text-lg", theme.text)} />
                   </div>
                   <div className="grid grid-cols-[75px,1fr] gap-2 items-center">
                     <span className="text-muted-foreground">Bank:</span>
-                    <EditableInput isEditing={isEditing} value={data.billTo.bankName} onChange={(e) => handleNestedChange("billTo", "bankName", e.target.value)} className="text-foreground font-medium" />
+                    <EditableInput isEditing={isEditing} value={data.billTo?.bankName} onChange={(e) => handleNestedChange("billTo", "bankName", e.target.value)} className="text-foreground font-medium" />
                     <span className="text-muted-foreground">IBAN:</span>
-                    <EditableInput isEditing={isEditing} value={data.billTo.iban} onChange={(e) => handleNestedChange("billTo", "iban", e.target.value)} className="text-foreground font-mono text-xs break-all" />
+                    <EditableInput isEditing={isEditing} value={data.billTo?.iban} onChange={(e) => handleNestedChange("billTo", "iban", e.target.value)} className="text-foreground font-mono text-xs break-all" />
                   </div>
                 </div>
               </div>

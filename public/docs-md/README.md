@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-11-09T07:02:50.963Z
-**Total files:** 327
+**Generated at:** 2026-11-10T10:50:59.922Z
+**Total files:** 329
 
 ## Available Files
 
@@ -118,6 +118,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/piano](/docs-md/nextjs-piano.md) - Source: `[framework]\piano\page.mdx`
 - [nextjs/platform-grid](/docs-md/nextjs-platform-grid.md) - Source: `[framework]\platform-grid\page.mdx`
 - [nextjs/popover](/docs-md/nextjs-popover.md) - Source: `[framework]\popover\page.mdx`
+- [nextjs/portfolio-showcase](/docs-md/nextjs-portfolio-showcase.md) - Source: `[framework]\portfolio-showcase\page.mdx`
 - [nextjs/pricing](/docs-md/nextjs-pricing.md) - Source: `[framework]\pricing\page.mdx`
 - [nextjs/product-details](/docs-md/nextjs-product-details.md) - Source: `[framework]\product-details\page.mdx`
 - [nextjs/profile-page](/docs-md/nextjs-profile-page.md) - Source: `[framework]\profile-page\page.mdx`
@@ -281,6 +282,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/piano](/docs-md/reactjs-piano.md) - Source: `[framework]\piano\page.mdx`
 - [reactjs/platform-grid](/docs-md/reactjs-platform-grid.md) - Source: `[framework]\platform-grid\page.mdx`
 - [reactjs/popover](/docs-md/reactjs-popover.md) - Source: `[framework]\popover\page.mdx`
+- [reactjs/portfolio-showcase](/docs-md/reactjs-portfolio-showcase.md) - Source: `[framework]\portfolio-showcase\page.mdx`
 - [reactjs/pricing](/docs-md/reactjs-pricing.md) - Source: `[framework]\pricing\page.mdx`
 - [reactjs/product-details](/docs-md/reactjs-product-details.md) - Source: `[framework]\product-details\page.mdx`
 - [reactjs/profile-page](/docs-md/reactjs-profile-page.md) - Source: `[framework]\profile-page\page.mdx`
