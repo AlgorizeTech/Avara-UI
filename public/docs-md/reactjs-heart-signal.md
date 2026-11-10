@@ -10,6 +10,45 @@ A slow, ultra-smooth cardiac telemetry and pulse visualization component with 3 
 
 `HeartSignal` brings health monitoring, fitness tracking, medical telemetry, and energetic UI headers to life with 60fps HTML5 Canvas rendering.
 
+## For AI agents
+
+**Ask before you pick.** This page has 3 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 3 options as live previews: https://avaraui.com/view/heart-signal
+
+**When to use it.** A slow, smooth cardiac telemetry visualisation drawn on an HTML5 canvas, with a live BPM badge and your theme colour, in three looks: an EKG trace, a heart silhouette with a sweep and a multi-lead wave.
+
+**Gotchas:**
+
+- All three are looks of the one `heart-signal` item: install it once and set `variant` from the index.
+
+### The 3 variants
+
+1. **EKG waveform** (`ecg-line`): A classic EKG P-Q-R-S-T heartbeat monitor trace.
+   - Live: https://avaraui.com/view/heart-signal/ecg-line
+   - Best for: health, fitness or medical telemetry that should read as a heart monitor
+   - Avoid if: you want an illustrated heart rather than a waveform
+   - Traits: monitor-style trace, live BPM badge
+   - Install: `npx shadcn@latest add @avara-ui/heart-signal`
+   - Set these props: `{"variant":"ecg-line"}`
+   - Docs: https://avaraui.com/docs/nextjs/heart-signal#real-time-ekg-waveform-monitor
+2. **Heart sweep** (`pulse-heart`): A central heart silhouette with a progressive left-to-right colour sweep fill.
+   - Live: https://avaraui.com/view/heart-signal/pulse-heart
+   - Best for: a friendly, illustrative heart for a header or card
+   - Avoid if: you want a technical monitor feel
+   - Traits: heart silhouette, colour sweep, live BPM badge
+   - Install: `npx shadcn@latest add @avara-ui/heart-signal`
+   - Set these props: `{"variant":"pulse-heart"}`
+   - Docs: https://avaraui.com/docs/nextjs/heart-signal#anatomical-cardiac-heart-sweep
+3. **Cardiac wave** (`cardiac-wave`): A multi-lead sine wave stream with audio-visual equalizer bars.
+   - Live: https://avaraui.com/view/heart-signal/cardiac-wave
+   - Best for: an energetic header or dashboard accent
+   - Avoid if: you want a single clear heartbeat trace
+   - Traits: multi-lead waves, equalizer bars, live BPM badge
+   - Install: `npx shadcn@latest add @avara-ui/heart-signal`
+   - Set these props: `{"variant":"cardiac-wave"}`
+   - Docs: https://avaraui.com/docs/nextjs/heart-signal#fluid-cardiac-wave-visualizer
+
 ## Real-time EKG Waveform Monitor
 
 - Use `variant="ecg-line"` for classic EKG P-Q-R-S-T heartbeat monitor waveform trace.

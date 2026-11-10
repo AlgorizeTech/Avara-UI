@@ -9,6 +9,7 @@ import { faqSection } from "./faq-section";
 import { fileUpload } from "./file-upload";
 import { footer } from "./footer";
 import { hero } from "./hero";
+import { loader } from "./loader";
 import { navbar } from "./navbar";
 import { newsletter } from "./newsletter";
 import { notFound } from "./not-found";
@@ -20,6 +21,43 @@ import { scrollStack } from "./scroll-stack";
 import { supportDashboard } from "./support-dashboard";
 import { videoPlayer } from "./video-player";
 import { waitlist } from "./waitlist";
+import { verticalTabs } from "./vertical-tabs";
+import { accordion } from "./accordion";
+import { gallery } from "./gallery";
+import { imageCompare } from "./image-compare";
+import { cursorAnimation } from "./cursor-animation";
+import { toast } from "./toast";
+import { themeSwitcher } from "./theme-switcher";
+import { chat } from "./chat";
+import { calendar } from "./calendar";
+import { email } from "./email";
+import { aiChat } from "./ai-chat";
+import { curvedCarousel } from "./curved-carousel";
+import { dataMaps } from "./data-maps";
+import { draggableCardList } from "./draggable-card-list";
+import { heartSignal } from "./heart-signal";
+import { imageViewer } from "./image-viewer";
+import { input } from "./input";
+import { invoice } from "./invoice";
+import { item } from "./item";
+import { fleetTracker } from "./fleet-tracker";
+import { modernScrollStack } from "./modern-scroll-stack";
+import { particleCanvas } from "./particle-canvas";
+import { rangeDatePicker } from "./range-date-picker";
+import { scrollArea } from "./scroll-area";
+import { splitFlap } from "./split-flap";
+import { terminal } from "./terminal";
+import { counter } from "./counter";
+import { designsToolkit } from "./designs-toolkit";
+import { glassPanel } from "./glass-panel";
+import { otpInput } from "./otp-input";
+import { progress } from "./progress";
+import { select } from "./select";
+import { socialLinks } from "./social-links";
+import { table } from "./table";
+import { techStack } from "./tech-stack";
+import { timeline } from "./timeline";
+import { toggleGroup } from "./toggle-group";
 import type { PageVariants } from "./types";
 
 export type { PageVariants, Variant } from "./types";
@@ -48,6 +86,44 @@ export const pageVariants: PageVariants[] = [
   dashboard,
   faqSection,
   bookAppointment,
+  loader,
+  verticalTabs,
+  accordion,
+  gallery,
+  imageCompare,
+  cursorAnimation,
+  toast,
+  themeSwitcher,
+  chat,
+  calendar,
+  email,
+  aiChat,
+  curvedCarousel,
+  dataMaps,
+  draggableCardList,
+  heartSignal,
+  imageViewer,
+  input,
+  invoice,
+  item,
+  fleetTracker,
+  modernScrollStack,
+  particleCanvas,
+  rangeDatePicker,
+  scrollArea,
+  splitFlap,
+  terminal,
+  counter,
+  designsToolkit,
+  glassPanel,
+  otpInput,
+  progress,
+  select,
+  socialLinks,
+  table,
+  techStack,
+  timeline,
+  toggleGroup,
 ];
 
 /**
@@ -73,6 +149,46 @@ export const NO_CHOICE_NEEDED: string[] = [
   // Its two examples differ only by `defaultExpanded` (open or icon rail): a
   // state of one design, not two designs (audited 2026-11-09).
   "sidebar",
+  // One example and one `<Installation>`; the `variant: "masonry-portfolio"` it
+  // sets is the only look (audited 2026-11-10).
+  "portfolio-showcase",
+  // Its variants are placeholder shapes (card, profile, text, rectangle, circle, custom) matched
+  // to the content that is loading, plus pulse or no animation as a state. The shape follows the UI
+  // being loaded, not a design preference to ask the user about (audited 2026-11-10).
+  "skeleton",
+  // Its examples are compositions of the Card primitives for different kinds of content (product,
+  // stat tile, blog, profile, shop tile, boarding pass, now playing). The recipe follows the content,
+  // not a design preference to ask the user about (audited 2026-11-10).
+  "card",
+  // Its variants are entrance animations of one list (flip, slide up, slide left or right, pop),
+  // a motion setting rather than alternative designs; the default is slide-right (audited 2026-11-10).
+  "animated-list",
+  // Its two examples are different tools in one item (a 360-degree colour wheel and a gradient
+  // generator), chosen by the job, not two designs of one tool (audited 2026-11-10).
+  "color-picker",
+  // Its two examples are scroll-pacing profiles of one cinematic layout (default or slow
+  // transition), a setting rather than two designs (audited 2026-11-10).
+  "scroll-split-cards",
+  // Its variants are text effects (typewriter, blur-reveal, wave, pop-in, flip, spin-in, blur-in-up)
+  // shown together in one comparison, with no per-effect example to link to; the effect is a prop
+  // (audited 2026-11-10). Give each effect its own example if you want it offered.
+  "text-animation",
+  // Its styles (solid, outline, modern, glass, glow) are shown together in one comparison and only
+  // glass and glow have their own example, so they cannot each carry a live link; the colour scheme
+  // is the semantic  (audited 2026-11-10). Give each style its own example to offer it.
+  "alert",
+  // Its examples differ by hover behaviour (zoom or spread), tooltip type (none, plain, arrow),
+  // size and an action slot, all props of one row of faces (audited 2026-11-10).
+  "avatar-stack",
+  // The page names four visual variants but its examples all show the classic one (icons and
+  // path truncation are props), so there are no alternative designs to link to (audited 2026-11-10).
+  "breadcrumb",
+  // Its examples are states of one picker (an error, disabled past dates, a time column), all props
+  // (audited 2026-11-10).
+  "date-picker",
+  // One example (minimal) beside the default look, so there is no pair of previews to offer
+  // (audited 2026-11-10).
+  "navigation",
 ];
 
 /**
@@ -86,57 +202,8 @@ export const PENDING_ROLLOUT: { slug: string; tier: 1 | 2 | 3 }[] = [
   // Tier 3: UI components with `variant` props (audit first)
   ...(
     [
-      "accordion",
-      "ai-chat",
-      "animated-list",
-      "calendar",
-      "card",
-      "chat",
-      "color-picker",
-      "cursor-animation",
-      "curved-carousel",
-      "data-maps",
-      "draggable-card-list",
-      "gallery",
-      "heart-signal",
-      "image-compare",
-      "image-viewer",
-      "input",
-      "invoice",
-      "item",
-      "loader",
-      "email",
-      "fleet-tracker",
-      "modern-scroll-stack",
-      "particle-canvas",
-      "range-date-picker",
-      "scroll-area",
-      "scroll-split-cards",
-      "skeleton",
-      "split-flap",
-      "terminal",
-      "text-animation",
-      "theme-switcher",
-      "toast",
-      "vertical-tabs",
       // Found by check:variants on 2026-11-09 (examples with a `variant` prop);
       // not in the original Tier 3 list.
-      "alert",
-      "avatar-stack",
-      "breadcrumb",
-      "counter",
-      "date-picker",
-      "designs-toolkit",
-      "glass-panel",
-      "navigation",
-      "otp-input",
-      "progress",
-      "select",
-      "social-links",
-      "table",
-      "tech-stack",
-      "timeline",
-      "toggle-group",
     ] as const
   ).map((slug) => ({ slug, tier: 3 as const })),
 ];

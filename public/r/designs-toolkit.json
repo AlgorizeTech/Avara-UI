@@ -3,7 +3,7 @@
   "name": "designs-toolkit",
   "title": "Designs Toolkit",
   "author": "AlgorizeTech",
-  "description": "A pinned resource toolkit grid featuring authentic 3D pushpins, staggered cards, brand icon badges, and connected corkboard path lines.",
+  "description": "Ask the user to pick one of 2 designs toolkit variants: https://avaraui.com/view/designs-toolkit. This item holds 2 of them as looks of one component (corkboard, roadmap). Skip the question if the user already named one. A pinned resource toolkit grid featuring authentic 3D pushpins, staggered cards, brand icon badges, and connected corkboard path lines.",
   "dependencies": [
     "lucide-react"
   ],

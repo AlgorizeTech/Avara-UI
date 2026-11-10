@@ -3,7 +3,7 @@
   "name": "toggle-group",
   "title": "Toggle Group",
   "author": "AlgorizeTech",
-  "description": "A set of toggle buttons behaving as either radio group or checkbox group. Use it for view switches and filter bars where all options should stay visible.",
+  "description": "Ask the user to pick one of 4 toggle group variants: https://avaraui.com/view/toggle-group. This item holds 4 of them as looks of one component (default, outline, ghost, segmented). Skip the question if the user already named one. A set of toggle buttons behaving as either radio group or checkbox group. Use it for view switches and filter bars where all options should stay visible.",
   "dependencies": [],
   "registryDependencies": [
     "utils"

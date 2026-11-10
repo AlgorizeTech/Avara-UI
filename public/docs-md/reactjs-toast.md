@@ -12,6 +12,54 @@ This headless-style Toast component handles its own global state via Context, us
 
 Click the trigger buttons in each preview to fire a toast. Toasts auto-dismiss after 5 seconds — hover to pause the timer, or click the `X` to dismiss it manually. Turn on `stack` to pile them up like a notification centre instead of listing them.
 
+## For AI agents
+
+**Ask before you pick.** This page has 4 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 4 options as live previews: https://avaraui.com/view/toast
+
+**When to use it.** A notification system that keeps its own state and animates with the browser's Web Animations API, in four card styles: the default, a glow, frosted glass and a minimal accent bar.
+
+**Gotchas:**
+
+- All four are looks of the one `toast` item: install it once and set `variant` from the index.
+- Stacking (`stack`) piles toasts behind the newest one and works with any style; it is a prop, not a design.
+- Types (`success`, `error`, `warning`, `info`, `default`), an action button and the duration are props on any style.
+
+### The 4 variants
+
+1. **Default** (`default`): The standard card with an icon and accent for each toast type.
+   - Live: https://avaraui.com/view/toast/default
+   - Best for: notifications on a normal light or dark interface
+   - Avoid if: you want an effect such as a glow or frosted glass
+   - Traits: type icon and accent, default look
+   - Install: `npx shadcn@latest add @avara-ui/toast`
+   - Docs: https://avaraui.com/docs/nextjs/toast#types
+2. **Minimal** (`minimal`): The card is stripped down to a thin accent bar and text.
+   - Live: https://avaraui.com/view/toast/minimal
+   - Best for: a restrained interface where notifications should be unobtrusive
+   - Avoid if: you want the toast type to be obvious from an icon at a glance
+   - Traits: thin accent bar, text only
+   - Install: `npx shadcn@latest add @avara-ui/toast`
+   - Set these props: `{"variant":"minimal"}`
+   - Docs: https://avaraui.com/docs/nextjs/toast#minimal
+3. **Glow** (`glow`): The card is surrounded by a coloured halo, built for dark surfaces.
+   - Live: https://avaraui.com/view/toast/glow
+   - Best for: a dark interface where notifications should stand out
+   - Avoid if: your surface is light, since the glow is built for dark ones
+   - Traits: coloured halo, for dark surfaces
+   - Install: `npx shadcn@latest add @avara-ui/toast`
+   - Set these props: `{"variant":"glow"}`
+   - Docs: https://avaraui.com/docs/nextjs/toast#glow
+4. **Glass** (`glass`): A frosted card with the type accent bleeding in from the icon corner, solid badge icons and a centred close button.
+   - Live: https://avaraui.com/view/toast/glass
+   - Best for: an interface over imagery or gradients
+   - Avoid if: the background is plain and there is nothing to frost
+   - Traits: frosted card, accent bleed from the icon, solid badge icons
+   - Install: `npx shadcn@latest add @avara-ui/toast`
+   - Set these props: `{"variant":"glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/toast#glass
+
 ## Toast
 
 Wrap the app in `ToastProvider`, then call `toast()` from the `useToast` hook.

@@ -10,6 +10,102 @@ An interactive, responsive image comparison slider component featuring 10 distin
 
 `ImageCompare` allows users to seamlessly compare before-and-after visual states for photo editing, design variations, AI enhancements, or product upgrades.
 
+## For AI agents
+
+**Ask before you pick.** This page has 10 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 10 options as live previews: https://avaraui.com/view/image-compare
+
+**When to use it.** A before-and-after image comparison in ten styles, from a classic drag slider to a hover reveal, a vertical or diagonal split and a circular lens. All take a `beforeImage` and `afterImage` and support captions.
+
+**Gotchas:**
+
+- All ten are looks of the one `image-compare` item: install it once and set `variant` from the index.
+- `hover-reveal` follows the pointer, so on touch screens plan for another way to see the comparison.
+
+### The 10 variants
+
+1. **Classic slider** (`classic-slider`): A horizontal handle with dual arrows and drag physics: the default.
+   - Live: https://avaraui.com/view/image-compare/classic-slider
+   - Best for: a clear before and after that anyone recognises
+   - Avoid if: you want a more distinctive handle
+   - Traits: dual-arrow handle, drag physics, default look
+   - Install: `npx shadcn@latest add @avara-ui/image-compare`
+   - Set these props: `{"variant":"classic-slider"}`
+   - Docs: https://avaraui.com/docs/nextjs/image-compare#classic-slider
+2. **Split handle** (`split-handle`): A pill-badge handle carrying high-contrast action text.
+   - Live: https://avaraui.com/view/image-compare/split-handle
+   - Best for: a comparison that should tell people what to do
+   - Avoid if: you want the handle to disappear into the image
+   - Traits: pill handle, text on the handle
+   - Install: `npx shadcn@latest add @avara-ui/image-compare`
+   - Set these props: `{"variant":"split-handle"}`
+   - Docs: https://avaraui.com/docs/nextjs/image-compare#split-handle
+3. **Glowing divider** (`glowing-divider`): A continuous ambient glow runs along the split edge.
+   - Live: https://avaraui.com/view/image-compare/glowing-divider
+   - Best for: dark or dramatic imagery, such as photo enhancement or AI results
+   - Avoid if: you want a neutral, understated divider
+   - Traits: glowing split edge
+   - Install: `npx shadcn@latest add @avara-ui/image-compare`
+   - Set these props: `{"variant":"glowing-divider"}`
+   - Docs: https://avaraui.com/docs/nextjs/image-compare#glowing-divider
+4. **Minimalist thin line** (`minimal-line`): An ultra-thin divider with a small centred dot as the handle.
+   - Live: https://avaraui.com/view/image-compare/minimal-line
+   - Best for: a clean, editorial look where the images are the focus
+   - Avoid if: a small handle would be hard to find or grab
+   - Traits: hairline divider, small dot handle
+   - Install: `npx shadcn@latest add @avara-ui/image-compare`
+   - Set these props: `{"variant":"minimal-line"}`
+   - Docs: https://avaraui.com/docs/nextjs/image-compare#minimalist-thin-line
+5. **Badge overlay percentage** (`badge-overlay`): A pill floats over the image showing the drag position as a percentage.
+   - Live: https://avaraui.com/view/image-compare/badge-overlay
+   - Best for: a comparison where the exact amount revealed matters
+   - Avoid if: you want nothing on top of the images
+   - Traits: percentage pill, live drag position
+   - Install: `npx shadcn@latest add @avara-ui/image-compare`
+   - Set these props: `{"variant":"badge-overlay"}`
+   - Docs: https://avaraui.com/docs/nextjs/image-compare#badge-overlay-percentage
+6. **Glassmorphic handle** (`glass-handle`): A translucent, backdrop-blurred pill handle with layer icons.
+   - Live: https://avaraui.com/view/image-compare/glass-handle
+   - Best for: a modern, glassy interface with rich imagery
+   - Avoid if: the page uses flat, solid styling
+   - Traits: backdrop-blur handle, layer icons
+   - Install: `npx shadcn@latest add @avara-ui/image-compare`
+   - Set these props: `{"variant":"glass-handle"}`
+   - Docs: https://avaraui.com/docs/nextjs/image-compare#glassmorphic-handle
+7. **Hover pointer reveal** (`hover-reveal`): The divider follows the pointer directly, with no click and drag needed.
+   - Live: https://avaraui.com/view/image-compare/hover-reveal
+   - Best for: a desktop-first page where hovering feels more natural than dragging
+   - Avoid if: many visitors are on touch screens
+   - Traits: follows the pointer, no dragging
+   - Install: `npx shadcn@latest add @avara-ui/image-compare`
+   - Set these props: `{"variant":"hover-reveal"}`
+   - Docs: https://avaraui.com/docs/nextjs/image-compare#hover-pointer-reveal
+8. **Vertical slide compare** (`vertical-slide`): The split runs top to bottom instead of left to right.
+   - Live: https://avaraui.com/view/image-compare/vertical-slide
+   - Best for: comparisons where height is what changes
+   - Avoid if: a left-to-right comparison reads more naturally for your images
+   - Traits: top-to-bottom split
+   - Install: `npx shadcn@latest add @avara-ui/image-compare`
+   - Set these props: `{"variant":"vertical-slide"}`
+   - Docs: https://avaraui.com/docs/nextjs/image-compare#vertical-slide-compare
+9. **Circular magnifier lens** (`circle-magnifier`): A circular scope clips the after image to a lens.
+   - Live: https://avaraui.com/view/image-compare/circle-magnifier
+   - Best for: showing detail in one spot, such as retouching or enhancement
+   - Avoid if: you want the whole image compared at once
+   - Traits: circular lens, after image shown inside the lens
+   - Install: `npx shadcn@latest add @avara-ui/image-compare`
+   - Set these props: `{"variant":"circle-magnifier"}`
+   - Docs: https://avaraui.com/docs/nextjs/image-compare#circular-magnifier-lens
+10. **Diagonal diamond split** (`diagonal-split`): A 45-degree split with a diamond crosshair as the handle.
+   - Live: https://avaraui.com/view/image-compare/diagonal-split
+   - Best for: a bold, graphic comparison
+   - Avoid if: you want a conventional straight divider
+   - Traits: 45-degree split, diamond crosshair handle
+   - Install: `npx shadcn@latest add @avara-ui/image-compare`
+   - Set these props: `{"variant":"diagonal-split"}`
+   - Docs: https://avaraui.com/docs/nextjs/image-compare#diagonal-diamond-split
+
 ## Classic Slider
 
 - `beforeImage` and `afterImage` are the two URLs; `beforeLabel` and `afterLabel` caption them.

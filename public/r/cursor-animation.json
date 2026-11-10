@@ -3,7 +3,7 @@
   "name": "cursor-animation",
   "title": "Cursor Animation",
   "author": "AlgorizeTech",
-  "description": "A custom cursor with magnetic, glow, trail, spotlight and crosshair effects, scoped to its children. Use it on portfolio and agency sites.",
+  "description": "Ask the user to pick one of 11 cursor animation variants: https://avaraui.com/view/cursor-animation. This item holds 11 of them as looks of one component (glow, pulse, sonar, ring, magnetic, crosshair, expand, spotlight, image-trail, trail, badge). Skip the question if the user already named one. A custom cursor with magnetic, glow, trail, spotlight and crosshair effects, scoped to its children. Use it on portfolio and agency sites.",
   "dependencies": [
     "lucide-react"
   ],

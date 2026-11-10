@@ -12,6 +12,87 @@ Eight `variant` styles ship with it — from a filled pill bar to an underline r
 
 Switch tabs in any preview and the panel slides in from the side you moved toward. Arrow keys walk the rail, `Home` and `End` jump to its ends, and nothing animates on load. The component is exported as `VerticalTabs`, which is the original name and stays the import so existing installs keep working.
 
+## For AI agents
+
+**Ask before you pick.** This page has 8 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 8 options as live previews: https://avaraui.com/view/vertical-tabs
+
+**When to use it.** A tab navigation component in eight styles, from a filled pill bar to an underline rail, a segmented control and a stack of cards. The rail runs across the top by default, or beside the content with `orientation="vertical"`.
+
+**Gotchas:**
+
+- All eight are looks of the one `vertical-tabs` item: install it once and set `variant` from the index.
+- Every style works horizontally and vertically: set `orientation="vertical"` for a sidebar-style rail instead of asking for a different design.
+- `elevated` paints its own card surfaces, so give the block a slightly different background for them to lift off; `glass` needs something behind it to blur.
+
+### The 8 variants
+
+1. **Pill bar** (`default`): The default: a filled pill bar across the top, scrolling sideways when the tabs outgrow the width.
+   - Live: https://avaraui.com/view/vertical-tabs/default
+   - Best for: a general-purpose tab strip with no strong style preference
+   - Avoid if: the page already supplies its own panel and borders and you want something quieter
+   - Traits: filled pill bar, default look, scrolls sideways when crowded
+   - Install: `npx shadcn@latest add @avara-ui/vertical-tabs`
+   - Set these props: `{"variant":"default"}`
+   - Docs: https://avaraui.com/docs/nextjs/vertical-tabs#horizontal-tabs
+2. **Soft** (`soft`): Full-round pills with a tinted wash and label for the active tab instead of a solid fill.
+   - Live: https://avaraui.com/view/vertical-tabs/soft
+   - Best for: a settings menu or sidebar that should stay out of the way
+   - Avoid if: you want the active tab to stand out with a solid fill
+   - Traits: round pills, tinted active state, legible with any hex colour
+   - Install: `npx shadcn@latest add @avara-ui/vertical-tabs`
+   - Set these props: `{"variant":"soft"}`
+   - Docs: https://avaraui.com/docs/nextjs/vertical-tabs#soft
+3. **Segmented** (`segmented`): The tabs sit inside one recessed track, and a single raised surface slides between the segments.
+   - Live: https://avaraui.com/view/vertical-tabs/segmented
+   - Best for: a compact switcher between a few views, like a segmented control
+   - Avoid if: you have many tabs or long labels
+   - Traits: recessed track, sliding raised surface, segments can share the width evenly
+   - Install: `npx shadcn@latest add @avara-ui/vertical-tabs`
+   - Set these props: `{"variant":"segmented"}`
+   - Docs: https://avaraui.com/docs/nextjs/vertical-tabs#segmented
+4. **Underline** (`underline`): No chrome: a bottom hairline with one accent bar that slides between the tabs.
+   - Live: https://avaraui.com/view/vertical-tabs/underline
+   - Best for: a docs-style or content page where the tabs should feel light
+   - Avoid if: you want each tab to read as a button
+   - Traits: hairline rail, sliding accent bar, never paints a label on the accent
+   - Install: `npx shadcn@latest add @avara-ui/vertical-tabs`
+   - Set these props: `{"variant":"underline"}`
+   - Docs: https://avaraui.com/docs/nextjs/vertical-tabs#underline
+5. **Minimal** (`minimal`): Just the tabs, with no panel or border of their own.
+   - Live: https://avaraui.com/view/vertical-tabs/minimal
+   - Best for: a layout that already supplies the panel and the borders
+   - Avoid if: the tabs sit on a bare page and need some structure
+   - Traits: no panel, no borders
+   - Install: `npx shadcn@latest add @avara-ui/vertical-tabs`
+   - Set these props: `{"variant":"minimal"}`
+   - Docs: https://avaraui.com/docs/nextjs/vertical-tabs#minimal
+6. **Bordered** (`bordered`): One border wraps the tab rail and the pane together, with a divider between them on whichever edge the rail sits.
+   - Live: https://avaraui.com/view/vertical-tabs/bordered
+   - Best for: a tabbed panel that should read as a single boxed unit
+   - Avoid if: the tabs sit inside a card that already has a border
+   - Traits: single outer border, divider follows the rail
+   - Install: `npx shadcn@latest add @avara-ui/vertical-tabs`
+   - Set these props: `{"variant":"bordered"}`
+   - Docs: https://avaraui.com/docs/nextjs/vertical-tabs#bordered
+7. **Elevated** (`elevated`): Each tab is its own bordered card, and hovering an unselected one tints its border toward the accent.
+   - Live: https://avaraui.com/view/vertical-tabs/elevated
+   - Best for: tabs that are destinations worth their own surface
+   - Avoid if: you want a flat, lightweight rail
+   - Traits: card per tab, hover border tint, paints its own surface
+   - Install: `npx shadcn@latest add @avara-ui/vertical-tabs`
+   - Set these props: `{"variant":"elevated"}`
+   - Docs: https://avaraui.com/docs/nextjs/vertical-tabs#elevated
+8. **Glass** (`glass`): The rail and the pane are both frosted over whatever sits behind them.
+   - Live: https://avaraui.com/view/vertical-tabs/glass
+   - Best for: tabs over a photo or gradient background
+   - Avoid if: the background is plain, since there is nothing to blur
+   - Traits: backdrop blur on rail and pane, tinted active tab
+   - Install: `npx shadcn@latest add @avara-ui/vertical-tabs`
+   - Set these props: `{"variant":"glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/vertical-tabs#glass
+
 ## Horizontal tabs
 
 The default. The rail runs across the top and scrolls sideways when the tabs outgrow the width.

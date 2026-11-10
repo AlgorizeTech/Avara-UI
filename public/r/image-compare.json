@@ -3,7 +3,7 @@
   "name": "image-compare",
   "title": "Image Compare",
   "author": "AlgorizeTech",
-  "description": "A before/after image slider with five handle styles and drag or click positioning. Use it for retouching, redesign and product comparison sections.",
+  "description": "Ask the user to pick one of 10 image compare variants: https://avaraui.com/view/image-compare. This item holds 10 of them as looks of one component (classic-slider, split-handle, glowing-divider, minimal-line, badge-overlay, glass-handle, hover-reveal, vertical-slide, circle-magnifier, diagonal-split). Skip the question if the user already named one. A before/after image slider with five handle styles and drag or click positioning. Use it for retouching, redesign and product comparison sections.",
   "dependencies": [
     "lucide-react"
   ],

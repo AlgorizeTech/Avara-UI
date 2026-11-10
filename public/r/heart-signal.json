@@ -3,7 +3,7 @@
   "name": "heart-signal",
   "title": "Heart Signal",
   "author": "AlgorizeTech",
-  "description": "A slow, ultra-smooth cardiac heart signal waveform component with 2 visual variants (realtime EKG line trace and fluid multi-lead cardiac wave).",
+  "description": "Ask the user to pick one of 3 heart signal variants: https://avaraui.com/view/heart-signal. This item holds 3 of them as looks of one component (ecg-line, pulse-heart, cardiac-wave). Skip the question if the user already named one. A slow, ultra-smooth cardiac heart signal waveform component with 2 visual variants (realtime EKG line trace and fluid multi-lead cardiac wave).",
   "dependencies": [
     "next-themes"
   ],

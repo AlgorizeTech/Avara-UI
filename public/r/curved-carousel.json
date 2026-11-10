@@ -3,7 +3,7 @@
   "name": "curved-carousel",
   "title": "Curved Carousel",
   "author": "AlgorizeTech",
-  "description": "A continuously scrolling carousel whose cards follow a curved arc path. Use it for logo walls and showcase strips that should feel ambient.",
+  "description": "Ask the user to pick one of 2 curved carousel variants: https://avaraui.com/view/curved-carousel. This item holds 2 of them as looks of one component (arc-sweep, infinite-marquee). Skip the question if the user already named one. A continuously scrolling carousel whose cards follow a curved arc path. Use it for logo walls and showcase strips that should feel ambient.",
   "dependencies": [],
   "registryDependencies": [
     "utils"

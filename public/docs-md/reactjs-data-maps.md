@@ -12,6 +12,39 @@ It features interactive hover tooltips, multiple visual variants (such as solid 
 
 The map is pure vector — it fetches world GeoJSON and paints country polygons, so there are no raster tiles to load. Hover any highlighted country for its data card.
 
+## For AI agents
+
+**Ask before you pick.** This page has 2 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 2 options as live previews: https://avaraui.com/view/data-maps
+
+**When to use it.** A React-Leaflet world map for geographic data, with hover tooltips, flag badges and trend indicators, drawn without external map tiles and following your light or dark theme. Two looks: filled country regions or pulsing density dots.
+
+**Gotchas:**
+
+- Both are looks of the one `data-maps` item: install it once and set `variant` from the index.
+- Zoom controls and drag-to-pan are the `zoomable` prop (off by default); leave wheel zoom off inside a scrolling page so the map does not steal the scroll.
+- Each data entry's `id` is the ISO-3 country code the map matches on.
+
+### The 2 variants
+
+1. **Filled regions** (`fill`): Each matched country is filled in the accent colour and the rest is dimmed. The default.
+   - Live: https://avaraui.com/view/data-maps/fill
+   - Best for: showing which countries have users, sales or coverage
+   - Avoid if: the regions of interest are small or crowded
+   - Traits: country fills, default look
+   - Install: `npx shadcn@latest add @avara-ui/data-maps`
+   - Set these props: `{"variant":"fill"}`
+   - Docs: https://avaraui.com/docs/nextjs/data-maps#filled-regions
+2. **Density dots** (`dots`): Pulsing markers at each country's centre: the same data read as points rather than areas.
+   - Live: https://avaraui.com/view/data-maps/dots
+   - Best for: small or crowded regions, where area fills would be hard to see
+   - Avoid if: you want whole countries highlighted
+   - Traits: pulsing centroid markers
+   - Install: `npx shadcn@latest add @avara-ui/data-maps`
+   - Set these props: `{"variant":"dots"}`
+   - Docs: https://avaraui.com/docs/nextjs/data-maps#density-dots
+
 ## Filled regions
 
 - Pass `dataPoints` as `{ id, name, flag, active, activeTrend }[]` — `id` is the ISO-3 country code the map matches on.

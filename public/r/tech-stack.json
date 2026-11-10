@@ -3,7 +3,7 @@
   "name": "tech-stack",
   "title": "Tech Stack",
   "author": "AlgorizeTech",
-  "description": "The tools a product is built with: a label, then one group of marks at a time in two rows — an odd group as three over four — each mark blurring out and the next group blurring in. Use it as the \"Built with\" line in a hero or footer.",
+  "description": "Ask the user to pick one of 2 tech stack variants: https://avaraui.com/view/tech-stack. This item holds 2 of them as looks of one component (labelled, compact). Skip the question if the user already named one. The tools a product is built with: a label, then one group of marks at a time in two rows — an odd group as three over four — each mark blurring out and the next group blurring in. Use it as the \"Built with\" line in a hero or footer.",
   "dependencies": [],
   "registryDependencies": [
     "https://avaraui.com/r/icons.json",

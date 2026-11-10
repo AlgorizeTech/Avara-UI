@@ -5,7 +5,7 @@ url: https://avaraui.com/docs
 
 # Documentation
 
-Avara UI is a library of 194 React components installed straight
+Avara UI is a library of 195 React components installed straight
 into your project by the shadcn CLI — no wrapper package, no lock-in.
 
 [Introduction What the library is, how the registry install model works, and what ships in it.](https://avaraui.com/docs/nextjs)
