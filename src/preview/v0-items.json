@@ -160,6 +160,7 @@
     "liquid-glass": "Calendar — Liquid Glass"
   },
   "card": {
+    "project-showcase": "Card — Project showcase",
     "e-commerce-product-cards": "Card — E-commerce Product Cards",
     "standard-card": "Card — Standard Card",
     "interactive": "Card — Interactive",
@@ -570,6 +571,7 @@
   },
   "invoice": {
     "default-dashboard-invoice": "Invoice — Default Dashboard Invoice",
+    "modern-geometric": "Invoice — Modern Geometric",
     "corporate-executive": "Invoice — Corporate Executive",
     "neo-brutalist": "Invoice — Neo-Brutalist"
   },
@@ -768,7 +770,8 @@
     "interactive-brand-logo-carousel": "Reviews — Interactive Brand Logo Carousel"
   },
   "ribbon-drift": {
-    "ribbon-drift-card": "Ribbon Drift — Ribbon Drift Card"
+    "cross-ribbon-logos": "Ribbon Drift — Cross Ribbon Logos",
+    "ribbon-drift-hero-card": "Ribbon Drift — Ribbon Drift Hero Card"
   },
   "scroll-area": {
     "scroll-area": "Scroll Area",

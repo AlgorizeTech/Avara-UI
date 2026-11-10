@@ -199,11 +199,11 @@ export const META: Record<string, ItemMeta> = {
     docs: "Default export. Supports variant (default | destructive | outline | secondary | ghost | link), size (sm | lg), and a `loading` prop. Ripple keyframes are injected into document.head on mount, so no Tailwind config or global CSS changes are needed.",
   },
   card: {
-    usageDependencies: ["product-card"],
+    usageDependencies: ["product-card", "button"],
     description:
       "A composable surface with header, title, description, content, and footer slots. Use it to group related content into a bounded block.",
     categories: ["layout"],
-    docs: "Named exports: Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter. Compose them rather than passing props to a single element.",
+    docs: "Named exports: Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, ProjectCard (also ShowcaseCard). Compose primitives or use ProjectCard for rich two-column showcases.",
   },
   tooltip: {
     description:
@@ -786,9 +786,9 @@ export const META: Record<string, ItemMeta> = {
   },
   invoice: {
     description:
-      "A printable invoice with line items, tax and totals, in three presentation styles. Use it for billing summaries and receipt pages.",
+      "A printable invoice with line items, tax and totals, in four presentation styles including modern geometric fashion branding. Use it for billing summaries and receipt pages.",
     categories: ["commerce", "data-display"],
-    docs: "Named exports: Invoice, getThemeStyles (from invoice-theme.ts, which installs alongside). `InvoiceData` carries invoiceNumber, parties, dates and an `items` array of { item, description?, hours|qty, rate }. Totals are computed for you. Variants: default | minimal | glass.",
+    docs: "Named exports: Invoice, getThemeStyles (from invoice-theme.ts, which installs alongside). `InvoiceData` carries invoiceNumber, parties, dates and an `items` array of { item, description?, hours|qty, unitPrice?, total }. Totals are computed for you. Variants: default | corporate | brutalist | geometric.",
   },
   cart: {
     description:
@@ -1121,9 +1121,9 @@ export const META: Record<string, ItemMeta> = {
   },
   "ribbon-drift": {
     description:
-      "A hero showcase card featuring dual floating infinite marquee ribbons, an animated gradient drift backdrop, center 3D illustration, and interactive frosted promo card.",
+      "A dynamic showcase component featuring dual floating infinite marquee ribbons with two variants: 3D illustration hero card with frosted promo, and criss-crossing brand logo ribbons over a warm yellow backdrop.",
     categories: ["marketing", "media", "data-display"],
-    docs: "Default export: RibbonDriftBlock. Also exports RibbonDriftCard and the RibbonDriftProps type. Features dual counter-rotating marquee ribbons with smooth seamless looping, animated ambient gradient drift, top-right brand pill badge, and bottom floating frosted promo card with avatar stack.",
+    docs: "Default export: RibbonDriftBlock. Also exports RibbonLogos, CrossRibbonLogos, RibbonDriftCard, and the RibbonDriftProps & RibbonLogosProps types. Supports variant='default' (3D illustration with frosted promo card) and variant='cross-logos' (dual counter-angled infinite brand marquee ribbons with leading brand SVGs).",
   },
   "tilted-card": {
     description:

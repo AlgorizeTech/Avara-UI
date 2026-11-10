@@ -66,6 +66,22 @@ export interface RibbonDriftProps
   color?: RibbonDriftColor;
   /** Custom corner radius value or class */
   rounded?: string | number;
+  /** Display variant: "default" (3D illustration hero card) or "cross-logos" (criss-crossing brand ribbons) */
+  variant?: "default" | "cross-logos";
+  /** Layout alias for variant */
+  layout?: "default" | "cross-logos";
+  /** Title text when using the cross-logos variant */
+  title?: React.ReactNode;
+  /** Custom background color for cross-logos variant (default: "#F8C83C") */
+  bgColor?: string;
+  /** Brand items for top ribbon in cross-logos variant */
+  logosTop?: RibbonBrandItem[];
+  /** Brand items for bottom ribbon in cross-logos variant */
+  logosBottom?: RibbonBrandItem[];
+  /** Crossing angle in degrees for cross-logos variant (default: 5.5) */
+  angle?: number;
+  /** Marquee speed in seconds for cross-logos variant (default: 48) */
+  speed?: number;
   /** Marquee speed in seconds (default: 48) */
   marqueeDuration?: number;
   /** Pause marquee scrolling when hovering the card (default: false) */
@@ -151,27 +167,62 @@ const fallbackProfiles = [
   { name: "Elena Rostova", designation: "Talent Acquisition" },
 ];
 
-export function RibbonDriftBlock({
-  image = defaultImage,
-  imageAlt = "Feature illustration",
-  badge,
-  logo,
-  logoDark,
-  logoHref,
-  brandName,
-  brandAccent,
-  logoConfig,
-  ribbonsTop = defaultRibbonsTop,
-  ribbonsBottom = defaultRibbonsBottom,
-  promo = defaultPromo,
-  color = "primary",
-  rounded,
-  marqueeDuration = 48,
-  pauseOnHover = false,
-  className,
-  style,
-  ...props
-}: RibbonDriftProps) {
+export function RibbonDriftBlock(props: RibbonDriftProps) {
+  if (props.variant === "cross-logos" || props.layout === "cross-logos") {
+    const {
+      variant: _variant,
+      layout: _layout,
+      title,
+      logosTop,
+      logosBottom,
+      bgColor,
+      speed,
+      angle,
+      pauseOnHover,
+      rounded,
+      className,
+      style,
+      ...rest
+    } = props;
+    return (
+      <RibbonLogos
+        title={title}
+        logosTop={logosTop}
+        logosBottom={logosBottom}
+        color={props.color}
+        bgColor={bgColor}
+        speed={speed ?? props.marqueeDuration}
+        angle={angle}
+        pauseOnHover={pauseOnHover}
+        rounded={rounded}
+        className={className}
+        style={style}
+        {...rest}
+      />
+    );
+  }
+
+  const {
+    image = defaultImage,
+    imageAlt = "Feature illustration",
+    badge,
+    logo,
+    logoDark,
+    logoHref,
+    brandName,
+    brandAccent,
+    logoConfig,
+    ribbonsTop = defaultRibbonsTop,
+    ribbonsBottom = defaultRibbonsBottom,
+    promo = defaultPromo,
+    color = "primary",
+    rounded,
+    marqueeDuration = 48,
+    pauseOnHover = false,
+    className,
+    style,
+    ...restProps
+  } = props;
   const effectiveLogo = logo !== undefined ? logo : logoConfig?.logo;
   const effectiveLogoDark =
     logoDark !== undefined ? logoDark : logoConfig?.logoDark;
@@ -219,7 +270,7 @@ export function RibbonDriftBlock({
           ["--drift-primary" as string]: themeVars.primary,
           ["--drift-secondary" as string]: themeVars.secondary,
         }}
-        {...props}
+        {...restProps}
       >
         {/* Animated ambient gradient background */}
         <div
@@ -561,7 +612,399 @@ const ribbonKeyframes = `
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
+@keyframes ribbon-line-draw {
+  0% {
+    stroke-dashoffset: 320;
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  45%, 65% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: -320;
+    opacity: 0;
+  }
+}
 `;
 
+// ---------------------------------------------------------------------------
+// CROSS RIBBON LOGOS (FRAMER RIBBON LOGOS STYLE)
+// ---------------------------------------------------------------------------
+
+export interface RibbonBrandItem {
+  name: string;
+  logo: React.ReactNode;
+  href?: string;
+}
+
+export interface RibbonLogosProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Section heading above the crossing ribbons */
+  title?: React.ReactNode;
+  /** Brand items shown in the upper ribbon (tilted +angle, moving right-to-left) */
+  logosTop?: RibbonBrandItem[];
+  /** Brand items shown in the lower ribbon (tilted -angle, moving left-to-right) */
+  logosBottom?: RibbonBrandItem[];
+  /** Color theme palette for ambient drift gradient (default: "primary") */
+  color?: RibbonDriftColor;
+  /** Optional custom background color override (e.g. "#F8C83C" for warm yellow). Defaults to signature ambient drift background of RibbonDriftCard. */
+  bgColor?: string;
+  /** Background classes for ribbon tracks (default: "bg-white/60 dark:bg-[#131316]/60 backdrop-blur-md") */
+  ribbonBg?: string;
+  /** Border color classes for ribbon top/bottom edges (default: "border-white/70 dark:border-white/15") */
+  borderColor?: string;
+  /** Marquee speed in seconds (default: 48) */
+  speed?: number;
+  /** Ribbon slant angle in degrees (default: 5.5) */
+  angle?: number;
+  /** Pause marquee scrolling when hovering the card (default: true) */
+  pauseOnHover?: boolean;
+  /** Custom corner radius value or class */
+  rounded?: string | number;
+}
+
+export function GoogleBrandIcon({ className = "size-5 shrink-0" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24">
+      <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.65v3.03h3.88c2.27-2.09 3.66-5.17 3.66-9.12z" />
+      <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.03c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.13C3.26 21.36 7.33 24 12 24z" />
+      <path fill="#FBBC05" d="M5.28 14.29c-.25-.72-.38-1.49-.38-2.29s.14-1.57.38-2.29V6.57H1.25C.45 8.16 0 9.98 0 12c0 2.02.45 3.84 1.25 5.43l4.03-3.14z" />
+      <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.25 6.57l4.03 3.14c.95-2.83 3.6-4.96 6.72-4.96z" />
+    </svg>
+  );
+}
+
+export function MicrosoftBrandIcon({ className = "size-5 shrink-0" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 21 21">
+      <rect x="1" y="1" width="9" height="9" fill="#f25022"/>
+      <rect x="11" y="1" width="9" height="9" fill="#7fba00"/>
+      <rect x="1" y="11" width="9" height="9" fill="#00a4ef"/>
+      <rect x="11" y="11" width="9" height="9" fill="#ffb900"/>
+    </svg>
+  );
+}
+
+export function AmazonBrandIcon({ className = "h-5 w-auto shrink-0" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none">
+      <path
+        d="M13.8 12.8c0-1.7-1-2.5-2.5-2.5-1.3 0-2.2.7-2.5 1.6h5zm-7 0c0-3 2.3-4.8 4.9-4.8 3 0 4.6 1.9 4.6 5v5.3h-1.9v-1.5c-.7 1.1-1.9 1.6-3.2 1.6-2.2 0-4.4-1.4-4.4-3.9 0-2.4 1.8-3.7 4.3-3.7h3.1v-.4c0-1.5-1-2.4-2.5-2.4-1.2 0-2.2.5-2.5 1.6l-2.4-.6zm4.5 4.1c1.3 0 2.4-.8 2.4-2v-.7h-2.3c-1.4 0-2.3.7-2.3 1.7 0 1 1 1 2.2 1z"
+        className="fill-black dark:fill-white"
+      />
+      <path
+        d="M21.5 19.8c-2.8 2.1-6.8 3.2-10.4 3.2-4.9 0-9.3-1.8-12.7-4.9-.3-.2-.3-.6 0-.8.3-.2.8-.2 1.1.1 3.1 2.8 7.2 4.4 11.6 4.4 3.3 0 6.9-1 9.4-2.8.4-.3.9 0 1 .4.1.3-.1.6 0 .4z"
+        fill="#FF9900"
+      />
+      <path
+        d="M22.3 18.2c-.4-.5-2.4-.2-3.6.2-.3.1-.4-.2-.1-.4 1.7-1.1 3.8-.8 4.2-.3.4.5-.1 2.6-1.7 3.9-.3.2-.5.1-.4-.2.4-1.1 1.9-2.7 1.6-3.4z"
+        fill="#FF9900"
+      />
+    </svg>
+  );
+}
+
+export function SpotifyBrandIcon({ className = "size-5 shrink-0" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="12" fill="#1DB954" />
+      <path
+        d="M17.9 16.35c-.23.38-.72.5-1.1.26-3.02-1.85-6.83-2.27-11.3-1.25-.43.1-.86-.17-.96-.6-.1-.43.17-.86.6-.96 4.9-1.12 9.1-.64 12.5 1.45.38.23.5.72.26 1.1zm1.5-3.33c-.3.47-.92.62-1.39.33-3.46-2.13-8.73-2.75-12.82-1.51-.53.16-1.1-.14-1.25-.67-.16-.53.14-1.1.67-1.25 4.67-1.42 10.48-.73 14.46 1.71.47.3.62.92.33 1.39zm.13-3.48C15.38 7.08 8.56 6.85 4.64 8.04c-.63.19-1.3-.17-1.49-.8-.19-.63.17-1.3.8-1.49 4.5-1.37 12.04-1.1 16.29 1.43.57.34.76 1.08.42 1.65-.34.57-1.08.76-1.65.42z"
+        fill="#000000"
+      />
+    </svg>
+  );
+}
+
+export function AppleBrandIcon({ className = "size-5 shrink-0" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24">
+      <path
+        d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.38c.62-.75 1.04-1.8 0.93-2.85-.9.04-1.98.6-2.61 1.34-.56.64-1.04 1.7-0.91 2.73 1 .08 2.03-.51 2.59-1.22z"
+        className="fill-black dark:fill-white"
+      />
+    </svg>
+  );
+}
+
+export function NikeBrandIcon({ className = "h-4 w-7 shrink-0" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24">
+      <path
+        d="M21.71 5.29c-.29-.29-.74-.33-1.07-.1L6.87 14.54c-1.22.86-2.87.53-3.68-.75-.65-1.02-.51-2.35.34-3.23.32-.33.31-.85-.01-1.17-.33-.32-.86-.31-1.18.01-1.22 1.25-1.42 3.14-.5 4.6 1.16 1.83 3.52 2.31 5.26 1.08L21.85 6.22c.36-.25.45-.75.2-1.11l-.34-.32z"
+        className="fill-black dark:fill-white"
+      />
+    </svg>
+  );
+}
+
+export function TeslaBrandIcon({ className = "size-5 shrink-0" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24">
+      <path
+        d="M12 4.5c2.4 0 4.6.6 6.5 1.6l.8-2C16.8 2.9 14.5 2.4 12 2.4S7.2 2.9 4.7 4.1l.8 2c1.9-1 4.1-1.6 6.5-1.6zm8.8 3.3c-.2 0-.4.1-.5.3-.8 1.5-2.2 2.5-3.8 2.9l.6 1.8c2.2-.6 4-2 5-3.9.2-.4 0-.8-.4-.9-.3-.1-.6-.2-.9-.2zM3.2 7.8c-.3 0-.6.1-.9.2-.4.1-.6.5-.4.9 1 1.9 2.8 3.3 5 3.9l.6-1.8c-1.6-.4-3-1.4-3.8-2.9-.1-.2-.3-.3-.5-.3zm7.8 4.2v8.5h2V12c2.1 0 4-.8 5.5-2.1l-1.2-1.5c-1.2 1-2.7 1.6-4.3 1.6s-3.1-.6-4.3-1.6L7.5 9.9c1.5 1.3 3.4 2.1 5.5 2.1z"
+        className="fill-black dark:fill-white"
+      />
+    </svg>
+  );
+}
+
+export function NetflixBrandIcon({ className = "h-5 w-auto shrink-0" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none">
+      <path d="M5.5 1h3.3v22H5.5V1z" fill="#E50914" />
+      <path d="M15.2 1h3.3v22h-3.3V1z" fill="#E50914" />
+      <path d="M5.5 1h3.3l6.4 22h-3.3L5.5 1z" fill="#B81D24" />
+    </svg>
+  );
+}
+
+export function AirbnbBrandIcon({ className = "size-5 shrink-0" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="#FF5A5F">
+      <path d="M12 0c-4.4 0-8 3.5-8 7.8 0 4.6 3.3 9.4 7.6 15.7.2.3.6.5.9.5.3 0 .7-.2.9-.5 4.3-6.3 7.6-11.1 7.6-15.7 0-4.3-3.6-7.8-8-7.8zm0 21.6C8.5 16.5 5.8 12.3 5.8 7.8c0-3.3 2.8-6 6.2-6s6.2 2.7 6.2 6c0 4.5-2.7 8.7-6.2 13.8zm0-15.9c-1.9 0-3.5 1.6-3.5 3.5s1.6 3.5 3.5 3.5 3.5-1.6 3.5-3.5-1.6-3.5-3.5-3.5zm0 5.2c-.9 0-1.7-.8-1.7-1.7s.8-1.7 1.7-1.7 1.7.8 1.7 1.7-.8 1.7-1.7 1.7z" />
+    </svg>
+  );
+}
+
+export function UberBrandIcon({ className = "shrink-0" }: { className?: string }) {
+  return (
+    <span className={cn("text-xs font-semibold text-black/70 dark:text-white/70 lowercase tracking-tight", className)}>
+      Uber
+    </span>
+  );
+}
+
+export function MetaBrandIcon({ className = "size-5 shrink-0" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="#0081FB">
+      <path d="M12 10.15c-1.43-2.14-3.1-3.65-5.18-3.65C3.07 6.5 0 9.4 0 13.5c0 4.09 3.07 6.99 6.82 6.99 2.5 0 4.34-1.39 5.18-2.65.84 1.26 2.68 2.65 5.18 2.65 3.75 0 6.82-2.9 6.82-6.99 0-4.1-3.07-7-6.82-7-2.08 0-3.75 1.51-5.18 3.65zm0 4.19c-.87 1.67-2.31 3.4-4.7 3.4-2.15 0-3.92-1.69-3.92-4.24 0-2.56 1.77-4.24 3.92-4.24 2.21 0 3.72 1.63 4.7 3.4v1.68zm5.18 3.4c-2.39 0-3.83-1.73-4.7-3.4v-1.68c.98-1.77 2.49-3.4 4.7-3.4 2.15 0 3.92 1.68 3.92 4.24 0 2.55-1.77 4.24-3.92 4.24z"/>
+    </svg>
+  );
+}
+
+export const defaultRibbonLogosTop: RibbonBrandItem[] = [
+  { name: "AMAZON", logo: <AmazonBrandIcon /> },
+  { name: "GOOGLE", logo: <GoogleBrandIcon /> },
+  { name: "MICROSOFT", logo: <MicrosoftBrandIcon /> },
+  { name: "SPOTIFY", logo: <SpotifyBrandIcon /> },
+  { name: "NIKE", logo: <NikeBrandIcon /> },
+  { name: "APPLE", logo: <AppleBrandIcon /> },
+];
+
+export const defaultRibbonLogosBottom: RibbonBrandItem[] = [
+  { name: "TESLA", logo: <TeslaBrandIcon /> },
+  { name: "NETFLIX", logo: <NetflixBrandIcon /> },
+  { name: "AIRBNB", logo: <AirbnbBrandIcon /> },
+  { name: "UBER", logo: <UberBrandIcon /> },
+  { name: "META", logo: <MetaBrandIcon /> },
+  { name: "SPOTIFY", logo: <SpotifyBrandIcon /> },
+  { name: "TESLA", logo: <TeslaBrandIcon /> },
+];
+
+export function RibbonLogos({
+  title = "Trusted by leading brands worldwide",
+  logosTop = defaultRibbonLogosTop,
+  logosBottom = defaultRibbonLogosBottom,
+  color = "primary",
+  bgColor,
+  ribbonBg = "bg-white/60 dark:bg-[#131316]/60 backdrop-blur-md",
+  borderColor = "border-white/70 dark:border-white/15",
+  speed = 48,
+  angle = 5.5,
+  pauseOnHover = true,
+  rounded,
+  className,
+  style,
+  ...props
+}: RibbonLogosProps) {
+  const dynamicRadius = formatRadius(rounded);
+  const cardRadiusStyle: React.CSSProperties = dynamicRadius
+    ? { borderRadius: dynamicRadius }
+    : {};
+
+  const isDefault = isDefaultAccent(color);
+  const resolvedHex = !isDefault
+    ? resolveAccent(color) ?? (color.startsWith("#") ? color : colorMap[color]?.primary)
+    : null;
+  const dynamicAccent = accentStyle(color);
+
+  const themeVars = isDefault
+    ? colorMap.primary
+    : {
+        primary: resolvedHex || color,
+        secondary:
+          colorMap[color]?.secondary ||
+          `color-mix(in oklab, ${resolvedHex || color} 70%, white)`,
+      };
+
+  const topRow = [...logosTop, ...logosTop, ...logosTop, ...logosTop];
+  const bottomRow = [...logosBottom, ...logosBottom, ...logosBottom, ...logosBottom];
+
+  const hasCustomBg = Boolean(bgColor);
+
+  return (
+    <>
+      <style dangerouslySetInnerHTML={{ __html: ribbonKeyframes }} />
+      <div
+        className={cn(
+          "group/ribbon relative isolate w-full overflow-hidden py-14 sm:py-20 flex flex-col items-center justify-center select-none rounded-3xl",
+          !hasCustomBg && "bg-[#d8d8de] dark:bg-[#0d0d10] border border-black/5 dark:border-white/5",
+          typeof rounded === "string" && !dynamicRadius ? rounded : "",
+          className
+        )}
+        style={{
+          ...(hasCustomBg ? { backgroundColor: bgColor } : {}),
+          ...cardRadiusStyle,
+          ...dynamicAccent,
+          ...style,
+          ["--drift-primary" as string]: themeVars.primary,
+          ["--drift-secondary" as string]: themeVars.secondary,
+        }}
+        {...props}
+      >
+        {/* Animated ambient gradient drift background (or soft radial glow if custom bgColor passed) */}
+        {!hasCustomBg ? (
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 animate-[ribbon-drift-bg_24s_ease-in-out_infinite_alternate] bg-[length:140%_140%] bg-[radial-gradient(70%_55%_at_15%_20%,color-mix(in_oklab,var(--drift-primary)_70%,transparent),transparent_70%),radial-gradient(65%_55%_at_90%_85%,color-mix(in_oklab,var(--drift-secondary)_75%,transparent),transparent_70%),linear-gradient(160deg,#f6f6f9,#b4b4c2_40%,#fff_60%,#73738a)] motion-reduce:animate-none dark:bg-[radial-gradient(70%_55%_at_15%_20%,color-mix(in_oklab,var(--drift-primary)_35%,transparent),transparent_70%),radial-gradient(65%_55%_at_90%_85%,color-mix(in_oklab,var(--drift-secondary)_28%,transparent),transparent_70%),linear-gradient(160deg,#34343f,#0b0b0f_40%,#5a5a6c_60%,#040406)] pointer-events-none"
+          />
+        ) : (
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgba(255,255,255,0.4),transparent_75%)] dark:bg-[radial-gradient(ellipse_60%_50%_at_50%_50%,rgba(255,255,255,0.08),transparent_75%)] pointer-events-none"
+          />
+        )}
+
+        {/* Section Heading with Animated Underline */}
+        {title && (
+          <div className="relative z-30 mb-8 sm:mb-12 px-4 flex flex-col items-center text-center">
+            <h2 className="font-extrabold tracking-tight text-[#1b1b22] dark:text-[#ececf1] text-2xl sm:text-3xl md:text-4xl max-w-2xl leading-[1.18]">
+              {title}
+            </h2>
+            {/* Animated drawing line underneath */}
+            <svg
+              className="w-48 sm:w-64 md:w-80 h-3 sm:h-4 mt-1.5 overflow-visible select-none pointer-events-none"
+              viewBox="0 0 280 14"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <defs>
+                <linearGradient id="ribbonLineDrawGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor="var(--drift-primary, #6366f1)" stopOpacity="0.25" />
+                  <stop offset="50%" stopColor="var(--drift-primary, #6366f1)" stopOpacity="1" />
+                  <stop offset="100%" stopColor="var(--drift-secondary, #a855f7)" stopOpacity="0.8" />
+                </linearGradient>
+              </defs>
+              <path
+                d="M4 10C60 3 170 2 276 8"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                className="text-black/10 dark:text-white/10"
+              />
+              <path
+                d="M4 10C60 3 170 2 276 8"
+                stroke="url(#ribbonLineDrawGrad)"
+                strokeWidth="2.75"
+                strokeLinecap="round"
+                style={{
+                  strokeDasharray: 320,
+                  animation: "ribbon-line-draw 3.5s ease-in-out infinite",
+                }}
+              />
+            </svg>
+          </div>
+        )}
+
+        {/* Crossing Ribbons Marquee Area */}
+        <div className="relative w-full h-[180px] sm:h-[210px] md:h-[230px] flex items-center justify-center">
+          {/* Top-left to bottom-right Ribbon (Angle +angle) */}
+          <div
+            className={cn(
+              "pointer-events-none absolute w-[160%] -left-[30%] sm:w-[140%] sm:-left-[20%] z-10 border-y py-2.5 sm:py-3 flex items-center overflow-hidden",
+              ribbonBg,
+              borderColor
+            )}
+            style={{
+              transform: `rotate(${angle}deg)`,
+            }}
+          >
+            <div
+              style={{ animationDuration: `${speed}s` }}
+              className={cn(
+                "flex w-max animate-[ribbon-drift-marquee_48s_linear_infinite] motion-reduce:animate-none",
+                pauseOnHover && "group-hover/ribbon:[animation-play-state:paused]"
+              )}
+            >
+              {[0, 1].map((half) => (
+                <span key={half} className="flex shrink-0 items-center" aria-hidden={half === 1}>
+                  {topRow.map((brand, i) => (
+                    <div
+                      key={i}
+                      className="inline-flex items-center gap-2.5 sm:gap-3 shrink-0 mx-6 sm:mx-8 md:mx-10"
+                    >
+                      {brand.logo}
+                      <span className="font-semibold uppercase tracking-wider text-[#1b1b22] dark:text-[#ececf1] text-xs sm:text-sm whitespace-nowrap">
+                        {brand.name}
+                      </span>
+                    </div>
+                  ))}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Bottom-left to top-right Ribbon (Angle -angle, z-20 with frosted glass so it blurs ribbon 1 beneath) */}
+          <div
+            className={cn(
+              "pointer-events-none absolute w-[160%] -left-[30%] sm:w-[140%] sm:-left-[20%] z-20 border-y py-2.5 sm:py-3 flex items-center overflow-hidden",
+              ribbonBg,
+              borderColor
+            )}
+            style={{
+              transform: `rotate(-${angle}deg)`,
+            }}
+          >
+            <div
+              style={{ animationDuration: `${speed}s` }}
+              className={cn(
+                "flex w-max animate-[ribbon-drift-marquee_48s_linear_infinite] motion-reduce:animate-none [animation-direction:reverse]",
+                pauseOnHover && "group-hover/ribbon:[animation-play-state:paused]"
+              )}
+            >
+              {[0, 1].map((half) => (
+                <span key={half} className="flex shrink-0 items-center" aria-hidden={half === 1}>
+                  {bottomRow.map((brand, i) => (
+                    <div
+                      key={i}
+                      className="inline-flex items-center gap-2.5 sm:gap-3 shrink-0 mx-6 sm:mx-8 md:mx-10"
+                    >
+                      {brand.logo}
+                      <span className="font-semibold uppercase tracking-wider text-[#1b1b22] dark:text-[#ececf1] text-xs sm:text-sm whitespace-nowrap">
+                        {brand.name}
+                      </span>
+                    </div>
+                  ))}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
 export default RibbonDriftBlock;
-export { RibbonDriftBlock as RibbonDriftCard };
+export {
+  RibbonDriftBlock as RibbonDriftCard,
+  RibbonLogos as CrossRibbonLogos,
+};
+

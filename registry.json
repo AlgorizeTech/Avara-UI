@@ -675,8 +675,11 @@
       "categories": [
         "layout"
       ],
-      "dependencies": [],
+      "dependencies": [
+        "lucide-react"
+      ],
       "registryDependencies": [
+        "https://avaraui.com/r/button.json",
         "https://avaraui.com/r/product-card.json",
         "utils"
       ],
@@ -687,7 +690,7 @@
           "target": "components/custom/blocks/CardBlock.tsx"
         }
       ],
-      "docs": "Named exports: Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter. Compose them rather than passing props to a single element."
+      "docs": "Named exports: Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, ProjectCard (also ShowcaseCard). Compose primitives or use ProjectCard for rich two-column showcases."
     },
     {
       "name": "card-stack",
@@ -2729,7 +2732,7 @@
           "target": "components/custom/blocks/invoice-theme.ts"
         }
       ],
-      "docs": "Named exports: Invoice, getThemeStyles (from invoice-theme.ts, which installs alongside). `InvoiceData` carries invoiceNumber, parties, dates and an `items` array of { item, description?, hours|qty, rate }. Totals are computed for you. Variants: default | minimal | glass."
+      "docs": "Named exports: Invoice, getThemeStyles (from invoice-theme.ts, which installs alongside). `InvoiceData` carries invoiceNumber, parties, dates and an `items` array of { item, description?, hours|qty, unitPrice?, total }. Totals are computed for you. Variants: default | corporate | brutalist | geometric."
     },
     {
       "name": "item",
@@ -3933,7 +3936,7 @@
       "type": "registry:component",
       "title": "Ribbon Drift",
       "author": "AlgorizeTech",
-      "description": "A hero showcase card featuring dual floating infinite marquee ribbons, an animated gradient drift backdrop, center 3D illustration, and interactive frosted promo card.",
+      "description": "A dynamic showcase component featuring dual floating infinite marquee ribbons with two variants: 3D illustration hero card with frosted promo, and criss-crossing brand logo ribbons over a warm yellow backdrop.",
       "categories": [
         "marketing",
         "media",
@@ -3956,7 +3959,7 @@
           "target": "lib/accent.ts"
         }
       ],
-      "docs": "Default export: RibbonDriftBlock. Also exports RibbonDriftCard and the RibbonDriftProps type. Features dual counter-rotating marquee ribbons with smooth seamless looping, animated ambient gradient drift, top-right brand pill badge, and bottom floating frosted promo card with avatar stack."
+      "docs": "Default export: RibbonDriftBlock. Also exports RibbonLogos, CrossRibbonLogos, RibbonDriftCard, and the RibbonDriftProps & RibbonLogosProps types. Supports variant='default' (3D illustration with frosted promo card) and variant='cross-logos' (dual counter-angled infinite brand marquee ribbons with leading brand SVGs)."
     },
     {
       "name": "scroll-accordion-showcase",

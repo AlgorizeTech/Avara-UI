@@ -816,7 +816,57 @@ export default function ProfileCards() {
   );
 }`;
 
+export const usageProjectShowcase = `"use client";
+
+import { ProjectCard } from "@/components/custom/blocks/CardBlock";
+
+export default function ProjectShowcaseCardDemo() {
+  return (
+    <ProjectCard
+      title="Platform grid"
+      image="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/platform-grid-1790516064500.jpg"
+      slug="platform-grid"
+      scope="avara-ui"
+      badge1="Component Block"
+      badge2="TypeScript & Tailwind"
+      description="A meticulously crafted, responsive interactive block built with modern animations, responsive layouts, and accessible standards. Ready to drop into your Next.js and React applications."
+      ctaLabel="Full View"
+      contactLabel="Contact"
+    />
+  );
+}`;
+
 <ExampleShowcase headingLevel={2}
+  name="card"
+  columns={1}
+  examples={[
+    {
+      title: "Project showcase",
+      subheading:
+        "A responsive, full-width two-column showcase card matching the interactive block design: visual preview frame on the left, pairing with specifications, tags, branded action buttons, and copyable install command on the right.",
+      propNotes: [
+        {
+          lead: "Two-column grid",
+          prop: "layout",
+          value: '"project-showcase"',
+          effect:
+            "splits the card into an image preview on the left and full project details, specifications, actions, and install bar on the right.",
+        },
+      ],
+      props: { variant: "bordered", layout: "project-showcase" },
+      usage: usageProjectShowcase,
+      code: extractCode("src/components/custom/blocks/CardBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="card" />
+
+## Examples
+
+<ExampleShowcase
   name="card"
   columns={1}
   examples={[
@@ -834,19 +884,6 @@ export default function ProfileCards() {
       usage: usageEcommerce,
       code: extractCode("src/components/custom/blocks/ProductCardBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="card" />
-
-## Examples
-
-<ExampleShowcase
-  name="card"
-  columns={1}
-  examples={[
     {
       title: "Standard Card",
       subheading: "Stack `CardHeader`, `CardContent` and `CardFooter` — spacing is handled for you.",
@@ -1263,6 +1300,94 @@ Learn about the Card component's flexible layout options, including headers, foo
   </table>
 </div>
 
+### ProjectCard
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>string</code></td>
+        <td><code>"Platform grid"</code></td>
+        <td>The primary title of the component or showcase.</td>
+      </tr>
+      <tr>
+        <td><code>image</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Image URL displayed in the left visual card presentation frame.</td>
+      </tr>
+      <tr>
+        <td><code>slug</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Component slug used in the CLI install bar and package name.</td>
+      </tr>
+      <tr>
+        <td><code>scope</code></td>
+        <td><code>string</code></td>
+        <td><code>"avara-ui"</code></td>
+        <td>NPM scope prefix for the package and CLI command.</td>
+      </tr>
+      <tr>
+        <td><code>badge1</code></td>
+        <td><code>string</code></td>
+        <td><code>"Component Block"</code></td>
+        <td>First category pill badge (rose outline style).</td>
+      </tr>
+      <tr>
+        <td><code>badge2</code></td>
+        <td><code>string</code></td>
+        <td><code>"TypeScript & Tailwind"</code></td>
+        <td>Second category pill badge (amber/neutral style).</td>
+      </tr>
+      <tr>
+        <td><code>description</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Detailed editorial narrative of the component or block.</td>
+      </tr>
+      <tr>
+        <td><code>specs</code></td>
+        <td><code>ProjectCardSpec[]</code></td>
+        <td>Default 2x2 grid</td>
+        <td>Array of <code>&#123; label, value &#125;</code> specifications displayed in the 2x2 rounded grid.</td>
+      </tr>
+      <tr>
+        <td><code>ctaLabel</code></td>
+        <td><code>string</code></td>
+        <td><code>"Full View"</code></td>
+        <td>Label for the primary branded action button.</td>
+      </tr>
+      <tr>
+        <td><code>ctaHref</code></td>
+        <td><code>string</code></td>
+        <td><code>"#"</code></td>
+        <td>Target URL when clicking the primary action.</td>
+      </tr>
+      <tr>
+        <td><code>contactLabel</code></td>
+        <td><code>string</code></td>
+        <td><code>"Contact"</code></td>
+        <td>Label for the secondary outline contact button.</td>
+      </tr>
+      <tr>
+        <td><code>installCommand</code></td>
+        <td><code>string</code></td>
+        <td>—</td>
+        <td>Custom CLI command string for the copyable bottom terminal bar.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
 
