@@ -2774,7 +2774,7 @@
       "type": "registry:component",
       "title": "Invoice",
       "author": "AlgorizeTech",
-      "description": "Ask the user to pick one of 3 invoice variants: https://avaraui.com/view/invoice. This item holds 3 of them as looks of one component (default, corporate, brutalist). Skip the question if the user already named one. A printable invoice with line items, tax and totals, in three presentation styles. Use it for billing summaries and receipt pages.",
+      "description": "Ask the user to pick one of 3 invoice variants: https://avaraui.com/view/invoice. This item holds 3 of them as looks of one component (default, corporate, brutalist). Skip the question if the user already named one. A printable invoice with line items, tax and totals, in four presentation styles including modern geometric fashion branding. Use it for billing summaries and receipt pages.",
       "categories": [
         "commerce",
         "data-display"
@@ -4001,7 +4001,7 @@
       "type": "registry:component",
       "title": "Ribbon Drift",
       "author": "AlgorizeTech",
-      "description": "A dynamic showcase component featuring dual floating infinite marquee ribbons with two variants: 3D illustration hero card with frosted promo, and criss-crossing brand logo ribbons over a warm yellow backdrop.",
+      "description": "Ask the user to pick one of 2 ribbon drift variants: https://avaraui.com/view/ribbon-drift. This item holds 2 of them as looks of one component (cross-logos, default). Skip the question if the user already named one. A dynamic showcase component featuring dual floating infinite marquee ribbons with two variants: 3D illustration hero card with frosted promo, and criss-crossing brand logo ribbons over a warm yellow backdrop.",
       "categories": [
         "marketing",
         "media",

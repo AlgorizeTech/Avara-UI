@@ -37,7 +37,7 @@ export interface RibbonDriftLogo {
 }
 
 export interface RibbonDriftProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   /** Main character or illustration image URL centered on the card */
   image?: string;
   /** Image alt text */
@@ -219,6 +219,10 @@ export function RibbonDriftBlock(props: RibbonDriftProps) {
     rounded,
     marqueeDuration = 48,
     pauseOnHover = false,
+    // cross-logos-only props: keep them (and the ReactNode `title`) off the <aside>
+    variant: _variant,
+    layout: _layout,
+    title: _title,
     className,
     style,
     ...restProps
@@ -644,7 +648,7 @@ export interface RibbonBrandItem {
   href?: string;
 }
 
-export interface RibbonLogosProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface RibbonLogosProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title"> {
   /** Section heading above the crossing ribbons */
   title?: React.ReactNode;
   /** Brand items shown in the upper ribbon (tilted +angle, moving right-to-left) */

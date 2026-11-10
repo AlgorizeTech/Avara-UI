@@ -125,5 +125,6 @@ Install the chosen variant's own `install` command from the index. Several looks
 - `tech-stack`: 2 variants. All live: https://avaraui.com/view/tech-stack
 - `timeline`: 5 variants. All live: https://avaraui.com/view/timeline
 - `toggle-group`: 4 variants. All live: https://avaraui.com/view/toggle-group
+- `ribbon-drift`: 2 variants. All live: https://avaraui.com/view/ribbon-drift
 
 An index entry with `choose: true` is the authority: it lists every variant and its live link.

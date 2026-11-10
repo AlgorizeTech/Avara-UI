@@ -59,11 +59,11 @@
 @source "../components/home/faq-data.tsx";
 @source "../components/home/faq-section.tsx";
 @source "../components/home/faq-visuals.tsx";
-@source "../components/home/featured-on-section.tsx";
 @source "../components/home/feedback-data.ts";
 @source "../components/home/feedback-section.tsx";
 @source "../components/home/feedback-video-modal.tsx";
 @source "../components/home/fit-to-width.tsx";
+@source "../components/home/footer-badges.tsx";
 @source "../components/home/footer-section.tsx";
 @source "../components/home/hero-section.tsx";
 @source "../components/home/lazy-hydrate.tsx";

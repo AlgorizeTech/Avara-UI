@@ -58,6 +58,7 @@ import { table } from "./table";
 import { techStack } from "./tech-stack";
 import { timeline } from "./timeline";
 import { toggleGroup } from "./toggle-group";
+import { ribbonDrift } from "./ribbon-drift";
 import type { PageVariants } from "./types";
 
 export type { PageVariants, Variant } from "./types";
@@ -124,6 +125,7 @@ export const pageVariants: PageVariants[] = [
   techStack,
   timeline,
   toggleGroup,
+  ribbonDrift,
 ];
 
 /**

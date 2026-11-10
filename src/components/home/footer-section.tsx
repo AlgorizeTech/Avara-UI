@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import Link from "@/components/site/intent-link";
 import { links } from "@/config/site";
+import { FooterBadges } from "@/components/home/footer-badges";
 import { SECTION_INNER } from "@/components/home/shared";
 
 /* ═══════════════════════════════════════════════
@@ -87,10 +88,13 @@ export function FooterSection() {
 					</nav>
 				</div>
 
-				{/* Wordmark */}
+				{/* Launch-platform badges: one row, above the wordmark */}
+					<FooterBadges className="mt-12" />
+
+					{/* Wordmark */}
 				<div
 					aria-hidden
-					className="mt-14 select-none whitespace-nowrap font-serif font-bold text-[clamp(44px,13vw,160px)] leading-none tracking-[-0.04em] text-foreground/25">
+					className="mt-10 select-none whitespace-nowrap font-serif font-bold text-[clamp(44px,13vw,160px)] leading-none tracking-[-0.04em] text-foreground/25">
 					Avara <span className="text-brand opacity-80">UI</span>
 				</div>
 
