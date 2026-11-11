@@ -74,6 +74,10 @@ export interface PortfolioShowcaseProps extends Omit<React.HTMLAttributes<HTMLEl
   ctaLabel?: string;
   /** Optional custom CTA button link in the details modal */
   ctaHref?: string;
+  /** Custom cursor badge label shown on card hover. Defaults to "View Details". */
+  cursorBadgeLabel?: string;
+  /** Whether to show the custom orange cursor with badge on card hover. Defaults to true. */
+  showCursorBadge?: boolean;
 }
 
 const kebab = (s: string) =>
@@ -93,29 +97,10 @@ const CARD_PAD = 6;
 const CAPTION_H = 16;
 const FRAME_W = CARD_W - (CARD_BORDER + CARD_PAD) * 2; // 370px
 const FRAME_RATIO = 493 / 332; // ~1.485
-const DEFAULT_FRAME_H = Math.round(FRAME_W / FRAME_RATIO); // 249px
-const DEFAULT_CARD_H = CARD_BORDER + CARD_PAD + CAPTION_H + CARD_PAD + DEFAULT_FRAME_H + CARD_PAD + CARD_BORDER; // 285px
-const MAX_FRAME_H = 340; // Max allowed frame height
-const MIN_FRAME_H = 180; // Min allowed frame height
+const FRAME_H = Math.round(FRAME_W / FRAME_RATIO); // 249px
+const CARD_H = CARD_BORDER + CARD_PAD + CAPTION_H + CARD_PAD + FRAME_H + CARD_PAD + CARD_BORDER; // 285px
 const PHONE_ZOOM = 0.5;
 const CENTER_TILE = "0,0";
-
-// Distinct masonry heights pattern for organic layout (small, medium, tall)
-// Wide variety of heights so cards naturally hug the image without empty bottom space
-const MASONRY_FRAME_HEIGHTS = [
-  210, // compact
-  320, // tall
-  240, // standard
-  180, // small / mini
-  340, // max / hero
-  220, // compact
-  300, // tall
-  255, // standard
-  195, // small
-  280, // medium-tall
-  230, // standard
-  330, // tall
-];
 
 interface PlacedCard extends PortfolioItem {
   left: number;
@@ -124,50 +109,45 @@ interface PlacedCard extends PortfolioItem {
   frameH: number;
 }
 
-function layoutCards(items: PortfolioItem[], columns: number, gap: number = GAP_DEFAULT, stagger: number = STAGGER_DEFAULT) {
+function layoutCards(
+  items: PortfolioItem[],
+  columns: number,
+  gap: number = GAP_DEFAULT,
+  stagger: number = STAGGER_DEFAULT,
+) {
   const colW = CARD_W + gap;
+  // Pad items so that every column has the exact same number of cards, avoiding empty trailing gaps
   const remainder = items.length % columns;
   const fullItems =
     remainder === 0 || items.length === 0
       ? items
       : items.concat(items.slice(0, columns - remainder));
 
+  const rowsPerCol = Math.ceil(fullItems.length / columns);
+  // Masonry column offsets: creates an organic staggered wall without identical row lines
   const pattern = [0, 1, 0.42, 1.25, 0.65, 1.1, 0.25, 0.85];
   const colOffsets = Array.from({ length: columns }, (_, c) =>
     stagger > 0 ? Math.round((pattern[c % pattern.length] ?? 0) * stagger) : 0,
   );
 
   const bottoms = [...colOffsets];
-  const rowsPerCol = Math.ceil(fullItems.length / columns);
-  const placed: PlacedCard[] = [];
+  const placed: PlacedCard[] = fullItems.map((item, i) => {
+    const c = i % columns;
+    const card: PlacedCard = {
+      ...item,
+      left: c * colW,
+      top: bottoms[c],
+      cardH: CARD_H,
+      frameH: FRAME_H,
+    };
+    bottoms[c] += CARD_H + gap;
+    return card;
+  });
 
-  // Distribute items into columns with exact gap between cards
-  for (let c = 0; c < columns; c++) {
-    for (let r = 0; r < rowsPerCol; r++) {
-      const idx = (c * rowsPerCol + r) % fullItems.length;
-      const item = fullItems[idx];
-      const rawFrameH = typeof item.height === "number"
-        ? item.height
-        : (MASONRY_FRAME_HEIGHTS[idx % MASONRY_FRAME_HEIGHTS.length] ?? DEFAULT_FRAME_H);
-      const frameH = Math.min(MAX_FRAME_H, Math.max(MIN_FRAME_H, rawFrameH));
-      const cardH = CARD_BORDER + CARD_PAD + CAPTION_H + CARD_PAD + frameH + CARD_PAD + CARD_BORDER;
-
-      placed.push({
-        ...item,
-        left: c * colW,
-        top: bottoms[c],
-        cardH,
-        frameH,
-      });
-
-      bottoms[c] += cardH + gap;
-    }
-  }
-
-  // To make the infinite vertical 2D tiling wrap seamlessly with exactly `gap` (16px) space
-  // between the bottom of tile 0 and top of tile 1 in every column:
-  const maxHeight = Math.max(...bottoms);
-  const height = maxHeight;
+  // Vertical repeat period MUST be exactly rowsPerCol * (CARD_H + gap).
+  // Because card.top = colOffsets[c] + r * (CARD_H + gap),
+  // (card.top + height) - (lastCard.top + CARD_H) = gap (strictly 16px) across infinite tile repeats for EVERY column!
+  const height = rowsPerCol * (CARD_H + gap);
   const width = columns * colW;
 
   return { placed, width, height };
@@ -201,7 +181,7 @@ const ShowcaseCard = React.memo(function ShowcaseCard({
       data-card-x={left}
       data-card-y={top}
       className={cn(
-        "absolute flex flex-col gap-1.5 overflow-hidden rounded-2xl border border-foreground/12 p-2 transition-[opacity,transform,filter,box-shadow] duration-500 ease-out select-none will-change-transform cursor-pointer",
+        "absolute flex flex-col gap-1.5 overflow-hidden rounded-2xl border border-foreground/12 p-2 transition-[opacity,transform,filter,box-shadow] duration-500 ease-out select-none will-change-transform cursor-none",
         cardShadow ? "bg-card shadow-xl shadow-black/20 dark:shadow-black/55" : "bg-muted",
       )}
       style={{
@@ -391,6 +371,8 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
       onFocus,
       ctaLabel = "View Case Study",
       ctaHref = "#",
+      cursorBadgeLabel = "View Details",
+      showCursorBadge = true,
       className,
       ...props
     },
@@ -401,6 +383,9 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
     const [tiles, setTiles] = useState(CENTER_TILE);
     const [isDragging, setIsDragging] = useState(false);
     const [onScreen, setOnScreen] = useState(true);
+    const [isHoveringCard, setIsHoveringCard] = useState(false);
+    const isHoveringCardRef = useRef(false);
+    const customCursorRef = useRef<HTMLDivElement | null>(null);
 
     const wrapRef = useRef<HTMLDivElement | null>(null);
     const canvasRef = useRef<HTMLDivElement | null>(null);
@@ -597,6 +582,11 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
           driftAnimRef.current = null;
         }
 
+        if (isHoveringCardRef.current) {
+          isHoveringCardRef.current = false;
+          setIsHoveringCard(false);
+        }
+
         const d = dragRef.current;
         d.active = true;
         d.startX = e.clientX;
@@ -620,6 +610,21 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
 
     const handlePointerMove = useCallback(
       (e: React.PointerEvent<HTMLDivElement>) => {
+        // Track custom cursor position and card hover state on desktop
+        if (showCursorBadge && e.pointerType !== "touch" && customCursorRef.current && wrapRef.current) {
+          const rect = wrapRef.current.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          customCursorRef.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+
+          const target = e.target as HTMLElement | null;
+          const isOverCard = Boolean(target?.closest?.("[data-card]"));
+          if (isOverCard !== isHoveringCardRef.current) {
+            isHoveringCardRef.current = isOverCard;
+            setIsHoveringCard(isOverCard);
+          }
+        }
+
         const d = dragRef.current;
         if (!d.active) return;
 
@@ -627,6 +632,10 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
         const deltaY = e.clientY - d.startY;
         if (!d.moved && Math.hypot(deltaX, deltaY) > 4) {
           d.moved = true;
+          if (isHoveringCardRef.current) {
+            isHoveringCardRef.current = false;
+            setIsHoveringCard(false);
+          }
         }
 
         const now = performance.now();
@@ -649,7 +658,7 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
         }
         cull();
       },
-      [cull],
+      [cull, showCursorBadge],
     );
 
     const handleCardSelection = useCallback(
@@ -702,7 +711,7 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
                     canvasX >= left &&
                     canvasX <= left + CARD_W &&
                     canvasY >= top &&
-                    canvasY <= top + (c.cardH ?? DEFAULT_CARD_H)
+                    canvasY <= top + (c.cardH ?? CARD_H)
                   ) {
                     clickedIndex = items.length > 0 ? i % items.length : i;
                     break;
@@ -890,6 +899,12 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
             onPointerMove={handlePointerMove}
             onPointerUp={handlePointerUp}
             onPointerCancel={handlePointerUp}
+            onPointerLeave={() => {
+              if (isHoveringCardRef.current) {
+                isHoveringCardRef.current = false;
+                setIsHoveringCard(false);
+              }
+            }}
             className={cn(
               "relative z-10 size-full overflow-hidden select-none touch-none [mask-image:radial-gradient(ellipse_78%_68%_at_50%_50%,black_45%,rgba(0,0,0,0.85)_75%,transparent_100%)]",
               draggable && (isDragging ? "cursor-grabbing" : "cursor-grab"),
@@ -902,6 +917,43 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
             >
               {cards}
             </div>
+
+            {/* Custom Theme-Aware Mouse Pointer with "View Details" Badge */}
+            {showCursorBadge && (
+              <div
+                ref={customCursorRef}
+                aria-hidden="true"
+                className={cn(
+                  "pointer-events-none absolute left-0 top-0 z-40 transition-opacity duration-150 ease-out select-none will-change-transform flex items-start",
+                  isHoveringCard && !isDragging && !selectedItem
+                    ? "opacity-100 scale-100"
+                    : "opacity-0 scale-95 pointer-events-none",
+                )}
+                style={{
+                  transform: "translate3d(-9999px, -9999px, 0)",
+                }}
+              >
+                {/* Mouse Cursor Arrow matching Theme Color */}
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="shrink-0 text-primary drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
+                >
+                  <path
+                    d="M0 0L7.07 17.97L9.58 10.58L16.97 8.07L0 0Z"
+                    fill="currentColor"
+                  />
+                </svg>
+
+                {/* Pill Badge matching Theme Color */}
+                <div className="bg-primary text-primary-foreground text-[12px] font-bold px-2.5 py-1 rounded-[8px] shadow-[0_2px_10px_color-mix(in_oklab,var(--primary)_35%,transparent)] whitespace-nowrap leading-none tracking-wide -ml-1 mt-2.5 select-none">
+                  {cursorBadgeLabel}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* 4-sided smooth perimeter vignette */}
@@ -918,21 +970,23 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
             onClose={() => setSelectedItem(null)}
             variant="custom"
             overlayClassName="bg-black/60 backdrop-blur-xl transition-all duration-300"
-            contentClassName="max-w-5xl w-[94vw] sm:w-[88vw] md:w-[82vw] p-0 overflow-hidden bg-black/40 border border-white/20 dark:border-white/10 rounded-2xl sm:rounded-3xl shadow-2xl max-h-[82vh] flex flex-col relative"
+            contentClassName="max-w-5xl w-[94vw] sm:w-[88vw] md:w-[82vw] p-0 overflow-y-auto md:overflow-hidden bg-card border border-foreground/15 dark:border-white/10 rounded-2xl sm:rounded-3xl shadow-2xl max-h-[90vh] md:max-h-[85vh] flex flex-col relative"
             ariaLabel={activeProject ? `${activeProject.title} Showcase` : "Portfolio Project"}
           >
             {activeProject && (
-              <div className="relative w-full h-[60vh] sm:h-[68vh] md:h-[74vh] overflow-hidden flex items-center justify-center bg-black/40 select-none">
-                {/* Full-bleed Project Image: Zero empty space on all sides */}
-                <img
-                  src={activeProject.image}
-                  alt={activeProject.title}
-                  className="w-full h-full object-cover object-center select-none pointer-events-none"
-                />
+              <div className="relative w-full flex flex-col md:block overflow-hidden bg-card select-none">
+                {/* Complete Project Image: 100% visible with zero zooming or clipping */}
+                <div className="relative w-full overflow-hidden flex items-center justify-center bg-card">
+                  <img
+                    src={activeProject.image}
+                    alt={activeProject.title}
+                    className="w-full h-auto max-h-[50vh] sm:max-h-[60vh] md:max-h-[82vh] object-contain block select-none pointer-events-none"
+                  />
+                </div>
 
-                {/* Bottom Ribbon Track: Frosted glass blur pill inspired by ribbon-drift */}
-                <div className="absolute inset-x-3 sm:inset-x-6 bottom-3 sm:bottom-6 z-20 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 sm:gap-4 border border-foreground/15 dark:border-white/15 bg-white/75 dark:bg-[#131316]/75 py-3 sm:py-3.5 px-3.5 sm:px-5 backdrop-blur-md rounded-2xl">
-                  <div className="space-y-0.5 max-w-xl">
+                {/* Info & Action Controls: In-flow below image on mobile (not absolute), floating frosted ribbon pill on desktop (md:) */}
+                <div className="relative md:absolute md:inset-x-6 md:bottom-6 z-20 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 sm:gap-4 p-4 sm:p-5 md:py-3.5 md:px-5 border-t md:border border-foreground/10 md:border-foreground/15 dark:border-white/10 md:dark:border-white/15 bg-card/95 md:bg-white/75 md:dark:bg-[#131316]/75 md:backdrop-blur-md md:rounded-2xl">
+                  <div className="space-y-1 md:space-y-0.5 max-w-xl">
                     <h2 className="text-base sm:text-lg md:text-xl font-bold tracking-tight text-foreground">
                       {activeProject.title}
                     </h2>
@@ -941,9 +995,14 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
                         {activeProject.category}
                       </p>
                     )}
+                    {activeProject.description && (
+                      <p className="text-xs sm:text-sm text-muted-foreground/90 leading-relaxed pt-1 md:hidden">
+                        {activeProject.description}
+                      </p>
+                    )}
                   </div>
 
-                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2.5 w-full md:w-auto shrink-0 [&>div]:w-full sm:[&>div]:w-auto [&>div>button]:w-full sm:[&>div>button]:w-auto [&>button]:w-full sm:[&>button]:w-auto">
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2.5 w-full md:w-auto shrink-0 pt-1 md:pt-0 [&>div]:w-full sm:[&>div]:w-auto [&>div>button]:w-full sm:[&>div>button]:w-auto [&>button]:w-full sm:[&>button]:w-auto">
                     <Button
                       variant="default"
                       size="default"
