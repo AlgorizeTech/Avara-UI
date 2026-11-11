@@ -98,6 +98,21 @@ export default function PortfolioShowcaseExample() {
 }
 `;
 
+export const usagePerspectiveCorridor = `"use client";
+
+import { PortfolioShowcase } from "@/components/custom/blocks/PortfolioShowcaseBlock";
+
+export default function PerspectiveCorridorExample() {
+  return (
+    <PortfolioShowcase
+      variant="perspective-corridor"
+      interval={true}
+      draggable={true}
+    />
+  );
+}
+`;
+
 <ExampleShowcase headingLevel={2}
   name="portfolio-showcase"
   columns={1}
@@ -179,6 +194,39 @@ export default function PortfolioShowcaseExample() {
         gap: 16,
       },
       usage: usageMasonryPortfolio,
+      code: extractCode("src/components/custom/blocks/PortfolioShowcaseBlock.tsx"),
+    },
+    {
+      title: '3D Perspective Corridor — variant="perspective-corridor"',
+      subheading:
+        "Pass `variant=\"perspective-corridor\"` for a cinematic 3D exhibition gallery corridor where artworks recede into deep linear perspective along facing walls. Features mouse parallax tilting, interactive momentum navigation, custom hover cursor badges, and the project inspection modal.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "variant",
+          value: '"perspective-corridor"',
+          effect:
+            "Activates the 3D perspective corridor gallery with facing parallel side walls and center vanishing point.",
+        },
+        {
+          lead: "Set",
+          prop: "draggable",
+          value: "true",
+          effect: "Enables interactive dragging and mouse-wheel walking through the 3D gallery with realistic momentum physics.",
+        },
+        {
+          lead: "Set",
+          prop: "interval",
+          value: "true",
+          effect: "Activates continuous gentle auto-gliding through the gallery runway.",
+        },
+      ],
+      props: {
+        variant: "perspective-corridor",
+        interval: true,
+        draggable: true,
+      },
+      usage: usagePerspectiveCorridor,
       code: extractCode("src/components/custom/blocks/PortfolioShowcaseBlock.tsx"),
     },
   ]}

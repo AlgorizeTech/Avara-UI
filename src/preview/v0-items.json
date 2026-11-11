@@ -705,7 +705,8 @@
     "offset": "Popover — Offset"
   },
   "portfolio-showcase": {
-    "masonry-portfolio-variant-masonry-portfolio": "Portfolio Showcase — Masonry Portfolio — variant=\"masonry-portfolio\""
+    "masonry-portfolio-variant-masonry-portfolio": "Portfolio Showcase — Masonry Portfolio — variant=\"masonry-portfolio\"",
+    "3d-perspective-corridor-variant-perspective-corridor": "Portfolio Showcase — 3D Perspective Corridor — variant=\"perspective-corridor\""
   },
   "pricing": {
     "selectable-workspace-plans": "Pricing — Selectable workspace plans",
