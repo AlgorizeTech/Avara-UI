@@ -132,7 +132,7 @@ export default function PortfolioShowcaseExample() {
           prop: "interval",
           value: "true",
           effect:
-            "Activates automatic ambient camera glide from project card to card, pausing automatically during user hover or drag interactions.",
+            "Activates continuous smooth auto-scrolling glide across the infinite 2D canvas, pausing automatically during active user drag interactions and project modal inspection.",
         },
         {
           lead: "Set",
@@ -246,7 +246,13 @@ Discover the key capabilities that make Portfolio Showcase the ultimate display 
         <td><code>interval</code></td>
         <td><code>boolean | number</code></td>
         <td><code>true</code></td>
-        <td>Controls automatic camera navigation. Set to <code>false</code> to disable auto-flights.</td>
+        <td>Controls automatic canvas animation. When true (or duration in ms), triggers smooth continuous auto-scrolling glide across the infinite 2D canvas. Set to <code>false</code> to keep the canvas stationary.</td>
+      </tr>
+      <tr>
+        <td><code>drift</code></td>
+        <td><code>boolean | &#123; x?: number; y?: number &#125;</code></td>
+        <td><code>&#123; x: -0.35, y: -0.18 &#125;</code></td>
+        <td>Custom continuous ambient auto-scroll velocity vector. Defaults to <code>&#123; x: -0.35, y: -0.18 &#125;</code> when <code>interval=true</code>. Pass <code>false</code> to disable auto-drift or specify custom velocity.</td>
       </tr>
       <tr>
         <td><code>intervalTime</code></td>
@@ -275,13 +281,13 @@ Discover the key capabilities that make Portfolio Showcase the ultimate display 
       <tr>
         <td><code>zoom</code></td>
         <td><code>number</code></td>
-        <td><code>1</code></td>
-        <td>Scale multiplier for resting cards on desktop viewports.</td>
+        <td><code>0.55</code></td>
+        <td>Scale multiplier for resting cards on desktop viewports (compact & refined view).</td>
       </tr>
       <tr>
         <td><code>mobileZoom</code></td>
         <td><code>number</code></td>
-        <td><code>0.5</code></td>
+        <td><code>0.42</code></td>
         <td>Scale multiplier for cards rendered on compact mobile displays.</td>
       </tr>
       <tr>

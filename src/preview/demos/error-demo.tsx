@@ -4,11 +4,20 @@ import React, { useState } from "react";
 import ErrorSection from "@/components/custom/blocks/ErrorBlock";
 
 export default function ErrorSectionDemo({
+  variant = "terminal",
   errorCode,
   title,
   description,
   errorId,
 }: {
+  variant?:
+    | "terminal"
+    | "modern-animated"
+    | "cosmic-pulse"
+    | "service-pipeline"
+    | "pipeline"
+    | "quantum-glitch"
+    | "quantum-hud";
   errorCode?: string;
   title?: string;
   description?: string;
@@ -31,11 +40,12 @@ export default function ErrorSectionDemo({
 
       <div className="w-full">
         <ErrorSection
+          variant={variant}
           errorCode={errorCode}
           title={title}
           description={description}
           errorId={errorId}
-          onRetry={() => showNotice("Triggered retry action: rebooting cluster...")}
+          onRetry={() => showNotice("Triggered recovery action: re-initiating cluster pipeline...")}
           onHome={() => showNotice("Redirecting to root homepage...")}
           onSupport={() => showNotice("Opening escalation support channel...")}
           className="w-full min-h-[560px] sm:min-h-[640px]"

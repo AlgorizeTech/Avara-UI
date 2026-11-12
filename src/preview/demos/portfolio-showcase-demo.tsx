@@ -7,12 +7,12 @@ export default function PortfolioShowcaseDemo({
   interval = true,
   intervalTime = 5500,
   order = "shuffle",
-  zoom = 1,
-  mobileZoom = 0.5,
+  zoom = 0.55,
+  mobileZoom = 0.42,
   gap = 16,
   stagger = 72,
   draggable = true,
-  drift = false,
+  drift,
   cardDim = 1,
   highlightFocus = false,
   cardShadow = true,
@@ -28,7 +28,7 @@ export default function PortfolioShowcaseDemo({
   gap?: number;
   stagger?: number;
   draggable?: boolean;
-  drift?: boolean;
+  drift?: boolean | { x?: number; y?: number };
   cardDim?: number;
   highlightFocus?: boolean;
   cardShadow?: boolean;

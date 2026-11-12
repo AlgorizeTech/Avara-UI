@@ -38,11 +38,11 @@ Every option carries its live link. An option without a link is not allowed.
 **If your client has no such tool,** print a numbered list in the message and wait for the answer. Give each variant its label, its `summary`, who it suits (`bestFor`) and its `viewUrl`. Add a last option: "Pick the best one for me". For example:
 
 ```text
-Which hero do you want? All of them live: https://avaraui.com/view/hero
+Which hero do you want? All of them live: https://avaraui.com/view/error
 
-1. Honeycomb hero: Dark travel hero: a huge word on the left, a turning honeycomb of hexagonal photographs on the right. Best for: travel, outdoor and expedition brands with strong photography. Live: https://avaraui.com/view/hero/honeycomb
-2. Hero carousel: Full-bleed photo hero with a queue of cards and a glass panel; the front card is the slide on screen. Best for: destinations, hotels and experiences sold by place. Live: https://avaraui.com/view/hero/carousel
-3. Fashion hero: Staggered columns of looks on flat colour, with a video badge, a tilt-on-hover effect and a story teaser. Best for: fashion, lookbook and store landing pages. Live: https://avaraui.com/view/hero/fashion
+1. Cyberpunk Terminal: Full-width futuristic telemetry enclosure with Mac window indicators, crash icon, and technical trace console. Best for: developer platforms, cyber/tech apps, and root error boundaries needing technical telemetry. Live: https://avaraui.com/view/error/terminal
+2. Quantum Glitch Bento HUD: High-tech command center HUD featuring chromatic aberration glitch typography, live crash vitals, and memory hex dump. Best for: cutting-edge developer tools, AI platforms, cloud infrastructure, and cyber-tech applications. Live: https://avaraui.com/view/error/quantum-glitch
+3. Modern Animated Pulse: Ultra-modern animated orbital radar with counter-rotating rings, sweeping radar, and micro-health monitors. Best for: SaaS platforms, modern web apps, and polished production error boundaries. Live: https://avaraui.com/view/error/modern-animated
 ... (every variant, not a sample)
 
 Or tell me to pick the best one for you.
@@ -65,6 +65,7 @@ Install the chosen variant's own `install` command from the index. Several looks
 
 ## Pages with variants today
 
+- `error`: 4 variants. All live: https://avaraui.com/view/error
 - `hero`: 16 variants. All live: https://avaraui.com/view/hero
 - `footer`: 9 variants. All live: https://avaraui.com/view/footer
 - `navbar`: 7 variants. All live: https://avaraui.com/view/navbar

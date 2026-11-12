@@ -94,6 +94,15 @@ export interface ComponentWallProps
    */
   persistentBackground?: boolean;
   /**
+   * When true (in layout="center" or layout="center-background"), renders ONE single
+   * continuous background wall across the entire hero instead of splitting into two separate walls.
+   */
+  singleBackground?: boolean;
+  /**
+   * Alias for `singleBackground`. When true, renders one full-width background wall.
+   */
+  singleWall?: boolean;
+  /**
    * Whether to show the background/wall image animation on mobile and small screens (<lg).
    * When `false`, the image animation is completely hidden on small screens across all layouts
    * (split, center, center-background), leaving only the clean content copy and tools on phones.
@@ -356,6 +365,8 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
       onItemClick,
       layout = "split",
       persistentBackground = false,
+      singleBackground = false,
+      singleWall,
       compactWall = true,
       showMobileWall,
       mobileBackground,
@@ -369,6 +380,7 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
     const resolvedIntro = intro ?? 1800;
     const wallStagger = stagger !== undefined ? stagger : 72;
     const wallGap = gap !== undefined ? gap : 16;
+    const isSingleWall = Boolean(singleBackground || singleWall);
     const isPersistent = persistentBackground || layout === "center-background";
     const centered = layout === "center" || isPersistent;
     const desktop = useMinWidth(1024);
@@ -668,20 +680,38 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
               isPersistent && isMobileWallVisible && "min-h-[44rem]",
             )}
           >
-            {/* ---- From `lg` (or all screens when persistentBackground is active and mobile wall is enabled): the left wall ---- */}
-            {(desktop || (isPersistent && isMobileWallVisible)) && (
-              <ImageWall
-                {...wallProps}
-                items={startItems}
-                intro={resolvedIntro}
-                anchor={START_ANCHOR}
-                onFocus={handleFocus}
-                className={cn(
-                  "absolute inset-y-0 left-0 h-auto w-1/2 [mask-image:linear-gradient(to_right,black_35%,transparent_68%)]",
-                  isPersistent && "opacity-60 sm:opacity-90 lg:opacity-100",
-                  !isMobileWallVisible && "hidden lg:block",
-                )}
-              />
+            {isSingleWall ? (
+              /* ---- Single full-width background wall ---- */
+              (desktop || (isPersistent && isMobileWallVisible)) && (
+                <ImageWall
+                  {...wallProps}
+                  items={items}
+                  intro={resolvedIntro}
+                  anchor={MIDDLE}
+                  onFocus={handleFocus}
+                  className={cn(
+                    "absolute inset-0 h-full w-full",
+                    isPersistent && "opacity-60 sm:opacity-90 lg:opacity-100",
+                    !isMobileWallVisible && "hidden lg:block",
+                  )}
+                />
+              )
+            ) : (
+              /* ---- From `lg` (or all screens when persistentBackground is active and mobile wall is enabled): the left wall ---- */
+              (desktop || (isPersistent && isMobileWallVisible)) && (
+                <ImageWall
+                  {...wallProps}
+                  items={startItems}
+                  intro={resolvedIntro}
+                  anchor={START_ANCHOR}
+                  onFocus={handleFocus}
+                  className={cn(
+                    "absolute inset-y-0 left-0 h-auto w-1/2 [mask-image:linear-gradient(to_right,black_35%,transparent_68%)]",
+                    isPersistent && "opacity-60 sm:opacity-90 lg:opacity-100",
+                    !isMobileWallVisible && "hidden lg:block",
+                  )}
+                />
+              )
             )}
 
             {/* ---- The copy, over a soft wash of the background where the walls meet ---- */}
@@ -696,8 +726,8 @@ export const ComponentWall = forwardRef<HTMLElement, ComponentWallProps>(
               {copy}
             </div>
 
-            {/* ---- From `lg` (or all screens when persistentBackground is active and mobile wall is enabled): the right wall ---- */}
-            {(desktop || (isPersistent && isMobileWallVisible)) && (
+            {/* ---- From `lg` (or all screens when persistentBackground is active and mobile wall is enabled): the right wall (only when dual walls) ---- */}
+            {!isSingleWall && (desktop || (isPersistent && isMobileWallVisible)) && (
               <ImageWall
                 {...wallProps}
                 items={endItems}

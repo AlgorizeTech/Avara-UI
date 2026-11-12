@@ -1,13 +1,16 @@
 "use client";
 
-import React, { forwardRef, useCallback, useState } from "react";
+import React, { forwardRef, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Mail, Copy, Check, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Button from "./Button";
-import { ImageWall, type ImageWallProps, type WallItem } from "./ImageWallBlock";
 import { Modal } from "./ModalBlock";
 
-export interface PortfolioItem extends WallItem {
+export interface PortfolioItem {
+  /** Project title */
+  title: string;
+  /** High-resolution project image URL */
+  image: string;
   /** Project slug or unique identifier */
   slug?: string;
   /** Category or discipline (e.g. 'Brand Identity', 'Web Design', 'Mobile App') */
@@ -24,40 +27,57 @@ export interface PortfolioItem extends WallItem {
   tags?: string[];
   /** Detailed specifications or deliverables */
   specs?: Record<string, string>;
+  /** Optional custom card height in px (will be clamped between 180 and 340) */
+  height?: number;
 }
 
-export interface PortfolioShowcaseProps
-  extends Omit<React.HTMLAttributes<HTMLElement>, "onFocus" | "draggable">,
-    Pick<
-      ImageWallProps,
-      | "columns"
-      | "interval"
-      | "intervalTime"
-      | "order"
-      | "zoom"
-      | "mobileZoom"
-      | "intro"
-      | "onFocus"
-      | "gap"
-      | "stagger"
-      | "draggable"
-      | "drift"
-      | "cardDim"
-      | "highlightFocus"
-      | "cardShadow"
-    > {
+export interface PortfolioShowcaseProps extends Omit<React.HTMLAttributes<HTMLElement>, "onFocus"> {
   /** Visual presentation mode. Defaults to 'masonry-portfolio'. */
   variant?: "masonry-portfolio" | "fullscreen";
   /** The portfolio project cards shown on the canvas. */
   items?: PortfolioItem[];
+  /** Staggered columns in one tile. Defaults to 4. */
+  columns?: number;
+  /** Gap between cards in pixels in all directions. Defaults to 16. */
+  gap?: number;
+  /** Vertical stagger offset between alternate columns. Defaults to 72. */
+  stagger?: number;
+  /** Controls automatic auto-scroll. Set to true (default) for continuous smooth 2D gliding, or false to hold still. */
+  interval?: boolean | number;
+  /** Interval time in ms when configured. Defaults to 5500. */
+  intervalTime?: number;
+  /** Sequence ordering: 'serial' or 'shuffle'. */
+  order?: "serial" | "shuffle";
+  /** Camera zoom / card scale multiplier on desktop. Defaults to 1. */
+  zoom?: number;
+  /** Camera zoom on mobile / small screens (<=640px). Defaults to 0.5. */
+  mobileZoom?: number;
+  /** Intro animation duration in ms. Defaults to 0 for instant start. */
+  intro?: number;
+  /** Whether the user can drag and pan the wall infinitely in all 4 directions with inertia. Defaults to true. */
+  draggable?: boolean;
+  /** Ambient continuous auto-scroll velocity { x, y } or boolean. Defaults to { x: -0.35, y: -0.18 } when interval=true. */
+  drift?: boolean | { x?: number; y?: number };
+  /** Opacity of resting cards. Defaults to 1. */
+  cardDim?: number;
+  /** Whether center card is highlighted. Defaults to false. */
+  highlightFocus?: boolean;
+  /** Whether cards render with elevated drop shadows. Defaults to true. */
+  cardShadow?: boolean;
   /** Whether clicking a portfolio item opens the interactive details modal. Defaults to true. */
   itemModal?: boolean;
   /** Callback fired when an item is clicked. */
   onItemClick?: (item: PortfolioItem, index: number) => void;
+  /** Callback fired when center card changes. */
+  onFocus?: (index: number) => void;
   /** Optional custom CTA button text in the details modal */
   ctaLabel?: string;
   /** Optional custom CTA button link in the details modal */
   ctaHref?: string;
+  /** Custom cursor badge label shown on card hover. Defaults to "View Details". */
+  cursorBadgeLabel?: string;
+  /** Whether to show the custom orange cursor with badge on card hover. Defaults to true. */
+  showCursorBadge?: boolean;
 }
 
 const kebab = (s: string) =>
@@ -66,8 +86,141 @@ const kebab = (s: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
 
-const MIDDLE = { x: 0.5, y: 0.5 };
+// ------------------------------------------
+// Geometry: Original card dimensions (384px wide × 285px high) preserved from previous commit
+// ------------------------------------------
+const CARD_W = 384;
+const GAP_DEFAULT = 16;
+const STAGGER_DEFAULT = 72;
+const CARD_BORDER = 1;
+const CARD_PAD = 6;
+const CAPTION_H = 16;
+const FRAME_W = CARD_W - (CARD_BORDER + CARD_PAD) * 2; // 370px
+const FRAME_RATIO = 493 / 332; // ~1.485
+const FRAME_H = Math.round(FRAME_W / FRAME_RATIO); // 249px
+const CARD_H = CARD_BORDER + CARD_PAD + CAPTION_H + CARD_PAD + FRAME_H + CARD_PAD + CARD_BORDER; // 285px
+const PHONE_ZOOM = 0.5;
+const CENTER_TILE = "0,0";
 
+interface PlacedCard extends PortfolioItem {
+  left: number;
+  top: number;
+  cardH: number;
+  frameH: number;
+}
+
+function layoutCards(
+  items: PortfolioItem[],
+  columns: number,
+  gap: number = GAP_DEFAULT,
+  stagger: number = STAGGER_DEFAULT,
+) {
+  const colW = CARD_W + gap;
+  // Pad items so that every column has the exact same number of cards, avoiding empty trailing gaps
+  const remainder = items.length % columns;
+  const fullItems =
+    remainder === 0 || items.length === 0
+      ? items
+      : items.concat(items.slice(0, columns - remainder));
+
+  const rowsPerCol = Math.ceil(fullItems.length / columns);
+  // Masonry column offsets: creates an organic staggered wall without identical row lines
+  const pattern = [0, 1, 0.42, 1.25, 0.65, 1.1, 0.25, 0.85];
+  const colOffsets = Array.from({ length: columns }, (_, c) =>
+    stagger > 0 ? Math.round((pattern[c % pattern.length] ?? 0) * stagger) : 0,
+  );
+
+  const bottoms = [...colOffsets];
+  const placed: PlacedCard[] = fullItems.map((item, i) => {
+    const c = i % columns;
+    const card: PlacedCard = {
+      ...item,
+      left: c * colW,
+      top: bottoms[c],
+      cardH: CARD_H,
+      frameH: FRAME_H,
+    };
+    bottoms[c] += CARD_H + gap;
+    return card;
+  });
+
+  // Vertical repeat period MUST be exactly rowsPerCol * (CARD_H + gap).
+  // Because card.top = colOffsets[c] + r * (CARD_H + gap),
+  // (card.top + height) - (lastCard.top + CARD_H) = gap (strictly 16px) across infinite tile repeats for EVERY column!
+  const height = rowsPerCol * (CARD_H + gap);
+  const width = columns * colW;
+
+  return { placed, width, height };
+}
+
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+// ------------------------------------------
+// Individual Portfolio Card (Memoized)
+// ------------------------------------------
+const ShowcaseCard = React.memo(function ShowcaseCard({
+  card,
+  left,
+  top,
+  copy,
+  cardDim = 1,
+  cardShadow = true,
+}: {
+  card: PlacedCard;
+  left: number;
+  top: number;
+  copy: boolean;
+  cardDim?: number;
+  cardShadow?: boolean;
+}) {
+  return (
+    <figure
+      aria-hidden={copy || undefined}
+      data-card
+      data-card-x={left}
+      data-card-y={top}
+      className={cn(
+        "absolute flex flex-col gap-1.5 overflow-hidden rounded-2xl border border-foreground/12 p-2 transition-[opacity,transform,filter,box-shadow] duration-500 ease-out select-none will-change-transform cursor-none",
+        cardShadow ? "bg-card shadow-xl shadow-black/20 dark:shadow-black/55" : "bg-muted",
+      )}
+      style={{
+        left,
+        top,
+        width: CARD_W,
+        height: card.cardH,
+        opacity: cardDim,
+      }}
+    >
+      <figcaption
+        className={cn(
+          "flex h-4 shrink-0 items-center px-1 font-mono text-[9px] leading-none select-none transition-colors duration-500",
+          cardShadow ? "font-semibold text-foreground" : "text-muted-foreground",
+        )}
+      >
+        {card.title}
+      </figcaption>
+      <div
+        className="relative min-h-0 flex-1 overflow-hidden rounded-lg border border-foreground/10 bg-card select-none"
+        style={{ height: card.frameH }}
+      >
+        <img
+          src={card.image}
+          alt=""
+          width={FRAME_W}
+          height={card.frameH}
+          decoding="async"
+          draggable={false}
+          className="absolute inset-0 h-full w-full object-cover object-top select-none pointer-events-none"
+        />
+      </div>
+    </figure>
+  );
+});
+
+// ------------------------------------------
+// Default Showcase Projects
+// ------------------------------------------
 export const DEFAULT_PORTFOLIO_ITEMS: PortfolioItem[] = [
   {
     slug: "fintech-aura",
@@ -191,22 +344,25 @@ export const DEFAULT_PORTFOLIO_ITEMS: PortfolioItem[] = [
   },
 ];
 
+// ------------------------------------------
+// PortfolioShowcase Component
+// ------------------------------------------
 export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>(
   (
     {
       variant = "masonry-portfolio",
       items = DEFAULT_PORTFOLIO_ITEMS,
-      columns,
-      gap = 16,
-      stagger = 72,
+      columns = 4,
+      gap = GAP_DEFAULT,
+      stagger = STAGGER_DEFAULT,
       interval = true,
       intervalTime = 5500,
       order = "shuffle",
-      zoom = 1,
-      mobileZoom = 0.5,
-      intro,
+      zoom = 0.55,
+      mobileZoom = 0.42,
+      intro = 0,
       draggable = true,
-      drift = false,
+      drift,
       cardDim = 1,
       highlightFocus = false,
       cardShadow = true,
@@ -215,6 +371,8 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
       onFocus,
       ctaLabel = "View Case Study",
       ctaHref = "#",
+      cursorBadgeLabel = "View Details",
+      showCursorBadge = true,
       className,
       ...props
     },
@@ -222,18 +380,453 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
   ) => {
     const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
     const [copiedLink, setCopiedLink] = useState(false);
+    const [tiles, setTiles] = useState(CENTER_TILE);
+    const [isDragging, setIsDragging] = useState(false);
+    const [onScreen, setOnScreen] = useState(true);
+    const [isHoveringCard, setIsHoveringCard] = useState(false);
+    const isHoveringCardRef = useRef(false);
+    const customCursorRef = useRef<HTMLDivElement | null>(null);
 
-    const handleItemClick = useCallback(
-      (item: WallItem, index: number) => {
-        const portfolioItem = item as PortfolioItem;
-        if (onItemClick) {
-          onItemClick(portfolioItem, index);
+    const wrapRef = useRef<HTMLDivElement | null>(null);
+    const canvasRef = useRef<HTMLDivElement | null>(null);
+    const cameraRef = useRef({ x: 0, y: 0, s: zoom });
+    const tilesRef = useRef(CENTER_TILE);
+    const momentumAnimRef = useRef<number | null>(null);
+    const driftAnimRef = useRef<number | null>(null);
+
+    // Drag / Pan interaction state
+    const dragRef = useRef({
+      active: false,
+      startX: 0,
+      startY: 0,
+      lastX: 0,
+      lastY: 0,
+      camStartX: 0,
+      camStartY: 0,
+      lastTime: 0,
+      vx: 0,
+      vy: 0,
+      moved: false,
+    });
+
+    // Layout memoization
+    const { placed, width, height } = useMemo(
+      () => layoutCards(items, columns, gap, stagger),
+      [items, columns, gap, stagger],
+    );
+    const placedRef = useRef(placed);
+    placedRef.current = placed;
+
+    const tileRef = useRef({ width, height });
+    tileRef.current = { width, height };
+
+    // Auto-scroll drift animation: when interval is enabled (true or >0), activate the continuous
+    // smooth auto-scrolling glide { x: -0.35, y: -0.18 } restored from the original fullscreen wall variant.
+    // Pauses cleanly when the project inspection modal is open.
+    const isIntervalActive = typeof interval === "boolean" ? interval : interval > 0;
+    const resolvedDrift =
+      selectedItem !== null
+        ? false
+        : drift !== undefined
+          ? drift
+          : isIntervalActive
+            ? { x: -0.35, y: -0.18 }
+            : false;
+
+    // Viewport tile culling for infinite 2D canvas wrapping
+    const cull = useCallback(() => {
+      const wrap = wrapRef.current;
+      if (!wrap) return;
+      const { x, y, s } = cameraRef.current;
+      const { width: tw, height: th } = tileRef.current;
+      if (!tw || !th) return;
+
+      const w = wrap.clientWidth;
+      const h = wrap.clientHeight;
+      if (!w || !h) return;
+
+      const margin = CARD_W;
+      const minX = -x / s - margin;
+      const maxX = (w - x) / s + margin;
+      const minY = -y / s - margin;
+      const maxY = (h - y) / s + margin;
+
+      const minDx = Math.floor(minX / tw);
+      const maxDx = Math.floor(maxX / tw);
+      const minDy = Math.floor(minY / th);
+      const maxDy = Math.floor(maxY / th);
+
+      const keep: string[] = [];
+      for (let dy = minDy; dy <= maxDy; dy++) {
+        for (let dx = minDx; dx <= maxDx; dx++) {
+          keep.push(`${dx},${dy}`);
         }
+      }
+
+      const key = keep.join("|") || CENTER_TILE;
+      if (key !== tilesRef.current) {
+        tilesRef.current = key;
+        setTiles(key);
+      }
+    }, []);
+
+    // Track whether camera has been initialized
+    const initializedRef = useRef(false);
+
+    // Ambient 60fps auto-scroll glide
+    const startAmbientDrift = useCallback(() => {
+      if (!resolvedDrift || prefersReducedMotion()) return;
+      if (momentumAnimRef.current) return;
+      if (driftAnimRef.current) cancelAnimationFrame(driftAnimRef.current);
+
+      const dx = typeof resolvedDrift === "object" ? (resolvedDrift.x ?? -0.35) : -0.35;
+      const dy = typeof resolvedDrift === "object" ? (resolvedDrift.y ?? -0.18) : -0.18;
+
+      const tickDrift = () => {
+        if (dragRef.current.active) {
+          driftAnimRef.current = null;
+          return;
+        }
+        cameraRef.current.x += dx;
+        cameraRef.current.y += dy;
+        const el = canvasRef.current;
+        if (el) {
+          el.style.translate = `${cameraRef.current.x}px ${cameraRef.current.y}px`;
+        }
+        cull();
+        driftAnimRef.current = requestAnimationFrame(tickDrift);
+      };
+      driftAnimRef.current = requestAnimationFrame(tickDrift);
+    }, [resolvedDrift, cull]);
+
+    // Reactively start or stop drift when resolvedDrift or onScreen changes
+    useEffect(() => {
+      if (resolvedDrift && onScreen) {
+        if (!dragRef.current.active && !momentumAnimRef.current) {
+          startAmbientDrift();
+        }
+      } else {
+        if (driftAnimRef.current) {
+          cancelAnimationFrame(driftAnimRef.current);
+          driftAnimRef.current = null;
+        }
+      }
+      return () => {
+        if (driftAnimRef.current) {
+          cancelAnimationFrame(driftAnimRef.current);
+          driftAnimRef.current = null;
+        }
+      };
+    }, [resolvedDrift, onScreen, startAmbientDrift]);
+
+    // Initial scale & center positioning - only happens ONCE, never resets during scroll/drag
+    useLayoutEffect(() => {
+      const wrap = wrapRef.current;
+      if (!wrap) return;
+
+      const W = wrap.clientWidth;
+      const s = W <= 640 && mobileZoom !== undefined ? mobileZoom : zoom;
+      cameraRef.current.s = s;
+
+      if (!initializedRef.current) {
+        initializedRef.current = true;
+        // Center initial canvas position on first mount
+        const cx = width / 2;
+        const cy = height / 2;
+        cameraRef.current.x = W * 0.5 - s * cx;
+        cameraRef.current.y = wrap.clientHeight * 0.5 - s * cy;
+      }
+
+      const el = canvasRef.current;
+      if (el) {
+        el.style.translate = `${cameraRef.current.x}px ${cameraRef.current.y}px`;
+        el.style.scale = String(s);
+        el.style.opacity = "1";
+      }
+      cull();
+
+      if (resolvedDrift && !dragRef.current.active && !momentumAnimRef.current) {
+        startAmbientDrift();
+      }
+
+      const handleResize = () => {
+        const currentWrap = wrapRef.current;
+        if (!currentWrap) return;
+        const currentW = currentWrap.clientWidth;
+        const newS = currentW <= 640 && mobileZoom !== undefined ? mobileZoom : zoom;
+        cameraRef.current.s = newS;
+        if (canvasRef.current) {
+          canvasRef.current.style.scale = String(newS);
+        }
+        cull();
+      };
+
+      const ro = typeof ResizeObserver === "undefined" ? null : new ResizeObserver(handleResize);
+      ro?.observe(wrap);
+
+      return () => {
+        ro?.disconnect();
+      };
+    }, [width, height, zoom, mobileZoom, cull, resolvedDrift, startAmbientDrift]);
+
+
+    const handlePointerDown = useCallback(
+      (e: React.PointerEvent<HTMLDivElement>) => {
+        if (!draggable || e.button !== 0) return;
+        if (momentumAnimRef.current) {
+          cancelAnimationFrame(momentumAnimRef.current);
+          momentumAnimRef.current = null;
+        }
+        if (driftAnimRef.current) {
+          cancelAnimationFrame(driftAnimRef.current);
+          driftAnimRef.current = null;
+        }
+
+        if (isHoveringCardRef.current) {
+          isHoveringCardRef.current = false;
+          setIsHoveringCard(false);
+        }
+
+        const d = dragRef.current;
+        d.active = true;
+        d.startX = e.clientX;
+        d.startY = e.clientY;
+        d.lastX = e.clientX;
+        d.lastY = e.clientY;
+        d.camStartX = cameraRef.current.x;
+        d.camStartY = cameraRef.current.y;
+        d.lastTime = performance.now();
+        d.vx = 0;
+        d.vy = 0;
+        d.moved = false;
+
+        setIsDragging(true);
+        try {
+          (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+        } catch {}
+      },
+      [draggable],
+    );
+
+    const handlePointerMove = useCallback(
+      (e: React.PointerEvent<HTMLDivElement>) => {
+        // Track custom cursor position and card hover state on desktop
+        if (showCursorBadge && e.pointerType !== "touch" && customCursorRef.current && wrapRef.current) {
+          const rect = wrapRef.current.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          customCursorRef.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+
+          const target = e.target as HTMLElement | null;
+          const isOverCard = Boolean(target?.closest?.("[data-card]"));
+          if (isOverCard !== isHoveringCardRef.current) {
+            isHoveringCardRef.current = isOverCard;
+            setIsHoveringCard(isOverCard);
+          }
+        }
+
+        const d = dragRef.current;
+        if (!d.active) return;
+
+        const deltaX = e.clientX - d.startX;
+        const deltaY = e.clientY - d.startY;
+        if (!d.moved && Math.hypot(deltaX, deltaY) > 4) {
+          d.moved = true;
+          if (isHoveringCardRef.current) {
+            isHoveringCardRef.current = false;
+            setIsHoveringCard(false);
+          }
+        }
+
+        const now = performance.now();
+        const dt = Math.max(1, now - d.lastTime);
+        const stepX = e.clientX - d.lastX;
+        const stepY = e.clientY - d.lastY;
+
+        d.vx = (stepX / dt) * 16.67;
+        d.vy = (stepY / dt) * 16.67;
+        d.lastX = e.clientX;
+        d.lastY = e.clientY;
+        d.lastTime = now;
+
+        cameraRef.current.x = d.camStartX + deltaX;
+        cameraRef.current.y = d.camStartY + deltaY;
+
+        const el = canvasRef.current;
+        if (el) {
+          el.style.translate = `${cameraRef.current.x}px ${cameraRef.current.y}px`;
+        }
+        cull();
+      },
+      [cull, showCursorBadge],
+    );
+
+    const handleCardSelection = useCallback(
+      (portfolioItem: PortfolioItem, index: number) => {
+        onItemClick?.(portfolioItem, index);
         if (itemModal) {
           setSelectedItem(portfolioItem);
         }
       },
       [itemModal, onItemClick],
+    );
+
+    const handlePointerUp = useCallback(
+      (e: React.PointerEvent<HTMLDivElement>) => {
+        const d = dragRef.current;
+        if (!d.active) return;
+        d.active = false;
+        setIsDragging(false);
+
+        try {
+          (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+        } catch {}
+
+        // Click / tap item inspection
+        if (!d.moved) {
+          const wrap = wrapRef.current;
+          if (wrap) {
+            const rect = wrap.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const clickY = e.clientY - rect.top;
+            const { x, y, s } = cameraRef.current;
+            const canvasX = (clickX - x) / s;
+            const canvasY = (clickY - y) / s;
+            const tw = tileRef.current.width;
+            const th = tileRef.current.height;
+            const baseDx = Math.floor(canvasX / tw);
+            const baseDy = Math.floor(canvasY / th);
+            const placedList = placedRef.current;
+            let clickedIndex = -1;
+
+            for (let cdy = baseDy - 1; cdy <= baseDy + 1; cdy++) {
+              for (let cdx = baseDx - 1; cdx <= baseDx + 1; cdx++) {
+                const offsetX = cdx * tw;
+                const offsetY = cdy * th;
+                for (let i = 0; i < placedList.length; i++) {
+                  const c = placedList[i];
+                  const left = c.left + offsetX;
+                  const top = c.top + offsetY;
+                  if (
+                    canvasX >= left &&
+                    canvasX <= left + CARD_W &&
+                    canvasY >= top &&
+                    canvasY <= top + (c.cardH ?? CARD_H)
+                  ) {
+                    clickedIndex = items.length > 0 ? i % items.length : i;
+                    break;
+                  }
+                }
+                if (clickedIndex >= 0) break;
+              }
+              if (clickedIndex >= 0) break;
+            }
+
+            if (clickedIndex >= 0) {
+              const rawItem = items[clickedIndex] ?? placedList[clickedIndex];
+              handleCardSelection(rawItem, clickedIndex);
+            }
+          }
+        }
+
+        // Kinetic inertial momentum physics
+        const maxV = 28;
+        let vx = Math.max(-maxV, Math.min(maxV, d.vx || 0));
+        let vy = Math.max(-maxV, Math.min(maxV, d.vy || 0));
+
+        const tickMomentum = () => {
+          if (Math.abs(vx) < 0.15 && Math.abs(vy) < 0.15) {
+            momentumAnimRef.current = null;
+            if (resolvedDrift) startAmbientDrift();
+            return;
+          }
+
+          cameraRef.current.x += vx;
+          cameraRef.current.y += vy;
+          vx *= 0.93;
+          vy *= 0.93;
+
+          const el = canvasRef.current;
+          if (el) {
+            el.style.translate = `${cameraRef.current.x}px ${cameraRef.current.y}px`;
+          }
+          cull();
+          momentumAnimRef.current = requestAnimationFrame(tickMomentum);
+        };
+
+        if (Math.hypot(vx, vy) > 0.5) {
+          momentumAnimRef.current = requestAnimationFrame(tickMomentum);
+        } else if (resolvedDrift) {
+          startAmbientDrift();
+        }
+      },
+      [cull, resolvedDrift, startAmbientDrift, handleCardSelection, items],
+    );
+
+    // Visibility & screen intersection observers to preserve performance
+    useEffect(() => {
+      const onVisibility = () => {
+        const isHidden = document.hidden;
+        if (isHidden) {
+          if (driftAnimRef.current) cancelAnimationFrame(driftAnimRef.current);
+        } else if (resolvedDrift) {
+          startAmbientDrift();
+        }
+      };
+      document.addEventListener("visibilitychange", onVisibility);
+      return () => document.removeEventListener("visibilitychange", onVisibility);
+    }, [resolvedDrift, startAmbientDrift]);
+
+    useEffect(() => {
+      const el = wrapRef.current;
+      if (!el || typeof IntersectionObserver === "undefined") return;
+      const io = new IntersectionObserver(
+        (entries) => {
+          const visible = entries.some((e) => e.isIntersecting);
+          setOnScreen(visible);
+          if (visible && resolvedDrift) {
+            startAmbientDrift();
+          } else if (driftAnimRef.current) {
+            cancelAnimationFrame(driftAnimRef.current);
+          }
+        },
+        { threshold: 0.15 },
+      );
+      io.observe(el);
+      return () => io.disconnect();
+    }, [resolvedDrift, startAmbientDrift]);
+
+    // Visible tile offsets
+    const offsets = useMemo(
+      () =>
+        tiles.split("|").map((t: string) => {
+          const [dx, dy] = t.split(",").map(Number);
+          return { dx, dy };
+        }),
+      [tiles],
+    );
+
+    // Cards grid rendering
+    const cards = useMemo(
+      () =>
+        offsets.map(({ dx, dy }: { dx: number; dy: number }) => {
+          const copy = dx !== 0 || dy !== 0;
+          return placed.map((card, i) => {
+            const key = `${dx},${dy},${i}`;
+            return (
+              <ShowcaseCard
+                key={key}
+                card={card}
+                left={card.left + dx * width}
+                top={card.top + dy * height}
+                copy={copy}
+                cardDim={cardDim}
+                cardShadow={cardShadow}
+              />
+            );
+          });
+        }),
+      [offsets, placed, width, height, cardDim, cardShadow],
     );
 
     const activeProject = selectedItem ?? items[0];
@@ -299,28 +892,69 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
             />
           </div>
 
-          {/* Continuous Infinite Drag Canvas */}
-          <ImageWall
-            columns={columns}
-            gap={gap}
-            stagger={stagger}
-            interval={interval}
-            intervalTime={intervalTime}
-            order={order}
-            zoom={zoom}
-            mobileZoom={mobileZoom}
-            items={items}
-            intro={intro}
-            anchor={MIDDLE}
-            onFocus={onFocus}
-            onItemClick={handleItemClick}
-            draggable={draggable}
-            drift={drift}
-            cardDim={cardDim}
-            highlightFocus={highlightFocus}
-            cardShadow={cardShadow}
-            className="relative z-10 size-full [mask-image:radial-gradient(ellipse_78%_68%_at_50%_50%,black_45%,rgba(0,0,0,0.85)_75%,transparent_100%)]"
-          />
+          {/* Self-contained 2D Infinite Canvas */}
+          <div
+            ref={wrapRef}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onPointerCancel={handlePointerUp}
+            onPointerLeave={() => {
+              if (isHoveringCardRef.current) {
+                isHoveringCardRef.current = false;
+                setIsHoveringCard(false);
+              }
+            }}
+            className={cn(
+              "relative z-10 size-full overflow-hidden select-none touch-none [mask-image:radial-gradient(ellipse_78%_68%_at_50%_50%,black_45%,rgba(0,0,0,0.85)_75%,transparent_100%)]",
+              draggable && (isDragging ? "cursor-grabbing" : "cursor-grab"),
+            )}
+          >
+            <div
+              ref={canvasRef}
+              className="absolute left-0 top-0 will-change-transform origin-top-left"
+              style={{ width, height, opacity: 0 }}
+            >
+              {cards}
+            </div>
+
+            {/* Custom Theme-Aware Mouse Pointer with "View Details" Badge */}
+            {showCursorBadge && (
+              <div
+                ref={customCursorRef}
+                aria-hidden="true"
+                className={cn(
+                  "pointer-events-none absolute left-0 top-0 z-40 transition-opacity duration-150 ease-out select-none will-change-transform flex items-start",
+                  isHoveringCard && !isDragging && !selectedItem
+                    ? "opacity-100 scale-100"
+                    : "opacity-0 scale-95 pointer-events-none",
+                )}
+                style={{
+                  transform: "translate3d(-9999px, -9999px, 0)",
+                }}
+              >
+                {/* Mouse Cursor Arrow matching Theme Color */}
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="shrink-0 text-primary drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
+                >
+                  <path
+                    d="M0 0L7.07 17.97L9.58 10.58L16.97 8.07L0 0Z"
+                    fill="currentColor"
+                  />
+                </svg>
+
+                {/* Pill Badge matching Theme Color */}
+                <div className="bg-primary text-primary-foreground text-[12px] font-bold px-2.5 py-1 rounded-[8px] shadow-[0_2px_10px_color-mix(in_oklab,var(--primary)_35%,transparent)] whitespace-nowrap leading-none tracking-wide -ml-1 mt-2.5 select-none">
+                  {cursorBadgeLabel}
+                </div>
+              </div>
+            )}
+          </div>
 
           {/* 4-sided smooth perimeter vignette */}
           <div className="pointer-events-none absolute inset-x-0 top-0 h-28 sm:h-40 bg-gradient-to-b from-background via-background/85 to-transparent z-20" aria-hidden />
@@ -329,173 +963,72 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
           <div className="pointer-events-none absolute inset-y-0 right-0 w-24 sm:w-40 bg-gradient-to-l from-background via-background/85 to-transparent z-20" aria-hidden />
         </section>
 
-        {/* Interactive Portfolio Details Modal */}
+        {/* Interactive Portfolio Details Modal: Full-screen visual showcase with ribbon-like frosted blur */}
         {itemModal && (
           <Modal
             isOpen={Boolean(selectedItem)}
             onClose={() => setSelectedItem(null)}
             variant="custom"
-            contentClassName="max-w-4xl w-full p-0 overflow-hidden bg-background border border-border rounded-2xl sm:rounded-3xl shadow-2xl max-h-[90vh] flex flex-col"
+            overlayClassName="bg-black/60 backdrop-blur-xl transition-all duration-300"
+            contentClassName="max-w-5xl w-[94vw] sm:w-[88vw] md:w-[82vw] p-0 overflow-y-auto md:overflow-hidden bg-card border border-foreground/15 dark:border-white/10 rounded-2xl sm:rounded-3xl shadow-2xl max-h-[90vh] md:max-h-[85vh] flex flex-col relative"
             ariaLabel={activeProject ? `${activeProject.title} Showcase` : "Portfolio Project"}
           >
             {activeProject && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-0 overflow-y-auto w-full flex-1">
-                {/* Left Column: Visual Card Preview */}
-                <div className="relative flex flex-col justify-center p-4 sm:p-6 md:p-8 bg-muted/30 border-b md:border-b-0 md:border-r border-border/80 w-full">
-                  <div className="relative z-10 w-full flex flex-col justify-between p-3.5 sm:p-5 rounded-2xl border border-border bg-card">
-                    <div className="flex items-center justify-between px-1 mb-2.5">
-                      <span className="font-mono text-sm sm:text-base font-semibold text-foreground truncate">
-                        {activeProject.title}
-                      </span>
-                      {activeProject.year && (
-                        <span className="text-xs font-mono text-muted-foreground px-2 py-0.5 rounded-md bg-muted border border-border/60">
-                          {activeProject.year}
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="relative w-full flex items-center justify-center overflow-hidden rounded-xl border border-border/60 bg-muted/20 p-1 sm:p-2">
-                      <img
-                        src={activeProject.image}
-                        alt={activeProject.title}
-                        className="w-full h-auto max-h-[280px] sm:max-h-[340px] md:max-h-[400px] object-contain rounded-lg select-none pointer-events-none"
-                      />
-                    </div>
-
-                    <div className="flex items-center justify-between pt-3 px-1 text-xs text-muted-foreground font-mono">
-                      <span className="truncate">portfolio/{activeProject.slug ?? kebab(activeProject.title)}</span>
-                      <span className="text-[11px] font-sans font-medium text-primary">Featured Work</span>
-                    </div>
-                  </div>
+              <div className="relative w-full flex flex-col md:block overflow-hidden bg-card select-none">
+                {/* Complete Project Image: 100% visible with zero zooming or clipping */}
+                <div className="relative w-full overflow-hidden flex items-center justify-center bg-card">
+                  <img
+                    src={activeProject.image}
+                    alt={activeProject.title}
+                    className="w-full h-auto max-h-[50vh] sm:max-h-[60vh] md:max-h-[82vh] object-contain block select-none pointer-events-none"
+                  />
                 </div>
 
-                {/* Right Column: Full Details & Project Metadata */}
-                <div className="flex flex-col justify-between p-5 sm:p-7 md:p-8 space-y-6">
-                  <div className="space-y-4">
-                    <div className="flex flex-wrap items-center gap-2">
-                      {activeProject.category && (
-                        <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20">
-                          {activeProject.category}
-                        </span>
-                      )}
-                      {activeProject.client && (
-                        <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground border border-border">
-                          {activeProject.client}
-                        </span>
-                      )}
-                    </div>
-
-                    <div>
-                      <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-                        {activeProject.title}
-                      </h2>
-                      <p className="mt-2.5 text-sm text-muted-foreground leading-relaxed">
-                        {activeProject.description ??
-                          "A premier digital creation showcasing meticulous craftsmanship, modern responsive UI design, and fluid interactive animations engineered for maximum impact."}
+                {/* Info & Action Controls: In-flow below image on mobile (not absolute), floating frosted ribbon pill on desktop (md:) */}
+                <div className="relative md:absolute md:inset-x-6 md:bottom-6 z-20 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 sm:gap-4 p-4 sm:p-5 md:py-3.5 md:px-5 border-t md:border border-foreground/10 md:border-foreground/15 dark:border-white/10 md:dark:border-white/15 bg-card/95 md:bg-white/75 md:dark:bg-[#131316]/75 md:backdrop-blur-md md:rounded-2xl">
+                  <div className="space-y-1 md:space-y-0.5 max-w-xl">
+                    <h2 className="text-base sm:text-lg md:text-xl font-bold tracking-tight text-foreground">
+                      {activeProject.title}
+                    </h2>
+                    {activeProject.category && (
+                      <p className="text-xs sm:text-sm font-medium text-muted-foreground">
+                        {activeProject.category}
                       </p>
-                    </div>
-
-                    {/* Project Specifications Grid */}
-                    <div className="grid grid-cols-2 gap-2.5 pt-1">
-                      <div className="p-2.5 rounded-xl bg-muted/40 border border-border/60">
-                        <div className="text-[11px] text-muted-foreground font-medium">Client</div>
-                        <div className="text-xs font-semibold text-foreground mt-0.5 truncate">
-                          {activeProject.client ?? "Confidential Client"}
-                        </div>
-                      </div>
-                      <div className="p-2.5 rounded-xl bg-muted/40 border border-border/60">
-                        <div className="text-[11px] text-muted-foreground font-medium">Timeline</div>
-                        <div className="text-xs font-semibold text-foreground mt-0.5">
-                          {activeProject.year ? `Released ${activeProject.year}` : "Current Release"}
-                        </div>
-                      </div>
-                      <div className="p-2.5 rounded-xl bg-muted/40 border border-border/60">
-                        <div className="text-[11px] text-muted-foreground font-medium">Discipline</div>
-                        <div className="text-xs font-semibold text-foreground mt-0.5 truncate">
-                          {activeProject.category ?? "Design & Engineering"}
-                        </div>
-                      </div>
-                      <div className="p-2.5 rounded-xl bg-muted/40 border border-border/60">
-                        <div className="text-[11px] text-muted-foreground font-medium">Deliverables</div>
-                        <div className="text-xs font-semibold text-foreground mt-0.5 truncate">
-                          Full UI / UX & Production Code
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Tags */}
-                    {activeProject.tags && activeProject.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5 pt-1">
-                        {activeProject.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="px-2 py-0.5 rounded-md text-[11px] font-medium bg-foreground/[0.04] text-foreground/75 border border-foreground/[0.06]"
-                          >
-                            #{tag}
-                          </span>
-                        ))}
-                      </div>
+                    )}
+                    {activeProject.description && (
+                      <p className="text-xs sm:text-sm text-muted-foreground/90 leading-relaxed pt-1 md:hidden">
+                        {activeProject.description}
+                      </p>
                     )}
                   </div>
 
-                  {/* Actions */}
-                  <div className="space-y-3 pt-2">
-                    <div className="flex flex-col sm:flex-row items-center gap-3 w-full">
-                      <div className="w-full sm:flex-1 flex [&>div]:w-full [&>div>button]:w-full [&>button]:w-full">
-                        <Button
-                          variant="default"
-                          size="default"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            if (activeProject.href && activeProject.href !== "#") {
-                              window.open(activeProject.href, "_blank", "noopener,noreferrer");
-                            }
-                          }}
-                          iconRight={<ArrowUpRight size={15} />}
-                          className="w-full font-medium"
-                        >
-                          {ctaLabel}
-                        </Button>
-                      </div>
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2.5 w-full md:w-auto shrink-0 pt-1 md:pt-0 [&>div]:w-full sm:[&>div]:w-auto [&>div>button]:w-full sm:[&>div>button]:w-auto [&>button]:w-full sm:[&>button]:w-auto">
+                    <Button
+                      variant="default"
+                      size="default"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (activeProject.href && activeProject.href !== "#") {
+                          window.open(activeProject.href, "_blank", "noopener,noreferrer");
+                        }
+                      }}
+                      iconRight={<ArrowUpRight size={15} />}
+                      className="w-full sm:w-auto font-medium"
+                    >
+                      {ctaLabel}
+                    </Button>
 
-                      <div className="w-full sm:flex-1 flex [&>div]:w-full [&>div>button]:w-full [&>button]:w-full">
-                        <Button
-                          variant="outline"
-                          size="default"
-                          onClick={(e) => {
-                            e.preventDefault();
-                          }}
-                          iconLeft={<Mail size={15} />}
-                          className="w-full font-medium"
-                        >
-                          Inquire / Contact
-                        </Button>
-                      </div>
-                    </div>
-
-                    {/* Share / Identifier Bar */}
-                    <div className="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-muted/60 border border-border/50 text-[11px] sm:text-xs font-mono text-muted-foreground w-full">
-                      <span className="truncate">project/{activeProject.slug ?? kebab(activeProject.title)}</span>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          const url = typeof window !== "undefined" ? window.location.href : "";
-                          if (url) {
-                            navigator.clipboard.writeText(`${url}#${activeProject.slug ?? kebab(activeProject.title)}`);
-                            setCopiedLink(true);
-                            setTimeout(() => setCopiedLink(false), 2000);
-                          }
-                        }}
-                        className="shrink-0 ml-2 hover:text-foreground cursor-pointer flex items-center gap-1"
-                        title="Copy project reference"
-                      >
-                        {copiedLink ? (
-                          <Check size={13} className="text-emerald-500" />
-                        ) : (
-                          <Copy size={13} />
-                        )}
-                      </button>
-                    </div>
+                    <Button
+                      variant="outline"
+                      size="default"
+                      onClick={(e) => {
+                        e.preventDefault();
+                      }}
+                      iconLeft={<Mail size={15} />}
+                      className="w-full sm:w-auto font-medium"
+                    >
+                      Contact
+                    </Button>
                   </div>
                 </div>
               </div>

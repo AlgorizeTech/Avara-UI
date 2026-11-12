@@ -59,12 +59,14 @@ import { techStack } from "./tech-stack";
 import { timeline } from "./timeline";
 import { toggleGroup } from "./toggle-group";
 import { ribbonDrift } from "./ribbon-drift";
+import { error } from "./error";
 import type { PageVariants } from "./types";
 
 export type { PageVariants, Variant } from "./types";
 
 /** Every docs page that has a variants file. Add new pages here. */
 export const pageVariants: PageVariants[] = [
+  error,
   hero,
   footer,
   navbar,
@@ -146,7 +148,6 @@ export const NO_CHOICE_NEEDED: string[] = [
   "top-destinations",
   "bento-showcase",
   "flavour-carousel",
-  "error",
   "platform-grid",
   // Its two examples differ only by `defaultExpanded` (open or icon rail): a
   // state of one design, not two designs (audited 2026-11-09).

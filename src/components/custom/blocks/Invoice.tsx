@@ -29,7 +29,8 @@ export type InvoiceVariant =
   | "default"
   | "corporate"
   | "brutalist"
-  | "geometric";
+  | "geometric"
+  | "split";
 
 export type InvoiceColor =
   | "indigo"
@@ -93,6 +94,21 @@ const invoiceVariants: Record<InvoiceVariant, Record<string, string>> = {
     blockBg:
       "bg-muted/40",
   },
+  split: {
+    wrapper: "bg-transparent",
+    invoicePanel:
+      "bg-card border border-border rounded-[var(--radius)] overflow-hidden font-sans w-full",
+    sidebarCard:
+      "bg-card border border-border shadow-sm rounded-2xl",
+    tableHeader:
+      "uppercase text-[11px] sm:text-xs font-bold tracking-wider",
+    tableRow:
+      "border-b border-border/40",
+    inputBg:
+      "bg-muted/60 border border-border",
+    blockBg:
+      "bg-[#23272f] text-neutral-200",
+  },
 };
 
 export type InvoiceItem = {
@@ -118,6 +134,20 @@ export type InvoiceData = {
     email?: string;
     description?: string;
   };
+  invoiceFrom?: {
+    name?: string;
+    company?: string;
+    address?: string;
+    phone?: string;
+    email?: string;
+    title?: string;
+  };
+  paymentMethod?: {
+    method?: string;
+    accountNo?: string;
+    accountName?: string;
+    branchName?: string;
+  };
   billTo?: {
     totalDue?: string;
     bankName?: string;
@@ -135,13 +165,14 @@ export type InvoiceData = {
   terms?: string[];
   signatory?: {
     name: string;
-    title: string;
+    title?: string;
   };
   companyContact?: {
     phone?: string;
     email?: string;
     social?: string;
     address?: string;
+    website?: string;
   };
 };
 
@@ -279,13 +310,21 @@ export default function Invoice({
   const handleMainChange = (field: string, value: string) =>
     setData((prev) => ({ ...prev, [field]: value }));
   const handleNestedChange = (
-    section: "invoiceTo" | "billTo",
+    section:
+      | "invoiceTo"
+      | "billTo"
+      | "invoiceFrom"
+      | "paymentMethod"
+      | "companyContact",
     field: string,
     value: string,
   ) =>
     setData((prev) => ({
       ...prev,
-      [section]: { ...prev[section], [field]: value },
+      [section]: {
+        ...((prev[section] as Record<string, unknown>) || {}),
+        [field]: value,
+      },
     }));
   const handleItemChange = (
     index: number,
@@ -857,12 +896,12 @@ export default function Invoice({
             </div>
           </div>
 
-          <div className="p-5 sm:p-8 md:p-12 space-y-6 sm:space-y-8">
+          <div className="p-3.5 sm:p-8 md:p-12 space-y-5 sm:space-y-8">
             {/* Top Header */}
             <header className="relative">
-              <div className="flex flex-col sm:flex-row justify-between items-start gap-4 sm:gap-6">
+              <div className="flex flex-col sm:flex-row justify-between items-start gap-3 sm:gap-6">
                 {/* Left: Tagline + Decorative Tile */}
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   <GeometricTilePattern themeBg={theme.bg} themeLight={theme.lightBg} />
                   <p className={cn("text-[10px] sm:text-xs font-semibold uppercase tracking-wide max-w-[260px] leading-relaxed", theme.text)}>
                     {data.tagline || "Crafting Next-Gen Interfaces: Where Code Meets Design Elegance!"}
@@ -888,13 +927,13 @@ export default function Invoice({
               </div>
 
               {/* Center / Big "Invoice" Title with underline */}
-              <div className="mt-6 sm:mt-8">
-                <div className="flex items-center justify-between gap-4">
-                  <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-foreground">
+              <div className="mt-4 sm:mt-8">
+                <div className="flex items-center justify-between gap-3 sm:gap-4">
+                  <h1 className="text-3xl sm:text-6xl md:text-7xl font-black tracking-tight text-foreground">
                     Invoice
                   </h1>
                   <div className="sm:hidden">
-                    <GeometricTilePattern className="w-20 h-14" themeBg={theme.bg} themeLight={theme.lightBg} />
+                    <GeometricTilePattern className="w-16 h-11" themeBg={theme.bg} themeLight={theme.lightBg} />
                   </div>
                 </div>
                 <div className={cn("h-[2px] sm:h-[3px] mt-1 sm:mt-2 w-full", theme.bg)} />
@@ -902,9 +941,9 @@ export default function Invoice({
             </header>
 
             {/* Recipient ("Invoice To") & Metadata */}
-            <section className="flex justify-between items-start gap-4 sm:gap-8 pt-2">
+            <section className="flex flex-col sm:flex-row justify-between items-start gap-4 sm:gap-8 pt-2">
               {/* Left Column: Recipient info */}
-              <div className="flex-1 min-w-0 space-y-3">
+              <div className="flex-1 w-full sm:w-auto min-w-0 space-y-2.5 sm:space-y-3">
                 <div className="inline-block border-b-2 border-border pb-0.5">
                   <span className="text-xs sm:text-sm font-bold tracking-wider text-foreground">
                     Invoice To
@@ -913,14 +952,14 @@ export default function Invoice({
 
                 {/* Recipient Solid Theme Badge */}
                 <div>
-                  <div className={cn("px-4 py-2 sm:px-5 sm:py-2.5 rounded-[var(--radius)] inline-block", theme.bg)}>
+                  <div className={cn("px-3.5 py-1.5 sm:px-5 sm:py-2.5 rounded-[var(--radius)] inline-block max-w-full", theme.bg)}>
                     <EditableInput
                       isEditing={isEditing}
                       value={data.invoiceTo.name}
                       onChange={(e) => handleNestedChange("invoiceTo", "name", e.target.value)}
                       placeholder="Client Name"
                       inputBg={cn("border font-bold", theme.fgSoft, theme.fg)}
-                      className={cn("text-base sm:text-xl font-bold tracking-tight", theme.fg)}
+                      className={cn("text-base sm:text-xl font-bold tracking-tight truncate", theme.fg)}
                     />
                   </div>
                 </div>
@@ -931,8 +970,8 @@ export default function Invoice({
                 </p>
 
                 {/* Contact Pills */}
-                <div className="flex flex-wrap items-center gap-3 sm:gap-6 pt-1 text-xs sm:text-sm font-medium text-foreground">
-                  <div className="flex items-center gap-2">
+                <div className="flex flex-wrap items-center gap-2.5 sm:gap-6 pt-1 text-xs sm:text-sm font-medium text-foreground">
+                  <div className="flex items-center gap-2 max-w-full">
                     <span className={cn("size-5 rounded-full keep-rounded grid place-items-center shrink-0", theme.bg)}>
                       <Phone className={cn("size-2.5", theme.fg)} />
                     </span>
@@ -943,7 +982,7 @@ export default function Invoice({
                       className="text-xs sm:text-sm font-medium"
                     />
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 max-w-full">
                     <span className={cn("size-5 rounded-full keep-rounded grid place-items-center shrink-0", theme.bg)}>
                       <MapPin className={cn("size-2.5", theme.fg)} />
                     </span>
@@ -958,7 +997,7 @@ export default function Invoice({
               </div>
 
               {/* Right Column: Invoice Number & Date */}
-              <div className="shrink-0 text-right space-y-2.5 sm:space-y-3">
+              <div className="w-full sm:w-auto shrink-0 flex sm:flex-col justify-between sm:justify-start items-start sm:items-end gap-2.5 sm:gap-3 text-left sm:text-right border-t border-border/40 pt-3 sm:border-0 sm:pt-0">
                 <div>
                   <span className="text-xs sm:text-sm font-bold text-foreground block">
                     No. Invoice:
@@ -967,11 +1006,11 @@ export default function Invoice({
                     isEditing={isEditing}
                     value={data.invoiceNumber}
                     onChange={(e) => handleMainChange("invoiceNumber", e.target.value)}
-                    align="right"
-                    className="text-xs sm:text-sm text-muted-foreground font-medium text-right"
+                    align="left"
+                    className="text-xs sm:text-sm text-muted-foreground font-medium text-left sm:text-right"
                   />
                 </div>
-                <div>
+                <div className="text-right sm:text-right">
                   <span className="text-xs sm:text-sm font-bold text-foreground block">
                     Date:
                   </span>
@@ -988,15 +1027,23 @@ export default function Invoice({
 
             {/* Items Table */}
             <section className="relative z-0 rounded-[var(--radius)] overflow-hidden bg-card">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs sm:text-sm border-collapse min-w-[500px]">
-                  <thead className={cn("uppercase text-[11px] sm:text-xs font-bold tracking-wider", theme.bg)}>
+              <div className="w-full overflow-hidden">
+                <table className="w-full text-left text-xs sm:text-sm border-collapse">
+                  <thead className={cn("uppercase text-[10px] sm:text-xs font-bold tracking-wider", theme.bg)}>
                     <tr>
-                      <th className={cn("py-3 px-3 sm:px-4 text-left", theme.fg)}>ITEM DESCRIPTION</th>
-                      <th className={cn("py-3 px-3 sm:px-4 text-right w-28", theme.fg)}>UNIT PRICE</th>
-                      <th className={cn("py-3 px-3 sm:px-4 text-center w-24", theme.fg)}>QUANTITY</th>
-                      <th className={cn("py-3 px-3 sm:px-4 text-right w-28", theme.fg)}>AMOUNT</th>
-                      {isEditing && <th className={cn("py-3 px-2 text-center w-12", theme.fg)}>ACT</th>}
+                      <th className={cn("py-2.5 sm:py-3 px-2 sm:px-4 text-left", theme.fg)}>ITEM DESCRIPTION</th>
+                      <th className={cn("py-2.5 sm:py-3 px-2 sm:px-4 text-right hidden sm:table-cell sm:w-28", theme.fg)}>
+                        UNIT PRICE
+                      </th>
+                      <th className={cn("py-2.5 sm:py-3 px-1.5 sm:px-4 text-center w-12 sm:w-24", theme.fg)}>
+                        <span className="hidden sm:inline">QUANTITY</span>
+                        <span className="sm:hidden">QTY</span>
+                      </th>
+                      <th className={cn("py-2.5 sm:py-3 px-2 sm:px-4 text-right w-20 sm:w-28", theme.fg)}>
+                        <span className="hidden sm:inline">AMOUNT</span>
+                        <span className="sm:hidden">TOTAL</span>
+                      </th>
+                      {isEditing && <th className={cn("py-2.5 sm:py-3 px-1 text-center w-7 sm:w-12", theme.fg)}>ACT</th>}
                     </tr>
                   </thead>
                   <tbody>
@@ -1011,23 +1058,37 @@ export default function Invoice({
                             isEven ? "bg-muted/40" : "bg-card"
                           )}
                         >
-                          <td className="py-3 px-3 sm:px-4">
+                          <td className="py-2.5 sm:py-3 px-2 sm:px-4 min-w-0">
                             <EditableInput
                               isEditing={isEditing}
                               value={item.item}
                               onChange={(e) => handleItemChange(idx, "item", e.target.value)}
-                              className="font-bold text-xs sm:text-sm text-foreground"
+                              className="font-bold text-xs sm:text-sm text-foreground break-words [overflow-wrap:anywhere]"
                             />
+                            {/* Mobile Unit Price info */}
+                            <div className="sm:hidden text-[10px] text-muted-foreground font-mono mt-0.5 flex items-center gap-1">
+                              <span className="opacity-70">Price:</span>
+                              {isEditing ? (
+                                <EditableInput
+                                  isEditing={isEditing}
+                                  value={unitPrice}
+                                  onChange={(e) => handleItemChange(idx, "unitPrice", e.target.value)}
+                                  className="text-[10px] w-20 py-0.5 px-1 font-mono"
+                                />
+                              ) : (
+                                <span>{unitPrice}</span>
+                              )}
+                            </div>
                             {item.description && (
                               <EditableInput
                                 isEditing={isEditing}
                                 value={item.description}
                                 onChange={(e) => handleItemChange(idx, "description", e.target.value)}
-                                className="text-[11px] text-muted-foreground"
+                                className="text-[10px] sm:text-[11px] text-muted-foreground break-words [overflow-wrap:anywhere] mt-0.5 line-clamp-2 sm:line-clamp-none"
                               />
                             )}
                           </td>
-                          <td className="py-3 px-3 sm:px-4 text-right font-medium text-muted-foreground">
+                          <td className="py-2.5 sm:py-3 px-2 sm:px-4 text-right font-medium text-muted-foreground whitespace-nowrap hidden sm:table-cell">
                             <EditableInput
                               isEditing={isEditing}
                               value={unitPrice}
@@ -1035,7 +1096,7 @@ export default function Invoice({
                               align="right"
                             />
                           </td>
-                          <td className="py-3 px-3 sm:px-4 text-center font-mono font-medium text-muted-foreground">
+                          <td className="py-2.5 sm:py-3 px-1.5 sm:px-4 text-center font-mono font-medium text-muted-foreground whitespace-nowrap">
                             <EditableInput
                               isEditing={isEditing}
                               value={item.qty}
@@ -1043,7 +1104,7 @@ export default function Invoice({
                               align="center"
                             />
                           </td>
-                          <td className="py-3 px-3 sm:px-4 text-right font-bold text-foreground">
+                          <td className="py-2.5 sm:py-3 px-2 sm:px-4 text-right font-bold text-foreground whitespace-nowrap">
                             <EditableInput
                               isEditing={isEditing}
                               value={item.total}
@@ -1052,12 +1113,12 @@ export default function Invoice({
                             />
                           </td>
                           {isEditing && (
-                            <td className="py-3 px-2 text-center">
+                            <td className="py-2.5 sm:py-3 px-1 text-center w-7 sm:w-12">
                               <button
                                 onClick={() => removeItem(idx)}
                                 className="text-rose-500 hover:text-rose-700 p-1 cursor-pointer"
                               >
-                                <Trash2 className="w-4 h-4" />
+                                <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                               </button>
                             </td>
                           )}
@@ -1084,7 +1145,7 @@ export default function Invoice({
             </section>
 
             {/* Calculations & Watermark Area */}
-            <section className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6 pt-4 pb-2">
+            <section className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6 pt-3 sm:pt-4 pb-2">
               {/* Left: Watermark Arcs in Theme Color (z-10) */}
               <div className="relative w-44 h-24 hidden sm:block pointer-events-none z-10">
                 <WatermarkArcs
@@ -1124,7 +1185,7 @@ export default function Invoice({
             </section>
 
             {/* Solid Theme Footer with Terms & Signatory */}
-            <footer className={cn("p-5 sm:p-7 md:p-8 rounded-[var(--radius)] relative z-10 overflow-hidden space-y-6", theme.bg)}>
+            <footer className={cn("p-4 sm:p-7 md:p-8 rounded-[var(--radius)] relative z-10 overflow-hidden space-y-5 sm:space-y-6", theme.bg)}>
               {/* Decorative Geometric Block in top-right of footer */}
               <div className="absolute top-0 right-0 opacity-40 sm:opacity-75 pointer-events-none">
                 <GeometricTilePattern className="w-24 h-16 sm:w-28 sm:h-18" themeBg={theme.bg} themeLight={theme.lightBg} />
@@ -1198,6 +1259,517 @@ export default function Invoice({
                 </div>
               </div>
             </footer>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* 5. ASYMMETRIC SPLIT VARIANT */}
+      {/* ========================================================================= */}
+      {variant === "split" && (
+        <div className="w-full bg-card border border-border rounded-[var(--radius)] overflow-hidden font-sans relative">
+          {/* Action Toolbar (hidden on print) */}
+          <div className="bg-muted text-foreground p-3 sm:px-6 sm:py-2.5 border-b border-border flex items-center justify-between print:hidden">
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Asymmetric Split Invoice
+            </span>
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <button
+                onClick={() => setIsEditing(!isEditing)}
+                className={cn(
+                  "px-3 py-1.5 sm:px-3.5 sm:py-1.5 rounded-[var(--radius)] font-semibold text-xs flex items-center gap-1.5 transition-all cursor-pointer",
+                  theme.bg
+                )}
+                title={isEditing ? "Save Invoice" : "Edit Invoice"}
+              >
+                {isEditing ? <Save className="w-3.5 h-3.5" /> : <Edit3 className="w-3.5 h-3.5" />}
+                <span>{isEditing ? "Save" : "Edit"}</span>
+              </button>
+              <button
+                onClick={handlePrint}
+                className="px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-[var(--radius)] bg-background hover:bg-muted text-foreground border border-border font-semibold text-xs flex items-center gap-1.5 transition-all cursor-pointer"
+                title="Print PDF"
+              >
+                <Printer className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Print</span>
+              </button>
+              <button
+                onClick={handleDownload}
+                className="px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-[var(--radius)] bg-background hover:bg-muted text-foreground border border-border font-semibold text-xs flex items-center gap-1.5 transition-all cursor-pointer"
+                title="Export JSON"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">JSON</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Invoice Document Body */}
+          <div className="relative">
+            {/* Top Section: Left Sidebar Column & Right Content */}
+            <div className="flex flex-col md:flex-row items-stretch">
+              {/* Top Left: Red Theme Logo Block + Dark Charcoal Invoice To */}
+              <div className="w-full md:w-[36%] lg:w-[35%] flex flex-col shrink-0">
+                {/* Solid Theme Logo Block */}
+                <div className={cn("p-5 sm:p-7 relative", theme.bg)}>
+                  <div className="flex items-center gap-3">
+                    <div className="size-9 rounded-[var(--radius)] flex items-center justify-center p-1.5 bg-black/15 dark:bg-white/15 shrink-0">
+                      <svg viewBox="0 0 24 24" className={cn("size-5 fill-current", theme.fg)}>
+                        <path d="M12 2L2 19.5h5l5-9 5 9h5L12 2zm0 6l-2.5 4.5h5L12 8z" />
+                      </svg>
+                    </div>
+                    <div className="min-w-0">
+                      <EditableInput
+                        isEditing={isEditing}
+                        value={data.companyName || "COMPANY"}
+                        onChange={(e) => handleMainChange("companyName", e.target.value)}
+                        className={cn("font-black tracking-wider text-base sm:text-lg uppercase truncate", theme.fg)}
+                      />
+                      <EditableInput
+                        isEditing={isEditing}
+                        value={data.tagline || "COMPANY TAGLINE HERE"}
+                        onChange={(e) => handleMainChange("tagline", e.target.value)}
+                        className={cn("text-[9px] sm:text-[10px] tracking-widest uppercase opacity-80 block truncate", theme.fg)}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Dark Charcoal Sidebar Top: Invoice To */}
+                <div className="flex-1 bg-[#23272f] text-neutral-200 p-5 sm:p-7 space-y-2 relative">
+                  <span className="text-[11px] uppercase tracking-wider text-neutral-400 font-semibold block">
+                    Invoice To:
+                  </span>
+                  <EditableInput
+                    isEditing={isEditing}
+                    inputBg="bg-neutral-800 text-white border-neutral-700"
+                    value={data.invoiceTo.name}
+                    onChange={(e) => handleNestedChange("invoiceTo", "name", e.target.value)}
+                    className="text-lg sm:text-xl font-serif font-bold text-white tracking-tight"
+                  />
+                  <EditableInput
+                    isEditing={isEditing}
+                    inputBg="bg-neutral-800 text-white border-neutral-700"
+                    value={data.invoiceTo.company || "Managing Director, Company ltd."}
+                    onChange={(e) => handleNestedChange("invoiceTo", "company", e.target.value)}
+                    className="text-xs text-neutral-400"
+                  />
+                  <div className="pt-2 space-y-1.5 text-xs text-neutral-400">
+                    <p className="flex items-center gap-1.5">
+                      <span className="shrink-0 text-neutral-500">Phone:</span>
+                      <EditableInput
+                        isEditing={isEditing}
+                        inputBg="bg-neutral-800 text-white border-neutral-700"
+                        value={data.invoiceTo.phone || "+123 4567 8910"}
+                        onChange={(e) => handleNestedChange("invoiceTo", "phone", e.target.value)}
+                        className="text-neutral-300"
+                      />
+                    </p>
+                    <p className="flex items-center gap-1.5">
+                      <span className="shrink-0 text-neutral-500">Email:</span>
+                      <EditableInput
+                        isEditing={isEditing}
+                        inputBg="bg-neutral-800 text-white border-neutral-700"
+                        value={data.invoiceTo.email || "example@mail.com"}
+                        onChange={(e) => handleNestedChange("invoiceTo", "email", e.target.value)}
+                        className="text-neutral-300 break-all"
+                      />
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Top Right: INVOICE title & "Invoice From:" */}
+              <div className="flex-1 bg-card p-5 sm:p-8 flex flex-col justify-between gap-6">
+                {/* Header block with red vertical line and title */}
+                <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                  <div className={cn("border-l-4 pl-3.5 space-y-0.5", theme.border)}>
+                    <h1 className={cn("text-3xl sm:text-4xl font-extrabold tracking-wider", theme.text)}>
+                      INVOICE
+                    </h1>
+                    <div className="grid grid-cols-[auto,1fr] gap-x-2 text-[11px] sm:text-xs text-muted-foreground pt-1">
+                      <span className="font-semibold text-foreground">Invoice Number:</span>
+                      <EditableInput
+                        isEditing={isEditing}
+                        value={data.invoiceNumber}
+                        onChange={(e) => handleMainChange("invoiceNumber", e.target.value)}
+                        className="font-medium text-foreground"
+                      />
+                      <span className="font-semibold text-foreground">Invoice Date:</span>
+                      <EditableInput
+                        isEditing={isEditing}
+                        value={data.dateIssued}
+                        onChange={(e) => handleMainChange("dateIssued", e.target.value)}
+                        className="font-medium text-foreground"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Invoice From */}
+                <div className="space-y-1 sm:pl-3.5">
+                  <span className="text-[11px] uppercase tracking-wider text-muted-foreground font-semibold block">
+                    Invoice From:
+                  </span>
+                  <EditableInput
+                    isEditing={isEditing}
+                    value={data.invoiceFrom?.name || data.salesPerson || "Jhone Smith."}
+                    onChange={(e) => {
+                      if (data.invoiceFrom) {
+                        handleNestedChange("invoiceFrom", "name", e.target.value);
+                      } else {
+                        handleMainChange("salesPerson", e.target.value);
+                      }
+                    }}
+                    className="text-lg sm:text-xl font-serif font-bold text-foreground tracking-tight"
+                  />
+                  <EditableInput
+                    isEditing={isEditing}
+                    value={data.invoiceFrom?.company || "Managing Director, Company ltd."}
+                    onChange={(e) => handleNestedChange("invoiceFrom", "company", e.target.value)}
+                    className="text-xs text-muted-foreground"
+                  />
+                  <div className="pt-1.5 space-y-1 text-xs text-muted-foreground">
+                    <p className="flex items-center gap-1.5">
+                      <span className="shrink-0 text-muted-foreground/80">Phone:</span>
+                      <EditableInput
+                        isEditing={isEditing}
+                        value={data.invoiceFrom?.phone || data.companyContact?.phone || "+123 4567 8910"}
+                        onChange={(e) => handleNestedChange("invoiceFrom", "phone", e.target.value)}
+                      />
+                    </p>
+                    <p className="flex items-center gap-1.5">
+                      <span className="shrink-0 text-muted-foreground/80">Email:</span>
+                      <EditableInput
+                        isEditing={isEditing}
+                        value={data.invoiceFrom?.email || data.companyContact?.email || "example@mail.com"}
+                        onChange={(e) => handleNestedChange("invoiceFrom", "email", e.target.value)}
+                        className="break-all"
+                      />
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Middle Section: Table with Angled Split Header */}
+            <section className="relative w-full overflow-hidden my-3 sm:my-5">
+              <div className="w-full overflow-hidden">
+                <table className="w-full text-left text-xs sm:text-sm border-collapse">
+                  {/* Thead with Left Theme Slant and Right Charcoal */}
+                  <thead>
+                    <tr className="h-10 sm:h-12 relative">
+                      {/* NO. column (Theme BG) */}
+                      <th className={cn("py-2.5 sm:py-3 px-2 sm:px-4 text-center font-bold uppercase tracking-wider text-[10px] sm:text-xs w-10 sm:w-16", theme.bg, theme.fg)}>
+                        NO.
+                      </th>
+                      {/* DESCRIPTION column (Theme BG with forward slant at right edge) */}
+                      <th className={cn("py-2.5 sm:py-3 px-2 sm:px-4 font-bold uppercase tracking-wider text-[10px] sm:text-xs relative pr-6 sm:pr-8", theme.bg, theme.fg)}>
+                        DESCRIPTION
+                        {/* Angled forward slant connecting into dark background */}
+                        <div
+                          className={cn("absolute top-0 -right-6 bottom-0 w-6 z-10 pointer-events-none hidden sm:block", theme.bg)}
+                          style={{ clipPath: "polygon(0 0, 100% 0, 0 100%)" }}
+                        />
+                      </th>
+                      {/* PRICE column (Dark Charcoal) */}
+                      <th className="py-2.5 sm:py-3 px-2 sm:px-4 text-right font-bold uppercase tracking-wider text-[10px] sm:text-xs bg-[#23272f] text-white hidden sm:table-cell sm:w-28">
+                        PRICE
+                      </th>
+                      {/* QTY column (Dark Charcoal) */}
+                      <th className="py-2.5 sm:py-3 px-1.5 sm:px-4 text-center font-bold uppercase tracking-wider text-[10px] sm:text-xs bg-[#23272f] text-white w-12 sm:w-20">
+                        QTY.
+                      </th>
+                      {/* TOTAL column (Dark Charcoal) */}
+                      <th className="py-2.5 sm:py-3 px-2 sm:px-4 text-right font-bold uppercase tracking-wider text-[10px] sm:text-xs bg-[#23272f] text-white w-16 sm:w-32">
+                        TOTAL
+                      </th>
+                      {isEditing && (
+                        <th className="py-2.5 sm:py-3 px-1 text-center bg-[#23272f] text-white w-7 sm:w-12">
+                          ACT
+                        </th>
+                      )}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.items.map((item, idx) => {
+                      const isEven = idx % 2 === 1;
+                      const unitPrice = item.unitPrice ?? item.total;
+                      return (
+                        <tr
+                          key={idx}
+                          className={cn(
+                            "transition-colors border-b border-border/40",
+                            isEven ? "bg-muted/40" : "bg-card"
+                          )}
+                        >
+                          <td className="py-2.5 sm:py-3 px-2 sm:px-4 text-center font-mono font-medium text-muted-foreground text-xs">
+                            {String(idx + 1).padStart(2, "0")}
+                          </td>
+                          <td className="py-2.5 sm:py-3 px-2 sm:px-4 min-w-0">
+                            <EditableInput
+                              isEditing={isEditing}
+                              value={item.item}
+                              onChange={(e) => handleItemChange(idx, "item", e.target.value)}
+                              className="font-semibold text-xs sm:text-sm text-foreground break-words [overflow-wrap:anywhere]"
+                            />
+                            {/* Mobile Unit Price info */}
+                            <div className="sm:hidden text-[10px] text-muted-foreground font-mono mt-0.5 flex items-center gap-1">
+                              <span className="opacity-70">Price:</span>
+                              {isEditing ? (
+                                <EditableInput
+                                  isEditing={isEditing}
+                                  value={unitPrice}
+                                  onChange={(e) => handleItemChange(idx, "unitPrice", e.target.value)}
+                                  className="text-[10px] w-20 py-0.5 px-1 font-mono"
+                                />
+                              ) : (
+                                <span>{unitPrice}</span>
+                              )}
+                            </div>
+                            {item.description && (
+                              <EditableInput
+                                isEditing={isEditing}
+                                value={item.description}
+                                onChange={(e) => handleItemChange(idx, "description", e.target.value)}
+                                className="text-[10px] sm:text-[11px] text-muted-foreground mt-0.5 break-words [overflow-wrap:anywhere] line-clamp-2 sm:line-clamp-none"
+                              />
+                            )}
+                          </td>
+                          <td className="py-2.5 sm:py-3 px-2 sm:px-4 text-right font-medium text-muted-foreground whitespace-nowrap hidden sm:table-cell">
+                            <EditableInput
+                              isEditing={isEditing}
+                              value={unitPrice}
+                              onChange={(e) => handleItemChange(idx, "unitPrice", e.target.value)}
+                              align="right"
+                            />
+                          </td>
+                          <td className="py-2.5 sm:py-3 px-1.5 sm:px-4 text-center font-mono font-medium text-muted-foreground whitespace-nowrap">
+                            <EditableInput
+                              isEditing={isEditing}
+                              value={item.qty}
+                              onChange={(e) => handleItemChange(idx, "qty", e.target.value)}
+                              align="center"
+                            />
+                          </td>
+                          <td className="py-2.5 sm:py-3 px-2 sm:px-4 text-right font-semibold text-foreground whitespace-nowrap">
+                            <EditableInput
+                              isEditing={isEditing}
+                              value={item.total}
+                              onChange={(e) => handleItemChange(idx, "total", e.target.value)}
+                              align="right"
+                            />
+                          </td>
+                          {isEditing && (
+                            <td className="py-2.5 sm:py-3 px-1 text-center w-7 sm:w-12">
+                              <button
+                                onClick={() => removeItem(idx)}
+                                className="text-rose-500 hover:text-rose-700 p-1 cursor-pointer"
+                              >
+                                <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                              </button>
+                            </td>
+                          )}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+
+              {isEditing && (
+                <div className="p-3 bg-muted/40 border-t border-border flex justify-start">
+                  <button
+                    onClick={addItem}
+                    className={cn(
+                      "flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-[var(--radius)] transition-all cursor-pointer",
+                      theme.bg
+                    )}
+                  >
+                    <Plus className="w-3.5 h-3.5" /> Add Service Item
+                  </button>
+                </div>
+              )}
+            </section>
+
+            {/* Bottom Section: Split Left & Right */}
+            <div className="flex flex-col md:flex-row items-stretch">
+              {/* Bottom Left: Dark Charcoal with Payment Method & Contact Information */}
+              <div className="w-full md:w-[36%] lg:w-[35%] bg-[#23272f] text-neutral-200 p-5 sm:p-7 space-y-6 shrink-0">
+                {/* Payment Method */}
+                <div className="space-y-2.5">
+                  <h3 className="text-xs sm:text-sm font-bold text-white tracking-wide">
+                    Payment Method:
+                  </h3>
+                  <div className="space-y-1.5 text-xs text-neutral-300">
+                    <div className="grid grid-cols-[90px,1fr] gap-1 items-center">
+                      <span className="text-neutral-400">Account No:</span>
+                      <EditableInput
+                        isEditing={isEditing}
+                        inputBg="bg-neutral-800 text-white border-neutral-700"
+                        value={data.paymentMethod?.accountNo || data.billTo?.iban || "1234 5678 910"}
+                        onChange={(e) => handleNestedChange("paymentMethod", "accountNo", e.target.value)}
+                        className="text-neutral-200 font-mono"
+                      />
+                    </div>
+                    <div className="grid grid-cols-[90px,1fr] gap-1 items-center">
+                      <span className="text-neutral-400">Account Name:</span>
+                      <EditableInput
+                        isEditing={isEditing}
+                        inputBg="bg-neutral-800 text-white border-neutral-700"
+                        value={data.paymentMethod?.accountName || data.invoiceTo.name || "Jhone Doe."}
+                        onChange={(e) => handleNestedChange("paymentMethod", "accountName", e.target.value)}
+                        className="text-neutral-200"
+                      />
+                    </div>
+                    <div className="grid grid-cols-[90px,1fr] gap-1 items-center">
+                      <span className="text-neutral-400">Branch Name:</span>
+                      <EditableInput
+                        isEditing={isEditing}
+                        inputBg="bg-neutral-800 text-white border-neutral-700"
+                        value={data.paymentMethod?.branchName || data.billTo?.bankName || "XYZ"}
+                        onChange={(e) => handleNestedChange("paymentMethod", "branchName", e.target.value)}
+                        className="text-neutral-200"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Contact Information */}
+                <div className="space-y-2.5 pt-2">
+                  <h3 className="text-xs sm:text-sm font-bold text-white tracking-wide">
+                    Contact Information
+                  </h3>
+                  <div className="space-y-1.5 text-xs text-neutral-300">
+                    <p className="flex items-center gap-1.5">
+                      <span className="shrink-0 text-neutral-400">Phone:</span>
+                      <EditableInput
+                        isEditing={isEditing}
+                        inputBg="bg-neutral-800 text-white border-neutral-700"
+                        value={data.companyContact?.phone || "+123 4567 8910"}
+                        onChange={(e) => handleNestedChange("companyContact", "phone", e.target.value)}
+                        className="text-neutral-200"
+                      />
+                    </p>
+                    <p className="flex items-center gap-1.5">
+                      <span className="shrink-0 text-neutral-400">Email:</span>
+                      <EditableInput
+                        isEditing={isEditing}
+                        inputBg="bg-neutral-800 text-white border-neutral-700"
+                        value={data.companyContact?.email || "example@mail.com"}
+                        onChange={(e) => handleNestedChange("companyContact", "email", e.target.value)}
+                        className="text-neutral-200 break-all"
+                      />
+                    </p>
+                    <p className="flex items-center gap-1.5">
+                      <span className="shrink-0 text-neutral-400">Website:</span>
+                      <EditableInput
+                        isEditing={isEditing}
+                        inputBg="bg-neutral-800 text-white border-neutral-700"
+                        value={data.companyContact?.website || data.companyContact?.social || "www.sitename.com"}
+                        onChange={(e) => handleNestedChange("companyContact", "website", e.target.value)}
+                        className="text-neutral-200"
+                      />
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom Right: Calculations, Signature, and Terms */}
+              <div className="flex-1 bg-card p-5 sm:p-8 space-y-6 flex flex-col justify-between">
+                {/* Calculations Breakdown */}
+                <div className="space-y-2 text-right">
+                  <div className="flex justify-between md:justify-end gap-6 text-xs sm:text-sm text-foreground">
+                    <span className="font-bold uppercase tracking-wider text-muted-foreground">SUBTOTAL:</span>
+                    <EditableInput
+                      isEditing={isEditing}
+                      value={data.subtotal}
+                      onChange={(e) => handleMainChange("subtotal", e.target.value)}
+                      align="right"
+                      className="font-bold text-foreground min-w-[80px]"
+                    />
+                  </div>
+                  <div className="flex justify-between md:justify-end gap-6 text-xs sm:text-sm text-foreground">
+                    <span className="font-bold uppercase tracking-wider text-muted-foreground">TAX (10%):</span>
+                    <EditableInput
+                      isEditing={isEditing}
+                      value={data.tax || "$100.00"}
+                      onChange={(e) => handleMainChange("tax", e.target.value)}
+                      align="right"
+                      className="font-bold text-foreground min-w-[80px]"
+                    />
+                  </div>
+                  <div className="flex justify-between md:justify-end gap-6 text-xs sm:text-sm text-foreground">
+                    <span className="font-bold uppercase tracking-wider text-muted-foreground">DISCOUNT:</span>
+                    <EditableInput
+                      isEditing={isEditing}
+                      value={data.discount || "$0.00"}
+                      onChange={(e) => handleMainChange("discount", e.target.value)}
+                      align="right"
+                      className="font-bold text-foreground min-w-[80px]"
+                    />
+                  </div>
+                </div>
+
+                {/* Signature & Solid Theme TOTAL Badge Row */}
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+                  {/* Signature Area */}
+                  <div className="text-center w-full sm:w-auto">
+                    <div className="w-40 sm:w-44 border-t border-border mb-1.5 mx-auto sm:mx-0" />
+                    <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                      {data.signatory?.name || "AUTHORISED SIGN"}
+                    </span>
+                  </div>
+
+                  {/* Total Theme Badge */}
+                  <div
+                    className={cn(
+                      "w-full sm:w-auto px-6 py-2.5 rounded-[var(--radius)] flex items-center justify-between sm:justify-center gap-6",
+                      theme.bg
+                    )}
+                  >
+                    <span className={cn("text-xs sm:text-sm font-bold uppercase tracking-wider", theme.fg)}>
+                      TOTAL:
+                    </span>
+                    <EditableInput
+                      isEditing={isEditing}
+                      inputBg={cn("border font-bold", theme.fgSoft, theme.fg)}
+                      value={data.grandTotal}
+                      onChange={(e) => handleMainChange("grandTotal", e.target.value)}
+                      align="right"
+                      className={cn("text-base sm:text-lg font-black tracking-tight", theme.fg)}
+                    />
+                  </div>
+                </div>
+
+                {/* Thank You and Terms & Conditions */}
+                <div className="space-y-2 pt-2 border-t border-border/40">
+                  <h4 className="text-xs sm:text-sm font-bold text-foreground">
+                    Thank You For Your Business
+                  </h4>
+                  <div className="space-y-1">
+                    <span className="text-[11px] font-semibold text-foreground block">
+                      Terms & Conditions:
+                    </span>
+                    <p className="text-[10px] sm:text-[11px] text-muted-foreground leading-relaxed max-w-xl">
+                      {Array.isArray(data.terms)
+                        ? data.terms.join(" ")
+                        : (data.terms || "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.")}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Bottom Accent Strip with Angled Corner Triangle */}
+            <div className="relative">
+              <div className={cn("h-2.5 sm:h-3 w-full", theme.bg)} />
+              {/* Right Corner Slanted Wing/Triangle */}
+              <div
+                className={cn("absolute right-0 bottom-0 w-8 h-8 sm:w-10 sm:h-10 pointer-events-none", theme.bg)}
+                style={{ clipPath: "polygon(100% 0, 0 100%, 100% 100%)" }}
+              />
+            </div>
           </div>
         </div>
       )}
