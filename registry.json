@@ -1890,7 +1890,7 @@
       "type": "registry:component",
       "title": "Error",
       "author": "AlgorizeTech",
-      "description": "A responsive, animated Cyberpunk Diagnostic Terminal Error Website Section with full Light and Dark mode adaptive styling, diagnostic monitors, and live stacktrace inspection.",
+      "description": "Ask the user to pick one of 4 error variants: https://avaraui.com/view/error. This item holds 4 of them as looks of one component (terminal, quantum-glitch, modern-animated, service-pipeline). Skip the question if the user already named one. A responsive, animated Cyberpunk Diagnostic Terminal Error Website Section with full Light and Dark mode adaptive styling, diagnostic monitors, and live stacktrace inspection.",
       "categories": [
         "marketing",
         "layout",
@@ -2774,7 +2774,7 @@
       "type": "registry:component",
       "title": "Invoice",
       "author": "AlgorizeTech",
-      "description": "Ask the user to pick one of 3 invoice variants: https://avaraui.com/view/invoice. This item holds 3 of them as looks of one component (default, corporate, brutalist). Skip the question if the user already named one. A printable invoice with line items, tax and totals, in four presentation styles including modern geometric fashion branding. Use it for billing summaries and receipt pages.",
+      "description": "Ask the user to pick one of 3 invoice variants: https://avaraui.com/view/invoice. This item holds 3 of them as looks of one component (default, corporate, brutalist). Skip the question if the user already named one. A printable invoice with line items, tax and totals, in five presentation styles including asymmetric split and modern geometric fashion branding. Use it for billing summaries and receipt pages.",
       "categories": [
         "commerce",
         "data-display"
@@ -2797,7 +2797,7 @@
           "target": "components/custom/blocks/invoice-theme.ts"
         }
       ],
-      "docs": "Named exports: Invoice, getThemeStyles (from invoice-theme.ts, which installs alongside). `InvoiceData` carries invoiceNumber, parties, dates and an `items` array of { item, description?, hours|qty, unitPrice?, total }. Totals are computed for you. Variants: default | corporate | brutalist | geometric."
+      "docs": "Named exports: Invoice, getThemeStyles (from invoice-theme.ts, which installs alongside). `InvoiceData` carries invoiceNumber, parties, dates and an `items` array of { item, description?, hours|qty, unitPrice?, total }. Totals are computed for you. Variants: default | corporate | brutalist | geometric | split."
     },
     {
       "name": "item",
@@ -3554,7 +3554,6 @@
       ],
       "registryDependencies": [
         "https://avaraui.com/r/button.json",
-        "https://avaraui.com/r/image-wall.json",
         "https://avaraui.com/r/modal.json",
         "utils"
       ],

@@ -8,7 +8,7 @@ import { extractCode } from "@/lib/code";
 
 # Shadcn Invoice Dashboard
 
-A complete, fully functional, and editable Invoice dashboard component featuring 4 distinct design variants: Default, Corporate Executive, Neo-Brutalist, and Modern Geometric.
+A complete, fully functional, and editable Invoice dashboard component featuring 5 distinct design variants: Default, Asymmetric Split, Modern Geometric, Corporate Executive, and Neo-Brutalist.
 
 The component is fully encapsulated — hand it an `invoiceData` object and it owns the rest. Click **Edit** in the right sidebar of any preview to add items, change quantities and download the resulting JSON.
 
@@ -149,6 +149,62 @@ export default function GeometricInvoice() {
   return <Invoice variant="geometric" invoiceData={invoiceData} />;
 }`;
 
+export const splitInvoiceSource = `const invoiceData: InvoiceData = {
+  invoiceNumber: "#123456",
+  dateIssued: "April 05, 2026",
+  companyName: "AVARA_UI",
+  tagline: "DESIGN SYSTEM ARCHITECTURE",
+  invoiceTo: {
+    name: "Jhone Doe.",
+    company: "Managing Director, Company ltd.",
+    phone: "+123 4567 8910",
+    email: "example@mail.com",
+    address: "7777 Mendez Plains, Brooklyn, CA 91905",
+  },
+  invoiceFrom: {
+    name: "Jhone Smith.",
+    company: "Managing Director, Company ltd.",
+    phone: "+123 4567 8910",
+    email: "example@mail.com",
+  },
+  items: [
+    { item: "Business Card Design", unitPrice: "$50", qty: "2", total: "$100.00" },
+    { item: "Interface Design", unitPrice: "$50", qty: "2", total: "$100.00" },
+    { item: "Dashboard Template", unitPrice: "$50", qty: "2", total: "$100.00" },
+    { item: "User Experience Design", unitPrice: "$50", qty: "2", total: "$100.00" },
+    { item: "Mobile Application Design", unitPrice: "$50", qty: "2", total: "$100.00" },
+    { item: "Affiliate Marketing", unitPrice: "$50", qty: "2", total: "$100.00" },
+  ],
+  subtotal: "$1000.00",
+  tax: "$100.00",
+  discount: "$0.00",
+  grandTotal: "$1100.00",
+  paymentMethod: {
+    accountNo: "1234 5678 910",
+    accountName: "Jhone Doe.",
+    branchName: "XYZ",
+  },
+  companyContact: {
+    phone: "+123 4567 8910",
+    email: "example@mail.com",
+    website: "www.sitename.com",
+  },
+  terms: [
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.",
+  ],
+  signatory: {
+    name: "AUTHORISED SIGN",
+  },
+};`;
+
+export const usageSplit = `import Invoice, { type InvoiceData } from "@/components/custom/blocks/Invoice";
+
+${splitInvoiceSource}
+
+export default function SplitInvoice() {
+  return <Invoice variant="split" invoiceData={invoiceData} />;
+}`;
+
 <ExampleShowcase headingLevel={2}
   name="invoice"
   colorControl
@@ -189,6 +245,13 @@ export default function GeometricInvoice() {
   columns={1}
   examples={[
     {
+      title: "Asymmetric Split",
+      subheading:
+        "High-impact editorial split layout with dark charcoal sidebar, themed logo block, angled header divider, and payment details.",
+      props: { variant: "split" },
+      usage: usageSplit,
+    },
+    {
       title: "Modern Geometric",
       subheading:
         "Fashion & creative agency invoice featuring abstract geometric pattern tiles, solid navy recipient badge, zebra table rows, watermark arcs, and terms footer.",
@@ -215,8 +278,8 @@ Explore the Invoice component's structured layout for displaying billing informa
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">4 Design Variants</h3>
-    <p className="text-muted-foreground text-sm">Choose from Default, Corporate Executive, Neo-Brutalist, and Modern Geometric layout variants.</p>
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">5 Design Variants</h3>
+    <p className="text-muted-foreground text-sm">Choose from Default, Asymmetric Split, Modern Geometric, Corporate Executive, and Neo-Brutalist layout variants.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">Interactive Edit & Export</h3>
@@ -265,7 +328,7 @@ Explore the Invoice component's structured layout for displaying billing informa
           <code>variant</code>
         </td>
         <td>
-          <code>"default" | "corporate" | "brutalist" | "geometric"</code>
+          <code>"default" | "corporate" | "brutalist" | "geometric" | "split"</code>
         </td>
         <td>
           <code>"default"</code>

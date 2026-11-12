@@ -52,7 +52,7 @@ export const wallGroups = `    <TechStackGroup>
 
 {/* One snippet per framework: Next.js passes next/link so the wall's links route client-side; anywhere else the default <a> is the right thing and needs no import. */}
 
-export const wallUsage = ({ next, layout, comment, stackVariant, persistentBackground, showMobileWall, interval = true, draggable, focus = true }) => `"use client";
+export const wallUsage = ({ next, layout, comment, stackVariant, singleBackground, persistentBackground, showMobileWall, interval = true, draggable, focus = true }) => `"use client";
 
 ${next ? 'import Link from "next/link";\n' : ""}import { ComponentWall, type ComponentWallItem } from "@/components/custom/blocks/ComponentWallBlock";
 import { TechStack, TechStackGroup, TechStackTool } from "@/components/custom/blocks/TechStackBlock";
@@ -69,7 +69,7 @@ ${wallGroups}  </TechStack>
 export default function Hero() {
   return (
     <ComponentWall
-      layout="${layout}"${persistentBackground ? "\n      persistentBackground" : ""}${showMobileWall !== undefined ? `\n      showMobileWall={${showMobileWall}}` : ""}
+      layout="${layout}"${singleBackground ? "\n      singleBackground" : ""}${persistentBackground ? "\n      persistentBackground" : ""}${showMobileWall !== undefined ? `\n      showMobileWall={${showMobileWall}}` : ""}
       badge={{ label: "Next-gen React components", href: "/docs" }}
       heading="Build interactive {word}."
       headingWords={["interfaces", "components", "experiences", "animations", "dashboards"]}
@@ -121,6 +121,18 @@ export const wallNoMobile = {
 // You can use showMobileWall={false} across ALL variants (center, split, persistentBackground).`,
 };
 
+export const wallSingleBackground = {
+  layout: "center",
+  singleBackground: true,
+  showMobileWall: false,
+  stackVariant: ' variant="compact"',
+  interval: true,
+  draggable: true,
+  focus: true,
+  comment: `// Renders a single continuous full-width background wall animation across the hero
+// instead of splitting into two separate walls on the left and right.`,
+};
+
 export const wallSplit = {
   layout: "split",
   stackVariant: "",
@@ -144,6 +156,11 @@ export const usagePersistent = {
 export const usageNoMobile = {
   nextjs: wallUsage({ ...wallNoMobile, next: true }),
   reactjs: wallUsage({ ...wallNoMobile, next: false }),
+};
+
+export const usageSingleBackground = {
+  nextjs: wallUsage({ ...wallSingleBackground, next: true }),
+  reactjs: wallUsage({ ...wallSingleBackground, next: false }),
 };
 
 export const usageSplit = {
@@ -337,6 +354,60 @@ export const usageSplit = {
       ],
       props: { layout: "center", showMobileWall: false, interval: true, intervalTime: 5500, draggable: true, highlightFocus: true },
       usage: usageNoMobile,
+    },
+    {
+      title: "Clean mobile view with single full-width background wall",
+      subheading:
+        "Centred hero layout featuring one single continuous full-width background wall across the entire hero instead of dual separate left and right walls. Pass singleBackground={true} (or singleWall={true}) to render a single unified wall animation, combined with showMobileWall={false} to keep mobile clean.",
+      propNotes: [
+        {
+          prop: "singleBackground",
+          value: "true",
+          effect:
+            "renders ONE single continuous background wall spanning the entire hero behind the copy, instead of splitting items into separate left and right walls.",
+        },
+        {
+          prop: "showMobileWall",
+          value: "false",
+          effect:
+            "completely hides the background screenshot animations on small screens and phones (<lg) for a clean mobile presentation.",
+        },
+        {
+          prop: "interval",
+          value: "true",
+          effect:
+            "glides the single camera smoothly across the entire background wall on desktop.",
+        },
+        {
+          prop: "draggable",
+          value: "true",
+          effect:
+            "allows interactive dragging and panning across the full-width wall.",
+        },
+        {
+          prop: "layout",
+          value: '"center"',
+          effect:
+            "centres the copy in the middle over the single background wall.",
+        },
+        {
+          prop: "install",
+          effect:
+            "is the command in the box. Live-updates with the card slug the camera lands on.",
+        },
+        {
+          prop: "items",
+          effect:
+            "are all the cards dealt into the single unified wall.",
+        },
+        {
+          prop: "stack",
+          effect:
+            "renders the Tech Stack in compact mode below the trust statement in the center column.",
+        },
+      ],
+      props: { layout: "center", singleBackground: true, showMobileWall: false, interval: true, intervalTime: 5500, draggable: true, highlightFocus: true },
+      usage: usageSingleBackground,
     },
     {
       title: "Copy beside the wall",
@@ -541,6 +612,12 @@ export const usageSplit = {
         <td><code>boolean</code></td>
         <td><code>false</code></td>
         <td>When true (or with <code>layout="center-background"</code>), the animated screenshot walls remain in the background layer behind the copy on small screens instead of dropping below the action buttons as a separate band.</td>
+      </tr>
+      <tr>
+        <td><code>singleBackground</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Centred layout only: when <code>true</code>, renders <strong>one single continuous background wall</strong> across the entire hero instead of splitting into two separate walls on the left and right. Can also be written as <code>singleWall</code>.</td>
       </tr>
       <tr>
         <td><code>compactWall</code></td>

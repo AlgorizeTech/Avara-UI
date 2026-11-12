@@ -231,7 +231,7 @@ const rawNavigation: NavigationItem[] = [
       },
       { label: "Infrastructure Topology", slug: "infrastructure-topology" },
       { label: "Input", slug: "input" },
-      { label: "Invoice", slug: "invoice" },
+      { label: "Invoice", slug: "invoice", badge: "New" },
       { label: "Item", slug: "item" },
       { label: "Kbd", slug: "kbd" },
       { label: "Loader", slug: "loader" },

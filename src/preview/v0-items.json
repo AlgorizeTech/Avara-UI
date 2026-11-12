@@ -242,6 +242,7 @@
     "build-interactive-interfaces": "Component Wall — Build interactive interfaces",
     "centred-with-persistent-background": "Component Wall — Centred with persistent background",
     "clean-mobile-view-no-background-animation": "Component Wall — Clean mobile view (no background animation)",
+    "clean-mobile-view-with-single-full-width-background-wall": "Component Wall — Clean mobile view with single full-width background wall",
     "copy-beside-the-wall": "Component Wall — Copy beside the wall"
   },
   "context-menu": {
@@ -386,7 +387,10 @@
     "liquid-glass": "Email — Liquid Glass"
   },
   "error": {
-    "cyberpunk-terminal-section": "Error — Cyberpunk Terminal Section"
+    "cyberpunk-terminal-section": "Error — Cyberpunk Terminal Section",
+    "modern-animated-orbital-pulse": "Error — Modern Animated Orbital Pulse",
+    "service-pipeline-topology": "Error — Service Pipeline Topology",
+    "quantum-glitch-bento-hud": "Error — Quantum Glitch Bento HUD"
   },
   "falling-tags": {
     "interactive-physics-arena": "Falling Tags — Interactive physics arena",
@@ -571,6 +575,7 @@
   },
   "invoice": {
     "default-dashboard-invoice": "Invoice — Default Dashboard Invoice",
+    "asymmetric-split": "Invoice — Asymmetric Split",
     "modern-geometric": "Invoice — Modern Geometric",
     "corporate-executive": "Invoice — Corporate Executive",
     "neo-brutalist": "Invoice — Neo-Brutalist"

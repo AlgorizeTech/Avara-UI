@@ -21,6 +21,8 @@ export default function ComponentWallDemo({
   cardDim,
   highlightFocus,
   cardShadow,
+  singleBackground,
+  singleWall,
 }: {
   /** Milliseconds the camera rests on a card, or boolean (`true` = auto-slide, `false` = still). */
   interval?: number | boolean;
@@ -32,6 +34,10 @@ export default function ComponentWallDemo({
   layout?: "split" | "center" | "center-background";
   /** Keep wall in the background on mobile instead of dropping as a bottom band. */
   persistentBackground?: boolean;
+  /** Render one single continuous background wall instead of splitting into two separate walls. */
+  singleBackground?: boolean;
+  /** Alias for singleBackground. */
+  singleWall?: boolean;
   /** Whether to show wall animations on mobile/small screens (<lg). Defaults to true. */
   showMobileWall?: boolean;
   /** Alias for showMobileWall. Set to false to hide animations on small screens. */
@@ -73,6 +79,7 @@ export default function ComponentWallDemo({
         order={order}
         layout={layout}
         persistentBackground={persistentBackground}
+        singleBackground={singleBackground || singleWall}
         showMobileWall={showMobileWall}
         mobileBackground={mobileBackground}
         mobileZoom={mobileZoom}
