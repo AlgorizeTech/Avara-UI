@@ -11,9 +11,26 @@ import {
   LifeBuoy,
   RefreshCw,
   Cpu,
+  ShieldAlert,
+  Terminal,
+  ChevronDown,
+  ChevronUp,
 } from "lucide-react";
 
+export interface ServiceStatusItem {
+  name: string;
+  status: "operational" | "degraded" | "outage";
+  latency?: string;
+}
+
 export interface ErrorSectionProps extends React.HTMLAttributes<HTMLElement> {
+  /**
+   * Visual layout variant:
+   * - "terminal": Cyberpunk diagnostic enclosure with technical readout.
+   * - "modern-animated" / "cosmic-pulse": Ultra-modern animated orbital radar with live health micro-monitors.
+   * Defaults to "terminal".
+   */
+  variant?: "terminal" | "modern-animated" | "cosmic-pulse";
   /** Primary error code or status, e.g. "500", "503", "CLIENT_EXCEPTION" */
   errorCode?: string;
   /** Main heading */
@@ -24,6 +41,8 @@ export interface ErrorSectionProps extends React.HTMLAttributes<HTMLElement> {
   errorDetails?: string;
   /** Digest/incident ID */
   errorId?: string;
+  /** Micro-service telemetry status items (used in modern-animated variant) */
+  services?: ServiceStatusItem[];
   /** Callback triggered when user clicks 'Try Again' / 'Reload' */
   onRetry?: () => void;
   /** Callback triggered when user clicks 'Back to Home' */
@@ -32,12 +51,51 @@ export interface ErrorSectionProps extends React.HTMLAttributes<HTMLElement> {
   onSupport?: () => void;
 }
 
+const MODERN_STYLES = `
+@keyframes err-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes err-radar-sweep {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes err-spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes err-spin-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+@keyframes err-pulse-halo {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.08); }
+}
+@keyframes err-beacon-ping {
+  0% { transform: scale(0.9); opacity: 0.8; }
+  70%, 100% { transform: scale(1.6); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .err-anim-float,
+  .err-anim-sweep,
+  .err-anim-spin,
+  .err-anim-spin-reverse,
+  .err-anim-halo,
+  .err-anim-ping {
+    animation: none !important;
+  }
+}
+`;
+
 export function ErrorSection({
+  variant = "terminal",
   errorCode = "500",
-  title = "SYSTEM RUNTIME EXCEPTION",
-  description = "Critical process halted due to an unhandled kernel exception. Memory buffers preserved for telemetry diagnostics.",
+  title,
+  description,
   errorDetails,
   errorId = "ERR_0x9481FA",
+  services,
   onRetry,
   onHome,
   onSupport,
@@ -46,6 +104,19 @@ export function ErrorSection({
 }: ErrorSectionProps) {
   const [copied, setCopied] = useState(false);
   const [retrying, setRetrying] = useState(false);
+  const [detailsOpen, setDetailsOpen] = useState(false);
+
+  const isModern = variant === "modern-animated" || variant === "cosmic-pulse";
+
+  const resolvedTitle =
+    title ||
+    (isModern ? "UNEXPECTED SYSTEM ANOMALY" : "SYSTEM RUNTIME EXCEPTION");
+
+  const resolvedDescription =
+    description ||
+    (isModern
+      ? "An unhandled runtime disruption interrupted the telemetry pipeline. Critical memory states were safely captured for telemetry diagnostics."
+      : "Critical process halted due to an unhandled kernel exception. Memory buffers preserved for telemetry diagnostics.");
 
   const sampleDetails =
     errorDetails ||
@@ -72,6 +143,231 @@ export function ErrorSection({
     setTimeout(() => setRetrying(false), 1200);
   };
 
+  const defaultServices: ServiceStatusItem[] = [
+    { name: "API Gateway", status: "operational", latency: "24ms" },
+    { name: "Worker Pool", status: "degraded", latency: "820ms" },
+    { name: "Database Shard", status: "outage", latency: "TIMEOUT" },
+  ];
+  const resolvedServices = services || defaultServices;
+
+  // -------------------------------------------------------------------------
+  // VARIANT: Modern Animated Orbital Radar ("modern-animated" / "cosmic-pulse")
+  // -------------------------------------------------------------------------
+  if (isModern) {
+    return (
+      <section
+        className={cn(
+          "relative w-full py-12 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-8 bg-background text-foreground overflow-hidden flex flex-col items-center justify-center min-h-[620px] transition-colors duration-300 font-sans select-none",
+          className
+        )}
+        {...props}
+      >
+        <style>{MODERN_STYLES}</style>
+
+        {/* Ambient background cyber grid & multi-layer glowing spotlights */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-[0.035] dark:opacity-[0.05] bg-[radial-gradient(#ef4444_1px,transparent_1px)] [background-size:24px_24px] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_75%)]"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[720px] max-w-full h-[400px] bg-red-500/12 dark:bg-red-600/15 blur-[130px] rounded-full"
+        />
+
+        <div className="relative z-10 w-full max-w-2xl mx-auto flex flex-col items-center text-center space-y-6 sm:space-y-8">
+
+          {/* Center Orbital Animated Radar Core */}
+          <div
+            className="relative flex items-center justify-center w-52 h-52 sm:w-60 sm:h-60 err-anim-float my-2 select-none"
+            style={{ animation: "err-float 6s ease-in-out infinite" }}
+          >
+            {/* Ambient glowing radial halo */}
+            <div
+              className="absolute inset-0 rounded-full bg-red-500/20 dark:bg-red-600/25 blur-3xl err-anim-halo pointer-events-none"
+              style={{ animation: "err-pulse-halo 4s ease-in-out infinite" }}
+            />
+
+            {/* Outer Dashed Orbit with Satellite bead */}
+            <div
+              className="absolute inset-0 rounded-full border border-dashed border-red-500/30 dark:border-red-400/30 err-anim-spin"
+              style={{ animation: "err-spin-slow 24s linear infinite" }}
+            >
+              <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-red-500 shadow-[0_0_12px_#ef4444]" />
+            </div>
+
+            {/* Middle Orbit with Cardinal crosshairs */}
+            <div
+              className="absolute inset-4 rounded-full border border-red-500/20 dark:border-red-500/25 err-anim-spin-reverse"
+              style={{ animation: "err-spin-reverse 16s linear infinite" }}
+            >
+              <span className="absolute top-0 left-1/2 -translate-x-1/2 w-1.5 h-1 bg-red-500/60" />
+              <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1.5 h-1 bg-red-500/60" />
+              <span className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-1.5 bg-red-500/60" />
+              <span className="absolute right-0 top-1/2 -translate-y-1/2 w-1 h-1.5 bg-red-500/60" />
+            </div>
+
+            {/* Conic Radar Scanner Sweep */}
+            <div
+              className="absolute inset-6 rounded-full opacity-60 err-anim-sweep pointer-events-none"
+              style={{
+                background:
+                  "conic-gradient(from 0deg, transparent 0deg, transparent 270deg, rgba(239,68,68,0.3) 360deg)",
+                animation: "err-radar-sweep 4s linear infinite",
+              }}
+            />
+
+            {/* Pulsing beacon waves */}
+            <div
+              className="absolute inset-10 rounded-full border border-red-500/40 err-anim-ping pointer-events-none"
+              style={{ animation: "err-beacon-ping 3s cubic-bezier(0, 0, 0.2, 1) infinite" }}
+            />
+
+            {/* Center Frosted Glass Capsule */}
+            <div className="relative z-10 w-24 h-24 sm:w-28 sm:h-28 rounded-full bg-card/80 backdrop-blur-xl border border-red-500/40 shadow-[0_0_35px_rgba(239,68,68,0.25)] dark:shadow-[0_0_50px_rgba(239,68,68,0.35)] flex flex-col items-center justify-center">
+              <div className="relative">
+                <ShieldAlert className="w-10 h-10 sm:w-12 sm:h-12 text-red-500 dark:text-red-400 drop-shadow-[0_0_12px_rgba(239,68,68,0.5)]" />
+                <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500" />
+                </span>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Heading & Explanatory Copy */}
+          <div className="space-y-2.5 max-w-lg">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-foreground uppercase font-sans">
+              {resolvedTitle}
+            </h2>
+            <p className="text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed">
+              {resolvedDescription}
+            </p>
+          </div>
+
+          {/* Micro-Service Live Health Monitors */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 w-full max-w-lg mx-auto">
+            {resolvedServices.map((svc, i) => {
+              const isOk = svc.status === "operational";
+              const isDegraded = svc.status === "degraded";
+              return (
+                <div
+                  key={i}
+                  className="flex items-center justify-between px-3.5 py-2.5 rounded-xl border border-border/80 bg-card/60 backdrop-blur-md transition-all hover:border-foreground/20 hover:scale-[1.02] shadow-xs"
+                >
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span
+                      className={cn(
+                        "w-2 h-2 rounded-full shrink-0",
+                        isOk && "bg-emerald-500 shadow-[0_0_8px_#10b981]",
+                        isDegraded && "bg-amber-500 animate-pulse shadow-[0_0_8px_#f59e0b]",
+                        !isOk && !isDegraded && "bg-red-500 animate-ping shadow-[0_0_8px_#ef4444]"
+                      )}
+                    />
+                    <span className="text-[12px] font-medium text-foreground truncate">
+                      {svc.name}
+                    </span>
+                  </div>
+                  <span
+                    className={cn(
+                      "text-[10px] font-mono uppercase font-semibold shrink-0 ml-2 px-1.5 py-0.5 rounded",
+                      isOk && "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10",
+                      isDegraded && "text-amber-600 dark:text-amber-400 bg-amber-500/10",
+                      !isOk && !isDegraded && "text-red-600 dark:text-red-400 bg-red-500/10"
+                    )}
+                  >
+                    {svc.latency ?? svc.status}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Expandable Diagnostic Drawer with Copy Trace Button */}
+          <div className="w-full max-w-lg mx-auto rounded-xl border border-border/80 bg-card/70 backdrop-blur-md overflow-hidden transition-all shadow-xs text-left">
+            <div className="flex items-center justify-between px-3.5 py-2.5 border-b border-border/60 bg-muted/40 text-xs">
+              <button
+                type="button"
+                onClick={() => setDetailsOpen(!detailsOpen)}
+                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer select-none font-mono"
+              >
+                <Terminal className="w-3.5 h-3.5 text-red-500 shrink-0" />
+                <span className="truncate">
+                  Trace: <strong className="text-foreground">{errorId}</strong>
+                </span>
+                {detailsOpen ? (
+                  <ChevronUp className="w-3.5 h-3.5 shrink-0" />
+                ) : (
+                  <ChevronDown className="w-3.5 h-3.5 shrink-0" />
+                )}
+              </button>
+
+              <button
+                type="button"
+                onClick={copyIncidentId}
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-mono bg-background hover:bg-muted border border-border transition-colors cursor-pointer shrink-0 ml-2"
+              >
+                {copied ? (
+                  <>
+                    <Check className="w-3 h-3 text-emerald-500" />
+                    <span className="text-emerald-600 dark:text-emerald-400 font-medium">Copied</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3 h-3 text-muted-foreground" />
+                    <span>Copy Hash</span>
+                  </>
+                )}
+              </button>
+            </div>
+
+            {detailsOpen && (
+              <div className="p-2.5 sm:p-3 pt-2">
+                <div className="p-3 sm:p-3.5 rounded-lg border border-neutral-200/90 dark:border-neutral-800 bg-neutral-100/70 dark:bg-neutral-950/80 text-red-600 dark:text-red-400 text-[11px] font-mono overflow-x-auto max-h-44 overflow-y-auto leading-relaxed whitespace-pre-wrap select-all shadow-xs selection:bg-red-500/20">
+                  {sampleDetails}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Interactive Actions Hub */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-md mx-auto pt-2">
+            <button
+              type="button"
+              onClick={handleRetry}
+              disabled={retrying}
+              className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-2.5 rounded-xl font-medium text-xs sm:text-sm bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-500/25 transition-all active:scale-95 cursor-pointer disabled:opacity-50"
+            >
+              <RefreshCw className={cn("w-4 h-4", retrying && "animate-spin")} />
+              {retrying ? "Re-initiating Pipeline..." : "Attempt Auto-Recovery"}
+            </button>
+            <button
+              type="button"
+              onClick={onHome}
+              className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 rounded-xl font-medium text-xs sm:text-sm bg-secondary hover:bg-secondary/80 text-secondary-foreground border border-border transition-all active:scale-95 cursor-pointer"
+            >
+              <Home className="w-4 h-4" />
+              Return to Safety
+            </button>
+          </div>
+
+          {onSupport && (
+            <button
+              type="button"
+              onClick={onSupport}
+              className="text-xs text-muted-foreground hover:text-red-500 dark:hover:text-red-400 inline-flex items-center gap-1.5 transition-colors cursor-pointer mt-1"
+            >
+              <LifeBuoy className="w-3.5 h-3.5" /> Escalate to Infrastructure Engineering &rarr;
+            </button>
+          )}
+        </div>
+      </section>
+    );
+  }
+
+  // -------------------------------------------------------------------------
+  // VARIANT: Cyberpunk Diagnostic Terminal ("terminal", default)
+  // -------------------------------------------------------------------------
   return (
     <section
       className={cn(
@@ -131,13 +427,15 @@ export function ErrorSection({
               <div className="flex flex-wrap items-center gap-1.5 sm:gap-2.5 text-[11px] sm:text-xs font-mono text-red-600 dark:text-red-400/90 font-medium">
                 <span className="font-bold uppercase tracking-wider">FATAL_SIGNAL</span>
                 <span className="text-neutral-400">/</span>
-                <span className="text-neutral-500 dark:text-neutral-400 truncate">INCIDENT ID: {errorId}</span>
+                <span className="text-neutral-500 dark:text-neutral-400 truncate">
+                  INCIDENT ID: {errorId}
+                </span>
               </div>
               <h3 className="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight text-neutral-900 dark:text-white font-mono uppercase break-words">
-                {title}
+                {resolvedTitle}
               </h3>
               <p className="text-xs sm:text-sm lg:text-base text-neutral-600 dark:text-neutral-400 leading-relaxed font-sans max-w-2xl">
-                {description}
+                {resolvedDescription}
               </p>
             </div>
           </div>
@@ -166,7 +464,9 @@ export function ErrorSection({
                 ) : (
                   <>
                     <Copy className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
-                    <span>Copy<span className="hidden sm:inline"> Trace</span></span>
+                    <span>
+                      Copy<span className="hidden sm:inline"> Trace</span>
+                    </span>
                   </>
                 )}
               </button>
@@ -189,7 +489,9 @@ export function ErrorSection({
                 disabled={retrying}
                 className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl font-medium text-xs sm:text-sm bg-red-600 hover:bg-red-500 text-white transition-all shadow-[0_0_25px_rgba(239,68,68,0.35)] active:scale-95 cursor-pointer disabled:opacity-50 w-full sm:w-auto"
               >
-                <RefreshCw className={cn("w-3.5 h-3.5 sm:w-4 sm:h-4", retrying && "animate-spin")} />
+                <RefreshCw
+                  className={cn("w-3.5 h-3.5 sm:w-4 sm:h-4", retrying && "animate-spin")}
+                />
                 {retrying ? "Rebooting Cluster..." : "Reboot System"}
               </button>
               <button

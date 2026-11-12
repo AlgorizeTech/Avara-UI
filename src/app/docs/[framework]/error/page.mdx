@@ -7,9 +7,11 @@ import { extractCode } from "@/lib/code";
 
 # Shadcn Error Page
 
-A full-page, responsive Cyberpunk Diagnostic Terminal section designed for root application error boundaries, Next.js `error.tsx` / `global-error.tsx`, and dedicated maintenance pages.
+A full-page, responsive Cyberpunk Diagnostic Terminal and Modern Animated Orbital Radar section designed for root application error boundaries, Next.js `error.tsx` / `global-error.tsx`, and dedicated maintenance pages.
 
 Features a full-width terminal enclosure, diagnostic monitors, adaptive light & dark mode styling, live stacktrace inspector, and one-click incident copying.
+
+<AgentVariants slug="error" />
 
 export const usageDefault = `import { ErrorSection } from "@/components/custom/blocks/ErrorBlock";
 
@@ -19,6 +21,23 @@ export default function ErrorPage() {
       errorCode="500"
       title="SYSTEM RUNTIME EXCEPTION"
       description="Critical process halted due to an unhandled kernel exception. Memory buffers preserved for telemetry diagnostics."
+      errorId="ERR_0x9481FA"
+      onRetry={() => window.location.reload()}
+      onHome={() => window.location.href = "/"}
+      onSupport={() => window.open("/support", "_blank")}
+    />
+  );
+}`;
+
+export const usageModern = `import { ErrorSection } from "@/components/custom/blocks/ErrorBlock";
+
+export default function ModernErrorPage() {
+  return (
+    <ErrorSection
+      variant="modern-animated"
+      errorCode="500"
+      title="UNEXPECTED SYSTEM ANOMALY"
+      description="An unhandled runtime disruption interrupted the telemetry pipeline. Critical memory states were safely captured for telemetry diagnostics."
       errorId="ERR_0x9481FA"
       onRetry={() => window.location.reload()}
       onHome={() => window.location.href = "/"}
@@ -63,26 +82,69 @@ export default function ErrorPage() {
 
 <Installation name="error" />
 
+## Variations
+
+<ExampleShowcase
+  name="error"
+  columns={1}
+  colorControl={false}
+  minHeight={660}
+  examples={[
+    {
+      title: "Modern Animated Orbital Pulse",
+      subheading:
+        "An ultra-modern, interactive glassmorphic error canvas featuring concentric counter-rotating orbital rings, sweeping radar beam, live micro-service health monitors, and interactive stacktrace diagnostics.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"modern-animated"',
+          effect:
+            "activates the modern animated orbital radar layout with glassmorphic cards and live telemetry.",
+        },
+        {
+          prop: "errorCode",
+          value: '"500"',
+          effect: "displays the error status code or exception type.",
+        },
+        {
+          prop: "errorId",
+          value: '"ERR_0x9481FA"',
+          effect: "unique incident trace ID for diagnostic triage.",
+        },
+      ],
+      props: {
+        variant: "modern-animated",
+        errorCode: "500",
+        title: "UNEXPECTED SYSTEM ANOMALY",
+        description:
+          "An unhandled runtime disruption interrupted the telemetry pipeline. Critical memory states were safely captured for telemetry diagnostics.",
+        errorId: "ERR_0x9481FA",
+      },
+      usage: usageModern,
+    },
+  ]}
+/>
+
 ## Features
 
 Discover the key capabilities of the `ErrorSection` component:
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Modern Animated Orbital Pulse</h3>
+    <p className="text-muted-foreground text-sm">Concentric counter-rotating orbital rings with sweeping radar scanner beam, floating satellite beads, and breathing luminous focal halo.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Live Micro-Service Health Monitors</h3>
+    <p className="text-muted-foreground text-sm">Dynamic status indicator cards for API Gateway, Worker Nodes, and Database Shards with real-time latency badges.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">Cyberpunk Diagnostic Enclosure</h3>
     <p className="text-muted-foreground text-sm">Full-width futuristic telemetry console with macOS window indicators, pulsating status badge, and glowing holographic crash icon.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Adaptive Light & Dark Modes</h3>
-    <p className="text-muted-foreground text-sm">Clean high-contrast daytime mode alongside an immersive deep obsidian cyberpunk nocturnal theme with red spotlights.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">Live Stacktrace Console & Copy</h3>
     <p className="text-muted-foreground text-sm">Scroll-safe diagnostic trace terminal with one-click clipboard copying for quick bug triage and escalation.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Mobile Touch-Friendly Layout</h3>
-    <p className="text-muted-foreground text-sm">Responsive action buttons and fluid typography that automatically adapt from compact 320px smartphones to widescreen monitors.</p>
   </div>
 </div>
 
@@ -99,6 +161,12 @@ Discover the key capabilities of the `ErrorSection` component:
       </tr>
     </thead>
     <tbody>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"terminal" | "modern-animated" | "cosmic-pulse"</code></td>
+        <td><code>"terminal"</code></td>
+        <td>Visual layout variant: <code>"terminal"</code> for the cyberpunk diagnostic enclosure, or <code>"modern-animated"</code> for the ultra-modern animated orbital radar with live health monitors.</td>
+      </tr>
       <tr>
         <td><code>errorCode</code></td>
         <td><code>string</code></td>
@@ -130,10 +198,16 @@ Discover the key capabilities of the `ErrorSection` component:
         <td>Raw stacktrace or diagnostic technical dump rendered inside the expandable code console.</td>
       </tr>
       <tr>
+        <td><code>services</code></td>
+        <td><code>ServiceStatusItem[]</code></td>
+        <td><code>default telemetry array</code></td>
+        <td>Custom micro-service health items (name, status, latency) displayed on the live telemetry cards in the modern variant.</td>
+      </tr>
+      <tr>
         <td><code>onRetry</code></td>
         <td><code>() =&gt; void</code></td>
         <td><code>undefined</code></td>
-        <td>Callback invoked when user clicks the "Reboot System" action button.</td>
+        <td>Callback invoked when user clicks the "Reboot System" or "Attempt Auto-Recovery" action button.</td>
       </tr>
       <tr>
         <td><code>onHome</code></td>
