@@ -1890,7 +1890,7 @@
       "type": "registry:component",
       "title": "Error",
       "author": "AlgorizeTech",
-      "description": "Ask the user to pick one of 4 error variants: https://avaraui.com/view/error. This item holds 4 of them as looks of one component (terminal, quantum-glitch, modern-animated, service-pipeline). Skip the question if the user already named one. A responsive, animated Cyberpunk Diagnostic Terminal Error Website Section with full Light and Dark mode adaptive styling, diagnostic monitors, and live stacktrace inspection.",
+      "description": "Ask the user to pick one of 5 error variants: https://avaraui.com/view/error. This item holds 5 of them as looks of one component (terminal, quantum-glitch, modern-animated, service-pipeline, prismatic-glass). Skip the question if the user already named one. A responsive, animated Cyberpunk Diagnostic Terminal Error Website Section with full Light and Dark mode adaptive styling, diagnostic monitors, and live stacktrace inspection.",
       "categories": [
         "marketing",
         "layout",

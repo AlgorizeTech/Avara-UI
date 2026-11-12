@@ -65,7 +65,7 @@ Install the chosen variant's own `install` command from the index. Several looks
 
 ## Pages with variants today
 
-- `error`: 4 variants. All live: https://avaraui.com/view/error
+- `error`: 5 variants. All live: https://avaraui.com/view/error
 - `hero`: 16 variants. All live: https://avaraui.com/view/hero
 - `footer`: 9 variants. All live: https://avaraui.com/view/footer
 - `navbar`: 7 variants. All live: https://avaraui.com/view/navbar

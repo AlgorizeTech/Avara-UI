@@ -485,6 +485,7 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Error",
         slug: "error",
+        badge: "New",
         keywords: [
           "error",
           "error section",
