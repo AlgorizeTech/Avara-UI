@@ -16,7 +16,7 @@ Pass `variant="masonry-portfolio"` for an edge-to-edge continuous infinite canva
 
 - Pass `variant="masonry-portfolio"` Selects the edge-to-edge infinite masonry canvas showcasing all cards with smooth inertial physics and centered 3D ambient elevation.
 - Set `draggable=true` Enables interactive 4-directional mouse and touch dragging with spring physics and kinetic momentum damping.
-- Set `interval=true` Activates automatic ambient camera glide from project card to card, pausing automatically during user hover or drag interactions.
+- Set `interval=true` Activates continuous smooth auto-scrolling glide across the infinite 2D canvas, pausing automatically during active user drag interactions and project modal inspection.
 - Set `intervalTime=5500` Configures how long the camera settles on a project card in milliseconds before initiating flight to the next.
 - Set `order="shuffle"` Takes flights in dynamic multi-directional paths across the masonry canvas rather than a single fixed axis.
 - Set `stagger=72` Controls the vertical masonry offset between alternate columns, producing an organic waterfall layout where cards do not align rigidly.
@@ -149,13 +149,14 @@ Clicking any work card pops open an accessible, responsive presentation dialog w
 | `variant` | `"masonry-portfolio" \| "fullscreen"` | `"masonry-portfolio"` | Layout presentation style. Defaults to `"masonry-portfolio"` with 3D ambient center cushion and edge-to-edge canvas. |
 | `items` | `PortfolioItem[]` | `DEFAULT_PORTFOLIO_ITEMS` | Array of project objects containing `title`, `image`, `category`, `client`, `year`, and `description`. |
 | `draggable` | `boolean` | `true` | Enables 4-way mouse, trackpad, and touch panning across the entire canvas with kinetic inertia. |
-| `interval` | `boolean \| number` | `true` | Controls automatic camera navigation. Set to `false` to disable auto-flights. |
+| `interval` | `boolean \| number` | `true` | Controls automatic canvas animation. When true (or duration in ms), triggers smooth continuous auto-scrolling glide across the infinite 2D canvas. Set to `false` to keep the canvas stationary. |
+| `drift` | `boolean \| &#123; x?: number; y?: number &#125;` | `&#123; x: -0.35, y: -0.18 &#125;` | Custom continuous ambient auto-scroll velocity vector. Defaults to `&#123; x: -0.35, y: -0.18 &#125;` when `interval=true`. Pass `false` to disable auto-drift or specify custom velocity. |
 | `intervalTime` | `number` | `5500` | Duration in milliseconds the camera settles on a card before transitioning to the next destination. |
 | `order` | `"serial" \| "shuffle"` | `"shuffle"` | Camera path sequence: sequential ordering or non-linear multi-directional random flights. |
 | `stagger` | `number` | `72` | Vertical masonry displacement in pixels between alternating column tracks. |
 | `gap` | `number` | `16` | Spacing in pixels between adjacent cards horizontally and vertically. |
-| `zoom` | `number` | `1` | Scale multiplier for resting cards on desktop viewports. |
-| `mobileZoom` | `number` | `0.5` | Scale multiplier for cards rendered on compact mobile displays. |
+| `zoom` | `number` | `0.55` | Scale multiplier for resting cards on desktop viewports (compact & refined view). |
+| `mobileZoom` | `number` | `0.42` | Scale multiplier for cards rendered on compact mobile displays. |
 | `itemModal` | `boolean` | `true` | When true, clicking any card launches the comprehensive project details dialog. |
 | `cardShadow` | `boolean` | `true` | Renders subtle realistic drop shadows beneath each project card. |
 | `highlightFocus` | `boolean` | `false` | When true, selectively highlights the active card while subtly dimming outer cards. |

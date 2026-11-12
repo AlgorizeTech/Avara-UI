@@ -1,7 +1,7 @@
 "use client";
 
 import React, { forwardRef, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { Mail, Copy, Check, ArrowUpRight } from "lucide-react";
+import { Mail, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Button from "./Button";
 import { Modal } from "./ModalBlock";
@@ -80,12 +80,6 @@ export interface PortfolioShowcaseProps extends Omit<React.HTMLAttributes<HTMLEl
   showCursorBadge?: boolean;
 }
 
-const kebab = (s: string) =>
-  s
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
-
 // ------------------------------------------
 // Geometry: Original card dimensions (384px wide × 285px high) preserved from previous commit
 // ------------------------------------------
@@ -99,7 +93,6 @@ const FRAME_W = CARD_W - (CARD_BORDER + CARD_PAD) * 2; // 370px
 const FRAME_RATIO = 493 / 332; // ~1.485
 const FRAME_H = Math.round(FRAME_W / FRAME_RATIO); // 249px
 const CARD_H = CARD_BORDER + CARD_PAD + CAPTION_H + CARD_PAD + FRAME_H + CARD_PAD + CARD_BORDER; // 285px
-const PHONE_ZOOM = 0.5;
 const CENTER_TILE = "0,0";
 
 interface PlacedCard extends PortfolioItem {
@@ -379,7 +372,6 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
     ref,
   ) => {
     const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
-    const [copiedLink, setCopiedLink] = useState(false);
     const [tiles, setTiles] = useState(CENTER_TILE);
     const [isDragging, setIsDragging] = useState(false);
     const [onScreen, setOnScreen] = useState(true);
