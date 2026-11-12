@@ -1,19 +1,10 @@
 "use client";
 
 import React, { forwardRef, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { createPortal } from "react-dom";
-import { Mail, Copy, Check, ArrowUpRight, X } from "lucide-react";
+import { Mail, Copy, Check, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Button from "./Button";
 import { Modal } from "./ModalBlock";
-
-export interface CardMorphOrigin {
-  top: number;
-  left: number;
-  width: number;
-  height: number;
-  rotY: number;
-}
 
 export interface PortfolioItem {
   /** Project title */
@@ -41,8 +32,8 @@ export interface PortfolioItem {
 }
 
 export interface PortfolioShowcaseProps extends Omit<React.HTMLAttributes<HTMLElement>, "onFocus"> {
-  /** Visual presentation mode. Defaults to 'masonry-portfolio'. Options: 'masonry-portfolio', 'fullscreen', 'perspective-corridor'. */
-  variant?: "masonry-portfolio" | "fullscreen" | "perspective-corridor" | "perspective-runway";
+  /** Visual presentation mode. Defaults to 'masonry-portfolio'. */
+  variant?: "masonry-portfolio" | "fullscreen";
   /** The portfolio project cards shown on the canvas. */
   items?: PortfolioItem[];
   /** Staggered columns in one tile. Defaults to 4. */
@@ -87,8 +78,6 @@ export interface PortfolioShowcaseProps extends Omit<React.HTMLAttributes<HTMLEl
   cursorBadgeLabel?: string;
   /** Whether to show the custom orange cursor with badge on card hover. Defaults to true. */
   showCursorBadge?: boolean;
-  /** Whether to show simulated live collaborative cursors in 3D perspective mode. Defaults to true. */
-  collaborativeCursors?: boolean;
 }
 
 const kebab = (s: string) =>
@@ -234,552 +223,126 @@ const ShowcaseCard = React.memo(function ShowcaseCard({
 // ------------------------------------------
 export const DEFAULT_PORTFOLIO_ITEMS: PortfolioItem[] = [
   {
-    slug: "lumen-website",
-    title: "Lumen / Website",
-    category: "Hero Sculpture",
-    client: "Lumen Studio",
+    slug: "fintech-aura",
+    title: "Aura Fintech Banking",
+    category: "Mobile App & Design System",
+    client: "Aura Global Financial",
     year: "2026",
-    description: "An evocative dark editorial hero featuring translucent wireframe statues and fluid kinetic typography.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/hero-1790516064495.jpg",
-    tags: ["WebGL", "Hero", "Creative"],
+    description: "An ultra-modern mobile banking experience and comprehensive design system with real-time liquidity visualization, biometric security flows, and seamless multi-currency settlements.",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/bento-showcase-1790516064489.jpg",
+    tags: ["Mobile", "Fintech", "Design System"],
   },
   {
-    slug: "orvane-hero",
-    title: "Orvane / Hero",
-    category: "Architecture & Studio",
-    client: "Orvane Group",
+    slug: "minimal-studio",
+    title: "Studio Arch Minimal",
+    category: "Architecture & Editorial",
+    client: "Atelier Architekten",
     year: "2026",
-    description: "Architectural monolithic showcase combining crane skyscraper photography with spatial gallery layouts.",
+    description: "Monolithic editorial portfolio website for an international architectural studio, combining high-resolution spatial photography with smooth inertial gallery physics.",
     image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/collage-hero-1790516064493.jpg",
     tags: ["Architecture", "Editorial", "Web Design"],
   },
   {
-    slug: "hashi-footer",
-    title: "Hashi / Footer",
-    category: "Minimal Typography",
-    client: "Hashi Living",
-    year: "2026",
-    description: "Minimalist editorial calendar and scheduling experience with crisp contrast and typographic discipline.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/calendar-1790516064491.jpg",
-    tags: ["Minimal", "Typography", "Editorial"],
-  },
-  {
-    slug: "summary-component",
-    title: "Summary / Component",
-    category: "Design System & UI",
-    client: "Summary Labs",
+    slug: "lumina-health",
+    title: "Lumina Telehealth AI",
+    category: "Healthcare & AI Assistant",
+    client: "Lumina Care Systems",
     year: "2025",
-    description: "Multi-layered enterprise ledger grid platform with GPU-accelerated pivot charting and real-time telemetry.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516056/data-grid-1790516064494.jpg",
-    tags: ["Component", "Design System", "Fintech"],
-  },
-  {
-    slug: "vellmont-footer",
-    title: "Vellmont / Footer",
-    category: "Blueprints & Structure",
-    client: "Vellmont Architekten",
-    year: "2025",
-    description: "Zero-latency cloud monitoring and architectural telemetry infrastructure with topological node mapping.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516056/data-flow-1790516064493.jpg",
-    tags: ["Infrastructure", "Dashboard", "DevTools"],
-  },
-  {
-    slug: "mail-contact",
-    title: "Mail / Contact Form",
-    category: "Interactive Stationery",
-    client: "Atelier Papeterie",
-    year: "2026",
-    description: "Tactile digital correspondence experience blending handwritten physics with instant email delivery.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/product-details-1790516064500.jpg",
-    tags: ["Commerce", "Interaction", "Stationery"],
-  },
-  {
-    slug: "qed-landing",
-    title: "QED / Landing",
-    category: "Fintech Platform",
-    client: "QED Capital",
-    year: "2026",
-    description: "Enterprise revenue automation portal featuring dynamic pricing tiers and localized compliance flows.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/pricing-1790516064500.jpg",
-    tags: ["Fintech", "Pricing", "Enterprise"],
-  },
-  {
-    slug: "offline-404",
-    title: "Offline / 404",
-    category: "Retro Meadow Display",
-    client: "Studio Offline",
-    year: "2026",
-    description: "Iconic nostalgic Macintosh workstation situated in a blooming countryside meadow at golden sunset.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
-    tags: ["3D", "Retro", "Landscape"],
-  },
-  {
-    slug: "meridian-footer",
-    title: "Meridian / Footer",
-    category: "Agency Monolith",
-    client: "Meridian Collective",
-    year: "2026",
-    description: "Curated contemporary digital gallery archive and sculpture museum with spatial gyroscopic navigation.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/orbit-gallery-1790516064499.jpg",
-    tags: ["Museum", "Arts", "Monolith"],
-  },
-  {
-    slug: "driftline-integrations",
-    title: "Driftline / Integrations",
-    category: "Alpine Wilderness",
-    client: "Driftline Outdoor",
-    year: "2025",
-    description: "High-altitude atmospheric mountain summit expedition documentary with panoramic photography.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
-    tags: ["Wilderness", "Photography", "Expedition"],
-  },
-  {
-    slug: "offline-footer",
-    title: "Alpine / Studio",
-    category: "Modern Architecture",
-    client: "Alpine Atelier",
-    year: "2025",
-    description: "Monolithic concrete architecture nestled in evergreen forest canopies, captured in natural lighting.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
-    tags: ["Architecture", "Minimal", "Nature"],
-  },
-  {
-    slug: "qed-footer",
-    title: "Pulse / Dashboard",
-    category: "Cloud Observability",
-    client: "Pulse Metrics",
-    year: "2026",
-    description: "Intelligent diagnostic healthcare and telemetry booking assistant with real-time status monitors.",
+    description: "Intelligent diagnostic consultation and care booking workflow connecting patients to certified specialists with encrypted medical records and interactive appointment timeline.",
     image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/book-appointment-1790516064490.jpg",
-    tags: ["Healthcare", "AI", "Dashboard"],
+    tags: ["AI", "Healthcare", "Web App"],
   },
   {
-    slug: "meridian-hero",
-    title: "Aura / Banking",
-    category: "Spatial Commerce",
-    client: "Aura Luxury",
+    slug: "atelier-fashion",
+    title: "Maison Haute Couture",
+    category: "Luxury Fashion & Ecommerce",
+    client: "Maison Parisienne",
     year: "2026",
-    description: "Sensory runway collection showcase and high-converting storefront with bespoke tactile ergonomics.",
+    description: "Sensory runway collection showcase and high-converting ecommerce storefront with fluid magnetic carousels, lookbook moodboards, and bespoke checkout ergonomics.",
     image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/fashion-hero-1790516064495.jpg",
-    tags: ["Fashion", "Commerce", "Creative"],
+    tags: ["Fashion", "Ecommerce", "Creative"],
   },
   {
-    slug: "waterline-perils",
-    title: "Waterline / Perils",
-    category: "Vibrant Poster Art",
-    client: "Waterline Creative",
+    slug: "cloud-metrics",
+    title: "Pulse Cloud Observability",
+    category: "Developer Tools & SaaS",
+    client: "Pulse Metrics Inc",
+    year: "2025",
+    description: "Zero-latency Kubernetes cluster monitoring dashboard with live metrics telemetry, interactive topological dependency graphs, and predictive incident management.",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516056/data-flow-1790516064493.jpg",
+    tags: ["SaaS", "Dashboard", "DevTools"],
+  },
+  {
+    slug: "sound-craft",
+    title: "Sonic Spatial Experience",
+    category: "Interactive Audio & WebGL",
+    client: "Sonic Labs Zurich",
     year: "2026",
-    description: "Electrifying cobalt blue editorial composition showcasing floating three-dimensional wireframe typography.",
+    description: "Immersive three-dimensional audio-reactive web landscape transforming organic sound frequencies into dynamic procedural light wave sculptures in real-time.",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/hero-1790516064495.jpg",
+    tags: ["WebGL", "Audio", "Interactive"],
+  },
+  {
+    slug: "strata-billing",
+    title: "Strata Revenue Infrastructure",
+    category: "Fintech & Invoicing",
+    client: "Strata Global Pay",
+    year: "2026",
+    description: "Enterprise billing automation engine featuring dynamic pricing matrices, localized VAT compliance, automated reconciliation, and beautiful customer invoices.",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/pricing-1790516064500.jpg",
+    tags: ["Enterprise", "Billing", "Product"],
+  },
+  {
+    slug: "honeycomb-grid",
+    title: "Hive Neural Collaboration",
+    category: "Productivity & Workspace",
+    client: "Hive Technologies",
+    year: "2025",
+    description: "Hexagonal interconnected canvas for modern product teams, mapping user research insights, interface wireframes, and design components onto a shared spatial board.",
     image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516059/honeycomb-hero-1790516064497.jpg",
-    tags: ["Graphic Design", "3D Typography", "Cobalt"],
+    tags: ["Collaboration", "Workspace", "Canvas"],
   },
   {
-    slug: "orbitly-bento",
-    title: "Orbitly / Bento",
-    category: "Dark Bento Matrix",
-    client: "Orbitly Tech",
+    slug: "chrono-schedule",
+    title: "Chrono Calendar Intelligence",
+    category: "Time Management & UI",
+    client: "Chrono Labs",
     year: "2026",
-    description: "Midnight black modular bento matrix showcasing product capabilities with vibrant live neon indicator lights.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/bento-showcase-1790516064489.jpg",
-    tags: ["Bento", "Dark Mode", "SaaS"],
+    description: "Time-zone agnostic smart scheduling assistant with fluid calendar heatmaps, recurring event sync, and focus-time protection algorithms.",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/calendar-1790516064491.jpg",
+    tags: ["Productivity", "Calendar", "UI Design"],
+  },
+  {
+    slug: "orbit-gallery",
+    title: "Orbital Digital Museum",
+    category: "Cultural Arts & Exhibition",
+    client: "Modern Art Foundation",
+    year: "2026",
+    description: "Circular spatial gallery presenting curated contemporary digital artwork, sculpture archives, and generative generative art with gyroscopic navigation.",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/orbit-gallery-1790516064499.jpg",
+    tags: ["Museum", "Arts", "3D Gallery"],
+  },
+  {
+    slug: "verve-commerce",
+    title: "Verve Artisan Goods",
+    category: "Brand & Direct-to-Consumer",
+    client: "Verve Roasters",
+    year: "2025",
+    description: "Direct-to-consumer artisanal coffee subscription portal with roast date tracking, origin stories, and interactive tasting notes flavor profile matching.",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/product-details-1790516064500.jpg",
+    tags: ["Ecommerce", "Branding", "D2C"],
+  },
+  {
+    slug: "nexus-analytics",
+    title: "Nexus Global Ledger",
+    category: "Big Data & Visualization",
+    client: "Nexus Capital",
+    year: "2026",
+    description: "High-density data grid platform capable of streaming hundreds of thousands of ledger records per second with GPU-accelerated filtering and pivot charting.",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516056/data-grid-1790516064494.jpg",
+    tags: ["Big Data", "Fintech", "Analytics"],
   },
 ];
-
-// ------------------------------------------
-// 3D Perspective Runway / Corridor Canvas
-// ------------------------------------------
-interface PerspectiveCorridorCanvasProps {
-  items: PortfolioItem[];
-  interval?: boolean | number;
-  draggable?: boolean;
-  showCursorBadge?: boolean;
-  cursorBadgeLabel?: string;
-  collaborativeCursors?: boolean;
-  onCardClick: (item: PortfolioItem, index: number, origin?: CardMorphOrigin) => void;
-  className?: string;
-}
-
-const PerspectiveCorridorCanvas = React.memo(function PerspectiveCorridorCanvas({
-  items,
-  interval = true,
-  draggable = true,
-  showCursorBadge = true,
-  cursorBadgeLabel = "View Details",
-  collaborativeCursors = false,
-  onCardClick,
-  className,
-}: PerspectiveCorridorCanvasProps) {
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const customCursorRef = useRef<HTMLDivElement | null>(null);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const hoveredIndexRef = useRef<number | null>(null);
-  const [containerSize, setContainerSize] = useState({ width: 1200, height: 720 });
-
-  // Continuous conveyor track scroll in pixels
-  const scrollRef = useRef(0);
-  const targetScrollRef = useRef(0);
-  const velocityRef = useRef(0);
-
-  // Drag tracking
-  const isDraggingRef = useRef(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const dragStartRef = useRef({
-    x: 0,
-    y: 0,
-    startScroll: 0,
-    lastX: 0,
-    lastTime: 0,
-    moved: false,
-  });
-
-  const [, setRenderTrigger] = useState(0);
-
-  // Measure container dimensions
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-
-    const updateSize = () => {
-      setContainerSize({
-        width: el.clientWidth || 1200,
-        height: el.clientHeight || 720,
-      });
-    };
-
-    updateSize();
-    const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(updateSize) : null;
-    ro?.observe(el);
-    return () => ro?.disconnect();
-  }, []);
-
-  // Geometry calculations: 3D corridor walls with perspective-corrected depth so cards never overlap
-  const isMobile = containerSize.width < 640;
-  const isTablet = containerSize.width >= 640 && containerSize.width < 1024;
-
-  const cardW = isMobile ? 220 : isTablet ? 270 : 320;
-  const cardH = isMobile ? 290 : isTablet ? 360 : 430;
-
-  const containerW = containerSize.width || 1200;
-  const halfW = containerW / 2;
-  const wallX = halfW; // Corridor walls start at absolute screen edges
-
-  // Corridor wall depth parameters
-  const Z_entry = 80; // Entry point: right at screen border
-  const Z_back = -1500; // Deep back wall
-
-  // 15 total items: 5 on right wall, 3 on back wall, 5 on left wall, 2 on return loop
-  const M_wall = 5;
-  const M_back = 3;
-  const PITCH = 280; // Center-to-center pitch along track
-  const L_right = M_wall * PITCH;
-  const L_back = M_back * PITCH;
-  const L_left = M_wall * PITCH;
-  const L_visible = L_right + L_back + L_left; // 13 * PITCH
-  const L_total = 15 * PITCH; // Exactly 15 items in loop
-
-  const rawList = items && items.length > 0 ? items : DEFAULT_PORTFOLIO_ITEMS;
-  const list = useMemo(() => {
-    if (rawList.length >= 15) return rawList;
-    const targetCount = 15;
-    const filled: PortfolioItem[] = [];
-    for (let i = 0; i < targetCount; i++) {
-      filled.push(rawList[i % rawList.length]);
-    }
-    return filled;
-  }, [rawList]);
-
-  const N = list.length;
-
-  // Animation Loop: smooth conveyor flow entering right and exiting left with zero camera hover tilt
-  useEffect(() => {
-    let animId: number;
-    let lastT = performance.now();
-
-    const loop = (time: number) => {
-      const dt = Math.min(32, time - lastT);
-      lastT = time;
-
-      // Ambient auto-gliding when not dragging: cards enter right and flow out left
-      const isAutoActive = typeof interval === "boolean" ? interval : interval > 0;
-      if (!isDraggingRef.current && isAutoActive) {
-        targetScrollRef.current += 0.55 * (dt / 16.67);
-      }
-
-      // Smooth lerp to target scroll
-      scrollRef.current += (targetScrollRef.current - scrollRef.current) * 0.12;
-
-      setRenderTrigger(time);
-      animId = requestAnimationFrame(loop);
-    };
-
-    animId = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(animId);
-  }, [interval]);
-
-  // Pointer & Drag handlers: horizontal drag smoothly slides the conveyor along the runway
-  const handlePointerDown = useCallback(
-    (e: React.PointerEvent) => {
-      if (!draggable || e.button !== 0) return;
-      isDraggingRef.current = true;
-      setIsDragging(true);
-
-      dragStartRef.current = {
-        x: e.clientX,
-        y: e.clientY,
-        startScroll: targetScrollRef.current,
-        lastX: e.clientX,
-        lastTime: performance.now(),
-        moved: false,
-      };
-      velocityRef.current = 0;
-
-      try {
-        (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-      } catch {}
-    },
-    [draggable],
-  );
-
-  const handlePointerMove = useCallback(
-    (e: React.PointerEvent) => {
-      const container = containerRef.current;
-      if (!container) return;
-
-      const rect = container.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-
-      // Update custom theme-aware cursor position (camera stays perfectly rock-solid and stable)
-      if (showCursorBadge && e.pointerType !== "touch" && customCursorRef.current) {
-        customCursorRef.current.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-      }
-
-      if (!isDraggingRef.current) return;
-
-      const deltaX = e.clientX - dragStartRef.current.x;
-      if (Math.abs(deltaX) > 4) {
-        dragStartRef.current.moved = true;
-      }
-
-      // Dragging left advances the conveyor forward (entering right -> exiting left)
-      targetScrollRef.current = dragStartRef.current.startScroll - deltaX * 1.35;
-
-      const now = performance.now();
-      const dt = Math.max(1, now - dragStartRef.current.lastTime);
-      const stepDist = -(e.clientX - dragStartRef.current.lastX);
-      velocityRef.current = (stepDist / dt) * 16.67;
-
-      dragStartRef.current.lastX = e.clientX;
-      dragStartRef.current.lastTime = now;
-    },
-    [showCursorBadge],
-  );
-
-  const handlePointerUp = useCallback((e: React.PointerEvent) => {
-    if (!isDraggingRef.current) return;
-    isDraggingRef.current = false;
-    setIsDragging(false);
-
-    try {
-      (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
-    } catch {}
-
-    // Apply kinetic inertia
-    const maxV = 28;
-    const v = Math.max(-maxV, Math.min(maxV, velocityRef.current || 0));
-    targetScrollRef.current += v * 8;
-  }, []);
-
-  // Wheel scroll along the runway
-  const handleWheel = useCallback((e: React.WheelEvent) => {
-    e.preventDefault();
-    const delta = (e.deltaY || e.deltaX) * 0.95;
-    targetScrollRef.current += delta;
-  }, []);
-
-  const isCardHovered = hoveredIndex !== null;
-
-  return (
-    <div
-      ref={containerRef}
-      onPointerDown={handlePointerDown}
-      onPointerMove={handlePointerMove}
-      onPointerUp={handlePointerUp}
-      onPointerCancel={handlePointerUp}
-      onWheel={handleWheel}
-      onPointerLeave={() => {
-        setHoveredIndex(null);
-        hoveredIndexRef.current = null;
-      }}
-      className={cn(
-        "relative w-full h-full overflow-hidden bg-[#F5F5F7] dark:bg-[#0B0B0E] text-foreground select-none touch-none flex items-center justify-center",
-        draggable && (isDragging ? "cursor-grabbing" : "cursor-grab"),
-        className,
-      )}
-      style={{
-        perspective: "1000px",
-        perspectiveOrigin: "50% 50%",
-      }}
-    >
-      {/* 3D Hallway Stage: Perfectly stable camera facing straight down the corridor (zero hover wobbling) */}
-      <div
-        className="relative w-full h-full pointer-events-none flex items-center justify-center will-change-transform"
-        style={{
-          transformStyle: "preserve-3d",
-        }}
-      >
-        {list.map((item, i) => {
-          // Exact conveyor position along the corridor track
-          const rawS = i * PITCH + scrollRef.current;
-          const s = ((rawS % L_total) + L_total) % L_total;
-
-          const isVisible = s <= L_visible + 20;
-
-          let x = 0;
-          let z = 0;
-          let rotY = 0;
-
-          if (s < L_right) {
-            // Segment 1: Right Wall - cards enter right edge and glide deep into perspective
-            // Perspective-corrected depth curve ensures cards never overlap and maintain visible ~20px gap
-            const t = s / L_right; // 0 to 1
-            const cornerRatio = 0.38;
-            const screenXRatio = 1 - t * (1 - cornerRatio);
-            z = -1000 * ((1 - screenXRatio) / screenXRatio);
-            z = Math.max(Z_back, Math.min(Z_entry, z));
-            x = wallX;
-            rotY = -86;
-          } else if (s < L_right + L_back) {
-            // Segment 2: Back Wall - cards smoothly travel across from right wall to left wall
-            const sBack = s - L_right;
-            const t = sBack / L_back;
-            x = wallX * (1 - 2 * t);
-            z = Z_back;
-            rotY = -86 * (1 - 2 * t);
-          } else if (s <= L_visible) {
-            // Segment 3: Left Wall - cards glide forward along left wall towards front left
-            const sLeft = s - (L_right + L_back);
-            const t = sLeft / L_left; // 0 (back) to 1 (front)
-            const cornerRatio = 0.38;
-            const screenXRatio = cornerRatio + t * (1 - cornerRatio);
-            z = -1000 * ((1 - screenXRatio) / screenXRatio);
-            z = Math.max(Z_back, Math.min(Z_entry, z));
-            x = -wallX;
-            rotY = 86;
-          }
-
-          const isHovered = hoveredIndex === i;
-          const zIndex = Math.round(5000 + z);
-
-          return (
-            <div
-              key={item.slug ?? i}
-              data-corridor-card
-              onMouseEnter={() => {
-                setHoveredIndex(i);
-                hoveredIndexRef.current = i;
-              }}
-              onMouseLeave={() => {
-                if (hoveredIndexRef.current === i) {
-                  setHoveredIndex(null);
-                  hoveredIndexRef.current = null;
-                }
-              }}
-              onClick={(e) => {
-                if (!dragStartRef.current.moved) {
-                  const rect = e.currentTarget.getBoundingClientRect();
-                  onCardClick(item, i, {
-                    top: rect.top,
-                    left: rect.left,
-                    width: rect.width,
-                    height: rect.height,
-                    rotY,
-                  });
-                }
-              }}
-              className="absolute left-1/2 top-1/2 pointer-events-auto cursor-none will-change-transform transition-[filter] duration-200"
-              style={{
-                width: cardW,
-                height: cardH,
-                transform: `translate3d(calc(-50% + ${x}px), -50%, ${z}px) rotateY(${rotY}deg)`,
-                zIndex,
-                visibility: isVisible ? "visible" : "hidden",
-              }}
-            >
-              {/* Caption Label in 3D plane above top edge */}
-              <div
-                className={cn(
-                  "absolute left-0 -top-6 text-[12px] font-sans font-medium tracking-tight whitespace-nowrap transition-colors duration-200 select-none pointer-events-none truncate max-w-full px-0.5",
-                  isHovered
-                    ? "text-primary font-semibold"
-                    : "text-muted-foreground/80 dark:text-muted-foreground/70",
-                )}
-              >
-                {item.title} / {item.category || "Case Study"}
-              </div>
-
-              {/* Framed Artwork Canvas with crisp 4px corners */}
-              <div
-                className={cn(
-                  "relative w-full h-full overflow-hidden rounded-[4px] bg-card transition-all duration-200 select-none",
-                  isHovered
-                    ? "ring-2 ring-primary border-primary shadow-2xl"
-                    : "border border-foreground/10 dark:border-white/10 shadow-lg",
-                )}
-              >
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  draggable={false}
-                  className="w-full h-full object-cover select-none pointer-events-none"
-                />
-
-                {/* Design-Tool Corner Square Handles on Hover (from Alim's reference screenshot) */}
-                {isHovered && (
-                  <>
-                    <span className="absolute -top-1 -left-1 size-2 bg-background border-2 border-primary" />
-                    <span className="absolute -top-1 -right-1 size-2 bg-background border-2 border-primary" />
-                    <span className="absolute -bottom-1 -left-1 size-2 bg-background border-2 border-primary" />
-                    <span className="absolute -bottom-1 -right-1 size-2 bg-background border-2 border-primary" />
-                  </>
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* User's Own Interactive Theme-Aware Cursor with "View Details" Badge */}
-      {showCursorBadge && (
-        <div
-          ref={customCursorRef}
-          aria-hidden="true"
-          className={cn(
-            "pointer-events-none absolute left-0 top-0 z-50 transition-opacity duration-150 ease-out select-none will-change-transform flex items-start",
-            isCardHovered && !isDragging
-              ? "opacity-100 scale-100"
-              : "opacity-0 scale-95 pointer-events-none",
-          )}
-          style={{ transform: "translate3d(-9999px, -9999px, 0)" }}
-        >
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 20 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="shrink-0 text-primary drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
-          >
-            <path d="M0 0L7.07 17.97L9.58 10.58L16.97 8.07L0 0Z" fill="currentColor" />
-          </svg>
-          <div className="bg-primary text-primary-foreground text-[12px] font-bold px-2.5 py-1 rounded-[8px] shadow-[0_2px_10px_color-mix(in_oklab,var(--primary)_35%,transparent)] whitespace-nowrap leading-none tracking-wide -ml-1 mt-2.5 select-none">
-            {cursorBadgeLabel}
-          </div>
-        </div>
-      )}
-    </div>
-  );
-});
 
 // ------------------------------------------
 // PortfolioShowcase Component
@@ -810,15 +373,12 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
       ctaHref = "#",
       cursorBadgeLabel = "View Details",
       showCursorBadge = true,
-      collaborativeCursors = true,
       className,
       ...props
     },
     ref,
   ) => {
     const [selectedItem, setSelectedItem] = useState<PortfolioItem | null>(null);
-    const [morphOrigin, setMorphOrigin] = useState<CardMorphOrigin | null>(null);
-    const [morphStage, setMorphStage] = useState<"idle" | "start" | "expanded" | "closing">("idle");
     const [copiedLink, setCopiedLink] = useState(false);
     const [tiles, setTiles] = useState(CENTER_TILE);
     const [isDragging, setIsDragging] = useState(false);
@@ -1102,50 +662,14 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
     );
 
     const handleCardSelection = useCallback(
-      (portfolioItem: PortfolioItem, index: number, origin?: CardMorphOrigin) => {
+      (portfolioItem: PortfolioItem, index: number) => {
         onItemClick?.(portfolioItem, index);
         if (itemModal) {
           setSelectedItem(portfolioItem);
-          if (origin) {
-            setMorphOrigin(origin);
-            setMorphStage("start");
-            requestAnimationFrame(() => {
-              requestAnimationFrame(() => {
-                setMorphStage("expanded");
-              });
-            });
-          } else {
-            setMorphOrigin(null);
-            setMorphStage("expanded");
-          }
         }
       },
       [itemModal, onItemClick],
     );
-
-    const handleCloseModal = useCallback(() => {
-      if (morphOrigin) {
-        setMorphStage("closing");
-        setTimeout(() => {
-          setSelectedItem(null);
-          setMorphOrigin(null);
-          setMorphStage("idle");
-        }, 450);
-      } else {
-        setSelectedItem(null);
-        setMorphStage("idle");
-      }
-    }, [morphOrigin]);
-
-    useEffect(() => {
-      const onKeyDown = (e: KeyboardEvent) => {
-        if (e.key === "Escape" && selectedItem) {
-          handleCloseModal();
-        }
-      };
-      window.addEventListener("keydown", onKeyDown);
-      return () => window.removeEventListener("keydown", onKeyDown);
-    }, [selectedItem, handleCloseModal]);
 
     const handlePointerUp = useCallback(
       (e: React.PointerEvent<HTMLDivElement>) => {
@@ -1306,7 +830,6 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
     );
 
     const activeProject = selectedItem ?? items[0];
-    const isCorridor = variant === "perspective-corridor" || variant === "perspective-runway";
 
     return (
       <>
@@ -1318,259 +841,199 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
           )}
           {...props}
         >
-          {isCorridor ? (
-            <PerspectiveCorridorCanvas
-              items={items}
-              interval={interval}
-              draggable={draggable}
-              showCursorBadge={showCursorBadge}
-              cursorBadgeLabel={cursorBadgeLabel}
-              collaborativeCursors={collaborativeCursors}
-              onCardClick={(item, index, origin) => {
-                handleCardSelection(item, index, origin);
+          {/* Multi-tiered 3D convex dome cushion underneath the cards in center */}
+          <div
+            className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center z-0"
+            aria-hidden
+          >
+            {/* Ambient diffuse primary aura around the base */}
+            <div
+              className="absolute w-[980px] max-w-[96vw] h-[640px] rounded-full blur-3xl opacity-75 dark:opacity-45"
+              style={{
+                background:
+                  "radial-gradient(ellipse at 50% 50%, color-mix(in oklab, var(--primary) 22%, transparent) 0%, color-mix(in oklab, var(--primary) 8%, transparent) 55%, transparent 75%)",
               }}
             />
-          ) : (
-            <>
-              {/* Multi-tiered 3D convex dome cushion underneath the cards in center */}
-              <div
-                className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center z-0"
-                aria-hidden
-              >
-                {/* Ambient diffuse primary aura around the base */}
-                <div
-                  className="absolute w-[980px] max-w-[96vw] h-[640px] rounded-full blur-3xl opacity-75 dark:opacity-45"
-                  style={{
-                    background:
-                      "radial-gradient(ellipse at 50% 50%, color-mix(in oklab, var(--primary) 22%, transparent) 0%, color-mix(in oklab, var(--primary) 8%, transparent) 55%, transparent 75%)",
-                  }}
-                />
 
-                {/* Base Tier 1: Outer mound rim with 3D elevation shadow */}
-                <div
-                  className="absolute w-[880px] max-w-[94vw] h-[550px] rounded-full border border-foreground/[0.08] dark:border-white/[0.09] shadow-[0_30px_70px_-15px_rgba(0,0,0,0.14),inset_0_1px_2px_rgba(255,255,255,0.7)] dark:shadow-[0_30px_80px_-15px_rgba(0,0,0,0.65),inset_0_1px_2px_rgba(255,255,255,0.15)]"
-                  style={{
-                    background:
-                      "radial-gradient(ellipse at 50% 40%, color-mix(in oklab, var(--card) 92%, white) 0%, color-mix(in oklab, var(--card) 65%, var(--background)) 55%, color-mix(in oklab, var(--background) 90%, transparent) 85%, transparent 100%)",
-                  }}
-                />
-
-                {/* Mid Tier 2: Rising dome slope ring */}
-                <div
-                  className="absolute w-[640px] max-w-[80vw] h-[400px] rounded-full border border-foreground/[0.10] dark:border-white/[0.12] shadow-[0_20px_50px_-10px_rgba(0,0,0,0.16),inset_0_2px_4px_rgba(255,255,255,0.85)] dark:shadow-[0_20px_50px_-10px_rgba(0,0,0,0.7),inset_0_2px_4px_rgba(255,255,255,0.2)]"
-                  style={{
-                    background:
-                      "radial-gradient(ellipse at 50% 36%, color-mix(in oklab, var(--card) 98%, white) 0%, color-mix(in oklab, var(--card) 80%, white) 45%, color-mix(in oklab, var(--primary) 12%, transparent) 80%, transparent 100%)",
-                  }}
-                />
-
-                {/* Apex Tier 3: Center crest / peak */}
-                <div
-                  className="absolute w-[400px] max-w-[58vw] h-[250px] rounded-full border border-foreground/[0.12] dark:border-white/[0.16] shadow-[0_14px_35px_-6px_rgba(0,0,0,0.18),inset_0_2px_6px_rgba(255,255,255,0.95)] dark:shadow-[0_14px_35px_-6px_rgba(0,0,0,0.75),inset_0_2px_6px_rgba(255,255,255,0.25)]"
-                  style={{
-                    background:
-                      "radial-gradient(ellipse at 50% 30%, color-mix(in oklab, var(--card) 99%, white) 0%, color-mix(in oklab, var(--card) 88%, white) 50%, color-mix(in oklab, var(--primary) 18%, transparent) 85%, transparent 100%)",
-                  }}
-                />
-
-                {/* Specular light glint at top-center of the dome peak */}
-                <div
-                  className="absolute -translate-y-8 w-[220px] h-[95px] rounded-full blur-md opacity-80 dark:opacity-40"
-                  style={{
-                    background:
-                      "radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.95) 0%, color-mix(in oklab, var(--primary) 30%, white) 45%, transparent 75%)",
-                  }}
-                />
-              </div>
-
-              {/* Self-contained 2D Infinite Canvas */}
-              <div
-                ref={wrapRef}
-                onPointerDown={handlePointerDown}
-                onPointerMove={handlePointerMove}
-                onPointerUp={handlePointerUp}
-                onPointerCancel={handlePointerUp}
-                onPointerLeave={() => {
-                  if (isHoveringCardRef.current) {
-                    isHoveringCardRef.current = false;
-                    setIsHoveringCard(false);
-                  }
-                }}
-                className={cn(
-                  "relative z-10 size-full overflow-hidden select-none touch-none [mask-image:radial-gradient(ellipse_78%_68%_at_50%_50%,black_45%,rgba(0,0,0,0.85)_75%,transparent_100%)]",
-                  draggable && (isDragging ? "cursor-grabbing" : "cursor-grab"),
-                )}
-              >
-                <div
-                  ref={canvasRef}
-                  className="absolute left-0 top-0 will-change-transform origin-top-left"
-                  style={{ width, height, opacity: 0 }}
-                >
-                  {cards}
-                </div>
-
-                {/* Custom Theme-Aware Mouse Pointer with "View Details" Badge */}
-                {showCursorBadge && (
-                  <div
-                    ref={customCursorRef}
-                    aria-hidden="true"
-                    className={cn(
-                      "pointer-events-none absolute left-0 top-0 z-40 transition-opacity duration-150 ease-out select-none will-change-transform flex items-start",
-                      isHoveringCard && !isDragging && !selectedItem
-                        ? "opacity-100 scale-100"
-                        : "opacity-0 scale-95 pointer-events-none",
-                    )}
-                    style={{
-                      transform: "translate3d(-9999px, -9999px, 0)",
-                    }}
-                  >
-                    {/* Mouse Cursor Arrow matching Theme Color */}
-                    <svg
-                      width="18"
-                      height="18"
-                      viewBox="0 0 20 20"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="shrink-0 text-primary drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
-                    >
-                      <path
-                        d="M0 0L7.07 17.97L9.58 10.58L16.97 8.07L0 0Z"
-                        fill="currentColor"
-                      />
-                    </svg>
-
-                    {/* Pill Badge matching Theme Color */}
-                    <div className="bg-primary text-primary-foreground text-[12px] font-bold px-2.5 py-1 rounded-[8px] shadow-[0_2px_10px_color-mix(in_oklab,var(--primary)_35%,transparent)] whitespace-nowrap leading-none tracking-wide -ml-1 mt-2.5 select-none">
-                      {cursorBadgeLabel}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* 4-sided smooth perimeter vignette */}
-              <div className="pointer-events-none absolute inset-x-0 top-0 h-28 sm:h-40 bg-gradient-to-b from-background via-background/85 to-transparent z-20" aria-hidden />
-              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 sm:h-40 bg-gradient-to-t from-background via-background/85 to-transparent z-20" aria-hidden />
-              <div className="pointer-events-none absolute inset-y-0 left-0 w-24 sm:w-40 bg-gradient-to-r from-background via-background/85 to-transparent z-20" aria-hidden />
-              <div className="pointer-events-none absolute inset-y-0 right-0 w-24 sm:w-40 bg-gradient-to-l from-background via-background/85 to-transparent z-20" aria-hidden />
-            </>
-          )}
-        </section>
-
-        {/* Interactive Portfolio Details Modal: Rising & morphing smooth transition from clicked 3D card into full modal */}
-        {itemModal && selectedItem && typeof document !== "undefined" && createPortal(
-          <div className="fixed inset-0 z-50 flex items-center justify-center select-none pointer-events-auto">
-            {/* Backdrop with frosted blur */}
+            {/* Base Tier 1: Outer mound rim with 3D elevation shadow */}
             <div
-              onClick={handleCloseModal}
-              className={cn(
-                "fixed inset-0 bg-black/60 backdrop-blur-xl transition-opacity duration-500 ease-out",
-                morphStage === "expanded" ? "opacity-100" : "opacity-0",
-              )}
+              className="absolute w-[880px] max-w-[94vw] h-[550px] rounded-full border border-foreground/[0.08] dark:border-white/[0.09] shadow-[0_30px_70px_-15px_rgba(0,0,0,0.14),inset_0_1px_2px_rgba(255,255,255,0.7)] dark:shadow-[0_30px_80px_-15px_rgba(0,0,0,0.65),inset_0_1px_2px_rgba(255,255,255,0.15)]"
+              style={{
+                background:
+                  "radial-gradient(ellipse at 50% 40%, color-mix(in oklab, var(--card) 92%, white) 0%, color-mix(in oklab, var(--card) 65%, var(--background)) 55%, color-mix(in oklab, var(--background) 90%, transparent) 85%, transparent 100%)",
+              }}
             />
 
-            {/* Rising & Expanding Morphing Card */}
+            {/* Mid Tier 2: Rising dome slope ring */}
             <div
-              style={
-                (morphStage === "start" || morphStage === "closing") && morphOrigin
-                  ? {
-                      position: "fixed",
-                      top: morphOrigin.top,
-                      left: morphOrigin.left,
-                      width: morphOrigin.width,
-                      height: morphOrigin.height,
-                      transform: `perspective(1000px) rotateY(${morphOrigin.rotY}deg) scale(1)`,
-                      transformOrigin: "center center",
-                      borderRadius: "4px",
-                      transition: morphStage === "closing" ? "all 450ms cubic-bezier(0.16, 1, 0.3, 1)" : "none",
-                    }
-                  : {
-                      position: "fixed",
-                      top: "50%",
-                      left: "50%",
-                      transform: "translate(-50%, -50%) perspective(1000px) rotateY(0deg) scale(1)",
-                      transformOrigin: "center center",
-                      width: "min(94vw, 1024px)",
-                      height: "min(88vh, 820px)",
-                      borderRadius: "24px",
-                      transition: "all 550ms cubic-bezier(0.16, 1, 0.3, 1)",
-                    }
+              className="absolute w-[640px] max-w-[80vw] h-[400px] rounded-full border border-foreground/[0.10] dark:border-white/[0.12] shadow-[0_20px_50px_-10px_rgba(0,0,0,0.16),inset_0_2px_4px_rgba(255,255,255,0.85)] dark:shadow-[0_20px_50px_-10px_rgba(0,0,0,0.7),inset_0_2px_4px_rgba(255,255,255,0.2)]"
+              style={{
+                background:
+                  "radial-gradient(ellipse at 50% 36%, color-mix(in oklab, var(--card) 98%, white) 0%, color-mix(in oklab, var(--card) 80%, white) 45%, color-mix(in oklab, var(--primary) 12%, transparent) 80%, transparent 100%)",
+              }}
+            />
+
+            {/* Apex Tier 3: Center crest / peak */}
+            <div
+              className="absolute w-[400px] max-w-[58vw] h-[250px] rounded-full border border-foreground/[0.12] dark:border-white/[0.16] shadow-[0_14px_35px_-6px_rgba(0,0,0,0.18),inset_0_2px_6px_rgba(255,255,255,0.95)] dark:shadow-[0_14px_35px_-6px_rgba(0,0,0,0.75),inset_0_2px_6px_rgba(255,255,255,0.25)]"
+              style={{
+                background:
+                  "radial-gradient(ellipse at 50% 30%, color-mix(in oklab, var(--card) 99%, white) 0%, color-mix(in oklab, var(--card) 88%, white) 50%, color-mix(in oklab, var(--primary) 18%, transparent) 85%, transparent 100%)",
+              }}
+            />
+
+            {/* Specular light glint at top-center of the dome peak */}
+            <div
+              className="absolute -translate-y-8 w-[220px] h-[95px] rounded-full blur-md opacity-80 dark:opacity-40"
+              style={{
+                background:
+                  "radial-gradient(ellipse at 50% 50%, rgba(255,255,255,0.95) 0%, color-mix(in oklab, var(--primary) 30%, white) 45%, transparent 75%)",
+              }}
+            />
+          </div>
+
+          {/* Self-contained 2D Infinite Canvas */}
+          <div
+            ref={wrapRef}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
+            onPointerCancel={handlePointerUp}
+            onPointerLeave={() => {
+              if (isHoveringCardRef.current) {
+                isHoveringCardRef.current = false;
+                setIsHoveringCard(false);
               }
-              className="overflow-hidden bg-card border border-foreground/15 dark:border-white/10 shadow-2xl flex flex-col relative will-change-transform z-10"
+            }}
+            className={cn(
+              "relative z-10 size-full overflow-hidden select-none touch-none [mask-image:radial-gradient(ellipse_78%_68%_at_50%_50%,black_45%,rgba(0,0,0,0.85)_75%,transparent_100%)]",
+              draggable && (isDragging ? "cursor-grabbing" : "cursor-grab"),
+            )}
+          >
+            <div
+              ref={canvasRef}
+              className="absolute left-0 top-0 will-change-transform origin-top-left"
+              style={{ width, height, opacity: 0 }}
             >
-              {/* Close Button */}
-              <button
-                type="button"
-                onClick={handleCloseModal}
-                className="absolute top-4 right-4 z-30 size-9 rounded-full bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition-colors cursor-pointer"
-                title="Close"
-              >
-                <X size={18} />
-              </button>
-
-              {/* Complete Project Image: 100% visible with zero zooming or clipping */}
-              <div className="relative w-full flex-1 overflow-hidden flex items-center justify-center bg-card">
-                <img
-                  src={activeProject.image}
-                  alt={activeProject.title}
-                  className="w-full h-auto max-h-[50vh] sm:max-h-[60vh] md:max-h-[82vh] object-contain block select-none pointer-events-none"
-                />
-              </div>
-
-              {/* Info & Action Controls: In-flow below image on mobile (not absolute), floating frosted ribbon pill on desktop (md:) */}
-              <div
-                className={cn(
-                  "relative md:absolute md:inset-x-6 md:bottom-6 z-20 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 sm:gap-4 p-4 sm:p-5 md:py-3.5 md:px-5 border-t md:border border-foreground/10 md:border-foreground/15 dark:border-white/10 md:dark:border-white/15 bg-card/95 md:bg-white/75 md:dark:bg-[#131316]/75 md:backdrop-blur-md md:rounded-2xl transition-all duration-400 delay-150",
-                  morphStage === "expanded" ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3",
-                )}
-              >
-                <div className="space-y-1 md:space-y-0.5 max-w-xl">
-                  <h2 className="text-base sm:text-lg md:text-xl font-bold tracking-tight text-foreground">
-                    {activeProject.title}
-                  </h2>
-                  {activeProject.category && (
-                    <p className="text-xs sm:text-sm font-medium text-muted-foreground">
-                      {activeProject.category}
-                    </p>
-                  )}
-                  {activeProject.description && (
-                    <p className="text-xs sm:text-sm text-muted-foreground/90 leading-relaxed pt-1 md:hidden">
-                      {activeProject.description}
-                    </p>
-                  )}
-                </div>
-
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2.5 w-full md:w-auto shrink-0 pt-1 md:pt-0 [&>div]:w-full sm:[&>div]:w-auto [&>div>button]:w-full sm:[&>div>button]:w-auto [&>button]:w-full sm:[&>button]:w-auto">
-                  <Button
-                    variant="default"
-                    size="default"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      if (activeProject.href && activeProject.href !== "#") {
-                        window.open(activeProject.href, "_blank", "noopener,noreferrer");
-                      }
-                    }}
-                    iconRight={<ArrowUpRight size={15} />}
-                    className="w-full sm:w-auto font-medium"
-                  >
-                    {ctaLabel}
-                  </Button>
-
-                  <Button
-                    variant="outline"
-                    size="default"
-                    onClick={(e) => {
-                      e.preventDefault();
-                    }}
-                    iconLeft={<Mail size={15} />}
-                    className="w-full sm:w-auto font-medium"
-                  >
-                    Contact
-                  </Button>
-                </div>
-              </div>
+              {cards}
             </div>
-          </div>,
-          document.body,
+
+            {/* Custom Theme-Aware Mouse Pointer with "View Details" Badge */}
+            {showCursorBadge && (
+              <div
+                ref={customCursorRef}
+                aria-hidden="true"
+                className={cn(
+                  "pointer-events-none absolute left-0 top-0 z-40 transition-opacity duration-150 ease-out select-none will-change-transform flex items-start",
+                  isHoveringCard && !isDragging && !selectedItem
+                    ? "opacity-100 scale-100"
+                    : "opacity-0 scale-95 pointer-events-none",
+                )}
+                style={{
+                  transform: "translate3d(-9999px, -9999px, 0)",
+                }}
+              >
+                {/* Mouse Cursor Arrow matching Theme Color */}
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="shrink-0 text-primary drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]"
+                >
+                  <path
+                    d="M0 0L7.07 17.97L9.58 10.58L16.97 8.07L0 0Z"
+                    fill="currentColor"
+                  />
+                </svg>
+
+                {/* Pill Badge matching Theme Color */}
+                <div className="bg-primary text-primary-foreground text-[12px] font-bold px-2.5 py-1 rounded-[8px] shadow-[0_2px_10px_color-mix(in_oklab,var(--primary)_35%,transparent)] whitespace-nowrap leading-none tracking-wide -ml-1 mt-2.5 select-none">
+                  {cursorBadgeLabel}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* 4-sided smooth perimeter vignette */}
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-28 sm:h-40 bg-gradient-to-b from-background via-background/85 to-transparent z-20" aria-hidden />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 sm:h-40 bg-gradient-to-t from-background via-background/85 to-transparent z-20" aria-hidden />
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-24 sm:w-40 bg-gradient-to-r from-background via-background/85 to-transparent z-20" aria-hidden />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-24 sm:w-40 bg-gradient-to-l from-background via-background/85 to-transparent z-20" aria-hidden />
+        </section>
+
+        {/* Interactive Portfolio Details Modal: Full-screen visual showcase with ribbon-like frosted blur */}
+        {itemModal && (
+          <Modal
+            isOpen={Boolean(selectedItem)}
+            onClose={() => setSelectedItem(null)}
+            variant="custom"
+            overlayClassName="bg-black/60 backdrop-blur-xl transition-all duration-300"
+            contentClassName="max-w-5xl w-[94vw] sm:w-[88vw] md:w-[82vw] p-0 overflow-y-auto md:overflow-hidden bg-card border border-foreground/15 dark:border-white/10 rounded-2xl sm:rounded-3xl shadow-2xl max-h-[90vh] md:max-h-[85vh] flex flex-col relative"
+            ariaLabel={activeProject ? `${activeProject.title} Showcase` : "Portfolio Project"}
+          >
+            {activeProject && (
+              <div className="relative w-full flex flex-col md:block overflow-hidden bg-card select-none">
+                {/* Complete Project Image: 100% visible with zero zooming or clipping */}
+                <div className="relative w-full overflow-hidden flex items-center justify-center bg-card">
+                  <img
+                    src={activeProject.image}
+                    alt={activeProject.title}
+                    className="w-full h-auto max-h-[50vh] sm:max-h-[60vh] md:max-h-[82vh] object-contain block select-none pointer-events-none"
+                  />
+                </div>
+
+                {/* Info & Action Controls: In-flow below image on mobile (not absolute), floating frosted ribbon pill on desktop (md:) */}
+                <div className="relative md:absolute md:inset-x-6 md:bottom-6 z-20 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 sm:gap-4 p-4 sm:p-5 md:py-3.5 md:px-5 border-t md:border border-foreground/10 md:border-foreground/15 dark:border-white/10 md:dark:border-white/15 bg-card/95 md:bg-white/75 md:dark:bg-[#131316]/75 md:backdrop-blur-md md:rounded-2xl">
+                  <div className="space-y-1 md:space-y-0.5 max-w-xl">
+                    <h2 className="text-base sm:text-lg md:text-xl font-bold tracking-tight text-foreground">
+                      {activeProject.title}
+                    </h2>
+                    {activeProject.category && (
+                      <p className="text-xs sm:text-sm font-medium text-muted-foreground">
+                        {activeProject.category}
+                      </p>
+                    )}
+                    {activeProject.description && (
+                      <p className="text-xs sm:text-sm text-muted-foreground/90 leading-relaxed pt-1 md:hidden">
+                        {activeProject.description}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2.5 w-full md:w-auto shrink-0 pt-1 md:pt-0 [&>div]:w-full sm:[&>div]:w-auto [&>div>button]:w-full sm:[&>div>button]:w-auto [&>button]:w-full sm:[&>button]:w-auto">
+                    <Button
+                      variant="default"
+                      size="default"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        if (activeProject.href && activeProject.href !== "#") {
+                          window.open(activeProject.href, "_blank", "noopener,noreferrer");
+                        }
+                      }}
+                      iconRight={<ArrowUpRight size={15} />}
+                      className="w-full sm:w-auto font-medium"
+                    >
+                      {ctaLabel}
+                    </Button>
+
+                    <Button
+                      variant="outline"
+                      size="default"
+                      onClick={(e) => {
+                        e.preventDefault();
+                      }}
+                      iconLeft={<Mail size={15} />}
+                      className="w-full sm:w-auto font-medium"
+                    >
+                      Contact
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </Modal>
         )}
       </>
     );

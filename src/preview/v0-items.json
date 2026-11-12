@@ -242,6 +242,7 @@
     "build-interactive-interfaces": "Component Wall — Build interactive interfaces",
     "centred-with-persistent-background": "Component Wall — Centred with persistent background",
     "clean-mobile-view-no-background-animation": "Component Wall — Clean mobile view (no background animation)",
+    "clean-mobile-view-with-single-full-width-background-wall": "Component Wall — Clean mobile view with single full-width background wall",
     "copy-beside-the-wall": "Component Wall — Copy beside the wall"
   },
   "context-menu": {
@@ -705,8 +706,7 @@
     "offset": "Popover — Offset"
   },
   "portfolio-showcase": {
-    "masonry-portfolio-variant-masonry-portfolio": "Portfolio Showcase — Masonry Portfolio — variant=\"masonry-portfolio\"",
-    "3d-perspective-corridor-variant-perspective-corridor": "Portfolio Showcase — 3D Perspective Corridor — variant=\"perspective-corridor\""
+    "masonry-portfolio-variant-masonry-portfolio": "Portfolio Showcase — Masonry Portfolio — variant=\"masonry-portfolio\""
   },
   "pricing": {
     "selectable-workspace-plans": "Pricing — Selectable workspace plans",

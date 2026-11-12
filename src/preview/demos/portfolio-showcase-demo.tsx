@@ -17,10 +17,9 @@ export default function PortfolioShowcaseDemo({
   highlightFocus = false,
   cardShadow = true,
   itemModal = true,
-  collaborativeCursors = false,
   items,
 }: {
-  variant?: "masonry-portfolio" | "fullscreen" | "perspective-corridor" | "perspective-runway";
+  variant?: "masonry-portfolio" | "fullscreen";
   interval?: boolean | number;
   intervalTime?: number;
   order?: "serial" | "shuffle";
@@ -34,7 +33,6 @@ export default function PortfolioShowcaseDemo({
   highlightFocus?: boolean;
   cardShadow?: boolean;
   itemModal?: boolean;
-  collaborativeCursors?: boolean;
   items?: PortfolioItem[];
 }) {
   return (
@@ -55,7 +53,6 @@ export default function PortfolioShowcaseDemo({
         highlightFocus={highlightFocus}
         cardShadow={cardShadow}
         itemModal={itemModal}
-        collaborativeCursors={collaborativeCursors}
       />
     </div>
   );
