@@ -7,6 +7,10 @@ const isServer = typeof window === "undefined";
 /** Quiet time after `load` before any section may come alive. */
 const SETTLE_MS = 1500;
 
+/** A section whose chunk fails to load is retried this many times, backing off from RETRY_BASE_MS. */
+const MAX_LOAD_RETRIES = 4;
+const RETRY_BASE_MS = 800;
+
 /** Input that means a person is already scrolling or reaching for the page. */
 const INPUT_EVENTS = ["scroll", "wheel", "touchstart", "pointerdown", "keydown"] as const;
 
@@ -107,14 +111,34 @@ export function LazyHydrate({ load, server, rootMargin = "600px 0px", eager = fa
 		const el = wrapRef.current;
 		if (!el) return;
 		let started = false;
+		let cancelled = false;
+		let retryTimer: number | undefined;
+		const attempt = (tries: number) => {
+			// A transition, so React builds the live tree in time-sliced chunks that
+			// yield to the browser, rather than one long task. The showcase alone is
+			// hundreds of components, and a one-piece render counted as blocking time.
+			loadRef.current().then(
+				(Component) => {
+					if (!cancelled) startTransition(() => setLive(() => Component));
+				},
+				() => {
+					// A chunk that fails to load (flaky network, a dev server still
+					// compiling) used to leave the section inert for good, and blank if
+					// the server HTML had been discarded. Retry with a growing delay.
+					if (cancelled) return;
+					if (tries >= MAX_LOAD_RETRIES) {
+						started = false; // a later scroll/hover may try again
+						return;
+					}
+					retryTimer = window.setTimeout(() => attempt(tries + 1), RETRY_BASE_MS * 2 ** tries);
+				},
+			);
+		};
 		const start = () => {
 			if (started) return;
 			started = true;
 			io?.disconnect();
-			// A transition, so React builds the live tree in time-sliced chunks that
-			// yield to the browser, rather than one long task. The showcase alone is
-			// hundreds of components, and a one-piece render counted as blocking time.
-			loadRef.current().then((Component) => startTransition(() => setLive(() => Component)));
+			attempt(0);
 		};
 		let near = eager;
 		let quiet = false;
@@ -149,6 +173,8 @@ export function LazyHydrate({ load, server, rootMargin = "600px 0px", eager = fa
 		el.addEventListener("focusin", early, { once: true });
 		el.addEventListener("touchstart", early, { once: true, passive: true });
 		return () => {
+			cancelled = true;
+			window.clearTimeout(retryTimer);
 			io.disconnect();
 			el.removeEventListener("pointerenter", early);
 			el.removeEventListener("focusin", early);
