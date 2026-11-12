@@ -26,7 +26,11 @@ const organization = {
  * site name. Derived, so they follow the environment.
  */
 const alternateNames = [
-  ...new Set([siteConfig.name.replace(/\s+/g, ""), REGISTRY_NAMESPACE.slice(1)]),
+  ...new Set([
+    siteConfig.name.replace(/\s+/g, ""), // AvaraUI
+    REGISTRY_NAMESPACE.slice(1), // avara-ui
+    new URL(SITE_URL).hostname.replace(/^www\./, ""), // avaraui.com
+  ]),
 ].filter((name) => name !== siteConfig.name);
 
 const graph = {

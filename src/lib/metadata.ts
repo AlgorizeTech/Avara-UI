@@ -74,8 +74,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: siteConfig.ogImage,
-        width: 1733,
-        height: 907,
+        width: 1200,
+        height: 630,
         alt: siteConfig.fullName,
         type: "image/png",
       },
@@ -197,7 +197,11 @@ const homeKeywords = [
   "react components",
   "tailwind css components",
   "next.js components",
+  // The brand, in the spellings people type it.
   SITE_NAME.toLowerCase(),
+  SITE_NAME.toLowerCase().replace(/\s+/g, ""),
+  `${SITE_NAME.toLowerCase()} components`,
+  `${SITE_NAME.toLowerCase()} shadcn`,
 ];
 
 /**

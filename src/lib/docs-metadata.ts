@@ -18,8 +18,8 @@ import {
  */
 const OG_IMAGE = {
   url: siteConfig.ogImage,
-  width: 1733,
-  height: 907,
+  width: 1200,
+  height: 630,
   alt: siteConfig.fullName,
   type: "image/png",
 };
