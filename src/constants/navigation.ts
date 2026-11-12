@@ -504,6 +504,7 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Not Found",
         slug: "not-found",
+        badge: "New",
         keywords: [
           "not found",
           "not found section",

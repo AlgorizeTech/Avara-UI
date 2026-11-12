@@ -13,11 +13,17 @@ Designed as a drop-in replacement for Next.js `not-found.tsx` or standalone miss
 
 <AgentVariants slug="not-found" />
 
-export const usageDefault = `import { NotFoundSection } from "@/components/custom/blocks/NotFoundBlock";
+export const usageDefault = `import {
+  NotFoundSection,
+  type NotFoundVariant,
+} from "@/components/custom/blocks/NotFoundBlock";
+
+const variant: NotFoundVariant = "hyperspace";
 
 export default function NotFound() {
   return (
     <NotFoundSection
+      variant={variant}
       code="404"
       badge="Error 404 • Page Not Found"
       title="Lost in Hyperspace?"
@@ -34,12 +40,17 @@ export default function NotFound() {
   );
 }`;
 
-export const usageAnimatedBeam = `import { NotFoundSection } from "@/components/custom/blocks/NotFoundBlock";
+export const usageAnimatedBeam = `import {
+  NotFoundSection,
+  type NotFoundVariant,
+} from "@/components/custom/blocks/NotFoundBlock";
+
+const variant: NotFoundVariant = "animated-beam-border";
 
 export default function NotFound() {
   return (
     <NotFoundSection
-      variant="animated-beam-border"
+      variant={variant}
       code="404"
       badge="CAD SPEC // 0x404 ROUTE EXCEPTION"
       title="Lost in the Digital Architecture?"
@@ -57,12 +68,17 @@ export default function NotFound() {
   );
 }`;
 
-export const usageQuantumHologram = `import { NotFoundSection } from "@/components/custom/blocks/NotFoundBlock";
+export const usageQuantumHologram = `import {
+  NotFoundSection,
+  type NotFoundVariant,
+} from "@/components/custom/blocks/NotFoundBlock";
+
+const variant: NotFoundVariant = "quantum-hologram";
 
 export default function NotFound() {
   return (
     <NotFoundSection
-      variant="quantum-hologram"
+      variant={variant}
       code="404"
       badge="QUANTUM ROUTE ANOMALY // 0x404"
       title="Lost in the Quantum Singularity?"
@@ -80,12 +96,17 @@ export default function NotFound() {
   );
 }`;
 
-export const usageHyperspace = `import { NotFoundSection } from "@/components/custom/blocks/NotFoundBlock";
+export const usageHyperspace = `import {
+  NotFoundSection,
+  type NotFoundVariant,
+} from "@/components/custom/blocks/NotFoundBlock";
+
+const variant: NotFoundVariant = "hyperspace";
 
 export default function NotFound() {
   return (
     <NotFoundSection
-      variant="hyperspace"
+      variant={variant}
       code="404"
       badge="Error 404 • Page Not Found"
       title="Lost in Hyperspace?"
@@ -99,6 +120,32 @@ export default function NotFound() {
         href: "/",
       }}
       showShortcuts={true}
+    />
+  );
+}`;
+
+export const usageSpatialPortal = `import {
+  NotFoundSection,
+  type NotFoundVariant,
+} from "@/components/custom/blocks/NotFoundBlock";
+
+const variant: NotFoundVariant = "spatial-portal";
+
+export default function NotFound() {
+  return (
+    <NotFoundSection
+      variant={variant}
+      code="404"
+      title="Page Not Found"
+      description="The page you are looking for doesn't exist, has been relocated, or is temporarily unavailable."
+      primaryAction={{
+        label: "Back to Home",
+        href: "/",
+      }}
+      secondaryAction={{
+        label: "Explore Documentation",
+        href: "#",
+      }}
     />
   );
 }`;
@@ -223,6 +270,46 @@ export default function NotFound() {
       usage: usageQuantumHologram,
       code: extractCode("src/components/custom/blocks/NotFoundBlock.tsx"),
     },
+    {
+      title: "Infinite Horizon Animated Color 404",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"spatial-portal"',
+          effect:
+            "activates full-background 3D perspective moving grid runway with chromatic color-animated 404 and mirror reflection.",
+        },
+        {
+          prop: "code",
+          value: '"404"',
+          effect:
+            "monumental hero typography with smooth chromatic color wave animation and soft diffuse glow.",
+        },
+        {
+          prop: "primaryAction",
+          value: '{ label: "Back to Home", href: "/" }',
+          effect:
+            "primary navigation CTA button routing the user back to the application homepage.",
+        },
+      ],
+      props: {
+        variant: "spatial-portal",
+        code: "404",
+        title: "Page Not Found",
+        description:
+          "The page you are looking for doesn't exist, has been relocated, or is temporarily unavailable.",
+        primaryAction: {
+          label: "Back to Home",
+          href: "/",
+        },
+        secondaryAction: {
+          label: "Explore Documentation",
+          href: "#",
+        },
+      },
+      usage: usageSpatialPortal,
+      code: extractCode("src/components/custom/blocks/NotFoundBlock.tsx"),
+    },
   ]}
 />
 
@@ -235,6 +322,10 @@ export default function NotFound() {
 Discover the key capabilities of the `NotFoundSection` component:
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Infinite Horizon 3D Grid & Color 404</h3>
+    <p className="text-muted-foreground text-sm">Full-section infinite moving 3D perspective cyber grid runway, glowing horizon laser beam, inverted mirror floor reflection, and flowing chromatic 404 typography.</p>
+  </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">Animated Conic Laser Border & Halo</h3>
     <p className="text-muted-foreground text-sm">360° rotating high-speed conic gradient beam border paired with a diffuse outer glow halo for a futuristic cyberpunk visual presence.</p>
@@ -276,9 +367,9 @@ Discover the key capabilities of the `NotFoundSection` component:
     <tbody>
       <tr>
         <td><code>variant</code></td>
-        <td><code>"hyperspace" | "animated-beam-border"</code></td>
+        <td><code>"hyperspace" | "animated-beam-border" | "quantum-hologram" | "spatial-portal"</code></td>
         <td><code>"hyperspace"</code></td>
-        <td>Visual style variant: classic cosmic hyperspace or rotating neon laser beam border with shifting color.</td>
+        <td>Visual style variant: classic cosmic hyperspace, architectural CAD blueprint, quantum orbital hologram, or kinetic animated radar with color 404.</td>
       </tr>
       <tr>
         <td><code>color</code></td>

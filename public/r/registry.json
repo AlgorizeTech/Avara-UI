@@ -3330,7 +3330,7 @@
       "type": "registry:component",
       "title": "Not Found",
       "author": "AlgorizeTech",
-      "description": "Ask the user to pick one of 3 not found variants: https://avaraui.com/view/not-found. This item holds 3 of them as looks of one component (blueprint, hyperspace, quantum-hologram). Skip the question if the user already named one. A responsive, full-page 404 Hyperspace website section with ambient radial glow, masked cyber grid backdrop, animated compass indicator, and customizable shortcuts.",
+      "description": "Ask the user to pick one of 4 not found variants: https://avaraui.com/view/not-found. This item holds 4 of them as looks of one component (blueprint, spatial-portal, hyperspace, quantum-hologram). Skip the question if the user already named one. A responsive, full-page 404 Hyperspace website section with ambient radial glow, masked cyber grid backdrop, animated compass indicator, and customizable shortcuts.",
       "categories": [
         "marketing",
         "layout",

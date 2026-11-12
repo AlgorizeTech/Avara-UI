@@ -15,12 +15,23 @@ import {
   Cpu,
   Radio,
   Zap,
+  Orbit,
+  Navigation,
+  CornerDownLeft,
+  Command,
+  Globe,
+  Layers,
 } from "lucide-react";
 
 export type NotFoundVariant =
   | "hyperspace"
   | "animated-beam-border"
-  | "quantum-hologram";
+  | "quantum-hologram"
+  | "spatial-portal"
+  | "kinetic-wireframe"
+  | "infinite-horizon"
+  | "dimensional-portal"
+  | "portal";
 
 export interface ShortcutItem {
   label: string;
@@ -953,6 +964,302 @@ export function QuantumHologramNotFoundSection({
 }
 
 /* ========================================================================== */
+/*  VARIANT 4: KINETIC RADAR MATRIX WITH COLOR-ANIMATED 404                  */
+/* ========================================================================== */
+
+const WIREFRAME_STYLES = `
+@keyframes perspective-grid-flow {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 60px;
+  }
+}
+@keyframes horizon-glow-pulse {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scaleY(0.85);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scaleY(1.2);
+  }
+}
+@keyframes float-particle-rise-1 {
+  0% {
+    transform: translateY(15px) scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(-80px) scale(1.2);
+    opacity: 0;
+  }
+}
+@keyframes float-particle-rise-2 {
+  0% {
+    transform: translateY(30px) scale(0.6);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.95;
+  }
+  100% {
+    transform: translateY(-90px) scale(1.1);
+    opacity: 0;
+  }
+}
+@keyframes hero-404-color-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+@keyframes hero-404-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 30px rgba(99, 102, 241, 0.45));
+  }
+  33% {
+    filter: drop-shadow(0 0 35px rgba(6, 182, 212, 0.5));
+  }
+  66% {
+    filter: drop-shadow(0 0 35px rgba(236, 72, 153, 0.5));
+  }
+}
+`;
+
+export function KineticWireframeNotFoundSection({
+  code = "404",
+  badge,
+  title = "Page Not Found",
+  description = "The page you are looking for doesn't exist, has been relocated, or is temporarily unavailable.",
+  primaryAction = {
+    label: "Back to Home",
+    href: "/",
+    icon: <Home className="h-4 w-4" />,
+  },
+  secondaryAction = {
+    label: "Explore Documentation",
+    href: "#",
+    icon: <BookOpen className="h-4 w-4" />,
+  },
+  color,
+  className,
+  ...props
+}: NotFoundSectionProps) {
+  const dynamicAccent = accentStyle(color);
+
+  const renderAction = (action?: NotFoundAction, isPrimary = false) => {
+    if (!action) return null;
+    const baseClass = isPrimary
+      ? "inline-flex w-full sm:w-auto items-center justify-center gap-2.5 rounded-full bg-primary text-primary-foreground font-semibold px-8 py-3.5 text-xs sm:text-sm hover:opacity-95 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer shadow-lg shadow-primary/20"
+      : "inline-flex w-full sm:w-auto items-center justify-center gap-2.5 rounded-full border border-border bg-card/80 hover:bg-card hover:border-foreground/30 text-foreground font-medium px-8 py-3.5 text-xs sm:text-sm backdrop-blur-md active:scale-[0.98] transition-all cursor-pointer";
+
+    const content = (
+      <>
+        {action.icon}
+        <span>{action.label}</span>
+      </>
+    );
+
+    if (action.onClick) {
+      return (
+        <button
+          type="button"
+          onClick={action.onClick}
+          className={baseClass}
+        >
+          {content}
+        </button>
+      );
+    }
+
+    return (
+      <a href={action.href ?? "#"} className={baseClass}>
+        {content}
+      </a>
+    );
+  };
+
+  return (
+    <section
+      style={dynamicAccent}
+      className={cn(
+        "relative w-full min-h-[700px] sm:min-h-[780px] flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-24 overflow-hidden bg-background text-foreground select-none transition-colors duration-200",
+        className
+      )}
+      {...props}
+    >
+      <style>{WIREFRAME_STYLES}</style>
+
+      {/* ==================================================================== */}
+      {/* FULL BACKGROUND: 3D PERSPECTIVE RUNWAY & HORIZON LIGHT BEAM          */}
+      {/* ==================================================================== */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden select-none"
+      >
+        {/* Subtle Cosmic Starfield / Dot Matrix */}
+        <div
+          className="absolute inset-0 opacity-[0.12] dark:opacity-[0.20]"
+          style={{
+            backgroundImage: "radial-gradient(circle, currentColor 1px, transparent 1px)",
+            backgroundSize: "28px 28px",
+          }}
+        />
+
+        {/* 3D Infinite Perspective Grid Floor */}
+        <div
+          className="absolute -bottom-24 left-1/2 -translate-x-1/2 w-[220%] h-[58%] origin-bottom pointer-events-none"
+          style={{
+            perspective: "500px",
+            maskImage:
+              "linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 60%, transparent 100%)",
+            WebkitMaskImage:
+              "linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 60%, transparent 100%)",
+          }}
+        >
+          <div
+            className="w-full h-full"
+            style={{
+              transform: "rotateX(74deg)",
+              backgroundImage: `
+                linear-gradient(to right, rgba(99, 102, 241, 0.28) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(99, 102, 241, 0.28) 1px, transparent 1px)
+              `,
+              backgroundSize: "60px 60px",
+              animation: "perspective-grid-flow 3.5s linear infinite",
+            }}
+          />
+        </div>
+
+        {/* Horizon Light Beam & Aurora Glow */}
+        <div
+          className="absolute top-1/2 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/80 to-transparent pointer-events-none shadow-[0_0_24px_rgba(99,102,241,0.8)]"
+          style={{ animation: "horizon-glow-pulse 5s ease-in-out infinite" }}
+        />
+        <div
+          className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 w-[650px] h-32 bg-primary/15 blur-3xl pointer-events-none rounded-full"
+          style={{ animation: "horizon-glow-pulse 6s ease-in-out infinite" }}
+        />
+
+        {/* Rising Ambient Digital Sparks / Particles */}
+        <div
+          className="absolute top-[48%] left-[20%] w-2 h-2 rounded-full bg-primary/70 blur-[1px] pointer-events-none"
+          style={{
+            animation: "float-particle-rise-1 4s ease-in-out infinite",
+            animationDelay: "0s",
+          }}
+        />
+        <div
+          className="absolute top-[52%] left-[32%] w-1.5 h-1.5 rounded-full bg-cyan-400/80 pointer-events-none"
+          style={{
+            animation: "float-particle-rise-2 5s ease-in-out infinite",
+            animationDelay: "1.2s",
+          }}
+        />
+        <div
+          className="absolute top-[46%] right-[22%] w-2 h-2 rounded-full bg-pink-500/70 blur-[1px] pointer-events-none"
+          style={{
+            animation: "float-particle-rise-1 4.5s ease-in-out infinite",
+            animationDelay: "2s",
+          }}
+        />
+        <div
+          className="absolute top-[54%] right-[35%] w-1.5 h-1.5 rounded-full bg-primary/80 pointer-events-none"
+          style={{
+            animation: "float-particle-rise-2 5.5s ease-in-out infinite",
+            animationDelay: "3s",
+          }}
+        />
+        <div
+          className="absolute top-[44%] left-[48%] w-1.5 h-1.5 rounded-full bg-purple-400/80 pointer-events-none"
+          style={{
+            animation: "float-particle-rise-1 4.8s ease-in-out infinite",
+            animationDelay: "0.8s",
+          }}
+        />
+      </div>
+
+      {/* ==================================================================== */}
+      {/* FOREGROUND CONTENT: HERO 404 + MIRROR FLOOR REFLECTION               */}
+      {/* ==================================================================== */}
+      <div className="relative z-10 w-full max-w-3xl mx-auto flex flex-col items-center text-center">
+        {/* Optional Clean Badge (Only if provided) */}
+        {badge && (
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-border/80 bg-card/60 backdrop-blur-xl text-foreground text-xs font-mono tracking-wide mb-3 shadow-sm hover:border-primary/40 transition-colors">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
+            </span>
+            <span>{badge}</span>
+          </div>
+        )}
+
+        {/* MASSIVE 404 WITH INVERTED MIRROR REFLECTION */}
+        <div className="relative flex flex-col items-center select-none my-1">
+          {/* Main 404 */}
+          <div
+            className="text-[9.5rem] sm:text-[13.5rem] md:text-[16.5rem] lg:text-[19rem] font-black font-mono tracking-tighter leading-none select-none text-transparent bg-clip-text"
+            style={{
+              backgroundImage:
+                "linear-gradient(135deg, #38bdf8, #818cf8, #c084fc, #f472b6, #38bdf8)",
+              backgroundSize: "300% 300%",
+              animation:
+                "hero-404-color-flow 7s ease infinite, hero-404-glow 7s ease infinite",
+            }}
+          >
+            {code}
+          </div>
+
+          {/* Inverted Mirror Floor Reflection */}
+          <div
+            aria-hidden="true"
+            className="text-[9.5rem] sm:text-[13.5rem] md:text-[16.5rem] lg:text-[19rem] font-black font-mono tracking-tighter leading-none select-none text-transparent bg-clip-text opacity-25 pointer-events-none scale-y-[-0.35] -mt-20 sm:-mt-28 md:-mt-32 blur-[2px]"
+            style={{
+              backgroundImage:
+                "linear-gradient(135deg, #38bdf8, #818cf8, #c084fc, #f472b6, #38bdf8)",
+              backgroundSize: "300% 300%",
+              animation: "hero-404-color-flow 7s ease infinite",
+              maskImage:
+                "linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, transparent 80%)",
+              WebkitMaskImage:
+                "linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, transparent 80%)",
+            }}
+          >
+            {code}
+          </div>
+        </div>
+
+        {/* Title & Description */}
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-foreground max-w-xl mb-3 mt-4">
+          {title}
+        </h1>
+        <p className="text-sm sm:text-base text-muted-foreground max-w-lg mx-auto mb-8 leading-relaxed">
+          {description}
+        </p>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 w-full sm:w-auto">
+          {renderAction(primaryAction, true)}
+          {renderAction(secondaryAction, false)}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export { KineticWireframeNotFoundSection as SpatialPortalNotFoundSection };
+
+/* ========================================================================== */
 /*  MAIN EXPORT: DISPATCHES TO SELECTED VARIANT                               */
 /* ========================================================================== */
 
@@ -965,6 +1272,15 @@ export function NotFoundSection({
   }
   if (variant === "quantum-hologram") {
     return <QuantumHologramNotFoundSection {...props} />;
+  }
+  if (
+    variant === "kinetic-wireframe" ||
+    variant === "spatial-portal" ||
+    variant === "infinite-horizon" ||
+    variant === "dimensional-portal" ||
+    variant === "portal"
+  ) {
+    return <KineticWireframeNotFoundSection {...props} />;
   }
   return <HyperspaceNotFoundSection {...props} />;
 }
