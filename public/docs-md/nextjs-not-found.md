@@ -12,11 +12,11 @@ Designed as a drop-in replacement for Next.js `not-found.tsx` or standalone miss
 
 ## For AI agents
 
-**Ask before you pick.** This page has 3 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+**Ask before you pick.** This page has 4 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
 
-All 3 options as live previews: https://avaraui.com/view/not-found
+All 4 options as live previews: https://avaraui.com/view/not-found
 
-**When to use it.** A full-page 404 section in three looks: an architectural blueprint, a hyperspace grid, and an animated quantum hologram.
+**When to use it.** A full-page 404 section in four looks: an architectural blueprint, a hyperspace grid, a quantum hologram, and a 3D perspective infinite horizon.
 
 **When to use something else:**
 
@@ -24,9 +24,9 @@ All 3 options as live previews: https://avaraui.com/view/not-found
 
 **Gotchas:**
 
-- All three are looks of the one `not-found` item: install it once and set `variant` from the index.
+- Choose between the architectural blueprint, hyperspace grid, quantum hologram, and 3D perspective infinite horizon via `variant`.
 
-### The 3 variants
+### The 4 variants
 
 1. **Architectural CAD blueprint** (`blueprint`): A zero-shadow modular CAD blueprint with a drafting ruler bar, protocol telemetry and a navigation directory.
    - Live: https://avaraui.com/view/not-found/blueprint
@@ -36,7 +36,15 @@ All 3 options as live previews: https://avaraui.com/view/not-found
    - Install: `npx shadcn@latest add @avara-ui/not-found`
    - Set these props: `{"variant":"animated-beam-border"}`
    - Docs: https://avaraui.com/docs/nextjs/not-found#architectural-cad-blueprint-404-zero-shadow
-2. **Hyperspace** (`hyperspace`): A celestial cosmic grid backdrop with ambient radial glow, a rotating compass badge and a serif status code.
+2. **Infinite Horizon Color 404** (`spatial-portal`): 3D perspective moving grid runway with an animated chromatic 404, mirror reflection, and clean CTAs.
+   - Live: https://avaraui.com/view/not-found/spatial-portal
+   - Best for: modern SaaS, design-led web apps, developer platforms, and clean uncluttered 404 pages
+   - Avoid if: you prefer a flat CAD blueprint or terminal interface
+   - Traits: 3D perspective grid, color-animated 404, mirror reflection, clean CTAs
+   - Install: `npx shadcn@latest add @avara-ui/not-found`
+   - Set these props: `{"variant":"spatial-portal"}`
+   - Docs: https://avaraui.com/docs/nextjs/not-found#infinite-horizon-animated-color-404
+3. **Hyperspace** (`hyperspace`): A celestial cosmic grid backdrop with ambient radial glow, a rotating compass badge and a serif status code.
    - Live: https://avaraui.com/view/not-found/hyperspace
    - Best for: a classic, atmospheric 404 that fits most tech and product sites
    - Avoid if: your brand is flat and light
@@ -44,7 +52,7 @@ All 3 options as live previews: https://avaraui.com/view/not-found
    - Install: `npx shadcn@latest add @avara-ui/not-found`
    - Set these props: `{"variant":"hyperspace"}`
    - Docs: https://avaraui.com/docs/nextjs/not-found#hyperspace-404-section
-3. **Quantum hologram** (`quantum-hologram`): A 3D gyroscopic orbital singularity with a chromatic glitch headline, audio frequency bars and HUD brackets.
+4. **Quantum hologram** (`quantum-hologram`): A 3D gyroscopic orbital singularity with a chromatic glitch headline, audio frequency bars and HUD brackets.
    - Live: https://avaraui.com/view/not-found/quantum-hologram
    - Best for: sci-fi, gaming and showpiece sites where the 404 can be a moment
    - Avoid if: you want a calm, quick-to-read error page
@@ -60,12 +68,17 @@ All 3 options as live previews: https://avaraui.com/view/not-found
 - `showShortcuts=true` displays tactical navigation directory with pure white icon hover transitions.
 
 ```tsx
-import { NotFoundSection } from "@/components/custom/blocks/NotFoundBlock";
+import {
+  NotFoundSection,
+  type NotFoundVariant,
+} from "@/components/custom/blocks/NotFoundBlock";
+
+const variant: NotFoundVariant = "animated-beam-border";
 
 export default function NotFound() {
   return (
     <NotFoundSection
-      variant="animated-beam-border"
+      variant={variant}
       code="404"
       badge="CAD SPEC // 0x404 ROUTE EXCEPTION"
       title="Lost in the Digital Architecture?"
@@ -91,12 +104,17 @@ export default function NotFound() {
 - `badge="Error 404 • Page Not Found"` floating status badge with animated rotating compass icon.
 
 ```tsx
-import { NotFoundSection } from "@/components/custom/blocks/NotFoundBlock";
+import {
+  NotFoundSection,
+  type NotFoundVariant,
+} from "@/components/custom/blocks/NotFoundBlock";
+
+const variant: NotFoundVariant = "hyperspace";
 
 export default function NotFound() {
   return (
     <NotFoundSection
-      variant="hyperspace"
+      variant={variant}
       code="404"
       badge="Error 404 • Page Not Found"
       title="Lost in Hyperspace?"
@@ -122,12 +140,17 @@ export default function NotFound() {
 - `showShortcuts=true` displays holographic trajectory recovery grid with live telemetry nodes and pure white icon hover transitions.
 
 ```tsx
-import { NotFoundSection } from "@/components/custom/blocks/NotFoundBlock";
+import {
+  NotFoundSection,
+  type NotFoundVariant,
+} from "@/components/custom/blocks/NotFoundBlock";
+
+const variant: NotFoundVariant = "quantum-hologram";
 
 export default function NotFound() {
   return (
     <NotFoundSection
-      variant="quantum-hologram"
+      variant={variant}
       code="404"
       badge="QUANTUM ROUTE ANOMALY // 0x404"
       title="Lost in the Quantum Singularity?"
@@ -141,6 +164,40 @@ export default function NotFound() {
         href: "/",
       }}
       showShortcuts={true}
+    />
+  );
+}
+```
+
+## Infinite Horizon Animated Color 404
+
+- `variant="spatial-portal"` activates full-background 3D perspective moving grid runway with chromatic color-animated 404 and mirror reflection.
+- `code="404"` monumental hero typography with smooth chromatic color wave animation and soft diffuse glow.
+- `primaryAction={ label: "Back to Home", href: "/" }` primary navigation CTA button routing the user back to the application homepage.
+
+```tsx
+import {
+  NotFoundSection,
+  type NotFoundVariant,
+} from "@/components/custom/blocks/NotFoundBlock";
+
+const variant: NotFoundVariant = "spatial-portal";
+
+export default function NotFound() {
+  return (
+    <NotFoundSection
+      variant={variant}
+      code="404"
+      title="Page Not Found"
+      description="The page you are looking for doesn't exist, has been relocated, or is temporarily unavailable."
+      primaryAction={{
+        label: "Back to Home",
+        href: "/",
+      }}
+      secondaryAction={{
+        label: "Explore Documentation",
+        href: "#",
+      }}
     />
   );
 }
@@ -164,6 +221,10 @@ npx shadcn@latest add @avara-ui/not-found
 ## Features
 
 Discover the key capabilities of the `NotFoundSection` component:
+
+### Infinite Horizon 3D Grid & Color 404
+
+Full-section infinite moving 3D perspective cyber grid runway, glowing horizon laser beam, inverted mirror floor reflection, and flowing chromatic 404 typography.
 
 ### Animated Conic Laser Border & Halo
 
@@ -193,7 +254,7 @@ Full live CSS variable integration (`--primary`), allowing interactive accent pa
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `variant` | `"hyperspace" \| "animated-beam-border"` | `"hyperspace"` | Visual style variant: classic cosmic hyperspace or rotating neon laser beam border with shifting color. |
+| `variant` | `"hyperspace" \| "animated-beam-border" \| "quantum-hologram" \| "spatial-portal"` | `"hyperspace"` | Visual style variant: classic cosmic hyperspace, architectural CAD blueprint, quantum orbital hologram, or kinetic animated radar with color 404. |
 | `color` | `string` | `undefined` | Custom theme accent color applied live across borders, badges, buttons, and glow effects. |
 | `code` | `string` | `"404"` | Primary numerical status code heading rendered in elegant serif typography or shifting gradient. |
 | `badge` | `string` | `"Error 404 • Page Not Found"` | Floating status pill text with animated rotating compass icon. |

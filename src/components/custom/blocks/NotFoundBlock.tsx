@@ -15,12 +15,6 @@ import {
   Cpu,
   Radio,
   Zap,
-  Orbit,
-  Navigation,
-  CornerDownLeft,
-  Command,
-  Globe,
-  Layers,
 } from "lucide-react";
 
 export type NotFoundVariant =

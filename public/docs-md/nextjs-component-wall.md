@@ -319,6 +319,92 @@ export default function Hero() {
 }
 ```
 
+### Clean mobile view with single full-width background wall
+
+Centred hero layout featuring one single continuous full-width background wall across the entire hero instead of dual separate left and right walls. Pass singleBackground={true} (or singleWall={true}) to render a single unified wall animation, combined with showMobileWall={false} to keep mobile clean.
+
+- `singleBackground=true` renders ONE single continuous background wall spanning the entire hero behind the copy, instead of splitting items into separate left and right walls.
+- `showMobileWall=false` completely hides the background screenshot animations on small screens and phones (<lg) for a clean mobile presentation.
+- `interval=true` glides the single camera smoothly across the entire background wall on desktop.
+- `draggable=true` allows interactive dragging and panning across the full-width wall.
+- `layout="center"` centres the copy in the middle over the single background wall.
+- `install` is the command in the box. Live-updates with the card slug the camera lands on.
+- `items` are all the cards dealt into the single unified wall.
+- `stack` renders the Tech Stack in compact mode below the trust statement in the center column.
+
+```tsx
+"use client";
+
+import Link from "next/link";
+import { ComponentWall, type ComponentWallItem } from "@/components/custom/blocks/ComponentWallBlock";
+
+
+// slug is what the install line calls the card; it defaults to the title in kebab-case.
+const ITEMS: ComponentWallItem[] = [
+  { slug: "hero", title: "Word bounce hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/hero-1790516064495.jpg" },
+  { slug: "pricing", title: "Pricing plans", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/pricing-1790516064500.jpg" },
+  { slug: "bento-showcase", title: "Bento showcase", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/bento-showcase-1790516064489.jpg" },
+  { slug: "book-appointment", title: "Book appointment", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/book-appointment-1790516064490.jpg" },
+  { slug: "collage-hero", title: "Collage hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/collage-hero-1790516064493.jpg" },
+  { slug: "fashion-hero", title: "Fashion hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/fashion-hero-1790516064495.jpg" },
+  { slug: "hero-carousel", title: "Hero carousel", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516059/hero-carousel-1790516064496.jpg" },
+  { slug: "honeycomb-hero", title: "Honeycomb hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516059/honeycomb-hero-1790516064497.jpg" },
+  // … as many as you like; four columns of six reads well
+];
+
+// Faces for the trust line — shown as an Avatar Group (shift on hover, name tooltip).
+const AVATARS = [
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1587009-1790145143488.jpg", alt: "Mara Jade" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg", alt: "Leo Silva" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790082180/pexels-photo-1520760-1790082180553.jpg", alt: "June Carter" },
+  { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145141/pexels-photo-6311475-1790145143489.jpg", alt: "Sam Wilson" },
+];
+
+// Renders a single continuous full-width background wall animation across the hero
+// instead of splitting into two separate walls on the left and right.
+const STACK = (
+  <TechStack label="Built with" variant="compact">
+    <TechStackGroup>
+      <TechStackTool name="React" icon={<ReactIcon />} />
+      <TechStackTool name="Next.js" icon={<NextjsIcon fill="currentColor" />} />
+      <TechStackTool name="TypeScript" icon={<TypeScriptIcon />} />
+      <TechStackTool name="Tailwind CSS" icon={<TailwindIcon />} />
+      <TechStackTool name="Motion" icon={<MotionIcon />} />
+      <TechStackTool name="GSAP" icon={<GsapIcon />} />
+      <TechStackTool name="Lucide" icon={<LucideIcon />} />
+    </TechStackGroup>
+  </TechStack>
+);
+
+export default function Hero() {
+  return (
+    <ComponentWall
+      layout="center"
+      singleBackground
+      showMobileWall={false}
+      badge={{ label: "Next-gen React components", href: "/docs" }}
+      heading="Build interactive {word}."
+      headingWords={["interfaces", "components", "experiences", "animations", "dashboards"]}
+      accent="interactive"
+      description="A meticulous library of React components and interactive blocks, engineered for seamless performance with Tailwind CSS, TypeScript, GSAP and Motion."
+      install={{ command: "npx shadcn@latest add @avara-ui/{item}" }}
+      primaryAction={{ label: "Browse components", href: "/docs" }}
+      secondaryAction={{ label: "Star on GitHub", href: "https://github.com/AlgorizeTech", icon: <GitHubIcon size={16} /> }}
+      trust={{ text: "Loved by developers shipping real products with it", avatars: AVATARS, rating: 5 }}
+      items={ITEMS}
+      stack={STACK}
+      interval={true}
+      intervalTime={5500}
+      draggable={true}
+      highlightFocus={true}
+      linkComponent={Link}
+    />
+  );
+}
+```
+
 ### Copy beside the wall
 
 The copy on the left, one wall filling the right and fading under it. One camera, so the install line follows it card by card; the tools sit over the lower edge of the wall.
@@ -447,6 +533,7 @@ Background, text, the primary button and the stars all read theme tokens, so a p
 | `showMobileWall` | `boolean` | `true` | Whether to show the background image animations on mobile and small screens (&lt;lg). When `false`, the wall animations are completely hidden on small screens across all variants (`center`, `split`, and `center-background`), leaving only the clean content copy and tools on phones while retaining full interactive animations on desktop. |
 | `mobileBackground` | `boolean` | `true` | Alias for `showMobileWall`. Set to `false` to disable the background image animation on small screens across all variants. |
 | `persistentBackground` | `boolean` | `false` | When true (or with `layout="center-background"`), the animated screenshot walls remain in the background layer behind the copy on small screens instead of dropping below the action buttons as a separate band. |
+| `singleBackground` | `boolean` | `false` | Centred layout only: when `true`, renders one single continuous background wall across the entire hero instead of splitting into two separate walls on the left and right. Can also be written as `singleWall`. |
 | `compactWall` | `boolean` | `true` | Centred layout only: whether that band shows below `lg`. Deprecated in favor of `showMobileWall` which works across all layouts. |
 | `linkComponent` | `ElementType` | `"a"` | What renders every link; pass `next/link` in Next.js. |
 

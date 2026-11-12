@@ -1,12 +1,12 @@
 ---
 title: "Shadcn Invoice Dashboard"
-description: "Shadcn Invoice Dashboard. A complete, fully functional, and editable Invoice dashboard component featuring 4 distinct design variants."
+description: "Shadcn Invoice Dashboard. A complete, fully functional, and editable Invoice dashboard component featuring 5 distinct design variants."
 url: https://avaraui.com/docs/nextjs/invoice
 ---
 
 # Shadcn Invoice Dashboard
 
-A complete, fully functional, and editable Invoice dashboard component featuring 4 distinct design variants: Default, Corporate Executive, Neo-Brutalist, and Modern Geometric.
+A complete, fully functional, and editable Invoice dashboard component featuring 5 distinct design variants: Default, Asymmetric Split, Modern Geometric, Corporate Executive, and Neo-Brutalist.
 
 The component is fully encapsulated — hand it an `invoiceData` object and it owns the rest. Click **Edit** in the right sidebar of any preview to add items, change quantities and download the resulting JSON.
 
@@ -123,6 +123,66 @@ npx shadcn@latest add @avara-ui/invoice
 ```
 
 ## Variations
+
+### Asymmetric Split
+
+High-impact editorial split layout with dark charcoal sidebar, themed logo block, angled header divider, and payment details.
+
+```tsx
+import Invoice, { type InvoiceData } from "@/components/custom/blocks/Invoice";
+
+const invoiceData: InvoiceData = {
+  invoiceNumber: "#123456",
+  dateIssued: "April 05, 2026",
+  companyName: "AVARA_UI",
+  tagline: "DESIGN SYSTEM ARCHITECTURE",
+  invoiceTo: {
+    name: "Jhone Doe.",
+    company: "Managing Director, Company ltd.",
+    phone: "+123 4567 8910",
+    email: "example@mail.com",
+    address: "7777 Mendez Plains, Brooklyn, CA 91905",
+  },
+  invoiceFrom: {
+    name: "Jhone Smith.",
+    company: "Managing Director, Company ltd.",
+    phone: "+123 4567 8910",
+    email: "example@mail.com",
+  },
+  items: [
+    { item: "Business Card Design", unitPrice: "$50", qty: "2", total: "$100.00" },
+    { item: "Interface Design", unitPrice: "$50", qty: "2", total: "$100.00" },
+    { item: "Dashboard Template", unitPrice: "$50", qty: "2", total: "$100.00" },
+    { item: "User Experience Design", unitPrice: "$50", qty: "2", total: "$100.00" },
+    { item: "Mobile Application Design", unitPrice: "$50", qty: "2", total: "$100.00" },
+    { item: "Affiliate Marketing", unitPrice: "$50", qty: "2", total: "$100.00" },
+  ],
+  subtotal: "$1000.00",
+  tax: "$100.00",
+  discount: "$0.00",
+  grandTotal: "$1100.00",
+  paymentMethod: {
+    accountNo: "1234 5678 910",
+    accountName: "Jhone Doe.",
+    branchName: "XYZ",
+  },
+  companyContact: {
+    phone: "+123 4567 8910",
+    email: "example@mail.com",
+    website: "www.sitename.com",
+  },
+  terms: [
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida.",
+  ],
+  signatory: {
+    name: "AUTHORISED SIGN",
+  },
+};
+
+export default function SplitInvoice() {
+  return <Invoice variant="split" invoiceData={invoiceData} />;
+}
+```
 
 ### Modern Geometric
 
@@ -308,9 +368,9 @@ export default function BrutalistInvoice() {
 ## Features
 Explore the Invoice component's structured layout for displaying billing information, line items, and dynamic total calculations.
 
-### 4 Design Variants
+### 5 Design Variants
 
-Choose from Default, Corporate Executive, Neo-Brutalist, and Modern Geometric layout variants.
+Choose from Default, Asymmetric Split, Modern Geometric, Corporate Executive, and Neo-Brutalist layout variants.
 
 ### Interactive Edit & Export
 
@@ -329,7 +389,7 @@ Seamless support for custom color themes across primary buttons, focus rings, an
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `invoiceData` | `InvoiceData` | Required | The core data object containing all fields (dates, addresses, billing details, array of items, totals, and notes). |
-| `variant` | `"default" \| "corporate" \| "brutalist" \| "geometric"` | `"default"` | Applies overarching structural layouts, including borders, backdrop blurs, shadows, or geometric styling. |
+| `variant` | `"default" \| "corporate" \| "brutalist" \| "geometric" \| "split"` | `"default"` | Applies overarching structural layouts, including borders, backdrop blurs, shadows, or geometric styling. |
 | `color` | `"primary" \| "indigo" \| "rose" \| "emerald" \| "zinc"` | `"primary"` | Applies global color themes to buttons, focus rings, and highlights. |
 
 ---
