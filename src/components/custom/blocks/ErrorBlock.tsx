@@ -15,6 +15,14 @@ import {
   Terminal,
   ChevronDown,
   ChevronUp,
+  Laptop,
+  Globe,
+  Database,
+  CheckCircle2,
+  XCircle,
+  Activity,
+  Layers,
+  Sparkles,
 } from "lucide-react";
 
 export interface ServiceStatusItem {
@@ -28,9 +36,15 @@ export interface ErrorSectionProps extends React.HTMLAttributes<HTMLElement> {
    * Visual layout variant:
    * - "terminal": Cyberpunk diagnostic enclosure with technical readout.
    * - "modern-animated" / "cosmic-pulse": Ultra-modern animated orbital radar with live health micro-monitors.
+   * - "service-pipeline" / "pipeline": Interactive animated service topology & network flow showing failure point.
    * Defaults to "terminal".
    */
-  variant?: "terminal" | "modern-animated" | "cosmic-pulse";
+  variant?:
+    | "terminal"
+    | "modern-animated"
+    | "cosmic-pulse"
+    | "service-pipeline"
+    | "pipeline";
   /** Primary error code or status, e.g. "500", "503", "CLIENT_EXCEPTION" */
   errorCode?: string;
   /** Main heading */
@@ -88,6 +102,33 @@ const MODERN_STYLES = `
 }
 `;
 
+const PIPELINE_STYLES = `
+@keyframes pipe-pulse-halo {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50% { opacity: 0.75; transform: scale(1.12); }
+}
+@keyframes pipe-beam-flow {
+  0% { stroke-dashoffset: 48; }
+  100% { stroke-dashoffset: 0; }
+}
+@keyframes pipe-ping-alert {
+  0% { transform: scale(0.95); opacity: 0.9; }
+  75%, 100% { transform: scale(1.7); opacity: 0; }
+}
+@keyframes pipe-heartbeat-glow {
+  0%, 100% { filter: drop-shadow(0 0 2px rgba(239, 68, 68, 0.4)); }
+  50% { filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.9)); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pipe-anim-halo,
+  .pipe-anim-beam,
+  .pipe-anim-ping,
+  .pipe-anim-heartbeat {
+    animation: none !important;
+  }
+}
+`;
+
 export function ErrorSection({
   variant = "terminal",
   errorCode = "500",
@@ -105,16 +146,24 @@ export function ErrorSection({
   const [copied, setCopied] = useState(false);
   const [retrying, setRetrying] = useState(false);
   const [detailsOpen, setDetailsOpen] = useState(false);
+  const [pipelineTab, setPipelineTab] = useState<"trace" | "remediation">("trace");
 
   const isModern = variant === "modern-animated" || variant === "cosmic-pulse";
+  const isPipeline = variant === "service-pipeline" || variant === "pipeline";
 
   const resolvedTitle =
     title ||
-    (isModern ? "UNEXPECTED SYSTEM ANOMALY" : "SYSTEM RUNTIME EXCEPTION");
+    (isPipeline
+      ? "SERVICE PIPELINE INTERRUPTED"
+      : isModern
+      ? "UNEXPECTED SYSTEM ANOMALY"
+      : "SYSTEM RUNTIME EXCEPTION");
 
   const resolvedDescription =
     description ||
-    (isModern
+    (isPipeline
+      ? "A critical downstream node failed during request execution. The pipeline halted safely to isolate fault propagation."
+      : isModern
       ? "An unhandled runtime disruption interrupted the telemetry pipeline. Critical memory states were safely captured for telemetry diagnostics."
       : "Critical process halted due to an unhandled kernel exception. Memory buffers preserved for telemetry diagnostics.");
 
@@ -149,6 +198,429 @@ export function ErrorSection({
     { name: "Database Shard", status: "outage", latency: "TIMEOUT" },
   ];
   const resolvedServices = services || defaultServices;
+
+  // -------------------------------------------------------------------------
+  // VARIANT: Service Pipeline Topology ("service-pipeline" / "pipeline")
+  // -------------------------------------------------------------------------
+  if (isPipeline) {
+    const pipelineSteps = [
+      {
+        id: "client",
+        name: "Client Device",
+        subtext: "Browser Handshake",
+        status: "passed" as const,
+        icon: Laptop,
+        metric: "HTTP 200 OK",
+        time: "14ms",
+      },
+      {
+        id: "edge",
+        name: "Edge CDN",
+        subtext: "Anycast Route",
+        status: "passed" as const,
+        icon: Globe,
+        metric: "TLS 1.3 Valid",
+        time: "32ms",
+      },
+      {
+        id: "gateway",
+        name: "App Gateway",
+        subtext: "Origin Service",
+        status: "failed" as const,
+        icon: ServerCrash,
+        metric: `HTTP ${errorCode} Fault`,
+        time: "TIMEOUT",
+      },
+      {
+        id: "data",
+        name: "Data Layer",
+        subtext: "Primary Cluster",
+        status: "blocked" as const,
+        icon: Database,
+        metric: "Unreachable",
+        time: "--",
+      },
+    ];
+
+    return (
+      <section
+        className={cn(
+          "relative w-full py-12 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-8 bg-background text-foreground overflow-hidden flex flex-col items-center justify-center min-h-[660px] transition-colors duration-300 font-sans select-none",
+          className
+        )}
+        {...props}
+      >
+        <style>{PIPELINE_STYLES}</style>
+
+        {/* Ambient subtle cyber-dot grid background */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-[0.035] dark:opacity-[0.05] bg-[radial-gradient(#ef4444_1px,transparent_1px)] [background-size:24px_24px] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_75%)]"
+        />
+
+        {/* Dual animated ambient aura spotlights */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[760px] max-w-full h-[380px] bg-red-500/12 dark:bg-red-600/15 blur-[130px] rounded-full pipe-anim-halo"
+          style={{ animation: "pipe-pulse-halo 5s ease-in-out infinite" }}
+        />
+
+        {/* Giant Ghost Watermark Error Code */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute top-6 sm:top-10 left-1/2 -translate-x-1/2 font-mono font-black text-[120px] sm:text-[180px] md:text-[230px] leading-none tracking-tighter text-foreground opacity-[0.03] dark:opacity-[0.04] select-none"
+        >
+          {errorCode}
+        </div>
+
+        <div className="relative z-10 w-full max-w-3xl mx-auto flex flex-col items-center text-center space-y-6 sm:space-y-8">
+          {/* Header Status Badge */}
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-red-500/30 bg-red-500/10 dark:bg-red-950/40 text-red-600 dark:text-red-400 text-xs font-mono tracking-wider font-semibold shadow-xs">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
+            </span>
+            <Activity className="w-3.5 h-3.5 text-red-500 animate-pulse" />
+            <span>DOWNSTREAM TIMEOUT • NODE 03 BREACH</span>
+          </div>
+
+          {/* Heading & Explanatory Copy */}
+          <div className="space-y-2 max-w-xl text-center">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-foreground uppercase font-sans">
+              {resolvedTitle}
+            </h2>
+            <p className="text-xs sm:text-sm md:text-base text-muted-foreground leading-relaxed">
+              {resolvedDescription}
+            </p>
+          </div>
+
+          {/* Interactive Topology Pipeline Stage Card */}
+          <div className="w-full rounded-2xl border border-border/80 bg-card/75 backdrop-blur-xl p-4 sm:p-7 shadow-xs relative overflow-hidden transition-all text-left">
+            {/* Pipeline Header Bar */}
+            <div className="flex items-center justify-between pb-4 sm:pb-6 border-b border-border/60 text-xs font-mono">
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Layers className="w-4 h-4 text-primary shrink-0" />
+                <span className="font-semibold text-foreground tracking-wide uppercase">
+                  Service Execution Topology
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 font-semibold border border-red-500/20 text-[11px]">
+                <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping" />
+                FAILURE DETECTED
+              </div>
+            </div>
+
+            {/* Nodes Row with Connected Signal Beams */}
+            <div className="py-6 sm:py-8 relative">
+              {/* Desktop Connecting Flow Track Behind Nodes */}
+              <div
+                aria-hidden="true"
+                className="hidden sm:block absolute top-[52px] left-12 right-12 h-1 pointer-events-none select-none z-0"
+              >
+                {/* SVG Animated Beams */}
+                <svg className="w-full h-4 overflow-visible" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="pipe-fail-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#10b981" />
+                      <stop offset="100%" stopColor="#ef4444" />
+                    </linearGradient>
+                  </defs>
+                  {/* Segment 1: Client -> Edge (Healthy Green) */}
+                  <line
+                    x1="6%"
+                    y1="2"
+                    x2="38%"
+                    y2="2"
+                    stroke="#10b981"
+                    strokeWidth="2.5"
+                    strokeDasharray="6 6"
+                    className="pipe-anim-beam"
+                    style={{ animation: "pipe-beam-flow 1.5s linear infinite" }}
+                  />
+                  {/* Segment 2: Edge -> Gateway (Degrading to Red) */}
+                  <line
+                    x1="38%"
+                    y1="2"
+                    x2="68%"
+                    y2="2"
+                    stroke="url(#pipe-fail-grad)"
+                    strokeWidth="2.5"
+                    strokeDasharray="6 6"
+                    className="pipe-anim-beam"
+                    style={{ animation: "pipe-beam-flow 1.2s linear infinite" }}
+                  />
+                  {/* Segment 3: Gateway -> Data (Broken Gray) */}
+                  <line
+                    x1="68%"
+                    y1="2"
+                    x2="94%"
+                    y2="2"
+                    stroke="currentColor"
+                    className="text-border/80"
+                    strokeWidth="2"
+                    strokeDasharray="4 4"
+                  />
+                </svg>
+              </div>
+
+              {/* Responsive Nodes Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 sm:gap-2 relative z-10">
+                {pipelineSteps.map((step) => {
+                  const Icon = step.icon;
+                  const isPassed = step.status === "passed";
+                  const isFailed = step.status === "failed";
+                  const isBlocked = step.status === "blocked";
+
+                  return (
+                    <div
+                      key={step.id}
+                      className={cn(
+                        "relative flex flex-col items-center text-center p-3 sm:p-2.5 rounded-xl transition-all duration-200 border",
+                        isPassed &&
+                          "border-emerald-500/25 bg-emerald-500/[0.03] dark:bg-emerald-950/20",
+                        isFailed &&
+                          "border-red-500/50 bg-red-500/[0.08] dark:bg-red-950/40 shadow-[0_0_25px_rgba(239,68,68,0.25)]",
+                        isBlocked && "border-border/60 bg-muted/20 opacity-60"
+                      )}
+                    >
+                      {/* Node Icon Capsule */}
+                      <div className="relative mb-2.5">
+                        {/* Ping Ripple on Failed Node */}
+                        {isFailed && (
+                          <div
+                            aria-hidden="true"
+                            className="absolute -inset-2 rounded-full border-2 border-red-500/60 pipe-anim-ping pointer-events-none"
+                            style={{
+                              animation: "pipe-ping-alert 2.2s cubic-bezier(0,0,0.2,1) infinite",
+                            }}
+                          />
+                        )}
+
+                        <div
+                          className={cn(
+                            "w-12 h-12 rounded-full flex items-center justify-center transition-all shadow-xs border",
+                            isPassed &&
+                              "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/40 shadow-[0_0_15px_rgba(16,185,129,0.2)]",
+                            isFailed &&
+                              "bg-red-500 text-white border-red-600 shadow-[0_0_20px_rgba(239,68,68,0.5)] animate-pulse",
+                            isBlocked &&
+                              "bg-muted text-muted-foreground border-border/80"
+                          )}
+                        >
+                          <Icon className="w-5 h-5" />
+                        </div>
+
+                        {/* Status Mini Indicator Bead */}
+                        <div className="absolute -bottom-1 -right-1">
+                          {isPassed && (
+                            <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400 fill-background" />
+                          )}
+                          {isFailed && (
+                            <XCircle className="w-4 h-4 text-red-600 dark:text-red-400 fill-background" />
+                          )}
+                          {isBlocked && (
+                            <div className="w-3.5 h-3.5 rounded-full bg-muted-foreground/40 border-2 border-background" />
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Label & Details */}
+                      <span className="text-xs font-semibold text-foreground tracking-tight">
+                        {step.name}
+                      </span>
+                      <span className="text-[11px] text-muted-foreground mt-0.5 truncate">
+                        {step.subtext}
+                      </span>
+
+                      {/* Status Metric Pill */}
+                      <div
+                        className={cn(
+                          "mt-2 px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase",
+                          isPassed &&
+                            "text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border border-emerald-500/20",
+                          isFailed &&
+                            "text-white bg-red-600 shadow-[0_0_10px_rgba(239,68,68,0.4)]",
+                          isBlocked &&
+                            "text-muted-foreground bg-muted/60 border border-border/50"
+                        )}
+                      >
+                        {step.metric}
+                      </div>
+
+                      {/* Time */}
+                      <span className="text-[9px] font-mono text-muted-foreground/75 mt-1">
+                        latency: {step.time}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Heartbeat & Incident Digest Strip */}
+            <div className="pt-4 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono">
+              {/* Animated Flatline Waveform */}
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <span className="text-[11px] uppercase tracking-wider font-semibold text-red-600 dark:text-red-400 flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+                  HEARTBEAT:
+                </span>
+                <svg
+                  viewBox="0 0 140 24"
+                  className="w-28 h-5 text-red-500 stroke-current fill-none stroke-[2] pipe-anim-heartbeat"
+                  style={{ animation: "pipe-heartbeat-glow 2s ease-in-out infinite" }}
+                >
+                  <path d="M0,12 L30,12 L36,4 L42,20 L48,12 L56,12 L140,12" />
+                </svg>
+                <span className="text-[10px] text-red-500/80 font-bold uppercase">
+                  LOST (0 BPS)
+                </span>
+              </div>
+
+              {/* Hash & Copy */}
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] text-muted-foreground">
+                  INCIDENT: <strong className="text-foreground">{errorId}</strong>
+                </span>
+                <button
+                  type="button"
+                  onClick={copyIncidentId}
+                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-mono bg-background hover:bg-muted border border-border transition-colors cursor-pointer text-muted-foreground hover:text-foreground"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="w-3 h-3 text-emerald-500" />
+                      <span className="text-emerald-600 dark:text-emerald-400">Copied</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3 h-3" />
+                      <span>Copy</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Diagnostic Inspection & Remediation Drawer with Tabs */}
+          <div className="w-full max-w-2xl mx-auto rounded-xl border border-border/80 bg-card/70 backdrop-blur-md overflow-hidden transition-all shadow-xs text-left">
+            {/* Drawer Tabs Header */}
+            <div className="flex items-center justify-between px-3.5 py-2 border-b border-border/60 bg-muted/40 text-xs">
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => setPipelineTab("trace")}
+                  className={cn(
+                    "px-3 py-1 rounded-md text-xs font-mono font-medium transition-all cursor-pointer",
+                    pipelineTab === "trace"
+                      ? "bg-background text-foreground shadow-xs font-semibold"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  <Terminal className="w-3 h-3 inline-block mr-1.5 text-red-500" />
+                  Stack Diagnostic
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPipelineTab("remediation")}
+                  className={cn(
+                    "px-3 py-1 rounded-md text-xs font-mono font-medium transition-all cursor-pointer",
+                    pipelineTab === "remediation"
+                      ? "bg-background text-foreground shadow-xs font-semibold"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  <Sparkles className="w-3 h-3 inline-block mr-1.5 text-amber-500" />
+                  Remediation Steps
+                </button>
+              </div>
+
+              <span className="text-[11px] font-mono text-muted-foreground hidden sm:inline">
+                Triage Channel: #eng-telemetry
+              </span>
+            </div>
+
+            {/* Tab 1: Mode-Adaptive Trace Box */}
+            {pipelineTab === "trace" && (
+              <div className="p-2.5 sm:p-3">
+                <div className="p-3 sm:p-3.5 rounded-lg border border-neutral-200/90 dark:border-neutral-800 bg-neutral-100/70 dark:bg-neutral-950/80 text-red-600 dark:text-red-400 text-[11px] font-mono overflow-x-auto max-h-44 overflow-y-auto leading-relaxed whitespace-pre-wrap select-all shadow-xs selection:bg-red-500/20">
+                  {sampleDetails}
+                </div>
+              </div>
+            )}
+
+            {/* Tab 2: Remediation Action Plan */}
+            {pipelineTab === "remediation" && (
+              <div className="p-3 sm:p-4 space-y-2.5 text-xs text-muted-foreground">
+                <div className="flex items-start gap-2.5 p-2 rounded-lg bg-muted/30 border border-border/50">
+                  <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-[10px]">
+                    1
+                  </span>
+                  <div>
+                    <strong className="text-foreground">Re-run Pipeline Handshake:</strong> Click Attempt
+                    Auto-Recovery below to trigger an automatic retry with exponential backoff.
+                  </div>
+                </div>
+                <div className="flex items-start gap-2.5 p-2 rounded-lg bg-muted/30 border border-border/50">
+                  <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-[10px]">
+                    2
+                  </span>
+                  <div>
+                    <strong className="text-foreground">Check Downstream Health:</strong> Verify if
+                    database replicas and worker clusters are responsive under current traffic.
+                  </div>
+                </div>
+                <div className="flex items-start gap-2.5 p-2 rounded-lg bg-muted/30 border border-border/50">
+                  <span className="flex-shrink-0 w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-[10px]">
+                    3
+                  </span>
+                  <div>
+                    <strong className="text-foreground">Escalate Incident:</strong> Provide Incident ID{" "}
+                    <code className="text-red-600 dark:text-red-400 font-mono font-bold">
+                      {errorId}
+                    </code>{" "}
+                    to the DevOps on-call team for container restart.
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Action Buttons Hub */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-md mx-auto pt-2">
+            <button
+              type="button"
+              onClick={handleRetry}
+              disabled={retrying}
+              className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-2.5 rounded-xl font-medium text-xs sm:text-sm bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-500/25 transition-all active:scale-95 cursor-pointer disabled:opacity-50"
+            >
+              <RefreshCw className={cn("w-4 h-4", retrying && "animate-spin")} />
+              {retrying ? "Re-executing Pipeline..." : "Attempt Auto-Recovery"}
+            </button>
+            <button
+              type="button"
+              onClick={onHome}
+              className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 rounded-xl font-medium text-xs sm:text-sm bg-secondary hover:bg-secondary/80 text-secondary-foreground border border-border transition-all active:scale-95 cursor-pointer"
+            >
+              <Home className="w-4 h-4" />
+              Return to Safety
+            </button>
+          </div>
+
+          {onSupport && (
+            <button
+              type="button"
+              onClick={onSupport}
+              className="text-xs text-muted-foreground hover:text-red-500 dark:hover:text-red-400 inline-flex items-center gap-1.5 transition-colors cursor-pointer mt-1"
+            >
+              <LifeBuoy className="w-3.5 h-3.5" /> Escalate to Infrastructure Engineering &rarr;
+            </button>
+          )}
+        </div>
+      </section>
+    );
+  }
 
   // -------------------------------------------------------------------------
   // VARIANT: Modern Animated Orbital Radar ("modern-animated" / "cosmic-pulse")

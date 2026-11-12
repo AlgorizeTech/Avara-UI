@@ -388,7 +388,8 @@
   },
   "error": {
     "cyberpunk-terminal-section": "Error — Cyberpunk Terminal Section",
-    "modern-animated-orbital-pulse": "Error — Modern Animated Orbital Pulse"
+    "modern-animated-orbital-pulse": "Error — Modern Animated Orbital Pulse",
+    "service-pipeline-topology": "Error — Service Pipeline Topology"
   },
   "falling-tags": {
     "interactive-physics-arena": "Falling Tags — Interactive physics arena",

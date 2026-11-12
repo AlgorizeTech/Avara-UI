@@ -7,9 +7,9 @@ import { extractCode } from "@/lib/code";
 
 # Shadcn Error Page
 
-A full-page, responsive Cyberpunk Diagnostic Terminal and Modern Animated Orbital Radar section designed for root application error boundaries, Next.js `error.tsx` / `global-error.tsx`, and dedicated maintenance pages.
+A full-page, responsive Cyberpunk Diagnostic Terminal, Modern Animated Orbital Radar, and Interactive Service Pipeline Topology section designed for root application error boundaries, Next.js `error.tsx` / `global-error.tsx`, and dedicated maintenance pages.
 
-Features a full-width terminal enclosure, diagnostic monitors, adaptive light & dark mode styling, live stacktrace inspector, and one-click incident copying.
+Features a full-width terminal enclosure, interactive animated network topology flow, diagnostic monitors, adaptive light & dark mode styling, live stacktrace inspector, and one-click incident copying.
 
 <AgentVariants slug="error" />
 
@@ -38,6 +38,23 @@ export default function ModernErrorPage() {
       errorCode="500"
       title="UNEXPECTED SYSTEM ANOMALY"
       description="An unhandled runtime disruption interrupted the telemetry pipeline. Critical memory states were safely captured for telemetry diagnostics."
+      errorId="ERR_0x9481FA"
+      onRetry={() => window.location.reload()}
+      onHome={() => window.location.href = "/"}
+      onSupport={() => window.open("/support", "_blank")}
+    />
+  );
+}`;
+
+export const usagePipeline = `import { ErrorSection } from "@/components/custom/blocks/ErrorBlock";
+
+export default function PipelineErrorPage() {
+  return (
+    <ErrorSection
+      variant="service-pipeline"
+      errorCode="500"
+      title="SERVICE PIPELINE INTERRUPTED"
+      description="A critical downstream node failed during request execution. The pipeline halted safely to isolate fault propagation."
       errorId="ERR_0x9481FA"
       onRetry={() => window.location.reload()}
       onHome={() => window.location.href = "/"}
@@ -122,6 +139,38 @@ export default function ModernErrorPage() {
       },
       usage: usageModern,
     },
+    {
+      title: "Service Pipeline Topology",
+      subheading:
+        "An architectural, interactive service topology flow featuring animated SVG signal beams, live node health checks, point-of-failure alert ripple, heartbeat flatline telemetry, and remediation playbook.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"service-pipeline"',
+          effect:
+            "activates the interactive service pipeline topology layout with connected animated node beams and heartbeat monitor.",
+        },
+        {
+          prop: "errorCode",
+          value: '"500"',
+          effect: "displays the error status code or exception type.",
+        },
+        {
+          prop: "errorId",
+          value: '"ERR_0x9481FA"',
+          effect: "unique incident trace ID for diagnostic triage.",
+        },
+      ],
+      props: {
+        variant: "service-pipeline",
+        errorCode: "500",
+        title: "SERVICE PIPELINE INTERRUPTED",
+        description:
+          "A critical downstream node failed during request execution. The pipeline halted safely to isolate fault propagation.",
+        errorId: "ERR_0x9481FA",
+      },
+      usage: usagePipeline,
+    },
   ]}
 />
 
@@ -130,6 +179,14 @@ export default function ModernErrorPage() {
 Discover the key capabilities of the `ErrorSection` component:
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Service Topology & Heartbeat</h3>
+    <p className="text-muted-foreground text-sm">Interactive 4-node architectural pipeline with animated signal beams, failed-node ripple alert, and real-time flatline ECG waveform.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Actionable Remediation Playbook</h3>
+    <p className="text-muted-foreground text-sm">Tabbed diagnostic drawer pairing raw technical error stacktraces with numbered step-by-step resolution checklists for engineers.</p>
+  </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">Modern Animated Orbital Pulse</h3>
     <p className="text-muted-foreground text-sm">Concentric counter-rotating orbital rings with sweeping radar scanner beam, floating satellite beads, and breathing luminous focal halo.</p>
@@ -163,9 +220,9 @@ Discover the key capabilities of the `ErrorSection` component:
     <tbody>
       <tr>
         <td><code>variant</code></td>
-        <td><code>"terminal" | "modern-animated" | "cosmic-pulse"</code></td>
+        <td><code>"terminal" | "modern-animated" | "service-pipeline"</code></td>
         <td><code>"terminal"</code></td>
-        <td>Visual layout variant: <code>"terminal"</code> for the cyberpunk diagnostic enclosure, or <code>"modern-animated"</code> for the ultra-modern animated orbital radar with live health monitors.</td>
+        <td>Visual layout variant: <code>"terminal"</code> for the cyberpunk diagnostic enclosure, <code>"modern-animated"</code> for the orbital radar with health monitors, or <code>"service-pipeline"</code> for the interactive service topology flow.</td>
       </tr>
       <tr>
         <td><code>errorCode</code></td>

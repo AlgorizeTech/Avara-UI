@@ -5,7 +5,7 @@ export const error: PageVariants = {
   intro:
     "Error page sections for root application error boundaries, Next.js error.tsx, and system failure screens.",
   gotchas: [
-    "Install `error` once; choose between the cyberpunk terminal look and the modern animated orbital pulse via `variant`.",
+    "Install `error` once; choose between the cyberpunk terminal look, modern animated orbital pulse, and interactive service pipeline topology via `variant`.",
   ],
   variants: [
     {
@@ -31,6 +31,19 @@ export const error: PageVariants = {
       example: "Modern Animated Orbital Pulse",
       props: { variant: "modern-animated" },
       setProps: { variant: "modern-animated" },
+    },
+    {
+      id: "service-pipeline",
+      label: "Service Pipeline Topology",
+      summary: "Interactive animated network topology and pipeline failure state with live heartbeat flatline and remediation playbook.",
+      bestFor: ["cloud platforms, API services, microservices architecture, and DevOps developer portals"],
+      avoidIf: ["you prefer a dense terminal console or circular radar over topology flows"],
+      traits: ["animated topology flow", "heartbeat flatline", "remediation playbook", "pipeline telemetry"],
+      item: "error",
+      demo: "error",
+      example: "Service Pipeline Topology",
+      props: { variant: "service-pipeline" },
+      setProps: { variant: "service-pipeline" },
     },
   ],
 };

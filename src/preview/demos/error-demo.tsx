@@ -10,7 +10,12 @@ export default function ErrorSectionDemo({
   description,
   errorId,
 }: {
-  variant?: "terminal" | "modern-animated" | "cosmic-pulse";
+  variant?:
+    | "terminal"
+    | "modern-animated"
+    | "cosmic-pulse"
+    | "service-pipeline"
+    | "pipeline";
   errorCode?: string;
   title?: string;
   description?: string;

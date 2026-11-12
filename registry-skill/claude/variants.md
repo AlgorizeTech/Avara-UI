@@ -42,6 +42,7 @@ Which hero do you want? All of them live: https://avaraui.com/view/error
 
 1. Cyberpunk Terminal: Full-width futuristic telemetry enclosure with Mac window indicators, crash icon, and technical trace console. Best for: developer platforms, cyber/tech apps, and root error boundaries needing technical telemetry. Live: https://avaraui.com/view/error/terminal
 2. Modern Animated Pulse: Ultra-modern animated orbital radar with counter-rotating rings, sweeping radar, and micro-health monitors. Best for: SaaS platforms, modern web apps, and polished production error boundaries. Live: https://avaraui.com/view/error/modern-animated
+3. Service Pipeline Topology: Interactive animated network topology and pipeline failure state with live heartbeat flatline and remediation playbook. Best for: cloud platforms, API services, microservices architecture, and DevOps developer portals. Live: https://avaraui.com/view/error/service-pipeline
 ... (every variant, not a sample)
 
 Or tell me to pick the best one for you.
@@ -64,7 +65,7 @@ Install the chosen variant's own `install` command from the index. Several looks
 
 ## Pages with variants today
 
-- `error`: 2 variants. All live: https://avaraui.com/view/error
+- `error`: 3 variants. All live: https://avaraui.com/view/error
 - `hero`: 16 variants. All live: https://avaraui.com/view/hero
 - `footer`: 9 variants. All live: https://avaraui.com/view/footer
 - `navbar`: 7 variants. All live: https://avaraui.com/view/navbar
