@@ -7,9 +7,9 @@ import { extractCode } from "@/lib/code";
 
 # Shadcn Error Page
 
-A full-page, responsive Cyberpunk Diagnostic Terminal, Modern Animated Orbital Radar, and Interactive Service Pipeline Topology section designed for root application error boundaries, Next.js `error.tsx` / `global-error.tsx`, and dedicated maintenance pages.
+A full-page, responsive Cyberpunk Diagnostic Terminal, Modern Animated Orbital Radar, Interactive Service Pipeline Topology, and Quantum Glitch Bento HUD section designed for root application error boundaries, Next.js `error.tsx` / `global-error.tsx`, and dedicated maintenance pages.
 
-Features a full-width terminal enclosure, interactive animated network topology flow, diagnostic monitors, adaptive light & dark mode styling, live stacktrace inspector, and one-click incident copying.
+Features full-width terminal enclosures, interactive network topology flows, chromatic glitch bento HUDs, diagnostic monitors, adaptive light & dark mode styling, live stacktrace inspectors, and one-click incident copying.
 
 <AgentVariants slug="error" />
 
@@ -55,6 +55,23 @@ export default function PipelineErrorPage() {
       errorCode="500"
       title="SERVICE PIPELINE INTERRUPTED"
       description="A critical downstream node failed during request execution. The pipeline halted safely to isolate fault propagation."
+      errorId="ERR_0x9481FA"
+      onRetry={() => window.location.reload()}
+      onHome={() => window.location.href = "/"}
+      onSupport={() => window.open("/support", "_blank")}
+    />
+  );
+}`;
+
+export const usageGlitch = `import { ErrorSection } from "@/components/custom/blocks/ErrorBlock";
+
+export default function GlitchErrorPage() {
+  return (
+    <ErrorSection
+      variant="quantum-glitch"
+      errorCode="500"
+      title="KERNEL EXECUTION ANOMALY"
+      description="High-priority execution thread encountered an unrecoverable kernel panic. Isolation protocols engaged to preserve system integrity."
       errorId="ERR_0x9481FA"
       onRetry={() => window.location.reload()}
       onHome={() => window.location.href = "/"}
@@ -171,6 +188,38 @@ export default function PipelineErrorPage() {
       },
       usage: usagePipeline,
     },
+    {
+      title: "Quantum Glitch Bento HUD",
+      subheading:
+        "A high-tech command center HUD featuring multi-layer chromatic aberration glitch typography, live crash vitals progress telemetry, interactive memory segment hex dump, and collapsible diagnostic drawer.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"quantum-glitch"',
+          effect:
+            "activates the 2-column bento command center HUD with chromatic glitch effect and system vitals telemetry.",
+        },
+        {
+          prop: "errorCode",
+          value: '"500"',
+          effect: "displays the error status code or exception type.",
+        },
+        {
+          prop: "errorId",
+          value: '"ERR_0x9481FA"',
+          effect: "unique incident trace ID for diagnostic triage.",
+        },
+      ],
+      props: {
+        variant: "quantum-glitch",
+        errorCode: "500",
+        title: "KERNEL EXECUTION ANOMALY",
+        description:
+          "High-priority execution thread encountered an unrecoverable kernel panic. Isolation protocols engaged to preserve system integrity.",
+        errorId: "ERR_0x9481FA",
+      },
+      usage: usageGlitch,
+    },
   ]}
 />
 
@@ -179,6 +228,10 @@ export default function PipelineErrorPage() {
 Discover the key capabilities of the `ErrorSection` component:
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Chromatic Glitch Bento HUD</h3>
+    <p className="text-muted-foreground text-sm">Two-column command center with layered chromatic aberration glitch typography, memory overflow bars, and hex dump inspector.</p>
+  </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">Service Topology & Heartbeat</h3>
     <p className="text-muted-foreground text-sm">Interactive 4-node architectural pipeline with animated signal beams, failed-node ripple alert, and real-time flatline ECG waveform.</p>
@@ -220,9 +273,9 @@ Discover the key capabilities of the `ErrorSection` component:
     <tbody>
       <tr>
         <td><code>variant</code></td>
-        <td><code>"terminal" | "modern-animated" | "service-pipeline"</code></td>
+        <td><code>"terminal" | "modern-animated" | "service-pipeline" | "quantum-glitch"</code></td>
         <td><code>"terminal"</code></td>
-        <td>Visual layout variant: <code>"terminal"</code> for the cyberpunk diagnostic enclosure, <code>"modern-animated"</code> for the orbital radar with health monitors, or <code>"service-pipeline"</code> for the interactive service topology flow.</td>
+        <td>Visual layout variant: <code>"terminal"</code> for the cyberpunk diagnostic enclosure, <code>"modern-animated"</code> for orbital radar, <code>"service-pipeline"</code> for service topology flow, or <code>"quantum-glitch"</code> for the chromatic glitch bento HUD.</td>
       </tr>
       <tr>
         <td><code>errorCode</code></td>

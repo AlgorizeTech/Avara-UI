@@ -5,11 +5,12 @@ export const error: PageVariants = {
   intro:
     "Error page sections for root application error boundaries, Next.js error.tsx, and system failure screens.",
   gotchas: [
-    "Install `error` once; choose between the cyberpunk terminal look, modern animated orbital pulse, and interactive service pipeline topology via `variant`.",
+    "Install `error` once; choose between the cyberpunk terminal, modern orbital pulse, service pipeline topology, and quantum glitch bento HUD via `variant`.",
   ],
   variants: [
     {
       id: "terminal",
+      group: "System consoles",
       label: "Cyberpunk Terminal",
       summary: "Full-width futuristic telemetry enclosure with Mac window indicators, crash icon, and technical trace console.",
       bestFor: ["developer platforms, cyber/tech apps, and root error boundaries needing technical telemetry"],
@@ -20,7 +21,22 @@ export const error: PageVariants = {
       example: "Cyberpunk Terminal Section",
     },
     {
+      id: "quantum-glitch",
+      group: "System consoles",
+      label: "Quantum Glitch Bento HUD",
+      summary: "High-tech command center HUD featuring chromatic aberration glitch typography, live crash vitals, and memory hex dump.",
+      bestFor: ["cutting-edge developer tools, AI platforms, cloud infrastructure, and cyber-tech applications"],
+      avoidIf: ["you prefer an orbital circular radar or simple terminal console"],
+      traits: ["chromatic glitch typography", "system vitals telemetry", "memory hex dump", "bento HUD layout"],
+      item: "error",
+      demo: "error",
+      example: "Quantum Glitch Bento HUD",
+      props: { variant: "quantum-glitch" },
+      setProps: { variant: "quantum-glitch" },
+    },
+    {
       id: "modern-animated",
+      group: "Animated telemetry",
       label: "Modern Animated Pulse",
       summary: "Ultra-modern animated orbital radar with counter-rotating rings, sweeping radar, and micro-health monitors.",
       bestFor: ["SaaS platforms, modern web apps, and polished production error boundaries"],
@@ -34,6 +50,7 @@ export const error: PageVariants = {
     },
     {
       id: "service-pipeline",
+      group: "Animated telemetry",
       label: "Service Pipeline Topology",
       summary: "Interactive animated network topology and pipeline failure state with live heartbeat flatline and remediation playbook.",
       bestFor: ["cloud platforms, API services, microservices architecture, and DevOps developer portals"],

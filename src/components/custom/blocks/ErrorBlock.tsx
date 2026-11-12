@@ -23,6 +23,8 @@ import {
   Activity,
   Layers,
   Sparkles,
+  Gauge,
+  Binary,
 } from "lucide-react";
 
 export interface ServiceStatusItem {
@@ -37,6 +39,7 @@ export interface ErrorSectionProps extends React.HTMLAttributes<HTMLElement> {
    * - "terminal": Cyberpunk diagnostic enclosure with technical readout.
    * - "modern-animated" / "cosmic-pulse": Ultra-modern animated orbital radar with live health micro-monitors.
    * - "service-pipeline" / "pipeline": Interactive animated service topology & network flow showing failure point.
+   * - "quantum-glitch" / "quantum-hud": High-tech chromatic glitch 2-column bento HUD with system vitals and memory hex dump.
    * Defaults to "terminal".
    */
   variant?:
@@ -44,7 +47,9 @@ export interface ErrorSectionProps extends React.HTMLAttributes<HTMLElement> {
     | "modern-animated"
     | "cosmic-pulse"
     | "service-pipeline"
-    | "pipeline";
+    | "pipeline"
+    | "quantum-glitch"
+    | "quantum-hud";
   /** Primary error code or status, e.g. "500", "503", "CLIENT_EXCEPTION" */
   errorCode?: string;
   /** Main heading */
@@ -129,6 +134,33 @@ const PIPELINE_STYLES = `
 }
 `;
 
+const GLITCH_STYLES = `
+@keyframes glitch-anim-1 {
+  0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+  20% { clip-path: inset(20% 0 60% 0); transform: translate(-2px, 2px); }
+  40% { clip-path: inset(40% 0 30% 0); transform: translate(2px, -2px); }
+  60% { clip-path: inset(80% 0 5% 0); transform: translate(-1px, 1px); }
+  80% { clip-path: inset(10% 0 70% 0); transform: translate(1px, -1px); }
+}
+@keyframes glitch-anim-2 {
+  0%, 100% { clip-path: inset(0 0 0 0); transform: translate(0); }
+  25% { clip-path: inset(70% 0 10% 0); transform: translate(2px, 1px); }
+  50% { clip-path: inset(15% 0 55% 0); transform: translate(-2px, -1px); }
+  75% { clip-path: inset(50% 0 35% 0); transform: translate(1px, 2px); }
+}
+@keyframes vitals-stripes {
+  from { background-position: 0 0; }
+  to { background-position: 30px 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .glitch-layer-1,
+  .glitch-layer-2,
+  .vitals-striped-bar {
+    animation: none !important;
+  }
+}
+`;
+
 export function ErrorSection({
   variant = "terminal",
   errorCode = "500",
@@ -150,10 +182,13 @@ export function ErrorSection({
 
   const isModern = variant === "modern-animated" || variant === "cosmic-pulse";
   const isPipeline = variant === "service-pipeline" || variant === "pipeline";
+  const isGlitch = variant === "quantum-glitch" || variant === "quantum-hud";
 
   const resolvedTitle =
     title ||
-    (isPipeline
+    (isGlitch
+      ? "KERNEL EXECUTION ANOMALY"
+      : isPipeline
       ? "SERVICE PIPELINE INTERRUPTED"
       : isModern
       ? "UNEXPECTED SYSTEM ANOMALY"
@@ -161,7 +196,9 @@ export function ErrorSection({
 
   const resolvedDescription =
     description ||
-    (isPipeline
+    (isGlitch
+      ? "High-priority execution thread encountered an unrecoverable kernel panic. Isolation protocols engaged to preserve system integrity."
+      : isPipeline
       ? "A critical downstream node failed during request execution. The pipeline halted safely to isolate fault propagation."
       : isModern
       ? "An unhandled runtime disruption interrupted the telemetry pipeline. Critical memory states were safely captured for telemetry diagnostics."
@@ -198,6 +235,275 @@ export function ErrorSection({
     { name: "Database Shard", status: "outage", latency: "TIMEOUT" },
   ];
   const resolvedServices = services || defaultServices;
+
+  // -------------------------------------------------------------------------
+  // VARIANT: Quantum Glitch Bento HUD ("quantum-glitch" / "quantum-hud")
+  // -------------------------------------------------------------------------
+  if (isGlitch) {
+    return (
+      <section
+        className={cn(
+          "relative w-full py-12 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-8 bg-background text-foreground overflow-hidden flex flex-col items-center justify-center min-h-[660px] transition-colors duration-300 font-sans select-none",
+          className
+        )}
+        {...props}
+      >
+        <style>{GLITCH_STYLES}</style>
+
+        {/* Ambient perspective wireframe & multi-layer glowing spotlights */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-[0.035] dark:opacity-[0.05] bg-[linear-gradient(to_right,#ef4444_1px,transparent_1px),linear-gradient(to_bottom,#ef4444_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_at_center,black_40%,transparent_75%)]"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[680px] max-w-full h-[400px] bg-red-500/12 dark:bg-red-600/15 blur-[140px] rounded-full"
+        />
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute top-1/2 right-1/4 translate-x-1/2 -translate-y-1/2 w-[520px] max-w-full h-[360px] bg-cyan-500/8 dark:bg-cyan-500/10 blur-[130px] rounded-full"
+        />
+
+        {/* Main 2-Column Bento Container */}
+        <div className="relative z-10 w-full max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
+          {/* Left Column: Hero Status, Chromatic Glitch Code, Copy & Actions */}
+          <div className="lg:col-span-5 flex flex-col items-center lg:items-start text-center lg:text-left space-y-5 sm:space-y-6">
+            {/* Telemetry Status Pill */}
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-red-500/30 bg-red-500/10 dark:bg-red-950/40 text-red-600 dark:text-red-400 text-xs font-mono tracking-wider font-semibold shadow-xs">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
+              </span>
+              <ShieldAlert className="w-3.5 h-3.5 text-red-500" />
+              <span>SUBSYSTEM PANIC // HALT_0xFA</span>
+            </div>
+
+            {/* Giant Chromatic Aberration Glitch Typography */}
+            <div className="relative inline-block select-none my-1">
+              <span className="font-mono font-black text-6xl sm:text-7xl md:text-8xl tracking-tight text-foreground drop-shadow-xs">
+                {errorCode}
+              </span>
+              <span
+                aria-hidden="true"
+                className="absolute inset-0 font-mono font-black text-6xl sm:text-7xl md:text-8xl tracking-tight text-red-500 opacity-75 pointer-events-none glitch-layer-1"
+                style={{
+                  animation: "glitch-anim-1 3s infinite linear alternate-reverse",
+                }}
+              >
+                {errorCode}
+              </span>
+              <span
+                aria-hidden="true"
+                className="absolute inset-0 font-mono font-black text-6xl sm:text-7xl md:text-8xl tracking-tight text-cyan-500 opacity-65 pointer-events-none glitch-layer-2"
+                style={{
+                  animation: "glitch-anim-2 2.4s infinite linear alternate-reverse",
+                }}
+              >
+                {errorCode}
+              </span>
+            </div>
+
+            {/* Heading & Explanatory Copy */}
+            <div className="space-y-2.5 max-w-md">
+              <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground uppercase font-sans">
+                {resolvedTitle}
+              </h2>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                {resolvedDescription}
+              </p>
+            </div>
+
+            {/* System Metadata Tags */}
+            <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 text-[10px] font-mono">
+              <span className="px-2.5 py-1 rounded-md bg-muted/70 text-muted-foreground border border-border/70">
+                REGION: US-EAST-1
+              </span>
+              <span className="px-2.5 py-1 rounded-md bg-muted/70 text-muted-foreground border border-border/70">
+                KERNEL: V8_ISOLATE
+              </span>
+              <span className="px-2.5 py-1 rounded-md bg-red-500/10 text-red-600 dark:text-red-400 border border-red-500/25 font-bold">
+                SEV: 0 (CRITICAL)
+              </span>
+            </div>
+
+            {/* Primary & Secondary Action Hub */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full max-w-sm pt-2">
+              <button
+                type="button"
+                onClick={handleRetry}
+                disabled={retrying}
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-medium text-xs sm:text-sm bg-red-600 hover:bg-red-500 text-white shadow-lg shadow-red-500/25 transition-all active:scale-95 cursor-pointer disabled:opacity-50"
+              >
+                <RefreshCw className={cn("w-4 h-4", retrying && "animate-spin")} />
+                {retrying ? "Executing Cold Boot..." : "Initiate Cold Restart"}
+              </button>
+              <button
+                type="button"
+                onClick={onHome}
+                className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-medium text-xs sm:text-sm bg-secondary hover:bg-secondary/80 text-secondary-foreground border border-border transition-all active:scale-95 cursor-pointer"
+              >
+                <Home className="w-4 h-4" />
+                Return to Safety
+              </button>
+            </div>
+
+            {onSupport && (
+              <button
+                type="button"
+                onClick={onSupport}
+                className="text-xs text-muted-foreground hover:text-red-500 dark:hover:text-red-400 inline-flex items-center gap-1.5 transition-colors cursor-pointer pt-1"
+              >
+                <LifeBuoy className="w-3.5 h-3.5" /> Emergency DevOps Hotline &rarr;
+              </button>
+            )}
+          </div>
+
+          {/* Right Column: Live Vitals & Memory Hex Dump Bento */}
+          <div className="lg:col-span-7 flex flex-col space-y-4 w-full">
+            {/* Card 1: System Vitals Telemetry */}
+            <div className="p-4 sm:p-5 rounded-2xl border border-border/80 bg-card/75 backdrop-blur-xl shadow-xs space-y-3.5 text-left">
+              <div className="flex items-center justify-between text-xs font-mono pb-2 border-b border-border/60">
+                <span className="flex items-center gap-2 font-bold uppercase text-foreground">
+                  <Gauge className="w-4 h-4 text-red-500 shrink-0" />
+                  Telemetry Vitals at Crash
+                </span>
+                <span className="text-[10px] px-2 py-0.5 rounded bg-red-500/10 text-red-600 dark:text-red-400 font-semibold border border-red-500/20">
+                  CRITICAL SPIKE
+                </span>
+              </div>
+
+              {/* Progress 1: Heap Allocation */}
+              <div className="space-y-1.5 text-xs font-mono">
+                <div className="flex justify-between text-[11px]">
+                  <span className="text-muted-foreground">Heap Allocation</span>
+                  <span className="text-red-600 dark:text-red-400 font-bold">
+                    105% (8.40 GB / 8.00 GB)
+                  </span>
+                </div>
+                <div className="w-full h-2 rounded-full bg-muted overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-amber-500 via-red-500 to-red-600 rounded-full vitals-striped-bar"
+                    style={{
+                      width: "100%",
+                      backgroundImage:
+                        "linear-gradient(45deg, rgba(255,255,255,0.2) 25%, transparent 25%, transparent 50%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2) 75%, transparent 75%, transparent)",
+                      backgroundSize: "16px 16px",
+                      animation: "vitals-stripes 1.2s linear infinite",
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Progress 2: Active Threads */}
+              <div className="space-y-1.5 text-xs font-mono">
+                <div className="flex justify-between text-[11px]">
+                  <span className="text-muted-foreground">Active Coroutines</span>
+                  <span className="text-amber-600 dark:text-amber-400 font-semibold">
+                    4,096 (THREAD_LOCK)
+                  </span>
+                </div>
+                <div className="w-full h-2 rounded-full bg-muted overflow-hidden">
+                  <div className="h-full bg-amber-500 rounded-full" style={{ width: "88%" }} />
+                </div>
+              </div>
+
+              {/* Progress 3: IO Throughput */}
+              <div className="space-y-1.5 text-xs font-mono">
+                <div className="flex justify-between text-[11px]">
+                  <span className="text-muted-foreground">Ingress Network IO</span>
+                  <span className="text-red-600 dark:text-red-400 font-semibold">
+                    0 KB/s (HALTED)
+                  </span>
+                </div>
+                <div className="w-full h-2 rounded-full bg-muted overflow-hidden">
+                  <div className="h-full bg-red-500 rounded-full" style={{ width: "8%" }} />
+                </div>
+              </div>
+            </div>
+
+            {/* Card 2: Interactive Memory Hex Fault Dump */}
+            <div className="p-4 sm:p-5 rounded-2xl border border-border/80 bg-card/75 backdrop-blur-xl shadow-xs space-y-3 text-left">
+              <div className="flex items-center justify-between text-xs font-mono pb-2 border-b border-border/60">
+                <span className="flex items-center gap-2 font-bold uppercase text-foreground">
+                  <Binary className="w-4 h-4 text-primary shrink-0" />
+                  Memory Segment Fault Dump
+                </span>
+                <span className="text-[10px] text-muted-foreground font-mono">
+                  BASE: 0x004F_DEAD
+                </span>
+              </div>
+
+              <div className="p-3 rounded-lg border border-neutral-200/90 dark:border-neutral-800 bg-neutral-100/70 dark:bg-neutral-950/80 font-mono text-[10px] sm:text-[11px] leading-relaxed text-muted-foreground select-all overflow-x-auto space-y-1">
+                <div className="flex items-center justify-between gap-2">
+                  <span>0x0040: 7F 45 4C 46 02 01 01 00</span>
+                  <span className="text-muted-foreground/60 hidden sm:inline">.ELF....</span>
+                </div>
+                <div className="flex items-center justify-between gap-2">
+                  <span>0x0050: 00 00 00 00 00 00 00 00</span>
+                  <span className="text-muted-foreground/60 hidden sm:inline">........</span>
+                </div>
+                <div className="flex items-center justify-between gap-2 text-red-600 dark:text-red-400 font-bold bg-red-500/10 px-1.5 py-0.5 rounded">
+                  <span>0x0060: FF 1B C4 DE 00 00 00 00</span>
+                  <span className="text-red-500">!PANIC!</span>
+                </div>
+                <div className="flex items-center justify-between gap-2">
+                  <span>0x0070: 08 00 00 00 00 00 00 00</span>
+                  <span className="text-muted-foreground/60 hidden sm:inline">........</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Card 3: Expandable Diagnostic Drawer with Copy Trace Button */}
+            <div className="rounded-2xl border border-border/80 bg-card/75 backdrop-blur-xl shadow-xs overflow-hidden text-left">
+              <div className="flex items-center justify-between px-4 py-2.5 border-b border-border/60 bg-muted/30 text-xs">
+                <button
+                  type="button"
+                  onClick={() => setDetailsOpen(!detailsOpen)}
+                  className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer font-mono"
+                >
+                  <Terminal className="w-3.5 h-3.5 text-red-500 shrink-0" />
+                  <span>
+                    Incident: <strong className="text-foreground">{errorId}</strong>
+                  </span>
+                  {detailsOpen ? (
+                    <ChevronUp className="w-3.5 h-3.5 shrink-0" />
+                  ) : (
+                    <ChevronDown className="w-3.5 h-3.5 shrink-0" />
+                  )}
+                </button>
+
+                <button
+                  type="button"
+                  onClick={copyIncidentId}
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-mono bg-background hover:bg-muted border border-border transition-colors cursor-pointer text-muted-foreground hover:text-foreground shrink-0 ml-2"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="w-3 h-3 text-emerald-500" />
+                      <span className="text-emerald-600 dark:text-emerald-400">Copied</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3 h-3" />
+                      <span>Copy Hash</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {detailsOpen && (
+                <div className="p-2.5 sm:p-3">
+                  <div className="p-3 sm:p-3.5 rounded-lg border border-neutral-200/90 dark:border-neutral-800 bg-neutral-100/70 dark:bg-neutral-950/80 text-red-600 dark:text-red-400 text-[11px] font-mono overflow-x-auto max-h-44 overflow-y-auto leading-relaxed whitespace-pre-wrap select-all shadow-xs selection:bg-red-500/20">
+                    {sampleDetails}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   // -------------------------------------------------------------------------
   // VARIANT: Service Pipeline Topology ("service-pipeline" / "pipeline")

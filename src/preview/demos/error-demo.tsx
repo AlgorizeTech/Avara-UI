@@ -15,7 +15,9 @@ export default function ErrorSectionDemo({
     | "modern-animated"
     | "cosmic-pulse"
     | "service-pipeline"
-    | "pipeline";
+    | "pipeline"
+    | "quantum-glitch"
+    | "quantum-hud";
   errorCode?: string;
   title?: string;
   description?: string;
