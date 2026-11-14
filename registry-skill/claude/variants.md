@@ -65,7 +65,7 @@ Install the chosen variant's own `install` command from the index. Several looks
 
 ## Pages with variants today
 
-- `error`: 4 variants. All live: https://avaraui.com/view/error
+- `error`: 5 variants. All live: https://avaraui.com/view/error
 - `hero`: 16 variants. All live: https://avaraui.com/view/hero
 - `footer`: 9 variants. All live: https://avaraui.com/view/footer
 - `navbar`: 7 variants. All live: https://avaraui.com/view/navbar
@@ -84,7 +84,7 @@ Install the chosen variant's own `install` command from the index. Several looks
 - `product-details`: 4 variants. All live: https://avaraui.com/view/product-details
 - `newsletter`: 3 variants. All live: https://avaraui.com/view/newsletter
 - `waitlist`: 3 variants. All live: https://avaraui.com/view/waitlist
-- `not-found`: 3 variants. All live: https://avaraui.com/view/not-found
+- `not-found`: 5 variants. All live: https://avaraui.com/view/not-found
 - `dashboard`: 3 variants. All live: https://avaraui.com/view/dashboard
 - `faq-section`: 2 variants. All live: https://avaraui.com/view/faq-section
 - `book-appointment`: 2 variants. All live: https://avaraui.com/view/book-appointment

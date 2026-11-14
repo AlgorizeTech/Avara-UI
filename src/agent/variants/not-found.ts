@@ -1,13 +1,14 @@
 import type { PageVariants } from "./types";
 
 /**
- * Not found (404): 3 looks of one registry item (`not-found`), chosen with the
+ * Not found (404): 4 looks of one registry item (`not-found`), chosen with the
  * `variant` prop. Claims come from
  * src/app/docs/[framework]/not-found/page.mdx.
  */
 export const notFound: PageVariants = {
   slug: "not-found",
-  intro: "A full-page 404 section in three looks: an architectural blueprint, a hyperspace grid, and an animated quantum hologram.",
+  intro:
+    "A full-page 404 section in five looks: an architectural blueprint, a hyperspace grid, a quantum hologram, a 3D perspective infinite horizon, and an aurora celestial singularity.",
   whenNot: [
     {
       use: "Error",
@@ -16,11 +17,26 @@ export const notFound: PageVariants = {
     },
   ],
   gotchas: [
-    "All three are looks of the one `not-found` item: install it once and set `variant` from the index.",
+    "Choose between the architectural blueprint, hyperspace grid, quantum hologram, 3D perspective infinite horizon, and aurora celestial singularity via `variant`.",
   ],
   variants: [
     {
+      id: "aurora-glass",
+      group: "Atmospheric & Sci-Fi",
+      label: "Aurora celestial singularity",
+      summary: "Clean cinematic 404 with hyperspace warp light streaks, horizon laser pulse, and an animated portal inside the 0.",
+      bestFor: ["modern SaaS, design-led web apps, AI platforms, and animated showcase 404 pages"],
+      avoidIf: ["you need a flat zero-shadow blueprint or minimal text-only layout"],
+      traits: ["warp light streaks", "animated 0 portal", "horizon laser beam", "clean minimal CTAs"],
+      item: "not-found",
+      demo: "not-found",
+      example: "Aurora Celestial Singularity 404 (Ultra Animated)",
+      props: { variant: "aurora-glass" },
+      setProps: { variant: "aurora-glass" },
+    },
+    {
       id: "blueprint",
+      group: "Technical & Modern",
       label: "Architectural CAD blueprint",
       summary: "A zero-shadow modular CAD blueprint with a drafting ruler bar, protocol telemetry and a navigation directory.",
       bestFor: ["architecture, engineering and design-led sites"],
@@ -33,7 +49,22 @@ export const notFound: PageVariants = {
       setProps: { variant: "animated-beam-border" },
     },
     {
+      id: "spatial-portal",
+      group: "Technical & Modern",
+      label: "Infinite Horizon Color 404",
+      summary: "3D perspective moving grid runway with an animated chromatic 404, mirror reflection, and clean CTAs.",
+      bestFor: ["modern SaaS, design-led web apps, developer platforms, and clean uncluttered 404 pages"],
+      avoidIf: ["you prefer a flat CAD blueprint or terminal interface"],
+      traits: ["3D perspective grid", "color-animated 404", "mirror reflection", "clean CTAs"],
+      item: "not-found",
+      demo: "not-found",
+      example: "Infinite Horizon Animated Color 404",
+      props: { variant: "spatial-portal" },
+      setProps: { variant: "spatial-portal" },
+    },
+    {
       id: "hyperspace",
+      group: "Atmospheric & Sci-Fi",
       label: "Hyperspace",
       summary: "A celestial cosmic grid backdrop with ambient radial glow, a rotating compass badge and a serif status code.",
       bestFor: ["a classic, atmospheric 404 that fits most tech and product sites"],
@@ -47,6 +78,7 @@ export const notFound: PageVariants = {
     },
     {
       id: "quantum-hologram",
+      group: "Atmospheric & Sci-Fi",
       label: "Quantum hologram",
       summary: "A 3D gyroscopic orbital singularity with a chromatic glitch headline, audio frequency bars and HUD brackets.",
       bestFor: ["sci-fi, gaming and showpiece sites where the 404 can be a moment"],
