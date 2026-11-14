@@ -26,7 +26,10 @@ export type NotFoundVariant =
   | "infinite-horizon"
   | "dimensional-portal"
   | "portal"
-  | "aurora-glass";
+  | "aurora-glass"
+  | "component-wall"
+  | "mosaic-wall"
+  | "card-wall";
 
 export interface ShortcutItem {
   label: string;
@@ -1632,6 +1635,389 @@ export function AuroraGlassNotFoundSection({
 }
 
 /* ========================================================================== */
+/*  VARIANT 6: COMPONENT WALL MOSAIC 404 SECTION                              */
+/* ========================================================================== */
+
+const COMPONENT_WALL_IMAGES = {
+  bento:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516057/bento-showcase-1790516064489.jpg",
+  appointment:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516057/book-appointment-1790516064490.jpg",
+  calendar:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516057/calendar-1790516064491.jpg",
+  chart:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516056/chart-1790516064492.jpg",
+  collage:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516057/collage-hero-1790516064493.jpg",
+  dataFlow:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516056/data-flow-1790516064493.jpg",
+  dataGrid:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516056/data-grid-1790516064494.jpg",
+  fashion:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516058/fashion-hero-1790516064495.jpg",
+  footer:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516057/footer-1790516064495.jpg",
+  hero:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516057/hero-1790516064495.jpg",
+  heroCarousel:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516059/hero-carousel-1790516064496.jpg",
+  honeycomb:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516059/honeycomb-hero-1790516064497.jpg",
+  invoice:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516059/invoice-1790516064498.jpg",
+  login:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516058/login-form-1790516064498.jpg",
+  navbar:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516057/navbar-1790516064499.jpg",
+  newsletter:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516058/newsletter-1790516064499.jpg",
+  gallery:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516058/orbit-gallery-1790516064499.jpg",
+  platform:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516057/platform-grid-1790516064500.jpg",
+  pricing:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516058/pricing-1790516064500.jpg",
+  product:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516058/product-details-1790516064500.jpg",
+  profile:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516058/profile-page-1790516064501.jpg",
+  reviews:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516059/reviews-1790516064502.jpg",
+  support:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516059/support-hero-1790516064502.jpg",
+  waitlist:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516059/waitlist-1790516064503.jpg",
+};
+
+interface MosaicCard {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  title: string;
+  image?: string;
+  content?: React.ReactNode;
+  bgClass?: string;
+}
+
+const CENTER_ZERO_CARDS: MosaicCard[] = [
+  // --- TOP APEX CARD (Centered at 50%: x: 38%, y: 0%, w: 24%, h: 11%) ---
+  { x: 38, y: 0, w: 24, h: 11, title: "Hero Showcase", image: COMPONENT_WALL_IMAGES.hero },
+
+  // --- UPPER-RIGHT ARCH (Smoothly curving down and outward) ---
+  { x: 63, y: 5.5, w: 24, h: 11, title: "Profile Page", image: COMPONENT_WALL_IMAGES.profile },
+  { x: 73, y: 18, w: 24, h: 11, title: "Reviews Component", image: COMPONENT_WALL_IMAGES.reviews },
+
+  // --- RIGHT VERTICAL FLANK (Rows at y = 30.5%, 43.5%, 56.5% - uniform 2% gap, h: 11%) ---
+  { x: 76, y: 30.5, w: 24, h: 11, title: "Bento Showcase", image: COMPONENT_WALL_IMAGES.bento },
+  { x: 76, y: 43.5, w: 24, h: 11, title: "Chart Analytics", image: COMPONENT_WALL_IMAGES.chart },
+  { x: 76, y: 56.5, w: 24, h: 11, title: "Calendar Scheduler", image: COMPONENT_WALL_IMAGES.calendar },
+
+  // --- LOWER-RIGHT ARCH (Smoothly curving down and inward towards bottom apex) ---
+  { x: 73, y: 69.5, w: 24, h: 11, title: "Pricing Grid", image: COMPONENT_WALL_IMAGES.pricing },
+  { x: 63, y: 82, w: 24, h: 11, title: "Orbit Gallery", image: COMPONENT_WALL_IMAGES.gallery },
+
+  // --- BOTTOM APEX CARD (Centered at 50%: x: 38%, y: 87.5%, w: 24%, h: 11% - mirrors top apex) ---
+  { x: 38, y: 87.5, w: 24, h: 11, title: "Invoice Billing", image: COMPONENT_WALL_IMAGES.invoice },
+
+  // --- LOWER-LEFT ARCH (Smoothly curving up and outward from bottom apex) ---
+  { x: 13, y: 82, w: 24, h: 11, title: "Hero Carousel", image: COMPONENT_WALL_IMAGES.heroCarousel },
+  { x: 3, y: 69.5, w: 24, h: 11, title: "Newsletter App", image: COMPONENT_WALL_IMAGES.newsletter },
+
+  // --- LEFT VERTICAL FLANK (Rows at y = 56.5%, 43.5%, 30.5% - uniform 2% gap, mirrors right flank) ---
+  { x: 0, y: 56.5, w: 24, h: 11, title: "Navbar Showcase", image: COMPONENT_WALL_IMAGES.navbar },
+  { x: 0, y: 43.5, w: 24, h: 11, title: "Fashion Hero", image: COMPONENT_WALL_IMAGES.fashion },
+  { x: 0, y: 30.5, w: 24, h: 11, title: "Support Hero", image: COMPONENT_WALL_IMAGES.support },
+
+  // --- UPPER-LEFT ARCH (Smoothly curving up and inward towards top apex) ---
+  { x: 3, y: 18, w: 24, h: 11, title: "Collage Hero", image: COMPONENT_WALL_IMAGES.collage },
+  { x: 13, y: 5.5, w: 24, h: 11, title: "Product Details", image: COMPONENT_WALL_IMAGES.product },
+];
+
+const FOUR_CARDS: MosaicCard[] = [
+  // --- VERTICAL STEM COLUMN (all w: 24%, h: 11% - identical size as '0') ---
+  { x: 50.5, y: 0, w: 24, h: 11, title: "Mobile Wireframe", image: COMPONENT_WALL_IMAGES.waitlist },
+  { x: 50.5, y: 12.5, w: 24, h: 11, title: "Book Appointment", image: COMPONENT_WALL_IMAGES.appointment },
+  { x: 50.5, y: 25, w: 24, h: 11, title: "Data Flow Architecture", image: COMPONENT_WALL_IMAGES.dataFlow },
+  { x: 50.5, y: 37.5, w: 24, h: 11, title: "Calendar Scheduler", image: COMPONENT_WALL_IMAGES.calendar },
+  { x: 50.5, y: 50, w: 24, h: 11, title: "Platform Grid", image: COMPONENT_WALL_IMAGES.platform },
+  // Intersection Card (Data Grid) - aligned with stem and crossbar
+  { x: 50.5, y: 62.5, w: 24, h: 11, title: "Data Grid Table", image: COMPONENT_WALL_IMAGES.dataGrid },
+  { x: 50.5, y: 75, w: 24, h: 11, title: "Honeycomb Hero", image: COMPONENT_WALL_IMAGES.honeycomb },
+  { x: 50.5, y: 87.5, w: 24, h: 11, title: "Bento Showcase", image: COMPONENT_WALL_IMAGES.bento },
+
+  // --- HORIZONTAL CROSSBAR ROW (all y: 62.5%, w: 24%, h: 11% - spans from x: 0% to exactly 100%) ---
+  { x: 0, y: 62.5, w: 24, h: 11, title: "Login Form", image: COMPONENT_WALL_IMAGES.login },
+  { x: 25.25, y: 62.5, w: 24, h: 11, title: "Chart Analytics", image: COMPONENT_WALL_IMAGES.chart },
+  // Right-side tail card (Hero Carousel) - ends precisely at 100% (76% + 24% = 100%)
+  { x: 76, y: 62.5, w: 24, h: 11, title: "Hero Carousel", image: COMPONENT_WALL_IMAGES.heroCarousel },
+
+  // --- DIAGONAL ARM (all w: 24%, h: 11% - perfectly spaced without overlap, 1.5% gap to stem at top-left) ---
+  { x: 25.0, y: 12.5, w: 24, h: 11, title: "Invoice Summary", image: COMPONENT_WALL_IMAGES.invoice },
+  { x: 16.7, y: 25, w: 24, h: 11, title: "Profile Page", image: COMPONENT_WALL_IMAGES.profile },
+  { x: 8.3, y: 37.5, w: 24, h: 11, title: "Product Details", image: COMPONENT_WALL_IMAGES.product },
+  { x: 0, y: 50, w: 24, h: 11, title: "Orbit Gallery", image: COMPONENT_WALL_IMAGES.gallery },
+];
+
+const BUBBLE_DOTS = [
+  { left: 5, size: 5, dur: 7, delay: 0 },
+  { left: 13, size: 7, dur: 9, delay: 2.5 },
+  { left: 21, size: 4, dur: 6.5, delay: 1.2 },
+  { left: 30, size: 8, dur: 10, delay: 4.1 },
+  { left: 39, size: 5, dur: 7.5, delay: 0.8 },
+  { left: 48, size: 6, dur: 8.5, delay: 3.2 },
+  { left: 57, size: 8, dur: 11, delay: 1.9 },
+  { left: 66, size: 4, dur: 6, delay: 4.8 },
+  { left: 74, size: 7, dur: 8, delay: 0.5 },
+  { left: 82, size: 5, dur: 9.5, delay: 2.1 },
+  { left: 90, size: 8, dur: 10.5, delay: 3.7 },
+  { left: 96, size: 4, dur: 7, delay: 5.3 },
+];
+
+export function ComponentWallNotFoundSection({
+  color,
+  className,
+  ...props
+}: NotFoundSectionProps) {
+  const dynamicAccent = accentStyle(color);
+
+  const renderCard = (card: MosaicCard, idx: number) => {
+    return (
+      <div
+        key={idx}
+        style={{
+          position: "absolute",
+          left: `${card.x}%`,
+          top: `${card.y}%`,
+          width: `${card.w}%`,
+          height: `${card.h}%`,
+        }}
+        className={cn(
+          "rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden shadow-sm border border-border/40 select-none bg-muted/30",
+          card.bgClass
+        )}
+        title={card.title}
+      >
+        {card.image ? (
+          <img
+            src={card.image}
+            alt={card.title}
+            className="w-full h-full object-cover pointer-events-none"
+            loading="lazy"
+          />
+        ) : (
+          card.content
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <section
+      style={dynamicAccent}
+      className={cn(
+        "relative w-full h-full min-h-full flex-1 self-stretch min-h-[660px] sm:min-h-[720px] lg:min-h-screen min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-12 overflow-hidden bg-background text-foreground select-none transition-colors duration-200",
+        className
+      )}
+      {...props}
+    >
+      {/* Dynamic Keyframes for Bidirectional Scanner & Rising Bubble Dots */}
+      <style>{`
+        @keyframes component-wall-scan-bidirectional {
+          0% {
+            top: -6%;
+            opacity: 0.15;
+          }
+          6% {
+            opacity: 1;
+          }
+          46% {
+            opacity: 1;
+          }
+          50% {
+            top: 106%;
+            opacity: 0.15;
+          }
+          56% {
+            opacity: 1;
+          }
+          96% {
+            opacity: 1;
+          }
+          100% {
+            top: -6%;
+            opacity: 0.15;
+          }
+        }
+        @keyframes component-wall-bubble-rise {
+          0% {
+            bottom: -6%;
+            opacity: 0;
+            transform: scale(0.4) translateX(0);
+          }
+          15% {
+            opacity: 0.85;
+          }
+          50% {
+            transform: scale(1.05) translateX(14px);
+          }
+          85% {
+            opacity: 0.85;
+          }
+          100% {
+            bottom: 106%;
+            opacity: 0;
+            transform: scale(1.3) translateX(-10px);
+          }
+        }
+        @keyframes component-wall-ambient-pulse {
+          0%, 100% {
+            opacity: 0.25;
+            transform: scale(0.96) translate(-50%, 0);
+          }
+          50% {
+            opacity: 0.55;
+            transform: scale(1.06) translate(-50%, 0);
+          }
+        }
+      `}</style>
+
+      {/* Background Subtle Dot Matrix Grid */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-[0.08] dark:opacity-[0.16]"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle, var(--primary,#6366f1) 1.2px, transparent 1.2px)",
+          backgroundSize: "28px 28px",
+          maskImage:
+            "radial-gradient(ellipse 70% 60% at 50% 50%, #000 70%, transparent 100%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 70% 60% at 50% 50%, #000 70%, transparent 100%)",
+        }}
+      />
+
+      {/* Floating Glowing Bubble Dots (rising up continuously from bottom) */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+        {BUBBLE_DOTS.map((dot, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-primary/50 shadow-[0_0_10px_var(--primary)] backdrop-blur-[0.5px]"
+            style={{
+              left: `${dot.left}%`,
+              width: `${dot.size}px`,
+              height: `${dot.size}px`,
+              animation: `component-wall-bubble-rise ${dot.dur}s ease-in-out infinite`,
+              animationDelay: `${dot.delay}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* ================================================================== */}
+      {/* HIGH-TECH DUAL-BEAM HOLOGRAPHIC SCANNER GATE (Bidirectional Sweep)  */}
+      {/* ================================================================== */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 -translate-y-1/2 z-20"
+        style={{
+          animation: "component-wall-scan-bidirectional 6s cubic-bezier(0.4, 0, 0.2, 1) infinite",
+        }}
+      >
+        {/* Soft volumetric light aura trailing behind the scanner */}
+        <div className="absolute -top-10 left-0 right-0 h-28 bg-gradient-to-b from-transparent via-primary/18 to-transparent blur-xl pointer-events-none" />
+
+        {/* Leading Razor-Sharp Laser Beam (Top Edge) */}
+        <div
+          className="w-full h-[1.5px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-90"
+          style={{
+            boxShadow: "0 0 16px 2px var(--primary)",
+          }}
+        />
+
+        {/* Translucent Luminous Scanning Field with Cyber HUD Readouts */}
+        <div className="relative w-full h-8 sm:h-9 bg-gradient-to-b from-primary/15 via-primary/5 to-primary/15 backdrop-blur-[1px] flex items-center justify-between px-3 sm:px-8 overflow-hidden">
+          {/* Micro-scanline texture inside the field */}
+          <div
+            className="absolute inset-0 opacity-25"
+            style={{
+              backgroundImage:
+                "repeating-linear-gradient(to bottom, transparent, transparent 3px, var(--primary) 3px, var(--primary) 4px)",
+            }}
+          />
+
+          {/* Left HUD Telemetry Tag */}
+          <div className="relative z-10 flex items-center gap-2 font-mono text-[9px] sm:text-[10px] tracking-wider text-primary font-bold select-none bg-background/85 px-2 py-0.5 rounded border border-primary/40 shadow-[0_0_12px_var(--primary)] backdrop-blur-md">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary" />
+            </span>
+            <span className="hidden min-[420px]:inline">SYSTEM_SCAN</span>
+            <span className="text-foreground/70">::</span>
+            <span>0x404</span>
+          </div>
+
+          {/* Center High-Intensity Laser Lens Reticle */}
+          <div className="relative z-10 flex items-center justify-center">
+            <div className="w-24 sm:w-44 h-[2px] bg-primary shadow-[0_0_20px_3px_var(--primary)] rounded-full" />
+            <div className="absolute w-3 h-3 rounded-full border border-primary/80 flex items-center justify-center shadow-[0_0_10px_var(--primary)]">
+              <div className="w-1 h-1 rounded-full bg-primary" />
+            </div>
+          </div>
+
+          {/* Right HUD Telemetry Tag */}
+          <div className="relative z-10 hidden sm:flex items-center gap-1.5 font-mono text-[9px] sm:text-[10px] tracking-wider text-primary font-semibold select-none bg-background/85 px-2 py-0.5 rounded border border-primary/40 shadow-[0_0_12px_var(--primary)] backdrop-blur-md">
+            <span className="text-foreground/60">[</span>
+            <span className="text-primary animate-pulse">GRID_PASS</span>
+            <span className="text-foreground/60">]</span>
+          </div>
+        </div>
+
+        {/* Trailing Razor-Sharp Laser Beam (Bottom Edge) */}
+        <div
+          className="w-full h-[1.5px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-90"
+          style={{
+            boxShadow: "0 0 16px 2px var(--primary)",
+          }}
+        />
+      </div>
+
+      {/* Ambient Radial Color Spot with Subtle Pulse */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full bg-primary/10 blur-[130px]"
+        style={{
+          animation: "component-wall-ambient-pulse 7s ease-in-out infinite",
+        }}
+      />
+
+      {/* Main Foreground Container: Perfectly Centered 404 Mosaic */}
+      <div className="relative z-10 w-full h-full min-h-full flex-1 max-w-4xl mx-auto flex items-center justify-center my-auto px-2 sm:px-4">
+        {/* ================================================================== */}
+        {/* MONUMENTAL 404 COMPONENT WALL MOSAIC                               */}
+        {/* ================================================================== */}
+        <div className="relative flex items-center justify-center gap-3 sm:gap-5 md:gap-8 w-full max-w-3xl lg:max-w-4xl mx-auto select-none">
+          {/* Digit 4 (Left - Identical card dimensions as '0') */}
+          <div className="relative w-[32%] max-w-[290px] aspect-[100/135]">
+            {FOUR_CARDS.map(renderCard)}
+          </div>
+
+          {/* Digit 0 (Center - Identical card dimensions as '4') */}
+          <div className="relative w-[32%] max-w-[290px] aspect-[100/135]">
+            {CENTER_ZERO_CARDS.map(renderCard)}
+          </div>
+
+          {/* Digit 4 (Right - Identical card dimensions as '0') */}
+          <div className="relative w-[32%] max-w-[290px] aspect-[100/135]">
+            {FOUR_CARDS.map(renderCard)}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ========================================================================== */
 /*  MAIN EXPORT: DISPATCHES TO SELECTED VARIANT                               */
 /* ========================================================================== */
 
@@ -1639,6 +2025,14 @@ export function NotFoundSection({
   variant = "hyperspace",
   ...props
 }: NotFoundSectionProps) {
+  if (
+    variant === "component-wall" ||
+    (variant as string) === "mosaic-wall" ||
+    (variant as string) === "card-wall" ||
+    (variant as string) === "mosaic"
+  ) {
+    return <ComponentWallNotFoundSection {...props} />;
+  }
   if (variant === "aurora-glass") {
     return <AuroraGlassNotFoundSection {...props} />;
   }

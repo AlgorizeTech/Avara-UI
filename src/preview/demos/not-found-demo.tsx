@@ -46,6 +46,13 @@ export default function NotFoundSectionDemo({
         onClick: () =>
           showNotice(`Action triggered: ${primaryAction.label}`),
       }
+    : variant === "component-wall" || (variant as string) === "mosaic-wall" || (variant as string) === "card-wall"
+    ? {
+        label: "Explore Documentation",
+        href: "#",
+        icon: <BookOpen className="h-4 w-4" />,
+        onClick: () => showNotice("Action triggered: Exploring Documentation..."),
+      }
     : variant === "aurora-glass"
     ? {
         label: "Return to Safety",
@@ -79,6 +86,13 @@ export default function NotFoundSectionDemo({
         ...secondaryAction,
         onClick: () =>
           showNotice(`Action triggered: ${secondaryAction.label}`),
+      }
+    : variant === "component-wall" || (variant as string) === "mosaic-wall" || (variant as string) === "card-wall"
+    ? {
+        label: "Back to Home",
+        href: "/",
+        icon: <Home className="h-4 w-4" />,
+        onClick: () => showNotice("Action triggered: Back to Home..."),
       }
     : variant === "aurora-glass"
     ? {
@@ -120,7 +134,7 @@ export default function NotFoundSectionDemo({
         ...s,
         onClick: () => showNotice(`Shortcut clicked: ${s.label}`),
       }))
-    : variant === "aurora-glass" || variant === "spatial-portal" || variant === "kinetic-wireframe" || variant === "infinite-horizon" || variant === "dimensional-portal" || variant === "portal"
+    : variant === "component-wall" || (variant as string) === "mosaic-wall" || (variant as string) === "card-wall" || variant === "aurora-glass" || variant === "spatial-portal" || variant === "kinetic-wireframe" || variant === "infinite-horizon" || variant === "dimensional-portal" || variant === "portal"
     ? undefined
     : variant === "quantum-hologram"
     ? [
@@ -194,7 +208,7 @@ export default function NotFoundSectionDemo({
   return (
     <div
       style={accentStyle(color)}
-      className="relative -my-6 -mx-4 w-[calc(100%+2rem)] min-w-[calc(100%+2rem)] max-w-none flex flex-col items-center justify-center overflow-hidden"
+      className="relative w-full h-full min-h-[660px] sm:min-h-[720px] lg:min-h-screen flex-1 self-stretch flex flex-col items-center justify-center overflow-hidden bg-background"
     >
       {notice && (
         <div className="absolute top-6 z-50 text-xs px-4 py-1.5 rounded-full bg-primary/10 text-primary border border-primary/20 font-mono shadow-lg backdrop-blur-md">
@@ -202,7 +216,7 @@ export default function NotFoundSectionDemo({
         </div>
       )}
 
-      <div className="w-full">
+      <div className="w-full h-full min-h-[660px] sm:min-h-[720px] lg:min-h-screen flex-1 self-stretch flex flex-col">
         <NotFoundSection
           variant={variant}
           color={color}
@@ -214,7 +228,7 @@ export default function NotFoundSectionDemo({
           primaryAction={resolvedPrimaryAction}
           secondaryAction={resolvedSecondaryAction}
           shortcuts={resolvedShortcuts}
-          className="w-full min-h-[580px] sm:min-h-[640px]"
+          className="w-full h-full min-h-[660px] sm:min-h-[720px] lg:min-h-screen flex-1 self-stretch"
         />
       </div>
     </div>
