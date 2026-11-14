@@ -165,6 +165,8 @@ function build(): string {
   const agents = [
     "## For AI agents",
     "",
+    `- [llms-full.txt](${absolute("/llms-full.txt")}): Every docs page in one file, for a model that can read it all at once.`,
+    `- [Introduction as Markdown](${absolute("/llm")}): The Introduction plus a map of every LLM-facing resource.`,
     `- [Agent index](${absolute("/agent/components.json")}): Every component and website section as JSON, with its summary, install command and Markdown URL. Search this instead of guessing names.`,
     ...Object.keys(SKILL_FILES)
       .filter((file) => file.endsWith(".md"))

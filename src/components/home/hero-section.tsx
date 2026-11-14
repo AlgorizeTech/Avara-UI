@@ -63,7 +63,7 @@ export function HeroSection() {
 		<section className="relative w-full overflow-hidden">
 			<HomepageHero
 				badge={{
-					label: "Free shadcn/ui components & blocks",
+					label: `${SITE_NAME} · Free shadcn ui components & blocks`,
 					href: "/docs/nextjs",
 				}}
 				heading="Build interactive {word}."

@@ -118,6 +118,16 @@ const BADGES: Badge[] = [
 		width: 486,
 		height: 105,
 	},
+	{
+		// One badge for both themes: it draws its own background. Like the
+		// OpenHunts one, its snippet has no noreferrer.
+		href: "https://verifieddr.com/website/avaraui-com",
+		rel: "noopener",
+		src: "https://verifieddr.com/badge/avaraui-com.svg?metric=dr",
+		alt: "Verified DR - Verified Domain Rating for avaraui.com",
+		width: 220,
+		height: 68,
+	},
 ];
 
 export function FooterBadges({ className }: { className?: string }) {

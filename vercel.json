@@ -5,6 +5,12 @@
   "installCommand": "npm install",
   "devCommand": "npm run dev",
   "cleanUrls": true,
+  "headers": [
+    {
+      "source": "/llm",
+      "headers": [{ "key": "Content-Type", "value": "text/markdown; charset=utf-8" }]
+    }
+  ],
   "rewrites": [
     {
       "source": "/r/v0-themed/:component/:example/item.json",

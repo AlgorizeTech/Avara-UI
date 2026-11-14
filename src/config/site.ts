@@ -39,7 +39,12 @@ export const url = (pathname = "/") =>
  */
 export const COMPONENT_COUNT = process.env.NEXT_PUBLIC_REGISTRY_COMPONENT_COUNT ?? "";
 
-export const SITE_NAME = env(process.env.NEXT_PUBLIC_SITE_NAME) ?? "Avara UI";
+/**
+ * The product name. Fixed on purpose, not read from the environment: search
+ * engines must always see exactly "Avara UI" in titles, structured data and
+ * copy, whatever a deploy's env says.
+ */
+export const SITE_NAME = "Avara UI";
 
 /**
  * The namespace readers register in `components.json` and write in front of an
@@ -118,20 +123,20 @@ export const siteConfig = {
    * server the /docs/<framework>/mcp guide connects to the registry. Kept under
    * ~60 characters so Google does not cut the brand off.
    */
-  title: `Free Shadcn UI Components, Blocks & MCP - ${SITE_NAME}`,
+  title: `${SITE_NAME} - Free Shadcn UI Components, Blocks & MCP`,
   /** The homepage snippet, under the ~160 characters Google shows. */
   description:
-    `${COMPONENT_COUNT ? `${COMPONENT_COUNT} free` : "Free"} Shadcn UI components and blocks ` +
-    "for React, Next.js and Tailwind CSS, with GSAP and Motion animations. Install with " +
-    "the shadcn CLI or AI agents via MCP.",
+    `${SITE_NAME} is a free library of ${COMPONENT_COUNT ? `${COMPONENT_COUNT} ` : ""}Shadcn UI ` +
+    "components and blocks for React and Tailwind CSS, with GSAP and Motion animation. " +
+    "Install via the shadcn CLI or MCP.",
   /** One line, for cards and social summaries. */
-  tagline: `${COMPONENT_COUNT} React components you install into your own codebase.`,
+  tagline: `${SITE_NAME} is a free library of ${COMPONENT_COUNT} React components you install into your own codebase.`.replace(/\s{2,}/g, " "),
   url: SITE_URL,
   /** Where `shadcn build` publishes the registry. */
   registryUrl: `${SITE_URL}/r`,
   author: env(process.env.NEXT_PUBLIC_SITE_AUTHOR) ?? "AlgorizeTech",
   github: links.github,
-  /** The social card, public/meta-image.png (1733×907). */
+  /** The social card, public/meta-image.png (1200×630). */
   ogImage: url("/meta-image.png"),
 } as const;
 
