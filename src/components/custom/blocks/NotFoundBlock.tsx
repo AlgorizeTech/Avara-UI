@@ -25,7 +25,8 @@ export type NotFoundVariant =
   | "kinetic-wireframe"
   | "infinite-horizon"
   | "dimensional-portal"
-  | "portal";
+  | "portal"
+  | "aurora-glass";
 
 export interface ShortcutItem {
   label: string;
@@ -154,7 +155,7 @@ export function HyperspaceNotFoundSection({
     <section
       style={dynamicAccent}
       className={cn(
-        "relative flex min-h-[580px] sm:min-h-[640px] w-full flex-col items-center justify-center overflow-hidden px-4 sm:px-6 py-12 text-center transition-colors duration-300 font-sans",
+        "relative flex w-full h-full min-h-full flex-1 min-h-[580px] sm:min-h-[640px] lg:min-h-screen flex-col items-center justify-center overflow-hidden px-4 sm:px-6 py-12 text-center transition-colors duration-300 font-sans",
         className
       )}
       {...props}
@@ -364,7 +365,7 @@ export function AnimatedBeamNotFoundSection({
     <section
       style={dynamicAccent}
       className={cn(
-        "relative flex min-h-[640px] sm:min-h-[720px] w-full flex-col items-center justify-center overflow-hidden px-3 sm:px-6 lg:px-8 py-8 sm:py-14 text-left transition-colors duration-300 font-sans select-none bg-background",
+        "relative flex w-full h-full min-h-full flex-1 min-h-[640px] sm:min-h-[720px] lg:min-h-screen flex-col items-center justify-center overflow-hidden px-3 sm:px-6 lg:px-8 py-8 sm:py-14 text-left transition-colors duration-300 font-sans select-none bg-background",
         className
       )}
       {...props}
@@ -732,7 +733,7 @@ export function QuantumHologramNotFoundSection({
     <section
       style={dynamicAccent}
       className={cn(
-        "relative flex min-h-[680px] sm:min-h-[760px] w-full flex-col items-center justify-center overflow-hidden px-3.5 sm:px-6 lg:px-8 py-10 sm:py-16 text-center transition-colors duration-300 font-sans select-none",
+        "relative flex w-full h-full min-h-full flex-1 min-h-[680px] sm:min-h-[760px] lg:min-h-screen flex-col items-center justify-center overflow-hidden px-3.5 sm:px-6 lg:px-8 py-10 sm:py-16 text-center transition-colors duration-300 font-sans select-none",
         className
       )}
       {...props}
@@ -1087,7 +1088,7 @@ export function KineticWireframeNotFoundSection({
     <section
       style={dynamicAccent}
       className={cn(
-        "relative w-full min-h-[700px] sm:min-h-[780px] flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-24 overflow-hidden bg-background text-foreground select-none transition-colors duration-200",
+        "relative w-full h-full min-h-full flex-1 min-h-[700px] sm:min-h-[780px] lg:min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-24 overflow-hidden bg-background text-foreground select-none transition-colors duration-200",
         className
       )}
       {...props}
@@ -1186,7 +1187,7 @@ export function KineticWireframeNotFoundSection({
       {/* ==================================================================== */}
       {/* FOREGROUND CONTENT: HERO 404 + MIRROR FLOOR REFLECTION               */}
       {/* ==================================================================== */}
-      <div className="relative z-10 w-full max-w-3xl mx-auto flex flex-col items-center text-center">
+      <div className="relative z-10 w-full max-w-3xl mx-auto flex flex-col items-center text-center my-auto">
         {/* Optional Clean Badge (Only if provided) */}
         {badge && (
           <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-border/80 bg-card/60 backdrop-blur-xl text-foreground text-xs font-mono tracking-wide mb-3 shadow-sm hover:border-primary/40 transition-colors">
@@ -1254,6 +1255,383 @@ export function KineticWireframeNotFoundSection({
 export { KineticWireframeNotFoundSection as SpatialPortalNotFoundSection };
 
 /* ========================================================================== */
+/*  VARIANT 5: AURORA CELESTIAL SINGULARITY & 3D ORBITAL PORTAL 404 SECTION   */
+/* ========================================================================== */
+
+const AURORA_GLASS_STYLES = `
+@keyframes hero-prismatic-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+@keyframes hero-float-left {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(-1deg);
+  }
+}
+@keyframes hero-float-center {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-16px) scale(1.03);
+  }
+}
+@keyframes hero-float-right {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(1deg);
+  }
+}
+@keyframes portal-vortex-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes portal-vortex-spin-reverse {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+@keyframes portal-singularity-pulse {
+  0%, 100% {
+    transform: scale(0.92);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+}
+@keyframes sonar-wave-pulse {
+  0% {
+    transform: scale(0.35);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+@keyframes radar-sweep-360 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes starlight-twinkle {
+  0%, 100% {
+    transform: scale(0.85);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 1;
+  }
+}
+`;
+
+export function AuroraGlassNotFoundSection({
+  code = "404",
+  badge,
+  title = "Lost Beyond the Horizon",
+  description = "The coordinate you were navigating to has drifted into uncharted space or never existed. Let's guide you back to safety.",
+  primaryAction = {
+    label: "Return to Safety",
+    href: "/",
+    icon: <Home className="h-4 w-4" />,
+  },
+  secondaryAction = {
+    label: "Explore Documentation",
+    href: "#",
+    icon: <BookOpen className="h-4 w-4" />,
+  },
+  color,
+  className,
+  ...props
+}: NotFoundSectionProps) {
+  const dynamicAccent = accentStyle(color);
+
+  const renderAction = (action?: NotFoundAction, isPrimary = false) => {
+    if (!action) return null;
+    const baseClass = isPrimary
+      ? "inline-flex w-full sm:w-auto items-center justify-center gap-2.5 rounded-full bg-primary text-primary-foreground font-semibold px-8 py-3.5 text-xs sm:text-sm hover:opacity-95 hover:scale-[1.03] active:scale-[0.98] transition-all cursor-pointer shadow-lg shadow-primary/25 relative overflow-hidden group select-none"
+      : "inline-flex w-full sm:w-auto items-center justify-center gap-2.5 rounded-full border border-border/80 bg-card/60 hover:bg-card hover:border-primary/40 text-foreground font-medium px-8 py-3.5 text-xs sm:text-sm backdrop-blur-md active:scale-[0.98] hover:scale-[1.02] transition-all cursor-pointer select-none";
+
+    const content = (
+      <>
+        {action.icon}
+        <span>{action.label}</span>
+        {isPrimary && (
+          <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+        )}
+      </>
+    );
+
+    if (action.onClick) {
+      return (
+        <button type="button" onClick={action.onClick} className={baseClass}>
+          {content}
+        </button>
+      );
+    }
+
+    return (
+      <a href={action.href ?? "#"} className={baseClass}>
+        {content}
+      </a>
+    );
+  };
+
+  const isStandard404 = code === "404";
+
+  return (
+    <section
+      style={dynamicAccent}
+      className={cn(
+        "relative w-full h-full min-h-full flex-1 min-h-screen min-h-[100dvh] flex flex-col items-center justify-center overflow-hidden bg-background text-foreground select-none transition-colors duration-200",
+        className
+      )}
+      {...props}
+    >
+      <style>{AURORA_GLASS_STYLES}</style>
+
+      {/* ==================================================================== */}
+      {/* BACKGROUND: CYBER RADAR SWEEP, SONAR PULSES, LASER STREAMS & HORIZON */}
+      {/* ==================================================================== */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden select-none"
+      >
+        {/* Subtle Cosmic Starfield / Dot Matrix */}
+        <div
+          className="absolute inset-0 opacity-[0.14] dark:opacity-[0.22]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle, var(--primary,#6366f1) 1px, transparent 1px)",
+            backgroundSize: "28px 28px",
+            maskImage:
+              "radial-gradient(ellipse 70% 60% at 50% 50%, #000 70%, transparent 100%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 70% 60% at 50% 50%, #000 70%, transparent 100%)",
+          }}
+        />
+
+        {/* Concentric Cyber Radar Rings in Background */}
+        <div className="absolute h-[320px] w-[320px] sm:h-[520px] sm:w-[520px] rounded-full border border-primary/25 pointer-events-none" />
+        <div className="absolute h-[520px] w-[520px] sm:h-[820px] sm:w-[820px] rounded-full border border-dashed border-primary/20 pointer-events-none" />
+        <div className="absolute h-[740px] w-[740px] sm:h-[1140px] sm:w-[1140px] rounded-full border border-primary/15 pointer-events-none" />
+
+        {/* Dynamic Rotating 360° Radar Scanner Cone */}
+        <div
+          className="absolute h-[520px] w-[520px] sm:h-[820px] sm:w-[820px] rounded-full pointer-events-none animate-[radar-sweep-360_10s_linear_infinite]"
+          style={{
+            background:
+              "conic-gradient(from 0deg, transparent 0deg, transparent 280deg, color-mix(in srgb, var(--primary,#6366f1) 12%, transparent) 340deg, color-mix(in srgb, var(--primary,#6366f1) 35%, transparent) 360deg)",
+            maskImage: "radial-gradient(circle, black 65%, transparent 72%)",
+            WebkitMaskImage: "radial-gradient(circle, black 65%, transparent 72%)",
+          }}
+        />
+
+        {/* Concentric Expanding Sonar Pulse Waves */}
+        <div
+          className="absolute h-[320px] w-[320px] sm:h-[420px] sm:w-[420px] rounded-full border-2 border-primary/35 shadow-[0_0_24px_var(--primary,#6366f1)] pointer-events-none"
+          style={{ animation: "sonar-wave-pulse 7s ease-out infinite" }}
+        />
+        <div
+          className="absolute h-[320px] w-[320px] sm:h-[420px] sm:w-[420px] rounded-full border-2 border-primary/25 shadow-[0_0_20px_var(--primary,#6366f1)] pointer-events-none"
+          style={{
+            animation: "sonar-wave-pulse 7s ease-out infinite",
+            animationDelay: "2.3s",
+          }}
+        />
+        <div
+          className="absolute h-[320px] w-[320px] sm:h-[420px] sm:w-[420px] rounded-full border-2 border-primary/15 shadow-[0_0_16px_var(--primary,#6366f1)] pointer-events-none"
+          style={{
+            animation: "sonar-wave-pulse 7s ease-out infinite",
+            animationDelay: "4.6s",
+          }}
+        />
+
+        {/* Twinkling Star Points */}
+        <div
+          className="absolute top-[44%] left-[20%] w-2.5 h-2.5 rounded-full bg-primary shadow-[0_0_14px_var(--primary,#6366f1)] pointer-events-none"
+          style={{ animation: "starlight-twinkle 3.5s ease-in-out infinite" }}
+        />
+        <div
+          className="absolute top-[52%] left-[32%] w-2 h-2 rounded-full bg-primary/80 shadow-[0_0_10px_var(--primary,#6366f1)] pointer-events-none"
+          style={{
+            animation: "starlight-twinkle 4.2s ease-in-out infinite",
+            animationDelay: "1s",
+          }}
+        />
+        <div
+          className="absolute top-[42%] right-[22%] w-2.5 h-2.5 rounded-full bg-primary shadow-[0_0_14px_var(--primary,#6366f1)] pointer-events-none"
+          style={{
+            animation: "starlight-twinkle 4s ease-in-out infinite",
+            animationDelay: "2s",
+          }}
+        />
+        <div
+          className="absolute top-[55%] right-[32%] w-2 h-2 rounded-full bg-primary/70 shadow-[0_0_10px_var(--primary,#6366f1)] pointer-events-none"
+          style={{
+            animation: "starlight-twinkle 4.8s ease-in-out infinite",
+            animationDelay: "3s",
+          }}
+        />
+      </div>
+
+      {/* ==================================================================== */}
+      {/* FOREGROUND CONTENT: BALANCED 3-ROW GRID - 404 ALWAYS AT EXACT CENTER */}
+      {/* ==================================================================== */}
+      <div className="relative z-10 w-full max-w-4xl mx-auto min-h-screen min-h-[100dvh] grid grid-rows-[1fr_auto_1fr] items-center text-center px-4 sm:px-6 py-6 sm:py-10">
+        {/* Top Equalizer Row: ensures 404 sits at exactly 50% viewport on all screens */}
+        <div aria-hidden="true" className="w-full pointer-events-none" />
+
+        {/* Middle Row: 404 Hero Representation centered directly on Radar Apex */}
+        <div className="relative flex items-center justify-center my-auto select-none w-full">
+          {isStandard404 ? (
+            <div className="flex items-center justify-center gap-1 sm:gap-3">
+              {/* Digit 4 (Left) */}
+              <span
+                aria-hidden="true"
+                className="text-[clamp(5.5rem,15vw,18rem)] font-black font-mono leading-none tracking-tighter text-transparent bg-clip-text select-none animate-[hero-float-left_6s_ease-in-out_infinite]"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(135deg, #0ea5e9, var(--primary,#6366f1), #38bdf8, color-mix(in srgb, var(--primary,#6366f1) 60%, #38bdf8 40%), #2563eb, var(--primary,#6366f1), #0ea5e9)",
+                  backgroundSize: "300% 300%",
+                  animation:
+                    "hero-prismatic-flow 8s ease infinite, hero-float-left 6s ease-in-out infinite",
+                }}
+              >
+                4
+              </span>
+
+              {/* Center '0' - HYPER-MODERN ANIMATED SINGULARITY PORTAL (ORIGINAL FRAME PRESERVED) */}
+              <div className="relative flex items-center justify-center w-[clamp(4.8rem,13vw,14.5rem)] h-[clamp(4.8rem,13vw,14.5rem)] mx-1 sm:mx-2 animate-[hero-float-center_6s_ease-in-out_infinite_0.3s]">
+                {/* Layer 2: Outer Precision Dash/Tick Chrono Ring (Clockwise) with Glowing Blue & Theme Satellites */}
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 rounded-full border-2 border-dashed border-primary/50 animate-[portal-vortex-spin_16s_linear_infinite]"
+                >
+                  <span className="absolute -top-1.5 left-1/2 -translate-x-1/2 h-3 w-3 rounded-full bg-sky-400 shadow-[0_0_16px_#38bdf8,0_0_30px_#0ea5e9]" />
+                  <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-2 w-2 rounded-full bg-primary/80 shadow-[0_0_10px_var(--primary,#6366f1)]" />
+                </div>
+
+                {/* Layer 3: Middle 3D Tilted Orbit Ring (Counter-Clockwise) with Satellite */}
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-2.5 sm:inset-3.5 rounded-full border border-sky-400/35 dark:border-primary/35 animate-[portal-vortex-spin-reverse_10s_linear_infinite] [transform:rotateX(62deg)_rotateY(-15deg)]"
+                >
+                  <span className="absolute top-1/2 -left-1.5 -translate-y-1/2 h-2.5 w-2.5 rounded-full bg-cyan-300 shadow-[0_0_14px_#38bdf8,0_0_24px_var(--primary,#6366f1)]" />
+                </div>
+
+                {/* Layer 4: Swirling Liquid Plasma Conic Torus Ring */}
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-3 sm:inset-4 rounded-full overflow-hidden"
+                >
+                  <div
+                    className="w-full h-full rounded-full animate-[portal-vortex-spin_5s_linear_infinite]"
+                    style={{
+                      background:
+                        "conic-gradient(from 0deg, #0ea5e9, var(--primary,#6366f1), #38bdf8, color-mix(in srgb, var(--primary,#6366f1) 50%, #38bdf8 50%), #2563eb, var(--primary,#6366f1), #0ea5e9)",
+                      maskImage:
+                        "radial-gradient(circle, transparent 52%, black 54%, black 76%, transparent 78%)",
+                      WebkitMaskImage:
+                        "radial-gradient(circle, transparent 52%, black 54%, black 76%, transparent 78%)",
+                    }}
+                  />
+                </div>
+
+                {/* Layer 5: Star Icon Center Core - Light Mode: White, Dark Mode: Black */}
+                <div className="relative z-10 flex items-center justify-center w-[58%] h-[58%] rounded-full bg-white dark:bg-black backdrop-blur-xl border border-sky-400/30 dark:border-primary/30 shadow-[inset_0_0_18px_rgba(0,0,0,0.08)] dark:shadow-[inset_0_0_20px_rgba(0,0,0,0.9)]">
+                  {/* Pulsing Singularity Star Flare */}
+                  <div className="relative flex items-center justify-center animate-[portal-singularity-pulse_3.5s_ease-in-out_infinite]">
+                    {/* 4-Point Radiant Sparkle / Star Flare */}
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      className="w-8 h-8 sm:w-11 sm:h-11 md:w-14 md:h-14 text-primary animate-[portal-vortex-spin_24s_linear_infinite]"
+                      style={{ filter: "drop-shadow(0 0 16px #0ea5e9)" }}
+                    >
+                      <path d="M12 0C12 6.627 6.627 12 0 12C6.627 12 12 17.373 12 24C12 17.373 17.373 12 24 12C17.373 12 12 6.627 12 0Z" />
+                    </svg>
+                    {/* High-Intensity Inner Core Dot */}
+                    <span className="absolute h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-white shadow-[0_0_12px_#ffffff,0_0_24px_#38bdf8,0_0_40px_var(--primary,#6366f1)]" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Digit 4 (Right) */}
+              <span
+                aria-hidden="true"
+                className="text-[clamp(5.5rem,15vw,18rem)] font-black font-mono leading-none tracking-tighter text-transparent bg-clip-text select-none animate-[hero-float-right_6s_ease-in-out_infinite_0.6s]"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(135deg, #0ea5e9, var(--primary,#6366f1), #38bdf8, color-mix(in srgb, var(--primary,#6366f1) 60%, #38bdf8 40%), #2563eb, var(--primary,#6366f1), #0ea5e9)",
+                  backgroundSize: "300% 300%",
+                  animation:
+                    "hero-prismatic-flow 8s ease infinite, hero-float-right 6s ease-in-out infinite 0.6s",
+                }}
+              >
+                4
+              </span>
+            </div>
+          ) : (
+            <div
+              className="text-[clamp(6.5rem,18vw,20rem)] font-black font-mono tracking-tighter leading-none select-none text-transparent bg-clip-text animate-[hero-float-center_6s_ease-in-out_infinite]"
+              style={{
+                backgroundImage:
+                  "linear-gradient(135deg, #0ea5e9, var(--primary,#6366f1), #38bdf8, color-mix(in srgb, var(--primary,#6366f1) 60%, #38bdf8 40%), #2563eb, var(--primary,#6366f1), #0ea5e9)",
+                backgroundSize: "300% 300%",
+                animation: "hero-prismatic-flow 8s ease infinite",
+              }}
+            >
+              {code}
+            </div>
+          )}
+        </div>
+
+        {/* Bottom Row: Title, Description, and Action Buttons */}
+        <div className="flex flex-col items-center justify-start text-center w-full max-w-xl mx-auto self-start pt-2 sm:pt-4">
+          <h1 className="text-xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-foreground max-w-xl mb-2 sm:mb-3">
+            {title}
+          </h1>
+          <p className="text-xs sm:text-sm lg:text-base text-muted-foreground max-w-md sm:max-w-lg mx-auto mb-6 sm:mb-8 leading-relaxed">
+            {description}
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-3.5 w-full sm:w-auto">
+            {renderAction(primaryAction, true)}
+            {renderAction(secondaryAction, false)}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ========================================================================== */
 /*  MAIN EXPORT: DISPATCHES TO SELECTED VARIANT                               */
 /* ========================================================================== */
 
@@ -1261,6 +1639,9 @@ export function NotFoundSection({
   variant = "hyperspace",
   ...props
 }: NotFoundSectionProps) {
+  if (variant === "aurora-glass") {
+    return <AuroraGlassNotFoundSection {...props} />;
+  }
   if (variant === "animated-beam-border") {
     return <AnimatedBeamNotFoundSection {...props} />;
   }

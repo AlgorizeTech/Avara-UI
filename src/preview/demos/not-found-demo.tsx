@@ -46,6 +46,13 @@ export default function NotFoundSectionDemo({
         onClick: () =>
           showNotice(`Action triggered: ${primaryAction.label}`),
       }
+    : variant === "aurora-glass"
+    ? {
+        label: "Return to Safety",
+        href: "/",
+        icon: <Home className="h-4 w-4" />,
+        onClick: () => showNotice("Action triggered: Returning to Safety..."),
+      }
     : variant === "spatial-portal" || variant === "kinetic-wireframe" || variant === "infinite-horizon" || variant === "dimensional-portal" || variant === "portal"
     ? {
         label: "Back to Home",
@@ -72,6 +79,13 @@ export default function NotFoundSectionDemo({
         ...secondaryAction,
         onClick: () =>
           showNotice(`Action triggered: ${secondaryAction.label}`),
+      }
+    : variant === "aurora-glass"
+    ? {
+        label: "Explore Documentation",
+        href: "#",
+        icon: <BookOpen className="h-4 w-4" />,
+        onClick: () => showNotice("Action triggered: Navigating to documentation..."),
       }
     : variant === "spatial-portal" || variant === "kinetic-wireframe" || variant === "infinite-horizon" || variant === "dimensional-portal" || variant === "portal"
     ? {
@@ -106,7 +120,7 @@ export default function NotFoundSectionDemo({
         ...s,
         onClick: () => showNotice(`Shortcut clicked: ${s.label}`),
       }))
-    : variant === "spatial-portal" || variant === "kinetic-wireframe" || variant === "infinite-horizon" || variant === "dimensional-portal" || variant === "portal"
+    : variant === "aurora-glass" || variant === "spatial-portal" || variant === "kinetic-wireframe" || variant === "infinite-horizon" || variant === "dimensional-portal" || variant === "portal"
     ? undefined
     : variant === "quantum-hologram"
     ? [

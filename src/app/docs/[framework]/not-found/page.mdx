@@ -150,6 +150,32 @@ export default function NotFound() {
   );
 }`;
 
+export const usageAuroraGlass = `import {
+  NotFoundSection,
+  type NotFoundVariant,
+} from "@/components/custom/blocks/NotFoundBlock";
+
+const variant: NotFoundVariant = "aurora-glass";
+
+export default function NotFound() {
+  return (
+    <NotFoundSection
+      variant={variant}
+      code="404"
+      title="Lost Beyond the Horizon"
+      description="The coordinate you were navigating to has drifted into uncharted space or never existed. Let's guide you back to safety."
+      primaryAction={{
+        label: "Return to Safety",
+        href: "/",
+      }}
+      secondaryAction={{
+        label: "Explore Documentation",
+        href: "#",
+      }}
+    />
+  );
+}`;
+
 <ExampleShowcase headingLevel={2}
   name="not-found"
   columns={1}
@@ -310,6 +336,46 @@ export default function NotFound() {
       usage: usageSpatialPortal,
       code: extractCode("src/components/custom/blocks/NotFoundBlock.tsx"),
     },
+    {
+      title: "Aurora Celestial Singularity 404 (Ultra Animated)",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"aurora-glass"',
+          effect:
+            "activates clean cinematic celestial singularity with concentric spacetime gravitational ripples, volumetric aurora light beams, and an animated portal inside the 0.",
+        },
+        {
+          prop: "code",
+          value: '"404"',
+          effect:
+            "monumental typography with chromatic wave animation and a mesmerizing multi-layer dimensional singularity portal in the central 0.",
+        },
+        {
+          prop: "primaryAction",
+          value: '{ label: "Return to Safety", href: "/" }',
+          effect:
+            "primary navigation CTA button routing the user back to the application homepage.",
+        },
+      ],
+      props: {
+        variant: "aurora-glass",
+        code: "404",
+        title: "Lost Beyond the Horizon",
+        description:
+          "The coordinate you were navigating to has drifted into uncharted space or never existed. Let's guide you back to safety.",
+        primaryAction: {
+          label: "Return to Safety",
+          href: "/",
+        },
+        secondaryAction: {
+          label: "Explore Documentation",
+          href: "#",
+        },
+      },
+      usage: usageAuroraGlass,
+      code: extractCode("src/components/custom/blocks/NotFoundBlock.tsx"),
+    },
   ]}
 />
 
@@ -322,6 +388,10 @@ export default function NotFound() {
 Discover the key capabilities of the `NotFoundSection` component:
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Hyperspace Warp Streaks & Animated '0' Portal</h3>
+    <p className="text-muted-foreground text-sm">Clean full-bleed spatial scene with sweeping hyperspace laser light streaks, horizon laser beam, and a dimensional multi-orbit vortex portal inside the central zero.</p>
+  </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">Infinite Horizon 3D Grid & Color 404</h3>
     <p className="text-muted-foreground text-sm">Full-section infinite moving 3D perspective cyber grid runway, glowing horizon laser beam, inverted mirror floor reflection, and flowing chromatic 404 typography.</p>
@@ -367,9 +437,9 @@ Discover the key capabilities of the `NotFoundSection` component:
     <tbody>
       <tr>
         <td><code>variant</code></td>
-        <td><code>"hyperspace" | "animated-beam-border" | "quantum-hologram" | "spatial-portal"</code></td>
+        <td><code>"hyperspace" | "animated-beam-border" | "quantum-hologram" | "spatial-portal" | "aurora-glass"</code></td>
         <td><code>"hyperspace"</code></td>
-        <td>Visual style variant: classic cosmic hyperspace, architectural CAD blueprint, quantum orbital hologram, or kinetic animated radar with color 404.</td>
+        <td>Visual style variant: classic cosmic hyperspace, architectural CAD blueprint, quantum orbital hologram, kinetic animated radar with color 404, or modern aurora spatial glass card.</td>
       </tr>
       <tr>
         <td><code>color</code></td>

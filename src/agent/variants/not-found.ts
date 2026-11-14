@@ -8,7 +8,7 @@ import type { PageVariants } from "./types";
 export const notFound: PageVariants = {
   slug: "not-found",
   intro:
-    "A full-page 404 section in four looks: an architectural blueprint, a hyperspace grid, a quantum hologram, and a 3D perspective infinite horizon.",
+    "A full-page 404 section in five looks: an architectural blueprint, a hyperspace grid, a quantum hologram, a 3D perspective infinite horizon, and an aurora celestial singularity.",
   whenNot: [
     {
       use: "Error",
@@ -17,9 +17,23 @@ export const notFound: PageVariants = {
     },
   ],
   gotchas: [
-    "Choose between the architectural blueprint, hyperspace grid, quantum hologram, and 3D perspective infinite horizon via `variant`.",
+    "Choose between the architectural blueprint, hyperspace grid, quantum hologram, 3D perspective infinite horizon, and aurora celestial singularity via `variant`.",
   ],
   variants: [
+    {
+      id: "aurora-glass",
+      group: "Atmospheric & Sci-Fi",
+      label: "Aurora celestial singularity",
+      summary: "Clean cinematic 404 with hyperspace warp light streaks, horizon laser pulse, and an animated portal inside the 0.",
+      bestFor: ["modern SaaS, design-led web apps, AI platforms, and animated showcase 404 pages"],
+      avoidIf: ["you need a flat zero-shadow blueprint or minimal text-only layout"],
+      traits: ["warp light streaks", "animated 0 portal", "horizon laser beam", "clean minimal CTAs"],
+      item: "not-found",
+      demo: "not-found",
+      example: "Aurora Celestial Singularity 404 (Ultra Animated)",
+      props: { variant: "aurora-glass" },
+      setProps: { variant: "aurora-glass" },
+    },
     {
       id: "blueprint",
       group: "Technical & Modern",
