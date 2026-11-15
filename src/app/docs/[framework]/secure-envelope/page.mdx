@@ -12,7 +12,7 @@ An interactive classified envelope sleeve & travel pass component featuring a se
 
 `SecureEnvelope` brings tactile physical curiosity to train online tickets, travel booking passes, security dossiers, coupon reward vouchers, and VIP cards.
 
-export const usageConfidentialFolder = `import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
+export const usageConfidentialFolder = `import { SecureEnvelope, type SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
 
 const confidentialData: SecureEnvelopeData = {
   idNumber: "ID · 0042",
@@ -34,7 +34,7 @@ export default function ConfidentialFolderExample() {
   );
 }`;
 
-export const usageSmartCard = `import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
+export const usageSmartCard = `import { SecureEnvelope, type SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
 
 const smartCardData: SecureEnvelopeData = {
   holderName: "Dr. Kaelen Vance",
@@ -54,7 +54,7 @@ export default function CyberSmartCardExample() {
   );
 }`;
 
-export const usageAutoFlip = `import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
+export const usageAutoFlip = `import { SecureEnvelope, type SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
 
 const voucherData: SecureEnvelopeData = {
   frontTitle: "Exclusive Access",
@@ -73,7 +73,7 @@ export default function AutoFlipSecureEnvelopeExample() {
   );
 }`;
 
-export const usageTrainTicket = `import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
+export const usageTrainTicket = `import { SecureEnvelope, type SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
 
 const ticketData: SecureEnvelopeData = {
   passengerName: "Barbara M. Sandoval",

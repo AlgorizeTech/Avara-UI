@@ -21,7 +21,7 @@ Three columns and three rows at desktop, two columns at tablet, a single stack o
 - `Phone` puts the first plan on an `Iphone17ProMaxMockup`, tilted and run off the card's edge, with the second plan peeking in below. `onAction` is the button.
 
 ```tsx
-import { useNavigate } from "react-router-dom";
+import { BentoShowcase, type BentoPlan, type BentoStat } from "@/components/custom/blocks/BentoShowcaseBlock";
 
 const CASE_STUDIES = [
   {
@@ -66,9 +66,9 @@ const TEAM = [
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790166049/pexels-photo-7709086-1790166052228.jpg", alt: "Omar at his laptop" },
 ];
 
+// A plain navigation, so this runs in any Vite app. With React Router, call
+// useNavigate() and use navigate("/pricing") instead.
 export default function Showcase() {
-  const navigate = useNavigate();
-
   return (
     <BentoShowcase className="rounded-[36px]">
       <BentoShowcase.Hero
@@ -97,7 +97,7 @@ export default function Showcase() {
 
       <BentoShowcase.Stats items={STATS} />
 
-      <BentoShowcase.Phone plans={PLANS} onAction={() => navigate("/pricing")} />
+      <BentoShowcase.Phone plans={PLANS} onAction={() => window.location.assign("/pricing")} />
 
       <BentoShowcase.Team photos={TEAM} stat={{ value: "96%", caption: "Calls resolved inside target time" }} />
     </BentoShowcase>

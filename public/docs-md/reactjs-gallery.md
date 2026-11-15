@@ -86,6 +86,8 @@ Revolving 3D circular photo orbit ring with upright cards and smooth hover pause
 - `color` is the accent — a preset (indigo, rose, emerald, zinc) or any CSS colour — and is nudged for contrast on light and dark surfaces. Left unset it follows your theme.
 
 ```tsx
+import { Gallery } from "@/components/custom/blocks/GalleryBlock";
+
 // Landscapes from Unsplash, free to use.
 const IMAGES = [
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
@@ -126,6 +128,8 @@ Self-rearranging image bento grid with a dominant center hero slot. Peripheral i
 - `items` is an array of cards ({ id, title, description, image }) to populate the grid.
 
 ```tsx
+import { Gallery } from "@/components/custom/blocks/GalleryBlock";
+
 const BENTO_ITEMS = [
   {
     id: "alpine-horizons",
@@ -200,6 +204,8 @@ Interactive, scroll-driven circular spinner. Each item lives on a segmented ring
 - `reelItems` is an array of items ({ id, name, category, description, image }) to populate the reel.
 
 ```tsx
+import { Gallery } from "@/components/custom/blocks/GalleryBlock";
+
 const REEL_ITEMS = [
   {
     id: "reel-1",
@@ -298,6 +304,8 @@ Layered diagonal image carousel with sculptural pill-shaped cards, smooth 3D dep
 - `pillItems` is an array of items ({ id, image, tooltipText, link }) to populate the 3D pill carousel.
 
 ```tsx
+import { Gallery } from "@/components/custom/blocks/GalleryBlock";
+
 const PILL_ITEMS = [
   {
     id: "pill-1",
@@ -376,6 +384,8 @@ Curved 3D image carousel arranged along an interactive concave cylindrical arc. 
 - `arcItems` is an array of items ({ id, image, title, subtitle, link }) to populate the arc carousel.
 
 ```tsx
+import { Gallery } from "@/components/custom/blocks/GalleryBlock";
+
 const ARC_ITEMS = [
   {
     id: "arc-1",
@@ -466,7 +476,9 @@ Immersive 3D rotating spherical video showcase. Videos and media drift along a F
 - `enablePopup=true` opens an animated video modal when a card is clicked.
 
 ```tsx
-const SPHERE_ITEMS = [
+import { Gallery, type VideoSphereItem } from "@/components/custom/blocks/GalleryBlock";
+
+const SPHERE_ITEMS: VideoSphereItem[] = [
   {
     id: "sphere-1",
     type: "image", // Supports "image" or "video"

@@ -22,6 +22,14 @@ Nest `MenubarMenu` → `MenubarTrigger` + `MenubarContent`.
 ```tsx
 "use client";
 
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarTrigger,
+} from "@/components/custom/blocks/MenubarBlock";
+import { AppWindow, FolderOpen, Plus, Redo2, Scissors, Undo2 } from "lucide-react";
 
 export default function TopNav() {
   return (
@@ -86,7 +94,38 @@ npx shadcn@latest add @avara-ui/menubar
 ```tsx
 "use client";
 
-
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarLabel,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarTrigger,
+} from "@/components/custom/blocks/MenubarBlock";
+import {
+  Check,
+  ClipboardPaste,
+  Copy,
+  Eye,
+  EyeOff,
+  Info,
+  Laptop,
+  Maximize,
+  Moon,
+  Power,
+  Redo2,
+  Scissors,
+  Settings,
+  Settings2,
+  Sun,
+  Undo2,
+  User,
+  UserPlus,
+  Users,
+} from "lucide-react";
+import { useState } from "react";
 
 /** Every row carries one, so no row needs `inset` to fake the gutter. */
 const icon = "w-4 h-4 mr-2 shrink-0";

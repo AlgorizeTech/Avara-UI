@@ -104,16 +104,15 @@ ${bentoJsx('() => router.push("/pricing")')}
   );
 }
 `,
-  reactjs: `import { useNavigate } from "react-router-dom";
-import { BentoShowcase, type BentoPlan, type BentoStat } from "@/components/custom/blocks/BentoShowcaseBlock";
+  reactjs: `import { BentoShowcase, type BentoPlan, type BentoStat } from "@/components/custom/blocks/BentoShowcaseBlock";
 
 ${bentoData}
 
+// A plain navigation, so this runs in any Vite app. With React Router, call
+// useNavigate() and use navigate("/pricing") instead.
 export default function Showcase() {
-  const navigate = useNavigate();
-
   return (
-${bentoJsx('() => navigate("/pricing")')}
+${bentoJsx('() => window.location.assign("/pricing")')}
   );
 }
 `,

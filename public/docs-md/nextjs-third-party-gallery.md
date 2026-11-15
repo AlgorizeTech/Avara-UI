@@ -28,12 +28,19 @@ Click any photo to open it. Arrow keys move, Escape closes, the counter and thum
 
 ```tsx
 import { useState } from "react";
-
-
-
-
-
-
+import { RowsPhotoAlbum, type Photo } from "react-photo-album";
+import Lightbox from "yet-another-react-lightbox";
+import Captions from "yet-another-react-lightbox/plugins/captions";
+import Counter from "yet-another-react-lightbox/plugins/counter";
+import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/custom/blocks/CardBlock";
 
 import "react-photo-album/rows.css";
 import "yet-another-react-lightbox/styles.css";
@@ -149,13 +156,20 @@ Column count responds to the container, not the viewport. Fullscreen, slideshow,
 
 ```tsx
 import { useState } from "react";
-
-
-
-
-
-
-
+import { MasonryPhotoAlbum, type Photo } from "react-photo-album";
+import Lightbox from "yet-another-react-lightbox";
+import Download from "yet-another-react-lightbox/plugins/download";
+import Fullscreen from "yet-another-react-lightbox/plugins/fullscreen";
+import Slideshow from "yet-another-react-lightbox/plugins/slideshow";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import { Maximize2 } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/custom/blocks/CardBlock";
 
 import "react-photo-album/masonry.css";
 import "yet-another-react-lightbox/styles.css";

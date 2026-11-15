@@ -67,6 +67,9 @@ Wrap the app in `ToastProvider`, then call `toast()` from the `useToast` hook.
 - `position` on the provider is global — individual toasts cannot override it.
 
 ```tsx
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
+
 function Triggers() {
   const { toast } = useToast();
 
@@ -125,6 +128,9 @@ npx shadcn@latest add @avara-ui/toast
 - `type` picks the icon and accent — `success`, `error`, `warning`, `info` or `default`.
 
 ```tsx
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
+
 const TRIGGER =
   "px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shadow-sm";
 
@@ -173,6 +179,9 @@ export default function ToastTypes() {
 - Pass `action` to add a button. Clicking it dismisses the toast as well as running your handler.
 
 ```tsx
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
+
 function Triggers() {
   const { toast } = useToast();
 
@@ -215,6 +224,9 @@ export default function ToastWithAction() {
 - `duration` is the auto-dismiss delay in milliseconds. `0` keeps the toast up until it is dismissed.
 
 ```tsx
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
+
 const TRIGGER =
   "px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shadow-sm";
 
@@ -270,6 +282,9 @@ export default function ToastDuration() {
 - Set `variant="glow"` to surround the card with a coloured halo — built for dark surfaces.
 
 ```tsx
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
+
 const TRIGGER =
   "px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shadow-sm";
 
@@ -319,6 +334,9 @@ export default function GlowToasts() {
 - Set `variant="glass"` for a frosted card with the type accent bleeding in from the icon corner — solid badge icons, centred close button.
 
 ```tsx
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
+
 const TRIGGER =
   "px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shadow-sm";
 
@@ -370,6 +388,9 @@ Fire a few in a row, then hover the pile to fan it out.
 - Set `stack` on the provider to pile toasts behind the newest one instead of listing them. Hovering expands the pile and pauses every timer in it; `stack` works with any `variant`.
 
 ```tsx
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
+
 const TRIGGER =
   "px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shadow-sm";
 
@@ -418,6 +439,9 @@ export default function StackedToasts() {
 - Set `variant="minimal"` to strip the card down to a thin accent bar and text.
 
 ```tsx
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
+
 const TRIGGER =
   "px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shadow-sm";
 

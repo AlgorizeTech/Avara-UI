@@ -24,6 +24,16 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/custom/blocks/TooltipBlock";
+import {
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  Compass,
+  Layers,
+  Sparkles,
+  Zap,
+} from "lucide-react";
 
 export default function NoArrowTooltip() {
   return (
@@ -134,6 +144,16 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/custom/blocks/TooltipBlock";
+import {
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  Compass,
+  Layers,
+  Sparkles,
+  Zap,
+} from "lucide-react";
 
 export default function ArrowTooltip() {
   return (
@@ -235,6 +255,16 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/custom/blocks/TooltipBlock";
+import {
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  Compass,
+  Layers,
+  Sparkles,
+  Zap,
+} from "lucide-react";
 
 export default function AnimatedTooltip() {
   return (
@@ -340,6 +370,16 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/custom/blocks/TooltipBlock";
+import {
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  Compass,
+  Layers,
+  Sparkles,
+  Zap,
+} from "lucide-react";
 
 export default function StaggeredTooltip() {
   return (
@@ -449,6 +489,16 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/custom/blocks/TooltipBlock";
+import {
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  ArrowUp,
+  Compass,
+  Layers,
+  Sparkles,
+  Zap,
+} from "lucide-react";
 
 export default function ExpandTooltip() {
   return (

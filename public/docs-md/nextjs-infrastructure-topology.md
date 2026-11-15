@@ -16,6 +16,7 @@ Live animated data flow canvas with pulsing central neural mesh router, peripher
 
 ```tsx
 import InfrastructureTopology, { type TopologyNode } from "@/components/custom/infrastructure-topology";
+import { UserCheck, ShieldAlert, Database, Cloud, CreditCard } from "lucide-react";
 
 const customNodes: TopologyNode[] = [
   {

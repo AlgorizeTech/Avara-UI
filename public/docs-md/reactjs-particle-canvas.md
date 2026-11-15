@@ -50,6 +50,8 @@ An interactive 2D HTML Canvas that rasterizes your text into thousands of respon
 - `content="AlgorizeTech"` sets the custom text string to convert into interactive particles.
 
 ```tsx
+import { ParticleCanvas } from "@/components/custom/blocks/ParticleCanvasBlock";
+
 export default function ParticleCanvasDemo() {
   return (
     <div className="relative w-full h-[650px] min-h-max bg-background rounded-xl overflow-hidden flex items-center justify-center border border-border">
@@ -74,6 +76,8 @@ A bottom-anchored giant wordmark banner where each letter rises with a slow, smo
 - `content="AlgorizeTech"` sets the wordmark text displayed across the bottom of the container.
 
 ```tsx
+import { ParticleCanvas } from "@/components/custom/blocks/ParticleCanvasBlock";
+
 export default function WordmarkGlowDemo() {
   return (
     <div className="relative w-full h-[260px] min-h-max bg-background rounded-xl overflow-hidden flex items-end justify-center border border-border">

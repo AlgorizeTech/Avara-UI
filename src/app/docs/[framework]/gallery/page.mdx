@@ -362,9 +362,9 @@ export default function ArcCarouselGalleryExample() {
 
 export const videoSphereUsage = `"use client";
 
-import { Gallery } from "@/components/custom/blocks/GalleryBlock";
+import { Gallery, type VideoSphereItem } from "@/components/custom/blocks/GalleryBlock";
 
-const SPHERE_ITEMS = [
+const SPHERE_ITEMS: VideoSphereItem[] = [
   {
     id: "sphere-1",
     type: "image", // Supports "image" or "video"

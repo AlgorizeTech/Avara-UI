@@ -122,6 +122,7 @@ All 11 options as live previews: https://avaraui.com/view/cursor-animation
 
 ```tsx
 import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
+import { Image as ImageIcon } from "lucide-react";
 
 const sampleImages = [
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_300,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
@@ -178,6 +179,7 @@ npx shadcn@latest add @avara-ui/cursor-animation
 
 ```tsx
 import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
+import { Sparkles } from "lucide-react";
 
 export default function GlowCursorDemo() {
   return (
@@ -204,6 +206,7 @@ export default function GlowCursorDemo() {
 
 ```tsx
 import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
+import { Target } from "lucide-react";
 
 export default function MagneticCursorDemo() {
   return (
@@ -231,6 +234,7 @@ export default function MagneticCursorDemo() {
 
 ```tsx
 import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
+import { Zap } from "lucide-react";
 
 export default function TrailCursorDemo() {
   return (
@@ -258,6 +262,7 @@ export default function TrailCursorDemo() {
 
 ```tsx
 import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
+import { MousePointer } from "lucide-react";
 
 export default function BadgeCursorDemo() {
   return (
@@ -284,6 +289,7 @@ export default function BadgeCursorDemo() {
 
 ```tsx
 import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
+import { Eye } from "lucide-react";
 
 export default function SpotlightCursorDemo() {
   return (
@@ -310,6 +316,7 @@ export default function SpotlightCursorDemo() {
 
 ```tsx
 import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
+import { Maximize2 } from "lucide-react";
 
 export default function ExpandCursorDemo() {
   return (
@@ -336,6 +343,7 @@ export default function ExpandCursorDemo() {
 
 ```tsx
 import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
+import { Crosshair } from "lucide-react";
 
 export default function CrosshairCursorDemo() {
   return (
@@ -362,6 +370,7 @@ export default function CrosshairCursorDemo() {
 
 ```tsx
 import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
+import { CircleDot } from "lucide-react";
 
 export default function RingCursorDemo() {
   return (
@@ -388,6 +397,7 @@ export default function RingCursorDemo() {
 
 ```tsx
 import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
+import { Radio } from "lucide-react";
 
 export default function PulseCursorDemo() {
   return (
@@ -414,6 +424,7 @@ export default function PulseCursorDemo() {
 
 ```tsx
 import { CursorAnimation, MainContent } from "@/components/custom/blocks/CursorAnimationBlock";
+import { Minimize2 } from "lucide-react";
 
 export default function SonarCursorDemo() {
   return (

@@ -210,6 +210,11 @@ Run it: neutral while starting, the brand colour from 10%, green at 100 — or r
 ```tsx
 "use client";
 
+import {
+  CircularProgress,
+  Progress,
+  ProgressField,
+} from "@/components/custom/blocks/ProgressBlock";
 
 // Each stage takes over from its `from` percent until the next.
 const STAGES = [

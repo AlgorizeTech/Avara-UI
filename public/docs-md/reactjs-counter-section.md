@@ -66,6 +66,8 @@ Developer and fintech terminal HUD with bracket corner crosshairs [+], subtle sc
 - Set `variant="cyber-hud"` to activate the cyber terminal layout. Pass custom metrics through the stats prop.
 
 ```tsx
+import { CounterSection } from "@/components/custom/blocks/CounterSectionBlock";
+
 // 1. Define custom telemetry stats data
 const stats = [
   {
@@ -119,6 +121,8 @@ Clean, high-impact typographic layout with floating Swiss modular cards, giant w
 - Set `variant="minimal-slash"` to activate floating Swiss cards with watermark numbers. Pass custom stats through the stats prop.
 
 ```tsx
+import { CounterSection } from "@/components/custom/blocks/CounterSectionBlock";
+
 // 1. Define custom agency stats data
 const stats = [
   {
@@ -170,6 +174,8 @@ Atmospheric architectural strip featuring an authentic dot-matrix halftone textu
 - Set `variant="halftone-cinema"` to activate the halftone dot-matrix strip. Pass custom stats through the stats prop.
 
 ```tsx
+import { CounterSection } from "@/components/custom/blocks/CounterSectionBlock";
+
 // 1. Define custom architectural stats data
 const stats = [
   {
@@ -215,6 +221,8 @@ Interactive radial spotlight that tracks the cursor across modern floating cards
 - Set `variant="spotlight-gradient"` to activate the cursor-tracking spotlight cards. Pass custom stats through the stats prop.
 
 ```tsx
+import { CounterSection } from "@/components/custom/blocks/CounterSectionBlock";
+
 // 1. Define custom telemetry & performance stats data
 const stats = [
   {

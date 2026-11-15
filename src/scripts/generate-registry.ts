@@ -499,6 +499,63 @@ const items: BuiltItem[] = sources.map((s) => {
 });
 
 // ---------------------------------------------------------------------------
+// Library items
+//
+// Plain modules under src/lib/ that docs pages tell people to import
+// (`@/lib/accent`, `@/lib/chart-tokens`) but that no single component owns.
+// Without an item of their own the page's install command leaves those imports
+// unresolved. They are not components, so they are left out of the component
+// count (see countComponents) and are not offered a docs page of their own.
+// Components that import them still carry their own copy as a companion file,
+// at the same target, so installing both is a no-op for the CLI.
+// ---------------------------------------------------------------------------
+
+const libItem = (
+  name: string,
+  title: string,
+  description: string,
+  file: string,
+  registryDependencies: string[] = [],
+  docs?: string,
+): BuiltItem => ({
+  name,
+  type: "registry:lib",
+  title,
+  author: AUTHOR,
+  description,
+  categories: ["utilities"],
+  dependencies: [],
+  registryDependencies: registryDependencies.map(depRef),
+  files: [
+    {
+      path: `src/lib/${file}`,
+      type: "registry:lib",
+      target: `lib/${file}`,
+    },
+  ],
+  ...(docs ? { docs } : {}),
+});
+
+items.push(
+  libItem(
+    "accent",
+    "Accent helper",
+    "Helper module (not a component) that repoints the --primary token for one subtree, so a block can take a `color` prop. Install it when a docs example imports `accentStyle` from `@/lib/accent`.",
+    "accent.ts",
+    [],
+    "Named exports: accentStyle, accentTokens, accentForeground, resolveAccent, isDefaultAccent, toBlockColor. `accentStyle(color)` returns a style object that sets --primary (and the tokens derived from it) for the element it is spread on; for the default accent it returns an empty object, so the theme keeps control.",
+  ),
+  libItem(
+    "chart-tokens",
+    "Chart Tokens",
+    "Hook (not a component) that reads the theme's CSS tokens into the plain colour strings Recharts, Chart.js and AG Grid need. Install it when a docs example imports `useChartTokens` from `@/lib/chart-tokens`.",
+    "chart-tokens.ts",
+    ["accent"],
+    "Named exports: useChartTokens, ChartTokens. `useChartTokens(color?)` returns { foreground, muted, border, card, primary, series } and re-reads them when the theme class on <html> changes.",
+  ),
+);
+
+// ---------------------------------------------------------------------------
 // One motion library per install
 // ---------------------------------------------------------------------------
 

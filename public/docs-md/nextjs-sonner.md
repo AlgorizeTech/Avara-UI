@@ -21,7 +21,8 @@ Mount `<Toaster />` once, then call `toast()` from anywhere — no provider need
 ```tsx
 "use client";
 
-
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
 
 // The trigger styling the preview uses.
 const BTN =
@@ -73,7 +74,8 @@ npx shadcn@latest add @avara-ui/sonner
 ```tsx
 "use client";
 
-
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
 
 // The trigger styling the preview uses.
 const BTN =
@@ -119,7 +121,8 @@ export default function ToastTypes() {
 ```tsx
 "use client";
 
-
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
 
 // The trigger styling the preview uses.
 const BTN =
@@ -156,7 +159,8 @@ export default function UndoToast() {
 ```tsx
 "use client";
 
-
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
 
 // The trigger styling the preview uses.
 const BTN =
@@ -191,7 +195,8 @@ export default function StackDemo() {
 ```tsx
 "use client";
 
-
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
 
 // The trigger styling the preview uses.
 const BTN =
@@ -226,7 +231,8 @@ export default function ExpandedStack() {
 ```tsx
 "use client";
 
-
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
 
 // The trigger styling the preview uses.
 const BTN =
@@ -276,9 +282,10 @@ export default function ToastDuration() {
 ```tsx
 "use client";
 
-
-
-
+import { useState } from "react";
+import { cn } from "@/lib/utils";
+import { Toaster, type ToasterProps } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
 
 const POSITIONS: { value: NonNullable<ToasterProps["position"]>; label: string }[] = [
   { value: "top-left", label: "Top left" },

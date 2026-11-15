@@ -145,6 +145,8 @@ Email and password with a remember-me checkbox and a forgot-password link, all v
 - `onSubmit` receives the validated credentials. Leave it off and the block simulates a round trip, so the preview works before any auth provider exists.
 
 ```tsx
+import LoginForm, { type LoginFormValues } from "@/components/custom/blocks/LoginForm";
+
 export default function LoginPage() {
   const handleSubmit = async (values: LoginFormValues) => {
     // Swap this for your auth call. The button stays in its loading state
@@ -196,6 +198,8 @@ Every example below is the same `LoginForm` you just installed — only the prop
 - Set `variant="split"` to pair the form with a full-height marketing panel on large screens.
 
 ```tsx
+import LoginForm, { type LoginFormValues } from "@/components/custom/blocks/LoginForm";
+
 export default function SplitLoginPage() {
   // "split" pairs the form with a full-height marketing panel on large screens.
   const handleSubmit = async (values: LoginFormValues) => {
@@ -228,6 +232,8 @@ export default function SplitLoginPage() {
 - Set `variant="minimal"` to strip the card away and leave the fields on your own background.
 
 ```tsx
+import LoginForm, { type LoginFormValues } from "@/components/custom/blocks/LoginForm";
+
 export default function MinimalLoginPage() {
   // "minimal" strips the card, leaving just the fields on your own background.
   const handleSubmit = async (values: LoginFormValues) => {
@@ -260,6 +266,8 @@ export default function MinimalLoginPage() {
 - `bgImage` Cloudinary or CDN image URL for the full-bleed frosted backdrop.
 
 ```tsx
+import LoginForm, { type LoginFormValues } from "@/components/custom/blocks/LoginForm";
+
 export default function GlassLoginPage() {
   // "glass" provides a self-contained full-bleed background with a floating frosted card.
   const handleSubmit = async (values: LoginFormValues) => {
@@ -293,6 +301,8 @@ export default function GlassLoginPage() {
 - `bgImage` Cloudinary or CDN image URL for the animated displacement backdrop.
 
 ```tsx
+import LoginForm, { type LoginFormValues } from "@/components/custom/blocks/LoginForm";
+
 export default function LiquidGlassLoginPage() {
   // "liquid-glass" uses SVG displacement turbulence, specular edge highlights, and high-contrast frosted styling.
   const handleSubmit = async (values: LoginFormValues) => {
@@ -326,6 +336,8 @@ export default function LiquidGlassLoginPage() {
 - `image` Cloudinary or image URL positioned between the layered ribbons.
 
 ```tsx
+import LoginForm, { type LoginFormValues } from "@/components/custom/blocks/LoginForm";
+
 export default function RibbonDriftLoginPage() {
   // "ribbon-drift" features dual floating infinite marquee ribbons, an animated drift backdrop, and interactive promo card.
   const handleSubmit = async (values: LoginFormValues) => {
@@ -365,6 +377,8 @@ Name fields, a confirm-password field and a terms checkbox, all validated on sub
 - `minPasswordLength` sets the client-side minimum (8 by default). It stops an obviously-too-short password before a round trip — your server still enforces the real policy.
 
 ```tsx
+import RegisterForm, { type RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
+
 export default function RegisterPage() {
   const handleSubmit = async (values: RegisterFormValues) => {
     // values: firstName, lastName, email, password, confirmPassword, agreeToTerms.
@@ -418,6 +432,8 @@ Every example below is the same `RegisterForm` you just installed — only the p
 - `bgImage` optional Cloudinary or CDN image URL for the scenic landscape backdrop.
 
 ```tsx
+import RegisterForm, { type RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
+
 export default function ScenicRegisterPage() {
   // "scenic" renders a floating onboarding card over a nature landscape backdrop.
   // Seamlessly adapts between light mode (frosted card) and dark mode (dark charcoal card).
@@ -454,6 +470,8 @@ export default function ScenicRegisterPage() {
 - Set `variant="split"` to pair the form with a full-height marketing panel on large screens. The illustration mirrors the fields beside it.
 
 ```tsx
+import RegisterForm, { type RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
+
 export default function SplitRegisterPage() {
   // "split" pairs the form with a full-height marketing panel on large screens.
   const handleSubmit = async (values: RegisterFormValues) => {
@@ -487,6 +505,8 @@ export default function SplitRegisterPage() {
 - Set `variant="minimal"` to strip the card away and leave the fields on your own background.
 
 ```tsx
+import RegisterForm, { type RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
+
 export default function MinimalRegisterPage() {
   // "minimal" strips the card, leaving just the fields on your own background.
   const handleSubmit = async (values: RegisterFormValues) => {
@@ -520,6 +540,8 @@ export default function MinimalRegisterPage() {
 - `bgImage` Cloudinary or CDN image URL for the full-bleed frosted backdrop.
 
 ```tsx
+import RegisterForm, { type RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
+
 export default function GlassRegisterPage() {
   // "glass" provides a self-contained full-bleed background with a floating frosted card.
   const handleSubmit = async (values: RegisterFormValues) => {
@@ -554,6 +576,8 @@ export default function GlassRegisterPage() {
 - `bgImage` Cloudinary or CDN image URL for the animated displacement backdrop.
 
 ```tsx
+import RegisterForm, { type RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
+
 export default function LiquidGlassRegisterPage() {
   // "liquid-glass" uses SVG displacement turbulence, specular edge highlights, and high-contrast frosted styling.
   const handleSubmit = async (values: RegisterFormValues) => {
@@ -590,6 +614,8 @@ export default function LiquidGlassRegisterPage() {
 - `lead` Custom subtitle text displayed below the headline.
 
 ```tsx
+import RegisterForm, { type RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
+
 export default function RibbonDriftRegisterPage() {
   // "ribbon-drift" features dual floating infinite marquee ribbons, an animated drift backdrop, and candidate showcase promo card.
   const handleSubmit = async (values: RegisterFormValues) => {

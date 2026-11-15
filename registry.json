@@ -4,6 +4,26 @@
   "homepage": "https://avaraui.com",
   "items": [
     {
+      "name": "accent",
+      "type": "registry:lib",
+      "title": "Accent helper",
+      "author": "AlgorizeTech",
+      "description": "Helper module (not a component) that repoints the --primary token for one subtree, so a block can take a `color` prop. Install it when a docs example imports `accentStyle` from `@/lib/accent`.",
+      "categories": [
+        "utilities"
+      ],
+      "dependencies": [],
+      "registryDependencies": [],
+      "files": [
+        {
+          "path": "src/lib/accent.ts",
+          "type": "registry:lib",
+          "target": "lib/accent.ts"
+        }
+      ],
+      "docs": "Named exports: accentStyle, accentTokens, accentForeground, resolveAccent, isDefaultAccent, toBlockColor. `accentStyle(color)` returns a style object that sets --primary (and the tokens derived from it) for the element it is spread on; for the default accent it returns an empty object, so the theme keeps control."
+    },
+    {
       "name": "accordion",
       "type": "registry:component",
       "title": "Accordion",
@@ -962,6 +982,28 @@
         }
       ],
       "docs": "Named exports: ChartBlock. `data` takes { label, value, color? }; switch presentation with `type` (bar | line | pie | donut | donut-legend | stacked-bar) and set `height` in pixels for the axis charts. The two legend types colour each share from `colors` (theme accent first) and take `centerLabel` / `hoverLabel`. Hand-drawn SVG with no chart library, so bundle cost is nil — but there are no axes or scales beyond what is drawn. Use a real charting library for analytical work."
+    },
+    {
+      "name": "chart-tokens",
+      "type": "registry:lib",
+      "title": "Chart Tokens",
+      "author": "AlgorizeTech",
+      "description": "Hook (not a component) that reads the theme's CSS tokens into the plain colour strings Recharts, Chart.js and AG Grid need. Install it when a docs example imports `useChartTokens` from `@/lib/chart-tokens`.",
+      "categories": [
+        "utilities"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "https://avaraui.com/r/accent.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/chart-tokens.ts",
+          "type": "registry:lib",
+          "target": "lib/chart-tokens.ts"
+        }
+      ],
+      "docs": "Named exports: useChartTokens, ChartTokens. `useChartTokens(color?)` returns { foreground, muted, border, card, primary, series } and re-reads them when the theme class on <html> changes."
     },
     {
       "name": "chat",

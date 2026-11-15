@@ -12,7 +12,6 @@ import {
   Palette,
   Sparkles,
   Layers,
-  Dribbble,
   Shapes,
   Image as ImageIcon,
   Globe,
@@ -221,7 +220,7 @@ export const CREATIVE_TOOLKIT_ITEMS: ToolkitItem[] = [
     title: "Dribbble",
     description:
       "Dribbble is a platform for showcasing, discovering, and connecting with creative design work.",
-    icon: <Dribbble className="w-5 h-5" />,
+    icon: <DribbbleLogo />,
     logoBg: "bg-pink-500 text-white",
     accentColor: "pink",
     pinColor: "#db2777",

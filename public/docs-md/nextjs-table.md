@@ -177,7 +177,16 @@ export default function InvoicesTable({ color }: { color?: string } = {}) {
 ```tsx
 "use client";
 
-
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContent,
+  TableHead,
+  TableHeader,
+  TableHeading,
+  TableRow,
+} from "@/components/custom/blocks/TableBlock";
 
 type Invoice = {
   reference: string;
@@ -425,7 +434,15 @@ export default function PlanComparison({ color }: { color?: string } = {}) {
 ```tsx
 "use client";
 
-
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContent,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/custom/blocks/TableBlock";
 
 type Invoice = {
   reference: string;

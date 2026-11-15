@@ -21,6 +21,10 @@ Type a value, pick an error-correction level, and export as PNG or PDF.
 - `value` is the data or URL encoded into the code — required, despite defaulting to an empty string.
 
 ```tsx
+import { QrCodeGenerator } from "@/components/custom/blocks/QrCodeGeneratorBlock";
+import { FileText, ImageIcon } from "lucide-react";
+import { useState } from "react";
+
 type Level = "L" | "M" | "Q" | "H";
 
 export default function GeneratorExample() {
@@ -168,6 +172,8 @@ A separate component with its own dependencies — decoding happens entirely in 
 - `onRead` on `QrCodeReader` receives the decoded payload — the decode happens in the browser, nothing is uploaded.
 
 ```tsx
+import { QrCodeReader } from "@/components/custom/blocks/QrCodeReaderBlock";
+
 export default function ReaderExample() {
   // Click or drag-and-drop a QR image; `onRead` fires with the decoded string.
   return <QrCodeReader onRead={(data) => console.log("Scanned QR:", data)} />;

@@ -14,6 +14,29 @@ A powerful, fully-featured data table component built on top of [Table](./table)
 - `sortBy` takes a dot path or an accessor function, so nested and computed values sort correctly.
 
 ```tsx
+import { useState } from "react";
+import {
+  DataTable,
+  DataTableBatchBar,
+  DataTableBody,
+  DataTableCell,
+  DataTableContent,
+  DataTableEmpty,
+  DataTableExport,
+  DataTableFooter,
+  DataTableHead,
+  DataTableHeader,
+  DataTableHeading,
+  DataTableInfo,
+  DataTablePageSize,
+  DataTablePagination,
+  DataTableRow,
+  DataTableSearch,
+  DataTableSelect,
+  DataTableSelectAll,
+} from "@/components/custom/blocks/TableBlock";
+import { Edit2, Trash2 } from "lucide-react";
+
 const now = Date.now();
 const ago = (d: number, h: number = 0) => now - (d * 86400000 + h * 3600000);
 

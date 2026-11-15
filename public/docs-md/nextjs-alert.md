@@ -178,6 +178,7 @@ export default function AlertIcons() {
 ```tsx
 "use client";
 
+import { Alert } from "@/components/custom/blocks/Alerts";
 
 export default function DismissibleAlert() {
   return (

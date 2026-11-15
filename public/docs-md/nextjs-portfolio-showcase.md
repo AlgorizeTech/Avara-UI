@@ -26,6 +26,7 @@ Pass `variant="masonry-portfolio"` for an edge-to-edge continuous infinite canva
 ```tsx
 "use client";
 
+import { PortfolioShowcase } from "@/components/custom/blocks/PortfolioShowcaseBlock";
 
 const PROJECTS = [
   {

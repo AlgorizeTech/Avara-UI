@@ -57,6 +57,26 @@ The full page. Open it fullscreen to see it as a page — the dial reads Farah's
 - `aurora` on `ProfilePage` takes three colours for the blobs the glass blurs. Any CSS colour works, including `var(--primary)` to tie the first blob to the theme, as the example does. Change them per person or per team; the panels adapt because they are translucent.
 
 ```tsx
+import { useState } from "react";
+import { GlassPanel } from "@/components/custom/blocks/GlassPanelBlock";
+import { ProfilePage, WorkdayDial } from "@/components/custom/blocks/ProfilePageBlock";
+import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
+import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
+import { cn } from "@/lib/utils";
+import {
+  ArrowLeft,
+  Check,
+  Eye,
+  FileText,
+  GitMerge,
+  Globe,
+  Mail,
+  MapPin,
+  MessageCircle,
+  Share2,
+  UserPlus,
+} from "lucide-react";
+
 const TIME_ZONE = "Asia/Dhaka";
 const WORKDAY = { start: 10, end: 18 };
 
@@ -337,6 +357,26 @@ The same page with no glass: white cards, an ordinary shadow, a flat ground. Not
 - Set `variant="solid"` on `ProfilePage` and every `GlassPanel` inside turns into a solid card with a normal shadow; the aurora is not drawn. One panel can opt out with its own `variant`.
 
 ```tsx
+import { useState } from "react";
+import { GlassPanel } from "@/components/custom/blocks/GlassPanelBlock";
+import { ProfilePage, WorkdayDial } from "@/components/custom/blocks/ProfilePageBlock";
+import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
+import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
+import { cn } from "@/lib/utils";
+import {
+  ArrowLeft,
+  Check,
+  Eye,
+  FileText,
+  GitMerge,
+  Globe,
+  Mail,
+  MapPin,
+  MessageCircle,
+  Share2,
+  UserPlus,
+} from "lucide-react";
+
 const TIME_ZONE = "Asia/Dhaka";
 const WORKDAY = { start: 10, end: 18 };
 
@@ -617,6 +657,26 @@ Fluid SVG displacement map refraction, specular inner highlights, and ambient de
 - Set `variant="liquid-glass"` on `ProfilePage` wraps the bento grid with fluid SVG refractive glass, deep backdrop blur, and high-contrast translucent panels.
 
 ```tsx
+import { useState } from "react";
+import { GlassPanel } from "@/components/custom/blocks/GlassPanelBlock";
+import { ProfilePage, WorkdayDial } from "@/components/custom/blocks/ProfilePageBlock";
+import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
+import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
+import { cn } from "@/lib/utils";
+import {
+  ArrowLeft,
+  Check,
+  Eye,
+  FileText,
+  GitMerge,
+  Globe,
+  Mail,
+  MapPin,
+  MessageCircle,
+  Share2,
+  UserPlus,
+} from "lucide-react";
+
 const TIME_ZONE = "Asia/Dhaka";
 const WORKDAY = { start: 10, end: 18 };
 

@@ -50,6 +50,7 @@ All 2 options as live previews: https://avaraui.com/view/item
 
 ```tsx
 import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
+import { Settings } from "lucide-react";
 
 export default function SettingsRow() {
   return (
@@ -90,6 +91,7 @@ npx shadcn@latest add @avara-ui/item
 
 ```tsx
 import { ItemBlock } from "@/components/custom/blocks/ItemBlock";
+import { Settings } from "lucide-react";
 
 export default function FeatureCard() {
   return (

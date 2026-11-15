@@ -3173,7 +3173,7 @@ function useConnectors(gridRef: React.RefObject<HTMLDivElement | null>, deps: un
 
     const measure = () => {
       const box = grid.getBoundingClientRect();
-      const stages = [...grid.querySelectorAll<HTMLElement>("[data-stage]")];
+      const stages = Array.from(grid.querySelectorAll<HTMLElement>("[data-stage]"));
       const first = stages[0];
       const inOneRow =
         first !== undefined && stages.length > 1 && stages.every((stage) => Math.abs(stage.offsetTop - first.offsetTop) < 2);

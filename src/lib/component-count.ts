@@ -8,7 +8,8 @@
  * A component is one registry item. A `-motion` item is the Motion build
  * of a component that is already counted under its GSAP name, so it is not
  * counted a second time. A `registry:item` is not a component either: the agent
- * skill items install files for an AI agent, not UI.
+ * skill items install files for an AI agent, not UI. Nor is a `registry:lib`:
+ * `accent` and `chart-tokens` are helper modules, not UI.
  *
  * Node-only: `getComponentCount` reads registry.json from disk, so call it at
  * build time. next.config.ts stamps the result into the bundle, and client code
@@ -26,7 +27,7 @@ export const isMotionTwin = (name: string) => name.endsWith("-motion");
 
 /** Counts the distinct components in a list of registry items. */
 export function countComponents(items: readonly RegistryItem[]): number {
-  return items.filter((item) => !isMotionTwin(item.name) && item.type !== "registry:item").length;
+  return items.filter((item) => !isMotionTwin(item.name) && item.type !== "registry:item" && item.type !== "registry:lib").length;
 }
 
 /** Reads registry.json and returns the number of components it ships. */

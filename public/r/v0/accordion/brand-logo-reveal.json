@@ -17,7 +17,7 @@
       "path": "app/page.tsx",
       "type": "registry:page",
       "target": "app/page.tsx",
-      "content": "import { BrandLogoAccordion, type BrandItem } from \"@/components/custom/blocks/Accordion\";\n\n// Alternatively use <Accordion variant=\"brand-reveal\" />\nexport default function BrandRevealShowcase() {\n  return (\n    <BrandLogoAccordion\n      autoplay\n      autoplayInterval={4000}\n      pauseOnHover\n    />\n  );\n}"
+      "content": "import { BrandLogoAccordion } from \"@/components/custom/blocks/Accordion\";\n\n// Alternatively use <Accordion variant=\"brand-reveal\" />\nexport default function BrandRevealShowcase() {\n  return (\n    <BrandLogoAccordion\n      autoplay\n      autoplayInterval={4000}\n      pauseOnHover\n    />\n  );\n}"
     },
     {
       "path": "components/custom/blocks/Accordion.tsx",

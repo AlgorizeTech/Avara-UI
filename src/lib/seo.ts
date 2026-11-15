@@ -25,7 +25,7 @@ export function generateMetadata(config: SEOConfig): Metadata {
     canonical,
     noindex = false,
     nofollow = false,
-    ogImage = '/meta-image.png',
+    ogImage = '/meta-image-v2.png',
     twitterImage,
     authors = ['AlgorizeTech'],
     category = 'technology',

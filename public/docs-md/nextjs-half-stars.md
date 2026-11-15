@@ -20,7 +20,8 @@ Explore the different variations of the Half Stars component — each example sh
 ```tsx
 "use client";
 
-
+import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
+import { useState } from "react";
 
 export default function FullStarRating() {
   const [rating, setRating] = useState(3);
@@ -62,7 +63,8 @@ npx shadcn@latest add @avara-ui/half-stars
 ```tsx
 "use client";
 
-
+import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
+import { useState } from "react";
 
 export default function HalfStarRating() {
   const [rating, setRating] = useState(3.5);
@@ -86,7 +88,8 @@ export default function HalfStarRating() {
 ```tsx
 "use client";
 
-
+import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
+import { useState } from "react";
 
 export default function PreciseRating() {
   const [rating, setRating] = useState(4.2);
@@ -112,7 +115,8 @@ export default function PreciseRating() {
 ```tsx
 "use client";
 
-
+import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
+import { useState } from "react";
 
 export default function TenStarRating() {
   const [rating, setRating] = useState(7.5);

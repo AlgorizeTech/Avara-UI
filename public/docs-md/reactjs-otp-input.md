@@ -51,6 +51,10 @@ Paste, arrow-key and backspace handling are built in.
 - `onComplete` fires once every box is filled, which saves you comparing lengths yourself.
 
 ```tsx
+import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
+import { CheckCircle2, KeyRound } from "lucide-react";
+import { useState } from "react";
+
 const LENGTH = 6;
 
 export default function BasicOtp() {
@@ -130,6 +134,10 @@ npx shadcn@latest add @avara-ui/otp-input
 - Use `variant="underlined"` to reduce each box to a baseline rule.
 
 ```tsx
+import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
+import { CheckCircle2, KeyRound } from "lucide-react";
+import { useState } from "react";
+
 const LENGTH = 6;
 
 export default function UnderlinedOtp() {

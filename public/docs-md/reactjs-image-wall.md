@@ -24,6 +24,8 @@ Wait a few seconds: the camera pulls back, glides to the next card and settles o
 - `intro=0` in milliseconds makes the camera start pulled back and off to one side, drifting towards the first card with nothing in focus, and land on it only when the time is up — room for copy beside the wall to arrive first. The canvas is invisible until the camera has painted once, so the server-rendered wall never flashes unpositioned.
 
 ```tsx
+import { ImageWall, type WallItem } from "@/components/custom/blocks/ImageWallBlock";
+
 const ITEMS: WallItem[] = [
   { title: "Word bounce hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/hero-1790516064495.jpg" },
   { title: "Product showcase", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/pricing-1790516064500.jpg" },
@@ -95,6 +97,8 @@ A short strip: the camera pulls back so a few cards show, and visits them in a r
 - A box under `420px` tall caps the zoom at 0.72 whatever `zoom` says, so the band shows neighbours instead of one card spilling out; a box under 640px wide caps it at 0.5.
 
 ```tsx
+import { ImageWall, type WallItem } from "@/components/custom/blocks/ImageWallBlock";
+
 const ITEMS: WallItem[] = [
   { title: "Word bounce hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/hero-1790516064495.jpg" },
   { title: "Product showcase", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/pricing-1790516064500.jpg" },
@@ -150,6 +154,8 @@ interval={true} with highlightFocus={true} and draggable={true} combines automat
 - `onFocus` is called with the index of the card the camera has settled on so you can caption or link it outside the wall.
 
 ```tsx
+import { ImageWall, type WallItem } from "@/components/custom/blocks/ImageWallBlock";
+
 const ITEMS: WallItem[] = [
   { title: "Word bounce hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/hero-1790516064495.jpg" },
   { title: "Product showcase", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/pricing-1790516064500.jpg" },

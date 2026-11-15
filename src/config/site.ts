@@ -136,8 +136,8 @@ export const siteConfig = {
   registryUrl: `${SITE_URL}/r`,
   author: env(process.env.NEXT_PUBLIC_SITE_AUTHOR) ?? "AlgorizeTech",
   github: links.github,
-  /** The social card, public/meta-image.png (1200×630). */
-  ogImage: url("/meta-image.png"),
+  /** The social card, public/meta-image-v2.png (1200×630). */
+  ogImage: url("/meta-image-v2.png"),
 } as const;
 
 export type SiteConfig = typeof siteConfig;

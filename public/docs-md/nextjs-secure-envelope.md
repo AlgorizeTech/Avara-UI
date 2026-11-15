@@ -19,7 +19,7 @@ The signature confidential manila folder and hot pink slide-out card design from
 - Interaction `interactionMode="step-flip"` Click 1 slides out the hot pink card onto the folder, Click 2 flips to the executive memorandum manifesto, Click 3 returns inside.
 
 ```tsx
-import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
+import { SecureEnvelope, type SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
 
 const confidentialData: SecureEnvelopeData = {
   idNumber: "ID · 0042",
@@ -68,7 +68,7 @@ High-tech biometric identity smartcard & encrypted key vault sleeve. Features go
 - Interaction `interactionMode="step-flip"` splits the animation into 3 distinct clicks: Click 1 opens to front smartcard, Click 2 flips to encrypted magnetic stripe & credentials, Click 3 closes.
 
 ```tsx
-import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
+import { SecureEnvelope, type SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
 
 const smartCardData: SecureEnvelopeData = {
   holderName: "Dr. Kaelen Vance",
@@ -97,7 +97,7 @@ export default function CyberSmartCardExample() {
 - Interaction `interactionMode="auto-flip"` automatically executes the full slide-out and in-place 180° flip on first click.
 
 ```tsx
-import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
+import { SecureEnvelope, type SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
 
 const voucherData: SecureEnvelopeData = {
   frontTitle: "Exclusive Access",
@@ -126,7 +126,7 @@ Exact high-speed rail ticket and envelope design. Features the top blue pill hea
 - Interaction `interactionMode="step-flip"` splits the animation into 3 distinct clicks: Click 1 opens to front ticket, Click 2 flips to reverse route overview, Click 3 closes.
 
 ```tsx
-import { SecureEnvelope, SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
+import { SecureEnvelope, type SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
 
 const ticketData: SecureEnvelopeData = {
   passengerName: "Barbara M. Sandoval",

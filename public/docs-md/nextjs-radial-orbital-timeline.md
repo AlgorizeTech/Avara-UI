@@ -16,6 +16,7 @@ Renders 2 concentric counter-rotating orbital lines for dense timeline items.
 
 ```tsx
 import RadialOrbitalTimeline, { type TimelineItem } from "@/components/custom/blocks/RadialOrbitalTimeline";
+import { Rocket, Shield, Code, Sparkles, CheckCircle2, BarChart3, Cpu, Clock, Zap, MessageSquare } from "lucide-react";
 
 const outerOrbitItems: TimelineItem[] = [
   {
@@ -179,6 +180,7 @@ Pass `orbitCount={1}` to render a clean single circular orbit ring.
 
 ```tsx
 import RadialOrbitalTimeline, { type TimelineItem } from "@/components/custom/blocks/RadialOrbitalTimeline";
+import { Rocket, Shield, Code, Sparkles, Zap } from "lucide-react";
 
 const singleOrbitItems: TimelineItem[] = [
   {

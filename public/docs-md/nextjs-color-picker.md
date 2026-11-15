@@ -19,6 +19,7 @@ Advanced 360° canvas spectrum wheel featuring real-time drag tracking, lightnes
 
 ```tsx
 import { ColorPicker } from "@/components/custom/color-picker";
+import { useState } from "react";
 
 export default function ColorWheelStudioDemo() {
   const [color, setColor] = useState("#d0ff00");
@@ -43,6 +44,7 @@ High-tech gradient studio featuring linear/radial/conic gradient modes, 2-stop o
 
 ```tsx
 import { ColorPicker } from "@/components/custom/color-picker";
+import { useState } from "react";
 
 export default function GradientStudioDemo() {
   const [gradient, setGradient] = useState("linear-gradient(135deg, #8b5cf6, #ec4899)");

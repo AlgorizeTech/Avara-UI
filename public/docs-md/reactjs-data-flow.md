@@ -21,6 +21,12 @@ Three columns at desktop with the curves drawn between them; below that the colu
 - `reveal="in-view"` (the default) plays the sequence the first time the section enters the viewport. The docs pass `"immediate"` because the preview is already on screen. Under prefers-reduced-motion the section renders finished, with the dash held still.
 
 ```tsx
+import { ArrowUpRight, Download } from "lucide-react";
+import Button from "@/components/custom/blocks/Button";
+import { DataFlow } from "@/components/custom/blocks/DataFlowBlock";
+import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
+import { AppStoreIcon, CapterraIcon, G2Icon, GooglePlayIcon, RedditIcon, UpworkIcon } from "@/components/custom/blocks/Icons";
+
 const APP_STORES = [
   { label: "App Store", icon: <AppStoreIcon fill="currentColor" /> },
   { label: "Google Play", icon: <GooglePlayIcon size={18} fill="currentColor" /> },

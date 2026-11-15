@@ -88,7 +88,8 @@ Revolving 3D circular photo orbit ring with upright cards and smooth hover pause
 ```tsx
 "use client";
 
-
+import Link from "next/link";
+import { Gallery } from "@/components/custom/blocks/GalleryBlock";
 
 // Landscapes from Unsplash, free to use.
 const IMAGES = [
@@ -132,6 +133,7 @@ Self-rearranging image bento grid with a dominant center hero slot. Peripheral i
 ```tsx
 "use client";
 
+import { Gallery } from "@/components/custom/blocks/GalleryBlock";
 
 const BENTO_ITEMS = [
   {
@@ -209,6 +211,7 @@ Interactive, scroll-driven circular spinner. Each item lives on a segmented ring
 ```tsx
 "use client";
 
+import { Gallery } from "@/components/custom/blocks/GalleryBlock";
 
 const REEL_ITEMS = [
   {
@@ -310,6 +313,7 @@ Layered diagonal image carousel with sculptural pill-shaped cards, smooth 3D dep
 ```tsx
 "use client";
 
+import { Gallery } from "@/components/custom/blocks/GalleryBlock";
 
 const PILL_ITEMS = [
   {
@@ -391,6 +395,7 @@ Curved 3D image carousel arranged along an interactive concave cylindrical arc. 
 ```tsx
 "use client";
 
+import { Gallery } from "@/components/custom/blocks/GalleryBlock";
 
 const ARC_ITEMS = [
   {
@@ -484,8 +489,9 @@ Immersive 3D rotating spherical video showcase. Videos and media drift along a F
 ```tsx
 "use client";
 
+import { Gallery, type VideoSphereItem } from "@/components/custom/blocks/GalleryBlock";
 
-const SPHERE_ITEMS = [
+const SPHERE_ITEMS: VideoSphereItem[] = [
   {
     id: "sphere-1",
     type: "image", // Supports "image" or "video"

@@ -53,7 +53,14 @@ Staggered 3-column pinned resource cards with 3D pushpins, custom icons, and con
 ```tsx
 "use client";
 
-
+import DesignsToolkit, { DribbbleLogo } from "@/components/custom/blocks/DesignsToolkitBlock";
+import {
+  Palette,
+  Sparkles,
+  Layers,
+  Shapes,
+  Image as ImageIcon,
+} from "lucide-react";
 
 const creativeTools = [
   {
@@ -90,7 +97,7 @@ const creativeTools = [
     number: "04",
     title: "Dribbble",
     description: "Platform for showcasing, discovering, and connecting with creative design work.",
-    icon: <Dribbble className="w-5 h-5" />,
+    icon: <DribbbleLogo />,
     logoBg: "bg-pink-500 text-white",
     accentColor: "pink",
     pinColor: "#db2777",
@@ -160,7 +167,8 @@ Tilted pastel cards pinned along an alternating zigzag timeline with notebook ru
 ```tsx
 "use client";
 
-
+import DesignsToolkit from "@/components/custom/blocks/DesignsToolkitBlock";
+import { MessageSquareQuote, ShieldCheck, Mail, BookOpen, RotateCcw } from "lucide-react";
 
 const roadmapSteps = [
   {
@@ -243,7 +251,15 @@ Minimal pinned card layout configured with custom developer stack tools and icon
 ```tsx
 "use client";
 
-
+import DesignsToolkit from "@/components/custom/blocks/DesignsToolkitBlock";
+import {
+  Globe,
+  Code2,
+  Wind,
+  Database,
+  GitBranch,
+  Zap,
+} from "lucide-react";
 
 const developerTools = [
   {

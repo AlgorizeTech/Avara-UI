@@ -25,10 +25,19 @@ Compose `DialogTrigger` and `DialogContent` inside a `Dialog` root.
 ```tsx
 "use client";
 
-
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/custom/blocks/DialogBlock";
 // CopyField ships with the copy-button item:
 // npx shadcn@latest add @avara-ui/copy-button
-
+import { CopyField } from "@/components/custom/blocks/CopyButtonBlock";
+import { UserPlus } from "lucide-react";
 
 export default function ShareDialog() {
   return (
@@ -96,6 +105,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/custom/blocks/DialogBlock";
+import { Settings } from "lucide-react";
 
 export default function EditProfileDialog() {
   return (
@@ -204,6 +214,16 @@ A confirmation shape: coloured title, clear consequence, two footer actions.
 ```tsx
 "use client";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/custom/blocks/DialogBlock";
+import { Trash2 } from "lucide-react";
 
 export default function DeleteAccountDialog() {
   return (
@@ -250,7 +270,16 @@ The working version of that shape — the row is only removed once the dialog re
 ```tsx
 "use client";
 
-
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/custom/blocks/DialogBlock";
+import { Trash2 } from "lucide-react";
 
 type Project = { id: string; name: string; meta?: string };
 
@@ -381,7 +410,16 @@ export default function TermsDialog() {
 ```tsx
 "use client";
 
-
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/custom/blocks/DialogBlock";
 
 export default function ControlledDialog() {
   const [open, setOpen] = useState(false);
@@ -435,7 +473,17 @@ A small dialog opens on top of the one already on screen — and Escape or a bac
 ```tsx
 "use client";
 
-
+import { useState } from "react";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/custom/blocks/DialogBlock";
 
 const CUSTOMERS = [
   { id: "c1", name: "Northwind Traders" },

@@ -68,6 +68,13 @@ Single selection — exactly one item stays active at a time.
 - `value` is a string here; pair it with `onValueChange`, or use `defaultValue` to stay uncontrolled.
 
 ```tsx
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+import { AlignCenter, AlignLeft, AlignRight } from "lucide-react";
+import { useState } from "react";
+
 export default function AlignmentGroup() {
   const [value, setValue] = useState("center");
 
@@ -109,6 +116,13 @@ npx shadcn@latest add @avara-ui/toggle-group
 - Use `variant="outline"` to draw a border around the segment.
 
 ```tsx
+import { useState } from "react";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+import { AlignCenter, AlignLeft } from "lucide-react";
+
 export default function OutlineGroup() {
   const [value, setValue] = useState("left");
 
@@ -135,6 +149,13 @@ export default function OutlineGroup() {
 - Use `variant="ghost"` for items that only paint when active — no pill container.
 
 ```tsx
+import { useState } from "react";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+import { AlignCenter, AlignLeft } from "lucide-react";
+
 export default function GhostGroup() {
   const [value, setValue] = useState("left");
 
@@ -163,6 +184,12 @@ A view switch: one highlight slides to the chosen item, which stays chosen when 
 - Use `variant="segmented"` for a pill track with a sliding highlight. It reads best with text labels and `type="single"`.
 
 ```tsx
+import { useState } from "react";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+
 export default function PeriodSwitch() {
   const [period, setPeriod] = useState("month");
 
@@ -187,6 +214,13 @@ export default function PeriodSwitch() {
 - Use `size` to change the item height and padding across the whole group.
 
 ```tsx
+import { useState } from "react";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+import { AlignCenter, AlignLeft } from "lucide-react";
+
 const items = (
   <>
     <ToggleGroupItem value="left" aria-label="Toggle align left">
@@ -223,6 +257,13 @@ export default function GroupSizes() {
 - `value` becomes a **string array** in this mode — passing a bare string selects nothing.
 
 ```tsx
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+import { Bold, Italic, Underline } from "lucide-react";
+import { useState } from "react";
+
 export default function FormattingGroup() {
   const [value, setValue] = useState(["bold"]);
 
@@ -247,6 +288,13 @@ export default function FormattingGroup() {
 - Set `disabled` on the group to lock every item at once, rather than disabling them one by one.
 
 ```tsx
+import { useState } from "react";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+import { AlignCenter, AlignLeft } from "lucide-react";
+
 export default function DisabledGroup() {
   const [value, setValue] = useState("left");
 

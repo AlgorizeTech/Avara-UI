@@ -274,6 +274,8 @@ Three faces using the zoom variant with clean tooltips and a trailing plus actio
 - `action=() => void` renders the built-in '+' action button at the end of the stack and triggers your onClick function when clicked.
 
 ```tsx
+import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
+
 const PEOPLE = [
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy", designation: "Co-Founder & CTO" },
@@ -304,6 +306,8 @@ Six people, three shown — the rest become a clickable +3 disc. Hovering faces 
 - `action` optional — pass an onClick function () => void alongside max if you want both a +N counter and a trailing '+' button.
 
 ```tsx
+import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
+
 const PEOPLE = [
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145142/pexels-photo-2043590-1790145143488.jpg", alt: "Tom Hardy", designation: "Co-Founder & CTO" },

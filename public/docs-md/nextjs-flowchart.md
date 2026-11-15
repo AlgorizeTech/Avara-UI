@@ -26,6 +26,7 @@ import {
   FlowConnection,
   FlowNode,
 } from "@/components/custom/blocks/FlowchartBlock";
+import { AlertCircle, CheckCircle2, Cpu, Terminal, Webhook } from "lucide-react";
 
 export default function AutomationMap() {
   return (
@@ -112,6 +113,7 @@ import {
   FlowConnection,
   FlowNode,
 } from "@/components/custom/blocks/FlowchartBlock";
+import { CheckCircle2, Cpu, Webhook } from "lucide-react";
 
 export default function LinearPipeline() {
   // The smallest useful chart: one route, three nodes on it.
@@ -162,6 +164,7 @@ import {
   FlowConnection,
   FlowNode,
 } from "@/components/custom/blocks/FlowchartBlock";
+import { AlertCircle, CheckCircle2, Cpu, Terminal, Webhook } from "lucide-react";
 
 function PipelineNodes() {
   return (
@@ -240,6 +243,7 @@ import {
   FlowConnection,
   FlowNode,
 } from "@/components/custom/blocks/FlowchartBlock";
+import { AlertCircle, CheckCircle2, Cpu, Terminal, Webhook } from "lucide-react";
 
 function PipelineNodes() {
   return (

@@ -19,6 +19,8 @@ Sticky left-hand TOC navigation with automatic scroll-spy, progress indicator, a
 - `showSearch` Enables an inline search filter input inside the right-hand TOC sidebar.
 
 ```tsx
+import { TableOfContentsBlock, type TOCItem } from "@/components/custom/blocks/TableOfContentsBlock";
+
 const previewItems: TOCItem[] = [
   {
     id: "overview",

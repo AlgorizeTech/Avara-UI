@@ -19,7 +19,8 @@ Swipe or drag cards left or right to discard them. Cards behind smoothly step fo
 ```tsx
 "use client";
 
-
+import { Compass, Palette, Terminal, FileText } from "lucide-react";
+import { CardStack, type CardStackItem } from "@/components/custom/blocks/CardStackBlock";
 
 const ARRIVALS: CardStackItem[] = [
   {
@@ -123,7 +124,8 @@ Continuous cyclical navigation where swiping cards seamlessly wraps around to th
 ```tsx
 "use client";
 
-
+import { Compass, Palette, Terminal, FileText } from "lucide-react";
+import { CardStack, type CardStackItem } from "@/components/custom/blocks/CardStackBlock";
 
 const ARRIVALS: CardStackItem[] = [
   {
@@ -202,7 +204,8 @@ Arrow button controls to slide cards forwards and backwards with disabled bounds
 ```tsx
 "use client";
 
-
+import { Compass, Palette, Terminal } from "lucide-react";
+import { CardStack, type CardStackItem } from "@/components/custom/blocks/CardStackBlock";
 
 const ARRIVALS: CardStackItem[] = [
   {
@@ -252,7 +255,8 @@ Slide the top card out toward the left when progressing forward with button cont
 ```tsx
 "use client";
 
-
+import { Compass, Palette, Terminal, FileText } from "lucide-react";
+import { CardStack, type CardStackItem } from "@/components/custom/blocks/CardStackBlock";
 
 const ARRIVALS: CardStackItem[] = [
   {

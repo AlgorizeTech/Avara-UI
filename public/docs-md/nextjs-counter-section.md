@@ -68,6 +68,7 @@ Developer and fintech terminal HUD with bracket corner crosshairs [+], subtle sc
 ```tsx
 "use client";
 
+import { CounterSection } from "@/components/custom/blocks/CounterSectionBlock";
 
 // 1. Define custom telemetry stats data
 const stats = [
@@ -124,6 +125,7 @@ Clean, high-impact typographic layout with floating Swiss modular cards, giant w
 ```tsx
 "use client";
 
+import { CounterSection } from "@/components/custom/blocks/CounterSectionBlock";
 
 // 1. Define custom agency stats data
 const stats = [
@@ -178,6 +180,7 @@ Atmospheric architectural strip featuring an authentic dot-matrix halftone textu
 ```tsx
 "use client";
 
+import { CounterSection } from "@/components/custom/blocks/CounterSectionBlock";
 
 // 1. Define custom architectural stats data
 const stats = [
@@ -226,6 +229,7 @@ Interactive radial spotlight that tracks the cursor across modern floating cards
 ```tsx
 "use client";
 
+import { CounterSection } from "@/components/custom/blocks/CounterSectionBlock";
 
 // 1. Define custom telemetry & performance stats data
 const stats = [

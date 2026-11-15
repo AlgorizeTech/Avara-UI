@@ -23,6 +23,18 @@ Compose `WizardProgress`, `WizardContainer` and one `WizardStep` per question â€
 ```tsx
 "use client";
 
+import {
+  Wizard,
+  WizardContainer,
+  WizardDescription,
+  WizardInput,
+  WizardNavigation,
+  WizardProgress,
+  WizardStep,
+  WizardTitle,
+} from "@/components/custom/blocks/WizardBlock";
+import { CheckCircle2 } from "lucide-react";
+import { useState, type FormEvent } from "react";
 
 export default function OnboardingFlow() {
   // Remounting the Wizard is what resets it back to the first step.
@@ -112,6 +124,18 @@ npx shadcn@latest add @avara-ui/wizard
 ```tsx
 "use client";
 
+import {
+  Wizard,
+  WizardContainer,
+  WizardDescription,
+  WizardInput,
+  WizardNavigation,
+  WizardProgress,
+  WizardStep,
+  WizardTitle,
+} from "@/components/custom/blocks/WizardBlock";
+import { CheckCircle2 } from "lucide-react";
+import { useState, type FormEvent } from "react";
 
 export default function ResumedOnboarding() {
   // Remounting the Wizard is what resets it back to the first step.
@@ -185,6 +209,17 @@ export default function ResumedOnboarding() {
 ```tsx
 "use client";
 
+import {
+  Wizard,
+  WizardContainer,
+  WizardDescription,
+  WizardInput,
+  WizardNavigation,
+  WizardStep,
+  WizardTitle,
+} from "@/components/custom/blocks/WizardBlock";
+import { CheckCircle2 } from "lucide-react";
+import { useState, type FormEvent } from "react";
 
 export default function BareWizard() {
   // Remounting the Wizard is what resets it back to the first step.

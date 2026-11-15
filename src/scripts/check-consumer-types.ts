@@ -54,7 +54,9 @@ const config = {
   compilerOptions: {
     tsBuildInfoFile: "./node_modules/.tmp/tsconfig.consumer.tsbuildinfo",
     target: "es2023",
-    lib: ["ES2023", "DOM", "DOM.Iterable"],
+    // No DOM.Iterable, exactly like the create-vite template: spreading a NodeList
+    // then fails to compile here, as it would in a consumer project on TypeScript 5.x.
+    lib: ["ES2023", "DOM"],
     module: "esnext",
     types: [],
     skipLibCheck: true,

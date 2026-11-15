@@ -70,6 +70,12 @@ Single selection — exactly one item stays active at a time.
 ```tsx
 "use client";
 
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+import { AlignCenter, AlignLeft, AlignRight } from "lucide-react";
+import { useState } from "react";
 
 export default function AlignmentGroup() {
   const [value, setValue] = useState("center");
@@ -114,7 +120,12 @@ npx shadcn@latest add @avara-ui/toggle-group
 ```tsx
 "use client";
 
-
+import { useState } from "react";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+import { AlignCenter, AlignLeft } from "lucide-react";
 
 export default function OutlineGroup() {
   const [value, setValue] = useState("left");
@@ -144,7 +155,12 @@ export default function OutlineGroup() {
 ```tsx
 "use client";
 
-
+import { useState } from "react";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+import { AlignCenter, AlignLeft } from "lucide-react";
 
 export default function GhostGroup() {
   const [value, setValue] = useState("left");
@@ -176,7 +192,11 @@ A view switch: one highlight slides to the chosen item, which stays chosen when 
 ```tsx
 "use client";
 
-
+import { useState } from "react";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
 
 export default function PeriodSwitch() {
   const [period, setPeriod] = useState("month");
@@ -204,7 +224,12 @@ export default function PeriodSwitch() {
 ```tsx
 "use client";
 
-
+import { useState } from "react";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+import { AlignCenter, AlignLeft } from "lucide-react";
 
 const items = (
   <>
@@ -244,6 +269,12 @@ export default function GroupSizes() {
 ```tsx
 "use client";
 
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+import { Bold, Italic, Underline } from "lucide-react";
+import { useState } from "react";
 
 export default function FormattingGroup() {
   const [value, setValue] = useState(["bold"]);
@@ -271,7 +302,12 @@ export default function FormattingGroup() {
 ```tsx
 "use client";
 
-
+import { useState } from "react";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+import { AlignCenter, AlignLeft } from "lucide-react";
 
 export default function DisabledGroup() {
   const [value, setValue] = useState("left");

@@ -51,6 +51,15 @@ Staggered 3-column pinned resource cards with 3D pushpins, custom icons, and con
 - `interactive=true` enables hover lift, accent glow shadow, and pushpin bounce micro-interactions.
 
 ```tsx
+import DesignsToolkit, { DribbbleLogo } from "@/components/custom/blocks/DesignsToolkitBlock";
+import {
+  Palette,
+  Sparkles,
+  Layers,
+  Shapes,
+  Image as ImageIcon,
+} from "lucide-react";
+
 const creativeTools = [
   {
     number: "01",
@@ -86,7 +95,7 @@ const creativeTools = [
     number: "04",
     title: "Dribbble",
     description: "Platform for showcasing, discovering, and connecting with creative design work.",
-    icon: <Dribbble className="w-5 h-5" />,
+    icon: <DribbbleLogo />,
     logoBg: "bg-pink-500 text-white",
     accentColor: "pink",
     pinColor: "#db2777",
@@ -154,6 +163,9 @@ Tilted pastel cards pinned along an alternating zigzag timeline with notebook ru
 - `showDashedLine=true` draws a continuous curved S-path connecting the pushpins to the footer partner note.
 
 ```tsx
+import DesignsToolkit from "@/components/custom/blocks/DesignsToolkitBlock";
+import { MessageSquareQuote, ShieldCheck, Mail, BookOpen, RotateCcw } from "lucide-react";
+
 const roadmapSteps = [
   {
     number: "01",
@@ -233,6 +245,16 @@ Minimal pinned card layout configured with custom developer stack tools and icon
 - Set `showDashedLine=false` to hide the decorative connecting dashed lines.
 
 ```tsx
+import DesignsToolkit from "@/components/custom/blocks/DesignsToolkitBlock";
+import {
+  Globe,
+  Code2,
+  Wind,
+  Database,
+  GitBranch,
+  Zap,
+} from "lucide-react";
+
 const developerTools = [
   {
     number: "01",

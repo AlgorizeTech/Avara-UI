@@ -88,6 +88,7 @@ npx shadcn@latest add @avara-ui/custom-code-block
 import { CustomCodeBlock } from "@/components/custom/blocks/CustomCodeBlock";
 
 const tsx = `import React, { useState, useEffect } from "react";
+import { Activity, Server, Zap } from "lucide-react";
 
 interface SystemMetrics {
   ping: number;
@@ -278,6 +279,7 @@ const css = `:root {
 }`;
 
 const tsx = `import React, { useState, useEffect } from "react";
+import { Activity, Server, Zap } from "lucide-react";
 
 interface SystemMetrics {
   ping: number;

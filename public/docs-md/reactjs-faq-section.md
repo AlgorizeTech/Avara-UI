@@ -49,6 +49,8 @@ The complete homepage FAQ section. Features a centered header, ambient backgroun
 - Provide `description="..."` to customize the section summary paragraph beneath the title.
 
 ```tsx
+import { FAQSection } from "@/components/custom/blocks/FAQSectionBlock";
+
 export default function FAQExample() {
   return (
     <FAQSection
@@ -69,6 +71,8 @@ A two-column section: sticky heading and a support team contact card on the left
 - `description` short introductory summary beneath the headline.
 
 ```tsx
+import { FAQSection } from "@/components/custom/blocks/FAQSectionBlock";
+
 export default function TwoColumnFAQExample() {
   return (
     <FAQSection

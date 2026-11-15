@@ -19,6 +19,9 @@ The calendar dropdown highlights today's date subtly and the selected date stron
 - `label` renders a bold label above the input and `helperText` a subtle line below it.
 
 ```tsx
+import { useState } from "react";
+import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
+
 export default function LaunchDatePicker() {
   const [date, setDate] = useState<Date | null>(null);
 
@@ -56,6 +59,9 @@ npx shadcn@latest add @avara-ui/date-picker
 - Pass `error` to turn the trigger red, add an alert icon and replace `helperText` with your message.
 
 ```tsx
+import { useState } from "react";
+import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
+
 export default function ValidatedDatePicker() {
   const [date, setDate] = useState<Date | null>(null);
 
@@ -88,6 +94,9 @@ export default function ValidatedDatePicker() {
 - Set `disablePast` to grey out every day before today. `minDate` and `maxDate` bound the calendar to any window; when both a lower bound and `disablePast` are given, the later one wins.
 
 ```tsx
+import { useState } from "react";
+import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
+
 export default function FutureOnlyPicker() {
   const [date, setDate] = useState<Date | null>(null);
 
@@ -114,6 +123,9 @@ Pick a day, then scroll the columns — Done closes the popover. The columns sit
 - With `disablePast` as well, times that have already passed today are disabled too, and landing on today snaps the time forward to now.
 
 ```tsx
+import { useState } from "react";
+import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
+
 export default function DateTimePicker() {
   const [date, setDate] = useState<Date | null>(null);
 

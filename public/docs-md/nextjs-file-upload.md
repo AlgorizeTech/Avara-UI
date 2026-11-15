@@ -67,6 +67,12 @@ The full suite: a `Dropzone` that hands you `File[]`, and an `UploadItem` for ea
 ```tsx
 "use client";
 
+import {
+  Dropzone,
+  UploadItem,
+  type FileUploadState,
+} from "@/components/custom/blocks/UploadBlock";
+import { useState } from "react";
 
 // Rows fade up in; a removed row fades up out and closes its gap, so the
 // rows under it slide up. `animationend` then drops it from state.
@@ -151,6 +157,10 @@ export default function FileUploader() {
 ```tsx
 "use client";
 
+import {
+  UploadItem,
+  type FileUploadState,
+} from "@/components/custom/blocks/UploadBlock";
 
 // status is the state machine that drives every colour, icon and action
 // on the row. progress/timeLeft/errorMessage come along for the ride.
@@ -232,6 +242,7 @@ For a form that just needs files attached: the `Input` block in file mode, with 
 ```tsx
 "use client";
 
+import { InputBlock } from "@/components/custom/blocks/InputBlock";
 
 export default function FileUploadInput() {
   // type="file" turns the Input block into a drag-and-drop zone with
@@ -280,8 +291,9 @@ The `Folder` block as an upload surface, tinted with the theme colour: drop file
 ```tsx
 "use client";
 
-
-
+import { Folder, type FolderFile } from "@/components/custom/blocks/FolderBlock";
+import { Image } from "lucide-react";
+import { useState } from "react";
 
 export default function DropZone() {
   const [files, setFiles] = useState<FolderFile[]>([]);

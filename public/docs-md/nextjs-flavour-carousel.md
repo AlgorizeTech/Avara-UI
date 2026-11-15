@@ -25,6 +25,7 @@ Eight flavours around one cup on a mountain of powder. The ring spins up from be
 ```tsx
 "use client";
 
+import { FlavourCarousel } from "@/components/custom/blocks/FlavourCarouselBlock";
 
 // Every product image must share the same crop, so only the contents appear to change.
 const ASSETS: Record<string, string> = {
