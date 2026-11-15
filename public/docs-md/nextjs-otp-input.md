@@ -53,8 +53,9 @@ Paste, arrow-key and backspace handling are built in.
 ```tsx
 "use client";
 
-
-
+import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
+import { CheckCircle2, KeyRound } from "lucide-react";
+import { useState } from "react";
 
 const LENGTH = 6;
 
@@ -137,8 +138,9 @@ npx shadcn@latest add @avara-ui/otp-input
 ```tsx
 "use client";
 
-
-
+import { OtpInputBlock } from "@/components/custom/blocks/OtpInputBlock";
+import { CheckCircle2, KeyRound } from "lucide-react";
+import { useState } from "react";
 
 const LENGTH = 6;
 

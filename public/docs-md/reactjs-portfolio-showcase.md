@@ -24,6 +24,8 @@ Pass `variant="masonry-portfolio"` for an edge-to-edge continuous infinite canva
 - Set `itemModal=true` Opens the high-resolution project modal upon card selection, providing media zoom, client metadata, deliverables, and external actions.
 
 ```tsx
+import { PortfolioShowcase } from "@/components/custom/blocks/PortfolioShowcaseBlock";
+
 const PROJECTS = [
   {
     slug: "fintech-aura",

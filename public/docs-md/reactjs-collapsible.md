@@ -24,7 +24,8 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/custom/blocks/CollapsibleBlock";
-
+import { Bell, Check, Shield } from "lucide-react";
+import { useState } from "react";
 
 export default function SettingsPanel() {
   const [emailAlerts, setEmailAlerts] = useState(true);
@@ -178,6 +179,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/custom/blocks/CollapsibleBlock";
+import { ChevronRight, File, Folder } from "lucide-react";
 
 export default function FileTree() {
   return (

@@ -22,8 +22,30 @@ Per-step validation blocks Next, and the Review step can simulate a failed submi
 - `color` takes any CSS colour — hex, `rgb()`, `oklch()`, `var(--token)` — applied inline. A Tailwind class works for the line and circles, but the pulse ring is skipped, since its border colour would need a class Tailwind's scanner never sees.
 
 ```tsx
+import {
+  AlertCircle,
+  Building2,
+  Check,
+  CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
+  Loader2,
+  Lock,
+  Mail,
+  ShieldCheck,
+  User,
+  XCircle,
+  type LucideIcon,
+} from "lucide-react";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
+import {
+  Stepper,
+  StepperContent,
+} from "@/components/custom/blocks/StepperBlock";
 // The Workspace step picks a role with the Select block:
 //   npx shadcn@latest add @avara-ui/select
+import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
 
 const PRIMARY_ROLE_OPTIONS = [
   "Developer",

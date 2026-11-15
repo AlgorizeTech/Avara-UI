@@ -21,6 +21,7 @@ A corner-anchored trigger that expands into a glass chat panel.
 ```tsx
 "use client";
 
+import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
 
 export default function SupportWidget() {
   return (

@@ -31,6 +31,7 @@ import {
   ChatMessage,
   ChatTimestamp,
 } from "@/components/custom/blocks/ChatBubbleBlock";
+import { ImageIcon, Send, SmilePlus } from "lucide-react";
 
 export default function ChatInterface() {
   return (

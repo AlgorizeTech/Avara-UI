@@ -20,6 +20,15 @@ Nest `MenubarMenu` → `MenubarTrigger` + `MenubarContent`.
 - `align` on `MenubarContent` anchors the dropdown to its trigger: `start` (the default), `center` or `end`.
 
 ```tsx
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarMenu,
+  MenubarTrigger,
+} from "@/components/custom/blocks/MenubarBlock";
+import { AppWindow, FolderOpen, Plus, Redo2, Scissors, Undo2 } from "lucide-react";
+
 export default function TopNav() {
   return (
     <Menubar>
@@ -81,6 +90,39 @@ npx shadcn@latest add @avara-ui/menubar
 - `className` on the bar is how you strip its chrome to fuse it into a window title bar.
 
 ```tsx
+import {
+  Menubar,
+  MenubarContent,
+  MenubarItem,
+  MenubarLabel,
+  MenubarMenu,
+  MenubarSeparator,
+  MenubarShortcut,
+  MenubarTrigger,
+} from "@/components/custom/blocks/MenubarBlock";
+import {
+  Check,
+  ClipboardPaste,
+  Copy,
+  Eye,
+  EyeOff,
+  Info,
+  Laptop,
+  Maximize,
+  Moon,
+  Power,
+  Redo2,
+  Scissors,
+  Settings,
+  Settings2,
+  Sun,
+  Undo2,
+  User,
+  UserPlus,
+  Users,
+} from "lucide-react";
+import { useState } from "react";
+
 /** Every row carries one, so no row needs `inset` to fake the gutter. */
 const icon = "w-4 h-4 mr-2 shrink-0";
 /** Marks the active theme; ml-auto keeps it clear of the label. */

@@ -1,6 +1,7 @@
 "use client";
 
 import { GitHubIcon } from "@/assets/icons/github";
+import { LinkedInIcon } from "@/assets/icons/linkedin";
 // import { GitHubStarCount } from "@/components/home/github-star-count";
 import { links } from "@/config/site";
 import { cn } from "@/lib/utils";
@@ -12,7 +13,6 @@ import {
 import {
   BookOpen,
   LayoutGrid,
-  Linkedin,
   Palette,
   Search,
   X,
@@ -291,7 +291,7 @@ const Header = () => {
               className="pointer-events-auto hidden lg:flex items-center justify-center size-10 rounded-full bg-black/[0.03] dark:bg-white/[0.04] backdrop-blur-xl border border-border/40 text-foreground/80 hover:text-foreground hover:border-border/70 transition-all"
               aria-label="View LinkedIn Profile"
             >
-              <Linkedin className="w-4 h-4" />
+              <LinkedInIcon className="w-4 h-4 fill-current" />
             </Link>
 
             {/* GitHub Stars Pill */}

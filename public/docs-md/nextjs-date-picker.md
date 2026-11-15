@@ -21,7 +21,8 @@ The calendar dropdown highlights today's date subtly and the selected date stron
 ```tsx
 "use client";
 
-
+import { useState } from "react";
+import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
 
 export default function LaunchDatePicker() {
   const [date, setDate] = useState<Date | null>(null);
@@ -62,7 +63,8 @@ npx shadcn@latest add @avara-ui/date-picker
 ```tsx
 "use client";
 
-
+import { useState } from "react";
+import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
 
 export default function ValidatedDatePicker() {
   const [date, setDate] = useState<Date | null>(null);
@@ -98,7 +100,8 @@ export default function ValidatedDatePicker() {
 ```tsx
 "use client";
 
-
+import { useState } from "react";
+import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
 
 export default function FutureOnlyPicker() {
   const [date, setDate] = useState<Date | null>(null);
@@ -128,7 +131,8 @@ Pick a day, then scroll the columns — Done closes the popover. The columns sit
 ```tsx
 "use client";
 
-
+import { useState } from "react";
+import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
 
 export default function DateTimePicker() {
   const [date, setDate] = useState<Date | null>(null);

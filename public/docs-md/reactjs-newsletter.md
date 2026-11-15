@@ -62,6 +62,8 @@ Four faces around the form, drifting with the pointer. Type an address and press
 - `Proof` stacks up to five `avatars` with a plus and takes the line as children.
 
 ```tsx
+import { Newsletter } from "@/components/custom/blocks/NewsletterBlock";
+
 // Faces from Pexels, free to use.
 const FACES = [
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-2379004-1790158812208.jpg",
@@ -123,6 +125,8 @@ A glow in the accent colour follows the pointer, and a ticker of who just joined
 - `Ticker` takes `items` of `{ name, avatar?, when }` and runs them left on a `MarqueeBlock` that pauses under the pointer.
 
 ```tsx
+import { Newsletter } from "@/components/custom/blocks/NewsletterBlock";
+
 const JOINED = [
   { name: "Iris", avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-2379004-1790158812208.jpg", when: "just now" },
   { name: "Ben", avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158810/pexels-photo-220453-1790158812206.jpg", when: "2 min ago" },
@@ -165,6 +169,8 @@ Copy and form on the left, the latest three issues fanned on the right. Hover th
 - `Issues` takes `items` of `{ title, date, excerpt, cover?, tag? }`: the first is the card in front — on a `TiltedCard`, with its cover and tag — and the next two sit behind it, turned.
 
 ```tsx
+import { Newsletter } from "@/components/custom/blocks/NewsletterBlock";
+
 const ISSUES = [
   {
     title: "Defaults do the heavy lifting",

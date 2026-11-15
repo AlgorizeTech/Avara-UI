@@ -168,6 +168,10 @@ Suggestions appear like a select menu, but the field stays free text — pick on
 - `maxSuggestions={8}` caps how many rows show at once; the rest scroll.
 
 ```tsx
+import { useState } from "react";
+import { InputBlock } from "@/components/custom/blocks/InputBlock";
+import { MapPin } from "lucide-react";
+
 const CITIES = [
   "Amsterdam", "Berlin", "Dhaka", "London", "New York",
   "San Francisco", "Santiago", "Singapore", "Tokyo",
@@ -202,6 +206,7 @@ Capsule-shaped fields featuring isolated left icon badges and smooth accent glow
 
 ```tsx
 import { InputBlock } from "@/components/custom/blocks/InputBlock";
+import { Lock, Mail, User } from "lucide-react";
 
 export default function PillInputs() {
   return (

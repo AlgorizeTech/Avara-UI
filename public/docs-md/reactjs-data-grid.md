@@ -22,6 +22,9 @@ Click any cell and drive the grid from the keyboard: arrows to move, `Tab` to fl
 - `color` accents the active cell's focus ring and the drag handle. Hex codes work.
 
 ```tsx
+import { useState } from "react";
+import { DataGridBlock } from "@/components/custom/blocks/DataGridBlock";
+
 import { type GridColumn } from "@/components/custom/blocks/DataGridBlock";
 
 const COLUMNS: GridColumn[] = [

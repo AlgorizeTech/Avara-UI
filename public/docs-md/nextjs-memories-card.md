@@ -18,7 +18,8 @@ Hover the front card for interactive 3D tilt physics, or drag/swipe it to send i
 ```tsx
 "use client";
 
-
+import { useState } from "react";
+import { MemoriesCard, type MemoryItem } from "@/components/custom/blocks/MemoriesCardBlock";
 
 const memories: MemoryItem[] = [
   {

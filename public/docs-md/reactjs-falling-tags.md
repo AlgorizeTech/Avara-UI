@@ -20,6 +20,8 @@ Watch the tags float into view, drop and tumble into a natural pile. Click and t
 - `interactive=true` enables real-time pointer drag and momentum-based throwing with impulse physics.
 
 ```tsx
+import FallingTags from "@/components/custom/blocks/FallingTagsBlock";
+
 export default function SkillsSection() {
   return (
     <div className="w-full max-w-4xl mx-auto py-12">
@@ -59,6 +61,8 @@ Vibrant multi-color playful palette across rich indigo, emerald, rose, and amber
 - Set `palette="colorful"` for a vivid color distribution across all falling badges.
 
 ```tsx
+import FallingTags from "@/components/custom/blocks/FallingTagsBlock";
+
 export default function ColorfulTags() {
   return (
     <FallingTags
@@ -76,6 +80,8 @@ Translucent frosted glass badges with backdrop-blur and luminous specular border
 - Set `palette="glass"` for semi-transparent tags with backdrop blur that blend over dark, light, or image backgrounds.
 
 ```tsx
+import FallingTags from "@/components/custom/blocks/FallingTagsBlock";
+
 const mySkills = [
   "React 19",
   "Next.js 15",
@@ -126,6 +132,8 @@ High-energy glowing cyberpunk badges with vibrant borders and neon glow shadows.
 - Set `palette="neon"` for intense saturated tones with electric glow box-shadows.
 
 ```tsx
+import FallingTags from "@/components/custom/blocks/FallingTagsBlock";
+
 export default function NeonArena() {
   return (
     <FallingTags
@@ -145,6 +153,8 @@ Soft soothing aesthetic pastel badges designed for serene minimal layouts and cr
 - Set `palette="pastel"` for delicate muted pastel hues that maintain readability without visual clutter.
 
 ```tsx
+import FallingTags from "@/components/custom/blocks/FallingTagsBlock";
+
 export default function PastelTags() {
   return (
     <FallingTags
@@ -162,6 +172,8 @@ High-contrast editorial zinc and black/white palette tailored for modern minimal
 - Set `palette="monochrome"` for a restrained black, white, and zinc palette that follows theme foreground/background tokens.
 
 ```tsx
+import FallingTags from "@/components/custom/blocks/FallingTagsBlock";
+
 export default function MonochromeTags() {
   return (
     <FallingTags
@@ -179,6 +191,8 @@ High-contrast dual-tone black and white badges. Tags alternate between black bac
 - Set `palette="black-and-white"` for dual-tone black and white badges with inverted high-contrast borders and text.
 
 ```tsx
+import FallingTags from "@/components/custom/blocks/FallingTagsBlock";
+
 export default function BlackAndWhiteTags() {
   return (
     <FallingTags

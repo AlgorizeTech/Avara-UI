@@ -206,6 +206,19 @@ for (const item of items) {
     if (!fs.existsSync(demoFor(item.name))) {
       fail(`[${item.name}] has no demo (${item.name}-demo.tsx) for the docs preview to switch to.`);
     }
+    // A twin's source sits one folder below its install target (blocks/motion/ →
+    // blocks/), so a relative import resolves in the repo but breaks in the
+    // consumer's project. Twins must import siblings through the `@/` alias.
+    for (const f of item.files) {
+      const src = path.join(ROOT, f.path);
+      if (!fs.existsSync(src) || !/\.tsx?$/.test(src)) continue;
+      const text = fs.readFileSync(src, "utf8");
+      for (const m of text.matchAll(/(?:from|import)\s*["'](\.{1,2}\/[^"']*)["']/g)) {
+        fail(
+          `[${item.name}] ${f.path} imports "${m[1]}" relatively; the file installs one folder up, so use the "@/components/..." alias.`
+        );
+      }
+    }
   } else if (pullsMotion(item.name)) {
     fail(
       `[${item.name}] pulls Motion without being a -motion twin. ` +

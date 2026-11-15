@@ -170,8 +170,9 @@ Suggestions appear like a select menu, but the field stays free text — pick on
 ```tsx
 "use client";
 
-
-
+import { useState } from "react";
+import { InputBlock } from "@/components/custom/blocks/InputBlock";
+import { MapPin } from "lucide-react";
 
 const CITIES = [
   "Amsterdam", "Berlin", "Dhaka", "London", "New York",
@@ -207,6 +208,7 @@ Capsule-shaped fields featuring isolated left icon badges and smooth accent glow
 
 ```tsx
 import { InputBlock } from "@/components/custom/blocks/InputBlock";
+import { Lock, Mail, User } from "lucide-react";
 
 export default function PillInputs() {
   return (

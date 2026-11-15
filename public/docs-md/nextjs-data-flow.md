@@ -23,10 +23,11 @@ Three columns at desktop with the curves drawn between them; below that the colu
 ```tsx
 "use client";
 
-
-
-
-
+import { ArrowUpRight, Download } from "lucide-react";
+import Button from "@/components/custom/blocks/Button";
+import { DataFlow } from "@/components/custom/blocks/DataFlowBlock";
+import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
+import { AppStoreIcon, CapterraIcon, G2Icon, GooglePlayIcon, RedditIcon, UpworkIcon } from "@/components/custom/blocks/Icons";
 
 const APP_STORES = [
   { label: "App Store", icon: <AppStoreIcon fill="currentColor" /> },

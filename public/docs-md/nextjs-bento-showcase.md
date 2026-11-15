@@ -23,7 +23,8 @@ Three columns and three rows at desktop, two columns at tablet, a single stack o
 ```tsx
 "use client";
 
-
+import { useRouter } from "next/navigation";
+import { BentoShowcase, type BentoPlan, type BentoStat } from "@/components/custom/blocks/BentoShowcaseBlock";
 
 const CASE_STUDIES = [
   {

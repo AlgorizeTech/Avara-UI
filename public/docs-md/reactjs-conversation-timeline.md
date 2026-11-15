@@ -20,6 +20,9 @@ Hover the rail (or Tab into it) to expand every row at once. Then hover a specif
 - `activeId` is the selected checkpoint; its mark takes the accent colour. `onSelect` receives the id of a clicked mark.
 
 ```tsx
+import { ConversationTimeline } from "@/components/custom/blocks/ConversationTimelineBlock";
+import { useState } from "react";
+
 const checkpoints = [
   { id: "1", role: "system",    label: "System prompt" },
   { id: "2", role: "user",      label: "Can you help me set up auth?" },
@@ -64,6 +67,9 @@ Drag the sliders, then hover the rail to see the new sizes.
 - `visibleCount` caps how many rows show before the rail scrolls (default `10`) — the faded edges appear only when there is more to scroll to. `labelWidth` is the fixed column labels truncate against (default `240`).
 
 ```tsx
+import { useState } from "react";
+import { ConversationTimeline, type TimelineCheckpoint } from "@/components/custom/blocks/ConversationTimelineBlock";
+
 const checkpoints: TimelineCheckpoint[] = [
   { id: "1", role: "system", label: "System prompt" },
   { id: "2", role: "user", label: "Can you help me set up auth?" },

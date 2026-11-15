@@ -21,6 +21,19 @@ Compose `WizardProgress`, `WizardContainer` and one `WizardStep` per question â€
 - `onComplete` fires when Next or Enter is pressed on the final step.
 
 ```tsx
+import {
+  Wizard,
+  WizardContainer,
+  WizardDescription,
+  WizardInput,
+  WizardNavigation,
+  WizardProgress,
+  WizardStep,
+  WizardTitle,
+} from "@/components/custom/blocks/WizardBlock";
+import { CheckCircle2 } from "lucide-react";
+import { useState, type FormEvent } from "react";
+
 export default function OnboardingFlow() {
   // Remounting the Wizard is what resets it back to the first step.
   const [runKey, setRunKey] = useState(0);
@@ -107,6 +120,19 @@ npx shadcn@latest add @avara-ui/wizard
 - Use `initialStep` to resume a flow partway through instead of restarting it.
 
 ```tsx
+import {
+  Wizard,
+  WizardContainer,
+  WizardDescription,
+  WizardInput,
+  WizardNavigation,
+  WizardProgress,
+  WizardStep,
+  WizardTitle,
+} from "@/components/custom/blocks/WizardBlock";
+import { CheckCircle2 } from "lucide-react";
+import { useState, type FormEvent } from "react";
+
 export default function ResumedOnboarding() {
   // Remounting the Wizard is what resets it back to the first step.
   const [runKey, setRunKey] = useState(0);
@@ -177,6 +203,18 @@ export default function ResumedOnboarding() {
 - `children` can omit `WizardProgress` entirely â€” it is an independent child, and navigation is unchanged without it.
 
 ```tsx
+import {
+  Wizard,
+  WizardContainer,
+  WizardDescription,
+  WizardInput,
+  WizardNavigation,
+  WizardStep,
+  WizardTitle,
+} from "@/components/custom/blocks/WizardBlock";
+import { CheckCircle2 } from "lucide-react";
+import { useState, type FormEvent } from "react";
+
 export default function BareWizard() {
   // Remounting the Wizard is what resets it back to the first step.
   const [runKey, setRunKey] = useState(0);

@@ -20,6 +20,7 @@ A phrase on the ring and a play button in the middle, both in the theme colour. 
 
 ```tsx
 import { Play } from "lucide-react";
+import { CircularText } from "@/components/custom/blocks/CircularTextBlock";
 
 export default function VideoBadge() {
   return (
@@ -86,6 +87,7 @@ Wrapped in an anchor, with the centre reacting to hover through a Tailwind group
 
 ```tsx
 import { ArrowUpRight } from "lucide-react";
+import { CircularText } from "@/components/custom/blocks/CircularTextBlock";
 
 export default function SeeTheWork() {
   return (

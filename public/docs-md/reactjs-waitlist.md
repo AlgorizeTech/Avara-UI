@@ -62,6 +62,8 @@ Your mark, a countdown to the opening date, and the form beside its button on a 
 - `shareUrl` on `Form` adds a copy button for the reader's invite link to the thank-you, with `shareHint` beside it.
 
 ```tsx
+import { Waitlist } from "@/components/custom/blocks/WaitlistBlock";
+
 // Faces from Pexels, free to use.
 const FACES = [
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-2379004-1790158812208.jpg",
@@ -119,6 +121,8 @@ A compact card with the field over the button — for a sidebar, a footer or a m
 - `note` on `Form` is a small line under the button — what joining means, in your own words.
 
 ```tsx
+import { Waitlist } from "@/components/custom/blocks/WaitlistBlock";
+
 // Faces from Pexels, free to use.
 const FACES = [
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-2379004-1790158812208.jpg",
@@ -159,6 +163,8 @@ The form as a pill on a soft ground, the faces already in line under it, and a b
 - `Spots` takes `claimed` and `total`, counts the figure up and fills a `Progress` bar to match. Pass children to write the line yourself.
 
 ```tsx
+import { Waitlist } from "@/components/custom/blocks/WaitlistBlock";
+
 // Faces from Pexels, free to use.
 const FACES = [
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-2379004-1790158812208.jpg",

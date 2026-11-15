@@ -26,6 +26,7 @@ Wait a few seconds: the camera pulls back, glides to the next card and settles o
 ```tsx
 "use client";
 
+import { ImageWall, type WallItem } from "@/components/custom/blocks/ImageWallBlock";
 
 const ITEMS: WallItem[] = [
   { title: "Word bounce hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/hero-1790516064495.jpg" },
@@ -100,6 +101,7 @@ A short strip: the camera pulls back so a few cards show, and visits them in a r
 ```tsx
 "use client";
 
+import { ImageWall, type WallItem } from "@/components/custom/blocks/ImageWallBlock";
 
 const ITEMS: WallItem[] = [
   { title: "Word bounce hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/hero-1790516064495.jpg" },
@@ -158,6 +160,7 @@ interval={true} with highlightFocus={true} and draggable={true} combines automat
 ```tsx
 "use client";
 
+import { ImageWall, type WallItem } from "@/components/custom/blocks/ImageWallBlock";
 
 const ITEMS: WallItem[] = [
   { title: "Word bounce hero", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/hero-1790516064495.jpg" },

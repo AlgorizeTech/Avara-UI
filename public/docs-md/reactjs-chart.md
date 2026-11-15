@@ -269,7 +269,7 @@ export default function WeekSplit() {
 - `signUps={412}` calculates and renders the visit-to-sign-up conversion rate meter.
 
 ```tsx
-import { ChartBlock, TrafficSourcesChart } from "@/components/custom/blocks/ChartBlock";
+import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
 
 const sources = [
   { label: "Direct", value: 3420 },
@@ -300,7 +300,7 @@ export default function TrafficSourcesDemo() {
 - `showCodes={true}` renders the 2-letter ISO country badges in the breakdown list.
 
 ```tsx
-import { ChartBlock, VisitorsByCountryChart } from "@/components/custom/blocks/ChartBlock";
+import { ChartBlock } from "@/components/custom/blocks/ChartBlock";
 
 const countryVisits = [
   { label: "United States", value: 4250, code: "US" },
@@ -331,6 +331,7 @@ export default function CountryVisitorsDemo() {
 
 ```tsx
 import { ChartBlock, type MetricTabItem } from "@/components/custom/blocks/ChartBlock";
+import { Mail, PenLine, UserPlus, Wallet } from "lucide-react";
 
 const overviewMetrics: MetricTabItem[] = [
   {

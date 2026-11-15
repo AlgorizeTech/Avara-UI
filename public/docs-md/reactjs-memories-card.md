@@ -16,6 +16,9 @@ Hover the front card for interactive 3D tilt physics, or drag/swipe it to send i
 - `onCardChange` fires with the new front index (number) on every swipe — wire it to a caption, counter or analytics call.
 
 ```tsx
+import { useState } from "react";
+import { MemoriesCard, type MemoryItem } from "@/components/custom/blocks/MemoriesCardBlock";
+
 const memories: MemoryItem[] = [
   {
     id: "m1",

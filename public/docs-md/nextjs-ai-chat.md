@@ -179,6 +179,7 @@ import AIChat, {
   type SendPayload,
   type UploadHandler,
 } from "@/components/custom/blocks/Ai-chat";
+import { Database, Paperclip, Ticket } from "lucide-react";
 
 // One upload row, then whatever sources your assistant can reach. Picking a
 // mention row writes "@Label" into the prompt; `onSend` lists which were named.

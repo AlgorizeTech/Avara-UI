@@ -19,6 +19,8 @@ A corner-anchored trigger that expands into a glass chat panel.
 - `initialMessages` seeds the thread the reader sees on opening.
 
 ```tsx
+import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock";
+
 export default function SupportWidget() {
   return (
     <FloatingContactButtonBlock

@@ -15,7 +15,7 @@
       "path": "app/page.tsx",
       "type": "registry:page",
       "target": "app/page.tsx",
-      "content": "import { SecureEnvelope, SecureEnvelopeData } from \"@/components/custom/blocks/SecureEnvelopeBlock\";\n\nconst confidentialData: SecureEnvelopeData = {\n  idNumber: \"ID · 0042\",\n  tagline: \"STAY\\nHUNGRY\",\n  subTagline: \"STAY FOOLISH · CLASSIFIED\",\n  stampBadge: \"CONFIDENTIAL\",\n  dossierNumber: \"DOSSIER // SEC-0042\",\n};\n\nexport default function ConfidentialFolderExample() {\n  return (\n    <div className=\"w-full flex items-center justify-center py-12\">\n      <SecureEnvelope\n        cardDesign=\"confidential-folder\"\n        interactionMode=\"step-flip\"\n        data={confidentialData}\n      />\n    </div>\n  );\n}"
+      "content": "import { SecureEnvelope, type SecureEnvelopeData } from \"@/components/custom/blocks/SecureEnvelopeBlock\";\n\nconst confidentialData: SecureEnvelopeData = {\n  idNumber: \"ID · 0042\",\n  tagline: \"STAY\\nHUNGRY\",\n  subTagline: \"STAY FOOLISH · CLASSIFIED\",\n  stampBadge: \"CONFIDENTIAL\",\n  dossierNumber: \"DOSSIER // SEC-0042\",\n};\n\nexport default function ConfidentialFolderExample() {\n  return (\n    <div className=\"w-full flex items-center justify-center py-12\">\n      <SecureEnvelope\n        cardDesign=\"confidential-folder\"\n        interactionMode=\"step-flip\"\n        data={confidentialData}\n      />\n    </div>\n  );\n}"
     },
     {
       "path": "components/custom/blocks/SecureEnvelopeBlock.tsx",

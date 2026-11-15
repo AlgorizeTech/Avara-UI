@@ -21,6 +21,55 @@ Eight columns at desktop, six, four, three and two as the window narrows; the fe
 - `reveal="in-view"` (the default) plays the wave the first time the section enters the viewport; the docs pass `"immediate"`. Under prefers-reduced-motion the tiles simply appear and the spotlight is off.
 
 ```tsx
+import {
+  ArrowLeftRight,
+  BadgeDollarSign,
+  BarChart3,
+  BookOpen,
+  Bot,
+  Box,
+  Calculator,
+  ChartLine,
+  ClipboardList,
+  Copy,
+  Database,
+  DollarSign,
+  FileText,
+  Flame,
+  Globe,
+  Grid2x2,
+  HeartHandshake,
+  Landmark,
+  LayoutGrid,
+  Lightbulb,
+  MessageSquare,
+  MessagesSquare,
+  PackageOpen,
+  Puzzle,
+  Radio,
+  Rocket,
+  Scissors,
+  Search,
+  Sparkles,
+  Star,
+  Store,
+  Tag,
+  Trophy,
+  Wrench,
+  Zap,
+} from "lucide-react";
+import { PlatformGrid } from "@/components/custom/blocks/PlatformGridBlock";
+import {
+  AppStoreIcon,
+  CapterraIcon,
+  G2Icon,
+  GooglePlayIcon,
+  RedditIcon,
+  StripeIcon,
+  UpworkIcon,
+  YCombinatorIcon,
+} from "@/components/custom/blocks/Icons";
+
 // A small mark on a dark tile, the way store badges are drawn.
 const Badge = ({ children }: { children: React.ReactNode }) => (
   <span className="grid h-4 w-4 place-items-center rounded-[4px] bg-foreground text-background">

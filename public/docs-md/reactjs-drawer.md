@@ -16,6 +16,18 @@ The drawer is always controlled — you own `open` and pass `onOpenChange`.
 - `onOpenChange` is also required, and fires on the overlay click, Escape and the close button alike.
 
 ```tsx
+import { useState } from "react";
+import {
+  Button,
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerTitle,
+} from "@/components/custom/blocks/Drawer";
+
 export default function DrawerDemo() {
   const [open, setOpen] = useState(false);
 
@@ -73,6 +85,18 @@ npx shadcn@latest add @avara-ui/drawer
 - Set `side="bottom"` for the familiar full-width mobile sheet.
 
 ```tsx
+import { useState } from "react";
+import {
+  Button,
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerTitle,
+} from "@/components/custom/blocks/Drawer";
+
 export default function BottomSheet() {
   const [open, setOpen] = useState(false);
 
@@ -105,6 +129,18 @@ export default function BottomSheet() {
 - `open` being yours means you can start it `true`, or flip it from any effect, with no trigger element at all.
 
 ```tsx
+import { useState, useSyncExternalStore } from "react";
+import {
+  Button,
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerTitle,
+} from "@/components/custom/blocks/Drawer";
+
 // Optionally skip visitors who were onboarded before. localStorage is read as
 // an external store: false on the server, the stored value in the browser.
 const subscribeToStorage = (onChange: () => void) => {

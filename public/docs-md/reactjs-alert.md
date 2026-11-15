@@ -176,6 +176,8 @@ export default function AlertIcons() {
 - `onDismiss` fires after that animation, so it is where you drop the alert from your own state.
 
 ```tsx
+import { Alert } from "@/components/custom/blocks/Alerts";
+
 export default function DismissibleAlert() {
   return (
     <Alert

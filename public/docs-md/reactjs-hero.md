@@ -170,6 +170,8 @@ Copy on the left, the honeycomb on the right with the primary hexagon set among 
 - `accent` sets `--primary` for the section: the letters of the word that cross the photographs, the rule, the arrows and the call to action, with its label in `primary-foreground`. Leave it out to follow your theme's primary. `background` is the tone for photographs without one: a deep shade of the primary by default.
 
 ```tsx
+import { HoneycombHero } from "@/components/custom/blocks/HoneycombHeroBlock";
+
 // tone is the colour behind everything while that photograph is featured; keep it deep.
 const IMAGES = [
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158809/photo-1628344253777-f73a64d8f983-1790158812202.jpg", alt: "A waterfall pouring through a green gorge", tone: "#0f2e22" },
@@ -268,6 +270,8 @@ Eyebrow and headline across the top; the glass panel and the queue of cards alon
 - `reveal="in-view"` (the default) plays the entrance the first time the section is seen; the docs pass `"immediate"`. Under prefers-reduced-motion the entrance is skipped and slides swap without the crossfade or drift.
 
 ```tsx
+import { HeroCarousel } from "@/components/custom/blocks/HeroCarouselBlock";
+
 const SLIDES = [
   {
     image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146210/photo-1506905925346-21bda4d32df4-1790146212208.jpg",
@@ -418,6 +422,8 @@ Five columns stepping down to the middle at desktop, three on tablets, two on ph
 - `reveal="in-view"` (the default) plays the sequence the first time the section enters the viewport; the docs pass `"immediate"`. Under prefers-reduced-motion everything renders finished and the badge holds still.
 
 ```tsx
+import { FashionHero } from "@/components/custom/blocks/FashionHeroBlock";
+
 // A person on a plain studio background, multiplied onto a colour that echoes the outfit.
 const LOOKS = [
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790150481/pexels-photo-16944801-1790150482273.jpg", alt: "Model in a pink blouse and lime-green pants against yellow", tone: "#f0a72f", blend: false },
@@ -523,6 +529,9 @@ Twelve columns at desktop — 3 / 3 / 3 / 3 on the first row with the portrait s
 - `reveal="in-view"` (the default) plays everything the first time the section enters the viewport; the docs pass `"immediate"`. Under prefers-reduced-motion the section renders finished.
 
 ```tsx
+import { SupportHero } from "@/components/custom/blocks/SupportHeroBlock";
+import { DiscordIcon, GoogleCalendarIcon, SlackIcon } from "@/components/custom/blocks/Icons";
+
 const AVATARS = [
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790158812/pexels-photo-2379004-1790158812208.jpg", alt: "Ana" },
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790158810/pexels-photo-220453-1790158812206.jpg", alt: "Tom" },
@@ -681,6 +690,8 @@ Badge, headline and pills across the top; five columns of photographs; quote, sc
 - `reveal="in-view"` (the default) plays the sequence the first time the section enters the viewport; the docs pass `"immediate"`. Under prefers-reduced-motion the badge holds still and the section renders finished.
 
 ```tsx
+import { CollageHero } from "@/components/custom/blocks/CollageHeroBlock";
+
 const PHOTOS = [
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148862/pexels-photo-3661193-1790148865106.jpg", alt: "Wooden toy dinosaurs atop a pile of books" },
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148867/pexels-photo-3661387-1790148865107.jpg", alt: "A toddler building with timber blocks" },
@@ -787,6 +798,8 @@ Copy and actions on the left, revolving 3D circular photo orbit ring on the righ
 - `highlights` are the dotted facts under the action buttons with customizable label and color.
 
 ```tsx
+import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
+
 // Landscapes from Unsplash, free to use.
 const IMAGES = [
   "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_600,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
@@ -859,6 +872,8 @@ Left column presents the interactive avatar stack, 5-star review score, 2-line h
 - `pauseOnHover=true` smoothly pauses the continuous cascade animation at the exact position when hovering over any card, resuming seamlessly when the cursor leaves.
 
 ```tsx
+import { BentoCascadeHero } from "@/components/custom/blocks/BentoCascadeHeroBlock";
+
 export default function Hero() {
   return (
     <BentoCascadeHero
@@ -904,6 +919,8 @@ An ethereal hero featuring an elegant serif headline and a staggered 5-card curv
 - `scrollScale=1.35` magnification factor applied to the center focal card as the page scrolls.
 
 ```tsx
+import { BreatheHero } from "@/components/custom/blocks/BreatheHeroBlock";
+
 export default function Hero() {
   return (
     <div className="h-screen w-full">
@@ -955,6 +972,8 @@ A lightweight interactive hero with a pointer-following sun orb, Typographic Cur
 - `primaryButtonVariant="pricing-typographic"` configures the animated button style from our Button component.
 
 ```tsx
+import { SolarSnapshotHero } from "@/components/custom/blocks/SolarSnapshotHeroBlock";
+
 export default function Hero() {
   return (
     <SolarSnapshotHero

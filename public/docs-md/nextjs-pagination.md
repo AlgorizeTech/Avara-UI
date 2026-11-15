@@ -22,7 +22,8 @@ Hold `currentPage` yourself and update it from `onPageChange`.
 ```tsx
 "use client";
 
-
+import { useState } from "react";
+import { Pagination } from "@/components/custom/blocks/PaginationBlock";
 
 export default function BasicPagination() {
   // You own the page state — the component only reports the new number.
@@ -62,7 +63,8 @@ npx shadcn@latest add @avara-ui/pagination
 ```tsx
 "use client";
 
-
+import { useState } from "react";
+import { Pagination } from "@/components/custom/blocks/PaginationBlock";
 
 export default function TightPagination() {
   const [currentPage, setCurrentPage] = useState(50);
@@ -90,7 +92,8 @@ Both controls are opt-in booleans; the page-size dropdown reports through `onPag
 ```tsx
 "use client";
 
-
+import { useState } from "react";
+import { Pagination } from "@/components/custom/blocks/PaginationBlock";
 
 export default function ControlledPagination() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -125,7 +128,8 @@ export default function ControlledPagination() {
 ```tsx
 "use client";
 
-
+import { useState } from "react";
+import { Pagination } from "@/components/custom/blocks/PaginationBlock";
 
 export default function DropdownJump() {
   const [currentPage, setCurrentPage] = useState(7);
@@ -151,7 +155,8 @@ export default function DropdownJump() {
 ```tsx
 "use client";
 
-
+import { useState } from "react";
+import { Pagination } from "@/components/custom/blocks/PaginationBlock";
 
 export default function CustomerDirectory() {
   const [currentPage, setCurrentPage] = useState(1);

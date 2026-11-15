@@ -68,6 +68,7 @@ Compact single month view for date range selection.
 
 ```tsx
 import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
+import { useState } from "react";
 
 export default function SingleRangeDatePickerDemo() {
   const [range, setRange] = useState<DateRange>({
@@ -92,6 +93,7 @@ Single calendar layout displaying dynamic rate prices ($100, $120) below date nu
 
 ```tsx
 import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
+import { useState } from "react";
 
 export default function PricedSingleRangeDatePickerDemo() {
   const [range, setRange] = useState<DateRange>({
@@ -118,6 +120,7 @@ Side-by-side dual calendars (Left Month & Right Month) for continuous range sele
 
 ```tsx
 import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
+import { useState } from "react";
 
 export default function DualRangeDatePickerDemo() {
   const [range, setRange] = useState<DateRange>({
@@ -142,6 +145,7 @@ Side-by-side dual calendars displaying dynamic rate prices ($100, $120) below da
 
 ```tsx
 import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
+import { useState } from "react";
 
 export default function PricedDualRangeDatePickerDemo() {
   const [range, setRange] = useState<DateRange>({
@@ -168,6 +172,7 @@ export default function PricedDualRangeDatePickerDemo() {
 
 ```tsx
 import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
+import { useState } from "react";
 
 export default function UpcomingStay() {
   const [range, setRange] = useState<DateRange>(() => {
@@ -191,6 +196,7 @@ The card opens as a bare calendar. Pick a start day and a time rail unfolds besi
 
 ```tsx
 import { RangeDatePicker, type DateRange } from "@/components/custom/range-date-picker";
+import { useState } from "react";
 
 export default function BookingWindow() {
   // Start empty: the card is just the calendar until a start day is picked.

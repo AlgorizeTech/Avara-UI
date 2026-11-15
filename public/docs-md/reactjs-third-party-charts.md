@@ -36,6 +36,16 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/custom/blocks/CardBlock";
+import { Badge } from "@/components/custom/ui/badge";
+import { accentStyle } from "@/lib/accent";
+import { useChartTokens } from "@/lib/chart-tokens";
 
 const revenue = [
   { month: "Jan", mrr: 12400, expansion: 2100 },
@@ -156,6 +166,7 @@ chart:
 ```ts
 // src/lib/chart-tokens.ts
 import { useEffect, useState } from "react";
+import { isDefaultAccent, resolveAccent } from "@/lib/accent";
 
 /**
  * Bridges the design tokens in CSS into the plain strings third-party chart
@@ -267,7 +278,26 @@ Chart.js is tree-shaken, so every scale, element and plugin has to be registered
 
 ```tsx
 import { useMemo } from "react";
-
+import {
+  ArcElement,
+  BarElement,
+  CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LinearScale,
+  Tooltip,
+  type ChartOptions,
+} from "chart.js";
+import { Bar, Doughnut } from "react-chartjs-2";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/custom/blocks/CardBlock";
+import { accentStyle } from "@/lib/accent";
+import { useChartTokens } from "@/lib/chart-tokens";
 
 /**
  * Chart.js is tree-shaken: every scale, element and plugin you use has to be

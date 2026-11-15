@@ -19,6 +19,18 @@ Type in any search box to filter — empty groups vanish on their own. `ArrowUp`
 - Give `heading` to a `CommandGroup` to label the cluster — the whole group hides itself when every item filters out.
 
 ```tsx
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "@/components/custom/blocks/CommandBlock";
+import { Calculator, Calendar, CreditCard, LogOut, Settings, Smile, User } from "lucide-react";
+
 export default function CommandPalette() {
   const run = (value: string) => console.log("Selected:", value);
 
@@ -108,6 +120,15 @@ Swap `Command` for `CommandDialog` to get the ⌘K overlay — try the shortcut.
 - `onOpenChange` fires on click-outside and on Escape, so it is where you close it.
 
 ```tsx
+import { useEffect, useState } from "react";
+import {
+  CommandDialog,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/custom/blocks/CommandBlock";
+
 export default function QuickActions() {
   const [open, setOpen] = useState(false);
 
@@ -161,6 +182,16 @@ export default function QuickActions() {
 - Set `shouldFilter={false}` to turn off the built-in filter when the results already come back filtered from an API.
 
 ```tsx
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/custom/blocks/CommandBlock";
+import { Calculator, Calendar, Smile } from "lucide-react";
+
 export default function ExternalFiltering() {
   // shouldFilter={false} hands filtering back to you. Typing no longer narrows
   // the list on its own — swap the static items below for your own results and

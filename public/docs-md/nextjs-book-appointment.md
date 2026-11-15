@@ -53,6 +53,7 @@ Pick a day and a time, press Book — the button stays busy while your onBook pr
 ```tsx
 "use client";
 
+import { BookAppointment } from "@/components/custom/blocks/BookAppointmentBlock";
 
 const DOCTOR = {
   name: "Dr. Priya Nair, MD",
@@ -132,6 +133,7 @@ No glass: the same booking on white cards with an ordinary shadow. The booker it
 ```tsx
 "use client";
 
+import { BookAppointment } from "@/components/custom/blocks/BookAppointmentBlock";
 
 const DOCTOR = {
   name: "Dr. Priya Nair, MD",

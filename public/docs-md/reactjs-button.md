@@ -16,6 +16,7 @@ The glowing border animation continuously spins around the 4 sides of the button
 
 ```tsx
 import Button from "@/components/custom/blocks/Button";
+import { ArrowRightIcon, SettingsIcon } from "@/components/custom/blocks/Icons";
 
 export default function GlowingBorderButtonDemo() {
   return (
@@ -65,6 +66,9 @@ Interactive dark glass control tiles for parameter panels (Color pickers, dropdo
 - Mode `effectMode="once" | "continuous"` `once` plays a single time per landing; `continuous` loops while the tile stays active and fades out when it no longer is. Override when it counts as active with `effectActive`. Skipped under `prefers-reduced-motion`.
 
 ```tsx
+import { useState } from "react";
+import Button, { type ShardsEffectMode } from "@/components/custom/blocks/Button";
+
 const EFFECT_MODES: Record<string, ShardsEffectMode> = {
   "One time": "once",
   Continuous: "continuous",
@@ -145,6 +149,7 @@ export default function ControlButtonsDemo() {
 
 ```tsx
 import Button from "@/components/custom/blocks/Button";
+import { ArrowRightIcon, DownloadIcon, MailIcon } from "@/components/custom/blocks/Icons";
 
 export default function MotionButtonDemo() {
   return (
@@ -199,6 +204,16 @@ Omit the children and the button collapses to a square icon target.
 
 ```tsx
 import Button from "@/components/custom/blocks/Button";
+import {
+  SearchIcon,
+  BellIcon,
+  MailIcon,
+  PhoneIcon,
+  SettingsIcon,
+  PlusIcon,
+  MinusIcon,
+  XIcon,
+} from "@/components/custom/blocks/Icons";
 
 export default function IconOnlyButtonDemo() {
   return (
@@ -222,6 +237,17 @@ Brand SVGs from the bundled icon set as leading icons.
 
 ```tsx
 import Button from "@/components/custom/blocks/Button";
+import {
+  EmailIcon,
+  GoogleIcon,
+  GitHubIcon,
+  FacebookIcon,
+  XIcon2,
+  AppleIcon,
+  MicrosoftIcon,
+  SlackIcon,
+  LinkedInIcon,
+} from "@/components/custom/blocks/Icons";
 
 export default function SocialButtonDemo() {
   return (
@@ -271,6 +297,7 @@ Dedicated button surfaces used across Auth Forms (Default, Split, Minimal, Frost
 
 ```tsx
 import Button from "@/components/custom/blocks/Button";
+import { AppleIcon, GitHubIcon, GoogleIcon } from "@/components/custom/blocks/Icons";
 
 export default function AuthAndGlassButtonsDemo() {
   return (

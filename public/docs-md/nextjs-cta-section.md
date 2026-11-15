@@ -194,8 +194,7 @@ export default function MobileAppExample() {
     <CTASection
       variant="mobile-app"
       badge="Mobile App Available"
-      heading={"Aura Clearmind..
-Your partner in wellness."}
+      heading={"Aura Clearmind..\nYour partner in wellness."}
       subheading="Find and book your favorite yoga classes, guided meditation, and daily mindful wellness sessions from anywhere with our all-in-one mobile app, designed to bring balance, clarity, and peace to your life."
       appleStoreHref="#"
       googlePlayHref="#"

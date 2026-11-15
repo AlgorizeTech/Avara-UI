@@ -411,7 +411,7 @@ function BrandPillarsCta({
   const sectionRef = useRef<HTMLElement>(null);
   const flightFrom = useRef<({ id: string } & ReturnType<typeof measureCard>) | null>(null);
   const findCard = (id: string) =>
-    [...(sectionRef.current?.querySelectorAll<HTMLElement>("[data-pillar-card]") ?? [])].find(
+    Array.from(sectionRef.current?.querySelectorAll<HTMLElement>("[data-pillar-card]") ?? []).find(
       (el) => el.dataset.pillarCard === id,
     );
 

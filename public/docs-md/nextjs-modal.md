@@ -19,7 +19,8 @@ Complete modal layout with title, badge, body description, and action buttons.
 ```tsx
 "use client";
 
-
+import { Modal } from "@/components/custom/blocks/ModalBlock";
+import { useState } from "react";
 
 export default function UpdateModal() {
   const [isOpen, setIsOpen] = useState(false);
@@ -75,8 +76,9 @@ Header and footer actions with custom form inputs as children.
 ```tsx
 "use client";
 
-
-
+import { Modal } from "@/components/custom/blocks/ModalBlock";
+import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
+import { useState } from "react";
 
 export default function InviteModal() {
   const [isOpen, setIsOpen] = useState(false);
@@ -154,7 +156,8 @@ Compact centered delete confirmation dialog with danger badge.
 ```tsx
 "use client";
 
-
+import { Modal } from "@/components/custom/blocks/ModalBlock";
+import { useState } from "react";
 
 export default function ConfirmDeleteModal() {
   const [isOpen, setIsOpen] = useState(false);
@@ -192,7 +195,8 @@ Wide layout with pinned header and multi-action responsive footer.
 ```tsx
 "use client";
 
-
+import { Modal } from "@/components/custom/blocks/ModalBlock";
+import { useState } from "react";
 
 export default function SettingsModal() {
   const [isOpen, setIsOpen] = useState(false);
@@ -250,7 +254,8 @@ Translucent frosted-glass treatment with backdrop blur.
 ```tsx
 "use client";
 
-
+import { Modal } from "@/components/custom/blocks/ModalBlock";
+import { useState } from "react";
 
 export default function GlassModal() {
   const [isOpen, setIsOpen] = useState(false);
@@ -289,8 +294,9 @@ Fluid glassmorphism featuring real SVG displacement mapping, multi-layer specula
 ```tsx
 "use client";
 
-
-
+import { Modal } from "@/components/custom/blocks/ModalBlock";
+import { Sparkles } from "lucide-react";
+import { useState } from "react";
 
 export default function LiquidGlassModal() {
   const [isOpen, setIsOpen] = useState(false);

@@ -64,6 +64,7 @@ Four faces around the form, drifting with the pointer. Type an address and press
 ```tsx
 "use client";
 
+import { Newsletter } from "@/components/custom/blocks/NewsletterBlock";
 
 // Faces from Pexels, free to use.
 const FACES = [
@@ -128,6 +129,7 @@ A glow in the accent colour follows the pointer, and a ticker of who just joined
 ```tsx
 "use client";
 
+import { Newsletter } from "@/components/custom/blocks/NewsletterBlock";
 
 const JOINED = [
   { name: "Iris", avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_160,c_limit/v1790158812/pexels-photo-2379004-1790158812208.jpg", when: "just now" },
@@ -173,6 +175,7 @@ Copy and form on the left, the latest three issues fanned on the right. Hover th
 ```tsx
 "use client";
 
+import { Newsletter } from "@/components/custom/blocks/NewsletterBlock";
 
 const ISSUES = [
   {

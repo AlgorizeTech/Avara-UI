@@ -19,6 +19,11 @@ Scroll down to watch top and bottom rows travel in opposite directions across th
 - `onExplore` callback fired when a card's Explore action button is activated.
 
 ```tsx
+import {
+  TopDestinations,
+  type DestinationItem,
+} from "@/components/custom/blocks/TopDestinationsBlock";
+
 const customDestinations: DestinationItem[] = [
   {
     id: "bali",

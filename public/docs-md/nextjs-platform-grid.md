@@ -23,7 +23,54 @@ Eight columns at desktop, six, four, three and two as the window narrows; the fe
 ```tsx
 "use client";
 
-
+import {
+  ArrowLeftRight,
+  BadgeDollarSign,
+  BarChart3,
+  BookOpen,
+  Bot,
+  Box,
+  Calculator,
+  ChartLine,
+  ClipboardList,
+  Copy,
+  Database,
+  DollarSign,
+  FileText,
+  Flame,
+  Globe,
+  Grid2x2,
+  HeartHandshake,
+  Landmark,
+  LayoutGrid,
+  Lightbulb,
+  MessageSquare,
+  MessagesSquare,
+  PackageOpen,
+  Puzzle,
+  Radio,
+  Rocket,
+  Scissors,
+  Search,
+  Sparkles,
+  Star,
+  Store,
+  Tag,
+  Trophy,
+  Wrench,
+  Zap,
+} from "lucide-react";
+import { PlatformGrid } from "@/components/custom/blocks/PlatformGridBlock";
+import {
+  AppStoreIcon,
+  CapterraIcon,
+  G2Icon,
+  GooglePlayIcon,
+  RedditIcon,
+  StripeIcon,
+  UpworkIcon,
+  YCombinatorIcon,
+} from "@/components/custom/blocks/Icons";
 
 // A small mark on a dark tile, the way store badges are drawn.
 const Badge = ({ children }: { children: React.ReactNode }) => (

@@ -23,6 +23,7 @@ Pick a day and a time, press Book — the button stays busy while your onBook pr
 ```tsx
 "use client";
 
+import { BookingCard } from "@/components/custom/blocks/BookingCardBlock";
 
 const MORNING = [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }];
 const AFTERNOON = [{ label: "12:00 PM" }, { label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM", taken: true }];
@@ -77,7 +78,8 @@ The same card inside a GlassPanel from Glass Panel. Nothing inside the card chan
 ```tsx
 "use client";
 
-
+import { BookingCard } from "@/components/custom/blocks/BookingCardBlock";
+import { GlassBackdrop, GlassPanel } from "@/components/custom/blocks/GlassPanelBlock";
 
 const MORNING = [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }];
 const AFTERNOON = [{ label: "12:00 PM" }, { label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM", taken: true }];
@@ -119,7 +121,8 @@ The booking card rendered inside a liquid-glass refraction surface.
 ```tsx
 "use client";
 
-
+import { BookingCard } from "@/components/custom/blocks/BookingCardBlock";
+import { GlassBackdrop } from "@/components/custom/blocks/GlassPanelBlock";
 
 const MORNING = [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }];
 const AFTERNOON = [{ label: "12:00 PM" }, { label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM", taken: true }];

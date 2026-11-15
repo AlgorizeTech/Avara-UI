@@ -18,6 +18,9 @@ Explore the different variations of the Half Stars component — each example sh
 - `allowHalf={false}` restricts interactive picking to whole numbers.
 
 ```tsx
+import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
+import { useState } from "react";
+
 export default function FullStarRating() {
   const [rating, setRating] = useState(3);
 
@@ -56,6 +59,9 @@ npx shadcn@latest add @avara-ui/half-stars
 - Set `allowHalf` — the default — for 0.5 precision while `interactive` is on.
 
 ```tsx
+import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
+import { useState } from "react";
+
 export default function HalfStarRating() {
   const [rating, setRating] = useState(3.5);
 
@@ -76,6 +82,9 @@ export default function HalfStarRating() {
 - Pass `step={0.1}` for fine-grained ratings like 2.3 or 4.6. It overrides `allowHalf` entirely.
 
 ```tsx
+import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
+import { useState } from "react";
+
 export default function PreciseRating() {
   const [rating, setRating] = useState(4.2);
 
@@ -98,6 +107,9 @@ export default function PreciseRating() {
 - `size={24}` is each star's width and height in pixels.
 
 ```tsx
+import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
+import { useState } from "react";
+
 export default function TenStarRating() {
   const [rating, setRating] = useState(7.5);
 

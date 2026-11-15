@@ -5,7 +5,7 @@ import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import { HomepageHero } from "@/components/site/HomepageHero";
 import { WALL_ITEMS, WallStack } from "@/constants/component-wall";
 import Link from "@/components/site/intent-link";
-import { Github } from "lucide-react";
+import { GitHubIcon } from "@/assets/icons/github";
 import { SITE_NAME, links } from "@/config/site";
 import { REGISTRY_NAMESPACE } from "@/lib/registry";
 
@@ -106,7 +106,7 @@ export function HeroSection() {
 				secondaryAction={{
 					label: "Star on GitHub",
 					href: links.github,
-					icon: <Github className="size-4" aria-hidden />,
+					icon: <GitHubIcon className="size-4 fill-current" />,
 					external: true,
 				}}
 				items={WALL_ITEMS}

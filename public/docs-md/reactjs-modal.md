@@ -17,6 +17,9 @@ Complete modal layout with title, badge, body description, and action buttons.
 - Pass `variant="standard"` to get the standard update & alert dialog with built-in primary and cancel action triggers.
 
 ```tsx
+import { Modal } from "@/components/custom/blocks/ModalBlock";
+import { useState } from "react";
+
 export default function UpdateModal() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -69,6 +72,10 @@ Header and footer actions with custom form inputs as children.
 - Pass `variant="form"` to automatically get header and footer action bars while passing form inputs directly as children.
 
 ```tsx
+import { Modal } from "@/components/custom/blocks/ModalBlock";
+import { SelectBlock } from "@/components/custom/blocks/SelectBlock";
+import { useState } from "react";
+
 export default function InviteModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [inviteRole, setInviteRole] = useState("Viewer");
@@ -143,6 +150,9 @@ Compact centered delete confirmation dialog with danger badge.
 - Pass `variant="confirmation"` for a centered destructive confirmation prompt with danger icon and confirm/cancel buttons.
 
 ```tsx
+import { Modal } from "@/components/custom/blocks/ModalBlock";
+import { useState } from "react";
+
 export default function ConfirmDeleteModal() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -177,6 +187,9 @@ Wide layout with pinned header and multi-action responsive footer.
 - Pass `variant="fullscreen"` to get a wide configuration dialog with pinned header, scrollable body, and multi-action footer.
 
 ```tsx
+import { Modal } from "@/components/custom/blocks/ModalBlock";
+import { useState } from "react";
+
 export default function SettingsModal() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -231,6 +244,9 @@ Translucent frosted-glass treatment with backdrop blur.
 - Pass `variant="glass"` to get a translucent card with backdrop blur and glass border highlights.
 
 ```tsx
+import { Modal } from "@/components/custom/blocks/ModalBlock";
+import { useState } from "react";
+
 export default function GlassModal() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -266,6 +282,10 @@ Fluid glassmorphism featuring real SVG displacement mapping, multi-layer specula
 - Pass `variant="liquid-glass"` for real liquid glass refraction using SVG displacement mapping, multi-layer specular highlights, and liquid glass buttons.
 
 ```tsx
+import { Modal } from "@/components/custom/blocks/ModalBlock";
+import { Sparkles } from "lucide-react";
+import { useState } from "react";
+
 export default function LiquidGlassModal() {
   const [isOpen, setIsOpen] = useState(false);
 

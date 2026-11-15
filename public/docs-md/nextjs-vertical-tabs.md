@@ -103,6 +103,7 @@ The default. The rail runs across the top and scrolls sideways when the tabs out
 
 ```tsx
 import { VerticalTabs, type TabItem } from "@/components/custom/blocks/VerticalTabs";
+import { Camera, Clapperboard, Music, Settings } from "lucide-react";
 
 const tabs: TabItem[] = [
   {
@@ -187,6 +188,7 @@ One prop moves the rail beside the pane. Nothing else about the API changes.
 
 ```tsx
 import { VerticalTabs, type TabItem } from "@/components/custom/blocks/VerticalTabs";
+import { Camera, Clapperboard, Music, Settings } from "lucide-react";
 
 const tabs: TabItem[] = [
   {
@@ -258,6 +260,7 @@ The classic browser-tab set — nothing filled, just an accent bar riding a hair
 
 ```tsx
 import { VerticalTabs, type TabItem } from "@/components/custom/blocks/VerticalTabs";
+import { Camera, Clapperboard, Music, Settings } from "lucide-react";
 
 const tabs: TabItem[] = [
   {
@@ -325,6 +328,7 @@ An iOS-style control: one recessed track, the active tab lifted onto its own sur
 
 ```tsx
 import { VerticalTabs, type TabItem } from "@/components/custom/blocks/VerticalTabs";
+import { Camera, Clapperboard, Music, Settings } from "lucide-react";
 
 const tabs: TabItem[] = [
   {
@@ -392,6 +396,7 @@ The quietest selection state: the accent tinted back to a wash, label kept in th
 
 ```tsx
 import { VerticalTabs, type TabItem } from "@/components/custom/blocks/VerticalTabs";
+import { Camera, Clapperboard, Music, Settings } from "lucide-react";
 
 const tabs: TabItem[] = [
   {
@@ -459,6 +464,7 @@ Every tab is its own card. The active one takes the accent; the rest stay flat.
 
 ```tsx
 import { VerticalTabs, type TabItem } from "@/components/custom/blocks/VerticalTabs";
+import { Camera, Clapperboard, Music, Settings } from "lucide-react";
 
 const tabs: TabItem[] = [
   {
@@ -525,6 +531,7 @@ No card chrome at all — just the rail and the pane.
 
 ```tsx
 import { VerticalTabs, type TabItem } from "@/components/custom/blocks/VerticalTabs";
+import { Camera, Clapperboard, Music, Settings } from "lucide-react";
 
 const tabs: TabItem[] = [
   {
@@ -591,6 +598,7 @@ Rail and pane joined inside one outlined card, split by a single divider.
 
 ```tsx
 import { VerticalTabs, type TabItem } from "@/components/custom/blocks/VerticalTabs";
+import { Camera, Clapperboard, Music, Settings } from "lucide-react";
 
 const tabs: TabItem[] = [
   {
@@ -658,6 +666,7 @@ Frosted panels — needs a rich background to blur.
 
 ```tsx
 import { VerticalTabs, type TabItem } from "@/components/custom/blocks/VerticalTabs";
+import { Camera, Clapperboard, Music, Settings } from "lucide-react";
 
 const tabs: TabItem[] = [
   {
@@ -739,6 +748,7 @@ The bar rotates onto the leading edge and travels down the rail, with no track l
 
 ```tsx
 import { VerticalTabs, type TabItem } from "@/components/custom/blocks/VerticalTabs";
+import { Camera, Clapperboard, Music, Settings } from "lucide-react";
 
 const tabs: TabItem[] = [
   {
@@ -805,6 +815,7 @@ Tinted pills stacked down the side — the lightest sidebar there is.
 
 ```tsx
 import { VerticalTabs, type TabItem } from "@/components/custom/blocks/VerticalTabs";
+import { Camera, Clapperboard, Music, Settings } from "lucide-react";
 
 const tabs: TabItem[] = [
   {
@@ -870,6 +881,7 @@ A stack of cards, the active one filled and raised.
 
 ```tsx
 import { VerticalTabs, type TabItem } from "@/components/custom/blocks/VerticalTabs";
+import { Camera, Clapperboard, Music, Settings } from "lucide-react";
 
 const tabs: TabItem[] = [
   {
@@ -935,6 +947,7 @@ The track turns on its side and the raised surface travels vertically; segments 
 
 ```tsx
 import { VerticalTabs, type TabItem } from "@/components/custom/blocks/VerticalTabs";
+import { Camera, Clapperboard, Music, Settings } from "lucide-react";
 
 const tabs: TabItem[] = [
   {
@@ -1000,6 +1013,7 @@ One card around both halves, divided down the middle.
 
 ```tsx
 import { VerticalTabs, type TabItem } from "@/components/custom/blocks/VerticalTabs";
+import { Camera, Clapperboard, Music, Settings } from "lucide-react";
 
 const tabs: TabItem[] = [
   {
@@ -1065,6 +1079,7 @@ Two frosted panels side by side.
 
 ```tsx
 import { VerticalTabs, type TabItem } from "@/components/custom/blocks/VerticalTabs";
+import { Camera, Clapperboard, Music, Settings } from "lucide-react";
 
 const tabs: TabItem[] = [
   {

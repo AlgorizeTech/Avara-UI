@@ -52,6 +52,7 @@ An interactive 2D HTML Canvas that rasterizes your text into thousands of respon
 ```tsx
 "use client";
 
+import { ParticleCanvas } from "@/components/custom/blocks/ParticleCanvasBlock";
 
 export default function ParticleCanvasDemo() {
   return (
@@ -79,6 +80,7 @@ A bottom-anchored giant wordmark banner where each letter rises with a slow, smo
 ```tsx
 "use client";
 
+import { ParticleCanvas } from "@/components/custom/blocks/ParticleCanvasBlock";
 
 export default function WordmarkGlowDemo() {
   return (

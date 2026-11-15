@@ -173,6 +173,17 @@ export default function InvoicesTable({ color }: { color?: string } = {}) {
 - Map `rows` straight into JSX — nested values like customer.email need no transformation.
 
 ```tsx
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContent,
+  TableHead,
+  TableHeader,
+  TableHeading,
+  TableRow,
+} from "@/components/custom/blocks/TableBlock";
+
 type Invoice = {
   reference: string;
   customer: { name: string; email: string };
@@ -415,6 +426,16 @@ export default function PlanComparison({ color }: { color?: string } = {}) {
 - Set `size="sm" | "md" | "lg"` on Table — every descendant reads it from context, so cells and headers stay in step.
 
 ```tsx
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContent,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/custom/blocks/TableBlock";
+
 type Invoice = {
   reference: string;
   customer: { name: string; email: string };

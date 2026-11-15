@@ -59,12 +59,25 @@ The full page. Open it fullscreen to see it as a page — the dial reads Farah's
 ```tsx
 "use client";
 
-
-
-
-
-
-
+import { useState } from "react";
+import { GlassPanel } from "@/components/custom/blocks/GlassPanelBlock";
+import { ProfilePage, WorkdayDial } from "@/components/custom/blocks/ProfilePageBlock";
+import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
+import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
+import { cn } from "@/lib/utils";
+import {
+  ArrowLeft,
+  Check,
+  Eye,
+  FileText,
+  GitMerge,
+  Globe,
+  Mail,
+  MapPin,
+  MessageCircle,
+  Share2,
+  UserPlus,
+} from "lucide-react";
 
 const TIME_ZONE = "Asia/Dhaka";
 const WORKDAY = { start: 10, end: 18 };
@@ -348,12 +361,25 @@ The same page with no glass: white cards, an ordinary shadow, a flat ground. Not
 ```tsx
 "use client";
 
-
-
-
-
-
-
+import { useState } from "react";
+import { GlassPanel } from "@/components/custom/blocks/GlassPanelBlock";
+import { ProfilePage, WorkdayDial } from "@/components/custom/blocks/ProfilePageBlock";
+import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
+import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
+import { cn } from "@/lib/utils";
+import {
+  ArrowLeft,
+  Check,
+  Eye,
+  FileText,
+  GitMerge,
+  Globe,
+  Mail,
+  MapPin,
+  MessageCircle,
+  Share2,
+  UserPlus,
+} from "lucide-react";
 
 const TIME_ZONE = "Asia/Dhaka";
 const WORKDAY = { start: 10, end: 18 };
@@ -637,12 +663,25 @@ Fluid SVG displacement map refraction, specular inner highlights, and ambient de
 ```tsx
 "use client";
 
-
-
-
-
-
-
+import { useState } from "react";
+import { GlassPanel } from "@/components/custom/blocks/GlassPanelBlock";
+import { ProfilePage, WorkdayDial } from "@/components/custom/blocks/ProfilePageBlock";
+import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
+import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock";
+import { cn } from "@/lib/utils";
+import {
+  ArrowLeft,
+  Check,
+  Eye,
+  FileText,
+  GitMerge,
+  Globe,
+  Mail,
+  MapPin,
+  MessageCircle,
+  Share2,
+  UserPlus,
+} from "lucide-react";
 
 const TIME_ZONE = "Asia/Dhaka";
 const WORKDAY = { start: 10, end: 18 };

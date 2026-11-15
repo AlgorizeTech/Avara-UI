@@ -138,7 +138,7 @@ Accordion brand logo showcase with animated horizontal pleats, autoplay progress
 - `pauseOnHover=true` pauses autoplay when the cursor hovers over any panel.
 
 ```tsx
-import { BrandLogoAccordion, type BrandItem } from "@/components/custom/blocks/Accordion";
+import { BrandLogoAccordion } from "@/components/custom/blocks/Accordion";
 
 // Alternatively use <Accordion variant="brand-reveal" />
 export default function BrandRevealShowcase() {

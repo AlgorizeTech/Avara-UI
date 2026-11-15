@@ -21,6 +21,7 @@ Sticky left-hand TOC navigation with automatic scroll-spy, progress indicator, a
 ```tsx
 "use client";
 
+import { TableOfContentsBlock, type TOCItem } from "@/components/custom/blocks/TableOfContentsBlock";
 
 const previewItems: TOCItem[] = [
   {

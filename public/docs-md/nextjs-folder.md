@@ -22,6 +22,7 @@ Hover, tap or focus the folder to fan the cards out.
 
 ```tsx
 import { Folder } from "@/components/custom/blocks/FolderBlock";
+import { Image } from "lucide-react";
 
 // The folder takes a soft tint of the theme colour by default; pass `color` to pin one.
 // peek={0} → an empty folder; peek={3} (default) → filled
@@ -63,6 +64,7 @@ Hover a card for its name. Use the arrows — or drag a card sideways — to pag
 
 ```tsx
 import { Folder } from "@/components/custom/blocks/FolderBlock";
+import { FileText } from "lucide-react";
 
 // Hovering fans the cards out into an arc above the folder — hovering a
 // card shows its name. Past five, arrows page through and wrap around.
@@ -91,8 +93,9 @@ Pick an icon — it and the pocket take their shades from the theme colour chose
 ```tsx
 "use client";
 
-
-
+import { Folder } from "@/components/custom/blocks/FolderBlock";
+import { Camera, FileText, Image, type LucideIcon, Music, Palette, Video } from "lucide-react";
+import { useState } from "react";
 
 const ICONS: Array<{ id: string; icon: LucideIcon }> = [
   { id: "palette", icon: Palette },
@@ -138,6 +141,7 @@ Drag a photo sideways — or swipe it with a thumb — to page through; the arro
 
 ```tsx
 import { Folder } from "@/components/custom/blocks/FolderBlock";
+import { Camera } from "lucide-react";
 
 // { thumb } turns a card into a photo. Add { name } for a hover tooltip.
 const photos = [
