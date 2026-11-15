@@ -7,74 +7,292 @@ import { extractCode } from "@/lib/code";
 
 # Shadcn Error Page
 
-A full-page, responsive Cyberpunk Diagnostic Terminal, Modern Animated Orbital Radar, Interactive Service Pipeline Topology, and Quantum Glitch Bento HUD section designed for root application error boundaries, Next.js `error.tsx` / `global-error.tsx`, and dedicated maintenance pages.
+A full-page, responsive Cyberpunk Diagnostic Terminal, Modern Animated Orbital Radar, Interactive Service Pipeline Topology, Quantum Glitch Bento HUD, and Prismatic Aurora Glass section designed for root application error boundaries, Next.js `error.tsx` / `global-error.tsx`, and dedicated maintenance pages.
 
-Features full-width terminal enclosures, interactive network topology flows, chromatic glitch bento HUDs, diagnostic monitors, adaptive light & dark mode styling, live stacktrace inspectors, and one-click incident copying.
+Features full-width terminal enclosures, interactive network topology flows, chromatic glitch bento HUDs, floating prismatic aurora glass crystals, diagnostic monitors, adaptive light & dark mode styling, live stacktrace inspectors, and one-click incident copying.
 
 <AgentVariants slug="error" />
 
-export const usageDefault = `import { ErrorSection } from "@/components/custom/blocks/ErrorBlock";
+export const terminalTraceSource = `const variant: ErrorVariant = "terminal";
 
-export default function ErrorPage() {
+const sampleStacktrace: string = \`Error: Critical Kernel Exception (0x9481FA)
+  at runWorkerPipeline (/app/core/worker.ts:142:19)
+  at async processBatchQueue (/app/queue/dispatcher.ts:89:12)
+  at async ClusterManager.dispatchTask (/app/cluster/manager.ts:312:7)\`;`;
+
+export const modernServicesSource = `const variant: ErrorVariant = "modern-animated";
+
+const services: ServiceStatusItem[] = [
+  {
+    name: "API Gateway",
+    status: "operational",
+    latency: "24ms",
+  },
+  {
+    name: "Auth Cluster",
+    status: "degraded",
+    latency: "182ms",
+  },
+  {
+    name: "PostgreSQL Primary",
+    status: "outage",
+    latency: "ERR",
+  },
+];`;
+
+export const pipelineNodesSource = `const variant: ErrorVariant = "service-pipeline";
+
+const pipelineNodes: ServiceStatusItem[] = [
+  {
+    name: "Edge CDN",
+    status: "operational",
+    latency: "12ms",
+  },
+  {
+    name: "GraphQL Gateway",
+    status: "operational",
+    latency: "38ms",
+  },
+  {
+    name: "Data Ingestion Pipeline",
+    status: "outage",
+    latency: "TIMEOUT",
+  },
+  {
+    name: "Distributed Store",
+    status: "degraded",
+    latency: "240ms",
+  },
+];`;
+
+export const quantumDumpSource = `const variant: ErrorVariant = "quantum-glitch";
+
+const crashDump: string = \`[CRASH_DUMP:0x9481FA]
+SEGMENT: 0x7FFF004B (READ_VIOLATION)
+INSTRUCTION: MOV QWORD PTR [RAX+0x18], RDX
+FAULTING_MODULE: kernel-allocator.sys (build 24.1.0)
+STATUS: CORRUPTED_PAGE_TABLE_ENTRY\`;`;
+
+export const prismaticTraceSource = `const variant: ErrorVariant = "prismatic-glass";
+
+const prismServices: ServiceStatusItem[] = [
+  {
+    name: "Refraction Core",
+    status: "operational",
+    latency: "18ms",
+  },
+  {
+    name: "Memory Shards",
+    status: "degraded",
+    latency: "142ms",
+  },
+  {
+    name: "Aurora Pipeline",
+    status: "outage",
+    latency: "ERR",
+  },
+];
+
+const diagnosticTrace: string = \`[PRISM_RUNTIME_FAULT]
+Thread: #04 (MeshRefractionRenderer)
+State: PipelineFrozen (SealedMemoryBuffer)
+Checksum: 0x9481FA_CRC32_VERIFIED
+Remediation: Automated recovery protocol queued\`;`;
+
+export const usageDefault = `"use client";
+
+import { useEffect } from "react";
+import {
+  ErrorSection,
+  type ErrorVariant,
+} from "@/components/custom/blocks/ErrorBlock";
+
+${terminalTraceSource}
+
+export default function ErrorPage({
+  error,
+  reset,
+}: {
+  error?: Error & { digest?: string };
+  reset?: () => void;
+}) {
+  useEffect(() => {
+    if (error) console.error(error);
+  }, [error]);
+
   return (
     <ErrorSection
+      variant={variant}
       errorCode="500"
       title="SYSTEM RUNTIME EXCEPTION"
-      description="Critical process halted due to an unhandled kernel exception. Memory buffers preserved for telemetry diagnostics."
-      errorId="ERR_0x9481FA"
-      onRetry={() => window.location.reload()}
-      onHome={() => window.location.href = "/"}
+      description={
+        error?.message ||
+        "Critical process halted due to an unhandled kernel exception. Memory buffers preserved for telemetry diagnostics."
+      }
+      errorId={error?.digest || "ERR_0x9481FA"}
+      errorDetails={sampleStacktrace}
+      onRetry={() => (reset ? reset() : window.location.reload())}
+      onHome={() => (window.location.href = "/")}
       onSupport={() => window.open("/support", "_blank")}
     />
   );
 }`;
 
-export const usageModern = `import { ErrorSection } from "@/components/custom/blocks/ErrorBlock";
+export const usageModern = `"use client";
 
-export default function ModernErrorPage() {
+import { useEffect } from "react";
+import {
+  ErrorSection,
+  type ErrorVariant,
+  type ServiceStatusItem,
+} from "@/components/custom/blocks/ErrorBlock";
+
+${modernServicesSource}
+
+export default function ModernErrorPage({
+  error,
+  reset,
+}: {
+  error?: Error & { digest?: string };
+  reset?: () => void;
+}) {
+  useEffect(() => {
+    if (error) console.error(error);
+  }, [error]);
+
   return (
     <ErrorSection
-      variant="modern-animated"
+      variant={variant}
       errorCode="500"
       title="UNEXPECTED SYSTEM ANOMALY"
-      description="An unhandled runtime disruption interrupted the telemetry pipeline. Critical memory states were safely captured for telemetry diagnostics."
-      errorId="ERR_0x9481FA"
-      onRetry={() => window.location.reload()}
-      onHome={() => window.location.href = "/"}
+      description={
+        error?.message ||
+        "An unhandled runtime disruption interrupted the telemetry pipeline. Critical memory states were safely captured for telemetry diagnostics."
+      }
+      errorId={error?.digest || "ERR_0x9481FA"}
+      services={services}
+      onRetry={() => (reset ? reset() : window.location.reload())}
+      onHome={() => (window.location.href = "/")}
       onSupport={() => window.open("/support", "_blank")}
     />
   );
 }`;
 
-export const usagePipeline = `import { ErrorSection } from "@/components/custom/blocks/ErrorBlock";
+export const usagePipeline = `"use client";
 
-export default function PipelineErrorPage() {
+import { useEffect } from "react";
+import {
+  ErrorSection,
+  type ErrorVariant,
+  type ServiceStatusItem,
+} from "@/components/custom/blocks/ErrorBlock";
+
+${pipelineNodesSource}
+
+export default function PipelineErrorPage({
+  error,
+  reset,
+}: {
+  error?: Error & { digest?: string };
+  reset?: () => void;
+}) {
+  useEffect(() => {
+    if (error) console.error(error);
+  }, [error]);
+
   return (
     <ErrorSection
-      variant="service-pipeline"
+      variant={variant}
       errorCode="500"
       title="SERVICE PIPELINE INTERRUPTED"
-      description="A critical downstream node failed during request execution. The pipeline halted safely to isolate fault propagation."
-      errorId="ERR_0x9481FA"
-      onRetry={() => window.location.reload()}
-      onHome={() => window.location.href = "/"}
+      description={
+        error?.message ||
+        "A critical downstream node failed during request execution. The pipeline halted safely to isolate fault propagation."
+      }
+      errorId={error?.digest || "ERR_0x9481FA"}
+      services={pipelineNodes}
+      onRetry={() => (reset ? reset() : window.location.reload())}
+      onHome={() => (window.location.href = "/")}
       onSupport={() => window.open("/support", "_blank")}
     />
   );
 }`;
 
-export const usageGlitch = `import { ErrorSection } from "@/components/custom/blocks/ErrorBlock";
+export const usageGlitch = `"use client";
 
-export default function GlitchErrorPage() {
+import { useEffect } from "react";
+import {
+  ErrorSection,
+  type ErrorVariant,
+} from "@/components/custom/blocks/ErrorBlock";
+
+${quantumDumpSource}
+
+export default function GlitchErrorPage({
+  error,
+  reset,
+}: {
+  error?: Error & { digest?: string };
+  reset?: () => void;
+}) {
+  useEffect(() => {
+    if (error) console.error(error);
+  }, [error]);
+
   return (
     <ErrorSection
-      variant="quantum-glitch"
+      variant={variant}
       errorCode="500"
       title="KERNEL EXECUTION ANOMALY"
-      description="High-priority execution thread encountered an unrecoverable kernel panic. Isolation protocols engaged to preserve system integrity."
-      errorId="ERR_0x9481FA"
-      onRetry={() => window.location.reload()}
-      onHome={() => window.location.href = "/"}
+      description={
+        error?.message ||
+        "High-priority execution thread encountered an unrecoverable kernel panic. Isolation protocols engaged to preserve system integrity."
+      }
+      errorId={error?.digest || "ERR_0x9481FA"}
+      errorDetails={crashDump}
+      onRetry={() => (reset ? reset() : window.location.reload())}
+      onHome={() => (window.location.href = "/")}
+      onSupport={() => window.open("/support", "_blank")}
+    />
+  );
+}`;
+
+export const usagePrismatic = `"use client";
+
+import { useEffect } from "react";
+import {
+  ErrorSection,
+  type ErrorVariant,
+  type ServiceStatusItem,
+} from "@/components/custom/blocks/ErrorBlock";
+
+${prismaticTraceSource}
+
+export default function PrismaticErrorPage({
+  error,
+  reset,
+}: {
+  error?: Error & { digest?: string };
+  reset?: () => void;
+}) {
+  useEffect(() => {
+    if (error) console.error(error);
+  }, [error]);
+
+  return (
+    <ErrorSection
+      variant={variant}
+      errorCode="500"
+      title="UNRESOLVED SYSTEM STATE"
+      description={
+        error?.message ||
+        "A transient disruption fractured the runtime pipeline. Cryptographic memory buffers remain sealed and preserved for triage."
+      }
+      errorId={error?.digest || "ERR_0x9481FA"}
+      errorDetails={diagnosticTrace}
+      services={prismServices}
+      onRetry={() => (reset ? reset() : window.location.reload())}
+      onHome={() => (window.location.href = "/")}
       onSupport={() => window.open("/support", "_blank")}
     />
   );
@@ -220,6 +438,38 @@ export default function GlitchErrorPage() {
       },
       usage: usageGlitch,
     },
+    {
+      title: "Prismatic Aurora Glass",
+      subheading:
+        "An ultra-clean, elegant glassmorphic error canvas featuring a floating diamond glass crystal, rotating rainbow refraction halo ring, liquid aurora glow, and micro-mesh telemetry pills.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"prismatic-glass"',
+          effect:
+            "activates the prismatic aurora glass layout with spinning refraction halo and floating diamond gem.",
+        },
+        {
+          prop: "errorCode",
+          value: '"500"',
+          effect: "displays the error status code or exception type.",
+        },
+        {
+          prop: "errorId",
+          value: '"ERR_0x9481FA"',
+          effect: "unique incident trace ID for diagnostic triage.",
+        },
+      ],
+      props: {
+        variant: "prismatic-glass",
+        errorCode: "500",
+        title: "UNRESOLVED SYSTEM STATE",
+        description:
+          "A transient disruption fractured the runtime pipeline. Cryptographic memory buffers remain sealed and preserved for triage.",
+        errorId: "ERR_0x9481FA",
+      },
+      usage: usagePrismatic,
+    },
   ]}
 />
 
@@ -228,6 +478,10 @@ export default function GlitchErrorPage() {
 Discover the key capabilities of the `ErrorSection` component:
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Prismatic Aurora Glass</h3>
+    <p className="text-muted-foreground text-sm">Floating diamond glass crystal with counter-rotating rainbow refraction halo, liquid aurora glow, and frosted status pills.</p>
+  </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">Chromatic Glitch Bento HUD</h3>
     <p className="text-muted-foreground text-sm">Two-column command center with layered chromatic aberration glitch typography, memory overflow bars, and hex dump inspector.</p>
@@ -273,9 +527,9 @@ Discover the key capabilities of the `ErrorSection` component:
     <tbody>
       <tr>
         <td><code>variant</code></td>
-        <td><code>"terminal" | "modern-animated" | "service-pipeline" | "quantum-glitch"</code></td>
+        <td><code>"terminal" | "modern-animated" | "service-pipeline" | "quantum-glitch" | "prismatic-glass"</code></td>
         <td><code>"terminal"</code></td>
-        <td>Visual layout variant: <code>"terminal"</code> for the cyberpunk diagnostic enclosure, <code>"modern-animated"</code> for orbital radar, <code>"service-pipeline"</code> for service topology flow, or <code>"quantum-glitch"</code> for the chromatic glitch bento HUD.</td>
+        <td>Visual layout variant: <code>"terminal"</code> for the cyberpunk diagnostic enclosure, <code>"modern-animated"</code> for orbital radar, <code>"service-pipeline"</code> for service topology flow, <code>"quantum-glitch"</code> for chromatic glitch HUD, or <code>"prismatic-glass"</code> for prismatic aurora crystal.</td>
       </tr>
       <tr>
         <td><code>errorCode</code></td>

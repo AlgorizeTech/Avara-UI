@@ -5,7 +5,7 @@ export const error: PageVariants = {
   intro:
     "Error page sections for root application error boundaries, Next.js error.tsx, and system failure screens.",
   gotchas: [
-    "Install `error` once; choose between the cyberpunk terminal, modern orbital pulse, service pipeline topology, and quantum glitch bento HUD via `variant`.",
+    "Install `error` once; choose between the cyberpunk terminal, modern orbital pulse, service pipeline topology, quantum glitch bento HUD, and prismatic aurora glass via `variant`.",
   ],
   variants: [
     {
@@ -61,6 +61,20 @@ export const error: PageVariants = {
       example: "Service Pipeline Topology",
       props: { variant: "service-pipeline" },
       setProps: { variant: "service-pipeline" },
+    },
+    {
+      id: "prismatic-glass",
+      group: "Animated telemetry",
+      label: "Prismatic Aurora Glass",
+      summary: "Glassmorphic floating crystal with spinning rainbow refraction halo, liquid aurora glow, and micro-mesh status pills.",
+      bestFor: ["modern SaaS, design-led web apps, AI studios, and consumer platforms needing an elegant aesthetic"],
+      avoidIf: ["you prefer dense terminal code blocks or raw cyberpunk command lines"],
+      traits: ["prismatic halo spin", "floating diamond glass", "liquid aurora glow", "gradient code typography"],
+      item: "error",
+      demo: "error",
+      example: "Prismatic Aurora Glass",
+      props: { variant: "prismatic-glass" },
+      setProps: { variant: "prismatic-glass" },
     },
   ],
 };

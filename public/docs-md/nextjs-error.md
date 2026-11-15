@@ -6,6 +6,17 @@ url: https://avaraui.com/docs/nextjs/error
 
 # Shadcn Error Page
 
+<<<<<<< HEAD
+A full-page, responsive Cyberpunk Diagnostic Terminal, Modern Animated Orbital Radar, Interactive Service Pipeline Topology, Quantum Glitch Bento HUD, and Prismatic Aurora Glass section designed for root application error boundaries, Next.js `error.tsx` / `global-error.tsx`, and dedicated maintenance pages.
+
+Features full-width terminal enclosures, interactive network topology flows, chromatic glitch bento HUDs, floating prismatic aurora glass crystals, diagnostic monitors, adaptive light & dark mode styling, live stacktrace inspectors, and one-click incident copying.
+
+## For AI agents
+
+**Ask before you pick.** This page has 5 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 5 options as live previews: https://avaraui.com/view/error
+=======
 A full-page, responsive Cyberpunk Diagnostic Terminal, Modern Animated Orbital Radar, Interactive Service Pipeline Topology, and Quantum Glitch Bento HUD section designed for root application error boundaries, Next.js `error.tsx` / `global-error.tsx`, and dedicated maintenance pages.
 
 Features full-width terminal enclosures, interactive network topology flows, chromatic glitch bento HUDs, diagnostic monitors, adaptive light & dark mode styling, live stacktrace inspectors, and one-click incident copying.
@@ -15,14 +26,21 @@ Features full-width terminal enclosures, interactive network topology flows, chr
 **Ask before you pick.** This page has 4 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
 
 All 4 options as live previews: https://avaraui.com/view/error
+>>>>>>> 9b9335ac24a48d9519f4b421cf65dd1fb4076494
 
 **When to use it.** Error page sections for root application error boundaries, Next.js error.tsx, and system failure screens.
 
 **Gotchas:**
 
+<<<<<<< HEAD
+- Install `error` once; choose between the cyberpunk terminal, modern orbital pulse, service pipeline topology, quantum glitch bento HUD, and prismatic aurora glass via `variant`.
+
+### The 5 variants
+=======
 - Install `error` once; choose between the cyberpunk terminal, modern orbital pulse, service pipeline topology, and quantum glitch bento HUD via `variant`.
 
 ### The 4 variants
+>>>>>>> 9b9335ac24a48d9519f4b421cf65dd1fb4076494
 
 1. **Cyberpunk Terminal** (`terminal`): Full-width futuristic telemetry enclosure with Mac window indicators, crash icon, and technical trace console.
    - Live: https://avaraui.com/view/error/terminal
@@ -55,6 +73,17 @@ All 4 options as live previews: https://avaraui.com/view/error
    - Install: `npx shadcn@latest add @avara-ui/error`
    - Set these props: `{"variant":"service-pipeline"}`
    - Docs: https://avaraui.com/docs/nextjs/error#service-pipeline-topology
+<<<<<<< HEAD
+5. **Prismatic Aurora Glass** (`prismatic-glass`): Glassmorphic floating crystal with spinning rainbow refraction halo, liquid aurora glow, and micro-mesh status pills.
+   - Live: https://avaraui.com/view/error/prismatic-glass
+   - Best for: modern SaaS, design-led web apps, AI studios, and consumer platforms needing an elegant aesthetic
+   - Avoid if: you prefer dense terminal code blocks or raw cyberpunk command lines
+   - Traits: prismatic halo spin, floating diamond glass, liquid aurora glow, gradient code typography
+   - Install: `npx shadcn@latest add @avara-ui/error`
+   - Set these props: `{"variant":"prismatic-glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/error#prismatic-aurora-glass
+=======
+>>>>>>> 9b9335ac24a48d9519f4b421cf65dd1fb4076494
 
 ## Cyberpunk Terminal Section
 
@@ -62,17 +91,41 @@ All 4 options as live previews: https://avaraui.com/view/error
 - `errorId="ERR_0x9481FA"` unique incident trace ID for diagnostic debugging.
 
 ```tsx
-import { ErrorSection } from "@/components/custom/blocks/ErrorBlock";
+"use client";
 
-export default function ErrorPage() {
+
+
+const variant: ErrorVariant = "terminal";
+
+const sampleStacktrace: string = `Error: Critical Kernel Exception (0x9481FA)
+  at runWorkerPipeline (/app/core/worker.ts:142:19)
+  at async processBatchQueue (/app/queue/dispatcher.ts:89:12)
+  at async ClusterManager.dispatchTask (/app/cluster/manager.ts:312:7)`;
+
+export default function ErrorPage({
+  error,
+  reset,
+}: {
+  error?: Error & { digest?: string };
+  reset?: () => void;
+}) {
+  useEffect(() => {
+    if (error) console.error(error);
+  }, [error]);
+
   return (
     <ErrorSection
+      variant={variant}
       errorCode="500"
       title="SYSTEM RUNTIME EXCEPTION"
-      description="Critical process halted due to an unhandled kernel exception. Memory buffers preserved for telemetry diagnostics."
-      errorId="ERR_0x9481FA"
-      onRetry={() => window.location.reload()}
-      onHome={() => window.location.href = "/"}
+      description={
+        error?.message ||
+        "Critical process halted due to an unhandled kernel exception. Memory buffers preserved for telemetry diagnostics."
+      }
+      errorId={error?.digest || "ERR_0x9481FA"}
+      errorDetails={sampleStacktrace}
+      onRetry={() => (reset ? reset() : window.location.reload())}
+      onHome={() => (window.location.href = "/")}
       onSupport={() => window.open("/support", "_blank")}
     />
   );
@@ -105,6 +158,56 @@ An ultra-modern, interactive glassmorphic error canvas featuring concentric coun
 - `errorId="ERR_0x9481FA"` unique incident trace ID for diagnostic triage.
 
 ```tsx
+<<<<<<< HEAD
+"use client";
+
+
+
+const variant: ErrorVariant = "modern-animated";
+
+const services: ServiceStatusItem[] = [
+  {
+    name: "API Gateway",
+    status: "operational",
+    latency: "24ms",
+  },
+  {
+    name: "Auth Cluster",
+    status: "degraded",
+    latency: "182ms",
+  },
+  {
+    name: "PostgreSQL Primary",
+    status: "outage",
+    latency: "ERR",
+  },
+];
+
+export default function ModernErrorPage({
+  error,
+  reset,
+}: {
+  error?: Error & { digest?: string };
+  reset?: () => void;
+}) {
+  useEffect(() => {
+    if (error) console.error(error);
+  }, [error]);
+
+  return (
+    <ErrorSection
+      variant={variant}
+      errorCode="500"
+      title="UNEXPECTED SYSTEM ANOMALY"
+      description={
+        error?.message ||
+        "An unhandled runtime disruption interrupted the telemetry pipeline. Critical memory states were safely captured for telemetry diagnostics."
+      }
+      errorId={error?.digest || "ERR_0x9481FA"}
+      services={services}
+      onRetry={() => (reset ? reset() : window.location.reload())}
+      onHome={() => (window.location.href = "/")}
+=======
 import { ErrorSection } from "@/components/custom/blocks/ErrorBlock";
 
 export default function ModernErrorPage() {
@@ -117,6 +220,7 @@ export default function ModernErrorPage() {
       errorId="ERR_0x9481FA"
       onRetry={() => window.location.reload()}
       onHome={() => window.location.href = "/"}
+>>>>>>> 9b9335ac24a48d9519f4b421cf65dd1fb4076494
       onSupport={() => window.open("/support", "_blank")}
     />
   );
@@ -132,6 +236,61 @@ An architectural, interactive service topology flow featuring animated SVG signa
 - `errorId="ERR_0x9481FA"` unique incident trace ID for diagnostic triage.
 
 ```tsx
+<<<<<<< HEAD
+"use client";
+
+
+
+const variant: ErrorVariant = "service-pipeline";
+
+const pipelineNodes: ServiceStatusItem[] = [
+  {
+    name: "Edge CDN",
+    status: "operational",
+    latency: "12ms",
+  },
+  {
+    name: "GraphQL Gateway",
+    status: "operational",
+    latency: "38ms",
+  },
+  {
+    name: "Data Ingestion Pipeline",
+    status: "outage",
+    latency: "TIMEOUT",
+  },
+  {
+    name: "Distributed Store",
+    status: "degraded",
+    latency: "240ms",
+  },
+];
+
+export default function PipelineErrorPage({
+  error,
+  reset,
+}: {
+  error?: Error & { digest?: string };
+  reset?: () => void;
+}) {
+  useEffect(() => {
+    if (error) console.error(error);
+  }, [error]);
+
+  return (
+    <ErrorSection
+      variant={variant}
+      errorCode="500"
+      title="SERVICE PIPELINE INTERRUPTED"
+      description={
+        error?.message ||
+        "A critical downstream node failed during request execution. The pipeline halted safely to isolate fault propagation."
+      }
+      errorId={error?.digest || "ERR_0x9481FA"}
+      services={pipelineNodes}
+      onRetry={() => (reset ? reset() : window.location.reload())}
+      onHome={() => (window.location.href = "/")}
+=======
 import { ErrorSection } from "@/components/custom/blocks/ErrorBlock";
 
 export default function PipelineErrorPage() {
@@ -144,6 +303,7 @@ export default function PipelineErrorPage() {
       errorId="ERR_0x9481FA"
       onRetry={() => window.location.reload()}
       onHome={() => window.location.href = "/"}
+>>>>>>> 9b9335ac24a48d9519f4b421cf65dd1fb4076494
       onSupport={() => window.open("/support", "_blank")}
     />
   );
@@ -159,6 +319,114 @@ A high-tech command center HUD featuring multi-layer chromatic aberration glitch
 - `errorId="ERR_0x9481FA"` unique incident trace ID for diagnostic triage.
 
 ```tsx
+<<<<<<< HEAD
+"use client";
+
+
+
+const variant: ErrorVariant = "quantum-glitch";
+
+const crashDump: string = `[CRASH_DUMP:0x9481FA]
+SEGMENT: 0x7FFF004B (READ_VIOLATION)
+INSTRUCTION: MOV QWORD PTR [RAX+0x18], RDX
+FAULTING_MODULE: kernel-allocator.sys (build 24.1.0)
+STATUS: CORRUPTED_PAGE_TABLE_ENTRY`;
+
+export default function GlitchErrorPage({
+  error,
+  reset,
+}: {
+  error?: Error & { digest?: string };
+  reset?: () => void;
+}) {
+  useEffect(() => {
+    if (error) console.error(error);
+  }, [error]);
+
+  return (
+    <ErrorSection
+      variant={variant}
+      errorCode="500"
+      title="KERNEL EXECUTION ANOMALY"
+      description={
+        error?.message ||
+        "High-priority execution thread encountered an unrecoverable kernel panic. Isolation protocols engaged to preserve system integrity."
+      }
+      errorId={error?.digest || "ERR_0x9481FA"}
+      errorDetails={crashDump}
+      onRetry={() => (reset ? reset() : window.location.reload())}
+      onHome={() => (window.location.href = "/")}
+      onSupport={() => window.open("/support", "_blank")}
+    />
+  );
+}
+```
+
+### Prismatic Aurora Glass
+
+An ultra-clean, elegant glassmorphic error canvas featuring a floating diamond glass crystal, rotating rainbow refraction halo ring, liquid aurora glow, and micro-mesh telemetry pills.
+
+- `variant="prismatic-glass"` activates the prismatic aurora glass layout with spinning refraction halo and floating diamond gem.
+- `errorCode="500"` displays the error status code or exception type.
+- `errorId="ERR_0x9481FA"` unique incident trace ID for diagnostic triage.
+
+```tsx
+"use client";
+
+
+
+const variant: ErrorVariant = "prismatic-glass";
+
+const prismServices: ServiceStatusItem[] = [
+  {
+    name: "Refraction Core",
+    status: "operational",
+    latency: "18ms",
+  },
+  {
+    name: "Memory Shards",
+    status: "degraded",
+    latency: "142ms",
+  },
+  {
+    name: "Aurora Pipeline",
+    status: "outage",
+    latency: "ERR",
+  },
+];
+
+const diagnosticTrace: string = `[PRISM_RUNTIME_FAULT]
+Thread: #04 (MeshRefractionRenderer)
+State: PipelineFrozen (SealedMemoryBuffer)
+Checksum: 0x9481FA_CRC32_VERIFIED
+Remediation: Automated recovery protocol queued`;
+
+export default function PrismaticErrorPage({
+  error,
+  reset,
+}: {
+  error?: Error & { digest?: string };
+  reset?: () => void;
+}) {
+  useEffect(() => {
+    if (error) console.error(error);
+  }, [error]);
+
+  return (
+    <ErrorSection
+      variant={variant}
+      errorCode="500"
+      title="UNRESOLVED SYSTEM STATE"
+      description={
+        error?.message ||
+        "A transient disruption fractured the runtime pipeline. Cryptographic memory buffers remain sealed and preserved for triage."
+      }
+      errorId={error?.digest || "ERR_0x9481FA"}
+      errorDetails={diagnosticTrace}
+      services={prismServices}
+      onRetry={() => (reset ? reset() : window.location.reload())}
+      onHome={() => (window.location.href = "/")}
+=======
 import { ErrorSection } from "@/components/custom/blocks/ErrorBlock";
 
 export default function GlitchErrorPage() {
@@ -171,6 +439,7 @@ export default function GlitchErrorPage() {
       errorId="ERR_0x9481FA"
       onRetry={() => window.location.reload()}
       onHome={() => window.location.href = "/"}
+>>>>>>> 9b9335ac24a48d9519f4b421cf65dd1fb4076494
       onSupport={() => window.open("/support", "_blank")}
     />
   );
@@ -181,6 +450,13 @@ export default function GlitchErrorPage() {
 
 Discover the key capabilities of the `ErrorSection` component:
 
+<<<<<<< HEAD
+### Prismatic Aurora Glass
+
+Floating diamond glass crystal with counter-rotating rainbow refraction halo, liquid aurora glow, and frosted status pills.
+
+=======
+>>>>>>> 9b9335ac24a48d9519f4b421cf65dd1fb4076494
 ### Chromatic Glitch Bento HUD
 
 Two-column command center with layered chromatic aberration glitch typography, memory overflow bars, and hex dump inspector.
@@ -213,7 +489,11 @@ Scroll-safe diagnostic trace terminal with one-click clipboard copying for quick
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
+<<<<<<< HEAD
+| `variant` | `"terminal" \| "modern-animated" \| "service-pipeline" \| "quantum-glitch" \| "prismatic-glass"` | `"terminal"` | Visual layout variant: `"terminal"` for the cyberpunk diagnostic enclosure, `"modern-animated"` for orbital radar, `"service-pipeline"` for service topology flow, `"quantum-glitch"` for chromatic glitch HUD, or `"prismatic-glass"` for prismatic aurora crystal. |
+=======
 | `variant` | `"terminal" \| "modern-animated" \| "service-pipeline" \| "quantum-glitch"` | `"terminal"` | Visual layout variant: `"terminal"` for the cyberpunk diagnostic enclosure, `"modern-animated"` for orbital radar, `"service-pipeline"` for service topology flow, or `"quantum-glitch"` for the chromatic glitch bento HUD. |
+>>>>>>> 9b9335ac24a48d9519f4b421cf65dd1fb4076494
 | `errorCode` | `string` | `"500"` | Primary error code or HTTP status string displayed on the status telemetry badge. |
 | `title` | `string` | `"SYSTEM RUNTIME EXCEPTION"` | Primary uppercase diagnostic heading. |
 | `description` | `string` | `"Critical process halted..."` | User-friendly explanatory message explaining why execution was suspended. |

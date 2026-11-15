@@ -17,7 +17,10 @@ export default function ErrorSectionDemo({
     | "service-pipeline"
     | "pipeline"
     | "quantum-glitch"
-    | "quantum-hud";
+    | "quantum-hud"
+    | "prismatic-glass"
+    | "prismatic"
+    | "aurora-prism";
   errorCode?: string;
   title?: string;
   description?: string;

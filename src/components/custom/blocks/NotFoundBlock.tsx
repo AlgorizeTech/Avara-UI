@@ -20,7 +20,16 @@ import {
 export type NotFoundVariant =
   | "hyperspace"
   | "animated-beam-border"
-  | "quantum-hologram";
+  | "quantum-hologram"
+  | "spatial-portal"
+  | "kinetic-wireframe"
+  | "infinite-horizon"
+  | "dimensional-portal"
+  | "portal"
+  | "aurora-glass"
+  | "component-wall"
+  | "mosaic-wall"
+  | "card-wall";
 
 export interface ShortcutItem {
   label: string;
@@ -149,7 +158,7 @@ export function HyperspaceNotFoundSection({
     <section
       style={dynamicAccent}
       className={cn(
-        "relative flex min-h-[580px] sm:min-h-[640px] w-full flex-col items-center justify-center overflow-hidden px-4 sm:px-6 py-12 text-center transition-colors duration-300 font-sans",
+        "relative flex w-full h-full min-h-full flex-1 min-h-[580px] sm:min-h-[640px] lg:min-h-screen flex-col items-center justify-center overflow-hidden px-4 sm:px-6 py-12 text-center transition-colors duration-300 font-sans",
         className
       )}
       {...props}
@@ -359,7 +368,7 @@ export function AnimatedBeamNotFoundSection({
     <section
       style={dynamicAccent}
       className={cn(
-        "relative flex min-h-[640px] sm:min-h-[720px] w-full flex-col items-center justify-center overflow-hidden px-3 sm:px-6 lg:px-8 py-8 sm:py-14 text-left transition-colors duration-300 font-sans select-none bg-background",
+        "relative flex w-full h-full min-h-full flex-1 min-h-[640px] sm:min-h-[720px] lg:min-h-screen flex-col items-center justify-center overflow-hidden px-3 sm:px-6 lg:px-8 py-8 sm:py-14 text-left transition-colors duration-300 font-sans select-none bg-background",
         className
       )}
       {...props}
@@ -727,7 +736,7 @@ export function QuantumHologramNotFoundSection({
     <section
       style={dynamicAccent}
       className={cn(
-        "relative flex min-h-[680px] sm:min-h-[760px] w-full flex-col items-center justify-center overflow-hidden px-3.5 sm:px-6 lg:px-8 py-10 sm:py-16 text-center transition-colors duration-300 font-sans select-none",
+        "relative flex w-full h-full min-h-full flex-1 min-h-[680px] sm:min-h-[760px] lg:min-h-screen flex-col items-center justify-center overflow-hidden px-3.5 sm:px-6 lg:px-8 py-10 sm:py-16 text-center transition-colors duration-300 font-sans select-none",
         className
       )}
       {...props}
@@ -953,6 +962,1062 @@ export function QuantumHologramNotFoundSection({
 }
 
 /* ========================================================================== */
+/*  VARIANT 4: KINETIC RADAR MATRIX WITH COLOR-ANIMATED 404                  */
+/* ========================================================================== */
+
+const WIREFRAME_STYLES = `
+@keyframes perspective-grid-flow {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 60px;
+  }
+}
+@keyframes horizon-glow-pulse {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scaleY(0.85);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scaleY(1.2);
+  }
+}
+@keyframes float-particle-rise-1 {
+  0% {
+    transform: translateY(15px) scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(-80px) scale(1.2);
+    opacity: 0;
+  }
+}
+@keyframes float-particle-rise-2 {
+  0% {
+    transform: translateY(30px) scale(0.6);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.95;
+  }
+  100% {
+    transform: translateY(-90px) scale(1.1);
+    opacity: 0;
+  }
+}
+@keyframes hero-404-color-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+@keyframes hero-404-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 30px rgba(99, 102, 241, 0.45));
+  }
+  33% {
+    filter: drop-shadow(0 0 35px rgba(6, 182, 212, 0.5));
+  }
+  66% {
+    filter: drop-shadow(0 0 35px rgba(236, 72, 153, 0.5));
+  }
+}
+`;
+
+export function KineticWireframeNotFoundSection({
+  code = "404",
+  badge,
+  title = "Page Not Found",
+  description = "The page you are looking for doesn't exist, has been relocated, or is temporarily unavailable.",
+  primaryAction = {
+    label: "Back to Home",
+    href: "/",
+    icon: <Home className="h-4 w-4" />,
+  },
+  secondaryAction = {
+    label: "Explore Documentation",
+    href: "#",
+    icon: <BookOpen className="h-4 w-4" />,
+  },
+  color,
+  className,
+  ...props
+}: NotFoundSectionProps) {
+  const dynamicAccent = accentStyle(color);
+
+  const renderAction = (action?: NotFoundAction, isPrimary = false) => {
+    if (!action) return null;
+    const baseClass = isPrimary
+      ? "inline-flex w-full sm:w-auto items-center justify-center gap-2.5 rounded-full bg-primary text-primary-foreground font-semibold px-8 py-3.5 text-xs sm:text-sm hover:opacity-95 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer shadow-lg shadow-primary/20"
+      : "inline-flex w-full sm:w-auto items-center justify-center gap-2.5 rounded-full border border-border bg-card/80 hover:bg-card hover:border-foreground/30 text-foreground font-medium px-8 py-3.5 text-xs sm:text-sm backdrop-blur-md active:scale-[0.98] transition-all cursor-pointer";
+
+    const content = (
+      <>
+        {action.icon}
+        <span>{action.label}</span>
+      </>
+    );
+
+    if (action.onClick) {
+      return (
+        <button
+          type="button"
+          onClick={action.onClick}
+          className={baseClass}
+        >
+          {content}
+        </button>
+      );
+    }
+
+    return (
+      <a href={action.href ?? "#"} className={baseClass}>
+        {content}
+      </a>
+    );
+  };
+
+  return (
+    <section
+      style={dynamicAccent}
+      className={cn(
+        "relative w-full h-full min-h-full flex-1 min-h-[700px] sm:min-h-[780px] lg:min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-16 sm:py-24 overflow-hidden bg-background text-foreground select-none transition-colors duration-200",
+        className
+      )}
+      {...props}
+    >
+      <style>{WIREFRAME_STYLES}</style>
+
+      {/* ==================================================================== */}
+      {/* FULL BACKGROUND: 3D PERSPECTIVE RUNWAY & HORIZON LIGHT BEAM          */}
+      {/* ==================================================================== */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden select-none"
+      >
+        {/* Subtle Cosmic Starfield / Dot Matrix */}
+        <div
+          className="absolute inset-0 opacity-[0.12] dark:opacity-[0.20]"
+          style={{
+            backgroundImage: "radial-gradient(circle, currentColor 1px, transparent 1px)",
+            backgroundSize: "28px 28px",
+          }}
+        />
+
+        {/* 3D Infinite Perspective Grid Floor */}
+        <div
+          className="absolute -bottom-24 left-1/2 -translate-x-1/2 w-[220%] h-[58%] origin-bottom pointer-events-none"
+          style={{
+            perspective: "500px",
+            maskImage:
+              "linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 60%, transparent 100%)",
+            WebkitMaskImage:
+              "linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 60%, transparent 100%)",
+          }}
+        >
+          <div
+            className="w-full h-full"
+            style={{
+              transform: "rotateX(74deg)",
+              backgroundImage: `
+                linear-gradient(to right, rgba(99, 102, 241, 0.28) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(99, 102, 241, 0.28) 1px, transparent 1px)
+              `,
+              backgroundSize: "60px 60px",
+              animation: "perspective-grid-flow 3.5s linear infinite",
+            }}
+          />
+        </div>
+
+        {/* Horizon Light Beam & Aurora Glow */}
+        <div
+          className="absolute top-1/2 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary/80 to-transparent pointer-events-none shadow-[0_0_24px_rgba(99,102,241,0.8)]"
+          style={{ animation: "horizon-glow-pulse 5s ease-in-out infinite" }}
+        />
+        <div
+          className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 w-[650px] h-32 bg-primary/15 blur-3xl pointer-events-none rounded-full"
+          style={{ animation: "horizon-glow-pulse 6s ease-in-out infinite" }}
+        />
+
+        {/* Rising Ambient Digital Sparks / Particles */}
+        <div
+          className="absolute top-[48%] left-[20%] w-2 h-2 rounded-full bg-primary/70 blur-[1px] pointer-events-none"
+          style={{
+            animation: "float-particle-rise-1 4s ease-in-out infinite",
+            animationDelay: "0s",
+          }}
+        />
+        <div
+          className="absolute top-[52%] left-[32%] w-1.5 h-1.5 rounded-full bg-cyan-400/80 pointer-events-none"
+          style={{
+            animation: "float-particle-rise-2 5s ease-in-out infinite",
+            animationDelay: "1.2s",
+          }}
+        />
+        <div
+          className="absolute top-[46%] right-[22%] w-2 h-2 rounded-full bg-pink-500/70 blur-[1px] pointer-events-none"
+          style={{
+            animation: "float-particle-rise-1 4.5s ease-in-out infinite",
+            animationDelay: "2s",
+          }}
+        />
+        <div
+          className="absolute top-[54%] right-[35%] w-1.5 h-1.5 rounded-full bg-primary/80 pointer-events-none"
+          style={{
+            animation: "float-particle-rise-2 5.5s ease-in-out infinite",
+            animationDelay: "3s",
+          }}
+        />
+        <div
+          className="absolute top-[44%] left-[48%] w-1.5 h-1.5 rounded-full bg-purple-400/80 pointer-events-none"
+          style={{
+            animation: "float-particle-rise-1 4.8s ease-in-out infinite",
+            animationDelay: "0.8s",
+          }}
+        />
+      </div>
+
+      {/* ==================================================================== */}
+      {/* FOREGROUND CONTENT: HERO 404 + MIRROR FLOOR REFLECTION               */}
+      {/* ==================================================================== */}
+      <div className="relative z-10 w-full max-w-3xl mx-auto flex flex-col items-center text-center my-auto">
+        {/* Optional Clean Badge (Only if provided) */}
+        {badge && (
+          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-border/80 bg-card/60 backdrop-blur-xl text-foreground text-xs font-mono tracking-wide mb-3 shadow-sm hover:border-primary/40 transition-colors">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
+            </span>
+            <span>{badge}</span>
+          </div>
+        )}
+
+        {/* MASSIVE 404 WITH INVERTED MIRROR REFLECTION */}
+        <div className="relative flex flex-col items-center select-none my-1">
+          {/* Main 404 */}
+          <div
+            className="text-[9.5rem] sm:text-[13.5rem] md:text-[16.5rem] lg:text-[19rem] font-black font-mono tracking-tighter leading-none select-none text-transparent bg-clip-text"
+            style={{
+              backgroundImage:
+                "linear-gradient(135deg, #38bdf8, #818cf8, #c084fc, #f472b6, #38bdf8)",
+              backgroundSize: "300% 300%",
+              animation:
+                "hero-404-color-flow 7s ease infinite, hero-404-glow 7s ease infinite",
+            }}
+          >
+            {code}
+          </div>
+
+          {/* Inverted Mirror Floor Reflection */}
+          <div
+            aria-hidden="true"
+            className="text-[9.5rem] sm:text-[13.5rem] md:text-[16.5rem] lg:text-[19rem] font-black font-mono tracking-tighter leading-none select-none text-transparent bg-clip-text opacity-25 pointer-events-none scale-y-[-0.35] -mt-20 sm:-mt-28 md:-mt-32 blur-[2px]"
+            style={{
+              backgroundImage:
+                "linear-gradient(135deg, #38bdf8, #818cf8, #c084fc, #f472b6, #38bdf8)",
+              backgroundSize: "300% 300%",
+              animation: "hero-404-color-flow 7s ease infinite",
+              maskImage:
+                "linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, transparent 80%)",
+              WebkitMaskImage:
+                "linear-gradient(to bottom, rgba(0,0,0,0.85) 0%, transparent 80%)",
+            }}
+          >
+            {code}
+          </div>
+        </div>
+
+        {/* Title & Description */}
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-foreground max-w-xl mb-3 mt-4">
+          {title}
+        </h1>
+        <p className="text-sm sm:text-base text-muted-foreground max-w-lg mx-auto mb-8 leading-relaxed">
+          {description}
+        </p>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 w-full sm:w-auto">
+          {renderAction(primaryAction, true)}
+          {renderAction(secondaryAction, false)}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export { KineticWireframeNotFoundSection as SpatialPortalNotFoundSection };
+
+/* ========================================================================== */
+/*  VARIANT 5: AURORA CELESTIAL SINGULARITY & 3D ORBITAL PORTAL 404 SECTION   */
+/* ========================================================================== */
+
+const AURORA_GLASS_STYLES = `
+@keyframes hero-prismatic-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+@keyframes hero-float-left {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(-1deg);
+  }
+}
+@keyframes hero-float-center {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-16px) scale(1.03);
+  }
+}
+@keyframes hero-float-right {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(1deg);
+  }
+}
+@keyframes portal-vortex-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes portal-vortex-spin-reverse {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+@keyframes portal-singularity-pulse {
+  0%, 100% {
+    transform: scale(0.92);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+}
+@keyframes sonar-wave-pulse {
+  0% {
+    transform: scale(0.35);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+@keyframes radar-sweep-360 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes starlight-twinkle {
+  0%, 100% {
+    transform: scale(0.85);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 1;
+  }
+}
+`;
+
+export function AuroraGlassNotFoundSection({
+  code = "404",
+  badge,
+  title = "Lost Beyond the Horizon",
+  description = "The coordinate you were navigating to has drifted into uncharted space or never existed. Let's guide you back to safety.",
+  primaryAction = {
+    label: "Return to Safety",
+    href: "/",
+    icon: <Home className="h-4 w-4" />,
+  },
+  secondaryAction = {
+    label: "Explore Documentation",
+    href: "#",
+    icon: <BookOpen className="h-4 w-4" />,
+  },
+  color,
+  className,
+  ...props
+}: NotFoundSectionProps) {
+  const dynamicAccent = accentStyle(color);
+
+  const renderAction = (action?: NotFoundAction, isPrimary = false) => {
+    if (!action) return null;
+    const baseClass = isPrimary
+      ? "inline-flex w-full sm:w-auto items-center justify-center gap-2.5 rounded-full bg-primary text-primary-foreground font-semibold px-8 py-3.5 text-xs sm:text-sm hover:opacity-95 hover:scale-[1.03] active:scale-[0.98] transition-all cursor-pointer shadow-lg shadow-primary/25 relative overflow-hidden group select-none"
+      : "inline-flex w-full sm:w-auto items-center justify-center gap-2.5 rounded-full border border-border/80 bg-card/60 hover:bg-card hover:border-primary/40 text-foreground font-medium px-8 py-3.5 text-xs sm:text-sm backdrop-blur-md active:scale-[0.98] hover:scale-[1.02] transition-all cursor-pointer select-none";
+
+    const content = (
+      <>
+        {action.icon}
+        <span>{action.label}</span>
+        {isPrimary && (
+          <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+        )}
+      </>
+    );
+
+    if (action.onClick) {
+      return (
+        <button type="button" onClick={action.onClick} className={baseClass}>
+          {content}
+        </button>
+      );
+    }
+
+    return (
+      <a href={action.href ?? "#"} className={baseClass}>
+        {content}
+      </a>
+    );
+  };
+
+  const isStandard404 = code === "404";
+
+  return (
+    <section
+      style={dynamicAccent}
+      className={cn(
+        "relative w-full h-full min-h-full flex-1 min-h-screen min-h-[100dvh] flex flex-col items-center justify-center overflow-hidden bg-background text-foreground select-none transition-colors duration-200",
+        className
+      )}
+      {...props}
+    >
+      <style>{AURORA_GLASS_STYLES}</style>
+
+      {/* ==================================================================== */}
+      {/* BACKGROUND: CYBER RADAR SWEEP, SONAR PULSES, LASER STREAMS & HORIZON */}
+      {/* ==================================================================== */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden select-none"
+      >
+        {/* Subtle Cosmic Starfield / Dot Matrix */}
+        <div
+          className="absolute inset-0 opacity-[0.14] dark:opacity-[0.22]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle, var(--primary,#6366f1) 1px, transparent 1px)",
+            backgroundSize: "28px 28px",
+            maskImage:
+              "radial-gradient(ellipse 70% 60% at 50% 50%, #000 70%, transparent 100%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 70% 60% at 50% 50%, #000 70%, transparent 100%)",
+          }}
+        />
+
+        {/* Concentric Cyber Radar Rings in Background */}
+        <div className="absolute h-[320px] w-[320px] sm:h-[520px] sm:w-[520px] rounded-full border border-primary/25 pointer-events-none" />
+        <div className="absolute h-[520px] w-[520px] sm:h-[820px] sm:w-[820px] rounded-full border border-dashed border-primary/20 pointer-events-none" />
+        <div className="absolute h-[740px] w-[740px] sm:h-[1140px] sm:w-[1140px] rounded-full border border-primary/15 pointer-events-none" />
+
+        {/* Dynamic Rotating 360° Radar Scanner Cone */}
+        <div
+          className="absolute h-[520px] w-[520px] sm:h-[820px] sm:w-[820px] rounded-full pointer-events-none animate-[radar-sweep-360_10s_linear_infinite]"
+          style={{
+            background:
+              "conic-gradient(from 0deg, transparent 0deg, transparent 280deg, color-mix(in srgb, var(--primary,#6366f1) 12%, transparent) 340deg, color-mix(in srgb, var(--primary,#6366f1) 35%, transparent) 360deg)",
+            maskImage: "radial-gradient(circle, black 65%, transparent 72%)",
+            WebkitMaskImage: "radial-gradient(circle, black 65%, transparent 72%)",
+          }}
+        />
+
+        {/* Concentric Expanding Sonar Pulse Waves */}
+        <div
+          className="absolute h-[320px] w-[320px] sm:h-[420px] sm:w-[420px] rounded-full border-2 border-primary/35 shadow-[0_0_24px_var(--primary,#6366f1)] pointer-events-none"
+          style={{ animation: "sonar-wave-pulse 7s ease-out infinite" }}
+        />
+        <div
+          className="absolute h-[320px] w-[320px] sm:h-[420px] sm:w-[420px] rounded-full border-2 border-primary/25 shadow-[0_0_20px_var(--primary,#6366f1)] pointer-events-none"
+          style={{
+            animation: "sonar-wave-pulse 7s ease-out infinite",
+            animationDelay: "2.3s",
+          }}
+        />
+        <div
+          className="absolute h-[320px] w-[320px] sm:h-[420px] sm:w-[420px] rounded-full border-2 border-primary/15 shadow-[0_0_16px_var(--primary,#6366f1)] pointer-events-none"
+          style={{
+            animation: "sonar-wave-pulse 7s ease-out infinite",
+            animationDelay: "4.6s",
+          }}
+        />
+
+        {/* Twinkling Star Points */}
+        <div
+          className="absolute top-[44%] left-[20%] w-2.5 h-2.5 rounded-full bg-primary shadow-[0_0_14px_var(--primary,#6366f1)] pointer-events-none"
+          style={{ animation: "starlight-twinkle 3.5s ease-in-out infinite" }}
+        />
+        <div
+          className="absolute top-[52%] left-[32%] w-2 h-2 rounded-full bg-primary/80 shadow-[0_0_10px_var(--primary,#6366f1)] pointer-events-none"
+          style={{
+            animation: "starlight-twinkle 4.2s ease-in-out infinite",
+            animationDelay: "1s",
+          }}
+        />
+        <div
+          className="absolute top-[42%] right-[22%] w-2.5 h-2.5 rounded-full bg-primary shadow-[0_0_14px_var(--primary,#6366f1)] pointer-events-none"
+          style={{
+            animation: "starlight-twinkle 4s ease-in-out infinite",
+            animationDelay: "2s",
+          }}
+        />
+        <div
+          className="absolute top-[55%] right-[32%] w-2 h-2 rounded-full bg-primary/70 shadow-[0_0_10px_var(--primary,#6366f1)] pointer-events-none"
+          style={{
+            animation: "starlight-twinkle 4.8s ease-in-out infinite",
+            animationDelay: "3s",
+          }}
+        />
+      </div>
+
+      {/* ==================================================================== */}
+      {/* FOREGROUND CONTENT: BALANCED 3-ROW GRID - 404 ALWAYS AT EXACT CENTER */}
+      {/* ==================================================================== */}
+      <div className="relative z-10 w-full max-w-4xl mx-auto min-h-screen min-h-[100dvh] grid grid-rows-[1fr_auto_1fr] items-center text-center px-4 sm:px-6 py-6 sm:py-10">
+        {/* Top Equalizer Row: ensures 404 sits at exactly 50% viewport on all screens */}
+        <div aria-hidden="true" className="w-full pointer-events-none" />
+
+        {/* Middle Row: 404 Hero Representation centered directly on Radar Apex */}
+        <div className="relative flex items-center justify-center my-auto select-none w-full">
+          {isStandard404 ? (
+            <div className="flex items-center justify-center gap-1 sm:gap-3">
+              {/* Digit 4 (Left) */}
+              <span
+                aria-hidden="true"
+                className="text-[clamp(5.5rem,15vw,18rem)] font-black font-mono leading-none tracking-tighter text-transparent bg-clip-text select-none animate-[hero-float-left_6s_ease-in-out_infinite]"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(135deg, #0ea5e9, var(--primary,#6366f1), #38bdf8, color-mix(in srgb, var(--primary,#6366f1) 60%, #38bdf8 40%), #2563eb, var(--primary,#6366f1), #0ea5e9)",
+                  backgroundSize: "300% 300%",
+                  animation:
+                    "hero-prismatic-flow 8s ease infinite, hero-float-left 6s ease-in-out infinite",
+                }}
+              >
+                4
+              </span>
+
+              {/* Center '0' - HYPER-MODERN ANIMATED SINGULARITY PORTAL (ORIGINAL FRAME PRESERVED) */}
+              <div className="relative flex items-center justify-center w-[clamp(4.8rem,13vw,14.5rem)] h-[clamp(4.8rem,13vw,14.5rem)] mx-1 sm:mx-2 animate-[hero-float-center_6s_ease-in-out_infinite_0.3s]">
+                {/* Layer 2: Outer Precision Dash/Tick Chrono Ring (Clockwise) with Glowing Blue & Theme Satellites */}
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 rounded-full border-2 border-dashed border-primary/50 animate-[portal-vortex-spin_16s_linear_infinite]"
+                >
+                  <span className="absolute -top-1.5 left-1/2 -translate-x-1/2 h-3 w-3 rounded-full bg-sky-400 shadow-[0_0_16px_#38bdf8,0_0_30px_#0ea5e9]" />
+                  <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-2 w-2 rounded-full bg-primary/80 shadow-[0_0_10px_var(--primary,#6366f1)]" />
+                </div>
+
+                {/* Layer 3: Middle 3D Tilted Orbit Ring (Counter-Clockwise) with Satellite */}
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-2.5 sm:inset-3.5 rounded-full border border-sky-400/35 dark:border-primary/35 animate-[portal-vortex-spin-reverse_10s_linear_infinite] [transform:rotateX(62deg)_rotateY(-15deg)]"
+                >
+                  <span className="absolute top-1/2 -left-1.5 -translate-y-1/2 h-2.5 w-2.5 rounded-full bg-cyan-300 shadow-[0_0_14px_#38bdf8,0_0_24px_var(--primary,#6366f1)]" />
+                </div>
+
+                {/* Layer 4: Swirling Liquid Plasma Conic Torus Ring */}
+                <div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-3 sm:inset-4 rounded-full overflow-hidden"
+                >
+                  <div
+                    className="w-full h-full rounded-full animate-[portal-vortex-spin_5s_linear_infinite]"
+                    style={{
+                      background:
+                        "conic-gradient(from 0deg, #0ea5e9, var(--primary,#6366f1), #38bdf8, color-mix(in srgb, var(--primary,#6366f1) 50%, #38bdf8 50%), #2563eb, var(--primary,#6366f1), #0ea5e9)",
+                      maskImage:
+                        "radial-gradient(circle, transparent 52%, black 54%, black 76%, transparent 78%)",
+                      WebkitMaskImage:
+                        "radial-gradient(circle, transparent 52%, black 54%, black 76%, transparent 78%)",
+                    }}
+                  />
+                </div>
+
+                {/* Layer 5: Star Icon Center Core - Light Mode: White, Dark Mode: Black */}
+                <div className="relative z-10 flex items-center justify-center w-[58%] h-[58%] rounded-full bg-white dark:bg-black backdrop-blur-xl border border-sky-400/30 dark:border-primary/30 shadow-[inset_0_0_18px_rgba(0,0,0,0.08)] dark:shadow-[inset_0_0_20px_rgba(0,0,0,0.9)]">
+                  {/* Pulsing Singularity Star Flare */}
+                  <div className="relative flex items-center justify-center animate-[portal-singularity-pulse_3.5s_ease-in-out_infinite]">
+                    {/* 4-Point Radiant Sparkle / Star Flare */}
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      className="w-8 h-8 sm:w-11 sm:h-11 md:w-14 md:h-14 text-primary animate-[portal-vortex-spin_24s_linear_infinite]"
+                      style={{ filter: "drop-shadow(0 0 16px #0ea5e9)" }}
+                    >
+                      <path d="M12 0C12 6.627 6.627 12 0 12C6.627 12 12 17.373 12 24C12 17.373 17.373 12 24 12C17.373 12 12 6.627 12 0Z" />
+                    </svg>
+                    {/* High-Intensity Inner Core Dot */}
+                    <span className="absolute h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-white shadow-[0_0_12px_#ffffff,0_0_24px_#38bdf8,0_0_40px_var(--primary,#6366f1)]" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Digit 4 (Right) */}
+              <span
+                aria-hidden="true"
+                className="text-[clamp(5.5rem,15vw,18rem)] font-black font-mono leading-none tracking-tighter text-transparent bg-clip-text select-none animate-[hero-float-right_6s_ease-in-out_infinite_0.6s]"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(135deg, #0ea5e9, var(--primary,#6366f1), #38bdf8, color-mix(in srgb, var(--primary,#6366f1) 60%, #38bdf8 40%), #2563eb, var(--primary,#6366f1), #0ea5e9)",
+                  backgroundSize: "300% 300%",
+                  animation:
+                    "hero-prismatic-flow 8s ease infinite, hero-float-right 6s ease-in-out infinite 0.6s",
+                }}
+              >
+                4
+              </span>
+            </div>
+          ) : (
+            <div
+              className="text-[clamp(6.5rem,18vw,20rem)] font-black font-mono tracking-tighter leading-none select-none text-transparent bg-clip-text animate-[hero-float-center_6s_ease-in-out_infinite]"
+              style={{
+                backgroundImage:
+                  "linear-gradient(135deg, #0ea5e9, var(--primary,#6366f1), #38bdf8, color-mix(in srgb, var(--primary,#6366f1) 60%, #38bdf8 40%), #2563eb, var(--primary,#6366f1), #0ea5e9)",
+                backgroundSize: "300% 300%",
+                animation: "hero-prismatic-flow 8s ease infinite",
+              }}
+            >
+              {code}
+            </div>
+          )}
+        </div>
+
+        {/* Bottom Row: Title, Description, and Action Buttons */}
+        <div className="flex flex-col items-center justify-start text-center w-full max-w-xl mx-auto self-start pt-2 sm:pt-4">
+          <h1 className="text-xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-foreground max-w-xl mb-2 sm:mb-3">
+            {title}
+          </h1>
+          <p className="text-xs sm:text-sm lg:text-base text-muted-foreground max-w-md sm:max-w-lg mx-auto mb-6 sm:mb-8 leading-relaxed">
+            {description}
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-3.5 w-full sm:w-auto">
+            {renderAction(primaryAction, true)}
+            {renderAction(secondaryAction, false)}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ========================================================================== */
+/*  VARIANT 6: COMPONENT WALL MOSAIC 404 SECTION                              */
+/* ========================================================================== */
+
+const COMPONENT_WALL_IMAGES = {
+  bento:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516057/bento-showcase-1790516064489.jpg",
+  appointment:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516057/book-appointment-1790516064490.jpg",
+  calendar:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516057/calendar-1790516064491.jpg",
+  chart:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516056/chart-1790516064492.jpg",
+  collage:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516057/collage-hero-1790516064493.jpg",
+  dataFlow:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516056/data-flow-1790516064493.jpg",
+  dataGrid:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516056/data-grid-1790516064494.jpg",
+  fashion:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516058/fashion-hero-1790516064495.jpg",
+  footer:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516057/footer-1790516064495.jpg",
+  hero:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516057/hero-1790516064495.jpg",
+  heroCarousel:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516059/hero-carousel-1790516064496.jpg",
+  honeycomb:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516059/honeycomb-hero-1790516064497.jpg",
+  invoice:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516059/invoice-1790516064498.jpg",
+  login:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516058/login-form-1790516064498.jpg",
+  navbar:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516057/navbar-1790516064499.jpg",
+  newsletter:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516058/newsletter-1790516064499.jpg",
+  gallery:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516058/orbit-gallery-1790516064499.jpg",
+  platform:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516057/platform-grid-1790516064500.jpg",
+  pricing:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516058/pricing-1790516064500.jpg",
+  product:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516058/product-details-1790516064500.jpg",
+  profile:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516058/profile-page-1790516064501.jpg",
+  reviews:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516059/reviews-1790516064502.jpg",
+  support:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516059/support-hero-1790516064502.jpg",
+  waitlist:
+    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_500,c_limit/v1790516059/waitlist-1790516064503.jpg",
+};
+
+interface MosaicCard {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  title: string;
+  image?: string;
+  content?: React.ReactNode;
+  bgClass?: string;
+}
+
+const CENTER_ZERO_CARDS: MosaicCard[] = [
+  // --- TOP APEX CARD (Centered at 50%: x: 38%, y: 0%, w: 24%, h: 11%) ---
+  { x: 38, y: 0, w: 24, h: 11, title: "Hero Showcase", image: COMPONENT_WALL_IMAGES.hero },
+
+  // --- UPPER-RIGHT ARCH (Smoothly curving down and outward) ---
+  { x: 63, y: 5.5, w: 24, h: 11, title: "Profile Page", image: COMPONENT_WALL_IMAGES.profile },
+  { x: 73, y: 18, w: 24, h: 11, title: "Reviews Component", image: COMPONENT_WALL_IMAGES.reviews },
+
+  // --- RIGHT VERTICAL FLANK (Rows at y = 30.5%, 43.5%, 56.5% - uniform 2% gap, h: 11%) ---
+  { x: 76, y: 30.5, w: 24, h: 11, title: "Bento Showcase", image: COMPONENT_WALL_IMAGES.bento },
+  { x: 76, y: 43.5, w: 24, h: 11, title: "Chart Analytics", image: COMPONENT_WALL_IMAGES.chart },
+  { x: 76, y: 56.5, w: 24, h: 11, title: "Calendar Scheduler", image: COMPONENT_WALL_IMAGES.calendar },
+
+  // --- LOWER-RIGHT ARCH (Smoothly curving down and inward towards bottom apex) ---
+  { x: 73, y: 69.5, w: 24, h: 11, title: "Pricing Grid", image: COMPONENT_WALL_IMAGES.pricing },
+  { x: 63, y: 82, w: 24, h: 11, title: "Orbit Gallery", image: COMPONENT_WALL_IMAGES.gallery },
+
+  // --- BOTTOM APEX CARD (Centered at 50%: x: 38%, y: 87.5%, w: 24%, h: 11% - mirrors top apex) ---
+  { x: 38, y: 87.5, w: 24, h: 11, title: "Invoice Billing", image: COMPONENT_WALL_IMAGES.invoice },
+
+  // --- LOWER-LEFT ARCH (Smoothly curving up and outward from bottom apex) ---
+  { x: 13, y: 82, w: 24, h: 11, title: "Hero Carousel", image: COMPONENT_WALL_IMAGES.heroCarousel },
+  { x: 3, y: 69.5, w: 24, h: 11, title: "Newsletter App", image: COMPONENT_WALL_IMAGES.newsletter },
+
+  // --- LEFT VERTICAL FLANK (Rows at y = 56.5%, 43.5%, 30.5% - uniform 2% gap, mirrors right flank) ---
+  { x: 0, y: 56.5, w: 24, h: 11, title: "Navbar Showcase", image: COMPONENT_WALL_IMAGES.navbar },
+  { x: 0, y: 43.5, w: 24, h: 11, title: "Fashion Hero", image: COMPONENT_WALL_IMAGES.fashion },
+  { x: 0, y: 30.5, w: 24, h: 11, title: "Support Hero", image: COMPONENT_WALL_IMAGES.support },
+
+  // --- UPPER-LEFT ARCH (Smoothly curving up and inward towards top apex) ---
+  { x: 3, y: 18, w: 24, h: 11, title: "Collage Hero", image: COMPONENT_WALL_IMAGES.collage },
+  { x: 13, y: 5.5, w: 24, h: 11, title: "Product Details", image: COMPONENT_WALL_IMAGES.product },
+];
+
+const FOUR_CARDS: MosaicCard[] = [
+  // --- VERTICAL STEM COLUMN (all w: 24%, h: 11% - identical size as '0') ---
+  { x: 50.5, y: 0, w: 24, h: 11, title: "Mobile Wireframe", image: COMPONENT_WALL_IMAGES.waitlist },
+  { x: 50.5, y: 12.5, w: 24, h: 11, title: "Book Appointment", image: COMPONENT_WALL_IMAGES.appointment },
+  { x: 50.5, y: 25, w: 24, h: 11, title: "Data Flow Architecture", image: COMPONENT_WALL_IMAGES.dataFlow },
+  { x: 50.5, y: 37.5, w: 24, h: 11, title: "Calendar Scheduler", image: COMPONENT_WALL_IMAGES.calendar },
+  { x: 50.5, y: 50, w: 24, h: 11, title: "Platform Grid", image: COMPONENT_WALL_IMAGES.platform },
+  // Intersection Card (Data Grid) - aligned with stem and crossbar
+  { x: 50.5, y: 62.5, w: 24, h: 11, title: "Data Grid Table", image: COMPONENT_WALL_IMAGES.dataGrid },
+  { x: 50.5, y: 75, w: 24, h: 11, title: "Honeycomb Hero", image: COMPONENT_WALL_IMAGES.honeycomb },
+  { x: 50.5, y: 87.5, w: 24, h: 11, title: "Bento Showcase", image: COMPONENT_WALL_IMAGES.bento },
+
+  // --- HORIZONTAL CROSSBAR ROW (all y: 62.5%, w: 24%, h: 11% - spans from x: 0% to exactly 100%) ---
+  { x: 0, y: 62.5, w: 24, h: 11, title: "Login Form", image: COMPONENT_WALL_IMAGES.login },
+  { x: 25.25, y: 62.5, w: 24, h: 11, title: "Chart Analytics", image: COMPONENT_WALL_IMAGES.chart },
+  // Right-side tail card (Hero Carousel) - ends precisely at 100% (76% + 24% = 100%)
+  { x: 76, y: 62.5, w: 24, h: 11, title: "Hero Carousel", image: COMPONENT_WALL_IMAGES.heroCarousel },
+
+  // --- DIAGONAL ARM (all w: 24%, h: 11% - perfectly spaced without overlap, 1.5% gap to stem at top-left) ---
+  { x: 25.0, y: 12.5, w: 24, h: 11, title: "Invoice Summary", image: COMPONENT_WALL_IMAGES.invoice },
+  { x: 16.7, y: 25, w: 24, h: 11, title: "Profile Page", image: COMPONENT_WALL_IMAGES.profile },
+  { x: 8.3, y: 37.5, w: 24, h: 11, title: "Product Details", image: COMPONENT_WALL_IMAGES.product },
+  { x: 0, y: 50, w: 24, h: 11, title: "Orbit Gallery", image: COMPONENT_WALL_IMAGES.gallery },
+];
+
+const BUBBLE_DOTS = [
+  { left: 5, size: 5, dur: 7, delay: 0 },
+  { left: 13, size: 7, dur: 9, delay: 2.5 },
+  { left: 21, size: 4, dur: 6.5, delay: 1.2 },
+  { left: 30, size: 8, dur: 10, delay: 4.1 },
+  { left: 39, size: 5, dur: 7.5, delay: 0.8 },
+  { left: 48, size: 6, dur: 8.5, delay: 3.2 },
+  { left: 57, size: 8, dur: 11, delay: 1.9 },
+  { left: 66, size: 4, dur: 6, delay: 4.8 },
+  { left: 74, size: 7, dur: 8, delay: 0.5 },
+  { left: 82, size: 5, dur: 9.5, delay: 2.1 },
+  { left: 90, size: 8, dur: 10.5, delay: 3.7 },
+  { left: 96, size: 4, dur: 7, delay: 5.3 },
+];
+
+export function ComponentWallNotFoundSection({
+  color,
+  className,
+  ...props
+}: NotFoundSectionProps) {
+  const dynamicAccent = accentStyle(color);
+
+  const renderCard = (card: MosaicCard, idx: number) => {
+    return (
+      <div
+        key={idx}
+        style={{
+          position: "absolute",
+          left: `${card.x}%`,
+          top: `${card.y}%`,
+          width: `${card.w}%`,
+          height: `${card.h}%`,
+        }}
+        className={cn(
+          "rounded-lg sm:rounded-xl md:rounded-2xl overflow-hidden shadow-sm border border-border/40 select-none bg-muted/30",
+          card.bgClass
+        )}
+        title={card.title}
+      >
+        {card.image ? (
+          <img
+            src={card.image}
+            alt={card.title}
+            className="w-full h-full object-cover pointer-events-none"
+            loading="lazy"
+          />
+        ) : (
+          card.content
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <section
+      style={dynamicAccent}
+      className={cn(
+        "relative w-full h-full min-h-full flex-1 self-stretch min-h-[660px] sm:min-h-[720px] lg:min-h-screen min-h-[100dvh] flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-8 sm:py-12 overflow-hidden bg-background text-foreground select-none transition-colors duration-200",
+        className
+      )}
+      {...props}
+    >
+      {/* Dynamic Keyframes for Bidirectional Scanner & Rising Bubble Dots */}
+      <style>{`
+        @keyframes component-wall-scan-bidirectional {
+          0% {
+            top: -6%;
+            opacity: 0.15;
+          }
+          6% {
+            opacity: 1;
+          }
+          46% {
+            opacity: 1;
+          }
+          50% {
+            top: 106%;
+            opacity: 0.15;
+          }
+          56% {
+            opacity: 1;
+          }
+          96% {
+            opacity: 1;
+          }
+          100% {
+            top: -6%;
+            opacity: 0.15;
+          }
+        }
+        @keyframes component-wall-bubble-rise {
+          0% {
+            bottom: -6%;
+            opacity: 0;
+            transform: scale(0.4) translateX(0);
+          }
+          15% {
+            opacity: 0.85;
+          }
+          50% {
+            transform: scale(1.05) translateX(14px);
+          }
+          85% {
+            opacity: 0.85;
+          }
+          100% {
+            bottom: 106%;
+            opacity: 0;
+            transform: scale(1.3) translateX(-10px);
+          }
+        }
+        @keyframes component-wall-ambient-pulse {
+          0%, 100% {
+            opacity: 0.25;
+            transform: scale(0.96) translate(-50%, 0);
+          }
+          50% {
+            opacity: 0.55;
+            transform: scale(1.06) translate(-50%, 0);
+          }
+        }
+      `}</style>
+
+      {/* Background Subtle Dot Matrix Grid */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-[0.08] dark:opacity-[0.16]"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle, var(--primary,#6366f1) 1.2px, transparent 1.2px)",
+          backgroundSize: "28px 28px",
+          maskImage:
+            "radial-gradient(ellipse 70% 60% at 50% 50%, #000 70%, transparent 100%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse 70% 60% at 50% 50%, #000 70%, transparent 100%)",
+        }}
+      />
+
+      {/* Floating Glowing Bubble Dots (rising up continuously from bottom) */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+        {BUBBLE_DOTS.map((dot, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full bg-primary/50 shadow-[0_0_10px_var(--primary)] backdrop-blur-[0.5px]"
+            style={{
+              left: `${dot.left}%`,
+              width: `${dot.size}px`,
+              height: `${dot.size}px`,
+              animation: `component-wall-bubble-rise ${dot.dur}s ease-in-out infinite`,
+              animationDelay: `${dot.delay}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* ================================================================== */}
+      {/* HIGH-TECH DUAL-BEAM HOLOGRAPHIC SCANNER GATE (Bidirectional Sweep)  */}
+      {/* ================================================================== */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 -translate-y-1/2 z-20"
+        style={{
+          animation: "component-wall-scan-bidirectional 6s cubic-bezier(0.4, 0, 0.2, 1) infinite",
+        }}
+      >
+        {/* Soft volumetric light aura trailing behind the scanner */}
+        <div className="absolute -top-10 left-0 right-0 h-28 bg-gradient-to-b from-transparent via-primary/18 to-transparent blur-xl pointer-events-none" />
+
+        {/* Leading Razor-Sharp Laser Beam (Top Edge) */}
+        <div
+          className="w-full h-[1.5px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-90"
+          style={{
+            boxShadow: "0 0 16px 2px var(--primary)",
+          }}
+        />
+
+        {/* Translucent Luminous Scanning Field with Cyber HUD Readouts */}
+        <div className="relative w-full h-8 sm:h-9 bg-gradient-to-b from-primary/15 via-primary/5 to-primary/15 backdrop-blur-[1px] flex items-center justify-between px-3 sm:px-8 overflow-hidden">
+          {/* Micro-scanline texture inside the field */}
+          <div
+            className="absolute inset-0 opacity-25"
+            style={{
+              backgroundImage:
+                "repeating-linear-gradient(to bottom, transparent, transparent 3px, var(--primary) 3px, var(--primary) 4px)",
+            }}
+          />
+
+          {/* Left HUD Telemetry Tag */}
+          <div className="relative z-10 flex items-center gap-2 font-mono text-[9px] sm:text-[10px] tracking-wider text-primary font-bold select-none bg-background/85 px-2 py-0.5 rounded border border-primary/40 shadow-[0_0_12px_var(--primary)] backdrop-blur-md">
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary" />
+            </span>
+            <span className="hidden min-[420px]:inline">SYSTEM_SCAN</span>
+            <span className="text-foreground/70">::</span>
+            <span>0x404</span>
+          </div>
+
+          {/* Center High-Intensity Laser Lens Reticle */}
+          <div className="relative z-10 flex items-center justify-center">
+            <div className="w-24 sm:w-44 h-[2px] bg-primary shadow-[0_0_20px_3px_var(--primary)] rounded-full" />
+            <div className="absolute w-3 h-3 rounded-full border border-primary/80 flex items-center justify-center shadow-[0_0_10px_var(--primary)]">
+              <div className="w-1 h-1 rounded-full bg-primary" />
+            </div>
+          </div>
+
+          {/* Right HUD Telemetry Tag */}
+          <div className="relative z-10 hidden sm:flex items-center gap-1.5 font-mono text-[9px] sm:text-[10px] tracking-wider text-primary font-semibold select-none bg-background/85 px-2 py-0.5 rounded border border-primary/40 shadow-[0_0_12px_var(--primary)] backdrop-blur-md">
+            <span className="text-foreground/60">[</span>
+            <span className="text-primary animate-pulse">GRID_PASS</span>
+            <span className="text-foreground/60">]</span>
+          </div>
+        </div>
+
+        {/* Trailing Razor-Sharp Laser Beam (Bottom Edge) */}
+        <div
+          className="w-full h-[1.5px] bg-gradient-to-r from-transparent via-primary to-transparent opacity-90"
+          style={{
+            boxShadow: "0 0 16px 2px var(--primary)",
+          }}
+        />
+      </div>
+
+      {/* Ambient Radial Color Spot with Subtle Pulse */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[400px] rounded-full bg-primary/10 blur-[130px]"
+        style={{
+          animation: "component-wall-ambient-pulse 7s ease-in-out infinite",
+        }}
+      />
+
+      {/* Main Foreground Container: Perfectly Centered 404 Mosaic */}
+      <div className="relative z-10 w-full h-full min-h-full flex-1 max-w-4xl mx-auto flex items-center justify-center my-auto px-2 sm:px-4">
+        {/* ================================================================== */}
+        {/* MONUMENTAL 404 COMPONENT WALL MOSAIC                               */}
+        {/* ================================================================== */}
+        <div className="relative flex items-center justify-center gap-3 sm:gap-5 md:gap-8 w-full max-w-3xl lg:max-w-4xl mx-auto select-none">
+          {/* Digit 4 (Left - Identical card dimensions as '0') */}
+          <div className="relative w-[32%] max-w-[290px] aspect-[100/135]">
+            {FOUR_CARDS.map(renderCard)}
+          </div>
+
+          {/* Digit 0 (Center - Identical card dimensions as '4') */}
+          <div className="relative w-[32%] max-w-[290px] aspect-[100/135]">
+            {CENTER_ZERO_CARDS.map(renderCard)}
+          </div>
+
+          {/* Digit 4 (Right - Identical card dimensions as '0') */}
+          <div className="relative w-[32%] max-w-[290px] aspect-[100/135]">
+            {FOUR_CARDS.map(renderCard)}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ========================================================================== */
 /*  MAIN EXPORT: DISPATCHES TO SELECTED VARIANT                               */
 /* ========================================================================== */
 
@@ -960,11 +2025,31 @@ export function NotFoundSection({
   variant = "hyperspace",
   ...props
 }: NotFoundSectionProps) {
+  if (
+    variant === "component-wall" ||
+    (variant as string) === "mosaic-wall" ||
+    (variant as string) === "card-wall" ||
+    (variant as string) === "mosaic"
+  ) {
+    return <ComponentWallNotFoundSection {...props} />;
+  }
+  if (variant === "aurora-glass") {
+    return <AuroraGlassNotFoundSection {...props} />;
+  }
   if (variant === "animated-beam-border") {
     return <AnimatedBeamNotFoundSection {...props} />;
   }
   if (variant === "quantum-hologram") {
     return <QuantumHologramNotFoundSection {...props} />;
+  }
+  if (
+    variant === "kinetic-wireframe" ||
+    variant === "spatial-portal" ||
+    variant === "infinite-horizon" ||
+    variant === "dimensional-portal" ||
+    variant === "portal"
+  ) {
+    return <KineticWireframeNotFoundSection {...props} />;
   }
   return <HyperspaceNotFoundSection {...props} />;
 }
