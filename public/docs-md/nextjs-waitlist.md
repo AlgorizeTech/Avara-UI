@@ -64,6 +64,7 @@ Your mark, a countdown to the opening date, and the form beside its button on a 
 ```tsx
 "use client";
 
+import { Waitlist } from "@/components/custom/blocks/WaitlistBlock";
 
 // Faces from Pexels, free to use.
 const FACES = [
@@ -124,6 +125,7 @@ A compact card with the field over the button — for a sidebar, a footer or a m
 ```tsx
 "use client";
 
+import { Waitlist } from "@/components/custom/blocks/WaitlistBlock";
 
 // Faces from Pexels, free to use.
 const FACES = [
@@ -167,6 +169,7 @@ The form as a pill on a soft ground, the faces already in line under it, and a b
 ```tsx
 "use client";
 
+import { Waitlist } from "@/components/custom/blocks/WaitlistBlock";
 
 // Faces from Pexels, free to use.
 const FACES = [

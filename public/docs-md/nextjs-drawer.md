@@ -18,7 +18,17 @@ The drawer is always controlled — you own `open` and pass `onOpenChange`.
 ```tsx
 "use client";
 
-
+import { useState } from "react";
+import {
+  Button,
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerTitle,
+} from "@/components/custom/blocks/Drawer";
 
 export default function DrawerDemo() {
   const [open, setOpen] = useState(false);
@@ -79,7 +89,17 @@ npx shadcn@latest add @avara-ui/drawer
 ```tsx
 "use client";
 
-
+import { useState } from "react";
+import {
+  Button,
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerTitle,
+} from "@/components/custom/blocks/Drawer";
 
 export default function BottomSheet() {
   const [open, setOpen] = useState(false);
@@ -115,7 +135,17 @@ export default function BottomSheet() {
 ```tsx
 "use client";
 
-
+import { useState, useSyncExternalStore } from "react";
+import {
+  Button,
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerTitle,
+} from "@/components/custom/blocks/Drawer";
 
 // Optionally skip visitors who were onboarded before. localStorage is read as
 // an external store: false on the server, the stored value in the browser.

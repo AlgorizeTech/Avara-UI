@@ -17,6 +17,16 @@ This engine decouples layout from state. It provides a stunning visual wrapper w
 - Pass `onSubmit` the result of RHF's `handleSubmit()` directly — `FormWrapper` never breaks child `ref`s, so `register()` just works.
 
 ```tsx
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import {
+  FormField,
+  FormSubmit,
+  FormWrapper,
+} from "@/components/custom/blocks/FormBlock";
+import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
 const schema = z.object({
   companyName: z.string().min(2, "Company name is strictly required."),
   workEmail: z.string().email("Invalid corporate email format detected."),
@@ -92,6 +102,13 @@ npx shadcn@latest install react-hook-form zod @hookform/resolvers
 - Pass `isSubmitting` to `FormSubmit` to swap the label for a spinner and disable the button, which is what blocks double submits.
 
 ```tsx
+import {
+  FormField,
+  FormSubmit,
+  FormWrapper,
+} from "@/components/custom/blocks/FormBlock";
+import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
 export default function SubmittingForm() {
   return (
     <FormWrapper

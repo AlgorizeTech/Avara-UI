@@ -22,6 +22,7 @@ Adjust tilt intensity, glare opacity, and hover scale using the interactive cont
 
 ```tsx
 import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
+import { Cpu, Fingerprint, Nfc } from "lucide-react";
 
 // The card face — anything you render inside TiltedCard tilts with it.
 const accent = "var(--primary)";
@@ -98,6 +99,7 @@ npx shadcn@latest add @avara-ui/tilted-card
 
 ```tsx
 import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
+import { Cpu, Fingerprint, Nfc } from "lucide-react";
 
 // The card face — anything you render inside TiltedCard tilts with it.
 const accent = "var(--primary)";
@@ -155,6 +157,7 @@ export default function StrongTilt() {
 
 ```tsx
 import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
+import { Cpu, Fingerprint, Nfc } from "lucide-react";
 
 // The card face — anything you render inside TiltedCard tilts with it.
 const accent = "var(--primary)";
@@ -215,6 +218,7 @@ export default function SubtleTilt() {
 
 ```tsx
 import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
+import { Cpu, Fingerprint, Nfc } from "lucide-react";
 
 // The card face — anything you render inside TiltedCard tilts with it.
 const accent = "var(--primary)";
@@ -272,6 +276,7 @@ export default function StrongGlare() {
 
 ```tsx
 import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
+import { Cpu, Fingerprint, Nfc } from "lucide-react";
 
 // The card face — anything you render inside TiltedCard tilts with it.
 const accent = "var(--primary)";
@@ -327,6 +332,7 @@ export default function NoGlare() {
 
 ```tsx
 import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock";
+import { Cpu, Fingerprint, Nfc } from "lucide-react";
 
 // The card face — anything you render inside TiltedCard tilts with it.
 const accent = "var(--primary)";

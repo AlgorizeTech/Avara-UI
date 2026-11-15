@@ -15,7 +15,7 @@
       "path": "app/page.tsx",
       "type": "registry:page",
       "target": "app/page.tsx",
-      "content": "import { SecureEnvelope, SecureEnvelopeData } from \"@/components/custom/blocks/SecureEnvelopeBlock\";\n\nconst smartCardData: SecureEnvelopeData = {\n  holderName: \"Dr. Kaelen Vance\",\n  roleTitle: \"CHIEF ARCHITECT\",\n  authLevel: \"LEVEL 09 // OMNI\",\n};\n\nexport default function CyberSmartCardExample() {\n  return (\n    <div className=\"w-full flex items-center justify-center py-12\">\n      <SecureEnvelope\n        cardDesign=\"smart-card\"\n        interactionMode=\"step-flip\"\n        data={smartCardData}\n      />\n    </div>\n  );\n}"
+      "content": "import { SecureEnvelope, type SecureEnvelopeData } from \"@/components/custom/blocks/SecureEnvelopeBlock\";\n\nconst smartCardData: SecureEnvelopeData = {\n  holderName: \"Dr. Kaelen Vance\",\n  roleTitle: \"CHIEF ARCHITECT\",\n  authLevel: \"LEVEL 09 // OMNI\",\n};\n\nexport default function CyberSmartCardExample() {\n  return (\n    <div className=\"w-full flex items-center justify-center py-12\">\n      <SecureEnvelope\n        cardDesign=\"smart-card\"\n        interactionMode=\"step-flip\"\n        data={smartCardData}\n      />\n    </div>\n  );\n}"
     },
     {
       "path": "components/custom/blocks/SecureEnvelopeBlock.tsx",

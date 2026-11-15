@@ -15,7 +15,7 @@
       "path": "app/page.tsx",
       "type": "registry:page",
       "target": "app/page.tsx",
-      "content": "import { SecureEnvelope, SecureEnvelopeData } from \"@/components/custom/blocks/SecureEnvelopeBlock\";\n\nconst voucherData: SecureEnvelopeData = {\n  frontTitle: \"Exclusive Access\",\n  frontSubtitle: \"Limited edition membership and premium reward voucher.\",\n  highlightQuote: \"Unlock 50% off on all annual pro plans.\",\n};\n\nexport default function AutoFlipSecureEnvelopeExample() {\n  return (\n    <div className=\"w-full flex items-center justify-center py-12\">\n      <SecureEnvelope\n        interactionMode=\"auto-flip\"\n        data={voucherData}\n      />\n    </div>\n  );\n}"
+      "content": "import { SecureEnvelope, type SecureEnvelopeData } from \"@/components/custom/blocks/SecureEnvelopeBlock\";\n\nconst voucherData: SecureEnvelopeData = {\n  frontTitle: \"Exclusive Access\",\n  frontSubtitle: \"Limited edition membership and premium reward voucher.\",\n  highlightQuote: \"Unlock 50% off on all annual pro plans.\",\n};\n\nexport default function AutoFlipSecureEnvelopeExample() {\n  return (\n    <div className=\"w-full flex items-center justify-center py-12\">\n      <SecureEnvelope\n        interactionMode=\"auto-flip\"\n        data={voucherData}\n      />\n    </div>\n  );\n}"
     },
     {
       "path": "components/custom/blocks/SecureEnvelopeBlock.tsx",

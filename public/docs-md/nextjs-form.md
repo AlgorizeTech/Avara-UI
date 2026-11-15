@@ -19,9 +19,15 @@ This engine decouples layout from state. It provides a stunning visual wrapper w
 ```tsx
 "use client";
 
-
-
-
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import {
+  FormField,
+  FormSubmit,
+  FormWrapper,
+} from "@/components/custom/blocks/FormBlock";
+import { InputBlock } from "@/components/custom/blocks/InputBlock";
 
 const schema = z.object({
   companyName: z.string().min(2, "Company name is strictly required."),
@@ -100,6 +106,12 @@ npx shadcn@latest install react-hook-form zod @hookform/resolvers
 ```tsx
 "use client";
 
+import {
+  FormField,
+  FormSubmit,
+  FormWrapper,
+} from "@/components/custom/blocks/FormBlock";
+import { InputBlock } from "@/components/custom/blocks/InputBlock";
 
 export default function SubmittingForm() {
   return (

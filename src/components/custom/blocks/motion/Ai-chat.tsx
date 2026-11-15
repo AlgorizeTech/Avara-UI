@@ -58,7 +58,7 @@ import {
   LiquidGlassSvgFilter,
   formatRadius,
 } from "@/components/custom/ui/liquid-glass";
-import { SurfaceContext, useSurface } from "../glass-panel-context";
+import { SurfaceContext, useSurface } from "@/components/custom/blocks/glass-panel-context";
 export { LiquidGlassSvgFilter };
 
 // We use (string & {}) to preserve IDE autocomplete for the predefined types

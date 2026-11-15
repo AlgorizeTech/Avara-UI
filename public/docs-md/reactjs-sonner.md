@@ -19,6 +19,9 @@ Mount `<Toaster />` once, then call `toast()` from anywhere — no provider need
 - `children` of `toast()` is the message; everything else about the toast is optional.
 
 ```tsx
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
+
 // The trigger styling the preview uses.
 const BTN =
   "px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer";
@@ -67,6 +70,9 @@ npx shadcn@latest add @avara-ui/sonner
 - Use `toast.success` `toast.error` and `toast.info` for the semantic icon and colour. They take the same arguments as `toast()`.
 
 ```tsx
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
+
 // The trigger styling the preview uses.
 const BTN =
   "px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer";
@@ -109,6 +115,9 @@ export default function ToastTypes() {
 - Pass `action` as `{ label, onClick }` to add an inline button — the usual home for Undo.
 
 ```tsx
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
+
 // The trigger styling the preview uses.
 const BTN =
   "px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer";
@@ -142,6 +151,9 @@ export default function UndoToast() {
 - `position` on the Toaster decides where they pile up; newer toasts sit on top and older ones recede until hovered.
 
 ```tsx
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
+
 // The trigger styling the preview uses.
 const BTN =
   "px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer";
@@ -173,6 +185,9 @@ export default function StackDemo() {
 - Set `expand` on the Toaster to keep the stack open instead of collapsing it to a pile.
 
 ```tsx
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
+
 // The trigger styling the preview uses.
 const BTN =
   "px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer";
@@ -204,6 +219,9 @@ export default function ExpandedStack() {
 - `duration` is the auto-dismiss delay in milliseconds. Pass `Infinity` and the toast stays up until dismissed.
 
 ```tsx
+import { Toaster } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
+
 // The trigger styling the preview uses.
 const BTN =
   "px-4 py-2 rounded-lg font-medium transition-colors bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer";
@@ -250,6 +268,11 @@ export default function ToastDuration() {
 - `position` anchors the stack to any of the six edges — `top-left` through `bottom-right`.
 
 ```tsx
+import { useState } from "react";
+import { cn } from "@/lib/utils";
+import { Toaster, type ToasterProps } from "@/components/custom/blocks/SonnerBlock";
+import { toast } from "@/components/custom/blocks/sonner-store";
+
 const POSITIONS: { value: NonNullable<ToasterProps["position"]>; label: string }[] = [
   { value: "top-left", label: "Top left" },
   { value: "top-center", label: "Top center" },

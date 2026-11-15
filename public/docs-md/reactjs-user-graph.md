@@ -18,6 +18,7 @@ Click any orbit node to move the highlight and its label tooltip.
 
 ```tsx
 import { UserGraph, type OrbitTool, type SubAgent } from "@/components/custom/blocks/UserGraphBlock";
+import { Phone, MessageSquare, Send, Mail, Code2, Plug, Network, Share2, Globe, CreditCard, BarChart3, Database } from "lucide-react";
 
 // Optional: Customize central orchestrator node
 const orchestrator = {

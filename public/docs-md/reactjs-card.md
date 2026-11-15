@@ -17,6 +17,8 @@ A responsive, full-width two-column showcase card matching the interactive block
 - Two-column grid `layout="project-showcase"` splits the card into an image preview on the left and full project details, specifications, actions, and install bar on the right.
 
 ```tsx
+import { ProjectCard } from "@/components/custom/blocks/CardBlock";
+
 export default function ProjectShowcaseCardDemo() {
   return (
     <ProjectCard
@@ -58,6 +60,9 @@ Complete suite of 4 reusable product cards designed for online stores, shopping 
 - `variant="standard" | "compact" | "horizontal"` controls layout orientation and sizing across ProductCard variations.
 
 ```tsx
+import { useState } from "react";
+import { ProductCard, type ProductColorOption } from "@/components/custom/blocks/ProductCardBlock";
+
 export default function EcommerceProductCardsDemo() {
   const [sneakerBg, setSneakerBg] = useState(
     "bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-amber-500/5 dark:from-amber-500/20 dark:to-card border-amber-500/30"
@@ -172,6 +177,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/custom/blocks/CardBlock";
+import { Bell, Settings } from "lucide-react";
 
 export default function NotificationCard() {
   return (
@@ -213,6 +219,9 @@ export default function NotificationCard() {
 - Set `interactive` for hover elevation, a border-colour change and a slight scale — the affordance that says the whole card is clickable.
 
 ```tsx
+import { Card, CardHeader, CardTitle, CardDescription } from "@/components/custom/blocks/CardBlock";
+import { Download, Upload } from "lucide-react";
+
 export default function ClickableCards() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl">
@@ -250,6 +259,7 @@ export default function ClickableCards() {
 
 ```tsx
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/custom/blocks/CardBlock";
+import { Bell, CreditCard, Settings } from "lucide-react";
 
 export default function StatGrid() {
   return (
@@ -494,6 +504,18 @@ A person as a card: a patterned banner, an avatar that overlaps it, a few number
 - `interactive=true` lifts the teammate rows on hover; the main profile card stays still.
 
 ```tsx
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/custom/blocks/CardBlock";
+import { cn } from "@/lib/utils";
+import { Check, MapPin, MessageCircle, UserPlus } from "lucide-react";
+
 const TEAMMATES = [
   {
     initials: "TL",
@@ -608,7 +630,7 @@ export default function ProfileCards() {
           <Card
             key={member.name}
             variant="bordered"
-            interactive={interactive}
+            interactive
             className="flex-row items-center gap-4 rounded-2xl p-4"
           >
             <span
@@ -657,6 +679,10 @@ Pastel product tiles: a tag, a two-line title, the product on the right, and a f
 - Set `interactive` to lift the tile and zoom the photo on hover. The basket button stops propagation, so it never triggers the tile's own click.
 
 ```tsx
+import type { CSSProperties } from "react";
+import { Card, CardFooter, CardHeader, CardTitle } from "@/components/custom/blocks/CardBlock";
+import { ShoppingBasket } from "lucide-react";
+
 const ITEMS = [
   {
     tag: "Women",
@@ -749,6 +775,7 @@ One card, two panels, a dashed perforation between them — the holes are circle
 
 ```tsx
 import { Card } from "@/components/custom/blocks/CardBlock";
+import { Plane } from "lucide-react";
 
 export default function BoardingPassCard() {
   return (
@@ -801,6 +828,10 @@ export default function BoardingPassCard() {
 A horizontal card holding live state: the record turns while the track runs, and the waveform doubles as a scrubber.
 
 ```tsx
+import { useEffect, useState } from "react";
+import { Card, CardContent } from "@/components/custom/blocks/CardBlock";
+import { Pause, Play, SkipBack, SkipForward } from "lucide-react";
+
 const WAVEFORM = [22, 34, 48, 40, 62, 76, 58, 44, 68, 88, 72, 54, 38, 46, 60, 82, 96, 78];
 const TRACK_LENGTH = 214;
 

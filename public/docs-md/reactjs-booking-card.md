@@ -21,6 +21,8 @@ Pick a day and a time, press Book — the button stays busy while your onBook pr
 - The arrows page `BookingCard.Days` a week at a time, up to `horizon` days out (90 by default). Days start today, so the previous arrow is disabled on the first page — nobody can book into the past.
 
 ```tsx
+import { BookingCard } from "@/components/custom/blocks/BookingCardBlock";
+
 const MORNING = [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }];
 const AFTERNOON = [{ label: "12:00 PM" }, { label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM", taken: true }];
 
@@ -72,6 +74,9 @@ The same card inside a GlassPanel from Glass Panel. Nothing inside the card chan
 - Wrap it in a `GlassPanel` and the card takes the panel's corners: its root is `rounded-[inherit]`, so the confirmation's cover matches whatever shape it sits in.
 
 ```tsx
+import { BookingCard } from "@/components/custom/blocks/BookingCardBlock";
+import { GlassBackdrop, GlassPanel } from "@/components/custom/blocks/GlassPanelBlock";
+
 const MORNING = [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }];
 const AFTERNOON = [{ label: "12:00 PM" }, { label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM", taken: true }];
 
@@ -110,6 +115,9 @@ The booking card rendered inside a liquid-glass refraction surface.
 - Set variant to `liquid-glass` on `GlassBackdrop` to render realistic SVG fluid refraction with pure white glass elements.
 
 ```tsx
+import { BookingCard } from "@/components/custom/blocks/BookingCardBlock";
+import { GlassBackdrop } from "@/components/custom/blocks/GlassPanelBlock";
+
 const MORNING = [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }];
 const AFTERNOON = [{ label: "12:00 PM" }, { label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM", taken: true }];
 

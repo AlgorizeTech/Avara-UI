@@ -22,6 +22,7 @@ Watch the tags float into view, drop and tumble into a natural pile. Click and t
 ```tsx
 "use client";
 
+import FallingTags from "@/components/custom/blocks/FallingTagsBlock";
 
 export default function SkillsSection() {
   return (
@@ -64,6 +65,7 @@ Vibrant multi-color playful palette across rich indigo, emerald, rose, and amber
 ```tsx
 "use client";
 
+import FallingTags from "@/components/custom/blocks/FallingTagsBlock";
 
 export default function ColorfulTags() {
   return (
@@ -84,6 +86,7 @@ Translucent frosted glass badges with backdrop-blur and luminous specular border
 ```tsx
 "use client";
 
+import FallingTags from "@/components/custom/blocks/FallingTagsBlock";
 
 const mySkills = [
   "React 19",
@@ -137,6 +140,7 @@ High-energy glowing cyberpunk badges with vibrant borders and neon glow shadows.
 ```tsx
 "use client";
 
+import FallingTags from "@/components/custom/blocks/FallingTagsBlock";
 
 export default function NeonArena() {
   return (
@@ -159,6 +163,7 @@ Soft soothing aesthetic pastel badges designed for serene minimal layouts and cr
 ```tsx
 "use client";
 
+import FallingTags from "@/components/custom/blocks/FallingTagsBlock";
 
 export default function PastelTags() {
   return (
@@ -179,6 +184,7 @@ High-contrast editorial zinc and black/white palette tailored for modern minimal
 ```tsx
 "use client";
 
+import FallingTags from "@/components/custom/blocks/FallingTagsBlock";
 
 export default function MonochromeTags() {
   return (
@@ -199,6 +205,7 @@ High-contrast dual-tone black and white badges. Tags alternate between black bac
 ```tsx
 "use client";
 
+import FallingTags from "@/components/custom/blocks/FallingTagsBlock";
 
 export default function BlackAndWhiteTags() {
   return (

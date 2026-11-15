@@ -15,7 +15,7 @@
       "path": "app/page.tsx",
       "type": "registry:page",
       "target": "app/page.tsx",
-      "content": "import { SecureEnvelope, SecureEnvelopeData } from \"@/components/custom/blocks/SecureEnvelopeBlock\";\n\nconst ticketData: SecureEnvelopeData = {\n  passengerName: \"Barbara M. Sandoval\",\n  routeText: \"ZÜRICH HB - PARIS-EST\",\n  seatNumber: \"18A\",\n  trainNumber: \"6\",\n};\n\nexport default function TrainOnlineTicketExample() {\n  return (\n    <div className=\"w-full flex items-center justify-center py-12\">\n      <SecureEnvelope\n        cardDesign=\"train-ticket\"\n        interactionMode=\"step-flip\"\n        data={ticketData}\n      />\n    </div>\n  );\n}"
+      "content": "import { SecureEnvelope, type SecureEnvelopeData } from \"@/components/custom/blocks/SecureEnvelopeBlock\";\n\nconst ticketData: SecureEnvelopeData = {\n  passengerName: \"Barbara M. Sandoval\",\n  routeText: \"ZÜRICH HB - PARIS-EST\",\n  seatNumber: \"18A\",\n  trainNumber: \"6\",\n};\n\nexport default function TrainOnlineTicketExample() {\n  return (\n    <div className=\"w-full flex items-center justify-center py-12\">\n      <SecureEnvelope\n        cardDesign=\"train-ticket\"\n        interactionMode=\"step-flip\"\n        data={ticketData}\n      />\n    </div>\n  );\n}"
     },
     {
       "path": "components/custom/blocks/SecureEnvelopeBlock.tsx",

@@ -5,8 +5,7 @@
     "target": "es2023",
     "lib": [
       "ES2023",
-      "DOM",
-      "DOM.Iterable"
+      "DOM"
     ],
     "module": "esnext",
     "types": [],
@@ -284,6 +283,7 @@
     "src/components/custom/ui/slider.tsx",
     "src/components/ui/card.tsx",
     "src/lib/accent.ts",
-    "src/lib/animate.ts"
+    "src/lib/animate.ts",
+    "src/lib/chart-tokens.ts"
   ]
 }

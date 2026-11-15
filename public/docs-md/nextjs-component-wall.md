@@ -66,7 +66,8 @@ The copy in the middle, a wall on each side. Wait a few seconds: the left camera
 
 import Link from "next/link";
 import { ComponentWall, type ComponentWallItem } from "@/components/custom/blocks/ComponentWallBlock";
-
+import { TechStack, TechStackGroup, TechStackTool } from "@/components/custom/blocks/TechStackBlock";
+import { GitHubIcon, ReactIcon, NextjsIcon, TypeScriptIcon, TailwindIcon, MotionIcon, GsapIcon, LucideIcon } from "@/components/custom/blocks/Icons";
 
 // slug is what the install line calls the card; it defaults to the title in kebab-case.
 const ITEMS: ComponentWallItem[] = [
@@ -168,7 +169,8 @@ The copy in the middle between two gliding screenshot walls. On mobile and small
 
 import Link from "next/link";
 import { ComponentWall, type ComponentWallItem } from "@/components/custom/blocks/ComponentWallBlock";
-
+import { TechStack, TechStackGroup, TechStackTool } from "@/components/custom/blocks/TechStackBlock";
+import { GitHubIcon, ReactIcon, NextjsIcon, TypeScriptIcon, TailwindIcon, MotionIcon, GsapIcon, LucideIcon } from "@/components/custom/blocks/Icons";
 
 // slug is what the install line calls the card; it defaults to the title in kebab-case.
 const ITEMS: ComponentWallItem[] = [
@@ -251,7 +253,8 @@ Centred hero layout with background image animations completely hidden on mobile
 
 import Link from "next/link";
 import { ComponentWall, type ComponentWallItem } from "@/components/custom/blocks/ComponentWallBlock";
-
+import { TechStack, TechStackGroup, TechStackTool } from "@/components/custom/blocks/TechStackBlock";
+import { GitHubIcon, ReactIcon, NextjsIcon, TypeScriptIcon, TailwindIcon, MotionIcon, GsapIcon, LucideIcon } from "@/components/custom/blocks/Icons";
 
 // slug is what the install line calls the card; it defaults to the title in kebab-case.
 const ITEMS: ComponentWallItem[] = [
@@ -337,7 +340,8 @@ Centred hero layout featuring one single continuous full-width background wall a
 
 import Link from "next/link";
 import { ComponentWall, type ComponentWallItem } from "@/components/custom/blocks/ComponentWallBlock";
-
+import { TechStack, TechStackGroup, TechStackTool } from "@/components/custom/blocks/TechStackBlock";
+import { GitHubIcon, ReactIcon, NextjsIcon, TypeScriptIcon, TailwindIcon, MotionIcon, GsapIcon, LucideIcon } from "@/components/custom/blocks/Icons";
 
 // slug is what the install line calls the card; it defaults to the title in kebab-case.
 const ITEMS: ComponentWallItem[] = [
@@ -420,7 +424,8 @@ The copy on the left, one wall filling the right and fading under it. One camera
 
 import Link from "next/link";
 import { ComponentWall, type ComponentWallItem } from "@/components/custom/blocks/ComponentWallBlock";
-
+import { TechStack, TechStackGroup, TechStackTool } from "@/components/custom/blocks/TechStackBlock";
+import { GitHubIcon, ReactIcon, NextjsIcon, TypeScriptIcon, TailwindIcon, MotionIcon, GsapIcon, LucideIcon } from "@/components/custom/blocks/Icons";
 
 // slug is what the install line calls the card; it defaults to the title in kebab-case.
 const ITEMS: ComponentWallItem[] = [

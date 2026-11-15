@@ -509,12 +509,12 @@ export default function AgGridInventory() {
 This example also uses these {SITE_NAME} components — install whichever
 your project does not already have:
 
-<Cli command="add card.json ui-badge.json button.json" />
+<Cli command="add card.json ui-badge.json button.json accent.json chart-tokens.json" />
 
-The grid takes its colours from `useChartTokens`, which is not a registry item:
-create `src/lib/chart-tokens.ts` with the file in this example's Code tab — the
-same file the <DocLink to="third-party/charts">Charts</DocLink> page sets up, so
-skip this if you already have it.
+The grid takes its colours from `useChartTokens`, which the `chart-tokens` item
+installs (with the small `accent` helper it imports) — the same file the
+<DocLink to="third-party/charts">Charts</DocLink> page sets up, so it is a no-op
+if you already have it.
 
 ## Which one
 

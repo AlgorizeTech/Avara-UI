@@ -23,6 +23,8 @@ Eight flavours around one cup on a mountain of powder. The ring spins up from be
 - `foregroundImage` is the powder — a transparent cutout with its peak at the horizontal centre — anchored to the foot of the stage in front of the cup, `foregroundHeight` (default `0.41`) of the stage tall. `backgroundImage` covers the section behind everything. Leave both out and the scene is drawn from `background`, `mound` (`[light, dark]`) and `paper`.
 
 ```tsx
+import { FlavourCarousel } from "@/components/custom/blocks/FlavourCarouselBlock";
+
 // Every product image must share the same crop, so only the contents appear to change.
 const ASSETS: Record<string, string> = {
   "cup-berry": "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790509366/cup-berry-1790509374064.webp",

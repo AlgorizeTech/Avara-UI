@@ -21,6 +21,10 @@ Scroll down to watch top and bottom rows travel in opposite directions across th
 ```tsx
 "use client";
 
+import {
+  TopDestinations,
+  type DestinationItem,
+} from "@/components/custom/blocks/TopDestinationsBlock";
 
 const customDestinations: DestinationItem[] = [
   {

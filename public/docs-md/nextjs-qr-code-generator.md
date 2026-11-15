@@ -23,8 +23,9 @@ Type a value, pick an error-correction level, and export as PNG or PDF.
 ```tsx
 "use client";
 
-
-
+import { QrCodeGenerator } from "@/components/custom/blocks/QrCodeGeneratorBlock";
+import { FileText, ImageIcon } from "lucide-react";
+import { useState } from "react";
 
 type Level = "L" | "M" | "Q" | "H";
 
@@ -175,6 +176,7 @@ A separate component with its own dependencies — decoding happens entirely in 
 ```tsx
 "use client";
 
+import { QrCodeReader } from "@/components/custom/blocks/QrCodeReaderBlock";
 
 export default function ReaderExample() {
   // Click or drag-and-drop a QR image; `onRead` fires with the decoded string.

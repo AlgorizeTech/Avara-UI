@@ -33,7 +33,22 @@ Type to filter, arrow keys to move, Enter to pick. The control, the menu, the op
 
 ```tsx
 import { useState } from "react";
-
+import Select, {
+  components,
+  type ClassNamesConfig,
+  type GroupBase,
+  type OptionProps,
+} from "react-select";
+import { Check } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/custom/blocks/CardBlock";
+import { Badge } from "@/components/custom/ui/badge";
+import { cn } from "@/lib/utils";
 
 type Option = { value: string; label: string; hint?: string };
 

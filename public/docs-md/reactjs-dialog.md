@@ -23,9 +23,19 @@ Compose `DialogTrigger` and `DialogContent` inside a `Dialog` root.
 - `defaultOpen` starts it open while leaving the state uncontrolled.
 
 ```tsx
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/custom/blocks/DialogBlock";
 // CopyField ships with the copy-button item:
 // npx shadcn@latest add @avara-ui/copy-button
-
+import { CopyField } from "@/components/custom/blocks/CopyButtonBlock";
+import { UserPlus } from "lucide-react";
 
 export default function ShareDialog() {
   return (
@@ -93,6 +103,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/custom/blocks/DialogBlock";
+import { Settings } from "lucide-react";
 
 export default function EditProfileDialog() {
   return (
@@ -199,6 +210,17 @@ A confirmation shape: coloured title, clear consequence, two footer actions.
 - `hideCloseButton` is worth pairing with this so the choice has to be made explicitly.
 
 ```tsx
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/custom/blocks/DialogBlock";
+import { Trash2 } from "lucide-react";
+
 export default function DeleteAccountDialog() {
   return (
     <Dialog>
@@ -242,6 +264,17 @@ The working version of that shape — the row is only removed once the dialog re
 - `size="sm"` suits a confirm — one question, two buttons, nothing to scan past.
 
 ```tsx
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/custom/blocks/DialogBlock";
+import { Trash2 } from "lucide-react";
+
 type Project = { id: string; name: string; meta?: string };
 
 export default function ProjectList({
@@ -369,6 +402,17 @@ export default function TermsDialog() {
 - `onOpenChange` also fires on Escape and on a backdrop click — handle those or the dialog will not close.
 
 ```tsx
+import { useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/custom/blocks/DialogBlock";
+
 export default function ControlledDialog() {
   const [open, setOpen] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -419,6 +463,18 @@ A small dialog opens on top of the one already on screen — and Escape or a bac
 - `onOpenChange` on the inner dialog is how the choice travels back out — write it into the outer form's state, then close only the inner one.
 
 ```tsx
+import { useState } from "react";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/custom/blocks/DialogBlock";
+
 const CUSTOMERS = [
   { id: "c1", name: "Northwind Traders" },
   { id: "c2", name: "Acme Robotics" },

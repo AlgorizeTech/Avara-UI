@@ -21,6 +21,17 @@ Type in any search box to filter — empty groups vanish on their own. `ArrowUp`
 ```tsx
 "use client";
 
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "@/components/custom/blocks/CommandBlock";
+import { Calculator, Calendar, CreditCard, LogOut, Settings, Smile, User } from "lucide-react";
 
 export default function CommandPalette() {
   const run = (value: string) => console.log("Selected:", value);
@@ -113,7 +124,14 @@ Swap `Command` for `CommandDialog` to get the ⌘K overlay — try the shortcut.
 ```tsx
 "use client";
 
-
+import { useEffect, useState } from "react";
+import {
+  CommandDialog,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/custom/blocks/CommandBlock";
 
 export default function QuickActions() {
   const [open, setOpen] = useState(false);
@@ -170,6 +188,15 @@ export default function QuickActions() {
 ```tsx
 "use client";
 
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/custom/blocks/CommandBlock";
+import { Calculator, Calendar, Smile } from "lucide-react";
 
 export default function ExternalFiltering() {
   // shouldFilter={false} hands filtering back to you. Typing no longer narrows

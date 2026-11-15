@@ -150,13 +150,20 @@ export function HeartSignal({
     let width = (canvas.width = container.clientWidth);
     let height = (canvas.height = container.clientHeight);
 
+    // Applied on the next frame, and only when the size really changed: resizing the
+    // canvas inside the observer callback makes the browser report "ResizeObserver
+    // loop completed with undelivered notifications" on every layout pass.
+    let resizeFrame = 0;
     const handleResize = () => {
+      resizeFrame = 0;
       if (!container || !canvas) return;
-      width = canvas.width = container.clientWidth;
-      height = canvas.height = container.clientHeight;
+      if (canvas.width !== container.clientWidth) width = canvas.width = container.clientWidth;
+      if (canvas.height !== container.clientHeight) height = canvas.height = container.clientHeight;
     };
 
-    const resizeObserver = new ResizeObserver(() => handleResize());
+    const resizeObserver = new ResizeObserver(() => {
+      if (!resizeFrame) resizeFrame = requestAnimationFrame(handleResize);
+    });
     resizeObserver.observe(container);
 
     let time = 0;
@@ -577,6 +584,7 @@ export function HeartSignal({
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
+      if (resizeFrame) cancelAnimationFrame(resizeFrame);
       resizeObserver.disconnect();
     };
   }, [variant, bpm, speed, effectiveColor, themeTrackColor, showGrid, resolvedTheme]);
@@ -591,7 +599,8 @@ export function HeartSignal({
       {...props}
     >
       {/* Realtime Canvas Renderer */}
-      <canvas ref={canvasRef} className="block w-full h-full" />
+      {/* Out of flow, so the canvas can never change the size of the box it measures. */}
+      <canvas ref={canvasRef} className="absolute inset-0 block h-full w-full" />
 
       {/* Floating BPM Vital Telemetry Badge */}
       {showBPM && (

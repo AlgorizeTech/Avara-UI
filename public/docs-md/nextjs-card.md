@@ -19,6 +19,7 @@ A responsive, full-width two-column showcase card matching the interactive block
 ```tsx
 "use client";
 
+import { ProjectCard } from "@/components/custom/blocks/CardBlock";
 
 export default function ProjectShowcaseCardDemo() {
   return (
@@ -63,7 +64,8 @@ Complete suite of 4 reusable product cards designed for online stores, shopping 
 ```tsx
 "use client";
 
-
+import { useState } from "react";
+import { ProductCard, type ProductColorOption } from "@/components/custom/blocks/ProductCardBlock";
 
 export default function EcommerceProductCardsDemo() {
   const [sneakerBg, setSneakerBg] = useState(
@@ -179,6 +181,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/custom/blocks/CardBlock";
+import { Bell, Settings } from "lucide-react";
 
 export default function NotificationCard() {
   return (
@@ -222,7 +225,8 @@ export default function NotificationCard() {
 ```tsx
 "use client";
 
-
+import { Card, CardHeader, CardTitle, CardDescription } from "@/components/custom/blocks/CardBlock";
+import { Download, Upload } from "lucide-react";
 
 export default function ClickableCards() {
   return (
@@ -261,6 +265,7 @@ export default function ClickableCards() {
 
 ```tsx
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/custom/blocks/CardBlock";
+import { Bell, CreditCard, Settings } from "lucide-react";
 
 export default function StatGrid() {
   return (
@@ -507,7 +512,17 @@ A person as a card: a patterned banner, an avatar that overlaps it, a few number
 ```tsx
 "use client";
 
-
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/custom/blocks/CardBlock";
+import { cn } from "@/lib/utils";
+import { Check, MapPin, MessageCircle, UserPlus } from "lucide-react";
 
 const TEAMMATES = [
   {
@@ -623,7 +638,7 @@ export default function ProfileCards() {
           <Card
             key={member.name}
             variant="bordered"
-            interactive={interactive}
+            interactive
             className="flex-row items-center gap-4 rounded-2xl p-4"
           >
             <span
@@ -674,8 +689,9 @@ Pastel product tiles: a tag, a two-line title, the product on the right, and a f
 ```tsx
 "use client";
 
-
-
+import type { CSSProperties } from "react";
+import { Card, CardFooter, CardHeader, CardTitle } from "@/components/custom/blocks/CardBlock";
+import { ShoppingBasket } from "lucide-react";
 
 const ITEMS = [
   {
@@ -769,6 +785,7 @@ One card, two panels, a dashed perforation between them — the holes are circle
 
 ```tsx
 import { Card } from "@/components/custom/blocks/CardBlock";
+import { Plane } from "lucide-react";
 
 export default function BoardingPassCard() {
   return (
@@ -823,8 +840,9 @@ A horizontal card holding live state: the record turns while the track runs, and
 ```tsx
 "use client";
 
-
-
+import { useEffect, useState } from "react";
+import { Card, CardContent } from "@/components/custom/blocks/CardBlock";
+import { Pause, Play, SkipBack, SkipForward } from "lucide-react";
 
 const WAVEFORM = [22, 34, 48, 40, 62, 76, 58, 44, 68, 88, 72, 54, 38, 46, 60, 82, 96, 78];
 const TRACK_LENGTH = 214;

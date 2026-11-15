@@ -21,6 +21,17 @@ Right-click (or long-press on touch) inside each dashed box. Try it near the edg
 - Set `disabled` on an item to fade it, drop its hover state and stop `onClick` firing.
 
 ```tsx
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuSeparator,
+  ContextMenuShortcut,
+  ContextMenuTrigger,
+} from "@/components/custom/blocks/ContextMenuBlock";
+import { Copy, Download, FileEdit, Scissors, Share2, Trash } from "lucide-react";
+
 export default function DocumentMenu() {
   // The live preview raises a toast here; this logs instead so the snippet
   // needs nothing beyond the context menu itself.

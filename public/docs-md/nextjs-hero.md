@@ -172,7 +172,8 @@ Copy on the left, the honeycomb on the right with the primary hexagon set among 
 ```tsx
 "use client";
 
-
+import Link from "next/link";
+import { HoneycombHero } from "@/components/custom/blocks/HoneycombHeroBlock";
 
 // tone is the colour behind everything while that photograph is featured; keep it deep.
 const IMAGES = [
@@ -275,7 +276,8 @@ Eyebrow and headline across the top; the glass panel and the queue of cards alon
 ```tsx
 "use client";
 
-
+import Link from "next/link";
+import { HeroCarousel } from "@/components/custom/blocks/HeroCarouselBlock";
 
 const SLIDES = [
   {
@@ -430,7 +432,8 @@ Five columns stepping down to the middle at desktop, three on tablets, two on ph
 ```tsx
 "use client";
 
-
+import Link from "next/link";
+import { FashionHero } from "@/components/custom/blocks/FashionHeroBlock";
 
 // A person on a plain studio background, multiplied onto a colour that echoes the outfit.
 const LOOKS = [
@@ -540,7 +543,8 @@ Twelve columns at desktop — 3 / 3 / 3 / 3 on the first row with the portrait s
 ```tsx
 "use client";
 
-
+import { SupportHero } from "@/components/custom/blocks/SupportHeroBlock";
+import { DiscordIcon, GoogleCalendarIcon, SlackIcon } from "@/components/custom/blocks/Icons";
 
 const AVATARS = [
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,c_limit/v1790158812/pexels-photo-2379004-1790158812208.jpg", alt: "Ana" },
@@ -702,6 +706,7 @@ Badge, headline and pills across the top; five columns of photographs; quote, sc
 ```tsx
 "use client";
 
+import { CollageHero } from "@/components/custom/blocks/CollageHeroBlock";
 
 const PHOTOS = [
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_700,c_limit/v1790148862/pexels-photo-3661193-1790148865106.jpg", alt: "Wooden toy dinosaurs atop a pile of books" },
@@ -811,7 +816,8 @@ Copy and actions on the left, revolving 3D circular photo orbit ring on the righ
 ```tsx
 "use client";
 
-
+import Link from "next/link";
+import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
 
 // Landscapes from Unsplash, free to use.
 const IMAGES = [
@@ -888,7 +894,8 @@ Left column presents the interactive avatar stack, 5-star review score, 2-line h
 ```tsx
 "use client";
 
-
+import Link from "next/link";
+import { BentoCascadeHero } from "@/components/custom/blocks/BentoCascadeHeroBlock";
 
 export default function Hero() {
   return (
@@ -938,7 +945,8 @@ An ethereal hero featuring an elegant serif headline and a staggered 5-card curv
 ```tsx
 "use client";
 
-
+import Link from "next/link";
+import { BreatheHero } from "@/components/custom/blocks/BreatheHeroBlock";
 
 export default function Hero() {
   return (
@@ -994,7 +1002,8 @@ A lightweight interactive hero with a pointer-following sun orb, Typographic Cur
 ```tsx
 "use client";
 
-
+import Link from "next/link";
+import { SolarSnapshotHero } from "@/components/custom/blocks/SolarSnapshotHeroBlock";
 
 export default function Hero() {
   return (

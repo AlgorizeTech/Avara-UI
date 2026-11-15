@@ -23,6 +23,7 @@ import {
   AnimatedList,
   AnimatedListItem,
 } from "@/components/custom/blocks/AnimatedListBlock";
+import { CheckCircle2, CreditCard, UserPlus, Zap } from "lucide-react";
 
 const notifications = [
   {
@@ -134,6 +135,7 @@ import {
   AnimatedList,
   AnimatedListItem,
 } from "@/components/custom/blocks/AnimatedListBlock";
+import { CheckCircle2, CreditCard, UserPlus, Zap } from "lucide-react";
 
 const notifications = [
   {
@@ -227,6 +229,7 @@ import {
   AnimatedList,
   AnimatedListItem,
 } from "@/components/custom/blocks/AnimatedListBlock";
+import { CheckCircle2, CreditCard, UserPlus, Zap } from "lucide-react";
 
 const notifications = [
   {
@@ -321,6 +324,7 @@ import {
   AnimatedList,
   AnimatedListItem,
 } from "@/components/custom/blocks/AnimatedListBlock";
+import { CheckCircle2, CreditCard, UserPlus, Zap } from "lucide-react";
 
 const notifications = [
   {
@@ -417,6 +421,7 @@ import {
   AnimatedList,
   AnimatedListItem,
 } from "@/components/custom/blocks/AnimatedListBlock";
+import { CheckCircle2, CreditCard, UserPlus, Zap } from "lucide-react";
 
 const notifications = [
   {

@@ -248,10 +248,6 @@ function convertMdxToMd(content: string, framework: Framework): string {
 
   let mdContent = content.replace(/```[\s\S]*?```/g, hold);
 
-  // Remove import statements
-  mdContent = mdContent.replace(/^import\s+.*?from\s+.*?;?\s*$/gm, '');
-  mdContent = mdContent.replace(/^import\s+.*?\{[\s\S]*?\}\s+from\s+.*?;?\s*$/gm, '');
-
   // Take the exports out of the prose; the examples below read them.
   const statements: string[] = [];
   for (;;) {
@@ -261,6 +257,12 @@ function convertMdxToMd(content: string, framework: Framework): string {
     if (match[1] !== "metadata") statements.push(statement.getText().replace(/^export\s+/, ""));
     mdContent = mdContent.slice(0, match.index) + mdContent.slice(match.index + statement.end);
   }
+
+  // Remove the page's own import statements (the MDX header). This has to wait
+  // until the exports are out: the usage strings are template literals, and an
+  // import at the start of one of their lines belongs to the snippet, not the page.
+  mdContent = mdContent.replace(/^import\s+.*?from\s+.*?;?\s*$/gm, '');
+  mdContent = mdContent.replace(/^import\s+.*?\{[\s\S]*?\}\s+from\s+.*?;?\s*$/gm, '');
 
   // Each <ExampleShowcase> becomes its examples, once the exports have run.
   const showcases: { marker: string; expression: string; level: number }[] = [];

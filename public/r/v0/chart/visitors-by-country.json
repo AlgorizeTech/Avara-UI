@@ -16,7 +16,7 @@
       "path": "app/page.tsx",
       "type": "registry:page",
       "target": "app/page.tsx",
-      "content": "import { ChartBlock, VisitorsByCountryChart } from \"@/components/custom/blocks/ChartBlock\";\n\nconst countryVisits = [\n  { label: \"United States\", value: 4250, code: \"US\" },\n  { label: \"Germany\", value: 1820, code: \"DE\" },\n  { label: \"United Kingdom\", value: 1340, code: \"GB\" },\n  { label: \"India\", value: 980, code: \"IN\" },\n  { label: \"Canada\", value: 650, code: \"CA\" },\n  { label: \"France\", value: 420, code: \"FR\" },\n];\n\nexport default function CountryVisitorsDemo() {\n  return (\n    <div className=\"w-full max-w-lg md:max-w-xl lg:max-w-2xl mx-auto\">\n      <ChartBlock\n        type=\"visitors-by-country\"\n        data={countryVisits}\n        title=\"Visitors by country\"\n        caption=\"Today\"\n      />\n    </div>\n  );\n}"
+      "content": "import { ChartBlock } from \"@/components/custom/blocks/ChartBlock\";\n\nconst countryVisits = [\n  { label: \"United States\", value: 4250, code: \"US\" },\n  { label: \"Germany\", value: 1820, code: \"DE\" },\n  { label: \"United Kingdom\", value: 1340, code: \"GB\" },\n  { label: \"India\", value: 980, code: \"IN\" },\n  { label: \"Canada\", value: 650, code: \"CA\" },\n  { label: \"France\", value: 420, code: \"FR\" },\n];\n\nexport default function CountryVisitorsDemo() {\n  return (\n    <div className=\"w-full max-w-lg md:max-w-xl lg:max-w-2xl mx-auto\">\n      <ChartBlock\n        type=\"visitors-by-country\"\n        data={countryVisits}\n        title=\"Visitors by country\"\n        caption=\"Today\"\n      />\n    </div>\n  );\n}"
     },
     {
       "path": "components/custom/blocks/ChartBlock.tsx",

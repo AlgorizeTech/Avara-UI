@@ -92,6 +92,7 @@ function renderItem(item: GridItem) {
   );
 }
 
+import { Cpu, Layers, Sparkles, Wand2 } from "lucide-react";
 
 const items: GridItem[] = [
   { id: "1", type: "card", height: "h-56", title: "Alpine Forest Research", desc: "Exploring ancient pine ecosystems.", icon: <Layers className="w-5 h-5" />, theme: "blue" },
@@ -214,6 +215,7 @@ function renderItem(item: GridItem) {
   );
 }
 
+import { Cpu, Layers, Sparkles, Wand2 } from "lucide-react";
 
 const items: GridItem[] = [
   { id: "c1", type: "image", height: "h-[22rem]", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg" },
@@ -314,6 +316,7 @@ function renderItem(item: GridItem) {
   );
 }
 
+import { Cpu, Layers, Sparkles } from "lucide-react";
 
 const items: GridItem[] = [
   { id: "g1", type: "card", height: "h-60", title: "Highland Sanctuary", desc: "Protected mountain valley reserves.", icon: <Sparkles className="w-5 h-5" />, theme: "purple" },
@@ -412,6 +415,7 @@ function renderItem(item: GridItem) {
   );
 }
 
+import { Layers, Sparkles, Wand2 } from "lucide-react";
 
 const items: GridItem[] = [
   { id: "s1", type: "image", height: "h-[28rem]", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg" },
@@ -511,6 +515,7 @@ function renderItem(item: GridItem) {
   );
 }
 
+import { Cpu, Layers, Wand2 } from "lucide-react";
 
 const items: GridItem[] = [
   { id: "st1", type: "card", height: "h-52", title: "Static Meadow", desc: "Instant zero-motion render view.", icon: <Cpu className="w-5 h-5" />, theme: "emerald" },

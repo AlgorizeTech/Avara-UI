@@ -29,8 +29,18 @@ Drag, swipe, arrows and dots. Embla positions the track; every pixel you can see
 
 ```tsx
 import { useCallback, useSyncExternalStore } from "react";
-
-
+import useEmblaCarousel from "embla-carousel-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardTitle,
+} from "@/components/custom/blocks/CardBlock";
+import { Badge } from "@/components/custom/ui/badge";
+import Button from "@/components/custom/blocks/Button";
+import { accentStyle } from "@/lib/accent";
+import { cn } from "@/lib/utils";
 
 const products = [
   { name: "Aurora Desk Lamp", price: "$129", tag: "New", image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790159966/photo-1507473885765-e6ed057f782c-1790159970112.jpg" },
@@ -173,8 +183,14 @@ Autoplay, coverflow depth, clickable pagination and keyboard-reachable arrows â€
 
 ```tsx
 import { Autoplay, EffectCoverflow, Navigation, Pagination } from "swiper/modules";
-
-
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Quote } from "lucide-react";
+import {
+  Card,
+  CardContent,
+} from "@/components/custom/blocks/CardBlock";
+import { Badge } from "@/components/custom/ui/badge";
+import { accentStyle } from "@/lib/accent";
 
 import "swiper/css";
 import "swiper/css/effect-coverflow";

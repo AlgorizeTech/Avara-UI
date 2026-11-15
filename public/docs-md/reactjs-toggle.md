@@ -18,6 +18,7 @@ Explore the different variations of the Toggle component — each example shows 
 
 ```tsx
 import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+import { Bold } from "lucide-react";
 
 export default function ToggleSizes() {
   return (
@@ -58,6 +59,10 @@ npx shadcn@latest add @avara-ui/toggle
 - `children` can hold an icon and a label together when the toggle drives a named action.
 
 ```tsx
+import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+import { Mic, MicOff } from "lucide-react";
+import { useState } from "react";
+
 export default function MuteToggle() {
   const [muted, setMuted] = useState(false);
 
@@ -75,6 +80,10 @@ export default function MuteToggle() {
 - `pressed` is per-toggle — a toolbar is just independent toggles side by side, not a group component.
 
 ```tsx
+import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+import { Bold, Italic, Underline } from "lucide-react";
+import { useState } from "react";
+
 export default function FormattingToolbar() {
   const [format, setFormat] = useState({ bold: false, italic: true, underline: false });
 
@@ -112,6 +121,7 @@ export default function FormattingToolbar() {
 
 ```tsx
 import { Toggle } from "@/components/custom/blocks/ToggleBlock";
+import { Bold } from "lucide-react";
 
 export default function DisabledToggle() {
   return (

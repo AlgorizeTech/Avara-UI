@@ -1,13 +1,13 @@
 "use client";
 
 import { REGISTRY_NAMESPACE } from "@/lib/registry";
+import { GitHubIcon } from "@/assets/icons/github";
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
   BatteryFull,
   Check,
   Copy,
-  Github,
   Signal,
   Sparkles,
   Terminal,
@@ -182,7 +182,7 @@ function HeroScreen({ homeIndicator = true }: { homeIndicator?: boolean }) {
             aria-label="Star on GitHub"
             className="size-9 shrink-0 rounded-xl border border-border bg-card text-foreground flex items-center justify-center hover:bg-primary/10 hover:border-primary/50 hover:text-primary active:scale-[0.98] transition-all"
           >
-            <Github className="size-4" />
+            <GitHubIcon className="size-4 fill-current" />
           </button>
         </div>
 

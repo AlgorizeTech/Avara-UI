@@ -65,6 +65,13 @@ The full suite: a `Dropzone` that hands you `File[]`, and an `UploadItem` for ea
 - `maxSize={50}` is the limit in **megabytes**, and is echoed in the helper text automatically.
 
 ```tsx
+import {
+  Dropzone,
+  UploadItem,
+  type FileUploadState,
+} from "@/components/custom/blocks/UploadBlock";
+import { useState } from "react";
+
 // Rows fade up in; a removed row fades up out and closes its gap, so the
 // rows under it slide up. `animationend` then drops it from state.
 const queueCss = `
@@ -146,6 +153,11 @@ export default function FileUploader() {
 - `onRetry` is what the inline Retry button calls after an `error`; `onRemove` backs the X.
 
 ```tsx
+import {
+  UploadItem,
+  type FileUploadState,
+} from "@/components/custom/blocks/UploadBlock";
+
 // status is the state machine that drives every colour, icon and action
 // on the row. progress/timeLeft/errorMessage come along for the ride.
 const queue: FileUploadState[] = [
@@ -224,6 +236,8 @@ For a form that just needs files attached: the `Input` block in file mode, with 
 - `multiple` and `accept` pass through; `accept` takes the standard HTML string such as `"image/*"`.
 
 ```tsx
+import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
 export default function FileUploadInput() {
   // type="file" turns the Input block into a drag-and-drop zone with
   // previews, sizes and remove buttons — no queue state to manage.
@@ -269,6 +283,10 @@ The `Folder` block as an upload surface, tinted with the theme colour: drop file
 - `color` defaults to a soft tint of `--primary` (lightness 0.88, chroma at 40%), so the folder — body, pocket, icon and the peeking cards — follows your theme preset and the colour picker above without going heavy. Pass any CSS colour to pin one.
 
 ```tsx
+import { Folder, type FolderFile } from "@/components/custom/blocks/FolderBlock";
+import { Image } from "lucide-react";
+import { useState } from "react";
+
 export default function DropZone() {
   const [files, setFiles] = useState<FolderFile[]>([]);
   const [progress, setProgress] = useState<number>();

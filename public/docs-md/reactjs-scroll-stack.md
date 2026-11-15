@@ -209,6 +209,7 @@ npx shadcn@latest add https://avaraui.com/r/fan-stack-motion.json
 
 ```tsx
 import { ScrollStack, type StackItem } from "@/components/custom/blocks/ScrollStackBlock";
+import { Blocks, Layers, ShieldCheck, Zap } from "lucide-react";
 
 const items: StackItem[] = [
   {
@@ -637,6 +638,7 @@ import {
   SplitScrollStack,
   type ScrollStackItem,
 } from "@/components/custom/blocks/SplitScrollStackBlock";
+import { BarChart3, Cpu, LayoutTemplate, Smartphone, Sparkles } from "lucide-react";
 
 // Card bodies — the four screens the preview renders.
 const MockLandingView = () => (

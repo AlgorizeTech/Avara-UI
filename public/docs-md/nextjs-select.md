@@ -57,7 +57,8 @@ A labelled dropdown with helper text.
 ```tsx
 "use client";
 
-
+import { SelectBlock, type SelectOption } from "@/components/custom/blocks/SelectBlock";
+import { useState } from "react";
 
 import { Box, Code, Database, Paintbrush } from "lucide-react";
 
@@ -109,7 +110,8 @@ npx shadcn@latest add @avara-ui/select
 ```tsx
 "use client";
 
-
+import { useState } from "react";
+import { SelectBlock, type SelectOption } from "@/components/custom/blocks/SelectBlock";
 
 import { Box, Code, Database, Paintbrush } from "lucide-react";
 
@@ -145,7 +147,8 @@ export default function UnderlinedSelect() {
 ```tsx
 "use client";
 
-
+import { useState } from "react";
+import { SelectBlock, type SelectOption } from "@/components/custom/blocks/SelectBlock";
 
 import { Box, Code, Database, Paintbrush } from "lucide-react";
 
@@ -181,7 +184,8 @@ export default function SearchableSelect() {
 ```tsx
 "use client";
 
-
+import { SelectBlock, type SelectOption } from "@/components/custom/blocks/SelectBlock";
+import { useState } from "react";
 
 import { Box, Code, Database, Paintbrush } from "lucide-react";
 

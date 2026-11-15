@@ -20,6 +20,9 @@ Hold `currentPage` yourself and update it from `onPageChange`.
 - `onPageChange` returns the target page number from a number click or the prev/next buttons.
 
 ```tsx
+import { useState } from "react";
+import { Pagination } from "@/components/custom/blocks/PaginationBlock";
+
 export default function BasicPagination() {
   // You own the page state — the component only reports the new number.
   const [currentPage, setCurrentPage] = useState(1);
@@ -56,6 +59,9 @@ npx shadcn@latest add @avara-ui/pagination
 - `siblingCount={2}` is how many numbers flank the active page before an ellipsis. Raise it for wide desktop layouts.
 
 ```tsx
+import { useState } from "react";
+import { Pagination } from "@/components/custom/blocks/PaginationBlock";
+
 export default function TightPagination() {
   const [currentPage, setCurrentPage] = useState(50);
 
@@ -80,6 +86,9 @@ Both controls are opt-in booleans; the page-size dropdown reports through `onPag
 - `showPageSize` adds a rows-per-page dropdown. Pass `pageSize`, `pageSizeOptions` and `onPageSizeChange`, then re-derive `totalPages`.
 
 ```tsx
+import { useState } from "react";
+import { Pagination } from "@/components/custom/blocks/PaginationBlock";
+
 export default function ControlledPagination() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -111,6 +120,9 @@ export default function ControlledPagination() {
 - `pageJumpVariant="select"` swaps the free-typed input for a dropdown that lists every page — handy for smaller page counts.
 
 ```tsx
+import { useState } from "react";
+import { Pagination } from "@/components/custom/blocks/PaginationBlock";
+
 export default function DropdownJump() {
   const [currentPage, setCurrentPage] = useState(7);
 
@@ -133,6 +145,9 @@ export default function DropdownJump() {
 - `totalPages` is yours to derive — `Math.ceil(rows.length / pageSize)` — and pairs naturally with a range readout.
 
 ```tsx
+import { useState } from "react";
+import { Pagination } from "@/components/custom/blocks/PaginationBlock";
+
 export default function CustomerDirectory() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);

@@ -55,6 +55,9 @@ A labelled dropdown with helper text.
 - `value` and `onChange` are yours to hold; use an array when `multiple` is on.
 
 ```tsx
+import { SelectBlock, type SelectOption } from "@/components/custom/blocks/SelectBlock";
+import { useState } from "react";
+
 import { Box, Code, Database, Paintbrush } from "lucide-react";
 
 const options: SelectOption[] = [
@@ -103,6 +106,9 @@ npx shadcn@latest add @avara-ui/select
 - Use `variant="underlined"` to reduce the trigger to a single baseline rule.
 
 ```tsx
+import { useState } from "react";
+import { SelectBlock, type SelectOption } from "@/components/custom/blocks/SelectBlock";
+
 import { Box, Code, Database, Paintbrush } from "lucide-react";
 
 const options: SelectOption[] = [
@@ -135,6 +141,9 @@ export default function UnderlinedSelect() {
 - Set `searchable` to add a sticky filter bar at the top of the dropdown.
 
 ```tsx
+import { useState } from "react";
+import { SelectBlock, type SelectOption } from "@/components/custom/blocks/SelectBlock";
+
 import { Box, Code, Database, Paintbrush } from "lucide-react";
 
 const options: SelectOption[] = [
@@ -167,6 +176,9 @@ export default function SearchableSelect() {
 - Set `multiple` and pass an array as `value` — selections render as removable tags in the trigger.
 
 ```tsx
+import { SelectBlock, type SelectOption } from "@/components/custom/blocks/SelectBlock";
+import { useState } from "react";
+
 import { Box, Code, Database, Paintbrush } from "lucide-react";
 
 const options: SelectOption[] = [

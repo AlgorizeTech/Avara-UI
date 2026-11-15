@@ -51,6 +51,7 @@ The complete homepage FAQ section. Features a centered header, ambient backgroun
 ```tsx
 "use client";
 
+import { FAQSection } from "@/components/custom/blocks/FAQSectionBlock";
 
 export default function FAQExample() {
   return (
@@ -74,6 +75,7 @@ A two-column section: sticky heading and a support team contact card on the left
 ```tsx
 "use client";
 
+import { FAQSection } from "@/components/custom/blocks/FAQSectionBlock";
 
 export default function TwoColumnFAQExample() {
   return (

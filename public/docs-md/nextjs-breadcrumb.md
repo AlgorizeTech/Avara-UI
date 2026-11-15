@@ -56,6 +56,7 @@ npx shadcn@latest add @avara-ui/breadcrumb
 
 ```tsx
 import { BreadcrumbBlock, type BreadcrumbItem } from "@/components/custom/blocks/BreadcrumbBlock";
+import { Home, Settings } from "lucide-react";
 
 const items: BreadcrumbItem[] = [
   // icon takes the Lucide component itself, not a string
@@ -75,6 +76,7 @@ export default function BreadcrumbWithIcons() {
 
 ```tsx
 import { BreadcrumbBlock, type BreadcrumbItem } from "@/components/custom/blocks/BreadcrumbBlock";
+import { FileText, Folder, Home } from "lucide-react";
 
 const deepPath: BreadcrumbItem[] = [
   { label: "Home", href: "/", icon: Home },

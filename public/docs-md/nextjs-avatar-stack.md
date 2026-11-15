@@ -276,6 +276,7 @@ Three faces using the zoom variant with clean tooltips and a trailing plus actio
 ```tsx
 "use client";
 
+import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
 
 const PEOPLE = [
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },
@@ -309,6 +310,7 @@ Six people, three shown — the rest become a clickable +3 disc. Hovering faces 
 ```tsx
 "use client";
 
+import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
 
 const PEOPLE = [
   { src: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_120,h_120,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg", alt: "Ana Watson", designation: "Founder & CEO" },

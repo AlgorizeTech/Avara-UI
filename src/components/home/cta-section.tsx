@@ -1,7 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { ArrowRight, Check, Copy, Github, Sparkles } from "lucide-react";
+import { ArrowRight, Check, Copy, Sparkles } from "lucide-react";
+import { GitHubIcon } from "@/assets/icons/github";
 import Link from "@/components/site/intent-link";
 import { useRef, useState } from "react";
 import { COMPONENT_COUNT, links } from "@/config/site";
@@ -266,7 +267,7 @@ export function CTASection() {
 								href={links.github}
 								target="_blank"
 								className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-border bg-background hover:bg-muted text-foreground font-medium text-sm transition-colors">
-								<Github className="size-4" />
+								<GitHubIcon className="size-4 fill-current" />
 								<span>Star on GitHub</span>
 								{/* <div className="inline-flex items-center gap-1 pl-1 text-xs font-mono text-foreground/70 font-semibold">
 									<Star className="size-3 fill-amber-400 text-amber-400" />

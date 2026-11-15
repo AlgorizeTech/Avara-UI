@@ -17,6 +17,9 @@ Swipe or drag cards left or right to discard them. Cards behind smoothly step fo
 - `visibleCards=3` keeps at most 3 cards visible in the stack at all times (front card + 2 cards behind).
 
 ```tsx
+import { Compass, Palette, Terminal, FileText } from "lucide-react";
+import { CardStack, type CardStackItem } from "@/components/custom/blocks/CardStackBlock";
+
 const ARRIVALS: CardStackItem[] = [
   {
     id: "maker-hunt",
@@ -117,6 +120,9 @@ Continuous cyclical navigation where swiping cards seamlessly wraps around to th
 - `showHeader=false` hides the header bar for a clean, uninterrupted swipe deck loop.
 
 ```tsx
+import { Compass, Palette, Terminal, FileText } from "lucide-react";
+import { CardStack, type CardStackItem } from "@/components/custom/blocks/CardStackBlock";
+
 const ARRIVALS: CardStackItem[] = [
   {
     id: "maker-hunt",
@@ -192,6 +198,9 @@ Arrow button controls to slide cards forwards and backwards with disabled bounds
 - `slideDirection=right` controls which direction the top card slides away when clicking next.
 
 ```tsx
+import { Compass, Palette, Terminal } from "lucide-react";
+import { CardStack, type CardStackItem } from "@/components/custom/blocks/CardStackBlock";
+
 const ARRIVALS: CardStackItem[] = [
   {
     id: "maker-hunt",
@@ -238,6 +247,9 @@ Slide the top card out toward the left when progressing forward with button cont
 - `slideDirection=left` animates the card exit towards the left side.
 
 ```tsx
+import { Compass, Palette, Terminal, FileText } from "lucide-react";
+import { CardStack, type CardStackItem } from "@/components/custom/blocks/CardStackBlock";
+
 const ARRIVALS: CardStackItem[] = [
   {
     id: "maker-hunt",

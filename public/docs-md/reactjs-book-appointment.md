@@ -51,6 +51,8 @@ Pick a day and a time, press Book — the button stays busy while your onBook pr
 - `scores` render as `HalfStars` with fractional fill. `visitReasons` and `activities` are `ChartBlock`s — a `donut-legend` and a `stacked-bar`; leave either out and its panel is not drawn.
 
 ```tsx
+import { BookAppointment } from "@/components/custom/blocks/BookAppointmentBlock";
+
 const DOCTOR = {
   name: "Dr. Priya Nair, MD",
   shortName: "Dr. Nair",
@@ -127,6 +129,8 @@ No glass: the same booking on white cards with an ordinary shadow. The booker it
 - Set `variant="solid"` and every panel becomes a solid card; the aurora is not drawn. Days, slots and the confirmation use neutral inks that read on either surface.
 
 ```tsx
+import { BookAppointment } from "@/components/custom/blocks/BookAppointmentBlock";
+
 const DOCTOR = {
   name: "Dr. Priya Nair, MD",
   shortName: "Dr. Nair",

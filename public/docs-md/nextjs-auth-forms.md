@@ -147,6 +147,7 @@ Email and password with a remember-me checkbox and a forgot-password link, all v
 ```tsx
 "use client";
 
+import LoginForm, { type LoginFormValues } from "@/components/custom/blocks/LoginForm";
 
 export default function LoginPage() {
   const handleSubmit = async (values: LoginFormValues) => {
@@ -201,6 +202,7 @@ Every example below is the same `LoginForm` you just installed — only the prop
 ```tsx
 "use client";
 
+import LoginForm, { type LoginFormValues } from "@/components/custom/blocks/LoginForm";
 
 export default function SplitLoginPage() {
   // "split" pairs the form with a full-height marketing panel on large screens.
@@ -236,6 +238,7 @@ export default function SplitLoginPage() {
 ```tsx
 "use client";
 
+import LoginForm, { type LoginFormValues } from "@/components/custom/blocks/LoginForm";
 
 export default function MinimalLoginPage() {
   // "minimal" strips the card, leaving just the fields on your own background.
@@ -271,6 +274,7 @@ export default function MinimalLoginPage() {
 ```tsx
 "use client";
 
+import LoginForm, { type LoginFormValues } from "@/components/custom/blocks/LoginForm";
 
 export default function GlassLoginPage() {
   // "glass" provides a self-contained full-bleed background with a floating frosted card.
@@ -307,6 +311,7 @@ export default function GlassLoginPage() {
 ```tsx
 "use client";
 
+import LoginForm, { type LoginFormValues } from "@/components/custom/blocks/LoginForm";
 
 export default function LiquidGlassLoginPage() {
   // "liquid-glass" uses SVG displacement turbulence, specular edge highlights, and high-contrast frosted styling.
@@ -343,6 +348,7 @@ export default function LiquidGlassLoginPage() {
 ```tsx
 "use client";
 
+import LoginForm, { type LoginFormValues } from "@/components/custom/blocks/LoginForm";
 
 export default function RibbonDriftLoginPage() {
   // "ribbon-drift" features dual floating infinite marquee ribbons, an animated drift backdrop, and interactive promo card.
@@ -385,6 +391,7 @@ Name fields, a confirm-password field and a terms checkbox, all validated on sub
 ```tsx
 "use client";
 
+import RegisterForm, { type RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
 
 export default function RegisterPage() {
   const handleSubmit = async (values: RegisterFormValues) => {
@@ -441,6 +448,7 @@ Every example below is the same `RegisterForm` you just installed — only the p
 ```tsx
 "use client";
 
+import RegisterForm, { type RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
 
 export default function ScenicRegisterPage() {
   // "scenic" renders a floating onboarding card over a nature landscape backdrop.
@@ -480,6 +488,7 @@ export default function ScenicRegisterPage() {
 ```tsx
 "use client";
 
+import RegisterForm, { type RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
 
 export default function SplitRegisterPage() {
   // "split" pairs the form with a full-height marketing panel on large screens.
@@ -516,6 +525,7 @@ export default function SplitRegisterPage() {
 ```tsx
 "use client";
 
+import RegisterForm, { type RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
 
 export default function MinimalRegisterPage() {
   // "minimal" strips the card, leaving just the fields on your own background.
@@ -552,6 +562,7 @@ export default function MinimalRegisterPage() {
 ```tsx
 "use client";
 
+import RegisterForm, { type RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
 
 export default function GlassRegisterPage() {
   // "glass" provides a self-contained full-bleed background with a floating frosted card.
@@ -589,6 +600,7 @@ export default function GlassRegisterPage() {
 ```tsx
 "use client";
 
+import RegisterForm, { type RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
 
 export default function LiquidGlassRegisterPage() {
   // "liquid-glass" uses SVG displacement turbulence, specular edge highlights, and high-contrast frosted styling.
@@ -628,6 +640,7 @@ export default function LiquidGlassRegisterPage() {
 ```tsx
 "use client";
 
+import RegisterForm, { type RegisterFormValues } from "@/components/custom/blocks/RegisterForm";
 
 export default function RibbonDriftRegisterPage() {
   // "ribbon-drift" features dual floating infinite marquee ribbons, an animated drift backdrop, and candidate showcase promo card.

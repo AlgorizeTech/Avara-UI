@@ -26,6 +26,14 @@ import {
   MagicBento,
   MagicBentoCard,
 } from "@/components/custom/blocks/MagicBentoBlock";
+import {
+  Activity,
+  Globe2,
+  LockKeyhole,
+  Network,
+  Users,
+  Workflow,
+} from "lucide-react";
 
 export default function FeatureGrid() {
   return (
@@ -151,6 +159,7 @@ import {
   MagicBento,
   MagicBentoCard,
 } from "@/components/custom/blocks/MagicBentoBlock";
+import { Activity, Sparkles } from "lucide-react";
 
 export default function HighlightedBento() {
   return (

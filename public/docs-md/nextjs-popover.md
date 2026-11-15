@@ -24,6 +24,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/custom/blocks/PopoverBlock";
+import { User } from "lucide-react";
 
 export default function AccountMenu() {
   return (
@@ -90,6 +91,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/custom/blocks/PopoverBlock";
+import { Settings2 } from "lucide-react";
 
 // The panel body, lifted out so both examples can render the same content.
 function DimensionsPanel() {

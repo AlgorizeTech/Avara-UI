@@ -185,7 +185,7 @@ export default function RechartsRevenue({ color }: { color?: string } = {}) {
 This example also uses these {SITE_NAME} components — install whichever
 your project does not already have:
 
-<Cli command="add card.json ui-badge.json" />
+<Cli command="add card.json ui-badge.json accent.json chart-tokens.json" />
 
 ## The theme bridge
 
@@ -198,6 +198,7 @@ chart:
 ```ts
 // src/lib/chart-tokens.ts
 import { useEffect, useState } from "react";
+import { isDefaultAccent, resolveAccent } from "@/lib/accent";
 
 /**
  * Bridges the design tokens in CSS into the plain strings third-party chart
@@ -512,7 +513,7 @@ export default function ChartJsTraffic({ color }: { color?: string } = {}) {
 This example also uses these {SITE_NAME} components — install whichever
 your project does not already have:
 
-<Cli command="add card.json" />
+<Cli command="add card.json accent.json chart-tokens.json" />
 
 ## Which one
 

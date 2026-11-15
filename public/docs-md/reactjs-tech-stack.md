@@ -56,6 +56,10 @@ Two groups taking turns: seven front-end tools, three over four, then four servi
 
 ```tsx
 import { TechStack, TechStackGroup, TechStackTool } from "@/components/custom/blocks/TechStackBlock";
+import {
+  DiscordIcon, MotionIcon, GitHubIcon, GsapIcon, LucideIcon, NextjsIcon,
+  ReactIcon, SlackIcon, StripeIcon, TailwindIcon, TypeScriptIcon,
+} from "@/components/custom/blocks/Icons";
 
 export default function BuiltWith() {
   return (
@@ -143,6 +147,7 @@ A single group holds still — a plain logo strip.
 
 ```tsx
 import { TechStack, TechStackGroup, TechStackTool } from "@/components/custom/blocks/TechStackBlock";
+import { MotionIcon, GsapIcon, LucideIcon, NextjsIcon, ReactIcon, TailwindIcon, TypeScriptIcon } from "@/components/custom/blocks/Icons";
 
 export default function BuiltWith() {
   return (

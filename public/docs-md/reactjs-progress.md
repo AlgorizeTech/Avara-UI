@@ -208,6 +208,12 @@ Run it: neutral while starting, the brand colour from 10%, green at 100 — or r
 - `hint` is one line under the bar — what happened, or what to do next — in the status colour.
 
 ```tsx
+import {
+  CircularProgress,
+  Progress,
+  ProgressField,
+} from "@/components/custom/blocks/ProgressBlock";
+
 // Each stage takes over from its `from` percent until the next.
 const STAGES = [
   { from: 0, color: "zinc" },      // starting up

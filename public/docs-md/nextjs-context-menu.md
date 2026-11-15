@@ -23,6 +23,16 @@ Right-click (or long-press on touch) inside each dashed box. Try it near the edg
 ```tsx
 "use client";
 
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuLabel,
+  ContextMenuSeparator,
+  ContextMenuShortcut,
+  ContextMenuTrigger,
+} from "@/components/custom/blocks/ContextMenuBlock";
+import { Copy, Download, FileEdit, Scissors, Share2, Trash } from "lucide-react";
 
 export default function DocumentMenu() {
   // The live preview raises a toast here; this logs instead so the snippet

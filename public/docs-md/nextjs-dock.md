@@ -18,8 +18,9 @@ Sweep the cursor across each dock to feel the magnification curve, and click an 
 ```tsx
 "use client";
 
-
-
+import { Dock } from "@/components/custom/blocks/DockBlock";
+import { Code2, Compass, FolderGit2, Home, Mail, Settings, Sparkles, Terminal } from "lucide-react";
+import { useState } from "react";
 
 export default function BottomNav() {
   const [active, setActive] = useState("home");
@@ -82,8 +83,9 @@ npx shadcn@latest add https://avaraui.com/r/dock-motion.json
 ```tsx
 "use client";
 
-
-
+import { Dock } from "@/components/custom/blocks/DockBlock";
+import { Home, Mail, Settings, Terminal } from "lucide-react";
+import { useState } from "react";
 
 export default function CompactNav() {
   const [active, setActive] = useState("home");

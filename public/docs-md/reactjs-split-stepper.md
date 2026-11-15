@@ -21,6 +21,7 @@ Text on the scrolling side, `cardContent` on the sticky deck.
 
 ```tsx
 import { SplitStepper, type SplitStep } from "@/components/custom/blocks/SplitStepperBlock";
+import { BarChart3, Cpu, LayoutTemplate, Smartphone, Sparkles } from "lucide-react";
 
 // Card bodies — these are the four screens the preview renders.
 const MockLandingView = () => (
@@ -207,6 +208,7 @@ npx shadcn@latest add @avara-ui/split-stepper
 
 ```tsx
 import { SplitStepper, type SplitStep } from "@/components/custom/blocks/SplitStepperBlock";
+import { BarChart3, Cpu, LayoutTemplate, Smartphone, Sparkles } from "lucide-react";
 
 // Card bodies — these are the four screens the preview renders.
 const MockLandingView = () => (
@@ -374,6 +376,7 @@ export default function ServicesSectionMirrored() {
 
 ```tsx
 import { SplitStepper, type SplitStep } from "@/components/custom/blocks/SplitStepperBlock";
+import { BarChart3, Cpu, LayoutTemplate, Smartphone, Sparkles } from "lucide-react";
 
 // Card bodies — these are the four screens the preview renders.
 const MockLandingView = () => (
@@ -543,6 +546,7 @@ export default function DeepDeck() {
 
 ```tsx
 import { SplitStepper, type SplitStep } from "@/components/custom/blocks/SplitStepperBlock";
+import { BarChart3, Cpu, LayoutTemplate, Smartphone, Sparkles } from "lucide-react";
 
 // Card bodies — these are the four screens the preview renders.
 const MockLandingView = () => (

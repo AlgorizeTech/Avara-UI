@@ -69,7 +69,8 @@ Wrap the app in `ToastProvider`, then call `toast()` from the `useToast` hook.
 ```tsx
 "use client";
 
-
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
 
 function Triggers() {
   const { toast } = useToast();
@@ -131,7 +132,8 @@ npx shadcn@latest add @avara-ui/toast
 ```tsx
 "use client";
 
-
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
 
 const TRIGGER =
   "px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shadow-sm";
@@ -183,7 +185,8 @@ export default function ToastTypes() {
 ```tsx
 "use client";
 
-
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
 
 function Triggers() {
   const { toast } = useToast();
@@ -229,7 +232,8 @@ export default function ToastWithAction() {
 ```tsx
 "use client";
 
-
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
 
 const TRIGGER =
   "px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shadow-sm";
@@ -288,7 +292,8 @@ export default function ToastDuration() {
 ```tsx
 "use client";
 
-
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
 
 const TRIGGER =
   "px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shadow-sm";
@@ -341,7 +346,8 @@ export default function GlowToasts() {
 ```tsx
 "use client";
 
-
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
 
 const TRIGGER =
   "px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shadow-sm";
@@ -396,7 +402,8 @@ Fire a few in a row, then hover the pile to fan it out.
 ```tsx
 "use client";
 
-
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
 
 const TRIGGER =
   "px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shadow-sm";
@@ -448,7 +455,8 @@ export default function StackedToasts() {
 ```tsx
 "use client";
 
-
+import { ToastProvider } from "@/components/custom/blocks/ToastBlock";
+import { useToast } from "@/components/custom/blocks/toast-context";
 
 const TRIGGER =
   "px-6 py-2.5 text-sm font-semibold rounded-xl transition-colors shadow-sm";

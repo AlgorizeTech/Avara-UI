@@ -22,7 +22,8 @@ Hover the rail (or Tab into it) to expand every row at once. Then hover a specif
 ```tsx
 "use client";
 
-
+import { ConversationTimeline } from "@/components/custom/blocks/ConversationTimelineBlock";
+import { useState } from "react";
 
 const checkpoints = [
   { id: "1", role: "system",    label: "System prompt" },
@@ -70,7 +71,8 @@ Drag the sliders, then hover the rail to see the new sizes.
 ```tsx
 "use client";
 
-
+import { useState } from "react";
+import { ConversationTimeline, type TimelineCheckpoint } from "@/components/custom/blocks/ConversationTimelineBlock";
 
 const checkpoints: TimelineCheckpoint[] = [
   { id: "1", role: "system", label: "System prompt" },

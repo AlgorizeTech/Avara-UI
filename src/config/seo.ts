@@ -50,7 +50,7 @@ export const seoConfig = {
     siteName: siteConfig.name,
     images: [
       {
-        url: '/meta-image.png',
+        url: '/meta-image-v2.png',
         width: 1200,
         height: 630,
         alt: siteConfig.title

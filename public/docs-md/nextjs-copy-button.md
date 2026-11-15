@@ -130,6 +130,7 @@ export default function ProfileLink() {
 
 ```tsx
 import { CopyField } from "@/components/custom/blocks/CopyButtonBlock";
+import { Link2 } from "lucide-react";
 
 // inset tucks an icon-only ghost button inside the field's right edge.
 export default function InviteLink() {
@@ -150,6 +151,7 @@ export default function InviteLink() {
 
 ```tsx
 import { CopyButton } from "@/components/custom/blocks/CopyButtonBlock";
+import { Terminal } from "lucide-react";
 
 const SNIPPET = "npx shadcn@latest add @avara-ui/copy-button";
 

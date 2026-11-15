@@ -28,8 +28,13 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/custom/blocks/NavigationMenu";
-
-
+import { cn } from "@/lib/utils";
+import { Code, Layers, Palette, Shield, Smartphone, Zap } from "lucide-react";
+import type {
+  ComponentPropsWithoutRef,
+  ElementType,
+  ReactNode,
+} from "react";
 
 export default function MinimalNav() {
   // Pill chrome removed; the indicator becomes a thin underline.

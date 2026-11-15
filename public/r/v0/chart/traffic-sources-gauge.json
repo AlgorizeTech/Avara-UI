@@ -16,7 +16,7 @@
       "path": "app/page.tsx",
       "type": "registry:page",
       "target": "app/page.tsx",
-      "content": "import { ChartBlock, TrafficSourcesChart } from \"@/components/custom/blocks/ChartBlock\";\n\nconst sources = [\n  { label: \"Direct\", value: 3420 },\n  { label: \"Google Search\", value: 2180 },\n  { label: \"GitHub\", value: 1450 },\n  { label: \"Twitter / X\", value: 890 },\n  { label: \"LinkedIn\", value: 430 },\n];\n\nexport default function TrafficSourcesDemo() {\n  return (\n    <div className=\"w-full max-w-lg md:max-w-xl lg:max-w-2xl mx-auto\">\n      <ChartBlock\n        type=\"traffic-sources\"\n        data={sources}\n        signUps={412}\n        title=\"Traffic sources\"\n        caption=\"Today\"\n      />\n    </div>\n  );\n}"
+      "content": "import { ChartBlock } from \"@/components/custom/blocks/ChartBlock\";\n\nconst sources = [\n  { label: \"Direct\", value: 3420 },\n  { label: \"Google Search\", value: 2180 },\n  { label: \"GitHub\", value: 1450 },\n  { label: \"Twitter / X\", value: 890 },\n  { label: \"LinkedIn\", value: 430 },\n];\n\nexport default function TrafficSourcesDemo() {\n  return (\n    <div className=\"w-full max-w-lg md:max-w-xl lg:max-w-2xl mx-auto\">\n      <ChartBlock\n        type=\"traffic-sources\"\n        data={sources}\n        signUps={412}\n        title=\"Traffic sources\"\n        caption=\"Today\"\n      />\n    </div>\n  );\n}"
     },
     {
       "path": "components/custom/blocks/ChartBlock.tsx",

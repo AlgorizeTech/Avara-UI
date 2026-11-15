@@ -21,6 +21,21 @@ Wrap the shell in `SidebarProvider`, then compose header, groups and footer.
 - `label` on a `SidebarGroup` is the uppercase cluster header — it hides itself when collapsed.
 
 ```tsx
+import {
+  MobileSidebarTrigger,
+  Sidebar,
+  SidebarBrand,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarHeader,
+  SidebarItem,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/custom/blocks/SidebarBlock";
+import { Bell, CreditCard, HelpCircle, Hexagon, LayoutDashboard, LogOut, Search, Settings, Users } from "lucide-react";
+import { useState } from "react";
+
 export default function AppLayout() {
   const [activeRoute, setActiveRoute] = useState("Dashboard");
 
@@ -124,6 +139,21 @@ npx shadcn@latest add @avara-ui/sidebar
 - Set `defaultExpanded={false}` to boot straight into the icon rail — item icons centre themselves and labels become hover tooltips.
 
 ```tsx
+import {
+  MobileSidebarTrigger,
+  Sidebar,
+  SidebarBrand,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarHeader,
+  SidebarItem,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/custom/blocks/SidebarBlock";
+import { Bell, CreditCard, HelpCircle, Hexagon, LayoutDashboard, LogOut, Search, Settings, Users } from "lucide-react";
+import { useState } from "react";
+
 export default function RailLayout() {
   const [activeRoute, setActiveRoute] = useState("Dashboard");
 

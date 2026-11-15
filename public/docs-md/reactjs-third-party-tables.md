@@ -30,7 +30,34 @@ Sort by clicking a header, search across every column, five rows to a page. `Bad
 
 ```tsx
 import { useState } from "react";
-
+import {
+  columnFilteringFeature,
+  createColumnHelper,
+  createFilteredRowModel,
+  createPaginatedRowModel,
+  createSortedRowModel,
+  filterFn_includesString,
+  globalFilteringFeature,
+  rowPaginationFeature,
+  rowSortingFeature,
+  sortFn_basic,
+  sortFn_text,
+  tableFeatures,
+  useTable,
+} from "@tanstack/react-table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContent,
+  TableEmpty,
+  TableHead,
+  TableHeader,
+  TableHeading,
+  TableRow,
+} from "@/components/custom/blocks/TableBlock";
+import { Badge } from "@/components/custom/ui/badge";
+import Button from "@/components/custom/blocks/Button";
 
 type Invoice = {
   id: string;
@@ -256,7 +283,23 @@ The same `useChartTokens` hook from the Charts page feeds AG Grid's Theming API,
 
 ```tsx
 import { useMemo, useState } from "react";
-
+import {
+  AllCommunityModule,
+  ModuleRegistry,
+  themeQuartz,
+  type ColDef,
+} from "ag-grid-community";
+import { AgGridReact } from "ag-grid-react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/custom/blocks/CardBlock";
+import { Badge } from "@/components/custom/ui/badge";
+import Button from "@/components/custom/blocks/Button";
+import { useChartTokens } from "@/lib/chart-tokens";
 
 /**
  * AG Grid v33+ is modular: register once, at module scope. `AllCommunityModule`
@@ -390,10 +433,10 @@ export default function AgGridInventory() {
 This example also uses these Avara UI components — install whichever
 your project does not already have:
 
-The grid takes its colours from `useChartTokens`, which is not a registry item:
-create `src/lib/chart-tokens.ts` with the file in this example's Code tab — the
-same file the [Charts](https://avaraui.com/docs/reactjs/third-party/charts) page sets up, so
-skip this if you already have it.
+The grid takes its colours from `useChartTokens`, which the `chart-tokens` item
+installs (with the small `accent` helper it imports) — the same file the
+[Charts](https://avaraui.com/docs/reactjs/third-party/charts) page sets up, so it is a no-op
+if you already have it.
 
 ## Which one
 

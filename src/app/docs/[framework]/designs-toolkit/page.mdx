@@ -16,12 +16,11 @@ Each card highlights a curated tool with bold numbering, custom accent-themed bo
 
 export const usageCreative = `"use client";
 
-import DesignsToolkit from "@/components/custom/blocks/DesignsToolkitBlock";
+import DesignsToolkit, { DribbbleLogo } from "@/components/custom/blocks/DesignsToolkitBlock";
 import {
   Palette,
   Sparkles,
   Layers,
-  Dribbble,
   Shapes,
   Image as ImageIcon,
 } from "lucide-react";
@@ -61,7 +60,7 @@ const creativeTools = [
     number: "04",
     title: "Dribbble",
     description: "Platform for showcasing, discovering, and connecting with creative design work.",
-    icon: <Dribbble className="w-5 h-5" />,
+    icon: <DribbbleLogo />,
     logoBg: "bg-pink-500 text-white",
     accentColor: "pink",
     pinColor: "#db2777",
