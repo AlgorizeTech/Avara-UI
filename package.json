@@ -2,6 +2,7 @@
   "name": "Avara UI",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
   "scripts": {
     "dev": "npm run generate:home-css && next dev --turbopack",
     "build": "npm run build:registry && tsx ./src/scripts/build-md-files.ts && npm run check:frameworks && npm run check:variants && npm run check:types && npm run generate:home-css && next build",
@@ -60,7 +61,7 @@
     "jspdf": "^4.2.1",
     "jsqr": "^1.4.0",
     "leaflet": "^1.9.4",
-    "lucide-react": "^0.510.0",
+    "lucide-react": "^1.73.0",
     "motion": "^13.5.0",
     "next": "^15.5.15",
     "next-mdx-remote": "^6.0.0",
