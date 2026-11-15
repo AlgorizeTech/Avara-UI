@@ -176,7 +176,49 @@ export default function NotFound() {
   );
 }`;
 
+export const usageComponentWall = `import {
+  NotFoundSection,
+  type NotFoundVariant,
+} from "@/components/custom/blocks/NotFoundBlock";
+
+const variant: NotFoundVariant = "component-wall";
+
+export default function NotFound() {
+  return <NotFoundSection variant={variant} />;
+}`;
+
 <ExampleShowcase headingLevel={2}
+  name="not-found"
+  columns={1}
+  colorControl={true}
+  minHeight={660}
+  examples={[
+    {
+      title: "Component Wall Mosaic 404",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"component-wall"',
+          effect:
+            "activates clean monumental 404 mosaic formed by rounded screenshot and graphic cards from the component library.",
+        },
+      ],
+      props: {
+        variant: "component-wall",
+      },
+      usage: usageComponentWall,
+      code: extractCode("src/components/custom/blocks/NotFoundBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="not-found" />
+
+## Examples
+
+<ExampleShowcase
   name="not-found"
   columns={1}
   colorControl={true}
@@ -379,10 +421,6 @@ export default function NotFound() {
   ]}
 />
 
-## Installation
-
-<Installation name="not-found" />
-
 ## Features
 
 Discover the key capabilities of the `NotFoundSection` component:
@@ -437,9 +475,9 @@ Discover the key capabilities of the `NotFoundSection` component:
     <tbody>
       <tr>
         <td><code>variant</code></td>
-        <td><code>"hyperspace" | "animated-beam-border" | "quantum-hologram" | "spatial-portal" | "aurora-glass"</code></td>
+        <td><code>"hyperspace" | "animated-beam-border" | "quantum-hologram" | "spatial-portal" | "aurora-glass" | "component-wall"</code></td>
         <td><code>"hyperspace"</code></td>
-        <td>Visual style variant: classic cosmic hyperspace, architectural CAD blueprint, quantum orbital hologram, kinetic animated radar with color 404, or modern aurora spatial glass card.</td>
+        <td>Visual style variant: component wall screenshot mosaic, classic cosmic hyperspace, architectural CAD blueprint, quantum orbital hologram, kinetic animated radar with color 404, or modern aurora spatial glass card.</td>
       </tr>
       <tr>
         <td><code>color</code></td>

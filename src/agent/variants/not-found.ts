@@ -8,7 +8,7 @@ import type { PageVariants } from "./types";
 export const notFound: PageVariants = {
   slug: "not-found",
   intro:
-    "A full-page 404 section in five looks: an architectural blueprint, a hyperspace grid, a quantum hologram, a 3D perspective infinite horizon, and an aurora celestial singularity.",
+    "A full-page 404 section in six looks: a component wall mosaic, an architectural blueprint, a hyperspace grid, a quantum hologram, a 3D perspective infinite horizon, and an aurora celestial singularity.",
   whenNot: [
     {
       use: "Error",
@@ -17,9 +17,23 @@ export const notFound: PageVariants = {
     },
   ],
   gotchas: [
-    "Choose between the architectural blueprint, hyperspace grid, quantum hologram, 3D perspective infinite horizon, and aurora celestial singularity via `variant`.",
+    "Choose between the component wall mosaic, architectural blueprint, hyperspace grid, quantum hologram, 3D perspective infinite horizon, and aurora celestial singularity via `variant`.",
   ],
   variants: [
+    {
+      id: "component-wall",
+      group: "Technical & Modern",
+      label: "Component Wall Mosaic 404",
+      summary: "A clean, aesthetic 404 mosaic of rounded component screenshots forming the digits 4, 0, 4 without text clutter.",
+      bestFor: ["component libraries, design systems, creative portfolios, and visual showcase websites"],
+      avoidIf: ["you want a minimalist monochrome CAD blueprint or terminal display"],
+      traits: ["screenshot mosaic cards", "404 letterform arrangement", "Cloudinary component screenshots", "clean zero-text look"],
+      item: "not-found",
+      demo: "not-found",
+      example: "Component Wall Mosaic 404",
+      props: { variant: "component-wall" },
+      setProps: { variant: "component-wall" },
+    },
     {
       id: "aurora-glass",
       group: "Atmospheric & Sci-Fi",
