@@ -146,4 +146,6 @@ Runtime libraries the components use, such as Radix UI, Lucide, GSAP and Motion,
 
 Avara UI is free for personal and commercial use under the [MIT License](LICENSE). Copyright © 2025–2026 AlgorizeTech.
 
-The names and logos are not covered by that license: see [TRADEMARKS.md](TRADEMARKS.md).
+## Trademarks
+
+The names and logos are not covered by the MIT License: see [TRADEMARKS.md](TRADEMARKS.md).
