@@ -13,7 +13,149 @@ Building a good sidebar is one of the hardest parts of dashboard development. It
 
 Click the collapse trigger in each preview's header to watch the labels hide and the icons centre — hover a collapsed icon and its label appears in a <DocLink to="tooltip">Tooltip</DocLink>. Switch a preview to the phone size and the sidebar becomes a dismissible flyout instead.
 
-{/* Both examples are the same app shell; only where the rail starts differs. */}
+export const usageCategorized = `"use client";
+
+import {
+  SidebarProvider,
+  CategorizedSidebar,
+  MobileSidebarTrigger,
+} from "@/components/custom/blocks/SidebarBlock";
+import {
+  LayoutDashboard,
+  Box,
+  ShoppingBag,
+  BarChart3,
+  Users,
+  Settings,
+  HelpCircle,
+  Bell,
+  Search,
+} from "lucide-react";
+import { useState } from "react";
+
+const GROUPS = [
+  {
+    label: "MENU",
+    items: [
+      { id: "Dashboard", label: "Dashboard", icon: <LayoutDashboard className="w-4 h-4" /> },
+      { id: "Products", label: "Products", icon: <Box className="w-4 h-4" />, badge: 4 },
+      { id: "Orders", label: "Orders & Invoices", icon: <ShoppingBag className="w-4 h-4" />, badge: 8 },
+      { id: "Analytics", label: "Sales Analytics", icon: <BarChart3 className="w-4 h-4" /> },
+      { id: "Insights", label: "Customer Insights", icon: <Users className="w-4 h-4" /> },
+      { id: "Reports", label: "Reports", icon: <BarChart3 className="w-4 h-4" />, badge: 2 },
+    ],
+  },
+  {
+    label: "OTHERS",
+    items: [
+      { id: "Settings", label: "Settings", icon: <Settings className="w-4 h-4" /> },
+      { id: "Team", label: "Team Members", icon: <Users className="w-4 h-4" />, badge: 3 },
+      { id: "Help", label: "Help Center", icon: <HelpCircle className="w-4 h-4" /> },
+    ],
+  },
+];
+
+export default function CategorizedSidebarDemo() {
+  const [activeRoute, setActiveRoute] = useState("Dashboard");
+
+  return (
+    <SidebarProvider defaultExpanded={true}>
+      <div className="flex h-screen w-full bg-background overflow-hidden">
+        <CategorizedSidebar
+          workspace={{
+            name: "Avara UI",
+            badge: "Pro",
+            isPrivate: true,
+            user: "Noah Bellingham",
+            userEmail: "noah@avara.design",
+          }}
+          groups={GROUPS}
+          activeRoute={activeRoute}
+          onRouteChange={setActiveRoute}
+        />
+        <div className="flex-1 flex flex-col min-w-0 bg-background overflow-hidden">
+          <header className="h-16 flex items-center justify-between px-6 border-b border-border">
+            <div className="flex items-center gap-3">
+              <MobileSidebarTrigger className="md:hidden" />
+              <h1 className="text-lg font-semibold text-foreground">{activeRoute}</h1>
+            </div>
+            <div className="flex items-center gap-4">
+              <Search className="w-5 h-5 text-muted-foreground" />
+              <Bell className="w-5 h-5 text-muted-foreground" />
+              <div className="w-8 h-8 rounded-full bg-muted" />
+            </div>
+          </header>
+          <main className="flex-1 p-6 overflow-y-auto">
+            <div className="w-full h-32 border-2 border-dashed border-border rounded-xl flex items-center justify-center text-muted-foreground">
+              Main Content Area
+            </div>
+          </main>
+        </div>
+      </div>
+    </SidebarProvider>
+  );
+}`;
+
+export const usageCurved = `"use client";
+
+import {
+  SidebarProvider,
+  CurvedSidebar,
+  MobileSidebarTrigger,
+} from "@/components/custom/blocks/SidebarBlock";
+import {
+  LayoutGrid,
+  User,
+  Clock,
+  Bell,
+  Calendar,
+  MessageSquare,
+  FileText,
+  HelpCircle,
+} from "lucide-react";
+import { useState } from "react";
+
+const WAVE_ITEMS = [
+  { id: "Dashboard", label: "Dashboard", icon: <LayoutGrid className="w-5 h-5" /> },
+  { id: "Profile", label: "User Profile", icon: <User className="w-5 h-5" /> },
+  {
+    id: "TimeTracker",
+    label: "Time Tracker",
+    icon: <Clock className="w-5 h-5" />,
+  },
+  { id: "Notifications", label: "Notifications", icon: <Bell className="w-5 h-5" /> },
+  { id: "Calendar", label: "Calendar", icon: <Calendar className="w-5 h-5" /> },
+  { id: "Messages", label: "Messages", icon: <MessageSquare className="w-5 h-5" /> },
+  { id: "Notes", label: "Notes & Tasks", icon: <FileText className="w-5 h-5" /> },
+  { id: "Help", label: "Help & Support", icon: <HelpCircle className="w-5 h-5" /> },
+];
+
+export default function CurvedSidebarDemo() {
+  const [activeRoute, setActiveRoute] = useState("Dashboard");
+
+  return (
+    <SidebarProvider>
+      <div className="flex h-screen bg-[#f6f7fb] dark:bg-background">
+        <CurvedSidebar
+          items={WAVE_ITEMS}
+          activeRoute={activeRoute}
+          onRouteChange={setActiveRoute}
+        />
+        <div className="flex-1 flex flex-col min-w-0 bg-background overflow-hidden">
+          <header className="h-16 flex items-center justify-between px-4 sm:px-6 border-b border-border/60">
+            <div className="flex items-center gap-3">
+              <MobileSidebarTrigger className="md:hidden" />
+              <h1 className="text-lg font-bold text-foreground">{activeRoute}</h1>
+            </div>
+          </header>
+          <main className="flex-1 p-6 overflow-y-auto">
+            {/* Main content goes here */}
+          </main>
+        </div>
+      </div>
+    </SidebarProvider>
+  );
+}`;
 
 export const sidebarUsage = ({ name, expanded, note }) => `"use client";
 
@@ -131,6 +273,60 @@ export const usageCollapsed = sidebarUsage({
   columns={1}
   examples={[
     {
+      title: "Categorized Dashboard Sidebar",
+      subheading:
+        "Modern SaaS sidebar layout with workspace switcher, collapsible category groups, counter badges, and user profile footer.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"categorized"',
+          effect:
+            "for a floating rounded store card sidebar with workspace switcher, collapsible categories, and notification badges.",
+        },
+      ],
+      props: {
+        variant: "categorized",
+        defaultExpanded: true,
+      },
+      usage: usageCategorized,
+      code: extractCode("src/components/custom/blocks/SidebarBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="sidebar" />
+
+## Examples
+
+<ExampleShowcase
+  name="sidebar"
+  colorControl
+  colorProp="themeColor"
+  columns={1}
+  examples={[
+    {
+      title: "Curved",
+      subheading:
+        "Floating organic curved wave rail sidebar with smooth bezier S-curve contours, elevated active squircle, and tooltip labels.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"curved"',
+          effect:
+            "for an organic curved wave rail with smooth S-curves, elevated active card, and tooltip labels.",
+        },
+      ],
+      props: {
+        variant: "curved",
+        defaultExpanded: true,
+      },
+      usage: usageCurved,
+    },
+    {
       title: "Sidebar",
       subheading: "Wrap the shell in `SidebarProvider`, then compose header, groups and footer.",
       propNotes: [
@@ -152,23 +348,7 @@ export const usageCollapsed = sidebarUsage({
       ],
       props: { variant: "attached", defaultExpanded: true },
       usage: usageDefault,
-      code: extractCode("src/components/custom/blocks/SidebarBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="sidebar" />
-
-## Examples
-
-<ExampleShowcase
-  name="sidebar"
-  colorControl
-  colorProp="themeColor"
-  columns={1}
-  examples={[
     {
       title: "Collapsed rail",
       propNotes: [
@@ -303,6 +483,106 @@ export const usageCollapsed = sidebarUsage({
           Highlights the item using the Provider's selected theme{" "}
           <code>color</code>.
         </td>
+      </tr>
+      <tr>
+        <td>
+          <code>CategorizedSidebar</code>
+        </td>
+        <td>
+          <code>groups</code>
+        </td>
+        <td>
+          <code>SidebarRouteGroup[]</code>
+        </td>
+        <td>
+          Array of categories/groups with label, collapsible state, and route items (id, label, icon, badge).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>CategorizedSidebar</code>
+        </td>
+        <td>
+          <code>workspace</code>
+        </td>
+        <td>
+          <code>SidebarWorkspace</code>
+        </td>
+        <td>
+          Workspace details including name, plan badge (Pro/Free), privacy, user name, and email.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>CategorizedSidebar</code>
+        </td>
+        <td>
+          <code>activeRoute</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>The ID of the currently selected route.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>CategorizedSidebar</code>
+        </td>
+        <td>
+          <code>onRouteChange</code>
+        </td>
+        <td>
+          <code>(routeId: string) =&gt; void</code>
+        </td>
+        <td>Callback fired when a route is clicked.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>CurvedSidebar</code>
+        </td>
+        <td>
+          <code>items</code>
+        </td>
+        <td>
+          <code>WaveSidebarItem[]</code>
+        </td>
+        <td>Array of navigation items with id, label, icon, and optional badge/badgeClassName.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>CurvedSidebar</code>
+        </td>
+        <td>
+          <code>activeRoute</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>The ID of the currently selected route.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>CurvedSidebar</code>
+        </td>
+        <td>
+          <code>onRouteChange</code>
+        </td>
+        <td>
+          <code>(routeId: string) =&gt; void</code>
+        </td>
+        <td>Callback fired when an item is clicked.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>CurvedSidebar</code>
+        </td>
+        <td>
+          <code>waveColor</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>Optional custom color class. Defaults to theme primary.</td>
       </tr>
       <tr>
         <td>

@@ -840,6 +840,8 @@
     "block-radius": "Selection Frame — Block & radius"
   },
   "sidebar": {
+    "categorized-dashboard-sidebar": "Sidebar — Categorized Dashboard Sidebar",
+    "curved": "Sidebar — Curved",
     "sidebar": "Sidebar",
     "collapsed-rail": "Sidebar — Collapsed rail"
   },
