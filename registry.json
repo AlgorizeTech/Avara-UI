@@ -2887,6 +2887,39 @@
       "docs": "Compose several side by side for chords, e.g. <Kbd>Ctrl</Kbd> <Kbd>K</Kbd>."
     },
     {
+      "name": "live-pulse-pill",
+      "type": "registry:component",
+      "title": "Live Pulse Pill",
+      "author": "AlgorizeTech",
+      "description": "An interactive live presence pill with animated soundwave pulse and modal participant roster for active calls, streams, spaces, and huddles.",
+      "categories": [
+        "data-display",
+        "actions",
+        "communication"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://avaraui.com/r/button.json",
+        "https://avaraui.com/r/modal.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/LivePulsePillBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/LivePulsePillBlock.tsx"
+        },
+        {
+          "path": "src/lib/accent.ts",
+          "type": "registry:component",
+          "target": "lib/accent.ts"
+        }
+      ],
+      "docs": "Named exports: LivePulsePill, SoundWaveBars, DEFAULT_LIVE_PARTICIPANTS. Features light/dark theme adaptability, active speaker indicators, participant counts, and centered popup modal dialog."
+    },
+    {
       "name": "loader",
       "type": "registry:component",
       "title": "Loader",

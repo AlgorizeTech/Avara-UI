@@ -590,6 +590,9 @@
     "combinations": "Kbd — Combinations",
     "inline-in-text": "Kbd — Inline in text"
   },
+  "live-pulse-pill": {
+    "live-pulse-pill": "Live Pulse Pill"
+  },
   "loader": {
     "spinner": "Loader — Spinner",
     "orbit-concentric-rings-pulse-variant-orbit": "Loader — Orbit (Concentric Rings & Pulse) — variant=\"orbit\"",

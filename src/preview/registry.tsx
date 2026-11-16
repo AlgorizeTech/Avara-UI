@@ -115,6 +115,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "invoice": lazyRetry(() => import("./demos/invoice-demo")),
   "item": lazyRetry(() => import("./demos/item-demo")),
   "kbd": lazyRetry(() => import("./demos/kbd-demo")),
+  "live-pulse-pill": lazyRetry(() => import("./demos/live-pulse-pill-demo")),
   "loader": lazyRetry(() => import("./demos/loader-demo")),
   "login-form": lazyRetry(() => import("./demos/login-form-demo")),
   "magic-bento": lazyRetry(() => import("./demos/magic-bento-demo")),

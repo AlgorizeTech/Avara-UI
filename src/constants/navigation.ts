@@ -235,6 +235,7 @@ const rawNavigation: NavigationItem[] = [
       { label: "Item", slug: "item" },
       { label: "Kbd", slug: "kbd" },
       { label: "Loader", slug: "loader" },
+      { label: "Live Pulse Pill", slug: "live-pulse-pill", badge: "New" },
       { label: "Magic Bento", slug: "magic-bento" },
       { label: "Mails", slug: "email" },
       { label: "Map", slug: "fleet-tracker" },

@@ -897,6 +897,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["feedback"],
     docs: "Named exports: LoaderBlock, getThemeColor. `variant` picks the shape, `size` is sm | md | lg | xl, and `text` renders a caption beneath. Pure CSS animation with no runtime dependencies. For content-shaped placeholders, use `skeleton`.",
   },
+  "live-pulse-pill": {
+    description:
+      "An interactive live presence pill with animated soundwave pulse and modal participant roster for active calls, streams, spaces, and huddles.",
+    categories: ["data-display", "actions", "communication"],
+    docs: "Named exports: LivePulsePill, SoundWaveBars, DEFAULT_LIVE_PARTICIPANTS. Features light/dark theme adaptability, active speaker indicators, participant counts, and centered popup modal dialog.",
+  },
   "ui-codeblocks": {
     description:
       "A compact code surface with syntax colouring and a copy button, used inside the docs site. Install it for a lightweight code display without tabs.",

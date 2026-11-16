@@ -110,6 +110,7 @@ export const sandboxNames = [
   "invoice",
   "item",
   "kbd",
+  "live-pulse-pill",
   "loader",
   "login-form",
   "magic-bento",

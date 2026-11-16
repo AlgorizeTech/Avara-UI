@@ -115,6 +115,7 @@
     "src/components/custom/blocks/Invoice.tsx",
     "src/components/custom/blocks/ItemBlock.tsx",
     "src/components/custom/blocks/KbdBlock.tsx",
+    "src/components/custom/blocks/LivePulsePillBlock.tsx",
     "src/components/custom/blocks/LoaderBlock.tsx",
     "src/components/custom/blocks/LoginForm.tsx",
     "src/components/custom/blocks/MagicBentoBlock.tsx",
