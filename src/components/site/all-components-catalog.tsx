@@ -25,7 +25,7 @@ import {
 } from "@/components/site/ComponentPreviewTooltip";
 import { IconSlideButton } from "@/components/ui/icon-slide-button";
 import { cn } from "@/lib/utils";
-import { GsapIcon, MotionIcon } from "@/components/custom/blocks/Icons";
+import { GsapIcon, MotionIcon, TailwindIcon } from "@/components/custom/blocks/Icons";
 import {
 	Select,
 	SelectContent,
@@ -42,11 +42,12 @@ import {
    ═══════════════════════════════════════════════ */
 
 /** An animation library a component ships a build for. */
-export type AnimationLibrary = "gsap" | "motion";
+export type AnimationLibrary = "gsap" | "motion" | "css";
 
 const ANIMATION_LABEL: Record<AnimationLibrary, string> = {
 	gsap: "GSAP",
 	motion: "Motion",
+	css: "CSS",
 };
 
 type PreviewCardItem = {
@@ -4026,11 +4027,13 @@ function MiniatureIllustration({
 const ANIMATION_DOT: Record<AnimationLibrary, string> = {
 	gsap: "bg-emerald-500",
 	motion: "bg-fuchsia-500",
+	css: "bg-cyan-500",
 };
 
 const ANIMATION_PILL: Record<AnimationLibrary, string> = {
 	gsap: "bg-emerald-500/10 text-emerald-700 border-emerald-500/25 dark:text-emerald-400",
 	motion: "bg-fuchsia-500/10 text-fuchsia-700 border-fuchsia-500/25 dark:text-fuchsia-400",
+	css: "bg-cyan-500/10 text-cyan-700 border-cyan-500/25 dark:text-cyan-400",
 };
 
 const KIND_LABEL: Record<ComponentTypeDef["kind"], string> = {
@@ -4041,7 +4044,7 @@ const KIND_LABEL: Record<ComponentTypeDef["kind"], string> = {
 /** Item text fills the row, so each type's count lines up on the right. */
 const TYPE_ITEM_CLASS = "cursor-pointer *:[span]:last:flex-1";
 
-const ANIMATION_FILTERS: readonly AnimationFilter[] = ["all", "gsap", "motion"];
+const ANIMATION_FILTERS: readonly AnimationFilter[] = ["all", "gsap", "motion", "css"];
 
 /**
  * The Animation filter, drawn as the same segmented switch as the sandbox's
@@ -4083,7 +4086,14 @@ function AnimationTabs({
 			{ANIMATION_FILTERS.map((candidate) => {
 				const isActive = candidate === value;
 				const label = candidate === "all" ? "All" : ANIMATION_LABEL[candidate];
-				const Icon = candidate === "gsap" ? GsapIcon : candidate === "motion" ? MotionIcon : null;
+				const Icon =
+						candidate === "gsap"
+							? GsapIcon
+							: candidate === "motion"
+								? MotionIcon
+								: candidate === "css"
+									? TailwindIcon
+									: null;
 				return (
 					<button
 						key={candidate}
@@ -4112,7 +4122,8 @@ function AnimationTabs({
 								)}
 							/>
 						)}
-						<span className="relative">{label}</span>
+						{/* Icons stand in for the library names on phones; the name stays for screen readers. */}
+						<span className={cn("relative", Icon && "max-sm:sr-only")}>{label}</span>
 						<span
 							className={cn(
 								"relative tabular-nums text-[11px]",
@@ -4171,6 +4182,7 @@ export function AllComponentsCatalog({
 		all: items.filter(inType).length,
 		gsap: items.filter((i) => inType(i) && i.animation.includes("gsap")).length,
 		motion: items.filter((i) => inType(i) && i.animation.includes("motion")).length,
+		css: items.filter((i) => inType(i) && i.animation.includes("css")).length,
 	};
 
 	const visible = items.filter(
@@ -4183,7 +4195,6 @@ export function AllComponentsCatalog({
 		items: visible.filter((item) => item.typeId === id),
 	})).filter((section) => section.items.length > 0);
 
-	const filtered = typeFilter !== "all" || animationFilter !== "all";
 	const clearFilters = () => {
 		setTypeFilter("all");
 		setAnimationFilter("all");
@@ -4274,23 +4285,6 @@ export function AllComponentsCatalog({
 							counts={animationCounts}
 							onChange={setAnimationFilter}
 						/>
-					</div>
-
-					<div
-						className="flex h-9 items-center gap-3 text-[12px] text-foreground/45 sm:ml-auto"
-						aria-live="polite">
-						<span>
-							Showing <span className="font-semibold tabular-nums text-foreground/70">{visible.length}</span> of{" "}
-							<span className="tabular-nums">{items.length}</span>
-						</span>
-						{filtered && (
-							<button
-								type="button"
-								onClick={clearFilters}
-								className="cursor-pointer font-medium text-primary hover:underline underline-offset-2">
-								Clear
-							</button>
-						)}
 					</div>
 				</div>
 

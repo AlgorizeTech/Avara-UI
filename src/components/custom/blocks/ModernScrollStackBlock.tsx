@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 export interface ModernScrollStackItem {
@@ -297,6 +297,15 @@ export function ModernScrollStack({
 
   const count = resolvedItems.length;
 
+  // The scroll effect only needs each item's rotation. Key it on that content so an inline
+  // `items={[...]}` array (new identity every parent render) does not re-register listeners.
+  const rotationsKey = resolvedItems.map((item) => String(item.rotation)).join(",");
+  const itemRotations = useMemo(
+    () => resolvedItems.map((item) => item.rotation),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [rotationsKey],
+  );
+
   // Measure available container width & viewport height so horizontal fan offset,
   // card size, and exact scroll termination adapt smoothly on all screens.
   useEffect(() => {
@@ -433,7 +442,7 @@ export function ModernScrollStack({
         if (!innerEl) continue;
 
         const targetRotation =
-          resolvedItems[i]?.rotation ??
+          itemRotations[i] ??
           (variant === "stacked"
             ? STACKED_ROTATIONS[i % STACKED_ROTATIONS.length]
             : DEFAULT_ROTATIONS[i % DEFAULT_ROTATIONS.length]) ??
@@ -566,7 +575,7 @@ export function ModernScrollStack({
     effectiveCardHeight,
     effectiveOffsetX,
     effectiveStickyTop,
-    resolvedItems,
+    itemRotations,
     scrollerRef,
     variant,
   ]);
