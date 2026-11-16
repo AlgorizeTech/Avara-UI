@@ -80,6 +80,21 @@ export function animates(name: string): boolean {
   });
 }
 
+/** A keyframe animation or a Tailwind `animate-*` utility; hover transitions don't count. */
+const CSS_ANIMATION_IN_SOURCE = /@keyframes|\banimate-(?!none)[a-z[]|\banimation(?:-name)?:/;
+
+/**
+ * Whether an item animates with plain CSS / Tailwind and no animation library,
+ * read from its own files (items it installs are not followed, as in `animates`).
+ */
+export function usesCssAnimation(name: string): boolean {
+  if (usesGsap(name) || hasMotionTwin(name)) return false;
+  return (itemsByName.get(name)?.files ?? []).some((file) => {
+    const full = path.join(process.cwd(), file.path);
+    return fs.existsSync(full) && CSS_ANIMATION_IN_SOURCE.test(fs.readFileSync(full, "utf8"));
+  });
+}
+
 /** Below this, a lead sentence is a teaser rather than a description. */
 const MIN_SUMMARY_LENGTH = 80;
 

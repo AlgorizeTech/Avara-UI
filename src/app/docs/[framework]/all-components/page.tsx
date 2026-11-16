@@ -7,7 +7,7 @@ import {
 	type AnimationLibrary,
 } from "@/components/site/all-components-catalog";
 import { docsPageMetadata } from "@/lib/docs-metadata";
-import { hasMotionTwin, usesGsap } from "@/lib/docs-source";
+import { hasMotionTwin, usesCssAnimation, usesGsap } from "@/lib/docs-source";
 
 // No MDX to read a title from; its title and description live in
 // src/lib/page-seo.ts with the other hub pages'.
@@ -33,6 +33,8 @@ function animationForSlug(slug: string): AnimationLibrary[] {
 	const libraries: AnimationLibrary[] = [];
 	if (names.some((n) => usesGsap(n))) libraries.push("gsap");
 	if (names.some(hasMotionTwin)) libraries.push("motion");
+	// Plain CSS / Tailwind motion, for pages with no animation library.
+	if (!libraries.length && names.some(usesCssAnimation)) libraries.push("css");
 	return libraries;
 }
 

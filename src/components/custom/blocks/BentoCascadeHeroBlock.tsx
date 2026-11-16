@@ -160,6 +160,8 @@ interface BentoCardProps {
   linkComponent?: React.ElementType;
   /** Second loop pass: hidden from assistive tech and removed from the Tab order. */
   decorative?: boolean;
+  /** Visible on first paint: load the image eagerly instead of lazily. */
+  priority?: boolean;
 }
 
 function BentoCard({
@@ -169,6 +171,7 @@ function BentoCard({
   imageComponent: ImageComp,
   linkComponent: LinkComp,
   decorative = false,
+  priority = false,
 }: BentoCardProps) {
   const Comp = card.href ? LinkComp || "a" : "div";
   const linkProps = card.href
@@ -195,7 +198,7 @@ function BentoCard({
         <img
           src={card.image}
           alt={card.title || "Showcase card"}
-          loading="lazy"
+          loading={priority ? "eager" : "lazy"}
           decoding="async"
           className="absolute inset-0 size-full object-cover transition-transform duration-700 ease-out group-hover/card:scale-105"
         />
@@ -359,6 +362,7 @@ export const BentoCascadeHero = forwardRef<HTMLElement, BentoCascadeHeroProps>(
           imageComponent={imageComponent}
           linkComponent={LinkComp}
           decorative={decorative}
+          priority={!decorative}
         />
 
         {/* Row 2: 2 Columns - Left has 2 stacked cards, Right has 1 tall card */}
@@ -371,6 +375,7 @@ export const BentoCascadeHero = forwardRef<HTMLElement, BentoCascadeHeroProps>(
               imageComponent={imageComponent}
               linkComponent={LinkComp}
               decorative={decorative}
+              priority={!decorative}
             />
             <BentoCard
               card={resolvedCards[2]}
@@ -378,6 +383,7 @@ export const BentoCascadeHero = forwardRef<HTMLElement, BentoCascadeHeroProps>(
               imageComponent={imageComponent}
               linkComponent={LinkComp}
               decorative={decorative}
+              priority={!decorative}
             />
           </div>
 
@@ -388,6 +394,7 @@ export const BentoCascadeHero = forwardRef<HTMLElement, BentoCascadeHeroProps>(
             imageComponent={imageComponent}
             linkComponent={LinkComp}
             decorative={decorative}
+            priority={!decorative}
           />
         </div>
 
