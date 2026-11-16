@@ -918,7 +918,7 @@ npx shadcn@latest add @avara-ui/bento-cascade-hero
 
 ## Breathe Hero
 
-A serif headline over a staggered five-card curved arch. On scroll the centre card grows while the others drift outward and dim.
+A serif headline over a staggered five-card curved arch. On scroll the centre card grows while the others drift outward and dim. Headline fonts load from Google Fonts at runtime; if that request is blocked (strict CSP), it falls back to your sans or serif font.
 
 ### Breathe Arch Stagger Hero
 
@@ -975,7 +975,7 @@ npx shadcn@latest add @avara-ui/breathe-hero
 
 ## Solar Snapshot Hero
 
-A lightweight hero with a pointer-following sun orb, typographic curtain buttons, an avatar group and a click-to-capture Polaroid stack of section screenshots.
+A lightweight hero with a pointer-following sun orb, typographic curtain buttons, an avatar group and a click-to-capture Polaroid stack of section screenshots. Fonts load from Google Fonts at runtime; if that request is blocked (strict CSP), it falls back to your sans font.
 
 ### Solar Snapshot Sun-Cursor Hero
 

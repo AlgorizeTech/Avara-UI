@@ -158,6 +158,8 @@ interface BentoCardProps {
   heightClass?: string;
   imageComponent?: React.ElementType;
   linkComponent?: React.ElementType;
+  /** Second loop pass: hidden from assistive tech and removed from the Tab order. */
+  decorative?: boolean;
 }
 
 function BentoCard({
@@ -166,9 +168,12 @@ function BentoCard({
   heightClass = "h-[150px] sm:h-[200px]",
   imageComponent: ImageComp,
   linkComponent: LinkComp,
+  decorative = false,
 }: BentoCardProps) {
   const Comp = card.href ? LinkComp || "a" : "div";
-  const linkProps = card.href ? { href: card.href } : {};
+  const linkProps = card.href
+    ? { href: card.href, ...(decorative ? { tabIndex: -1 } : {}) }
+    : {};
 
   return (
     <Comp
@@ -191,6 +196,7 @@ function BentoCard({
           src={card.image}
           alt={card.title || "Showcase card"}
           loading="lazy"
+          decoding="async"
           className="absolute inset-0 size-full object-cover transition-transform duration-700 ease-out group-hover/card:scale-105"
         />
       )}
@@ -338,15 +344,21 @@ export const BentoCascadeHero = forwardRef<HTMLElement, BentoCascadeHeroProps>(
       ...style,
     };
 
-    // The repeating 8-card bento cascade cycle
-    const BentoCycle = () => (
-      <div className="flex flex-col gap-2.5 sm:gap-4 pb-2.5 sm:pb-4">
+    // The repeating 8-card bento cascade cycle. Called as a plain function (not
+    // rendered as a component) so React keeps the same element type across
+    // renders instead of remounting all 16 cards whenever the parent updates.
+    const renderCycle = (decorative = false) => (
+      <div
+        className="flex flex-col gap-2.5 sm:gap-4 pb-2.5 sm:pb-4"
+        aria-hidden={decorative ? true : undefined}
+      >
         {/* Row 1: Wide Card across 2 columns */}
         <BentoCard
           card={resolvedCards[0]}
           heightClass="h-[150px] sm:h-[200px]"
           imageComponent={imageComponent}
           linkComponent={LinkComp}
+          decorative={decorative}
         />
 
         {/* Row 2: 2 Columns - Left has 2 stacked cards, Right has 1 tall card */}
@@ -358,12 +370,14 @@ export const BentoCascadeHero = forwardRef<HTMLElement, BentoCascadeHeroProps>(
               heightClass="h-[130px] sm:h-[180px]"
               imageComponent={imageComponent}
               linkComponent={LinkComp}
+              decorative={decorative}
             />
             <BentoCard
               card={resolvedCards[2]}
               heightClass="h-[130px] sm:h-[180px]"
               imageComponent={imageComponent}
               linkComponent={LinkComp}
+              decorative={decorative}
             />
           </div>
 
@@ -373,6 +387,7 @@ export const BentoCascadeHero = forwardRef<HTMLElement, BentoCascadeHeroProps>(
             heightClass="h-[270px] sm:h-[376px]"
             imageComponent={imageComponent}
             linkComponent={LinkComp}
+            decorative={decorative}
           />
         </div>
 
@@ -382,6 +397,7 @@ export const BentoCascadeHero = forwardRef<HTMLElement, BentoCascadeHeroProps>(
           heightClass="h-[150px] sm:h-[200px]"
           imageComponent={imageComponent}
           linkComponent={LinkComp}
+          decorative={decorative}
         />
 
         {/* Row 4: Flipped Pattern - Left has 1 tall card, Right has 2 stacked cards */}
@@ -392,6 +408,7 @@ export const BentoCascadeHero = forwardRef<HTMLElement, BentoCascadeHeroProps>(
             heightClass="h-[270px] sm:h-[376px]"
             imageComponent={imageComponent}
             linkComponent={LinkComp}
+            decorative={decorative}
           />
 
           {/* Right Column (2 Stacked Cards) */}
@@ -401,12 +418,14 @@ export const BentoCascadeHero = forwardRef<HTMLElement, BentoCascadeHeroProps>(
               heightClass="h-[130px] sm:h-[180px]"
               imageComponent={imageComponent}
               linkComponent={LinkComp}
+              decorative={decorative}
             />
             <BentoCard
               card={resolvedCards[7]}
               heightClass="h-[130px] sm:h-[180px]"
               imageComponent={imageComponent}
               linkComponent={LinkComp}
+              decorative={decorative}
             />
           </div>
         </div>
@@ -635,9 +654,9 @@ export const BentoCascadeHero = forwardRef<HTMLElement, BentoCascadeHeroProps>(
                 {/* Continuous Infinite Bento Cascade Track */}
                 <div className="bento-cascade-container flex flex-col">
                   {/* First Pass */}
-                  <BentoCycle />
+                  {renderCycle()}
                   {/* Duplicate Pass for Seamless 100% Zero-Reset Loop */}
-                  <BentoCycle />
+                  {renderCycle(true)}
                 </div>
               </div>
             </div>

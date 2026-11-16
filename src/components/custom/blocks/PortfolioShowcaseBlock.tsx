@@ -32,7 +32,7 @@ export interface PortfolioItem {
 }
 
 export interface PortfolioShowcaseProps extends Omit<React.HTMLAttributes<HTMLElement>, "onFocus"> {
-  /** Visual presentation mode. Defaults to 'masonry-portfolio'. */
+  /** @deprecated Reserved: accepted for compatibility but currently has no effect. */
   variant?: "masonry-portfolio" | "fullscreen";
   /** The portfolio project cards shown on the canvas. */
   items?: PortfolioItem[];
@@ -44,15 +44,15 @@ export interface PortfolioShowcaseProps extends Omit<React.HTMLAttributes<HTMLEl
   stagger?: number;
   /** Controls automatic auto-scroll. Set to true (default) for continuous smooth 2D gliding, or false to hold still. */
   interval?: boolean | number;
-  /** Interval time in ms when configured. Defaults to 5500. */
+  /** @deprecated Reserved: accepted for compatibility but currently has no effect. Use `interval` and `drift`. */
   intervalTime?: number;
-  /** Sequence ordering: 'serial' or 'shuffle'. */
+  /** @deprecated Reserved: accepted for compatibility but currently has no effect. */
   order?: "serial" | "shuffle";
-  /** Camera zoom / card scale multiplier on desktop. Defaults to 1. */
+  /** Camera zoom / card scale multiplier on desktop. Defaults to 0.55. */
   zoom?: number;
-  /** Camera zoom on mobile / small screens (<=640px). Defaults to 0.5. */
+  /** Camera zoom on mobile / small screens (<=640px). Defaults to 0.42. */
   mobileZoom?: number;
-  /** Intro animation duration in ms. Defaults to 0 for instant start. */
+  /** @deprecated Reserved: accepted for compatibility but currently has no effect. */
   intro?: number;
   /** Whether the user can drag and pan the wall infinitely in all 4 directions with inertia. Defaults to true. */
   draggable?: boolean;
@@ -60,7 +60,7 @@ export interface PortfolioShowcaseProps extends Omit<React.HTMLAttributes<HTMLEl
   drift?: boolean | { x?: number; y?: number };
   /** Opacity of resting cards. Defaults to 1. */
   cardDim?: number;
-  /** Whether center card is highlighted. Defaults to false. */
+  /** @deprecated Reserved: accepted for compatibility but currently has no effect. */
   highlightFocus?: boolean;
   /** Whether cards render with elevated drop shadows. Defaults to true. */
   cardShadow?: boolean;
@@ -68,11 +68,11 @@ export interface PortfolioShowcaseProps extends Omit<React.HTMLAttributes<HTMLEl
   itemModal?: boolean;
   /** Callback fired when an item is clicked. */
   onItemClick?: (item: PortfolioItem, index: number) => void;
-  /** Callback fired when center card changes. */
+  /** @deprecated Reserved: accepted for compatibility but never called. */
   onFocus?: (index: number) => void;
   /** Optional custom CTA button text in the details modal */
   ctaLabel?: string;
-  /** Optional custom CTA button link in the details modal */
+  /** @deprecated Reserved: accepted for compatibility but currently has no effect. */
   ctaHref?: string;
   /** Custom cursor badge label shown on card hover. Defaults to "View Details". */
   cursorBadgeLabel?: string;
@@ -146,6 +146,9 @@ function layoutCards(
   return { placed, width, height };
 }
 
+// useLayoutEffect warns during SSR in React 18; fall back to useEffect on the server.
+const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
 const prefersReducedMotion = () =>
   typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
@@ -171,8 +174,6 @@ const ShowcaseCard = React.memo(function ShowcaseCard({
     <figure
       aria-hidden={copy || undefined}
       data-card
-      data-card-x={left}
-      data-card-y={top}
       className={cn(
         "absolute flex flex-col gap-1.5 overflow-hidden rounded-2xl border border-foreground/12 p-2 transition-[opacity,transform,filter,box-shadow] duration-500 ease-out select-none will-change-transform cursor-none",
         cardShadow ? "bg-card shadow-xl shadow-black/20 dark:shadow-black/55" : "bg-muted",
@@ -222,7 +223,7 @@ export const DEFAULT_PORTFOLIO_ITEMS: PortfolioItem[] = [
     client: "Aura Global Financial",
     year: "2026",
     description: "An ultra-modern mobile banking experience and comprehensive design system with real-time liquidity visualization, biometric security flows, and seamless multi-currency settlements.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/bento-showcase-1790516064489.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790516057/bento-showcase-1790516064489.jpg",
     tags: ["Mobile", "Fintech", "Design System"],
   },
   {
@@ -232,7 +233,7 @@ export const DEFAULT_PORTFOLIO_ITEMS: PortfolioItem[] = [
     client: "Atelier Architekten",
     year: "2026",
     description: "Monolithic editorial portfolio website for an international architectural studio, combining high-resolution spatial photography with smooth inertial gallery physics.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/collage-hero-1790516064493.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790516057/collage-hero-1790516064493.jpg",
     tags: ["Architecture", "Editorial", "Web Design"],
   },
   {
@@ -242,7 +243,7 @@ export const DEFAULT_PORTFOLIO_ITEMS: PortfolioItem[] = [
     client: "Lumina Care Systems",
     year: "2025",
     description: "Intelligent diagnostic consultation and care booking workflow connecting patients to certified specialists with encrypted medical records and interactive appointment timeline.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/book-appointment-1790516064490.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790516057/book-appointment-1790516064490.jpg",
     tags: ["AI", "Healthcare", "Web App"],
   },
   {
@@ -252,7 +253,7 @@ export const DEFAULT_PORTFOLIO_ITEMS: PortfolioItem[] = [
     client: "Maison Parisienne",
     year: "2026",
     description: "Sensory runway collection showcase and high-converting ecommerce storefront with fluid magnetic carousels, lookbook moodboards, and bespoke checkout ergonomics.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/fashion-hero-1790516064495.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790516058/fashion-hero-1790516064495.jpg",
     tags: ["Fashion", "Ecommerce", "Creative"],
   },
   {
@@ -262,7 +263,7 @@ export const DEFAULT_PORTFOLIO_ITEMS: PortfolioItem[] = [
     client: "Pulse Metrics Inc",
     year: "2025",
     description: "Zero-latency Kubernetes cluster monitoring dashboard with live metrics telemetry, interactive topological dependency graphs, and predictive incident management.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516056/data-flow-1790516064493.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790516056/data-flow-1790516064493.jpg",
     tags: ["SaaS", "Dashboard", "DevTools"],
   },
   {
@@ -272,7 +273,7 @@ export const DEFAULT_PORTFOLIO_ITEMS: PortfolioItem[] = [
     client: "Sonic Labs Zurich",
     year: "2026",
     description: "Immersive three-dimensional audio-reactive web landscape transforming organic sound frequencies into dynamic procedural light wave sculptures in real-time.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/hero-1790516064495.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790516057/hero-1790516064495.jpg",
     tags: ["WebGL", "Audio", "Interactive"],
   },
   {
@@ -282,7 +283,7 @@ export const DEFAULT_PORTFOLIO_ITEMS: PortfolioItem[] = [
     client: "Strata Global Pay",
     year: "2026",
     description: "Enterprise billing automation engine featuring dynamic pricing matrices, localized VAT compliance, automated reconciliation, and beautiful customer invoices.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/pricing-1790516064500.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790516058/pricing-1790516064500.jpg",
     tags: ["Enterprise", "Billing", "Product"],
   },
   {
@@ -292,7 +293,7 @@ export const DEFAULT_PORTFOLIO_ITEMS: PortfolioItem[] = [
     client: "Hive Technologies",
     year: "2025",
     description: "Hexagonal interconnected canvas for modern product teams, mapping user research insights, interface wireframes, and design components onto a shared spatial board.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516059/honeycomb-hero-1790516064497.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790516059/honeycomb-hero-1790516064497.jpg",
     tags: ["Collaboration", "Workspace", "Canvas"],
   },
   {
@@ -302,7 +303,7 @@ export const DEFAULT_PORTFOLIO_ITEMS: PortfolioItem[] = [
     client: "Chrono Labs",
     year: "2026",
     description: "Time-zone agnostic smart scheduling assistant with fluid calendar heatmaps, recurring event sync, and focus-time protection algorithms.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/calendar-1790516064491.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790516057/calendar-1790516064491.jpg",
     tags: ["Productivity", "Calendar", "UI Design"],
   },
   {
@@ -312,7 +313,7 @@ export const DEFAULT_PORTFOLIO_ITEMS: PortfolioItem[] = [
     client: "Modern Art Foundation",
     year: "2026",
     description: "Circular spatial gallery presenting curated contemporary digital artwork, sculpture archives, and generative generative art with gyroscopic navigation.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/orbit-gallery-1790516064499.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790516058/orbit-gallery-1790516064499.jpg",
     tags: ["Museum", "Arts", "3D Gallery"],
   },
   {
@@ -322,7 +323,7 @@ export const DEFAULT_PORTFOLIO_ITEMS: PortfolioItem[] = [
     client: "Verve Roasters",
     year: "2025",
     description: "Direct-to-consumer artisanal coffee subscription portal with roast date tracking, origin stories, and interactive tasting notes flavor profile matching.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/product-details-1790516064500.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790516058/product-details-1790516064500.jpg",
     tags: ["Ecommerce", "Branding", "D2C"],
   },
   {
@@ -332,7 +333,7 @@ export const DEFAULT_PORTFOLIO_ITEMS: PortfolioItem[] = [
     client: "Nexus Capital",
     year: "2026",
     description: "High-density data grid platform capable of streaming hundreds of thousands of ledger records per second with GPU-accelerated filtering and pivot charting.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516056/data-grid-1790516064494.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790516056/data-grid-1790516064494.jpg",
     tags: ["Big Data", "Fintech", "Analytics"],
   },
 ];
@@ -343,27 +344,27 @@ export const DEFAULT_PORTFOLIO_ITEMS: PortfolioItem[] = [
 export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>(
   (
     {
-      variant = "masonry-portfolio",
+      variant: _variant = "masonry-portfolio",
       items = DEFAULT_PORTFOLIO_ITEMS,
       columns = 4,
       gap = GAP_DEFAULT,
       stagger = STAGGER_DEFAULT,
       interval = true,
-      intervalTime = 5500,
-      order = "shuffle",
+      intervalTime: _intervalTime = 5500,
+      order: _order = "shuffle",
       zoom = 0.55,
       mobileZoom = 0.42,
-      intro = 0,
+      intro: _intro = 0,
       draggable = true,
       drift,
       cardDim = 1,
-      highlightFocus = false,
+      highlightFocus: _highlightFocus = false,
       cardShadow = true,
       itemModal = true,
       onItemClick,
       onFocus,
       ctaLabel = "View Case Study",
-      ctaHref = "#",
+      ctaHref: _ctaHref = "#",
       cursorBadgeLabel = "View Details",
       showCursorBadge = true,
       className,
@@ -407,23 +408,29 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
       [items, columns, gap, stagger],
     );
     const placedRef = useRef(placed);
-    placedRef.current = placed;
-
     const tileRef = useRef({ width, height });
-    tileRef.current = { width, height };
+    useIsomorphicLayoutEffect(() => {
+      placedRef.current = placed;
+      tileRef.current = { width, height };
+    }, [placed, width, height]);
 
     // Auto-scroll drift animation: when interval is enabled (true or >0), activate the continuous
     // smooth auto-scrolling glide { x: -0.35, y: -0.18 } restored from the original fullscreen wall variant.
     // Pauses cleanly when the project inspection modal is open.
     const isIntervalActive = typeof interval === "boolean" ? interval : interval > 0;
-    const resolvedDrift =
-      selectedItem !== null
-        ? false
-        : drift !== undefined
-          ? drift
-          : isIntervalActive
-            ? { x: -0.35, y: -0.18 }
-            : false;
+    // Resolved from primitives so the value (and every effect/callback that depends on it)
+    // stays referentially stable across renders instead of changing on every hover or drag.
+    const modalOpen = selectedItem !== null;
+    const driftIsObject = typeof drift === "object" && drift !== null;
+    const driftFlag = driftIsObject ? undefined : drift;
+    const driftX = driftIsObject ? drift.x : undefined;
+    const driftY = driftIsObject ? drift.y : undefined;
+    const resolvedDrift = useMemo<boolean | { x?: number; y?: number }>(() => {
+      if (modalOpen) return false;
+      if (driftIsObject) return { x: driftX, y: driftY };
+      if (driftFlag !== undefined) return driftFlag;
+      return isIntervalActive ? { x: -0.35, y: -0.18 } : false;
+    }, [modalOpen, driftIsObject, driftFlag, driftX, driftY, isIntervalActive]);
 
     // Viewport tile culling for infinite 2D canvas wrapping
     const cull = useCallback(() => {
@@ -512,7 +519,7 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
     }, [resolvedDrift, onScreen, startAmbientDrift]);
 
     // Initial scale & center positioning - only happens ONCE, never resets during scroll/drag
-    useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       const wrap = wrapRef.current;
       if (!wrap) return;
 

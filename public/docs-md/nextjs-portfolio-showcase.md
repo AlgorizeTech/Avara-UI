@@ -28,7 +28,7 @@ const PROJECTS = [
     client: "Aura Global Financial",
     year: "2026",
     description: "An ultra-modern mobile banking experience and comprehensive design system with real-time liquidity visualization.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/bento-showcase-1790516064489.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790516057/bento-showcase-1790516064489.jpg",
     tags: ["Mobile", "Fintech", "Design System"],
   },
   {
@@ -38,7 +38,7 @@ const PROJECTS = [
     client: "Atelier Architekten",
     year: "2026",
     description: "Monolithic editorial portfolio website for an international architectural studio with spatial photography.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/collage-hero-1790516064493.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790516057/collage-hero-1790516064493.jpg",
     tags: ["Architecture", "Editorial", "Web Design"],
   },
   {
@@ -48,7 +48,7 @@ const PROJECTS = [
     client: "Lumina Care Systems",
     year: "2025",
     description: "Intelligent diagnostic consultation and care booking workflow connecting patients to certified specialists.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/book-appointment-1790516064490.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790516057/book-appointment-1790516064490.jpg",
     tags: ["AI", "Healthcare", "Web App"],
   },
   {
@@ -58,7 +58,7 @@ const PROJECTS = [
     client: "Maison Parisienne",
     year: "2026",
     description: "Sensory runway collection showcase and high-converting ecommerce storefront with fluid magnetic carousels.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516058/fashion-hero-1790516064495.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790516058/fashion-hero-1790516064495.jpg",
     tags: ["Fashion", "Ecommerce", "Creative"],
   },
   {
@@ -68,7 +68,7 @@ const PROJECTS = [
     client: "Pulse Metrics Inc",
     year: "2025",
     description: "Zero-latency Kubernetes cluster monitoring dashboard with live metrics telemetry.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516056/data-flow-1790516064493.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790516056/data-flow-1790516064493.jpg",
     tags: ["SaaS", "Dashboard", "DevTools"],
   },
   {
@@ -78,7 +78,7 @@ const PROJECTS = [
     client: "Sonic Labs Zurich",
     year: "2026",
     description: "Immersive three-dimensional audio-reactive web landscape transforming organic sound frequencies into light sculptures.",
-    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/hero-1790516064495.jpg",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790516057/hero-1790516064495.jpg",
     tags: ["WebGL", "Audio", "Interactive"],
   },
 ];
@@ -139,20 +139,20 @@ Clicking any work card pops open an accessible, responsive presentation dialog w
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `variant` | `"masonry-portfolio" \| "fullscreen"` | `"masonry-portfolio"` | Layout presentation style. Defaults to `"masonry-portfolio"` with 3D ambient center cushion and edge-to-edge canvas. |
+| `variant` | `"masonry-portfolio" \| "fullscreen"` | `"masonry-portfolio"` | Reserved. Currently has no effect. |
 | `items` | `PortfolioItem[]` | `DEFAULT_PORTFOLIO_ITEMS` | Array of project objects containing `title`, `image`, `category`, `client`, `year`, and `description`. |
 | `draggable` | `boolean` | `true` | Enables 4-way mouse, trackpad, and touch panning across the entire canvas with kinetic inertia. |
 | `interval` | `boolean \| number` | `true` | Controls automatic canvas animation. When true (or duration in ms), triggers smooth continuous auto-scrolling glide across the infinite 2D canvas. Set to `false` to keep the canvas stationary. |
 | `drift` | `boolean \| &#123; x?: number; y?: number &#125;` | `&#123; x: -0.35, y: -0.18 &#125;` | Custom continuous ambient auto-scroll velocity vector. Defaults to `&#123; x: -0.35, y: -0.18 &#125;` when `interval=true`. Pass `false` to disable auto-drift or specify custom velocity. |
-| `intervalTime` | `number` | `5500` | Duration in milliseconds the camera settles on a card before transitioning to the next destination. |
-| `order` | `"serial" \| "shuffle"` | `"shuffle"` | Camera path sequence: sequential ordering or non-linear multi-directional random flights. |
+| `intervalTime` | `number` | `5500` | Reserved. Currently has no effect; use `interval` and `drift`. |
+| `order` | `"serial" \| "shuffle"` | `"shuffle"` | Reserved. Currently has no effect. |
 | `stagger` | `number` | `72` | Vertical masonry displacement in pixels between alternating column tracks. |
 | `gap` | `number` | `16` | Spacing in pixels between adjacent cards horizontally and vertically. |
 | `zoom` | `number` | `0.55` | Scale multiplier for resting cards on desktop viewports (compact & refined view). |
 | `mobileZoom` | `number` | `0.42` | Scale multiplier for cards rendered on compact mobile displays. |
 | `itemModal` | `boolean` | `true` | When true, clicking any card launches the comprehensive project details dialog. |
 | `cardShadow` | `boolean` | `true` | Renders subtle realistic drop shadows beneath each project card. |
-| `highlightFocus` | `boolean` | `false` | When true, selectively highlights the active card while subtly dimming outer cards. |
+| `highlightFocus` | `boolean` | `false` | Reserved. Currently has no effect. |
 
 ---
 
