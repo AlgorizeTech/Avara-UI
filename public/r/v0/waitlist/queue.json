@@ -3,7 +3,7 @@
   "name": "waitlist-queue",
   "type": "registry:block",
   "title": "Waitlist — Queue",
-  "description": "The form as a pill on a soft ground, the faces already in line under it, and a bar of the early spots claimed that fills once as the section appears. Switch the docs to dark mode to see the same panel by night.",
+  "description": "The form as a pill on a soft ground, the faces already in line under it, and a bar of early spots claimed.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

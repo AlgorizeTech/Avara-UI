@@ -3,7 +3,7 @@
   "name": "accordion-brand-logo-reveal",
   "type": "registry:block",
   "title": "Accordion — Brand logo reveal",
-  "description": "Accordion brand logo showcase with animated horizontal pleats, autoplay progress indicator, hover pause, and responsive stacking. Inspired by Framer Brand Logo Reveal.",
+  "description": "A brand accordion of horizontal pleats with an autoplay progress indicator. Hovering pauses it, and it stacks on small screens.",
   "dependencies": [
     "@radix-ui/react-accordion",
     "lucide-react",

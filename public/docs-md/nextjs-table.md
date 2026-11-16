@@ -58,7 +58,7 @@ All 3 options as live previews: https://avaraui.com/view/table
 
 ## Soft variant
 
-A plain read-only table in the admin-dashboard look — a rounded panel on a hairline ring, a tinted header band, calm dividers and soft row hover. No search, filters or paging: just the rows.
+A plain read-only table in the admin-dashboard look: a rounded panel, a tinted header band, calm dividers and soft row hover.
 
 - Set `variant="soft"` once on `Table`; the heading, header band, cells and dividers read it from context. Every tint is mixed from the table colour.
 - `TablePerson` and `TableBadge` draw the avatar-and-email cell and the status pill, in any variant.

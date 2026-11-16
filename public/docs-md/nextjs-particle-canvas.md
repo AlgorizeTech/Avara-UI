@@ -44,10 +44,10 @@ All 2 options as live previews: https://avaraui.com/view/particle-canvas
 
 ## Text Particle Repel
 
-An interactive 2D HTML Canvas that rasterizes your text into thousands of responsive dots that scatter on pointer hover and spring back smoothly.
+Your text rasterised into thousands of dots that scatter away from the pointer and spring back.
 
-- Use `variant="repel"` renders the 2D particle physics engine where dots scatter organically away from the pointer and spring back to their text positions.
-- `content="AlgorizeTech"` sets the custom text string to convert into interactive particles.
+- Use `variant="repel"` runs the particle physics where dots scatter from the pointer and return to their text positions.
+- `content="AlgorizeTech"` is the text turned into particles.
 
 ```tsx
 "use client";
@@ -72,10 +72,10 @@ export default function ParticleCanvasDemo() {
 
 ## Wordmark Glow Canvas
 
-A bottom-anchored giant wordmark banner where each letter rises with a slow, smooth spring bounce on scroll alongside a pointer-tracking radial glow.
+A giant bottom-anchored wordmark whose letters rise with a slow spring bounce on scroll, beside a pointer-tracking radial glow.
 
-- Use `variant="wordmark-glow"` renders a compact bottom-aligned wordmark banner with staggered scroll-triggered spring bounce letters and a cursor-following radial glow.
-- `content="AlgorizeTech"` sets the wordmark text displayed across the bottom of the container.
+- Use `variant="wordmark-glow"` renders the compact wordmark banner with staggered scroll-triggered letters and a cursor glow.
+- `content="AlgorizeTech"` is the wordmark text across the bottom of the container.
 
 ```tsx
 "use client";

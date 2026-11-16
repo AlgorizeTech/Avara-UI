@@ -3,7 +3,7 @@
   "name": "component-wall-centred-with-persistent-background",
   "type": "registry:block",
   "title": "Component Wall — Centred with persistent background",
-  "description": "The copy in the middle between two gliding screenshot walls. On mobile and small screens, the animated walls stay underneath the copy in the background layer just like on desktop, rather than dropping below the action buttons.",
+  "description": "The same centred layout, with the walls kept behind the copy on small screens instead of dropping below the buttons.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

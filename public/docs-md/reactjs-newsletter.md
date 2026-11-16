@@ -6,7 +6,7 @@ url: https://avaraui.com/docs/nextjs/newsletter
 
 # Shadcn Newsletter
 
-A sign-up section in three layouts. **Portraits** puts four readers' faces around a centred form on a soft panel and lets them drift with the pointer. **Spotlight** is the same form with a glow under the cursor and a ticker of who just joined. Every layout follows your site's colour scheme — soft grounds by day, near-black by night. **Issues** sets the form beside a fanned stack of recent issues, the top one on a tilting card. One reveal when the section first appears; a form that turns into a thank-you when your promise resolves; nothing else moves unless the reader does.
+A sign-up section in three layouts. **Portraits** puts four readers' faces around a centred form on a soft panel and lets them drift with the pointer. **Spotlight** is the same form with a glow under the cursor and a ticker of who just joined. **Issues** places the form beside a fanned stack of recent issues, the top one on a tilting card. Every layout follows your site's colour scheme, and the form turns into a thank-you when your promise resolves.
 
 `Newsletter` is built from library pieces: the field is [Input](https://avaraui.com/docs/reactjs/input), the action is [Button](https://avaraui.com/docs/reactjs/button), the ticker is [Marquee](https://avaraui.com/docs/reactjs/marquee) and the top issue sits on a [Tilted Card](https://avaraui.com/docs/reactjs/tilted-card). Every piece of copy is a named part — `Heading`, `Intro`, `Form`, `Proof`, `Ticker`, `Issues` — so the words are yours.
 

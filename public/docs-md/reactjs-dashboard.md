@@ -42,7 +42,7 @@ All 3 options as live previews: https://avaraui.com/view/dashboard
    - Traits: milky glass panes, capsule columns, half ring, optional payments table and shortcut tiles
    - Install: `npx shadcn@latest add @avara-ui/dashboard`
    - Set these props: `{"variant":"glass"}`
-   - Docs: https://avaraui.com/docs/nextjs/dashboard#dashboard-glass
+   - Docs: https://avaraui.com/docs/nextjs/dashboard#glass
 3. **Liquid glass dashboard** (`liquid-glass`): Fluid refractive glass from SVG displacement filters, with specular highlights and an ambient backdrop.
    - Live: https://avaraui.com/view/dashboard/liquid-glass
    - Best for: a showpiece dashboard where the glass effect is part of the brand
@@ -50,14 +50,13 @@ All 3 options as live previews: https://avaraui.com/view/dashboard
    - Traits: liquid glass, SVG displacement filters, specular highlights, ambient backdrop
    - Install: `npx shadcn@latest add @avara-ui/dashboard`
    - Set these props: `{"variant":"liquid-glass"}`
-   - Docs: https://avaraui.com/docs/nextjs/dashboard#dashboard-liquid-glass
+   - Docs: https://avaraui.com/docs/nextjs/dashboard#liquid-glass
 
 ## Admin overview
 
-Switch Daily, Weekly and Monthly, open a metric tab, flip the chart between columns and a trend line, filter the activity feed, and hover the gauge, the barcode or a legend row to light up a share.
+Switch Daily, Weekly and Monthly, open a metric tab, and hover the gauge or a legend row to light up a share.
 
-- Pass `metrics` with one series per period (`day`, `week`, `month`), oldest first — the last point is the current one and wears the accent. Give a metric a `currency` and it formats as money.
-- `sources` , `countries` and `authors` are keyed by period too; the panels follow the switch. Leave `sources` or `countries` out and the panel says the data is unavailable.
+- Pass `metrics` with one series per period (`day`, `week`, `month`), oldest first. The last point is the current one and wears the accent.
 - `links` give each panel a round open button. Pass `linkComponent={Link}` from `next/link` in a Next.js app.
 
 ```tsx
@@ -320,11 +319,10 @@ export default function AdminDashboard({ variant = "classic", bgImage }: { varia
 
 ## Glass
 
-Milky glass panes on a soft canvas. Pick a metric tile to chart it, hover a capsule column, the half ring or a country segment, and follow the activity from a first post to a message. Switch to dark mode to see the glass go smoky.
+Milky glass panes on a soft canvas. Pick a metric tile to chart it, and switch to dark mode to see the glass go smoky.
 
-- Set `variant="glass"` — the same `metrics`, `activity`, `sources`, `countries` and `authors` re-present as glass: the top authors sit in the pane's notch and the activity becomes one card per step.
-- Give `totals` a `metric` id and each KPI card says what the current period added ("+1,094 new users this month"); an `href` adds its round open button.
-- Pass `payments` for the recent payments table and `shortcuts` for the tiles beside the activity. Leave `payments` out and the countries pane takes the full row.
+- Use `variant="glass"` re-presents the same data as glass: the top authors sit in the pane's notch and the activity becomes one card per step.
+- Pass `payments` for the recent payments table. Leave it out and the countries pane takes the full row.
 
 ```tsx
 import {
@@ -586,9 +584,9 @@ export default function AdminDashboard({ variant = "glass", bgImage }: { variant
 
 ## Liquid Glass
 
-Fluid refractive glass effect powered by SVG displacement noise filters. Wraps the dashboard with dynamic liquid glass backdrops, specular highlights, and ambient illumination using LiquidGlassWrapper, LiquidGlassBackground, and LiquidGlassSvgFilter.
+Fluid refractive glass built on SVG displacement filters, with specular highlights and ambient light.
 
-- Set `variant="liquid-glass"` — applies fluid SVG distortion filters, specular highlights, and refractive backdrop glass layers built with LiquidGlassWrapper, LiquidGlassBackground, and LiquidGlassSvgFilter.
+- Use `variant="liquid-glass"` wraps the dashboard in the liquid glass backdrop and refractive panes.
 
 ```tsx
 import {

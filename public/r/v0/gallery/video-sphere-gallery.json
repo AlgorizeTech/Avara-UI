@@ -3,7 +3,7 @@
   "name": "gallery-video-sphere-gallery",
   "type": "registry:block",
   "title": "Gallery — Video Sphere Gallery",
-  "description": "Immersive 3D rotating spherical video showcase. Videos and media drift along a Fibonacci sphere with organic drag navigation, auto-drift rotation, depth-based scaling, dynamic blur and grayscale effects, and popup preview modal.",
+  "description": "Videos and images drift along a rotating sphere with drag navigation, depth-based blur and a popup preview.",
   "dependencies": [
     "gsap",
     "lucide-react",

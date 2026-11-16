@@ -6,19 +6,17 @@ url: https://avaraui.com/docs/nextjs/platform-grid
 
 # Shadcn Platform Grid
 
-Everything a product offers, as one hairline grid: small tiles with an icon and a name, and a few 2×2 features that show a piece of the product on a tilting card. Tiles pack densely, so the features stay square whether the grid has eight columns or two. When the section first scrolls into view the tiles rise in as a wave from the centre; after that a soft spotlight follows the pointer across the grid, and each tile answers hover on its own — the icon lifts and takes the accent, the name darkens, a feature's card straightens and tilts with the cursor.
+Everything a product offers, as one hairline grid: small tiles with an icon and a name, and a few 2×2 features that show a piece of the product on a tilting card. The tiles rise in as a wave from the centre when the section scrolls into view, and a soft spotlight then follows the pointer across the grid.
 
-`PlatformGrid` is built on [Tilted Card](https://avaraui.com/docs/nextjs/tilted-card), which installs alongside and gives the featured cards their tilt and glare; the example's platform marks come from the library's `icons` item (`G2Icon`, `RedditIcon`, `CapterraIcon`, `AppStoreIcon`…). Every cell is a named part — `Tile`, `Feature` — with `Mock` and `Pill` for what goes on a feature's card.
+`PlatformGrid` is built on [Tilted Card](https://avaraui.com/docs/nextjs/tilted-card), which installs alongside. Every cell is a named part — `Tile`, `Feature` — with `Mock` and `Pill` for what goes on a feature's card. The example's platform marks come from the library's `icons` item.
 
 ## Fifty-six cells, four features
 
-Eight columns at desktop, six, four, three and two as the window narrows; the features stay 2×2 throughout. Move the pointer across the grid and hover a feature.
+Eight columns at desktop, narrowing to two; the features stay 2×2 throughout. Move the pointer across the grid and hover a feature.
 
-- `Tile` is an `icon` and a `label`, square, with hairlines on its right and bottom edge. Give it an `href` and it renders as a link; `linkComponent` swaps in your router's Link.
-- `Feature` spans two columns and two rows. Its children sit on a `TiltedCard` that leans 4° at rest and straightens under the pointer; the `icon` and `label` sit beneath.
-- `Mock` is the small white card the example puts on every feature — a frame with a little padding — and `Pill` (`ink`, `accent`, `soft`) is the vocabulary inside it. Put anything you like there instead.
-- `fadeEdges` masks the outer columns from `lg` up, so the grid reads as a window onto something larger. Turn it off for a plain grid.
-- `reveal="in-view"` (the default) plays the wave the first time the section enters the viewport; the docs pass `"immediate"`. Under prefers-reduced-motion the tiles simply appear and the spotlight is off.
+- `Tile` is an `icon` and a `label`. Give it an `href` and it renders as a link; `linkComponent` swaps in your router's Link.
+- `Feature` spans two columns and two rows. Its children sit on a `TiltedCard`, with the `icon` and `label` beneath.
+- `Mock` is the small white card the example puts on every feature; `Pill` is the vocabulary inside it. Put anything you like there instead.
 
 ```tsx
 "use client";

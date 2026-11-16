@@ -3,7 +3,7 @@
   "name": "secure-envelope-auto-flip-classic-voucher-classified",
   "type": "registry:block",
   "title": "Secure Envelope — Auto Flip (Classic Voucher / Classified)",
-  "description": "1st click slides the card out from the sleeve, elevates onto the front, and automatically flips 180° in-place to reveal the back details. 2nd click flips back and returns inside the sleeve.",
+  "description": "The first click slides the card out and flips it in place to its back; the second flips it back and returns it inside.",
   "dependencies": [
     "tw-animate-css"
   ],

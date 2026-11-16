@@ -1,27 +1,19 @@
 ---
 title: "Portfolio Showcase"
-description: "Shadcn Portfolio Showcase. An edge-to-edge continuous infinite canvas in an organic masonry waterfall layout engineered for creative agencies, design studios."
+description: "An infinite, draggable masonry canvas for creative agencies, design studios and freelance portfolios. Free shadcn/ui block for React and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/portfolio-showcase
 ---
 
 # Portfolio Showcase
 
-An edge-to-edge continuous infinite canvas in an organic masonry waterfall layout engineered for creative agencies, design studios, and freelance portfolios.
-
-The component pairs smooth 4-directional inertial drag physics (touch, trackpad, and mouse) with an ambient floating drift and automatic camera flights that glide gracefully from card to card. Clicking any project card opens a high-fidelity modal detailing project specifications, deliverables, and interactive action triggers.
+An infinite, draggable masonry canvas for creative agencies, design studios and freelance portfolios. It wraps endlessly in every direction, drifts on its own as a camera glides from card to card, and opens a project modal when a card is clicked.
 
 ## Masonry Portfolio — variant="masonry-portfolio"
 
-Pass `variant="masonry-portfolio"` for an edge-to-edge continuous infinite canvas in a masonry layout. Click & drag anywhere in all 4 directions with smooth momentum physics and ambient floating drift — it wraps infinitely without ever ending.
+Drag in any direction with momentum, or let the camera glide from card to card. Click a card to open its project details.
 
-- Pass `variant="masonry-portfolio"` Selects the edge-to-edge infinite masonry canvas showcasing all cards with smooth inertial physics and centered 3D ambient elevation.
-- Set `draggable=true` Enables interactive 4-directional mouse and touch dragging with spring physics and kinetic momentum damping.
-- Set `interval=true` Activates continuous smooth auto-scrolling glide across the infinite 2D canvas, pausing automatically during active user drag interactions and project modal inspection.
-- Set `intervalTime=5500` Configures how long the camera settles on a project card in milliseconds before initiating flight to the next.
-- Set `order="shuffle"` Takes flights in dynamic multi-directional paths across the masonry canvas rather than a single fixed axis.
-- Set `stagger=72` Controls the vertical masonry offset between alternate columns, producing an organic waterfall layout where cards do not align rigidly.
-- Set `gap=16` Specifies the uniform spacing between adjacent cards in pixels.
-- Set `itemModal=true` Opens the high-resolution project modal upon card selection, providing media zoom, client metadata, deliverables, and external actions.
+- `order="shuffle"` sends the camera along varied paths instead of one fixed axis.
+- `itemModal=true` opens a project modal with media, client details, deliverables and links when a card is clicked.
 
 ```tsx
 "use client";

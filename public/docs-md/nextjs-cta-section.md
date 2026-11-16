@@ -1,12 +1,12 @@
 ---
 title: "Shadcn CTA Section"
-description: "An interconnected, conversion-focused call-to-action block designed for modern web applications, agencies, and SaaS platforms. Free shadcn/ui CTA Section."
+description: "Shadcn CTA Section. A conversion-focused call-to-action block with four layouts, chosen with `variant`: Brand Pillars, Concentric Portal."
 url: https://avaraui.com/docs/nextjs/cta-section
 ---
 
 # Shadcn CTA Section
 
-An interconnected, conversion-focused call-to-action block designed for modern web applications, agencies, and SaaS platforms. Features high-impact interactive systems including **Mobile App Showcase** (interactive smartphone experience with live workout tracking, app store CTAs, and responsive previews), **Concentric Portal** (scroll-driven expanding circular lens with gyroscopic monospace orbital text), and **Offer Showcase** (promotional pricing card with moving nature reels).
+A conversion-focused call-to-action block with four layouts, chosen with `variant`: **Brand Pillars**, **Concentric Portal**, **Mobile App Showcase** and **Offer Showcase**.
 
 ## For AI agents
 
@@ -62,14 +62,10 @@ All 4 options as live previews: https://avaraui.com/view/cta-section
 
 ## Offer Showcase — variant="offer-showcase"
 
-Pass `variant="offer-showcase"` for a high-impact central promotional offer card flanked by moving nature reels with animated price count-up.
+A promotional offer card flanked by moving reels of photos, with the price counting up.
 
-- Pass `variant="offer-showcase"` Selects the offer showcase layout with continuously moving background nature reels and elevated central card.
-- Pass `images=natureImages` Passes an array of Cloudinary nature image URLs displayed in the 4 continuous vertical moving reels.
-- Set `badge="Limited launch offer"` Renders a prominent pill badge with an animated pulsing live status dot.
-- Set `price=149` Sets the numerical offer price with animated count-up and currency symbol.
-- Set `compareAtPrice=349` Displays the original price with strikethrough styling.
-- Set `savingsText="Save 57%"` Renders the highlighted savings discount badge next to the compare-at price.
+- `images=natureImages` feeds the four vertical reels that move behind the card.
+- `price=149` counts up to the offer price. Add `compareAtPrice` for the struck-through original.
 
 ```tsx
 import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
@@ -128,11 +124,10 @@ npx shadcn@latest add @avara-ui/cta-section
 
 ### Concentric Portal — variant="concentric-portal"
 
-Pass `variant="concentric-portal"` for the scroll-driven expanding circular lens with continuous gyroscopic orbital text rings.
+A circular lens that expands as you scroll, ringed by orbiting monospace text.
 
-- Pass `variant="concentric-portal"` Selects the concentric orbital portal experience with scroll-scrubbed expansion.
-- Set `autoRotate=true` Enables automatic gyroscopic rotation for all concentric text orbits (set to false to keep static).
-- Set `phrase="THE CONTENT ARCHITECTURE"` Defines the repeating monospace text string orbiting around the portal.
+- `phrase="THE CONTENT ARCHITECTURE"` is the text repeated around the portal's rings.
+- `autoRotate=true` keeps the rings spinning; `false` holds them still.
 
 ```tsx
 import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
@@ -154,10 +149,9 @@ export default function ConcentricPortalExample() {
 
 ### Brand Pillars — variant="brand-pillars"
 
-Pass `variant="brand-pillars"` for the interactive synchronized scorecard with dynamic progress metrics.
+A scorecard synced to the pillar cards: pick a pillar and its scores and meters animate.
 
-- Pass `variant="brand-pillars"` Selects the multi-pillar brand scorecard layout with live score recalculation.
-- Set `color="#f95716"` Sets the signature brand accent color for active cards, meters, and badges.
+- `color="#f95716"` is the accent for the active card, meters and badges.
 
 ```tsx
 import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";
@@ -178,13 +172,10 @@ export default function BrandPillarsExample() {
 
 ### Mobile App Showcase — variant="mobile-app"
 
-Pass `variant="mobile-app"` for a scroll-driven app showcase CTA. Initially displays only the iPhone 16 Pro frame centered in the viewport; scrolling smoothly glides the phone down and to the left while the editorial headline, description, and official app store badges reveal on the right.
+Scrolling glides an iPhone from the centre to the left while the headline and app store badges appear on the right.
 
-- Pass `variant="mobile-app"` Selects the mobile app showcase layout with an upright iPhone 16 Pro mockup.
-- Set `headingAccent="your partner"` Applies an elegant serif italic treatment to the highlighted phrase in the headline.
-- Set `userName="Alicia Regis"` Customizes the greeting header inside the phone screen feed.
-- Set `featuredWorkoutTitle="Wellness Workshops"` Sets the title of the hero video/image card within the mobile feed.
-- Set `showAppStoreBadges=true` Displays official Apple App Store and Google Play store download buttons.
+- `headingAccent="your partner"` sets that phrase of the headline in serif italic.
+- `showAppStoreBadges=true` adds the App Store and Google Play download badges.
 
 ```tsx
 import { CTASection } from "@/components/custom/blocks/CtaSectionBlock";

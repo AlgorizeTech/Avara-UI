@@ -3,7 +3,7 @@
   "name": "avatar-stack-with-an-action",
   "type": "registry:block",
   "title": "Avatar Stack — With an action",
-  "description": "Three faces using the zoom variant with clean tooltips and a trailing plus action button that triggers an onClick handler.",
+  "description": "Three faces with tooltips and a trailing + button.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

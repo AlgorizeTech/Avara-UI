@@ -7,9 +7,9 @@ import { extractCode } from "@/lib/code";
 
 # Shadcn Ribbon Drift
 
-A dynamic hero showcase card featuring dual floating infinite marquee ribbons, an animated ambient gradient drift backdrop, center 3D illustration, and an interactive frosted glass promo card.
+A hero showcase card with two floating infinite marquee ribbons, a softly drifting gradient backdrop, a centre 3D illustration and a frosted glass promo card.
 
-Originally created as the signature visual counterpart for authentication layouts, it is completely decoupled as a standalone visual card that works across landing pages, feature highlights, onboarding heroes, and product showcase sections.
+Originally the visual counterpart for authentication layouts, it works as a standalone card on landing pages, onboarding heroes and product showcases.
 
 <AgentVariants slug="ribbon-drift" />
 
@@ -87,28 +87,16 @@ export default function CrossRibbonLogosExample() {
   examples={[
     {
       title: "Cross Ribbon Logos",
-      subheading:
-        "Dual criss-crossing infinite marquee ribbons featuring leading brand logos with frosted glass blur and ambient drift background.",
+      subheading: "Two criss-crossing marquee ribbons of brand logos over a frosted, softly drifting gradient.",
       propNotes: [
         {
-          lead: "Set",
           prop: "variant",
           value: '"cross-logos"',
-          effect: "switches to dual intersecting brand ribbon animation.",
-        },
-        {
-          lead: "Set",
-          prop: "color",
-          value: '"primary" | "indigo" | "rose" | "emerald" | "lavender" | "amber" | "violet" | "zinc"',
-          effect: "tunes the ambient glow gradient background.",
-        },
-        {
-          prop: "bgColor",
-          effect: "optional custom background color override (e.g. #F8C83C for warm yellow).",
+          effect: "switches to the two intersecting brand ribbons.",
         },
         {
           prop: "speed",
-          effect: "marquee scrolling duration in seconds (default: 48).",
+          effect: "is the seconds one marquee takes to scroll (48 by default).",
         },
       ],
       props: {
@@ -124,18 +112,13 @@ export default function CrossRibbonLogosExample() {
         "Dual infinite marquee ribbons, central 3D character, ambient gradient drift, and frosted promo card.",
       propNotes: [
         {
-          lead: "Set",
+          lead: "Use",
           prop: "color",
-          value: '"primary" | "indigo" | "rose" | "emerald" | "lavender" | "amber" | "violet" | "zinc"',
-          effect: "tunes the ambient glow gradient, diamond separators, and hover accents.",
+          effect: "tunes the glow, the diamond separators and the hover accents.",
         },
         {
           prop: "ribbonsTop",
-          effect: "items rendered in the top ribbon (-7deg tilt, drifting left).",
-        },
-        {
-          prop: "ribbonsBottom",
-          effect: "items rendered in the bottom ribbon (+5deg tilt, drifting right).",
+          effect: "and `ribbonsBottom` fill the two ribbons, tilted opposite ways.",
         },
       ],
       props: {

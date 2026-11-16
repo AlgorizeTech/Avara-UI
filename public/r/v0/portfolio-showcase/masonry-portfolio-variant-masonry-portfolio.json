@@ -3,7 +3,7 @@
   "name": "portfolio-showcase-masonry-portfolio-variant-masonry-portfolio",
   "type": "registry:block",
   "title": "Portfolio Showcase — Masonry Portfolio — variant=\"masonry-portfolio\"",
-  "description": "Pass `variant=\"masonry-portfolio\"` for an edge-to-edge continuous infinite canvas in a masonry layout. Click & drag anywhere in all 4 directions with smooth momentum physics and ambient floating drift — it wraps infinitely without ever ending.",
+  "description": "Drag in any direction with momentum, or let the camera glide from card to card. Click a card to open its project details.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

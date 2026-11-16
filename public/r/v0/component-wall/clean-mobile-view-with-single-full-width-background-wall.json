@@ -3,7 +3,7 @@
   "name": "component-wall-clean-mobile-view-with-single-full-width-background-wall",
   "type": "registry:block",
   "title": "Component Wall — Clean mobile view with single full-width background wall",
-  "description": "Centred hero layout featuring one single continuous full-width background wall across the entire hero instead of dual separate left and right walls. Pass singleBackground={true} (or singleWall={true}) to render a single unified wall animation, combined with showMobileWall={false} to keep mobile clean.",
+  "description": "One full-width wall behind the centred copy, instead of a wall on each side.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

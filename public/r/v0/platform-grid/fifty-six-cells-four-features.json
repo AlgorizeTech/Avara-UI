@@ -3,7 +3,7 @@
   "name": "platform-grid-fifty-six-cells-four-features",
   "type": "registry:block",
   "title": "Platform Grid — Fifty-six cells, four features",
-  "description": "Eight columns at desktop, six, four, three and two as the window narrows; the features stay 2×2 throughout. Move the pointer across the grid and hover a feature.",
+  "description": "Eight columns at desktop, narrowing to two; the features stay 2×2 throughout. Move the pointer across the grid and hover a feature.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

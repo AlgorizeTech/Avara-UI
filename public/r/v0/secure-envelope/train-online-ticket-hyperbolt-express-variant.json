@@ -3,7 +3,7 @@
   "name": "secure-envelope-train-online-ticket-hyperbolt-express-variant",
   "type": "registry:block",
   "title": "Secure Envelope — Train Online Ticket (Hyperbolt Express Variant)",
-  "description": "Exact high-speed rail ticket and envelope design. Features the top blue pill header, passenger info, seat/train numbers, vertical barcode, watermarked station route bar, tear-off stub, and Hyperbolt bullet train box sleeve.",
+  "description": "A high-speed rail ticket with passenger details, a vertical barcode and a tear-off stub, in a bullet-train sleeve.",
   "dependencies": [
     "tw-animate-css"
   ],

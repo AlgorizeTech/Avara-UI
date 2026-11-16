@@ -3,7 +3,7 @@
   "name": "cta-section-brand-pillars-variant-brand-pillars",
   "type": "registry:block",
   "title": "Cta Section — Brand Pillars — variant=\"brand-pillars\"",
-  "description": "Pass `variant=\"brand-pillars\"` for the interactive synchronized scorecard with dynamic progress metrics.",
+  "description": "A scorecard synced to the pillar cards: pick a pillar and its scores and meters animate.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

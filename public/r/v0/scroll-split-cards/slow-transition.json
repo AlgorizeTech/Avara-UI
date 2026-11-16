@@ -3,7 +3,7 @@
   "name": "scroll-split-cards-slow-transition",
   "type": "registry:block",
   "title": "Scroll Split Cards — Slow Transition",
-  "description": "Pass the variant=\"slow-transition\" and scrollSpeed or speed prop (e.g. scrollSpeed={0.6}) to dynamically control scroll sensitivity.",
+  "description": "A slower profile for leisurely narrative pacing.",
   "dependencies": [
     "tw-animate-css"
   ],

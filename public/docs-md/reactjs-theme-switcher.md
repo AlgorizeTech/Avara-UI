@@ -1,18 +1,16 @@
 ---
 title: "Shadcn Theme Switcher"
-description: "A premium, animated dark mode toggle component built specifically for Next.js applications using `next-themes`. Free shadcn/ui Theme Switcher component."
+description: "Shadcn Theme Switcher. A premium, animated dark mode toggle for Next.js applications using `next-themes`, in three variants (Icon."
 url: https://avaraui.com/docs/nextjs/theme-switcher
 ---
 
 # Shadcn Theme Switcher
 
-A premium, animated dark mode toggle component built specifically for Next.js applications using `next-themes`.
+A premium, animated dark mode toggle for Next.js applications using `next-themes`, in three variants (Icon, Pill and Dropdown) that suit everything from compact navigation bars to settings menus. It handles React hydration safely, so there is no dark-mode flash on load.
 
-It includes three distinct layout variants (Icon, Pill, and Dropdown) to match different areas of your application, from compact navigation bars to sprawling settings menus. It safely handles React hydration to prevent the dreaded "dark mode flash" on initial load.
+Switching runs the same circular reveal as the toggle in this site's header, using the View Transitions API. The CSS it needs ships inside the component, so an installed copy works without touching `globals.css`. Browsers without View Transitions, and users who prefer reduced motion, get an instant switch.
 
-Switching runs the same circular reveal as the toggle in this site's header: the new theme grows out of the control as a circle over the page, using the View Transitions API. The CSS that reveal needs is part of the component — it goes into `<head>` the first time a switcher mounts — so an installed copy works without touching `globals.css`. Browsers without View Transitions, and users who prefer reduced motion, get an instant switch.
-
-Each switcher below is live and writes through `next-themes`, so flipping one changes the theme for the whole docs site. The previews run in their own frame, and a View Transition can't cross documents, so here the demo hands the pick to the page through `applyTheme` — what you see is the header's own reveal, starting from the control you clicked. In your app the component does all of that itself.
+Each switcher below is live and writes through `next-themes`, so flipping one changes the theme for the whole docs site.
 
 ## For AI agents
 

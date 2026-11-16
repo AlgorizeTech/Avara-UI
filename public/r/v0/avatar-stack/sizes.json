@@ -3,7 +3,7 @@
   "name": "avatar-stack-sizes",
   "type": "registry:block",
   "title": "Avatar Stack — Sizes",
-  "description": "sm, md and lg — 28, 36 and 44 pixels. The small stack shows a clean tooltip (type=\"tooltip\"), the middle stack shows without tooltip (type=\"default\"), and the large stack displays tooltips with pointing arrows (type=\"tooltip-arrow\").",
+  "description": "sm, md and lg are 28, 36 and 44 pixels, each paired here with a different tooltip style.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

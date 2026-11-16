@@ -3,7 +3,7 @@
   "name": "wallet-interactive-cardholder-wallet",
   "type": "registry:block",
   "title": "Wallet — Interactive Cardholder Wallet",
-  "description": "Hover over the wallet to smoothly slide out the 3 cards serially. Click any card to pull it high out of the wallet, then click it again to 3D-flip and reveal its back face (magnetic stripe, signature box & CVV). Moving the cursor away resets all cards back inside.",
+  "description": "Hover to slide the cards out. Click a card to pull it high out of the wallet, then click again to 3D-flip it to its back face.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

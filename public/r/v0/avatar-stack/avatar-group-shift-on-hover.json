@@ -3,7 +3,7 @@
   "name": "avatar-stack-avatar-group-shift-on-hover",
   "type": "registry:block",
   "title": "Avatar Stack — Avatar Group (Shift on hover)",
-  "description": "An animated avatar group inspired by animate-ui that displays overlapping user images and smoothly shifts each avatar upward with spring physics on hover with an anchored pointer tooltip.",
+  "description": "Overlapping faces that shift upward on a spring when hovered, with a tooltip that glides between them.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

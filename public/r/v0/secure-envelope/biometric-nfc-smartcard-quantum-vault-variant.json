@@ -3,7 +3,7 @@
   "name": "secure-envelope-biometric-nfc-smartcard-quantum-vault-variant",
   "type": "registry:block",
   "title": "Secure Envelope — Biometric NFC SmartCard (Quantum Vault Variant)",
-  "description": "High-tech biometric identity smartcard & encrypted key vault sleeve. Features golden EMV microchip, contactless NFC glyph, clearance level badge, encrypted magnetic stripe, and crypto signature panel with full light/dark theme adaptivity.",
+  "description": "A biometric identity smartcard in an encrypted key vault sleeve, with a chip, NFC glyph and clearance badge.",
   "dependencies": [
     "tw-animate-css"
   ],

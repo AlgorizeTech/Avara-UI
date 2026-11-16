@@ -3,7 +3,7 @@
   "name": "component-wall-copy-beside-the-wall",
   "type": "registry:block",
   "title": "Component Wall — Copy beside the wall",
-  "description": "The copy on the left, one wall filling the right and fading under it. One camera, so the install line follows it card by card; the tools sit over the lower edge of the wall.",
+  "description": "The copy on the left, one wall filling the right. With one camera, the install line follows it card by card.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

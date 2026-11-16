@@ -87,10 +87,10 @@ All 7 options as live previews: https://avaraui.com/view/navbar
 
 ## Spotlight Pill Navbar
 
-A sticky pill navbar that smoothly narrows and gains a frosted glass backdrop on scroll, paired with a sliding pill hover indicator behind navigation links and an interactive roll-up CTA button.
+A sticky pill that narrows and gains a frosted backdrop on scroll, with a sliding hover pill behind the links and a roll-up CTA button.
 
-- Set `variant="spotlight"` activates the scroll-reactive shrink and blur pill container, sliding hover pill indicator, and dual-layer roll-up CTA button.
-- Customize `color` themes the logo mark icon and roll-up CTA button.
+- Use `variant="spotlight"` turns on the scroll-reactive pill, the sliding hover indicator and the roll-up CTA.
+- Pass `color` themes the logo mark and the CTA button.
 
 ```tsx
 import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";
@@ -218,11 +218,10 @@ export default function GlassHeader() {
 
 ### E-Commerce Mega Nav
 
-A conversion-focused e-commerce navigation inspired by Framer's E-Commerce Mega Nav. Features a top announcement bar, product-rich mega menus with direct product previews and promotional cards, live search, cart badge with mini-cart, and a responsive mobile drawer with drill-down categories.
+A conversion-focused store bar with an announcement strip, mega menus, live search and a cart badge, plus a drill-down mobile drawer.
 
-- Set `variant="ecommerce-mega-nav"` activates the comprehensive e-commerce navigation with announcement bar, multi-category mega menus, product cards, promo banners, cart indicator, and mobile drawer.
-- Pass `logoText="NUTRIFY"` sets the brand name in both the desktop bar and mobile drawer.
-- Customize `color` themes the announcement bar, badges, active indicators, and checkout CTA buttons.
+- Use `variant="ecommerce-mega-nav"` adds the announcement bar, mega menus, cart indicator and drill-down drawer.
+- Pass `logoText="NUTRIFY"` is the brand name in both the desktop bar and the mobile drawer.
 
 ```tsx
 import { NavbarBlock } from "@/components/custom/blocks/NavbarBlock";

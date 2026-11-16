@@ -3,7 +3,7 @@
   "name": "card-shop-tiles",
   "type": "registry:block",
   "title": "Card — Shop tiles",
-  "description": "Pastel product tiles: a tag, a two-line title, the product on the right, and a frosted price bar with one action. The photo's backdrop and the tile share a colour, so the masked edge between them disappears.",
+  "description": "Pastel product tiles with a tag, a two-line title, the product on the right and a frosted price bar. The photo's backdrop and the tile share a colour, so the edge between them disappears.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -8,17 +8,15 @@ url: https://avaraui.com/docs/nextjs/booking-card
 
 A booking panel that goes inside any card: a strip of days paged a week at a time, time slots in groups, a button that reads the choice back before anyone confirms, and a confirmation that draws itself in over the form once the booking is made.
 
-`BookingCard` is a compound component. It holds the chosen day and slot; `BookingCard.Days`, `BookingCard.Slots`, `BookingCard.Submit` and `BookingCard.Confirmation` go inside it in whatever layout the panel needs. It draws no surface of its own, so it sits as comfortably in a plain bordered card as in a glass slab from [Glass Panel](https://avaraui.com/docs/nextjs/glass-panel) — the [Book Appointment](https://avaraui.com/docs/nextjs/book-appointment) section is the same card on a full page.
+`BookingCard` is a compound component that holds the chosen day and slot; `BookingCard.Days`, `BookingCard.Slots`, `BookingCard.Submit` and `BookingCard.Confirmation` go inside it in any layout. It draws no surface of its own, so it sits as comfortably in a plain bordered card as in a slab from [Glass Panel](https://avaraui.com/docs/nextjs/glass-panel). The [Book Appointment](https://avaraui.com/docs/nextjs/book-appointment) section is the same card on a full page.
 
 ## In a card
 
-Pick a day and a time, press Book — the button stays busy while your onBook promise runs, then the check draws itself and the details rise in.
+Pick a day and a time, then press Book. The button stays busy while your `onBook` promise runs, then the confirmation draws itself in.
 
-- `BookingCard` holds the chosen day and slot. Put `BookingCard.Days`, `BookingCard.Slots`, `BookingCard.Submit` and `BookingCard.Confirmation` inside it in any layout; the confirmation covers the `BookingCard` it sits in — so give the `BookingCard` the panel's padding (heading included) and the cover reaches the panel's edges and corners.
-- Return a promise from `onBook` and the button stays busy until it settles — resolve to show the confirmation, throw to drop back to the form.
+- `BookingCard` holds the chosen day and slot. Its confirmation covers it, so give it the panel's padding, heading included, and the cover reaches the panel's edges.
+- Return a promise from `onBook` and the button stays busy until it settles: resolve to show the confirmation, throw to drop back to the form.
 - `unavailable=(day) => day.getDay() === 0` on `BookingCard.Days` strikes out days with nothing free. Sundays here; feed it your real availability.
-- The Book button, the check and every focus ring take `--primary` so the card follows your theme — pick a colour above to see it. Selected days and slots stay a neutral ink that reads on glass or solid.
-- The arrows page `BookingCard.Days` a week at a time, up to `horizon` days out (90 by default). Days start today, so the previous arrow is disabled on the first page — nobody can book into the past.
 
 ```tsx
 "use client";

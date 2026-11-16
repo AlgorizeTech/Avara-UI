@@ -3,7 +3,7 @@
   "name": "ribbon-drift-cross-ribbon-logos",
   "type": "registry:block",
   "title": "Ribbon Drift — Cross Ribbon Logos",
-  "description": "Dual criss-crossing infinite marquee ribbons featuring leading brand logos with frosted glass blur and ambient drift background.",
+  "description": "Two criss-crossing marquee ribbons of brand logos over a frosted, softly drifting gradient.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

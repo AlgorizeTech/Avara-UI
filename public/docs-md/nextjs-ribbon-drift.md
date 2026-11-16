@@ -6,9 +6,9 @@ url: https://avaraui.com/docs/nextjs/ribbon-drift
 
 # Shadcn Ribbon Drift
 
-A dynamic hero showcase card featuring dual floating infinite marquee ribbons, an animated ambient gradient drift backdrop, center 3D illustration, and an interactive frosted glass promo card.
+A hero showcase card with two floating infinite marquee ribbons, a softly drifting gradient backdrop, a centre 3D illustration and a frosted glass promo card.
 
-Originally created as the signature visual counterpart for authentication layouts, it is completely decoupled as a standalone visual card that works across landing pages, feature highlights, onboarding heroes, and product showcase sections.
+Originally the visual counterpart for authentication layouts, it works as a standalone card on landing pages, onboarding heroes and product showcases.
 
 ## For AI agents
 
@@ -44,12 +44,10 @@ All 2 options as live previews: https://avaraui.com/view/ribbon-drift
 
 ### Cross Ribbon Logos
 
-Dual criss-crossing infinite marquee ribbons featuring leading brand logos with frosted glass blur and ambient drift background.
+Two criss-crossing marquee ribbons of brand logos over a frosted, softly drifting gradient.
 
-- Set `variant="cross-logos"` switches to dual intersecting brand ribbon animation.
-- Set `color="primary" | "indigo" | "rose" | "emerald" | "lavender" | "amber" | "violet" | "zinc"` tunes the ambient glow gradient background.
-- `bgColor` optional custom background color override (e.g. #F8C83C for warm yellow).
-- `speed` marquee scrolling duration in seconds (default: 48).
+- `variant="cross-logos"` switches to the two intersecting brand ribbons.
+- `speed` is the seconds one marquee takes to scroll (48 by default).
 
 ```tsx
 import { RibbonLogos } from "@/components/custom/blocks/RibbonDriftBlock";
@@ -74,9 +72,8 @@ export default function CrossRibbonLogosExample() {
 
 Dual infinite marquee ribbons, central 3D character, ambient gradient drift, and frosted promo card.
 
-- Set `color="primary" | "indigo" | "rose" | "emerald" | "lavender" | "amber" | "violet" | "zinc"` tunes the ambient glow gradient, diamond separators, and hover accents.
-- `ribbonsTop` items rendered in the top ribbon (-7deg tilt, drifting left).
-- `ribbonsBottom` items rendered in the bottom ribbon (+5deg tilt, drifting right).
+- Use `color` tunes the glow, the diamond separators and the hover accents.
+- `ribbonsTop` and `ribbonsBottom` fill the two ribbons, tilted opposite ways.
 
 ```tsx
 import { RibbonDriftBlock } from "@/components/custom/blocks/RibbonDriftBlock";

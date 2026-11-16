@@ -116,29 +116,13 @@ export default function BrandRevealShowcase() {
         {
           lead: "Pass",
           prop: "accordionData",
-          effect:
-            "as an array of \`{ value, title, icon, content }\` — \`content\` is an array of paragraphs and \`icon\` a key of the block's \`ICON_MAP\`.",
-        },
-        {
-          prop: "type",
-          value: '"single"',
-          effect: "keeps one panel open at a time.",
-        },
-        {
-          prop: "collapsible",
-          effect: "lets the open panel be closed again, leaving all of them shut.",
-        },
-        {
-          prop: "defaultValue",
-          value: '"getting-started"',
-          effect: "matches an item's \`value\` to decide which panel starts open.",
+          effect: "as an array of `{ value, title, icon, content }`. `content` is an array of paragraphs and `icon` a key of the block's `ICON_MAP`.",
         },
         {
           lead: "Add",
           prop: "animation",
           value: '"stack"',
-          effect:
-            "to start the items piled on the first one and deal them into place when the accordion scrolls into view. Reload the preview to watch it again.",
+          effect: "to start the items piled on the first one and deal them into place when the accordion scrolls into view.",
         },
       ],
       props: { variant: "default", interaction: "single", animation: "stack" },
@@ -147,30 +131,18 @@ export default function BrandRevealShowcase() {
     },
     {
       title: "Brand logo reveal",
-      subheading:
-        "Accordion brand logo showcase with animated horizontal pleats, autoplay progress indicator, hover pause, and responsive stacking. Inspired by Framer Brand Logo Reveal.",
+      subheading: "A brand accordion of horizontal pleats with an autoplay progress indicator. Hovering pauses it, and it stacks on small screens.",
       propNotes: [
         {
           lead: "Pass",
           prop: "variant",
           value: '"brand-reveal"',
-          effect:
-            "to display an editorial horizontal brand accordion, or use \`<BrandLogoAccordion />\` directly.",
-        },
-        {
-          prop: "autoplay",
-          value: "true",
-          effect: "cycles through client/partner brands on an automated timer.",
+          effect: "to show the editorial horizontal brand accordion, or use `<BrandLogoAccordion />` directly.",
         },
         {
           prop: "autoplayInterval",
           value: "4000",
-          effect: "duration in milliseconds before revealing the next brand.",
-        },
-        {
-          prop: "pauseOnHover",
-          value: "true",
-          effect: "pauses autoplay when the cursor hovers over any panel.",
+          effect: "is the milliseconds before the next brand is revealed.",
         },
       ],
       props: { variant: "brand-reveal" },
@@ -272,11 +244,10 @@ export default function AccordionVariants() {
       title: "Always one open",
       propNotes: [
         {
-          lead: "Set",
+          lead: "Use",
           prop: "collapsible",
           value: "{false}",
-          effect:
-            "to stop the user closing the last open panel, so exactly one is always showing. Pair it with a `defaultValue` or the accordion starts fully closed.",
+          effect: "to stop the user closing the last open panel, so exactly one is always showing. Pair it with a `defaultValue` or the accordion starts fully closed.",
         },
       ],
       props: { variant: "filled", interaction: "single-mandatory" },
@@ -286,10 +257,10 @@ export default function AccordionVariants() {
       title: "Multiple permanent open",
       propNotes: [
         {
-          lead: "Set",
+          lead: "Combine",
           prop: "type",
           value: '"multiple"',
-          effect: "and `collapsible={false}` to allow opening multiple panels, but preventing opened panels from being closed.",
+          effect: "and `collapsible={false}` to allow several panels open at once without letting any be closed.",
         },
       ],
       props: { variant: "ghost", interaction: "multiple-non-collapsible" },
@@ -297,21 +268,13 @@ export default function AccordionVariants() {
     },
     {
       title: "Stack entrance",
-      subheading:
-        "The deal-out entrance on the `elevated` variant. It works with all five.",
+      subheading: "The deal-out entrance on the `elevated` variant. It works with all five.",
       propNotes: [
         {
-          lead: "Set",
+          lead: "Pass",
           prop: "animation",
           value: '"stack"',
-          effect:
-            "to pile the items on the first one and deal them down with a stagger. It runs once, when the accordion first scrolls into view, and is skipped when the visitor prefers reduced motion.",
-        },
-        {
-          prop: "variant",
-          value: '"elevated"',
-          effect:
-            "keeps every item on its own card, so the open one rises on a primary ring instead of changing shape.",
+          effect: "to pile the items on the first one and deal them down with a stagger. It runs once, when the accordion first scrolls into view.",
         },
       ],
       props: { variant: "elevated", interaction: "single", animation: "stack" },

@@ -6,23 +6,16 @@ url: https://avaraui.com/docs/nextjs/network-graph
 
 # Shadcn Network Graph
 
-A network graph of avatars: a layered orbital visual that spreads items evenly across concentric rings. It works well for community showcases, team maps, social proof sections, and dense relationship-driven hero layouts.
+A network graph of avatars: a layered orbital visual that spreads items evenly across concentric rings. It suits community showcases, team maps, social proof sections and relationship-driven hero layouts.
 
-Unlike static canvases or heavy physics engines, this component dynamically handles the math for you. Simply assign a `ring` index to each node (e.g., Ring 1, Ring 2), and the component will automatically space the avatars evenly in perfect 360-degree circles using percentage-based rendering that scales flawlessly on mobile.
-
----
-
-Assign each node a `ring` index and the component spaces that ring evenly across a full 360°. Hover an avatar for its tooltip, or hit the reload button to replay the staggered spring entrance.
+Assign each node a `ring` index and the component spaces that ring evenly across a full 360°, in percentages that scale to any box. Hover an avatar for its tooltip, or hit the reload button to replay the staggered spring entrance.
 
 ## Interactive rings
 
 Drag the sliders above to reshape the orbits live, then copy the numbers straight into your own `NetworkGraph`.
 
 - `ringCount` is how many orbits draw. A node whose `ring` exceeds this is **not rendered at all**.
-- `baseRadius` is the first ring's radius as a percentage of the square container, so it scales with the box.
-- `ringGap` is the percentage added for each subsequent ring.
-- `orbitSpeed` multiplies the rotation rate — `2` is twice as fast, `0.5` half. Rings still alternate direction for depth.
-- Set `animateOrbit={false}` to stop the planetary motion. `animateIn` is separate, so the entrance still plays.
+- Use `animateOrbit={false}` to stop the planetary motion. `animateIn` is separate, so the entrance still plays.
 
 ```tsx
 import {

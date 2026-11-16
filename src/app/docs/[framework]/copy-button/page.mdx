@@ -11,11 +11,9 @@ export const metadata = docsPageMetadata("copy-button", {
 
 # Shadcn Copy Button
 
-A button that puts text on the clipboard and says so — the icon pops from a clipboard to a check, the label rises from "Copy" to "Copied!", and both settle back after a moment.
+A button that puts text on the clipboard and says so: the icon pops from a clipboard to a check, the label rises from "Copy" to "Copied!", and both settle back after a moment.
 
-It ships in three pieces: `CopyButton` for any surface (toolbars, code blocks, cards), `CopyField` for the classic read-only input with a copy button beside or inside it, and the `useCopyToClipboard` hook when you want the behaviour with your own markup. The write uses the async Clipboard API and falls back to a hidden textarea where that is unavailable, and a failed write shows a brief "Failed" state instead of lying about success.
-
-Explore the different variations of the Copy Button — each example shows a live preview with the exact code to copy. Click a button to see it confirm.
+It ships in three pieces: `CopyButton` for any surface, `CopyField` for a read-only input with a copy button beside or inside it, and the `useCopyToClipboard` hook for your own markup. A failed write shows a brief "Failed" state instead of lying about success.
 
 export const usageDefault = `import { CopyButton } from "@/components/custom/blocks/CopyButtonBlock";
 

@@ -1,12 +1,12 @@
 ---
 title: "Shadcn Waitlist"
-description: "A pre-launch sign-up in three layouts. Card is a compact card with the field over the button, for a corner of a page. Free shadcn/ui Waitlist block."
+description: "A pre-launch sign-up in three layouts. Card is a compact card with the field over the button. Free shadcn/ui Waitlist block for React, Next.js and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/waitlist
 ---
 
 # Shadcn Waitlist
 
-A pre-launch sign-up in three layouts. **Card** is a compact card with the field over the button, for a corner of a page. **Launch** puts your mark and a live countdown to the opening date over the form on a wide panel. **Queue** sets the form as a pill on a soft ground, with the faces of who is already in and a bar of the early spots claimed. Whichever layout, the form becomes the reader's place in line when your promise resolves — a number that counts up, and an invite link to copy to move up. One reveal when the section first appears; after that only the countdown's seconds and the reader's own actions move anything.
+A pre-launch sign-up in three layouts. **Card** is a compact card with the field over the button. **Launch** puts your mark and a live countdown to the opening date over the form on a wide panel. **Queue** sets the form as a pill on a soft ground, with the faces of who is already in and a bar of early spots claimed. In every layout the form becomes the reader's place in line when your promise resolves: a number that counts up, with an invite link to copy.
 
 `Waitlist` is built from library pieces: the countdown is the [Counter](https://avaraui.com/docs/nextjs/counter)'s slide variant, the field is [Input](https://avaraui.com/docs/nextjs/input), the action is [Button](https://avaraui.com/docs/nextjs/button), the faces are an [Avatar Stack](https://avaraui.com/docs/nextjs/avatar-stack), the spots bar is [Progress](https://avaraui.com/docs/nextjs/progress) and the invite link is a [Copy Button](https://avaraui.com/docs/nextjs/copy-button). Every piece of copy is a named part — `Mark`, `Countdown`, `Heading`, `Intro`, `Form`, `Proof`, `Spots` — so the words are yours.
 
@@ -55,11 +55,10 @@ All 3 options as live previews: https://avaraui.com/view/waitlist
 
 ## Launch
 
-Your mark, a countdown to the opening date, and the form beside its button on a wide panel. Type an address and submit — the form becomes your place in line, counting up, with an invite link to copy.
+Your mark, a countdown to the opening date and the form on a wide panel. Submit an address and the form becomes your place in line, with an invite link to copy.
 
-- `Countdown` takes a `date` (a `Date` or ISO string) and shows days, hours, minutes and seconds to it, each figure sliding as it changes — it is the Counter block's `slide` countdown in the panel's own text colour. Once the date has passed it shows `doneLabel` instead.
-- Return a number from `onJoin` and it becomes the reader's place in line, counting up from zero. Resolve with nothing for the thank-you alone; throw an `Error` to stay on the form with its message under the field.
-- `shareUrl` on `Form` adds a copy button for the reader's invite link to the thank-you, with `shareHint` beside it.
+- `Countdown` takes a `date` and counts down to it in days, hours, minutes and seconds. Once the date has passed it shows `doneLabel` instead.
+- Return a number from `onJoin` and it becomes the reader's place in line. Resolve with nothing for the thank-you alone; throw an `Error` to stay on the form with its message under the field.
 
 ```tsx
 "use client";
@@ -119,8 +118,7 @@ npx shadcn@latest add @avara-ui/waitlist
 
 A compact card with the field over the button — for a sidebar, a footer or a modal. Submit an empty field to see the input report it.
 
-- Set `variant="card"` for the card. The heading and intro size down, the button goes full width, and the thank-you takes the card's own border rather than a shadow.
-- `note` on `Form` is a small line under the button — what joining means, in your own words.
+- Use `variant="card"` for the card: the heading and intro size down and the button goes full width.
 
 ```tsx
 "use client";
@@ -161,10 +159,10 @@ export default function JoinCard() {
 
 ### Queue
 
-The form as a pill on a soft ground, the faces already in line under it, and a bar of the early spots claimed that fills once as the section appears. Switch the docs to dark mode to see the same panel by night.
+The form as a pill on a soft ground, the faces already in line under it, and a bar of early spots claimed.
 
-- Set `variant="queue"` for the pill and the soft ground. The panel, form and thank-you restyle themselves for light and dark mode.
-- `Spots` takes `claimed` and `total`, counts the figure up and fills a `Progress` bar to match. Pass children to write the line yourself.
+- Set `variant="queue"` for the pill and the soft ground. Both light and dark mode are covered.
+- `Spots` takes `claimed` and `total`, counts the figure up and fills a `Progress` bar to match.
 
 ```tsx
 "use client";

@@ -3,7 +3,7 @@
   "name": "card-e-commerce-product-cards",
   "type": "registry:block",
   "title": "Card — E-commerce Product Cards",
-  "description": "Complete suite of 4 reusable product cards designed for online stores, shopping platforms, and flash deal showcases.",
+  "description": "Four reusable product cards for online stores and flash deal showcases.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -3,7 +3,7 @@
   "name": "gallery-3d-pill-carousel",
   "type": "registry:block",
   "title": "Gallery — 3D Pill Carousel",
-  "description": "Layered diagonal image carousel with sculptural pill-shaped cards, smooth 3D depth transitions, click-to-focus, keyboard navigation, hover brightness/scale, and a floating theme-accent tooltip CTA above the active card.",
+  "description": "Layered diagonal pill-shaped cards with 3D depth, click-to-focus and keyboard navigation.",
   "dependencies": [
     "gsap",
     "lucide-react",

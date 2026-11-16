@@ -3,7 +3,7 @@
   "name": "hero-bento-cascade-bento-cascade-infinite-motion-hero",
   "type": "registry:block",
   "title": "Shadcn Hero — Bento Cascade Infinite Motion Hero",
-  "description": "Left column presents the interactive avatar stack, 5-star review score, 2-line headline, stylish accent line description, primary CTA button, secondary outline button, and expedition support badges. Right column features an infinite seamless 2-column bento cascade of high-definition nature cards, glass tag badges, theme-reactive hover glows, soft edge fade masks, and seamless hover pause.",
+  "description": "Copy, avatars and actions on the left; on the right two columns of bento cards cascading in an endless loop with soft edge fades.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

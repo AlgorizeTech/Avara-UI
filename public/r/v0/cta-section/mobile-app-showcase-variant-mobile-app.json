@@ -3,7 +3,7 @@
   "name": "cta-section-mobile-app-showcase-variant-mobile-app",
   "type": "registry:block",
   "title": "Cta Section — Mobile App Showcase — variant=\"mobile-app\"",
-  "description": "Pass `variant=\"mobile-app\"` for a scroll-driven app showcase CTA. Initially displays only the iPhone 16 Pro frame centered in the viewport; scrolling smoothly glides the phone down and to the left while the editorial headline, description, and official app store badges reveal on the right.",
+  "description": "Scrolling glides an iPhone from the centre to the left while the headline and app store badges appear on the right.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

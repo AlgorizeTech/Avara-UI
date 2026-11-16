@@ -1,20 +1,14 @@
 ---
 title: "Shadcn Dialog"
-description: "A window overlaid on either the primary window or another dialog window, rendering the background content underneath inert. Free shadcn/ui Dialog component."
+description: "A window overlaid on the page or on another dialog, rendering the content underneath inert. Free shadcn/ui Dialog component for React, Next.js and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/dialog
 ---
 
 # Shadcn Dialog
 
-A window overlaid on either the primary window or another dialog window, rendering the background content underneath inert.
+A window overlaid on the page or on another dialog, rendering the content underneath inert. Popovers and dropdowns suit quick, non-blocking actions; reach for a Dialog when the user has to decide or finish a form without distractions.
 
-Popovers and Dropdowns are great for quick, non-blocking actions. But when you need to force the user to make a decision or complete a complex form without distractions, you need a Dialog (Modal).
-
-The `DialogBlock` component handles the complex DOM logic required for true accessibility: it automatically renders into a React Portal, locks the `document.body` scrollbar to prevent background scrolling, and actively listens for background clicks or the `Escape` key to dismiss itself smoothly.
-
-Open each dialog from its trigger — the background scrollbar vanishes while it's open and returns exactly as it was on close.
-
-`DialogContent` sizes itself from a `size` prop: `sm` through `xl` for panels that sit on the page, and `full` for a surface that takes the whole viewport with its content centred in the middle of it. Dialogs also nest — render one inside another's content and the inner window portals above its parent, with `Escape` and backdrop clicks reaching only whichever one is on top.
+`DialogBlock` handles the DOM logic for you: it renders into a React Portal, locks the body scrollbar while open, and dismisses on a background click or `Escape`. Dialogs also nest — render one inside another's content and the inner window portals above its parent, with `Escape` and backdrop clicks reaching only the top one.
 
 ## Dialog
 
@@ -155,9 +149,8 @@ export default function EditProfileDialog() {
 
 Five widths, from a compact confirm up to a full-page surface.
 
-- Set `size` to `sm` | `md` | `lg` | `xl` | `full` — roughly 24rem, 32rem, 42rem and 56rem, then the whole viewport.
-- `size="full"` also drops the rounding, border and height cap, so the panel really does reach every edge — and centres its content in the middle of the screen, in a column the width of `md`.
-- `className` still wins over the size it is paired with — reach for it only when no step on the scale fits.
+- Set `size` to `sm` | `md` | `lg` | `xl` | `full`: roughly 24rem, 32rem, 42rem and 56rem, then the whole viewport.
+- `size="full"` also drops the rounding, border and height cap and centres the content, so the panel reaches every edge.
 
 ```tsx
 import {
@@ -260,8 +253,7 @@ export default function DeleteAccountDialog() {
 The working version of that shape — the row is only removed once the dialog resolves.
 
 - Drive it with `open` set from the row awaiting confirmation, so one dialog serves the whole list instead of one per row.
-- `onOpenChange` is where you refuse the dismissal while the request is in flight — Escape and backdrop clicks arrive here too.
-- `size="sm"` suits a confirm — one question, two buttons, nothing to scan past.
+- `onOpenChange` is where you refuse the dismissal while the request is in flight. Escape and backdrop clicks arrive here too.
 
 ```tsx
 import { useState } from "react";
@@ -459,8 +451,7 @@ export default function ControlledDialog() {
 A small dialog opens on top of the one already on screen — and Escape or a backdrop click only reaches the topmost of the two.
 
 - Nesting needs no new API — `Dialog` is just rendered inside another `DialogContent`, and the inner one portals above its parent.
-- `size="sm"` on the inner dialog is what makes it read as a popup over the sheet rather than a second full window.
-- `onOpenChange` on the inner dialog is how the choice travels back out — write it into the outer form's state, then close only the inner one.
+- `onOpenChange` on the inner dialog is how the choice travels back out: write it into the outer form's state, then close only the inner one.
 
 ```tsx
 import { useState } from "react";

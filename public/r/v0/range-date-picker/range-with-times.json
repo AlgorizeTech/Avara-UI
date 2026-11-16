@@ -3,7 +3,7 @@
   "name": "range-date-picker-range-with-times",
   "type": "registry:block",
   "title": "Range Date Picker — Range with times",
-  "description": "The card opens as a bare calendar. Pick a start day and a time rail unfolds beside it — Start first, then an End column once the end day is chosen. The rail unfolds under the calendar when the card is narrow, and Clear folds it away.",
+  "description": "Pick a start day and a time rail unfolds beside the calendar: Start first, then an End column once the end day is chosen.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

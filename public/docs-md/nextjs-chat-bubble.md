@@ -16,13 +16,10 @@ These are compound components: `ChatBubble` is the root and publishes `variant` 
 
 ## Conversation
 
-The pieces assembled into a messenger thread — set the side once on the `ChatBubble` root and the children read it from context.
+The pieces assembled into a messenger thread. Set the side once on the `ChatBubble` root and the children read it from context.
 
-- Set `variant="sent"` on the root to align the row right — it also unlocks `color` on `ChatMessage` and the ticks on `ChatTimestamp`.
-- `variant="received"` is the default: aligns left and forces the neutral zinc bubble whatever `color` says.
-- `color="blue"` on `ChatMessage` picks the sent-bubble fill — `primary`, `default`, `blue`, `indigo`, `rose` or `emerald`, not an arbitrary hex.
-- `status="read"` on `ChatTimestamp` adds the blue double tick after the time.
-- `fallback="SJ"` on `ChatAvatar` is required — the initials show until `src` loads, and stay if it fails.
+- Use `variant="sent"` on the root aligns the row right and unlocks `color` on `ChatMessage` and the ticks on `ChatTimestamp`. `"received"` is the default.
+- `fallback="SJ"` on `ChatAvatar` is required: the initials show until `src` loads, and stay if it fails.
 
 ```tsx
 import {
@@ -117,10 +114,7 @@ npx shadcn@latest add @avara-ui/chat-bubble
 
 ### Message grouping
 
-- `layout="default"` is the default — a fully rounded 16px bubble with a visible avatar, for a standalone message.
-- Use `layout="group-top"` on the first bubble of a run: the bottom inner corner tightens to 4px and the avatar is hidden.
-- `layout="group-middle"` tightens both inner corners and hides the avatar.
-- `layout="group-bottom"` closes the run — tightens the top inner corner and brings the avatar back. The corners mirror automatically for `sent` bubbles.
+- Use `layout="group-top"` on the first bubble of a run tightens its bottom inner corner and hides the avatar. `"group-middle"` tightens both, and `"group-bottom"` closes the run and brings the avatar back.
 
 ```tsx
 import {
@@ -172,11 +166,8 @@ export default function GroupedMessages() {
 
 ### Timestamps & read receipts
 
-- Pass `time="10:25 AM"` as a plain string — required, and formatted by you, so `Just now` works in the same slot.
-- `status="sent"` renders one grey tick.
-- `status="delivered"` renders two grey ticks.
-- `status="read"` renders two blue ticks.
-- `status` left off shows the time alone — which is also what a `received` bubble does whatever you pass.
+- Pass `time="10:25 AM"` is a plain string you format yourself, so `Just now` works in the same slot.
+- `status="read"` adds ticks after the time: `"sent"` one grey, `"delivered"` two grey, `"read"` two blue. Leave it off for the time alone.
 
 ```tsx
 import {
@@ -231,10 +222,9 @@ export default function ReadReceipts() {
 
 ### Typing indicator
 
-`ChatTypingIndicator` takes no props of its own — it draws its own pill and loops until you unmount it.
+`ChatTypingIndicator` takes no props of its own. It draws its own pill and loops until you unmount it.
 
-- `variant="received"` on the root gives the dots a zinc pill, cornered to the left.
-- `variant="sent"` inverts it — dark pill, light dots, cornered to the right.
+- `variant` on the root sets the pill: `"received"` is zinc and cornered left, `"sent"` is dark and cornered right.
 
 ```tsx
 import {

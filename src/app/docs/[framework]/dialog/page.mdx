@@ -8,15 +8,9 @@ import { extractCode } from "@/lib/code";
 
 # Shadcn Dialog
 
-A window overlaid on either the primary window or another dialog window, rendering the background content underneath inert.
+A window overlaid on the page or on another dialog, rendering the content underneath inert. Popovers and dropdowns suit quick, non-blocking actions; reach for a Dialog when the user has to decide or finish a form without distractions.
 
-Popovers and Dropdowns are great for quick, non-blocking actions. But when you need to force the user to make a decision or complete a complex form without distractions, you need a Dialog (Modal).
-
-The `DialogBlock` component handles the complex DOM logic required for true accessibility: it automatically renders into a React Portal, locks the `document.body` scrollbar to prevent background scrolling, and actively listens for background clicks or the `Escape` key to dismiss itself smoothly.
-
-Open each dialog from its trigger — the background scrollbar vanishes while it's open and returns exactly as it was on close.
-
-`DialogContent` sizes itself from a `size` prop: `sm` through `xl` for panels that sit on the page, and `full` for a surface that takes the whole viewport with its content centred in the middle of it. Dialogs also nest — render one inside another's content and the inner window portals above its parent, with `Escape` and backdrop clicks reaching only whichever one is on top.
+`DialogBlock` handles the DOM logic for you: it renders into a React Portal, locks the body scrollbar while open, and dismisses on a background click or `Escape`. Dialogs also nest — render one inside another's content and the inner window portals above its parent, with `Escape` and backdrop clicks reaching only the top one.
 
 export const usageDefault = `"use client";
 
@@ -530,19 +524,12 @@ export default function NestedDialog() {
         {
           lead: "Set",
           prop: "size",
-          effect:
-            "to `sm` | `md` | `lg` | `xl` | `full` — roughly 24rem, 32rem, 42rem and 56rem, then the whole viewport.",
+          effect: "to `sm` | `md` | `lg` | `xl` | `full`: roughly 24rem, 32rem, 42rem and 56rem, then the whole viewport.",
         },
         {
           prop: "size",
           value: '"full"',
-          effect:
-            "also drops the rounding, border and height cap, so the panel really does reach every edge — and centres its content in the middle of the screen, in a column the width of `md`.",
-        },
-        {
-          prop: "className",
-          effect:
-            "still wins over the size it is paired with — reach for it only when no step on the scale fits.",
+          effect: "also drops the rounding, border and height cap and centres the content, so the panel reaches every edge.",
         },
       ],
       props: { layout: "sizes" },
@@ -568,19 +555,11 @@ export default function NestedDialog() {
         {
           lead: "Drive it with",
           prop: "open",
-          effect:
-            "set from the row awaiting confirmation, so one dialog serves the whole list instead of one per row.",
+          effect: "set from the row awaiting confirmation, so one dialog serves the whole list instead of one per row.",
         },
         {
           prop: "onOpenChange",
-          effect:
-            "is where you refuse the dismissal while the request is in flight — Escape and backdrop clicks arrive here too.",
-        },
-        {
-          prop: "size",
-          value: '"sm"',
-          effect:
-            "suits a confirm — one question, two buttons, nothing to scan past.",
+          effect: "is where you refuse the dismissal while the request is in flight. Escape and backdrop clicks arrive here too.",
         },
       ],
       props: { layout: "confirm-delete" },
@@ -624,19 +603,11 @@ export default function NestedDialog() {
         {
           lead: "Nesting needs no new API —",
           prop: "Dialog",
-          effect:
-            "is just rendered inside another `DialogContent`, and the inner one portals above its parent.",
-        },
-        {
-          prop: "size",
-          value: '"sm"',
-          effect:
-            "on the inner dialog is what makes it read as a popup over the sheet rather than a second full window.",
+          effect: "is just rendered inside another `DialogContent`, and the inner one portals above its parent.",
         },
         {
           prop: "onOpenChange",
-          effect:
-            "on the inner dialog is how the choice travels back out — write it into the outer form's state, then close only the inner one.",
+          effect: "on the inner dialog is how the choice travels back out: write it into the outer form's state, then close only the inner one.",
         },
       ],
       props: { layout: "nested" },
