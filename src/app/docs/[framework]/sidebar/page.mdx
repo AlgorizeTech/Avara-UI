@@ -221,6 +221,67 @@ export default function CategorizedSidebarDemo() {
   );
 }`;
 
+export const usageCurved = `"use client";
+
+import {
+  SidebarProvider,
+  CurvedSidebar,
+  MobileSidebarTrigger,
+} from "@/components/custom/blocks/SidebarBlock";
+import {
+  LayoutGrid,
+  User,
+  Clock,
+  Bell,
+  Calendar,
+  MessageSquare,
+  FileText,
+  HelpCircle,
+} from "lucide-react";
+import { useState } from "react";
+
+const WAVE_ITEMS = [
+  { id: "Dashboard", label: "Dashboard", icon: <LayoutGrid className="w-5 h-5" /> },
+  { id: "Profile", label: "User Profile", icon: <User className="w-5 h-5" /> },
+  {
+    id: "TimeTracker",
+    label: "Time Tracker",
+    icon: <Clock className="w-5 h-5" />,
+  },
+  { id: "Notifications", label: "Notifications", icon: <Bell className="w-5 h-5" /> },
+  { id: "Calendar", label: "Calendar", icon: <Calendar className="w-5 h-5" /> },
+  { id: "Messages", label: "Messages", icon: <MessageSquare className="w-5 h-5" /> },
+  { id: "Notes", label: "Notes & Tasks", icon: <FileText className="w-5 h-5" /> },
+  { id: "Help", label: "Help & Support", icon: <HelpCircle className="w-5 h-5" /> },
+];
+
+export default function CurvedSidebarDemo() {
+  const [activeRoute, setActiveRoute] = useState("Dashboard");
+
+  return (
+    <SidebarProvider>
+      <div className="flex h-screen bg-[#f6f7fb] dark:bg-background">
+        <CurvedSidebar
+          items={WAVE_ITEMS}
+          activeRoute={activeRoute}
+          onRouteChange={setActiveRoute}
+        />
+        <div className="flex-1 flex flex-col min-w-0 bg-background overflow-hidden">
+          <header className="h-16 flex items-center justify-between px-4 sm:px-6 border-b border-border/60">
+            <div className="flex items-center gap-3">
+              <MobileSidebarTrigger className="md:hidden" />
+              <h1 className="text-lg font-bold text-foreground">{activeRoute}</h1>
+            </div>
+          </header>
+          <main className="flex-1 p-6 overflow-y-auto">
+            {/* Main content goes here */}
+          </main>
+        </div>
+      </div>
+    </SidebarProvider>
+  );
+}`;
+
 ## Examples
 
 <ExampleShowcase
@@ -247,6 +308,25 @@ export default function CategorizedSidebarDemo() {
         defaultExpanded: true,
       },
       usage: usageCategorized,
+    },
+    {
+      title: "Curved",
+      subheading:
+        "Floating organic curved wave rail sidebar with smooth bezier S-curve contours, elevated active squircle, and tooltip labels.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"curved"',
+          effect:
+            "for an organic curved wave rail with smooth S-curves, elevated active card, and tooltip labels.",
+        },
+      ],
+      props: {
+        variant: "curved",
+        defaultExpanded: true,
+      },
+      usage: usageCurved,
     },
     {
       title: "Collapsed rail",
@@ -434,6 +514,54 @@ export default function CategorizedSidebarDemo() {
           <code>(routeId: string) =&gt; void</code>
         </td>
         <td>Callback fired when a route is clicked.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>CurvedSidebar</code>
+        </td>
+        <td>
+          <code>items</code>
+        </td>
+        <td>
+          <code>WaveSidebarItem[]</code>
+        </td>
+        <td>Array of navigation items with id, label, icon, and optional badge/badgeClassName.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>CurvedSidebar</code>
+        </td>
+        <td>
+          <code>activeRoute</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>The ID of the currently selected route.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>CurvedSidebar</code>
+        </td>
+        <td>
+          <code>onRouteChange</code>
+        </td>
+        <td>
+          <code>(routeId: string) =&gt; void</code>
+        </td>
+        <td>Callback fired when an item is clicked.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>CurvedSidebar</code>
+        </td>
+        <td>
+          <code>waveColor</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>Optional custom color class. Defaults to theme primary.</td>
       </tr>
       <tr>
         <td>

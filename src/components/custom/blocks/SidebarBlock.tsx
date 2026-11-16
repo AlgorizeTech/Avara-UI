@@ -799,3 +799,173 @@ export function CategorizedSidebar({
     </Sidebar>
   );
 }
+
+// ==========================================
+// 7. CURVED WAVE RAIL SIDEBAR
+// ==========================================
+export interface WaveSidebarItem {
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  badge?: React.ReactNode;
+  badgeClassName?: string;
+  onClick?: () => void;
+}
+
+export interface CurvedWaveSidebarProps
+  extends Omit<React.HTMLAttributes<HTMLElement>, "children"> {
+  items: WaveSidebarItem[];
+  activeRoute?: string;
+  onRouteChange?: (id: string) => void;
+  topOffset?: string;
+  waveColor?: string;
+  showMobileTrigger?: boolean;
+}
+
+export function CurvedWaveSidebar({
+  items,
+  activeRoute,
+  onRouteChange,
+  topOffset = "",
+  waveColor,
+  showMobileTrigger = false,
+  className,
+  ...props
+}: CurvedWaveSidebarProps) {
+  const sidebarContext = React.useContext(SidebarContext);
+  const [localMobileOpen, setLocalMobileOpen] = useState(false);
+
+  const isMobileOpen = sidebarContext ? sidebarContext.isMobileOpen : localMobileOpen;
+  const setIsMobileOpen = sidebarContext ? sidebarContext.setIsMobileOpen : setLocalMobileOpen;
+
+  const colorClass = waveColor || "text-primary";
+  const bgClass = waveColor ? "" : "bg-primary";
+
+  const railContent = (
+    <div className="flex flex-col items-center drop-shadow-xl select-none">
+      {/* Top Wave S-Curve */}
+      <svg
+        viewBox="0 0 80 64"
+        className={cn("w-20 h-16 shrink-0 fill-current", colorClass)}
+        aria-hidden="true"
+      >
+        <path d="M 0,0 C 0,32 80,32 80,64 L 0,64 Z" />
+      </svg>
+
+      {/* Middle Rail Body */}
+      <div
+        className={cn(
+          "w-20 flex flex-col items-center py-2 gap-3.5 shrink-0",
+          bgClass,
+          waveColor ? `bg-[${waveColor}]` : ""
+        )}
+      >
+        {items.map((item) => {
+          const isActive = activeRoute === item.id;
+          return (
+            <Tooltip key={item.id}>
+              <TooltipTrigger asChild>
+                <button
+                  type="button"
+                  aria-label={item.label}
+                  onClick={() => {
+                    onRouteChange?.(item.id);
+                    item.onClick?.();
+                  }}
+                  className={cn(
+                    "relative flex items-center justify-center w-12 h-12 rounded-2xl transition-all duration-300 group cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white",
+                    isActive
+                      ? "bg-white dark:bg-card text-primary shadow-lg shadow-black/15 scale-105"
+                      : "text-white/75 hover:text-white hover:bg-white/15 active:scale-95"
+                  )}
+                >
+                  <span className="shrink-0">{item.icon}</span>
+
+                  {item.badge && (
+                    <span
+                      className={cn(
+                        "absolute -top-1 -right-1 text-[9px] font-bold px-1.5 py-0.5 rounded-full shadow-xs leading-none",
+                        item.badgeClassName || "bg-emerald-400 text-emerald-950"
+                      )}
+                    >
+                      {item.badge}
+                    </span>
+                  )}
+                </button>
+              </TooltipTrigger>
+              <TooltipContent
+                side="right"
+                showArrow
+                sideOffset={8}
+                className="bg-white text-zinc-900 dark:bg-card dark:text-foreground border border-zinc-200/80 dark:border-border/60 shadow-md font-medium text-xs py-1.5 px-3 rounded-lg"
+              >
+                {item.label}
+              </TooltipContent>
+            </Tooltip>
+          );
+        })}
+      </div>
+
+      {/* Bottom Wave S-Curve */}
+      <svg
+        viewBox="0 0 80 64"
+        className={cn("w-20 h-16 shrink-0 fill-current", colorClass)}
+        aria-hidden="true"
+      >
+        <path d="M 80,0 C 80,32 0,32 0,64 L 0,0 Z" />
+      </svg>
+    </div>
+  );
+
+  return (
+    <>
+      {/* Mobile Trigger Button (Optional fallback if not using MobileSidebarTrigger in header) */}
+      {showMobileTrigger && (
+        <div className="md:hidden absolute top-3.5 left-4 z-40">
+          <button
+            type="button"
+            onClick={() => setIsMobileOpen(!isMobileOpen)}
+            className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-muted transition-colors flex items-center justify-center"
+            aria-label="Toggle Navigation Sidebar"
+          >
+            {isMobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
+      )}
+
+      {/* Mobile Drawer Backdrop */}
+      {isMobileOpen && (
+        <div
+          onClick={() => setIsMobileOpen(false)}
+          className="md:hidden absolute inset-0 bg-black/40 backdrop-blur-xs z-40 transition-opacity animate-in fade-in duration-200"
+        />
+      )}
+
+      {/* Mobile Floating Drawer (Vertically Centered) */}
+      <div
+        className={cn(
+          "md:hidden absolute left-0 top-0 bottom-0 z-50 flex flex-col justify-center transition-transform duration-300 ease-out",
+          isMobileOpen ? "translate-x-0" : "-translate-x-full"
+        )}
+      >
+        {railContent}
+      </div>
+
+      {/* Desktop Sticky/Docked Sidebar (Vertically Centered) */}
+      <aside
+        className={cn(
+          "hidden md:flex flex-col justify-center h-full shrink-0 select-none",
+          topOffset,
+          className
+        )}
+        {...props}
+      >
+        {railContent}
+      </aside>
+    </>
+  );
+}
+
+export const CurvedSidebar = CurvedWaveSidebar;
+export type CurvedSidebarProps = CurvedWaveSidebarProps;
+
