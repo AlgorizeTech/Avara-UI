@@ -190,7 +190,7 @@ export default function UpcomingStay() {
 
 ### Range with times
 
-The card opens as a bare calendar. Pick a start day and a time rail unfolds beside it — Start first, then an End column once the end day is chosen. The rail unfolds under the calendar when the card is narrow, and Clear folds it away.
+Pick a start day and a time rail unfolds beside the calendar: Start first, then an End column once the end day is chosen.
 
 - Set `showTime` to add the Start / End time columns. With no `value` the card starts empty; both `from` and `to` then carry a time and the footer shows it. `timeFormat` switches to 24-hour and `minuteStep` sets the granularity.
 

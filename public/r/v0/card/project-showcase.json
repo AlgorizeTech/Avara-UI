@@ -3,7 +3,7 @@
   "name": "card-project-showcase",
   "type": "registry:block",
   "title": "Card — Project showcase",
-  "description": "A responsive, full-width two-column showcase card matching the interactive block design: visual preview frame on the left, pairing with specifications, tags, branded action buttons, and copyable install command on the right.",
+  "description": "A full-width two-column card: a visual preview on the left, and on the right the specifications, tags, action buttons and a copyable install command.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

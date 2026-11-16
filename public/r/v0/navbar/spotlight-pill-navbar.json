@@ -3,7 +3,7 @@
   "name": "navbar-spotlight-pill-navbar",
   "type": "registry:block",
   "title": "Navbar — Spotlight Pill Navbar",
-  "description": "A sticky pill navbar that smoothly narrows and gains a frosted glass backdrop on scroll, paired with a sliding pill hover indicator behind navigation links and an interactive roll-up CTA button.",
+  "description": "A sticky pill that narrows and gains a frosted backdrop on scroll, with a sliding hover pill behind the links and a roll-up CTA button.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -6,15 +6,13 @@ url: https://avaraui.com/docs/nextjs/wallet
 
 # Shadcn Wallet
 
-An interactive fintech cardholder wallet component featuring 3 serially staggered cards, an authentic physical thumb scoop, a solid enclosed pocket, and privacy balance toggle. When hovered, the 3 cards glide up smoothly in a spring-staggered sequence. Designed with complete dual-theme adaptivity—delivering a clean, crisp, modern light palette in Light Mode and a deep, luxurious violet finish in Dark Mode.
+An interactive fintech cardholder wallet with three staggered cards, a physical thumb scoop, an enclosed pocket and a privacy balance toggle. Hovering glides the cards up in a spring-staggered sequence. One component for both themes: a crisp light palette by day and a deep violet finish at night.
 
 ## Interactive Cardholder Wallet
 
-Hover over the wallet to smoothly slide out the 3 cards serially. Click any card to pull it high out of the wallet, then click it again to 3D-flip and reveal its back face (magnetic stripe, signature box & CVV). Moving the cursor away resets all cards back inside.
+Hover to slide the cards out. Click a card to pull it high out of the wallet, then click again to 3D-flip it to its back face.
 
-- Click `onClick` any card to elevate it high above the others. Click again to 3D flip between front face and back face (with magnetic stripe & CVV).
-- Toggle `allowReveal` the Eye icon button to reveal or conceal the balance amount.
-- Reusable `cards & props` all texts, cards, balances, tags, and disclaimers can be passed as props, or used zero-config out-of-the-box.
+- `allowReveal` adds the eye button that reveals or hides the balance.
 
 ```tsx
 import { Wallet, type WalletCardItem } from "@/components/custom/blocks/WalletBlock";

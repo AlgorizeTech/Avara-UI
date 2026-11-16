@@ -3,7 +3,7 @@
   "name": "waitlist-launch",
   "type": "registry:block",
   "title": "Waitlist — Launch",
-  "description": "Your mark, a countdown to the opening date, and the form beside its button on a wide panel. Type an address and submit — the form becomes your place in line, counting up, with an invite link to copy.",
+  "description": "Your mark, a countdown to the opening date and the form on a wide panel. Submit an address and the form becomes your place in line, with an invite link to copy.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

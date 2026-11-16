@@ -31,23 +31,16 @@ Three looks read the same props: **classic**, solid panels on a light canvas; **
   examples={[
     {
       title: "Admin overview",
-      subheading: "Switch Daily, Weekly and Monthly, open a metric tab, flip the chart between columns and a trend line, filter the activity feed, and hover the gauge, the barcode or a legend row to light up a share.",
+      subheading: "Switch Daily, Weekly and Monthly, open a metric tab, and hover the gauge or a legend row to light up a share.",
       propNotes: [
         {
           lead: "Pass",
           prop: "metrics",
-          effect:
-            "with one series per period (`day`, `week`, `month`), oldest first — the last point is the current one and wears the accent. Give a metric a `currency` and it formats as money.",
-        },
-        {
-          prop: "sources",
-          effect:
-            ", `countries` and `authors` are keyed by period too; the panels follow the switch. Leave `sources` or `countries` out and the panel says the data is unavailable.",
+          effect: "with one series per period (`day`, `week`, `month`), oldest first. The last point is the current one and wears the accent.",
         },
         {
           prop: "links",
-          effect:
-            "give each panel a round open button. Pass `linkComponent={Link}` from `next/link` in a Next.js app.",
+          effect: "give each panel a round open button. Pass `linkComponent={Link}` from `next/link` in a Next.js app.",
         },
       ],
       usage: extractCode("src/preview/demos/dashboard-demo.tsx"),
@@ -55,27 +48,18 @@ Three looks read the same props: **classic**, solid panels on a light canvas; **
     },
     {
       title: "Glass",
-      id: "dashboard-glass",
-      subheading: "Milky glass panes on a soft canvas. Pick a metric tile to chart it, hover a capsule column, the half ring or a country segment, and follow the activity from a first post to a message. Switch to dark mode to see the glass go smoky.",
+      subheading: "Milky glass panes on a soft canvas. Pick a metric tile to chart it, and switch to dark mode to see the glass go smoky.",
       propNotes: [
         {
-          lead: "Set",
+          lead: "Use",
           prop: "variant",
           value: '"glass"',
-          effect:
-            "— the same `metrics`, `activity`, `sources`, `countries` and `authors` re-present as glass: the top authors sit in the pane's notch and the activity becomes one card per step.",
-        },
-        {
-          lead: "Give",
-          prop: "totals",
-          effect:
-            "a `metric` id and each KPI card says what the current period added (\"+1,094 new users this month\"); an `href` adds its round open button.",
+          effect: "re-presents the same data as glass: the top authors sit in the pane's notch and the activity becomes one card per step.",
         },
         {
           lead: "Pass",
           prop: "payments",
-          effect:
-            "for the recent payments table and `shortcuts` for the tiles beside the activity. Leave `payments` out and the countries pane takes the full row.",
+          effect: "for the recent payments table. Leave it out and the countries pane takes the full row.",
         },
       ],
       props: { variant: "glass" },
@@ -84,15 +68,13 @@ Three looks read the same props: **classic**, solid panels on a light canvas; **
     },
     {
       title: "Liquid Glass",
-      id: "dashboard-liquid-glass",
-      subheading: "Fluid refractive glass effect powered by SVG displacement noise filters. Wraps the dashboard with dynamic liquid glass backdrops, specular highlights, and ambient illumination using LiquidGlassWrapper, LiquidGlassBackground, and LiquidGlassSvgFilter.",
+      subheading: "Fluid refractive glass built on SVG displacement filters, with specular highlights and ambient light.",
       propNotes: [
         {
-          lead: "Set",
+          lead: "Use",
           prop: "variant",
           value: '"liquid-glass"',
-          effect:
-            "— applies fluid SVG distortion filters, specular highlights, and refractive backdrop glass layers built with LiquidGlassWrapper, LiquidGlassBackground, and LiquidGlassSvgFilter.",
+          effect: "wraps the dashboard in the liquid glass backdrop and refractive panes.",
         },
       ],
       props: { variant: "liquid-glass" },

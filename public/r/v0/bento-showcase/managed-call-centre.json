@@ -3,7 +3,7 @@
   "name": "bento-showcase-managed-call-centre",
   "type": "registry:block",
   "title": "Bento Showcase — Managed call centre",
-  "description": "Three columns and three rows at desktop, two columns at tablet, a single stack on phones. The figures scroll up and the team scrolls left; both pause under the pointer and hold still under prefers-reduced-motion.",
+  "description": "Three columns at desktop, two at tablet, one on phones. The figures scroll up and the team scrolls left; both pause under the pointer.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

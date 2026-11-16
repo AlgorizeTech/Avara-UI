@@ -258,26 +258,17 @@ export default function AvatarGroupDemo() {
   examples={[
     {
       title: "Avatar Group (Shift on hover)",
-      subheading:
-        "An animated avatar group inspired by animate-ui that displays overlapping user images and smoothly shifts each avatar upward with spring physics on hover with an anchored pointer tooltip.",
+      subheading: "Overlapping faces that shift upward on a spring when hovered, with a tooltip that glides between them.",
       propNotes: [
         {
           prop: "variant",
           value: '"shift"',
-          effect: "enables the spring-physics upward shift on hover with an anchored gliding tooltip.",
+          effect: "lifts the hovered face on a spring and glides the tooltip between faces.",
         },
         {
           prop: "max",
           value: "4",
-          effect: "sets how many avatars are displayed before folding remaining items into a clickable +N counter.",
-        },
-        {
-          prop: "onMoreClick",
-          effect: "optional — pass an onClick function (restCount, hiddenAvatars) => void to handle clicks on the +N counter disc.",
-        },
-        {
-          prop: "action",
-          effect: "optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it if not needed.",
+          effect: "is how many faces show before the rest fold into a +N disc. `onMoreClick` handles a click on it.",
         },
       ],
       props: { example: "avatar-group", showTooltip: true, max: 4 },
@@ -301,26 +292,12 @@ export default function AvatarGroupDemo() {
   examples={[
     {
       title: "Without tooltip",
-      subheading: "A clean row of overlapping faces using the zoom variant without tooltips.",
+      subheading: "A clean row of overlapping faces that zoom on hover, with no tooltip.",
       propNotes: [
-        {
-          prop: "variant",
-          value: '"zoom"',
-          effect: "raises and zooms the hovered face above its neighbours while keeping the row's gap fixed.",
-        },
         {
           prop: "type",
           value: '"default"',
-          effect: "disables the hover tooltip completely so the avatars zoom without displaying name or info popups.",
-        },
-        {
-          prop: "max",
-          value: "4",
-          effect: "sets the maximum visible faces before folding the rest into a +N badge (supports onMoreClick).",
-        },
-        {
-          prop: "action",
-          effect: "optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it.",
+          effect: "turns the tooltip off completely.",
         },
       ],
       props: { example: "default", variant: "zoom", type: "default", max: 4 },
@@ -329,27 +306,12 @@ export default function AvatarGroupDemo() {
     },
     {
       title: "With tooltip (Zoom on hover)",
-      subheading:
-        "Hovering an avatar displays its name in a tooltip and zooms the face upward, keeping the row's gap fixed.",
+      subheading: "Hovering a face zooms it upward and shows its name in a tooltip.",
       propNotes: [
-        {
-          prop: "variant",
-          value: '"zoom"',
-          effect: "raises and zooms the hovered avatar above its neighbours while keeping the spacing fixed.",
-        },
         {
           prop: "type",
           value: '"tooltip"',
-          effect: "displays the avatar's name and designation in a clean floating tooltip on hover.",
-        },
-        {
-          prop: "max",
-          value: "4",
-          effect: "sets the maximum visible faces before folding the rest into a +N badge (supports onMoreClick).",
-        },
-        {
-          prop: "action",
-          effect: "optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it.",
+          effect: "shows the avatar's name and designation in a floating tooltip.",
         },
       ],
       props: { example: "tooltip", variant: "zoom", type: "tooltip", max: 4 },
@@ -358,27 +320,12 @@ export default function AvatarGroupDemo() {
     },
     {
       title: "With tooltip arrow (Zoom on hover)",
-      subheading:
-        "Displays an anchored pointer arrow underneath the tooltip card with a lively spring popup animation as avatars smoothly zoom on hover.",
+      subheading: "The same tooltip with a pointer arrow and a spring popup.",
       propNotes: [
-        {
-          prop: "variant",
-          value: '"zoom"',
-          effect: "raises and zooms the hovered avatar above its neighbours while keeping the spacing fixed.",
-        },
         {
           prop: "type",
           value: '"tooltip-arrow"',
-          effect: "renders a floating tooltip with a pointer arrow anchoring to the top of the avatar circle.",
-        },
-        {
-          prop: "max",
-          value: "4",
-          effect: "sets the maximum visible faces before folding the rest into a +N badge (supports onMoreClick).",
-        },
-        {
-          prop: "action",
-          effect: "optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it.",
+          effect: "adds a pointer arrow anchoring the tooltip to the top of the avatar.",
         },
       ],
       props: { example: "tooltip-arrow", variant: "zoom", type: "tooltip-arrow", max: 4 },
@@ -387,27 +334,12 @@ export default function AvatarGroupDemo() {
     },
     {
       title: "Spread on hover (Expand width)",
-      subheading:
-        "Hovering over the stack smoothly fans the avatars out symmetrically from the center and subtly shifts the hovered face upward without zooming.",
+      subheading: "Hovering the stack fans the faces out from the centre and lifts the hovered one, without zooming.",
       propNotes: [
         {
           prop: "variant",
           value: '"spread"',
-          effect: "smoothly expands the avatar stack symmetrically from the center on hover (6px) and elevates the hovered face by -30% without scaling.",
-        },
-        {
-          prop: "type",
-          value: '"default"',
-          effect: "disables tooltips so the avatars fan out cleanly without info popups.",
-        },
-        {
-          prop: "max",
-          value: "4",
-          effect: "sets the maximum visible faces before folding the rest into a +N badge (supports onMoreClick).",
-        },
-        {
-          prop: "action",
-          effect: "optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it.",
+          effect: "fans the faces out symmetrically and lifts the hovered one.",
         },
       ],
       props: { example: "spread", variant: "spread", type: "default", max: 4 },
@@ -416,27 +348,12 @@ export default function AvatarGroupDemo() {
     },
     {
       title: "Spread with tooltip",
-      subheading:
-        "Hovering over the stack widens the avatar gap symmetrically from the center, elevates the hovered face by -30%, and displays a clean floating tooltip above it.",
+      subheading: "The spread fan-out with a floating name tooltip above the hovered face.",
       propNotes: [
-        {
-          prop: "variant",
-          value: '"spread"',
-          effect: "smoothly expands the avatars symmetrically from the center on hover and elevates the hovered face by -30%.",
-        },
         {
           prop: "type",
           value: '"tooltip"',
-          effect: "displays a clean floating tooltip without a pointer arrow on hover.",
-        },
-        {
-          prop: "max",
-          value: "4",
-          effect: "sets the maximum visible faces before folding the rest into a +N badge (supports onMoreClick).",
-        },
-        {
-          prop: "action",
-          effect: "optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it.",
+          effect: "adds a floating tooltip without an arrow.",
         },
       ],
       props: { example: "spread-tooltip", variant: "spread", type: "tooltip", max: 4 },
@@ -445,27 +362,12 @@ export default function AvatarGroupDemo() {
     },
     {
       title: "Spread with tooltip arrow",
-      subheading:
-        "Hovering widens the stack symmetrically from the center, subtly raises the hovered face, and reveals a spring popup tooltip with an anchored pointer arrow.",
+      subheading: "The spread fan-out with a pointer-arrow tooltip.",
       propNotes: [
-        {
-          prop: "variant",
-          value: '"spread"',
-          effect: "smoothly expands the avatars symmetrically from the center on hover and elevates the hovered face by -30%.",
-        },
         {
           prop: "type",
           value: '"tooltip-arrow"',
-          effect: "renders a floating tooltip with an anchored pointer arrow underneath and spring popup animation.",
-        },
-        {
-          prop: "max",
-          value: "4",
-          effect: "sets the maximum visible faces before folding the rest into a +N badge (supports onMoreClick).",
-        },
-        {
-          prop: "action",
-          effect: "optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it.",
+          effect: "adds a floating tooltip with an anchored pointer arrow.",
         },
       ],
       props: { example: "spread-tooltip-arrow", variant: "spread", type: "tooltip-arrow", max: 4 },
@@ -474,23 +376,12 @@ export default function AvatarGroupDemo() {
     },
     {
       title: "With an action",
-      subheading: "Three faces using the zoom variant with clean tooltips and a trailing plus action button that triggers an onClick handler.",
+      subheading: "Three faces with tooltips and a trailing + button.",
       propNotes: [
-        {
-          prop: "variant",
-          value: '"zoom"',
-          effect: "raises and zooms the hovered avatar above its neighbours while keeping the spacing fixed.",
-        },
-        {
-          prop: "type",
-          value: '"tooltip"',
-          effect: "displays the avatar's name and designation in a clean floating tooltip on hover.",
-        },
         {
           prop: "action",
           value: "() => void",
-          effect:
-            "renders the built-in '+' action button at the end of the stack and triggers your onClick function when clicked.",
+          effect: "adds the built-in + button at the end of the stack and calls your handler when it is clicked.",
         },
       ],
       props: { example: "action", variant: "zoom", type: "tooltip" },
@@ -499,31 +390,17 @@ export default function AvatarGroupDemo() {
     },
     {
       title: "Folded count",
-      subheading: "Six people, three shown — the rest become a clickable +3 disc. Hovering faces or the counter disc displays arrow tooltips.",
+      subheading: "Six people, three shown; the rest fold into a clickable +3 disc.",
       propNotes: [
         {
           prop: "max",
           value: "3",
-          effect: "is how many faces show before the rest fold into a +N count disc.",
+          effect: "is how many faces show before the rest fold into a +N disc.",
         },
         {
           prop: "onMoreClick",
           value: "(restCount, hiddenAvatars) => void",
-          effect: "triggers your onClick callback when the +N counter disc is clicked.",
-        },
-        {
-          prop: "variant",
-          value: '"zoom"',
-          effect: "raises and zooms the hovered face or counter disc above its neighbours.",
-        },
-        {
-          prop: "type",
-          value: '"tooltip-arrow"',
-          effect: "displays tooltips with pointer arrows and lively pop animations on hover.",
-        },
-        {
-          prop: "action",
-          effect: "optional — pass an onClick function () => void alongside max if you want both a +N counter and a trailing '+' button.",
+          effect: "is called when the +N disc is clicked.",
         },
       ],
       props: { example: "count", variant: "zoom", type: "tooltip-arrow", max: 3 },
@@ -532,26 +409,15 @@ export default function AvatarGroupDemo() {
     },
     {
       title: "Sizes",
-      subheading:
-        "sm, md and lg — 28, 36 and 44 pixels. The small stack shows a clean tooltip (type=\"tooltip\"), the middle stack shows without tooltip (type=\"default\"), and the large stack displays tooltips with pointing arrows (type=\"tooltip-arrow\").",
+      subheading: "sm, md and lg are 28, 36 and 44 pixels, each paired here with a different tooltip style.",
       propNotes: [
         {
           prop: "size",
-          effect: "controls the avatar circle dimensions: sm (28px), md (36px), lg (44px), or xl (48px).",
-        },
-        {
-          prop: "variant",
-          value: '"zoom"',
-          effect: "scales the hovered avatar upward while keeping the row's spacing fixed.",
-        },
-        {
-          prop: "type",
-          effect: "configures each stack's tooltip style: \"tooltip\" (sm), \"default\" (md), and \"tooltip-arrow\" (lg).",
+          effect: "sets the avatar diameter: `sm` (28px), `md` (36px), `lg` (44px) or `xl` (48px).",
         },
         {
           prop: "ringClassName",
-          effect:
-            "is the gap colour between faces (`ring-background` by default). Match it to the surface the stack sits on.",
+          effect: "is the gap colour between faces (`ring-background` by default). Match it to the surface the stack sits on.",
         },
       ],
       props: { example: "sizes", max: 4 },

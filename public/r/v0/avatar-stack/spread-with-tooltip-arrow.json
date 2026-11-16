@@ -3,7 +3,7 @@
   "name": "avatar-stack-spread-with-tooltip-arrow",
   "type": "registry:block",
   "title": "Avatar Stack — Spread with tooltip arrow",
-  "description": "Hovering widens the stack symmetrically from the center, subtly raises the hovered face, and reveals a spring popup tooltip with an anchored pointer arrow.",
+  "description": "The spread fan-out with a pointer-arrow tooltip.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

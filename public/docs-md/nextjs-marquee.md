@@ -1,24 +1,17 @@
 ---
 title: "Shadcn Marquee"
-description: "An infinite, seamless scrolling marquee ideal for logos, testimonials, and image galleries. Free shadcn/ui Marquee component for React and Tailwind CSS."
+description: "An infinite, seamless scrolling marquee for logos, testimonials and image galleries. Free shadcn/ui Marquee component for React, Next.js and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/marquee
 ---
 
 # Shadcn Marquee
 
-An infinite, seamless scrolling marquee ideal for logos, testimonials, and image galleries.
-
-This `MarqueeBlock` is engineered to be **flawless**. By exactly duplicating the content and using a precise CSS calculation (`calc(-100% - gap)`), the animation loops infinitely without any stuttering, lagging, or "snap back" resets that plague older implementations.
-
-You only supply one set of items — the block duplicates them and offsets the copy by `calc(-100% - gap)`, so the loop never snaps.
+An infinite, seamless scrolling marquee for logos, testimonials and image galleries. Supply one set of items: the block duplicates them and offsets the copy by `calc(-100% - gap)`, so the loop never stutters or snaps back.
 
 ## Marquee
 
-- Pass `children=once` — the block renders a second `aria-hidden` copy itself to close the loop. Duplicating them yourself gives a visible double run.
-- `fade` is off by default; on, it masks the first and last 10% so items dissolve instead of being clipped.
-- `pauseOnHover` is off by default; on, it freezes the loop while the pointer is inside.
-- `gap="4rem"` is a raw CSS length that both spaces the items and feeds the loop maths — a `%` value breaks it.
-- `direction="left"` is the default: content travels leftwards.
+- Pass `children` once. The block renders a second `aria-hidden` copy itself to close the loop, so duplicating them yourself gives a visible double run.
+- `gap="4rem"` is a raw CSS length that both spaces the items and feeds the loop maths. A `%` value breaks it.
 
 ```tsx
 import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
@@ -136,11 +129,9 @@ export default function ReverseLogoWall() {
 
 ### Vertical
 
-Vertical marquees need a bounded height — without one the container grows to fit both tracks and nothing appears to move.
+Vertical marquees need a bounded height. Without one the container grows to fit both tracks and nothing appears to move.
 
-- Use `direction="up"` to scroll the column upwards — it switches the container to `flex-col` and animates `translateY`.
-- `direction="down"` runs the same column the other way.
-- `fade` follows the axis on its own, masking the top and bottom edges here.
+- Use `direction="up"` to scroll the column upwards; `"down"` runs it the other way.
 
 ```tsx
 import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
@@ -200,12 +191,9 @@ export default function TestimonialColumn() {
 
 ### Speed
 
-`speed` is a duration for one full pass, not a pixels-per-second rate — the same value moves faster with fewer items.
+`speed` is a duration for one full pass, not a pixels-per-second rate, so the same value moves faster with fewer items.
 
-- Use `speed="slow"` for 40s per pass — a calm drift, good for large imagery.
-- `speed="normal"` is the default: 20s per pass.
-- `speed="fast"` gives 10s per pass — ticker pace.
-- `speed={45}` a raw number sets the seconds per pass directly.
+- Use `speed="slow"` for a calm 40s pass. `"normal"` is the default (20s), `"fast"` is 10s, and a raw number sets the seconds directly.
 
 ```tsx
 import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";
@@ -237,8 +225,7 @@ export default function SlowGallery() {
 
 ### Without fade or pause
 
-- Set `fade={false}` to drop the edge mask and let items run to a hard edge.
-- `pauseOnHover={false}` keeps the loop running under the cursor. Both are the defaults.
+- Use `fade={false}` to drop the edge mask, and `pauseOnHover={false}` to keep the loop running under the cursor. Both are the defaults.
 
 ```tsx
 import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock";

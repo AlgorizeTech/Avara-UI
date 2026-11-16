@@ -3,7 +3,7 @@
   "name": "navbar-e-commerce-mega-nav",
   "type": "registry:block",
   "title": "Navbar — E-Commerce Mega Nav",
-  "description": "A conversion-focused e-commerce navigation inspired by Framer's E-Commerce Mega Nav. Features a top announcement bar, product-rich mega menus with direct product previews and promotional cards, live search, cart badge with mini-cart, and a responsive mobile drawer with drill-down categories.",
+  "description": "A conversion-focused store bar with an announcement strip, mega menus, live search and a cart badge, plus a drill-down mobile drawer.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

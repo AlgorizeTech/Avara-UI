@@ -3,7 +3,7 @@
   "name": "carousel-radial-carousel",
   "type": "registry:block",
   "title": "Carousel — Radial carousel",
-  "description": "`RadialCarousel` arranges cards in a full 360-degree 3D radial wheel radiating in all four directions around a central hub with smooth drag momentum. The hub at the exact centre is a play/pause button for autoplay (`autoPlay` sets whether it starts playing), and cards further from the top fade toward the page background so the wheel works in light and dark themes.",
+  "description": "`RadialCarousel` arranges cards on a 360-degree 3D wheel around a central hub, with drag momentum. The hub plays or pauses autoplay.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

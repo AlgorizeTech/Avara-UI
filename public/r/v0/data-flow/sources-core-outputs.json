@@ -3,7 +3,7 @@
   "name": "data-flow-sources-core-outputs",
   "type": "registry:block",
   "title": "Data Flow — Sources, core, outputs",
-  "description": "Three columns at desktop with the curves drawn between them; below that the columns stack and short dashed spines stand in. Reload the preview to watch the reveal again.",
+  "description": "Three columns on desktop with curves drawn between them; below that the columns stack. Reload the preview to watch the reveal again.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

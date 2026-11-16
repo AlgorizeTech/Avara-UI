@@ -3,7 +3,7 @@
   "name": "gallery-arc-carousel-gallery",
   "type": "registry:block",
   "title": "Gallery — Arc Carousel Gallery",
-  "description": "Curved 3D image carousel arranged along an interactive concave cylindrical arc. Cards flow seamlessly, drift with passive rotation, and spin with momentum physics on drag.",
+  "description": "A curved 3D carousel along a concave arc that drifts on its own and spins with momentum when dragged.",
   "dependencies": [
     "gsap",
     "lucide-react",

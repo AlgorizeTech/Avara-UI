@@ -8,9 +8,9 @@ import { extractCode } from "@/lib/code";
 
 # Shadcn Scroll Split Cards
 
-A cinematic scroll-driven storytelling component featuring a unified panoramic landscape that splits into three distinct physical card panels upon scrolling. As the user continues downward, the cards separate, execute a perspective-rich 180° 3D flip to reveal curated editorial narratives, and finally settle cleanly in place.
+A cinematic scroll-driven component: one panoramic landscape splits into three card panels as you scroll, then the cards separate and flip in 3D to reveal editorial narratives.
 
-`ScrollSplitCards` brings tactile visual immersion to brand origin stories, architectural journeys, editorial photography features, and landmark case studies.
+`ScrollSplitCards` suits brand origin stories, architectural journeys, editorial photography features and landmark case studies.
 
 export const usageDefault = `import { ScrollSplitCards } from "@/components/custom/blocks/ScrollSplitCardsBlock";
 
@@ -123,33 +123,11 @@ export default function SlowTransitionExample() {
   examples={[
     {
       title: "Default",
-      subheading:
-        "The default smooth scroll mode with built-in calibrated spring physics. No speed props required.",
+      subheading: "The default scroll mode, with built-in spring physics. No speed props needed.",
       propNotes: [
         {
-          lead: "Variant Selector",
-          prop: "variant",
-          value: '"default"',
-          effect:
-            "uses standard responsive spring-follower scroll physics.",
-        },
-        {
-          lead: "Seamless Panorama Slicing",
           prop: "imageUrl",
-          effect:
-            "splits a single wide image into three adjacent panels that appear completely seamless at initial scroll position.",
-        },
-        {
-          lead: "Expanding Gap Choreography",
-          prop: "panelShiftX",
-          effect:
-            "drives outward translation of left and right panels with spring-damped smoothness as scroll progresses.",
-        },
-        {
-          lead: "180° Perspective 3D Flip",
-          prop: "panelRotateY",
-          effect:
-            "rotates all three panels in 3D space to reveal bespoke back-face editorial narratives with custom color palettes.",
+          effect: "is split into three adjacent panels that line up seamlessly before the first scroll.",
         },
       ],
       props: {
@@ -182,34 +160,16 @@ export default function SlowTransitionExample() {
   examples={[
     {
       title: "Slow Transition",
-      subheading:
-        "Pass the variant=\"slow-transition\" and scrollSpeed or speed prop (e.g. scrollSpeed={0.6}) to dynamically control scroll sensitivity.",
+      subheading: "A slower profile for leisurely narrative pacing.",
       propNotes: [
         {
-          lead: "Variant Mode",
-          prop: "variant",
-          value: '"slow-transition"',
-          effect:
-            "activates the slow transition profile with leisurely narrative pacing.",
-        },
-        {
-          lead: "Scroll Speed Multiplier",
           prop: "scrollSpeed",
           value: "0.6",
-          effect:
-            "multiplies wheel and touch delta values to fine-tune how fast or leisurely the animation unfolds per scroll tick.",
+          effect: "multiplies wheel and touch deltas to tune how fast the animation unfolds.",
         },
         {
-          lead: "Panoramic Mountain Ridge",
-          prop: "imageUrl",
-          effect:
-            "renders a high-resolution sunset alpine peak panorama across the three split cards.",
-        },
-        {
-          lead: "Custom Narrative Acts",
           prop: "cards",
-          effect:
-            "renders custom thematic chapters with bespoke metric badges and distinct background colors.",
+          effect: "are your own chapters, each with metric badges and a background colour.",
         },
       ],
       props: {

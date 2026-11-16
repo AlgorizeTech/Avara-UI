@@ -3,7 +3,7 @@
   "name": "cta-section-concentric-portal-variant-concentric-portal",
   "type": "registry:block",
   "title": "Cta Section — Concentric Portal — variant=\"concentric-portal\"",
-  "description": "Pass `variant=\"concentric-portal\"` for the scroll-driven expanding circular lens with continuous gyroscopic orbital text rings.",
+  "description": "A circular lens that expands as you scroll, ringed by orbiting monospace text.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

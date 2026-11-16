@@ -3,7 +3,7 @@
   "name": "dashboard-admin-overview",
   "type": "registry:block",
   "title": "Dashboard — Admin overview",
-  "description": "Switch Daily, Weekly and Monthly, open a metric tab, flip the chart between columns and a trend line, filter the activity feed, and hover the gauge, the barcode or a legend row to light up a share.",
+  "description": "Switch Daily, Weekly and Monthly, open a metric tab, and hover the gauge or a legend row to light up a share.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

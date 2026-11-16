@@ -6,19 +6,17 @@ url: https://avaraui.com/docs/nextjs/bento-showcase
 
 # Shadcn Bento Showcase
 
-A six-card marketing bento grid for agency and services landing pages: a hero with a live chat and a headline, a laptop of case studies, one line that says what you do, figures that scroll up, the plans on a phone, and a strip of the team that scrolls left. Flat cards, no borders, no shadows — colour is the only thing separating them. One component, both themes: pastels on white in light mode, the same hues deepened on black in dark mode, switched by the `dark` class like the rest of the library.
+A six-card marketing bento grid for agency and services landing pages: a hero with a live chat, a laptop of case studies, one line that says what you do, figures that scroll up, the plans on a phone, and a strip of the team that scrolls left. Flat cards, pastels on white in light mode and the same hues deepened on black in dark mode.
 
-`BentoShowcase` is a section built from library pieces. Both moving cards are [Marquee](https://avaraui.com/docs/nextjs/marquee) (`direction="up"` and `"left"`), the conversation is [Chat Bubble](https://avaraui.com/docs/nextjs/chat-bubble), the rating is [Half Stars](https://avaraui.com/docs/nextjs/half-stars), the device is [Mobile Mockup](https://avaraui.com/docs/nextjs/mobile-mockup) and the call to action is [Button](https://avaraui.com/docs/nextjs/button). Each card is a named part — `Hero`, `CaseStudies`, `Headline`, `Stats`, `Phone`, `Team` — so a page can leave one out, reorder them, or add its own with `BentoShowcase.Card`.
+`BentoShowcase` is built from library pieces: the moving cards are [Marquee](https://avaraui.com/docs/nextjs/marquee), the conversation is [Chat Bubble](https://avaraui.com/docs/nextjs/chat-bubble), the rating is [Half Stars](https://avaraui.com/docs/nextjs/half-stars), the device is [Mobile Mockup](https://avaraui.com/docs/nextjs/mobile-mockup) and the call to action is [Button](https://avaraui.com/docs/nextjs/button). Each card is a named part — `Hero`, `CaseStudies`, `Headline`, `Stats`, `Phone`, `Team` — so a page can leave one out, reorder them, or add its own with `BentoShowcase.Card`.
 
 ## Managed call centre
 
-Three columns and three rows at desktop, two columns at tablet, a single stack on phones. The figures scroll up and the team scrolls left; both pause under the pointer and hold still under prefers-reduced-motion.
+Three columns at desktop, two at tablet, one on phones. The figures scroll up and the team scrolls left; both pause under the pointer.
 
-- `Hero` takes a `photo`, a `chat` (who wrote, what they wrote, who replied and what) and the headline as children — wrap the display phrase in `<em>` for the serif italic. `avatars` sit under it as social proof.
-- `Stats` is a `MarqueeBlock` going up: each item is a figure, a caption, a `tone` and an optional `ornament` (spheres, ring, drops).
-- `Team` is a `MarqueeBlock` going left: every cell is an ellipse, cells alternate high and low, and a figure disc follows every other photo when `stat` is given. Keep the cell count even so the loop stays seamless.
-- `Headline` sets the `<em>` phrase on its own line in the serif, with a scribble under it. Put a `<br />` where the sans lines should break.
-- `Phone` puts the first plan on an `Iphone17ProMaxMockup`, tilted and run off the card's edge, with the second plan peeking in below. `onAction` is the button.
+- `Hero` takes a `photo`, a `chat` and the headline as children. Wrap the display phrase in `<em>` for the serif italic.
+- `Team` is a marquee going left. Keep the cell count even so the loop stays seamless.
+- `Headline` puts the `<em>` phrase on its own line in the serif. Put a `<br />` where the sans lines should break.
 
 ```tsx
 "use client";

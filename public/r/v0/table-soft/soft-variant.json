@@ -3,7 +3,7 @@
   "name": "table-soft-soft-variant",
   "type": "registry:block",
   "title": "Shadcn Table — Soft variant",
-  "description": "A plain read-only table in the admin-dashboard look — a rounded panel on a hairline ring, a tinted header band, calm dividers and soft row hover. No search, filters or paging: just the rows.",
+  "description": "A plain read-only table in the admin-dashboard look: a rounded panel, a tinted header band, calm dividers and soft row hover.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

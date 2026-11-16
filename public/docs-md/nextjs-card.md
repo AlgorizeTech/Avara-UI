@@ -12,7 +12,7 @@ Building a UI entirely out of raw `div` tags quickly leads to inconsistent paddi
 
 ## Project showcase
 
-A responsive, full-width two-column showcase card matching the interactive block design: visual preview frame on the left, pairing with specifications, tags, branded action buttons, and copyable install command on the right.
+A full-width two-column card: a visual preview on the left, and on the right the specifications, tags, action buttons and a copyable install command.
 
 - Two-column grid `layout="project-showcase"` splits the card into an image preview on the left and full project details, specifications, actions, and install bar on the right.
 
@@ -57,7 +57,7 @@ npx shadcn@latest add @avara-ui/card
 
 ### E-commerce Product Cards
 
-Complete suite of 4 reusable product cards designed for online stores, shopping platforms, and flash deal showcases.
+Four reusable product cards for online stores and flash deal showcases.
 
 - `variant="standard" | "compact" | "horizontal"` controls layout orientation and sizing across ProductCard variations.
 
@@ -682,7 +682,7 @@ export default function ProfileCards() {
 
 ### Shop tiles
 
-Pastel product tiles: a tag, a two-line title, the product on the right, and a frosted price bar with one action. The photo's backdrop and the tile share a colour, so the masked edge between them disappears.
+Pastel product tiles with a tag, a two-line title, the product on the right and a frosted price bar. The photo's backdrop and the tile share a colour, so the edge between them disappears.
 
 - Set `interactive` to lift the tile and zoom the photo on hover. The basket button stops propagation, so it never triggers the tile's own click.
 

@@ -10,7 +10,7 @@ export const metadata = docsPageMetadata("waitlist", {
 
 # Shadcn Waitlist
 
-A pre-launch sign-up in three layouts. **Card** is a compact card with the field over the button, for a corner of a page. **Launch** puts your mark and a live countdown to the opening date over the form on a wide panel. **Queue** sets the form as a pill on a soft ground, with the faces of who is already in and a bar of the early spots claimed. Whichever layout, the form becomes the reader's place in line when your promise resolves — a number that counts up, and an invite link to copy to move up. One reveal when the section first appears; after that only the countdown's seconds and the reader's own actions move anything.
+A pre-launch sign-up in three layouts. **Card** is a compact card with the field over the button. **Launch** puts your mark and a live countdown to the opening date over the form on a wide panel. **Queue** sets the form as a pill on a soft ground, with the faces of who is already in and a bar of early spots claimed. In every layout the form becomes the reader's place in line when your promise resolves: a number that counts up, with an invite link to copy.
 
 `Waitlist` is built from library pieces: the countdown is the <DocLink to="counter">Counter</DocLink>'s slide variant, the field is <DocLink to="input">Input</DocLink>, the action is <DocLink to="button">Button</DocLink>, the faces are an <DocLink to="avatar-stack">Avatar Stack</DocLink>, the spots bar is <DocLink to="progress">Progress</DocLink> and the invite link is a <DocLink to="copy-button">Copy Button</DocLink>. Every piece of copy is a named part — `Mark`, `Countdown`, `Heading`, `Intro`, `Form`, `Proof`, `Spots` — so the words are yours.
 
@@ -115,23 +115,16 @@ export default function GetInLine() {
   examples={[
     {
       title: "Launch",
-      subheading: "Your mark, a countdown to the opening date, and the form beside its button on a wide panel. Type an address and submit — the form becomes your place in line, counting up, with an invite link to copy.",
+      subheading: "Your mark, a countdown to the opening date and the form on a wide panel. Submit an address and the form becomes your place in line, with an invite link to copy.",
       propNotes: [
         {
           prop: "Countdown",
-          effect:
-            "takes a `date` (a `Date` or ISO string) and shows days, hours, minutes and seconds to it, each figure sliding as it changes — it is the Counter block's `slide` countdown in the panel's own text colour. Once the date has passed it shows `doneLabel` instead.",
+          effect: "takes a `date` and counts down to it in days, hours, minutes and seconds. Once the date has passed it shows `doneLabel` instead.",
         },
         {
           lead: "Return a number from",
           prop: "onJoin",
-          effect:
-            "and it becomes the reader's place in line, counting up from zero. Resolve with nothing for the thank-you alone; throw an `Error` to stay on the form with its message under the field.",
-        },
-        {
-          prop: "shareUrl",
-          effect:
-            "on `Form` adds a copy button for the reader's invite link to the thank-you, with `shareHint` beside it.",
+          effect: "and it becomes the reader's place in line. Resolve with nothing for the thank-you alone; throw an `Error` to stay on the form with its message under the field.",
         },
       ],
       props: { variant: "launch" },
@@ -157,16 +150,10 @@ export default function GetInLine() {
       subheading: "A compact card with the field over the button — for a sidebar, a footer or a modal. Submit an empty field to see the input report it.",
       propNotes: [
         {
-          lead: "Set",
+          lead: "Use",
           prop: "variant",
           value: '"card"',
-          effect:
-            "for the card. The heading and intro size down, the button goes full width, and the thank-you takes the card's own border rather than a shadow.",
-        },
-        {
-          prop: "note",
-          effect:
-            "on `Form` is a small line under the button — what joining means, in your own words.",
+          effect: "for the card: the heading and intro size down and the button goes full width.",
         },
       ],
       props: { variant: "card" },
@@ -175,19 +162,17 @@ export default function GetInLine() {
     },
     {
       title: "Queue",
-      subheading: "The form as a pill on a soft ground, the faces already in line under it, and a bar of the early spots claimed that fills once as the section appears. Switch the docs to dark mode to see the same panel by night.",
+      subheading: "The form as a pill on a soft ground, the faces already in line under it, and a bar of early spots claimed.",
       propNotes: [
         {
           lead: "Set",
           prop: "variant",
           value: '"queue"',
-          effect:
-            "for the pill and the soft ground. The panel, form and thank-you restyle themselves for light and dark mode.",
+          effect: "for the pill and the soft ground. Both light and dark mode are covered.",
         },
         {
           prop: "Spots",
-          effect:
-            "takes `claimed` and `total`, counts the figure up and fills a `Progress` bar to match. Pass children to write the line yourself.",
+          effect: "takes `claimed` and `total`, counts the figure up and fills a `Progress` bar to match.",
         },
       ],
       props: { variant: "queue", rounded: true },

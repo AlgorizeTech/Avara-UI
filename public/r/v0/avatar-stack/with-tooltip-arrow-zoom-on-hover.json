@@ -3,7 +3,7 @@
   "name": "avatar-stack-with-tooltip-arrow-zoom-on-hover",
   "type": "registry:block",
   "title": "Avatar Stack — With tooltip arrow (Zoom on hover)",
-  "description": "Displays an anchored pointer arrow underneath the tooltip card with a lively spring popup animation as avatars smoothly zoom on hover.",
+  "description": "The same tooltip with a pointer arrow and a spring popup.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

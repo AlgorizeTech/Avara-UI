@@ -3,7 +3,7 @@
   "name": "collage-hero-a-bright-place",
   "type": "registry:block",
   "title": "Collage Hero — A bright place",
-  "description": "Badge, headline and pills across the top; five columns of photographs; quote, scroll pill and video trigger along the foot. Three columns at tablet — a portrait, a stack and the tall one, then three landscapes in a row — and two on phones. Hover the photographs and the pills, open the video.",
+  "description": "Badge, headline and pills across the top, five columns of photographs, and a quote and video trigger along the foot. Hover the photographs and pills, or open the video.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

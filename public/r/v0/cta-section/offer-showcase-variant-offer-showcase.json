@@ -3,7 +3,7 @@
   "name": "cta-section-offer-showcase-variant-offer-showcase",
   "type": "registry:block",
   "title": "Cta Section — Offer Showcase — variant=\"offer-showcase\"",
-  "description": "Pass `variant=\"offer-showcase\"` for a high-impact central promotional offer card flanked by moving nature reels with animated price count-up.",
+  "description": "A promotional offer card flanked by moving reels of photos, with the price counting up.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

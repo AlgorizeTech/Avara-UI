@@ -1,23 +1,21 @@
 ---
 title: "Shadcn Scroll Split Cards"
-description: "Shadcn Scroll Split Cards. A cinematic scroll-driven storytelling component featuring a unified panoramic landscape that splits into three distinct physical…"
+description: "Shadcn Scroll Split Cards. A cinematic scroll-driven component: one panoramic landscape splits into three card panels as you scroll."
 url: https://avaraui.com/docs/nextjs/scroll-split-cards
 ---
 
 # Shadcn Scroll Split Cards
 
-A cinematic scroll-driven storytelling component featuring a unified panoramic landscape that splits into three distinct physical card panels upon scrolling. As the user continues downward, the cards separate, execute a perspective-rich 180° 3D flip to reveal curated editorial narratives, and finally settle cleanly in place.
+A cinematic scroll-driven component: one panoramic landscape splits into three card panels as you scroll, then the cards separate and flip in 3D to reveal editorial narratives.
 
-`ScrollSplitCards` brings tactile visual immersion to brand origin stories, architectural journeys, editorial photography features, and landmark case studies.
+`ScrollSplitCards` suits brand origin stories, architectural journeys, editorial photography features and landmark case studies.
 
 ### Slow Transition
 
-Pass the variant="slow-transition" and scrollSpeed or speed prop (e.g. scrollSpeed={0.6}) to dynamically control scroll sensitivity.
+A slower profile for leisurely narrative pacing.
 
-- Variant Mode `variant="slow-transition"` activates the slow transition profile with leisurely narrative pacing.
-- Scroll Speed Multiplier `scrollSpeed=0.6` multiplies wheel and touch delta values to fine-tune how fast or leisurely the animation unfolds per scroll tick.
-- Panoramic Mountain Ridge `imageUrl` renders a high-resolution sunset alpine peak panorama across the three split cards.
-- Custom Narrative Acts `cards` renders custom thematic chapters with bespoke metric badges and distinct background colors.
+- `scrollSpeed=0.6` multiplies wheel and touch deltas to tune how fast the animation unfolds.
+- `cards` are your own chapters, each with metric badges and a background colour.
 
 ```tsx
 import { ScrollSplitCards } from "@/components/custom/blocks/ScrollSplitCardsBlock";

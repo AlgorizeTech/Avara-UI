@@ -77,11 +77,8 @@ All 6 options as live previews: https://avaraui.com/view/accordion
 
 ## Accordion
 
-- Pass `accordionData` as an array of `{ value, title, icon, content }` — `content` is an array of paragraphs and `icon` a key of the block's `ICON_MAP`.
-- `type="single"` keeps one panel open at a time.
-- `collapsible` lets the open panel be closed again, leaving all of them shut.
-- `defaultValue="getting-started"` matches an item's `value` to decide which panel starts open.
-- Add `animation="stack"` to start the items piled on the first one and deal them into place when the accordion scrolls into view. Reload the preview to watch it again.
+- Pass `accordionData` as an array of `{ value, title, icon, content }`. `content` is an array of paragraphs and `icon` a key of the block's `ICON_MAP`.
+- Add `animation="stack"` to start the items piled on the first one and deal them into place when the accordion scrolls into view.
 
 ```tsx
 import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
@@ -130,12 +127,10 @@ export default function Faq() {
 
 ## Brand logo reveal
 
-Accordion brand logo showcase with animated horizontal pleats, autoplay progress indicator, hover pause, and responsive stacking. Inspired by Framer Brand Logo Reveal.
+A brand accordion of horizontal pleats with an autoplay progress indicator. Hovering pauses it, and it stacks on small screens.
 
-- Pass `variant="brand-reveal"` to display an editorial horizontal brand accordion, or use `<BrandLogoAccordion />` directly.
-- `autoplay=true` cycles through client/partner brands on an automated timer.
-- `autoplayInterval=4000` duration in milliseconds before revealing the next brand.
-- `pauseOnHover=true` pauses autoplay when the cursor hovers over any panel.
+- Pass `variant="brand-reveal"` to show the editorial horizontal brand accordion, or use `<BrandLogoAccordion />` directly.
+- `autoplayInterval=4000` is the milliseconds before the next brand is revealed.
 
 ```tsx
 import { BrandLogoAccordion } from "@/components/custom/blocks/Accordion";
@@ -220,7 +215,7 @@ export default function MultiOpenFaq() {
 
 ### Always one open
 
-- Set `collapsible={false}` to stop the user closing the last open panel, so exactly one is always showing. Pair it with a `defaultValue` or the accordion starts fully closed.
+- Use `collapsible={false}` to stop the user closing the last open panel, so exactly one is always showing. Pair it with a `defaultValue` or the accordion starts fully closed.
 
 ```tsx
 import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
@@ -269,7 +264,7 @@ export default function AlwaysOpenFaq() {
 
 ### Multiple permanent open
 
-- Set `type="multiple"` and `collapsible={false}` to allow opening multiple panels, but preventing opened panels from being closed.
+- Combine `type="multiple"` and `collapsible={false}` to allow several panels open at once without letting any be closed.
 
 ```tsx
 import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
@@ -320,8 +315,7 @@ export default function PermanentMultiOpenFaq() {
 
 The deal-out entrance on the `elevated` variant. It works with all five.
 
-- Set `animation="stack"` to pile the items on the first one and deal them down with a stagger. It runs once, when the accordion first scrolls into view, and is skipped when the visitor prefers reduced motion.
-- `variant="elevated"` keeps every item on its own card, so the open one rises on a primary ring instead of changing shape.
+- Pass `animation="stack"` to pile the items on the first one and deal them down with a stagger. It runs once, when the accordion first scrolls into view.
 
 ```tsx
 import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";

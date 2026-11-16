@@ -7,11 +7,7 @@ import { extractCode } from "@/lib/code";
 
 # Shadcn Marquee
 
-An infinite, seamless scrolling marquee ideal for logos, testimonials, and image galleries.
-
-This `MarqueeBlock` is engineered to be **flawless**. By exactly duplicating the content and using a precise CSS calculation (`calc(-100% - gap)`), the animation loops infinitely without any stuttering, lagging, or "snap back" resets that plague older implementations.
-
-You only supply one set of items — the block duplicates them and offsets the copy by `calc(-100% - gap)`, so the loop never snaps.
+An infinite, seamless scrolling marquee for logos, testimonials and image galleries. Supply one set of items: the block duplicates them and offsets the copy by `calc(-100% - gap)`, so the loop never stutters or snaps back.
 
 export const marqueeLogos = `import {
   Box,
@@ -196,30 +192,12 @@ export default function BareLogoWall() {
         {
           lead: "Pass",
           prop: "children",
-          value: "once",
-          effect:
-            "— the block renders a second `aria-hidden` copy itself to close the loop. Duplicating them yourself gives a visible double run.",
-        },
-        {
-          prop: "fade",
-          effect:
-            "is off by default; on, it masks the first and last 10% so items dissolve instead of being clipped.",
-        },
-        {
-          prop: "pauseOnHover",
-          effect:
-            "is off by default; on, it freezes the loop while the pointer is inside.",
+          effect: "once. The block renders a second `aria-hidden` copy itself to close the loop, so duplicating them yourself gives a visible double run.",
         },
         {
           prop: "gap",
           value: '"4rem"',
-          effect:
-            "is a raw CSS length that both spaces the items and feeds the loop maths — a `%` value breaks it.",
-        },
-        {
-          prop: "direction",
-          value: '"left"',
-          effect: "is the default: content travels leftwards.",
+          effect: "is a raw CSS length that both spaces the items and feeds the loop maths. A `%` value breaks it.",
         },
       ],
       props: { contentType: "logos", direction: "left" },
@@ -256,23 +234,13 @@ export default function BareLogoWall() {
     },
     {
       title: "Vertical",
-      subheading: "Vertical marquees need a bounded height — without one the container grows to fit both tracks and nothing appears to move.",
+      subheading: "Vertical marquees need a bounded height. Without one the container grows to fit both tracks and nothing appears to move.",
       propNotes: [
         {
           lead: "Use",
           prop: "direction",
           value: '"up"',
-          effect:
-            "to scroll the column upwards — it switches the container to `flex-col` and animates `translateY`.",
-        },
-        {
-          prop: "direction",
-          value: '"down"',
-          effect: "runs the same column the other way.",
-        },
-        {
-          prop: "fade",
-          effect: "follows the axis on its own, masking the top and bottom edges here.",
+          effect: "to scroll the column upwards; `\"down\"` runs it the other way.",
         },
       ],
       props: { contentType: "testimonials", direction: "up" },
@@ -280,20 +248,13 @@ export default function BareLogoWall() {
     },
     {
       title: "Speed",
-      subheading: "`speed` is a duration for one full pass, not a pixels-per-second rate — the same value moves faster with fewer items.",
+      subheading: "`speed` is a duration for one full pass, not a pixels-per-second rate, so the same value moves faster with fewer items.",
       propNotes: [
         {
           lead: "Use",
           prop: "speed",
           value: '"slow"',
-          effect: "for 40s per pass — a calm drift, good for large imagery.",
-        },
-        { prop: "speed", value: '"normal"', effect: "is the default: 20s per pass." },
-        { prop: "speed", value: '"fast"', effect: "gives 10s per pass — ticker pace." },
-        {
-          prop: "speed",
-          value: "{45}",
-          effect: "a raw number sets the seconds per pass directly.",
+          effect: "for a calm 40s pass. `\"normal\"` is the default (20s), `\"fast\"` is 10s, and a raw number sets the seconds directly.",
         },
       ],
       props: { contentType: "images", direction: "left", speed: "slow" },
@@ -303,15 +264,10 @@ export default function BareLogoWall() {
       title: "Without fade or pause",
       propNotes: [
         {
-          lead: "Set",
+          lead: "Use",
           prop: "fade",
           value: "{false}",
-          effect: "to drop the edge mask and let items run to a hard edge.",
-        },
-        {
-          prop: "pauseOnHover",
-          value: "{false}",
-          effect: "keeps the loop running under the cursor. Both are the defaults.",
+          effect: "to drop the edge mask, and `pauseOnHover={false}` to keep the loop running under the cursor. Both are the defaults.",
         },
       ],
       props: { contentType: "logos", direction: "left", fade: false, pauseOnHover: false },

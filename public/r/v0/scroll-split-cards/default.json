@@ -3,7 +3,7 @@
   "name": "scroll-split-cards-default",
   "type": "registry:block",
   "title": "Scroll Split Cards — Default",
-  "description": "The default smooth scroll mode with built-in calibrated spring physics. No speed props required.",
+  "description": "The default scroll mode, with built-in spring physics. No speed props needed.",
   "dependencies": [
     "tw-animate-css"
   ],

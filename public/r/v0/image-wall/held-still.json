@@ -3,7 +3,7 @@
   "name": "image-wall-held-still",
   "type": "registry:block",
   "title": "Image Wall — Held still",
-  "description": "interval={true} with highlightFocus={true} and draggable={true} combines automatic camera flights with interactive drag-to-pan.",
+  "description": "A full window: the camera flies from card to card on its own, and the reader can drag the wall to pan it.",
   "dependencies": [
     "tw-animate-css"
   ],

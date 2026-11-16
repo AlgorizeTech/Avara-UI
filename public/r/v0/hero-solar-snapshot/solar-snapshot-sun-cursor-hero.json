@@ -3,7 +3,7 @@
   "name": "hero-solar-snapshot-solar-snapshot-sun-cursor-hero",
   "type": "registry:block",
   "title": "Shadcn Hero — Solar Snapshot Sun-Cursor Hero",
-  "description": "A lightweight interactive hero with a pointer-following sun orb, Typographic Curtain CTA buttons, an interactive Avatar Group, and a click-to-capture Polaroid section screenshot stack in the bottom-right where each frame auto-clears 10 seconds after capture.",
+  "description": "A pointer-following sun orb, and a click-to-capture Polaroid stack in the corner whose frames clear themselves after ten seconds.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

@@ -6,21 +6,17 @@ url: https://avaraui.com/docs/nextjs/flavour-carousel
 
 # Shadcn Flavour Carousel
 
-A product hero for anything that comes in flavours — a matcha latte here, but ice cream, juice or a candle would do. The product stands in a mountain of matcha powder against a moss-green backdrop and its flavours flank it on four tilted cream tiles. Every five seconds, or when a tile is clicked, the ring turns: the chosen tile slides into the cup and shrinks away, and the cup — which never moves — cross-fades to the picture with that flavour inside. A soft glow behind the cup takes the flavour's colour; a price pill and an add-to-cart button hang under the cup, and the headline sits low over the powder.
-
-When the section first appears only the cup is there; the ring rises from behind the powder already spinning, one continuous turn that eases to a stop on the first flavour in a little over two seconds, and the price, cart and headline fade up as it lands. The scene is three layers — a backdrop, the cup, and a transparent cutout of the powder laid in front of the cup so the glass stands in it — positioned in fractions of the stage, measured from the design. One component serves both themes: the scene is the same in both, and in dark mode only the tiles change, from cream to a translucent black that sits into the ground. Without pictures the scene is drawn — moss with a heap of powder. Every move is a spring, so a click in the middle of a turn simply redirects it; a tile two steps away is walked to one step at a time, at a quicker pace, so the ring always behaves like a carousel; and a tile only ever leaves on its own side of the cup and arrives from the other — nothing is seen crossing the stage. The pictures of the product are stacked and the newest fades in over the one before, so the cup never dips or flickers mid-change; the ring holds while the pointer or keyboard focus is on it, while the tab is hidden and while the section is off screen. Under `prefers-reduced-motion` every change is a cut.
+A product hero for anything that comes in flavours — a matcha latte here, but ice cream, juice or a candle would do. The product stands in a mountain of powder while its flavours flank it on tilted tiles. Every few seconds, or when a tile is clicked, the ring turns: the chosen tile slides into the cup, and the cup cross-fades to the picture with that flavour inside.
 
 `FlavourCarousel` is built from library pieces: the cart button is [Button](https://avaraui.com/docs/reactjs/button).
 
 ## Choose your matcha tea
 
-Eight flavours around one cup on a mountain of powder. The ring spins up from behind the powder and settles; then wait five seconds or click a tile: it slides into the cup and the cup's contents change with it. Four tiles on tablets and up, two on phones; switch the site theme to see the tiles go dark. Arrow keys turn the ring when it has focus; hovering holds it.
+Eight flavours around one cup. Wait five seconds or click a tile to turn the ring; arrow keys work when it has focus, and hovering holds it.
 
-- `flavours` are `{ name, price?, tint?, product, tile }` in ring order. `product` is the picture of the product with that flavour inside — cut every one with the same geometry so only the contents change — and `tile` is what sits on the cream tile. `tint` colours the glow behind the product.
-- `reveal="in-view"` (the default) plays the entrance the first time the section is on screen; the docs pass `"immediate"`, and `"none"` renders the ring in place. Under prefers-reduced-motion the ring is simply there.
-- `interval=5000` is the rest between turns in milliseconds; `0` turns autoplay off and leaves the tiles to the user.
-- `onAdd` renders the cart button under the price pill and receives the chosen flavour; leave it out and only the pill remains. The pill shows the `price` (the name when there is none) and announces the name to screen readers. `onChange` reports every turn.
-- `foregroundImage` is the powder — a transparent cutout with its peak at the horizontal centre — anchored to the foot of the stage in front of the cup, `foregroundHeight` (default `0.41`) of the stage tall. `backgroundImage` covers the section behind everything. Leave both out and the scene is drawn from `background`, `mound` (`[light, dark]`) and `paper`.
+- `flavours` are `{ name, price?, tint?, product, tile }` in ring order. Cut every `product` picture with the same geometry so only the contents change.
+- `onAdd` adds the cart button under the price pill and receives the chosen flavour. Leave it out and only the pill remains.
+- `foregroundImage` is the powder, a transparent cutout laid in front of the cup. Leave it and `backgroundImage` out and the scene is drawn for you.
 
 ```tsx
 import { FlavourCarousel } from "@/components/custom/blocks/FlavourCarouselBlock";

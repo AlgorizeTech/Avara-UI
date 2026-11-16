@@ -3,7 +3,7 @@
   "name": "chat-bubble-typing-indicator",
   "type": "registry:block",
   "title": "Chat Bubble — Typing indicator",
-  "description": "`ChatTypingIndicator` takes no props of its own — it draws its own pill and loops until you unmount it.",
+  "description": "`ChatTypingIndicator` takes no props of its own. It draws its own pill and loops until you unmount it.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -3,7 +3,7 @@
   "name": "hero-orbit-orbit-ring-hero",
   "type": "registry:block",
   "title": "Shadcn Hero — Orbit Ring Hero",
-  "description": "Copy and actions on the left, revolving 3D circular photo orbit ring on the right with smooth hover pause.",
+  "description": "Copy and actions on the left, a revolving 3D ring of photos on the right that pauses on hover.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

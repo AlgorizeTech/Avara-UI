@@ -1,14 +1,14 @@
 ---
 title: "Shadcn Image Wall"
-description: "A wall of screenshots that never ends, and a camera hanging over it. Free shadcn/ui Image Wall component for React, Next.js and Tailwind CSS."
+description: "A wall of screenshots that never ends, with a camera hanging over it. Free shadcn/ui Image Wall component for React, Next.js and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/image-wall
 ---
 
 # Shadcn Image Wall
 
-A wall of screenshots that never ends, and a camera hanging over it. The camera rests zoomed in on one card; every few seconds it pulls back, glides to the next card and settles on it, brightening that card while the rest stay dimmed. Hovering the wall holds the camera where it is.
+A wall of screenshots that never ends, with a camera hanging over it. The camera rests zoomed in on one card, then every few seconds pulls back, glides to the next and settles on it. Hovering the wall holds it still.
 
-The wall is one tile of cards in staggered columns, repeated around itself eight times, so however far the camera travels it never finds an edge. Every image sits in the same 493:332 frame under a small mono caption, and the camera walks the cards in order — each gets its turn before any comes round again. It fills whatever box you give it: a tall window shows one card at a time, a short band eases the zoom down so a few show at once, and on a phone it pulls back further still so the flight between cards is something to watch. [Component Wall](https://avaraui.com/docs/nextjs/component-wall) is this wall beside a column of hero copy.
+The wall repeats around itself, so the camera never finds an edge, and it fills whatever box you give it. [Component Wall](https://avaraui.com/docs/nextjs/component-wall) is this wall beside a column of hero copy.
 
 ## A camera over the wall
 
@@ -92,11 +92,9 @@ npx shadcn@latest add @avara-ui/image-wall
 
 A short strip: the camera pulls back so a few cards show, and visits them in a random order.
 
-- `order="shuffle"` visits every card once per round in a random order; `"serial"` walks them one after another. Either way a card never comes round again before all the others have had a turn.
-- `interval=false` turns off automatic camera sliding so the wall stays still unless dragged; set to `true` (or milliseconds) to enable auto-sliding.
-- `highlightFocus=false` shows every card at full clarity; set to `true` to focus the center card and dim the surrounding ones.
-- `draggable=true` lets the user grab and pan the wall infinitely in all four directions; set to `false` to turn dragging off.
-- A box under `420px` tall caps the zoom at 0.72 whatever `zoom` says, so the band shows neighbours instead of one card spilling out; a box under 640px wide caps it at 0.5.
+- `order="shuffle"` visits every card once per round in a random order instead of one after another.
+- `interval=false` keeps the wall still until the reader drags it.
+- A box under `420px` tall caps the zoom whatever `zoom` says, so a few cards show instead of one spilling out.
 
 ```tsx
 "use client";
@@ -149,13 +147,10 @@ export default function Band() {
 
 ### Held still
 
-interval={true} with highlightFocus={true} and draggable={true} combines automatic camera flights with interactive drag-to-pan.
+A full window: the camera flies from card to card on its own, and the reader can drag the wall to pan it.
 
-- `interval=true` enables automatic camera flights from card to card (default `5500ms`). Set to `false` (or `0`) to stop automatic movement.
-- `intervalTime=5500` sets the custom interval time in milliseconds when `interval={true}` (default `5500`).
-- `highlightFocus=true` keeps the center card at full clarity while dimming the surrounding cards (`0.55` opacity); set to `false` to show all cards clearly.
-- `draggable=true` lets the user grab and pan the wall infinitely in all four directions; set to `false` to lock it in place.
-- `onFocus` is called with the index of the card the camera has settled on so you can caption or link it outside the wall.
+- `interval=true` flies the camera on its own, resting on each card for `intervalTime` milliseconds.
+- `onFocus` receives the index of the card the camera lands on, so you can caption or link it outside the wall.
 
 ```tsx
 "use client";

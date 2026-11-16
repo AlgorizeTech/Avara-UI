@@ -1,16 +1,14 @@
 ---
 title: "Shadcn Login & Signup Form"
-description: "Two production-ready authentication blocks: a Login Form for returning users and a Register Form for new ones. Free shadcn/ui block for React and Tailwind CSS."
+description: "Shadcn Login & Signup Form. Two production-ready authentication blocks: a Login Form for returning users and a Register Form for new ones."
 url: https://avaraui.com/docs/nextjs/auth-forms
 ---
 
 # Shadcn Login & Signup Form
 
-Two production-ready authentication blocks: a **Login Form** for returning users and a **Register Form** for new ones. Both ship comprehensive client-side validation, error state handling, simulated loading states, password visibility toggles and social auth button templates.
+Two production-ready authentication blocks: a **Login Form** for returning users and a **Register Form** for new ones, each with client-side validation, error states, simulated loading, password visibility toggles and social auth button templates.
 
-They are separate components on purpose. Sign-in and sign-up are different pages with different fields, different validation rules and different autofill hints — a browser password manager cannot offer to save a new credential on a form it thinks might be a login. Install only the one a given route needs; each has its own install command, and each command sits with the block it installs.
-
-Both share the same `variant` and `color` surface, so a login page and a register page match without any extra work. The fields are the library's [Input](https://avaraui.com/docs/nextjs/input) and the buttons its [Button](https://avaraui.com/docs/nextjs/button), each handed the same `color`, so the whole form follows one accent and picks up any change you make to those components.
+They are separate components on purpose: sign-in and sign-up have different fields, validation rules and autofill hints, and a password manager cannot offer to save a new credential on a form it thinks might be a login. Install only the one a route needs. Both share the same `variant` and `color` surface and are built from the library's [Input](https://avaraui.com/docs/nextjs/input) and [Button](https://avaraui.com/docs/nextjs/button), so a login page and a register page match without extra work.
 
 ## For AI agents
 

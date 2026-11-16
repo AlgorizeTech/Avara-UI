@@ -3,7 +3,7 @@
   "name": "fashion-hero-daring-designs",
   "type": "registry:block",
   "title": "Fashion Hero — Daring designs",
-  "description": "Five columns stepping down to the middle at desktop, three on tablets, two on phones with the middle look full width. Hover a look to tilt it; reload the preview to watch the reveal again.",
+  "description": "Five columns stepping down to the middle at desktop, three on tablets, two on phones. Hover a look to tilt it.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",
