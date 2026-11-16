@@ -17,6 +17,7 @@ export interface DestinationItem {
   placesCount?: number | string;
   image: string;
   tag?: string;
+  /** @deprecated Reserved: accepted for compatibility but currently has no effect. */
   link?: string;
 }
 
@@ -45,7 +46,7 @@ export const DEFAULT_DESTINATIONS: DestinationItem[] = [
     country: "Indonesia",
     placesCount: 38,
     image:
-      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158812/photo-1721335916916-37c319adce3a-1790158812206.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158812/photo-1721335916916-37c319adce3a-1790158812206.jpg",
     tag: "Tropical",
   },
   {
@@ -54,7 +55,7 @@ export const DEFAULT_DESTINATIONS: DestinationItem[] = [
     country: "Japan",
     placesCount: 42,
     image:
-      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
     tag: "Historic",
   },
   {
@@ -63,7 +64,7 @@ export const DEFAULT_DESTINATIONS: DestinationItem[] = [
     country: "Greece",
     placesCount: 26,
     image:
-      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790166049/photo-1527004013197-933c4bb611b3-1790166052225.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/photo-1527004013197-933c4bb611b3-1790166052225.jpg",
     tag: "Islands",
   },
   {
@@ -72,7 +73,7 @@ export const DEFAULT_DESTINATIONS: DestinationItem[] = [
     country: "Italy",
     placesCount: 31,
     image:
-      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158811/photo-1663428520845-056989f8a664-1790158812204.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158811/photo-1663428520845-056989f8a664-1790158812204.jpg",
     tag: "Coastal",
   },
   {
@@ -81,7 +82,7 @@ export const DEFAULT_DESTINATIONS: DestinationItem[] = [
     country: "France",
     placesCount: 54,
     image:
-      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
     tag: "Romantic",
   },
   {
@@ -90,7 +91,7 @@ export const DEFAULT_DESTINATIONS: DestinationItem[] = [
     country: "USA",
     placesCount: 68,
     image:
-      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790145142/photo-1500530855697-b586d89ba3ee-1790145143493.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145142/photo-1500530855697-b586d89ba3ee-1790145143493.jpg",
     tag: "Metropolis",
   },
   {
@@ -99,7 +100,7 @@ export const DEFAULT_DESTINATIONS: DestinationItem[] = [
     country: "South Africa",
     placesCount: 29,
     image:
-      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158812/photo-1695496896465-9e59091a8ed1-1790158812205.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158812/photo-1695496896465-9e59091a8ed1-1790158812205.jpg",
     tag: "Adventure",
   },
   {
@@ -108,7 +109,7 @@ export const DEFAULT_DESTINATIONS: DestinationItem[] = [
     country: "Hawaii, USA",
     placesCount: 22,
     image:
-      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
     tag: "Nature",
   },
   {
@@ -117,7 +118,7 @@ export const DEFAULT_DESTINATIONS: DestinationItem[] = [
     country: "Switzerland",
     placesCount: 35,
     image:
-      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146210/photo-1506905925346-21bda4d32df4-1790146212208.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506905925346-21bda4d32df4-1790146212208.jpg",
     tag: "Alpine",
   },
   {
@@ -126,7 +127,7 @@ export const DEFAULT_DESTINATIONS: DestinationItem[] = [
     country: "UAE",
     placesCount: 47,
     image:
-      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146211/photo-1519681393784-d120267933ba-1790146212210.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1519681393784-d120267933ba-1790146212210.jpg",
     tag: "Luxury",
   },
   {
@@ -135,7 +136,7 @@ export const DEFAULT_DESTINATIONS: DestinationItem[] = [
     country: "Canada",
     placesCount: 28,
     image:
-      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
     tag: "Wilderness",
   },
   {
@@ -144,7 +145,7 @@ export const DEFAULT_DESTINATIONS: DestinationItem[] = [
     country: "Iceland",
     placesCount: 25,
     image:
-      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158815/photo-1593378026483-2a1fd46a35bd-1790158812215.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158815/photo-1593378026483-2a1fd46a35bd-1790158812215.jpg",
     tag: "Aurora",
   },
   {
@@ -153,7 +154,7 @@ export const DEFAULT_DESTINATIONS: DestinationItem[] = [
     country: "Spain",
     placesCount: 44,
     image:
-      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158812/photo-1710762634126-4c0e8fba44d8-1790158812206.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158812/photo-1710762634126-4c0e8fba44d8-1790158812206.jpg",
     tag: "Culture",
   },
   {
@@ -162,7 +163,7 @@ export const DEFAULT_DESTINATIONS: DestinationItem[] = [
     country: "Japan",
     placesCount: 72,
     image:
-      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1600,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
     tag: "Futuristic",
   },
   {
@@ -171,7 +172,7 @@ export const DEFAULT_DESTINATIONS: DestinationItem[] = [
     country: "Australia",
     placesCount: 39,
     image:
-      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158811/photo-1682952986992-de7082fb213d-1790158812205.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158811/photo-1682952986992-de7082fb213d-1790158812205.jpg",
     tag: "Harbour",
   },
   {
@@ -180,7 +181,7 @@ export const DEFAULT_DESTINATIONS: DestinationItem[] = [
     country: "Egypt",
     placesCount: 33,
     image:
-      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1400,c_limit/v1790158809/photo-1628344253777-f73a64d8f983-1790158812202.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158809/photo-1628344253777-f73a64d8f983-1790158812202.jpg",
     tag: "Ancient",
   },
 ];
@@ -188,13 +189,17 @@ export const DEFAULT_DESTINATIONS: DestinationItem[] = [
 export function TopDestinationsCard({
   item,
   onExplore,
+  decorative = false,
 }: {
   item: DestinationItem;
   onExplore?: (item: DestinationItem) => void;
+  /** Repeated copy used to fill a short row: hidden from assistive tech and the Tab order. */
+  decorative?: boolean;
 }) {
   return (
     <div
-      tabIndex={0}
+      tabIndex={decorative ? -1 : 0}
+      aria-hidden={decorative ? true : undefined}
       role="button"
       onClick={() => onExplore?.(item)}
       onKeyDown={(e) => {
@@ -214,6 +219,7 @@ export function TopDestinationsCard({
         src={item.image}
         alt={item.title}
         loading="lazy"
+        decoding="async"
         draggable={false}
         className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110 group-focus-visible:scale-110 will-change-transform"
       />
@@ -270,18 +276,14 @@ export function TopDestinationsCard({
             )}
           </div>
 
-          {/* Bottom Explore CTA Button */}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              onExplore?.(item);
-            }}
+          {/* Bottom Explore CTA. Not a nested <button>: the card itself is the single control
+              (role="button"), and a click here bubbles up to its onClick. */}
+          <span
             className="text-white text-xs sm:text-sm font-semibold cursor-pointer inline-flex items-center gap-1 sm:gap-1.5 mx-auto hover:text-primary hover:underline underline-offset-4 transition-colors group/btn"
           >
             <span>Explore</span>
             <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-300 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
-          </button>
+          </span>
         </div>
       </div>
     </div>
@@ -445,6 +447,7 @@ export function TopDestinations({
                 key={`row1-${item.id}-${idx}`}
                 item={item}
                 onExplore={onExplore}
+                decorative={idx >= r1.length}
               />
             ))}
           </div>
@@ -461,6 +464,7 @@ export function TopDestinations({
                 key={`row2-${item.id}-${idx}`}
                 item={item}
                 onExplore={onExplore}
+                decorative={idx >= r2.length}
               />
             ))}
           </div>

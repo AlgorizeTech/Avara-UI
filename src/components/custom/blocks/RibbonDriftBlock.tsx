@@ -298,6 +298,7 @@ export function RibbonDriftBlock(props: RibbonDriftProps) {
             <img
               src={image}
               alt={imageAlt}
+              decoding="async"
               className="size-full object-contain object-bottom drop-shadow-[0_28px_36px_rgba(20,12,60,0.28)] select-none"
             />
           </div>
@@ -380,7 +381,7 @@ function RibbonTrack({
         {[0, 1].map((half) => (
           <span key={half} className="flex" aria-hidden={half === 1}>
             {row.map((text, i) => (
-              <span key={i} className="inline-flex items-center">
+              <span key={i} className="inline-flex items-center" aria-hidden={half === 1 || i >= items.length}>
                 {text}
                 <span className="mx-[18px] bg-gradient-to-br from-[var(--drift-primary)] to-[var(--drift-secondary)] bg-clip-text text-transparent select-none">
                   ✦
@@ -828,6 +829,8 @@ export function RibbonLogos({
   style,
   ...props
 }: RibbonLogosProps) {
+  // Unique per instance so two ribbons on one page never share (or hide) the same gradient id.
+  const lineGradId = `ribbon-line-draw-${React.useId().replace(/:/g, "")}`;
   const dynamicRadius = formatRadius(rounded);
   const cardRadiusStyle: React.CSSProperties = dynamicRadius
     ? { borderRadius: dynamicRadius }
@@ -900,7 +903,7 @@ export function RibbonLogos({
               xmlns="http://www.w3.org/2000/svg"
             >
               <defs>
-                <linearGradient id="ribbonLineDrawGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <linearGradient id={lineGradId} x1="0%" y1="0%" x2="100%" y2="0%">
                   <stop offset="0%" stopColor="var(--drift-primary, #6366f1)" stopOpacity="0.25" />
                   <stop offset="50%" stopColor="var(--drift-primary, #6366f1)" stopOpacity="1" />
                   <stop offset="100%" stopColor="var(--drift-secondary, #a855f7)" stopOpacity="0.8" />
@@ -915,7 +918,7 @@ export function RibbonLogos({
               />
               <path
                 d="M4 10C60 3 170 2 276 8"
-                stroke="url(#ribbonLineDrawGrad)"
+                stroke={`url(#${lineGradId})`}
                 strokeWidth="2.75"
                 strokeLinecap="round"
                 style={{
@@ -952,6 +955,7 @@ export function RibbonLogos({
                   {topRow.map((brand, i) => (
                     <div
                       key={i}
+                      aria-hidden={half === 1 || i >= logosTop.length}
                       className="inline-flex items-center gap-2.5 sm:gap-3 shrink-0 mx-6 sm:mx-8 md:mx-10"
                     >
                       {brand.logo}
@@ -988,6 +992,7 @@ export function RibbonLogos({
                   {bottomRow.map((brand, i) => (
                     <div
                       key={i}
+                      aria-hidden={half === 1 || i >= logosBottom.length}
                       className="inline-flex items-center gap-2.5 sm:gap-3 shrink-0 mx-6 sm:mx-8 md:mx-10"
                     >
                       {brand.logo}

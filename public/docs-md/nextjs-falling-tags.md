@@ -79,7 +79,7 @@ export default function ColorfulTags() {
 
 ### Glass
 
-Translucent frosted glass badges with backdrop-blur and luminous specular borders over a scenic backdrop.
+Translucent frosted glass badges with backdrop-blur and luminous specular borders over a scenic backdrop. Moving blur is GPU-heavy on phones.
 
 - Set `palette="glass"` for semi-transparent tags with backdrop blur that blend over dark, light, or image backgrounds.
 
@@ -225,15 +225,15 @@ When scrolled into view, tags appear in the upper arena with a gentle floating l
 
 ### Real 2D Rigid-Body Physics
 
-Mathematically exact capsule-capsule and capsule-wall collision solver with realistic mass, angular inertia, restitution bounce, and sliding friction.
+Oriented-box (rotated rectangle) collision solver with realistic mass, angular inertia, restitution bounce, and sliding friction.
 
 ### Interactive Grab & Throw
 
 Grab tags with your mouse or finger, toss them in any direction, and watch them rebound off walls and scatter other tags with momentum.
 
-### Zero External Dependencies
+### No Physics Library
 
-Built purely using native React and high-efficiency requestAnimationFrame loop. Zero bulky physics library dependencies.
+Built with native React and a requestAnimationFrame loop. The only npm dependency is lucide-react.
 
 ## Props Reference
 

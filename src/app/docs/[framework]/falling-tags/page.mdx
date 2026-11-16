@@ -224,7 +224,7 @@ export default function BlackAndWhiteTags() {
     {
       title: "Glass",
       subheading:
-        "Translucent frosted glass badges with backdrop-blur and luminous specular borders over a scenic backdrop.",
+        "Translucent frosted glass badges with backdrop-blur and luminous specular borders over a scenic backdrop. Moving blur is GPU-heavy on phones.",
       propNotes: [
         {
           lead: "Set",
@@ -332,15 +332,15 @@ export default function BlackAndWhiteTags() {
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">Real 2D Rigid-Body Physics</h3>
-    <p className="text-muted-foreground text-sm">Mathematically exact capsule-capsule and capsule-wall collision solver with realistic mass, angular inertia, restitution bounce, and sliding friction.</p>
+    <p className="text-muted-foreground text-sm">Oriented-box (rotated rectangle) collision solver with realistic mass, angular inertia, restitution bounce, and sliding friction.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">Interactive Grab & Throw</h3>
     <p className="text-muted-foreground text-sm">Grab tags with your mouse or finger, toss them in any direction, and watch them rebound off walls and scatter other tags with momentum.</p>
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Zero External Dependencies</h3>
-    <p className="text-muted-foreground text-sm">Built purely using native React and high-efficiency requestAnimationFrame loop. Zero bulky physics library dependencies.</p>
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">No Physics Library</h3>
+    <p className="text-muted-foreground text-sm">Built with native React and a requestAnimationFrame loop. The only npm dependency is lucide-react.</p>
   </div>
 </div>
 

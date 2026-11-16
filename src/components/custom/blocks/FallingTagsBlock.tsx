@@ -207,10 +207,15 @@ function clamp(v: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, v));
 }
 
-function getOBBVertices(
+// Scratch buffer for box corners (x0,y0,x1,y1,...). The solver is single-threaded and the
+// buffer is always fully read before the next call, so one shared buffer avoids per-call arrays.
+const OBB_SCRATCH = new Float64Array(8);
+
+function fillOBBVertices(
   t: { x: number; y: number; width: number; height: number; angle: number },
-  extraGap = 0,
-): { x: number; y: number }[] {
+  extraGap: number,
+  out: Float64Array,
+): void {
   const hw = t.width * 0.5 + extraGap * 0.5;
   const hh = t.height * 0.5 + extraGap * 0.5;
   const c = Math.cos(t.angle);
@@ -219,12 +224,14 @@ function getOBBVertices(
   const uy = hw * s;
   const vx = -hh * s;
   const vy = hh * c;
-  return [
-    { x: t.x - ux - vx, y: t.y - uy - vy },
-    { x: t.x + ux - vx, y: t.y + uy - vy },
-    { x: t.x + ux + vx, y: t.y + uy + vy },
-    { x: t.x - ux + vx, y: t.y - uy + vy },
-  ];
+  out[0] = t.x - ux - vx;
+  out[1] = t.y - uy - vy;
+  out[2] = t.x + ux - vx;
+  out[3] = t.y + uy - vy;
+  out[4] = t.x + ux + vx;
+  out[5] = t.y + uy + vy;
+  out[6] = t.x - ux + vx;
+  out[7] = t.y - uy + vy;
 }
 
 function getBoxExtents(t: { x: number; y: number; width: number; height: number; angle: number }) {
@@ -244,12 +251,20 @@ function getBoxExtents(t: { x: number; y: number; width: number; height: number;
   };
 }
 
+type OBBCollision = { collided: boolean; nx: number; ny: number; pen: number; cx: number; cy: number };
+
+// Shared result for "no collision". Callers only read `.collided` on a miss.
+const NO_COLLISION: OBBCollision = Object.freeze({
+  collided: false,
+  nx: 0,
+  ny: 0,
+  pen: 0,
+  cx: 0,
+  cy: 0,
+});
+
 // Exact 2D Oriented Bounding Box (OBB) SAT Collision Detection + Support Contact Point
-function checkOBBCollision(
-  a: PhysicsTag,
-  b: PhysicsTag,
-  extraGap = 1.5,
-): { collided: boolean; nx: number; ny: number; pen: number; cx: number; cy: number } {
+function checkOBBCollision(a: PhysicsTag, b: PhysicsTag, extraGap = 1.5): OBBCollision {
   const hwA = a.width * 0.5 + extraGap * 0.5;
   const hhA = a.height * 0.5 + extraGap * 0.5;
   const hwB = b.width * 0.5 + extraGap * 0.5;
@@ -260,64 +275,65 @@ function checkOBBCollision(
   const cosB = Math.cos(b.angle);
   const sinB = Math.sin(b.angle);
 
-  const axes = [
-    { x: cosA, y: sinA },
-    { x: -sinA, y: cosA },
-    { x: cosB, y: sinB },
-    { x: -sinB, y: cosB },
-  ];
-
   const dx = b.x - a.x;
   const dy = b.y - a.y;
 
   let minOverlap = Infinity;
-  let bestAxis = { x: 0, y: -1 };
+  let bestX = 0;
+  let bestY = -1;
   let bestAxisIndex = 0;
 
+  // Four separating axes: A's two edge normals, then B's two.
   for (let i = 0; i < 4; i++) {
-    const L = axes[i];
-    const rA = hwA * Math.abs(cosA * L.x + sinA * L.y) + hhA * Math.abs(-sinA * L.x + cosA * L.y);
-    const rB = hwB * Math.abs(cosB * L.x + sinB * L.y) + hhB * Math.abs(-sinB * L.x + cosB * L.y);
-    const dist = Math.abs(dx * L.x + dy * L.y);
+    const lx = i === 0 ? cosA : i === 1 ? -sinA : i === 2 ? cosB : -sinB;
+    const ly = i === 0 ? sinA : i === 1 ? cosA : i === 2 ? sinB : cosB;
+    const rA = hwA * Math.abs(cosA * lx + sinA * ly) + hhA * Math.abs(-sinA * lx + cosA * ly);
+    const rB = hwB * Math.abs(cosB * lx + sinB * ly) + hhB * Math.abs(-sinB * lx + cosB * ly);
+    const dist = Math.abs(dx * lx + dy * ly);
     const overlap = rA + rB - dist;
 
     if (overlap <= 0) {
-      return { collided: false, nx: 0, ny: 0, pen: 0, cx: 0, cy: 0 };
+      return NO_COLLISION;
     }
 
     if (overlap < minOverlap) {
       minOverlap = overlap;
-      const sign = dx * L.x + dy * L.y >= 0 ? 1 : -1;
-      bestAxis = { x: L.x * sign, y: L.y * sign };
+      const sign = dx * lx + dy * ly >= 0 ? 1 : -1;
+      bestX = lx * sign;
+      bestY = ly * sign;
       bestAxisIndex = i;
     }
   }
 
-  const nx = bestAxis.x;
-  const ny = bestAxis.y;
+  const nx = bestX;
+  const ny = bestY;
   let cx = (a.x + b.x) * 0.5;
   let cy = (a.y + b.y) * 0.5;
 
   if (bestAxisIndex < 2) {
-    const vertsB = getOBBVertices(b, 0);
+    fillOBBVertices(b, 0, OBB_SCRATCH);
     let minProj = Infinity;
     for (let k = 0; k < 4; k++) {
-      const p = vertsB[k].x * nx + vertsB[k].y * ny;
+      const vx = OBB_SCRATCH[k * 2];
+      const vy = OBB_SCRATCH[k * 2 + 1];
+      const p = vx * nx + vy * ny;
       if (p < minProj) {
         minProj = p;
-        cx = vertsB[k].x;
-        cy = vertsB[k].y;
+        cx = vx;
+        cy = vy;
       }
     }
   } else {
-    const vertsA = getOBBVertices(a, 0);
+    fillOBBVertices(a, 0, OBB_SCRATCH);
     let maxProj = -Infinity;
     for (let k = 0; k < 4; k++) {
-      const p = vertsA[k].x * nx + vertsA[k].y * ny;
+      const vx = OBB_SCRATCH[k * 2];
+      const vy = OBB_SCRATCH[k * 2 + 1];
+      const p = vx * nx + vy * ny;
       if (p > maxProj) {
         maxProj = p;
-        cx = vertsA[k].x;
-        cy = vertsA[k].y;
+        cx = vx;
+        cy = vy;
       }
     }
   }
@@ -331,6 +347,14 @@ function checkOBBCollision(
     cy,
   };
 }
+
+const normalizeTags = (list: (string | FallingTagItem)[]): FallingTagItem[] =>
+  list.map((t, idx) => {
+    if (typeof t === "string") {
+      return { id: `tag-${idx}-${t.toLowerCase().replace(/[^a-z0-9]/g, "-")}`, label: t };
+    }
+    return { ...t, id: t.id || `tag-${idx}` };
+  });
 
 export default function FallingTagsBlock({
   tags = DEFAULT_TAG_LABELS,
@@ -352,13 +376,9 @@ export default function FallingTagsBlock({
   const containerRef = useRef<HTMLDivElement>(null);
   const tagElementsRef = useRef<Map<string, HTMLDivElement>>(new Map());
 
-  const [, setPhase] = useState<"floating" | "falling" | "zeroG">("floating");
   const [activeGravity, setActiveGravity] = useState<boolean>(true);
-  const [, setActiveTagsCount] = useState<number>(0);
-  const [, setArenaDimensions] = useState<{ width: number; height: number }>({
-    width: 800,
-    height: 520,
-  });
+  // Window-level drag listeners still attached; released if the component unmounts mid-drag.
+  const dragCleanupsRef = useRef<Set<() => void>>(new Set());
 
   // Physics state
   const physicsTagsRef = useRef<PhysicsTag[]>([]);
@@ -404,6 +424,15 @@ export default function FallingTagsBlock({
     hasTriggered: false,
   });
 
+  // Release any window drag listeners if unmounted mid-drag
+  useEffect(() => {
+    const cleanups = dragCleanupsRef.current;
+    return () => {
+      cleanups.forEach((fn) => fn());
+      cleanups.clear();
+    };
+  }, []);
+
   // Keep stateRef synced with props
   useEffect(() => {
     stateRef.current.gravity = gravity;
@@ -413,14 +442,18 @@ export default function FallingTagsBlock({
   }, [gravity, bounce, friction, hoverDuration]);
 
   // Normalized tag list
-  const normalizedTags: FallingTagItem[] = React.useMemo(() => {
-    return tags.map((t, idx) => {
-      if (typeof t === "string") {
-        return { id: `tag-${idx}-${t.toLowerCase().replace(/[^a-z0-9]/g, "-")}`, label: t };
-      }
-      return { ...t, id: t.id || `tag-${idx}` };
-    });
-  }, [tags]);
+  const normalizedTags: FallingTagItem[] = React.useMemo(() => normalizeTags(tags), [tags]);
+
+  // The simulation only depends on each tag's id and label. Key it on that content so an
+  // inline `tags={[...]}` array (new identity on every parent render) does not reset the physics.
+  const layoutKey = JSON.stringify(
+    tags.map((t) => (typeof t === "string" ? t : [t.id, t.label])),
+  );
+  const layoutTags: FallingTagItem[] = React.useMemo(
+    () => normalizeTags(tags),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [layoutKey],
+  );
 
   // Measure exact unrotated rendered DOM dimensions
   const measureTags = useCallback(() => {
@@ -486,7 +519,6 @@ export default function FallingTagsBlock({
     const h = typeof height === "number" ? height : (rawH || 520);
     stateRef.current.width = width;
     stateRef.current.height = h;
-    setArenaDimensions({ width, height: h });
 
     const isSmallScreen = width < 520;
     const paletteList = PALETTES[palette] || PALETTES.default;
@@ -496,7 +528,7 @@ export default function FallingTagsBlock({
     const items: PhysicsTag[] = [];
     const tagsPerRow = isSmallScreen ? 3 : 6;
 
-    normalizedTags.forEach((item, index) => {
+    layoutTags.forEach((item, index) => {
       const rowIndex = Math.floor(index / tagsPerRow);
       const colIndex = index % tagsPerRow;
 
@@ -576,24 +608,25 @@ export default function FallingTagsBlock({
     }
 
     physicsTagsRef.current = items;
-    setActiveTagsCount(items.length);
     const now = performance.now();
     const effectiveHover = quickDrop ? Math.min(0.25, stateRef.current.hoverDuration) : stateRef.current.hoverDuration;
     stateRef.current.phase = "floating";
     stateRef.current.startTime = now - (stateRef.current.hoverDuration - effectiveHover) * 1000;
     stateRef.current.fallStartTime = now + effectiveHover * 1000;
-    setPhase("floating");
 
     requestAnimationFrame(() => {
       measureTags();
     });
-  }, [normalizedTags, height, palette, measureTags]);
+  }, [layoutTags, height, palette, measureTags]);
 
   // Main Physics Simulation Loop
   useEffect(() => {
     if (!isMounted) return;
 
     let animFrame: number;
+    // One MediaQueryList for the whole loop (still read live every frame).
+    const reducedMotionQuery =
+      typeof window !== "undefined" ? window.matchMedia("(prefers-reduced-motion: reduce)") : null;
 
     const loop = (currentTime: number) => {
       const state = stateRef.current;
@@ -607,7 +640,6 @@ export default function FallingTagsBlock({
       if (state.phase === "floating" && elapsed >= state.hoverDuration) {
         state.phase = "falling";
         state.fallStartTime = currentTime;
-        setPhase("falling");
         for (let i = 0; i < tags.length; i++) {
           tags[i].vx = (Math.random() - 0.5) * 1.2;
           tags[i].angularVelocity = (Math.random() - 0.5) * 0.025;
@@ -615,9 +647,7 @@ export default function FallingTagsBlock({
       }
 
       // Check prefers-reduced-motion
-      const prefersReduced =
-        typeof window !== "undefined" &&
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const prefersReduced = reducedMotionQuery !== null && reducedMotionQuery.matches;
 
       // Boundary floor and wall coordinates
       const floorY = H - 8;
@@ -723,19 +753,20 @@ export default function FallingTagsBlock({
             const isBeingDragged = state.isDragging && state.draggedId === t.id;
             if (t.isSleeping && !isBeingDragged) continue;
 
-            const verts = getOBBVertices(t, 0);
+            fillOBBVertices(t, 0, OBB_SCRATCH);
             let maxPenY = 0;
             let floorContactX = 0;
             let floorVerts = 0;
 
             for (let k = 0; k < 4; k++) {
-              const penY = verts[k].y - floorY;
+              const vertX = OBB_SCRATCH[k * 2];
+              const penY = OBB_SCRATCH[k * 2 + 1] - floorY;
               if (penY >= -1.5 && state.activeGravity) {
                 t.isSupported = true;
                 floorVerts++;
-                floorContactX += verts[k].x;
-                if (verts[k].x <= t.x + 6) t.supportLeft = true;
-                if (verts[k].x >= t.x - 6) t.supportRight = true;
+                floorContactX += vertX;
+                if (vertX <= t.x + 6) t.supportLeft = true;
+                if (vertX >= t.x - 6) t.supportRight = true;
               }
               if (penY > maxPenY) {
                 maxPenY = penY;
@@ -1026,7 +1057,6 @@ export default function FallingTagsBlock({
           if (widthDiff > 2 || heightDiff > 2) {
             stateRef.current.width = width;
             stateRef.current.height = h;
-            setArenaDimensions({ width, height: h });
 
             // Immediately re-measure DOM dimensions (in case responsive sm: breakpoint changed)
             measureTags();
@@ -1113,10 +1143,15 @@ export default function FallingTagsBlock({
       }
     };
 
-    const onPointerUp = () => {
+    const detachListeners = () => {
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerup", onPointerUp);
       window.removeEventListener("pointercancel", onPointerUp);
+      dragCleanupsRef.current.delete(detachListeners);
+    };
+
+    const onPointerUp = () => {
+      detachListeners();
 
       const history = stateRef.current.mouseHistory;
       if (history.length >= 2 && stateRef.current.draggedId) {
@@ -1140,6 +1175,7 @@ export default function FallingTagsBlock({
     window.addEventListener("pointermove", onPointerMove);
     window.addEventListener("pointerup", onPointerUp);
     window.addEventListener("pointercancel", onPointerUp);
+    dragCleanupsRef.current.add(detachListeners);
   };
 
   // Actions
@@ -1162,7 +1198,6 @@ export default function FallingTagsBlock({
     });
     if (stateRef.current.phase === "floating") {
       stateRef.current.phase = "falling";
-      setPhase("falling");
     }
   };
 

@@ -20,6 +20,9 @@ import { cn } from "@/lib/utils";
 import { prefersReducedMotion, springTiming, usePrefersReducedMotion } from "@/lib/animate";
 import { Iphone16ProMockup } from "./MobileMockupBlock";
 
+// useLayoutEffect warns during SSR in React 18; fall back to useEffect on the server.
+const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
 /** How a card travels: quick into a slot, slow and weighty back to the deck. */
 const TO_SLOT = springTiming({ stiffness: 240, damping: 25 });
 const TO_DECK = springTiming({ stiffness: 75, damping: 16, mass: 1.1 });
@@ -63,7 +66,7 @@ function RisePresence({
   if (show && !present) setPresent(true);
   const ref = useRef<HTMLDivElement>(null);
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
     if (prefersReducedMotion()) {
@@ -416,7 +419,7 @@ function BrandPillarsCta({
     );
 
   // Cards rain into the deck on load, right to left.
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!hasMounted || prefersReducedMotion()) return;
     sectionRef.current?.querySelectorAll<HTMLElement>("[data-pillar-card]").forEach((el) => {
       const y = Number(el.dataset.restY);
@@ -434,7 +437,7 @@ function BrandPillarsCta({
   // A placed or returned card is a new element in a new spot. It starts at the
   // old one's position and size and flies to its own. Width and height animate
   // rather than scale, so the text on the card never stretches.
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const from = flightFrom.current;
     flightFrom.current = null;
     if (!from || prefersReducedMotion()) return;
@@ -469,6 +472,12 @@ function BrandPillarsCta({
   // Active flying animations to ensure moving cards are always on top of EVERYTHING
   const [activeFlyingCards, setActiveFlyingCards] = useState<Record<string, "toSlot" | "toDeck">>({});
   const flyingTimersRef = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
+  useEffect(() => {
+    const timers = flyingTimersRef.current;
+    return () => {
+      Object.values(timers).forEach(clearTimeout);
+    };
+  }, []);
 
   // Toggle or place card
   const handlePlaceCard = (id: string) => {
@@ -1697,22 +1706,22 @@ export const OrbitalLensCta = ConcentricPortalCta;
 // Central high-impact offer card flanked by moving nature reels
 // ==========================================
 export const DEFAULT_OFFER_NATURE_IMAGES: string[] = [
-  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
-  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
-  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
-  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
-  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
-  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145142/photo-1511671782779-c97d3d27a1d4-1790145143493.jpg",
-  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1550684848-fac1c5b4e853-1790145143489.jpg",
-  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
-  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/pexels-photo-7688336-1790166052227.jpg",
-  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/pexels-photo-8867434-1790166052229.jpg",
-  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/pexels-photo-7658387-1790166052226.jpg",
-  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/pexels-photo-7709086-1790166052228.jpg",
-  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145139/pexels-photo-7709208-1790145143489.jpg",
-  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145139/pexels-photo-1036623-1790145143487.jpg",
-  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145142/pexels-photo-2043590-1790145143488.jpg",
-  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145139/pexels-photo-1587009-1790145143488.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_480,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_480,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_480,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_480,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_480,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_480,c_limit/v1790145142/photo-1511671782779-c97d3d27a1d4-1790145143493.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_480,c_limit/v1790145140/photo-1550684848-fac1c5b4e853-1790145143489.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_480,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_480,c_limit/v1790166049/pexels-photo-7688336-1790166052227.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_480,c_limit/v1790166049/pexels-photo-8867434-1790166052229.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_480,c_limit/v1790166049/pexels-photo-7658387-1790166052226.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_480,c_limit/v1790166049/pexels-photo-7709086-1790166052228.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_480,c_limit/v1790145139/pexels-photo-7709208-1790145143489.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_480,c_limit/v1790145139/pexels-photo-1036623-1790145143487.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_480,c_limit/v1790145142/pexels-photo-2043590-1790145143488.jpg",
+  "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_480,c_limit/v1790145139/pexels-photo-1587009-1790145143488.jpg",
 ];
 
 function ReelLane({
@@ -2130,7 +2139,7 @@ export function OfferShowcaseCta({
 // ==========================================
 export function MobileAppCta({
   heading = "Aura Clearmind..\nYour partner in wellness.",
-  headingAccent = "Your partner",
+  headingAccent: _headingAccent = "Your partner",
   subheading = "Find and book your favorite yoga classes, guided meditation, and daily mindful wellness sessions from anywhere with our all-in-one mobile app, designed to bring balance, clarity, and peace to your life.",
   statement,
   badge = "Mobile App Available",
@@ -2188,7 +2197,7 @@ export function MobileAppCta({
   }, [scrollProgress]);
 
   // Dynamically calculate exact pixel distance from side column to center of stage
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const updateDelta = () => {
       if (stageRef.current && phoneColRef.current) {
         const stageRect = stageRef.current.getBoundingClientRect();
@@ -2484,6 +2493,9 @@ export function MobileAppCta({
                         <img
                           src={userAvatar}
                           alt={userName}
+                          width={32}
+                          height={32}
+                          decoding="async"
                           className="size-full rounded-full object-cover"
                         />
                       </div>

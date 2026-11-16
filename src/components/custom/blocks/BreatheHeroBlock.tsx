@@ -7,6 +7,11 @@ import { cn } from "@/lib/utils";
 import { accentTokens } from "@/lib/accent";
 import { usePrefersReducedMotion } from "@/lib/animate";
 
+// `fetchPriority` is a React 19 prop; React 18 logs an unknown-prop warning for it, so only
+// pass it when the consumer is on 19+. It is a hint for the browser and never changes the render.
+const LCP_IMAGE_PROPS: { fetchPriority?: "high" } =
+  Number.parseInt(React.version, 10) >= 19 ? { fetchPriority: "high" } : {};
+
 /* ═══════════════════════════════════════════════
    TYPES & INTERFACES
    ═══════════════════════════════════════════════ */
@@ -338,7 +343,11 @@ function BreatheCard({
               <img
                 src={card.image}
                 alt={card.alt || card.caption || "Hero card"}
-                loading="lazy"
+                // Inner cards are the hero image (LCP): load them eagerly. Outer cards are
+                // display:none below md, so keep those lazy.
+                loading={isOuter ? "lazy" : "eager"}
+                decoding="async"
+                {...(isCenter ? LCP_IMAGE_PROPS : {})}
                 className={cn(
                   "size-full object-cover transition-transform duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]",
                   (hoverMode === "zoom" || hoverMode === "both") &&
@@ -397,7 +406,7 @@ export const BreatheHero = forwardRef<HTMLElement, BreatheHeroProps>(
       badgeHighlight = "Studio v2.4",
       buttonLabel = "Start Exploring",
       buttonHref = "#get-started",
-      buttonVariant = "filled",
+      buttonVariant: _buttonVariant = "filled",
       buttonArrow = true,
       secondaryButtonLabel = "View Showroom",
       secondaryButtonHref = "#showroom",
@@ -432,7 +441,7 @@ export const BreatheHero = forwardRef<HTMLElement, BreatheHeroProps>(
     },
     ref
   ) => {
-    const containerRef = useRef<HTMLElement>(null);
+    const containerRef = useRef<HTMLElement | null>(null);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
     const prefersReducedMotion = usePrefersReducedMotion();
@@ -715,8 +724,11 @@ export const BreatheHero = forwardRef<HTMLElement, BreatheHeroProps>(
                       key={i}
                       src={src}
                       alt="Client avatar"
+                      width={32}
+                      height={32}
                       className="inline-block size-7 sm:size-8 rounded-full ring-2 ring-background object-cover"
                       loading="lazy"
+                      decoding="async"
                     />
                   ))}
                 </div>
@@ -804,9 +816,9 @@ export const BreatheHero = forwardRef<HTMLElement, BreatheHeroProps>(
     return (
       <section
         ref={(node) => {
-          (containerRef as any).current = node;
+          containerRef.current = node;
           if (typeof ref === "function") ref(node);
-          else if (ref) (ref as any).current = node;
+          else if (ref) ref.current = node;
         }}
         style={customStyle}
         className={cn(
