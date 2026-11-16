@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-11-15T10:40:16.736Z
-**Total files:** 329
+**Generated at:** 2026-11-16T13:03:20.935Z
+**Total files:** 331
 
 ## Available Files
 
@@ -97,6 +97,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/invoice](/docs-md/nextjs-invoice.md) - Source: `[framework]\invoice\page.mdx`
 - [nextjs/item](/docs-md/nextjs-item.md) - Source: `[framework]\item\page.mdx`
 - [nextjs/kbd](/docs-md/nextjs-kbd.md) - Source: `[framework]\kbd\page.mdx`
+- [nextjs/live-pulse-pill](/docs-md/nextjs-live-pulse-pill.md) - Source: `[framework]\live-pulse-pill\page.mdx`
 - [nextjs/loader](/docs-md/nextjs-loader.md) - Source: `[framework]\loader\page.mdx`
 - [nextjs/magic-bento](/docs-md/nextjs-magic-bento.md) - Source: `[framework]\magic-bento\page.mdx`
 - [nextjs/marquee](/docs-md/nextjs-marquee.md) - Source: `[framework]\marquee\page.mdx`
@@ -261,6 +262,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/invoice](/docs-md/reactjs-invoice.md) - Source: `[framework]\invoice\page.mdx`
 - [reactjs/item](/docs-md/reactjs-item.md) - Source: `[framework]\item\page.mdx`
 - [reactjs/kbd](/docs-md/reactjs-kbd.md) - Source: `[framework]\kbd\page.mdx`
+- [reactjs/live-pulse-pill](/docs-md/reactjs-live-pulse-pill.md) - Source: `[framework]\live-pulse-pill\page.mdx`
 - [reactjs/loader](/docs-md/reactjs-loader.md) - Source: `[framework]\loader\page.mdx`
 - [reactjs/magic-bento](/docs-md/reactjs-magic-bento.md) - Source: `[framework]\magic-bento\page.mdx`
 - [reactjs/marquee](/docs-md/reactjs-marquee.md) - Source: `[framework]\marquee\page.mdx`

@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-15T10:40:16.723Z",
-  "totalFiles": 329,
+  "generatedAt": "2026-11-16T13:03:20.732Z",
+  "totalFiles": 331,
   "files": [
     {
       "name": "docs",
@@ -541,6 +541,12 @@
       "path": "/docs-md/nextjs-kbd.md",
       "url": "/docs/nextjs/kbd",
       "originalMdx": "[framework]\\kbd\\page.mdx"
+    },
+    {
+      "name": "nextjs/live-pulse-pill",
+      "path": "/docs-md/nextjs-live-pulse-pill.md",
+      "url": "/docs/nextjs/live-pulse-pill",
+      "originalMdx": "[framework]\\live-pulse-pill\\page.mdx"
     },
     {
       "name": "nextjs/loader",
@@ -1525,6 +1531,12 @@
       "path": "/docs-md/reactjs-kbd.md",
       "url": "/docs/reactjs/kbd",
       "originalMdx": "[framework]\\kbd\\page.mdx"
+    },
+    {
+      "name": "reactjs/live-pulse-pill",
+      "path": "/docs-md/reactjs-live-pulse-pill.md",
+      "url": "/docs/reactjs/live-pulse-pill",
+      "originalMdx": "[framework]\\live-pulse-pill\\page.mdx"
     },
     {
       "name": "reactjs/loader",

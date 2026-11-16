@@ -192,6 +192,8 @@ export const NO_CHOICE_NEEDED: string[] = [
   // One example (minimal) beside the default look, so there is no pair of previews to offer
   // (audited 2026-11-10).
   "navigation",
+  // One design offering customizable theme color, soundwave waves, and interactive modal roster.
+  "live-pulse-pill",
 ];
 
 /**
