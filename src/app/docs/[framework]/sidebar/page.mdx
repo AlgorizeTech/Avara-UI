@@ -161,6 +161,66 @@ export const usageCollapsed = sidebarUsage({
 
 <Installation name="sidebar" />
 
+export const usageCategorized = `"use client";
+
+import {
+  SidebarProvider,
+  CategorizedSidebar,
+} from "@/components/custom/blocks/SidebarBlock";
+import {
+  LayoutDashboard,
+  Box,
+  ShoppingBag,
+  BarChart3,
+  Users,
+  Settings,
+  HelpCircle,
+} from "lucide-react";
+import { useState } from "react";
+
+const GROUPS = [
+  {
+    label: "MENU",
+    items: [
+      { id: "Dashboard", label: "Dashboard", icon: <LayoutDashboard className="w-4 h-4" /> },
+      { id: "Products", label: "Products", icon: <Box className="w-4 h-4" />, badge: 4 },
+      { id: "Orders", label: "Orders & Invoices", icon: <ShoppingBag className="w-4 h-4" />, badge: 8 },
+      { id: "Analytics", label: "Sales Analytics", icon: <BarChart3 className="w-4 h-4" /> },
+      { id: "Insights", label: "Customer Insights", icon: <Users className="w-4 h-4" /> },
+      { id: "Reports", label: "Reports", icon: <BarChart3 className="w-4 h-4" />, badge: 2 },
+    ],
+  },
+  {
+    label: "OTHERS",
+    items: [
+      { id: "Settings", label: "Settings", icon: <Settings className="w-4 h-4" /> },
+      { id: "Team", label: "Team Members", icon: <Users className="w-4 h-4" />, badge: 3 },
+      { id: "Help", label: "Help Center", icon: <HelpCircle className="w-4 h-4" /> },
+    ],
+  },
+];
+
+export default function CategorizedSidebarDemo() {
+  const [activeRoute, setActiveRoute] = useState("Dashboard");
+
+  return (
+    <SidebarProvider defaultExpanded={true}>
+      <CategorizedSidebar
+        workspace={{
+          name: "Avara UI",
+          badge: "Pro",
+          isPrivate: true,
+          user: "Noah Bellingham",
+          userEmail: "noah@avara.design",
+        }}
+        groups={GROUPS}
+        activeRoute={activeRoute}
+        onRouteChange={setActiveRoute}
+      />
+    </SidebarProvider>
+  );
+}`;
+
 ## Examples
 
 <ExampleShowcase
@@ -169,6 +229,25 @@ export const usageCollapsed = sidebarUsage({
   colorProp="themeColor"
   columns={1}
   examples={[
+    {
+      title: "Categorized Dashboard Sidebar",
+      subheading:
+        "Modern SaaS sidebar layout with workspace switcher, collapsible category groups, counter badges, and user profile footer.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"categorized"',
+          effect:
+            "for a floating rounded store card sidebar with workspace switcher, collapsible categories, and notification badges.",
+        },
+      ],
+      props: {
+        variant: "categorized",
+        defaultExpanded: true,
+      },
+      usage: usageCategorized,
+    },
     {
       title: "Collapsed rail",
       propNotes: [
@@ -303,6 +382,58 @@ export const usageCollapsed = sidebarUsage({
           Highlights the item using the Provider's selected theme{" "}
           <code>color</code>.
         </td>
+      </tr>
+      <tr>
+        <td>
+          <code>CategorizedSidebar</code>
+        </td>
+        <td>
+          <code>groups</code>
+        </td>
+        <td>
+          <code>SidebarRouteGroup[]</code>
+        </td>
+        <td>
+          Array of categories/groups with label, collapsible state, and route items (id, label, icon, badge).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>CategorizedSidebar</code>
+        </td>
+        <td>
+          <code>workspace</code>
+        </td>
+        <td>
+          <code>SidebarWorkspace</code>
+        </td>
+        <td>
+          Workspace details including name, plan badge (Pro/Free), privacy, user name, and email.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>CategorizedSidebar</code>
+        </td>
+        <td>
+          <code>activeRoute</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>The ID of the currently selected route.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>CategorizedSidebar</code>
+        </td>
+        <td>
+          <code>onRouteChange</code>
+        </td>
+        <td>
+          <code>(routeId: string) =&gt; void</code>
+        </td>
+        <td>Callback fired when a route is clicked.</td>
       </tr>
       <tr>
         <td>
