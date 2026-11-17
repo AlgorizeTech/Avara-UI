@@ -25,6 +25,34 @@ export const SITE_URL = (
   env(process.env.NEXT_PUBLIC_SITE_URL) ?? "https://avaraui.com"
 ).replace(/\/+$/, "");
 
+/**
+ * Whether search engines may index THIS deployment.
+ *
+ * The site is deployed twice from one repo: the real host (EasyPanel, serving
+ * `NEXT_PUBLIC_SITE_URL`) and Vercel, which has to stay up because it runs
+ * api/v0.ts for "Open in v0". Vercel also serves the whole static site on
+ * `*.vercel.app`, and without a rule those copies compete with the real host
+ * in Google (duplicate content, "Google chose different canonical").
+ *
+ * Resolution order, so nobody has to remember a variable:
+ *   1. `NEXT_PUBLIC_ALLOW_INDEXING=true|false` wins when set. Use it to force a
+ *      Vercel deployment on the real domain to be indexable, or to keep a
+ *      staging copy of the real host out of search.
+ *   2. Otherwise a Vercel build (Vercel sets `VERCEL=1` for every build) is not
+ *      indexable, and any other host is.
+ *
+ * Read at build time, which is when the static export bakes in the robots meta
+ * tag, robots.txt and the sitemap. Server-only: `VERCEL` is not `NEXT_PUBLIC_`.
+ * Vercel must have "Automatically expose System Environment Variables" on, which
+ * is its default.
+ */
+export const INDEXABLE: boolean = (() => {
+  const override = env(process.env.NEXT_PUBLIC_ALLOW_INDEXING)?.toLowerCase();
+  if (override === "true" || override === "1") return true;
+  if (override === "false" || override === "0") return false;
+  return !env(process.env.VERCEL);
+})();
+
 /** Absolute URL for a site-relative path. `url("/docs")` → `https://…/docs`. */
 export const url = (pathname = "/") =>
   `${SITE_URL}${pathname.startsWith("/") ? pathname : `/${pathname}`}`;

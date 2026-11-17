@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import fs from "node:fs";
 import path from "node:path";
-import { SITE_URL } from "@/config/site";
+import { INDEXABLE, SITE_URL } from "@/config/site";
 import {
   BUILT_FRAMEWORKS,
   DEFAULT_FRAMEWORK,
@@ -164,6 +164,10 @@ function modifiedFor(route: string): string | undefined {
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  // A non-indexable deployment (the Vercel copy) must not list URLs it tells
+  // crawlers to skip, and the URLs here are the real host's anyway.
+  if (!INDEXABLE) return [];
+
   return collectRoutes().map((route) => {
     const lastModified = modifiedFor(route);
     return {
