@@ -59,6 +59,7 @@ export const SEARCH_NAMES: Record<string, string> = {
   sonner: "Sonner Toast",
   timeline: "Timeline",
   toast: "Toast",
+  "voice-note": "Voice Note",
   "auth-forms": "Login & Signup Form",
   error: "Error Page",
   navbar: "Navbar",

@@ -374,6 +374,22 @@ const rawNavigation: NavigationItem[] = [
       { label: "Video Accordion", slug: "video-accordion" },
       { label: "Video Player", slug: "video-player" },
       {
+        label: "Voice Note",
+        slug: "voice-note",
+        badge: "New",
+        keywords: [
+          "voice note",
+          "voice",
+          "audio record",
+          "hold to record",
+          "mic",
+          "microphone",
+          "speech",
+          "waveform",
+          "sound",
+        ],
+      },
+      {
         label: "Wallet",
         slug: "wallet",
         keywords: [

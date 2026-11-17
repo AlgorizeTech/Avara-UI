@@ -5720,6 +5720,32 @@
       "docs": "Named export: PlyrPlayer. Requires the `plyr` package, which the CLI installs. `provider` is html5 | youtube | vimeo and `mediaType` is video | audio; `accentColor` sets Plyr's `--plyr-color-main`, and `controls` takes Plyr's control-name array. Plyr is imported dynamically inside an effect, so the component server-renders cleanly. Its control icons come from Plyr's CDN sprite by default — set `iconUrl` to a self-hosted `plyr.svg` if the page must not reach a third-party host."
     },
     {
+      "name": "voice-note",
+      "type": "registry:component",
+      "title": "Voice Note",
+      "author": "AlgorizeTech",
+      "description": "A hold-to-record voice note component with dynamic soundwave visualization, slide to cancel gesture, and instant playback with close option.",
+      "categories": [
+        "communication",
+        "media",
+        "actions"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/VoiceNoteBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/VoiceNoteBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: VoiceNote, VoiceNoteProps. Supports hold-to-record, slide-to-cancel gestures, real or simulated audio capture, waveform visualization, and instant playback."
+    },
+    {
       "name": "waitlist",
       "type": "registry:component",
       "title": "Waitlist",

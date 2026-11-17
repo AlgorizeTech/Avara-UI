@@ -85,9 +85,17 @@ export const NAME_OVERRIDES: Record<string, string> = {
   "ErrorBlock.tsx": "error",
   "NotFoundBlock.tsx": "not-found",
   "DesignsToolkitBlock.tsx": "designs-toolkit",
+  "VoiceNoteBlock.tsx": "voice-note",
 };
 
 export const META: Record<string, ItemMeta> = {
+  "voice-note": {
+    title: "Voice Note",
+    description:
+      "A hold-to-record voice note component with dynamic soundwave visualization, slide to cancel gesture, and instant playback with close option.",
+    categories: ["communication", "media", "actions"],
+    docs: "Named exports: VoiceNote, VoiceNoteProps. Supports hold-to-record, slide-to-cancel gestures, real or simulated audio capture, waveform visualization, and instant playback.",
+  },
   "modern-scroll-stack": {
     title: "Modern Scroll Stack",
     description:

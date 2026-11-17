@@ -200,6 +200,7 @@ export const sandboxNames = [
   "video-player",
   "video-player-jw",
   "video-player-plyr",
+  "voice-note",
   "waitlist",
   "wallet",
   "wizard",

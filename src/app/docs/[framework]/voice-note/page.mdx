@@ -1,0 +1,225 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("voice-note");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Shadcn Voice Note
+
+A hold-to-record voice note component with dynamic audio waveform bars, slide-to-cancel gesture, and instant playback with a discard option.
+
+Press and hold the pill to record audio in real time. Sliding left cancels the recording, and releasing gives you an instant audio player with waveform seeking and a close/discard option.
+
+export const usageInteractive = `"use client";
+
+import { VoiceNote } from "@/components/custom/blocks/VoiceNoteBlock";
+
+export default function VoiceNoteInteractiveDemo() {
+  return (
+    <VoiceNote
+      holdLabel="Hold to record"
+      slideCancelLabel="< Slide to cancel"
+      onRecordComplete={(res) => {
+        console.log("Voice note recorded:", res);
+      }}
+      onCancel={() => {
+        console.log("Recording cancelled or discarded");
+      }}
+    />
+  );
+}`;
+
+<ExampleShowcase headingLevel={2}
+  name="voice-note"
+  colorControl
+  colorProp="themeColor"
+  columns={1}
+  examples={[
+    {
+      title: "Voice Note",
+      subheading:
+        "Press and hold to record with live animated waveforms, slide left to cancel, and release to preview audio playback with close option.",
+      propNotes: [
+        {
+          prop: "holdLabel",
+          value: '"Hold to record"',
+          effect: "label displayed inside the pill during the idle state.",
+        },
+        {
+          prop: "slideCancelLabel",
+          value: '"< Slide to cancel"',
+          effect: "cancel hint shown underneath the pill during active recording.",
+        },
+      ],
+      props: { initialState: "idle" },
+      usage: usageInteractive,
+      code: extractCode("src/components/custom/blocks/VoiceNoteBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="voice-note" />
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>holdLabel</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Hold to record"</code>
+        </td>
+        <td>
+          Label displayed inside the pill during the idle state.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>slideCancelLabel</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"&lt; Slide to cancel"</code>
+        </td>
+        <td>
+          Subtext displayed underneath the pill during active recording.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>themeColor</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom theme accent color applied to the play button, active soundwave bars, and pulse indicators.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>maxDuration</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>60</code>
+        </td>
+        <td>
+          Maximum recording duration in seconds before auto-completing.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>minDuration</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>0.5</code>
+        </td>
+        <td>
+          Minimum duration in seconds required to accept the recording. A short tap below this threshold cancels the record immediately.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>enableMic</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          Captures real audio via navigator.mediaDevices when microphone permission is granted.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>initialState</code>
+        </td>
+        <td>
+          <code>"idle" | "recording" | "recorded"</code>
+        </td>
+        <td>
+          <code>"idle"</code>
+        </td>
+        <td>
+          Initial visual state for previews and testing.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>onRecordStart</code>
+        </td>
+        <td>
+          <code>() =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Callback invoked when the user starts holding to record.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>onRecordComplete</code>
+        </td>
+        <td>
+          <code>(result: VoiceNoteRecordResult) =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Callback invoked when recording successfully finishes.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>onCancel</code>
+        </td>
+        <td>
+          <code>() =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Callback invoked when recording is cancelled or closed via the 'X' button.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+
+<DocsJsonLd slug="voice-note" />

@@ -199,6 +199,7 @@
     "src/components/custom/blocks/VideoPlayerBlock.tsx",
     "src/components/custom/blocks/VideoPlayerJwBlock.tsx",
     "src/components/custom/blocks/VideoPlayerPlyrBlock.tsx",
+    "src/components/custom/blocks/VoiceNoteBlock.tsx",
     "src/components/custom/blocks/WaitlistBlock.tsx",
     "src/components/custom/blocks/WalletBlock.tsx",
     "src/components/custom/blocks/WizardBlock.tsx",

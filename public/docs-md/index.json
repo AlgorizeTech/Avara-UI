@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-17T03:03:44.300Z",
-  "totalFiles": 331,
+  "generatedAt": "2026-11-17T08:04:29.645Z",
+  "totalFiles": 333,
   "files": [
     {
       "name": "docs",
@@ -979,6 +979,12 @@
       "path": "/docs-md/nextjs-video-player.md",
       "url": "/docs/nextjs/video-player",
       "originalMdx": "[framework]\\video-player\\page.mdx"
+    },
+    {
+      "name": "nextjs/voice-note",
+      "path": "/docs-md/nextjs-voice-note.md",
+      "url": "/docs/nextjs/voice-note",
+      "originalMdx": "[framework]\\voice-note\\page.mdx"
     },
     {
       "name": "nextjs/waitlist",
@@ -1969,6 +1975,12 @@
       "path": "/docs-md/reactjs-video-player.md",
       "url": "/docs/reactjs/video-player",
       "originalMdx": "[framework]\\video-player\\page.mdx"
+    },
+    {
+      "name": "reactjs/voice-note",
+      "path": "/docs-md/reactjs-voice-note.md",
+      "url": "/docs/reactjs/voice-note",
+      "originalMdx": "[framework]\\voice-note\\page.mdx"
     },
     {
       "name": "reactjs/waitlist",

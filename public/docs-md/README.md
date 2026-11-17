@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-11-17T03:03:44.434Z
-**Total files:** 331
+**Generated at:** 2026-11-17T08:04:29.804Z
+**Total files:** 333
 
 ## Available Files
 
@@ -170,6 +170,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/vertical-tabs](/docs-md/nextjs-vertical-tabs.md) - Source: `[framework]\vertical-tabs\page.mdx`
 - [nextjs/video-accordion](/docs-md/nextjs-video-accordion.md) - Source: `[framework]\video-accordion\page.mdx`
 - [nextjs/video-player](/docs-md/nextjs-video-player.md) - Source: `[framework]\video-player\page.mdx`
+- [nextjs/voice-note](/docs-md/nextjs-voice-note.md) - Source: `[framework]\voice-note\page.mdx`
 - [nextjs/waitlist](/docs-md/nextjs-waitlist.md) - Source: `[framework]\waitlist\page.mdx`
 - [nextjs/wallet](/docs-md/nextjs-wallet.md) - Source: `[framework]\wallet\page.mdx`
 - [nextjs/wizard](/docs-md/nextjs-wizard.md) - Source: `[framework]\wizard\page.mdx`
@@ -335,6 +336,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/vertical-tabs](/docs-md/reactjs-vertical-tabs.md) - Source: `[framework]\vertical-tabs\page.mdx`
 - [reactjs/video-accordion](/docs-md/reactjs-video-accordion.md) - Source: `[framework]\video-accordion\page.mdx`
 - [reactjs/video-player](/docs-md/reactjs-video-player.md) - Source: `[framework]\video-player\page.mdx`
+- [reactjs/voice-note](/docs-md/reactjs-voice-note.md) - Source: `[framework]\voice-note\page.mdx`
 - [reactjs/waitlist](/docs-md/reactjs-waitlist.md) - Source: `[framework]\waitlist\page.mdx`
 - [reactjs/wallet](/docs-md/reactjs-wallet.md) - Source: `[framework]\wallet\page.mdx`
 - [reactjs/wizard](/docs-md/reactjs-wizard.md) - Source: `[framework]\wizard\page.mdx`
