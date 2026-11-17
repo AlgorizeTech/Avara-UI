@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SITE_NAME, SITE_URL, integrations, siteConfig } from "@/config/site";
+import { INDEXABLE, SITE_NAME, SITE_URL, integrations, siteConfig } from "@/config/site";
 
 /**
  * What the library is, in the terms people search for it by. Only accurate
@@ -89,11 +89,14 @@ export const metadata: Metadata = {
     description: siteConfig.description,
     images: [siteConfig.ogImage],
   },
+  // `INDEXABLE` is false on the Vercel deployment (see src/config/site.ts), so
+  // its copy of every page says `noindex` and cannot compete with the real host.
+  // `follow` stays on so crawlers can still read the canonical and links.
   robots: {
-    index: true,
+    index: INDEXABLE,
     follow: true,
     googleBot: {
-      index: true,
+      index: INDEXABLE,
       follow: true,
       "max-video-preview": -1,
       "max-image-preview": "large",

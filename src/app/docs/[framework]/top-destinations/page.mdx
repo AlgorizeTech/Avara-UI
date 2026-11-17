@@ -4,11 +4,11 @@ export const metadata = docsPageMetadata("top-destinations");
 
 import { ExampleShowcase } from "@/components/site/Sandbox";
 import { Installation } from "@/components/site/installation";
-import { extractCode } from "@/lib/code";
+import { extractMotionCode } from "@/lib/code";
 
 # Shadcn Top Destinations
 
-A dual-row scroll-driven destination showcase. As the user scrolls down the page, two parallel rows of destination cards travel in opposite directions via **GSAP ScrollTrigger** scrub animation.
+A dual-row scroll-driven destination showcase. As the user scrolls down the page, two parallel rows of destination cards travel in opposite directions in a scroll-scrubbed animation, built with GSAP ScrollTrigger or Motion.
 
 Each card features full-bleed photography, subtle vertical typography by default, smooth hover scaling, and an interactive bordered overlay revealing place counts, tags, and an "Explore" action.
 
@@ -144,7 +144,7 @@ export default function DestinationsShowcase() {
       ],
       props: { scrollOffset: 450 },
       usage: usageDestinations,
-      code: extractCode("src/components/custom/blocks/TopDestinationsBlock.tsx"),
+      code: extractMotionCode("src/components/custom/blocks/TopDestinationsBlock.tsx"),
     },
   ]}
 />
@@ -239,7 +239,7 @@ export default function DestinationsShowcase() {
         <td><code>scrollerRef</code></td>
         <td><code>RefObject&lt;HTMLElement&gt;</code></td>
         <td><code>undefined</code></td>
-        <td>Custom scroll parent element driving ScrollTrigger (useful inside sandboxes and modals).</td>
+        <td>Custom scroll parent element driving the scrub (useful inside sandboxes and modals).</td>
       </tr>
       <tr>
         <td><code>onExplore</code></td>
