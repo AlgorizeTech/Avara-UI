@@ -12,19 +12,27 @@ Designed to showcase client feedback, agency trust signals, and social proof wit
 
 ## For AI agents
 
-**Ask before you pick.** This page has 4 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+**Ask before you pick.** This page has 5 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
 
-All 4 options as live previews: https://avaraui.com/view/reviews
+All 5 options as live previews: https://avaraui.com/view/reviews
 
-**When to use it.** A testimonials section. Four designs: an envelope that opens to a letter, rolling stacked cards, a logo-tab carousel with a quote card, and a wall of vertical marquee columns.
+**When to use it.** A testimonials section. Five designs: an interactive spotlight card with thumbnail switching and video play modal, an envelope that opens to a letter, rolling stacked cards, a logo-tab carousel with a quote card, and a wall of vertical marquee columns.
 
 **Gotchas:**
 
-- All four are looks of the one `reviews` item: install it once and set `variant` from the index.
+- All five are looks of the one `reviews` item: install it once and set `variant` from the index.
 
-### The 4 variants
+### The 5 variants
 
-1. **Testimonial loom (envelope carousel)** (`testimonial-loom`): A 3D envelope opens, a ruled testimonial letter slides out and settles on the front with a postmark.
+1. **Interactive Testimonial Switcher** (`interactive-testimonial-switcher`): A spotlight testimonial card with interactive thumbnail switching, dynamic quotes, and video playback badge.
+   - Live: https://avaraui.com/view/reviews/interactive-testimonial-switcher
+   - Best for: spotlight video or high-profile client testimonials that visitors click to explore
+   - Avoid if: you have text-only reviews without photos
+   - Traits: spotlight card, thumbnail row, dynamic quote switcher, play modal
+   - Install: `npx shadcn@latest add @avara-ui/reviews`
+   - Set these props: `{"variant":"interactive-testimonial-switcher"}`
+   - Docs: https://avaraui.com/docs/nextjs/reviews#interactive-testimonial-switcher
+2. **Testimonial loom (envelope carousel)** (`testimonial-loom`): A 3D envelope opens, a ruled testimonial letter slides out and settles on the front with a postmark.
    - Live: https://avaraui.com/view/reviews/testimonial-loom
    - Best for: a few strong, personal testimonials that deserve a moment each
    - Avoid if: you have many short reviews to show at once
@@ -32,7 +40,7 @@ All 4 options as live previews: https://avaraui.com/view/reviews
    - Install: `npx shadcn@latest add @avara-ui/reviews`
    - Set these props: `{"variant":"testimonial-loom"}`
    - Docs: https://avaraui.com/docs/nextjs/reviews#testimonial-loom-pro-envelope-carousel
-2. **3D stacked cards carousel** (`stacked-carousel`): Three stacked portrait cards that roll into place with arrow navigation.
+3. **3D stacked cards carousel** (`stacked-carousel`): Three stacked portrait cards that roll into place with arrow navigation.
    - Live: https://avaraui.com/view/reviews/stacked-carousel
    - Best for: testimonials that come with a portrait of the person
    - Avoid if: you have no portraits or photos of reviewers
@@ -40,7 +48,7 @@ All 4 options as live previews: https://avaraui.com/view/reviews
    - Install: `npx shadcn@latest add @avara-ui/reviews`
    - Set these props: `{"variant":"stacked-carousel"}`
    - Docs: https://avaraui.com/docs/nextjs/reviews#3d-stacked-cards-carousel-with-rolling-motion-arrows
-3. **Interactive brand logo carousel** (`logo-carousel`): Company logo tabs that switch a split testimonial quote card with the author's portrait.
+4. **Interactive brand logo carousel** (`logo-carousel`): Company logo tabs that switch a split testimonial quote card with the author's portrait.
    - Live: https://avaraui.com/view/reviews/logo-carousel
    - Best for: B2B proof: quotes from named companies, led by their logos
    - Avoid if: your reviewers are individuals with no company logos
@@ -48,7 +56,7 @@ All 4 options as live previews: https://avaraui.com/view/reviews
    - Install: `npx shadcn@latest add @avara-ui/reviews`
    - Set these props: `{"variant":"logo-carousel"}`
    - Docs: https://avaraui.com/docs/nextjs/reviews#interactive-brand-logo-carousel
-4. **Up-down vertical marquee** (`up-down-marquee`): Four infinite vertical columns of reviews scrolling up and down, pausing on hover.
+5. **Up-down vertical marquee** (`up-down-marquee`): Four infinite vertical columns of reviews scrolling up and down, pausing on hover.
    - Live: https://avaraui.com/view/reviews/up-down-marquee
    - Best for: a wall of many short reviews that shows volume
    - Avoid if: you have only a few reviews; you want visitors to read each one at their own pace
@@ -56,6 +64,24 @@ All 4 options as live previews: https://avaraui.com/view/reviews
    - Install: `npx shadcn@latest add @avara-ui/reviews`
    - Set these props: `{"variant":"up-down-vertical-marquee"}`
    - Docs: https://avaraui.com/docs/nextjs/reviews#updown-vertical-marquee
+
+## Interactive Testimonial Switcher
+
+- Spotlight Switcher & Video Lightbox `variant="interactive-testimonial-switcher"` renders an active spotlight card with bottom-aligned thumbnail swapper, dynamic quote updates, and video playback badge.
+
+```tsx
+import { ReviewsBlock } from "@/components/custom/blocks/ReviewsBlock";
+
+export default function TestimonialSwitcherDemo() {
+  return (
+    <ReviewsBlock
+      variant="interactive-testimonial-switcher"
+      title="Voices of Our Happy Partners"
+      subtitle="Our clients come to us for reliability and stay with us for results. Here's what they have to say about their experience working with our dedicated developers and delivery teams."
+    />
+  );
+}
+```
 
 ## Testimonial Loom Pro (Envelope Carousel)
 
@@ -394,6 +420,7 @@ npx shadcn@latest add @avara-ui/reviews
 
 Discover the key capabilities of the `ReviewsBlock` component:
 
+- **Interactive Testimonial Switcher**: Spotlight card layout with click-to-swap thumbnails, dynamic quote updates, Play duration badge, and video modal lightbox.
 - **UpDown Vertical Marquee**: 4 infinite scrolling columns moving continuously (Column 1 Up, Column 2 Down, Column 3 Up, Column 4 Down) with hover-to-pause interaction.
 - **3D Stacked Portrait Carousel**: Interactive 3-card stacked portrait layout with spring-eased CSS transitions, rolling 3D card rotation, and circular arrow buttons.
 - **Interactive Brand Logo Carousel**: Split card layout with company logo tabs, quote transition animations, author portrait, indicator dots, and round navigation controls.
@@ -405,7 +432,7 @@ Discover the key capabilities of the `ReviewsBlock` component:
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `variant` | `"testimonial-loom" \| "up-down-vertical-marquee" \| "stacked-carousel" \| "logo-carousel"` | `"up-down-vertical-marquee"` | Determines the visual review layout style (4-stage interactive envelope loom, infinite up/down vertical marquee, 3D stacked cards, or brand logo carousel). |
+| `variant` | `"interactive-testimonial-switcher" \| "testimonial-loom" \| "up-down-vertical-marquee" \| "stacked-carousel" \| "logo-carousel"` | `"up-down-vertical-marquee"` | Determines the visual review layout style (interactive spotlight switcher with video badge, 4-stage interactive envelope loom, infinite up/down vertical marquee, 3D stacked cards, or brand logo carousel). |
 | `title` | `string` | `"Loved by Teams Worldwide"` | Main headline text rendered at the top of the reviews section. |
 | `subtitle` | `string` | `"See what founders, designers, and engineers are saying..."` | Supporting paragraph description displayed below the title. |
 | `reviews` | `ReviewItem[]` | `DEFAULT_REVIEWS` | Array of review objects with `id`, `name`, `role`, `avatar`, `rating`, and `content`. |

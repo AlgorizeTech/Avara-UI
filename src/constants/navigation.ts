@@ -550,7 +550,7 @@ const rawNavigation: NavigationItem[] = [
         slug: "profile-page",
         keywords: ["profile", "user profile", "member", "team", "bento", "glass", "glassmorphism"],
       },
-      { label: "Review Section", slug: "reviews" },
+      { label: "Review Section", slug: "reviews", badge: "New" },
       { label: "Sidebar Section", slug: "sidebar", badge: "New" },
       { label: "Support Dashboard", slug: "support-dashboard" },
       {

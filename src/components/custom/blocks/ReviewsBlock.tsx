@@ -2,15 +2,18 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { cn } from "@/lib/utils";
-import { Star, ArrowLeft, ArrowRight } from "lucide-react";
+import { Star, ArrowLeft, ArrowRight, Play, X } from "lucide-react";
 import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
 import { springLinear } from "./motion-curves";
+import { AnimatePresence, motion } from "motion/react";
 
 export type ReviewsVariant =
 	| "up-down-vertical-marquee"
 	| "stacked-carousel"
 	| "logo-carousel"
-	| "testimonial-loom";
+	| "testimonial-loom"
+	| "interactive-testimonial-switcher"
+	| "testimonial-switcher";
 
 export interface ReviewItem {
 	id: string;
@@ -22,6 +25,8 @@ export interface ReviewItem {
 	company?: string;
 	logo?: React.ReactNode;
 	highlight?: string;
+	duration?: string;
+	videoUrl?: string;
 }
 
 export interface ReviewsProps {
@@ -115,6 +120,165 @@ const DEFAULT_REVIEWS: ReviewItem[] = [
 		rating: 5.0,
 		content:
 			"Outstanding developer experience from day one. Clean TypeScript types, well-documented component exports, and instant setup made integration effortless!",
+	},
+];
+
+const DEFAULT_SWITCHER_REVIEWS: ReviewItem[] = [
+	{
+		id: "greg-matthews",
+		name: "Greg Matthews",
+		role: "Managing Director",
+		company: "Apex Labs",
+		avatar:
+			"https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=800&q=80",
+		rating: 5.0,
+		content:
+			"Exceptional delivery standard. They took full ownership of our feature release and delivered ahead of our investor demo deadline with zero defects.",
+		duration: "2 Min",
+		videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1",
+	},
+	{
+		id: "chad-nellis",
+		name: "Chad Nellis",
+		role: "Founder",
+		company: "Music Launch Pad",
+		avatar:
+			"https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80",
+		rating: 5.0,
+		content:
+			"I highly recommend their services. Highly efficient, affordable, always make deadlines, very good communication.",
+		duration: "1 Min",
+		videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1",
+	},
+	{
+		id: "darren-fuller",
+		name: "Darren fuller",
+		role: "Works At Pinpoint",
+		company: "Pinpoint",
+		avatar:
+			"https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
+		rating: 5.0,
+		content:
+			"Acquaint is always there for help, working even on weekends. Their dedicated team provides exceptional support, With excellent communication. Highly recommend these guys. Provides great value.",
+		duration: "2 Min",
+		videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1",
+	},
+	{
+		id: "julian-vance",
+		name: "Julian Vance",
+		role: "CTO",
+		company: "CloudScale",
+		avatar:
+			"https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=800&q=80",
+		rating: 5.0,
+		content:
+			"The engineering depth they brought to our core platform was phenomenal. Scalability issues vanished within the first month of deployment.",
+		duration: "3 Min",
+		videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1",
+	},
+	{
+		id: "marcus-thorne",
+		name: "Marcus Thorne",
+		role: "Creative Director",
+		company: "StudioPulse",
+		avatar:
+			"https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80",
+		rating: 5.0,
+		content:
+			"A rare blend of high design sense and bulletproof code execution. They brought our vision to life faster than any team we've ever partnered with.",
+		duration: "1 Min",
+		videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1",
+	},
+	{
+		id: "lucas-vance",
+		name: "Lucas Vance",
+		role: "Co-Founder",
+		company: "FlowLogic",
+		avatar:
+			"https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=800&q=80",
+		rating: 5.0,
+		content:
+			"Their turnaround speed and proactive communication made them feel like an in-house core team rather than an external agency partner.",
+		duration: "2 Min",
+		videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1",
+	},
+	{
+		id: "gavin-reed",
+		name: "Gavin Reed",
+		role: "VP of Product",
+		company: "BrightScale",
+		avatar:
+			"https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80",
+		rating: 5.0,
+		content:
+			"Clean architecture, excellent automated test coverage, and seamless collaboration. They set a new benchmark for software engineering partners.",
+		duration: "4 Min",
+		videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1",
+	},
+	{
+		id: "sofia-chen",
+		name: "Sofia Chen",
+		role: "Lead Systems Architect",
+		company: "NovaGrid",
+		avatar:
+			"https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80",
+		rating: 5.0,
+		content:
+			"Integrating their UI architecture shaved months off our launch roadmap. Built-in performance optimizations and accessibility standards saved us hundreds of hours.",
+		duration: "3 Min",
+		videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1",
+	},
+	{
+		id: "elena-rostova",
+		name: "Elena Rostova",
+		role: "VP of Engineering",
+		company: "Hyperion",
+		avatar:
+			"https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=800&q=80",
+		rating: 5.0,
+		content:
+			"Their component library is bulletproof. Seamless dark mode integration, accessible keyboard navigation, and animation physics work impeccably out of the box.",
+		duration: "2 Min",
+		videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1",
+	},
+	{
+		id: "david-kim",
+		name: "David Kim",
+		role: "Head of Design",
+		company: "Forma Labs",
+		avatar:
+			"https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800&q=80",
+		rating: 5.0,
+		content:
+			"The attention to clean typography, micro-interactions, and responsive layout scaling surpassed all expectations. It transformed our web product into a world-class design.",
+		duration: "1 Min",
+		videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1",
+	},
+	{
+		id: "alice-johnson",
+		name: "Alice Johnson",
+		role: "Product Director",
+		company: "LayerZero",
+		avatar:
+			"https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&q=80",
+		rating: 5.0,
+		content:
+			"The difference between this team and other agencies is their deep engineering talent. You actually work directly with senior engineers. Code quality is unmatched.",
+		duration: "2 Min",
+		videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1",
+	},
+	{
+		id: "tamar-mendelson",
+		name: "Tamar Mendelson",
+		role: "Senior Partner",
+		company: "Apex Ventures",
+		avatar:
+			"https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80",
+		rating: 5.0,
+		content:
+			"Outstanding developer experience from day one. Clean TypeScript types, well-documented component exports, and instant setup made integration completely effortless.",
+		duration: "3 Min",
+		videoUrl: "https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1",
 	},
 ];
 
@@ -1796,6 +1960,584 @@ function TestimonialLoomVariant({
 }
 
 // ==========================================
+// INTERACTIVE TESTIMONIAL SWITCHER VARIANT
+// ==========================================
+interface InteractiveTestimonialSwitcherProps {
+	reviews?: ReviewItem[];
+	title?: string;
+	subtitle?: string;
+}
+
+const DEFAULT_AVATAR =
+	"https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80";
+
+function InteractiveTestimonialSwitcherVariant({
+	reviews = DEFAULT_SWITCHER_REVIEWS,
+	title,
+	subtitle,
+}: InteractiveTestimonialSwitcherProps) {
+	const items = reviews.length > 0 ? reviews : DEFAULT_SWITCHER_REVIEWS;
+
+	// Initial active item: default to Chad Nellis (index 1 if present) or index 0
+	const defaultActiveIndex = Math.max(
+		0,
+		items.findIndex(
+			(item) =>
+				item.id === "chad-nellis" ||
+				item.name.toLowerCase().includes("chad"),
+		),
+	);
+
+	const [activeIndex, setActiveIndex] = useState(
+		defaultActiveIndex >= 0 ? defaultActiveIndex : 0,
+	);
+	const [isVideoOpen, setIsVideoOpen] = useState(false);
+
+	// Horizontal drag / swipe to change active item (fluid tape & infinite ring)
+	const [dragOffset, setDragOffset] = useState(0);
+	const [isDragging, setIsDragging] = useState(false);
+	const [slideDirection, setSlideDirection] = useState<"left" | "right" | null>(null);
+
+	const startXRef = useRef(0);
+	const currentDiffRef = useRef(0);
+	const isDraggingRef = useRef(false);
+	const hasDraggedRef = useRef(false);
+
+	const count = items.length;
+
+	// Infinite circular ring accessor: never runs out of items
+	const getItem = useCallback(
+		(offset: number) => {
+			const idx = ((activeIndex + offset) % count + count) % count;
+			return items[idx];
+		},
+		[items, activeIndex, count],
+	);
+
+	const activeItem = getItem(0);
+	const leftItem = getItem(-1);
+
+	const handleDragStart = (clientX: number) => {
+		isDraggingRef.current = true;
+		hasDraggedRef.current = false;
+		startXRef.current = clientX;
+		currentDiffRef.current = 0;
+		setIsDragging(true);
+	};
+
+	const handleDragMove = (clientX: number) => {
+		if (!isDraggingRef.current) return;
+		const diff = clientX - startXRef.current;
+		currentDiffRef.current = diff;
+		if (Math.abs(diff) > 8) {
+			hasDraggedRef.current = true;
+		}
+		// Responsive 1:1 tactile tape feedback capped smoothly
+		const damped = Math.sign(diff) * Math.min(Math.abs(diff) * 0.75, 140);
+		setDragOffset(damped);
+	};
+
+	const handleDragEnd = () => {
+		if (!isDraggingRef.current) return;
+		isDraggingRef.current = false;
+		setIsDragging(false);
+
+		const diff = currentDiffRef.current;
+		setDragOffset(0);
+
+		const threshold = 35; // Easy, natural drag threshold
+		if (diff > threshold) {
+			// Dragged to the right: items slide right, activate previous review
+			setSlideDirection("right");
+			setActiveIndex((prev) => (prev - 1 + count) % count);
+			setTimeout(() => setSlideDirection(null), 350);
+		} else if (diff < -threshold) {
+			// Dragged to the left: items slide left, activate next review
+			setSlideDirection("left");
+			setActiveIndex((prev) => (prev + 1) % count);
+			setTimeout(() => setSlideDirection(null), 350);
+		}
+	};
+
+	const onMouseDown = (e: React.MouseEvent) => {
+		e.preventDefault();
+		handleDragStart(e.clientX);
+
+		const onMouseMove = (moveEvent: MouseEvent) => {
+			handleDragMove(moveEvent.clientX);
+		};
+
+		const onMouseUp = () => {
+			window.removeEventListener("mousemove", onMouseMove);
+			window.removeEventListener("mouseup", onMouseUp);
+			handleDragEnd();
+		};
+
+		window.addEventListener("mousemove", onMouseMove);
+		window.addEventListener("mouseup", onMouseUp);
+	};
+
+	const onTouchStart = (e: React.TouchEvent) => {
+		if (e.touches.length !== 1) return;
+		handleDragStart(e.touches[0].clientX);
+	};
+
+	const onTouchMove = (e: React.TouchEvent) => {
+		if (e.touches.length !== 1) return;
+		handleDragMove(e.touches[0].clientX);
+	};
+
+	const onTouchEnd = () => {
+		handleDragEnd();
+	};
+
+	const handleSelect = useCallback(
+		(id: string) => {
+			const foundIdx = items.findIndex((item) => item.id === id);
+			if (foundIdx !== -1 && foundIdx !== activeIndex) {
+				const forwardDist = (foundIdx - activeIndex + count) % count;
+				const backwardDist = (activeIndex - foundIdx + count) % count;
+				const dir = forwardDist <= backwardDist ? "left" : "right";
+				setSlideDirection(dir);
+				setActiveIndex(foundIdx);
+				setTimeout(() => setSlideDirection(null), 320);
+			}
+		},
+		[items, activeIndex, count],
+	);
+
+	useEffect(() => {
+		const handleKeyDown = (e: KeyboardEvent) => {
+			if (e.key === "Escape") setIsVideoOpen(false);
+		};
+		if (isVideoOpen) {
+			window.addEventListener("keydown", handleKeyDown);
+			return () => window.removeEventListener("keydown", handleKeyDown);
+		}
+	}, [isVideoOpen]);
+
+	const displayTitle =
+		title && title !== "Loved by Tech Leaders Worldwide"
+			? title
+			: "Voices of Our Happy Partners";
+	const displaySubtitle =
+		subtitle &&
+		subtitle !==
+			"See how fast-growing teams scale products with our senior engineering team."
+			? subtitle
+			: "Our clients come to us for reliability and stay with us for results. Here's what they have to say about their experience working with our dedicated developers and delivery teams.";
+
+	const imageDragStyle = {
+		transform: isDragging ? `translateX(${dragOffset}px)` : undefined,
+		transition: isDragging
+			? "none"
+			: "transform 0.32s cubic-bezier(0.16, 1, 0.3, 1)",
+	};
+
+	return (
+		<div className="w-full max-w-6xl mx-auto flex flex-col justify-between rounded-3xl border border-border/70 bg-card p-4 sm:p-7 md:p-9 transition-all duration-300">
+			<style>{`
+				.no-scrollbar::-webkit-scrollbar {
+					display: none;
+				}
+				.no-scrollbar {
+					-ms-overflow-style: none;
+					scrollbar-width: none;
+				}
+			`}</style>
+
+			{/* Header */}
+			<div className="space-y-2 mb-6 sm:mb-8 shrink-0">
+				<span className="text-primary text-[11px] sm:text-xs font-bold tracking-[0.2em] uppercase block">
+					CLIENT TESTIMONIALS
+				</span>
+				<h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-foreground tracking-tight">
+					{displayTitle}
+				</h2>
+				<p className="text-xs sm:text-sm text-muted-foreground max-w-2xl leading-relaxed mt-2">
+					{displaySubtitle}
+				</p>
+			</div>
+
+			{/* DESKTOP LAYOUT (md and up): Images drag like a ribbon/tape, Right-Top Quote is static & animates from bottom */}
+			<div className="hidden md:flex items-end gap-3 lg:gap-4 mt-auto w-full select-none overflow-hidden">
+				{/* Left Buffer Item (Peeks from off-screen left, rolls into view when dragging right so items never end) */}
+				<div
+					style={imageDragStyle}
+					className="hidden xl:block w-[95px] lg:w-[105px] xl:w-[115px] h-[105px] lg:h-[130px] xl:h-[138px] rounded-2xl lg:rounded-3xl overflow-hidden shrink-0 opacity-40 -ml-[110px] pointer-events-none"
+				>
+					<img
+						src={getItem(-2).avatar || DEFAULT_AVATAR}
+						alt={getItem(-2).name}
+						className="w-full h-full object-cover"
+						draggable={false}
+					/>
+				</div>
+
+				{/* 1. Left Thumbnail (Clickable, draggable, switches to active, resting on bottom baseline) */}
+				<button
+					type="button"
+					onMouseDown={onMouseDown}
+					onTouchStart={onTouchStart}
+					onTouchMove={onTouchMove}
+					onTouchEnd={onTouchEnd}
+					style={imageDragStyle}
+					onClick={(e) => {
+						if (hasDraggedRef.current) {
+							e.preventDefault();
+							return;
+						}
+						handleSelect(leftItem.id);
+					}}
+					className="group relative w-[90px] lg:w-[105px] xl:w-[115px] h-[105px] lg:h-[130px] xl:h-[138px] rounded-2xl lg:rounded-3xl overflow-hidden cursor-grab active:cursor-grabbing border border-border/60 hover:border-primary/60 transition-colors duration-200 shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary bg-muted text-left"
+					title={`Switch to ${leftItem.name}`}
+				>
+					<img
+						src={leftItem.avatar || DEFAULT_AVATAR}
+						alt={leftItem.name}
+						className="w-full h-full object-cover pointer-events-none select-none transition-opacity duration-300"
+						draggable={false}
+					/>
+					<div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-200 pointer-events-none" />
+				</button>
+
+				{/* 2. Active Spotlight Card (Draggable tape, height: h-[320px] on md, h-[380px] on lg, h-[390px] on xl) */}
+				<div
+					onMouseDown={onMouseDown}
+					onTouchStart={onTouchStart}
+					onTouchMove={onTouchMove}
+					onTouchEnd={onTouchEnd}
+					style={imageDragStyle}
+					className="relative w-[190px] md:w-[210px] lg:w-[260px] xl:w-[290px] h-[320px] lg:h-[380px] xl:h-[390px] rounded-2xl lg:rounded-3xl overflow-hidden border border-border/60 shrink-0 bg-muted group cursor-grab active:cursor-grabbing"
+				>
+					<AnimatePresence initial={false} mode="popLayout" custom={slideDirection}>
+						<motion.img
+							key={activeItem.id}
+							src={activeItem.avatar || DEFAULT_AVATAR}
+							alt={activeItem.name}
+							custom={slideDirection}
+							variants={{
+								enter: (dir: "left" | "right" | null) => ({
+									x: dir === "left" ? "28%" : dir === "right" ? "-28%" : 0,
+									opacity: 0.35,
+								}),
+								center: {
+									x: 0,
+									opacity: 1,
+								},
+								exit: (dir: "left" | "right" | null) => ({
+									x: dir === "left" ? "-28%" : dir === "right" ? "28%" : 0,
+									opacity: 0.35,
+								}),
+							}}
+							initial="enter"
+							animate="center"
+							exit="exit"
+							transition={{
+								duration: 0.36,
+								ease: [0.16, 1, 0.3, 1],
+							}}
+							className="w-full h-full object-cover pointer-events-none select-none"
+							draggable={false}
+						/>
+					</AnimatePresence>
+
+					{/* Circular Play Button with white border and theme pulse */}
+					<button
+						type="button"
+						onClick={(e) => {
+							if (hasDraggedRef.current) {
+								e.preventDefault();
+								return;
+							}
+							setIsVideoOpen(true);
+						}}
+						className="group absolute bottom-3 right-3 lg:bottom-4 lg:right-4 size-11 lg:size-12 rounded-full bg-primary border-2 border-white flex items-center justify-center text-primary-foreground shadow-xl cursor-pointer hover:scale-110 active:scale-95 transition-transform duration-200 z-10"
+						title={`Play video testimonial of ${activeItem.name}`}
+					>
+						<span className="absolute -inset-1 rounded-full bg-primary/50 animate-ping opacity-75 pointer-events-none" />
+						<Play className="size-4 lg:size-5 fill-white text-white ml-0.5 relative z-10 pointer-events-none" />
+					</button>
+				</div>
+
+				{/* 3. Right Column: Quote on top (STATIC, NEVER DRAGGED), Thumbnails on bottom (DRAGGABLE TAPE) */}
+				<div className="flex-1 flex flex-col justify-between h-[320px] lg:h-[380px] xl:h-[390px] min-w-0">
+					{/* Active Testimonial Quote & Author details: STATIC, animates in from bottom with AnimatePresence */}
+					<AnimatePresence mode="wait">
+						<motion.div
+							key={activeItem.id}
+							initial={{ opacity: 0, y: 16 }}
+							animate={{ opacity: 1, y: 0 }}
+							exit={{ opacity: 0, y: -10 }}
+							transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+							className="flex flex-col justify-start space-y-2 lg:space-y-3.5 overflow-hidden md:pl-6 lg:pl-8 xl:pl-9"
+						>
+							{/* 5-Star Rating & Verified Badge */}
+							<div className="flex items-center gap-2 pt-0.5">
+								<div className="flex items-center gap-1">
+									{[1, 2, 3, 4, 5].map((s) => (
+										<Star
+											key={s}
+											className="size-4 lg:size-[17px] fill-primary text-primary"
+										/>
+									))}
+								</div>
+								<span className="text-[11px] lg:text-xs font-semibold text-primary bg-primary/10 px-2.5 py-0.5 rounded-full">
+									5.0 • Verified Client
+								</span>
+							</div>
+							<p className="text-xs md:text-sm lg:text-base xl:text-lg text-foreground/90 font-normal leading-relaxed line-clamp-4 max-w-xl">
+								"{activeItem.content}"
+							</p>
+							<div className="pt-0.5 lg:pt-1">
+								<h4 className="text-sm lg:text-base xl:text-lg font-bold text-foreground leading-tight truncate">
+									{activeItem.name}
+								</h4>
+								<p className="text-xs lg:text-sm text-muted-foreground mt-0.5 font-normal truncate">
+									{activeItem.role}
+									{activeItem.company ? ` • ${activeItem.company}` : ""}
+								</p>
+							</div>
+						</motion.div>
+					</AnimatePresence>
+
+					{/* Remaining Thumbnails Row: Draggable tape in sync with Active Card, infinite ring loop with overflow peek */}
+					<div
+						onMouseDown={onMouseDown}
+						onTouchStart={onTouchStart}
+						onTouchMove={onTouchMove}
+						onTouchEnd={onTouchEnd}
+						style={imageDragStyle}
+						className="w-full flex items-end gap-2.5 lg:gap-3 mt-4 lg:mt-6 cursor-grab active:cursor-grabbing"
+					>
+						{[1, 2, 3, 4, 5, 6, 7].map((offset) => {
+							const item = getItem(offset);
+							return (
+								<button
+									key={`r-thumb-${offset}-${item.id}`}
+									type="button"
+									onClick={(e) => {
+										if (hasDraggedRef.current) {
+											e.preventDefault();
+											return;
+										}
+										handleSelect(item.id);
+									}}
+									className={cn(
+										"group relative flex-1 min-w-[70px] lg:min-w-[90px] xl:min-w-[100px] h-[105px] lg:h-[130px] xl:h-[138px] rounded-2xl lg:rounded-3xl overflow-hidden cursor-pointer border border-border/60 hover:border-primary/60 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary bg-muted text-left shrink-0",
+										offset <= 3 ? "flex" : offset <= 5 ? "hidden sm:flex" : "hidden xl:flex",
+									)}
+									title={`Switch to ${item.name}`}
+								>
+									<img
+										src={item.avatar || DEFAULT_AVATAR}
+										alt={item.name}
+										className="w-full h-full object-cover pointer-events-none select-none transition-opacity duration-300"
+										draggable={false}
+									/>
+									<div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-200 pointer-events-none" />
+								</button>
+							);
+						})}
+					</div>
+				</div>
+			</div>
+
+			{/* MOBILE LAYOUT (< md): Stacked vertically with infinite circular ring & static quote reveal */}
+			<div className="flex md:hidden flex-col w-full">
+				{/* 1. Top Spotlight Card with Play Button (Draggable tape with smooth directional slide) */}
+				<div
+					onTouchStart={onTouchStart}
+					onTouchMove={onTouchMove}
+					onTouchEnd={onTouchEnd}
+					onMouseDown={onMouseDown}
+					style={imageDragStyle}
+					className="relative w-full h-[350px] min-h-[350px] max-h-[350px] shrink-0 rounded-2xl overflow-hidden border border-border/60 bg-muted group cursor-grab active:cursor-grabbing select-none"
+				>
+					<AnimatePresence initial={false} mode="popLayout" custom={slideDirection}>
+						<motion.img
+							key={activeItem.id}
+							src={activeItem.avatar || DEFAULT_AVATAR}
+							alt={activeItem.name}
+							custom={slideDirection}
+							variants={{
+								enter: (dir: "left" | "right" | null) => ({
+									x: dir === "left" ? "28%" : dir === "right" ? "-28%" : 0,
+									opacity: 0.35,
+								}),
+								center: {
+									x: 0,
+									opacity: 1,
+								},
+								exit: (dir: "left" | "right" | null) => ({
+									x: dir === "left" ? "-28%" : dir === "right" ? "28%" : 0,
+									opacity: 0.35,
+								}),
+							}}
+							initial="enter"
+							animate="center"
+							exit="exit"
+							transition={{
+								duration: 0.36,
+								ease: [0.16, 1, 0.3, 1],
+							}}
+							className="w-full h-full object-cover pointer-events-none select-none"
+							draggable={false}
+						/>
+					</AnimatePresence>
+
+					{/* Circular Play Button with white border and theme pulse */}
+					<button
+						type="button"
+						onClick={(e) => {
+							if (hasDraggedRef.current) {
+								e.preventDefault();
+								return;
+							}
+							setIsVideoOpen(true);
+						}}
+						className="group absolute bottom-3 right-3 size-11 rounded-full bg-primary border-2 border-white flex items-center justify-center text-primary-foreground shadow-xl cursor-pointer hover:scale-110 active:scale-95 transition-transform duration-200 z-10"
+						title={`Play video testimonial of ${activeItem.name}`}
+					>
+						<span className="absolute -inset-1 rounded-full bg-primary/50 animate-ping opacity-75 pointer-events-none" />
+						<Play className="size-4 fill-white text-white ml-0.5 relative z-10" />
+					</button>
+				</div>
+
+				{/* 2. Middle: Quote & Author Info (Fixed height, STATIC, animates in from bottom with AnimatePresence) */}
+				<div className="pt-4 pb-1 flex flex-col justify-between h-[165px] min-h-[165px] max-h-[165px] text-left shrink-0 overflow-hidden">
+					<AnimatePresence mode="wait">
+						<motion.div
+							key={`m-quote-${activeItem.id}`}
+							initial={{ opacity: 0, y: 12 }}
+							animate={{ opacity: 1, y: 0 }}
+							exit={{ opacity: 0, y: -8 }}
+							transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+							className="flex flex-col justify-between h-full"
+						>
+							<div>
+								{/* 5-Star Rating & Verified Badge */}
+								<div className="flex items-center gap-2 mb-2">
+									<div className="flex items-center gap-0.5">
+										{[1, 2, 3, 4, 5].map((s) => (
+											<Star
+												key={s}
+												className="size-3.5 fill-primary text-primary"
+											/>
+										))}
+									</div>
+									<span className="text-[10px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+										5.0 • Verified
+									</span>
+								</div>
+								<p className="text-sm sm:text-base text-foreground/90 font-normal leading-relaxed line-clamp-3 sm:line-clamp-4">
+									"{activeItem.content}"
+								</p>
+							</div>
+							<div className="pt-1">
+								<h4 className="text-base sm:text-lg font-bold text-foreground leading-tight truncate">
+									{activeItem.name}
+								</h4>
+								<p className="text-xs sm:text-sm text-muted-foreground mt-0.5 font-normal truncate">
+									{activeItem.role}
+									{activeItem.company ? ` - ${activeItem.company}` : ""}
+								</p>
+							</div>
+						</motion.div>
+					</AnimatePresence>
+				</div>
+
+				{/* 3. Bottom: Horizontal Thumbnail Strip with infinite circular ring (peeking both directions) */}
+				<div
+					onMouseDown={onMouseDown}
+					onTouchStart={onTouchStart}
+					onTouchMove={onTouchMove}
+					onTouchEnd={onTouchEnd}
+					className="flex items-center gap-3.5 sm:gap-4 overflow-hidden mt-6 pt-2 pb-2 -mx-1 px-1 cursor-grab active:cursor-grabbing select-none shrink-0"
+				>
+					<div
+						className="flex items-center gap-3.5 sm:gap-4 shrink-0"
+						style={imageDragStyle}
+					>
+						{[-2, -1, 0, 1, 2, 3, 4, 5, 6].map((offset) => {
+							const item = getItem(offset);
+							const isActive = offset === 0;
+							return (
+								<button
+									key={`m-ring-${offset}-${item.id}`}
+									type="button"
+									onClick={(e) => {
+										if (hasDraggedRef.current) {
+											e.preventDefault();
+											return;
+										}
+										handleSelect(item.id);
+									}}
+									className={cn(
+										"group relative w-[76px] xs:w-[86px] sm:w-[98px] aspect-[3/4] rounded-2xl overflow-hidden cursor-pointer shrink-0 transition-colors duration-200 text-left focus:outline-none",
+										isActive
+											? "border-2 border-primary"
+											: "border border-border/60 opacity-80 hover:opacity-100",
+									)}
+									title={`Switch to ${item.name}`}
+								>
+									<img
+										src={item.avatar || DEFAULT_AVATAR}
+										alt={item.name}
+										className="w-full h-full object-cover pointer-events-none transition-opacity duration-300"
+										draggable={false}
+									/>
+									<div
+										className={cn(
+											"absolute inset-0 transition-colors duration-200",
+											isActive
+												? "bg-transparent"
+												: "bg-black/10 group-hover:bg-transparent",
+										)}
+									/>
+								</button>
+							);
+						})}
+					</div>
+				</div>
+			</div>
+
+			{/* Video Modal / Lightbox (no shadow) */}
+			{isVideoOpen && (
+				<div
+					className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+					onClick={() => setIsVideoOpen(false)}
+				>
+					<div
+						className="relative w-full max-w-3xl aspect-video bg-black rounded-2xl overflow-hidden border border-white/10"
+						onClick={(e) => e.stopPropagation()}
+					>
+						<button
+							type="button"
+							onClick={() => setIsVideoOpen(false)}
+							className="absolute top-3 right-3 z-20 p-2 rounded-full bg-black/60 hover:bg-black/90 text-white transition-colors"
+							aria-label="Close video"
+						>
+							<X className="size-5" />
+						</button>
+						<iframe
+							src={
+								activeItem.videoUrl ||
+								"https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1"
+							}
+							title={`${activeItem.name} video testimonial`}
+							className="w-full h-full border-0"
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+							allowFullScreen
+						/>
+					</div>
+				</div>
+			)}
+		</div>
+	);
+}
+
+// ==========================================
 // MAIN REVIEWS BLOCK
 // ==========================================
 export function ReviewsBlock({
@@ -1808,6 +2550,28 @@ export function ReviewsBlock({
 	marqueeSpeed = 100,
 	className,
 }: ReviewsProps) {
+	if (
+		variant === "interactive-testimonial-switcher" ||
+		variant === "testimonial-switcher"
+	) {
+		return (
+			<section
+				className={cn(
+					"relative w-full flex items-center justify-center py-6 sm:py-10 md:py-12 px-2 sm:px-4 md:px-6 overflow-hidden transition-colors duration-300",
+					className,
+				)}
+			>
+				<InteractiveTestimonialSwitcherVariant
+					title={title}
+					subtitle={subtitle}
+					reviews={
+						reviews === DEFAULT_REVIEWS ? DEFAULT_SWITCHER_REVIEWS : reviews
+					}
+				/>
+			</section>
+		);
+	}
+
 	if (variant === "testimonial-loom") {
 		return (
 			<section

@@ -148,6 +148,18 @@ export default function TestimonialLoomDemo() {
   return <ReviewsBlock variant="testimonial-loom" />;
 }`;
 
+export const usageTestimonialSwitcher = `import { ReviewsBlock } from "@/components/custom/blocks/ReviewsBlock";
+
+export default function TestimonialSwitcherDemo() {
+  return (
+    <ReviewsBlock
+      variant="interactive-testimonial-switcher"
+      title="Voices of Our Happy Partners"
+      subtitle="Our clients come to us for reliability and stay with us for results. Here's what they have to say about their experience working with our dedicated developers and delivery teams."
+    />
+  );
+}`;
+
 <ExampleShowcase headingLevel={2}
   name="reviews"
   controls={[
@@ -155,6 +167,21 @@ export default function TestimonialLoomDemo() {
   ]}
   columns={1}
   examples={[
+    {
+      title: "Interactive Testimonial Switcher",
+      propNotes: [
+        {
+          lead: "Spotlight Switcher & Video Lightbox",
+          prop: "variant",
+          value: '"interactive-testimonial-switcher"',
+          effect:
+            "renders an active spotlight card with bottom-aligned thumbnail swapper, dynamic quote updates, and video playback badge.",
+        },
+      ],
+      props: { variant: "interactive-testimonial-switcher" },
+      usage: usageTestimonialSwitcher,
+      code: extractCode("src/components/custom/blocks/ReviewsBlock.tsx"),
+    },
     {
       title: "Testimonial Loom Pro (Envelope Carousel)",
       propNotes: [
@@ -200,6 +227,7 @@ export default function TestimonialLoomDemo() {
 
 Discover the key capabilities of the `ReviewsBlock` component:
 
+- **Interactive Testimonial Switcher**: Spotlight card layout with click-to-swap thumbnails, dynamic quote updates, Play duration badge, and video modal lightbox.
 - **UpDown Vertical Marquee**: 4 infinite scrolling columns moving continuously (Column 1 Up, Column 2 Down, Column 3 Up, Column 4 Down) with hover-to-pause interaction.
 - **3D Stacked Portrait Carousel**: Interactive 3-card stacked portrait layout with spring-eased CSS transitions, rolling 3D card rotation, and circular arrow buttons.
 - **Interactive Brand Logo Carousel**: Split card layout with company logo tabs, quote transition animations, author portrait, indicator dots, and round navigation controls.
@@ -222,9 +250,9 @@ Discover the key capabilities of the `ReviewsBlock` component:
     <tbody>
       <tr>
         <td><code>variant</code></td>
-        <td><code>"testimonial-loom" | "up-down-vertical-marquee" | "stacked-carousel" | "logo-carousel"</code></td>
+        <td><code>"interactive-testimonial-switcher" | "testimonial-loom" | "up-down-vertical-marquee" | "stacked-carousel" | "logo-carousel"</code></td>
         <td><code>"up-down-vertical-marquee"</code></td>
-        <td>Determines the visual review layout style (4-stage interactive envelope loom, infinite up/down vertical marquee, 3D stacked cards, or brand logo carousel).</td>
+        <td>Determines the visual review layout style (interactive spotlight switcher with video badge, 4-stage interactive envelope loom, infinite up/down vertical marquee, 3D stacked cards, or brand logo carousel).</td>
       </tr>
       <tr>
         <td><code>title</code></td>
