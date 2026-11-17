@@ -14,7 +14,7 @@ Four independent components live on this page — four in `carousel.tsx` (`Image
 
 ### Radial carousel
 
-`RadialCarousel` arranges cards in a full 360-degree 3D radial wheel radiating in all four directions around a central hub with smooth drag momentum. The hub at the exact centre is a play/pause button for autoplay (`autoPlay` sets whether it starts playing), and cards further from the top fade toward the page background so the wheel works in light and dark themes.
+`RadialCarousel` arranges cards on a 360-degree 3D wheel around a central hub, with drag momentum. The hub plays or pauses autoplay.
 
 - Pass `items` as `{ title, category, rating, img }[]` — cards radiate in 360 degrees around the center.
 - `stepAngle` controls the rotation angle increment between cards (default is 360 / items.length).

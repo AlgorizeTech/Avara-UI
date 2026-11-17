@@ -6,11 +6,9 @@ url: https://avaraui.com/docs/nextjs/data-maps
 
 # Shadcn Data Maps
 
-A powerful, highly-customizable React-Leaflet based choropleth map component designed for beautifully visualizing geographic data, user distributions, and global trends without the need for clunky external map tiles. Built with SSR safety in mind: the component defers Leaflet until after mount, so it renders correctly whether or not your framework prerenders on a server — no hydration mismatches, no broken renders, and nothing for you to wrap.
+A React-Leaflet choropleth map for visualizing geographic data, user distributions and global trends. It paints country polygons from world GeoJSON, so there are no raster tiles to load, and it defers Leaflet until after mount, so it renders correctly whether or not your framework prerenders.
 
-It features interactive hover tooltips, multiple visual variants (such as solid region fills or density dots), country flag badges, trend indicators, and seamless theme integration that automatically adapts to your site's dark or light mode. Whether you're showing active users per country, traffic breakdowns, or global feature adoption — this component handles it with elegant simplicity. Perfect for building immersive dashboards, analytics panels, and global demographic visualizations in any React application.
-
-The map is pure vector — it fetches world GeoJSON and paints country polygons, so there are no raster tiles to load. Hover any highlighted country for its data card.
+It has hover tooltips, solid-fill and density-dot variants, flag badges and trend indicators, and it follows your site's light or dark mode. Hover any highlighted country for its data card.
 
 ## For AI agents
 

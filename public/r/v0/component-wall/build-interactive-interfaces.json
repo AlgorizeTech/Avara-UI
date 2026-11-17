@@ -3,7 +3,7 @@
   "name": "component-wall-build-interactive-interfaces",
   "type": "registry:block",
   "title": "Component Wall — Build interactive interfaces",
-  "description": "The copy in the middle, a wall on each side. Wait a few seconds: the left camera glides to another card, then the right one, and the install line changes to name whichever just landed. Hovering a wall holds its camera.",
+  "description": "The copy in the middle, a wall on each side. Wait a few seconds: each camera glides to a new card in turn, and the install line changes to name it.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

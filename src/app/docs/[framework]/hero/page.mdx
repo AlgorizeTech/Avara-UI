@@ -27,9 +27,9 @@ Every hero section in the library, on one page. Each is its own registry item wi
 ## Honeycomb Hero
 
 
-A travel hero on a dark ground that shifts colour: a light line over a huge white word on the left, and on the right a honeycomb of hexagonal photographs with a primary hexagonal call to action set among them. The large hexagon is the slide on screen — its photograph is also the background behind everything, tinted with that photograph's own tone, so the colour of the whole section changes with the slide — and the smaller ones are the queue. Every four seconds, or on the arrows at the foot, every hexagon moves one step along the honeycomb: the next photograph grows into the feature spot while the feature slides to the back of the queue. The loop never ends, in either direction.
+A travel hero on a dark ground that shifts colour: a huge white word on the left, and on the right a honeycomb of hexagonal photographs with a primary call-to-action hexagon among them. The large hexagon is the slide on screen, and its photograph tints the whole section. Every four seconds, or on the arrows at the foot, every hexagon moves one step along the honeycomb, and the loop never ends.
 
-The honeycomb is measured from the design and laid out in percentages of a fixed-aspect stage anchored to the right edge, so the composition holds at any size and whatever falls past the edge is clipped, as intended. The letters of the word that cross the photographs turn your theme's `primary`, as do the rule, the arrows and the call-to-action hexagon, whose compass and label take `primary-foreground`. They read the theme wherever the section sits, so switching themes repaints them.
+The word's letters over the photographs, the rule, the arrows and the call to action take your theme's `primary`, so switching themes repaints them.
 
 {/* The snippets below pass next/link so links route client-side in Next.js. The React tab is the same file without it: the component's default <a> needs no import. */}
 
@@ -87,26 +87,15 @@ export default function Hero() {
   examples={[
     {
       title: "Wander the fjords",
-      subheading: "Copy on the left, the honeycomb on the right with the primary hexagon set among the photographs. Wait four seconds or use the arrows at the foot: every hexagon moves one step along the ring, and the whole section eases to the new photograph's colour. Pick a colour above to repaint the accent.",
+      subheading: "Copy on the left, the honeycomb on the right. Wait four seconds or use the arrows: every hexagon moves one step, and the section eases to the new photograph's colour.",
       propNotes: [
         {
           prop: "images",
-          effect:
-            "are the photographs in queue order; the first is featured at the start. Nine cells are visible — fewer photographs are repeated around the ring, more simply wait their turn. Give each a deep `tone` and the background tint, the fade towards the copy and the gaps between hexagons all ease to it while that photograph is featured.",
-        },
-        {
-          prop: "interval",
-          value: "4000",
-          effect:
-            "is the gap between steps in milliseconds. It pauses while the tab is hidden and while the section is off screen; `0` turns autoplay off and leaves the arrows.",
+          effect: "are the photographs in queue order. Give each a deep `tone` and the section eases to it while that photograph is featured.",
         },
         {
           prop: "primaryActionLabel",
-          effect: "fills the call-to-action hexagon; a `\\n` in the string breaks the line, as in Plan / your trip. A compass sits above it; on hover it turns and the hairline hexagon inside the cell swells, and on keyboard focus the hairline goes solid.",
-        },
-        {
-          prop: "accent",
-          effect: "sets `--primary` for the section: the letters of the word that cross the photographs, the rule, the arrows and the call to action, with its label in `primary-foreground`. Leave it out to follow your theme's primary. `background` is the tone for photographs without one: a deep shade of the primary by default.",
+          effect: "fills the call-to-action hexagon; a `\\n` in the string breaks the line.",
         },
       ],
       usage: nextAndReact(usageHoneycomb),
@@ -226,9 +215,9 @@ export default function Hero() {
 ## Hero Carousel
 
 
-A full-bleed photo hero for a place worth travelling to: an eyebrow pill, a large light headline, a glass panel with the faces of the people who came before you and a call to action, and — the thing that moves — a queue of cards. The front card is the slide on screen; the ones behind it are what comes next. Every five seconds, or when a card is clicked, the queue slides forward, the photograph behind everything crossfades, and the headline and caption follow it.
+A full-bleed photo hero for a place worth travelling to: an eyebrow pill, a large light headline, a glass panel with a call to action, and a queue of cards. The front card is the slide on screen. Every five seconds, or when a card is clicked, the queue slides forward and the photograph, headline and caption follow it.
 
-`HeroCarousel` composes the library: the faces are an <DocLink to="avatar-stack">AvatarStack</DocLink>. The colours come from the photographs; the theme's `--primary` (pin it with `accent`) is used for the eyebrow pip, the arrow on the call to action, the progress line and the focus rings.
+`HeroCarousel` composes the library: the faces are an <DocLink to="avatar-stack">AvatarStack</DocLink>. Accents use the theme's `--primary`, which `accent` pins.
 
 export const usageHeroCarousel = `"use client";
 
@@ -318,29 +307,15 @@ export default function Hero() {
   examples={[
     {
       title: "Watch the dawn from the summit",
-      subheading: "Eyebrow and headline across the top; the glass panel and the queue of cards along the foot. The queue moves every five seconds — click any card to bring it forward, use the arrow keys, or swipe on a phone. Hovering the rail holds the clock.",
+      subheading: "Eyebrow and headline across the top, the glass panel and the queue of cards along the foot. Click a card to bring it forward, use the arrow keys or swipe; hovering the rail holds the clock.",
       propNotes: [
         {
           prop: "slides",
-          effect:
-            "are shown in order: the front card is the current slide, the rest queue up behind it. Each carries its `image` (full-bleed and in its card), a `title` and `description` for the caption, an optional `heading` that replaces the section headline while it is in front, and a `position` for the crop.",
-        },
-        {
-          prop: "interval",
-          value: "5000",
-          effect:
-            "is the gap between slides in milliseconds. It pauses while the pointer or keyboard focus is on the rail, while the tab is hidden and while the section is off screen; `0` turns autoplay off and hides the progress line.",
+          effect: "are shown in order: the front card is the current slide, the rest queue up behind it. Each carries an `image`, a `title` and `description`, and optionally a `heading` that replaces the headline while it is in front.",
         },
         {
           prop: "avatars",
-          effect:
-            "and `avatarsLabel` fill the top of the glass panel; `intro` is the paragraph and `cta` the pill. Pass `next/link` as `linkComponent` to keep client-side navigation.",
-        },
-        {
-          prop: "reveal",
-          value: '"in-view"',
-          effect:
-            "(the default) plays the entrance the first time the section is seen; the docs pass `\"immediate\"`. Under prefers-reduced-motion the entrance is skipped and slides swap without the crossfade or drift.",
+          effect: "and `avatarsLabel` fill the top of the glass panel. Pass `next/link` as `linkComponent` to keep client-side navigation.",
         },
       ],
       props: { rounded: true },
@@ -476,9 +451,9 @@ The section takes the height its content needs — about 44rem on a desktop — 
 ## Fashion Hero
 
 
-A fashion hero: a bold two-line headline between a turning video badge and a stack of faces, five staggered columns of looks — each a person on a flat colour that tilts and zooms under the pointer — a call to action sitting on the middle look, and a footer with a customer's words on one side and the next story on the other.
+A fashion hero: a bold two-line headline between a turning video badge and a stack of faces, five staggered columns of looks — each a person on a flat colour that tilts under the pointer — and a call to action on the middle look.
 
-`FashionHero` is built from library pieces: the badge is <DocLink to="circular-text">Circular Text</DocLink>, the faces are <DocLink to="avatar-stack">Avatar Stack</DocLink>, the headline is <DocLink to="text-animation">Text Animation</DocLink> (`blur-in-up`, word by word), every look is a <DocLink to="tilted-card">Tilted Card</DocLink>, and the badge opens a <DocLink to="dialog">Dialog</DocLink>. When it first scrolls into view the badge and faces settle in, the looks rise from the middle column outward, the button lands on its look and the footer follows — one reveal, then only the badge keeps turning and the pointer does the rest.
+`FashionHero` is built from library pieces: the badge is <DocLink to="circular-text">Circular Text</DocLink>, the faces are <DocLink to="avatar-stack">Avatar Stack</DocLink>, the headline is <DocLink to="text-animation">Text Animation</DocLink>, every look is a <DocLink to="tilted-card">Tilted Card</DocLink>, and the badge opens a <DocLink to="dialog">Dialog</DocLink>.
 
 export const usageFashion = `"use client";
 
@@ -529,33 +504,15 @@ export default function Hero() {
   examples={[
     {
       title: "Daring designs",
-      subheading: "Five columns stepping down to the middle at desktop, three on tablets, two on phones with the middle look full width. Hover a look to tilt it; reload the preview to watch the reveal again.",
+      subheading: "Five columns stepping down to the middle at desktop, three on tablets, two on phones. Hover a look to tilt it.",
       propNotes: [
         {
           prop: "looks",
-          effect:
-            "are up to seven `{ src, alt, tone }`, laid out left to right: a tall and a small, a tall, the tall that carries the button, a tall, a tall and a small. `tone` is the flat colour behind the person.",
+          effect: "are up to seven `{ src, alt, tone }`, laid out left to right. `tone` is the flat colour behind the person.",
         },
         {
           prop: "blend",
-          effect:
-            "multiplies the photo onto its tone (on by default), so a plain white studio background takes the colour. Turn it off for a shot that already has a coloured background.",
-        },
-        {
-          prop: "video",
-          effect:
-            "is the phrase on the turning badge and the embed it opens in a Dialog. Leave it out and the badge's space stays empty so the headline keeps its place.",
-        },
-        {
-          prop: "teaser",
-          effect:
-            "is the next story — a number, a category and a title — as one link; the arrow fills and the title underlines on hover.",
-        },
-        {
-          prop: "reveal",
-          value: '"in-view"',
-          effect:
-            "(the default) plays the sequence the first time the section enters the viewport; the docs pass `\"immediate\"`. Under prefers-reduced-motion everything renders finished and the badge holds still.",
+          effect: "multiplies the photo onto its tone so a white studio background takes the colour. Turn it off for a shot that already has a coloured background.",
         },
       ],
       props: { rounded: true },
@@ -675,9 +632,9 @@ The reference look is a person cut out on a flat colour. Cut-outs are expensive;
 ## Support Hero
 
 
-A product hero on a soft grey ground: a headline that rises in word by word, one line under it and one call to action, then a bento of frosted cards — integrations on white tiles, two figures that count up, two portraits and a team card with faces scattered over a field of dots. The cards land in one staggered pass after the headline; after that only the pointer moves anything: cards lift, portraits zoom a touch, the integration tiles rise one after another, the faces drift apart.
+A product hero on a soft grey ground: a headline that rises in word by word, one call to action, then a bento of frosted cards — integrations, counting figures, portraits and a team card. The cards land in one staggered pass; after that only the pointer moves anything.
 
-`SupportHero` is built from library pieces. The ground and the cards are <DocLink to="glass-panel">Glass Panel</DocLink> (`GlassBackdrop` with a grey aurora, `GlassPanel` tiles), the headline is <DocLink to="text-animation">Text Animation</DocLink>'s `blur-in-up`, the figures are <DocLink to="counter">Counter</DocLink>'s animated type in its new bare form, and the call to action is <DocLink to="button">Button</DocLink>. Every card is a named part — `Integrations`, `Stat`, `Photo`, `Team` — plus a plain `Card` for anything else.
+`SupportHero` is built from library pieces: the cards are <DocLink to="glass-panel">Glass Panel</DocLink>, the headline is <DocLink to="text-animation">Text Animation</DocLink>, the figures are <DocLink to="counter">Counter</DocLink> and the call to action is <DocLink to="button">Button</DocLink>. Every card is a named part — `Integrations`, `Stat`, `Photo`, `Team` — plus a plain `Card` for anything else.
 
 export const usageSupport = `"use client";
 
@@ -742,33 +699,15 @@ export default function Hero() {
   examples={[
     {
       title: "Headline, call to action, six cards",
-      subheading: "Twelve columns at desktop — 3 / 3 / 3 / 3 on the first row with the portrait spanning both rows, 3 / 6 on the second. Six columns at tablet, one on phones. Hover the cards.",
+      subheading: "Twelve columns at desktop, six at tablet, one on phones. Hover the cards.",
       propNotes: [
         {
-          prop: "heading",
-          effect:
-            "is set by `TextAnimation` in `blur-in-up`: each word rises out of a blur the first time the section is on screen. `subtitle` and the `cta` button fade in behind it.",
-        },
-        {
           prop: "Stat",
-          effect:
-            "counts up with `CounterBlock` — `value`, `decimals`, `prefix`, `suffix` — starting when the card is on screen. `tone=\"accent\"` is the card in the theme's primary colour. Give it an `image` and the picture fills the card, with only the bottom-left corner under the figure washed in the card colour — the rest shows through, so pick a picture whose subject sits up and to the right.",
+          effect: "counts up with `value`, `decimals`, `prefix` and `suffix`. `tone=\"accent\"` makes it the theme's primary colour; give it an `image` and the picture fills the card.",
         },
         {
           prop: "Photo",
-          effect:
-            "fills its card with a portrait; `position` sets the crop anchor, `label` a word in the corner. Add `lg:row-span-2 lg:h-auto` to make one tall.",
-        },
-        {
-          prop: "Team",
-          effect:
-            "scatters up to six `avatars` over the right half of the card, above a field of dots. They pop in after the cards and drift outward on hover.",
-        },
-        {
-          prop: "reveal",
-          value: '"in-view"',
-          effect:
-            "(the default) plays everything the first time the section enters the viewport; the docs pass `\"immediate\"`. Under prefers-reduced-motion the section renders finished.",
+          effect: "fills its card with a portrait. `position` sets the crop and `label` a word in the corner; add `lg:row-span-2 lg:h-auto` to make one tall.",
         },
       ],
       props: { rounded: true },
@@ -1018,9 +957,9 @@ A <code>GlassPanel</code> that takes part in the reveal: <code>shape="tile"</cod
 ## Collage Hero
 
 
-A hero for a place that is warm and busy — a kindergarten here, but any studio, school or workshop: a badge whose name turns slowly around a mark, a serif headline with two words in colour, three hashtag pills, a collage of seven photographs in five staggered columns, and a footer with a quote, a scroll-down pill and a watch-video trigger. When it first appears the headline rises out of a blur, the pills pop in with a twist and the photographs come up one after another; after that the badge keeps turning and the pointer does the rest — photographs lift and zoom a touch, pills straighten, the arrow nods.
+A hero for a place that is warm and busy — a kindergarten here, but any studio, school or workshop: a badge whose name turns around a mark, a serif headline with two words in colour, hashtag pills, a collage of photographs in five staggered columns, and a footer with a quote and a watch-video trigger.
 
-`CollageHero` is built from library pieces: the scroll pill is <DocLink to="button">Button</DocLink>, the video opens in a <DocLink to="dialog">Dialog</DocLink>. The colours come from the theme — the accent is `--primary` (pin it with `accent`) and the second colour is `highlight`.
+`CollageHero` is built from library pieces: the scroll pill is <DocLink to="button">Button</DocLink> and the video opens in a <DocLink to="dialog">Dialog</DocLink>. The accent is `--primary` (pin it with `accent`) and the second colour is `highlight`.
 
 export const usageCollage = `"use client";
 
@@ -1065,33 +1004,15 @@ export default function Hero() {
   examples={[
     {
       title: "A bright place",
-      subheading: "Badge, headline and pills across the top; five columns of photographs; quote, scroll pill and video trigger along the foot. Three columns at tablet — a portrait, a stack and the tall one, then three landscapes in a row — and two on phones. Hover the photographs and the pills, open the video.",
+      subheading: "Badge, headline and pills across the top, five columns of photographs, and a quote and video trigger along the foot. Hover the photographs and pills, or open the video.",
       propNotes: [
         {
           prop: "heading",
-          effect:
-            "is any node; wrap the words to colour in `<em>` — the first takes the accent, the second the `highlight`. Use `<br />` for a deliberate break.",
-        },
-        {
-          prop: "photos",
-          effect:
-            "are laid out left to right: one under the caption, two stacked, one tall in the middle, two stacked, one on the right. Each takes a `position` for its crop. Fewer than seven is fine; the columns just empty.",
-        },
-        {
-          prop: "tags",
-          effect:
-            "are up to three pills, scattered and tilted at desktop and in a plain row below. `tone` picks soft / highlight / accent; the defaults cycle through them.",
+          effect: "is any node. Wrap the words to colour in `<em>`: the first takes the accent, the second the `highlight`.",
         },
         {
           prop: "video",
-          effect:
-            "renders the play trigger; its `url` is an embed URL shown in a `Dialog` at 16:9. `scrollLabel` is a `Button` that scrolls to `scrollTo`, or the next section.",
-        },
-        {
-          prop: "reveal",
-          value: '"in-view"',
-          effect:
-            "(the default) plays the sequence the first time the section enters the viewport; the docs pass `\"immediate\"`. Under prefers-reduced-motion the badge holds still and the section renders finished.",
+          effect: "renders the play trigger; its `url` is an embed URL shown in a `Dialog` at 16:9.",
         },
       ],
       props: { rounded: true },
@@ -1228,7 +1149,7 @@ import { Sparkles } from "lucide-react";
 
 ## Hero Block
 
-A collection of modern hero layouts in one component, built with Tailwind CSS and plain CSS animations, no animation library: revolving 3D circular photo orbit ring, rotating word spring bounce, character typewriter effect, continuous thumbnail slider marquee, facility architectural blueprint grid, and high-tech cyclone radar. One registry item, multiple opinionated variants.
+Several hero layouts in one component, chosen with `variant`. Built with Tailwind CSS and plain CSS animations, with no animation library.
 
 
 export const usageWordBounce = `import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
@@ -1261,10 +1182,9 @@ export default function Page() {
       title: "Word bounce hero",
       propNotes: [
         {
-          lead: "Set",
           prop: "variant",
           value: '"bounce"',
-          effect: "for a spring word bounce animation loop.",
+          effect: "loops each word in with a spring bounce.",
         },
       ],
       usage: usageWordBounce,
@@ -1336,10 +1256,9 @@ export default function Page() {
       title: "Typing hero",
       propNotes: [
         {
-          lead: "Set",
           prop: "variant",
           value: '"typing"',
-          effect: "for a character-by-character typewriter animation.",
+          effect: "types the word out character by character.",
         },
       ],
       usage: usageTyping,
@@ -1349,10 +1268,9 @@ export default function Page() {
       subheading: "The same hero with the title held in place while the word types and deletes.",
       propNotes: [
         {
-          lead: "Set",
           prop: "prefixPosition",
           value: '"fixed"',
-          effect: "so the text before the word keeps its place instead of re-centring.",
+          effect: "keeps the text before the word in place instead of re-centring.",
         },
       ],
       props: { prefixPosition: "fixed" },
@@ -1396,10 +1314,9 @@ export default function Page() {
       title: "Split marquee slider hero",
       propNotes: [
         {
-          lead: "Set",
           prop: "variant",
           value: '"slider"',
-          effect: "for a split 2-column hero featuring a continuous right-to-left thumbnail slider and floating visual cards.",
+          effect: "splits the hero in two, with a thumbnail slider scrolling right to left beside the copy.",
         },
       ],
       usage: usageSlider,
@@ -1438,10 +1355,9 @@ export default function Page() {
       title: "Pet Shop & Animal Care Hero",
       propNotes: [
         {
-          lead: "Set",
           prop: "variant",
           value: '"pet-shop"',
-          effect: "for a clean, minimal e-commerce hero layout with circular image showcase and feature badges.",
+          effect: "is a minimal e-commerce layout with a circular image showcase and feature badges.",
         },
       ],
       usage: usageGlowArc,
@@ -1482,10 +1398,9 @@ export default function Page() {
       title: "Doctor Portal & Healthcare Hero",
       propNotes: [
         {
-          lead: "Set",
           prop: "variant",
           value: '"doctor"',
-          effect: "for a clean medical & healthcare hero with specialist doctor showcase and appointment booking CTA.",
+          effect: "is a healthcare layout with a specialist showcase and an appointment call to action.",
         },
       ],
       usage: usageDoctor,
@@ -1517,10 +1432,9 @@ export default function Page() {
       title: "Precision Facility & CAD Grid Hero",
       propNotes: [
         {
-          lead: "Set",
           prop: "variant",
           value: '"facility"',
-          effect: "for an architectural CAD blueprint grid hero with interactive morphing shape responding to left and right grid hover zones.",
+          effect: "is an architectural blueprint grid, with a morphing shape that follows hover on its left and right zones.",
         },
       ],
       usage: usageFacility,
@@ -1569,10 +1483,9 @@ export default function VortexHeroExample() {
       title: "Atmospheric Cyclone Radar Hero",
       propNotes: [
         {
-          lead: "Set",
           prop: "variant",
           value: '"vortex"',
-          effect: "for a high-tech climate risk radar hero featuring an animated multi-armed rotating cyclone vortex, HUD telemetry overlay, and parcel metrics.",
+          effect: "is a climate-risk radar with a rotating cyclone, HUD telemetry and parcel metrics.",
         },
       ],
       usage: usageVortex,
@@ -1638,29 +1551,24 @@ export default function OrbitHeroExample() {
   examples={[
     {
       title: "Orbit Ring Hero",
-      subheading: "Copy and actions on the left, revolving 3D circular photo orbit ring on the right with smooth hover pause.",
-      props: { variant: "orbit" },
+      subheading: "Copy and actions on the left, a revolving 3D ring of photos on the right that pauses on hover.",
       propNotes: [
         {
-          lead: "Set",
           prop: "variant",
           value: '"orbit"',
-          effect: "for a revolving 3D circular photo orbit ring layout.",
+          effect: "puts the photos on a revolving 3D ring.",
         },
         {
           prop: "images",
-          effect: "are the cards on the ring, in orbit order. Offset evenly by duration.",
+          effect: "are the cards on the ring, in orbit order.",
         },
         {
           prop: "duration",
           value: "36",
           effect: "is the seconds for one full revolution.",
         },
-        {
-          prop: "highlights",
-          effect: "are the dotted facts under the action buttons with customizable label and color.",
-        },
       ],
+      props: { variant: "orbit" },
       usage: nextAndReact(usageOrbit),
       code: extractCode("src/components/custom/blocks/HeroBlock.tsx"),
     },
@@ -1673,7 +1581,7 @@ export default function OrbitHeroExample() {
 
 ## Bento Cascade Hero
 
-An infinite vertical bento marquee hero section that loops seamlessly on the browser compositor. Features staggered multi-column cards, rich media tiles, soft top and bottom edge fade masks, and responsive motion with zero visible reset jumps — inspired by Framer's Bento Cascade.
+An infinite vertical bento marquee hero that loops seamlessly, with staggered cards, soft edge fades and no visible reset jump.
 
 export const usageBentoCascade = `"use client";
 
@@ -1706,26 +1614,25 @@ export default function Hero() {
   examples={[
     {
       title: "Bento Cascade Infinite Motion Hero",
-      subheading: "Left column presents the interactive avatar stack, 5-star review score, 2-line headline, stylish accent line description, primary CTA button, secondary outline button, and expedition support badges. Right column features an infinite seamless 2-column bento cascade of high-definition nature cards, glass tag badges, theme-reactive hover glows, soft edge fade masks, and seamless hover pause.",
-      props: { variant: "bento-cascade" },
+      subheading: "Copy, avatars and actions on the left; on the right two columns of bento cards cascading in an endless loop with soft edge fades.",
       propNotes: [
         {
-          lead: "Set",
           prop: "variant",
           value: '"bento-cascade"',
-          effect: "for the infinite vertical bento marquee cascade hero layout.",
+          effect: "is the endless vertical bento marquee.",
         },
         {
           prop: "speed",
           value: "30",
-          effect: "seconds for one complete seamless vertical loop cycle.",
+          effect: "is the seconds for one full loop.",
         },
         {
           prop: "pauseOnHover",
           value: "true",
-          effect: "smoothly pauses the continuous cascade animation at the exact position when hovering over any card, resuming seamlessly when the cursor leaves.",
+          effect: "holds the cascade in place while a card is hovered.",
         },
       ],
+      props: { variant: "bento-cascade" },
       usage: nextAndReact(usageBentoCascade),
       code: extractCode("src/components/custom/blocks/BentoCascadeHeroBlock.tsx"),
     },
@@ -1738,7 +1645,7 @@ export default function Hero() {
 
 ## Breathe Hero
 
-An ethereal hero featuring an elegant serif headline and a staggered 5-card curved arch. On scroll, the center card scales up to 1.35x while surrounding cards gently drift outward and dim, creating a breathtaking focal zoom.
+A serif headline over a staggered five-card curved arch. On scroll the centre card grows while the others drift outward and dim. Headline fonts load from Google Fonts at runtime; if that request is blocked (strict CSP), it falls back to your sans or serif font.
 
 export const usageBreathe = `"use client";
 
@@ -1777,26 +1684,25 @@ export default function Hero() {
   examples={[
     {
       title: "Breathe Arch Stagger Hero",
-      subheading: "An ethereal hero featuring an elegant serif headline and a staggered 5-card curved arch. On scroll, the center card scales up to 1.35x while surrounding cards gently drift outward and dim, creating a breathtaking focal zoom.",
-      props: { variant: "breathe" },
+      subheading: "A serif headline over a staggered five-card arch. On scroll the centre card grows while the others drift outward and dim.",
       propNotes: [
         {
-          lead: "Set",
           prop: "variant",
           value: '"breathe"',
-          effect: "for the Framer Breathe curved 5-card arch hero layout.",
+          effect: "is the curved five-card arch.",
         },
         {
           prop: "scrollMode",
           value: '"grow"',
-          effect: "controls the scroll animation: 'grow' zooms the center card while drifting outer cards, 'parallax' moves cards vertically at variable rates, and 'spread' fans out the cards.",
+          effect: "zooms the centre card. `\"parallax\"` and `\"spread\"` are the alternatives.",
         },
         {
           prop: "scrollScale",
           value: "1.35",
-          effect: "magnification factor applied to the center focal card as the page scrolls.",
+          effect: "is how far the centre card grows.",
         },
       ],
+      props: { variant: "breathe" },
       usage: nextAndReact(usageBreathe),
       code: extractCode("src/components/custom/blocks/BreatheHeroBlock.tsx"),
     },
@@ -1809,7 +1715,7 @@ export default function Hero() {
 
 ## Solar Snapshot Hero
 
-A lightweight interactive hero with a pointer-following sun orb, Typographic Curtain CTA buttons, an interactive Avatar Group, and a click-to-capture Polaroid section screenshot stack.
+A lightweight hero with a pointer-following sun orb, typographic curtain buttons, an avatar group and a click-to-capture Polaroid stack of section screenshots. Fonts load from Google Fonts at runtime; if that request is blocked (strict CSP), it falls back to your sans font.
 
 export const usageSolarSnapshot = `"use client";
 
@@ -1843,26 +1749,20 @@ export default function Hero() {
   examples={[
     {
       title: "Solar Snapshot Sun-Cursor Hero",
-      subheading: "A lightweight interactive hero with a pointer-following sun orb, Typographic Curtain CTA buttons, an interactive Avatar Group, and a click-to-capture Polaroid section screenshot stack in the bottom-right where each frame auto-clears 10 seconds after capture.",
-      props: { variant: "solar-snapshot" },
+      subheading: "A pointer-following sun orb, and a click-to-capture Polaroid stack in the corner whose frames clear themselves after ten seconds.",
       propNotes: [
         {
-          lead: "Set",
           prop: "variant",
           value: '"solar-snapshot"',
-          effect: "for the interactive sun-cursor & click-to-capture Polaroid section screenshot hero.",
+          effect: "is the sun-cursor hero with the Polaroid stack.",
         },
         {
           prop: "snapshotDurationMs",
           value: "10000",
-          effect: "time in milliseconds (10s) before each captured Polaroid frame automatically disappears from the bottom-right stack.",
-        },
-        {
-          prop: "primaryButtonVariant",
-          value: '"pricing-typographic"',
-          effect: "configures the animated button style from our Button component.",
+          effect: "is how long a captured frame stays in the stack.",
         },
       ],
+      props: { variant: "solar-snapshot" },
       usage: nextAndReact(usageSolarSnapshot),
       code: extractCode("src/components/custom/blocks/SolarSnapshotHeroBlock.tsx"),
     },

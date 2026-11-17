@@ -3,7 +3,7 @@
   "name": "honeycomb-hero-wander-the-fjords",
   "type": "registry:block",
   "title": "Honeycomb Hero — Wander the fjords",
-  "description": "Copy on the left, the honeycomb on the right with the primary hexagon set among the photographs. Wait four seconds or use the arrows at the foot: every hexagon moves one step along the ring, and the whole section eases to the new photograph's colour. Pick a colour above to repaint the accent.",
+  "description": "Copy on the left, the honeycomb on the right. Wait four seconds or use the arrows: every hexagon moves one step, and the section eases to the new photograph's colour.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -6,17 +6,14 @@ url: https://avaraui.com/docs/nextjs/secure-envelope
 
 # Shadcn Secure Envelope
 
-An interactive classified envelope sleeve & travel pass component featuring a secret card that glides out horizontally on hover and elevates gracefully onto the cover on click. Designed with a vector-precise thumb notch, authentic security crest seals, and luxurious 3D dual-sided flip physics.
-
-`SecureEnvelope` brings tactile physical curiosity to train online tickets, travel booking passes, security dossiers, coupon reward vouchers, and VIP cards.
+An interactive classified envelope sleeve and travel pass: a secret card glides out on hover, lifts onto the cover on click and flips in 3D to show its back. It suits online tickets, travel passes, security dossiers, vouchers and VIP cards.
 
 ## Confidential Folder (Slide-Out Sleeve / Stay Hungry Variant)
 
-The signature confidential manila folder and hot pink slide-out card design from the catalog preview. Features golden amber dossier folder with top tab, stamped -rotate-6 CONFIDENTIAL badge, folder index lines, vibrant hot pink STAY HUNGRY card, and back manifesto memorandum.
+A golden manila dossier folder with a stamped CONFIDENTIAL badge and a hot pink card that slides out of it.
 
-- Design Variant `cardDesign="confidential-folder"` activates the golden manila folder with top tab, red stamped badge, and vibrant hot pink Stay Hungry slide-out card.
-- Data Object `data=confidentialData` passes custom ID, bold tagline, sub-tagline, and folder dossier identifiers.
-- Interaction `interactionMode="step-flip"` Click 1 slides out the hot pink card onto the folder, Click 2 flips to the executive memorandum manifesto, Click 3 returns inside.
+- `cardDesign="confidential-folder"` is the manila folder with its top tab, red stamp and hot pink slide-out card.
+- `interactionMode="step-flip"` splits the animation into three clicks: the card slides out, flips to the memorandum on its back, then returns inside.
 
 ```tsx
 import { SecureEnvelope, type SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
@@ -61,11 +58,10 @@ npx shadcn@latest add @avara-ui/secure-envelope
 
 ### Biometric NFC SmartCard (Quantum Vault Variant)
 
-High-tech biometric identity smartcard & encrypted key vault sleeve. Features golden EMV microchip, contactless NFC glyph, clearance level badge, encrypted magnetic stripe, and crypto signature panel with full light/dark theme adaptivity.
+A biometric identity smartcard in an encrypted key vault sleeve, with a chip, NFC glyph and clearance badge.
 
-- Design Variant `cardDesign="smart-card"` activates the Quantum Key Vault biometric smartcard layout and cyber nexus seal styling.
-- Data Object `data=smartCardData` passes essential holder name, role title, and clearance level. Chip serial, security keys, and cryptographic hashes use built-in defaults.
-- Interaction `interactionMode="step-flip"` splits the animation into 3 distinct clicks: Click 1 opens to front smartcard, Click 2 flips to encrypted magnetic stripe & credentials, Click 3 closes.
+- `cardDesign="smart-card"` is the Quantum Key Vault smartcard layout.
+- `interactionMode="step-flip"` splits the animation into three clicks: open to the front, flip to the magnetic stripe and credentials, then close.
 
 ```tsx
 import { SecureEnvelope, type SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
@@ -91,10 +87,9 @@ export default function CyberSmartCardExample() {
 
 ### Auto Flip (Classic Voucher / Classified)
 
-1st click slides the card out from the sleeve, elevates onto the front, and automatically flips 180° in-place to reveal the back details. 2nd click flips back and returns inside the sleeve.
+The first click slides the card out and flips it in place to its back; the second flips it back and returns it inside.
 
-- Data Object `data=voucherData` passes key title, subtitle, and discount quote while all badges, metric pillars, and seals use component defaults.
-- Interaction `interactionMode="auto-flip"` automatically executes the full slide-out and in-place 180° flip on first click.
+- `interactionMode="auto-flip"` runs the whole slide-out and 180° flip on the first click.
 
 ```tsx
 import { SecureEnvelope, type SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";
@@ -119,11 +114,10 @@ export default function AutoFlipSecureEnvelopeExample() {
 
 ### Train Online Ticket (Hyperbolt Express Variant)
 
-Exact high-speed rail ticket and envelope design. Features the top blue pill header, passenger info, seat/train numbers, vertical barcode, watermarked station route bar, tear-off stub, and Hyperbolt bullet train box sleeve.
+A high-speed rail ticket with passenger details, a vertical barcode and a tear-off stub, in a bullet-train sleeve.
 
-- Data Object `data=ticketData` passes essential passenger name, route, seat, and train number. All other train details automatically use authentic built-in defaults.
-- Design Variant `cardDesign="train-ticket"` activates the Hyperbolt Express train online ticket layout for both the card and the outer sleeve box.
-- Interaction `interactionMode="step-flip"` splits the animation into 3 distinct clicks: Click 1 opens to front ticket, Click 2 flips to reverse route overview, Click 3 closes.
+- `cardDesign="train-ticket"` is the Hyperbolt Express ticket layout, for both the card and the outer sleeve.
+- `interactionMode="step-flip"` splits the animation into three clicks: open to the front ticket, flip to the route overview, then close.
 
 ```tsx
 import { SecureEnvelope, type SecureEnvelopeData } from "@/components/custom/blocks/SecureEnvelopeBlock";

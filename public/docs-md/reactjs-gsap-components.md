@@ -14,7 +14,7 @@ runs on GSAP; many of these also ship a Motion build that you install instead.
 
 **Forms & Inputs**
 
-- [File Upload](https://avaraui.com/docs-md/nextjs-file-upload.md): A highly-orchestrated, premium file upload component suite based on modern UX engineering principles. (Motion build available)
+- [File Upload](https://avaraui.com/docs-md/nextjs-file-upload.md): A file upload suite that goes beyond a native `<input type="file">`. (Motion build available)
 
 **Navigation & Menus**
 
@@ -28,7 +28,7 @@ runs on GSAP; many of these also ship a Motion build that you install instead.
 
 - [Card Stack](https://avaraui.com/docs-md/nextjs-card-stack.md): A layered deck of cards featuring fluid drag-to-discard gestures, button-driven directional slide animations, and realistic depth perspective. (Motion build available)
 - [Draggable Card List](https://avaraui.com/docs-md/nextjs-draggable-card-list.md): An interactive, fluid Draggable Card List component featuring spring-driven reordering (in a GSAP build and a Motion build that move identically),… (Motion build available)
-- [Folder](https://avaraui.com/docs-md/nextjs-folder.md): A tactile folder — unified skeleton cards (or your own photos) tuck behind a frosted-glass front pocket. (Motion build available)
+- [Folder](https://avaraui.com/docs-md/nextjs-folder.md): A tactile folder: skeleton cards (or your own photos) tuck behind a frosted-glass front pocket that tilts open in 3D, and the cards lift into a… (Motion build available)
 - [Memories Card](https://avaraui.com/docs-md/nextjs-memories-card.md): A premium, interactive card stack component featuring real-time 3D tilt physics, a dynamic "fan" background spread, and smooth swipe-to-next gestures. (Motion build available)
 - [Scroll Stack](https://avaraui.com/docs-md/nextjs-scroll-stack.md): A premium collection of scroll-driven 3D card stacking layouts engineered exclusively with GSAP's ScrollTrigger plugin. (Motion build available)
 
@@ -43,7 +43,7 @@ runs on GSAP; many of these also ship a Motion build that you install instead.
 
 **Apps & Messaging**
 
-- [Ai-Chat](https://avaraui.com/docs-md/nextjs-ai-chat.md): A premium, interactive LLM chat interface featuring conversation history management, real-time typing indicators, editable chat titles, and a full… (Motion build available)
+- [Ai-Chat](https://avaraui.com/docs-md/nextjs-ai-chat.md): A premium LLM chat interface with conversation history, typing indicators, editable chat titles and a full prompt composer: a + menu for files and… (Motion build available)
 
 **Marketing Sections**
 

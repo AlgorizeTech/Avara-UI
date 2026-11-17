@@ -6,17 +6,11 @@ url: https://avaraui.com/docs/nextjs/file-upload
 
 # Shadcn File Upload
 
-A highly-orchestrated, premium file upload component suite based on modern UX engineering principles. It goes far beyond a native `<input type="file">` by addressing five distinct user feedback signals.
+A file upload suite that goes beyond a native `<input type="file">`. The dropzone reacts to drag events, progress shows exact percentages and time estimates, a failed file halts and offers an inline retry, thumbnails preview each file before the upload completes, and every file gets its own lane so one failure never blocks the others.
 
-1. **Drag Feedback:** The dropzone reacts physically (glow, border shift, icon scale) to drag events.
-2. **Honest Progress:** Replaces mystery spinners with exact percentage tracking, dynamic time estimations, and file metadata.
-3. **Inline Retry:** Files that fail mid-upload do not reset. They halt their state, turn red, and offer an inline 1-click retry button to resume.
-4. **Upload Preview:** Extracts visual proof (thumbnails) of the file instantly on the client side before upload completes.
-5. **Independent Queue:** Every file gets its own lane and state. One failure never blocks the others.
+The suite is two pieces you compose yourself: a `Dropzone` that hands you `File[]`, and an `UploadItem` that renders one entry of your own queue state. Drop real files into the first preview; its simulator randomly fails some at 89% so you can watch the retry resume.
 
-The suite is two pieces you compose yourself: a `Dropzone` that hands you `File[]`, and an `UploadItem` that renders one entry of your own queue state. Drop real files into the first preview — its simulator randomly fails some at 89% so you can watch the inline retry resume.
-
-Three upload surfaces live on this page, and each installs separately: the `Dropzone` + `UploadItem` suite, the `Input` block's built-in file mode for simple forms, and the `Folder` block as a playful drop target. Each section below ends with its own install.
+Three upload surfaces live on this page, and each installs separately: the `Dropzone` + `UploadItem` suite, the `Input` block's file mode for simple forms, and the `Folder` block as a playful drop target.
 
 ## For AI agents
 
@@ -151,8 +145,7 @@ export default function FileUploader() {
 
 ### Upload states
 
-- `status` drives the whole row — `idle`, `uploading`, `paused`, `error` and `success` each pick their own colours, icon and messaging.
-- `onRetry` is what the inline Retry button calls after an `error`; `onRemove` backs the X.
+- `status` drives the whole row: `idle`, `uploading`, `paused`, `error` and `success` each pick their own colours, icon and messaging.
 
 ```tsx
 "use client";
@@ -237,7 +230,6 @@ For a form that just needs files attached: the `Input` block in file mode, with 
 
 - Set `type="file"` on `InputBlock` to turn the field into a drag-and-drop zone with previews.
 - `onFilesChange` returns native `File[]` on drop, selection and removal.
-- `multiple` and `accept` pass through; `accept` takes the standard HTML string such as `"image/*"`.
 
 ```tsx
 "use client";
@@ -281,12 +273,11 @@ The `Folder` block as an upload surface — a playful alternative to a dropzone 
 
 ### Folder drop target
 
-The `Folder` block as an upload surface, tinted with the theme colour: drop files on it or click to browse. It starts empty, each dropped file becomes a card with its own progress bar, the pocket tracks the overall figure, and an × removes a file.
+The `Folder` block as an upload surface: drop files on it or click to browse. Each dropped file becomes a card with its own progress bar.
 
-- Set `interactive` to enable drag-and-drop and click-to-browse. `onFiles` receives the dropped or picked `File[]`; `accept` and `multiple` pass through to the input.
-- `peek={0}` keeps the folder empty until the first drop — without it the folder shows three placeholder cards peeking out.
-- `progress` drives the bar across the pocket (0–100); a per-file `progress` draws a bar on that card. `onRemoveFile` adds an × to each fanned card.
-- `color` defaults to a soft tint of `--primary` (lightness 0.88, chroma at 40%), so the folder — body, pocket, icon and the peeking cards — follows your theme preset and the colour picker above without going heavy. Pass any CSS colour to pin one.
+- Use `interactive` to enable drag-and-drop and click-to-browse. `onFiles` receives the dropped or picked `File[]`.
+- `peek={0}` keeps the folder empty until the first drop. Without it the folder shows three placeholder cards.
+- `progress` drives the bar across the pocket (0–100); a per-file `progress` draws a bar on that card.
 
 ```tsx
 "use client";

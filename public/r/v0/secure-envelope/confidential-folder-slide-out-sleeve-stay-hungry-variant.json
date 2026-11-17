@@ -3,7 +3,7 @@
   "name": "secure-envelope-confidential-folder-slide-out-sleeve-stay-hungry-variant",
   "type": "registry:block",
   "title": "Secure Envelope — Confidential Folder (Slide-Out Sleeve / Stay Hungry Variant)",
-  "description": "The signature confidential manila folder and hot pink slide-out card design from the catalog preview. Features golden amber dossier folder with top tab, stamped -rotate-6 CONFIDENTIAL badge, folder index lines, vibrant hot pink STAY HUNGRY card, and back manifesto memorandum.",
+  "description": "A golden manila dossier folder with a stamped CONFIDENTIAL badge and a hot pink card that slides out of it.",
   "dependencies": [
     "tw-animate-css"
   ],

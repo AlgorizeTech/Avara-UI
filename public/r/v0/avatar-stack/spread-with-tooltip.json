@@ -3,7 +3,7 @@
   "name": "avatar-stack-spread-with-tooltip",
   "type": "registry:block",
   "title": "Avatar Stack — Spread with tooltip",
-  "description": "Hovering over the stack widens the avatar gap symmetrically from the center, elevates the hovered face by -30%, and displays a clean floating tooltip above it.",
+  "description": "The spread fan-out with a floating name tooltip above the hovered face.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

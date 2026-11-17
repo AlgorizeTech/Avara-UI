@@ -3,7 +3,7 @@
   "name": "gallery-circular-reel",
   "type": "registry:block",
   "title": "Gallery — Circular Reel",
-  "description": "Interactive, scroll-driven circular spinner. Each item lives on a segmented ring that responds to scroll or idles with smooth passive rotation. Features an active full-bleed background preview and center HUD.",
+  "description": "A scroll-driven circular dial: each item sits on a segmented ring that turns with scroll and idles in a slow passive rotation.",
   "dependencies": [
     "gsap",
     "lucide-react",

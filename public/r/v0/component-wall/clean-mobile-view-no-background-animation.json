@@ -3,7 +3,7 @@
   "name": "component-wall-clean-mobile-view-no-background-animation",
   "type": "registry:block",
   "title": "Component Wall — Clean mobile view (no background animation)",
-  "description": "Centred hero layout with background image animations completely hidden on mobile and small screens (<lg). Pass showMobileWall={false} (or mobileBackground={false}) across ALL variants (center, split, and center-background) to keep mobile screens clean and distraction-free while retaining full interactive animation on desktop.",
+  "description": "The centred hero with the walls hidden below `lg`, so phones stay clean while desktop keeps both walls moving.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

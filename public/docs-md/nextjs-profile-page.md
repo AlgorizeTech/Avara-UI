@@ -1,14 +1,14 @@
 ---
 title: "Shadcn Profile Page"
-description: "Shadcn Profile Page. A person as a page: an aurora backdrop, frosted panels in four shapes, and a 24-hour dial that shows when they are at work — live."
+description: "Shadcn Profile Page. A person as a page: an aurora backdrop, frosted panels in four shapes, and a 24-hour dial that shows when they are at work, live."
 url: https://avaraui.com/docs/nextjs/profile-page
 ---
 
 # Shadcn Profile Page
 
-A person as a page: an aurora backdrop, frosted panels in four shapes, and a 24-hour dial that shows when they are at work — live, in their own time zone.
+A person as a page: an aurora backdrop, frosted panels in four shapes, and a 24-hour dial that shows when they are at work, live, in their own time zone.
 
-The page is primitives rather than one monolith. `ProfilePage` is the backdrop and a 12-column grid; `GlassPanel` — from [Glass Panel](https://avaraui.com/docs/nextjs/glass-panel), which installs alongside — is one glass recipe with a `shape` that encodes hierarchy (a `slab` for the hero, a `tile` for content, a `disc` for a single number, a `capsule` for chips); `WorkdayDial` is the one element that moves; `useLocalTime` is the hook under it. Compose them with your own data — nothing has to be reshaped to fit. The example page also drops in two other library pieces where a profile wants them: a [Verify Badge](https://avaraui.com/docs/nextjs/verify-badge) beside the name and a row of [Social Links](https://avaraui.com/docs/nextjs/social-links) under the contact details.
+The page is built from primitives. `ProfilePage` is the backdrop and a 12-column grid; `GlassPanel`, from [Glass Panel](https://avaraui.com/docs/nextjs/glass-panel), which installs alongside, takes a `shape` that encodes hierarchy (`slab`, `tile`, `disc` or `capsule`); `WorkdayDial` is the one element that moves, driven by the `useLocalTime` hook. The example also uses a [Verify Badge](https://avaraui.com/docs/nextjs/verify-badge) beside the name and a row of [Social Links](https://avaraui.com/docs/nextjs/social-links) under the contact details.
 
 ## For AI agents
 

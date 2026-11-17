@@ -3,7 +3,7 @@
   "name": "flavour-carousel-choose-your-matcha-tea",
   "type": "registry:block",
   "title": "Flavour Carousel — Choose your matcha tea",
-  "description": "Eight flavours around one cup on a mountain of powder. The ring spins up from behind the powder and settles; then wait five seconds or click a tile: it slides into the cup and the cup's contents change with it. Four tiles on tablets and up, two on phones; switch the site theme to see the tiles go dark. Arrow keys turn the ring when it has focus; hovering holds it.",
+  "description": "Eight flavours around one cup. Wait five seconds or click a tile to turn the ring; arrow keys work when it has focus, and hovering holds it.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

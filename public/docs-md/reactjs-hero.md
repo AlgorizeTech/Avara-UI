@@ -156,18 +156,16 @@ All 16 options as live previews: https://avaraui.com/view/hero
 
 ## Honeycomb Hero
 
-A travel hero on a dark ground that shifts colour: a light line over a huge white word on the left, and on the right a honeycomb of hexagonal photographs with a primary hexagonal call to action set among them. The large hexagon is the slide on screen — its photograph is also the background behind everything, tinted with that photograph's own tone, so the colour of the whole section changes with the slide — and the smaller ones are the queue. Every four seconds, or on the arrows at the foot, every hexagon moves one step along the honeycomb: the next photograph grows into the feature spot while the feature slides to the back of the queue. The loop never ends, in either direction.
+A travel hero on a dark ground that shifts colour: a huge white word on the left, and on the right a honeycomb of hexagonal photographs with a primary call-to-action hexagon among them. The large hexagon is the slide on screen, and its photograph tints the whole section. Every four seconds, or on the arrows at the foot, every hexagon moves one step along the honeycomb, and the loop never ends.
 
-The honeycomb is measured from the design and laid out in percentages of a fixed-aspect stage anchored to the right edge, so the composition holds at any size and whatever falls past the edge is clipped, as intended. The letters of the word that cross the photographs turn your theme's `primary`, as do the rule, the arrows and the call-to-action hexagon, whose compass and label take `primary-foreground`. They read the theme wherever the section sits, so switching themes repaints them.
+The word's letters over the photographs, the rule, the arrows and the call to action take your theme's `primary`, so switching themes repaints them.
 
 ### Wander the fjords
 
-Copy on the left, the honeycomb on the right with the primary hexagon set among the photographs. Wait four seconds or use the arrows at the foot: every hexagon moves one step along the ring, and the whole section eases to the new photograph's colour. Pick a colour above to repaint the accent.
+Copy on the left, the honeycomb on the right. Wait four seconds or use the arrows: every hexagon moves one step, and the section eases to the new photograph's colour.
 
-- `images` are the photographs in queue order; the first is featured at the start. Nine cells are visible — fewer photographs are repeated around the ring, more simply wait their turn. Give each a deep `tone` and the background tint, the fade towards the copy and the gaps between hexagons all ease to it while that photograph is featured.
-- `interval=4000` is the gap between steps in milliseconds. It pauses while the tab is hidden and while the section is off screen; `0` turns autoplay off and leaves the arrows.
-- `primaryActionLabel` fills the call-to-action hexagon; a `\n` in the string breaks the line, as in Plan / your trip. A compass sits above it; on hover it turns and the hairline hexagon inside the cell swells, and on keyboard focus the hairline goes solid.
-- `accent` sets `--primary` for the section: the letters of the word that cross the photographs, the rule, the arrows and the call to action, with its label in `primary-foreground`. Leave it out to follow your theme's primary. `background` is the tone for photographs without one: a deep shade of the primary by default.
+- `images` are the photographs in queue order. Give each a deep `tone` and the section eases to it while that photograph is featured.
+- `primaryActionLabel` fills the call-to-action hexagon; a `\n` in the string breaks the line.
 
 ```tsx
 import { HoneycombHero } from "@/components/custom/blocks/HoneycombHeroBlock";
@@ -256,18 +254,16 @@ Arrows at the foot and the keyboard's arrow keys step the queue either way; a li
 
 ## Hero Carousel
 
-A full-bleed photo hero for a place worth travelling to: an eyebrow pill, a large light headline, a glass panel with the faces of the people who came before you and a call to action, and — the thing that moves — a queue of cards. The front card is the slide on screen; the ones behind it are what comes next. Every five seconds, or when a card is clicked, the queue slides forward, the photograph behind everything crossfades, and the headline and caption follow it.
+A full-bleed photo hero for a place worth travelling to: an eyebrow pill, a large light headline, a glass panel with a call to action, and a queue of cards. The front card is the slide on screen. Every five seconds, or when a card is clicked, the queue slides forward and the photograph, headline and caption follow it.
 
-`HeroCarousel` composes the library: the faces are an [AvatarStack](https://avaraui.com/docs/reactjs/avatar-stack). The colours come from the photographs; the theme's `--primary` (pin it with `accent`) is used for the eyebrow pip, the arrow on the call to action, the progress line and the focus rings.
+`HeroCarousel` composes the library: the faces are an [AvatarStack](https://avaraui.com/docs/reactjs/avatar-stack). Accents use the theme's `--primary`, which `accent` pins.
 
 ### Watch the dawn from the summit
 
-Eyebrow and headline across the top; the glass panel and the queue of cards along the foot. The queue moves every five seconds — click any card to bring it forward, use the arrow keys, or swipe on a phone. Hovering the rail holds the clock.
+Eyebrow and headline across the top, the glass panel and the queue of cards along the foot. Click a card to bring it forward, use the arrow keys or swipe; hovering the rail holds the clock.
 
-- `slides` are shown in order: the front card is the current slide, the rest queue up behind it. Each carries its `image` (full-bleed and in its card), a `title` and `description` for the caption, an optional `heading` that replaces the section headline while it is in front, and a `position` for the crop.
-- `interval=5000` is the gap between slides in milliseconds. It pauses while the pointer or keyboard focus is on the rail, while the tab is hidden and while the section is off screen; `0` turns autoplay off and hides the progress line.
-- `avatars` and `avatarsLabel` fill the top of the glass panel; `intro` is the paragraph and `cta` the pill. Pass `next/link` as `linkComponent` to keep client-side navigation.
-- `reveal="in-view"` (the default) plays the entrance the first time the section is seen; the docs pass `"immediate"`. Under prefers-reduced-motion the entrance is skipped and slides swap without the crossfade or drift.
+- `slides` are shown in order: the front card is the current slide, the rest queue up behind it. Each carries an `image`, a `title` and `description`, and optionally a `heading` that replaces the headline while it is in front.
+- `avatars` and `avatarsLabel` fill the top of the glass panel. Pass `next/link` as `linkComponent` to keep client-side navigation.
 
 ```tsx
 import { HeroCarousel } from "@/components/custom/blocks/HeroCarouselBlock";
@@ -407,19 +403,16 @@ Every card is a button with a visible focus ring; arrow keys walk the queue, a s
 
 ## Fashion Hero
 
-A fashion hero: a bold two-line headline between a turning video badge and a stack of faces, five staggered columns of looks — each a person on a flat colour that tilts and zooms under the pointer — a call to action sitting on the middle look, and a footer with a customer's words on one side and the next story on the other.
+A fashion hero: a bold two-line headline between a turning video badge and a stack of faces, five staggered columns of looks — each a person on a flat colour that tilts under the pointer — and a call to action on the middle look.
 
-`FashionHero` is built from library pieces: the badge is [Circular Text](https://avaraui.com/docs/reactjs/circular-text), the faces are [Avatar Stack](https://avaraui.com/docs/reactjs/avatar-stack), the headline is [Text Animation](https://avaraui.com/docs/reactjs/text-animation) (`blur-in-up`, word by word), every look is a [Tilted Card](https://avaraui.com/docs/reactjs/tilted-card), and the badge opens a [Dialog](https://avaraui.com/docs/reactjs/dialog). When it first scrolls into view the badge and faces settle in, the looks rise from the middle column outward, the button lands on its look and the footer follows — one reveal, then only the badge keeps turning and the pointer does the rest.
+`FashionHero` is built from library pieces: the badge is [Circular Text](https://avaraui.com/docs/reactjs/circular-text), the faces are [Avatar Stack](https://avaraui.com/docs/reactjs/avatar-stack), the headline is [Text Animation](https://avaraui.com/docs/reactjs/text-animation), every look is a [Tilted Card](https://avaraui.com/docs/reactjs/tilted-card), and the badge opens a [Dialog](https://avaraui.com/docs/reactjs/dialog).
 
 ### Daring designs
 
-Five columns stepping down to the middle at desktop, three on tablets, two on phones with the middle look full width. Hover a look to tilt it; reload the preview to watch the reveal again.
+Five columns stepping down to the middle at desktop, three on tablets, two on phones. Hover a look to tilt it.
 
-- `looks` are up to seven `{ src, alt, tone }`, laid out left to right: a tall and a small, a tall, the tall that carries the button, a tall, a tall and a small. `tone` is the flat colour behind the person.
-- `blend` multiplies the photo onto its tone (on by default), so a plain white studio background takes the colour. Turn it off for a shot that already has a coloured background.
-- `video` is the phrase on the turning badge and the embed it opens in a Dialog. Leave it out and the badge's space stays empty so the headline keeps its place.
-- `teaser` is the next story — a number, a category and a title — as one link; the arrow fills and the title underlines on hover.
-- `reveal="in-view"` (the default) plays the sequence the first time the section enters the viewport; the docs pass `"immediate"`. Under prefers-reduced-motion everything renders finished and the badge holds still.
+- `looks` are up to seven `{ src, alt, tone }`, laid out left to right. `tone` is the flat colour behind the person.
+- `blend` multiplies the photo onto its tone so a white studio background takes the colour. Turn it off for a shot that already has a coloured background.
 
 ```tsx
 import { FashionHero } from "@/components/custom/blocks/FashionHeroBlock";
@@ -514,19 +507,16 @@ The call to action, the plus beside the faces and the teaser are anchors — pas
 
 ## Support Hero
 
-A product hero on a soft grey ground: a headline that rises in word by word, one line under it and one call to action, then a bento of frosted cards — integrations on white tiles, two figures that count up, two portraits and a team card with faces scattered over a field of dots. The cards land in one staggered pass after the headline; after that only the pointer moves anything: cards lift, portraits zoom a touch, the integration tiles rise one after another, the faces drift apart.
+A product hero on a soft grey ground: a headline that rises in word by word, one call to action, then a bento of frosted cards — integrations, counting figures, portraits and a team card. The cards land in one staggered pass; after that only the pointer moves anything.
 
-`SupportHero` is built from library pieces. The ground and the cards are [Glass Panel](https://avaraui.com/docs/reactjs/glass-panel) (`GlassBackdrop` with a grey aurora, `GlassPanel` tiles), the headline is [Text Animation](https://avaraui.com/docs/reactjs/text-animation)'s `blur-in-up`, the figures are [Counter](https://avaraui.com/docs/reactjs/counter)'s animated type in its new bare form, and the call to action is [Button](https://avaraui.com/docs/reactjs/button). Every card is a named part — `Integrations`, `Stat`, `Photo`, `Team` — plus a plain `Card` for anything else.
+`SupportHero` is built from library pieces: the cards are [Glass Panel](https://avaraui.com/docs/reactjs/glass-panel), the headline is [Text Animation](https://avaraui.com/docs/reactjs/text-animation), the figures are [Counter](https://avaraui.com/docs/reactjs/counter) and the call to action is [Button](https://avaraui.com/docs/reactjs/button). Every card is a named part — `Integrations`, `Stat`, `Photo`, `Team` — plus a plain `Card` for anything else.
 
 ### Headline, call to action, six cards
 
-Twelve columns at desktop — 3 / 3 / 3 / 3 on the first row with the portrait spanning both rows, 3 / 6 on the second. Six columns at tablet, one on phones. Hover the cards.
+Twelve columns at desktop, six at tablet, one on phones. Hover the cards.
 
-- `heading` is set by `TextAnimation` in `blur-in-up`: each word rises out of a blur the first time the section is on screen. `subtitle` and the `cta` button fade in behind it.
-- `Stat` counts up with `CounterBlock` — `value`, `decimals`, `prefix`, `suffix` — starting when the card is on screen. `tone="accent"` is the card in the theme's primary colour. Give it an `image` and the picture fills the card, with only the bottom-left corner under the figure washed in the card colour — the rest shows through, so pick a picture whose subject sits up and to the right.
-- `Photo` fills its card with a portrait; `position` sets the crop anchor, `label` a word in the corner. Add `lg:row-span-2 lg:h-auto` to make one tall.
-- `Team` scatters up to six `avatars` over the right half of the card, above a field of dots. They pop in after the cards and drift outward on hover.
-- `reveal="in-view"` (the default) plays everything the first time the section enters the viewport; the docs pass `"immediate"`. Under prefers-reduced-motion the section renders finished.
+- `Stat` counts up with `value`, `decimals`, `prefix` and `suffix`. `tone="accent"` makes it the theme's primary colour; give it an `image` and the picture fills the card.
+- `Photo` fills its card with a portrait. `position` sets the crop and `label` a word in the corner; add `lg:row-span-2 lg:h-auto` to make one tall.
 
 ```tsx
 import { SupportHero } from "@/components/custom/blocks/SupportHeroBlock";
@@ -675,19 +665,16 @@ A `GlassPanel` that takes part in the reveal: `shape="tile"`, `interactive`, thr
 
 ## Collage Hero
 
-A hero for a place that is warm and busy — a kindergarten here, but any studio, school or workshop: a badge whose name turns slowly around a mark, a serif headline with two words in colour, three hashtag pills, a collage of seven photographs in five staggered columns, and a footer with a quote, a scroll-down pill and a watch-video trigger. When it first appears the headline rises out of a blur, the pills pop in with a twist and the photographs come up one after another; after that the badge keeps turning and the pointer does the rest — photographs lift and zoom a touch, pills straighten, the arrow nods.
+A hero for a place that is warm and busy — a kindergarten here, but any studio, school or workshop: a badge whose name turns around a mark, a serif headline with two words in colour, hashtag pills, a collage of photographs in five staggered columns, and a footer with a quote and a watch-video trigger.
 
-`CollageHero` is built from library pieces: the scroll pill is [Button](https://avaraui.com/docs/reactjs/button), the video opens in a [Dialog](https://avaraui.com/docs/reactjs/dialog). The colours come from the theme — the accent is `--primary` (pin it with `accent`) and the second colour is `highlight`.
+`CollageHero` is built from library pieces: the scroll pill is [Button](https://avaraui.com/docs/reactjs/button) and the video opens in a [Dialog](https://avaraui.com/docs/reactjs/dialog). The accent is `--primary` (pin it with `accent`) and the second colour is `highlight`.
 
 ### A bright place
 
-Badge, headline and pills across the top; five columns of photographs; quote, scroll pill and video trigger along the foot. Three columns at tablet — a portrait, a stack and the tall one, then three landscapes in a row — and two on phones. Hover the photographs and the pills, open the video.
+Badge, headline and pills across the top, five columns of photographs, and a quote and video trigger along the foot. Hover the photographs and pills, or open the video.
 
-- `heading` is any node; wrap the words to colour in `<em>` — the first takes the accent, the second the `highlight`. Use `<br />` for a deliberate break.
-- `photos` are laid out left to right: one under the caption, two stacked, one tall in the middle, two stacked, one on the right. Each takes a `position` for its crop. Fewer than seven is fine; the columns just empty.
-- `tags` are up to three pills, scattered and tilted at desktop and in a plain row below. `tone` picks soft / highlight / accent; the defaults cycle through them.
-- `video` renders the play trigger; its `url` is an embed URL shown in a `Dialog` at 16:9. `scrollLabel` is a `Button` that scrolls to `scrollTo`, or the next section.
-- `reveal="in-view"` (the default) plays the sequence the first time the section enters the viewport; the docs pass `"immediate"`. Under prefers-reduced-motion the badge holds still and the section renders finished.
+- `heading` is any node. Wrap the words to colour in `<em>`: the first takes the accent, the second the `highlight`.
+- `video` renders the play trigger; its `url` is an embed URL shown in a `Dialog` at 16:9.
 
 ```tsx
 import { CollageHero } from "@/components/custom/blocks/CollageHeroBlock";
@@ -786,16 +773,15 @@ The video trigger is keyboard-operable and opens a proper dialog with focus hand
 
 ## Hero Block
 
-A collection of modern hero layouts in one component, built with Tailwind CSS and plain CSS animations, no animation library: revolving 3D circular photo orbit ring, rotating word spring bounce, character typewriter effect, continuous thumbnail slider marquee, facility architectural blueprint grid, and high-tech cyclone radar. One registry item, multiple opinionated variants.
+Several hero layouts in one component, chosen with `variant`. Built with Tailwind CSS and plain CSS animations, with no animation library.
 
 ### Orbit Ring Hero
 
-Copy and actions on the left, revolving 3D circular photo orbit ring on the right with smooth hover pause.
+Copy and actions on the left, a revolving 3D ring of photos on the right that pauses on hover.
 
-- Set `variant="orbit"` for a revolving 3D circular photo orbit ring layout.
-- `images` are the cards on the ring, in orbit order. Offset evenly by duration.
+- `variant="orbit"` puts the photos on a revolving 3D ring.
+- `images` are the cards on the ring, in orbit order.
 - `duration=36` is the seconds for one full revolution.
-- `highlights` are the dotted facts under the action buttons with customizable label and color.
 
 ```tsx
 import { HeroBlock } from "@/components/custom/blocks/HeroBlock";
@@ -861,15 +847,15 @@ npx shadcn@latest add @avara-ui/hero
 
 ## Bento Cascade Hero
 
-An infinite vertical bento marquee hero section that loops seamlessly on the browser compositor. Features staggered multi-column cards, rich media tiles, soft top and bottom edge fade masks, and responsive motion with zero visible reset jumps — inspired by Framer's Bento Cascade.
+An infinite vertical bento marquee hero that loops seamlessly, with staggered cards, soft edge fades and no visible reset jump.
 
 ### Bento Cascade Infinite Motion Hero
 
-Left column presents the interactive avatar stack, 5-star review score, 2-line headline, stylish accent line description, primary CTA button, secondary outline button, and expedition support badges. Right column features an infinite seamless 2-column bento cascade of high-definition nature cards, glass tag badges, theme-reactive hover glows, soft edge fade masks, and seamless hover pause.
+Copy, avatars and actions on the left; on the right two columns of bento cards cascading in an endless loop with soft edge fades.
 
-- Set `variant="bento-cascade"` for the infinite vertical bento marquee cascade hero layout.
-- `speed=30` seconds for one complete seamless vertical loop cycle.
-- `pauseOnHover=true` smoothly pauses the continuous cascade animation at the exact position when hovering over any card, resuming seamlessly when the cursor leaves.
+- `variant="bento-cascade"` is the endless vertical bento marquee.
+- `speed=30` is the seconds for one full loop.
+- `pauseOnHover=true` holds the cascade in place while a card is hovered.
 
 ```tsx
 import { BentoCascadeHero } from "@/components/custom/blocks/BentoCascadeHeroBlock";
@@ -908,15 +894,15 @@ npx shadcn@latest add @avara-ui/bento-cascade-hero
 
 ## Breathe Hero
 
-An ethereal hero featuring an elegant serif headline and a staggered 5-card curved arch. On scroll, the center card scales up to 1.35x while surrounding cards gently drift outward and dim, creating a breathtaking focal zoom.
+A serif headline over a staggered five-card curved arch. On scroll the centre card grows while the others drift outward and dim. Headline fonts load from Google Fonts at runtime; if that request is blocked (strict CSP), it falls back to your sans or serif font.
 
 ### Breathe Arch Stagger Hero
 
-An ethereal hero featuring an elegant serif headline and a staggered 5-card curved arch. On scroll, the center card scales up to 1.35x while surrounding cards gently drift outward and dim, creating a breathtaking focal zoom.
+A serif headline over a staggered five-card arch. On scroll the centre card grows while the others drift outward and dim.
 
-- Set `variant="breathe"` for the Framer Breathe curved 5-card arch hero layout.
-- `scrollMode="grow"` controls the scroll animation: 'grow' zooms the center card while drifting outer cards, 'parallax' moves cards vertically at variable rates, and 'spread' fans out the cards.
-- `scrollScale=1.35` magnification factor applied to the center focal card as the page scrolls.
+- `variant="breathe"` is the curved five-card arch.
+- `scrollMode="grow"` zooms the centre card. `"parallax"` and `"spread"` are the alternatives.
+- `scrollScale=1.35` is how far the centre card grows.
 
 ```tsx
 import { BreatheHero } from "@/components/custom/blocks/BreatheHeroBlock";
@@ -961,15 +947,14 @@ npx shadcn@latest add @avara-ui/breathe-hero
 
 ## Solar Snapshot Hero
 
-A lightweight interactive hero with a pointer-following sun orb, Typographic Curtain CTA buttons, an interactive Avatar Group, and a click-to-capture Polaroid section screenshot stack.
+A lightweight hero with a pointer-following sun orb, typographic curtain buttons, an avatar group and a click-to-capture Polaroid stack of section screenshots. Fonts load from Google Fonts at runtime; if that request is blocked (strict CSP), it falls back to your sans font.
 
 ### Solar Snapshot Sun-Cursor Hero
 
-A lightweight interactive hero with a pointer-following sun orb, Typographic Curtain CTA buttons, an interactive Avatar Group, and a click-to-capture Polaroid section screenshot stack in the bottom-right where each frame auto-clears 10 seconds after capture.
+A pointer-following sun orb, and a click-to-capture Polaroid stack in the corner whose frames clear themselves after ten seconds.
 
-- Set `variant="solar-snapshot"` for the interactive sun-cursor & click-to-capture Polaroid section screenshot hero.
-- `snapshotDurationMs=10000` time in milliseconds (10s) before each captured Polaroid frame automatically disappears from the bottom-right stack.
-- `primaryButtonVariant="pricing-typographic"` configures the animated button style from our Button component.
+- `variant="solar-snapshot"` is the sun-cursor hero with the Polaroid stack.
+- `snapshotDurationMs=10000` is how long a captured frame stays in the stack.
 
 ```tsx
 import { SolarSnapshotHero } from "@/components/custom/blocks/SolarSnapshotHeroBlock";

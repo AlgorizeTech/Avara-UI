@@ -3,7 +3,7 @@
   "name": "avatar-stack-without-tooltip",
   "type": "registry:block",
   "title": "Avatar Stack — Without tooltip",
-  "description": "A clean row of overlapping faces using the zoom variant without tooltips.",
+  "description": "A clean row of overlapping faces that zoom on hover, with no tooltip.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

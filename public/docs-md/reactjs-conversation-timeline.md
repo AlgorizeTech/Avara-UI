@@ -8,9 +8,7 @@ url: https://avaraui.com/docs/nextjs/conversation-timeline
 
 A dense rail of thin marks, one per message, that expands into a labelled list on hover.
 
-At rest it is a compact stack of hairlines — a minimap of the whole conversation that takes almost no room beside a chat. Hover the rail (or Tab into it) and every row grows at once while the labels fade in; hover a specific row and it gets extra emphasis — a brighter mark, a darker label, a small nudge. Click any mark to select it. Only `height` animates, so the rail never resizes sideways, and it re-anchors its own scroll position while the rows grow so the list never jumps. On touch devices, where there is no hover, it stays expanded so the labels remain reachable.
-
-Explore the different variations of the Conversation Timeline — each example shows a live preview with the exact code to copy. Hover a rail to expand it.
+At rest it is a compact stack of hairlines: a minimap of the whole conversation that takes almost no room beside a chat. Hover the rail (or Tab into it) and every row grows at once while the labels fade in; click any mark to select it. Only `height` animates, so the rail never resizes sideways. On touch devices, where there is no hover, it stays expanded.
 
 ## Conversation Timeline
 

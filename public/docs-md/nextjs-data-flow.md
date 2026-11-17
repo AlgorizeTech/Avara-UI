@@ -6,19 +6,18 @@ url: https://avaraui.com/docs/nextjs/data-flow
 
 # Shadcn Data Flow
 
-A section that shows where the data comes from and what comes out: source cards on the left feed one node in the middle, which fans out to result cards on the right. The connectors are real curves measured from the cards, so they hold at any width; when the section first scrolls into view the sources arrive, the lines draw themselves to the core, the core lands, the lines draw on and the results arrive — then a dash keeps moving along every line.
+A section that shows where the data comes from and what comes out: source cards on the left feed one node in the middle, which fans out to result cards on the right. The connectors are real curves measured from the cards, so they hold at any width. When the section scrolls into view they draw themselves in, and a dash keeps moving along every line.
 
-`DataFlow` is built on [Flowchart](https://avaraui.com/docs/nextjs/flowchart) and [Apple Select](https://avaraui.com/docs/nextjs/apple-select): the connectors are `FlowCanvas` and `FlowConnection` inside a fluid `Flowchart`, and the key phrases of the intro are selected iOS-style by `AppleSelect`; both install alongside. Every card is a named part — `Source`, `Core`, `Output` — with `Pill`, `Tag` and `Row` for the bits inside, so the content is entirely yours; the example below fills its output cards with [Half Stars](https://avaraui.com/docs/nextjs/half-stars) and [Button](https://avaraui.com/docs/nextjs/button), which you add as you need them.
+`DataFlow` is built on [Flowchart](https://avaraui.com/docs/nextjs/flowchart) and [Apple Select](https://avaraui.com/docs/nextjs/apple-select), which install alongside. Every card is a named part — `Source`, `Core`, `Output` — so the content is entirely yours. The example fills its output cards with [Half Stars](https://avaraui.com/docs/nextjs/half-stars) and [Button](https://avaraui.com/docs/nextjs/button), which you add as you need them.
 
 ## Sources, core, outputs
 
-Three columns at desktop with the curves drawn between them; below that the columns stack and short dashed spines stand in. Reload the preview to watch the reveal again.
+Three columns on desktop with curves drawn between them; below that the columns stack. Reload the preview to watch the reveal again.
 
-- `Source` is a group of platforms: a `title`, a `count` pill and `items` of `{ label, icon }` rendered as chips. The marks here come from the library's Icons item — App Store, Google Play, G2, Capterra, Reddit, Upwork, Stripe, Y Combinator — each in its brand colour.
-- `Core` is the node in the middle — `title` and a small `subtitle`. Every source line ends here and every output line starts here.
-- `Output` is a result card: `title`, a `badge` pill, and whatever you put inside. `DataFlow.Row`, `DataFlow.Tag` and `DataFlow.Pill` are the pieces the demo's four cards are made of.
-- List phrases from the intro in `highlights` and `AppleSelect` picks them out with a translucent tint and lollipop handles, fading in with the reveal. Each phrase is matched once, in order; one that is not in the text is skipped.
-- `reveal="in-view"` (the default) plays the sequence the first time the section enters the viewport. The docs pass `"immediate"` because the preview is already on screen. Under prefers-reduced-motion the section renders finished, with the dash held still.
+- `Source` is a group of platforms: a `title`, a `count` pill and `items` of `{ label, icon }` shown as chips.
+- `Core` is the node in the middle. Every source line ends here and every output line starts here.
+- `Output` is a result card: a `title`, a `badge` pill and whatever you put inside, built from `DataFlow.Row`, `DataFlow.Tag` and `DataFlow.Pill`.
+- List phrases from the intro in `highlights` and they are selected iOS-style, each phrase matched once, in order.
 
 ```tsx
 "use client";

@@ -1,16 +1,14 @@
 ---
 title: "Shadcn Mobile Mockups"
-description: "Shadcn Mobile Mockups. A stunning, fully responsive collection of mobile device mockups engineered for Next.js, allowing you to present your app designs."
+description: "A collection of mobile device mockups for presenting your app designs, images or autoplaying videos in high-fidelity hardware frames. Free shadcn/ui component."
 url: https://avaraui.com/docs/nextjs/mobile-mockup
 ---
 
 # Shadcn Mobile Mockups
 
-A stunning, fully responsive collection of mobile device mockups engineered for Next.js, allowing you to present your app designs, images, or autoplaying videos in gorgeous, high-fidelity hardware frames.
+A collection of mobile device mockups for presenting your app designs, images or autoplaying videos in high-fidelity hardware frames. Eight models share one API: the iPhone 16 Pro and 17 Pro Max, iPhone 14 Pro Max, iPhone 12 Pro Max, iPhone 5, Samsung S24 Ultra, Google Pixel 8 and Google Pixel 10.
 
-The suite ships with eight iconic models, led by the sleek iPhone 16 Pro and iPhone 17 Pro Max. Behind them sit the iPhone 14 Pro Max, the flat-edged iPhone 12 Pro Max, the retro iPhone 5, the sleek Samsung S24 Ultra, the uniquely rounded Google Pixel 8, and the futuristic Google Pixel 10 — so you can evoke nostalgia with a classic home button or show off the newest glass, from the same API.
-
-Each device is its own exported component that wraps whatever you put inside it — a screenshot, an autoplaying video, or a live React tree. Every frame is pure CSS/SVG, so it stays crisp at any zoom. The screens below run this site's own hero section as live children rather than a screenshot: the headline word flips, and the install command copies.
+Each device is its own exported component that wraps whatever you put inside it — a screenshot, a video or a live React tree. Every frame is pure CSS/SVG, so it stays crisp at any zoom. The screens below run this site's own hero section as live children.
 
 ## iPhone 16 Pro
 

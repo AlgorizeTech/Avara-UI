@@ -6,11 +6,9 @@ url: https://avaraui.com/docs/nextjs/chart
 
 # Shadcn Chart
 
-A beautiful, completely custom charting engine built from the ground up for modern React applications.
+A custom charting engine for React with no `recharts`, `chart.js` or `gsap`. Bars are responsive CSS flexbox, lines and areas are smooth bezier SVG paths, and pie and donut charts use SVG stroke-dasharray maths, so they never stretch into ovals.
 
-This `ChartBlock` completely drops heavy dependencies (No `recharts`, No `chart.js`, No `gsap`). It leverages the power of **Responsive CSS Flexbox** for the Bar charts to ensure they anchor perfectly to the axis without squashing, uses **Smooth Bezier Curves** for the Line/Area SVG paths, and utilizes pure **SVG Stroke-Dasharray Math** for perfect Pie and Donut charts that never stretch into ovals.
-
-One `data` array of `{ label, value }` drives every chart type — the engine handles scaling, height distribution and polar math. Hover any bar, point or slice for its tooltip. Two further types, `donut-legend` and `stacked-bar`, show shares of a whole with a legend, each share in its own colour — the charts on the [Book Appointment](https://avaraui.com/docs/reactjs/book-appointment) page.
+One `data` array of `{ label, value }` drives every chart type, and hovering a bar, point or slice shows its tooltip. Two further types, `donut-legend` and `stacked-bar`, show shares of a whole with a legend — the charts on the [Book Appointment](https://avaraui.com/docs/reactjs/book-appointment) page.
 
 ## Bar chart
 

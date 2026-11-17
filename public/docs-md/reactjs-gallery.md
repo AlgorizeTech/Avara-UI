@@ -80,10 +80,9 @@ All 6 options as live previews: https://avaraui.com/view/gallery
 
 Revolving 3D circular photo orbit ring with upright cards and smooth hover pause.
 
-- `variant="orbit-gallery"` is the revolving 3D circular photo orbit ring layout (default).
-- `images` are the cards on the ring, in orbit order. Any count works — each is offset by a share of `duration`, so they stay evenly spaced.
+- `variant="orbit-gallery"` is the revolving 3D photo ring (the default).
+- `images` are the cards on the ring, in orbit order. Any count works; they stay evenly spaced.
 - `duration=36` is the seconds for one full revolution.
-- `color` is the accent — a preset (indigo, rose, emerald, zinc) or any CSS colour — and is nudged for contrast on light and dark surfaces. Left unset it follows your theme.
 
 ```tsx
 import { Gallery } from "@/components/custom/blocks/GalleryBlock";
@@ -120,12 +119,11 @@ export default function OrbitGalleryExample() {
 
 ## Moving Bento
 
-Self-rearranging image bento grid with a dominant center hero slot. Peripheral items rotate into focus via GSAP Flip animations. Hovering holds the items still; clicking any peripheral item instantly brings it to the hero slot.
+A self-rearranging image bento with a dominant centre slot. Hovering holds the items still; clicking one brings it to the hero slot.
 
-- `variant="moving-bento"` switches from the circular orbit to the GSAP Flip moving bento grid layout.
-- `swapInterval=3000` is the milliseconds between automatic position swaps.
-- `gap=12` is the spacing in pixels between bento items.
-- `items` is an array of cards ({ id, title, description, image }) to populate the grid.
+- `variant="moving-bento"` switches to the GSAP Flip moving bento.
+- `items` are the cards, as `{ id, title, description, image }`.
+- `swapInterval=3000` is the milliseconds between automatic swaps.
 
 ```tsx
 import { Gallery } from "@/components/custom/blocks/GalleryBlock";
@@ -195,13 +193,10 @@ export default function MovingBentoExample() {
 
 ## Circular Reel
 
-Interactive, scroll-driven circular spinner. Each item lives on a segmented ring that responds to scroll or idles with smooth passive rotation. Features an active full-bleed background preview and center HUD.
+A scroll-driven circular dial: each item sits on a segmented ring that turns with scroll and idles in a slow passive rotation.
 
-- `variant="circular-reel"` switches to the Framer-inspired interactive scroll-driven circular dial spinner.
-- `idleRotationSpeed=5` is the degrees per second of passive idle rotation.
-- `scrollSensitivity=0.06` is the multiplier for mouse wheel and touch scroll interactions.
-- `ringThickness=37` is the percentage thickness of the segmented ring (10 to 60).
-- `reelItems` is an array of items ({ id, name, category, description, image }) to populate the reel.
+- `variant="circular-reel"` switches to the circular dial spinner.
+- `reelItems` are the items, as `{ id, name, category, description, image }`.
 
 ```tsx
 import { Gallery } from "@/components/custom/blocks/GalleryBlock";
@@ -294,14 +289,11 @@ export default function CircularReelExample() {
 
 ## 3D Pill Carousel
 
-Layered diagonal image carousel with sculptural pill-shaped cards, smooth 3D depth transitions, click-to-focus, keyboard navigation, hover brightness/scale, and a floating theme-accent tooltip CTA above the active card.
+Layered diagonal pill-shaped cards with 3D depth, click-to-focus and keyboard navigation.
 
-- `variant="pill-carousel"` switches to the Framer-inspired 3D layered pill carousel.
-- `autoSlide=true` enables automatic sliding while also supporting click-to-focus. Pass `false` (`autoSlide={false}`) to disable automatic sliding so cards change only when clicked.
-- `cardBorderRadius=200` is the border radius in pixels for the pill-shaped cards.
-- `activeBorderWidth=6` is the border width in pixels around the centered active pill card (coloured with your theme/accent colour).
-- `autoPlayInterval=3000` is the interval in milliseconds between automatic slide advances when `autoSlide` is `true`.
-- `pillItems` is an array of items ({ id, image, tooltipText, link }) to populate the 3D pill carousel.
+- `variant="pill-carousel"` switches to the layered pill carousel.
+- `pillItems` are the items, as `{ id, image, tooltipText, link }`.
+- `autoSlide=true` keeps the cards sliding on their own. Pass `false` to change them only on click.
 
 ```tsx
 import { Gallery } from "@/components/custom/blocks/GalleryBlock";
@@ -371,17 +363,11 @@ export default function ThreeDPillCarouselExample() {
 
 ## Arc Carousel Gallery
 
-Curved 3D image carousel arranged along an interactive concave cylindrical arc. Cards flow seamlessly, drift with passive rotation, and spin with momentum physics on drag.
+A curved 3D carousel along a concave arc that drifts on its own and spins with momentum when dragged.
 
-- `variant="arc-carousel"` switches to the Framer-inspired 3D curved arc carousel gallery.
-- `curve=-200` controls the arc curvature from -300 to 300: negative for concave (wrapping away like inside a cylinder, default -200), 0 for flat, and positive for convex (curling toward you).
-- `cardSize=220` is the width in pixels for each card on the arc.
-- `perspective=1200` is the 3D perspective depth in pixels.
-- `autoScrollSpeed=0.22` is the auto-drift speed in cards per second.
-- `autoSlide=true` enables continuous auto-scroll. Set to `false` to disable auto-scrolling and rely on drag-and-spin navigation.
-- `dragSpeed=1.2` is the pointer drag multiplier for spinning with momentum.
-- `inertia=0.75` is the momentum inertia coefficient (0 to 1) for smooth gliding after release.
-- `arcItems` is an array of items ({ id, image, title, subtitle, link }) to populate the arc carousel.
+- `variant="arc-carousel"` switches to the curved arc carousel.
+- `arcItems` are the items, as `{ id, image, title, subtitle, link }`.
+- `curve=-200` runs from -300 to 300: negative is concave, `0` flat and positive convex.
 
 ```tsx
 import { Gallery } from "@/components/custom/blocks/GalleryBlock";
@@ -465,15 +451,11 @@ export default function ArcCarouselGalleryExample() {
 
 ## Video Sphere Gallery
 
-Immersive 3D rotating spherical video showcase. Videos and media drift along a Fibonacci sphere with organic drag navigation, auto-drift rotation, depth-based scaling, dynamic blur and grayscale effects, and popup preview modal.
+Videos and images drift along a rotating sphere with drag navigation, depth-based blur and a popup preview.
 
-- `variant="video-sphere"` switches to the Framer-inspired interactive 3D video sphere showcase.
-- `sphereItems` is an array of items ({ id, type, src, poster, title, description, link }) where type can be 'image' or 'video' to populate the sphere.
-- `radius=280` is the radius in pixels of the 3D sphere.
-- `itemCount=35` is the total number of cards distributed across the sphere surface.
-- `autoRotateSpeed=0.0015` controls the passive idle rotation drift speed.
-- `blurStrength=12` is the maximum blur in pixels applied to distant cards on the far side of the sphere.
-- `enablePopup=true` opens an animated video modal when a card is clicked.
+- `variant="video-sphere"` switches to the 3D video sphere.
+- `sphereItems` are the items, as `{ id, type, src, poster, title, description, link }`, where `type` is `"image"` or `"video"`.
+- `enablePopup=true` opens a video modal when a card is clicked.
 
 ```tsx
 import { Gallery, type VideoSphereItem } from "@/components/custom/blocks/GalleryBlock";

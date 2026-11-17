@@ -212,37 +212,18 @@ export default function TypingIndicator() {
   examples={[
     {
       title: "Conversation",
-      subheading: "The pieces assembled into a messenger thread — set the side once on the `ChatBubble` root and the children read it from context.",
+      subheading: "The pieces assembled into a messenger thread. Set the side once on the `ChatBubble` root and the children read it from context.",
       propNotes: [
         {
-          lead: "Set",
+          lead: "Use",
           prop: "variant",
           value: '"sent"',
-          effect:
-            "on the root to align the row right — it also unlocks `color` on `ChatMessage` and the ticks on `ChatTimestamp`.",
-        },
-        {
-          prop: "variant",
-          value: '"received"',
-          effect:
-            "is the default: aligns left and forces the neutral zinc bubble whatever `color` says.",
-        },
-        {
-          prop: "color",
-          value: '"blue"',
-          effect:
-            "on `ChatMessage` picks the sent-bubble fill — `primary`, `default`, `blue`, `indigo`, `rose` or `emerald`, not an arbitrary hex.",
-        },
-        {
-          prop: "status",
-          value: '"read"',
-          effect: "on `ChatTimestamp` adds the blue double tick after the time.",
+          effect: "on the root aligns the row right and unlocks `color` on `ChatMessage` and the ticks on `ChatTimestamp`. `\"received\"` is the default.",
         },
         {
           prop: "fallback",
           value: '"SJ"',
-          effect:
-            "on `ChatAvatar` is required — the initials show until `src` loads, and stay if it fails.",
+          effect: "on `ChatAvatar` is required: the initials show until `src` loads, and stay if it fails.",
         },
       ],
       props: { example: "conversation" },
@@ -268,28 +249,10 @@ export default function TypingIndicator() {
       title: "Message grouping",
       propNotes: [
         {
-          prop: "layout",
-          value: '"default"',
-          effect:
-            "is the default — a fully rounded 16px bubble with a visible avatar, for a standalone message.",
-        },
-        {
           lead: "Use",
           prop: "layout",
           value: '"group-top"',
-          effect:
-            "on the first bubble of a run: the bottom inner corner tightens to 4px and the avatar is hidden.",
-        },
-        {
-          prop: "layout",
-          value: '"group-middle"',
-          effect: "tightens both inner corners and hides the avatar.",
-        },
-        {
-          prop: "layout",
-          value: '"group-bottom"',
-          effect:
-            "closes the run — tightens the top inner corner and brings the avatar back. The corners mirror automatically for `sent` bubbles.",
+          effect: "on the first bubble of a run tightens its bottom inner corner and hides the avatar. `\"group-middle\"` tightens both, and `\"group-bottom\"` closes the run and brings the avatar back.",
         },
       ],
       props: { example: "grouping" },
@@ -302,16 +265,12 @@ export default function TypingIndicator() {
           lead: "Pass",
           prop: "time",
           value: '"10:25 AM"',
-          effect:
-            "as a plain string — required, and formatted by you, so `Just now` works in the same slot.",
+          effect: "is a plain string you format yourself, so `Just now` works in the same slot.",
         },
-        { prop: "status", value: '"sent"', effect: "renders one grey tick." },
-        { prop: "status", value: '"delivered"', effect: "renders two grey ticks." },
-        { prop: "status", value: '"read"', effect: "renders two blue ticks." },
         {
           prop: "status",
-          effect:
-            "left off shows the time alone — which is also what a `received` bubble does whatever you pass.",
+          value: '"read"',
+          effect: "adds ticks after the time: `\"sent\"` one grey, `\"delivered\"` two grey, `\"read\"` two blue. Leave it off for the time alone.",
         },
       ],
       props: { example: "receipts" },
@@ -319,18 +278,11 @@ export default function TypingIndicator() {
     },
     {
       title: "Typing indicator",
-      subheading: "`ChatTypingIndicator` takes no props of its own — it draws its own pill and loops until you unmount it.",
+      subheading: "`ChatTypingIndicator` takes no props of its own. It draws its own pill and loops until you unmount it.",
       propNotes: [
         {
           prop: "variant",
-          value: '"received"',
-          effect:
-            "on the root gives the dots a zinc pill, cornered to the left.",
-        },
-        {
-          prop: "variant",
-          value: '"sent"',
-          effect: "inverts it — dark pill, light dots, cornered to the right.",
+          effect: "on the root sets the pill: `\"received\"` is zinc and cornered left, `\"sent\"` is dark and cornered right.",
         },
       ],
       props: { example: "typing" },

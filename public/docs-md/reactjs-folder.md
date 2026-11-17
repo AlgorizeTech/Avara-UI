@@ -1,16 +1,14 @@
 ---
 title: "Shadcn Folder"
-description: "A tactile folder — unified skeleton cards (or your own photos) tuck behind a frosted-glass front pocket. Free shadcn/ui component with GSAP and Motion builds."
+description: "Shadcn Folder. A tactile folder: skeleton cards (or your own photos) tuck behind a frosted-glass front pocket that tilts open in 3D."
 url: https://avaraui.com/docs/nextjs/folder
 ---
 
 # Shadcn Folder
 
-A tactile folder — unified skeleton cards (or your own photos) tuck behind a frosted-glass front pocket.
+A tactile folder: skeleton cards (or your own photos) tuck behind a frosted-glass front pocket that tilts open in 3D, and the cards lift into a shallow arc on hover, tap or focus.
 
-The back panel and its tab are one continuous squircle path, the pocket is frosted glass that tilts open in 3D, and the cards inside lift into a shallow arc on hover, tap or focus. Give it a `color` and the pocket, icon and cards all derive their shades from it in OKLCH. Pass `files` with thumbnails to show real photos, names to get hover tooltips, or switch on `interactive` to make it a drag-and-drop upload target with progress bars — that example lives on the [File Upload](https://avaraui.com/docs/reactjs/file-upload) page.
-
-Explore the different variations of the Folder — each example shows a live preview with the exact code to copy. Hover a folder to open it.
+Give it a `color` and the pocket, icon and cards all derive their shades from it. Pass `files` for real photos, or switch on `interactive` to make it a drag-and-drop upload target — that example lives on the [File Upload](https://avaraui.com/docs/reactjs/file-upload) page.
 
 ## Folder
 

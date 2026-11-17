@@ -3,7 +3,7 @@
   "name": "particle-canvas-wordmark-glow-canvas",
   "type": "registry:block",
   "title": "Particle Canvas — Wordmark Glow Canvas",
-  "description": "A bottom-anchored giant wordmark banner where each letter rises with a slow, smooth spring bounce on scroll alongside a pointer-tracking radial glow.",
+  "description": "A giant bottom-anchored wordmark whose letters rise with a slow spring bounce on scroll, beside a pointer-tracking radial glow.",
   "dependencies": [
     "next-themes",
     "tw-animate-css"

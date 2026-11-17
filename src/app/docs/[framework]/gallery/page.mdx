@@ -497,222 +497,133 @@ export default function VideoSphereGalleryExample() {
     {
       title: "Orbit Gallery",
       subheading: "Revolving 3D circular photo orbit ring with upright cards and smooth hover pause.",
-      props: { variant: "orbit-gallery" },
       propNotes: [
         {
           prop: "variant",
           value: '"orbit-gallery"',
-          effect: "is the revolving 3D circular photo orbit ring layout (default).",
+          effect: "is the revolving 3D photo ring (the default).",
         },
         {
           prop: "images",
-          effect: "are the cards on the ring, in orbit order. Any count works — each is offset by a share of `duration`, so they stay evenly spaced.",
+          effect: "are the cards on the ring, in orbit order. Any count works; they stay evenly spaced.",
         },
         {
           prop: "duration",
           value: "36",
           effect: "is the seconds for one full revolution.",
         },
-        {
-          prop: "color",
-          effect: "is the accent — a preset (indigo, rose, emerald, zinc) or any CSS colour — and is nudged for contrast on light and dark surfaces. Left unset it follows your theme.",
-        },
       ],
+      props: { variant: "orbit-gallery" },
       usage: nextAndReact(usage),
       code: extractCode("src/components/custom/blocks/GalleryBlock.tsx"),
     },
     {
       title: "Moving Bento",
-      subheading: "Self-rearranging image bento grid with a dominant center hero slot. Peripheral items rotate into focus via GSAP Flip animations. Hovering holds the items still; clicking any peripheral item instantly brings it to the hero slot.",
-      props: { variant: "moving-bento" },
+      subheading: "A self-rearranging image bento with a dominant centre slot. Hovering holds the items still; clicking one brings it to the hero slot.",
       propNotes: [
         {
           prop: "variant",
           value: '"moving-bento"',
-          effect: "switches from the circular orbit to the GSAP Flip moving bento grid layout.",
+          effect: "switches to the GSAP Flip moving bento.",
+        },
+        {
+          prop: "items",
+          effect: "are the cards, as `{ id, title, description, image }`.",
         },
         {
           prop: "swapInterval",
           value: "3000",
-          effect: "is the milliseconds between automatic position swaps.",
-        },
-        {
-          prop: "gap",
-          value: "12",
-          effect: "is the spacing in pixels between bento items.",
-        },
-        {
-          prop: "items",
-          effect: "is an array of cards ({ id, title, description, image }) to populate the grid.",
+          effect: "is the milliseconds between automatic swaps.",
         },
       ],
+      props: { variant: "moving-bento" },
       usage: nextAndReact(bentoUsage),
       code: extractCode("src/components/custom/blocks/GalleryBlock.tsx"),
     },
     {
       title: "Circular Reel",
-      subheading: "Interactive, scroll-driven circular spinner. Each item lives on a segmented ring that responds to scroll or idles with smooth passive rotation. Features an active full-bleed background preview and center HUD.",
-      props: { variant: "circular-reel" },
+      subheading: "A scroll-driven circular dial: each item sits on a segmented ring that turns with scroll and idles in a slow passive rotation.",
       propNotes: [
         {
           prop: "variant",
           value: '"circular-reel"',
-          effect: "switches to the Framer-inspired interactive scroll-driven circular dial spinner.",
-        },
-        {
-          prop: "idleRotationSpeed",
-          value: "5",
-          effect: "is the degrees per second of passive idle rotation.",
-        },
-        {
-          prop: "scrollSensitivity",
-          value: "0.06",
-          effect: "is the multiplier for mouse wheel and touch scroll interactions.",
-        },
-        {
-          prop: "ringThickness",
-          value: "37",
-          effect: "is the percentage thickness of the segmented ring (10 to 60).",
+          effect: "switches to the circular dial spinner.",
         },
         {
           prop: "reelItems",
-          effect: "is an array of items ({ id, name, category, description, image }) to populate the reel.",
+          effect: "are the items, as `{ id, name, category, description, image }`.",
         },
       ],
+      props: { variant: "circular-reel" },
       usage: nextAndReact(reelUsage),
       code: extractCode("src/components/custom/blocks/GalleryBlock.tsx"),
     },
     {
       title: "3D Pill Carousel",
-      subheading: "Layered diagonal image carousel with sculptural pill-shaped cards, smooth 3D depth transitions, click-to-focus, keyboard navigation, hover brightness/scale, and a floating theme-accent tooltip CTA above the active card.",
-      props: { variant: "pill-carousel", autoSlide: true },
+      subheading: "Layered diagonal pill-shaped cards with 3D depth, click-to-focus and keyboard navigation.",
       propNotes: [
         {
           prop: "variant",
           value: '"pill-carousel"',
-          effect: "switches to the Framer-inspired 3D layered pill carousel.",
+          effect: "switches to the layered pill carousel.",
+        },
+        {
+          prop: "pillItems",
+          effect: "are the items, as `{ id, image, tooltipText, link }`.",
         },
         {
           prop: "autoSlide",
           value: "true",
-          effect: "enables automatic sliding while also supporting click-to-focus. Pass `false` (`autoSlide={false}`) to disable automatic sliding so cards change only when clicked.",
-        },
-        {
-          prop: "cardBorderRadius",
-          value: "200",
-          effect: "is the border radius in pixels for the pill-shaped cards.",
-        },
-        {
-          prop: "activeBorderWidth",
-          value: "6",
-          effect: "is the border width in pixels around the centered active pill card (coloured with your theme/accent colour).",
-        },
-        {
-          prop: "autoPlayInterval",
-          value: "3000",
-          effect: "is the interval in milliseconds between automatic slide advances when `autoSlide` is `true`.",
-        },
-        {
-          prop: "pillItems",
-          effect: "is an array of items ({ id, image, tooltipText, link }) to populate the 3D pill carousel.",
+          effect: "keeps the cards sliding on their own. Pass `false` to change them only on click.",
         },
       ],
+      props: { variant: "pill-carousel", autoSlide: true },
       usage: nextAndReact(pillUsage),
       code: extractCode("src/components/custom/blocks/GalleryBlock.tsx"),
     },
     {
       title: "Arc Carousel Gallery",
-      subheading: "Curved 3D image carousel arranged along an interactive concave cylindrical arc. Cards flow seamlessly, drift with passive rotation, and spin with momentum physics on drag.",
-      props: { variant: "arc-carousel", curve: -200 },
+      subheading: "A curved 3D carousel along a concave arc that drifts on its own and spins with momentum when dragged.",
       propNotes: [
         {
           prop: "variant",
           value: '"arc-carousel"',
-          effect: "switches to the Framer-inspired 3D curved arc carousel gallery.",
+          effect: "switches to the curved arc carousel.",
+        },
+        {
+          prop: "arcItems",
+          effect: "are the items, as `{ id, image, title, subtitle, link }`.",
         },
         {
           prop: "curve",
           value: "-200",
-          effect: "controls the arc curvature from -300 to 300: negative for concave (wrapping away like inside a cylinder, default -200), 0 for flat, and positive for convex (curling toward you).",
-        },
-        {
-          prop: "cardSize",
-          value: "220",
-          effect: "is the width in pixels for each card on the arc.",
-        },
-        {
-          prop: "perspective",
-          value: "1200",
-          effect: "is the 3D perspective depth in pixels.",
-        },
-        {
-          prop: "autoScrollSpeed",
-          value: "0.22",
-          effect: "is the auto-drift speed in cards per second.",
-        },
-        {
-          prop: "autoSlide",
-          value: "true",
-          effect: "enables continuous auto-scroll. Set to `false` to disable auto-scrolling and rely on drag-and-spin navigation.",
-        },
-        {
-          prop: "dragSpeed",
-          value: "1.2",
-          effect: "is the pointer drag multiplier for spinning with momentum.",
-        },
-        {
-          prop: "inertia",
-          value: "0.75",
-          effect: "is the momentum inertia coefficient (0 to 1) for smooth gliding after release.",
-        },
-        {
-          prop: "arcItems",
-          effect: "is an array of items ({ id, image, title, subtitle, link }) to populate the arc carousel.",
+          effect: "runs from -300 to 300: negative is concave, `0` flat and positive convex.",
         },
       ],
+      props: { variant: "arc-carousel", curve: -200 },
       usage: nextAndReact(arcUsage),
       code: extractCode("src/components/custom/blocks/GalleryBlock.tsx"),
     },
     {
       title: "Video Sphere Gallery",
-      subheading: "Immersive 3D rotating spherical video showcase. Videos and media drift along a Fibonacci sphere with organic drag navigation, auto-drift rotation, depth-based scaling, dynamic blur and grayscale effects, and popup preview modal.",
-      props: { variant: "video-sphere" },
+      subheading: "Videos and images drift along a rotating sphere with drag navigation, depth-based blur and a popup preview.",
       propNotes: [
         {
           prop: "variant",
           value: '"video-sphere"',
-          effect: "switches to the Framer-inspired interactive 3D video sphere showcase.",
+          effect: "switches to the 3D video sphere.",
         },
         {
           prop: "sphereItems",
-          effect: "is an array of items ({ id, type, src, poster, title, description, link }) where type can be 'image' or 'video' to populate the sphere.",
-        },
-        {
-          prop: "radius",
-          value: "280",
-          effect: "is the radius in pixels of the 3D sphere.",
-        },
-        {
-          prop: "itemCount",
-          value: "35",
-          effect: "is the total number of cards distributed across the sphere surface.",
-        },
-        {
-          prop: "autoRotateSpeed",
-          value: "0.0015",
-          effect: "controls the passive idle rotation drift speed.",
-        },
-        {
-          prop: "blurStrength",
-          value: "12",
-          effect: "is the maximum blur in pixels applied to distant cards on the far side of the sphere.",
+          effect: "are the items, as `{ id, type, src, poster, title, description, link }`, where `type` is `\"image\"` or `\"video\"`.",
         },
         {
           prop: "enablePopup",
           value: "true",
-          effect: "opens an animated video modal when a card is clicked.",
+          effect: "opens a video modal when a card is clicked.",
         },
       ],
+      props: { variant: "video-sphere" },
       usage: nextAndReact(videoSphereUsage),
       code: extractCode("src/components/custom/blocks/GalleryBlock.tsx"),
     },

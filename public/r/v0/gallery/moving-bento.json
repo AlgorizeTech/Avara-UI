@@ -3,7 +3,7 @@
   "name": "gallery-moving-bento",
   "type": "registry:block",
   "title": "Gallery — Moving Bento",
-  "description": "Self-rearranging image bento grid with a dominant center hero slot. Peripheral items rotate into focus via GSAP Flip animations. Hovering holds the items still; clicking any peripheral item instantly brings it to the hero slot.",
+  "description": "A self-rearranging image bento with a dominant centre slot. Hovering holds the items still; clicking one brings it to the hero slot.",
   "dependencies": [
     "gsap",
     "lucide-react",

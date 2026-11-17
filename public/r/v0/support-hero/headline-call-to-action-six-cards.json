@@ -3,7 +3,7 @@
   "name": "support-hero-headline-call-to-action-six-cards",
   "type": "registry:block",
   "title": "Support Hero — Headline, call to action, six cards",
-  "description": "Twelve columns at desktop — 3 / 3 / 3 / 3 on the first row with the portrait spanning both rows, 3 / 6 on the second. Six columns at tablet, one on phones. Hover the cards.",
+  "description": "Twelve columns at desktop, six at tablet, one on phones. Hover the cards.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

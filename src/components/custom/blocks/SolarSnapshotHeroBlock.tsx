@@ -295,6 +295,9 @@ function PolaroidSnapshotCard({
                     key={i}
                     src={av.src}
                     alt={av.alt ?? ""}
+                    width={shot.isCompact ? 18 : 24}
+                    height={shot.isCompact ? 18 : 24}
+                    decoding="async"
                     className={cn(
                       "rounded-full border-2 border-background object-cover",
                       shot.isCompact ? "size-4.5" : "size-6"
@@ -469,12 +472,17 @@ export const SolarSnapshotHero = forwardRef<HTMLElement, SolarSnapshotHeroProps>
       new Map()
     );
 
+    const flashTimersRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
+
     // Cleanup all active 10-second snapshot timers on unmount
     useEffect(() => {
       const timers = timersRef.current;
+      const flashTimers = flashTimersRef.current;
       return () => {
         timers.forEach((timer) => clearTimeout(timer));
         timers.clear();
+        flashTimers.forEach((timer) => clearTimeout(timer));
+        flashTimers.clear();
       };
     }, []);
 
@@ -555,7 +563,11 @@ export const SolarSnapshotHero = forwardRef<HTMLElement, SolarSnapshotHeroProps>
 
         // Trigger camera shutter flash
         setShutterFlash(true);
-        setTimeout(() => setShutterFlash(false), 140);
+        const flashTimer = setTimeout(() => {
+          flashTimersRef.current.delete(flashTimer);
+          setShutterFlash(false);
+        }, 140);
+        flashTimersRef.current.add(flashTimer);
 
         setSnapshots((prev) => [...prev.slice(-(maxSnapshots - 1)), newShot]);
 
@@ -594,7 +606,7 @@ export const SolarSnapshotHero = forwardRef<HTMLElement, SolarSnapshotHeroProps>
         ref={(node) => {
           sectionRef.current = node;
           if (typeof ref === "function") ref(node);
-          else if (ref) (ref as any).current = node;
+          else if (ref) ref.current = node;
         }}
         onPointerEnter={() => setCursorActive(true)}
         onPointerLeave={() => setCursorActive(false)}

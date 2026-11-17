@@ -3,7 +3,7 @@
   "name": "hero-carousel-watch-the-dawn-from-the-summit",
   "type": "registry:block",
   "title": "Hero Carousel — Watch the dawn from the summit",
-  "description": "Eyebrow and headline across the top; the glass panel and the queue of cards along the foot. The queue moves every five seconds — click any card to bring it forward, use the arrow keys, or swipe on a phone. Hovering the rail holds the clock.",
+  "description": "Eyebrow and headline across the top, the glass panel and the queue of cards along the foot. Click a card to bring it forward, use the arrow keys or swipe; hovering the rail holds the clock.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

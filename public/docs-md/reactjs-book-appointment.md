@@ -6,9 +6,9 @@ url: https://avaraui.com/docs/nextjs/book-appointment
 
 # Shadcn Book Appointment
 
-A booking flow for a page that ends in an appointment: a practitioner's portrait and contact details, their scores as stars, two small charts, and a booking panel with a strip of days, time slots in groups, a button that reads back the choice, and a confirmation that draws itself in once the booking is made.
+A booking flow for a page that ends in an appointment: a practitioner's portrait and contact details, their scores as stars, two small charts, and a booking panel with a strip of days, time slots in groups, and a confirmation that draws itself in once the booking is made.
 
-`BookAppointment` is a section built from library pieces. The surface is [Glass Panel](https://avaraui.com/docs/reactjs/glass-panel) (`GlassBackdrop` and `GlassPanel`), the scores are [Half Stars](https://avaraui.com/docs/reactjs/half-stars), and the booking panel is [Booking Card](https://avaraui.com/docs/reactjs/booking-card) — a compound component that can be dropped into any panel on any page. Hand it a `practitioner`, some `slotGroups` and an `onBook`, and it lays the page out.
+`BookAppointment` is built from library pieces: the surface is [Glass Panel](https://avaraui.com/docs/reactjs/glass-panel), the scores are [Half Stars](https://avaraui.com/docs/reactjs/half-stars) and the booking panel is [Booking Card](https://avaraui.com/docs/reactjs/booking-card). Hand it a `practitioner`, some `slotGroups` and an `onBook`, and it lays the page out.
 
 ## For AI agents
 
@@ -42,13 +42,11 @@ All 2 options as live previews: https://avaraui.com/view/book-appointment
 
 ## Clinic booking page
 
-Pick a day and a time, press Book — the button stays busy while your onBook promise runs, then the check draws itself and the details rise in.
+Pick a day and a time, then press Book. The button stays busy while your `onBook` promise runs, then the confirmation draws itself in.
 
-- `practitioner` fills the portrait, contact list, name, overall score and summary. `shortName` is how the confirmation refers to them; contact rows are left out when their field is missing.
-- `slotGroups` are the times on offer, one `BookingCard.Slots` group per entry. Mark a slot `taken` to show it struck through.
-- Return a promise from `onBook` and the button stays busy until it settles — resolve to show the confirmation, throw to drop back to the form.
-- `unavailable=(day) => day.getDay() === 0` strikes out days with nothing free. Sundays here; feed it your real availability.
-- `scores` render as `HalfStars` with fractional fill. `visitReasons` and `activities` are `ChartBlock`s — a `donut-legend` and a `stacked-bar`; leave either out and its panel is not drawn.
+- `practitioner` fills the portrait, contact list, name, overall score and summary. Contact rows are left out when their field is missing.
+- `slotGroups` are the times on offer, one group per entry. Mark a slot `taken` to show it struck through.
+- Return a promise from `onBook` and the button stays busy until it settles: resolve to show the confirmation, throw to drop back to the form.
 
 ```tsx
 import { BookAppointment } from "@/components/custom/blocks/BookAppointmentBlock";

@@ -562,7 +562,8 @@ export default function DesignsToolkitBlock({
 
     if (!autoStartOnView) {
       startAnimation();
-      return;
+      // Clear the scheduled steps if the component unmounts (or restarts) mid-sequence.
+      return clearAllTimeouts;
     }
 
     const el = containerRef.current;
@@ -583,7 +584,7 @@ export default function DesignsToolkitBlock({
       observer.disconnect();
       clearAllTimeouts();
     };
-  }, [animated, autoStartOnView, startAnimation, clearAllTimeouts]);
+  }, [animated, autoStartOnView, variant, startAnimation, clearAllTimeouts]);
 
   // Re-trigger animation when duration changes so user immediately sees the effect of slider
   useEffect(() => {
@@ -1224,6 +1225,9 @@ export default function DesignsToolkitBlock({
                     "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=96&h=96&fit=crop&crop=faces"
                   }
                   alt="Design partner"
+                  width={40}
+                  height={40}
+                  decoding="async"
                   className="w-10 h-10 rounded-full object-cover shadow-sm ring-1 ring-black/10 dark:ring-white/10"
                 />
                 <div className="mt-2 text-center text-xs sm:text-[13px] text-zinc-600 dark:text-zinc-400 font-medium leading-tight">
@@ -1276,6 +1280,9 @@ export default function DesignsToolkitBlock({
                   "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=96&h=96&fit=crop&crop=faces"
                 }
                 alt="Design partner"
+                width={36}
+                height={36}
+                decoding="async"
                 className="w-9 h-9 rounded-full object-cover shadow-sm ring-1 ring-black/10 dark:ring-white/10"
               />
               <div className="mt-2 text-xs text-zinc-600 dark:text-zinc-400 font-medium leading-tight">

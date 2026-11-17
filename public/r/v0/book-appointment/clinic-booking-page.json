@@ -3,7 +3,7 @@
   "name": "book-appointment-clinic-booking-page",
   "type": "registry:block",
   "title": "Book Appointment — Clinic booking page",
-  "description": "Pick a day and a time, press Book — the button stays busy while your onBook promise runs, then the check draws itself and the details rise in.",
+  "description": "Pick a day and a time, then press Book. The button stays busy while your `onBook` promise runs, then the confirmation draws itself in.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -6,9 +6,9 @@ url: https://avaraui.com/docs/nextjs/component-wall
 
 # Shadcn Component Wall
 
-A landing hero for a component library. In the middle, the copy — a small badge, a headline that blurs in word by word and keeps one word changing, a lead, an install command, two actions, a line of trust and, closing the column, the tools it is built with: a label, then two rows of marks — an odd batch staggers as three over four — one batch of related tools at a time. On either side, a wall of screenshots that never ends: a camera hangs over each, zoomed in on one card, and every few seconds pulls back, glides to the next card and settles on it — the left camera resting high, the right one low. On phones there is a single wall instead: a band of every card between the copy and the tools. A second layout puts the copy on the left and a single wall on the right, with the tools over its lower edge.
+A landing hero for a component library: the copy in the middle — headline, install command, actions and a line of trust — between two walls of screenshots that never end. Each wall has a camera that glides from card to card, and the install line always names the card a camera has just landed on, so the hero shows something the reader can paste into a terminal.
 
-The copy and the walls talk to each other. The install line ends in the name of the card a camera has just landed on, and slides to the next name as the next camera lands — so the hero is always showing something the reader can paste into a terminal. The walls are [Image Walls](https://avaraui.com/docs/nextjs/image-wall), the headline a [Text Animation](https://avaraui.com/docs/nextjs/text-animation), the copy control a [Copy Button](https://avaraui.com/docs/nextjs/copy-button), the faces an [Avatar Stack](https://avaraui.com/docs/nextjs/avatar-stack), the stars [Half Stars](https://avaraui.com/docs/nextjs/half-stars) and the tools a [Tech Stack](https://avaraui.com/docs/nextjs/tech-stack), passed in as `stack`. The headline is set in your theme's `font-serif`, the rest in `font-sans`; every colour is a theme token.
+The walls are [Image Walls](https://avaraui.com/docs/nextjs/image-wall), the headline a [Text Animation](https://avaraui.com/docs/nextjs/text-animation), the copy control a [Copy Button](https://avaraui.com/docs/nextjs/copy-button), the faces an [Avatar Stack](https://avaraui.com/docs/nextjs/avatar-stack), the stars [Half Stars](https://avaraui.com/docs/nextjs/half-stars) and the tools a [Tech Stack](https://avaraui.com/docs/nextjs/tech-stack), passed in as `stack`.
 
 ## For AI agents
 
@@ -48,18 +48,11 @@ All 2 options as live previews: https://avaraui.com/view/component-wall
 
 ## Build interactive interfaces
 
-The copy in the middle, a wall on each side. Wait a few seconds: the left camera glides to another card, then the right one, and the install line changes to name whichever just landed. Hovering a wall holds its camera.
+The copy in the middle, a wall on each side. Wait a few seconds: each camera glides to a new card in turn, and the install line changes to name it.
 
-- `layout="center"` centres the copy between two walls, each half the width and fading in under it. The left camera rests high and towards the outside, the right one low, so the two resting cards never mirror each other across the headline. The walls split `items` — the first half on the left, the rest on the right — so each draws half the cards. Below `lg` there is one wall instead — a band of every card between the copy and the tools. `"split"`, the default, is the copy on the left and one wall on the right — see Examples.
-- `interval=true` enables the auto-slide camera flight (defaults to `5500ms`, or pass `intervalTime` / a custom millisecond value). Pass `false` (or `0`) to turn auto-sliding off.
-- `intervalTime=5500` sets the custom interval time in milliseconds when `interval={true}` (default `5500`).
-- `install` is the command in the box. Write `{item}` where the card's name goes — `"npx shadcn@latest add @avara-ui/{item}"` — and the card a camera has just landed on fills it in with its `slug`, sliding to the next name as the next camera lands. The copy button copies the whole resolved line. On phones only the last word before the name (`@avara-ui/`) stays.
-- `heading` is a string, revealed word by word with the library's blur-in-up text animation. Write `{word}` where `headingWords` take turns — each new word blurs in the same way, every `wordInterval` ms — and name one word in `accent` to set it in the primary colour. Keep it short: it's set large in `font-serif` and wraps at about fourteen characters per line.
-- `items` are the cards, dealt into `columns` in order. Each has a mono `title`, an `image` cropped into the same 493:332 frame, and an optional `slug` for the install line (default: the title in kebab-case). The right wall deals the same list from halfway through, so the two walls never show the same card; `onFocus` always reports an index into `items`.
-- `interval=4500` is how long each camera rests on a card; the right one lands half an interval after the left, so they take turns. Each holds while its wall is hovered, while the tab is hidden and while the section is off screen; `0` keeps both still on their first cards.
-- `trust` is the faces, the stars and the sentence under the actions; leave out `avatars` or `rating` to drop either.
-- `stack` is a Tech Stack — the tools the library is built with — closing the copy column. Its groups of four to eight take turns, an odd group as three over four, each mark blurring in the way the headline word does. The column is narrow, so give it `variant="compact"`: the label sits between two hairlines and only the marks show, each name its tooltip and read to screen readers.
-- `zoom=0.9` is this layout's default: each wall is half the width, so a smaller resting card keeps it clear of the copy. Pass `zoom` to override it.
+- `layout="center"` centres the copy between two walls. The default, `"split"`, puts it beside one wall — see More Examples.
+- `install` is the command in the box. Write `{item}` where the card's name goes — `"npx shadcn@latest add @avara-ui/{item}"` — and it fills in with the card a camera has just landed on.
+- `heading` is revealed word by word. Write `{word}` where `headingWords` take turns, and name one word in `accent` to colour it.
 
 ```tsx
 "use client";
@@ -153,16 +146,11 @@ npx shadcn@latest add @avara-ui/component-wall
 
 ### Centred with persistent background
 
-The copy in the middle between two gliding screenshot walls. On mobile and small screens, the animated walls stay underneath the copy in the background layer just like on desktop, rather than dropping below the action buttons.
+The same centred layout, with the walls kept behind the copy on small screens instead of dropping below the buttons.
 
-- `layout="center"` centres the copy between two walls, each half the width and fading in under it.
-- `persistentBackground=true` ensures the animated walls remain anchored in the background behind the content on small screens, preventing the cards from dropping down below the call-to-action buttons.
-- `interval=false` disables automatic camera gliding, keeping both walls stationary while remaining draggable.
-- `draggable=true` allows users to drag and explore the background cards freely.
-- `install` is the command in the box. Live-updates with the card slug the camera lands on.
-- `items` are the cards dealt into the walls. The left wall draws the first half, the right wall the second half.
-- `mobileZoom=0.30` controls the scale of the background cards on small screens and phones, rendering them delightfully compact and unobtrusive.
-- `stack` renders the Tech Stack in compact mode below the trust statement in the center column.
+- `persistentBackground=true` keeps the walls behind the content on small screens.
+- `mobileZoom=0.30` scales the background cards down on phones so they stay unobtrusive.
+- `interval=false` holds both cameras still; the walls can still be dragged.
 
 ```tsx
 "use client";
@@ -238,15 +226,9 @@ export default function Hero() {
 
 ### Clean mobile view (no background animation)
 
-Centred hero layout with background image animations completely hidden on mobile and small screens (<lg). Pass showMobileWall={false} (or mobileBackground={false}) across ALL variants (center, split, and center-background) to keep mobile screens clean and distraction-free while retaining full interactive animation on desktop.
+The centred hero with the walls hidden below `lg`, so phones stay clean while desktop keeps both walls moving.
 
-- `showMobileWall=false` completely hides the background screenshot animations on small screens and phones (<lg). Supported across all layout variants (center, split, and center-background). Desktop retains full dual-wall interactive animation.
-- `interval=true` enables automatic dual camera flights across both walls on desktop.
-- `draggable=true` allows interactive dragging and panning across the dual walls.
-- `layout="center"` centres the copy between two walls on desktop.
-- `install` is the command in the box. Live-updates with the card slug the camera lands on.
-- `items` are the cards dealt into the walls.
-- `stack` renders the Tech Stack in compact mode below the trust statement in the center column.
+- `showMobileWall=false` hides the walls on small screens, in every layout. `mobileBackground={false}` does the same.
 
 ```tsx
 "use client";
@@ -324,16 +306,9 @@ export default function Hero() {
 
 ### Clean mobile view with single full-width background wall
 
-Centred hero layout featuring one single continuous full-width background wall across the entire hero instead of dual separate left and right walls. Pass singleBackground={true} (or singleWall={true}) to render a single unified wall animation, combined with showMobileWall={false} to keep mobile clean.
+One full-width wall behind the centred copy, instead of a wall on each side.
 
-- `singleBackground=true` renders ONE single continuous background wall spanning the entire hero behind the copy, instead of splitting items into separate left and right walls.
-- `showMobileWall=false` completely hides the background screenshot animations on small screens and phones (<lg) for a clean mobile presentation.
-- `interval=true` glides the single camera smoothly across the entire background wall on desktop.
-- `draggable=true` allows interactive dragging and panning across the full-width wall.
-- `layout="center"` centres the copy in the middle over the single background wall.
-- `install` is the command in the box. Live-updates with the card slug the camera lands on.
-- `items` are all the cards dealt into the single unified wall.
-- `stack` renders the Tech Stack in compact mode below the trust statement in the center column.
+- `singleBackground=true` draws one wall across the whole hero and gives it every card. `singleWall` is an alias.
 
 ```tsx
 "use client";
@@ -411,13 +386,10 @@ export default function Hero() {
 
 ### Copy beside the wall
 
-The copy on the left, one wall filling the right and fading under it. One camera, so the install line follows it card by card; the tools sit over the lower edge of the wall.
+The copy on the left, one wall filling the right. With one camera, the install line follows it card by card.
 
-- `layout="split"` is the default: the copy takes the left 44–46% on desktop and the wall the right 56–58%, fading in under the copy. Below `lg` the wall is a band under the copy.
-- `interval=true` glides the single wall camera from card to card automatically.
-- `draggable=false` disables dragging so the camera controls all navigation.
-- `stack` sits over the lower wall on desktop and under the band on smaller screens; the wall blurs and fades beneath the marks. A labelled Tech Stack (the default variant) fits here: from `xl` up names sit beside the marks; below that only the marks show.
-- `zoom=1.35` is the default here: one wall has room for a larger resting card.
+- `layout="split"` is the default. Below `lg` the wall becomes a band under the copy.
+- `stack` sits over the lower edge of the wall on desktop and under the band on smaller screens.
 
 ```tsx
 "use client";

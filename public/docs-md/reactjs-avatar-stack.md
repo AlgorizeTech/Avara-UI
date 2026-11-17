@@ -12,12 +12,10 @@ Several sections used to hand-roll this row; [Fashion Hero](https://avaraui.com/
 
 ## Avatar Group (Shift on hover)
 
-An animated avatar group inspired by animate-ui that displays overlapping user images and smoothly shifts each avatar upward with spring physics on hover with an anchored pointer tooltip.
+Overlapping faces that shift upward on a spring when hovered, with a tooltip that glides between them.
 
-- `variant="shift"` enables the spring-physics upward shift on hover with an anchored gliding tooltip.
-- `max=4` sets how many avatars are displayed before folding remaining items into a clickable +N counter.
-- `onMoreClick` optional — pass an onClick function (restCount, hiddenAvatars) => void to handle clicks on the +N counter disc.
-- `action` optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it if not needed.
+- `variant="shift"` lifts the hovered face on a spring and glides the tooltip between faces.
+- `max=4` is how many faces show before the rest fold into a +N disc. `onMoreClick` handles a click on it.
 
 ```tsx
 import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
@@ -63,12 +61,9 @@ npx shadcn@latest add @avara-ui/avatar-stack
 
 ### Without tooltip
 
-A clean row of overlapping faces using the zoom variant without tooltips.
+A clean row of overlapping faces that zoom on hover, with no tooltip.
 
-- `variant="zoom"` raises and zooms the hovered face above its neighbours while keeping the row's gap fixed.
-- `type="default"` disables the hover tooltip completely so the avatars zoom without displaying name or info popups.
-- `max=4` sets the maximum visible faces before folding the rest into a +N badge (supports onMoreClick).
-- `action` optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it.
+- `type="default"` turns the tooltip off completely.
 
 ```tsx
 import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
@@ -97,12 +92,9 @@ export default function BasicAvatarStack() {
 
 ### With tooltip (Zoom on hover)
 
-Hovering an avatar displays its name in a tooltip and zooms the face upward, keeping the row's gap fixed.
+Hovering a face zooms it upward and shows its name in a tooltip.
 
-- `variant="zoom"` raises and zooms the hovered avatar above its neighbours while keeping the spacing fixed.
-- `type="tooltip"` displays the avatar's name and designation in a clean floating tooltip on hover.
-- `max=4` sets the maximum visible faces before folding the rest into a +N badge (supports onMoreClick).
-- `action` optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it.
+- `type="tooltip"` shows the avatar's name and designation in a floating tooltip.
 
 ```tsx
 import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
@@ -131,12 +123,9 @@ export default function TooltipZoomAvatarStack() {
 
 ### With tooltip arrow (Zoom on hover)
 
-Displays an anchored pointer arrow underneath the tooltip card with a lively spring popup animation as avatars smoothly zoom on hover.
+The same tooltip with a pointer arrow and a spring popup.
 
-- `variant="zoom"` raises and zooms the hovered avatar above its neighbours while keeping the spacing fixed.
-- `type="tooltip-arrow"` renders a floating tooltip with a pointer arrow anchoring to the top of the avatar circle.
-- `max=4` sets the maximum visible faces before folding the rest into a +N badge (supports onMoreClick).
-- `action` optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it.
+- `type="tooltip-arrow"` adds a pointer arrow anchoring the tooltip to the top of the avatar.
 
 ```tsx
 import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
@@ -165,12 +154,9 @@ export default function TooltipArrowAvatarStack() {
 
 ### Spread on hover (Expand width)
 
-Hovering over the stack smoothly fans the avatars out symmetrically from the center and subtly shifts the hovered face upward without zooming.
+Hovering the stack fans the faces out from the centre and lifts the hovered one, without zooming.
 
-- `variant="spread"` smoothly expands the avatar stack symmetrically from the center on hover (6px) and elevates the hovered face by -30% without scaling.
-- `type="default"` disables tooltips so the avatars fan out cleanly without info popups.
-- `max=4` sets the maximum visible faces before folding the rest into a +N badge (supports onMoreClick).
-- `action` optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it.
+- `variant="spread"` fans the faces out symmetrically and lifts the hovered one.
 
 ```tsx
 import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
@@ -199,12 +185,9 @@ export default function SpreadOnHover() {
 
 ### Spread with tooltip
 
-Hovering over the stack widens the avatar gap symmetrically from the center, elevates the hovered face by -30%, and displays a clean floating tooltip above it.
+The spread fan-out with a floating name tooltip above the hovered face.
 
-- `variant="spread"` smoothly expands the avatars symmetrically from the center on hover and elevates the hovered face by -30%.
-- `type="tooltip"` displays a clean floating tooltip without a pointer arrow on hover.
-- `max=4` sets the maximum visible faces before folding the rest into a +N badge (supports onMoreClick).
-- `action` optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it.
+- `type="tooltip"` adds a floating tooltip without an arrow.
 
 ```tsx
 import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
@@ -233,12 +216,9 @@ export default function SpreadWithTooltip() {
 
 ### Spread with tooltip arrow
 
-Hovering widens the stack symmetrically from the center, subtly raises the hovered face, and reveals a spring popup tooltip with an anchored pointer arrow.
+The spread fan-out with a pointer-arrow tooltip.
 
-- `variant="spread"` smoothly expands the avatars symmetrically from the center on hover and elevates the hovered face by -30%.
-- `type="tooltip-arrow"` renders a floating tooltip with an anchored pointer arrow underneath and spring popup animation.
-- `max=4` sets the maximum visible faces before folding the rest into a +N badge (supports onMoreClick).
-- `action` optional — pass an onClick function () => void (or true) to append a trailing '+' action button, or omit it.
+- `type="tooltip-arrow"` adds a floating tooltip with an anchored pointer arrow.
 
 ```tsx
 import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
@@ -267,11 +247,9 @@ export default function SpreadWithTooltipArrow() {
 
 ### With an action
 
-Three faces using the zoom variant with clean tooltips and a trailing plus action button that triggers an onClick handler.
+Three faces with tooltips and a trailing + button.
 
-- `variant="zoom"` raises and zooms the hovered avatar above its neighbours while keeping the spacing fixed.
-- `type="tooltip"` displays the avatar's name and designation in a clean floating tooltip on hover.
-- `action=() => void` renders the built-in '+' action button at the end of the stack and triggers your onClick function when clicked.
+- `action=() => void` adds the built-in + button at the end of the stack and calls your handler when it is clicked.
 
 ```tsx
 import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
@@ -297,13 +275,10 @@ export default function Community() {
 
 ### Folded count
 
-Six people, three shown — the rest become a clickable +3 disc. Hovering faces or the counter disc displays arrow tooltips.
+Six people, three shown; the rest fold into a clickable +3 disc.
 
-- `max=3` is how many faces show before the rest fold into a +N count disc.
-- `onMoreClick=(restCount, hiddenAvatars) => void` triggers your onClick callback when the +N counter disc is clicked.
-- `variant="zoom"` raises and zooms the hovered face or counter disc above its neighbours.
-- `type="tooltip-arrow"` displays tooltips with pointer arrows and lively pop animations on hover.
-- `action` optional — pass an onClick function () => void alongside max if you want both a +N counter and a trailing '+' button.
+- `max=3` is how many faces show before the rest fold into a +N disc.
+- `onMoreClick=(restCount, hiddenAvatars) => void` is called when the +N disc is clicked.
 
 ```tsx
 import { AvatarStack } from "@/components/custom/blocks/AvatarStackBlock";
@@ -338,11 +313,9 @@ export default function JoinedThisMonth() {
 
 ### Sizes
 
-sm, md and lg — 28, 36 and 44 pixels. The small stack shows a clean tooltip (type="tooltip"), the middle stack shows without tooltip (type="default"), and the large stack displays tooltips with pointing arrows (type="tooltip-arrow").
+sm, md and lg are 28, 36 and 44 pixels, each paired here with a different tooltip style.
 
-- `size` controls the avatar circle dimensions: sm (28px), md (36px), lg (44px), or xl (48px).
-- `variant="zoom"` scales the hovered avatar upward while keeping the row's spacing fixed.
-- `type` configures each stack's tooltip style: "tooltip" (sm), "default" (md), and "tooltip-arrow" (lg).
+- `size` sets the avatar diameter: `sm` (28px), `md` (36px), `lg` (44px) or `xl` (48px).
 - `ringClassName` is the gap colour between faces (`ring-background` by default). Match it to the surface the stack sits on.
 
 ```tsx
