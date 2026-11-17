@@ -86,9 +86,17 @@ export const NAME_OVERRIDES: Record<string, string> = {
   "NotFoundBlock.tsx": "not-found",
   "DesignsToolkitBlock.tsx": "designs-toolkit",
   "VoiceNoteBlock.tsx": "voice-note",
+  "ArcProcessBlock.tsx": "arc-process",
 };
 
 export const META: Record<string, ItemMeta> = {
+  "arc-process": {
+    title: "Arc Process",
+    description:
+      "A scroll-driven curved arc process website section with dynamic progress strokes, orbital step nodes, and active milestone details.",
+    categories: ["marketing", "layout", "scroll"],
+    docs: "Named exports: ArcProcess, DEFAULT_ARC_STEPS, ArcProcessStep, ArcProcessProps. Features SVG dome arc progress strokes, scroll synchronization, step node transitions, and theme color customization.",
+  },
   "voice-note": {
     title: "Voice Note",
     description:

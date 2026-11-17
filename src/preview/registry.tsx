@@ -17,6 +17,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "animated-typography": lazyRetry(() => import("./demos/animated-typography-demo")),
   "api-playground": lazyRetry(() => import("./demos/api-playground-demo")),
   "apple-select": lazyRetry(() => import("./demos/apple-select-demo")),
+  "arc-process": lazyRetry(() => import("./demos/arc-process-demo")),
   "audio-player": lazyRetry(() => import("./demos/audio-player-demo")),
   "avatar-stack": lazyRetry(() => import("./demos/avatar-stack-demo")),
   "bento-showcase": lazyRetry(() => import("./demos/bento-showcase-demo")),

@@ -24,7 +24,7 @@ Each name below is a docs page slug. Its summary, install command and Markdown a
 - **Charts, Maps & Graphs** (components): `chart`, `data-maps`, `flowchart`, `infrastructure-topology`, `fleet-tracker`, `network-graph`, `user-graph`
 - **More Components** (components): `designs-toolkit`, `falling-tags`, `live-pulse-pill`, `modern-scroll-stack`, `ribbon-drift`, `voice-note`
 - **Pages & App Screens** (components): `image-viewer`, `auth-forms`, `book-appointment`, `dashboard`, `product-details`, `profile-page`, `support-dashboard`
+- **More Sections** (website sections): `arc-process`, `error`, `not-found`, `top-destinations`
 - **Marketing Sections** (website sections): `bento-showcase`, `counter-section`, `cta-section`, `data-flow`, `faq-section`, `platform-grid`, `pricing`, `reviews`, `newsletter`, `waitlist`
 - **Hero Sections** (website sections): `component-wall`, `portfolio-showcase`, `flavour-carousel`, `hero`
 - **Headers & Footers** (website sections): `footer`, `navbar`, `sidebar`
-- **More Sections** (website sections): `error`, `not-found`, `top-destinations`

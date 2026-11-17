@@ -420,6 +420,32 @@
       "docs": "Named export: AppleSelect. `text` is the full string and `selection` is a `[start, end]` character range (end exclusive, like String.slice) or an array of them for several phrases. The range is fixed by the author, not draggable. `color` takes any CSS colour, `handles={false}` drops the lollipops, and `animate` fades the highlight in on mount. Renders a <p> by default; `as=\"span\"` sets it inline inside your own paragraph. Other HTML attributes are forwarded to it."
     },
     {
+      "name": "arc-process",
+      "type": "registry:component",
+      "title": "Arc Process",
+      "author": "AlgorizeTech",
+      "description": "A scroll-driven curved arc process website section with dynamic progress strokes, orbital step nodes, and active milestone details.",
+      "categories": [
+        "marketing",
+        "layout",
+        "scroll"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ArcProcessBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ArcProcessBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: ArcProcess, DEFAULT_ARC_STEPS, ArcProcessStep, ArcProcessProps. Features SVG dome arc progress strokes, scroll synchronization, step node transitions, and theme color customization."
+    },
+    {
       "name": "audio-player",
       "type": "registry:component",
       "title": "Audio Player",

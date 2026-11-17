@@ -194,6 +194,8 @@ export const NO_CHOICE_NEEDED: string[] = [
   "navigation",
   // One design offering customizable theme color, soundwave waves, and interactive modal roster.
   "live-pulse-pill",
+  // Interactive rotating semicircle dome process with orbital milestone nodes (single design layout).
+  "arc-process",
 ];
 
 /**

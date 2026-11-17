@@ -1,0 +1,282 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("arc-process");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Shadcn Arc Process
+
+A scroll-driven curved arc process section with dynamic SVG progress strokes, animated heading accent underline, rotating milestone nodes, and active step details.
+
+As the user scrolls through the section, the arc stroke traces along the curve with your theme color, rotating the orbital nodes and revealing each project milestone at the apex.
+
+export const usageDefault = `"use client";
+
+import React from "react";
+import {
+  Compass,
+  Palette,
+  Cpu,
+  ShieldCheck,
+  Rocket,
+} from "lucide-react";
+import {
+  ArcProcess,
+  type ArcProcessStep,
+} from "@/components/custom/blocks/ArcProcessBlock";
+
+const PROCESS_STEPS: ArcProcessStep[] = [
+  {
+    id: "step-1",
+    stepNumber: "01",
+    title: "Discovery & Strategic Roadmap",
+    description:
+      "We map your technical roadmap, dissect core user journeys, and align architecture goals before writing a single line of code.",
+    icon: Compass,
+  },
+  {
+    id: "step-2",
+    stepNumber: "02",
+    title: "Rapid Prototyping & Iteration",
+    description:
+      "Interactive wireframes and tangible prototypes let you test assumptions early and refine user interactions with direct feedback.",
+    icon: Palette,
+  },
+  {
+    id: "step-3",
+    stepNumber: "03",
+    title: "Full-Stack Agile Engineering",
+    description:
+      "Clean, type-safe implementation using modular components, robust state management, and enterprise-grade performance best practices.",
+    icon: Cpu,
+  },
+  {
+    id: "step-4",
+    stepNumber: "04",
+    title: "Automated QA & Security Audit",
+    description:
+      "Comprehensive end-to-end testing, accessibility compliance checks, and performance benchmarks to guarantee zero regression.",
+    icon: ShieldCheck,
+  },
+  {
+    id: "step-5",
+    stepNumber: "05",
+    title: "Global Scale & Continuous Delivery",
+    description:
+      "Zero-downtime automated deployment pipelines with real-time telemetry, auto-scaling infrastructure, and continuous monitoring.",
+    icon: Rocket,
+  },
+];
+
+export default function ArcProcessDemo() {
+  return (
+    <ArcProcess
+      variant="arc-dock"
+      badgeText="ENGINEERING LIFECYCLE"
+      title="A streamlined workflow built for"
+      highlightWord="workflow"
+      subtitle="teams shipping high-standard products"
+      steps={PROCESS_STEPS}
+    />
+  );
+}`;
+
+<ExampleShowcase headingLevel={2}
+  name="arc-process"
+  colorControl
+  colorProp="themeColor"
+  columns={1}
+  examples={[
+    {
+      title: "Arc Process Section",
+      subheading:
+        "Scroll-driven dome arc process with live colored progress border, animated header underline, orbital badge nodes, and milestone card details.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"arc-dock"',
+          effect: "interactive rotating semicircle dome with orbital milestone nodes.",
+        },
+        {
+          prop: "highlightShape",
+          value: '"wave"',
+          effect: 'drawing style under the highlighted word: "wave" (marker squiggle), "double" (dual sketch), or "curve" (swoop).',
+        },
+        {
+          prop: "highlightWord",
+          value: '"workflow"',
+          effect: "word inside the heading wrapped with an animated SVG curved underline stroke.",
+        },
+      ],
+      props: { variant: "arc-dock", highlightShape: "wave" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/ArcProcessBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="arc-process" />
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"arc-dock" | "default" | "semicircle"</code>
+        </td>
+        <td>
+          <code>"arc-dock"</code>
+        </td>
+        <td>
+          Visual design variant for the process section. Defaults to "arc-dock" for the interactive rotating semicircular dome.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>badgeText</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"ENGINEERING LIFECYCLE"</code>
+        </td>
+        <td>
+          Optional badge pill label displayed above the main heading.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"A streamlined workflow built for"</code>
+        </td>
+        <td>
+          Primary heading text at the top of the section.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>highlightWord</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"workflow"</code>
+        </td>
+        <td>
+          Specific word in the title styled with an animated hand-drawn SVG curve underline in the theme accent color.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>highlightShape</code>
+        </td>
+        <td>
+          <code>"wave" | "double" | "curve"</code>
+        </td>
+        <td>
+          <code>"wave"</code>
+        </td>
+        <td>
+          Visual drawing shape rendered beneath the highlighted word: energetic hand-drawn marker wave ("wave"), dual sketch stroke ("double"), or clean swoop curve ("curve").
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>subtitle</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"teams shipping high-standard products"</code>
+        </td>
+        <td>
+          Secondary muted heading text below the primary title.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>steps</code>
+        </td>
+        <td>
+          <code>ArcProcessStep[]</code>
+        </td>
+        <td>
+          <code>DEFAULT_ARC_STEPS</code>
+        </td>
+        <td>
+          Array of step milestone objects containing id, stepNumber, title, description, and Lucide icon.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>themeColor</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"var(--theme-color, var(--primary))"</code>
+        </td>
+        <td>
+          Accent color applied to the active arc stroke, apex indicator dot, active badge, and step numbers. Automatically inherits your project theme or custom color swatch.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>autoPlay</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          Whether to automatically cycle between steps when not scrolling.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>autoPlayInterval</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>5000</code>
+        </td>
+        <td>
+          Interval in milliseconds between automatic step transitions.
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+
+<DocsJsonLd slug="arc-process" />

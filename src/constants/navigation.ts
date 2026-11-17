@@ -405,6 +405,23 @@ const rawNavigation: NavigationItem[] = [
     label: "Website Sections",
     children: [
       {
+        label: "Arc Process",
+        slug: "arc-process",
+        badge: "New",
+        keywords: [
+          "arc process",
+          "curved process",
+          "curved stepper",
+          "orbit features",
+          "circular timeline",
+          "scroll process",
+          "why choose us",
+          "founder led",
+          "milestones",
+          "orbit",
+        ],
+      },
+      {
         label: "Auth Forms",
         slug: "auth-forms",
         keywords: [

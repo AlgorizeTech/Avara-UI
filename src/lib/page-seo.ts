@@ -43,6 +43,7 @@ export const SEARCH_NAMES: Record<string, string> = {
   "ai-chat": "AI Chat",
   alert: "Alert",
   "animated-list": "Animated List",
+  "arc-process": "Arc Process",
   calendar: "Calendar",
   "chat-bubble": "Chat Bubble",
   "color-picker": "Color Picker",

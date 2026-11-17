@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-17T08:04:29.645Z",
-  "totalFiles": 333,
+  "generatedAt": "2026-11-17T16:44:08.798Z",
+  "totalFiles": 335,
   "files": [
     {
       "name": "docs",
@@ -67,6 +67,12 @@
       "path": "/docs-md/nextjs-apple-select.md",
       "url": "/docs/nextjs/apple-select",
       "originalMdx": "[framework]\\apple-select\\page.mdx"
+    },
+    {
+      "name": "nextjs/arc-process",
+      "path": "/docs-md/nextjs-arc-process.md",
+      "url": "/docs/nextjs/arc-process",
+      "originalMdx": "[framework]\\arc-process\\page.mdx"
     },
     {
       "name": "nextjs/audio-player",
@@ -1063,6 +1069,12 @@
       "path": "/docs-md/reactjs-apple-select.md",
       "url": "/docs/reactjs/apple-select",
       "originalMdx": "[framework]\\apple-select\\page.mdx"
+    },
+    {
+      "name": "reactjs/arc-process",
+      "path": "/docs-md/reactjs-arc-process.md",
+      "url": "/docs/reactjs/arc-process",
+      "originalMdx": "[framework]\\arc-process\\page.mdx"
     },
     {
       "name": "reactjs/audio-player",

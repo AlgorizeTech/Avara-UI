@@ -447,7 +447,20 @@ async function main() {
     }
   }
 
-  fs.writeFileSync(MANIFEST, JSON.stringify(manifest, null, 2) + "\n");
+  function writeWithRetry(targetPath: string, content: string, retries = 5, delayMs = 300) {
+    for (let i = 0; i < retries; i++) {
+      try {
+        fs.writeFileSync(targetPath, content);
+        return;
+      } catch (err: unknown) {
+        if (i === retries - 1) throw err;
+        const waitTill = Date.now() + delayMs;
+        while (Date.now() < waitTill) {}
+      }
+    }
+  }
+
+  writeWithRetry(MANIFEST, JSON.stringify(manifest, null, 2) + "\n");
   console.log(
     `Open in v0: wrote ${written} items for ${Object.keys(manifest).length} previews across ${pages.length} pages.`,
   );

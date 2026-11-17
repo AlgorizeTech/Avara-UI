@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-11-17T08:04:29.804Z
-**Total files:** 333
+**Generated at:** 2026-11-17T16:44:09.258Z
+**Total files:** 335
 
 ## Available Files
 
@@ -18,6 +18,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/animated-typography](/docs-md/nextjs-animated-typography.md) - Source: `[framework]\animated-typography\page.mdx`
 - [nextjs/api-playground](/docs-md/nextjs-api-playground.md) - Source: `[framework]\api-playground\page.mdx`
 - [nextjs/apple-select](/docs-md/nextjs-apple-select.md) - Source: `[framework]\apple-select\page.mdx`
+- [nextjs/arc-process](/docs-md/nextjs-arc-process.md) - Source: `[framework]\arc-process\page.mdx`
 - [nextjs/audio-player](/docs-md/nextjs-audio-player.md) - Source: `[framework]\audio-player\page.mdx`
 - [nextjs/auth-forms](/docs-md/nextjs-auth-forms.md) - Source: `[framework]\auth-forms\page.mdx`
 - [nextjs/avatar-stack](/docs-md/nextjs-avatar-stack.md) - Source: `[framework]\avatar-stack\page.mdx`
@@ -184,6 +185,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/animated-typography](/docs-md/reactjs-animated-typography.md) - Source: `[framework]\animated-typography\page.mdx`
 - [reactjs/api-playground](/docs-md/reactjs-api-playground.md) - Source: `[framework]\api-playground\page.mdx`
 - [reactjs/apple-select](/docs-md/reactjs-apple-select.md) - Source: `[framework]\apple-select\page.mdx`
+- [reactjs/arc-process](/docs-md/reactjs-arc-process.md) - Source: `[framework]\arc-process\page.mdx`
 - [reactjs/audio-player](/docs-md/reactjs-audio-player.md) - Source: `[framework]\audio-player\page.mdx`
 - [reactjs/auth-forms](/docs-md/reactjs-auth-forms.md) - Source: `[framework]\auth-forms\page.mdx`
 - [reactjs/avatar-stack](/docs-md/reactjs-avatar-stack.md) - Source: `[framework]\avatar-stack\page.mdx`

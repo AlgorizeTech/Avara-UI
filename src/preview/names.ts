@@ -12,6 +12,7 @@ export const sandboxNames = [
   "animated-typography",
   "api-playground",
   "apple-select",
+  "arc-process",
   "audio-player",
   "avatar-stack",
   "bento-showcase",
