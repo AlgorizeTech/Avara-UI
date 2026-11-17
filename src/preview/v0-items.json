@@ -1064,6 +1064,9 @@
     "jw-player-skinned": "Video Player (JW Player) — JW Player — skinned",
     "jw-player-custom-palette": "Video Player (JW Player) — JW Player — custom palette"
   },
+  "voice-note": {
+    "voice-note": "Voice Note"
+  },
   "waitlist": {
     "launch": "Waitlist — Launch",
     "card": "Waitlist — Card",
