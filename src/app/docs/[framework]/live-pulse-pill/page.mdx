@@ -1,0 +1,251 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("live-pulse-pill");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Shadcn Live Pulse Pill
+
+An interactive live presence pill with an animated soundwave pulse and modal participant roster for active calls, streams, audio spaces, and huddles.
+
+Clicking the pill triggers a smooth pop-up modal displaying active session participants, real-time speaker badges, and a direct action trigger.
+
+export const usageDefault = `"use client";
+
+import {
+  LivePulsePill,
+  type LiveParticipant,
+} from "@/components/custom/blocks/LivePulsePillBlock";
+
+const PARTICIPANTS: LiveParticipant[] = [
+  {
+    id: "p1",
+    name: "David",
+    avatar:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_240,h_240,c_fill/v1790150480/photo-1507003211169-0a1dd7228f2d-1790150482276.jpg",
+  },
+  {
+    id: "p2",
+    name: "Kira",
+    avatar:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_240,h_240,c_fill/v1790158813/photo-1494790108377-be9c29b29330-1790158812212.jpg",
+  },
+  {
+    id: "p3",
+    name: "Marina",
+    avatar:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_240,h_240,c_fill/v1790150483/photo-1534528741775-53994a69daeb-1790150482280.jpg",
+  },
+  {
+    id: "p4",
+    name: "Razvan",
+    avatar:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_240,h_240,c_fill/v1790145139/pexels-photo-3775534-1790145143488.jpg",
+  },
+  {
+    id: "p5",
+    name: "Ana",
+    avatar:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_240,h_240,c_fill/v1790145139/pexels-photo-1036623-1790145143487.jpg",
+    isSpeaking: true,
+  },
+  {
+    id: "p6",
+    name: "Daniel",
+    avatar:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_240,h_240,c_fill/v1790158814/photo-1539571696357-5a69c17a67c6-1790158812214.jpg",
+  },
+  {
+    id: "p7",
+    name: "Afshin",
+    avatar:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_240,h_240,c_fill/v1790150482/photo-1530595467537-0b5996c41f2d-1790150482280.jpg",
+  },
+  {
+    id: "p8",
+    name: "Lina",
+    avatar:
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_240,h_240,c_fill/v1790150481/photo-1517841905240-472988babdf9-1790150482277.jpg",
+  },
+];
+
+export default function LivePulsePillDemo() {
+  return (
+    <LivePulsePill
+      variant="default"
+      participants={PARTICIPANTS}
+      title="Live Session"
+      actionLabel="Join Now"
+      count="+4"
+      onJoin={() => alert("Joined session!")}
+    />
+  );
+}`;
+
+<ExampleShowcase headingLevel={2}
+  name="live-pulse-pill"
+  colorControl
+  colorProp="themeColor"
+  columns={1}
+  examples={[
+    {
+      title: "Live Pulse Pill",
+      subheading:
+        "Interactive presence pill with pulsating soundwave icon, overlapping avatar stack, and centered session participant modal.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"default"',
+          effect: "renders the live pulse pill with expanding ambient soundwave waves and avatar stack.",
+        },
+        {
+          prop: "participants",
+          value: "PARTICIPANTS",
+          effect: "array of active session participants shown in the pill and modal grid.",
+        },
+      ],
+      props: { variant: "default" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/LivePulsePillBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="live-pulse-pill" />
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "pulse"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Visual style variant for the live presence pill.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>participants</code>
+        </td>
+        <td>
+          <code>LiveParticipant[]</code>
+        </td>
+        <td>
+          <code>DEFAULT_LIVE_PARTICIPANTS</code>
+        </td>
+        <td>
+          Array of participants to display. The first 4 appear in the pill's overlapping avatar stack, and all 8 appear inside the modal.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>count</code>
+        </td>
+        <td>
+          <code>number | string</code>
+        </td>
+        <td>
+          <code>"+4"</code>
+        </td>
+        <td>
+          The trailing badge text or number displayed on the right side of the pill.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Live Session"</code>
+        </td>
+        <td>
+          The header title shown inside the pop-up modal dialog.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>actionLabel</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>"Join Now"</code>
+        </td>
+        <td>
+          Text for the full-width action button at the bottom of the modal.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>onJoin</code>
+        </td>
+        <td>
+          <code>() =&gt; void</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Callback triggered when the user clicks the action button inside the modal.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>disableModal</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          When set to <code>true</code>, clicking the pill will not open the modal.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>themeColor</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Color override applied to the soundwave badge, pulse ring, and modal elements (e.g. <code>"hsl(var(--primary))"</code> or hex code).
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+
+<DocsJsonLd slug="live-pulse-pill" />
+

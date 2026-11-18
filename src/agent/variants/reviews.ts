@@ -1,17 +1,31 @@
 import type { PageVariants } from "./types";
 
 /**
- * Reviews: 4 looks of one registry item (`reviews`), chosen with the `variant`
+ * Reviews: 5 looks of one registry item (`reviews`), chosen with the `variant`
  * prop. Claims come from src/app/docs/[framework]/reviews/page.mdx.
  */
 export const reviews: PageVariants = {
   slug: "reviews",
   intro:
-    "A testimonials section. Four designs: an envelope that opens to a letter, rolling stacked cards, a logo-tab carousel with a quote card, and a wall of vertical marquee columns.",
+    "A testimonials section. Five designs: an interactive spotlight card with thumbnail switching and video play modal, an envelope that opens to a letter, rolling stacked cards, a logo-tab carousel with a quote card, and a wall of vertical marquee columns.",
   gotchas: [
-    "All four are looks of the one `reviews` item: install it once and set `variant` from the index.",
+    "All five are looks of the one `reviews` item: install it once and set `variant` from the index.",
   ],
   variants: [
+    {
+      id: "interactive-testimonial-switcher",
+      group: "Cards and envelopes",
+      label: "Interactive Testimonial Switcher",
+      summary: "A spotlight testimonial card with interactive thumbnail switching, dynamic quotes, and video playback badge.",
+      bestFor: ["spotlight video or high-profile client testimonials that visitors click to explore"],
+      avoidIf: ["you have text-only reviews without photos"],
+      traits: ["spotlight card", "thumbnail row", "dynamic quote switcher", "play modal"],
+      item: "reviews",
+      demo: "reviews",
+      example: "Interactive Testimonial Switcher",
+      props: { variant: "interactive-testimonial-switcher" },
+      setProps: { variant: "interactive-testimonial-switcher" },
+    },
     {
       id: "testimonial-loom",
       group: "Cards and envelopes",

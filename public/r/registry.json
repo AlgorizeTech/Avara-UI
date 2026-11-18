@@ -420,6 +420,32 @@
       "docs": "Named export: AppleSelect. `text` is the full string and `selection` is a `[start, end]` character range (end exclusive, like String.slice) or an array of them for several phrases. The range is fixed by the author, not draggable. `color` takes any CSS colour, `handles={false}` drops the lollipops, and `animate` fades the highlight in on mount. Renders a <p> by default; `as=\"span\"` sets it inline inside your own paragraph. Other HTML attributes are forwarded to it."
     },
     {
+      "name": "arc-process",
+      "type": "registry:component",
+      "title": "Arc Process",
+      "author": "AlgorizeTech",
+      "description": "A scroll-driven curved arc process website section with dynamic progress strokes, orbital step nodes, and active milestone details.",
+      "categories": [
+        "marketing",
+        "layout",
+        "scroll"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ArcProcessBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ArcProcessBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: ArcProcess, DEFAULT_ARC_STEPS, ArcProcessStep, ArcProcessProps. Features SVG dome arc progress strokes, scroll synchronization, step node transitions, and theme color customization."
+    },
+    {
       "name": "audio-player",
       "type": "registry:component",
       "title": "Audio Player",
@@ -1180,6 +1206,32 @@
         }
       ],
       "docs": "Named exports: Command, CommandDialog, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem, CommandSeparator. Use CommandDialog with `open` / `onOpenChange` for the overlay form, or Command inline. Set `shouldFilter` false to filter server-side yourself. Bind your own ⌘K listener — no global shortcut is registered for you."
+    },
+    {
+      "name": "command-palette",
+      "type": "registry:component",
+      "title": "Command Palette",
+      "author": "AlgorizeTech",
+      "description": "A keyboard-first Command Palette with instant search, grouped sections, shortcut keycaps, nested drill-down sub-menus, Ask AI streaming answers, and both modal trigger (Ctrl+K/⌘K) and always-open inline modes.",
+      "categories": [
+        "navigation",
+        "overlays",
+        "actions"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/CommandPaletteBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/CommandPaletteBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: CommandPalette, CommandPaletteTrigger, CommandPaletteContent, StatusIcon, PriorityIcon, DEFAULT_COMMAND_PALETTE_GROUPS, DEFAULT_NESTED_PALETTE_STATE. Pass `variant=\"linear\"` for trigger + quick navigation modal, `variant=\"nested\"` for contextual issue commands with animated drill-down Status, Assignee, Priority, and Project sub-menus (Backspace/← returns to root), `variant=\"inline\"` for an always-open embedded palette with no modal, or `variant=\"ai\"` for suggested questions, skeleton loading, and character-by-character streamed AI answers with citations and sources."
     },
     {
       "name": "component-wall",
@@ -2691,6 +2743,35 @@
       "docs": "Named export: HorizontalScrollStack. Items take { id, number, title, description, icon? }. Pins the section and maps scroll progress to horizontal travel, so it needs enough page height to complete — and it takes over scrolling while pinned, which is worth testing on touch."
     },
     {
+      "name": "hover-peek",
+      "type": "registry:component",
+      "title": "Hover Peek",
+      "author": "AlgorizeTech",
+      "description": "An editorial manifesto typography section with interactive word hovers that smoothly reveal a slow-zooming physical deck of 8 stacking nature images.",
+      "categories": [
+        "marketing",
+        "layout",
+        "typography"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/HoverPeekBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/HoverPeekBlock.tsx"
+        },
+        {
+          "path": "src/lib/accent.ts",
+          "type": "registry:component",
+          "target": "lib/accent.ts"
+        }
+      ],
+      "docs": "Named exports: HoverPeek, DEFAULT_HOVER_PEEK_HIGHLIGHTS, DEFAULT_STATEMENT, HoverPeekHighlight, HoverPeekProps. Features 8-image progressive card stacking on hover, alternating physical card tilts, smooth modal zoom-in, responsive layout, and theme color accent."
+    },
+    {
       "name": "icons",
       "type": "registry:component",
       "title": "Icons",
@@ -2912,6 +2993,39 @@
         }
       ],
       "docs": "Compose several side by side for chords, e.g. <Kbd>Ctrl</Kbd> <Kbd>K</Kbd>."
+    },
+    {
+      "name": "live-pulse-pill",
+      "type": "registry:component",
+      "title": "Live Pulse Pill",
+      "author": "AlgorizeTech",
+      "description": "An interactive live presence pill with animated soundwave pulse and modal participant roster for active calls, streams, spaces, and huddles.",
+      "categories": [
+        "data-display",
+        "actions",
+        "communication"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://avaraui.com/r/button.json",
+        "https://avaraui.com/r/modal.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/LivePulsePillBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/LivePulsePillBlock.tsx"
+        },
+        {
+          "path": "src/lib/accent.ts",
+          "type": "registry:component",
+          "target": "lib/accent.ts"
+        }
+      ],
+      "docs": "Named exports: LivePulsePill, SoundWaveBars, DEFAULT_LIVE_PARTICIPANTS. Features light/dark theme adaptability, active speaker indicators, participant counts, and centered popup modal dialog."
     },
     {
       "name": "loader",
@@ -4039,7 +4153,7 @@
       "type": "registry:component",
       "title": "Reviews",
       "author": "AlgorizeTech",
-      "description": "Ask the user to pick one of 4 reviews variants: https://avaraui.com/view/reviews. This item holds 4 of them as looks of one component (testimonial-loom, stacked-carousel, logo-carousel, up-down-marquee). Skip the question if the user already named one. A high-converting Review and Testimonial section with a 3D rotating background globe, smooth right-to-left marquee cards, and client rating badges.",
+      "description": "Ask the user to pick one of 5 reviews variants: https://avaraui.com/view/reviews. This item holds 5 of them as looks of one component (interactive-testimonial-switcher, testimonial-loom, stacked-carousel, logo-carousel, up-down-marquee). Skip the question if the user already named one. A high-converting Review and Testimonial section with a 3D rotating background globe, smooth right-to-left marquee cards, and client rating badges.",
       "categories": [
         "marketing",
         "data-display"
@@ -5763,6 +5877,32 @@
         }
       ],
       "docs": "Named export: PlyrPlayer. Requires the `plyr` package, which the CLI installs. `provider` is html5 | youtube | vimeo and `mediaType` is video | audio; `accentColor` sets Plyr's `--plyr-color-main`, and `controls` takes Plyr's control-name array. Plyr is imported dynamically inside an effect, so the component server-renders cleanly. Its control icons come from Plyr's CDN sprite by default — set `iconUrl` to a self-hosted `plyr.svg` if the page must not reach a third-party host."
+    },
+    {
+      "name": "voice-note",
+      "type": "registry:component",
+      "title": "Voice Note",
+      "author": "AlgorizeTech",
+      "description": "A hold-to-record voice note component with dynamic soundwave visualization, slide to cancel gesture, and instant playback with close option.",
+      "categories": [
+        "communication",
+        "media",
+        "actions"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/VoiceNoteBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/VoiceNoteBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: VoiceNote, VoiceNoteProps. Supports hold-to-record, slide-to-cancel gestures, real or simulated audio capture, waveform visualization, and instant playback."
     },
     {
       "name": "waitlist",

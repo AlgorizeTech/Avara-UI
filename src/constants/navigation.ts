@@ -153,6 +153,22 @@ const rawNavigation: NavigationItem[] = [
       { label: "Collapsible", slug: "collapsible" },
       { label: "Color Picker", slug: "color-picker" },
       { label: "Command", slug: "command" },
+      {
+        label: "Command Palette",
+        slug: "command-palette",
+        badge: "New",
+        addedOn: "2026-11-18",
+        keywords: [
+          "command palette",
+          "linear",
+          "spotlight",
+          "search or jump to",
+          "ctrl k",
+          "cmd k",
+          "quick actions",
+          "shortcut",
+        ],
+      },
       { label: "Components Folder", slug: "design-components-folder" },
       {
         label: "Designs Toolkit",
@@ -235,6 +251,7 @@ const rawNavigation: NavigationItem[] = [
       { label: "Item", slug: "item" },
       { label: "Kbd", slug: "kbd" },
       { label: "Loader", slug: "loader" },
+      { label: "Live Pulse Pill", slug: "live-pulse-pill", badge: "New" },
       { label: "Magic Bento", slug: "magic-bento" },
       { label: "Mails", slug: "email" },
       { label: "Map", slug: "fleet-tracker" },
@@ -373,6 +390,22 @@ const rawNavigation: NavigationItem[] = [
       { label: "Video Accordion", slug: "video-accordion" },
       { label: "Video Player", slug: "video-player" },
       {
+        label: "Voice Note",
+        slug: "voice-note",
+        badge: "New",
+        keywords: [
+          "voice note",
+          "voice",
+          "audio record",
+          "hold to record",
+          "mic",
+          "microphone",
+          "speech",
+          "waveform",
+          "sound",
+        ],
+      },
+      {
         label: "Wallet",
         slug: "wallet",
         keywords: [
@@ -387,6 +420,23 @@ const rawNavigation: NavigationItem[] = [
   {
     label: "Website Sections",
     children: [
+      {
+        label: "Arc Process",
+        slug: "arc-process",
+        badge: "New",
+        keywords: [
+          "arc process",
+          "curved process",
+          "curved stepper",
+          "orbit features",
+          "circular timeline",
+          "scroll process",
+          "why choose us",
+          "founder led",
+          "milestones",
+          "orbit",
+        ],
+      },
       {
         label: "Auth Forms",
         slug: "auth-forms",
@@ -530,6 +580,23 @@ const rawNavigation: NavigationItem[] = [
         ],
       },
       {
+        label: "Hover Peek",
+        slug: "hover-peek",
+        badge: "New",
+        keywords: [
+          "hover peek",
+          "card stack",
+          "image peek",
+          "typography hover",
+          "editorial typography",
+          "manifesto",
+          "nature deck",
+          "hover images",
+          "tilted cards",
+          "stacking cards",
+        ],
+      },
+      {
         label: "Navbar",
         slug: "navbar",
         keywords: ["navbar", "header", "mega menu", "mega nav", "ecommerce", "navigation", "top bar"],
@@ -549,7 +616,7 @@ const rawNavigation: NavigationItem[] = [
         slug: "profile-page",
         keywords: ["profile", "user profile", "member", "team", "bento", "glass", "glassmorphism"],
       },
-      { label: "Review Section", slug: "reviews" },
+      { label: "Review Section", slug: "reviews", badge: "New" },
       { label: "Sidebar Section", slug: "sidebar", badge: "New" },
       { label: "Support Dashboard", slug: "support-dashboard" },
       {

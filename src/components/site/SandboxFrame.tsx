@@ -20,6 +20,7 @@ export function SandboxFrame({
   scale = 1,
   resetKey = 0,
   minHeight = 0,
+  maxHeight,
   fill = false,
   className,
 }: {
@@ -63,6 +64,9 @@ export function SandboxFrame({
   const accentRef = useRef(accent);
   accentRef.current = accent;
 
+  const fillRef = useRef(fill);
+  fillRef.current = fill;
+
   // New document (mount or reset) → back to the loading state until the demo
   // signals it has actually mounted. A safety timeout reveals the frame even
   // if the signal never arrives (e.g. a demo that crashed).
@@ -94,6 +98,7 @@ export function SandboxFrame({
   const postState = () => {
     post({ type: "sandbox:props", props: propsRef.current ?? {} });
     post({ type: "sandbox:accent", accent: accentRef.current ?? null });
+    post({ type: "sandbox:fill", fill: fillRef.current ?? false });
   };
 
   useEffect(() => {
@@ -103,6 +108,10 @@ export function SandboxFrame({
   useEffect(() => {
     post({ type: "sandbox:accent", accent: accent ?? null });
   }, [accent]);
+
+  useEffect(() => {
+    post({ type: "sandbox:fill", fill });
+  }, [fill]);
 
   // A demo can hand a theme switch to the page (`sandbox:theme`): a View
   // Transition can't leave the iframe's document, so the theme-switcher demo
@@ -118,7 +127,9 @@ export function SandboxFrame({
       if (event.source !== iframeRef.current?.contentWindow) return;
       const data = event.data;
       if (data?.type === "sandbox:height" && typeof data.height === "number") {
-        setContentHeight(Math.ceil(data.height));
+        if (!fillRef.current) {
+          setContentHeight(Math.ceil(data.height));
+        }
       }
       if (data?.type === "sandbox:ready") {
         setReady(true);
@@ -177,7 +188,11 @@ export function SandboxFrame({
   const effectiveMinHeight =
     minHeight > 0 ? minHeight : !ready || contentHeight === 0 ? 420 : 0;
   const floorHeight = Math.ceil(effectiveMinHeight / safeScale);
-  const frameHeight = Math.max(floorHeight, contentHeight);
+  const rawFrameHeight = Math.max(floorHeight, contentHeight);
+  const frameHeight =
+    maxHeight && maxHeight > 0
+      ? Math.min(rawFrameHeight, Math.ceil(maxHeight / safeScale))
+      : rawFrameHeight;
 
   const frameStyle: React.CSSProperties = fill
     ? {

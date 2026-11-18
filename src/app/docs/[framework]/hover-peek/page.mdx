@@ -1,0 +1,227 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("hover-peek");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Shadcn Hover Peek
+
+An editorial manifesto typography section with interactive word hovers that smoothly reveal a slow-zooming physical deck of 8 stacking nature images.
+
+When the user hovers over any highlighted bold phrase, a card viewport smoothly zooms in from the text center like a modal, progressively dropping 8 nature images one on top of another with organic alternating physical tilts and depth.
+
+export const usageDefault = `"use client";
+
+import React from "react";
+import {
+  HoverPeek,
+  type HoverPeekHighlight,
+} from "@/components/custom/blocks/HoverPeekBlock";
+
+const HIGHLIGHTS: HoverPeekHighlight[] = [
+  {
+    id: "organic-sanctuaries",
+    word: "organic sanctuaries",
+    images: [
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1448375240586-882707db888b-1790145143491.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790148863/photo-1542273917363-3b1817f69a2d-1790148865110.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1434394354979-a235cd36269d-1790145143490.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1472214103451-9374bd1c798e-1790146212205.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145142/photo-1500530855697-b586d89ba3ee-1790145143493.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1470071459604-3b5ec3a7fe05-1790146212205.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1517411032315-54ef2cb783bb-1790146212209.jpg",
+    ],
+  },
+  {
+    id: "untamed-wilderness",
+    word: "untamed wilderness",
+    images: [
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1501785888041-af3ef285b470-1790146212207.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1464822759023-fed622ff2c3b-1790145143491.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1506905925346-21bda4d32df4-1790146212208.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146209/photo-1483728642387-6c3bdd6c93e5-1790146212206.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790166049/photo-1527004013197-933c4bb611b3-1790166052225.jpg",
+    ],
+  },
+  {
+    id: "timeless-craft",
+    word: "timeless craft",
+    images: [
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1507525428034-b723cf961d3e-1790146212208.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146210/photo-1509316975850-ff9c5deb0cd9-1790146212209.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1519681393784-d120267933ba-1790146212210.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1469854523086-cc02fe5d8800-1790145143492.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145142/photo-1476820865390-c52aeebb9891-1790145143492.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145141/photo-1454496522488-7a8e488e8606-1790145143491.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790145142/photo-1495616811223-4d98c6e9c869-1790145143493.jpg",
+      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1518709268805-4e9042af9f23-1790146212209.jpg",
+    ],
+  },
+];
+
+const STATEMENT =
+  "We shape **organic sanctuaries** where raw beauty, intuitive motion, and **untamed wilderness** harmonize to awaken quiet moments that feel honest, soulful, and deeply rooted in **timeless craft**.";
+
+export default function HoverPeekExample() {
+  return (
+    <HoverPeek
+      badge="(Our Philosophy)"
+      statement={STATEMENT}
+      highlights={HIGHLIGHTS}
+    />
+  );
+}`;
+
+<ExampleShowcase headingLevel={2}
+  name="hover-peek"
+  colorControl={false}
+  columns={1}
+  minHeight={700}
+  maxHeight={760}
+  examples={[
+    {
+      title: "Hover Peek Section",
+      subheading:
+        "Editorial statement typography with interactive word hovers that progressively pile an 8-card nature deck with alternating physical tilts.",
+      propNotes: [
+        {
+          prop: "badge",
+          value: '"(Our Philosophy)"',
+          effect: "top eyebrow text tag displayed in uppercase tracking.",
+        },
+        {
+          prop: "statement",
+          value: '"We shape **organic sanctuaries**..."',
+          effect: "markdown bold **phrases** automatically connect to corresponding image sets.",
+        },
+        {
+          prop: "highlights",
+          value: "HoverPeekHighlight[]",
+          effect: "array of 8 nature image URLs per highlighted word.",
+        },
+      ],
+      props: {},
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/HoverPeekBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="hover-peek" />
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <code>badge</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>&quot;(Our Philosophy)&quot;</code>
+        </td>
+        <td>Eyebrow label displayed above the typography statement.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>statement</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>DEFAULT_STATEMENT</code>
+        </td>
+        <td>
+          The manifesto statement string. Words enclosed in <code>**word**</code> will be rendered as interactive highlights.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>highlights</code>
+        </td>
+        <td>
+          <code>HoverPeekHighlight[]</code>
+        </td>
+        <td>
+          <code>DEFAULT_HOVER_PEEK_HIGHLIGHTS</code>
+        </td>
+        <td>
+          Array of highlight items, each with <code>id</code>, <code>word</code>, and an array of 8 nature images.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>cardWidth</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>220</code>
+        </td>
+        <td>Width of each image card in the floating stack popover.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>cardHeight</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>280</code>
+        </td>
+        <td>Height of each image card in the floating stack popover.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>stackInterval</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>160</code>
+        </td>
+        <td>Delay (in ms) between consecutive cards dropping onto the stack.</td>
+      </tr>
+      <tr>
+        <td>
+          <code>themeColor</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Custom theme accent color applied to the badge, active word, and underline decorations.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+
+<DocsJsonLd slug="hover-peek" />
+

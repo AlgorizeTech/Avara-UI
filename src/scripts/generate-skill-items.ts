@@ -83,7 +83,21 @@ const own = new Set<string>(skillItems.map((item) => item.name));
 const items = [...registry.items.filter((item) => !own.has(item.name)), ...skillItems].sort((a, b) =>
   a.name.localeCompare(b.name),
 );
-fs.writeFileSync(REGISTRY, JSON.stringify({ ...registry, items }, null, 2) + "\n");
+// Retry writing in case of transient Windows/OneDrive file locking
+function writeWithRetry(targetPath: string, content: string, retries = 5, delayMs = 300) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      fs.writeFileSync(targetPath, content);
+      return;
+    } catch (err: unknown) {
+      if (i === retries - 1) throw err;
+      const waitTill = Date.now() + delayMs;
+      while (Date.now() < waitTill) {}
+    }
+  }
+}
+
+writeWithRetry(REGISTRY, JSON.stringify({ ...registry, items }, null, 2) + "\n");
 
 console.log(
   `\nSkill items: ${skillItems.map((item) => `${item.name} (${item.files.length} file${item.files.length > 1 ? "s" : ""})`).join(", ")} → registry-skill/`,
