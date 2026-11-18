@@ -10,9 +10,9 @@ import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
 
 A fast, keyboard-first Command Palette with a search box trigger, instant filtering, hotkey badges, grouped sections, and a modal overlay.
 
-Starts as a compact search bar (`Search anything... [Ctrl] [K]`) in your header. Clicking it or pressing `Ctrl+K` / `⌘K` opens the palette as a centered modal over a dimmed overlay. Pass the variant name via the `variant` prop (`variant="linear"`), ready to support more variants as they are added.
+Starts as a compact search bar (`Search anything... [Ctrl] [K]`) in your header that opens a centered modal over a dimmed overlay, or renders always-open inline on the page. Choose a look via the `variant` prop (`"linear"`, `"nested"`, `"inline"`, or `"ai"`).
 
-export const usageDefault = `"use client";
+export const usageLinear = `"use client";
 
 import { CommandPalette } from "@/components/custom/blocks/CommandPaletteBlock";
 
@@ -26,6 +26,74 @@ export default function AppHeader() {
         variant="linear"
         triggerPlaceholder="Search anything..."
         placeholder="Search pages, projects and actions"
+        onSelect={(item) => console.log("Selected:", item.id)}
+      />
+    </header>
+  );
+}`;
+
+export const usageNested = `"use client";
+
+import { useState } from "react";
+import {
+  CommandPalette,
+  DEFAULT_NESTED_PALETTE_STATE,
+  type NestedPaletteState,
+} from "@/components/custom/blocks/CommandPaletteBlock";
+
+export default function IssueCommandHeader() {
+  const [issueState, setIssueState] = useState<NestedPaletteState>(
+    DEFAULT_NESTED_PALETTE_STATE,
+  );
+
+  return (
+    <header className="flex items-center justify-between p-4 border-b">
+      <span className="text-sm font-medium">Rewrite the welcome email</span>
+
+      {/* Contextual drill-down palette with Status, Assignee, Priority & Project sub-menus */}
+      <CommandPalette
+        variant="nested"
+        contextId="AVA-214"
+        contextTitle="Rewrite the welcome email"
+        nestedState={issueState}
+        onNestedStateChange={setIssueState}
+        triggerPlaceholder="Search anything..."
+      />
+    </header>
+  );
+}`;
+
+export const usageInline = `"use client";
+
+import { CommandPalette } from "@/components/custom/blocks/CommandPaletteBlock";
+
+export default function InlineCommandPalette() {
+  return (
+    <div className="w-full max-w-xl mx-auto p-4">
+      {/* Always-open inline palette — no modal or trigger button */}
+      <CommandPalette
+        variant="inline"
+        placeholder="Search pages, projects and actions"
+        onSelect={(item) => console.log("Selected:", item.id)}
+      />
+    </div>
+  );
+}`;
+
+export const usageAi = `"use client";
+
+import { CommandPalette } from "@/components/custom/blocks/CommandPaletteBlock";
+
+export default function AskAiCommandPalette() {
+  return (
+    <header className="flex items-center justify-between p-4 border-b">
+      <span className="text-sm font-medium">Help Center</span>
+
+      {/* Click trigger or press Ctrl+K; click any question or type your own to stream an AI answer */}
+      <CommandPalette
+        variant="ai"
+        triggerPlaceholder="Search anything..."
+        placeholder="Search or ask a question"
         onSelect={(item) => console.log("Selected:", item.id)}
       />
     </header>
@@ -54,7 +122,7 @@ export default function AppHeader() {
         },
       ],
       props: { variant: "linear" },
-      usage: usageDefault,
+      usage: usageLinear,
       code: extractCode("src/components/custom/blocks/CommandPaletteBlock.tsx"),
     },
   ]}
@@ -63,5 +131,175 @@ export default function AppHeader() {
 ## Installation
 
 <Installation name="command-palette" />
+
+## Variants
+
+<ExampleShowcase
+  name="command-palette"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Nested",
+      subheading: "Contextual issue actions with drill-down sub-menus for Status, Assignee, Priority, and Project. Press Backspace or click ← to return.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "variant",
+          value: '"nested"',
+          effect: "enables contextual badge pills and multi-level sub-menus with live selection checkmarks.",
+        },
+        {
+          prop: "contextId",
+          value: '"AVA-214"',
+          effect: "displays the active record identifier pill beside the search input.",
+        },
+      ],
+      props: { variant: "nested" },
+      usage: usageNested,
+    },
+    {
+      title: "Inline",
+      subheading: "Always-open embedded command palette without a trigger bar or modal overlay — type immediately to filter items.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "variant",
+          value: '"inline"',
+          effect: "renders the palette permanently open directly in your layout with no backdrop modal.",
+        },
+      ],
+      props: { variant: "inline" },
+      usage: usageInline,
+    },
+    {
+      title: "Ask AI",
+      subheading: "Search or ask any question — displays a skeleton loader, streams the answer character by character with citations, and lists matching help center sources (or a support fallback).",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "variant",
+          value: '"ai"',
+          effect: "enables suggested questions, skeleton loading state, streamed AI answers with citations, and follow-up queries.",
+        },
+      ],
+      props: { variant: "ai" },
+      usage: usageAi,
+    },
+  ]}
+/>
+
+## Props Reference
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>{`"linear" | "nested" | "inline" | "ai"`}</code></td>
+        <td><code>{`"linear"`}</code></td>
+        <td>Selects the command palette variant. <code>linear</code> renders the trigger + grouped modal; <code>nested</code> enables contextual issue actions with drill-down sub-menus; <code>inline</code> renders the palette always open directly on the page without a modal; <code>ai</code> adds suggested questions and streamed AI answers with sources.</td>
+      </tr>
+      <tr>
+        <td><code>open</code></td>
+        <td><code>boolean</code></td>
+        <td><code>undefined</code></td>
+        <td>Controls the visibility of the command palette modal (controlled mode).</td>
+      </tr>
+      <tr>
+        <td><code>defaultOpen</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Sets the initial open state when using the component in uncontrolled mode.</td>
+      </tr>
+      <tr>
+        <td><code>onOpenChange</code></td>
+        <td><code>{`(open: boolean) => void`}</code></td>
+        <td><code>undefined</code></td>
+        <td>Callback fired whenever the modal opens or closes via trigger click, backdrop click, Escape key, or <code>Ctrl+K</code> / <code>⌘K</code>.</td>
+      </tr>
+      <tr>
+        <td><code>triggerPlaceholder</code></td>
+        <td><code>string</code></td>
+        <td><code>{`"Search anything..."`}</code></td>
+        <td>Placeholder label displayed inside the initial search bar trigger button.</td>
+      </tr>
+      <tr>
+        <td><code>placeholder</code></td>
+        <td><code>string</code></td>
+        <td><code>{`"Search pages, projects and actions"`}</code></td>
+        <td>Search input placeholder inside the open modal dialog (defaults to <code>{`"Type a command or search"`}</code> in the <code>nested</code> variant).</td>
+      </tr>
+      <tr>
+        <td><code>groups</code></td>
+        <td><code>CommandPaletteGroupType[]</code></td>
+        <td><code>DEFAULT_COMMAND_PALETTE_GROUPS</code></td>
+        <td>Grouped sections and items (with icons, tags, shortcut keycaps, and keywords) displayed in the <code>linear</code> variant.</td>
+      </tr>
+      <tr>
+        <td><code>onSelect</code></td>
+        <td><code>{`(item: CommandPaletteItemType) => void`}</code></td>
+        <td><code>undefined</code></td>
+        <td>Callback fired when an item is clicked or activated with the <code>Enter</code> key.</td>
+      </tr>
+      <tr>
+        <td><code>shortcuts</code></td>
+        <td><code>string[]</code></td>
+        <td><code>{`["Ctrl", "K"]`}</code></td>
+        <td>Shortcut keycap badges rendered on the right of the trigger bar. Automatically displays <code>⌘</code> on macOS.</td>
+      </tr>
+      <tr>
+        <td><code>contextId</code></td>
+        <td><code>string</code></td>
+        <td><code>{`"AVA-214"`}</code></td>
+        <td>Record/issue identifier badge rendered beside the search input in the <code>nested</code> variant.</td>
+      </tr>
+      <tr>
+        <td><code>contextTitle</code></td>
+        <td><code>string</code></td>
+        <td><code>{`"Rewrite the welcome email"`}</code></td>
+        <td>Primary section heading shown in the root view of the <code>nested</code> variant.</td>
+      </tr>
+      <tr>
+        <td><code>nestedState</code></td>
+        <td><code>NestedPaletteState</code></td>
+        <td><code>DEFAULT_NESTED_PALETTE_STATE</code></td>
+        <td>Current values for <code>status</code>, <code>assignee</code>, <code>priority</code>, and <code>project</code> in the <code>nested</code> variant.</td>
+      </tr>
+      <tr>
+        <td><code>onNestedStateChange</code></td>
+        <td><code>{`(next: NestedPaletteState) => void`}</code></td>
+        <td><code>undefined</code></td>
+        <td>Callback fired whenever a user selects an option inside a nested sub-menu.</td>
+      </tr>
+      <tr>
+        <td><code>color</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Optional custom accent color override (hex or CSS custom property).</td>
+      </tr>
+      <tr>
+        <td><code>triggerClassName</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Additional Tailwind CSS classes applied directly to the trigger search bar button.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Standard Tailwind CSS overrides applied to the outer container.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <DocsJsonLd slug="command-palette" />

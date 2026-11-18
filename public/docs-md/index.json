@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-18T08:18:27.838Z",
-  "totalFiles": 337,
+  "generatedAt": "2026-11-18T13:41:43.624Z",
+  "totalFiles": 339,
   "files": [
     {
       "name": "docs",
@@ -205,6 +205,12 @@
       "path": "/docs-md/nextjs-command.md",
       "url": "/docs/nextjs/command",
       "originalMdx": "[framework]\\command\\page.mdx"
+    },
+    {
+      "name": "nextjs/command-palette",
+      "path": "/docs-md/nextjs-command-palette.md",
+      "url": "/docs/nextjs/command-palette",
+      "originalMdx": "[framework]\\command-palette\\page.mdx"
     },
     {
       "name": "nextjs/component-wall",
@@ -1213,6 +1219,12 @@
       "path": "/docs-md/reactjs-command.md",
       "url": "/docs/reactjs/command",
       "originalMdx": "[framework]\\command\\page.mdx"
+    },
+    {
+      "name": "reactjs/command-palette",
+      "path": "/docs-md/reactjs-command-palette.md",
+      "url": "/docs/reactjs/command-palette",
+      "originalMdx": "[framework]\\command-palette\\page.mdx"
     },
     {
       "name": "reactjs/component-wall",

@@ -6,7 +6,10 @@ import {
   CommandPaletteContent,
   CommandPaletteVariant,
   DEFAULT_COMMAND_PALETTE_GROUPS,
+  DEFAULT_NESTED_PALETTE_STATE,
   CommandPaletteItemType,
+  NestedPaletteState,
+  StatusIcon,
 } from "@/components/custom/blocks/CommandPaletteBlock";
 
 const colorMap: Record<string, string> = {
@@ -36,7 +39,13 @@ export default function CommandPaletteDemo({
   const [activeItem, setActiveItem] = useState<CommandPaletteItemType>(
     DEFAULT_COMMAND_PALETTE_GROUPS[0].items[0],
   );
+  const [nestedState, setNestedState] = useState<NestedPaletteState>(
+    DEFAULT_NESTED_PALETTE_STATE,
+  );
   const themeColor = getThemeColor(color);
+  const isNested = variant === "nested";
+  const isInline = variant === "inline";
+  const isAi = variant === "ai";
 
   const containerStyle =
     color && color !== "primary" && color !== "default"
@@ -45,8 +54,9 @@ export default function CommandPaletteDemo({
         } as React.CSSProperties)
       : undefined;
 
-  // Keyboard shortcut Ctrl+K / Cmd+K to toggle modal
+  // Keyboard shortcut Ctrl+K / Cmd+K to toggle modal (modal variants only)
   useEffect(() => {
+    if (isInline) return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
@@ -55,12 +65,33 @@ export default function CommandPaletteDemo({
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [isInline]);
 
   const handleSelect = (item: CommandPaletteItemType) => {
-    setActiveItem(item);
+    if (!isNested) {
+      setActiveItem(item);
+    }
     setIsOpen(false);
   };
+
+  // Always-open inline variant — no trigger button, no backdrop modal
+  if (isInline) {
+    return (
+      <div
+        style={containerStyle}
+        className="flex w-full items-center justify-center py-6 px-4 font-sans"
+      >
+        <div className="w-full max-w-xl">
+          <CommandPaletteContent
+            variant="inline"
+            placeholder="Search pages, projects and actions"
+            groups={DEFAULT_COMMAND_PALETTE_GROUPS}
+            isDialog={false}
+          />
+        </div>
+      </div>
+    );
+  }
 
   const ActiveIcon = activeItem.icon;
 
@@ -71,13 +102,27 @@ export default function CommandPaletteDemo({
     >
       {/* 1. Header with current page icon & label on Left and Search Box on Right */}
       <header className="flex h-14 w-full items-center justify-between border-b border-zinc-200/80 dark:border-zinc-800/80 px-4 sm:px-6 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-sm">
-        <div className="flex items-center gap-2 text-sm">
-          {ActiveIcon && (
-            <ActiveIcon className="h-4 w-4 shrink-0 text-zinc-500 dark:text-zinc-400" />
+        <div className="flex items-center gap-2 text-sm min-w-0">
+          {isNested ? (
+            <>
+              <StatusIcon
+                status={nestedState.status}
+                className="text-zinc-500 dark:text-zinc-400"
+              />
+              <span className="text-zinc-600 dark:text-zinc-300 font-medium truncate">
+                Rewrite the welcome email
+              </span>
+            </>
+          ) : (
+            <>
+              {ActiveIcon && (
+                <ActiveIcon className="h-4 w-4 shrink-0 text-zinc-500 dark:text-zinc-400" />
+              )}
+              <span className="text-zinc-600 dark:text-zinc-300 font-medium truncate">
+                {activeItem.label}
+              </span>
+            </>
           )}
-          <span className="text-zinc-600 dark:text-zinc-300 font-medium">
-            {activeItem.label}
-          </span>
         </div>
 
         {/* Right: Search Trigger */}
@@ -85,7 +130,7 @@ export default function CommandPaletteDemo({
           placeholder="Search anything..."
           shortcuts={["Ctrl", "K"]}
           onClick={() => setIsOpen(true)}
-          className="max-w-[210px] sm:max-w-xs"
+          className="max-w-[210px] sm:max-w-xs shrink-0 ml-3"
         />
       </header>
 
@@ -117,8 +162,16 @@ export default function CommandPaletteDemo({
           <div className="relative z-10 w-full max-w-xl animate-in fade-in zoom-in-95 duration-150">
             <CommandPaletteContent
               variant={variant}
-              placeholder="Search pages, projects and actions"
+              placeholder={
+                isNested
+                  ? "Type a command or search"
+                  : isAi
+                    ? "Search or ask a question"
+                    : "Search pages, projects and actions"
+              }
               groups={DEFAULT_COMMAND_PALETTE_GROUPS}
+              nestedState={nestedState}
+              onNestedStateChange={setNestedState}
               onSelect={handleSelect}
               onClose={() => setIsOpen(false)}
               isDialog={true}

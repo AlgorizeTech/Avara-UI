@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-11-18T08:18:27.892Z
-**Total files:** 337
+**Generated at:** 2026-11-18T13:41:43.754Z
+**Total files:** 339
 
 ## Available Files
 
@@ -41,6 +41,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/collapsible](/docs-md/nextjs-collapsible.md) - Source: `[framework]\collapsible\page.mdx`
 - [nextjs/color-picker](/docs-md/nextjs-color-picker.md) - Source: `[framework]\color-picker\page.mdx`
 - [nextjs/command](/docs-md/nextjs-command.md) - Source: `[framework]\command\page.mdx`
+- [nextjs/command-palette](/docs-md/nextjs-command-palette.md) - Source: `[framework]\command-palette\page.mdx`
 - [nextjs/component-wall](/docs-md/nextjs-component-wall.md) - Source: `[framework]\component-wall\page.mdx`
 - [nextjs/context-menu](/docs-md/nextjs-context-menu.md) - Source: `[framework]\context-menu\page.mdx`
 - [nextjs/conversation-timeline](/docs-md/nextjs-conversation-timeline.md) - Source: `[framework]\conversation-timeline\page.mdx`
@@ -209,6 +210,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/collapsible](/docs-md/reactjs-collapsible.md) - Source: `[framework]\collapsible\page.mdx`
 - [reactjs/color-picker](/docs-md/reactjs-color-picker.md) - Source: `[framework]\color-picker\page.mdx`
 - [reactjs/command](/docs-md/reactjs-command.md) - Source: `[framework]\command\page.mdx`
+- [reactjs/command-palette](/docs-md/reactjs-command-palette.md) - Source: `[framework]\command-palette\page.mdx`
 - [reactjs/component-wall](/docs-md/reactjs-component-wall.md) - Source: `[framework]\component-wall\page.mdx`
 - [reactjs/context-menu](/docs-md/reactjs-context-menu.md) - Source: `[framework]\context-menu\page.mdx`
 - [reactjs/conversation-timeline](/docs-md/reactjs-conversation-timeline.md) - Source: `[framework]\conversation-timeline\page.mdx`

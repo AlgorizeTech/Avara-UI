@@ -242,7 +242,10 @@
     "external-filtering": "Command — External filtering"
   },
   "command-palette": {
-    "linear": "Command Palette — Linear"
+    "linear": "Command Palette — Linear",
+    "nested": "Command Palette — Nested",
+    "inline": "Command Palette — Inline",
+    "ask-ai": "Command Palette — Ask AI"
   },
   "component-wall": {
     "build-interactive-interfaces": "Component Wall — Build interactive interfaces",

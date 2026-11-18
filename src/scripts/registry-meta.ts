@@ -513,9 +513,9 @@ export const META: Record<string, ItemMeta> = {
   },
   "command-palette": {
     description:
-      "A keyboard-first Command Palette starting as a search box trigger (Ctrl+K/⌘K) that opens a centered modal dialog with instant search, grouped sections, and shortcut keycaps.",
+      "A keyboard-first Command Palette with instant search, grouped sections, shortcut keycaps, nested drill-down sub-menus, Ask AI streaming answers, and both modal trigger (Ctrl+K/⌘K) and always-open inline modes.",
     categories: ["navigation", "overlays", "actions"],
-    docs: "Named exports: CommandPalette, CommandPaletteTrigger, CommandPaletteContent, DEFAULT_COMMAND_PALETTE_GROUPS. Pass the variant name via `variant` (e.g. `variant=\"linear\"`). Renders the trigger search box initially and opens the modal dialog with dimmed backdrop on click or Ctrl+K/⌘K. Supports full keyboard navigation (ArrowUp/ArrowDown/Enter/Esc), custom groups, shortcut keycaps, tags, and item action callbacks.",
+    docs: "Named exports: CommandPalette, CommandPaletteTrigger, CommandPaletteContent, StatusIcon, PriorityIcon, DEFAULT_COMMAND_PALETTE_GROUPS, DEFAULT_NESTED_PALETTE_STATE. Pass `variant=\"linear\"` for trigger + quick navigation modal, `variant=\"nested\"` for contextual issue commands with animated drill-down Status, Assignee, Priority, and Project sub-menus (Backspace/← returns to root), `variant=\"inline\"` for an always-open embedded palette with no modal, or `variant=\"ai\"` for suggested questions, skeleton loading, and character-by-character streamed AI answers with citations and sources.",
   },
   "context-menu": {
     description:
