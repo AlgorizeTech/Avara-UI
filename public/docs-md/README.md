@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-11-18T03:27:11.057Z
-**Total files:** 335
+**Generated at:** 2026-11-18T07:41:22.866Z
+**Total files:** 337
 
 ## Available Files
 
@@ -88,6 +88,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/half-stars](/docs-md/nextjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`
 - [nextjs/heart-signal](/docs-md/nextjs-heart-signal.md) - Source: `[framework]\heart-signal\page.mdx`
 - [nextjs/hero](/docs-md/nextjs-hero.md) - Source: `[framework]\hero\page.mdx`
+- [nextjs/hover-peek](/docs-md/nextjs-hover-peek.md) - Source: `[framework]\hover-peek\page.mdx`
 - [nextjs/image-compare](/docs-md/nextjs-image-compare.md) - Source: `[framework]\image-compare\page.mdx`
 - [nextjs/image-viewer](/docs-md/nextjs-image-viewer.md) - Source: `[framework]\image-viewer\page.mdx`
 - [nextjs/image-wall](/docs-md/nextjs-image-wall.md) - Source: `[framework]\image-wall\page.mdx`
@@ -255,6 +256,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/half-stars](/docs-md/reactjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`
 - [reactjs/heart-signal](/docs-md/reactjs-heart-signal.md) - Source: `[framework]\heart-signal\page.mdx`
 - [reactjs/hero](/docs-md/reactjs-hero.md) - Source: `[framework]\hero\page.mdx`
+- [reactjs/hover-peek](/docs-md/reactjs-hover-peek.md) - Source: `[framework]\hover-peek\page.mdx`
 - [reactjs/image-compare](/docs-md/reactjs-image-compare.md) - Source: `[framework]\image-compare\page.mdx`
 - [reactjs/image-viewer](/docs-md/reactjs-image-viewer.md) - Source: `[framework]\image-viewer\page.mdx`
 - [reactjs/image-wall](/docs-md/reactjs-image-wall.md) - Source: `[framework]\image-wall\page.mdx`

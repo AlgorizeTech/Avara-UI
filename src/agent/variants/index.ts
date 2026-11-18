@@ -196,6 +196,8 @@ export const NO_CHOICE_NEEDED: string[] = [
   "live-pulse-pill",
   // Interactive rotating semicircle dome process with orbital milestone nodes (single design layout).
   "arc-process",
+  // Editorial typography manifesto section with 8-card stacking nature images on hover.
+  "hover-peek",
 ];
 
 /**

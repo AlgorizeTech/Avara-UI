@@ -103,6 +103,7 @@ export const sandboxNames = [
   "homepage-hero-typing",
   "honeycomb-hero",
   "horizontal-scroll-stack",
+  "hover-peek",
   "image-compare",
   "image-viewer",
   "image-wall",

@@ -564,6 +564,23 @@ const rawNavigation: NavigationItem[] = [
         ],
       },
       {
+        label: "Hover Peek",
+        slug: "hover-peek",
+        badge: "New",
+        keywords: [
+          "hover peek",
+          "card stack",
+          "image peek",
+          "typography hover",
+          "editorial typography",
+          "manifesto",
+          "nature deck",
+          "hover images",
+          "tilted cards",
+          "stacking cards",
+        ],
+      },
+      {
         label: "Navbar",
         slug: "navbar",
         keywords: ["navbar", "header", "mega menu", "mega nav", "ecommerce", "navigation", "top bar"],

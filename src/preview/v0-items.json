@@ -551,6 +551,9 @@
   "hero-solar-snapshot": {
     "solar-snapshot-sun-cursor-hero": "Shadcn Hero — Solar Snapshot Sun-Cursor Hero"
   },
+  "hover-peek": {
+    "hover-peek-section": "Hover Peek — Hover Peek Section"
+  },
   "image-compare": {
     "classic-slider": "Image Compare — Classic Slider",
     "split-handle": "Image Compare — Split Handle",

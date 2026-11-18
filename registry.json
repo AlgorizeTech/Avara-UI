@@ -2690,6 +2690,35 @@
       "docs": "Named export: HorizontalScrollStack. Items take { id, number, title, description, icon? }. Pins the section and maps scroll progress to horizontal travel, so it needs enough page height to complete — and it takes over scrolling while pinned, which is worth testing on touch."
     },
     {
+      "name": "hover-peek",
+      "type": "registry:component",
+      "title": "Hover Peek",
+      "author": "AlgorizeTech",
+      "description": "An editorial manifesto typography section with interactive word hovers that smoothly reveal a slow-zooming physical deck of 8 stacking nature images.",
+      "categories": [
+        "marketing",
+        "layout",
+        "typography"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/HoverPeekBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/HoverPeekBlock.tsx"
+        },
+        {
+          "path": "src/lib/accent.ts",
+          "type": "registry:component",
+          "target": "lib/accent.ts"
+        }
+      ],
+      "docs": "Named exports: HoverPeek, DEFAULT_HOVER_PEEK_HIGHLIGHTS, DEFAULT_STATEMENT, HoverPeekHighlight, HoverPeekProps. Features 8-image progressive card stacking on hover, alternating physical card tilts, smooth modal zoom-in, responsive layout, and theme color accent."
+    },
+    {
       "name": "icons",
       "type": "registry:component",
       "title": "Icons",

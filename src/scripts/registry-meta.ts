@@ -87,9 +87,17 @@ export const NAME_OVERRIDES: Record<string, string> = {
   "DesignsToolkitBlock.tsx": "designs-toolkit",
   "VoiceNoteBlock.tsx": "voice-note",
   "ArcProcessBlock.tsx": "arc-process",
+  "HoverPeekBlock.tsx": "hover-peek",
 };
 
 export const META: Record<string, ItemMeta> = {
+  "hover-peek": {
+    title: "Hover Peek",
+    description:
+      "An editorial manifesto typography section with interactive word hovers that smoothly reveal a slow-zooming physical deck of 8 stacking nature images.",
+    categories: ["marketing", "layout", "typography"],
+    docs: "Named exports: HoverPeek, DEFAULT_HOVER_PEEK_HIGHLIGHTS, DEFAULT_STATEMENT, HoverPeekHighlight, HoverPeekProps. Features 8-image progressive card stacking on hover, alternating physical card tilts, smooth modal zoom-in, responsive layout, and theme color accent.",
+  },
   "arc-process": {
     title: "Arc Process",
     description:

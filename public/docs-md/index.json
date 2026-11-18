@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-18T03:27:10.566Z",
-  "totalFiles": 335,
+  "generatedAt": "2026-11-18T07:41:21.525Z",
+  "totalFiles": 337,
   "files": [
     {
       "name": "docs",
@@ -487,6 +487,12 @@
       "path": "/docs-md/nextjs-hero.md",
       "url": "/docs/nextjs/hero",
       "originalMdx": "[framework]\\hero\\page.mdx"
+    },
+    {
+      "name": "nextjs/hover-peek",
+      "path": "/docs-md/nextjs-hover-peek.md",
+      "url": "/docs/nextjs/hover-peek",
+      "originalMdx": "[framework]\\hover-peek\\page.mdx"
     },
     {
       "name": "nextjs/image-compare",
@@ -1489,6 +1495,12 @@
       "path": "/docs-md/reactjs-hero.md",
       "url": "/docs/reactjs/hero",
       "originalMdx": "[framework]\\hero\\page.mdx"
+    },
+    {
+      "name": "reactjs/hover-peek",
+      "path": "/docs-md/reactjs-hover-peek.md",
+      "url": "/docs/reactjs/hover-peek",
+      "originalMdx": "[framework]\\hover-peek\\page.mdx"
     },
     {
       "name": "reactjs/image-compare",

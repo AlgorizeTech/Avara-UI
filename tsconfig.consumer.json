@@ -108,6 +108,7 @@
     "src/components/custom/blocks/HoneycombHeroBlock.tsx",
     "src/components/custom/blocks/HorizontalRailBlock.tsx",
     "src/components/custom/blocks/HorizontalScrollStackBlock.tsx",
+    "src/components/custom/blocks/HoverPeekBlock.tsx",
     "src/components/custom/blocks/Icons.tsx",
     "src/components/custom/blocks/ImageCompareBlock.tsx",
     "src/components/custom/blocks/ImageViewerBlock.tsx",
