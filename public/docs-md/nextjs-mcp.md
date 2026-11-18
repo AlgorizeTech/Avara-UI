@@ -15,25 +15,7 @@ Avara UI because our components are published as a standard shadcn registry.
 
 ## Quick start
 
-### Step 1: Register Avara UI
-
-Run once per project, so the server knows where to find our components:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-```
-
-This adds the registry to `components.json`, which you can also write by hand:
-
-```json
-{
-  "registries": {
-    "@avara-ui": "https://avaraui.com/r/{name}.json"
-  }
-}
-```
-
-### Step 2: Add the MCP server
+### Step 1: Add the MCP server
 
 Pick your client and run the command in your project. Prefer to do it by hand? See
 [Configuration](#configuration).
@@ -88,7 +70,7 @@ npx shadcn@latest mcp init --client opencode
 
 Restart OpenCode to load the server.
 
-### Step 3: Try it
+### Step 2: Try it
 
 Ask your assistant:
 
@@ -205,7 +187,7 @@ Some sections come in several designs, like the sixteen heroes. An assistant tha
 
 ### The assistant can't find Avara UI components
 
-Check that `components.json` has the `@avara-ui` entry from Step 1, and mention `@avara-ui` in your prompt.
+Check that `components.json` has the `@avara-ui` entry, and mention `@avara-ui` in your prompt.
 
 ### The server doesn't respond
 

@@ -1,6 +1,6 @@
 ---
 title: "Shadcn Split-Flap Display"
-description: "A split-flap (Solari board) display with 3D flipping cards, split creases, hinge notches and synthesised click sounds. Shadcn/ui, animated with GSAP."
+description: "A split-flap (Solari board) display with 3D flipping cards, split creases, hinge notches and synthesised click sounds. Shadcn/ui with GSAP and Motion builds."
 url: https://avaraui.com/docs/nextjs/split-flap
 ---
 
@@ -119,6 +119,12 @@ Or register the @avara-ui registry once per project and add it by name:
 ```bash
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/split-flap
+```
+
+Or the Motion build (same props, same file — install one):
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/split-flap-motion.json
 ```
 
 ---

@@ -3,7 +3,7 @@
   "name": "top-destinations",
   "title": "Top Destinations",
   "author": "AlgorizeTech",
-  "description": "A dual-row scroll-driven destination showcase with opposite-direction GSAP ScrollTrigger parallax travel, full-bleed photography, and interactive hover details.",
+  "description": "A dual-row scroll-driven destination showcase with opposite-direction scroll-scrubbed parallax travel, full-bleed photography, and interactive hover details.",
   "dependencies": [
     "gsap",
     "lucide-react"

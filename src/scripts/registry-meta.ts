@@ -1320,7 +1320,7 @@ export const META: Record<string, ItemMeta> = {
   "top-destinations": {
     title: "Top Destinations",
     description:
-      "A dual-row scroll-driven destination showcase with opposite-direction GSAP ScrollTrigger parallax travel, full-bleed photography, and interactive hover details.",
+      "A dual-row scroll-driven destination showcase with opposite-direction scroll-scrubbed parallax travel, full-bleed photography, and interactive hover details.",
     categories: ["marketing", "data-display", "scroll"],
     docs: "Named exports: TopDestinations, TopDestinationsCard, DEFAULT_DESTINATIONS (plus DestinationItem type). Accepts items array or row1Items/row2Items, scrollOffset, and scrollerRef.",
   },

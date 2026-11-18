@@ -6,7 +6,7 @@ import { Cli } from "@/components/site/cli";
 import { DocLink } from "@/components/site/doc-link";
 import { McpClientTabs, McpClientPanel } from "@/components/site/mcp-client-tabs";
 import { SITE_NAME, SITE_URL } from "@/config/site";
-import { REGISTRY_ADD_ARGS, REGISTRY_NAMESPACE } from "@/lib/registry";
+import { REGISTRY_NAMESPACE } from "@/lib/registry";
 
 # MCP Server
 
@@ -19,17 +19,7 @@ The server is part of the shadcn CLI. It is free, needs no API key, and works wi
 
 ## Quick start
 
-### Step 1: Register {SITE_NAME}
-
-Run once per project, so the server knows where to find our components:
-
-<Cli command={REGISTRY_ADD_ARGS} />
-
-This adds the registry to `components.json`, which you can also write by hand:
-
-<RegistryConfig />
-
-### Step 2: Add the MCP server
+### Step 1: Add the MCP server
 
 Pick your client and run the command in your project. Prefer to do it by hand? See
 [Configuration](#configuration).
@@ -72,7 +62,7 @@ Pick your client and run the command in your project. Prefer to do it by hand? S
   </McpClientPanel>
 </McpClientTabs>
 
-### Step 3: Try it
+### Step 2: Try it
 
 Ask your assistant:
 
@@ -192,7 +182,7 @@ Some sections come in several designs, like the sixteen heroes. An assistant tha
 <div className="flex flex-col gap-3 my-6 not-prose">
   <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
     <h3 data-toc-skip className="text-[14px] font-semibold text-foreground mb-1">The assistant can't find {SITE_NAME} components</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Check that <code>components.json</code> has the <code>{REGISTRY_NAMESPACE}</code> entry from Step 1, and mention <code>{REGISTRY_NAMESPACE}</code> in your prompt.</p>
+    <p className="text-[13px] leading-relaxed text-foreground/50">Check that <code>components.json</code> has the <code>{REGISTRY_NAMESPACE}</code> entry, and mention <code>{REGISTRY_NAMESPACE}</code> in your prompt.</p>
   </div>
   <div className="p-4 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
     <h3 data-toc-skip className="text-[14px] font-semibold text-foreground mb-1">The server doesn't respond</h3>

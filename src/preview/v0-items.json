@@ -485,6 +485,14 @@
     "arc-carousel-gallery": "Gallery — Arc Carousel Gallery",
     "video-sphere-gallery": "Gallery — Video Sphere Gallery"
   },
+  "gallery-motion": {
+    "orbit-gallery": "Gallery — Orbit Gallery",
+    "moving-bento": "Gallery — Moving Bento",
+    "circular-reel": "Gallery — Circular Reel",
+    "3d-pill-carousel": "Gallery — 3D Pill Carousel",
+    "arc-carousel-gallery": "Gallery — Arc Carousel Gallery",
+    "video-sphere-gallery": "Gallery — Video Sphere Gallery"
+  },
   "glass-panel": {
     "four-shapes": "Glass Panel — Four shapes",
     "bento-layout": "Glass Panel — Bento layout",
@@ -885,6 +893,10 @@
     "split-flap-ivory": "Split-Flap Display — Split-Flap — Ivory (Classic Mechanical)",
     "split-flap-minimalist": "Split-Flap Display — Split-Flap — Minimalist Architectural"
   },
+  "split-flap-motion": {
+    "split-flap-ivory": "Split-Flap Display — Split-Flap — Ivory (Classic Mechanical)",
+    "split-flap-minimalist": "Split-Flap Display — Split-Flap — Minimalist Architectural"
+  },
   "scroll-accordion": {
     "scroll-accordion-showcase": "Scroll Accordion Showcase",
     "text-only": "Scroll Accordion Showcase — Text only",
@@ -1026,6 +1038,9 @@
     "with-expanding-content": "Tooltip — With Expanding Content"
   },
   "top-destinations": {
+    "dual-row-parallax-travel": "Top Destinations — Dual-row parallax travel"
+  },
+  "top-destinations-motion": {
     "dual-row-parallax-travel": "Top Destinations — Dual-row parallax travel"
   },
   "user-graph": {

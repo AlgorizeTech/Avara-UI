@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import { Star, ArrowLeft, ArrowRight, Play, X } from "lucide-react";
 import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock";
 import { springLinear } from "./motion-curves";
-import { AnimatePresence, motion } from "motion/react";
 
 export type ReviewsVariant =
 	| "up-down-vertical-marquee"
@@ -2144,6 +2143,36 @@ function InteractiveTestimonialSwitcherVariant({
 					-ms-overflow-style: none;
 					scrollbar-width: none;
 				}
+				@keyframes switcher-fade-in {
+					from {
+						opacity: 0;
+						transform: translateY(12px);
+					}
+					to {
+						opacity: 1;
+						transform: translateY(0);
+					}
+				}
+				@keyframes switcher-img-slide-left {
+					from {
+						opacity: 0.35;
+						transform: translateX(28%);
+					}
+					to {
+						opacity: 1;
+						transform: translateX(0);
+					}
+				}
+				@keyframes switcher-img-slide-right {
+					from {
+						opacity: 0.35;
+						transform: translateX(-28%);
+					}
+					to {
+						opacity: 1;
+						transform: translateX(0);
+					}
+				}
 			`}</style>
 
 			{/* Header */}
@@ -2210,37 +2239,20 @@ function InteractiveTestimonialSwitcherVariant({
 					style={imageDragStyle}
 					className="relative w-[190px] md:w-[210px] lg:w-[260px] xl:w-[290px] h-[320px] lg:h-[380px] xl:h-[390px] rounded-2xl lg:rounded-3xl overflow-hidden border border-border/60 shrink-0 bg-muted group cursor-grab active:cursor-grabbing"
 				>
-					<AnimatePresence initial={false} mode="popLayout" custom={slideDirection}>
-						<motion.img
-							key={activeItem.id}
-							src={activeItem.avatar || DEFAULT_AVATAR}
-							alt={activeItem.name}
-							custom={slideDirection}
-							variants={{
-								enter: (dir: "left" | "right" | null) => ({
-									x: dir === "left" ? "28%" : dir === "right" ? "-28%" : 0,
-									opacity: 0.35,
-								}),
-								center: {
-									x: 0,
-									opacity: 1,
-								},
-								exit: (dir: "left" | "right" | null) => ({
-									x: dir === "left" ? "-28%" : dir === "right" ? "28%" : 0,
-									opacity: 0.35,
-								}),
-							}}
-							initial="enter"
-							animate="center"
-							exit="exit"
-							transition={{
-								duration: 0.36,
-								ease: [0.16, 1, 0.3, 1],
-							}}
-							className="w-full h-full object-cover pointer-events-none select-none"
-							draggable={false}
-						/>
-					</AnimatePresence>
+					<img
+						key={activeItem.id}
+						src={activeItem.avatar || DEFAULT_AVATAR}
+						alt={activeItem.name}
+						className={cn(
+							"w-full h-full object-cover pointer-events-none select-none",
+							slideDirection === "left"
+								? "animate-[switcher-img-slide-left_0.36s_cubic-bezier(0.16,1,0.3,1)]"
+								: slideDirection === "right"
+									? "animate-[switcher-img-slide-right_0.36s_cubic-bezier(0.16,1,0.3,1)]"
+									: "animate-[switcher-fade-in_0.32s_cubic-bezier(0.16,1,0.3,1)]",
+						)}
+						draggable={false}
+					/>
 
 					{/* Circular Play Button with white border and theme pulse */}
 					<button
@@ -2262,16 +2274,11 @@ function InteractiveTestimonialSwitcherVariant({
 
 				{/* 3. Right Column: Quote on top (STATIC, NEVER DRAGGED), Thumbnails on bottom (DRAGGABLE TAPE) */}
 				<div className="flex-1 flex flex-col justify-between h-[320px] lg:h-[380px] xl:h-[390px] min-w-0">
-					{/* Active Testimonial Quote & Author details: STATIC, animates in from bottom with AnimatePresence */}
-					<AnimatePresence mode="wait">
-						<motion.div
-							key={activeItem.id}
-							initial={{ opacity: 0, y: 16 }}
-							animate={{ opacity: 1, y: 0 }}
-							exit={{ opacity: 0, y: -10 }}
-							transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-							className="flex flex-col justify-start space-y-2 lg:space-y-3.5 overflow-hidden md:pl-6 lg:pl-8 xl:pl-9"
-						>
+					{/* Active Testimonial Quote & Author details: STATIC, animates in from bottom */}
+					<div
+						key={activeItem.id}
+						className="flex flex-col justify-start space-y-2 lg:space-y-3.5 overflow-hidden md:pl-6 lg:pl-8 xl:pl-9 animate-[switcher-fade-in_0.28s_cubic-bezier(0.16,1,0.3,1)]"
+					>
 							{/* 5-Star Rating & Verified Badge */}
 							<div className="flex items-center gap-2 pt-0.5">
 								<div className="flex items-center gap-1">
@@ -2298,8 +2305,7 @@ function InteractiveTestimonialSwitcherVariant({
 									{activeItem.company ? ` • ${activeItem.company}` : ""}
 								</p>
 							</div>
-						</motion.div>
-					</AnimatePresence>
+						</div>
 
 					{/* Remaining Thumbnails Row: Draggable tape in sync with Active Card, infinite ring loop with overflow peek */}
 					<div
@@ -2354,37 +2360,20 @@ function InteractiveTestimonialSwitcherVariant({
 					style={imageDragStyle}
 					className="relative w-full h-[350px] min-h-[350px] max-h-[350px] shrink-0 rounded-2xl overflow-hidden border border-border/60 bg-muted group cursor-grab active:cursor-grabbing select-none"
 				>
-					<AnimatePresence initial={false} mode="popLayout" custom={slideDirection}>
-						<motion.img
-							key={activeItem.id}
-							src={activeItem.avatar || DEFAULT_AVATAR}
-							alt={activeItem.name}
-							custom={slideDirection}
-							variants={{
-								enter: (dir: "left" | "right" | null) => ({
-									x: dir === "left" ? "28%" : dir === "right" ? "-28%" : 0,
-									opacity: 0.35,
-								}),
-								center: {
-									x: 0,
-									opacity: 1,
-								},
-								exit: (dir: "left" | "right" | null) => ({
-									x: dir === "left" ? "-28%" : dir === "right" ? "28%" : 0,
-									opacity: 0.35,
-								}),
-							}}
-							initial="enter"
-							animate="center"
-							exit="exit"
-							transition={{
-								duration: 0.36,
-								ease: [0.16, 1, 0.3, 1],
-							}}
-							className="w-full h-full object-cover pointer-events-none select-none"
-							draggable={false}
-						/>
-					</AnimatePresence>
+					<img
+						key={activeItem.id}
+						src={activeItem.avatar || DEFAULT_AVATAR}
+						alt={activeItem.name}
+						className={cn(
+							"w-full h-full object-cover pointer-events-none select-none",
+							slideDirection === "left"
+								? "animate-[switcher-img-slide-left_0.36s_cubic-bezier(0.16,1,0.3,1)]"
+								: slideDirection === "right"
+									? "animate-[switcher-img-slide-right_0.36s_cubic-bezier(0.16,1,0.3,1)]"
+									: "animate-[switcher-fade-in_0.32s_cubic-bezier(0.16,1,0.3,1)]",
+						)}
+						draggable={false}
+					/>
 
 					{/* Circular Play Button with white border and theme pulse */}
 					<button
@@ -2404,47 +2393,41 @@ function InteractiveTestimonialSwitcherVariant({
 					</button>
 				</div>
 
-				{/* 2. Middle: Quote & Author Info (Fixed height, STATIC, animates in from bottom with AnimatePresence) */}
+				{/* 2. Middle: Quote & Author Info (Fixed height, STATIC, animates in from bottom) */}
 				<div className="pt-4 pb-1 flex flex-col justify-between h-[165px] min-h-[165px] max-h-[165px] text-left shrink-0 overflow-hidden">
-					<AnimatePresence mode="wait">
-						<motion.div
-							key={`m-quote-${activeItem.id}`}
-							initial={{ opacity: 0, y: 12 }}
-							animate={{ opacity: 1, y: 0 }}
-							exit={{ opacity: 0, y: -8 }}
-							transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-							className="flex flex-col justify-between h-full"
-						>
-							<div>
-								{/* 5-Star Rating & Verified Badge */}
-								<div className="flex items-center gap-2 mb-2">
-									<div className="flex items-center gap-0.5">
-										{[1, 2, 3, 4, 5].map((s) => (
-											<Star
-												key={s}
-												className="size-3.5 fill-primary text-primary"
-											/>
-										))}
-									</div>
-									<span className="text-[10px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-										5.0 • Verified
-									</span>
+					<div
+						key={`m-quote-${activeItem.id}`}
+						className="flex flex-col justify-between h-full animate-[switcher-fade-in_0.25s_cubic-bezier(0.16,1,0.3,1)]"
+					>
+						<div>
+							{/* 5-Star Rating & Verified Badge */}
+							<div className="flex items-center gap-2 mb-2">
+								<div className="flex items-center gap-0.5">
+									{[1, 2, 3, 4, 5].map((s) => (
+										<Star
+											key={s}
+											className="size-3.5 fill-primary text-primary"
+										/>
+									))}
 								</div>
-								<p className="text-sm sm:text-base text-foreground/90 font-normal leading-relaxed line-clamp-3 sm:line-clamp-4">
-									"{activeItem.content}"
-								</p>
+								<span className="text-[10px] font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+									5.0 • Verified
+								</span>
 							</div>
-							<div className="pt-1">
-								<h4 className="text-base sm:text-lg font-bold text-foreground leading-tight truncate">
-									{activeItem.name}
-								</h4>
-								<p className="text-xs sm:text-sm text-muted-foreground mt-0.5 font-normal truncate">
-									{activeItem.role}
-									{activeItem.company ? ` - ${activeItem.company}` : ""}
-								</p>
-							</div>
-						</motion.div>
-					</AnimatePresence>
+							<p className="text-sm sm:text-base text-foreground/90 font-normal leading-relaxed line-clamp-3 sm:line-clamp-4">
+								"{activeItem.content}"
+							</p>
+						</div>
+						<div className="pt-1">
+							<h4 className="text-base sm:text-lg font-bold text-foreground leading-tight truncate">
+								{activeItem.name}
+							</h4>
+							<p className="text-xs sm:text-sm text-muted-foreground mt-0.5 font-normal truncate">
+								{activeItem.role}
+								{activeItem.company ? ` - ${activeItem.company}` : ""}
+							</p>
+						</div>
+					</div>
 				</div>
 
 				{/* 3. Bottom: Horizontal Thumbnail Strip with infinite circular ring (peeking both directions) */}

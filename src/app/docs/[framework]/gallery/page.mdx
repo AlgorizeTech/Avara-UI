@@ -3,11 +3,11 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("gallery");
 
 import { ExampleShowcase } from "@/components/site/Sandbox";
-import { extractCode } from "@/lib/code";
+import { extractMotionCode } from "@/lib/code";
 
 # Shadcn Gallery
 
-A dynamic visual showcase featuring six interactive variants: a revolving 3D circular photo orbit ring, an interactive 3D video sphere gallery, a GSAP Flip self-rearranging moving bento grid, an interactive circular reel dial spinner, a 3D layered pill carousel, and a Framer-inspired 3D curved arc carousel gallery.
+A dynamic visual showcase featuring six interactive variants: a revolving 3D circular photo orbit ring, an interactive 3D video sphere gallery, a self-rearranging moving bento grid, an interactive circular reel dial spinner, a 3D layered pill carousel, and a Framer-inspired 3D curved arc carousel gallery.
 
 {/* The snippets below pass next/link so links route client-side in Next.js. The React tab is the same file without it: the component's default <a> needs no import. */}
 
@@ -515,7 +515,7 @@ export default function VideoSphereGalleryExample() {
       ],
       props: { variant: "orbit-gallery" },
       usage: nextAndReact(usage),
-      code: extractCode("src/components/custom/blocks/GalleryBlock.tsx"),
+      code: extractMotionCode("src/components/custom/blocks/GalleryBlock.tsx"),
     },
     {
       title: "Moving Bento",
@@ -524,7 +524,7 @@ export default function VideoSphereGalleryExample() {
         {
           prop: "variant",
           value: '"moving-bento"',
-          effect: "switches to the GSAP Flip moving bento.",
+          effect: "switches to the moving bento.",
         },
         {
           prop: "items",
@@ -538,7 +538,7 @@ export default function VideoSphereGalleryExample() {
       ],
       props: { variant: "moving-bento" },
       usage: nextAndReact(bentoUsage),
-      code: extractCode("src/components/custom/blocks/GalleryBlock.tsx"),
+      code: extractMotionCode("src/components/custom/blocks/GalleryBlock.tsx"),
     },
     {
       title: "Circular Reel",
@@ -556,7 +556,7 @@ export default function VideoSphereGalleryExample() {
       ],
       props: { variant: "circular-reel" },
       usage: nextAndReact(reelUsage),
-      code: extractCode("src/components/custom/blocks/GalleryBlock.tsx"),
+      code: extractMotionCode("src/components/custom/blocks/GalleryBlock.tsx"),
     },
     {
       title: "3D Pill Carousel",
@@ -579,7 +579,7 @@ export default function VideoSphereGalleryExample() {
       ],
       props: { variant: "pill-carousel", autoSlide: true },
       usage: nextAndReact(pillUsage),
-      code: extractCode("src/components/custom/blocks/GalleryBlock.tsx"),
+      code: extractMotionCode("src/components/custom/blocks/GalleryBlock.tsx"),
     },
     {
       title: "Arc Carousel Gallery",
@@ -602,7 +602,7 @@ export default function VideoSphereGalleryExample() {
       ],
       props: { variant: "arc-carousel", curve: -200 },
       usage: nextAndReact(arcUsage),
-      code: extractCode("src/components/custom/blocks/GalleryBlock.tsx"),
+      code: extractMotionCode("src/components/custom/blocks/GalleryBlock.tsx"),
     },
     {
       title: "Video Sphere Gallery",
@@ -625,7 +625,7 @@ export default function VideoSphereGalleryExample() {
       ],
       props: { variant: "video-sphere" },
       usage: nextAndReact(videoSphereUsage),
-      code: extractCode("src/components/custom/blocks/GalleryBlock.tsx"),
+      code: extractMotionCode("src/components/custom/blocks/GalleryBlock.tsx"),
     },
   ]}
 />
@@ -651,7 +651,7 @@ export default function VideoSphereGalleryExample() {
         <td><code>variant</code></td>
         <td><code>"orbit" | "moving-bento" | "circular-reel" | "pill-carousel" | "arc-carousel" | "video-sphere"</code></td>
         <td><code>"orbit"</code></td>
-        <td>Selects the revolving 3D circular photo orbit ring, 3D video sphere gallery, GSAP Flip moving bento, circular reel dial spinner, 3D pill carousel, or 3D curved arc carousel gallery.</td>
+        <td>Selects the revolving 3D circular photo orbit ring, 3D video sphere gallery, moving bento, circular reel dial spinner, 3D pill carousel, or 3D curved arc carousel gallery.</td>
       </tr>
       <tr>
         <td><code>images</code></td>

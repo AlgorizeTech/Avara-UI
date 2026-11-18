@@ -1,5 +1,5 @@
 import { MetadataRoute } from "next";
-import { SITE_URL } from "@/config/site";
+import { INDEXABLE, SITE_URL } from "@/config/site";
 
 export const dynamic = "force-static";
 
@@ -19,10 +19,20 @@ export const dynamic = "force-static";
  * that must stay out of search results say so with `noindex` in their metadata
  * (the /preview iframes, the leftover /docs/*\/examples pages), which only works
  * if crawlers are allowed to fetch them and read it.
+ *
+ * On a deployment that is not indexable (the Vercel copy, see `INDEXABLE`) the
+ * rules stay open for the same reason: every page carries `noindex`, and a
+ * `Disallow: /` would stop Google fetching the pages it has already indexed, so
+ * it could never see the tag and the stale copies would stay in the results.
+ * What changes is that this host stops advertising itself: no sitemap, and no
+ * `Host:` line claiming the real domain.
  */
 export default function robots(): MetadataRoute.Robots {
+  const rules = [{ userAgent: "*", allow: "/", disallow: "/cdn-cgi/" }];
+  if (!INDEXABLE) return { rules };
+
   return {
-    rules: [{ userAgent: "*", allow: "/", disallow: "/cdn-cgi/" }],
+    rules,
     sitemap: `${SITE_URL}/sitemap.xml`,
     host: new URL(SITE_URL).host,
   };
