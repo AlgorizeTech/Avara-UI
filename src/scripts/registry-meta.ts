@@ -511,6 +511,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["navigation", "overlays"],
     docs: "Named exports: Command, CommandDialog, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem, CommandSeparator. Use CommandDialog with `open` / `onOpenChange` for the overlay form, or Command inline. Set `shouldFilter` false to filter server-side yourself. Bind your own ⌘K listener — no global shortcut is registered for you.",
   },
+  "command-palette": {
+    description:
+      "A keyboard-first Command Palette starting as a search box trigger (Ctrl+K/⌘K) that opens a centered modal dialog with instant search, grouped sections, and shortcut keycaps.",
+    categories: ["navigation", "overlays", "actions"],
+    docs: "Named exports: CommandPalette, CommandPaletteTrigger, CommandPaletteContent, DEFAULT_COMMAND_PALETTE_GROUPS. Pass the variant name via `variant` (e.g. `variant=\"linear\"`). Renders the trigger search box initially and opens the modal dialog with dimmed backdrop on click or Ctrl+K/⌘K. Supports full keyboard navigation (ArrowUp/ArrowDown/Enter/Esc), custom groups, shortcut keycaps, tags, and item action callbacks.",
+  },
   "context-menu": {
     description:
       "A right-click context menu that opens at the pointer, with items, separators and shortcut hints. Use it for secondary actions on a row or canvas object.",

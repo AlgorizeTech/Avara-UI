@@ -153,6 +153,22 @@ const rawNavigation: NavigationItem[] = [
       { label: "Collapsible", slug: "collapsible" },
       { label: "Color Picker", slug: "color-picker" },
       { label: "Command", slug: "command" },
+      {
+        label: "Command Palette",
+        slug: "command-palette",
+        badge: "New",
+        addedOn: "2026-11-18",
+        keywords: [
+          "command palette",
+          "linear",
+          "spotlight",
+          "search or jump to",
+          "ctrl k",
+          "cmd k",
+          "quick actions",
+          "shortcut",
+        ],
+      },
       { label: "Components Folder", slug: "design-components-folder" },
       {
         label: "Designs Toolkit",

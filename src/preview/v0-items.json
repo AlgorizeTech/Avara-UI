@@ -241,6 +241,9 @@
     "command-dialog": "Command — Command dialog",
     "external-filtering": "Command — External filtering"
   },
+  "command-palette": {
+    "linear": "Command Palette — Linear"
+  },
   "component-wall": {
     "build-interactive-interfaces": "Component Wall — Build interactive interfaces",
     "centred-with-persistent-background": "Component Wall — Centred with persistent background",

@@ -1208,6 +1208,32 @@
       "docs": "Named exports: Command, CommandDialog, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem, CommandSeparator. Use CommandDialog with `open` / `onOpenChange` for the overlay form, or Command inline. Set `shouldFilter` false to filter server-side yourself. Bind your own ⌘K listener — no global shortcut is registered for you."
     },
     {
+      "name": "command-palette",
+      "type": "registry:component",
+      "title": "Command Palette",
+      "author": "AlgorizeTech",
+      "description": "A keyboard-first Command Palette starting as a search box trigger (Ctrl+K/⌘K) that opens a centered modal dialog with instant search, grouped sections, and shortcut keycaps.",
+      "categories": [
+        "navigation",
+        "overlays",
+        "actions"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/CommandPaletteBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/CommandPaletteBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: CommandPalette, CommandPaletteTrigger, CommandPaletteContent, DEFAULT_COMMAND_PALETTE_GROUPS. Pass the variant name via `variant` (e.g. `variant=\"linear\"`). Renders the trigger search box initially and opens the modal dialog with dimmed backdrop on click or Ctrl+K/⌘K. Supports full keyboard navigation (ArrowUp/ArrowDown/Enter/Esc), custom groups, shortcut keycaps, tags, and item action callbacks."
+    },
+    {
       "name": "component-wall",
       "type": "registry:component",
       "title": "Component Wall",

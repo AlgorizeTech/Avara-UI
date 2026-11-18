@@ -22,7 +22,7 @@ Each name below is a docs page slug. Its summary, install command and Markdown a
 - **Navigation & Menus** (components): `breadcrumb`, `command`, `context-menu`, `conversation-timeline`, `dock`, `menubar`, `navigation`, `pagination`, `table-of-contents`, `vertical-tabs`
 - **Buttons & Actions** (components): `button`, `copy-button`, `floating-contact-button`, `kbd`, `social-links`, `theme-switcher`, `toggle`, `toggle-group`, `verify-badge`
 - **Charts, Maps & Graphs** (components): `chart`, `data-maps`, `flowchart`, `infrastructure-topology`, `fleet-tracker`, `network-graph`, `user-graph`
-- **More Components** (components): `designs-toolkit`, `falling-tags`, `live-pulse-pill`, `modern-scroll-stack`, `ribbon-drift`, `voice-note`
+- **More Components** (components): `command-palette`, `designs-toolkit`, `falling-tags`, `live-pulse-pill`, `modern-scroll-stack`, `ribbon-drift`, `voice-note`
 - **Pages & App Screens** (components): `image-viewer`, `auth-forms`, `book-appointment`, `dashboard`, `product-details`, `profile-page`, `support-dashboard`
 - **More Sections** (website sections): `arc-process`, `error`, `not-found`, `hover-peek`, `top-destinations`
 - **Marketing Sections** (website sections): `bento-showcase`, `counter-section`, `cta-section`, `data-flow`, `faq-section`, `platform-grid`, `pricing`, `reviews`, `newsletter`, `waitlist`

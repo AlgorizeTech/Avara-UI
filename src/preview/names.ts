@@ -37,6 +37,7 @@ export const sandboxNames = [
   "collapsible",
   "color-picker",
   "command",
+  "command-palette",
   "component-wall",
   "confidential-folder",
   "context-menu",

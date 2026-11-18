@@ -61,6 +61,7 @@
     "src/components/custom/blocks/CollageHeroBlock.tsx",
     "src/components/custom/blocks/CollapsibleBlock.tsx",
     "src/components/custom/blocks/CommandBlock.tsx",
+    "src/components/custom/blocks/CommandPaletteBlock.tsx",
     "src/components/custom/blocks/ComponentWallBlock.tsx",
     "src/components/custom/blocks/ComputeBlock.tsx",
     "src/components/custom/blocks/ConfidentialFolderBlock.tsx",

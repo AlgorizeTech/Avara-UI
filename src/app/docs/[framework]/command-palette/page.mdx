@@ -1,0 +1,67 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("command-palette");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+
+# Command Palette
+
+A fast, keyboard-first Command Palette with a search box trigger, instant filtering, hotkey badges, grouped sections, and a modal overlay.
+
+Starts as a compact search bar (`Search anything... [Ctrl] [K]`) in your header. Clicking it or pressing `Ctrl+K` / `⌘K` opens the palette as a centered modal over a dimmed overlay. Pass the variant name via the `variant` prop (`variant="linear"`), ready to support more variants as they are added.
+
+export const usageDefault = `"use client";
+
+import { CommandPalette } from "@/components/custom/blocks/CommandPaletteBlock";
+
+export default function AppHeader() {
+  return (
+    <header className="flex items-center justify-between p-4 border-b">
+      <span className="text-sm font-medium">Projects</span>
+
+      {/* Renders the search box trigger initially; opens modal on click or Ctrl+K */}
+      <CommandPalette
+        variant="linear"
+        triggerPlaceholder="Search anything..."
+        placeholder="Search pages, projects and actions"
+        onSelect={(item) => console.log("Selected:", item.id)}
+      />
+    </header>
+  );
+}`;
+
+<ExampleShowcase headingLevel={2}
+  name="command-palette"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Linear",
+      subheading: "Click the search box in the top right (or press Ctrl+K) to open the command palette modal over the dimmed overlay.",
+      propNotes: [
+        {
+          lead: "Pass",
+          prop: "variant",
+          value: '"linear"',
+          effect: "selects the Linear-inspired command palette variant.",
+        },
+        {
+          prop: "triggerPlaceholder",
+          value: '"Search anything..."',
+          effect: "sets the placeholder label inside the initial search bar trigger.",
+        },
+      ],
+      props: { variant: "linear" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/CommandPaletteBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="command-palette" />
+
+<DocsJsonLd slug="command-palette" />

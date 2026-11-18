@@ -42,6 +42,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "collapsible": lazyRetry(() => import("./demos/collapsible-demo")),
   "color-picker": lazyRetry(() => import("./demos/color-picker-demo")),
   "command": lazyRetry(() => import("./demos/command-demo")),
+  "command-palette": lazyRetry(() => import("./demos/command-palette-demo")),
   "component-wall": lazyRetry(() => import("./demos/component-wall-demo")),
   "confidential-folder": lazyRetry(() => import("./demos/confidential-folder-demo")),
   "context-menu": lazyRetry(() => import("./demos/context-menu-demo")),

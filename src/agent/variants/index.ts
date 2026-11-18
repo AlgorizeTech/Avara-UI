@@ -198,6 +198,8 @@ export const NO_CHOICE_NEEDED: string[] = [
   "arc-process",
   // Editorial typography manifesto section with 8-card stacking nature images on hover.
   "hover-peek",
+  // Linear-style command palette with full keyboard navigation and trigger button.
+  "command-palette",
 ];
 
 /**
