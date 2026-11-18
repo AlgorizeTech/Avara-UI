@@ -85,6 +85,9 @@
     "animated": "Apple Select — Animated",
     "across-lines": "Apple Select — Across lines"
   },
+  "arc-process": {
+    "arc-process-section": "Arc Process — Arc Process Section"
+  },
   "audio-player": {
     "audio-hero": "Audio Player — Audio hero",
     "compact-bar": "Audio Player — Compact bar",
@@ -237,6 +240,12 @@
     "groups-separators-shortcuts": "Command — Groups, separators & shortcuts",
     "command-dialog": "Command — Command dialog",
     "external-filtering": "Command — External filtering"
+  },
+  "command-palette": {
+    "linear": "Command Palette — Linear",
+    "nested": "Command Palette — Nested",
+    "inline": "Command Palette — Inline",
+    "ask-ai": "Command Palette — Ask AI"
   },
   "component-wall": {
     "build-interactive-interfaces": "Component Wall — Build interactive interfaces",
@@ -556,6 +565,9 @@
   "hero-solar-snapshot": {
     "solar-snapshot-sun-cursor-hero": "Shadcn Hero — Solar Snapshot Sun-Cursor Hero"
   },
+  "hover-peek": {
+    "hover-peek-section": "Hover Peek — Hover Peek Section"
+  },
   "image-compare": {
     "classic-slider": "Image Compare — Classic Slider",
     "split-handle": "Image Compare — Split Handle",
@@ -597,6 +609,9 @@
     "kbd": "Kbd",
     "combinations": "Kbd — Combinations",
     "inline-in-text": "Kbd — Inline in text"
+  },
+  "live-pulse-pill": {
+    "live-pulse-pill": "Live Pulse Pill"
   },
   "loader": {
     "spinner": "Loader — Spinner",
@@ -781,6 +796,7 @@
     "size-constraints": "Resizable — Size constraints"
   },
   "reviews": {
+    "interactive-testimonial-switcher": "Reviews — Interactive Testimonial Switcher",
     "testimonial-loom-pro-envelope-carousel": "Reviews — Testimonial Loom Pro (Envelope Carousel)",
     "updown-vertical-marquee": "Reviews — UpDown Vertical Marquee",
     "3d-stacked-cards-carousel-with-rolling-motion-arrows": "Reviews — 3D Stacked Cards Carousel with Rolling Motion & Arrows",
@@ -1074,6 +1090,9 @@
     "jw-player-default-skin": "Video Player (JW Player) — JW Player — default skin",
     "jw-player-skinned": "Video Player (JW Player) — JW Player — skinned",
     "jw-player-custom-palette": "Video Player (JW Player) — JW Player — custom palette"
+  },
+  "voice-note": {
+    "voice-note": "Voice Note"
   },
   "waitlist": {
     "launch": "Waitlist — Launch",

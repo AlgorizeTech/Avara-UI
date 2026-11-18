@@ -80,7 +80,7 @@ Install the chosen variant's own `install` command from the index. Several looks
 - `support-dashboard`: 4 variants. All live: https://avaraui.com/view/support-dashboard
 - `counter-section`: 4 variants. All live: https://avaraui.com/view/counter-section
 - `cta-section`: 4 variants. All live: https://avaraui.com/view/cta-section
-- `reviews`: 4 variants. All live: https://avaraui.com/view/reviews
+- `reviews`: 5 variants. All live: https://avaraui.com/view/reviews
 - `product-details`: 4 variants. All live: https://avaraui.com/view/product-details
 - `newsletter`: 3 variants. All live: https://avaraui.com/view/newsletter
 - `waitlist`: 3 variants. All live: https://avaraui.com/view/waitlist

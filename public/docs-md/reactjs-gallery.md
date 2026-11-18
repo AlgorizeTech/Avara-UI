@@ -6,7 +6,7 @@ url: https://avaraui.com/docs/nextjs/gallery
 
 # Shadcn Gallery
 
-A dynamic visual showcase featuring six interactive variants: a revolving 3D circular photo orbit ring, an interactive 3D video sphere gallery, a GSAP Flip self-rearranging moving bento grid, an interactive circular reel dial spinner, a 3D layered pill carousel, and a Framer-inspired 3D curved arc carousel gallery.
+A dynamic visual showcase featuring six interactive variants: a revolving 3D circular photo orbit ring, an interactive 3D video sphere gallery, a self-rearranging moving bento grid, an interactive circular reel dial spinner, a 3D layered pill carousel, and a Framer-inspired 3D curved arc carousel gallery.
 
 ## For AI agents
 
@@ -121,7 +121,7 @@ export default function OrbitGalleryExample() {
 
 A self-rearranging image bento with a dominant centre slot. Hovering holds the items still; clicking one brings it to the hero slot.
 
-- `variant="moving-bento"` switches to the GSAP Flip moving bento.
+- `variant="moving-bento"` switches to the moving bento.
 - `items` are the cards, as `{ id, title, description, image }`.
 - `swapInterval=3000` is the milliseconds between automatic swaps.
 
@@ -599,11 +599,17 @@ npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/gallery
 ```
 
+Or the Motion build (same props, same file — install one):
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/gallery-motion.json
+```
+
 ## Props Reference
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `variant` | `"orbit" \| "moving-bento" \| "circular-reel" \| "pill-carousel" \| "arc-carousel" \| "video-sphere"` | `"orbit"` | Selects the revolving 3D circular photo orbit ring, 3D video sphere gallery, GSAP Flip moving bento, circular reel dial spinner, 3D pill carousel, or 3D curved arc carousel gallery. |
+| `variant` | `"orbit" \| "moving-bento" \| "circular-reel" \| "pill-carousel" \| "arc-carousel" \| "video-sphere"` | `"orbit"` | Selects the revolving 3D circular photo orbit ring, 3D video sphere gallery, moving bento, circular reel dial spinner, 3D pill carousel, or 3D curved arc carousel gallery. |
 | `images` | `string[]` | 15 landscapes | The cards on the ring for the `"orbit"` variant. |
 | `duration` | `number` | `36` | Seconds per revolution on the orbit ring. |
 | `items` | `MovingBentoItem[]` | 8 landscapes | The cards for the `"moving-bento"` variant. |

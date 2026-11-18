@@ -34,12 +34,12 @@ runs on GSAP; many of these also ship a Motion build that you install instead.
 
 **Data Display**
 
-- [Split-Flap Display](https://avaraui.com/docs-md/nextjs-split-flap.md): An authentic, physics-driven Split-Flap Display component (Solari board) simulating retro-mechanical flap cards, 3D perspective flips (`rotateX`),…
+- [Split-Flap Display](https://avaraui.com/docs-md/nextjs-split-flap.md): An authentic, physics-driven Split-Flap Display component (Solari board) simulating retro-mechanical flap cards, 3D perspective flips (`rotateX`),… (Motion build available)
 
 **Media & Carousels**
 
 - [3D Carousel](https://avaraui.com/docs-md/nextjs-3d-carousel.md): A premium 3D carousel with a fanned layout, smooth interactive animations, and a sleek adaptive aesthetic. (Motion build available)
-- [Gallery](https://avaraui.com/docs-md/nextjs-gallery.md): A dynamic visual showcase featuring six interactive variants: a revolving 3D circular photo orbit ring, an interactive 3D video sphere gallery, a…
+- [Gallery](https://avaraui.com/docs-md/nextjs-gallery.md): A dynamic visual showcase featuring six interactive variants: a revolving 3D circular photo orbit ring, an interactive 3D video sphere gallery, a… (Motion build available)
 
 **Apps & Messaging**
 
@@ -51,7 +51,7 @@ runs on GSAP; many of these also ship a Motion build that you install instead.
 
 **More Sections**
 
-- [Top Destinations](https://avaraui.com/docs-md/nextjs-top-destinations.md): A dual-row scroll-driven destination showcase. As the user scrolls down the page, two parallel rows of destination cards travel in opposite…
+- [Top Destinations](https://avaraui.com/docs-md/nextjs-top-destinations.md): A dual-row scroll-driven destination showcase. As the user scrolls down the page, two parallel rows of destination cards travel in opposite… (Motion build available)
 
 ## Which components use GSAP?
 

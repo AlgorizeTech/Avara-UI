@@ -6,7 +6,7 @@ url: https://avaraui.com/docs/nextjs/top-destinations
 
 # Shadcn Top Destinations
 
-A dual-row scroll-driven destination showcase. As the user scrolls down the page, two parallel rows of destination cards travel in opposite directions via **GSAP ScrollTrigger** scrub animation.
+A dual-row scroll-driven destination showcase. As the user scrolls down the page, two parallel rows of destination cards travel in opposite directions in a scroll-scrubbed animation, built with GSAP ScrollTrigger or Motion.
 
 Each card features full-bleed photography, subtle vertical typography by default, smooth hover scaling, and an interactive bordered overlay revealing place counts, tags, and an "Explore" action.
 
@@ -135,6 +135,12 @@ npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/top-destinations
 ```
 
+Or the Motion build (same props, same file — install one):
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/top-destinations-motion.json
+```
+
 ## Features
 
 ### Opposite Direction Scrub
@@ -165,7 +171,7 @@ Automatically respects user motion preferences, gracefully falling back to a cle
 | `row1Items` | `DestinationItem[]` | First half | Explicit destination items for the top row (travels towards the left). |
 | `row2Items` | `DestinationItem[]` | Second half | Explicit destination items for the bottom row (travels towards the right). |
 | `scrollOffset` | `number` | `450` | Horizontal travel distance in pixels as the section traverses the viewport. |
-| `scrollerRef` | `RefObject<HTMLElement>` | `undefined` | Custom scroll parent element driving ScrollTrigger (useful inside sandboxes and modals). |
+| `scrollerRef` | `RefObject<HTMLElement>` | `undefined` | Custom scroll parent element driving the scrub (useful inside sandboxes and modals). |
 | `onExplore` | `(item) => void` | `undefined` | Click handler triggered when a user explores a specific destination. |
 
 ---

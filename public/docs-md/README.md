@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-11-15T10:40:16.736Z
-**Total files:** 329
+**Generated at:** 2026-11-18T13:41:43.754Z
+**Total files:** 339
 
 ## Available Files
 
@@ -18,6 +18,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/animated-typography](/docs-md/nextjs-animated-typography.md) - Source: `[framework]\animated-typography\page.mdx`
 - [nextjs/api-playground](/docs-md/nextjs-api-playground.md) - Source: `[framework]\api-playground\page.mdx`
 - [nextjs/apple-select](/docs-md/nextjs-apple-select.md) - Source: `[framework]\apple-select\page.mdx`
+- [nextjs/arc-process](/docs-md/nextjs-arc-process.md) - Source: `[framework]\arc-process\page.mdx`
 - [nextjs/audio-player](/docs-md/nextjs-audio-player.md) - Source: `[framework]\audio-player\page.mdx`
 - [nextjs/auth-forms](/docs-md/nextjs-auth-forms.md) - Source: `[framework]\auth-forms\page.mdx`
 - [nextjs/avatar-stack](/docs-md/nextjs-avatar-stack.md) - Source: `[framework]\avatar-stack\page.mdx`
@@ -40,6 +41,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/collapsible](/docs-md/nextjs-collapsible.md) - Source: `[framework]\collapsible\page.mdx`
 - [nextjs/color-picker](/docs-md/nextjs-color-picker.md) - Source: `[framework]\color-picker\page.mdx`
 - [nextjs/command](/docs-md/nextjs-command.md) - Source: `[framework]\command\page.mdx`
+- [nextjs/command-palette](/docs-md/nextjs-command-palette.md) - Source: `[framework]\command-palette\page.mdx`
 - [nextjs/component-wall](/docs-md/nextjs-component-wall.md) - Source: `[framework]\component-wall\page.mdx`
 - [nextjs/context-menu](/docs-md/nextjs-context-menu.md) - Source: `[framework]\context-menu\page.mdx`
 - [nextjs/conversation-timeline](/docs-md/nextjs-conversation-timeline.md) - Source: `[framework]\conversation-timeline\page.mdx`
@@ -87,6 +89,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/half-stars](/docs-md/nextjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`
 - [nextjs/heart-signal](/docs-md/nextjs-heart-signal.md) - Source: `[framework]\heart-signal\page.mdx`
 - [nextjs/hero](/docs-md/nextjs-hero.md) - Source: `[framework]\hero\page.mdx`
+- [nextjs/hover-peek](/docs-md/nextjs-hover-peek.md) - Source: `[framework]\hover-peek\page.mdx`
 - [nextjs/image-compare](/docs-md/nextjs-image-compare.md) - Source: `[framework]\image-compare\page.mdx`
 - [nextjs/image-viewer](/docs-md/nextjs-image-viewer.md) - Source: `[framework]\image-viewer\page.mdx`
 - [nextjs/image-wall](/docs-md/nextjs-image-wall.md) - Source: `[framework]\image-wall\page.mdx`
@@ -97,6 +100,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/invoice](/docs-md/nextjs-invoice.md) - Source: `[framework]\invoice\page.mdx`
 - [nextjs/item](/docs-md/nextjs-item.md) - Source: `[framework]\item\page.mdx`
 - [nextjs/kbd](/docs-md/nextjs-kbd.md) - Source: `[framework]\kbd\page.mdx`
+- [nextjs/live-pulse-pill](/docs-md/nextjs-live-pulse-pill.md) - Source: `[framework]\live-pulse-pill\page.mdx`
 - [nextjs/loader](/docs-md/nextjs-loader.md) - Source: `[framework]\loader\page.mdx`
 - [nextjs/magic-bento](/docs-md/nextjs-magic-bento.md) - Source: `[framework]\magic-bento\page.mdx`
 - [nextjs/marquee](/docs-md/nextjs-marquee.md) - Source: `[framework]\marquee\page.mdx`
@@ -169,6 +173,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/vertical-tabs](/docs-md/nextjs-vertical-tabs.md) - Source: `[framework]\vertical-tabs\page.mdx`
 - [nextjs/video-accordion](/docs-md/nextjs-video-accordion.md) - Source: `[framework]\video-accordion\page.mdx`
 - [nextjs/video-player](/docs-md/nextjs-video-player.md) - Source: `[framework]\video-player\page.mdx`
+- [nextjs/voice-note](/docs-md/nextjs-voice-note.md) - Source: `[framework]\voice-note\page.mdx`
 - [nextjs/waitlist](/docs-md/nextjs-waitlist.md) - Source: `[framework]\waitlist\page.mdx`
 - [nextjs/wallet](/docs-md/nextjs-wallet.md) - Source: `[framework]\wallet\page.mdx`
 - [nextjs/wizard](/docs-md/nextjs-wizard.md) - Source: `[framework]\wizard\page.mdx`
@@ -182,6 +187,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/animated-typography](/docs-md/reactjs-animated-typography.md) - Source: `[framework]\animated-typography\page.mdx`
 - [reactjs/api-playground](/docs-md/reactjs-api-playground.md) - Source: `[framework]\api-playground\page.mdx`
 - [reactjs/apple-select](/docs-md/reactjs-apple-select.md) - Source: `[framework]\apple-select\page.mdx`
+- [reactjs/arc-process](/docs-md/reactjs-arc-process.md) - Source: `[framework]\arc-process\page.mdx`
 - [reactjs/audio-player](/docs-md/reactjs-audio-player.md) - Source: `[framework]\audio-player\page.mdx`
 - [reactjs/auth-forms](/docs-md/reactjs-auth-forms.md) - Source: `[framework]\auth-forms\page.mdx`
 - [reactjs/avatar-stack](/docs-md/reactjs-avatar-stack.md) - Source: `[framework]\avatar-stack\page.mdx`
@@ -204,6 +210,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/collapsible](/docs-md/reactjs-collapsible.md) - Source: `[framework]\collapsible\page.mdx`
 - [reactjs/color-picker](/docs-md/reactjs-color-picker.md) - Source: `[framework]\color-picker\page.mdx`
 - [reactjs/command](/docs-md/reactjs-command.md) - Source: `[framework]\command\page.mdx`
+- [reactjs/command-palette](/docs-md/reactjs-command-palette.md) - Source: `[framework]\command-palette\page.mdx`
 - [reactjs/component-wall](/docs-md/reactjs-component-wall.md) - Source: `[framework]\component-wall\page.mdx`
 - [reactjs/context-menu](/docs-md/reactjs-context-menu.md) - Source: `[framework]\context-menu\page.mdx`
 - [reactjs/conversation-timeline](/docs-md/reactjs-conversation-timeline.md) - Source: `[framework]\conversation-timeline\page.mdx`
@@ -251,6 +258,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/half-stars](/docs-md/reactjs-half-stars.md) - Source: `[framework]\half-stars\page.mdx`
 - [reactjs/heart-signal](/docs-md/reactjs-heart-signal.md) - Source: `[framework]\heart-signal\page.mdx`
 - [reactjs/hero](/docs-md/reactjs-hero.md) - Source: `[framework]\hero\page.mdx`
+- [reactjs/hover-peek](/docs-md/reactjs-hover-peek.md) - Source: `[framework]\hover-peek\page.mdx`
 - [reactjs/image-compare](/docs-md/reactjs-image-compare.md) - Source: `[framework]\image-compare\page.mdx`
 - [reactjs/image-viewer](/docs-md/reactjs-image-viewer.md) - Source: `[framework]\image-viewer\page.mdx`
 - [reactjs/image-wall](/docs-md/reactjs-image-wall.md) - Source: `[framework]\image-wall\page.mdx`
@@ -261,6 +269,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/invoice](/docs-md/reactjs-invoice.md) - Source: `[framework]\invoice\page.mdx`
 - [reactjs/item](/docs-md/reactjs-item.md) - Source: `[framework]\item\page.mdx`
 - [reactjs/kbd](/docs-md/reactjs-kbd.md) - Source: `[framework]\kbd\page.mdx`
+- [reactjs/live-pulse-pill](/docs-md/reactjs-live-pulse-pill.md) - Source: `[framework]\live-pulse-pill\page.mdx`
 - [reactjs/loader](/docs-md/reactjs-loader.md) - Source: `[framework]\loader\page.mdx`
 - [reactjs/magic-bento](/docs-md/reactjs-magic-bento.md) - Source: `[framework]\magic-bento\page.mdx`
 - [reactjs/marquee](/docs-md/reactjs-marquee.md) - Source: `[framework]\marquee\page.mdx`
@@ -333,6 +342,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/vertical-tabs](/docs-md/reactjs-vertical-tabs.md) - Source: `[framework]\vertical-tabs\page.mdx`
 - [reactjs/video-accordion](/docs-md/reactjs-video-accordion.md) - Source: `[framework]\video-accordion\page.mdx`
 - [reactjs/video-player](/docs-md/reactjs-video-player.md) - Source: `[framework]\video-player\page.mdx`
+- [reactjs/voice-note](/docs-md/reactjs-voice-note.md) - Source: `[framework]\voice-note\page.mdx`
 - [reactjs/waitlist](/docs-md/reactjs-waitlist.md) - Source: `[framework]\waitlist\page.mdx`
 - [reactjs/wallet](/docs-md/reactjs-wallet.md) - Source: `[framework]\wallet\page.mdx`
 - [reactjs/wizard](/docs-md/reactjs-wizard.md) - Source: `[framework]\wizard\page.mdx`

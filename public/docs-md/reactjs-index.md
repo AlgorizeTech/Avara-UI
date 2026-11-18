@@ -6,7 +6,7 @@ url: https://avaraui.com/docs/nextjs
 
 # Introduction
 
-Avara UI is a free, MIT-licensed library of **195 animated,
+Avara UI is a free, MIT-licensed library of **200 animated,
 responsive React components** — from buttons and inputs to dashboards, carousels
 and full marketing sections.
 

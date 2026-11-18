@@ -134,6 +134,14 @@ export function SandboxClient({ name }: { name: string }) {
       if (data && data.type === "sandbox:accent") {
         setAccent(typeof data.accent === "string" ? data.accent : null);
       }
+      if (data && data.type === "sandbox:fill") {
+        document.body.dataset.fullscreen = data.fill ? "true" : "false";
+        window.dispatchEvent(
+          new CustomEvent("sandbox:fullscreen", {
+            detail: { fullscreen: !!data.fill },
+          })
+        );
+      }
     };
     window.addEventListener("message", onMessage);
     return () => window.removeEventListener("message", onMessage);

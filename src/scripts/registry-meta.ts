@@ -85,9 +85,33 @@ export const NAME_OVERRIDES: Record<string, string> = {
   "ErrorBlock.tsx": "error",
   "NotFoundBlock.tsx": "not-found",
   "DesignsToolkitBlock.tsx": "designs-toolkit",
+  "VoiceNoteBlock.tsx": "voice-note",
+  "ArcProcessBlock.tsx": "arc-process",
+  "HoverPeekBlock.tsx": "hover-peek",
 };
 
 export const META: Record<string, ItemMeta> = {
+  "hover-peek": {
+    title: "Hover Peek",
+    description:
+      "An editorial manifesto typography section with interactive word hovers that smoothly reveal a slow-zooming physical deck of 8 stacking nature images.",
+    categories: ["marketing", "layout", "typography"],
+    docs: "Named exports: HoverPeek, DEFAULT_HOVER_PEEK_HIGHLIGHTS, DEFAULT_STATEMENT, HoverPeekHighlight, HoverPeekProps. Features 8-image progressive card stacking on hover, alternating physical card tilts, smooth modal zoom-in, responsive layout, and theme color accent.",
+  },
+  "arc-process": {
+    title: "Arc Process",
+    description:
+      "A scroll-driven curved arc process website section with dynamic progress strokes, orbital step nodes, and active milestone details.",
+    categories: ["marketing", "layout", "scroll"],
+    docs: "Named exports: ArcProcess, DEFAULT_ARC_STEPS, ArcProcessStep, ArcProcessProps. Features SVG dome arc progress strokes, scroll synchronization, step node transitions, and theme color customization.",
+  },
+  "voice-note": {
+    title: "Voice Note",
+    description:
+      "A hold-to-record voice note component with dynamic soundwave visualization, slide to cancel gesture, and instant playback with close option.",
+    categories: ["communication", "media", "actions"],
+    docs: "Named exports: VoiceNote, VoiceNoteProps. Supports hold-to-record, slide-to-cancel gestures, real or simulated audio capture, waveform visualization, and instant playback.",
+  },
   "modern-scroll-stack": {
     title: "Modern Scroll Stack",
     description:
@@ -486,6 +510,12 @@ export const META: Record<string, ItemMeta> = {
       "A command palette with fuzzy search, grouped results and a dialog mode. Use it for the ⌘K quick-action menu in an application.",
     categories: ["navigation", "overlays"],
     docs: "Named exports: Command, CommandDialog, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem, CommandSeparator. Use CommandDialog with `open` / `onOpenChange` for the overlay form, or Command inline. Set `shouldFilter` false to filter server-side yourself. Bind your own ⌘K listener — no global shortcut is registered for you.",
+  },
+  "command-palette": {
+    description:
+      "A keyboard-first Command Palette with instant search, grouped sections, shortcut keycaps, nested drill-down sub-menus, Ask AI streaming answers, and both modal trigger (Ctrl+K/⌘K) and always-open inline modes.",
+    categories: ["navigation", "overlays", "actions"],
+    docs: "Named exports: CommandPalette, CommandPaletteTrigger, CommandPaletteContent, StatusIcon, PriorityIcon, DEFAULT_COMMAND_PALETTE_GROUPS, DEFAULT_NESTED_PALETTE_STATE. Pass `variant=\"linear\"` for trigger + quick navigation modal, `variant=\"nested\"` for contextual issue commands with animated drill-down Status, Assignee, Priority, and Project sub-menus (Backspace/← returns to root), `variant=\"inline\"` for an always-open embedded palette with no modal, or `variant=\"ai\"` for suggested questions, skeleton loading, and character-by-character streamed AI answers with citations and sources.",
   },
   "context-menu": {
     description:
@@ -896,6 +926,12 @@ export const META: Record<string, ItemMeta> = {
       "A loading indicator in six shapes — spinner, orbit, dots, pulse, ring and bar — with an optional caption. Use it for inline and full-panel pending states.",
     categories: ["feedback"],
     docs: "Named exports: LoaderBlock, getThemeColor. `variant` picks the shape, `size` is sm | md | lg | xl, and `text` renders a caption beneath. Pure CSS animation with no runtime dependencies. For content-shaped placeholders, use `skeleton`.",
+  },
+  "live-pulse-pill": {
+    description:
+      "An interactive live presence pill with animated soundwave pulse and modal participant roster for active calls, streams, spaces, and huddles.",
+    categories: ["data-display", "actions", "communication"],
+    docs: "Named exports: LivePulsePill, SoundWaveBars, DEFAULT_LIVE_PARTICIPANTS. Features light/dark theme adaptability, active speaker indicators, participant counts, and centered popup modal dialog.",
   },
   "ui-codeblocks": {
     description:
