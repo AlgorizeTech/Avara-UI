@@ -59,12 +59,12 @@ const DEMO_PROCESS_STEPS: ArcProcessStep[] = [
 
 export default function ArcProcessDemo({
   variant = "arc-dock",
-  highlightShape = "wave",
+  highlightShape = "ribbon",
   themeColor,
   color,
 }: {
   variant?: "arc-dock" | "default" | "semicircle";
-  highlightShape?: "wave" | "double" | "curve";
+  highlightShape?: "ribbon" | "wave" | "double" | "curve";
   themeColor?: string;
   color?: string;
 }) {
@@ -81,7 +81,7 @@ export default function ArcProcessDemo({
         ...accentStyle(chosen),
         ...(activeColor ? ({ "--theme-color": activeColor } as React.CSSProperties) : {}),
       }}
-      className="w-full h-[650px] sm:h-[720px] relative overflow-hidden flex flex-col items-center justify-between bg-white dark:bg-zinc-950 rounded-2xl border border-border/60 p-0 m-0"
+      className="w-full h-auto min-h-[480px] sm:min-h-[600px] lg:min-h-[720px] relative overflow-hidden flex flex-col items-center justify-start bg-white dark:bg-zinc-950 rounded-2xl border border-border/60 p-0 m-0"
     >
       <ArcProcess
         variant={variant}
@@ -92,7 +92,7 @@ export default function ArcProcessDemo({
         subtitle="teams shipping high-standard products"
         steps={DEMO_PROCESS_STEPS}
         themeColor={activeColor}
-        className="w-full h-full"
+        className="w-full"
       />
     </div>
   );

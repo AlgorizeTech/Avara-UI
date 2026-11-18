@@ -87,6 +87,7 @@ export default function ArcProcessDemo() {
   colorControl
   colorProp="themeColor"
   columns={1}
+  minHeight={420}
   examples={[
     {
       title: "Arc Process Section",
@@ -100,8 +101,8 @@ export default function ArcProcessDemo() {
         },
         {
           prop: "highlightShape",
-          value: '"wave"',
-          effect: 'drawing style under the highlighted word: "wave" (marker squiggle), "double" (dual sketch), or "curve" (swoop).',
+          value: '"ribbon"',
+          effect: 'drawing style under the highlighted word: "ribbon" (Ribbon Drift dual gradient line), "wave", "double", or "curve".',
         },
         {
           prop: "highlightWord",
@@ -109,7 +110,7 @@ export default function ArcProcessDemo() {
           effect: "word inside the heading wrapped with an animated SVG curved underline stroke.",
         },
       ],
-      props: { variant: "arc-dock", highlightShape: "wave" },
+      props: { variant: "arc-dock", highlightShape: "ribbon" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ArcProcessBlock.tsx"),
     },

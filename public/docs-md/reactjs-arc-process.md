@@ -15,7 +15,7 @@ As the user scrolls through the section, the arc stroke traces along the curve w
 Scroll-driven dome arc process with live colored progress border, animated header underline, orbital badge nodes, and milestone card details.
 
 - `variant="arc-dock"` interactive rotating semicircle dome with orbital milestone nodes.
-- `highlightShape="wave"` drawing style under the highlighted word: "wave" (marker squiggle), "double" (dual sketch), or "curve" (swoop).
+- `highlightShape="ribbon"` drawing style under the highlighted word: "ribbon" (Ribbon Drift dual gradient line), "wave", "double", or "curve".
 - `highlightWord="workflow"` word inside the heading wrapped with an animated SVG curved underline stroke.
 
 ```tsx

@@ -43,12 +43,12 @@ export const ARC_COLOR_PRESETS: Record<string, string> = {
 };
 
 export type ArcProcessVariant = "arc-dock" | "default" | "semicircle" | (string & {});
-export type ArcProcessHighlightShape = "wave" | "double" | "curve";
+export type ArcProcessHighlightShape = "ribbon" | "wave" | "double" | "curve";
 
 export interface ArcProcessProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Visual variant style. Defaults to "arc-dock". */
   variant?: ArcProcessVariant;
-  /** Shape style of the animated underline under the highlighted word. Defaults to "wave" (wavy hand-drawn squiggle). */
+  /** Shape style of the animated underline under the highlighted word. Defaults to "ribbon" (Ribbon Drift dual gradient draw). */
   highlightShape?: ArcProcessHighlightShape;
   /** Optional badge pill text displayed above the main heading */
   badgeText?: string;
@@ -121,7 +121,7 @@ export const ArcProcess = React.forwardRef<HTMLDivElement, ArcProcessProps>(
   (
     {
       variant = "arc-dock",
-      highlightShape = "wave",
+      highlightShape = "ribbon",
       badgeText = "ENGINEERING LIFECYCLE",
       title = "A streamlined workflow built for",
       highlightWord = "workflow",
@@ -136,6 +136,13 @@ export const ArcProcess = React.forwardRef<HTMLDivElement, ArcProcessProps>(
     },
     ref,
   ) => {
+    // Unique gradient ID for the Ribbon Drift style animated line draw
+    const rawId = React.useId();
+    const lineGradId = useMemo(
+      () => `arc-line-draw-${rawId.replace(/[^a-zA-Z0-9_-]/g, "")}`,
+      [rawId],
+    );
+
     // Smooth continuous rotation angle in degrees
     const [currentRotation, setCurrentRotation] = useState<number>(0);
     // Dynamic container sizing tracking so component adapts edge-to-edge
@@ -159,12 +166,15 @@ export const ArcProcess = React.forwardRef<HTMLDivElement, ArcProcessProps>(
 
     // Fills parent width cleanly; ring curves down and exits bottom naturally
     const containerWidth = containerSize.width;
-    const ringDiameter = Math.max(380, containerWidth * 0.92);
+    // Proportional diameter that scales smoothly on mobile while filling large screens
+    const ringDiameter = Math.min(1150, Math.max(360, containerWidth * 0.92));
     const ringRadius = ringDiameter / 2;
     const ringSize = ringDiameter;
     const ringCenter = ringRadius;
-    // Lowered safely down (155px) so the top icon badges and ring NEVER enter or overlap the title area
+    // Exact fixed gap (155px) matching large screen across all devices so it never enters title/subtitle
     const ringTop = 155;
+    // Dome height is strictly ringTop + ringRadius so ONLY the upper 50% (semicircle) is visible on ALL screens
+    const domeHeight = ringTop + ringRadius;
 
     // Track parent container sizing with ResizeObserver
     useEffect(() => {
@@ -195,7 +205,7 @@ export const ArcProcess = React.forwardRef<HTMLDivElement, ArcProcessProps>(
     // Resolve theme color for CSS variable and inline styles, supporting hex, rgb, and palette presets (lavender, indigo, rose, etc.)
     const resolvedThemeColor = useMemo(() => {
       if (!themeColor || themeColor === "primary" || themeColor === "default") {
-        return "var(--theme-color, var(--primary))";
+        return "var(--theme-color, var(--primary, #9b8afb))";
       }
       const lower = themeColor.toLowerCase();
       if (ARC_COLOR_PRESETS[lower]) {
@@ -351,43 +361,36 @@ export const ArcProcess = React.forwardRef<HTMLDivElement, ArcProcessProps>(
           ...style,
         }}
         className={cn(
-          "w-full h-full min-h-[550px] relative flex flex-col bg-white dark:bg-zinc-950 overflow-hidden select-none p-0 m-0",
+          "w-full relative flex flex-col items-center justify-start bg-white dark:bg-zinc-950 overflow-hidden select-none p-0 m-0",
           className,
         )}
         {...props}
       >
-        {/* Underline continuous draw animation styling (loops seamlessly with zero clipping) */}
+        {/* Ribbon Drift style drawing animation styling */}
         <style>{`
-          @keyframes arcUnderlineDraw {
+          @keyframes ribbon-line-draw {
             0% {
-              stroke-dashoffset: 180;
-              opacity: 0.9;
+              stroke-dashoffset: 320;
+              opacity: 0;
             }
-            38% {
+            15% {
+              opacity: 1;
+            }
+            45%, 65% {
               stroke-dashoffset: 0;
               opacity: 1;
             }
-            78% {
-              stroke-dashoffset: 0;
+            85% {
               opacity: 1;
-            }
-            90% {
-              stroke-dashoffset: 0;
-              opacity: 0;
-            }
-            95% {
-              stroke-dashoffset: 180;
-              opacity: 0;
             }
             100% {
-              stroke-dashoffset: 180;
-              opacity: 0.9;
+              stroke-dashoffset: -320;
+              opacity: 0;
             }
           }
-          .animate-arc-underline {
-            stroke-dasharray: 180;
-            stroke-dashoffset: 180;
-            animation: arcUnderlineDraw 2.6s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+          .animate-ribbon-line-draw {
+            stroke-dasharray: 320;
+            animation: ribbon-line-draw 3.5s ease-in-out infinite;
           }
         `}</style>
 
@@ -412,54 +415,130 @@ export const ArcProcess = React.forwardRef<HTMLDivElement, ArcProcessProps>(
             {titleParts.word && (
               <span className="relative inline-block text-zinc-900 dark:text-zinc-50 shrink-0 mx-1 px-0.5 pb-1">
                 {titleParts.word}
-                <svg
-                  viewBox={highlightShape === "double" ? "0 0 150 18" : "0 0 150 16"}
-                  fill="none"
-                  preserveAspectRatio="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="absolute left-0 -bottom-1.5 w-full h-3.5 sm:h-4 overflow-visible pointer-events-none"
-                >
-                  {highlightShape === "double" ? (
-                    <>
-                      <path
-                        d="M 2 8 C 40 14, 100 14, 148 6"
-                        stroke={resolvedThemeColor}
-                        strokeWidth="2.8"
-                        strokeLinecap="round"
-                        className="animate-arc-underline"
-                      />
-                      <path
-                        d="M 12 14 C 45 18, 95 18, 138 12"
-                        stroke={resolvedThemeColor}
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        opacity="0.8"
-                        className="animate-arc-underline"
-                      />
-                    </>
-                  ) : highlightShape === "curve" ? (
+                {highlightShape === "double" ? (
+                  <svg
+                    viewBox="0 0 150 18"
+                    fill="none"
+                    preserveAspectRatio="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="absolute left-0 -bottom-1.5 w-full h-3.5 sm:h-4 overflow-visible pointer-events-none"
+                  >
+                    <path
+                      d="M 2 8 C 40 14, 100 14, 148 6"
+                      stroke={resolvedThemeColor}
+                      strokeWidth="2.8"
+                      strokeLinecap="round"
+                      className="animate-ribbon-line-draw"
+                    />
+                    <path
+                      d="M 12 14 C 45 18, 95 18, 138 12"
+                      stroke={resolvedThemeColor}
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      opacity="0.8"
+                      className="animate-ribbon-line-draw"
+                    />
+                  </svg>
+                ) : highlightShape === "curve" ? (
+                  <svg
+                    viewBox="0 0 150 16"
+                    fill="none"
+                    preserveAspectRatio="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="absolute left-0 -bottom-1.5 w-full h-3.5 sm:h-4 overflow-visible pointer-events-none"
+                  >
                     <path
                       d="M 2 8 C 38 14, 96 14, 138 6"
                       stroke={resolvedThemeColor}
                       strokeWidth="3.2"
                       strokeLinecap="round"
-                      className="animate-arc-underline"
+                      className="animate-ribbon-line-draw"
                     />
-                  ) : (
-                    /* Default: "wave" - energetic hand-drawn marker wave squiggle */
+                  </svg>
+                ) : highlightShape === "wave" ? (
+                  <svg
+                    viewBox="0 0 150 16"
+                    fill="none"
+                    preserveAspectRatio="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="absolute left-0 -bottom-1.5 w-full h-3.5 sm:h-4 overflow-visible pointer-events-none"
+                  >
                     <path
                       d="M 2 11 C 24 3, 48 16, 75 8 C 102 2, 125 15, 148 6"
                       stroke={resolvedThemeColor}
                       strokeWidth="3.2"
                       strokeLinecap="round"
-                      className="animate-arc-underline"
+                      className="animate-ribbon-line-draw"
                     />
-                  )}
-                </svg>
+                  </svg>
+                ) : (
+                  /* Default: "ribbon" — exact 1st variant draw from /docs/nextjs/ribbon-drift */
+                  <svg
+                    viewBox="0 0 280 14"
+                    fill="none"
+                    preserveAspectRatio="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="absolute left-0 -bottom-1.5 w-full h-3 sm:h-3.5 overflow-visible select-none pointer-events-none"
+                  >
+                    <defs>
+                      <linearGradient id={lineGradId} x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor={resolvedThemeColor} stopOpacity="0.25" />
+                        <stop offset="50%" stopColor={resolvedThemeColor} stopOpacity="1" />
+                        <stop offset="100%" stopColor={resolvedThemeColor} stopOpacity="0.25" />
+                      </linearGradient>
+                    </defs>
+                    <path
+                      d="M4 10C60 3 170 2 276 8"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      className="text-black/10 dark:text-white/10"
+                    />
+                    <path
+                      d="M4 10C60 3 170 2 276 8"
+                      stroke={`url(#${lineGradId})`}
+                      strokeWidth="2.75"
+                      strokeLinecap="round"
+                      className="animate-ribbon-line-draw"
+                    />
+                  </svg>
+                )}
               </span>
             )}
             {titleParts.suffix && <span className="truncate">{titleParts.suffix}</span>}
           </h2>
+
+          {/* When no highlightWord is given, render the full Ribbon Drift underline centered under title */}
+          {!titleParts.word && (
+            <svg
+              className="w-48 sm:w-64 md:w-80 h-3 sm:h-4 mt-1.5 overflow-visible select-none pointer-events-none mx-auto"
+              viewBox="0 0 280 14"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <defs>
+                <linearGradient id={`${lineGradId}-title`} x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stopColor={resolvedThemeColor} stopOpacity="0.25" />
+                  <stop offset="50%" stopColor={resolvedThemeColor} stopOpacity="1" />
+                  <stop offset="100%" stopColor={resolvedThemeColor} stopOpacity="0.25" />
+                </linearGradient>
+              </defs>
+              <path
+                d="M4 10C60 3 170 2 276 8"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                className="text-black/10 dark:text-white/10"
+              />
+              <path
+                d="M4 10C60 3 170 2 276 8"
+                stroke={`url(#${lineGradId}-title)`}
+                strokeWidth="2.75"
+                strokeLinecap="round"
+                className="animate-ribbon-line-draw"
+              />
+            </svg>
+          )}
 
           {/* Subtitle strictly on one line with smaller font size */}
           {subtitle && (
@@ -470,14 +549,18 @@ export const ArcProcess = React.forwardRef<HTMLDivElement, ArcProcessProps>(
         </div>
 
         {/* ============================================================== */}
-        {/* 2. ROTATING RING DOME CONTAINER (Fills parent width & height)  */}
+        {/* 2. ROTATING RING DOME CONTAINER (Strictly 50% Upper Arc Dome)   */}
+        {/* Height is locked to ringTop + ringRadius so bottom half is cut  */}
         {/* ============================================================== */}
         <div
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}
-          className="relative flex-1 w-full min-h-[420px] cursor-grab active:cursor-grabbing overflow-hidden"
+          style={{
+            height: `${domeHeight}px`,
+          }}
+          className="relative w-full cursor-grab active:cursor-grabbing overflow-hidden shrink-0"
         >
           {/* ============================================================== */}
           {/* 3. PHYSICAL ROTATING RING WHEEL                                */}
@@ -570,7 +653,9 @@ export const ArcProcess = React.forwardRef<HTMLDivElement, ArcProcessProps>(
 
               // Reveal factor: smoothly emerges as step enters the upper dome (absStepDistance < 0.45)
               const stepReveal = Math.max(0, Math.min(1, (0.45 - absStepDistance) / 0.22));
-              const lineHeight = stepReveal * 115;
+              // Scale connector line height proportionally so content card stays safely inside the upper 50% dome
+              const maxLineHeight = Math.max(38, Math.min(110, ringRadius * 0.24));
+              const lineHeight = stepReveal * maxLineHeight;
 
               return (
                 <div
@@ -608,7 +693,7 @@ export const ArcProcess = React.forwardRef<HTMLDivElement, ArcProcessProps>(
                   <div
                     style={{
                       transform: "translate(-50%, -100%)",
-                      top: "-16px", // 16px clearance above the dot
+                      top: "-14px", // Clearance above the dot
                       left: "0",
                     }}
                     className="absolute z-20 flex flex-col items-center pointer-events-auto"
@@ -622,7 +707,7 @@ export const ArcProcess = React.forwardRef<HTMLDivElement, ArcProcessProps>(
                           : {}
                       }
                       className={cn(
-                        "w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center transition-all duration-500",
+                        "w-9 h-9 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center transition-all duration-500",
                         absStepDistance < 0.25
                           ? "scale-105 ring-2 ring-white/30 dark:ring-zinc-900/40"
                           : isActivated
@@ -674,7 +759,7 @@ export const ArcProcess = React.forwardRef<HTMLDivElement, ArcProcessProps>(
                       <div
                         style={{
                           position: "absolute",
-                          top: `${lineHeight + 8}px`,
+                          top: `${lineHeight + 6}px`,
                           left: "0",
                           transform: "translateX(-50%)",
                           opacity: stepReveal,
@@ -684,23 +769,23 @@ export const ArcProcess = React.forwardRef<HTMLDivElement, ArcProcessProps>(
                               ? "opacity 280ms ease-out"
                               : "opacity 200ms ease-out",
                         }}
-                        className="flex flex-col items-center text-center w-[280px] sm:w-[360px] px-2 z-30 pointer-events-auto"
+                        className="flex flex-col items-center text-center w-[250px] sm:w-[320px] md:w-[360px] px-2 z-30 pointer-events-auto"
                       >
                         {/* Step Number */}
                         <span
                           style={{ color: resolvedThemeColor }}
-                          className="text-[11px] sm:text-xs font-semibold tracking-widest uppercase mb-1"
+                          className="text-[10px] sm:text-xs font-semibold tracking-widest uppercase mb-0.5 sm:mb-1"
                         >
                           {step.stepNumber}
                         </span>
 
-                        {/* Title (Single Line with smaller font size) */}
-                        <h3 className="text-base sm:text-lg font-semibold text-zinc-900 dark:text-zinc-50 tracking-tight whitespace-nowrap mb-1">
+                        {/* Title (Single Line with responsive font size) */}
+                        <h3 className="text-sm sm:text-base md:text-lg font-semibold text-zinc-900 dark:text-zinc-50 tracking-tight whitespace-nowrap mb-0.5 sm:mb-1">
                           {step.title}
                         </h3>
 
-                        {/* Description (Smaller font size) */}
-                        <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed font-normal max-w-xs sm:max-w-sm mx-auto">
+                        {/* Description (Responsive font size) */}
+                        <p className="text-[11px] sm:text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed font-normal max-w-[240px] sm:max-w-xs md:max-w-sm mx-auto">
                           {step.description}
                         </p>
                       </div>
