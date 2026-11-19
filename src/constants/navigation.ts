@@ -112,6 +112,7 @@ const rawNavigation: NavigationItem[] = [
     children: [
       { label: "3D Carousel", slug: "3d-carousel" },
       { label: "Accordion", slug: "accordion" },
+      { label: "Agent Graph", slug: "agent-graph", badge: "New", addedOn: "2026-11-19" },
       { label: "Ai-Chat", slug: "ai-chat" },
       { label: "Alert", slug: "alert" },
       { label: "Animated List", slug: "animated-list" },
@@ -246,7 +247,7 @@ const rawNavigation: NavigationItem[] = [
         keywords: ["image", "wall", "carousel", "screenshots", "camera", "zoom", "gallery", "grid", "masonry", "showcase"],
       },
       { label: "Infrastructure Topology", slug: "infrastructure-topology" },
-      { label: "Input", slug: "input" },
+      { label: "Input", slug: "input", badge: "New", addedOn: "2026-11-19" },
       { label: "Invoice", slug: "invoice", badge: "New" },
       { label: "Item", slug: "item" },
       { label: "Kbd", slug: "kbd" },

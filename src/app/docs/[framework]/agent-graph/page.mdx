@@ -1,0 +1,493 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("agent-graph");
+
+import { ExampleShowcase } from "@/components/site/Sandbox";
+import { extractCode } from "@/lib/code";
+
+# Shadcn Agent Graph
+
+A hierarchical multi-agent orchestration tree for visualizing AI agent workflows: shows a lead orchestrator branching into worker agents and compact sub-agents, complete with status pills, token usage bars, tool integrations, and handoff trails.
+
+On desktop viewports, worker agents fan out horizontally with rounded orthogonal connectors; on narrow/mobile screens, the entire tree collapses into an indented vertical hierarchy.
+
+export const usageAgentGraphShaded = `import {
+  AgentGraph,
+  type AgentGraphNode,
+} from "@/components/custom/blocks/AgentGraphBlock";
+
+const agentTree: AgentGraphNode = {
+  id: "lead",
+  name: "Lead",
+  model: "Claude Opus",
+  status: "working",
+  message: "Assigning the patch",
+  description: "Delegates root-cause fixes, reviews incoming PRs, and verifies build tests.",
+  time: "8s",
+  cost: "$0.42",
+  tokensUsed: 58000,
+  tokensMax: 200000,
+  color: "blue",
+  iconPattern: [0.35, 0.7, 1, 0.7, 1, 0.7, 1, 0.7, 0.35],
+  tools: ["linear", "github"],
+  handoff: { agent: "Researcher", summary: "Root cause: cart.ts:142" },
+  children: [
+    {
+      id: "researcher",
+      name: "Researcher",
+      model: "Claude Sonnet",
+      status: "done",
+      message: "Found the cause",
+      description: "Find where and why empty carts crash the checkout",
+      time: "5s",
+      cost: "$0.31",
+      tokensUsed: 104000,
+      tokensMax: 200000,
+      color: "purple",
+      iconPattern: [1, 0.25, 1, 0, 1, 0.4, 1, 0.25, 1],
+      tools: ["linear", "notion"],
+      handoff: { agent: "Web search", summary: "3 matching reports" },
+      children: [
+        {
+          id: "web-search",
+          name: "Web search",
+          model: "Perplexity Sonar",
+          status: "done",
+          message: "Found 3 matches",
+          description: "Queries documentation and GitHub issue threads for edge-case reproduction",
+          time: "2s",
+          cost: "$0.04",
+          tokensUsed: 26000,
+          tokensMax: 64000,
+          color: "purple",
+          iconPattern: [0.3, 1, 0.3, 1, 1, 1, 0.3, 1, 0.3],
+          tools: ["notion"],
+        },
+      ],
+    },
+    {
+      id: "coder",
+      name: "Coder",
+      model: "Claude Sonnet",
+      status: "working",
+      message: "Opening PR #482",
+      description: "Applies guard conditions to cart validation and writes regression tests",
+      time: "12s",
+      cost: "$0.58",
+      tokensUsed: 166000,
+      tokensMax: 200000,
+      color: "cyan",
+      iconPattern: [1, 0, 1, 1, 0, 1, 0.3, 1, 0.3],
+      tools: ["github", "vercel"],
+      handoff: { agent: "Test runner", summary: "214/214 pass" },
+      children: [
+        {
+          id: "linter",
+          name: "Linter",
+          model: "ESLint Core",
+          status: "done",
+          message: "All clean",
+          description: "Runs strict typescript-eslint and stylistic rules across modified files",
+          time: "1s",
+          cost: "$0.01",
+          tokensUsed: 15000,
+          tokensMax: 32000,
+          color: "cyan",
+          iconPattern: [0.25, 0, 0, 1, 0.4, 0.25, 1, 1, 1],
+          tools: ["github"],
+        },
+        {
+          id: "test-runner",
+          name: "Test runner",
+          model: "Vitest Runner",
+          status: "done",
+          message: "All 214 pass",
+          description: "Executes full integration suite for checkout and empty-cart boundary flows",
+          time: "4s",
+          cost: "$0.08",
+          tokensUsed: 47000,
+          tokensMax: 64000,
+          color: "cyan",
+          iconPattern: [0.2, 0.8, 0.2, 0.8, 1, 0.8, 0.2, 0.8, 0.2],
+          tools: ["vercel"],
+        },
+      ],
+    },
+    {
+      id: "reviewer",
+      name: "Reviewer",
+      model: "Claude Opus",
+      status: "idle",
+      message: "Waiting for work",
+      description: "Review PR #482 before it merges",
+      cost: "$0.09",
+      tokensUsed: 6000,
+      tokensMax: 200000,
+      color: "emerald",
+      iconPattern: [0.3, 1, 0.3, 0.8, 1, 0.8, 0.25, 0.5, 0.25],
+      tools: ["github"],
+      children: [
+        {
+          id: "docs-writer",
+          name: "Docs writer",
+          model: "Claude Sonnet",
+          status: "idle",
+          message: "Idle",
+          description: "Generates release notes and updates API documentation for cart behavior",
+          time: "2s",
+          cost: "$0.03",
+          tokensUsed: 6000,
+          tokensMax: 128000,
+          color: "emerald",
+          iconPattern: [1, 0.3, 1, 1, 0.3, 1, 1, 0.3, 1],
+          tools: ["github", "notion"],
+        },
+      ],
+    },
+  ],
+};
+
+// Default look with tiered shaded backdrop
+export default function ShadedAgentWorkflowGraph() {
+  return <AgentGraph data={agentTree} variant="tree" shade={true} />;
+}`;
+
+export const usageAgentGraphFlat = `import {
+  AgentGraph,
+  type AgentGraphNode,
+} from "@/components/custom/blocks/AgentGraphBlock";
+
+// Clean flat card look without outer shade
+export default function FlatAgentWorkflowGraph({ data }: { data: AgentGraphNode }) {
+  return <AgentGraph data={data} variant="tree" shade={false} />;
+}`;
+
+export const usageAgentGraphEditorial = `import {
+  AgentGraph,
+  type AgentGraphNode,
+} from "@/components/custom/blocks/AgentGraphBlock";
+
+const editorialTree: AgentGraphNode = {
+  id: "editor",
+  name: "Editor",
+  model: "Claude Opus",
+  status: "working",
+  message: "Delegating",
+  description: "Coordinates the launch post workflow across research, writing, fact-checking, and SEO.",
+  time: "6s",
+  cost: "$0.29",
+  tokensUsed: 24000,
+  tokensMax: 200000,
+  color: "blue",
+  iconPattern: [0.35, 0.7, 1, 0.7, 1, 0.7, 1, 0.7, 0.35],
+  tools: ["notion", "linear"],
+  children: [
+    {
+      id: "researcher",
+      name: "Researcher",
+      model: "Claude Sonnet",
+      status: "working",
+      message: "Reading 42 tickets",
+      description: "Collects changelog highlights and customer quotes from recent sprint tickets.",
+      time: "5s",
+      cost: "$0.24",
+      tokensUsed: 48000,
+      tokensMax: 200000,
+      color: "purple",
+      iconPattern: [1, 0.25, 1, 0, 1, 0.4, 1, 0.25, 1],
+      tools: ["linear", "github"],
+      handoff: { agent: "Editor", summary: "What shipped in ..." },
+    },
+    {
+      id: "writer",
+      name: "Writer",
+      model: "Claude Sonnet",
+      status: "idle",
+      message: "Waiting for work",
+      description: "Drafts the launch announcement and coordinates verification with Fact checker and SEO.",
+      time: "4s",
+      cost: "$0.18",
+      tokensUsed: 8000,
+      tokensMax: 200000,
+      color: "cyan",
+      iconPattern: [1, 0, 1, 1, 0, 1, 0.3, 1, 0.3],
+      tools: ["notion"],
+      children: [
+        {
+          id: "fact-checker",
+          name: "Fact checker",
+          model: "Claude Haiku",
+          status: "idle",
+          message: "Idle",
+          description: "Cross-checks all benchmarks, metrics, and product claims against release notes.",
+          time: "2s",
+          cost: "$0.02",
+          tokensUsed: 1000,
+          tokensMax: 64000,
+          color: "cyan",
+          iconPattern: [0.25, 0, 0, 1, 0.4, 0.25, 1, 1, 1],
+          tools: ["notion"],
+        },
+        {
+          id: "seo",
+          name: "SEO",
+          model: "Claude Haiku",
+          status: "idle",
+          message: "Idle",
+          description: "Audits headings, meta description, and keyword density before publishing.",
+          time: "1s",
+          cost: "$0.01",
+          tokensUsed: 640,
+          tokensMax: 32000,
+          color: "cyan",
+          iconPattern: [0.2, 0.8, 0.2, 0.8, 1, 0.8, 0.2, 0.8, 0.2],
+          tools: ["notion"],
+        },
+      ],
+    },
+  ],
+};
+
+// Two-column editorial workflow (also supports shade={false})
+export default function EditorialAgentWorkflowGraph() {
+  return <AgentGraph data={editorialTree} variant="editorial" shade={true} />;
+}`;
+
+<ExampleShowcase headingLevel={2}
+  name="agent-graph"
+  columns={1}
+  colorControl={false}
+  examples={[
+    {
+      title: "Shaded Tree (Default)",
+      subheading: "Tree variant featuring layered bevel card borders with shaded background and tinted tool/handoff footers.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: "\"tree\"",
+          effect: "renders the hierarchical multi-agent tree layout (default).",
+        },
+        {
+          prop: "shade",
+          value: "{true}",
+          effect: "renders the double-layered shaded backdrop and tiered footer strip (default).",
+        },
+        {
+          prop: "tokensUsed",
+          effect: "automatically highlights the progress bar and counter in amber once usage reaches 80% of `tokensMax`.",
+        },
+      ],
+      props: { variant: "tree", shade: true },
+      usage: usageAgentGraphShaded,
+      code: extractCode("src/components/custom/blocks/AgentGraphBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="agent-graph" />
+
+## Examples
+
+<ExampleShowcase headingLevel={3}
+  name="agent-graph"
+  columns={1}
+  colorControl={false}
+  examples={[
+    {
+      id: "flat-no-shade",
+      title: "Flat Tree (No Shade)",
+      subheading: "Pass `shade={false}` to the `tree` variant to remove the outer shaded backdrop and render clean single-surface cards.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: "\"tree\"",
+          effect: "renders the hierarchical multi-agent tree layout.",
+        },
+        {
+          prop: "shade",
+          value: "{false}",
+          effect: "removes the outer shaded bezel for a clean minimalist card surface.",
+        },
+      ],
+      props: { variant: "tree", shade: false },
+      usage: usageAgentGraphFlat,
+      code: extractCode("src/components/custom/blocks/AgentGraphBlock.tsx"),
+    },
+    {
+      id: "editorial-crew",
+      title: "Editorial (2-Column)",
+      subheading: "Two-column editorial workflow variant (`variant=\"editorial\"`) with shaded cards by default; pass `shade={false}` for a flat look.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: "\"editorial\"",
+          effect: "renders the 2-column editorial launch workflow (Researcher & Writer with Fact checker / SEO sub-agents).",
+        },
+        {
+          prop: "shade",
+          value: "{true}",
+          effect: "supports both `true` (default) and `false` just like the tree variant.",
+        },
+      ],
+      props: { variant: "editorial", shade: true },
+      usage: usageAgentGraphEditorial,
+      code: extractCode("src/components/custom/blocks/AgentGraphBlock.tsx"),
+    },
+  ]}
+/>
+
+## Features
+Discover the key capabilities that make this component an excellent choice for modern AI orchestration interfaces.
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Dual Visual Styles (Shaded &amp; Flat)</h3>
+    <p className="text-muted-foreground text-sm">Control card depth with the <code>shade</code> prop — true for tiered layered bezels, or false for flat minimalist cards.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive Tree Layout</h3>
+    <p className="text-muted-foreground text-sm">Fans out horizontally into equal columns on desktop and collapses into an indented vertical tree on mobile.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Live Status &amp; Token Budgets</h3>
+    <p className="text-muted-foreground text-sm">Displays animated working spinners, completion checks, and automatic high-usage token warnings.</p>
+  </div>
+  <div className="p-6 rounded-2xl border border-border bg-card">
+    <h3 className="text-lg font-semibold text-card-foreground mb-2">Tool &amp; Handoff Footer</h3>
+    <p className="text-muted-foreground text-sm">Highlights connected integrations and the latest agent-to-agent handoff summary directly below each worker card.</p>
+  </div>
+</div>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>data</code></td>
+        <td><code>AgentGraphNode</code></td>
+        <td><strong>Required</strong></td>
+        <td>Root orchestrator node containing nested <code>children</code> for workers and sub-agents.</td>
+      </tr>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"tree" | "editorial"</code></td>
+        <td><code>"tree"</code></td>
+        <td>Layout variant for the agent graph (3-column engineering tree or 2-column editorial workflow).</td>
+      </tr>
+      <tr>
+        <td><code>animateIn</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Fades the graph in on mount.</td>
+      </tr>
+      <tr>
+        <td><code>shade</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Renders the outer shaded backdrop and tiered footer. Set <code>false</code> for a flat single-surface card.</td>
+      </tr>
+      <tr>
+        <td><code>liveAnimation</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Enables the live sequential orchestration handoff animation loop across the tree.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### AgentGraphNode Object
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>id</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>Unique identifier for the node.</td>
+      </tr>
+      <tr>
+        <td><code>name</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>Display name of the agent or sub-agent.</td>
+      </tr>
+      <tr>
+        <td><code>model</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Optional model subtitle (e.g. <code>"Claude Opus"</code>).</td>
+      </tr>
+      <tr>
+        <td><code>status</code></td>
+        <td><code>"working" | "done" | "idle" | "needs-you"</code></td>
+        <td><strong>Required</strong></td>
+        <td>Controls the status badge and message styling.</td>
+      </tr>
+      <tr>
+        <td><code>message</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>Current task or status line shown inside the card.</td>
+      </tr>
+      <tr>
+        <td><code>tokensUsed</code></td>
+        <td><code>number</code></td>
+        <td><strong>Required</strong></td>
+        <td>Tokens consumed so far.</td>
+      </tr>
+      <tr>
+        <td><code>tokensMax</code></td>
+        <td><code>number</code></td>
+        <td><strong>Required</strong></td>
+        <td>Maximum token budget for the agent.</td>
+      </tr>
+      <tr>
+        <td><code>color</code></td>
+        <td><code>"blue" | "purple" | "cyan" | "emerald" | "amber"</code></td>
+        <td><strong>Required</strong></td>
+        <td>Accent colour for the pixel icon, progress bar, and connector lines.</td>
+      </tr>
+      <tr>
+        <td><code>tools</code></td>
+        <td><code>("linear" | "github" | "notion" | "vercel")[]</code></td>
+        <td><code>undefined</code></td>
+        <td>Tool integration badges rendered in the card footer.</td>
+      </tr>
+      <tr>
+        <td><code>handoff</code></td>
+        <td><code>&#123; agent: string; summary: string &#125;</code></td>
+        <td><code>undefined</code></td>
+        <td>Optional handoff target and truncated summary in the footer.</td>
+      </tr>
+      <tr>
+        <td><code>children</code></td>
+        <td><code>AgentGraphNode[]</code></td>
+        <td><code>undefined</code></td>
+        <td>Nested worker or sub-agent nodes.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<AgentVariants slug="agent-graph" />

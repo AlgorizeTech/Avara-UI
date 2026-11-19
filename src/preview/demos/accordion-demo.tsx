@@ -80,7 +80,16 @@ const libraryFaq: AccordionDataItem[] = [
   },
 ];
 
-type Variant = "default" | "bordered" | "filled" | "ghost" | "elevated" | "brand-reveal";
+type Variant =
+  | "default"
+  | "bordered"
+  | "filled"
+  | "ghost"
+  | "elevated"
+  | "soft"
+  | "inset"
+  | "bracket"
+  | "brand-reveal";
 type Animation = "none" | "stack";
 type Interaction =
   | "single"
@@ -171,14 +180,16 @@ export default function AccordionDemo({
 
   if (variant === "brand-reveal") {
     return (
-      <div className="mx-auto w-full max-w-4xl p-2 sm:p-4">
-        <BrandLogoAccordion />
+      <div className="w-full p-2 sm:p-4">
+        <div className="mx-auto w-full max-w-4xl">
+          <BrandLogoAccordion />
+        </div>
       </div>
     );
   }
 
   if (showAll === "variants") {
-    const variants: Variant[] = ["default", "bordered", "filled", "elevated", "ghost", "brand-reveal"];
+    const variants: Variant[] = ["default", "bordered", "filled", "elevated", "soft", "inset", "bracket", "ghost", "brand-reveal"];
 
     return (
       <div className="mx-auto flex w-full max-w-4xl flex-col gap-10 p-4 md:p-8">
@@ -206,20 +217,26 @@ export default function AccordionDemo({
     );
   }
 
+  // The min-height is the tallest single-open state, so the preview card keeps
+  // one size while a panel opens and closes: the card is not re-laid-out (with
+  // the whole page under it) on every animation frame, and the rows stay
+  // pinned to the top instead of drifting as the content grows.
   return (
-    <div className="mx-auto w-full max-w-2xl p-4 md:p-8">
-      <Accordion
-        key={`${variant}-${interaction}-${animation}-${expandIcon ?? "default"}`}
-        accordionData={sampleData}
-        type={accordionType}
-        collapsible={isCollapsible}
-        variant={variant}
-        animation={animation}
-        expandIcon={expandIcon}
-        defaultValue={
-          accordionType === "single" ? "getting-started" : ["getting-started"]
-        }
-      />
+    <div className="w-full p-4 md:p-8 min-h-[33rem]">
+      <div className="mx-auto w-full max-w-2xl">
+        <Accordion
+          key={`${variant}-${interaction}-${animation}-${expandIcon ?? "default"}`}
+          accordionData={sampleData}
+          type={accordionType}
+          collapsible={isCollapsible}
+          variant={variant}
+          animation={animation}
+          expandIcon={expandIcon}
+          defaultValue={
+            accordionType === "single" ? "getting-started" : ["getting-started"]
+          }
+        />
+      </div>
     </div>
   );
 }

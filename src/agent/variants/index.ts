@@ -1,3 +1,4 @@
+import { agentGraph } from "./agent-graph";
 import { audioPlayer } from "./audio-player";
 import { authForms } from "./auth-forms";
 import { bookAppointment } from "./book-appointment";
@@ -60,12 +61,14 @@ import { timeline } from "./timeline";
 import { toggleGroup } from "./toggle-group";
 import { ribbonDrift } from "./ribbon-drift";
 import { error } from "./error";
+import { alert } from "./alert";
 import type { PageVariants } from "./types";
 
 export type { PageVariants, Variant } from "./types";
 
 /** Every docs page that has a variants file. Add new pages here. */
 export const pageVariants: PageVariants[] = [
+  agentGraph,
   error,
   hero,
   footer,
@@ -128,6 +131,7 @@ export const pageVariants: PageVariants[] = [
   timeline,
   toggleGroup,
   ribbonDrift,
+  alert,
 ];
 
 /**
@@ -176,10 +180,6 @@ export const NO_CHOICE_NEEDED: string[] = [
   // shown together in one comparison, with no per-effect example to link to; the effect is a prop
   // (audited 2026-11-10). Give each effect its own example if you want it offered.
   "text-animation",
-  // Its styles (solid, outline, modern, glass, glow) are shown together in one comparison and only
-  // glass and glow have their own example, so they cannot each carry a live link; the colour scheme
-  // is the semantic  (audited 2026-11-10). Give each style its own example to offer it.
-  "alert",
   // Its examples differ by hover behaviour (zoom or spread), tooltip type (none, plain, arrow),
   // size and an action slot, all props of one row of faces (audited 2026-11-10).
   "avatar-stack",

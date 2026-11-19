@@ -10,13 +10,20 @@
     "without-arrows-or-dots": "Carousel 3D — Without arrows or dots"
   },
   "accordion": {
-    "accordion": "Accordion",
-    "brand-logo-reveal": "Accordion — Brand logo reveal",
-    "multiple-open": "Accordion — Multiple open",
-    "always-one-open": "Accordion — Always one open",
-    "multiple-permanent-open": "Accordion — Multiple permanent open",
-    "stack-entrance": "Accordion — Stack entrance",
-    "all-variants": "Accordion — All variants"
+    "inset-panel": "Accordion — Inset panel",
+    "bracket-frame": "Accordion — Bracket frame",
+    "soft-tiles": "Accordion — Soft tiles",
+    "lift-card": "Accordion — Lift card",
+    "brand-reveal": "Accordion — Brand reveal",
+    "multiple-open": "Accordion — Multiple open"
+  },
+  "agent-graph": {
+    "shaded-tree-default": "Agent Graph — Shaded Tree (Default)",
+    "flat-no-shade": "Agent Graph — Flat Tree (No Shade)",
+    "editorial-crew": "Agent Graph — Editorial (2-Column)"
+  },
+  "ai-chat-workspace": {
+    "workspace": "AI Chat Workspace — Workspace"
   },
   "ai-chat": {
     "ai-assistant": "AI Chat — AI assistant",
@@ -35,14 +42,10 @@
     "liquid-glass": "AI Chat — Liquid Glass"
   },
   "alert": {
-    "alert": "Alert",
-    "semantic-types": "Alert — Semantic types",
-    "variants": "Alert — Variants",
+    "default": "Alert — Default",
+    "soft": "Alert — Soft",
     "glass": "Alert — Glass",
-    "glow": "Alert — Glow",
-    "icons": "Alert — Icons",
-    "dismissible": "Alert — Dismissible",
-    "rich-content": "Alert — Rich content"
+    "solid": "Alert — Solid"
   },
   "animated-list": {
     "animated-list": "Animated List",
@@ -51,13 +54,22 @@
     "pop": "Animated List — Pop",
     "timing": "Animated List — Timing"
   },
+  "timeline-path": {
+    "path-timeline": "Timeline Path — Path timeline"
+  },
+  "timeline-dial": {
+    "dial-timeline": "Timeline Dial — Dial timeline"
+  },
+  "timeline-ruler": {
+    "ruler-timeline": "Timeline Ruler — Ruler timeline"
+  },
+  "timeline-steps": {
+    "steps-timeline": "Timeline Steps — Steps timeline"
+  },
   "animated-timeline": {
     "animated-timeline": "Animated Timeline",
     "left-layout": "Animated Timeline — Left layout",
-    "right-layout": "Animated Timeline — Right layout",
-    "fade-up": "Animated Timeline — Fade up",
-    "zoom-in": "Animated Timeline — Zoom in",
-    "blur-in": "Animated Timeline — Blur in"
+    "right-layout": "Animated Timeline — Right layout"
   },
   "animated-typography": {
     "typewriter": "Animated Typography — Typewriter",
@@ -421,6 +433,7 @@
   },
   "input": {
     "simple-file-input": "Input — Simple file input",
+    "password-strength": "Input — Password Strength",
     "input": "Input",
     "filled": "Input — Filled",
     "underlined": "Input — Underlined",

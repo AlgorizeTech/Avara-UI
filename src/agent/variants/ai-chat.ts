@@ -7,7 +7,7 @@ import type { PageVariants } from "./types";
  */
 export const aiChat: PageVariants = {
   slug: "ai-chat",
-  intro: "An LLM chat interface with conversation history, typing indicators, editable titles and a full prompt composer (a + menu for files and mentions, an upload indicator, a model picker), in five looks.",
+  intro: "An LLM chat interface with conversation history, typing indicators, editable titles and a full prompt composer (a + menu for files and mentions, an upload indicator, a model picker), in five looks of one item plus a separate full workspace.",
   whenNot: [
     {
       use: "Chat",
@@ -16,11 +16,23 @@ export const aiChat: PageVariants = {
     },
   ],
   gotchas: [
-    "All five are looks of the one `ai-chat` item: install it once and set `variant` from the index.",
+    "Five are looks of the one `ai-chat` item: install it once and set `variant` from the index. The workspace is a separate item, `ai-chat-workspace`, with no `variant` prop.",
     "To connect a real backend, pass your own upload and send handlers; the simulated stream and upload are the defaults.",
     "`glass` and `liquid-glass` need a colourful backdrop behind them to read.",
   ],
   variants: [
+    {
+      id: "workspace",
+      label: "Workspace",
+      group: "Layout",
+      summary: "Full AI workspace: empty-screen start, model menu in the prompt bar, research and image modes, linked apps, Library.",
+      bestFor: ["an assistant product where the chat is the whole screen"],
+      avoidIf: ["you want a small embedded chat box", "you only need a prompt bar"],
+      traits: ["empty screen first", "model menu in the prompt bar", "research and web search", "linked apps and Library", "separate install"],
+      item: "ai-chat-workspace",
+      demo: "ai-chat-workspace",
+      example: "Workspace",
+    },
     {
       id: "default",
       label: "Default",

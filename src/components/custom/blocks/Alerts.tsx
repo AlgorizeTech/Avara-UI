@@ -1,245 +1,376 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { AlertTriangle, Bell, CheckCircle2, Info, XCircle } from "lucide-react";
-import React, { useState } from "react";
-
-const ICON_MAP: Record<string, React.ElementType> = {
-  CheckCircle2,
-  AlertTriangle,
+import {
+  CircleAlert,
+  CircleCheck,
   Info,
-  Bell,
-  XCircle,
-};
+  LoaderCircle,
+  TriangleAlert,
+  X,
+} from "lucide-react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
+/** What the alert is about. It picks the icon and the colour. */
 export type AlertType =
-  | "primary"
-  | "secondary"
-  | "success"
-  | "danger"
-  | "warning"
+  | "neutral"
   | "info"
-  | "dark";
+  | "success"
+  | "warning"
+  | "danger"
+  | "loading";
 
-// Added three new modern variants!
-export type AlertVariant = "solid" | "outline" | "modern" | "glass" | "glow";
+/**
+ * default: card surface, only the icon carries the colour.
+ * soft:    tinted background and border in the type colour.
+ * glass:   frosted, for use over an image or gradient.
+ * solid:   filled with the type colour.
+ */
+export type AlertVariant = "default" | "soft" | "glass" | "solid";
 
 export interface AlertProps {
   type?: AlertType;
   variant?: AlertVariant;
+  title?: React.ReactNode;
+  message?: React.ReactNode;
+  /** Replaces the icon for the type. Pass `null` to hide the icon. */
+  icon?: React.ReactNode;
+  /** Slot on the right, usually an `<AlertAction>`. */
+  action?: React.ReactNode;
   dismissible?: boolean;
-  icon?: React.ReactNode | string | null;
-  title?: string | null;
-  message?: string;
+  onDismiss?: (() => void) | null;
   className?: string;
   titleClassName?: string;
   messageClassName?: string;
   iconClassName?: string;
-  dismissIconClassName?: string;
-  onDismiss?: (() => void) | null;
-  children?: React.ReactNode | null;
+  /** Extra content under the message: a list, a link, a form. */
+  children?: React.ReactNode;
 }
 
+type Tone = {
+  /** Icon colour on the default variant. */
+  icon: string;
+  /** Soft variant: sets --alert-tone, the colour the gradient is mixed from. */
+  soft: string;
+  /** Icon colour on the soft variant. */
+  softIcon: string;
+  /** Solid variant: a flat light fill of the standard colour, with its own text colour. */
+  solid: string;
+  /** Icon colour on the solid variant. */
+  solidIcon: string;
+  /** Glass variant: tint and border. */
+  glass: string;
+  /** Icon colour on the glass variant. */
+  glassIcon: string;
+  /** Filled pill for AlertAction on the default variant. */
+  action: string;
+};
+
+const TONES: Record<AlertType, Tone> = {
+  neutral: {
+    icon: "text-foreground",
+    soft: "[--alert-tone:#94a3b8]",
+    softIcon: "text-foreground",
+    solid: "bg-zinc-100 border-zinc-300 text-zinc-900 dark:bg-zinc-800 dark:border-zinc-700 dark:text-zinc-50",
+    solidIcon: "text-zinc-600 dark:text-zinc-300",
+    glass: "bg-white/15 border-white/30",
+    glassIcon: "text-white",
+    action: "bg-foreground text-background hover:bg-foreground/90",
+  },
+  info: {
+    icon: "text-sky-500",
+    soft: "[--alert-tone:#0ea5e9]",
+    softIcon: "text-sky-500",
+    solid: "bg-sky-100 border-sky-300 text-sky-950 dark:bg-sky-500/20 dark:border-sky-400/30 dark:text-sky-50",
+    solidIcon: "text-sky-600 dark:text-sky-300",
+    glass: "bg-sky-500/20 border-sky-300/40",
+    glassIcon: "text-sky-300",
+    action: "bg-sky-500 text-white hover:bg-sky-500/90",
+  },
+  success: {
+    icon: "text-emerald-500",
+    soft: "[--alert-tone:#10b981]",
+    softIcon: "text-emerald-500",
+    solid: "bg-emerald-100 border-emerald-300 text-emerald-950 dark:bg-emerald-500/20 dark:border-emerald-400/30 dark:text-emerald-50",
+    solidIcon: "text-emerald-600 dark:text-emerald-300",
+    glass: "bg-emerald-500/20 border-emerald-300/40",
+    glassIcon: "text-emerald-300",
+    action: "bg-emerald-600 text-white hover:bg-emerald-600/90",
+  },
+  warning: {
+    icon: "text-amber-500",
+    soft: "[--alert-tone:#f97316]",
+    softIcon: "text-orange-500",
+    solid: "bg-amber-100 border-amber-300 text-amber-950 dark:bg-amber-500/20 dark:border-amber-400/30 dark:text-amber-50",
+    solidIcon: "text-amber-600 dark:text-amber-300",
+    glass: "bg-amber-500/20 border-amber-300/40",
+    glassIcon: "text-amber-300",
+    action: "bg-amber-500 text-amber-950 hover:bg-amber-500/90",
+  },
+  danger: {
+    icon: "text-destructive",
+    soft: "[--alert-tone:var(--destructive)]",
+    softIcon: "text-destructive",
+    solid: "bg-red-100 border-red-300 text-red-950 dark:bg-red-500/20 dark:border-red-400/30 dark:text-red-50",
+    solidIcon: "text-red-600 dark:text-red-300",
+    glass: "bg-rose-500/20 border-rose-300/40",
+    glassIcon: "text-rose-300",
+    action: "bg-destructive text-white hover:bg-destructive/90",
+  },
+  loading: {
+    icon: "text-primary",
+    soft: "[--alert-tone:var(--primary)]",
+    softIcon: "text-primary",
+    solid: "bg-primary/15 border-primary/30 text-foreground",
+    solidIcon: "text-primary",
+    glass: "bg-white/15 border-white/30",
+    glassIcon: "text-white",
+    action: "bg-primary text-primary-foreground hover:bg-primary/90",
+  },
+};
+
+const GLASS_ACTION =
+  "border border-white/30 bg-white/20 text-white hover:bg-white/30";
+
+const DISMISS: Record<AlertVariant, string> = {
+  default: "bg-foreground/[0.06] text-foreground/60 hover:bg-foreground/[0.12] hover:text-foreground",
+  soft: "text-foreground/60 hover:bg-foreground/10 hover:text-foreground",
+  glass: "bg-white/15 text-white hover:bg-white/25",
+  solid: "text-current/60 hover:bg-foreground/10 hover:text-current",
+};
+
+const SURFACE: Record<AlertVariant, string> = {
+  // A hairline border at 8% of the text colour, a top-edge highlight, a tight
+  // contact shadow and a long soft one, all mixed from --foreground so they
+  // follow the theme in light and dark.
+  default:
+    "border border-foreground/[0.08] bg-card text-card-foreground shadow-[inset_0_1px_0_0_color-mix(in_oklab,var(--foreground)_5%,transparent),0_1px_2px_0_color-mix(in_oklab,var(--foreground)_6%,transparent),0_12px_24px_-12px_color-mix(in_oklab,var(--foreground)_24%,transparent)]",
+  // The type colour bleeds in from the left corners over a pale card, the way
+  // a tinted window lets light in from one side.
+  soft: "border border-foreground/[0.07] bg-card text-card-foreground bg-[radial-gradient(75%_130%_at_0%_100%,color-mix(in_oklab,var(--alert-tone)_26%,transparent),transparent_70%),radial-gradient(45%_100%_at_0%_0%,color-mix(in_oklab,var(--alert-tone)_16%,transparent),transparent_70%)] shadow-[0_1px_2px_0_color-mix(in_oklab,var(--foreground)_5%,transparent),0_12px_24px_-14px_color-mix(in_oklab,var(--foreground)_20%,transparent)]",
+  glass:
+    "border text-white backdrop-blur-xl shadow-[inset_0_1px_0_0_rgb(255_255_255/0.28),0_1px_2px_0_rgb(0_0_0/0.12),0_14px_32px_-12px_rgb(0_0_0/0.45)]",
+  solid:
+    "border shadow-[0_1px_2px_0_rgb(0_0_0/0.05),0_10px_20px_-14px_rgb(0_0_0/0.25)]",
+};
+
+function toneSurface(variant: AlertVariant, tone: Tone) {
+  if (variant === "soft") return tone.soft;
+  if (variant === "solid") return tone.solid;
+  if (variant === "glass") return tone.glass;
+  return "";
+}
+
+const ICONS: Record<AlertType, React.ElementType> = {
+  neutral: Info,
+  info: Info,
+  success: CircleCheck,
+  warning: TriangleAlert,
+  danger: CircleAlert,
+  loading: LoaderCircle,
+};
+
+const AlertContext = createContext<{ type: AlertType; variant: AlertVariant }>({
+  type: "neutral",
+  variant: "default",
+});
+
+/**
+ * A pill button that takes its colour from the alert it sits in. Put it in the
+ * `action` slot, or inside `children`.
+ */
+export const AlertAction = React.forwardRef<
+  HTMLButtonElement,
+  React.ButtonHTMLAttributes<HTMLButtonElement> & {
+    /** `outline` is the quieter of two buttons side by side. */
+    appearance?: "filled" | "outline";
+  }
+>(function AlertAction(
+  { className, type = "button", appearance = "filled", ...props },
+  ref,
+) {
+  const { type: alertType, variant } = useContext(AlertContext);
+  const tone = TONES[alertType];
+  const soft = variant === "soft";
+  return (
+    <button
+      ref={ref}
+      type={type}
+      className={cn(
+        "inline-flex shrink-0 cursor-pointer items-center justify-center px-4 py-1.5 text-sm font-semibold transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current",
+        soft ? "rounded-lg" : "rounded-full",
+        soft
+          ? appearance === "outline"
+            ? "border border-foreground/15 bg-card text-foreground hover:bg-foreground/5"
+            : "bg-primary text-primary-foreground hover:bg-primary/90"
+          : variant === "glass"
+            ? GLASS_ACTION
+            : variant === "solid"
+              ? tone.action
+              : tone.action,
+        className,
+      )}
+      {...props}
+    />
+  );
+});
+
 export const Alert: React.FC<AlertProps> = ({
-  type = "primary",
-  variant = "modern",
+  type = "neutral",
+  variant = "default",
+  title,
+  message,
+  icon,
+  action,
   dismissible = false,
-  icon = null,
-  title = null,
-  message = "",
-  className = "",
-  titleClassName = "",
-  messageClassName = "",
-  iconClassName = "",
-  dismissIconClassName = "",
   onDismiss = null,
-  children = null,
+  className,
+  titleClassName,
+  messageClassName,
+  iconClassName,
+  children,
 }) => {
-  const [isVisible, setIsVisible] = useState<boolean>(true);
-  const [isAnimating, setIsAnimating] = useState<boolean>(false);
+  const [closing, setClosing] = useState(false);
+  const [visible, setVisible] = useState(true);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Expanded dictionary with modern styles and beautiful ambient shadows
-  const alertTypes: Record<AlertType, Record<AlertVariant, string>> = {
-    primary: {
-      solid:
-        "bg-primary border-primary/30 text-primary-foreground",
-      outline:
-        "bg-background border-2 border-primary/30 text-foreground",
-      modern:
-        "bg-card border-0 border-l-4 border-l-primary shadow-xl shadow-primary/10 text-foreground",
-      glass:
-        "bg-white/20 dark:bg-black/30 backdrop-blur-md border border-white/30 dark:border-white/10 text-white shadow-xl ring-1 ring-white/20",
-      glow: "bg-background border border-primary/40 dark:border-primary/50 shadow-[0_0_20px_var(--primary)] text-primary",
+  useEffect(
+    () => () => {
+      if (timer.current) clearTimeout(timer.current);
     },
-    secondary: {
-      solid:
-        "bg-muted border-border text-foreground",
-      outline:
-        "bg-background border-border text-foreground",
-      modern:
-        "bg-card border-0 border-l-4 border-l-muted-foreground shadow-xl shadow-zinc-500/10 text-foreground",
-      glass:
-        "bg-white/20 dark:bg-black/30 backdrop-blur-md border border-white/30 dark:border-white/10 text-white shadow-xl ring-1 ring-white/20",
-      glow: "bg-background border border-muted-foreground/40 shadow-[0_0_20px_rgba(113,113,122,0.15)] dark:shadow-[0_0_20px_rgba(113,113,122,0.3)] text-foreground",
-    },
-    success: {
-      solid:
-        "bg-green-50 border-green-200 text-green-800 dark:bg-green-900/20 dark:border-green-800/50 dark:text-green-300",
-      outline:
-        "bg-background border-green-300 text-green-800 dark:border-green-800/50 dark:text-green-400",
-      modern:
-        "bg-card border-0 border-l-4 border-l-green-500 shadow-xl shadow-green-500/10 text-foreground",
-      glass:
-        "bg-emerald-500/20 dark:bg-emerald-500/20 backdrop-blur-md border border-emerald-300/40 text-white shadow-xl ring-1 ring-emerald-400/30",
-      glow: "bg-background border border-green-500/40 dark:border-green-500/50 shadow-[0_0_20px_rgba(34,197,94,0.2)] dark:shadow-[0_0_20px_rgba(34,197,94,0.35)] text-green-900 dark:text-green-400",
-    },
-    danger: {
-      solid:
-        "bg-red-50 border-red-200 text-red-800 dark:bg-red-900/20 dark:border-red-800/50 dark:text-red-300",
-      outline:
-        "bg-background border-red-300 text-red-800 dark:border-red-800/50 dark:text-red-400",
-      modern:
-        "bg-card border-0 border-l-4 border-l-red-500 shadow-xl shadow-red-500/10 text-foreground",
-      glass:
-        "bg-rose-500/20 dark:bg-rose-500/20 backdrop-blur-md border border-rose-300/40 text-white shadow-xl ring-1 ring-rose-400/30",
-      glow: "bg-background border border-red-500/40 dark:border-red-500/50 shadow-[0_0_20px_rgba(239,68,68,0.2)] dark:shadow-[0_0_20px_rgba(239,68,68,0.35)] text-red-900 dark:text-red-400",
-    },
-    warning: {
-      solid:
-        "bg-yellow-50 border-yellow-200 text-yellow-800 dark:bg-yellow-900/20 dark:border-yellow-800/50 dark:text-yellow-300",
-      outline:
-        "bg-background border-yellow-300 text-yellow-800 dark:border-yellow-800/50 dark:text-yellow-400",
-      modern:
-        "bg-card border-0 border-l-4 border-l-yellow-500 shadow-xl shadow-yellow-500/10 text-foreground",
-      glass:
-        "bg-amber-500/20 dark:bg-amber-500/20 backdrop-blur-md border border-amber-300/40 text-white shadow-xl ring-1 ring-amber-400/30",
-      glow: "bg-background border border-yellow-500/50 dark:border-yellow-500/50 shadow-[0_0_20px_rgba(234,179,8,0.2)] dark:shadow-[0_0_20px_rgba(234,179,8,0.35)] text-yellow-950 dark:text-yellow-400",
-    },
-    info: {
-      solid:
-        "bg-cyan-50 border-cyan-200 text-cyan-800 dark:bg-cyan-900/20 dark:border-cyan-800/50 dark:text-cyan-300",
-      outline:
-        "bg-background border-cyan-300 text-cyan-800 dark:border-cyan-800/50 dark:text-cyan-400",
-      modern:
-        "bg-card border-0 border-l-4 border-l-cyan-500 shadow-xl shadow-cyan-500/10 text-foreground",
-      glass:
-        "bg-sky-500/20 dark:bg-sky-500/20 backdrop-blur-md border border-sky-300/40 text-white shadow-xl ring-1 ring-sky-400/30",
-      glow: "bg-background border border-cyan-500/40 dark:border-cyan-500/50 shadow-[0_0_20px_rgba(6,182,212,0.2)] dark:shadow-[0_0_20px_rgba(6,182,212,0.35)] text-cyan-900 dark:text-cyan-400",
-    },
-    dark: {
-      solid:
-        "bg-zinc-800 border-zinc-700 text-zinc-100 dark:bg-zinc-900 dark:border-zinc-700 dark:text-zinc-100",
-      outline:
-        "bg-background border-foreground/30 text-foreground",
-      modern:
-        "bg-card border-0 border-l-4 border-l-foreground shadow-xl shadow-zinc-900/10 text-foreground",
-      glass:
-        "bg-black/30 dark:bg-black/40 backdrop-blur-md border border-white/20 text-white shadow-xl ring-1 ring-white/10",
-      glow: "bg-background border border-foreground/40 shadow-[0_0_20px_rgba(0,0,0,0.1)] dark:shadow-[0_0_20px_rgba(255,255,255,0.15)] text-foreground",
-    },
-  };
+    [],
+  );
 
-  const alertConfig = alertTypes[type] || alertTypes.info;
-  const alertClasses = alertConfig[variant] || alertConfig.modern;
-
-  const renderIcon = (
-    iconProp: React.ReactNode | string | null,
-  ): React.ReactNode => {
-    if (iconProp === null) return null;
-    if (typeof iconProp === "string") {
-      if (ICON_MAP[iconProp]) {
-        const MappedIcon = ICON_MAP[iconProp];
-        return (
-          <MappedIcon
-            className={cn("w-5 h-5", variant === "glow" && "animate-pulse")}
-          />
-        );
-      }
-      return <span className="text-lg leading-none">{iconProp}</span>;
-    }
-    if (React.isValidElement(iconProp)) return iconProp;
-    return null;
-  };
+  const tone = TONES[type] ?? TONES.neutral;
+  const Icon = ICONS[type] ?? Info;
 
   const handleDismiss = () => {
-    if (onDismiss) onDismiss();
-    setIsAnimating(true);
-    setTimeout(() => setIsVisible(false), 300);
+    setClosing(true);
+    timer.current = setTimeout(() => {
+      setVisible(false);
+      onDismiss?.();
+    }, 200);
   };
 
-  if (!isVisible) return null;
+  if (!visible) return null;
+
+  const hasTitle = title !== undefined && title !== null && title !== "";
+  const hasMessage = message !== undefined && message !== null && message !== "";
+  const hasChildren = React.Children.toArray(children).length > 0;
+
+  const iconColour =
+    variant === "default"
+      ? tone.icon
+      : variant === "glass"
+        ? tone.glassIcon
+        : variant === "soft"
+          ? tone.softIcon
+          : tone.solidIcon;
+
+  const iconNode =
+    icon === undefined ? (
+      <Icon
+        aria-hidden
+        className={cn(
+          "size-5",
+          type === "loading" && "animate-spin motion-reduce:animate-none",
+        )}
+      />
+    ) : (
+      icon
+    );
 
   return (
     <div
+      role={type === "danger" || type === "warning" ? "alert" : "status"}
+      aria-busy={type === "loading" || undefined}
       className={cn(
-        `relative w-full flex items-start p-4 rounded-xl transition-all duration-300 ease-in-out overflow-hidden`,
-        // Default border fallback for old variants
-        (variant === "solid" || variant === "outline") && "border shadow-sm",
-        // Smooth entrance animation
-        "animate-in fade-in slide-in-from-top-4 duration-500",
-        alertClasses,
-        isAnimating
-          ? "opacity-0 transform scale-[0.96]"
-          : "opacity-100 transform scale-100",
+        "relative flex w-full items-start gap-3 rounded-2xl p-4 transition-all duration-200 ease-out",
+        "motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-top-2",
+        SURFACE[variant],
+        toneSurface(variant, tone),
+        closing && "scale-[0.98] opacity-0",
         className,
       )}
-      role="alert"
     >
-      {/* Decorative Shine for Glass Variant */}
-      {variant === "glass" && (
-        <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent animate-[shimmer_3s_infinite]" />
-      )}
+      <AlertContext.Provider value={{ type, variant }}>
+        {iconNode !== null && iconNode !== false && (
+          <div
+            className={cn(
+              "mt-0.5 flex size-5 shrink-0 items-center justify-center",
+              iconColour,
+              iconClassName,
+            )}
+          >
+            {iconNode}
+          </div>
+        )}
 
-      {icon !== null && icon && (
-        <div
-          className={cn(
-            `flex-shrink-0 mr-3 mt-0.5 relative z-10`,
-            !title ? "self-center mt-0" : "",
-            iconClassName,
+        <div className="min-w-0 flex-1">
+          {hasTitle && (
+            <div
+              className={cn(
+                "text-[15px] font-semibold leading-6",
+                (variant === "default" || variant === "soft") && "text-foreground",
+                titleClassName,
+              )}
+            >
+              {title}
+            </div>
           )}
-        >
-          {renderIcon(icon)}
+          {hasMessage && (
+            <p
+              className={cn(
+                "text-sm leading-6",
+                variant === "default" && "text-muted-foreground",
+                variant === "soft" && "text-foreground/75",
+                variant === "glass" && "text-white/80",
+                variant === "solid" && "text-current/75",
+                !hasTitle && "text-[15px] font-medium",
+                messageClassName,
+              )}
+            >
+              {message}
+            </p>
+          )}
+          {hasChildren && (
+            <div
+              className={cn(
+                "text-sm",
+                (hasTitle || hasMessage) && "mt-2",
+                variant === "default" && "text-muted-foreground",
+                variant === "soft" && "text-foreground/75",
+                variant === "glass" && "text-white/80",
+                variant === "solid" && "text-current/75",
+              )}
+            >
+              {children}
+            </div>
+          )}
         </div>
-      )}
 
-      <div
-        className={cn(
-          `flex-1 min-w-0 relative z-10`,
-          !title ? "flex items-center" : "",
-          dismissible && "pr-6",
-        )}
-      >
-        {title && (
-          <h4 className={cn(`font-semibold mb-1 tracking-tight`, titleClassName)}>
-            {title}
-          </h4>
-        )}
-        {message && (
-          <p className={cn(`text-sm opacity-90 font-medium`, messageClassName)}>
-            {message}
-          </p>
-        )}
-        {children && <div className="mt-3 relative z-10">{children}</div>}
-      </div>
+        {action && <div className="shrink-0">{action}</div>}
 
-      {dismissible && (
-        <button
-          onClick={handleDismiss}
-          className={cn(
-            `absolute top-3 right-3 p-1 rounded-md cursor-pointer opacity-70 hover:opacity-100 hover:bg-current/10 transition-all z-10 active:scale-90`,
-            dismissIconClassName,
-          )}
-          aria-label="Dismiss alert"
-        >
-          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-            <path
-              fillRule="evenodd"
-              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </button>
-      )}
+        {dismissible && (
+          <button
+            type="button"
+            onClick={handleDismiss}
+            aria-label="Dismiss alert"
+            className={cn(
+              "flex size-7 shrink-0 cursor-pointer items-center justify-center rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-current",
+              DISMISS[variant],
+            )}
+          >
+            <X aria-hidden className="size-4" />
+          </button>
+        )}
+      </AlertContext.Provider>
     </div>
   );
 };
