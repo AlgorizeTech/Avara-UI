@@ -112,6 +112,7 @@ const rawNavigation: NavigationItem[] = [
     children: [
       { label: "3D Carousel", slug: "3d-carousel" },
       { label: "Accordion", slug: "accordion" },
+      { label: "Action Button", slug: "action-buttons", badge: "New", addedOn: "2026-11-19" },
       { label: "Agent Graph", slug: "agent-graph", badge: "New", addedOn: "2026-11-19" },
       { label: "Ai-Chat", slug: "ai-chat" },
       { label: "Alert", slug: "alert" },
