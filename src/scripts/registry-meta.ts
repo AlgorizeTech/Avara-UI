@@ -70,6 +70,7 @@ export const NAME_OVERRIDES: Record<string, string> = {
   "Alerts.tsx": "alert",
   "CustomCodeBlock.tsx": "custom-code-block",
   "Ai-chat.tsx": "ai-chat",
+  "AiChatWorkspace.tsx": "ai-chat-workspace",
   "Fleet-map.tsx": "fleet-map",
   "Pricing-plan.tsx": "pricing-plan",
   "Support-dashboard.tsx": "support-dashboard",
@@ -473,7 +474,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A data-driven accordion taking an array of items, with five distinct variants and an optional stack entrance that deals the items into place. Use it for FAQs and any list of collapsible sections.",
     categories: ["layout"],
-    docs: "Named export: Accordion. Pass `accordionData` as { value, title, icon?, content } — content accepts a string array or a node. `type` is single | multiple; set `collapsible` to let the last open section close. Variants: default (open row lifts out as a card) | bordered (rail on the open row) | filled (open row inverts to primary) | elevated (cards, open one on a ring) | ghost (type and hairlines). `animation=\"stack\"` piles the items and deals them out on scroll-in via the Web Animations API; skipped under reduced motion. Wraps the `ui-accordion` Radix primitive. For a single section, `collapsible` is lighter.",
+    docs: "Named export: Accordion. Pass `accordionData` as { value, title, icon?, content } — content accepts a string array or a node. `type` is single | multiple; set `collapsible` to let the last open section close. Variants: default (open row lifts out as a card) | bordered (rail on the open row) | filled (open row inverts to primary) | elevated (cards, open one on a ring) | soft (tinted tiles, plus folds into minus) | inset (pill rows, answer in an inset well) | bracket (outlined rows, corner brackets open outward) | ghost (type and hairlines); soft, inset and bracket animate open and close with CSS keyframes that ship inside the component. `animation=\"stack\"` piles the items and deals them out on scroll-in via the Web Animations API; skipped under reduced motion. Wraps the `ui-accordion` Radix primitive. For a single section, `collapsible` is lighter.",
   },
   breadcrumb: {
     description:
@@ -911,9 +912,9 @@ export const META: Record<string, ItemMeta> = {
   },
   alert: {
     description:
-      "An inline alert with seven semantic types, five visual styles and optional dismiss. Use it for form-level and page-level messages that stay in the layout.",
+      "An inline alert with six types, four visual styles, an action slot and optional dismiss. Use it for form-level and page-level messages that stay in the layout.",
     categories: ["feedback"],
-    docs: "Named export: Alert. `type` is primary | secondary | success | danger | warning | info | dark; `variant` is solid | outline | modern | glass | glow. Set `dismissible` with `onDismiss` to make it closable. For transient messages, use `toast` or `sonner`.",
+    docs: "Named exports: Alert, AlertAction. `type` is neutral | info | success | warning | danger | loading; `variant` is default | soft | glass | solid. Put an `AlertAction` in `action` for a button on the right, and set `dismissible` with `onDismiss` to make it closable. Glass needs an image or gradient behind it. For transient messages, use `toast` or `sonner`.",
   },
   toast: {
     description:
@@ -980,6 +981,13 @@ export const META: Record<string, ItemMeta> = {
       "An AI assistant interface with thread history sidebar, streaming-style responses and a prompt composer. Use it as the front end for an LLM feature.",
     categories: ["communication"],
     docs: "Named exports: AIChat, plus ChatThread, Message, ChatModel, EffortOption, ComposerTool, SendPayload and UploadHandler types. Responses are mocked — wire `onSend` ({ content, attachments, model, effort, tools }) to your endpoint and `uploadFile` (file, onProgress, signal) to your storage. The composer ships with a + menu (`tools`: one upload row opens the picker, the rest insert @Label mentions), drag-and-drop attachments (rocket progress indicator), a `models` picker, a Faster↔Smarter `efforts` slider that lights the prompt bar at the top level, and mic dictation via getUserMedia + the Web Speech API with graceful fallbacks. Variants: default | minimal | glass | compact (no history sidebar — opens as a hero with `heroTitle` over the prompt bar until the first message; `showSidebar={false}` does the same for any variant).",
+  },
+  "ai-chat-workspace": {
+    title: "AI Chat Workspace",
+    description:
+      "A full AI workspace: sidebar with history, Library, Discover and Templates, and a prompt bar with a model switcher, research, web search, image and reasoning modes, effort, files and voice. It opens on an empty screen and answers in a streamed, step-by-step style.",
+    categories: ["communication"],
+    docs: "Named export: AIChatWorkspace, plus WorkspaceThread, WorkspaceMessage, WorkspaceModel, WorkspaceEffort, WorkspaceModes, WorkspaceConnector, WorkspaceCard, WorkspaceKnowledgeItem, WorkspaceSendPayload and WorkspaceUploadHandler types. A separate install from `ai-chat`, not a `variant` of it. It starts on the empty screen (title and prompt bar); the first message creates a thread and streams a reply. Wire `onSend` ({ content, attachments, model, effort, modes, connectors, knowledge, language }) to your endpoint and `generateReply` (payload) => string to your model; `uploadFile` (file, onProgress, signal) takes real uploads. Replies are simulated until you pass `generateReply`. The pill in the prompt bar is the model picker (`models`: pro and premium tiers play a flourish); the chip button is the effort slider; research, image and bulb are `modes` (`defaultModes`). `connectors` ({ id, label, logo }) fill the apps strip under the prompt bar and unlock on Pro (`defaultPlan`, `onUpgrade`). `user` ({ name, email, avatarUrl }) fills the account menu (View profile calls `onProfile`, Settings opens the built-in toggles, Sign out calls `onSignOut`). Discover, Library and Templates are real screens fed by `exploreCards`, `knowledgeBase` and `templates`. Colour: `color` is primary (theme tokens, the default) | indigo | rose | emerald | zinc | any hex.",
   },
   email: {
     description:

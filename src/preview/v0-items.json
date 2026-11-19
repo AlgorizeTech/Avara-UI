@@ -10,13 +10,15 @@
     "without-arrows-or-dots": "Carousel 3D — Without arrows or dots"
   },
   "accordion": {
-    "accordion": "Accordion",
-    "brand-logo-reveal": "Accordion — Brand logo reveal",
-    "multiple-open": "Accordion — Multiple open",
-    "always-one-open": "Accordion — Always one open",
-    "multiple-permanent-open": "Accordion — Multiple permanent open",
-    "stack-entrance": "Accordion — Stack entrance",
-    "all-variants": "Accordion — All variants"
+    "inset-panel": "Accordion — Inset panel",
+    "bracket-frame": "Accordion — Bracket frame",
+    "soft-tiles": "Accordion — Soft tiles",
+    "lift-card": "Accordion — Lift card",
+    "brand-reveal": "Accordion — Brand reveal",
+    "multiple-open": "Accordion — Multiple open"
+  },
+  "ai-chat-workspace": {
+    "workspace": "AI Chat Workspace — Workspace"
   },
   "agent-graph": {
     "shaded-tree-default": "Agent Graph — Shaded Tree (Default)",
@@ -40,14 +42,10 @@
     "liquid-glass": "AI Chat — Liquid Glass"
   },
   "alert": {
-    "alert": "Alert",
-    "semantic-types": "Alert — Semantic types",
-    "variants": "Alert — Variants",
+    "default": "Alert — Default",
+    "soft": "Alert — Soft",
     "glass": "Alert — Glass",
-    "glow": "Alert — Glow",
-    "icons": "Alert — Icons",
-    "dismissible": "Alert — Dismissible",
-    "rich-content": "Alert — Rich content"
+    "solid": "Alert — Solid"
   },
   "animated-list": {
     "animated-list": "Animated List",

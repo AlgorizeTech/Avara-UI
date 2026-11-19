@@ -61,6 +61,12 @@ export type AccordionVariant =
   | "filled"
   | "ghost"
   | "elevated"
+  /** Soft tinted tiles with a plus that folds into a minus. */
+  | "soft"
+  /** Pill rows; the open one rises as a card with the answer in an inset well. */
+  | "inset"
+  /** Outlined rows with corner brackets that open outward. */
+  | "bracket"
   | "brand-reveal"
   /** @deprecated Alias of "filled". */
   | "card-filled";
@@ -95,13 +101,27 @@ type VariantStyles = {
   title: string;
   /** Wrapper around the expand/collapse icon. */
   expand: string;
-  expandIcon: "plus" | "chevron";
+  expandIcon: "plus" | "chevron" | "plusminus";
   content: string;
   /** Extra content padding when the row carries an icon, so text aligns with the title. Dropped below `sm`, where the column is too narrow to spend on an indent. */
   contentWithIcon?: string;
   /** Draws a thin line from the icon down the answer. */
   thread?: boolean;
+  /** Wraps the answer in its own surface, e.g. an inset well. */
+  panel?: string;
+  /** Draws four corner brackets that grow outward on the open row. */
+  corners?: boolean;
+  /** Fades the answer and animates height with CSS keyframes (see `ui/accordion`). */
+  smooth?: boolean;
 };
+
+/** One corner of the bracket frame: [position, border sides, outward shift when open]. */
+const BRACKET_CORNERS = [
+  "-left-px -top-px border-l-2 border-t-2 group-data-[state=open]/item:-left-1 group-data-[state=open]/item:-top-1",
+  "-right-px -top-px border-r-2 border-t-2 group-data-[state=open]/item:-right-1 group-data-[state=open]/item:-top-1",
+  "-bottom-px -left-px border-b-2 border-l-2 group-data-[state=open]/item:-bottom-1 group-data-[state=open]/item:-left-1",
+  "-bottom-px -right-px border-b-2 border-r-2 group-data-[state=open]/item:-bottom-1 group-data-[state=open]/item:-right-1",
+] as const;
 
 const VARIANTS: Record<Exclude<AccordionVariant, "card-filled" | "brand-reveal">, VariantStyles> = {
   // "Lift": closed rows are quiet hairline rows; the open one lifts out as a card.
@@ -197,6 +217,92 @@ const VARIANTS: Record<Exclude<AccordionVariant, "card-filled" | "brand-reveal">
     expandIcon: "chevron",
     content: "px-5 pb-5 pr-12 text-muted-foreground",
     contentWithIcon: "sm:pl-[4.25rem]",
+  },
+
+  // "Soft": tinted tiles; the chip fills with the accent and its plus folds into a minus.
+  soft: {
+    list: "flex flex-col gap-2.5",
+    item: cn(
+      "rounded-2xl bg-muted/60 ring-1 ring-transparent",
+      "transition-[background-color,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+      "hover:bg-primary/[0.07]",
+      "data-[state=open]:bg-card data-[state=open]:ring-border/60 data-[state=open]:hover:bg-card",
+      "dark:bg-muted/40 dark:data-[state=open]:bg-muted/80 dark:data-[state=open]:hover:bg-muted/80",
+      "data-[state=open]:shadow-[0_1px_2px_rgb(0_0_0/0.04),0_18px_36px_-22px_rgb(0_0_0/0.24)]",
+      "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring/60",
+    ),
+    trigger: "items-center gap-4 px-4 py-3.5 sm:px-5",
+    iconWrap: cn(
+      "flex size-9 shrink-0 items-center justify-center rounded-xl bg-background text-muted-foreground transition-colors duration-300",
+      "group-hover:text-primary group-data-[state=open]:bg-primary/10 group-data-[state=open]:text-primary",
+    ),
+    title: "text-[15px] font-medium tracking-[-0.01em] text-foreground",
+    expand: cn(
+      "flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary",
+      "transition-[background-color,color,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+      "group-hover:bg-primary/15 group-data-[state=open]:bg-primary group-data-[state=open]:text-primary-foreground",
+    ),
+    expandIcon: "plusminus",
+    content: "px-4 pb-5 pr-14 text-muted-foreground sm:px-5 sm:pr-16",
+    contentWithIcon: "sm:pl-[4.75rem]",
+    smooth: true,
+  },
+
+  // "Inset": quiet pill rows; the open one rises as a card holding the answer in a well.
+  inset: {
+    list: "flex flex-col gap-2.5",
+    item: cn(
+      "rounded-[1.75rem] bg-muted/50 p-1.5 ring-1 ring-transparent",
+      "transition-[background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+      "hover:bg-muted/80",
+      "data-[state=open]:-translate-y-px data-[state=open]:bg-card data-[state=open]:ring-border/70 data-[state=open]:hover:bg-card",
+      "dark:bg-muted/30 dark:hover:bg-muted/50 dark:data-[state=open]:bg-muted dark:data-[state=open]:hover:bg-muted",
+      "data-[state=open]:shadow-[0_1px_2px_rgb(0_0_0/0.05),0_26px_50px_-26px_rgb(0_0_0/0.3)]",
+      "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring/60",
+    ),
+    trigger: "items-center gap-4 px-4 py-3 sm:px-5",
+    iconWrap: cn(
+      "flex size-9 shrink-0 items-center justify-center rounded-full bg-background text-muted-foreground transition-colors duration-300",
+      "group-data-[state=open]:bg-muted group-data-[state=open]:text-foreground",
+    ),
+    title: cn(
+      "text-[15px] font-medium tracking-[-0.01em] text-muted-foreground transition-colors duration-500",
+      "group-hover:text-foreground group-data-[state=open]:text-foreground",
+    ),
+    expand: cn(
+      "flex shrink-0 items-center justify-center text-muted-foreground",
+      "transition-[transform,color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+      "group-hover:text-foreground group-data-[state=open]:rotate-180 group-data-[state=open]:text-foreground",
+    ),
+    expandIcon: "plus",
+    content: "px-1.5 pb-1.5",
+    panel: "rounded-[1.25rem] bg-muted/70 px-4 py-3.5 text-[15px] text-foreground/80 dark:bg-background/50 sm:px-5 sm:py-4",
+    smooth: true,
+  },
+
+  // "Bracket": an outlined frame whose corner brackets open outward and take the accent.
+  bracket: {
+    list: "flex flex-col gap-3.5",
+    item: cn(
+      "group/item relative rounded-[2px] border border-border bg-card",
+      "transition-[border-color,background-color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+      "hover:border-foreground/25 data-[state=open]:border-foreground/25",
+      "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring/60 has-[:focus-visible]:ring-offset-2 has-[:focus-visible]:ring-offset-background",
+    ),
+    trigger: "items-center gap-4 px-5 py-4",
+    iconWrap:
+      "flex shrink-0 items-center justify-center text-muted-foreground transition-colors duration-300 group-data-[state=open]:text-primary",
+    title: "text-[15px] font-semibold tracking-[-0.005em] text-foreground",
+    expand: cn(
+      "flex shrink-0 items-center justify-center text-muted-foreground",
+      "transition-[transform,color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+      "group-hover:text-foreground group-data-[state=open]:-rotate-180 group-data-[state=open]:text-primary",
+    ),
+    expandIcon: "chevron",
+    content: "px-5 pb-5 pr-12 text-muted-foreground",
+    contentWithIcon: "sm:pl-[3.25rem]",
+    corners: true,
+    smooth: true,
   },
 
   // "Editorial": nothing but type and hairlines.
@@ -351,6 +457,13 @@ function StandardAccordion({
   const ResolvedExpandIcon =
     typeof expandIcon === "string" ? ICON_MAP[expandIcon] : null;
   const DefaultExpandIcon = styles.expandIcon === "plus" ? Plus : ChevronDown;
+  /** The plus that folds into a minus: its vertical bar collapses as the row opens. */
+  const plusMinusIcon = (
+    <span className="relative block size-3.5">
+      <span className="absolute inset-x-0 top-1/2 h-0.5 -translate-y-1/2 rounded-full bg-current" />
+      <span className="absolute inset-y-0 left-1/2 w-0.5 -translate-x-1/2 rounded-full bg-current transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[state=open]:rotate-90 group-data-[state=open]:scale-y-0" />
+    </span>
+  );
 
   const listRef = React.useRef<HTMLDivElement>(null);
   const [stacking, setStacking] = React.useState(animation === "stack");
@@ -359,6 +472,7 @@ function StandardAccordion({
   useStackEntrance(listRef, animation === "stack", setStacking);
 
   const shellClassName = cn("relative w-full", styles.list, className);
+  const motion = styles.smooth ? "smooth" : "default";
 
   const items = accordionData.map((item) => {
     const ItemIcon =
@@ -384,6 +498,8 @@ function StandardAccordion({
                 <ResolvedExpandIcon className="size-4" />
               ) : expandIcon ? (
                 expandIcon
+              ) : styles.expandIcon === "plusminus" ? (
+                plusMinusIcon
               ) : (
                 <DefaultExpandIcon className="size-4" strokeWidth={1.75} />
               )}
@@ -422,7 +538,7 @@ function StandardAccordion({
             contentClassName,
           )}
         >
-          <div className="space-y-3">
+          <div className={cn("space-y-3", styles.panel)}>
             {Array.isArray(item.content) ? (
               item.content.map((paragraph, index) => (
                 <p key={index} className="leading-relaxed">
@@ -434,6 +550,19 @@ function StandardAccordion({
             )}
           </div>
         </AccordionContent>
+        {styles.corners &&
+          BRACKET_CORNERS.map((corner) => (
+            <span
+              key={corner}
+              aria-hidden="true"
+              className={cn(
+                "pointer-events-none absolute size-2.5 border-muted-foreground/60",
+                "transition-[width,height,top,right,bottom,left,border-color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+                "group-data-[state=open]/item:size-4 group-data-[state=open]/item:border-primary",
+                corner,
+              )}
+            />
+          ))}
       </AccordionItem>
     );
   });
@@ -442,6 +571,7 @@ function StandardAccordion({
     return (
       <ShadCNAccordion
         ref={listRef}
+        motion={motion}
         type="single"
         collapsible={collapsible}
         className={shellClassName}
@@ -456,6 +586,7 @@ function StandardAccordion({
     return (
       <ShadCNAccordion
         ref={listRef}
+        motion={motion}
         type="multiple"
         className={shellClassName}
         value={multipleValue}
@@ -473,6 +604,7 @@ function StandardAccordion({
   return (
     <ShadCNAccordion
       ref={listRef}
+      motion={motion}
       type="multiple"
       className={shellClassName}
       defaultValue={multipleDefault}
@@ -727,8 +859,8 @@ export function BrandLogoAccordion({
     : 0;
 
   const [activeIndex, setActiveIndex] = React.useState(initialIndex);
-  const [isPaused, setIsPaused] = React.useState(false);
-  const [progress, setProgress] = React.useState(0);
+  /** Bumped on every pick so choosing the active brand again restarts its timer. */
+  const [cycle, setCycle] = React.useState(0);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const activeIndexRef = React.useRef(activeIndex);
@@ -742,14 +874,29 @@ export function BrandLogoAccordion({
 
   const selectBrand = React.useCallback((index: number) => {
     setActiveIndex(index);
-    setProgress(0);
+    setCycle((value) => value + 1);
     const b = brandsRef.current[index];
     if (b) {
       onBrandChangeRef.current?.(b, index);
     }
   }, []);
 
-  // Autoplay ticker with smooth progress animation
+  // Autoplay: the progress bar IS the timer. One Web Animation runs on the
+  // compositor and advances to the next brand when it finishes, so nothing
+  // re-renders while a slide plays (a setInterval/setState loop here would
+  // re-render the block 20 times a second and starve every animation on the
+  // page). Hover, an off-screen block and a hidden tab all pause it.
+  const progressRef = React.useRef<Animation | null>(null);
+  const hoverPausedRef = React.useRef(false);
+  const visibleRef = React.useRef(true);
+
+  const syncPlayState = React.useCallback(() => {
+    const animation = progressRef.current;
+    if (!animation) return;
+    if (hoverPausedRef.current || !visibleRef.current) animation.pause();
+    else animation.play();
+  }, []);
+
   React.useEffect(() => {
     if (!autoplay || brands.length <= 1) return;
 
@@ -760,24 +907,50 @@ export function BrandLogoAccordion({
       return;
     }
 
-    const stepMs = 50;
-    const increment = (stepMs / autoplayInterval) * 100;
+    const bar = containerRef.current?.querySelector<HTMLElement>(
+      '[role="tab"][aria-selected="true"] [data-brand-progress]',
+    );
+    if (!bar || typeof bar.animate !== "function") return;
 
-    const interval = setInterval(() => {
-      if (isPaused) return;
+    const animation = bar.animate(
+      [{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }],
+      { duration: autoplayInterval, easing: "linear", fill: "forwards" },
+    );
+    animation.onfinish = () =>
+      selectBrand((activeIndexRef.current + 1) % brandsRef.current.length);
+    progressRef.current = animation;
+    syncPlayState();
 
-      setProgress((prev) => {
-        if (prev + increment >= 100) {
-          const next = (activeIndexRef.current + 1) % brandsRef.current.length;
-          selectBrand(next);
-          return 0;
-        }
-        return prev + increment;
+    return () => {
+      animation.onfinish = null;
+      animation.cancel();
+      if (progressRef.current === animation) progressRef.current = null;
+    };
+  }, [autoplay, autoplayInterval, brands.length, activeIndex, cycle, selectBrand, syncPlayState]);
+
+  // Only tick while the block is on screen and the tab is in the foreground.
+  React.useEffect(() => {
+    if (!autoplay) return;
+    const container = containerRef.current;
+    const update = () => {
+      visibleRef.current = onScreen && !document.hidden;
+      syncPlayState();
+    };
+    let onScreen = true;
+    let observer: IntersectionObserver | null = null;
+    if (container && "IntersectionObserver" in window) {
+      observer = new IntersectionObserver(([entry]) => {
+        onScreen = entry.isIntersecting;
+        update();
       });
-    }, stepMs);
-
-    return () => clearInterval(interval);
-  }, [autoplay, autoplayInterval, isPaused, brands.length, selectBrand]);
+      observer.observe(container);
+    }
+    document.addEventListener("visibilitychange", update);
+    return () => {
+      observer?.disconnect();
+      document.removeEventListener("visibilitychange", update);
+    };
+  }, [autoplay, syncPlayState]);
 
   const totalCount = brands.length;
   const totalFormatted = String(totalCount).padStart(2, "0");
@@ -794,8 +967,16 @@ export function BrandLogoAccordion({
         ref={containerRef}
         role="tablist"
         aria-label={title || "Brand showcase"}
-        onMouseEnter={() => pauseOnHover && setIsPaused(true)}
-        onMouseLeave={() => pauseOnHover && setIsPaused(false)}
+        onMouseEnter={() => {
+          if (!pauseOnHover) return;
+          hoverPausedRef.current = true;
+          syncPlayState();
+        }}
+        onMouseLeave={() => {
+          if (!pauseOnHover) return;
+          hoverPausedRef.current = false;
+          syncPlayState();
+        }}
         style={{
           minHeight: typeof height === "number" ? `${height}px` : height,
         }}
@@ -831,8 +1012,8 @@ export function BrandLogoAccordion({
               className={cn(
                 "relative overflow-hidden cursor-pointer flex transition-[flex-grow,flex-basis,background,color] duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-inset",
                 isOpen
-                  ? "flex-1 bg-zinc-950 text-zinc-50 dark:bg-zinc-900 dark:text-zinc-100 min-w-0 md:min-w-[280px]"
-                  : "flex-[0_0_54px] md:flex-[0_0_95px] lg:flex-[0_0_105px] bg-card text-foreground hover:bg-muted/70 dark:bg-zinc-950/60 dark:hover:bg-zinc-900/80"
+                  ? "flex-1 bg-primary/[0.09] text-foreground dark:bg-zinc-900 dark:text-zinc-100 min-w-0 md:min-w-[260px]"
+                  : "flex-[0_0_54px] md:flex-[0_1_105px] md:min-w-[52px] bg-card text-foreground hover:bg-muted/70 dark:bg-zinc-950/60 dark:hover:bg-zinc-900/80"
               )}
             >
               {/* Spine (Collapsed State) */}
@@ -875,7 +1056,7 @@ export function BrandLogoAccordion({
 
                 {/* Brand Details */}
                 <div className="my-auto py-4">
-                  <div className="inline-flex items-center justify-center size-12 rounded-xl bg-white/10 dark:bg-white/10 border border-white/15 shadow-sm backdrop-blur-sm mb-4 p-2.5">
+                  <div className="inline-flex items-center justify-center size-12 rounded-xl bg-primary/10 border border-primary/20 dark:bg-white/10 dark:border-white/15 shadow-sm backdrop-blur-sm mb-4 p-2.5">
                     {renderBrandLogo(item, "inner")}
                   </div>
                   <div className="text-[12px] font-bold uppercase tracking-[0.18em] opacity-60">
@@ -905,8 +1086,9 @@ export function BrandLogoAccordion({
                     className="absolute left-0 right-0 bottom-0 h-[2.5px] bg-foreground/15 dark:bg-white/15 overflow-hidden"
                   >
                     <div
-                      className="h-full bg-primary transition-all duration-75 ease-linear"
-                      style={{ width: `${progress}%` }}
+                      data-brand-progress=""
+                      className="h-full w-full origin-left bg-primary"
+                      style={{ transform: "scaleX(0)" }}
                     />
                   </div>
                 )}

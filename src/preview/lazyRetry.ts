@@ -23,12 +23,14 @@ const wait = (ms: number) =>
  */
 export function lazyRetry<T extends ComponentType<any>>(
   factory: () => Promise<{ default: T }>,
-): LazyExoticComponent<T> {
-  return lazy(async () => {
+): LazyExoticComponent<T> & { preload: () => void } {
+  let started: Promise<{ default: T }> | undefined;
+
+  const attempt = async () => {
     let lastError: unknown;
-    for (let attempt = 0; attempt < MAX_IMPORT_ATTEMPTS; attempt++) {
-      if (attempt > 0) {
-        await wait(RETRY_DELAY_MS[attempt - 1] ?? 750);
+    for (let tries = 0; tries < MAX_IMPORT_ATTEMPTS; tries++) {
+      if (tries > 0) {
+        await wait(RETRY_DELAY_MS[tries - 1] ?? 750);
       }
       try {
         return await factory();
@@ -37,5 +39,16 @@ export function lazyRetry<T extends ComponentType<any>>(
       }
     }
     throw lastError;
-  });
+  };
+
+  // One shared load: rendering the lazy component and a `preload()` call before
+  // it both reuse it, so the chunk is fetched once, whichever comes first.
+  const load = () => (started ??= attempt());
+
+  const component = lazy(load) as LazyExoticComponent<T> & { preload: () => void };
+  /** Starts fetching the demo's chunk without rendering it. Errors surface on render. */
+  component.preload = () => {
+    load().catch(() => {});
+  };
+  return component;
 }

@@ -12,11 +12,11 @@ Every preview is live: send a prompt to see the simulated stream, rename a threa
 
 ## For AI agents
 
-**Ask before you pick.** This page has 5 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+**Ask before you pick.** This page has 6 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
 
-All 5 options as live previews: https://avaraui.com/view/ai-chat
+All 6 options as live previews: https://avaraui.com/view/ai-chat
 
-**When to use it.** An LLM chat interface with conversation history, typing indicators, editable titles and a full prompt composer (a + menu for files and mentions, an upload indicator, a model picker), in five looks.
+**When to use it.** An LLM chat interface with conversation history, typing indicators, editable titles and a full prompt composer (a + menu for files and mentions, an upload indicator, a model picker), in five looks of one item plus a separate full workspace.
 
 **When to use something else:**
 
@@ -24,13 +24,20 @@ All 5 options as live previews: https://avaraui.com/view/ai-chat
 
 **Gotchas:**
 
-- All five are looks of the one `ai-chat` item: install it once and set `variant` from the index.
+- Five are looks of the one `ai-chat` item: install it once and set `variant` from the index. The workspace is a separate item, `ai-chat-workspace`, with no `variant` prop.
 - To connect a real backend, pass your own upload and send handlers; the simulated stream and upload are the defaults.
 - `glass` and `liquid-glass` need a colourful backdrop behind them to read.
 
-### The 5 variants
+### The 6 variants
 
-1. **Default** (`default`): The full assistant with a history sidebar of threads, grouped by date, beside the conversation.
+1. **Workspace** (`workspace`): Full AI workspace: empty-screen start, model menu in the prompt bar, research and image modes, linked apps, Library.
+   - Live: https://avaraui.com/view/ai-chat/workspace
+   - Best for: an assistant product where the chat is the whole screen
+   - Avoid if: you want a small embedded chat box; you only need a prompt bar
+   - Traits: empty screen first, model menu in the prompt bar, research and web search, linked apps and Library, separate install
+   - Install: `npx shadcn@latest add @avara-ui/ai-chat-workspace`
+   - Docs: https://avaraui.com/docs/nextjs/ai-chat#workspace
+2. **Default** (`default`): The full assistant with a history sidebar of threads, grouped by date, beside the conversation.
    - Live: https://avaraui.com/view/ai-chat/default
    - Best for: an assistant where users return to earlier threads
    - Avoid if: you want a single prompt box with no history
@@ -38,7 +45,7 @@ All 5 options as live previews: https://avaraui.com/view/ai-chat
    - Install: `npx shadcn@latest add @avara-ui/ai-chat`
    - Set these props: `{"variant":"default"}`
    - Docs: https://avaraui.com/docs/nextjs/ai-chat#ai-assistant
-2. **Compact** (`compact`): No history sidebar: a hero title over the prompt bar until the first message, then the conversation.
+3. **Compact** (`compact`): No history sidebar: a hero title over the prompt bar until the first message, then the conversation.
    - Live: https://avaraui.com/view/ai-chat/compact
    - Best for: an assistant embedded in a page or a landing section
    - Avoid if: users need to browse past conversations
@@ -46,7 +53,7 @@ All 5 options as live previews: https://avaraui.com/view/ai-chat
    - Install: `npx shadcn@latest add @avara-ui/ai-chat`
    - Set these props: `{"variant":"compact"}`
    - Docs: https://avaraui.com/docs/nextjs/ai-chat#compact
-3. **Minimal** (`minimal`): Borders, shadows and dividers are stripped so the assistant blends into the surface around it.
+4. **Minimal** (`minimal`): Borders, shadows and dividers are stripped so the assistant blends into the surface around it.
    - Live: https://avaraui.com/view/ai-chat/minimal
    - Best for: an assistant inside a page or panel that already has its own frame
    - Avoid if: you want it to read as a standalone card
@@ -54,7 +61,7 @@ All 5 options as live previews: https://avaraui.com/view/ai-chat
    - Install: `npx shadcn@latest add @avara-ui/ai-chat`
    - Set these props: `{"variant":"minimal"}`
    - Docs: https://avaraui.com/docs/nextjs/ai-chat#minimal
-4. **Glass** (`glass`): Translucent panels with backdrop blur; the accent can be tinted to hold up against your backdrop.
+5. **Glass** (`glass`): Translucent panels with backdrop blur; the accent can be tinted to hold up against your backdrop.
    - Live: https://avaraui.com/view/ai-chat/glass
    - Best for: an assistant over a colourful or photographic background
    - Avoid if: the background is plain
@@ -62,7 +69,7 @@ All 5 options as live previews: https://avaraui.com/view/ai-chat
    - Install: `npx shadcn@latest add @avara-ui/ai-chat`
    - Set these props: `{"variant":"glass"}`
    - Docs: https://avaraui.com/docs/nextjs/ai-chat#glass
-5. **Liquid glass** (`liquid-glass`): Liquid-glass refraction using SVG displacement mapping, layered specular highlights and fluid reflections.
+6. **Liquid glass** (`liquid-glass`): Liquid-glass refraction using SVG displacement mapping, layered specular highlights and fluid reflections.
    - Live: https://avaraui.com/view/ai-chat/liquid-glass
    - Best for: a showpiece assistant over rich imagery
    - Avoid if: you want a restrained look or a plain background
@@ -70,6 +77,76 @@ All 5 options as live previews: https://avaraui.com/view/ai-chat
    - Install: `npx shadcn@latest add @avara-ui/ai-chat`
    - Set these props: `{"variant":"liquid-glass"}`
    - Docs: https://avaraui.com/docs/nextjs/ai-chat#liquid-glass
+
+## Workspace chat
+
+A separate install, not a `variant`: a full AI workspace that opens on an empty screen and answers with live steps, streamed text, sources and a stop button.
+
+### Workspace
+
+Send a prompt to watch the steps run. Try Research, the effort slider, a file and the model menu beside the prompt bar.
+
+- `color="primary"` is the default, so the accent, borders and surfaces all follow your theme tokens. A named colour or hex works too.
+- `chatHistory` fills the sidebar. Threads are grouped by their `date` string, in the order they appear.
+
+```tsx
+import AIChatWorkspace, {
+  type WorkspaceThread,
+} from "@/components/custom/blocks/AiChatWorkspace";
+
+const chatHistory: WorkspaceThread[] = [
+  { id: 1, title: "Rewrite onboarding emails in a warmer tone", date: "Today" },
+  { id: 2, title: "Plan a two-week launch checklist", date: "Today" },
+  { id: 3, title: "Compare three pricing page layouts", date: "Today" },
+  { id: 4, title: "Explain OAuth to a new teammate", date: "Yesterday" },
+  { id: 5, title: "Draft release notes for v2.4", date: "Yesterday" },
+  { id: 6, title: "Summarize last quarter's support tickets", date: "Yesterday" },
+  { id: 7, title: "Outline a talk on design systems", date: "Yesterday" },
+  { id: 8, title: "Name ideas for a budgeting app", date: "Last week" },
+  { id: 9, title: "Review a SQL migration for risks", date: "Last week" },
+  { id: 10, title: "Cover letter for a product design role", date: "Last week" },
+];
+
+export default function Workspace() {
+  return (
+    <div className="w-full">
+      <AIChatWorkspace
+        defaultModelId="core"
+        chatHistory={chatHistory}
+        user={{
+          name: "Maya Chen",
+          email: "maya.chen@example.com",
+          avatarUrl:
+            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=96&h=96&fit=crop&crop=faces",
+        }}
+      />
+    </div>
+  );
+}
+```
+
+### Install the workspace chat
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/ai-chat-workspace.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/ai-chat-workspace
+```
+
+What the screen does without any props:
+
+- **Model menu** sits in the prompt bar. Pro and Premium models wear a badge and play the same one-off flourish as the other chat.
+- **Prompt bar** also has Research, image and reasoning toggles, an effort slider, web search, file attachments (drag them in too) and voice dictation. The send button turns into a stop button while a reply is being written.
+- **Apps strip** under the bar lists Google Drive, Slack and more, with their real logos. They unlock on Pro; a linked app is named in a prompt as `@Slack` and arrives in `onSend` as `connectors`.
+- **Sidebar** holds history with rename and delete, Discover, Library and Templates. Library files you switch on travel with each prompt as `knowledge`.
+- **Header actions** copy a link, share, rename, export a chat as Markdown or clear it. **New chat** is also bound to ⌘/Ctrl + N while focus is inside the component.
 
 ## AI assistant
 
