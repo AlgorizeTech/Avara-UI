@@ -216,6 +216,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["layout", "scroll", "media"],
   },
   // ---- Curated in Phase 3. Verified against source. ----
+  "action-buttons": {
+    description:
+      "Motion-powered interactive action buttons: AsyncButton, WaitlistButton, HoldToConfirm, SlideToConfirm, StarButton (Star & Upvote), FollowButton, SplitButton, AddToCart, PaymentButton, and InteractiveButton.",
+    categories: ["actions", "forms"],
+    docs: "Named exports: AsyncButton, WaitlistButton, HoldToConfirm, SlideToConfirm, StarButton, FollowButton, SplitButton, AddToCart, PaymentButton, InteractiveButton.",
+  },
   button: {
     usageDependencies: ["icons"],
     description:

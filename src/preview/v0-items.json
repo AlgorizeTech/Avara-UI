@@ -17,13 +17,16 @@
     "brand-reveal": "Accordion — Brand reveal",
     "multiple-open": "Accordion — Multiple open"
   },
-  "ai-chat-workspace": {
-    "workspace": "AI Chat Workspace — Workspace"
+  "action-buttons": {
+    "interactive-action-async-commerce-buttons": "Action Buttons — Interactive Action, Async & Commerce Buttons"
   },
   "agent-graph": {
     "shaded-tree-default": "Agent Graph — Shaded Tree (Default)",
     "flat-no-shade": "Agent Graph — Flat Tree (No Shade)",
     "editorial-crew": "Agent Graph — Editorial (2-Column)"
+  },
+  "ai-chat-workspace": {
+    "workspace": "AI Chat Workspace — Workspace"
   },
   "ai-chat": {
     "ai-assistant": "AI Chat — AI assistant",

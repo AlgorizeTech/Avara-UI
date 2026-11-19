@@ -49,6 +49,32 @@
       "docs": "Named export: Accordion. Pass `accordionData` as { value, title, icon?, content } — content accepts a string array or a node. `type` is single | multiple; set `collapsible` to let the last open section close. Variants: default (open row lifts out as a card) | bordered (rail on the open row) | filled (open row inverts to primary) | elevated (cards, open one on a ring) | soft (tinted tiles, plus folds into minus) | inset (pill rows, answer in an inset well) | bracket (outlined rows, corner brackets open outward) | ghost (type and hairlines); soft, inset and bracket animate open and close with CSS keyframes that ship inside the component. `animation=\"stack\"` piles the items and deals them out on scroll-in via the Web Animations API; skipped under reduced motion. Wraps the `ui-accordion` Radix primitive. For a single section, `collapsible` is lighter."
     },
     {
+      "name": "action-buttons",
+      "type": "registry:component",
+      "title": "Action Buttons",
+      "author": "AlgorizeTech",
+      "description": "Motion-powered interactive action buttons: AsyncButton, WaitlistButton, HoldToConfirm, SlideToConfirm, StarButton (Star & Upvote), FollowButton, SplitButton, AddToCart, PaymentButton, and InteractiveButton.",
+      "categories": [
+        "actions",
+        "forms"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ActionButtons.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ActionButtons.tsx"
+        }
+      ],
+      "docs": "Named exports: AsyncButton, WaitlistButton, HoldToConfirm, SlideToConfirm, StarButton, FollowButton, SplitButton, AddToCart, PaymentButton, InteractiveButton."
+    },
+    {
       "name": "advanced-table",
       "type": "registry:component",
       "title": "Advanced Table",
