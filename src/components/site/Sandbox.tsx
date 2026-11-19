@@ -35,7 +35,7 @@ import {
   MoveHorizontal,
   X,
 } from "lucide-react";
-import { SandboxFrame } from "@/components/site/SandboxFrame";
+import { PreviewFrameContext } from "@/components/site/preview-frame-context";
 import { prefetchHighlight, warmHighlighter } from "@/components/custom/ui/code-renderer-core";
 import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { isDefaultAccent, toBlockColor } from "@/lib/accent";
@@ -50,7 +50,7 @@ import {
   DEFAULT_SHOWCASE_COLOR,
   useShowcaseColorContext,
 } from "@/components/site/showcase-color";
-import React, { Fragment, useEffect, useId, useRef, useState } from "react";
+import React, { Fragment, useContext, useEffect, useId, useRef, useState } from "react";
 
 /**
  * Hard floor for the preview viewport. Nothing — drag, keyboard, or the fluid
@@ -239,6 +239,10 @@ export function Sandbox({
     reset = true,
     openInV0 = true,
   } = options;
+
+  // The preview surface: an iframe unless a page opts into another (see
+  // ExampleShowcaseV2).
+  const { Frame: PreviewFrame } = useContext(PreviewFrameContext);
 
   const previewTab = tabs.find((t) => t.resizable) ?? tabs[0];
   const [activeTab, setActiveTab] = useState<string>(tabs[0]?.id ?? "preview");
@@ -693,7 +697,7 @@ export function Sandbox({
                       ],
                 )}
               >
-                <SandboxFrame
+                <PreviewFrame
                   name={name}
                   sandboxProps={sandboxProps}
                   accent={accent}
@@ -1413,6 +1417,7 @@ function ExampleCard({
   // The Sandbox (and its iframe) mounts only once the card nears the viewport.
   const [mounted, setMounted] = useState(false);
   const rootRef = useRef<HTMLElement>(null);
+  const { eager } = useContext(PreviewFrameContext);
 
   useEffect(() => {
     const el = rootRef.current;
@@ -1428,20 +1433,20 @@ function ExampleCard({
       ([entry]) => {
         if (!entry.isIntersecting) return;
         observer.disconnect();
-        whenPreviewsAllowed()
-          .then(nextPreviewSlot)
+        // An eager page (inline previews) skips the wait and the queue.
+        (eager ? Promise.resolve() : whenPreviewsAllowed().then(nextPreviewSlot))
           .then(() => {
             if (!cancelled) setMounted(true);
           });
       },
-      { rootMargin: "200px" },
+      { rootMargin: eager ? "600px" : "200px" },
     );
     observer.observe(el);
     return () => {
       cancelled = true;
       observer.disconnect();
     };
-  }, [mounted]);
+  }, [mounted, eager]);
 
   const tabs: SandboxTab[] = [
     { id: "preview", label: "Preview", resizable: true },

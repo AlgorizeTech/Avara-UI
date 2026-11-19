@@ -1,14 +1,12 @@
 ---
 title: "Shadcn Accordion"
-description: "A data-driven accordion built on the Radix primitive, with five list variants and an interactive Brand Logo Reveal showcase variant. Free shadcn/ui component."
+description: "A data-driven accordion with eight list styles and a brand reveal showcase. Free shadcn/ui Accordion component for React, Next.js and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/accordion
 ---
 
 # Shadcn Accordion
 
-A data-driven accordion built on the Radix primitive, with five list variants and an interactive **Brand Logo Reveal** showcase variant. The open panel is the only thing that gets the accent: it lifts out as a card, inverts to your primary color, grows a rail down its edge, or expands into an editorial brand showcase.
-
-You feed it an `accordionData` array — the wrapper maps it to items, icons and content for you. Switch on `animation="stack"` and the items start piled on the first one and deal down into place when the accordion scrolls into view.
+A data-driven accordion with eight list styles and a brand reveal showcase.
 
 ## For AI agents
 
@@ -16,7 +14,7 @@ You feed it an `accordionData` array — the wrapper maps it to items, icons and
 
 All 6 options as live previews: https://avaraui.com/view/accordion
 
-**When to use it.** A data-driven accordion with five list styles and an automated Brand Logo Reveal showcase. You pass an `accordionData` array and the open panel is the only thing that gets the accent.
+**When to use it.** A data-driven accordion. You pass an `accordionData` array and the open panel is the only thing that gets the accent. The examples show the inset, bracket, soft, lift-card and ghost lists and an automated brand reveal showcase; `variant` also accepts `soft`, `inset`, `bracket`, `bordered`, `filled` and `elevated`.
 
 **Gotchas:**
 
@@ -26,59 +24,199 @@ All 6 options as live previews: https://avaraui.com/view/accordion
 
 ### The 6 variants
 
-1. **Default** (`default`): Closed rows stay quiet and the open one lifts out as a card.
+1. **Inset panel** (`inset`): Quiet pill rows; the open one rises as a card with the answer set in an inset well.
+   - Live: https://avaraui.com/view/accordion/inset
+   - Best for: a clean SaaS FAQ with longer answers
+   - Avoid if: answers are a single short line
+   - Traits: pill rows, answer in an inset well, CSS open and close motion
+   - Install: `npx shadcn@latest add @avara-ui/accordion`
+   - Set these props: `{"variant":"inset"}`
+   - Docs: https://avaraui.com/docs/nextjs/accordion#inset-panel
+2. **Bracket frame** (`bracket`): Outlined rows whose corner brackets open outward and take the accent when active.
+   - Live: https://avaraui.com/view/accordion/bracket
+   - Best for: developer tools, dashboards and technical products
+   - Avoid if: the brand is soft or playful
+   - Traits: sharp outline, corner brackets, CSS open and close motion
+   - Install: `npx shadcn@latest add @avara-ui/accordion`
+   - Set these props: `{"variant":"bracket"}`
+   - Docs: https://avaraui.com/docs/nextjs/accordion#bracket-frame
+3. **Soft tiles** (`soft`): Tinted tiles; the open one fills its chip with the accent as the plus folds into a minus.
+   - Live: https://avaraui.com/view/accordion/soft
+   - Best for: a friendly product or support FAQ
+   - Avoid if: you want a flat, document-like list
+   - Traits: tinted tile per row, plus folds into minus, CSS open and close motion
+   - Install: `npx shadcn@latest add @avara-ui/accordion`
+   - Set these props: `{"variant":"soft"}`
+   - Docs: https://avaraui.com/docs/nextjs/accordion#soft-tiles
+4. **Lift card** (`default`): Closed rows stay quiet and the open one lifts out as a card.
    - Live: https://avaraui.com/view/accordion/default
    - Best for: a FAQ on a plain page background
    - Avoid if: the accordion sits inside a card or panel that is already boxed
    - Traits: open row becomes a card, quiet closed rows
    - Install: `npx shadcn@latest add @avara-ui/accordion`
    - Set these props: `{"variant":"default"}`
-   - Docs: https://avaraui.com/docs/nextjs/accordion#accordion
-2. **Ghost** (`ghost`): Type and hairlines only, with no boxes.
-   - Live: https://avaraui.com/view/accordion/ghost
-   - Best for: a long editorial FAQ
-   - Avoid if: you want the open item to stand out strongly
-   - Traits: hairlines, no cards
-   - Install: `npx shadcn@latest add @avara-ui/accordion`
-   - Set these props: `{"variant":"ghost"}`
-   - Docs: https://avaraui.com/docs/nextjs/accordion#multiple-permanent-open
-3. **Bordered** (`bordered`): Everything sits in one outlined panel, with a rail down the open row.
-   - Live: https://avaraui.com/view/accordion/bordered
-   - Best for: an accordion inside a card or a settings page
-   - Avoid if: it sits on a bare page where the outline looks heavy
-   - Traits: single outlined panel, rail on the open row
-   - Install: `npx shadcn@latest add @avara-ui/accordion`
-   - Set these props: `{"variant":"bordered"}`
-   - Docs: https://avaraui.com/docs/nextjs/accordion#multiple-open
-4. **Elevated** (`elevated`): Every item keeps its own card, and the open one rises on a primary ring instead of changing shape.
-   - Live: https://avaraui.com/view/accordion/elevated
-   - Best for: a stack of separate cards, especially with the stack entrance
-   - Avoid if: you want a compact list without a card per row
-   - Traits: card per item, primary ring on the open one
-   - Install: `npx shadcn@latest add @avara-ui/accordion`
-   - Set these props: `{"variant":"elevated"}`
-   - Docs: https://avaraui.com/docs/nextjs/accordion#stack-entrance
-5. **Filled** (`filled`): The open item inverts to your primary colour: the loudest of the five lists.
-   - Live: https://avaraui.com/view/accordion/filled
-   - Best for: a section where the open answer should be unmissable
-   - Avoid if: you want a calm, document-like list
-   - Traits: primary-colour open item, loudest list style
-   - Install: `npx shadcn@latest add @avara-ui/accordion`
-   - Set these props: `{"variant":"filled"}`
-   - Docs: https://avaraui.com/docs/nextjs/accordion#always-one-open
-6. **Brand logo reveal** (`brand-reveal`): An editorial horizontal brand accordion that cycles through client or partner brands on a timer.
+   - Docs: https://avaraui.com/docs/nextjs/accordion#lift-card
+5. **Brand reveal** (`brand-reveal`): An editorial horizontal brand accordion that cycles through client or partner brands on a timer.
    - Live: https://avaraui.com/view/accordion/brand-reveal
    - Best for: showing clients or partners as a feature, not answering questions
    - Avoid if: you need a FAQ or any text-heavy list
    - Traits: horizontal panels, autoplay on a timer, pauses on hover, also available as `<BrandLogoAccordion />`
    - Install: `npx shadcn@latest add @avara-ui/accordion`
    - Set these props: `{"variant":"brand-reveal"}`
-   - Docs: https://avaraui.com/docs/nextjs/accordion#brand-logo-reveal
+   - Docs: https://avaraui.com/docs/nextjs/accordion#brand-reveal
+6. **Ghost** (`ghost`): Type and hairlines only, with no boxes.
+   - Live: https://avaraui.com/view/accordion/ghost
+   - Best for: a long editorial FAQ
+   - Avoid if: you want the open item to stand out strongly
+   - Traits: hairlines, no cards
+   - Install: `npx shadcn@latest add @avara-ui/accordion`
+   - Set these props: `{"variant":"ghost"}`
+   - Docs: https://avaraui.com/docs/nextjs/accordion#multiple-open
 
-## Accordion
+## Inset panel
 
-- Pass `accordionData` as an array of `{ value, title, icon, content }`. `content` is an array of paragraphs and `icon` a key of the block's `ICON_MAP`.
-- Add `animation="stack"` to start the items piled on the first one and deal them into place when the accordion scrolls into view.
+- Use `variant="inset"` to lift the open row and set its answer in an inset well.
+
+```tsx
+import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+
+const faqItems: AccordionDataItem[] = [
+  {
+    value: "getting-started",
+    title: "How do I get started?",
+    icon: "HelpCircle", // any key of the block's ICON_MAP
+    content: [
+      "Getting started is easy! Simply sign up for an account.",
+      "We'll guide you through setting up your profile.",
+    ],
+  },
+  {
+    value: "pricing",
+    title: "What are your pricing plans?",
+    icon: "CreditCard",
+    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
+  },
+  {
+    value: "security",
+    title: "How secure is my data?",
+    icon: "Shield",
+    content: [
+      "Security is our top priority.",
+      "Your information is stored in secure data centers.",
+    ],
+  },
+];
+
+export default function InsetFaq() {
+  return (
+    <div className="mx-auto w-full max-w-2xl">
+      <Accordion
+        accordionData={faqItems}
+        variant="inset"
+        defaultValue="getting-started"
+      />
+    </div>
+  );
+}
+```
+
+## Bracket frame
+
+- Use `variant="bracket"` for outlined rows whose corner brackets open outward.
+
+```tsx
+import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+
+const faqItems: AccordionDataItem[] = [
+  {
+    value: "getting-started",
+    title: "How do I get started?",
+    icon: "HelpCircle", // any key of the block's ICON_MAP
+    content: [
+      "Getting started is easy! Simply sign up for an account.",
+      "We'll guide you through setting up your profile.",
+    ],
+  },
+  {
+    value: "pricing",
+    title: "What are your pricing plans?",
+    icon: "CreditCard",
+    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
+  },
+  {
+    value: "security",
+    title: "How secure is my data?",
+    icon: "Shield",
+    content: [
+      "Security is our top priority.",
+      "Your information is stored in secure data centers.",
+    ],
+  },
+];
+
+export default function BracketFaq() {
+  return (
+    <div className="mx-auto w-full max-w-2xl">
+      <Accordion
+        accordionData={faqItems}
+        variant="bracket"
+        defaultValue="getting-started"
+      />
+    </div>
+  );
+}
+```
+
+## Soft tiles
+
+- Use `variant="soft"` for tinted tiles whose plus folds into a minus.
+
+```tsx
+import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+
+const faqItems: AccordionDataItem[] = [
+  {
+    value: "getting-started",
+    title: "How do I get started?",
+    icon: "HelpCircle", // any key of the block's ICON_MAP
+    content: [
+      "Getting started is easy! Simply sign up for an account.",
+      "We'll guide you through setting up your profile.",
+    ],
+  },
+  {
+    value: "pricing",
+    title: "What are your pricing plans?",
+    icon: "CreditCard",
+    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
+  },
+  {
+    value: "security",
+    title: "How secure is my data?",
+    icon: "Shield",
+    content: [
+      "Security is our top priority.",
+      "Your information is stored in secure data centers.",
+    ],
+  },
+];
+
+export default function SoftFaq() {
+  return (
+    <div className="mx-auto w-full max-w-2xl">
+      <Accordion
+        accordionData={faqItems}
+        variant="soft"
+        defaultValue="getting-started"
+      />
+    </div>
+  );
+}
+```
+
+## Lift card
+
+- Pass `accordionData` as an array of `{ value, title, icon, content }`.
 
 ```tsx
 import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
@@ -114,23 +252,22 @@ export default function Faq() {
   // animation="stack" piles the items on the first one and deals them out
   // once the accordion scrolls into view. Leave it off for plain rendering.
   return (
-    <Accordion
-      accordionData={faqItems}
-      type="single"
-      collapsible
-      animation="stack"
-      defaultValue="getting-started"
-    />
+    <div className="mx-auto w-full max-w-2xl">
+      <Accordion
+        accordionData={faqItems}
+        type="single"
+        collapsible
+        animation="stack"
+        defaultValue="getting-started"
+      />
+    </div>
   );
 }
 ```
 
-## Brand logo reveal
+## Brand reveal
 
-A brand accordion of horizontal pleats with an autoplay progress indicator. Hovering pauses it, and it stacks on small screens.
-
-- Pass `variant="brand-reveal"` to show the editorial horizontal brand accordion, or use `<BrandLogoAccordion />` directly.
-- `autoplayInterval=4000` is the milliseconds before the next brand is revealed.
+- Use `variant="brand-reveal"` or `<BrandLogoAccordion />` directly.
 
 ```tsx
 import { BrandLogoAccordion } from "@/components/custom/blocks/Accordion";
@@ -138,11 +275,58 @@ import { BrandLogoAccordion } from "@/components/custom/blocks/Accordion";
 // Alternatively use <Accordion variant="brand-reveal" />
 export default function BrandRevealShowcase() {
   return (
-    <BrandLogoAccordion
-      autoplay
-      autoplayInterval={4000}
-      pauseOnHover
-    />
+    <div className="mx-auto w-full max-w-4xl">
+      <BrandLogoAccordion autoplay autoplayInterval={4000} pauseOnHover />
+    </div>
+  );
+}
+```
+
+## Multiple open
+
+- Set `type="multiple"` so several panels can be open at once; each one still closes on click.
+
+```tsx
+import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+
+const faqItems: AccordionDataItem[] = [
+  {
+    value: "getting-started",
+    title: "How do I get started?",
+    icon: "HelpCircle", // any key of the block's ICON_MAP
+    content: [
+      "Getting started is easy! Simply sign up for an account.",
+      "We'll guide you through setting up your profile.",
+    ],
+  },
+  {
+    value: "pricing",
+    title: "What are your pricing plans?",
+    icon: "CreditCard",
+    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
+  },
+  {
+    value: "security",
+    title: "How secure is my data?",
+    icon: "Shield",
+    content: [
+      "Security is our top priority.",
+      "Your information is stored in secure data centers.",
+    ],
+  },
+];
+
+export default function MultipleOpenFaq() {
+  // type="multiple" lets several panels stay open; clicking an open one closes it.
+  return (
+    <div className="mx-auto w-full max-w-2xl">
+      <Accordion
+        accordionData={faqItems}
+        type="multiple"
+        variant="ghost"
+        defaultValue={["getting-started"]}
+      />
+    </div>
   );
 }
 ```
@@ -162,268 +346,8 @@ npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/accordion
 ```
 
-## Examples
-
-### Multiple open
-
-- Set `type="multiple"` to let any number of panels stay open at once.
-- `defaultValue` becomes an **array** in this mode — passing a bare string silently opens nothing.
-
-```tsx
-import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
-
-const faqItems: AccordionDataItem[] = [
-  {
-    value: "getting-started",
-    title: "How do I get started?",
-    icon: "HelpCircle", // any key of the block's ICON_MAP
-    content: [
-      "Getting started is easy! Simply sign up for an account.",
-      "We'll guide you through setting up your profile.",
-    ],
-  },
-  {
-    value: "pricing",
-    title: "What are your pricing plans?",
-    icon: "CreditCard",
-    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
-  },
-  {
-    value: "security",
-    title: "How secure is my data?",
-    icon: "Shield",
-    content: [
-      "Security is our top priority.",
-      "Your information is stored in secure data centers.",
-    ],
-  },
-];
-
-export default function MultiOpenFaq() {
-  // type="multiple" lets any number of panels stay open at once.
-  // defaultValue becomes an array in this mode.
-  return (
-    <Accordion
-      accordionData={faqItems}
-      type="multiple"
-      variant="bordered"
-      defaultValue={["getting-started"]}
-    />
-  );
-}
-```
-
-### Always one open
-
-- Use `collapsible={false}` to stop the user closing the last open panel, so exactly one is always showing. Pair it with a `defaultValue` or the accordion starts fully closed.
-
-```tsx
-import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
-
-const faqItems: AccordionDataItem[] = [
-  {
-    value: "getting-started",
-    title: "How do I get started?",
-    icon: "HelpCircle", // any key of the block's ICON_MAP
-    content: [
-      "Getting started is easy! Simply sign up for an account.",
-      "We'll guide you through setting up your profile.",
-    ],
-  },
-  {
-    value: "pricing",
-    title: "What are your pricing plans?",
-    icon: "CreditCard",
-    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
-  },
-  {
-    value: "security",
-    title: "How secure is my data?",
-    icon: "Shield",
-    content: [
-      "Security is our top priority.",
-      "Your information is stored in secure data centers.",
-    ],
-  },
-];
-
-export default function AlwaysOpenFaq() {
-  // collapsible={false} stops the user closing the last open panel,
-  // so exactly one is always showing.
-  return (
-    <Accordion
-      accordionData={faqItems}
-      type="single"
-      collapsible={false}
-      variant="filled"
-      defaultValue="getting-started"
-    />
-  );
-}
-```
-
-### Multiple permanent open
-
-- Combine `type="multiple"` and `collapsible={false}` to allow several panels open at once without letting any be closed.
-
-```tsx
-import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
-
-const faqItems: AccordionDataItem[] = [
-  {
-    value: "getting-started",
-    title: "How do I get started?",
-    icon: "HelpCircle", // any key of the block's ICON_MAP
-    content: [
-      "Getting started is easy! Simply sign up for an account.",
-      "We'll guide you through setting up your profile.",
-    ],
-  },
-  {
-    value: "pricing",
-    title: "What are your pricing plans?",
-    icon: "CreditCard",
-    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
-  },
-  {
-    value: "security",
-    title: "How secure is my data?",
-    icon: "Shield",
-    content: [
-      "Security is our top priority.",
-      "Your information is stored in secure data centers.",
-    ],
-  },
-];
-
-export default function PermanentMultiOpenFaq() {
-  // type="multiple" and collapsible={false} allows opening multiple panels,
-  // but once opened, a panel cannot be closed by clicking it again.
-  return (
-    <Accordion
-      accordionData={faqItems}
-      type="multiple"
-      collapsible={false}
-      variant="ghost"
-      defaultValue={["getting-started"]}
-    />
-  );
-}
-```
-
-### Stack entrance
-
-The deal-out entrance on the `elevated` variant. It works with all five.
-
-- Pass `animation="stack"` to pile the items on the first one and deal them down with a stagger. It runs once, when the accordion first scrolls into view.
-
-```tsx
-import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
-
-const faqItems: AccordionDataItem[] = [
-  {
-    value: "getting-started",
-    title: "How do I get started?",
-    icon: "HelpCircle", // any key of the block's ICON_MAP
-    content: [
-      "Getting started is easy! Simply sign up for an account.",
-      "We'll guide you through setting up your profile.",
-    ],
-  },
-  {
-    value: "pricing",
-    title: "What are your pricing plans?",
-    icon: "CreditCard",
-    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
-  },
-  {
-    value: "security",
-    title: "How secure is my data?",
-    icon: "Shield",
-    content: [
-      "Security is our top priority.",
-      "Your information is stored in secure data centers.",
-    ],
-  },
-];
-
-export default function StackedFaq() {
-  // The entrance works with every variant. It waits for the accordion to
-  // scroll into view, and is skipped for visitors who prefer reduced motion.
-  return (
-    <Accordion
-      accordionData={faqItems}
-      type="single"
-      collapsible
-      variant="elevated"
-      animation="stack"
-      defaultValue="getting-started"
-    />
-  );
-}
-```
-
-### All variants
-
-Same data, five looks. Pick by how much the accordion should stand out from what surrounds it.
-
-- `variant="default"` keeps closed rows quiet and lifts the open one out as a card. Best on a plain page background.
-- `variant="bordered"` wraps everything in one outlined panel with a rail on the open row. Best inside cards and settings pages.
-- `variant="filled"` inverts the open item to your primary color. Loudest of the five.
-- `variant="ghost"` is type and hairlines only. Best for long editorial FAQs.
-
-```tsx
-import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
-
-const faqItems: AccordionDataItem[] = [
-  {
-    value: "getting-started",
-    title: "How do I get started?",
-    icon: "HelpCircle", // any key of the block's ICON_MAP
-    content: [
-      "Getting started is easy! Simply sign up for an account.",
-      "We'll guide you through setting up your profile.",
-    ],
-  },
-  {
-    value: "pricing",
-    title: "What are your pricing plans?",
-    icon: "CreditCard",
-    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
-  },
-  {
-    value: "security",
-    title: "How secure is my data?",
-    icon: "Shield",
-    content: [
-      "Security is our top priority.",
-      "Your information is stored in secure data centers.",
-    ],
-  },
-];
-
-const variants = ["default", "bordered", "filled", "elevated", "ghost"] as const;
-
-export default function AccordionVariants() {
-  return (
-    <div className="flex flex-col gap-10">
-      {variants.map((variant) => (
-        <Accordion
-          key={variant}
-          variant={variant}
-          accordionData={faqItems}
-          type="single"
-          collapsible
-          defaultValue="pricing"
-        />
-      ))}
-    </div>
-  );
-}
-```
-
 ## Features
-Single or multiple open panels, a one-time stack entrance, and five variants that all read your theme tokens.
+Single or multiple open panels, a one-time stack entrance, and eight variants that all read your theme tokens.
 
 ### Follows your theme
 
@@ -439,7 +363,7 @@ Rows wrap cleanly at phone width; the open card in the default variant only grow
 
 ### No animation library
 
-The stack entrance uses the Web Animations API and runs once. The only dependency beyond Radix is `lucide-react`.
+The `soft`, `inset` and `bracket` variants open and close with CSS keyframes that ship inside the component. The stack entrance uses the Web Animations API. The only dependency beyond Radix is `lucide-react`.
 
 ## Best Practices & Guidelines
 
@@ -452,7 +376,7 @@ Use `animation="stack"` once per page, on the accordion you want people to notic
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `accordionData` | `AccordionDataItem[]` | `[]` | Array of objects defining `value`, `title`, `icon`, and `content`. |
-| `variant` | `"default" \| "bordered" \| "filled" \| "elevated" \| "ghost" \| "brand-reveal"` | `"default"` | Which look to use. `default` lifts the open row out as a card, `bordered` grows a rail on it, `filled` inverts it to `primary`, `elevated` raises it on a ring, `ghost` is type and hairlines only, and `brand-reveal` renders an interactive horizontal brand showcase. |
+| `variant` | `"default" \| "bordered" \| "filled" \| "elevated" \| "soft" \| "inset" \| "bracket" \| "ghost" \| "brand-reveal"` | `"default"` | Which look to use. `default` lifts the open row out as a card, `bordered` grows a rail on it, `filled` inverts it to `primary`, `elevated` raises it on a ring, `soft` uses tinted tiles with a plus that folds into a minus, `inset` sets the answer in a well inside the open card, `bracket` opens corner brackets outward, `ghost` is type and hairlines only, and `brand-reveal` renders an interactive horizontal brand showcase. |
 | `brands` | `BrandItem[]` | `DEFAULT_BRANDS` | Used when `variant="brand-reveal"`. Array of objects defining `id`, `name`, `caption`, and optional `logo`, `link`, and `index`. |
 | `animation` | `"none" \| "stack"` | `"none"` | `"stack"` piles the items on the first one and deals them into place once the accordion scrolls into view. Runs once; skipped under `prefers-reduced-motion`. |
 | `type` | `"single" \| "multiple"` | `"single"` | Determines if one or multiple panels can be open simultaneously. |
@@ -463,6 +387,12 @@ Use `animation="stack"` once per page, on the accordion you want people to notic
 | `itemClassName` | `string` | `""` | Custom classes applied to individual accordion items. |
 | `triggerClassName` | `string` | `""` | Custom classes applied to the clickable trigger row. |
 | `contentClassName` | `string` | `""` | Custom classes applied to the expanded content area. |
+
+## About Shadcn Accordion
+
+**What it is.** A copy-paste accordion for React, built on the Radix UI primitive and styled with shadcn theme tokens. You pass an array of items and it renders the icons, titles and panels.
+
+**When to use it.** FAQ sections, settings panels, onboarding checklists and help centers. Pick a list style to match the surface it sits on, or the brand reveal to show clients and partners.
 
 ---
 

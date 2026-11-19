@@ -32,6 +32,7 @@
     "src/components/custom/blocks/Accordion.tsx",
     "src/components/custom/blocks/AdvancedTableBlock.tsx",
     "src/components/custom/blocks/Ai-chat.tsx",
+    "src/components/custom/blocks/AiChatWorkspace.tsx",
     "src/components/custom/blocks/Alerts.tsx",
     "src/components/custom/blocks/AnimatedFAQBlock.tsx",
     "src/components/custom/blocks/AnimatedFAQVisuals.tsx",

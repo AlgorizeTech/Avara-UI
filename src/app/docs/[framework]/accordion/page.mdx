@@ -2,14 +2,12 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("accordion");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Accordion
 
-A data-driven accordion built on the Radix primitive, with five list variants and an interactive **Brand Logo Reveal** showcase variant. The open panel is the only thing that gets the accent: it lifts out as a card, inverts to your primary color, grows a rail down its edge, or expands into an editorial brand showcase.
-
-You feed it an `accordionData` array — the wrapper maps it to items, icons and content for you. Switch on `animation="stack"` and the items start piled on the first one and deal down into place when the accordion scrolls into view.
+A data-driven accordion with eight list styles and a brand reveal showcase.
 
 <AgentVariants slug="accordion" />
 
@@ -48,48 +46,63 @@ export default function Faq() {
   // animation="stack" piles the items on the first one and deals them out
   // once the accordion scrolls into view. Leave it off for plain rendering.
   return (
-    <Accordion
-      accordionData={faqItems}
-      type="single"
-      collapsible
-      animation="stack"
-      defaultValue="getting-started"
-    />
+    <div className="mx-auto w-full max-w-2xl">
+      <Accordion
+        accordionData={faqItems}
+        type="single"
+        collapsible
+        animation="stack"
+        defaultValue="getting-started"
+      />
+    </div>
   );
 }`;
 
-export const usageMultiple = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+export const usageSoft = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
 
 ${usageData}
 
-export default function MultiOpenFaq() {
-  // type="multiple" lets any number of panels stay open at once.
-  // defaultValue becomes an array in this mode.
+export default function SoftFaq() {
   return (
-    <Accordion
-      accordionData={faqItems}
-      type="multiple"
-      variant="bordered"
-      defaultValue={["getting-started"]}
-    />
+    <div className="mx-auto w-full max-w-2xl">
+      <Accordion
+        accordionData={faqItems}
+        variant="soft"
+        defaultValue="getting-started"
+      />
+    </div>
   );
 }`;
 
-export const usageMandatory = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+export const usageInset = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
 
 ${usageData}
 
-export default function AlwaysOpenFaq() {
-  // collapsible={false} stops the user closing the last open panel,
-  // so exactly one is always showing.
+export default function InsetFaq() {
   return (
-    <Accordion
-      accordionData={faqItems}
-      type="single"
-      collapsible={false}
-      variant="filled"
-      defaultValue="getting-started"
-    />
+    <div className="mx-auto w-full max-w-2xl">
+      <Accordion
+        accordionData={faqItems}
+        variant="inset"
+        defaultValue="getting-started"
+      />
+    </div>
+  );
+}`;
+
+export const usageBracket = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+
+${usageData}
+
+export default function BracketFaq() {
+  return (
+    <div className="mx-auto w-full max-w-2xl">
+      <Accordion
+        accordionData={faqItems}
+        variant="bracket"
+        defaultValue="getting-started"
+      />
+    </div>
   );
 }`;
 
@@ -98,31 +111,81 @@ export const usageBrandReveal = `import { BrandLogoAccordion } from "@/component
 // Alternatively use <Accordion variant="brand-reveal" />
 export default function BrandRevealShowcase() {
   return (
-    <BrandLogoAccordion
-      autoplay
-      autoplayInterval={4000}
-      pauseOnHover
-    />
+    <div className="mx-auto w-full max-w-4xl">
+      <BrandLogoAccordion autoplay autoplayInterval={4000} pauseOnHover />
+    </div>
+  );
+}`;
+
+export const usageMultipleOpen = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+
+${usageData}
+
+export default function MultipleOpenFaq() {
+  // type="multiple" lets several panels stay open; clicking an open one closes it.
+  return (
+    <div className="mx-auto w-full max-w-2xl">
+      <Accordion
+        accordionData={faqItems}
+        type="multiple"
+        variant="ghost"
+        defaultValue={["getting-started"]}
+      />
+    </div>
   );
 }`;
 
 <ExampleShowcase headingLevel={2}
   name="accordion"
   columns={1}
+  minHeight={240}
   examples={[
     {
-      title: "Accordion",
+      title: "Inset panel",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"inset"',
+          effect: "to lift the open row and set its answer in an inset well.",
+        },
+      ],
+      props: { variant: "inset", interaction: "single" },
+      usage: usageInset,
+    },
+    {
+      title: "Bracket frame",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"bracket"',
+          effect: "for outlined rows whose corner brackets open outward.",
+        },
+      ],
+      props: { variant: "bracket", interaction: "single" },
+      usage: usageBracket,
+    },
+    {
+      title: "Soft tiles",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"soft"',
+          effect: "for tinted tiles whose plus folds into a minus.",
+        },
+      ],
+      props: { variant: "soft", interaction: "single" },
+      usage: usageSoft,
+    },
+    {
+      title: "Lift card",
       propNotes: [
         {
           lead: "Pass",
           prop: "accordionData",
-          effect: "as an array of `{ value, title, icon, content }`. `content` is an array of paragraphs and `icon` a key of the block's `ICON_MAP`.",
-        },
-        {
-          lead: "Add",
-          prop: "animation",
-          value: '"stack"',
-          effect: "to start the items piled on the first one and deal them into place when the accordion scrolls into view.",
+          effect: "as an array of `{ value, title, icon, content }`.",
         },
       ],
       props: { variant: "default", interaction: "single", animation: "stack" },
@@ -130,24 +193,31 @@ export default function BrandRevealShowcase() {
       code: extractCode("src/components/custom/blocks/Accordion.tsx"),
     },
     {
-      title: "Brand logo reveal",
-      subheading: "A brand accordion of horizontal pleats with an autoplay progress indicator. Hovering pauses it, and it stacks on small screens.",
+      title: "Brand reveal",
       propNotes: [
         {
-          lead: "Pass",
+          lead: "Use",
           prop: "variant",
           value: '"brand-reveal"',
-          effect: "to show the editorial horizontal brand accordion, or use `<BrandLogoAccordion />` directly.",
-        },
-        {
-          prop: "autoplayInterval",
-          value: "4000",
-          effect: "is the milliseconds before the next brand is revealed.",
+          effect: "or `<BrandLogoAccordion />` directly.",
         },
       ],
       props: { variant: "brand-reveal" },
       usage: usageBrandReveal,
       code: extractCode("src/components/custom/blocks/Accordion.tsx"),
+    },
+    {
+      title: "Multiple open",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "type",
+          value: '"multiple"',
+          effect: "so several panels can be open at once; each one still closes on click.",
+        },
+      ],
+      props: { variant: "ghost", interaction: "multiple" },
+      usage: usageMultipleOpen,
     },
   ]}
 />
@@ -156,169 +226,8 @@ export default function BrandRevealShowcase() {
 
 <Installation name="accordion" />
 
-## Examples
-
-export const usageMultiplePermanent = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
-
-${usageData}
-
-export default function PermanentMultiOpenFaq() {
-  // type="multiple" and collapsible={false} allows opening multiple panels,
-  // but once opened, a panel cannot be closed by clicking it again.
-  return (
-    <Accordion
-      accordionData={faqItems}
-      type="multiple"
-      collapsible={false}
-      variant="ghost"
-      defaultValue={["getting-started"]}
-    />
-  );
-}`;
-
-export const usageStackElevated = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
-
-${usageData}
-
-export default function StackedFaq() {
-  // The entrance works with every variant. It waits for the accordion to
-  // scroll into view, and is skipped for visitors who prefer reduced motion.
-  return (
-    <Accordion
-      accordionData={faqItems}
-      type="single"
-      collapsible
-      variant="elevated"
-      animation="stack"
-      defaultValue="getting-started"
-    />
-  );
-}`;
-
-export const usageVariants = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
-
-${usageData}
-
-const variants = ["default", "bordered", "filled", "elevated", "ghost"] as const;
-
-export default function AccordionVariants() {
-  return (
-    <div className="flex flex-col gap-10">
-      {variants.map((variant) => (
-        <Accordion
-          key={variant}
-          variant={variant}
-          accordionData={faqItems}
-          type="single"
-          collapsible
-          defaultValue="pricing"
-        />
-      ))}
-    </div>
-  );
-}`;
-
-<ExampleShowcase
-  name="accordion"
-  columns={1}
-  examples={[
-    {
-      title: "Multiple open",
-      propNotes: [
-        {
-          lead: "Set",
-          prop: "type",
-          value: '"multiple"',
-          effect: "to let any number of panels stay open at once.",
-        },
-        {
-          prop: "defaultValue",
-          effect:
-            "becomes an **array** in this mode — passing a bare string silently opens nothing.",
-        },
-      ],
-      props: { variant: "bordered", interaction: "multiple" },
-      usage: usageMultiple,
-    },
-    {
-      title: "Always one open",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "collapsible",
-          value: "{false}",
-          effect: "to stop the user closing the last open panel, so exactly one is always showing. Pair it with a `defaultValue` or the accordion starts fully closed.",
-        },
-      ],
-      props: { variant: "filled", interaction: "single-mandatory" },
-      usage: usageMandatory,
-    },
-    {
-      title: "Multiple permanent open",
-      propNotes: [
-        {
-          lead: "Combine",
-          prop: "type",
-          value: '"multiple"',
-          effect: "and `collapsible={false}` to allow several panels open at once without letting any be closed.",
-        },
-      ],
-      props: { variant: "ghost", interaction: "multiple-non-collapsible" },
-      usage: usageMultiplePermanent,
-    },
-    {
-      title: "Stack entrance",
-      subheading: "The deal-out entrance on the `elevated` variant. It works with all five.",
-      propNotes: [
-        {
-          lead: "Pass",
-          prop: "animation",
-          value: '"stack"',
-          effect: "to pile the items on the first one and deal them down with a stagger. It runs once, when the accordion first scrolls into view.",
-        },
-      ],
-      props: { variant: "elevated", interaction: "single", animation: "stack" },
-      usage: usageStackElevated,
-    },
-    {
-      title: "All variants",
-      subheading:
-        "Same data, five looks. Pick by how much the accordion should stand out from what surrounds it.",
-      propNotes: [
-        {
-          prop: "variant",
-          value: '"default"',
-          effect:
-            "keeps closed rows quiet and lifts the open one out as a card. Best on a plain page background.",
-        },
-        {
-          prop: "variant",
-          value: '"bordered"',
-          effect:
-            "wraps everything in one outlined panel with a rail on the open row. Best inside cards and settings pages.",
-        },
-        {
-          prop: "variant",
-          value: '"filled"',
-          effect:
-            "inverts the open item to your primary color. Loudest of the five.",
-        },
-        {
-          prop: "variant",
-          value: '"ghost"',
-          effect:
-            "is type and hairlines only. Best for long editorial FAQs.",
-        },
-      ],
-      props: { showAll: "variants" },
-      usage: usageVariants,
-      minHeight: 900,
-    },
-  ]}
-/>
-
 ## Features
-Single or multiple open panels, a one-time stack entrance, and five variants that all read your theme tokens.
+Single or multiple open panels, a one-time stack entrance, and eight variants that all read your theme tokens.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <div className="p-6 rounded-2xl border border-border bg-card">
@@ -335,7 +244,7 @@ Single or multiple open panels, a one-time stack entrance, and five variants tha
   </div>
   <div className="p-6 rounded-2xl border border-border bg-card">
     <h3 className="text-lg font-semibold text-card-foreground mb-2">No animation library</h3>
-    <p className="text-muted-foreground text-sm">The stack entrance uses the Web Animations API and runs once. The only dependency beyond Radix is <code>lucide-react</code>.</p>
+    <p className="text-muted-foreground text-sm">The <code>soft</code>, <code>inset</code> and <code>bracket</code> variants open and close with CSS keyframes that ship inside the component. The stack entrance uses the Web Animations API. The only dependency beyond Radix is <code>lucide-react</code>.</p>
   </div>
 </div>
 
@@ -381,7 +290,7 @@ Single or multiple open panels, a one-time stack entrance, and five variants tha
           <code>variant</code>
         </td>
         <td>
-          <code>"default" | "bordered" | "filled" | "elevated" | "ghost" | "brand-reveal"</code>
+          <code>"default" | "bordered" | "filled" | "elevated" | "soft" | "inset" | "bracket" | "ghost" | "brand-reveal"</code>
         </td>
         <td>
           <code>"default"</code>
@@ -390,7 +299,10 @@ Single or multiple open panels, a one-time stack entrance, and five variants tha
           Which look to use. <code>default</code> lifts the open row out as a
           card, <code>bordered</code> grows a rail on it, <code>filled</code>{" "}
           inverts it to <code>primary</code>, <code>elevated</code> raises it on
-          a ring, <code>ghost</code> is type and hairlines only, and{" "}
+          a ring, <code>soft</code> uses tinted tiles with a plus that folds
+          into a minus, <code>inset</code> sets the answer in a well inside the
+          open card, <code>bracket</code> opens corner brackets outward,{" "}
+          <code>ghost</code> is type and hairlines only, and{" "}
           <code>brand-reveal</code> renders an interactive horizontal brand showcase.
         </td>
       </tr>
@@ -533,6 +445,12 @@ Single or multiple open panels, a one-time stack entrance, and five variants tha
     </tbody>
   </table>
 </div>
+
+## About Shadcn Accordion
+
+**What it is.** A copy-paste accordion for React, built on the Radix UI primitive and styled with shadcn theme tokens. You pass an array of items and it renders the icons, titles and panels.
+
+**When to use it.** FAQ sections, settings panels, onboarding checklists and help centers. Pick a list style to match the surface it sits on, or the brand reveal to show clients and partners.
 
 import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
 

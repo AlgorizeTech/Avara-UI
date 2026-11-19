@@ -99,7 +99,7 @@ Install the chosen variant's own `install` command from the index. Several looks
 - `chat`: 4 variants. All live: https://avaraui.com/view/chat
 - `calendar`: 4 variants. All live: https://avaraui.com/view/calendar
 - `email`: 4 variants. All live: https://avaraui.com/view/email
-- `ai-chat`: 5 variants. All live: https://avaraui.com/view/ai-chat
+- `ai-chat`: 6 variants. All live: https://avaraui.com/view/ai-chat
 - `curved-carousel`: 2 variants. All live: https://avaraui.com/view/curved-carousel
 - `data-maps`: 2 variants. All live: https://avaraui.com/view/data-maps
 - `draggable-card-list`: 2 variants. All live: https://avaraui.com/view/draggable-card-list
@@ -127,5 +127,6 @@ Install the chosen variant's own `install` command from the index. Several looks
 - `timeline`: 5 variants. All live: https://avaraui.com/view/timeline
 - `toggle-group`: 4 variants. All live: https://avaraui.com/view/toggle-group
 - `ribbon-drift`: 2 variants. All live: https://avaraui.com/view/ribbon-drift
+- `alert`: 4 variants. All live: https://avaraui.com/view/alert
 
 An index entry with `choose: true` is the authority: it lists every variant and its live link.
