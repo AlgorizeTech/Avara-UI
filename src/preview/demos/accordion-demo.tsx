@@ -180,7 +180,7 @@ export default function AccordionDemo({
 
   if (variant === "brand-reveal") {
     return (
-      <div className="p-2 sm:p-4">
+      <div className="w-full p-2 sm:p-4">
         <div className="mx-auto w-full max-w-4xl">
           <BrandLogoAccordion />
         </div>
@@ -222,7 +222,7 @@ export default function AccordionDemo({
   // the whole page under it) on every animation frame, and the rows stay
   // pinned to the top instead of drifting as the content grows.
   return (
-    <div className="p-4 md:p-8 min-h-[33rem]">
+    <div className="w-full p-4 md:p-8 min-h-[33rem]">
       <div className="mx-auto w-full max-w-2xl">
         <Accordion
           key={`${variant}-${interaction}-${animation}-${expandIcon ?? "default"}`}

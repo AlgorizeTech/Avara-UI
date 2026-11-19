@@ -57,13 +57,22 @@
     "pop": "Animated List — Pop",
     "timing": "Animated List — Timing"
   },
+  "timeline-path": {
+    "path-timeline": "Timeline Path — Path timeline"
+  },
+  "timeline-dial": {
+    "dial-timeline": "Timeline Dial — Dial timeline"
+  },
+  "timeline-ruler": {
+    "ruler-timeline": "Timeline Ruler — Ruler timeline"
+  },
+  "timeline-steps": {
+    "steps-timeline": "Timeline Steps — Steps timeline"
+  },
   "animated-timeline": {
     "animated-timeline": "Animated Timeline",
     "left-layout": "Animated Timeline — Left layout",
-    "right-layout": "Animated Timeline — Right layout",
-    "fade-up": "Animated Timeline — Fade up",
-    "zoom-in": "Animated Timeline — Zoom in",
-    "blur-in": "Animated Timeline — Blur in"
+    "right-layout": "Animated Timeline — Right layout"
   },
   "animated-typography": {
     "typewriter": "Animated Typography — Typewriter",

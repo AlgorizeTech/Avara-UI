@@ -1744,7 +1744,7 @@ export default function AIChatWorkspace({
           if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files);
         }}
         className={cn(
-          "relative rounded-2xl border border-border/60 bg-card shadow-[0_1px_2px_rgb(0_0_0/0.03),0_10px_28px_-14px_rgb(0_0_0/0.14)] transition-shadow",
+          "relative rounded-2xl border border-border/60 bg-card dark:bg-black shadow-[0_1px_2px_rgb(0_0_0/0.03),0_10px_28px_-14px_rgb(0_0_0/0.14)] transition-shadow",
           theme.ring,
           isDragging && cn("ring-2", theme.inputBorder),
         )}
@@ -1869,7 +1869,7 @@ export default function AIChatWorkspace({
                   className={cn(
                     "relative flex h-8 min-w-0 max-w-[132px] items-center gap-1.5 rounded-lg px-2 text-xs font-semibold transition-colors cursor-pointer sm:max-w-[176px]",
                     FOCUS,
-                    tierLook ? tierLook.pill : open ? "bg-card text-foreground" : "text-foreground hover:bg-card",
+                    tierLook ? tierLook.pill : open ? "bg-card dark:bg-black text-foreground" : "text-foreground hover:bg-card",
                   )}
                 >
                   {tierFx > 0 && tierLook && <tierLook.PillFlash key={tierFx} />}
@@ -2088,7 +2088,7 @@ export default function AIChatWorkspace({
               <div ref={ref} style={style} className="overflow-hidden">
                 <div className="max-h-[216px] space-y-0.5 overflow-y-auto px-2 pb-2">
                   {!isPro && (
-                    <div className="mb-1 flex items-center justify-between gap-3 rounded-lg bg-card px-3 py-2.5">
+                    <div className="mb-1 flex items-center justify-between gap-3 rounded-lg bg-card dark:bg-black px-3 py-2.5">
                       <p className="text-xs text-muted-foreground">Linking apps is part of Pro.</p>
                       <button
                         type="button"
@@ -2134,7 +2134,7 @@ export default function AIChatWorkspace({
                             disabled={state === "connecting"}
                             onClick={() => connect(c)}
                             className={cn(
-                              "inline-flex min-w-[72px] items-center justify-center gap-1.5 rounded-md border border-border bg-card px-2.5 py-1 text-[11.5px] font-semibold text-foreground transition-colors hover:bg-muted disabled:opacity-70 cursor-pointer",
+                              "inline-flex min-w-[72px] items-center justify-center gap-1.5 rounded-md border border-border bg-card dark:bg-black px-2.5 py-1 text-[11.5px] font-semibold text-foreground transition-colors hover:bg-muted disabled:opacity-70 cursor-pointer",
                               FOCUS,
                             )}
                           >
@@ -2206,7 +2206,7 @@ export default function AIChatWorkspace({
                   file.previewUrl && file.type.startsWith("image/") ? (
                     <img key={file.id} src={file.previewUrl} alt={file.name} className="h-24 max-w-[180px] rounded-xl border border-border object-cover" />
                   ) : (
-                    <div key={file.id} className="flex max-w-[220px] items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-xs">
+                    <div key={file.id} className="flex max-w-[220px] items-center gap-2 rounded-xl border border-border bg-card dark:bg-black px-3 py-2 text-xs">
                       <FileText className="size-4 shrink-0 text-muted-foreground" />
                       <span className="truncate font-semibold">{file.name}</span>
                       <span className="shrink-0 text-muted-foreground">{formatBytes(file.size)}</span>
@@ -2278,7 +2278,7 @@ export default function AIChatWorkspace({
                 <span
                   key={s.id}
                   title={s.title}
-                  className="inline-flex max-w-[200px] items-center gap-1.5 rounded-full border border-border bg-card px-2.5 py-1 text-[11.5px] text-muted-foreground"
+                  className="inline-flex max-w-[200px] items-center gap-1.5 rounded-full border border-border bg-card dark:bg-black px-2.5 py-1 text-[11.5px] text-muted-foreground"
                 >
                   <span className={cn("flex size-4 items-center justify-center rounded-full text-[9px] font-semibold", theme.lightBg)}>{i + 1}</span>
                   <span className="truncate">{s.host}</span>
@@ -2405,7 +2405,7 @@ export default function AIChatWorkspace({
               aria-label={`Reply language: ${language.label}`}
               title={`Reply language: ${language.label}`}
               className={cn(
-                "inline-flex size-9 items-center justify-center rounded-full border border-border bg-card text-foreground/80 shadow-[0_1px_2px_rgb(0_0_0/0.04)] transition-colors hover:bg-muted cursor-pointer",
+                "inline-flex size-9 items-center justify-center rounded-full border border-border bg-card dark:bg-black text-foreground/80 shadow-[0_1px_2px_rgb(0_0_0/0.04)] transition-colors hover:bg-muted cursor-pointer",
                 FOCUS,
                 open && "bg-muted",
               )}
@@ -2436,7 +2436,7 @@ export default function AIChatWorkspace({
               aria-label="Help and shortcuts"
               title="Help and shortcuts"
               className={cn(
-                "inline-flex size-9 items-center justify-center rounded-full border border-border bg-card text-foreground/80 shadow-[0_1px_2px_rgb(0_0_0/0.04)] transition-colors hover:bg-muted cursor-pointer",
+                "inline-flex size-9 items-center justify-center rounded-full border border-border bg-card dark:bg-black text-foreground/80 shadow-[0_1px_2px_rgb(0_0_0/0.04)] transition-colors hover:bg-muted cursor-pointer",
                 FOCUS,
                 open && "bg-muted",
               )}
@@ -2772,7 +2772,7 @@ export default function AIChatWorkspace({
       </aside>
 
       {/* === MAIN === */}
-      <main className="relative flex min-w-0 flex-1 flex-col overflow-hidden rounded-[calc(var(--ws-r,28px)-8px)] bg-card ring-1 ring-foreground/[0.05] shadow-[0_1px_2px_rgb(0_0_0/0.04),0_18px_44px_-22px_rgb(0_0_0/0.2)] max-lg:rounded-[calc(var(--ws-r,28px)-8px)]">
+      <main className="relative flex min-w-0 flex-1 flex-col overflow-hidden rounded-[calc(var(--ws-r,28px)-8px)] bg-card dark:bg-black ring-1 ring-foreground/[0.05] shadow-[0_1px_2px_rgb(0_0_0/0.04),0_18px_44px_-22px_rgb(0_0_0/0.2)] max-lg:rounded-[calc(var(--ws-r,28px)-8px)]">
         <header className="relative z-20 flex h-14 shrink-0 items-center justify-between gap-2 border-b border-border/40 px-3 sm:px-5">
           <div className="flex min-w-0 items-center gap-1">
             <button type="button" onClick={() => setMobileOpen(true)} aria-label="Open sidebar" className={iconBtn("size-9 hover:bg-muted hover:text-foreground lg:hidden")}>
@@ -2811,7 +2811,7 @@ export default function AIChatWorkspace({
               onClick={copyLink}
               aria-label="Copy link"
               title="Copy link"
-              className={iconBtn("size-9 border border-border bg-card shadow-[0_1px_2px_rgb(0_0_0/0.04)] hover:bg-muted hover:text-foreground")}
+              className={iconBtn("size-9 border border-border bg-card dark:bg-black shadow-[0_1px_2px_rgb(0_0_0/0.04)] hover:bg-muted hover:text-foreground")}
             >
               {linkState === "copied" ? <Check className="size-4 text-emerald-600 dark:text-emerald-400" /> : <Link2 className="size-4" />}
             </button>
@@ -2828,7 +2828,7 @@ export default function AIChatWorkspace({
                   aria-haspopup="menu"
                   aria-expanded={open}
                   className={cn(
-                    "inline-flex h-9 items-center gap-2 rounded-lg border border-border bg-card px-3 text-[13px] font-medium text-foreground shadow-[0_1px_2px_rgb(0_0_0/0.04)] transition-colors hover:bg-muted cursor-pointer",
+                    "inline-flex h-9 items-center gap-2 rounded-lg border border-border bg-card dark:bg-black px-3 text-[13px] font-medium text-foreground shadow-[0_1px_2px_rgb(0_0_0/0.04)] transition-colors hover:bg-muted cursor-pointer",
                     FOCUS,
                     open && "bg-muted",
                   )}
@@ -2927,7 +2927,7 @@ export default function AIChatWorkspace({
                     stick.current = true;
                     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
                   }}
-                  className={cn("absolute bottom-3 left-1/2 inline-flex size-9 -translate-x-1/2 items-center justify-center rounded-full border border-border bg-card shadow-[0_1px_2px_rgb(0_0_0/0.04)] cursor-pointer", FOCUS)}
+                  className={cn("absolute bottom-3 left-1/2 inline-flex size-9 -translate-x-1/2 items-center justify-center rounded-full border border-border bg-card dark:bg-black shadow-[0_1px_2px_rgb(0_0_0/0.04)] cursor-pointer", FOCUS)}
                 >
                   <ChevronDown className="size-4" />
                 </button>
@@ -2994,7 +2994,7 @@ export default function AIChatWorkspace({
               ) : (
                 <ul className="divide-y divide-border overflow-hidden rounded-2xl border border-border">
                   {knowledge.map((item) => (
-                    <li key={item.id} className="flex items-center gap-3 bg-card px-4 py-3">
+                    <li key={item.id} className="flex items-center gap-3 bg-card dark:bg-black px-4 py-3">
                       <span className={cn("flex size-9 shrink-0 items-center justify-center rounded-lg", theme.lightBg)}>
                         <FileText className="size-4" />
                       </span>
@@ -3039,7 +3039,7 @@ export default function AIChatWorkspace({
             className="absolute inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-[2px]"
             onMouseDown={(e) => e.target === e.currentTarget && setUpgradeOpen(false)}
           >
-            <div role="dialog" aria-modal="true" aria-labelledby="ws-upgrade-title" className="aichat-rise-10 w-full max-w-sm rounded-2xl border border-border bg-card p-5 shadow-[0_12px_32px_-12px_rgb(0_0_0/0.22)]">
+            <div role="dialog" aria-modal="true" aria-labelledby="ws-upgrade-title" className="aichat-rise-10 w-full max-w-sm rounded-2xl border border-border bg-card dark:bg-black p-5 shadow-[0_12px_32px_-12px_rgb(0_0_0/0.22)]">
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <h2 id="ws-upgrade-title" className="text-lg font-semibold tracking-tight text-foreground">Upgrade to Pro</h2>
