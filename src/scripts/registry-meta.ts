@@ -617,6 +617,30 @@ export const META: Record<string, ItemMeta> = {
     categories: ["data-display", "marketing"],
     docs: "Named exports: AnimatedTimelineBlock, getThemeStyles (from animated-timeline-theme.ts, which installs alongside). `animation` is fade-up | slide-in | zoom-in | flip-up | blur-in; `layout` is left | right | center. Uses IntersectionObserver rather than a motion library, so it has no runtime dependencies. For status-driven progress, use `timeline`.",
   },
+  "timeline-steps": {
+    description:
+      "A scroll-linked step list: numbered nodes on a rail that fills with the accent colour as you scroll, with the step in focus kept sharp. Use it for a company history or a dated changelog.",
+    categories: ["data-display", "marketing"],
+    docs: "Named exports: TimelineStepsBlock (also uses timeline-kit-theme.ts and timeline-scroll.ts, which install alongside). Items take { id, title, date?, description?, content?, action? }. It follows the scroll of its nearest scrolling ancestor, else the page; click a node to scroll to it. `defaultIndex` and `onIndexChange` read the step in focus. Zero runtime dependencies.",
+  },
+  "timeline-path": {
+    description:
+      "A scroll-linked timeline on a winding path that draws itself from stop to stop, with a glowing head and cards that light up as it arrives. Use it for a company or product milestone story.",
+    categories: ["data-display", "marketing"],
+    docs: "Named exports: TimelinePathBlock (also uses timeline-kit-theme.ts and timeline-scroll.ts, which install alongside). Items take { id, title, date?, description?, icon? }. The path winds between two lanes from a 640px column up and hugs the left edge below that. It follows the scroll of its nearest scrolling ancestor, else the page. Zero runtime dependencies.",
+  },
+  "timeline-dial": {
+    description:
+      "A wheel timeline: entries ride an arc beside a ruler of tick marks while the focused one is detailed beside it. Use it for a company or product milestone section.",
+    categories: ["data-display", "marketing"],
+    docs: "Named exports: TimelineDialBlock (also uses timeline-kit-theme.ts and timeline-scroll.ts, which install alongside). Items take { id, title, date, eyebrow?, description?, icon? }. Turn it by clicking an entry, the arrow buttons, the mouse wheel (only while there is somewhere to go), arrow keys or a vertical drag. `defaultIndex` and `onIndexChange` read the entry in focus. Zero runtime dependencies.",
+  },
+  "timeline-ruler": {
+    description:
+      "A date-ruler timeline: labels slide past a fixed wavy rail and the one at the bulge is detailed beside it, with a headline figure. Use it for monthly metrics or a dated activity log.",
+    categories: ["data-display", "marketing"],
+    docs: "Named exports: TimelineRulerBlock (also uses timeline-kit-theme.ts and timeline-scroll.ts, which install alongside). Items take { id, date, title, value?, description?, image?, icon?, content? }; `value` is the large figure and `description` its caption. Move with a click, the round button (it wraps), the mouse wheel (only while there is somewhere to go), arrow keys or a vertical drag. Zero runtime dependencies.",
+  },
   "radial-orbital-timeline": {
     description:
       "A dynamic orbital visualization component that displays nodes in a circular pattern around a central point. Each node represents a data point with title, status, and energy level.",
