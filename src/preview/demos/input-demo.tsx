@@ -60,6 +60,7 @@ export default function InputDemo({
   isMultiple = true,
   isImageOnly = false,
   color = "primary",
+  floatingLabel = false,
   showAll,
   example,
 }: {
@@ -71,11 +72,31 @@ export default function InputDemo({
   isMultiple?: boolean;
   isImageOnly?: boolean;
   color?: InputColor | string;
+  floatingLabel?: boolean;
   /** Render-all modes: every size, or the error/disabled states, in one frame. */
   showAll?: "sizes" | "states";
   /** Special interactive or composite showcases. */
   example?: "autocomplete" | "pill";
 }) {
+  if (variant === "password-strength") {
+    return (
+      <div className="w-full flex flex-col items-center justify-center min-h-[400px] p-4 relative z-10">
+        <div className="w-full max-w-sm">
+          <InputBlock
+            variant="password-strength"
+            type="password"
+            color={color}
+            inputSize={inputSize}
+            label="New password"
+            floatingLabel={floatingLabel}
+            placeholder="Enter a strong password..."
+            disabled={isDisabled}
+          />
+        </div>
+      </div>
+    );
+  }
+
   if (example === "pill" || variant === "pill") {
     const iconClass =
       inputSize === "sm" ? "w-3.5 h-3.5" : inputSize === "lg" ? "w-5 h-5" : "w-4 h-4";

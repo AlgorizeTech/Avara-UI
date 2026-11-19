@@ -15,6 +15,20 @@ Explore the different variations of the Input component — each example shows a
 
 <AgentVariants slug="input" />
 
+export const usagePasswordStrength = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
+
+export default function PasswordStrengthInput() {
+  return (
+    <InputBlock
+      variant="password-strength"
+      type="password"
+      label="New password"
+      floatingLabel={true}
+      placeholder="Enter a strong password..."
+    />
+  );
+}`;
+
 export const usageDefault = `import { InputBlock } from "@/components/custom/blocks/InputBlock";
 
 export default function BasicInput() {
@@ -133,6 +147,35 @@ export default function DestinationInput() {
   colorLabel="Active Color"
   columns={1}
   examples={[
+    {
+      id: "password-strength",
+      title: "Password Strength",
+      subheading: "Live password strength meter with four segmented bars, dynamic strength label (Weak, Fair, Good, Strong), and real-time criteria checklist.",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"password-strength"',
+          effect:
+            "for the segmented password strength meter and live rule checklist.",
+        },
+        {
+          prop: "type",
+          value: '"password"',
+          effect:
+            "enables the masked field with a show/hide password toggle.",
+        },
+        {
+          prop: "floatingLabel",
+          value: "{true}",
+          effect:
+            "floats the label onto the top border when focused or filled; omit or pass `false` for a static label above the input.",
+        },
+      ],
+      props: { variant: "password-strength", inputType: "password", floatingLabel: true },
+      usage: usagePasswordStrength,
+      code: extractCode("src/components/custom/blocks/InputBlock.tsx"),
+    },
     {
       title: "Input",
       subheading: "A labelled text field with helper text and a leading icon.",

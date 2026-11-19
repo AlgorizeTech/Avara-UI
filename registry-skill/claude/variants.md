@@ -106,7 +106,7 @@ Install the chosen variant's own `install` command from the index. Several looks
 - `draggable-card-list`: 2 variants. All live: https://avaraui.com/view/draggable-card-list
 - `heart-signal`: 3 variants. All live: https://avaraui.com/view/heart-signal
 - `image-viewer`: 4 variants. All live: https://avaraui.com/view/image-viewer
-- `input`: 4 variants. All live: https://avaraui.com/view/input
+- `input`: 5 variants. All live: https://avaraui.com/view/input
 - `invoice`: 3 variants. All live: https://avaraui.com/view/invoice
 - `item`: 2 variants. All live: https://avaraui.com/view/item
 - `fleet-tracker`: 3 variants. All live: https://avaraui.com/view/fleet-tracker

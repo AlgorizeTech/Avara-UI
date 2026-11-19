@@ -22,6 +22,21 @@ export const input: PageVariants = {
   ],
   variants: [
     {
+      id: "password-strength",
+      label: "Password Strength",
+      group: "Boxed",
+      summary: "A password field with a 4-segment strength meter, Weak/Fair/Good/Strong label, and live criteria checklist.",
+      bestFor: ["sign-up or password-reset forms where users need immediate strength feedback"],
+      avoidIf: ["you only need a plain masked password input without rules"],
+      traits: ["4-segment meter", "live checklist", "Weak/Fair/Good/Strong tones"],
+      item: "input",
+      demo: "input",
+      example: "Password Strength",
+      props: { variant: "password-strength", inputType: "password" },
+      setProps: { variant: "password-strength", type: "password" },
+      generalItem: true,
+    },
+    {
       id: "default",
       label: "Bordered",
       group: "Boxed",
