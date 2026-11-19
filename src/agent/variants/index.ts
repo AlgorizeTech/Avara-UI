@@ -62,6 +62,7 @@ import { toggleGroup } from "./toggle-group";
 import { ribbonDrift } from "./ribbon-drift";
 import { error } from "./error";
 import { alert } from "./alert";
+import { animatedTimeline } from "./animated-timeline";
 import type { PageVariants } from "./types";
 
 export type { PageVariants, Variant } from "./types";
@@ -69,6 +70,7 @@ export type { PageVariants, Variant } from "./types";
 /** Every docs page that has a variants file. Add new pages here. */
 export const pageVariants: PageVariants[] = [
   agentGraph,
+  animatedTimeline,
   error,
   hero,
   footer,
