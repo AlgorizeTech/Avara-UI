@@ -4,6 +4,7 @@
 export const sandboxNames = [
   "accordion",
   "advanced-table",
+  "agent-graph",
   "ai-chat",
   "ai-chat-motion",
   "alert",

@@ -18,6 +18,11 @@
     "stack-entrance": "Accordion — Stack entrance",
     "all-variants": "Accordion — All variants"
   },
+  "agent-graph": {
+    "shaded-tree-default": "Agent Graph — Shaded Tree (Default)",
+    "flat-no-shade": "Agent Graph — Flat Tree (No Shade)",
+    "editorial-crew": "Agent Graph — Editorial (2-Column)"
+  },
   "ai-chat": {
     "ai-assistant": "AI Chat — AI assistant",
     "compact": "AI Chat — Compact",
@@ -421,6 +426,7 @@
   },
   "input": {
     "simple-file-input": "Input — Simple file input",
+    "password-strength": "Input — Password Strength",
     "input": "Input",
     "filled": "Input — Filled",
     "underlined": "Input — Underlined",

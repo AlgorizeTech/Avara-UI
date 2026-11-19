@@ -38,11 +38,11 @@ Every option carries its live link. An option without a link is not allowed.
 **If your client has no such tool,** print a numbered list in the message and wait for the answer. Give each variant its label, its `summary`, who it suits (`bestFor`) and its `viewUrl`. Add a last option: "Pick the best one for me". For example:
 
 ```text
-Which hero do you want? All of them live: https://avaraui.com/view/error
+Which hero do you want? All of them live: https://avaraui.com/view/agent-graph
 
-1. Cyberpunk Terminal: Full-width futuristic telemetry enclosure with Mac window indicators, crash icon, and technical trace console. Best for: developer platforms, cyber/tech apps, and root error boundaries needing technical telemetry. Live: https://avaraui.com/view/error/terminal
-2. Quantum Glitch Bento HUD: High-tech command center HUD featuring chromatic aberration glitch typography, live crash vitals, and memory hex dump. Best for: cutting-edge developer tools, AI platforms, cloud infrastructure, and cyber-tech applications. Live: https://avaraui.com/view/error/quantum-glitch
-3. Modern Animated Pulse: Ultra-modern animated orbital radar with counter-rotating rings, sweeping radar, and micro-health monitors. Best for: SaaS platforms, modern web apps, and polished production error boundaries. Live: https://avaraui.com/view/error/modern-animated
+1. Shaded Tree (Default): Three-column engineering crew tree with layered shaded card bezels. Best for: multi-agent engineering workflows with Lead, Researcher, Coder, and Reviewer branches. Live: https://avaraui.com/view/agent-graph/tree
+2. Flat Tree (No Shade): Three-column tree with `shade={false}` for clean single-surface cards. Best for: minimalist dashboards where outer card bezels are not needed. Live: https://avaraui.com/view/agent-graph/tree-flat
+3. Editorial (2-Column): Two-column editorial workflow tree (Editor -> Researcher & Writer with Fact checker and SEO). Best for: content, launch post, or two-branch agent pipelines. Live: https://avaraui.com/view/agent-graph/editorial
 ... (every variant, not a sample)
 
 Or tell me to pick the best one for you.
@@ -65,6 +65,7 @@ Install the chosen variant's own `install` command from the index. Several looks
 
 ## Pages with variants today
 
+- `agent-graph`: 3 variants. All live: https://avaraui.com/view/agent-graph
 - `error`: 5 variants. All live: https://avaraui.com/view/error
 - `hero`: 16 variants. All live: https://avaraui.com/view/hero
 - `footer`: 9 variants. All live: https://avaraui.com/view/footer
@@ -105,7 +106,7 @@ Install the chosen variant's own `install` command from the index. Several looks
 - `draggable-card-list`: 2 variants. All live: https://avaraui.com/view/draggable-card-list
 - `heart-signal`: 3 variants. All live: https://avaraui.com/view/heart-signal
 - `image-viewer`: 4 variants. All live: https://avaraui.com/view/image-viewer
-- `input`: 4 variants. All live: https://avaraui.com/view/input
+- `input`: 5 variants. All live: https://avaraui.com/view/input
 - `invoice`: 3 variants. All live: https://avaraui.com/view/invoice
 - `item`: 2 variants. All live: https://avaraui.com/view/item
 - `fleet-tracker`: 3 variants. All live: https://avaraui.com/view/fleet-tracker
