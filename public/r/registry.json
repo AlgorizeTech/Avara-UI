@@ -5235,6 +5235,142 @@
       "docs": "Named exports: TimelineBlock, getThemeStyles (from timeline-theme.ts, which installs alongside). Items take { id, title, date, description?, icon?, status } where status is completed | current | upcoming and drives the colour. `layout` places entries left | center | right. For entrance animation variety without status semantics, use `animated-timeline`."
     },
     {
+      "name": "timeline-dial",
+      "type": "registry:component",
+      "title": "Timeline Dial",
+      "author": "AlgorizeTech",
+      "description": "A wheel timeline: entries ride an arc beside a ruler of tick marks while the focused one is detailed beside it. Use it for a company or product milestone section.",
+      "categories": [
+        "data-display",
+        "marketing"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/TimelineDialBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/TimelineDialBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/timeline-kit-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/timeline-kit-theme.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/timeline-scroll.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/timeline-scroll.ts"
+        }
+      ],
+      "docs": "Named exports: TimelineDialBlock (also uses timeline-kit-theme.ts and timeline-scroll.ts, which install alongside). Items take { id, title, date, eyebrow?, description?, icon? }. Turn it by clicking an entry, the arrow buttons, the mouse wheel (only while there is somewhere to go), arrow keys or a vertical drag. `defaultIndex` and `onIndexChange` read the entry in focus. Zero runtime dependencies."
+    },
+    {
+      "name": "timeline-path",
+      "type": "registry:component",
+      "title": "Timeline Path",
+      "author": "AlgorizeTech",
+      "description": "A scroll-linked timeline on a winding path that draws itself from stop to stop, with a glowing head and cards that light up as it arrives. Use it for a company or product milestone story.",
+      "categories": [
+        "data-display",
+        "marketing"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/TimelinePathBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/TimelinePathBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/timeline-kit-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/timeline-kit-theme.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/timeline-scroll.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/timeline-scroll.ts"
+        }
+      ],
+      "docs": "Named exports: TimelinePathBlock (also uses timeline-kit-theme.ts and timeline-scroll.ts, which install alongside). Items take { id, title, date?, description?, icon? }. The path winds between two lanes from a 640px column up and hugs the left edge below that. It follows the scroll of its nearest scrolling ancestor, else the page. Zero runtime dependencies."
+    },
+    {
+      "name": "timeline-ruler",
+      "type": "registry:component",
+      "title": "Timeline Ruler",
+      "author": "AlgorizeTech",
+      "description": "A date-ruler timeline: labels slide past a fixed wavy rail and the one at the bulge is detailed beside it, with a headline figure. Use it for monthly metrics or a dated activity log.",
+      "categories": [
+        "data-display",
+        "marketing"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/TimelineRulerBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/TimelineRulerBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/timeline-kit-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/timeline-kit-theme.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/timeline-scroll.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/timeline-scroll.ts"
+        }
+      ],
+      "docs": "Named exports: TimelineRulerBlock (also uses timeline-kit-theme.ts and timeline-scroll.ts, which install alongside). Items take { id, date, title, value?, description?, image?, icon?, content? }; `value` is the large figure and `description` its caption. Move with a click, the round button (it wraps), the mouse wheel (only while there is somewhere to go), arrow keys or a vertical drag. Zero runtime dependencies."
+    },
+    {
+      "name": "timeline-steps",
+      "type": "registry:component",
+      "title": "Timeline Steps",
+      "author": "AlgorizeTech",
+      "description": "A scroll-linked step list: numbered nodes on a rail that fills with the accent colour as you scroll, with the step in focus kept sharp. Use it for a company history or a dated changelog.",
+      "categories": [
+        "data-display",
+        "marketing"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/TimelineStepsBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/TimelineStepsBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/timeline-kit-theme.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/timeline-kit-theme.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/timeline-scroll.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/timeline-scroll.ts"
+        }
+      ],
+      "docs": "Named exports: TimelineStepsBlock (also uses timeline-kit-theme.ts and timeline-scroll.ts, which install alongside). Items take { id, title, date?, description?, content?, action? }. It follows the scroll of its nearest scrolling ancestor, else the page; click a node to scroll to it. `defaultIndex` and `onIndexChange` read the step in focus. Zero runtime dependencies."
+    },
+    {
       "name": "toast",
       "type": "registry:component",
       "title": "Toast",

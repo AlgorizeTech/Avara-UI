@@ -116,41 +116,92 @@ export default function RightTimeline() {
   );
 }`;
 
-export const usageFadeUp = `import { AnimatedTimelineBlock, type AnimatedTimelineItem } from "@/components/custom/blocks/AnimatedTimelineBlock";
+<ExampleShowcase headingLevel={2}
+  name="timeline-path"
+  colorControl
+  colorLabel="Accent Color"
+  columns={1}
+  examples={[
+    {
+      title: "Path timeline",
+      subheading: "A winding line that draws itself from stop to stop, with a glowing head and cards that light up on arrival.",
+      minHeight: 690,
+      usage: extractCode("src/preview/demos/timeline-path-demo.tsx"),
+      code: extractCode("src/components/custom/blocks/TimelinePathBlock.tsx"),
+    },
+  ]}
+/>
 
-${timelineEvents}
+### Install the path timeline
 
-export default function FadeUpTimeline() {
-  return (
-    <div className="w-full max-w-5xl mx-auto py-24">
-      <AnimatedTimelineBlock items={EVENTS} layout="center" animation="fade-up" />
-    </div>
-  );
-}`;
+<Installation name="timeline-path" showSetupPath={false} />
 
-export const usageZoom = `import { AnimatedTimelineBlock, type AnimatedTimelineItem } from "@/components/custom/blocks/AnimatedTimelineBlock";
+<ExampleShowcase headingLevel={2}
+  name="timeline-dial"
+  colorControl
+  colorLabel="Accent Color"
+  columns={1}
+  examples={[
+    {
+      title: "Dial timeline",
+      subheading: "Entries ride an arc beside a ruler of ticks. Click one, use the arrows, the mouse wheel or arrow keys, or drag up and down.",
+      minHeight: 690,
+      usage: extractCode("src/preview/demos/timeline-dial-demo.tsx"),
+      code: extractCode("src/components/custom/blocks/TimelineDialBlock.tsx"),
+    },
+  ]}
+/>
 
-${timelineEvents}
+### Install the dial timeline
 
-export default function ZoomTimeline() {
-  return (
-    <div className="w-full max-w-5xl mx-auto py-24">
-      <AnimatedTimelineBlock items={EVENTS} layout="center" animation="zoom-in" />
-    </div>
-  );
-}`;
+<Installation name="timeline-dial" showSetupPath={false} />
 
-export const usageBlur = `import { AnimatedTimelineBlock, type AnimatedTimelineItem } from "@/components/custom/blocks/AnimatedTimelineBlock";
+<ExampleShowcase headingLevel={2}
+  name="timeline-ruler"
+  colorControl
+  colorLabel="Accent Color"
+  columns={1}
+  examples={[
+    {
+      title: "Ruler timeline",
+      subheading: "Labels slide past a wavy rail and the one at the bulge is detailed beside it. Click a label, press the round button, or use the wheel, arrow keys or a drag.",
+      propNotes: [
+        {
+          lead: "Each entry's",
+          prop: "value",
+          effect: "is the large figure and its `description` the caption under it.",
+        },
+      ],
+      minHeight: 690,
+      usage: extractCode("src/preview/demos/timeline-ruler-demo.tsx"),
+      code: extractCode("src/components/custom/blocks/TimelineRulerBlock.tsx"),
+    },
+  ]}
+/>
 
-${timelineEvents}
+### Install the ruler timeline
 
-export default function BlurTimeline() {
-  return (
-    <div className="w-full max-w-5xl mx-auto py-24">
-      <AnimatedTimelineBlock items={EVENTS} layout="center" animation="blur-in" />
-    </div>
-  );
-}`;
+<Installation name="timeline-ruler" showSetupPath={false} />
+
+<ExampleShowcase headingLevel={2}
+  name="timeline-steps"
+  colorControl
+  colorLabel="Accent Color"
+  columns={1}
+  examples={[
+    {
+      title: "Steps timeline",
+      subheading: "Numbered nodes on a rail that fills as you scroll the box. Click a node to bring that step into focus.",
+      minHeight: 690,
+      usage: extractCode("src/preview/demos/timeline-steps-demo.tsx"),
+      code: extractCode("src/components/custom/blocks/TimelineStepsBlock.tsx"),
+    },
+  ]}
+/>
+
+### Install the steps timeline
+
+<Installation name="timeline-steps" showSetupPath={false} />
 
 <ExampleShowcase headingLevel={2}
   name="animated-timeline"
@@ -185,11 +236,12 @@ export default function BlurTimeline() {
   ]}
 />
 
-## Installation
+### Install the animated timeline
 
 <Installation name="animated-timeline" />
 
-## Examples
+### Layouts
+
 
 <ExampleShowcase
   name="animated-timeline"
@@ -225,48 +277,13 @@ export default function BlurTimeline() {
       props: { layout: "right", animation: "slide-in" },
       usage: usageRight,
     },
-    {
-      title: "Fade up",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "animation",
-          value: '"fade-up"',
-          effect:
-            "for the quietest entrance — a short rise with an opacity ramp. It is the default.",
-        },
-      ],
-      props: { layout: "center", animation: "fade-up" },
-      usage: usageFadeUp,
-    },
-    {
-      title: "Zoom in",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "animation",
-          value: '"zoom-in"',
-          effect: "to scale each card up as its node lights.",
-        },
-      ],
-      props: { layout: "center", animation: "zoom-in" },
-      usage: usageZoom,
-    },
-    {
-      title: "Blur in",
-      propNotes: [
-        {
-          lead: "Use",
-          prop: "animation",
-          value: '"blur-in"',
-          effect: "to resolve the card out of a blur instead of moving it.",
-        },
-      ],
-      props: { layout: "center", animation: "blur-in" },
-      usage: usageBlur,
-    },
   ]}
 />
+
+### Requires Tailwind CSS v4
+
+Layouts switch at **container queries** (`@container/timeline`), so they follow the width of the column a timeline sits in, not the window. Container queries are built into Tailwind v4; on v3 the timelines stay in their narrow layout.
+
 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
@@ -382,6 +399,186 @@ Discover the key capabilities that make this component an excellent choice for m
         <td><code>React.ElementType</code></td>
         <td><code>undefined</code></td>
         <td>Component rendered inside the node — any lucide icon works.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### Steps, Path, Dial and Ruler props
+
+`items` is required for each. `color` (default `"primary"`) takes a named accent or a hex code, and `animate` (default `true`) can be set to `false` for static output. Steps, Path, Dial and Ruler also take `defaultIndex` and `onIndexChange` to read the entry in focus. Reduced-motion preferences are honoured.
+
+### TimelineStepsItem
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>id</code></td>
+        <td><code>string | number</code></td>
+        <td><strong>Required</strong></td>
+        <td>Unique key for the step.</td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>The large heading.</td>
+      </tr>
+      <tr>
+        <td><code>date</code>, <code>description</code>, <code>content</code>, <code>action</code></td>
+        <td><code>string</code>, <code>string</code>, <code>ReactNode</code>, <code>ReactNode</code></td>
+        <td><code>undefined</code></td>
+        <td>A small label above the title, text under it, extra detail and a button or link.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### TimelinePathItem
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>id</code></td>
+        <td><code>string | number</code></td>
+        <td><strong>Required</strong></td>
+        <td>Unique key for the stop. The path needs at least two to draw. From a 640px column up it winds between two lanes; below that it hugs the left edge.</td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>The card heading.</td>
+      </tr>
+      <tr>
+        <td><code>date</code>, <code>description</code>, <code>icon</code></td>
+        <td><code>string</code>, <code>string</code>, <code>React.ElementType</code></td>
+        <td><code>undefined</code></td>
+        <td>A small mono label, text under the heading, and an icon tile at the top of the card.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### TimelineDialItem
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>id</code></td>
+        <td><code>string | number</code></td>
+        <td><strong>Required</strong></td>
+        <td>Unique key for the entry. Entries more than three steps from the focus are hidden. The mouse wheel only turns the dial while there is somewhere to go, so the page still scrolls at either end.</td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>The heading, also shown on the wheel.</td>
+      </tr>
+      <tr>
+        <td><code>date</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>The badge above the heading and the label on the wheel, such as a year.</td>
+      </tr>
+      <tr>
+        <td><code>eyebrow</code>, <code>description</code>, <code>icon</code></td>
+        <td><code>string</code>, <code>string</code>, <code>React.ElementType</code></td>
+        <td><code>undefined</code></td>
+        <td>A small label above the heading, text under it, and the icon in the wheel bubble (the entry number when omitted).</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### TimelineRulerItem
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>id</code></td>
+        <td><code>string | number</code></td>
+        <td><strong>Required</strong></td>
+        <td>Unique key for the entry.</td>
+      </tr>
+      <tr>
+        <td><code>date</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>The label on the ruler, such as <code>Apr 2026</code>.</td>
+      </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>string</code></td>
+        <td><strong>Required</strong></td>
+        <td>Names the entry in the detail panel.</td>
+      </tr>
+      <tr>
+        <td><code>value</code></td>
+        <td><code>ReactNode</code></td>
+        <td><code>undefined</code></td>
+        <td>A headline figure, shown large.</td>
+      </tr>
+      <tr>
+        <td><code>description</code>, <code>content</code></td>
+        <td><code>string</code>, <code>ReactNode</code></td>
+        <td><code>undefined</code></td>
+        <td>The caption under the figure (or body text when there is no figure), and extra detail below it.</td>
+      </tr>
+      <tr>
+        <td><code>image</code>, <code>icon</code></td>
+        <td><code>string</code>, <code>React.ElementType</code></td>
+        <td><code>undefined</code></td>
+        <td>An avatar beside the title, or an icon tile when there is no image.</td>
+      </tr>
+      <tr>
+        <td><code>tag</code>, <code>delta</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>A badge above the title, and a change beside the figure. A leading <code>-</code> shows as a drop.</td>
+      </tr>
+      <tr>
+        <td><code>highlights</code>, <code>action</code></td>
+        <td><code>string[]</code>, <code>ReactNode</code></td>
+        <td><code>undefined</code></td>
+        <td>A checklist of what happened, and a button or link at the foot.</td>
       </tr>
     </tbody>
   </table>

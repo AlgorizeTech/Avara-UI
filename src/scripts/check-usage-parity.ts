@@ -79,7 +79,7 @@ function isStageOnly(before: string, after: string): boolean {
   return tags.every((tag) => {
     const m = tag.match(/^<div(?: class="([^"]*)")?>$/);
     if (!m) return false;
-    return (m[1] ?? "").split(/\s+/).filter(Boolean).every((c) => /^(?:[a-z]+:)?(?:p[xytblr]?-|min-h-)/.test(c));
+    return (m[1] ?? "").split(/\s+/).filter(Boolean).every((c) => /^(?:w-full$|(?:[a-z]+:)?(?:p[xytblr]?-|min-h-))/.test(c));
   });
 }
 
