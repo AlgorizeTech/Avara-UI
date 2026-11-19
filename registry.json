@@ -377,7 +377,7 @@
       "type": "registry:component",
       "title": "Animated Timeline",
       "author": "AlgorizeTech",
-      "description": "A timeline whose entries animate in on scroll, with five entrance styles. Use it on marketing pages for company history and roadmap sections.",
+      "description": "Ask the user to pick one of 5 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Animated rail. Skip the question if the user already named one. A timeline whose entries animate in on scroll, with five entrance styles. Use it on marketing pages for company history and roadmap sections.",
       "categories": [
         "data-display",
         "marketing"
@@ -5239,7 +5239,7 @@
       "type": "registry:component",
       "title": "Timeline Dial",
       "author": "AlgorizeTech",
-      "description": "A wheel timeline: entries ride an arc beside a ruler of tick marks while the focused one is detailed beside it. Use it for a company or product milestone section.",
+      "description": "Ask the user to pick one of 5 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Dial timeline. Skip the question if the user already named one. A wheel timeline: entries ride an arc beside a ruler of tick marks while the focused one is detailed beside it. Use it for a company or product milestone section.",
       "categories": [
         "data-display",
         "marketing"
@@ -5274,7 +5274,7 @@
       "type": "registry:component",
       "title": "Timeline Path",
       "author": "AlgorizeTech",
-      "description": "A scroll-linked timeline on a winding path that draws itself from stop to stop, with a glowing head and cards that light up as it arrives. Use it for a company or product milestone story.",
+      "description": "Ask the user to pick one of 5 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Path timeline. Skip the question if the user already named one. A scroll-linked timeline on a winding path that draws itself from stop to stop, with a glowing head and cards that light up as it arrives. Use it for a company or product milestone story.",
       "categories": [
         "data-display",
         "marketing"
@@ -5307,7 +5307,7 @@
       "type": "registry:component",
       "title": "Timeline Ruler",
       "author": "AlgorizeTech",
-      "description": "A date-ruler timeline: labels slide past a fixed wavy rail and the one at the bulge is detailed beside it, with a headline figure. Use it for monthly metrics or a dated activity log.",
+      "description": "Ask the user to pick one of 5 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Ruler timeline. Skip the question if the user already named one. A date-ruler timeline: labels slide past a fixed wavy rail and the one at the bulge is detailed beside it, with a headline figure. Use it for monthly metrics or a dated activity log.",
       "categories": [
         "data-display",
         "marketing"
@@ -5342,7 +5342,7 @@
       "type": "registry:component",
       "title": "Timeline Steps",
       "author": "AlgorizeTech",
-      "description": "A scroll-linked step list: numbered nodes on a rail that fills with the accent colour as you scroll, with the step in focus kept sharp. Use it for a company history or a dated changelog.",
+      "description": "Ask the user to pick one of 5 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Steps timeline. Skip the question if the user already named one. A scroll-linked step list: numbered nodes on a rail that fills with the accent colour as you scroll, with the step in focus kept sharp. Use it for a company history or a dated changelog.",
       "categories": [
         "data-display",
         "marketing"
