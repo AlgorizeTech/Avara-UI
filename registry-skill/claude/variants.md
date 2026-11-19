@@ -66,6 +66,7 @@ Install the chosen variant's own `install` command from the index. Several looks
 ## Pages with variants today
 
 - `agent-graph`: 3 variants. All live: https://avaraui.com/view/agent-graph
+- `animated-timeline`: 5 variants. All live: https://avaraui.com/view/animated-timeline
 - `error`: 5 variants. All live: https://avaraui.com/view/error
 - `hero`: 16 variants. All live: https://avaraui.com/view/hero
 - `footer`: 9 variants. All live: https://avaraui.com/view/footer

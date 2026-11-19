@@ -10,6 +10,58 @@ A highly dynamic, scroll-aware timeline engine featuring Intersection Observers 
 
 Unlike standard static timelines, this `AnimatedTimelineBlock` uses native browser APIs (`IntersectionObserver`) to orchestrate complex animations only when the user scrolls the elements into view. As the user scrolls down your page, the vertical tracking line dynamically extends, the nodes glow, and the cards flip, blur, or slide into position.
 
+## For AI agents
+
+**Ask before you pick.** This page has 5 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 5 options as live previews: https://avaraui.com/view/animated-timeline
+
+**When to use it.** Timelines for roadmaps, histories and process steps. One scrolls a rail with cards in a column, the others draw a path, spin a dial, slide a ruler or number the steps.
+
+**Gotchas:**
+
+- Each look is its own registry item: install only the one you picked.
+- The animated timeline's `layout` prop (center, left, right) moves the rail; it is not a separate item.
+- The dial and ruler timelines respond to the wheel, arrow keys and drag, so give them room and avoid putting them in a scrolling column.
+
+### The 5 variants
+
+1. **Animated rail** (`animated`): A rail with cards that animate in as you scroll, centered, left or right.
+   - Live: https://avaraui.com/view/animated-timeline/animated
+   - Best for: a company history or roadmap in a normal content column
+   - Avoid if: you want the reader to pick entries rather than scroll
+   - Traits: scroll-driven, layout center, left or right, active node glow
+   - Install: `npx shadcn@latest add @avara-ui/animated-timeline`
+   - Set these props: `{"layout":"center"}`
+   - Docs: https://avaraui.com/docs/nextjs/animated-timeline#animated-timeline
+2. **Path timeline** (`path`): A winding line draws itself from stop to stop with a glowing head.
+   - Live: https://avaraui.com/view/animated-timeline/path
+   - Best for: a journey or story with a few distinct stops
+   - Avoid if: there are many entries or long descriptions
+   - Traits: winding path, draws on scroll, cards light up on arrival
+   - Install: `npx shadcn@latest add @avara-ui/timeline-path`
+   - Docs: https://avaraui.com/docs/nextjs/animated-timeline#path-timeline
+3. **Steps timeline** (`steps`): Numbered nodes on a rail that fills as you scroll the box.
+   - Live: https://avaraui.com/view/animated-timeline/steps
+   - Best for: a how-it-works or onboarding process
+   - Avoid if: entries are dates rather than ordered steps
+   - Traits: numbered nodes, rail fills on scroll, click to focus a step
+   - Install: `npx shadcn@latest add @avara-ui/timeline-steps`
+   - Docs: https://avaraui.com/docs/nextjs/animated-timeline#steps-timeline
+4. **Dial timeline** (`dial`): Entries ride an arc beside a ruler of ticks; click, use the wheel or drag.
+   - Live: https://avaraui.com/view/animated-timeline/dial
+   - Best for: a showcase where the reader browses a handful of milestones
+   - Avoid if: it must work as a plain scrolling list
+   - Traits: arc layout, wheel, arrow keys and drag, needs room
+   - Install: `npx shadcn@latest add @avara-ui/timeline-dial`
+   - Docs: https://avaraui.com/docs/nextjs/animated-timeline#dial-timeline
+5. **Ruler timeline** (`ruler`): Labels slide past a wavy rail and the one at the bulge is detailed beside it.
+   - Live: https://avaraui.com/view/animated-timeline/ruler
+   - Best for: years or figures with a short caption each
+   - Avoid if: entries need long body text
+   - Traits: wavy rail, value and caption per entry, wheel, arrow keys and drag
+   - Install: `npx shadcn@latest add @avara-ui/timeline-ruler`
+   - Docs: https://avaraui.com/docs/nextjs/animated-timeline#ruler-timeline
 Every preview scrolls internally — **scroll down inside a preview** and watch the tracking line extend as each node crosses the observer threshold.
 
 ## Path timeline
