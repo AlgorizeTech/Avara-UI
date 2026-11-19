@@ -8,6 +8,7 @@ import {
   EyeOff,
   FileIcon,
   FileText,
+  Sparkles,
   UploadCloud,
   X,
 } from "lucide-react";
@@ -26,7 +27,13 @@ import { getThemeStyles } from "./input-theme";
 // DYNAMIC THEME ENGINE
 // ==========================================
 export type InputColor = "indigo" | "rose" | "emerald" | "zinc" | string;
-export type InputVariant = "default" | "filled" | "underlined" | "glow" | "pill";
+export type InputVariant =
+  | "default"
+  | "filled"
+  | "underlined"
+  | "glow"
+  | "pill"
+  | "password-strength";
 export type InputSize = "sm" | "md" | "lg";
 
 // ==========================================
@@ -42,6 +49,8 @@ export interface InputBlockProps
   color?: InputColor;
   inputSize?: InputSize;
   label?: string;
+  /** Floats the label onto the top border when focused or filled. Default: false */
+  floatingLabel?: boolean;
   helperText?: string;
   error?: string;
   leftIcon?: React.ReactNode;
@@ -121,6 +130,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
       color = "primary",
       inputSize = "md",
       label,
+      floatingLabel = false,
       helperText,
       error,
       leftIcon,
@@ -138,6 +148,7 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
     ref,
   ) => {
     const [showPassword, setShowPassword] = useState(false);
+    const [isFocused, setIsFocused] = useState(false);
     const { theme, style } = getThemeStyles(color);
     const hasError = Boolean(error);
 
@@ -430,6 +441,359 @@ export const InputBlock = forwardRef<HTMLInputElement, InputBlockProps>(
         return newPreviews;
       });
     };
+
+const PASSWORD_STRENGTH_RULES = [
+  {
+    id: "length",
+    label: "At least 12 characters",
+    test: (v: string) => v.length >= 12,
+  },
+  {
+    id: "case",
+    label: "Uppercase & lowercase letters",
+    test: (v: string) => /[a-z]/.test(v) && /[A-Z]/.test(v),
+  },
+  {
+    id: "number",
+    label: "Includes a number (0-9)",
+    test: (v: string) => /\d/.test(v),
+  },
+  {
+    id: "symbol",
+    label: "Includes a special character",
+    test: (v: string) => /[^A-Za-z0-9]/.test(v),
+  },
+] as const;
+
+const COMMON_WEAK_PATTERNS =
+  /(password|qwerty|123456|letmein|admin|welcome|0123|1234|2345|3456|4567|5678|6789|abcd|bcde|cdef|defg|qwer|wert|erty|asdf)/i;
+
+function evaluatePasswordStrength(pw: string) {
+  const results = PASSWORD_STRENGTH_RULES.map((rule) => ({
+    ...rule,
+    met: rule.test(pw),
+  }));
+  const passed = results.filter((r) => r.met).length;
+  const isGuessable =
+    pw.length > 0 &&
+    (COMMON_WEAK_PATTERNS.test(pw) || /(.)\1{3,}/.test(pw));
+
+  const score =
+    pw.length === 0 ? 0 : isGuessable ? 1 : Math.max(1, passed);
+
+  const labels = ["Empty", "Weak", "Fair", "Good", "Strong"] as const;
+  const label = labels[score] ?? "Strong";
+
+  const tone =
+    score === 0
+      ? {
+          bar: "bg-neutral-300 dark:bg-zinc-700",
+          text: "text-neutral-400 dark:text-neutral-500",
+        }
+      : score === 1
+        ? {
+            bar: "bg-[#ef1f2f] dark:bg-red-500",
+            text: "text-[#ef1f2f] dark:text-red-400",
+          }
+        : score === 2
+          ? {
+              bar: "bg-[#f59e0b] dark:bg-amber-500",
+              text: "text-[#d97706] dark:text-amber-400",
+            }
+          : {
+              bar: "bg-[#00b67a] dark:bg-emerald-500",
+              text: "text-[#059669] dark:text-emerald-400",
+            };
+
+  return { results, score, label, isGuessable, tone };
+}
+
+function generateStrongPassword(length = 16): string {
+  const upper = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+  const lower = "abcdefghijkmnopqrstuvwxyz";
+  const digits = "23456789";
+  const symbols = "!@#$%^&*()-_=+?";
+  const all = upper + lower + digits + symbols;
+
+  const pick = (pool: string) =>
+    pool[Math.floor(Math.random() * pool.length)];
+
+  // Ensure every strength rule is guaranteed to be satisfied
+  const chars = [
+    pick(upper),
+    pick(upper),
+    pick(lower),
+    pick(lower),
+    pick(digits),
+    pick(digits),
+    pick(symbols),
+    pick(symbols),
+  ];
+
+  while (chars.length < length) {
+    chars.push(pick(all));
+  }
+
+  for (let i = chars.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [chars[i], chars[j]] = [chars[j], chars[i]];
+  }
+
+  const candidate = chars.join("");
+  if (COMMON_WEAK_PATTERNS.test(candidate) || /(.)\1{3,}/.test(candidate)) {
+    return generateStrongPassword(length);
+  }
+  return candidate;
+}
+
+    // ==========================================
+    // RENDER: PASSWORD STRENGTH VARIANT
+    // ==========================================
+    if (variant === "password-strength") {
+      const { results, score, label: strengthLabel, isGuessable, tone } =
+        evaluatePasswordStrength(query);
+      const pwInputType = showPassword ? "text" : "password";
+
+      const handleGeneratePassword = () => {
+        if (disabled) return;
+        const generated = generateStrongPassword(16);
+        setTyped(generated);
+        if (inputRef.current) {
+          writeInputValue(inputRef.current, generated);
+        }
+      };
+
+      const isFloatingActive = floatingLabel && (isFocused || query.length > 0);
+
+      return (
+        <div
+          className={cn("flex flex-col w-full max-w-sm relative", className)}
+          style={style}
+        >
+          {label && !floatingLabel && (
+            <label
+              className={cn(
+                "text-[13.5px] font-medium mb-2",
+                hasError
+                  ? "text-red-500"
+                  : "text-neutral-800 dark:text-neutral-200",
+                disabled && "opacity-50",
+              )}
+            >
+              {label}
+            </label>
+          )}
+
+          <div className="flex items-center gap-2">
+            <div
+              className={cn(
+                "relative flex-1 min-w-0 flex items-center h-12 rounded-xl border-[1.5px] px-3.5 transition-colors duration-200",
+                disabled
+                  ? "opacity-50 cursor-not-allowed bg-muted border-border"
+                  : hasError
+                    ? "border-red-400 bg-red-50/40 dark:bg-red-500/5"
+                    : "border-neutral-200/90 dark:border-zinc-800 bg-neutral-100/80 dark:bg-zinc-900/70 focus-within:bg-white dark:focus-within:bg-zinc-950 focus-within:border-neutral-300 dark:focus-within:border-zinc-700",
+              )}
+            >
+              {floatingLabel && label && (
+                <label
+                  className={cn(
+                    "pointer-events-none absolute transition-all duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] select-none",
+                    isFloatingActive
+                      ? "top-0 -translate-y-1/2 left-2.5 px-1.5 text-[12px] font-medium bg-white dark:bg-zinc-950 rounded-xs text-neutral-700 dark:text-neutral-200"
+                      : cn(
+                          "top-1/2 -translate-y-1/2 text-[13.5px] text-neutral-400 dark:text-neutral-500",
+                          leftIcon ? "left-9" : "left-3.5",
+                        ),
+                    hasError && "text-red-500",
+                    disabled && "opacity-50",
+                  )}
+                >
+                  {label}
+                </label>
+              )}
+
+              {leftIcon && (
+                <div className="shrink-0 mr-2.5 text-neutral-400 flex items-center justify-center [&_svg]:size-4">
+                  {leftIcon}
+                </div>
+              )}
+
+              <input
+                ref={assignInputRef}
+                type={pwInputType}
+                disabled={disabled}
+                className="w-full h-full bg-transparent border-none outline-none text-[13.5px] text-neutral-900 dark:text-neutral-100 placeholder:text-neutral-400 dark:placeholder:text-neutral-500 tracking-wide"
+                {...props}
+                placeholder={
+                  floatingLabel
+                    ? ""
+                    : (props.placeholder ?? "Enter a password...")
+                }
+                onFocus={(e) => {
+                  setIsFocused(true);
+                  props.onFocus?.(e);
+                }}
+                onBlur={(e) => {
+                  setIsFocused(false);
+                  props.onBlur?.(e);
+                }}
+                onChange={(e) => {
+                  setTyped(e.target.value);
+                  props.onChange?.(e);
+                }}
+              />
+
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                disabled={disabled}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                className="shrink-0 ml-2 text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors disabled:opacity-50"
+              >
+                {showPassword ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
+              </button>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleGeneratePassword}
+              disabled={disabled}
+              title="Generate strong password"
+              aria-label="Generate strong password"
+              className={cn(
+                "w-12 h-12 rounded-xl border-[1.5px] border-neutral-200/90 dark:border-zinc-800 bg-white dark:bg-zinc-950 hover:bg-neutral-50 dark:hover:bg-zinc-900 shrink-0 flex items-center justify-center transition-all active:scale-[0.96] disabled:opacity-50 disabled:cursor-not-allowed shadow-2xs cursor-pointer focus-visible:outline-none focus-visible:ring-2",
+                theme.ring,
+              )}
+            >
+              <Sparkles className={cn("w-4 h-4 shrink-0 transition-colors", theme.text)} />
+            </button>
+          </div>
+
+          {/* 4 Segmented Strength Bars */}
+          <div
+            role="meter"
+            aria-label="Password strength"
+            aria-valuemin={0}
+            aria-valuemax={PASSWORD_STRENGTH_RULES.length}
+            aria-valuenow={score}
+            aria-valuetext={strengthLabel}
+            className="grid grid-cols-4 gap-2 mt-2.5"
+          >
+            {PASSWORD_STRENGTH_RULES.map((rule, idx) => {
+              const active = idx < score;
+              return (
+                <div
+                  key={rule.id}
+                  className="h-[4px] rounded-sm bg-neutral-200/90 dark:bg-zinc-800 overflow-hidden"
+                >
+                  <div
+                    className={cn(
+                      "h-full w-full rounded-sm origin-left transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+                      tone.bar,
+                    )}
+                    style={{
+                      transform: active ? "scaleX(1)" : "scaleX(0)",
+                      opacity: active ? 1 : 0,
+                      transitionDelay: active ? `${idx * 120}ms` : "0ms",
+                    }}
+                  />
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Strength Label + Commonly Guessed Warning */}
+          <div className="mt-2 flex items-center justify-between gap-2 min-h-[20px]">
+            <div className="grid">
+              {(["Empty", "Weak", "Fair", "Good", "Strong"] as const).map(
+                (lbl) => (
+                  <span
+                    key={lbl}
+                    className={cn(
+                      "col-start-1 row-start-1 text-[13.5px] font-medium transition-opacity duration-300",
+                      lbl === strengthLabel
+                        ? cn("opacity-100", tone.text)
+                        : "opacity-0 pointer-events-none",
+                    )}
+                  >
+                    {lbl}
+                  </span>
+                ),
+              )}
+            </div>
+            {isGuessable && (
+              <span className="text-[11.5px] font-medium text-amber-600 dark:text-amber-400">
+                Commonly guessed
+              </span>
+            )}
+          </div>
+
+          {/* 4 Criteria Checklist with slow, smooth staggered draw-in checkmarks */}
+          <ul className="mt-2.5 flex flex-col gap-2">
+            {results.map((rule, idx) => {
+              const boxDelay = rule.met ? `${idx * 160}ms` : "0ms";
+              const drawDelay = rule.met ? `${idx * 160 + 90}ms` : "0ms";
+
+              return (
+                <li key={rule.id} className="flex items-center gap-2.5">
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      "relative w-[18px] h-[18px] rounded-sm border flex items-center justify-center shrink-0 transition-all duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
+                      rule.met
+                        ? "bg-[#00b67a] border-[#00b67a] text-white scale-100"
+                        : "bg-white dark:bg-zinc-950 border-neutral-300 dark:border-zinc-700 text-transparent scale-100",
+                    )}
+                    style={{ transitionDelay: boxDelay }}
+                  >
+                    <svg viewBox="0 0 12 12" fill="none" className="w-2.5 h-2.5">
+                      <path
+                        d="M2 6.2 4.7 8.9 10 3.3"
+                        stroke="currentColor"
+                        strokeWidth="1.9"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        pathLength={1}
+                        strokeDasharray={1}
+                        strokeDashoffset={rule.met ? 0 : 1}
+                        style={{
+                          transition:
+                            "stroke-dashoffset 420ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms ease",
+                          transitionDelay: drawDelay,
+                          opacity: rule.met ? 1 : 0,
+                        }}
+                      />
+                    </svg>
+                  </span>
+                  <span
+                    className={cn(
+                      "text-[13.5px] leading-snug transition-colors duration-300 ease-out",
+                      rule.met
+                        ? "text-neutral-800 dark:text-neutral-200"
+                        : "text-neutral-400 dark:text-neutral-500",
+                    )}
+                    style={{ transitionDelay: boxDelay }}
+                  >
+                    {rule.label}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+
+          {error && (
+            <p className="text-xs font-semibold text-red-500 flex items-center gap-1 mt-2">
+              <AlertCircle className="w-3.5 h-3.5" /> {error}
+            </p>
+          )}
+        </div>
+      );
+    }
 
     // ==========================================
     // RENDER: FILE TYPE

@@ -1,3 +1,4 @@
+import { agentGraph } from "./agent-graph";
 import { audioPlayer } from "./audio-player";
 import { authForms } from "./auth-forms";
 import { bookAppointment } from "./book-appointment";
@@ -67,6 +68,7 @@ export type { PageVariants, Variant } from "./types";
 
 /** Every docs page that has a variants file. Add new pages here. */
 export const pageVariants: PageVariants[] = [
+  agentGraph,
   error,
   hero,
   footer,

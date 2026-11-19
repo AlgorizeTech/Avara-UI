@@ -9,6 +9,7 @@ import { lazyRetry } from "./lazyRetry";
 export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<any>>> = {
   "accordion": lazyRetry(() => import("./demos/accordion-demo")),
   "advanced-table": lazyRetry(() => import("./demos/advanced-table-demo")),
+  "agent-graph": lazyRetry(() => import("./demos/agent-graph-demo")),
   "ai-chat": lazyRetry(() => import("./demos/ai-chat-demo")),
   "ai-chat-motion": lazyRetry(() => import("./demos/ai-chat-motion-demo")),
   "ai-chat-workspace": lazyRetry(() => import("./demos/ai-chat-workspace-demo")),

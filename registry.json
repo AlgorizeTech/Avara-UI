@@ -71,6 +71,28 @@
       "docs": "Named exports: DataTable plus DataTableHeading/Content/Header/Body/Row/Head/Cell/Footer/Empty, DataTableSearch, DataTablePageSize, DataTableSelect, DataTableSelectAll, DataTableBatchBar, DataTableInfo, DataTablePagination, DataTableExpandToggle, DataTableExpandedRow, DataTableTabs, DataTableFilter, DataTableReset, DataTableBatchAction, TableAction, TableRowAction, TableBadge, TablePerson, useDataTable, resolveAccessor. `DataTableTabs` and `DataTableFilter` filter one field each by exact match (`by` is a dot path or accessor); `useDataTable` exposes `filters`, `isFiltered` and `resetAll`. `variant=\"soft\"` gives the admin-dashboard look. `DataTableBody` takes a render function receiving the current page of rows. `getRowId` defaults to id → _id → uuid; `sortBy` accepts a dot path or an accessor function (add `sortId` for functions). Builds on `table` and depends on `select` for the page-size control."
     },
     {
+      "name": "agent-graph",
+      "type": "registry:component",
+      "title": "Agent Graph",
+      "author": "AlgorizeTech",
+      "description": "Ask the user to pick one of 3 agent graph variants: https://avaraui.com/view/agent-graph. This item holds 3 of them as looks of one component (tree, tree-flat, editorial). Skip the question if the user already named one. A hierarchical multi-agent orchestration tree showing live status pills, token budgets, tool integrations, and handoff trails.",
+      "categories": [
+        "data-display"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/AgentGraphBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/AgentGraphBlock.tsx"
+        }
+      ],
+      "docs": "Named export: AgentGraph. Accepts `data` (an `AgentGraphNode` tree with `id`, `name`, `model?`, `status`, `message`, `tokensUsed`, `tokensMax`, `color`, `tools?`, `handoff?`, `children?`) and `animateIn`. Fans out horizontally on desktop and collapses into an indented vertical tree on mobile."
+    },
+    {
       "name": "agent-skill",
       "type": "registry:item",
       "title": "Agent Skill (Claude Code)",

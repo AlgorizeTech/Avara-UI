@@ -86,7 +86,7 @@ export const COMPONENT_TYPES = {
 		description: "Data visualisation, maps and node graphs.",
 		icon: ChartSpline,
 		kind: "ui",
-		slugs: ["chart", "data-maps", "fleet-tracker", "user-graph", "network-graph", "infrastructure-topology", "flowchart"],
+		slugs: ["chart", "data-maps", "fleet-tracker", "user-graph", "network-graph", "agent-graph", "infrastructure-topology", "flowchart"],
 	},
 	media: {
 		label: "Media & Carousels",

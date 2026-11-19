@@ -635,6 +635,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["data-display", "marketing"],
     docs: "Named export: NetworkGraph. `nodes` take { id, ring, image?, fallback?, label?, size? } — `ring` assigns the orbit. Tune spacing with `ringCount`, `baseRadius` and `ringGap`; `animateIn` staggers the reveal. Positions are computed by ring, not by force simulation.",
   },
+  "agent-graph": {
+    description:
+      "A hierarchical multi-agent orchestration tree showing live status pills, token budgets, tool integrations, and handoff trails.",
+    categories: ["data-display"],
+    docs: "Named export: AgentGraph. Accepts `data` (an `AgentGraphNode` tree with `id`, `name`, `model?`, `status`, `message`, `tokensUsed`, `tokensMax`, `color`, `tools?`, `handoff?`, `children?`) and `animateIn`. Fans out horizontally on desktop and collapses into an indented vertical tree on mobile.",
+  },
   footer: {
     description:
       "A collection of 7 modern, animated, fully responsive Footer components for web applications, SaaS platforms, and marketing landing pages.",
