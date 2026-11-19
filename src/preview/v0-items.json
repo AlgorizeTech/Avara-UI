@@ -357,6 +357,7 @@
     "searchable-datatable": "Advanced Table — Searchable DataTable"
   },
   "date-picker": {
+    "inline-calendar": "Date Picker — Inline Calendar",
     "date-picker": "Date Picker",
     "error": "Date Picker — Error",
     "disable-past-dates": "Date Picker — Disable past dates",
