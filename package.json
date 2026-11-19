@@ -28,7 +28,8 @@
     "check:variants": "tsx ./src/scripts/check-variants.ts",
     "prepare": "git config core.hooksPath .githooks || true",
     "verify:registry": "node scripts/verify-registry.mjs",
-    "check:types": "tsx ./src/scripts/check-consumer-types.ts"
+    "check:types": "tsx ./src/scripts/check-consumer-types.ts",
+    "check:usage-parity": "tsx ./src/scripts/check-usage-parity.ts"
   },
   "dependencies": {
     "@babel/generator": "^7.28.0",
