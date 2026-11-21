@@ -125,6 +125,7 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Avatar Stack",
         slug: "avatar-stack",
+        badge: "Updated",
         keywords: ["avatar", "avatars", "faces", "group", "stack", "overlap", "social proof", "people"],
       },
       { label: "Book Flip", slug: "book-flip" },
