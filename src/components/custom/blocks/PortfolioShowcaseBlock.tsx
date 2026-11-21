@@ -905,7 +905,7 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
               }
             }}
             className={cn(
-              "relative z-10 size-full overflow-hidden select-none touch-none [mask-image:radial-gradient(ellipse_78%_68%_at_50%_50%,black_45%,rgba(0,0,0,0.85)_75%,transparent_100%)]",
+              "relative z-10 size-full overflow-hidden select-none touch-none [mask-image:radial-gradient(ellipse_88%_82%_at_50%_50%,black_65%,rgba(0,0,0,0.9)_86%,transparent_100%)]",
               draggable && (isDragging ? "cursor-grabbing" : "cursor-grab"),
             )}
           >
@@ -956,10 +956,10 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
           </div>
 
           {/* 4-sided smooth perimeter vignette */}
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-28 sm:h-40 bg-gradient-to-b from-background via-background/85 to-transparent z-20" aria-hidden />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 sm:h-40 bg-gradient-to-t from-background via-background/85 to-transparent z-20" aria-hidden />
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-24 sm:w-40 bg-gradient-to-r from-background via-background/85 to-transparent z-20" aria-hidden />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-24 sm:w-40 bg-gradient-to-l from-background via-background/85 to-transparent z-20" aria-hidden />
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-10 sm:h-20 md:h-24 bg-gradient-to-b from-background via-background/55 to-transparent z-20" aria-hidden />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-10 sm:h-20 md:h-24 bg-gradient-to-t from-background via-background/55 to-transparent z-20" aria-hidden />
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-8 sm:w-20 md:w-24 bg-gradient-to-r from-background via-background/55 to-transparent z-20" aria-hidden />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-8 sm:w-20 md:w-24 bg-gradient-to-l from-background via-background/55 to-transparent z-20" aria-hidden />
         </section>
 
         {/* Interactive Portfolio Details Modal: Full-screen visual showcase with ribbon-like frosted blur */}
@@ -970,6 +970,7 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
             variant="custom"
             overlayClassName="bg-black/60 backdrop-blur-xl transition-all duration-300"
             contentClassName="max-w-5xl w-[94vw] sm:w-[88vw] md:w-[82vw] p-0 overflow-y-auto md:overflow-hidden bg-card border border-foreground/15 dark:border-white/10 rounded-2xl sm:rounded-3xl shadow-2xl max-h-[90vh] md:max-h-[85vh] flex flex-col relative"
+            closeButtonClassName="p-2 rounded-full bg-background/80 hover:bg-background text-foreground backdrop-blur-md border border-foreground/10 shadow-sm"
             ariaLabel={activeProject ? `${activeProject.title} Showcase` : "Portfolio Project"}
           >
             {activeProject && (
@@ -984,7 +985,7 @@ export const PortfolioShowcase = forwardRef<HTMLElement, PortfolioShowcaseProps>
                 </div>
 
                 {/* Info & Action Controls: In-flow below image on mobile (not absolute), floating frosted ribbon pill on desktop (md:) */}
-                <div className="relative md:absolute md:inset-x-6 md:bottom-6 z-20 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 sm:gap-4 p-4 sm:p-5 md:py-3.5 md:px-5 border-t md:border border-foreground/10 md:border-foreground/15 dark:border-white/10 md:dark:border-white/15 bg-card/95 md:bg-white/75 md:dark:bg-[#131316]/75 md:backdrop-blur-md md:rounded-2xl">
+                <div className="relative md:absolute md:inset-x-6 md:bottom-6 z-20 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 sm:gap-4 p-4 sm:p-5 md:py-3.5 md:px-5 border-t md:border border-foreground/10 md:border-white/40 dark:border-white/10 md:dark:border-white/15 bg-card/95 md:bg-white/15 md:dark:bg-[#131316]/25 md:backdrop-blur-sm md:shadow-[0_8px_32px_rgba(0,0,0,0.08)] md:rounded-2xl">
                   <div className="space-y-1 md:space-y-0.5 max-w-xl">
                     <h2 className="text-base sm:text-lg md:text-xl font-bold tracking-tight text-foreground">
                       {activeProject.title}

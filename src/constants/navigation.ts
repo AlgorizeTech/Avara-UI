@@ -474,7 +474,7 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Portfolio Showcase",
         slug: "portfolio-showcase",
-        badge: "New",
+        badge: "Updated",
         keywords: ["portfolio", "showcase", "masonry", "infinite canvas", "draggable", "gallery"],
       },
       {

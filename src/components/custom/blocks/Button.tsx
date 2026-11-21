@@ -3612,15 +3612,18 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     }
 
     return (
-      <div className="relative inline-flex items-center justify-center group p-[2px] rounded-xl overflow-hidden isolation-auto bg-muted">
-        {/* Conic Spinning Beam layer that spins exactly over the border frame */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350%] aspect-square bg-[conic-gradient(from_0deg,transparent_70%,var(--primary,#3b82f6)_100%)] group-hover:opacity-0 animate-[spin_3s_linear_infinite] opacity-100 transition-opacity duration-300 pointer-events-none" />
+      <div className="relative isolate inline-flex items-center justify-center group p-[2px] rounded-lg overflow-hidden bg-muted transition-colors duration-300 hover:bg-primary shadow-xs">
+        {/* Conic Spinning Beam layer that spins evenly over the 2px border frame */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350%] aspect-square bg-[conic-gradient(from_0deg,transparent_65%,var(--primary,#3b82f6)_88%,var(--primary,#3b82f6)_100%)] group-hover:opacity-0 animate-[spin_3s_linear_infinite] opacity-100 transition-opacity duration-300 pointer-events-none" />
+
+        {/* Single Unified Liquid Fill Wave Layer (matches liquid-fill variant) */}
+        <span className="pointer-events-none absolute inset-0 z-10 translate-y-full rounded-t-full bg-primary transition-transform duration-700 ease-out group-hover:translate-y-0" />
 
         <button
           className={cn(
             baseClasses,
             sizeClasses[size],
-            "relative z-10 w-max h-auto overflow-hidden bg-background text-foreground border-0",
+            "relative w-full h-full overflow-hidden rounded-[max(0px,calc(var(--radius)-2px))] bg-background text-foreground border-0 shadow-none",
             className,
           )}
           onClick={createRipple}
@@ -3628,10 +3631,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           ref={ref}
           {...props}
         >
-          {/* Liquid Fill Wave Layer (Rises smoothly from bottom to top on hover) */}
-          <span className="absolute inset-0 bg-primary rounded-t-full translate-y-full transition-transform duration-500 ease-out group-hover:translate-y-0 pointer-events-none z-0" />
-
-          <span className="relative z-10 flex items-center justify-center gap-2 transition-colors duration-300 group-hover:text-primary-foreground font-semibold">
+          <span className="relative z-20 flex items-center justify-center gap-2 transition-colors duration-300 group-hover:text-primary-foreground font-semibold">
             {loading && <Loader2 className="h-4 w-4" />}
             {!loading && iconLeft && (
               <span className="flex items-center justify-center">{iconLeft}</span>
@@ -3645,7 +3645,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           </span>
 
           {!loading && (
-            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-xl">
+            <div className="absolute inset-0 z-20 pointer-events-none overflow-hidden rounded-xl">
               {ripples.map((ripple) => (
                 <span
                   key={ripple.id}
