@@ -262,7 +262,7 @@ export function RibbonDriftBlock(props: RibbonDriftProps) {
       <style dangerouslySetInnerHTML={{ __html: ribbonKeyframes }} />
       <aside
         className={cn(
-          "group/drift relative isolate w-full max-w-full min-w-0 flex-1 min-h-[460px] sm:min-h-[520px] lg:min-h-[560px] overflow-hidden bg-[#d8d8de] dark:bg-[#0d0d10] border border-black/5 dark:border-white/5 shadow-sm rounded-3xl",
+          "group/drift relative isolate w-full max-w-full min-w-0 flex-1 min-h-[460px] sm:min-h-[520px] lg:min-h-[560px] overflow-hidden bg-[#f4f4f8] dark:bg-[#0d0d10] border border-black/5 dark:border-white/5 rounded-3xl",
           typeof rounded === "string" && !dynamicRadius ? rounded : "",
           className,
         )}
@@ -279,7 +279,7 @@ export function RibbonDriftBlock(props: RibbonDriftProps) {
         {/* Animated ambient gradient background */}
         <div
           aria-hidden="true"
-          className="absolute inset-0 animate-[ribbon-drift-bg_24s_ease-in-out_infinite_alternate] bg-[length:140%_140%] bg-[radial-gradient(70%_55%_at_15%_20%,color-mix(in_oklab,var(--drift-primary)_70%,transparent),transparent_70%),radial-gradient(65%_55%_at_90%_85%,color-mix(in_oklab,var(--drift-secondary)_75%,transparent),transparent_70%),linear-gradient(160deg,#f6f6f9,#b4b4c2_40%,#fff_60%,#73738a)] motion-reduce:animate-none dark:bg-[radial-gradient(70%_55%_at_15%_20%,color-mix(in_oklab,var(--drift-primary)_35%,transparent),transparent_70%),radial-gradient(65%_55%_at_90%_85%,color-mix(in_oklab,var(--drift-secondary)_28%,transparent),transparent_70%),linear-gradient(160deg,#34343f,#0b0b0f_40%,#5a5a6c_60%,#040406)] pointer-events-none"
+          className="absolute inset-0 animate-[ribbon-drift-bg_24s_ease-in-out_infinite_alternate] bg-[length:140%_140%] bg-[radial-gradient(70%_55%_at_15%_20%,color-mix(in_oklab,var(--drift-primary)_28%,transparent),transparent_70%),radial-gradient(65%_55%_at_90%_85%,color-mix(in_oklab,var(--drift-secondary)_30%,transparent),transparent_70%),linear-gradient(160deg,#fafafd,#ececf5_40%,#fff_60%,#e6e6f0)] motion-reduce:animate-none dark:bg-[radial-gradient(70%_55%_at_15%_20%,color-mix(in_oklab,var(--drift-primary)_20%,transparent),transparent_70%),radial-gradient(65%_55%_at_90%_85%,color-mix(in_oklab,var(--drift-secondary)_18%,transparent),transparent_70%),linear-gradient(160deg,#23232c,#111116_40%,#2a2a35_60%,#0c0c10)] pointer-events-none"
         />
 
         {/* Top Marquee Ribbon (-7deg, Layer z-1 behind character) */}
@@ -299,7 +299,7 @@ export function RibbonDriftBlock(props: RibbonDriftProps) {
               src={image}
               alt={imageAlt}
               decoding="async"
-              className="size-full object-contain object-bottom drop-shadow-[0_28px_36px_rgba(20,12,60,0.28)] select-none"
+              className="size-full object-contain object-bottom select-none"
             />
           </div>
         )}
@@ -316,7 +316,7 @@ export function RibbonDriftBlock(props: RibbonDriftProps) {
         )}
 
         {/* Top-Right Logo Badge (Layer z-5) */}
-        <div className="absolute right-3.5 top-3.5 z-[5] flex items-center rounded-full border border-white/70 bg-white/70 px-3.5 py-1.5 sm:px-4 sm:py-2 backdrop-blur-xl shadow-sm dark:border-white/15 dark:bg-[#131316]/70">
+        <div className="absolute right-3.5 top-3.5 z-[5] flex items-center rounded-full border border-white/70 bg-white/70 px-3.5 py-1.5 sm:px-4 sm:py-2 backdrop-blur-xl dark:border-white/15 dark:bg-[#131316]/70">
           {badge ? (
             badge
           ) : (
@@ -366,7 +366,7 @@ function RibbonTrack({
   return (
     <div
       className={cn(
-        "pointer-events-none absolute -left-[15%] w-[130%] sm:-left-[20%] sm:w-[140%] max-w-none overflow-hidden whitespace-nowrap border-y border-white/70 bg-white/60 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-[#1b1b22] backdrop-blur-md dark:border-white/15 dark:bg-[#131316]/60 dark:text-[#ececf1] select-none shadow-xs",
+        "pointer-events-none absolute -left-[15%] w-[130%] sm:-left-[20%] sm:w-[140%] max-w-none overflow-hidden whitespace-nowrap border-y border-white/70 bg-white/60 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-[#1b1b22] backdrop-blur-md dark:border-white/15 dark:bg-[#131316]/60 dark:text-[#ececf1] select-none",
         className,
       )}
     >
@@ -576,7 +576,7 @@ function PromoCard({
   );
 
   const cardClasses =
-    "group absolute inset-x-2.5 sm:inset-x-3.5 bottom-2.5 sm:bottom-3.5 z-[4] flex items-center gap-2.5 sm:gap-3.5 border border-white/30 bg-[#15151c]/60 py-2.5 sm:py-3.5 pl-3 sm:pl-4 pr-2.5 sm:pr-3.5 text-white backdrop-blur-xl transition-all duration-300 hover:bg-[#15151c]/75 shadow-lg rounded-2xl";
+    "group absolute inset-x-2.5 sm:inset-x-3.5 bottom-2.5 sm:bottom-3.5 z-[4] flex items-center gap-2.5 sm:gap-3.5 border border-white/30 bg-[#15151c]/60 py-2.5 sm:py-3.5 pl-3 sm:pl-4 pr-2.5 sm:pr-3.5 text-white backdrop-blur-xl transition-all duration-300 hover:bg-[#15151c]/75 rounded-2xl";
 
   if (promo.href) {
     return (
@@ -862,7 +862,7 @@ export function RibbonLogos({
       <div
         className={cn(
           "group/ribbon relative isolate w-full overflow-hidden py-14 sm:py-20 flex flex-col items-center justify-center select-none rounded-3xl",
-          !hasCustomBg && "bg-[#d8d8de] dark:bg-[#0d0d10] border border-black/5 dark:border-white/5",
+          !hasCustomBg && "bg-[#f4f4f8] dark:bg-[#0d0d10] border border-black/5 dark:border-white/5",
           typeof rounded === "string" && !dynamicRadius ? rounded : "",
           className
         )}
@@ -880,7 +880,7 @@ export function RibbonLogos({
         {!hasCustomBg ? (
           <div
             aria-hidden="true"
-            className="absolute inset-0 animate-[ribbon-drift-bg_24s_ease-in-out_infinite_alternate] bg-[length:140%_140%] bg-[radial-gradient(70%_55%_at_15%_20%,color-mix(in_oklab,var(--drift-primary)_70%,transparent),transparent_70%),radial-gradient(65%_55%_at_90%_85%,color-mix(in_oklab,var(--drift-secondary)_75%,transparent),transparent_70%),linear-gradient(160deg,#f6f6f9,#b4b4c2_40%,#fff_60%,#73738a)] motion-reduce:animate-none dark:bg-[radial-gradient(70%_55%_at_15%_20%,color-mix(in_oklab,var(--drift-primary)_35%,transparent),transparent_70%),radial-gradient(65%_55%_at_90%_85%,color-mix(in_oklab,var(--drift-secondary)_28%,transparent),transparent_70%),linear-gradient(160deg,#34343f,#0b0b0f_40%,#5a5a6c_60%,#040406)] pointer-events-none"
+            className="absolute inset-0 animate-[ribbon-drift-bg_24s_ease-in-out_infinite_alternate] bg-[length:140%_140%] bg-[radial-gradient(70%_55%_at_15%_20%,color-mix(in_oklab,var(--drift-primary)_28%,transparent),transparent_70%),radial-gradient(65%_55%_at_90%_85%,color-mix(in_oklab,var(--drift-secondary)_30%,transparent),transparent_70%),linear-gradient(160deg,#fafafd,#ececf5_40%,#fff_60%,#e6e6f0)] motion-reduce:animate-none dark:bg-[radial-gradient(70%_55%_at_15%_20%,color-mix(in_oklab,var(--drift-primary)_20%,transparent),transparent_70%),radial-gradient(65%_55%_at_90%_85%,color-mix(in_oklab,var(--drift-secondary)_18%,transparent),transparent_70%),linear-gradient(160deg,#23232c,#111116_40%,#2a2a35_60%,#0c0c10)] pointer-events-none"
           />
         ) : (
           <div

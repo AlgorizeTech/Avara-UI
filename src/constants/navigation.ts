@@ -125,6 +125,7 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Avatar Stack",
         slug: "avatar-stack",
+        badge: "Updated",
         keywords: ["avatar", "avatars", "faces", "group", "stack", "overlap", "social proof", "people"],
       },
       { label: "Book Flip", slug: "book-flip" },
@@ -197,7 +198,7 @@ const rawNavigation: NavigationItem[] = [
       { label: "Data Grid", slug: "data-grid" },
       { label: "Data Maps", slug: "data-maps" },
       { label: "Data Table", slug: "data-table" },
-      { label: "Date Picker", slug: "date-picker" },
+      { label: "Date Picker", slug: "date-picker", badge: "New", addedOn: "2026-11-19" },
       { label: "Dialog", slug: "dialog" },
       { label: "Dock", slug: "dock" },
       { label: "Draggable Card List", slug: "draggable-card-list" },

@@ -113,7 +113,56 @@ export default function DateTimePicker() {
   );
 }`;
 
+export const usageCalendar = `"use client";
+
+import { useState } from "react";
+import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
+
+export default function InlineCalendarDatePicker() {
+  const [date, setDate] = useState<Date | null>(() => new Date());
+
+  return (
+    <DatePickerBlock
+      variant="calendar"
+      value={date}
+      onChange={setDate}
+      color="primary"
+    />
+  );
+}`;
+
 <ExampleShowcase headingLevel={2}
+  name="date-picker"
+  colorControl
+  columns={1}
+  minHeight={440}
+  examples={[
+    {
+      title: "Inline Calendar",
+      subheading: "Compact inline single-month calendar card for direct date selection.",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"calendar"',
+          effect:
+            "renders the calendar inline inside a bordered card with a live selected-date footer and Reset action instead of a dropdown trigger.",
+        },
+      ],
+      props: { variant: "calendar" },
+      usage: usageCalendar,
+      code: extractCode("src/components/custom/blocks/DatePickerBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="date-picker" />
+
+## Examples
+
+<ExampleShowcase
   name="date-picker"
   colorControl
   columns={1}
@@ -141,23 +190,7 @@ export default function DateTimePicker() {
       ],
       props: { variant: "default", inputSize: "md" },
       usage: usageDefault,
-      code: extractCode("src/components/custom/blocks/DatePickerBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="date-picker" />
-
-## Examples
-
-<ExampleShowcase
-  name="date-picker"
-  colorControl
-  columns={1}
-  minHeight={450}
-  examples={[
     {
       title: "Error",
       propNotes: [
@@ -312,7 +345,7 @@ Discover the Date Picker's flexible input formatting, popover calendar selection
           <code>variant</code>
         </td>
         <td>
-          <code>"default" | "filled" | "underlined" | "glow"</code>
+          <code>"default" | "filled" | "underlined" | "glow" | "calendar"</code>
         </td>
         <td>
           <code>"default"</code>
