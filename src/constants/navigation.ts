@@ -222,7 +222,7 @@ const rawNavigation: NavigationItem[] = [
       { label: "File Upload", slug: "file-upload" },
       { label: "Floating ContactButton", slug: "floating-contact-button" },
       { label: "Flow Gallery", slug: "flow-gallery" },
-      { label: "Flowchart", slug: "flowchart" },
+      { label: "Flowchart", slug: "flowchart", badge: "New", addedOn: "2026-11-22" },
       { label: "Folder", slug: "folder" },
       { label: "Form", slug: "form" },
       {

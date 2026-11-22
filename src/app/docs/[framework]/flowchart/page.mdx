@@ -197,22 +197,84 @@ export default function IdlePipeline() {
   );
 }`;
 
-export const usageColor = `import {
+export const usageConvergence = `import {
   FlowCanvas,
   Flowchart,
   FlowConnection,
   FlowNode,
 } from "@/components/custom/blocks/FlowchartBlock";
-import { AlertCircle, CheckCircle2, Cpu, Terminal, Webhook } from "lucide-react";
+import { Bot, Cpu, Database, Layers, Terminal } from "lucide-react";
 
-${pipelineNodes}
-
-export default function AccentedPipeline() {
-  // One of "blue" | "indigo" | "rose" | "emerald" | "zinc" — it tints the
-  // active stream, the node ports and the focus ring together.
+export default function AgentPipeline() {
   return (
-    <Flowchart initialActivePath="success-path" color="emerald">
-      <PipelineNodes />
+    <Flowchart initialActivePath="agent-exec-path">
+      <FlowCanvas>
+        {/* Curved input routes converging into the orchestrator */}
+        <FlowConnection
+          id="agent-exec-path"
+          path="M 270 110 C 305 110, 295 200, 330 200"
+        />
+        <FlowConnection
+          id="agent-eval-path"
+          path="M 270 290 C 305 290, 295 200, 330 200"
+        />
+
+        {/* Curved output routes diverging to execution & artifacts */}
+        <FlowConnection
+          id="agent-exec-path"
+          path="M 570 200 C 605 200, 595 110, 630 110"
+        />
+        <FlowConnection
+          id="agent-eval-path"
+          path="M 570 200 C 605 200, 595 290, 630 290"
+        />
+      </FlowCanvas>
+
+      {/* Input Agents */}
+      <FlowNode
+        id="prompt-agent"
+        title="Autonomous Agent"
+        description="Goal decomposition & reasoning"
+        icon={Bot}
+        connectedPaths={["agent-exec-path"]}
+        className="left-[30px] top-[76px]"
+      />
+      <FlowNode
+        id="vector-memory"
+        title="Vector Memory"
+        description="Hybrid semantic search"
+        icon={Database}
+        connectedPaths={["agent-eval-path"]}
+        className="left-[30px] top-[256px]"
+      />
+
+      {/* Central Orchestrator */}
+      <FlowNode
+        id="orchestrator"
+        title="Runtime Coordinator"
+        description="Dynamic tool selection loop"
+        icon={Cpu}
+        connectedPaths={["agent-exec-path", "agent-eval-path"]}
+        className="left-[330px] top-[166px]"
+      />
+
+      {/* Execution & Output Targets */}
+      <FlowNode
+        id="code-sandbox"
+        title="Code Sandbox"
+        description="Isolated micro-container"
+        icon={Terminal}
+        connectedPaths={["agent-exec-path"]}
+        className="left-[630px] top-[76px]"
+      />
+      <FlowNode
+        id="artifacts"
+        title="Artifact Stream"
+        description="Verified real-time components"
+        icon={Layers}
+        connectedPaths={["agent-eval-path"]}
+        className="left-[630px] top-[256px]"
+      />
     </Flowchart>
   );
 }`;
@@ -281,17 +343,17 @@ export default function AccentedPipeline() {
       usage: usageIdle,
     },
     {
-      title: "Accent color",
+      title: "AI Agent convergence",
       propNotes: [
         {
-          prop: "color",
-          value: '"emerald"',
+          prop: "path",
+          value: '"C ..."',
           effect:
-            "tints the active stream, the node ports and the focus ring together. One of `blue`, `indigo`, `rose`, `emerald`, `zinc`.",
+            "smooth cubic bezier curves guide multi-agent inputs into a central orchestrator before streaming to code execution and artifacts.",
         },
       ],
-      props: { example: "branching", color: "emerald" },
-      usage: usageColor,
+      props: { example: "convergence" },
+      usage: usageConvergence,
     },
   ]}
 />
