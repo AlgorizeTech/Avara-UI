@@ -7,15 +7,18 @@ import {
   ChevronLeft,
   ChevronRight,
   Clock,
+  RotateCcw,
 } from "lucide-react";
 import React, {
   forwardRef,
   useCallback,
   useEffect,
+  useId,
   useRef,
   useState,
   useSyncExternalStore,
 } from "react";
+import { motion } from "motion/react";
 import { getThemeStyles } from "./date-picker-theme";
 import { springLinear } from "./motion-curves";
 import { TimePicker } from "./TimePickerBlock";
@@ -30,7 +33,7 @@ import {
 // DYNAMIC THEME ENGINE
 // ==========================================
 export type DatePickerColor = "indigo" | "rose" | "emerald" | "zinc" | string;
-export type DatePickerVariant = "default" | "filled" | "underlined" | "glow";
+export type DatePickerVariant = "default" | "filled" | "underlined" | "glow" | "calendar";
 export type DatePickerSize = "sm" | "md" | "lg";
 
 // ==========================================
@@ -40,6 +43,33 @@ const getDaysInMonth = (year: number, month: number) =>
   new Date(year, month + 1, 0).getDate();
 const getFirstDayOfMonth = (year: number, month: number) =>
   new Date(year, month, 1).getDay();
+const generateCalendarDays = (year: number, month: number) => {
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = getDaysInMonth(year, month);
+  const daysInPrevMonth = getDaysInMonth(year, month - 1);
+  const days: { date: Date; isCurrentMonth: boolean }[] = [];
+
+  for (let i = firstDay - 1; i >= 0; i--) {
+    days.push({
+      date: new Date(year, month - 1, daysInPrevMonth - i),
+      isCurrentMonth: false,
+    });
+  }
+  for (let i = 1; i <= daysInMonth; i++) {
+    days.push({
+      date: new Date(year, month, i),
+      isCurrentMonth: true,
+    });
+  }
+  const remaining = 42 - days.length;
+  for (let i = 1; i <= remaining; i++) {
+    days.push({
+      date: new Date(year, month + 1, i),
+      isCurrentMonth: false,
+    });
+  }
+  return days;
+};
 const MONTH_NAMES = [
   "January",
   "February",
@@ -244,6 +274,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
     const [sideLayout, setSideLayout] = useState(false);
     const [alignRight, setAlignRight] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
+    const instanceId = useId();
     const { theme, style } = getThemeStyles(color);
 
     // containerRef drives the click-outside handler, so the forwarded ref is
@@ -481,6 +512,158 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
         </span>
       </div>
     );
+
+    if (variant === "calendar") {
+      const calendarDays = generateCalendarDays(currentYear, currentMonth);
+      return (
+        <article
+          ref={containerRef}
+          style={style}
+          className={cn(
+            "w-full max-w-sm rounded-2xl bg-card border border-border/80 p-5 flex flex-col gap-4 text-foreground select-none overflow-hidden shadow-none mx-auto my-auto",
+            disabled && "opacity-60 pointer-events-none",
+            className,
+          )}
+        >
+          <div className="flex-1 flex flex-col justify-between min-w-0">
+            {/* Month Header */}
+            <header className="flex items-center justify-between pb-3">
+              <h2 className="text-sm font-extrabold text-foreground tracking-tight">
+                {MONTH_NAMES[currentMonth]} {currentYear}
+              </h2>
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={handlePrevMonth}
+                  className="size-7 rounded-lg border border-border/80 hover:bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <ChevronLeft className="size-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={handleNextMonth}
+                  className="size-7 rounded-lg border border-border/80 hover:bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  <ChevronRight className="size-4" />
+                </button>
+              </div>
+            </header>
+
+            {/* Weekdays Header */}
+            <section className="grid grid-cols-7 gap-1 text-center mb-2">
+              {DAY_NAMES.map((day) => (
+                <span
+                  key={day}
+                  className="text-xs font-semibold text-muted-foreground"
+                >
+                  {day}
+                </span>
+              ))}
+            </section>
+
+            {/* Days Grid */}
+            <section className="grid grid-cols-7 gap-y-1.5 gap-x-0 text-center">
+              {calendarDays.map(({ date: cellDate, isCurrentMonth }, idx) => {
+                const isSelected = Boolean(value && isSameDay(cellDate, value));
+                const isOff = isDayDisabled(cellDate);
+                return (
+                  <div
+                    key={idx}
+                    className="relative flex items-center justify-center my-0.5 h-8"
+                  >
+                    <button
+                      type="button"
+                      disabled={isOff}
+                      aria-disabled={isOff}
+                      onClick={() => {
+                        if (isOff) return;
+                        onChange?.(cellDate);
+                        if (!isCurrentMonth) {
+                          setViewDate(
+                            new Date(
+                              cellDate.getFullYear(),
+                              cellDate.getMonth(),
+                              1,
+                            ),
+                          );
+                        }
+                      }}
+                      className={cn(
+                        "relative size-8 rounded-lg transition-colors duration-100 flex items-center justify-center text-xs font-semibold leading-tight",
+                        !isCurrentMonth &&
+                          !isSelected &&
+                          "text-muted-foreground/30",
+                        isCurrentMonth &&
+                          !isSelected &&
+                          "hover:bg-muted text-foreground",
+                        !isCurrentMonth && !isSelected && "hover:bg-muted",
+                        isSelected &&
+                          (color === "zinc"
+                            ? "text-white dark:text-zinc-900 font-extrabold"
+                            : color === "primary"
+                              ? "text-primary-foreground font-extrabold"
+                              : "text-white font-extrabold"),
+                        isOff &&
+                          "text-muted-foreground/40 cursor-not-allowed hover:bg-transparent line-through font-normal",
+                      )}
+                    >
+                      {isSelected && (
+                        <motion.div
+                          layoutId={`${instanceId}-sel-${currentYear}-${currentMonth}`}
+                          className={cn(
+                            "absolute inset-0 rounded-lg shadow-xs z-0",
+                            theme.bg,
+                          )}
+                          transition={
+                            reduceMotion
+                              ? { duration: 0 }
+                              : { type: "spring", stiffness: 440, damping: 44 }
+                          }
+                        />
+                      )}
+                      <span className="relative z-10">{cellDate.getDate()}</span>
+                    </button>
+                  </div>
+                );
+              })}
+            </section>
+          </div>
+
+          {/* Bottom Footer Status Bar */}
+          <footer className="flex items-center justify-between pt-3 mt-1 border-t border-border/60">
+            <div className="text-[11px] font-medium text-muted-foreground truncate max-w-[240px]">
+              {value ? (
+                <span className="flex items-center gap-1.5">
+                  <span
+                    className={cn("size-2 rounded-full", theme.bg.split(" ")[0])}
+                  />
+                  <strong className="text-foreground">
+                    {formatDate(value)}
+                  </strong>
+                </span>
+              ) : (
+                <span>{placeholder || "Select a date"}</span>
+              )}
+            </div>
+
+            {value && (
+              <button
+                type="button"
+                onClick={() => {
+                  const now = new Date();
+                  onChange?.(now);
+                  setViewDate(now);
+                }}
+                className="flex items-center gap-1 px-2.5 py-1 rounded-lg border border-border/80 text-[11px] font-semibold text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
+              >
+                <RotateCcw className="size-3" />
+                Reset
+              </button>
+            )}
+          </footer>
+        </article>
+      );
+    }
 
     return (
       <div

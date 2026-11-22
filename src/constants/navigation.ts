@@ -125,6 +125,7 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Avatar Stack",
         slug: "avatar-stack",
+        badge: "Updated",
         keywords: ["avatar", "avatars", "faces", "group", "stack", "overlap", "social proof", "people"],
       },
       { label: "Book Flip", slug: "book-flip" },
@@ -197,11 +198,11 @@ const rawNavigation: NavigationItem[] = [
       { label: "Data Grid", slug: "data-grid" },
       { label: "Data Maps", slug: "data-maps" },
       { label: "Data Table", slug: "data-table" },
-      { label: "Date Picker", slug: "date-picker" },
+      { label: "Date Picker", slug: "date-picker", badge: "New", addedOn: "2026-11-19" },
       { label: "Dialog", slug: "dialog" },
       { label: "Dock", slug: "dock" },
       { label: "Draggable Card List", slug: "draggable-card-list" },
-      { label: "Drawer", slug: "drawer" },
+      { label: "Drawer", slug: "drawer", badge: "Updated" },
       {
         label: "Falling Tags",
         slug: "falling-tags",
@@ -247,7 +248,7 @@ const rawNavigation: NavigationItem[] = [
         slug: "image-wall",
         keywords: ["image", "wall", "carousel", "screenshots", "camera", "zoom", "gallery", "grid", "masonry", "showcase"],
       },
-      { label: "Infrastructure Topology", slug: "infrastructure-topology" },
+      { label: "Infrastructure Topology", slug: "infrastructure-topology", badge: "New", addedOn: "2026-11-22" },
       { label: "Input", slug: "input", badge: "New", addedOn: "2026-11-19" },
       { label: "Invoice", slug: "invoice", badge: "New" },
       { label: "Item", slug: "item" },
@@ -378,7 +379,7 @@ const rawNavigation: NavigationItem[] = [
         slug: "tech-stack",
         keywords: ["tech stack", "built with", "tools", "logos", "logo strip", "brands", "technologies", "powered by"],
       },
-      { label: "Terminal", slug: "terminal" },
+      { label: "Terminal", slug: "terminal", badge: "Updated" },
       { label: "Text Animation", slug: "text-animation" },
       { label: "Theme Switcher", slug: "theme-switcher" },
       { label: "Tilted Card", slug: "tilted-card" },
@@ -473,7 +474,7 @@ const rawNavigation: NavigationItem[] = [
       {
         label: "Portfolio Showcase",
         slug: "portfolio-showcase",
-        badge: "New",
+        badge: "Updated",
         keywords: ["portfolio", "showcase", "masonry", "infinite canvas", "draggable", "gallery"],
       },
       {

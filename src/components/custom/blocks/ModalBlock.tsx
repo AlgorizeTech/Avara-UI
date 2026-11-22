@@ -115,6 +115,8 @@ export type ModalProps = {
   contentClassName?: string;
   /** Classes for the backdrop. Merged with variant defaults. */
   overlayClassName?: string;
+  /** Classes for the close button. Merged with variant defaults. */
+  closeButtonClassName?: string;
   /** Renders the close button as a tinted primary chip instead of a bare icon. */
   primaryCloseButton?: boolean;
   /** Drops the built-in X, for flows where a choice has to be made explicitly. */
@@ -143,6 +145,7 @@ export function Modal({
   children,
   contentClassName,
   overlayClassName,
+  closeButtonClassName,
   primaryCloseButton = false,
   hideCloseButton,
   ariaLabel,
@@ -684,7 +687,8 @@ export function Modal({
                 "p-1.5 rounded-md absolute top-3.5 right-3.5 sm:top-4 sm:right-4 cursor-pointer transition-colors duration-200 z-50",
                 activeVariant === "liquid-glass"
                   ? "text-white/80 hover:text-white bg-white/20 hover:bg-white/30 dark:bg-black/50 dark:hover:bg-black/70 dark:border dark:border-white/15 rounded-full backdrop-blur-md"
-                  : "bg-primary/10 text-primary hover:bg-primary/20"
+                  : "bg-primary/10 text-primary hover:bg-primary/20",
+                closeButtonClassName,
               )}
             >
               <X className="h-5 w-5 ml-[1px]" />
@@ -703,7 +707,8 @@ export function Modal({
                 "absolute top-3.5 right-3.5 sm:top-4 sm:right-4 cursor-pointer transition-colors duration-200 z-50",
                 activeVariant === "liquid-glass"
                   ? "text-white/80 hover:text-white bg-white/20 hover:bg-white/30 dark:bg-black/50 dark:hover:bg-black/70 dark:border dark:border-white/15 p-1.5 rounded-full backdrop-blur-md"
-                  : "text-muted-foreground hover:text-foreground"
+                  : "text-muted-foreground hover:text-foreground",
+                closeButtonClassName,
               )}
             >
               <X className="h-5 w-5" />

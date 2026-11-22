@@ -38,8 +38,26 @@ export default function DatePickerDemo({
   /** Render-all modes for the docs gallery. Omitted = previous behavior. */
   showAll?: "variants" | "sizes";
 }) {
-  const [date, setDate] = useState<Date | null>(null);
+  const [date, setDate] = useState<Date | null>(() =>
+    variant === "calendar" ? new Date() : null,
+  );
   const [dates, setDates] = useState<Record<string, Date | null>>({});
+
+  if (variant === "calendar") {
+    return (
+      <div className="w-full min-h-[440px] py-10 px-4 my-auto flex items-center justify-center">
+        <DatePickerBlock
+          key={`calendar-${color}-${disablePast}`}
+          value={date}
+          onChange={setDate}
+          variant="calendar"
+          color={color}
+          disabled={isDisabled}
+          disablePast={disablePast}
+        />
+      </div>
+    );
+  }
 
   if (showAll) {
     const keys: string[] = showAll === "variants" ? VARIANTS : SIZES;
