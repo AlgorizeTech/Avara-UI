@@ -63,25 +63,15 @@ npx shadcn@latest add @avara-ui/squircle-carousel
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
 
-### Squircle Grid Masking
-
 Images flow seamlessly behind a matrix of rounded squircle tiles for an ultra-modern aesthetic.
-
-### Drag & Inertia Physics
 
 Interactive mouse and touch drag controls with grab cursor and smooth momentum deceleration.
 
-### Responsive Stage Scaling
-
 Automatically adapts height and squircle tile density across mobile, tablet, and desktop viewports.
-
-### Light & Dark Theme Adaptation
 
 Built with Next Themes integration to transition canvas backgrounds and edge gradient overlays dynamically.
 
 ## Best Practices & Guidelines
-
-### Animation Performance
 
 Use high-resolution landscape images (1200x800 or larger) so that sub-crops render crisp fragments across all squircle columns.
 

@@ -112,25 +112,15 @@ export default function DenseRail() {
 ## Features
 Discover the Conversation Timeline's capabilities as a minimap for long conversations.
 
-### One property animates
-
 Only row `height` transitions; the mark length, gap and label width are fixed, so the rail never shifts sideways and hover can never nudge the marks.
-
-### Scroll stays put
 
 While rows grow from 10px to 24px the rail re-anchors to the row at the top every frame, so a scrolled list expands in place instead of jumping.
 
-### Touch and keyboard
-
 Without hover the rail stays expanded so labels remain reachable; focus expands it too, and every mark is a real button with an accessible name.
-
-### Respects reduced motion
 
 Every transition is dropped under `prefers-reduced-motion`; the rail simply snaps between its two states.
 
 ## Best Practices & Guidelines
-
-### Keep labels short
 
 Labels truncate at `labelWidth`. Use the first line of a message or a summary rather than the full text.
 

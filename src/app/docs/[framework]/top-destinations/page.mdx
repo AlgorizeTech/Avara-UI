@@ -156,22 +156,18 @@ export default function DestinationsShowcase() {
 ## Features
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Opposite Direction Scrub</h3>
-    <p className="text-muted-foreground text-sm">Row 1 and Row 2 glide in opposite directions as the viewport scrolls, creating an immersive cinematic depth effect.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Interactive Hover Frame</h3>
-    <p className="text-muted-foreground text-sm">Hovering over any card dims the background, smoothly frames the destination with a frosted border, and displays place count and explore CTA.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Flexible Split or Unified Rows</h3>
-    <p className="text-muted-foreground text-sm">Pass a single unified <code>items</code> array to automatically split across rows, or supply <code>row1Items</code> and <code>row2Items</code> explicitly.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Reduced Motion Safe</h3>
-    <p className="text-muted-foreground text-sm">Automatically respects user motion preferences, gracefully falling back to a clean horizontal carousel without jarring animations.</p>
-  </div>
+  <InfoCard title="Opposite Direction Scrub">
+    <p>Row 1 and Row 2 glide in opposite directions as the viewport scrolls, creating an immersive cinematic depth effect.</p>
+  </InfoCard>
+  <InfoCard title="Interactive Hover Frame">
+    <p>Hovering over any card dims the background, smoothly frames the destination with a frosted border, and displays place count and explore CTA.</p>
+  </InfoCard>
+  <InfoCard title="Flexible Split or Unified Rows">
+    <p>Pass a single unified <code>items</code> array to automatically split across rows, or supply <code>row1Items</code> and <code>row2Items</code> explicitly.</p>
+  </InfoCard>
+  <InfoCard title="Reduced Motion Safe">
+    <p>Automatically respects user motion preferences, gracefully falling back to a clean horizontal carousel without jarring animations.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

@@ -544,25 +544,15 @@ export default function StaticWall() {
 
 Discover the Masonry Grid's dynamic layout features, seamlessly arranging varying-height elements without large vertical gaps.
 
-### Pure CSS Layout
-
 Uses standard CSS multi-column layouts rather than heavy JavaScript absolute positioning to pack items perfectly.
-
-### Headless Design
 
 Total control over your UI. Just pass the raw data and a render function, and the grid handles the complex layout.
 
-### Staggered Entrances
-
 Apple-style staggered blur-fade entrances on scroll, in a GSAP build and a Motion build that move the same way.
-
-### Fluid Resizing
 
 Automatically reflows into the correct number of columns using Tailwind responsive utility classes.
 
 ## Best Practices & Guidelines
-
-### Break-Inside-Avoid
 
 Because CSS columns natively try to break content across columns, it is crucial that the wrapper `div` of your rendered item has `break-inside: avoid` (in Tailwind: `break-inside-avoid`). The headless component handles this on the outer container, but keep this in mind if you add complex nested layouts.
 

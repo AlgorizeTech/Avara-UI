@@ -168,19 +168,11 @@ export default function BuiltWith() {
 
 ## Features
 
-### Composed, not configured
-
 Groups and tools are elements, so your data keeps whatever shape it has — map it straight into `TechStackTool`, or write the marks out by hand.
-
-### A swap that never jumps
 
 The leaving group is lifted out of the flow where it stood and plays its way out on top, so the new one takes its place at once. Each mark goes a beat after the last, the way a headline word blurs in.
 
-### Idle off screen
-
 The groups turn only while the strip is in view, so a footer strip costs nothing until someone scrolls to it. Under prefers-reduced-motion each swap is a cut.
-
-### Your theme
 
 The label, hairlines and names read theme tokens; pass a node as `label` to set it in your own type.
 

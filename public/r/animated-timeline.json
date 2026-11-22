@@ -3,7 +3,7 @@
   "name": "animated-timeline",
   "title": "Animated Timeline",
   "author": "AlgorizeTech",
-  "description": "Ask the user to pick one of 5 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Animated rail. Skip the question if the user already named one. A timeline whose entries animate in on scroll, with five entrance styles. Use it on marketing pages for company history and roadmap sections.",
+  "description": "Ask the user to pick one of 6 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Animated rail. Skip the question if the user already named one. A timeline whose entries animate in on scroll, with five entrance styles. Use it on marketing pages for company history and roadmap sections.",
   "dependencies": [],
   "registryDependencies": [
     "utils"

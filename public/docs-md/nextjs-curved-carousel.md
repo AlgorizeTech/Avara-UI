@@ -152,8 +152,6 @@ Fully responsive container sizing with click-to-center navigation and hover paus
 
 ## Best Practices & Guidelines
 
-### When to Use
-
 Use `CurvedCarousel` on hero sections, portfolio showcases, product galleries, or brand story cards to capture high user engagement with fluid 3D motion.
 
 ## Props Reference

@@ -11,7 +11,7 @@ it costs, how it installs and what it works with.
 
 ## What is Avara UI?
 
-Avara UI is a free, MIT-licensed library of 207 animated React
+Avara UI is a free, MIT-licensed library of 210 animated React
 components and website sections, published as a
 [shadcn registry](https://ui.shadcn.com/docs/registry). The shadcn CLI copies each
 component's source into your project, where you can edit it like any other file.

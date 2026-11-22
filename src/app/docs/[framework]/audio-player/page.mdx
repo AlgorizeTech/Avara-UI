@@ -170,22 +170,18 @@ export default function PlyrAudioHero() {
 ## Features
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Three Layouts</h3>
-    <p className="text-muted-foreground text-sm">A hero card with artwork and glow, a compact bar for lists and footers, or the browser's own controls inside the same shell — one prop.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">No Player Library</h3>
-    <p className="text-muted-foreground text-sm">Everything sits on a native <code>&lt;audio&gt;</code> element, so the only weight added is the icons.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Mirrors the Element</h3>
-    <p className="text-muted-foreground text-sm">Playback state follows the element's own events, so a media key, the OS, or the native controls changing playback never leaves the UI out of sync.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Themed Accent</h3>
-    <p className="text-muted-foreground text-sm">The play button and progress fill read <code>--theme-color</code>, falling back to your <code>--primary</code>, so the player matches the rest of the page.</p>
-  </div>
+  <InfoCard title="Three Layouts">
+    <p>A hero card with artwork and glow, a compact bar for lists and footers, or the browser's own controls inside the same shell — one prop.</p>
+  </InfoCard>
+  <InfoCard title="No Player Library">
+    <p>Everything sits on a native <code>&lt;audio&gt;</code> element, so the only weight added is the icons.</p>
+  </InfoCard>
+  <InfoCard title="Mirrors the Element">
+    <p>Playback state follows the element's own events, so a media key, the OS, or the native controls changing playback never leaves the UI out of sync.</p>
+  </InfoCard>
+  <InfoCard title="Themed Accent">
+    <p>The play button and progress fill read <code>--theme-color</code>, falling back to your <code>--primary</code>, so the player matches the rest of the page.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

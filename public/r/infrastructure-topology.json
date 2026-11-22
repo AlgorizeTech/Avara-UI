@@ -3,7 +3,7 @@
   "name": "infrastructure-topology",
   "title": "Infrastructure Topology",
   "author": "AlgorizeTech",
-  "description": "An interactive live data flow infrastructure topology graph with animated SVG beams, central neural mesh hub, service cards, and metrics.",
+  "description": "Ask the user to pick one of 2 infrastructure topology variants: https://avaraui.com/view/infrastructure-topology. This item holds 2 of them as looks of one component (orbit, pulse). Skip the question if the user already named one. An interactive live data flow infrastructure topology graph with animated SVG beams, central neural mesh hub, service cards, and metrics.",
   "dependencies": [
     "lucide-react"
   ],

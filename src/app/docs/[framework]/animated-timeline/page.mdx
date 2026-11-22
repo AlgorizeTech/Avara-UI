@@ -119,6 +119,34 @@ export default function RightTimeline() {
 }`;
 
 <ExampleShowcase headingLevel={2}
+  name="timeline-cable"
+  columns={1}
+  examples={[
+    {
+      title: "Cable timeline",
+      subheading: "Cards on a centre playhead. Drag sideways or scroll the wheel over it to bring the next one forward.",
+      propNotes: [
+        {
+          prop: "events",
+          effect: "take an ISO `date`, a `title`, and optional `media` and `meta` for the card.",
+        },
+        {
+          prop: "wheel",
+          effect: "moves it with the mouse wheel and trackpad; at either end the page scrolls on.",
+        },
+      ],
+      minHeight: 640,
+      usage: extractCode("src/preview/demos/timeline-cable-demo.tsx"),
+      code: extractCode("src/components/custom/blocks/TimelineCableBlock.tsx"),
+    },
+  ]}
+/>
+
+### Install the cable timeline
+
+<Installation name="timeline-cable" showSetupPath={false} />
+
+<ExampleShowcase headingLevel={2}
   name="timeline-path"
   colorControl
   colorLabel="Accent Color"
@@ -291,31 +319,26 @@ Layouts switch at **container queries** (`@container/timeline`), so they follow 
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Fluid Animations</h3>
-    <p className="text-muted-foreground text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Highly Customizable</h3>
-    <p className="text-muted-foreground text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive Design</h3>
-    <p className="text-muted-foreground text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
-    <p className="text-muted-foreground text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
-  </div>
+  <InfoCard title="Fluid Animations">
+    <p>Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
+  </InfoCard>
+  <InfoCard title="Highly Customizable">
+    <p>Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
+  </InfoCard>
+  <InfoCard title="Responsive Design">
+    <p>Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
+  </InfoCard>
+  <InfoCard title="Accessible">
+    <p>Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
+  </InfoCard>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Give the timeline room to breathe — the entrance only reads as an entrance when a node crosses the observer threshold mid-scroll, so avoid placing the whole list above the fold. On narrow columns prefer <code>layout="left"</code>; the centered rail needs roughly 640px to avoid cramped cards.</p>
-  </div>
+  <InfoCard title="Usage Guidelines">
+    <p>Give the timeline room to breathe — the entrance only reads as an entrance when a node crosses the observer threshold mid-scroll, so avoid placing the whole list above the fold. On narrow columns prefer <code>layout="left"</code>; the centered rail needs roughly 640px to avoid cramped cards.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference
@@ -581,6 +604,59 @@ Discover the key capabilities that make this component an excellent choice for m
         <td><code>string[]</code>, <code>ReactNode</code></td>
         <td><code>undefined</code></td>
         <td>A checklist of what happened, and a button or link at the foot.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### TimelineCableBlock
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>events</code></td>
+        <td><code>{"{ id, date, title, media?, meta? }[]"}</code></td>
+        <td><strong>Required</strong></td>
+        <td>The cards. <code>date</code> is an ISO string or Date read in UTC; <code>media</code> fills the picture area and <code>meta</code> is the footer line.</td>
+      </tr>
+      <tr>
+        <td><code>value</code>, <code>defaultValue</code>, <code>onValueChange</code></td>
+        <td><code>string</code>, <code>string</code>, <code>(id: string) =&gt; void</code></td>
+        <td>first event</td>
+        <td>The focused event id, controlled or initial, and a callback when it changes.</td>
+      </tr>
+      <tr>
+        <td><code>itemWidth</code>, <code>height</code></td>
+        <td><code>number</code></td>
+        <td><code>340</code>, <code>600</code></td>
+        <td>Card width and stage height in px. The card shrinks to fit a narrow column.</td>
+      </tr>
+      <tr>
+        <td><code>years</code>, <code>ruler</code>, <code>cables</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>The year numerals, the ticks between cards and the cables to the cards beside the centre.</td>
+      </tr>
+      <tr>
+        <td><code>wheel</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Move with the mouse wheel and trackpad. Dragging and the arrow keys always work.</td>
+      </tr>
+      <tr>
+        <td><code>formatDate</code>, <code>formatYear</code></td>
+        <td><code>(date: Date) =&gt; string</code></td>
+        <td><code>Mar 4, 2024</code>, <code>2024</code></td>
+        <td>Format the card date and the year numeral.</td>
       </tr>
     </tbody>
   </table>

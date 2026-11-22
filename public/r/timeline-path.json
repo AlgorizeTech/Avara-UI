@@ -3,7 +3,7 @@
   "name": "timeline-path",
   "title": "Timeline Path",
   "author": "AlgorizeTech",
-  "description": "Ask the user to pick one of 5 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Path timeline. Skip the question if the user already named one. A scroll-linked timeline on a winding path that draws itself from stop to stop, with a glowing head and cards that light up as it arrives. Use it for a company or product milestone story.",
+  "description": "Ask the user to pick one of 6 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Path timeline. Skip the question if the user already named one. A scroll-linked timeline on a winding path that draws itself from stop to stop, with a glowing head and cards that light up as it arrives. Use it for a company or product milestone story.",
   "dependencies": [],
   "registryDependencies": [
     "utils"

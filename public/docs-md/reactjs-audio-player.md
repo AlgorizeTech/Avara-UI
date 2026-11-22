@@ -186,19 +186,11 @@ npx shadcn@latest add @avara-ui/video-player-plyr
 
 ## Features
 
-### Three Layouts
-
 A hero card with artwork and glow, a compact bar for lists and footers, or the browser's own controls inside the same shell — one prop.
-
-### No Player Library
 
 Everything sits on a native `<audio>` element, so the only weight added is the icons.
 
-### Mirrors the Element
-
 Playback state follows the element's own events, so a media key, the OS, or the native controls changing playback never leaves the UI out of sync.
-
-### Themed Accent
 
 The play button and progress fill read `--theme-color`, falling back to your `--primary`, so the player matches the rest of the page.
 

@@ -230,31 +230,26 @@ export default function MultipleOpenFaq() {
 Single or multiple open panels, a one-time stack entrance, and eight variants that all read your theme tokens.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Follows your theme</h3>
-    <p className="text-muted-foreground text-sm">Every variant is built from the shadcn tokens, so changing <code>--primary</code> restyles the open panel, the rail and the icon tile together.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
-    <p className="text-muted-foreground text-sm">Radix handles roles, arrow-key navigation and focus. The visible focus ring follows the shape of each variant, and the entrance respects reduced motion.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
-    <p className="text-muted-foreground text-sm">Rows wrap cleanly at phone width; the open card in the default variant only grows wider than the list from <code>sm</code> up.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">No animation library</h3>
-    <p className="text-muted-foreground text-sm">The <code>soft</code>, <code>inset</code> and <code>bracket</code> variants open and close with CSS keyframes that ship inside the component. The stack entrance uses the Web Animations API. The only dependency beyond Radix is <code>lucide-react</code>.</p>
-  </div>
+  <InfoCard title="Follows your theme">
+    <p>Every variant is built from the shadcn tokens, so changing <code>--primary</code> restyles the open panel, the rail and the icon tile together.</p>
+  </InfoCard>
+  <InfoCard title="Accessible">
+    <p>Radix handles roles, arrow-key navigation and focus. The visible focus ring follows the shape of each variant, and the entrance respects reduced motion.</p>
+  </InfoCard>
+  <InfoCard title="Responsive">
+    <p>Rows wrap cleanly at phone width; the open card in the default variant only grows wider than the list from <code>sm</code> up.</p>
+  </InfoCard>
+  <InfoCard title="No animation library">
+    <p>The <code>soft</code>, <code>inset</code> and <code>bracket</code> variants open and close with CSS keyframes that ship inside the component. The stack entrance uses the Web Animations API. The only dependency beyond Radix is <code>lucide-react</code>.</p>
+  </InfoCard>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Use <code>animation="stack"</code> once per page, on the accordion you want people to notice; two decks dealing at the same time cancel each other out. Give it at least three items so the pile reads as a deck, and keep <code>defaultValue</code> set so the open card is part of the deal.</p>
-  </div>
+  <InfoCard title="Usage Guidelines">
+    <p>Use <code>animation="stack"</code> once per page, on the accordion you want people to notice; two decks dealing at the same time cancel each other out. Give it at least three items so the pile reads as a deck, and keep <code>defaultValue</code> set so the open card is part of the deal.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

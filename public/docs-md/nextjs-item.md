@@ -119,25 +119,15 @@ export default function FeatureCard() {
 ## Features
 Discover the Item component's structural layout features, designed for lists, dropdowns, and menus with proper spacing.
 
-### Customizable
-
 Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-### Accessible
 
 Built with accessibility in mind, ensuring all users can interact with your application effectively.
 
-### Responsive
-
 Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-### Performant
 
 Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
-
-### Usage Guidelines
 
 Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 

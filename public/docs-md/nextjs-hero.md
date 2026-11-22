@@ -224,19 +224,11 @@ npx shadcn@latest add @avara-ui/honeycomb-hero
 
 ### Features
 
-### A honeycomb that turns
-
 The nine cells sit on a real hexagonal lattice, and the queue snakes around it so every step is a hop between neighbours. Each cell glides to its next place with a short stagger — the one heading for the feature spot leads, the one leaving it follows last.
-
-### The feature is the background
 
 Whatever photograph is in the large hexagon also fills the section behind everything, tinted with its own tone and darkened towards the copy. Photograph and colour crossfade together as the honeycomb turns — deep green behind the gorge, indigo behind the cabins, night blue behind the snow.
 
-### Measured, not guessed
-
 Every hexagon's position comes from the design in percentages of a fixed-aspect stage, so the composition is the same at 1024 and 1920 — including the cells cut by the right edge and the foot. Below the desktop breakpoint the honeycomb stacks under the copy.
-
-### Operable
 
 Arrows at the foot and the keyboard's arrow keys step the queue either way; a live region names the featured photograph; under prefers-reduced-motion the cells swap places without travelling.
 
@@ -376,19 +368,11 @@ The section takes the height its content needs — about 44rem on a desktop — 
 
 ### Features
 
-### A queue, not a slider
-
 Cards glide between their places in the queue; the one sent to the back appears where it belongs instead of flying across the others. The background crossfades, settles and then drifts slowly until the next slide.
-
-### The clock is the progress line
 
 One CSS animation fills the line under the front card and moves the queue when it completes. Pausing the line pauses the clock, so a hover never throws away the time already spent.
 
-### Every device
-
 The rail measures itself and picks card sizes from its own width, not the viewport. Desktop puts the panel beside the rail; tablets stack them; phones give the front card most of the row and keep the rest of the queue peeking in.
-
-### Operable and readable
 
 Every card is a button with a visible focus ring; arrow keys walk the queue, a swipe moves it on touch, and a live region announces the slide. Reduced motion swaps slides without the crossfade or drift.
 
@@ -486,19 +470,11 @@ The reference look is a person cut out on a flat colour. Cut-outs are expensive;
 
 ### Features
 
-### Built from the library
-
 Circular Text for the badge, Avatar Stack for the faces, Text Animation for the headline, Tilted Card for every look, Dialog for the video. Install this one item and all five come with it.
-
-### One reveal, then the pointer
 
 A single timeline plays on first view: badge and faces, looks from the middle outward, the button, the footer. After that only the badge turns; tilt, zoom, fan-out and arrows all answer the pointer.
 
-### Responsive to two columns
-
 Five staggered columns at lg, three at sm, two on phones with the middle look — and its button — full width. The header folds the badge and faces above the headline.
-
-### Links are links
 
 The call to action, the plus beside the faces and the teaser are anchors — pass your router's Link as linkComponent — and the video badge is a real button with a label for screen readers.
 
@@ -610,19 +586,11 @@ The call to action is a `Button`. Give `cta` an `onClick`, or an `href` to navig
 
 ### Features
 
-### Built from the library
-
 Glass Panel for the ground and the cards, Text Animation for the headline, Counter for the figures, Button for the call to action. Install this one item and all four come with it.
-
-### One sequence, then the pointer
 
 Words, line, button, cards, faces — one timeline the first time the section appears. After that nothing moves unless you hover it. Reduced motion renders the finished state.
 
-### Figures that count when seen
-
 Each Stat waits until its card is on screen before counting, so a hero below the fold does not run its numbers while nobody is looking.
-
-### Server-safe
 
 Cards and faces render opaque in the HTML and only animate once the page is live; nothing depends on JavaScript to be visible.
 
@@ -754,19 +722,11 @@ import { Sparkles } from "lucide-react";
 
 ### Features
 
-### Built from the library
-
 Button for the scroll pill, Dialog for the video. Both install with this item; the rest is Tailwind and one SVG.
-
-### One reveal, one thing that keeps moving
 
 Headline, pills, photographs, footer — one timeline the first time the section appears. The turning badge is the only ambient motion, and it stops under reduced motion.
 
-### Two colours, from the theme
-
 The accent is your primary colour unless you pin it; the second colour is one prop. Pills, badge, coloured words, play button and scroll pill all follow.
-
-### Real links and dialogs
 
 The video trigger is keyboard-operable and opens a proper dialog with focus handling; every photograph carries its alt text; nothing depends on JavaScript to be visible.
 

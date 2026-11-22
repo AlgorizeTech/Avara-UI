@@ -180,19 +180,11 @@ export default function LiquidGlass() {
 
 ## Features
 
-### One recipe, four shapes
-
 Blur, hairline border and inset highlight are identical on every panel. Only the radius changes, so shape carries meaning instead of decoration.
-
-### Glass or solid, by context
 
 The backdrop sets the surface once and every panel reads it. Flip a whole page from frosted to flat with one prop; override a single panel when needed.
 
-### Dark mode built in
-
 The aurora dims and the glass darkens under the dark class; the hairline and highlight keep their contrast on both.
-
-### Nothing but Tailwind
 
 No animation library, no portal. Spans, padding and inner layout are ordinary utility classes on the panel.
 

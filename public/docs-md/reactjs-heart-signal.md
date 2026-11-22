@@ -128,19 +128,11 @@ export default function CardiacWaveDemo() {
 
 ## Features
 
-### 3 Ultra-Smooth Animation Variants
-
 Includes EKG Line Trace, Cardiac Heart Sweep, and Cardiac Wave visualizers.
-
-### Slow & Calm Rhythm Flow
 
 Features a relaxed, smooth heartbeat waveform flow perfect for clean medical dashboards.
 
-### Dynamic Theme Adaptive
-
 Automatically resolves active theme primary color (`bg-primary`) across Light and Dark modes.
-
-### Full Width & Responsive Height
 
 Scales fluidly to fill 100% of parent container width and height without expanding overflow.
 

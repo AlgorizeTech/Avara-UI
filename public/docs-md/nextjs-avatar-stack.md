@@ -352,19 +352,13 @@ export default function SizesDemo() {
 
 ## Best Practices & Guidelines
 
-### Optimal Avatar Count
-
 Limit visible avatars to 3–5 items using the `max` prop. Folding excess avatars into a `+N` counter keeps your layout balanced, avoids horizontal overflow on mobile screens, and maintains clean visual hierarchy.
-
-### Smooth Hover Motion
 
 When enabling `spreadOnHover`, keep `spreadDistance` subtle (4–8px) and `transitionDuration` around 500ms. Pair with `translate="-30%"` to gently elevate the hovered avatar above its neighbors without jarring layout shifts.
 
 ### Tooltip Accessibility & Text Alignment
 
 Always provide accessible `alt` or `name` attributes for every avatar. When a `designation` or subtitle is provided, tooltips automatically align text to the left; otherwise, titles stay cleanly centered for single-line labels.
-
-### Ring Contrast & Background Matching
 
 Ensure `ringClassName` matches the surface the avatars rest upon (defaults to `ring-background`). A matching border ring creates clean visual separation between overlapping faces in both light and dark modes.
 

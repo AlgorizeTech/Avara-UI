@@ -120,31 +120,26 @@ export default function UserGraphDemo() {
 Discover the key capabilities of the User Graph hierarchy tree:
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Orbit Tool Cluster</h3>
-    <p className="text-muted-foreground text-sm">Interactive orbiting ring featuring 10 integrated channels including Voice, Telegram, Email, and MCP plugins.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Dynamic SVG Curves</h3>
-    <p className="text-muted-foreground text-sm">Cubic bezier SVG connecting paths with glowing animated pulses highlighting selected agent hierarchy paths.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Specialized Sub-Agents</h3>
-    <p className="text-muted-foreground text-sm">Dedicated team nodes for Sales, Marketing, Support, Accounting, and Data Analytics with online status badges.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Light Mode First</h3>
-    <p className="text-muted-foreground text-sm">Crafted with high-contrast slate and white light theme aesthetics, full dark mode support, and smooth responsiveness.</p>
-  </div>
+  <InfoCard title="Orbit Tool Cluster">
+    <p>Interactive orbiting ring featuring 10 integrated channels including Voice, Telegram, Email, and MCP plugins.</p>
+  </InfoCard>
+  <InfoCard title="Dynamic SVG Curves">
+    <p>Cubic bezier SVG connecting paths with glowing animated pulses highlighting selected agent hierarchy paths.</p>
+  </InfoCard>
+  <InfoCard title="Specialized Sub-Agents">
+    <p>Dedicated team nodes for Sales, Marketing, Support, Accounting, and Data Analytics with online status badges.</p>
+  </InfoCard>
+  <InfoCard title="Light Mode First">
+    <p>Crafted with high-contrast slate and white light theme aesthetics, full dark mode support, and smooth responsiveness.</p>
+  </InfoCard>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Hierarchy Organization</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Ensure nodes are grouped logically into User, Orchestrator, and Sub-Agent tiers so the hierarchy flows naturally from top to bottom.</p>
-  </div>
+  <InfoCard title="Hierarchy Organization">
+    <p>Ensure nodes are grouped logically into User, Orchestrator, and Sub-Agent tiers so the hierarchy flows naturally from top to bottom.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

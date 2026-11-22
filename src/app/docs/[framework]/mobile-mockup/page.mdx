@@ -321,35 +321,29 @@ export default function Pixel10Showcase() {
 Learn about the Mobile Mockup component's realistic device framing, perfect for presenting app screenshots with proper bezels.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">8 Unique Devices</h3>
-    <p className="text-muted-foreground text-sm">Choose from a variety of iconic models, from the modern iPhone 16 Pro and iPhone 17 Pro Max through classic iPhones to Samsung Ultra and Google Pixel.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Pure CSS/SVG</h3>
-    <p className="text-muted-foreground text-sm">No heavy raster images used for the frames. Everything is built with perfectly scaled SVG and CSS for blazing fast performance.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Media & React Ready</h3>
-    <p className="text-muted-foreground text-sm">Easily pass static images, autoplaying looping videos, or full interactive React trees directly into the screen container.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Theme Adapting</h3>
-    <p className="text-muted-foreground text-sm">The hardware frames natively adapt their bezels, finishes, and shadows based on your app's current light or dark mode.</p>
-  </div>
+  <InfoCard title="8 Unique Devices">
+    <p>Choose from a variety of iconic models, from the modern iPhone 16 Pro and iPhone 17 Pro Max through classic iPhones to Samsung Ultra and Google Pixel.</p>
+  </InfoCard>
+  <InfoCard title="Pure CSS/SVG">
+    <p>No heavy raster images used for the frames. Everything is built with perfectly scaled SVG and CSS for blazing fast performance.</p>
+  </InfoCard>
+  <InfoCard title="Media & React Ready">
+    <p>Easily pass static images, autoplaying looping videos, or full interactive React trees directly into the screen container.</p>
+  </InfoCard>
+  <InfoCard title="Theme Adapting">
+    <p>The hardware frames natively adapt their bezels, finishes, and shadows based on your app's current light or dark mode.</p>
+  </InfoCard>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Content Aspect Ratios</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">When passing screenshots as images, try to ensure they roughly match a vertical aspect ratio close to the frame you picked (16:9 on the iPhone 5, 19.5:9 on the iPhone 12/14/17 and Samsung, 20:9 on the Pixels) to prevent unnatural stretching or cropping inside the frame.</p>
-  </div>
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Sizing Live Screens</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Tailwind's responsive prefixes key off the viewport, not the frame. A section that uses <code>sm:</code> or <code>lg:</code> classes still renders at desktop sizes inside a 300px-wide mockup, so give an embedded screen a fixed type scale instead of reusing your page-level layout component.</p>
-  </div>
+  <InfoCard title="Content Aspect Ratios">
+    <p>When passing screenshots as images, try to ensure they roughly match a vertical aspect ratio close to the frame you picked (16:9 on the iPhone 5, 19.5:9 on the iPhone 12/14/17 and Samsung, 20:9 on the Pixels) to prevent unnatural stretching or cropping inside the frame.</p>
+  </InfoCard>
+  <InfoCard title="Sizing Live Screens">
+    <p>Tailwind's responsive prefixes key off the viewport, not the frame. A section that uses <code>sm:</code> or <code>lg:</code> classes still renders at desktop sizes inside a 300px-wide mockup, so give an embedded screen a fixed type scale instead of reusing your page-level layout component.</p>
+  </InfoCard>
   <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
     <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Handling Overflow</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">If you are passing interactive React components inside the mockup instead of an image, ensure you add <code>overflow-y-auto</code> to your child wrapper if you want the screen content to be scrollable.</p>

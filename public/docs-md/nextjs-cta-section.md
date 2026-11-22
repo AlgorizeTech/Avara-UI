@@ -202,19 +202,11 @@ export default function MobileAppExample() {
 
 Discover the key capabilities that make this component an excellent choice for modern interactive user interfaces.
 
-### Synchronized Scorecard
-
 Selecting any feature or service card on the left automatically synchronizes with the right scorecard canvas, animating scores and progress meters.
-
-### Signature 3D Popover
 
 Features an eye-catching floating active badge with vibrant accent gradients, bold typography, and smooth transitions.
 
-### Design Token Integration
-
 Seamlessly respects `var(--radius)` corner rounding and brand accent tokens across Light and Dark themes.
-
-### Fully Responsive
 
 Adapts effortlessly from expansive two-column desktop layouts to stacked, touch-friendly mobile flows without horizontal overflow.
 

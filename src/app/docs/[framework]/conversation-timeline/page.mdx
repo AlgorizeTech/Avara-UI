@@ -288,31 +288,26 @@ export default function ChatWithMinimap() {
 Discover the Conversation Timeline's capabilities as a minimap for long conversations.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">One property animates</h3>
-    <p className="text-muted-foreground text-sm">Only row <code>height</code> transitions; the mark length, gap and label width are fixed, so the rail never shifts sideways and hover can never nudge the marks.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Scroll stays put</h3>
-    <p className="text-muted-foreground text-sm">While rows grow from 10px to 24px the rail re-anchors to the row at the top every frame, so a scrolled list expands in place instead of jumping.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Touch and keyboard</h3>
-    <p className="text-muted-foreground text-sm">Without hover the rail stays expanded so labels remain reachable; focus expands it too, and every mark is a real button with an accessible name.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Respects reduced motion</h3>
-    <p className="text-muted-foreground text-sm">Every transition is dropped under <code>prefers-reduced-motion</code>; the rail simply snaps between its two states.</p>
-  </div>
+  <InfoCard title="One property animates">
+    <p>Only row <code>height</code> transitions; the mark length, gap and label width are fixed, so the rail never shifts sideways and hover can never nudge the marks.</p>
+  </InfoCard>
+  <InfoCard title="Scroll stays put">
+    <p>While rows grow from 10px to 24px the rail re-anchors to the row at the top every frame, so a scrolled list expands in place instead of jumping.</p>
+  </InfoCard>
+  <InfoCard title="Touch and keyboard">
+    <p>Without hover the rail stays expanded so labels remain reachable; focus expands it too, and every mark is a real button with an accessible name.</p>
+  </InfoCard>
+  <InfoCard title="Respects reduced motion">
+    <p>Every transition is dropped under <code>prefers-reduced-motion</code>; the rail simply snaps between its two states.</p>
+  </InfoCard>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Keep labels short</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Labels truncate at <code>labelWidth</code>. Use the first line of a message or a summary rather than the full text.</p>
-  </div>
+  <InfoCard title="Keep labels short">
+    <p>Labels truncate at <code>labelWidth</code>. Use the first line of a message or a summary rather than the full text.</p>
+  </InfoCard>
   <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
     <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Leave room to expand</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">The rail's height grows from <code>visibleCount × collapsedRowHeight</code> to <code>visibleCount × rowHeight</code> on hover. Place it where that growth won't push other content around.</p>

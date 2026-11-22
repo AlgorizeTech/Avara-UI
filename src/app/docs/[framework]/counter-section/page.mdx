@@ -403,39 +403,32 @@ export default function SpotlightGradientCounter() {
 ## Features
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">4 Production Variants</h3>
-    <p className="text-muted-foreground text-sm">Cyber HUD for fintech & developer tools, Minimal Slash for agencies, Halftone Cinema for architecture, and Spotlight Gradient for modern tech.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">100% Reusable with Custom Datasets</h3>
-    <p className="text-muted-foreground text-sm">Every variant accepts a typed stats array prop with value, prefix, suffix, label, sublabel, and tag for complete customization.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">No Shadows, Pure Flat Design</h3>
-    <p className="text-muted-foreground text-sm">Engineered with clean, crisp borders and zero box-shadows for a modern, sleek aesthetic that blends into any layout.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">100% Theme Adaptive</h3>
-    <p className="text-muted-foreground text-sm">Every variant—including Halftone and Cyber HUD—renders completely light in Light Mode and deep dark in Dark Mode.</p>
-  </div>
+  <InfoCard title="4 Production Variants">
+    <p>Cyber HUD for fintech & developer tools, Minimal Slash for agencies, Halftone Cinema for architecture, and Spotlight Gradient for modern tech.</p>
+  </InfoCard>
+  <InfoCard title="100% Reusable with Custom Datasets">
+    <p>Every variant accepts a typed stats array prop with value, prefix, suffix, label, sublabel, and tag for complete customization.</p>
+  </InfoCard>
+  <InfoCard title="No Shadows, Pure Flat Design">
+    <p>Engineered with clean, crisp borders and zero box-shadows for a modern, sleek aesthetic that blends into any layout.</p>
+  </InfoCard>
+  <InfoCard title="100% Theme Adaptive">
+    <p>Every variant—including Halftone and Cyber HUD—renders completely light in Light Mode and deep dark in Dark Mode.</p>
+  </InfoCard>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Layout & Placement</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Place counter sections below the hero fold or immediately after high-level feature highlights. The animated count-up runs automatically when the section intersects the viewport (using <code>useInView</code>), making it ideal for social proof and conversion trust anchors.</p>
-  </div>
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Variant Selection</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Choose <code>variant="cyber-hud"</code> for developer tools, Web3, security, and fintech telemetry; <code>variant="minimal-slash"</code> for modern agencies, SaaS, and portfolios; <code>variant="halftone-cinema"</code> for architecture and editorial brands; and <code>variant="spotlight-gradient"</code> for interactive consumer tech and modern AI applications.</p>
-  </div>
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Custom Data & Precision</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Always specify the <code>decimals</code> prop on stats when dealing with floating-point metrics (e.g., <code>decimals: 1</code> for <code>2.4</code> or <code>decimals: 3</code> for <code>99.999</code>). This prevents awkward integer rounding during the count-up animation.</p>
-  </div>
+  <InfoCard title="Layout & Placement">
+    <p>Place counter sections below the hero fold or immediately after high-level feature highlights. The animated count-up runs automatically when the section intersects the viewport (using <code>useInView</code>), making it ideal for social proof and conversion trust anchors.</p>
+  </InfoCard>
+  <InfoCard title="Variant Selection">
+    <p>Choose <code>variant="cyber-hud"</code> for developer tools, Web3, security, and fintech telemetry; <code>variant="minimal-slash"</code> for modern agencies, SaaS, and portfolios; <code>variant="halftone-cinema"</code> for architecture and editorial brands; and <code>variant="spotlight-gradient"</code> for interactive consumer tech and modern AI applications.</p>
+  </InfoCard>
+  <InfoCard title="Custom Data & Precision">
+    <p>Always specify the <code>decimals</code> prop on stats when dealing with floating-point metrics (e.g., <code>decimals: 1</code> for <code>2.4</code> or <code>decimals: 3</code> for <code>99.999</code>). This prevents awkward integer rounding during the count-up animation.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

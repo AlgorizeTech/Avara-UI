@@ -14,13 +14,15 @@ export type NavigationChild = {
   slug?: string;
   href?: string;
   /**
-   * Small tag after the label. `"New"` is time-limited: pair it with `addedOn`
-   * and it disappears on its own after NEW_BADGE_DAYS. Every other badge
-   * ("Updated", …) stays until it is removed by hand.
+   * Small tag after the label. `"New"` and `"Updated"` are time-limited: pair
+   * them with `addedOn` / `updatedOn` and they disappear on their own after
+   * BADGE_DAYS. Any badge without a date stays until it is removed by hand.
    */
   badge?: string;
   /** The day the page shipped, "YYYY-MM-DD". Drives the `"New"` badge's expiry. */
   addedOn?: string;
+  /** The day the page last changed, "YYYY-MM-DD". Drives the `"Updated"` badge's expiry. */
+  updatedOn?: string;
   /**
    * Extra search terms for the command palette, which otherwise indexes nothing
    * but the label. Needed where a page is known by names its label does not
@@ -52,8 +54,8 @@ export const navHref = (
   framework: Framework,
 ) => (item.slug ? docsHref(framework, item.slug) : (item.href ?? "#"));
 
-/** How long a page keeps its "New" badge after `addedOn`. */
-export const NEW_BADGE_DAYS = 2;
+/** How long a page keeps its "New" / "Updated" badge after `addedOn` / `updatedOn`. */
+export const BADGE_DAYS = 7;
 
 /**
  * The clock the "New" badges are judged against. The site is a static export
@@ -66,15 +68,15 @@ export const NEW_BADGE_DAYS = 2;
 const badgeClock =
   Date.parse(process.env.NEXT_PUBLIC_BUILD_TIME ?? "") || Date.now();
 
-export const isFreshlyAdded = (addedOn?: string) =>
-  !!addedOn &&
-  badgeClock - Date.parse(addedOn) < NEW_BADGE_DAYS * 24 * 60 * 60 * 1000;
+export const isFreshlyAdded = (date?: string) =>
+  !!date && badgeClock - Date.parse(date) < BADGE_DAYS * 24 * 60 * 60 * 1000;
 
 const expireNewBadges = (items: NavigationItem[]): NavigationItem[] =>
   items.map((group) => ({
     ...group,
     children: group.children.map((child) =>
-      child.badge === "New" && child.addedOn && !isFreshlyAdded(child.addedOn)
+      (child.badge === "New" && child.addedOn && !isFreshlyAdded(child.addedOn)) ||
+      (child.badge === "Updated" && child.updatedOn && !isFreshlyAdded(child.updatedOn))
         ? { ...child, badge: undefined }
         : child,
     ),
@@ -110,14 +112,13 @@ const rawNavigation: NavigationItem[] = [
   {
     label: "Ui Components",
     children: [
-      { label: "3D Carousel", slug: "3d-carousel" },
-      { label: "Accordion", slug: "accordion" },
+      { label: "Accordion", slug: "accordion", badge: "Updated", updatedOn: "2026-11-22" },
       { label: "Action Button", slug: "action-buttons", badge: "New", addedOn: "2026-11-19" },
       { label: "Agent Graph", slug: "agent-graph", badge: "New", addedOn: "2026-11-19" },
-      { label: "Ai-Chat", slug: "ai-chat" },
-      { label: "Alert", slug: "alert" },
+      { label: "Ai-Chat", slug: "ai-chat", badge: "Updated", updatedOn: "2026-11-22" },
+      { label: "Alert", slug: "alert", badge: "Updated", updatedOn: "2026-11-22" },
       { label: "Animated List", slug: "animated-list" },
-      { label: "Animated Timeline", slug: "animated-timeline" },
+      { label: "Animated Timeline", slug: "animated-timeline", badge: "Updated", updatedOn: "2026-11-22" },
       { label: "Animated Typography", slug: "animated-typography" },
       { label: "Api Playground", slug: "api-playground" },
       { label: "Apple Select", slug: "apple-select" },
@@ -134,7 +135,7 @@ const rawNavigation: NavigationItem[] = [
         slug: "booking-card",
         keywords: ["booking", "appointment", "schedule", "calendar", "slots", "time picker", "reservation"],
       },
-      { label: "Breadcrumb", slug: "breadcrumb" },
+      { label: "Breadcrumb", slug: "breadcrumb", badge: "Updated", updatedOn: "2026-11-22" },
       { label: "Buttons", slug: "button" },
       { label: "Calendar", slug: "calendar" },
       { label: "Card", slug: "card", badge: "New" },
@@ -383,7 +384,7 @@ const rawNavigation: NavigationItem[] = [
       { label: "Text Animation", slug: "text-animation" },
       { label: "Theme Switcher", slug: "theme-switcher" },
       { label: "Tilted Card", slug: "tilted-card" },
-      { label: "Timeline", slug: "timeline" },
+      { label: "Timeline", slug: "timeline", badge: "Updated", updatedOn: "2026-11-22" },
       { label: "Toast", slug: "toast" },
       { label: "Toggle", slug: "toggle" },
       { label: "Toggle Group", slug: "toggle-group" },

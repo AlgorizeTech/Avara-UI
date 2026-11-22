@@ -110,25 +110,15 @@ npx shadcn@latest add @avara-ui/particle-canvas
 
 Discover the key capabilities that make this component an excellent choice for modern interactive user interfaces.
 
-### Theme Adaptive
-
 Automatically resolves and matches the active navigation item background color (`bg-primary`) across Light and Dark mode.
-
-### Organic Physics
 
 Cursor repulsion features staggered particle turbulence and spring-damped return physics for a fluid tactile feel.
 
-### Multi-Device Breakpoints
-
 Automatically scales particle parameters across Small (&lt;768px), Medium (768px-1023px), and Large (&ge;1024px) viewports.
-
-### 60 FPS Canvas
 
 Built with an offscreen sampling engine and efficient 2D rendering loops for maximum performance.
 
 ## Best Practices & Guidelines
-
-### Canvas Breakpoint Scaling
 
 Automatically adapts particle parameters based on screen size: Large (&gt;=1024px) uses `particleGap = 5px, particleSize = 2.5px`, MD (768px-1023px) uses `particleGap = 4px, particleSize = 2px`, and Small (&lt;768px) uses `particleGap = 3px, particleSize = 1.5px`.
 

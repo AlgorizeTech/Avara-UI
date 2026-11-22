@@ -196,19 +196,11 @@ export default function GetInLine() {
 
 ## Features
 
-### Built from the library
-
 Counter for the countdown, Input for the field, Button for the action, Avatar Stack for the faces, Progress for the spots bar and Copy Button for the invite link. Install this one item and all six come with it.
-
-### A thank-you that says where you stand
 
 Resolve your promise with a number and the form becomes that place in line, counting up. Add a share link and the reader can copy it to move up. A thrown error puts its message under the field.
 
-### One reveal, then only what matters
-
 Mark, countdown, heading, form and proof rise in once. After that the seconds tick, the spots bar fills, and nothing else moves until the reader acts. Reduced motion renders the finished state.
-
-### Accessible by default
 
 A real email field with a label, a submit button with a busy state, an alert for a bad address, a status region for the thank-you, a timer role on the countdown and a progress bar with real values.
 

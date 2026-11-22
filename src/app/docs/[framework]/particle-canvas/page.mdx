@@ -106,31 +106,26 @@ export default function WordmarkGlowDemo() {
 Discover the key capabilities that make this component an excellent choice for modern interactive user interfaces.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Theme Adaptive</h3>
-    <p className="text-muted-foreground text-sm">Automatically resolves and matches the active navigation item background color (<code>bg-primary</code>) across Light and Dark mode.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Organic Physics</h3>
-    <p className="text-muted-foreground text-sm">Cursor repulsion features staggered particle turbulence and spring-damped return physics for a fluid tactile feel.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Multi-Device Breakpoints</h3>
-    <p className="text-muted-foreground text-sm">Automatically scales particle parameters across Small (&lt;768px), Medium (768px-1023px), and Large (&ge;1024px) viewports.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">60 FPS Canvas</h3>
-    <p className="text-muted-foreground text-sm">Built with an offscreen sampling engine and efficient 2D rendering loops for maximum performance.</p>
-  </div>
+  <InfoCard title="Theme Adaptive">
+    <p>Automatically resolves and matches the active navigation item background color (<code>bg-primary</code>) across Light and Dark mode.</p>
+  </InfoCard>
+  <InfoCard title="Organic Physics">
+    <p>Cursor repulsion features staggered particle turbulence and spring-damped return physics for a fluid tactile feel.</p>
+  </InfoCard>
+  <InfoCard title="Multi-Device Breakpoints">
+    <p>Automatically scales particle parameters across Small (&lt;768px), Medium (768px-1023px), and Large (&ge;1024px) viewports.</p>
+  </InfoCard>
+  <InfoCard title="60 FPS Canvas">
+    <p>Built with an offscreen sampling engine and efficient 2D rendering loops for maximum performance.</p>
+  </InfoCard>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Canvas Breakpoint Scaling</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Automatically adapts particle parameters based on screen size: <strong>Large (&gt;=1024px)</strong> uses <code>particleGap = 5px, particleSize = 2.5px</code>, <strong>MD (768px-1023px)</strong> uses <code>particleGap = 4px, particleSize = 2px</code>, and <strong>Small (&lt;768px)</strong> uses <code>particleGap = 3px, particleSize = 1.5px</code>.</p>
-  </div>
+  <InfoCard title="Canvas Breakpoint Scaling">
+    <p>Automatically adapts particle parameters based on screen size: <strong>Large (&gt;=1024px)</strong> uses <code>particleGap = 5px, particleSize = 2.5px</code>, <strong>MD (768px-1023px)</strong> uses <code>particleGap = 4px, particleSize = 2px</code>, and <strong>Small (&lt;768px)</strong> uses <code>particleGap = 3px, particleSize = 1.5px</code>.</p>
+  </InfoCard>
   <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
     <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Container Height & Layout</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Wrap the component in a fixed or responsive height container (e.g. <code>h-[650px]</code> or <code>h-screen</code>). The canvas automatically resizes to fill 100% of its parent element.</p>

@@ -291,35 +291,19 @@ export default function NotFound() {
 
 Discover the key capabilities of the `NotFoundSection` component:
 
-### Hyperspace Warp Streaks & Animated '0' Portal
-
 Clean full-bleed spatial scene with sweeping hyperspace laser light streaks, horizon laser beam, and a dimensional multi-orbit vortex portal inside the central zero.
-
-### Infinite Horizon 3D Grid & Color 404
 
 Full-section infinite moving 3D perspective cyber grid runway, glowing horizon laser beam, inverted mirror floor reflection, and flowing chromatic 404 typography.
 
-### Animated Conic Laser Border & Halo
-
  360° rotating high-speed conic gradient beam border paired with a diffuse outer glow halo for a futuristic cyberpunk visual presence.
-
-### Shifting Multi-Color Typography
 
 Floating 404 heading with animated chromatic color wave transition and real-time diffuse projection reflections.
 
-### Ambient Radial Glow & Cyber Grid
-
 Dual glowing radial light sources with a subtle masked 24px cyber grid overlay for a cosmic depth effect.
-
-### 100% Screen & Device Responsive
 
 Adaptive fluid clamp typography and flexible touch-friendly action buttons that fit effortlessly on 320px mobile up to 4K displays.
 
-### Diagnostic Telemetry Bar
-
 High-tech monospace route drop monitor with real-time pulsing signal beacon indicating network coordinates status.
-
-### Theme Accent Color Switching
 
 Full live CSS variable integration (`--primary`), allowing interactive accent palette switching across light and dark modes.
 

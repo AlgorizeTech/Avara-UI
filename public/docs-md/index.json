@@ -1,18 +1,12 @@
 {
-  "generatedAt": "2026-11-21T13:48:51.238Z",
-  "totalFiles": 343,
+  "generatedAt": "2026-11-22T15:28:59.464Z",
+  "totalFiles": 341,
   "files": [
     {
       "name": "docs",
       "path": "/docs-md/index.md",
       "url": "/docs/",
       "originalMdx": "page.mdx"
-    },
-    {
-      "name": "nextjs/3d-carousel",
-      "path": "/docs-md/nextjs-3d-carousel.md",
-      "url": "/docs/nextjs/3d-carousel",
-      "originalMdx": "[framework]\\3d-carousel\\page.mdx"
     },
     {
       "name": "nextjs/accordion",
@@ -1033,12 +1027,6 @@
       "path": "/docs-md/nextjs-wizard.md",
       "url": "/docs/nextjs/wizard",
       "originalMdx": "[framework]\\wizard\\page.mdx"
-    },
-    {
-      "name": "reactjs/3d-carousel",
-      "path": "/docs-md/reactjs-3d-carousel.md",
-      "url": "/docs/reactjs/3d-carousel",
-      "originalMdx": "[framework]\\3d-carousel\\page.mdx"
     },
     {
       "name": "reactjs/accordion",

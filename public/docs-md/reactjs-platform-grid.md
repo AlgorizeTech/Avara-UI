@@ -225,19 +225,11 @@ Every tile is `aspect-square`, so a feature spanning two columns is exactly two 
 
 ## Features
 
-### Built from the library
-
 Tilted Card gives the featured cards their tilt and glare and installs with this item; the platform marks are Icons. Everything else is Tailwind.
-
-### One reveal, then the pointer
 
 A single wave from the centre when the section appears, then nothing moves unless you do: a spotlight tracks the pointer, tiles answer hover, features tilt. Reduced motion skips the wave and the spotlight.
 
-### Cheap to move over
-
 The spotlight is two CSS variables written straight to the grid element, so moving the mouse never re-renders fifty tiles.
-
-### Links, keyboard, dark mode
 
 Tiles with an href are real links with a visible focus state; hover and focus share the same treatment. Hairlines, tints and the feature gradient all have dark counterparts.
 

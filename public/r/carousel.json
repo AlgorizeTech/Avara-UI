@@ -3,7 +3,7 @@
   "name": "carousel",
   "title": "Carousel",
   "author": "AlgorizeTech",
-  "description": "Three image carousels in one file — a plain slider, a full-bleed hero with autoplay, and a thumbnail-navigated gallery. Reach for it for product shots, galleries and landing-page heroes.",
+  "description": "Ask the user to pick one of 6 carousel variants: https://avaraui.com/view/carousel. This item holds 5 of them as looks of one component (radial, glass, image, hero, thumbnails). Skip the question if the user already named one. Three image carousels in one file — a plain slider, a full-bleed hero with autoplay, and a thumbnail-navigated gallery. Reach for it for product shots, galleries and landing-page heroes.",
   "dependencies": [
     "lucide-react"
   ],

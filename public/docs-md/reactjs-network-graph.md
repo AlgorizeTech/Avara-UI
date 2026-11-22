@@ -88,25 +88,15 @@ npx shadcn@latest add @avara-ui/network-graph
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
 
-### Fluid Animations
-
 Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
-
-### Highly Customizable
 
 Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
 
-### Responsive Design
-
 Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
-
-### Accessible
 
 Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
 
 ## Best Practices & Guidelines
-
-### Usage Guidelines
 
 Keep outer rings denser than inner ones — nodes are spaced by count, so a ring holding two avatars leaves a large visual gap. Give distant rings `size="sm"` so the composition reads as depth rather than clutter.
 

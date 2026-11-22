@@ -312,25 +312,15 @@ npx shadcn@latest add @avara-ui/flow-gallery
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
 
-### 4 Directional Stream Angles
-
 Supports `top-left`, `top-right`, `vertical-up`, and `vertical-down` directional angles via simple props.
-
-### Continuous Infinite Auto-Flow
 
 Images cascade continuously with smooth velocity inertia and optional pause-on-hover.
 
-### Drag & Inertia Physics
-
 Interactive mouse and touch drag gestures along the stream axis with grab cursor feedback.
-
-### Light & Dark Theme Adaptation
 
 Supports Next Themes integration to transition stage background tones and radial depth vignette overlays.
 
 ## Best Practices & Guidelines
-
-### Image Resolution & Aspect Ratios
 
 Use square or near-square images around 320px wide. Cards render at 140px, so larger files only add decode time and memory.
 

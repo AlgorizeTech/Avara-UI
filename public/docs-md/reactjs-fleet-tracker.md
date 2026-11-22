@@ -12,18 +12,18 @@ Every preview is live: click a vehicle in the sidebar to fly the map to its coor
 
 ## For AI agents
 
-**Ask before you pick.** This page has 3 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+**Ask before you pick.** This page has 11 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
 
-All 3 options as live previews: https://avaraui.com/view/fleet-tracker
+All 11 options as live previews: https://avaraui.com/view/fleet-tracker
 
-**When to use it.** A fleet management dashboard with a vehicle sidebar synchronised with a live React Leaflet map: click a vehicle to fly the map to it, or a marker to highlight it in the list. Three looks.
+**When to use it.** A fleet management dashboard (`fleet-map`) plus 8 minimalist Positron Leaflet map variants (`maps`) covering routing, tracking, listings, zones, heatmaps, and clustering.
 
 **Gotchas:**
 
-- All three are looks of the one `fleet-map` item: install it once and set `variant` from the index.
-- Vehicles are `{ id, location, lat, lng }` with optional `status` (`active`, `idle`, `maintenance`) and `speed`.
+- The first three looks install as `fleet-map`; the eight Positron map variants install as `maps`.
+- FleetTracker takes `fleetData` as `{ id, location, lat, lng }` with optional `status` and `speed`.
 
-### The 3 variants
+### The 11 variants
 
 1. **Split view** (`default`): A fixed sidebar beside the map, synchronised in both directions.
    - Live: https://avaraui.com/view/fleet-tracker/default
@@ -41,7 +41,7 @@ All 3 options as live previews: https://avaraui.com/view/fleet-tracker
    - Install: `npx shadcn@latest add @avara-ui/fleet-map`
    - Set these props: `{"variant":"minimal"}`
    - Docs: https://avaraui.com/docs/nextjs/fleet-tracker#minimal
-3. **Modern** (`modern`): An aurora behind the whole tracker, the vehicle list as a frosted slab and the map in a glass-edged panel.
+3. **Modern** (`modern`): An aurora behind the tracker, frosted vehicle list, and glass-edged map.
    - Live: https://avaraui.com/view/fleet-tracker/modern
    - Best for: a showpiece, brand-forward tracking screen
    - Avoid if: you want a plain, utilitarian dashboard
@@ -49,6 +49,70 @@ All 3 options as live previews: https://avaraui.com/view/fleet-tracker
    - Install: `npx shadcn@latest add @avara-ui/fleet-map`
    - Set these props: `{"variant":"modern"}`
    - Docs: https://avaraui.com/docs/nextjs/fleet-tracker#modern
+4. **Route Planner** (`route-planner`): Positron map with a blue dispatch route, stop markers, popup, and ETA card.
+   - Live: https://avaraui.com/view/fleet-tracker/route-planner
+   - Best for: multi-stop dispatch and delivery route previews
+   - Avoid if: you need a full vehicle sidebar
+   - Traits: Positron basemap, route polyline, floating ETA card
+   - Install: `npx shadcn@latest add @avara-ui/maps`
+   - Set these props: `{"variant":"route-planner"}`
+   - Docs: https://avaraui.com/docs/nextjs/fleet-tracker#route-planner
+5. **Live Tracking** (`live-tracking`): Animated pulsing courier marker moving along a solid and dashed route.
+   - Live: https://avaraui.com/view/fleet-tracker/live-tracking
+   - Best for: real-time order or courier ETA tracking
+   - Avoid if: showing static locations
+   - Traits: animated courier, solid and dashed path, ETA progress bar
+   - Install: `npx shadcn@latest add @avara-ui/maps`
+   - Set these props: `{"variant":"live-tracking"}`
+   - Docs: https://avaraui.com/docs/nextjs/fleet-tracker#live-tracking
+6. **Fleet Dispatch** (`fleet-dispatch`): Active courier units along a dispatch corridor with a floating SLA card.
+   - Live: https://avaraui.com/view/fleet-tracker/fleet-dispatch
+   - Best for: regional dispatch overview with live SLA metrics
+   - Avoid if: you need a searchable vehicle list
+   - Traits: SLA summary card, corridor route, unit popups
+   - Install: `npx shadcn@latest add @avara-ui/maps`
+   - Set these props: `{"variant":"fleet-dispatch"}`
+   - Docs: https://avaraui.com/docs/nextjs/fleet-tracker#fleet-dispatch
+7. **Property Listings** (`property-listings`): Interactive price-pill markers paired with a neighborhood card and popups.
+   - Live: https://avaraui.com/view/fleet-tracker/property-listings
+   - Best for: real estate, rentals, or price-tagged map discovery
+   - Avoid if: showing routes or telemetry
+   - Traits: price-pill markers, neighborhood list, listing popups
+   - Install: `npx shadcn@latest add @avara-ui/maps`
+   - Set these props: `{"variant":"property-listings"}`
+   - Docs: https://avaraui.com/docs/nextjs/fleet-tracker#property-listings
+8. **Store Locator** (`store-locator`): Color-coded pickup pins, clickable location list, and a Locate Me control.
+   - Live: https://avaraui.com/view/fleet-tracker/store-locator
+   - Best for: store finders, pickup counters, and branch locators
+   - Avoid if: showing delivery polygons
+   - Traits: locate-me control, color-coded pins, location list
+   - Install: `npx shadcn@latest add @avara-ui/maps`
+   - Set these props: `{"variant":"store-locator"}`
+   - Docs: https://avaraui.com/docs/nextjs/fleet-tracker#store-locator
+9. **Coverage Zones** (`coverage-zones`): Delivery polygon zones with centered capacity badges and a zone legend.
+   - Live: https://avaraui.com/view/fleet-tracker/coverage-zones
+   - Best for: service-area boundaries and regional capacity monitoring
+   - Avoid if: plotting individual point events
+   - Traits: polygon zones, capacity pills, zone legend
+   - Install: `npx shadcn@latest add @avara-ui/maps`
+   - Set these props: `{"variant":"coverage-zones"}`
+   - Docs: https://avaraui.com/docs/nextjs/fleet-tracker#coverage-zones
+10. **Heatmap** (`heatmap`): Canvas-rendered thermal pickup density layer with a Low-High legend.
+   - Live: https://avaraui.com/view/fleet-tracker/heatmap
+   - Best for: demand hotspots and geographic density visualization
+   - Avoid if: inspecting individual clickable markers
+   - Traits: canvas heatmap, thermal gradient, density legend
+   - Install: `npx shadcn@latest add @avara-ui/maps`
+   - Set these props: `{"variant":"heatmap"}`
+   - Docs: https://avaraui.com/docs/nextjs/fleet-tracker#heatmap
+11. **Incident Monitor** (`incident-monitor`): Zoom-aware numbered cluster circles expanding into severity incident pins.
+   - Live: https://avaraui.com/view/fleet-tracker/incident-monitor
+   - Best for: operations monitoring with dense incident or alert pins
+   - Avoid if: you only have a handful of static points
+   - Traits: zoom clustering, severity dots, KPI overlay
+   - Install: `npx shadcn@latest add @avara-ui/maps`
+   - Set these props: `{"variant":"incident-monitor"}`
+   - Docs: https://avaraui.com/docs/nextjs/fleet-tracker#incident-monitor
 
 ## Fleet tracker
 
@@ -220,28 +284,131 @@ export default function ModernFleet() {
 }
 ```
 
+## Maps (Positron Style)
+
+Eight minimalist Positron Leaflet map variants with floating KPI/list overlays, custom dot and price-pill markers, route polylines, delivery zone polygons, canvas heatmaps, and zoom-aware incident clustering.
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/maps.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/maps
+```
+
+### Route Planner
+
+- Set `variant="route-planner"` for a dispatch route polyline, dot stop markers, open popup details, and a floating ETA card.
+
+```tsx
+import Maps from "@/components/custom/blocks/Maps";
+
+export default function RoutePlannerMap() {
+  return <Maps variant="route-planner" />;
+}
+```
+
+### Property Listings
+
+- Set `variant="property-listings"` for interactive price-pill markers, a synchronized neighborhood card, and listing popups.
+
+```tsx
+import Maps from "@/components/custom/blocks/Maps";
+
+export default function PropertyListingsMap() {
+  return <Maps variant="property-listings" />;
+}
+```
+
+### Live Tracking
+
+- Set `variant="live-tracking"` for an animated pulsing courier marker moving along a solid/dashed route with a live ETA progress bar.
+
+```tsx
+import Maps from "@/components/custom/blocks/Maps";
+
+export default function LiveTrackingMap() {
+  return <Maps variant="live-tracking" />;
+}
+```
+
+### Store Locator
+
+- Set `variant="store-locator"` for color-coded pickup pins, a clickable location list, and a Locate Me map control.
+
+```tsx
+import Maps from "@/components/custom/blocks/Maps";
+
+export default function StoreLocatorMap() {
+  return <Maps variant="store-locator" />;
+}
+```
+
+### Fleet Dispatch
+
+- Set `variant="fleet-dispatch"` for active vehicle markers along a dispatch corridor with a floating SLA summary card.
+
+```tsx
+import Maps from "@/components/custom/blocks/Maps";
+
+export default function FleetDispatchMap() {
+  return <Maps variant="fleet-dispatch" />;
+}
+```
+
+### Coverage Zones
+
+- Set `variant="coverage-zones"` for polygon delivery zones with centered capacity badges and a color-coded legend.
+
+```tsx
+import Maps from "@/components/custom/blocks/Maps";
+
+export default function CoverageZonesMap() {
+  return <Maps variant="coverage-zones" />;
+}
+```
+
+### Heatmap
+
+- Set `variant="heatmap"` for a canvas-rendered thermal pickup density layer with a Low–High gradient legend.
+
+```tsx
+import Maps from "@/components/custom/blocks/Maps";
+
+export default function HeatmapView() {
+  return <Maps variant="heatmap" />;
+}
+```
+
+### Incident Monitor
+
+- Set `variant="incident-monitor"` for zoom-aware numbered cluster circles that expand into severity-coded incident pins.
+
+```tsx
+import Maps from "@/components/custom/blocks/Maps";
+
+export default function IncidentMonitorMap() {
+  return <Maps variant="incident-monitor" />;
+}
+```
+
 ## Features
 Explore the Fleet Tracker map features, including live marker positioning, custom tooltips, and interactive geographic visualization.
 
-### Customizable
-
 Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-### Accessible
 
 Built with accessibility in mind, ensuring all users can interact with your application effectively.
 
-### Responsive
-
 Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-### Performant
 
 Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
-
-### Usage Guidelines
 
 Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 

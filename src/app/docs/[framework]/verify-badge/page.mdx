@@ -240,31 +240,26 @@ export default function NotificationCard() {
 Explore the Verify Badge's authentic design features, providing recognizable trust signals with subtle animated glows.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">SVG Based</h3>
-    <p className="text-muted-foreground text-sm">Uses standard SVG elements that scale perfectly to any size without losing quality.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Custom Themes</h3>
-    <p className="text-muted-foreground text-sm">Easily pass any custom hex color or use predefined themes to match your branding.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Micro-Animations</h3>
-    <p className="text-muted-foreground text-sm">Built-in optional subtle pulse animations to draw attention to verified status.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Flexible Sizing</h3>
-    <p className="text-muted-foreground text-sm">Comes with 4 preset sizes (sm, md, lg, xl) that integrate seamlessly into any layout.</p>
-  </div>
+  <InfoCard title="SVG Based">
+    <p>Uses standard SVG elements that scale perfectly to any size without losing quality.</p>
+  </InfoCard>
+  <InfoCard title="Custom Themes">
+    <p>Easily pass any custom hex color or use predefined themes to match your branding.</p>
+  </InfoCard>
+  <InfoCard title="Micro-Animations">
+    <p>Built-in optional subtle pulse animations to draw attention to verified status.</p>
+  </InfoCard>
+  <InfoCard title="Flexible Sizing">
+    <p>Comes with 4 preset sizes (sm, md, lg, xl) that integrate seamlessly into any layout.</p>
+  </InfoCard>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Accessibility First</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Always ensure that you add an <code>aria-label</code> or <code>title</code> to the badge so that screen readers can convey the "Verified" status to visually impaired users.</p>
-  </div>
+  <InfoCard title="Accessibility First">
+    <p>Always ensure that you add an <code>aria-label</code> or <code>title</code> to the badge so that screen readers can convey the "Verified" status to visually impaired users.</p>
+  </InfoCard>
   <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
     <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Proper Sizing</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Use the <code>sm</code> or <code>md</code> sizes when placing the badge directly next to standard text (like usernames). The <code>lg</code> and <code>xl</code> sizes are best reserved for profile headers or prominent display cards.</p>

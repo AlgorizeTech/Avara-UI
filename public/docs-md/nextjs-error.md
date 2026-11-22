@@ -407,35 +407,19 @@ export default function PrismaticErrorPage({
 
 Discover the key capabilities of the `ErrorSection` component:
 
-### Prismatic Aurora Glass
-
 Floating diamond glass crystal with counter-rotating rainbow refraction halo, liquid aurora glow, and frosted status pills.
-
-### Chromatic Glitch Bento HUD
 
 Two-column command center with layered chromatic aberration glitch typography, memory overflow bars, and hex dump inspector.
 
-### Service Topology & Heartbeat
-
 Interactive 4-node architectural pipeline with animated signal beams, failed-node ripple alert, and real-time flatline ECG waveform.
-
-### Actionable Remediation Playbook
 
 Tabbed diagnostic drawer pairing raw technical error stacktraces with numbered step-by-step resolution checklists for engineers.
 
-### Modern Animated Orbital Pulse
-
 Concentric counter-rotating orbital rings with sweeping radar scanner beam, floating satellite beads, and breathing luminous focal halo.
-
-### Live Micro-Service Health Monitors
 
 Dynamic status indicator cards for API Gateway, Worker Nodes, and Database Shards with real-time latency badges.
 
-### Cyberpunk Diagnostic Enclosure
-
 Full-width futuristic telemetry console with macOS window indicators, pulsating status badge, and glowing holographic crash icon.
-
-### Live Stacktrace Console & Copy
 
 Scroll-safe diagnostic trace terminal with one-click clipboard copying for quick bug triage and escalation.
 

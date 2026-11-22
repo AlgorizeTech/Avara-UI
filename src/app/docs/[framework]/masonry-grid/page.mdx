@@ -322,31 +322,26 @@ export default function StaticWall() {
 Discover the Masonry Grid's dynamic layout features, seamlessly arranging varying-height elements without large vertical gaps.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Pure CSS Layout</h3>
-    <p className="text-muted-foreground text-sm">Uses standard CSS multi-column layouts rather than heavy JavaScript absolute positioning to pack items perfectly.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Headless Design</h3>
-    <p className="text-muted-foreground text-sm">Total control over your UI. Just pass the raw data and a render function, and the grid handles the complex layout.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Staggered Entrances</h3>
-    <p className="text-muted-foreground text-sm">Apple-style staggered blur-fade entrances on scroll, in a GSAP build and a Motion build that move the same way.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Fluid Resizing</h3>
-    <p className="text-muted-foreground text-sm">Automatically reflows into the correct number of columns using Tailwind responsive utility classes.</p>
-  </div>
+  <InfoCard title="Pure CSS Layout">
+    <p>Uses standard CSS multi-column layouts rather than heavy JavaScript absolute positioning to pack items perfectly.</p>
+  </InfoCard>
+  <InfoCard title="Headless Design">
+    <p>Total control over your UI. Just pass the raw data and a render function, and the grid handles the complex layout.</p>
+  </InfoCard>
+  <InfoCard title="Staggered Entrances">
+    <p>Apple-style staggered blur-fade entrances on scroll, in a GSAP build and a Motion build that move the same way.</p>
+  </InfoCard>
+  <InfoCard title="Fluid Resizing">
+    <p>Automatically reflows into the correct number of columns using Tailwind responsive utility classes.</p>
+  </InfoCard>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Break-Inside-Avoid</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Because CSS columns natively try to break content across columns, it is crucial that the wrapper `div` of your rendered item has `break-inside: avoid` (in Tailwind: `break-inside-avoid`). The headless component handles this on the outer container, but keep this in mind if you add complex nested layouts.</p>
-  </div>
+  <InfoCard title="Break-Inside-Avoid">
+    <p>Because CSS columns natively try to break content across columns, it is crucial that the wrapper `div` of your rendered item has `break-inside: avoid` (in Tailwind: `break-inside-avoid`). The headless component handles this on the outer container, but keep this in mind if you add complex nested layouts.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

@@ -293,31 +293,26 @@ export default function CopyRow() {
 Discover the Copy Button's capabilities for confirming a clipboard write without a toast.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Inline confirmation</h3>
-    <p className="text-muted-foreground text-sm">The feedback lives in the button itself — a popping check and a rising label — so nothing else on the page has to move.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Honest states</h3>
-    <p className="text-muted-foreground text-sm">A blocked clipboard shows <em>Failed</em> rather than a false success, and <code>onCopy</code> tells you which it was.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Works everywhere</h3>
-    <p className="text-muted-foreground text-sm">Uses the async Clipboard API and falls back to a hidden textarea on older browsers and non-secure origins.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
-    <p className="text-muted-foreground text-sm">A polite live region announces the change; icon-only buttons carry a name that updates to <em>Copied</em>.</p>
-  </div>
+  <InfoCard title="Inline confirmation">
+    <p>The feedback lives in the button itself — a popping check and a rising label — so nothing else on the page has to move.</p>
+  </InfoCard>
+  <InfoCard title="Honest states">
+    <p>A blocked clipboard shows <em>Failed</em> rather than a false success, and <code>onCopy</code> tells you which it was.</p>
+  </InfoCard>
+  <InfoCard title="Works everywhere">
+    <p>Uses the async Clipboard API and falls back to a hidden textarea on older browsers and non-secure origins.</p>
+  </InfoCard>
+  <InfoCard title="Accessible">
+    <p>A polite live region announces the change; icon-only buttons carry a name that updates to <em>Copied</em>.</p>
+  </InfoCard>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Say what was copied</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Prefer specific labels — <em>Copy Link</em>, <em>Code copied</em> — over a bare <em>Copy</em> when more than one thing on the screen could be copied.</p>
-  </div>
+  <InfoCard title="Say what was copied">
+    <p>Prefer specific labels — <em>Copy Link</em>, <em>Code copied</em> — over a bare <em>Copy</em> when more than one thing on the screen could be copied.</p>
+  </InfoCard>
   <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
     <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Don't close the surface on copy</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Let the confirmation play before dismissing a dialog or popover — closing on click hides the only feedback the user gets.</p>

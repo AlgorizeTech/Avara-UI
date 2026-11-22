@@ -171,22 +171,18 @@ export default function BuiltWith() {
 ## Features
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Composed, not configured</h3>
-    <p className="text-muted-foreground text-sm">Groups and tools are elements, so your data keeps whatever shape it has — map it straight into <code>TechStackTool</code>, or write the marks out by hand.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">A swap that never jumps</h3>
-    <p className="text-muted-foreground text-sm">The leaving group is lifted out of the flow where it stood and plays its way out on top, so the new one takes its place at once. Each mark goes a beat after the last, the way a headline word blurs in.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Idle off screen</h3>
-    <p className="text-muted-foreground text-sm">The groups turn only while the strip is in view, so a footer strip costs nothing until someone scrolls to it. Under prefers-reduced-motion each swap is a cut.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Your theme</h3>
-    <p className="text-muted-foreground text-sm">The label, hairlines and names read theme tokens; pass a node as <code>label</code> to set it in your own type.</p>
-  </div>
+  <InfoCard title="Composed, not configured">
+    <p>Groups and tools are elements, so your data keeps whatever shape it has — map it straight into <code>TechStackTool</code>, or write the marks out by hand.</p>
+  </InfoCard>
+  <InfoCard title="A swap that never jumps">
+    <p>The leaving group is lifted out of the flow where it stood and plays its way out on top, so the new one takes its place at once. Each mark goes a beat after the last, the way a headline word blurs in.</p>
+  </InfoCard>
+  <InfoCard title="Idle off screen">
+    <p>The groups turn only while the strip is in view, so a footer strip costs nothing until someone scrolls to it. Under prefers-reduced-motion each swap is a cut.</p>
+  </InfoCard>
+  <InfoCard title="Your theme">
+    <p>The label, hairlines and names read theme tokens; pass a node as <code>label</code> to set it in your own type.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

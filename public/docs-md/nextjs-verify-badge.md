@@ -193,25 +193,15 @@ export default function NotificationCard() {
 ## Features
 Explore the Verify Badge's authentic design features, providing recognizable trust signals with subtle animated glows.
 
-### SVG Based
-
 Uses standard SVG elements that scale perfectly to any size without losing quality.
-
-### Custom Themes
 
 Easily pass any custom hex color or use predefined themes to match your branding.
 
-### Micro-Animations
-
 Built-in optional subtle pulse animations to draw attention to verified status.
-
-### Flexible Sizing
 
 Comes with 4 preset sizes (sm, md, lg, xl) that integrate seamlessly into any layout.
 
 ## Best Practices & Guidelines
-
-### Accessibility First
 
 Always ensure that you add an `aria-label` or `title` to the badge so that screen readers can convey the "Verified" status to visually impaired users.
 

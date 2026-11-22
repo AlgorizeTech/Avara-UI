@@ -255,45 +255,38 @@ Explore the QR Code Generator's customizable features, allowing for different co
 
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Fully Client-side</h3>
-    <p className="text-muted-foreground text-sm">Runs securely in the browser without relying on any external APIs.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">High-Fidelity Output</h3>
-    <p className="text-muted-foreground text-sm">Generates crisp, scalable SVG QR codes that never lose visual quality.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Highly Customizable</h3>
-    <p className="text-muted-foreground text-sm">Easily tweak foreground/background colors, sizes, and error correction levels.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Drag-and-Drop Scan</h3>
-    <p className="text-muted-foreground text-sm">The reader supports both file selection and drag-and-drop for a premium UX.</p>
-  </div>
+  <InfoCard title="Fully Client-side">
+    <p>Runs securely in the browser without relying on any external APIs.</p>
+  </InfoCard>
+  <InfoCard title="High-Fidelity Output">
+    <p>Generates crisp, scalable SVG QR codes that never lose visual quality.</p>
+  </InfoCard>
+  <InfoCard title="Highly Customizable">
+    <p>Easily tweak foreground/background colors, sizes, and error correction levels.</p>
+  </InfoCard>
+  <InfoCard title="Drag-and-Drop Scan">
+    <p>The reader supports both file selection and drag-and-drop for a premium UX.</p>
+  </InfoCard>
 </div>
 
 ## Best Practices & Guidelines
 
 <div id="generator-docs-best-practices">
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Color Contrast</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Ensure a high contrast between the background and foreground colors. A light background (e.g., <code>#FFFFFF</code>) with a dark foreground (e.g., <code>#000000</code>) is recommended for optimal scannability by smartphone cameras.</p>
-  </div>
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Error Correction Level</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Use <strong>L (Low)</strong> for simple URLs to keep the QR code visually clean and sparse. Use <strong>H (High)</strong> if you plan to overlay a custom logo in the center, as it allows up to 30% of the code to be obscured without breaking.</p>
-  </div>
+  <InfoCard title="Color Contrast">
+    <p>Ensure a high contrast between the background and foreground colors. A light background (e.g., <code>#FFFFFF</code>) with a dark foreground (e.g., <code>#000000</code>) is recommended for optimal scannability by smartphone cameras.</p>
+  </InfoCard>
+  <InfoCard title="Error Correction Level">
+    <p>Use <strong>L (Low)</strong> for simple URLs to keep the QR code visually clean and sparse. Use <strong>H (High)</strong> if you plan to overlay a custom logo in the center, as it allows up to 30% of the code to be obscured without breaking.</p>
+  </InfoCard>
 </div>
 </div>
 
 <div id="reader-docs-best-practices">
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Error Handling</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">The reader automatically handles invalid or unreadable images. Consider adding UI feedback (e.g., a toast notification) if the <code>onRead</code> callback isn't triggered after a user uploads an invalid file.</p>
-  </div>
+  <InfoCard title="Error Handling">
+    <p>The reader automatically handles invalid or unreadable images. Consider adding UI feedback (e.g., a toast notification) if the <code>onRead</code> callback isn't triggered after a user uploads an invalid file.</p>
+  </InfoCard>
   <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
     <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Accessibility (a11y)</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">The drag-and-drop area is keyboard accessible, but ensure any surrounding labels or descriptions clearly instruct the user to upload a valid QR code image.</p>

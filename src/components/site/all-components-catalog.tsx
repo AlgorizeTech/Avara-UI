@@ -151,7 +151,6 @@ const COMPONENT_META: Record<
 	"social-links": { countText: "Brand Mark Row", illustrationType: "social-links" },
 	"squircle-carousel": { countText: "Masked Tile Slider", illustrationType: "squircle-carousel" },
 	"table-of-contents": { countText: "Scroll-Spy Nav", illustrationType: "table-of-contents" },
-	"3d-carousel": { countText: "3D Physics Spring", illustrationType: "carousel" },
 	"animated-list": { countText: "Staggered Entrance", illustrationType: "animated-list" },
 	"chat-bubble": { countText: "Spring Motion Feed", illustrationType: "chat-bubble" },
 	"design-components-folder": { countText: "Animated File Deck", illustrationType: "design-components-folder" },
@@ -222,7 +221,6 @@ const CATALOG_GROUPS: Record<string, ComponentTypeId> = {
  * component with a matching demo name is picked up with no edit here.
  */
 const PREVIEW_NAME_OVERRIDES: Record<string, string> = {
-	"3d-carousel": "carousel-3d",
 	"data-table": "advanced-table",
 	"file-upload": "upload",
 	"fleet-tracker": "fleet",

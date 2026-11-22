@@ -226,39 +226,32 @@ export default function TrainOnlineTicketExample() {
 ## Features
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Rail Tickets & Biometric SmartCards</h3>
-    <p className="text-muted-foreground text-sm">Rich variety of real-world templates including Hyperbolt European train tickets, classic classified dossiers, and biometric NFC smartcards with EMV microchips and full light/dark theme adaptivity.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Two-Stage Flight Choreography</h3>
-    <p className="text-muted-foreground text-sm">When clicked, the document slides out horizontally past the sleeve edge, elevates in front on the z-axis, and glides back down with a gentle tilt onto the front cover.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Vector Thumb Scoop Notch</h3>
-    <p className="text-muted-foreground text-sm">Engineered with a clean, subpixel-sharp SVG inward scoop notch along the right edge, exposing the card inside exactly like a high-end physical envelope sleeve.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">3D In-Place Flip Physics</h3>
-    <p className="text-muted-foreground text-sm">Features seamless 180-degree in-place 3D card flips with true perspective, preserved backface visibility, and dynamic theme adaptivity.</p>
-  </div>
+  <InfoCard title="Rail Tickets & Biometric SmartCards">
+    <p>Rich variety of real-world templates including Hyperbolt European train tickets, classic classified dossiers, and biometric NFC smartcards with EMV microchips and full light/dark theme adaptivity.</p>
+  </InfoCard>
+  <InfoCard title="Two-Stage Flight Choreography">
+    <p>When clicked, the document slides out horizontally past the sleeve edge, elevates in front on the z-axis, and glides back down with a gentle tilt onto the front cover.</p>
+  </InfoCard>
+  <InfoCard title="Vector Thumb Scoop Notch">
+    <p>Engineered with a clean, subpixel-sharp SVG inward scoop notch along the right edge, exposing the card inside exactly like a high-end physical envelope sleeve.</p>
+  </InfoCard>
+  <InfoCard title="3D In-Place Flip Physics">
+    <p>Features seamless 180-degree in-place 3D card flips with true perspective, preserved backface visibility, and dynamic theme adaptivity.</p>
+  </InfoCard>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Keyboard & Accessibility</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50"><code>SecureEnvelope</code> supports keyboard navigation: focus it with <code>Tab</code> and trigger the opening/closing animation using <code>Enter</code> or <code>Space</code>, or close with <code>Escape</code>.</p>
-  </div>
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Mobile & Touch Interaction</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">On touch devices where hover is unavailable, tapping the folder launches the smooth opening flight sequence immediately.</p>
-  </div>
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Biometric SmartCards & Access Credentials</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Pass <code>cardDesign="smart-card"</code> with custom clearance levels, holder name, and department for cybersecurity credentials, VIP access badges, and identity portals.</p>
-  </div>
+  <InfoCard title="Keyboard & Accessibility">
+    <p><code>SecureEnvelope</code> supports keyboard navigation: focus it with <code>Tab</code> and trigger the opening/closing animation using <code>Enter</code> or <code>Space</code>, or close with <code>Escape</code>.</p>
+  </InfoCard>
+  <InfoCard title="Mobile & Touch Interaction">
+    <p>On touch devices where hover is unavailable, tapping the folder launches the smooth opening flight sequence immediately.</p>
+  </InfoCard>
+  <InfoCard title="Biometric SmartCards & Access Credentials">
+    <p>Pass <code>cardDesign="smart-card"</code> with custom clearance levels, holder name, and department for cybersecurity credentials, VIP access badges, and identity portals.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

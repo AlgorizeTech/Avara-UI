@@ -97,19 +97,11 @@ npx shadcn@latest add @avara-ui/table-of-contents
 
 ## Features
 
-### Right-Side Sticky Panel
-
 Positions the TOC navigation cleanly on the right column while main content flows on the left.
-
-### Scroll-Spy Tracking
 
 Automatically detects active viewport headings and animates the active indicator smoothly along a spring curve, with no animation library.
 
-### Section Search Filter
-
 Filter long document section headers instantly with an embedded search input.
-
-### Mobile Dropdown Menu
 
 Collapses into a sticky mobile bar with drawer navigation on smaller devices.
 

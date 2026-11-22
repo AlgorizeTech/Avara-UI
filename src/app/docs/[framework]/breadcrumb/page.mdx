@@ -13,6 +13,8 @@ This component features four distinct visual variants, seamless color theming, a
 
 You describe the trail as an `items` array; the component handles dividers, the active item and truncation.
 
+<AgentVariants slug="breadcrumb" />
+
 export const usageDefault = `import { BreadcrumbBlock, type BreadcrumbItem } from "@/components/custom/blocks/BreadcrumbBlock";
 
 const items: BreadcrumbItem[] = [
@@ -57,6 +59,36 @@ export default function DeepBreadcrumb() {
   // that expands the full trail when clicked.
   return <BreadcrumbBlock items={deepPath} maxItems={4} />;
 }`;
+
+<ExampleShowcase minHeight={300} headingLevel={2}
+  name="breadcrumb-flow"
+  columns={1}
+  examples={[
+    {
+      title: "Flow breadcrumb",
+      subheading: "Composed from parts. Items fade in and out as the route changes and the rest slide into place; past `maxItems` the middle collapses behind an ellipsis.",
+      propNotes: [
+        {
+          lead: "Give each",
+          prop: "BreadcrumbItem",
+          effect: "its page as a stable `key`, with its `BreadcrumbSeparator` inside it, so it can animate.",
+        },
+        {
+          prop: "maxItems",
+          effect: "sets the visible slots; the ellipsis opens on hover, tap, Enter, Space or ArrowDown.",
+        },
+      ],
+      usage: extractCode("src/preview/demos/breadcrumb-flow-demo.tsx"),
+      code: extractCode("src/components/custom/blocks/BreadcrumbFlowBlock.tsx"),
+    },
+  ]}
+/>
+
+### Install the flow breadcrumb
+
+<Installation name="breadcrumb-flow" showSetupPath={false} />
+
+### Breadcrumb with items
 
 <ExampleShowcase minHeight={160} headingLevel={2}
   name="breadcrumb"
@@ -134,31 +166,26 @@ export default function DeepBreadcrumb() {
 Explore the Breadcrumb navigation features, including collapsible items, custom separators, and SEO-friendly structure.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
-    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
-    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
-    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
-    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </div>
+  <InfoCard title="Customizable">
+    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </InfoCard>
+  <InfoCard title="Accessible">
+    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </InfoCard>
+  <InfoCard title="Responsive">
+    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </InfoCard>
+  <InfoCard title="Performant">
+    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </InfoCard>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </div>
+  <InfoCard title="Usage Guidelines">
+    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference
@@ -251,6 +278,47 @@ Explore the Breadcrumb navigation features, including collapsible items, custom 
           <code>Link</code> from <code>next/link</code> to get client-side
           navigation and prefetching back.
         </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### Flow breadcrumb parts
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Part</th>
+        <th>Prop</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>Breadcrumb</code></td>
+        <td><code>labels</code></td>
+        <td>Overrides the built-in strings: <code>{"{ label, showHidden }"}</code>.</td>
+      </tr>
+      <tr>
+        <td><code>BreadcrumbList</code></td>
+        <td><code>maxItems</code>, <code>overflowLabel</code></td>
+        <td>Visible slots including the ellipsis (minimum 3, default 4; <code>Infinity</code> turns collapsing off), and the ellipsis button's accessible name.</td>
+      </tr>
+      <tr>
+        <td><code>BreadcrumbItem</code></td>
+        <td><code>key</code></td>
+        <td>A stable route key. Items that arrive fade in, items that leave fade out, and the rest slide into place.</td>
+      </tr>
+      <tr>
+        <td><code>BreadcrumbLink</code></td>
+        <td><code>render</code></td>
+        <td>Render your router's Link, spreading the received props onto it.</td>
+      </tr>
+      <tr>
+        <td><code>BreadcrumbPage</code>, <code>BreadcrumbSeparator</code></td>
+        <td>—</td>
+        <td>The current page (<code>aria-current="page"</code>) and a decorative divider that goes inside the following item.</td>
       </tr>
     </tbody>
   </table>

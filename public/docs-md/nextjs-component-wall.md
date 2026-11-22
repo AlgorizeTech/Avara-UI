@@ -465,23 +465,13 @@ export default function Hero() {
 
 ## Features
 
-### An install line that follows the camera
-
 The wall reports the card it has settled on; the hero puts that card's slug into the command and slides the old name out. Whatever the reader is looking at, the line beside it is the way to get it.
-
-### One entrance, in order
 
 The headline blurs in word by word; then the lead, the command, the actions and the trust line rise once, each a beat after the last. Meanwhile the wall fades in with its camera pulled back and drifting, nothing in focus, and lands on the first card once the copy is in — so nothing on the page jumps. The changing word in the headline replays that same blur each time it turns. Under prefers-reduced-motion everything is simply there, and both the headline word and the name in the command cut instead of moving.
 
-### Built on Image Wall
-
 The wall, its camera and its flights are the Image Wall component; this hero passes the wall props straight through and only decides where the walls sit — centred, one on each half fading under the copy with the cameras anchored high and low; split, the right 56–58% on desktop. Below `lg` they become bands around the copy.
 
-### The tools, in batches
-
 Pass a [Tech Stack](https://avaraui.com/docs/nextjs/tech-stack) as `stack`. Group what you build with — a front-end batch, a data batch, a tooling batch — and the strip shows one group at a time — closing the centred copy column, or over a blurred, fading stretch of the wall beside it — so the marks read without competing with the cards.
-
-### Your theme, your fonts
 
 Background, text, the primary button and the stars all read theme tokens, so a palette change reaches every part. The headline uses `font-serif` and the command `font-mono` — set those in your Tailwind theme and the hero follows.
 

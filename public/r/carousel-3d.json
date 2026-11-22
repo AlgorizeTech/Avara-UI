@@ -3,7 +3,7 @@
   "name": "carousel-3d",
   "title": "Carousel 3D",
   "author": "AlgorizeTech",
-  "description": "A perspective carousel where cards rotate through depth, with drag and autoplay. Use it for portfolio and gallery sections that need presence.",
+  "description": "Ask the user to pick one of 6 carousel variants: https://avaraui.com/view/carousel. This is the 3D carousel deck. Skip the question if the user already named one. A perspective carousel where cards rotate through depth, with drag and autoplay. Use it for portfolio and gallery sections that need presence.",
   "dependencies": [
     "gsap",
     "lucide-react"
