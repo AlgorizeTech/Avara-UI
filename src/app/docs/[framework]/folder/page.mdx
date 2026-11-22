@@ -1,6 +1,6 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractMotionCode } from "@/lib/code";
 
 export const metadata = docsPageMetadata("folder", {
@@ -103,7 +103,7 @@ export default function SummerTrip() {
   return <Folder files={photos} label="Summer trip" count="6 photos" icon={Camera} />;
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={330} headingLevel={2}
   name="folder"
   colorControl
   columns={1}
@@ -146,7 +146,7 @@ export default function SummerTrip() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={330}
   name="folder"
   colorControl
   columns={1}
@@ -197,31 +197,26 @@ export default function SummerTrip() {
 Discover the Folder's capabilities for presenting a group of files as one tactile object.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">One silhouette</h3>
-    <p className="text-muted-foreground text-sm">The tab and body are a single rounded path, so the join never shows a notch and every corner — including the slant — is a true squircle.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Colour-derived shades</h3>
-    <p className="text-muted-foreground text-sm">Pocket, icon and skeleton cards are computed from <code>color</code> in OKLCH, so any base colour — near-black included — stays readable.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Fits the room</h3>
-    <p className="text-muted-foreground text-sm">The fan measures its nearest clipping ancestor and tightens the gap — then drops a card — rather than overflowing on a narrow screen.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Reachable everywhere</h3>
-    <p className="text-muted-foreground text-sm">Hover opens it on desktop; a tap toggles it on touch; focus opens it from the keyboard. Every animation respects <code>prefers-reduced-motion</code>.</p>
-  </div>
+  <InfoCard title="One silhouette">
+    <p>The tab and body are a single rounded path, so the join never shows a notch and every corner — including the slant — is a true squircle.</p>
+  </InfoCard>
+  <InfoCard title="Colour-derived shades">
+    <p>Pocket, icon and skeleton cards are computed from <code>color</code> in OKLCH, so any base colour — near-black included — stays readable.</p>
+  </InfoCard>
+  <InfoCard title="Fits the room">
+    <p>The fan measures its nearest clipping ancestor and tightens the gap — then drops a card — rather than overflowing on a narrow screen.</p>
+  </InfoCard>
+  <InfoCard title="Reachable everywhere">
+    <p>Hover opens it on desktop; a tap toggles it on touch; focus opens it from the keyboard. Every animation respects <code>prefers-reduced-motion</code>.</p>
+  </InfoCard>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Leave headroom above the folder</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">The fan lifts cards roughly half the folder's height above it and the arrows sit just outside its width. Give the folder that space, and avoid <code>overflow-hidden</code> on its immediate parent.</p>
-  </div>
+  <InfoCard title="Leave headroom above the folder">
+    <p>The fan lifts cards roughly half the folder's height above it and the arrows sit just outside its width. Give the folder that space, and avoid <code>overflow-hidden</code> on its immediate parent.</p>
+  </InfoCard>
   <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
     <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Do not double up the click</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">An <code>interactive</code> folder spends its click on the file picker, so tap-to-toggle is off there. If an ancestor already handles clicks, pass <code>toggleOnClick={false}</code> and <code>focusable</code> so the fan stays keyboard-reachable.</p>

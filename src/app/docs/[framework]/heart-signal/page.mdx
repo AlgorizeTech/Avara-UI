@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("heart-signal");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { Installation } from "@/components/site/installation";
 import { extractCode } from "@/lib/code";
 
@@ -56,7 +56,7 @@ export default function CardiacWaveDemo() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={450} headingLevel={2}
   name="heart-signal"
   colorControl
   controls={[
@@ -83,7 +83,7 @@ export default function CardiacWaveDemo() {
 
 ## Animation Variants
 
-<ExampleShowcase
+<ExampleShowcase minHeight={450}
   name="heart-signal"
   colorControl
   controls={[
@@ -114,22 +114,18 @@ export default function CardiacWaveDemo() {
 ## Features
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">3 Ultra-Smooth Animation Variants</h3>
-    <p className="text-muted-foreground text-sm">Includes EKG Line Trace, Cardiac Heart Sweep, and Cardiac Wave visualizers.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Slow & Calm Rhythm Flow</h3>
-    <p className="text-muted-foreground text-sm">Features a relaxed, smooth heartbeat waveform flow perfect for clean medical dashboards.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Dynamic Theme Adaptive</h3>
-    <p className="text-muted-foreground text-sm">Automatically resolves active theme primary color (<code>bg-primary</code>) across Light and Dark modes.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Full Width & Responsive Height</h3>
-    <p className="text-muted-foreground text-sm">Scales fluidly to fill 100% of parent container width and height without expanding overflow.</p>
-  </div>
+  <InfoCard title="3 Ultra-Smooth Animation Variants">
+    <p>Includes EKG Line Trace, Cardiac Heart Sweep, and Cardiac Wave visualizers.</p>
+  </InfoCard>
+  <InfoCard title="Slow & Calm Rhythm Flow">
+    <p>Features a relaxed, smooth heartbeat waveform flow perfect for clean medical dashboards.</p>
+  </InfoCard>
+  <InfoCard title="Dynamic Theme Adaptive">
+    <p>Automatically resolves active theme primary color (<code>bg-primary</code>) across Light and Dark modes.</p>
+  </InfoCard>
+  <InfoCard title="Full Width & Responsive Height">
+    <p>Scales fluidly to fill 100% of parent container width and height without expanding overflow.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

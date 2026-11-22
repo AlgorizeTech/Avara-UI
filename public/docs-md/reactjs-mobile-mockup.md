@@ -257,29 +257,17 @@ export default function Pixel10Showcase() {
 ## Features
 Learn about the Mobile Mockup component's realistic device framing, perfect for presenting app screenshots with proper bezels.
 
-### 8 Unique Devices
-
 Choose from a variety of iconic models, from the modern iPhone 16 Pro and iPhone 17 Pro Max through classic iPhones to Samsung Ultra and Google Pixel.
-
-### Pure CSS/SVG
 
 No heavy raster images used for the frames. Everything is built with perfectly scaled SVG and CSS for blazing fast performance.
 
-### Media & React Ready
-
 Easily pass static images, autoplaying looping videos, or full interactive React trees directly into the screen container.
-
-### Theme Adapting
 
 The hardware frames natively adapt their bezels, finishes, and shadows based on your app's current light or dark mode.
 
 ## Best Practices & Guidelines
 
-### Content Aspect Ratios
-
 When passing screenshots as images, try to ensure they roughly match a vertical aspect ratio close to the frame you picked (16:9 on the iPhone 5, 19.5:9 on the iPhone 12/14/17 and Samsung, 20:9 on the Pixels) to prevent unnatural stretching or cropping inside the frame.
-
-### Sizing Live Screens
 
 Tailwind's responsive prefixes key off the viewport, not the frame. A section that uses `sm:` or `lg:` classes still renders at desktop sizes inside a 300px-wide mockup, so give an embedded screen a fixed type scale instead of reusing your page-level layout component.
 

@@ -349,25 +349,15 @@ npx shadcn@latest add @avara-ui/accordion
 ## Features
 Single or multiple open panels, a one-time stack entrance, and eight variants that all read your theme tokens.
 
-### Follows your theme
-
 Every variant is built from the shadcn tokens, so changing `--primary` restyles the open panel, the rail and the icon tile together.
-
-### Accessible
 
 Radix handles roles, arrow-key navigation and focus. The visible focus ring follows the shape of each variant, and the entrance respects reduced motion.
 
-### Responsive
-
 Rows wrap cleanly at phone width; the open card in the default variant only grows wider than the list from `sm` up.
-
-### No animation library
 
 The `soft`, `inset` and `bracket` variants open and close with CSS keyframes that ship inside the component. The stack entrance uses the Web Animations API. The only dependency beyond Radix is `lucide-react`.
 
 ## Best Practices & Guidelines
-
-### Usage Guidelines
 
 Use `animation="stack"` once per page, on the accordion you want people to notice; two decks dealing at the same time cancel each other out. Give it at least three items so the pile reads as a deck, and keep `defaultValue` set so the open card is part of the deal.
 

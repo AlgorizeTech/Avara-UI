@@ -148,25 +148,15 @@ export default function ZoomableMap() {
 ## Features
 Learn about the Data Maps component's geographic visualization features, mapping interactive data points onto vector country paths.
 
-### SSR Compatible
-
 Uses Next.js dynamic imports to safely load Leaflet client-side without hydration errors.
-
-### Lightweight Vectors
 
 Fetches clean GeoJSON data on the fly instead of relying on heavy raster map tiles.
 
-### Dual Variants
-
 Supports both solid polygon fills and modern pulsing dots for geographic emphasis.
-
-### Rich Hover Cards
 
 Elegant tooltips with country flags, data metrics, and up/down trend indicators.
 
 ## Best Practices & Guidelines
-
-### Dynamic Imports
 
 Leaflet reads the browser's `window` at import time, so the component defers loading it until after mount. That is why any component wrapping `react-leaflet` must stay off the server — this one already does, so you can render it directly without a `{ ssr: false }` wrapper of your own.
 

@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-19T08:32:21.005Z",
-  "totalFiles": 339,
+  "generatedAt": "2026-11-22T15:36:15.928Z",
+  "totalFiles": 341,
   "files": [
     {
       "name": "docs",
@@ -9,16 +9,22 @@
       "originalMdx": "page.mdx"
     },
     {
-      "name": "nextjs/3d-carousel",
-      "path": "/docs-md/nextjs-3d-carousel.md",
-      "url": "/docs/nextjs/3d-carousel",
-      "originalMdx": "[framework]\\3d-carousel\\page.mdx"
-    },
-    {
       "name": "nextjs/accordion",
       "path": "/docs-md/nextjs-accordion.md",
       "url": "/docs/nextjs/accordion",
       "originalMdx": "[framework]\\accordion\\page.mdx"
+    },
+    {
+      "name": "nextjs/action-buttons",
+      "path": "/docs-md/nextjs-action-buttons.md",
+      "url": "/docs/nextjs/action-buttons",
+      "originalMdx": "[framework]\\action-buttons\\page.mdx"
+    },
+    {
+      "name": "nextjs/agent-graph",
+      "path": "/docs-md/nextjs-agent-graph.md",
+      "url": "/docs/nextjs/agent-graph",
+      "originalMdx": "[framework]\\agent-graph\\page.mdx"
     },
     {
       "name": "nextjs/agent-skills",
@@ -1023,16 +1029,22 @@
       "originalMdx": "[framework]\\wizard\\page.mdx"
     },
     {
-      "name": "reactjs/3d-carousel",
-      "path": "/docs-md/reactjs-3d-carousel.md",
-      "url": "/docs/reactjs/3d-carousel",
-      "originalMdx": "[framework]\\3d-carousel\\page.mdx"
-    },
-    {
       "name": "reactjs/accordion",
       "path": "/docs-md/reactjs-accordion.md",
       "url": "/docs/reactjs/accordion",
       "originalMdx": "[framework]\\accordion\\page.mdx"
+    },
+    {
+      "name": "reactjs/action-buttons",
+      "path": "/docs-md/reactjs-action-buttons.md",
+      "url": "/docs/reactjs/action-buttons",
+      "originalMdx": "[framework]\\action-buttons\\page.mdx"
+    },
+    {
+      "name": "reactjs/agent-graph",
+      "path": "/docs-md/reactjs-agent-graph.md",
+      "url": "/docs/reactjs/agent-graph",
+      "originalMdx": "[framework]\\agent-graph\\page.mdx"
     },
     {
       "name": "reactjs/agent-skills",

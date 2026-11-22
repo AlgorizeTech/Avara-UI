@@ -449,25 +449,15 @@ export default function SonarCursorDemo() {
 
 Discover the key interactive capabilities of the `CursorAnimation` block:
 
-### 10 Distinct Variants
-
 Choose from glow, magnetic, particle trail, badge label, spotlight, crosshair, and 4 other fluid styles.
-
-### Fluid Physics & Lerp
 
 Smooth linear interpolation (LERP) physics ensures natural inertia and responsive cursor tracking.
 
-### 100% Full-Width Responsive
-
 Adapts seamlessly to container boundaries across desktop, tablet, and mobile screens without breaking overflow.
-
-### Dark Mode Native
 
 Pre-configured with zinc dark mode palettes matching site design tokens and contrast guidelines.
 
 ## Best Practices & Guidelines
-
-### Usage Guidelines
 
 Use `CursorAnimation` to highlight hero sections, portfolio cards, interactive canvas areas, or custom action areas. Ensure pointer-events are set correctly when layering over interactive text or buttons.
 

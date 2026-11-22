@@ -91,8 +91,18 @@ export type ComponentPreview = {
  */
 export function useComponentPreviewHover({
   delay = 280,
-}: { delay?: number } = {}) {
-  const [preview, setPreview] = useState<ComponentPreview | null>(null);
+  enabled = true,
+}: {
+  delay?: number;
+  /**
+   * When false the hook is inert: cards get no hover handlers, no timer is ever
+   * started, and `preview` stays null — so the sandbox iframe (and every timer,
+   * GSAP timeline and animation loop inside it) is never created, or is torn
+   * down if one was open.
+   */
+  enabled?: boolean;
+} = {}) {
+  const [openPreview, setPreview] = useState<ComponentPreview | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const cancel = useCallback(() => {
@@ -120,10 +130,15 @@ export function useComponentPreviewHover({
 
   useEffect(() => cancel, [cancel]);
 
+  // Switched off while a preview is up (or a hover is pending): drop it now.
+  useEffect(() => {
+    if (!enabled) close();
+  }, [enabled, close]);
+
   /** Spread onto the card that should trigger the preview. */
   const getTriggerProps = useCallback(
     (name: string | null | undefined, title: string) => {
-      if (!name) return {};
+      if (!enabled || !name) return {};
       return {
         onMouseEnter: (event: React.MouseEvent<HTMLElement>) =>
           open({ name, title, anchor: event.currentTarget }),
@@ -133,10 +148,14 @@ export function useComponentPreviewHover({
         onBlur: close,
       };
     },
-    [open, close],
+    [open, close, enabled],
   );
 
-  return { preview, getTriggerProps, close };
+  return {
+    preview: enabled ? openPreview : null,
+    getTriggerProps,
+    close,
+  };
 }
 
 export function ComponentPreviewTooltip({

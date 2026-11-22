@@ -202,33 +202,19 @@ npx shadcn@latest add @avara-ui/qr-code-reader
 ## Features
 Explore the QR Code Generator's customizable features, allowing for different colors, sizes, and embedded logos within the code.
 
-### Fully Client-side
-
 Runs securely in the browser without relying on any external APIs.
-
-### High-Fidelity Output
 
 Generates crisp, scalable SVG QR codes that never lose visual quality.
 
-### Highly Customizable
-
 Easily tweak foreground/background colors, sizes, and error correction levels.
-
-### Drag-and-Drop Scan
 
 The reader supports both file selection and drag-and-drop for a premium UX.
 
 ## Best Practices & Guidelines
 
-### Color Contrast
-
 Ensure a high contrast between the background and foreground colors. A light background (e.g., `#FFFFFF`) with a dark foreground (e.g., `#000000`) is recommended for optimal scannability by smartphone cameras.
 
-### Error Correction Level
-
 Use L (Low) for simple URLs to keep the QR code visually clean and sparse. Use H (High) if you plan to overlay a custom logo in the center, as it allows up to 30% of the code to be obscured without breaking.
-
-### Error Handling
 
 The reader automatically handles invalid or unreadable images. Consider adding UI feedback (e.g., a toast notification) if the `onRead` callback isn't triggered after a user uploads an invalid file.
 

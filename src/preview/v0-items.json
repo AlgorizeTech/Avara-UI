@@ -1,14 +1,4 @@
 {
-  "carousel-3d": {
-    "3d-carousel": "Carousel 3D — 3D carousel",
-    "shorter-deck": "Carousel 3D — Shorter deck",
-    "without-arrows-or-dots": "Carousel 3D — Without arrows or dots"
-  },
-  "carousel-3d-motion": {
-    "3d-carousel": "Carousel 3D — 3D carousel",
-    "shorter-deck": "Carousel 3D — Shorter deck",
-    "without-arrows-or-dots": "Carousel 3D — Without arrows or dots"
-  },
   "accordion": {
     "inset-panel": "Accordion — Inset panel",
     "bracket-frame": "Accordion — Bracket frame",
@@ -16,6 +6,9 @@
     "lift-card": "Accordion — Lift card",
     "brand-reveal": "Accordion — Brand reveal",
     "multiple-open": "Accordion — Multiple open"
+  },
+  "action-buttons": {
+    "interactive-action-async-commerce-buttons": "Action Buttons — Interactive Action, Async & Commerce Buttons"
   },
   "agent-graph": {
     "shaded-tree-default": "Agent Graph — Shaded Tree (Default)",
@@ -53,6 +46,9 @@
     "slide-up": "Animated List — Slide up",
     "pop": "Animated List — Pop",
     "timing": "Animated List — Timing"
+  },
+  "timeline-cable": {
+    "cable-timeline": "Timeline Cable — Cable timeline"
   },
   "timeline-path": {
     "path-timeline": "Timeline Path — Path timeline"
@@ -154,6 +150,9 @@
     "in-a-glass-slab": "Booking Card — In a glass slab",
     "liquid-glass": "Booking Card — Liquid glass"
   },
+  "breadcrumb-flow": {
+    "flow-breadcrumb": "Breadcrumb Flow — Flow breadcrumb"
+  },
   "breadcrumb": {
     "breadcrumb": "Breadcrumb",
     "with-icons": "Breadcrumb — With icons",
@@ -206,6 +205,16 @@
     "hero-carousel": "Carousel — Hero carousel",
     "thumbnail-rail": "Carousel — Thumbnail rail",
     "side-thumbnails": "Carousel — Side thumbnails"
+  },
+  "carousel-3d": {
+    "3d-carousel": "Carousel 3D — 3D carousel",
+    "shorter-deck": "Carousel 3D — Shorter deck",
+    "without-arrows-or-dots": "Carousel 3D — Without arrows or dots"
+  },
+  "carousel-3d-motion": {
+    "3d-carousel": "Carousel 3D — 3D carousel",
+    "shorter-deck": "Carousel 3D — Shorter deck",
+    "without-arrows-or-dots": "Carousel 3D — Without arrows or dots"
   },
   "cart": {
     "drawer": "Cart — Drawer",
@@ -354,6 +363,7 @@
     "searchable-datatable": "Advanced Table — Searchable DataTable"
   },
   "date-picker": {
+    "inline-calendar": "Date Picker — Inline Calendar",
     "date-picker": "Date Picker",
     "error": "Date Picker — Error",
     "disable-past-dates": "Date Picker — Disable past dates",
@@ -463,6 +473,16 @@
     "minimal": "Shadcn Fleet Tracker Map — Minimal",
     "modern": "Shadcn Fleet Tracker Map — Modern"
   },
+  "maps": {
+    "route-planner": "Maps — Route Planner",
+    "property-listings": "Maps — Property Listings",
+    "live-tracking": "Maps — Live Tracking",
+    "store-locator": "Maps — Store Locator",
+    "fleet-dispatch": "Maps — Fleet Dispatch",
+    "coverage-zones": "Maps — Coverage Zones",
+    "heatmap": "Maps — Heatmap",
+    "incident-monitor": "Maps — Incident Monitor"
+  },
   "floating-contact-button": {
     "floating-contact-button": "Floating Contact Button",
     "bottom-left": "Floating Contact Button — Bottom left",
@@ -479,7 +499,7 @@
     "flowchart": "Flowchart",
     "linear-pipeline": "Flowchart — Linear pipeline",
     "no-active-route": "Flowchart — No active route",
-    "accent-color": "Flowchart — Accent color"
+    "ai-agent-convergence": "Flowchart — AI Agent convergence"
   },
   "footer": {
     "architectural-blueprint-liquid-ink-footer-heron-ai-inspired": "Footer — Architectural Blueprint & Liquid Ink Footer (Heron AI Inspired)",
@@ -605,7 +625,8 @@
     "held-still": "Image Wall — Held still"
   },
   "infrastructure-topology": {
-    "infrastructure-topology-showcase": "Infrastructure Topology — Infrastructure Topology Showcase"
+    "orbital-mesh": "Infrastructure Topology — Orbital Mesh",
+    "pulse-pipeline": "Infrastructure Topology — Pulse Pipeline"
   },
   "invoice": {
     "default-dashboard-invoice": "Invoice — Default Dashboard Invoice",

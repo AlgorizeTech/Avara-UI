@@ -213,19 +213,11 @@ export default function Signup() {
 
 ## Features
 
-### Built from the library
-
 Input for the field, Button for the action, Marquee for the ticker, Tilted Card for the top issue. Install this one item and all four come with it.
-
-### A form that says what happened
 
 The button stays busy while your promise runs, then the pill becomes a thank-you with a check that draws itself. A rejection returns to the form for your own message.
 
-### One reveal, then the pointer
-
 Heading, intro, form and proof rise in once. After that the faces drift, the glow follows and the stack spreads only when you move. Reduced motion renders the finished state.
-
-### Accessible by default
 
 A real email field with a label, a submit button with a busy state, a status region for the thank-you, and faces that are decorative unless you give them alt text.
 

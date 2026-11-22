@@ -77,8 +77,8 @@ export default function TerminalDemo({
 
   if (variant === "glass") {
     return (
-      // Backdrop-blurred chrome — put it over a gradient.
-      <div className="p-12 bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80 rounded-2xl">
+      // Backdrop-blurred chrome — put it over a full-bleed gradient.
+      <div className="-mx-4 -my-6 w-[calc(100%+2rem)] min-h-[550px] px-4 py-6 flex items-center bg-gradient-to-br from-indigo-500/80 via-purple-500/80 to-pink-500/80">
         <TerminalBlock
           code={tsxSource}
           language="tsx"

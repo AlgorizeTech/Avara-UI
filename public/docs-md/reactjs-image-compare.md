@@ -264,8 +264,6 @@ Pass custom Before/After labels and image URLs through flexible props.
 
 ## Best Practices & Guidelines
 
-### When to Use
-
 Use `ImageCompare` to showcase photo retouching, AI enhancement models, design redrafts, dark mode vs light mode UI previews, or product quality upgrades.
 
 ## Props Reference

@@ -1,6 +1,6 @@
-"use client";
+﻿"use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import {
     Zap,
@@ -34,7 +34,11 @@ export interface MetricItem {
     color?: string;
 }
 
+export type InfrastructureTopologyVariant = "orbit" | "pulse";
+
 export interface InfrastructureTopologyProps {
+    /** Visual & animation variant */
+    variant?: InfrastructureTopologyVariant;
     /** Header main title */
     headerTitle?: string;
     /** Monospaced header subtitle */
@@ -158,13 +162,13 @@ const DEFAULT_METRICS: MetricItem[] = [
 ];
 
 export function InfrastructureTopology({
+    variant = "orbit",
     headerTitle = "Infrastructure Topology",
     headerSubtitle = "LIVE DATA FLOW · 6 SERVICES · 5 ROUTES",
     statusBadge = "ALL SYSTEMS",
     bandwidthBadge = "10 GBPS",
     centerTitle = "NEURAL MESH",
     centerSubtitle = "CORE ROUTER · V4.2",
-    centerColor = "cyan",
     nodes = DEFAULT_NODES,
     metrics = DEFAULT_METRICS,
     animated = true,
@@ -172,54 +176,57 @@ export function InfrastructureTopology({
     className,
 }: InfrastructureTopologyProps) {
     const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
+    const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
+    const activeNodeId = hoveredNodeId ?? selectedNodeId;
 
-    const getCenterColorStyles = (color: string) => {
-        switch (color) {
-            case "emerald":
-                return {
-                    border: "border-emerald-500/60 dark:border-emerald-400/80",
-                    ringOuter: "border-emerald-500/20",
-                    ringInner: "border-emerald-500/10",
-                    iconBg: "bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400",
-                    text: "text-emerald-700 dark:text-emerald-400",
-                };
-            case "indigo":
-                return {
-                    border: "border-indigo-500/60 dark:border-indigo-400/80",
-                    ringOuter: "border-indigo-500/20",
-                    ringInner: "border-indigo-500/10",
-                    iconBg: "bg-indigo-500/10 border-indigo-500/30 text-indigo-600 dark:text-indigo-400",
-                    text: "text-indigo-700 dark:text-indigo-400",
-                };
-            case "rose":
-                return {
-                    border: "border-rose-500/60 dark:border-rose-400/80",
-                    ringOuter: "border-rose-500/20",
-                    ringInner: "border-rose-500/10",
-                    iconBg: "bg-rose-500/10 border-rose-500/30 text-rose-600 dark:text-rose-400",
-                    text: "text-rose-700 dark:text-rose-400",
-                };
-            case "purple":
-                return {
-                    border: "border-purple-500/60 dark:border-purple-400/80",
-                    ringOuter: "border-purple-500/20",
-                    ringInner: "border-purple-500/10",
-                    iconBg: "bg-purple-500/10 border-purple-500/30 text-purple-600 dark:text-purple-400",
-                    text: "text-purple-700 dark:text-purple-400",
-                };
-            case "cyan":
-            default:
-                return {
-                    border: "border-cyan-500/60 dark:border-cyan-400/80",
-                    ringOuter: "border-cyan-500/20",
-                    ringInner: "border-cyan-500/10",
-                    iconBg: "bg-cyan-500/10 border-cyan-500/30 text-cyan-600 dark:text-cyan-400",
-                    text: "text-cyan-700 dark:text-cyan-400",
-                };
+    const canvasRef = useRef<HTMLDivElement | null>(null);
+    const hubRef = useRef<HTMLDivElement | null>(null);
+    const nodeRefs = useRef<Record<string, HTMLButtonElement | null>>({});
+    const [measuredPaths, setMeasuredPaths] = useState<Record<string, string>>({});
+
+    const measurePaths = useCallback(() => {
+        const canvas = canvasRef.current;
+        const hub = hubRef.current;
+        if (!canvas || !hub) return;
+
+        const cRect = canvas.getBoundingClientRect();
+        const hRect = hub.getBoundingClientRect();
+        if (cRect.width === 0 || cRect.height === 0) return;
+
+        const hx = hRect.left - cRect.left + hRect.width / 2;
+        const hy = hRect.top - cRect.top + hRect.height / 2;
+
+        const next: Record<string, string> = {};
+        for (const node of nodes) {
+            const el = nodeRefs.current[node.id];
+            if (!el) continue;
+            const r = el.getBoundingClientRect();
+            const isLeft = node.position.includes("left");
+            const nx = isLeft ? r.right - cRect.left : r.left - cRect.left;
+            const ny = r.top - cRect.top + r.height / 2;
+
+            if (variant === "pulse") {
+                const dx = hx - nx;
+                next[node.id] = `M ${nx} ${ny} C ${nx + dx * 0.48} ${ny}, ${nx + dx * 0.52} ${hy}, ${hx} ${hy}`;
+            } else {
+                next[node.id] = `M ${nx} ${ny} Q ${(nx + hx) / 2} ${ny} ${hx} ${hy}`;
+            }
         }
-    };
+        setMeasuredPaths(next);
+    }, [nodes, variant]);
 
-    const centerTheme = getCenterColorStyles(centerColor);
+    useEffect(() => {
+        measurePaths();
+        const canvas = canvasRef.current;
+        if (!canvas || typeof ResizeObserver === "undefined") return;
+        const ro = new ResizeObserver(() => measurePaths());
+        ro.observe(canvas);
+        window.addEventListener("resize", measurePaths);
+        return () => {
+            ro.disconnect();
+            window.removeEventListener("resize", measurePaths);
+        };
+    }, [measurePaths]);
 
     const getBadgeStyle = (variant?: string) => {
         switch (variant) {
@@ -269,294 +276,500 @@ export function InfrastructureTopology({
         }
     };
 
-    return (
-        <div
-            className={cn(
-                "w-full max-w-5xl mx-auto rounded-3xl border border-border/80 bg-background/95 backdrop-blur-2xl p-4 sm:p-6 md:p-8 shadow-none relative overflow-hidden select-none",
-                "bg-[radial-gradient(var(--border)_1.2px,transparent_1.2px)] [background-size:20px_20px]",
-                className
-            )}
-        >
-            {/* `dash` drives the animate-[dash_…] beams below. Plain <style> rather
-                than styled-jsx so the component compiles outside Next.js, and kept
-                inline so the keyframes survive a copy into another project. */}
-            <style
-                dangerouslySetInnerHTML={{
-                    __html: `@keyframes dash { to { stroke-dashoffset: -1000; } }`,
-                }}
-            />
+    const orbitPaths: Record<TopologyNode["position"], { d: string; dur: string }> = {
+        "top-left": { d: "M 240 100 Q 370 110 500 250", dur: "2.6s" },
+        "bottom-left": { d: "M 240 400 Q 370 390 500 250", dur: "3.1s" },
+        "top-right": { d: "M 760 90 Q 630 110 500 250", dur: "2.4s" },
+        "middle-right": { d: "M 760 250 Q 635 250 500 250", dur: "2.1s" },
+        "bottom-right": { d: "M 760 410 Q 630 390 500 250", dur: "2.9s" },
+    };
 
-            {/* Header Section */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 pb-4 sm:pb-6 border-b border-border/40">
-                <div className="space-y-1">
-                    <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-foreground">
-                        {headerTitle}
-                    </h2>
-                    <p className="text-[10px] sm:text-[11px] font-mono font-semibold tracking-widest text-muted-foreground">
-                        {headerSubtitle}
-                    </p>
-                </div>
+    if (variant !== "pulse") {
+        const activeNode = nodes.find((n) => n.id === activeNodeId);
 
-                <div className="flex items-center gap-2">
-                    <div className="px-3 py-1 rounded-full text-[11px] sm:text-xs font-mono font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center gap-1.5 cursor-pointer hover:bg-emerald-500/20 transition-colors">
-                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                        <span>{statusBadge}</span>
+        return (
+            <div
+                className={cn(
+                    "w-full rounded-3xl bg-card/90 backdrop-blur-2xl p-4 sm:p-6 md:p-8 shadow-none relative overflow-hidden select-none",
+                    className
+                )}
+            >
+                <style
+                    dangerouslySetInnerHTML={{
+                        __html: `
+                        @keyframes orbit-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+                        @keyframes orbit-spin-rev { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+                        @keyframes orbit-scan { 0% { transform: translateX(-100%); opacity: 0; } 20% { opacity: 1; } 80% { opacity: 1; } 100% { transform: translateX(200%); opacity: 0; } }
+                        `,
+                    }}
+                />
+
+                {/* Header — Centered stacked layout across all screen sizes for Orbital Mesh */}
+                <div className="relative z-10 flex flex-col items-center text-center justify-center gap-4 pb-5 sm:pb-6">
+                    <div className="flex flex-col items-center gap-3">
+                        <div className="p-2.5 rounded-2xl bg-primary/10 border border-primary/25 text-primary shrink-0">
+                            <Activity className="w-5 h-5" />
+                        </div>
+                        <div className="space-y-1">
+                            <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-foreground">
+                                {headerTitle}
+                            </h2>
+                            <p className="text-[10px] sm:text-[11px] font-mono font-semibold tracking-widest text-muted-foreground min-h-[2.6em] sm:min-h-0 flex items-center justify-center">
+                                {activeNode
+                                    ? `ACTIVE ROUTE · ${activeNode.title.toUpperCase()} (${activeNode.subtitle})`
+                                    : headerSubtitle}
+                            </p>
+                        </div>
                     </div>
 
-                    <div className="px-3 py-1 rounded-full text-[11px] sm:text-xs font-mono font-semibold bg-muted/80 text-muted-foreground border border-border/60 flex items-center gap-1.5 cursor-pointer hover:bg-muted transition-colors">
-                        <Wifi className="w-3.5 h-3.5" />
-                        <span>{bandwidthBadge}</span>
+                    <div className="flex items-center justify-center gap-2">
+                        <div className="px-3 py-1 rounded-full text-[11px] sm:text-xs font-mono font-semibold bg-primary/10 text-primary border border-primary/25 flex items-center gap-1.5">
+                            <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
+                            <span>{statusBadge}</span>
+                        </div>
+
+                        <div className="px-3 py-1 rounded-full text-[11px] sm:text-xs font-mono font-semibold bg-muted/70 text-foreground/80 border border-border/70 flex items-center gap-1.5 backdrop-blur-md">
+                            <Wifi className="w-3.5 h-3.5 text-primary" />
+                            <span>{bandwidthBadge}</span>
+                        </div>
+                    </div>
+
+                    {/* Animated Gliding Laser Divider (Style 1: Center-fade scan beam) */}
+                    <div aria-hidden className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-border/80 to-transparent overflow-hidden">
+                        <div
+                            className="h-full w-1/2 bg-gradient-to-r from-transparent via-primary to-transparent"
+                            style={animated ? { animation: "orbit-scan 3.2s ease-in-out infinite" } : undefined}
+                        />
                     </div>
                 </div>
-            </div>
 
-            {/* DESKTOP & TABLET VIEW (md and up): 2D Graph Canvas with SVG Lines */}
-            <div className="hidden md:flex relative w-full min-h-[480px] lg:min-h-[500px] items-center justify-center my-4">
-                {/* SVG Data Flow Connection Beams Overlay */}
-                <svg className="absolute inset-0 w-full h-full pointer-events-none z-0">
-                    <defs>
-                        <linearGradient id="gradient-blue" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.8" />
-                            <stop offset="100%" stopColor="#60a5fa" stopOpacity="0.2" />
-                        </linearGradient>
-                        <linearGradient id="gradient-rose" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#f43f5e" stopOpacity="0.8" />
-                            <stop offset="100%" stopColor="#fb7185" stopOpacity="0.2" />
-                        </linearGradient>
-                        <linearGradient id="gradient-purple" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#a855f7" stopOpacity="0.8" />
-                            <stop offset="100%" stopColor="#c084fc" stopOpacity="0.2" />
-                        </linearGradient>
-                        <linearGradient id="gradient-amber" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#f59e0b" stopOpacity="0.8" />
-                            <stop offset="100%" stopColor="#fbbf24" stopOpacity="0.2" />
-                        </linearGradient>
-                        <linearGradient id="gradient-emerald" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#10b981" stopOpacity="0.8" />
-                            <stop offset="100%" stopColor="#34d399" stopOpacity="0.2" />
-                        </linearGradient>
-                    </defs>
+                {/* ALL DEVICES: Curved Bezier Pipelines + Travelling Orbs (icon-only cards below lg, full cards on lg+) */}
+                <div ref={canvasRef} className="flex relative w-full min-h-[360px] sm:min-h-[440px] lg:min-h-[500px] items-center justify-center my-4">
+                    <svg
+                        className="absolute inset-0 w-full h-full pointer-events-none z-0"
+                    >
+                        {nodes.map((node) => {
+                            const cfg = orbitPaths[node.position];
+                            const d = measuredPaths[node.id];
+                            if (!d) return null;
+                            const isActive = activeNodeId === node.id;
+                            return (
+                                <g key={node.id}>
+                                    <path
+                                        d={d}
+                                        fill="none"
+                                        stroke={node.strokeColor}
+                                        strokeWidth={isActive ? 2.8 : 1.6}
+                                        strokeOpacity={isActive ? 0.9 : 0.25}
+                                        className="transition-all duration-300"
+                                    />
+                                    {animated && (
+                                        <>
+                                            <circle
+                                                r={isActive ? 9 : 6}
+                                                fill={node.strokeColor}
+                                                opacity={isActive ? 0.35 : 0.18}
+                                            >
+                                                <animateMotion
+                                                    dur={isActive ? "1.1s" : cfg.dur}
+                                                    repeatCount="indefinite"
+                                                    path={d}
+                                                />
+                                            </circle>
+                                            <circle
+                                                r={isActive ? 4 : 3}
+                                                fill={node.strokeColor}
+                                            >
+                                                <animateMotion
+                                                    dur={isActive ? "1.1s" : cfg.dur}
+                                                    repeatCount="indefinite"
+                                                    path={d}
+                                                />
+                                            </circle>
+                                        </>
+                                    )}
+                                </g>
+                            );
+                        })}
+                    </svg>
 
-                    <line
-                        x1="22%"
-                        y1="22%"
-                        x2="50%"
-                        y2="50%"
-                        stroke="url(#gradient-blue)"
-                        strokeWidth={hoveredNodeId === "auth" ? 4 : 3}
-                        strokeDasharray="8 6"
-                        className={cn("transition-all duration-300", animated && "animate-[dash_20s_linear_infinite]")}
-                    />
+                    {/* Counter-Rotating Orbital Core Hub */}
+                    <div className="relative z-20 flex flex-col items-center justify-center">
+                        <div ref={hubRef} className="relative flex items-center justify-center">
+                            <div
+                                className="absolute w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 rounded-full border border-dashed border-primary/25 pointer-events-none"
+                                style={animated ? { animation: "orbit-spin 22s linear infinite" } : undefined}
+                            >
+                                <span className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_var(--primary)]" />
+                            </div>
+                            <div
+                                className="absolute w-24 h-24 sm:w-32 sm:h-32 lg:w-38 lg:h-38 rounded-full border border-dotted border-primary/45 pointer-events-none"
+                                style={animated ? { animation: "orbit-spin-rev 14s linear infinite" } : undefined}
+                            >
+                                <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-primary/80" />
+                            </div>
 
-                    <line
-                        x1="22%"
-                        y1="78%"
-                        x2="50%"
-                        y2="50%"
-                        stroke="url(#gradient-rose)"
-                        strokeWidth={hoveredNodeId === "waf" ? 4 : 3}
-                        strokeDasharray="8 6"
-                        className={cn("transition-all duration-300", animated && "animate-[dash_22s_linear_infinite]")}
-                    />
-
-                    <line
-                        x1="78%"
-                        y1="20%"
-                        x2="50%"
-                        y2="50%"
-                        stroke="url(#gradient-purple)"
-                        strokeWidth={hoveredNodeId === "db" ? 4 : 3}
-                        strokeDasharray="8 6"
-                        className={cn("transition-all duration-300", animated && "animate-[dash_18s_linear_infinite]")}
-                    />
-
-                    <line
-                        x1="78%"
-                        y1="50%"
-                        x2="50%"
-                        y2="50%"
-                        stroke="url(#gradient-amber)"
-                        strokeWidth={hoveredNodeId === "aws" ? 4 : 3}
-                        strokeDasharray="8 6"
-                        className={cn("transition-all duration-300", animated && "animate-[dash_15s_linear_infinite]")}
-                    />
-
-                    <line
-                        x1="78%"
-                        y1="80%"
-                        x2="50%"
-                        y2="50%"
-                        stroke="url(#gradient-emerald)"
-                        strokeWidth={hoveredNodeId === "billing" ? 4 : 3}
-                        strokeDasharray="8 6"
-                        className={cn("transition-all duration-300", animated && "animate-[dash_25s_linear_infinite]")}
-                    />
-                </svg>
-
-                {/* Central Neural Mesh Hub Node - Mode Adaptive Colors, NO ZOOM */}
-                <div className="relative z-20 flex flex-col items-center justify-center cursor-pointer">
-                    <div className="relative flex items-center justify-center">
-                        <div className={cn("absolute w-32 h-32 lg:w-36 lg:h-36 rounded-full border animate-ping opacity-40 pointer-events-none", centerTheme.ringOuter)} />
-                        <div className={cn("absolute w-40 h-40 lg:w-44 lg:h-44 rounded-full border animate-pulse pointer-events-none", centerTheme.ringInner)} />
-
-                        <div className={cn("w-24 h-24 lg:w-28 lg:h-28 rounded-full bg-card text-card-foreground border-2 shadow-none flex flex-col items-center justify-center p-2.5 lg:p-3 relative cursor-pointer backdrop-blur-xl transition-colors", centerTheme.border)}>
-                            <div className={cn("p-1.5 lg:p-2 rounded-xl border mb-1 transition-colors", centerTheme.iconBg)}>
-                                <Zap className="w-5 h-5 lg:w-6 lg:h-6 animate-pulse" />
+                            <div className="w-16 h-16 sm:w-20 sm:h-20 lg:w-28 lg:h-28 rounded-full bg-background/90 text-card-foreground border-2 border-primary/50 flex flex-col items-center justify-center p-2 sm:p-2.5 lg:p-3 relative backdrop-blur-xl shadow-[0_0_30px_color-mix(in_oklab,var(--primary)_16%,transparent)] transition-all duration-300">
+                                <div className="p-1.5 sm:p-2 rounded-xl lg:rounded-2xl border border-primary/30 bg-primary/10 text-primary transition-transform duration-300">
+                                    <Zap className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div className="text-center mt-2.5 space-y-0.5">
-                        <h4 className={cn("text-[11px] lg:text-xs font-bold tracking-wider uppercase", centerTheme.text)}>
-                            {centerTitle}
-                        </h4>
-                        <p className="text-[9px] lg:text-[10px] font-mono font-semibold text-muted-foreground">
-                            {centerSubtitle}
-                        </p>
-                    </div>
-                </div>
+                    {/* Floating Glassmorphic Service Nodes */}
+                    <div className="absolute inset-0 w-full h-full pointer-events-none">
+                        {nodes.map((node) => {
+                            const isActive = activeNodeId === node.id;
 
-                {/* Peripheral Service Card Nodes - Slightly Smaller on md: Screen */}
-                <div className="absolute inset-0 w-full h-full pointer-events-none">
-                    {nodes.map((node) => {
-                        const isHovered = hoveredNodeId === node.id;
+                            let posClasses = "";
+                            switch (node.position) {
+                                case "top-left":
+                                    posClasses = "top-[20%] -translate-y-1/2 left-1 sm:left-4 lg:left-10";
+                                    break;
+                                case "bottom-left":
+                                    posClasses = "top-[80%] -translate-y-1/2 left-1 sm:left-4 lg:left-10";
+                                    break;
+                                case "top-right":
+                                    posClasses = "top-[18%] -translate-y-1/2 right-1 sm:right-4 lg:right-10";
+                                    break;
+                                case "middle-right":
+                                    posClasses = "top-1/2 -translate-y-1/2 right-1 sm:right-4 lg:right-10";
+                                    break;
+                                case "bottom-right":
+                                    posClasses = "top-[82%] -translate-y-1/2 right-1 sm:right-4 lg:right-10";
+                                    break;
+                            }
 
-                        let posClasses = "";
-                        switch (node.position) {
-                            case "top-left":
-                                posClasses = "top-4 left-4 lg:left-12";
-                                break;
-                            case "bottom-left":
-                                posClasses = "bottom-4 left-4 lg:left-12";
-                                break;
-                            case "top-right":
-                                posClasses = "top-2 right-4 lg:right-12";
-                                break;
-                            case "middle-right":
-                                posClasses = "top-1/2 -translate-y-1/2 right-4 lg:right-12";
-                                break;
-                            case "bottom-right":
-                                posClasses = "bottom-2 right-4 lg:right-12";
-                                break;
-                        }
-
-                        return (
-                            <div
-                                key={node.id}
-                                onMouseEnter={() => interactive && setHoveredNodeId(node.id)}
-                                onMouseLeave={() => interactive && setHoveredNodeId(null)}
-                                className={cn(
-                                    "absolute pointer-events-auto w-40 md:w-44 lg:w-48 rounded-2xl border bg-card/95 backdrop-blur-xl p-3 md:p-3.5 lg:p-4 shadow-none transition-all duration-300 flex flex-col items-center text-center gap-1.5 md:gap-2 cursor-pointer hover:scale-[1.03]",
-                                    getNodeBorderStyle(node.color, isHovered),
-                                    posClasses
-                                )}
-                            >
-                                <div className="p-2 md:p-2.5 rounded-xl bg-muted/60 border border-border/50">
-                                    {node.icon}
-                                </div>
-
-                                <div className="space-y-0.5 min-w-0 w-full">
-                                    <h3 className="text-xs md:text-sm font-semibold text-foreground leading-tight truncate">
-                                        {node.title}
-                                    </h3>
-                                    <p className="text-[9px] md:text-[10px] font-mono font-medium text-muted-foreground truncate">
-                                        {node.subtitle}
-                                    </p>
-                                </div>
-
-                                <span
+                            return (
+                                <button
+                                    key={node.id}
+                                    ref={(el) => {
+                                        nodeRefs.current[node.id] = el;
+                                    }}
+                                    type="button"
+                                    title={`${node.title} — ${node.subtitle}`}
+                                    aria-label={node.title}
+                                    onMouseEnter={() => interactive && setHoveredNodeId(node.id)}
+                                    onMouseLeave={() => interactive && setHoveredNodeId(null)}
+                                    onClick={() =>
+                                        interactive &&
+                                        setSelectedNodeId((prev) => (prev === node.id ? null : node.id))
+                                    }
                                     className={cn(
-                                        "px-2 md:px-2.5 py-0.5 rounded-full text-[8px] md:text-[9px] font-mono font-semibold tracking-wider border uppercase flex items-center gap-1 cursor-pointer",
-                                        getBadgeStyle(node.badgeVariant)
+                                        "absolute pointer-events-auto w-auto lg:w-52 rounded-2xl border bg-background/80 backdrop-blur-xl p-2 sm:p-2.5 lg:p-3.5 text-left transition-all duration-300 flex items-center gap-3 cursor-pointer hover:scale-[1.03]",
+                                        getNodeBorderStyle(node.color, isActive),
+                                        isActive && "shadow-[0_0_24px_color-mix(in_oklab,var(--primary)_18%,transparent)]",
+                                        posClasses
                                     )}
                                 >
-                                    <span className="w-1.5 h-1.5 rounded-full bg-current" />
-                                    <span>{node.badgeText}</span>
-                                </span>
-                            </div>
-                        );
-                    })}
+                                    <div className="p-2 lg:p-2.5 rounded-xl bg-muted/70 border border-border/60 shrink-0">
+                                        {node.icon}
+                                    </div>
+
+                                    <div className="hidden lg:block min-w-0 flex-1 space-y-1">
+                                        <div className="flex items-center justify-between gap-1.5">
+                                            <h3 className="text-xs lg:text-sm font-semibold text-foreground leading-tight truncate">
+                                                {node.title}
+                                            </h3>
+                                        </div>
+                                        <p className="text-[9px] lg:text-[10px] font-mono font-medium text-muted-foreground truncate">
+                                            {node.subtitle}
+                                        </p>
+                                        <span
+                                            className={cn(
+                                                "inline-flex px-2 py-0.5 rounded-full text-[8px] lg:text-[9px] font-mono font-semibold tracking-wider border uppercase items-center gap-1",
+                                                getBadgeStyle(node.badgeVariant)
+                                            )}
+                                        >
+                                            <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
+                                            <span>{node.badgeText}</span>
+                                        </span>
+                                    </div>
+                                </button>
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
+        );
+    }
 
-            {/* MOBILE & SMALL SCREEN VIEW (< md): Clean Grid Layout */}
-            <div className="md:hidden py-6 space-y-6">
-                {/* Central Hub Node Mobile */}
-                <div className="flex flex-col items-center justify-center text-center py-2 cursor-pointer">
-                    <div className="relative flex items-center justify-center">
-                        <div className={cn("absolute w-28 h-28 rounded-full border animate-ping opacity-40 pointer-events-none", centerTheme.ringOuter)} />
-                        <div className={cn("w-20 h-20 rounded-full bg-card text-card-foreground border-2 flex flex-col items-center justify-center p-2 backdrop-blur-xl", centerTheme.border)}>
-                            <Zap className={cn("w-5 h-5 animate-pulse", centerTheme.text)} />
+    const leftNodes = nodes.filter(
+        (n) => n.position === "top-left" || n.position === "bottom-left"
+    );
+        const rightNodes = nodes.filter(
+            (n) =>
+                n.position === "top-right" ||
+                n.position === "middle-right" ||
+                n.position === "bottom-right"
+        );
+        const activeNode = nodes.find((n) => n.id === activeNodeId);
+
+        return (
+            <div
+                className={cn(
+                    "w-full rounded-3xl bg-card/95 backdrop-blur-2xl p-4 sm:p-6 md:p-8 shadow-none relative overflow-hidden select-none",
+                    className
+                )}
+            >
+                <style
+                    dangerouslySetInnerHTML={{
+                        __html: `
+                        @keyframes pulse-beam {
+                            0% { stroke-dashoffset: 180; }
+                            100% { stroke-dashoffset: 0; }
+                        }
+                        @keyframes pulse-ripple {
+                            0% { transform: scale(0.88); opacity: 0.55; }
+                            100% { transform: scale(1.65); opacity: 0; }
+                        }
+                        @keyframes pulse-line-orb {
+                            0% { left: 0%; opacity: 0; }
+                            15% { opacity: 1; }
+                            85% { opacity: 1; }
+                            100% { left: 100%; opacity: 0; }
+                        }
+                        `,
+                    }}
+                />
+
+                {/* Header — Curved left border on all screens + Style 2 animated orb divider */}
+                <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5 sm:gap-4 pb-5 sm:pb-6">
+                    <div className="space-y-1.5 border-l-[3px] border-primary rounded-l-2xl pl-4 py-0.5">
+                        <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-foreground">
+                            {headerTitle}
+                        </h2>
+                        <p className="text-[10px] sm:text-[11px] font-mono font-semibold tracking-widest text-muted-foreground min-h-[2.6em] sm:min-h-0 flex items-center">
+                            {activeNode
+                                ? `INSPECTING · ${activeNode.title.toUpperCase()} — ${activeNode.badgeText}`
+                                : headerSubtitle}
+                        </p>
+                    </div>
+
+                    <div className="flex items-center justify-between w-full sm:w-auto sm:justify-end gap-2">
+                        <div className="px-3 py-1 rounded-full text-[11px] sm:text-xs font-mono font-semibold bg-primary/10 text-primary border border-primary/25 flex items-center gap-1.5">
+                            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                            <span>{statusBadge}</span>
+                        </div>
+                        <div className="px-3 py-1 rounded-full text-[11px] sm:text-xs font-mono font-semibold bg-muted/60 text-muted-foreground border border-border/60 flex items-center gap-1.5">
+                            <Wifi className="w-3.5 h-3.5 text-primary" />
+                            <span>{bandwidthBadge}</span>
                         </div>
                     </div>
-                    <h4 className={cn("text-xs font-bold tracking-wider uppercase mt-2", centerTheme.text)}>
-                        {centerTitle}
-                    </h4>
-                    <p className="text-[9px] font-mono font-semibold text-muted-foreground">
-                        {centerSubtitle}
-                    </p>
+
+                    {/* Animated Pulse-Node Divider (Style 2: Left-to-right gradient with gliding glowing orb) */}
+                    <div aria-hidden className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-primary/50 via-border/60 to-transparent">
+                        <span
+                            className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-primary shadow-[0_0_10px_var(--primary)]"
+                            style={animated ? { animation: "pulse-line-orb 3.6s ease-in-out infinite" } : undefined}
+                        />
+                    </div>
                 </div>
 
-                {/* 2-Column Responsive Service Grid */}
-                <div className="grid grid-cols-1 xs:grid-cols-2 gap-3">
-                    {nodes.map((node) => (
+                {/* ALL DEVICES: 3-Column Clean Pipeline + Ripple Core + Curved Bezier Energy Pulses */}
+                <div ref={canvasRef} className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 sm:gap-4 md:gap-6 relative w-full min-h-[340px] sm:min-h-[420px] md:min-h-[470px] my-4">
+                    {/* Smooth Cubic Bezier Energy Pulses */}
+                    <svg
+                        className="absolute inset-0 w-full h-full pointer-events-none z-0"
+                    >
+                        {nodes.map((node, i) => {
+                            const d = measuredPaths[node.id];
+                            if (!d) return null;
+                            const isActive = activeNodeId === node.id;
+                            const isDimmed = activeNodeId !== null && !isActive;
+                            return (
+                                <g key={node.id}>
+                                    <path
+                                        d={d}
+                                        fill="none"
+                                        stroke={node.strokeColor}
+                                        strokeWidth={isActive ? 2.5 : 1.5}
+                                        strokeOpacity={isDimmed ? 0.08 : isActive ? 0.55 : 0.2}
+                                        className="transition-all duration-300"
+                                    />
+                                    {animated && !isDimmed && (
+                                        <path
+                                            d={d}
+                                            fill="none"
+                                            stroke={node.strokeColor}
+                                            strokeWidth={isActive ? 3.5 : 2.5}
+                                            strokeLinecap="round"
+                                            strokeDasharray="24 156"
+                                            strokeOpacity={isActive ? 1 : 0.75}
+                                            style={{
+                                                animation: `pulse-beam ${isActive ? "1.2s" : `${2.2 + i * 0.25}s`} linear infinite`,
+                                            }}
+                                        />
+                                    )}
+                                </g>
+                            );
+                        })}
+                    </svg>
+
+                    {/* Left Column Services */}
+                    <div className="relative z-10 flex flex-col justify-center gap-12 sm:gap-14 md:gap-16 pl-1 sm:pl-2 lg:pl-6 md:max-w-[260px]">
+                        {leftNodes.map((node) => {
+                            const isActive = activeNodeId === node.id;
+                            const isDimmed = activeNodeId !== null && !isActive;
+                            return (
+                                <button
+                                    key={node.id}
+                                    ref={(el) => {
+                                        nodeRefs.current[node.id] = el;
+                                    }}
+                                    type="button"
+                                    title={`${node.title} — ${node.subtitle}`}
+                                    aria-label={node.title}
+                                    onMouseEnter={() => interactive && setHoveredNodeId(node.id)}
+                                    onMouseLeave={() => interactive && setHoveredNodeId(null)}
+                                    onClick={() =>
+                                        interactive &&
+                                        setSelectedNodeId((prev) => (prev === node.id ? null : node.id))
+                                    }
+                                    className={cn(
+                                        "w-fit md:w-full rounded-2xl border bg-background/85 backdrop-blur-xl p-2 sm:p-2.5 md:p-3.5 text-left transition-all duration-300 flex items-center gap-3 cursor-pointer hover:translate-x-1",
+                                        getNodeBorderStyle(node.color, isActive),
+                                        isDimmed && "opacity-45"
+                                    )}
+                                >
+                                    <div className="p-2 md:p-2.5 rounded-xl bg-muted/60 border border-border/50 shrink-0">
+                                        {node.icon}
+                                    </div>
+                                    <div className="hidden md:block min-w-0 flex-1 space-y-0.5">
+                                        <div className="flex items-center justify-between gap-2">
+                                            <h3 className="text-xs lg:text-sm font-semibold text-foreground truncate">
+                                                {node.title}
+                                            </h3>
+                                            <span
+                                                className={cn(
+                                                    "px-1.5 py-0.5 rounded-full text-[8px] font-mono font-semibold border uppercase shrink-0",
+                                                    getBadgeStyle(node.badgeVariant)
+                                                )}
+                                            >
+                                                {node.badgeText}
+                                            </span>
+                                        </div>
+                                        <p className="text-[9px] lg:text-[10px] font-mono font-medium text-muted-foreground truncate">
+                                            {node.subtitle}
+                                        </p>
+                                    </div>
+                                </button>
+                            );
+                        })}
+                    </div>
+
+                    {/* Center Pulse Core Hub */}
+                    <div className="relative z-20 flex flex-col items-center justify-center px-1 sm:px-3 md:px-4">
+                        <div ref={hubRef} className="relative flex items-center justify-center">
+                            {animated && (
+                                <>
+                                    <span
+                                        className="absolute w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full border border-primary/40 pointer-events-none"
+                                        style={{ animation: "pulse-ripple 3s ease-out infinite" }}
+                                    />
+                                    <span
+                                        className="absolute w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 rounded-full border border-primary/40 pointer-events-none"
+                                        style={{ animation: "pulse-ripple 3s ease-out 1.5s infinite" }}
+                                    />
+                                </>
+                            )}
+                            <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 rounded-2xl sm:rounded-3xl bg-background/95 border-2 border-primary/50 flex flex-col items-center justify-center p-2 md:p-3 backdrop-blur-xl transition-all duration-300">
+                                <div className="p-1.5 sm:p-2 md:p-2.5 rounded-xl md:rounded-2xl border border-primary/30 bg-primary/10 text-primary">
+                                    <Zap className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="text-center mt-2 md:mt-3 space-y-0.5">
+                            <h4 className="text-[10px] sm:text-[11px] lg:text-xs font-bold tracking-wider uppercase text-primary">
+                                {centerTitle}
+                            </h4>
+                            <p className="text-[8px] sm:text-[9px] lg:text-[10px] font-mono font-semibold text-muted-foreground">
+                                {centerSubtitle}
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Right Column Services */}
+                    <div className="relative z-10 flex flex-col items-end justify-center gap-5 sm:gap-6 pr-1 sm:pr-2 lg:pr-6 md:max-w-[260px] justify-self-end w-full">
+                        {rightNodes.map((node) => {
+                            const isActive = activeNodeId === node.id;
+                            const isDimmed = activeNodeId !== null && !isActive;
+                            return (
+                                <button
+                                    key={node.id}
+                                    ref={(el) => {
+                                        nodeRefs.current[node.id] = el;
+                                    }}
+                                    type="button"
+                                    title={`${node.title} — ${node.subtitle}`}
+                                    aria-label={node.title}
+                                    onMouseEnter={() => interactive && setHoveredNodeId(node.id)}
+                                    onMouseLeave={() => interactive && setHoveredNodeId(null)}
+                                    onClick={() =>
+                                        interactive &&
+                                        setSelectedNodeId((prev) => (prev === node.id ? null : node.id))
+                                    }
+                                    className={cn(
+                                        "w-fit md:w-full rounded-2xl border bg-background/85 backdrop-blur-xl p-2 sm:p-2.5 md:p-3.5 text-left transition-all duration-300 flex items-center gap-3 cursor-pointer hover:-translate-x-1",
+                                        getNodeBorderStyle(node.color, isActive),
+                                        isDimmed && "opacity-45"
+                                    )}
+                                >
+                                    <div className="p-2 md:p-2.5 rounded-xl bg-muted/60 border border-border/50 shrink-0">
+                                        {node.icon}
+                                    </div>
+                                    <div className="hidden md:block min-w-0 flex-1 space-y-0.5">
+                                        <div className="flex items-center justify-between gap-2">
+                                            <h3 className="text-xs lg:text-sm font-semibold text-foreground truncate">
+                                                {node.title}
+                                            </h3>
+                                            <span
+                                                className={cn(
+                                                    "px-1.5 py-0.5 rounded-full text-[8px] font-mono font-semibold border uppercase shrink-0",
+                                                    getBadgeStyle(node.badgeVariant)
+                                                )}
+                                            >
+                                                {node.badgeText}
+                                            </span>
+                                        </div>
+                                        <p className="text-[9px] lg:text-[10px] font-mono font-medium text-muted-foreground truncate">
+                                            {node.subtitle}
+                                        </p>
+                                    </div>
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
+
+                {/* Bottom Telemetry Metrics */}
+                <div className="relative z-10 pt-4 sm:pt-6 border-t border-border/40 grid grid-cols-2 sm:flex sm:flex-wrap sm:items-center sm:justify-between gap-2 sm:gap-3">
+                    {metrics.map((metric, idx) => (
                         <div
-                            key={node.id}
+                            key={metric.id}
                             className={cn(
-                                "rounded-2xl border bg-card/95 p-3.5 flex items-center gap-3 transition-all cursor-pointer hover:scale-[1.02]",
-                                getNodeBorderStyle(node.color, false)
+                                "px-3 sm:px-4 py-1.5 sm:py-2 rounded-2xl border border-border/60 bg-background/70 backdrop-blur-md flex items-center gap-2 text-xs hover:border-border cursor-pointer transition-all hover:scale-[1.02]",
+                                idx === metrics.length - 1 && metrics.length % 2 === 1 && "col-span-2 sm:col-span-1"
                             )}
                         >
-                            <div className="p-2 rounded-xl bg-muted/60 border border-border/50 shrink-0">
-                                {node.icon}
+                            <div className="p-1 rounded-md bg-muted/80 border border-border/50">
+                                {metric.icon}
                             </div>
-
-                            <div className="flex-1 min-w-0 space-y-0.5">
-                                <div className="flex items-center justify-between gap-1">
-                                    <h3 className="text-xs font-semibold text-foreground truncate">
-                                        {node.title}
-                                    </h3>
-                                    <span
-                                        className={cn(
-                                            "px-1.5 py-0.2 rounded text-[8px] font-mono font-semibold border uppercase shrink-0",
-                                            getBadgeStyle(node.badgeVariant)
-                                        )}
-                                    >
-                                        {node.badgeText}
-                                    </span>
-                                </div>
-                                <p className="text-[9px] font-mono font-medium text-muted-foreground truncate">
-                                    {node.subtitle}
-                                </p>
+                            <div className="flex flex-col">
+                                <span className="text-[8px] sm:text-[9px] font-mono font-semibold text-muted-foreground tracking-wider">
+                                    {metric.label}
+                                </span>
+                                <span className={cn("text-[11px] sm:text-xs font-mono font-semibold", metric.color)}>
+                                    {metric.value}
+                                </span>
                             </div>
                         </div>
                     ))}
                 </div>
             </div>
-
-            {/* Bottom Telemetry Metrics Bar */}
-            <div className="pt-4 sm:pt-6 border-t border-border/40 flex flex-wrap items-center justify-center sm:justify-between gap-2 sm:gap-3">
-                {metrics.map((metric) => (
-                    <div
-                        key={metric.id}
-                        className="px-3 sm:px-4 py-1.5 sm:py-2 rounded-2xl border border-border/60 bg-muted/40 backdrop-blur-md flex items-center gap-2 text-xs shadow-none hover:border-border cursor-pointer transition-all hover:scale-[1.02]"
-                    >
-                        <div className="p-1 rounded-md bg-background/80 border border-border/40">
-                            {metric.icon}
-                        </div>
-                        <div className="flex flex-col">
-                            <span className="text-[8px] sm:text-[9px] font-mono font-semibold text-muted-foreground tracking-wider">
-                                {metric.label}
-                            </span>
-                            <span className={cn("text-[11px] sm:text-xs font-mono font-semibold", metric.color)}>
-                                {metric.value}
-                            </span>
-                        </div>
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
+        );
 }
 
 export default InfrastructureTopology;

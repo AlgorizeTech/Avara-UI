@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("error");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Error Page
@@ -302,7 +302,7 @@ export default function PrismaticErrorPage({
   name="error"
   columns={1}
   colorControl={false}
-  minHeight={640}
+  minHeight={550}
   examples={[
     {
       title: "Cyberpunk Terminal Section",
@@ -340,7 +340,7 @@ export default function PrismaticErrorPage({
   name="error"
   columns={1}
   colorControl={false}
-  minHeight={660}
+  minHeight={440}
   examples={[
     {
       title: "Modern Animated Orbital Pulse",
@@ -478,38 +478,30 @@ export default function PrismaticErrorPage({
 Discover the key capabilities of the `ErrorSection` component:
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Prismatic Aurora Glass</h3>
-    <p className="text-muted-foreground text-sm">Floating diamond glass crystal with counter-rotating rainbow refraction halo, liquid aurora glow, and frosted status pills.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Chromatic Glitch Bento HUD</h3>
-    <p className="text-muted-foreground text-sm">Two-column command center with layered chromatic aberration glitch typography, memory overflow bars, and hex dump inspector.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Service Topology & Heartbeat</h3>
-    <p className="text-muted-foreground text-sm">Interactive 4-node architectural pipeline with animated signal beams, failed-node ripple alert, and real-time flatline ECG waveform.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Actionable Remediation Playbook</h3>
-    <p className="text-muted-foreground text-sm">Tabbed diagnostic drawer pairing raw technical error stacktraces with numbered step-by-step resolution checklists for engineers.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Modern Animated Orbital Pulse</h3>
-    <p className="text-muted-foreground text-sm">Concentric counter-rotating orbital rings with sweeping radar scanner beam, floating satellite beads, and breathing luminous focal halo.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Live Micro-Service Health Monitors</h3>
-    <p className="text-muted-foreground text-sm">Dynamic status indicator cards for API Gateway, Worker Nodes, and Database Shards with real-time latency badges.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Cyberpunk Diagnostic Enclosure</h3>
-    <p className="text-muted-foreground text-sm">Full-width futuristic telemetry console with macOS window indicators, pulsating status badge, and glowing holographic crash icon.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Live Stacktrace Console & Copy</h3>
-    <p className="text-muted-foreground text-sm">Scroll-safe diagnostic trace terminal with one-click clipboard copying for quick bug triage and escalation.</p>
-  </div>
+  <InfoCard title="Prismatic Aurora Glass">
+    <p>Floating diamond glass crystal with counter-rotating rainbow refraction halo, liquid aurora glow, and frosted status pills.</p>
+  </InfoCard>
+  <InfoCard title="Chromatic Glitch Bento HUD">
+    <p>Two-column command center with layered chromatic aberration glitch typography, memory overflow bars, and hex dump inspector.</p>
+  </InfoCard>
+  <InfoCard title="Service Topology & Heartbeat">
+    <p>Interactive 4-node architectural pipeline with animated signal beams, failed-node ripple alert, and real-time flatline ECG waveform.</p>
+  </InfoCard>
+  <InfoCard title="Actionable Remediation Playbook">
+    <p>Tabbed diagnostic drawer pairing raw technical error stacktraces with numbered step-by-step resolution checklists for engineers.</p>
+  </InfoCard>
+  <InfoCard title="Modern Animated Orbital Pulse">
+    <p>Concentric counter-rotating orbital rings with sweeping radar scanner beam, floating satellite beads, and breathing luminous focal halo.</p>
+  </InfoCard>
+  <InfoCard title="Live Micro-Service Health Monitors">
+    <p>Dynamic status indicator cards for API Gateway, Worker Nodes, and Database Shards with real-time latency badges.</p>
+  </InfoCard>
+  <InfoCard title="Cyberpunk Diagnostic Enclosure">
+    <p>Full-width futuristic telemetry console with macOS window indicators, pulsating status badge, and glowing holographic crash icon.</p>
+  </InfoCard>
+  <InfoCard title="Live Stacktrace Console & Copy">
+    <p>Scroll-safe diagnostic trace terminal with one-click clipboard copying for quick bug triage and escalation.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

@@ -38,7 +38,7 @@ runs on GSAP; many of these also ship a Motion build that you install instead.
 
 **Media & Carousels**
 
-- [3D Carousel](https://avaraui.com/docs-md/nextjs-3d-carousel.md): A premium 3D carousel with a fanned layout, smooth interactive animations, and a sleek adaptive aesthetic. (Motion build available)
+- [Carousel](https://avaraui.com/docs-md/nextjs-carousel.md): A collection of highly interactive carousel components for image galleries, hero sections, and fluid presentations. (Motion build available)
 - [Gallery](https://avaraui.com/docs-md/nextjs-gallery.md): A dynamic visual showcase featuring six interactive variants: a revolving 3D circular photo orbit ring, an interactive 3D video sphere gallery, a… (Motion build available)
 
 **Apps & Messaging**

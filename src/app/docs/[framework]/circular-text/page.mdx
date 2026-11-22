@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("circular-text");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Circular Text
@@ -88,7 +88,7 @@ export default function SeeTheWork() {
       props: { example: "badge" },
       usage: usageBadge,
       code: extractCode("src/components/custom/blocks/CircularTextBlock.tsx"),
-      minHeight: 280,
+      minHeight: 200,
     },
   ]}
 />
@@ -120,7 +120,7 @@ export default function SeeTheWork() {
       ],
       props: { example: "stamp" },
       usage: usageStamp,
-      minHeight: 280,
+      minHeight: 200,
     },
     {
       title: "As a link",
@@ -140,7 +140,7 @@ export default function SeeTheWork() {
       ],
       props: { example: "link", direction: "counterclockwise" },
       usage: usageLink,
-      minHeight: 280,
+      minHeight: 200,
     },
   ]}
 />

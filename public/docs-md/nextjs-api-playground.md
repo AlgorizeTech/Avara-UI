@@ -104,8 +104,6 @@ Built-in raw JSON request body editor with syntax highlighting, automatic JSON f
 
 ## Best Practices & Guidelines
 
-### Usage Guidelines
-
 Provide realistic mock handlers with simulated delays (e.g. 100ms - 500ms) to give users an authentic API testing experience directly inside your documentation.
 
 ## Props Reference

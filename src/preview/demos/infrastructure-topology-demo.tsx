@@ -3,7 +3,7 @@ import InfrastructureTopology, { InfrastructureTopologyProps } from "@/component
 
 export default function InfrastructureTopologyDemo(props: InfrastructureTopologyProps) {
     return (
-        <div className="w-full min-h-[600px] flex items-center justify-center p-4 bg-background">
+        <div className="w-full py-[10px] flex items-center justify-center">
             <InfrastructureTopology {...props} />
         </div>
     );

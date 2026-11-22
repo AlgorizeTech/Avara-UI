@@ -3,7 +3,7 @@ import { REGISTRY_NAMESPACE } from "@/lib/registry";
 
 export const metadata = docsPageMetadata("table-of-contents");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Table of Contents
@@ -74,7 +74,7 @@ export default function TableOfContentsDemo() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={430} headingLevel={2}
   name="table-of-contents"
   colorControl
   colorLabel="Accent Color"
@@ -111,22 +111,18 @@ export default function TableOfContentsDemo() {
 ## Features
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Right-Side Sticky Panel</h3>
-    <p className="text-muted-foreground text-sm">Positions the TOC navigation cleanly on the right column while main content flows on the left.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Scroll-Spy Tracking</h3>
-    <p className="text-muted-foreground text-sm">Automatically detects active viewport headings and animates the active indicator smoothly along a spring curve, with no animation library.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Section Search Filter</h3>
-    <p className="text-muted-foreground text-sm">Filter long document section headers instantly with an embedded search input.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Mobile Dropdown Menu</h3>
-    <p className="text-muted-foreground text-sm">Collapses into a sticky mobile bar with drawer navigation on smaller devices.</p>
-  </div>
+  <InfoCard title="Right-Side Sticky Panel">
+    <p>Positions the TOC navigation cleanly on the right column while main content flows on the left.</p>
+  </InfoCard>
+  <InfoCard title="Scroll-Spy Tracking">
+    <p>Automatically detects active viewport headings and animates the active indicator smoothly along a spring curve, with no animation library.</p>
+  </InfoCard>
+  <InfoCard title="Section Search Filter">
+    <p>Filter long document section headers instantly with an embedded search input.</p>
+  </InfoCard>
+  <InfoCard title="Mobile Dropdown Menu">
+    <p>Collapses into a sticky mobile bar with drawer navigation on smaller devices.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

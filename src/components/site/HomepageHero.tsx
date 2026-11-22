@@ -419,14 +419,14 @@ function useInViewOnce<T extends Element>() {
 
 interface SwapLayer<T> {
   id: number;
-  key: React.Key;
+  key: PropertyKey;
   value: T;
   enter: boolean;
   leaving: boolean;
   pop?: React.CSSProperties;
 }
 
-function useSwap<T>(key: React.Key, value: T, reduceMotion: boolean, exitMs: number) {
+function useSwap<T>(key: PropertyKey, value: T, reduceMotion: boolean, exitMs: number) {
   const [layers, setLayers] = useState<SwapLayer<T>[]>(() => [{ id: 0, key, value, enter: false, leaving: false }]);
   const nodes = useRef(new Map<number, HTMLElement>());
   const timers = useRef(new Map<number, number>());

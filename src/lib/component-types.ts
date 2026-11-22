@@ -93,7 +93,7 @@ export const COMPONENT_TYPES = {
 		description: "Carousels, galleries, players and tickers.",
 		icon: Images,
 		kind: "ui",
-		slugs: ["gallery", "carousel", "3d-carousel", "curved-carousel", "squircle-carousel", "flow-gallery", "image-compare", "image-wall", "marquee", "video-player", "audio-player", "video-accordion"],
+		slugs: ["gallery", "carousel","curved-carousel", "squircle-carousel", "flow-gallery", "image-compare", "image-wall", "marquee", "video-player", "audio-player", "video-accordion"],
 	},
 	apps: {
 		label: "Apps & Messaging",

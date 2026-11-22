@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("card");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Card
@@ -836,7 +836,7 @@ export default function ProjectShowcaseCardDemo() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={400} headingLevel={2}
   name="card"
   columns={1}
   examples={[
@@ -865,7 +865,7 @@ export default function ProjectShowcaseCardDemo() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={290}
   name="card"
   columns={1}
   examples={[
@@ -936,7 +936,7 @@ export default function ProjectShowcaseCardDemo() {
       ],
       props: { variant: "bordered", layout: "blog-showcase", interactive: true },
       usage: usageBlogShowcase,
-      minHeight: 620,
+      minHeight: 360,
     },
     {
       title: "Blog cards",
@@ -951,7 +951,7 @@ export default function ProjectShowcaseCardDemo() {
       ],
       props: { variant: "bordered", layout: "blog-grid", interactive: true },
       usage: usageBlogGrid,
-      minHeight: 560,
+      minHeight: 290,
     },
     {
       title: "Profile card",
@@ -965,7 +965,7 @@ export default function ProjectShowcaseCardDemo() {
       ],
       props: { variant: "bordered", layout: "profile", interactive: true },
       usage: usageProfile,
-      minHeight: 560,
+      minHeight: 370,
     },
     {
       title: "Shop tiles",
@@ -980,7 +980,7 @@ export default function ProjectShowcaseCardDemo() {
       ],
       props: { variant: "default", layout: "shop", interactive: true },
       usage: usageShop,
-      minHeight: 520,
+      minHeight: 300,
     },
     {
       title: "Boarding pass",
@@ -996,14 +996,14 @@ export default function ProjectShowcaseCardDemo() {
       ],
       props: { variant: "bordered", layout: "ticket" },
       usage: usageTicket,
-      minHeight: 460,
+      minHeight: 290,
     },
     {
       title: "Now playing",
       subheading: "A horizontal card holding live state: the record turns while the track runs, and the waveform doubles as a scrubber.",
       props: { variant: "bordered", layout: "media" },
       usage: usageMedia,
-      minHeight: 460,
+      minHeight: 290,
     },
   ]}
 />
@@ -1013,14 +1013,12 @@ Learn about the Card component's flexible layout options, including headers, foo
 
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
-    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Composable</h3>
-    <p className="text-muted-foreground text-sm">Mix and match sub-components to create complex card layouts effortlessly.</p>
-  </div>
+  <InfoCard title="Customizable">
+    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </InfoCard>
+  <InfoCard title="Composable">
+    <p>Mix and match sub-components to create complex card layouts effortlessly.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("data-table");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Data Table
@@ -13,7 +13,7 @@ A powerful, fully-featured data table component built on top of [Table](./table)
 <ExampleShowcase headingLevel={2}
   name="data-table-soft"
   columns={1}
-  minHeight={640}
+  minHeight={440}
   examples={[
     {
       title: "Soft variant",
@@ -269,53 +269,45 @@ export default function UserTable() {
 
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">The parts that come with it</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50"><code>DataTableTabs</code>, <code>DataTableFilter</code> and <code>DataTableReset</code> filter and clear; <code>TableAction</code> is the toolbar button (primary, secondary, ghost); <code>TableRowAction</code> is a round icon button that needs a <code>label</code>; <code>TableBadge</code> is a status pill (<code>tone</code>) or, without its dot, a tag; <code>TablePerson</code> draws an avatar with a name and a second line; <code>DataTableBatchAction</code> goes inside the batch bar. They work in every variant and take the soft look inside a soft table.</p>
-  </div>
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Empty results explain themselves</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Give <code>DataTableEmpty</code> an <code>icon</code>, <code>title</code>, <code>description</code> and <code>action</code>, and read <code>search</code>, <code>isFiltered</code> and <code>resetAll</code> from <code>useDataTable</code> (in <code>table-core</code>) to say whether nothing matched or nothing exists yet — the example's <code>NoUsers</code> does exactly that.</p>
-  </div>
+  <InfoCard title="The parts that come with it">
+    <p><code>DataTableTabs</code>, <code>DataTableFilter</code> and <code>DataTableReset</code> filter and clear; <code>TableAction</code> is the toolbar button (primary, secondary, ghost); <code>TableRowAction</code> is a round icon button that needs a <code>label</code>; <code>TableBadge</code> is a status pill (<code>tone</code>) or, without its dot, a tag; <code>TablePerson</code> draws an avatar with a name and a second line; <code>DataTableBatchAction</code> goes inside the batch bar. They work in every variant and take the soft look inside a soft table.</p>
+  </InfoCard>
+  <InfoCard title="Empty results explain themselves">
+    <p>Give <code>DataTableEmpty</code> an <code>icon</code>, <code>title</code>, <code>description</code> and <code>action</code>, and read <code>search</code>, <code>isFiltered</code> and <code>resetAll</code> from <code>useDataTable</code> (in <code>table-core</code>) to say whether nothing matched or nothing exists yet — the example's <code>NoUsers</code> does exactly that.</p>
+  </InfoCard>
 </div>
 
 
 ## Features
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">No data transformation</h3>
-    <p className="text-muted-foreground text-sm">getRowId resolves id, _id or uuid out of the box, dot paths reach into nested objects, and accessor functions cover anything computed.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Opt-in controls</h3>
-    <p className="text-muted-foreground text-sm">Search, page size, pagination and selection are separate components. Leave one out and the feature is simply not there — no boolean flags to manage.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Typed sorting</h3>
-    <p className="text-muted-foreground text-sm">Numbers compare numerically by default rather than lexically, and sortType lets you force string, number or date comparison.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Escape hatch</h3>
-    <p className="text-muted-foreground text-sm">useDataTable exposes the whole state — rows, search, sort, paging, selection — so you can build your own toolbar or pager on the same provider.</p>
-  </div>
+  <InfoCard title="No data transformation">
+    <p>getRowId resolves id, _id or uuid out of the box, dot paths reach into nested objects, and accessor functions cover anything computed.</p>
+  </InfoCard>
+  <InfoCard title="Opt-in controls">
+    <p>Search, page size, pagination and selection are separate components. Leave one out and the feature is simply not there — no boolean flags to manage.</p>
+  </InfoCard>
+  <InfoCard title="Typed sorting">
+    <p>Numbers compare numerically by default rather than lexically, and sortType lets you force string, number or date comparison.</p>
+  </InfoCard>
+  <InfoCard title="Escape hatch">
+    <p>useDataTable exposes the whole state — rows, search, sort, paging, selection — so you can build your own toolbar or pager on the same provider.</p>
+  </InfoCard>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Give rows a stable id</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Selection is tracked by id, not by index, so it survives sorting and paging. If your rows have no natural key, derive one before passing the array in — an array index will unselect the wrong row as soon as the order changes.</p>
-  </div>
+  <InfoCard title="Give rows a stable id">
+    <p>Selection is tracked by id, not by index, so it survives sorting and paging. If your rows have no natural key, derive one before passing the array in — an array index will unselect the wrong row as soon as the order changes.</p>
+  </InfoCard>
   <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
     <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Client-side by design</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Search, sort and paging all run over the array you pass in. For server-driven datasets, use the plain Table primitives and drive the query yourself — or keep DataTable for the current page only and supply your own footer.</p>
   </div>
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Give a function sortBy an id</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">A string sortBy doubles as its own identity. When you pass an accessor function, add sortId so the active-sort indicator stays stable across re-renders.</p>
-  </div>
+  <InfoCard title="Give a function sortBy an id">
+    <p>A string sortBy doubles as its own identity. When you pass an accessor function, add sortId so the active-sort indicator stays stable across re-renders.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

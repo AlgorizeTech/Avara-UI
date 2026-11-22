@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("invoice");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { Installation } from "@/components/site/installation";
 import { extractCode } from "@/lib/code";
 
@@ -277,22 +277,18 @@ export default function SplitInvoice() {
 Explore the Invoice component's structured layout for displaying billing information, line items, and dynamic total calculations.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">5 Design Variants</h3>
-    <p className="text-muted-foreground text-sm">Choose from Default, Asymmetric Split, Modern Geometric, Corporate Executive, and Neo-Brutalist layout variants.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Interactive Edit & Export</h3>
-    <p className="text-muted-foreground text-sm">Inline editing for item prices, descriptions, quantities, with instant recalculations and JSON export.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Print & PDF Ready</h3>
-    <p className="text-muted-foreground text-sm">Built-in browser print triggers that automatically hide control sidebars and format clean PDF pages.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Theme Integration</h3>
-    <p className="text-muted-foreground text-sm">Seamless support for custom color themes across primary buttons, focus rings, and badges.</p>
-  </div>
+  <InfoCard title="5 Design Variants">
+    <p>Choose from Default, Asymmetric Split, Modern Geometric, Corporate Executive, and Neo-Brutalist layout variants.</p>
+  </InfoCard>
+  <InfoCard title="Interactive Edit & Export">
+    <p>Inline editing for item prices, descriptions, quantities, with instant recalculations and JSON export.</p>
+  </InfoCard>
+  <InfoCard title="Print & PDF Ready">
+    <p>Built-in browser print triggers that automatically hide control sidebars and format clean PDF pages.</p>
+  </InfoCard>
+  <InfoCard title="Theme Integration">
+    <p>Seamless support for custom color themes across primary buttons, focus rings, and badges.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

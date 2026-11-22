@@ -300,19 +300,11 @@ export default function EditorialAgentWorkflowGraph() {
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern AI orchestration interfaces.
 
-### Dual Visual Styles (Shaded &amp; Flat)
-
 Control card depth with the `shade` prop — true for tiered layered bezels, or false for flat minimalist cards.
-
-### Responsive Tree Layout
 
 Fans out horizontally into equal columns on desktop and collapses into an indented vertical tree on mobile.
 
-### Live Status &amp; Token Budgets
-
 Displays animated working spinners, completion checks, and automatic high-usage token warnings.
-
-### Tool &amp; Handoff Footer
 
 Highlights connected integrations and the latest agent-to-agent handoff summary directly below each worker card.
 

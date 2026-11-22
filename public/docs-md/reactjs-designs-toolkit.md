@@ -334,19 +334,11 @@ export default function DeveloperStackSection() {
 
 ## Features
 
-### Authentic 3D Pushpins
-
 Hyper-realistic SVG 3D pushpins with multi-stop radial highlights, depth bevels, and natural contact drop shadows.
-
-### Multiple Layout Variants
 
 Switch effortlessly between the staggered 3-column corkboard `grid` and the winding alternating `roadmap` timeline pathway.
 
-### Brand Badges & Glowing Borders
-
 Each card carries individual accent palettes with matching pastel tinted borders, glowing hover shadows, and custom icon badges.
-
-### Pure Reusability & Zero Navigations
 
 Pass any custom items with your own icons, titles, and descriptions. Cards trigger customizable onClick handlers without navigating.
 

@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("support-dashboard");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Support Dashboard
@@ -145,7 +145,7 @@ export default function LiquidGlassDashboard() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={500} headingLevel={2}
   name="support"
   colorControl
   colorLabel="Accent Color"
@@ -181,7 +181,7 @@ export default function LiquidGlassDashboard() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={500}
   name="support"
   colorControl
   colorLabel="Accent Color"

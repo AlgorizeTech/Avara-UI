@@ -1003,23 +1003,13 @@ Grid spans are plain Tailwind: the grid is `grid-cols-1 md:grid-cols-6 lg:grid-c
 
 ## Features
 
-### One glass, four shapes
-
 Every panel shares a single recipe. Slab, tile, disc and capsule differ only in corners, so the page reads as one material rather than a kit of cards.
-
-### A live dial, not a status dot
 
 The 24-hour ring shows the working window and where the day is right now, computed in the person's own time zone with Intl.DateTimeFormat — no library.
 
-### Light and dark by construction
-
 Panels are translucent white over the aurora in light mode and over near-black in dark mode. The blobs dim, the text flips, nothing else has to change.
 
-### Theme colours
-
 The dial's arc and marker, the Follow button, the progress bars and the avatar are all written against `primary` and `ring`, so the page follows your theme preset — and the colour picker above — with no prop. Pass `var(--primary)` into `aurora` and the backdrop follows too.
-
-### Still, on purpose
 
 Nothing animates on load. The only motion is the marker on the dial and a lift on panels you mark interactive — and both hold still under prefers-reduced-motion.
 

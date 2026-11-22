@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("modern-scroll-stack");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { Installation } from "@/components/site/installation";
 import { extractCode } from "@/lib/code";
 
@@ -79,7 +79,7 @@ export default function StackedCardsExample() {
       },
       usage: usageServiceCards,
       code: extractCode("src/components/custom/blocks/ModernScrollStackBlock.tsx"),
-      minHeight: 640,
+      minHeight: 460,
     },
     {
       title: "Centered Stacked Pile",
@@ -114,7 +114,7 @@ export default function StackedCardsExample() {
       },
       usage: usageStackedCards,
       code: extractCode("src/components/custom/blocks/ModernScrollStackBlock.tsx"),
-      minHeight: 640,
+      minHeight: 460,
     },
   ]}
 />
@@ -126,22 +126,18 @@ export default function StackedCardsExample() {
 ## Features
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Scroll-Linked Tilt Physics</h3>
-    <p className="text-muted-foreground text-sm">Cards enter flat at the bottom of the viewport and smoothly interpolate their rotation using an ease-out curve as they approach the sticky lock position.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Horizontal Fan Cascade</h3>
-    <p className="text-muted-foreground text-sm">Each card is offset along the X-axis so all stacked cards remain partially visible, creating a physical hand-dealt card deck aesthetic.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive Container Clamping</h3>
-    <p className="text-muted-foreground text-sm">A built-in <code>ResizeObserver</code> automatically scales the horizontal fan offset and card dimensions on tablet and mobile viewports so cards never overflow horizontally.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Zero External Animation Dependencies</h3>
-    <p className="text-muted-foreground text-sm">Powered by native CSS <code>position: sticky</code> and <code>requestAnimationFrame</code> transforms for silky 60fps performance without heavy runtime libraries.</p>
-  </div>
+  <InfoCard title="Scroll-Linked Tilt Physics">
+    <p>Cards enter flat at the bottom of the viewport and smoothly interpolate their rotation using an ease-out curve as they approach the sticky lock position.</p>
+  </InfoCard>
+  <InfoCard title="Horizontal Fan Cascade">
+    <p>Each card is offset along the X-axis so all stacked cards remain partially visible, creating a physical hand-dealt card deck aesthetic.</p>
+  </InfoCard>
+  <InfoCard title="Responsive Container Clamping">
+    <p>A built-in <code>ResizeObserver</code> automatically scales the horizontal fan offset and card dimensions on tablet and mobile viewports so cards never overflow horizontally.</p>
+  </InfoCard>
+  <InfoCard title="Zero External Animation Dependencies">
+    <p>Powered by native CSS <code>position: sticky</code> and <code>requestAnimationFrame</code> transforms for silky 60fps performance without heavy runtime libraries.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

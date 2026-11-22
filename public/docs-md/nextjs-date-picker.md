@@ -12,7 +12,50 @@ This component solves that by using native JavaScript Date math to construct a f
 
 The calendar dropdown highlights today's date subtly and the selected date strongly, and it opens with plain absolute positioning and CSS transitions — no popover library required.
 
-## Date picker
+## Inline Calendar
+
+Compact inline single-month calendar card for direct date selection.
+
+- Set `variant="calendar"` renders the calendar inline inside a bordered card with a live selected-date footer and Reset action instead of a dropdown trigger.
+
+```tsx
+"use client";
+
+import { useState } from "react";
+import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock";
+
+export default function InlineCalendarDatePicker() {
+  const [date, setDate] = useState<Date | null>(() => new Date());
+
+  return (
+    <DatePickerBlock
+      variant="calendar"
+      value={date}
+      onChange={setDate}
+      color="primary"
+    />
+  );
+}
+```
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/date-picker.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/date-picker
+```
+
+## Examples
+
+### Date picker
 
 - Control it with `value` and `onChange` — both work with a plain `Date | null`.
 - `placeholder` is the trigger text while nothing is selected, defaulting to `Pick a date`.
@@ -38,23 +81,6 @@ export default function LaunchDatePicker() {
   );
 }
 ```
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/date-picker.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/date-picker
-```
-
-## Examples
 
 ### Error
 
@@ -161,25 +187,15 @@ export default function DateTimePicker() {
 ## Features
 Discover the Date Picker's flexible input formatting, popover calendar selection, and range picking capabilities.
 
-### Customizable
-
 Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-### Accessible
 
 Built with accessibility in mind, ensuring all users can interact with your application effectively.
 
-### Responsive
-
 Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-### Performant
 
 Optimized for maximum performance with minimal re-renders and efficient state management.
 
 ## Best Practices & Guidelines
-
-### Usage Guidelines
 
 Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
@@ -191,7 +207,7 @@ Follow standard design principles when implementing this component. Ensure prope
 | `onChange` | `(val: Date) => void` | `undefined` | Callback function fired when a user selects a date from the calendar. |
 | `placeholder` | `string` | `"Pick a date"` | Text displayed inside the trigger button when no date is selected. |
 | `inputSize` | `"sm" \| "md" \| "lg"` | `"md"` | Uniformly scales the padding, text size, and icon size of the trigger button. |
-| `variant` | `"default" \| "filled" \| "underlined" \| "glow"` | `"default"` | Determines the visual styling of the borders, background, and focus rings. |
+| `variant` | `"default" \| "filled" \| "underlined" \| "glow" \| "calendar"` | `"default"` | Determines the visual styling of the borders, background, and focus rings. |
 | `color` | `"primary" \| "indigo" \| "rose" \| "emerald" \| "zinc" \| string` | `"primary"` | Applies the global color theme to the focus ring, glow shadow, and the selected date bubble in the calendar. Accepts valid hex codes. |
 | `label` | `string` | `undefined` | Renders a bold, accessible label directly above the input. |
 | `helperText` | `string` | `undefined` | Subtle instructional text rendered below the input. |

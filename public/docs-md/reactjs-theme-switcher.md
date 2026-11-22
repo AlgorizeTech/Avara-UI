@@ -145,33 +145,19 @@ export default function DropdownSwitcher() {
 
 Explore the Theme Switcher's dark mode capabilities, featuring the circular reveal, hydration-safe rendering and smooth layout transitions.
 
-### Circular Reveal
-
 The new theme sweeps out from whichever control was clicked, via the View Transitions API. The `::view-transition` rules it needs ship inside the component, so nothing has to be added to your global stylesheet. Set `reveal={false}` for an instant switch.
-
-### Self-contained
 
 Every style the switcher relies on is in `ThemeSwitcherBlock.tsx`: Tailwind classes for the controls, and the reveal CSS injected once into `<head>`. Install it and it works; nothing to copy into `globals.css`.
 
-### Hydration Safe
-
 Safely checks if the component is mounted on the client to completely eliminate the infamous React hydration mismatch errors.
-
-### No Animation Library
 
 The sliding pill, the icon spin and the dropdown run on the browser's built-in Web Animations API, so they feel completely native and add no dependency.
 
-### 3 Layout Variants
-
 Ships with a compact Icon toggle, a sliding Pill control, and a classic Dropdown menu to fit any UI design.
-
-### System Sync
 
 Automatically syncs with the user's OS-level dark mode preferences if the "system" theme is selected.
 
 ## Best Practices & Guidelines
-
-### SSR Considerations
 
 Since `next-themes` relies on `localStorage` which isn't available during Server-Side Rendering, always wrap the component's inner rendering logic in a `mounted` check to prevent hydration mismatch flashes.
 

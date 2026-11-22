@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("image-compare");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Image Compare
@@ -73,7 +73,7 @@ export default function DiagonalSplitDemo() {
   return <ImageCompare variant="diagonal-split" color="primary" className="w-full" />;
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={370} headingLevel={2}
   name="image-compare"
   colorControl
   columns={1}
@@ -106,7 +106,7 @@ export default function DiagonalSplitDemo() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={370}
   name="image-compare"
   colorControl
   columns={1}
@@ -264,10 +264,9 @@ export default function DiagonalSplitDemo() {
 ## Best Practices & Guidelines
 
 <div className="space-y-3 my-6">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">When to Use</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Use <code>ImageCompare</code> to showcase photo retouching, AI enhancement models, design redrafts, dark mode vs light mode UI previews, or product quality upgrades.</p>
-  </div>
+  <InfoCard title="When to Use">
+    <p>Use <code>ImageCompare</code> to showcase photo retouching, AI enhancement models, design redrafts, dark mode vs light mode UI previews, or product quality upgrades.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

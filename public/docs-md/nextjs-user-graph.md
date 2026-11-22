@@ -115,25 +115,15 @@ npx shadcn@latest add @avara-ui/user-graph
 
 Discover the key capabilities of the User Graph hierarchy tree:
 
-### Orbit Tool Cluster
-
 Interactive orbiting ring featuring 10 integrated channels including Voice, Telegram, Email, and MCP plugins.
-
-### Dynamic SVG Curves
 
 Cubic bezier SVG connecting paths with glowing animated pulses highlighting selected agent hierarchy paths.
 
-### Specialized Sub-Agents
-
 Dedicated team nodes for Sales, Marketing, Support, Accounting, and Data Analytics with online status badges.
-
-### Light Mode First
 
 Crafted with high-contrast slate and white light theme aesthetics, full dark mode support, and smooth responsiveness.
 
 ## Best Practices & Guidelines
-
-### Hierarchy Organization
 
 Ensure nodes are grouped logically into User, Orchestrator, and Sub-Agent tiers so the hierarchy flows naturally from top to bottom.
 

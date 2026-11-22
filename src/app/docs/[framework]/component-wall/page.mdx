@@ -3,7 +3,7 @@ import { REGISTRY_NAMESPACE } from "@/lib/registry";
 
 export const metadata = docsPageMetadata("component-wall");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Component Wall
@@ -171,7 +171,7 @@ export const usageSplit = {
 <ExampleShowcase headingLevel={2}
   name="component-wall"
   columns={1}
-  minHeight={760}
+  minHeight={550}
   controls={[
     { name: "intervalTime", label: "Interval Time", min: 1000, max: 10000, step: 100, defaultValue: 5500, unit: "ms" },
   ]}
@@ -211,7 +211,7 @@ export const usageSplit = {
 <ExampleShowcase
   name="component-wall"
   columns={1}
-  minHeight={760}
+  minHeight={550}
   examples={[
     {
       title: "Centred with persistent background",
@@ -278,7 +278,7 @@ export const usageSplit = {
       ],
       props: { layout: "split", interval: true, intervalTime: 5500, draggable: false, highlightFocus: true },
       usage: usageSplit,
-      minHeight: 720,
+      minHeight: 520,
     },
   ]}
 />
@@ -286,26 +286,21 @@ export const usageSplit = {
 ## Features
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">An install line that follows the camera</h3>
-    <p className="text-muted-foreground text-sm">The wall reports the card it has settled on; the hero puts that card's slug into the command and slides the old name out. Whatever the reader is looking at, the line beside it is the way to get it.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">One entrance, in order</h3>
-    <p className="text-muted-foreground text-sm">The headline blurs in word by word; then the lead, the command, the actions and the trust line rise once, each a beat after the last. Meanwhile the wall fades in with its camera pulled back and drifting, nothing in focus, and lands on the first card once the copy is in — so nothing on the page jumps. The changing word in the headline replays that same blur each time it turns. Under prefers-reduced-motion everything is simply there, and both the headline word and the name in the command cut instead of moving.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Built on Image Wall</h3>
-    <p className="text-muted-foreground text-sm">The wall, its camera and its flights are the Image Wall component; this hero passes the wall props straight through and only decides where the walls sit — centred, one on each half fading under the copy with the cameras anchored high and low; split, the right 56–58% on desktop. Below <code>lg</code> they become bands around the copy.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">The tools, in batches</h3>
-    <p className="text-muted-foreground text-sm">Pass a <DocLink to="tech-stack">Tech Stack</DocLink> as <code>stack</code>. Group what you build with — a front-end batch, a data batch, a tooling batch — and the strip shows one group at a time — closing the centred copy column, or over a blurred, fading stretch of the wall beside it — so the marks read without competing with the cards.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Your theme, your fonts</h3>
-    <p className="text-muted-foreground text-sm">Background, text, the primary button and the stars all read theme tokens, so a palette change reaches every part. The headline uses <code>font-serif</code> and the command <code>font-mono</code> — set those in your Tailwind theme and the hero follows.</p>
-  </div>
+  <InfoCard title="An install line that follows the camera">
+    <p>The wall reports the card it has settled on; the hero puts that card's slug into the command and slides the old name out. Whatever the reader is looking at, the line beside it is the way to get it.</p>
+  </InfoCard>
+  <InfoCard title="One entrance, in order">
+    <p>The headline blurs in word by word; then the lead, the command, the actions and the trust line rise once, each a beat after the last. Meanwhile the wall fades in with its camera pulled back and drifting, nothing in focus, and lands on the first card once the copy is in — so nothing on the page jumps. The changing word in the headline replays that same blur each time it turns. Under prefers-reduced-motion everything is simply there, and both the headline word and the name in the command cut instead of moving.</p>
+  </InfoCard>
+  <InfoCard title="Built on Image Wall">
+    <p>The wall, its camera and its flights are the Image Wall component; this hero passes the wall props straight through and only decides where the walls sit — centred, one on each half fading under the copy with the cameras anchored high and low; split, the right 56–58% on desktop. Below <code>lg</code> they become bands around the copy.</p>
+  </InfoCard>
+  <InfoCard title="The tools, in batches">
+    <p>Pass a <DocLink to="tech-stack">Tech Stack</DocLink> as <code>stack</code>. Group what you build with — a front-end batch, a data batch, a tooling batch — and the strip shows one group at a time — closing the centred copy column, or over a blurred, fading stretch of the wall beside it — so the marks read without competing with the cards.</p>
+  </InfoCard>
+  <InfoCard title="Your theme, your fonts">
+    <p>Background, text, the primary button and the stars all read theme tokens, so a palette change reaches every part. The headline uses <code>font-serif</code> and the command <code>font-mono</code> — set those in your Tailwind theme and the hero follows.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

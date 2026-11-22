@@ -12,9 +12,9 @@ Unlike standard static timelines, this `AnimatedTimelineBlock` uses native brows
 
 ## For AI agents
 
-**Ask before you pick.** This page has 5 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+**Ask before you pick.** This page has 6 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
 
-All 5 options as live previews: https://avaraui.com/view/animated-timeline
+All 6 options as live previews: https://avaraui.com/view/animated-timeline
 
 **When to use it.** Timelines for roadmaps, histories and process steps. One scrolls a rail with cards in a column, the others draw a path, spin a dial, slide a ruler or number the steps.
 
@@ -24,9 +24,16 @@ All 5 options as live previews: https://avaraui.com/view/animated-timeline
 - The animated timeline's `layout` prop (center, left, right) moves the rail; it is not a separate item.
 - The dial and ruler timelines respond to the wheel, arrow keys and drag, so give them room and avoid putting them in a scrolling column.
 
-### The 5 variants
+### The 6 variants
 
-1. **Animated rail** (`animated`): A rail with cards that animate in as you scroll, centered, left or right.
+1. **Cable timeline** (`cable`): Cards on a centre playhead with cables and year numerals; drag or scroll the wheel.
+   - Live: https://avaraui.com/view/animated-timeline/cable
+   - Best for: browsing launches, releases or a project history; events with a picture or figure each
+   - Avoid if: it must work as a plain scrolling list; entries need long body text
+   - Traits: horizontal, drag and wheel, year numerals, arrow keys
+   - Install: `npx shadcn@latest add @avara-ui/timeline-cable`
+   - Docs: https://avaraui.com/docs/nextjs/animated-timeline#cable-timeline
+2. **Animated rail** (`animated`): A rail with cards that animate in as you scroll, centered, left or right.
    - Live: https://avaraui.com/view/animated-timeline/animated
    - Best for: a company history or roadmap in a normal content column
    - Avoid if: you want the reader to pick entries rather than scroll
@@ -34,28 +41,28 @@ All 5 options as live previews: https://avaraui.com/view/animated-timeline
    - Install: `npx shadcn@latest add @avara-ui/animated-timeline`
    - Set these props: `{"layout":"center"}`
    - Docs: https://avaraui.com/docs/nextjs/animated-timeline#animated-timeline
-2. **Path timeline** (`path`): A winding line draws itself from stop to stop with a glowing head.
+3. **Path timeline** (`path`): A winding line draws itself from stop to stop with a glowing head.
    - Live: https://avaraui.com/view/animated-timeline/path
    - Best for: a journey or story with a few distinct stops
    - Avoid if: there are many entries or long descriptions
    - Traits: winding path, draws on scroll, cards light up on arrival
    - Install: `npx shadcn@latest add @avara-ui/timeline-path`
    - Docs: https://avaraui.com/docs/nextjs/animated-timeline#path-timeline
-3. **Steps timeline** (`steps`): Numbered nodes on a rail that fills as you scroll the box.
+4. **Steps timeline** (`steps`): Numbered nodes on a rail that fills as you scroll the box.
    - Live: https://avaraui.com/view/animated-timeline/steps
    - Best for: a how-it-works or onboarding process
    - Avoid if: entries are dates rather than ordered steps
    - Traits: numbered nodes, rail fills on scroll, click to focus a step
    - Install: `npx shadcn@latest add @avara-ui/timeline-steps`
    - Docs: https://avaraui.com/docs/nextjs/animated-timeline#steps-timeline
-4. **Dial timeline** (`dial`): Entries ride an arc beside a ruler of ticks; click, use the wheel or drag.
+5. **Dial timeline** (`dial`): Entries ride an arc beside a ruler of ticks; click, use the wheel or drag.
    - Live: https://avaraui.com/view/animated-timeline/dial
    - Best for: a showcase where the reader browses a handful of milestones
    - Avoid if: it must work as a plain scrolling list
    - Traits: arc layout, wheel, arrow keys and drag, needs room
    - Install: `npx shadcn@latest add @avara-ui/timeline-dial`
    - Docs: https://avaraui.com/docs/nextjs/animated-timeline#dial-timeline
-5. **Ruler timeline** (`ruler`): Labels slide past a wavy rail and the one at the bulge is detailed beside it.
+6. **Ruler timeline** (`ruler`): Labels slide past a wavy rail and the one at the bulge is detailed beside it.
    - Live: https://avaraui.com/view/animated-timeline/ruler
    - Best for: years or figures with a short caption each
    - Avoid if: entries need long body text
@@ -63,6 +70,131 @@ All 5 options as live previews: https://avaraui.com/view/animated-timeline
    - Install: `npx shadcn@latest add @avara-ui/timeline-ruler`
    - Docs: https://avaraui.com/docs/nextjs/animated-timeline#ruler-timeline
 Every preview scrolls internally — **scroll down inside a preview** and watch the tracking line extend as each node crosses the observer threshold.
+
+## Cable timeline
+
+Cards on a centre playhead. Drag sideways or scroll the wheel over it to bring the next one forward.
+
+- `events` take an ISO `date`, a `title`, and optional `media` and `meta` for the card.
+- `wheel` moves it with the mouse wheel and trackpad; at either end the page scrolls on.
+
+```tsx
+import {
+  TimelineCableBlock,
+  type TimelineCableEvent,
+} from "@/components/custom/blocks/TimelineCableBlock";
+import { Mountain, Route } from "lucide-react";
+
+const CDN = "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit";
+
+// Media is any non-interactive node. Here, a photograph that fills the area.
+function Photo({ src, alt }: { src: string; alt: string }) {
+  return <img src={src} alt={alt} loading="lazy" draggable={false} className="size-full object-cover" />;
+}
+
+const events: TimelineCableEvent[] = [
+  {
+    id: "trailhead",
+    date: "2023-05-14",
+    title: "Into the trees",
+    media: (
+      <Photo
+        src={`${CDN}/v1790146211/photo-1441974231531-c6227db76b6e-1790146212212.jpg`}
+        alt="A dirt trail winding through tall forest"
+      />
+    ),
+    meta: (
+      <>
+        <Route aria-hidden className="size-4" /> 12 km
+      </>
+    ),
+  },
+  {
+    id: "base-camp",
+    date: "2023-09-02",
+    title: "Under the granite wall",
+    media: (
+      <Photo
+        src={`${CDN}/v1790145140/photo-1426604966848-d7adac402bff-1790145143490.jpg`}
+        alt="A granite cliff above a sunlit meadow and pines"
+      />
+    ),
+    meta: (
+      <>
+        <Mountain aria-hidden className="size-4" /> 2,100 m
+      </>
+    ),
+  },
+  {
+    id: "river",
+    date: "2024-03-18",
+    title: "Cold water at first light",
+    media: (
+      <Photo
+        src={`${CDN}/v1790146210/photo-1506744038136-46273834b3fb-1790146212208.jpg`}
+        alt="A shallow river in a misty valley at dawn"
+      />
+    ),
+    meta: (
+      <>
+        <Route aria-hidden className="size-4" /> 18 km
+      </>
+    ),
+  },
+  {
+    id: "summit",
+    date: "2024-08-09",
+    title: "The last scramble",
+    media: (
+      <Photo
+        src={`${CDN}/v1790146209/photo-1469474968028-56623f02e42e-1790146212205.jpg`}
+        alt="A lone hiker standing on a rock above misty forested hills"
+      />
+    ),
+    meta: (
+      <>
+        <Mountain aria-hidden className="size-4" /> 3,480 m
+      </>
+    ),
+  },
+  {
+    id: "clouds",
+    date: "2025-02-21",
+    title: "A sea of cloud at sunset",
+    media: (
+      <Photo
+        src={`${CDN}/v1790146210/photo-1506905925346-21bda4d32df4-1790146212208.jpg`}
+        alt="Snowy peaks rising above a layer of cloud at sunset"
+      />
+    ),
+    meta: (
+      <>
+        <Mountain aria-hidden className="size-4" /> 3,900 m
+      </>
+    ),
+  },
+];
+
+// Drag it sideways, scroll the mouse wheel over it, or press the arrow keys.
+export default function TimelineCableExample() {
+  return <TimelineCableBlock events={events} defaultValue="river" />;
+}
+```
+
+### Install the cable timeline
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/timeline-cable.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/timeline-cable
+```
 
 ## Path timeline
 
@@ -728,25 +860,15 @@ Layouts switch at **container queries** (`@container/timeline`), so they follow 
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
 
-### Fluid Animations
-
 Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
-
-### Highly Customizable
 
 Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
 
-### Responsive Design
-
 Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
-
-### Accessible
 
 Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
 
 ## Best Practices & Guidelines
-
-### Usage Guidelines
 
 Give the timeline room to breathe — the entrance only reads as an entrance when a node crosses the observer threshold mid-scroll, so avoid placing the whole list above the fold. On narrow columns prefer `layout="left"`; the centered rail needs roughly 640px to avoid cramped cards.
 
@@ -810,6 +932,17 @@ Give the timeline room to breathe — the entrance only reads as an entrance whe
 | `image`, `icon` | `string`, `React.ElementType` | `undefined` | An avatar beside the title, or an icon tile when there is no image. |
 | `tag`, `delta` | `string` | `undefined` | A badge above the title, and a change beside the figure. A leading `-` shows as a drop. |
 | `highlights`, `action` | `string[]`, `ReactNode` | `undefined` | A checklist of what happened, and a button or link at the foot. |
+
+### TimelineCableBlock
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `events` | `{ id, date, title, media?, meta? }[]` | Required | The cards. `date` is an ISO string or Date read in UTC; `media` fills the picture area and `meta` is the footer line. |
+| `value`, `defaultValue`, `onValueChange` | `string`, `string`, `(id: string) => void` | first event | The focused event id, controlled or initial, and a callback when it changes. |
+| `itemWidth`, `height` | `number` | `340`, `600` | Card width and stage height in px. The card shrinks to fit a narrow column. |
+| `years`, `ruler`, `cables` | `boolean` | `true` | The year numerals, the ticks between cards and the cables to the cards beside the centre. |
+| `wheel` | `boolean` | `true` | Move with the mouse wheel and trackpad. Dragging and the arrow keys always work. |
+| `formatDate`, `formatYear` | `(date: Date) => string` | `Mar 4, 2024`, `2024` | Format the card date and the year numeral. |
 
 ---
 

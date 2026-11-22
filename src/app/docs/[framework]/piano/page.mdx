@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("piano");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Playable Piano
@@ -17,7 +17,7 @@ export default function PianoDemo() {
   return <Piano defaultVolume={0.8} defaultShowKeys={true} />;
 }`;
 
-<ExampleShowcase
+<ExampleShowcase minHeight={340}
   name="piano"
   columns={1}
   examples={[

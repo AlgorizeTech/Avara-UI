@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("designs-toolkit");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { Installation } from "@/components/site/installation";
 import { extractCode } from "@/lib/code";
 
@@ -399,22 +399,18 @@ export default function RoadmapPathwaySection() {
 ## Features
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Authentic 3D Pushpins</h3>
-    <p className="text-muted-foreground text-sm">Hyper-realistic SVG 3D pushpins with multi-stop radial highlights, depth bevels, and natural contact drop shadows.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Multiple Layout Variants</h3>
-    <p className="text-muted-foreground text-sm">Switch effortlessly between the staggered 3-column corkboard <code>grid</code> and the winding alternating <code>roadmap</code> timeline pathway.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Brand Badges & Glowing Borders</h3>
-    <p className="text-muted-foreground text-sm">Each card carries individual accent palettes with matching pastel tinted borders, glowing hover shadows, and custom icon badges.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Pure Reusability & Zero Navigations</h3>
-    <p className="text-muted-foreground text-sm">Pass any custom items with your own icons, titles, and descriptions. Cards trigger customizable onClick handlers without navigating.</p>
-  </div>
+  <InfoCard title="Authentic 3D Pushpins">
+    <p>Hyper-realistic SVG 3D pushpins with multi-stop radial highlights, depth bevels, and natural contact drop shadows.</p>
+  </InfoCard>
+  <InfoCard title="Multiple Layout Variants">
+    <p>Switch effortlessly between the staggered 3-column corkboard <code>grid</code> and the winding alternating <code>roadmap</code> timeline pathway.</p>
+  </InfoCard>
+  <InfoCard title="Brand Badges & Glowing Borders">
+    <p>Each card carries individual accent palettes with matching pastel tinted borders, glowing hover shadows, and custom icon badges.</p>
+  </InfoCard>
+  <InfoCard title="Pure Reusability & Zero Navigations">
+    <p>Pass any custom items with your own icons, titles, and descriptions. Cards trigger customizable onClick handlers without navigating.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

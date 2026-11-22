@@ -287,25 +287,15 @@ export default function BareWizard() {
 ## Features
 Learn about the Wizard component's multi-step capabilities, providing state management and validation for complex onboarding flows.
 
-### Compound Components
-
 Uses React Context to share state across child components, preventing messy prop drilling and enabling flexible layouts.
-
-### Library-free Animations
 
 Features premium, buttery smooth vertical sliding transitions built on CSS transitions — no animation library to install.
 
-### Keyboard Navigation
-
 Natively supports "Enter" key progression to submit forms and move to the next step instantly.
-
-### Auto-Progress Bar
 
 Automatically calculates completion percentage based on the number of active steps rendered.
 
 ## Best Practices & Guidelines
-
-### State Management
 
 Since `WizardStep` components act as independent layout blocks, keep your actual form state (e.g., using React Hook Form or standard state) lifted up to the parent component wrapping the `WizardContainer`.
 

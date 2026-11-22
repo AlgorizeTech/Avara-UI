@@ -1,0 +1,108 @@
+import type { PageVariants } from "./types";
+
+/**
+ * Carousel: five looks of one registry item (`carousel`, chosen with the
+ * `variant` prop) plus a separate 3D deck item (`carousel-3d`). Claims come
+ * from src/app/docs/[framework]/carousel/page.mdx.
+ */
+export const carousel: PageVariants = {
+  slug: "carousel",
+  intro:
+    "Image and content carousels. Five looks (radial wheel, fluid glass, image, hero, thumbnails) ship in one `carousel` item; a 3D coverflow deck is its own item.",
+  whenNot: [
+    {
+      use: "Curved carousel",
+      slug: "curved-carousel",
+      reason: "for a full-width curved-arc deck with a sway or marquee motion",
+    },
+  ],
+  gotchas: [
+    "The five looks share one `carousel` item: install it once and set `variant` (`radial`, `glass`, `image`, `hero` or `thumbnails`) from the index.",
+    "The slide data differs by look: `items` for radial and thumbnails, `slides` for glass and hero, `images` for image.",
+    "The 3D deck is a separate `carousel-3d` item with its own `ThreeDCarousel` API.",
+  ],
+  variants: [
+    {
+      id: "radial",
+      label: "Radial carousel",
+      group: "3D",
+      summary: "Cards on a 360-degree 3D wheel around a central hub, with drag momentum and an autoplay toggle.",
+      bestFor: ["a featured-items showcase that should feel dimensional"],
+      avoidIf: ["you need a simple strip of images or a text-over-image banner"],
+      traits: ["360-degree wheel", "drag momentum", "hub play/pause"],
+      item: "carousel",
+      demo: "carousel",
+      example: "Radial carousel",
+      props: { carouselType: "radial" },
+      setProps: { variant: "radial" },
+    },
+    {
+      id: "three-d-deck",
+      label: "3D carousel deck",
+      group: "3D",
+      summary: "A 3D coverflow deck of cards with arrows, dots, drag and keyboard navigation.",
+      bestFor: ["a hero gallery of photos or cards with depth"],
+      avoidIf: ["you want a wheel around a hub or a flat strip"],
+      traits: ["coverflow depth", "arrows and dots", "drag and keyboard"],
+      item: "carousel-3d",
+      demo: "carousel-3d",
+      example: "3D carousel",
+    },
+    {
+      id: "glass",
+      label: "Fluid glass slider",
+      group: "Flat",
+      summary: "A liquid-glass distortion slider with cursor tracking, glass overlays and progress tracking.",
+      bestFor: ["a premium landing-page banner with big imagery"],
+      avoidIf: ["you want a plain, low-effect image rotator"],
+      traits: ["liquid glass distortion", "cursor tracking", "progress bar"],
+      item: "carousel",
+      demo: "carousel",
+      example: "Fluid glass slider",
+      props: { carouselType: "fluid" },
+      setProps: { variant: "glass" },
+    },
+    {
+      id: "image",
+      label: "Image carousel",
+      group: "Flat",
+      summary: "A straightforward image carousel with arrows, dots, swipe and autoplay built in.",
+      bestFor: ["a product or photo gallery that should just work"],
+      avoidIf: ["you want copy over the image or a thumbnail rail"],
+      traits: ["arrows and dots", "swipe", "autoplay"],
+      item: "carousel",
+      demo: "carousel",
+      example: "Image carousel",
+      props: { carouselType: "image" },
+      setProps: { variant: "image" },
+    },
+    {
+      id: "hero",
+      label: "Hero carousel",
+      group: "Flat",
+      summary: "Copy overlaid on a full-bleed image; click an image card to make it the background.",
+      bestFor: ["a landing-page hero with headline copy per slide"],
+      avoidIf: ["you only have images with no text"],
+      traits: ["full-bleed background", "copy overlay", "clickable cards"],
+      item: "carousel",
+      demo: "carousel",
+      example: "Hero carousel",
+      props: { carouselType: "hero" },
+      setProps: { variant: "hero" },
+    },
+    {
+      id: "thumbnails",
+      label: "Thumbnail rail",
+      group: "Flat",
+      summary: "A main slide with a clickable thumbnail strip, at the bottom or on the left.",
+      bestFor: ["a gallery where the visitor jumps to a specific slide"],
+      avoidIf: ["you want a minimal strip with no extra chrome"],
+      traits: ["thumbnail strip", "bottom or left placement"],
+      item: "carousel",
+      demo: "carousel",
+      example: "Thumbnail rail",
+      props: { carouselType: "thumbnails", thumbPosition: "bottom" },
+      setProps: { variant: "thumbnails" },
+    },
+  ],
+};

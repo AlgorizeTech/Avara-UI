@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("glass-panel");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Glass Panel
@@ -111,7 +111,7 @@ export default function LiquidGlass() {
       props: { example: "shapes" },
       usage: usageShapes,
       code: extractCode("src/components/custom/blocks/GlassPanelBlock.tsx"),
-      minHeight: 320,
+      minHeight: 240,
     },
   ]}
 />
@@ -144,7 +144,7 @@ export default function LiquidGlass() {
       ],
       props: { example: "bento" },
       usage: usageBento,
-      minHeight: 520,
+      minHeight: 370,
     },
     {
       title: "Solid",
@@ -160,7 +160,7 @@ export default function LiquidGlass() {
       ],
       props: { example: "bento", variant: "solid" },
       usage: usageSolid,
-      minHeight: 520,
+      minHeight: 370,
     },
     {
       title: "Liquid glass",
@@ -176,7 +176,7 @@ export default function LiquidGlass() {
       ],
       props: { example: "bento", variant: "liquid-glass" },
       usage: usageLiquidGlass,
-      minHeight: 520,
+      minHeight: 340,
     },
   ]}
 />
@@ -184,22 +184,18 @@ export default function LiquidGlass() {
 ## Features
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">One recipe, four shapes</h3>
-    <p className="text-muted-foreground text-sm">Blur, hairline border and inset highlight are identical on every panel. Only the radius changes, so shape carries meaning instead of decoration.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Glass or solid, by context</h3>
-    <p className="text-muted-foreground text-sm">The backdrop sets the surface once and every panel reads it. Flip a whole page from frosted to flat with one prop; override a single panel when needed.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Dark mode built in</h3>
-    <p className="text-muted-foreground text-sm">The aurora dims and the glass darkens under the dark class; the hairline and highlight keep their contrast on both.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Nothing but Tailwind</h3>
-    <p className="text-muted-foreground text-sm">No animation library, no portal. Spans, padding and inner layout are ordinary utility classes on the panel.</p>
-  </div>
+  <InfoCard title="One recipe, four shapes">
+    <p>Blur, hairline border and inset highlight are identical on every panel. Only the radius changes, so shape carries meaning instead of decoration.</p>
+  </InfoCard>
+  <InfoCard title="Glass or solid, by context">
+    <p>The backdrop sets the surface once and every panel reads it. Flip a whole page from frosted to flat with one prop; override a single panel when needed.</p>
+  </InfoCard>
+  <InfoCard title="Dark mode built in">
+    <p>The aurora dims and the glass darkens under the dark class; the hairline and highlight keep their contrast on both.</p>
+  </InfoCard>
+  <InfoCard title="Nothing but Tailwind">
+    <p>No animation library, no portal. Spans, padding and inner layout are ordinary utility classes on the panel.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

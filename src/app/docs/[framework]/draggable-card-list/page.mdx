@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("draggable-card-list");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractMotionCode } from "@/lib/code";
 
 # Shadcn Draggable Card List
@@ -121,7 +121,7 @@ export default function DraggableCardListModernDemo() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase minHeight={440}
   name="draggable-card-list"
   colorControl={false}
   columns={1}

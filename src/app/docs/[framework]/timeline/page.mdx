@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("timeline");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Timeline
@@ -154,7 +154,7 @@ export default function StaticTimeline() {
   return <TimelineBlock items={events} layout="left" animate={false} />;
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={430} headingLevel={2}
   name="timeline"
   colorControl
   colorLabel="Status Accent Color"
@@ -188,7 +188,7 @@ The breakpoints are **container queries** (`@container/timeline`, `@container/tl
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={360}
   name="timeline"
   colorControl
   colorLabel="Status Accent Color"

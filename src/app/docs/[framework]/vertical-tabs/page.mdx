@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("vertical-tabs");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Tabs
@@ -100,7 +100,7 @@ export default function ${name}() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={360} headingLevel={2}
   name="vertical-tabs"
   colorControl
   columns={1}
@@ -143,7 +143,7 @@ export default function ${name}() {
 
 ## Vertical layout
 
-<ExampleShowcase
+<ExampleShowcase minHeight={360}
   name="vertical-tabs"
   colorControl
   columns={1}
@@ -180,7 +180,7 @@ export default function ${name}() {
 
 Seven ways to dress the top rail. Every one takes the page `color`, so pick the shape here and the accent above.
 
-<ExampleShowcase
+<ExampleShowcase minHeight={360}
   name="vertical-tabs"
   colorControl
   columns={1}
@@ -351,7 +351,7 @@ Seven ways to dress the top rail. Every one takes the page `color`, so pick the 
 
 The same seven styles with `orientation="vertical"`. The rail becomes a column, the divider and the travelling indicator move to the edge facing the pane, and the arrow keys switch from left/right to up/down.
 
-<ExampleShowcase
+<ExampleShowcase minHeight={360}
   name="vertical-tabs"
   colorControl
   columns={1}

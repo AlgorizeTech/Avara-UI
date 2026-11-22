@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("table");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Table
@@ -16,7 +16,7 @@ Every example below is live. Click a sortable header, expand a row, or hover the
 
 <AgentVariants slug="table" />
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={410} headingLevel={2}
   name="table-soft"
   columns={1}
   examples={[
@@ -1121,7 +1121,7 @@ export default function EmptyTableDemo() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={360}
   name="table"
   columns={1}
   examples={[
@@ -1198,7 +1198,7 @@ export default function EmptyTableDemo() {
   ]}
 />
 
-<ExampleShowcase
+<ExampleShowcase minHeight={360}
   name="table-soft-comparison"
   columns={1}
   examples={[
@@ -1245,31 +1245,26 @@ export default function EmptyTableDemo() {
 ## Features
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Any data shape</h3>
-    <p className="text-muted-foreground text-sm">No column config and no required row shape. Nested objects, unusual key names and computed cells all work without a transformation step.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Real table markup</h3>
-    <p className="text-muted-foreground text-sm">Each primitive renders its native element, so colSpan, scope and aria attributes pass straight through and screen readers get a genuine table.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Themed by context</h3>
-    <p className="text-muted-foreground text-sm">Variant, size and colour are set once on Table and read by every descendant, so a cell dropped three levels deep still matches.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Stateless by default</h3>
-    <p className="text-muted-foreground text-sm">Sorting and expansion are controlled props. The table never reorders or hides your data on its own, so server-side sorting and paging drop in unchanged.</p>
-  </div>
+  <InfoCard title="Any data shape">
+    <p>No column config and no required row shape. Nested objects, unusual key names and computed cells all work without a transformation step.</p>
+  </InfoCard>
+  <InfoCard title="Real table markup">
+    <p>Each primitive renders its native element, so colSpan, scope and aria attributes pass straight through and screen readers get a genuine table.</p>
+  </InfoCard>
+  <InfoCard title="Themed by context">
+    <p>Variant, size and colour are set once on Table and read by every descendant, so a cell dropped three levels deep still matches.</p>
+  </InfoCard>
+  <InfoCard title="Stateless by default">
+    <p>Sorting and expansion are controlled props. The table never reorders or hides your data on its own, so server-side sorting and paging drop in unchanged.</p>
+  </InfoCard>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Reach for the Data Table instead</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">These primitives are deliberately stateless. If you need search, pagination, row selection and batch actions wired up for you, use the Data Table — it composes the very same primitives and adds a state provider.</p>
-  </div>
+  <InfoCard title="Reach for the Data Table instead">
+    <p>These primitives are deliberately stateless. If you need search, pagination, row selection and batch actions wired up for you, use the Data Table — it composes the very same primitives and adds a state provider.</p>
+  </InfoCard>
   <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
     <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Keep colSpan honest</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">TableEmpty and TableExpandedRow both need a colSpan that matches your real column count. Derive it from a variable rather than hard-coding it, so conditional columns cannot drift out of sync.</p>

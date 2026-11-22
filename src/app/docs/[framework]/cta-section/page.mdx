@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("cta-section");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { Installation } from "@/components/site/installation";
 import { extractCode } from "@/lib/code";
 
@@ -157,7 +157,7 @@ export default function MobileAppExample() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={480}
   name="cta-section"
   columns={1}
   examples={[
@@ -246,22 +246,18 @@ export default function MobileAppExample() {
 Discover the key capabilities that make this component an excellent choice for modern interactive user interfaces.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Synchronized Scorecard</h3>
-    <p className="text-muted-foreground text-sm">Selecting any feature or service card on the left automatically synchronizes with the right scorecard canvas, animating scores and progress meters.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Signature 3D Popover</h3>
-    <p className="text-muted-foreground text-sm">Features an eye-catching floating active badge with vibrant accent gradients, bold typography, and smooth transitions.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Design Token Integration</h3>
-    <p className="text-muted-foreground text-sm">Seamlessly respects <code>var(--radius)</code> corner rounding and brand accent tokens across Light and Dark themes.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Fully Responsive</h3>
-    <p className="text-muted-foreground text-sm">Adapts effortlessly from expansive two-column desktop layouts to stacked, touch-friendly mobile flows without horizontal overflow.</p>
-  </div>
+  <InfoCard title="Synchronized Scorecard">
+    <p>Selecting any feature or service card on the left automatically synchronizes with the right scorecard canvas, animating scores and progress meters.</p>
+  </InfoCard>
+  <InfoCard title="Signature 3D Popover">
+    <p>Features an eye-catching floating active badge with vibrant accent gradients, bold typography, and smooth transitions.</p>
+  </InfoCard>
+  <InfoCard title="Design Token Integration">
+    <p>Seamlessly respects <code>var(--radius)</code> corner rounding and brand accent tokens across Light and Dark themes.</p>
+  </InfoCard>
+  <InfoCard title="Fully Responsive">
+    <p>Adapts effortlessly from expansive two-column desktop layouts to stacked, touch-friendly mobile flows without horizontal overflow.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

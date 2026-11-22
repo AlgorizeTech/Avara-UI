@@ -134,7 +134,9 @@ async function inFullStylesheet(candidates: string[]): Promise<string[]> {
     import("postcss"),
     import("@tailwindcss/postcss"),
   ]);
-  const { css } = await postcss([tailwind()]).process(
+  // `@tailwindcss/postcss` resolves its own postcss copy, so its plugin type is
+  // not the top-level one's. Same API at runtime; the cast only settles types.
+  const { css } = await postcss([tailwind() as never]).process(
     fs.readFileSync(GLOBALS, "utf8"),
     { from: GLOBALS },
   );

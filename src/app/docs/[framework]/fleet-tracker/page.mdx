@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("fleet-tracker");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Fleet Tracker Map
@@ -83,7 +83,55 @@ export default function ModernFleet() {
   return <FleetTracker variant="modern" fleetData={fleet} />;
 }`;
 
-<ExampleShowcase headingLevel={2}
+export const usageMapsRoute = `import Maps from "@/components/custom/blocks/Maps";
+
+export default function RoutePlannerMap() {
+  return <Maps variant="route-planner" />;
+}`;
+
+export const usageMapsProperties = `import Maps from "@/components/custom/blocks/Maps";
+
+export default function PropertyListingsMap() {
+  return <Maps variant="property-listings" />;
+}`;
+
+export const usageMapsTracking = `import Maps from "@/components/custom/blocks/Maps";
+
+export default function LiveTrackingMap() {
+  return <Maps variant="live-tracking" />;
+}`;
+
+export const usageMapsStores = `import Maps from "@/components/custom/blocks/Maps";
+
+export default function StoreLocatorMap() {
+  return <Maps variant="store-locator" />;
+}`;
+
+export const usageMapsDispatch = `import Maps from "@/components/custom/blocks/Maps";
+
+export default function FleetDispatchMap() {
+  return <Maps variant="fleet-dispatch" />;
+}`;
+
+export const usageMapsZones = `import Maps from "@/components/custom/blocks/Maps";
+
+export default function CoverageZonesMap() {
+  return <Maps variant="coverage-zones" />;
+}`;
+
+export const usageMapsHeatmap = `import Maps from "@/components/custom/blocks/Maps";
+
+export default function HeatmapView() {
+  return <Maps variant="heatmap" />;
+}`;
+
+export const usageMapsIncidents = `import Maps from "@/components/custom/blocks/Maps";
+
+export default function IncidentMonitorMap() {
+  return <Maps variant="incident-monitor" />;
+}`;
+
+<ExampleShowcase minHeight={460} headingLevel={2}
   name="fleet"
   colorControl
   columns={1}
@@ -117,7 +165,7 @@ export default function ModernFleet() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={460}
   name="fleet"
   colorControl
   columns={1}
@@ -153,35 +201,157 @@ export default function ModernFleet() {
   ]}
 />
 
+## Maps (Positron Style)
+
+Eight minimalist Positron Leaflet map variants with floating KPI/list overlays, custom dot and price-pill markers, route polylines, delivery zone polygons, canvas heatmaps, and zoom-aware incident clustering.
+
+<Installation name="maps" />
+
+<ExampleShowcase minHeight={480}
+  name="maps"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Route Planner",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"route-planner"',
+          effect:
+            "for a dispatch route polyline, dot stop markers, open popup details, and a floating ETA card.",
+        },
+      ],
+      props: { variant: "route-planner" },
+      usage: usageMapsRoute,
+      code: extractCode("src/components/custom/blocks/Maps.tsx"),
+    },
+    {
+      title: "Property Listings",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"property-listings"',
+          effect:
+            "for interactive price-pill markers, a synchronized neighborhood card, and listing popups.",
+        },
+      ],
+      props: { variant: "property-listings" },
+      usage: usageMapsProperties,
+    },
+    {
+      title: "Live Tracking",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"live-tracking"',
+          effect:
+            "for an animated pulsing courier marker moving along a solid/dashed route with a live ETA progress bar.",
+        },
+      ],
+      props: { variant: "live-tracking" },
+      usage: usageMapsTracking,
+    },
+    {
+      title: "Store Locator",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"store-locator"',
+          effect:
+            "for color-coded pickup pins, a clickable location list, and a Locate Me map control.",
+        },
+      ],
+      props: { variant: "store-locator" },
+      usage: usageMapsStores,
+    },
+    {
+      title: "Fleet Dispatch",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"fleet-dispatch"',
+          effect:
+            "for active vehicle markers along a dispatch corridor with a floating SLA summary card.",
+        },
+      ],
+      props: { variant: "fleet-dispatch" },
+      usage: usageMapsDispatch,
+    },
+    {
+      title: "Coverage Zones",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"coverage-zones"',
+          effect:
+            "for polygon delivery zones with centered capacity badges and a color-coded legend.",
+        },
+      ],
+      props: { variant: "coverage-zones" },
+      usage: usageMapsZones,
+    },
+    {
+      title: "Heatmap",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"heatmap"',
+          effect:
+            "for a canvas-rendered thermal pickup density layer with a Low–High gradient legend.",
+        },
+      ],
+      props: { variant: "heatmap" },
+      usage: usageMapsHeatmap,
+    },
+    {
+      title: "Incident Monitor",
+      propNotes: [
+        {
+          lead: "Set",
+          prop: "variant",
+          value: '"incident-monitor"',
+          effect:
+            "for zoom-aware numbered cluster circles that expand into severity-coded incident pins.",
+        },
+      ],
+      props: { variant: "incident-monitor" },
+      usage: usageMapsIncidents,
+    },
+  ]}
+/>
+
 ## Features
 Explore the Fleet Tracker map features, including live marker positioning, custom tooltips, and interactive geographic visualization.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Customizable</h3>
-    <p className="text-muted-foreground text-sm">Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
-    <p className="text-muted-foreground text-sm">Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
-    <p className="text-muted-foreground text-sm">Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Performant</h3>
-    <p className="text-muted-foreground text-sm">Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </div>
+  <InfoCard title="Customizable">
+    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
+  </InfoCard>
+  <InfoCard title="Accessible">
+    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
+  </InfoCard>
+  <InfoCard title="Responsive">
+    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
+  </InfoCard>
+  <InfoCard title="Performant">
+    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
+  </InfoCard>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </div>
+  <InfoCard title="Usage Guidelines">
+    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

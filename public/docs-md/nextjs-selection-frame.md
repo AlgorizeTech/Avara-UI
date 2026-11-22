@@ -77,25 +77,15 @@ export default function FramedCard() {
 ## Features
 Discover the Selection Frame's capabilities for putting a design-tool spotlight on any element.
 
-### Measures live
-
 A `ResizeObserver` tracks the child, so the frame re-fits when text reflows, fonts load or the content changes.
-
-### Pixel-accurate
 
 The stroke is centred on the frame edge and each handle is centred on the true corner point, so nothing sits a fraction of a pixel off.
 
-### Respects reduced motion
-
 Marching ants are an indefinite loop, so both the march and the handle spring are disabled when the visitor prefers reduced motion.
-
-### Decorative only
 
 The SVG and handles are `aria-hidden` and ignore pointer events — your content stays exactly as readable and clickable as before.
 
 ## Best Practices & Guidelines
-
-### Give the frame room
 
 The stroke and handles are drawn outside the child by `padding` pixels (plus half a handle). Leave that much space around the wrapper — an `overflow-hidden` parent will clip the corners.
 

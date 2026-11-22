@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("flowchart");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Flowchart / Node Builder
@@ -197,27 +197,89 @@ export default function IdlePipeline() {
   );
 }`;
 
-export const usageColor = `import {
+export const usageConvergence = `import {
   FlowCanvas,
   Flowchart,
   FlowConnection,
   FlowNode,
 } from "@/components/custom/blocks/FlowchartBlock";
-import { AlertCircle, CheckCircle2, Cpu, Terminal, Webhook } from "lucide-react";
+import { Bot, Cpu, Database, Layers, Terminal } from "lucide-react";
 
-${pipelineNodes}
-
-export default function AccentedPipeline() {
-  // One of "blue" | "indigo" | "rose" | "emerald" | "zinc" — it tints the
-  // active stream, the node ports and the focus ring together.
+export default function AgentPipeline() {
   return (
-    <Flowchart initialActivePath="success-path" color="emerald">
-      <PipelineNodes />
+    <Flowchart initialActivePath="agent-exec-path">
+      <FlowCanvas>
+        {/* Curved input routes converging into the orchestrator */}
+        <FlowConnection
+          id="agent-exec-path"
+          path="M 270 110 C 305 110, 295 200, 330 200"
+        />
+        <FlowConnection
+          id="agent-eval-path"
+          path="M 270 290 C 305 290, 295 200, 330 200"
+        />
+
+        {/* Curved output routes diverging to execution & artifacts */}
+        <FlowConnection
+          id="agent-exec-path"
+          path="M 570 200 C 605 200, 595 110, 630 110"
+        />
+        <FlowConnection
+          id="agent-eval-path"
+          path="M 570 200 C 605 200, 595 290, 630 290"
+        />
+      </FlowCanvas>
+
+      {/* Input Agents */}
+      <FlowNode
+        id="prompt-agent"
+        title="Autonomous Agent"
+        description="Goal decomposition & reasoning"
+        icon={Bot}
+        connectedPaths={["agent-exec-path"]}
+        className="left-[30px] top-[76px]"
+      />
+      <FlowNode
+        id="vector-memory"
+        title="Vector Memory"
+        description="Hybrid semantic search"
+        icon={Database}
+        connectedPaths={["agent-eval-path"]}
+        className="left-[30px] top-[256px]"
+      />
+
+      {/* Central Orchestrator */}
+      <FlowNode
+        id="orchestrator"
+        title="Runtime Coordinator"
+        description="Dynamic tool selection loop"
+        icon={Cpu}
+        connectedPaths={["agent-exec-path", "agent-eval-path"]}
+        className="left-[330px] top-[166px]"
+      />
+
+      {/* Execution & Output Targets */}
+      <FlowNode
+        id="code-sandbox"
+        title="Code Sandbox"
+        description="Isolated micro-container"
+        icon={Terminal}
+        connectedPaths={["agent-exec-path"]}
+        className="left-[630px] top-[76px]"
+      />
+      <FlowNode
+        id="artifacts"
+        title="Artifact Stream"
+        description="Verified real-time components"
+        icon={Layers}
+        connectedPaths={["agent-eval-path"]}
+        className="left-[630px] top-[256px]"
+      />
     </Flowchart>
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={350} headingLevel={2}
   name="flowchart"
   columns={1}
   examples={[
@@ -249,7 +311,7 @@ export default function AccentedPipeline() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={350}
   name="flowchart"
   columns={1}
   examples={[
@@ -281,17 +343,17 @@ export default function AccentedPipeline() {
       usage: usageIdle,
     },
     {
-      title: "Accent color",
+      title: "AI Agent convergence",
       propNotes: [
         {
-          prop: "color",
-          value: '"emerald"',
+          prop: "path",
+          value: '"C ..."',
           effect:
-            "tints the active stream, the node ports and the focus ring together. One of `blue`, `indigo`, `rose`, `emerald`, `zinc`.",
+            "smooth cubic bezier curves guide multi-agent inputs into a central orchestrator before streaming to code execution and artifacts.",
         },
       ],
-      props: { example: "branching", color: "emerald" },
-      usage: usageColor,
+      props: { example: "convergence" },
+      usage: usageConvergence,
     },
   ]}
 />
@@ -299,10 +361,9 @@ export default function AccentedPipeline() {
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Keep ports and paths in sync</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Node positions come from Tailwind <code>left-[…]</code> / <code>top-[…]</code> classes and the routes are raw SVG coordinates, so the two are only aligned because you made them align. When you move a node, move the matching <code>M</code>/<code>L</code> coordinates with it.</p>
-  </div>
+  <InfoCard title="Keep ports and paths in sync">
+    <p>Node positions come from Tailwind <code>left-[…]</code> / <code>top-[…]</code> classes and the routes are raw SVG coordinates, so the two are only aligned because you made them align. When you move a node, move the matching <code>M</code>/<code>L</code> coordinates with it.</p>
+  </InfoCard>
   <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
     <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Split long routes into segments</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">Several <code>FlowConnection</code>s can share the same <code>id</code>. Splitting a branch into per-hop segments lets the stream animation restart at each node instead of sweeping the whole diagram at once.</p>

@@ -144,33 +144,19 @@ export default function TrainOnlineTicketExample() {
 
 ## Features
 
-### Rail Tickets & Biometric SmartCards
-
 Rich variety of real-world templates including Hyperbolt European train tickets, classic classified dossiers, and biometric NFC smartcards with EMV microchips and full light/dark theme adaptivity.
-
-### Two-Stage Flight Choreography
 
 When clicked, the document slides out horizontally past the sleeve edge, elevates in front on the z-axis, and glides back down with a gentle tilt onto the front cover.
 
-### Vector Thumb Scoop Notch
-
 Engineered with a clean, subpixel-sharp SVG inward scoop notch along the right edge, exposing the card inside exactly like a high-end physical envelope sleeve.
-
-### 3D In-Place Flip Physics
 
 Features seamless 180-degree in-place 3D card flips with true perspective, preserved backface visibility, and dynamic theme adaptivity.
 
 ## Best Practices & Guidelines
 
-### Keyboard & Accessibility
-
 `SecureEnvelope` supports keyboard navigation: focus it with `Tab` and trigger the opening/closing animation using `Enter` or `Space`, or close with `Escape`.
 
-### Mobile & Touch Interaction
-
 On touch devices where hover is unavailable, tapping the folder launches the smooth opening flight sequence immediately.
-
-### Biometric SmartCards & Access Credentials
 
 Pass `cardDesign="smart-card"` with custom clearance levels, holder name, and department for cybersecurity credentials, VIP access badges, and identity portals.
 

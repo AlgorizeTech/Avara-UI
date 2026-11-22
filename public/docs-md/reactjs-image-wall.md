@@ -197,19 +197,11 @@ export default function Still() {
 
 ## Features
 
-### A camera, not a slider
-
 One animation of the canvas moves the whole wall: it pulls the camera back to 0.64 of its resting scale while gliding to the next card, then settles back in. Nothing inside the wall moves on its own, so it stays cheap however many cards you give it.
-
-### A wall without edges
 
 The tile is drawn nine times — itself and its eight neighbours — so the camera can settle on a card at the very edge and still see cards all around it. The copies are hidden from assistive tech.
 
-### Any box
-
 Size it with a class and it fills the box; a short band eases the zoom down so a few cards fit, and a phone-width box pulls back further so the journey between cards stays visible. The camera re-aims on every resize and holds while hovered, hidden or off screen.
-
-### Quiet by request
 
 Under prefers-reduced-motion the camera cuts between cards instead of flying, and the wall is labelled with the card in view.
 

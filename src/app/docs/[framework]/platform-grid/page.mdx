@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("platform-grid");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Platform Grid
@@ -220,7 +220,7 @@ export default function Platform() {
       props: { rounded: true },
       usage: usageSection,
       code: extractCode("src/components/custom/blocks/PlatformGridBlock.tsx"),
-      minHeight: 1380,
+      minHeight: 850,
     },
   ]}
 />
@@ -238,22 +238,18 @@ Every tile is `aspect-square`, so a feature spanning two columns is exactly two 
 ## Features
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Built from the library</h3>
-    <p className="text-muted-foreground text-sm">Tilted Card gives the featured cards their tilt and glare and installs with this item; the platform marks are Icons. Everything else is Tailwind.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">One reveal, then the pointer</h3>
-    <p className="text-muted-foreground text-sm">A single wave from the centre when the section appears, then nothing moves unless you do: a spotlight tracks the pointer, tiles answer hover, features tilt. Reduced motion skips the wave and the spotlight.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Cheap to move over</h3>
-    <p className="text-muted-foreground text-sm">The spotlight is two CSS variables written straight to the grid element, so moving the mouse never re-renders fifty tiles.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Links, keyboard, dark mode</h3>
-    <p className="text-muted-foreground text-sm">Tiles with an href are real links with a visible focus state; hover and focus share the same treatment. Hairlines, tints and the feature gradient all have dark counterparts.</p>
-  </div>
+  <InfoCard title="Built from the library">
+    <p>Tilted Card gives the featured cards their tilt and glare and installs with this item; the platform marks are Icons. Everything else is Tailwind.</p>
+  </InfoCard>
+  <InfoCard title="One reveal, then the pointer">
+    <p>A single wave from the centre when the section appears, then nothing moves unless you do: a spotlight tracks the pointer, tiles answer hover, features tilt. Reduced motion skips the wave and the spotlight.</p>
+  </InfoCard>
+  <InfoCard title="Cheap to move over">
+    <p>The spotlight is two CSS variables written straight to the grid element, so moving the mouse never re-renders fifty tiles.</p>
+  </InfoCard>
+  <InfoCard title="Links, keyboard, dark mode">
+    <p>Tiles with an href are real links with a visible focus state; hover and focus share the same treatment. Hairlines, tints and the feature gradient all have dark counterparts.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

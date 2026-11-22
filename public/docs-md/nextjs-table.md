@@ -547,25 +547,15 @@ export default function TableSizesDemo({
 
 ## Features
 
-### Any data shape
-
 No column config and no required row shape. Nested objects, unusual key names and computed cells all work without a transformation step.
-
-### Real table markup
 
 Each primitive renders its native element, so colSpan, scope and aria attributes pass straight through and screen readers get a genuine table.
 
-### Themed by context
-
 Variant, size and colour are set once on Table and read by every descendant, so a cell dropped three levels deep still matches.
-
-### Stateless by default
 
 Sorting and expansion are controlled props. The table never reorders or hides your data on its own, so server-side sorting and paging drop in unchanged.
 
 ## Best Practices & Guidelines
-
-### Reach for the Data Table instead
 
 These primitives are deliberately stateless. If you need search, pagination, row selection and batch actions wired up for you, use the Data Table — it composes the very same primitives and adds a state provider.
 

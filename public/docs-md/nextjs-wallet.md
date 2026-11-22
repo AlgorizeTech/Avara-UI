@@ -119,33 +119,19 @@ npx shadcn@latest add @avara-ui/wallet
 
 ## Features
 
-### Serially Staggered Cards
-
 Hovering over the wallet smoothly slides out all 3 cards in a staggered spring sequence, allowing each card tier to reveal its currency and balance.
-
-### 100% Theme Adaptive (Light & Dark)
 
 Renders a clean, elegant light wallet with crisp borders in Light Mode and switches automatically to deep violet luxury tones in Dark Mode.
 
-### Completely Enclosed Pocket Base
-
 Engineered with a solid pocket base ensuring cards are 100% hidden inside before hover and never poke through the bottom.
-
-### Interactive Balance Privacy Toggle
 
 Users can toggle balance visibility with an animated eye icon button or auto-reveal the unmasked balance on hover.
 
 ## Best Practices & Guidelines
 
-### Touch & Mobile Support
-
 On touchscreens without hover capability, tapping the wallet triggers the staggered cards reveal so mobile users have the identical tactile experience.
 
-### Custom Datasets
-
 Pass a custom `cards` array to customize the name, balance, currency, card number, and gradient classes for each of the 3 cards to match your company's product lineup.
-
-### Individual Card Hover
 
 When cards are fanned out, hovering over an individual card raises it an extra 18px and adjusts scale to highlight that specific card.
 

@@ -869,37 +869,21 @@ npx shadcn@latest add @avara-ui/dashboard
 
 ## Features
 
-### Built from the library
-
 The period, chart-style and activity switches are the segmented [Toggle Group](https://avaraui.com/docs/nextjs/toggle-group), the trend line is the [Chart](https://avaraui.com/docs/nextjs/chart), and the rate explainer is a [Popover](https://avaraui.com/docs/nextjs/popover) — installing the section pulls those in.
-
-### Every value is text too
 
 The gauge and barcode are backed by legend rows with the number and share, the chart has a screen-reader table, and the arrow keys read each column.
 
-### Follows your theme
-
 The canvas glow, the current column, the tab indicator and the bars are mixed from `--primary`, so a theme preset repaints the whole section in light and dark.
-
-### Glass without the lag
 
 The glass variant gets its depth from a sheen, a light rim and colour blobs on the canvas, not from `backdrop-filter`, so it scrolls as smoothly as the classic look. With reduced transparency turned on, the panes go solid.
 
-### Sizes to its container
-
 The glass layout uses container queries, so it stacks, pairs up and spreads out by the width it is given — a sidebar layout and a full-width page both get the right grid.
-
-### No hydration surprises
 
 The greeting, the date and the "4m ago" times read the visitor's clock after mount, so a server-rendered page and the browser agree. Pass `now` to pin them.
 
 ## Best Practices & Guidelines
 
-### Send the change with the series
-
 The badges show `change[period]` as given — compute it on your side the way your business reads it (raw totals, or the current period's pace against the last). Leave it out for a period and the tab shows no badge.
-
-### Keep the series the same length
 
 The built-in Export writes one CSV row per point with a column per metric, so give every metric the same buckets for a period. Pass `onExport` to produce your own report instead.
 

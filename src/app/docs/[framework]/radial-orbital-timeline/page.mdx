@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("radial-orbital-timeline");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Radial Orbital Timeline
@@ -229,7 +229,7 @@ export default function SingleOrbitExample() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={480} headingLevel={2}
   name="radial-orbital-timeline"
   columns={1}
   examples={[
@@ -249,7 +249,7 @@ export default function SingleOrbitExample() {
 
 ## Single Orbit Variant
 
-<ExampleShowcase
+<ExampleShowcase minHeight={480}
   name="radial-orbital-timeline"
   columns={1}
   examples={[

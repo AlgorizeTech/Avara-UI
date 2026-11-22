@@ -3,7 +3,7 @@
   "name": "timeline-dial",
   "title": "Timeline Dial",
   "author": "AlgorizeTech",
-  "description": "Ask the user to pick one of 5 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Dial timeline. Skip the question if the user already named one. A wheel timeline: entries ride an arc beside a ruler of tick marks while the focused one is detailed beside it. Use it for a company or product milestone section.",
+  "description": "Ask the user to pick one of 6 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Dial timeline. Skip the question if the user already named one. A wheel timeline: entries ride an arc beside a ruler of tick marks while the focused one is detailed beside it. Use it for a company or product milestone section.",
   "dependencies": [
     "lucide-react"
   ],

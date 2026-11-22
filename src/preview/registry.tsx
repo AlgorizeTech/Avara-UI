@@ -8,6 +8,7 @@ import { lazyRetry } from "./lazyRetry";
 
 export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<any>>> = {
   "accordion": lazyRetry(() => import("./demos/accordion-demo")),
+  "action-buttons": lazyRetry(() => import("./demos/action-buttons-demo")),
   "advanced-table": lazyRetry(() => import("./demos/advanced-table-demo")),
   "agent-graph": lazyRetry(() => import("./demos/agent-graph-demo")),
   "ai-chat": lazyRetry(() => import("./demos/ai-chat-demo")),
@@ -27,6 +28,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "book-flip": lazyRetry(() => import("./demos/book-flip-demo")),
   "booking-card": lazyRetry(() => import("./demos/booking-card-demo")),
   "breadcrumb": lazyRetry(() => import("./demos/breadcrumb-demo")),
+  "breadcrumb-flow": lazyRetry(() => import("./demos/breadcrumb-flow-demo")),
   "button": lazyRetry(() => import("./demos/button-demo")),
   "calendar": lazyRetry(() => import("./demos/calendar-demo")),
   "card": lazyRetry(() => import("./demos/card-demo")),
@@ -125,6 +127,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "loader": lazyRetry(() => import("./demos/loader-demo")),
   "login-form": lazyRetry(() => import("./demos/login-form-demo")),
   "magic-bento": lazyRetry(() => import("./demos/magic-bento-demo")),
+  "maps": lazyRetry(() => import("./demos/maps-demo")),
   "marquee": lazyRetry(() => import("./demos/marquee-demo")),
   "masonry-grid": lazyRetry(() => import("./demos/masonry-grid-demo")),
   "masonry-grid-motion": lazyRetry(() => import("./demos/masonry-grid-motion-demo")),
@@ -198,6 +201,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "third-party-table-aggrid": lazyRetry(() => import("./demos/third-party-table-aggrid-demo")),
   "third-party-table-tanstack": lazyRetry(() => import("./demos/third-party-table-tanstack-demo")),
   "tilted-card": lazyRetry(() => import("./demos/tilted-card-demo")),
+  "timeline-cable": lazyRetry(() => import("./demos/timeline-cable-demo")),
   "timeline": lazyRetry(() => import("./demos/timeline-demo")),
   "timeline-dial": lazyRetry(() => import("./demos/timeline-dial-demo")),
   "timeline-path": lazyRetry(() => import("./demos/timeline-path-demo")),

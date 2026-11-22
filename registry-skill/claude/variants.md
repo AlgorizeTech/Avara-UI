@@ -66,7 +66,7 @@ Install the chosen variant's own `install` command from the index. Several looks
 ## Pages with variants today
 
 - `agent-graph`: 3 variants. All live: https://avaraui.com/view/agent-graph
-- `animated-timeline`: 5 variants. All live: https://avaraui.com/view/animated-timeline
+- `animated-timeline`: 6 variants. All live: https://avaraui.com/view/animated-timeline
 - `error`: 5 variants. All live: https://avaraui.com/view/error
 - `hero`: 16 variants. All live: https://avaraui.com/view/hero
 - `footer`: 9 variants. All live: https://avaraui.com/view/footer
@@ -110,7 +110,7 @@ Install the chosen variant's own `install` command from the index. Several looks
 - `input`: 5 variants. All live: https://avaraui.com/view/input
 - `invoice`: 3 variants. All live: https://avaraui.com/view/invoice
 - `item`: 2 variants. All live: https://avaraui.com/view/item
-- `fleet-tracker`: 3 variants. All live: https://avaraui.com/view/fleet-tracker
+- `fleet-tracker`: 11 variants. All live: https://avaraui.com/view/fleet-tracker
 - `modern-scroll-stack`: 2 variants. All live: https://avaraui.com/view/modern-scroll-stack
 - `particle-canvas`: 2 variants. All live: https://avaraui.com/view/particle-canvas
 - `range-date-picker`: 4 variants. All live: https://avaraui.com/view/range-date-picker
@@ -127,8 +127,11 @@ Install the chosen variant's own `install` command from the index. Several looks
 - `table`: 3 variants. All live: https://avaraui.com/view/table
 - `tech-stack`: 2 variants. All live: https://avaraui.com/view/tech-stack
 - `timeline`: 5 variants. All live: https://avaraui.com/view/timeline
+- `breadcrumb`: 2 variants. All live: https://avaraui.com/view/breadcrumb
 - `toggle-group`: 4 variants. All live: https://avaraui.com/view/toggle-group
 - `ribbon-drift`: 2 variants. All live: https://avaraui.com/view/ribbon-drift
 - `alert`: 4 variants. All live: https://avaraui.com/view/alert
+- `carousel`: 6 variants. All live: https://avaraui.com/view/carousel
+- `infrastructure-topology`: 2 variants. All live: https://avaraui.com/view/infrastructure-topology
 
 An index entry with `choose: true` is the authority: it lists every variant and its live link.

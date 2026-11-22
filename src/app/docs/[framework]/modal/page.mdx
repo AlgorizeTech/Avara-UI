@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("modal");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { Installation } from "@/components/site/installation";
 import { extractCode } from "@/lib/code";
 
@@ -264,7 +264,7 @@ export default function LiquidGlassModal() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={390} headingLevel={2}
   name="modal"
   columns={1}
   examples={[
@@ -293,7 +293,7 @@ export default function LiquidGlassModal() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={360}
   name="modal"
   columns={1}
   examples={[
@@ -379,31 +379,26 @@ export default function LiquidGlassModal() {
 Discover the Modal's flexible overlay features, designed for important user prompts with accessible focus management and animations.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Variant Presets</h3>
-    <p className="text-muted-foreground text-sm">Pre-styled variants (standard, confirmation, form, fullscreen, glass, liquid-glass) eliminate boilerplate styling.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
-    <p className="text-muted-foreground text-sm">Built with aria dialog roles, label connections, Escape dismissal, and body scroll locking.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive</h3>
-    <p className="text-muted-foreground text-sm">Optimized sizing and wrapped action rows that adapt seamlessly across mobile, tablet, and desktop.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Composable</h3>
-    <p className="text-muted-foreground text-sm">Supports optional subcomponents (ModalHeader, ModalBody, ModalFooter) for fully custom layouts.</p>
-  </div>
+  <InfoCard title="Variant Presets">
+    <p>Pre-styled variants (standard, confirmation, form, fullscreen, glass, liquid-glass) eliminate boilerplate styling.</p>
+  </InfoCard>
+  <InfoCard title="Accessible">
+    <p>Built with aria dialog roles, label connections, Escape dismissal, and body scroll locking.</p>
+  </InfoCard>
+  <InfoCard title="Responsive">
+    <p>Optimized sizing and wrapped action rows that adapt seamlessly across mobile, tablet, and desktop.</p>
+  </InfoCard>
+  <InfoCard title="Composable">
+    <p>Supports optional subcomponents (ModalHeader, ModalBody, ModalFooter) for fully custom layouts.</p>
+  </InfoCard>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Usage Guidelines</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Pass <code>variant</code> with title, description, and button labels for fast implementation without manual styling. If you need complete layout freedom, use <code>ModalHeader</code>, <code>ModalBody</code>, and <code>ModalFooter</code> subcomponents directly.</p>
-  </div>
+  <InfoCard title="Usage Guidelines">
+    <p>Pass <code>variant</code> with title, description, and button labels for fast implementation without manual styling. If you need complete layout freedom, use <code>ModalHeader</code>, <code>ModalBody</code>, and <code>ModalFooter</code> subcomponents directly.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

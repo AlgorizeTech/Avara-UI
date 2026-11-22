@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("scroll-stack");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode, extractMotionCode } from "@/lib/code";
 
 # Shadcn Scroll Stack
@@ -17,7 +17,7 @@ Five independent scroll-driven layouts share this page, each with its own block 
 
 Overlapping cards in a tilted diagonal cascade, each with a photo hanging off its edge. As the stack scrolls into view the cards are dealt out of one pile into place, scrubbed by the scrollbar. It is built from small primitives, so a card holds whatever your data has.
 
-<ExampleShowcase
+<ExampleShowcase minHeight={480}
   name="fan-stack"
   colorControl
   columns={1}
@@ -256,7 +256,7 @@ export default function GappedStack() {
   return <ScrollStack items={items} cardGap={64} />;
 }`;
 
-<ExampleShowcase
+<ExampleShowcase minHeight={500}
   name="scroll-stack"
   colorControl
   columns={1}
@@ -395,7 +395,7 @@ export default function TunedStickyStack() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase minHeight={500}
   name="sticky-scroll-stack"
   colorControl
   columns={1}
@@ -423,7 +423,7 @@ export default function TunedStickyStack() {
 
 ### More examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={500}
   name="sticky-scroll-stack"
   colorControl
   columns={1}
@@ -627,7 +627,7 @@ export default function PinnedLeftStack() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase minHeight={450}
   name="split-scroll-stack"
   colorControl
   columns={1}
@@ -656,7 +656,7 @@ export default function PinnedLeftStack() {
 
 ### More examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={450}
   name="split-scroll-stack"
   colorControl
   columns={1}
@@ -749,7 +749,7 @@ export default function ProcessRail() {
   return <HorizontalScrollStack items={steps} />;
 }`;
 
-<ExampleShowcase
+<ExampleShowcase minHeight={390}
   name="horizontal-scroll-stack"
   colorControl
   columns={1}
@@ -786,7 +786,7 @@ export default function ProcessRailTrack() {
 
 ### More examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={390}
   name="horizontal-scroll-stack"
   colorControl
   columns={1}
@@ -816,31 +816,26 @@ export default function ProcessRailTrack() {
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Fluid Animations</h3>
-    <p className="text-muted-foreground text-sm">Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Highly Customizable</h3>
-    <p className="text-muted-foreground text-sm">Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive Design</h3>
-    <p className="text-muted-foreground text-sm">Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
-    <p className="text-muted-foreground text-sm">Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
-  </div>
+  <InfoCard title="Fluid Animations">
+    <p>Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
+  </InfoCard>
+  <InfoCard title="Highly Customizable">
+    <p>Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
+  </InfoCard>
+  <InfoCard title="Responsive Design">
+    <p>Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
+  </InfoCard>
+  <InfoCard title="Accessible">
+    <p>Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
+  </InfoCard>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Animation Performance</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
-  </div>
+  <InfoCard title="Animation Performance">
+    <p>Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
+  </InfoCard>
   <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
     <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">State Management</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>

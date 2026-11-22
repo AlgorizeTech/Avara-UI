@@ -240,19 +240,11 @@ export default function AuthorCard() {
 
 ## Features
 
-### No icon package
-
 Brand marks are inline SVG. Lucide dropped its brand icons, so this never breaks when an icon library updates.
-
-### Named for screen readers
 
 Every tile carries an aria-label and title — the network's name by default, or whatever label you pass — and a visible focus ring.
 
-### Safe off-site links
-
 External links open in a new tab with noopener noreferrer. Email links stay in place, because a new tab for mailto is just an empty tab.
-
-### Works with your router
 
 Pass linkComponent={"{Link}"} from next/link when some hrefs are internal; a plain anchor is the default so it runs anywhere.
 

@@ -131,25 +131,15 @@ export default function TenStarRating() {
 ## Features
 Discover the Half Stars rating component's precise visual feedback, supporting fractional SVG rendering for accurate reviews.
 
-### High Precision
-
 Supports exact decimal ratings (e.g., 4.2 or 3.7) by dynamically calculating SVG clip paths for pixel-perfect fills.
-
-### Interactive Mode
 
 Allow users to hover and click to submit their own ratings. Includes smooth animations and fractional steps.
 
-### Fully Custom
-
 Easily change colors, sizes, and the maximum number of stars using standard Tailwind CSS utility classes.
-
-### Zero Dependencies
 
 Built entirely with React and raw SVGs. No heavy external rating libraries required.
 
 ## Best Practices & Guidelines
-
-### Precision Steps
 
 If you are allowing user input via `interactive={true}`, it is recommended to set `allowHalf={true}` (step 0.5) or `step={1}` for standard reviews. Setting `step={0.1}` can make it difficult for users to intentionally click a precise score like 4.0 exactly.
 

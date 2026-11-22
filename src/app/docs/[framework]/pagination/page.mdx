@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("pagination");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Pagination
@@ -144,7 +144,7 @@ export default function CustomerDirectory() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={220} headingLevel={2}
   name="pagination"
   colorControl
   columns={1}
@@ -177,7 +177,7 @@ export default function CustomerDirectory() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={190}
   name="pagination"
   colorControl
   columns={1}

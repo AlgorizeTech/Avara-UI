@@ -258,11 +258,7 @@ npx shadcn@latest add @avara-ui/product-details
 
 Discover the key capabilities of the `ProductDetails` component:
 
-### 4 Unique Responsive Footwear Layouts
-
 Includes Modern Split Gallery Slider, Floating Glass Card, Bento Editorial Showcase, and Color-Synced Swatch Gallery.
-
-### 100% Screen & Device Responsive
 
 Fluid Tailwind CSS grid and flex layouts built to adapt from 320px mobile viewports up to 4K ultra-wide screens.
 

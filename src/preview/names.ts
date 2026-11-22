@@ -3,6 +3,7 @@
 
 export const sandboxNames = [
   "accordion",
+  "action-buttons",
   "advanced-table",
   "agent-graph",
   "ai-chat",
@@ -22,6 +23,7 @@ export const sandboxNames = [
   "book-flip",
   "booking-card",
   "breadcrumb",
+  "breadcrumb-flow",
   "button",
   "calendar",
   "card",
@@ -120,6 +122,7 @@ export const sandboxNames = [
   "loader",
   "login-form",
   "magic-bento",
+  "maps",
   "marquee",
   "masonry-grid",
   "masonry-grid-motion",
@@ -193,6 +196,7 @@ export const sandboxNames = [
   "third-party-table-aggrid",
   "third-party-table-tanstack",
   "tilted-card",
+  "timeline-cable",
   "timeline",
   "timeline-dial",
   "timeline-path",

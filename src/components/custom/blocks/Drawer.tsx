@@ -24,41 +24,61 @@ const DrawerContext = createContext<DrawerContextType | null>(null);
 
 // ==========================================
 // MOTION
-// Opening fades the overlay in (0.3s power2.out) and slides the panel in from
-// its edge (0.4s power3.out); closing reverses both in 0.3s (power2.in /
-// power3.in). A transition takes its timing from the state it is heading to,
-// so each state carries its own. @starting-style is where a freshly mounted
-// layer starts from.
+// Uses standard CSS @keyframes for enter and cubic-bezier transitions for exit
+// so opening/closing works reliably on all browsers and mobile devices without
+// relying on @starting-style, linear(), or requestAnimationFrame timing.
 // ==========================================
-const POWER3_OUT =
-  "linear(0, .1268, .2412, .3439, .4358, .5177, .5904, .6545, .7108, .7599, .8025, .8391, .8704, .8969, .9191, .9375, .9526, .9647, .9744, .9819, .9877, .9919, .9949, .997, .9984, .9992, .9997, .9999, 1, 1, 1)";
-const POWER3_IN =
-  "linear(0, 0, 0, .0001, .0003, .0008, .0016, .003, .0051, .0081, .0123, .0181, .0256, .0353, .0474, .0625, .0809, .1031, .1296, .1609, .1975, .2401, .2892, .3455, .4096, .4823, .5642, .6561, .7588, .8732, 1)";
-
 const DRAWER_CSS = `
+@keyframes drawer-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes drawer-slide-in-top {
+  from { transform: translateY(-100%); }
+  to { transform: translate3d(0, 0, 0); }
+}
+@keyframes drawer-slide-in-bottom {
+  from { transform: translateY(100%); }
+  to { transform: translate3d(0, 0, 0); }
+}
+@keyframes drawer-slide-in-left {
+  from { transform: translateX(-100%); }
+  to { transform: translate3d(0, 0, 0); }
+}
+@keyframes drawer-slide-in-right {
+  from { transform: translateX(100%); }
+  to { transform: translate3d(0, 0, 0); }
+}
 .drawer-overlay {
   opacity: 0;
-  transition: opacity 0.3s cubic-bezier(0.3333, 0, 0.6667, 0);
+  transition: opacity 0.25s ease-in;
 }
 .drawer-overlay[data-state="open"] {
   opacity: 1;
-  transition: opacity 0.3s cubic-bezier(0.3333, 1, 0.6667, 1);
+  animation: drawer-fade-in 0.25s ease-out forwards;
 }
-.drawer-content { transition: transform 0.3s ${POWER3_IN}; }
+.drawer-content {
+  transition: transform 0.28s cubic-bezier(0.55, 0, 1, 0.45);
+  will-change: transform;
+}
 .drawer-content[data-side="top"] { transform: translateY(-100%); }
 .drawer-content[data-side="bottom"] { transform: translateY(100%); }
 .drawer-content[data-side="left"] { transform: translateX(-100%); }
 .drawer-content[data-side="right"] { transform: translateX(100%); }
 .drawer-content[data-state="open"] {
-  transform: none;
-  transition: transform 0.4s ${POWER3_OUT};
+  transform: translate3d(0, 0, 0);
 }
-@starting-style {
-  .drawer-overlay[data-state="open"] { opacity: 0; }
-  .drawer-content[data-state="open"][data-side="top"] { transform: translateY(-100%); }
-  .drawer-content[data-state="open"][data-side="bottom"] { transform: translateY(100%); }
-  .drawer-content[data-state="open"][data-side="left"] { transform: translateX(-100%); }
-  .drawer-content[data-state="open"][data-side="right"] { transform: translateX(100%); }
+.drawer-content[data-state="open"][data-side="top"] {
+  animation: drawer-slide-in-top 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.drawer-content[data-state="open"][data-side="bottom"] {
+  animation: drawer-slide-in-bottom 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.drawer-content[data-state="open"][data-side="left"] {
+  animation: drawer-slide-in-left 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.drawer-content[data-state="open"][data-side="right"] {
+  animation: drawer-slide-in-right 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 `;
 
@@ -85,9 +105,7 @@ export const Drawer = ({
     setPortalTarget(node ? node.ownerDocument.body : null);
   }, []);
 
-  // Opening must show the layer immediately. Adjusting state during render on a
-  // prop change is React's documented alternative to an effect here, and avoids
-  // the extra render an effect would cost on every open.
+  // Opening must mount the layer immediately so the enter transition can start.
   const [prevOpen, setPrevOpen] = useState(open);
   if (prevOpen !== open) {
     setPrevOpen(open);
@@ -95,7 +113,6 @@ export const Drawer = ({
   }
 
   useEffect(() => {
-    // Resolve the document the drawer actually lives in (supports iframe rendering).
     const doc = layerRef.current?.ownerDocument ?? document;
     if (open) {
       doc.body.style.overflow = "hidden";
@@ -103,9 +120,10 @@ export const Drawer = ({
         doc.body.style.overflow = "";
       };
     }
+
     doc.body.style.overflow = "";
-    // Match the closing transition (300ms) before unmounting from DOM
-    const timer = setTimeout(() => setRenderLayer(false), 300);
+    // Match the closing transition (280ms) before unmounting from DOM
+    const timer = setTimeout(() => setRenderLayer(false), 280);
     return () => clearTimeout(timer);
   }, [open, portalTarget]);
 
@@ -118,20 +136,24 @@ export const Drawer = ({
     return () => doc.removeEventListener("keydown", handleEsc);
   }, [open, onOpenChange, portalTarget]);
 
-  if (!portalTarget || !renderLayer) return <span ref={setAnchor} hidden />;
-
   return (
     <>
       <span ref={setAnchor} hidden />
-      {createPortal(
-        <DrawerContext.Provider value={{ open, onOpenChange, side }}>
-          <div ref={layerRef} className="fixed inset-0 z-50 pointer-events-none">
-            <style>{DRAWER_CSS}</style>
-            {children}
-          </div>
-        </DrawerContext.Provider>,
-        portalTarget,
-      )}
+      {portalTarget && renderLayer
+        ? createPortal(
+            <DrawerContext.Provider value={{ open, onOpenChange, side }}>
+              <div
+                ref={layerRef}
+                className="fixed inset-0 z-50 pointer-events-none"
+                style={{ zIndex: 100 }}
+              >
+                <style>{DRAWER_CSS}</style>
+                {children}
+              </div>
+            </DrawerContext.Provider>,
+            portalTarget,
+          )
+        : null}
     </>
   );
 };
@@ -196,8 +218,10 @@ export const DrawerContent = React.forwardRef<
       {...props}
     >
       <button
+        type="button"
+        aria-label="Close drawer"
         onClick={() => onOpenChange(false)}
-        className="absolute top-4 right-4 z-50 p-2 bg-muted hover:bg-muted text-muted-foreground rounded-full transition-colors"
+        className="absolute top-4 right-4 z-50 p-2 bg-muted hover:bg-muted/80 text-muted-foreground rounded-full transition-colors cursor-pointer"
       >
         <X className="w-4 h-4" />
       </button>
@@ -261,14 +285,15 @@ export const Button = React.forwardRef<
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
     variant?: "default" | "outline";
   }
->(({ className, variant = "default", ...props }, ref) => (
+>(({ className, variant = "default", type = "button", ...props }, ref) => (
   <button
     ref={ref}
+    type={type}
     className={cn(
-      "inline-flex items-center justify-center rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2",
+      "inline-flex items-center justify-center rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-400 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 cursor-pointer",
       variant === "outline"
         ? "border border-border bg-transparent hover:bg-muted text-foreground"
-        : "bg-primary text-primary-foreground hover:bg-primary",
+        : "bg-primary text-primary-foreground hover:bg-primary/90",
       className,
     )}
     {...props}

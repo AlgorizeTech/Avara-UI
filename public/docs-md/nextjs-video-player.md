@@ -385,33 +385,19 @@ If the library fails to load, the component renders a native `<video>` with the 
 
 ## Features
 
-### Three Reveal Modes
-
 Open in a dialog, swap the player into the card in place, or render it directly on load — one prop, no layout rewrite.
-
-### Four Player Backends
 
 YouTube embeds, native HTML5 video, Plyr and JW Player — sharing one hero card, one title treatment and one glow treatment.
 
-### Deferred Media Weight
-
 In modal and inline mode nothing but the poster loads until a click, so an embed never lands on your Largest Contentful Paint.
-
-### Responsive Aspect Ratios
 
  16:9, ultrawide 21:9, classic 4:3 and square 1:1, forwarded to Plyr and JW in their own ratio formats so the frame never jumps.
 
-### Keyboard Accessible
-
 The play CTA is a real button, the modal is a labelled dialog, `Esc` closes it, the page behind it stops scrolling, and focus returns to the trigger.
-
-### Themed Accent
 
 Play buttons and progress fills read `--theme-color`, falling back to your `--primary`, so the players match the rest of the page.
 
 ## Best Practices & Guidelines
-
-### Picking a playback mode
 
 Use `modal` above the fold, where the video is the page's main call to action. Use `inline` mid-page — an overlay that hijacks the whole viewport from a card the reader scrolled past reads as an interruption. Use `direct` when the video is the content, such as a documentation walkthrough.
 
@@ -419,15 +405,9 @@ Use `modal` above the fold, where the video is the page's main call to action. U
 
 Browsers block autoplay with sound. `autoPlay` only applies to `playbackMode="direct"`, and the native player mutes itself when it is set. In `modal` and `inline` the click is the gesture, so playback starts on its own and the component adds `autoplay=1` to the embed URL for you.
 
-### Optimizing thumbnails
-
 Give `thumbnailUrl` a resolution that matches your `aspectRatio`. It is the poster, the LCP candidate and — for `source="video"` — the `<video>` element's own `poster`, so a mismatched crop shows up in all three places.
 
-### The title treatment follows playback
-
 Before anything has played, the title and subtitle sit at the foot of the frame and stay there — nothing is happening yet, so they are free to introduce the video, and nobody should have to hover to learn what they are about to watch. Once playback starts the picture is the point, so the copy moves to a top bar that only appears on hover, the way YouTube does. It never returns to the bottom, because pausing does not undo having started. This applies to the players we draw the chrome for — the native `<video>`, Plyr and JW. A YouTube or Vimeo embed already paints its own title bar, so nothing is layered on top of it.
-
-### Choosing a backend
 
 Start with `VideoPlayer` — it ships no player library. Move to Plyr when you need one consistent, skinnable control bar across YouTube, Vimeo and self-hosted files. Move to JW Player when you are already on JW's platform for adaptive streaming, DRM or analytics.
 

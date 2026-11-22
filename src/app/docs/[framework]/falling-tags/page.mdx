@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("falling-tags");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { Installation } from "@/components/site/installation";
 import { extractCode } from "@/lib/code";
 
@@ -326,22 +326,18 @@ export default function BlackAndWhiteTags() {
 ## Features
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Float-to-Drop Sequence</h3>
-    <p className="text-muted-foreground text-sm">When scrolled into view, tags appear in the upper arena with a gentle floating levitation wave before gravity triggers the drop.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Real 2D Rigid-Body Physics</h3>
-    <p className="text-muted-foreground text-sm">Oriented-box (rotated rectangle) collision solver with realistic mass, angular inertia, restitution bounce, and sliding friction.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Interactive Grab & Throw</h3>
-    <p className="text-muted-foreground text-sm">Grab tags with your mouse or finger, toss them in any direction, and watch them rebound off walls and scatter other tags with momentum.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">No Physics Library</h3>
-    <p className="text-muted-foreground text-sm">Built with native React and a requestAnimationFrame loop. The only npm dependency is lucide-react.</p>
-  </div>
+  <InfoCard title="Float-to-Drop Sequence">
+    <p>When scrolled into view, tags appear in the upper arena with a gentle floating levitation wave before gravity triggers the drop.</p>
+  </InfoCard>
+  <InfoCard title="Real 2D Rigid-Body Physics">
+    <p>Oriented-box (rotated rectangle) collision solver with realistic mass, angular inertia, restitution bounce, and sliding friction.</p>
+  </InfoCard>
+  <InfoCard title="Interactive Grab & Throw">
+    <p>Grab tags with your mouse or finger, toss them in any direction, and watch them rebound off walls and scatter other tags with momentum.</p>
+  </InfoCard>
+  <InfoCard title="No Physics Library">
+    <p>Built with native React and a requestAnimationFrame loop. The only npm dependency is lucide-react.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

@@ -157,25 +157,15 @@ export default function SummerTrip() {
 ## Features
 Discover the Folder's capabilities for presenting a group of files as one tactile object.
 
-### One silhouette
-
 The tab and body are a single rounded path, so the join never shows a notch and every corner — including the slant — is a true squircle.
-
-### Colour-derived shades
 
 Pocket, icon and skeleton cards are computed from `color` in OKLCH, so any base colour — near-black included — stays readable.
 
-### Fits the room
-
 The fan measures its nearest clipping ancestor and tightens the gap — then drops a card — rather than overflowing on a narrow screen.
-
-### Reachable everywhere
 
 Hover opens it on desktop; a tap toggles it on touch; focus opens it from the keyboard. Every animation respects `prefers-reduced-motion`.
 
 ## Best Practices & Guidelines
-
-### Leave headroom above the folder
 
 The fan lifts cards roughly half the folder's height above it and the arrows sit just outside its width. Give the folder that space, and avoid `overflow-hidden` on its immediate parent.
 

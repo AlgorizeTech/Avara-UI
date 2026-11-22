@@ -139,23 +139,13 @@ The built-in parts carry their own placement (`Hero` is column 1, rows 1–2; `P
 
 ## Features
 
-### Built from the library
-
 Marquee for both scrolling cards, Chat Bubble for the conversation, Half Stars for the rating, Mobile Mockup for the device and Button for the call to action. Install this one item and all five come with it.
-
-### Two things move, nothing else
 
 The figures scroll up and the team scrolls left; the chat pops in once. Both marquees pause under the pointer and stay put under prefers-reduced-motion, with the content still readable.
 
-### Compound, not configured
-
 Six named parts you can drop, reorder or replace, and a plain Card for anything else. Headlines are children, so the serif phrase is an em tag, not a prop.
 
-### Light and dark, one component
-
 Follows the site theme with no prop: a white ground and pastel cards in light mode, a black ground and the same hues deepened in dark mode. The chat, the phone screen and the call bar switch with it; the laptop, the yellow accents and the ornaments stay as they are.
-
-### Responsive to a single column
 
  3-2-3 columns at lg, two at md, one on phones. The tilted phone and both marquees keep their own height when the grid rows go away.
 

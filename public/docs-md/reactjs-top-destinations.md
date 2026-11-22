@@ -143,19 +143,11 @@ npx shadcn@latest add https://avaraui.com/r/top-destinations-motion.json
 
 ## Features
 
-### Opposite Direction Scrub
-
 Row 1 and Row 2 glide in opposite directions as the viewport scrolls, creating an immersive cinematic depth effect.
-
-### Interactive Hover Frame
 
 Hovering over any card dims the background, smoothly frames the destination with a frosted border, and displays place count and explore CTA.
 
-### Flexible Split or Unified Rows
-
 Pass a single unified `items` array to automatically split across rows, or supply `row1Items` and `row2Items` explicitly.
-
-### Reduced Motion Safe
 
 Automatically respects user motion preferences, gracefully falling back to a clean horizontal carousel without jarring animations.
 

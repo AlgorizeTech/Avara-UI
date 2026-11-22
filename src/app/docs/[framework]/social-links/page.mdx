@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("social-links");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Social Links
@@ -150,7 +150,7 @@ export default function ExpandReplaceShareButton() {
       props: { example: "row" },
       usage: usageRow,
       code: extractCode("src/components/custom/blocks/SocialLinksBlock.tsx"),
-      minHeight: 260,
+      minHeight: 180,
     },
   ]}
 />
@@ -185,7 +185,7 @@ export default function ExpandReplaceShareButton() {
       ],
       props: { example: "expand-replace", variant: "expand-replace" },
       usage: usageExpandReplace,
-      minHeight: 720,
+      minHeight: 510,
     },
     {
       title: "Expandable 4-directional share buttons",
@@ -206,7 +206,7 @@ export default function ExpandReplaceShareButton() {
       ],
       props: { example: "expand-reveal", variant: "expand-reveal" },
       usage: usageExpandReveal,
-      minHeight: 720,
+      minHeight: 510,
     },
     {
       title: "Every network, outlined",
@@ -227,7 +227,7 @@ export default function ExpandReplaceShareButton() {
       ],
       props: { example: "all", variant: "outline", size: "lg" },
       usage: usageAll,
-      minHeight: 260,
+      minHeight: 180,
     },
     {
       title: "Author byline",
@@ -246,7 +246,7 @@ export default function ExpandReplaceShareButton() {
       ],
       props: { example: "byline" },
       usage: usageByline,
-      minHeight: 260,
+      minHeight: 180,
     },
   ]}
 />
@@ -254,22 +254,18 @@ export default function ExpandReplaceShareButton() {
 ## Features
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">No icon package</h3>
-    <p className="text-muted-foreground text-sm">Brand marks are inline SVG. Lucide dropped its brand icons, so this never breaks when an icon library updates.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Named for screen readers</h3>
-    <p className="text-muted-foreground text-sm">Every tile carries an aria-label and title — the network's name by default, or whatever label you pass — and a visible focus ring.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Safe off-site links</h3>
-    <p className="text-muted-foreground text-sm">External links open in a new tab with noopener noreferrer. Email links stay in place, because a new tab for mailto is just an empty tab.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Works with your router</h3>
-    <p className="text-muted-foreground text-sm">Pass linkComponent={"{Link}"} from next/link when some hrefs are internal; a plain anchor is the default so it runs anywhere.</p>
-  </div>
+  <InfoCard title="No icon package">
+    <p>Brand marks are inline SVG. Lucide dropped its brand icons, so this never breaks when an icon library updates.</p>
+  </InfoCard>
+  <InfoCard title="Named for screen readers">
+    <p>Every tile carries an aria-label and title — the network's name by default, or whatever label you pass — and a visible focus ring.</p>
+  </InfoCard>
+  <InfoCard title="Safe off-site links">
+    <p>External links open in a new tab with noopener noreferrer. Email links stay in place, because a new tab for mailto is just an empty tab.</p>
+  </InfoCard>
+  <InfoCard title="Works with your router">
+    <p>Pass linkComponent={"{Link}"} from next/link when some hrefs are internal; a plain anchor is the default so it runs anywhere.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

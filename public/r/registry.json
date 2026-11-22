@@ -49,6 +49,32 @@
       "docs": "Named export: Accordion. Pass `accordionData` as { value, title, icon?, content } — content accepts a string array or a node. `type` is single | multiple; set `collapsible` to let the last open section close. Variants: default (open row lifts out as a card) | bordered (rail on the open row) | filled (open row inverts to primary) | elevated (cards, open one on a ring) | soft (tinted tiles, plus folds into minus) | inset (pill rows, answer in an inset well) | bracket (outlined rows, corner brackets open outward) | ghost (type and hairlines); soft, inset and bracket animate open and close with CSS keyframes that ship inside the component. `animation=\"stack\"` piles the items and deals them out on scroll-in via the Web Animations API; skipped under reduced motion. Wraps the `ui-accordion` Radix primitive. For a single section, `collapsible` is lighter."
     },
     {
+      "name": "action-buttons",
+      "type": "registry:component",
+      "title": "Action Buttons",
+      "author": "AlgorizeTech",
+      "description": "Motion-powered interactive action buttons: AsyncButton, WaitlistButton, HoldToConfirm, SlideToConfirm, StarButton (Star & Upvote), FollowButton, SplitButton, AddToCart, PaymentButton, and InteractiveButton.",
+      "categories": [
+        "actions",
+        "forms"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ActionButtons.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ActionButtons.tsx"
+        }
+      ],
+      "docs": "Named exports: AsyncButton, WaitlistButton, HoldToConfirm, SlideToConfirm, StarButton, FollowButton, SplitButton, AddToCart, PaymentButton, InteractiveButton."
+    },
+    {
       "name": "advanced-table",
       "type": "registry:component",
       "title": "Advanced Table",
@@ -377,7 +403,7 @@
       "type": "registry:component",
       "title": "Animated Timeline",
       "author": "AlgorizeTech",
-      "description": "Ask the user to pick one of 5 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Animated rail. Skip the question if the user already named one. A timeline whose entries animate in on scroll, with five entrance styles. Use it on marketing pages for company history and roadmap sections.",
+      "description": "Ask the user to pick one of 6 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Animated rail. Skip the question if the user already named one. A timeline whose entries animate in on scroll, with five entrance styles. Use it on marketing pages for company history and roadmap sections.",
       "categories": [
         "data-display",
         "marketing"
@@ -716,7 +742,7 @@
       "type": "registry:component",
       "title": "Breadcrumb",
       "author": "AlgorizeTech",
-      "description": "A breadcrumb trail with per-item icons and automatic collapsing when the path is long. Use it to show position in a deep hierarchy.",
+      "description": "Ask the user to pick one of 2 breadcrumb variants: https://avaraui.com/view/breadcrumb. This is the Breadcrumb. Skip the question if the user already named one. A breadcrumb trail with per-item icons and automatic collapsing when the path is long. Use it to show position in a deep hierarchy.",
       "categories": [
         "navigation"
       ],
@@ -739,6 +765,30 @@
         }
       ],
       "docs": "Named exports: BreadcrumbBlock, getThemeStyles (from breadcrumb-theme.ts, which installs alongside). `items` take { label, href?, icon? }; `maxItems` collapses the middle into an ellipsis past that count. Separator styles: classic | slash | solid | ghost. Renders next/link, so it needs edits outside Next.js."
+    },
+    {
+      "name": "breadcrumb-flow",
+      "type": "registry:component",
+      "title": "Breadcrumb Flow",
+      "author": "AlgorizeTech",
+      "description": "Ask the user to pick one of 2 breadcrumb variants: https://avaraui.com/view/breadcrumb. This is the Flow breadcrumb. Skip the question if the user already named one. A composable breadcrumb whose items fade in and out as the route changes while the rest slide into place, with a hover, tap and keyboard disclosure for collapsed ancestors. Use it for apps whose path changes without a page reload.",
+      "categories": [
+        "navigation"
+      ],
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/BreadcrumbFlowBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/BreadcrumbFlowBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbEllipsis. Give each BreadcrumbItem a stable key (its route) and put its BreadcrumbSeparator inside it; items entering or leaving animate and the rest slide. `maxItems` on BreadcrumbList (min 3, Infinity disables) collapses the middle into BreadcrumbEllipsis, opened by hover, click, tap, Enter, Space or ArrowDown; Escape closes it. BreadcrumbLink takes a `render` prop for your router's Link. `labels` on Breadcrumb overrides the built-in strings. Honours prefers-reduced-motion. Zero runtime dependencies."
     },
     {
       "name": "breathe-hero",
@@ -934,7 +984,7 @@
       "type": "registry:component",
       "title": "Carousel",
       "author": "AlgorizeTech",
-      "description": "Three image carousels in one file — a plain slider, a full-bleed hero with autoplay, and a thumbnail-navigated gallery. Reach for it for product shots, galleries and landing-page heroes.",
+      "description": "Ask the user to pick one of 6 carousel variants: https://avaraui.com/view/carousel. This item holds 5 of them as looks of one component (radial, glass, image, hero, thumbnails). Skip the question if the user already named one. Three image carousels in one file — a plain slider, a full-bleed hero with autoplay, and a thumbnail-navigated gallery. Reach for it for product shots, galleries and landing-page heroes.",
       "categories": [
         "media",
         "navigation"
@@ -959,7 +1009,7 @@
       "type": "registry:component",
       "title": "Carousel 3D",
       "author": "AlgorizeTech",
-      "description": "A perspective carousel where cards rotate through depth, with drag and autoplay. Use it for portfolio and gallery sections that need presence.",
+      "description": "Ask the user to pick one of 6 carousel variants: https://avaraui.com/view/carousel. This is the 3D carousel deck. Skip the question if the user already named one. A perspective carousel where cards rotate through depth, with drag and autoplay. Use it for portfolio and gallery sections that need presence.",
       "categories": [
         "media",
         "marketing"
@@ -995,7 +1045,7 @@
       "type": "registry:component",
       "title": "Carousel 3D (Motion)",
       "author": "AlgorizeTech",
-      "description": "A perspective carousel where cards rotate through depth, with drag and autoplay. Use it for portfolio and gallery sections that need presence.",
+      "description": "Ask the user to pick one of 6 carousel variants: https://avaraui.com/view/carousel. This is the 3D carousel deck. Skip the question if the user already named one. A perspective carousel where cards rotate through depth, with drag and autoplay. Use it for portfolio and gallery sections that need presence.",
       "categories": [
         "media",
         "marketing"
@@ -2246,7 +2296,7 @@
       "type": "registry:component",
       "title": "Fleet Map",
       "author": "AlgorizeTech",
-      "description": "Ask the user to pick one of 3 fleet tracker variants: https://avaraui.com/view/fleet-tracker. This item holds 3 of them as looks of one component (default, minimal, modern). Skip the question if the user already named one. A live fleet tracking view pairing a Leaflet map with a vehicle list and status filters. Use it for logistics and delivery dashboards.",
+      "description": "Ask the user to pick one of 11 fleet tracker variants: https://avaraui.com/view/fleet-tracker. This item holds 3 of them as looks of one component (default, minimal, modern). Skip the question if the user already named one. A live fleet tracking view pairing a Leaflet map with a vehicle list and status filters. Use it for logistics and delivery dashboards.",
       "categories": [
         "maps",
         "data-display"
@@ -2311,9 +2361,7 @@
         "media",
         "scroll"
       ],
-      "dependencies": [
-        "next-themes"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -2932,7 +2980,7 @@
       "type": "registry:component",
       "title": "Infrastructure Topology",
       "author": "AlgorizeTech",
-      "description": "An interactive live data flow infrastructure topology graph with animated SVG beams, central neural mesh hub, service cards, and metrics.",
+      "description": "Ask the user to pick one of 2 infrastructure topology variants: https://avaraui.com/view/infrastructure-topology. This item holds 2 of them as looks of one component (orbit, pulse). Skip the question if the user already named one. An interactive live data flow infrastructure topology graph with animated SVG beams, central neural mesh hub, service cards, and metrics.",
       "categories": [
         "data-display",
         "layout"
@@ -3173,6 +3221,32 @@
         }
       ],
       "docs": "Named exports: MagicBento, MagicBentoCard. Compose cards as children and set `highlight` on the ones that should stand out; span cards across columns with your own grid classes. Layout-agnostic — it supplies the effect, you supply the grid."
+    },
+    {
+      "name": "maps",
+      "type": "registry:component",
+      "title": "Maps",
+      "author": "AlgorizeTech",
+      "description": "Ask the user to pick one of 11 fleet tracker variants: https://avaraui.com/view/fleet-tracker. This item holds 8 of them as looks of one component (route-planner, live-tracking, fleet-dispatch, property-listings, store-locator, coverage-zones, heatmap, incident-monitor). Skip the question if the user already named one. Eight minimalist OpenFreeMap Positron MapLibre GL map variants covering route planning, property listings, live courier tracking, store locators, fleet dispatch, coverage zones, heatmaps, and incident clustering.",
+      "categories": [
+        "maps",
+        "data-display"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "maplibre-gl"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/Maps.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/Maps.tsx"
+        }
+      ],
+      "docs": "Default export: Maps. Powered by `maplibre-gl` and OpenFreeMap / OpenMapTiles Positron styles (no API key required). Pass `variant` (route-planner | property-listings | live-tracking | store-locator | fleet-dispatch | coverage-zones | heatmap | incident-monitor) and optional `color`, `center` ([lng, lat]), `zoom`, `height`, `lightStyleUrl`, `darkStyleUrl`. **Import MapLibre's CSS yourself** — `import \"maplibre-gl/dist/maplibre-gl.css\"`."
     },
     {
       "name": "marquee",
@@ -5235,11 +5309,39 @@
       "docs": "Named exports: TimelineBlock, getThemeStyles (from timeline-theme.ts, which installs alongside). Items take { id, title, date, description?, icon?, status } where status is completed | current | upcoming and drives the colour. `layout` places entries left | center | right. For entrance animation variety without status semantics, use `animated-timeline`."
     },
     {
+      "name": "timeline-cable",
+      "type": "registry:component",
+      "title": "Timeline Cable",
+      "author": "AlgorizeTech",
+      "description": "Ask the user to pick one of 6 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Cable timeline. Skip the question if the user already named one. A horizontal timeline of cards on a centre playhead, with cables fanning to the cards beside it, year numerals and tick marks. Drag it or scroll the wheel to move. Use it to browse launches, releases or a project history.",
+      "categories": [
+        "data-display",
+        "marketing"
+      ],
+      "dependencies": [],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/TimelineCableBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/TimelineCableBlock.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/timeline-scroll.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/timeline-scroll.ts"
+        }
+      ],
+      "docs": "Named exports: TimelineCableBlock (also uses timeline-scroll.ts, which installs alongside). `events` is { id, date, title, media?, meta? }[]; `date` is an ISO string or Date read in UTC, `media` fills the card's picture area and `meta` is the footer line. Move with a sideways drag, the mouse wheel or trackpad (vertical or sideways, only while there is somewhere to go, so the page scrolls on at either end; `wheel={false}` turns it off), arrow keys, Home/End or a click. `value` / `defaultValue` / `onValueChange` use event ids. `years`, `ruler` and `cables` toggle the decoration; `itemWidth` and `height` size it. Zero runtime dependencies."
+    },
+    {
       "name": "timeline-dial",
       "type": "registry:component",
       "title": "Timeline Dial",
       "author": "AlgorizeTech",
-      "description": "Ask the user to pick one of 5 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Dial timeline. Skip the question if the user already named one. A wheel timeline: entries ride an arc beside a ruler of tick marks while the focused one is detailed beside it. Use it for a company or product milestone section.",
+      "description": "Ask the user to pick one of 6 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Dial timeline. Skip the question if the user already named one. A wheel timeline: entries ride an arc beside a ruler of tick marks while the focused one is detailed beside it. Use it for a company or product milestone section.",
       "categories": [
         "data-display",
         "marketing"
@@ -5274,7 +5376,7 @@
       "type": "registry:component",
       "title": "Timeline Path",
       "author": "AlgorizeTech",
-      "description": "Ask the user to pick one of 5 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Path timeline. Skip the question if the user already named one. A scroll-linked timeline on a winding path that draws itself from stop to stop, with a glowing head and cards that light up as it arrives. Use it for a company or product milestone story.",
+      "description": "Ask the user to pick one of 6 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Path timeline. Skip the question if the user already named one. A scroll-linked timeline on a winding path that draws itself from stop to stop, with a glowing head and cards that light up as it arrives. Use it for a company or product milestone story.",
       "categories": [
         "data-display",
         "marketing"
@@ -5307,7 +5409,7 @@
       "type": "registry:component",
       "title": "Timeline Ruler",
       "author": "AlgorizeTech",
-      "description": "Ask the user to pick one of 5 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Ruler timeline. Skip the question if the user already named one. A date-ruler timeline: labels slide past a fixed wavy rail and the one at the bulge is detailed beside it, with a headline figure. Use it for monthly metrics or a dated activity log.",
+      "description": "Ask the user to pick one of 6 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Ruler timeline. Skip the question if the user already named one. A date-ruler timeline: labels slide past a fixed wavy rail and the one at the bulge is detailed beside it, with a headline figure. Use it for monthly metrics or a dated activity log.",
       "categories": [
         "data-display",
         "marketing"
@@ -5342,7 +5444,7 @@
       "type": "registry:component",
       "title": "Timeline Steps",
       "author": "AlgorizeTech",
-      "description": "Ask the user to pick one of 5 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Steps timeline. Skip the question if the user already named one. A scroll-linked step list: numbered nodes on a rail that fills with the accent colour as you scroll, with the step in focus kept sharp. Use it for a company history or a dated changelog.",
+      "description": "Ask the user to pick one of 6 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Steps timeline. Skip the question if the user already named one. A scroll-linked step list: numbered nodes on a rail that fills with the accent colour as you scroll, with the step in focus kept sharp. Use it for a company history or a dated changelog.",
       "categories": [
         "data-display",
         "marketing"
