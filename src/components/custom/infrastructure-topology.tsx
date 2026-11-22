@@ -12,6 +12,11 @@ import {
     Activity,
     Shield,
     Wifi,
+    Globe,
+    KeyRound,
+    Cpu,
+    HardDrive,
+    Radio,
 } from "lucide-react";
 
 export interface TopologyNode {
@@ -34,7 +39,7 @@ export interface MetricItem {
     color?: string;
 }
 
-export type InfrastructureTopologyVariant = "orbit" | "pulse";
+export type InfrastructureTopologyVariant = "orbit" | "pulse" | "chain";
 
 export interface InfrastructureTopologyProps {
     /** Visual & animation variant */
@@ -123,6 +128,64 @@ const DEFAULT_NODES: TopologyNode[] = [
     },
 ];
 
+const DEFAULT_CHAIN_NODES: TopologyNode[] = [
+    {
+        id: "ingress-edge",
+        title: "Ingress Edge",
+        subtitle: "ANYCAST · 6MS",
+        badgeText: "STAGE 1",
+        badgeVariant: "blue",
+        icon: <Globe className="w-4 h-4 md:w-4.5 md:h-4.5 text-blue-500" />,
+        color: "blue",
+        strokeColor: "#3b82f6",
+        position: "top-left",
+    },
+    {
+        id: "token-guard",
+        title: "Token Guard",
+        subtitle: "JWT · RATE LIMIT",
+        badgeText: "STAGE 2",
+        badgeVariant: "emerald",
+        icon: <KeyRound className="w-4 h-4 md:w-4.5 md:h-4.5 text-emerald-500" />,
+        color: "emerald",
+        strokeColor: "#10b981",
+        position: "bottom-left",
+    },
+    {
+        id: "inference-gpu",
+        title: "Inference GPU",
+        subtitle: "LLAMA-3 · 18MS",
+        badgeText: "COMPUTE",
+        badgeVariant: "purple",
+        icon: <Cpu className="w-4 h-4 md:w-4.5 md:h-4.5 text-purple-500" />,
+        color: "purple",
+        strokeColor: "#a855f7",
+        position: "top-right",
+    },
+    {
+        id: "vector-cache",
+        title: "Vector Cache",
+        subtitle: "QDRANT · 4MS",
+        badgeText: "MEMORY",
+        badgeVariant: "amber",
+        icon: <HardDrive className="w-4 h-4 md:w-4.5 md:h-4.5 text-amber-500" />,
+        color: "amber",
+        strokeColor: "#f59e0b",
+        position: "middle-right",
+    },
+    {
+        id: "telemetry-sink",
+        title: "Telemetry Sink",
+        subtitle: "OTEL · 12K/S",
+        badgeText: "STREAM",
+        badgeVariant: "rose",
+        icon: <Radio className="w-4 h-4 md:w-4.5 md:h-4.5 text-rose-500" />,
+        color: "rose",
+        strokeColor: "#f43f5e",
+        position: "bottom-right",
+    },
+];
+
 const DEFAULT_METRICS: MetricItem[] = [
     {
         id: "throughput",
@@ -170,12 +233,14 @@ export function InfrastructureTopology({
     centerTitle = "NEURAL MESH",
     centerSubtitle = "CORE ROUTER · V4.2",
     centerColor = "cyan",
-    nodes = DEFAULT_NODES,
+    nodes: nodesProp,
     metrics = DEFAULT_METRICS,
     animated = true,
     interactive = true,
     className,
 }: InfrastructureTopologyProps) {
+    const nodes =
+        nodesProp ?? (variant === "chain" ? DEFAULT_CHAIN_NODES : DEFAULT_NODES);
     const [hoveredNodeId, setHoveredNodeId] = useState<string | null>(null);
     const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
     const activeNodeId = hoveredNodeId ?? selectedNodeId;
@@ -202,6 +267,7 @@ export function InfrastructureTopology({
             const el = nodeRefs.current[node.id];
             if (!el) continue;
             const r = el.getBoundingClientRect();
+
             const isLeft = node.position.includes("left");
             const nx = isLeft ? r.right - cRect.left : r.left - cRect.left;
             const ny = r.top - cRect.top + r.height / 2;
@@ -333,7 +399,7 @@ export function InfrastructureTopology({
         "bottom-right": { d: "M 760 410 Q 630 390 500 250", dur: "2.9s" },
     };
 
-    if (variant !== "pulse") {
+    if (variant === "orbit") {
         const activeNode = nodes.find((n) => n.id === activeNodeId);
 
         return (
@@ -536,6 +602,245 @@ export function InfrastructureTopology({
                                         </span>
                                     </div>
                                 </button>
+                            );
+                        })}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (variant === "chain") {
+        const ingressNodes = nodes.slice(0, 2);
+        const downstreamNodes = nodes.slice(2);
+        const activeNode = nodes.find((n) => n.id === activeNodeId) ?? nodes[0];
+
+        return (
+            <div
+                className={cn(
+                    "w-full rounded-3xl bg-card/95 backdrop-blur-2xl p-4 sm:p-6 md:p-8 shadow-none relative overflow-hidden select-none",
+                    className
+                )}
+            >
+                <style
+                    dangerouslySetInnerHTML={{
+                        __html: `
+                        @keyframes chain-hop-x {
+                            0% { transform: translateX(-8px); opacity: 0; }
+                            20% { opacity: 1; }
+                            80% { opacity: 1; }
+                            100% { transform: translateX(48px); opacity: 0; }
+                        }
+                        @keyframes chain-hop-y {
+                            0% { transform: translateY(-6px); opacity: 0; }
+                            20% { opacity: 1; }
+                            80% { opacity: 1; }
+                            100% { transform: translateY(28px); opacity: 0; }
+                        }
+                        @keyframes chain-pulse {
+                            0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--primary) 25%, transparent); }
+                            50% { box-shadow: 0 0 0 8px color-mix(in oklab, var(--primary) 0%, transparent); }
+                        }
+                        `,
+                    }}
+                />
+
+                {/* Header */}
+                <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-5">
+                    <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                            <span className="inline-flex h-2.5 w-2.5 rounded-full bg-primary animate-pulse" />
+                            <h2 className="text-lg sm:text-xl md:text-2xl font-bold tracking-tight text-foreground">
+                                {headerTitle}
+                            </h2>
+                        </div>
+                        <p className="text-[10px] sm:text-[11px] font-mono font-semibold tracking-widest text-muted-foreground min-h-[2.4em] sm:min-h-0 flex items-center">
+                            {headerSubtitle}
+                        </p>
+                    </div>
+
+                    <div className="flex items-center justify-between w-full sm:w-auto sm:justify-end gap-2">
+                        <span className="px-3 py-1 rounded-full text-[11px] sm:text-xs font-mono font-semibold bg-primary/10 text-primary border border-primary/25 flex items-center gap-1.5">
+                            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-ping" />
+                            {statusBadge}
+                        </span>
+                        <span className="px-3 py-1 rounded-full text-[11px] sm:text-xs font-mono font-semibold bg-muted/70 text-foreground/80 border border-border/60 flex items-center gap-1.5">
+                            <Wifi className="w-3.5 h-3.5 text-primary" />
+                            {bandwidthBadge}
+                        </span>
+                    </div>
+
+                    <div aria-hidden className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-primary/50 via-border/70 to-primary/50" />
+                </div>
+
+                {/* Multi-Hop Chained Routing Topology */}
+                <div className="relative z-10 mt-6 space-y-5">
+                    {/* Stage 1 -> Stage 2 -> Core Gateway (Horizontal Chain on md+, Vertical on mobile) */}
+                    <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2 md:gap-0">
+                        {ingressNodes.map((node, idx) => {
+                            const isActive = activeNode?.id === node.id;
+                            const isDimmed = activeNodeId !== null && !isActive;
+                            return (
+                                <React.Fragment key={node.id}>
+                                    <button
+                                        type="button"
+                                        onMouseEnter={() => interactive && setHoveredNodeId(node.id)}
+                                        onMouseLeave={() => interactive && setHoveredNodeId(null)}
+                                        onClick={() =>
+                                            interactive &&
+                                            setSelectedNodeId((prev) => (prev === node.id ? null : node.id))
+                                        }
+                                        className={cn(
+                                            "flex-1 rounded-2xl border bg-background/90 backdrop-blur-xl p-3.5 sm:p-4 text-left transition-all duration-300 flex items-center justify-between gap-3 cursor-pointer hover:-translate-y-0.5",
+                                            getNodeBorderStyle(node.color, isActive),
+                                            isDimmed && "opacity-45"
+                                        )}
+                                    >
+                                        <div className="flex items-center gap-3 min-w-0">
+                                            <div className="p-2.5 rounded-xl bg-muted/70 border border-border/50 shrink-0">
+                                                {node.icon}
+                                            </div>
+                                            <div className="min-w-0">
+                                                <h3 className="text-xs sm:text-sm font-semibold text-foreground truncate">
+                                                    {node.title}
+                                                </h3>
+                                                <p className="text-[9px] sm:text-[10px] font-mono font-medium text-muted-foreground truncate">
+                                                    {node.subtitle}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <span
+                                            className={cn(
+                                                "px-2 py-0.5 rounded-md text-[8px] font-mono font-semibold border uppercase shrink-0",
+                                                getBadgeStyle(node.badgeVariant)
+                                            )}
+                                        >
+                                            {node.badgeText}
+                                        </span>
+                                    </button>
+
+                                    {/* Hop Connector Arrow (Horizontal on md+, Vertical on mobile) */}
+                                    <div className="flex items-center justify-center shrink-0 py-1 md:py-0 md:px-2">
+                                        <div className="hidden md:flex relative w-12 h-[2px] bg-border/70 items-center overflow-hidden rounded-full">
+                                            {animated && (
+                                                <span
+                                                    className="absolute left-0 w-2.5 h-2 rounded-full"
+                                                    style={{
+                                                        backgroundColor: node.strokeColor,
+                                                        boxShadow: `0 0 8px ${node.strokeColor}`,
+                                                        animation: `chain-hop-x 1.5s linear ${idx * 0.4}s infinite`,
+                                                    }}
+                                                />
+                                            )}
+                                        </div>
+                                        <div className="md:hidden relative h-7 w-[2px] bg-border/70 flex justify-center overflow-hidden rounded-full">
+                                            {animated && (
+                                                <span
+                                                    className="absolute top-0 w-2 h-2.5 rounded-full"
+                                                    style={{
+                                                        backgroundColor: node.strokeColor,
+                                                        boxShadow: `0 0 8px ${node.strokeColor}`,
+                                                        animation: `chain-hop-y 1.5s linear ${idx * 0.4}s infinite`,
+                                                    }}
+                                                />
+                                            )}
+                                        </div>
+                                    </div>
+                                </React.Fragment>
+                            );
+                        })}
+
+                        {/* Core Gateway Node (Final Hop before Fan-Out) */}
+                        <div
+                            className="flex-1 rounded-2xl border-2 border-primary/50 bg-background/95 backdrop-blur-xl p-3.5 sm:p-4 flex items-center justify-between gap-3"
+                            style={animated ? { animation: "chain-pulse 2.6s ease-in-out infinite" } : undefined}
+                        >
+                            <div className="flex items-center gap-3 min-w-0">
+                                <div className="p-2.5 rounded-xl bg-primary/10 border border-primary/30 text-primary shrink-0">
+                                    <Zap className="w-4 h-4 sm:w-5 sm:h-5" />
+                                </div>
+                                <div className="min-w-0">
+                                    <h4 className="text-xs sm:text-sm font-bold tracking-wider uppercase text-primary truncate">
+                                        {centerTitle}
+                                    </h4>
+                                    <p className="text-[9px] sm:text-[10px] font-mono font-semibold text-muted-foreground truncate">
+                                        {centerSubtitle}
+                                    </p>
+                                </div>
+                            </div>
+                            <span className="px-2 py-0.5 rounded-md text-[8px] font-mono font-semibold bg-primary/10 text-primary border border-primary/25 uppercase shrink-0">
+                                HUB
+                            </span>
+                        </div>
+                    </div>
+
+                    {/* Fan-Out Connector Bar */}
+                    <div className="hidden md:flex items-center justify-center px-16">
+                        <div className="relative w-full h-[2px] bg-gradient-to-r from-transparent via-primary/40 to-transparent">
+                            {animated && (
+                                <span
+                                    className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 w-2.5 h-2.5 rounded-full bg-primary shadow-[0_0_10px_var(--primary)] animate-ping"
+                                />
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Downstream Fan-Out Nodes */}
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                        {downstreamNodes.map((node, idx) => {
+                            const isActive = activeNode?.id === node.id;
+                            const isDimmed = activeNodeId !== null && !isActive;
+                            return (
+                                <div key={node.id} className="flex flex-col items-center">
+                                    <div className="relative h-6 w-[2px] bg-border/60 overflow-hidden">
+                                        {animated && !isDimmed && (
+                                            <span
+                                                className="absolute left-1/2 -translate-x-1/2 w-2 h-2 rounded-full"
+                                                style={{
+                                                    backgroundColor: node.strokeColor,
+                                                    boxShadow: `0 0 8px ${node.strokeColor}`,
+                                                    animation: `chain-hop-y 1.6s linear ${idx * 0.3}s infinite`,
+                                                }}
+                                            />
+                                        )}
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onMouseEnter={() => interactive && setHoveredNodeId(node.id)}
+                                        onMouseLeave={() => interactive && setHoveredNodeId(null)}
+                                        onClick={() =>
+                                            interactive &&
+                                            setSelectedNodeId((prev) => (prev === node.id ? null : node.id))
+                                        }
+                                        className={cn(
+                                            "w-full rounded-2xl border bg-background/90 backdrop-blur-xl p-4 text-left transition-all duration-300 flex items-center justify-between gap-3 cursor-pointer hover:-translate-y-0.5",
+                                            getNodeBorderStyle(node.color, isActive),
+                                            isDimmed && "opacity-45"
+                                        )}
+                                    >
+                                        <div className="flex items-center gap-3 min-w-0">
+                                            <div className="p-2 rounded-xl bg-muted/70 border border-border/50 shrink-0">
+                                                {node.icon}
+                                            </div>
+                                            <div className="min-w-0">
+                                                <h3 className="text-xs sm:text-sm font-semibold text-foreground truncate">
+                                                    {node.title}
+                                                </h3>
+                                                <p className="text-[9px] sm:text-[10px] font-mono font-medium text-muted-foreground truncate">
+                                                    {node.subtitle}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <span
+                                            className={cn(
+                                                "px-2 py-0.5 rounded-md text-[8px] font-mono font-semibold border uppercase shrink-0",
+                                                getBadgeStyle(node.badgeVariant)
+                                            )}
+                                        >
+                                            {node.badgeText}
+                                        </span>
+                                    </button>
+                                </div>
                             );
                         })}
                     </div>
