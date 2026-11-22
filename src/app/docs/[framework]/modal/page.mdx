@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("modal");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { Installation } from "@/components/site/installation";
 import { extractCode } from "@/lib/code";
 
@@ -264,7 +264,7 @@ export default function LiquidGlassModal() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={390} headingLevel={2}
   name="modal"
   columns={1}
   examples={[
@@ -293,7 +293,7 @@ export default function LiquidGlassModal() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={360}
   name="modal"
   columns={1}
   examples={[

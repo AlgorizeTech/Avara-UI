@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("sonner");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Sonner Toast
@@ -273,7 +273,7 @@ export default function PositionDemo() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={320} headingLevel={2}
   name="sonner"
   colorControl
   columns={1}
@@ -301,7 +301,7 @@ export default function PositionDemo() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={320}
   name="sonner"
   colorControl
   columns={1}

@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("command");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Command
@@ -188,7 +188,7 @@ export default function ExternalFiltering() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={330} headingLevel={2}
   name="command"
   colorControl
   columns={1}
@@ -217,7 +217,7 @@ export default function ExternalFiltering() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={330}
   name="command"
   colorControl
   columns={1}

@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("command-palette");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
 
@@ -100,7 +100,7 @@ export default function AskAiCommandPalette() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={480} headingLevel={2}
   name="command-palette"
   colorControl={false}
   columns={1}
@@ -134,7 +134,7 @@ export default function AskAiCommandPalette() {
 
 ## Variants
 
-<ExampleShowcase
+<ExampleShowcase minHeight={350}
   name="command-palette"
   colorControl={false}
   columns={1}

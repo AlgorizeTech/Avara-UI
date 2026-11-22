@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("toast");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Toast
@@ -384,7 +384,7 @@ export default function MinimalToasts() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={360} headingLevel={2}
   name="toast"
   colorControl={false}
   columns={1}
@@ -416,7 +416,7 @@ export default function MinimalToasts() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={360}
   name="toast"
   colorControl={false}
   columns={1}

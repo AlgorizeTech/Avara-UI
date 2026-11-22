@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("drawer");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Drawer
@@ -163,7 +163,7 @@ export default function OnboardingDrawer() {
 <ExampleShowcase headingLevel={2}
   name="drawer"
   columns={1}
-  minHeight={500}
+  minHeight={360}
   examples={[
     {
       title: "Drawer",
@@ -195,7 +195,7 @@ export default function OnboardingDrawer() {
 <ExampleShowcase
   name="drawer"
   columns={1}
-  minHeight={500}
+  minHeight={360}
   examples={[
     {
       title: "Bottom sheet",
