@@ -379,7 +379,7 @@ const rawNavigation: NavigationItem[] = [
         slug: "tech-stack",
         keywords: ["tech stack", "built with", "tools", "logos", "logo strip", "brands", "technologies", "powered by"],
       },
-      { label: "Terminal", slug: "terminal" },
+      { label: "Terminal", slug: "terminal", badge: "Updated" },
       { label: "Text Animation", slug: "text-animation" },
       { label: "Theme Switcher", slug: "theme-switcher" },
       { label: "Tilted Card", slug: "tilted-card" },
