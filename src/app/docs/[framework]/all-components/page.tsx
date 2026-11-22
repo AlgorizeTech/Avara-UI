@@ -14,6 +14,13 @@ import { hasMotionTwin, usesCssAnimation, usesGsap } from "@/lib/docs-source";
 export const metadata = docsPageMetadata("all-components");
 
 /**
+ * Show the live preview that floats beside a card on hover. Set to `false` to
+ * turn it off: the hover handlers, the sandbox iframe and everything running
+ * inside it (timers, GSAP/Motion loops) are then never created.
+ */
+const SHOW_COMPONENT_PREVIEW = false;
+
+/**
  * The libraries a docs page's components animate with, read from the
  * `<Installation name>` items its MDX installs. Derived at build time so a new
  * GSAP component, or a new Motion twin, shows up under its filter with no edit
@@ -48,5 +55,10 @@ export default function AllComponentsDocsPage() {
 		}
 	}
 
-	return <AllComponentsCatalog animationBySlug={animationBySlug} />;
+	return (
+		<AllComponentsCatalog
+			animationBySlug={animationBySlug}
+			showPreview={SHOW_COMPONENT_PREVIEW}
+		/>
+	);
 }
