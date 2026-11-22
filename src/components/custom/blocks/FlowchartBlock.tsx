@@ -1,8 +1,11 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { forwardRef, useLayoutEffect, useRef, useState } from "react";
+import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { FlowchartContext, useFlowchart } from "./flowchart-context";
+
+const useIsomorphicLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 // ==========================================
 // MOTION
@@ -52,6 +55,32 @@ export const Flowchart = forwardRef<HTMLDivElement, FlowchartProps>(
     const [activePath, setActivePath] = useState<string | null>(
       initialActivePath,
     );
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [scale, setScale] = useState(1);
+
+    useIsomorphicLayoutEffect(() => {
+      if (layout === "fluid") return;
+      const el = containerRef.current;
+      if (!el || typeof ResizeObserver === "undefined") return;
+
+      const measure = () => {
+        const availableWidth = el.clientWidth;
+        if (availableWidth > 0 && availableWidth < 900) {
+          setScale(availableWidth / 900);
+        } else if (availableWidth >= 900) {
+          setScale(1);
+        }
+      };
+
+      measure();
+      const ro = new ResizeObserver(measure);
+      ro.observe(el);
+      window.addEventListener("resize", measure);
+      return () => {
+        ro.disconnect();
+        window.removeEventListener("resize", measure);
+      };
+    }, [layout]);
 
     if (layout === "fluid") {
       return (
@@ -68,18 +97,34 @@ export const Flowchart = forwardRef<HTMLDivElement, FlowchartProps>(
         <div
           ref={ref}
           className={cn(
-            "w-full overflow-x-auto bg-background border border-border/80 rounded-2xl select-none shadow-inner custom-scrollbar",
+            "w-full bg-background border border-border/80 rounded-2xl select-none shadow-inner overflow-hidden",
             className,
           )}
           {...props}
         >
-          {/* Locked Canvas Matrix Workspace Container */}
-          <div className="relative w-[900px] h-[400px] mx-auto overflow-hidden">
-            {/* Architectural Blueprint Grid */}
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800d_1px,transparent_1px),linear-gradient(to_bottom,#8080800d_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0" />
+          <div
+            ref={containerRef}
+            className="w-full relative overflow-hidden"
+            style={{
+              height: scale < 1 ? `${Math.ceil(400 * scale)}px` : "400px",
+            }}
+          >
+            {/* Scaled Responsive Canvas Matrix Workspace Container */}
+            <div
+              className="absolute left-1/2 top-0 origin-top"
+              style={{
+                width: "900px",
+                height: "400px",
+                transform: `translateX(-50%) scale(${scale})`,
+                transformOrigin: "top center",
+              }}
+            >
+              {/* Architectural Blueprint Grid */}
+              <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800d_1px,transparent_1px),linear-gradient(to_bottom,#8080800d_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none z-0" />
 
-            {/* Content Container Layer */}
-            <div className="relative z-10 w-full h-full">{children}</div>
+              {/* Content Container Layer */}
+              <div className="relative z-10 w-full h-full">{children}</div>
+            </div>
           </div>
         </div>
       </FlowchartContext.Provider>
