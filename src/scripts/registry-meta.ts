@@ -1271,6 +1271,13 @@ export const META: Record<string, ItemMeta> = {
     categories: ["maps", "data-display"],
     docs: "Named exports: FleetTracker, Vehicle. `fleetData` take { id, location, lat, lng, status, speed? } with status active | idle | maintenance. **Import Leaflet's CSS yourself** — `import \"leaflet/dist/leaflet.css\"` — or the map renders as broken tiles. Leaflet touches `window`, so load it client-side only.",
   },
+  "maps": {
+    title: "Maps",
+    description:
+      "Eight minimalist OpenFreeMap Positron MapLibre GL map variants covering route planning, property listings, live courier tracking, store locators, fleet dispatch, coverage zones, heatmaps, and incident clustering.",
+    categories: ["maps", "data-display"],
+    docs: "Default export: Maps. Powered by `maplibre-gl` and OpenFreeMap / OpenMapTiles Positron styles (no API key required). Pass `variant` (route-planner | property-listings | live-tracking | store-locator | fleet-dispatch | coverage-zones | heatmap | incident-monitor) and optional `color`, `center` ([lng, lat]), `zoom`, `height`, `lightStyleUrl`, `darkStyleUrl`. **Import MapLibre's CSS yourself** — `import \"maplibre-gl/dist/maplibre-gl.css\"`.",
+  },
   "data-maps": {
     description:
       "A choropleth world map colouring countries by metric, with fill and dot variants. Use it for geographic analytics and regional breakdowns.",

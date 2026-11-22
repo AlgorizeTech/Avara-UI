@@ -2272,7 +2272,7 @@
       "type": "registry:component",
       "title": "Fleet Map",
       "author": "AlgorizeTech",
-      "description": "Ask the user to pick one of 3 fleet tracker variants: https://avaraui.com/view/fleet-tracker. This item holds 3 of them as looks of one component (default, minimal, modern). Skip the question if the user already named one. A live fleet tracking view pairing a Leaflet map with a vehicle list and status filters. Use it for logistics and delivery dashboards.",
+      "description": "Ask the user to pick one of 11 fleet tracker variants: https://avaraui.com/view/fleet-tracker. This item holds 3 of them as looks of one component (default, minimal, modern). Skip the question if the user already named one. A live fleet tracking view pairing a Leaflet map with a vehicle list and status filters. Use it for logistics and delivery dashboards.",
       "categories": [
         "maps",
         "data-display"
@@ -3197,6 +3197,32 @@
         }
       ],
       "docs": "Named exports: MagicBento, MagicBentoCard. Compose cards as children and set `highlight` on the ones that should stand out; span cards across columns with your own grid classes. Layout-agnostic — it supplies the effect, you supply the grid."
+    },
+    {
+      "name": "maps",
+      "type": "registry:component",
+      "title": "Maps",
+      "author": "AlgorizeTech",
+      "description": "Ask the user to pick one of 11 fleet tracker variants: https://avaraui.com/view/fleet-tracker. This item holds 8 of them as looks of one component (route-planner, live-tracking, fleet-dispatch, property-listings, store-locator, coverage-zones, heatmap, incident-monitor). Skip the question if the user already named one. Eight minimalist OpenFreeMap Positron MapLibre GL map variants covering route planning, property listings, live courier tracking, store locators, fleet dispatch, coverage zones, heatmaps, and incident clustering.",
+      "categories": [
+        "maps",
+        "data-display"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "maplibre-gl"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/Maps.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/Maps.tsx"
+        }
+      ],
+      "docs": "Default export: Maps. Powered by `maplibre-gl` and OpenFreeMap / OpenMapTiles Positron styles (no API key required). Pass `variant` (route-planner | property-listings | live-tracking | store-locator | fleet-dispatch | coverage-zones | heatmap | incident-monitor) and optional `color`, `center` ([lng, lat]), `zoom`, `height`, `lightStyleUrl`, `darkStyleUrl`. **Import MapLibre's CSS yourself** — `import \"maplibre-gl/dist/maplibre-gl.css\"`."
     },
     {
       "name": "marquee",
