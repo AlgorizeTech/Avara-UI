@@ -47,24 +47,6 @@ export default function InfrastructureTopologyPulseDemo() {
   );
 }`;
 
-export const usageChain = `import InfrastructureTopology from "@/components/custom/infrastructure-topology";
-
-export default function InfrastructureTopologyChainDemo() {
-  return (
-    <InfrastructureTopology
-      variant="chain"
-      headerTitle="Neural Chain"
-      headerSubtitle="MULTI-HOP ROUTING · SEQUENTIAL FAN-OUT"
-      statusBadge="CHAIN LIVE"
-      bandwidthBadge="100 GBPS"
-      centerTitle="API GATEWAY"
-      centerSubtitle="STAGE 3 · V7.1"
-      animated={true}
-      interactive={true}
-    />
-  );
-}`;
-
 <ExampleShowcase
   headingLevel={2}
   name="infrastructure-topology"
@@ -132,29 +114,6 @@ export default function InfrastructureTopologyChainDemo() {
       },
       usage: usagePulse,
     },
-    {
-      title: "Neural Chain",
-      subheading: "Sequential multi-hop routing topology where packets hop from Ingress Edge through Token Guard into the API Gateway and fan out to downstream AI services.",
-      propNotes: [
-        {
-          lead: "Pass",
-          prop: "variant",
-          value: '"chain"',
-          effect:
-            "for the multi-hop sequential routing chain with animated hop connectors and downstream fan-out.",
-        },
-      ],
-      props: {
-        variant: "chain",
-        headerTitle: "Neural Chain",
-        headerSubtitle: "MULTI-HOP ROUTING · SEQUENTIAL FAN-OUT",
-        statusBadge: "CHAIN LIVE",
-        bandwidthBadge: "100 GBPS",
-        centerTitle: "API GATEWAY",
-        centerSubtitle: "STAGE 3 · V7.1",
-      },
-      usage: usageChain,
-    },
   ]}
 />
 
@@ -173,9 +132,9 @@ export default function InfrastructureTopologyChainDemo() {
     <tbody>
       <tr>
         <td><code>variant</code></td>
-        <td><code>"orbit" | "pulse" | "chain"</code></td>
+        <td><code>"orbit" | "pulse"</code></td>
         <td><code>"orbit"</code></td>
-        <td>Visual & animation layout style (orbital packet mesh, 3-column pulse pipeline, or multi-hop sequential routing chain).</td>
+        <td>Visual & animation layout style (curved orbital packet mesh or clean 3-column pulse pipeline).</td>
       </tr>
       <tr>
         <td><code>headerTitle</code></td>
