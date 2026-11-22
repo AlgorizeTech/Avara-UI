@@ -2,14 +2,16 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-11-18T13:41:43.754Z
-**Total files:** 339
+**Generated at:** 2026-11-21T13:48:51.453Z
+**Total files:** 343
 
 ## Available Files
 
 - [docs](/docs-md/index.md) - Source: `page.mdx`
 - [nextjs/3d-carousel](/docs-md/nextjs-3d-carousel.md) - Source: `[framework]\3d-carousel\page.mdx`
 - [nextjs/accordion](/docs-md/nextjs-accordion.md) - Source: `[framework]\accordion\page.mdx`
+- [nextjs/action-buttons](/docs-md/nextjs-action-buttons.md) - Source: `[framework]\action-buttons\page.mdx`
+- [nextjs/agent-graph](/docs-md/nextjs-agent-graph.md) - Source: `[framework]\agent-graph\page.mdx`
 - [nextjs/agent-skills](/docs-md/nextjs-agent-skills.md) - Source: `[framework]\agent-skills\page.mdx`
 - [nextjs/ai-chat](/docs-md/nextjs-ai-chat.md) - Source: `[framework]\ai-chat\page.mdx`
 - [nextjs/alert](/docs-md/nextjs-alert.md) - Source: `[framework]\alert\page.mdx`
@@ -179,6 +181,8 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/wizard](/docs-md/nextjs-wizard.md) - Source: `[framework]\wizard\page.mdx`
 - [reactjs/3d-carousel](/docs-md/reactjs-3d-carousel.md) - Source: `[framework]\3d-carousel\page.mdx`
 - [reactjs/accordion](/docs-md/reactjs-accordion.md) - Source: `[framework]\accordion\page.mdx`
+- [reactjs/action-buttons](/docs-md/reactjs-action-buttons.md) - Source: `[framework]\action-buttons\page.mdx`
+- [reactjs/agent-graph](/docs-md/reactjs-agent-graph.md) - Source: `[framework]\agent-graph\page.mdx`
 - [reactjs/agent-skills](/docs-md/reactjs-agent-skills.md) - Source: `[framework]\agent-skills\page.mdx`
 - [reactjs/ai-chat](/docs-md/reactjs-ai-chat.md) - Source: `[framework]\ai-chat\page.mdx`
 - [reactjs/alert](/docs-md/reactjs-alert.md) - Source: `[framework]\alert\page.mdx`
