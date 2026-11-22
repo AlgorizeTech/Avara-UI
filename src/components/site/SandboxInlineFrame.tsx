@@ -62,15 +62,54 @@ export function SandboxInlineFrame(props: FrameProps) {
 
   const { viewportWidth, fill, minHeight = 0 } = props;
   const sameBand = viewportWidth != null && windowWidth != null && band(viewportWidth) === band(windowWidth);
+  const wantFrame = Boolean(fill) || (windowWidth !== null && viewportWidth != null && !sameBand);
 
-  if (fill || (windowWidth !== null && viewportWidth != null && !sameBand)) {
-    return <SandboxFrame {...props} />;
-  }
-  if (viewportWidth == null || windowWidth === null) {
-    // Width not measured yet: hold the space the preview will take.
-    return <div style={{ height: minHeight > 0 ? minHeight : 420 }} aria-hidden />;
-  }
-  return <InlineStage {...props} viewportWidth={viewportWidth} />;
+  // The iframe is the slow part of a Phone/Tablet/fullscreen switch: a whole
+  // document has to boot. v1 never paid for it because its iframe was always
+  // there. So it is brought up ahead of the click, as soon as the visitor shows
+  // interest in this card (pointer, focus or touch anywhere on it, the device
+  // buttons included), and once it exists it is kept (hidden while the inline
+  // preview is showing) so no later switch reloads it. A card nobody touches
+  // never loads an iframe at all.
+  const anchorRef = useRef<HTMLSpanElement>(null);
+  const [warm, setWarm] = useState(false);
+  const [framed, setFramed] = useState(false);
+  if (wantFrame && !framed) setFramed(true);
+
+  useEffect(() => {
+    if (warm) return;
+    const card = anchorRef.current?.closest("[data-sandbox-card]");
+    if (!card) return;
+    const heat = () => setWarm(true);
+    const events = ["pointerenter", "focusin", "touchstart"] as const;
+    events.forEach((type) => card.addEventListener(type, heat, { passive: true, once: true }));
+    return () => events.forEach((type) => card.removeEventListener(type, heat));
+  }, [warm]);
+
+  const showInline = !wantFrame && viewportWidth != null && windowWidth !== null;
+
+  return (
+    <>
+      <span ref={anchorRef} hidden />
+      {showInline && <InlineStage {...props} viewportWidth={viewportWidth} />}
+      {!wantFrame && !showInline && (
+        // Width not measured yet: hold the space the preview will take.
+        <div style={{ height: minHeight > 0 ? minHeight : 420 }} aria-hidden />
+      )}
+      {(framed || warm) && (
+        // Same element in both states, so the iframe never remounts. Parked, it
+        // is clipped to nothing but keeps its real size (display:none would give
+        // the document a 0×0 viewport and a wrong first layout).
+        <div
+          className={wantFrame ? "contents" : "pointer-events-none h-0 overflow-hidden"}
+          aria-hidden={wantFrame ? undefined : true}
+          inert={wantFrame ? undefined : true}
+        >
+          <SandboxFrame {...props} />
+        </div>
+      )}
+    </>
+  );
 }
 
 function InlineStage({

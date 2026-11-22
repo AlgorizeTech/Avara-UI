@@ -449,7 +449,7 @@ export function Sandbox({
     // on an inset panel — with its own accents: a hairline ring and a larger
     // radius on the shell, a sliding pill (not an underline) for the tabs, and
     // the active tab's icon in the primary colour.
-    <div className="w-full my-8 rounded-2xl bg-foreground/[0.03] ring-1 ring-inset ring-foreground/[0.05] flex flex-col not-prose relative">
+    <div data-sandbox-card className="w-full my-8 rounded-2xl bg-foreground/[0.03] ring-1 ring-inset ring-foreground/[0.05] flex flex-col not-prose relative">
       {/* Top Header Bar */}
       <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 min-h-12 py-2 pl-2 pr-2.5">
         {/* Left: tab pills */}
