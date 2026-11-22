@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("split-stepper");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Split-Stack Stepper
@@ -212,7 +212,7 @@ export default function BrandedSplitStepper() {
   return <SplitStepper steps={steps} color="#6366f1" />;
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={430} headingLevel={2}
   name="split-stepper"
   columns={1}
   examples={[
@@ -245,7 +245,7 @@ export default function BrandedSplitStepper() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={430}
   name="split-stepper"
   columns={1}
   examples={[

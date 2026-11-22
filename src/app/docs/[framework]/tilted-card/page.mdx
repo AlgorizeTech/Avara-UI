@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("tilted-card");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Tilted Card
@@ -124,7 +124,7 @@ export default function LiftOnHover() {
   return <TiltedCard scaleOnHover={1.12}>{card}</TiltedCard>;
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={460} headingLevel={2}
   name="tilted-card"
   colorControl
   controls={[
@@ -164,7 +164,7 @@ export default function LiftOnHover() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={460}
   name="tilted-card"
   colorControl
   columns={1}

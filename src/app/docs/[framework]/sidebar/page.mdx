@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("sidebar");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Sidebar
@@ -266,7 +266,7 @@ export const usageCollapsed = sidebarUsage({
   note: "Start as an icon rail — labels appear as tooltips on hover.",
 });
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={450} headingLevel={2}
   name="sidebar"
   colorControl
   colorProp="themeColor"
@@ -301,7 +301,7 @@ export const usageCollapsed = sidebarUsage({
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={450}
   name="sidebar"
   colorControl
   colorProp="themeColor"

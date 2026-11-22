@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("image-compare");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Image Compare
@@ -73,7 +73,7 @@ export default function DiagonalSplitDemo() {
   return <ImageCompare variant="diagonal-split" color="primary" className="w-full" />;
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={370} headingLevel={2}
   name="image-compare"
   colorControl
   columns={1}
@@ -106,7 +106,7 @@ export default function DiagonalSplitDemo() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={370}
   name="image-compare"
   colorControl
   columns={1}

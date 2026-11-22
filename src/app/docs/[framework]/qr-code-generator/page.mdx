@@ -1,6 +1,6 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 export const metadata = docsPageMetadata("qr-code-generator", {
@@ -156,7 +156,7 @@ export default function ReaderExample() {
   return <QrCodeReader onRead={(data) => console.log("Scanned QR:", data)} />;
 }`;
 
-<ExampleShowcase
+<ExampleShowcase minHeight={300}
   name="qr-code"
   colorControl
   colorProp="themeColor"
@@ -186,7 +186,7 @@ export default function ReaderExample() {
 
 ### More examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={260}
   name="qr-code"
   colorControl
   colorProp="themeColor"
@@ -223,7 +223,7 @@ export default function ReaderExample() {
 
 A separate component with its own dependencies — decoding happens entirely in the browser.
 
-<ExampleShowcase
+<ExampleShowcase minHeight={260}
   name="qr-code"
   colorControl
   colorProp="themeColor"

@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("animated-list");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Animated List
@@ -185,7 +185,7 @@ export default function TimedFeed() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={260} headingLevel={2}
   name="animated-list"
   colorControl={false}
   columns={1}
@@ -214,7 +214,7 @@ export default function TimedFeed() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={260}
   name="animated-list"
   colorControl={false}
   columns={1}

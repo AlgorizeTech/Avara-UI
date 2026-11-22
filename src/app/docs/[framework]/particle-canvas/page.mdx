@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("particle-canvas");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { Installation } from "@/components/site/installation";
 import { extractCode } from "@/lib/code";
 
@@ -49,7 +49,7 @@ export default function WordmarkGlowDemo() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={430} headingLevel={2}
   name="particle-canvas"
   columns={1}
   examples={[
@@ -92,7 +92,7 @@ export default function WordmarkGlowDemo() {
       props: { variant: "wordmark-glow", content: "AlgorizeTech" },
       usage: usageWordmarkGlow,
       code: extractCode("src/components/custom/blocks/ParticleCanvasBlock.tsx"),
-      minHeight: 260,
+      minHeight: 160,
     },
   ]}
 />

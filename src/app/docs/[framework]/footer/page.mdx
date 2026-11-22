@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("footer");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Footer
@@ -185,7 +185,7 @@ export default function WordmarkFooterDemo() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={390}
   name="footer"
   columns={1}
   examples={[

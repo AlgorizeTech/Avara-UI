@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("scroll-split-cards");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { Installation } from "@/components/site/installation";
 import { extractCode } from "@/lib/code";
 
@@ -137,7 +137,7 @@ export default function SlowTransitionExample() {
       },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ScrollSplitCardsBlock.tsx"),
-      minHeight: 720,
+      minHeight: 470,
     },
   ]}
 />
@@ -216,7 +216,7 @@ export default function SlowTransitionExample() {
       },
       usage: usageSlowTransition,
       code: extractCode("src/components/custom/blocks/ScrollSplitCardsBlock.tsx"),
-      minHeight: 720,
+      minHeight: 470,
     },
   ]}
 />

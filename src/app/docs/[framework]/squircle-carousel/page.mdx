@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("squircle-carousel");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { Installation } from "@/components/site/installation";
 import { extractCode } from "@/lib/code";
 
@@ -43,7 +43,7 @@ export default function SquircleCarouselDemo() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={330} headingLevel={2}
   name="squircle-carousel"
   colorControl={false}
   columns={1}

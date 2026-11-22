@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("newsletter");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractMotionCode } from "@/lib/code";
 
 # Shadcn Newsletter
@@ -143,7 +143,7 @@ export default function Signup() {
       props: { variant: "portraits", rounded: true },
       usage: usagePortraits,
       code: extractMotionCode("src/components/custom/blocks/NewsletterBlock.tsx"),
-      minHeight: 460,
+      minHeight: 350,
     },
   ]}
 />
@@ -177,7 +177,7 @@ export default function Signup() {
       ],
       props: { variant: "spotlight", rounded: true },
       usage: usageSpotlight,
-      minHeight: 520,
+      minHeight: 410,
     },
     {
       title: "Issues",
@@ -198,7 +198,7 @@ export default function Signup() {
       ],
       props: { variant: "issues", rounded: true },
       usage: usageIssues,
-      minHeight: 560,
+      minHeight: 330,
     },
   ]}
 />

@@ -1,6 +1,6 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 export const metadata = docsPageMetadata("text-animation", {
@@ -76,7 +76,7 @@ export default function HeadlineAnimation() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={190} headingLevel={2}
   name="text-animation"
   columns={1}
   examples={[
@@ -104,7 +104,7 @@ export default function HeadlineAnimation() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={190}
   name="text-animation"
   columns={1}
   examples={[

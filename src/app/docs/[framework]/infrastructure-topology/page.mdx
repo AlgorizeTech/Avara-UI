@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("infrastructure-topology");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Infrastructure Topology
@@ -86,7 +86,7 @@ export default function InfrastructureTopologyPulseDemo() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={530}
   name="infrastructure-topology"
   colorControl={false}
   columns={1}

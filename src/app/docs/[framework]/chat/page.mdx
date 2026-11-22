@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("chat");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Chat Application
@@ -133,7 +133,7 @@ export default function LiquidGlassChat() {
   );
 };`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={530} headingLevel={2}
   name="chat"
   colorControl
   columns={1}
@@ -166,7 +166,7 @@ export default function LiquidGlassChat() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={530}
   name="chat"
   colorControl
   columns={1}

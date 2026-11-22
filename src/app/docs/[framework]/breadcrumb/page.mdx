@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("breadcrumb");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Breadcrumb
@@ -58,7 +58,7 @@ export default function DeepBreadcrumb() {
   return <BreadcrumbBlock items={deepPath} maxItems={4} />;
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={160} headingLevel={2}
   name="breadcrumb"
   colorControl
   columns={1}
@@ -96,7 +96,7 @@ export default function DeepBreadcrumb() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={160}
   name="breadcrumb"
   colorControl
   columns={1}

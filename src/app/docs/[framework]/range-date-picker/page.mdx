@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("range-date-picker");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Range Date Picker
@@ -133,7 +133,7 @@ export default function BookingWindow() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase minHeight={350}
   name="range-date-picker"
   columns={1}
   examples={[

@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("button");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Button
@@ -332,7 +332,7 @@ export default function AuthAndGlassButtonsDemo() {
   );
 };`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={330} headingLevel={2}
   name="button"
   colorControl
   columns={1}
@@ -353,7 +353,7 @@ export default function AuthAndGlassButtonsDemo() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={330}
   name="button"
   colorControl
   columns={1}

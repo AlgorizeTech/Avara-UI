@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("wizard");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Progress Wizard
@@ -156,7 +156,7 @@ ${wizardSteps}
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={360} headingLevel={2}
   name="wizard"
   colorControl
   columns={1}
@@ -196,7 +196,7 @@ ${wizardSteps}
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={360}
   name="wizard"
   colorControl
   columns={1}

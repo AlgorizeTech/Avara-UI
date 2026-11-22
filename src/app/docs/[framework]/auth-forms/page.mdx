@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("auth-forms");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Login & Signup Form
@@ -239,7 +239,7 @@ export default function RibbonDriftLoginPage() {
 
 Every example below is the same `LoginForm` you just installed — only the props change.
 
-<ExampleShowcase
+<ExampleShowcase minHeight={470}
   name="login-form"
   colorControl
   columns={1}
@@ -631,7 +631,7 @@ export default function RibbonDriftRegisterPage() {
 
 Every example below is the same `RegisterForm` you just installed — only the props change.
 
-<ExampleShowcase
+<ExampleShowcase minHeight={460}
   name="register-form"
   colorControl
   columns={1}

@@ -1,6 +1,6 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 export const metadata = docsPageMetadata("waitlist", {
@@ -130,7 +130,7 @@ export default function GetInLine() {
       props: { variant: "launch" },
       usage: usageLaunch,
       code: extractCode("src/components/custom/blocks/WaitlistBlock.tsx"),
-      minHeight: 580,
+      minHeight: 480,
     },
   ]}
 />
@@ -158,7 +158,7 @@ export default function GetInLine() {
       ],
       props: { variant: "card" },
       usage: usageCard,
-      minHeight: 480,
+      minHeight: 320,
     },
     {
       title: "Queue",
@@ -177,7 +177,7 @@ export default function GetInLine() {
       ],
       props: { variant: "queue", rounded: true },
       usage: usageQueue,
-      minHeight: 560,
+      minHeight: 410,
     },
   ]}
 />

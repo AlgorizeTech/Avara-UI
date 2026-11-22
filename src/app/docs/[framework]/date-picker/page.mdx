@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("date-picker");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Date Picker
@@ -135,7 +135,7 @@ export default function InlineCalendarDatePicker() {
   name="date-picker"
   colorControl
   columns={1}
-  minHeight={440}
+  minHeight={360}
   examples={[
     {
       title: "Inline Calendar",
@@ -166,7 +166,7 @@ export default function InlineCalendarDatePicker() {
   name="date-picker"
   colorControl
   columns={1}
-  minHeight={450}
+  minHeight={330}
   examples={[
     {
       title: "Date picker",
@@ -234,7 +234,7 @@ export default function InlineCalendarDatePicker() {
             "as well, times that have already passed today are disabled too, and landing on today snaps the time forward to now.",
         },
       ],
-      minHeight: 680,
+      minHeight: 480,
       props: { showTime: true, disablePast: true },
       usage: usageTime,
     },

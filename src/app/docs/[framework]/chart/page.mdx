@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("chart");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Chart
@@ -281,7 +281,7 @@ export default function MetricsOverviewDemo() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={330} headingLevel={2}
   name="chart"
   colorControl
   columns={1}
@@ -321,7 +321,7 @@ export default function MetricsOverviewDemo() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={310}
   name="chart"
   colorControl
   columns={1}

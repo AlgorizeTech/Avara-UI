@@ -1,6 +1,6 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 export const metadata = docsPageMetadata("apple-select", {
@@ -68,7 +68,7 @@ export default function MultilineSelection() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={220} headingLevel={2}
   name="apple-select"
   colorControl
   columns={1}
@@ -96,7 +96,7 @@ export default function MultilineSelection() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={220}
   name="apple-select"
   colorControl
   columns={1}

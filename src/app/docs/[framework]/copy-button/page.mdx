@@ -1,7 +1,7 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
 import { REGISTRY_NAMESPACE } from "@/lib/registry";
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 export const metadata = docsPageMetadata("copy-button", {
@@ -141,7 +141,7 @@ export default function CustomLabels() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={220} headingLevel={2}
   name="copy-button"
   colorControl
   columns={1}
@@ -173,7 +173,7 @@ export default function CustomLabels() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={70}
   name="copy-button"
   colorControl
   columns={1}

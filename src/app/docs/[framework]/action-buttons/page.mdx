@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("action-buttons");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
 
@@ -81,7 +81,7 @@ export default function ActionButtonsDemo() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase minHeight={330}
   headingLevel={2}
   name="action-buttons"
   colorControl

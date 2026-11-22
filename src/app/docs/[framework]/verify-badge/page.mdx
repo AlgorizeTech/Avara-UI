@@ -1,6 +1,6 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 export const metadata = docsPageMetadata("verify-badge", {
@@ -160,7 +160,7 @@ export default function NotificationCard() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={280} headingLevel={2}
   name="verify-badge"
   colorControl
   columns={1}
@@ -188,7 +188,7 @@ export default function NotificationCard() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={280}
   name="verify-badge"
   colorControl
   columns={1}

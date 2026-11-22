@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("otp-input");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn OTP Input
@@ -140,7 +140,7 @@ export default function UnderlinedOtp() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={290} headingLevel={2}
   name="otp-input"
   colorControl
   colorLabel="Focus Color"
@@ -174,7 +174,7 @@ export default function UnderlinedOtp() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={290}
   name="otp-input"
   colorControl
   colorLabel="Focus Color"

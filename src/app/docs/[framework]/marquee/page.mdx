@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("marquee");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Marquee
@@ -181,7 +181,7 @@ export default function BareLogoWall() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={200} headingLevel={2}
   name="marquee"
   colorControl={false}
   columns={1}
@@ -213,7 +213,7 @@ export default function BareLogoWall() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={200}
   name="marquee"
   colorControl={false}
   columns={1}

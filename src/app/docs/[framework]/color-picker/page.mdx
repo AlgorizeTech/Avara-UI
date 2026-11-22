@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("color-picker");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Color Picker
@@ -43,7 +43,7 @@ export default function GradientStudioDemo() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase minHeight={460}
   name="color-picker"
   colorControl={false}
   columns={1}

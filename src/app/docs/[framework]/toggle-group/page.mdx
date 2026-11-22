@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("toggle-group");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Toggle Group
@@ -215,7 +215,7 @@ export default function DisabledGroup() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={220} headingLevel={2}
   name="toggle-group"
   colorControl
   colorLabel="Active Color Theme"
@@ -250,7 +250,7 @@ export default function DisabledGroup() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={220}
   name="toggle-group"
   colorControl
   colorLabel="Active Color Theme"

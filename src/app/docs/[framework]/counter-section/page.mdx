@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("counter-section");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { Installation } from "@/components/site/installation";
 import { extractCode } from "@/lib/code";
 
@@ -346,7 +346,7 @@ export default function SpotlightGradientCounter() {
       props: { variant: "cyber-hud", stats: cyberHudStats },
       usage: usageCyberHud,
       code: extractCode("src/components/custom/blocks/CounterSectionBlock.tsx"),
-      minHeight: 280,
+      minHeight: 240,
     },
     {
       title: "2. Minimal Slash (Agency / Studio)",
@@ -361,7 +361,7 @@ export default function SpotlightGradientCounter() {
       ],
       props: { variant: "minimal-slash", stats: minimalSlashStats },
       usage: usageMinimalSlash,
-      minHeight: 280,
+      minHeight: 220,
     },
     {
       title: "3. Halftone Cinema (Architectural)",
@@ -376,7 +376,7 @@ export default function SpotlightGradientCounter() {
       ],
       props: { variant: "halftone-cinema", stats: halftoneCinemaStats },
       usage: usageHalftoneCinema,
-      minHeight: 280,
+      minHeight: 210,
     },
     {
       title: "4. Spotlight Gradient (Interactive Pointer)",

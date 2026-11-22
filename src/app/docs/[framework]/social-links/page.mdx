@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("social-links");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Social Links
@@ -150,7 +150,7 @@ export default function ExpandReplaceShareButton() {
       props: { example: "row" },
       usage: usageRow,
       code: extractCode("src/components/custom/blocks/SocialLinksBlock.tsx"),
-      minHeight: 260,
+      minHeight: 180,
     },
   ]}
 />
@@ -185,7 +185,7 @@ export default function ExpandReplaceShareButton() {
       ],
       props: { example: "expand-replace", variant: "expand-replace" },
       usage: usageExpandReplace,
-      minHeight: 720,
+      minHeight: 510,
     },
     {
       title: "Expandable 4-directional share buttons",
@@ -206,7 +206,7 @@ export default function ExpandReplaceShareButton() {
       ],
       props: { example: "expand-reveal", variant: "expand-reveal" },
       usage: usageExpandReveal,
-      minHeight: 720,
+      minHeight: 510,
     },
     {
       title: "Every network, outlined",
@@ -227,7 +227,7 @@ export default function ExpandReplaceShareButton() {
       ],
       props: { example: "all", variant: "outline", size: "lg" },
       usage: usageAll,
-      minHeight: 260,
+      minHeight: 180,
     },
     {
       title: "Author byline",
@@ -246,7 +246,7 @@ export default function ExpandReplaceShareButton() {
       ],
       props: { example: "byline" },
       usage: usageByline,
-      minHeight: 260,
+      minHeight: 180,
     },
   ]}
 />

@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("book-appointment");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Book Appointment
@@ -184,7 +184,7 @@ export default function BookAppointmentPage() {
       props: { rounded: true },
       usage: usagePage,
       code: extractCode("src/components/custom/blocks/BookAppointmentBlock.tsx"),
-      minHeight: 980,
+      minHeight: 600,
     },
     {
       title: "Solid",
@@ -200,7 +200,7 @@ export default function BookAppointmentPage() {
       ],
       props: { rounded: true, variant: "solid" },
       usage: usagePageSolid,
-      minHeight: 980,
+      minHeight: 600,
     },
   ]}
 />

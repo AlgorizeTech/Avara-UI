@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("ribbon-drift");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Ribbon Drift
@@ -80,7 +80,7 @@ export default function CrossRibbonLogosExample() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase minHeight={400}
   name="ribbon-drift"
   colorControl
   columns={1}

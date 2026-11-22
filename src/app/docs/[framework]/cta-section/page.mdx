@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("cta-section");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { Installation } from "@/components/site/installation";
 import { extractCode } from "@/lib/code";
 
@@ -157,7 +157,7 @@ export default function MobileAppExample() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={480}
   name="cta-section"
   columns={1}
   examples={[

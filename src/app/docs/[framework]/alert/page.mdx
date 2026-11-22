@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("alert");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Alert
@@ -11,7 +11,7 @@ An inline alert for messages that stay in the layout. Six types say what it is a
 
 <AgentVariants slug="alert" />
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={530} headingLevel={2}
   name="alert"
   columns={1}
   colorControl={false}
@@ -36,7 +36,7 @@ An inline alert for messages that stay in the layout. Six types say what it is a
 
 <Installation name="alert" />
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={530} headingLevel={2}
   name="alert"
   columns={1}
   colorControl={false}

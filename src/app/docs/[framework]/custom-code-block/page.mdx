@@ -3,7 +3,7 @@ import { REGISTRY_ADD_ARGS, REGISTRY_NAMESPACE } from "@/lib/registry";
 
 export const metadata = docsPageMetadata("custom-code-block");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Custom Code Block
@@ -259,7 +259,7 @@ export default function MultiFileSnippet() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={450}
   name="custom-code-block"
   colorControl={false}
   columns={1}

@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("flowchart");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Flowchart / Node Builder
@@ -279,7 +279,7 @@ export default function AgentPipeline() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={350} headingLevel={2}
   name="flowchart"
   columns={1}
   examples={[
@@ -311,7 +311,7 @@ export default function AgentPipeline() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={350}
   name="flowchart"
   columns={1}
   examples={[

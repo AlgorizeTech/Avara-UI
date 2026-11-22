@@ -1,6 +1,6 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 export const metadata = docsPageMetadata("selection-frame", {
@@ -120,7 +120,7 @@ export default function FramedCard() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={220} headingLevel={2}
   name="selection-frame"
   colorControl
   columns={1}
@@ -148,7 +148,7 @@ export default function FramedCard() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={220}
   name="selection-frame"
   colorControl
   columns={1}
@@ -215,7 +215,7 @@ export default function FramedCard() {
   ]}
 />
 
-<ExampleShowcase
+<ExampleShowcase minHeight={220}
   name="selection-frame"
   colorControl
   columns={1}

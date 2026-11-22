@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("memories-card");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractMotionCode } from "@/lib/code";
 
 # Shadcn Memories Card
@@ -77,7 +77,7 @@ export default function TravelDeck() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={490} headingLevel={2}
   name="memories-card"
   colorControl
   columns={1}

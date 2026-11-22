@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("file-upload");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode, extractMotionCode } from "@/lib/code";
 
 # Shadcn File Upload
@@ -156,7 +156,7 @@ export default function UploadStates() {
 
 The full suite: a `Dropzone` that hands you `File[]`, and an `UploadItem` for each row of your own queue state.
 
-<ExampleShowcase
+<ExampleShowcase minHeight={290}
   name="upload"
   colorControl={false}
   columns={1}
@@ -248,7 +248,7 @@ For a form that just needs files attached, the `Input` block has a file mode wit
       props: { inputType: "file", isMultiple: true, isImageOnly: true },
       usage: usageFileInput,
       code: extractCode("src/components/custom/blocks/InputBlock.tsx"),
-      minHeight: 460,
+      minHeight: 290,
     },
   ]}
 />
@@ -307,7 +307,7 @@ export default function DropZone() {
 
 The `Folder` block as an upload surface — a playful alternative to a dropzone for a handful of files.
 
-<ExampleShowcase
+<ExampleShowcase minHeight={330}
   name="folder"
   colorControl={false}
   columns={1}
