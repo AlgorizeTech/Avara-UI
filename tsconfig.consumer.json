@@ -125,6 +125,7 @@
     "src/components/custom/blocks/LoaderBlock.tsx",
     "src/components/custom/blocks/LoginForm.tsx",
     "src/components/custom/blocks/MagicBentoBlock.tsx",
+    "src/components/custom/blocks/Maps.tsx",
     "src/components/custom/blocks/MarqueeBlock.tsx",
     "src/components/custom/blocks/MasonryGridBlock.tsx",
     "src/components/custom/blocks/MemoriesCardBlock.tsx",

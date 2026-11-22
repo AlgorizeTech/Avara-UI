@@ -121,6 +121,7 @@ export const sandboxNames = [
   "loader",
   "login-form",
   "magic-bento",
+  "maps",
   "marquee",
   "masonry-grid",
   "masonry-grid-motion",

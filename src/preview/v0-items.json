@@ -467,6 +467,16 @@
     "minimal": "Shadcn Fleet Tracker Map — Minimal",
     "modern": "Shadcn Fleet Tracker Map — Modern"
   },
+  "maps": {
+    "route-planner": "Maps — Route Planner",
+    "property-listings": "Maps — Property Listings",
+    "live-tracking": "Maps — Live Tracking",
+    "store-locator": "Maps — Store Locator",
+    "fleet-dispatch": "Maps — Fleet Dispatch",
+    "coverage-zones": "Maps — Coverage Zones",
+    "heatmap": "Maps — Heatmap",
+    "incident-monitor": "Maps — Incident Monitor"
+  },
   "floating-contact-button": {
     "floating-contact-button": "Floating Contact Button",
     "bottom-left": "Floating Contact Button — Bottom left",

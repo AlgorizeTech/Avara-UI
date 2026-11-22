@@ -110,7 +110,7 @@ Install the chosen variant's own `install` command from the index. Several looks
 - `input`: 5 variants. All live: https://avaraui.com/view/input
 - `invoice`: 3 variants. All live: https://avaraui.com/view/invoice
 - `item`: 2 variants. All live: https://avaraui.com/view/item
-- `fleet-tracker`: 3 variants. All live: https://avaraui.com/view/fleet-tracker
+- `fleet-tracker`: 11 variants. All live: https://avaraui.com/view/fleet-tracker
 - `modern-scroll-stack`: 2 variants. All live: https://avaraui.com/view/modern-scroll-stack
 - `particle-canvas`: 2 variants. All live: https://avaraui.com/view/particle-canvas
 - `range-date-picker`: 4 variants. All live: https://avaraui.com/view/range-date-picker
