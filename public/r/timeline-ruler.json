@@ -3,7 +3,7 @@
   "name": "timeline-ruler",
   "title": "Timeline Ruler",
   "author": "AlgorizeTech",
-  "description": "Ask the user to pick one of 5 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Ruler timeline. Skip the question if the user already named one. A date-ruler timeline: labels slide past a fixed wavy rail and the one at the bulge is detailed beside it, with a headline figure. Use it for monthly metrics or a dated activity log.",
+  "description": "Ask the user to pick one of 6 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Ruler timeline. Skip the question if the user already named one. A date-ruler timeline: labels slide past a fixed wavy rail and the one at the bulge is detailed beside it, with a headline figure. Use it for monthly metrics or a dated activity log.",
   "dependencies": [
     "lucide-react"
   ],

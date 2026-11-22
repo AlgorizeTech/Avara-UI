@@ -176,31 +176,26 @@ export default function ColoredMap() {
 Learn about the Data Maps component's geographic visualization features, mapping interactive data points onto vector country paths.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">SSR Compatible</h3>
-    <p className="text-muted-foreground text-sm">Uses Next.js dynamic imports to safely load Leaflet client-side without hydration errors.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Lightweight Vectors</h3>
-    <p className="text-muted-foreground text-sm">Fetches clean GeoJSON data on the fly instead of relying on heavy raster map tiles.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Dual Variants</h3>
-    <p className="text-muted-foreground text-sm">Supports both solid polygon fills and modern pulsing dots for geographic emphasis.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Rich Hover Cards</h3>
-    <p className="text-muted-foreground text-sm">Elegant tooltips with country flags, data metrics, and up/down trend indicators.</p>
-  </div>
+  <InfoCard title="SSR Compatible">
+    <p>Uses Next.js dynamic imports to safely load Leaflet client-side without hydration errors.</p>
+  </InfoCard>
+  <InfoCard title="Lightweight Vectors">
+    <p>Fetches clean GeoJSON data on the fly instead of relying on heavy raster map tiles.</p>
+  </InfoCard>
+  <InfoCard title="Dual Variants">
+    <p>Supports both solid polygon fills and modern pulsing dots for geographic emphasis.</p>
+  </InfoCard>
+  <InfoCard title="Rich Hover Cards">
+    <p>Elegant tooltips with country flags, data metrics, and up/down trend indicators.</p>
+  </InfoCard>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Dynamic Imports</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Leaflet reads the browser's <code>window</code> at import time, so the component defers loading it until after mount. <ForFramework only="nextjs">That is why any component wrapping <code>react-leaflet</code> must stay off the server — this one already does, so you can render it directly without a <code>{"{ ssr: false }"}</code> wrapper of your own.</ForFramework><ForFramework only="reactjs">A Vite SPA has no server render, so there is nothing to opt out of — import and render it directly.</ForFramework></p>
-  </div>
+  <InfoCard title="Dynamic Imports">
+    <p>Leaflet reads the browser's <code>window</code> at import time, so the component defers loading it until after mount. <ForFramework only="nextjs">That is why any component wrapping <code>react-leaflet</code> must stay off the server — this one already does, so you can render it directly without a <code>{"{ ssr: false }"}</code> wrapper of your own.</ForFramework><ForFramework only="reactjs">A Vite SPA has no server render, so there is nothing to opt out of — import and render it directly.</ForFramework></p>
+  </InfoCard>
   <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
     <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">GeoJSON Caching</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">By default, the map fetches the world map GeoJSON from a remote CDN. For production environments, it is highly recommended to download the <code>custom.geo.json</code> file and host it locally in your <code>public</code> directory to reduce latency.</p>

@@ -58,10 +58,13 @@ import { socialLinks } from "./social-links";
 import { table } from "./table";
 import { techStack } from "./tech-stack";
 import { timeline } from "./timeline";
+import { breadcrumb } from "./breadcrumb";
 import { toggleGroup } from "./toggle-group";
 import { ribbonDrift } from "./ribbon-drift";
 import { error } from "./error";
 import { alert } from "./alert";
+import { carousel } from "./carousel";
+import { infrastructureTopology } from "./infrastructure-topology";
 import { animatedTimeline } from "./animated-timeline";
 import type { PageVariants } from "./types";
 
@@ -131,9 +134,12 @@ export const pageVariants: PageVariants[] = [
   table,
   techStack,
   timeline,
+  breadcrumb,
   toggleGroup,
   ribbonDrift,
   alert,
+  carousel,
+  infrastructureTopology,
 ];
 
 /**
@@ -185,9 +191,6 @@ export const NO_CHOICE_NEEDED: string[] = [
   // Its examples differ by hover behaviour (zoom or spread), tooltip type (none, plain, arrow),
   // size and an action slot, all props of one row of faces (audited 2026-11-10).
   "avatar-stack",
-  // The page names four visual variants but its examples all show the classic one (icons and
-  // path truncation are props), so there are no alternative designs to link to (audited 2026-11-10).
-  "breadcrumb",
   // Its examples are states of one picker (an error, disabled past dates, a time column), all props
   // (audited 2026-11-10).
   "date-picker",

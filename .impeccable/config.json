@@ -1,0 +1,26 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "undersized-ui-text",
+        "value": "*",
+        "files": [
+          ".playwright-mcp/og/meta-image.html"
+        ],
+        "createdAt": "2026-11-12T07:04:53.670Z",
+        "reason": "Claude's judgement: this file is only the source for a 1200x630 social-card PNG; the small and dim text is mock component content inside the picture, not interactive UI"
+      },
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          ".playwright-mcp/og/meta-image.html"
+        ],
+        "createdAt": "2026-11-12T07:04:53.915Z",
+        "reason": "Claude's judgement: this file is only the source for a 1200x630 social-card PNG; the small and dim text is mock component content inside the picture, not interactive UI"
+      }
+    ]
+  }
+}

@@ -284,33 +284,19 @@ npx shadcn@latest add @avara-ui/counter-section
 
 ## Features
 
-### 4 Production Variants
-
 Cyber HUD for fintech & developer tools, Minimal Slash for agencies, Halftone Cinema for architecture, and Spotlight Gradient for modern tech.
-
-### 100% Reusable with Custom Datasets
 
 Every variant accepts a typed stats array prop with value, prefix, suffix, label, sublabel, and tag for complete customization.
 
-### No Shadows, Pure Flat Design
-
 Engineered with clean, crisp borders and zero box-shadows for a modern, sleek aesthetic that blends into any layout.
-
-### 100% Theme Adaptive
 
 Every variant—including Halftone and Cyber HUD—renders completely light in Light Mode and deep dark in Dark Mode.
 
 ## Best Practices & Guidelines
 
-### Layout & Placement
-
 Place counter sections below the hero fold or immediately after high-level feature highlights. The animated count-up runs automatically when the section intersects the viewport (using `useInView`), making it ideal for social proof and conversion trust anchors.
 
-### Variant Selection
-
 Choose `variant="cyber-hud"` for developer tools, Web3, security, and fintech telemetry; `variant="minimal-slash"` for modern agencies, SaaS, and portfolios; `variant="halftone-cinema"` for architecture and editorial brands; and `variant="spotlight-gradient"` for interactive consumer tech and modern AI applications.
-
-### Custom Data & Precision
 
 Always specify the `decimals` prop on stats when dealing with floating-point metrics (e.g., `decimals: 1` for `2.4` or `decimals: 3` for `99.999`). This prevents awkward integer rounding during the count-up animation.
 

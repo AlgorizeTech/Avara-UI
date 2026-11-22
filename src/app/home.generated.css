@@ -957,6 +957,21 @@ html body[data-scroll-locked] {
   }
 }
 
+/* No scrollbar inside a preview stage. A fixed overlay (a toast sliding in
+   from below the edge) briefly overflows the stage, and a classic scrollbar
+   appearing then vanishing narrows the stage and shakes the centred demo
+   twice. Hidden, the stage can still scroll; it just doesn't change width.
+   Covers the inline stage ([data-sandbox]) and the /preview iframe, whose
+   scroller is <html>. */
+[data-sandbox],
+html:has(> body[data-sandbox]) {
+  scrollbar-width: none;
+}
+[data-sandbox]::-webkit-scrollbar,
+html:has(> body[data-sandbox])::-webkit-scrollbar {
+  display: none;
+}
+
 /* A demo's outer frame panel inside the preview sandbox, marked by
    SandboxClient. The panel already stands off the --preview-stage surface, so
    its border is dropped. Transparent rather than removed, so nothing shifts

@@ -223,43 +223,27 @@ npx shadcn@latest add @avara-ui/table
 
 `variant="soft"` is the admin-dashboard look: a rounded panel on a hairline ring, a tinted header band, pill controls and calm round row actions, every tint mixed from the table colour. Everything below lives inside the panel — status tabs with live counts, select filters, search, a reset, the page's actions, sortable columns with a pinned actions column, a rows-per-page picker, pagination and a floating bar for the selected rows. The first example on this page is a soft table — its Usage tab is the preview's exact source.
 
-### The parts that come with it
-
 `DataTableTabs`, `DataTableFilter` and `DataTableReset` filter and clear; `TableAction` is the toolbar button (primary, secondary, ghost); `TableRowAction` is a round icon button that needs a `label`; `TableBadge` is a status pill (`tone`) or, without its dot, a tag; `TablePerson` draws an avatar with a name and a second line; `DataTableBatchAction` goes inside the batch bar. They work in every variant and take the soft look inside a soft table.
-
-### Empty results explain themselves
 
 Give `DataTableEmpty` an `icon`, `title`, `description` and `action`, and read `search`, `isFiltered` and `resetAll` from `useDataTable` (in `table-core`) to say whether nothing matched or nothing exists yet — the example's `NoUsers` does exactly that.
 
 ## Features
 
-### No data transformation
-
 getRowId resolves id, _id or uuid out of the box, dot paths reach into nested objects, and accessor functions cover anything computed.
-
-### Opt-in controls
 
 Search, page size, pagination and selection are separate components. Leave one out and the feature is simply not there — no boolean flags to manage.
 
-### Typed sorting
-
 Numbers compare numerically by default rather than lexically, and sortType lets you force string, number or date comparison.
-
-### Escape hatch
 
 useDataTable exposes the whole state — rows, search, sort, paging, selection — so you can build your own toolbar or pager on the same provider.
 
 ## Best Practices & Guidelines
-
-### Give rows a stable id
 
 Selection is tracked by id, not by index, so it survives sorting and paging. If your rows have no natural key, derive one before passing the array in — an array index will unselect the wrong row as soon as the order changes.
 
 ### Client-side by design
 
 Search, sort and paging all run over the array you pass in. For server-driven datasets, use the plain Table primitives and drive the query yourself — or keep DataTable for the current page only and supply your own footer.
-
-### Give a function sortBy an id
 
 A string sortBy doubles as its own identity. When you pass an accessor function, add sortId so the active-sort indicator stays stable across re-renders.
 

@@ -3,7 +3,7 @@
   "name": "breadcrumb",
   "title": "Breadcrumb",
   "author": "AlgorizeTech",
-  "description": "A breadcrumb trail with per-item icons and automatic collapsing when the path is long. Use it to show position in a deep hierarchy.",
+  "description": "Ask the user to pick one of 2 breadcrumb variants: https://avaraui.com/view/breadcrumb. This is the Breadcrumb. Skip the question if the user already named one. A breadcrumb trail with per-item icons and automatic collapsing when the path is long. Use it to show position in a deep hierarchy.",
   "dependencies": [
     "lucide-react"
   ],

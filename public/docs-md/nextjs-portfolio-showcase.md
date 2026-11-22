@@ -119,19 +119,11 @@ npx shadcn@latest add @avara-ui/portfolio-showcase
 
 Discover the key capabilities that make Portfolio Showcase the ultimate display engine for creative work.
 
-### 2D Infinite Canvas
-
 Cards seamlessly wrap around all 4 screen boundaries with zero stutter or boundaries, creating an uninterrupted endless browsing experience.
-
-### Inertial Momentum Physics
 
 Natural kinetic friction and velocity tracking respond to mouse flings and touch swipes, smoothly decelerating like a physical surface.
 
-### Organic Masonry Stagger
-
 Configurable column offsets produce an asymmetric waterfall composition that highlights projects without rigid row constraints.
-
-### Rich Project Inspection Modal
 
 Clicking any work card pops open an accessible, responsive presentation dialog with client specs, deliverables, and live project triggers.
 

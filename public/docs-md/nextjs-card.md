@@ -939,11 +939,7 @@ export default function NowPlayingCard() {
 ## Features
 Learn about the Card component's flexible layout options, including headers, footers, content areas, and interactive hover effects.
 
-### Customizable
-
 Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-### Composable
 
 Mix and match sub-components to create complex card layouts effortlessly.
 

@@ -354,25 +354,15 @@ export default function MultiFileSnippet() {
 ## Features
 Explore the Custom Code Block's syntax highlighting features, complete with copy-to-clipboard functionality and line numbering.
 
-### No Highlighting Library
-
 Uses a lightweight, custom regex engine for syntax highlighting. No need to install heavy libraries like PrismJS or Shiki.
-
-### Language Badges
 
 Automatically displays the correct language icon (React, JS, TS, HTML, CSS, Bash) in the macOS-style header.
 
-### Clipboard Copy
-
 Includes a built-in copy button with a temporary success state (checkmark) for an excellent developer experience.
-
-### Dark Mode Ready
 
 The syntax highlighter colors are carefully chosen to look gorgeous on both light and dark backgrounds.
 
 ## Best Practices & Guidelines
-
-### Language Prop Mapping
 
 Make sure to pass the correct `language` prop (e.g., `"tsx"`, `"bash"`, `"css"`). This prop drives both the regex syntax highlighting engine and the language icon rendered in the header.
 

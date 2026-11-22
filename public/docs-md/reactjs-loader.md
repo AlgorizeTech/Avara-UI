@@ -157,8 +157,6 @@ export default function BarLoader() {
 
 ## Best Practices & Guidelines
 
-### Usage Guidelines
-
 Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 
 ## Props Reference

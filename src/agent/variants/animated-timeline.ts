@@ -16,6 +16,18 @@ export const animatedTimeline: PageVariants = {
   ],
   variants: [
     {
+      id: "cable",
+      label: "Cable timeline",
+      group: "Interactive pickers",
+      summary: "Cards on a centre playhead with cables and year numerals; drag or scroll the wheel.",
+      bestFor: ["browsing launches, releases or a project history", "events with a picture or figure each"],
+      avoidIf: ["it must work as a plain scrolling list", "entries need long body text"],
+      traits: ["horizontal", "drag and wheel", "year numerals", "arrow keys"],
+      item: "timeline-cable",
+      demo: "timeline-cable",
+      example: "Cable timeline",
+    },
+    {
       id: "animated",
       label: "Animated rail",
       group: "Scroll and rail",

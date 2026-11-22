@@ -310,31 +310,26 @@ export default function MultiFileSnippet() {
 Explore the Custom Code Block's syntax highlighting features, complete with copy-to-clipboard functionality and line numbering.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">No Highlighting Library</h3>
-    <p className="text-muted-foreground text-sm">Uses a lightweight, custom regex engine for syntax highlighting. No need to install heavy libraries like PrismJS or Shiki.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Language Badges</h3>
-    <p className="text-muted-foreground text-sm">Automatically displays the correct language icon (React, JS, TS, HTML, CSS, Bash) in the macOS-style header.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Clipboard Copy</h3>
-    <p className="text-muted-foreground text-sm">Includes a built-in copy button with a temporary success state (checkmark) for an excellent developer experience.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Dark Mode Ready</h3>
-    <p className="text-muted-foreground text-sm">The syntax highlighter colors are carefully chosen to look gorgeous on both light and dark backgrounds.</p>
-  </div>
+  <InfoCard title="No Highlighting Library">
+    <p>Uses a lightweight, custom regex engine for syntax highlighting. No need to install heavy libraries like PrismJS or Shiki.</p>
+  </InfoCard>
+  <InfoCard title="Language Badges">
+    <p>Automatically displays the correct language icon (React, JS, TS, HTML, CSS, Bash) in the macOS-style header.</p>
+  </InfoCard>
+  <InfoCard title="Clipboard Copy">
+    <p>Includes a built-in copy button with a temporary success state (checkmark) for an excellent developer experience.</p>
+  </InfoCard>
+  <InfoCard title="Dark Mode Ready">
+    <p>The syntax highlighter colors are carefully chosen to look gorgeous on both light and dark backgrounds.</p>
+  </InfoCard>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Language Prop Mapping</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Make sure to pass the correct <code>language</code> prop (e.g., <code>"tsx"</code>, <code>"bash"</code>, <code>"css"</code>). This prop drives both the regex syntax highlighting engine and the language icon rendered in the header.</p>
-  </div>
+  <InfoCard title="Language Prop Mapping">
+    <p>Make sure to pass the correct <code>language</code> prop (e.g., <code>"tsx"</code>, <code>"bash"</code>, <code>"css"</code>). This prop drives both the regex syntax highlighting engine and the language icon rendered in the header.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

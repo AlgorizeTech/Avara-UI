@@ -148,31 +148,26 @@ export default function MultilineSelection() {
 Discover the Apple Select component's capabilities for pointing at part of a sentence with a native-feeling selection.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Author-controlled</h3>
-    <p className="text-muted-foreground text-sm">The range is a pair of numbers in code, so the same selection renders identically for every visitor — no screenshots, no drift.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Accessible</h3>
-    <p className="text-muted-foreground text-sm">The handles are hidden from assistive tech and the highlighted span uses a semantic <code>mark</code>, so the sentence reads as one string.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Inherits typography</h3>
-    <p className="text-muted-foreground text-sm">Handles and highlight are sized in <code>em</code>, so they scale with whatever font size and weight you apply through <code>className</code>.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Zero dependencies</h3>
-    <p className="text-muted-foreground text-sm">Plain React and CSS — the optional entrance animation ships its own keyframes, so there is nothing to add to your global styles.</p>
-  </div>
+  <InfoCard title="Author-controlled">
+    <p>The range is a pair of numbers in code, so the same selection renders identically for every visitor — no screenshots, no drift.</p>
+  </InfoCard>
+  <InfoCard title="Accessible">
+    <p>The handles are hidden from assistive tech and the highlighted span uses a semantic <code>mark</code>, so the sentence reads as one string.</p>
+  </InfoCard>
+  <InfoCard title="Inherits typography">
+    <p>Handles and highlight are sized in <code>em</code>, so they scale with whatever font size and weight you apply through <code>className</code>.</p>
+  </InfoCard>
+  <InfoCard title="Zero dependencies">
+    <p>Plain React and CSS — the optional entrance animation ships its own keyframes, so there is nothing to add to your global styles.</p>
+  </InfoCard>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">Land on word boundaries</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Compute <code>selection</code> from the text (for example <code>text.indexOf("ability")</code>) rather than hard-coding magic numbers, so an edit to the copy cannot leave the highlight cutting through a word.</p>
-  </div>
+  <InfoCard title="Land on word boundaries">
+    <p>Compute <code>selection</code> from the text (for example <code>text.indexOf("ability")</code>) rather than hard-coding magic numbers, so an edit to the copy cannot leave the highlight cutting through a word.</p>
+  </InfoCard>
   <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
     <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">It is not a real selection</h3>
     <p className="text-[13px] leading-relaxed text-foreground/50">The handles do not drag and the range does not copy. Use it to illustrate a selection, not to replace the browser's native one.</p>

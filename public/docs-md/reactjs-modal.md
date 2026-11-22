@@ -318,25 +318,15 @@ export default function LiquidGlassModal() {
 ## Features
 Discover the Modal's flexible overlay features, designed for important user prompts with accessible focus management and animations.
 
-### Variant Presets
-
 Pre-styled variants (standard, confirmation, form, fullscreen, glass, liquid-glass) eliminate boilerplate styling.
-
-### Accessible
 
 Built with aria dialog roles, label connections, Escape dismissal, and body scroll locking.
 
-### Responsive
-
 Optimized sizing and wrapped action rows that adapt seamlessly across mobile, tablet, and desktop.
-
-### Composable
 
 Supports optional subcomponents (ModalHeader, ModalBody, ModalFooter) for fully custom layouts.
 
 ## Best Practices & Guidelines
-
-### Usage Guidelines
 
 Pass `variant` with title, description, and button labels for fast implementation without manual styling. If you need complete layout freedom, use `ModalHeader`, `ModalBody`, and `ModalFooter` subcomponents directly.
 

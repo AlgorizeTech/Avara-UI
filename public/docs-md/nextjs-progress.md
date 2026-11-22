@@ -253,25 +253,15 @@ export default function UploadProgress({
 ## Features
 Explore the Progress bar's features, including smooth value interpolation, indeterminate animations, and accessibility labels.
 
-### Customizable
-
 Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-### Accessible
 
 Built with accessibility in mind, ensuring all users can interact with your application effectively.
 
-### Responsive
-
 Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-### Counts up
 
 Bars, segments and rings fill from zero on first paint and every readout counts up in step, on one shared easing. Respects `prefers-reduced-motion`; turn it off with `animate={false}`.
 
 ## Best Practices & Guidelines
-
-### Usage Guidelines
 
 Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
 

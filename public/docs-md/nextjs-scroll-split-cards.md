@@ -87,33 +87,19 @@ npx shadcn@latest add @avara-ui/scroll-split-cards
 
 ## Features
 
-### Mathematical Panorama Slicing
-
 Renders a single high-resolution image across three adjacent overflow-hidden cards using precise percentage offsets, guaranteeing zero seams when closed.
-
-### Spring-Smoothed Scroll Physics
 
 A spring follower (the same equation of motion as Motion's `useSpring`) turns native mousewheel and touch input into organic physical motion, with no animation library to install. Under `prefers-reduced-motion` the panels track the input directly.
 
-### Dual-Sided 3D Cardstock
-
 Each panel has genuine 3D card faces with `preserve-3d` and `backface-visibility`, flipping 180° to reveal typographic narratives with individual color schemes.
-
-### Live Range Slider & Speed Control
 
 Fine-tune the scroll rate by passing `scrollSpeed` or `speed` (numbers like `0.6` or presets like `"slow"`, `"normal"`, `"fast"`), with a live interactive range slider.
 
 ## Best Practices & Guidelines
 
-### Scroll Choreography & Layout Containment
-
 Place `ScrollSplitCards` in a standard vertical flow without conflicting parent `overflow-hidden` constraints. Both mousewheel scroll and touch drag gestures naturally advance the animation through each stage.
 
-### Panoramic Image Selection
-
 For the most dramatic visual impact, use wide landscape photography (recommended aspect ratio 21:9 or ~2.4:1) with a resolution of at least 2400×1000px. High-contrast horizon or architectural imagery splits cleanly across the panels.
-
-### Editorial Card Content & Legibility
 
 Keep narrative copy concise: 1–2 sentences per card along with an optional metric callout and kicker. Contrast-tested background colors ensure text remains easily legible on all viewports.
 

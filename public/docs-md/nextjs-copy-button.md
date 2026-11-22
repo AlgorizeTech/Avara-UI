@@ -229,25 +229,15 @@ export default function CopyRow() {
 ## Features
 Discover the Copy Button's capabilities for confirming a clipboard write without a toast.
 
-### Inline confirmation
-
 The feedback lives in the button itself — a popping check and a rising label — so nothing else on the page has to move.
-
-### Honest states
 
 A blocked clipboard shows Failed rather than a false success, and `onCopy` tells you which it was.
 
-### Works everywhere
-
 Uses the async Clipboard API and falls back to a hidden textarea on older browsers and non-secure origins.
-
-### Accessible
 
 A polite live region announces the change; icon-only buttons carry a name that updates to Copied.
 
 ## Best Practices & Guidelines
-
-### Say what was copied
 
 Prefer specific labels — Copy Link, Code copied — over a bare Copy when more than one thing on the screen could be copied.
 

@@ -342,22 +342,18 @@ export default function EditorialAgentWorkflowGraph() {
 Discover the key capabilities that make this component an excellent choice for modern AI orchestration interfaces.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Dual Visual Styles (Shaded &amp; Flat)</h3>
-    <p className="text-muted-foreground text-sm">Control card depth with the <code>shade</code> prop — true for tiered layered bezels, or false for flat minimalist cards.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Responsive Tree Layout</h3>
-    <p className="text-muted-foreground text-sm">Fans out horizontally into equal columns on desktop and collapses into an indented vertical tree on mobile.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Live Status &amp; Token Budgets</h3>
-    <p className="text-muted-foreground text-sm">Displays animated working spinners, completion checks, and automatic high-usage token warnings.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Tool &amp; Handoff Footer</h3>
-    <p className="text-muted-foreground text-sm">Highlights connected integrations and the latest agent-to-agent handoff summary directly below each worker card.</p>
-  </div>
+  <InfoCard title="Dual Visual Styles (Shaded &amp; Flat)">
+    <p>Control card depth with the <code>shade</code> prop — true for tiered layered bezels, or false for flat minimalist cards.</p>
+  </InfoCard>
+  <InfoCard title="Responsive Tree Layout">
+    <p>Fans out horizontally into equal columns on desktop and collapses into an indented vertical tree on mobile.</p>
+  </InfoCard>
+  <InfoCard title="Live Status &amp; Token Budgets">
+    <p>Displays animated working spinners, completion checks, and automatic high-usage token warnings.</p>
+  </InfoCard>
+  <InfoCard title="Tool &amp; Handoff Footer">
+    <p>Highlights connected integrations and the latest agent-to-agent handoff summary directly below each worker card.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

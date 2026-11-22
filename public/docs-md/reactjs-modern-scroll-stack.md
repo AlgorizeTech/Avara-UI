@@ -103,19 +103,11 @@ npx shadcn@latest add @avara-ui/modern-scroll-stack
 
 ## Features
 
-### Scroll-Linked Tilt Physics
-
 Cards enter flat at the bottom of the viewport and smoothly interpolate their rotation using an ease-out curve as they approach the sticky lock position.
-
-### Horizontal Fan Cascade
 
 Each card is offset along the X-axis so all stacked cards remain partially visible, creating a physical hand-dealt card deck aesthetic.
 
-### Responsive Container Clamping
-
 A built-in `ResizeObserver` automatically scales the horizontal fan offset and card dimensions on tablet and mobile viewports so cards never overflow horizontally.
-
-### Zero External Animation Dependencies
 
 Powered by native CSS `position: sticky` and `requestAnimationFrame` transforms for silky 60fps performance without heavy runtime libraries.
 

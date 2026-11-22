@@ -186,19 +186,11 @@ npx shadcn@latest add @avara-ui/image-viewer
 
 Discover the key capabilities of the `ImageViewer` component:
 
-### 4 Dedicated Viewer Architectures
-
 Includes Inner Lens Zoom, Side Portal Zoom Projection, Floating Arrow Slider, and Active Thumbnail Strip Gallery.
-
-### Integrated Lightbox Modal
 
 Theme-adaptive frosted glass overlay matching Light and Dark mode with keyboard controls, chevron navigation, and thumbnail strip.
 
-### High-Definition Optical Zoom
-
 Experience smooth 2.6x inner frame magnification or a 3–10x floating zoom loupe on cursor hover and touch drag.
-
-### 100% Mobile Responsive
 
 Fluid aspect ratio framing and touch-friendly controls tested across mobile phones, tablets, and desktop displays.
 

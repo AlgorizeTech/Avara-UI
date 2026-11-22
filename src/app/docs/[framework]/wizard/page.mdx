@@ -233,31 +233,26 @@ ${wizardSteps}
 Learn about the Wizard component's multi-step capabilities, providing state management and validation for complex onboarding flows.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Compound Components</h3>
-    <p className="text-muted-foreground text-sm">Uses React Context to share state across child components, preventing messy prop drilling and enabling flexible layouts.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Library-free Animations</h3>
-    <p className="text-muted-foreground text-sm">Features premium, buttery smooth vertical sliding transitions built on CSS transitions — no animation library to install.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Keyboard Navigation</h3>
-    <p className="text-muted-foreground text-sm">Natively supports "Enter" key progression to submit forms and move to the next step instantly.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Auto-Progress Bar</h3>
-    <p className="text-muted-foreground text-sm">Automatically calculates completion percentage based on the number of active steps rendered.</p>
-  </div>
+  <InfoCard title="Compound Components">
+    <p>Uses React Context to share state across child components, preventing messy prop drilling and enabling flexible layouts.</p>
+  </InfoCard>
+  <InfoCard title="Library-free Animations">
+    <p>Features premium, buttery smooth vertical sliding transitions built on CSS transitions — no animation library to install.</p>
+  </InfoCard>
+  <InfoCard title="Keyboard Navigation">
+    <p>Natively supports "Enter" key progression to submit forms and move to the next step instantly.</p>
+  </InfoCard>
+  <InfoCard title="Auto-Progress Bar">
+    <p>Automatically calculates completion percentage based on the number of active steps rendered.</p>
+  </InfoCard>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">State Management</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Since `WizardStep` components act as independent layout blocks, keep your actual form state (e.g., using React Hook Form or standard state) lifted up to the parent component wrapping the `WizardContainer`.</p>
-  </div>
+  <InfoCard title="State Management">
+    <p>Since `WizardStep` components act as independent layout blocks, keep your actual form state (e.g., using React Hook Form or standard state) lifted up to the parent component wrapping the `WizardContainer`.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

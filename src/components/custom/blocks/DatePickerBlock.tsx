@@ -13,12 +13,11 @@ import React, {
   forwardRef,
   useCallback,
   useEffect,
-  useId,
+  useLayoutEffect,
   useRef,
   useState,
   useSyncExternalStore,
 } from "react";
-import { motion } from "motion/react";
 import { getThemeStyles } from "./date-picker-theme";
 import { springLinear } from "./motion-curves";
 import { TimePicker } from "./TimePickerBlock";
@@ -120,6 +119,59 @@ function useReducedMotion() {
     subscribeReducedMotion,
     () => window.matchMedia(REDUCED_MOTION).matches,
     () => false,
+  );
+}
+
+/**
+ * The pill behind the selected day. One element that glides to the newly
+ * picked day on the unfold spring, in CSS with no animation library: after each
+ * change it measures the day marked `data-selected` inside `gridRef` and moves
+ * there. It jumps, without gliding, on first show and when the month changes.
+ */
+function SelectionPill({
+  gridRef,
+  selectedKey,
+  monthKey,
+  instant,
+  className,
+}: {
+  gridRef: React.RefObject<HTMLElement | null>;
+  selectedKey: string | null;
+  monthKey: string;
+  instant: boolean;
+  className?: string;
+}) {
+  const pillRef = useRef<HTMLSpanElement>(null);
+  const placedIn = useRef<string | null>(null);
+
+  useLayoutEffect(() => {
+    const grid = gridRef.current;
+    const pill = pillRef.current;
+    if (!grid || !pill) return;
+    const target = grid.querySelector<HTMLElement>('[data-selected="true"]');
+    if (!target) {
+      pill.style.opacity = "0";
+      placedIn.current = null;
+      return;
+    }
+    const from = grid.getBoundingClientRect();
+    const to = target.getBoundingClientRect();
+    const glide = placedIn.current === monthKey && !instant;
+    pill.style.transition = glide ? unfoldOn("transform") : "none";
+    pill.style.transform = `translate(${to.left - from.left}px, ${to.top - from.top}px)`;
+    pill.style.opacity = "1";
+    placedIn.current = monthKey;
+  }, [gridRef, selectedKey, monthKey, instant]);
+
+  return (
+    <span
+      ref={pillRef}
+      aria-hidden
+      className={cn(
+        "pointer-events-none absolute left-0 top-0 z-0 size-8 rounded-lg opacity-0 shadow-xs",
+        className,
+      )}
+    />
   );
 }
 
@@ -274,7 +326,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
     const [sideLayout, setSideLayout] = useState(false);
     const [alignRight, setAlignRight] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
-    const instanceId = useId();
+    const daysGridRef = useRef<HTMLElement>(null);
     const { theme, style } = getThemeStyles(color);
 
     // containerRef drives the click-outside handler, so the forwarded ref is
@@ -562,7 +614,21 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
             </section>
 
             {/* Days Grid */}
-            <section className="grid grid-cols-7 gap-y-1.5 gap-x-0 text-center">
+            <section
+              ref={daysGridRef}
+              className="relative grid grid-cols-7 gap-y-1.5 gap-x-0 text-center"
+            >
+              <SelectionPill
+                gridRef={daysGridRef}
+                selectedKey={
+                  value
+                    ? `${value.getFullYear()}-${value.getMonth()}-${value.getDate()}`
+                    : null
+                }
+                monthKey={`${currentYear}-${currentMonth}`}
+                instant={reduceMotion}
+                className={theme.bg}
+              />
               {calendarDays.map(({ date: cellDate, isCurrentMonth }, idx) => {
                 const isSelected = Boolean(value && isSameDay(cellDate, value));
                 const isOff = isDayDisabled(cellDate);
@@ -575,6 +641,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
                       type="button"
                       disabled={isOff}
                       aria-disabled={isOff}
+                      data-selected={isSelected ? "true" : undefined}
                       onClick={() => {
                         if (isOff) return;
                         onChange?.(cellDate);
@@ -607,20 +674,6 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
                           "text-muted-foreground/40 cursor-not-allowed hover:bg-transparent line-through font-normal",
                       )}
                     >
-                      {isSelected && (
-                        <motion.div
-                          layoutId={`${instanceId}-sel-${currentYear}-${currentMonth}`}
-                          className={cn(
-                            "absolute inset-0 rounded-lg shadow-xs z-0",
-                            theme.bg,
-                          )}
-                          transition={
-                            reduceMotion
-                              ? { duration: 0 }
-                              : { type: "spring", stiffness: 440, damping: 44 }
-                          }
-                        />
-                      )}
                       <span className="relative z-10">{cellDate.getDate()}</span>
                     </button>
                   </div>

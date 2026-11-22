@@ -137,39 +137,32 @@ export default function RootLayout({
 Explore the Theme Switcher's dark mode capabilities, featuring the circular reveal, hydration-safe rendering and smooth layout transitions.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Circular Reveal</h3>
-    <p className="text-muted-foreground text-sm">The new theme sweeps out from whichever control was clicked, via the View Transitions API. The `::view-transition` rules it needs ship inside the component, so nothing has to be added to your global stylesheet. Set <code>reveal={false}</code> for an instant switch.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Self-contained</h3>
-    <p className="text-muted-foreground text-sm">Every style the switcher relies on is in <code>ThemeSwitcherBlock.tsx</code>: Tailwind classes for the controls, and the reveal CSS injected once into <code>&lt;head&gt;</code>. Install it and it works; nothing to copy into <code>globals.css</code>.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Hydration Safe</h3>
-    <p className="text-muted-foreground text-sm">Safely checks if the component is mounted on the client to completely eliminate the infamous React hydration mismatch errors.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">No Animation Library</h3>
-    <p className="text-muted-foreground text-sm">The sliding pill, the icon spin and the dropdown run on the browser's built-in Web Animations API, so they feel completely native and add no dependency.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">3 Layout Variants</h3>
-    <p className="text-muted-foreground text-sm">Ships with a compact Icon toggle, a sliding Pill control, and a classic Dropdown menu to fit any UI design.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">System Sync</h3>
-    <p className="text-muted-foreground text-sm">Automatically syncs with the user's OS-level dark mode preferences if the "system" theme is selected.</p>
-  </div>
+  <InfoCard title="Circular Reveal">
+    <p>The new theme sweeps out from whichever control was clicked, via the View Transitions API. The `::view-transition` rules it needs ship inside the component, so nothing has to be added to your global stylesheet. Set <code>reveal={false}</code> for an instant switch.</p>
+  </InfoCard>
+  <InfoCard title="Self-contained">
+    <p>Every style the switcher relies on is in <code>ThemeSwitcherBlock.tsx</code>: Tailwind classes for the controls, and the reveal CSS injected once into <code>&lt;head&gt;</code>. Install it and it works; nothing to copy into <code>globals.css</code>.</p>
+  </InfoCard>
+  <InfoCard title="Hydration Safe">
+    <p>Safely checks if the component is mounted on the client to completely eliminate the infamous React hydration mismatch errors.</p>
+  </InfoCard>
+  <InfoCard title="No Animation Library">
+    <p>The sliding pill, the icon spin and the dropdown run on the browser's built-in Web Animations API, so they feel completely native and add no dependency.</p>
+  </InfoCard>
+  <InfoCard title="3 Layout Variants">
+    <p>Ships with a compact Icon toggle, a sliding Pill control, and a classic Dropdown menu to fit any UI design.</p>
+  </InfoCard>
+  <InfoCard title="System Sync">
+    <p>Automatically syncs with the user's OS-level dark mode preferences if the "system" theme is selected.</p>
+  </InfoCard>
 </div>
 
 ## Best Practices & Guidelines
 
 <div className="flex flex-col gap-4 my-6 not-prose">
-  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-foreground mb-1">SSR Considerations</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Since `next-themes` relies on `localStorage` which isn't available during Server-Side Rendering, always wrap the component's inner rendering logic in a `mounted` check to prevent hydration mismatch flashes.</p>
-  </div>
+  <InfoCard title="SSR Considerations">
+    <p>Since `next-themes` relies on `localStorage` which isn't available during Server-Side Rendering, always wrap the component's inner rendering logic in a `mounted` check to prevent hydration mismatch flashes.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

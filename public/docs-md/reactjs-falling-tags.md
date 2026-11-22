@@ -205,19 +205,11 @@ export default function BlackAndWhiteTags() {
 
 ## Features
 
-### Float-to-Drop Sequence
-
 When scrolled into view, tags appear in the upper arena with a gentle floating levitation wave before gravity triggers the drop.
-
-### Real 2D Rigid-Body Physics
 
 Oriented-box (rotated rectangle) collision solver with realistic mass, angular inertia, restitution bounce, and sliding friction.
 
-### Interactive Grab & Throw
-
 Grab tags with your mouse or finger, toss them in any direction, and watch them rebound off walls and scatter other tags with momentum.
-
-### No Physics Library
 
 Built with native React and a requestAnimationFrame loop. The only npm dependency is lucide-react.
 

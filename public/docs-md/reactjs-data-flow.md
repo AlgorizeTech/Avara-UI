@@ -112,19 +112,11 @@ Each curve is a `FlowConnection` from [Flowchart](https://avaraui.com/docs/react
 
 ## Features
 
-### Built from the library
-
 Flowchart draws the connectors and Apple Select picks out the intro's phrases; both install with this item. The example's output cards use Half Stars and Button — add whichever pieces your own cards need.
-
-### One reveal, then a pulse
 
 A single timeline plays when the section first appears: sources, lines, core, lines, outputs. After that the only motion is the dash travelling along each line — and it holds still under prefers-reduced-motion.
 
-### Lines that follow the layout
-
 Curves are measured from the cards, not drawn for one width. Resize the window, add a fourth source, make an output taller — the connectors move with them.
-
-### Compound, not configured
 
 Any number of sources and outputs, in any order; output cards take whatever you put inside. Cards render opaque on the server and only animate once the page is live.
 

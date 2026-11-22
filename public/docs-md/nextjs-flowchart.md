@@ -232,9 +232,9 @@ export default function IdlePipeline() {
 }
 ```
 
-### Accent color
+### AI Agent convergence
 
-- `color="emerald"` tints the active stream, the node ports and the focus ring together. One of `blue`, `indigo`, `rose`, `emerald`, `zinc`.
+- `path="C ..."` smooth cubic bezier curves guide multi-agent inputs into a central orchestrator before streaming to code execution and artifacts.
 
 ```tsx
 import {
@@ -243,78 +243,84 @@ import {
   FlowConnection,
   FlowNode,
 } from "@/components/custom/blocks/FlowchartBlock";
-import { AlertCircle, CheckCircle2, Cpu, Terminal, Webhook } from "lucide-react";
+import { Bot, Cpu, Database, Layers, Terminal } from "lucide-react";
 
-function PipelineNodes() {
+export default function AgentPipeline() {
   return (
-    <>
-      {/* Routes first: plain SVG path data, M/L for right angles, C for curves */}
+    <Flowchart initialActivePath="agent-exec-path">
       <FlowCanvas>
-        <FlowConnection id="success-path" path="M 280 200 L 310 200 L 310 114 L 340 114" />
-        <FlowConnection id="success-path" path="M 580 114 L 640 114" />
-        <FlowConnection id="fail-path" path="M 280 200 L 310 200 L 310 284 L 340 284" />
-        <FlowConnection id="fail-path" path="M 580 284 L 640 284" />
+        {/* Curved input routes converging into the orchestrator */}
+        <FlowConnection
+          id="agent-exec-path"
+          path="M 270 110 C 305 110, 295 200, 330 200"
+        />
+        <FlowConnection
+          id="agent-eval-path"
+          path="M 270 290 C 305 290, 295 200, 330 200"
+        />
+
+        {/* Curved output routes diverging to execution & artifacts */}
+        <FlowConnection
+          id="agent-exec-path"
+          path="M 570 200 C 605 200, 595 110, 630 110"
+        />
+        <FlowConnection
+          id="agent-eval-path"
+          path="M 570 200 C 605 200, 595 290, 630 290"
+        />
       </FlowCanvas>
 
-      {/* Nodes are absolutely positioned, so the ports line up with the paths */}
+      {/* Input Agents */}
       <FlowNode
-        id="webhook"
-        title="Webhook Trigger"
-        description="Inbound secure POST"
-        icon={Webhook}
-        connectedPaths={["success-path", "fail-path"]}
-        className="left-[40px] top-[166px]"
+        id="prompt-agent"
+        title="Autonomous Agent"
+        description="Goal decomposition & reasoning"
+        icon={Bot}
+        connectedPaths={["agent-exec-path"]}
+        className="left-[30px] top-[76px]"
       />
       <FlowNode
-        id="transform"
-        title="Transform Payload"
-        description="Normalizing JSON data"
-        icon={Cpu}
-        connectedPaths={["success-path"]}
-        className="left-[340px] top-[80px]"
+        id="vector-memory"
+        title="Vector Memory"
+        description="Hybrid semantic search"
+        icon={Database}
+        connectedPaths={["agent-eval-path"]}
+        className="left-[30px] top-[256px]"
       />
-      <FlowNode
-        id="error"
-        title="Validation Check"
-        description="Checking metadata schema"
-        icon={Terminal}
-        connectedPaths={["fail-path"]}
-        className="left-[340px] top-[250px]"
-      />
-      <FlowNode
-        id="success"
-        title="Sync Database"
-        description="Committed to cluster"
-        icon={CheckCircle2}
-        connectedPaths={["success-path"]}
-        className="left-[640px] top-[80px]"
-      />
-      <FlowNode
-        id="fail"
-        title="Dead Letter Queue"
-        description="Retrying delivery pool"
-        icon={AlertCircle}
-        connectedPaths={["fail-path"]}
-        className="left-[640px] top-[250px]"
-      />
-    </>
-  );
-}
 
-export default function AccentedPipeline() {
-  // One of "blue" | "indigo" | "rose" | "emerald" | "zinc" — it tints the
-  // active stream, the node ports and the focus ring together.
-  return (
-    <Flowchart initialActivePath="success-path" color="emerald">
-      <PipelineNodes />
+      {/* Central Orchestrator */}
+      <FlowNode
+        id="orchestrator"
+        title="Runtime Coordinator"
+        description="Dynamic tool selection loop"
+        icon={Cpu}
+        connectedPaths={["agent-exec-path", "agent-eval-path"]}
+        className="left-[330px] top-[166px]"
+      />
+
+      {/* Execution & Output Targets */}
+      <FlowNode
+        id="code-sandbox"
+        title="Code Sandbox"
+        description="Isolated micro-container"
+        icon={Terminal}
+        connectedPaths={["agent-exec-path"]}
+        className="left-[630px] top-[76px]"
+      />
+      <FlowNode
+        id="artifacts"
+        title="Artifact Stream"
+        description="Verified real-time components"
+        icon={Layers}
+        connectedPaths={["agent-eval-path"]}
+        className="left-[630px] top-[256px]"
+      />
     </Flowchart>
   );
 }
 ```
 
 ## Best Practices & Guidelines
-
-### Keep ports and paths in sync
 
 Node positions come from Tailwind `left-[…]` / `top-[…]` classes and the routes are raw SVG coordinates, so the two are only aligned because you made them align. When you move a node, move the matching `M`/`L` coordinates with it.
 

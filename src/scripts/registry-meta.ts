@@ -482,6 +482,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["layout"],
     docs: "Named export: Accordion. Pass `accordionData` as { value, title, icon?, content } — content accepts a string array or a node. `type` is single | multiple; set `collapsible` to let the last open section close. Variants: default (open row lifts out as a card) | bordered (rail on the open row) | filled (open row inverts to primary) | elevated (cards, open one on a ring) | soft (tinted tiles, plus folds into minus) | inset (pill rows, answer in an inset well) | bracket (outlined rows, corner brackets open outward) | ghost (type and hairlines); soft, inset and bracket animate open and close with CSS keyframes that ship inside the component. `animation=\"stack\"` piles the items and deals them out on scroll-in via the Web Animations API; skipped under reduced motion. Wraps the `ui-accordion` Radix primitive. For a single section, `collapsible` is lighter.",
   },
+  "breadcrumb-flow": {
+    description:
+      "A composable breadcrumb whose items fade in and out as the route changes while the rest slide into place, with a hover, tap and keyboard disclosure for collapsed ancestors. Use it for apps whose path changes without a page reload.",
+    categories: ["navigation"],
+    docs: "Named exports: Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink, BreadcrumbPage, BreadcrumbSeparator, BreadcrumbEllipsis. Give each BreadcrumbItem a stable key (its route) and put its BreadcrumbSeparator inside it; items entering or leaving animate and the rest slide. `maxItems` on BreadcrumbList (min 3, Infinity disables) collapses the middle into BreadcrumbEllipsis, opened by hover, click, tap, Enter, Space or ArrowDown; Escape closes it. BreadcrumbLink takes a `render` prop for your router's Link. `labels` on Breadcrumb overrides the built-in strings. Honours prefers-reduced-motion. Zero runtime dependencies.",
+  },
   breadcrumb: {
     description:
       "A breadcrumb trail with per-item icons and automatic collapsing when the path is long. Use it to show position in a deep hierarchy.",
@@ -622,6 +628,12 @@ export const META: Record<string, ItemMeta> = {
       "A timeline whose entries animate in on scroll, with five entrance styles. Use it on marketing pages for company history and roadmap sections.",
     categories: ["data-display", "marketing"],
     docs: "Named exports: AnimatedTimelineBlock, getThemeStyles (from animated-timeline-theme.ts, which installs alongside). `animation` is fade-up | slide-in | zoom-in | flip-up | blur-in; `layout` is left | right | center. Uses IntersectionObserver rather than a motion library, so it has no runtime dependencies. For status-driven progress, use `timeline`.",
+  },
+  "timeline-cable": {
+    description:
+      "A horizontal timeline of cards on a centre playhead, with cables fanning to the cards beside it, year numerals and tick marks. Drag it or scroll the wheel to move. Use it to browse launches, releases or a project history.",
+    categories: ["data-display", "marketing"],
+    docs: "Named exports: TimelineCableBlock (also uses timeline-scroll.ts, which installs alongside). `events` is { id, date, title, media?, meta? }[]; `date` is an ISO string or Date read in UTC, `media` fills the card's picture area and `meta` is the footer line. Move with a sideways drag, the mouse wheel or trackpad (vertical or sideways, only while there is somewhere to go, so the page scrolls on at either end; `wheel={false}` turns it off), arrow keys, Home/End or a click. `value` / `defaultValue` / `onValueChange` use event ids. `years`, `ruler` and `cables` toggle the decoration; `itemWidth` and `height` size it. Zero runtime dependencies.",
   },
   "timeline-steps": {
     description:

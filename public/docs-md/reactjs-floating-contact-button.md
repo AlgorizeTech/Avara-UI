@@ -99,25 +99,15 @@ export default function BrandedWidget() {
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
 
-### Fluid Animations
-
 Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
-
-### Highly Customizable
 
 Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
 
-### Responsive Design
-
 Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
-
-### Accessible
 
 Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
 
 ## Best Practices & Guidelines
-
-### Animation Performance
 
 Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.
 

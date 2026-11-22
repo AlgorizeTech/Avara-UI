@@ -96,19 +96,11 @@ The trick that makes the cup look untouched is that every `product` picture is t
 
 ## Features
 
-### The product never moves
-
 The pictures are stacked and the newest fades in over the one before, so there is no dip, no flicker and no jump — only the contents change.
-
-### Springs, and no crossings
 
 Every tile animates to its resting place with a spring, so clicking during a turn redirects the motion instead of restarting it. A far tile is reached step by step at double pace, and a tile remembers which side of the cup it is on: it leaves on that side and comes back in from the other, never across the stage.
 
-### One entrance, then it holds still when it should
-
 The ring spins up from behind the powder once, as a single decelerating turn, and hands over to the springs where it stops. After that autoplay pauses while the pointer or focus is on the ring, while the tab is hidden and while the section is scrolled out of view.
-
-### Keyboard and screen readers
 
 Tiles are buttons with a pressed state, the arrow keys turn the ring, the tag is a live region and the cart button names the flavour it adds. Reduced motion turns every change into a cut.
 

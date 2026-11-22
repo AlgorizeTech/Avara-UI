@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("not-found");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn 404 Page
@@ -191,7 +191,7 @@ export default function NotFound() {
   name="not-found"
   columns={1}
   colorControl={true}
-  minHeight={660}
+  minHeight={580}
   examples={[
     {
       title: "Component Wall Mosaic 404",
@@ -222,7 +222,7 @@ export default function NotFound() {
   name="not-found"
   columns={1}
   colorControl={true}
-  minHeight={660}
+  minHeight={580}
   examples={[
     {
       title: "Architectural CAD Blueprint 404 (Zero Shadow)",
@@ -426,38 +426,30 @@ export default function NotFound() {
 Discover the key capabilities of the `NotFoundSection` component:
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Hyperspace Warp Streaks & Animated '0' Portal</h3>
-    <p className="text-muted-foreground text-sm">Clean full-bleed spatial scene with sweeping hyperspace laser light streaks, horizon laser beam, and a dimensional multi-orbit vortex portal inside the central zero.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Infinite Horizon 3D Grid & Color 404</h3>
-    <p className="text-muted-foreground text-sm">Full-section infinite moving 3D perspective cyber grid runway, glowing horizon laser beam, inverted mirror floor reflection, and flowing chromatic 404 typography.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Animated Conic Laser Border & Halo</h3>
-    <p className="text-muted-foreground text-sm">360° rotating high-speed conic gradient beam border paired with a diffuse outer glow halo for a futuristic cyberpunk visual presence.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Shifting Multi-Color Typography</h3>
-    <p className="text-muted-foreground text-sm">Floating 404 heading with animated chromatic color wave transition and real-time diffuse projection reflections.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Ambient Radial Glow & Cyber Grid</h3>
-    <p className="text-muted-foreground text-sm">Dual glowing radial light sources with a subtle masked 24px cyber grid overlay for a cosmic depth effect.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">100% Screen & Device Responsive</h3>
-    <p className="text-muted-foreground text-sm">Adaptive fluid clamp typography and flexible touch-friendly action buttons that fit effortlessly on 320px mobile up to 4K displays.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Diagnostic Telemetry Bar</h3>
-    <p className="text-muted-foreground text-sm">High-tech monospace route drop monitor with real-time pulsing signal beacon indicating network coordinates status.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Theme Accent Color Switching</h3>
-    <p className="text-muted-foreground text-sm">Full live CSS variable integration (`--primary`), allowing interactive accent palette switching across light and dark modes.</p>
-  </div>
+  <InfoCard title="Hyperspace Warp Streaks & Animated '0' Portal">
+    <p>Clean full-bleed spatial scene with sweeping hyperspace laser light streaks, horizon laser beam, and a dimensional multi-orbit vortex portal inside the central zero.</p>
+  </InfoCard>
+  <InfoCard title="Infinite Horizon 3D Grid & Color 404">
+    <p>Full-section infinite moving 3D perspective cyber grid runway, glowing horizon laser beam, inverted mirror floor reflection, and flowing chromatic 404 typography.</p>
+  </InfoCard>
+  <InfoCard title="Animated Conic Laser Border & Halo">
+    <p>360° rotating high-speed conic gradient beam border paired with a diffuse outer glow halo for a futuristic cyberpunk visual presence.</p>
+  </InfoCard>
+  <InfoCard title="Shifting Multi-Color Typography">
+    <p>Floating 404 heading with animated chromatic color wave transition and real-time diffuse projection reflections.</p>
+  </InfoCard>
+  <InfoCard title="Ambient Radial Glow & Cyber Grid">
+    <p>Dual glowing radial light sources with a subtle masked 24px cyber grid overlay for a cosmic depth effect.</p>
+  </InfoCard>
+  <InfoCard title="100% Screen & Device Responsive">
+    <p>Adaptive fluid clamp typography and flexible touch-friendly action buttons that fit effortlessly on 320px mobile up to 4K displays.</p>
+  </InfoCard>
+  <InfoCard title="Diagnostic Telemetry Bar">
+    <p>High-tech monospace route drop monitor with real-time pulsing signal beacon indicating network coordinates status.</p>
+  </InfoCard>
+  <InfoCard title="Theme Accent Color Switching">
+    <p>Full live CSS variable integration (`--primary`), allowing interactive accent palette switching across light and dark modes.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

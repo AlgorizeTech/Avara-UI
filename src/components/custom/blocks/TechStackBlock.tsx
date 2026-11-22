@@ -100,7 +100,7 @@ function mergeRefs<T>(...refs: (React.Ref<T> | undefined)[]) {
 
 interface SwapLayer<T> {
   id: number;
-  key: React.Key;
+  key: PropertyKey;
   value: T;
   /** Plays the way in — every layer but the first. */
   enter: boolean;
@@ -116,7 +116,7 @@ interface SwapLayer<T> {
  * gone; a timer does it too, in case its animation never ends. With reduced
  * motion the swap is instant.
  */
-function useSwap<T>(key: React.Key, value: T, reduceMotion: boolean, exitMs: number) {
+function useSwap<T>(key: PropertyKey, value: T, reduceMotion: boolean, exitMs: number) {
   const [layers, setLayers] = useState<SwapLayer<T>[]>(() => [{ id: 0, key, value, enter: false, leaving: false }]);
   const nodes = useRef(new Map<number, HTMLElement>());
   const timers = useRef(new Map<number, number>());

@@ -76,7 +76,6 @@ export const SEARCH_NAMES: Record<string, string> = {
  */
 const DESCRIPTIONS: Record<string, string> = {
   // Leads too vague to say what is on the page; these list its examples.
-  "3d-carousel": "A 3D carousel with a fanned card layout, a configurable deck length and optional arrows and dots.",
   calendar: "A calendar dashboard with event management, filtering and month, week and day views, in default, minimal, glass and liquid-glass styles.",
   cart: "A shopping cart for online stores in three layouts: a slide-out drawer, a modal and a full cart page.",
   chart: "A custom charting component with bar, line, pie, donut and stacked bar charts, a traffic gauge, visitors by country and metric overview tabs.",

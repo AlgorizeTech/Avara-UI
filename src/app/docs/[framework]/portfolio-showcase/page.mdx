@@ -146,22 +146,18 @@ export default function PortfolioShowcaseExample() {
 Discover the key capabilities that make Portfolio Showcase the ultimate display engine for creative work.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">2D Infinite Canvas</h3>
-    <p className="text-muted-foreground text-sm">Cards seamlessly wrap around all 4 screen boundaries with zero stutter or boundaries, creating an uninterrupted endless browsing experience.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Inertial Momentum Physics</h3>
-    <p className="text-muted-foreground text-sm">Natural kinetic friction and velocity tracking respond to mouse flings and touch swipes, smoothly decelerating like a physical surface.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Organic Masonry Stagger</h3>
-    <p className="text-muted-foreground text-sm">Configurable column offsets produce an asymmetric waterfall composition that highlights projects without rigid row constraints.</p>
-  </div>
-  <div className="p-6 rounded-2xl border border-border bg-card">
-    <h3 className="text-lg font-semibold text-card-foreground mb-2">Rich Project Inspection Modal</h3>
-    <p className="text-muted-foreground text-sm">Clicking any work card pops open an accessible, responsive presentation dialog with client specs, deliverables, and live project triggers.</p>
-  </div>
+  <InfoCard title="2D Infinite Canvas">
+    <p>Cards seamlessly wrap around all 4 screen boundaries with zero stutter or boundaries, creating an uninterrupted endless browsing experience.</p>
+  </InfoCard>
+  <InfoCard title="Inertial Momentum Physics">
+    <p>Natural kinetic friction and velocity tracking respond to mouse flings and touch swipes, smoothly decelerating like a physical surface.</p>
+  </InfoCard>
+  <InfoCard title="Organic Masonry Stagger">
+    <p>Configurable column offsets produce an asymmetric waterfall composition that highlights projects without rigid row constraints.</p>
+  </InfoCard>
+  <InfoCard title="Rich Project Inspection Modal">
+    <p>Clicking any work card pops open an accessible, responsive presentation dialog with client specs, deliverables, and live project triggers.</p>
+  </InfoCard>
 </div>
 
 ## Props Reference

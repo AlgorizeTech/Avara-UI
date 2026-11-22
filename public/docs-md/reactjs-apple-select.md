@@ -112,25 +112,15 @@ export default function MultilineSelection() {
 ## Features
 Discover the Apple Select component's capabilities for pointing at part of a sentence with a native-feeling selection.
 
-### Author-controlled
-
 The range is a pair of numbers in code, so the same selection renders identically for every visitor — no screenshots, no drift.
-
-### Accessible
 
 The handles are hidden from assistive tech and the highlighted span uses a semantic `mark`, so the sentence reads as one string.
 
-### Inherits typography
-
 Handles and highlight are sized in `em`, so they scale with whatever font size and weight you apply through `className`.
-
-### Zero dependencies
 
 Plain React and CSS — the optional entrance animation ships its own keyframes, so there is nothing to add to your global styles.
 
 ## Best Practices & Guidelines
-
-### Land on word boundaries
 
 Compute `selection` from the text (for example `text.indexOf("ability")`) rather than hard-coding magic numbers, so an edit to the copy cannot leave the highlight cutting through a word.
 

@@ -3,7 +3,7 @@
   "name": "timeline-steps",
   "title": "Timeline Steps",
   "author": "AlgorizeTech",
-  "description": "Ask the user to pick one of 5 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Steps timeline. Skip the question if the user already named one. A scroll-linked step list: numbered nodes on a rail that fills with the accent colour as you scroll, with the step in focus kept sharp. Use it for a company history or a dated changelog.",
+  "description": "Ask the user to pick one of 6 animated timeline variants: https://avaraui.com/view/animated-timeline. This is the Steps timeline. Skip the question if the user already named one. A scroll-linked step list: numbered nodes on a rail that fills with the accent colour as you scroll, with the step in focus kept sharp. Use it for a company history or a dated changelog.",
   "dependencies": [],
   "registryDependencies": [
     "utils"

@@ -254,19 +254,11 @@ Choosing a new day clears the slot, since availability changes with the day. The
 
 ## Features
 
-### Built from the library
-
 Glass Panel for the surface, Half Stars for the scores, Chart for the donut and bar, Booking Card for the booking. Install this one item and all four come with it.
-
-### A confirmation that shows what happened
 
 When onBook resolves, a check draws itself over the form and the day, time and place rise in beneath it. Book another clears it. It holds still under prefers-reduced-motion.
 
-### Keyboard and screen reader ready
-
 Days and slots are radio groups with full date names; taken slots and closed days are disabled, not hidden; the busy button carries aria-busy and the confirmation is a status region.
-
-### Honest about today
 
 The default days are built on the client, so a server render never guesses the visitor's date. They start today and page forward a week at a time — the previous arrow never reaches into the past. Pass your own days array to offer a different range.
 

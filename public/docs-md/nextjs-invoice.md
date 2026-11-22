@@ -368,19 +368,11 @@ export default function BrutalistInvoice() {
 ## Features
 Explore the Invoice component's structured layout for displaying billing information, line items, and dynamic total calculations.
 
-### 5 Design Variants
-
 Choose from Default, Asymmetric Split, Modern Geometric, Corporate Executive, and Neo-Brutalist layout variants.
-
-### Interactive Edit & Export
 
 Inline editing for item prices, descriptions, quantities, with instant recalculations and JSON export.
 
-### Print & PDF Ready
-
 Built-in browser print triggers that automatically hide control sidebars and format clean PDF pages.
-
-### Theme Integration
 
 Seamless support for custom color themes across primary buttons, focus rings, and badges.
 

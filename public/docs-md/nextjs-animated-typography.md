@@ -359,19 +359,11 @@ export default function MatrixScrambleShowcase() {
 ## Features
 Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
 
-### 14 Animation Patterns
-
 From Matrix decryption to liquid underlines, plus every hero title effect — letter bounce, typewriter, word flip, blur swap, blur rise and color wipe.
-
-### Highly Accessible
 
 Automatically renders an sr-only version for screen readers while displaying child visual spans.
 
-### Responsive Sizing
-
 Supports semantic tags (h1-h6, p) with Tailwind size overrides and pixel/rem custom sizing.
-
-### Hardware Accelerated
 
 GPU-optimized CSS keyframes and spring physics for smooth 60fps animations.
 

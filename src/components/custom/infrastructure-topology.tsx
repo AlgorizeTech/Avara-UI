@@ -169,7 +169,6 @@ export function InfrastructureTopology({
     bandwidthBadge = "10 GBPS",
     centerTitle = "NEURAL MESH",
     centerSubtitle = "CORE ROUTER · V4.2",
-    centerColor = "cyan",
     nodes = DEFAULT_NODES,
     metrics = DEFAULT_METRICS,
     animated = true,
@@ -228,54 +227,6 @@ export function InfrastructureTopology({
             window.removeEventListener("resize", measurePaths);
         };
     }, [measurePaths]);
-
-    const getCenterColorStyles = (color: string) => {
-        switch (color) {
-            case "emerald":
-                return {
-                    border: "border-emerald-500/60 dark:border-emerald-400/80",
-                    ringOuter: "border-emerald-500/20",
-                    ringInner: "border-emerald-500/10",
-                    iconBg: "bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400",
-                    text: "text-emerald-700 dark:text-emerald-400",
-                };
-            case "indigo":
-                return {
-                    border: "border-indigo-500/60 dark:border-indigo-400/80",
-                    ringOuter: "border-indigo-500/20",
-                    ringInner: "border-indigo-500/10",
-                    iconBg: "bg-indigo-500/10 border-indigo-500/30 text-indigo-600 dark:text-indigo-400",
-                    text: "text-indigo-700 dark:text-indigo-400",
-                };
-            case "rose":
-                return {
-                    border: "border-rose-500/60 dark:border-rose-400/80",
-                    ringOuter: "border-rose-500/20",
-                    ringInner: "border-rose-500/10",
-                    iconBg: "bg-rose-500/10 border-rose-500/30 text-rose-600 dark:text-rose-400",
-                    text: "text-rose-700 dark:text-rose-400",
-                };
-            case "purple":
-                return {
-                    border: "border-purple-500/60 dark:border-purple-400/80",
-                    ringOuter: "border-purple-500/20",
-                    ringInner: "border-purple-500/10",
-                    iconBg: "bg-purple-500/10 border-purple-500/30 text-purple-600 dark:text-purple-400",
-                    text: "text-purple-700 dark:text-purple-400",
-                };
-            case "cyan":
-            default:
-                return {
-                    border: "border-cyan-500/60 dark:border-cyan-400/80",
-                    ringOuter: "border-cyan-500/20",
-                    ringInner: "border-cyan-500/10",
-                    iconBg: "bg-cyan-500/10 border-cyan-500/30 text-cyan-600 dark:text-cyan-400",
-                    text: "text-cyan-700 dark:text-cyan-400",
-                };
-        }
-    };
-
-    const centerTheme = getCenterColorStyles(centerColor);
 
     const getBadgeStyle = (variant?: string) => {
         switch (variant) {
@@ -554,14 +505,6 @@ export function InfrastructureTopology({
                 n.position === "bottom-right"
         );
         const activeNode = nodes.find((n) => n.id === activeNodeId);
-
-        const pulsePaths: Record<TopologyNode["position"], string> = {
-            "top-left": "M 270 176 C 365 176, 385 242, 455 245",
-            "bottom-left": "M 270 324 C 365 324, 385 258, 455 255",
-            "top-right": "M 730 146 C 635 146, 615 235, 545 242",
-            "middle-right": "M 730 250 C 645 250, 615 250, 545 250",
-            "bottom-right": "M 730 354 C 635 354, 615 265, 545 258",
-        };
 
         return (
             <div

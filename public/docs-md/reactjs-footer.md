@@ -286,11 +286,7 @@ export default function QuantumBeamFooterDemo() {
 
 Discover the key capabilities of the `Footer` component:
 
-### 9 High-Performance Responsive Variants
-
 Includes Architectural Blueprint Liquid, Editorial Tilted Card, Snapshot, Modern Stack, Wordmark Glow, Simple Centered, Glass Dock, Neon Glow Pulse, and Quantum Particle Beam.
-
-### 100% Screen & Device Responsive
 
 Fluid Tailwind CSS grid and flex layouts built to adapt from 320px mobile viewports up to 4K ultra-wide screens.
 
