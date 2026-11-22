@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("masonry-grid");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractMotionCode } from "@/lib/code";
 
 # Shadcn Masonry Grid
@@ -257,7 +257,7 @@ export default function StaticWall() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={510}
   name="masonry-grid"
   colorControl
   columns={1}

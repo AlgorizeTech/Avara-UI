@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("split-flap");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { Installation } from "@/components/site/installation";
 import { extractMotionCode } from "@/lib/code";
 
@@ -59,7 +59,7 @@ export default function MinimalistSplitFlapDemo() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase minHeight={330}
   name="split-flap"
   columns={1}
   examples={[

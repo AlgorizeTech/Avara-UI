@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("scroll-area");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Scroll Area
@@ -490,7 +490,7 @@ export default function AutoHideScroller() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={420} headingLevel={2}
   name="scroll-area"
   colorControl
   colorLabel="Accent Color"
@@ -519,7 +519,7 @@ export default function AutoHideScroller() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={420}
   name="scroll-area"
   colorControl
   colorLabel="Accent Color"

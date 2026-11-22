@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("item");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Item
@@ -58,7 +58,7 @@ export default function FeatureCard() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={290} headingLevel={2}
   name="item"
   colorControl={false}
   columns={1}
@@ -86,7 +86,7 @@ export default function FeatureCard() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={290}
   name="item"
   colorControl={false}
   columns={1}

@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("animated-timeline");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Animated Timeline
@@ -127,7 +127,7 @@ export default function RightTimeline() {
     {
       title: "Path timeline",
       subheading: "A winding line that draws itself from stop to stop, with a glowing head and cards that light up on arrival.",
-      minHeight: 690,
+      minHeight: 410,
       usage: extractCode("src/preview/demos/timeline-path-demo.tsx"),
       code: extractCode("src/components/custom/blocks/TimelinePathBlock.tsx"),
     },
@@ -147,7 +147,7 @@ export default function RightTimeline() {
     {
       title: "Dial timeline",
       subheading: "Entries ride an arc beside a ruler of ticks. Click one, use the arrows, the mouse wheel or arrow keys, or drag up and down.",
-      minHeight: 690,
+      minHeight: 410,
       usage: extractCode("src/preview/demos/timeline-dial-demo.tsx"),
       code: extractCode("src/components/custom/blocks/TimelineDialBlock.tsx"),
     },
@@ -174,7 +174,7 @@ export default function RightTimeline() {
           effect: "is the large figure and its `description` the caption under it.",
         },
       ],
-      minHeight: 690,
+      minHeight: 350,
       usage: extractCode("src/preview/demos/timeline-ruler-demo.tsx"),
       code: extractCode("src/components/custom/blocks/TimelineRulerBlock.tsx"),
     },
@@ -194,7 +194,7 @@ export default function RightTimeline() {
     {
       title: "Steps timeline",
       subheading: "Numbered nodes on a rail that fills as you scroll the box. Click a node to bring that step into focus.",
-      minHeight: 690,
+      minHeight: 410,
       usage: extractCode("src/preview/demos/timeline-steps-demo.tsx"),
       code: extractCode("src/components/custom/blocks/TimelineStepsBlock.tsx"),
     },
@@ -205,7 +205,7 @@ export default function RightTimeline() {
 
 <Installation name="timeline-steps" showSetupPath={false} />
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={400} headingLevel={2}
   name="animated-timeline"
   colorControl
   colorLabel="Active Focus Color"
@@ -245,7 +245,7 @@ export default function RightTimeline() {
 ### Layouts
 
 
-<ExampleShowcase
+<ExampleShowcase minHeight={400}
   name="animated-timeline"
   colorControl
   colorLabel="Active Focus Color"

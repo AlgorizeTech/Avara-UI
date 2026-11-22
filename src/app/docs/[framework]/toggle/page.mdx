@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("toggle");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Toggle
@@ -96,7 +96,7 @@ export default function DisabledToggle() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={220} headingLevel={2}
   name="toggle"
   colorControl={false}
   columns={1}
@@ -124,7 +124,7 @@ export default function DisabledToggle() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={220}
   name="toggle"
   colorControl={false}
   columns={1}

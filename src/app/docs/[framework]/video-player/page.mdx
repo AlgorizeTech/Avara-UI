@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("video-player");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Video Player
@@ -105,7 +105,7 @@ export default function NativeModalHero() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase minHeight={330}
   name="video-player"
   columns={1}
   examples={[
@@ -276,7 +276,7 @@ export default function PlyrYouTubeHero() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase minHeight={420}
   name="video-player-plyr"
   columns={1}
   examples={[
@@ -382,7 +382,7 @@ export default function BrandedJwHero() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase minHeight={420}
   name="video-player-jw"
   columns={1}
   examples={[

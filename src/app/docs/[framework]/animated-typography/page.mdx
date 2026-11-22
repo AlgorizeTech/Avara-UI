@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("animated-typography");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Animated Typography
@@ -63,7 +63,7 @@ export default function ElasticSpringShowcase() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={260} headingLevel={2}
   name="animated-typography"
   colorControl
   colorLabel="Text Color"
@@ -231,7 +231,7 @@ export default function ColorWipeShowcase() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase minHeight={260}
   name="animated-typography"
   colorControl
   colorLabel="Text Color"

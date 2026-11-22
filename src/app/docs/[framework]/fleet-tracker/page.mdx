@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("fleet-tracker");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Fleet Tracker Map
@@ -83,7 +83,7 @@ export default function ModernFleet() {
   return <FleetTracker variant="modern" fleetData={fleet} />;
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={460} headingLevel={2}
   name="fleet"
   colorControl
   columns={1}
@@ -117,7 +117,7 @@ export default function ModernFleet() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={460}
   name="fleet"
   colorControl
   columns={1}

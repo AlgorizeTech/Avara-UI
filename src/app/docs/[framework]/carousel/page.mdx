@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("carousel");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Carousel
@@ -189,7 +189,7 @@ export default function SideThumbnailsCarouselDemo() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase minHeight={460}
   name="carousel"
   colorControl={false}
   columns={1}
@@ -221,7 +221,7 @@ export default function SideThumbnailsCarouselDemo() {
 
 All five carousels (`RadialCarousel`, `FluidGlassSlider`, `ImageCarousel`, `HeroCarousel`, `CustomCarousel`) ship together in a single self-contained `carousel.tsx` file when installing `carousel`. You can import components directly or pass `variant="radial" | "glass" | "image" | "hero" | "thumbnails"` into the default `Carousel` component.
 
-<ExampleShowcase
+<ExampleShowcase minHeight={360}
   name="carousel"
   colorControl={false}
   columns={1}

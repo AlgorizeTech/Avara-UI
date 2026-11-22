@@ -1,6 +1,6 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractMotionCode } from "@/lib/code";
 
 export const metadata = docsPageMetadata("folder", {
@@ -103,7 +103,7 @@ export default function SummerTrip() {
   return <Folder files={photos} label="Summer trip" count="6 photos" icon={Camera} />;
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={330} headingLevel={2}
   name="folder"
   colorControl
   columns={1}
@@ -146,7 +146,7 @@ export default function SummerTrip() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={330}
   name="folder"
   colorControl
   columns={1}

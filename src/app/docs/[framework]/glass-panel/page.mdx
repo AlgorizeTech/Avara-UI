@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("glass-panel");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Glass Panel
@@ -111,7 +111,7 @@ export default function LiquidGlass() {
       props: { example: "shapes" },
       usage: usageShapes,
       code: extractCode("src/components/custom/blocks/GlassPanelBlock.tsx"),
-      minHeight: 320,
+      minHeight: 240,
     },
   ]}
 />
@@ -144,7 +144,7 @@ export default function LiquidGlass() {
       ],
       props: { example: "bento" },
       usage: usageBento,
-      minHeight: 520,
+      minHeight: 370,
     },
     {
       title: "Solid",
@@ -160,7 +160,7 @@ export default function LiquidGlass() {
       ],
       props: { example: "bento", variant: "solid" },
       usage: usageSolid,
-      minHeight: 520,
+      minHeight: 370,
     },
     {
       title: "Liquid glass",
@@ -176,7 +176,7 @@ export default function LiquidGlass() {
       ],
       props: { example: "bento", variant: "liquid-glass" },
       usage: usageLiquidGlass,
-      minHeight: 520,
+      minHeight: 340,
     },
   ]}
 />

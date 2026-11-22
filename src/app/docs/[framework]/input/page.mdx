@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("input");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Input
@@ -141,7 +141,7 @@ export default function DestinationInput() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={290} headingLevel={2}
   name="input"
   colorControl
   colorLabel="Active Color"
@@ -205,7 +205,7 @@ export default function DestinationInput() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={290}
   name="input"
   colorControl
   colorLabel="Active Color"
@@ -277,7 +277,7 @@ export default function DestinationInput() {
       ],
       props: { example: "autocomplete", inputType: "text" },
       usage: usageAutocomplete,
-      minHeight: 460,
+      minHeight: 290,
     },
     {
       title: "Pill badge",
@@ -299,7 +299,7 @@ export default function DestinationInput() {
       ],
       props: { example: "pill", variant: "pill" },
       usage: usagePill,
-      minHeight: 450,
+      minHeight: 290,
     },
   ]}
 />

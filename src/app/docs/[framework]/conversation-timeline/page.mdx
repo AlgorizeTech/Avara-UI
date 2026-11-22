@@ -1,6 +1,6 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 export const metadata = docsPageMetadata("conversation-timeline", {
@@ -172,7 +172,7 @@ export default function ChatWithMinimap() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={240} headingLevel={2}
   name="conversation-timeline"
   colorControl
   columns={1}
@@ -205,7 +205,7 @@ export default function ChatWithMinimap() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={240}
   name="conversation-timeline"
   colorControl
   columns={1}
@@ -252,7 +252,7 @@ export default function ChatWithMinimap() {
   ]}
 />
 
-<ExampleShowcase
+<ExampleShowcase minHeight={240}
   name="conversation-timeline"
   colorControl
   columns={1}

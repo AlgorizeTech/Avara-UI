@@ -8,85 +8,26 @@ url: https://avaraui.com/docs/nextjs/infrastructure-topology
 
 An interactive, fluid **Infrastructure Topology** component simulating live data flows across microservices, central neural mesh core routers, connected SVG beam pipelines, and real-time telemetry metrics.
 
-## Variations
+## Orbital Mesh
 
-### Infrastructure Topology Showcase
+Modern glassmorphic topology with curved Bezier pipelines, travelling glowing packet orbs, counter-rotating orbital core rings, and click-to-inspect route highlighting.
 
-Live animated data flow canvas with pulsing central neural mesh router, peripheral service cards, and telemetry metrics.
+- Pass `variant="orbit"` (default) for curved Bezier pipelines, travelling packet orbs, and counter-rotating orbital core rings.
 
 ```tsx
-import InfrastructureTopology, { type TopologyNode } from "@/components/custom/infrastructure-topology";
-import { UserCheck, ShieldAlert, Database, Cloud, CreditCard } from "lucide-react";
+import InfrastructureTopology from "@/components/custom/infrastructure-topology";
 
-const customNodes: TopologyNode[] = [
-  {
-    id: "auth",
-    title: "User Auth",
-    subtitle: "OAUTH 2.0",
-    badgeText: "SECURED",
-    badgeVariant: "blue",
-    icon: <UserCheck className="w-4 h-4 md:w-4.5 md:h-4.5 text-blue-500" />,
-    color: "blue",
-    strokeColor: "#3b82f6",
-    position: "top-left",
-  },
-  {
-    id: "waf",
-    title: "WAF Guard",
-    subtitle: "LAYER 7",
-    badgeText: "ONLINE",
-    badgeVariant: "rose",
-    icon: <ShieldAlert className="w-4 h-4 md:w-4.5 md:h-4.5 text-rose-500" />,
-    color: "rose",
-    strokeColor: "#f43f5e",
-    position: "bottom-left",
-  },
-  {
-    id: "db",
-    title: "Postgres",
-    subtitle: "PRIMARY DB",
-    badgeText: "ONLINE",
-    badgeVariant: "purple",
-    icon: <Database className="w-4 h-4 md:w-4.5 md:h-4.5 text-purple-500" />,
-    color: "purple",
-    strokeColor: "#a855f7",
-    position: "top-right",
-  },
-  {
-    id: "aws",
-    title: "AWS Cloud",
-    subtitle: "US-EAST-1",
-    badgeText: "ACTIVE",
-    badgeVariant: "amber",
-    icon: <Cloud className="w-4 h-4 md:w-4.5 md:h-4.5 text-amber-500" />,
-    color: "amber",
-    strokeColor: "#f59e0b",
-    position: "middle-right",
-  },
-  {
-    id: "billing",
-    title: "Billing API",
-    subtitle: "STRIPE V3",
-    badgeText: "ONLINE",
-    badgeVariant: "emerald",
-    icon: <CreditCard className="w-4 h-4 md:w-4.5 md:h-4.5 text-emerald-500" />,
-    color: "emerald",
-    strokeColor: "#10b981",
-    position: "bottom-right",
-  },
-];
-
-export default function InfrastructureTopologyDemo() {
+export default function InfrastructureTopologyOrbitDemo() {
   return (
     <InfrastructureTopology
-      headerTitle="Infrastructure Topology"
-      headerSubtitle="LIVE DATA FLOW · 6 SERVICES · 5 ROUTES"
+      variant="orbit"
+      headerTitle="Orbital Neural Mesh"
+      headerSubtitle="CURVED PIPELINES · TRAVELLING PACKETS"
       statusBadge="ALL SYSTEMS"
-      bandwidthBadge="10 GBPS"
-      centerTitle="NEURAL MESH"
-      centerSubtitle="CORE ROUTER · V4.2"
-      centerColor="cyan"
-      nodes={customNodes}
+      bandwidthBadge="25 GBPS"
+      centerTitle="ORBIT CORE"
+      centerSubtitle="MESH ROUTER · V5.0"
+      centerColor="indigo"
       animated={true}
       interactive={true}
     />
@@ -109,18 +50,40 @@ npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/infrastructure-topology
 ```
 
-## Features
+## Examples
 
-- **Central Neural Mesh Hub**: Mode-adaptive pulsing concentric rings with core status & version indicator.
-- **Animated SVG Data Beams**: Real-time laser packet dash animations connecting peripheral service nodes to the central hub.
-- **Interactive Route Highlights**: Hovering over service cards highlights the active connection pipeline with ring glow feedback.
-- **Responsive Dual Layout**: Full 2D graph canvas on desktop/tablet, and clean non-overlapping 2-column grid on mobile screens.
-- **Semantic Theme Adaptation**: Uses Tailwind CSS semantic tokens (`bg-background`, `bg-card`, `text-foreground`, `border-border`) to seamlessly match any site theme.
+### Pulse Pipeline
+
+Clean grid-free ambient surface with 3-column pipeline layout, expanding core ripple waves, energy-beam pulses, and focus-isolating hover/click states.
+
+- Pass `variant="pulse"` for the 3-column pipeline layout, expanding core ripple waves, and energy-beam pulses.
+
+```tsx
+import InfrastructureTopology from "@/components/custom/infrastructure-topology";
+
+export default function InfrastructureTopologyPulseDemo() {
+  return (
+    <InfrastructureTopology
+      variant="pulse"
+      headerTitle="Pulse Pipeline"
+      headerSubtitle="CLEAN SURFACE · RIPPLE CORE · BEAMS"
+      statusBadge="ALL SYSTEMS"
+      bandwidthBadge="40 GBPS"
+      centerTitle="PULSE CORE"
+      centerSubtitle="EDGE GATEWAY · V6.0"
+      centerColor="emerald"
+      animated={true}
+      interactive={true}
+    />
+  );
+}
+```
 
 ## Props Reference: InfrastructureTopology
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
+| `variant` | `"orbit" \| "pulse"` | `"orbit"` | Visual & animation layout style (curved orbital packet mesh or clean 3-column pulse pipeline). |
 | `headerTitle` | `string` | `"Infrastructure Topology"` | Main headline text in the header bar. |
 | `headerSubtitle` | `string` | `"LIVE DATA FLOW · 6 SERVICES · 5 ROUTES"` | Monospaced subtitle text in the header bar. |
 | `statusBadge` | `string` | `"ALL SYSTEMS"` | System status pill badge text. |

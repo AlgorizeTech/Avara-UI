@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("avatar-stack");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Avatar Stack
@@ -274,7 +274,7 @@ export default function AvatarGroupDemo() {
       props: { example: "avatar-group", showTooltip: true, max: 4 },
       usage: usageAvatarGroup,
       code: extractCode("src/components/custom/blocks/AvatarStackBlock.tsx"),
-      minHeight: 260,
+      minHeight: 170,
     },
   ]}
 />
@@ -302,7 +302,7 @@ export default function AvatarGroupDemo() {
       ],
       props: { example: "default", variant: "zoom", type: "default", max: 4 },
       usage: usageDefault,
-      minHeight: 240,
+      minHeight: 170,
     },
     {
       title: "With tooltip (Zoom on hover)",
@@ -316,7 +316,7 @@ export default function AvatarGroupDemo() {
       ],
       props: { example: "tooltip", variant: "zoom", type: "tooltip", max: 4 },
       usage: usageTooltip,
-      minHeight: 240,
+      minHeight: 170,
     },
     {
       title: "With tooltip arrow (Zoom on hover)",
@@ -330,7 +330,7 @@ export default function AvatarGroupDemo() {
       ],
       props: { example: "tooltip-arrow", variant: "zoom", type: "tooltip-arrow", max: 4 },
       usage: usageTooltipArrow,
-      minHeight: 240,
+      minHeight: 170,
     },
     {
       title: "Spread on hover (Expand width)",
@@ -344,7 +344,7 @@ export default function AvatarGroupDemo() {
       ],
       props: { example: "spread", variant: "spread", type: "default", max: 4 },
       usage: usageSpread,
-      minHeight: 240,
+      minHeight: 170,
     },
     {
       title: "Spread with tooltip",
@@ -358,7 +358,7 @@ export default function AvatarGroupDemo() {
       ],
       props: { example: "spread-tooltip", variant: "spread", type: "tooltip", max: 4 },
       usage: usageSpreadTooltip,
-      minHeight: 240,
+      minHeight: 170,
     },
     {
       title: "Spread with tooltip arrow",
@@ -372,7 +372,7 @@ export default function AvatarGroupDemo() {
       ],
       props: { example: "spread-tooltip-arrow", variant: "spread", type: "tooltip-arrow", max: 4 },
       usage: usageSpreadTooltipArrow,
-      minHeight: 240,
+      minHeight: 170,
     },
     {
       title: "With an action",
@@ -386,7 +386,7 @@ export default function AvatarGroupDemo() {
       ],
       props: { example: "action", variant: "zoom", type: "tooltip" },
       usage: usageAction,
-      minHeight: 240,
+      minHeight: 170,
     },
     {
       title: "Folded count",
@@ -405,7 +405,7 @@ export default function AvatarGroupDemo() {
       ],
       props: { example: "count", variant: "zoom", type: "tooltip-arrow", max: 3 },
       usage: usageCount,
-      minHeight: 240,
+      minHeight: 170,
     },
     {
       title: "Sizes",
@@ -422,7 +422,7 @@ export default function AvatarGroupDemo() {
       ],
       props: { example: "sizes", max: 4 },
       usage: usageSizes,
-      minHeight: 260,
+      minHeight: 170,
     },
   ]}
 />

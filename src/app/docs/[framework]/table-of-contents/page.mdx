@@ -3,7 +3,7 @@ import { REGISTRY_NAMESPACE } from "@/lib/registry";
 
 export const metadata = docsPageMetadata("table-of-contents");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Table of Contents
@@ -74,7 +74,7 @@ export default function TableOfContentsDemo() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={430} headingLevel={2}
   name="table-of-contents"
   colorControl
   colorLabel="Accent Color"

@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("cart");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Shopping Cart
@@ -74,7 +74,7 @@ export default function CartPage() {
   return <CartBlock type="page" color="primary" initialItems={items} />;
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={400} headingLevel={2}
   name="cart"
   colorControl
   columns={1}
@@ -114,7 +114,7 @@ export default function CartPage() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={400}
   name="cart"
   colorControl
   columns={1}

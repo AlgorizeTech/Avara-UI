@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("half-stars");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Half Star Rating
@@ -93,7 +93,7 @@ export default function TenStarRating() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={220} headingLevel={2}
   name="half-stars"
   colorControl
   columns={1}
@@ -126,7 +126,7 @@ export default function TenStarRating() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={220}
   name="half-stars"
   colorControl
   columns={1}

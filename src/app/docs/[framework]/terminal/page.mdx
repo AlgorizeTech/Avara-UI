@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("terminal");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Terminal Snippet
@@ -101,7 +101,7 @@ export default function BareTerminal() {
   return <TerminalBlock code={source} language="tsx" copyable={false} />;
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={330} headingLevel={2}
   name="terminal"
   colorControl
   colorLabel="Accent Color"
@@ -136,7 +136,7 @@ export default function BareTerminal() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={330}
   name="terminal"
   colorControl
   colorLabel="Accent Color"

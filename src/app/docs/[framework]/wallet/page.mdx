@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("wallet");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { Installation } from "@/components/site/installation";
 import { extractCode } from "@/lib/code";
 
@@ -128,7 +128,7 @@ export default function CustomWalletExample() {
       },
       usage: usageCustom,
       code: extractCode("src/components/custom/blocks/WalletBlock.tsx"),
-      minHeight: 520,
+      minHeight: 430,
     },
   ]}
 />

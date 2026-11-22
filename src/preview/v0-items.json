@@ -609,7 +609,8 @@
     "held-still": "Image Wall — Held still"
   },
   "infrastructure-topology": {
-    "infrastructure-topology-showcase": "Infrastructure Topology — Infrastructure Topology Showcase"
+    "orbital-mesh": "Infrastructure Topology — Orbital Mesh",
+    "pulse-pipeline": "Infrastructure Topology — Pulse Pipeline"
   },
   "invoice": {
     "default-dashboard-invoice": "Invoice — Default Dashboard Invoice",

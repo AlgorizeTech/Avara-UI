@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("form");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Form
@@ -95,7 +95,7 @@ export default function SubmittingForm() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={360} headingLevel={2}
   name="form"
   colorControl
   columns={1}
@@ -129,7 +129,7 @@ The form primitives are unopinionated about validation; the native example uses 
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={360}
   name="form"
   colorControl
   columns={1}

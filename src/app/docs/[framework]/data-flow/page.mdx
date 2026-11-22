@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("data-flow");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Data Flow
@@ -105,7 +105,7 @@ export default function Intelligence() {
       props: { rounded: true },
       usage: usageSection,
       code: extractCode("src/components/custom/blocks/DataFlowBlock.tsx"),
-      minHeight: 1080,
+      minHeight: 730,
     },
   ]}
 />

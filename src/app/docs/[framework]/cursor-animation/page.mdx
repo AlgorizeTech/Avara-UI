@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("cursor-animation");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Cursor Animation
@@ -257,7 +257,7 @@ export default function ImageTrailCursorDemo() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={370} headingLevel={2}
   name="cursor-animation"
   colorControl
   columns={1}
@@ -281,7 +281,7 @@ export default function ImageTrailCursorDemo() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={370}
   name="cursor-animation"
   colorControl
   columns={1}

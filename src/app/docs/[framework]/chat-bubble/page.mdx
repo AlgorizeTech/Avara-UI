@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("chat-bubble");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Chat Bubble
@@ -204,7 +204,7 @@ export default function TypingIndicator() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={420} headingLevel={2}
   name="chat-bubble"
   colorControl
   colorLabel="Sender Brand Color"
@@ -239,7 +239,7 @@ export default function TypingIndicator() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={240}
   name="chat-bubble"
   colorControl
   colorLabel="Sender Brand Color"
@@ -287,7 +287,7 @@ export default function TypingIndicator() {
       ],
       props: { example: "typing" },
       usage: usageTyping,
-      minHeight: 220,
+      minHeight: 70,
     },
   ]}
 />

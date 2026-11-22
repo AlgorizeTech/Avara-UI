@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("table");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Table
@@ -16,7 +16,7 @@ Every example below is live. Click a sortable header, expand a row, or hover the
 
 <AgentVariants slug="table" />
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={410} headingLevel={2}
   name="table-soft"
   columns={1}
   examples={[
@@ -1121,7 +1121,7 @@ export default function EmptyTableDemo() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={360}
   name="table"
   columns={1}
   examples={[
@@ -1198,7 +1198,7 @@ export default function EmptyTableDemo() {
   ]}
 />
 
-<ExampleShowcase
+<ExampleShowcase minHeight={360}
   name="table-soft-comparison"
   columns={1}
   examples={[

@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("split-scroll-stepper");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Scroll Accordion Showcase
@@ -144,7 +144,7 @@ The accent is resolved at runtime, so it adopts your site's primary color with n
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={530}
   name="scroll-accordion"
   columns={1}
   examples={[

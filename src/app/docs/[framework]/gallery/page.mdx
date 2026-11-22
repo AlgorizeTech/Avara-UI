@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("gallery");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractMotionCode } from "@/lib/code";
 
 # Shadcn Gallery
@@ -492,7 +492,7 @@ export default function VideoSphereGalleryExample() {
   name="gallery"
   colorControl
   columns={1}
-  minHeight={520}
+  minHeight={460}
   examples={[
     {
       title: "Orbit Gallery",

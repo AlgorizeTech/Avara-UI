@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("progress");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Progress
@@ -151,7 +151,7 @@ export default function CreditsRing() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={170} headingLevel={2}
   name="progress"
   colorControl
   colorLabel="Accent Brand Theme"
@@ -226,7 +226,7 @@ export default function CreditsRing() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={170}
   name="progress"
   colorControl
   colorLabel="Accent Brand Theme"
@@ -245,7 +245,7 @@ export default function CreditsRing() {
       ],
       props: { example: "statuses", variant: "default" },
       usage: usageStatuses,
-      minHeight: 360,
+      minHeight: 240,
     },
     {
       title: "Indeterminate",
@@ -296,7 +296,7 @@ export default function CreditsRing() {
       ],
       props: { example: "stages", variant: "default" },
       usage: usageStages,
-      minHeight: 420,
+      minHeight: 260,
     },
   ]}
 />

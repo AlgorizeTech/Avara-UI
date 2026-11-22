@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("skeleton");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Skeleton
@@ -71,7 +71,7 @@ export default function CustomSkeleton() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={290} headingLevel={2}
   name="skeleton"
   colorControl={false}
   columns={1}
@@ -106,7 +106,7 @@ export default function CustomSkeleton() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={290}
   name="skeleton"
   colorControl={false}
   columns={1}

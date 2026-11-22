@@ -3,7 +3,7 @@ import { REGISTRY_NAMESPACE } from "@/lib/registry";
 
 export const metadata = docsPageMetadata("hero");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Hero
@@ -83,7 +83,7 @@ export default function Hero() {
   name="honeycomb-hero"
   colorControl
   columns={1}
-  minHeight={600}
+  minHeight={460}
   examples={[
     {
       title: "Wander the fjords",
@@ -321,7 +321,7 @@ export default function Hero() {
       props: { rounded: true },
       usage: nextAndReact(usageHeroCarousel),
       code: extractCode("src/components/custom/blocks/HeroCarouselBlock.tsx"),
-      minHeight: 760,
+      minHeight: 500,
     },
   ]}
 />
@@ -518,7 +518,7 @@ export default function Hero() {
       props: { rounded: true },
       usage: nextAndReact(usageFashion),
       code: extractCode("src/components/custom/blocks/FashionHeroBlock.tsx"),
-      minHeight: 860,
+      minHeight: 520,
     },
   ]}
 />
@@ -713,7 +713,7 @@ export default function Hero() {
       props: { rounded: true },
       usage: usageSupport,
       code: extractCode("src/components/custom/blocks/SupportHeroBlock.tsx"),
-      minHeight: 980,
+      minHeight: 630,
     },
   ]}
 />
@@ -1018,7 +1018,7 @@ export default function Hero() {
       props: { rounded: true },
       usage: usageCollage,
       code: extractCode("src/components/custom/blocks/CollageHeroBlock.tsx"),
-      minHeight: 900,
+      minHeight: 540,
     },
   ]}
 />
@@ -1176,7 +1176,7 @@ export default function Page() {
   name="homepage-hero"
   colorControl
   columns={1}
-  minHeight={420}
+  minHeight={330}
   examples={[
     {
       title: "Word bounce hero",
@@ -1250,7 +1250,7 @@ export default function Page() {
   name="homepage-hero-typing"
   colorControl
   columns={1}
-  minHeight={420}
+  minHeight={330}
   examples={[
     {
       title: "Typing hero",
@@ -1426,7 +1426,7 @@ export default function Page() {
   name="hero-facility"
   colorControl
   columns={1}
-  minHeight={500}
+  minHeight={340}
   examples={[
     {
       title: "Precision Facility & CAD Grid Hero",
@@ -1477,7 +1477,7 @@ export default function VortexHeroExample() {
   name="hero-vortex"
   colorControl
   columns={1}
-  minHeight={580}
+  minHeight={450}
   examples={[
     {
       title: "Atmospheric Cyclone Radar Hero",
@@ -1610,7 +1610,7 @@ export default function Hero() {
   name="hero-bento-cascade"
   colorControl
   columns={1}
-  minHeight={620}
+  minHeight={560}
   examples={[
     {
       title: "Bento Cascade Infinite Motion Hero",

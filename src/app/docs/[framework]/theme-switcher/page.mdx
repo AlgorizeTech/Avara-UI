@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("theme-switcher");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Theme Switcher
@@ -42,7 +42,7 @@ export default function DropdownSwitcher() {
   return <ThemeSwitcher variant="dropdown" />;
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={170} headingLevel={2}
   name="theme-switcher"
   colorControl={false}
   columns={1}
@@ -96,7 +96,7 @@ export default function RootLayout({
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={170}
   name="theme-switcher"
   colorControl={false}
   columns={1}

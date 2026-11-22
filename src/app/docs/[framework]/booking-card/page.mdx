@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("booking-card");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Booking Card
@@ -136,7 +136,7 @@ export default function Booking() {
       props: { surface: "card" },
       usage: usageCard,
       code: extractCode("src/components/custom/blocks/BookingCardBlock.tsx"),
-      minHeight: 560,
+      minHeight: 320,
     },
   ]}
 />
@@ -164,7 +164,7 @@ export default function Booking() {
       ],
       props: { surface: "glass" },
       usage: usageGlass,
-      minHeight: 560,
+      minHeight: 360,
     },
     {
       title: "Liquid glass",
@@ -179,7 +179,7 @@ export default function Booking() {
       ],
       props: { surface: "liquid-glass" },
       usage: usageLiquidGlass,
-      minHeight: 560,
+      minHeight: 370,
     },
   ]}
 />

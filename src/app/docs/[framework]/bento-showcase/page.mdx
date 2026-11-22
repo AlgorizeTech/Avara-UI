@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("bento-showcase");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Bento Showcase
@@ -142,7 +142,7 @@ ${bentoJsx('() => window.location.assign("/pricing")')}
       props: { rounded: true },
       usage: usageSection,
       code: extractCode("src/components/custom/blocks/BentoShowcaseBlock.tsx"),
-      minHeight: 820,
+      minHeight: 550,
     },
   ]}
 />

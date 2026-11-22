@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("tooltip");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Tooltip
@@ -546,7 +546,7 @@ export default function ExpandTooltip() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={310} headingLevel={2}
   name="tooltip"
   columns={1}
   examples={[
@@ -577,7 +577,7 @@ export default function ExpandTooltip() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={310}
   name="tooltip"
   columns={1}
   examples={[

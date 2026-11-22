@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("tech-stack");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Tech Stack
@@ -118,7 +118,7 @@ export default function BuiltWith() {
       props: { example: "default", variant: "labelled" },
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/TechStackBlock.tsx"),
-      minHeight: 280,
+      minHeight: 200,
     },
   ]}
 />
@@ -150,7 +150,7 @@ export default function BuiltWith() {
       ],
       props: { example: "default", variant: "compact" },
       usage: usageCompact,
-      minHeight: 260,
+      minHeight: 200,
     },
     {
       title: "One group",
@@ -163,7 +163,7 @@ export default function BuiltWith() {
       ],
       props: { example: "single", variant: "labelled" },
       usage: usageSingle,
-      minHeight: 240,
+      minHeight: 200,
     },
   ]}
 />

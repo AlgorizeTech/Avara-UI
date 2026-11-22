@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("reviews");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { Installation } from "@/components/site/installation";
 import { extractCode } from "@/lib/code";
 
@@ -160,7 +160,7 @@ export default function TestimonialSwitcherDemo() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={470} headingLevel={2}
   name="reviews"
   controls={[
     { name: "marqueeSpeed", label: "Marquee Duration (Seconds)", min: 40, max: 200, step: 5, defaultValue: 100 },

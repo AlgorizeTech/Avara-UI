@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("pricing");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Pricing Section
@@ -578,7 +578,7 @@ export default function WorkspacePlanSelector() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={510} headingLevel={2}
   name="pricing"
   colorControl
   columns={1}
@@ -620,7 +620,7 @@ export default function WorkspacePlanSelector() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={480}
   name="pricing"
   colorControl
   columns={1}

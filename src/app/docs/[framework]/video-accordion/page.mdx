@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("video-accordion");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Video Accordion
@@ -80,7 +80,7 @@ export default function ShortReel() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={360} headingLevel={2}
   name="video-accordion"
   colorControl={false}
   columns={1}
@@ -108,7 +108,7 @@ export default function ShortReel() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={360}
   name="video-accordion"
   colorControl={false}
   columns={1}

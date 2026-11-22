@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("scroll-stack");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode, extractMotionCode } from "@/lib/code";
 
 # Shadcn Scroll Stack
@@ -17,7 +17,7 @@ Five independent scroll-driven layouts share this page, each with its own block 
 
 Overlapping cards in a tilted diagonal cascade, each with a photo hanging off its edge. As the stack scrolls into view the cards are dealt out of one pile into place, scrubbed by the scrollbar. It is built from small primitives, so a card holds whatever your data has.
 
-<ExampleShowcase
+<ExampleShowcase minHeight={480}
   name="fan-stack"
   colorControl
   columns={1}
@@ -256,7 +256,7 @@ export default function GappedStack() {
   return <ScrollStack items={items} cardGap={64} />;
 }`;
 
-<ExampleShowcase
+<ExampleShowcase minHeight={500}
   name="scroll-stack"
   colorControl
   columns={1}
@@ -395,7 +395,7 @@ export default function TunedStickyStack() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase minHeight={500}
   name="sticky-scroll-stack"
   colorControl
   columns={1}
@@ -423,7 +423,7 @@ export default function TunedStickyStack() {
 
 ### More examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={500}
   name="sticky-scroll-stack"
   colorControl
   columns={1}
@@ -627,7 +627,7 @@ export default function PinnedLeftStack() {
   );
 }`;
 
-<ExampleShowcase
+<ExampleShowcase minHeight={450}
   name="split-scroll-stack"
   colorControl
   columns={1}
@@ -656,7 +656,7 @@ export default function PinnedLeftStack() {
 
 ### More examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={450}
   name="split-scroll-stack"
   colorControl
   columns={1}
@@ -749,7 +749,7 @@ export default function ProcessRail() {
   return <HorizontalScrollStack items={steps} />;
 }`;
 
-<ExampleShowcase
+<ExampleShowcase minHeight={390}
   name="horizontal-scroll-stack"
   colorControl
   columns={1}
@@ -786,7 +786,7 @@ export default function ProcessRailTrack() {
 
 ### More examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={390}
   name="horizontal-scroll-stack"
   colorControl
   columns={1}

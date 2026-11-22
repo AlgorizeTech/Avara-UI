@@ -2,7 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 export const metadata = docsPageMetadata("3d-carousel");
 
-import { ExampleShowcase } from "@/components/site/Sandbox";
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractMotionCode } from "@/lib/code";
 
 # Shadcn 3D Carousel
@@ -86,7 +86,7 @@ export default function MinimalControlsCarousel() {
   return <ThreeDCarousel items={items} showArrows={false} showDots={false} />;
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase minHeight={450} headingLevel={2}
   name="carousel-3d"
   colorControl
   columns={1}
@@ -118,7 +118,7 @@ export default function MinimalControlsCarousel() {
 
 ## Examples
 
-<ExampleShowcase
+<ExampleShowcase minHeight={450}
   name="carousel-3d"
   colorControl
   columns={1}
