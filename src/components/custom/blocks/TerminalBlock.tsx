@@ -177,19 +177,17 @@ export const TerminalBlock = forwardRef<HTMLDivElement, TerminalBlockProps>(
 
     const variantStyles = {
       default:
-        "bg-card text-card-foreground border border-border shadow-xl",
+        "bg-card text-card-foreground border border-black/[0.08] dark:border-white/[0.1] shadow-[0_0_12px_rgba(0,0,0,0.06)] dark:shadow-[0_0_12px_rgba(0,0,0,0.28)]",
       glass:
-        "bg-card/80 text-card-foreground backdrop-blur-xl border border-border/80 shadow-2xl",
-      minimal: "bg-transparent border border-border",
+        "bg-white/35 dark:bg-zinc-950/40 text-card-foreground backdrop-blur-xl border border-white/35 dark:border-white/20 shadow-[0_0_16px_rgba(0,0,0,0.08)] dark:shadow-[0_0_16px_rgba(0,0,0,0.3)]",
+      minimal:
+        "bg-transparent border border-black/[0.08] dark:border-white/[0.1] shadow-[0_0_12px_rgba(0,0,0,0.06)] dark:shadow-[0_0_12px_rgba(0,0,0,0.28)]",
     };
 
     const headerStyles = {
-      default:
-        "bg-muted/80 border-b border-border",
-      glass:
-        "bg-muted/60 border-b border-border/80",
-      minimal:
-        "bg-muted border-b border-border",
+      default: "bg-muted/80",
+      glass: "bg-white/25 dark:bg-white/[0.06]",
+      minimal: "bg-muted",
     };
 
     const highlightedCode = highlightCode(code, language);
@@ -198,41 +196,41 @@ export const TerminalBlock = forwardRef<HTMLDivElement, TerminalBlockProps>(
       <div
         ref={ref}
         className={cn(
-          "w-full rounded-xl overflow-hidden flex flex-col font-sans",
+          "w-full min-h-[500px] rounded-xl overflow-hidden flex flex-col font-sans",
           variantStyles[variant],
           className,
         )}
-        style={style}
+        style={{ minHeight: "500px", ...style }}
         {...props}
       >
         {/* Header */}
         <div
           className={cn(
-            "flex items-center justify-between px-4 py-3 h-12 select-none",
+            "flex items-center justify-between gap-2 px-3 sm:px-4 py-2.5 sm:py-3 min-h-12 select-none",
             headerStyles[variant],
           )}
         >
-          <div className="flex items-center gap-4 w-1/3">
+          <div className="flex items-center gap-4 shrink-0 sm:w-1/3">
             {variant !== "minimal" ? (
               <div className="flex items-center gap-1.5">
-                <div className="w-3 h-3 rounded-full bg-[#ff5f56]" />
-                <div className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
-                <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
+                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#ff5f56]" />
+                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#ffbd2e]" />
+                <div className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-[#27c93f]" />
               </div>
             ) : (
               <TerminalIcon className="w-4 h-4 text-muted-foreground" />
             )}
           </div>
 
-          <div className="flex items-center justify-center w-1/3">
+          <div className="flex items-center justify-center min-w-0 flex-1 sm:w-1/3">
             {filename && (
-              <span className="text-xs font-medium font-mono text-muted-foreground">
+              <span className="text-xs font-medium font-mono text-muted-foreground truncate">
                 {filename}
               </span>
             )}
           </div>
 
-          <div className="flex items-center justify-end gap-3 w-1/3">
+          <div className="flex items-center justify-end gap-2 sm:gap-3 shrink-0 sm:w-1/3">
             {language && (
               <span
                 className={cn(
@@ -262,10 +260,10 @@ export const TerminalBlock = forwardRef<HTMLDivElement, TerminalBlockProps>(
         </div>
 
         {/* Code Area */}
-        <div className="p-4 md:p-6 overflow-x-auto">
-          <pre className="m-0 bg-transparent p-0 w-max min-w-full">
+        <div className="w-full overflow-x-auto">
+          <pre className="m-0 bg-transparent p-4 sm:p-[20px] w-full whitespace-pre-wrap break-words [overflow-wrap:anywhere]">
             <code
-              className="font-mono text-sm leading-relaxed text-foreground"
+              className="font-mono text-xs sm:text-sm leading-relaxed text-foreground whitespace-pre-wrap break-words [overflow-wrap:anywhere]"
               dangerouslySetInnerHTML={{ __html: highlightedCode }}
             />
           </pre>
