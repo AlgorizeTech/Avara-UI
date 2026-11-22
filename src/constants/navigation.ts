@@ -202,7 +202,7 @@ const rawNavigation: NavigationItem[] = [
       { label: "Dialog", slug: "dialog" },
       { label: "Dock", slug: "dock" },
       { label: "Draggable Card List", slug: "draggable-card-list" },
-      { label: "Drawer", slug: "drawer" },
+      { label: "Drawer", slug: "drawer", badge: "Updated" },
       {
         label: "Falling Tags",
         slug: "falling-tags",
