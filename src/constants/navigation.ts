@@ -248,7 +248,7 @@ const rawNavigation: NavigationItem[] = [
         slug: "image-wall",
         keywords: ["image", "wall", "carousel", "screenshots", "camera", "zoom", "gallery", "grid", "masonry", "showcase"],
       },
-      { label: "Infrastructure Topology", slug: "infrastructure-topology" },
+      { label: "Infrastructure Topology", slug: "infrastructure-topology", badge: "New", addedOn: "2026-11-22" },
       { label: "Input", slug: "input", badge: "New", addedOn: "2026-11-19" },
       { label: "Invoice", slug: "invoice", badge: "New" },
       { label: "Item", slug: "item" },
