@@ -30,6 +30,7 @@
   },
   "files": [
     "src/components/custom/blocks/Accordion.tsx",
+    "src/components/custom/blocks/ActionButtons.tsx",
     "src/components/custom/blocks/AdvancedTableBlock.tsx",
     "src/components/custom/blocks/AgentGraphBlock.tsx",
     "src/components/custom/blocks/Ai-chat.tsx",

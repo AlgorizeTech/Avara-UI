@@ -1761,8 +1761,7 @@
         "dates"
       ],
       "dependencies": [
-        "lucide-react",
-        "motion"
+        "lucide-react"
       ],
       "registryDependencies": [
         "https://avaraui.com/r/time-picker.json",
@@ -2338,9 +2337,7 @@
         "media",
         "scroll"
       ],
-      "dependencies": [
-        "next-themes"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
