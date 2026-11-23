@@ -234,6 +234,7 @@
     "src/components/custom/blocks/glass-panel-context.ts",
     "src/components/custom/blocks/gsap-motion.ts",
     "src/components/custom/blocks/input-theme.ts",
+    "src/components/custom/blocks/internal/CalendarPanel.tsx",
     "src/components/custom/blocks/invoice-theme.ts",
     "src/components/custom/blocks/loader-theme.ts",
     "src/components/custom/blocks/login-form-theme.ts",
