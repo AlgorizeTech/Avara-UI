@@ -102,6 +102,7 @@ const DESCRIPTIONS: Record<string, string> = {
   // Leads that run past the snippet length, restated shorter.
   "data-maps": "A React-Leaflet choropleth map for geographic data and user distributions, with no external map tiles. Leaflet loads after mount, so it is SSR safe.",
   "ribbon-drift": "A hero showcase card with two floating marquee ribbons, an animated gradient backdrop, a 3D illustration and a frosted glass promo card.",
+  "brand-bridge": "An interactive integration hub card with two columns of brand tiles, a rotating multi-colour hub ring, magnetic gradient wires, glowing comets and a reactive 2D particle field.",
   "ai-chat": "An AI chat interface with conversation history, typing indicators, editable titles, a model picker, file and @mention tools and voice dictation.",
   "animated-list": "A list that staggers its items into view with 3D perspective transforms and no animation library, plus a glassmorphic spotlight that follows the mouse.",
   "bento-showcase": "A six-card marketing bento grid: a hero with a live chat, case studies on a laptop, scrolling figures, plans on a phone and a team strip.",

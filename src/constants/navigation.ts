@@ -135,6 +135,13 @@ const rawNavigation: NavigationItem[] = [
         slug: "booking-card",
         keywords: ["booking", "appointment", "schedule", "calendar", "slots", "time picker", "reservation"],
       },
+      {
+        label: "Brand Bridge",
+        slug: "brand-bridge",
+        badge: "New",
+        addedOn: "2026-11-23",
+        keywords: ["brand bridge", "integrations", "hub", "logos", "wires", "comets", "particles", "connect"],
+      },
       { label: "Breadcrumb", slug: "breadcrumb", badge: "Updated", updatedOn: "2026-11-22" },
       { label: "Buttons", slug: "button" },
       { label: "Calendar", slug: "calendar" },

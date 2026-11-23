@@ -50,6 +50,7 @@
     "src/components/custom/blocks/BentoShowcaseBlock.tsx",
     "src/components/custom/blocks/BookAppointmentBlock.tsx",
     "src/components/custom/blocks/BookingCardBlock.tsx",
+    "src/components/custom/blocks/BrandBridgeBlock.tsx",
     "src/components/custom/blocks/BreadcrumbBlock.tsx",
     "src/components/custom/blocks/BreadcrumbFlowBlock.tsx",
     "src/components/custom/blocks/BreatheHeroBlock.tsx",

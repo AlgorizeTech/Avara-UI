@@ -22,6 +22,7 @@ export const sandboxNames = [
   "book-appointment",
   "book-flip",
   "booking-card",
+  "brand-bridge",
   "breadcrumb",
   "breadcrumb-flow",
   "button",

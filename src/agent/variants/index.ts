@@ -66,6 +66,7 @@ import { alert } from "./alert";
 import { carousel } from "./carousel";
 import { infrastructureTopology } from "./infrastructure-topology";
 import { animatedTimeline } from "./animated-timeline";
+import { brandBridge } from "./brand-bridge";
 import type { PageVariants } from "./types";
 
 export type { PageVariants, Variant } from "./types";
@@ -140,6 +141,7 @@ export const pageVariants: PageVariants[] = [
   alert,
   carousel,
   infrastructureTopology,
+  brandBridge,
 ];
 
 /**

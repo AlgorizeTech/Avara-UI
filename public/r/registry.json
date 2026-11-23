@@ -738,6 +738,31 @@
       "docs": "Named export: BookingCard (plus the BookingSlot and Booking types). `BookingCard` is a compound component — put `BookingCard.Days`, `BookingCard.Slots`, `BookingCard.Submit` and `BookingCard.Confirmation` inside it in any layout; it holds the chosen day and slot and calls `onBook`. It draws no surface of its own: make it the padded inside of whatever panel it sits in so the confirmation reaches the edges. The selected day and slot, the submit and 'Add to calendar' buttons, the check mark and the focus rings use the `--primary` token."
     },
     {
+      "name": "brand-bridge",
+      "type": "registry:component",
+      "title": "Brand Bridge",
+      "author": "AlgorizeTech",
+      "description": "Ask the user to pick one of 2 brand bridge variants: https://avaraui.com/view/brand-bridge. This item holds 2 of them as looks of one component (default, eight-brands). Skip the question if the user already named one. An interactive integrations card where brand tiles flank a central hub with a rotating colour ring, magnetic gradient wires, glowing comets, and a reactive 2D particle field.",
+      "categories": [
+        "marketing",
+        "data-display"
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/BrandBridgeBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/BrandBridgeBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: BrandBridge, BRANDS, DEFAULT_BRANDS (also default-exported as BrandBridge) and the BridgeBrand & BrandBridgeProps types. Autoplay connects brands one by one in random order, pauses on hover, and stops permanently when any tile is clicked."
+    },
+    {
       "name": "breadcrumb",
       "type": "registry:component",
       "title": "Breadcrumb",

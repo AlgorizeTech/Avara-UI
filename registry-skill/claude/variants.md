@@ -133,5 +133,6 @@ Install the chosen variant's own `install` command from the index. Several looks
 - `alert`: 4 variants. All live: https://avaraui.com/view/alert
 - `carousel`: 6 variants. All live: https://avaraui.com/view/carousel
 - `infrastructure-topology`: 2 variants. All live: https://avaraui.com/view/infrastructure-topology
+- `brand-bridge`: 2 variants. All live: https://avaraui.com/view/brand-bridge
 
 An index entry with `choose: true` is the authority: it lists every variant and its live link.

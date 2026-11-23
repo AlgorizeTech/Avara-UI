@@ -1217,6 +1217,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["marketing", "media", "data-display"],
     docs: "Default export: RibbonDriftBlock. Also exports RibbonLogos, CrossRibbonLogos, RibbonDriftCard, and the RibbonDriftProps & RibbonLogosProps types. Supports variant='default' (3D illustration with frosted promo card) and variant='cross-logos' (dual counter-angled infinite brand marquee ribbons with leading brand SVGs).",
   },
+  "brand-bridge": {
+    description:
+      "An interactive integrations card where brand tiles flank a central hub with a rotating colour ring, magnetic gradient wires, glowing comets, and a reactive 2D particle field.",
+    categories: ["marketing", "data-display"],
+    docs: "Named exports: BrandBridge, BRANDS, DEFAULT_BRANDS (also default-exported as BrandBridge) and the BridgeBrand & BrandBridgeProps types. Autoplay connects brands one by one in random order, pauses on hover, and stops permanently when any tile is clicked.",
+  },
   "tilted-card": {
     description:
       "A card that tilts in 3D toward the pointer with a moving glare highlight. Use it to make a single feature or product card feel tactile.",

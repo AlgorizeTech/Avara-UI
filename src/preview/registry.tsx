@@ -27,6 +27,7 @@ export const sandboxRegistry: Record<string, LazyExoticComponent<ComponentType<a
   "book-appointment": lazyRetry(() => import("./demos/book-appointment-demo")),
   "book-flip": lazyRetry(() => import("./demos/book-flip-demo")),
   "booking-card": lazyRetry(() => import("./demos/booking-card-demo")),
+  "brand-bridge": lazyRetry(() => import("./demos/brand-bridge-demo")),
   "breadcrumb": lazyRetry(() => import("./demos/breadcrumb-demo")),
   "breadcrumb-flow": lazyRetry(() => import("./demos/breadcrumb-flow-demo")),
   "button": lazyRetry(() => import("./demos/button-demo")),

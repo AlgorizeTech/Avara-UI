@@ -150,6 +150,10 @@
     "in-a-glass-slab": "Booking Card — In a glass slab",
     "liquid-glass": "Booking Card — Liquid glass"
   },
+  "brand-bridge": {
+    "core-stack-hub": "Brand Bridge — Core Stack Hub",
+    "full-ecosystem-bridge": "Brand Bridge — Full Ecosystem Bridge"
+  },
   "breadcrumb-flow": {
     "flow-breadcrumb": "Breadcrumb Flow — Flow breadcrumb"
   },
