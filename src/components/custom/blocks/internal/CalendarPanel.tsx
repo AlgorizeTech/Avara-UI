@@ -69,7 +69,8 @@ const generateCalendarDays = (year: number, month: number, weekStartsOn: 0 | 1) 
   return days;
 };
 
-type Page = { kind: "days"; year: number; month: number } | { kind: "months" };
+/** The months page remembers the month on show when it opened, so it stays put while it slides away. */
+type Page = { kind: "days"; year: number; month: number } | { kind: "months"; year: number; month: number };
 const pageKey = (p: Page) => (p.kind === "months" ? "months" : `${p.year}-${p.month}`);
 
 /** +1 when `to` sits after `from` (slides in from the right), -1 otherwise. */
@@ -79,14 +80,30 @@ const directionBetween = (from: Page, to: Page): 1 | -1 => {
   return to.year * 12 + to.month >= from.year * 12 + from.month ? 1 : -1;
 };
 
-const slide = (el: HTMLElement, from: number, to: number) =>
-  el.animate(
-    [
-      { transform: `translateX(${from}%)`, opacity: from === 0 ? 1 : 0 },
-      { transform: `translateX(${to}%)`, opacity: to === 0 ? 1 : 0 },
-    ],
-    { duration: SLIDE_MS, easing: SLIDE_EASE, fill: "backwards" },
+/**
+ * Position and opacity run on separate clocks. The slide uses the slow
+ * ease-out, which is nearly finished after the first fifth of its time; if
+ * opacity rode the same curve a page would blink in or out within ~100ms while
+ * the movement carried on, and that reads as a flicker. Opacity fades on a
+ * linear clock instead: the page leaving is gone by 55% of the time, the page
+ * arriving starts at 30%, so the two are never both half transparent for long.
+ * `fill: "both"` holds the page leaving at its final, invisible frame until React
+ * removes it; with `backwards` it would snap back to fully visible for a frame.
+ */
+const slide = (el: HTMLElement, from: number, to: number) => {
+  const entering = to === 0;
+  const move = el.animate(
+    [{ transform: `translateX(${from}%)` }, { transform: `translateX(${to}%)` }],
+    { duration: SLIDE_MS, easing: SLIDE_EASE, fill: "both" },
   );
+  const fade = el.animate(
+    entering
+      ? [{ opacity: 0, offset: 0 }, { opacity: 0, offset: 0.3 }, { opacity: 1, offset: 1 }]
+      : [{ opacity: 1, offset: 0 }, { opacity: 0, offset: 0.55 }, { opacity: 0, offset: 1 }],
+    { duration: SLIDE_MS, easing: "linear", fill: "both" },
+  );
+  return [move, fade];
+};
 
 /**
  * The pill behind the selected day. One element that glides to the newly
@@ -264,11 +281,13 @@ export function CalendarPanel({
   // --- Page transitions ---
   // The page on show is derived from state; when it changes, the page it
   // replaces stays mounted (inert) while both slide, then is dropped.
-  const page: Page = view === "months" ? { kind: "months" } : { kind: "days", year, month };
+  const page: Page = view === "months" ? { kind: "months", year, month } : { kind: "days", year, month };
   const key = pageKey(page);
   const [shown, setShown] = useState<Page>(page);
   const [leaving, setLeaving] = useState<{ page: Page; dir: 1 | -1 } | null>(null);
   if (pageKey(shown) !== key) {
+    // While the picker is open `year` / `month` do not change, so `shown` holds
+    // what the picker was showing — the page leaving keeps that, not the new pick.
     setShown(page);
     if (active && !reduceMotion) setLeaving({ page: shown, dir: directionBetween(shown, page) });
     else if (leaving) setLeaving(null);
@@ -282,8 +301,8 @@ export function CalendarPanel({
     const inn = currentRef.current;
     if (!out || !inn) return;
     const animations = [
-      slide(out, 0, -leaving.dir * SLIDE_OFFSET),
-      slide(inn, leaving.dir * SLIDE_OFFSET, 0),
+      ...slide(out, 0, -leaving.dir * SLIDE_OFFSET),
+      ...slide(inn, leaving.dir * SLIDE_OFFSET, 0),
     ];
     let live = true;
     Promise.all(animations.map((a) => a.finished))
@@ -325,10 +344,12 @@ export function CalendarPanel({
 
   const renderPage = (p: Page) => {
     if (p.kind === "months") {
+      const activeYear = p.year;
+      const activeMonth = p.month;
       return (
         <div className="flex h-full gap-3">
           <YearList
-            activeYear={year}
+            activeYear={activeYear}
             pickYear={pickYear}
             todayYear={today.getFullYear()}
             isYearDisabled={isYearDisabled}
@@ -337,7 +358,7 @@ export function CalendarPanel({
           />
           <div className="grid min-w-0 flex-1 grid-cols-2 grid-rows-6 gap-1">
             {MONTH_NAMES.map((name, m) => {
-              const isActive = pickYear === year && m === month;
+              const isActive = pickYear === activeYear && m === activeMonth;
               const off = isMonthDisabled(pickYear, m);
               const isThisMonth = pickYear === today.getFullYear() && m === today.getMonth();
               return (
