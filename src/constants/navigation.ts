@@ -258,7 +258,7 @@ const rawNavigation: NavigationItem[] = [
       { label: "Live Pulse Pill", slug: "live-pulse-pill", badge: "New" },
       { label: "Magic Bento", slug: "magic-bento" },
       { label: "Mails", slug: "email" },
-      { label: "Map", slug: "fleet-tracker", badge: "Working" },
+      { label: "Map", slug: "fleet-tracker", badge: "New" },
       { label: "Marquee", slug: "marquee" },
       { label: "Masonry Grid", slug: "masonry-grid" },
       { label: "Memories Card", slug: "memories-card" },
