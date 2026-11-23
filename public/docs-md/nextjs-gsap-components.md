@@ -8,7 +8,8 @@ url: https://avaraui.com/docs/nextjs/gsap-components
 
 Free shadcn/ui components and blocks animated with GSAP, for React and Tailwind
 CSS. Motion that follows the pointer, the scroll position, a drag or the layout
-runs on GSAP; many of these also ship a Motion build that you install instead.
+runs on GSAP. Prefer Motion? Many of these also have a
+[Motion build](https://avaraui.com/docs/nextjs/motion-components).
 
 ## All GSAP components
 
@@ -45,6 +46,10 @@ runs on GSAP; many of these also ship a Motion build that you install instead.
 
 - [Ai-Chat](https://avaraui.com/docs-md/nextjs-ai-chat.md): A premium LLM chat interface with conversation history, typing indicators, editable chat titles and a full prompt composer: a + menu for files and… (Motion build available)
 
+**More Components**
+
+- [Action Button](https://avaraui.com/docs-md/nextjs-action-buttons.md): A collection of stateful interactive action, commerce, and confirmation buttons built on GSAP and CSS (a Motion build is also available) — featuring… (Motion build available)
+
 **Marketing Sections**
 
 - [Newsletter](https://avaraui.com/docs-md/nextjs-newsletter.md): A sign-up section in three layouts. Portraits puts four readers' faces around a centred form on a soft panel and lets them drift with the pointer. (Motion build available)
@@ -57,14 +62,14 @@ runs on GSAP; many of these also ship a Motion build that you install instead.
 
 The ones listed above. Avara UI uses plain CSS for motion that has fixed
 values, and adds GSAP only where a pointer, scroll, drag or layout calls for a
-library. A component that lists a Motion build can be installed either way.
+library.
 
 ## Can I use Motion instead of GSAP?
 
-Where a component shows a Motion build, yes. Install the Motion build, named like
-`@avara-ui/name-motion`, in place of the default one. They
-write the same file, so install one or the other, never both. Each component's
-page has GSAP and Motion tabs with the code for both.
+Where a card shows a Motion pill, yes. See the
+[Motion components](https://avaraui.com/docs/nextjs/motion-components) list. Install the
+Motion build in place of the GSAP one, never both, because they write the same
+file.
 
 ## How do I install a GSAP component?
 

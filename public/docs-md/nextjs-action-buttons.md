@@ -6,7 +6,7 @@ url: https://avaraui.com/docs/nextjs/action-buttons
 
 # Action Button
 
-A collection of stateful interactive action, commerce, and confirmation buttons powered by `motion/react` — featuring spring-morphing icons, odometer digit rolling, hold-to-confirm progress, draggable slide-to-confirm, inline waitlist expansion, cart parcel drop physics, split action menus, and payment/download progress states.
+A collection of stateful interactive action, commerce, and confirmation buttons built on GSAP and CSS (a Motion build is also available) — featuring spring-morphing icons, odometer digit rolling, hold-to-confirm progress, draggable slide-to-confirm, inline waitlist expansion, cart parcel drop physics, split action menus, and payment/download progress states.
 
 ## Interactive Action, Async & Commerce Buttons
 
@@ -109,6 +109,12 @@ Or register the @avara-ui registry once per project and add it by name:
 ```bash
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/action-buttons
+```
+
+Or the Motion build (same props, same file — install one):
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/action-buttons-motion.json
 ```
 
 ## Components Included

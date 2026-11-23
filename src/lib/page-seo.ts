@@ -181,6 +181,11 @@ const PAGE_SEO: Record<string, Seo> = {
     description: `Free shadcn/ui components animated with GSAP for React and Tailwind CSS. Many also ship a Motion build. Install them with the shadcn CLI.`,
     keywords: ["shadcn gsap components", "gsap react components", "gsap shadcn", "animated shadcn components", "free animated shadcn components", "gsap tailwind components", "gsap scrolltrigger react components", "gsap vs framer motion components"],
   },
+  "motion-components": {
+    title: `Shadcn Motion Components: Free & Animated - ${SITE_NAME}`,
+    description: `Free shadcn/ui components animated with Motion (Framer Motion) for React and Tailwind CSS. Each is a twin of a GSAP build. Install them with the shadcn CLI.`,
+    keywords: ["shadcn motion components", "framer motion shadcn", "framer motion react components", "motion react components", "animated shadcn components", "free animated shadcn components", "motion tailwind components", "gsap vs framer motion components"],
+  },
   "agent-skills": {
     title: `Agent Skill for Shadcn UI Components - ${SITE_NAME}`,
     description: `Install a free agent skill so Claude Code, Cursor, Codex or Copilot plans, finds, installs and checks ${SITE_NAME} components without inventing props.`,

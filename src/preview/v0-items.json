@@ -177,17 +177,20 @@
     "liquid-glass": "Calendar — Liquid Glass"
   },
   "card": {
-    "project-showcase": "Card — Project showcase",
-    "e-commerce-product-cards": "Card — E-commerce Product Cards",
-    "standard-card": "Card — Standard Card",
-    "interactive": "Card — Interactive",
-    "stat-grid": "Card — Stat grid",
-    "blog-showcase": "Card — Blog showcase",
+    "teaser-card": "Card — Teaser card",
+    "blog-post-cards": "Card — Blog post cards",
+    "notched-cards": "Card — Notched cards",
     "blog-cards": "Card — Blog cards",
-    "profile-card": "Card — Profile card",
+    "author-cards": "Card — Author cards",
+    "e-commerce-product-cards": "Card — E-commerce Product Cards",
     "shop-tiles": "Card — Shop tiles",
-    "boarding-pass": "Card — Boarding pass",
-    "now-playing": "Card — Now playing"
+    "folder-cards": "Card — Folder cards",
+    "quote-tiles": "Card — Quote tiles",
+    "profile-card": "Card — Profile card",
+    "platform-grid": "Card — Platform grid",
+    "stat-grid": "Card — Stat grid",
+    "standard-card": "Card — Standard Card",
+    "boarding-pass": "Card — Boarding pass"
   },
   "card-stack": {
     "swipe-to-discard": "Card Stack — Swipe to Discard",

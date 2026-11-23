@@ -107,6 +107,7 @@ const rawNavigation: NavigationItem[] = [
       { label: "All Components", slug: "all-components", badge: "All" },
       { label: "Blocks", slug: "blocks" },
       { label: "GSAP Components", slug: "gsap-components" },
+      { label: "Motion Components", slug: "motion-components" },
     ],
   },
   {

@@ -1,0 +1,83 @@
+---
+title: "Shadcn Motion Components"
+description: "Free shadcn/ui components animated with Motion (Framer Motion) for React and Tailwind CSS. Each is a twin of a GSAP build. Install them with the shadcn CLI."
+url: https://avaraui.com/docs/nextjs/motion-components
+---
+
+# Shadcn Motion Components
+
+Free shadcn/ui components animated with Motion (the library formerly called
+Framer Motion), for React and Tailwind CSS. Each one is a twin of a
+[GSAP component](https://avaraui.com/docs/nextjs/gsap-components): same props, same file,
+different animation library.
+
+## All Motion components
+
+**Forms & Inputs**
+
+- [File Upload](https://avaraui.com/docs-md/nextjs-file-upload.md): A file upload suite that goes beyond a native `<input type="file">`. (Motion build available)
+
+**Navigation & Menus**
+
+- [Dock](https://avaraui.com/docs-md/nextjs-dock.md): A premium, macOS-inspired navigation dock featuring real-time physics magnification, floating label tooltips, active application indicators, and… (Motion build available)
+
+**Layout & Containers**
+
+- [Masonry Grid](https://avaraui.com/docs-md/nextjs-masonry-grid.md): A high-performance masonry layout that tightly packs items of varying heights. (Motion build available)
+
+**Cards & Stacks**
+
+- [Card Stack](https://avaraui.com/docs-md/nextjs-card-stack.md): A layered deck of cards featuring fluid drag-to-discard gestures, button-driven directional slide animations, and realistic depth perspective. (Motion build available)
+- [Draggable Card List](https://avaraui.com/docs-md/nextjs-draggable-card-list.md): An interactive, fluid Draggable Card List component featuring spring-driven reordering (in a GSAP build and a Motion build that move identically),… (Motion build available)
+- [Folder](https://avaraui.com/docs-md/nextjs-folder.md): A tactile folder: skeleton cards (or your own photos) tuck behind a frosted-glass front pocket that tilts open in 3D, and the cards lift into a… (Motion build available)
+- [Memories Card](https://avaraui.com/docs-md/nextjs-memories-card.md): A premium, interactive card stack component featuring real-time 3D tilt physics, a dynamic "fan" background spread, and smooth swipe-to-next gestures. (Motion build available)
+- [Scroll Stack](https://avaraui.com/docs-md/nextjs-scroll-stack.md): A premium collection of scroll-driven 3D card stacking layouts engineered exclusively with GSAP's ScrollTrigger plugin. (Motion build available)
+
+**Data Display**
+
+- [Split-Flap Display](https://avaraui.com/docs-md/nextjs-split-flap.md): An authentic, physics-driven Split-Flap Display component (Solari board) simulating retro-mechanical flap cards, 3D perspective flips (`rotateX`),… (Motion build available)
+
+**Media & Carousels**
+
+- [Carousel](https://avaraui.com/docs-md/nextjs-carousel.md): A collection of highly interactive carousel components for image galleries, hero sections, and fluid presentations. (Motion build available)
+- [Gallery](https://avaraui.com/docs-md/nextjs-gallery.md): A dynamic visual showcase featuring six interactive variants: a revolving 3D circular photo orbit ring, an interactive 3D video sphere gallery, a… (Motion build available)
+
+**Apps & Messaging**
+
+- [Ai-Chat](https://avaraui.com/docs-md/nextjs-ai-chat.md): A premium LLM chat interface with conversation history, typing indicators, editable chat titles and a full prompt composer: a + menu for files and… (Motion build available)
+
+**More Components**
+
+- [Action Button](https://avaraui.com/docs-md/nextjs-action-buttons.md): A collection of stateful interactive action, commerce, and confirmation buttons built on GSAP and CSS (a Motion build is also available) — featuring… (Motion build available)
+
+**Marketing Sections**
+
+- [Newsletter](https://avaraui.com/docs-md/nextjs-newsletter.md): A sign-up section in three layouts. Portraits puts four readers' faces around a centred form on a soft panel and lets them drift with the pointer. (Motion build available)
+
+**More Sections**
+
+- [Top Destinations](https://avaraui.com/docs-md/nextjs-top-destinations.md): A dual-row scroll-driven destination showcase. As the user scrolls down the page, two parallel rows of destination cards travel in opposite… (Motion build available)
+
+## What is a Motion build?
+
+A Motion build is the same component written with the `motion` package
+instead of GSAP. Avara UI ships one only where it behaves like the GSAP build,
+and every page shows both in GSAP and Motion tabs.
+
+## How do I install a Motion component?
+
+Register the registry once, then add the build named
+`@avara-ui/name-motion` instead of
+`@avara-ui/name`. The CLI also installs the
+`motion` package. Install one build or the other, never both, because
+they write the same file. See the
+[Installation guide](https://avaraui.com/docs/nextjs/installation) for the one-time setup.
+
+## Should I pick GSAP or Motion?
+
+Pick the library your project already uses. Both builds look and behave the same,
+and both honour reduced-motion settings.
+
+---
+
+Live previews and every example: https://avaraui.com/docs/nextjs/motion-components
