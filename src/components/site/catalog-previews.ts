@@ -22,11 +22,13 @@ export type CatalogPreviewSpec = {
 
 /** Slugs whose docs page shows a demo registered under a different name. */
 export const PREVIEW_NAME_OVERRIDES: Record<string, string> = {
+  "auth-forms": "login-form",
   "data-table": "advanced-table",
   "file-upload": "upload",
   "fleet-tracker": "fleet",
   navigation: "navigation-menu",
   "qr-code-generator": "qr-code",
+  "split-scroll-stepper": "scroll-accordion",
   "support-dashboard": "support",
 };
 
@@ -35,10 +37,7 @@ export const PREVIEW_NAME_OVERRIDES: Record<string, string> = {
  * overlays or fixed-position UI over the page, or that are too heavy to run
  * inside a card. Add a slug here when a card's preview misbehaves.
  */
-const KEEP_MINIATURE = new Set<string>([
-  // A 640px internal scroller that rests on an empty yellow block; needs a card scene.
-  "modern-scroll-stack",
-]);
+const KEEP_MINIATURE = new Set<string>([]);
 
 /** Component cards are laid out at a compact width; website sections at a desktop one. */
 const DEFAULT_WIDTH = 720;
@@ -65,6 +64,15 @@ const OVERRIDES: Record<string, Partial<CatalogPreviewSpec>> = {
   "animated-typography": { width: 1100 },
   "api-playground": { width: 900 },
   "apple-select": { width: 640 },
+  // The split layout is landscape, so it fills a 2:1 card where the stacked form would not.
+  "auth-forms": { width: 900, props: { variant: "split" } },
+  "modern-scroll-stack": {
+    // The docs demo is a scroller that rests on an empty block; this shows the settled stack.
+    component: lazyRetry(() => import("./catalog-scenes/ModernScrollStackScene")),
+    width: 760,
+  },
+  // Wide enough for the two-column layout (text beside the image), which is much shorter.
+  "split-scroll-stepper": { width: 1200 },
   "video-accordion": {
     // The docs demo streams four large clips; the scene shows the posters only.
     component: lazyRetry(() => import("./catalog-scenes/VideoAccordionScene")),

@@ -33,7 +33,7 @@ const MOUNT_DELAY_MS = 350;
 const REMEASURE_MS = [500, 1400, 3000];
 
 /** Breathing room kept between the component and the panel edge, in card px. */
-const PANEL_PADDING = 18;
+const PANEL_PADDING = 9;
 
 /**
  * Most previews that may be live at once, page-wide. A screenful of cards is

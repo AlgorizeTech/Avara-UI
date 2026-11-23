@@ -4017,18 +4017,6 @@ function MiniatureIllustration({
 	);
 }
 
-const ANIMATION_DOT: Record<AnimationLibrary, string> = {
-	gsap: "bg-emerald-500",
-	motion: "bg-fuchsia-500",
-	css: "bg-cyan-500",
-};
-
-const ANIMATION_PILL: Record<AnimationLibrary, string> = {
-	gsap: "bg-emerald-500/10 text-emerald-700 border-emerald-500/25 dark:text-emerald-400",
-	motion: "bg-fuchsia-500/10 text-fuchsia-700 border-fuchsia-500/25 dark:text-fuchsia-400",
-	css: "bg-cyan-500/10 text-cyan-700 border-cyan-500/25 dark:text-cyan-400",
-};
-
 const KIND_LABEL: Record<ComponentTypeDef["kind"], string> = {
 	ui: "Ui Components",
 	section: "Website Sections",
@@ -4148,42 +4136,53 @@ function CatalogCard({
 		// whole card. A live preview holds real buttons, which cannot sit inside an
 		// <a>, and one link with the component's name as its text is also what a
 		// crawler and a screen reader should see.
-		<div className="group relative flex h-full flex-col overflow-hidden rounded-[28px] border border-foreground/[0.08] bg-foreground/[0.03] transition-colors duration-300 hover:bg-foreground/[0.06] focus-within:ring-2 focus-within:ring-primary/50">
+		// Named group: a plain `group` would also fire every `group-hover:` class
+		// inside a live preview, so components would animate on card hover. The card
+		// zooms its preview instead, and only the footer (the arrow) uses `group`.
+		<div className="group/card relative flex h-full flex-col overflow-hidden rounded-2xl border border-foreground/[0.08] bg-foreground/[0.03] transition-colors duration-300 hover:bg-foreground/[0.06] focus-within:ring-2 focus-within:ring-primary/50">
 			{/* 2:1 panel, so the card keeps one proportion whatever it shows. */}
-			<div className="relative m-2 mb-0 aspect-[2/1] overflow-hidden rounded-[20px] bg-background">
-				{item.live ? (
-					<CatalogPreview spec={item.live} fallback={miniature} />
-				) : (
-					<div className="absolute inset-0 p-2">{miniature}</div>
-				)}
+			<div className="relative m-2 mb-0 aspect-[2/1] overflow-hidden rounded-lg bg-background">
+				{/* The only hover effect: a slow zoom of the whole preview, like a still image. */}
+				<div className="absolute inset-0 origin-center transition-transform duration-500 ease-out group-hover/card:scale-[1.05] motion-reduce:transition-none">
+					{item.live ? (
+						<CatalogPreview spec={item.live} fallback={miniature} />
+					) : (
+						<div className="absolute inset-0 p-2">{miniature}</div>
+					)}
+				</div>
 				{item.badge && (
 					<span className="absolute top-2.5 right-2.5 z-10 text-[9px] font-bold uppercase tracking-wider leading-none px-1.5 py-0.5 rounded-md bg-primary/15 text-primary border border-primary/30 backdrop-blur-sm">
 						{item.badge}
 					</span>
 				)}
 			</div>
-			<div className="flex items-start justify-between gap-3 px-4 pb-4 pt-3.5">
+			<div className="group flex items-start justify-between gap-3 px-4 pb-4 pt-3.5">
 				<div className="min-w-0">
 					<div className="flex flex-wrap items-center gap-x-2 gap-y-1">
 						<h3 className="font-sans text-[15px] font-semibold leading-snug text-foreground transition-colors group-hover:text-primary">
 							<Link
 								href={item.href || docsHref(framework, item.slug || "")}
 								{...triggerProps}
-								className="outline-none after:absolute after:inset-0 after:z-20 after:rounded-[28px] after:content-['']">
+								className="outline-none after:absolute after:inset-0 after:z-20 after:rounded-2xl after:content-['']">
 								{item.title}
 							</Link>
 						</h3>
-						{item.animation.map((lib) => (
-							<span
-								key={lib}
-								className={cn(
-									"inline-flex items-center gap-1 rounded-md border px-1.5 py-0.5 text-[10px] font-semibold leading-none",
-									ANIMATION_PILL[lib],
-								)}>
-								<span aria-hidden className={cn("size-1 rounded-full", ANIMATION_DOT[lib])} />
-								{ANIMATION_LABEL[lib]}
-							</span>
-						))}
+						{item.animation.map((lib) => {
+							const LibIcon = lib === "gsap" ? GsapIcon : lib === "motion" ? MotionIcon : TailwindIcon;
+							return (
+								<span
+									key={lib}
+									title={ANIMATION_LABEL[lib]}
+									className="inline-flex items-center leading-none">
+									<LibIcon
+										aria-hidden
+										size={16}
+										className={cn("shrink-0", lib === "motion" && "text-foreground")}
+									/>
+									<span className="sr-only">{ANIMATION_LABEL[lib]}</span>
+								</span>
+							);
+						})}
 					</div>
 					<p className="mt-1 line-clamp-1 text-[13px] text-foreground/50">{item.countText}</p>
 				</div>
