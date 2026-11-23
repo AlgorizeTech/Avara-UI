@@ -145,22 +145,50 @@ function SelectionPill({
   const placedIn = useRef<string | null>(null);
 
   useLayoutEffect(() => {
-    const grid = gridRef.current;
     const pill = pillRef.current;
+    // The pill is a child of the grid, and React attaches a parent's ref only
+    // after its children's layout effects have run. On the very first mount
+    // `gridRef.current` is therefore still null, which left the initially
+    // selected day without a pill (its white text on a white card) until some
+    // later re-render. The pill's own parent is that same grid.
+    const grid = gridRef.current ?? pill?.parentElement;
     if (!grid || !pill) return;
-    const target = grid.querySelector<HTMLElement>('[data-selected="true"]');
-    if (!target) {
-      pill.style.opacity = "0";
-      placedIn.current = null;
-      return;
-    }
-    const from = grid.getBoundingClientRect();
-    const to = target.getBoundingClientRect();
-    const glide = placedIn.current === monthKey && !instant;
-    pill.style.transition = glide ? unfoldOn("transform") : "none";
-    pill.style.transform = `translate(${to.left - from.left}px, ${to.top - from.top}px)`;
-    pill.style.opacity = "1";
-    placedIn.current = monthKey;
+    const place = (glide: boolean) => {
+      const target = grid.querySelector<HTMLElement>('[data-selected="true"]');
+      if (!target) {
+        pill.style.opacity = "0";
+        placedIn.current = null;
+        return;
+      }
+      const from = grid.getBoundingClientRect();
+      const to = target.getBoundingClientRect();
+      // getBoundingClientRect is in screen pixels, but the translate below is
+      // in the grid's own CSS pixels. They only match at scale 1: inside a
+      // transform: scale() ancestor (a fitted docs preview, a zoomed canvas)
+      // the pill would land short of the day. Divide the scale back out.
+      const scale = grid.offsetWidth > 0 ? from.width / grid.offsetWidth : 1;
+      pill.style.transition = glide ? unfoldOn("transform") : "none";
+      pill.style.transform = `translate(${(to.left - from.left) / scale}px, ${(to.top - from.top) / scale}px)`;
+      pill.style.opacity = "1";
+      placedIn.current = monthKey;
+    };
+    place(placedIn.current === monthKey && !instant);
+
+    // The grid can change size after the pill is placed (the popover finishing
+    // its open animation, a responsive container settling, the window
+    // resizing). The day moves with it, so snap the pill back onto the day.
+    // (The observer reports once on observe(); skip that so a click's glide
+    // is not cut short.)
+    let initial = true;
+    const observer = new ResizeObserver(() => {
+      if (initial) {
+        initial = false;
+        return;
+      }
+      place(false);
+    });
+    observer.observe(grid);
+    return () => observer.disconnect();
   }, [gridRef, selectedKey, monthKey, instant]);
 
   return (

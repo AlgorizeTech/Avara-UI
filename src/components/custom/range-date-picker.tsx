@@ -446,7 +446,9 @@ function useElementWidth(ref: React.RefObject<HTMLElement | null>) {
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const measure = () => setWidth(el.getBoundingClientRect().width);
+    // offsetWidth is the layout width, unaffected by a transform: scale()
+    // ancestor; getBoundingClientRect().width would shrink with it.
+    const measure = () => setWidth(el.offsetWidth);
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
