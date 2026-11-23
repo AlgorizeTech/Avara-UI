@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-22T15:36:15.928Z",
-  "totalFiles": 341,
+  "generatedAt": "2026-11-23T14:20:14.025Z",
+  "totalFiles": 347,
   "files": [
     {
       "name": "docs",
@@ -127,6 +127,12 @@
       "path": "/docs-md/nextjs-booking-card.md",
       "url": "/docs/nextjs/booking-card",
       "originalMdx": "[framework]\\booking-card\\page.mdx"
+    },
+    {
+      "name": "nextjs/brand-bridge",
+      "path": "/docs-md/nextjs-brand-bridge.md",
+      "url": "/docs/nextjs/brand-bridge",
+      "originalMdx": "[framework]\\brand-bridge\\page.mdx"
     },
     {
       "name": "nextjs/breadcrumb",
@@ -717,6 +723,12 @@
       "originalMdx": "[framework]\\product-details\\page.mdx"
     },
     {
+      "name": "nextjs/profile-card",
+      "path": "/docs-md/nextjs-profile-card.md",
+      "url": "/docs/nextjs/profile-card",
+      "originalMdx": "[framework]\\profile-card\\page.mdx"
+    },
+    {
       "name": "nextjs/profile-page",
       "path": "/docs-md/nextjs-profile-page.md",
       "url": "/docs/nextjs/profile-page",
@@ -739,6 +751,12 @@
       "path": "/docs-md/nextjs-radial-orbital-timeline.md",
       "url": "/docs/nextjs/radial-orbital-timeline",
       "originalMdx": "[framework]\\radial-orbital-timeline\\page.mdx"
+    },
+    {
+      "name": "nextjs/radio-button",
+      "path": "/docs-md/nextjs-radio-button.md",
+      "url": "/docs/nextjs/radio-button",
+      "originalMdx": "[framework]\\radio-button\\page.mdx"
     },
     {
       "name": "nextjs/range-date-picker",
@@ -1147,6 +1165,12 @@
       "path": "/docs-md/reactjs-booking-card.md",
       "url": "/docs/reactjs/booking-card",
       "originalMdx": "[framework]\\booking-card\\page.mdx"
+    },
+    {
+      "name": "reactjs/brand-bridge",
+      "path": "/docs-md/reactjs-brand-bridge.md",
+      "url": "/docs/reactjs/brand-bridge",
+      "originalMdx": "[framework]\\brand-bridge\\page.mdx"
     },
     {
       "name": "reactjs/breadcrumb",
@@ -1737,6 +1761,12 @@
       "originalMdx": "[framework]\\product-details\\page.mdx"
     },
     {
+      "name": "reactjs/profile-card",
+      "path": "/docs-md/reactjs-profile-card.md",
+      "url": "/docs/reactjs/profile-card",
+      "originalMdx": "[framework]\\profile-card\\page.mdx"
+    },
+    {
       "name": "reactjs/profile-page",
       "path": "/docs-md/reactjs-profile-page.md",
       "url": "/docs/reactjs/profile-page",
@@ -1759,6 +1789,12 @@
       "path": "/docs-md/reactjs-radial-orbital-timeline.md",
       "url": "/docs/reactjs/radial-orbital-timeline",
       "originalMdx": "[framework]\\radial-orbital-timeline\\page.mdx"
+    },
+    {
+      "name": "reactjs/radio-button",
+      "path": "/docs-md/reactjs-radio-button.md",
+      "url": "/docs/reactjs/radio-button",
+      "originalMdx": "[framework]\\radio-button\\page.mdx"
     },
     {
       "name": "reactjs/range-date-picker",
