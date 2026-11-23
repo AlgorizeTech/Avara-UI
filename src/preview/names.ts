@@ -148,6 +148,7 @@ export const sandboxNames = [
   "portfolio-showcase",
   "pricing",
   "product-details",
+  "profile-card",
   "profile-page",
   "progress",
   "qr-code",

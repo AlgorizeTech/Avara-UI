@@ -133,6 +133,7 @@ const DESCRIPTIONS: Record<string, string> = {
   piano: "A playable piano with synthesised Web Audio sound, computer-keyboard key bindings, a volume slider and optional key labels.",
   "platform-grid": "A hairline feature grid of icon tiles and larger 2×2 feature cards, with a wave entrance on scroll, a pointer spotlight and per-tile hover tilt.",
   "product-details": "Four responsive product details sections for online stores, with bento hero layouts, glass cards and images that switch with the selected colour.",
+  "profile-card": "A compact creator profile card with a pointer-reactive pastel aurora cover, verified seal, expandable skill chips, counting stats and an animated Follow button.",
   reviews: "A review and testimonial section with either a rotating 3D globe marquee or a 3D stacked portrait carousel with arrow navigation.",
   "secure-envelope": "An envelope card component: a pass slides out on hover and lifts onto the cover on click, with a thumb notch, crest seals and a 3D two-sided flip.",
   "split-flap": "A split-flap (Solari board) display with 3D flipping cards, split creases, hinge notches and synthesised click sounds.",

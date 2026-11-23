@@ -4070,6 +4070,32 @@
       "docs": "Named export: ProductDetails. Accepts `variant` (4 variants: modern-split-gallery, floating-card-glass, bento-editorial-showcase, color-sync-gallery), `title`, `price`, `originalPrice`, `description`, `className`. Adaptable across mobile, tablet, and desktop viewports."
     },
     {
+      "name": "profile-card",
+      "type": "registry:component",
+      "title": "Profile Card",
+      "author": "AlgorizeTech",
+      "description": "A compact creator profile card with a pointer-reactive pastel aurora cover, verified seal, expandable skill chips, counting stats, and an animated Follow button.",
+      "categories": [
+        "marketing",
+        "data-display"
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://avaraui.com/r/button.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ProfileCardBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ProfileCardBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: ProfileCard (also default-exported), plus ProfileCardProps and ProfileStat types. Reuses the library's Button component for Follow/Following."
+    },
+    {
       "name": "profile-page",
       "type": "registry:component",
       "title": "Profile Page",

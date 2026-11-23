@@ -292,6 +292,13 @@ const rawNavigation: NavigationItem[] = [
       { label: "Particle Canvas", slug: "particle-canvas" },
       { label: "Playable Piano", slug: "piano" },
       { label: "Popover", slug: "popover" },
+      {
+        label: "Profile Card",
+        slug: "profile-card",
+        badge: "New",
+        addedOn: "2026-11-23",
+        keywords: ["profile card", "creator card", "user card", "aurora", "follow", "bio", "avatar"],
+      },
       { label: "Progress", slug: "progress" },
       { label: "QR Code", slug: "qr-code-generator" },
       { label: "Radial Orbital Timeline", slug: "radial-orbital-timeline" },

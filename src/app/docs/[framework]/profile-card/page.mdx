@@ -1,0 +1,197 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("profile-card");
+
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+import { extractCode } from "@/lib/code";
+
+# Profile Card
+
+A compact creator profile card with a pointer-reactive pastel aurora cover, pulsing availability dot, scalloped verified seal, expandable skill chips, counting stats, and an animated Follow <DocLink to="button">Button</DocLink>.
+
+export const usageDefault = `import { ProfileCard } from "@/components/custom/blocks/ProfileCardBlock";
+
+export default function ProfileCardExample() {
+  return (
+    <div className="w-full py-8 flex items-center justify-center">
+      <ProfileCard
+        variant="aurora"
+        name="Nadia Karim"
+        role="Product & motion engineer"
+        location="United States"
+        verified={true}
+        active={true}
+        onFollowChange={(following) => {
+          console.log("Following:", following);
+        }}
+      />
+    </div>
+  );
+}`;
+
+<ExampleShowcase
+  minHeight={600}
+  name="profile-card"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Aurora Profile Card",
+      subheading:
+        "Creator profile card with pointer-reactive aurora cover, expandable skills, counting stats, and Follow button.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"aurora"',
+          effect:
+            "renders the pastel aurora cover card style.",
+        },
+        {
+          prop: "verified",
+          value: "true",
+          effect:
+            "toggles the scalloped blue verified seal beside the name.",
+        },
+        {
+          prop: "active",
+          value: "true",
+          effect:
+            "toggles the pulsing green online dot on the avatar.",
+        },
+      ],
+      props: {
+        variant: "aurora",
+        verified: true,
+        active: true,
+      },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/ProfileCardBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="profile-card" />
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"aurora"</code></td>
+        <td><code>"aurora"</code></td>
+        <td>Visual style variant of the profile card.</td>
+      </tr>
+      <tr>
+        <td><code>name</code></td>
+        <td><code>string</code></td>
+        <td><code>"Nadia Karim"</code></td>
+        <td>Creator display name.</td>
+      </tr>
+      <tr>
+        <td><code>role</code></td>
+        <td><code>string</code></td>
+        <td><code>"Product &amp; motion engineer"</code></td>
+        <td>Role or title shown beneath the name.</td>
+      </tr>
+      <tr>
+        <td><code>location</code></td>
+        <td><code>string | null</code></td>
+        <td><code>"United States"</code></td>
+        <td>City or place shown with an animated pin icon. Pass <code>null</code> to hide.</td>
+      </tr>
+      <tr>
+        <td><code>bio</code></td>
+        <td><code>string</code></td>
+        <td><code>"Building expressive interfaces..."</code></td>
+        <td>Short bio paragraph.</td>
+      </tr>
+      <tr>
+        <td><code>avatar</code></td>
+        <td><code>string</code></td>
+        <td>Cloudinary portrait</td>
+        <td>Avatar portrait image URL.</td>
+      </tr>
+      <tr>
+        <td><code>verified</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Displays the scalloped blue verified seal beside the name.</td>
+      </tr>
+      <tr>
+        <td><code>active</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Displays the pulsing green online dot on the avatar.</td>
+      </tr>
+      <tr>
+        <td><code>status</code></td>
+        <td><code>string | null</code></td>
+        <td><code>"Available"</code></td>
+        <td>Status pill shown on the top-right of the cover. Pass <code>null</code> to hide.</td>
+      </tr>
+      <tr>
+        <td><code>skills</code></td>
+        <td><code>string[]</code></td>
+        <td><code>6 skills</code></td>
+        <td>Skill chips; the first 3 are shown and the rest expand via the <code>+n</code> chip.</td>
+      </tr>
+      <tr>
+        <td><code>stats</code></td>
+        <td><code>ProfileStat[]</code></td>
+        <td>Followers, Projects, Rating</td>
+        <td>Three animated stat tiles. The first tile ticks up/down on Follow.</td>
+      </tr>
+      <tr>
+        <td><code>cover</code></td>
+        <td><code>[string, string, string]</code></td>
+        <td><code>["#a5f3fc", "#c4b5fd", "#fbcfe8"]</code></td>
+        <td>Three pastel colours for the pointer-reactive aurora cover.</td>
+      </tr>
+      <tr>
+        <td><code>defaultFollowing</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Initial Following state.</td>
+      </tr>
+      <tr>
+        <td><code>onFollowChange</code></td>
+        <td><code>(following: boolean) =&gt; void</code></td>
+        <td><code>undefined</code></td>
+        <td>Callback fired when the Follow button is clicked.</td>
+      </tr>
+      <tr>
+        <td><code>onMessage</code></td>
+        <td><code>() =&gt; void</code></td>
+        <td><code>undefined</code></td>
+        <td>Callback fired when the Message icon button is clicked.</td>
+      </tr>
+      <tr>
+        <td><code>onSaveChange</code></td>
+        <td><code>(saved: boolean) =&gt; void</code></td>
+        <td><code>undefined</code></td>
+        <td>Callback fired when the Save bookmark button is toggled.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Additional CSS classes for the card container.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<DocsJsonLd slug="profile-card" />

@@ -207,6 +207,8 @@ export const NO_CHOICE_NEEDED: string[] = [
   "hover-peek",
   // Linear-style command palette with full keyboard navigation and trigger button.
   "command-palette",
+  // Compact creator profile card with pointer-reactive aurora cover and Follow button.
+  "profile-card",
 ];
 
 /**

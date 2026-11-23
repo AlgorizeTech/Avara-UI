@@ -5,7 +5,7 @@ description: Build React interfaces with Avara UI, a free shadcn registry of ani
 
 # Avara UI
 
-Avara UI is a free, MIT-licensed library of 211 animated React components and website sections, published as a shadcn registry. The shadcn CLI copies each component's source into the project, so the files are the user's to edit. There is no npm package, no account and no key.
+Avara UI is a free, MIT-licensed library of 212 animated React components and website sections, published as a shadcn registry. The shadcn CLI copies each component's source into the project, so the files are the user's to edit. There is no npm package, no account and no key.
 
 ## Workflow
 
