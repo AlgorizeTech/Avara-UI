@@ -10,6 +10,9 @@
   "action-buttons": {
     "interactive-action-async-commerce-buttons": "Action Buttons — Interactive Action, Async & Commerce Buttons"
   },
+  "action-buttons-motion": {
+    "interactive-action-async-commerce-buttons": "Action Buttons — Interactive Action, Async & Commerce Buttons"
+  },
   "agent-graph": {
     "shaded-tree-default": "Agent Graph — Shaded Tree (Default)",
     "flat-no-shade": "Agent Graph — Flat Tree (No Shade)",

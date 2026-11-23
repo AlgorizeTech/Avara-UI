@@ -238,6 +238,7 @@
     "src/components/custom/blocks/loader-theme.ts",
     "src/components/custom/blocks/login-form-theme.ts",
     "src/components/custom/blocks/motion-curves.ts",
+    "src/components/custom/blocks/motion/ActionButtons.tsx",
     "src/components/custom/blocks/motion/Ai-chat.tsx",
     "src/components/custom/blocks/motion/CardStackBlock.tsx",
     "src/components/custom/blocks/motion/DockBlock.tsx",
