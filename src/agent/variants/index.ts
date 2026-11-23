@@ -68,6 +68,7 @@ import { infrastructureTopology } from "./infrastructure-topology";
 import { animatedTimeline } from "./animated-timeline";
 import { brandBridge } from "./brand-bridge";
 import { profileCard } from "./profile-card";
+import { radioButton } from "./radio-button";
 import type { PageVariants } from "./types";
 
 export type { PageVariants, Variant } from "./types";
@@ -144,6 +145,7 @@ export const pageVariants: PageVariants[] = [
   infrastructureTopology,
   brandBridge,
   profileCard,
+  radioButton,
 ];
 
 /**

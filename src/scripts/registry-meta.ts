@@ -848,6 +848,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["marketing", "data-display"],
     docs: "Named exports: ProfileCard (also default-exported), plus ProfileCardProps and ProfileStat types. Reuses the library's Button component for Follow/Following.",
   },
+  "radio-button": {
+    description:
+      "An accessible, animated radio button group with card-style options, press ripple feedback, keyboard arrow navigation, and six distinct layout variants.",
+    categories: ["actions", "layout"],
+    docs: "Named export: RadioButtonGroup (also default-exported), plus RadioButtonGroupProps, RadioButtonOption, and RadioButtonVariant types. Supports variant='default' | 'subscription-plans' | 'grid' | 'with-icons' | 'custom-indicator' | 'icon-cards'.",
+  },
   "profile-page": {
     // The documented page puts a Verify Badge beside the name and Social Links
     // under the contact details; installing profile-page must bring both.

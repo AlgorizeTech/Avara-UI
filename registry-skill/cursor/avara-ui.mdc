@@ -6,7 +6,7 @@ alwaysApply: false
 
 # Avara UI
 
-Avara UI is a free, MIT-licensed library of 213 animated React components and website sections, published as a shadcn registry. The shadcn CLI copies each component's source into the project, so the files are the user's to edit. There is no npm package, no account and no key.
+Avara UI is a free, MIT-licensed library of 214 animated React components and website sections, published as a shadcn registry. The shadcn CLI copies each component's source into the project, so the files are the user's to edit. There is no npm package, no account and no key.
 
 ## Workflow
 

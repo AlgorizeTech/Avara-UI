@@ -302,6 +302,13 @@ const rawNavigation: NavigationItem[] = [
       { label: "Progress", slug: "progress" },
       { label: "QR Code", slug: "qr-code-generator" },
       { label: "Radial Orbital Timeline", slug: "radial-orbital-timeline" },
+      {
+        label: "Radio Button",
+        slug: "radio-button",
+        badge: "New",
+        addedOn: "2026-11-23",
+        keywords: ["radio", "radio button", "radio group", "plan selector", "options", "grid"],
+      },
       { label: "Range Date Picker", slug: "range-date-picker" },
       { label: "Resizable", slug: "resizable" },
       {

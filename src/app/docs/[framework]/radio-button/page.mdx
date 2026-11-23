@@ -1,0 +1,444 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("radio-button");
+
+import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+import { extractCode } from "@/lib/code";
+
+# Radio Button
+
+An accessible, animated radio button group with card-style options, keyboard arrow navigation, optional press ripple feedback, and eleven distinct examples.
+
+<AgentVariants slug="radio-button" />
+
+export const usageDefault = `import { RadioButtonGroup } from "@/components/custom/blocks/RadioButtonBlock";
+
+const PLANS = [
+  { value: "starter", label: "Starter", description: "Essential components for solo makers.", meta: "$5/mo" },
+  { value: "pro", label: "Pro", description: "Full registry access with priority updates.", meta: "$15/mo" },
+  { value: "enterprise", label: "Enterprise", description: "Dedicated support and team seats.", meta: "$45/mo" },
+];
+
+export default function RadioButtonDefaultExample() {
+  return (
+    <RadioButtonGroup
+      variant="default"
+      label="Select a plan"
+      options={PLANS}
+      defaultValue="pro"
+    />
+  );
+}`;
+
+export const usageDeliveryAndPayment = `import { RadioButtonGroup } from "@/components/custom/blocks/RadioButtonBlock";
+import { Building2, CreditCard, Wallet } from "lucide-react";
+
+const DELIVERY = [
+  { value: "standard", label: "Standard", description: "4–6 business days", meta: "$5.00" },
+  { value: "express", label: "Express", description: "2–3 business days", meta: "$16.00" },
+  { value: "super-fast", label: "Super Fast", description: "Next-day delivery", meta: "$25.00" },
+];
+
+const PAYMENTS = [
+  { value: "visa-0123", label: "**** 0123", description: "Expires 08/2028", icon: <CreditCard className="size-4" /> },
+  { value: "mc-8304", label: "**** 8304", description: "Expires 11/2027", icon: <CreditCard className="size-4" /> },
+  { value: "paypal", label: "PayPal", description: "Instant checkout", icon: <Wallet className="size-4" /> },
+  { value: "bank", label: "Bank Transfer", description: "ACH / Wire", icon: <Building2 className="size-4" /> },
+];
+
+export default function DeliveryAndPaymentExample() {
+  return (
+    <div className="flex flex-col gap-6">
+      <RadioButtonGroup variant="grid" label="Delivery method" options={DELIVERY} defaultValue="express" />
+      <RadioButtonGroup variant="with-icons" label="Payment method" options={PAYMENTS} defaultValue="visa-0123" />
+    </div>
+  );
+}`;
+
+export const usageSubscription = `import { RadioButtonGroup } from "@/components/custom/blocks/RadioButtonBlock";
+
+const SUBSCRIPTIONS = [
+  { value: "annual", label: "Annual", description: "Billed yearly for full access.", meta: "$99/yr" },
+  { value: "annual-toolkit", label: "Annual + Toolkit", badge: "Save up to 50%", description: "Includes Figma kit and updates.", meta: "$149/yr" },
+];
+
+export default function RadioButtonSubscriptionExample() {
+  return (
+    <RadioButtonGroup
+      variant="subscription-plans"
+      label="Subscription plans"
+      options={SUBSCRIPTIONS}
+      defaultValue="annual-toolkit"
+    />
+  );
+}`;
+
+export const usageControlled = `import { useState } from "react";
+import { RadioButtonGroup } from "@/components/custom/blocks/RadioButtonBlock";
+
+const PLANS = [
+  { value: "starter", label: "Starter", description: "Essential components for solo makers.", meta: "$5/mo" },
+  { value: "pro", label: "Pro", description: "Full registry access with priority updates.", meta: "$15/mo" },
+  { value: "enterprise", label: "Enterprise", description: "Dedicated support and team seats.", meta: "$45/mo" },
+];
+
+export default function RadioButtonControlledExample() {
+  const [selected, setSelected] = useState("pro");
+
+  return (
+    <div className="flex flex-col gap-3">
+      <RadioButtonGroup
+        variant="default"
+        label="Select a plan"
+        options={PLANS}
+        value={selected}
+        onValueChange={setSelected}
+      />
+      <p className="text-xs text-muted-foreground">Selected: {selected}</p>
+    </div>
+  );
+}`;
+
+export const usageCustomIndicator = `import { RadioButtonGroup } from "@/components/custom/blocks/RadioButtonBlock";
+
+const LISTS = [
+  { value: "newsletter", label: "Newsletter", description: "621 users" },
+  { value: "existing", label: "Existing Customers", description: "1,200 users" },
+  { value: "trial", label: "Trial Users", description: "2,740 users" },
+];
+
+export default function RadioButtonCustomIndicatorExample() {
+  return (
+    <RadioButtonGroup
+      variant="custom-indicator"
+      label="Select a mailing list"
+      options={LISTS}
+      defaultValue="newsletter"
+    />
+  );
+}`;
+
+export const usageDisabled = `import { RadioButtonGroup } from "@/components/custom/blocks/RadioButtonBlock";
+
+const PLANS = [
+  { value: "starter", label: "Starter", description: "Essential components for solo makers.", meta: "$5/mo" },
+  { value: "pro", label: "Pro", description: "Full registry access with priority updates.", meta: "$15/mo" },
+  { value: "enterprise", label: "Enterprise", description: "Dedicated support and team seats.", meta: "$45/mo" },
+];
+
+export default function RadioButtonDisabledExample() {
+  return (
+    <RadioButtonGroup
+      variant="disabled-group"
+      label="Select a plan"
+      description="Plan changes are temporarily unavailable."
+      options={PLANS}
+      defaultValue="pro"
+      disabled={true}
+    />
+  );
+}`;
+
+export const usageGrid = `import { RadioButtonGroup } from "@/components/custom/blocks/RadioButtonBlock";
+
+const DELIVERY = [
+  { value: "standard", label: "Standard", description: "4–6 business days", meta: "$5.00" },
+  { value: "express", label: "Express", description: "2–3 business days", meta: "$16.00" },
+  { value: "super-fast", label: "Super Fast", description: "Next-day delivery", meta: "$25.00" },
+];
+
+export default function RadioButtonGridExample() {
+  return (
+    <RadioButtonGroup
+      variant="grid"
+      label="Delivery method"
+      options={DELIVERY}
+      defaultValue="express"
+    />
+  );
+}`;
+
+export const usageIconCards = `import { RadioButtonGroup } from "@/components/custom/blocks/RadioButtonBlock";
+import { Crown, Flame, Gem, Layers, Rocket } from "lucide-react";
+
+const WORKSPACES = [
+  { value: "starter", label: "Starter", badge: "Most popular", meta: "$12", metaSuffix: "per month", description: "For freelancers and solo makers shipping fast.", icon: <Layers className="size-4" /> },
+  { value: "growth", label: "Growth", meta: "$29", metaSuffix: "per month", description: "For small teams scaling their product.", icon: <Flame className="size-4" /> },
+  { value: "business", label: "Business", meta: "$59", metaSuffix: "per month", description: "For companies with advanced compliance needs.", icon: <Rocket className="size-4" /> },
+  { value: "scale", label: "Scale", meta: "$149", metaSuffix: "per month", description: "Dedicated infra, SLA, and custom integrations.", icon: <Gem className="size-4" /> },
+  { value: "enterprise", label: "Enterprise", meta: "$299", metaSuffix: "per month", description: "White-glove onboarding, custom contracts.", icon: <Crown className="size-4" /> },
+];
+
+export default function RadioButtonIconCardsExample() {
+  return (
+    <RadioButtonGroup
+      variant="icon-cards"
+      label="Choose your workspace plan"
+      options={WORKSPACES}
+      defaultValue="growth"
+    />
+  );
+}`;
+
+export const usageNoIndicator = `import { RadioButtonGroup } from "@/components/custom/blocks/RadioButtonBlock";
+
+const PLANS = [
+  { value: "starter", label: "Starter", description: "Essential components for solo makers.", meta: "$5/mo" },
+  { value: "pro", label: "Pro", description: "Full registry access with priority updates.", meta: "$15/mo" },
+  { value: "enterprise", label: "Enterprise", description: "Dedicated support and team seats.", meta: "$45/mo" },
+];
+
+export default function RadioButtonNoIndicatorExample() {
+  return (
+    <RadioButtonGroup
+      variant="no-indicator"
+      label="Select a plan"
+      options={PLANS}
+      defaultValue="pro"
+    />
+  );
+}`;
+
+export const usageWithIcons = `import { RadioButtonGroup } from "@/components/custom/blocks/RadioButtonBlock";
+import { Building2, CreditCard, Wallet } from "lucide-react";
+
+const PAYMENTS = [
+  { value: "visa-0123", label: "**** 0123", description: "Expires 08/2028", icon: <CreditCard className="size-4" /> },
+  { value: "mc-8304", label: "**** 8304", description: "Expires 11/2027", icon: <CreditCard className="size-4" /> },
+  { value: "paypal", label: "PayPal", description: "Instant checkout", icon: <Wallet className="size-4" /> },
+  { value: "bank", label: "Bank Transfer", description: "ACH / Wire", icon: <Building2 className="size-4" /> },
+];
+
+export default function RadioButtonIconsExample() {
+  return (
+    <RadioButtonGroup
+      variant="with-icons"
+      label="Payment method"
+      options={PAYMENTS}
+      defaultValue="visa-0123"
+    />
+  );
+}`;
+
+export const usageWithRipple = `import { RadioButtonGroup } from "@/components/custom/blocks/RadioButtonBlock";
+
+const REGIONS = [
+  { value: "us-east-1", label: "US East", description: "us-east-1" },
+  { value: "eu-west-1", label: "EU West", description: "eu-west-1" },
+  { value: "ap-south-1", label: "Asia Pacific", description: "ap-south-1" },
+];
+
+export default function RadioButtonRippleExample() {
+  return (
+    <RadioButtonGroup
+      variant="with-ripple"
+      label="Deploy region"
+      options={REGIONS}
+      defaultValue="us-east-1"
+      ripple={true}
+    />
+  );
+}`;
+
+<ExampleShowcase
+  minHeight={360}
+  name="radio-button"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Select a Plan",
+      subheading:
+        "Vertical card stack with top-right radio dot indicator, descriptions, and right-aligned pricing.",
+      propNotes: [
+        {
+          prop: "variant",
+          value: '"default"',
+          effect: "renders vertical radio cards with a top-right dot indicator.",
+        },
+      ],
+      props: { variant: "default" },
+      usage: usageDefault,
+      code: extractCode("src/components/custom/blocks/RadioButtonBlock.tsx"),
+    },
+  ]}
+/>
+
+## Installation
+
+<Installation name="radio-button" />
+
+<ExampleShowcase
+  minHeight={360}
+  name="radio-button"
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Delivery And Payment",
+      subheading:
+        "Combined checkout layout pairing a 3-column delivery grid with a 2-column payment icon grid.",
+      props: { variant: "delivery-and-payment" },
+      usage: usageDeliveryAndPayment,
+      code: extractCode("src/components/custom/blocks/RadioButtonBlock.tsx"),
+    },
+    {
+      title: "Subscription Plans",
+      subheading:
+        "Inverted high-contrast selected state with discount badge, centered check indicator, and press ripple.",
+      props: { variant: "subscription-plans" },
+      usage: usageSubscription,
+      code: extractCode("src/components/custom/blocks/RadioButtonBlock.tsx"),
+    },
+    {
+      title: "Controlled",
+      subheading:
+        "Controlled radio group with live selected value readout below the cards.",
+      props: { variant: "controlled" },
+      usage: usageControlled,
+      code: extractCode("src/components/custom/blocks/RadioButtonBlock.tsx"),
+    },
+    {
+      title: "Custom Indicator",
+      subheading:
+        "Three-column grid with an animated spring check-circle indicator in the top-right corner.",
+      props: { variant: "custom-indicator" },
+      usage: usageCustomIndicator,
+      code: extractCode("src/components/custom/blocks/RadioButtonBlock.tsx"),
+    },
+    {
+      title: "Disabled Group",
+      subheading:
+        "Read-only disabled state when option changes are temporarily unavailable.",
+      props: { variant: "disabled-group" },
+      usage: usageDisabled,
+      code: extractCode("src/components/custom/blocks/RadioButtonBlock.tsx"),
+    },
+    {
+      title: "Grid Layout",
+      subheading:
+        "Three-column responsive grid for compact delivery or shipping options.",
+      props: { variant: "grid" },
+      usage: usageGrid,
+      code: extractCode("src/components/custom/blocks/RadioButtonBlock.tsx"),
+    },
+    {
+      title: "Icon Cards",
+      subheading:
+        "Wide plan cards with leading icon boxes, highlight badges, pricing, and checkmark indicators.",
+      props: { variant: "icon-cards" },
+      usage: usageIconCards,
+      code: extractCode("src/components/custom/blocks/RadioButtonBlock.tsx"),
+    },
+    {
+      title: "No Indicator",
+      subheading:
+        "Clean border and ring selection with no radio dot or checkmark indicator.",
+      props: { variant: "no-indicator" },
+      usage: usageNoIndicator,
+      code: extractCode("src/components/custom/blocks/RadioButtonBlock.tsx"),
+    },
+    {
+      title: "With Icons",
+      subheading:
+        "Two-column horizontal icon cards with no radio dot indicator.",
+      props: { variant: "with-icons" },
+      usage: usageWithIcons,
+      code: extractCode("src/components/custom/blocks/RadioButtonBlock.tsx"),
+    },
+    {
+      title: "With Ripple",
+      subheading:
+        "Three-column deploy region grid with tactile press ripple feedback on click.",
+      props: { variant: "with-ripple" },
+      usage: usageWithRipple,
+      code: extractCode("src/components/custom/blocks/RadioButtonBlock.tsx"),
+    },
+  ]}
+/>
+
+## Props Reference
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>variant</code></td>
+        <td><code>"default" | "delivery-and-payment" | "subscription-plans" | "controlled" | "custom-indicator" | "disabled-group" | "grid" | "icon-cards" | "no-indicator" | "with-icons" | "with-ripple"</code></td>
+        <td><code>"default"</code></td>
+        <td>Visual layout and indicator style of the radio button group.</td>
+      </tr>
+      <tr>
+        <td><code>options</code></td>
+        <td><code>RadioButtonOption[]</code></td>
+        <td>—</td>
+        <td>Array of options (<code>value</code>, <code>label</code>, <code>description</code>, <code>meta</code>, <code>badge</code>, <code>icon</code>, <code>disabled</code>).</td>
+      </tr>
+      <tr>
+        <td><code>label</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Heading displayed above the radio group.</td>
+      </tr>
+      <tr>
+        <td><code>description</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Helper text displayed beneath the label.</td>
+      </tr>
+      <tr>
+        <td><code>value</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Controlled selected option value.</td>
+      </tr>
+      <tr>
+        <td><code>defaultValue</code></td>
+        <td><code>string</code></td>
+        <td>First enabled option</td>
+        <td>Initial selected value for uncontrolled usage.</td>
+      </tr>
+      <tr>
+        <td><code>onValueChange</code></td>
+        <td><code>(value: string) =&gt; void</code></td>
+        <td><code>undefined</code></td>
+        <td>Callback fired when the selected option changes.</td>
+      </tr>
+      <tr>
+        <td><code>disabled</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Disables all options in the group.</td>
+      </tr>
+      <tr>
+        <td><code>ripple</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code> for <code>subscription-plans</code> &amp; <code>with-ripple</code></td>
+        <td>Enables press ripple feedback on pointer click.</td>
+      </tr>
+      <tr>
+        <td><code>indicator</code></td>
+        <td><code>"dot" | "check" | "none"</code></td>
+        <td>Variant default</td>
+        <td>Overrides the selection indicator style.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Additional CSS classes for the outer wrapper.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<DocsJsonLd slug="radio-button" />

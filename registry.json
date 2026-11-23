@@ -4267,6 +4267,32 @@
       "docs": "Named export: RadialOrbitalTimeline. `nodes` take { id, title, date, status, energyLevel, description, icon?, connectedNodes? }. Click or hover nodes to reveal inspector popover card. Supports `autoRotate`, `rotationSpeed`, and custom accent colors."
     },
     {
+      "name": "radio-button",
+      "type": "registry:component",
+      "title": "Radio Button",
+      "author": "AlgorizeTech",
+      "description": "Ask the user to pick one of 11 radio button variants: https://avaraui.com/view/radio-button. This item holds 11 of them as looks of one component (default, subscription-plans, icon-cards, no-indicator, controlled, disabled-group, delivery-and-payment, grid, with-icons, custom-indicator, with-ripple). Skip the question if the user already named one. An accessible, animated radio button group with card-style options, press ripple feedback, keyboard arrow navigation, and six distinct layout variants.",
+      "categories": [
+        "actions",
+        "layout"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/RadioButtonBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/RadioButtonBlock.tsx"
+        }
+      ],
+      "docs": "Named export: RadioButtonGroup (also default-exported), plus RadioButtonGroupProps, RadioButtonOption, and RadioButtonVariant types. Supports variant='default' | 'subscription-plans' | 'grid' | 'with-icons' | 'custom-indicator' | 'icon-cards'."
+    },
+    {
       "name": "range-date-picker",
       "type": "registry:component",
       "title": "Range Date Picker",

@@ -823,6 +823,19 @@
     "dual-orbit-timeline-default": "Radial Orbital Timeline — Dual Orbit Timeline (Default)",
     "single-orbit-timeline": "Radial Orbital Timeline — Single Orbit Timeline"
   },
+  "radio-button": {
+    "select-a-plan": "Radio Button — Select a Plan",
+    "delivery-and-payment": "Radio Button — Delivery And Payment",
+    "subscription-plans": "Radio Button — Subscription Plans",
+    "controlled": "Radio Button — Controlled",
+    "custom-indicator": "Radio Button — Custom Indicator",
+    "disabled-group": "Radio Button — Disabled Group",
+    "grid-layout": "Radio Button — Grid Layout",
+    "icon-cards": "Radio Button — Icon Cards",
+    "no-indicator": "Radio Button — No Indicator",
+    "with-icons": "Radio Button — With Icons",
+    "with-ripple": "Radio Button — With Ripple"
+  },
   "range-date-picker": {
     "single-month-range-date-picker": "Range Date Picker — Single Month Range Date Picker",
     "single-month-priced-range-date-picker": "Range Date Picker — Single Month Priced Range Date Picker",

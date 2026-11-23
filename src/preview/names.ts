@@ -153,6 +153,7 @@ export const sandboxNames = [
   "progress",
   "qr-code",
   "radial-orbital-timeline",
+  "radio-button",
   "range-date-picker",
   "register-form",
   "resizable",

@@ -160,6 +160,7 @@
     "src/components/custom/blocks/QrCodeGeneratorBlock.tsx",
     "src/components/custom/blocks/QrCodeReaderBlock.tsx",
     "src/components/custom/blocks/RadialOrbitalTimeline.tsx",
+    "src/components/custom/blocks/RadioButtonBlock.tsx",
     "src/components/custom/blocks/RegisterForm.tsx",
     "src/components/custom/blocks/ResizableBlock.tsx",
     "src/components/custom/blocks/ReviewsBlock.tsx",

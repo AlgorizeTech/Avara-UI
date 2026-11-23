@@ -135,5 +135,6 @@ Install the chosen variant's own `install` command from the index. Several looks
 - `infrastructure-topology`: 2 variants. All live: https://avaraui.com/view/infrastructure-topology
 - `brand-bridge`: 2 variants. All live: https://avaraui.com/view/brand-bridge
 - `profile-card`: 2 variants. All live: https://avaraui.com/view/profile-card
+- `radio-button`: 11 variants. All live: https://avaraui.com/view/radio-button
 
 An index entry with `choose: true` is the authority: it lists every variant and its live link.
