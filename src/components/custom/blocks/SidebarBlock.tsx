@@ -227,17 +227,32 @@ export function SidebarContent({
           activeRect.height === 0 ||
           activeEl.offsetParent === null
         ) {
-          setIndicatorStyle((prev) => ({ ...prev, opacity: 0 }));
+          setIndicatorStyle((prev) =>
+            prev.opacity === 0 ? prev : { ...prev, opacity: 0 },
+          );
         } else {
-          const top = activeRect.top - containerRect.top + container.scrollTop;
-          setIndicatorStyle({
-            top,
-            height: activeRect.height,
-            opacity: 1,
-          });
+          // Rects are in screen pixels, `top`/`height` are applied in the
+          // container's own CSS pixels. They differ inside a transform: scale()
+          // ancestor (a fitted docs preview), so divide the scale back out.
+          const scale =
+            container.offsetWidth > 0
+              ? containerRect.width / container.offsetWidth
+              : 1;
+          const top =
+            (activeRect.top - containerRect.top) / scale + container.scrollTop;
+          const height = activeRect.height / scale;
+          setIndicatorStyle((prev) =>
+            Math.abs(prev.top - top) < 0.5 &&
+            Math.abs(prev.height - height) < 0.5 &&
+            prev.opacity === 1
+              ? prev
+              : { top, height, opacity: 1 },
+          );
         }
       } else {
-        setIndicatorStyle((prev) => ({ ...prev, opacity: 0 }));
+        setIndicatorStyle((prev) =>
+          prev.opacity === 0 ? prev : { ...prev, opacity: 0 },
+        );
       }
     };
 
