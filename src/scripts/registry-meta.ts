@@ -836,6 +836,12 @@ export const META: Record<string, ItemMeta> = {
     categories: ["layout"],
     docs: "Named exports: GlassBackdrop, GlassPanel (plus SurfaceVariant, GlassShape types); useSurface is exported from glass-panel-context.ts, which installs alongside. `GlassBackdrop` washes three `aurora` colours behind a 12-column grid (`gridClassName` for row heights and gaps) and sets `variant` (glass | solid) for every `GlassPanel` inside; panels take `shape` (slab, tile, disc, capsule), `interactive`, and Tailwind column spans.",
   },
+  "account-menu": {
+    description:
+      "A morphing account pill and card with a live status picker, quick action tiles, workspace switcher, optional storage meter, and two-step sign out.",
+    categories: ["navigation", "data-display"],
+    docs: "Named exports: AccountMenu (also default-exported), plus AccountMenuProps, AccountStatus, and AccountWorkspace types. Supports showModal (default true) and showStorage (default false) props.",
+  },
   "profile-card": {
     description:
       "A compact creator profile card with a pointer-reactive pastel aurora cover, verified seal, expandable skill chips, counting stats, and an animated Follow button.",

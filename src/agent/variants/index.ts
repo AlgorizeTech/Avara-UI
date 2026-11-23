@@ -67,6 +67,7 @@ import { carousel } from "./carousel";
 import { infrastructureTopology } from "./infrastructure-topology";
 import { animatedTimeline } from "./animated-timeline";
 import { brandBridge } from "./brand-bridge";
+import { profileCard } from "./profile-card";
 import type { PageVariants } from "./types";
 
 export type { PageVariants, Variant } from "./types";
@@ -142,6 +143,7 @@ export const pageVariants: PageVariants[] = [
   carousel,
   infrastructureTopology,
   brandBridge,
+  profileCard,
 ];
 
 /**
@@ -207,8 +209,6 @@ export const NO_CHOICE_NEEDED: string[] = [
   "hover-peek",
   // Linear-style command palette with full keyboard navigation and trigger button.
   "command-palette",
-  // Compact creator profile card with pointer-reactive aurora cover and Follow button.
-  "profile-card",
 ];
 
 /**

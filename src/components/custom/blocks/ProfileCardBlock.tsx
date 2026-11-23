@@ -777,7 +777,14 @@ export interface ProfileStat {
   compact?: boolean;
 }
 
-export type ProfileCardVariant = "aurora";
+export {
+  AccountMenu,
+  type AccountMenuProps,
+  type AccountStatus,
+  type AccountWorkspace,
+} from "@/components/custom/blocks/AccountMenuBlock";
+
+export type ProfileCardVariant = "aurora" | "account-menu";
 
 export interface ProfileCardProps {
   /** Visual style variant. Default `"aurora"`. */

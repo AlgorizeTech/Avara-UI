@@ -8,7 +8,9 @@ import { extractCode } from "@/lib/code";
 
 # Profile Card
 
-A compact creator profile card with a pointer-reactive pastel aurora cover, pulsing availability dot, scalloped verified seal, expandable skill chips, counting stats, and an animated Follow <DocLink to="button">Button</DocLink>.
+A compact creator profile card with a pointer-reactive pastel aurora cover, pulsing availability dot, scalloped verified seal, expandable skill chips, counting stats, and an animated Follow <DocLink to="button">Button</DocLink> — alongside an interactive **Account Menu** variant featuring a morphing status pill, workspace switcher, optional storage meter, and two-step sign out.
+
+<AgentVariants slug="profile-card" />
 
 export const usageDefault = `import { ProfileCard } from "@/components/custom/blocks/ProfileCardBlock";
 
@@ -25,6 +27,23 @@ export default function ProfileCardExample() {
         onFollowChange={(following) => {
           console.log("Following:", following);
         }}
+      />
+    </div>
+  );
+}`;
+
+export const usageAccountMenu = `import { AccountMenu } from "@/components/custom/blocks/AccountMenuBlock";
+
+export default function AccountMenuExample() {
+  return (
+    <div className="w-full py-8 flex items-center justify-center">
+      <AccountMenu
+        name="John Doe"
+        handle="@johndoe"
+        showModal={true}
+        showStorage={false}
+        onStatusChange={(status) => console.log("Status:", status)}
+        onWorkspaceChange={(id) => console.log("Workspace:", id)}
       />
     </div>
   );
@@ -75,7 +94,44 @@ export default function ProfileCardExample() {
 
 <Installation name="profile-card" />
 
+<ExampleShowcase
+  minHeight={560}
+  name="profile-card"
+  colorControl={false}
+  columns={1}
+  examples={[
+    {
+      title: "Account Menu",
+      subheading:
+        "Morphing account pill and card with live status picker, quick action tiles, workspace switcher, optional storage meter, and two-step sign out.",
+      propNotes: [
+        {
+          prop: "showModal",
+          value: "true",
+          effect:
+            "controls whether the expanded account card starts open or collapsed as a pill.",
+        },
+        {
+          prop: "showStorage",
+          value: "false",
+          effect:
+            "toggles the animated storage usage meter inside the menu.",
+        },
+      ],
+      props: {
+        variant: "account-menu",
+        showModal: true,
+        showStorage: false,
+      },
+      usage: usageAccountMenu,
+      code: extractCode("src/components/custom/blocks/AccountMenuBlock.tsx"),
+    },
+  ]}
+/>
+
 ## Props Reference
+
+### ProfileCard
 
 <div className="overflow-x-auto mb-8">
   <table>
@@ -90,7 +146,7 @@ export default function ProfileCardExample() {
     <tbody>
       <tr>
         <td><code>variant</code></td>
-        <td><code>"aurora"</code></td>
+        <td><code>"aurora" | "account-menu"</code></td>
         <td><code>"aurora"</code></td>
         <td>Visual style variant of the profile card.</td>
       </tr>
@@ -189,6 +245,65 @@ export default function ProfileCardExample() {
         <td><code>string</code></td>
         <td><code>undefined</code></td>
         <td>Additional CSS classes for the card container.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### AccountMenu
+
+<div className="overflow-x-auto mb-8">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>showModal</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Controls whether the expanded account menu card starts open or collapsed as a pill.</td>
+      </tr>
+      <tr>
+        <td><code>showStorage</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Controls whether the animated storage meter is displayed.</td>
+      </tr>
+      <tr>
+        <td><code>name</code></td>
+        <td><code>string</code></td>
+        <td><code>"John Doe"</code></td>
+        <td>User display name.</td>
+      </tr>
+      <tr>
+        <td><code>handle</code></td>
+        <td><code>string</code></td>
+        <td><code>"@johndoe"</code></td>
+        <td>Handle shown beside the rolling status line.</td>
+      </tr>
+      <tr>
+        <td><code>defaultStatus</code></td>
+        <td><code>"online" | "focus" | "away" | "hidden"</code></td>
+        <td><code>"online"</code></td>
+        <td>Initial presence status.</td>
+      </tr>
+      <tr>
+        <td><code>workspaces</code></td>
+        <td><code>AccountWorkspace[]</code></td>
+        <td><code>2 workspaces</code></td>
+        <td>List of workspaces to switch between.</td>
+      </tr>
+      <tr>
+        <td><code>storage</code></td>
+        <td><code>[number, number] | null</code></td>
+        <td><code>[6.4, 10]</code></td>
+        <td>Used and total storage in GB (shown when <code>showStorage</code> is <code>true</code>).</td>
       </tr>
     </tbody>
   </table>

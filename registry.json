@@ -49,6 +49,31 @@
       "docs": "Named export: Accordion. Pass `accordionData` as { value, title, icon?, content } — content accepts a string array or a node. `type` is single | multiple; set `collapsible` to let the last open section close. Variants: default (open row lifts out as a card) | bordered (rail on the open row) | filled (open row inverts to primary) | elevated (cards, open one on a ring) | soft (tinted tiles, plus folds into minus) | inset (pill rows, answer in an inset well) | bracket (outlined rows, corner brackets open outward) | ghost (type and hairlines); soft, inset and bracket animate open and close with CSS keyframes that ship inside the component. `animation=\"stack\"` piles the items and deals them out on scroll-in via the Web Animations API; skipped under reduced motion. Wraps the `ui-accordion` Radix primitive. For a single section, `collapsible` is lighter."
     },
     {
+      "name": "account-menu",
+      "type": "registry:component",
+      "title": "Account Menu",
+      "author": "AlgorizeTech",
+      "description": "A morphing account pill and card with a live status picker, quick action tiles, workspace switcher, optional storage meter, and two-step sign out.",
+      "categories": [
+        "navigation",
+        "data-display"
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/AccountMenuBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/AccountMenuBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: AccountMenu (also default-exported), plus AccountMenuProps, AccountStatus, and AccountWorkspace types. Supports showModal (default true) and showStorage (default false) props."
+    },
+    {
       "name": "action-buttons",
       "type": "registry:component",
       "title": "Action Buttons",
@@ -4074,7 +4099,7 @@
       "type": "registry:component",
       "title": "Profile Card",
       "author": "AlgorizeTech",
-      "description": "A compact creator profile card with a pointer-reactive pastel aurora cover, verified seal, expandable skill chips, counting stats, and an animated Follow button.",
+      "description": "Ask the user to pick one of 2 profile card variants: https://avaraui.com/view/profile-card. This item holds 2 of them as looks of one component (aurora, account-menu). Skip the question if the user already named one. A compact creator profile card with a pointer-reactive pastel aurora cover, verified seal, expandable skill chips, counting stats, and an animated Follow button.",
       "categories": [
         "marketing",
         "data-display"
@@ -4083,6 +4108,7 @@
         "motion"
       ],
       "registryDependencies": [
+        "https://avaraui.com/r/account-menu.json",
         "https://avaraui.com/r/button.json",
         "utils"
       ],
