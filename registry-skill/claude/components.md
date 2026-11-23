@@ -12,7 +12,7 @@ For a page, start with sections, then reach for components to fill gaps. For a c
 Each name below is a docs page slug. Its summary, install command and Markdown are in the agent index: `https://avaraui.com/agent/components.json`.
 
 - **Layout & Containers** (components): `accordion`, `collapsible`, `glass-panel`, `item`, `magic-bento`, `masonry-grid`, `mobile-mockup`, `resizable`, `scroll-area`
-- **More Components** (components): `action-buttons`, `command-palette`, `designs-toolkit`, `falling-tags`, `live-pulse-pill`, `modern-scroll-stack`, `ribbon-drift`, `voice-note`
+- **More Components** (components): `action-buttons`, `brand-bridge`, `command-palette`, `designs-toolkit`, `falling-tags`, `live-pulse-pill`, `modern-scroll-stack`, `profile-card`, `radio-button`, `ribbon-drift`, `voice-note`
 - **Charts, Maps & Graphs** (components): `agent-graph`, `chart`, `data-maps`, `flowchart`, `infrastructure-topology`, `fleet-tracker`, `network-graph`, `user-graph`
 - **Apps & Messaging** (components): `ai-chat`, `cart`, `chat`, `chat-bubble`, `email`, `piano`
 - **Overlays & Feedback** (components): `alert`, `dialog`, `drawer`, `loader`, `modal`, `popover`, `progress`, `skeleton`, `sonner`, `toast`, `tooltip`

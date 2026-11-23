@@ -836,6 +836,24 @@ export const META: Record<string, ItemMeta> = {
     categories: ["layout"],
     docs: "Named exports: GlassBackdrop, GlassPanel (plus SurfaceVariant, GlassShape types); useSurface is exported from glass-panel-context.ts, which installs alongside. `GlassBackdrop` washes three `aurora` colours behind a 12-column grid (`gridClassName` for row heights and gaps) and sets `variant` (glass | solid) for every `GlassPanel` inside; panels take `shape` (slab, tile, disc, capsule), `interactive`, and Tailwind column spans.",
   },
+  "account-menu": {
+    description:
+      "A morphing account pill and card with a live status picker, quick action tiles, workspace switcher, optional storage meter, and two-step sign out.",
+    categories: ["navigation", "data-display"],
+    docs: "Named exports: AccountMenu (also default-exported), plus AccountMenuProps, AccountStatus, and AccountWorkspace types. Supports showModal (default true) and showStorage (default false) props.",
+  },
+  "profile-card": {
+    description:
+      "A compact creator profile card with a pointer-reactive pastel aurora cover, verified seal, expandable skill chips, counting stats, and an animated Follow button.",
+    categories: ["marketing", "data-display"],
+    docs: "Named exports: ProfileCard (also default-exported), plus ProfileCardProps and ProfileStat types. Reuses the library's Button component for Follow/Following.",
+  },
+  "radio-button": {
+    description:
+      "An accessible, animated radio button group with card-style options, press ripple feedback, keyboard arrow navigation, and six distinct layout variants.",
+    categories: ["actions", "layout"],
+    docs: "Named export: RadioButtonGroup (also default-exported), plus RadioButtonGroupProps, RadioButtonOption, and RadioButtonVariant types. Supports variant='default' | 'subscription-plans' | 'grid' | 'with-icons' | 'custom-indicator' | 'icon-cards'.",
+  },
   "profile-page": {
     // The documented page puts a Verify Badge beside the name and Social Links
     // under the contact details; installing profile-page must bring both.
@@ -1216,6 +1234,12 @@ export const META: Record<string, ItemMeta> = {
       "A dynamic showcase component featuring dual floating infinite marquee ribbons with two variants: 3D illustration hero card with frosted promo, and criss-crossing brand logo ribbons over a warm yellow backdrop.",
     categories: ["marketing", "media", "data-display"],
     docs: "Default export: RibbonDriftBlock. Also exports RibbonLogos, CrossRibbonLogos, RibbonDriftCard, and the RibbonDriftProps & RibbonLogosProps types. Supports variant='default' (3D illustration with frosted promo card) and variant='cross-logos' (dual counter-angled infinite brand marquee ribbons with leading brand SVGs).",
+  },
+  "brand-bridge": {
+    description:
+      "An interactive integrations card where brand tiles flank a central hub with a rotating colour ring, magnetic gradient wires, glowing comets, and a reactive 2D particle field.",
+    categories: ["marketing", "data-display"],
+    docs: "Named exports: BrandBridge, BRANDS, DEFAULT_BRANDS (also default-exported as BrandBridge) and the BridgeBrand & BrandBridgeProps types. Autoplay connects brands one by one in random order, pauses on hover, and stops permanently when any tile is clicked.",
   },
   "tilted-card": {
     description:

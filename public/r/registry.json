@@ -49,6 +49,31 @@
       "docs": "Named export: Accordion. Pass `accordionData` as { value, title, icon?, content } — content accepts a string array or a node. `type` is single | multiple; set `collapsible` to let the last open section close. Variants: default (open row lifts out as a card) | bordered (rail on the open row) | filled (open row inverts to primary) | elevated (cards, open one on a ring) | soft (tinted tiles, plus folds into minus) | inset (pill rows, answer in an inset well) | bracket (outlined rows, corner brackets open outward) | ghost (type and hairlines); soft, inset and bracket animate open and close with CSS keyframes that ship inside the component. `animation=\"stack\"` piles the items and deals them out on scroll-in via the Web Animations API; skipped under reduced motion. Wraps the `ui-accordion` Radix primitive. For a single section, `collapsible` is lighter."
     },
     {
+      "name": "account-menu",
+      "type": "registry:component",
+      "title": "Account Menu",
+      "author": "AlgorizeTech",
+      "description": "A morphing account pill and card with a live status picker, quick action tiles, workspace switcher, optional storage meter, and two-step sign out.",
+      "categories": [
+        "navigation",
+        "data-display"
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/AccountMenuBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/AccountMenuBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: AccountMenu (also default-exported), plus AccountMenuProps, AccountStatus, and AccountWorkspace types. Supports showModal (default true) and showStorage (default false) props."
+    },
+    {
       "name": "action-buttons",
       "type": "registry:component",
       "title": "Action Buttons",
@@ -772,6 +797,31 @@
         }
       ],
       "docs": "Named export: BookingCard (plus the BookingSlot and Booking types). `BookingCard` is a compound component — put `BookingCard.Days`, `BookingCard.Slots`, `BookingCard.Submit` and `BookingCard.Confirmation` inside it in any layout; it holds the chosen day and slot and calls `onBook`. It draws no surface of its own: make it the padded inside of whatever panel it sits in so the confirmation reaches the edges. The selected day and slot, the submit and 'Add to calendar' buttons, the check mark and the focus rings use the `--primary` token."
+    },
+    {
+      "name": "brand-bridge",
+      "type": "registry:component",
+      "title": "Brand Bridge",
+      "author": "AlgorizeTech",
+      "description": "Ask the user to pick one of 2 brand bridge variants: https://avaraui.com/view/brand-bridge. This item holds 2 of them as looks of one component (default, eight-brands). Skip the question if the user already named one. An interactive integrations card where brand tiles flank a central hub with a rotating colour ring, magnetic gradient wires, glowing comets, and a reactive 2D particle field.",
+      "categories": [
+        "marketing",
+        "data-display"
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/BrandBridgeBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/BrandBridgeBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: BrandBridge, BRANDS, DEFAULT_BRANDS (also default-exported as BrandBridge) and the BridgeBrand & BrandBridgeProps types. Autoplay connects brands one by one in random order, pauses on hover, and stops permanently when any tile is clicked."
     },
     {
       "name": "breadcrumb",
@@ -4086,6 +4136,33 @@
       "docs": "Named export: ProductDetails. Accepts `variant` (4 variants: modern-split-gallery, floating-card-glass, bento-editorial-showcase, color-sync-gallery), `title`, `price`, `originalPrice`, `description`, `className`. Adaptable across mobile, tablet, and desktop viewports."
     },
     {
+      "name": "profile-card",
+      "type": "registry:component",
+      "title": "Profile Card",
+      "author": "AlgorizeTech",
+      "description": "Ask the user to pick one of 2 profile card variants: https://avaraui.com/view/profile-card. This item holds 2 of them as looks of one component (aurora, account-menu). Skip the question if the user already named one. A compact creator profile card with a pointer-reactive pastel aurora cover, verified seal, expandable skill chips, counting stats, and an animated Follow button.",
+      "categories": [
+        "marketing",
+        "data-display"
+      ],
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://avaraui.com/r/account-menu.json",
+        "https://avaraui.com/r/button.json",
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ProfileCardBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ProfileCardBlock.tsx"
+        }
+      ],
+      "docs": "Named exports: ProfileCard (also default-exported), plus ProfileCardProps and ProfileStat types. Reuses the library's Button component for Follow/Following."
+    },
+    {
       "name": "profile-page",
       "type": "registry:component",
       "title": "Profile Page",
@@ -4229,6 +4306,32 @@
         }
       ],
       "docs": "Named export: RadialOrbitalTimeline. `nodes` take { id, title, date, status, energyLevel, description, icon?, connectedNodes? }. Click or hover nodes to reveal inspector popover card. Supports `autoRotate`, `rotationSpeed`, and custom accent colors."
+    },
+    {
+      "name": "radio-button",
+      "type": "registry:component",
+      "title": "Radio Button",
+      "author": "AlgorizeTech",
+      "description": "Ask the user to pick one of 11 radio button variants: https://avaraui.com/view/radio-button. This item holds 11 of them as looks of one component (default, subscription-plans, icon-cards, no-indicator, controlled, disabled-group, delivery-and-payment, grid, with-icons, custom-indicator, with-ripple). Skip the question if the user already named one. An accessible, animated radio button group with card-style options, press ripple feedback, keyboard arrow navigation, and six distinct layout variants.",
+      "categories": [
+        "actions",
+        "layout"
+      ],
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/RadioButtonBlock.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/RadioButtonBlock.tsx"
+        }
+      ],
+      "docs": "Named export: RadioButtonGroup (also default-exported), plus RadioButtonGroupProps, RadioButtonOption, and RadioButtonVariant types. Supports variant='default' | 'subscription-plans' | 'grid' | 'with-icons' | 'custom-indicator' | 'icon-cards'."
     },
     {
       "name": "range-date-picker",
