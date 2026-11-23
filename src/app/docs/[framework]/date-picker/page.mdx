@@ -11,7 +11,7 @@ A completely custom, dependency-free Date Picker component. Native HTML `<input 
 
 This component solves that by using native JavaScript Date math to construct a flawless, customizable calendar dropdown that perfectly matches your UI kit's visual variants.
 
-The calendar dropdown highlights today's date subtly and the selected date strongly, and it opens with plain absolute positioning and CSS transitions — no popover library required.
+Every variant shares one calendar: click the month and year in its heading to jump straight to any month — years scroll on the left, months sit on the right, and the arrow beside the heading takes you back. The card keeps the same size throughout, and months and views slide into each other slowly instead of snapping.
 
 export const usageDefault = `"use client";
 
@@ -433,6 +433,12 @@ Discover the Date Picker's flexible input formatting, popover calendar selection
         <td><code>Date</code></td>
         <td><code>undefined</code></td>
         <td>Latest selectable day (inclusive).</td>
+      </tr>
+      <tr>
+        <td><code>weekStartsOn</code></td>
+        <td><code>0 | 1</code></td>
+        <td><code>1</code></td>
+        <td>First day of the week: <code>1</code> for Monday, <code>0</code> for Sunday.</td>
       </tr>
       <tr>
         <td><code>showTime</code></td>

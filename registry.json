@@ -53,7 +53,43 @@
       "type": "registry:component",
       "title": "Action Buttons",
       "author": "AlgorizeTech",
-      "description": "Motion-powered interactive action buttons: AsyncButton, WaitlistButton, HoldToConfirm, SlideToConfirm, StarButton (Star & Upvote), FollowButton, SplitButton, AddToCart, PaymentButton, and InteractiveButton.",
+      "description": "GSAP-powered interactive action buttons: AsyncButton, WaitlistButton, HoldToConfirm, SlideToConfirm, StarButton (Star & Upvote), FollowButton, SplitButton, AddToCart, PaymentButton, and InteractiveButton.",
+      "categories": [
+        "actions",
+        "forms"
+      ],
+      "dependencies": [
+        "gsap",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "utils"
+      ],
+      "files": [
+        {
+          "path": "src/components/custom/blocks/ActionButtons.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/ActionButtons.tsx"
+        },
+        {
+          "path": "src/components/custom/blocks/gsap-motion.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/gsap-motion.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/motion-curves.ts",
+          "type": "registry:component",
+          "target": "components/custom/blocks/motion-curves.ts"
+        }
+      ],
+      "docs": "Named exports: AsyncButton, WaitlistButton, HoldToConfirm, SlideToConfirm, StarButton, FollowButton, SplitButton, AddToCart, PaymentButton, InteractiveButton."
+    },
+    {
+      "name": "action-buttons-motion",
+      "type": "registry:component",
+      "title": "Action Buttons (Motion)",
+      "author": "AlgorizeTech",
+      "description": "GSAP-powered interactive action buttons: AsyncButton, WaitlistButton, HoldToConfirm, SlideToConfirm, StarButton (Star & Upvote), FollowButton, SplitButton, AddToCart, PaymentButton, and InteractiveButton.",
       "categories": [
         "actions",
         "forms"
@@ -67,12 +103,12 @@
       ],
       "files": [
         {
-          "path": "src/components/custom/blocks/ActionButtons.tsx",
+          "path": "src/components/custom/blocks/motion/ActionButtons.tsx",
           "type": "registry:component",
           "target": "components/custom/blocks/ActionButtons.tsx"
         }
       ],
-      "docs": "Named exports: AsyncButton, WaitlistButton, HoldToConfirm, SlideToConfirm, StarButton, FollowButton, SplitButton, AddToCart, PaymentButton, InteractiveButton."
+      "docs": "Motion build of `action-buttons` — same props, markup and install path; install one or the other. Named exports: AsyncButton, WaitlistButton, HoldToConfirm, SlideToConfirm, StarButton, FollowButton, SplitButton, AddToCart, PaymentButton, InteractiveButton."
     },
     {
       "name": "advanced-table",
@@ -1801,6 +1837,11 @@
           "path": "src/components/custom/blocks/date-picker-theme.ts",
           "type": "registry:component",
           "target": "components/custom/blocks/date-picker-theme.ts"
+        },
+        {
+          "path": "src/components/custom/blocks/internal/CalendarPanel.tsx",
+          "type": "registry:component",
+          "target": "components/custom/blocks/internal/CalendarPanel.tsx"
         },
         {
           "path": "src/components/custom/blocks/motion-curves.ts",

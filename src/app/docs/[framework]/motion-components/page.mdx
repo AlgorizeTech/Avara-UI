@@ -1,0 +1,44 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+
+export const metadata = docsPageMetadata("motion-components");
+
+import { DocLink } from "@/components/site/doc-link";
+import { PageIndex } from "@/components/site/page-index";
+import { SITE_NAME } from "@/config/site";
+import { REGISTRY_NAMESPACE } from "@/lib/registry";
+
+# Shadcn Motion Components
+
+Free shadcn/ui components animated with Motion (the library formerly called
+Framer Motion), for React and Tailwind CSS. Each one is a twin of a
+<DocLink to="gsap-components">GSAP component</DocLink>: same props, same file,
+different animation library.
+
+## All Motion components
+
+<PageIndex kind="motion" />
+
+## What is a Motion build?
+
+A Motion build is the same component written with the <code>motion</code> package
+instead of GSAP. {SITE_NAME} ships one only where it behaves like the GSAP build,
+and every page shows both in GSAP and Motion tabs.
+
+## How do I install a Motion component?
+
+Register the registry once, then add the build named
+<code>{REGISTRY_NAMESPACE}/name-motion</code> instead of
+<code>{REGISTRY_NAMESPACE}/name</code>. The CLI also installs the
+<code>motion</code> package. Install one build or the other, never both, because
+they write the same file. See the
+<DocLink to="installation">Installation guide</DocLink> for the one-time setup.
+
+## Should I pick GSAP or Motion?
+
+Pick the library your project already uses. Both builds look and behave the same,
+and both honour reduced-motion settings.
+
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
+
+<DocsJsonLd slug="motion-components" />
+<FaqJsonLd slug="motion-components" />

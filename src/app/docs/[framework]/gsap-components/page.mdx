@@ -11,7 +11,8 @@ import { REGISTRY_NAMESPACE } from "@/lib/registry";
 
 Free shadcn/ui components and blocks animated with GSAP, for React and Tailwind
 CSS. Motion that follows the pointer, the scroll position, a drag or the layout
-runs on GSAP; many of these also ship a Motion build that you install instead.
+runs on GSAP. Prefer Motion? Many of these also have a
+<DocLink to="motion-components">Motion build</DocLink>.
 
 ## All GSAP components
 
@@ -21,14 +22,14 @@ runs on GSAP; many of these also ship a Motion build that you install instead.
 
 The ones listed above. {SITE_NAME} uses plain CSS for motion that has fixed
 values, and adds GSAP only where a pointer, scroll, drag or layout calls for a
-library. A component that lists a Motion build can be installed either way.
+library.
 
 ## Can I use Motion instead of GSAP?
 
-Where a component shows a Motion build, yes. Install the Motion build, named like
-<code>{REGISTRY_NAMESPACE}/name-motion</code>, in place of the default one. They
-write the same file, so install one or the other, never both. Each component's
-page has GSAP and Motion tabs with the code for both.
+Where a card shows a Motion pill, yes. See the
+<DocLink to="motion-components">Motion components</DocLink> list. Install the
+Motion build in place of the GSAP one, never both, because they write the same
+file.
 
 ## How do I install a GSAP component?
 

@@ -1,8 +1,8 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
-  "name": "card-project-showcase",
+  "name": "card-platform-grid",
   "type": "registry:block",
-  "title": "Card — Project showcase",
+  "title": "Card — Platform grid",
   "description": "A full-width two-column card: a visual preview on the left, and on the right the specifications, tags, action buttons and a copyable install command.",
   "dependencies": [
     "lucide-react",

@@ -3,12 +3,12 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("action-buttons");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
-import { extractCode } from "@/lib/code";
+import { extractMotionCode } from "@/lib/code";
 import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Action Button
 
-A collection of stateful interactive action, commerce, and confirmation buttons powered by `motion/react` — featuring spring-morphing icons, odometer digit rolling, hold-to-confirm progress, draggable slide-to-confirm, inline waitlist expansion, cart parcel drop physics, split action menus, and payment/download progress states.
+A collection of stateful interactive action, commerce, and confirmation buttons built on GSAP and CSS (a Motion build is also available) — featuring spring-morphing icons, odometer digit rolling, hold-to-confirm progress, draggable slide-to-confirm, inline waitlist expansion, cart parcel drop physics, split action menus, and payment/download progress states.
 
 export const usageActionButtons = `import {
   AsyncButton,
@@ -104,7 +104,7 @@ export default function ActionButtonsDemo() {
       ],
       props: {},
       usage: usageActionButtons,
-      code: extractCode("src/components/custom/blocks/ActionButtons.tsx"),
+      code: extractMotionCode("src/components/custom/blocks/ActionButtons.tsx"),
     },
   ]}
 />

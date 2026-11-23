@@ -10,30 +10,88 @@ A flexible container used to group related information and actions together in a
 
 Building a UI entirely out of raw `div` tags quickly leads to inconsistent padding, mismatched border radiuses, and spaghetti code. The `CardBlock` and `ProductCardBlock` provide a set of highly composable components (`CardHeader`, `CardContent`, `CardFooter`, `ProductCard`) that automatically manage internal spacing and interactive states.
 
-## Project showcase
+## Teaser card
 
-A full-width two-column card: a visual preview on the left, and on the right the specifications, tags, action buttons and a copyable install command.
-
-- Two-column grid `layout="project-showcase"` splits the card into an image preview on the left and full project details, specifications, actions, and install bar on the right.
+Three to a row: an image, a meta line, a title with a corner arrow, and a tag beside the date.
 
 ```tsx
-"use client";
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardTitle,
+} from "@/components/custom/blocks/CardBlock";
+import { ArrowUpRight } from "lucide-react";
 
-import { ProjectCard } from "@/components/custom/blocks/CardBlock";
+const TEASERS = [
+  {
+    cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150483/photo-1541701494587-cb58502866ab-1790150482281.jpg",
+    coverAlt: "Abstract flowing ink in blue and violet",
+    author: "William Ashford",
+    read: "5 min read",
+    title: "Optimizing Business decisions with Advanced data Analytics",
+    dek: "Discover how web solutions are reshaping the business landscape.",
+    tag: "Data Science",
+    date: "Mar 09, 2024",
+  },
+  {
+    cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1518709268805-4e9042af9f23-1790146212209.jpg",
+    coverAlt: "Glowing circuit board traces",
+    author: "Priya Nair",
+    read: "7 min read",
+    title: "Designing interfaces that stay readable at any size",
+    dek: "Practical rules for type, spacing and contrast that hold up on every screen.",
+    tag: "Design",
+    date: "Mar 02, 2024",
+  },
+  {
+    cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158809/photo-1618005198919-d3d4b5a92ead-1790158812198.jpg",
+    coverAlt: "Abstract render of intersecting shapes",
+    author: "Marcus Bell",
+    read: "4 min read",
+    title: "Shipping faster with smaller, safer releases",
+    dek: "How small batches cut risk and keep the whole team moving.",
+    tag: "Engineering",
+    date: "Feb 26, 2024",
+  },
+];
 
-export default function ProjectShowcaseCardDemo() {
+export default function ArticleTeaserCards() {
   return (
-    <ProjectCard
-      title="Platform grid"
-      image="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/platform-grid-1790516064500.jpg"
-      slug="platform-grid"
-      scope="avara-ui"
-      badge1="Component Block"
-      badge2="TypeScript & Tailwind"
-      description="A meticulously crafted, responsive interactive block built with modern animations, responsive layouts, and accessible standards. Ready to drop into your Next.js and React applications."
-      ctaLabel="Full View"
-      contactLabel="Contact"
-    />
+    <div className="grid w-full max-w-5xl gap-5 sm:grid-cols-3">
+      {TEASERS.map((post) => (
+        <Card key={post.title} variant="default" className="gap-0 rounded-[26px] p-3.5 shadow-lg">
+          <img
+            src={post.cover}
+            alt={post.coverAlt}
+            loading="lazy"
+            className="h-44 w-full rounded-2xl object-cover"
+          />
+
+          <p className="mt-3.5 flex items-center gap-2 text-xs text-muted-foreground">
+            {post.author}
+            <span className="size-[3px] rounded-full bg-muted-foreground" />
+            {post.read}
+          </p>
+
+          <div className="mt-2 flex items-start gap-3">
+            <CardTitle className="line-clamp-2 flex-1 text-[15px] font-medium leading-snug tracking-normal">
+              {post.title}
+            </CardTitle>
+            <ArrowUpRight className="mt-0.5 size-[18px] shrink-0 text-muted-foreground" />
+          </div>
+
+          <CardDescription className="mt-2 text-[13px] leading-relaxed">{post.dek}</CardDescription>
+
+          <CardFooter className="mt-auto items-center gap-3 p-0 pt-4">
+            <span className="rounded-md bg-muted px-2.5 py-1 text-xs text-foreground">
+              {post.tag}
+            </span>
+            <span className="text-xs text-muted-foreground">{post.date}</span>
+          </CardFooter>
+        </Card>
+      ))}
+    </div>
   );
 }
 ```
@@ -54,6 +112,340 @@ npx shadcn@latest add @avara-ui/card
 ```
 
 ## Examples
+
+### Blog post cards
+
+Three bare cards: a cover, the date, a title, and the author with a Read more link under a hairline.
+
+```tsx
+import { Card } from "@/components/custom/blocks/CardBlock";
+import { ArrowRight } from "lucide-react";
+
+const POST_CARDS = [
+  {
+    date: "October 1, 2024",
+    title: "Mindful Moments: Simple Practices to Boost Your Mental Well-Being",
+    author: "Sarah Thompson",
+    cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150483/photo-1541701494587-cb58502866ab-1790150482281.jpg",
+    coverAlt: "Abstract flowing ink in blue and violet",
+  },
+  {
+    date: "September 29, 2024",
+    title: "The Connection Between Nutrition and Mental Health: What You Need to Know",
+    author: "David Kim",
+    cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1518709268805-4e9042af9f23-1790146212209.jpg",
+    coverAlt: "Glowing circuit board traces",
+  },
+  {
+    date: "September 25, 2024",
+    title: "The Power of Journaling: How Writing Can Transform Your Mind and Persona",
+    author: "Emily Carter",
+    cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158809/photo-1618005198919-d3d4b5a92ead-1790158812198.jpg",
+    coverAlt: "Abstract render of intersecting shapes",
+  },
+];
+
+export default function BlogPostCards() {
+  return (
+    <div className="grid w-full max-w-5xl gap-6 sm:grid-cols-3">
+      {POST_CARDS.map((post) => (
+        <Card
+          key={post.title}
+          variant="flat"
+          className="group rounded-none border-0 bg-transparent shadow-none"
+        >
+          <div className="aspect-[4/3] overflow-hidden rounded-2xl">
+            <img
+              src={post.cover}
+              alt={post.coverAlt}
+              loading="lazy"
+              className="size-full object-cover transition-transform duration-500 motion-safe:group-hover:scale-105"
+            />
+          </div>
+          <p className="mt-4 text-xs text-muted-foreground">{post.date}</p>
+          <h3 className="mt-2 line-clamp-2 text-lg font-medium leading-snug">{post.title}</h3>
+          <div className="mt-5 flex items-center justify-between border-t border-border pt-3 text-xs">
+            <span className="text-muted-foreground">{post.author}</span>
+            <a href="#" className="inline-flex items-center gap-1.5 font-medium">
+              Read more <ArrowRight className="size-3.5" />
+            </a>
+          </div>
+        </Card>
+      ))}
+    </div>
+  );
+}
+```
+
+### Notched cards
+
+A card with a tab cut into its top-right corner, in soft gray (light) or the card colour (dark). A concave fillet joins the tab to the body.
+
+```tsx
+import { Card } from "@/components/custom/blocks/CardBlock";
+
+const CARDS = [
+  {
+    brand: "Archive Studio®",
+    lead: "It’s high time to discuss the details.",
+    headline: "Let’s Talk.",
+    art: "bg-[linear-gradient(135deg,#02021f_0%,#0b1c7a_50%,#2a74ff_100%)]",
+    dot: "bg-[#2f7bff]",
+    active: 1,
+  },
+  {
+    brand: "Level Up®",
+    lead: "A new level of quality for your brand.",
+    headline: "+190%",
+    art: "bg-[linear-gradient(135deg,#1d0402_0%,#8a1a07_50%,#ff5a36_100%)]",
+    dot: "bg-[#ff4a24]",
+    active: 2,
+  },
+  {
+    brand: "Spider’s Lair®",
+    lead: "The spiders are ready to work.",
+    headline: "One Call.",
+    art: "bg-[linear-gradient(135deg,#0d0220_0%,#4b138f_50%,#b04bff_100%)]",
+    dot: "bg-[#b44cff]",
+    active: 3,
+  },
+];
+
+export default function NotchedCards() {
+  return (
+    <div className="grid w-full max-w-[922px] gap-5 sm:grid-cols-3">
+      {CARDS.map((card) => (
+        <Card
+          key={card.brand}
+          variant="flat"
+          className="relative rounded-none border-0 bg-transparent pt-[34px] shadow-none drop-shadow-sm [--shell:var(--muted)] dark:[--shell:var(--card)] dark:drop-shadow-none"
+        >
+          {/* The tab: rounded on top, with a concave fillet that eases it into the body. The shadow and the 1px overhang on the fillet overlap the body, so no seam shows at fractional widths. --shell is soft gray (muted) in light mode and the card colour in dark mode */}
+          <div className="absolute right-0 top-0 flex h-[34px] w-[58%] items-center justify-end rounded-tl-[17px] rounded-tr-[28px] bg-(--shell) px-4 shadow-[0_1px_0_var(--shell)] before:absolute before:-bottom-px before:-left-[17px] before:h-[18px] before:w-[18px] before:[background:radial-gradient(circle_at_0_0,transparent_16.5px,var(--shell)_17.5px)]">
+            <span className="text-[11px] font-medium">— {card.brand}</span>
+          </div>
+
+          <div className="rounded-[28px] rounded-tr-none bg-(--shell) p-4">
+            <div className={"relative flex h-[150px] items-end overflow-hidden rounded-xl p-3.5 text-white " + card.art}>
+              {/* Ribs give the flat gradient a 3D, folded-ribbon feel */}
+              <div className="absolute inset-0 [mask-image:linear-gradient(100deg,transparent_25%,black)] bg-[repeating-linear-gradient(100deg,rgba(255,255,255,0.22)_0_2px,transparent_2px_9px)]" />
+              <p className="relative text-[15px] font-medium leading-snug">{card.lead}</p>
+            </div>
+
+            <p className="mt-8 bg-gradient-to-b from-foreground to-foreground/40 bg-clip-text text-[44px] font-light leading-none tracking-tight text-transparent">
+              {card.headline}
+            </p>
+
+            <div className="mt-6 flex gap-1.5" aria-hidden>
+              {[1, 2, 3].map((n) => (
+                <span
+                  key={n}
+                  className={"size-2.5 rounded-full " + (n <= card.active ? card.dot : "bg-foreground/15")}
+                />
+              ))}
+            </div>
+          </div>
+        </Card>
+      ))}
+    </div>
+  );
+}
+```
+
+### Blog cards
+
+Three posts across. The topic rides on the image, so the card body stays type-only.
+
+- Set `interactive` to make the whole card clickable — the cover then scales gently on hover, and holds still under `prefers-reduced-motion`.
+
+```tsx
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/custom/blocks/CardBlock";
+
+const POSTS = [
+  {
+    topic: "Layout",
+    title: "Grids that survive translation",
+    dek: "German compound nouns broke our pricing table in four places. What we changed.",
+    cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150483/photo-1541701494587-cb58502866ab-1790150482281.jpg",
+    coverAlt: "Abstract flowing ink in blue and violet",
+    author: "Maya Lin",
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790150481/photo-1517841905240-472988babdf9-1790150482277.jpg",
+    read: "7 min",
+  },
+  {
+    topic: "Accessibility",
+    title: "The accessibility tree is not a mirror",
+    dek: "Two components that looked identical read as completely different things aloud.",
+    cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1518709268805-4e9042af9f23-1790146212209.jpg",
+    coverAlt: "Glowing circuit board traces",
+    author: "Daniel Kim",
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790159965/photo-1519085360753-af0119f7cbe7-1790159970113.jpg",
+    read: "5 min",
+  },
+  {
+    topic: "Machine learning",
+    title: "Ship the model, keep the seams",
+    dek: "Every inference call our app makes can fail. The UI has to say so plainly.",
+    cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158809/photo-1618005198919-d3d4b5a92ead-1790158812198.jpg",
+    coverAlt: "Abstract render of intersecting shapes",
+    author: "Ethan Wright",
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790158814/photo-1522075469751-3a6694fb2f61-1790158812213.jpg",
+    read: "9 min",
+  },
+];
+
+export default function BlogCardGrid() {
+  return (
+    <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {POSTS.map((post) => (
+        <Card
+          key={post.title}
+          variant="bordered"
+          interactive
+          className="group overflow-hidden rounded-xl"
+        >
+          <div className="relative aspect-[16/10] overflow-hidden">
+            <img
+              src={post.cover}
+              alt={post.coverAlt}
+              loading="lazy"
+              className="size-full object-cover transition-transform duration-500 motion-safe:group-hover:scale-105"
+            />
+            {/* The topic rides on the image, so the card body stays type-only */}
+            <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-xs font-medium text-zinc-900 backdrop-blur">
+              {post.topic}
+            </span>
+          </div>
+
+          <CardHeader className="gap-2 px-5 pb-3 pt-5">
+            <CardTitle className="line-clamp-2 font-serif text-[17px] font-normal leading-snug tracking-normal">
+              {post.title}
+            </CardTitle>
+            <CardDescription className="line-clamp-2 leading-relaxed">
+              {post.dek}
+            </CardDescription>
+          </CardHeader>
+
+          <CardFooter className="items-center gap-2.5 px-5 pb-5 pt-0">
+            <img src={post.avatar} alt="" className="size-7 shrink-0 rounded-full object-cover" />
+            <span className="min-w-0 flex-1 truncate text-xs text-muted-foreground">
+              {post.author}
+            </span>
+            <span className="shrink-0 text-xs text-muted-foreground">{post.read}</span>
+          </CardFooter>
+        </Card>
+      ))}
+    </div>
+  );
+}
+```
+
+### Author cards
+
+Two to a row: a cover beside a title and intro, then the author and round actions. Each card stacks when it gets narrow.
+
+- Add `dark="className"` to a single card to pin it to the dark tokens, whatever the page theme. Without it the card follows light and dark.
+
+```tsx
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardTitle,
+} from "@/components/custom/blocks/CardBlock";
+import { Forward, MoreHorizontal } from "lucide-react";
+
+const ARTICLES = [
+  {
+    tag: "#art",
+    title: "Art, Creativity and Genius: A Journey Through Masterpieces",
+    dek: "Discover the beauty, diversity and impact of art on society, from classical masterpieces to modern-day geniuses.",
+    cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150483/photo-1541701494587-cb58502866ab-1790150482281.jpg",
+    coverAlt: "Abstract flowing ink in blue and violet",
+    author: "Samantha Smith",
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790158813/photo-1494790108377-be9c29b29330-1790158812212.jpg",
+    date: "March 11, 2024",
+  },
+  {
+    tag: "#tech",
+    title: "Circuits and Code: How Hardware Shapes the Software We Write",
+    dek: "A look at the physical limits behind everyday software, and the craft of working well inside them.",
+    cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1518709268805-4e9042af9f23-1790146212209.jpg",
+    coverAlt: "Glowing circuit board traces",
+    author: "Daniel Kim",
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790159965/photo-1519085360753-af0119f7cbe7-1790159970113.jpg",
+    date: "March 4, 2024",
+  },
+];
+
+export default function ArticleCards() {
+  return (
+    <div className="grid w-full max-w-5xl gap-5 md:grid-cols-2">
+      {ARTICLES.map((article) => (
+        // @container lets each card pick its own layout from its width, not the page's
+        <div key={article.title} className="@container min-w-0">
+          {/* Colours come from the theme tokens, so the card follows light and dark */}
+          <Card variant="default" className="h-full gap-5 rounded-[28px] p-3 shadow-lg @sm:flex-row">
+            <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden rounded-[22px] bg-muted @sm:aspect-auto @sm:w-[38%]">
+              <img
+                src={article.cover}
+                alt={article.coverAlt}
+                loading="lazy"
+                className="absolute inset-0 size-full object-cover"
+              />
+              <span className="absolute left-3.5 top-3 text-sm font-medium text-white drop-shadow">
+                {article.tag}
+              </span>
+            </div>
+
+            <div className="flex min-w-0 flex-1 flex-col py-1 pr-2">
+              <CardTitle className="line-clamp-2 text-base font-medium leading-snug tracking-normal @lg:text-xl">
+                {article.title}
+              </CardTitle>
+              <CardDescription className="mt-2 line-clamp-2 text-xs leading-relaxed">
+                {article.dek}
+              </CardDescription>
+
+              <CardFooter className="mt-auto items-center gap-3 p-0 pt-4">
+                <img
+                  src={article.avatar}
+                  alt=""
+                  loading="lazy"
+                  className="size-9 shrink-0 rounded-full object-cover @lg:size-11"
+                />
+                <div className="min-w-0 flex-1 leading-tight">
+                  <p className="truncate text-xs font-medium"><span className="hidden @lg:inline">By </span>{article.author}</p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">{article.date}</p>
+                </div>
+                <button
+                  type="button"
+                  aria-label="Share"
+                  className="grid size-9 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-card @lg:size-10"
+                >
+                  <Forward className="size-[17px]" />
+                </button>
+                <button
+                  type="button"
+                  aria-label="More options"
+                  className="hidden size-9 shrink-0 place-items-center rounded-full border border-foreground/60 text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-card @lg:grid"
+                >
+                  <MoreHorizontal className="size-4" />
+                </button>
+              </CardFooter>
+            </div>
+          </Card>
+        </div>
+      ))}
+    </div>
+  );
+}
+```
 
 ### E-commerce Product Cards
 
@@ -166,520 +558,6 @@ export default function EcommerceProductCardsDemo() {
 }
 ```
 
-### Standard Card
-
-Stack `CardHeader`, `CardContent` and `CardFooter` — spacing is handled for you.
-
-- `variant="bordered"` is the default — a subtle stroke around the surface.
-
-```tsx
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/custom/blocks/CardBlock";
-import { Bell, Settings } from "lucide-react";
-
-export default function NotificationCard() {
-  return (
-    <Card variant="bordered" className="w-full max-w-sm">
-      <CardHeader>
-        <CardTitle>Notifications</CardTitle>
-        <CardDescription>You have 3 unread messages.</CardDescription>
-      </CardHeader>
-
-      <CardContent className="grid gap-4">
-        <div className="flex items-center gap-4 p-3 rounded-lg border border-primary/20 bg-primary/5">
-          <Bell className="w-5 h-5 text-primary" />
-          <div className="flex-1 space-y-1">
-            <p className="text-sm font-medium leading-none">System Update</p>
-            <p className="text-xs text-muted-foreground">A new version is available.</p>
-          </div>
-        </div>
-        <div className="flex items-center gap-4 p-3 rounded-lg border border-primary/20 bg-primary/5">
-          <Settings className="w-5 h-5 text-primary" />
-          <div className="flex-1 space-y-1">
-            <p className="text-sm font-medium leading-none">Account Notice</p>
-            <p className="text-xs text-muted-foreground">Please verify your email address.</p>
-          </div>
-        </div>
-      </CardContent>
-
-      <CardFooter className="border-t border-primary/20 pt-6">
-        <button className="w-full py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium">
-          Mark all as read
-        </button>
-      </CardFooter>
-    </Card>
-  );
-}
-```
-
-### Interactive
-
-- Set `interactive` for hover elevation, a border-colour change and a slight scale — the affordance that says the whole card is clickable.
-
-```tsx
-"use client";
-
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/custom/blocks/CardBlock";
-import { Download, Upload } from "lucide-react";
-
-export default function ClickableCards() {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-2xl">
-      <Card variant="bordered" interactive onClick={() => console.log("Download")}>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Download className="w-5 h-5 text-emerald-500" /> Download Report
-          </CardTitle>
-          <CardDescription>
-            Export your analytics data as a CSV file for external processing.
-          </CardDescription>
-        </CardHeader>
-      </Card>
-
-      <Card variant="bordered" interactive onClick={() => console.log("Import")}>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Upload className="w-5 h-5 text-indigo-500" /> Import Data
-          </CardTitle>
-          <CardDescription>
-            Upload legacy customer profiles to merge into your active CRM.
-          </CardDescription>
-        </CardHeader>
-      </Card>
-    </div>
-  );
-}
-```
-
-### Stat grid
-
-`CardHeader` stacks its children by default; override that to line a title up against an icon.
-
-- `variant="bordered"` keeps each tile separated in a dense grid.
-
-```tsx
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/custom/blocks/CardBlock";
-import { Bell, CreditCard, Settings } from "lucide-react";
-
-export default function StatGrid() {
-  return (
-    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <Card variant="bordered">
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-sm font-medium text-muted-foreground">Total Revenue</CardTitle>
-          <CreditCard className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-semibold">$45,231.89</div>
-          <p className="text-xs text-emerald-500 font-medium mt-1">+20.1% from last month</p>
-        </CardContent>
-      </Card>
-
-      <Card variant="bordered">
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-sm font-medium text-muted-foreground">Subscriptions</CardTitle>
-          <Bell className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-semibold">+2350</div>
-          <p className="text-xs text-emerald-500 font-medium mt-1">+180.1% from last month</p>
-        </CardContent>
-      </Card>
-
-      <Card variant="bordered">
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <CardTitle className="text-sm font-medium text-muted-foreground">Active Now</CardTitle>
-          <Settings className="h-4 w-4 text-muted-foreground" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-2xl font-semibold">+573</div>
-          <p className="text-xs text-emerald-500 font-medium mt-1">+201 since last hour</p>
-        </CardContent>
-      </Card>
-    </div>
-  );
-}
-```
-
-### Blog showcase
-
-One featured story beside the rest of the feed — both built from the same three primitives.
-
-- Keep the cover outside `CardHeader` so the image bleeds to the card's edges; `overflow-hidden` on the `Card` is what clips it to the corner radius.
-
-```tsx
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/custom/blocks/CardBlock";
-
-const FEED = [
-  {
-    title: "Naming things without a thesaurus",
-    topic: "Craft",
-    read: "5 min",
-    thumb: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_400,c_limit/v1790146210/photo-1504639725590-34d0984388bd-1790146212207.jpg",
-    thumbAlt: "Developer writing code at a desk",
-  },
-  {
-    title: "What a design token is not",
-    topic: "Design systems",
-    read: "6 min",
-    thumb: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_400,c_limit/v1790146209/photo-1460925895917-afdab827c52f-1790146212204.jpg",
-    thumbAlt: "Workspace with a laptop showing a web layout",
-  },
-];
-
-export default function BlogShowcase() {
-  return (
-    <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
-      {/* Featured story */}
-      <Card variant="bordered" interactive className="group overflow-hidden rounded-lg">
-        {/* The cover sits outside CardHeader so it can bleed to the edges */}
-        <div className="relative aspect-[16/9] overflow-hidden">
-          <img
-            src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146211/photo-1551288049-bebda4e38f71-1790146212211.jpg"
-            alt="Analytics dashboard charts on a laptop screen"
-            loading="lazy"
-            className="size-full object-cover transition-transform duration-500 motion-safe:group-hover:scale-[1.04]"
-          />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/65 to-transparent" />
-          <span className="absolute bottom-4 left-4 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-zinc-900 backdrop-blur">
-            Performance
-          </span>
-        </div>
-
-        <CardHeader className="gap-2.5 px-6 pb-4 pt-5">
-          <CardTitle className="font-serif text-[23px] font-normal leading-snug tracking-normal">
-            The quiet cost of a re-render
-          </CardTitle>
-          <CardDescription className="leading-relaxed">
-            A dashboard that only felt slow on Mondays, and the six components that explained it.
-          </CardDescription>
-        </CardHeader>
-
-        <CardFooter className="items-center gap-3 border-t border-border/70 px-6 pb-6 pt-4">
-          <img
-            src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790158813/photo-1494790108377-be9c29b29330-1790158812212.jpg"
-            alt=""
-            className="size-8 shrink-0 rounded-full object-cover"
-          />
-          <div className="min-w-0 flex-1 leading-tight">
-            <p className="truncate text-sm font-medium">Priya Raman</p>
-            <p className="text-xs text-muted-foreground">4 March</p>
-          </div>
-          <span className="text-xs text-muted-foreground">8 min</span>
-        </CardFooter>
-      </Card>
-
-      {/* Sidebar feed — one Card, rows split by divide-y */}
-      <Card variant="bordered" className="divide-y divide-border overflow-hidden rounded-lg">
-        <p className="px-5 py-3.5 text-sm font-medium">Latest</p>
-        {FEED.map((story) => (
-          <button
-            key={story.title}
-            type="button"
-            className="flex w-full items-center gap-4 p-4 text-left transition-colors hover:bg-muted/60"
-          >
-            <img
-              src={story.thumb}
-              alt={story.thumbAlt}
-              loading="lazy"
-              className="size-[72px] shrink-0 rounded-md object-cover"
-            />
-            <span className="min-w-0 flex-1">
-              <span className="block font-serif text-[15px] leading-snug">{story.title}</span>
-              <span className="mt-1.5 block text-xs text-muted-foreground">{story.topic}</span>
-            </span>
-            <span className="shrink-0 text-xs text-muted-foreground">{story.read}</span>
-          </button>
-        ))}
-      </Card>
-    </div>
-  );
-}
-```
-
-### Blog cards
-
-Three posts across. The topic rides on the image, so the card body stays type-only.
-
-- Set `interactive` to make the whole card clickable — the cover then scales gently on hover, and holds still under `prefers-reduced-motion`.
-
-```tsx
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/custom/blocks/CardBlock";
-
-const POSTS = [
-  {
-    topic: "Layout",
-    title: "Grids that survive translation",
-    dek: "German compound nouns broke our pricing table in four places. What we changed.",
-    cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150483/photo-1541701494587-cb58502866ab-1790150482281.jpg",
-    coverAlt: "Abstract flowing ink in blue and violet",
-    author: "Maya Lin",
-    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790150481/photo-1517841905240-472988babdf9-1790150482277.jpg",
-    read: "7 min",
-  },
-  {
-    topic: "Accessibility",
-    title: "The accessibility tree is not a mirror",
-    dek: "Two components that looked identical read as completely different things aloud.",
-    cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1518709268805-4e9042af9f23-1790146212209.jpg",
-    coverAlt: "Glowing circuit board traces",
-    author: "Daniel Kim",
-    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790159965/photo-1519085360753-af0119f7cbe7-1790159970113.jpg",
-    read: "5 min",
-  },
-  {
-    topic: "Machine learning",
-    title: "Ship the model, keep the seams",
-    dek: "Every inference call our app makes can fail. The UI has to say so plainly.",
-    cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158809/photo-1618005198919-d3d4b5a92ead-1790158812198.jpg",
-    coverAlt: "Abstract render of intersecting shapes",
-    author: "Ethan Wright",
-    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790158814/photo-1522075469751-3a6694fb2f61-1790158812213.jpg",
-    read: "9 min",
-  },
-];
-
-export default function BlogCardGrid() {
-  return (
-    <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-      {POSTS.map((post) => (
-        <Card
-          key={post.title}
-          variant="bordered"
-          interactive
-          className="group overflow-hidden rounded-xl"
-        >
-          <div className="relative aspect-[16/10] overflow-hidden">
-            <img
-              src={post.cover}
-              alt={post.coverAlt}
-              loading="lazy"
-              className="size-full object-cover transition-transform duration-500 motion-safe:group-hover:scale-105"
-            />
-            {/* The topic rides on the image, so the card body stays type-only */}
-            <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-xs font-medium text-zinc-900 backdrop-blur">
-              {post.topic}
-            </span>
-          </div>
-
-          <CardHeader className="gap-2 px-5 pb-3 pt-5">
-            <CardTitle className="font-serif text-[17px] font-normal leading-snug tracking-normal">
-              {post.title}
-            </CardTitle>
-            <CardDescription className="line-clamp-2 leading-relaxed">
-              {post.dek}
-            </CardDescription>
-          </CardHeader>
-
-          <CardFooter className="items-center gap-2.5 px-5 pb-5 pt-0">
-            <img src={post.avatar} alt="" className="size-7 shrink-0 rounded-full object-cover" />
-            <span className="min-w-0 flex-1 truncate text-xs text-muted-foreground">
-              {post.author}
-            </span>
-            <span className="shrink-0 text-xs text-muted-foreground">{post.read}</span>
-          </CardFooter>
-        </Card>
-      ))}
-    </div>
-  );
-}
-```
-
-### Profile card
-
-A person as a card: a patterned banner, an avatar that overlaps it, a few numbers, and one primary action — beside a column of teammates in the compact row form.
-
-- `interactive=true` lifts the teammate rows on hover; the main profile card stays still.
-
-```tsx
-"use client";
-
-import { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/custom/blocks/CardBlock";
-import { cn } from "@/lib/utils";
-import { Check, MapPin, MessageCircle, UserPlus } from "lucide-react";
-
-const TEAMMATES = [
-  {
-    initials: "TL",
-    name: "Tomás Léger",
-    role: "Motion and prototyping",
-    zone: "Lisbon",
-    tint: "bg-sky-500/10 text-sky-700 dark:text-sky-300",
-  },
-  {
-    initials: "WA",
-    name: "Wren Adeyemi",
-    role: "Accessibility",
-    zone: "Lagos",
-    tint: "bg-amber-500/10 text-amber-700 dark:text-amber-300",
-  },
-];
-
-export default function ProfileCards() {
-  const [following, setFollowing] = useState(false);
-
-  return (
-    <div className="grid w-full max-w-4xl gap-5 lg:grid-cols-2">
-      <Card variant="bordered" className="overflow-hidden rounded-3xl">
-        <div className="h-24 bg-primary/10 bg-[radial-gradient(circle_at_1px_1px,var(--primary)_1px,transparent_0)] [background-size:12px_12px] opacity-40" />
-
-        <CardHeader className="gap-3 px-6 pb-0 pt-0">
-          <div className="-mt-11 flex items-end justify-between gap-3">
-            <div className="relative">
-              <span className="grid size-20 place-items-center rounded-full bg-primary/15 text-xl font-semibold text-primary ring-4 ring-card">
-                AK
-              </span>
-              <span className="absolute bottom-1 right-1 size-3.5 rounded-full bg-emerald-500 ring-2 ring-card" />
-            </div>
-            <span className="mb-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-300">
-              Open to projects
-            </span>
-          </div>
-          <div className="space-y-1">
-            <CardTitle className="text-xl">Ayesha Karim</CardTitle>
-            <CardDescription className="flex items-center gap-1.5">
-              Design engineer at Northwind
-              <span className="text-muted-foreground/40">|</span>
-              <MapPin className="size-3.5" /> Dhaka
-            </CardDescription>
-          </div>
-        </CardHeader>
-
-        <CardContent className="space-y-5 px-6 pb-0 pt-4">
-          <p className="text-sm leading-relaxed text-muted-foreground">
-            Builds the component library three product teams ship on. Currently
-            rewriting the motion primitives.
-          </p>
-          <div className="flex flex-wrap gap-2">
-            {["Design systems", "React", "Motion", "Accessibility"].map(
-              (tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground"
-                >
-                  {tag}
-                </span>
-              ),
-            )}
-          </div>
-          <div className="grid grid-cols-3 divide-x divide-border rounded-2xl border border-border bg-muted/40 py-3 text-center">
-            {[
-              ["128", "Components"],
-              ["342", "Merged PRs"],
-              ["96", "Reviews"],
-            ].map(([value, label]) => (
-              <div key={label} className="px-2">
-                <p className="text-base font-semibold tabular-nums">{value}</p>
-                <p className="mt-0.5 text-xs text-muted-foreground">{label}</p>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-
-        <CardFooter className="gap-3 px-6 pb-6 pt-5">
-          <button
-            type="button"
-            aria-pressed={following}
-            onClick={() => setFollowing((v) => !v)}
-            className={cn(
-              "inline-flex flex-1 items-center justify-center gap-2 rounded-full border px-4 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-              following
-                ? "border-border text-foreground hover:bg-muted"
-                : "border-primary bg-primary text-primary-foreground hover:border-primary/90 hover:bg-primary/90",
-            )}
-          >
-            {following ? (
-              <>
-                <Check className="size-4" /> Following
-              </>
-            ) : (
-              <>
-                <UserPlus className="size-4" /> Follow
-              </>
-            )}
-          </button>
-          <button
-            type="button"
-            className="inline-flex items-center justify-center gap-2 rounded-full border border-border px-4 py-2.5 text-sm font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-          >
-            <MessageCircle className="size-4" /> Message
-          </button>
-        </CardFooter>
-      </Card>
-
-      <div className="grid gap-4 lg:grid-rows-[auto_auto_1fr]">
-        {TEAMMATES.map((member) => (
-          <Card
-            key={member.name}
-            variant="bordered"
-            interactive
-            className="flex-row items-center gap-4 rounded-2xl p-4"
-          >
-            <span
-              className={cn(
-                "grid size-12 shrink-0 place-items-center rounded-2xl text-sm font-semibold",
-                member.tint,
-              )}
-            >
-              {member.initials}
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium">{member.name}</p>
-              <p className="truncate text-xs text-muted-foreground">
-                {member.role}
-              </p>
-            </div>
-            <span className="hidden shrink-0 text-xs text-muted-foreground sm:block">
-              {member.zone}
-            </span>
-            <button
-              type="button"
-              aria-label={`Message ${member.name}`}
-              className="grid size-9 shrink-0 place-items-center rounded-full border border-border text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-            >
-              <MessageCircle className="size-4" />
-            </button>
-          </Card>
-        ))}
-
-        <button
-          type="button"
-          className="flex items-center justify-center gap-2 rounded-2xl border border-dashed border-border p-5 text-sm text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-        >
-          <UserPlus className="size-4" /> Invite a teammate
-        </button>
-      </div>
-    </div>
-  );
-}
-```
-
 ### Shop tiles
 
 Pastel product tiles with a tag, a two-line title, the product on the right and a frosted price bar. The photo's backdrop and the tile share a colour, so the edge between them disappears.
@@ -777,6 +655,421 @@ export default function ShopCards() {
 }
 ```
 
+### Folder cards
+
+A thick frame around a photograph and a folder-tab panel. Only the number and title show at first; hover or focus a card to open the text.
+
+```tsx
+import { Card } from "@/components/custom/blocks/CardBlock";
+import { ArrowUpRight } from "lucide-react";
+
+const CARDS = [
+  {
+    number: "01",
+    title: "A castle above the mist",
+    text: "Cobbled lanes, stone towers and a quiet start. Arrive early, before the day trippers do.",
+    theme:
+      "[--frame:#dde2e5] [--panel:#f0f2f3] [--ink:#1b2227] dark:[--frame:#1b2227] dark:[--panel:#242d33] dark:[--ink:#ffffff]",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1518709268805-4e9042af9f23-1790146212209.jpg",
+    alt: "A stone castle on a hill, wrapped in morning mist",
+  },
+  {
+    number: "02",
+    title: "The red lighthouse walk",
+    text: "A short coastal path under a wide open sky. Climb at golden hour for the best light.",
+    theme:
+      "[--frame:#c6e2e7] [--panel:#e5f3f5] [--ink:#0a2f37] dark:[--frame:#0a2f37] dark:[--panel:#0d3d47] dark:[--ink:#ffffff]",
+    image: "https://images.unsplash.com/photo-1718807384827-bf59c4935ee1?auto=format&fit=crop&w=800&q=80",
+    alt: "A red and white striped lighthouse against a teal sky",
+  },
+  {
+    number: "03",
+    title: "Peonies by the window",
+    text: "One stem, soft light and a blush wall. A slow flower morning that asks nothing of you.",
+    theme:
+      "[--frame:#ebd2d3] [--panel:#f8eceb] [--ink:#3b2227] dark:[--frame:#3a2428] dark:[--panel:#4a2e33] dark:[--ink:#f8eceb]",
+    image: "https://images.unsplash.com/photo-1684752840287-13f1546fce93?auto=format&fit=crop&w=800&q=80",
+    alt: "A single pink peony in a metal bottle against a blush wall",
+  },
+];
+
+export default function FolderCards() {
+  return (
+    <div className="grid w-full max-w-[922px] gap-5 sm:grid-cols-3">
+      {CARDS.map((card) => (
+        <Card
+          key={card.number}
+          variant="flat"
+          interactive
+          tabIndex={0}
+          className={
+            "group aspect-[3/4] rounded-[26px] border-0 bg-(--frame) p-[5px] text-(--ink) shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring " +
+            card.theme
+          }
+        >
+          <div className="relative size-full overflow-hidden rounded-[21px]">
+            <img
+              src={card.image}
+              alt={card.alt}
+              loading="lazy"
+              className="absolute inset-0 size-full object-cover transition-transform duration-700 ease-out motion-reduce:transition-none group-hover:scale-105 group-focus-visible:scale-105"
+            />
+
+            {/* Anchored to the bottom: at rest only the number and title show, and the panel grows upward when the text row opens */}
+            <div className="absolute inset-x-0 bottom-0 flex flex-col rounded-tr-[18px] bg-(--panel) p-4">
+              {/* The folder tab: a raised step on the left, with a concave fillet at its foot. Its height is the convex radius (14px) plus the fillet radius (14px), so the two curves meet in one smooth S. The shadow and the 1px overhang on the fillet overlap the panel, so no seam shows */}
+              <div className="absolute -top-7 left-0 h-7 w-[46%] rounded-tl-[16px] rounded-tr-[14px] bg-(--panel) shadow-[0_1px_0_var(--panel)] after:absolute after:-bottom-px after:left-full after:-ml-px after:size-[15px] after:[background:radial-gradient(circle_at_100%_0,transparent_13.5px,var(--panel)_14.5px)]" />
+
+              <div className="flex items-start justify-between">
+                <span className="text-[44px] font-light leading-none tracking-tight">
+                  {card.number}
+                </span>
+                <ArrowUpRight className="mt-3 size-5 transition-transform duration-300 motion-reduce:transition-none group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-focus-visible:-translate-y-0.5 group-focus-visible:translate-x-0.5" />
+              </div>
+
+              <p className="mt-4 text-[15px] font-semibold leading-snug">{card.title}</p>
+
+              {/* grid-rows 0fr to 1fr animates the height of text of any length */}
+              <div className="grid grid-rows-[0fr] opacity-0 transition-[grid-template-rows,opacity] duration-500 ease-out motion-reduce:transition-none group-hover:grid-rows-[1fr] group-hover:opacity-100 group-focus-visible:grid-rows-[1fr] group-focus-visible:opacity-100">
+                <div className="min-h-0 overflow-hidden">
+                  <p className="pt-2 text-xs leading-relaxed opacity-70">{card.text}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Card>
+      ))}
+    </div>
+  );
+}
+```
+
+### Quote tiles
+
+Pastel tiles with a small caps category, a bold quote and the photo dissolving into the tint from below.
+
+```tsx
+import type { CSSProperties } from "react";
+import { Card } from "@/components/custom/blocks/CardBlock";
+
+const TILES = [
+  {
+    category: "Branding",
+    title: "A Brand Is A Voice And A Product Is A Souvenir.",
+    tint: "#e1c2ce",
+    color: "#18181b",
+    image: "https://images.unsplash.com/photo-1759332691549-fb0863bbb92c?auto=format&fit=crop&w=600&q=80",
+    imageAlt: "A single pale flower balanced on a paper triangle against a pink wall",
+    position: "50% 50%",
+  },
+  {
+    category: "Typography",
+    title: "The Purpose Of Our Lives Is To Be Happy.",
+    tint: "#1f636d",
+    color: "#ffffff",
+    image: "https://images.unsplash.com/photo-1718807384827-bf59c4935ee1?auto=format&fit=crop&w=600&q=80",
+    imageAlt: "Red and white lighthouse against a deep teal sky",
+    position: "50% 38%",
+  },
+  {
+    category: "Copy Writing",
+    title: "Love Is The Flower You’ve Got To Let Grow.",
+    tint: "#b5a08d",
+    color: "#18181b",
+    image: "https://images.unsplash.com/photo-1684752840287-13f1546fce93?auto=format&fit=crop&w=600&q=80",
+    imageAlt: "A coral peony in a steel bottle against a dusty rose wall",
+    position: "50% 15%",
+  },
+];
+
+export default function QuoteTiles() {
+  return (
+    <div className="w-full max-w-3xl">
+      <h2 className="max-w-md text-2xl font-bold leading-snug tracking-tight">
+        You Only Live Once, But If You Do It Right, Once Is Enough.
+      </h2>
+
+      <div className="mt-6 grid gap-5 sm:grid-cols-3">
+        {TILES.map((tile) => (
+          <Card
+            key={tile.category}
+            variant="default"
+            style={{ backgroundColor: tile.tint, color: tile.color, "--tint": tile.tint } as CSSProperties}
+            className="group relative aspect-[3/4] overflow-hidden rounded-lg border-0 shadow-none"
+          >
+            {/* The photo fills the lower half; a mask dissolves its top edge into the tint */}
+            <img
+              src={tile.image}
+              alt={tile.imageAlt}
+              loading="lazy"
+              style={{ objectPosition: tile.position }}
+              className="absolute inset-x-0 bottom-0 h-[68%] w-full object-cover [mask-image:linear-gradient(to_bottom,transparent,black_30%)] transition-transform duration-500 motion-safe:group-hover:scale-105"
+            />
+
+            <div className="relative p-4">
+              <p className="text-[10px] font-medium uppercase tracking-[0.16em]">
+                {tile.category}
+              </p>
+              <h3 className="mt-3 text-[17px] font-bold leading-snug">{tile.title}</h3>
+            </div>
+
+            <button
+              type="button"
+              className="absolute bottom-3 right-3 rounded-md bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-900 shadow-sm transition-colors hover:bg-white/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900"
+            >
+              Explore
+            </button>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+### Profile card
+
+A person as a card: a patterned banner, an avatar that overlaps it, a few numbers, and one primary action.
+
+```tsx
+"use client";
+
+import { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/custom/blocks/CardBlock";
+import { cn } from "@/lib/utils";
+import { Check, MapPin, MessageCircle, UserPlus } from "lucide-react";
+
+export default function ProfileCards() {
+  const [following, setFollowing] = useState(false);
+
+  return (
+    <Card variant="bordered" className="w-full max-w-md overflow-hidden rounded-3xl">
+      <div className="h-24 bg-primary/10 bg-[radial-gradient(circle_at_1px_1px,var(--primary)_1px,transparent_0)] [background-size:12px_12px] opacity-40" />
+
+      <CardHeader className="gap-3 px-6 pb-0 pt-0">
+        <div className="-mt-11 flex items-end justify-between gap-3">
+          <div className="relative">
+            <span className="grid size-20 place-items-center rounded-full bg-primary/15 text-xl font-semibold text-primary ring-4 ring-card">
+              AK
+            </span>
+            <span className="absolute bottom-1 right-1 size-3.5 rounded-full bg-emerald-500 ring-2 ring-card" />
+          </div>
+          <span className="mb-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-300">
+            Open to projects
+          </span>
+        </div>
+        <div className="space-y-1">
+          <CardTitle className="text-xl">Ayesha Karim</CardTitle>
+          <CardDescription className="flex items-center gap-1.5">
+            Design engineer at Northwind
+            <span className="text-muted-foreground/40">|</span>
+            <MapPin className="size-3.5" /> Dhaka
+          </CardDescription>
+        </div>
+      </CardHeader>
+
+      <CardContent className="space-y-5 px-6 pb-0 pt-4">
+        <p className="text-sm leading-relaxed text-muted-foreground">
+          Builds the component library three product teams ship on. Currently
+          rewriting the motion primitives.
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {["Design systems", "React", "Motion", "Accessibility"].map(
+            (tag) => (
+              <span
+                key={tag}
+                className="rounded-full border border-border px-3 py-1 text-xs text-muted-foreground"
+              >
+                {tag}
+              </span>
+            ),
+          )}
+        </div>
+        <div className="grid grid-cols-3 divide-x divide-border rounded-2xl border border-border bg-muted/40 py-3 text-center">
+          {[
+            ["128", "Components"],
+            ["342", "Merged PRs"],
+            ["96", "Reviews"],
+          ].map(([value, label]) => (
+            <div key={label} className="px-2">
+              <p className="text-base font-semibold tabular-nums">{value}</p>
+              <p className="mt-0.5 text-xs text-muted-foreground">{label}</p>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+
+      <CardFooter className="gap-3 px-6 pb-6 pt-5">
+        <button
+          type="button"
+          aria-pressed={following}
+          onClick={() => setFollowing((v) => !v)}
+          className={cn(
+            "inline-flex flex-1 items-center justify-center gap-2 rounded-full border px-4 py-2.5 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+            following
+              ? "border-border text-foreground hover:bg-muted"
+              : "border-primary bg-primary text-primary-foreground hover:border-primary/90 hover:bg-primary/90",
+          )}
+        >
+          {following ? (
+            <>
+              <Check className="size-4" /> Following
+            </>
+          ) : (
+            <>
+              <UserPlus className="size-4" /> Follow
+            </>
+          )}
+        </button>
+        <button
+          type="button"
+          className="inline-flex items-center justify-center gap-2 rounded-full border border-border px-4 py-2.5 text-sm font-medium transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        >
+          <MessageCircle className="size-4" /> Message
+        </button>
+      </CardFooter>
+    </Card>
+  );
+}
+```
+
+### Platform grid
+
+A full-width two-column card: a visual preview on the left, and on the right the specifications, tags, action buttons and a copyable install command.
+
+- Two-column grid `layout="project-showcase"` splits the card into an image preview on the left and full project details, specifications, actions, and install bar on the right.
+
+```tsx
+"use client";
+
+import { ProjectCard } from "@/components/custom/blocks/CardBlock";
+
+export default function ProjectShowcaseCardDemo() {
+  return (
+    <ProjectCard
+      title="Platform grid"
+      image="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790516057/platform-grid-1790516064500.jpg"
+      slug="platform-grid"
+      scope="avara-ui"
+      badge1="Component Block"
+      badge2="TypeScript & Tailwind"
+      description="A meticulously crafted, responsive interactive block built with modern animations, responsive layouts, and accessible standards. Ready to drop into your Next.js and React applications."
+      ctaLabel="Full View"
+      contactLabel="Contact"
+    />
+  );
+}
+```
+
+### Stat grid
+
+`CardHeader` stacks its children by default; override that to line a title up against an icon.
+
+- `variant="bordered"` keeps each tile separated in a dense grid.
+
+```tsx
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/custom/blocks/CardBlock";
+import { Bell, CreditCard, Settings } from "lucide-react";
+
+export default function StatGrid() {
+  return (
+    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <Card variant="bordered">
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <CardTitle className="text-sm font-medium text-muted-foreground">Total Revenue</CardTitle>
+          <CreditCard className="h-4 w-4 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-semibold">$45,231.89</div>
+          <p className="text-xs text-emerald-500 font-medium mt-1">+20.1% from last month</p>
+        </CardContent>
+      </Card>
+
+      <Card variant="bordered">
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <CardTitle className="text-sm font-medium text-muted-foreground">Subscriptions</CardTitle>
+          <Bell className="h-4 w-4 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-semibold">+2350</div>
+          <p className="text-xs text-emerald-500 font-medium mt-1">+180.1% from last month</p>
+        </CardContent>
+      </Card>
+
+      <Card variant="bordered">
+        <CardHeader className="flex flex-row items-center justify-between pb-2">
+          <CardTitle className="text-sm font-medium text-muted-foreground">Active Now</CardTitle>
+          <Settings className="h-4 w-4 text-muted-foreground" />
+        </CardHeader>
+        <CardContent>
+          <div className="text-2xl font-semibold">+573</div>
+          <p className="text-xs text-emerald-500 font-medium mt-1">+201 since last hour</p>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+```
+
+### Standard Card
+
+Stack `CardHeader`, `CardContent` and `CardFooter` — spacing is handled for you.
+
+- `variant="bordered"` is the default — a subtle stroke around the surface.
+
+```tsx
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/custom/blocks/CardBlock";
+import { Bell, Settings } from "lucide-react";
+
+export default function NotificationCard() {
+  return (
+    <Card variant="bordered" className="w-full max-w-sm">
+      <CardHeader>
+        <CardTitle>Notifications</CardTitle>
+        <CardDescription>You have 3 unread messages.</CardDescription>
+      </CardHeader>
+
+      <CardContent className="grid gap-4">
+        <div className="flex items-center gap-4 p-3 rounded-lg border border-primary/20 bg-primary/5">
+          <Bell className="w-5 h-5 text-primary" />
+          <div className="flex-1 space-y-1">
+            <p className="text-sm font-medium leading-none">System Update</p>
+            <p className="text-xs text-muted-foreground">A new version is available.</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-4 p-3 rounded-lg border border-primary/20 bg-primary/5">
+          <Settings className="w-5 h-5 text-primary" />
+          <div className="flex-1 space-y-1">
+            <p className="text-sm font-medium leading-none">Account Notice</p>
+            <p className="text-xs text-muted-foreground">Please verify your email address.</p>
+          </div>
+        </div>
+      </CardContent>
+
+      <CardFooter className="border-t border-primary/20 pt-6">
+        <button className="w-full py-2 bg-primary text-primary-foreground rounded-md text-sm font-medium">
+          Mark all as read
+        </button>
+      </CardFooter>
+    </Card>
+  );
+}
+```
+
 ### Boarding pass
 
 One card, two panels, a dashed perforation between them — the holes are circles filled with the page colour.
@@ -828,109 +1121,6 @@ export default function BoardingPassCard() {
         <div className="mt-5 h-14 w-full bg-[repeating-linear-gradient(90deg,currentColor_0_2px,transparent_2px_4px,currentColor_4px_5px,transparent_5px_9px)] text-foreground/75" />
         <p className="mt-2 font-mono text-[11px] tracking-widest text-muted-foreground">MR214 12APR</p>
       </div>
-    </Card>
-  );
-}
-```
-
-### Now playing
-
-A horizontal card holding live state: the record turns while the track runs, and the waveform doubles as a scrubber.
-
-```tsx
-"use client";
-
-import { useEffect, useState } from "react";
-import { Card, CardContent } from "@/components/custom/blocks/CardBlock";
-import { Pause, Play, SkipBack, SkipForward } from "lucide-react";
-
-const WAVEFORM = [22, 34, 48, 40, 62, 76, 58, 44, 68, 88, 72, 54, 38, 46, 60, 82, 96, 78];
-const TRACK_LENGTH = 214;
-
-const formatTime = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
-
-export default function NowPlayingCard() {
-  const [playing, setPlaying] = useState(false);
-  const [elapsed, setElapsed] = useState(72);
-
-  useEffect(() => {
-    if (!playing) return;
-    const id = setInterval(
-      () => setElapsed((v) => (v >= TRACK_LENGTH ? 0 : v + 1)),
-      1000,
-    );
-    return () => clearInterval(id);
-  }, [playing]);
-
-  const progress = elapsed / TRACK_LENGTH;
-
-  return (
-    <Card variant="bordered" className="w-full max-w-2xl overflow-hidden rounded-2xl sm:flex-row">
-      {/* Art panel — the record turns only while the track is playing */}
-      <div className="grid aspect-square w-full shrink-0 place-items-center bg-zinc-950 dark:bg-zinc-900 sm:aspect-auto sm:size-48">
-        <div
-          className={`grid size-32 place-items-center rounded-full bg-[repeating-radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.10)_0_1px,transparent_1px_5px)] ring-1 ring-white/10 sm:size-36 ${
-            playing ? "[animation-duration:6s] motion-safe:animate-spin" : ""
-          }`}
-        >
-          <span className="grid size-12 place-items-center rounded-full bg-primary text-primary-foreground">
-            <span className="size-1.5 rounded-full bg-zinc-950" />
-          </span>
-        </div>
-      </div>
-
-      <CardContent className="flex flex-1 flex-col justify-center gap-4 p-6">
-        <div>
-          <h3 className="text-lg font-semibold leading-tight">Ceiling Fan Blues</h3>
-          <p className="text-sm text-muted-foreground">Lila Moreau Trio</p>
-        </div>
-
-        {/* A real range input sits invisibly over the bars, so seeking works
-            with a pointer and a keyboard both */}
-        <div className="relative rounded-md focus-within:ring-2 focus-within:ring-primary">
-          <div aria-hidden className="pointer-events-none flex h-10 items-end gap-[3px]">
-            {WAVEFORM.map((height, i) => (
-              <span
-                key={i}
-                style={{ height: `${height}%` }}
-                className={`min-w-0 flex-1 rounded-full ${
-                  i / WAVEFORM.length <= progress ? "bg-primary" : "bg-muted-foreground/25"
-                }`}
-              />
-            ))}
-          </div>
-          <input
-            type="range"
-            min={0}
-            max={TRACK_LENGTH}
-            value={elapsed}
-            aria-label="Seek"
-            onChange={(e) => setElapsed(Number(e.target.value))}
-            className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
-          />
-        </div>
-
-        <div className="flex justify-between font-mono text-xs tabular-nums text-muted-foreground">
-          <span>{formatTime(elapsed)}</span>
-          <span>{formatTime(TRACK_LENGTH)}</span>
-        </div>
-
-        <div className="flex items-center gap-1">
-          <button aria-label="Previous track" className="grid size-9 place-items-center rounded-full text-muted-foreground hover:bg-muted">
-            <SkipBack className="size-4" />
-          </button>
-          <button
-            aria-label={playing ? "Pause" : "Play"}
-            onClick={() => setPlaying((v) => !v)}
-            className="grid size-11 place-items-center rounded-full bg-primary text-primary-foreground hover:bg-primary/90"
-          >
-            {playing ? <Pause className="size-5" /> : <Play className="size-5 translate-x-px" />}
-          </button>
-          <button aria-label="Next track" className="grid size-9 place-items-center rounded-full text-muted-foreground hover:bg-muted">
-            <SkipForward className="size-4" />
-          </button>
-        </div>
-      </CardContent>
     </Card>
   );
 }
