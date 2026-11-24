@@ -9,10 +9,20 @@
     "multiple-open": "Accordion — Multiple open"
   },
   "action-buttons": {
-    "interactive-action-async-commerce-buttons": "Action Buttons — Interactive Action, Async & Commerce Buttons"
+    "slide-to-deploy": "Action Buttons — Slide to Deploy",
+    "star-upvote": "Action Buttons — Star & Upvote",
+    "download-delete": "Action Buttons — Download & Delete",
+    "join-waitlist": "Action Buttons — Join Waitlist",
+    "deploy-cart": "Action Buttons — Deploy & Cart",
+    "save-changes-pay": "Action Buttons — Save Changes & Pay"
   },
   "action-buttons-motion": {
-    "interactive-action-async-commerce-buttons": "Action Buttons — Interactive Action, Async & Commerce Buttons"
+    "slide-to-deploy": "Action Buttons — Slide to Deploy",
+    "star-upvote": "Action Buttons — Star & Upvote",
+    "download-delete": "Action Buttons — Download & Delete",
+    "join-waitlist": "Action Buttons — Join Waitlist",
+    "deploy-cart": "Action Buttons — Deploy & Cart",
+    "save-changes-pay": "Action Buttons — Save Changes & Pay"
   },
   "agent-graph": {
     "shaded-tree-default": "Agent Graph — Shaded Tree (Default)",
