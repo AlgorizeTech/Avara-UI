@@ -61,8 +61,10 @@ export type AccordionVariant =
   | "filled"
   | "ghost"
   | "elevated"
-  /** Soft tinted tiles with a plus that folds into a minus. */
+  /** White tiles that settle to soft gray when open, with a plus that folds into a minus. */
   | "soft"
+  /** One rounded tray; the open row becomes a tile with an animated plus/minus chip. */
+  | "tray"
   /** Pill rows; the open one rises as a card with the answer in an inset well. */
   | "inset"
   /** Outlined rows with corner brackets that open outward. */
@@ -101,7 +103,7 @@ type VariantStyles = {
   title: string;
   /** Wrapper around the expand/collapse icon. */
   expand: string;
-  expandIcon: "plus" | "chevron" | "plusminus";
+  expandIcon: "plus" | "chevron" | "morph";
   content: string;
   /** Extra content padding when the row carries an icon, so text aligns with the title. Dropped below `sm`, where the column is too narrow to spend on an indent. */
   contentWithIcon?: string;
@@ -123,6 +125,16 @@ const BRACKET_CORNERS = [
   "-bottom-px -right-px border-b-2 border-r-2 group-data-[state=open]/item:-bottom-1 group-data-[state=open]/item:-right-1",
 ] as const;
 
+/** Hairline-lit card shadow shared by the card-style variants. */
+const CARD_SHADOW = "shadow-[0_1px_2px_rgba(0,0,0,0.06),0_12px_24px_-18px_rgba(0,0,0,0.42)]";
+
+/** Round gray chip behind the animated plus/minus; each variant adds its own open tint. */
+const EXPAND_CHIP = cn(
+  "flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-foreground",
+  "transition-[background-color,color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+  "group-data-[state=closed]:group-hover:bg-foreground/10 group-data-[state=open]:text-foreground",
+);
+
 const VARIANTS: Record<Exclude<AccordionVariant, "card-filled" | "brand-reveal">, VariantStyles> = {
   // "Lift": closed rows are quiet hairline rows; the open one lifts out as a card.
   default: {
@@ -130,8 +142,8 @@ const VARIANTS: Record<Exclude<AccordionVariant, "card-filled" | "brand-reveal">
     item: cn(
       "relative rounded-2xl border-b border-border transition-all duration-300 ease-out last:border-b-0",
       "data-[state=open]:my-2 data-[state=open]:border-b-transparent data-[state=open]:bg-card",
-      "data-[state=open]:ring-1 data-[state=open]:ring-border",
-      "data-[state=open]:shadow-[0_1px_2px_rgb(0_0_0/0.04),0_20px_44px_-20px_rgb(0_0_0/0.22)]",
+      "data-[state=open]:ring-1 data-[state=open]:ring-[#F7F7F6] dark:data-[state=open]:ring-border",
+      "data-[state=open]:shadow-[0_1px_2px_rgba(0,0,0,0.06),0_12px_24px_-18px_rgba(0,0,0,0.42)]",
       "data-[state=open]:first:mt-0 data-[state=open]:last:mb-0 sm:data-[state=open]:-mx-3 sm:data-[state=open]:px-3",
       "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring/60",
     ),
@@ -142,12 +154,8 @@ const VARIANTS: Record<Exclude<AccordionVariant, "card-filled" | "brand-reveal">
       "group-data-[state=open]:bg-primary group-data-[state=open]:text-primary-foreground group-data-[state=open]:shadow-lg group-data-[state=open]:shadow-primary/30",
     ),
     title: "text-[15px] font-medium tracking-[-0.01em] text-foreground",
-    expand: cn(
-      "flex size-7 shrink-0 items-center justify-center rounded-full border border-border text-muted-foreground transition-all duration-300",
-      "group-hover:border-foreground/30 group-hover:text-foreground",
-      "group-data-[state=open]:rotate-45 group-data-[state=open]:border-foreground/30 group-data-[state=open]:text-foreground",
-    ),
-    expandIcon: "plus",
+    expand: cn(EXPAND_CHIP, "group-data-[state=open]:bg-foreground/15"),
+    expandIcon: "morph",
     content: "relative px-4 pb-5 pr-12 text-muted-foreground",
     contentWithIcon: "sm:pl-[4.5rem]",
     thread: true,
@@ -219,48 +227,70 @@ const VARIANTS: Record<Exclude<AccordionVariant, "card-filled" | "brand-reveal">
     contentWithIcon: "sm:pl-[4.25rem]",
   },
 
-  // "Soft": tinted tiles; the chip fills with the accent and its plus folds into a minus.
+  // "Soft": white tiles that settle to soft gray when open; the plus folds into a minus.
   soft: {
     list: "flex flex-col gap-2.5",
     item: cn(
-      "rounded-2xl bg-muted/60 ring-1 ring-transparent",
+      "rounded-2xl bg-card ring-1 ring-[#F7F7F6] dark:ring-border/60",
+      CARD_SHADOW,
       "transition-[background-color,box-shadow] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
-      "hover:bg-primary/[0.07]",
-      "data-[state=open]:bg-card data-[state=open]:ring-border/60 data-[state=open]:hover:bg-card",
-      "dark:bg-muted/40 dark:data-[state=open]:bg-muted/80 dark:data-[state=open]:hover:bg-muted/80",
-      "data-[state=open]:shadow-[0_1px_2px_rgb(0_0_0/0.04),0_18px_36px_-22px_rgb(0_0_0/0.24)]",
+      "hover:bg-[#F7F7F6] data-[state=open]:bg-[#F7F7F6]",
+      "dark:hover:bg-muted/60 dark:data-[state=open]:bg-muted dark:data-[state=open]:hover:bg-muted",
       "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring/60",
     ),
     trigger: "items-center gap-4 px-4 py-3.5 sm:px-5",
     iconWrap: cn(
-      "flex size-9 shrink-0 items-center justify-center rounded-xl bg-background text-muted-foreground transition-colors duration-300",
-      "group-hover:text-primary group-data-[state=open]:bg-primary/10 group-data-[state=open]:text-primary",
+      "flex size-9 shrink-0 items-center justify-center rounded-xl bg-muted text-muted-foreground transition-colors duration-300",
+      "group-hover:text-foreground group-data-[state=open]:bg-card group-data-[state=open]:text-foreground",
     ),
     title: "text-[15px] font-medium tracking-[-0.01em] text-foreground",
-    expand: cn(
-      "flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary",
-      "transition-[background-color,color,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
-      "group-hover:bg-primary/15 group-data-[state=open]:bg-primary group-data-[state=open]:text-primary-foreground",
-    ),
-    expandIcon: "plusminus",
+    expand: cn(EXPAND_CHIP, "group-data-[state=open]:bg-foreground/15"),
+    expandIcon: "morph",
     content: "px-4 pb-5 pr-14 text-muted-foreground sm:px-5 sm:pr-16",
     contentWithIcon: "sm:pl-[4.75rem]",
     smooth: true,
   },
 
-  // "Inset": quiet pill rows; the open one rises as a card holding the answer in a well.
+  // "Tray": rows sit in one rounded tray; the open row becomes a soft tile and
+  // its round chip inverts, with the plus turning into a minus.
+  tray: {
+    list: cn(
+      "flex flex-col gap-1 rounded-[1.75rem] bg-card p-3 ring-1 ring-[#F7F7F6] dark:ring-border/60",
+      "shadow-[0_1px_2px_rgb(0_0_0/0.04),0_18px_40px_-24px_rgb(0_0_0/0.22)]",
+    ),
+    item: cn(
+      "rounded-[1.25rem] p-1.5 transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+      "data-[state=closed]:hover:bg-muted/50 data-[state=open]:bg-[#F7F7F6] dark:data-[state=open]:bg-muted",
+      "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring/60",
+    ),
+    trigger: "items-center gap-4 px-3 py-3 sm:px-4",
+    iconWrap: cn(
+      "flex shrink-0 items-center justify-center text-muted-foreground",
+      "transition-[color,transform] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
+      "group-hover:-rotate-6 group-hover:scale-110 group-hover:text-foreground group-data-[state=open]:text-foreground",
+    ),
+    title: cn(
+      "text-[15px] font-medium tracking-[-0.01em] text-foreground/80 transition-colors duration-300",
+      "group-hover:text-foreground group-data-[state=open]:text-foreground",
+    ),
+    expand: cn(EXPAND_CHIP, "group-data-[state=open]:bg-foreground/15"),
+    expandIcon: "morph",
+    content: "px-3 pb-3 pr-14 text-muted-foreground sm:px-4 sm:pr-16",
+    contentWithIcon: "sm:pl-12",
+    smooth: true,
+  },
+
+  // "Inset": white cards with a hairline border and soft shadow; the open one holds the answer in a well.
   inset: {
     list: "flex flex-col gap-2.5",
     item: cn(
-      "rounded-[1.75rem] bg-muted/50 p-1.5 ring-1 ring-transparent",
-      "transition-[background-color,box-shadow,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
-      "hover:bg-muted/80",
-      "data-[state=open]:-translate-y-px data-[state=open]:bg-card data-[state=open]:ring-border/70 data-[state=open]:hover:bg-card",
-      "dark:bg-muted/30 dark:hover:bg-muted/50 dark:data-[state=open]:bg-muted dark:data-[state=open]:hover:bg-muted",
-      "data-[state=open]:shadow-[0_1px_2px_rgb(0_0_0/0.05),0_26px_50px_-26px_rgb(0_0_0/0.3)]",
+      "rounded-[1.75rem] border border-[#F7F7F6] bg-card p-2 dark:border-border/60",
+      CARD_SHADOW,
+      "transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+      "data-[state=open]:-translate-y-px",
       "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring/60",
     ),
-    trigger: "items-center gap-4 px-4 py-3 sm:px-5",
+    trigger: "items-center gap-4 px-3 py-3 sm:px-4",
     iconWrap: cn(
       "flex size-9 shrink-0 items-center justify-center rounded-full bg-background text-muted-foreground transition-colors duration-300",
       "group-data-[state=open]:bg-muted group-data-[state=open]:text-foreground",
@@ -269,14 +299,10 @@ const VARIANTS: Record<Exclude<AccordionVariant, "card-filled" | "brand-reveal">
       "text-[15px] font-medium tracking-[-0.01em] text-muted-foreground transition-colors duration-500",
       "group-hover:text-foreground group-data-[state=open]:text-foreground",
     ),
-    expand: cn(
-      "flex shrink-0 items-center justify-center text-muted-foreground",
-      "transition-[transform,color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
-      "group-hover:text-foreground group-data-[state=open]:rotate-180 group-data-[state=open]:text-foreground",
-    ),
-    expandIcon: "plus",
+    expand: cn(EXPAND_CHIP, "group-data-[state=open]:bg-foreground/[0.12]"),
+    expandIcon: "morph",
     content: "px-1.5 pb-1.5",
-    panel: "rounded-[1.25rem] bg-muted/70 px-4 py-3.5 text-[15px] text-foreground/80 dark:bg-background/50 sm:px-5 sm:py-4",
+    panel: "rounded-[1.25rem] bg-[#F7F7F6] px-3.5 py-3 text-[15px] text-foreground/80 dark:bg-background/50 sm:px-4 sm:py-3.5",
     smooth: true,
   },
 
@@ -305,22 +331,68 @@ const VARIANTS: Record<Exclude<AccordionVariant, "card-filled" | "brand-reveal">
     smooth: true,
   },
 
-  // "Editorial": nothing but type and hairlines.
+  // "Editorial": stacked white cards, each lit by a hairline and a soft shadow.
   ghost: {
-    list: "divide-y divide-border",
-    item: "has-[:focus-visible]:bg-muted/40",
-    trigger: "items-center gap-4 py-5",
+    list: "flex flex-col gap-3",
+    item: cn(
+      "rounded-2xl bg-card ring-1 ring-[#F7F7F6] dark:ring-border/60",
+      CARD_SHADOW,
+      "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring/60",
+    ),
+    trigger: "items-center gap-4 px-5 py-4",
     iconWrap:
-      "flex shrink-0 items-center justify-center text-muted-foreground transition-colors duration-300 group-data-[state=open]:text-primary",
+      "flex shrink-0 items-center justify-center text-muted-foreground transition-colors duration-300 group-data-[state=open]:text-foreground",
     title:
-      "text-lg font-medium tracking-tight text-foreground transition-[transform,color] duration-300 group-hover:translate-x-1 group-data-[state=open]:text-primary",
-    expand:
-      "flex shrink-0 items-center justify-center text-muted-foreground transition-transform duration-300 group-data-[state=open]:rotate-45",
-    expandIcon: "plus",
-    content: "max-w-prose pb-6 pr-10 text-[15px] leading-relaxed text-muted-foreground",
-    contentWithIcon: "sm:pl-8",
+      "text-lg font-medium tracking-tight text-foreground transition-[transform,color] duration-300 group-hover:translate-x-1",
+    expand: cn(EXPAND_CHIP, "group-data-[state=open]:bg-foreground/15"),
+    expandIcon: "morph",
+    content: "max-w-prose px-5 pb-5 pr-14 text-[15px] leading-relaxed text-muted-foreground",
+    contentWithIcon: "sm:pl-[3.25rem]",
   },
 };
+
+/**
+ * Plus that turns into a minus. Drawn as SVG strokes so each part animates on
+ * its own: the pair spins half a turn and the vertical stroke retracts when the
+ * row opens, the plus turns a quarter on hover, and the whole glyph pops a
+ * little. Driven by the trigger's `group` and `data-state`, so it needs no state.
+ */
+function MorphIcon() {
+  const easing = "ease-[cubic-bezier(0.34,1.56,0.64,1)]";
+  return (
+    <svg
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.75}
+      strokeLinecap="round"
+      aria-hidden="true"
+      className={cn(
+        "size-4 overflow-visible transition-transform duration-300 group-hover:scale-110",
+        easing,
+      )}
+    >
+      <g
+        style={{ transformOrigin: "8px 8px" }}
+        className={cn(
+          "transition-transform duration-500",
+          easing,
+          "group-data-[state=closed]:group-hover:rotate-90 group-data-[state=open]:rotate-180",
+        )}
+      >
+        <line x1="3" y1="8" x2="13" y2="8" />
+        <line
+          x1="8"
+          y1="3"
+          x2="8"
+          y2="13"
+          style={{ transformOrigin: "8px 8px" }}
+          className="transition-[scale,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[state=open]:scale-y-0 group-data-[state=open]:opacity-0"
+        />
+      </g>
+    </svg>
+  );
+}
 
 /** Vertical gap, in px, each deeper card peeks out below the one above it while stacked. */
 const STACK_PEEK = 7;
@@ -457,14 +529,6 @@ function StandardAccordion({
   const ResolvedExpandIcon =
     typeof expandIcon === "string" ? ICON_MAP[expandIcon] : null;
   const DefaultExpandIcon = styles.expandIcon === "plus" ? Plus : ChevronDown;
-  /** The plus that folds into a minus: its vertical bar collapses as the row opens. */
-  const plusMinusIcon = (
-    <span className="relative block size-3.5">
-      <span className="absolute inset-x-0 top-1/2 h-0.5 -translate-y-1/2 rounded-full bg-current" />
-      <span className="absolute inset-y-0 left-1/2 w-0.5 -translate-x-1/2 rounded-full bg-current transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[state=open]:rotate-90 group-data-[state=open]:scale-y-0" />
-    </span>
-  );
-
   const listRef = React.useRef<HTMLDivElement>(null);
   const [stacking, setStacking] = React.useState(animation === "stack");
   const [multipleValue, setMultipleValue] =
@@ -498,8 +562,8 @@ function StandardAccordion({
                 <ResolvedExpandIcon className="size-4" />
               ) : expandIcon ? (
                 expandIcon
-              ) : styles.expandIcon === "plusminus" ? (
-                plusMinusIcon
+              ) : styles.expandIcon === "morph" ? (
+                <MorphIcon />
               ) : (
                 <DefaultExpandIcon className="size-4" strokeWidth={1.75} />
               )}

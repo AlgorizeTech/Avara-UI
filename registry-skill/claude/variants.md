@@ -92,7 +92,7 @@ Install the chosen variant's own `install` command from the index. Several looks
 - `book-appointment`: 2 variants. All live: https://avaraui.com/view/book-appointment
 - `loader`: 5 variants. All live: https://avaraui.com/view/loader
 - `vertical-tabs`: 8 variants. All live: https://avaraui.com/view/vertical-tabs
-- `accordion`: 6 variants. All live: https://avaraui.com/view/accordion
+- `accordion`: 7 variants. All live: https://avaraui.com/view/accordion
 - `gallery`: 6 variants. All live: https://avaraui.com/view/gallery
 - `image-compare`: 10 variants. All live: https://avaraui.com/view/image-compare
 - `cursor-animation`: 11 variants. All live: https://avaraui.com/view/cursor-animation
@@ -133,5 +133,8 @@ Install the chosen variant's own `install` command from the index. Several looks
 - `alert`: 4 variants. All live: https://avaraui.com/view/alert
 - `carousel`: 6 variants. All live: https://avaraui.com/view/carousel
 - `infrastructure-topology`: 2 variants. All live: https://avaraui.com/view/infrastructure-topology
+- `brand-bridge`: 2 variants. All live: https://avaraui.com/view/brand-bridge
+- `profile-card`: 2 variants. All live: https://avaraui.com/view/profile-card
+- `radio-button`: 11 variants. All live: https://avaraui.com/view/radio-button
 
 An index entry with `choose: true` is the authority: it lists every variant and its live link.

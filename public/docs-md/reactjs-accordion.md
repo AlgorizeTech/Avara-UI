@@ -1,20 +1,20 @@
 ---
 title: "Shadcn Accordion"
-description: "A data-driven accordion with eight list styles and a brand reveal showcase. Free shadcn/ui Accordion component for React, Next.js and Tailwind CSS."
+description: "A data-driven accordion with nine list styles and a brand reveal showcase. Free shadcn/ui Accordion component for React, Next.js and Tailwind CSS."
 url: https://avaraui.com/docs/nextjs/accordion
 ---
 
 # Shadcn Accordion
 
-A data-driven accordion with eight list styles and a brand reveal showcase.
+A data-driven accordion with nine list styles and a brand reveal showcase.
 
 ## For AI agents
 
-**Ask before you pick.** This page has 6 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+**Ask before you pick.** This page has 7 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
 
-All 6 options as live previews: https://avaraui.com/view/accordion
+All 7 options as live previews: https://avaraui.com/view/accordion
 
-**When to use it.** A data-driven accordion. You pass an `accordionData` array and the open panel is the only thing that gets the accent. The examples show the inset, bracket, soft, lift-card and ghost lists and an automated brand reveal showcase; `variant` also accepts `soft`, `inset`, `bracket`, `bordered`, `filled` and `elevated`.
+**When to use it.** A data-driven accordion. You pass an `accordionData` array and the open panel is the only thing that gets the accent. The examples show the inset, tray, bracket, soft, lift-card and ghost lists and an automated brand reveal showcase; `variant` also accepts `soft`, `tray`, `inset`, `bracket`, `bordered`, `filled` and `elevated`.
 
 **Gotchas:**
 
@@ -22,7 +22,7 @@ All 6 options as live previews: https://avaraui.com/view/accordion
 - How many panels may be open is the `interaction` prop (single, multiple, mandatory, non-collapsible), not a design; in multiple mode `defaultValue` must be an array.
 - `animation="stack"` deals the items down when the accordion scrolls into view and works with any list style.
 
-### The 6 variants
+### The 7 variants
 
 1. **Inset panel** (`inset`): Quiet pill rows; the open one rises as a card with the answer set in an inset well.
    - Live: https://avaraui.com/view/accordion/inset
@@ -32,7 +32,15 @@ All 6 options as live previews: https://avaraui.com/view/accordion
    - Install: `npx shadcn@latest add @avara-ui/accordion`
    - Set these props: `{"variant":"inset"}`
    - Docs: https://avaraui.com/docs/nextjs/accordion#inset-panel
-2. **Bracket frame** (`bracket`): Outlined rows whose corner brackets open outward and take the accent when active.
+2. **Tray** (`tray`): Rows sit in one rounded tray; the open row becomes a tile and its round chip animates from plus to minus.
+   - Live: https://avaraui.com/view/accordion/tray
+   - Best for: a clean product FAQ with a friendly, contained look
+   - Avoid if: you want a flat, document-like list
+   - Traits: one rounded tray, open row becomes a tile, animated plus-to-minus chip, CSS open and close motion
+   - Install: `npx shadcn@latest add @avara-ui/accordion`
+   - Set these props: `{"variant":"tray"}`
+   - Docs: https://avaraui.com/docs/nextjs/accordion#tray
+3. **Bracket frame** (`bracket`): Outlined rows whose corner brackets open outward and take the accent when active.
    - Live: https://avaraui.com/view/accordion/bracket
    - Best for: developer tools, dashboards and technical products
    - Avoid if: the brand is soft or playful
@@ -40,7 +48,7 @@ All 6 options as live previews: https://avaraui.com/view/accordion
    - Install: `npx shadcn@latest add @avara-ui/accordion`
    - Set these props: `{"variant":"bracket"}`
    - Docs: https://avaraui.com/docs/nextjs/accordion#bracket-frame
-3. **Soft tiles** (`soft`): Tinted tiles; the open one fills its chip with the accent as the plus folds into a minus.
+4. **Soft tiles** (`soft`): Tinted tiles; the open one fills its chip with the accent as the plus folds into a minus.
    - Live: https://avaraui.com/view/accordion/soft
    - Best for: a friendly product or support FAQ
    - Avoid if: you want a flat, document-like list
@@ -48,7 +56,7 @@ All 6 options as live previews: https://avaraui.com/view/accordion
    - Install: `npx shadcn@latest add @avara-ui/accordion`
    - Set these props: `{"variant":"soft"}`
    - Docs: https://avaraui.com/docs/nextjs/accordion#soft-tiles
-4. **Lift card** (`default`): Closed rows stay quiet and the open one lifts out as a card.
+5. **Lift card** (`default`): Closed rows stay quiet and the open one lifts out as a card.
    - Live: https://avaraui.com/view/accordion/default
    - Best for: a FAQ on a plain page background
    - Avoid if: the accordion sits inside a card or panel that is already boxed
@@ -56,7 +64,7 @@ All 6 options as live previews: https://avaraui.com/view/accordion
    - Install: `npx shadcn@latest add @avara-ui/accordion`
    - Set these props: `{"variant":"default"}`
    - Docs: https://avaraui.com/docs/nextjs/accordion#lift-card
-5. **Brand reveal** (`brand-reveal`): An editorial horizontal brand accordion that cycles through client or partner brands on a timer.
+6. **Brand reveal** (`brand-reveal`): An editorial horizontal brand accordion that cycles through client or partner brands on a timer.
    - Live: https://avaraui.com/view/accordion/brand-reveal
    - Best for: showing clients or partners as a feature, not answering questions
    - Avoid if: you need a FAQ or any text-heavy list
@@ -64,7 +72,7 @@ All 6 options as live previews: https://avaraui.com/view/accordion
    - Install: `npx shadcn@latest add @avara-ui/accordion`
    - Set these props: `{"variant":"brand-reveal"}`
    - Docs: https://avaraui.com/docs/nextjs/accordion#brand-reveal
-6. **Ghost** (`ghost`): Type and hairlines only, with no boxes.
+7. **Ghost** (`ghost`): Type and hairlines only, with no boxes.
    - Live: https://avaraui.com/view/accordion/ghost
    - Best for: a long editorial FAQ
    - Avoid if: you want the open item to stand out strongly
@@ -86,23 +94,23 @@ const faqItems: AccordionDataItem[] = [
     title: "How do I get started?",
     icon: "HelpCircle", // any key of the block's ICON_MAP
     content: [
-      "Getting started is easy! Simply sign up for an account.",
-      "We'll guide you through setting up your profile.",
+      "Getting started takes a couple of minutes. Sign up for a free account, confirm your email and follow the guided setup to create your profile, invite your team and connect the tools you already use.",
     ],
   },
   {
     value: "pricing",
     title: "What are your pricing plans?",
     icon: "CreditCard",
-    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
+    content: [
+      "We offer flexible plans that grow with you. The Basic plan starts at $9 per month and includes every core feature, while Pro and Team add priority support, advanced analytics and unlimited projects.",
+    ],
   },
   {
     value: "security",
     title: "How secure is my data?",
     icon: "Shield",
     content: [
-      "Security is our top priority.",
-      "Your information is stored in secure data centers.",
+      "Security is our top priority. Your data is encrypted in transit and at rest, stored in certified data centers and backed up every day, so your information stays private and recoverable at all times.",
     ],
   },
 ];
@@ -113,6 +121,53 @@ export default function InsetFaq() {
       <Accordion
         accordionData={faqItems}
         variant="inset"
+        defaultValue="getting-started"
+      />
+    </div>
+  );
+}
+```
+
+## Tray
+
+- Use `variant="tray"` for one rounded tray whose open row becomes a tile, with a plus that turns into a minus.
+
+```tsx
+import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+
+const faqItems: AccordionDataItem[] = [
+  {
+    value: "getting-started",
+    title: "How do I get started?",
+    icon: "HelpCircle", // any key of the block's ICON_MAP
+    content: [
+      "Getting started takes a couple of minutes. Sign up for a free account, confirm your email and follow the guided setup to create your profile, invite your team and connect the tools you already use.",
+    ],
+  },
+  {
+    value: "pricing",
+    title: "What are your pricing plans?",
+    icon: "CreditCard",
+    content: [
+      "We offer flexible plans that grow with you. The Basic plan starts at $9 per month and includes every core feature, while Pro and Team add priority support, advanced analytics and unlimited projects.",
+    ],
+  },
+  {
+    value: "security",
+    title: "How secure is my data?",
+    icon: "Shield",
+    content: [
+      "Security is our top priority. Your data is encrypted in transit and at rest, stored in certified data centers and backed up every day, so your information stays private and recoverable at all times.",
+    ],
+  },
+];
+
+export default function TrayFaq() {
+  return (
+    <div className="mx-auto w-full max-w-2xl">
+      <Accordion
+        accordionData={faqItems}
+        variant="tray"
         defaultValue="getting-started"
       />
     </div>
@@ -133,23 +188,23 @@ const faqItems: AccordionDataItem[] = [
     title: "How do I get started?",
     icon: "HelpCircle", // any key of the block's ICON_MAP
     content: [
-      "Getting started is easy! Simply sign up for an account.",
-      "We'll guide you through setting up your profile.",
+      "Getting started takes a couple of minutes. Sign up for a free account, confirm your email and follow the guided setup to create your profile, invite your team and connect the tools you already use.",
     ],
   },
   {
     value: "pricing",
     title: "What are your pricing plans?",
     icon: "CreditCard",
-    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
+    content: [
+      "We offer flexible plans that grow with you. The Basic plan starts at $9 per month and includes every core feature, while Pro and Team add priority support, advanced analytics and unlimited projects.",
+    ],
   },
   {
     value: "security",
     title: "How secure is my data?",
     icon: "Shield",
     content: [
-      "Security is our top priority.",
-      "Your information is stored in secure data centers.",
+      "Security is our top priority. Your data is encrypted in transit and at rest, stored in certified data centers and backed up every day, so your information stays private and recoverable at all times.",
     ],
   },
 ];
@@ -169,7 +224,7 @@ export default function BracketFaq() {
 
 ## Soft tiles
 
-- Use `variant="soft"` for tinted tiles whose plus folds into a minus.
+- Use `variant="soft"` for white tiles that settle to soft gray when open, with a plus that folds into a minus.
 
 ```tsx
 import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
@@ -180,23 +235,23 @@ const faqItems: AccordionDataItem[] = [
     title: "How do I get started?",
     icon: "HelpCircle", // any key of the block's ICON_MAP
     content: [
-      "Getting started is easy! Simply sign up for an account.",
-      "We'll guide you through setting up your profile.",
+      "Getting started takes a couple of minutes. Sign up for a free account, confirm your email and follow the guided setup to create your profile, invite your team and connect the tools you already use.",
     ],
   },
   {
     value: "pricing",
     title: "What are your pricing plans?",
     icon: "CreditCard",
-    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
+    content: [
+      "We offer flexible plans that grow with you. The Basic plan starts at $9 per month and includes every core feature, while Pro and Team add priority support, advanced analytics and unlimited projects.",
+    ],
   },
   {
     value: "security",
     title: "How secure is my data?",
     icon: "Shield",
     content: [
-      "Security is our top priority.",
-      "Your information is stored in secure data centers.",
+      "Security is our top priority. Your data is encrypted in transit and at rest, stored in certified data centers and backed up every day, so your information stays private and recoverable at all times.",
     ],
   },
 ];
@@ -227,23 +282,23 @@ const faqItems: AccordionDataItem[] = [
     title: "How do I get started?",
     icon: "HelpCircle", // any key of the block's ICON_MAP
     content: [
-      "Getting started is easy! Simply sign up for an account.",
-      "We'll guide you through setting up your profile.",
+      "Getting started takes a couple of minutes. Sign up for a free account, confirm your email and follow the guided setup to create your profile, invite your team and connect the tools you already use.",
     ],
   },
   {
     value: "pricing",
     title: "What are your pricing plans?",
     icon: "CreditCard",
-    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
+    content: [
+      "We offer flexible plans that grow with you. The Basic plan starts at $9 per month and includes every core feature, while Pro and Team add priority support, advanced analytics and unlimited projects.",
+    ],
   },
   {
     value: "security",
     title: "How secure is my data?",
     icon: "Shield",
     content: [
-      "Security is our top priority.",
-      "Your information is stored in secure data centers.",
+      "Security is our top priority. Your data is encrypted in transit and at rest, stored in certified data centers and backed up every day, so your information stays private and recoverable at all times.",
     ],
   },
 ];
@@ -295,23 +350,23 @@ const faqItems: AccordionDataItem[] = [
     title: "How do I get started?",
     icon: "HelpCircle", // any key of the block's ICON_MAP
     content: [
-      "Getting started is easy! Simply sign up for an account.",
-      "We'll guide you through setting up your profile.",
+      "Getting started takes a couple of minutes. Sign up for a free account, confirm your email and follow the guided setup to create your profile, invite your team and connect the tools you already use.",
     ],
   },
   {
     value: "pricing",
     title: "What are your pricing plans?",
     icon: "CreditCard",
-    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
+    content: [
+      "We offer flexible plans that grow with you. The Basic plan starts at $9 per month and includes every core feature, while Pro and Team add priority support, advanced analytics and unlimited projects.",
+    ],
   },
   {
     value: "security",
     title: "How secure is my data?",
     icon: "Shield",
     content: [
-      "Security is our top priority.",
-      "Your information is stored in secure data centers.",
+      "Security is our top priority. Your data is encrypted in transit and at rest, stored in certified data centers and backed up every day, so your information stays private and recoverable at all times.",
     ],
   },
 ];
@@ -347,7 +402,7 @@ npx shadcn@latest add @avara-ui/accordion
 ```
 
 ## Features
-Single or multiple open panels, a one-time stack entrance, and eight variants that all read your theme tokens.
+Single or multiple open panels, a one-time stack entrance, and nine variants that all read your theme tokens.
 
 Every variant is built from the shadcn tokens, so changing `--primary` restyles the open panel, the rail and the icon tile together.
 
@@ -355,7 +410,7 @@ Radix handles roles, arrow-key navigation and focus. The visible focus ring foll
 
 Rows wrap cleanly at phone width; the open card in the default variant only grows wider than the list from `sm` up.
 
-The `soft`, `inset` and `bracket` variants open and close with CSS keyframes that ship inside the component. The stack entrance uses the Web Animations API. The only dependency beyond Radix is `lucide-react`.
+The `soft`, `tray`, `inset` and `bracket` variants open and close with CSS keyframes that ship inside the component. The stack entrance uses the Web Animations API. The only dependency beyond Radix is `lucide-react`.
 
 ## Best Practices & Guidelines
 
@@ -366,7 +421,7 @@ Use `animation="stack"` once per page, on the accordion you want people to notic
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `accordionData` | `AccordionDataItem[]` | `[]` | Array of objects defining `value`, `title`, `icon`, and `content`. |
-| `variant` | `"default" \| "bordered" \| "filled" \| "elevated" \| "soft" \| "inset" \| "bracket" \| "ghost" \| "brand-reveal"` | `"default"` | Which look to use. `default` lifts the open row out as a card, `bordered` grows a rail on it, `filled` inverts it to `primary`, `elevated` raises it on a ring, `soft` uses tinted tiles with a plus that folds into a minus, `inset` sets the answer in a well inside the open card, `bracket` opens corner brackets outward, `ghost` is type and hairlines only, and `brand-reveal` renders an interactive horizontal brand showcase. |
+| `variant` | `"default" \| "bordered" \| "filled" \| "elevated" \| "soft" \| "tray" \| "inset" \| "bracket" \| "ghost" \| "brand-reveal"` | `"default"` | Which look to use. `default` lifts the open row out as a card, `bordered` grows a rail on it, `filled` inverts it to `primary`, `elevated` raises it on a ring, `soft` uses white tiles that settle to soft gray with a plus that folds into a minus, `tray` sets the rows in one rounded tray with an animated plus/minus chip, `inset` sets the answer in a well inside the open card, `bracket` opens corner brackets outward, `ghost` is a stack of white cards lit by a hairline and soft shadow, and `brand-reveal` renders an interactive horizontal brand showcase. |
 | `brands` | `BrandItem[]` | `DEFAULT_BRANDS` | Used when `variant="brand-reveal"`. Array of objects defining `id`, `name`, `caption`, and optional `logo`, `link`, and `index`. |
 | `animation` | `"none" \| "stack"` | `"none"` | `"stack"` piles the items on the first one and deals them into place once the accordion scrolls into view. Runs once; skipped under `prefers-reduced-motion`. |
 | `type` | `"single" \| "multiple"` | `"single"` | Determines if one or multiple panels can be open simultaneously. |

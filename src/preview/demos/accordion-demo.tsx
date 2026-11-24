@@ -12,8 +12,7 @@ const sampleData: AccordionDataItem[] = [
     title: "How do I get started?",
     icon: "HelpCircle",
     content: [
-      "Getting started is easy! Simply sign up for an account.",
-      "We'll guide you through setting up your profile.",
+      "Getting started takes a couple of minutes. Sign up for a free account, confirm your email and follow the guided setup to create your profile, invite your team and connect the tools you already use.",
     ],
   },
   {
@@ -21,8 +20,7 @@ const sampleData: AccordionDataItem[] = [
     title: "What are your pricing plans?",
     icon: "CreditCard",
     content: [
-      "We offer flexible pricing plans.",
-      "Basic plan starts at $9/month.",
+      "We offer flexible plans that grow with you. The Basic plan starts at $9 per month and includes every core feature, while Pro and Team add priority support, advanced analytics and unlimited projects.",
     ],
   },
   {
@@ -30,8 +28,7 @@ const sampleData: AccordionDataItem[] = [
     title: "How secure is my data?",
     icon: "Shield",
     content: [
-      "Security is our top priority.",
-      "Your information is stored in secure data centers.",
+      "Security is our top priority. Your data is encrypted in transit and at rest, stored in certified data centers and backed up every day, so your information stays private and recoverable at all times.",
     ],
   },
 ];
@@ -87,6 +84,7 @@ type Variant =
   | "ghost"
   | "elevated"
   | "soft"
+  | "tray"
   | "inset"
   | "bracket"
   | "brand-reveal";
@@ -189,7 +187,7 @@ export default function AccordionDemo({
   }
 
   if (showAll === "variants") {
-    const variants: Variant[] = ["default", "bordered", "filled", "elevated", "soft", "inset", "bracket", "ghost", "brand-reveal"];
+    const variants: Variant[] = ["default", "bordered", "filled", "elevated", "soft", "tray", "inset", "bracket", "ghost", "brand-reveal"];
 
     return (
       <div className="mx-auto flex w-full max-w-4xl flex-col gap-10 p-4 md:p-8">

@@ -1,6 +1,7 @@
 {
   "accordion": {
     "inset-panel": "Accordion — Inset panel",
+    "tray": "Accordion — Tray",
     "bracket-frame": "Accordion — Bracket frame",
     "soft-tiles": "Accordion — Soft tiles",
     "lift-card": "Accordion — Lift card",
@@ -8,7 +9,20 @@
     "multiple-open": "Accordion — Multiple open"
   },
   "action-buttons": {
-    "interactive-action-async-commerce-buttons": "Action Buttons — Interactive Action, Async & Commerce Buttons"
+    "slide-to-deploy": "Action Buttons — Slide to Deploy",
+    "star-upvote": "Action Buttons — Star & Upvote",
+    "download-delete": "Action Buttons — Download & Delete",
+    "join-waitlist": "Action Buttons — Join Waitlist",
+    "deploy-cart": "Action Buttons — Deploy & Cart",
+    "save-changes-pay": "Action Buttons — Save Changes & Pay"
+  },
+  "action-buttons-motion": {
+    "slide-to-deploy": "Action Buttons — Slide to Deploy",
+    "star-upvote": "Action Buttons — Star & Upvote",
+    "download-delete": "Action Buttons — Download & Delete",
+    "join-waitlist": "Action Buttons — Join Waitlist",
+    "deploy-cart": "Action Buttons — Deploy & Cart",
+    "save-changes-pay": "Action Buttons — Save Changes & Pay"
   },
   "agent-graph": {
     "shaded-tree-default": "Agent Graph — Shaded Tree (Default)",
@@ -150,6 +164,10 @@
     "in-a-glass-slab": "Booking Card — In a glass slab",
     "liquid-glass": "Booking Card — Liquid glass"
   },
+  "brand-bridge": {
+    "core-stack-hub": "Brand Bridge — Core Stack Hub",
+    "full-ecosystem-bridge": "Brand Bridge — Full Ecosystem Bridge"
+  },
   "breadcrumb-flow": {
     "flow-breadcrumb": "Breadcrumb Flow — Flow breadcrumb"
   },
@@ -174,17 +192,20 @@
     "liquid-glass": "Calendar — Liquid Glass"
   },
   "card": {
-    "project-showcase": "Card — Project showcase",
-    "e-commerce-product-cards": "Card — E-commerce Product Cards",
-    "standard-card": "Card — Standard Card",
-    "interactive": "Card — Interactive",
-    "stat-grid": "Card — Stat grid",
-    "blog-showcase": "Card — Blog showcase",
+    "teaser-card": "Card — Teaser card",
+    "blog-post-cards": "Card — Blog post cards",
+    "notched-cards": "Card — Notched cards",
     "blog-cards": "Card — Blog cards",
-    "profile-card": "Card — Profile card",
+    "author-cards": "Card — Author cards",
+    "e-commerce-product-cards": "Card — E-commerce Product Cards",
     "shop-tiles": "Card — Shop tiles",
-    "boarding-pass": "Card — Boarding pass",
-    "now-playing": "Card — Now playing"
+    "folder-cards": "Card — Folder cards",
+    "quote-tiles": "Card — Quote tiles",
+    "profile-card": "Card — Profile card",
+    "platform-grid": "Card — Platform grid",
+    "stat-grid": "Card — Stat grid",
+    "standard-card": "Card — Standard Card",
+    "boarding-pass": "Card — Boarding pass"
   },
   "card-stack": {
     "swipe-to-discard": "Card Stack — Swipe to Discard",
@@ -792,6 +813,10 @@
     "floating-glassmorphism-card-details": "Product Details — Floating Glassmorphism Card Details",
     "bento-editorial-showcase-details": "Product Details — Bento Editorial Showcase Details"
   },
+  "profile-card": {
+    "aurora-profile-card": "Profile Card — Aurora Profile Card",
+    "account-menu": "Profile Card — Account Menu"
+  },
   "profile-page": {
     "profile-page": "Profile Page",
     "solid": "Profile Page — Solid",
@@ -814,6 +839,19 @@
   "radial-orbital-timeline": {
     "dual-orbit-timeline-default": "Radial Orbital Timeline — Dual Orbit Timeline (Default)",
     "single-orbit-timeline": "Radial Orbital Timeline — Single Orbit Timeline"
+  },
+  "radio-button": {
+    "select-a-plan": "Radio Button — Select a Plan",
+    "delivery-and-payment": "Radio Button — Delivery And Payment",
+    "subscription-plans": "Radio Button — Subscription Plans",
+    "controlled": "Radio Button — Controlled",
+    "custom-indicator": "Radio Button — Custom Indicator",
+    "disabled-group": "Radio Button — Disabled Group",
+    "grid-layout": "Radio Button — Grid Layout",
+    "icon-cards": "Radio Button — Icon Cards",
+    "no-indicator": "Radio Button — No Indicator",
+    "with-icons": "Radio Button — With Icons",
+    "with-ripple": "Radio Button — With Ripple"
   },
   "range-date-picker": {
     "single-month-range-date-picker": "Range Date Picker — Single Month Range Date Picker",

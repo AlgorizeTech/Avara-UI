@@ -3,108 +3,127 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("action-buttons");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
-import { extractCode } from "@/lib/code";
+import { extractMotionCode } from "@/lib/code";
 import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Action Button
 
-A collection of stateful interactive action, commerce, and confirmation buttons powered by `motion/react` — featuring spring-morphing icons, odometer digit rolling, hold-to-confirm progress, draggable slide-to-confirm, inline waitlist expansion, cart parcel drop physics, split action menus, and payment/download progress states.
+A collection of stateful interactive action, commerce, and confirmation buttons built on GSAP and CSS (a Motion build is also available) — featuring spring-morphing icons, odometer digit rolling, hold-to-confirm progress, draggable slide-to-confirm, inline waitlist expansion, cart parcel drop physics, split action menus, and payment/download progress states.
 
-export const usageActionButtons = `import {
-  AsyncButton,
-  WaitlistButton,
-  HoldToConfirm,
-  SlideToConfirm,
-  StarButton,
-  FollowButton,
-  SplitButton,
-  AddToCart,
-  PaymentButton,
-  InteractiveButton,
-} from "@/components/custom/blocks/ActionButtons";
+export const usageSlide = `import { SlideToConfirm } from "@/components/custom/blocks/ActionButtons";
 
-export default function ActionButtonsDemo() {
+export default function Demo() {
   return (
-    <div className="flex flex-col items-center justify-center gap-8">
-      <div className="flex flex-wrap items-center justify-center gap-5">
-        <AsyncButton action={() => new Promise((r) => setTimeout(r, 1200))}>
-          Save changes
-        </AsyncButton>
-
-        <HoldToConfirm
-          action={() => new Promise((r) => setTimeout(r, 900))}
-          resetAfter={2000}
-        />
-
-        <StarButton count={1299} />
-
-        <StarButton icon="upvote" count={128} />
-
-        <FollowButton name="Lena Ortiz" />
-
-        <SplitButton onAction={() => new Promise((r) => setTimeout(r, 1100))} />
-
-        <AddToCart price="$48.00" max={9} />
-
-        <InteractiveButton
-          action={async (progress) => {
-            for (let p = 0; p <= 100; p += 10) {
-              progress(p / 100);
-              await new Promise((r) => setTimeout(r, 160));
-            }
-          }}
-        >
-          Download
-        </InteractiveButton>
-      </div>
-
-      <div className="flex flex-wrap items-start justify-center gap-6">
-        <SlideToConfirm
-          action={() => new Promise((r) => setTimeout(r, 1200))}
-          resetAfter={2000}
-        />
-
-        <PaymentButton
-          amount="$49.00"
-          action={() => new Promise((r) => setTimeout(r, 1200))}
-          resetAfter={2200}
-        />
-
-        <WaitlistButton
-          action={async () => {
-            await new Promise((r) => setTimeout(r, 1000));
-            return { position: 42 };
-          }}
-        />
-      </div>
+    <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
+      <SlideToConfirm
+        action={() => new Promise((r) => setTimeout(r, 1200))}
+        resetAfter={2000}
+      />
     </div>
   );
 }`;
 
-<ExampleShowcase minHeight={330}
+export const usageStar = `import { StarButton } from "@/components/custom/blocks/ActionButtons";
+
+export default function Demo() {
+  return (
+    <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
+      <StarButton count={1299} />
+      <StarButton icon="upvote" count={128} />
+    </div>
+  );
+}`;
+
+export const usageDownload = `import { InteractiveButton, HoldToConfirm } from "@/components/custom/blocks/ActionButtons";
+
+export default function Demo() {
+  return (
+    <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
+      <InteractiveButton
+        action={async (progress) => {
+          for (let p = 0; p <= 100; p += 10) {
+            progress(p / 100);
+            await new Promise((r) => setTimeout(r, 160));
+          }
+        }}
+      >
+        Download
+      </InteractiveButton>
+
+      <HoldToConfirm
+        action={() => new Promise((r) => setTimeout(r, 900))}
+        resetAfter={2000}
+      />
+    </div>
+  );
+}`;
+
+export const usageWaitlist = `import { WaitlistButton } from "@/components/custom/blocks/ActionButtons";
+
+export default function Demo() {
+  return (
+    <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
+      <WaitlistButton
+        action={async () => {
+          await new Promise((r) => setTimeout(r, 1000));
+          return { position: 42 };
+        }}
+      />
+    </div>
+  );
+}`;
+
+export const usageDeploy = `import { SplitButton, AddToCart } from "@/components/custom/blocks/ActionButtons";
+
+export default function Demo() {
+  return (
+    <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
+      <SplitButton onAction={() => new Promise((r) => setTimeout(r, 1100))} />
+
+      <AddToCart price="$48.00" max={9} />
+    </div>
+  );
+}`;
+
+export const usageSave = `import { AsyncButton, PaymentButton } from "@/components/custom/blocks/ActionButtons";
+
+export default function Demo() {
+  return (
+    <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
+      <AsyncButton action={() => new Promise((r) => setTimeout(r, 1200))}>
+        Save changes
+      </AsyncButton>
+
+      <PaymentButton
+        amount="$49.00"
+        action={() => new Promise((r) => setTimeout(r, 1200))}
+        resetAfter={2200}
+      />
+    </div>
+  );
+}`;
+
+export const actionButtonsCode = extractMotionCode("src/components/custom/blocks/ActionButtons.tsx");
+
+{/* Fixed light/dark grey stage, so a site theme preset cannot repaint it. */}
+export const previewStage = "[--preview-stage:#fafafa] dark:[--preview-stage:#202023]";
+
+<ExampleShowcase minHeight={260}
   headingLevel={2}
   name="action-buttons"
+  className={previewStage}
   colorControl
   columns={1}
   examples={[
     {
-      title: "Interactive Action, Async & Commerce Buttons",
-      description: "Uniform 48px-tall interactive buttons with spring morphing, odometer counters, hold-to-confirm progress, draggable slide-to-confirm, inline waitlist expansion, cart parcel drop physics, split action menu, and payment/download progress feedback.",
+      title: "Slide to Deploy",
+      description: "Draggable slide-to-confirm track with a clipped ink sweep, non-overshoot spring return, tap nudge, and `Deploying` → `Deployed` feedback.",
       propNotes: [
-        { lead: "Async Button", prop: "AsyncButton", value: "action()", effect: "delays spinner by `loadingDelay` (200ms) and morphs to checkmark on resolve." },
-        { lead: "Hold to Confirm", prop: "HoldToConfirm", value: "holdDuration", effect: "lifts trash lid `-34deg` and fills background over hold duration; shows `Keep holding` on early tap." },
-        { lead: "Star & Upvote", prop: "StarButton", value: 'icon="star" | "upvote"', effect: "toggles pressed state with spring icon twirl and carry-animated odometer digits." },
-        { lead: "Follow Button", prop: "FollowButton", value: "onFollowingChange", effect: "morphs SVG strokes (plus → check → cross) and reveals red `Unfollow` only after pointer leaves and re-enters." },
-        { lead: "Split Button", prop: "SplitButton", value: "options, onAction", effect: "primary action button paired with an animated dropdown menu for switching modes." },
-        { lead: "Add to Cart", prop: "AddToCart", value: "price, max", effect: "drops a parcel into the dipping basket and morphs into a rolling quantity stepper." },
-        { lead: "Interactive Download", prop: "InteractiveButton", value: "action(progress)", effect: "sweeps horizontal progress fill with live percentage or indeterminate creep." },
         { lead: "Slide to Confirm", prop: "SlideToConfirm", value: "threshold, resetAfter", effect: "draggable slider thumb with ink clip-path reveal, tap nudge, and `Deploying` → `Deployed` feedback." },
-        { lead: "Payment Button", prop: "PaymentButton", value: "amount, action", effect: "transitions through idle → processing → paid (or shakes on failed)." },
-        { lead: "Waitlist Button", prop: "WaitlistButton", value: "action(email)", effect: "expands smoothly into an inline email form and rolls queue position with an odometer." },
       ],
-      props: {},
-      usage: usageActionButtons,
-      code: extractCode("src/components/custom/blocks/ActionButtons.tsx"),
+      props: { group: "slide-to-deploy" },
+      usage: usageSlide,
+      code: actionButtonsCode,
     },
   ]}
 />
@@ -113,17 +132,705 @@ export default function ActionButtonsDemo() {
 
 <Installation name="action-buttons" />
 
-## Components Included
+<ExampleShowcase minHeight={260}
+  headingLevel={2}
+  name="action-buttons"
+  className={previewStage}
+  colorControl
+  columns={1}
+  examples={[
+    {
+      title: "Star & Upvote",
+      description: "Split counter buttons with a spring icon twirl, gold star or upvote triangle fill, and carry-animated odometer digits.",
+      propNotes: [
+        { lead: "Star & Upvote", prop: "StarButton", value: 'icon="star" | "upvote"', effect: "toggles pressed state with spring icon twirl and carry-animated odometer digits." },
+      ],
+      props: { group: "star-upvote" },
+      usage: usageStar,
+      code: actionButtonsCode,
+    },
+    {
+      title: "Download & Delete",
+      description: "A download button with a live progress sweep, beside a press-and-hold delete with a hinged trash lid and linear fill.",
+      propNotes: [
+        { lead: "Interactive Download", prop: "InteractiveButton", value: "action(progress)", effect: "sweeps horizontal progress fill with live percentage or indeterminate creep." },
+        { lead: "Hold to Confirm", prop: "HoldToConfirm", value: "holdDuration", effect: "lifts trash lid `-34deg` and fills background over hold duration; shows `Keep holding` on early tap." },
+      ],
+      props: { group: "download-delete" },
+      usage: usageDownload,
+      code: actionButtonsCode,
+    },
+    {
+      title: "Join Waitlist",
+      description: "A button that expands into an inline email form and rolls the returned queue position with an odometer.",
+      propNotes: [
+        { lead: "Waitlist Button", prop: "WaitlistButton", value: "action(email)", effect: "expands smoothly into an inline email form and rolls queue position with an odometer." },
+      ],
+      props: { group: "join-waitlist" },
+      usage: usageWaitlist,
+      code: actionButtonsCode,
+    },
+    {
+      title: "Deploy & Cart",
+      description: "A split deploy button with an animated mode menu, and an add-to-cart button that drops a parcel into the basket and becomes a quantity stepper.",
+      propNotes: [
+        { lead: "Split Button", prop: "SplitButton", value: "options, onAction", effect: "primary action button paired with an animated dropdown menu for switching modes." },
+        { lead: "Add to Cart", prop: "AddToCart", value: "price, max", effect: "drops a parcel into the dipping basket and morphs into a rolling quantity stepper." },
+      ],
+      props: { group: "deploy-cart" },
+      usage: usageDeploy,
+      code: actionButtonsCode,
+    },
+    {
+      title: "Save Changes & Pay",
+      description: "An async save button with a delayed spinner and checkmark, and a checkout button that moves through processing to paid.",
+      propNotes: [
+        { lead: "Async Button", prop: "AsyncButton", value: "action()", effect: "delays spinner by `loadingDelay` (200ms) and morphs to checkmark on resolve." },
+        { lead: "Payment Button", prop: "PaymentButton", value: "amount, action", effect: "transitions through idle → processing → paid (or shakes on failed)." },
+      ],
+      props: { group: "save-pay" },
+      usage: usageSave,
+      code: actionButtonsCode,
+    },
+  ]}
+/>
 
-- **`AsyncButton`**: Fixed-width async action trigger with delayed spinner (`loadingDelay`) and blur/slide checkmark confirmation.
-- **`HoldToConfirm`**: Destructive press-and-hold button with hinged trash lid rotation (`-34deg`), linear fill, early-tap `"Keep holding"` hint, and haptic vibration.
-- **`StarButton` (`star` & `upvote`)**: Split counter button with spring icon twirl, gold star fill / upvote triangle fill, and carry-animated `Odometer` digits.
-- **`FollowButton`**: Morphing SVG strokes (`plus` → `check` → `cross`) with pointer-leave arming before revealing the soft-red `Unfollow` hover state.
-- **`SplitButton`**: Primary action button paired with an animated dropdown menu, keyboard navigation (`ArrowUp`/`ArrowDown`/`Home`/`End`/`Escape`), and async running/done icon states.
-- **`AddToCart`**: Drops a `5×5px` parcel into the dipping cart basket and transitions into a rolling `−` / `+` quantity stepper with `max` stock clamping.
-- **`InteractiveButton`**: Horizontal progress sweep with live `0%–100%` readout (or indeterminate creep) and `Downloaded` completion feedback.
-- **`SlideToConfirm`**: Accessible `role="slider"` track with clipped ink sweep, non-overshoot spring return, tap nudge, and keyboard shortcuts.
-- **`PaymentButton`**: Lock-badged checkout trigger transitioning through `idle` → `processing` → `paid` (or horizontal shake on failure).
-- **`WaitlistButton`**: Morphs smoothly via `clipPath` and SVG outline into an inline email form and rolls queue position via an odometer.
+## Props Reference
+
+Every component is a named export of <code>ActionButtons</code>.
+
+### SlideToConfirm
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>{"action"}</code></td>
+        <td><code>{"() => Promise<void>"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Runs when the thumb passes the threshold. A rejected promise shows the error label.</td>
+      </tr>
+      <tr>
+        <td><code>{"label"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"Slide to deploy\""}</code></td>
+        <td>Track text while idle.</td>
+      </tr>
+      <tr>
+        <td><code>{"pendingLabel"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"Deploying\""}</code></td>
+        <td>Text while the action runs.</td>
+      </tr>
+      <tr>
+        <td><code>{"doneLabel"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"Deployed\""}</code></td>
+        <td>Text after the action resolves.</td>
+      </tr>
+      <tr>
+        <td><code>{"errorLabel"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"Couldn't deploy\""}</code></td>
+        <td>Text after the action rejects.</td>
+      </tr>
+      <tr>
+        <td><code>{"threshold"}</code></td>
+        <td><code>{"number"}</code></td>
+        <td><code>{"0.9"}</code></td>
+        <td>Fraction of the track the thumb must cross to confirm.</td>
+      </tr>
+      <tr>
+        <td><code>{"resetAfter"}</code></td>
+        <td><code>{"number"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Milliseconds before returning to idle after completion. Leave unset to stay done.</td>
+      </tr>
+      <tr>
+        <td><code>{"disabled"}</code></td>
+        <td><code>{"boolean"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Disables dragging and keyboard input.</td>
+      </tr>
+      <tr>
+        <td><code>{"className"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Classes for the track.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### StarButton
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>{"icon"}</code></td>
+        <td><code>{"\"star\" | \"upvote\""}</code></td>
+        <td><code>{"\"star\""}</code></td>
+        <td>Icon and default label.</td>
+      </tr>
+      <tr>
+        <td><code>{"label"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"Star\" or \"Upvote\""}</code></td>
+        <td>Button text. Defaults from <code>icon</code>.</td>
+      </tr>
+      <tr>
+        <td><code>{"count"}</code></td>
+        <td><code>{"number"}</code></td>
+        <td><code>{"0"}</code></td>
+        <td>Starting count shown in the odometer.</td>
+      </tr>
+      <tr>
+        <td><code>{"repo"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>GitHub <code>owner/name</code>. Fetches the live star count and renders the button as a link to the repo.</td>
+      </tr>
+      <tr>
+        <td><code>{"href"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Renders the button as a link opening in a new tab. Overrides the <code>repo</code> link.</td>
+      </tr>
+      <tr>
+        <td><code>{"pressed"}</code></td>
+        <td><code>{"boolean"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Controlled pressed state.</td>
+      </tr>
+      <tr>
+        <td><code>{"defaultPressed"}</code></td>
+        <td><code>{"boolean"}</code></td>
+        <td><code>{"false"}</code></td>
+        <td>Initial pressed state when uncontrolled.</td>
+      </tr>
+      <tr>
+        <td><code>{"onPressedChange"}</code></td>
+        <td><code>{"(pressed: boolean) => void"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Called when the pressed state toggles.</td>
+      </tr>
+      <tr>
+        <td><code>{"className"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Classes for the root.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### InteractiveButton
+
+Other <code>{"<button>"}</code> attributes are passed to the button.
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>{"action"}</code></td>
+        <td><code>{"(progress: (value: number) => void) => Promise<void>"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Runs on click. Call <code>progress</code> with 0–1 for a live percentage; never call it for an indeterminate sweep.</td>
+      </tr>
+      <tr>
+        <td><code>{"children"}</code></td>
+        <td><code>{"ReactNode"}</code></td>
+        <td><code>{"\"Download\""}</code></td>
+        <td>Idle label.</td>
+      </tr>
+      <tr>
+        <td><code>{"loadingLabel"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"Downloading\""}</code></td>
+        <td>Text while the action runs.</td>
+      </tr>
+      <tr>
+        <td><code>{"successLabel"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"Downloaded\""}</code></td>
+        <td>Text after the action resolves.</td>
+      </tr>
+      <tr>
+        <td><code>{"successDuration"}</code></td>
+        <td><code>{"number"}</code></td>
+        <td><code>{"1600"}</code></td>
+        <td>Milliseconds the success state stays before resetting.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### HoldToConfirm
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>{"action"}</code></td>
+        <td><code>{"() => Promise<void>"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Runs once the hold completes.</td>
+      </tr>
+      <tr>
+        <td><code>{"label"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"Hold to delete\""}</code></td>
+        <td>Idle text.</td>
+      </tr>
+      <tr>
+        <td><code>{"hintLabel"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"Keep holding\""}</code></td>
+        <td>Shown when the button is released early.</td>
+      </tr>
+      <tr>
+        <td><code>{"pendingLabel"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"Deleting\""}</code></td>
+        <td>Text while the action runs.</td>
+      </tr>
+      <tr>
+        <td><code>{"doneLabel"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"Deleted\""}</code></td>
+        <td>Text after the action resolves.</td>
+      </tr>
+      <tr>
+        <td><code>{"errorLabel"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"Couldn't delete\""}</code></td>
+        <td>Text after the action rejects.</td>
+      </tr>
+      <tr>
+        <td><code>{"holdDuration"}</code></td>
+        <td><code>{"number"}</code></td>
+        <td><code>{"1200"}</code></td>
+        <td>Milliseconds the button must be held.</td>
+      </tr>
+      <tr>
+        <td><code>{"resetAfter"}</code></td>
+        <td><code>{"number"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Milliseconds before returning to idle after completion. Leave unset to stay done.</td>
+      </tr>
+      <tr>
+        <td><code>{"disabled"}</code></td>
+        <td><code>{"boolean"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Disables the button.</td>
+      </tr>
+      <tr>
+        <td><code>{"className"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Classes for the button.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### WaitlistButton
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>{"action"}</code></td>
+        <td><code>{"(email: string) => Promise<void | { position?: number }>"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Submits the email. Return a <code>position</code> to roll it in the odometer.</td>
+      </tr>
+      <tr>
+        <td><code>{"label"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"Join the waitlist\""}</code></td>
+        <td>Idle button text.</td>
+      </tr>
+      <tr>
+        <td><code>{"submitLabel"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"Join\""}</code></td>
+        <td>Submit button text inside the form.</td>
+      </tr>
+      <tr>
+        <td><code>{"placeholder"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"you@company.com\""}</code></td>
+        <td>Email input placeholder.</td>
+      </tr>
+      <tr>
+        <td><code>{"successLabel"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"You're on the list\""}</code></td>
+        <td>Text after a successful submit.</td>
+      </tr>
+      <tr>
+        <td><code>{"successMessage"}</code></td>
+        <td><code>{"(email: string) => string"}</code></td>
+        <td>Built-in message</td>
+        <td>Secondary success text.</td>
+      </tr>
+      <tr>
+        <td><code>{"invalidMessage"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"Enter a valid email address.\""}</code></td>
+        <td>Shown for an invalid email.</td>
+      </tr>
+      <tr>
+        <td><code>{"errorMessage"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"Couldn't save that. Try again.\""}</code></td>
+        <td>Shown when <code>action</code> rejects.</td>
+      </tr>
+      <tr>
+        <td><code>{"className"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Classes for the root.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### SplitButton
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>{"options"}</code></td>
+        <td><code>{"SplitOption[]"}</code></td>
+        <td>Deploy, preview, redeploy</td>
+        <td>Menu items: <code>{"{ value, label, description?, icon? }"}</code>.</td>
+      </tr>
+      <tr>
+        <td><code>{"value"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Controlled selected option.</td>
+      </tr>
+      <tr>
+        <td><code>{"defaultValue"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td>First option</td>
+        <td>Initial option when uncontrolled.</td>
+      </tr>
+      <tr>
+        <td><code>{"onValueChange"}</code></td>
+        <td><code>{"(value: string) => void"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Called when a menu item is picked.</td>
+      </tr>
+      <tr>
+        <td><code>{"onAction"}</code></td>
+        <td><code>{"(value: string) => void | Promise<void>"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Runs the selected option. A promise shows the running and done icons.</td>
+      </tr>
+      <tr>
+        <td><code>{"menuLabel"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"More deploy options\""}</code></td>
+        <td>Accessible label for the menu trigger.</td>
+      </tr>
+      <tr>
+        <td><code>{"disabled"}</code></td>
+        <td><code>{"boolean"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Disables both halves.</td>
+      </tr>
+      <tr>
+        <td><code>{"className"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Classes for the root.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### AddToCart
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>{"price"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"$48.00\""}</code></td>
+        <td>Price shown beside the label.</td>
+      </tr>
+      <tr>
+        <td><code>{"label"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"Add to cart\""}</code></td>
+        <td>Button text.</td>
+      </tr>
+      <tr>
+        <td><code>{"quantity"}</code></td>
+        <td><code>{"number"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Controlled quantity.</td>
+      </tr>
+      <tr>
+        <td><code>{"defaultQuantity"}</code></td>
+        <td><code>{"number"}</code></td>
+        <td><code>{"0"}</code></td>
+        <td>Initial quantity when uncontrolled.</td>
+      </tr>
+      <tr>
+        <td><code>{"onQuantityChange"}</code></td>
+        <td><code>{"(quantity: number) => void | Promise<void>"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Called when the quantity changes.</td>
+      </tr>
+      <tr>
+        <td><code>{"max"}</code></td>
+        <td><code>{"number"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Upper limit for the stepper.</td>
+      </tr>
+      <tr>
+        <td><code>{"className"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Classes for the root.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### AsyncButton
+
+Other <code>{"<button>"}</code> attributes are passed to the button.
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>{"action"}</code></td>
+        <td><code>{"() => Promise<void>"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Runs on click.</td>
+      </tr>
+      <tr>
+        <td><code>{"loadingDelay"}</code></td>
+        <td><code>{"number"}</code></td>
+        <td><code>{"200"}</code></td>
+        <td>Milliseconds before the spinner appears, so fast actions skip it.</td>
+      </tr>
+      <tr>
+        <td><code>{"successDuration"}</code></td>
+        <td><code>{"number"}</code></td>
+        <td><code>{"1500"}</code></td>
+        <td>Milliseconds the checkmark stays before resetting.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### PaymentButton
+
+Other <code>{"<button>"}</code> attributes except <code>children</code> are passed to the button.
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>{"amount"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"$49.00\""}</code></td>
+        <td>Amount shown after the label.</td>
+      </tr>
+      <tr>
+        <td><code>{"label"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"Pay\""}</code></td>
+        <td>Idle text.</td>
+      </tr>
+      <tr>
+        <td><code>{"action"}</code></td>
+        <td><code>{"() => Promise<void>"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Runs the payment. A rejected promise shakes into the failed state.</td>
+      </tr>
+      <tr>
+        <td><code>{"processingLabel"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"Processing\""}</code></td>
+        <td>Text while the action runs.</td>
+      </tr>
+      <tr>
+        <td><code>{"paidLabel"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"Paid\""}</code></td>
+        <td>Text after the action resolves.</td>
+      </tr>
+      <tr>
+        <td><code>{"failedLabel"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"Payment failed\""}</code></td>
+        <td>Text after the action rejects.</td>
+      </tr>
+      <tr>
+        <td><code>{"failedDuration"}</code></td>
+        <td><code>{"number"}</code></td>
+        <td><code>{"1800"}</code></td>
+        <td>Milliseconds the failed state stays.</td>
+      </tr>
+      <tr>
+        <td><code>{"resetAfter"}</code></td>
+        <td><code>{"number"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Milliseconds before returning to idle after paying. Leave unset to stay paid.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### FollowButton
+
+Included in the install but not shown above.
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>{"name"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Who is being followed, for the accessible label.</td>
+      </tr>
+      <tr>
+        <td><code>{"following"}</code></td>
+        <td><code>{"boolean"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Controlled following state.</td>
+      </tr>
+      <tr>
+        <td><code>{"defaultFollowing"}</code></td>
+        <td><code>{"boolean"}</code></td>
+        <td><code>{"false"}</code></td>
+        <td>Initial state when uncontrolled.</td>
+      </tr>
+      <tr>
+        <td><code>{"onFollowingChange"}</code></td>
+        <td><code>{"(following: boolean) => void | Promise<void>"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Called when the state toggles.</td>
+      </tr>
+      <tr>
+        <td><code>{"followLabel"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"Follow\""}</code></td>
+        <td>Text while not following.</td>
+      </tr>
+      <tr>
+        <td><code>{"followingLabel"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"Following\""}</code></td>
+        <td>Text while following.</td>
+      </tr>
+      <tr>
+        <td><code>{"unfollowLabel"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"\"Unfollow\""}</code></td>
+        <td>Hover text while following.</td>
+      </tr>
+      <tr>
+        <td><code>{"className"}</code></td>
+        <td><code>{"string"}</code></td>
+        <td><code>{"undefined"}</code></td>
+        <td>Classes for the button.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <DocsJsonLd slug="action-buttons" />

@@ -218,7 +218,7 @@ export const META: Record<string, ItemMeta> = {
   // ---- Curated in Phase 3. Verified against source. ----
   "action-buttons": {
     description:
-      "Motion-powered interactive action buttons: AsyncButton, WaitlistButton, HoldToConfirm, SlideToConfirm, StarButton (Star & Upvote), FollowButton, SplitButton, AddToCart, PaymentButton, and InteractiveButton.",
+      "GSAP-powered interactive action buttons: AsyncButton, WaitlistButton, HoldToConfirm, SlideToConfirm, StarButton (Star & Upvote), FollowButton, SplitButton, AddToCart, PaymentButton, and InteractiveButton.",
     categories: ["actions", "forms"],
     docs: "Named exports: AsyncButton, WaitlistButton, HoldToConfirm, SlideToConfirm, StarButton, FollowButton, SplitButton, AddToCart, PaymentButton, InteractiveButton.",
   },
@@ -480,7 +480,7 @@ export const META: Record<string, ItemMeta> = {
     description:
       "A data-driven accordion taking an array of items, with five distinct variants and an optional stack entrance that deals the items into place. Use it for FAQs and any list of collapsible sections.",
     categories: ["layout"],
-    docs: "Named export: Accordion. Pass `accordionData` as { value, title, icon?, content } — content accepts a string array or a node. `type` is single | multiple; set `collapsible` to let the last open section close. Variants: default (open row lifts out as a card) | bordered (rail on the open row) | filled (open row inverts to primary) | elevated (cards, open one on a ring) | soft (tinted tiles, plus folds into minus) | inset (pill rows, answer in an inset well) | bracket (outlined rows, corner brackets open outward) | ghost (type and hairlines); soft, inset and bracket animate open and close with CSS keyframes that ship inside the component. `animation=\"stack\"` piles the items and deals them out on scroll-in via the Web Animations API; skipped under reduced motion. Wraps the `ui-accordion` Radix primitive. For a single section, `collapsible` is lighter.",
+    docs: "Named export: Accordion. Pass `accordionData` as { value, title, icon?, content } — content accepts a string array or a node. `type` is single | multiple; set `collapsible` to let the last open section close. Variants: default (open row lifts out as a card) | bordered (rail on the open row) | filled (open row inverts to primary) | elevated (cards, open one on a ring) | soft (tinted tiles, plus folds into minus) | tray (one rounded tray, open row becomes a tile, animated SVG plus/minus chip) | tray (one rounded tray, open row becomes a tile, animated plus/minus chip) | inset (pill rows, answer in an inset well) | bracket (outlined rows, corner brackets open outward) | ghost (type and hairlines); soft, tray, inset and bracket animate open and close with CSS keyframes that ship inside the component. `animation=\"stack\"` piles the items and deals them out on scroll-in via the Web Animations API; skipped under reduced motion. Wraps the `ui-accordion` Radix primitive. For a single section, `collapsible` is lighter.",
   },
   "breadcrumb-flow": {
     description:
@@ -692,9 +692,9 @@ export const META: Record<string, ItemMeta> = {
   "booking-card": {
     usageDependencies: ["glass-panel"],
     description:
-      "A booking panel for any card: a day strip paged a week at a time, time slots in groups, a button that reads back the choice, and a confirmation that draws itself in. Use it wherever a page ends in an appointment.",
+      "A booking panel for any card: one scrolling line of days and one of times, each with prev/next arrows, a button that reads back the choice, and a confirmation that draws itself in. Use it wherever a page ends in an appointment.",
     categories: ["forms", "dates"],
-    docs: "Named export: BookingCard (plus the BookingSlot and Booking types). `BookingCard` is a compound component — put `BookingCard.Days`, `BookingCard.Slots`, `BookingCard.Submit` and `BookingCard.Confirmation` inside it in any layout; it holds the chosen day and slot and calls `onBook`. It draws no surface of its own: make it the padded inside of whatever panel it sits in so the confirmation reaches the edges. The selected day and slot, the submit and 'Add to calendar' buttons, the check mark and the focus rings use the `--primary` token.",
+    docs: "Named export: BookingCard (plus the BookingSlot and Booking types). `BookingCard` is a compound component — put `BookingCard.Days`, `BookingCard.Times` (pass `slots`), `BookingCard.Submit` and `BookingCard.Confirmation` inside it in any layout; it holds the chosen day and slot and calls `onBook`. It draws no surface of its own: make it the padded inside of whatever panel it sits in so the confirmation reaches the edges. The selected day and slot, the submit and 'Add to calendar' buttons, the check mark and the focus rings use the `--primary` token.",
   },
   "bento-showcase": {
     description:
@@ -835,6 +835,24 @@ export const META: Record<string, ItemMeta> = {
       "A frosted surface in four shapes and the aurora ground it sits on. Use it for glass bento layouts, profile and booking pages — or flip it to solid cards with one prop.",
     categories: ["layout"],
     docs: "Named exports: GlassBackdrop, GlassPanel (plus SurfaceVariant, GlassShape types); useSurface is exported from glass-panel-context.ts, which installs alongside. `GlassBackdrop` washes three `aurora` colours behind a 12-column grid (`gridClassName` for row heights and gaps) and sets `variant` (glass | solid) for every `GlassPanel` inside; panels take `shape` (slab, tile, disc, capsule), `interactive`, and Tailwind column spans.",
+  },
+  "account-menu": {
+    description:
+      "A morphing account pill and card with a live status picker, quick action tiles, workspace switcher, optional storage meter, and two-step sign out.",
+    categories: ["navigation", "data-display"],
+    docs: "Named exports: AccountMenu (also default-exported), plus AccountMenuProps, AccountStatus, and AccountWorkspace types. Supports showModal (default true) and showStorage (default false) props.",
+  },
+  "profile-card": {
+    description:
+      "A compact creator profile card with a pointer-reactive pastel aurora cover, verified seal, expandable skill chips, counting stats, and an animated Follow button.",
+    categories: ["marketing", "data-display"],
+    docs: "Named exports: ProfileCard (also default-exported), plus ProfileCardProps and ProfileStat types. Reuses the library's Button component for Follow/Following.",
+  },
+  "radio-button": {
+    description:
+      "An accessible, animated radio button group with card-style options, press ripple feedback, keyboard arrow navigation, and six distinct layout variants.",
+    categories: ["actions", "layout"],
+    docs: "Named export: RadioButtonGroup (also default-exported), plus RadioButtonGroupProps, RadioButtonOption, and RadioButtonVariant types. Supports variant='default' | 'subscription-plans' | 'grid' | 'with-icons' | 'custom-indicator' | 'icon-cards'.",
   },
   "profile-page": {
     // The documented page puts a Verify Badge beside the name and Social Links
@@ -1216,6 +1234,12 @@ export const META: Record<string, ItemMeta> = {
       "A dynamic showcase component featuring dual floating infinite marquee ribbons with two variants: 3D illustration hero card with frosted promo, and criss-crossing brand logo ribbons over a warm yellow backdrop.",
     categories: ["marketing", "media", "data-display"],
     docs: "Default export: RibbonDriftBlock. Also exports RibbonLogos, CrossRibbonLogos, RibbonDriftCard, and the RibbonDriftProps & RibbonLogosProps types. Supports variant='default' (3D illustration with frosted promo card) and variant='cross-logos' (dual counter-angled infinite brand marquee ribbons with leading brand SVGs).",
+  },
+  "brand-bridge": {
+    description:
+      "An interactive integrations card where brand tiles flank a central hub with a rotating colour ring, magnetic gradient wires, glowing comets, and a reactive 2D particle field.",
+    categories: ["marketing", "data-display"],
+    docs: "Named exports: BrandBridge, BRANDS, DEFAULT_BRANDS (also default-exported as BrandBridge) and the BridgeBrand & BrandBridgeProps types. Autoplay connects brands one by one in random order, pauses on hover, and stops permanently when any tile is clicked.",
   },
   "tilted-card": {
     description:

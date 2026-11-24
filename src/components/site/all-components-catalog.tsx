@@ -19,6 +19,12 @@ import {
 	type ComponentTypeId,
 } from "@/lib/component-types";
 import { sandboxNames } from "@/preview/names";
+import { CatalogPreview } from "@/components/site/CatalogPreview";
+import {
+	CATALOG_PREVIEWS,
+	PREVIEW_NAME_OVERRIDES,
+	type CatalogPreviewSpec,
+} from "@/components/site/catalog-previews";
 import {
 	ComponentPreviewTooltip,
 	useComponentPreviewHover,
@@ -61,6 +67,8 @@ type PreviewCardItem = {
 	previewName: string | null;
 	typeId: ComponentTypeId;
 	animation: AnimationLibrary[];
+	/** Set where the card shows the real component rather than a miniature. */
+	live?: CatalogPreviewSpec;
 };
 
 const COMPONENT_META: Record<
@@ -215,20 +223,6 @@ const CATALOG_GROUPS: Record<string, ComponentTypeId> = {
 	"Website Sections": "more-sections",
 };
 
-/**
- * Slugs whose docs page shows a demo registered under a different name. Every
- * other card resolves by slug, so this list only needs the mismatches — a new
- * component with a matching demo name is picked up with no edit here.
- */
-const PREVIEW_NAME_OVERRIDES: Record<string, string> = {
-	"data-table": "advanced-table",
-	"file-upload": "upload",
-	"fleet-tracker": "fleet",
-	navigation: "navigation-menu",
-	"qr-code-generator": "qr-code",
-	"support-dashboard": "support",
-};
-
 const registeredDemos = new Set<string>(sandboxNames);
 
 /** The sandbox demo a card hovers into, or null when none is registered. */
@@ -251,6 +245,7 @@ const catalogItems: Omit<PreviewCardItem, "animation">[] = navigation
 				badge: child.badge,
 				illustrationType: itemMeta.illustrationType || child.slug || "card",
 				previewName: resolvePreviewName(child.slug),
+				live: CATALOG_PREVIEWS[child.slug || ""],
 				typeId: TYPE_OF_SLUG.get(child.slug || "") ?? CATALOG_GROUPS[group.label],
 			};
 		}),
@@ -4022,18 +4017,6 @@ function MiniatureIllustration({
 	);
 }
 
-const ANIMATION_DOT: Record<AnimationLibrary, string> = {
-	gsap: "bg-emerald-500",
-	motion: "bg-fuchsia-500",
-	css: "bg-cyan-500",
-};
-
-const ANIMATION_PILL: Record<AnimationLibrary, string> = {
-	gsap: "bg-emerald-500/10 text-emerald-700 border-emerald-500/25 dark:text-emerald-400",
-	motion: "bg-fuchsia-500/10 text-fuchsia-700 border-fuchsia-500/25 dark:text-fuchsia-400",
-	css: "bg-cyan-500/10 text-cyan-700 border-cyan-500/25 dark:text-cyan-400",
-};
-
 const KIND_LABEL: Record<ComponentTypeDef["kind"], string> = {
 	ui: "Ui Components",
 	section: "Website Sections",
@@ -4132,6 +4115,81 @@ function AnimationTabs({
 					</button>
 				);
 			})}
+		</div>
+	);
+}
+
+/** One catalog card: miniature, title, what it is and which libraries animate it. */
+function CatalogCard({
+	item,
+	framework,
+	triggerProps,
+}: {
+	item: PreviewCardItem;
+	framework: ReturnType<typeof frameworkFromPathname>;
+	triggerProps?: React.HTMLAttributes<HTMLAnchorElement>;
+}) {
+	const miniature = <MiniatureIllustration title={item.title} type={item.illustrationType} />;
+
+	return (
+		// The card is a plain box and the title is the one link, stretched over the
+		// whole card. A live preview holds real buttons, which cannot sit inside an
+		// <a>, and one link with the component's name as its text is also what a
+		// crawler and a screen reader should see.
+		// Named group: a plain `group` would also fire every `group-hover:` class
+		// inside a live preview, so components would animate on card hover. The card
+		// zooms its preview instead, and only the footer (the arrow) uses `group`.
+		<div className="group/card relative flex h-full flex-col overflow-hidden rounded-2xl border border-foreground/[0.08] bg-foreground/[0.03] transition-colors duration-300 hover:bg-foreground/[0.06] focus-within:ring-2 focus-within:ring-primary/50">
+			{/* 2:1 panel, so the card keeps one proportion whatever it shows. */}
+			<div className="relative m-2 mb-0 aspect-[2/1] overflow-hidden rounded-lg bg-background">
+				{/* The only hover effect: a slow zoom of the whole preview, like a still image. */}
+				<div className="absolute inset-0 origin-center transition-transform duration-500 ease-out group-hover/card:scale-[1.05] motion-reduce:transition-none">
+					{item.live ? (
+						<CatalogPreview spec={item.live} fallback={miniature} />
+					) : (
+						<div className="absolute inset-0 p-2">{miniature}</div>
+					)}
+				</div>
+				{item.badge && (
+					<span className="absolute top-2.5 right-2.5 z-10 text-[9px] font-bold uppercase tracking-wider leading-none px-1.5 py-0.5 rounded-md bg-primary/15 text-primary border border-primary/30 backdrop-blur-sm">
+						{item.badge}
+					</span>
+				)}
+			</div>
+			<div className="group flex items-start justify-between gap-3 px-4 pb-4 pt-3.5">
+				<div className="min-w-0">
+					<div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+						<h3 className="font-sans text-[15px] font-semibold leading-snug text-foreground transition-colors group-hover:text-primary">
+							<Link
+								href={item.href || docsHref(framework, item.slug || "")}
+								{...triggerProps}
+								className="outline-none after:absolute after:inset-0 after:z-20 after:rounded-2xl after:content-['']">
+								{item.title}
+							</Link>
+						</h3>
+						{item.animation.map((lib) => {
+							const LibIcon = lib === "gsap" ? GsapIcon : lib === "motion" ? MotionIcon : TailwindIcon;
+							return (
+								<span
+									key={lib}
+									title={ANIMATION_LABEL[lib]}
+									className="inline-flex items-center leading-none">
+									<LibIcon
+										aria-hidden
+										size={16}
+										className={cn("shrink-0", lib === "motion" && "text-foreground")}
+									/>
+									<span className="sr-only">{ANIMATION_LABEL[lib]}</span>
+								</span>
+							);
+						})}
+					</div>
+					<p className="mt-1 line-clamp-1 text-[13px] text-foreground/50">{item.countText}</p>
+				</div>
+				<IconSlideButton as="span" trigger="group">
+					<ArrowRight className="size-3.5" />
+				</IconSlideButton>
+			</div>
 		</div>
 	);
 }
@@ -4340,56 +4398,12 @@ export function AllComponentsCatalog({
 								{/* Cards Grid */}
 								<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
 									{section.items.map((item) => (
-										<Link
+										<CatalogCard
 											key={item.slug ?? item.title}
-											href={item.href || docsHref(framework, item.slug || "")}
-											{...getTriggerProps(item.previewName, item.title)}
-											className="group block rounded-xl">
-											<div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] p-4 transition-all duration-300 hover:bg-foreground/[0.07] hover:-translate-y-1.5 flex flex-col h-full justify-between overflow-hidden">
-												{/* Card Thumbnail / Illustration */}
-												<div className="w-full h-32 rounded-lg mb-4 overflow-hidden relative">
-													<MiniatureIllustration
-														title={item.title}
-														type={item.illustrationType}
-													/>
-													{item.badge && (
-														<span className="absolute top-2.5 right-2.5 text-[9px] font-bold uppercase tracking-wider leading-none px-1.5 py-0.5 rounded-md bg-primary/15 text-primary border border-primary/30 backdrop-blur-sm">
-															{item.badge}
-														</span>
-													)}
-												</div>
-
-												{/* Card Info */}
-												<div className="flex items-center justify-between gap-3 pt-1">
-													<div className="min-w-0">
-														<h3 className="text-[14px] font-semibold text-foreground group-hover:text-primary transition-colors">
-															{item.title}
-														</h3>
-														<p className="text-[12px] text-foreground/40 mt-0.5">
-															{item.countText}
-														</p>
-														{item.animation.length > 0 && (
-															<div className="mt-2 flex flex-wrap gap-1">
-																{item.animation.map((lib) => (
-																	<span
-																		key={lib}
-																		className={cn(
-																			"inline-flex items-center gap-1 rounded-md border px-1.5 py-0.5 text-[10px] font-semibold leading-none",
-																			ANIMATION_PILL[lib],
-																		)}>
-																		<span aria-hidden className={cn("size-1 rounded-full", ANIMATION_DOT[lib])} />
-																		{ANIMATION_LABEL[lib]}
-																	</span>
-																))}
-															</div>
-														)}
-													</div>
-													<IconSlideButton as="span" trigger="group">
-														<ArrowRight className="size-3.5" />
-													</IconSlideButton>
-												</div>
-											</div>
-										</Link>
+											item={item}
+											framework={framework}
+											triggerProps={getTriggerProps(item.previewName, item.title)}
+										/>
 									))}
 								</div>
 							</div>
@@ -4403,6 +4417,78 @@ export function AllComponentsCatalog({
 			{preview && (
 				<ComponentPreviewTooltip key={preview.name} {...preview} />
 			)}
+		</div>
+	);
+}
+
+/** Which pages a hub page shows: every website section, or every page with a build for one library. */
+export type HubFilter = "sections" | "gsap" | "motion";
+
+/**
+ * A hub page's list (Blocks, GSAP Components, Motion Components): the same
+ * illustrated cards as the catalog, grouped by type, with no filters because
+ * the hub is the filter. `animationBySlug` comes from the registry at build
+ * time, so a new page shows up with no edit here.
+ */
+export function HubCards({
+	filter,
+	animationBySlug,
+}: {
+	filter: HubFilter;
+	animationBySlug: Record<string, AnimationLibrary[]>;
+}) {
+	const framework = frameworkFromPathname(usePathname() ?? "");
+	const items = useMemo(
+		() =>
+			catalogItems
+				.map((item) => ({ ...item, animation: animationBySlug[item.slug ?? ""] ?? [] }))
+				.filter((item) =>
+					filter === "sections"
+						? (COMPONENT_TYPES[item.typeId] as ComponentTypeDef).kind === "section"
+						: item.animation.includes(filter),
+				),
+		[animationBySlug, filter],
+	);
+	const sections = TYPE_IDS.map((id) => ({
+		id,
+		...(COMPONENT_TYPES[id] as ComponentTypeDef),
+		items: items.filter((item) => item.typeId === id),
+	})).filter((section) => section.items.length > 0);
+	const withMotion = items.filter((item) => item.animation.includes("motion")).length;
+
+	return (
+		<div className="not-prose my-8 space-y-10">
+			<div className="flex flex-wrap items-center gap-2 text-[12px] text-foreground/50">
+				<span className="rounded-full border border-primary/30 bg-primary/15 px-2.5 py-1 font-medium text-primary">
+					{items.length} {items.length === 1 ? "page" : "pages"}
+				</span>
+				{filter === "gsap" && withMotion > 0 && (
+					<span className="rounded-full border border-foreground/[0.08] bg-foreground/[0.03] px-2.5 py-1">
+						{withMotion === items.length ? "All have a Motion build" : `${withMotion} also ship a Motion build`}
+					</span>
+				)}
+				<span className="rounded-full border border-foreground/[0.08] bg-foreground/[0.03] px-2.5 py-1">
+					{sections.length} {sections.length === 1 ? "category" : "categories"}
+				</span>
+			</div>
+			{sections.map((section) => (
+				<section key={section.id} className="space-y-4">
+					<div className="flex items-center gap-3">
+						<div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary">
+							<section.icon className="size-4" />
+						</div>
+						<h3 data-toc-skip className="font-serif text-lg font-normal leading-7 text-foreground">
+							{section.label}
+						</h3>
+						<span className="text-[12px] tabular-nums text-foreground/35">{section.items.length}</span>
+					</div>
+					<div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+						{section.items.map((item) => (
+							<CatalogCard key={item.slug ?? item.title} item={item} framework={framework} />
+						))}
+					</div>
+				</section>
+			))}
 		</div>
 	);
 }

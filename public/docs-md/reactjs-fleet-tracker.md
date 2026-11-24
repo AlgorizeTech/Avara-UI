@@ -286,7 +286,7 @@ export default function ModernFleet() {
 
 ## Maps (Positron Style)
 
-Eight minimalist Positron Leaflet map variants with floating KPI/list overlays, custom dot and price-pill markers, route polylines, delivery zone polygons, canvas heatmaps, and zoom-aware incident clustering.
+Eight minimalist OpenFreeMap Positron MapLibre GL map variants with floating KPI/list overlays, custom dot and price-pill markers, route polylines, delivery zone polygons, WebGL heatmaps, and GeoJSON incident clustering.
 
 Add the component by URL — no setup needed:
 

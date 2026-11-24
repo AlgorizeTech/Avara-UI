@@ -1,20 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  AnimatePresence,
-  animate,
-  motion,
-  useAnimate,
-  useInView,
-  useMotionTemplate,
-  useMotionValue,
-  useReducedMotion,
-  useTransform,
-  type AnimationPlaybackControls,
-  type HTMLMotionProps,
-  type MotionValue,
-} from "motion/react";
+import gsap from "gsap";
 import {
   ArrowRight,
   Check,
@@ -31,11 +18,147 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { bezierEase } from "./gsap-motion";
+import { springEase } from "./motion-curves";
 
 const EASE_OUT_FAST = [0.23, 1, 0.32, 1] as const;
 const EASE_OUT = [0.16, 1, 0.3, 1] as const;
 const TRAVEL = [0.65, 0, 0.35, 1] as const;
 const CREEP_EASE = [0.25, 0.6, 0.35, 1] as const;
+
+const cssCurve = (c: readonly number[]) => `cubic-bezier(${c.join(", ")})`;
+const CSS_OUT = cssCurve(EASE_OUT);
+const CSS_TRAVEL = cssCurve(TRAVEL);
+const CSS_STANDARD = "cubic-bezier(0.4, 0, 0.2, 1)";
+
+/** The same curves as GSAP eases, so CSS and GSAP motion match. */
+const gEase = {
+  outFast: bezierEase(EASE_OUT_FAST),
+  out: bezierEase(EASE_OUT),
+  creep: bezierEase(CREEP_EASE),
+  circIn: bezierEase([0.55, 0, 1, 0.45]),
+  drop: bezierEase([0.5, 0, 0.75, 0]),
+};
+
+const SPRING_POP = springEase({ stiffness: 420, damping: 24 });
+const SPRING_TWIRL = springEase({ stiffness: 380, damping: 18 });
+const SPRING_RETURN = springEase({ stiffness: 520, damping: 42 });
+
+const POP_FROM = { scale: 0.4, rotation: -30 } as const;
+const TWIRL_FROM = { scale: 0.7, rotation: -72 } as const;
+
+/* -------------------------------------------------------------------------- */
+/* Motion helpers                                                             */
+/* -------------------------------------------------------------------------- */
+
+function usePrefersReducedMotion() {
+  const [reduce, setReduce] = React.useState(false);
+  React.useEffect(() => {
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReduce(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+  return reduce;
+}
+
+type TransitionPart = readonly [
+  property: string,
+  ms: number,
+  ease?: string,
+  delayMs?: number,
+];
+
+/** CSS transition longhands from a list of `[property, ms, ease, delay]`. */
+function transition(...parts: TransitionPart[]): React.CSSProperties {
+  return {
+    transitionProperty: parts.map((p) => p[0]).join(", "),
+    transitionDuration: parts.map((p) => `${p[1]}ms`).join(", "),
+    transitionTimingFunction: parts.map((p) => p[2] ?? CSS_OUT).join(", "),
+    transitionDelay: parts.map((p) => `${p[3] ?? 0}ms`).join(", "),
+  };
+}
+
+/** A short left-right shake — the "that failed" cue. */
+function shake(el: Element | null, amplitude: number, duration: number) {
+  if (!el) return;
+  gsap.killTweensOf(el, "x");
+  gsap.to(el, {
+    keyframes: [
+      { x: -amplitude },
+      { x: amplitude },
+      { x: -amplitude * 0.75 },
+      { x: amplitude * 0.75 },
+      { x: 0 },
+    ],
+    ease: "none",
+    easeEach: "power1.out",
+    duration,
+  });
+}
+
+/** Tween `target` and resolve when it lands. Replaces any tween already on it. */
+function tweenTo(target: object, vars: gsap.TweenVars): Promise<void> {
+  return new Promise((resolve) => {
+    gsap.to(target, { ...vars, overwrite: true, onComplete: () => resolve() });
+  });
+}
+
+/** True once the element has scrolled into view (and stays true). */
+function useInViewOnce(
+  ref: React.RefObject<Element | null>,
+  rootMargin: string,
+) {
+  const [seen, setSeen] = React.useState(false);
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el || seen) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setSeen(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setSeen(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [ref, rootMargin, seen]);
+  return seen;
+}
+
+/**
+ * Slides an element from where it was to where it is now when its layout
+ * position changes (FLIP). Used where a label swap changes the width of a
+ * centred group.
+ */
+function useGlide<T extends HTMLElement>(key: unknown, reduce: boolean) {
+  const ref = React.useRef<T>(null);
+  const before = React.useRef<number | null>(null);
+  React.useLayoutEffect(() => {
+    const el = ref.current;
+    const parent = el?.parentElement;
+    if (!el || !parent) return;
+    const shift = Number(gsap.getProperty(el, "x")) || 0;
+    gsap.killTweensOf(el, "x");
+    gsap.set(el, { x: 0 });
+    const left =
+      el.getBoundingClientRect().left - parent.getBoundingClientRect().left;
+    const previous = before.current;
+    before.current = left;
+    if (previous === null || reduce) return;
+    const delta = previous + shift - left;
+    if (Math.abs(delta) < 0.5) return;
+    gsap.fromTo(el, { x: delta }, { x: 0, duration: 0.32, ease: gEase.out });
+  }, [key, reduce]);
+  return ref;
+}
 
 function useElementRadius(
   ref: React.RefObject<HTMLElement | null>,
@@ -66,6 +189,271 @@ function useElementRadius(
 }
 
 /* -------------------------------------------------------------------------- */
+/* Presence — one slot whose content swaps with an exit and an enter          */
+/* -------------------------------------------------------------------------- */
+
+type PresenceMotion = {
+  from: gsap.TweenVars;
+  to: gsap.TweenVars;
+  out: gsap.TweenVars;
+};
+
+type PresenceProps = PresenceMotion & {
+  /** Identity of what shows. A new id swaps the content; `null` shows nothing. */
+  id: string | number | null;
+  as?: "span" | "div" | "p";
+  className?: string;
+  /** Takes the leaving layer out of flow so the arriving one sizes the box. */
+  popLayout?: boolean;
+  children?: React.ReactNode;
+};
+
+type Leaving = {
+  uid: number;
+  node: React.ReactNode;
+  className?: string;
+};
+
+function EnterLayer({
+  as,
+  enter,
+  from,
+  to,
+  className,
+  children,
+}: {
+  as: NonNullable<PresenceProps["as"]>;
+  enter: boolean;
+  from: gsap.TweenVars;
+  to: gsap.TweenVars;
+  className?: string;
+  children?: React.ReactNode;
+}) {
+  const ref = React.useRef<HTMLElement>(null);
+  React.useLayoutEffect(() => {
+    const el = ref.current;
+    if (!enter || !el) return;
+    const tween = gsap.fromTo(el, from, to);
+    return () => {
+      tween.kill();
+    };
+    // Runs once, when the layer arrives.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const Tag = as as React.ElementType;
+  return (
+    <Tag ref={ref} className={className}>
+      {children}
+    </Tag>
+  );
+}
+
+function ExitLayer({
+  as,
+  popLayout,
+  out,
+  className,
+  onDone,
+  children,
+}: {
+  as: NonNullable<PresenceProps["as"]>;
+  popLayout?: boolean;
+  out: gsap.TweenVars;
+  className?: string;
+  onDone: () => void;
+  children?: React.ReactNode;
+}) {
+  const ref = React.useRef<HTMLElement>(null);
+  React.useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const tween = gsap.to(el, { ...out, onComplete: onDone });
+    return () => {
+      tween.kill();
+    };
+    // Runs once, when the layer starts leaving.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const Tag = as as React.ElementType;
+  return (
+    <Tag
+      ref={ref}
+      aria-hidden
+      className={cn(className, popLayout && "absolute")}
+      style={{ pointerEvents: "none" }}
+    >
+      {children}
+    </Tag>
+  );
+}
+
+function Presence({
+  id,
+  as = "span",
+  className,
+  popLayout,
+  from,
+  to,
+  out,
+  children,
+}: PresenceProps) {
+  const [leaving, setLeaving] = React.useState<Leaving[]>([]);
+  const last = React.useRef({ id, node: children, className });
+  const live = React.useRef(false);
+  const counter = React.useRef(0);
+
+  React.useLayoutEffect(() => {
+    const previous = last.current;
+    if (previous.id !== null && previous.id !== id) {
+      const entry: Leaving = {
+        uid: ++counter.current,
+        node: previous.node,
+        className: previous.className,
+      };
+      setLeaving((list) => [...list, entry]);
+    }
+    last.current = { id, node: children, className };
+    live.current = true;
+  }, [id, children, className]);
+
+  return (
+    <>
+      {leaving.map((layer) => (
+        <ExitLayer
+          key={`leaving-${layer.uid}`}
+          as={as}
+          popLayout={popLayout}
+          out={out}
+          className={layer.className}
+          onDone={() =>
+            setLeaving((list) => list.filter((l) => l.uid !== layer.uid))
+          }
+        >
+          {layer.node}
+        </ExitLayer>
+      ))}
+      {id !== null && (
+        <EnterLayer
+          key={`id-${id}`}
+          as={as}
+          enter={live.current}
+          from={from}
+          to={to}
+          className={className}
+        >
+          {children}
+        </EnterLayer>
+      )}
+    </>
+  );
+}
+
+/** Fades and slides content a few pixels — the default label swap. */
+const slideSwap = (reduce: boolean): PresenceMotion => ({
+  from: { opacity: 0, y: reduce ? 0 : 4 },
+  to: {
+    opacity: 1,
+    y: 0,
+    duration: 0.24,
+    ease: gEase.out,
+    clearProps: "transform",
+  },
+  out: { opacity: 0, y: reduce ? 0 : -4, duration: 0.14, ease: gEase.out },
+});
+
+/** The slide swap with a touch of blur. */
+const blurSwap = (reduce: boolean): PresenceMotion => ({
+  from: reduce
+    ? { opacity: 0 }
+    : { opacity: 0, filter: "blur(2px)", y: 4 },
+  to: {
+    opacity: 1,
+    ...(reduce ? {} : { filter: "blur(0px)", y: 0 }),
+    duration: 0.18,
+    ease: gEase.outFast,
+    clearProps: "filter,transform",
+  },
+  out: {
+    opacity: 0,
+    ...(reduce ? {} : { filter: "blur(2px)", y: -4 }),
+    duration: 0.12,
+    ease: gEase.outFast,
+  },
+});
+
+function SlideSlot({
+  id,
+  reduce,
+  className,
+  children,
+}: {
+  id: string | number | null;
+  reduce: boolean;
+  className?: string;
+  children?: React.ReactNode;
+}) {
+  return (
+    <Presence
+      id={id}
+      className={cn("col-start-1 row-start-1", className)}
+      {...slideSwap(reduce)}
+    >
+      {children}
+    </Presence>
+  );
+}
+
+/** Springs an element in from a small, rotated pose. */
+function PopIn({
+  active = true,
+  skip = false,
+  reduce,
+  delay = 0,
+  from,
+  spring = SPRING_POP,
+  className,
+  children,
+}: {
+  active?: boolean;
+  skip?: boolean;
+  reduce: boolean;
+  delay?: number;
+  from: { scale: number; rotation: number };
+  spring?: { duration: number; ease: (progress: number) => number };
+  className?: string;
+  children?: React.ReactNode;
+}) {
+  const ref = React.useRef<HTMLSpanElement>(null);
+  React.useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (!active) {
+      gsap.set(el, from);
+      return;
+    }
+    if (skip || reduce) {
+      gsap.set(el, { scale: 1, rotation: 0 });
+      return;
+    }
+    const tween = gsap.fromTo(el, from, {
+      scale: 1,
+      rotation: 0,
+      duration: spring.duration,
+      ease: spring.ease,
+      delay,
+    });
+    return () => {
+      tween.kill();
+    };
+  }, [active, skip, reduce, delay, from, spring]);
+  return (
+    <span ref={ref} className={className}>
+      {children}
+    </span>
+  );
+}
+
+/* -------------------------------------------------------------------------- */
 /* 1. AsyncButton                                                             */
 /* -------------------------------------------------------------------------- */
 
@@ -76,43 +464,6 @@ export type AsyncButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   loadingDelay?: number;
   successDuration?: number;
 };
-
-function AsyncSwap({
-  children,
-  reduceMotion,
-}: {
-  children: React.ReactNode;
-  reduceMotion: boolean;
-}) {
-  return (
-    <motion.span
-      initial={
-        reduceMotion
-          ? { opacity: 0 }
-          : { opacity: 0, filter: "blur(2px)", transform: "translateY(4px)" }
-      }
-      animate={
-        reduceMotion
-          ? { opacity: 1 }
-          : { opacity: 1, filter: "blur(0px)", transform: "translateY(0px)" }
-      }
-      exit={
-        reduceMotion
-          ? { opacity: 0, transition: { duration: 0.12, ease: EASE_OUT_FAST } }
-          : {
-              opacity: 0,
-              filter: "blur(2px)",
-              transform: "translateY(-4px)",
-              transition: { duration: 0.12, ease: EASE_OUT_FAST },
-            }
-      }
-      transition={{ duration: 0.18, ease: EASE_OUT_FAST }}
-      className="absolute inset-0 flex items-center justify-center"
-    >
-      {children}
-    </motion.span>
-  );
-}
 
 export const AsyncButton = React.forwardRef<HTMLButtonElement, AsyncButtonProps>(
   (
@@ -130,7 +481,7 @@ export const AsyncButton = React.forwardRef<HTMLButtonElement, AsyncButtonProps>
   ) => {
     const [state, setState] = React.useState<AsyncButtonState>("idle");
     const [pending, setPending] = React.useState(false);
-    const reduceMotion = Boolean(useReducedMotion());
+    const reduceMotion = usePrefersReducedMotion();
     const generation = React.useRef(0);
     const timers = React.useRef<number[]>([]);
 
@@ -197,9 +548,9 @@ export const AsyncButton = React.forwardRef<HTMLButtonElement, AsyncButtonProps>
         aria-live="polite"
         data-state={state}
         className={cn(
-          "relative inline-flex h-12 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-primary px-6 text-sm font-medium text-primary-foreground",
+          "relative inline-flex h-12 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full keep-rounded bg-primary px-8 text-sm font-medium whitespace-nowrap text-primary-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-1px_0_rgba(0,0,0,0.08),0_0_1px_rgba(0,0,0,0.08),0_0_2px_rgba(0,0,0,0.04)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.08)]",
           "transition-[transform,background-color] duration-[160ms] ease-[cubic-bezier(0.23,1,0.32,1)]",
-          "hover:bg-primary/90 active:scale-[0.97]",
+          "hover:bg-primary/95 active:scale-[0.97]",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
           "disabled:pointer-events-none",
           disabled && "opacity-50",
@@ -216,23 +567,19 @@ export const AsyncButton = React.forwardRef<HTMLButtonElement, AsyncButtonProps>
         <span className="sr-only">
           {state === "loading" ? "Loading" : state === "success" ? "Done" : null}
         </span>
-        <AnimatePresence initial={false}>
-          {state === "idle" && (
-            <AsyncSwap key="idle" reduceMotion={reduceMotion}>
-              {children}
-            </AsyncSwap>
+        <Presence
+          id={state}
+          className="absolute inset-0 flex items-center justify-center"
+          {...blurSwap(reduceMotion)}
+        >
+          {state === "idle" ? (
+            children
+          ) : state === "loading" ? (
+            <Loader2 className="size-4 animate-spin [animation-duration:700ms]" />
+          ) : (
+            <Check className="size-4" strokeWidth={2.5} />
           )}
-          {state === "loading" && (
-            <AsyncSwap key="loading" reduceMotion={reduceMotion}>
-              <Loader2 className="size-4 animate-spin [animation-duration:700ms]" />
-            </AsyncSwap>
-          )}
-          {state === "success" && (
-            <AsyncSwap key="success" reduceMotion={reduceMotion}>
-              <Check className="size-4" strokeWidth={2.5} />
-            </AsyncSwap>
-          )}
-        </AnimatePresence>
+        </Presence>
       </button>
     );
   },
@@ -261,9 +608,47 @@ export type WaitlistButtonProps = {
 const WAITLIST_HEIGHT = 48;
 const WAITLIST_INSET = 4;
 const WAITLIST_ICON = 16;
-const WAITLIST_IDLE_PAD = 20;
+const WAITLIST_IDLE_PAD = 32;
 const WAITLIST_SUBMIT_PAD = 14;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function OdometerDigit({
+  digit,
+  delay,
+  reduce,
+}: {
+  digit: number;
+  delay: number;
+  reduce: boolean;
+}) {
+  const column = React.useRef<HTMLSpanElement>(null);
+  React.useLayoutEffect(() => {
+    const el = column.current;
+    if (!el) return;
+    // The column is ten digits tall, so a tenth of it is one digit.
+    if (reduce) {
+      gsap.set(el, { yPercent: -digit * 10 });
+      return;
+    }
+    const tween = gsap.fromTo(
+      el,
+      { yPercent: 0 },
+      { yPercent: -digit * 10, duration: 0.9, delay, ease: gEase.out },
+    );
+    return () => {
+      tween.kill();
+    };
+  }, [digit, delay, reduce]);
+  return (
+    <span className="flex flex-col" ref={column}>
+      {Array.from({ length: 10 }, (_, d) => (
+        <span key={d} className="block h-[1em] leading-none">
+          {d}
+        </span>
+      ))}
+    </span>
+  );
+}
 
 function WaitlistOdometer({
   value,
@@ -293,22 +678,11 @@ function WaitlistOdometer({
             key={index}
             className="relative inline-block h-[1em] overflow-clip"
           >
-            <motion.span
-              className="flex flex-col"
-              initial={reduce ? false : { y: "0em" }}
-              animate={{ y: `-${n}em` }}
-              transition={{
-                duration: 0.9,
-                delay: delay + order * 0.07,
-                ease: EASE_OUT,
-              }}
-            >
-              {Array.from({ length: 10 }, (_, d) => (
-                <span key={d} className="block h-[1em] leading-none">
-                  {d}
-                </span>
-              ))}
-            </motion.span>
+            <OdometerDigit
+              digit={n}
+              delay={delay + order * 0.07}
+              reduce={reduce}
+            />
           </span>
         );
       })}
@@ -341,8 +715,8 @@ export const WaitlistButton = React.forwardRef<
     const [error, setError] = React.useState<string | null>(null);
     const [hover, setHover] = React.useState(false);
     const [size, setSize] = React.useState({ box: 0, idle: 0, submit: 0 });
-    const reduce = Boolean(useReducedMotion());
-    const [scope, animateScope] = useAnimate<HTMLDivElement>();
+    const reduce = usePrefersReducedMotion();
+    const scope = React.useRef<HTMLDivElement>(null);
     const box = React.useRef<HTMLDivElement>(null);
     const radius = useElementRadius(box);
     const idleButton = React.useRef<HTMLButtonElement>(null);
@@ -352,7 +726,7 @@ export const WaitlistButton = React.forwardRef<
     const inputId = React.useId();
     const messageId = React.useId();
 
-    React.useImperativeHandle(ref, () => scope.current, [scope]);
+    React.useImperativeHandle(ref, () => scope.current as HTMLDivElement, []);
 
     React.useEffect(() => {
       mounted.current = true;
@@ -396,16 +770,19 @@ export const WaitlistButton = React.forwardRef<
       state === "idle"
         ? side + size.idle - WAITLIST_IDLE_PAD - WAITLIST_ICON
         : size.box - WAITLIST_INSET - WAITLIST_SUBMIT_PAD - WAITLIST_ICON;
-    const travel = { duration: reduce ? 0 : 0.55, ease: TRAVEL };
+    const travelMs = reduce ? 0 : 550;
 
-    const shake = () => {
-      if (reduce || !scope.current) return;
-      animateScope(
-        scope.current,
-        { x: [0, -4, 4, -3, 3, 0] },
-        { duration: 0.36, ease: "easeOut" },
-      );
-    };
+    const fade = (
+      visible: boolean,
+      delay: number,
+      ...extra: TransitionPart[]
+    ): React.CSSProperties => ({
+      opacity: visible ? 1 : 0,
+      ...transition(
+        ["opacity", visible ? 240 : 120, CSS_OUT, visible && !reduce ? delay * 1000 : 0],
+        ...extra,
+      ),
+    });
 
     const close = () => {
       setError(null);
@@ -421,7 +798,7 @@ export const WaitlistButton = React.forwardRef<
       const value = email.trim();
       if (!EMAIL_REGEX.test(value)) {
         setError(invalidMessage);
-        shake();
+        if (!reduce) shake(scope.current, 4, 0.36);
         input.current?.focus();
         return;
       }
@@ -441,16 +818,13 @@ export const WaitlistButton = React.forwardRef<
         if (!mounted.current) return;
         setError(errorMessage);
         setState("open");
-        shake();
+        if (!reduce) shake(scope.current, 4, 0.36);
       }
     };
 
-    const fade = (visible: boolean, delay = 0) => ({
-      opacity: visible ? 1 : 0,
-      transition: visible
-        ? { duration: 0.24, delay: reduce ? 0 : delay, ease: EASE_OUT }
-        : { duration: 0.12, ease: EASE_OUT },
-    });
+    const done = state === "done";
+    const messageKey =
+      error && !done ? `error:${error}` : done ? "done" : null;
 
     return (
       <div ref={scope} className={cn("w-[360px] max-w-full", className)}>
@@ -475,55 +849,44 @@ export const WaitlistButton = React.forwardRef<
           <div
             ref={box}
             data-hover={hover && state === "idle"}
-            className="group relative rounded-lg text-sm font-medium transition-transform duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] has-[[data-slot=idle]:active]:scale-[0.98]"
+            className="group relative rounded-full keep-rounded text-sm font-medium transition-transform duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] has-[[data-slot=idle]:active]:scale-[0.98]"
             style={{ height: WAITLIST_HEIGHT }}
           >
             {measured && (
               <>
-                <div className="absolute inset-0 [filter:drop-shadow(0_1px_1px_rgba(0,0,0,0.04))]">
-                  <motion.div
+                <div className="absolute inset-0 [filter:drop-shadow(0_0_1px_rgba(0,0,0,0.04))]">
+                  <div
                     aria-hidden
-                    initial={false}
-                    animate={{
+                    className="absolute inset-0 rounded-full keep-rounded bg-background shadow-[inset_0_0_2px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_0_2px_rgba(0,0,0,0.4)]"
+                    style={{
                       clipPath: state === "idle" ? idleClip : fullClip,
+                      ...transition(["clip-path", travelMs, CSS_TRAVEL]),
                     }}
-                    transition={travel}
-                    className="absolute inset-0 rounded-lg bg-background shadow-[inset_0_1px_2px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)]"
                   />
                 </div>
-                <svg
+                <div
                   aria-hidden
-                  width={size.box}
-                  height={WAITLIST_HEIGHT}
-                  className="pointer-events-none absolute inset-0 overflow-visible"
-                >
-                  <motion.rect
-                    initial={false}
-                    animate={{
-                      x: state === "idle" ? side + 0.5 : 0.5,
-                      width:
-                        state === "idle"
-                          ? Math.max(0, size.idle - 1)
-                          : size.box - 1,
-                    }}
-                    transition={travel}
-                    y={0.5}
-                    height={WAITLIST_HEIGHT - 1}
-                    rx={Math.max(0, r - 0.5)}
-                    fill="none"
-                    strokeWidth={1}
-                    className={cn(
-                      "transition-[stroke] duration-150",
-                      error
-                        ? "stroke-red-500/60 dark:stroke-red-400/60"
-                        : "stroke-black/[0.12] group-has-[input:focus]:stroke-black/30 dark:stroke-white/[0.14] dark:group-has-[input:focus]:stroke-white/35",
-                    )}
-                  />
-                </svg>
+                  className={cn(
+                    "pointer-events-none absolute inset-y-0 keep-rounded border",
+                    error
+                      ? "border-red-500/60 dark:border-red-400/60"
+                      : "border-black/[0.06] group-has-[input:focus]:border-black/20 dark:border-white/[0.07] dark:group-has-[input:focus]:border-white/25",
+                  )}
+                  style={{
+                    left: state === "idle" ? side : 0,
+                    width: state === "idle" ? size.idle : size.box,
+                    borderRadius: r,
+                    ...transition(
+                      ["left", travelMs, CSS_TRAVEL],
+                      ["width", travelMs, CSS_TRAVEL],
+                      ["border-color", 150, CSS_STANDARD],
+                    ),
+                  }}
+                />
               </>
             )}
 
-            <motion.input
+            <input
               ref={input}
               id={inputId}
               type="email"
@@ -542,25 +905,27 @@ export const WaitlistButton = React.forwardRef<
               }}
               disabled={!open}
               tabIndex={open ? 0 : -1}
-              initial={false}
-              animate={fade(open, 0.28)}
               className="absolute inset-y-0 left-0 w-full bg-transparent pl-3.5 text-sm font-normal text-foreground outline-none placeholder:text-muted-foreground disabled:cursor-default"
-              style={{ paddingRight: size.submit + WAITLIST_INSET * 2 + 8 }}
+              style={{
+                paddingRight: size.submit + WAITLIST_INSET * 2 + 8,
+                ...fade(open, 0.28),
+              }}
             />
 
             {measured && (
-              <div className="pointer-events-none absolute inset-0 [filter:drop-shadow(0_1px_1px_rgba(0,0,0,0.14))_drop-shadow(0_6px_12px_rgba(0,0,0,0.12))] dark:[filter:none]">
-                <motion.div
+              <div className="pointer-events-none absolute inset-0 [filter:drop-shadow(0_0_1px_rgba(0,0,0,0.08))_drop-shadow(0_0_2px_rgba(0,0,0,0.04))] dark:[filter:none]">
+                <div
                   aria-hidden
-                  initial={false}
-                  animate={{ clipPath: inkClip }}
-                  transition={travel}
-                  className="absolute inset-0 rounded-lg bg-primary bg-[linear-gradient(to_bottom,rgba(255,255,255,0.10),rgba(255,255,255,0)_55%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.16),inset_0_-1px_0_rgba(0,0,0,0.3)] dark:bg-[linear-gradient(to_bottom,rgba(255,255,255,0),rgba(0,0,0,0.06))] dark:shadow-[inset_0_-1px_0_rgba(0,0,0,0.12)]"
+                  className="absolute inset-0 rounded-full keep-rounded bg-primary bg-[linear-gradient(to_bottom,rgba(255,255,255,0.10),rgba(255,255,255,0)_55%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-1px_0_rgba(0,0,0,0.08)] dark:bg-[linear-gradient(to_bottom,rgba(255,255,255,0),rgba(0,0,0,0.06))] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.08)]"
+                  style={{
+                    clipPath: inkClip,
+                    ...transition(["clip-path", travelMs, CSS_TRAVEL]),
+                  }}
                 />
               </div>
             )}
 
-            <motion.button
+            <button
               ref={idleButton}
               type="button"
               data-slot="idle"
@@ -572,15 +937,20 @@ export const WaitlistButton = React.forwardRef<
               }
               onPointerLeave={() => setHover(false)}
               tabIndex={state === "idle" ? 0 : -1}
-              initial={false}
-              animate={fade(state === "idle", 0.32)}
               className={cn(
-                "absolute inset-y-0 left-1/2 flex -translate-x-1/2 cursor-pointer items-center gap-2 whitespace-nowrap rounded-lg text-primary-foreground transition-colors duration-150",
-                "hover:bg-primary-foreground/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                "absolute inset-y-0 left-1/2 flex -translate-x-1/2 cursor-pointer items-center gap-2 whitespace-nowrap rounded-full keep-rounded text-primary-foreground",
+                "hover:bg-primary-foreground/[0.05] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                 !measured && "bg-primary",
                 state !== "idle" && "pointer-events-none",
               )}
-              style={{ paddingInline: WAITLIST_IDLE_PAD }}
+              style={{
+                paddingInline: WAITLIST_IDLE_PAD,
+                ...fade(state === "idle", 0.32, [
+                  "background-color",
+                  150,
+                  CSS_STANDARD,
+                ]),
+              }}
             >
               {label}
               {measured ? (
@@ -592,21 +962,22 @@ export const WaitlistButton = React.forwardRef<
               ) : (
                 <ArrowRight aria-hidden className="size-4" />
               )}
-            </motion.button>
+            </button>
 
-            <motion.button
+            <button
               ref={submitButton}
               type="submit"
               tabIndex={open ? 0 : -1}
               disabled={state !== "open"}
-              initial={false}
-              animate={fade(open, 0.44)}
               className={cn(
-                "absolute top-1 right-1 bottom-1 flex cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-md text-primary-foreground transition-colors duration-150",
-                "hover:bg-primary-foreground/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                "absolute top-1 right-1 bottom-1 flex cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-full keep-rounded text-primary-foreground",
+                "hover:bg-primary-foreground/[0.05] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 !open && "pointer-events-none",
               )}
-              style={{ paddingInline: WAITLIST_SUBMIT_PAD }}
+              style={{
+                paddingInline: WAITLIST_SUBMIT_PAD,
+                ...fade(open, 0.44, ["background-color", 150, CSS_STANDARD]),
+              }}
             >
               {submitLabel}
               <span
@@ -614,65 +985,66 @@ export const WaitlistButton = React.forwardRef<
                 className="inline-block"
                 style={{ width: WAITLIST_ICON }}
               />
-            </motion.button>
+            </button>
 
             {measured && (
-              <motion.span
+              <span
                 aria-hidden
-                initial={false}
-                animate={{ x: arrowX, opacity: state === "done" ? 0 : 1 }}
-                transition={{
-                  x: travel,
-                  opacity: { duration: 0.15, ease: EASE_OUT },
-                }}
                 className="pointer-events-none absolute top-1/2 left-0 -mt-2 grid size-4 text-primary-foreground"
+                style={{
+                  transform: `translateX(${arrowX}px)`,
+                  opacity: done ? 0 : 1,
+                  ...transition(
+                    ["transform", travelMs, CSS_TRAVEL],
+                    ["opacity", 150, CSS_OUT],
+                  ),
+                }}
               >
-                <motion.span
-                  className="col-start-1 row-start-1 transition-transform duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] [[data-hover=true]_&]:translate-x-0.5"
-                  animate={{
+                <span
+                  className="col-start-1 row-start-1 [[data-hover=true]_&]:translate-x-0.5"
+                  style={{
                     opacity: state === "sending" ? 0 : 1,
-                    scale: state === "sending" ? 0.6 : 1,
+                    transform: `scale(${state === "sending" ? 0.6 : 1})`,
+                    ...transition(
+                      ["opacity", 180, CSS_OUT],
+                      ["transform", 180, CSS_OUT],
+                      ["translate", 200, CSS_OUT],
+                    ),
                   }}
-                  transition={{ duration: 0.18, ease: EASE_OUT }}
                 >
                   <ArrowRight className="size-4" />
-                </motion.span>
-                <motion.span
+                </span>
+                <span
                   className="col-start-1 row-start-1"
-                  initial={false}
-                  animate={{
+                  style={{
                     opacity: state === "sending" ? 1 : 0,
-                    scale: state === "sending" ? 1 : 0.6,
+                    transform: `scale(${state === "sending" ? 1 : 0.6})`,
+                    ...transition(
+                      ["opacity", 180, CSS_OUT],
+                      ["transform", 180, CSS_OUT],
+                    ),
                   }}
-                  transition={{ duration: 0.18, ease: EASE_OUT }}
                 >
                   <Loader2 className="size-4 animate-spin [animation-duration:700ms]" />
-                </motion.span>
-              </motion.span>
+                </span>
+              </span>
             )}
 
-            <motion.div
-              aria-hidden={state !== "done"}
-              initial={false}
-              animate={fade(state === "done", 0.34)}
+            <div
+              aria-hidden={!done}
               className="pointer-events-none absolute inset-0 flex items-center justify-center gap-2 text-primary-foreground"
+              style={fade(done, 0.34)}
             >
-              <motion.span
-                initial={false}
-                animate={
-                  state === "done"
-                    ? { scale: 1, rotate: 0 }
-                    : { scale: 0.4, rotate: -30 }
-                }
-                transition={
-                  state === "done" && !reduce
-                    ? { type: "spring", stiffness: 420, damping: 24, delay: 0.38 }
-                    : { duration: 0 }
-                }
+              <PopIn
+                active={done}
+                reduce={reduce}
+                delay={0.38}
+                from={POP_FROM}
+                className="inline-flex"
               >
                 <Check aria-hidden className="size-4" strokeWidth={2.5} />
-              </motion.span>
-              {state === "done" && position !== null ? (
+              </PopIn>
+              {done && position !== null ? (
                 <span className="flex items-center gap-[0.3em] leading-none">
                   You&apos;re
                   <span className="inline-flex">
@@ -689,7 +1061,7 @@ export const WaitlistButton = React.forwardRef<
               ) : (
                 successLabel
               )}
-            </motion.div>
+            </div>
           </div>
 
           <div
@@ -697,41 +1069,28 @@ export const WaitlistButton = React.forwardRef<
             aria-live="polite"
             className="relative mt-2.5 h-5 text-center text-[13px] leading-5"
           >
-            <AnimatePresence initial={false}>
-              {error && state !== "done" && (
-                <motion.p
-                  key={error}
-                  initial={{ opacity: 0, y: reduce ? 0 : -2 }}
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                    transition: { duration: 0.24, ease: EASE_OUT },
-                  }}
-                  exit={{ opacity: 0, transition: { duration: 0.12 } }}
-                  className="absolute inset-x-0 text-red-600 dark:text-red-400"
-                >
-                  {error}
-                </motion.p>
+            <Presence
+              id={messageKey}
+              as="p"
+              className={cn(
+                "absolute inset-x-0",
+                done
+                  ? "truncate text-muted-foreground"
+                  : "text-red-600 dark:text-red-400",
               )}
-              {state === "done" && (
-                <motion.p
-                  key="done"
-                  initial={{ opacity: 0, y: reduce ? 0 : -2 }}
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                    transition: {
-                      duration: 0.3,
-                      delay: reduce ? 0 : 0.9,
-                      ease: EASE_OUT,
-                    },
-                  }}
-                  className="absolute inset-x-0 truncate text-muted-foreground"
-                >
-                  {successMessage(email)}
-                </motion.p>
-              )}
-            </AnimatePresence>
+              from={{ opacity: 0, y: reduce ? 0 : -2 }}
+              to={{
+                opacity: 1,
+                y: 0,
+                duration: done ? 0.3 : 0.24,
+                delay: done && !reduce ? 0.9 : 0,
+                ease: gEase.out,
+                clearProps: "transform",
+              }}
+              out={{ opacity: 0, duration: 0.12 }}
+            >
+              {done ? successMessage(email) : error}
+            </Presence>
           </div>
         </form>
       </div>
@@ -759,32 +1118,11 @@ export type HoldToConfirmProps = {
   className?: string;
 };
 
-function SlideSwap({
-  children,
-  reduce,
-  className,
+function TrashIcon({
+  lid,
 }: {
-  children: React.ReactNode;
-  reduce: boolean;
-  className?: string;
+  lid: React.RefObject<SVGGElement | null>;
 }) {
-  return (
-    <motion.span
-      initial={{ opacity: 0, y: reduce ? 0 : 4 }}
-      animate={{ opacity: 1, y: 0, transition: { duration: 0.24, ease: EASE_OUT } }}
-      exit={{
-        opacity: 0,
-        y: reduce ? 0 : -4,
-        transition: { duration: 0.14, ease: EASE_OUT },
-      }}
-      className={cn("col-start-1 row-start-1", className)}
-    >
-      {children}
-    </motion.span>
-  );
-}
-
-function TrashIcon({ lid }: { lid: MotionValue<number> }) {
   return (
     <svg
       viewBox="0 0 16 16"
@@ -792,7 +1130,10 @@ function TrashIcon({ lid }: { lid: MotionValue<number> }) {
       fill="none"
       aria-hidden
     >
-      <motion.g style={{ rotate: lid, originX: 0, originY: 1 }}>
+      <g
+        ref={lid}
+        style={{ transformBox: "fill-box", transformOrigin: "0% 100%" }}
+      >
         <path
           d="M2 4.5h12"
           stroke="currentColor"
@@ -805,7 +1146,7 @@ function TrashIcon({ lid }: { lid: MotionValue<number> }) {
           strokeWidth="1.5"
           strokeLinejoin="round"
         />
-      </motion.g>
+      </g>
       <path
         d="M3.5 6.5l.6 6.6c.07.77.71 1.4 1.49 1.4h4.82c.78 0 1.42-.63 1.49-1.4l.6-6.6"
         stroke="currentColor"
@@ -837,23 +1178,30 @@ export function HoldToConfirm({
 }: HoldToConfirmProps) {
   const [state, setState] = React.useState<HoldState>("idle");
   const [note, setNote] = React.useState<"hint" | "error" | null>(null);
-  const reduce = Boolean(useReducedMotion());
-  const progress = useMotionValue(0);
-  const shut = useMotionValue(0);
-  const lid = useTransform<number, number>(
-    [progress, shut],
-    ([p, s]) => -34 * p * (1 - s),
-  );
-  const run = React.useRef<AnimationPlaybackControls | null>(null);
+  const reduce = usePrefersReducedMotion();
+  // `progress` is how far the hold has gone (0–1); `shut` snaps the lid closed.
+  const anim = React.useRef({ progress: 0, shut: 0 });
+  const fillEl = React.useRef<HTMLSpanElement>(null);
+  const lidEl = React.useRef<SVGGElement>(null);
+  const run = React.useRef<gsap.core.Tween | null>(null);
   const timer = React.useRef<number | undefined>(undefined);
   const mounted = React.useRef(true);
   const descriptionId = React.useId();
 
+  const paint = React.useCallback(() => {
+    const { progress, shut } = anim.current;
+    if (fillEl.current) fillEl.current.style.transform = `scaleX(${progress})`;
+    if (lidEl.current) {
+      lidEl.current.style.transform = `rotate(${-34 * progress * (1 - shut)}deg)`;
+    }
+  }, []);
+
   React.useEffect(() => {
     mounted.current = true;
+    const values = anim.current;
     return () => {
       mounted.current = false;
-      run.current?.stop();
+      gsap.killTweensOf(values);
       window.clearTimeout(timer.current);
     };
   }, []);
@@ -867,12 +1215,23 @@ export function HoldToConfirm({
     );
   };
 
+  const rewind = (duration: number) =>
+    gsap.to(anim.current, {
+      progress: 0,
+      duration,
+      ease: gEase.out,
+      overwrite: true,
+      onUpdate: paint,
+    });
+
   const finish = async () => {
     run.current = null;
     setNote(null);
-    await animate(shut, 1, {
+    await tweenTo(anim.current, {
+      shut: 1,
       duration: reduce ? 0 : 0.16,
-      ease: [0.55, 0, 1, 0.45],
+      ease: gEase.circIn,
+      onUpdate: paint,
     });
     if (!mounted.current) return;
     if ("vibrate" in navigator) navigator.vibrate?.(12);
@@ -885,13 +1244,13 @@ export function HoldToConfirm({
         timer.current = window.setTimeout(() => {
           if (!mounted.current) return;
           setState("idle");
-          animate(progress, 0, { duration: 0.3, ease: EASE_OUT });
+          rewind(0.3);
         }, resetAfter);
       }
     } catch {
       if (!mounted.current) return;
       setState("idle");
-      animate(progress, 0, { duration: 0.3, ease: EASE_OUT });
+      rewind(0.3);
       showNote("error");
     }
   };
@@ -900,12 +1259,16 @@ export function HoldToConfirm({
     if (disabled || (state !== "idle" && state !== "holding")) return;
     setState("holding");
     setNote(null);
-    shut.set(0);
-    run.current?.stop();
-    const remaining = holdDuration * (1 - progress.get());
-    run.current = animate(progress, 1, {
+    anim.current.shut = 0;
+    paint();
+    run.current?.kill();
+    const remaining = holdDuration * (1 - anim.current.progress);
+    run.current = gsap.to(anim.current, {
+      progress: 1,
       duration: remaining / 1000,
-      ease: "linear",
+      ease: "none",
+      overwrite: true,
+      onUpdate: paint,
       onComplete: () => {
         if (mounted.current) void finish();
       },
@@ -914,16 +1277,17 @@ export function HoldToConfirm({
 
   const release = () => {
     if (state !== "holding" || !run.current) return;
-    run.current.stop();
+    run.current.kill();
     run.current = null;
-    if (progress.get() < 0.6) showNote("hint");
+    if (anim.current.progress < 0.6) showNote("hint");
     setState("idle");
-    animate(progress, 0, { duration: reduce ? 0 : 0.35, ease: EASE_OUT });
+    rewind(reduce ? 0 : 0.35);
   };
 
   const solid = state === "pending" || state === "done";
   const idleText =
     note === "hint" ? hintLabel : note === "error" ? errorLabel : label;
+  const slot = state === "idle" || state === "holding" ? "idle" : state;
 
   return (
     <button
@@ -951,19 +1315,20 @@ export function HoldToConfirm({
       onContextMenu={(event) => event.preventDefault()}
       className={cn(
         "[--danger:#d4463e] [--danger-solid:#c4403a] [--danger-text:#c2372f] dark:[--danger:#e0625a] dark:[--danger-solid:#b9453d] dark:[--danger-text:#f08a82]",
-        "relative inline-flex h-12 cursor-pointer touch-manipulation items-center justify-center overflow-clip rounded-lg px-5 text-sm font-medium select-none [-webkit-touch-callout:none]",
+        "relative inline-flex h-12 cursor-pointer touch-manipulation items-center justify-center overflow-clip rounded-full keep-rounded px-8 text-sm font-medium select-none [-webkit-touch-callout:none]",
         "transition-[background-color,border-color,color,box-shadow] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)]",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color-mix(in_oklab,var(--danger)_45%,transparent)] focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         "disabled:pointer-events-none disabled:opacity-50",
         solid
-          ? "border border-[color-mix(in_oklab,var(--danger-solid)_82%,black)] bg-[var(--danger-solid)] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.2),inset_0_-1px_0_rgba(0,0,0,0.18),0_1px_2px_rgba(0,0,0,0.16),0_6px_14px_-6px_rgba(0,0,0,0.28)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.16),inset_0_-1px_0_rgba(0,0,0,0.2)]"
-          : "border border-[color-mix(in_oklab,var(--danger)_32%,transparent)] bg-background text-[var(--danger-text)] shadow-[0_1px_2px_rgba(0,0,0,0.04)] hover:border-[color-mix(in_oklab,var(--danger)_48%,transparent)] hover:bg-[color-mix(in_oklab,var(--danger)_4%,transparent)]",
+          ? "border border-[color-mix(in_oklab,var(--danger-solid)_95%,black)] bg-[var(--danger-solid)] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-1px_0_rgba(0,0,0,0.08),0_0_1px_rgba(0,0,0,0.08),0_0_2px_rgba(0,0,0,0.04)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.08)]"
+          : "border border-[color-mix(in_oklab,var(--danger)_18%,transparent)] bg-white text-[var(--danger-text)] shadow-[0_0_1px_rgba(0,0,0,0.05),0_0_1px_rgba(0,0,0,0.03)] hover:border-[color-mix(in_oklab,var(--danger)_28%,transparent)] hover:bg-black/[0.03] dark:bg-background dark:hover:bg-white/[0.035]",
         className,
       )}
     >
-      <motion.span
+      <span
+        ref={fillEl}
         aria-hidden
-        style={{ scaleX: progress }}
+        style={{ transform: "scaleX(0)" }}
         className={cn(
           "pointer-events-none absolute inset-0 origin-left bg-[color-mix(in_oklab,var(--danger)_13%,transparent)] dark:bg-[color-mix(in_oklab,var(--danger)_18%,transparent)]",
           solid && "opacity-0",
@@ -982,62 +1347,52 @@ export function HoldToConfirm({
           </span>
         ))}
 
-        <AnimatePresence initial={false}>
-          {(state === "idle" || state === "holding") && (
-            <SlideSwap
-              key="idle"
-              reduce={reduce}
-              className="flex items-center justify-center gap-2"
-            >
+        <SlideSlot
+          id={slot}
+          reduce={reduce}
+          className={cn(
+            "flex items-center justify-center gap-2",
+            slot !== "idle" && "whitespace-nowrap",
+          )}
+        >
+          {slot === "idle" ? (
+            <>
               <span className="grid size-4 place-items-center">
-                <TrashIcon lid={lid} />
+                <TrashIcon lid={lidEl} />
               </span>
               <span className="relative whitespace-nowrap">
                 <span aria-hidden className="invisible">
                   {label}
                 </span>
-                <AnimatePresence initial={false}>
-                  <SlideSwap
-                    key={idleText}
-                    reduce={reduce}
-                    className="absolute top-0 left-0 whitespace-nowrap"
-                  >
-                    {idleText}
-                  </SlideSwap>
-                </AnimatePresence>
+                <SlideSlot
+                  id={idleText}
+                  reduce={reduce}
+                  className="absolute top-0 left-0 whitespace-nowrap"
+                >
+                  {idleText}
+                </SlideSlot>
               </span>
-            </SlideSwap>
-          )}
-          {state === "pending" && (
-            <SlideSwap
-              key="pending"
-              reduce={reduce}
-              className="flex items-center justify-center gap-2 whitespace-nowrap"
-            >
+            </>
+          ) : slot === "pending" ? (
+            <>
               <span className="grid size-4 place-items-center">
                 <Loader2 className="size-4 animate-spin [animation-duration:700ms]" />
               </span>
               {pendingLabel}
-            </SlideSwap>
-          )}
-          {state === "done" && (
-            <SlideSwap
-              key="done"
-              reduce={reduce}
-              className="flex items-center justify-center gap-2 whitespace-nowrap"
-            >
-              <motion.span
+            </>
+          ) : (
+            <>
+              <PopIn
+                reduce={reduce}
+                from={POP_FROM}
                 className="grid size-4 place-items-center"
-                initial={reduce ? false : { scale: 0.4, rotate: -30 }}
-                animate={{ scale: 1, rotate: 0 }}
-                transition={{ type: "spring", stiffness: 420, damping: 24 }}
               >
                 <Check className="size-4" strokeWidth={2.5} />
-              </motion.span>
+              </PopIn>
               {doneLabel}
-            </SlideSwap>
+            </>
           )}
-        </AnimatePresence>
+        </SlideSlot>
       </span>
 
       <span id={descriptionId} className="sr-only">
@@ -1072,8 +1427,6 @@ export type StarButtonProps = {
   className?: string;
 };
 
-const STAR_ROLL = { duration: 0.6, ease: EASE_OUT } as const;
-
 function StarWheel({
   digit,
   direction,
@@ -1088,10 +1441,25 @@ function StarWheel({
   reduce: boolean;
 }) {
   const shown = hold ? 0 : digit;
-  const index = useMotionValue(shown);
-  const y = useTransform(index, (v) => `${-v}em`);
+  const column = React.useRef<HTMLSpanElement>(null);
+  // Which digit of the 0–9, 0–9 strip is showing; fractions are mid-roll.
+  const index = React.useRef({ v: shown });
+  const [startAt] = React.useState(shown);
   const previous = React.useRef(shown);
   const held = React.useRef(hold);
+
+  const paint = React.useCallback(() => {
+    if (column.current) {
+      column.current.style.transform = `translateY(${-index.current.v}em)`;
+    }
+  }, []);
+
+  React.useEffect(() => {
+    const value = index.current;
+    return () => {
+      gsap.killTweensOf(value);
+    };
+  }, []);
 
   React.useEffect(() => {
     const from = previous.current;
@@ -1100,32 +1468,54 @@ function StarWheel({
     held.current = hold;
     if (from === shown) return;
     const dir = releasing ? 1 : direction;
-    index.stop();
+    const value = index.current;
+    gsap.killTweensOf(value);
     if (reduce) {
-      index.set(shown);
+      value.v = shown;
+      paint();
       return;
     }
     if (dir === 1) {
-      index.set(from);
+      value.v = from;
+      paint();
       const target = shown > from ? shown : shown + 10;
-      animate(index, target, { ...STAR_ROLL, delay }).then(() =>
-        index.set(shown),
-      );
+      gsap.to(value, {
+        v: target,
+        duration: 0.6,
+        delay,
+        ease: gEase.out,
+        onUpdate: paint,
+        onComplete: () => {
+          value.v = shown;
+          paint();
+        },
+      });
     } else {
-      index.set(shown < from ? from : from + 10);
-      animate(index, shown, { ...STAR_ROLL, delay });
+      value.v = shown < from ? from : from + 10;
+      paint();
+      gsap.to(value, {
+        v: shown,
+        duration: 0.6,
+        delay,
+        ease: gEase.out,
+        onUpdate: paint,
+      });
     }
-  }, [shown, hold, direction, delay, index, reduce]);
+  }, [shown, hold, direction, delay, reduce, paint]);
 
   return (
     <span className="relative inline-block h-[1em] overflow-clip leading-none">
-      <motion.span className="flex flex-col" style={{ y }}>
+      <span
+        ref={column}
+        className="flex flex-col"
+        style={{ transform: `translateY(${-startAt}em)` }}
+      >
         {Array.from({ length: 20 }, (_, i) => (
           <span key={i} className="block h-[1em] leading-none">
             {i % 10}
           </span>
         ))}
-      </motion.span>
+      </span>
     </span>
   );
 }
@@ -1277,9 +1667,9 @@ export function StarButton({
   onPressedChange,
   className,
 }: StarButtonProps) {
-  const reduce = Boolean(useReducedMotion());
+  const reduce = usePrefersReducedMotion();
   const root = React.useRef<HTMLElement>(null);
-  const seen = useInView(root, { once: true, margin: "-40px" });
+  const seen = useInViewOnce(root, "-40px");
   const [own, setOwn] = React.useState(defaultPressed);
   const [twirl, setTwirl] = React.useState(0);
   const live = useRepoStars(repo);
@@ -1303,27 +1693,28 @@ export function StarButton({
 
   const content = (
     <>
-      <span className="flex items-center gap-1.5 px-3 leading-none">
-        <motion.span
-          className="grid size-4 place-items-center"
+      <span className="flex items-center gap-1.5 pr-3 pl-8 leading-none">
+        <PopIn
           key={twirl}
-          initial={twirl && !reduce ? { scale: 0.7, rotate: -72 } : false}
-          animate={{ scale: 1, rotate: 0 }}
-          transition={{ type: "spring", stiffness: 380, damping: 18 }}
+          skip={twirl === 0}
+          reduce={reduce}
+          from={TWIRL_FROM}
+          spring={SPRING_TWIRL}
+          className="grid size-4 place-items-center"
         >
           {icon === "star" ? (
             <StarSvgIcon on={link ? false : pressed} />
           ) : (
             <UpvoteSvgIcon on={link ? false : pressed} />
           )}
-        </motion.span>
+        </PopIn>
         {text}
       </span>
       <span
         aria-hidden
         className="h-4 w-px bg-black/[0.1] dark:bg-white/[0.12]"
       />
-      <span className="relative grid px-3 tabular-nums">
+      <span className="relative grid pr-8 pl-3 tabular-nums">
         <span
           aria-hidden
           className="invisible col-start-1 row-start-1 text-right"
@@ -1338,9 +1729,9 @@ export function StarButton({
   );
 
   const surface = cn(
-    "inline-flex h-12 cursor-pointer items-center rounded-lg border border-black/[0.09] bg-background text-[13px] font-medium text-foreground select-none",
-    "shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_1px_2px_rgba(0,0,0,0.06)] dark:border-white/[0.1] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_1px_2px_rgba(0,0,0,0.4)]",
-    "transition-[background-color,transform,scale] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-black/[0.03] active:scale-[0.97] dark:hover:bg-white/[0.05]",
+    "inline-flex h-12 cursor-pointer items-center rounded-full keep-rounded border border-black/[0.045] bg-white text-[13px] font-medium text-foreground select-none dark:bg-background",
+    "shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_0_1px_rgba(0,0,0,0.05),0_0_1px_rgba(0,0,0,0.03)] dark:border-white/[0.06] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_0_1px_rgba(0,0,0,0.2),0_0_1px_rgba(0,0,0,0.12)]",
+    "transition-[background-color,transform,scale] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-black/[0.03] active:scale-[0.97] dark:hover:bg-white/[0.035]",
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
     className,
   );
@@ -1398,10 +1789,20 @@ export type FollowButtonProps = {
   className?: string;
 };
 
+/** Two strokes per icon, as `[x1, y1, x2, y2]`, so one shape tweens into the next. */
 const FOLLOW_SHAPES = {
-  plus: ["M8 3.5L8 12.5", "M3.5 8L12.5 8"],
-  check: ["M3.5 8.5L6.5 11.5", "M6.5 11.5L12.5 4.5"],
-  cross: ["M4.5 4.5L11.5 11.5", "M11.5 4.5L4.5 11.5"],
+  plus: [
+    [8, 3.5, 8, 12.5],
+    [3.5, 8, 12.5, 8],
+  ],
+  check: [
+    [3.5, 8.5, 6.5, 11.5],
+    [6.5, 11.5, 12.5, 4.5],
+  ],
+  cross: [
+    [4.5, 4.5, 11.5, 11.5],
+    [11.5, 4.5, 4.5, 11.5],
+  ],
 } as const;
 
 function MorphIcon({
@@ -1411,6 +1812,25 @@ function MorphIcon({
   shape: keyof typeof FOLLOW_SHAPES;
   reduce: boolean;
 }) {
+  const [startAt] = React.useState(shape);
+  const lines = React.useRef<(SVGLineElement | null)[]>([]);
+  const settled = React.useRef(shape);
+
+  React.useEffect(() => {
+    if (settled.current === shape) return;
+    settled.current = shape;
+    lines.current.forEach((el, i) => {
+      if (!el) return;
+      const [x1, y1, x2, y2] = FOLLOW_SHAPES[shape][i];
+      gsap.to(el, {
+        attr: { x1, y1, x2, y2 },
+        duration: reduce ? 0 : 0.32,
+        ease: gEase.out,
+        overwrite: true,
+      });
+    });
+  }, [shape, reduce]);
+
   return (
     <svg
       viewBox="0 0 16 16"
@@ -1418,12 +1838,16 @@ function MorphIcon({
       fill="none"
       aria-hidden
     >
-      {FOLLOW_SHAPES[shape].map((d, i) => (
-        <motion.path
+      {FOLLOW_SHAPES[startAt].map(([x1, y1, x2, y2], i) => (
+        <line
           key={i}
-          initial={false}
-          animate={{ d }}
-          transition={{ duration: reduce ? 0 : 0.32, ease: EASE_OUT }}
+          ref={(el) => {
+            lines.current[i] = el;
+          }}
+          x1={x1}
+          y1={y1}
+          x2={x2}
+          y2={y2}
           stroke="currentColor"
           strokeWidth={1.75}
           strokeLinecap="round"
@@ -1444,11 +1868,11 @@ export function FollowButton({
   unfollowLabel = "Unfollow",
   className,
 }: FollowButtonProps) {
-  const reduce = Boolean(useReducedMotion());
+  const reduce = usePrefersReducedMotion();
   const [own, setOwn] = React.useState(defaultFollowing);
   const [hover, setHover] = React.useState(false);
   const [armed, setArmed] = React.useState(true);
-  const [scope, animateScope] = useAnimate<HTMLButtonElement>();
+  const scope = React.useRef<HTMLButtonElement>(null);
   const following = controlled ?? own;
   const unfollowing = following && hover && armed;
 
@@ -1462,6 +1886,7 @@ export function FollowButton({
     : unfollowing
       ? unfollowLabel
       : followingLabel;
+  const group = useGlide<HTMLSpanElement>(label, reduce);
 
   const toggle = async () => {
     const next = !following;
@@ -1471,13 +1896,7 @@ export function FollowButton({
       await onFollowingChange?.(next);
     } catch {
       if (controlled === undefined) setOwn(!next);
-      if (!reduce && scope.current) {
-        animateScope(
-          scope.current,
-          { x: [0, -3, 3, -2, 2, 0] },
-          { duration: 0.32, ease: "easeOut" },
-        );
-      }
+      if (!reduce) shake(scope.current, 3, 0.32);
     }
   };
 
@@ -1499,17 +1918,17 @@ export function FollowButton({
         setArmed(true);
       }}
       className={cn(
-        "relative inline-grid h-12 cursor-pointer place-items-center rounded-lg border px-3.5 text-[13px] font-medium select-none",
+        "relative inline-grid h-12 cursor-pointer place-items-center rounded-full keep-rounded border px-3.5 text-[13px] font-medium select-none",
         "transition-[background-color,border-color,color,box-shadow,transform,scale] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.97]",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         "[--danger:#d4463e] [--danger-text:#c2372f] dark:[--danger:#e0625a] dark:[--danger-text:#f08a82]",
         !following &&
-          "border-[color-mix(in_oklab,var(--primary)_85%,black)] bg-primary text-primary-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.16),inset_0_-1px_0_rgba(0,0,0,0.3),0_1px_2px_rgba(0,0,0,0.12)] hover:bg-primary/90 dark:border-primary dark:shadow-[inset_0_-1px_0_rgba(0,0,0,0.12)]",
+          "border-[color-mix(in_oklab,var(--primary)_96%,black)] bg-primary text-primary-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-1px_0_rgba(0,0,0,0.08),0_0_1px_rgba(0,0,0,0.08),0_0_2px_rgba(0,0,0,0.04)] hover:bg-primary/95 dark:border-primary dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.08)]",
         following &&
           !unfollowing &&
-          "border-black/[0.1] bg-background text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_1px_2px_rgba(0,0,0,0.05)] dark:border-white/[0.12] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]",
+          "border-black/[0.045] bg-background text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_0_1px_rgba(0,0,0,0.05),0_0_1px_rgba(0,0,0,0.03)] dark:border-white/[0.06] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_0_1px_rgba(0,0,0,0.2),0_0_1px_rgba(0,0,0,0.12)]",
         unfollowing &&
-          "border-[color-mix(in_oklab,var(--danger)_35%,transparent)] bg-[color-mix(in_oklab,var(--danger)_5%,var(--background))] text-[var(--danger-text)]",
+          "border-[color-mix(in_oklab,var(--danger)_20%,transparent)] bg-[color-mix(in_oklab,var(--danger)_5%,var(--background))] text-[var(--danger-text)]",
         className,
       )}
     >
@@ -1525,38 +1944,28 @@ export function FollowButton({
       ))}
 
       <span className="absolute inset-0 flex items-center justify-center">
-        <motion.span
-          layout={reduce ? false : "position"}
-          transition={{ layout: { duration: 0.32, ease: EASE_OUT } }}
-          className="flex items-center gap-1.5"
-        >
+        <span ref={group} className="flex items-center gap-1.5">
           <MorphIcon shape={shape} reduce={reduce} />
           <span className="relative grid whitespace-nowrap">
-            <AnimatePresence mode="popLayout" initial={false}>
-              <motion.span
-                key={label}
-                initial={{ opacity: 0, y: reduce ? 0 : 3 }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                  transition: {
-                    duration: 0.22,
-                    delay: reduce ? 0 : 0.06,
-                    ease: EASE_OUT,
-                  },
-                }}
-                exit={{
-                  opacity: 0,
-                  y: reduce ? 0 : -3,
-                  transition: { duration: 0.12, ease: EASE_OUT },
-                }}
-                className="col-start-1 row-start-1"
-              >
-                {label}
-              </motion.span>
-            </AnimatePresence>
+            <Presence
+              id={label}
+              popLayout
+              className="col-start-1 row-start-1"
+              from={{ opacity: 0, y: reduce ? 0 : 3 }}
+              to={{
+                opacity: 1,
+                y: 0,
+                duration: 0.22,
+                delay: reduce ? 0 : 0.06,
+                ease: gEase.out,
+                clearProps: "transform",
+              }}
+              out={{ opacity: 0, y: reduce ? 0 : -3, duration: 0.12, ease: gEase.out }}
+            >
+              {label}
+            </Presence>
           </span>
-        </motion.span>
+        </span>
       </span>
 
       <span className="sr-only" aria-live="polite">
@@ -1619,13 +2028,15 @@ export function SplitButton({
   disabled,
   className,
 }: SplitButtonProps) {
-  const reduce = Boolean(useReducedMotion());
+  const reduce = usePrefersReducedMotion();
   const [own, setOwn] = React.useState(defaultValue ?? options[0]?.value);
   const [open, setOpen] = React.useState(false);
+  const [leaving, setLeaving] = React.useState(false);
   const [busy, setBusy] = React.useState<"idle" | "running" | "done">("idle");
   const [active, setActive] = React.useState(0);
   const root = React.useRef<HTMLDivElement>(null);
   const trigger = React.useRef<HTMLButtonElement>(null);
+  const menu = React.useRef<HTMLDivElement>(null);
   const items = React.useRef<(HTMLButtonElement | null)[]>([]);
   const timer = React.useRef<number | undefined>(undefined);
   const mounted = React.useRef(true);
@@ -1634,6 +2045,7 @@ export function SplitButton({
   const value = controlled ?? own;
   const current = options.find((o) => o.value === value) ?? options[0];
   const Icon = current?.icon;
+  const group = useGlide<HTMLSpanElement>(current?.value, reduce);
 
   React.useEffect(() => {
     mounted.current = true;
@@ -1643,26 +2055,67 @@ export function SplitButton({
     };
   }, []);
 
+  const hide = React.useCallback(() => {
+    setOpen(false);
+    setLeaving(true);
+  }, []);
+
   React.useEffect(() => {
     if (!open) return;
     const onDown = (event: PointerEvent) => {
-      if (!root.current?.contains(event.target as Node)) setOpen(false);
+      if (!root.current?.contains(event.target as Node)) hide();
     };
     document.addEventListener("pointerdown", onDown);
     return () => document.removeEventListener("pointerdown", onDown);
-  }, [open]);
+  }, [open, hide]);
 
   React.useEffect(() => {
     if (open) items.current[active]?.focus({ preventScroll: true });
   }, [open, active]);
 
+  // The menu is mounted while open and while it fades out.
+  React.useLayoutEffect(() => {
+    const el = menu.current;
+    if (!el) return;
+    if (open) {
+      const tween = gsap.fromTo(
+        el,
+        { opacity: 0, scale: reduce ? 1 : 0.96, y: reduce ? 0 : -4 },
+        {
+          opacity: 1,
+          scale: 1,
+          y: 0,
+          duration: 0.18,
+          ease: gEase.out,
+          clearProps: "transform",
+        },
+      );
+      return () => {
+        tween.kill();
+      };
+    }
+    if (leaving) {
+      const tween = gsap.to(el, {
+        opacity: 0,
+        scale: reduce ? 1 : 0.97,
+        duration: 0.12,
+        ease: gEase.out,
+        onComplete: () => setLeaving(false),
+      });
+      return () => {
+        tween.kill();
+      };
+    }
+  }, [open, leaving, reduce]);
+
   const openMenu = () => {
     setActive(Math.max(0, options.findIndex((o) => o.value === value)));
+    setLeaving(false);
     setOpen(true);
   };
 
   const close = (refocus = true) => {
-    setOpen(false);
+    hide();
     if (refocus) trigger.current?.focus({ preventScroll: true });
   };
 
@@ -1704,15 +2157,14 @@ export function SplitButton({
   const ink =
     "bg-primary text-primary-foreground bg-[linear-gradient(to_bottom,rgba(255,255,255,0.10),rgba(255,255,255,0)_55%)] dark:bg-[linear-gradient(to_bottom,rgba(255,255,255,0),rgba(0,0,0,0.06))]";
   const press =
-    "cursor-pointer transition-[background-color,transform,scale] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-primary/90 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-foreground/45 disabled:pointer-events-none";
-  const glide = { layout: { duration: 0.32, ease: EASE_OUT } };
+    "cursor-pointer transition-[background-color,transform,scale] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-primary/95 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-foreground/45 disabled:pointer-events-none";
 
   return (
     <div
       ref={root}
       className={cn(
-        "relative inline-flex h-12 rounded-lg text-[13px] font-medium",
-        "shadow-[inset_0_1px_0_rgba(255,255,255,0.16),inset_0_-1px_0_rgba(0,0,0,0.3),0_1px_2px_rgba(0,0,0,0.14),0_4px_10px_-4px_rgba(0,0,0,0.2)] dark:shadow-[inset_0_-1px_0_rgba(0,0,0,0.12)]",
+        "relative inline-flex h-12 rounded-full keep-rounded text-[13px] font-medium",
+        "shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-1px_0_rgba(0,0,0,0.08),0_0_1px_rgba(0,0,0,0.08),0_0_2px_rgba(0,0,0,0.04)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.08)]",
         disabled && "opacity-50",
         className,
       )}
@@ -1723,7 +2175,7 @@ export function SplitButton({
         aria-busy={busy === "running"}
         onClick={run}
         className={cn(
-          "relative inline-grid place-items-center rounded-l-lg pr-3 pl-3.5",
+          "relative inline-grid place-items-center rounded-l-full keep-rounded pr-3 pl-8",
           ink,
           press,
         )}
@@ -1739,70 +2191,61 @@ export function SplitButton({
           </span>
         ))}
         <span className="absolute inset-0 flex items-center justify-center">
-          <motion.span
-            layout={reduce ? false : "position"}
-            transition={glide}
-            className="flex items-center gap-2"
-          >
+          <span ref={group} className="flex items-center gap-2">
             <span className="grid size-4 place-items-center">
-              <AnimatePresence initial={false}>
-                <motion.span
-                  key={
-                    busy === "running"
-                      ? "spin"
-                      : busy === "done"
-                        ? "done"
-                        : current?.value
-                  }
-                  initial={{ opacity: 0, scale: reduce ? 1 : 0.6 }}
-                  animate={{
-                    opacity: 1,
-                    scale: 1,
-                    transition: { duration: 0.2, ease: EASE_OUT },
-                  }}
-                  exit={{
-                    opacity: 0,
-                    scale: reduce ? 1 : 0.6,
-                    transition: { duration: 0.12 },
-                  }}
-                  className="col-start-1 row-start-1 grid place-items-center"
-                >
-                  {busy === "running" ? (
-                    <Loader2 className="size-4 animate-spin [animation-duration:700ms]" />
-                  ) : busy === "done" ? (
-                    <Check className="size-4" strokeWidth={2.5} />
-                  ) : Icon ? (
-                    <Icon className="size-4" />
-                  ) : null}
-                </motion.span>
-              </AnimatePresence>
+              <Presence
+                id={
+                  busy === "running"
+                    ? "spin"
+                    : busy === "done"
+                      ? "done"
+                      : (current?.value ?? "none")
+                }
+                className="col-start-1 row-start-1 grid place-items-center"
+                from={{ opacity: 0, scale: reduce ? 1 : 0.6 }}
+                to={{
+                  opacity: 1,
+                  scale: 1,
+                  duration: 0.2,
+                  ease: gEase.out,
+                  clearProps: "transform",
+                }}
+                out={{ opacity: 0, scale: reduce ? 1 : 0.6, duration: 0.12 }}
+              >
+                {busy === "running" ? (
+                  <Loader2 className="size-4 animate-spin [animation-duration:700ms]" />
+                ) : busy === "done" ? (
+                  <Check className="size-4" strokeWidth={2.5} />
+                ) : Icon ? (
+                  <Icon className="size-4" />
+                ) : null}
+              </Presence>
             </span>
             <span className="relative grid whitespace-nowrap">
-              <AnimatePresence mode="popLayout" initial={false}>
-                <motion.span
-                  key={current?.value}
-                  initial={{ opacity: 0, y: reduce ? 0 : 3 }}
-                  animate={{
-                    opacity: 1,
-                    y: 0,
-                    transition: {
-                      duration: 0.22,
-                      delay: reduce ? 0 : 0.06,
-                      ease: EASE_OUT,
-                    },
-                  }}
-                  exit={{
-                    opacity: 0,
-                    y: reduce ? 0 : -3,
-                    transition: { duration: 0.12, ease: EASE_OUT },
-                  }}
-                  className="col-start-1 row-start-1"
-                >
-                  {current?.label}
-                </motion.span>
-              </AnimatePresence>
+              <Presence
+                id={current?.value ?? "none"}
+                popLayout
+                className="col-start-1 row-start-1"
+                from={{ opacity: 0, y: reduce ? 0 : 3 }}
+                to={{
+                  opacity: 1,
+                  y: 0,
+                  duration: 0.22,
+                  delay: reduce ? 0 : 0.06,
+                  ease: gEase.out,
+                  clearProps: "transform",
+                }}
+                out={{
+                  opacity: 0,
+                  y: reduce ? 0 : -3,
+                  duration: 0.12,
+                  ease: gEase.out,
+                }}
+              >
+                {current?.label}
+              </Presence>
             </span>
-          </motion.span>
+          </span>
         </span>
       </button>
 
@@ -1823,84 +2266,72 @@ export function SplitButton({
             openMenu();
           }
         }}
-        className={cn("grid w-9 place-items-center rounded-r-lg", ink, press)}
+        className={cn("grid w-11 place-items-center rounded-r-full keep-rounded", ink, press)}
       >
-        <motion.span
-          initial={false}
-          animate={{ rotate: open ? 180 : 0 }}
-          transition={{ duration: reduce ? 0 : 0.24, ease: EASE_OUT }}
+        <span
           className="grid"
+          style={{
+            transform: `rotate(${open ? 180 : 0}deg)`,
+            ...transition(["transform", reduce ? 0 : 240, CSS_OUT]),
+          }}
         >
           <ChevronDown className="size-4" />
-        </motion.span>
+        </span>
       </button>
 
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            id={menuId}
-            role="menu"
-            aria-label={menuLabel}
-            onKeyDown={onMenuKey}
-            initial={{ opacity: 0, scale: reduce ? 1 : 0.96, y: reduce ? 0 : -4 }}
-            animate={{
-              opacity: 1,
-              scale: 1,
-              y: 0,
-              transition: { duration: 0.18, ease: EASE_OUT },
-            }}
-            exit={{
-              opacity: 0,
-              scale: reduce ? 1 : 0.97,
-              transition: { duration: 0.12, ease: EASE_OUT },
-            }}
-            style={{ transformOrigin: "top right" }}
-            className="absolute top-full right-0 z-50 mt-1.5 w-[280px] rounded-lg border border-black/[0.08] bg-background p-1 text-foreground shadow-[0_0_0_1px_rgba(0,0,0,0.02),0_2px_4px_rgba(0,0,0,0.04),0_12px_28px_-12px_rgba(0,0,0,0.22)] dark:border-white/[0.1] dark:bg-zinc-900 dark:shadow-[0_12px_28px_-12px_rgba(0,0,0,0.7)]"
-          >
-            {options.map((o, i) => {
-              const ItemIcon = o.icon;
-              const selected = o.value === value;
-              return (
-                <button
-                  key={o.value}
-                  ref={(el) => {
-                    items.current[i] = el;
-                  }}
-                  type="button"
-                  role="menuitemradio"
-                  aria-checked={selected}
-                  tabIndex={i === active ? 0 : -1}
-                  onClick={() => choose(o.value)}
-                  onPointerMove={() => setActive(i)}
-                  className={cn(
-                    "flex w-full cursor-pointer items-start gap-2.5 rounded-md px-2.5 py-2 text-left outline-none transition-colors duration-100",
-                    i === active
-                      ? "bg-black/[0.045] dark:bg-white/[0.06]"
-                      : "bg-transparent",
-                  )}
-                >
-                  <span className="mt-px grid size-4 shrink-0 place-items-center text-muted-foreground">
-                    {ItemIcon ? <ItemIcon className="size-4" /> : null}
+      {(open || leaving) && (
+        <div
+          ref={menu}
+          id={menuId}
+          role="menu"
+          aria-label={menuLabel}
+          onKeyDown={onMenuKey}
+          style={{ transformOrigin: "top right" }}
+          className="absolute top-full right-0 z-50 mt-1.5 w-[280px] rounded-lg border border-black/[0.045] bg-background p-1 text-foreground shadow-[0_0_0_1px_rgba(0,0,0,0.02),0_2px_4px_rgba(0,0,0,0.04),0_12px_28px_-12px_rgba(0,0,0,0.22)] dark:border-white/[0.06] dark:bg-zinc-900 dark:shadow-[0_12px_28px_-12px_rgba(0,0,0,0.7)]"
+        >
+          {options.map((o, i) => {
+            const ItemIcon = o.icon;
+            const selected = o.value === value;
+            return (
+              <button
+                key={o.value}
+                ref={(el) => {
+                  items.current[i] = el;
+                }}
+                type="button"
+                role="menuitemradio"
+                aria-checked={selected}
+                tabIndex={i === active ? 0 : -1}
+                onClick={() => choose(o.value)}
+                onPointerMove={() => setActive(i)}
+                className={cn(
+                  "flex w-full cursor-pointer items-start gap-2.5 rounded-md px-2.5 py-2 text-left outline-none transition-colors duration-100",
+                  i === active
+                    ? "bg-black/[0.045] dark:bg-white/[0.06]"
+                    : "bg-transparent",
+                )}
+              >
+                <span className="mt-px grid size-4 shrink-0 place-items-center text-muted-foreground">
+                  {ItemIcon ? <ItemIcon className="size-4" /> : null}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[13px] leading-5 font-medium">
+                    {o.label}
                   </span>
-                  <span className="min-w-0 flex-1">
-                    <span className="block text-[13px] leading-5 font-medium">
-                      {o.label}
+                  {o.description && (
+                    <span className="block text-[12px] leading-4 text-muted-foreground">
+                      {o.description}
                     </span>
-                    {o.description && (
-                      <span className="block text-[12px] leading-4 text-muted-foreground">
-                        {o.description}
-                      </span>
-                    )}
-                  </span>
-                  <span className="mt-0.5 grid size-4 shrink-0 place-items-center">
-                    {selected && <Check className="size-4" strokeWidth={2.25} />}
-                  </span>
-                </button>
-              );
-            })}
-          </motion.div>
-        )}
-      </AnimatePresence>
+                  )}
+                </span>
+                <span className="mt-0.5 grid size-4 shrink-0 place-items-center">
+                  {selected && <Check className="size-4" strokeWidth={2.25} />}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       <span className="sr-only" aria-live="polite">
         {busy === "running" ? `${current?.label}…` : busy === "done" ? "Done" : ""}
@@ -1924,42 +2355,44 @@ export type AddToCartProps = {
 };
 
 function CartIcon({ drops, reduce }: { drops: number; reduce: boolean }) {
+  const parcel = React.useRef<HTMLSpanElement>(null);
+  const cart = React.useRef<SVGSVGElement>(null);
+
+  // A parcel falls into the basket, then the basket dips.
+  React.useEffect(() => {
+    const box = parcel.current;
+    const basket = cart.current;
+    if (!drops || reduce || !box || !basket) return;
+    const timeline = gsap.timeline();
+    timeline
+      .set(box, { y: -11, opacity: 0, scale: 0.6 })
+      .to(box, { opacity: 1, scale: 1, duration: 0.126, ease: gEase.drop }, 0)
+      .to(box, { y: 4.5, duration: 0.294, ease: gEase.drop }, 0.126)
+      .to(box, { opacity: 0, duration: 0.08 }, 0.42)
+      .set(basket, { y: 0 }, 0)
+      .to(basket, { y: 1.6, duration: 0.0992, ease: gEase.out }, 0.3844)
+      .to(basket, { y: 0, duration: 0.1364, ease: gEase.out }, 0.4836);
+    return () => {
+      timeline.kill();
+      gsap.set(box, { opacity: 0 });
+      gsap.set(basket, { y: 0 });
+    };
+  }, [drops, reduce]);
+
   return (
     <span className="relative grid size-4 place-items-center">
-      <AnimatePresence>
-        {drops > 0 && !reduce && (
-          <motion.span
-            key={drops}
-            aria-hidden
-            className="absolute top-[1px] left-[6.5px] size-[5px] rounded-[1px] bg-current"
-            initial={{ y: -11, opacity: 0, scale: 0.6 }}
-            animate={{
-              y: [-11, -11, 4.5],
-              opacity: [0, 1, 1],
-              scale: [0.6, 1, 1],
-              transition: {
-                duration: 0.42,
-                times: [0, 0.3, 1],
-                ease: [0.5, 0, 0.75, 0],
-              },
-            }}
-            exit={{ opacity: 0, transition: { duration: 0.08 } }}
-          />
-        )}
-      </AnimatePresence>
-      <motion.svg
-        key={`cart-${drops}`}
+      <span
+        ref={parcel}
+        aria-hidden
+        className="absolute top-[1px] left-[6.5px] size-[5px] rounded-[1px] bg-current"
+        style={{ opacity: 0 }}
+      />
+      <svg
+        ref={cart}
         viewBox="0 0 16 16"
         className="size-4 overflow-visible"
         fill="none"
         aria-hidden
-        initial={drops && !reduce ? { y: 0 } : false}
-        animate={drops && !reduce ? { y: [0, 0, 1.6, 0] } : { y: 0 }}
-        transition={{
-          duration: 0.62,
-          times: [0, 0.62, 0.78, 1],
-          ease: EASE_OUT,
-        }}
       >
         <path
           d="M1.5 2h1.6l1.6 8.2c.08.43.45.74.89.74h6.3c.42 0 .78-.29.88-.7L14 5H4"
@@ -1970,7 +2403,7 @@ function CartIcon({ drops, reduce }: { drops: number; reduce: boolean }) {
         />
         <circle cx={6.2} cy={13.6} r={1.1} fill="currentColor" />
         <circle cx={11.6} cy={13.6} r={1.1} fill="currentColor" />
-      </motion.svg>
+      </svg>
     </span>
   );
 }
@@ -1984,30 +2417,29 @@ function CartCount({ value, reduce }: { value: number; reduce: boolean }) {
   }
   return (
     <span className="relative inline-grid h-[1.25em] overflow-clip tabular-nums">
-      <AnimatePresence initial={false} custom={direction}>
-        <motion.span
-          key={value}
-          custom={direction}
-          variants={{
-            enter: (d: number) => ({
-              y: reduce ? 0 : `${d * 100}%`,
-              opacity: reduce ? 0 : 1,
-            }),
-            center: { y: "0%", opacity: 1 },
-            exit: (d: number) => ({
-              y: reduce ? 0 : `${d * -100}%`,
-              opacity: reduce ? 0 : 1,
-            }),
-          }}
-          initial="enter"
-          animate="center"
-          exit="exit"
-          transition={{ duration: 0.28, ease: EASE_OUT }}
-          className="col-start-1 row-start-1 leading-[1.25em]"
-        >
-          {value}
-        </motion.span>
-      </AnimatePresence>
+      <Presence
+        id={value}
+        className="col-start-1 row-start-1 leading-[1.25em]"
+        from={{
+          yPercent: reduce ? 0 : direction * 100,
+          opacity: reduce ? 0 : 1,
+        }}
+        to={{
+          yPercent: 0,
+          opacity: 1,
+          duration: 0.28,
+          ease: gEase.out,
+          clearProps: "transform",
+        }}
+        out={{
+          yPercent: reduce ? 0 : direction * -100,
+          opacity: reduce ? 0 : 1,
+          duration: 0.28,
+          ease: gEase.out,
+        }}
+      >
+        {value}
+      </Presence>
     </span>
   );
 }
@@ -2021,10 +2453,10 @@ export function AddToCart({
   max,
   className,
 }: AddToCartProps) {
-  const reduce = Boolean(useReducedMotion());
+  const reduce = usePrefersReducedMotion();
   const [own, setOwn] = React.useState(defaultQuantity);
   const [drops, setDrops] = React.useState(0);
-  const [scope, animateScope] = useAnimate<HTMLDivElement>();
+  const scope = React.useRef<HTMLDivElement>(null);
   const addButton = React.useRef<HTMLButtonElement>(null);
   const plusButton = React.useRef<HTMLButtonElement>(null);
   const minusButton = React.useRef<HTMLButtonElement>(null);
@@ -2039,7 +2471,7 @@ export function AddToCart({
     wasInCart.current = inCart;
     if (!focusedInside) return;
     (inCart ? plusButton : addButton).current?.focus({ preventScroll: true });
-  }, [inCart, scope]);
+  }, [inCart]);
 
   const change = async (next: number) => {
     const clamped = Math.max(
@@ -2062,134 +2494,116 @@ export function AddToCart({
       await onQuantityChange?.(clamped);
     } catch {
       if (controlled === undefined) setOwn(before);
-      if (!reduce && scope.current) {
-        animateScope(
-          scope.current,
-          { x: [0, -4, 4, -3, 3, 0] },
-          { duration: 0.36, ease: "easeOut" },
-        );
-      }
+      if (!reduce) shake(scope.current, 4, 0.36);
     }
   };
 
   const step =
-    "grid h-full w-11 shrink-0 cursor-pointer place-items-center text-primary-foreground transition-colors duration-150 hover:bg-primary-foreground/[0.1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-foreground/45 disabled:cursor-default disabled:hover:bg-transparent";
+    "grid h-full w-11 shrink-0 cursor-pointer place-items-center text-primary-foreground hover:bg-primary-foreground/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-foreground/45 disabled:cursor-default disabled:hover:bg-transparent";
+
+  /** Both faces stay mounted and trade places with a delayed cross-fade. */
+  const face = (shown: boolean, lead: number): React.CSSProperties => ({
+    opacity: shown ? 1 : 0,
+    visibility: shown ? "visible" : "hidden",
+    ...transition(
+      ["opacity", shown ? 200 : 120, CSS_OUT, shown && !reduce ? lead : 0],
+      ["visibility", 0, "linear", shown ? 0 : 120],
+    ),
+  });
+
+  /** The − and + buttons slide in from the sides once the stepper shows. */
+  const stepSlide = (from: number, opacity: number): React.CSSProperties => ({
+    opacity: inCart ? opacity : 0,
+    transform: `translateX(${inCart || reduce ? 0 : from}px)`,
+    ...transition(
+      ["opacity", inCart ? 320 : 120, CSS_OUT, inCart && !reduce ? 220 : 0],
+      ["transform", inCart ? 320 : 120, CSS_OUT, inCart && !reduce ? 220 : 0],
+      ["background-color", 150, CSS_STANDARD],
+    ),
+  });
 
   return (
     <div
       ref={scope}
       className={cn(
-        "relative inline-grid h-12 overflow-clip rounded-lg bg-primary text-sm font-medium text-primary-foreground select-none",
-        "bg-[linear-gradient(to_bottom,rgba(255,255,255,0.10),rgba(255,255,255,0)_55%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.16),inset_0_-1px_0_rgba(0,0,0,0.3),0_1px_2px_rgba(0,0,0,0.14),0_6px_14px_-6px_rgba(0,0,0,0.24)]",
-        "dark:bg-[linear-gradient(to_bottom,rgba(255,255,255,0),rgba(0,0,0,0.06))] dark:shadow-[inset_0_-1px_0_rgba(0,0,0,0.12)]",
+        "relative inline-grid h-12 overflow-clip rounded-full keep-rounded bg-primary text-sm font-medium text-primary-foreground select-none",
+        "bg-[linear-gradient(to_bottom,rgba(255,255,255,0.10),rgba(255,255,255,0)_55%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-1px_0_rgba(0,0,0,0.08),0_0_1px_rgba(0,0,0,0.08),0_0_2px_rgba(0,0,0,0.04)]",
+        "dark:bg-[linear-gradient(to_bottom,rgba(255,255,255,0),rgba(0,0,0,0.06))] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.08)]",
         className,
       )}
     >
       <span
         aria-hidden
-        className="invisible col-start-1 row-start-1 flex items-center gap-2 px-5 whitespace-nowrap"
+        className="invisible col-start-1 row-start-1 flex items-center gap-2 px-8 whitespace-nowrap"
       >
         <span className="size-4" />
         {label}
         {price && <span className="ml-1">· {price}</span>}
       </span>
 
-      <AnimatePresence initial={false}>
-        {!inCart ? (
-          <motion.button
-            key="add"
-            ref={addButton}
-            type="button"
-            onClick={() => change(1)}
-            aria-label={price ? `${label}, ${price}` : label}
-            initial={{ opacity: 0 }}
-            animate={{
-              opacity: 1,
-              transition: {
-                duration: 0.2,
-                delay: reduce ? 0 : 0.14,
-                ease: EASE_OUT,
-              },
-            }}
-            exit={{ opacity: 0, transition: { duration: 0.12 } }}
-            className="col-start-1 row-start-1 flex cursor-pointer items-center justify-center gap-2 px-5 whitespace-nowrap transition-[background-color,transform,scale] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-primary-foreground/[0.06] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-foreground/45"
-          >
-            <CartIcon drops={0} reduce={reduce} />
-            {label}
-            {price && (
-              <span className="ml-1 text-primary-foreground/65">· {price}</span>
-            )}
-          </motion.button>
-        ) : (
-          <motion.div
-            key="stepper"
-            role="group"
-            aria-label="Quantity in cart"
-            initial={{ opacity: 0 }}
-            animate={{
-              opacity: 1,
-              transition: {
-                duration: 0.2,
-                delay: reduce ? 0 : 0.12,
-                ease: EASE_OUT,
-              },
-            }}
-            exit={{ opacity: 0, transition: { duration: 0.12 } }}
-            className="col-start-1 row-start-1 flex items-center justify-between"
-          >
-            <motion.button
-              ref={minusButton}
-              type="button"
-              aria-label={quantity === 1 ? "Remove from cart" : "Remove one"}
-              onClick={() => change(quantity - 1)}
-              initial={{ x: reduce ? 0 : 14, opacity: 0 }}
-              animate={{
-                x: 0,
-                opacity: 1,
-                transition: {
-                  duration: 0.32,
-                  delay: reduce ? 0 : 0.22,
-                  ease: EASE_OUT,
-                },
-              }}
-              className={step}
-            >
-              <Minus className="size-4" strokeWidth={2} />
-            </motion.button>
+      <div
+        aria-hidden={inCart}
+        className="col-start-1 row-start-1 grid"
+        style={face(!inCart, 140)}
+      >
+        <button
+          ref={addButton}
+          type="button"
+          tabIndex={inCart ? -1 : 0}
+          onClick={() => change(1)}
+          aria-label={price ? `${label}, ${price}` : label}
+          className="flex cursor-pointer items-center justify-center gap-2 px-8 whitespace-nowrap transition-[background-color,transform,scale] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-primary-foreground/[0.04] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-foreground/45"
+        >
+          <CartIcon drops={0} reduce={reduce} />
+          {label}
+          {price && (
+            <span className="ml-1 text-primary-foreground/65">· {price}</span>
+          )}
+        </button>
+      </div>
 
-            <span className="flex items-center gap-2">
-              <CartIcon drops={drops} reduce={reduce} />
-              <span className="flex items-center gap-1 whitespace-nowrap">
-                <CartCount value={quantity} reduce={reduce} />
-                <span className="leading-[1.25em] text-primary-foreground/65">
-                  in cart
-                </span>
-              </span>
+      <div
+        role="group"
+        aria-label="Quantity in cart"
+        aria-hidden={!inCart}
+        className="col-start-1 row-start-1 flex items-center justify-between"
+        style={face(inCart, 120)}
+      >
+        <button
+          ref={minusButton}
+          type="button"
+          tabIndex={inCart ? 0 : -1}
+          aria-label={quantity === 1 ? "Remove from cart" : "Remove one"}
+          onClick={() => change(quantity - 1)}
+          className={step}
+          style={stepSlide(14, 1)}
+        >
+          <Minus className="size-4" strokeWidth={2} />
+        </button>
+
+        <span className="flex items-center gap-2">
+          <CartIcon drops={drops} reduce={reduce} />
+          <span className="flex items-center gap-1 whitespace-nowrap">
+            <CartCount value={quantity} reduce={reduce} />
+            <span className="leading-[1.25em] text-primary-foreground/65">
+              in cart
             </span>
+          </span>
+        </span>
 
-            <motion.button
-              ref={plusButton}
-              type="button"
-              aria-label="Add one"
-              onClick={() => change(quantity + 1)}
-              disabled={atMax}
-              initial={{ x: reduce ? 0 : -14, opacity: 0 }}
-              animate={{
-                x: 0,
-                opacity: atMax ? 0.4 : 1,
-                transition: {
-                  duration: 0.32,
-                  delay: reduce ? 0 : 0.22,
-                  ease: EASE_OUT,
-                },
-              }}
-              className={step}
-            >
-              <Plus className="size-4" strokeWidth={2} />
-            </motion.button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        <button
+          ref={plusButton}
+          type="button"
+          tabIndex={inCart ? 0 : -1}
+          aria-label="Add one"
+          onClick={() => change(quantity + 1)}
+          disabled={atMax}
+          className={step}
+          style={stepSlide(-14, atMax ? 0.4 : 1)}
+        >
+          <Plus className="size-4" strokeWidth={2} />
+        </button>
+      </div>
 
       <span className="sr-only" aria-live="polite">
         {inCart ? `${quantity} in cart` : ""}
@@ -2204,7 +2618,10 @@ export function AddToCart({
 
 type PaymentButtonState = "idle" | "processing" | "paid" | "failed";
 
-export type PaymentButtonProps = Omit<HTMLMotionProps<"button">, "children"> & {
+export type PaymentButtonProps = Omit<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  "children"
+> & {
   amount?: string;
   label?: string;
   action?: () => Promise<void>;
@@ -2215,31 +2632,9 @@ export type PaymentButtonProps = Omit<HTMLMotionProps<"button">, "children"> & {
   resetAfter?: number;
 };
 
-function PaymentSwap({
-  children,
-  reduceMotion,
-}: {
-  children: React.ReactNode;
-  reduceMotion: boolean;
-}) {
-  return (
-    <motion.span
-      initial={{ opacity: 0, y: reduceMotion ? 0 : 4 }}
-      animate={{ opacity: 1, y: 0, transition: { duration: 0.24, ease: EASE_OUT } }}
-      exit={{
-        opacity: 0,
-        y: reduceMotion ? 0 : -4,
-        transition: { duration: 0.14, ease: EASE_OUT },
-      }}
-      className="col-start-1 row-start-1 flex items-center justify-center gap-2 whitespace-nowrap"
-    >
-      {children}
-    </motion.span>
-  );
-}
-
 const paymentSlotClass =
   "invisible col-start-1 row-start-1 flex items-center justify-center gap-2 whitespace-nowrap";
+const swapSlotClass = "flex items-center justify-center gap-2 whitespace-nowrap";
 
 export const PaymentButton = React.forwardRef<
   HTMLButtonElement,
@@ -2264,7 +2659,7 @@ export const PaymentButton = React.forwardRef<
   ) => {
     const [state, setState] = React.useState<PaymentButtonState>("idle");
     const [attempt, setAttempt] = React.useState(0);
-    const reduceMotion = Boolean(useReducedMotion());
+    const reduceMotion = usePrefersReducedMotion();
     const generation = React.useRef(0);
     const timer = React.useRef<number | undefined>(undefined);
 
@@ -2297,6 +2692,7 @@ export const PaymentButton = React.forwardRef<
       )
         return;
 
+      const button = event.currentTarget;
       const gen = ++generation.current;
       setState("processing");
       try {
@@ -2306,6 +2702,7 @@ export const PaymentButton = React.forwardRef<
         if (generation.current !== gen) return;
         setAttempt((n) => n + 1);
         settle(gen, "failed", failedDuration);
+        if (!reduceMotion) shake(button, 4, 0.36);
       }
     };
 
@@ -2340,24 +2737,16 @@ export const PaymentButton = React.forwardRef<
     );
 
     return (
-      <motion.button
+      <button
         ref={ref}
         type="button"
         disabled={Boolean(disabled) || state !== "idle"}
         onClick={handleClick}
         aria-busy={state === "processing"}
         data-state={state}
-        animate={
-          state === "failed" && !reduceMotion
-            ? {
-                x: [0, -4, 4, -3, 3, 0],
-                transition: { duration: 0.36, ease: "easeOut" },
-              }
-            : { x: 0 }
-        }
         className={cn(
-          "relative inline-flex h-12 w-full max-w-[280px] cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-primary px-5 text-sm font-medium text-primary-foreground",
-          "transition-[background-color,transform,scale] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-primary/90 active:scale-[0.98]",
+          "relative inline-flex h-12 w-full max-w-[280px] cursor-pointer items-center justify-center overflow-hidden rounded-full keep-rounded bg-primary px-5 text-sm font-medium text-primary-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-1px_0_rgba(0,0,0,0.08),0_0_1px_rgba(0,0,0,0.08),0_0_2px_rgba(0,0,0,0.04)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.08)]",
+          "transition-[background-color,transform,scale] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-primary/95 active:scale-[0.98]",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
           "disabled:pointer-events-none data-[state=idle]:disabled:opacity-50",
           className,
@@ -2378,28 +2767,19 @@ export const PaymentButton = React.forwardRef<
             {failed}
           </span>
 
-          <AnimatePresence initial={false}>
-            {state === "idle" && (
-              <PaymentSwap key="idle" reduceMotion={reduceMotion}>
-                {idle}
-              </PaymentSwap>
-            )}
-            {state === "processing" && (
-              <PaymentSwap key="processing" reduceMotion={reduceMotion}>
-                {processing}
-              </PaymentSwap>
-            )}
-            {state === "paid" && (
-              <PaymentSwap key="paid" reduceMotion={reduceMotion}>
-                {paid}
-              </PaymentSwap>
-            )}
-            {state === "failed" && (
-              <PaymentSwap key={`failed-${attempt}`} reduceMotion={reduceMotion}>
-                {failed}
-              </PaymentSwap>
-            )}
-          </AnimatePresence>
+          <SlideSlot
+            id={state === "failed" ? `failed-${attempt}` : state}
+            reduce={reduceMotion}
+            className={swapSlotClass}
+          >
+            {state === "idle"
+              ? idle
+              : state === "processing"
+                ? processing
+                : state === "paid"
+                  ? paid
+                  : failed}
+          </SlideSlot>
         </span>
 
         <span className="sr-only" aria-live="polite">
@@ -2411,7 +2791,7 @@ export const PaymentButton = React.forwardRef<
                 ? failedLabel
                 : ""}
         </span>
-      </motion.button>
+      </button>
     );
   },
 );
@@ -2451,29 +2831,35 @@ export const InteractiveButton = React.forwardRef<
   ) => {
     const [state, setState] = React.useState<InteractiveButtonState>("idle");
     const [percent, setPercent] = React.useState<number | null>(null);
-    const reduceMotion = Boolean(useReducedMotion());
-    const fill = useMotionValue(0);
-    const fillAnimation = React.useRef<AnimationPlaybackControls | null>(null);
+    const reduceMotion = usePrefersReducedMotion();
+    const fill = React.useRef({ value: 0 });
+    const fillEl = React.useRef<HTMLSpanElement>(null);
     const generation = React.useRef(0);
     const timer = React.useRef<number | undefined>(undefined);
 
+    const paintFill = React.useCallback(() => {
+      if (fillEl.current) {
+        fillEl.current.style.transform = `scaleX(${fill.current.value})`;
+      }
+    }, []);
+
     const moveFill = React.useCallback(
-      (to: number, duration: number, ease: readonly number[] = EASE_OUT) => {
-        fillAnimation.current?.stop();
-        fillAnimation.current = animate(fill, to, {
+      (to: number, duration: number, ease: (p: number) => number = gEase.out) =>
+        tweenTo(fill.current, {
+          value: to,
           duration: reduceMotion ? 0 : duration,
-          ease: [...ease] as [number, number, number, number],
-        });
-        return fillAnimation.current;
-      },
-      [fill, reduceMotion],
+          ease,
+          onUpdate: paintFill,
+        }),
+      [reduceMotion, paintFill],
     );
 
     React.useEffect(() => {
+      const values = fill.current;
       return () => {
         generation.current += 1;
         window.clearTimeout(timer.current);
-        fillAnimation.current?.stop();
+        gsap.killTweensOf(values);
       };
     }, []);
 
@@ -2484,17 +2870,19 @@ export const InteractiveButton = React.forwardRef<
 
       const gen = ++generation.current;
       let determinate = false;
-      fill.set(0);
+      gsap.killTweensOf(fill.current);
+      fill.current.value = 0;
+      paintFill();
       setPercent(null);
       setState("loading");
-      moveFill(0.9, 3.2, CREEP_EASE);
+      void moveFill(0.9, 3.2, gEase.creep);
 
       const report = (value: number) => {
         if (generation.current !== gen) return;
         const clamped = Math.min(1, Math.max(0, value));
         determinate = true;
         setPercent(Math.round(clamped * 100));
-        moveFill(clamped, 0.3);
+        void moveFill(clamped, 0.3);
       };
 
       try {
@@ -2507,12 +2895,12 @@ export const InteractiveButton = React.forwardRef<
         timer.current = window.setTimeout(() => {
           if (generation.current !== gen) return;
           setState("idle");
-          moveFill(0, 0.2);
+          void moveFill(0, 0.2);
         }, successDuration);
       } catch {
         if (generation.current !== gen) return;
         setState("idle");
-        moveFill(0, 0.2);
+        void moveFill(0, 0.2);
       }
     };
 
@@ -2551,60 +2939,49 @@ export const InteractiveButton = React.forwardRef<
         aria-busy={state === "loading"}
         data-state={state}
         className={cn(
-          "group relative inline-flex h-12 cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-border bg-background px-5 text-sm font-medium text-foreground",
-          "transition-[background-color,transform,scale] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-muted active:scale-[0.98]",
+          "group relative inline-flex h-12 cursor-pointer items-center justify-center overflow-hidden rounded-full keep-rounded border border-black/[0.045] bg-white px-5 text-sm font-medium text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_0_1px_rgba(0,0,0,0.05),0_0_1px_rgba(0,0,0,0.03)] dark:border-white/[0.06] dark:bg-background dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_0_1px_rgba(0,0,0,0.2),0_0_1px_rgba(0,0,0,0.12)]",
+          "transition-[background-color,transform,scale] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-black/[0.03] active:scale-[0.98] dark:hover:bg-white/[0.035]",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
           "disabled:pointer-events-none data-[state=idle]:disabled:opacity-50",
           className,
         )}
         {...props}
       >
-        <motion.span
+        <span
+          ref={fillEl}
           aria-hidden
-          style={{ scaleX: fill }}
+          style={{ transform: "scaleX(0)" }}
           className="pointer-events-none absolute inset-0 origin-left bg-foreground/[0.07]"
         />
 
         <span className="relative grid">
-          <span
-            aria-hidden
-            className="invisible col-start-1 row-start-1 flex items-center justify-center gap-2 whitespace-nowrap"
-          >
+          <span aria-hidden className={paymentSlotClass}>
             {idleLabel}
           </span>
-          <span
-            aria-hidden
-            className="invisible col-start-1 row-start-1 flex items-center justify-center gap-2 whitespace-nowrap"
-          >
+          <span aria-hidden className={paymentSlotClass}>
             {loadingText(100)}
           </span>
-          <span
-            aria-hidden
-            className="invisible col-start-1 row-start-1 flex items-center justify-center gap-2 whitespace-nowrap"
-          >
+          <span aria-hidden className={paymentSlotClass}>
             {successText}
           </span>
 
-          <AnimatePresence initial={false}>
-            {state === "idle" && (
-              <PaymentSwap key="idle" reduceMotion={reduceMotion}>
-                {idleLabel}
-              </PaymentSwap>
-            )}
-            {state === "loading" && (
-              <PaymentSwap
-                key={percent === null ? "loading" : "progress"}
-                reduceMotion={reduceMotion}
-              >
-                {loadingText(percent)}
-              </PaymentSwap>
-            )}
-            {state === "success" && (
-              <PaymentSwap key="success" reduceMotion={reduceMotion}>
-                {successText}
-              </PaymentSwap>
-            )}
-          </AnimatePresence>
+          <SlideSlot
+            id={
+              state === "loading"
+                ? percent === null
+                  ? "loading"
+                  : "progress"
+                : state
+            }
+            reduce={reduceMotion}
+            className={swapSlotClass}
+          >
+            {state === "idle"
+              ? idleLabel
+              : state === "loading"
+                ? loadingText(percent)
+                : successText}
+          </SlideSlot>
         </span>
 
         <span className="sr-only" aria-live="polite">
@@ -2641,7 +3018,6 @@ export type SlideToConfirmProps = {
 const SLIDE_HEIGHT = 48;
 const SLIDE_INSET = 4;
 const SLIDE_THUMB = 40;
-const SLIDE_RETURN = { type: "spring", stiffness: 520, damping: 42 } as const;
 
 export function SlideToConfirm({
   action,
@@ -2658,8 +3034,10 @@ export function SlideToConfirm({
   const [error, setError] = React.useState(false);
   const [width, setWidth] = React.useState(0);
   const [value, setValue] = React.useState(0);
-  const reduce = Boolean(useReducedMotion());
+  const reduce = usePrefersReducedMotion();
   const track = React.useRef<HTMLDivElement>(null);
+  const thumbEl = React.useRef<HTMLButtonElement>(null);
+  const fillEl = React.useRef<HTMLDivElement>(null);
   const radius = useElementRadius(track);
   const drag = React.useRef<{
     id: number;
@@ -2670,21 +3048,34 @@ export function SlideToConfirm({
   } | null>(null);
   const timer = React.useRef<number | undefined>(undefined);
   const mounted = React.useRef(true);
-  const x = useMotionValue(0);
+  // The thumb's offset from its resting place, in px.
+  const thumb = React.useRef({ x: 0 });
   const target = React.useRef(0);
 
   const r = Math.min(radius, SLIDE_HEIGHT / 2);
   const max = Math.max(0, width - SLIDE_THUMB - SLIDE_INSET * 2);
-  const reach = useTransform(x, (v) =>
-    Math.max(0, width - (v + SLIDE_THUMB + SLIDE_INSET * 2)),
-  );
-  const fillClip = useMotionTemplate`inset(0px ${reach}px 0px 0px round ${r}px)`;
-  const fillOpacity = useTransform(x, [0, 16], [0, 1]);
+
+  /** Puts the thumb and the ink that trails it where `thumb.x` says. */
+  const paint = React.useCallback(() => {
+    const x = thumb.current.x;
+    if (thumbEl.current) thumbEl.current.style.transform = `translateX(${x}px)`;
+    if (fillEl.current) {
+      const reach = Math.max(0, width - (x + SLIDE_THUMB + SLIDE_INSET * 2));
+      fillEl.current.style.clipPath = `inset(0px ${reach}px 0px 0px round ${r}px)`;
+      fillEl.current.style.opacity = String(Math.min(1, Math.max(0, x / 16)));
+    }
+  }, [width, r]);
+
+  React.useLayoutEffect(() => {
+    paint();
+  }, [paint, width]);
 
   React.useEffect(() => {
     mounted.current = true;
+    const values = thumb.current;
     return () => {
       mounted.current = false;
+      gsap.killTweensOf(values);
       window.clearTimeout(timer.current);
     };
   }, []);
@@ -2701,17 +3092,23 @@ export function SlideToConfirm({
 
   const busy = state === "pending" || state === "done";
 
+  const slideTo = (to: number, vars: gsap.TweenVars) =>
+    tweenTo(thumb.current, { x: to, onUpdate: paint, ...vars });
+
   const sendBack = () => {
     setValue(0);
     target.current = 0;
-    animate(x, 0, reduce ? { duration: 0 } : SLIDE_RETURN);
+    void slideTo(
+      0,
+      reduce ? { duration: 0 } : { duration: SPRING_RETURN.duration, ease: SPRING_RETURN.ease },
+    );
   };
 
   const confirm = async () => {
     setState("pending");
     setValue(100);
     setError(false);
-    await animate(x, max, { duration: reduce ? 0 : 0.18, ease: EASE_OUT });
+    await slideTo(max, { duration: reduce ? 0 : 0.18, ease: gEase.out });
     if (!mounted.current) return;
     if ("vibrate" in navigator) navigator.vibrate?.(12);
     try {
@@ -2740,22 +3137,25 @@ export function SlideToConfirm({
 
   const nudge = async () => {
     if (reduce) return;
-    await animate(x, Math.min(28, max), { duration: 0.22, ease: EASE_OUT });
-    animate(x, 0, SLIDE_RETURN);
+    await slideTo(Math.min(28, max), { duration: 0.22, ease: gEase.out });
+    void slideTo(0, {
+      duration: SPRING_RETURN.duration,
+      ease: SPRING_RETURN.ease,
+    });
   };
 
   const onPointerDown = (event: React.PointerEvent<HTMLButtonElement>) => {
     if (disabled || busy || event.button !== 0) return;
     event.currentTarget.setPointerCapture(event.pointerId);
-    x.stop();
+    gsap.killTweensOf(thumb.current);
     drag.current = {
       id: event.pointerId,
       startX: event.clientX,
-      origin: x.get(),
+      origin: thumb.current.x,
       moved: false,
       at: performance.now(),
     };
-    target.current = x.get();
+    target.current = thumb.current.x;
     setState("dragging");
   };
 
@@ -2764,14 +3164,15 @@ export function SlideToConfirm({
     if (!d || d.id !== event.pointerId) return;
     const dx = event.clientX - d.startX;
     if (Math.abs(dx) > 3) d.moved = true;
-    x.set(Math.min(max, Math.max(0, d.origin + dx)));
+    thumb.current.x = Math.min(max, Math.max(0, d.origin + dx));
+    paint();
   };
 
   const onPointerUp = (event: React.PointerEvent<HTMLButtonElement>) => {
     const d = drag.current;
     if (!d || d.id !== event.pointerId) return;
     drag.current = null;
-    if (max && x.get() / max >= threshold) {
+    if (max && thumb.current.x / max >= threshold) {
       void confirm();
       return;
     }
@@ -2803,20 +3204,22 @@ export function SlideToConfirm({
     }
     target.current = clamped;
     setValue(Math.round((clamped / (max || 1)) * 100));
-    animate(x, clamped, { duration: reduce ? 0 : 0.2, ease: EASE_OUT });
+    void slideTo(clamped, { duration: reduce ? 0 : 0.2, ease: gEase.out });
   };
 
   const measured = width > 0;
   const restText = error ? errorLabel : label;
+  const restId = busy ? null : restText;
+  const progressId = state === "pending" || state === "done" ? state : null;
 
   return (
     <div
       ref={track}
       data-state={state}
       className={cn(
-        "relative w-[320px] max-w-full overflow-clip rounded-lg text-sm font-medium select-none",
+        "relative w-[320px] max-w-full overflow-clip rounded-full keep-rounded text-sm font-medium select-none",
         "has-[[role=slider]:focus-visible]:outline-solid has-[[role=slider]:focus-visible]:outline-2 has-[[role=slider]:focus-visible]:outline-offset-2 has-[[role=slider]:focus-visible]:outline-ring/50",
-        "border border-black/[0.08] bg-black/[0.035] shadow-[inset_0_1px_2px_rgba(0,0,0,0.06)] dark:border-white/[0.08] dark:bg-white/[0.04] dark:shadow-[inset_0_1px_2px_rgba(0,0,0,0.5)]",
+        "border border-black/[0.04] bg-black/[0.035] shadow-[inset_0_0_2px_rgba(0,0,0,0.06)] dark:border-white/[0.05] dark:bg-white/[0.04] dark:shadow-[inset_0_0_2px_rgba(0,0,0,0.5)]",
         disabled && "opacity-50",
         className,
       )}
@@ -2827,45 +3230,33 @@ export function SlideToConfirm({
         className="pointer-events-none absolute inset-y-0 right-0 grid place-items-center text-muted-foreground"
         style={{ left: SLIDE_THUMB + SLIDE_INSET * 2 }}
       >
-        <AnimatePresence initial={false}>
-          {!busy && (
-            <SlideSwap
-              key={restText}
-              reduce={reduce}
-              className={cn(
-                "whitespace-nowrap",
-                error && "text-red-600 dark:text-red-400",
-              )}
-            >
-              {restText}
-            </SlideSwap>
+        <SlideSlot
+          id={restId}
+          reduce={reduce}
+          className={cn(
+            "whitespace-nowrap",
+            error && "text-red-600 dark:text-red-400",
           )}
-        </AnimatePresence>
+        >
+          {restText}
+        </SlideSlot>
       </span>
 
       {measured && (
-        <motion.div
+        <div
+          ref={fillEl}
           aria-hidden
-          style={{ clipPath: fillClip, opacity: fillOpacity }}
           className="pointer-events-none absolute inset-0 bg-primary bg-[linear-gradient(to_bottom,rgba(255,255,255,0.08),rgba(255,255,255,0)_60%)] dark:bg-[linear-gradient(to_bottom,rgba(255,255,255,0),rgba(0,0,0,0.06))]"
         >
           <span
             className="absolute inset-y-0 right-0 grid place-items-center text-primary-foreground"
             style={{ left: SLIDE_THUMB + SLIDE_INSET * 2 }}
           >
-            <AnimatePresence initial={false}>
-              {!busy && (
-                <SlideSwap
-                  key={restText}
-                  reduce={reduce}
-                  className="whitespace-nowrap"
-                >
-                  {restText}
-                </SlideSwap>
-              )}
-            </AnimatePresence>
+            <SlideSlot id={restId} reduce={reduce} className="whitespace-nowrap">
+              {restText}
+            </SlideSlot>
           </span>
-        </motion.div>
+        </div>
       )}
 
       <span
@@ -2873,25 +3264,17 @@ export function SlideToConfirm({
         className="pointer-events-none absolute inset-y-0 left-0 grid place-items-center text-primary-foreground"
         style={{ right: SLIDE_THUMB + SLIDE_INSET * 2 }}
       >
-        <AnimatePresence initial={false}>
-          {state === "pending" && (
-            <SlideSwap
-              key="pending"
-              reduce={reduce}
-              className="whitespace-nowrap"
-            >
-              {pendingLabel}
-            </SlideSwap>
-          )}
-          {state === "done" && (
-            <SlideSwap key="done" reduce={reduce} className="whitespace-nowrap">
-              {doneLabel}
-            </SlideSwap>
-          )}
-        </AnimatePresence>
+        <SlideSlot
+          id={progressId}
+          reduce={reduce}
+          className="whitespace-nowrap"
+        >
+          {state === "pending" ? pendingLabel : doneLabel}
+        </SlideSlot>
       </span>
 
-      <motion.button
+      <button
+        ref={thumbEl}
         type="button"
         role="slider"
         aria-label={label}
@@ -2914,15 +3297,14 @@ export function SlideToConfirm({
         onKeyDown={onKeyDown}
         onContextMenu={(event) => event.preventDefault()}
         style={{
-          x,
           width: SLIDE_THUMB,
           top: SLIDE_INSET,
           bottom: SLIDE_INSET,
           left: SLIDE_INSET,
         }}
         className={cn(
-          "group absolute grid touch-none place-items-center rounded-md bg-background text-foreground",
-          "shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_0_0_1px_rgba(0,0,0,0.07),0_1px_2px_rgba(0,0,0,0.1),0_3px_8px_-2px_rgba(0,0,0,0.14)] dark:bg-zinc-800 dark:text-zinc-100 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_0_0_1px_rgba(255,255,255,0.1),0_1px_2px_rgba(0,0,0,0.6)]",
+          "group absolute grid touch-none place-items-center rounded-full keep-rounded bg-background text-foreground",
+          "shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_0_0_1px_rgba(0,0,0,0.04),0_0_1px_rgba(0,0,0,0.06),0_0_2px_rgba(0,0,0,0.04)] dark:bg-zinc-800 dark:text-zinc-100 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_0_0_1px_rgba(255,255,255,0.06),0_0_1px_rgba(0,0,0,0.3),0_0_1px_rgba(0,0,0,0.2)]",
           "transition-shadow duration-150 focus-visible:outline-none",
           busy
             ? "cursor-default"
@@ -2932,44 +3314,27 @@ export function SlideToConfirm({
         )}
       >
         <span className="grid size-4 place-items-center">
-          <AnimatePresence initial={false}>
-            {!busy && (
-              <SlideSwap
-                key="arrow"
+          <SlideSlot
+            id={!busy ? "arrow" : state}
+            reduce={reduce}
+            className="grid place-items-center"
+          >
+            {!busy ? (
+              <ArrowRight className="size-4 transition-transform duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-0.5" />
+            ) : state === "pending" ? (
+              <Loader2 className="size-4 animate-spin [animation-duration:700ms]" />
+            ) : (
+              <PopIn
                 reduce={reduce}
+                from={POP_FROM}
                 className="grid place-items-center"
               >
-                <ArrowRight className="size-4 transition-transform duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-0.5" />
-              </SlideSwap>
+                <Check className="size-4" strokeWidth={2.5} />
+              </PopIn>
             )}
-            {state === "pending" && (
-              <SlideSwap
-                key="spinner"
-                reduce={reduce}
-                className="grid place-items-center"
-              >
-                <Loader2 className="size-4 animate-spin [animation-duration:700ms]" />
-              </SlideSwap>
-            )}
-            {state === "done" && (
-              <SlideSwap
-                key="check"
-                reduce={reduce}
-                className="grid place-items-center"
-              >
-                <motion.span
-                  className="grid place-items-center"
-                  initial={reduce ? false : { scale: 0.4, rotate: -30 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  transition={{ type: "spring", stiffness: 420, damping: 24 }}
-                >
-                  <Check className="size-4" strokeWidth={2.5} />
-                </motion.span>
-              </SlideSwap>
-            )}
-          </AnimatePresence>
+          </SlideSlot>
         </span>
-      </motion.button>
+      </button>
 
       <span className="sr-only" aria-live="polite">
         {state === "pending"

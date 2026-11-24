@@ -4,33 +4,38 @@ import { BookingCard } from "@/components/custom/blocks/BookingCardBlock";
 import { GlassBackdrop, GlassPanel } from "@/components/custom/blocks/GlassPanelBlock";
 import { cn } from "@/lib/utils";
 
-const MORNING = [
-  { label: "9:00 AM" },
-  { label: "10:00 AM" },
-  { label: "11:00 AM", taken: true },
-];
-const AFTERNOON = [
-  { label: "12:00 PM" },
-  { label: "1:00 PM" },
-  { label: "2:00 PM" },
-  { label: "3:00 PM", taken: true },
+const SLOTS = [
+  { label: "09:00" },
+  { label: "10:00" },
+  { label: "11:00", taken: true },
+  { label: "13:00" },
+  { label: "14:00" },
+  { label: "15:00" },
+  { label: "16:00", taken: true },
+  { label: "18:00" },
+  { label: "19:00" },
 ];
 
-function Card({ heading = "Book an appointment", className }: { heading?: string; className?: string }) {
+function Card({ className }: { className?: string }) {
   return (
     <BookingCard
-      className={cn("flex h-full flex-col gap-5 p-6", className)}
+      className={cn("p-6 sm:p-7", className)}
       onBook={() => new Promise((resolve) => setTimeout(resolve, 900))}
     >
-      <h2 className="text-lg font-semibold tracking-tight">{heading}</h2>
-      <BookingCard.Days unavailable={(d) => d.getDay() === 0} />
-      <div className="space-y-4">
-        <p className="text-sm font-semibold">Time</p>
-        <BookingCard.Slots label="Morning" slots={MORNING} />
-        <BookingCard.Slots label="Afternoon" slots={AFTERNOON} />
+      <div className="flex items-center justify-between gap-3">
+        <h2 className="text-lg font-semibold tracking-tight">Book Appointment</h2>
+        <BookingCard.Month />
       </div>
-      <BookingCard.Submit className="mt-auto" />
-      <BookingCard.Confirmation withName="Dr. Nair" place="Riverside Heart & Medical Group" />
+      <p className="mt-3 text-sm text-muted-foreground">
+        Choose a day and time that works for you.
+      </p>
+      <BookingCard.Days className="-mx-1 mt-5" unavailable={(d) => d.getDay() === 0} />
+      <BookingCard.Times slots={SLOTS} />
+      <BookingCard.Submit className="mt-6">Book appointment</BookingCard.Submit>
+      <BookingCard.Confirmation
+        title="Appointment confirmed"
+        description="Your appointment is booked, and a confirmation is on its way to your inbox. Please arrive 10 minutes early."
+      />
     </BookingCard>
   );
 }
@@ -38,7 +43,7 @@ function Card({ heading = "Book an appointment", className }: { heading?: string
 export default function BookingCardDemo({
   surface = "card",
 }: {
-  /** The panel the card sits in: a plain bordered card, a glass slab, or liquid-glass refraction. */
+  /** The panel the card sits in: a plain card, a glass slab, or liquid-glass refraction. */
   surface?: "card" | "glass" | "liquid-glass";
 }) {
   if (surface === "liquid-glass") {
@@ -60,11 +65,7 @@ export default function BookingCardDemo({
   }
 
   return (
-    <div
-      className={cn(
-        "w-full max-w-md rounded-3xl border border-border bg-card text-card-foreground shadow-sm",
-      )}
-    >
+    <div className="w-full max-w-md rounded-[2rem] bg-card text-card-foreground shadow-[0_1px_2px_rgba(0,0,0,0.06),0_24px_56px_-20px_rgba(0,0,0,0.42)]">
       <Card />
     </div>
   );

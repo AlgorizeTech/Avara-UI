@@ -169,11 +169,18 @@ const MAP_STYLES = `
   background: rgba(255, 255, 255, 0.85) !important;
   backdrop-filter: blur(8px);
   border-radius: 9999px !important;
-  padding: 2px 10px !important;
+  padding: 2px 26px 2px 10px !important;
   margin: 0 12px 12px 0 !important;
   font-size: 10px !important;
   color: #52525b !important;
   border: 1px solid rgba(0, 0, 0, 0.06);
+}
+.avara-maps-root .maplibregl-ctrl-attrib.maplibregl-compact {
+  padding: 0 !important;
+  min-height: 24px;
+}
+.avara-maps-root .maplibregl-ctrl-attrib.maplibregl-compact-show {
+  padding: 2px 28px 2px 10px !important;
 }
 .avara-maps-root[data-maps-theme="dark"] .maplibregl-ctrl-attrib {
   background: rgba(24, 24, 27, 0.85) !important;
@@ -227,7 +234,7 @@ const ROUTE_PLANNER_STOPS: MapStop[] = [
     label: "Start",
     subtitle: "Embarcadero Depot",
     detail: "Departed 9:12 AM",
-    lngLat: [-122.3921, 37.7918],
+    lngLat: [-122.4005, 37.7955],
     tone: "start",
   },
   {
@@ -235,7 +242,7 @@ const ROUTE_PLANNER_STOPS: MapStop[] = [
     label: "Market Street",
     subtitle: "Next stop",
     detail: "Arrival 9:19 AM",
-    lngLat: [-122.3982, 37.7875],
+    lngLat: [-122.3965, 37.7855],
     tone: "stop",
   },
   {
@@ -249,12 +256,12 @@ const ROUTE_PLANNER_STOPS: MapStop[] = [
 ];
 
 const ROUTE_PLANNER_PATH: [number, number][] = [
-  [-122.3921, 37.7918],
-  [-122.3951, 37.7896],
-  [-122.3982, 37.7875],
-  [-122.3948, 37.7848],
-  [-122.391, 37.7795],
-  [-122.3894, 37.7734],
+  [-122.4005, 37.7955],
+  [-122.3982, 37.7905],
+  [-122.3965, 37.7855],
+  [-122.3935, 37.781],
+  [-122.3905, 37.7755],
+  [-122.3888, 37.771],
   [-122.3877, 37.768],
 ];
 
@@ -399,13 +406,16 @@ const COVERAGE_ZONES: CoverageZone[] = [
     name: "North same-day",
     capacityLabel: "84%",
     color: "#6366f1",
-    center: [-97.738, 30.335],
+    center: [-97.738, 30.338],
     polygon: [
-      [-97.772, 30.365],
-      [-97.704, 30.365],
-      [-97.704, 30.305],
-      [-97.772, 30.305],
-      [-97.772, 30.365],
+      [-97.776, 30.348],
+      [-97.758, 30.368],
+      [-97.716, 30.365],
+      [-97.698, 30.342],
+      [-97.706, 30.312],
+      [-97.742, 30.306],
+      [-97.772, 30.318],
+      [-97.776, 30.348],
     ],
   },
   {
@@ -413,13 +423,16 @@ const COVERAGE_ZONES: CoverageZone[] = [
     name: "Core express",
     capacityLabel: "96%",
     color: "#10b981",
-    center: [-97.743, 30.268],
+    center: [-97.742, 30.27],
     polygon: [
-      [-97.775, 30.3],
-      [-97.71, 30.3],
-      [-97.71, 30.242],
-      [-97.775, 30.242],
-      [-97.775, 30.3],
+      [-97.778, 30.285],
+      [-97.752, 30.302],
+      [-97.712, 30.298],
+      [-97.702, 30.274],
+      [-97.714, 30.246],
+      [-97.748, 30.24],
+      [-97.776, 30.258],
+      [-97.778, 30.285],
     ],
   },
   {
@@ -429,11 +442,14 @@ const COVERAGE_ZONES: CoverageZone[] = [
     color: "#f59e0b",
     center: [-97.752, 30.208],
     polygon: [
-      [-97.785, 30.238],
-      [-97.718, 30.238],
-      [-97.718, 30.18],
-      [-97.785, 30.18],
-      [-97.785, 30.238],
+      [-97.788, 30.222],
+      [-97.762, 30.238],
+      [-97.72, 30.234],
+      [-97.712, 30.205],
+      [-97.728, 30.182],
+      [-97.768, 30.184],
+      [-97.786, 30.2],
+      [-97.788, 30.222],
     ],
   },
 ];
@@ -472,12 +488,12 @@ const INCIDENT_POINTS: IncidentPoint[] = [
 ];
 
 const DEFAULT_VIEWS: Record<MapsVariant, { center: [number, number]; zoom: number }> = {
-  "route-planner": { center: [-122.393, 37.78], zoom: 12.6 },
+  "route-planner": { center: [-122.404, 37.779], zoom: 12.2 },
   "property-listings": { center: [-122.423, 37.775], zoom: 11.8 },
-  "live-tracking": { center: [-122.409, 37.781], zoom: 13.4 },
+  "live-tracking": { center: [-122.412, 37.781], zoom: 13.4 },
   "store-locator": { center: [-122.658, 45.526], zoom: 11.8 },
-  "fleet-dispatch": { center: [-122.339, 47.614], zoom: 12.5 },
-  "coverage-zones": { center: [-97.745, 30.27], zoom: 10.6 },
+  "fleet-dispatch": { center: [-122.342, 47.614], zoom: 12.5 },
+  "coverage-zones": { center: [-97.752, 30.27], zoom: 10.6 },
   heatmap: { center: [-73.989, 40.742], zoom: 11.8 },
   "incident-monitor": { center: [-73.989, 40.742], zoom: 11.6 },
 };
@@ -549,6 +565,7 @@ export default function Maps({
   const courierMarkerRef = useRef<MapLibreNS.Marker | null>(null);
 
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isInView, setIsInView] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState<PropertyListing>(
     PROPERTY_LISTINGS[1],
   );
@@ -560,6 +577,22 @@ export default function Maps({
   const styleUrl = isDark
     ? darkStyleUrl || OPENFREEMAP_STYLES.dark
     : lightStyleUrl || OPENFREEMAP_STYLES.light;
+
+  // Keep only near-viewport maps mounted so pages with many maps never exceed
+  // Chrome/Edge's active WebGL context limit (~8-16 contexts per tab).
+  useEffect(() => {
+    if (!mounted || !containerRef.current) return;
+    if (typeof IntersectionObserver === "undefined") return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry) setIsInView(entry.isIntersecting);
+      },
+      { rootMargin: "350px 0px" },
+    );
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
+  }, [mounted]);
 
   // Animate courier progress for live-tracking
   useEffect(() => {
@@ -619,7 +652,7 @@ export default function Maps({
 
   // Initialize MapLibre GL map
   useEffect(() => {
-    if (!mounted || !mapCanvasRef.current) return;
+    if (!mounted || !isInView || !mapCanvasRef.current) return;
     let cancelled = false;
     let mapInstance: MapLibreNS.Map | null = null;
     let resizeObserver: ResizeObserver | null = null;
@@ -901,9 +934,9 @@ export default function Maps({
             source: "nyc-heat",
             paint: {
               "heatmap-weight": ["get", "weight"],
-              "heatmap-intensity": 1.2,
-              "heatmap-radius": 38,
-              "heatmap-opacity": 0.85,
+              "heatmap-intensity": 1.85,
+              "heatmap-radius": 46,
+              "heatmap-opacity": 0.88,
               "heatmap-color": [
                 "interpolate",
                 ["linear"],
@@ -1052,8 +1085,8 @@ export default function Maps({
       mapInstance?.remove();
       mapRef.current = null;
     };
-    // Re-initialize cleanly when variant, theme, or accent changes
-  }, [mounted, variant, styleUrl, accent, isDark]);
+    // Re-initialize cleanly when variant, theme, accent, or visibility changes
+  }, [mounted, isInView, variant, styleUrl, accent, isDark]);
 
   const toggleFullscreen = () => {
     if (!containerRef.current) return;

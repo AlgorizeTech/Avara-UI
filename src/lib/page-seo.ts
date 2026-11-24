@@ -102,6 +102,7 @@ const DESCRIPTIONS: Record<string, string> = {
   // Leads that run past the snippet length, restated shorter.
   "data-maps": "A React-Leaflet choropleth map for geographic data and user distributions, with no external map tiles. Leaflet loads after mount, so it is SSR safe.",
   "ribbon-drift": "A hero showcase card with two floating marquee ribbons, an animated gradient backdrop, a 3D illustration and a frosted glass promo card.",
+  "brand-bridge": "An interactive integration hub card with two columns of brand tiles, a rotating multi-colour hub ring, magnetic gradient wires, glowing comets and a reactive 2D particle field.",
   "ai-chat": "An AI chat interface with conversation history, typing indicators, editable titles, a model picker, file and @mention tools and voice dictation.",
   "animated-list": "A list that staggers its items into view with 3D perspective transforms and no animation library, plus a glassmorphic spotlight that follows the mouse.",
   "bento-showcase": "A six-card marketing bento grid: a hero with a live chat, case studies on a laptop, scrolling figures, plans on a phone and a team strip.",
@@ -132,6 +133,8 @@ const DESCRIPTIONS: Record<string, string> = {
   piano: "A playable piano with synthesised Web Audio sound, computer-keyboard key bindings, a volume slider and optional key labels.",
   "platform-grid": "A hairline feature grid of icon tiles and larger 2×2 feature cards, with a wave entrance on scroll, a pointer spotlight and per-tile hover tilt.",
   "product-details": "Four responsive product details sections for online stores, with bento hero layouts, glass cards and images that switch with the selected colour.",
+  "profile-card": "A compact creator profile card with a pointer-reactive pastel aurora cover, verified seal, expandable skill chips, counting stats and an animated Follow button.",
+  "radio-button": "Accessible card-style radio button groups in six distinct layouts with press ripple feedback, keyboard navigation and animated selection indicators.",
   reviews: "A review and testimonial section with either a rotating 3D globe marquee or a 3D stacked portrait carousel with arrow navigation.",
   "secure-envelope": "An envelope card component: a pass slides out on hover and lifts onto the cover on click, with a thumb notch, crest seals and a 3D two-sided flip.",
   "split-flap": "A split-flap (Solari board) display with 3D flipping cards, split creases, hinge notches and synthesised click sounds.",
@@ -180,6 +183,11 @@ const PAGE_SEO: Record<string, Seo> = {
     title: `Shadcn GSAP Components: Free & Animated - ${SITE_NAME}`,
     description: `Free shadcn/ui components animated with GSAP for React and Tailwind CSS. Many also ship a Motion build. Install them with the shadcn CLI.`,
     keywords: ["shadcn gsap components", "gsap react components", "gsap shadcn", "animated shadcn components", "free animated shadcn components", "gsap tailwind components", "gsap scrolltrigger react components", "gsap vs framer motion components"],
+  },
+  "motion-components": {
+    title: `Shadcn Motion Components: Free & Animated - ${SITE_NAME}`,
+    description: `Free shadcn/ui components animated with Motion (Framer Motion) for React and Tailwind CSS. Each is a twin of a GSAP build. Install them with the shadcn CLI.`,
+    keywords: ["shadcn motion components", "framer motion shadcn", "framer motion react components", "motion react components", "animated shadcn components", "free animated shadcn components", "motion tailwind components", "gsap vs framer motion components"],
   },
   "agent-skills": {
     title: `Agent Skill for Shadcn UI Components - ${SITE_NAME}`,

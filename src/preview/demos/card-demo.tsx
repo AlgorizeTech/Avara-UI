@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
+import { useState, type CSSProperties } from "react";
 import {
   Card,
   CardContent,
@@ -13,20 +13,19 @@ import {
 import { ProductCard, ProductColorOption } from "@/components/custom/blocks/ProductCardBlock";
 import { cn } from "@/lib/utils";
 import {
+  ArrowRight,
+  ArrowUpRight,
   Bell,
   Check,
   CreditCard,
   Download,
-  Heart,
+  Forward,
   MapPin,
   MessageCircle,
-  Pause,
+  MoreHorizontal,
   Plane,
-  Play,
   Settings,
   ShoppingBasket,
-  SkipBack,
-  SkipForward,
   Upload,
   UserPlus,
 } from "lucide-react";
@@ -43,13 +42,17 @@ export default function CardDemo({
     | "grid"
     | "stats"
     | "ecommerce"
-    | "blog-showcase"
     | "blog-grid"
     | "profile"
     | "ticket"
-    | "media"
     | "shop"
-    | "project-showcase";
+    | "project-showcase"
+    | "article-cards"
+    | "article-teaser"
+    | "blog-posts"
+    | "quote-tiles"
+    | "notched"
+    | "folder";
 }) {
   const [sneakerBg, setSneakerBg] = useState(
     "bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-amber-500/5 dark:from-amber-500/20 dark:to-card border-amber-500/30"
@@ -312,19 +315,20 @@ export default function CardDemo({
         </div>
       )}
 
-      {layout === "blog-showcase" && (
-        <BlogShowcaseCards interactive={interactive} />
-      )}
-
       {layout === "blog-grid" && <BlogGridCards interactive={interactive} />}
 
-      {layout === "profile" && <ProfileCards interactive={interactive} />}
+      {layout === "profile" && <ProfileCards />}
 
       {layout === "ticket" && <BoardingPassCard />}
 
-      {layout === "media" && <NowPlayingCard />}
-
       {layout === "shop" && <ShopCards interactive={interactive} />}
+
+      {layout === "article-cards" && <ArticleCards />}
+      {layout === "article-teaser" && <ArticleTeaserCards />}
+      {layout === "blog-posts" && <BlogPostCards />}
+      {layout === "quote-tiles" && <QuoteTiles />}
+      {layout === "notched" && <NotchedCards />}
+      {layout === "folder" && <FolderCards />}
 
       {layout === "project-showcase" && (
         <ProjectCard
@@ -439,138 +443,6 @@ function ShopCards({ interactive }: { interactive: boolean }) {
 }
 
 /* ========================================================================== */
-/*  Blog showcase — one featured story beside the rest of the feed             */
-/* ========================================================================== */
-
-const FEATURED_STORY = {
-  topic: "Performance",
-  title: "The quiet cost of a re-render",
-  dek: "A dashboard that only felt slow on Mondays, and the six components that explained it.",
-  cover:
-    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_1200,c_limit/v1790146211/photo-1551288049-bebda4e38f71-1790146212211.jpg",
-  coverAlt: "Analytics dashboard charts on a laptop screen",
-  author: "Priya Raman",
-  avatar:
-    "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790158813/photo-1494790108377-be9c29b29330-1790158812212.jpg",
-  date: "4 March",
-  read: "8 min",
-};
-
-const FEED_STORIES = [
-  {
-    title: "Naming things without a thesaurus",
-    topic: "Craft",
-    read: "5 min",
-    thumb:
-      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_400,c_limit/v1790146210/photo-1504639725590-34d0984388bd-1790146212207.jpg",
-    thumbAlt: "Developer writing code at a desk",
-  },
-  {
-    title: "What a design token is not",
-    topic: "Design systems",
-    read: "6 min",
-    thumb:
-      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_400,c_limit/v1790146209/photo-1460925895917-afdab827c52f-1790146212204.jpg",
-    thumbAlt: "Workspace with a laptop showing a web layout",
-  },
-  {
-    title: "Shipping on a Friday, safely",
-    topic: "Practice",
-    read: "4 min",
-    thumb:
-      "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_400,c_limit/v1790148864/photo-1618005182384-a83a8bd57fbe-1790148865111.jpg",
-    thumbAlt: "Abstract render of connected nodes",
-  },
-];
-
-function BlogShowcaseCards({ interactive }: { interactive: boolean }) {
-  return (
-    <div className="grid w-full max-w-4xl items-start gap-5 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
-      <Card
-        variant="bordered"
-        interactive={interactive}
-        className="group overflow-hidden rounded-lg"
-      >
-        {/* The cover sits outside CardHeader so it can bleed to the edges */}
-        <div className="relative aspect-[16/9] overflow-hidden">
-          <img
-            src={FEATURED_STORY.cover}
-            alt={FEATURED_STORY.coverAlt}
-            loading="lazy"
-            className={cn(
-              "size-full object-cover",
-              interactive &&
-                "transition-transform duration-500 motion-safe:group-hover:scale-[1.04]",
-            )}
-          />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/65 to-transparent" />
-          <span className="absolute bottom-4 left-4 rounded-full bg-white/90 px-3 py-1 text-xs font-medium text-zinc-900 backdrop-blur">
-            {FEATURED_STORY.topic}
-          </span>
-        </div>
-
-        <CardHeader className="gap-2.5 px-6 pb-4 pt-5">
-          <CardTitle className="font-serif text-[23px] font-normal leading-snug tracking-normal">
-            {FEATURED_STORY.title}
-          </CardTitle>
-          <CardDescription className="leading-relaxed">
-            {FEATURED_STORY.dek}
-          </CardDescription>
-        </CardHeader>
-
-        <CardFooter className="items-center gap-3 border-t border-primary/20 px-6 pb-6 pt-4">
-          <img
-            src={FEATURED_STORY.avatar}
-            alt=""
-            loading="lazy"
-            className="size-8 shrink-0 rounded-full object-cover"
-          />
-          <div className="min-w-0 flex-1 leading-tight">
-            <p className="truncate text-sm font-medium">{FEATURED_STORY.author}</p>
-            <p className="text-xs text-muted-foreground">{FEATURED_STORY.date}</p>
-          </div>
-          <span className="shrink-0 text-xs text-muted-foreground">
-            {FEATURED_STORY.read}
-          </span>
-        </CardFooter>
-      </Card>
-
-      <Card
-        variant="bordered"
-        className="divide-y divide-primary/20 overflow-hidden rounded-lg"
-      >
-        <p className="px-5 py-3.5 text-sm font-medium">Latest</p>
-        {FEED_STORIES.map((story) => (
-          <button
-            key={story.title}
-            type="button"
-            className="flex w-full items-center gap-4 p-4 text-left transition-colors hover:bg-primary/10 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary cursor-pointer group"
-          >
-            <img
-              src={story.thumb}
-              alt={story.thumbAlt}
-              loading="lazy"
-              className="size-[72px] shrink-0 rounded-md object-cover"
-            />
-            <span className="min-w-0 flex-1">
-              <span className="block font-serif text-[15px] leading-snug">
-                {story.title}
-              </span>
-              <span className="mt-1.5 block text-xs text-muted-foreground">
-                {story.topic}
-              </span>
-            </span>
-            <span className="shrink-0 text-xs text-muted-foreground">
-              {story.read}
-            </span>
-          </button>
-        ))}
-      </Card>
-    </div>
-  );
-}
-
-/* ========================================================================== */
 /*  Blog grid — three posts across                                             */
 /* ========================================================================== */
 
@@ -643,7 +515,7 @@ function BlogGridCards({ interactive }: { interactive: boolean }) {
           </div>
 
           <CardHeader className="gap-2 px-5 pb-3 pt-5">
-            <CardTitle className="font-serif text-[17px] font-normal leading-snug tracking-normal">
+            <CardTitle className="line-clamp-2 font-serif text-[17px] font-normal leading-snug tracking-normal">
               {post.title}
             </CardTitle>
             <CardDescription className="line-clamp-2 leading-relaxed">
@@ -675,28 +547,11 @@ function BlogGridCards({ interactive }: { interactive: boolean }) {
 /*  Profile — one full member card beside the rest of the team                 */
 /* ========================================================================== */
 
-const TEAMMATES = [
-  {
-    initials: "TL",
-    name: "Tomás Léger",
-    role: "Motion and prototyping",
-    zone: "Lisbon",
-    tint: "bg-sky-500/10 text-sky-700 dark:text-sky-300",
-  },
-  {
-    initials: "WA",
-    name: "Wren Adeyemi",
-    role: "Accessibility",
-    zone: "Lagos",
-    tint: "bg-amber-500/10 text-amber-700 dark:text-amber-300",
-  },
-];
-
-function ProfileCards({ interactive }: { interactive: boolean }) {
+function ProfileCards() {
   const [following, setFollowing] = useState(false);
 
   return (
-    <div className="grid w-full max-w-4xl gap-5 lg:grid-cols-2">
+    <div className="w-full max-w-md">
       <Card variant="bordered" className="overflow-hidden rounded-3xl">
         <div className="h-24 bg-primary/10 bg-[radial-gradient(circle_at_1px_1px,var(--primary)_1px,transparent_0)] [background-size:12px_12px] opacity-40" />
 
@@ -784,47 +639,6 @@ function ProfileCards({ interactive }: { interactive: boolean }) {
         </CardFooter>
       </Card>
 
-      <div className="grid gap-4 lg:grid-rows-[auto_auto_1fr]">
-        {TEAMMATES.map((member) => (
-          <Card
-            key={member.name}
-            variant="bordered"
-            interactive={interactive}
-            className="flex-row items-center gap-4 rounded-2xl p-4"
-          >
-            <span
-              className={cn(
-                "grid size-12 shrink-0 place-items-center rounded-2xl text-sm font-semibold bg-primary/10 text-primary",
-              )}
-            >
-              {member.initials}
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className="truncate text-sm font-medium">{member.name}</p>
-              <p className="truncate text-xs text-muted-foreground">
-                {member.role}
-              </p>
-            </div>
-            <span className="hidden shrink-0 text-xs text-muted-foreground sm:block">
-              {member.zone}
-            </span>
-            <button
-              type="button"
-              aria-label={`Message ${member.name}`}
-              className="grid size-9 shrink-0 place-items-center rounded-full border border-primary/20 text-muted-foreground transition-colors hover:bg-muted hover:text-primary hover:border-primary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
-            >
-              <MessageCircle className="size-4" />
-            </button>
-          </Card>
-        ))}
-
-        <button
-          type="button"
-          className="flex items-center justify-center gap-2 rounded-2xl border border-dashed border-primary/30 p-5 text-sm text-muted-foreground transition-colors hover:border-primary/30 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
-        >
-          <UserPlus className="size-4" /> Invite a teammate
-        </button>
-      </div>
     </div>
   );
 }
@@ -913,149 +727,467 @@ function BoardingPassCard() {
 }
 
 /* ========================================================================== */
-/*  Now playing — a card that holds a running transport                        */
+/*  Author cards */
 /* ========================================================================== */
 
-const WAVEFORM = [
-  22, 34, 48, 40, 62, 76, 58, 44, 68, 88, 72, 54, 38, 46, 60, 82, 96, 78, 56,
-  42, 34, 50, 66, 84, 70, 52, 40, 58, 74, 90, 64, 46, 36, 44, 62, 80, 68, 50,
-  38, 30, 42, 56, 34, 24,
+const ARTICLES = [
+  {
+    tag: "#art",
+    title: "Art, Creativity and Genius: A Journey Through Masterpieces",
+    dek: "Discover the beauty, diversity and impact of art on society, from classical masterpieces to modern-day geniuses.",
+    cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150483/photo-1541701494587-cb58502866ab-1790150482281.jpg",
+    coverAlt: "Abstract flowing ink in blue and violet",
+    author: "Samantha Smith",
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790158813/photo-1494790108377-be9c29b29330-1790158812212.jpg",
+    date: "March 11, 2024",
+  },
+  {
+    tag: "#tech",
+    title: "Circuits and Code: How Hardware Shapes the Software We Write",
+    dek: "A look at the physical limits behind everyday software, and the craft of working well inside them.",
+    cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1518709268805-4e9042af9f23-1790146212209.jpg",
+    coverAlt: "Glowing circuit board traces",
+    author: "Daniel Kim",
+    avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790159965/photo-1519085360753-af0119f7cbe7-1790159970113.jpg",
+    date: "March 4, 2024",
+  },
 ];
-const TRACK_LENGTH = 214;
 
-const formatTime = (seconds: number) =>
-  `${Math.floor(seconds / 60)}:${String(Math.floor(seconds % 60)).padStart(2, "0")}`;
-
-function NowPlayingCard() {
-  const [playing, setPlaying] = useState(false);
-  const [elapsed, setElapsed] = useState(72);
-  const [saved, setSaved] = useState(false);
-
-  useEffect(() => {
-    if (!playing) return;
-    const id = setInterval(
-      () => setElapsed((value) => (value >= TRACK_LENGTH ? 0 : value + 1)),
-      1000,
-    );
-    return () => clearInterval(id);
-  }, [playing]);
-
-  const progress = elapsed / TRACK_LENGTH;
-
+function ArticleCards() {
   return (
-    <Card
-      variant="bordered"
-      className="w-full max-w-2xl overflow-hidden rounded-2xl sm:flex-row"
-    >
-      <div className="grid aspect-square w-full shrink-0 place-items-center bg-zinc-950 dark:bg-zinc-900 sm:aspect-auto sm:size-48">
-        <div
-          className={cn(
-            "grid size-32 place-items-center rounded-full bg-[repeating-radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.10)_0_1px,transparent_1px_5px)] ring-1 ring-white/10 sm:size-36",
-            playing && "[animation-duration:6s] motion-safe:animate-spin",
-          )}
-        >
-          <span className="grid size-12 place-items-center rounded-full bg-primary text-primary-foreground">
-            <span className="size-1.5 rounded-full bg-zinc-950" />
-          </span>
-        </div>
-      </div>
+    <div className="grid w-full max-w-5xl gap-5 md:grid-cols-2">
+      {ARTICLES.map((article) => (
+        // @container lets each card pick its own layout from its width, not the page's
+        <div key={article.title} className="@container min-w-0">
+          {/* Colours come from the theme tokens, so the card follows light and dark */}
+          <Card variant="default" className="h-full gap-5 rounded-[28px] p-3 shadow-lg @sm:flex-row">
+            <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden rounded-[22px] bg-muted @sm:aspect-auto @sm:w-[38%]">
+              <img
+                src={article.cover}
+                alt={article.coverAlt}
+                loading="lazy"
+                className="absolute inset-0 size-full object-cover"
+              />
+              <span className="absolute left-3.5 top-3 text-sm font-medium text-white drop-shadow">
+                {article.tag}
+              </span>
+            </div>
 
-      <CardContent className="flex flex-1 flex-col justify-center gap-4 p-6">
-        <div>
-          <div className="flex items-center gap-2 text-xs text-muted-foreground">
-            <span className="flex h-3 items-end gap-[3px]" aria-hidden>
-              {[8, 12, 6].map((height, i) => (
+            <div className="flex min-w-0 flex-1 flex-col py-1 pr-2">
+              <CardTitle className="line-clamp-2 text-base font-medium leading-snug tracking-normal @lg:text-xl">
+                {article.title}
+              </CardTitle>
+              <CardDescription className="mt-2 line-clamp-2 text-xs leading-relaxed">
+                {article.dek}
+              </CardDescription>
+
+              <CardFooter className="mt-auto items-center gap-3 p-0 pt-4">
+                <img
+                  src={article.avatar}
+                  alt=""
+                  loading="lazy"
+                  className="size-9 shrink-0 rounded-full object-cover @lg:size-11"
+                />
+                <div className="min-w-0 flex-1 leading-tight">
+                  <p className="truncate text-xs font-medium"><span className="hidden @lg:inline">By </span>{article.author}</p>
+                  <p className="mt-0.5 text-xs text-muted-foreground">{article.date}</p>
+                </div>
+                <button
+                  type="button"
+                  aria-label="Share"
+                  className="grid size-9 shrink-0 place-items-center rounded-full bg-primary text-primary-foreground transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-card @lg:size-10"
+                >
+                  <Forward className="size-[17px]" />
+                </button>
+                <button
+                  type="button"
+                  aria-label="More options"
+                  className="hidden size-9 shrink-0 place-items-center rounded-full border border-foreground/60 text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-card @lg:grid"
+                >
+                  <MoreHorizontal className="size-4" />
+                </button>
+              </CardFooter>
+            </div>
+          </Card>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+/* ========================================================================== */
+/*  Teaser card */
+/* ========================================================================== */
+
+const TEASERS = [
+  {
+    cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150483/photo-1541701494587-cb58502866ab-1790150482281.jpg",
+    coverAlt: "Abstract flowing ink in blue and violet",
+    author: "William Ashford",
+    read: "5 min read",
+    title: "Optimizing Business decisions with Advanced data Analytics",
+    dek: "Discover how web solutions are reshaping the business landscape.",
+    tag: "Data Science",
+    date: "Mar 09, 2024",
+  },
+  {
+    cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1518709268805-4e9042af9f23-1790146212209.jpg",
+    coverAlt: "Glowing circuit board traces",
+    author: "Priya Nair",
+    read: "7 min read",
+    title: "Designing interfaces that stay readable at any size",
+    dek: "Practical rules for type, spacing and contrast that hold up on every screen.",
+    tag: "Design",
+    date: "Mar 02, 2024",
+  },
+  {
+    cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158809/photo-1618005198919-d3d4b5a92ead-1790158812198.jpg",
+    coverAlt: "Abstract render of intersecting shapes",
+    author: "Marcus Bell",
+    read: "4 min read",
+    title: "Shipping faster with smaller, safer releases",
+    dek: "How small batches cut risk and keep the whole team moving.",
+    tag: "Engineering",
+    date: "Feb 26, 2024",
+  },
+];
+
+function ArticleTeaserCards() {
+  return (
+    <div className="grid w-full max-w-5xl gap-5 sm:grid-cols-3">
+      {TEASERS.map((post) => (
+        <Card key={post.title} variant="default" className="gap-0 rounded-[26px] p-3.5 shadow-lg">
+          <img
+            src={post.cover}
+            alt={post.coverAlt}
+            loading="lazy"
+            className="h-44 w-full rounded-2xl object-cover"
+          />
+
+          <p className="mt-3.5 flex items-center gap-2 text-xs text-muted-foreground">
+            {post.author}
+            <span className="size-[3px] rounded-full bg-muted-foreground" />
+            {post.read}
+          </p>
+
+          <div className="mt-2 flex items-start gap-3">
+            <CardTitle className="line-clamp-2 flex-1 text-[15px] font-medium leading-snug tracking-normal">
+              {post.title}
+            </CardTitle>
+            <ArrowUpRight className="mt-0.5 size-[18px] shrink-0 text-muted-foreground" />
+          </div>
+
+          <CardDescription className="mt-2 text-[13px] leading-relaxed">{post.dek}</CardDescription>
+
+          <CardFooter className="mt-auto items-center gap-3 p-0 pt-4">
+            <span className="rounded-md bg-muted px-2.5 py-1 text-xs text-foreground">
+              {post.tag}
+            </span>
+            <span className="text-xs text-muted-foreground">{post.date}</span>
+          </CardFooter>
+        </Card>
+      ))}
+    </div>
+  );
+}
+
+/* ========================================================================== */
+/*  Blog post cards */
+/* ========================================================================== */
+
+const POST_CARDS = [
+  {
+    date: "October 1, 2024",
+    title: "Mindful Moments: Simple Practices to Boost Your Mental Well-Being",
+    author: "Sarah Thompson",
+    cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790150483/photo-1541701494587-cb58502866ab-1790150482281.jpg",
+    coverAlt: "Abstract flowing ink in blue and violet",
+  },
+  {
+    date: "September 29, 2024",
+    title: "The Connection Between Nutrition and Mental Health: What You Need to Know",
+    author: "David Kim",
+    cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1518709268805-4e9042af9f23-1790146212209.jpg",
+    coverAlt: "Glowing circuit board traces",
+  },
+  {
+    date: "September 25, 2024",
+    title: "The Power of Journaling: How Writing Can Transform Your Mind and Persona",
+    author: "Emily Carter",
+    cover: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790158809/photo-1618005198919-d3d4b5a92ead-1790158812198.jpg",
+    coverAlt: "Abstract render of intersecting shapes",
+  },
+];
+
+function BlogPostCards() {
+  return (
+    <div className="grid w-full max-w-5xl gap-6 sm:grid-cols-3">
+      {POST_CARDS.map((post) => (
+        <Card
+          key={post.title}
+          variant="flat"
+          className="group rounded-none border-0 bg-transparent shadow-none"
+        >
+          <div className="aspect-[4/3] overflow-hidden rounded-2xl">
+            <img
+              src={post.cover}
+              alt={post.coverAlt}
+              loading="lazy"
+              className="size-full object-cover transition-transform duration-500 motion-safe:group-hover:scale-105"
+            />
+          </div>
+          <p className="mt-4 text-xs text-muted-foreground">{post.date}</p>
+          <h3 className="mt-2 line-clamp-2 text-lg font-medium leading-snug">{post.title}</h3>
+          <div className="mt-5 flex items-center justify-between border-t border-border pt-3 text-xs">
+            <span className="text-muted-foreground">{post.author}</span>
+            <a href="#" className="inline-flex items-center gap-1.5 font-medium">
+              Read more <ArrowRight className="size-3.5" />
+            </a>
+          </div>
+        </Card>
+      ))}
+    </div>
+  );
+}
+
+/* ========================================================================== */
+/*  Quote tiles */
+/* ========================================================================== */
+
+const QUOTE_TILES = [
+  {
+    category: "Branding",
+    title: "A Brand Is A Voice And A Product Is A Souvenir.",
+    tint: "#e1c2ce",
+    color: "#18181b",
+    image: "https://images.unsplash.com/photo-1759332691549-fb0863bbb92c?auto=format&fit=crop&w=600&q=80",
+    imageAlt: "A single pale flower balanced on a paper triangle against a pink wall",
+    position: "50% 50%",
+  },
+  {
+    category: "Typography",
+    title: "The Purpose Of Our Lives Is To Be Happy.",
+    tint: "#1f636d",
+    color: "#ffffff",
+    image: "https://images.unsplash.com/photo-1718807384827-bf59c4935ee1?auto=format&fit=crop&w=600&q=80",
+    imageAlt: "Red and white lighthouse against a deep teal sky",
+    position: "50% 38%",
+  },
+  {
+    category: "Copy Writing",
+    title: "Love Is The Flower You’ve Got To Let Grow.",
+    tint: "#b5a08d",
+    color: "#18181b",
+    image: "https://images.unsplash.com/photo-1684752840287-13f1546fce93?auto=format&fit=crop&w=600&q=80",
+    imageAlt: "A coral peony in a steel bottle against a dusty rose wall",
+    position: "50% 15%",
+  },
+];
+
+function QuoteTiles() {
+  return (
+    <div className="w-full max-w-3xl">
+      <h2 className="max-w-md text-2xl font-bold leading-snug tracking-tight">
+        You Only Live Once, But If You Do It Right, Once Is Enough.
+      </h2>
+
+      <div className="mt-6 grid gap-5 sm:grid-cols-3">
+        {QUOTE_TILES.map((tile) => (
+          <Card
+            key={tile.category}
+            variant="default"
+            style={{ backgroundColor: tile.tint, color: tile.color, "--tint": tile.tint } as CSSProperties}
+            className="group relative aspect-[3/4] overflow-hidden rounded-lg border-0 shadow-none"
+          >
+            {/* The photo fills the lower half; a mask dissolves its top edge into the tint */}
+            <img
+              src={tile.image}
+              alt={tile.imageAlt}
+              loading="lazy"
+              style={{ objectPosition: tile.position }}
+              className="absolute inset-x-0 bottom-0 h-[68%] w-full object-cover [mask-image:linear-gradient(to_bottom,transparent,black_30%)] transition-transform duration-500 motion-safe:group-hover:scale-105"
+            />
+
+            <div className="relative p-4">
+              <p className="text-[10px] font-medium uppercase tracking-[0.16em]">
+                {tile.category}
+              </p>
+              <h3 className="mt-3 text-[17px] font-bold leading-snug">{tile.title}</h3>
+            </div>
+
+            <button
+              type="button"
+              className="absolute bottom-3 right-3 rounded-md bg-white px-3.5 py-1.5 text-xs font-medium text-zinc-900 shadow-sm transition-colors hover:bg-white/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900"
+            >
+              Explore
+            </button>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ========================================================================== */
+/*  Notched cards */
+/* ========================================================================== */
+
+const NOTCH_CARDS = [
+  {
+    brand: "Archive Studio®",
+    lead: "It’s high time to discuss the details.",
+    headline: "Let’s Talk.",
+    art: "bg-[linear-gradient(135deg,#02021f_0%,#0b1c7a_50%,#2a74ff_100%)]",
+    dot: "bg-[#2f7bff]",
+    active: 1,
+  },
+  {
+    brand: "Level Up®",
+    lead: "A new level of quality for your brand.",
+    headline: "+190%",
+    art: "bg-[linear-gradient(135deg,#1d0402_0%,#8a1a07_50%,#ff5a36_100%)]",
+    dot: "bg-[#ff4a24]",
+    active: 2,
+  },
+  {
+    brand: "Spider’s Lair®",
+    lead: "The spiders are ready to work.",
+    headline: "One Call.",
+    art: "bg-[linear-gradient(135deg,#0d0220_0%,#4b138f_50%,#b04bff_100%)]",
+    dot: "bg-[#b44cff]",
+    active: 3,
+  },
+];
+
+function NotchedCards() {
+  return (
+    <div className="grid w-full max-w-[922px] gap-5 sm:grid-cols-3">
+      {NOTCH_CARDS.map((card) => (
+        <Card
+          key={card.brand}
+          variant="flat"
+          className="relative rounded-none border-0 bg-transparent pt-[34px] shadow-none drop-shadow-sm [--shell:var(--muted)] dark:[--shell:var(--card)] dark:drop-shadow-none"
+        >
+          {/* The tab: rounded on top, with a concave fillet that eases it into the body. The shadow and the 1px overhang on the fillet overlap the body, so no seam shows at fractional widths. --shell is soft gray (muted) in light mode and the card colour in dark mode */}
+          <div className="absolute right-0 top-0 flex h-[34px] w-[58%] items-center justify-end rounded-tl-[17px] rounded-tr-[28px] bg-(--shell) px-4 shadow-[0_1px_0_var(--shell)] before:absolute before:-bottom-px before:-left-[17px] before:h-[18px] before:w-[18px] before:[background:radial-gradient(circle_at_0_0,transparent_16.5px,var(--shell)_17.5px)]">
+            <span className="text-[11px] font-medium">— {card.brand}</span>
+          </div>
+
+          <div className="rounded-[28px] rounded-tr-none bg-(--shell) p-4">
+            <div className={"relative flex h-[150px] items-end overflow-hidden rounded-xl p-3.5 text-white " + card.art}>
+              {/* Ribs give the flat gradient a 3D, folded-ribbon feel */}
+              <div className="absolute inset-0 [mask-image:linear-gradient(100deg,transparent_25%,black)] bg-[repeating-linear-gradient(100deg,rgba(255,255,255,0.22)_0_2px,transparent_2px_9px)]" />
+              <p className="relative text-[15px] font-medium leading-snug">{card.lead}</p>
+            </div>
+
+            <p className="mt-8 bg-gradient-to-b from-foreground to-foreground/40 bg-clip-text text-[44px] font-light leading-none tracking-tight text-transparent">
+              {card.headline}
+            </p>
+
+            <div className="mt-6 flex gap-1.5" aria-hidden>
+              {[1, 2, 3].map((n) => (
                 <span
-                  key={i}
-                  className={cn(
-                    "w-[3px] rounded-full bg-primary",
-                    playing && "motion-safe:animate-pulse",
-                  )}
-                  style={{ height, animationDelay: `${i * 160}ms` }}
+                  key={n}
+                  className={"size-2.5 rounded-full " + (n <= card.active ? card.dot : "bg-foreground/15")}
                 />
               ))}
-            </span>
-            {playing ? "Playing" : "Paused"}
+            </div>
           </div>
-          <h3 className="mt-2 text-lg font-semibold leading-tight">
-            Ceiling Fan Blues
-          </h3>
-          <p className="text-sm text-muted-foreground">Lila Moreau Trio</p>
-        </div>
+        </Card>
+      ))}
+    </div>
+  );
+}
 
-        <div className="relative rounded-md focus-within:ring-2 focus-within:ring-primary">
-          <div
-            aria-hidden
-            className="pointer-events-none flex h-10 items-end gap-[3px]"
-          >
-            {WAVEFORM.map((height, i) => (
-              <span
-                key={i}
-                className={cn(
-                  "min-w-0 flex-1 rounded-full transition-colors",
-                  i / WAVEFORM.length <= progress
-                    ? "bg-primary"
-                    : "bg-muted-foreground/25",
-                )}
-                style={{ height: `${height}%` }}
-              />
-            ))}
+/* ========================================================================== */
+/*  Folder cards */
+/* ========================================================================== */
+
+type FolderCardData = {
+  number: string;
+  title: string;
+  text: string;
+  theme: string;
+  image: string;
+  alt: string;
+};
+
+const FOLDER_CARDS: FolderCardData[] = [
+  {
+    number: "01",
+    title: "A castle above the mist",
+    text: "Cobbled lanes, stone towers and a quiet start. Arrive early, before the day trippers do.",
+    theme:
+      "[--frame:#dde2e5] [--panel:#f0f2f3] [--ink:#1b2227] dark:[--frame:#1b2227] dark:[--panel:#242d33] dark:[--ink:#ffffff]",
+    image: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_800,c_limit/v1790146211/photo-1518709268805-4e9042af9f23-1790146212209.jpg",
+    alt: "A stone castle on a hill, wrapped in morning mist",
+  },
+  {
+    number: "02",
+    title: "The red lighthouse walk",
+    text: "A short coastal path under a wide open sky. Climb at golden hour for the best light.",
+    theme:
+      "[--frame:#c6e2e7] [--panel:#e5f3f5] [--ink:#0a2f37] dark:[--frame:#0a2f37] dark:[--panel:#0d3d47] dark:[--ink:#ffffff]",
+    image: "https://images.unsplash.com/photo-1718807384827-bf59c4935ee1?auto=format&fit=crop&w=800&q=80",
+    alt: "A red and white striped lighthouse against a teal sky",
+  },
+  {
+    number: "03",
+    title: "Peonies by the window",
+    text: "One stem, soft light and a blush wall. A slow flower morning that asks nothing of you.",
+    theme:
+      "[--frame:#ebd2d3] [--panel:#f8eceb] [--ink:#3b2227] dark:[--frame:#3a2428] dark:[--panel:#4a2e33] dark:[--ink:#f8eceb]",
+    image: "https://images.unsplash.com/photo-1684752840287-13f1546fce93?auto=format&fit=crop&w=800&q=80",
+    alt: "A single pink peony in a metal bottle against a blush wall",
+  },
+];
+
+function FolderCards({ cards = FOLDER_CARDS }: { cards?: FolderCardData[] }) {
+  return (
+    <div className="grid w-full max-w-[922px] gap-5 sm:grid-cols-3">
+      {cards.map((card) => (
+        <Card
+          key={card.number}
+          variant="flat"
+          interactive
+          tabIndex={0}
+          className={
+            "group aspect-[3/4] rounded-[26px] border-0 bg-(--frame) p-[5px] text-(--ink) shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring " +
+            card.theme
+          }
+        >
+          <div className="relative size-full overflow-hidden rounded-[21px]">
+            <img
+              src={card.image}
+              alt={card.alt}
+              loading="lazy"
+              className="absolute inset-0 size-full object-cover transition-transform duration-700 ease-out motion-reduce:transition-none group-hover:scale-105 group-focus-visible:scale-105"
+            />
+
+            {/* Anchored to the bottom: at rest only the number and title show, and the panel grows upward when the text row opens */}
+            <div className="absolute inset-x-0 bottom-0 flex flex-col rounded-tr-[18px] bg-(--panel) p-4">
+              {/* The folder tab: a raised step on the left, with a concave fillet at its foot. Its height is the convex radius (14px) plus the fillet radius (14px), so the two curves meet in one smooth S. The shadow and the 1px overhang on the fillet overlap the panel, so no seam shows */}
+              <div className="absolute -top-7 left-0 h-7 w-[46%] rounded-tl-[16px] rounded-tr-[14px] bg-(--panel) shadow-[0_1px_0_var(--panel)] after:absolute after:-bottom-px after:left-full after:-ml-px after:size-[15px] after:[background:radial-gradient(circle_at_100%_0,transparent_13.5px,var(--panel)_14.5px)]" />
+
+              <div className="flex items-start justify-between">
+                <span className="text-[44px] font-light leading-none tracking-tight">
+                  {card.number}
+                </span>
+                <ArrowUpRight className="mt-3 size-5 transition-transform duration-300 motion-reduce:transition-none group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-focus-visible:-translate-y-0.5 group-focus-visible:translate-x-0.5" />
+              </div>
+
+              <p className="mt-4 text-[15px] font-semibold leading-snug">{card.title}</p>
+
+              {/* grid-rows 0fr to 1fr animates the height of text of any length */}
+              <div className="grid grid-rows-[0fr] opacity-0 transition-[grid-template-rows,opacity] duration-500 ease-out motion-reduce:transition-none group-hover:grid-rows-[1fr] group-hover:opacity-100 group-focus-visible:grid-rows-[1fr] group-focus-visible:opacity-100">
+                <div className="min-h-0 overflow-hidden">
+                  <p className="pt-2 text-xs leading-relaxed opacity-70">{card.text}</p>
+                </div>
+              </div>
+            </div>
           </div>
-          <input
-            type="range"
-            min={0}
-            max={TRACK_LENGTH}
-            value={elapsed}
-            aria-label="Seek"
-            onChange={(event) => setElapsed(Number(event.target.value))}
-            className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
-          />
-        </div>
-
-        <div className="flex justify-between font-mono text-xs tabular-nums text-muted-foreground">
-          <span>{formatTime(elapsed)}</span>
-          <span>{formatTime(TRACK_LENGTH)}</span>
-        </div>
-
-        <div className="flex items-center gap-1">
-          <button
-            type="button"
-            aria-label="Previous track"
-            className="grid size-9 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
-          >
-            <SkipBack className="size-4" />
-          </button>
-          <button
-            type="button"
-            aria-label={playing ? "Pause" : "Play"}
-            onClick={() => setPlaying((value) => !value)}
-            className="grid size-11 place-items-center rounded-full bg-primary text-primary-foreground transition-all hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 cursor-pointer shadow-sm"
-          >
-            {playing ? (
-              <Pause className="size-5" />
-            ) : (
-              <Play className="size-5 translate-x-px" />
-            )}
-          </button>
-          <button
-            type="button"
-            aria-label="Next track"
-            className="grid size-9 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
-          >
-            <SkipForward className="size-4" />
-          </button>
-          <span className="flex-1" />
-          <button
-            type="button"
-            aria-label={saved ? "Remove from library" : "Save to library"}
-            aria-pressed={saved}
-            onClick={() => setSaved((value) => !value)}
-            className="grid size-9 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
-          >
-            <Heart className={cn("size-4", saved && "fill-rose-500 text-rose-500")} />
-          </button>
-        </div>
-      </CardContent>
-    </Card>
+        </Card>
+      ))}
+    </div>
   );
 }

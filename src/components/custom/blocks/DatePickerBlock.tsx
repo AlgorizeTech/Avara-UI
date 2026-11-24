@@ -4,8 +4,6 @@ import { cn } from "@/lib/utils";
 import {
   AlertCircle,
   Calendar as CalendarIcon,
-  ChevronLeft,
-  ChevronRight,
   Clock,
   RotateCcw,
 } from "lucide-react";
@@ -13,11 +11,11 @@ import React, {
   forwardRef,
   useCallback,
   useEffect,
-  useLayoutEffect,
   useRef,
   useState,
   useSyncExternalStore,
 } from "react";
+import { CalendarPanel } from "./internal/CalendarPanel";
 import { getThemeStyles } from "./date-picker-theme";
 import { springLinear } from "./motion-curves";
 import { TimePicker } from "./TimePickerBlock";
@@ -34,56 +32,6 @@ import {
 export type DatePickerColor = "indigo" | "rose" | "emerald" | "zinc" | string;
 export type DatePickerVariant = "default" | "filled" | "underlined" | "glow" | "calendar";
 export type DatePickerSize = "sm" | "md" | "lg";
-
-// ==========================================
-// CALENDAR MATH HELPERS
-// ==========================================
-const getDaysInMonth = (year: number, month: number) =>
-  new Date(year, month + 1, 0).getDate();
-const getFirstDayOfMonth = (year: number, month: number) =>
-  new Date(year, month, 1).getDay();
-const generateCalendarDays = (year: number, month: number) => {
-  const firstDay = new Date(year, month, 1).getDay();
-  const daysInMonth = getDaysInMonth(year, month);
-  const daysInPrevMonth = getDaysInMonth(year, month - 1);
-  const days: { date: Date; isCurrentMonth: boolean }[] = [];
-
-  for (let i = firstDay - 1; i >= 0; i--) {
-    days.push({
-      date: new Date(year, month - 1, daysInPrevMonth - i),
-      isCurrentMonth: false,
-    });
-  }
-  for (let i = 1; i <= daysInMonth; i++) {
-    days.push({
-      date: new Date(year, month, i),
-      isCurrentMonth: true,
-    });
-  }
-  const remaining = 42 - days.length;
-  for (let i = 1; i <= remaining; i++) {
-    days.push({
-      date: new Date(year, month + 1, i),
-      isCurrentMonth: false,
-    });
-  }
-  return days;
-};
-const MONTH_NAMES = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-const DAY_NAMES = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
 /**
  * Popover widths: the calendar alone (18rem) and the calendar with the time
@@ -119,59 +67,6 @@ function useReducedMotion() {
     subscribeReducedMotion,
     () => window.matchMedia(REDUCED_MOTION).matches,
     () => false,
-  );
-}
-
-/**
- * The pill behind the selected day. One element that glides to the newly
- * picked day on the unfold spring, in CSS with no animation library: after each
- * change it measures the day marked `data-selected` inside `gridRef` and moves
- * there. It jumps, without gliding, on first show and when the month changes.
- */
-function SelectionPill({
-  gridRef,
-  selectedKey,
-  monthKey,
-  instant,
-  className,
-}: {
-  gridRef: React.RefObject<HTMLElement | null>;
-  selectedKey: string | null;
-  monthKey: string;
-  instant: boolean;
-  className?: string;
-}) {
-  const pillRef = useRef<HTMLSpanElement>(null);
-  const placedIn = useRef<string | null>(null);
-
-  useLayoutEffect(() => {
-    const grid = gridRef.current;
-    const pill = pillRef.current;
-    if (!grid || !pill) return;
-    const target = grid.querySelector<HTMLElement>('[data-selected="true"]');
-    if (!target) {
-      pill.style.opacity = "0";
-      placedIn.current = null;
-      return;
-    }
-    const from = grid.getBoundingClientRect();
-    const to = target.getBoundingClientRect();
-    const glide = placedIn.current === monthKey && !instant;
-    pill.style.transition = glide ? unfoldOn("transform") : "none";
-    pill.style.transform = `translate(${to.left - from.left}px, ${to.top - from.top}px)`;
-    pill.style.opacity = "1";
-    placedIn.current = monthKey;
-  }, [gridRef, selectedKey, monthKey, instant]);
-
-  return (
-    <span
-      ref={pillRef}
-      aria-hidden
-      className={cn(
-        "pointer-events-none absolute left-0 top-0 z-0 size-8 rounded-lg opacity-0 shadow-xs",
-        className,
-      )}
-    />
   );
 }
 
@@ -275,6 +170,8 @@ export interface DatePickerBlockProps {
   minDate?: Date;
   /** Latest selectable day (inclusive). */
   maxDate?: Date;
+  /** First day of the week: 1 = Monday (default), 0 = Sunday. */
+  weekStartsOn?: 0 | 1;
   /**
    * Adds hour / minute (and AM-PM) columns. The popover opens on the calendar
    * alone and unfolds the columns — beside it when there is room, below it
@@ -305,6 +202,7 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
       disablePast = false,
       minDate,
       maxDate,
+      weekStartsOn = 1,
       showTime = false,
       timeFormat = "12h",
       minuteStep = 5,
@@ -326,7 +224,6 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
     const [sideLayout, setSideLayout] = useState(false);
     const [alignRight, setAlignRight] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
-    const daysGridRef = useRef<HTMLElement>(null);
     const { theme, style } = getThemeStyles(color);
 
     // containerRef drives the click-outside handler, so the forwarded ref is
@@ -390,22 +287,6 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
       return () => win.removeEventListener("resize", measure);
     }, [showTime, isOpen]);
 
-    // --- Calendar Generation ---
-    const currentMonth = viewDate.getMonth();
-    const currentYear = viewDate.getFullYear();
-    const daysInMonth = getDaysInMonth(currentYear, currentMonth);
-    const firstDayIndex = getFirstDayOfMonth(currentYear, currentMonth);
-
-    const handlePrevMonth = (e: React.MouseEvent) => {
-      e.stopPropagation();
-      setViewDate(new Date(currentYear, currentMonth - 1, 1));
-    };
-
-    const handleNextMonth = (e: React.MouseEvent) => {
-      e.stopPropagation();
-      setViewDate(new Date(currentYear, currentMonth + 1, 1));
-    };
-
     // --- Bounds ---
     // `disablePast` is sugar for minDate = today; whichever lower bound is
     // later wins, so both can be passed together without surprises.
@@ -434,10 +315,9 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
         : null;
     const maxTime = upper && value && isSameDay(value, upper) ? upper : null;
 
-    const handleSelectDate = (day: number, e: React.MouseEvent) => {
-      e.stopPropagation();
-      let newDate = new Date(currentYear, currentMonth, day);
-      if (isDayDisabled(newDate)) return;
+    const handleSelectDate = (date: Date) => {
+      if (isDayDisabled(date)) return;
+      let newDate = date;
       if (showTime) {
         newDate = setTime(newDate, timeSource.getHours(), timeSource.getMinutes());
         // Landing on today with a time that has already passed: bump to now.
@@ -566,121 +446,29 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
     );
 
     if (variant === "calendar") {
-      const calendarDays = generateCalendarDays(currentYear, currentMonth);
       return (
         <article
           ref={containerRef}
           style={style}
           className={cn(
-            "w-full max-w-sm rounded-2xl bg-card border border-border/80 p-5 flex flex-col gap-4 text-foreground select-none overflow-hidden shadow-none mx-auto my-auto",
+            "w-full max-w-sm rounded-3xl bg-card border border-border/60 p-6 flex flex-col gap-4 text-foreground select-none overflow-hidden shadow-lg mx-auto my-auto",
             disabled && "opacity-60 pointer-events-none",
             className,
           )}
         >
-          <div className="flex-1 flex flex-col justify-between min-w-0">
-            {/* Month Header */}
-            <header className="flex items-center justify-between pb-3">
-              <h2 className="text-sm font-extrabold text-foreground tracking-tight">
-                {MONTH_NAMES[currentMonth]} {currentYear}
-              </h2>
-              <div className="flex items-center gap-1">
-                <button
-                  type="button"
-                  onClick={handlePrevMonth}
-                  className="size-7 rounded-lg border border-border/80 hover:bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <ChevronLeft className="size-4" />
-                </button>
-                <button
-                  type="button"
-                  onClick={handleNextMonth}
-                  className="size-7 rounded-lg border border-border/80 hover:bg-muted flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  <ChevronRight className="size-4" />
-                </button>
-              </div>
-            </header>
-
-            {/* Weekdays Header */}
-            <section className="grid grid-cols-7 gap-1 text-center mb-2">
-              {DAY_NAMES.map((day) => (
-                <span
-                  key={day}
-                  className="text-xs font-semibold text-muted-foreground"
-                >
-                  {day}
-                </span>
-              ))}
-            </section>
-
-            {/* Days Grid */}
-            <section
-              ref={daysGridRef}
-              className="relative grid grid-cols-7 gap-y-1.5 gap-x-0 text-center"
-            >
-              <SelectionPill
-                gridRef={daysGridRef}
-                selectedKey={
-                  value
-                    ? `${value.getFullYear()}-${value.getMonth()}-${value.getDate()}`
-                    : null
-                }
-                monthKey={`${currentYear}-${currentMonth}`}
-                instant={reduceMotion}
-                className={theme.bg}
-              />
-              {calendarDays.map(({ date: cellDate, isCurrentMonth }, idx) => {
-                const isSelected = Boolean(value && isSameDay(cellDate, value));
-                const isOff = isDayDisabled(cellDate);
-                return (
-                  <div
-                    key={idx}
-                    className="relative flex items-center justify-center my-0.5 h-8"
-                  >
-                    <button
-                      type="button"
-                      disabled={isOff}
-                      aria-disabled={isOff}
-                      data-selected={isSelected ? "true" : undefined}
-                      onClick={() => {
-                        if (isOff) return;
-                        onChange?.(cellDate);
-                        if (!isCurrentMonth) {
-                          setViewDate(
-                            new Date(
-                              cellDate.getFullYear(),
-                              cellDate.getMonth(),
-                              1,
-                            ),
-                          );
-                        }
-                      }}
-                      className={cn(
-                        "relative size-8 rounded-lg transition-colors duration-100 flex items-center justify-center text-xs font-semibold leading-tight",
-                        !isCurrentMonth &&
-                          !isSelected &&
-                          "text-muted-foreground/30",
-                        isCurrentMonth &&
-                          !isSelected &&
-                          "hover:bg-muted text-foreground",
-                        !isCurrentMonth && !isSelected && "hover:bg-muted",
-                        isSelected &&
-                          (color === "zinc"
-                            ? "text-white dark:text-zinc-900 font-extrabold"
-                            : color === "primary"
-                              ? "text-primary-foreground font-extrabold"
-                              : "text-white font-extrabold"),
-                        isOff &&
-                          "text-muted-foreground/40 cursor-not-allowed hover:bg-transparent line-through font-normal",
-                      )}
-                    >
-                      <span className="relative z-10">{cellDate.getDate()}</span>
-                    </button>
-                  </div>
-                );
-              })}
-            </section>
-          </div>
+          <CalendarPanel
+            viewDate={viewDate}
+            onViewDateChange={setViewDate}
+            value={value}
+            onSelect={(date) => onChange?.(date)}
+            isDayDisabled={isDayDisabled}
+            lower={lower}
+            upper={upper}
+            color={color}
+            weekStartsOn={weekStartsOn}
+            reduceMotion={reduceMotion}
+            active={true}
+          />
 
           {/* Bottom Footer Status Bar */}
           <footer className="flex items-center justify-between pt-3 mt-1 border-t border-border/60">
@@ -797,78 +585,19 @@ export const DatePickerBlock = forwardRef<HTMLDivElement, DatePickerBlockProps>(
           <div className="p-4">
             <div className={cn(showTime && sideLayout && "flex items-stretch")}>
               <div className="min-w-0 flex-1">
-                {/* Header */}
-                <div className="flex items-center justify-between mb-4">
-                  <button
-                    onClick={handlePrevMonth}
-                    className="p-1.5 rounded-md text-muted-foreground hover:bg-muted transition-colors"
-                  >
-                    <ChevronLeft className="w-4 h-4" />
-                  </button>
-                  <div className="text-sm font-semibold text-foreground">
-                    {MONTH_NAMES[currentMonth]} {currentYear}
-                  </div>
-                  <button
-                    onClick={handleNextMonth}
-                    className="p-1.5 rounded-md text-muted-foreground hover:bg-muted transition-colors"
-                  >
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
-                </div>
-
-                {/* Days Header */}
-                <div className="grid grid-cols-7 mb-2">
-                  {DAY_NAMES.map((day) => (
-                    <div
-                      key={day}
-                      className="text-center text-[10px] font-semibold uppercase tracking-wider text-muted-foreground"
-                    >
-                      {day}
-                    </div>
-                  ))}
-                </div>
-
-                {/* Days Grid */}
-                <div className="grid grid-cols-7 gap-1">
-                  {/* Empty slots for start of month */}
-                  {Array.from({ length: firstDayIndex }).map((_, i) => (
-                    <div key={`empty-${i}`} className="w-8 h-8" />
-                  ))}
-
-                  {/* Actual Days */}
-                  {Array.from({ length: daysInMonth }).map((_, i) => {
-                    const day = i + 1;
-                    const thisDate = new Date(currentYear, currentMonth, day);
-                    const isSelected = value && isSameDay(thisDate, value);
-                    const isToday = isSameDay(thisDate, today);
-                    const isOff = isDayDisabled(thisDate);
-
-                    return (
-                      <button
-                        key={day}
-                        type="button"
-                        disabled={isOff}
-                        aria-disabled={isOff}
-                        onClick={(e) => handleSelectDate(day, e)}
-                        className={cn(
-                          "w-8 h-8 flex items-center justify-center rounded-full text-sm transition-all duration-200 cursor-pointer mx-auto",
-                          isSelected
-                            ? cn(theme.bg, "font-semibold shadow-sm scale-110")
-                            : isToday
-                              ? cn(
-                                  "font-semibold bg-muted",
-                                  theme.text,
-                                )
-                              : "text-foreground font-medium hover:bg-muted",
-                          isOff &&
-                            "text-muted-foreground/40 line-through cursor-not-allowed hover:bg-transparent font-normal",
-                        )}
-                      >
-                        {day}
-                      </button>
-                    );
-                  })}
-                </div>
+                <CalendarPanel
+                  viewDate={viewDate}
+                  onViewDateChange={setViewDate}
+                  value={value}
+                  onSelect={handleSelectDate}
+                  isDayDisabled={isDayDisabled}
+                  lower={lower}
+                  upper={upper}
+                  color={color}
+                  weekStartsOn={weekStartsOn}
+                  reduceMotion={reduceMotion}
+                  active={isOpen}
+                />
               </div>
 
               {/* Time — unfolds to the RIGHT of the calendar on the first pick

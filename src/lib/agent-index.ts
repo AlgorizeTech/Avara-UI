@@ -147,8 +147,8 @@ export function agentIndex() {
 }
 
 
-/** Which pages a hub lists: every website section, or every page that animates with GSAP. */
-export type HubKind = "sections" | "gsap";
+/** Which pages a hub lists: every website section, every page with a GSAP build, or every page with a Motion build. */
+export type HubKind = "sections" | "gsap" | "motion";
 
 /** A page summary cut at its last whole sentence that fits, for a list row. */
 export function shortSummary(summary: string, max = 150): string {
@@ -162,7 +162,7 @@ export function shortSummary(summary: string, max = 150): string {
 /** The hub's pages grouped by category, in the order the "All components" page lists them. */
 export function hubGroups(kind: HubKind) {
   const entries = agentEntries().filter((entry) =>
-    kind === "sections" ? entry.kind === "section" : entry.animation.includes("gsap"),
+    kind === "sections" ? entry.kind === "section" : entry.animation.includes(kind),
   );
   const order = Object.keys(COMPONENT_TYPES);
   const groups = new Map<ComponentTypeId, { label: string; entries: AgentEntry[] }>();

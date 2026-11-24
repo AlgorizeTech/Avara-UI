@@ -7,7 +7,7 @@ import { extractCode } from "@/lib/code";
 
 # Shadcn Accordion
 
-A data-driven accordion with eight list styles and a brand reveal showcase.
+A data-driven accordion with nine list styles and a brand reveal showcase.
 
 <AgentVariants slug="accordion" />
 
@@ -17,23 +17,23 @@ export const usageData = `const faqItems: AccordionDataItem[] = [
     title: "How do I get started?",
     icon: "HelpCircle", // any key of the block's ICON_MAP
     content: [
-      "Getting started is easy! Simply sign up for an account.",
-      "We'll guide you through setting up your profile.",
+      "Getting started takes a couple of minutes. Sign up for a free account, confirm your email and follow the guided setup to create your profile, invite your team and connect the tools you already use.",
     ],
   },
   {
     value: "pricing",
     title: "What are your pricing plans?",
     icon: "CreditCard",
-    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
+    content: [
+      "We offer flexible plans that grow with you. The Basic plan starts at $9 per month and includes every core feature, while Pro and Team add priority support, advanced analytics and unlimited projects.",
+    ],
   },
   {
     value: "security",
     title: "How secure is my data?",
     icon: "Shield",
     content: [
-      "Security is our top priority.",
-      "Your information is stored in secure data centers.",
+      "Security is our top priority. Your data is encrypted in transit and at rest, stored in certified data centers and backed up every day, so your information stays private and recoverable at all times.",
     ],
   },
 ];`;
@@ -84,6 +84,22 @@ export default function InsetFaq() {
       <Accordion
         accordionData={faqItems}
         variant="inset"
+        defaultValue="getting-started"
+      />
+    </div>
+  );
+}`;
+
+export const usageTray = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+
+${usageData}
+
+export default function TrayFaq() {
+  return (
+    <div className="mx-auto w-full max-w-2xl">
+      <Accordion
+        accordionData={faqItems}
+        variant="tray"
         defaultValue="getting-started"
       />
     </div>
@@ -154,6 +170,19 @@ export default function MultipleOpenFaq() {
       usage: usageInset,
     },
     {
+      title: "Tray",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"tray"',
+          effect: "for one rounded tray whose open row becomes a tile, with a plus that turns into a minus.",
+        },
+      ],
+      props: { variant: "tray", interaction: "single" },
+      usage: usageTray,
+    },
+    {
       title: "Bracket frame",
       propNotes: [
         {
@@ -173,7 +202,7 @@ export default function MultipleOpenFaq() {
           lead: "Use",
           prop: "variant",
           value: '"soft"',
-          effect: "for tinted tiles whose plus folds into a minus.",
+          effect: "for white tiles that settle to soft gray when open, with a plus that folds into a minus.",
         },
       ],
       props: { variant: "soft", interaction: "single" },
@@ -227,7 +256,7 @@ export default function MultipleOpenFaq() {
 <Installation name="accordion" />
 
 ## Features
-Single or multiple open panels, a one-time stack entrance, and eight variants that all read your theme tokens.
+Single or multiple open panels, a one-time stack entrance, and nine variants that all read your theme tokens.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <InfoCard title="Follows your theme">
@@ -240,7 +269,7 @@ Single or multiple open panels, a one-time stack entrance, and eight variants th
     <p>Rows wrap cleanly at phone width; the open card in the default variant only grows wider than the list from <code>sm</code> up.</p>
   </InfoCard>
   <InfoCard title="No animation library">
-    <p>The <code>soft</code>, <code>inset</code> and <code>bracket</code> variants open and close with CSS keyframes that ship inside the component. The stack entrance uses the Web Animations API. The only dependency beyond Radix is <code>lucide-react</code>.</p>
+    <p>The <code>soft</code>, <code>tray</code>, <code>inset</code> and <code>bracket</code> variants open and close with CSS keyframes that ship inside the component. The stack entrance uses the Web Animations API. The only dependency beyond Radix is <code>lucide-react</code>.</p>
   </InfoCard>
 </div>
 
@@ -285,7 +314,7 @@ Single or multiple open panels, a one-time stack entrance, and eight variants th
           <code>variant</code>
         </td>
         <td>
-          <code>"default" | "bordered" | "filled" | "elevated" | "soft" | "inset" | "bracket" | "ghost" | "brand-reveal"</code>
+          <code>"default" | "bordered" | "filled" | "elevated" | "soft" | "tray" | "inset" | "bracket" | "ghost" | "brand-reveal"</code>
         </td>
         <td>
           <code>"default"</code>
@@ -294,10 +323,11 @@ Single or multiple open panels, a one-time stack entrance, and eight variants th
           Which look to use. <code>default</code> lifts the open row out as a
           card, <code>bordered</code> grows a rail on it, <code>filled</code>{" "}
           inverts it to <code>primary</code>, <code>elevated</code> raises it on
-          a ring, <code>soft</code> uses tinted tiles with a plus that folds
-          into a minus, <code>inset</code> sets the answer in a well inside the
+          a ring, <code>soft</code> uses white tiles that settle to soft gray with a plus that folds
+          into a minus, <code>tray</code> sets the rows in one rounded tray with an
+          animated plus/minus chip, <code>inset</code> sets the answer in a well inside the
           open card, <code>bracket</code> opens corner brackets outward,{" "}
-          <code>ghost</code> is type and hairlines only, and{" "}
+          <code>ghost</code> is a stack of white cards lit by a hairline and soft shadow, and{" "}
           <code>brand-reveal</code> renders an interactive horizontal brand showcase.
         </td>
       </tr>

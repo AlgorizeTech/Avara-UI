@@ -6,9 +6,9 @@ url: https://avaraui.com/docs/nextjs/booking-card
 
 # Shadcn Booking Card
 
-A booking panel that goes inside any card: a strip of days paged a week at a time, time slots in groups, a button that reads the choice back before anyone confirms, and a confirmation that draws itself in over the form once the booking is made.
+A booking panel that goes inside any card: one scrolling line of days and one of times, each with prev/next arrows, a button that reads the choice back before anyone confirms, and a confirmation that draws itself in over the form once the booking is made.
 
-`BookingCard` is a compound component that holds the chosen day and slot; `BookingCard.Days`, `BookingCard.Slots`, `BookingCard.Submit` and `BookingCard.Confirmation` go inside it in any layout. It draws no surface of its own, so it sits as comfortably in a plain bordered card as in a slab from [Glass Panel](https://avaraui.com/docs/reactjs/glass-panel). The [Book Appointment](https://avaraui.com/docs/reactjs/book-appointment) section is the same card on a full page.
+`BookingCard` is a compound component that holds the chosen day and slot; `BookingCard.Days`, `BookingCard.Times`, `BookingCard.Submit` and `BookingCard.Confirmation` go inside it in any layout. It draws no surface of its own, so it sits as comfortably in a plain bordered card as in a slab from [Glass Panel](https://avaraui.com/docs/reactjs/glass-panel). The [Book Appointment](https://avaraui.com/docs/reactjs/book-appointment) section is the same card on a full page.
 
 ## In a card
 
@@ -21,8 +21,7 @@ Pick a day and a time, then press Book. The button stays busy while your `onBook
 ```tsx
 import { BookingCard } from "@/components/custom/blocks/BookingCardBlock";
 
-const MORNING = [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }];
-const AFTERNOON = [{ label: "12:00 PM" }, { label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM", taken: true }];
+const SLOTS = [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }, { label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM" }];
 
 export default function Booking() {
   return (
@@ -35,11 +34,7 @@ export default function Booking() {
       >
         <h2 className="text-lg font-semibold tracking-tight">Book an appointment</h2>
         <BookingCard.Days unavailable={(d) => d.getDay() === 0} />
-        <div className="space-y-4">
-          <p className="text-sm font-semibold">Time</p>
-          <BookingCard.Slots label="Morning" slots={MORNING} />
-          <BookingCard.Slots label="Afternoon" slots={AFTERNOON} />
-        </div>
+        <BookingCard.Times slots={SLOTS} />
         <BookingCard.Submit className="mt-auto" />
         <BookingCard.Confirmation withName="Dr. Nair" place="Riverside Heart & Medical Group" />
       </BookingCard>
@@ -75,8 +70,7 @@ The same card inside a GlassPanel from Glass Panel. Nothing inside the card chan
 import { BookingCard } from "@/components/custom/blocks/BookingCardBlock";
 import { GlassBackdrop, GlassPanel } from "@/components/custom/blocks/GlassPanelBlock";
 
-const MORNING = [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }];
-const AFTERNOON = [{ label: "12:00 PM" }, { label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM", taken: true }];
+const SLOTS = [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }, { label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM" }];
 
 export default function Booking() {
   return (
@@ -92,11 +86,7 @@ export default function Booking() {
         >
           <h2 className="text-lg font-semibold tracking-tight">Book an appointment</h2>
           <BookingCard.Days unavailable={(d) => d.getDay() === 0} />
-          <div className="space-y-4">
-            <p className="text-sm font-semibold">Time</p>
-            <BookingCard.Slots label="Morning" slots={MORNING} />
-            <BookingCard.Slots label="Afternoon" slots={AFTERNOON} />
-          </div>
+          <BookingCard.Times slots={SLOTS} />
           <BookingCard.Submit className="mt-auto" />
           <BookingCard.Confirmation withName="Dr. Nair" place="Riverside Heart & Medical Group" />
         </BookingCard>
@@ -116,8 +106,7 @@ The booking card rendered inside a liquid-glass refraction surface.
 import { BookingCard } from "@/components/custom/blocks/BookingCardBlock";
 import { GlassBackdrop } from "@/components/custom/blocks/GlassPanelBlock";
 
-const MORNING = [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }];
-const AFTERNOON = [{ label: "12:00 PM" }, { label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM", taken: true }];
+const SLOTS = [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }, { label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM" }];
 
 export default function Booking() {
   return (
@@ -130,11 +119,7 @@ export default function Booking() {
       >
         <h2 className="text-lg font-semibold tracking-tight">Book an appointment</h2>
         <BookingCard.Days unavailable={(d) => d.getDay() === 0} />
-        <div className="space-y-4">
-          <p className="text-sm font-semibold">Time</p>
-          <BookingCard.Slots label="Morning" slots={MORNING} />
-          <BookingCard.Slots label="Afternoon" slots={AFTERNOON} />
-        </div>
+        <BookingCard.Times slots={SLOTS} />
         <BookingCard.Submit className="mt-auto" />
         <BookingCard.Confirmation withName="Dr. Nair" place="Riverside Heart & Medical Group" />
       </BookingCard>
@@ -168,17 +153,16 @@ The default days are built on the client, so a server render never guesses the v
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `days` | `Date[]` | today → `horizon` | Days on offer, in order, paged `count` at a time with the previous/next arrows. The default is built on the client so the server never guesses today, and it starts today — there is no paging back into the past. |
-| `count` | `number` | `7` | Days shown per page. |
-| `horizon` | `number` | `90` | How far ahead the default days run, in days from today. Ignored when `days` is given. |
+| `days` | `Date[]` | today → `horizon` | Days on offer, in order. One line with a fixed height — a short month sits centred in it — that scrolls or pages with the arrows. The default is built on the client so the server never guesses today, and it starts today. |
+| `horizon` | `number` | `60` | How far ahead the default days run, in days from today. Ignored when `days` is given. |
 | `unavailable` | `(day: Date) => boolean` | — | Days with nothing free — shown struck through, not selectable. |
 
-### BookingCard.Slots
+### BookingCard.Times
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `label` | `string` | — | Group title, e.g. `&quot;Morning&quot;`. |
-| `slots` | `&#123; label: string; taken?: boolean &#125;[]` | — | Times in the group. Disabled until a day is chosen; `taken` slots are shown struck through. |
+| `slots` | `&#123; label: string; taken?: boolean &#125;[]` | — | Every time, in order, on one scrolling line. Disabled until a day is chosen; `taken` slots are shown struck through. |
+| `label` | `string` | `&quot;Select a time&quot;` | Title above the line. |
 
 ### BookingCard.Submit
 
