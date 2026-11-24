@@ -225,8 +225,7 @@ The booking panel is its own component, [Booking Card](https://avaraui.com/docs/
 import { BookingCard } from "@/components/custom/blocks/BookingCardBlock";
 import { GlassBackdrop, GlassPanel } from "@/components/custom/blocks/GlassPanelBlock";
 
-const MORNING = [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }];
-const AFTERNOON = [{ label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM" }];
+const SLOTS = [{ label: "9:00 AM" }, { label: "10:00 AM" }, { label: "11:00 AM", taken: true }, { label: "1:00 PM" }, { label: "2:00 PM" }, { label: "3:00 PM" }];
 
 export default function Booking() {
   return (
@@ -240,11 +239,7 @@ export default function Booking() {
         >
           <h2 className="text-lg font-semibold tracking-tight">Schedule a visit</h2>
           <BookingCard.Days unavailable={(d) => d.getDay() === 0} />
-          <div className="space-y-4">
-            <p className="text-sm font-semibold">Time</p>
-            <BookingCard.Slots label="Morning" slots={MORNING} />
-            <BookingCard.Slots label="Afternoon" slots={AFTERNOON} />
-          </div>
+          <BookingCard.Times slots={SLOTS} />
           <BookingCard.Submit className="mt-auto" />
           <BookingCard.Confirmation withName="Dr. Nair" place="Riverside Heart & Medical Group" />
         </BookingCard>
@@ -273,7 +268,7 @@ The default days are built on the client, so a server render never guesses the v
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `practitioner` | `Practitioner` | — | Who the page is about. See the shape below. |
-| `slotGroups` | `&#123; label: string; slots: &#123; label: string; taken?: boolean &#125;[] &#125;[]` | — | Times on offer, grouped, e.g. Morning and Afternoon. |
+| `slotGroups` | `&#123; label: string; slots: &#123; label: string; taken?: boolean &#125;[] &#125;[]` | — | Times on offer. The groups are joined, in order, into one scrolling line. |
 | `onBook` | `(booking: &#123; day: Date; slot: string &#125;) => void \| Promise<void>` | — | Called on confirm. Return a promise to hold the busy state; a rejection returns to the form. |
 | `unavailable` | `(day: Date) => boolean` | — | Days with nothing free — struck through, not selectable. |
 | `scores` | `&#123; label: string; value: number &#125;[]` | `[]` | Named scores out of 5, shown as `HalfStars` under the summary. |
@@ -299,7 +294,7 @@ The default days are built on the client, so a server render never guesses the v
 
 ### BookingCard
 
-The booking panel's own props — `onBook`, `BookingCard.Days`, `BookingCard.Slots`, `BookingCard.Submit`, `BookingCard.Confirmation` — are documented on the [Booking Card](https://avaraui.com/docs/nextjs/booking-card) page.
+The booking panel's own props — `onBook`, `BookingCard.Days`, `BookingCard.Times`, `BookingCard.Submit`, `BookingCard.Confirmation` — are documented on the [Booking Card](https://avaraui.com/docs/nextjs/booking-card) page.
 
 ---
 
