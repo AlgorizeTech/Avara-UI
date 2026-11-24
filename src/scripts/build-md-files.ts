@@ -185,6 +185,32 @@ function evaluatePage(statements: string[], expressions: string[]): unknown[] {
   return values.__results as unknown[];
 }
 
+/**
+ * What `<Installation name="…">` renders, as Markdown: the command, which is all
+ * a reader needs, since the web component's dependency list is read from
+ * registry.json and the CLI installs those itself.
+ */
+function installMarkdown(name: string): string {
+  return (
+    "Add the component by URL — no setup needed:\n\n" +
+    "```bash\n" +
+    `npx shadcn@latest ${addArgsFor(name, "url")}\n` +
+    "```\n\n" +
+    `Or register the ${REGISTRY_NAMESPACE} registry once per project and add it by name:\n\n` +
+    "```bash\n" +
+    `npx shadcn@latest ${REGISTRY_ADD_ARGS}\n` +
+    `npx shadcn@latest ${addArgsFor(name, "namespace")}\n` +
+    "```" +
+    // Dual components: the same file, built on Motion instead of GSAP.
+    (MOTION_TWINS.has(name)
+      ? "\n\nOr the Motion build (same props, same file — install one):\n\n" +
+        "```bash\n" +
+        `npx shadcn@latest ${addArgsFor(`${name}-motion`, "url")}\n` +
+        "```"
+      : "")
+  );
+}
+
 /** An example as the page shows it: heading, summary, prop notes, then its Usage tab. */
 function exampleToMarkdown(example: ShowcaseExample, level: number, framework: Framework): string {
   const lines = [`${"#".repeat(level)} ${example.title ?? ""}`];
@@ -265,7 +291,7 @@ function convertMdxToMd(content: string, framework: Framework): string {
   mdContent = mdContent.replace(/^import\s+.*?\{[\s\S]*?\}\s+from\s+.*?;?\s*$/gm, '');
 
   // Each <ExampleShowcase> becomes its examples, once the exports have run.
-  const showcases: { marker: string; expression: string; level: number }[] = [];
+  const showcases: { marker: string; expression: string; level: number; installName?: string }[] = [];
   for (let index = mdContent.indexOf("<ExampleShowcase"); index >= 0; ) {
     const file = parseAt(mdContent, index);
     const first = file.statements[0];
@@ -281,18 +307,26 @@ function convertMdxToMd(content: string, framework: Framework): string {
     const examples = attribute("examples");
     const level = attribute("headingLevel")?.getText(file) === "{2}" ? 2 : 3;
     const marker = `\u0001${showcases.length}\u0001`;
+    // A page that shows the install steps in each preview's Get code sheet
+    // passes them as `installation={<Installation name="…" />}`.
+    const installation = attribute("installation");
+    const installName =
+      installation && ts.isJsxExpression(installation) && installation.expression
+        ? /<Installation\s+name="([^"]+)"/.exec(installation.expression.getText(file))?.[1]
+        : undefined;
     if (examples && ts.isJsxExpression(examples) && examples.expression) {
-      showcases.push({ marker, expression: examples.expression.getText(file), level });
+      showcases.push({ marker, expression: examples.expression.getText(file), level, installName });
     }
     mdContent = mdContent.slice(0, index) + marker + mdContent.slice(index + element.end);
     index = mdContent.indexOf("<ExampleShowcase", index);
   }
   const results = evaluatePage(statements, showcases.map((showcase) => showcase.expression));
-  showcases.forEach(({ marker, level }, position) => {
+  showcases.forEach(({ marker, level, installName }, position) => {
     const examples = results[position] as ShowcaseExample[];
+    const install = installName ? `## Installation\n\n${installMarkdown(installName)}\n\n` : "";
     mdContent = mdContent.replace(
       marker,
-      () => hold(examples.map((example) => exampleToMarkdown(example, level, framework)).join("\n\n")),
+      () => hold(install + examples.map((example) => exampleToMarkdown(example, level, framework)).join("\n\n")),
     );
   });
 
@@ -411,23 +445,7 @@ function convertMdxToMd(content: string, framework: Framework): string {
   // installs those itself, so the command alone is enough here.
   mdContent = mdContent.replace(
     /<Installation\s+name="([^"]+)"[^>]*\/>/g,
-    (_, name: string) => hold(
-      'Add the component by URL — no setup needed:\n\n' +
-      '```bash\n' +
-      `npx shadcn@latest ${addArgsFor(name, "url")}\n` +
-      '```\n\n' +
-      `Or register the ${REGISTRY_NAMESPACE} registry once per project and add it by name:\n\n` +
-      '```bash\n' +
-      `npx shadcn@latest ${REGISTRY_ADD_ARGS}\n` +
-      `npx shadcn@latest ${addArgsFor(name, "namespace")}\n` +
-      '```' +
-      // Dual components: the same file, built on Motion instead of GSAP.
-      (MOTION_TWINS.has(name)
-        ? '\n\nOr the Motion build (same props, same file — install one):\n\n' +
-          '```bash\n' +
-          `npx shadcn@latest ${addArgsFor(`${name}-motion`, "url")}\n` +
-          '```'
-        : ''))
+    (_, name: string) => hold(installMarkdown(name)),
   );
   // <InstallGroup> only wraps several <Installation>s; drop the wrapper.
   mdContent = mdContent.replace(/<\/?InstallGroup>/g, '');

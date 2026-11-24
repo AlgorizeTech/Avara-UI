@@ -105,8 +105,10 @@ export function DocsJsonLd({
 
 /**
  * FAQPage JSON-LD for a page of questions, read from its `## …?` headings. The
- * docs FAQ uses it; component pages should not, since a question repeated across
- * dozens of pages is the mass-produced pattern search engines discount.
+ * docs FAQ uses it, and so does a component page whose questions are its own
+ * (Action Buttons). A question repeated across dozens of pages is the
+ * mass-produced pattern search engines discount, so a page opts in only with
+ * questions it alone can answer.
  */
 export function FaqJsonLd({ slug }: { slug: string }) {
   const data = {

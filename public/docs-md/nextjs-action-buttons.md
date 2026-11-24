@@ -1,33 +1,12 @@
 ---
 title: "Action Button"
-description: "Shadcn Action Button. A collection of stateful interactive action, commerce."
+description: "Animated action buttons: slide to confirm, hold to delete, star, add to cart, waitlist and payment. Free shadcn/ui component with GSAP and Motion builds."
 url: https://avaraui.com/docs/nextjs/action-buttons
 ---
 
 # Action Button
 
-A collection of stateful interactive action, commerce, and confirmation buttons built on GSAP and CSS (a Motion build is also available) — featuring spring-morphing icons, odometer digit rolling, hold-to-confirm progress, draggable slide-to-confirm, inline waitlist expansion, cart parcel drop physics, split action menus, and payment/download progress states.
-
-## Slide to Deploy
-
-Draggable slide-to-confirm track with a clipped ink sweep, non-overshoot spring return, tap nudge, and `Deploying` → `Deployed` feedback.
-
-- Slide to Confirm `SlideToConfirm=threshold, resetAfter` draggable slider thumb with ink clip-path reveal, tap nudge, and `Deploying` → `Deployed` feedback.
-
-```tsx
-import { SlideToConfirm } from "@/components/custom/blocks/ActionButtons";
-
-export default function Demo() {
-  return (
-    <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
-      <SlideToConfirm
-        action={() => new Promise((r) => setTimeout(r, 1200))}
-        resetAfter={2000}
-      />
-    </div>
-  );
-}
-```
+Animated action buttons: slide to confirm, hold to delete, star, add to cart, waitlist and payment.
 
 ## Installation
 
@@ -48,6 +27,27 @@ Or the Motion build (same props, same file — install one):
 
 ```bash
 npx shadcn@latest add https://avaraui.com/r/action-buttons-motion.json
+```
+
+## Slide to Deploy
+
+Draggable slide-to-confirm track with a clipped ink sweep, non-overshoot spring return, tap nudge, and `Deploying` → `Deployed` feedback.
+
+- Slide to Confirm `SlideToConfirm=threshold, resetAfter` draggable slider thumb with ink clip-path reveal, tap nudge, and `Deploying` → `Deployed` feedback.
+
+```tsx
+import { SlideToConfirm } from "@/components/custom/blocks/ActionButtons";
+
+export default function Demo() {
+  return (
+    <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
+      <SlideToConfirm
+        action={() => new Promise((r) => setTimeout(r, 1200))}
+        resetAfter={2000}
+      />
+    </div>
+  );
+}
 ```
 
 ## Star & Upvote
@@ -172,6 +172,34 @@ export default function Demo() {
   );
 }
 ```
+
+## About Action Buttons
+
+**What it is.** Ten stateful buttons for the moments a plain button can't carry: confirming a risky action, saving, paying, joining a waitlist, adding to a cart. They are named exports of one file. Each runs the promise you pass as `action` and moves through idle, pending, done and failed states on its own.
+
+**How it is built.** CSS handles the fixed-value motion and GSAP handles the pointer, drag and physics effects. A Motion build ships the same file on Motion instead. Colours come from your theme tokens, and the animation reads `prefers-reduced-motion`.
+
+**When to use it.** Reach for these when an action takes time, can fail or can't be undone. For a button that only navigates, a plain shadcn button is enough.
+
+## For AI agents
+
+**When to use**
+
+- Hold-to-delete, slide-to-deploy and other confirm-before-you-act flows
+- Buttons that run an async call and need pending, success and error states
+- Commerce actions: add to cart with a quantity stepper, pay, join a waitlist
+
+**When not to use**
+
+- A plain submit or link: use the glowing-border [Button](https://avaraui.com/docs/nextjs/button)
+- A confirmation that needs a full explanation: use [Dialog](https://avaraui.com/docs/nextjs/dialog)
+
+**Agent notes**
+
+- Import the named exports from `@/components/custom/blocks/ActionButtons`; there is no default export.
+- `action` must return a promise. On the confirm, hold, waitlist and payment buttons a rejected promise shows the failed state, so don't swallow errors inside it.
+- `SlideToConfirm`, `HoldToConfirm` and `PaymentButton` stay on their done state until you set `resetAfter` (milliseconds). `AsyncButton` and `InteractiveButton` use `successDuration` instead.
+- Install the GSAP build (`action-buttons`) or the Motion build (`action-buttons-motion`), not both.
 
 ## Props Reference
 
@@ -310,6 +338,33 @@ Included in the install but not shown above.
 | `followingLabel` | `string` | `\"Following\"` | Text while following. |
 | `unfollowLabel` | `string` | `\"Unfollow\"` | Hover text while following. |
 | `className` | `string` | `undefined` | Classes for the button. |
+
+## Works with other components
+
+- Put [Dialog](https://avaraui.com/docs/nextjs/dialog) around a `HoldToConfirm` or `SlideToConfirm` when the confirmation needs a sentence of context.
+- Fire a [Sonner toast](https://avaraui.com/docs/nextjs/sonner) when an `action` resolves, such as "Deployed" or "Added to cart".
+- Use `AsyncButton` as the submit button of a [form](https://avaraui.com/docs/nextjs/form): its `action` is the async submit, with a spinner after 200 ms and a checkmark on success.
+- Add a [Tooltip](https://avaraui.com/docs/nextjs/tooltip) to explain a gesture the first time a reader meets it, such as hold to delete.
+
+## How do I ask for confirmation before a destructive action?
+
+Use `HoldToConfirm` for delete-style actions or `SlideToConfirm` for deploys. Neither runs `action` until the gesture finishes: the hold lasts `holdDuration` (1200 ms by default) and the slide has to pass `threshold` (90% of the track). Releasing a hold early shows "Keep holding", and a rejected action shows the error label.
+
+## Do the buttons handle loading, success and error states?
+
+Yes. Pass an async `action` and the button shows its own pending, done and failed states. `AsyncButton` delays the spinner by 200 ms so a fast call never flashes one, `PaymentButton` shakes into a failed state when the promise rejects, and `resetAfter` returns a finished button to idle.
+
+## Should I use the GSAP or the Motion build?
+
+Either one. Both have the same props, the same file and the same install path, so pick the library your project already ships. GSAP is the default (`action-buttons`) and `action-buttons-motion` is the Motion twin. Install one, not both.
+
+## Are the buttons accessible?
+
+They read `prefers-reduced-motion` and report their state to assistive technology with live-region text, and a pending button is marked busy. `SlideToConfirm` also accepts keyboard input, so the gesture is not pointer-only.
+
+## Can I use them without Next.js?
+
+Yes. They import nothing from `next/*`, so they run in Vite and any other React app. `StarButton` renders a plain link when you pass `repo` or `href`.
 
 ---
 

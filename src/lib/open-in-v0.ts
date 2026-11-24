@@ -53,7 +53,7 @@ export interface V0Theme {
   font?: string;
 }
 
-const DEFAULT_RADIUS = 0.625;
+export const DEFAULT_RADIUS = 0.625;
 const DEFAULT_FONT = "DM Sans";
 
 /** Accepts colour values (oklch, hsl, hex, names) and nothing that ends a declaration. */

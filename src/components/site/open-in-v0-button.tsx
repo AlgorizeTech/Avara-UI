@@ -5,7 +5,7 @@ import { useThemeCustomizer } from "@/contexts/theme-customizer-context";
 import { DEFAULT_PRESET, FONT_FAMILY_STORAGE_KEY } from "@/lib/theme-presets";
 import { isDefaultAccent } from "@/lib/accent";
 import { V0_ENDPOINT_ORIGIN } from "@/config/site";
-import { openInV0Url, type V0Theme } from "@/lib/open-in-v0";
+import { DEFAULT_RADIUS, openInV0Url, type V0Theme } from "@/lib/open-in-v0";
 import v0Items from "@/preview/v0-items.json";
 
 /** Preview name → example id → the v0 chat title. */
@@ -73,14 +73,22 @@ export function OpenInV0Button({
   const [previewName, exampleId] = item.split("/");
   const title = ITEMS[previewName]?.[exampleId];
 
-  const theme: V0Theme = {
-    preset: state.activePreset || DEFAULT_PRESET,
-    colors: state.colors,
-    radius: state.radius,
-    accent: isDefaultAccent(accent) ? undefined : accent,
-    mode: currentMode,
-    font,
-  };
+  // The customizer's state comes from the reader's browser, so it differs from
+  // what the server rendered. Until hydration the link carries the defaults,
+  // then the theme the reader is looking at.
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => setHydrated(true), []);
+
+  const theme: V0Theme = hydrated
+    ? {
+        preset: state.activePreset || DEFAULT_PRESET,
+        colors: state.colors,
+        radius: state.radius,
+        accent: isDefaultAccent(accent) ? undefined : accent,
+        mode: currentMode,
+        font,
+      }
+    : { preset: DEFAULT_PRESET, radius: DEFAULT_RADIUS, mode: "light" };
 
   return (
     <a

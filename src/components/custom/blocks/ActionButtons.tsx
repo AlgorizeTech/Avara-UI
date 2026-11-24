@@ -1427,6 +1427,15 @@ export type StarButtonProps = {
   className?: string;
 };
 
+/**
+ * Height of one digit row, in whole CSS pixels. A row taller than the 13px
+ * text leaves room above and below the glyph so the clip never shaves it, and
+ * a whole-pixel height keeps every row on the device-pixel grid at fractional
+ * zoom (an `em` row lands on .25/.5 px there, so digits snap to different
+ * baselines).
+ */
+const STAR_ROW = 16;
+
 function StarWheel({
   digit,
   direction,
@@ -1450,7 +1459,7 @@ function StarWheel({
 
   const paint = React.useCallback(() => {
     if (column.current) {
-      column.current.style.transform = `translateY(${-index.current.v}em)`;
+      column.current.style.transform = `translateY(${-index.current.v * STAR_ROW}px)`;
     }
   }, []);
 
@@ -1504,14 +1513,14 @@ function StarWheel({
   }, [shown, hold, direction, delay, reduce, paint]);
 
   return (
-    <span className="relative inline-block h-[1em] overflow-clip leading-none">
+    <span className="relative inline-block h-[16px] overflow-clip leading-[16px]">
       <span
         ref={column}
         className="flex flex-col"
-        style={{ transform: `translateY(${-startAt}em)` }}
+        style={{ transform: `translateY(${-startAt * STAR_ROW}px)` }}
       >
         {Array.from({ length: 20 }, (_, i) => (
-          <span key={i} className="block h-[1em] leading-none">
+          <span key={i} className="block h-[16px] leading-[16px]">
             {i % 10}
           </span>
         ))}
