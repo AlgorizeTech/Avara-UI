@@ -63,6 +63,8 @@ export type AccordionVariant =
   | "elevated"
   /** Soft tinted tiles with a plus that folds into a minus. */
   | "soft"
+  /** One rounded tray; the open row becomes a tile with an animated plus/minus chip. */
+  | "tray"
   /** Pill rows; the open one rises as a card with the answer in an inset well. */
   | "inset"
   /** Outlined rows with corner brackets that open outward. */
@@ -101,7 +103,7 @@ type VariantStyles = {
   title: string;
   /** Wrapper around the expand/collapse icon. */
   expand: string;
-  expandIcon: "plus" | "chevron" | "plusminus";
+  expandIcon: "plus" | "chevron" | "plusminus" | "morph";
   content: string;
   /** Extra content padding when the row carries an icon, so text aligns with the title. Dropped below `sm`, where the column is too narrow to spend on an indent. */
   contentWithIcon?: string;
@@ -248,6 +250,40 @@ const VARIANTS: Record<Exclude<AccordionVariant, "card-filled" | "brand-reveal">
     smooth: true,
   },
 
+  // "Tray": rows sit in one rounded tray; the open row becomes a muted tile and
+  // its round chip inverts, with the plus turning into a minus.
+  tray: {
+    list: cn(
+      "flex flex-col gap-1 rounded-[1.75rem] bg-card p-2 ring-1 ring-border/60",
+      "shadow-[0_1px_2px_rgb(0_0_0/0.04),0_18px_40px_-24px_rgb(0_0_0/0.22)]",
+    ),
+    item: cn(
+      "rounded-[1.25rem] transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+      "data-[state=closed]:hover:bg-muted/50 data-[state=open]:bg-muted",
+      "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring/60",
+    ),
+    trigger: "items-center gap-4 px-4 py-3.5 sm:px-5",
+    iconWrap: cn(
+      "flex shrink-0 items-center justify-center text-muted-foreground",
+      "transition-[color,transform] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]",
+      "group-hover:-rotate-6 group-hover:scale-110 group-hover:text-foreground group-data-[state=open]:text-foreground",
+    ),
+    title: cn(
+      "text-[15px] font-medium tracking-[-0.01em] text-foreground/80 transition-colors duration-300",
+      "group-hover:text-foreground group-data-[state=open]:text-foreground",
+    ),
+    expand: cn(
+      "flex size-8 shrink-0 items-center justify-center rounded-full bg-muted text-foreground",
+      "transition-[background-color,color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+      "group-data-[state=closed]:group-hover:bg-foreground/10",
+      "group-data-[state=open]:bg-foreground group-data-[state=open]:text-background",
+    ),
+    expandIcon: "morph",
+    content: "px-4 pb-4 pr-14 text-muted-foreground sm:px-5 sm:pr-16",
+    contentWithIcon: "sm:pl-[3.25rem]",
+    smooth: true,
+  },
+
   // "Inset": quiet pill rows; the open one rises as a card holding the answer in a well.
   inset: {
     list: "flex flex-col gap-2.5",
@@ -321,6 +357,49 @@ const VARIANTS: Record<Exclude<AccordionVariant, "card-filled" | "brand-reveal">
     contentWithIcon: "sm:pl-8",
   },
 };
+
+/**
+ * Plus that turns into a minus. Drawn as SVG strokes so each part animates on
+ * its own: the pair spins half a turn and the vertical stroke retracts when the
+ * row opens, the plus turns a quarter on hover, and the whole glyph pops a
+ * little. Driven by the trigger's `group` and `data-state`, so it needs no state.
+ */
+function MorphIcon() {
+  const easing = "ease-[cubic-bezier(0.34,1.56,0.64,1)]";
+  return (
+    <svg
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.75}
+      strokeLinecap="round"
+      aria-hidden="true"
+      className={cn(
+        "size-4 overflow-visible transition-transform duration-300 group-hover:scale-110",
+        easing,
+      )}
+    >
+      <g
+        style={{ transformOrigin: "8px 8px" }}
+        className={cn(
+          "transition-transform duration-500",
+          easing,
+          "group-data-[state=closed]:group-hover:rotate-90 group-data-[state=open]:rotate-180",
+        )}
+      >
+        <line x1="3" y1="8" x2="13" y2="8" />
+        <line
+          x1="8"
+          y1="3"
+          x2="8"
+          y2="13"
+          style={{ transformOrigin: "8px 8px" }}
+          className="transition-[scale,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-data-[state=open]:scale-y-0 group-data-[state=open]:opacity-0"
+        />
+      </g>
+    </svg>
+  );
+}
 
 /** Vertical gap, in px, each deeper card peeks out below the one above it while stacked. */
 const STACK_PEEK = 7;
@@ -500,6 +579,8 @@ function StandardAccordion({
                 expandIcon
               ) : styles.expandIcon === "plusminus" ? (
                 plusMinusIcon
+              ) : styles.expandIcon === "morph" ? (
+                <MorphIcon />
               ) : (
                 <DefaultExpandIcon className="size-4" strokeWidth={1.75} />
               )}

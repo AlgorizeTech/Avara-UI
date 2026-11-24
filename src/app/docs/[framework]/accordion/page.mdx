@@ -7,7 +7,7 @@ import { extractCode } from "@/lib/code";
 
 # Shadcn Accordion
 
-A data-driven accordion with eight list styles and a brand reveal showcase.
+A data-driven accordion with nine list styles and a brand reveal showcase.
 
 <AgentVariants slug="accordion" />
 
@@ -90,6 +90,22 @@ export default function InsetFaq() {
   );
 }`;
 
+export const usageTray = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
+
+${usageData}
+
+export default function TrayFaq() {
+  return (
+    <div className="mx-auto w-full max-w-2xl">
+      <Accordion
+        accordionData={faqItems}
+        variant="tray"
+        defaultValue="getting-started"
+      />
+    </div>
+  );
+}`;
+
 export const usageBracket = `import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
 
 ${usageData}
@@ -152,6 +168,19 @@ export default function MultipleOpenFaq() {
       ],
       props: { variant: "inset", interaction: "single" },
       usage: usageInset,
+    },
+    {
+      title: "Tray",
+      propNotes: [
+        {
+          lead: "Use",
+          prop: "variant",
+          value: '"tray"',
+          effect: "for one rounded tray whose open row becomes a tile, with a plus that turns into a minus.",
+        },
+      ],
+      props: { variant: "tray", interaction: "single" },
+      usage: usageTray,
     },
     {
       title: "Bracket frame",
@@ -227,7 +256,7 @@ export default function MultipleOpenFaq() {
 <Installation name="accordion" />
 
 ## Features
-Single or multiple open panels, a one-time stack entrance, and eight variants that all read your theme tokens.
+Single or multiple open panels, a one-time stack entrance, and nine variants that all read your theme tokens.
 
 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
   <InfoCard title="Follows your theme">
@@ -240,7 +269,7 @@ Single or multiple open panels, a one-time stack entrance, and eight variants th
     <p>Rows wrap cleanly at phone width; the open card in the default variant only grows wider than the list from <code>sm</code> up.</p>
   </InfoCard>
   <InfoCard title="No animation library">
-    <p>The <code>soft</code>, <code>inset</code> and <code>bracket</code> variants open and close with CSS keyframes that ship inside the component. The stack entrance uses the Web Animations API. The only dependency beyond Radix is <code>lucide-react</code>.</p>
+    <p>The <code>soft</code>, <code>tray</code>, <code>inset</code> and <code>bracket</code> variants open and close with CSS keyframes that ship inside the component. The stack entrance uses the Web Animations API. The only dependency beyond Radix is <code>lucide-react</code>.</p>
   </InfoCard>
 </div>
 
@@ -285,7 +314,7 @@ Single or multiple open panels, a one-time stack entrance, and eight variants th
           <code>variant</code>
         </td>
         <td>
-          <code>"default" | "bordered" | "filled" | "elevated" | "soft" | "inset" | "bracket" | "ghost" | "brand-reveal"</code>
+          <code>"default" | "bordered" | "filled" | "elevated" | "soft" | "tray" | "inset" | "bracket" | "ghost" | "brand-reveal"</code>
         </td>
         <td>
           <code>"default"</code>
@@ -295,7 +324,8 @@ Single or multiple open panels, a one-time stack entrance, and eight variants th
           card, <code>bordered</code> grows a rail on it, <code>filled</code>{" "}
           inverts it to <code>primary</code>, <code>elevated</code> raises it on
           a ring, <code>soft</code> uses tinted tiles with a plus that folds
-          into a minus, <code>inset</code> sets the answer in a well inside the
+          into a minus, <code>tray</code> sets the rows in one rounded tray with an
+          animated plus/minus chip, <code>inset</code> sets the answer in a well inside the
           open card, <code>bracket</code> opens corner brackets outward,{" "}
           <code>ghost</code> is type and hairlines only, and{" "}
           <code>brand-reveal</code> renders an interactive horizontal brand showcase.

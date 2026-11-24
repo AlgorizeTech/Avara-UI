@@ -1,7 +1,7 @@
 import type { PageVariants } from "./types";
 
 /**
- * Accordion: the docs show 6 looks (inset, bracket, soft, lift-card and ghost lists, brand-reveal showcase), all one registry item
+ * Accordion: the docs show 7 looks (inset, tray, bracket, soft, lift-card and ghost lists, brand-reveal showcase), all one registry item
  * (`accordion`), chosen with the `variant` prop. How many panels stay open is
  * `interaction` (a behaviour), and the stack entrance is `animation`, so the
  * examples that only change those are not separate designs. Claims come from
@@ -9,7 +9,7 @@ import type { PageVariants } from "./types";
  */
 export const accordion: PageVariants = {
   slug: "accordion",
-  intro: "A data-driven accordion. You pass an `accordionData` array and the open panel is the only thing that gets the accent. The examples show the inset, bracket, soft, lift-card and ghost lists and an automated brand reveal showcase; `variant` also accepts `soft`, `inset`, `bracket`, `bordered`, `filled` and `elevated`.",
+  intro: "A data-driven accordion. You pass an `accordionData` array and the open panel is the only thing that gets the accent. The examples show the inset, tray, bracket, soft, lift-card and ghost lists and an automated brand reveal showcase; `variant` also accepts `soft`, `tray`, `inset`, `bracket`, `bordered`, `filled` and `elevated`.",
   gotchas: [
     "All of them are looks of the one `accordion` item: install it once and set `variant` from the index.",
     "How many panels may be open is the `interaction` prop (single, multiple, mandatory, non-collapsible), not a design; in multiple mode `defaultValue` must be an array.",
@@ -29,6 +29,20 @@ export const accordion: PageVariants = {
       example: "Inset panel",
       props: { variant: "inset", interaction: "single" },
       setProps: { variant: "inset" },
+    },
+    {
+      id: "tray",
+      label: "Tray",
+      group: "Boxed",
+      summary: "Rows sit in one rounded tray; the open row becomes a tile and its round chip animates from plus to minus.",
+      bestFor: ["a clean product FAQ with a friendly, contained look"],
+      avoidIf: ["you want a flat, document-like list"],
+      traits: ["one rounded tray", "open row becomes a tile", "animated plus-to-minus chip", "CSS open and close motion"],
+      item: "accordion",
+      demo: "accordion",
+      example: "Tray",
+      props: { variant: "tray", interaction: "single" },
+      setProps: { variant: "tray" },
     },
     {
       id: "bracket",

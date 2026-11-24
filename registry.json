@@ -28,7 +28,7 @@
       "type": "registry:component",
       "title": "Accordion",
       "author": "AlgorizeTech",
-      "description": "Ask the user to pick one of 6 accordion variants: https://avaraui.com/view/accordion. This item holds 6 of them as looks of one component (inset, bracket, soft, default, brand-reveal, ghost). Skip the question if the user already named one. A data-driven accordion taking an array of items, with five distinct variants and an optional stack entrance that deals the items into place. Use it for FAQs and any list of collapsible sections.",
+      "description": "Ask the user to pick one of 7 accordion variants: https://avaraui.com/view/accordion. This item holds 7 of them as looks of one component (inset, tray, bracket, soft, default, brand-reveal, ghost). Skip the question if the user already named one. A data-driven accordion taking an array of items, with five distinct variants and an optional stack entrance that deals the items into place. Use it for FAQs and any list of collapsible sections.",
       "categories": [
         "layout"
       ],
@@ -46,7 +46,7 @@
           "target": "components/custom/blocks/Accordion.tsx"
         }
       ],
-      "docs": "Named export: Accordion. Pass `accordionData` as { value, title, icon?, content } — content accepts a string array or a node. `type` is single | multiple; set `collapsible` to let the last open section close. Variants: default (open row lifts out as a card) | bordered (rail on the open row) | filled (open row inverts to primary) | elevated (cards, open one on a ring) | soft (tinted tiles, plus folds into minus) | inset (pill rows, answer in an inset well) | bracket (outlined rows, corner brackets open outward) | ghost (type and hairlines); soft, inset and bracket animate open and close with CSS keyframes that ship inside the component. `animation=\"stack\"` piles the items and deals them out on scroll-in via the Web Animations API; skipped under reduced motion. Wraps the `ui-accordion` Radix primitive. For a single section, `collapsible` is lighter."
+      "docs": "Named export: Accordion. Pass `accordionData` as { value, title, icon?, content } — content accepts a string array or a node. `type` is single | multiple; set `collapsible` to let the last open section close. Variants: default (open row lifts out as a card) | bordered (rail on the open row) | filled (open row inverts to primary) | elevated (cards, open one on a ring) | soft (tinted tiles, plus folds into minus) | tray (one rounded tray, open row becomes a tile, animated SVG plus/minus chip) | tray (one rounded tray, open row becomes a tile, animated plus/minus chip) | inset (pill rows, answer in an inset well) | bracket (outlined rows, corner brackets open outward) | ghost (type and hairlines); soft, tray, inset and bracket animate open and close with CSS keyframes that ship inside the component. `animation=\"stack\"` piles the items and deals them out on scroll-in via the Web Animations API; skipped under reduced motion. Wraps the `ui-accordion` Radix primitive. For a single section, `collapsible` is lighter."
     },
     {
       "name": "account-menu",

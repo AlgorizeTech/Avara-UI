@@ -92,7 +92,7 @@ Install the chosen variant's own `install` command from the index. Several looks
 - `book-appointment`: 2 variants. All live: https://avaraui.com/view/book-appointment
 - `loader`: 5 variants. All live: https://avaraui.com/view/loader
 - `vertical-tabs`: 8 variants. All live: https://avaraui.com/view/vertical-tabs
-- `accordion`: 6 variants. All live: https://avaraui.com/view/accordion
+- `accordion`: 7 variants. All live: https://avaraui.com/view/accordion
 - `gallery`: 6 variants. All live: https://avaraui.com/view/gallery
 - `image-compare`: 10 variants. All live: https://avaraui.com/view/image-compare
 - `cursor-animation`: 11 variants. All live: https://avaraui.com/view/cursor-animation

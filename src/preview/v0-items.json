@@ -1,6 +1,7 @@
 {
   "accordion": {
     "inset-panel": "Accordion — Inset panel",
+    "tray": "Accordion — Tray",
     "bracket-frame": "Accordion — Bracket frame",
     "soft-tiles": "Accordion — Soft tiles",
     "lift-card": "Accordion — Lift card",
