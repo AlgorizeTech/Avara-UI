@@ -85,10 +85,10 @@ function DrawIcon({ icon }: { icon: SectionIconKey }) {
                 prefersReducedMotion
                   ? { duration: 0 }
                   : {
-                      duration: 2.2,
-                      delay: i * 0.15,
+                      duration: 3.2,
+                      delay: i * 0.2,
                       repeat: Infinity,
-                      repeatDelay: 0.6,
+                      repeatDelay: 0.9,
                       ease: "easeInOut",
                       times: [0, 0.45, 0.75, 1],
                     }

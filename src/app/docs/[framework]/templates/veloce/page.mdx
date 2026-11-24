@@ -1,16 +1,16 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
 import { SITE_NAME } from "@/config/site";
-import { KinetixTemplateView } from "@/components/site/KinetixTemplateView";
+import { VeloceTemplateView } from "@/components/site/VeloceTemplateView";
 import { AnimatedSectionTitle } from "@/components/site/AnimatedSectionTitle";
 import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
 
-export const metadata = docsPageMetadata("templates/kinetix", {
-  title: `Kinetix SaaS Template - ${SITE_NAME}`,
+export const metadata = docsPageMetadata("templates/veloce", {
+  title: `Veloce SaaS Template - ${SITE_NAME}`,
   description:
-    "A complete marketing site for an AI or SaaS product, with feature showcases, pricing, changelog, and light and dark themes.",
+    "A complete marketing site for an AI or SaaS product, featuring a clean navbar and high-converting bento hero section in light and dark themes.",
 });
 
-<KinetixTemplateView />
+<VeloceTemplateView />
 
 <AnimatedSectionTitle icon="zap" id="built-for-production">Built For Production</AnimatedSectionTitle>
 
@@ -29,4 +29,4 @@ export const metadata = docsPageMetadata("templates/kinetix", {
   </InfoCard>
 </div>
 
-<DocsJsonLd slug="templates/kinetix" />
+<DocsJsonLd slug="templates/veloce" />

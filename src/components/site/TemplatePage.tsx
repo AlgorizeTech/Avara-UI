@@ -11,6 +11,7 @@ import {
   Maximize2,
   Monitor,
   Moon,
+  RotateCcw,
   Smartphone,
   Sparkles,
   Sun,
@@ -34,7 +35,10 @@ export interface TemplatePreviewTab {
   id: string;
   label: string;
   path: string;
-  render: (theme: "light" | "dark") => React.ReactNode;
+  render: (
+    theme: "light" | "dark",
+    onToggleTheme?: (e: React.MouseEvent<HTMLElement>) => void,
+  ) => React.ReactNode;
 }
 
 export interface TemplateTechItem {
@@ -141,42 +145,64 @@ function AnimatedUrlPill({
 }) {
   const prefersReducedMotion = useReducedMotion();
   const suffix = path === "/" ? "" : path;
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState<number | undefined>(undefined);
+
+  useEffect(() => {
+    const el = contentRef.current;
+    if (!el) return;
+
+    const update = () => {
+      setWidth(el.offsetWidth);
+    };
+
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [domain, suffix]);
 
   return (
     <motion.div
-      layout
+      animate={width !== undefined ? { width } : undefined}
+      initial={false}
       transition={
         prefersReducedMotion
           ? { duration: 0 }
-          : { layout: { duration: 0.35, ease: [0.22, 1, 0.36, 1] } }
+          : { duration: 0.55, ease: [0.16, 1, 0.3, 1] }
       }
       className={cn(
-        "flex items-center gap-1.5 rounded-full bg-foreground/[0.04] px-3 py-1 text-[11px] font-mono text-foreground/55 overflow-hidden",
+        "rounded-full bg-foreground/[0.04] text-[11px] font-mono text-foreground/55 overflow-hidden shrink-0",
         className,
       )}
     >
-      <Lock className="size-3 shrink-0 text-foreground/45" aria-hidden />
-      <span className="flex items-center whitespace-nowrap truncate">
-        <span>{domain}</span>
-        <AnimatePresence mode="popLayout" initial={false}>
-          {suffix && (
-            <motion.span
-              key={suffix}
-              initial={prefersReducedMotion ? false : { opacity: 0, y: 4 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={prefersReducedMotion ? undefined : { opacity: 0, y: -4 }}
-              transition={
-                prefersReducedMotion
-                  ? { duration: 0 }
-                  : { duration: 0.25, ease: [0.22, 1, 0.36, 1] }
-              }
-              className="inline-block"
-            >
-              {suffix}
-            </motion.span>
-          )}
-        </AnimatePresence>
-      </span>
+      <div
+        ref={contentRef}
+        className="w-max flex items-center gap-1.5 px-3 py-1 whitespace-nowrap"
+      >
+        <Lock className="size-3 shrink-0 text-foreground/45" aria-hidden />
+        <span className="flex items-center">
+          <span>{domain}</span>
+          <AnimatePresence mode="popLayout" initial={false}>
+            {suffix && (
+              <motion.span
+                key={suffix}
+                initial={prefersReducedMotion ? false : { opacity: 0, x: -4 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={prefersReducedMotion ? undefined : { opacity: 0, x: -4 }}
+                transition={
+                  prefersReducedMotion
+                    ? { duration: 0 }
+                    : { duration: 0.25, ease: [0.22, 1, 0.36, 1] }
+                }
+                className="inline-block"
+              >
+                {suffix}
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </span>
+      </div>
     </motion.div>
   );
 }
@@ -241,7 +267,23 @@ export function TemplatePage({
   const [previewTheme, setPreviewTheme] = useState<"light" | "dark">("light");
   const [device, setDevice] = useState<"desktop" | "tablet" | "mobile">("desktop");
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [reloadKey, setReloadKey] = useState(0);
   const previewRef = useRef<HTMLDivElement>(null);
+  const prefersReducedMotion = useReducedMotion();
+
+  const handleTogglePreviewTheme = (e: React.MouseEvent<HTMLElement>) => {
+    const nextTheme = previewTheme === "dark" ? "light" : "dark";
+    const rect = e.currentTarget.getBoundingClientRect();
+    revealThemeAt(
+      rect.left + rect.width / 2,
+      rect.top + rect.height / 2,
+      () => {
+        flushSync(() => {
+          setPreviewTheme(nextTheme);
+        });
+      },
+    );
+  };
 
   useEffect(() => {
     if (!isFullscreen) return;
@@ -358,19 +400,17 @@ export function TemplatePage({
 
             <button
               type="button"
-              onClick={(e) => {
-                const nextTheme = previewTheme === "dark" ? "light" : "dark";
-                const rect = e.currentTarget.getBoundingClientRect();
-                revealThemeAt(
-                  rect.left + rect.width / 2,
-                  rect.top + rect.height / 2,
-                  () => {
-                    flushSync(() => {
-                      setPreviewTheme(nextTheme);
-                    });
-                  },
-                );
-              }}
+              onClick={() => setReloadKey((k) => k + 1)}
+              aria-label="Reload preview"
+              title="Reload preview"
+              className="flex items-center justify-center rounded-lg bg-foreground/[0.04] p-1.5 text-foreground/65 hover:text-foreground transition-colors cursor-pointer"
+            >
+              <RotateCcw className="size-3.5" />
+            </button>
+
+            <button
+              type="button"
+              onClick={handleTogglePreviewTheme}
               aria-label={`Switch preview to ${previewTheme === "dark" ? "light" : "dark"} mode`}
               className="flex items-center justify-center rounded-lg bg-foreground/[0.04] p-1.5 text-foreground/65 hover:text-foreground transition-colors cursor-pointer"
             >
@@ -386,17 +426,27 @@ export function TemplatePage({
         {/* Inner Viewport */}
         <div
           role="tabpanel"
-          className="rounded-md bg-background overflow-hidden flex justify-center border border-foreground/[0.06]"
+          className="rounded-md bg-background max-h-[880px] overflow-y-auto overflow-x-hidden flex justify-center border border-foreground/[0.06] [scrollbar-width:thin] [scrollbar-color:rgba(128,128,128,0.28)_transparent] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-foreground/15 hover:[&::-webkit-scrollbar-thumb]:bg-foreground/30"
         >
-          <div
+          <motion.div
+            key={reloadKey}
+            initial={false}
+            animate={{
+              maxWidth:
+                device === "mobile" ? 375 : device === "tablet" ? 768 : 1600,
+            }}
+            transition={
+              prefersReducedMotion
+                ? { duration: 0 }
+                : { duration: 0.72, ease: [0.16, 1, 0.3, 1] }
+            }
             className={cn(
-              "w-full transition-all duration-200",
-              device === "tablet" && "max-w-[768px] border-x border-foreground/[0.06]",
-              device === "mobile" && "max-w-[375px] border-x border-foreground/[0.06]",
+              "w-full",
+              device !== "desktop" && "border-x border-foreground/[0.06]",
             )}
           >
-            {activePage.render(previewTheme)}
-          </div>
+            {activePage.render(previewTheme, handleTogglePreviewTheme)}
+          </motion.div>
         </div>
       </div>
 
@@ -461,7 +511,7 @@ export function TemplatePage({
               const isCurrent = targetIdx === activeIndex;
               return (
                 <button
-                  key={item.id}
+                  key={item.number}
                   type="button"
                   onClick={() => {
                     if (targetIdx !== -1) {
@@ -718,8 +768,11 @@ export function TemplatePage({
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto">
-            {activePage.render(previewTheme)}
+          <div
+            key={reloadKey}
+            className="flex-1 overflow-y-auto [scrollbar-width:thin] [scrollbar-color:rgba(128,128,128,0.28)_transparent] [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-foreground/15 hover:[&::-webkit-scrollbar-thumb]:bg-foreground/30"
+          >
+            {activePage.render(previewTheme, handleTogglePreviewTheme)}
           </div>
         </div>
       )}

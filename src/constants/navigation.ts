@@ -674,18 +674,6 @@ const rawNavigation: NavigationItem[] = [
     ],
   },
   {
-    label: "Templates",
-    children: [
-      {
-        label: "Kinetix",
-        slug: "templates/kinetix",
-        badge: "New",
-        addedOn: "2026-11-24",
-        keywords: ["template", "templates", "saas", "ai", "marketing site", "landing page", "kinetix"],
-      },
-    ],
-  },
-  {
     label: "Third Party Integration",
     children: [
       {
