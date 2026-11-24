@@ -94,23 +94,23 @@ const faqItems: AccordionDataItem[] = [
     title: "How do I get started?",
     icon: "HelpCircle", // any key of the block's ICON_MAP
     content: [
-      "Getting started is easy! Simply sign up for an account.",
-      "We'll guide you through setting up your profile.",
+      "Getting started takes a couple of minutes. Sign up for a free account, confirm your email and follow the guided setup to create your profile, invite your team and connect the tools you already use.",
     ],
   },
   {
     value: "pricing",
     title: "What are your pricing plans?",
     icon: "CreditCard",
-    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
+    content: [
+      "We offer flexible plans that grow with you. The Basic plan starts at $9 per month and includes every core feature, while Pro and Team add priority support, advanced analytics and unlimited projects.",
+    ],
   },
   {
     value: "security",
     title: "How secure is my data?",
     icon: "Shield",
     content: [
-      "Security is our top priority.",
-      "Your information is stored in secure data centers.",
+      "Security is our top priority. Your data is encrypted in transit and at rest, stored in certified data centers and backed up every day, so your information stays private and recoverable at all times.",
     ],
   },
 ];
@@ -141,23 +141,23 @@ const faqItems: AccordionDataItem[] = [
     title: "How do I get started?",
     icon: "HelpCircle", // any key of the block's ICON_MAP
     content: [
-      "Getting started is easy! Simply sign up for an account.",
-      "We'll guide you through setting up your profile.",
+      "Getting started takes a couple of minutes. Sign up for a free account, confirm your email and follow the guided setup to create your profile, invite your team and connect the tools you already use.",
     ],
   },
   {
     value: "pricing",
     title: "What are your pricing plans?",
     icon: "CreditCard",
-    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
+    content: [
+      "We offer flexible plans that grow with you. The Basic plan starts at $9 per month and includes every core feature, while Pro and Team add priority support, advanced analytics and unlimited projects.",
+    ],
   },
   {
     value: "security",
     title: "How secure is my data?",
     icon: "Shield",
     content: [
-      "Security is our top priority.",
-      "Your information is stored in secure data centers.",
+      "Security is our top priority. Your data is encrypted in transit and at rest, stored in certified data centers and backed up every day, so your information stays private and recoverable at all times.",
     ],
   },
 ];
@@ -188,23 +188,23 @@ const faqItems: AccordionDataItem[] = [
     title: "How do I get started?",
     icon: "HelpCircle", // any key of the block's ICON_MAP
     content: [
-      "Getting started is easy! Simply sign up for an account.",
-      "We'll guide you through setting up your profile.",
+      "Getting started takes a couple of minutes. Sign up for a free account, confirm your email and follow the guided setup to create your profile, invite your team and connect the tools you already use.",
     ],
   },
   {
     value: "pricing",
     title: "What are your pricing plans?",
     icon: "CreditCard",
-    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
+    content: [
+      "We offer flexible plans that grow with you. The Basic plan starts at $9 per month and includes every core feature, while Pro and Team add priority support, advanced analytics and unlimited projects.",
+    ],
   },
   {
     value: "security",
     title: "How secure is my data?",
     icon: "Shield",
     content: [
-      "Security is our top priority.",
-      "Your information is stored in secure data centers.",
+      "Security is our top priority. Your data is encrypted in transit and at rest, stored in certified data centers and backed up every day, so your information stays private and recoverable at all times.",
     ],
   },
 ];
@@ -224,7 +224,7 @@ export default function BracketFaq() {
 
 ## Soft tiles
 
-- Use `variant="soft"` for tinted tiles whose plus folds into a minus.
+- Use `variant="soft"` for white tiles that settle to soft gray when open, with a plus that folds into a minus.
 
 ```tsx
 import { Accordion, type AccordionDataItem } from "@/components/custom/blocks/Accordion";
@@ -235,23 +235,23 @@ const faqItems: AccordionDataItem[] = [
     title: "How do I get started?",
     icon: "HelpCircle", // any key of the block's ICON_MAP
     content: [
-      "Getting started is easy! Simply sign up for an account.",
-      "We'll guide you through setting up your profile.",
+      "Getting started takes a couple of minutes. Sign up for a free account, confirm your email and follow the guided setup to create your profile, invite your team and connect the tools you already use.",
     ],
   },
   {
     value: "pricing",
     title: "What are your pricing plans?",
     icon: "CreditCard",
-    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
+    content: [
+      "We offer flexible plans that grow with you. The Basic plan starts at $9 per month and includes every core feature, while Pro and Team add priority support, advanced analytics and unlimited projects.",
+    ],
   },
   {
     value: "security",
     title: "How secure is my data?",
     icon: "Shield",
     content: [
-      "Security is our top priority.",
-      "Your information is stored in secure data centers.",
+      "Security is our top priority. Your data is encrypted in transit and at rest, stored in certified data centers and backed up every day, so your information stays private and recoverable at all times.",
     ],
   },
 ];
@@ -282,23 +282,23 @@ const faqItems: AccordionDataItem[] = [
     title: "How do I get started?",
     icon: "HelpCircle", // any key of the block's ICON_MAP
     content: [
-      "Getting started is easy! Simply sign up for an account.",
-      "We'll guide you through setting up your profile.",
+      "Getting started takes a couple of minutes. Sign up for a free account, confirm your email and follow the guided setup to create your profile, invite your team and connect the tools you already use.",
     ],
   },
   {
     value: "pricing",
     title: "What are your pricing plans?",
     icon: "CreditCard",
-    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
+    content: [
+      "We offer flexible plans that grow with you. The Basic plan starts at $9 per month and includes every core feature, while Pro and Team add priority support, advanced analytics and unlimited projects.",
+    ],
   },
   {
     value: "security",
     title: "How secure is my data?",
     icon: "Shield",
     content: [
-      "Security is our top priority.",
-      "Your information is stored in secure data centers.",
+      "Security is our top priority. Your data is encrypted in transit and at rest, stored in certified data centers and backed up every day, so your information stays private and recoverable at all times.",
     ],
   },
 ];
@@ -350,23 +350,23 @@ const faqItems: AccordionDataItem[] = [
     title: "How do I get started?",
     icon: "HelpCircle", // any key of the block's ICON_MAP
     content: [
-      "Getting started is easy! Simply sign up for an account.",
-      "We'll guide you through setting up your profile.",
+      "Getting started takes a couple of minutes. Sign up for a free account, confirm your email and follow the guided setup to create your profile, invite your team and connect the tools you already use.",
     ],
   },
   {
     value: "pricing",
     title: "What are your pricing plans?",
     icon: "CreditCard",
-    content: ["We offer flexible pricing plans.", "Basic plan starts at $9/month."],
+    content: [
+      "We offer flexible plans that grow with you. The Basic plan starts at $9 per month and includes every core feature, while Pro and Team add priority support, advanced analytics and unlimited projects.",
+    ],
   },
   {
     value: "security",
     title: "How secure is my data?",
     icon: "Shield",
     content: [
-      "Security is our top priority.",
-      "Your information is stored in secure data centers.",
+      "Security is our top priority. Your data is encrypted in transit and at rest, stored in certified data centers and backed up every day, so your information stays private and recoverable at all times.",
     ],
   },
 ];
@@ -421,7 +421,7 @@ Use `animation="stack"` once per page, on the accordion you want people to notic
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `accordionData` | `AccordionDataItem[]` | `[]` | Array of objects defining `value`, `title`, `icon`, and `content`. |
-| `variant` | `"default" \| "bordered" \| "filled" \| "elevated" \| "soft" \| "tray" \| "inset" \| "bracket" \| "ghost" \| "brand-reveal"` | `"default"` | Which look to use. `default` lifts the open row out as a card, `bordered` grows a rail on it, `filled` inverts it to `primary`, `elevated` raises it on a ring, `soft` uses tinted tiles with a plus that folds into a minus, `tray` sets the rows in one rounded tray with an animated plus/minus chip, `inset` sets the answer in a well inside the open card, `bracket` opens corner brackets outward, `ghost` is type and hairlines only, and `brand-reveal` renders an interactive horizontal brand showcase. |
+| `variant` | `"default" \| "bordered" \| "filled" \| "elevated" \| "soft" \| "tray" \| "inset" \| "bracket" \| "ghost" \| "brand-reveal"` | `"default"` | Which look to use. `default` lifts the open row out as a card, `bordered` grows a rail on it, `filled` inverts it to `primary`, `elevated` raises it on a ring, `soft` uses white tiles that settle to soft gray with a plus that folds into a minus, `tray` sets the rows in one rounded tray with an animated plus/minus chip, `inset` sets the answer in a well inside the open card, `bracket` opens corner brackets outward, `ghost` is a stack of white cards lit by a hairline and soft shadow, and `brand-reveal` renders an interactive horizontal brand showcase. |
 | `brands` | `BrandItem[]` | `DEFAULT_BRANDS` | Used when `variant="brand-reveal"`. Array of objects defining `id`, `name`, `caption`, and optional `logo`, `link`, and `index`. |
 | `animation` | `"none" \| "stack"` | `"none"` | `"stack"` piles the items on the first one and deals them into place once the accordion scrolls into view. Runs once; skipped under `prefers-reduced-motion`. |
 | `type` | `"single" \| "multiple"` | `"single"` | Determines if one or multiple panels can be open simultaneously. |

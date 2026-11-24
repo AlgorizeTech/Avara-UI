@@ -91,10 +91,9 @@ const DEVICE_PRESETS: Record<Device, number> = {
 
 /** The sliding highlights behind the active tab and the active device. */
 const TAB_PILL =
-  "rounded-lg bg-preview-stage ring-1 ring-foreground/[0.06]";
-// White on the stage-gray track, so it takes the lift shadow.
+  "rounded-lg bg-background shadow-[0_1px_2px_rgb(0_0_0/0.06)] ring-1 ring-foreground/[0.06]";
 const DEVICE_PILL =
-  "rounded-md bg-preview-shell shadow-lift-sm ring-1 ring-foreground/[0.06]";
+  "rounded-md bg-background shadow-[0_1px_2px_rgb(0_0_0/0.06)] ring-1 ring-foreground/[0.06]";
 
 const TAB_ICONS: Record<string, React.ReactNode> = {
   preview: <MonitorPlay className="w-4 h-4" />,
@@ -450,7 +449,7 @@ export function Sandbox({
     // on an inset panel — with its own accents: a hairline ring and a larger
     // radius on the shell, a sliding pill (not an underline) for the tabs, and
     // the active tab's icon in the primary colour.
-    <div data-sandbox-card className="w-full my-8 rounded-2xl bg-preview-shell ring-1 ring-inset ring-foreground/[0.05] flex flex-col not-prose relative">
+    <div data-sandbox-card className="w-full my-8 rounded-2xl bg-foreground/[0.03] ring-1 ring-inset ring-foreground/[0.05] flex flex-col not-prose relative">
       {/* Top Header Bar */}
       <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 min-h-12 py-2 pl-2 pr-2.5">
         {/* Left: tab pills */}
@@ -529,7 +528,7 @@ export function Sandbox({
             </span>
 
             {deviceSwitcher && (
-              <div ref={devicePill.ref} className="relative flex items-center gap-0.5 bg-preview-stage p-0.5 rounded-lg">
+              <div ref={devicePill.ref} className="relative flex items-center gap-0.5 bg-foreground/[0.04] p-0.5 rounded-lg">
                 {devicePill.pill(DEVICE_PILL)}
                 {deviceButtons.map(({ device, icon, label }) => (
                   <button
@@ -619,7 +618,7 @@ export function Sandbox({
           ref={areaRef}
           className={cn(
             "flex items-stretch relative justify-start overflow-visible rounded-xl ring-1 ring-foreground/[0.05]",
-            "bg-preview-stage",
+            "bg-foreground/[0.015] dark:bg-preview-stage",
             !isPreviewActive && "hidden",
           )}
           style={{
@@ -764,7 +763,7 @@ export function Sandbox({
                   onPointerUp={handlePointerEnd}
                   onPointerCancel={handlePointerEnd}
                   onKeyDown={handleResizeKeyDown}
-                  className="absolute -right-2.5 top-1/2 -translate-y-1/2 w-5 h-8 bg-preview-shell border border-border dark:border-foreground/15 rounded-[3px] hidden sm:flex items-center justify-center cursor-ew-resize shadow-lift-sm hover:shadow-lift transition-shadow z-10 touch-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                  className="absolute -right-2.5 top-1/2 -translate-y-1/2 w-5 h-8 bg-card dark:bg-foreground/[0.08] border border-border dark:border-foreground/15 rounded-[3px] hidden sm:flex items-center justify-center cursor-ew-resize shadow-sm hover:shadow-md transition-shadow z-10 touch-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
                 >
                   <GripVertical className="w-3.5 h-3.5 text-foreground/40" />
                 </div>
