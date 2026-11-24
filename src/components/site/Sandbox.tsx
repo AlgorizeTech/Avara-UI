@@ -612,13 +612,13 @@ export function Sandbox({
 
       {/* Main Content Area — an inset panel inside the shell. Not clipped:
           the drag handle hangs over the stage's right edge. */}
-      <div className="relative w-full px-1.5 pb-1.5">
+      <div className="relative w-full px-2 pb-2">
         {/* The preview stays MOUNTED across tab switches (hidden, not removed)
             so the sandbox iframe never reloads when returning to Preview. */}
         <div
           ref={areaRef}
           className={cn(
-            "flex items-stretch relative justify-start overflow-visible rounded-xl ring-1 ring-foreground/[0.05]",
+            "flex items-stretch relative justify-start overflow-visible rounded-xl",
             "bg-preview-stage",
             !isPreviewActive && "hidden",
           )}
@@ -661,7 +661,6 @@ export function Sandbox({
               role={isFullscreen ? "dialog" : undefined}
               aria-modal={isFullscreen ? true : undefined}
               aria-label={isFullscreen ? `${name} fullscreen preview` : undefined}
-              /* +1px compensates the right border so the inner viewport is exact */
               style={
                 isFullscreen
                   ? undefined
@@ -671,7 +670,7 @@ export function Sandbox({
                           ? "100%"
                           : visualWidth === null
                             ? "100%"
-                            : `${visualWidth + 1}px`,
+                            : `${visualWidth}px`,
                       maxWidth: "100%",
                     }
               }
@@ -682,7 +681,6 @@ export function Sandbox({
                   : [
                       "relative items-start transition-[width] ease-out",
                       isDragging ? "duration-0" : "duration-300",
-                      "border-r border-border",
                       isFitted ? "rounded-xl" : "rounded-l-xl rounded-r-none",
                     ],
               )}
