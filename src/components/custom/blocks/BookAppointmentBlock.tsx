@@ -62,7 +62,7 @@ export interface BookAppointmentProps
   visitReasons?: Share[];
   /** Fills the stacked bar. Omit to leave that panel out. */
   activities?: Share[];
-  /** Time slots on offer, grouped. */
+  /** Time slots on offer. The groups are joined, in order, into one line of times. */
   slotGroups: SlotGroup[];
   /** Days with nothing free — struck through in the day strip. */
   unavailable?: (day: Date) => boolean;
@@ -208,11 +208,7 @@ export function BookAppointment({
             <BookingCard.Month />
           </div>
           <BookingCard.Days className="-mx-1 mt-5" {...(unavailable ? { unavailable } : {})} />
-          <BookingCard.Times>
-            {slotGroups.map((group) => (
-              <BookingCard.Slots key={group.label} label={group.label} slots={group.slots} />
-            ))}
-          </BookingCard.Times>
+          <BookingCard.Times slots={slotGroups.flatMap((group) => group.slots)} />
           <BookingCard.Submit className="mt-6" />
           <BookingCard.Confirmation
             withName={practitioner.shortName ?? practitioner.name}
