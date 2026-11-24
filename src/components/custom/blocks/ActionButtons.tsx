@@ -548,9 +548,9 @@ export const AsyncButton = React.forwardRef<HTMLButtonElement, AsyncButtonProps>
         aria-live="polite"
         data-state={state}
         className={cn(
-          "relative inline-flex h-12 cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-primary px-6 text-sm font-medium text-primary-foreground",
+          "relative inline-flex h-12 shrink-0 cursor-pointer items-center justify-center overflow-hidden rounded-full keep-rounded bg-primary px-8 text-sm font-medium whitespace-nowrap text-primary-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-1px_0_rgba(0,0,0,0.08),0_0_1px_rgba(0,0,0,0.08),0_0_2px_rgba(0,0,0,0.04)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.08)]",
           "transition-[transform,background-color] duration-[160ms] ease-[cubic-bezier(0.23,1,0.32,1)]",
-          "hover:bg-primary/90 active:scale-[0.97]",
+          "hover:bg-primary/95 active:scale-[0.97]",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
           "disabled:pointer-events-none",
           disabled && "opacity-50",
@@ -608,7 +608,7 @@ export type WaitlistButtonProps = {
 const WAITLIST_HEIGHT = 48;
 const WAITLIST_INSET = 4;
 const WAITLIST_ICON = 16;
-const WAITLIST_IDLE_PAD = 20;
+const WAITLIST_IDLE_PAD = 32;
 const WAITLIST_SUBMIT_PAD = 14;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -849,15 +849,15 @@ export const WaitlistButton = React.forwardRef<
           <div
             ref={box}
             data-hover={hover && state === "idle"}
-            className="group relative rounded-lg text-sm font-medium transition-transform duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] has-[[data-slot=idle]:active]:scale-[0.98]"
+            className="group relative rounded-full keep-rounded text-sm font-medium transition-transform duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] has-[[data-slot=idle]:active]:scale-[0.98]"
             style={{ height: WAITLIST_HEIGHT }}
           >
             {measured && (
               <>
-                <div className="absolute inset-0 [filter:drop-shadow(0_1px_1px_rgba(0,0,0,0.04))]">
+                <div className="absolute inset-0 [filter:drop-shadow(0_0_1px_rgba(0,0,0,0.04))]">
                   <div
                     aria-hidden
-                    className="absolute inset-0 rounded-lg bg-background shadow-[inset_0_1px_2px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)]"
+                    className="absolute inset-0 rounded-full keep-rounded bg-background shadow-[inset_0_0_2px_rgba(0,0,0,0.05)] dark:shadow-[inset_0_0_2px_rgba(0,0,0,0.4)]"
                     style={{
                       clipPath: state === "idle" ? idleClip : fullClip,
                       ...transition(["clip-path", travelMs, CSS_TRAVEL]),
@@ -867,10 +867,10 @@ export const WaitlistButton = React.forwardRef<
                 <div
                   aria-hidden
                   className={cn(
-                    "pointer-events-none absolute inset-y-0 border",
+                    "pointer-events-none absolute inset-y-0 keep-rounded border",
                     error
                       ? "border-red-500/60 dark:border-red-400/60"
-                      : "border-black/[0.12] group-has-[input:focus]:border-black/30 dark:border-white/[0.14] dark:group-has-[input:focus]:border-white/35",
+                      : "border-black/[0.06] group-has-[input:focus]:border-black/20 dark:border-white/[0.07] dark:group-has-[input:focus]:border-white/25",
                   )}
                   style={{
                     left: state === "idle" ? side : 0,
@@ -913,10 +913,10 @@ export const WaitlistButton = React.forwardRef<
             />
 
             {measured && (
-              <div className="pointer-events-none absolute inset-0 [filter:drop-shadow(0_1px_1px_rgba(0,0,0,0.14))_drop-shadow(0_6px_12px_rgba(0,0,0,0.12))] dark:[filter:none]">
+              <div className="pointer-events-none absolute inset-0 [filter:drop-shadow(0_0_1px_rgba(0,0,0,0.08))_drop-shadow(0_0_2px_rgba(0,0,0,0.04))] dark:[filter:none]">
                 <div
                   aria-hidden
-                  className="absolute inset-0 rounded-lg bg-primary bg-[linear-gradient(to_bottom,rgba(255,255,255,0.10),rgba(255,255,255,0)_55%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.16),inset_0_-1px_0_rgba(0,0,0,0.3)] dark:bg-[linear-gradient(to_bottom,rgba(255,255,255,0),rgba(0,0,0,0.06))] dark:shadow-[inset_0_-1px_0_rgba(0,0,0,0.12)]"
+                  className="absolute inset-0 rounded-full keep-rounded bg-primary bg-[linear-gradient(to_bottom,rgba(255,255,255,0.10),rgba(255,255,255,0)_55%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-1px_0_rgba(0,0,0,0.08)] dark:bg-[linear-gradient(to_bottom,rgba(255,255,255,0),rgba(0,0,0,0.06))] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.08)]"
                   style={{
                     clipPath: inkClip,
                     ...transition(["clip-path", travelMs, CSS_TRAVEL]),
@@ -938,8 +938,8 @@ export const WaitlistButton = React.forwardRef<
               onPointerLeave={() => setHover(false)}
               tabIndex={state === "idle" ? 0 : -1}
               className={cn(
-                "absolute inset-y-0 left-1/2 flex -translate-x-1/2 cursor-pointer items-center gap-2 whitespace-nowrap rounded-lg text-primary-foreground",
-                "hover:bg-primary-foreground/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                "absolute inset-y-0 left-1/2 flex -translate-x-1/2 cursor-pointer items-center gap-2 whitespace-nowrap rounded-full keep-rounded text-primary-foreground",
+                "hover:bg-primary-foreground/[0.05] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                 !measured && "bg-primary",
                 state !== "idle" && "pointer-events-none",
               )}
@@ -970,8 +970,8 @@ export const WaitlistButton = React.forwardRef<
               tabIndex={open ? 0 : -1}
               disabled={state !== "open"}
               className={cn(
-                "absolute top-1 right-1 bottom-1 flex cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-md text-primary-foreground",
-                "hover:bg-primary-foreground/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                "absolute top-1 right-1 bottom-1 flex cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-full keep-rounded text-primary-foreground",
+                "hover:bg-primary-foreground/[0.05] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 !open && "pointer-events-none",
               )}
               style={{
@@ -1315,13 +1315,13 @@ export function HoldToConfirm({
       onContextMenu={(event) => event.preventDefault()}
       className={cn(
         "[--danger:#d4463e] [--danger-solid:#c4403a] [--danger-text:#c2372f] dark:[--danger:#e0625a] dark:[--danger-solid:#b9453d] dark:[--danger-text:#f08a82]",
-        "relative inline-flex h-12 cursor-pointer touch-manipulation items-center justify-center overflow-clip rounded-lg px-5 text-sm font-medium select-none [-webkit-touch-callout:none]",
+        "relative inline-flex h-12 cursor-pointer touch-manipulation items-center justify-center overflow-clip rounded-full keep-rounded px-8 text-sm font-medium select-none [-webkit-touch-callout:none]",
         "transition-[background-color,border-color,color,box-shadow] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)]",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[color-mix(in_oklab,var(--danger)_45%,transparent)] focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         "disabled:pointer-events-none disabled:opacity-50",
         solid
-          ? "border border-[color-mix(in_oklab,var(--danger-solid)_82%,black)] bg-[var(--danger-solid)] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.2),inset_0_-1px_0_rgba(0,0,0,0.18),0_1px_2px_rgba(0,0,0,0.16),0_6px_14px_-6px_rgba(0,0,0,0.28)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.16),inset_0_-1px_0_rgba(0,0,0,0.2)]"
-          : "border border-[color-mix(in_oklab,var(--danger)_32%,transparent)] bg-background text-[var(--danger-text)] shadow-[0_1px_2px_rgba(0,0,0,0.04)] hover:border-[color-mix(in_oklab,var(--danger)_48%,transparent)] hover:bg-[color-mix(in_oklab,var(--danger)_4%,transparent)]",
+          ? "border border-[color-mix(in_oklab,var(--danger-solid)_95%,black)] bg-[var(--danger-solid)] text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-1px_0_rgba(0,0,0,0.08),0_0_1px_rgba(0,0,0,0.08),0_0_2px_rgba(0,0,0,0.04)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.08)]"
+          : "border border-[color-mix(in_oklab,var(--danger)_18%,transparent)] bg-white text-[var(--danger-text)] shadow-[0_0_1px_rgba(0,0,0,0.05),0_0_1px_rgba(0,0,0,0.03)] hover:border-[color-mix(in_oklab,var(--danger)_28%,transparent)] hover:bg-black/[0.03] dark:bg-background dark:hover:bg-white/[0.035]",
         className,
       )}
     >
@@ -1693,7 +1693,7 @@ export function StarButton({
 
   const content = (
     <>
-      <span className="flex items-center gap-1.5 px-3 leading-none">
+      <span className="flex items-center gap-1.5 pr-3 pl-8 leading-none">
         <PopIn
           key={twirl}
           skip={twirl === 0}
@@ -1714,7 +1714,7 @@ export function StarButton({
         aria-hidden
         className="h-4 w-px bg-black/[0.1] dark:bg-white/[0.12]"
       />
-      <span className="relative grid px-3 tabular-nums">
+      <span className="relative grid pr-8 pl-3 tabular-nums">
         <span
           aria-hidden
           className="invisible col-start-1 row-start-1 text-right"
@@ -1729,9 +1729,9 @@ export function StarButton({
   );
 
   const surface = cn(
-    "inline-flex h-12 cursor-pointer items-center rounded-lg border border-black/[0.09] bg-background text-[13px] font-medium text-foreground select-none",
-    "shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_1px_2px_rgba(0,0,0,0.06)] dark:border-white/[0.1] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_1px_2px_rgba(0,0,0,0.4)]",
-    "transition-[background-color,transform,scale] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-black/[0.03] active:scale-[0.97] dark:hover:bg-white/[0.05]",
+    "inline-flex h-12 cursor-pointer items-center rounded-full keep-rounded border border-black/[0.045] bg-white text-[13px] font-medium text-foreground select-none dark:bg-background",
+    "shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_0_1px_rgba(0,0,0,0.05),0_0_1px_rgba(0,0,0,0.03)] dark:border-white/[0.06] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_0_1px_rgba(0,0,0,0.2),0_0_1px_rgba(0,0,0,0.12)]",
+    "transition-[background-color,transform,scale] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-black/[0.03] active:scale-[0.97] dark:hover:bg-white/[0.035]",
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
     className,
   );
@@ -1918,17 +1918,17 @@ export function FollowButton({
         setArmed(true);
       }}
       className={cn(
-        "relative inline-grid h-12 cursor-pointer place-items-center rounded-lg border px-3.5 text-[13px] font-medium select-none",
+        "relative inline-grid h-12 cursor-pointer place-items-center rounded-full keep-rounded border px-3.5 text-[13px] font-medium select-none",
         "transition-[background-color,border-color,color,box-shadow,transform,scale] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] active:scale-[0.97]",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         "[--danger:#d4463e] [--danger-text:#c2372f] dark:[--danger:#e0625a] dark:[--danger-text:#f08a82]",
         !following &&
-          "border-[color-mix(in_oklab,var(--primary)_85%,black)] bg-primary text-primary-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.16),inset_0_-1px_0_rgba(0,0,0,0.3),0_1px_2px_rgba(0,0,0,0.12)] hover:bg-primary/90 dark:border-primary dark:shadow-[inset_0_-1px_0_rgba(0,0,0,0.12)]",
+          "border-[color-mix(in_oklab,var(--primary)_96%,black)] bg-primary text-primary-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-1px_0_rgba(0,0,0,0.08),0_0_1px_rgba(0,0,0,0.08),0_0_2px_rgba(0,0,0,0.04)] hover:bg-primary/95 dark:border-primary dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.08)]",
         following &&
           !unfollowing &&
-          "border-black/[0.1] bg-background text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_1px_2px_rgba(0,0,0,0.05)] dark:border-white/[0.12] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.06)]",
+          "border-black/[0.045] bg-background text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_0_1px_rgba(0,0,0,0.05),0_0_1px_rgba(0,0,0,0.03)] dark:border-white/[0.06] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_0_1px_rgba(0,0,0,0.2),0_0_1px_rgba(0,0,0,0.12)]",
         unfollowing &&
-          "border-[color-mix(in_oklab,var(--danger)_35%,transparent)] bg-[color-mix(in_oklab,var(--danger)_5%,var(--background))] text-[var(--danger-text)]",
+          "border-[color-mix(in_oklab,var(--danger)_20%,transparent)] bg-[color-mix(in_oklab,var(--danger)_5%,var(--background))] text-[var(--danger-text)]",
         className,
       )}
     >
@@ -2157,14 +2157,14 @@ export function SplitButton({
   const ink =
     "bg-primary text-primary-foreground bg-[linear-gradient(to_bottom,rgba(255,255,255,0.10),rgba(255,255,255,0)_55%)] dark:bg-[linear-gradient(to_bottom,rgba(255,255,255,0),rgba(0,0,0,0.06))]";
   const press =
-    "cursor-pointer transition-[background-color,transform,scale] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-primary/90 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-foreground/45 disabled:pointer-events-none";
+    "cursor-pointer transition-[background-color,transform,scale] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-primary/95 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-foreground/45 disabled:pointer-events-none";
 
   return (
     <div
       ref={root}
       className={cn(
-        "relative inline-flex h-12 rounded-lg text-[13px] font-medium",
-        "shadow-[inset_0_1px_0_rgba(255,255,255,0.16),inset_0_-1px_0_rgba(0,0,0,0.3),0_1px_2px_rgba(0,0,0,0.14),0_4px_10px_-4px_rgba(0,0,0,0.2)] dark:shadow-[inset_0_-1px_0_rgba(0,0,0,0.12)]",
+        "relative inline-flex h-12 rounded-full keep-rounded text-[13px] font-medium",
+        "shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-1px_0_rgba(0,0,0,0.08),0_0_1px_rgba(0,0,0,0.08),0_0_2px_rgba(0,0,0,0.04)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.08)]",
         disabled && "opacity-50",
         className,
       )}
@@ -2175,7 +2175,7 @@ export function SplitButton({
         aria-busy={busy === "running"}
         onClick={run}
         className={cn(
-          "relative inline-grid place-items-center rounded-l-lg pr-3 pl-3.5",
+          "relative inline-grid place-items-center rounded-l-full keep-rounded pr-3 pl-8",
           ink,
           press,
         )}
@@ -2266,7 +2266,7 @@ export function SplitButton({
             openMenu();
           }
         }}
-        className={cn("grid w-9 place-items-center rounded-r-lg", ink, press)}
+        className={cn("grid w-11 place-items-center rounded-r-full keep-rounded", ink, press)}
       >
         <span
           className="grid"
@@ -2287,7 +2287,7 @@ export function SplitButton({
           aria-label={menuLabel}
           onKeyDown={onMenuKey}
           style={{ transformOrigin: "top right" }}
-          className="absolute top-full right-0 z-50 mt-1.5 w-[280px] rounded-lg border border-black/[0.08] bg-background p-1 text-foreground shadow-[0_0_0_1px_rgba(0,0,0,0.02),0_2px_4px_rgba(0,0,0,0.04),0_12px_28px_-12px_rgba(0,0,0,0.22)] dark:border-white/[0.1] dark:bg-zinc-900 dark:shadow-[0_12px_28px_-12px_rgba(0,0,0,0.7)]"
+          className="absolute top-full right-0 z-50 mt-1.5 w-[280px] rounded-lg border border-black/[0.045] bg-background p-1 text-foreground shadow-[0_0_0_1px_rgba(0,0,0,0.02),0_2px_4px_rgba(0,0,0,0.04),0_12px_28px_-12px_rgba(0,0,0,0.22)] dark:border-white/[0.06] dark:bg-zinc-900 dark:shadow-[0_12px_28px_-12px_rgba(0,0,0,0.7)]"
         >
           {options.map((o, i) => {
             const ItemIcon = o.icon;
@@ -2499,7 +2499,7 @@ export function AddToCart({
   };
 
   const step =
-    "grid h-full w-11 shrink-0 cursor-pointer place-items-center text-primary-foreground hover:bg-primary-foreground/[0.1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-foreground/45 disabled:cursor-default disabled:hover:bg-transparent";
+    "grid h-full w-11 shrink-0 cursor-pointer place-items-center text-primary-foreground hover:bg-primary-foreground/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-foreground/45 disabled:cursor-default disabled:hover:bg-transparent";
 
   /** Both faces stay mounted and trade places with a delayed cross-fade. */
   const face = (shown: boolean, lead: number): React.CSSProperties => ({
@@ -2526,15 +2526,15 @@ export function AddToCart({
     <div
       ref={scope}
       className={cn(
-        "relative inline-grid h-12 overflow-clip rounded-lg bg-primary text-sm font-medium text-primary-foreground select-none",
-        "bg-[linear-gradient(to_bottom,rgba(255,255,255,0.10),rgba(255,255,255,0)_55%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.16),inset_0_-1px_0_rgba(0,0,0,0.3),0_1px_2px_rgba(0,0,0,0.14),0_6px_14px_-6px_rgba(0,0,0,0.24)]",
-        "dark:bg-[linear-gradient(to_bottom,rgba(255,255,255,0),rgba(0,0,0,0.06))] dark:shadow-[inset_0_-1px_0_rgba(0,0,0,0.12)]",
+        "relative inline-grid h-12 overflow-clip rounded-full keep-rounded bg-primary text-sm font-medium text-primary-foreground select-none",
+        "bg-[linear-gradient(to_bottom,rgba(255,255,255,0.10),rgba(255,255,255,0)_55%)] shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-1px_0_rgba(0,0,0,0.08),0_0_1px_rgba(0,0,0,0.08),0_0_2px_rgba(0,0,0,0.04)]",
+        "dark:bg-[linear-gradient(to_bottom,rgba(255,255,255,0),rgba(0,0,0,0.06))] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.08)]",
         className,
       )}
     >
       <span
         aria-hidden
-        className="invisible col-start-1 row-start-1 flex items-center gap-2 px-5 whitespace-nowrap"
+        className="invisible col-start-1 row-start-1 flex items-center gap-2 px-8 whitespace-nowrap"
       >
         <span className="size-4" />
         {label}
@@ -2552,7 +2552,7 @@ export function AddToCart({
           tabIndex={inCart ? -1 : 0}
           onClick={() => change(1)}
           aria-label={price ? `${label}, ${price}` : label}
-          className="flex cursor-pointer items-center justify-center gap-2 px-5 whitespace-nowrap transition-[background-color,transform,scale] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-primary-foreground/[0.06] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-foreground/45"
+          className="flex cursor-pointer items-center justify-center gap-2 px-8 whitespace-nowrap transition-[background-color,transform,scale] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-primary-foreground/[0.04] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary-foreground/45"
         >
           <CartIcon drops={0} reduce={reduce} />
           {label}
@@ -2745,8 +2745,8 @@ export const PaymentButton = React.forwardRef<
         aria-busy={state === "processing"}
         data-state={state}
         className={cn(
-          "relative inline-flex h-12 w-full max-w-[280px] cursor-pointer items-center justify-center overflow-hidden rounded-lg bg-primary px-5 text-sm font-medium text-primary-foreground",
-          "transition-[background-color,transform,scale] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-primary/90 active:scale-[0.98]",
+          "relative inline-flex h-12 w-full max-w-[280px] cursor-pointer items-center justify-center overflow-hidden rounded-full keep-rounded bg-primary px-5 text-sm font-medium text-primary-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.12),inset_0_-1px_0_rgba(0,0,0,0.08),0_0_1px_rgba(0,0,0,0.08),0_0_2px_rgba(0,0,0,0.04)] dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),inset_0_-1px_0_rgba(0,0,0,0.08)]",
+          "transition-[background-color,transform,scale] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-primary/95 active:scale-[0.98]",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
           "disabled:pointer-events-none data-[state=idle]:disabled:opacity-50",
           className,
@@ -2939,8 +2939,8 @@ export const InteractiveButton = React.forwardRef<
         aria-busy={state === "loading"}
         data-state={state}
         className={cn(
-          "group relative inline-flex h-12 cursor-pointer items-center justify-center overflow-hidden rounded-lg border border-border bg-background px-5 text-sm font-medium text-foreground",
-          "transition-[background-color,transform,scale] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-muted active:scale-[0.98]",
+          "group relative inline-flex h-12 cursor-pointer items-center justify-center overflow-hidden rounded-full keep-rounded border border-black/[0.045] bg-white px-5 text-sm font-medium text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_0_1px_rgba(0,0,0,0.05),0_0_1px_rgba(0,0,0,0.03)] dark:border-white/[0.06] dark:bg-background dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_0_1px_rgba(0,0,0,0.2),0_0_1px_rgba(0,0,0,0.12)]",
+          "transition-[background-color,transform,scale] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-black/[0.03] active:scale-[0.98] dark:hover:bg-white/[0.035]",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
           "disabled:pointer-events-none data-[state=idle]:disabled:opacity-50",
           className,
@@ -3217,9 +3217,9 @@ export function SlideToConfirm({
       ref={track}
       data-state={state}
       className={cn(
-        "relative w-[320px] max-w-full overflow-clip rounded-lg text-sm font-medium select-none",
+        "relative w-[320px] max-w-full overflow-clip rounded-full keep-rounded text-sm font-medium select-none",
         "has-[[role=slider]:focus-visible]:outline-solid has-[[role=slider]:focus-visible]:outline-2 has-[[role=slider]:focus-visible]:outline-offset-2 has-[[role=slider]:focus-visible]:outline-ring/50",
-        "border border-black/[0.08] bg-black/[0.035] shadow-[inset_0_1px_2px_rgba(0,0,0,0.06)] dark:border-white/[0.08] dark:bg-white/[0.04] dark:shadow-[inset_0_1px_2px_rgba(0,0,0,0.5)]",
+        "border border-black/[0.04] bg-black/[0.035] shadow-[inset_0_0_2px_rgba(0,0,0,0.06)] dark:border-white/[0.05] dark:bg-white/[0.04] dark:shadow-[inset_0_0_2px_rgba(0,0,0,0.5)]",
         disabled && "opacity-50",
         className,
       )}
@@ -3303,8 +3303,8 @@ export function SlideToConfirm({
           left: SLIDE_INSET,
         }}
         className={cn(
-          "group absolute grid touch-none place-items-center rounded-md bg-background text-foreground",
-          "shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_0_0_1px_rgba(0,0,0,0.07),0_1px_2px_rgba(0,0,0,0.1),0_3px_8px_-2px_rgba(0,0,0,0.14)] dark:bg-zinc-800 dark:text-zinc-100 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_0_0_1px_rgba(255,255,255,0.1),0_1px_2px_rgba(0,0,0,0.6)]",
+          "group absolute grid touch-none place-items-center rounded-full keep-rounded bg-background text-foreground",
+          "shadow-[inset_0_1px_0_rgba(255,255,255,0.9),0_0_0_1px_rgba(0,0,0,0.04),0_0_1px_rgba(0,0,0,0.06),0_0_2px_rgba(0,0,0,0.04)] dark:bg-zinc-800 dark:text-zinc-100 dark:shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_0_0_1px_rgba(255,255,255,0.06),0_0_1px_rgba(0,0,0,0.3),0_0_1px_rgba(0,0,0,0.2)]",
           "transition-shadow duration-150 focus-visible:outline-none",
           busy
             ? "cursor-default"
