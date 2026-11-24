@@ -1,3 +1,4 @@
+import { DM_Sans, Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
 
 /**
@@ -7,12 +8,9 @@ import localFont from "next/font/local";
  * `--font-serif` in globals.css, so the theme customizer can swap the body
  * family by overriding `--font-sans` on <html> without fighting a class
  * selector on <body>.
- *
- * All fonts are self-hosted from /public/fonts to avoid network-dependent
- * fetches during Docker/CI builds (next/font/google fails without internet).
  */
-export const dmSans = localFont({
-  src: "../../../public/fonts/DMSans-Variable-Latin.woff2",
+export const dmSans = DM_Sans({
+  subsets: ["latin"],
   variable: "--font-dm-sans",
   display: "swap",
 });
@@ -35,13 +33,11 @@ export const cooper = localFont({
   display: "swap",
 });
 
-export const geistSans = localFont({
-  src: "../../../public/fonts/Geist-Variable-Latin.woff2",
+export const geistSans = Geist({
   variable: "--font-geist-sans",
-  display: "swap",
+  subsets: ["latin"],
 });
-export const geistMono = localFont({
-  src: "../../../public/fonts/GeistMono-Variable-Latin.woff2",
+export const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
-  display: "swap",
+  subsets: ["latin"],
 });
