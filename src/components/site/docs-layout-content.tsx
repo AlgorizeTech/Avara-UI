@@ -32,9 +32,9 @@ export function DocsLayoutContent({ children }: { children: ReactNode }) {
             className="prose w-full min-w-0 max-w-full text-foreground/60
             prose-headings:font-serif prose-headings:font-normal prose-headings:text-foreground prose-headings:tracking-normal
             prose-th:font-sans prose-th:font-semibold
-            prose-h1:text-2xl prose-h1:leading-8 prose-h1:mt-0 prose-h1:mb-6
-            prose-h2:text-2xl prose-h2:leading-8 prose-h2:mt-16 prose-h2:mb-6 prose-h2:scroll-m-24
-            prose-h3:text-lg prose-h3:leading-7 prose-h3:mt-10 prose-h3:mb-4 prose-h3:scroll-m-24
+            prose-h1:text-2xl prose-h1:leading-8 prose-h1:mt-0 prose-h1:mb-2
+            prose-h2:text-2xl prose-h2:leading-8 prose-h2:mt-14 prose-h2:mb-2 prose-h2:scroll-m-24
+            prose-h3:text-lg prose-h3:leading-7 prose-h3:mt-8 prose-h3:mb-2 prose-h3:scroll-m-24
             prose-h4:text-[15px] prose-h4:leading-[1.25] prose-h4:tracking-[-0.01em] prose-h4:mt-6 prose-h4:mb-2
             prose-p:text-[15px] prose-p:leading-[1.8] prose-p:text-foreground/60 prose-p:mt-0 prose-p:mb-6
             prose-ul:text-[15px] prose-ul:leading-[1.8] prose-ul:text-foreground/60 prose-ul:mt-0 prose-ul:mb-8

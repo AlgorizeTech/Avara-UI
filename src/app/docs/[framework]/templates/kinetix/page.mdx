@@ -1,0 +1,32 @@
+import { docsPageMetadata } from "@/lib/docs-metadata";
+import { SITE_NAME } from "@/config/site";
+import { KinetixTemplateView } from "@/components/site/KinetixTemplateView";
+import { AnimatedSectionTitle } from "@/components/site/AnimatedSectionTitle";
+import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+
+export const metadata = docsPageMetadata("templates/kinetix", {
+  title: `Kinetix SaaS Template - ${SITE_NAME}`,
+  description:
+    "A complete marketing site for an AI or SaaS product, with feature showcases, pricing, changelog, and light and dark themes.",
+});
+
+<KinetixTemplateView />
+
+<AnimatedSectionTitle icon="zap" id="built-for-production">Built For Production</AnimatedSectionTitle>
+
+<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
+  <InfoCard title="Theme-first architecture">
+    <p>Ships with light and dark modes wired to CSS custom properties and a built-in theme switcher, matching the rest of the library.</p>
+  </InfoCard>
+  <InfoCard title="Content-driven pages">
+    <p>Every section's copy lives in dedicated content files, while changelog entries and blog posts are authored in MDX.</p>
+  </InfoCard>
+  <InfoCard title="Static export ready">
+    <p>Configured for static HTML export with generated sitemap, robots.txt, and per-page Open Graph metadata.</p>
+  </InfoCard>
+  <InfoCard title="Accessible & motion-safe">
+    <p>Keyboard navigation, semantic landmarks, and reduced-motion fallbacks are baked into every interactive block.</p>
+  </InfoCard>
+</div>
+
+<DocsJsonLd slug="templates/kinetix" />

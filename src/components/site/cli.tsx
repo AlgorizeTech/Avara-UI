@@ -58,6 +58,26 @@ function resolveSegments(
   pm: PackageManager,
   form: RegistryForm,
 ): Segment[] {
+  if (command === "project-install") {
+    return [
+      { text: pm, tone: "runner" },
+      { text: "install", tone: "package" },
+    ];
+  }
+
+  if (command === "project-dev") {
+    return pm === "npm"
+      ? [
+          { text: "npm", tone: "runner" },
+          { text: "run", tone: "package" },
+          { text: "dev", tone: "args" },
+        ]
+      : [
+          { text: pm, tone: "runner" },
+          { text: "dev", tone: "package" },
+        ];
+  }
+
   const deps = command.match(/^install\s+(.+)$/);
   if (deps) {
     // "npm install" / "pnpm add" — the runner and its subcommand are coloured
