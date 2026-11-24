@@ -10,7 +10,7 @@ A completely custom, dependency-free Date Picker component. Native HTML `<input 
 
 This component solves that by using native JavaScript Date math to construct a flawless, customizable calendar dropdown that perfectly matches your UI kit's visual variants.
 
-The calendar dropdown highlights today's date subtly and the selected date strongly, and it opens with plain absolute positioning and CSS transitions — no popover library required.
+Every variant shares one calendar: click the month and year in its heading to jump straight to any month — years scroll on the left, months sit on the right, and the arrow beside the heading takes you back. The card keeps the same size throughout, and months and views slide into each other slowly instead of snapping.
 
 ## Inline Calendar
 
@@ -206,6 +206,7 @@ Follow standard design principles when implementing this component. Ensure prope
 | `disablePast` | `boolean` | `false` | Greys out every day before today so it cannot be picked. With `showTime`, times already passed today are disabled as well. |
 | `minDate` | `Date` | `undefined` | Earliest selectable day (inclusive). Combined with `disablePast`, the later bound wins. |
 | `maxDate` | `Date` | `undefined` | Latest selectable day (inclusive). |
+| `weekStartsOn` | `0 \| 1` | `1` | First day of the week: `1` for Monday, `0` for Sunday. |
 | `showTime` | `boolean` | `false` | Adds hour / minute (and AM-PM) columns — to the right of the calendar when the viewport has room (the popover widens to 30rem), under it otherwise. The popover also flips to hang from the trigger's right edge when that is the side with space. Picking a day keeps the popover open until Done, and `value` carries the chosen time. |
 | `timeFormat` | `"12h" \| "24h"` | `"12h"` | 12-hour clock with an AM / PM column, or a 24-hour one. |
 | `minuteStep` | `number` | `5` | Minute granularity of the time columns. |
