@@ -1,6 +1,7 @@
 import React from "react";
-import { Info } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
+import { cn } from "@/lib/utils";
 import { REGISTRY_NAMESPACE } from "@/lib/registry";
 
 import { DocLink } from "./doc-link";
@@ -27,40 +28,47 @@ import { DocLink } from "./doc-link";
 const CODE =
   "rounded bg-foreground/[0.06] px-1.5 py-0.5 font-mono text-[12px] text-foreground/70";
 
+/**
+ * The primary-tinted card the docs rail uses for its call to action
+ * (table-of-contents.tsx): the same tokens, so a theme preset restyles both.
+ */
+const TINT_TITLE =
+  "text-[oklch(from_var(--primary)_0.3_calc(c*0.6)_h)] dark:text-[oklch(from_var(--primary)_0.95_calc(c*0.25)_h)]";
+const TINT_TEXT =
+  "text-[oklch(from_var(--primary)_0.3_calc(c*0.6)_h_/_0.75)] dark:text-[oklch(from_var(--primary)_0.95_calc(c*0.25)_h_/_0.7)]";
+
 export function SetupPath() {
   return (
-    <p className="mb-8 flex gap-3 rounded-xl border border-primary/15 bg-primary/5 p-4 text-[13px] leading-relaxed text-foreground/50">
-      <Info aria-hidden className="mt-0.5 size-4 shrink-0 text-primary" />
-      <span>
-        <span className="font-medium text-primary">New project?</span> Follow the{" "}
-        <DocLink
-          to="installation"
-          className="font-medium text-primary hover:underline"
-        >
-          installation guide
-        </DocLink>{" "}
-        to set up Tailwind CSS, shadcn, the{" "}
-        <code data-badge className={CODE}>cn</code> helper and{" "}
-        <code data-badge className={CODE}>lucide-react</code>,{" "}
-        <DocLink
-          to="installation#step-2-register-the-registry"
-          className="font-medium text-primary hover:underline"
-        >
-          register the{" "}
+    <div
+      className={cn(
+        "mb-6 flex flex-col gap-3 rounded-xl border p-3.5 sm:flex-row sm:items-center sm:justify-between sm:gap-4",
+        "bg-[oklch(from_var(--primary)_0.93_calc(c*0.35)_h)] border-[oklch(from_var(--primary)_0.85_calc(c*0.45)_h)]",
+        "dark:bg-[oklch(from_var(--primary)_0.28_calc(c*0.45)_h)] dark:border-[oklch(from_var(--primary)_0.38_calc(c*0.5)_h)]",
+      )}
+    >
+      <p className="min-w-0">
+        <span className={cn("block text-sm font-semibold leading-snug", TINT_TITLE)}>
+          New project?
+        </span>
+        <span className={cn("mt-1 block text-xs leading-relaxed", TINT_TEXT)}>
+          Set up Tailwind CSS, shadcn and the{" "}
           <code data-badge className={CODE}>
             {REGISTRY_NAMESPACE}
           </code>{" "}
-          registry
-        </DocLink>{" "}
-        once, then copy your styles from the{" "}
-        <DocLink
-          href="/themes"
-          className="font-medium text-primary hover:underline"
-        >
-          Themes page
-        </DocLink>
-        .
-      </span>
-    </p>
+          registry once, then copy your styles from the{" "}
+          <DocLink href="/themes" className="font-medium underline underline-offset-2 hover:no-underline">
+            Themes page
+          </DocLink>
+          .
+        </span>
+      </p>
+      <DocLink
+        to="installation"
+        className="group inline-flex shrink-0 items-center justify-center gap-1 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground shadow-sm transition-colors hover:bg-primary/90"
+      >
+        Setup guide
+        <ArrowRight aria-hidden className="size-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+      </DocLink>
+    </div>
   );
 }

@@ -72,10 +72,16 @@ export default function ActionButtonsDemo({
   group?: ActionButtonsGroup;
 }) {
   const Group = groups[group] ?? groups["slide-to-deploy"];
+  // The deploy menu opens below the button, so the stage is taller and the
+  // buttons sit near the top, leaving room for the menu inside the frame.
+  const stage =
+    group === "deploy-cart"
+      ? "min-h-[300px] items-start pt-10 sm:pt-10"
+      : "min-h-[260px] items-center";
 
   return (
     <div
-      className="w-full min-h-[260px] h-full flex items-center justify-center p-4 sm:p-8 m-0"
+      className={`w-full h-full flex justify-center p-4 sm:p-8 m-0 ${stage}`}
       style={getButtonThemeStyle(color)}
     >
       <div className="flex flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">

@@ -41,6 +41,7 @@ import { ThemeColorPicker } from "@/components/site/ThemeColorPicker";
 import { isDefaultAccent, toBlockColor } from "@/lib/accent";
 import { slugify } from "@/lib/open-in-v0";
 import { OpenInV0Button, v0ItemFor } from "@/components/site/open-in-v0-button";
+import { GetCodeSheet } from "@/components/site/GetCodeSheet";
 import {
   ShowcaseControlCard,
   ShowcaseSliders,
@@ -210,9 +211,19 @@ export function Sandbox({
   maxHeight = 820,
   motionSwitch = false,
   v0Item,
+  minimalBar = false,
+  actions,
 }: {
   /** Registry name of the demo (src/preview/registry.tsx). */
   name: string;
+  /**
+   * A preview-only card keeps just the view tools in its bar: no tab pills, no
+   * build switch, no width readout, and no device switcher on a phone (it is
+   * already the mobile view). The page puts the title and actions above it.
+   */
+  minimalBar?: boolean;
+  /** Floats on the stage's bottom-right corner when `minimalBar` is set (the page's own action). */
+  actions?: React.ReactNode;
   /** JSON-serializable props bridged into the demo, live. */
   sandboxProps?: Record<string, unknown>;
   /**
@@ -444,6 +455,96 @@ export function Sandbox({
     currentTab?.code !== undefined &&
     isTransformable(currentLang);
 
+  // The view tools are drawn in two places: in the bar's right slot, and, on a
+  // preview-only card (`minimalBar`), laid out across the bar.
+  // True viewport width, plus how far it was shrunk to fit the column.
+  const readout = (
+    <span className="flex items-baseline gap-1.5 font-mono text-[11px] text-foreground/50 min-w-[48px] justify-end tabular-nums whitespace-nowrap max-sm:min-w-0 max-sm:text-[10px]">
+      <span>
+        {viewportWidth === null
+          ? "—"
+          : `${Math.round(viewportWidth)}px`}
+      </span>
+      <span
+        className={cn(
+          "text-[11px] hidden sm:inline-block",
+          fitScale < 1
+            ? "text-foreground/35"
+            : "text-foreground/25",
+        )}
+        title={
+          fitScale < 1
+            ? `Scaled to ${Math.round(fitScale * 100)}% to fit`
+            : "Shown at full size"
+        }
+      >
+        {Math.round(fitScale * 100)}%
+      </span>
+    </span>
+  );
+
+  const deviceSwitcherEl = deviceSwitcher && (
+    <div
+      ref={devicePill.ref}
+      className={cn(
+        "relative flex items-center gap-0.5 bg-foreground/[0.04] p-0.5 rounded-lg",
+        // On a phone the row is shared with v0, the readout and two buttons,
+        // so the icons and their padding shrink instead of the tabs going away.
+        minimalBar && "max-sm:[&_button]:p-1 max-sm:[&_svg]:size-3.5",
+      )}
+    >
+      {devicePill.pill(DEVICE_PILL)}
+      {deviceButtons.map(({ device, icon, label }) => (
+        <button
+          key={device}
+          onClick={() => setPreviewWidth(DEVICE_PRESETS[device])}
+          data-pill-active={activeDevice === device || undefined}
+          className={cn(
+            "relative p-1.5 rounded-md transition-colors cursor-pointer",
+            activeDevice === device
+              ? "text-foreground"
+              : "text-foreground/45 hover:text-foreground/80",
+            activeDevice === device && !devicePill.ready && DEVICE_PILL,
+          )}
+          title={label}
+          aria-label={label}
+          aria-pressed={activeDevice === device}
+        >
+          <span className="relative flex">{icon}</span>
+        </button>
+      ))}
+    </div>
+  );
+
+  // Fullscreen: the SAME running preview expands to a chrome-free
+  // overlay at the real window size — the frame stays put in the
+  // DOM and only its wrapper changes, so the demo is never torn
+  // down and reloaded. The in-card preview is always a fraction of
+  // the window and often scaled; this is the only view that shows
+  // the component at true screen scale.
+  const fullscreenButton = fullscreenOption && (
+    <button
+      onClick={openFullscreen}
+      className="h-8 w-8 flex items-center justify-center rounded-lg transition-colors active:scale-95 cursor-pointer text-foreground/45 hover:text-foreground hover:bg-foreground/[0.06] [&_svg]:size-3.5"
+      title="Open fullscreen preview"
+      aria-label="Open fullscreen preview"
+      aria-haspopup="dialog"
+    >
+      <Maximize2 className="w-4 h-4" />
+    </button>
+  );
+
+  const resetButton = reset && (
+    <button
+      onClick={() => setResetKey((k) => k + 1)}
+      className="h-8 w-8 flex items-center justify-center rounded-lg transition-colors active:scale-95 cursor-pointer text-foreground/45 hover:text-foreground hover:bg-foreground/[0.06] [&_svg]:size-3.5"
+      title="Reload preview"
+      aria-label="Reload preview"
+    >
+      <RotateCcw className="w-4 h-4" />
+    </button>
+  );
+
   return (
     // The install box's anatomy — an ink-tint shell, a slim bar, the content
     // on an inset panel — with its own accents: a hairline ring and a larger
@@ -452,8 +553,36 @@ export function Sandbox({
     <div data-sandbox-card className="w-full my-8 rounded-2xl bg-foreground/[0.03] ring-1 ring-inset ring-foreground/[0.05] flex flex-col not-prose relative">
       {/* Top Header Bar */}
       <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 min-h-12 py-2 pl-2 pr-2.5">
+        {minimalBar ? (
+          // Open in v0 left, device tabs in the middle, view tools right. The
+          // page's own action (`actions`) floats on the stage corner below.
+          <div className="grid w-full grid-cols-[1fr_auto_1fr] items-center gap-2">
+            <div className="flex items-center">
+              {openInV0 && v0Item && (
+                <OpenInV0Button
+                  item={v0Item}
+                  accent={accent}
+                  showLabel
+                  className="flex h-8 cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-lg bg-background px-3 text-[12px] font-medium text-foreground/70 max-sm:size-8 max-sm:justify-center max-sm:px-0 max-sm:[&>span]:hidden shadow-[0_1px_2px_rgb(0_0_0/0.06)] ring-1 ring-foreground/[0.08] transition-[color,box-shadow,transform] hover:text-foreground hover:ring-foreground/20 active:scale-[0.97] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                />
+              )}
+            </div>
+            <div>{deviceSwitcherEl}</div>
+            <div className="flex items-center justify-end gap-1.5 sm:gap-3">
+              {readout}
+              <div className="flex items-center gap-0.5 max-sm:[&_button]:size-7">
+                {fullscreenButton}
+                {resetButton}
+              </div>
+            </div>
+          </div>
+        ) : (
+        <>
         {/* Left: tab pills */}
-        <div ref={tabPill.ref} className="relative flex items-center gap-0.5">
+        <div
+          ref={tabPill.ref}
+          className={cn("relative flex items-center gap-0.5", minimalBar && "hidden")}
+        >
           {tabPill.pill(TAB_PILL)}
           {tabs.map((tab) => {
             const isActive = activeTab === tab.id;
@@ -490,7 +619,7 @@ export function Sandbox({
             the preview AND the code), then the code tabs' TS/JS switch in the
             same slot the preview tab gets its device controls. */}
         <div className="ml-auto flex flex-wrap items-center justify-end gap-2 sm:gap-3">
-        {motionSwitch && <MotionLibraryTabs compact />}
+        {motionSwitch && !minimalBar && <MotionLibraryTabs compact />}
 
         {showLanguageSwitch && (
           <CodeCopy
@@ -502,55 +631,9 @@ export function Sandbox({
         {/* Right: preview controls */}
         {isPreviewActive && (
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* True viewport width, plus how far it was shrunk to fit the
-                column, which the Fit button snaps back to 100%. */}
-            <span className="flex items-baseline gap-1.5 font-mono text-[11px] text-foreground/50 min-w-[48px] justify-end tabular-nums whitespace-nowrap">
-              <span>
-                {viewportWidth === null
-                  ? "—"
-                  : `${Math.round(viewportWidth)}px`}
-              </span>
-              <span
-                className={cn(
-                  "text-[11px] hidden sm:inline-block",
-                  fitScale < 1
-                    ? "text-foreground/35"
-                    : "text-foreground/25",
-                )}
-                title={
-                  fitScale < 1
-                    ? `Scaled to ${Math.round(fitScale * 100)}% to fit`
-                    : "Shown at full size"
-                }
-              >
-                {Math.round(fitScale * 100)}%
-              </span>
-            </span>
+            {readout}
 
-            {deviceSwitcher && (
-              <div ref={devicePill.ref} className="relative flex items-center gap-0.5 bg-foreground/[0.04] p-0.5 rounded-lg">
-                {devicePill.pill(DEVICE_PILL)}
-                {deviceButtons.map(({ device, icon, label }) => (
-                  <button
-                    key={device}
-                    onClick={() => setPreviewWidth(DEVICE_PRESETS[device])}
-                    data-pill-active={activeDevice === device || undefined}
-                    className={cn(
-                      "relative p-1.5 rounded-md transition-colors cursor-pointer",
-                      activeDevice === device
-                        ? "text-foreground"
-                        : "text-foreground/45 hover:text-foreground/80",
-                      activeDevice === device && !devicePill.ready && DEVICE_PILL,
-                    )}
-                    title={label}
-                    aria-label={label}
-                    aria-pressed={activeDevice === device}
-                  >
-                    <span className="relative flex">{icon}</span>
-                  </button>
-                ))}
-              </div>
-            )}
+            {deviceSwitcherEl}
 
             {/* Snaps back to the 100% fit-to-screen view from whatever device
                 or drag width is active — and reads as selected while the
@@ -576,37 +659,14 @@ export function Sandbox({
               </button>
             )}
 
-            {/* Fullscreen: the SAME running preview expands to a chrome-free
-                overlay at the real window size — the frame stays put in the
-                DOM and only its wrapper changes, so the demo is never torn
-                down and reloaded. The in-card preview is always a fraction of
-                the window and often scaled; this is the only view that shows
-                the component at true screen scale. */}
-            {fullscreenOption && (
-              <button
-                onClick={openFullscreen}
-                className="h-8 w-8 flex items-center justify-center rounded-lg transition-colors active:scale-95 cursor-pointer text-foreground/45 hover:text-foreground hover:bg-foreground/[0.06] [&_svg]:size-3.5"
-                title="Open fullscreen preview"
-                aria-label="Open fullscreen preview"
-                aria-haspopup="dialog"
-              >
-                <Maximize2 className="w-4 h-4" />
-              </button>
-            )}
+            {fullscreenButton}
 
-            {reset && (
-              <button
-                onClick={() => setResetKey((k) => k + 1)}
-                className="h-8 w-8 flex items-center justify-center rounded-lg transition-colors active:scale-95 cursor-pointer text-foreground/45 hover:text-foreground hover:bg-foreground/[0.06] [&_svg]:size-3.5"
-                title="Reload preview"
-                aria-label="Reload preview"
-              >
-                <RotateCcw className="w-4 h-4" />
-              </button>
-            )}
+            {resetButton}
           </div>
         )}
         </div>
+        </>
+        )}
       </div>
 
       {/* Main Content Area — an inset panel inside the shell. Not clipped:
@@ -715,14 +775,22 @@ export function Sandbox({
                   reader's current theme — a new chat in a new tab. A glass
                   pill on the stage's corner; transform-gpu lifts it over an
                   iframe whose document composites, like the fullscreen close. */}
-              {openInV0 && v0Item && !isFullscreen && (
-                <OpenInV0Button
-                  item={v0Item}
-                  accent={accent}
-                  showLabel
-                  className="absolute bottom-3 right-3 z-10 transform-gpu flex h-8 items-center gap-1.5 rounded-full px-3 text-[12px] font-medium whitespace-nowrap text-foreground/70 hover:text-foreground bg-background/60 backdrop-blur-md backdrop-saturate-150 ring-1 ring-foreground/10 shadow-[0_2px_12px_rgb(0_0_0/0.08)] transition-colors active:scale-95 cursor-pointer"
-                />
-              )}
+              {!isFullscreen &&
+                (minimalBar ? (
+                  actions && (
+                    <div className="absolute bottom-3 right-3 z-10 transform-gpu">{actions}</div>
+                  )
+                ) : (
+                  openInV0 &&
+                  v0Item && (
+                    <OpenInV0Button
+                          item={v0Item}
+                          accent={accent}
+                          showLabel
+                          className="absolute bottom-3 right-3 z-10 transform-gpu flex h-8 items-center gap-1.5 rounded-full px-3 text-[12px] font-medium whitespace-nowrap text-foreground/70 hover:text-foreground bg-background/60 backdrop-blur-md backdrop-saturate-150 ring-1 ring-foreground/10 shadow-[0_2px_12px_rgb(0_0_0/0.08)] transition-colors active:scale-95 cursor-pointer"
+                        />
+                  )
+                ))}
 
               {/* The only chrome in fullscreen. transform-gpu gives it its own
                   compositing layer, which an iframe whose document composites
@@ -1101,9 +1169,19 @@ export function ExampleShowcase({
   controls = [],
   motionVariants,
   headingLevel = 3,
+  installation,
 }: {
   /** Registry name of the demo (src/preview/registry.tsx). */
   name: string;
+  /**
+   * The install steps (`<Installation name="…" />`). Passing them switches
+   * every example to the preview-first layout: the title keeps its place above
+   * the card, with Open in v0 and a Get code button on its right. Get code
+   * opens these steps and the example's usage in a side sheet, so the usage tab
+   * and prop-notes no longer print on the page; the Markdown mirror still
+   * carries them.
+   */
+  installation?: React.ReactNode;
   /**
    * Document level of each example's title. 2 for a gallery that sits
    * directly under the page's H1, before any `##`, so the outline does not
@@ -1211,8 +1289,12 @@ export function ExampleShowcase({
 
   // Handed to the FIRST example so the card sits directly above its preview —
   // the controls read as part of that demo rather than as page furniture.
+  // Preview-first pages draw just the picker's swatch pill: no card, no label.
+  const bareSwatches = installation !== undefined && controls.length === 0;
   const controlCard =
-    ownsPicker || controls.length > 0 ? (
+    ownsPicker && bareSwatches ? (
+      <ThemeColorPicker hideLabel color={color} onChange={setColor} label={colorLabel} />
+    ) : ownsPicker || controls.length > 0 ? (
       <ShowcaseControlCard>
         {ownsPicker && (
           <ThemeColorPicker
@@ -1321,6 +1403,7 @@ export function ExampleShowcase({
               minHeight={example.minHeight ?? minHeight}
               maxHeight={example.maxHeight ?? maxHeight}
               headingLevel={headingLevel}
+              installation={installation}
             />
           );
         })}
@@ -1395,9 +1478,12 @@ function ExampleCard({
   minHeight,
   maxHeight,
   headingLevel,
+  installation,
 }: {
   name: string;
   headingLevel: 2 | 3;
+  /** Set → the preview-first card; see ExampleShowcase. */
+  installation?: React.ReactNode;
   /** Draw the GSAP / Motion switch in the preview bar. */
   motionSwitch?: boolean;
   example: ResolvedShowcaseExample;
@@ -1451,7 +1537,10 @@ function ExampleCard({
   const tabs: SandboxTab[] = [
     { id: "preview", label: "Preview", resizable: true },
   ];
-  if (usage) {
+  // Preview-first cards keep the usage out of the card: it opens in the Get
+  // code sheet instead.
+  const previewFirst = installation !== undefined;
+  if (usage && !previewFirst) {
     tabs.push({ id: "usage", label: "Usage", code: usage, lang: "tsx" });
   }
   // The source `shadcn add` writes — for a dual component, the build the
@@ -1461,12 +1550,20 @@ function ExampleCard({
   //   tabs.push({ id: "component", label: "Code", code, lang: "tsx" });
   // }
 
+  // Preview-first: Get code sits in the card's bar, Open in v0 on the stage
+  // corner (both drawn by the Sandbox); the title above stays plain.
+  const v0Item = v0ItemFor(name, anchor);
+  const getCode = previewFirst ? (
+    <GetCodeSheet title={title} usage={usage} installation={installation} dual={motionSwitch} />
+  ) : null;
+
   return (
     <section ref={rootRef} aria-labelledby={anchor} className="flex flex-col min-w-0">
       {controlCard && <div className="mb-6">{controlCard}</div>}
 
       {/* Title + optional subheading */}
       <div>
+      <div className="min-w-0">
         <Heading
           id={anchor}
           data-toc-level={headingLevel === 2 ? 3 : undefined}
@@ -1482,7 +1579,8 @@ function ExampleCard({
             {renderInline(subheading)}
           </p>
         )}
-        {propNotes && propNotes.length > 0 && <PropNotes notes={propNotes} />}
+        {!previewFirst && propNotes && propNotes.length > 0 && <PropNotes notes={propNotes} />}
+      </div>
       </div>
 
       {/* Sandbox has its own my-8 — tighten it to the heading. */}
@@ -1497,7 +1595,9 @@ function ExampleCard({
             minHeight={minHeight}
             maxHeight={maxHeight}
             motionSwitch={motionSwitch}
-            v0Item={v0ItemFor(name, anchor)}
+            v0Item={v0Item}
+            minimalBar={previewFirst}
+            actions={getCode}
           />
         ) : (
           <button

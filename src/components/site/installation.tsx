@@ -31,6 +31,11 @@ export interface InstallationProps {
    * repeating it four times buries the commands it is meant to introduce.
    */
   showSetupPath?: boolean;
+  /**
+   * Where the usage snippet is, relative to these steps. The default points at
+   * the Usage tab above them; a Get code sheet puts the snippet below.
+   */
+  usage?: "tab" | "below";
 }
 
 /**
@@ -112,16 +117,9 @@ function transitivePackages(name: string, seen = new Set<string>()): string[] {
 }
 
 /**
- * Matches the prop badges in Sandbox.tsx. Carries `data-badge`, which opts out
- * of the global inline-<code> styling in globals.css and docs-layout-content;
- * without it those rules win and the badge renders as a plain slate chip.
- */
-const BADGE =
-  "inline rounded-md border border-primary/25 bg-primary/15 px-[7px] py-[2px] font-mono text-[12px] leading-[1.55] text-primary [overflow-wrap:anywhere] [box-decoration-break:clone] [-webkit-box-decoration-break:clone]";
-
-/**
- * Plain inline code (a path, a package name in passing). Also `data-badge`,
- * for the same reason as BADGE; the classes are the docs inline-code style.
+ * Plain inline code (a path, a package name in passing). Carries `data-badge`,
+ * which opts out of the global inline-<code> styling in globals.css and
+ * docs-layout-content; the classes are the docs inline-code style.
  */
 const CODE =
   "rounded bg-foreground/[0.06] px-1.5 py-0.5 font-mono text-[12px] text-foreground/70 [overflow-wrap:anywhere]";
@@ -250,22 +248,6 @@ function BreakablePath({ path }: { path: string }) {
   );
 }
 
-/** `a`, `b` and `c` — badged, so each dependency stays findable in the prose. */
-function BadgeList({ items }: { items: string[] }) {
-  return (
-    <>
-      {items.map((item, i) => (
-        <React.Fragment key={item}>
-          {i > 0 && (i === items.length - 1 ? " and " : ", ")}
-          <code data-badge className={BADGE}>
-            {item}
-          </code>
-        </React.Fragment>
-      ))}
-    </>
-  );
-}
-
 /**
  * The standard install block for a documented component: install it, install
  * what it needs, use it. Nothing here asks the reader to paste a source file —
@@ -288,6 +270,7 @@ function BadgeList({ items }: { items: string[] }) {
 export function Installation({
   name,
   showSetupPath = true,
+  usage = "tab",
 }: InstallationProps) {
   // A component with a Motion twin gets both install sequences behind
   // the GSAP / Motion switch; GSAP, the default build, shows first.
@@ -305,18 +288,18 @@ export function Installation({
 
       {isDual ? (
         <MotionInstallSwitch
-          gsap={<InstallationSteps name={name} />}
-          motion={<InstallationSteps name={twin} />}
+          gsap={<InstallationSteps name={name} usage={usage} />}
+          motion={<InstallationSteps name={twin} usage={usage} />}
         />
       ) : (
-        <InstallationSteps name={name} />
+        <InstallationSteps name={name} usage={usage} />
       )}
     </div>
   );
 }
 
 /** Steps 1 and 2 for one registry item. */
-function InstallationSteps({ name }: { name: string }) {
+function InstallationSteps({ name, usage }: { name: string; usage: "tab" | "below" }) {
   const item = getRegistryItem(name);
 
   // Fail at build time rather than shipping a page whose install command is a
@@ -330,7 +313,6 @@ function InstallationSteps({ name }: { name: string }) {
 
   const title = item.title ?? name;
   const target = item.files?.[0]?.target;
-  const direct = item.dependencies ?? [];
   const components = (item.registryDependencies ?? []).filter(
     (dependency: string) => !BASELINE_COMPONENTS.has(label(dependency)),
   );
@@ -338,14 +320,7 @@ function InstallationSteps({ name }: { name: string }) {
   const packages = [...new Set(transitivePackages(name))]
     .filter((pkg) => !BASELINE_PACKAGES.has(pkg))
     .sort();
-  const inherited = packages.filter((pkg) => !direct.includes(pkg));
   const total = packages.length + components.length;
-  // True when the only things filtered out were the baseline ones — the reader
-  // should hear that the component still needs them, just not from this page.
-  const onlyBaseline =
-    total === 0 &&
-    ((item.registryDependencies?.length ?? 0) > 0 ||
-      (item.dependencies?.length ?? 0) > 0);
 
   return (
     // The left border is the rail the step discs sit on. It runs to the end of
@@ -355,15 +330,23 @@ function InstallationSteps({ name }: { name: string }) {
         <Step number={1} id={`install-${name}`} title={<>Install {title}</>}>
           <Cli command={`add ${name}.json`} />
           <p className={BODY}>
+            Adds{" "}
             {target ? (
               <code data-badge className={CODE}>
                 <BreakablePath path={target} />
               </code>
             ) : (
-              <>The component</>
-            )}{" "}
-            is written into your project. Copy any snippet from a{" "}
-            <strong className="font-semibold text-foreground">Usage</strong> tab above and it runs.
+              <>the component</>
+            )}
+            {usage === "below" ? (
+              <>.</>
+            ) : (
+              <>
+                {" "}
+                to your project. Copy any snippet from a{" "}
+                <strong className="font-semibold text-foreground">Usage</strong> tab above.
+              </>
+            )}
           </p>
         </Step>
 
@@ -376,64 +359,26 @@ function InstallationSteps({ name }: { name: string }) {
         >
           {total === 0 ? (
             <p className={BODY}>
-              {onlyBaseline ? (
-                <>
-                  Nothing beyond the shared setup — {title} needs only the{" "}
-                  <code data-badge className={CODE}>cn</code> helper and{" "}
-                  <code data-badge className={CODE}>lucide-react</code>, which
-                  the installation guide already put in place.
-                </>
-              ) : (
-                <>
-                  None — {title} has no npm packages or registry components to
-                  install.
-                </>
-              )}
+              None. {title} needs only{" "}
+              <code data-badge className={CODE}>cn</code> and{" "}
+              <code data-badge className={CODE}>lucide-react</code> from the setup guide.
             </p>
           ) : (
             <>
-              <p className={BODY}>
-                Step 1 installs {total > 1 ? "these" : "this"} for you. Run{" "}
-                {total > 1 ? "them" : "it"} yourself only if you are adding{" "}
-                {title} to an existing project by hand. The{" "}
-                <code data-badge className={CODE}>cn</code> helper and{" "}
-                <code data-badge className={CODE}>lucide-react</code> are not listed — the
-                installation guide covers them once for every component.
-                {inherited.length > 0 && (
-                  <>
-                    {" "}
-                    <BadgeList items={inherited} /> come
-                    {inherited.length > 1 ? "" : "s"} in with the component
-                    {components.length > 1 ? "s" : ""} above rather than from{" "}
-                    {title} directly.
-                  </>
-                )}
-              </p>
+              <p className={BODY}>Step 1 already adds these. Run them only for a manual setup.</p>
 
+              {/* One command per tool, however many items: registry components
+                  all go through one `shadcn add`, npm packages through one install. */}
               {components.length > 0 && (
                 <div className="space-y-2">
-                  <p className={SMALL}>
-                    <BadgeList items={components.map(label)} />{" "}
-                    {components.length > 1
-                      ? "are components"
-                      : "is a component"}
-                    , not {components.length > 1 ? "packages" : "a package"} —
-                    the shadcn CLI installs{" "}
-                    {components.length > 1 ? "them" : "it"} as source files.
-                  </p>
+                  <p className={SMALL}>Registry components</p>
                   <Cli command={`add ${components.map(toAddArg).join(" ")}`} />
                 </div>
               )}
 
               {packages.length > 0 && (
                 <div className="space-y-2">
-                  <p className={SMALL}>
-                    <BadgeList items={packages} />{" "}
-                    {packages.length > 1
-                      ? "are npm packages"
-                      : "is an npm package"}
-                    .
-                  </p>
+                  <p className={SMALL}>npm packages</p>
                   <Cli command={`install ${packages.join(" ")}`} />
                 </div>
               )}

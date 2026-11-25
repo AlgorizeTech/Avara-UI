@@ -48,7 +48,7 @@ runs on GSAP. Prefer Motion? Many of these also have a
 
 **More Components**
 
-- [Action Button](https://avaraui.com/docs-md/nextjs-action-buttons.md): A collection of stateful interactive action, commerce, and confirmation buttons built on GSAP and CSS (a Motion build is also available) — featuring… (Motion build available)
+- [Action Button](https://avaraui.com/docs-md/nextjs-action-buttons.md): Animated action buttons: slide to confirm, hold to delete, star, add to cart, waitlist and payment. (Motion build available)
 
 **Marketing Sections**
 
