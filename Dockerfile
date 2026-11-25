@@ -62,7 +62,10 @@ ENV NEXT_TELEMETRY_DISABLED=1
 # Measured peak is about 2.5 GB of real RAM with the webpack build worker enabled
 # in next.config.ts. "JavaScript heap out of memory" -> raise it; container
 # "Killed" or exit 137 -> lower it. Override: --build-arg NODE_MAX_OLD_SPACE=2048
-ARG NODE_MAX_OLD_SPACE=1536
+# 1536 was not enough: the build ran out of heap about 4 minutes into
+# `next build` (Easypanel, Nov 2026). 3072 needs a host with roughly 4 GB of
+# RAM or swap free while building.
+ARG NODE_MAX_OLD_SPACE=3072
 ENV NODE_OPTIONS=--max-old-space-size=${NODE_MAX_OLD_SPACE}
 
 # NEXT_PUBLIC_* values are inlined into the bundle at build time, so they must
