@@ -3,7 +3,7 @@
   "name": "card-e-commerce-product-cards",
   "type": "registry:block",
   "title": "Card — E-commerce Product Cards",
-  "description": "Four reusable product cards for online stores and flash deal showcases.",
+  "description": "The \"E-commerce Product Cards\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

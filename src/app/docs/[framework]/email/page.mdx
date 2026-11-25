@@ -3,15 +3,14 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("email");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Email Dashboard
 
-A premium, fully interactive email client featuring a modern SaaS aesthetic. It includes out-of-the-box state management for reading, starring, archiving, deleting, and composing emails, alongside a fully responsive mobile drawer sidebar.
+A full email client UI with reading, starring, archiving, deleting, composing and a mobile drawer sidebar.
 
-The client is fully encapsulated — hand it `initialEmails` and reading, starring, archiving, deleting and composing all work. Try searching for a sender, starring a message to watch it move to the Starred folder, or opening Compose.
-
-<AgentVariants slug="email" />
+The client is fully encapsulated — hand it `initialEmails` and reading, starring, archiving, deleting and composing all work. Try searching for a sender, starring a message to see it appear in the Starred folder, or opening Compose.
 
 export const emailData = `const emails: Email[] = [
   {
@@ -143,6 +142,7 @@ export default function LiquidGlassMailbox() {
   name="email"
   colorControl
   columns={1}
+  installation={<Installation name="email" usage="below" />}
   examples={[
     {
       title: "Email dashboard",
@@ -163,20 +163,6 @@ export default function LiquidGlassMailbox() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/Email.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="email" />
-
-## Examples
-
-<ExampleShowcase
-  name="email"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Minimal",
       propNotes: [
@@ -222,31 +208,37 @@ export default function LiquidGlassMailbox() {
   ]}
 />
 
-## Features
-Discover the Email interface component's layout features, including inbox listing, message preview, and responsive split panes.
+## About Shadcn Email Dashboard
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**What it is.** **Shadcn Email Dashboard** (the default export `EmailApp`) is a complete inbox client with folder filtering, search, starring, archiving, deletion, message reading, and a Compose modal across `"default"`, `"minimal"`, `"glass"`, and `"liquid-glass"` shells.
 
-## Best Practices & Guidelines
+**How it is built.** Pass `initialEmails` (`Email[]` with `folder`, `isRead`, and `isStarred`) and optional `variant` and `color`. The list is copied into component state on mount, and folder moves, search filtering and the Compose form all run on that state. Nothing is sent or saved anywhere. The only npm dependency is `lucide-react`.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use it for webmail apps, SaaS notification centers, support ticket inboxes, and CRM communication panels.
+
+## For AI agents
+
+<AgentBrief name="email">
+
+**When to use**
+
+- Webmail apps, SaaS notification centers
+- Support ticket inboxes, CRM communication panels
+
+**When not to use**
+
+- A direct conversation between two people: use <DocLink to="chat">Chat</DocLink>
+- A global search-and-action bar: use <DocLink to="command-palette">Command Palette</DocLink>
+
+**Agent notes**
+
+- Default export: `import EmailApp, { type Email } from "@/components/custom/blocks/Email"`. It takes `initialEmails` (`Email[]`), `variant` (`"default" | "minimal" | "glass" | "liquid-glass"`), and `color`, and nothing else (no `className`).
+- State is internal and there are no change callbacks. `initialEmails` is read once on mount, and Compose only adds a local message to `sent`; wire your own send and save logic into the file.
+- The sidebar lists `inbox`, `sent`, `draft`, `starred` and `trash`, plus the labels `Private`, `Company` and `Important`. Archiving sets `folder` to `"archive"`, which has no sidebar entry.
+- Reading, starring, archiving, deleting, folder routing, and composing work out of the box.
+- Collapses into a responsive mobile drawer sidebar on smaller viewports.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -282,7 +274,7 @@ Discover the Email interface component's layout features, including inbox listin
           <code>variant</code>
         </td>
         <td>
-          <code>"default" | "minimal" | "glass"</code>
+          <code>"default" | "minimal" | "glass" | "liquid-glass"</code>
         </td>
         <td>
           <code>"default"</code>
@@ -298,7 +290,7 @@ Discover the Email interface component's layout features, including inbox listin
         </td>
         <td>
           <code>
-            "primary" | "indigo" | "rose" | "emerald" | "zinc" | (hex string)
+            "primary" | "indigo" | "rose" | "emerald" | "lavender" | "blue" | "zinc" | (hex string)
           </code>
         </td>
         <td>
@@ -313,6 +305,33 @@ Discover the Email interface component's layout features, including inbox listin
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+Pair `EmailApp` with <DocLink to="chat">Chat</DocLink> for real-time team messaging, <DocLink to="command-palette">Command Palette</DocLink> for quick email actions, and <DocLink to="toast">Toast</DocLink> for send and archive confirmations.
+
+## Does starring or archiving update folders automatically?
+
+Starring sets `isStarred`, and the Starred view is a filter on that flag, so the message also stays in its own folder. Deleting moves it to `trash`, and deleting from Trash removes it. Archiving moves it to `archive`, which the sidebar does not list. Unread counts update as you read.
+
+## What is the difference between `glass` and `liquid-glass`?
+
+`glass` frosts the sidebar, list and Compose modal with backdrop blur. `liquid-glass` renders the shell with an SVG displacement filter, specular highlights and white text for a refracted look, so it reads best over a colourful background. `default` and `minimal` use plain theme surfaces.
+
+## How do I load my own emails into EmailApp?
+
+Pass an `Email[]` as `initialEmails`. Each message needs `id`, `sender`, `email`, `subject`, `time`, `fullDate`, `body`, `isRead` and `isStarred`. `folder` defaults to `"inbox"`, and `labels`, `attachments`, `avatar` and `initials` are optional. The array is copied once on mount, so later prop changes are ignored.
+
+## Does EmailApp send real email or save changes to a backend?
+
+No. It has no callbacks and no network code. Compose builds a message from Me / me@example.com and adds it to the local `sent` folder; Reply and Forward open the same form. To connect a backend, edit `handleSendEmail` and the toggle handlers in the installed file.
+
+## How do I change the accent colour of EmailApp?
+
+Set `color` to `"primary"` (default), `"indigo"`, `"rose"`, `"emerald"`, `"lavender"`, `"blue"`, `"zinc"` or a hex string such as `"#0ea5e9"`. It tints the Compose button, unread indicators and selected checkboxes. `"primary"` follows your theme token, so Themes presets restyle it.
+
+## Is EmailApp responsive?
+
+Yes. Below the `lg` breakpoint (1024px) the sidebar becomes a slide-in drawer opened from a menu button, and it closes after you pick a folder or Compose. The client has a fixed height of 700px, or 800px from `sm` up, and takes no `className`, so change that in the file.
 
 <DocsJsonLd slug="email" />
+<FaqJsonLd slug="email" />

@@ -3,7 +3,7 @@
   "name": "voice-note-voice-note",
   "type": "registry:block",
   "title": "Voice Note",
-  "description": "Press and hold to record with live animated waveforms, slide left to cancel, and release to preview audio playback with close option.",
+  "description": "The \"Voice Note\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

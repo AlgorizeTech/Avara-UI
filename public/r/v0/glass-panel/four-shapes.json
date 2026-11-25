@@ -3,7 +3,7 @@
   "name": "glass-panel-four-shapes",
   "type": "registry:block",
   "title": "Glass Panel — Four shapes",
-  "description": "The same recipe with four corner treatments. Radius is the only difference, so it reads as hierarchy.",
+  "description": "The \"Four shapes\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

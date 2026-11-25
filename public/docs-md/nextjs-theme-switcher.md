@@ -1,18 +1,98 @@
 ---
 title: "Shadcn Theme Switcher"
-description: "Shadcn Theme Switcher. A premium, animated dark mode toggle for Next.js applications using `next-themes`, in three variants (Icon."
+description: "Shadcn Theme Switcher. A hydration-safe dark mode switcher for `next-themes` in three variants (`icon`, `pill`."
 url: https://avaraui.com/docs/nextjs/theme-switcher
 ---
 
 # Shadcn Theme Switcher
 
-A premium, animated dark mode toggle for Next.js applications using `next-themes`, in three variants (Icon, Pill and Dropdown) that suit everything from compact navigation bars to settings menus. It handles React hydration safely, so there is no dark-mode flash on load.
+A hydration-safe dark mode switcher for `next-themes` in three variants (`icon`, `pill`, and `dropdown`) with a View Transitions circular reveal.
 
-Switching runs the same circular reveal as the toggle in this site's header, using the View Transitions API. The CSS it needs ships inside the component, so an installed copy works without touching `globals.css`. Browsers without View Transitions, and users who prefer reduced motion, get an instant switch.
+## Installation
 
-Each switcher below is live and writes through `next-themes`, so flipping one changes the theme for the whole docs site.
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/theme-switcher.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/theme-switcher
+```
+
+## Icon
+
+One button that flips between light and dark, with a spin micro-interaction on the icon and the circular reveal growing out of it.
+
+- `variant="icon"` is the default — the compact choice for a navbar.
+
+```tsx
+import { ThemeSwitcher } from "@/components/custom/blocks/ThemeSwitcherBlock";
+
+export default function DashboardHeader() {
+  return (
+    <header className="flex justify-between items-center p-4 border-b">
+      <h1>My App</h1>
+      {/* Compact enough for a navbar */}
+      <ThemeSwitcher variant="icon" />
+    </header>
+  );
+}
+```
+
+## Pill
+
+- Set `variant="pill"` for a segmented control with a sliding indicator. It shows the current mode explicitly, which suits a settings page.
+
+```tsx
+import { ThemeSwitcher } from "@/components/custom/blocks/ThemeSwitcherBlock";
+
+export default function PillSwitcher() {
+  // A segmented control that shows the current mode explicitly — better on a
+  // settings page than in a dense navbar.
+  return <ThemeSwitcher variant="pill" />;
+}
+```
+
+## Dropdown
+
+- Set `variant="dropdown"` for a menu — the **only** variant that exposes the `system` option, so users can defer to their OS setting.
+
+```tsx
+import { ThemeSwitcher } from "@/components/custom/blocks/ThemeSwitcherBlock";
+
+export default function DropdownSwitcher() {
+  // Includes the "system" option, so users can defer to their OS setting.
+  return <ThemeSwitcher variant="dropdown" />;
+}
+```
+
+## About Shadcn Theme Switcher
+
+**What it is.** A dark-mode switcher (`ThemeSwitcher`) with `icon`, `pill`, and `dropdown` variants wired to `next-themes`.
+
+**How it is built.** Injects its own `::view-transition` circular reveal CSS into `<head>` (no `globals.css` edits needed), uses the Web Animations API for micro-interactions, and waits for client mount to avoid SSR hydration mismatches. Falls back to an instant switch under `prefers-reduced-motion` or browsers without View Transitions.
+
+**When to use it.** Use `variant="icon"` in compact navbars, `variant="pill"` on settings pages, and `variant="dropdown"` when users need explicit `light`, `dark`, and `system` options.
 
 ## For AI agents
+
+**When to use**
+
+- Light/dark/system theme controls in navbars (`variant="icon"`), settings pages (`variant="pill"`), or menus (`variant="dropdown"`)
+
+**When not to use**
+
+- Generic multi-option segmented controls unrelated to theme — use [Toggle Group](https://avaraui.com/docs/nextjs/toggle-group)
+
+**Agent notes**
+
+- Named export: `import { ThemeSwitcher } from "@/components/custom/blocks/ThemeSwitcherBlock"`
+- Requires `next-themes` `ThemeProvider` wrapping the root layout with `suppressHydrationWarning` on `<html>`
+- Only `variant="dropdown"` exposes the `"system"` option; pass `reveal={false}` to disable the circular View Transitions sweep
 
 **Ask before you pick.** This page has 3 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
 
@@ -52,115 +132,6 @@ All 3 options as live previews: https://avaraui.com/view/theme-switcher
    - Set these props: `{"variant":"dropdown"}`
    - Docs: https://avaraui.com/docs/nextjs/theme-switcher#dropdown
 
-## Icon
-
-One button that flips between light and dark, with a spin micro-interaction on the icon and the circular reveal growing out of it.
-
-- `variant="icon"` is the default — the compact choice for a navbar.
-
-```tsx
-import { ThemeSwitcher } from "@/components/custom/blocks/ThemeSwitcherBlock";
-
-export default function DashboardHeader() {
-  return (
-    <header className="flex justify-between items-center p-4 border-b">
-      <h1>My App</h1>
-      {/* Compact enough for a navbar */}
-      <ThemeSwitcher variant="icon" />
-    </header>
-  );
-}
-```
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/theme-switcher.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/theme-switcher
-```
-
-### Configure next-themes
-
-`ThemeSwitcher` reads and writes the theme through `next-themes`, so your app has to be wrapped in its provider once. `suppressHydrationWarning` on `<html>` is required — the theme class is applied before React hydrates.
-
-```tsx
-// app/layout.tsx
-import { ThemeProvider } from "next-themes";
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
-  );
-}
-```
-
-## Examples
-
-### Pill
-
-- Set `variant="pill"` for a segmented control with a sliding indicator. It shows the current mode explicitly, which suits a settings page.
-
-```tsx
-import { ThemeSwitcher } from "@/components/custom/blocks/ThemeSwitcherBlock";
-
-export default function PillSwitcher() {
-  // A segmented control that shows the current mode explicitly — better on a
-  // settings page than in a dense navbar.
-  return <ThemeSwitcher variant="pill" />;
-}
-```
-
-### Dropdown
-
-- Set `variant="dropdown"` for a menu — the **only** variant that exposes the `system` option, so users can defer to their OS setting.
-
-```tsx
-import { ThemeSwitcher } from "@/components/custom/blocks/ThemeSwitcherBlock";
-
-export default function DropdownSwitcher() {
-  // Includes the "system" option, so users can defer to their OS setting.
-  return <ThemeSwitcher variant="dropdown" />;
-}
-```
-
-## Features
-
-Explore the Theme Switcher's dark mode capabilities, featuring the circular reveal, hydration-safe rendering and smooth layout transitions.
-
-The new theme sweeps out from whichever control was clicked, via the View Transitions API. The `::view-transition` rules it needs ship inside the component, so nothing has to be added to your global stylesheet. Set `reveal={false}` for an instant switch.
-
-Every style the switcher relies on is in `ThemeSwitcherBlock.tsx`: Tailwind classes for the controls, and the reveal CSS injected once into `<head>`. Install it and it works; nothing to copy into `globals.css`.
-
-Safely checks if the component is mounted on the client to completely eliminate the infamous React hydration mismatch errors.
-
-The sliding pill, the icon spin and the dropdown run on the browser's built-in Web Animations API, so they feel completely native and add no dependency.
-
-Ships with a compact Icon toggle, a sliding Pill control, and a classic Dropdown menu to fit any UI design.
-
-Automatically syncs with the user's OS-level dark mode preferences if the "system" theme is selected.
-
-## Best Practices & Guidelines
-
-Since `next-themes` relies on `localStorage` which isn't available during Server-Side Rendering, always wrap the component's inner rendering logic in a `mounted` check to prevent hydration mismatch flashes.
-
 ## Props Reference
 
 | Component | Prop | Type | Default | Description |
@@ -170,6 +141,31 @@ Since `next-themes` relies on `localStorage` which isn't available during Server
 | `ThemeSwitcher` | `revealDuration` | `number` | `500` | Length of the reveal, in milliseconds. |
 | `ThemeSwitcher` | `applyTheme` | `(theme: string, origin: Element \| null) => void` | `undefined` | Replace how a picked theme is applied. By default the switcher reveals and calls `setTheme`; pass this to do it yourself — persist it first, or hand the switch to a parent document. `origin` is the element that was clicked, for positioning your own reveal. |
 | `ThemeSwitcher` | `...props` | `HTMLAttributes<HTMLDivElement>` | `undefined` | Accepts all native HTML div attributes (e.g., `className`, `id`) which are seamlessly forwarded to the root wrapper. |
+
+## Works with other components
+
+- Place `variant="icon"` inside [Navbar](https://avaraui.com/docs/nextjs/navbar) or [Sidebar](https://avaraui.com/docs/nextjs/sidebar) headers.
+- Pair `variant="pill"` with [Card](https://avaraui.com/docs/nextjs/card) appearance settings panels.
+
+## How do I add a dark mode toggle with next-themes?
+
+Render `ThemeSwitcher` inside a `next-themes` `ThemeProvider`, which the component expects. Choose `variant="icon"`, `"pill"` or `"dropdown"`. The registry installs `next-themes` and `lucide-react` with it, and the switcher is hydration-safe, so it avoids a mismatch on first paint.
+
+## Does ThemeSwitcher require globals.css changes for the circular reveal?
+
+No. It injects the `::view-transition` rules into `<head>` automatically, and falls back to an instant switch when View Transitions are unsupported or `prefers-reduced-motion` is active. `reveal` is `true` by default, so set `reveal={false}` to turn the circle off.
+
+## How do I allow users to pick the OS system theme?
+
+Use `variant="dropdown"`, which is the only variant that includes `"system"` alongside `"light"` and `"dark"`. Make sure `ThemeProvider` has `enableSystem` set, otherwise next-themes will not resolve the operating-system preference for you.
+
+## How do I change how the new theme is applied?
+
+Pass `applyTheme`, a function that receives the picked theme and the clicked element. It replaces the default behaviour, which runs the reveal and then changes the theme. `revealDuration` sets the circle animation length in milliseconds and defaults to `500`.
+
+## Which ThemeSwitcher variant should I use in a navbar or settings page?
+
+Use `variant="icon"` in a [Navbar](https://avaraui.com/docs/nextjs/navbar) or [Sidebar](https://avaraui.com/docs/nextjs/sidebar) header, `"pill"` for appearance settings in a [Card](https://avaraui.com/docs/nextjs/card), and `"dropdown"` when the user needs the system option. `icon` is the default.
 
 ---
 

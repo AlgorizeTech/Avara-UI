@@ -1,14 +1,27 @@
 ---
 title: "Shadcn Card"
-description: "A flexible container used to group related information and actions together in a visually distinct box. Free shadcn/ui component for React and Tailwind CSS."
+description: "Shadcn Card. A composable card container (`Card`, `CardHeader`, `CardContent`, `CardFooter`, `ProductCard`, `ProjectCard`) for content tiles, ecommerce cards."
 url: https://avaraui.com/docs/nextjs/card
 ---
 
 # Shadcn Card
 
-A flexible container used to group related information and actions together in a visually distinct box.
+A composable card container (`Card`, `CardHeader`, `CardContent`, `CardFooter`, `ProductCard`, `ProjectCard`) for content tiles, ecommerce cards, profiles, and editorial grids.
 
-Building a UI entirely out of raw `div` tags quickly leads to inconsistent padding, mismatched border radiuses, and spaghetti code. The `CardBlock` and `ProductCardBlock` provide a set of highly composable components (`CardHeader`, `CardContent`, `CardFooter`, `ProductCard`) that automatically manage internal spacing and interactive states.
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/card.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/card
+```
 
 ## Teaser card
 
@@ -96,24 +109,7 @@ export default function ArticleTeaserCards() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/card.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/card
-```
-
-## Examples
-
-### Blog post cards
+## Blog post cards
 
 Three bare cards: a cover, the date, a title, and the author with a Read more link under a hairline.
 
@@ -177,7 +173,7 @@ export default function BlogPostCards() {
 }
 ```
 
-### Notched cards
+## Notched cards
 
 A card with a tab cut into its top-right corner, in soft gray (light) or the card colour (dark). A concave fillet joins the tab to the body.
 
@@ -252,7 +248,7 @@ export default function NotchedCards() {
 }
 ```
 
-### Blog cards
+## Blog cards
 
 Three posts across. The topic rides on the image, so the card body stays type-only.
 
@@ -346,7 +342,7 @@ export default function BlogCardGrid() {
 }
 ```
 
-### Author cards
+## Author cards
 
 Two to a row: a cover beside a title and intro, then the author and round actions. Each card stacks when it gets narrow.
 
@@ -447,7 +443,7 @@ export default function ArticleCards() {
 }
 ```
 
-### E-commerce Product Cards
+## E-commerce Product Cards
 
 Four reusable product cards for online stores and flash deal showcases.
 
@@ -556,7 +552,7 @@ export default function EcommerceProductCardsDemo() {
 }
 ```
 
-### Shop tiles
+## Shop tiles
 
 Pastel product tiles with a tag, a two-line title, the product on the right and a frosted price bar. The photo's backdrop and the tile share a colour, so the edge between them disappears.
 
@@ -651,7 +647,7 @@ export default function ShopCards() {
 }
 ```
 
-### Folder cards
+## Folder cards
 
 A thick frame around a photograph and a folder-tab panel. Only the number and title show at first; hover or focus a card to open the text.
 
@@ -740,7 +736,7 @@ export default function FolderCards() {
 }
 ```
 
-### Quote tiles
+## Quote tiles
 
 Pastel tiles with a small caps category, a bold quote and the photo dissolving into the tint from below.
 
@@ -823,7 +819,7 @@ export default function QuoteTiles() {
 }
 ```
 
-### Profile card
+## Profile card
 
 A person as a card: a patterned banner, an avatar that overlaps it, a few numbers, and one primary action.
 
@@ -934,7 +930,7 @@ export default function ProfileCards() {
 }
 ```
 
-### Platform grid
+## Platform grid
 
 A full-width two-column card: a visual preview on the left, and on the right the specifications, tags, action buttons and a copyable install command.
 
@@ -960,7 +956,7 @@ export default function ProjectShowcaseCardDemo() {
 }
 ```
 
-### Stat grid
+## Stat grid
 
 `CardHeader` stacks its children by default; override that to line a title up against an icon.
 
@@ -1010,7 +1006,7 @@ export default function StatGrid() {
 }
 ```
 
-### Standard Card
+## Standard Card
 
 Stack `CardHeader`, `CardContent` and `CardFooter` — spacing is handled for you.
 
@@ -1062,7 +1058,7 @@ export default function NotificationCard() {
 }
 ```
 
-### Boarding pass
+## Boarding pass
 
 One card, two panels, a dashed perforation between them — the holes are circles filled with the page colour.
 
@@ -1118,12 +1114,33 @@ export default function BoardingPassCard() {
 }
 ```
 
-## Features
-Learn about the Card component's flexible layout options, including headers, footers, content areas, and interactive hover effects.
+## About Shadcn Card
 
-Easily adapt the component's styling and behavior to fit your application's unique design system.
+**What it is.** A composable suite of card primitives (`Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`) alongside specialized `ProductCard` and `ProjectCard` layouts for editorial, ecommerce, profile, and dashboard tiles.
 
-Mix and match sub-components to create complex card layouts effortlessly.
+**How it is built.** `Card` is a plain `div` styled with theme tokens (`bg-card`, `text-card-foreground`, `border-primary`), with three `variant` surfaces and an optional `interactive` hover state. `ProductCard` lives in `ProductCardBlock`, and `ProjectCard` is exported from `CardBlock`. They use CSS transitions only, import nothing from `next/*`, and install `lucide-react`, the `button` item and `utils`.
+
+**When to use it.** Use `Card` whenever related metadata, media, and actions belong in a distinct surface. For stacked/draggable decks or 3D tilt cards, see [Card Stack](https://avaraui.com/docs/reactjs/card-stack) or [Tilted Card](https://avaraui.com/docs/reactjs/tilted-card).
+
+## For AI agents
+
+**When to use**
+
+- Grouping headers, media, metrics, or actions into editorial, product, profile, or stat cards
+- Interactive clickable cards (`interactive` prop) or ecommerce product tiles (`ProductCard`)
+
+**When not to use**
+
+- Draggable or stacked card decks — use [Card Stack](https://avaraui.com/docs/reactjs/card-stack) or [Draggable Card List](https://avaraui.com/docs/reactjs/draggable-card-list)
+- 3D pointer-tilting spotlight cards — use [Tilted Card](https://avaraui.com/docs/reactjs/tilted-card)
+
+**Agent notes**
+
+- Named exports: `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter` and `ProjectCard` from `@/components/custom/blocks/CardBlock`; `ProductCard` from `@/components/custom/blocks/ProductCardBlock`
+- `Card` variants are `"bordered"` (default), `"default"` and `"flat"`; add `"dark"` to `className` to pin an individual card to the dark tokens
+- `Card` renders a `div` and `interactive` only changes its styling. Add `onClick`, `role` and `tabIndex` yourself, or wrap it in a link, for a real clickable card
+- `ProductCard` shows its Add, Buy Now, Quick View and heart buttons only when you pass `onAddToCart`, `onBuyNow`, `onQuickView` and `onFavoriteToggle`
+- `ProductCard` `variant="compact"` is in the type but renders the same as `"standard"`
 
 ## Props Reference
 
@@ -1132,7 +1149,7 @@ Mix and match sub-components to create complex card layouts effortlessly.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `variant` | `"bordered" \| "default" \| "flat"` | `"bordered"` | Visual styling variant of the card container. |
-| `interactive` | `boolean` | `false` | Enables hover elevation, scale effects, and pointer cursor. |
+| `interactive` | `boolean` | `false` | Adds a hover lift, shadow and stronger border, a pointer cursor, and a slight press scale. It does not make the card focusable or a link. |
 | `className` | `string` | `undefined` | Additional CSS classes applied to the root element. |
 
 ### ProductCard
@@ -1141,7 +1158,7 @@ Mix and match sub-components to create complex card layouts effortlessly.
 | --- | --- | --- | --- |
 | `title` | `string` | `-` | Product title heading (required). |
 | `price` | `string` | `-` | Displayed product price string (required). |
-| `variant` | `"standard" \| "compact" \| "horizontal"` | `"standard"` | Layout orientation and sizing of the product card. |
+| `variant` | `"standard" \| "compact" \| "horizontal"` | `"standard"` | `"horizontal"` lays the card out as a row with a small thumbnail. `"compact"` is accepted but renders the same as `"standard"`. |
 | `subtitle` | `string` | `undefined` | Brand name, category or secondary label. |
 | `description` | `string` | `undefined` | Detailed product description text. |
 | `originalPrice` | `string` | `undefined` | Strikethrough original price for discount display. |
@@ -1151,7 +1168,7 @@ Mix and match sub-components to create complex card layouts effortlessly.
 | `badgeVariant` | `"emerald" \| "rose" \| "indigo" \| "amber" \| "zinc"` | `"emerald"` | Color theme of the badge tag. |
 | `inStock` | `boolean` | `true` | Shows availability indicator badge on image header. |
 | `image` | `ReactNode` | `undefined` | Image or visual graphic node for the product preview. |
-| `colors` | `ProductColorOption[]` | `undefined` | Array of color swatch options `&#123; name, value &#125;`. |
+| `colors` | `ProductColorOption[]` | `undefined` | Array of color swatch options `&#123; name, value &#125;`, where `value` is a Tailwind background class such as `bg-indigo-600`. Standard layout only. |
 | `onAddToCart` | `() => void` | `undefined` | Callback triggered when clicking the Add to Cart button. |
 | `onBuyNow` | `() => void` | `undefined` | Callback triggered when clicking Buy Now button. |
 | `onQuickView` | `() => void` | `undefined` | Callback triggered when clicking Quick View button. |
@@ -1162,17 +1179,48 @@ Mix and match sub-components to create complex card layouts effortlessly.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `title` | `string` | `"Platform grid"` | The primary title of the component or showcase. |
-| `image` | `string` | — | Image URL displayed in the left visual card presentation frame. |
-| `slug` | `string` | — | Component slug used in the CLI install bar and package name. |
-| `scope` | `string` | `"avara-ui"` | NPM scope prefix for the package and CLI command. |
+| `image` | `string` | Built-in sample image | Image URL displayed in the left visual card presentation frame. |
+| `slug` | `string` | `title`, lower-cased and hyphenated | Component slug used in the CLI install bar and package name. |
+| `scope` | `string` | `"avara-ui"` | Registry namespace shown as `@scope/slug` and used in the install command. |
 | `badge1` | `string` | `"Component Block"` | First category pill badge (rose outline style). |
 | `badge2` | `string` | `"TypeScript & Tailwind"` | Second category pill badge (amber/neutral style). |
-| `description` | `string` | — | Detailed editorial narrative of the component or block. |
+| `description` | `string` | Built-in sample text | Detailed editorial narrative of the component or block. |
 | `specs` | `ProjectCardSpec[]` | Default 2x2 grid | Array of `&#123; label, value &#125;` specifications displayed in the 2x2 rounded grid. |
 | `ctaLabel` | `string` | `"Full View"` | Label for the primary branded action button. |
 | `ctaHref` | `string` | `"#"` | Target URL when clicking the primary action. |
 | `contactLabel` | `string` | `"Contact"` | Label for the secondary outline contact button. |
-| `installCommand` | `string` | — | Custom CLI command string for the copyable bottom terminal bar. |
+| `installCommand` | `string` | `npx shadcn@latest add @scope/slug` | Custom CLI command string for the copyable bottom terminal bar. |
+
+## Works with other components
+
+- Place [Button](https://avaraui.com/docs/reactjs/button) or [Action Button](https://avaraui.com/docs/reactjs/action-buttons) inside `CardFooter` for primary card actions.
+- Combine `ProductCard` with [Cart](https://avaraui.com/docs/reactjs/cart) and [Half Stars](https://avaraui.com/docs/reactjs/half-stars) for storefront listings.
+- Display [Avatar Stack](https://avaraui.com/docs/reactjs/avatar-stack) or [Verify Badge](https://avaraui.com/docs/reactjs/verify-badge) inside author and profile cards.
+- Use [Profile Card](https://avaraui.com/docs/reactjs/profile-card) when you want a ready-made person tile instead of composing one from `Card` parts.
+
+## What is the difference between Card, ProductCard, and ProjectCard?
+
+`Card` is the general-purpose container composed from `CardHeader`, `CardContent`, and `CardFooter`. `ProductCard` (`ProductCardBlock`) adds ecommerce slots for pricing, ratings, color swatches and add-to-cart actions, while `ProjectCard` provides a two-column showcase with specifications and a copyable install bar.
+
+## How do I make a Card react to hover with the interactive prop?
+
+`interactive` adds a small lift, a shadow, a stronger border, a pointer cursor and a press scale. It is styling only: `Card` stays a `div`, so add `onClick`, `role` and `tabIndex={0}`, or wrap the card in a link, to make it actually clickable and keyboard reachable.
+
+## How can I pin a single Card to dark mode?
+
+Add `"dark"` to that `Card`'s `className`. The `dark` class re-applies your dark theme tokens inside the card, so `bg-card` and `text-card-foreground` switch while the rest of the page keeps its theme. It needs the usual shadcn setup, with dark tokens defined under `.dark`.
+
+## How do I add color swatches and buy buttons to ProductCard?
+
+Pass `colors` as an array of `{ name, value }`, where `value` is a Tailwind background class such as `bg-indigo-600`. Buttons appear only for callbacks you provide: `onAddToCart`, `onBuyNow`, `onQuickView` and `onFavoriteToggle`. Swatches report picks through `onColorChange`, and `defaultColorIndex` sets the starting one.
+
+## What do the ProductCard variants standard, compact and horizontal do?
+
+`"standard"` is the vertical card with an image header, ratings, swatches and action buttons. `"horizontal"` is a row with a thumbnail, badge, rating, title, price and a single Add button. `"compact"` is declared in the type but has no layout of its own, so it renders as `"standard"`.
+
+## How do I set the install command shown on ProjectCard?
+
+`ProjectCard` builds `npx shadcn@latest add @scope/slug` from `scope` (default `"avara-ui"`) and `slug`, which defaults to the hyphenated `title`. Pass `installCommand` to replace the whole string. `ctaHref` opens in a new tab, and `onCtaClick` and `onContactClick` handle the two buttons.
 
 ---
 

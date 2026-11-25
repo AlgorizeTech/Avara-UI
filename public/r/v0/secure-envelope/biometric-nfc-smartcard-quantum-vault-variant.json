@@ -3,7 +3,7 @@
   "name": "secure-envelope-biometric-nfc-smartcard-quantum-vault-variant",
   "type": "registry:block",
   "title": "Secure Envelope — Biometric NFC SmartCard (Quantum Vault Variant)",
-  "description": "A biometric identity smartcard in an encrypted key vault sleeve, with a chip, NFC glyph and clearance badge.",
+  "description": "The \"Biometric NFC SmartCard (Quantum Vault Variant)\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

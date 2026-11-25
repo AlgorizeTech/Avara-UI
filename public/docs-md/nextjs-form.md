@@ -1,16 +1,27 @@
 ---
 title: "Shadcn Form"
-description: "A high-fidelity Form toolkit engineered for both simple landing pages and complex enterprise dashboards. Free shadcn/ui Form for React and Tailwind CSS."
+description: "Shadcn Form. A state-agnostic form wrapper (`FormWrapper`, `FormField`."
 url: https://avaraui.com/docs/nextjs/form
 ---
 
 # Shadcn Form
 
-A high-fidelity Form toolkit engineered for both simple landing pages and complex enterprise dashboards.
+A state-agnostic form wrapper (`FormWrapper`, `FormField`, `FormSubmit`) with a spinning glow border and animated error text that works with plain `useState` or `react-hook-form` + `zod`.
 
-This engine decouples layout from state. It provides a stunning visual wrapper with a **slim animated glowing border** that tracks focus, and a custom **glitching error text effect** that draws immediate attention to invalid fields.
+## Installation
 
-`FormWrapper` is unopinionated about state — it works with plain `useState` and with `react-hook-form`'s `handleSubmit` alike, because it never clones or intercepts child `ref`s.
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/form.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/form
+```
 
 ## React Hook Form + Zod
 
@@ -74,32 +85,7 @@ export default function EnterpriseForm() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/form.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/form
-```
-
-### Optional — schema validation
-
-The form primitives are unopinionated about validation; the native example uses plain React state. Only add these if you want the schema-driven approach from the second example.
-
-```bash
-npx shadcn@latest install react-hook-form zod @hookform/resolvers
-```
-
-## Examples
-
-### Submitting
+## Submitting
 
 - Pass `isSubmitting` to `FormSubmit` to swap the label for a spinner and disable the button, which is what blocks double submits.
 
@@ -131,20 +117,32 @@ export default function SubmittingForm() {
 }
 ```
 
-## Features
-Explore the Form component's validation integration, accessible error messages, and loading state management.
+## About Shadcn Form
 
-Easily adapt the component's styling and behavior to fit your application's unique design system.
+**What it is.** `FormWrapper`, `FormField` and `FormSubmit` provide a styled form container with a spinning glow border that brightens on hover, glitching error text, and a submit button that disables itself while `isSubmitting` is true.
 
-Built with accessibility in mind, ensuring all users can interact with your application effectively.
+**How it is built.** `color` sets one CSS variable on the wrapper that tints the border and the submit button. The wrapper never clones or intercepts child `ref`s, so native HTML forms, controlled `useState`, and `react-hook-form` (`register()` + `zodResolver`) all work out of the box.
 
-Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+**When to use it.** Use `FormWrapper` for single-step forms, settings panels, and schema-validated inputs. For multi-step flows, use [Wizard](https://avaraui.com/docs/nextjs/wizard) or [Stepper](https://avaraui.com/docs/nextjs/stepper).
 
-Optimized for maximum performance with minimal re-renders and efficient state management.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+- Single-page forms with `react-hook-form` + `zod` or plain `useState`
+- Forms needing built-in `isSubmitting` loading lock on `FormSubmit`
+
+**When not to use**
+
+- Pre-built login/signup/onboarding screens — use [Auth Forms](https://avaraui.com/docs/nextjs/auth-forms)
+- Multi-step flows — use [Wizard](https://avaraui.com/docs/nextjs/wizard)
+
+**Agent notes**
+
+- Named exports from `@/components/custom/blocks/FormBlock`: `FormWrapper`, `FormField`, `FormError`, `FormSubmit`
+- `FormSubmit` is a `type="submit"` button, so pass `onSubmit` to `FormWrapper` (that renders the `<form>`) or it will not submit anything
+- `FormField` renders its `label` without `htmlFor`; give the input its own `aria-label` or `id` handling if screen readers need the name
+- Install optional schema packages (`npm install react-hook-form zod @hookform/resolvers`) only if using `zodResolver`
 
 ## Props Reference
 
@@ -152,13 +150,41 @@ Follow standard design principles when implementing this component. Ensure prope
 | --- | --- | --- | --- | --- |
 | `FormWrapper` | `title` | `string` | `undefined` | Heading shown above the divider. Omit it (along with `description`) to drop the header entirely. |
 | `FormWrapper` | `description` | `string` | `undefined` | Supporting copy rendered under the title. |
-| `FormWrapper` | `color` | `"primary" \| "indigo" \| "rose" \| "emerald" \| "zinc" \| string` | `"primary"` | Drives the animated border, focus ring and submit button. Accepts any hex string. |
+| `FormWrapper` | `color` | `"primary" \| "indigo" \| "rose" \| "emerald" \| "zinc" \| string` | `"primary"` | Drives the animated border and the submit button. Accepts a preset name or a hex string starting with `#`; any other string falls back to `primary`. |
 | `FormWrapper` | `onSubmit` | `(e: React.FormEvent) => void` | `undefined` | When provided the children are wrapped in a `<form>`; otherwise a plain `<div>` is used. |
 | `FormField` | `label` | `string` | `undefined` | Field label. Turns red automatically while `error` is set. |
 | `FormField` | `error` | `string` | `undefined` | Message to render below the input. Falsy values render nothing. |
 | `FormField` | `errorVariant` | `"glitch" \| "default"` | `"glitch"` | Selects the animated RGB-split error text or the static one. |
 | `FormError` | `message` | `string` | `undefined` | Standalone error renderer, for when you are not using `FormField`. |
+| `FormError` | `variant` | `"glitch" \| "default"` | `"glitch"` | Animated RGB-split text or the static red text. |
 | `FormSubmit` | `isSubmitting` | `boolean` | `false` | Replaces the label with a spinner and disables the button. |
+
+## Works with other components
+
+- Compose [Input](https://avaraui.com/docs/nextjs/input), [Select](https://avaraui.com/docs/nextjs/select), and [Date Picker](https://avaraui.com/docs/nextjs/date-picker) fields inside `FormWrapper`.
+- Pair `onSubmit` with [Sonner](https://avaraui.com/docs/nextjs/sonner) or [Alert](https://avaraui.com/docs/nextjs/alert) for server response feedback.
+- Use [Auth Forms](https://avaraui.com/docs/nextjs/auth-forms) when you want finished login and signup screens instead of assembling fields.
+- Split a long form into steps with [Wizard](https://avaraui.com/docs/nextjs/wizard) and keep a `FormWrapper` on each step.
+
+## Does FormWrapper require react-hook-form or Zod?
+
+No. `FormWrapper` is state-agnostic and works with plain `useState` or native form handlers. The `react-hook-form`, `zod` and `@hookform/resolvers` packages are only needed if you want schema validation, and the registry item itself has no npm dependencies.
+
+## How do I use FormWrapper with react-hook-form and Zod?
+
+Pass `handleSubmit(...)` as `onSubmit`, spread `register("name")` onto each input (the example uses `InputBlock`), and give each `FormField` `error={errors.name?.message}`. Set `isSubmitting` from `formState` on `FormSubmit`. `FormWrapper` never touches child refs, so `register()` keeps working with `zodResolver`.
+
+## How do I stop users from submitting a form twice?
+
+Pass `isSubmitting` to `FormSubmit`. While it is true the button is disabled and shows a spinner instead of its label. Wire it to `formState.isSubmitting` from react-hook-form, or to your own loading state. Without that prop the button stays enabled.
+
+## How do I change the FormWrapper border and button colour?
+
+Set `color` on `FormWrapper` to `primary` (the default, following your theme's `--primary`), `indigo`, `rose`, `emerald` or `zinc`, or pass a hex string such as `#0ea5e9`. One value tints the spinning border and the submit button, and the button text switches with it.
+
+## Can I turn off the glitch effect on FormField errors?
+
+Yes. Set `errorVariant="default"` on `FormField` for static red text, or use `variant="default"` on a standalone `FormError`. The glitch animation has no `prefers-reduced-motion` check, so choose the default variant for audiences who need less motion. The message text is the same in both. The message text is the same in both.
 
 ---
 

@@ -3,7 +3,7 @@
   "name": "avatar-stack-spread-with-tooltip",
   "type": "registry:block",
   "title": "Avatar Stack — Spread with tooltip",
-  "description": "The spread fan-out with a floating name tooltip above the hovered face.",
+  "description": "The \"Spread with tooltip\" example from the Avara UI docs.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

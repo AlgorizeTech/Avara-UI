@@ -1,18 +1,286 @@
 ---
 title: "Shadcn Toggle Group"
-description: "A set of segmented, two-state buttons that can be toggled on or off, perfect for configuration settings and rich text editors. Free shadcn/ui component."
+description: "Shadcn Toggle Group. A set of segmented two-state buttons (`ToggleGroup`, `ToggleGroupItem`) supporting single or multiple selection in `default`, `outline`."
 url: https://avaraui.com/docs/nextjs/toggle-group
 ---
 
 # Shadcn Toggle Group
 
-A set of segmented, two-state buttons that can be toggled on or off, perfect for configuration settings and rich text editors.
+A set of segmented two-state buttons (`ToggleGroup`, `ToggleGroupItem`) supporting single or multiple selection in `default`, `outline`, `ghost`, and `segmented` variants.
 
-This component utilizes a React Context Provider to make composition incredibly easy. Instead of passing active states and `onClick` handlers to every single button, you simply wrap your `<ToggleGroupItem>` components inside the parent `<ToggleGroup>` and it handles all of the logic automatically.
+## Installation
 
-Explore the different variations of the Toggle Group — each example shows a live preview with the exact code to copy.
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/toggle-group.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/toggle-group
+```
+
+## Toggle Group
+
+Single selection — exactly one item stays active at a time.
+
+- `type="single"` is the default and behaves like radio buttons.
+- `value` is a string here; pair it with `onValueChange`, or use `defaultValue` to stay uncontrolled.
+
+```tsx
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+import { AlignCenter, AlignLeft, AlignRight } from "lucide-react";
+import { useState } from "react";
+
+export default function AlignmentGroup() {
+  const [value, setValue] = useState("center");
+
+  return (
+    <ToggleGroup type="single" value={value} onValueChange={setValue}>
+      <ToggleGroupItem value="left" aria-label="Toggle align left">
+        <AlignLeft className="w-4 h-4" />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="center" aria-label="Toggle align center">
+        <AlignCenter className="w-4 h-4" />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="right" aria-label="Toggle align right">
+        <AlignRight className="w-4 h-4" />
+      </ToggleGroupItem>
+    </ToggleGroup>
+  );
+}
+```
+
+## Outline
+
+- Use `variant="outline"` to draw a border around the segment.
+
+```tsx
+import { useState } from "react";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+import { AlignCenter, AlignLeft } from "lucide-react";
+
+export default function OutlineGroup() {
+  const [value, setValue] = useState("left");
+
+  return (
+    <ToggleGroup
+      variant="outline"
+      type="single"
+      value={value}
+      onValueChange={setValue}
+    >
+      <ToggleGroupItem value="left" aria-label="Toggle align left">
+        <AlignLeft className="w-4 h-4" />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="center" aria-label="Toggle align center">
+        <AlignCenter className="w-4 h-4" />
+      </ToggleGroupItem>
+    </ToggleGroup>
+  );
+}
+```
+
+## Ghost
+
+- Use `variant="ghost"` for items that only paint when active — no pill container.
+
+```tsx
+import { useState } from "react";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+import { AlignCenter, AlignLeft } from "lucide-react";
+
+export default function GhostGroup() {
+  const [value, setValue] = useState("left");
+
+  return (
+    <ToggleGroup
+      variant="ghost"
+      type="single"
+      value={value}
+      onValueChange={setValue}
+    >
+      <ToggleGroupItem value="left" aria-label="Toggle align left">
+        <AlignLeft className="w-4 h-4" />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="center" aria-label="Toggle align center">
+        <AlignCenter className="w-4 h-4" />
+      </ToggleGroupItem>
+    </ToggleGroup>
+  );
+}
+```
+
+## Segmented
+
+A view switch: one highlight slides to the chosen item, which stays chosen when clicked again. The arrow keys move the choice.
+
+- Use `variant="segmented"` for a pill track with a sliding highlight. It reads best with text labels and `type="single"`.
+
+```tsx
+import { useState } from "react";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+
+export default function PeriodSwitch() {
+  const [period, setPeriod] = useState("month");
+
+  return (
+    <ToggleGroup
+      type="single"
+      variant="segmented"
+      value={period}
+      onValueChange={setPeriod}
+      aria-label="Reporting period"
+    >
+      <ToggleGroupItem value="day">Daily</ToggleGroupItem>
+      <ToggleGroupItem value="week">Weekly</ToggleGroupItem>
+      <ToggleGroupItem value="month">Monthly</ToggleGroupItem>
+    </ToggleGroup>
+  );
+}
+```
+
+## Sizes
+
+- Use `size` to change the item height and padding across the whole group.
+
+```tsx
+import { useState } from "react";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+import { AlignCenter, AlignLeft } from "lucide-react";
+
+const items = (
+  <>
+    <ToggleGroupItem value="left" aria-label="Toggle align left">
+      <AlignLeft className="w-4 h-4" />
+    </ToggleGroupItem>
+    <ToggleGroupItem value="center" aria-label="Toggle align center">
+      <AlignCenter className="w-4 h-4" />
+    </ToggleGroupItem>
+  </>
+);
+
+export default function GroupSizes() {
+  const [value, setValue] = useState("left");
+
+  return (
+    <div className="flex flex-col items-center gap-6">
+      <ToggleGroup size="sm" type="single" value={value} onValueChange={setValue}>
+        {items}
+      </ToggleGroup>
+      <ToggleGroup size="md" type="single" value={value} onValueChange={setValue}>
+        {items}
+      </ToggleGroup>
+      <ToggleGroup size="lg" type="single" value={value} onValueChange={setValue}>
+        {items}
+      </ToggleGroup>
+    </div>
+  );
+}
+```
+
+## Multiple selection
+
+- Set `type="multiple"` for checkbox behaviour.
+- `value` becomes a **string array** in this mode — passing a bare string selects nothing.
+
+```tsx
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+import { Bold, Italic, Underline } from "lucide-react";
+import { useState } from "react";
+
+export default function FormattingGroup() {
+  const [value, setValue] = useState(["bold"]);
+
+  return (
+    <ToggleGroup type="multiple" value={value} onValueChange={setValue}>
+      <ToggleGroupItem value="bold" aria-label="Toggle bold">
+        <Bold className="w-4 h-4" />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="italic" aria-label="Toggle italic">
+        <Italic className="w-4 h-4" />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="underline" aria-label="Toggle underline">
+        <Underline className="w-4 h-4" />
+      </ToggleGroupItem>
+    </ToggleGroup>
+  );
+}
+```
+
+## Disabled
+
+- Set `disabled` on the group to lock every item at once, rather than disabling them one by one.
+
+```tsx
+import { useState } from "react";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@/components/custom/blocks/ToggleGroupBlock";
+import { AlignCenter, AlignLeft } from "lucide-react";
+
+export default function DisabledGroup() {
+  const [value, setValue] = useState("left");
+
+  return (
+    <ToggleGroup disabled type="single" value={value} onValueChange={setValue}>
+      <ToggleGroupItem value="left" aria-label="Toggle align left">
+        <AlignLeft className="w-4 h-4" />
+      </ToggleGroupItem>
+      <ToggleGroupItem value="center" aria-label="Toggle align center">
+        <AlignCenter className="w-4 h-4" />
+      </ToggleGroupItem>
+    </ToggleGroup>
+  );
+}
+```
+
+## About Shadcn Toggle Group
+
+**What it is.** A context-driven button group (`ToggleGroup` + `ToggleGroupItem`) supporting `type="single"` (string value) and `type="multiple"` (string array value) across `default`, `outline`, `ghost`, and sliding `segmented` variants.
+
+**How it is built.** Shares selection state, `variant`, `size`, and `disabled` from `ToggleGroup` context to every child `ToggleGroupItem`, with arrow-key navigation in `segmented` mode.
+
+**When to use it.** Use `ToggleGroup` for rich-text formatting toolbars, view switchers, and segmented option bars. For standalone binary toggles, use [Toggle](https://avaraui.com/docs/reactjs/toggle).
 
 ## For AI agents
+
+**When to use**
+
+- Single-choice segmented view switchers (`variant="segmented"`, `type="single"`)
+- Multi-choice formatting toolbars (`type="multiple"`)
+
+**When not to use**
+
+- Standalone on/off buttons — use [Toggle](https://avaraui.com/docs/reactjs/toggle)
+- Full tab panels with associated content — use [Vertical Tabs](https://avaraui.com/docs/reactjs/vertical-tabs)
+
+**Agent notes**
+
+- Named exports: `ToggleGroup`, `ToggleGroupItem` from `@/components/custom/blocks/ToggleGroupBlock`
+- `type="single"` expects a `string` `value`; `type="multiple"` expects a `string[]` `value` (passing a bare string selects nothing)
 
 **Ask before you pick.** This page has 4 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
 
@@ -60,295 +328,6 @@ All 4 options as live previews: https://avaraui.com/view/toggle-group
    - Set these props: `{"variant":"segmented"}`
    - Docs: https://avaraui.com/docs/nextjs/toggle-group#segmented
 
-## Toggle Group
-
-Single selection — exactly one item stays active at a time.
-
-- `type="single"` is the default and behaves like radio buttons.
-- `value` is a string here; pair it with `onValueChange`, or use `defaultValue` to stay uncontrolled.
-
-```tsx
-import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/custom/blocks/ToggleGroupBlock";
-import { AlignCenter, AlignLeft, AlignRight } from "lucide-react";
-import { useState } from "react";
-
-export default function AlignmentGroup() {
-  const [value, setValue] = useState("center");
-
-  return (
-    <ToggleGroup type="single" value={value} onValueChange={setValue}>
-      <ToggleGroupItem value="left" aria-label="Toggle align left">
-        <AlignLeft className="w-4 h-4" />
-      </ToggleGroupItem>
-      <ToggleGroupItem value="center" aria-label="Toggle align center">
-        <AlignCenter className="w-4 h-4" />
-      </ToggleGroupItem>
-      <ToggleGroupItem value="right" aria-label="Toggle align right">
-        <AlignRight className="w-4 h-4" />
-      </ToggleGroupItem>
-    </ToggleGroup>
-  );
-}
-```
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/toggle-group.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/toggle-group
-```
-
-## Examples
-
-### Outline
-
-- Use `variant="outline"` to draw a border around the segment.
-
-```tsx
-import { useState } from "react";
-import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/custom/blocks/ToggleGroupBlock";
-import { AlignCenter, AlignLeft } from "lucide-react";
-
-export default function OutlineGroup() {
-  const [value, setValue] = useState("left");
-
-  return (
-    <ToggleGroup
-      variant="outline"
-      type="single"
-      value={value}
-      onValueChange={setValue}
-    >
-      <ToggleGroupItem value="left" aria-label="Toggle align left">
-        <AlignLeft className="w-4 h-4" />
-      </ToggleGroupItem>
-      <ToggleGroupItem value="center" aria-label="Toggle align center">
-        <AlignCenter className="w-4 h-4" />
-      </ToggleGroupItem>
-    </ToggleGroup>
-  );
-}
-```
-
-### Ghost
-
-- Use `variant="ghost"` for items that only paint when active — no pill container.
-
-```tsx
-import { useState } from "react";
-import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/custom/blocks/ToggleGroupBlock";
-import { AlignCenter, AlignLeft } from "lucide-react";
-
-export default function GhostGroup() {
-  const [value, setValue] = useState("left");
-
-  return (
-    <ToggleGroup
-      variant="ghost"
-      type="single"
-      value={value}
-      onValueChange={setValue}
-    >
-      <ToggleGroupItem value="left" aria-label="Toggle align left">
-        <AlignLeft className="w-4 h-4" />
-      </ToggleGroupItem>
-      <ToggleGroupItem value="center" aria-label="Toggle align center">
-        <AlignCenter className="w-4 h-4" />
-      </ToggleGroupItem>
-    </ToggleGroup>
-  );
-}
-```
-
-### Segmented
-
-A view switch: one highlight slides to the chosen item, which stays chosen when clicked again. The arrow keys move the choice.
-
-- Use `variant="segmented"` for a pill track with a sliding highlight. It reads best with text labels and `type="single"`.
-
-```tsx
-import { useState } from "react";
-import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/custom/blocks/ToggleGroupBlock";
-
-export default function PeriodSwitch() {
-  const [period, setPeriod] = useState("month");
-
-  return (
-    <ToggleGroup
-      type="single"
-      variant="segmented"
-      value={period}
-      onValueChange={setPeriod}
-      aria-label="Reporting period"
-    >
-      <ToggleGroupItem value="day">Daily</ToggleGroupItem>
-      <ToggleGroupItem value="week">Weekly</ToggleGroupItem>
-      <ToggleGroupItem value="month">Monthly</ToggleGroupItem>
-    </ToggleGroup>
-  );
-}
-```
-
-### Sizes
-
-- Use `size` to change the item height and padding across the whole group.
-
-```tsx
-import { useState } from "react";
-import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/custom/blocks/ToggleGroupBlock";
-import { AlignCenter, AlignLeft } from "lucide-react";
-
-const items = (
-  <>
-    <ToggleGroupItem value="left" aria-label="Toggle align left">
-      <AlignLeft className="w-4 h-4" />
-    </ToggleGroupItem>
-    <ToggleGroupItem value="center" aria-label="Toggle align center">
-      <AlignCenter className="w-4 h-4" />
-    </ToggleGroupItem>
-  </>
-);
-
-export default function GroupSizes() {
-  const [value, setValue] = useState("left");
-
-  return (
-    <div className="flex flex-col items-center gap-6">
-      <ToggleGroup size="sm" type="single" value={value} onValueChange={setValue}>
-        {items}
-      </ToggleGroup>
-      <ToggleGroup size="md" type="single" value={value} onValueChange={setValue}>
-        {items}
-      </ToggleGroup>
-      <ToggleGroup size="lg" type="single" value={value} onValueChange={setValue}>
-        {items}
-      </ToggleGroup>
-    </div>
-  );
-}
-```
-
-### Multiple selection
-
-- Set `type="multiple"` for checkbox behaviour.
-- `value` becomes a **string array** in this mode — passing a bare string selects nothing.
-
-```tsx
-import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/custom/blocks/ToggleGroupBlock";
-import { Bold, Italic, Underline } from "lucide-react";
-import { useState } from "react";
-
-export default function FormattingGroup() {
-  const [value, setValue] = useState(["bold"]);
-
-  return (
-    <ToggleGroup type="multiple" value={value} onValueChange={setValue}>
-      <ToggleGroupItem value="bold" aria-label="Toggle bold">
-        <Bold className="w-4 h-4" />
-      </ToggleGroupItem>
-      <ToggleGroupItem value="italic" aria-label="Toggle italic">
-        <Italic className="w-4 h-4" />
-      </ToggleGroupItem>
-      <ToggleGroupItem value="underline" aria-label="Toggle underline">
-        <Underline className="w-4 h-4" />
-      </ToggleGroupItem>
-    </ToggleGroup>
-  );
-}
-```
-
-### Disabled
-
-- Set `disabled` on the group to lock every item at once, rather than disabling them one by one.
-
-```tsx
-import { useState } from "react";
-import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/custom/blocks/ToggleGroupBlock";
-import { AlignCenter, AlignLeft } from "lucide-react";
-
-export default function DisabledGroup() {
-  const [value, setValue] = useState("left");
-
-  return (
-    <ToggleGroup disabled type="single" value={value} onValueChange={setValue}>
-      <ToggleGroupItem value="left" aria-label="Toggle align left">
-        <AlignLeft className="w-4 h-4" />
-      </ToggleGroupItem>
-      <ToggleGroupItem value="center" aria-label="Toggle align center">
-        <AlignCenter className="w-4 h-4" />
-      </ToggleGroupItem>
-    </ToggleGroup>
-  );
-}
-```
-
-## Usage
-
-Use the `type` prop on the parent `<ToggleGroup>` to determine if the user can select only one option (`"single"`) or many options (`"multiple"`).
-
-```tsx
-import { useState } from "react";
-import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/custom/blocks/ToggleGroupBlock";
-import { Bold, Italic, Underline } from "lucide-react";
-
-export default function TextEditor() {
-  const [format, setFormat] = useState(["bold"]);
-
-  return (
-    <div className="w-full p-4 border rounded-xl">
-      <ToggleGroup
-        onValueChange="{setFormat}"
-        type="multiple"
-        value="{format}"
-        variant="default"
-      >
-        <ToggleGroupItem aria-label="Toggle bold" value="bold">
-          <Bold className="w-4 h-4" />
-        </ToggleGroupItem>
-        <ToggleGroupItem aria-label="Toggle italic" value="italic">
-          <Italic className="w-4 h-4" />
-        </ToggleGroupItem>
-        <ToggleGroupItem aria-label="Toggle underline" value="underline">
-          <Underline className="w-4 h-4" />
-        </ToggleGroupItem>
-      </ToggleGroup>
-    </div>
-  );
-}
-```
-
 ## Props Reference
 
 | Component | Prop | Type | Default | Description |
@@ -363,6 +342,32 @@ export default function TextEditor() {
 | `ToggleGroup` | `disabled` | `boolean` | `false` | If true, completely disables all interaction for every item inside the group. |
 | `ToggleGroupItem` | `value` | `string` | Required | The unique identifier for this specific toggle button. This is the value passed to `onValueChange`. |
 | `ToggleGroupItem` | `disabled` | `boolean` | `false` | Disables this specific item, independently of the parent group's disabled state. |
+
+## Works with other components
+
+- Pair `ToggleGroup` with [Tooltip](https://avaraui.com/docs/reactjs/tooltip) for icon-only toolbar actions.
+- Use [Toggle](https://avaraui.com/docs/reactjs/toggle) when controls are independent rather than grouped.
+- Combine `variant="segmented"` with [Data Table](https://avaraui.com/docs/reactjs/data-table) or [Chart](https://avaraui.com/docs/reactjs/chart) view switchers.
+
+## How do I build a single-select segmented control in React?
+
+Use `ToggleGroup` with `type="single"` and `variant="segmented"`, then add a `ToggleGroupItem` with a unique `value` for each option. Control it with `value` and `onValueChange`, or give it `defaultValue` to leave state to the component.
+
+## Why does type="multiple" require a string array?
+
+With `type="multiple"`, `ToggleGroup` tracks several active keys at once, so `value` and `defaultValue` must be `string[]`. Passing a single string selects nothing. With `type="single"` the value is a plain string, and `"single"` is the default type.
+
+## How does variant="segmented" differ from default?
+
+`variant="segmented"` renders a pill track with a sliding active highlight, keeps one item selected when it is clicked again, and supports arrow-key navigation. It suits text-labelled view switches. The default variant wraps the items in a plain styled container.
+
+## How do I disable one item or the whole group?
+
+Set `disabled` on `ToggleGroup` to block interaction for every item, or on a single `ToggleGroupItem` to disable only that item. The item setting is independent of the group setting, and both default to `false`.
+
+## How do I change the colour or size of a ToggleGroup?
+
+Use `color` on the group, which accepts `"primary"`, `"indigo"`, `"rose"`, `"emerald"`, `"zinc"` or a custom string, and tints active items. `"primary"` follows your theme. `size` sets height, padding and text size for all items with `"sm"`, `"md"` or `"lg"`.
 
 ---
 

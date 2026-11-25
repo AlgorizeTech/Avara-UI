@@ -6,11 +6,208 @@ url: https://avaraui.com/docs/nextjs/social-links
 
 # Shadcn Social Links
 
-A row of brand marks that link out. Hand it the networks you have — X, GitHub, LinkedIn, YouTube, Instagram, Facebook, Discord, Dribbble, email — and it draws one tile per link, each with an accessible name, opening off-site links in a new tab.
+A row of inline-SVG brand tiles (`SocialLinks`, `SocialLink`) with expandable share-reveal variants, accessible labels, and safe external link handling.
 
-The marks are inline SVG rather than an icon-library import, so the component keeps working whichever icon package (or version of it) a project has installed. It is the social row in every [Footer](https://avaraui.com/docs/reactjs/footer) variant, and fits just as well on a profile card or under an author's name.
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/social-links.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/social-links
+```
+
+## Follow row
+
+The five networks a footer usually carries, as soft tiles that take the primary colour on hover.
+
+- `links` is the only required prop: `{ network, href, label? }[]`. Order is drawn as given; a network you leave out is simply not there.
+- `external` is on by default, so every link opens in a new tab with `rel="noopener noreferrer"` — `mailto:` links are left alone. Turn it off for internal hrefs.
+
+```tsx
+import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
+
+export default function FollowUs() {
+  return (
+    <SocialLinks
+      links={[
+        { network: "x", href: "https://x.com/avaraui" },
+        { network: "github", href: "https://github.com/avaraui" },
+        { network: "linkedin", href: "https://linkedin.com/company/avaraui" },
+        { network: "youtube", href: "https://youtube.com/@avaraui" },
+        { network: "instagram", href: "https://instagram.com/avaraui" },
+      ]}
+    />
+  );
+}
+```
+
+## Expand and replace share button (Trigger hides on hover)
+
+Share trigger button hides on hover, with social link icons revealing directly from the trigger position in 4 directions.
+
+- `variant="expand-replace"` hides the trigger button on hover and expands social link icons starting directly from its exact position.
+- `expandDirection="top" | "right" | "left" | "bottom"` controls direction of animated reveal. Defaults to "right".
+
+```tsx
+import { SocialLinks, type SocialLink } from "@/components/custom/blocks/SocialLinksBlock";
+
+const links: SocialLink[] = [
+  { network: "x", href: "https://x.com/avaraui" },
+  { network: "github", href: "https://github.com/avaraui" },
+  { network: "linkedin", href: "https://linkedin.com/company/avaraui" },
+  { network: "youtube", href: "https://youtube.com/@avaraui" },
+  { network: "instagram", href: "https://instagram.com/avaraui" },
+];
+
+export default function ExpandReplaceShareButton() {
+  return (
+    <div className="flex gap-8 items-center">
+      {/* Expand & Replace Top */}
+      <SocialLinks variant="expand-replace" expandDirection="top" links={links} />
+
+      {/* Expand & Replace Right (Default) */}
+      <SocialLinks variant="expand-replace" expandDirection="right" links={links} />
+
+      {/* Expand & Replace Left */}
+      <SocialLinks variant="expand-replace" expandDirection="left" links={links} />
+
+      {/* Expand & Replace Bottom */}
+      <SocialLinks variant="expand-replace" expandDirection="bottom" links={links} />
+    </div>
+  );
+}
+```
+
+## Expandable 4-directional share buttons
+
+Icon-only share button trigger that animates social icons expanding smoothly in 4 directions: top, right, left, or bottom.
+
+- `variant="expand-reveal"` renders an icon-only Share trigger button that expands social link tiles on mouse hover.
+- `expandDirection="top" | "right" | "left" | "bottom"` controls direction of animated reveal. Defaults to "right".
+
+```tsx
+import { SocialLinks, type SocialLink } from "@/components/custom/blocks/SocialLinksBlock";
+
+const links: SocialLink[] = [
+  { network: "x", href: "https://x.com/avaraui" },
+  { network: "github", href: "https://github.com/avaraui" },
+  { network: "linkedin", href: "https://linkedin.com/company/avaraui" },
+  { network: "youtube", href: "https://youtube.com/@avaraui" },
+  { network: "instagram", href: "https://instagram.com/avaraui" },
+];
+
+export default function ExpandShareButton() {
+  return (
+    <div className="flex gap-8 items-center">
+      {/* Expand Top */}
+      <SocialLinks variant="expand-reveal" expandDirection="top" links={links} />
+
+      {/* Expand Right (Default) */}
+      <SocialLinks variant="expand-reveal" expandDirection="right" links={links} />
+
+      {/* Expand Left */}
+      <SocialLinks variant="expand-reveal" expandDirection="left" links={links} />
+
+      {/* Expand Bottom */}
+      <SocialLinks variant="expand-reveal" expandDirection="bottom" links={links} />
+    </div>
+  );
+}
+```
+
+## Every network, outlined
+
+All nine networks at the large size on the outline surface.
+
+- `variant="outline"` draws a border instead of a fill; `"ghost"` draws nothing until hover. `"tile"` is the default.
+- `size="lg"` sets the tile and mark together: sm is 32px, md 40px, lg 48px.
+
+```tsx
+import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
+
+export default function EveryNetwork() {
+  return (
+    <SocialLinks
+      variant="outline"
+      size="lg"
+      links={[
+        { network: "x", href: "https://x.com" },
+        { network: "github", href: "https://github.com" },
+        { network: "linkedin", href: "https://linkedin.com" },
+        { network: "youtube", href: "https://youtube.com" },
+        { network: "instagram", href: "https://instagram.com" },
+        { network: "facebook", href: "https://facebook.com" },
+        { network: "discord", href: "https://discord.gg/avaraui" },
+        { network: "dribbble", href: "https://dribbble.com/avaraui" },
+        { network: "email", href: "mailto:hello@avaraui.com" },
+      ]}
+    />
+  );
+}
+```
+
+## Author byline
+
+Small ghost tiles under a name, with a label per link so a screen reader says whose profile it is.
+
+- `label` on a link overrides the accessible name — the default is the network's name, e.g. "GitHub".
+- `className` lands on the row, so `gap-*` and `justify-*` tune spacing and alignment.
+
+```tsx
+import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
+
+export default function AuthorCard() {
+  return (
+    <div className="flex max-w-sm items-center gap-4 rounded-2xl border border-border bg-card p-4">
+      <img src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790158813/photo-1494790108377-be9c29b29330-1790158812212.jpg" alt="Ayesha Karim" className="size-14 rounded-full object-cover" />
+      <div className="min-w-0 flex-1">
+        <p className="text-sm font-semibold">Ayesha Karim</p>
+        <p className="text-xs text-muted-foreground">Design engineer, Avara</p>
+        <SocialLinks
+          size="sm"
+          variant="ghost"
+          className="mt-2 gap-1"
+          links={[
+            { network: "x", href: "https://x.com/ayesha", label: "Ayesha on X" },
+            { network: "github", href: "https://github.com/ayesha", label: "Ayesha on GitHub" },
+            { network: "dribbble", href: "https://dribbble.com/ayesha", label: "Ayesha on Dribbble" },
+          ]}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+## About Shadcn Social Links
+
+**What it is.** `SocialLinks` (and single `SocialLink`) renders inline-SVG brand tiles for X, GitHub, LinkedIn, YouTube, Instagram, Facebook, Discord, Dribbble, and email across `tile`, `outline`, `ghost`, `expand-reveal`, and `expand-replace` variants.
+
+**How it is built.** Uses bundled inline SVGs (no icon-library dependency), adds `aria-label` and `title` per tile, and opens external links in a new tab with `rel="noopener noreferrer"` while leaving `mailto:` links in place.
+
+**When to use it.** Use `SocialLinks` in footers, author bylines, profile cards, and compact hover-to-share triggers.
 
 ## For AI agents
+
+**When to use**
+
+- Footer social rows (`variant="tile"`), author bylines (`variant="ghost"`), or hover-to-expand share buttons (`variant="expand-reveal"` / `"expand-replace"`)
+
+**When not to use**
+
+- OAuth sign-in buttons with text labels — use [Button](https://avaraui.com/docs/reactjs/button) (`variant="auth-social"`)
+
+**Agent notes**
+
+- Named exports: `SocialLinks`, `SocialLink` from `@/components/custom/blocks/SocialLinksBlock`
+- Pass `linkComponent={Link}` from `next/link` when routing internal links; `external` defaults to `true`
 
 **Ask before you pick.** This page has 4 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
 
@@ -58,196 +255,6 @@ All 4 options as live previews: https://avaraui.com/view/social-links
    - Set these props: `{"variant":"expand-reveal"}`
    - Docs: https://avaraui.com/docs/nextjs/social-links#expandable-4-directional-share-buttons
 
-## Follow row
-
-The five networks a footer usually carries, as soft tiles that take the primary colour on hover.
-
-- `links` is the only required prop: `{ network, href, label? }[]`. Order is drawn as given; a network you leave out is simply not there.
-- `external` is on by default, so every link opens in a new tab with `rel="noopener noreferrer"` — `mailto:` links are left alone. Turn it off for internal hrefs.
-
-```tsx
-import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
-
-export default function FollowUs() {
-  return (
-    <SocialLinks
-      links={[
-        { network: "x", href: "https://x.com/avaraui" },
-        { network: "github", href: "https://github.com/avaraui" },
-        { network: "linkedin", href: "https://linkedin.com/company/avaraui" },
-        { network: "youtube", href: "https://youtube.com/@avaraui" },
-        { network: "instagram", href: "https://instagram.com/avaraui" },
-      ]}
-    />
-  );
-}
-```
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/social-links.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/social-links
-```
-
-## Examples
-
-### Expand and replace share button (Trigger hides on hover)
-
-Share trigger button hides on hover, with social link icons revealing directly from the trigger position in 4 directions.
-
-- `variant="expand-replace"` hides the trigger button on hover and expands social link icons starting directly from its exact position.
-- `expandDirection="top" | "right" | "left" | "bottom"` controls direction of animated reveal. Defaults to "right".
-
-```tsx
-import { SocialLinks, type SocialLink } from "@/components/custom/blocks/SocialLinksBlock";
-
-const links: SocialLink[] = [
-  { network: "x", href: "https://x.com/avaraui" },
-  { network: "github", href: "https://github.com/avaraui" },
-  { network: "linkedin", href: "https://linkedin.com/company/avaraui" },
-  { network: "youtube", href: "https://youtube.com/@avaraui" },
-  { network: "instagram", href: "https://instagram.com/avaraui" },
-];
-
-export default function ExpandReplaceShareButton() {
-  return (
-    <div className="flex gap-8 items-center">
-      {/* Expand & Replace Top */}
-      <SocialLinks variant="expand-replace" expandDirection="top" links={links} />
-
-      {/* Expand & Replace Right (Default) */}
-      <SocialLinks variant="expand-replace" expandDirection="right" links={links} />
-
-      {/* Expand & Replace Left */}
-      <SocialLinks variant="expand-replace" expandDirection="left" links={links} />
-
-      {/* Expand & Replace Bottom */}
-      <SocialLinks variant="expand-replace" expandDirection="bottom" links={links} />
-    </div>
-  );
-}
-```
-
-### Expandable 4-directional share buttons
-
-Icon-only share button trigger that animates social icons expanding smoothly in 4 directions: top, right, left, or bottom.
-
-- `variant="expand-reveal"` renders an icon-only Share trigger button that expands social link tiles on mouse hover.
-- `expandDirection="top" | "right" | "left" | "bottom"` controls direction of animated reveal. Defaults to "right".
-
-```tsx
-import { SocialLinks, type SocialLink } from "@/components/custom/blocks/SocialLinksBlock";
-
-const links: SocialLink[] = [
-  { network: "x", href: "https://x.com/avaraui" },
-  { network: "github", href: "https://github.com/avaraui" },
-  { network: "linkedin", href: "https://linkedin.com/company/avaraui" },
-  { network: "youtube", href: "https://youtube.com/@avaraui" },
-  { network: "instagram", href: "https://instagram.com/avaraui" },
-];
-
-export default function ExpandShareButton() {
-  return (
-    <div className="flex gap-8 items-center">
-      {/* Expand Top */}
-      <SocialLinks variant="expand-reveal" expandDirection="top" links={links} />
-
-      {/* Expand Right (Default) */}
-      <SocialLinks variant="expand-reveal" expandDirection="right" links={links} />
-
-      {/* Expand Left */}
-      <SocialLinks variant="expand-reveal" expandDirection="left" links={links} />
-
-      {/* Expand Bottom */}
-      <SocialLinks variant="expand-reveal" expandDirection="bottom" links={links} />
-    </div>
-  );
-}
-```
-
-### Every network, outlined
-
-All nine networks at the large size on the outline surface.
-
-- `variant="outline"` draws a border instead of a fill; `"ghost"` draws nothing until hover. `"tile"` is the default.
-- `size="lg"` sets the tile and mark together: sm is 32px, md 40px, lg 48px.
-
-```tsx
-import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
-
-export default function EveryNetwork() {
-  return (
-    <SocialLinks
-      variant="outline"
-      size="lg"
-      links={[
-        { network: "x", href: "https://x.com" },
-        { network: "github", href: "https://github.com" },
-        { network: "linkedin", href: "https://linkedin.com" },
-        { network: "youtube", href: "https://youtube.com" },
-        { network: "instagram", href: "https://instagram.com" },
-        { network: "facebook", href: "https://facebook.com" },
-        { network: "discord", href: "https://discord.gg/avaraui" },
-        { network: "dribbble", href: "https://dribbble.com/avaraui" },
-        { network: "email", href: "mailto:hello@avaraui.com" },
-      ]}
-    />
-  );
-}
-```
-
-### Author byline
-
-Small ghost tiles under a name, with a label per link so a screen reader says whose profile it is.
-
-- `label` on a link overrides the accessible name — the default is the network's name, e.g. "GitHub".
-- `className` lands on the row, so `gap-*` and `justify-*` tune spacing and alignment.
-
-```tsx
-import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
-
-export default function AuthorCard() {
-  return (
-    <div className="flex max-w-sm items-center gap-4 rounded-2xl border border-border bg-card p-4">
-      <img src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_200,c_limit/v1790158813/photo-1494790108377-be9c29b29330-1790158812212.jpg" alt="Ayesha Karim" className="size-14 rounded-full object-cover" />
-      <div className="min-w-0 flex-1">
-        <p className="text-sm font-semibold">Ayesha Karim</p>
-        <p className="text-xs text-muted-foreground">Design engineer, Avara</p>
-        <SocialLinks
-          size="sm"
-          variant="ghost"
-          className="mt-2 gap-1"
-          links={[
-            { network: "x", href: "https://x.com/ayesha", label: "Ayesha on X" },
-            { network: "github", href: "https://github.com/ayesha", label: "Ayesha on GitHub" },
-            { network: "dribbble", href: "https://dribbble.com/ayesha", label: "Ayesha on Dribbble" },
-          ]}
-        />
-      </div>
-    </div>
-  );
-}
-```
-
-## Features
-
-Brand marks are inline SVG. Lucide dropped its brand icons, so this never breaks when an icon library updates.
-
-Every tile carries an aria-label and title — the network's name by default, or whatever label you pass — and a visible focus ring.
-
-External links open in a new tab with noopener noreferrer. Email links stay in place, because a new tab for mailto is just an empty tab.
-
-Pass linkComponent={"{Link}"} from next/link when some hrefs are internal; a plain anchor is the default so it runs anywhere.
-
 ## Props Reference
 
 ### SocialLinks
@@ -268,6 +275,31 @@ Pass linkComponent={"{Link}"} from next/link when some hrefs are internal; a pla
 | `network` | `&quot;x&quot; \| &quot;github&quot; \| &quot;linkedin&quot; \| &quot;youtube&quot; \| &quot;instagram&quot; \| &quot;facebook&quot; \| &quot;discord&quot; \| &quot;dribbble&quot; \| &quot;email&quot;` | Which mark to draw. |
 | `href` | `string` | Where it goes. |
 | `label` | `string` | Accessible name. Defaults to the network's name. |
+
+## Works with other components
+
+- Used inside [Footer](https://avaraui.com/docs/reactjs/footer) and [Profile Card](https://avaraui.com/docs/reactjs/profile-card) layouts.
+- Pair with [Tooltip](https://avaraui.com/docs/reactjs/tooltip) or [Copy Button](https://avaraui.com/docs/reactjs/copy-button) in author/profile headers.
+
+## How do I add social media icons to a React site?
+
+Pass a `links` array to `SocialLinks`, one entry per network, in the order you want them shown. It covers X, GitHub, LinkedIn, YouTube, Instagram, Facebook, Discord, Dribbble and email. Each is an inline SVG, so no icon font is loaded.
+
+## Does SocialLinks require Lucide or another icon package?
+
+No. All nine network marks are bundled as inline SVGs, so icon-library updates never break your social links. The only Lucide import is the `Mail` icon for the email link, so brand logos never depend on the package.
+
+## How do I use Next.js Link for internal social routes?
+
+Pass `linkComponent={Link}` from `next/link` and set `external={false}` when your `links` include internal URLs. The default element is a plain `a`, which keeps the component free of any `next/*` import so it also works in Vite.
+
+## How do I change the style and size of the icons?
+
+Use `variant` with `"tile"`, `"outline"` or `"ghost"`, which are a soft fill, a border, or nothing until hover. `size` accepts `"sm"`, `"md"` or `"lg"`, which render at 32, 40 or 48px. Other props are spread onto the row element.
+
+## Do social links open in a new tab safely?
+
+Yes. `external` defaults to `true`, which opens links in a new tab with `rel="noopener noreferrer"`. `mailto:` links are exempt from that behaviour. Set `external={false}` for same-tab navigation to pages on your own site.
 
 ---
 

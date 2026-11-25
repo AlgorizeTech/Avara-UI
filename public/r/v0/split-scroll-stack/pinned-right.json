@@ -3,7 +3,7 @@
   "name": "split-scroll-stack-pinned-right",
   "type": "registry:block",
   "title": "Split Scroll Stack — Pinned right",
-  "description": "A two-column layout: the right column pins while the left scrolls its deck past it.",
+  "description": "The \"Pinned right\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

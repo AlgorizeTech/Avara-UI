@@ -4,14 +4,11 @@ export const metadata = docsPageMetadata("navigation");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Navigation Menu
 
-A highly composable, accessible, and smoothly animated navigation menu built for modern React applications.
-
-This `NavigationMenu` uses a strict context-driven composition pattern to share state across its sub-components. It features a smoothly sliding background indicator that tracks the active menu item and gracefully handles dropdown positioning.
-
-The menu is context-driven: `NavigationMenu` publishes the open item, `variant` and `color`, and the `Indicator` measures the active trigger and slides to it. That hierarchy — `Menu` > `List` > `Item` > `Trigger` / `Content` — is what makes the animation work, so keep it intact.
+A context-driven navigation bar (`NavigationMenu`, `NavigationMenuList`, `NavigationMenuItem`, `NavigationMenuTrigger`, `NavigationMenuContent`, `NavigationMenuIndicator`) with an active sliding indicator.
 
 export const usageMinimal = `import {
   NavigationMenu,
@@ -136,10 +133,11 @@ function ListItem({
   name="navigation-menu"
   colorControl
   columns={1}
+  installation={<Installation name="navigation-menu" usage="below" />}
   examples={[
     {
       title: "Minimal",
-      subheading: "Pill chrome removed; the indicator becomes a thin underline.",
+      description: "Pill chrome removed; the indicator becomes a thin underline.",
       propNotes: [
         {
           lead: "Set",
@@ -156,35 +154,37 @@ function ListItem({
   ]}
 />
 
-## Installation
+## About Shadcn Navigation Menu
 
-<Installation name="navigation-menu" />
+**What it is.** `NavigationMenu` (`NavigationMenuList`, `NavigationMenuItem`, `NavigationMenuTrigger`, `NavigationMenuContent`, `NavigationMenuIndicator`) provides animated site navigation with hover/click dropdown panels and a sliding active indicator.
 
-## Features
-Explore the Navigation menu's accessible dropdown features, including hover-delays, animated viewports, and responsive collapsing.
+**How it is built.** Context-driven hierarchy (`NavigationMenu` → `NavigationMenuList` → `NavigationMenuItem` → `NavigationMenuTrigger` / `NavigationMenuContent`). Each trigger measures itself when it becomes active, and `NavigationMenuIndicator` slides to that position with a CSS transition. Panels are centred under the `<nav>` element.
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `NavigationMenu` for top-level site headers and mega-menus. For desktop application command bars, use <DocLink to="menubar">Menubar</DocLink>.
 
-## Best Practices & Guidelines
+## For AI agents
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+<AgentBrief name="navigation">
+
+**When to use**
+
+- Top-level site navigation bars with animated dropdown viewports and sliding active indicators (`variant="default" | "minimal" | "glass"`)
+
+**When not to use**
+
+- Desktop File/Edit/View command bars — use <DocLink to="menubar">Menubar</DocLink>
+- Breadcrumb hierarchy trails — use <DocLink to="breadcrumb">Breadcrumb</DocLink>
+
+**Agent notes**
+
+- Installs via `navigation-menu` (`@/components/custom/blocks/NavigationMenu`)
+- Keep the `NavigationMenu` → `NavigationMenuList` → `NavigationMenuItem` → `NavigationMenuTrigger` / `NavigationMenuContent` hierarchy intact. Every `NavigationMenuItem` needs a unique `value`, and using these parts outside `NavigationMenu` throws.
+- `NavigationMenuIndicator` only slides to a `NavigationMenuTrigger`. A plain link item (an `<a>` inside a `NavigationMenuItem`) gets no indicator.
+- `color` accepts `"primary"`, `"indigo"`, `"rose"`, `"emerald"`, `"zinc"` or a hex string starting with `#`. Any other name falls back to `"primary"`.
+- Mark the current page with `active` on `NavigationMenuLink`, which also sets `aria-current="page"`.
+- The only npm dependency is `lucide-react`; the item also installs a small `navigation-menu-theme` helper file beside it.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -278,6 +278,35 @@ Explore the Navigation menu's accessible dropdown features, including hover-dela
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Pair `NavigationMenu` with <DocLink to="navbar">Navbar</DocLink> and <DocLink to="theme-switcher">Theme Switcher</DocLink> in site headers.
+- Use <DocLink to="menubar">Menubar</DocLink> for desktop File/Edit/View command bars instead of site navigation.
+- Add a <DocLink to="breadcrumb">Breadcrumb</DocLink> below the header to show where the current page sits.
+
+## How does variant="minimal" change NavigationMenu?
+
+`variant="minimal"` makes the pill container around `NavigationMenuList` transparent with no border or shadow. The dropdown panels keep their tinted background and shadow, and `NavigationMenuIndicator` still draws a soft highlight behind the active trigger rather than an underline.
+
+## How do I change the NavigationMenu accent color?
+
+Pass `color` to `NavigationMenu`. Use `"primary"`, `"indigo"`, `"rose"`, `"emerald"`, `"zinc"` or a hex string such as `"#0ea5e9"`. It tints the indicator, link hover and the default and minimal panels. Any other name falls back to `"primary"`, which follows your theme token.
+
+## How do I mark the current page in NavigationMenu?
+
+Set `active` on the matching `NavigationMenuLink`. It adds a soft accent background with semibold text, sets `data-active`, and adds `aria-current="page"` so screen readers announce the current link. `NavigationMenu` does not read the router, so you pass `active` yourself.
+
+## Does NavigationMenu work with touch and the keyboard?
+
+Hover opens a panel only for mouse pointers; on touch devices a tap on `NavigationMenuTrigger` toggles it. Focusing a trigger also opens its panel. The component has no Escape handler and no `aria-expanded`, so add those yourself if your design needs them.
+
+## Why does NavigationMenu throw a "must be used within" error?
+
+`NavigationMenuList`, `NavigationMenuTrigger`, `NavigationMenuContent` and `NavigationMenuIndicator` read context from the root and throw when rendered outside `NavigationMenu`. `NavigationMenuTrigger` and `NavigationMenuContent` also throw outside a `NavigationMenuItem`, which supplies the `value` that links them. Wrap the parts in the full hierarchy to fix it.
+
+## When should I pick NavigationMenu instead of Navbar?
+
+Choose `NavigationMenu` when you only need the pill bar with hover dropdown panels and a sliding indicator, and you supply your own header layout. It has no mobile slide-out drawer. Choose <DocLink to="navbar">Navbar</DocLink> when you want a complete header with a built-in mobile drawer.
 
 <DocsJsonLd slug="navigation" />
+<FaqJsonLd slug="navigation" />

@@ -6,11 +6,22 @@ url: https://avaraui.com/docs/nextjs/date-picker
 
 # Shadcn Date Picker
 
-A completely custom, dependency-free Date Picker component. Native HTML `<input type="date">` elements vary wildly between browsers and operating systems, often breaking the visual consistency of your application.
+A Date Picker (`DatePickerBlock`) with inline calendar and dropdown modes, month/year jump navigation, disabled past dates, and optional time columns.
 
-This component solves that by using native JavaScript Date math to construct a flawless, customizable calendar dropdown that perfectly matches your UI kit's visual variants.
+## Installation
 
-Every variant shares one calendar: click the month and year in its heading to jump straight to any month — years scroll on the left, months sit on the right, and the arrow beside the heading takes you back. The card keeps the same size throughout, and months and views slide into each other slowly instead of snapping.
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/date-picker.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/date-picker
+```
 
 ## Inline Calendar
 
@@ -36,24 +47,7 @@ export default function InlineCalendarDatePicker() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/date-picker.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/date-picker
-```
-
-## Examples
-
-### Date picker
+## Date picker
 
 - Control it with `value` and `onChange` — both work with a plain `Date | null`.
 - `placeholder` is the trigger text while nothing is selected, defaulting to `Pick a date`.
@@ -78,7 +72,7 @@ export default function LaunchDatePicker() {
 }
 ```
 
-### Error
+## Error
 
 - Pass `error` to turn the trigger red, add an alert icon and replace `helperText` with your message.
 
@@ -113,7 +107,7 @@ export default function ValidatedDatePicker() {
 }
 ```
 
-### Disable past dates
+## Disable past dates
 
 - Set `disablePast` to grey out every day before today. `minDate` and `maxDate` bound the calendar to any window; when both a lower bound and `disablePast` are given, the later one wins.
 
@@ -139,7 +133,7 @@ export default function FutureOnlyPicker() {
 }
 ```
 
-### Date & time
+## Date & time
 
 Pick a day, then scroll the columns — Done closes the popover. The columns sit to the right of the calendar when the viewport has room, and under it otherwise.
 
@@ -174,20 +168,30 @@ export default function DateTimePicker() {
 }
 ```
 
-## Features
-Discover the Date Picker's flexible input formatting, popover calendar selection, and range picking capabilities.
+## About Shadcn Date Picker
 
-Easily adapt the component's styling and behavior to fit your application's unique design system.
+**What it is.** `DatePickerBlock` is a single-date and date-time selector with a popover trigger or inline `variant="calendar"` card, built-in month/year jump view, `disablePast`/`minDate`/`maxDate` bounds, and optional `showTime` hour/minute columns.
 
-Built with accessibility in mind, ensuring all users can interact with your application effectively.
+**How it is built.** Native JavaScript `Date` math and `Intl.DateTimeFormat`, so no date library is needed; the only npm dependency is `lucide-react` for icons. The month grid sits in a fixed-height stage, so the card does not resize between 5- and 6-week months, and panels unfold on a spring that switches off under `prefers-reduced-motion`.
 
-Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+**When to use it.** Use `DatePickerBlock` for single dates or date+time selection. For start-to-end date spans or priced booking calendars, use [Range Date Picker](https://avaraui.com/docs/reactjs/range-date-picker).
 
-Optimized for maximum performance with minimal re-renders and efficient state management.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+- Single date or date-and-time form fields (`value: Date | null`, `onChange`)
+- Inline single-month selection cards (`variant="calendar"`)
+
+**When not to use**
+
+- Start-to-end date ranges or priced hotel/flight calendars — use [Range Date Picker](https://avaraui.com/docs/reactjs/range-date-picker)
+- Full event scheduling dashboards — use [Calendar](https://avaraui.com/docs/reactjs/calendar)
+
+**Agent notes**
+
+- Named export: `import { DatePickerBlock } from "@/components/custom/blocks/DatePickerBlock"`
+- Pass `showTime` for hour/minute/AM-PM columns (`timeFormat` for 24h, `minuteStep` for granularity); with `disablePast`, today's past times are also disabled
 
 ## Props Reference
 
@@ -210,6 +214,35 @@ Follow standard design principles when implementing this component. Ensure prope
 | `showTime` | `boolean` | `false` | Adds hour / minute (and AM-PM) columns — to the right of the calendar when the viewport has room (the popover widens to 30rem), under it otherwise. The popover also flips to hang from the trigger's right edge when that is the side with space. Picking a day keeps the popover open until Done, and `value` carries the chosen time. |
 | `timeFormat` | `"12h" \| "24h"` | `"12h"` | 12-hour clock with an AM / PM column, or a 24-hour one. |
 | `minuteStep` | `number` | `5` | Minute granularity of the time columns. |
+
+## Works with other components
+
+- Pair `DatePickerBlock` with [Input](https://avaraui.com/docs/reactjs/input), [Select](https://avaraui.com/docs/reactjs/select), and [Form](https://avaraui.com/docs/reactjs/form).
+- Use [Range Date Picker](https://avaraui.com/docs/reactjs/range-date-picker) when users need both a start and end date.
+
+## How do I enable time selection alongside the calendar?
+
+Pass `showTime` to `DatePickerBlock`. After a day is picked, hour and minute columns unfold beside the calendar, or under it on narrow screens, and the popover stays open until **Done**. The `Date` in `value` carries the time; `timeFormat="24h"` and `minuteStep` adjust the clock.
+
+## How do I block past dates or limit `DatePickerBlock` to a date window?
+
+Use `disablePast` to grey out every day before today, or `minDate` and `maxDate` for an inclusive window. You can combine `disablePast` with `minDate`; the later lower bound wins. Disabled days cannot be selected, and with `showTime` the times already passed today are disabled too.
+
+## Can `DatePickerBlock` start the week on Sunday?
+
+Yes. Pass `weekStartsOn={0}` for a Sunday-first grid; the default is `1`, which starts on Monday. The setting only changes the column order and leading days of each month, and it applies to every variant, including the inline `variant="calendar"` card.
+
+## Does `DatePickerBlock` need date-fns or another date library?
+
+No. It does its calendar math with the native `Date` object and formats with `Intl.DateTimeFormat` in `en-US`. The only npm dependency is `lucide-react`, and the file has no `next/*` imports, so it installs the same way in Next.js and Vite projects. `onChange` hands you a plain `Date`.
+
+## How do I change the accent colour of the date picker?
+
+Set `color` to `"primary"` (the default, following your theme token), `"indigo"`, `"rose"`, `"emerald"`, `"zinc"`, or a hex string such as `"#0ea5e9"`. It tints the focus ring, the selected day and the **Done** button. `variant` and `inputSize` control the trigger's look and size.
+
+## Is `DatePickerBlock` accessible to keyboard and screen-reader users?
+
+The trigger is a native `button`, each day is a `button` with a full-date `aria-label` and `aria-pressed`, and the month arrows are labelled. A closed popover is `inert`, so it leaves the tab order. It closes on an outside click or **Done**, not on Escape. Animations become instant under `prefers-reduced-motion`.
 
 ---
 

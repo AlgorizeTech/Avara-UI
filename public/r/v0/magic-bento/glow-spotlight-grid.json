@@ -3,7 +3,7 @@
   "name": "magic-bento-glow-spotlight-grid",
   "type": "registry:block",
   "title": "Magic Bento — Glow Spotlight Grid",
-  "description": "`MagicBento` lays out the grid; each card owns its own pointer-tracked border and glow.",
+  "description": "The \"Glow Spotlight Grid\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -1,14 +1,27 @@
 ---
 title: "Shadcn Popover"
-description: "Displays rich, interactive content in a portal, triggered by a click. Free shadcn/ui Popover component for React, Next.js and Tailwind CSS."
+description: "Shadcn Popover. A portal-rendered floating panel (`Popover`, `PopoverTrigger`, `PopoverContent`) with collision flipping, viewport clamping."
 url: https://avaraui.com/docs/nextjs/popover
 ---
 
 # Shadcn Popover
 
-Displays rich, interactive content in a portal, triggered by a click. Where tooltips hold small text hints, a popover holds richer content like forms, grids and settings menus.
+A portal-rendered floating panel (`Popover`, `PopoverTrigger`, `PopoverContent`) with collision flipping, viewport clamping, and click-outside/`Escape` dismissal.
 
-`PopoverBlock` renders into `document.body` with `createPortal`, so parent constraints like `overflow-hidden` never clip it. `side` and `align` are preferences: the panel flips to the opposite side when the preferred one has no room, shifts back inside the viewport, and caps its own size to the screen. Pass `avoidCollisions={false}` to opt out. Click outside or press `Escape` to dismiss.
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/popover.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/popover
+```
 
 ## Account menu
 
@@ -59,24 +72,7 @@ export default function AccountMenu() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/popover.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/popover
-```
-
-## Examples
-
-### Offset
+## Offset
 
 - `sideOffset={8}` is the gap in pixels between trigger and panel.
 - `collisionPadding={8}` is the minimum gap kept from the viewport edges while `avoidCollisions` is on.
@@ -133,20 +129,31 @@ export default function OffsetPopover() {
 }
 ```
 
-## Features
-Discover the Popover's intelligent positioning engine that prevents collision with screen edges while displaying contextual content.
+## About Shadcn Popover
 
-Easily adapt the component's styling and behavior to fit your application's unique design system.
+**What it is.** `Popover`, `PopoverTrigger`, and `PopoverContent` display interactive menus, filters, or forms anchored to a trigger element.
 
-Built with accessibility in mind, ensuring all users can interact with your application effectively.
+**How it is built.** Portals into `document.body` via `createPortal` so `overflow-hidden` ancestors never clip it, flips `side`/`align` automatically when space is tight (`avoidCollisions`), and dismisses on outside click or `Escape`.
 
-Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+**When to use it.** Use `Popover` for click-triggered menus, settings panels, and inline pickers. For hover/focus text hints, use [Tooltip](https://avaraui.com/docs/nextjs/tooltip); for blocking tasks, use [Dialog](https://avaraui.com/docs/nextjs/dialog).
 
-Optimized for maximum performance with minimal re-renders and efficient state management.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+- Click-triggered floating panels (account menus, filter controls, quick settings)
+
+**When not to use**
+
+- Hover/focus text hints — use [Tooltip](https://avaraui.com/docs/nextjs/tooltip)
+- Blocking modal confirmations — use [Dialog](https://avaraui.com/docs/nextjs/dialog)
+
+**Agent notes**
+
+- Named exports: `Popover`, `PopoverTrigger`, `PopoverContent` from `@/components/custom/blocks/PopoverBlock`
+- Set panel width via `className` on `PopoverContent`; tune gaps with `sideOffset` and `collisionPadding`
+- Open state is internal: `Popover` takes only `children`, with no `open` or `onOpenChange` prop
+- `PopoverTrigger` always renders its own `div` wrapper; the `asChild` prop is declared but not implemented, so nest your element inside it
 
 ## Props Reference
 
@@ -158,6 +165,35 @@ Follow standard design principles when implementing this component. Ensure prope
 | `PopoverContent` | `avoidCollisions` | `boolean` | `true` | Flips the panel to the opposite side and shifts it back into view when the preferred placement would overflow the viewport — this is what keeps `side="left" / "right"` and `align="start" / "end"` from being cropped on phones. Set to `false` to pin the panel to `side`/ `align` regardless. |
 | `PopoverContent` | `collisionPadding` | `number` | `8` | Minimum gap (in pixels) kept between the panel and the viewport edges when `avoidCollisions` is on. |
 | All Components | `className` | `string` | `undefined` | Standard Tailwind CSS overrides. By default, `PopoverContent` has a fixed width (`w-72`), which you can easily override here. |
+
+## Works with other components
+
+- Pair `Popover` with [Button](https://avaraui.com/docs/nextjs/button) triggers and [Color Picker](https://avaraui.com/docs/nextjs/color-picker) or [Date Picker](https://avaraui.com/docs/nextjs/date-picker) panels.
+- Use [Context Menu](https://avaraui.com/docs/nextjs/context-menu) for right-click menus instead of left-click popovers.
+
+## Why won't PopoverContent get clipped inside overflow-hidden containers?
+
+`PopoverContent` renders into the trigger's `document.body` through `createPortal`, so ancestors with `overflow-hidden` cannot cut it off. It is positioned from the trigger's bounding box and kept inside the viewport with `collisionPadding` while `avoidCollisions` is on.
+
+## How do I control the Popover open state?
+
+You cannot through props: `Popover` accepts only `children` and keeps `open` in internal state. It toggles on a trigger click, `Enter` or `Space`, and closes on an outside `mousedown` or `touchstart`, or on `Escape`. Clicks inside `PopoverContent` do not close it.
+
+## How do I stop PopoverContent from flipping or moving on small screens?
+
+Pass `avoidCollisions={false}` to pin the panel to `side` and `align`, which also turns off viewport clamping and size capping. By default it flips to the opposite side when there is more room there, drops to above or below the trigger when neither horizontal side fits, and scrolls if still too tall.
+
+## How do I change the PopoverContent width?
+
+Pass a width class through `className`, for example `className="w-64"`. The default is `w-72`, limited by `max-w-[calc(100vw-1rem)]`, and the width stays a single class so your override applies at every breakpoint. Padding is `p-3`, rising to `lg:p-4`.
+
+## Is Popover keyboard accessible?
+
+Partly. `PopoverTrigger` is a `div` with `role="button"`, `tabIndex={0}`, `aria-haspopup="dialog"` and `aria-expanded`, and opens with `Enter` or `Space`. The panel has `role="dialog"` and closes on `Escape`, but focus is not moved or trapped, so use [Dialog](https://avaraui.com/docs/nextjs/dialog) for modal tasks.
+
+## Can PopoverTrigger use asChild with my own Button?
+
+No. `asChild` appears in the `PopoverTriggerProps` type but the component never reads it, so the trigger always renders its own `div`. Nest your element inside `PopoverTrigger`, as the demos do. It adds no npm dependencies and has no `next/*` imports.
 
 ---
 

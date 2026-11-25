@@ -3,7 +3,7 @@
   "name": "card-notched-cards",
   "type": "registry:block",
   "title": "Card — Notched cards",
-  "description": "A card with a tab cut into its top-right corner, in soft gray (light) or the card colour (dark). A concave fillet joins the tab to the body.",
+  "description": "The \"Notched cards\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

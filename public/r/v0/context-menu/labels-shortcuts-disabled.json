@@ -3,7 +3,7 @@
   "name": "context-menu-labels-shortcuts-disabled",
   "type": "registry:block",
   "title": "Context Menu — Labels, shortcuts & disabled",
-  "description": "`ContextMenuLabel` titles a group and `ContextMenuShortcut` right-aligns the hotkey.",
+  "description": "The \"Labels, shortcuts & disabled\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -3,7 +3,7 @@
   "name": "animated-list-animated-list",
   "type": "registry:block",
   "title": "Animated List",
-  "description": "Wrap the feed in `AnimatedList` and each row in `AnimatedListItem` — the stagger, perspective and hover spotlight come with it.",
+  "description": "The \"Animated list\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

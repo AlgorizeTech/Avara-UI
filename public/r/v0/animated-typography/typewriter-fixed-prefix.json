@@ -3,7 +3,7 @@
   "name": "animated-typography-typewriter-fixed-prefix",
   "type": "registry:block",
   "title": "Animated Typography — Typewriter, Fixed Prefix",
-  "description": "The same typewriter with the prefix held in place: the line keeps the longest word's width, so only the typed word moves.",
+  "description": "The \"Typewriter, Fixed Prefix\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

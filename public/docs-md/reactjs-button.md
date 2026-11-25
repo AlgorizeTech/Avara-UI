@@ -6,9 +6,22 @@ url: https://avaraui.com/docs/nextjs/button
 
 # Shadcn Button
 
-An animated glowing-border Button component engineered with a spinning conic-gradient line tracking the 4 edges of the button, smooth click ripple physics, loading states, and full theme synchronization.
+An animated Button component with a spinning conic-gradient border, click ripple physics, 3D press, loading states, and theme-synced variants.
 
-The glowing border animation continuously spins around the 4 sides of the button matching the form submitting engine animation.
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/button.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/button
+```
 
 ## 4-Side Spinning Glowing Line Animated Button
 
@@ -40,24 +53,7 @@ export default function GlowingBorderButtonDemo() {
 };
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/button.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/button
-```
-
-## Examples
-
-### Dark Glass Parameter Control Panel Tiles
+## Dark Glass Parameter Control Panel Tiles
 
 Interactive dark glass control tiles for parameter panels (Color pickers, dropdown selects, sliders, and toggle switches).
 
@@ -138,7 +134,7 @@ export default function ControlButtonsDemo() {
 }
 ```
 
-### Interactive Sliding Icon & Text Motion Variants
+## Interactive Sliding Icon & Text Motion Variants
 
 - Icon Expand `variant="expand-icon"` radial color expansion fills button from icon center.
 - Icon Slide `variant="slide-icon"` rounded icon slides out to right while new icon enters from left.
@@ -198,7 +194,7 @@ export default function MotionButtonDemo() {
 }
 ```
 
-### Icon only
+## Icon only
 
 Omit the children and the button collapses to a square icon target.
 
@@ -231,7 +227,7 @@ export default function IconOnlyButtonDemo() {
 }
 ```
 
-### Social login
+## Social login
 
 Brand SVGs from the bundled icon set as leading icons.
 
@@ -284,7 +280,7 @@ export default function SocialButtonDemo() {
 }
 ```
 
-### Auth, Glass, Liquid-Glass, Scenic & Ribbon Buttons
+## Auth, Glass, Liquid-Glass, Scenic & Ribbon Buttons
 
 Dedicated button surfaces used across Auth Forms (Default, Split, Minimal, Frosted Glass, Liquid Glass, Scenic Onboarding, and Ribbon Drift) — available standalone for any glassmorphic or multi-step UI.
 
@@ -334,7 +330,7 @@ export default function AuthAndGlassButtonsDemo() {
 };
 ```
 
-### Pricing & Action CTA Buttons
+## Pricing & Action CTA Buttons
 
 Clean high-converting pricing call-to-action buttons styled for modern pricing tiers, supporting automatic trailing arrows via the showArrow prop or clean text-only states.
 
@@ -413,7 +409,15 @@ export default function PricingButtonsDemo() {
 };
 ```
 
-## Features
+## About Shadcn Button
+
+**What it is.** A versatile `Button` component with 20+ visual and motion variants — including a 4-side conic-gradient glowing outline, 3D raised press, sliding icons, vertical text roll, dark glass `shards-control` parameter tiles, auth/glass surfaces, and pricing CTAs.
+
+**How it is built.** Engineered with Tailwind CSS, CSS custom properties (`--primary`, `--button-color`), and GPU-friendly transforms. Continuous animations such as `slide-icon-loop` and `shards-control` effects automatically respect `prefers-reduced-motion`.
+
+**When to use it.** Use `Button` for standard triggers, CTAs, social sign-in buttons, icon-only toolbar actions, and interactive parameter tiles. For async progress, slide-to-confirm, or hold-to-confirm workflows, use [Action Button](https://avaraui.com/docs/reactjs/action-buttons).
+
+**Features.**
 
 - **4-Side Animated Glowing Border**: Conic-gradient spinning line that continuously sweeps around the 4 edges of the button matching Form Engine submitting buttons.
 - **Interactive Sliding Icon Physics**: `variant="slide-icon"` provides a rounded background icon on the right that slides out to the right on hover, while a new rounded icon slides in smoothly from the left.
@@ -421,8 +425,25 @@ export default function PricingButtonsDemo() {
 - **3D Press**: `variant="3d"` stacks a raised primary face over a darkened edge and a soft ground shadow. Hover lowers the face a step; pressing seats it on the edge, so the click reads as a real push.
 - **Vertical Text Roll Animation**: `variant="slide-text"` moves the button text smoothly upwards on hover while another text label rolls up smoothly into position from below.
 - **Ripple Click Physics**: Interactive radial ripple expansion on mouse click.
-- **Loading Spinners**: Built-in async state handling with interactive disabled states.
-- **Full Theme Color Syncing**: Automatically inherits site primary CSS variables (`var(--primary)`).
+
+## For AI agents
+
+**When to use**
+
+- Standard actions, form submits, pricing CTAs, icon-only buttons, and social login triggers
+- Animated hover/press buttons (`variant="outline"`, `"3d"`, `"slide-icon"`, `"slide-text"`) or dark glass parameter tiles (`variant="shards-control"`)
+
+**When not to use**
+
+- Async progress, slide-to-confirm, or hold-to-confirm buttons — use [Action Button](https://avaraui.com/docs/reactjs/action-buttons)
+- One-click clipboard copy with copied confirmation — use [Copy Button](https://avaraui.com/docs/reactjs/copy-button)
+- Binary pressed/unpressed state controls — use [Toggle](https://avaraui.com/docs/reactjs/toggle)
+
+**Agent notes**
+
+- Default export: `import Button from "@/components/custom/blocks/Button"`
+- Pass `loading` for the built-in spinner and disabled state; omit `children` and pass `iconLeft` for an icon-only square button
+- `shards-control` tiles accept `controlType="color" | "select" | "slider" | "toggle"` and `effect="sparkle" | "orbit" | "beacon" | "shimmer"`
 
 ## Props Reference
 
@@ -439,6 +460,40 @@ export default function PricingButtonsDemo() {
 | `iconLeft` | `React.ReactNode` | `undefined` | Renders an icon or element to the left of the text. |
 | `iconRight` | `React.ReactNode` | `undefined` | Renders an icon or element to the right of the text. |
 | `showArrow` | `boolean` | `false` | If true, automatically displays an interactive trailing arrow icon (`ArrowRightIcon`) without needing to supply `iconRight`. |
+
+## Works with other components
+
+- Pair `Button` as the trigger inside [Dialog](https://avaraui.com/docs/reactjs/dialog), [Popover](https://avaraui.com/docs/reactjs/popover), or [Drawer](https://avaraui.com/docs/reactjs/drawer).
+- Combine `variant="pricing-*"` buttons with [Card](https://avaraui.com/docs/reactjs/card) or [Pricing](https://avaraui.com/docs/reactjs/pricing) tiers.
+- Use `variant="auth-social"` or `"glass-social"` inside [Auth Forms](https://avaraui.com/docs/reactjs/auth-forms).
+
+## How do I create an icon-only Button?
+
+Pass your icon via `iconLeft` (or `iconRight`) and omit `children`. When no text children are provided, `Button` automatically collapses into a square icon target.
+
+## How do the shards-control parameter tiles work?
+
+Set `variant="shards-control"` along with `controlType` (`"color"`, `"select"`, `"slider"`, or `"toggle"`). You can attach an interactive completion animation with `effect` (`"sparkle"`, `"orbit"`, `"beacon"`, or `"shimmer"`) and control whether it plays once or loops via `effectMode`.
+
+## Does Button respect reduced-motion preferences?
+
+Yes. Continuous animations like `variant="slide-icon-loop"` and `shards-control` effects automatically pause or skip motion when `prefers-reduced-motion: reduce` is enabled.
+
+## Is Button accessible?
+
+Yes. It renders a native `<button>` and forwards its ref, so keyboard activation, focus and form submission work as usual. While `loading` is true it is disabled, and decorative layers such as the glowing border and ripples are hidden from assistive technology. Give icon-only buttons an `aria-label`.
+
+## Does Button need extra dependencies, and does it work without Next.js?
+
+No extra packages. It needs only React and the `cn` helper, with no `next/*` imports and no animation library, so it runs in Next.js, Vite and any other React app.
+
+## How do I change the Button colour?
+
+Pass `color` with a named preset such as `"indigo"` or `"rose"`, or any hex value. Leave it unset and the button follows your theme's `--primary` token, so it changes with your theme in light and dark mode.
+
+## How is Button different from Action Button?
+
+Button is the general-purpose trigger with 20+ visual variants. [Action Button](https://avaraui.com/docs/reactjs/action-buttons) wraps an async `action` with pending, success and failed states, plus slide-to-confirm and hold-to-confirm gestures. Use Button for plain triggers and Action Button when the click starts something slow or hard to undo.
 
 ---
 

@@ -3,15 +3,16 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("counter");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Counter
 
-A multi-purpose, highly animated Counter component. Whether you need a user-interactive Stepper for e-commerce, an animated statistics ticker, a circular progress tracker, or a promotional countdown timer, this block handles it all with built-in fluid animations. The countdown comes in two designs: framed figures under a pill, or `slide` — soft tiles where only the figure that changed slides, the same countdown the <DocLink to="waitlist">Waitlist</DocLink> launch panel uses.
+Animated counters: a stepper, a number ticker, circular progress and countdown timers.
+
+The `slide` countdown is the same one the <DocLink to="waitlist">Waitlist</DocLink> launch panel uses.
 
 Explore the different variations of the Counter component — each example shows a live preview with the exact code to copy.
-
-<AgentVariants slug="counter" />
 
 export const usageStepper = `import { CounterBlock } from "@/components/custom/blocks/CounterBlock";
 
@@ -122,10 +123,11 @@ export default function OpensIn() {
   name="counter"
   colorControl
   columns={1}
+  installation={<Installation name="counter" usage="below" />}
   examples={[
     {
       title: "Slide countdown",
-      subheading: "Days, hours, minutes and seconds to a date on soft tiles. Watch the seconds: only the figure that changed slides, the others hold still.",
+      description: "Days, hours, minutes and seconds to a date on soft tiles. Watch the seconds: only the figure that changed slides, the others hold still.",
       propNotes: [
         {
           lead: "Set",
@@ -146,23 +148,9 @@ export default function OpensIn() {
       usage: usageSlide,
       code: extractCode("src/components/custom/blocks/CounterBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="counter" />
-
-## Examples
-
-<ExampleShowcase minHeight={290}
-  name="counter"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Stepper",
-      subheading: "An interactive quantity picker.",
+      description: "An interactive quantity picker.",
       propNotes: [
         {
           prop: "type",
@@ -260,31 +248,38 @@ export default function OpensIn() {
   ]}
 />
 
-## Features
-Explore the Counter component's number animation features, including customizable easing, duration, and formatting options.
+## About Shadcn Counter
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**What it is.** **Shadcn Counter** (`CounterBlock`) is a multi-mode animated counter supporting quantity steppers, stat tickers, circular progress counters, and countdown timers (default framed or `slide` tiles).
 
-## Best Practices & Guidelines
+**How it is built.** `CounterBlock` switches behavior via `type` (`"stepper"`, `"animated"`, `"circular"`, `"countdown"`) and `variant="slide"` for countdown tiles where only the figure that changed slides, hydrating safely (`--` until the first client tick). The only npm dependency is `lucide-react`.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use it for cart quantity controls, KPI stat cards, goal progress rings, and product launch or event countdowns.
+
+## For AI agents
+
+<AgentBrief name="counter">
+
+**When to use**
+
+- Cart quantity controls, KPI stat cards
+- Goal progress rings, product launch or event countdowns
+
+**When not to use**
+
+- A retro flip-board display: use <DocLink to="split-flap">Split Flap</DocLink>
+- A plain linear progress bar: use <DocLink to="progress">Progress</DocLink>
+
+**Agent notes**
+
+- `CounterBlock` supports `type`: `"countdown"`, `"stepper"`, `"animated"`, and `"circular"`.
+- For the sliding tile countdown, pass `type="countdown"` with `variant="slide"`, `targetDate`, and `doneLabel`.
+- For quantity steppers, use `min` and `max` to clamp values and automatically disable boundary buttons.
+- The stepper keeps its count in internal state and has no `onChange` or `value` prop, so you cannot read the number from the parent without editing the source.
+- `prefix`, `bare`, `decimals`, `startOnView` and `className` apply to `type="animated"` only; `circular` reads `targetValue` as a percentage from 0 to 100.
+- Use `color="inherit"` to take the surrounding text colour.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -365,7 +360,7 @@ Explore the Counter component's number animation features, including customizabl
         </td>
         <td>
           The final number to animate towards (used in <code>animated</code> and{" "}
-          <code>circular</code> types).
+          <code>circular</code> types). In <code>circular</code> it is read as a percentage and clamped to 0–100.
         </td>
       </tr>
       <tr>
@@ -408,8 +403,8 @@ Explore the Counter component's number animation features, including customizabl
           <code>""</code>
         </td>
         <td>
-          Strings to append before or after the number (e.g. <code>"$"</code> or{" "}
-          <code>"%"</code>).
+          Strings to put before or after the number (e.g. <code>"$"</code> or{" "}
+          <code>"%"</code>). <code>prefix</code> works on <code>animated</code> only; <code>suffix</code> works on <code>animated</code> and <code>circular</code>.
         </td>
       </tr>
       <tr>
@@ -498,6 +493,35 @@ Explore the Counter component's number animation features, including customizabl
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Combine `CounterBlock` with <DocLink to="split-flap">Split-Flap Display</DocLink> for mechanical counters.
+- Pair it with <DocLink to="progress">Progress</DocLink> for linear goal bars and <DocLink to="card">Card</DocLink> for KPI metric tiles.
+- Use the `slide` countdown in <DocLink to="waitlist">Waitlist</DocLink>-style launch panels, or see <DocLink to="counter-section">Counter Section</DocLink> for full-width stats layouts.
+
+## How does the slide countdown avoid SSR hydration mismatches?
+
+The countdown only reads the clock inside an effect, so with `variant="slide"` every tile renders `--` until the first client tick. Server HTML and the first client paint then match. The default framed countdown shows `00` in each tile for the same first render.
+
+## What happens when the countdown reaches targetDate?
+
+`doneLabel` (default `"Time's up"`) replaces `label`. With `variant="slide"` the figures are removed and only that text remains. The default framed countdown keeps its four tiles on screen, reading `00`. Pass `targetDate` as a `Date`, ISO string or timestamp; without it, the timer counts down three days from mount.
+
+## How do I get the current value out of the stepper?
+
+You cannot with the current API. The stepper keeps its count in internal state, starting at `initialValue`, and exposes no `onChange` or `value` prop. If a cart or form needs the number, edit `StepperCounter` in the installed file to call a callback when the count changes.
+
+## How do I make the animated counter start when it scrolls into view?
+
+Set `startOnView` on a `type="animated"` counter. It then waits until about 30% of the element is visible before counting up to `targetValue`. Without it, the count starts on mount. Use `decimals` for fractional figures, and `bare` to render just the number as a `span` inside your own layout.
+
+## Does Counter respect prefers-reduced-motion?
+
+Partly. The animated ticker skips the tween and shows `targetValue` straight away, and the slide countdown drops its slide animation. The stepper's small scale pop on each press and the circular ring's fill animation do not check the preference. The slide countdown is a `role="timer"` with `aria-live="off"`, so screen readers are not told every second.
+
+## How do I use the circular counter and what range does it take?
+
+Set `type="circular"` with `targetValue` and an optional `suffix` such as `"%"`. The ring is drawn from the value as a percentage, so numbers are clamped between 0 and 100 for the arc, and the centre shows the animated whole number. Use `color` to recolour the stroke.
 
 <DocsJsonLd slug="counter" />
+<FaqJsonLd slug="counter" />

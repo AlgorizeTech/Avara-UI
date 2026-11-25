@@ -3,7 +3,7 @@
   "name": "card-teaser-card",
   "type": "registry:block",
   "title": "Card — Teaser card",
-  "description": "Three to a row: an image, a meta line, a title with a corner arrow, and a tag beside the date.",
+  "description": "The \"Teaser card\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

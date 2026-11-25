@@ -3,7 +3,7 @@
   "name": "vertical-tabs-underline",
   "type": "registry:block",
   "title": "Tabs — Underline",
-  "description": "The classic browser-tab set — nothing filled, just an accent bar riding a hairline track.",
+  "description": "The \"Underline\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

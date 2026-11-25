@@ -3,7 +3,7 @@
   "name": "network-graph-interactive-rings",
   "type": "registry:block",
   "title": "Network Graph — Interactive rings",
-  "description": "Drag the sliders above to reshape the orbits live, then copy the numbers straight into your own `NetworkGraph`.",
+  "description": "The \"Interactive rings\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

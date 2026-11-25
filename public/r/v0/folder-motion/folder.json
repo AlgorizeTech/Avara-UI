@@ -3,7 +3,7 @@
   "name": "folder-motion-folder",
   "type": "registry:block",
   "title": "Folder",
-  "description": "Hover, tap or focus the folder to fan the cards out.",
+  "description": "The \"Folder\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

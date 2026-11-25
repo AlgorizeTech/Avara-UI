@@ -3,7 +3,7 @@
   "name": "command-palette-linear",
   "type": "registry:block",
   "title": "Command Palette — Linear",
-  "description": "Click the search box in the top right (or press Ctrl+K) to open the command palette modal over the dimmed overlay.",
+  "description": "The \"Linear\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

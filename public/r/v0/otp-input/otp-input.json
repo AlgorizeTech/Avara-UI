@@ -3,7 +3,7 @@
   "name": "otp-input-otp-input",
   "type": "registry:block",
   "title": "OTP Input",
-  "description": "Paste, arrow-key and backspace handling are built in.",
+  "description": "The \"OTP Input\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

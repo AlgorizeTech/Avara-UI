@@ -1,16 +1,27 @@
 ---
 title: "Shadcn Menubar"
-description: "A visually persistent, OS-style menu component that provides quick access to a consistent set of commands. Free shadcn/ui component for React and Tailwind CSS."
+description: "Shadcn Menubar. A dependency-free desktop-style menubar (`Menubar`, `MenubarMenu`, `MenubarTrigger`."
 url: https://avaraui.com/docs/nextjs/menubar
 ---
 
 # Shadcn Menubar
 
-A visually persistent, OS-style menu component that provides quick access to a consistent set of commands.
+A dependency-free desktop-style menubar (`Menubar`, `MenubarMenu`, `MenubarTrigger`, `MenubarContent`) with hover-to-swap menu switching and application title-bar support.
 
-Native application menus have complex, unwritten interaction rules. If you click to open "File", and then hover your mouse horizontally over "Edit", the "Edit" menu should instantly open while "File" closes. Building this from scratch is notoriously difficult. This `MenubarBlock` solves all of that natively in React using Context, providing a 100% dependency-free implementation.
+## Installation
 
-Click a trigger to open its menu, then hover the neighbours — they swap instantly, exactly like a native app.
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/menubar.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/menubar
+```
 
 ## Menubar
 
@@ -70,24 +81,7 @@ export default function TopNav() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/menubar.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/menubar
-```
-
-## Examples
-
-### Application menubar
+## Application menubar
 
 - `className` on the bar is how you strip its chrome to fuse it into a window title bar.
 
@@ -266,20 +260,31 @@ export default function AppWindow() {
 }
 ```
 
-## Features
-Learn about the Menubar's desktop-style navigation features, supporting complex nested menus, radio groups, and checkboxes.
+## About Shadcn Menubar
 
-Easily adapt the component's styling and behavior to fit your application's unique design system.
+**What it is.** `Menubar` (`MenubarMenu`, `MenubarTrigger`, `MenubarContent`, `MenubarItem`, `MenubarSeparator`, `MenubarShortcut`, `MenubarLabel`) provides a persistent OS-style command bar. There are no checkbox, radio or submenu parts; mark a chosen row with an icon, as the application example does.
 
-Built with accessibility in mind, ensuring all users can interact with your application effectively.
+**How it is built.** Plain React Context with no menu library. The bar tracks one open menu by `value`: click a trigger to open it, then hover the neighbouring triggers to swap. Escape or a mouse press outside closes it. `MenubarContent` nudges itself back inside the viewport and caps its height.
 
-Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+**When to use it.** Use `Menubar` for desktop-style editors, IDEs, and application title bars. For marketing/site navigation, use [Navigation Menu](https://avaraui.com/docs/nextjs/navigation); for right-click menus, use [Context Menu](https://avaraui.com/docs/nextjs/context-menu).
 
-Optimized for maximum performance with minimal re-renders and efficient state management.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+- Persistent desktop-style File / Edit / View command bars in editors or web apps
+
+**When not to use**
+
+- Site header navigation: use [Navigation Menu](https://avaraui.com/docs/nextjs/navigation)
+- Right-click context menus: use [Context Menu](https://avaraui.com/docs/nextjs/context-menu)
+
+**Agent notes**
+
+- Named exports from `@/components/custom/blocks/MenubarBlock`: `Menubar`, `MenubarMenu`, `MenubarTrigger`, `MenubarContent`, `MenubarItem`, `MenubarSeparator`, `MenubarShortcut`, `MenubarLabel`. Nothing else exists, so do not import `MenubarCheckboxItem` or `MenubarSub`.
+- Every `MenubarMenu` requires a unique `value` prop so context can track the active dropdown. Open state is internal; there is no controlled `open` prop.
+- `MenubarItem` is a `button` that closes the menu after `onClick` runs.
+- Keyboard support is limited to Tab and Escape. There is no arrow-key navigation and no `role="menu"` markup.
 
 ## Props Reference
 
@@ -289,9 +294,39 @@ Follow standard design principles when implementing this component. Ensure prope
 | `MenubarContent` | `align` | `"start" \| "center" \| "end"` | Determines how the dropdown is anchored relative to its trigger button. Defaults to `"start"`. |
 | `MenubarItem` | `inset` | `boolean` | Adds extra left-padding to the item, aligning text cleanly when adjacent items use icons. |
 | `MenubarItem` | `disabled` | `boolean` | Dims the item, changes the cursor, and completely disables pointer events and click handlers. |
-| `MenubarItem` | `onClick` | `() => void` | Fires your custom action. The menu will automatically close after the click. |
+| `MenubarItem` | `onClick` | `(e: React.MouseEvent<HTMLButtonElement>) => void` | Fires your custom action. The menu will automatically close after the click. |
 | `MenubarLabel` | `inset` | `boolean` | Aligns the label text with `inset` menu items. |
-| All Components | `className` | `string` | Every component supports custom Tailwind classes for easy styling overrides. |
+| All Components | `className` | `string` | Every component except `MenubarMenu` accepts custom Tailwind classes, and the others pass extra HTML attributes to their root element (`MenubarSeparator` takes only `className`). |
+
+## Works with other components
+
+- Pair `Menubar` with [Resizable](https://avaraui.com/docs/nextjs/resizable) panes and [Kbd](https://avaraui.com/docs/nextjs/kbd) shortcut hints in IDE/editor shells.
+- Use [Context Menu](https://avaraui.com/docs/nextjs/context-menu) for the right-click version of the same actions.
+- Use [Navigation Menu](https://avaraui.com/docs/nextjs/navigation) for site header links instead of command menus.
+
+## Why does each MenubarMenu need a value prop?
+
+`Menubar` keeps one `activeMenu` string in React Context, and each `MenubarMenu` registers its `value` there. The trigger compares them to know whether to highlight, and the content compares them to know whether to render. Two menus with the same `value` would open together, so keep each one unique.
+
+## What closes a Menubar menu?
+
+Clicking a `MenubarItem` closes it after your `onClick` runs. A mouse press anywhere outside the bar closes it, and so does the Escape key. Clicking the open trigger again toggles it shut. Closed menus are unmounted, so `MenubarContent` renders nothing until its trigger is clicked.
+
+## Does Menubar support arrow-key navigation?
+
+No. Triggers and items are native `button` elements, so Tab and Enter work, and Escape closes the open menu. There is no arrow-key movement, no typeahead, and no `role="menubar"` or `aria-expanded` markup. For strict ARIA menu behaviour, use a Radix-based menubar.
+
+## How do I fuse a Menubar into a window title bar?
+
+Pass `className` to `Menubar` to remove its chrome, for example `border-none bg-transparent shadow-none p-0` as the application example does, then place it inside your own header. Each `MenubarTrigger` is a plain button, so you can restyle triggers with `className` too.
+
+## Does the Menubar dropdown stay on screen near the edge of the window?
+
+Mostly. When a menu opens, `MenubarContent` measures itself and shifts sideways to stay 8px inside the viewport, then caps its height if it would run past the bottom. `align` can be `start`, `center` or `end`. It is not portaled, so an ancestor with `overflow-hidden` will still crop it.
+
+## Can I add checkbox, radio or submenu items to Menubar?
+
+Not as built-in parts. The block ships `MenubarItem`, `MenubarLabel`, `MenubarSeparator` and `MenubarShortcut` only. To show a selected option, hold the state yourself and render a check icon inside a `MenubarItem`, as the View menu in the application example does for the theme choice.
 
 ---
 

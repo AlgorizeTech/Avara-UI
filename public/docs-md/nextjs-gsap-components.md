@@ -15,36 +15,36 @@ runs on GSAP. Prefer Motion? Many of these also have a
 
 **Forms & Inputs**
 
-- [File Upload](https://avaraui.com/docs-md/nextjs-file-upload.md): A file upload suite that goes beyond a native `<input type="file">`. (Motion build available)
+- [File Upload](https://avaraui.com/docs-md/nextjs-file-upload.md): A file upload suite featuring a drag-and-drop `Dropzone` + `UploadItem` queue, `InputBlock` file mode, and an interactive `Folder` drop target. (Motion build available)
 
 **Navigation & Menus**
 
-- [Dock](https://avaraui.com/docs-md/nextjs-dock.md): A premium, macOS-inspired navigation dock featuring real-time physics magnification, floating label tooltips, active application indicators, and… (Motion build available)
+- [Dock](https://avaraui.com/docs-md/nextjs-dock.md): A macOS-inspired navigation dock (`Dock`) with pointer magnification physics, floating label tooltips, active-app indicators, and notification badges… (Motion build available)
 
 **Layout & Containers**
 
-- [Masonry Grid](https://avaraui.com/docs-md/nextjs-masonry-grid.md): A high-performance masonry layout that tightly packs items of varying heights. (Motion build available)
+- [Masonry Grid](https://avaraui.com/docs-md/nextjs-masonry-grid.md): A CSS multi-column masonry layout (`MasonryGrid`) with staggered blur-fade scroll entrances in both GSAP and Motion builds. (Motion build available)
 
 **Cards & Stacks**
 
-- [Card Stack](https://avaraui.com/docs-md/nextjs-card-stack.md): A layered deck of cards featuring fluid drag-to-discard gestures, button-driven directional slide animations, and realistic depth perspective. (Motion build available)
-- [Draggable Card List](https://avaraui.com/docs-md/nextjs-draggable-card-list.md): An interactive, fluid Draggable Card List component featuring spring-driven reordering (in a GSAP build and a Motion build that move identically),… (Motion build available)
-- [Folder](https://avaraui.com/docs-md/nextjs-folder.md): A tactile folder: skeleton cards (or your own photos) tuck behind a frosted-glass front pocket that tilts open in 3D, and the cards lift into a… (Motion build available)
-- [Memories Card](https://avaraui.com/docs-md/nextjs-memories-card.md): A premium, interactive card stack component featuring real-time 3D tilt physics, a dynamic "fan" background spread, and smooth swipe-to-next gestures. (Motion build available)
-- [Scroll Stack](https://avaraui.com/docs-md/nextjs-scroll-stack.md): A premium collection of scroll-driven 3D card stacking layouts engineered exclusively with GSAP's ScrollTrigger plugin. (Motion build available)
+- [Card Stack](https://avaraui.com/docs-md/nextjs-card-stack.md): A layered card deck (`CardStack`) with drag-to-discard swipes, previous and next buttons, optional looping, and a choice of GSAP or Motion builds. (Motion build available)
+- [Draggable Card List](https://avaraui.com/docs-md/nextjs-draggable-card-list.md): A reorderable card list with spring-driven dragging, grip handles and status badges, in GSAP and Motion builds. (Motion build available)
+- [Folder](https://avaraui.com/docs-md/nextjs-folder.md): A tactile folder (`Folder`, `SkeletonCard`) with a 3D frosted-glass pocket, OKLCH color-derived shades, and fanned card previews on hover, tap, or… (Motion build available)
+- [Memories Card](https://avaraui.com/docs-md/nextjs-memories-card.md): An interactive 3D-tilting photo card stack (`MemoriesCard`) with a fanned background deck, drag-to-cycle gestures, and `onCardChange` index tracking. (Motion build available)
+- [Scroll Stack](https://avaraui.com/docs-md/nextjs-scroll-stack.md): Scroll-driven 3D card stacks built with GSAP ScrollTrigger: cards stick while the next one slides up over them. (Motion build available)
 
 **Data Display**
 
-- [Split-Flap Display](https://avaraui.com/docs-md/nextjs-split-flap.md): An authentic, physics-driven Split-Flap Display component (Solari board) simulating retro-mechanical flap cards, 3D perspective flips (`rotateX`),… (Motion build available)
+- [Split-Flap Display](https://avaraui.com/docs-md/nextjs-split-flap.md): A Solari-style split-flap display with 3D flips, split creases and synthesized click sounds. (Motion build available)
 
 **Media & Carousels**
 
-- [Carousel](https://avaraui.com/docs-md/nextjs-carousel.md): A collection of highly interactive carousel components for image galleries, hero sections, and fluid presentations. (Motion build available)
-- [Gallery](https://avaraui.com/docs-md/nextjs-gallery.md): A dynamic visual showcase featuring six interactive variants: a revolving 3D circular photo orbit ring, an interactive 3D video sphere gallery, a… (Motion build available)
+- [Carousel](https://avaraui.com/docs-md/nextjs-carousel.md): Carousel components for image galleries, hero sections, product wheels and fluid presentations. (Motion build available)
+- [Gallery](https://avaraui.com/docs-md/nextjs-gallery.md): A media gallery with six interactive layouts, from 3D orbit rings and video spheres to a moving bento grid. (Motion build available)
 
 **Apps & Messaging**
 
-- [Ai-Chat](https://avaraui.com/docs-md/nextjs-ai-chat.md): A premium LLM chat interface with conversation history, typing indicators, editable chat titles and a full prompt composer: a + menu for files and… (Motion build available)
+- [Ai-Chat](https://avaraui.com/docs-md/nextjs-ai-chat.md): An LLM chat interface with history, editable titles, a prompt composer with @Mention tools, and a model picker. (Motion build available)
 
 **More Components**
 

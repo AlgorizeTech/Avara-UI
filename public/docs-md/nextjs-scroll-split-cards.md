@@ -1,16 +1,90 @@
 ---
 title: "Shadcn Scroll Split Cards"
-description: "Shadcn Scroll Split Cards. A cinematic scroll-driven component: one panoramic landscape splits into three card panels as you scroll."
+description: "Shadcn Scroll Split Cards. A scroll-driven 3D split showcase (`ScrollSplitCards`) that slices a panoramic image into three panels, separates them."
 url: https://avaraui.com/docs/nextjs/scroll-split-cards
 ---
 
 # Shadcn Scroll Split Cards
 
-A cinematic scroll-driven component: one panoramic landscape splits into three card panels as you scroll, then the cards separate and flip in 3D to reveal editorial narratives.
+A scroll-driven 3D split showcase (`ScrollSplitCards`) that slices a panoramic image into three panels, separates them, and flips them 180° to reveal editorial cards.
 
-`ScrollSplitCards` suits brand origin stories, architectural journeys, editorial photography features and landmark case studies.
+## Installation
 
-### Slow Transition
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/scroll-split-cards.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/scroll-split-cards
+```
+
+## Default
+
+The default scroll mode, with built-in spring physics. No speed props needed.
+
+- `imageUrl` is split into three adjacent panels that line up seamlessly before the first scroll.
+
+```tsx
+import { ScrollSplitCards } from "@/components/custom/blocks/ScrollSplitCardsBlock";
+
+export default function DefaultVariantExample() {
+  return (
+    <div className="w-full">
+      <ScrollSplitCards
+        variant="default"
+        headerTitle="Explore"
+        headerSubtitle="Scroll down to reveal the alpine lake narrative"
+        imageUrl="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790224415/photo-1501785888041-af3ef285b470-1790146212207-1790224416318.jpg"
+        cards={[
+          {
+            number: "01",
+            tag: "SANCTUARY",
+            metric: "1,496 M",
+            metricLabel: "ELEVATION",
+            location: "South Tyrol, Italy",
+            title: "Lago di Braies",
+            description:
+              "Glacial emerald waters mirror sheer limestone walls in the silent morning mist before rowers set out.",
+            backgroundColor: "#13352F",
+            textColor: "#E6F4F1",
+          },
+          {
+            number: "02",
+            tag: "HERITAGE",
+            metric: "100+ YRS",
+            metricLabel: "ROWBOAT CRAFT",
+            location: "Prags Alpine Dock",
+            title: "The Boathouse",
+            description:
+              "Handcrafted wooden larch skiffs moored to stilted pine docks, awaiting the gentle morning row across crystal shallows.",
+            backgroundColor: "#A45229",
+            textColor: "#FFF8F5",
+          },
+          {
+            number: "03",
+            tag: "UNESCO",
+            metric: "2,810 M",
+            metricLabel: "SUMMIT HEIGHT",
+            location: "Dolomites Park",
+            title: "Seekofel Peak",
+            description:
+              "Towering pale crags catch the first golden alpine glow, standing sentinel over the emerald basin below.",
+            backgroundColor: "#141E2B",
+            textColor: "#ECF3F9",
+          },
+        ]}
+      />
+    </div>
+  );
+}
+```
+
+## Slow Transition
 
 A slower profile for leisurely narrative pacing.
 
@@ -70,38 +144,28 @@ export default function SlowTransitionExample() {
 }
 ```
 
-## Installation
+## About Shadcn Scroll Split Cards
 
-Add the component by URL — no setup needed:
+**What it is.** `ScrollSplitCards` slices one wide `imageUrl` panorama across three seamless panels that separate and 3D-flip 180° on scroll to reveal three `cards` chapters.
 
-```bash
-npx shadcn@latest add https://avaraui.com/r/scroll-split-cards.json
-```
+**How it is built.** Uses a dependency-free spring follower for wheel and touch deltas (tracking input directly under `prefers-reduced-motion`) and CSS `preserve-3d` / `backface-visibility` for the flip.
 
-Or register the @avara-ui registry once per project and add it by name:
+**When to use it.** Use `ScrollSplitCards` for editorial storytelling, brand journeys, and architectural or travel features.
 
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/scroll-split-cards
-```
+## For AI agents
 
-## Features
+**When to use**
 
-Renders a single high-resolution image across three adjacent overflow-hidden cards using precise percentage offsets, guaranteeing zero seams when closed.
+- Three-panel panoramic image-to-3D-flip storytelling sections (`variant="default" | "slow-transition"`, `scrollSpeed`)
 
-A spring follower (the same equation of motion as Motion's `useSpring`) turns native mousewheel and touch input into organic physical motion, with no animation library to install. Under `prefers-reduced-motion` the panels track the input directly.
+**When not to use**
 
-Each panel has genuine 3D card faces with `preserve-3d` and `backface-visibility`, flipping 180° to reveal typographic narratives with individual color schemes.
+- Vertical sticky card decks — use [Modern Scroll Stack](https://avaraui.com/docs/nextjs/modern-scroll-stack) or [Scroll Stack](https://avaraui.com/docs/nextjs/scroll-stack)
 
-Fine-tune the scroll rate by passing `scrollSpeed` or `speed` (numbers like `0.6` or presets like `"slow"`, `"normal"`, `"fast"`), with a live interactive range slider.
+**Agent notes**
 
-## Best Practices & Guidelines
-
-Place `ScrollSplitCards` in a standard vertical flow without conflicting parent `overflow-hidden` constraints. Both mousewheel scroll and touch drag gestures naturally advance the animation through each stage.
-
-For the most dramatic visual impact, use wide landscape photography (recommended aspect ratio 21:9 or ~2.4:1) with a resolution of at least 2400×1000px. High-contrast horizon or architectural imagery splits cleanly across the panels.
-
-Keep narrative copy concise: 1–2 sentences per card along with an optional metric callout and kicker. Contrast-tested background colors ensure text remains easily legible on all viewports.
+- Named export: `import { ScrollSplitCards } from "@/components/custom/blocks/ScrollSplitCardsBlock"`
+- Avoid `overflow-hidden` on parent containers; use wide ~21:9 landscape photography (`2400x1000px+`) for clean 3-panel slicing
 
 ## Props Reference
 
@@ -132,6 +196,30 @@ Keep narrative copy concise: 1–2 sentences per card along with an optional met
 | `location` | `string` | `undefined` | Geographic location or sub-region rendered in the bottom footer row. |
 | `backgroundColor` | `string` | `"#13352F"` | Background color of the card back face. Also accepts `bgColor`. |
 | `textColor` | `string` | `"#E6F4F1"` | Text color for clear contrast against the card background. |
+
+## Works with other components
+
+- Pair with [Hero](https://avaraui.com/docs/nextjs/hero) or [Scroll Stack](https://avaraui.com/docs/nextjs/scroll-stack) in narrative landing pages.
+
+## What image works best for ScrollSplitCards?
+
+Use a wide panoramic landscape photo in `imageUrl`. The component slices that one image across three panels so the pieces line up while closed, then separates them as the user scrolls. A narrow or portrait image will be cropped heavily across the three slices.
+
+## How do I change the content of the three cards?
+
+Pass three `SplitCard` objects in `cards`. Each needs a `title` and `description`. Optional fields include `tag`, `number`, `metric`, `metricLabel`, `location`, `backgroundColor` and `textColor`, which style the editorial face revealed after the 180° flip.
+
+## How do I make the scroll animation slower?
+
+Lower `scrollSpeed` below its default of `1`, for example `0.6`, or pass `"slow"`. You can also set `variant="slow-transition"` for a more leisurely storytelling pace. `"normal"` and `"fast"` are accepted too, and they apply to both wheel and touch scrolling.
+
+## Does ScrollSplitCards respect reduced motion and work on touch?
+
+Yes to both. It follows wheel and touch deltas with a dependency-free spring, and under `prefers-reduced-motion` it tracks the input directly instead of easing. The panel flip uses CSS `preserve-3d` and `backface-visibility`, so it adds no animation library.
+
+## How do I change the stage height or hide the scroll indicator?
+
+Set `containerHeight` to a CSS size string to override the default responsive stage height, which starts at `460px` on mobile. Pass `enableScrollIndicator={false}` to remove the animated mouse pill at the top. `headerTitle` and `headerSubtitle` change the text above the cards.
 
 ---
 

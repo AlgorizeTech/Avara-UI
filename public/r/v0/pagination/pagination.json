@@ -3,7 +3,7 @@
   "name": "pagination-pagination",
   "type": "registry:block",
   "title": "Pagination",
-  "description": "Hold `currentPage` yourself and update it from `onPageChange`.",
+  "description": "The \"Pagination\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

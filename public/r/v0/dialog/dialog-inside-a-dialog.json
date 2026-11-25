@@ -3,7 +3,7 @@
   "name": "dialog-dialog-inside-a-dialog",
   "type": "registry:block",
   "title": "Dialog — Dialog inside a dialog",
-  "description": "A small dialog opens on top of the one already on screen — and Escape or a backdrop click only reaches the topmost of the two.",
+  "description": "The \"Dialog inside a dialog\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

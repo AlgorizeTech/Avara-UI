@@ -3,7 +3,7 @@
   "name": "command-command-dialog",
   "type": "registry:block",
   "title": "Command — Command dialog",
-  "description": "Swap `Command` for `CommandDialog` to get the ⌘K overlay — try the shortcut.",
+  "description": "The \"Command dialog\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

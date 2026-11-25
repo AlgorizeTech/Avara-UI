@@ -3,7 +3,7 @@
   "name": "invoice-default-dashboard-invoice",
   "type": "registry:block",
   "title": "Invoice — Default Dashboard Invoice",
-  "description": "Editing, totals, printing and JSON export are all handled internally.",
+  "description": "The \"Default Dashboard Invoice\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

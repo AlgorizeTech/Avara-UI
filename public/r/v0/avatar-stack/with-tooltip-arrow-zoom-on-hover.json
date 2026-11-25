@@ -3,7 +3,7 @@
   "name": "avatar-stack-with-tooltip-arrow-zoom-on-hover",
   "type": "registry:block",
   "title": "Avatar Stack — With tooltip arrow (Zoom on hover)",
-  "description": "The same tooltip with a pointer arrow and a spring popup.",
+  "description": "The \"With tooltip arrow (Zoom on hover)\" example from the Avara UI docs.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

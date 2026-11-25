@@ -10,6 +10,21 @@ A network graph of avatars: a layered orbital visual that spreads items evenly a
 
 Assign each node a `ring` index and the component spaces that ring evenly across a full 360°, in percentages that scale to any box. Hover an avatar for its tooltip, or hit the reload button to replay the staggered spring entrance.
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/network-graph.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/network-graph
+```
+
 ## Interactive rings
 
 Drag the sliders above to reshape the orbits live, then copy the numbers straight into your own `NetworkGraph`.
@@ -70,42 +85,41 @@ export default function OrbitGraph() {
 }
 ```
 
-## Installation
+## About Shadcn Network Graph
 
-Add the component by URL — no setup needed:
+**What it is.** **Shadcn Network Graph** (`NetworkGraph`) is an orbital avatar graph that arranges nodes across concentric percentage-scaled rings with hover labels and a staggered spring entrance. Positions come from the ring index and node order, not from a force simulation.
 
-```bash
-npx shadcn@latest add https://avaraui.com/r/network-graph.json
-```
+**How it is built.** Each `NetworkNode` declares a `ring` index and either an `image` or `fallback` initials; `NetworkGraph` spaces each ring evenly around 360°, starting at the top, using `baseRadius`, `ringGap`, `ringCount`, and `orbitSpeed`, with independent `animateOrbit` and `animateIn` controls. The entrance is CSS keyframes and the orbit is a `requestAnimationFrame` loop that pauses while the graph is off screen.
 
-Or register the @avara-ui registry once per project and add it by name:
+**When to use it.** Use it for community directories, team hubs, integration ecosystems, and social-proof hero sections.
 
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/network-graph
-```
+## For AI agents
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+**When to use**
 
-Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
+- Community directories, team hubs
+- Integration ecosystems, social-proof hero sections
 
-Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
+**When not to use**
 
-Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
+- A tiered hierarchy with a central node: use [User Graph](https://avaraui.com/docs/nextjs/user-graph)
+- A simple overlapping row of avatars: use [Avatar Stack](https://avaraui.com/docs/nextjs/avatar-stack)
 
-Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
+**Agent notes**
 
-## Best Practices & Guidelines
-
-Keep outer rings denser than inner ones — nodes are spaced by count, so a ring holding two avatars leaves a large visual gap. Give distant rings `size="sm"` so the composition reads as depth rather than clutter.
+- `NetworkGraph` takes `nodes` (`NetworkNode[]` with `id`, `ring`, `label`, and `image` or `fallback`), `ringCount`, `baseRadius`, `ringGap`, `orbitSpeed`, `animateOrbit`, and `animateIn`.
+- Nodes whose `ring` exceeds `ringCount` are omitted from rendering.
+- Keep outer rings denser than inner ones and set `size: "sm"` on nodes in distant rings for visual depth. An unknown `size` string falls back to `"md"`.
+- A node's `label` appears only on hover, not on keyboard focus. The `centerNode` label is different: it is always visible under the hub.
+- `orbitSpeed={0}` does not stop the orbit (it falls back to 1). Use `animateOrbit={false}`.
+- There is no `prefers-reduced-motion` handling, so turn off `animateOrbit` and `animateIn` yourself for users who ask for reduced motion.
 
 ## Props Reference
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `nodes` | `NetworkNode[]` | Required | The avatars to place. Each node is grouped by its `ring` and spaced evenly around that orbit. |
-| `centerNode` | `&#123; image?, fallback?, label? &#125;` | `undefined` | Optional hub avatar rendered at the centre of every ring. |
+| `centerNode` | `&#123; image?, fallback?, label? &#125;` | `undefined` | Optional hub avatar rendered at the centre of every ring. Its `label` is always visible below it. |
 | `ringCount` | `number` | `3` | How many orbits to draw. Nodes whose `ring` exceeds this are not rendered. |
 | `baseRadius` | `number` | `15` | Radius of the first ring, as a percentage of the square container. |
 | `ringGap` | `number` | `15` | Percentage added to the radius for each subsequent ring. |
@@ -123,6 +137,37 @@ Keep outer rings denser than inner ones — nodes are spaced by count, so a ring
 | `fallback` | `string` | `undefined` | Initials shown when no `image` is given. |
 | `label` | `string` | `undefined` | Tooltip text revealed on hover. |
 | `size` | `"sm" \| "md" \| "lg"` | `"md"` | Avatar diameter — use smaller sizes on outer rings to suggest depth. |
+
+## Works with other components
+
+- Pair `NetworkGraph` with [User Graph](https://avaraui.com/docs/nextjs/user-graph) for tiered AI agent hierarchies.
+- Use [Avatar Stack](https://avaraui.com/docs/nextjs/avatar-stack) for compact inline member rows.
+- Use [Radial Orbital Timeline](https://avaraui.com/docs/nextjs/radial-orbital-timeline) for interactive milestone rings.
+- Reach for [Agent Graph](https://avaraui.com/docs/nextjs/agent-graph) when the nodes form a lead-and-worker tree rather than sitting on rings.
+
+## Can I pause the orbital rotation while keeping the entrance animation?
+
+Yes. Pass `animateOrbit={false}` to keep nodes stationary on their rings while `animateIn` still plays the staggered spring entrance. The two props are independent, so `animateIn={false}` alone skips the entrance and leaves the rings turning. Both props default to `true`.
+
+## What happens if a node has no `image` URL?
+
+Give the `NetworkNode` a `fallback` string such as initials, and `NetworkGraph` shows it uppercase in a round tile instead of an image. If a node has neither `image` nor `fallback`, the circle renders empty, so always supply one of the two.
+
+## How do I choose which ring a NetworkGraph avatar sits on?
+
+Set `ring` on each `NetworkNode`, where `1` is the innermost orbit. Nodes sharing a `ring` are spread at equal angles in array order, starting at the top. A node whose `ring` is above `ringCount` is not rendered, so raise `ringCount` when you add an outer ring.
+
+## How fast does each NetworkGraph ring orbit, and can I change it?
+
+Ring `n` completes a lap in `(35 + 10n) / orbitSpeed` seconds, so outer rings turn more slowly. Even-numbered rings run in the opposite direction. Changing `orbitSpeed` applies from the ring's current angle without a jump, and avatars are counter-rotated to stay upright.
+
+## Does NetworkGraph pause when off screen or respect reduced motion?
+
+It pauses when off screen: each ring's animation frame loop starts and stops with an `IntersectionObserver`. It does not read `prefers-reduced-motion`, so pass `animateOrbit={false}` and `animateIn={false}` yourself when a user prefers less motion. Where `IntersectionObserver` is unavailable, the loop simply runs all the time.
+
+## Can I use NetworkGraph without Next.js?
+
+Yes. The block has no `next/*` imports and no npm dependencies. It installs the shadcn `utils` item plus a small `motion-curves.ts` helper for the spring easing. Avatars render as plain `<img>` tags, so remote image hosts need no framework configuration.
 
 ---
 

@@ -3,7 +3,7 @@
   "name": "modal-form",
   "type": "registry:block",
   "title": "Modal — Form",
-  "description": "Header and footer actions with custom form inputs as children.",
+  "description": "The \"Form\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

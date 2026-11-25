@@ -3,7 +3,7 @@
   "name": "avatar-stack-with-tooltip-zoom-on-hover",
   "type": "registry:block",
   "title": "Avatar Stack — With tooltip (Zoom on hover)",
-  "description": "Hovering a face zooms it upward and shows its name in a tooltip.",
+  "description": "The \"With tooltip (Zoom on hover)\" example from the Avara UI docs.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

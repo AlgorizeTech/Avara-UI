@@ -3,7 +3,7 @@
   "name": "radial-orbital-timeline-dual-orbit-timeline-default",
   "type": "registry:block",
   "title": "Radial Orbital Timeline — Dual Orbit Timeline (Default)",
-  "description": "Renders 2 concentric counter-rotating orbital lines for dense timeline items.",
+  "description": "The \"Dual Orbit Timeline (Default)\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

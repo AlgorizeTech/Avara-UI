@@ -6,26 +6,7 @@ url: https://avaraui.com/docs/nextjs/skeleton
 
 # Shadcn Skeleton
 
-A skeleton loader: a high-performance visual placeholder system used to reduce perceived loading times.
-
-While standard Tailwind gives you the `animate-pulse` class, modern applications rely on **Shimmer** effects (a sleek gradient sliding across the background). This component injects its own pure CSS `@keyframes` to achieve a gorgeous shimmer. It provides composite templates out of the box (like Cards and Profiles), but also exposes top-level props so you can strictly define custom widths, heights, and border radii.
-
-Explore the different variations of the Skeleton component — each example shows a live preview with the exact code to copy.
-
-## Card
-
-A composite placeholder that mirrors a media card layout.
-
-- `variant="card"` outputs a pre-arranged composite rather than a single shape.
-- `animation="shimmer"` is the default — a gradient sliding across the placeholder.
-
-```tsx
-import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
-
-export default function CardSkeleton() {
-  return <SkeletonBlock variant="card" width="100%" height="auto" />;
-}
-```
+A pure-CSS loading placeholder (`SkeletonBlock`) with `shimmer`, `pulse`, and `none` animations plus composite `card`, `profile`, `text`, `rect`, and `circle` presets.
 
 ## Installation
 
@@ -42,9 +23,22 @@ npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/skeleton
 ```
 
-## Examples
+## Card
 
-### Profile
+A composite placeholder that mirrors a media card layout.
+
+- `variant="card"` outputs a pre-arranged composite rather than a single shape.
+- `animation="shimmer"` is the default — a gradient sliding across the placeholder.
+
+```tsx
+import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
+
+export default function CardSkeleton() {
+  return <SkeletonBlock variant="card" width="100%" height="auto" />;
+}
+```
+
+## Profile
 
 - Use `variant="profile"` for an avatar with two text lines beside it.
 
@@ -56,7 +50,7 @@ export default function ProfileSkeleton() {
 }
 ```
 
-### Text
+## Text
 
 - Use `variant="text"` for stacked paragraph lines.
 
@@ -68,7 +62,7 @@ export default function TextSkeleton() {
 }
 ```
 
-### Rectangle
+## Rectangle
 
 - Use `variant="rect"` as a block placeholder for images and charts. It is the default.
 
@@ -80,7 +74,7 @@ export default function RectSkeleton() {
 }
 ```
 
-### Circle
+## Circle
 
 - Use `variant="circle"` for avatars and round icon slots.
 
@@ -92,7 +86,7 @@ export default function CircleSkeleton() {
 }
 ```
 
-### Pulse animation
+## Pulse animation
 
 - Use `animation="pulse"` for the classic fading placeholder instead of the sliding shimmer.
 
@@ -104,7 +98,7 @@ export default function PulseSkeleton() {
 }
 ```
 
-### No animation
+## No animation
 
 - Use `animation="none"` for a static placeholder — the right choice under `prefers-reduced-motion`.
 
@@ -116,7 +110,7 @@ export default function StaticSkeleton() {
 }
 ```
 
-### Custom composition
+## Custom composition
 
 - Use `variant="custom"` to build atomic pieces yourself.
 - `width` `height` and `radius` take a number or a CSS string, and are set inline so they override Tailwind classes.
@@ -139,20 +133,29 @@ export default function CustomSkeleton() {
 }
 ```
 
-## Features
-Learn about the Skeleton component's loading placeholder features, featuring a subtle pulsing animation that reduces perceived wait times.
+## About Shadcn Skeleton
 
-Easily adapt the component's styling and behavior to fit your application's unique design system.
+**What it is.** `SkeletonBlock` provides ready-made composite placeholders (`card`, `profile`, `text`, `rect`, `circle`) and atomic `custom` shapes (`width`, `height`, `radius`) with `shimmer`, `pulse`, or `none` animations.
 
-Built with accessibility in mind, ensuring all users can interact with your application effectively.
+**How it is built.** Injects pure CSS `@keyframes` for the sliding shimmer (no `globals.css` changes needed) and applies `width`, `height`, and `radius` inline so exact dimensions override utility classes.
 
-Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+**When to use it.** Use `SkeletonBlock` while data is fetching to preserve layout geometry and prevent layout shifts. For compact spinners or indeterminate bars, use [Loader](https://avaraui.com/docs/nextjs/loader).
 
-Optimized for maximum performance with minimal re-renders and efficient state management.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+- Layout-preserving loading placeholders for cards, profiles, avatars, and text blocks (`shimmer`, `pulse`, `none`)
+
+**When not to use**
+
+- Inline spinners or indeterminate bars — use [Loader](https://avaraui.com/docs/nextjs/loader)
+- Percentage progress indicators — use [Progress](https://avaraui.com/docs/nextjs/progress)
+
+**Agent notes**
+
+- Named export: `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock"`
+- Use `animation="none"` for static placeholders under `prefers-reduced-motion`
 
 ## Props Reference
 
@@ -164,6 +167,31 @@ Follow standard design principles when implementing this component. Ensure prope
 | `height` | `string \| number` | `undefined` | Sets an exact inline height (e.g. `48` or `"100vh"`). Overrides Tailwind utility classes. |
 | `radius` | `string \| number` | `undefined` | Sets an exact border-radius (e.g. `"1rem"` or `8`). Useful for perfect circles or custom rounding. |
 | `className` | `string` | `undefined` | Allows you to pass custom Tailwind classes to manage layout constraints like margins or max-widths. |
+
+## Works with other components
+
+- Mirror the geometry of [Card](https://avaraui.com/docs/nextjs/card), [Item](https://avaraui.com/docs/nextjs/item), and [Data Table](https://avaraui.com/docs/nextjs/data-table) rows while loading.
+- Pair with [Loader](https://avaraui.com/docs/nextjs/loader) for action button or overlay spinners.
+
+## How do I add a loading skeleton in React with Tailwind?
+
+Render `SkeletonBlock` with a `variant` that matches what is loading: `"card"`, `"profile"`, `"text"`, `"rect"` or `"circle"`. Swap it for the real content when your data arrives. `card` and `profile` output ready-made composite layouts with several placeholder shapes.
+
+## Do I need to add shimmer keyframes to globals.css?
+
+No. `SkeletonBlock` injects its own CSS `@keyframes` for the sliding shimmer, so nothing in your global stylesheet changes. It uses no animation library, which keeps it light on pages that show many placeholders at once.
+
+## How do I switch between shimmer and pulse animations?
+
+Set `animation` to `"shimmer"`, `"pulse"` or `"none"`. `shimmer` is the default and slides a gradient across the shape, `pulse` fades its opacity, and `none` leaves a static placeholder. Use `none` where you want no motion at all.
+
+## How do I make a skeleton with a custom size or shape?
+
+Use `variant="custom"` with `width`, `height` and `radius`. Each takes a number in pixels or a CSS string such as `"50%"` or `"100vh"`, and these inline values override Tailwind utility classes. A matching `width`, `height` and `radius` makes a perfect circle.
+
+## How do I make skeletons match my real layout?
+
+Give each `SkeletonBlock` the same dimensions as the content it stands in for, using `width`, `height` and `className` for margins or max-width. Matching the geometry of the final [Card](https://avaraui.com/docs/nextjs/card) or table row avoids layout shift when real data loads.
 
 ---
 

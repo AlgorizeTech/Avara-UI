@@ -4,14 +4,11 @@ export const metadata = docsPageMetadata("pagination");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Pagination
 
-A complex navigation component that intelligently handles page rendering, ellipsis calculation, and edge bounds.
-
-Building pagination logic from scratch is notoriously difficult. If you have 100 pages, you can't render 100 buttons. This `PaginationBlock` automatically calculates the optimal view (e.g., `1, 2, ..., 4, 5, 6, ..., 100`) based on the current active page, the total number of pages, and your specified sibling count. It also seamlessly disables the "Next" and "Previous" controls when you hit the edges.
-
-Click through the page numbers in each preview to watch the ellipses shift.
+A controlled pagination bar (`Pagination`) with automatic ellipsis calculation, `siblingCount`, opt-in `showPageJump` (input or select), and `showPageSize` controls.
 
 export const usageDefault = `"use client";
 
@@ -89,7 +86,7 @@ import { Pagination } from "@/components/custom/blocks/PaginationBlock";
 export default function DropdownJump() {
   const [currentPage, setCurrentPage] = useState(7);
 
-  // Every page is listed in a <select>; best when totalPages stays modest.
+  // Every page is listed in a custom dropdown; best when totalPages stays modest.
   return (
     <Pagination
       currentPage={currentPage}
@@ -148,10 +145,11 @@ export default function CustomerDirectory() {
   name="pagination"
   colorControl
   columns={1}
+  installation={<Installation name="pagination" usage="below" />}
   examples={[
     {
       title: "Pagination",
-      subheading: "Hold `currentPage` yourself and update it from `onPageChange`.",
+      description: "Hold `currentPage` yourself and update it from `onPageChange`.",
       propNotes: [
         {
           prop: "currentPage",
@@ -168,20 +166,6 @@ export default function CustomerDirectory() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/PaginationBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="pagination" />
-
-## Examples
-
-<ExampleShowcase minHeight={190}
-  name="pagination"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Sibling count",
       propNotes: [
@@ -197,7 +181,7 @@ export default function CustomerDirectory() {
     },
     {
       title: "Jump to page & rows per page",
-      subheading: "Both controls are opt-in booleans; the page-size dropdown reports through `onPageSizeChange`.",
+      description: "Both controls are opt-in booleans; the page-size dropdown reports through `onPageSizeChange`.",
       propNotes: [
         {
           prop: "showPageJump",
@@ -264,6 +248,35 @@ export default function CustomerDirectory() {
     },
   ]}
 />
+
+## About Shadcn Pagination
+
+**What it is.** `Pagination` renders page buttons with ellipsis collapsing (`siblingCount`), Previous and Next buttons that disable at the ends, an optional `showPageJump` control (numeric input or `pageJumpVariant="select"` dropdown), and a `showPageSize` rows-per-page dropdown. It draws the controls only; you slice the data.
+
+**How it is built.** Strictly controlled via `currentPage`, `totalPages`, and `onPageChange` so client-side and server-side datasets use the exact same API. Page numbers are buttons, not links, and the rows-per-page and page dropdowns are custom listboxes rather than native `<select>` elements.
+
+**When to use it.** Use `Pagination` below <DocLink to="table">Table</DocLink>, search results, and galleries. For built-in client-side pagination, <DocLink to="data-table">Data Table</DocLink> includes one out of the box.
+
+## For AI agents
+
+<AgentBrief name="pagination">
+
+**When to use**
+
+- Controlled page navigation for tables, search results, or multi-page lists (`currentPage`, `totalPages`, `onPageChange`)
+
+**When not to use**
+
+- Client-side tables that already use <DocLink to="data-table">Data Table</DocLink> built-in pagination
+
+**Agent notes**
+
+- Named export: `import { Pagination } from "@/components/custom/blocks/PaginationBlock"`
+- Both `currentPage` (1-based) and `totalPages` are required; re-derive `totalPages` when `onPageSizeChange` updates `pageSize`, and reset `currentPage` to 1.
+- Below the `md` breakpoint the number list always uses one sibling and Previous/Next move to their own row, so `siblingCount` only affects wider screens.
+- Extra `nav` attributes (`className`, `style`, `id`) pass to the root. The atomic parts (`PaginationItem`, `PaginationPrevious`, `PaginationNext`, `PaginationEllipsis`, `PaginationPageSize`, `PaginationPageJump`) are also named exports.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -393,8 +406,8 @@ export default function CustomerDirectory() {
           <code>false</code>
         </td>
         <td>
-          Shows a "Rows per page" dropdown. Requires <code>pageSize</code> and{" "}
-          <code>onPageSizeChange</code>.
+          Shows a "Rows per page" dropdown. Pair it with <code>pageSize</code>{" "}
+          and <code>onPageSizeChange</code>; without a handler picking a size does nothing.
         </td>
       </tr>
       <tr>
@@ -450,13 +463,42 @@ export default function CustomerDirectory() {
           <code>undefined</code>
         </td>
         <td>
-          Themes the active page, focus rings, hover states, and dropdown selection highlights — supports preset names (e.g. <code>"indigo"</code>, <code>"rose"</code>, <code>"emerald"</code>, <code>"lavender"</code>) or a custom hex string.
+          Themes the active page, focus rings, hover states, and dropdown selection highlights. Accepts the presets <code>"primary"</code>, <code>"indigo"</code>, <code>"rose"</code>, <code>"emerald"</code>, <code>"lavender"</code>, <code>"blue"</code> and <code>"zinc"</code>, or any CSS color string such as a hex or <code>rgb()</code> value. Unset uses the theme <code>--primary</code>.
         </td>
       </tr>
     </tbody>
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Drop `Pagination` into `TableFooter` of <DocLink to="table">Table</DocLink> for server-paginated datasets.
+- Use <DocLink to="data-table">Data Table</DocLink> when you want client-side paging wired to rows, search and sorting for you.
+- Place it at the bottom of a <DocLink to="card">Card</DocLink> that holds a results list or a gallery.
+
+## How does siblingCount decide which page numbers Pagination shows?
+
+`siblingCount` is how many numbers sit either side of `currentPage`. The first and last page always stay visible, with an ellipsis for each gap. When `totalPages` is at most `siblingCount + 5`, every page shows. Below the `md` breakpoint a fixed one-sibling layout is used instead.
+
+## How do I connect Pagination to the Next.js router or a URL?
+
+Read the page from your route, for example a `page` search param, pass it as `currentPage`, and call `router.push` or `setSearchParams` inside `onPageChange`. The numbers are `<button>` elements, not links, so crawlers will not follow them. The file has no `next/*` imports and only needs `lucide-react`.
+
+## How do the jump-to-page controls work in Pagination?
+
+`showPageJump` adds a number input that commits on Enter, blur or the Go button. Values below 1 or above `totalPages` are clamped, and non-numbers reset to the current page. With `pageJumpVariant="select"` it becomes a dropdown listing every page, which suits small page counts.
+
+## How do I add a rows-per-page selector to Pagination?
+
+Set `showPageSize` and pass `pageSize`, `pageSizeOptions` and `onPageSizeChange`. The callback receives a number. Store it, recompute `totalPages` with `Math.ceil(totalItems / pageSize)` and reset `currentPage` to 1. A `pageSize` missing from `pageSizeOptions` is added to the list automatically.
+
+## Is Pagination keyboard and screen reader friendly?
+
+The root is a `nav` labelled "pagination", the active page has `aria-current="page"`, and Previous and Next carry labels. In the dropdowns the trigger is a focusable button and Escape closes the list, but options are chosen with a pointer click, so they have no arrow-key navigation.
+
+## How do I change the Pagination accent color?
+
+Pass `color` as a preset name (`"indigo"`, `"rose"`, `"emerald"`, `"lavender"`, `"blue"`, `"zinc"` or `"primary"`) or any CSS color string. It sets a `--theme-color` variable on the `nav` that tints the active page, focus rings and dropdown highlights. Without `color`, everything follows the theme `--primary` token.
 
 <DocsJsonLd slug="pagination" />
+<FaqJsonLd slug="pagination" />

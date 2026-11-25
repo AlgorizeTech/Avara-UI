@@ -3,7 +3,7 @@
   "name": "circular-text-video-badge",
   "type": "registry:block",
   "title": "Circular Text — Video badge",
-  "description": "A phrase on the ring and a play button in the middle, both in the theme colour. The ring turns once every 20 seconds and holds still under prefers-reduced-motion.",
+  "description": "The \"Video badge\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

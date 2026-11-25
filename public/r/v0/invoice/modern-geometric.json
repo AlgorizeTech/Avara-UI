@@ -3,7 +3,7 @@
   "name": "invoice-modern-geometric",
   "type": "registry:block",
   "title": "Invoice — Modern Geometric",
-  "description": "Fashion & creative agency invoice featuring abstract geometric pattern tiles, solid navy recipient badge, zebra table rows, watermark arcs, and terms footer.",
+  "description": "The \"Modern Geometric\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

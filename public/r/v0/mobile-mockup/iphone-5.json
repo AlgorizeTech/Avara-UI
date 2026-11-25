@@ -3,7 +3,7 @@
   "name": "mobile-mockup-iphone-5",
   "type": "registry:block",
   "title": "Mobile Mockup — iPhone 5",
-  "description": "The retro frame — thick bezels, a home button and a 16:9 screen.",
+  "description": "The \"iPhone 5\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

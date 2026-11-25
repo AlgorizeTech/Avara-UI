@@ -3,7 +3,7 @@
   "name": "falling-tags-colorful",
   "type": "registry:block",
   "title": "Falling Tags — Colorful",
-  "description": "Vibrant multi-color playful palette across rich indigo, emerald, rose, and amber tones.",
+  "description": "The \"Colorful\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

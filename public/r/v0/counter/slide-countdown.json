@@ -3,7 +3,7 @@
   "name": "counter-slide-countdown",
   "type": "registry:block",
   "title": "Counter — Slide countdown",
-  "description": "Days, hours, minutes and seconds to a date on soft tiles. Watch the seconds: only the figure that changed slides, the others hold still.",
+  "description": "The \"Slide countdown\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -3,7 +3,7 @@
   "name": "floating-contact-button-floating-contact-button",
   "type": "registry:block",
   "title": "Floating Contact Button",
-  "description": "A corner-anchored trigger that expands into a glass chat panel.",
+  "description": "The \"Floating contact button\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

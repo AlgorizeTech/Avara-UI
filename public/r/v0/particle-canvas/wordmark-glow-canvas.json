@@ -3,7 +3,7 @@
   "name": "particle-canvas-wordmark-glow-canvas",
   "type": "registry:block",
   "title": "Particle Canvas — Wordmark Glow Canvas",
-  "description": "A giant bottom-anchored wordmark whose letters rise with a slow spring bounce on scroll, beside a pointer-tracking radial glow.",
+  "description": "The \"Wordmark Glow Canvas\" example from the Avara UI docs.",
   "dependencies": [
     "next-themes",
     "tw-animate-css"

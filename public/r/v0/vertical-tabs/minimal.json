@@ -3,7 +3,7 @@
   "name": "vertical-tabs-minimal",
   "type": "registry:block",
   "title": "Tabs — Minimal",
-  "description": "No card chrome at all — just the rail and the pane.",
+  "description": "The \"Minimal\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

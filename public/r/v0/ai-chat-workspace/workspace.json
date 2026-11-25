@@ -3,7 +3,7 @@
   "name": "ai-chat-workspace-workspace",
   "type": "registry:block",
   "title": "AI Chat Workspace — Workspace",
-  "description": "Send a prompt to watch the steps run. Try Research, the effort slider, a file and the model menu beside the prompt bar.",
+  "description": "The \"Workspace\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

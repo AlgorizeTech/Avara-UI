@@ -3,6 +3,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("radial-orbital-timeline");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Radial Orbital Timeline
@@ -232,20 +233,17 @@ export default function SingleOrbitExample() {
 <ExampleShowcase minHeight={480} headingLevel={2}
   name="radial-orbital-timeline"
   columns={1}
+  installation={<Installation name="radial-orbital-timeline" usage="below" />}
   examples={[
     {
       title: "Dual Orbit Timeline (Default)",
-      subheading: "Renders 2 concentric counter-rotating orbital lines for dense timeline items.",
+      description: "Renders 2 concentric counter-rotating orbital lines for dense timeline items.",
       props: { orbitCount: 2 },
       usage: defaultUsage,
       code: extractCode("src/components/custom/blocks/RadialOrbitalTimeline.tsx"),
     },
   ]}
 />
-
-## Installation
-
-<Installation name="radial-orbital-timeline" />
 
 ## Single Orbit Variant
 
@@ -255,7 +253,7 @@ export default function SingleOrbitExample() {
   examples={[
     {
       title: "Single Orbit Timeline",
-      subheading: "Pass `orbitCount={1}` to render a clean single circular orbit ring.",
+      description: "Pass `orbitCount={1}` to render a clean single circular orbit ring.",
       props: { orbitCount: 1 },
       usage: singleOrbitUsage,
       code: extractCode("src/components/custom/blocks/RadialOrbitalTimeline.tsx"),
@@ -263,7 +261,39 @@ export default function SingleOrbitExample() {
   ]}
 />
 
-## Props Reference: RadialOrbitalTimeline
+## About Shadcn Radial Orbital Timeline
+
+**What it is.** **Shadcn Radial Orbital Timeline** (`RadialOrbitalTimeline`) is an interactive circular orbit visualization that arranges milestone nodes around a glowing central nucleus.
+
+**How it is built.** A default export that spins its nodes with `requestAnimationFrame` and builds the detail card from the `Card` primitive. Clicking a node opens one card with status, date, description, an energy meter and chips for its `relatedIds`. `orbitCount` picks a single ring (`1`) or two counter-rotating rings (`2`).
+
+**When to use it.** Use it for system architecture overviews, product lifecycle wheels, AI workflow stages, and interactive roadmap explorers.
+
+## For AI agents
+
+<AgentBrief name="radial-orbital-timeline">
+
+**When to use**
+
+- System architecture overviews, product lifecycle wheels
+- AI workflow stages, interactive roadmap explorers
+
+**When not to use**
+
+- A linear list of milestones: use <DocLink to="timeline">Timeline</DocLink>
+- An agent hierarchy: use <DocLink to="agent-graph">Agent Graph</DocLink>
+
+**Agent notes**
+
+- Import the default export: `import RadialOrbitalTimeline, { type TimelineItem } from "@/components/custom/blocks/RadialOrbitalTimeline"`.
+- Props are `orbitCount` (`1 | 2`, default `2`), `outerOrbitItems`, `innerOrbitItems`, `timelineData` and `className`. With no data it renders built-in sample items.
+- With `orbitCount={1}` only `outerOrbitItems` (or else `timelineData`) is drawn and `innerOrbitItems` is ignored. With `2`, `outerOrbitItems` and `innerOrbitItems` win over `timelineData`.
+- Each `TimelineItem` needs `id` (a unique number), `title`, `date`, `content`, `icon` (a component such as a Lucide icon), `relatedIds` (`number[]`, may be empty), `status` (`"completed" | "in-progress" | "pending"`) and `energy` (0 to 100). `category`, `color` and `layer` are optional.
+- Clicking a node stops the rotation, turns that node to the top and opens its card. Clicking it again, or the empty background, resumes the rotation.
+
+</AgentBrief>
+
+## Props Reference
 
 <div className="overflow-x-auto">
   <table>
@@ -301,7 +331,7 @@ export default function SingleOrbitExample() {
           <code>undefined</code>
         </td>
         <td>
-          Dedicated array of timeline items placed on the 1st Outer Orbit Line (rotates CCW).
+          Items placed on the outer orbit, which rotates clockwise. With <code>orbitCount</code> <code>1</code> it is the only orbit drawn.
         </td>
       </tr>
       <tr>
@@ -315,7 +345,7 @@ export default function SingleOrbitExample() {
           <code>undefined</code>
         </td>
         <td>
-          Dedicated array of timeline items placed on the 2nd Inner Orbit Line (rotates CW).
+          Items placed on the inner orbit, which rotates counter-clockwise. Ignored when <code>orbitCount</code> is <code>1</code>.
         </td>
       </tr>
       <tr>
@@ -329,7 +359,7 @@ export default function SingleOrbitExample() {
           <code>DEFAULT_TIMELINE_DATA</code>
         </td>
         <td>
-          Combined array of items. Each item can take optional <code>layer: "outer" | "inner"</code> or be auto-distributed across dual orbits.
+          Fallback array used when no orbit-specific array is given. In dual mode, if any item sets <code>layer: "outer" | "inner"</code> only those items are drawn, on that orbit; if none does, even indexes go outer and odd indexes inner.
         </td>
       </tr>
       <tr>
@@ -343,13 +373,38 @@ export default function SingleOrbitExample() {
           <code>undefined</code>
         </td>
         <td>
-          Additional Tailwind CSS class names for custom container styling.
+          Classes merged onto the root container, which is <code>h-[650px] sm:h-[720px]</code> by default, so you can override its size.
         </td>
       </tr>
     </tbody>
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Use <DocLink to="timeline">Timeline</DocLink> or <DocLink to="animated-timeline">Animated Timeline</DocLink> when the milestones belong in a linear history instead of a ring.
+- Reach for <DocLink to="agent-graph">Agent Graph</DocLink> when you need a parent and child tree with drawn connectors rather than `relatedIds` chips.
+- The detail popover is built from <DocLink to="card">Card</DocLink>, so installing the timeline pulls it in and your Card styling carries over.
+
+## How do I split items between the two orbits in `RadialOrbitalTimeline`?
+
+Pass `outerOrbitItems` and `innerOrbitItems` with `orbitCount={2}`. Alternatively pass one `timelineData` array and set `layer` on every item. If no item sets `layer`, the component alternates them: even indexes land on the outer ring and odd indexes on the inner one. If only some do, items without it are not drawn.
+
+## Which direction does each orbit rotate?
+
+The outer orbit turns clockwise and the inner orbit turns counter-clockwise, both at a steady 12 degrees per second. Opening a node stops the rotation and turns that node to the top. Collapsing it, or clicking the empty background, starts the rotation again.
+
+## What happens when I click a connected node chip?
+
+The chip calls the same toggle as clicking the node, so the current card closes and the related node opens and turns to the top. A `relatedIds` entry needs a matching `id` among the rendered items, or the chip renders empty. That includes inner items, which are not drawn when `orbitCount={1}`.
+
+## How do I change a node's colour or its glow size?
+
+Set `color` on a `TimelineItem` to a full class string such as `"bg-blue-500 text-white border-blue-400"`. Without it, the badge cycles through ten built-in colours. The node's glow grows with `energy`, and the same value fills the meter in the open card.
+
+## Can I use `RadialOrbitalTimeline` with a keyboard or reduced motion?
+
+Not fully. Nodes are clickable `div` elements with no `tabIndex`, role or key handler, so selection is pointer and touch only, and the rotation does not check `prefers-reduced-motion`. If either matters, add your own list of the same items beside the ring.
 
 <DocsJsonLd slug="radial-orbital-timeline" />
+<FaqJsonLd slug="radial-orbital-timeline" />

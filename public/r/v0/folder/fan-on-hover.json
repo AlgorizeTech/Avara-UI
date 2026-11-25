@@ -3,7 +3,7 @@
   "name": "folder-fan-on-hover",
   "type": "registry:block",
   "title": "Folder — Fan on hover",
-  "description": "Hover a card for its name. Use the arrows — or drag a card sideways — to page through; the window wraps at either end.",
+  "description": "The \"Fan on hover\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

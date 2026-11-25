@@ -3,14 +3,12 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("profile-card");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Profile Card
 
-A compact creator profile card with a pointer-reactive pastel aurora cover, pulsing availability dot, scalloped verified seal, expandable skill chips, counting stats, and an animated Follow <DocLink to="button">Button</DocLink> — alongside an interactive **Account Menu** variant featuring a morphing status pill, workspace switcher, optional storage meter, and two-step sign out.
-
-<AgentVariants slug="profile-card" />
+A creator profile card (`ProfileCard`) with pointer-reactive aurora cover, verified seal, and counting stats, paired with a morphing `AccountMenu` variant.
 
 export const usageDefault = `import { ProfileCard } from "@/components/custom/blocks/ProfileCardBlock";
 
@@ -50,14 +48,16 @@ export default function AccountMenuExample() {
 }`;
 
 <ExampleShowcase
-  minHeight={600}
+  minHeight={560}
+  headingLevel={2}
   name="profile-card"
   colorControl={false}
   columns={1}
+  installation={<Installation name="profile-card" usage="below" />}
   examples={[
     {
       title: "Aurora Profile Card",
-      subheading:
+      description:
         "Creator profile card with pointer-reactive aurora cover, expandable skills, counting stats, and Follow button.",
       propNotes: [
         {
@@ -87,22 +87,9 @@ export default function AccountMenuExample() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ProfileCardBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="profile-card" />
-
-<ExampleShowcase
-  minHeight={560}
-  name="profile-card"
-  colorControl={false}
-  columns={1}
-  examples={[
     {
       title: "Account Menu",
-      subheading:
+      description:
         "Morphing account pill and card with live status picker, quick action tiles, workspace switcher, optional storage meter, and two-step sign out.",
       propNotes: [
         {
@@ -129,6 +116,36 @@ export default function AccountMenuExample() {
   ]}
 />
 
+## About Profile Card
+
+**What it is.** `ProfileCard` renders a creator/member card with a pointer-reactive aurora cover, online `active` dot, `verified` badge, expandable skills, and Follow CTA, while `AccountMenu` provides an expandable account pill with status picker, workspace switcher, storage meter, and two-step sign out.
+
+**How it is built.** Two focused components (`ProfileCardBlock` and `AccountMenuBlock`) bundled in the `profile-card` registry item, animated with plain CSS and the Web Animations API (no animation library) and installed together with the library's `Button`.
+
+**When to use it.** Use `ProfileCard` for creator bios, team directories, and hover/modal user cards; use `AccountMenu` in app headers and sidebars. For full-screen user profiles, see <DocLink to="profile-page">Profile Page</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="profile-card">
+
+**When to use**
+
+- Compact creator/team cards (`ProfileCard`) or interactive workspace account menus (`AccountMenu`)
+
+**When not to use**
+
+- Full-page bento profile layouts — use <DocLink to="profile-page">Profile Page</DocLink>
+
+**Agent notes**
+
+- Named exports: `ProfileCard` (`ProfileCardBlock.tsx`) and `AccountMenu` (`AccountMenuBlock.tsx`) via the `profile-card` registry item
+- Toggle `showModal` and `showStorage` on `AccountMenu` to control initial expansion and storage meter visibility
+- `AccountMenu` also takes `avatar`, `defaultWorkspace`, `onStatusChange`, `onWorkspaceChange`, `onUpgrade`, `onProfile`, `onSettings`, `onShortcuts`, `onNewWorkspace`, `onSignOut` and `className`; a `workspaces` item is `{ id, name, plan, color? }`
+- `ProfileCard` `variant` only sets a `data-variant` attribute; `stats` items are `{ label, value, decimals?, compact? }` and only the first three render
+- Both components are `forwardRef` to their root `div` and keep follow, save and status state internally
+
+</AgentBrief>
+
 ## Props Reference
 
 ### ProfileCard
@@ -148,7 +165,7 @@ export default function AccountMenuExample() {
         <td><code>variant</code></td>
         <td><code>"aurora" | "account-menu"</code></td>
         <td><code>"aurora"</code></td>
-        <td>Visual style variant of the profile card.</td>
+        <td>Only sets a <code>data-variant</code> attribute on the card; it does not change what renders. Use <code>AccountMenu</code> for the account menu.</td>
       </tr>
       <tr>
         <td><code>name</code></td>
@@ -309,4 +326,33 @@ export default function AccountMenuExample() {
   </table>
 </div>
 
+## Works with other components
+
+- Embed `AccountMenu` inside <DocLink to="navbar">Navbar</DocLink> or <DocLink to="sidebar">Sidebar</DocLink> headers, or pair `ProfileCard` with <DocLink to="social-links">Social Links</DocLink>.
+
+## How do I show the storage usage meter inside AccountMenu?
+
+Pass `showStorage={true}` to `AccountMenu`. The meter renders only while `storage` is not `null`, and `storage={[usedGb, totalGb]}` sets the numbers, with `[6.4, 10]` as the default. The bar fill is used divided by total, capped at full.
+
+## How do I listen for Follow, Message and Save clicks on ProfileCard?
+
+Use `onFollowChange(following)`, `onMessage()` and `onSaveChange(saved)`. Follow and save state live inside the card, and `defaultFollowing` only sets the starting value. The first stat tile, treated as followers, counts one up or down relative to that starting state when Follow is toggled.
+
+## How do I change the ProfileCard stats, skills and cover colors?
+
+Pass `stats` as `{ label, value, decimals?, compact? }` objects. Only the first three render, and `compact` shortens thousands to `12.4k`. `skills` shows the first three chips with a `+n` chip for the rest, and `cover` takes three colors for the aurora.
+
+## Does the ProfileCard variant prop change its design?
+
+No. `variant` accepts `"aurora"` or `"account-menu"` but only writes a `data-variant` attribute on the card, so both values render the same aurora card. For the expandable account pill, use the separate `AccountMenu` export from `AccountMenuBlock`, which `ProfileCardBlock` also re-exports.
+
+## How do I start AccountMenu collapsed as a pill?
+
+Set `showModal={false}`. The menu then renders as a pill that expands on click, and `Escape` or the Collapse button folds it back. Changing `showModal` later reopens or closes it. Sign out takes two clicks: the first asks, and a second within about 2.6 seconds fires `onSignOut`.
+
+## What does the profile-card install add, and does it need Next.js?
+
+It installs `ProfileCardBlock`, `AccountMenuBlock` and the library `Button`, plus the npm package `motion`. There are no `next/*` imports and the avatar is a plain `img`, so it works in Vite. Animations switch off for `prefers-reduced-motion` through `useReducedMotion`.
+
 <DocsJsonLd slug="profile-card" />
+<FaqJsonLd slug="profile-card" />

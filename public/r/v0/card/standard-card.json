@@ -3,7 +3,7 @@
   "name": "card-standard-card",
   "type": "registry:block",
   "title": "Card — Standard Card",
-  "description": "Stack `CardHeader`, `CardContent` and `CardFooter` — spacing is handled for you.",
+  "description": "The \"Standard Card\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

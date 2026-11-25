@@ -3,7 +3,7 @@
   "name": "ribbon-drift-ribbon-drift-hero-card",
   "type": "registry:block",
   "title": "Ribbon Drift — Ribbon Drift Hero Card",
-  "description": "Dual infinite marquee ribbons, central 3D character, ambient gradient drift, and frosted promo card.",
+  "description": "The \"Ribbon Drift Hero Card\" example from the Avara UI docs.",
   "dependencies": [
     "@radix-ui/react-avatar",
     "lucide-react",

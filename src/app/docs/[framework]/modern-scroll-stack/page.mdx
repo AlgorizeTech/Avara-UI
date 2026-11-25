@@ -3,16 +3,12 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("modern-scroll-stack");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
-import { Installation } from "@/components/site/installation";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Modern Scroll Stack
 
-A tactile scroll-driven card stacking section where individual service cards slide up from the bottom of the viewport with staggered horizontal offsets and smoothly tilt into organic resting angles (`0°`, `+3.5°`, `-4.5°`, `+3.5°`) as they lock into the sticky deck.
-
-Scroll inside the preview container below to watch each card rise over the previous one and fan out across the stage.
-
-<AgentVariants slug="modern-scroll-stack" />
+A zero-dependency scroll-driven card stack (`ModernScrollStack`) using CSS `position: sticky` and `requestAnimationFrame` in `fan` and `stacked` variants.
 
 export const usageServiceCards = `import { ModernScrollStack } from "@/components/custom/blocks/ModernScrollStackBlock";
 
@@ -38,10 +34,11 @@ export default function StackedCardsExample() {
   name="modern-scroll-stack"
   columns={1}
   colorControl={false}
+  installation={<Installation name="modern-scroll-stack" usage="below" />}
   examples={[
     {
       title: "Service cards (Horizontal Fan)",
-      subheading:
+      description:
         "Each card slides up flat from the bottom-center and glides into its horizontal fan slot with a smooth tilt.",
       propNotes: [
         {
@@ -83,7 +80,7 @@ export default function StackedCardsExample() {
     },
     {
       title: "Centered Stacked Pile",
-      subheading:
+      description:
         "Cards rise straight up the center and stack directly on top of one another with alternating angled tilts so every card's edges peek out behind the deck.",
       propNotes: [
         {
@@ -119,26 +116,36 @@ export default function StackedCardsExample() {
   ]}
 />
 
-## Installation
+## About Shadcn Modern Scroll Stack
 
-<Installation name="modern-scroll-stack" />
+**What it is.** `ModernScrollStack` renders scroll-linked sticky cards in `variant="fan"` (horizontal cascade with `cardOffsetX`) or `variant="stacked"` (centered alternating-angle pile).
 
-## Features
+**How it is built.** Uses native CSS `position: sticky`, `requestAnimationFrame` transforms, and a `ResizeObserver` that clamps offsets on tablet/mobile viewports — zero external animation libraries.
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Scroll-Linked Tilt Physics">
-    <p>Cards enter flat at the bottom of the viewport and smoothly interpolate their rotation using an ease-out curve as they approach the sticky lock position.</p>
-  </InfoCard>
-  <InfoCard title="Horizontal Fan Cascade">
-    <p>Each card is offset along the X-axis so all stacked cards remain partially visible, creating a physical hand-dealt card deck aesthetic.</p>
-  </InfoCard>
-  <InfoCard title="Responsive Container Clamping">
-    <p>A built-in <code>ResizeObserver</code> automatically scales the horizontal fan offset and card dimensions on tablet and mobile viewports so cards never overflow horizontally.</p>
-  </InfoCard>
-  <InfoCard title="Zero External Animation Dependencies">
-    <p>Powered by native CSS <code>position: sticky</code> and <code>requestAnimationFrame</code> transforms for silky 60fps performance without heavy runtime libraries.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `ModernScrollStack` for lightweight, dependency-free sticky card stacks. For GSAP ScrollTrigger timelines with 5 specialized layouts, use <DocLink to="scroll-stack">Scroll Stack</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="modern-scroll-stack">
+
+**When to use**
+
+- Zero-dependency sticky scroll stacks in horizontal fan (`variant="fan"`) or centered pile (`variant="stacked"`) layouts
+
+**When not to use**
+
+- GSAP ScrollTrigger scrubbed stacks — use <DocLink to="scroll-stack">Scroll Stack</DocLink>
+- Panoramic 3D flipping cards — use <DocLink to="scroll-split-cards">Scroll Split Cards</DocLink>
+
+**Agent notes**
+
+- Named export: `import { ModernScrollStack } from "@/components/custom/blocks/ModernScrollStackBlock"`
+- `cardOffsetX` (default `78`) sets the horizontal fan spacing and only applies to `variant="fan"`; `variant="stacked"` forces it to 0. `cardGap` (default `48`) is the vertical scroll distance between cards.
+- The section header is off by default. Pass `showHeader` together with `eyebrow`, `heading` or `subheading`, which have no built-in text.
+- Each variant has its own default `items`. Pass `items` of `ModernScrollStackItem` (`id`, `title` and `description` required) to replace them. `stat` and `badge` render only in the stacked variant, and `image` only in the fan variant.
+- Inside a fixed-height scrollable box, pass `scrollerRef` pointing at that element; without it the stack follows window scroll.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -164,31 +171,31 @@ export default function StackedCardsExample() {
       <tr>
         <td><code>items</code></td>
         <td><code>ModernScrollStackItem[]</code></td>
-        <td><code>DEFAULT_MODERN_SCROLL_STACK_ITEMS</code></td>
-        <td>Array of card items to render in the scroll stack. Defaults to the 4 Demo 1 service cards (Web Design, Content Strategy, SEO &amp; Growth, Brand Identity).</td>
+        <td><code>DEFAULT_MODERN_SCROLL_STACK_ITEMS</code> (fan) or <code>DEFAULT_STACKED_SCROLL_STACK_ITEMS</code> (stacked)</td>
+        <td>Array of card items to render in the scroll stack. The fan defaults are AI Automation, Product Strategy, Cloud Architecture and Interactive Motion; the stacked defaults are four stat cards (10x, 99.9%, 48h, 4.9★).</td>
       </tr>
       <tr>
         <td><code>eyebrow</code></td>
         <td><code>string</code></td>
-        <td><code>"DEMO 1"</code></td>
+        <td><code>undefined</code></td>
         <td>Small uppercase accent label displayed above the main heading.</td>
       </tr>
       <tr>
         <td><code>heading</code></td>
         <td><code>string</code></td>
-        <td><code>"Service cards"</code></td>
+        <td><code>undefined</code></td>
         <td>Main section heading displayed above the card stack.</td>
       </tr>
       <tr>
         <td><code>subheading</code></td>
         <td><code>string</code></td>
-        <td><code>"Highlight what you offer..."</code></td>
+        <td><code>undefined</code></td>
         <td>Supporting description text displayed below the heading.</td>
       </tr>
       <tr>
         <td><code>showHeader</code></td>
         <td><code>boolean</code></td>
-        <td><code>true</code></td>
+        <td><code>false</code></td>
         <td>Controls whether the section header block (eyebrow, heading, subheading) is rendered.</td>
       </tr>
       <tr>
@@ -212,14 +219,14 @@ export default function StackedCardsExample() {
       <tr>
         <td><code>cardWidth</code></td>
         <td><code>number</code></td>
-        <td><code>316</code></td>
-        <td>Width of each service card in pixels on desktop viewports.</td>
+        <td><code>316</code> (fan) or <code>430</code> (stacked)</td>
+        <td>Width of each card in pixels on desktop viewports.</td>
       </tr>
       <tr>
         <td><code>cardHeight</code></td>
         <td><code>number</code></td>
-        <td><code>376</code></td>
-        <td>Height of each service card in pixels on desktop viewports.</td>
+        <td><code>376</code> (fan) or <code>308</code> (stacked)</td>
+        <td>Height of each card in pixels on desktop viewports.</td>
       </tr>
       <tr>
         <td><code>scrollerRef</code></td>
@@ -260,7 +267,7 @@ export default function StackedCardsExample() {
         <td><code>title</code></td>
         <td><code>string</code></td>
         <td>Required</td>
-        <td>Service title displayed in bold near the bottom of the card.</td>
+        <td>Card title. In the fan variant it sits at the bottom of the card; in the stacked variant it sits in the centre under the stat.</td>
       </tr>
       <tr>
         <td><code>description</code></td>
@@ -271,14 +278,14 @@ export default function StackedCardsExample() {
       <tr>
         <td><code>bgColor</code></td>
         <td><code>string</code></td>
-        <td><code>"#F6F3EE"</code></td>
+        <td><code>"#F7C844"</code></td>
         <td>Background color of the card (any valid CSS color value).</td>
       </tr>
       <tr>
         <td><code>textColor</code></td>
         <td><code>string</code></td>
-        <td><code>"#3E2718"</code></td>
-        <td>Text and SVG stroke color for the card content.</td>
+        <td><code>"#2B1C06"</code></td>
+        <td>Text color for the card content.</td>
       </tr>
       <tr>
         <td><code>icon</code></td>
@@ -290,18 +297,59 @@ export default function StackedCardsExample() {
         <td><code>image</code></td>
         <td><code>string</code></td>
         <td><code>undefined</code></td>
-        <td>Optional image URL displayed in the top-left corner instead of <code>icon</code>.</td>
+        <td>Optional image URL displayed in the top-left corner instead of <code>icon</code>. Used by <code>variant="fan"</code> only.</td>
+      </tr>
+      <tr>
+        <td><code>stat</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Large callout figure shown in the centre of the card. Used by <code>variant="stacked"</code> only.</td>
+      </tr>
+      <tr>
+        <td><code>badge</code></td>
+        <td><code>string</code></td>
+        <td><code>"0N · HIGHLIGHT"</code></td>
+        <td>Pill label at the top of the card. Used by <code>variant="stacked"</code> only; the default is built from the card position.</td>
       </tr>
       <tr>
         <td><code>rotation</code></td>
         <td><code>number</code></td>
-        <td><code>0 | 3.5 | -4.5 | 3.5</code></td>
+        <td>By index: <code>0, 3.5, -4.5, 3.5</code> (fan) or <code>0, -6.5, -2.5, 6.5</code> (stacked)</td>
         <td>Target resting tilt angle in degrees once the card locks into the sticky stack.</td>
       </tr>
     </tbody>
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- <DocLink to="scroll-stack">Scroll Stack</DocLink> covers the GSAP ScrollTrigger version with scrubbed 3D layouts.
+- <DocLink to="scroll-split-cards">Scroll Split Cards</DocLink> is the scroll-driven panel that splits an image and flips into cards.
+- <DocLink to="card-stack">Card Stack</DocLink> is a swipeable deck driven by drag and buttons rather than page scroll.
+
+## How do I switch ModernScrollStack between the fan and stacked layouts?
+
+Set `variant` to `"fan"` or `"stacked"`. The fan cascades cards sideways by `cardOffsetX` and the stacked variant piles them in the centre with alternating tilts. Each variant also loads its own default cards, so switching `variant` changes the content unless you pass `items`.
+
+## How do I add my own cards to ModernScrollStack?
+
+Pass `items` as an array of `ModernScrollStackItem`. Each needs an `id`, `title` and `description`. Add `bgColor`, `textColor`, `icon` or `rotation` to style it, plus `stat` and `badge` for the stacked variant. Omitting `rotation` falls back to a built-in angle per position.
+
+## Why is the heading on ModernScrollStack not showing?
+
+`showHeader` defaults to `false`, so the header block is not rendered. Set `showHeader` and pass `eyebrow`, `heading` and `subheading`. None of them have built-in text, and each one renders only when you supply a value.
+
+## How do I use ModernScrollStack inside a scrollable box instead of the page?
+
+Pass a ref to that element as `scrollerRef`. The stack then measures the box's height, listens to its scroll events and smooths mouse-wheel steps inside it. Without `scrollerRef` it tracks the window scroll, which suits full-page sections.
+
+## Does ModernScrollStack adapt to narrow screens?
+
+Yes. It measures its own container width. Below 640px it caps `stickyTop` at 56 and `cardGap` at 40, and below 480px at 44 and 32. Card width shrinks to fit, and the fan's `cardOffsetX` is reduced so every card stays inside the container.
+
+## Does ModernScrollStack require GSAP or Motion?
+
+No. `ModernScrollStack` uses native CSS `position: sticky`, `ResizeObserver` and `requestAnimationFrame`, so no animation library is installed. The registry item pulls in only the shared `utils` helper, and the file has no `next/*` imports, so it works in Next.js and Vite.
 
 <DocsJsonLd slug="modern-scroll-stack" />
+<FaqJsonLd slug="modern-scroll-stack" />

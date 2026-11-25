@@ -1,6 +1,7 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 export const metadata = docsPageMetadata("text-animation", {
@@ -79,10 +80,11 @@ export default function HeadlineAnimation() {
 <ExampleShowcase minHeight={190} headingLevel={2}
   name="text-animation"
   columns={1}
+  installation={<Installation name="text-animation" usage="below" />}
   examples={[
     {
       title: "Text animation",
-      subheading: "The component splits the string and staggers each character with CSS animation delays.",
+      description: "The component splits the string and staggers each character with CSS animation delays.",
       propNotes: [
         {
           lead: "Pass",
@@ -95,19 +97,6 @@ export default function HeadlineAnimation() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/TextAnimationBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="text-animation" />
-
-## Examples
-
-<ExampleShowcase minHeight={190}
-  name="text-animation"
-  columns={1}
-  examples={[
     {
       title: "Variants",
       propNotes: [
@@ -160,6 +149,36 @@ export default function HeadlineAnimation() {
     },
   ]}
 />
+
+## About Text Animation
+
+**What it is.** **Text Animation** (`TextAnimation`) is a zero-dependency CSS keyframe text component with 7 staggered effects (`blur-reveal`, `typewriter`, `wave`, `pop-in`, `flip`, `spin-in`, and `blur-in-up`).
+
+**How it is built.** `TextAnimation` splits the `text` string internally, triggers once on scroll via `IntersectionObserver`, and lets you control the rendered HTML tag via `as` (`p` by default, or `h1`–`h6`) plus `duration` and `delay`.
+
+**When to use it.** Use it for lightweight landing-page headlines, scroll-triggered section intros, and staggered display copy without adding an animation library.
+
+## For AI agents
+
+<AgentBrief name="text-animation">
+
+**When to use**
+
+- Lightweight landing-page headlines, scroll-triggered section intros
+- Staggered display copy without adding an animation library
+
+**When not to use**
+
+- The richer 14-variant text engine: use <DocLink to="animated-typography">Animated Typography</DocLink>
+- A selection box around a phrase: use <DocLink to="selection-frame">Selection Frame</DocLink>
+
+**Agent notes**
+
+- Pass `text` as a plain string (children are not read), `variant` (`"blur-reveal" | "typewriter" | "wave" | "pop-in" | "flip" | "spin-in" | "blur-in-up"`), `as`, `duration`, and `delay`.
+- Uses plain CSS keyframes and `IntersectionObserver` with zero external animation dependencies.
+- Forward `className` and `style` directly to customize font size and color.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -315,6 +334,29 @@ export default function HeadlineAnimation() {
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+Pair `TextAnimation` with <DocLink to="animated-typography">Animated Typography</DocLink> for rotating multi-word hero titles, <DocLink to="selection-frame">Selection Frame</DocLink> for highlighted phrases, and <DocLink to="circular-text">Circular Text</DocLink> for rotating ring badges.
+
+## How do I add a typewriter or blur-reveal text animation in React?
+
+Render `TextAnimation` with a `text` string and a `variant` such as `"typewriter"` or `"blur-reveal"`, which is the default. It splits the text and staggers the pieces with plain CSS keyframes, so no animation library is loaded.
+
+## Which animation variants does TextAnimation include?
+
+There are seven: `blur-reveal`, `typewriter`, `wave`, `pop-in`, `flip`, `spin-in` and `blur-in-up`. `duration` is in seconds and defaults to `0.5`, except for `typewriter`, where it is the total time to type out the whole string. `delay` defaults to `0`.
+
+## Does TextAnimation read JSX children?
+
+No. Pass the copy as a plain string through the `text` prop so `TextAnimation` can split and stagger it cleanly. If you need a styled word inside the string, `renderWord` lets you swap what an individual word renders as while keeping its entrance.
+
+## How do I render a semantic h1 heading?
+
+Pass `as="h1"` so the root element is a heading instead of the default `p`. Native HTML attributes such as `className`, `style` and `id` are forwarded to that element, so you can style and link to it as usual.
+
+## How do I start the animation later or slow it down?
+
+Set `delay` in seconds to hold the start, for example to sequence two headlines, and raise `duration` to slow it. Because it is all CSS, you can pair it with <DocLink to="animated-typography">Animated Typography</DocLink> when you need rotating multi-word hero titles.
 
 <DocsJsonLd slug="text-animation" />
+<FaqJsonLd slug="text-animation" />

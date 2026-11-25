@@ -6,11 +6,22 @@ url: https://avaraui.com/docs/nextjs/wizard
 
 # Shadcn Progress Wizard
 
-A "Typeform" style multi-step wizard featuring buttery smooth vertical slide transitions powered by plain CSS transitions, native keyboard navigation, and an interactive progress bar.
+A Typeform-style compound multi-step wizard (`Wizard`, `WizardProgress`, `WizardContainer`, `WizardStep`, `WizardNavigation`) with vertical CSS slide transitions and Enter-key progression.
 
-This component relies on the **Compound Component** pattern using React Context. This allows you to place the `WizardProgress` bar independently of the main `WizardContainer`, and nest complex forms inside the `WizardStep` blocks without passing deep props.
+## Installation
 
-Because every piece reads the wizard's state from context, you compose the flow yourself — drop the progress bar wherever you like, or leave it out. Press **Enter** inside any step to advance. It includes dynamic theme binding via the `color` prop (`"indigo"`, `"rose"`, `"emerald"`, `"zinc"`, `"blue"`, `"primary"`, or hex) to automatically style the progress bar, input focus rings, and action buttons.
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/wizard.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/wizard
+```
 
 ## Wizard
 
@@ -98,24 +109,7 @@ export default function OnboardingFlow() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/wizard.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/wizard
-```
-
-## Examples
-
-### Starting step
+## Starting step
 
 - Use `initialStep` to resume a flow partway through instead of restarting it.
 
@@ -198,7 +192,7 @@ export default function ResumedOnboarding() {
 }
 ```
 
-### Without the progress bar
+## Without the progress bar
 
 - `children` can omit `WizardProgress` entirely — it is an independent child, and navigation is unchanged without it.
 
@@ -278,20 +272,29 @@ export default function BareWizard() {
 }
 ```
 
-## Features
-Learn about the Wizard component's multi-step capabilities, providing state management and validation for complex onboarding flows.
+## About Shadcn Progress Wizard
 
-Uses React Context to share state across child components, preventing messy prop drilling and enabling flexible layouts.
+**What it is.** A compound multi-step flow (`Wizard`, `WizardProgress`, `WizardContainer`, `WizardStep`, `WizardTitle`, `WizardInput`, `WizardNavigation`) for one-question-at-a-time onboarding and surveys.
 
-Features premium, buttery smooth vertical sliding transitions built on CSS transitions — no animation library to install.
+**How it is built.** Shares current step index via React Context, animates vertical Y-offset slides with plain CSS transitions, advances on `Enter`, and themes controls via `color`.
 
-Natively supports "Enter" key progression to submit forms and move to the next step instantly.
+**When to use it.** Use `Wizard` for focused Typeform-style onboarding or surveys. For horizontal numbered step headers, use [Stepper](https://avaraui.com/docs/reactjs/stepper).
 
-Automatically calculates completion percentage based on the number of active steps rendered.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Since `WizardStep` components act as independent layout blocks, keep your actual form state (e.g., using React Hook Form or standard state) lifted up to the parent component wrapping the `WizardContainer`.
+- One-question-at-a-time onboarding, intake, or survey flows with vertical slide transitions
+
+**When not to use**
+
+- Horizontal multi-field checkout/setup steps — use [Stepper](https://avaraui.com/docs/reactjs/stepper)
+- Single-screen forms — use [Form](https://avaraui.com/docs/reactjs/form)
+
+**Agent notes**
+
+- Named exports from `@/components/custom/blocks/WizardBlock`
+- Every `WizardStep` requires a 0-based `index` prop; `WizardProgress` is optional and can be omitted or placed anywhere inside `Wizard`
 
 ## Props Reference
 
@@ -304,6 +307,31 @@ Since `WizardStep` components act as independent layout blocks, keep your actual
 | `WizardInput` | `...props` | `InputHTMLAttributes` | `undefined` | Accepts all native HTML input attributes (e.g., `placeholder`, `autoFocus`, `onChange`, `type`). |
 | `WizardTitle` | `children` | `ReactNode` | Required | The primary heading or question for the current step. |
 | `WizardDescription` | `children` | `ReactNode` | Required | Secondary context or helper text displayed below the title. |
+
+## Works with other components
+
+- Embed [Radio Button](https://avaraui.com/docs/reactjs/radio-button) or [Select](https://avaraui.com/docs/reactjs/select) inside `WizardStep` blocks for structured choices.
+- Pair `onComplete` with [Sonner](https://avaraui.com/docs/reactjs/sonner) or [Dialog](https://avaraui.com/docs/reactjs/dialog) completion feedback.
+
+## How do I build a Typeform-style one-question-at-a-time form in React?
+
+Compose `Wizard` with `WizardProgress`, a `WizardContainer` and one `WizardStep` per question, giving each step an `index`. Add `WizardTitle`, `WizardDescription` and `WizardInput`, then finish with `WizardNavigation`. Steps slide vertically as the user advances.
+
+## Where should I store form values across WizardStep panels?
+
+Lift your form state, plain `useState` or `react-hook-form`, into the parent component wrapping `Wizard`. `Wizard` manages the step index and transitions rather than field values, and `WizardInput` forwards native input props such as `onChange`.
+
+## How do I run code when the wizard finishes?
+
+Pass `onComplete` to `Wizard`. It fires when the user clicks Next or presses `Enter` on the final step. Use it to submit your form, then show [Sonner](https://avaraui.com/docs/reactjs/sonner) or a [Dialog](https://avaraui.com/docs/reactjs/dialog) as confirmation.
+
+## Can users move to the next question with the Enter key?
+
+Yes. The wizard advances on `Enter`, which suits typing-heavy forms where a pointer would slow people down. On the last step the same key triggers `onComplete`. `WizardInput` takes native attributes such as `autoFocus` and `type`.
+
+## How do I start on a later step or change the colour?
+
+Set `initialStep` to a zero-based index, which defaults to `0`. `color` themes the progress bar and active input borders, and accepts `"primary"`, `"indigo"`, `"blue"`, `"rose"`, `"emerald"`, `"zinc"` or a custom string. For horizontal numbered headers use [Stepper](https://avaraui.com/docs/reactjs/stepper).
 
 ---
 

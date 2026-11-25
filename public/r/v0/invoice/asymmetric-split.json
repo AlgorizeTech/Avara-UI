@@ -3,7 +3,7 @@
   "name": "invoice-asymmetric-split",
   "type": "registry:block",
   "title": "Invoice — Asymmetric Split",
-  "description": "High-impact editorial split layout with dark charcoal sidebar, themed logo block, angled header divider, and payment details.",
+  "description": "The \"Asymmetric Split\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

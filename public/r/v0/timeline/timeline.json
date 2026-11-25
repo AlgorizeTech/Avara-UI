@@ -3,7 +3,7 @@
   "name": "timeline-timeline",
   "type": "registry:block",
   "title": "Timeline",
-  "description": "Each item can carry an `icon`, a `status`, an inline `action` button and expandable `content`.",
+  "description": "The \"Timeline\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

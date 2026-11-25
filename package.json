@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "npm run generate:home-css && next dev --turbopack",
-    "build": "npm run build:registry && tsx ./src/scripts/build-md-files.ts && npm run check:frameworks && npm run check:variants && npm run check:types && npm run generate:home-css && next build",
+    "build": "npm run build:registry && tsx ./src/scripts/build-md-files.ts && npm run check:frameworks && npm run check:variants && npm run generate:home-css && next build",
+    "build:full": "npm run check:types && npx tsc --noEmit && npm run lint && npm run build",
     "postbuild": "tsx ./src/scripts/link-404-css.ts",
     "build:analyze": "npm run generate:home-css && set ANALYZE=true && next build",
     "start": "serve out --config ../serve.json",

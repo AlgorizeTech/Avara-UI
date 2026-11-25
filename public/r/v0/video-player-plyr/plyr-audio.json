@@ -3,7 +3,7 @@
   "name": "video-player-plyr-plyr-audio",
   "type": "registry:block",
   "title": "Video Player (Plyr) — Plyr — Audio",
-  "description": "The same component in its audio layout, with no video frame.",
+  "description": "The \"Plyr — Audio\" example from the Avara UI docs.",
   "dependencies": [
     "plyr",
     "tw-animate-css"

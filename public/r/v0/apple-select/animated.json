@@ -3,7 +3,7 @@
   "name": "apple-select-animated",
   "type": "registry:block",
   "title": "Apple Select — Animated",
-  "description": "Hit Reset on the preview to replay the entrance.",
+  "description": "The \"Animated\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

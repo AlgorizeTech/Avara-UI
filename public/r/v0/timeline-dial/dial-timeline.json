@@ -3,7 +3,7 @@
   "name": "timeline-dial-dial-timeline",
   "type": "registry:block",
   "title": "Timeline Dial — Dial timeline",
-  "description": "Entries ride an arc beside a ruler of ticks. Click one, use the arrows, the mouse wheel or arrow keys, or drag up and down.",
+  "description": "The \"Dial timeline\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

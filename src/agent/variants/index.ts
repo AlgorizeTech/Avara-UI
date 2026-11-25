@@ -69,6 +69,8 @@ import { animatedTimeline } from "./animated-timeline";
 import { brandBridge } from "./brand-bridge";
 import { profileCard } from "./profile-card";
 import { radioButton } from "./radio-button";
+import { secureEnvelope } from "./secure-envelope";
+import { fallingTags } from "./falling-tags";
 import type { PageVariants } from "./types";
 
 export type { PageVariants, Variant } from "./types";
@@ -146,6 +148,8 @@ export const pageVariants: PageVariants[] = [
   brandBridge,
   profileCard,
   radioButton,
+  secureEnvelope,
+  fallingTags,
 ];
 
 /**
@@ -211,6 +215,10 @@ export const NO_CHOICE_NEEDED: string[] = [
   "hover-peek",
   // Linear-style command palette with full keyboard navigation and trigger button.
   "command-palette",
+  // Its three examples are the same surface-neutral card inside a plain card, a glass slab and a
+  // liquid-glass panel: the surface comes from the container, nothing inside the card changes
+  // (audited 2026-11-25).
+  "booking-card",
 ];
 
 /**

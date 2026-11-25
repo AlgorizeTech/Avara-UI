@@ -4,14 +4,11 @@ export const metadata = docsPageMetadata("tooltip");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Tooltip
 
-A context-aware popup that displays information when an element receives keyboard focus or a mouse hover.
-
-Most lightweight tooltips suffer from a fatal flaw: they get clipped or hidden if they are placed inside a container with `overflow-hidden`. This `TooltipBlock` completely sidesteps that issue natively. It uses React's `createPortal` to render the tooltip bubble directly onto the `document.body` layer, calculating its position dynamically so it is mathematically impossible for it to get clipped by parent components.
-
-Hover or tab to each trigger to open its tooltip.
+A portal-rendered hover/focus tooltip (`TooltipProvider`, `Tooltip`, `TooltipTrigger`, `TooltipContent`) with optional directional arrows, staggered icons, and expanding descriptions.
 
 export const usageNoArrow = `import {
   Tooltip,
@@ -549,6 +546,7 @@ export default function ExpandTooltip() {
 <ExampleShowcase minHeight={310} headingLevel={2}
   name="tooltip"
   columns={1}
+  installation={<Installation name="tooltip" usage="below" />}
   examples={[
     {
       title: "Without Arrow",
@@ -568,19 +566,6 @@ export default function ExpandTooltip() {
       usage: usageNoArrow,
       code: extractCode("src/components/custom/blocks/TooltipBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="tooltip" />
-
-## Examples
-
-<ExampleShowcase minHeight={310}
-  name="tooltip"
-  columns={1}
-  examples={[
     {
       title: "With Arrow",
       propNotes: [
@@ -639,6 +624,33 @@ export default function ExpandTooltip() {
     },
   ]}
 />
+
+## About Shadcn Tooltip
+
+**What it is.** `TooltipProvider`, `Tooltip`, `TooltipTrigger`, and `TooltipContent` render hover/focus hints with optional `showArrow`, `animated` pull-out, `staggered` icon/title/description entrance, and `expand` reveal modes.
+
+**How it is built.** Portals into `document.body` via `createPortal` with dynamic positioning so `overflow-hidden` containers never clip the bubble.
+
+**When to use it.** Use `Tooltip` for non-interactive hover/focus labels and shortcut hints. When the popup needs clickable buttons, links, or forms inside it, use <DocLink to="popover">Popover</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="tooltip">
+
+**When to use**
+
+- Hover and keyboard-focus hints on icon buttons, nav items, and status badges (`showArrow`, `animated`, `staggered`, `expand`)
+
+**When not to use**
+
+- Interactive menus or forms inside the popup — use <DocLink to="popover">Popover</DocLink>
+
+**Agent notes**
+
+- Named exports: `TooltipProvider`, `Tooltip`, `TooltipTrigger`, `TooltipContent` from `@/components/custom/blocks/TooltipBlock`
+- Supports structured `icon`, `title`, and `des` props on `TooltipContent` alongside `side="top" | "bottom" | "left" | "right"`
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -935,6 +947,30 @@ export default function ExpandTooltip() {
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Pair `Tooltip` with icon-only <DocLink to="button">Button</DocLink>, <DocLink to="toggle">Toggle</DocLink>, and <DocLink to="kbd">Kbd</DocLink> shortcuts.
+- Upgrade to <DocLink to="popover">Popover</DocLink> if users need to click inside the floating panel.
+
+## How do I add a tooltip to a button in React?
+
+Wrap the app area in `TooltipProvider`, then use `Tooltip` with a `TooltipTrigger` around your button and a `TooltipContent` for the text. The content renders through a portal, so parent `overflow` clipping does not cut it off. It opens on hover and on keyboard focus.
+
+## How do I enable the arrow and staggered entrance animations?
+
+Pass `showArrow` on `TooltipContent` for the directional pointer, `animated` for the pull-out slide, `staggered` for a sequential icon, title and description entrance, or `expand` to open as a compact title badge first. All four default to `false`.
+
+## How do I change where the tooltip appears?
+
+Set `side` on `TooltipContent` to `"top"`, `"bottom"`, `"left"` or `"right"`, and `align` to `"start"`, `"center"` or `"end"`. `sideOffset` is the gap in pixels from the trigger and defaults to `6`. The default side is `"top"`.
+
+## How do I delay how fast the tooltip opens?
+
+Set `delayDuration` on `Tooltip` in milliseconds. It defaults to `200`, which is how long the user must hover before it opens. Use a larger number for dense toolbars where accidental hovers should stay quiet. A smaller value opens it more eagerly.
+
+## Can I put an icon, title and description in a tooltip?
+
+Yes. `TooltipContent` accepts `icon`, `title` and `description`, with `des` as a shorthand alias for `description`. The icon sits in a badge on the left and the title is bold. Use <DocLink to="popover">Popover</DocLink> instead when users need to click inside the floating content.
 
 <DocsJsonLd slug="tooltip" />
+<FaqJsonLd slug="tooltip" />

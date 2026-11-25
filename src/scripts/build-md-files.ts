@@ -143,6 +143,26 @@ type ShowcaseExample = {
   usage?: ShowcaseSnippet;
 };
 
+type PropsTableRow = {
+  name: string;
+  type: string;
+  default?: string;
+  description: unknown;
+  required?: boolean;
+};
+
+const mdxReact = {
+  Fragment: Symbol("Fragment"),
+  createElement(tag: unknown, _props: Record<string, unknown> | null, ...children: unknown[]): string {
+    const text = children
+      .flat(Infinity)
+      .filter((c) => c != null && c !== false)
+      .join("");
+    if (tag === "code") return `\`${text}\``;
+    return text;
+  },
+};
+
 /** Stands in for anything a page imports that the mirror has no use for: icons, components, helpers. */
 const placeholder: unknown = new Proxy(function () {}, {
   get: (_, key) => (key === Symbol.toPrimitive ? () => "" : placeholder),
@@ -168,7 +188,13 @@ function evaluatePage(statements: string[], expressions: string[]): unknown[] {
       alwaysStrict: false,
     },
   });
-  const values: Record<PropertyKey, unknown> = { ...PAGE_CONSTANTS, links, extractCode, extractMotionCode };
+  const values: Record<PropertyKey, unknown> = {
+    ...PAGE_CONSTANTS,
+    links,
+    extractCode,
+    extractMotionCode,
+    React: mdxReact,
+  };
   const scope = new Proxy(values, {
     has: () => true,
     get(target, key) {
@@ -253,6 +279,17 @@ function tableToMarkdown(table: string, restore: (text: string) => string): stri
   return [line(rows[0]), line(rows[0].map(() => "---")), ...rows.slice(1).map(line)].join("\n");
 }
 
+function propsTableToMarkdown(rows: PropsTableRow[]): string {
+  if (!rows.length) return "";
+  const cell = (v: unknown) => String(v ?? "").replace(/\s+/g, " ").trim().replace(/\|/g, "\\|");
+  const header = "| Prop | Type | Default | Required | Description |";
+  const sep = "| --- | --- | --- | --- | --- |";
+  const body = rows.map((r) =>
+    `| \`${cell(r.name)}\` | \`${cell(r.type)}\` | ${r.default ? `\`${cell(r.default)}\`` : "–"} | ${r.required ? "Yes" : "No"} | ${cell(r.description)} |`,
+  );
+  return [header, sep, ...body].join("\n");
+}
+
 /** A link wrapping a whole card holds headings and paragraphs; Markdown link text is one line. */
 const linkText = (text: string) =>
   text.replace(/<\/?[A-Za-z][^<>]*>/g, " ").replace(/\s+/g, " ").trim();
@@ -330,6 +367,34 @@ function convertMdxToMd(content: string, framework: Framework): string {
     );
   });
 
+  // Each <PropsTable props={[…]} /> becomes a Markdown table.
+  const propsTables: { marker: string; expression: string }[] = [];
+  for (let index = mdContent.indexOf("<PropsTable"); index >= 0; ) {
+    const file = parseAt(mdContent, index);
+    const first = file.statements[0];
+    const element = first && ts.isExpressionStatement(first) ? first.expression : undefined;
+    if (!element || !ts.isJsxSelfClosingElement(element)) {
+      index = mdContent.indexOf("<PropsTable", index + 1);
+      continue;
+    }
+    const propsAttr = element.attributes.properties.find(
+      (prop): prop is ts.JsxAttribute => ts.isJsxAttribute(prop) && prop.name.getText(file) === "props",
+    )?.initializer;
+    const marker = `\u0002${propsTables.length}\u0002`;
+    if (propsAttr && ts.isJsxExpression(propsAttr) && propsAttr.expression) {
+      propsTables.push({ marker, expression: propsAttr.expression.getText(file) });
+    }
+    mdContent = mdContent.slice(0, index) + marker + mdContent.slice(index + element.end);
+    index = mdContent.indexOf("<PropsTable", index);
+  }
+  if (propsTables.length) {
+    const tableResults = evaluatePage(statements, propsTables.map((t) => t.expression));
+    propsTables.forEach(({ marker }, position) => {
+      const rows = (tableResults[position] as PropsTableRow[]) ?? [];
+      mdContent = mdContent.replace(marker, () => hold(propsTableToMarkdown(rows)));
+    });
+  }
+
   // Resolve the site values the page prints through JSX expressions.
   mdContent = resolvePageConstants(mdContent);
 
@@ -374,6 +439,20 @@ function convertMdxToMd(content: string, framework: Framework): string {
     if (!block) throw new Error(`<AgentVariants slug="${pageSlug}"> has no variants file in src/agent/variants/`);
     return hold(agentBlockMarkdown(block, (target) => `${SITE_URL}${docsHref(framework, target)}`));
   });
+
+  // <AgentBrief name="…" [slug="…"]>...</AgentBrief> embeds the variants block when a variants file exists for that slug.
+  mdContent = mdContent.replace(
+    /<AgentBrief\b([^>]*)>([\s\S]*?)<\/AgentBrief>/g,
+    (_, attrs: string, inner: string) => {
+      const slugMatch = attrs.match(/slug="([^"]+)"/) ?? attrs.match(/name="([^"]+)"/);
+      const pageSlug = slugMatch?.[1];
+      const block = pageSlug ? agentBlockForSlug(pageSlug) : undefined;
+      if (!block) return inner;
+      const variantsMd = agentBlockMarkdown(block, (target) => `${SITE_URL}${docsHref(framework, target)}`)
+        .replace(/^## For AI agents\s*\n+/, "");
+      return `${inner.trimEnd()}\n\n${hold(variantsMd)}`;
+    },
+  );
 
   // Convert JSX components to markdown equivalents
 

@@ -4,10 +4,11 @@ export const metadata = docsPageMetadata("design-components-folder");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Components Folder
 
-An interactive multi-tab component folder showcasing live AI Chat, Real-time Analytics, Auth Form, and CLI Terminal components inside a sleek desktop window interface. Built with Tailwind CSS and native CSS transitions — no animation library.
+An animated folder (`DesignComponentsFolder`) that fans out eight component preview cards, plus a card-free `DesignFolderBox` with custom two-line labels, built with Tailwind CSS and CSS transitions.
 
 export const usageFolder = `import { DesignComponentsFolder } from "@/components/custom/blocks/DesignComponentsFolder";
 
@@ -20,10 +21,11 @@ export default function Showcase() {
   colorControl
   colorLabel="Accent Color"
   columns={1}
+  installation={<Installation name="design-components-folder" usage="below" />}
   examples={[
     {
       title: "Design components folder",
-      subheading: "The cards fan out once the folder scrolls into view, then retract one at a time on hover.",
+      description: "The cards fan out once the folder scrolls into view, then retract one at a time on hover.",
       propNotes: [
         {
           prop: "color",
@@ -37,10 +39,6 @@ export default function Showcase() {
   ]}
 />
 
-### Installation
-
-<Installation name="design-components-folder" />
-
 export const usageBoxLabels = `import { DesignFolderBox } from "@/components/custom/blocks/DesignFolderBox";
 
 export default function CustomLabelBox() {
@@ -53,6 +51,7 @@ export default function CustomLabelBox() {
   name="design-folder-box"
   colorControl
   columns={1}
+  installation={<Installation name="design-folder-box" showSetupPath={false} usage="below" />}
   examples={[
     {
       title: "Custom labels",
@@ -75,9 +74,34 @@ export default function CustomLabelBox() {
   ]}
 />
 
-### Installation
+## About Shadcn Components Folder
 
-<Installation name="design-folder-box" showSetupPath={false} />
+**What it is.** `DesignComponentsFolder` fans eight mini previews (Calendar, Data Table, Map, Breadcrumb, Dock, File Upload, Network Graph, Navbar) out of a folder, and each card links to its docs page. `DesignFolderBox` is the same folder shape without cards, with your own `title` and `subtitle`.
+
+**How it is built.** Tailwind CSS and CSS transitions drawn from spring curves, with no animation library; the only npm dependency is `lucide-react`. The fan-out starts when an `IntersectionObserver` sees the folder, and the accent follows `--primary` or the `color` you pass.
+
+**When to use it.** Use `DesignComponentsFolder` as a landing-page or docs-home showcase of your component library. Use `DesignFolderBox` when you only want the folder with a label. For general file/photo folders, use <DocLink to="folder">Folder</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="design-components-folder">
+
+**When to use**
+
+- Interactive component-showcase folder (`DesignComponentsFolder`) or custom-labeled folder box (`DesignFolderBox`)
+
+**When not to use**
+
+- File/photo collection folders or upload drop targets — use <DocLink to="folder">Folder</DocLink>
+
+**Agent notes**
+
+- `DesignComponentsFolder` installs via `design-components-folder`; `DesignFolderBox` installs via `design-folder-box`
+- Leave `color` unset to inherit the active `--primary` theme token
+- The eight cards and the "Design Components" wordmark are fixed in `DesignComponentsFolder`; only `DesignFolderBox` takes `title` and `subtitle`
+- Card links point at `/docs/nextjs/<slug>`: pass `disableLinks` or your own `linkComponent` in an app that has no such routes
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -112,6 +136,40 @@ export default function CustomLabelBox() {
           <code>"zinc"</code> or any CSS color; it is applied by overriding the{" "}
           <code>--primary</code> variable on the wrapper. Left unset (or set to{" "}
           <code>"primary"</code>) it inherits your theme.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DesignComponentsFolder</code>
+        </td>
+        <td>
+          <code>disableLinks</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          Points every card at <code>#</code> and cancels the click, so the cards no longer navigate to the <code>/docs/nextjs</code> pages.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DesignComponentsFolder</code>
+        </td>
+        <td>
+          <code>linkComponent</code>
+        </td>
+        <td>
+          <code>React.ElementType</code>
+        </td>
+        <td>
+          <code>"a"</code>
+        </td>
+        <td>
+          Element used for the card links. Pass <code>next/link</code> in Next.js for client-side navigation.
         </td>
       </tr>
       <tr>
@@ -199,6 +257,29 @@ export default function CustomLabelBox() {
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Compare with <DocLink to="folder">Folder</DocLink> for file/photo folders and <DocLink to="designs-toolkit">Designs Toolkit</DocLink> for section showcases.
+
+## How do I change the accent color on DesignComponentsFolder?
+
+Pass `color` as `indigo`, `rose`, `emerald`, `zinc` or any CSS color. The component writes it to `--primary` on its wrapper, and the folder fill and wordmark are derived from that variable. Leave `color` unset, or use `primary`, to inherit your theme.
+
+## Why do the cards in DesignComponentsFolder link to /docs/nextjs pages?
+
+Each card's `href` is hard-coded to a docs path such as `/docs/nextjs/calendar`. In an app without those routes, set `disableLinks` so the cards render `#` and cancel the click. In Next.js, pass `linkComponent={Link}` from `next/link` to keep client-side navigation.
+
+## Can I change the cards or the wordmark in DesignComponentsFolder?
+
+Not through props. The eight cards and the "Design Components" wordmark are written into the file, which you own after install, so edit them there. If you only need a different label, use `DesignFolderBox` and set `title` and `subtitle`, which default to "Design" and "Components".
+
+## What is the difference between DesignComponentsFolder and DesignFolderBox?
+
+`DesignComponentsFolder` is the full scene: eight preview cards fan out and retract around a solid folder. `DesignFolderBox` is a frosted-glass folder with no cards, a `title` and `subtitle`, and a forwarded ref. They install separately as `design-components-folder` and `design-folder-box`.
+
+## When does the DesignComponentsFolder animation play?
+
+The cards fan out the first time the folder scrolls into view. After about two seconds one card at a time retracts into the folder and returns, and the loop pauses while the folder is off screen. Pointer hover lifts a card; touch input does not. The component does not read `prefers-reduced-motion`.
 
 <DocsJsonLd slug="design-components-folder" />
+<FaqJsonLd slug="design-components-folder" />

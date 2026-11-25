@@ -3,6 +3,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("image-wall");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Image Wall
@@ -113,13 +114,14 @@ export default function Still() {
   colorControl={false}
   columns={1}
   minHeight={470}
+  installation={<Installation name="image-wall" usage="below" />}
   controls={[
     { name: "intervalTime", label: "Interval Time", min: 1000, max: 10000, step: 100, defaultValue: 5500, unit: "ms" },
   ]}
   examples={[
     {
       title: "A camera over the wall",
-      subheading: "Wait a few seconds: the camera pulls back, glides to the next card and settles on it. Hover to hold it.",
+      description: "Wait a few seconds: the camera pulls back, glides to the next card and settles on it. Hover to hold it.",
       propNotes: [
         {
           prop: "items",
@@ -173,10 +175,6 @@ export default function Still() {
   ]}
 />
 
-## Installation
-
-<Installation name="image-wall" />
-
 ## Examples
 
 <ExampleShowcase
@@ -187,7 +185,7 @@ export default function Still() {
   examples={[
     {
       title: "A band, shuffled",
-      subheading: "A short strip: the camera pulls back so a few cards show, and visits them in a random order.",
+      description: "A short strip: the camera pulls back so a few cards show, and visits them in a random order.",
       propNotes: [
         {
           prop: "order",
@@ -211,7 +209,7 @@ export default function Still() {
     },
     {
       title: "Held still",
-      subheading: "A full window: the camera flies from card to card on its own, and the reader can drag the wall to pan it.",
+      description: "A full window: the camera flies from card to card on its own, and the reader can drag the wall to pan it.",
       propNotes: [
         {
           prop: "interval",
@@ -230,22 +228,37 @@ export default function Still() {
   ]}
 />
 
-## Features
+## About Shadcn Image Wall
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="A camera, not a slider">
-    <p>One animation of the canvas moves the whole wall: it pulls the camera back to 0.64 of its resting scale while gliding to the next card, then settles back in. Nothing inside the wall moves on its own, so it stays cheap however many cards you give it.</p>
-  </InfoCard>
-  <InfoCard title="A wall without edges">
-    <p>The tile is drawn nine times — itself and its eight neighbours — so the camera can settle on a card at the very edge and still see cards all around it. The copies are hidden from assistive tech.</p>
-  </InfoCard>
-  <InfoCard title="Any box">
-    <p>Size it with a class and it fills the box; a short band eases the zoom down so a few cards fit, and a phone-width box pulls back further so the journey between cards stays visible. The camera re-aims on every resize and holds while hovered, hidden or off screen.</p>
-  </InfoCard>
-  <InfoCard title="Quiet by request">
-    <p>Under prefers-reduced-motion the camera cuts between cards instead of flying, and the wall is labelled with the card in view.</p>
-  </InfoCard>
-</div>
+**What it is.** **Shadcn Image Wall** (`ImageWall`) is a seamless, edge-free grid of screenshots with an animated camera that zooms out, glides between cards, and settles on each highlight.
+
+**How it is built.** `ImageWall` tiles the wall 3×3 (the copies are `aria-hidden`) so the camera never hits an edge, re-aims on container resize, pauses on hover, while the tab is hidden, off-screen or while the page scrolls, and cuts straight to each card under `prefers-reduced-motion`. It has no npm dependencies.
+
+**When to use it.** Use it for component showcases, product screenshot walls, hero background canvases, and interactive portfolio grids.
+
+## For AI agents
+
+<AgentBrief name="image-wall">
+
+**When to use**
+
+- Component showcases, product screenshot walls
+- Hero background canvases, interactive portfolio grids
+
+**When not to use**
+
+- Columns of different heights: use <DocLink to="masonry-grid">Masonry Grid</DocLink>
+- A continuously moving image stream: use <DocLink to="flow-gallery">Flow Gallery</DocLink>
+
+**Agent notes**
+
+- `ImageWall` accepts `items` (`WallItem[]` with `title` and `image`), `interval`, `intervalTime`, `highlightFocus`, `draggable`, `order` (`"shuffle"`), `zoom`, `intro`, and `onFocus`.
+- Size the container with `className` (defaults to `h-96`); boxes under `420px` tall automatically scale zoom down so multiple cards fit.
+- Hovering, hiding the tab, scrolling off-screen or scrolling the page pauses camera flights automatically.
+- Pass a stable `items` array, `anchor` and `onFocus`: `ImageWall` is memoised, so new object identities on every render defeat that.
+- The wall is one `role="img"` whose `aria-label` is the focused card's `title`; card images have empty `alt`, so put the meaning in `title`.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -264,13 +277,25 @@ export default function Still() {
         <td><code>items</code></td>
         <td><code>&#123; title: string; image: string &#125;[]</code></td>
         <td>—</td>
-        <td>The cards on the wall, each in a 493:332 frame under a mono caption.</td>
+        <td>The cards on the wall, each in a 493:332 frame under a mono caption. The image is cropped from its top edge.</td>
       </tr>
       <tr>
         <td><code>columns</code></td>
         <td><code>number</code></td>
         <td><code>4</code></td>
         <td>Columns in one tile.</td>
+      </tr>
+      <tr>
+        <td><code>gap</code></td>
+        <td><code>number</code></td>
+        <td><code>16</code></td>
+        <td>Space between cards in pixels, horizontally and vertically.</td>
+      </tr>
+      <tr>
+        <td><code>stagger</code></td>
+        <td><code>number</code></td>
+        <td><code>72</code></td>
+        <td>Vertical offset between neighbouring columns. <code>0</code> gives a uniform grid.</td>
       </tr>
       <tr>
         <td><code>order</code></td>
@@ -297,6 +322,12 @@ export default function Still() {
         <td>The camera's resting scale; capped at 0.72 in a box under 420px tall and 0.5 in one under 640px wide.</td>
       </tr>
       <tr>
+        <td><code>mobileZoom</code></td>
+        <td><code>number</code></td>
+        <td>—</td>
+        <td>When set, replaces <code>zoom</code> and the automatic size caps as the camera's resting scale.</td>
+      </tr>
+      <tr>
         <td><code>intro</code></td>
         <td><code>number</code></td>
         <td><code>0</code></td>
@@ -321,6 +352,30 @@ export default function Still() {
         <td>When <code>true</code>, the user can grab and pan the wall infinitely in all four directions. Set to <code>false</code> to disable dragging.</td>
       </tr>
       <tr>
+        <td><code>cardDim</code></td>
+        <td><code>number</code></td>
+        <td><code>0.55</code></td>
+        <td>Opacity of cards that are not in focus while <code>highlightFocus</code> is on.</td>
+      </tr>
+      <tr>
+        <td><code>cardShadow</code></td>
+        <td><code>boolean</code></td>
+        <td><code>false</code></td>
+        <td>Gives cards a surface background with an elevated shadow, and a slight lift on the focused card.</td>
+      </tr>
+      <tr>
+        <td><code>drift</code></td>
+        <td><code>boolean | &#123; x?: number; y?: number &#125;</code></td>
+        <td><code>false</code></td>
+        <td>Slow continuous drift of the wall instead of camera flights. Turns the automatic flights off.</td>
+      </tr>
+      <tr>
+        <td><code>onItemClick</code></td>
+        <td><code>(item: WallItem, index: number) =&gt; void</code></td>
+        <td>—</td>
+        <td>Called when a card is clicked or tapped, not when it is dragged. Cards only receive pointer events when this is set.</td>
+      </tr>
+      <tr>
         <td><code>onFocus</code></td>
         <td><code>(index: number) =&gt; void</code></td>
         <td>—</td>
@@ -336,6 +391,36 @@ export default function Still() {
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- <DocLink to="component-wall">Component Wall</DocLink> is this wall beside a column of hero copy.
+- <DocLink to="flow-gallery">Flow Gallery</DocLink> is a continuously moving diagonal image stream.
+- <DocLink to="masonry-grid">Masonry Grid</DocLink> is a static grid with columns of different heights.
+- <DocLink to="gallery">Gallery</DocLink> offers 3D orbit, bento and sphere layouts for photos and video.
+
+## How do I make ImageWall start after the text next to it has appeared?
+
+Set `intro` to a number of milliseconds. The camera begins pulled back and off to one side, drifts towards the first card with nothing in focus, and lands on it when the time is up. The canvas stays invisible until the camera has painted once, so there is no flash.
+
+## How do I change how long ImageWall rests on each card, or the order?
+
+Set `interval` to a number of milliseconds, or `true` to use `intervalTime` (5500 by default). `interval={false}` or `0` keeps the wall still until dragged. `order="shuffle"` visits every card once per round in random order, while `"serial"` goes card by card.
+
+## How do I know which card ImageWall is showing, or make cards clickable?
+
+Pass `onFocus`, which receives the index of the card the camera settles on, so you can caption or link it outside the wall. For clicks, pass `onItemClick` with `(item, index)`. It fires on a click or tap but not at the end of a drag.
+
+## How do I resize ImageWall or change the camera zoom?
+
+Size the box with `className`; the default is `h-96` and the wall fills it. `zoom` sets the resting scale (1.35 by default). In a box under 420px tall it eases down to 0.72, and in one 640px wide or narrower to 0.5, so a few cards stay visible.
+
+## Does ImageWall pause, and can users drag it?
+
+Yes to both. `draggable` is on by default, so the reader can drag the wall in any direction. Automatic flights pause on hover, while the tab is hidden, when the wall is off-screen and while the page scrolls, then resume. Set `draggable={false}` to leave all movement to the camera.
+
+## Is ImageWall accessible, and does it respect reduced motion?
+
+The wall is one `role="img"` whose `aria-label` is the focused card's `title`. The repeated tiles are `aria-hidden` and the images have empty `alt`, so put the meaning in `title`. Under `prefers-reduced-motion` the camera jumps to the next card instead of flying.
 
 <DocsJsonLd slug="image-wall" />
+<FaqJsonLd slug="image-wall" />

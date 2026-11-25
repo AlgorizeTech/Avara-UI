@@ -3,7 +3,7 @@
   "name": "card-folder-cards",
   "type": "registry:block",
   "title": "Card — Folder cards",
-  "description": "A thick frame around a photograph and a folder-tab panel. Only the number and title show at first; hover or focus a card to open the text.",
+  "description": "The \"Folder cards\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

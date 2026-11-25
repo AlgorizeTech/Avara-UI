@@ -3,7 +3,7 @@
   "name": "scroll-area-scroll-area",
   "type": "registry:block",
   "title": "Scroll Area",
-  "description": "The styled scrollbar is scoped to a generated class, so global scrollbars are untouched.",
+  "description": "The \"Scroll area\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

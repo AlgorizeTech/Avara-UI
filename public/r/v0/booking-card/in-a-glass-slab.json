@@ -3,7 +3,7 @@
   "name": "booking-card-in-a-glass-slab",
   "type": "registry:block",
   "title": "Booking Card — In a glass slab",
-  "description": "The same card inside a GlassPanel from Glass Panel. Nothing inside the card changes — it is surface-neutral by design.",
+  "description": "The \"In a glass slab\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

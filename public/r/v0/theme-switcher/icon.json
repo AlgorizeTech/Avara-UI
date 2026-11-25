@@ -3,7 +3,7 @@
   "name": "theme-switcher-icon",
   "type": "registry:block",
   "title": "Theme Switcher — Icon",
-  "description": "One button that flips between light and dark, with a spin micro-interaction on the icon and the circular reveal growing out of it.",
+  "description": "The \"Icon\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "next-themes",

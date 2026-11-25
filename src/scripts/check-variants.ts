@@ -207,9 +207,16 @@ flagged.forEach(fail);
 // ---------------------------------------------------------------------------
 
 for (const page of pageVariants) {
-  // The docs page must show the "For AI agents" block.
-  if (hasDocsPage(page.slug) && !new RegExp(`<AgentVariants\\s+slug="${page.slug}"\\s*/>`).test(fs.readFileSync(docsPath(page.slug), "utf-8"))) {
-    fail(`variants/${page.slug}: the docs page has no <AgentVariants slug="${page.slug}" /> block`);
+  // The docs page must show the "For AI agents" block (either standalone
+  // <AgentVariants /> or embedded inside <AgentBrief />).
+  if (hasDocsPage(page.slug)) {
+    const mdxSource = fs.readFileSync(docsPath(page.slug), "utf-8");
+    const hasVariantsTag =
+      new RegExp(`<AgentVariants\\s+slug="${page.slug}"\\s*/>`).test(mdxSource) ||
+      new RegExp(`<AgentBrief\\b[^>]*(?:name|slug)="${page.slug}"`).test(mdxSource);
+    if (!hasVariantsTag) {
+      fail(`variants/${page.slug}: the docs page has no <AgentVariants slug="${page.slug}" /> or <AgentBrief name="${page.slug}"> block`);
+    }
   }
 }
 // Each variant item's registry description must open with the ask-first notice

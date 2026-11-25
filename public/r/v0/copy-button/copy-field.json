@@ -3,7 +3,7 @@
   "name": "copy-button-copy-field",
   "type": "registry:block",
   "title": "Copy Button — Copy field",
-  "description": "The share-link pattern: a read-only input with the button beside it.",
+  "description": "The \"Copy field\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

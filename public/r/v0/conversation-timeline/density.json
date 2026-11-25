@@ -3,7 +3,7 @@
   "name": "conversation-timeline-density",
   "type": "registry:block",
   "title": "Conversation Timeline — Density",
-  "description": "Drag the sliders, then hover the rail to see the new sizes.",
+  "description": "The \"Density\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

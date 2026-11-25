@@ -3,7 +3,7 @@
   "name": "falling-tags-glass",
   "type": "registry:block",
   "title": "Falling Tags — Glass",
-  "description": "Translucent frosted glass badges with backdrop-blur and luminous specular borders over a scenic backdrop. Moving blur is GPU-heavy on phones.",
+  "description": "The \"Glass\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

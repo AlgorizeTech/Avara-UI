@@ -3,7 +3,7 @@
   "name": "card-blog-post-cards",
   "type": "registry:block",
   "title": "Card — Blog post cards",
-  "description": "Three bare cards: a cover, the date, a title, and the author with a Read more link under a hairline.",
+  "description": "The \"Blog post cards\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

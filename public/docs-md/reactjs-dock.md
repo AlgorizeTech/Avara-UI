@@ -6,9 +6,28 @@ url: https://avaraui.com/docs/nextjs/dock
 
 # Shadcn Dock
 
-A premium, macOS-inspired navigation dock featuring real-time physics magnification, floating label tooltips, active application indicators, and notification badges. Highly customizable via direct layout and physics props, it adapts seamlessly between desktop floating tooltips and touch-safe mobile layouts.
+A macOS-inspired navigation dock (`Dock`) with pointer magnification physics, floating label tooltips, active-app indicators, and notification badges in GSAP and Motion builds.
 
-Sweep the cursor across each dock to feel the magnification curve, and click an icon to move the active indicator.
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/dock.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/dock
+```
+
+Or the Motion build (same props, same file — install one):
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/dock-motion.json
+```
 
 ## Dock
 
@@ -50,30 +69,7 @@ export default function BottomNav() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/dock.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/dock
-```
-
-Or the Motion build (same props, same file — install one):
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/dock-motion.json
-```
-
-## Examples
-
-### Badges & active app
+## Badges & active app
 
 - `badge` on an item prints a pulsing counter pill in its top-right corner.
 - `isActive` draws the running-app dot beneath the icon.
@@ -109,24 +105,30 @@ export default function CompactNav() {
 }
 ```
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+## About Shadcn Dock
 
-Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
+**What it is.** `Dock` renders a macOS-style icon bar with cursor-proximity magnification, floating tooltips, `isActive` running dots, and pulsing `badge` counters.
 
-Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
+**How it is built.** The pointer position is shared with every icon, and each icon's size chases it on a spring, outside React's render loop. The GSAP build (`dock`) and the Motion build (`dock-motion`) install to the same file. Below 640px the component caps `baseSize`, `magnification`, `distance`, `gap` and bar height so the dock fits a phone.
 
-Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
+**When to use it.** Use `Dock` for app-launcher bars, OS-inspired toolbars, and floating workspace switchers. For standard text navigation links, use [Navigation Menu](https://avaraui.com/docs/reactjs/navigation).
 
-Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.
+- Floating icon docks with cursor magnification, tooltips, `badge` counters, and `isActive` dots
 
-### State Management
+**When not to use**
 
-When triggering animations via state changes, ensure you wrap state updates in `startTransition` or use lightweight stores to prevent React rendering bottlenecks during the animation tick.
+- Standard header text navigation — use [Navigation Menu](https://avaraui.com/docs/reactjs/navigation)
+
+**Agent notes**
+
+- Named export from `@/components/custom/blocks/DockBlock` (ships GSAP and Motion twin builds)
+- Pass `items` as `{ id, label, icon, onClick?, badge?, isActive? }[]` where `icon` is a React node (give it `w-full h-full`)
+- Install the GSAP build (`dock`) or the Motion build (`dock-motion`), not both
+- `Dock` is a `div`: extra props and `ref` go to it, and tooltips show on mouse hover only
 
 ## Props Reference
 
@@ -145,6 +147,30 @@ When triggering animations via state changes, ensure you wrap state updates in `
 | `DockItem` | `onClick` | `() => void` | `undefined` | Optional callback function fired whenever the user clicks on the specific dock icon button. |
 | `DockItem` | `isActive` | `boolean` | `false` | When set to `true`, displays a smooth animated dot indicator beneath the icon button. |
 | `DockItem` | `badge` | `string \| number` | `undefined` | Optional notification badge string or number (e.g., "3", "NEW") rendered as a pulsing red pill in the top-right corner. |
+
+## Works with other components
+
+- Pair `Dock` with [Live Pulse Pill](https://avaraui.com/docs/reactjs/live-pulse-pill) or [Command Palette](https://avaraui.com/docs/reactjs/command-palette) in app shells.
+
+## How do I show notification badges and active-app dots on Dock items?
+
+Add `badge` (a string or number) and `isActive: true` to any object in the `items` array. `badge` prints a pulsing rose pill on the icon's top-right corner, and `isActive` draws a dot beneath it. When the active item changes, the dot glides from the old icon to the new one.
+
+## How do I make the Dock magnify more or less?
+
+Tune `baseSize` (resting pixel size, default `48`), `magnification` (pixel size directly under the cursor, default `80`) and `distance` (the radius in pixels where neighbours start to grow, default `140`). Raise `magnification` for a bigger swell, or raise `distance` so more icons react at once.
+
+## What is the difference between the GSAP and Motion builds of Dock?
+
+They expose the same `Dock` and `DockItem` API and install to `components/custom/blocks/DockBlock.tsx`. The `dock` item depends on `gsap`; `dock-motion` depends on `motion`. Install one of them, not both, and switch by re-adding the other item.
+
+## Does the Dock work on touch screens and small viewports?
+
+It shrinks rather than disappears. Under 640px it caps `baseSize`, `magnification`, `distance` and `gap`, and with 7 or more items on screens under 480px it shrinks further. Magnification and tooltips follow mouse events, so on touch you mainly get tapping with `onClick`, not the swell.
+
+## How accessible is the Dock, and what do I pass for icons?
+
+Each item is a native `button` with `aria-label` set from `label`, so it is focusable and announced. The tooltip appears on mouse hover only, and `isActive` is a visual dot without `aria-current`. Pass `icon` as a React node such as a lucide icon with `className="w-full h-full"`.
 
 ---
 

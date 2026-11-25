@@ -1,84 +1,31 @@
 ---
 title: "Shadcn Carousel"
-description: "A collection of highly interactive carousel components for image galleries, hero sections, and fluid presentations. Shadcn/ui with GSAP and Motion builds."
+description: "Carousel components for image galleries, hero sections, product wheels and fluid presentations. Free shadcn/ui Carousel component with GSAP and Motion builds."
 url: https://avaraui.com/docs/nextjs/carousel
 ---
 
 # Shadcn Carousel
 
-A collection of highly interactive carousel components for image galleries, hero sections, and fluid presentations.
+Carousel components for image galleries, hero sections, product wheels and fluid presentations.
 
-Five carousels live on this page: four in `carousel.tsx` (`ImageCarousel`, `HeroCarousel`, `CustomCarousel`, `RadialCarousel`) plus the `FluidGlassSlider`, and the `ThreeDCarousel` fan, which installs on its own as `carousel-3d`.
-
-## For AI agents
-
-**Ask before you pick.** This page has 6 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
-
-All 6 options as live previews: https://avaraui.com/view/carousel
-
-**When to use it.** Image and content carousels. Five looks (radial wheel, fluid glass, image, hero, thumbnails) ship in one `carousel` item; a 3D coverflow deck is its own item.
-
-**When to use something else:**
-
-- [Curved carousel](https://avaraui.com/docs/reactjs/curved-carousel): for a full-width curved-arc deck with a sway or marquee motion.
-
-**Gotchas:**
-
-- The five looks share one `carousel` item: install it once and set `variant` (`radial`, `glass`, `image`, `hero` or `thumbnails`) from the index.
-- The slide data differs by look: `items` for radial and thumbnails, `slides` for glass and hero, `images` for image.
-- The 3D deck is a separate `carousel-3d` item with its own `ThreeDCarousel` API.
-
-### The 6 variants
-
-1. **Radial carousel** (`radial`): Cards on a 360-degree 3D wheel around a central hub, with drag momentum and an autoplay toggle.
-   - Live: https://avaraui.com/view/carousel/radial
-   - Best for: a featured-items showcase that should feel dimensional
-   - Avoid if: you need a simple strip of images or a text-over-image banner
-   - Traits: 360-degree wheel, drag momentum, hub play/pause
-   - Install: `npx shadcn@latest add @avara-ui/carousel`
-   - Set these props: `{"variant":"radial"}`
-   - Docs: https://avaraui.com/docs/nextjs/carousel#radial-carousel
-2. **3D carousel deck** (`three-d-deck`): A 3D coverflow deck of cards with arrows, dots, drag and keyboard navigation.
-   - Live: https://avaraui.com/view/carousel/three-d-deck
-   - Best for: a hero gallery of photos or cards with depth
-   - Avoid if: you want a wheel around a hub or a flat strip
-   - Traits: coverflow depth, arrows and dots, drag and keyboard
-   - Install: `npx shadcn@latest add @avara-ui/carousel-3d`
-   - Docs: https://avaraui.com/docs/nextjs/carousel#3d-carousel
-3. **Fluid glass slider** (`glass`): A liquid-glass distortion slider with cursor tracking, glass overlays and progress tracking.
-   - Live: https://avaraui.com/view/carousel/glass
-   - Best for: a premium landing-page banner with big imagery
-   - Avoid if: you want a plain, low-effect image rotator
-   - Traits: liquid glass distortion, cursor tracking, progress bar
-   - Install: `npx shadcn@latest add @avara-ui/carousel`
-   - Set these props: `{"variant":"glass"}`
-   - Docs: https://avaraui.com/docs/nextjs/carousel#fluid-glass-slider
-4. **Image carousel** (`image`): A straightforward image carousel with arrows, dots, swipe and autoplay built in.
-   - Live: https://avaraui.com/view/carousel/image
-   - Best for: a product or photo gallery that should just work
-   - Avoid if: you want copy over the image or a thumbnail rail
-   - Traits: arrows and dots, swipe, autoplay
-   - Install: `npx shadcn@latest add @avara-ui/carousel`
-   - Set these props: `{"variant":"image"}`
-   - Docs: https://avaraui.com/docs/nextjs/carousel#image-carousel
-5. **Hero carousel** (`hero`): Copy overlaid on a full-bleed image; click an image card to make it the background.
-   - Live: https://avaraui.com/view/carousel/hero
-   - Best for: a landing-page hero with headline copy per slide
-   - Avoid if: you only have images with no text
-   - Traits: full-bleed background, copy overlay, clickable cards
-   - Install: `npx shadcn@latest add @avara-ui/carousel`
-   - Set these props: `{"variant":"hero"}`
-   - Docs: https://avaraui.com/docs/nextjs/carousel#hero-carousel
-6. **Thumbnail rail** (`thumbnails`): A main slide with a clickable thumbnail strip, at the bottom or on the left.
-   - Live: https://avaraui.com/view/carousel/thumbnails
-   - Best for: a gallery where the visitor jumps to a specific slide
-   - Avoid if: you want a minimal strip with no extra chrome
-   - Traits: thumbnail strip, bottom or left placement
-   - Install: `npx shadcn@latest add @avara-ui/carousel`
-   - Set these props: `{"variant":"thumbnails"}`
-   - Docs: https://avaraui.com/docs/nextjs/carousel#thumbnail-rail
+Six carousels live on this page: five in `carousel.tsx` (`ImageCarousel`, `HeroCarousel`, `CustomCarousel`, `RadialCarousel` and `FluidGlassSlider`) and the `ThreeDCarousel` fan, which installs on its own as `carousel-3d`.
 
 ## Carousels
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/carousel.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/carousel
+```
 
 ### Radial carousel
 
@@ -125,21 +72,6 @@ export default function RadialCarouselDemo() {
     </div>
   );
 }
-```
-
-### Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/carousel.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/carousel
 ```
 
 All five carousels (`RadialCarousel`, `FluidGlassSlider`, `ImageCarousel`, `HeroCarousel`, `CustomCarousel`) ship together in a single self-contained `carousel.tsx` file when installing `carousel`. You can import components directly or pass `variant="radial" | "glass" | "image" | "hero" | "thumbnails"` into the default `Carousel` component.
@@ -323,11 +255,32 @@ export default function SideThumbnailsCarouselDemo() {
 }
 ```
 
-## 3D Carousel
+## 3D Fanned Deck
 
 A fanned 3D deck with drag gestures, keyboard arrows, circular endless fanning and an autoplay timer that pauses on hover.
 
 Drag the center card left or right, use the arrow keys, or click a fanned neighbour to bring it forward.
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/carousel-3d.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/carousel-3d
+```
+
+Or the Motion build (same props, same file — install one):
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/carousel-3d-motion.json
+```
 
 ### 3D carousel
 
@@ -514,41 +467,101 @@ export default function MinimalControlsCarousel() {
 }
 ```
 
-### Installation
+## About Shadcn Carousel
 
-Add the component by URL — no setup needed:
+**What it is.** **Shadcn Carousel** bundles five interactive slider modes in `carousel.tsx` (`RadialCarousel`, `FluidGlassSlider`, `ImageCarousel`, `HeroCarousel`, and `CustomCarousel`) alongside the standalone `ThreeDCarousel` (`carousel-3d`) fanned deck.
 
-```bash
-npx shadcn@latest add https://avaraui.com/r/carousel-3d.json
-```
+**How it is built.** Use the default `Carousel` with a `variant` prop (`"image"` by default, then `"hero"`, `"thumbnails"`, `"radial"` or `"glass"`), or import a carousel by name. `carousel.tsx` is CSS and React state only and installs just `lucide-react`. `ThreeDCarousel` ships a GSAP build (`carousel-3d`, `gsap`) and a Motion build (`carousel-3d-motion`, `motion`). Nothing imports `next/*`; images render through a plain `img` unless you pass `imageComponent`.
 
-Or register the @avara-ui registry once per project and add it by name:
+**When to use it.** Use it for hero sliders, product image galleries with thumbnails, 360-degree radial wheels, and fanned 3D card decks. Reach for `ImageCarousel` when you only need images with arrows and dots.
 
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/carousel-3d
-```
+## For AI agents
 
-Or the Motion build (same props, same file — install one):
+**When to use**
 
-```bash
-npx shadcn@latest add https://avaraui.com/r/carousel-3d-motion.json
-```
+- Hero sliders, product image galleries with thumbnails
+- 360-degree radial wheels, interactive fanned 3D card decks
 
-## Features
-Discover the Carousel's powerful features, including touch-swipe support, autoplay functionality, and accessible navigation controls.
+**When not to use**
 
-Easily adapt the component's styling and behavior to fit your application's unique design system.
+- A full-width curved 3D arc deck: use [Curved Carousel](https://avaraui.com/docs/reactjs/curved-carousel)
+- A mixed media wall rather than a slider: use [Gallery](https://avaraui.com/docs/reactjs/gallery)
 
-Built with accessibility in mind, ensuring all users can interact with your application effectively.
+**Agent notes**
 
-Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+- Install `carousel` for `RadialCarousel`, `FluidGlassSlider`, `ImageCarousel`, `HeroCarousel`, and `CustomCarousel`, or `carousel-3d` for `ThreeDCarousel`.
+- On `CustomCarousel`, set `imageButtonPosition` to `"bottom"`, `"left"`, or `"right"` and pass `items` (not `images`). Its autoplay is on by default, and the interval prop is `interval`, not `autoPlayInterval`.
+- `ImageCarousel`, `HeroCarousel`, `CustomCarousel` and `RadialCarousel` take `imageComponent`; pass `next/image` there in Next.js. `StaticImageData` objects only work with it, and `HeroCarousel` and `CustomCarousel` paint the main image as a CSS background, so give them URL strings.
+- `ImageCarousel` and `ThreeDCarousel` wrap around at the ends; `FluidGlassSlider` disables its buttons at the first and last slide.
+- `FluidGlassSlider` autoplays every 5 seconds with no prop to change that, and always shows a "Fluid Glass" heading.
+- `ThreeDCarousel` listens for the left and right arrow keys on the whole window, so avoid mounting two on one page.
+- `ImageCarousel` and `HeroCarousel` size from their own default classes; override them with `rootClassName`, not `className`.
 
-Optimized for maximum performance with minimal re-renders and efficient state management.
+**Ask before you pick.** This page has 6 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
 
-## Best Practices & Guidelines
+All 6 options as live previews: https://avaraui.com/view/carousel
 
-Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+**When to use it.** Image and content carousels. Five looks (radial wheel, fluid glass, image, hero, thumbnails) ship in one `carousel` item; a 3D coverflow deck is its own item.
+
+**When to use something else:**
+
+- [Curved carousel](https://avaraui.com/docs/reactjs/curved-carousel): for a full-width curved-arc deck with a sway or marquee motion.
+
+**Gotchas:**
+
+- The five looks share one `carousel` item: install it once and set `variant` (`radial`, `glass`, `image`, `hero` or `thumbnails`) from the index.
+- The slide data differs by look: `items` for radial and thumbnails, `slides` for glass and hero, `images` for image.
+- The 3D deck is a separate `carousel-3d` item with its own `ThreeDCarousel` API.
+
+### The 6 variants
+
+1. **Radial carousel** (`radial`): Cards on a 360-degree 3D wheel around a central hub, with drag momentum and an autoplay toggle.
+   - Live: https://avaraui.com/view/carousel/radial
+   - Best for: a featured-items showcase that should feel dimensional
+   - Avoid if: you need a simple strip of images or a text-over-image banner
+   - Traits: 360-degree wheel, drag momentum, hub play/pause
+   - Install: `npx shadcn@latest add @avara-ui/carousel`
+   - Set these props: `{"variant":"radial"}`
+   - Docs: https://avaraui.com/docs/nextjs/carousel#radial-carousel
+2. **3D carousel deck** (`three-d-deck`): A 3D coverflow deck of cards with arrows, dots, drag and keyboard navigation.
+   - Live: https://avaraui.com/view/carousel/three-d-deck
+   - Best for: a hero gallery of photos or cards with depth
+   - Avoid if: you want a wheel around a hub or a flat strip
+   - Traits: coverflow depth, arrows and dots, drag and keyboard
+   - Install: `npx shadcn@latest add @avara-ui/carousel-3d`
+   - Docs: https://avaraui.com/docs/nextjs/carousel#3d-carousel
+3. **Fluid glass slider** (`glass`): A liquid-glass distortion slider with cursor tracking, glass overlays and progress tracking.
+   - Live: https://avaraui.com/view/carousel/glass
+   - Best for: a premium landing-page banner with big imagery
+   - Avoid if: you want a plain, low-effect image rotator
+   - Traits: liquid glass distortion, cursor tracking, progress bar
+   - Install: `npx shadcn@latest add @avara-ui/carousel`
+   - Set these props: `{"variant":"glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/carousel#fluid-glass-slider
+4. **Image carousel** (`image`): A straightforward image carousel with arrows, dots, swipe and autoplay built in.
+   - Live: https://avaraui.com/view/carousel/image
+   - Best for: a product or photo gallery that should just work
+   - Avoid if: you want copy over the image or a thumbnail rail
+   - Traits: arrows and dots, swipe, autoplay
+   - Install: `npx shadcn@latest add @avara-ui/carousel`
+   - Set these props: `{"variant":"image"}`
+   - Docs: https://avaraui.com/docs/nextjs/carousel#image-carousel
+5. **Hero carousel** (`hero`): Copy overlaid on a full-bleed image; click an image card to make it the background.
+   - Live: https://avaraui.com/view/carousel/hero
+   - Best for: a landing-page hero with headline copy per slide
+   - Avoid if: you only have images with no text
+   - Traits: full-bleed background, copy overlay, clickable cards
+   - Install: `npx shadcn@latest add @avara-ui/carousel`
+   - Set these props: `{"variant":"hero"}`
+   - Docs: https://avaraui.com/docs/nextjs/carousel#hero-carousel
+6. **Thumbnail rail** (`thumbnails`): A main slide with a clickable thumbnail strip, at the bottom or on the left.
+   - Live: https://avaraui.com/view/carousel/thumbnails
+   - Best for: a gallery where the visitor jumps to a specific slide
+   - Avoid if: you want a minimal strip with no extra chrome
+   - Traits: thumbnail strip, bottom or left placement
+   - Install: `npx shadcn@latest add @avara-ui/carousel`
+   - Set these props: `{"variant":"thumbnails"}`
+   - Docs: https://avaraui.com/docs/nextjs/carousel#thumbnail-rail
 
 ## Props Reference
 
@@ -556,34 +569,37 @@ Follow standard design principles when implementing this component. Ensure prope
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `variant` | `"radial" \| "glass" \| "image" \| "hero" \| "thumbnails"` | `"image"` | The layout variant to render. |
+| `variant` | `"image" \| "hero" \| "thumbnails" \| "radial" \| "glass" \| "fluid"` | `"image"` | The layout variant to render. `"fluid"` is an alias for `"glass"`. Each variant takes the props of the carousel below it. |
 | `images` | `ImgSrc[]` | `[]` | Array of image URLs or StaticImageData objects (for `"image"` variant). |
-| `slides` | `any[]` | `[]` | Array of slide objects (for `"glass"` or `"hero"` variants). |
-| `items` | `any[]` | `[]` | Array of item objects (for `"radial"` or `"thumbnails"` variants). |
-| `className` | `string` | `-` | Custom CSS styling classes for the outer wrapper. |
+| `slides` | `HeroSlide[] \| FluidGlassSlide[]` | `[]` | Array of slide objects (for `"hero"` or `"glass"` variants). |
+| `items` | `RadialCarouselItem[] \| CustomItem[]` | `[]` | Array of item objects (for `"radial"` or `"thumbnails"` variants). |
+| `className` | `string` | `-` | Classes for the outer wrapper on the `"image"`, `"radial"` and `"glass"` variants. On `"image"` it replaces the default root classes, height included. The `"hero"` and `"thumbnails"` variants ignore it. |
 
 ### RadialCarousel
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `items` | `RadialCarouselItem[]` | `[]` | Array of cards with `{ title, category, rating, price?, img }` radiating in 360 degrees. |
-| `autoPlay` | `boolean` | `false` | If true, continuously rotates the 3D wheel. |
+| `items` | `RadialCarouselItem[]` | Built-in sample cards | Array of cards with `{ title, img, category?, rating?, price?, des? }` radiating in 360 degrees. Fewer than 10 items are repeated to fill the wheel. |
+| `autoPlay` | `boolean` | `false` | If true, the wheel starts rotating. The hub button then pauses and resumes it. |
 | `autoPlayInterval` | `number` | `3500` | Interval (in ms) between auto rotations. |
-| `stepAngle` | `number` | `360 / items.length` | Rotation angle step per card in degrees. |
+| `stepAngle` | `number` | `360 / cards shown` | Rotation angle step per card in degrees. The default divides the circle by the number of cards on the wheel, after short lists are repeated. |
+| `showArrows` | `boolean` | `false` | Shows previous and next buttons. |
+| `showDots` | `boolean` | `false` | Shows pagination dots. |
+| `imageComponent` | `React.ElementType` | `"img"` | Element used for card images. Pass `Image` from `next/image` in Next.js. |
 | `className` | `string` | `-` | Outer container styling. |
 
 ### FluidGlassSlider
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `slides` | `FluidGlassSlide[]` | `DEFAULT_SLIDES` | Array of glass slides with `{ id, image, title, subtitle }`. |
+| `slides` | `FluidGlassSlide[]` | Three built-in slides | Array of glass slides with `{ id, image, title, subtitle }`, where `id` is a number and `image` a URL string. Autoplay advances every 5 seconds and cannot be changed. |
 | `className` | `string` | `-` | Container dimensions, borders, and shadows. |
 
 ### ImageCarousel
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `images` | `ImgSrc[]` | `[]` | Array of string URLs or Next.js StaticImageData objects. |
+| `images` | `ImgSrc[]` | `[]` | Array of string URLs, or Next.js StaticImageData objects when `imageComponent` is `Image` from `next/image`. |
 | `autoPlay` | `boolean` | `false` | If true, automatically cycles through images. |
 | `autoPlayInterval` | `number` | `3000` | Time (in ms) before automatically switching slides. |
 | `showArrows` | `boolean` | `true` | Whether to show previous/next navigation buttons. |
@@ -591,6 +607,7 @@ Follow standard design principles when implementing this component. Ensure prope
 | `transitionDuration` | `number` | `500` | Transition animation duration in milliseconds. |
 | `imageWidth` | `number` | `1200` | Default image width in pixels. |
 | `imageHeight` | `number` | `540` | Default image height in pixels. |
+| `imageComponent` | `React.ElementType` | `"img"` | Element used for the slides. Pass `Image` from `next/image` in Next.js to keep image optimisation. |
 
 ### HeroCarousel
 
@@ -606,8 +623,8 @@ Follow standard design principles when implementing this component. Ensure prope
 | --- | --- | --- | --- |
 | `items` | `CustomItem[]` | `[]` | Array of thumbnail slides with `{ img, title, des }`. |
 | `imageButtonPosition` | `"bottom" \| "left" \| "right"` | `"bottom"` | Placement of the thumbnail selector strip. |
-| `autoPlay` | `boolean` | `false` | If true, auto-advances through thumbnail items. |
-| `autoPlayInterval` | `number` | `3000` | Time (in ms) between slide changes. |
+| `autoPlay` | `boolean` | `true` | Auto-advances through the items. Set to `false` to turn it off. |
+| `interval` | `number` | `5000` | Time (in ms) between slide changes. |
 
 ### ThreeDCarousel
 
@@ -629,6 +646,34 @@ Follow standard design principles when implementing this component. Ensure prope
 | `category` | `string` | Required | A short descriptive pill/badge label rendered above the title (e.g., "Architecture", "Design"). |
 | `image` | `string` | Required | The URL to the high-resolution background image for the card. |
 | `description` | `string` | `undefined` | Optional supporting paragraph text displayed below the headline. Automatically clamped to 2 lines. |
+
+## Works with other components
+
+- Combine `Carousel` with [Curved Carousel](https://avaraui.com/docs/reactjs/curved-carousel) for oscillating 3D arcs, [Squircle Carousel](https://avaraui.com/docs/reactjs/squircle-carousel) for masked tile grids, and [Gallery](https://avaraui.com/docs/reactjs/gallery) for multi-mode 3D media showcases.
+
+## Should I install `carousel` or `carousel-3d`?
+
+Install `carousel` for `RadialCarousel`, `FluidGlassSlider`, `ImageCarousel`, `HeroCarousel`, and `CustomCarousel`; it needs only `lucide-react`. Install `carousel-3d` for the fanned `ThreeDCarousel` deck, which adds `gsap`. `carousel-3d-motion` is the same deck on `motion`; add one build, not both.
+
+## How do I position the thumbnail strip on `CustomCarousel`?
+
+Set `imageButtonPosition` to `"bottom"` (the default), `"left"` or `"right"`, and pass your slides through `items` rather than `images`. Each item is `{ img, title, des }`. The carousel autoplays every 5 seconds by default; change that with `interval`, or pass `autoPlay={false}`.
+
+## How do I use next/image with ImageCarousel?
+
+Pass `imageComponent={Image}` with `Image` from `next/image`. Without it, `ImageCarousel` renders a plain `img`, so the file also runs in Vite. `StaticImageData` imports only work with `imageComponent`. `HeroCarousel` and `CustomCarousel` use their image as a CSS background, so give them URL strings.
+
+## Which carousels autoplay by default?
+
+`CustomCarousel` (5000 ms `interval`), `ThreeDCarousel` (`autoPlay`, 4000 ms) and `FluidGlassSlider` (fixed 5000 ms) start playing. `ImageCarousel` (3000 ms), `HeroCarousel` (3000 ms) and `RadialCarousel` (3500 ms) stay still until you set `autoPlay`. `ThreeDCarousel` pauses while the pointer is over it.
+
+## How do the ThreeDCarousel drag and keyboard controls work?
+
+Drag the centre card more than 50px to move one slide, click a side card to bring it forward, or press the left and right arrow keys. The keys are caught on the whole window, not only when the deck is focused. Arrows, pause button and dots are labelled; `showArrows` and `showDots` hide them.
+
+## Are the carousels accessible?
+
+`RadialCarousel` is a `region` with `aria-roledescription="carousel"`, a screen-reader-only title announced while autoplay is paused, and a labelled Play and Pause hub button. Its card transitions switch off under `motion-reduce`. `ImageCarousel` dots are labelled "Go to slide N", but its arrows have no text unless you pass `prevIcon` and `nextIcon` that carry it.
 
 ---
 

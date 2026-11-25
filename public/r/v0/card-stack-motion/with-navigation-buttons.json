@@ -3,7 +3,7 @@
   "name": "card-stack-motion-with-navigation-buttons",
   "type": "registry:block",
   "title": "Card Stack — With navigation buttons",
-  "description": "Arrow button controls to slide cards forwards and backwards with disabled bounds at the ends.",
+  "description": "The \"With navigation buttons\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

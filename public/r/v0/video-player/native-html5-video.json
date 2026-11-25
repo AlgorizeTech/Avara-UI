@@ -3,7 +3,7 @@
   "name": "video-player-native-html5-video",
   "type": "registry:block",
   "title": "Video Player — Native HTML5 video",
-  "description": "A self-hosted mp4 with the browser's own controls — no embed, no third-party player.",
+  "description": "The \"Native HTML5 video\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

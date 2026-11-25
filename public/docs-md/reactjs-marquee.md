@@ -6,7 +6,22 @@ url: https://avaraui.com/docs/nextjs/marquee
 
 # Shadcn Marquee
 
-An infinite, seamless scrolling marquee for logos, testimonials and image galleries. Supply one set of items: the block duplicates them and offsets the copy by `calc(-100% - gap)`, so the loop never stutters or snaps back.
+An infinite, seamless scrolling marquee for logos, testimonials and image galleries. Supply one set of items: the block repeats them and offsets each track by `calc(-100% - gap)`, so the loop never stutters or snaps back.
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/marquee.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/marquee
+```
 
 ## Marquee
 
@@ -59,24 +74,7 @@ export default function LogoSection() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/marquee.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/marquee
-```
-
-## Examples
-
-### Reverse direction
+## Reverse direction
 
 - Set `direction="right"` to run the same animation backwards — pair it with a `left` row above or below for a two-row logo wall.
 
@@ -127,7 +125,7 @@ export default function ReverseLogoWall() {
 }
 ```
 
-### Vertical
+## Vertical
 
 Vertical marquees need a bounded height. Without one the container grows to fit both tracks and nothing appears to move.
 
@@ -189,7 +187,7 @@ export default function TestimonialColumn() {
 }
 ```
 
-### Speed
+## Speed
 
 `speed` is a duration for one full pass, not a pixels-per-second rate, so the same value moves faster with fewer items.
 
@@ -223,7 +221,7 @@ export default function SlowGallery() {
 }
 ```
 
-### Without fade or pause
+## Without fade or pause
 
 - Use `fade={false}` to drop the edge mask, and `pauseOnHover={false}` to keep the loop running under the cursor. Both are the defaults.
 
@@ -274,16 +272,74 @@ export default function BareLogoWall() {
 }
 ```
 
+## About Shadcn Marquee
+
+**What it is.** **Shadcn Marquee** (`MarqueeBlock`) is a seamless infinite scrolling ticker for logos, testimonials, and image strips in horizontal (`left`, `right`) or vertical (`up`, `down`) directions.
+
+**How it is built.** Supply your children once; `MarqueeBlock` renders them in four flex tracks, the first readable and the other three `aria-hidden`, and animates each by `calc(-100% - gap)` so loops never jump. It is plain CSS keyframes with no npm dependency. `speed`, `fade` and `pauseOnHover` are props, and motion pauses under `prefers-reduced-motion`.
+
+**When to use it.** Use it for customer logo walls, live testimonial columns, social proof strips, and gallery tickers.
+
+## For AI agents
+
+**When to use**
+
+- Customer logo walls, live testimonial columns
+- Social proof strips, gallery tickers
+
+**When not to use**
+
+- A grouped "built with" strip that cycles through tool groups: use [Tech Stack](https://avaraui.com/docs/reactjs/tech-stack)
+- A 3D arc of cards instead of a flat ticker: use [Curved Carousel](https://avaraui.com/docs/reactjs/curved-carousel)
+
+**Agent notes**
+
+- Named export: `import { MarqueeBlock } from "@/components/custom/blocks/MarqueeBlock"`. It forwards a ref and other `div` attributes.
+- Pass `children` once. They are rendered four times in total, so keep them non-interactive and avoid `id` attributes on them.
+- `gap` must be a CSS length (like `"4rem"`), not a percentage.
+- Vertical marquees (`direction="up" | "down"`) require a bounded height on the container to scroll.
+- `fade` and `pauseOnHover` both default to `false`, so pass them explicitly when you want them.
+
 ## Props Reference
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `children` | `React.ReactNode` | Required | One set of items. The block duplicates them internally to close the loop. |
+| `children` | `React.ReactNode` | Required | One set of items. The block repeats them in hidden tracks to close the loop. |
 | `direction` | `"left" \| "right" \| "up" \| "down"` | `"left"` | Travel direction. Vertical values need a bounded height on the container. |
 | `speed` | `"slow" \| "normal" \| "fast" \| number` | `"normal"` | Preset pace, or the duration of one full pass in seconds. |
 | `pauseOnHover` | `boolean` | `false` | Pauses the animation while the pointer is over the marquee. |
 | `fade` | `boolean` | `false` | Applies a gradient `mask-image` so items dissolve at both edges. |
-| `gap` | `string` | `"1rem"` | CSS gap between items. The loop math accounts for it, so any value stays seamless. |
+| `gap` | `string` | `"1rem"` | CSS gap between items. Any CSS length keeps the loop seamless; avoid percentages. |
+
+## Works with other components
+
+- [Tech Stack](https://avaraui.com/docs/reactjs/tech-stack) pairs with `MarqueeBlock` for alternating tool strips.
+- [Curved Carousel](https://avaraui.com/docs/reactjs/curved-carousel) is the option for a 3D concave arc of cards.
+- [Flow Gallery](https://avaraui.com/docs/reactjs/flow-gallery) suits diagonal image streams.
+
+## Why isn't my vertical marquee scrolling?
+
+Vertical marquees (`direction="up"` or `"down"`) need a fixed or bounded height on the container, such as `className="h-[380px]"`. Without one, the flex column grows to fit every track at once, so the content has nothing to scroll past. Horizontal marquees fill the width of their parent.
+
+## Should I use percentage values for the Marquee gap?
+
+No. Pass `gap` as a concrete CSS length such as `"4rem"` or `"24px"`. The same value spaces the items and feeds the `calc(-100% - gap)` offset that closes the loop, and a percentage resolves against different boxes in each place, so the tracks no longer line up.
+
+## How do I change the Marquee speed?
+
+Set `speed` to `"slow"`, `"normal"` or `"fast"`, which run one pass in 40, 20 and 10 seconds. A number sets the seconds directly, so `speed={30}` is 30 seconds. It is a duration for one pass of the track, not a pixel rate, so a longer set of items moves faster at the same value.
+
+## Does the Marquee respect prefers-reduced-motion?
+
+Yes. The block injects a `prefers-reduced-motion: reduce` rule that sets `animation-play-state: paused`, so the track holds still for visitors who asked for less motion. Everything else, including `fade` and `gap`, behaves normally, and the first copy of your items stays readable.
+
+## Is it safe to put links or buttons inside a Marquee?
+
+Be careful. `MarqueeBlock` renders your children four times: the first track is readable and the other three are `aria-hidden`. That hides the copies from screen readers, but not from keyboard focus, so links and buttons appear several times in the tab order. Use it for logos, quotes and images.
+
+## How do I pause the Marquee on hover or fade its edges?
+
+Pass `pauseOnHover` to pause the animation while the pointer is over the container, and `fade` to apply a gradient mask over the first and last 10% so items dissolve at both edges. Both default to `false`. The mask runs left to right for horizontal marquees and top to bottom for vertical ones.
 
 ---
 

@@ -2,6 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractMotionCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 export const metadata = docsPageMetadata("folder", {
   title: "Folder",
@@ -10,9 +11,7 @@ export const metadata = docsPageMetadata("folder", {
 
 # Shadcn Folder
 
-A tactile folder: skeleton cards (or your own photos) tuck behind a frosted-glass front pocket that tilts open in 3D, and the cards lift into a shallow arc on hover, tap or focus.
-
-Give it a `color` and the pocket, icon and cards all derive their shades from it. Pass `files` for real photos, or switch on `interactive` to make it a drag-and-drop upload target — that example lives on the <DocLink to="file-upload">File Upload</DocLink> page.
+A tactile folder (`Folder`, `SkeletonCard`) with a 3D frosted-glass pocket, OKLCH color-derived shades, and fanned card previews on hover, tap, or focus.
 
 export const usageDefault = `import { Folder } from "@/components/custom/blocks/FolderBlock";
 import { Image } from "lucide-react";
@@ -112,10 +111,11 @@ export default function SummerTrip() {
     { name: "size", label: "Size", min: 160, max: 360, step: 10, defaultValue: 260, unit: "px" },
     { name: "blur", label: "Pocket blur", min: 0, max: 24, step: 1, defaultValue: 10, unit: "px" },
   ]}
+  installation={<Installation name="folder" usage="below" />}
   examples={[
     {
       title: "Folder",
-      subheading: "Hover, tap or focus the folder to fan the cards out.",
+      description: "Hover, tap or focus the folder to fan the cards out.",
       propNotes: [
         {
           prop: "peek",
@@ -137,23 +137,9 @@ export default function SummerTrip() {
       usage: usageDefault,
       code: extractMotionCode("src/components/custom/blocks/FolderBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="folder" />
-
-## Examples
-
-<ExampleShowcase minHeight={330}
-  name="folder"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Fan on hover",
-      subheading: "Hover a card for its name. Use the arrows — or drag a card sideways — to page through; the window wraps at either end.",
+      description: "Hover a card for its name. Use the arrows — or drag a card sideways — to page through; the window wraps at either end.",
       propNotes: [
         {
           prop: "files",
@@ -166,7 +152,7 @@ export default function SummerTrip() {
     },
     {
       title: "Icon",
-      subheading: "Pick an icon — it and the pocket take their shades from the theme colour chosen at the top of the page.",
+      description: "Pick an icon — it and the pocket take their shades from the theme colour chosen at the top of the page.",
       propNotes: [
         {
           prop: "icon",
@@ -179,7 +165,7 @@ export default function SummerTrip() {
     },
     {
       title: "Photos",
-      subheading: "Drag a photo sideways — or swipe it with a thumb — to page through; the arrows do the same.",
+      description: "Drag a photo sideways — or swipe it with a thumb — to page through; the arrows do the same.",
       propNotes: [
         {
           prop: "files",
@@ -193,35 +179,34 @@ export default function SummerTrip() {
   ]}
 />
 
-## Features
-Discover the Folder's capabilities for presenting a group of files as one tactile object.
+## About Shadcn Folder
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="One silhouette">
-    <p>The tab and body are a single rounded path, so the join never shows a notch and every corner — including the slant — is a true squircle.</p>
-  </InfoCard>
-  <InfoCard title="Colour-derived shades">
-    <p>Pocket, icon and skeleton cards are computed from <code>color</code> in OKLCH, so any base colour — near-black included — stays readable.</p>
-  </InfoCard>
-  <InfoCard title="Fits the room">
-    <p>The fan measures its nearest clipping ancestor and tightens the gap — then drops a card — rather than overflowing on a narrow screen.</p>
-  </InfoCard>
-  <InfoCard title="Reachable everywhere">
-    <p>Hover opens it on desktop; a tap toggles it on touch; focus opens it from the keyboard. Every animation respects <code>prefers-reduced-motion</code>.</p>
-  </InfoCard>
-</div>
+**What it is.** `Folder` renders a squircle folder with a frosted-glass front pocket, `peek` skeleton cards (or photo/file thumbnails via `files`), paging arrows when there is more than one item (the fan shows up to five cards at a time), and optional `interactive` drag-and-drop upload mode.
 
-## Best Practices & Guidelines
+**How it is built.** Derives pocket, icon, and card shades in OKLCH from `color` (defaulting to `--primary`), measures its nearest clipping ancestor to fit narrow containers, and respects `prefers-reduced-motion`. The default build uses GSAP; `folder-motion` is the same API on Motion.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Leave headroom above the folder">
-    <p>The fan lifts cards roughly half the folder's height above it and the arrows sit just outside its width. Give the folder that space, and avoid <code>overflow-hidden</code> on its immediate parent.</p>
-  </InfoCard>
-  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Do not double up the click</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">An <code>interactive</code> folder spends its click on the file picker, so tap-to-toggle is off there. If an ancestor already handles clicks, pass <code>toggleOnClick={false}</code> and <code>focusable</code> so the fan stays keyboard-reachable.</p>
-  </div>
-</div>
+**When to use it.** Use `Folder` for file collections, media albums, and playful upload targets. For dropzone upload queues, see <DocLink to="file-upload">File Upload</DocLink>; for component-showcase folders, see <DocLink to="design-components-folder">Components Folder</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="folder">
+
+**When to use**
+
+- Tactile folder previews with fanned skeleton/photo cards (`files`, `peek`, `icon`) or interactive file drop targets (`interactive`)
+
+**When not to use**
+
+- Full multi-file upload queues with per-file progress — use <DocLink to="file-upload">File Upload</DocLink>
+
+**Agent notes**
+
+- Named exports: `Folder`, `SkeletonCard` from `@/components/custom/blocks/FolderBlock` (ships GSAP and Motion twin builds)
+- Avoid `overflow-hidden` on the immediate parent so the fanned cards have headroom above the folder
+- `files` takes `{ thumb?, name?, progress? }` objects; with no `files`, `peek` skeleton cards are shown.
+- Install `folder` (GSAP) or `folder-motion` (Motion), not both. Both pull in the Tooltip block and `lucide-react`.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -372,6 +357,35 @@ Discover the Folder's capabilities for presenting a group of files as one tactil
 
 Also exported. The placeholder "document" the folder draws for files without a `thumb` — reuse it anywhere you need a pretend file so the language stays consistent.
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Use `interactive` mode as a playful drop target alongside <DocLink to="file-upload">File Upload</DocLink>, which handles the upload queue.
+- Compare with <DocLink to="design-components-folder">Components Folder</DocLink> for multi-card showcase folders.
+- Card names in the fan are shown with the <DocLink to="tooltip">Tooltip</DocLink> block, which installs as a dependency.
+
+## Why shouldn't I put overflow-hidden on Folder's parent?
+
+When hovered or focused, `Folder` fans its cards roughly half the folder's height above the top edge and places paging arrows just outside its width; `overflow-hidden` on an immediate ancestor will clip them. Leave headroom above the folder.
+
+## How do I show my own photos in the Folder fan?
+
+Pass `files` with a `thumb` URL on each entry. Those cards render as photos clipped to the card corners, while entries without `thumb` render as skeleton cards. Add `name` to show a tooltip, and `onRemoveFile` to get an × on each open card that reports its index.
+
+## How do I turn Folder into a file drop target?
+
+Set `interactive` and handle `onFiles`, which receives the dropped or picked `File[]`. Clicking the folder opens the browser file picker, and `accept` and `multiple` go to the hidden input. Drive the pocket's progress bar with a `progress` value from 0 to 100.
+
+## How do I open the Folder fan on touch or with the keyboard?
+
+By default a tap, or Enter and Space on the focused folder, toggles the fan, and focus inside it also opens it. If an ancestor owns the click, set `toggleOnClick={false}` and add `focusable` so the fan still opens on focus. Pass `open` to force it.
+
+## How do I change the Folder colour?
+
+Pass `color` any CSS colour. Without it the folder uses `FOLDER_THEME_TINT`, a soft tint of your theme's `--primary`, so it follows theme presets. The pocket, icon and skeleton cards derive their shades from `color` in OKLCH, so one value restyles the whole folder.
+
+## Should I use the GSAP or the Motion build of Folder?
+
+Either. `folder` installs with `gsap` and `folder-motion` with `motion`, and both export `Folder` and `SkeletonCard` with the same props and `prefers-reduced-motion` handling. Neither imports `next/*`, so both run in Vite. Pick the library your project already ships and install one.
 
 <DocsJsonLd slug="folder" />
+<FaqJsonLd slug="folder" />

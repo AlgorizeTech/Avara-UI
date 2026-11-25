@@ -3,7 +3,7 @@
   "name": "date-picker-inline-calendar",
   "type": "registry:block",
   "title": "Date Picker — Inline Calendar",
-  "description": "Compact inline single-month calendar card for direct date selection.",
+  "description": "The \"Inline Calendar\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

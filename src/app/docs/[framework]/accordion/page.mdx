@@ -4,12 +4,11 @@ export const metadata = docsPageMetadata("accordion");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Accordion
 
 A data-driven accordion with nine list styles and a brand reveal showcase.
-
-<AgentVariants slug="accordion" />
 
 export const usageData = `const faqItems: AccordionDataItem[] = [
   {
@@ -151,13 +150,19 @@ export default function MultipleOpenFaq() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+export const accordionCode = extractCode("src/components/custom/blocks/Accordion.tsx");
+
+<ExampleShowcase
+  headingLevel={2}
   name="accordion"
   columns={1}
   minHeight={240}
+  colorControl
+  installation={<Installation name="accordion" usage="below" />}
   examples={[
     {
       title: "Inset panel",
+      description: "Lifts the open row and sets its answer inside an inset well.",
       propNotes: [
         {
           lead: "Use",
@@ -168,9 +173,11 @@ export default function MultipleOpenFaq() {
       ],
       props: { variant: "inset", interaction: "single" },
       usage: usageInset,
+      code: accordionCode,
     },
     {
       title: "Tray",
+      description: "Groups rows inside one rounded tray where the open row becomes a tile with a plus-to-minus toggle.",
       propNotes: [
         {
           lead: "Use",
@@ -181,9 +188,11 @@ export default function MultipleOpenFaq() {
       ],
       props: { variant: "tray", interaction: "single" },
       usage: usageTray,
+      code: accordionCode,
     },
     {
       title: "Bracket frame",
+      description: "Outlined rows with corner brackets that open outward when expanded.",
       propNotes: [
         {
           lead: "Use",
@@ -194,9 +203,11 @@ export default function MultipleOpenFaq() {
       ],
       props: { variant: "bracket", interaction: "single" },
       usage: usageBracket,
+      code: accordionCode,
     },
     {
       title: "Soft tiles",
+      description: "White tiles that settle to soft gray when open with a folding plus-to-minus icon.",
       propNotes: [
         {
           lead: "Use",
@@ -207,9 +218,11 @@ export default function MultipleOpenFaq() {
       ],
       props: { variant: "soft", interaction: "single" },
       usage: usageSoft,
+      code: accordionCode,
     },
     {
       title: "Lift card",
+      description: "Default card-lift style with an optional one-time stack entrance when scrolled into view.",
       propNotes: [
         {
           lead: "Pass",
@@ -219,10 +232,11 @@ export default function MultipleOpenFaq() {
       ],
       props: { variant: "default", interaction: "single", animation: "stack" },
       usage: usageDefault,
-      code: extractCode("src/components/custom/blocks/Accordion.tsx"),
+      code: accordionCode,
     },
     {
       title: "Brand reveal",
+      description: "Interactive horizontal brand logo showcase powered by `BrandLogoAccordion`.",
       propNotes: [
         {
           lead: "Use",
@@ -233,10 +247,11 @@ export default function MultipleOpenFaq() {
       ],
       props: { variant: "brand-reveal" },
       usage: usageBrandReveal,
-      code: extractCode("src/components/custom/blocks/Accordion.tsx"),
+      code: accordionCode,
     },
     {
       title: "Multiple open",
+      description: "Ghost card stack configured with `type=\"multiple\"` so several panels can remain open together.",
       propNotes: [
         {
           lead: "Set",
@@ -247,39 +262,42 @@ export default function MultipleOpenFaq() {
       ],
       props: { variant: "ghost", interaction: "multiple" },
       usage: usageMultipleOpen,
+      code: accordionCode,
     },
   ]}
 />
 
-## Installation
+## About Shadcn Accordion
 
-<Installation name="accordion" />
+**What it is.** A data-driven accordion for React built on the Radix UI primitive, shipping nine list variants plus an interactive `BrandLogoAccordion` showcase. Pass an `accordionData` array and it renders icons, triggers, and animated panels.
 
-## Features
-Single or multiple open panels, a one-time stack entrance, and nine variants that all read your theme tokens.
+**How it is built.** The `soft`, `tray`, `inset`, and `bracket` variants animate via CSS keyframes inside the component, while `animation="stack"` uses the Web Animations API—requiring no external animation library beyond Radix UI and `lucide-react`. Every variant reads your shadcn theme tokens (`--primary`, `--border`, `--card`) and respects `prefers-reduced-motion`.
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Follows your theme">
-    <p>Every variant is built from the shadcn tokens, so changing <code>--primary</code> restyles the open panel, the rail and the icon tile together.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Radix handles roles, arrow-key navigation and focus. The visible focus ring follows the shape of each variant, and the entrance respects reduced motion.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Rows wrap cleanly at phone width; the open card in the default variant only grows wider than the list from <code>sm</code> up.</p>
-  </InfoCard>
-  <InfoCard title="No animation library">
-    <p>The <code>soft</code>, <code>tray</code>, <code>inset</code> and <code>bracket</code> variants open and close with CSS keyframes that ship inside the component. The stack entrance uses the Web Animations API. The only dependency beyond Radix is <code>lucide-react</code>.</p>
-  </InfoCard>
-</div>
+**When to use it.** Reach for it in FAQ sections, settings panels, onboarding checklists, and help centers, or use `brand-reveal` for client and partner showcases. When using `animation="stack"`, apply it once per page with at least three items and a `defaultValue` set so the open card is part of the initial deal.
 
-## Best Practices & Guidelines
+## For AI agents
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Use <code>animation="stack"</code> once per page, on the accordion you want people to notice; two decks dealing at the same time cancel each other out. Give it at least three items so the pile reads as a deck, and keep <code>defaultValue</code> set so the open card is part of the deal.</p>
-  </InfoCard>
-</div>
+<AgentBrief name="accordion">
+
+**When to use**
+
+- FAQ sections, help centers, settings groups, and onboarding checklists
+- Brand/partner showcases via `variant="brand-reveal"` or `<BrandLogoAccordion />`
+- Single-open (`type="single"`) or multi-open (`type="multiple"`) disclosure lists
+
+**When not to use**
+
+- A single standalone show/hide toggle: use <DocLink to="collapsible">Collapsible</DocLink>
+- Switching between full views or forms side-by-side: use <DocLink to="vertical-tabs">Vertical Tabs</DocLink>
+
+**Agent notes**
+
+- Import named exports `{ Accordion, BrandLogoAccordion, type AccordionDataItem }` from `@/components/custom/blocks/Accordion`.
+- `accordionData` expects items of `{ value, title, icon, content }`, where `icon` is a key of the block's `ICON_MAP` (such as `"HelpCircle"`, `"CreditCard"`, `"Shield"`).
+- Use `animation="stack"` on at most one accordion per page, with 3+ items and `defaultValue` set.
+- No GSAP or Motion dependency is needed; animations use CSS keyframes and the Web Animations API.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -471,12 +489,31 @@ Single or multiple open panels, a one-time stack entrance, and nine variants tha
   </table>
 </div>
 
-## About Shadcn Accordion
+## Works with other components
 
-**What it is.** A copy-paste accordion for React, built on the Radix UI primitive and styled with shadcn theme tokens. You pass an array of items and it renders the icons, titles and panels.
+- Pair with <DocLink to="faq-section">FAQ Section</DocLink> when you want a full-page FAQ layout with headings and supporting copy.
+- Use <DocLink to="collapsible">Collapsible</DocLink> for a single independent disclosure toggle instead of a coordinated list.
+- Combine with <DocLink to="card">Card</DocLink> or <DocLink to="vertical-tabs">Vertical Tabs</DocLink> inside settings and onboarding screens.
 
-**When to use it.** FAQ sections, settings panels, onboarding checklists and help centers. Pick a list style to match the surface it sits on, or the brand reveal to show clients and partners.
+## When should I use animation="stack"?
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+Use `animation="stack"` on a single focal accordion per page—having two decks deal simultaneously splits attention. Give it at least three items so the pile reads as a deck, and pass `defaultValue` so the initially open item is part of the reveal.
+
+## Which variants use CSS animations instead of JS?
+
+The `soft`, `tray`, `inset`, and `bracket` variants open and close using CSS keyframes shipped inside the component. Only `animation="stack"` uses the Web Animations API, and no external animation library (GSAP or Motion) is required.
+
+## Can multiple accordion panels stay open at once?
+
+Yes. Pass `type="multiple"` and provide an array for `defaultValue` (for example `defaultValue={["getting-started"]}`). Clicking an open panel still closes it independently.
+
+## Is the accordion accessible?
+
+Yes. Radix UI handles ARIA roles, keyboard navigation (arrow keys, `Home`, `End`), and focus management. Focus rings adapt to each variant's shape, and `animation="stack"` is skipped when `prefers-reduced-motion` is enabled.
+
+## Can I use it without Next.js?
+
+Yes. `Accordion` and `BrandLogoAccordion` import nothing from `next/*`, so they work in Vite and any other React setup.
 
 <DocsJsonLd slug="accordion" />
+<FaqJsonLd slug="accordion" />

@@ -3,14 +3,12 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("scroll-split-cards");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
-import { Installation } from "@/components/site/installation";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Scroll Split Cards
 
-A cinematic scroll-driven component: one panoramic landscape splits into three card panels as you scroll, then the cards separate and flip in 3D to reveal editorial narratives.
-
-`ScrollSplitCards` suits brand origin stories, architectural journeys, editorial photography features and landmark case studies.
+A scroll-driven 3D split showcase (`ScrollSplitCards`) that slices a panoramic image into three panels, separates them, and flips them 180° to reveal editorial cards.
 
 export const usageDefault = `import { ScrollSplitCards } from "@/components/custom/blocks/ScrollSplitCardsBlock";
 
@@ -120,10 +118,11 @@ export default function SlowTransitionExample() {
   name="scroll-split-cards"
   columns={1}
   colorControl={false}
+  installation={<Installation name="scroll-split-cards" usage="below" />}
   examples={[
     {
       title: "Default",
-      subheading: "The default scroll mode, with built-in spring physics. No speed props needed.",
+      description: "The default scroll mode, with built-in spring physics. No speed props needed.",
       propNotes: [
         {
           prop: "imageUrl",
@@ -139,28 +138,9 @@ export default function SlowTransitionExample() {
       code: extractCode("src/components/custom/blocks/ScrollSplitCardsBlock.tsx"),
       minHeight: 470,
     },
-  ]}
-/>
-
-<ExampleShowcase
-  name="scroll-split-cards"
-  columns={1}
-  colorControl={false}
-  controls={[
-    {
-      name: "scrollSpeed",
-      label: "Scroll Speed",
-      min: 0.2,
-      max: 2.5,
-      step: 0.1,
-      defaultValue: 0.6,
-      unit: "x",
-    },
-  ]}
-  examples={[
     {
       title: "Slow Transition",
-      subheading: "A slower profile for leisurely narrative pacing.",
+      description: "A slower profile for leisurely narrative pacing.",
       propNotes: [
         {
           prop: "scrollSpeed",
@@ -221,40 +201,32 @@ export default function SlowTransitionExample() {
   ]}
 />
 
-## Installation
+## About Shadcn Scroll Split Cards
 
-<Installation name="scroll-split-cards" />
+**What it is.** `ScrollSplitCards` slices one wide `imageUrl` panorama across three seamless panels that separate and 3D-flip 180° on scroll to reveal three `cards` chapters.
 
-## Features
+**How it is built.** Uses a dependency-free spring follower for wheel and touch deltas (tracking input directly under `prefers-reduced-motion`) and CSS `preserve-3d` / `backface-visibility` for the flip.
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Mathematical Panorama Slicing">
-    <p>Renders a single high-resolution image across three adjacent overflow-hidden cards using precise percentage offsets, guaranteeing zero seams when closed.</p>
-  </InfoCard>
-  <InfoCard title="Spring-Smoothed Scroll Physics">
-    <p>A spring follower (the same equation of motion as Motion's <code>useSpring</code>) turns native mousewheel and touch input into organic physical motion, with no animation library to install. Under <code>prefers-reduced-motion</code> the panels track the input directly.</p>
-  </InfoCard>
-  <InfoCard title="Dual-Sided 3D Cardstock">
-    <p>Each panel has genuine 3D card faces with <code>preserve-3d</code> and <code>backface-visibility</code>, flipping 180° to reveal typographic narratives with individual color schemes.</p>
-  </InfoCard>
-  <InfoCard title="Live Range Slider & Speed Control">
-    <p>Fine-tune the scroll rate by passing <code>scrollSpeed</code> or <code>speed</code> (numbers like <code>0.6</code> or presets like <code>"slow"</code>, <code>"normal"</code>, <code>"fast"</code>), with a live interactive range slider.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `ScrollSplitCards` for editorial storytelling, brand journeys, and architectural or travel features.
 
-## Best Practices & Guidelines
+## For AI agents
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Scroll Choreography & Layout Containment">
-    <p>Place <code>ScrollSplitCards</code> in a standard vertical flow without conflicting parent <code>overflow-hidden</code> constraints. Both mousewheel scroll and touch drag gestures naturally advance the animation through each stage.</p>
-  </InfoCard>
-  <InfoCard title="Panoramic Image Selection">
-    <p>For the most dramatic visual impact, use wide landscape photography (recommended aspect ratio 21:9 or ~2.4:1) with a resolution of at least 2400×1000px. High-contrast horizon or architectural imagery splits cleanly across the panels.</p>
-  </InfoCard>
-  <InfoCard title="Editorial Card Content & Legibility">
-    <p>Keep narrative copy concise: 1–2 sentences per card along with an optional metric callout and kicker. Contrast-tested background colors ensure text remains easily legible on all viewports.</p>
-  </InfoCard>
-</div>
+<AgentBrief name="scroll-split-cards">
+
+**When to use**
+
+- Three-panel panoramic image-to-3D-flip storytelling sections (`variant="default" | "slow-transition"`, `scrollSpeed`)
+
+**When not to use**
+
+- Vertical sticky card decks — use <DocLink to="modern-scroll-stack">Modern Scroll Stack</DocLink> or <DocLink to="scroll-stack">Scroll Stack</DocLink>
+
+**Agent notes**
+
+- Named export: `import { ScrollSplitCards } from "@/components/custom/blocks/ScrollSplitCardsBlock"`
+- Avoid `overflow-hidden` on parent containers; use wide ~21:9 landscape photography (`2400x1000px+`) for clean 3-panel slicing
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -400,6 +372,29 @@ export default function SlowTransitionExample() {
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Pair with <DocLink to="hero">Hero</DocLink> or <DocLink to="scroll-stack">Scroll Stack</DocLink> in narrative landing pages.
+
+## What image works best for ScrollSplitCards?
+
+Use a wide panoramic landscape photo in `imageUrl`. The component slices that one image across three panels so the pieces line up while closed, then separates them as the user scrolls. A narrow or portrait image will be cropped heavily across the three slices.
+
+## How do I change the content of the three cards?
+
+Pass three `SplitCard` objects in `cards`. Each needs a `title` and `description`. Optional fields include `tag`, `number`, `metric`, `metricLabel`, `location`, `backgroundColor` and `textColor`, which style the editorial face revealed after the 180° flip.
+
+## How do I make the scroll animation slower?
+
+Lower `scrollSpeed` below its default of `1`, for example `0.6`, or pass `"slow"`. You can also set `variant="slow-transition"` for a more leisurely storytelling pace. `"normal"` and `"fast"` are accepted too, and they apply to both wheel and touch scrolling.
+
+## Does ScrollSplitCards respect reduced motion and work on touch?
+
+Yes to both. It follows wheel and touch deltas with a dependency-free spring, and under `prefers-reduced-motion` it tracks the input directly instead of easing. The panel flip uses CSS `preserve-3d` and `backface-visibility`, so it adds no animation library.
+
+## How do I change the stage height or hide the scroll indicator?
+
+Set `containerHeight` to a CSS size string to override the default responsive stage height, which starts at `460px` on mobile. Pass `enableScrollIndicator={false}` to remove the animated mouse pill at the top. `headerTitle` and `headerSubtitle` change the text above the cards.
 
 <DocsJsonLd slug="scroll-split-cards" />
+<FaqJsonLd slug="scroll-split-cards" />

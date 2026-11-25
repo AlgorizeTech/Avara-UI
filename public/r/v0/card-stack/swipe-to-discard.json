@@ -3,7 +3,7 @@
   "name": "card-stack-swipe-to-discard",
   "type": "registry:block",
   "title": "Card Stack — Swipe to Discard",
-  "description": "Swipe or drag cards left or right to discard them. Cards behind smoothly step forward without back navigation, and the last card remains pinned in place.",
+  "description": "The \"Swipe to Discard\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

@@ -3,7 +3,7 @@
   "name": "input-autocomplete",
   "type": "registry:block",
   "title": "Input — Autocomplete",
-  "description": "Suggestions appear like a select menu, but the field stays free text — pick one or keep typing.",
+  "description": "The \"Autocomplete\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

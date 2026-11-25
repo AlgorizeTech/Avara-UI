@@ -3,7 +3,7 @@
   "name": "card-blog-cards",
   "type": "registry:block",
   "title": "Card — Blog cards",
-  "description": "Three posts across. The topic rides on the image, so the card body stays type-only.",
+  "description": "The \"Blog cards\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

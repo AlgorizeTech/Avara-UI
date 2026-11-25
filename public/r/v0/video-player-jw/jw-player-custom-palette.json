@@ -3,7 +3,7 @@
   "name": "video-player-jw-jw-player-custom-palette",
   "type": "registry:block",
   "title": "Video Player (JW Player) — JW Player — custom palette",
-  "description": "A transparent control bar over your own media, with extra JW options merged into setup.",
+  "description": "The \"JW Player — custom palette\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

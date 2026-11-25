@@ -1,14 +1,27 @@
 ---
 title: "Shadcn Floating Contact Button"
-description: "A high-converting, interactive floating support widget that anchors to any screen corner. Free shadcn/ui component for React and Tailwind CSS."
+description: "Shadcn Floating Contact Button. A corner-anchored floating support widget (`FloatingContactButtonBlock`) that expands into a glassmorphic chat panel with…"
 url: https://avaraui.com/docs/nextjs/floating-contact-button
 ---
 
 # Shadcn Floating Contact Button
 
-A high-converting, interactive floating support widget that anchors to any screen corner. Clicking the button expands a sleek glassmorphic chat interface animated with plain CSS (no animation library), featuring simulated agent replies, instantaneous `localStorage` theme coloring, and mobile-first responsiveness.
+A corner-anchored floating support widget (`FloatingContactButtonBlock`) that expands into a glassmorphic chat panel with simulated replies and theme syncing.
 
-Type a message in any preview and hit Enter to see the typing indicator and simulated reply. The previews use `containerMode="absolute"` so the widget stays inside its frame — in your app you would leave it `fixed`.
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/floating-contact-button.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/floating-contact-button
+```
 
 ## Floating contact button
 
@@ -35,24 +48,7 @@ export default function SupportWidget() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/floating-contact-button.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/floating-contact-button
-```
-
-## Examples
-
-### Bottom left
+## Bottom left
 
 - Set `position="bottom-left"` to move the anchor and mirror the popup's transform origin with it.
 
@@ -65,7 +61,7 @@ export default function LeftAnchoredWidget() {
 }
 ```
 
-### Collapsed
+## Collapsed
 
 - Set `defaultOpen={false}` — the default, and what a real page ships: the widget waits as a single button.
 
@@ -78,7 +74,7 @@ export default function CollapsedWidget() {
 }
 ```
 
-### Branded header
+## Branded header
 
 - `title="Nexus Support"` is the headline in the panel header, beside the sparkles badge.
 - `subtitle` is the status line under it, and `avatarUrl` the agent photo with its online dot.
@@ -98,24 +94,32 @@ export default function BrandedWidget() {
 }
 ```
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+## About Shadcn Floating Contact Button
 
-Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
+**What it is.** `FloatingContactButtonBlock` is a corner-anchored support launcher (`bottom-right` or `bottom-left`) that expands into a glassmorphic chat panel with `initialMessages`, custom agent `title`/`subtitle`/`avatarUrl`, and an `onSendMessage` callback.
 
-Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
+**How it is built.** Animated with CSS keyframes and transitions (no animation library; the only npm dependency is `lucide-react`). `containerMode="fixed"` anchors it to the viewport and `containerMode="absolute"` to the nearest positioned parent. Replies are simulated: the widget keeps the thread in its own state and answers with a canned message, and your code only sees each sent message through `onSendMessage`.
 
-Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
+**When to use it.** Use `FloatingContactButtonBlock` for lightweight landing-page or docs support widgets. For full-screen or embedded multi-turn AI assistants, use [AI Chat](https://avaraui.com/docs/nextjs/ai-chat) or [Chat](https://avaraui.com/docs/nextjs/chat).
 
-Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.
+- Corner-anchored support chat launchers with expandable glass panels
+- Branded support headers (`title`, `subtitle`, `avatarUrl`) and `onSendMessage` integration
 
-### State Management
+**When not to use**
 
-When triggering animations via state changes, ensure you wrap state updates in `startTransition` or use lightweight stores to prevent React rendering bottlenecks during the animation tick.
+- Full-page or inline AI chat threads — use [AI Chat](https://avaraui.com/docs/nextjs/ai-chat) or [Chat](https://avaraui.com/docs/nextjs/chat)
+
+**Agent notes**
+
+- Named export: `import { FloatingContactButtonBlock } from "@/components/custom/blocks/FloatingContactButtonBlock"`
+- Defaults to `defaultOpen={false}` and `containerMode="fixed"`; set `containerMode="absolute"` only inside bounded preview containers
+- There is no controlled `open` prop and no way to push agent replies in; `onSendMessage(text)` receives the user's text and the built-in reply is a placeholder
+- The accent colour is read from `localStorage` (a hex value under `localStorageKey` and a few other keys) every 100 ms, falling back to `defaultAccentColor`
+- The launcher and close buttons have no `aria-label`; add one if you ship it
 
 ## Props Reference
 
@@ -129,10 +133,10 @@ Extends `React.HTMLAttributes<HTMLDivElement>`. Accepts all standard native `<di
 | `containerMode` | `"fixed" \| "absolute"` | `"fixed"` | Layout positioning engine. Use `"fixed"` for production web pages to anchor to the viewport; use `"absolute"` inside documentation preview boxes. |
 | `title` | `string` | `"Chat with us"` | The primary headline string rendered in the chat modal header next to the sparkles badge. |
 | `subtitle` | `string` | `"We typically reply in a few minutes"` | The secondary status string displayed beneath the title in the header. |
-| `avatarUrl` | `string` | `"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790224285/photo-1469474968028-56623f02e42e-1790146212205-1790224284635.webp"` | Image URL for the support agent avatar rendered in the header with an online status badge. |
+| `avatarUrl` | `string` | `"https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto,w_250,c_limit/v1790150483/photo-1534528741775-53994a69daeb-1790150482280.jpg"` | Image URL for the support agent avatar rendered in the header with an online status badge. |
 | `defaultOpen` | `boolean` | `false` | Whether the chat modal should render expanded by default when the component mounts. |
-| `localStorageKey` | `string` | `"primaryColor"` | The storage key string monitored by the instant detection engine to sync brand colors across tabs. |
-| `defaultAccentColor` | `string` | `"var(--primary)"` | The fallback hex color applied to the header, user message bubbles, and trigger button if no key is found in storage. |
+| `localStorageKey` | `string` | `"primaryColor"` | The `localStorage` key checked first for a hex colour, ahead of `primaryColor`, `docs-theme-color`, `theme-color`, `accentColor` and `color`. It is re-read every 100 ms and on `storage` events. |
+| `defaultAccentColor` | `string` | `"var(--primary)"` | The fallback colour for the header, user message bubbles, and trigger button when no hex colour is found in storage. Accepts a hex, `rgb`, `hsl` or `var(...)` value, or a name such as `indigo`, `rose`, `emerald`, `zinc`, `amber`, `violet`, `cyan` or `blue`. |
 | `initialMessages` | `ChatMessage[]` | Default greeting array | An array of message objects populated in the chat thread when the user opens the widget. |
 | `onSendMessage` | `(message: string) => void` | `undefined` | Callback function fired whenever the user submits a new text message via the input bar. |
 
@@ -146,6 +150,35 @@ Used for structuring items inside the `initialMessages` array and managing conve
 | `text` | `string` | Yes | The text body string rendered inside the message bubble. |
 | `sender` | `"user" \| "agent"` | Yes | Determines bubble alignment and styling. `"user"` aligns right with the accent color; `"agent"` aligns left with neutral styling. |
 | `timestamp` | `string` | Yes | Formatted time string (e.g., `"2:45 PM"` or `"Just now"`) displayed beneath the message bubble. |
+
+## Works with other components
+
+- Pair with [Chat Bubble](https://avaraui.com/docs/nextjs/chat-bubble) or [Chat](https://avaraui.com/docs/nextjs/chat) if you expand into a full messaging view.
+- Combine with [Sonner](https://avaraui.com/docs/nextjs/sonner) to confirm offline ticket submissions.
+
+## How do I keep the Floating Contact Button inside a container vs the viewport?
+
+Leave `containerMode="fixed"` (the default) to pin the widget to the viewport corner. Pass `containerMode="absolute"` to anchor it to the nearest positioned parent, so give that parent `position: relative`. In absolute mode the widget scales down, to a minimum of half size, when the parent is narrower than 460px.
+
+## How do I receive the messages visitors type into FloatingContactButtonBlock?
+
+Pass `onSendMessage`. It runs with the trimmed text each time a visitor submits the form. The widget then shows a typing indicator and, after about 1.2 seconds, adds a canned "Thanks for reaching out!" reply. To show real agent replies, change the `handleSend` logic in the installed file.
+
+## How does FloatingContactButtonBlock choose its accent colour?
+
+It looks in `localStorage` for a hex value under `localStorageKey` (default `"primaryColor"`), then under `docs-theme-color`, `theme-color`, `accentColor` and `color`. If none holds a hex colour it uses `defaultAccentColor`, which is `var(--primary)` by default. While mounted it re-checks every 100 ms and wraps `setItem`.
+
+## How do I brand the support panel and move it to the left?
+
+Set `title` (default "Chat with us"), `subtitle` and `avatarUrl` for the header, and `initialMessages` for the opening thread. Each message needs `id`, `text`, `sender` (`"user"` or `"agent"`) and `timestamp`. Use `position="bottom-left"` to move the launcher and mirror the panel's transform origin.
+
+## Can I open or close the contact button from my own code?
+
+Only at mount. `defaultOpen` sets the initial state, but there is no controlled `open` prop or imperative handle; the launcher and the header's close button toggle the state inside the component. To control it from outside, lift the `isOpen` state out of the installed file and expose it as a prop.
+
+## Is the Floating Contact Button accessible to screen readers and keyboards?
+
+Partly. The launcher, close button and send button are native `button` elements, and the message field is a real `input` in a `form`, so Tab and Enter work. The source sets no `aria-label` or role on the launcher or close button, and it does not close on Escape, so add labels before shipping.
 
 ---
 

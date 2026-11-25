@@ -3,7 +3,7 @@
   "name": "card-profile-card",
   "type": "registry:block",
   "title": "Card — Profile card",
-  "description": "A person as a card: a patterned banner, an avatar that overlaps it, a few numbers, and one primary action.",
+  "description": "The \"Profile card\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -3,7 +3,7 @@
   "name": "split-flap-split-flap-ivory",
   "type": "registry:block",
   "title": "Split-Flap Display — Split-Flap — Ivory (Classic Mechanical)",
-  "description": "The iconic embossed cream electro-mechanical display with rust-coral slab-serif typography and tactile 3D perspective flap folds.",
+  "description": "The \"Split-Flap — Ivory (Classic Mechanical)\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "tw-animate-css"

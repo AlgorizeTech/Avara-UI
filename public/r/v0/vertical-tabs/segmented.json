@@ -3,7 +3,7 @@
   "name": "vertical-tabs-segmented",
   "type": "registry:block",
   "title": "Tabs — Segmented",
-  "description": "An iOS-style control: one recessed track, the active tab lifted onto its own surface.",
+  "description": "The \"Segmented\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

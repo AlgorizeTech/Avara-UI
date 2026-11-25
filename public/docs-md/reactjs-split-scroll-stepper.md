@@ -6,9 +6,22 @@ url: https://avaraui.com/docs/nextjs/split-scroll-stepper
 
 # Scroll Accordion Showcase
 
-A high-impact, scroll-driven interactive section built with full dark/light mode responsiveness, instantaneous `localStorage` theme coloring, and flexible layout options. As users scroll through a sequence of numbered accordion cards, an `IntersectionObserver` expands the active narrative while cross-fading a sticky showcase mockup on the right.
+A scroll-driven split showcase (`ScrollAccordionShowcase`) where scrolling expands numbered accordion rows via `IntersectionObserver` and cross-fades a sticky visual card.
 
-Scroll the preview and each row expands as it reaches the reading line, driving the sticky image card beside it. `displayMode` decides which halves of that pairing are rendered.
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/scroll-accordion-showcase.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/scroll-accordion-showcase
+```
 
 ## Scroll accordion showcase
 
@@ -89,28 +102,7 @@ export default function ServicesShowcase() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/scroll-accordion-showcase.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/scroll-accordion-showcase
-```
-
-### Accent color
-
-The accent is resolved at runtime, so it adopts your site's primary color with no configuration. The component reads a hex from `localStorage` (any key starting with `localStorageKey`), then the `--primary-color` / `--primary` / `--theme-color` CSS variables, and only falls back to `defaultAccentColor` if neither is set.
-
-## Examples
-
-### Text only
+## Text only
 
 - Set `displayMode="text-only"` to drop the sticky image column and run the accordion full width.
 
@@ -183,7 +175,7 @@ export default function TextOnlyShowcase() {
 }
 ```
 
-### Image only
+## Image only
 
 - Set `displayMode="image-only"` to keep the scroll-driven visual and replace the copy with a horizontal step selector.
 
@@ -255,7 +247,7 @@ export default function ImageOnlyShowcase() {
 }
 ```
 
-### Starting row
+## Starting row
 
 - `defaultIndex={0}` is the zero-based row expanded before the reader scrolls.
 - `scrollerRef` points the internal IntersectionObserver at a custom scroll container instead of the window.
@@ -328,6 +320,30 @@ export default function ShowcaseStartingOnThird() {
 }
 ```
 
+## About Scroll Accordion Showcase
+
+**What it is.** `ScrollAccordionShowcase` combines numbered accordion rows with a sticky visual panel across three `displayMode` options (`both`, `text-only`, `image-only`), optional `tags` pills, and a `defaultIndex` starting row.
+
+**How it is built.** Uses `IntersectionObserver` (targeting `window` or a custom `scrollerRef`) to expand rows as they cross the reading line and resolves accent colors at runtime from CSS variables or `localStorage`.
+
+**When to use it.** Use `ScrollAccordionShowcase` for scroll-driven feature walkthroughs and service showcases. For click-driven 3D card stacking, use [Split-Stack Stepper](https://avaraui.com/docs/reactjs/split-stepper).
+
+## For AI agents
+
+**When to use**
+
+- Scroll-triggered feature/service showcases with expanding numbered rows and a sticky preview (`displayMode="both" | "text-only" | "image-only"`)
+
+**When not to use**
+
+- Click-driven 3D stacked card decks — use [Split-Stack Stepper](https://avaraui.com/docs/reactjs/split-stepper)
+- Static FAQ accordions — use [Accordion](https://avaraui.com/docs/reactjs/accordion)
+
+**Agent notes**
+
+- Installs via the `scroll-accordion-showcase` registry item; named exports `ScrollAccordionShowcase`, `type AccordionShowcaseItem` from `@/components/custom/blocks/ScrollAccordionShowcaseBlock`
+- Pass `scrollerRef` when embedding inside a custom scrollable container instead of the window
+
 ## Props Reference
 
 | Component / Interface | Prop | Type | Default | Description |
@@ -346,6 +362,30 @@ export default function ShowcaseStartingOnThird() {
 | `AccordionShowcaseItem` | `tags` | `string[]` | `undefined` | An optional array of keyword strings rendered as uppercase pill badges with colored checkmark icons beneath the description when the card expands. |
 | `AccordionShowcaseItem` | `image` | `string` | Required | The image URL or file path displayed inside the sticky visual mockup card, which smoothly cross-fades when the active step changes. |
 | `AccordionShowcaseItem` | `badgeText` | `string` | `"SELECTED SERVICE"` | An optional custom uppercase label rendered inside the floating glassmorphic badge at the bottom-left of the sticky visual card. |
+
+## Works with other components
+
+- Pair with [Split-Stack Stepper](https://avaraui.com/docs/reactjs/split-stepper) or [Accordion](https://avaraui.com/docs/reactjs/accordion) depending on whether you need scroll-driven or click-driven disclosure.
+
+## How do I build a scroll-driven accordion showcase in React?
+
+Pass an `items` array to `ScrollAccordionShowcase`. Each item needs an `id`, `stepNumber`, `title`, `description` and `image`. As the user scrolls, an `IntersectionObserver` expands the matching numbered row and cross-fades the sticky visual card to that item's image.
+
+## How do I observe scroll inside a custom container instead of window?
+
+Pass a React ref to that scrollable element via `scrollerRef` so the internal `IntersectionObserver` uses it as the scroll root. Without it the observer targets `window`, which is right for a normal page layout.
+
+## Can I show only text or only images?
+
+Yes. `displayMode` accepts `"both"`, `"text-only"` and `"image-only"`, and `"both"` is the default two-column layout. Use `defaultIndex`, which starts at `0`, to choose which row is expanded when the component first mounts.
+
+## How do I add tags and a badge to a step?
+
+Add a `tags` string array to an item to render uppercase pills with checkmark icons under its description. Set `badgeText` to change the glass badge on the visual card. It defaults to `"SELECTED SERVICE"` when you leave it out.
+
+## How do I change the accent colour of the showcase?
+
+The accent follows your primary colour. `defaultAccentColor` is the fallback, `var(--primary)` by default, used when no valid colour is detected. `localStorageKey` names the storage key that is watched for a stored primary colour, and it defaults to `"primaryColor"`.
 
 ---
 

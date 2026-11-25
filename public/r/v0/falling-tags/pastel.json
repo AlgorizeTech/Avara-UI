@@ -3,7 +3,7 @@
   "name": "falling-tags-pastel",
   "type": "registry:block",
   "title": "Falling Tags — Pastel",
-  "description": "Soft soothing aesthetic pastel badges designed for serene minimal layouts and creative portfolios.",
+  "description": "The \"Pastel\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

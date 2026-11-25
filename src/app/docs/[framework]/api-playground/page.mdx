@@ -3,6 +3,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("api-playground");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn API Playground
@@ -65,10 +66,11 @@ export default function UsersEndpointDocs() {
   colorControl
   colorLabel="Accent Color"
   columns={1}
+  installation={<Installation name="api-playground" usage="below" />}
   examples={[
     {
       title: "API playground",
-      subheading: "A split-pane request builder.",
+      description: "A split-pane request builder.",
       propNotes: [
         {
           lead: "Pass",
@@ -88,39 +90,35 @@ export default function UsersEndpointDocs() {
   ]}
 />
 
-## Installation
+## About Shadcn API Playground
 
-<Installation name="api-playground" />
+**What it is.** `ApiPlaygroundBlock` is a split-pane request builder and response viewer for API documentation. The left pane has a method picker, URL bar and Params, Headers and Body tabs, and the right pane shows the status, the time and the JSON response.
 
-## Features & Core Capabilities
-Explore the interactive API Playground component capabilities designed to elevate API documentation:
+**How it is built.** Pressing Send calls your async `mockHandler` with `{ method, url, headers, params, body }` and renders the `{ status, timeMs, data }` it returns. The component never calls `fetch` itself, and without a handler it returns a built-in echo of the request. It uses the `select` registry item for the method dropdown and `lucide-react` icons.
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <div className="p-6 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
-    <h3 className="text-[14px] font-semibold text-foreground mb-2">Split-Pane Architecture</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Interactive dual-panel interface with real-time HTTP Request Builder on the left and Live JSON Response Viewer on the right.</p>
-  </div>
-  <div className="p-6 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
-    <h3 className="text-[14px] font-semibold text-foreground mb-2">CORS-Safe Mock Handler</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Uses a client-side `mockHandler` async function to simulate network latency, dynamic endpoints, and custom status codes safely without CORS issues.</p>
-  </div>
-  <div className="p-6 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
-    <h3 className="text-[14px] font-semibold text-foreground mb-2">Full Header & Query Params Editor</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Add, enable/disable, or remove HTTP headers and query parameters dynamically before executing API calls.</p>
-  </div>
-  <div className="p-6 rounded-xl bg-foreground/[0.03] border border-foreground/[0.06]">
-    <h3 className="text-[14px] font-semibold text-foreground mb-2">JSON Body Payload & Syntax Highlighting</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Built-in raw JSON request body editor with syntax highlighting, automatic JSON formatting, error handling, and response timing metrics.</p>
-  </div>
-</div>
+**When to use it.** Use it for REST API docs, SDK quickstarts, webhook simulators and developer portals where readers should try a request without leaving the page.
 
-## Best Practices & Guidelines
+## For AI agents
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Provide realistic mock handlers with simulated delays (e.g. 100ms - 500ms) to give users an authentic API testing experience directly inside your documentation.</p>
-  </InfoCard>
-</div>
+<AgentBrief name="api-playground">
+
+**When to use**
+
+- REST API docs, SDK quickstarts, webhook simulators, and developer portals where readers test payloads interactively
+
+**When not to use**
+
+- A static, read-only code sample: use <DocLink to="custom-code-block">Custom Code Block</DocLink>
+- Shell commands and install snippets: use <DocLink to="terminal">Terminal</DocLink>
+
+**Agent notes**
+
+- Named export `ApiPlaygroundBlock` from `@/components/custom/blocks/ApiPlaygroundBlock`. Props are `mockHandler`, `defaultUrl`, `defaultMethod`, `color` and `className`.
+- Annotate the handler as `ApiMockHandler`. It receives `{ method, url, headers, params, body }` (`body` is the raw string from the textarea) and must return a promise of `{ status, timeMs, data }`.
+- `headers` and `params` include rows the reader switched off, with `enabled: false`, so filter on `enabled`.
+- Without `mockHandler` a built-in handler echoes the request after about 600 ms. The component does no network call of its own.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -169,7 +167,7 @@ Explore the interactive API Playground component capabilities designed to elevat
         <td>
           <code>"primary"</code>
         </td>
-        <td>Accent color theme (<code>"primary" | "indigo" | "rose" | "emerald" | "zinc"</code> or custom hex).</td>
+        <td>Accent color theme (<code>"primary" | "default" | "lavender" | "indigo" | "rose" | "emerald" | "zinc"</code> or custom hex).</td>
       </tr>
       <tr>
         <td>
@@ -181,7 +179,7 @@ Explore the interactive API Playground component capabilities designed to elevat
         <td>
           <code>undefined</code>
         </td>
-        <td>Async function that receives request details and returns simulated API response data.</td>
+        <td>Async function that receives request details and returns the response to show. Without it, a built-in handler echoes the request.</td>
       </tr>
       <tr>
         <td>
@@ -235,6 +233,31 @@ The Response Object — exported as `ApiResponse` (required return type):
 ```
 
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- <DocLink to="custom-code-block">Custom Code Block</DocLink> for the SDK or request samples shown beside the playground.
+- <DocLink to="terminal">Terminal</DocLink> for a cURL equivalent of the request the reader just built.
+- <DocLink to="vertical-tabs">Tabs</DocLink> to switch between languages or endpoints above a playground.
+
+## Does ApiPlaygroundBlock make live network requests?
+
+Not by itself. `ApiPlaygroundBlock` never calls `fetch`; Send runs your `mockHandler` and shows what it returns. The handler can still call a real API if you write it that way, and then CORS and exposed keys become your concern. Without a handler it returns a built-in echo.
+
+## What should `mockHandler` return?
+
+Return a promise that resolves to `{ status, timeMs, data }`. `status` is a number, `timeMs` is the duration shown in the header, and `data` is any JSON-serialisable value, which is printed with `JSON.stringify(data, null, 2)`. A status below 400 shows green and anything else shows red.
+
+## What happens if I do not pass a mockHandler to ApiPlaygroundBlock?
+
+A built-in handler waits about 600 ms and returns status 201 for POST and 200 otherwise. The `data` holds `message: "Success"` and an `echo` of the method, URL, enabled params and headers, and parsed body. It is good for trying the layout before you write real responses.
+
+## How do params and the URL stay in sync in ApiPlaygroundBlock?
+
+Editing a row on the Params tab rebuilds the query string in the URL bar, using only enabled rows with a key. Typing a query string into the URL bar parses it back into Params rows. `defaultUrl` is parsed the same way, so `?limit=10` starts as a row.
+
+## How do I handle errors and invalid JSON in ApiPlaygroundBlock?
+
+Return an error status yourself, for example `{ status: 400, timeMs: 15, data: { error: "bad_request" } }`, after a `JSON.parse` try/catch on `req.body`. If your handler throws or rejects, the playground shows status 500 with the error message instead of crashing.
 
 <DocsJsonLd slug="api-playground" />
+<FaqJsonLd slug="api-playground" />

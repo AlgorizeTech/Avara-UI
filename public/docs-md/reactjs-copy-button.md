@@ -1,29 +1,12 @@
 ---
 title: "Shadcn Copy Button"
-description: "Shadcn Copy Button. A button that puts text on the clipboard and says so: the icon pops from a clipboard to a check, the label rises from \"Copy\" to \"Copied!\"."
+description: "Shadcn Copy Button. A clipboard button (`CopyButton`), read-only input (`CopyField`)."
 url: https://avaraui.com/docs/nextjs/copy-button
 ---
 
 # Shadcn Copy Button
 
-A button that puts text on the clipboard and says so: the icon pops from a clipboard to a check, the label rises from "Copy" to "Copied!", and both settle back after a moment.
-
-It ships in three pieces: `CopyButton` for any surface, `CopyField` for a read-only input with a copy button beside or inside it, and the `useCopyToClipboard` hook for your own markup. A failed write shows a brief "Failed" state instead of lying about success.
-
-## Copy Button
-
-Click it — the icon pops to a check and the label swaps to `Copied!` for two seconds.
-
-- `value` is the text written to the clipboard.
-- `label` is the resting text and `copiedLabel` the confirmation — `Copy` and `Copied!` by default.
-
-```tsx
-import { CopyButton } from "@/components/custom/blocks/CopyButtonBlock";
-
-export default function CopyLink() {
-  return <CopyButton value="https://nexus.dev/u/johndoe" label="Copy Link" />;
-}
-```
+A clipboard button (`CopyButton`), read-only input (`CopyField`), and `useCopyToClipboard` hook that confirm copies with an animated check and label swap.
 
 ## Installation
 
@@ -40,9 +23,22 @@ npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
 npx shadcn@latest add @avara-ui/copy-button
 ```
 
-## Examples
+## Copy Button
 
-### Variants
+Click it — the icon pops to a check and the label swaps to `Copied!` for two seconds.
+
+- `value` is the text written to the clipboard.
+- `label` is the resting text and `copiedLabel` the confirmation — `Copy` and `Copied!` by default.
+
+```tsx
+import { CopyButton } from "@/components/custom/blocks/CopyButtonBlock";
+
+export default function CopyLink() {
+  return <CopyButton value="https://nexus.dev/u/johndoe" label="Copy Link" />;
+}
+```
+
+## Variants
 
 - `variant` is `"solid"` (default), `"soft"`, `"outline"` or `"ghost"`. Every variant flashes the theme colour on success so the confirmation reads even on a quiet button.
 
@@ -61,7 +57,7 @@ export default function CopyVariants() {
 }
 ```
 
-### Sizes
+## Sizes
 
 - `size` is `"sm"`, `"md"` (default) or `"lg"` — height, padding and icon scale together.
 
@@ -79,7 +75,7 @@ export default function CopySizes() {
 }
 ```
 
-### Icon only
+## Icon only
 
 - Set `iconOnly` for a square button with no label — for toolbars and table rows. It keeps an accessible name that flips to `Copied` after a successful write.
 
@@ -100,7 +96,7 @@ export default function IconOnly() {
 }
 ```
 
-### Copy field
+## Copy field
 
 The share-link pattern: a read-only input with the button beside it.
 
@@ -122,7 +118,7 @@ export default function ProfileLink() {
 }
 ```
 
-### Inset button
+## Inset button
 
 - Set `inset` on `CopyField` to tuck an icon-only ghost button inside the field's right edge; `prefix` adds an icon on the left.
 
@@ -143,7 +139,7 @@ export default function InviteLink() {
 }
 ```
 
-### In a code block
+## In a code block
 
 - Combine `variant="ghost"` with a `className` to blend the button into any toolbar — here a terminal header that follows the light and dark theme.
 
@@ -176,7 +172,7 @@ export default function CommandBlock() {
 }
 ```
 
-### Custom labels & timing
+## Custom labels & timing
 
 - `timeout` is how long the copied state lingers in milliseconds (default `2000`). `onCopy` fires with the value and whether the write succeeded.
 
@@ -206,44 +202,33 @@ export default function CustomLabels() {
 }
 ```
 
-### The hook on its own
+## About Shadcn Copy Button
 
-`useCopyToClipboard(timeout?)`, exported from `copy-button-hooks.ts` (installed beside the block), returns `{ copy, status, copied }`. `copy(text)` resolves to a boolean, and `status` is `"idle" | "copied" | "error"`, resetting itself after `timeout` ms — everything the button does, for your own markup.
+**What it is.** A clipboard suite shipping `CopyButton` (`solid`, `soft`, `outline`, and `ghost` variants), `CopyField` (read-only input with beside or `inset` copy trigger), and the `useCopyToClipboard(timeout?)` hook (`{ copy, status, copied }`).
 
-```tsx
-"use client";
+**How it is built.** Uses the async Clipboard API with a hidden-textarea fallback where it is unavailable (older browsers, non-secure origins), an `aria-live="polite"` button for screen readers, and an honest `"error"` (`Failed`) state if a write is blocked. The only npm dependency is `lucide-react`.
 
-import { useCopyToClipboard } from "@/components/custom/blocks/copy-button-hooks";
+**When to use it.** Use `CopyButton` or `CopyField` for share links, API keys, CLI commands, and code block toolbars. For generic action triggers without clipboard feedback, use [Button](https://avaraui.com/docs/reactjs/button).
 
-export default function CopyRow() {
-  const { copy, copied } = useCopyToClipboard(1500);
+## For AI agents
 
-  return (
-    <button type="button" onClick={() => copy("hello@nexus.dev")}>
-      {copied ? "Email copied" : "hello@nexus.dev"}
-    </button>
-  );
-}
-```
+**When to use**
 
-## Features
-Discover the Copy Button's capabilities for confirming a clipboard write without a toast.
+- One-click clipboard buttons (`CopyButton`) with inline `Copy` → `Copied!` icon/label swap
+- Share links, tokens, or install commands (`CopyField`, with optional `inset` button and `prefix` icon)
+- Custom copy triggers via `useCopyToClipboard(timeout?)` from `@/components/custom/blocks/copy-button-hooks`
 
-The feedback lives in the button itself — a popping check and a rising label — so nothing else on the page has to move.
+**When not to use**
 
-A blocked clipboard shows Failed rather than a false success, and `onCopy` tells you which it was.
+- Standard action or submit buttons — use [Button](https://avaraui.com/docs/reactjs/button)
+- Async multi-step action buttons — use [Action Button](https://avaraui.com/docs/reactjs/action-buttons)
 
-Uses the async Clipboard API and falls back to a hidden textarea on older browsers and non-secure origins.
+**Agent notes**
 
-A polite live region announces the change; icon-only buttons carry a name that updates to Copied.
-
-## Best Practices & Guidelines
-
-Prefer specific labels — Copy Link, Code copied — over a bare Copy when more than one thing on the screen could be copied.
-
-### Don't close the surface on copy
-
-Let the confirmation play before dismissing a dialog or popover — closing on click hides the only feedback the user gets.
+- Named exports: `CopyButton`, `CopyField` from `@/components/custom/blocks/CopyButtonBlock`; `useCopyToClipboard` from `@/components/custom/blocks/copy-button-hooks`
+- Pass `iconOnly` on `CopyButton` for toolbar/table cells; use `buttonProps` on `CopyField` to forward `label`, `variant`, or `timeout`
+- `useCopyToClipboard` lives in a separate file that is installed with the component, so import it from `copy-button-hooks`, not `CopyButtonBlock`
+- `color` takes `"primary"`, `"indigo"`, `"rose"`, `"emerald"`, `"zinc"` or a `#` hex code
 
 ## Props Reference
 
@@ -259,7 +244,7 @@ Let the confirmation play before dismissing a dialog or popover — closing on c
 | `timeout` | `number` | `2000` | How long the copied / failed state lingers, in ms. |
 | `variant` | `"solid" \| "soft" \| "outline" \| "ghost"` | `"solid"` | Visual style. |
 | `size` | `"sm" \| "md" \| "lg"` | `"md"` | Height, padding and icon size. |
-| `color` | `"primary" \| "indigo" \| "rose" \| "emerald" \| "zinc" \| string` | `"primary"` | Theme colour for the solid / soft fills, the success flash and the focus ring. Accepts hex codes. |
+| `color` | `"primary" \| "indigo" \| "rose" \| "emerald" \| "zinc" \| string` | `"primary"` | Theme colour for the solid / soft fills, the success flash and the focus ring. Accepts a preset name or a hex code starting with `#`; any other string falls back to `"primary"`. |
 | `onCopy` | `(value: string, ok: boolean) => void` | — | Fires after the write with the value and whether it succeeded. |
 
 Every other `<button>` attribute (`className`, `disabled`, `onClick`…) is forwarded. Calling `preventDefault()` in your own `onClick` cancels the copy.
@@ -276,6 +261,36 @@ Every other `<button>` attribute (`className`, `disabled`, `onClick`…) is forw
 | `selectOnClick` | `boolean` | `true` | Select the whole value when the input is clicked. |
 | `size` | `"sm" \| "md" \| "lg"` | `"md"` | Field and button height. |
 | `color` | `string` | `"primary"` | Theme colour shared by the button and the field's focus ring. |
+
+## Works with other components
+
+- Embed `CopyField` inside [Dialog](https://avaraui.com/docs/reactjs/dialog) for share-profile or invite-link modals.
+- Place `CopyButton` with `variant="ghost"` inside [Terminal](https://avaraui.com/docs/reactjs/terminal) or [Custom Code Block](https://avaraui.com/docs/reactjs/custom-code-block) headers.
+- Pair `onCopy` with [Sonner](https://avaraui.com/docs/reactjs/sonner) if you also want a global notification.
+
+## What happens if the clipboard API is blocked?
+
+`useCopyToClipboard` first tries `navigator.clipboard.writeText`. If that is missing or throws, it falls back to a hidden textarea and `document.execCommand("copy")`. If that also fails, the button shows an X icon and the `errorLabel` (`Failed`), and `onCopy` receives `false` instead of a false confirmation.
+
+## Can I use the clipboard logic with my own button markup?
+
+Yes. Import `useCopyToClipboard` from `@/components/custom/blocks/copy-button-hooks` and call `const { copy, status, copied } = useCopyToClipboard(timeout)`. `copy(text)` returns a promise of a boolean, and `status` moves from `"idle"` to `"copied"` or `"error"`, then resets after `timeout` milliseconds.
+
+## How do I show a toast or run code after CopyButton copies?
+
+Pass `onCopy`, which fires after the write with the copied value and a boolean for success, so you can call a toast only when `ok` is `true`. To run something before the copy, use `onClick`; calling `preventDefault()` there cancels the copy entirely.
+
+## How does an icon-only CopyButton stay accessible?
+
+With `iconOnly`, the button drops its text and sets `aria-label` to `"Copy to clipboard"`, which becomes `"Copied"` after a successful write. It also carries `aria-live="polite"`. If you pass your own `aria-label`, it replaces the built-in one, because extra props are spread onto the button last.
+
+## How do I change the CopyButton color?
+
+Set `color` to `"primary"`, `"indigo"`, `"rose"`, `"emerald"`, `"zinc"` or a hex code starting with `#`. It tints the `solid` and `soft` fills, the focus ring, and the text flash on success. `outline` and `ghost` stay neutral at rest. An unrecognised name falls back to `"primary"`.
+
+## How do I put the copy button inside a CopyField input?
+
+Set `inset` on `CopyField`. It places an icon-only `ghost` button inside the input's right edge, and `prefix` adds an icon on the left. The field is read-only and selects its whole value on click unless you set `selectOnClick={false}`. Forward other button settings with `buttonProps`.
 
 ---
 
