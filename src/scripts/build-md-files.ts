@@ -375,6 +375,20 @@ function convertMdxToMd(content: string, framework: Framework): string {
     return hold(agentBlockMarkdown(block, (target) => `${SITE_URL}${docsHref(framework, target)}`));
   });
 
+  // <AgentBrief name="…" [slug="…"]>...</AgentBrief> embeds the variants block when a variants file exists for that slug.
+  mdContent = mdContent.replace(
+    /<AgentBrief\b([^>]*)>([\s\S]*?)<\/AgentBrief>/g,
+    (_, attrs: string, inner: string) => {
+      const slugMatch = attrs.match(/slug="([^"]+)"/) ?? attrs.match(/name="([^"]+)"/);
+      const pageSlug = slugMatch?.[1];
+      const block = pageSlug ? agentBlockForSlug(pageSlug) : undefined;
+      if (!block) return inner;
+      const variantsMd = agentBlockMarkdown(block, (target) => `${SITE_URL}${docsHref(framework, target)}`)
+        .replace(/^## For AI agents\s*\n+/, "");
+      return `${inner.trimEnd()}\n\n${hold(variantsMd)}`;
+    },
+  );
+
   // Convert JSX components to markdown equivalents
 
   // Convert <AI dir="left"/> to nothing (remove it)

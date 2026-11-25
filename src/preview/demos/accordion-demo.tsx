@@ -215,12 +215,8 @@ export default function AccordionDemo({
     );
   }
 
-  // The min-height is the tallest single-open state, so the preview card keeps
-  // one size while a panel opens and closes: the card is not re-laid-out (with
-  // the whole page under it) on every animation frame, and the rows stay
-  // pinned to the top instead of drifting as the content grows.
   return (
-    <div className="w-full p-4 md:p-8 min-h-[33rem]">
+    <div className="w-full p-4 md:p-8">
       <div className="mx-auto w-full max-w-2xl">
         <Accordion
           key={`${variant}-${interaction}-${animation}-${expandIcon ?? "default"}`}
