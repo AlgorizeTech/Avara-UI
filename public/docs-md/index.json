@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-11-23T14:20:14.025Z",
-  "totalFiles": 347,
+  "generatedAt": "2026-11-25T07:49:46.682Z",
+  "totalFiles": 351,
   "files": [
     {
       "name": "docs",
@@ -639,6 +639,12 @@
       "originalMdx": "[framework]\\modern-scroll-stack\\page.mdx"
     },
     {
+      "name": "nextjs/motion-components",
+      "path": "/docs-md/nextjs-motion-components.md",
+      "url": "/docs/nextjs/motion-components",
+      "originalMdx": "[framework]\\motion-components\\page.mdx"
+    },
+    {
       "name": "nextjs/navbar",
       "path": "/docs-md/nextjs-navbar.md",
       "url": "/docs/nextjs/navbar",
@@ -895,6 +901,12 @@
       "path": "/docs-md/nextjs-tech-stack.md",
       "url": "/docs/nextjs/tech-stack",
       "originalMdx": "[framework]\\tech-stack\\page.mdx"
+    },
+    {
+      "name": "nextjs/templates/veloce",
+      "path": "/docs-md/nextjs-templates-veloce.md",
+      "url": "/docs/nextjs/templates/veloce",
+      "originalMdx": "[framework]\\templates\\veloce\\page.mdx"
     },
     {
       "name": "nextjs/terminal",
@@ -1677,6 +1689,12 @@
       "originalMdx": "[framework]\\modern-scroll-stack\\page.mdx"
     },
     {
+      "name": "reactjs/motion-components",
+      "path": "/docs-md/reactjs-motion-components.md",
+      "url": "/docs/reactjs/motion-components",
+      "originalMdx": "[framework]\\motion-components\\page.mdx"
+    },
+    {
       "name": "reactjs/navbar",
       "path": "/docs-md/reactjs-navbar.md",
       "url": "/docs/reactjs/navbar",
@@ -1933,6 +1951,12 @@
       "path": "/docs-md/reactjs-tech-stack.md",
       "url": "/docs/reactjs/tech-stack",
       "originalMdx": "[framework]\\tech-stack\\page.mdx"
+    },
+    {
+      "name": "reactjs/templates/veloce",
+      "path": "/docs-md/reactjs-templates-veloce.md",
+      "url": "/docs/reactjs/templates/veloce",
+      "originalMdx": "[framework]\\templates\\veloce\\page.mdx"
     },
     {
       "name": "reactjs/terminal",

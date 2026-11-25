@@ -2,10 +2,28 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { ArrowRightIcon } from "@/components/ui/arrow-right-icon";
+import { ChartNoAxesColumnIcon } from "@/components/ui/chart-no-axes-column-icon";
+import { ChevronRightIcon } from "@/components/ui/chevron-right-icon";
+import { CoinsIcon } from "@/components/ui/coins-icon";
+import { CompassIcon } from "@/components/ui/compass-icon";
+import { CopyCheckIcon } from "@/components/ui/copy-check-icon";
+import { GlobeIcon } from "@/components/ui/globe-icon";
+import { HeartIcon } from "@/components/ui/heart-icon";
+import { MailIcon } from "@/components/ui/mail-icon";
+import { MegaphoneIcon } from "@/components/ui/megaphone-icon";
+import { MousePointerClickIcon } from "@/components/ui/mouse-pointer-click-icon";
+import { RadarIcon, type RadarIconHandle } from "@/components/ui/radar-icon";
+import { RadioIcon } from "@/components/ui/radio-icon";
+import { StarIcon } from "@/components/ui/star-icon";
+import { TargetIcon } from "@/components/ui/target-icon";
+import { TrophyIcon } from "@/components/ui/trophy-icon";
+import { WalletIcon } from "@/components/ui/wallet-icon";
 import {
   ArrowRight,
   BarChart2,
   Check,
+  ChevronDown,
   ChevronRight,
   Globe,
   Heart,
@@ -19,6 +37,141 @@ import {
 import { TemplatePage, type TemplatePreviewTab } from "@/components/site/TemplatePage";
 import { cn } from "@/lib/utils";
 
+type AnimatedIconComponent = React.ForwardRefExoticComponent<
+  {
+    size?: number;
+    duration?: number;
+    isAnimated?: boolean;
+    color?: string;
+    className?: string;
+  } & React.RefAttributes<RadarIconHandle>
+>;
+
+function LoopingAnimatedIcon({
+  icon: Icon,
+  size = 20,
+  duration = 2.2,
+  delay = 0,
+  color = "#f45d5d",
+  prefersReducedMotion,
+  className,
+}: {
+  icon: AnimatedIconComponent;
+  size?: number;
+  duration?: number;
+  delay?: number;
+  color?: string;
+  prefersReducedMotion: boolean | null;
+  className?: string;
+}) {
+  const iconRef = useRef<RadarIconHandle>(null);
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    let intervalId: ReturnType<typeof setInterval> | undefined;
+    let resetTimerId: ReturnType<typeof setTimeout> | undefined;
+
+    const trigger = () => {
+      iconRef.current?.stopAnimation();
+      resetTimerId = setTimeout(() => {
+        iconRef.current?.startAnimation();
+      }, 60);
+    };
+
+    const startTimer = setTimeout(() => {
+      trigger();
+      intervalId = setInterval(trigger, 3400);
+    }, Math.round(delay * 1000));
+
+    return () => {
+      clearTimeout(startTimer);
+      if (resetTimerId) clearTimeout(resetTimerId);
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [prefersReducedMotion, delay]);
+
+  return (
+    <Icon
+      ref={iconRef}
+      size={size}
+      duration={duration}
+      isAnimated={!prefersReducedMotion}
+      color={color}
+      className={className}
+    />
+  );
+}
+
+function VeloceRadarIconBadge({
+  isDark,
+  prefersReducedMotion,
+  delay = 0,
+  variant = "radar",
+}: {
+  isDark: boolean;
+  prefersReducedMotion: boolean | null;
+  delay?: number;
+  variant?: "radar" | "radio" | "target" | "compass";
+}) {
+  const iconRef = useRef<RadarIconHandle>(null);
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+
+    let intervalId: ReturnType<typeof setInterval> | undefined;
+    let resetTimerId: ReturnType<typeof setTimeout> | undefined;
+
+    const triggerSweep = () => {
+      iconRef.current?.stopAnimation();
+      resetTimerId = setTimeout(() => {
+        iconRef.current?.startAnimation();
+      }, 60);
+    };
+
+    const startTimer = setTimeout(() => {
+      triggerSweep();
+      intervalId = setInterval(() => {
+        triggerSweep();
+      }, 3400);
+    }, Math.round(delay * 1000));
+
+    return () => {
+      clearTimeout(startTimer);
+      if (resetTimerId) clearTimeout(resetTimerId);
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [prefersReducedMotion, delay]);
+
+  const IconComponent =
+    variant === "radio"
+      ? RadioIcon
+      : variant === "target"
+        ? TargetIcon
+        : variant === "compass"
+          ? CompassIcon
+          : RadarIcon;
+
+  return (
+    <div
+      className={cn(
+        "flex size-10 items-center justify-center rounded-xl border",
+        isDark
+          ? "bg-[#151821] border-white/10 shadow-lg"
+          : "bg-white border-black/[0.04] shadow-[0_4px_14px_rgb(0_0_0/0.05)]",
+      )}
+    >
+      <IconComponent
+        ref={iconRef}
+        size={20}
+        duration={2.4}
+        isAnimated={!prefersReducedMotion}
+        color="#f45d5d"
+      />
+    </div>
+  );
+}
+
 function VeloceHeroPreview({
   theme,
   onToggleTheme,
@@ -30,11 +183,35 @@ function VeloceHeroPreview({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [hoveredBar, setHoveredBar] = useState<number | null>(null);
   const [selectedFeature, setSelectedFeature] = useState(0);
+  const [incomePeriod, setIncomePeriod] = useState<"monthly" | "yearly">("monthly");
+  const [selectedMgmtOption, setSelectedMgmtOption] = useState(1);
+  const [openFaqIndices, setOpenFaqIndices] = useState<number[]>([1, 3]);
+  const [hoveredSegBar, setHoveredSegBar] = useState<number | null>(null);
+  const [hoveredAvgBar, setHoveredAvgBar] = useState<number | null>(null);
+  const [hoveredSalesBar, setHoveredSalesBar] = useState<number | null>(null);
+  const [hoveredPlanningCard, setHoveredPlanningCard] = useState<number | null>(null);
   const prefersReducedMotion = useReducedMotion();
   const contentGridRef = useRef<HTMLDivElement>(null);
   const donutCardRef = useRef<HTMLDivElement>(null);
   const salesCardRef = useRef<HTMLDivElement>(null);
   const featureBtnRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const planningVisualRef = useRef<HTMLDivElement>(null);
+  const podiumCardRef = useRef<HTMLDivElement>(null);
+  const verifiedCardRef = useRef<HTMLDivElement>(null);
+  const incomeCardRef = useRef<HTMLDivElement>(null);
+  const [planningConnectors, setPlanningConnectors] = useState<{
+    podiumX: number;
+    podiumY: number;
+    verifiedLeftX: number;
+    verifiedMidY: number;
+    verifiedMidX: number;
+    verifiedBottomY: number;
+    incomeTopY: number;
+    incomeLeftX: number;
+    incomeRightX: number;
+    incomeMidY: number;
+    containerWidth: number;
+  } | null>(null);
   const [connectorCoords, setConnectorCoords] = useState<{
     donutX: number;
     donutY: number;
@@ -51,6 +228,14 @@ function VeloceHeroPreview({
     const interval = setInterval(() => {
       setSelectedFeature((prev) => (prev + 1) % 4);
     }, 2200);
+    return () => clearInterval(interval);
+  }, [prefersReducedMotion]);
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+    const interval = setInterval(() => {
+      setSelectedMgmtOption((prev) => (prev + 1) % 3);
+    }, 1800);
     return () => clearInterval(interval);
   }, [prefersReducedMotion]);
 
@@ -84,6 +269,40 @@ function VeloceHeroPreview({
     if (contentGridRef.current) observer.observe(contentGridRef.current);
     return () => observer.disconnect();
   }, [selectedFeature]);
+
+  useEffect(() => {
+    const updatePlanningCoords = () => {
+      const container = planningVisualRef.current;
+      const podium = podiumCardRef.current;
+      const verified = verifiedCardRef.current;
+      const income = incomeCardRef.current;
+      if (!container || !podium || !verified || !income) return;
+
+      const cRect = container.getBoundingClientRect();
+      const pRect = podium.getBoundingClientRect();
+      const vRect = verified.getBoundingClientRect();
+      const iRect = income.getBoundingClientRect();
+
+      setPlanningConnectors({
+        podiumX: pRect.left - cRect.left + pRect.width * 0.5,
+        podiumY: pRect.top - cRect.top,
+        verifiedLeftX: vRect.left - cRect.left,
+        verifiedMidY: vRect.top - cRect.top + vRect.height * 0.5,
+        verifiedMidX: vRect.left - cRect.left + vRect.width * 0.5,
+        verifiedBottomY: vRect.bottom - cRect.top,
+        incomeTopY: iRect.top - cRect.top,
+        incomeLeftX: iRect.left - cRect.left,
+        incomeRightX: iRect.right - cRect.left,
+        incomeMidY: iRect.top - cRect.top + iRect.height * 0.5,
+        containerWidth: cRect.width,
+      });
+    };
+
+    updatePlanningCoords();
+    const observer = new ResizeObserver(updatePlanningCoords);
+    if (planningVisualRef.current) observer.observe(planningVisualRef.current);
+    return () => observer.disconnect();
+  }, []);
   const [customerCount, setCustomerCount] = useState(() =>
     prefersReducedMotion ? 15823 : 0,
   );
@@ -151,7 +370,7 @@ function VeloceHeroPreview({
 
         {/* Brand (Centered on mobile, Left on desktop) */}
         <div className="flex items-center gap-2 h-8 @md:static absolute left-1/2 -translate-x-1/2 @md:translate-x-0">
-          <span className="flex size-6 items-center justify-center rounded-md bg-blue-600 text-white shrink-0">
+          <span className="flex size-6 items-center justify-center rounded-md bg-[#f45d5d] text-white shrink-0">
             <svg viewBox="0 0 24 24" className="size-4 fill-current" aria-hidden>
               <path d="M4.5 5.5L12 19.5L19.5 5.5H15.8L12 12.8L8.2 5.5H4.5Z" />
             </svg>
@@ -241,7 +460,7 @@ function VeloceHeroPreview({
               <div>
                 <div className="flex items-center justify-between pb-4 border-b border-current/10">
                   <div className="flex items-center gap-2">
-                    <span className="flex size-6 items-center justify-center rounded-md bg-blue-600 text-white">
+                    <span className="flex size-6 items-center justify-center rounded-md bg-[#f45d5d] text-white">
                       <svg viewBox="0 0 24 24" className="size-4 fill-current" aria-hidden>
                         <path d="M4.5 5.5L12 19.5L19.5 5.5H15.8L12 12.8L8.2 5.5H4.5Z" />
                       </svg>
@@ -282,7 +501,7 @@ function VeloceHeroPreview({
                     >
                       <span>{item}</span>
                       {i === 0 && (
-                        <span className="size-1.5 rounded-full bg-blue-600" />
+                        <span className="size-1.5 rounded-full bg-[#f45d5d]" />
                       )}
                     </button>
                   ))}
@@ -290,15 +509,33 @@ function VeloceHeroPreview({
               </div>
 
               <div className="pt-4 border-t border-current/10">
-                <span
+                <button
+                  type="button"
                   className={cn(
-                    "inline-flex w-full items-center justify-center gap-2 rounded-full px-4 py-2 text-[12px] font-medium cursor-pointer",
-                    isDark ? "bg-white text-zinc-900" : "bg-zinc-900 text-white",
+                    "group relative inline-flex w-full items-center justify-center gap-2.5 rounded-full px-4 py-2 text-[12px] font-medium cursor-pointer transition-all duration-300 active:scale-95",
+                    isDark
+                      ? "bg-white text-zinc-900 hover:shadow-[0_6px_20px_rgba(255,255,255,0.18)]"
+                      : "bg-zinc-900 text-white hover:shadow-[0_6px_20px_rgba(0,0,0,0.2)]",
                   )}
                 >
-                  <span>Get Started</span>
-                  <ArrowRight className="size-3.5" />
-                </span>
+                  <span className="relative h-4 overflow-hidden flex flex-col">
+                    <span className="transition-transform duration-300 group-hover:-translate-y-full">
+                      Get Started
+                    </span>
+                    <span className="transition-transform duration-300 group-hover:-translate-y-full">
+                      Get Started
+                    </span>
+                  </span>
+                  <span
+                    className={cn(
+                      "relative flex size-5 items-center justify-center rounded-full overflow-hidden",
+                      isDark ? "bg-zinc-900/10" : "bg-white/15",
+                    )}
+                  >
+                    <ArrowRight className="size-3 transition-all duration-300 group-hover:translate-x-5 group-hover:opacity-0" />
+                    <ArrowRight className="absolute size-3 -translate-x-5 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
+                  </span>
+                </button>
               </div>
             </motion.aside>
           </>
@@ -306,7 +543,7 @@ function VeloceHeroPreview({
       </AnimatePresence>
 
       {/* 2. Hero Section */}
-      <section className="mx-auto max-w-5xl pt-9 @sm:pt-12">
+      <section className="mx-auto max-w-[560px] @4xl:max-w-5xl pt-9 @sm:pt-12">
         {/* Headline */}
         <div className="text-center">
           <h3 className="flex flex-col items-center text-[26px] @sm:text-[38px] @lg:text-[46px] font-semibold tracking-tight leading-[1.12] uppercase">
@@ -323,13 +560,34 @@ function VeloceHeroPreview({
               <span>ONE</span>
               <span className="inline-flex items-center -space-x-1.5 align-middle mx-0.5">
                 <span className="flex size-7 @sm:size-9 @lg:size-10 items-center justify-center rounded-full bg-amber-100 text-amber-600 ring-2 ring-white dark:ring-[#0b0d12]">
-                  <BarChart2 className="size-3.5 @sm:size-4 @lg:size-5" />
+                  <LoopingAnimatedIcon
+                    icon={ChartNoAxesColumnIcon}
+                    size={16}
+                    duration={2.0}
+                    delay={0}
+                    color="#d97706"
+                    prefersReducedMotion={prefersReducedMotion}
+                  />
                 </span>
                 <span className="flex size-7 @sm:size-9 @lg:size-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 ring-2 ring-white dark:ring-[#0b0d12]">
-                  <Globe className="size-3.5 @sm:size-4 @lg:size-5" />
+                  <LoopingAnimatedIcon
+                    icon={GlobeIcon}
+                    size={16}
+                    duration={2.0}
+                    delay={0.25}
+                    color="#059669"
+                    prefersReducedMotion={prefersReducedMotion}
+                  />
                 </span>
                 <span className="flex size-7 @sm:size-9 @lg:size-10 items-center justify-center rounded-full bg-blue-100 text-blue-600 ring-2 ring-white dark:ring-[#0b0d12]">
-                  <MousePointerClick className="size-3.5 @sm:size-4 @lg:size-5" />
+                  <LoopingAnimatedIcon
+                    icon={MousePointerClickIcon}
+                    size={16}
+                    duration={2.0}
+                    delay={0.5}
+                    color="#2563eb"
+                    prefersReducedMotion={prefersReducedMotion}
+                  />
                 </span>
               </span>
               <span>CLICK</span>
@@ -377,31 +635,61 @@ function VeloceHeroPreview({
             }
             className="mt-5 flex flex-wrap items-center justify-center gap-2.5"
           >
-            <span
+            {/* Get Started: Vertical text ticker + rounded arrow exit/enter swap */}
+            <button
+              type="button"
               className={cn(
-                "inline-flex items-center gap-2 rounded-full px-4 py-2 text-[11.5px] font-medium cursor-pointer transition-opacity hover:opacity-90",
-                isDark ? "bg-white text-zinc-900" : "bg-zinc-900 text-white",
-              )}
-            >
-              <span>Get Started</span>
-              <ArrowRight className="size-3.5" />
-            </span>
-            <span
-              className={cn(
-                "inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[11.5px] font-medium cursor-pointer transition-colors",
+                "group relative inline-flex items-center gap-2.5 rounded-full pl-4 pr-2 py-1.5 text-[11.5px] font-medium cursor-pointer transition-all duration-300 active:scale-95",
                 isDark
-                  ? "border-white/15 bg-white/5 text-white hover:bg-white/10"
-                  : "border-zinc-200 bg-white text-zinc-800 hover:bg-zinc-50",
+                  ? "bg-white text-zinc-900 hover:shadow-[0_8px_24px_rgba(255,255,255,0.16)]"
+                  : "bg-zinc-900 text-white hover:shadow-[0_8px_24px_rgba(0,0,0,0.18)]",
               )}
             >
-              <span>Learn More</span>
-              <ArrowRight className="size-3.5" />
-            </span>
+              <span className="relative h-[16px] overflow-hidden flex flex-col leading-[16px]">
+                <span className="transition-transform duration-300 ease-out group-hover:-translate-y-full">
+                  Get Started
+                </span>
+                <span className="transition-transform duration-300 ease-out group-hover:-translate-y-full">
+                  Get Started
+                </span>
+              </span>
+              <span
+                className={cn(
+                  "relative flex size-6 items-center justify-center rounded-full overflow-hidden",
+                  isDark ? "bg-zinc-900/10" : "bg-white/15",
+                )}
+              >
+                <ArrowRight className="size-3 transition-all duration-300 group-hover:translate-x-5 group-hover:opacity-0" />
+                <ArrowRight className="absolute size-3 -translate-x-5 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100" />
+              </span>
+            </button>
+
+            {/* Learn More (Hero): Spinning conic-gradient border + soft coral glow */}
+            <button
+              type="button"
+              className="group relative inline-flex items-center justify-center overflow-hidden rounded-full p-[1.5px] cursor-pointer transition-shadow duration-300 hover:shadow-[0_0_20px_rgba(244,93,93,0.28)] active:scale-95"
+            >
+              <span
+                aria-hidden
+                className="absolute inset-[-100%] bg-[conic-gradient(from_0deg,transparent_55%,#f45d5d_85%,transparent_100%)] opacity-0 group-hover:opacity-100 group-hover:animate-[spin_2.2s_linear_infinite] transition-opacity duration-300"
+              />
+              <span
+                className={cn(
+                  "relative z-10 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-[11.5px] font-medium transition-colors duration-300",
+                  isDark
+                    ? "border-white/15 bg-[#0b0d12] text-white group-hover:border-transparent"
+                    : "border-zinc-200 bg-white text-zinc-800 group-hover:border-transparent",
+                )}
+              >
+                <span>Learn More</span>
+                <ArrowRight className="size-3.5 transition-transform duration-300 group-hover:translate-x-1 group-hover:text-[#f45d5d]" />
+              </span>
+            </button>
           </motion.div>
         </div>
 
         {/* Bottom 3-Column Bento Grid */}
-        <div className="mt-8 grid grid-cols-1 @md:grid-cols-2 @lg:grid-cols-12 gap-3.5 items-stretch">
+        <div className="mt-8 grid grid-cols-1 @4xl:grid-cols-12 gap-3.5 items-stretch">
           {/* Left Card: Mastering the Art of Digital Marketing */}
           <motion.div
             initial={prefersReducedMotion ? false : { opacity: 0, x: -24 }}
@@ -412,7 +700,7 @@ function VeloceHeroPreview({
                 : { duration: 0.85, delay: 0.4, ease: [0.16, 1, 0.3, 1] }
             }
             className={cn(
-              "@lg:col-span-3 rounded-2xl p-5 flex flex-col justify-between min-h-[300px]",
+              "@4xl:col-span-3 rounded-2xl p-5 flex flex-col justify-between min-h-[300px]",
               cardSurface,
             )}
           >
@@ -434,12 +722,103 @@ function VeloceHeroPreview({
                   ? { duration: 0 }
                   : { duration: 0.85, delay: 0.62, ease: [0.16, 1, 0.3, 1] }
               }
-              className="my-4 flex items-center justify-center"
+              className="relative my-4 flex h-44 items-center justify-center"
             >
-              <img
+              {/* Subtle radial-faded square grid */}
+              <div
+                aria-hidden
+                className={cn(
+                  "pointer-events-none absolute inset-0 [mask-image:radial-gradient(circle_at_center,black_35%,transparent_72%)]",
+                  isDark
+                    ? "bg-[linear-gradient(to_right,rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.06)_1px,transparent_1px)] bg-[size:22px_22px]"
+                    : "bg-[linear-gradient(to_right,rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.05)_1px,transparent_1px)] bg-[size:22px_22px]",
+                )}
+              />
+
+              {/* Outer animated circular ring */}
+              <motion.div
+                aria-hidden
+                animate={
+                  prefersReducedMotion
+                    ? undefined
+                    : { rotate: 360, scale: [1, 1.03, 1] }
+                }
+                transition={
+                  prefersReducedMotion
+                    ? undefined
+                    : {
+                        rotate: { duration: 24, repeat: Infinity, ease: "linear" },
+                        scale: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                      }
+                }
+                className={cn(
+                  "pointer-events-none absolute size-40 rounded-full border",
+                  isDark ? "border-white/10" : "border-zinc-300/60",
+                )}
+              />
+
+              {/* Inner pulsing circular ring */}
+              <motion.div
+                aria-hidden
+                animate={
+                  prefersReducedMotion
+                    ? undefined
+                    : { scale: [0.96, 1.04, 0.96], opacity: [0.5, 0.9, 0.5] }
+                }
+                transition={
+                  prefersReducedMotion
+                    ? undefined
+                    : { duration: 3.4, repeat: Infinity, ease: "easeInOut" }
+                }
+                className={cn(
+                  "pointer-events-none absolute size-28 rounded-full border",
+                  isDark ? "border-rose-400/20" : "border-rose-300/50",
+                )}
+              />
+
+              {/* Outward radiating color ripples in all 4 directions */}
+              {!prefersReducedMotion &&
+                [0, 1.2, 2.4].map((rippleDelay) => (
+                  <motion.div
+                    key={rippleDelay}
+                    aria-hidden
+                    initial={{ scale: 0.45, opacity: 0 }}
+                    animate={{
+                      scale: [0.45, 1.85],
+                      opacity: [0, 0.42, 0.18, 0],
+                    }}
+                    transition={{
+                      duration: 3.6,
+                      delay: rippleDelay,
+                      repeat: Infinity,
+                      ease: "easeOut",
+                      times: [0, 0.2, 0.65, 1],
+                    }}
+                    className="pointer-events-none absolute size-32 rounded-full bg-[radial-gradient(circle,rgba(244,93,93,0.22)_0%,rgba(244,93,93,0.08)_45%,transparent_72%)] blur-[2px]"
+                  />
+                ))}
+
+              {/* Soft radial glow */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute size-24 rounded-full bg-[#f45d5d]/12 blur-xl"
+              />
+
+              {/* Floating megaphone image */}
+              <motion.img
                 src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1795520794/002-1795520794090.png"
                 alt="Digital marketing illustration"
-                className="w-36 h-36 object-contain rounded-xl"
+                animate={
+                  prefersReducedMotion
+                    ? undefined
+                    : { y: [0, -5, 0], rotate: [-1.5, 1.5, -1.5] }
+                }
+                transition={
+                  prefersReducedMotion
+                    ? undefined
+                    : { duration: 3.8, repeat: Infinity, ease: "easeInOut" }
+                }
+                className="relative z-10 w-36 h-36 object-contain rounded-xl"
               />
             </motion.div>
 
@@ -453,15 +832,20 @@ function VeloceHeroPreview({
                 Program that goes beyond the basics, offering you a deep dive into the art and
                 science of digital marketing.
               </p>
-              <span
+              {/* Learn More (Bento): Radial center-out ripple + -45deg diagonal arrow tilt */}
+              <button
+                type="button"
                 className={cn(
-                  "mt-3.5 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[11px] font-medium",
-                  isDark ? "bg-white text-zinc-900" : "bg-zinc-900 text-white",
+                  "group relative overflow-hidden mt-3.5 inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[11px] font-medium cursor-pointer transition-all duration-300 hover:-translate-y-0.5 active:scale-95",
+                  "after:absolute after:left-1/2 after:top-1/2 after:-translate-x-1/2 after:-translate-y-1/2 after:size-0 after:rounded-full after:bg-[#f45d5d] after:transition-all after:duration-500 hover:after:size-44",
+                  isDark
+                    ? "bg-white text-zinc-900 hover:text-white hover:shadow-[0_6px_18px_rgba(244,93,93,0.3)]"
+                    : "bg-zinc-900 text-white hover:shadow-[0_6px_18px_rgba(244,93,93,0.3)]",
                 )}
               >
-                <span>Learn More</span>
-                <ArrowRight className="size-3" />
-              </span>
+                <span className="relative z-10">Learn More</span>
+                <ArrowRight className="relative z-10 size-3 transition-transform duration-300 group-hover:-rotate-45 group-hover:translate-x-0.5" />
+              </button>
             </div>
           </motion.div>
 
@@ -475,7 +859,7 @@ function VeloceHeroPreview({
                 : { duration: 0.85, delay: 0.45, ease: [0.16, 1, 0.3, 1] }
             }
             className={cn(
-              "@lg:col-span-5 relative rounded-2xl overflow-hidden min-h-[320px] flex items-end justify-center",
+              "@4xl:col-span-5 relative rounded-2xl overflow-hidden min-h-[340px] @sm:min-h-[400px] @4xl:min-h-[320px] flex items-end justify-center",
               cardSurface,
             )}
           >
@@ -502,7 +886,14 @@ function VeloceHeroPreview({
                 floatingSurface,
               )}
             >
-              <Globe className="size-3.5 text-zinc-600 dark:text-zinc-300" />
+              <LoopingAnimatedIcon
+                icon={GlobeIcon}
+                size={14}
+                duration={2.2}
+                delay={0.2}
+                color={isDark ? "#d4d4d8" : "#52525b"}
+                prefersReducedMotion={prefersReducedMotion}
+              />
               <span>Let&apos;s Growth!</span>
             </motion.div>
 
@@ -585,14 +976,28 @@ function VeloceHeroPreview({
                   G
                 </span>
                 <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-1.5 py-0.5 text-[9px] font-semibold text-emerald-600 dark:text-emerald-400">
-                  <Check className="size-2.5" />
+                  <LoopingAnimatedIcon
+                    icon={CopyCheckIcon}
+                    size={10}
+                    duration={1.2}
+                    delay={0.3}
+                    color={isDark ? "#34d399" : "#059669"}
+                    prefersReducedMotion={prefersReducedMotion}
+                  />
                   Verified
                 </span>
               </div>
               <p className="mt-2 text-[13px] font-semibold leading-tight">Google Ads</p>
               <div className="mt-1 flex items-center gap-1 text-[9.5px] text-zinc-500 dark:text-zinc-400">
                 <span className="font-semibold text-zinc-900 dark:text-white">4.9</span>
-                <Star className="size-2.5 fill-amber-400 text-amber-400" />
+                <LoopingAnimatedIcon
+                  icon={StarIcon}
+                  size={11}
+                  duration={2.0}
+                  delay={0.4}
+                  color="#fbbf24"
+                  prefersReducedMotion={prefersReducedMotion}
+                />
                 <span>(10 Stars Reviews)</span>
               </div>
             </motion.div>
@@ -614,7 +1019,14 @@ function VeloceHeroPreview({
               )}
             >
               <span className="flex size-6 items-center justify-center rounded-full bg-rose-400 text-white">
-                <ArrowRight className="size-3" />
+                <LoopingAnimatedIcon
+                  icon={ArrowRightIcon}
+                  size={12}
+                  duration={1.8}
+                  delay={0.5}
+                  color="#ffffff"
+                  prefersReducedMotion={prefersReducedMotion}
+                />
               </span>
               <div className="pr-1">
                 <p className="text-[10.5px] font-semibold leading-none">2,924 Views</p>
@@ -624,7 +1036,7 @@ function VeloceHeroPreview({
           </motion.div>
 
           {/* Right Column: 2 Stacked Cards */}
-          <div className="@md:col-span-2 @lg:col-span-4 flex flex-col gap-3.5">
+          <div className="@4xl:col-span-4 flex flex-col gap-3.5">
             {/* Top Card: Satisfied Customers */}
             <motion.div
               initial={prefersReducedMotion ? false : { opacity: 0, x: 24 }}
@@ -646,7 +1058,14 @@ function VeloceHeroPreview({
                       isDark ? "bg-white/10" : "bg-zinc-200/80",
                     )}
                   >
-                    <Heart className="size-4 fill-rose-500 text-rose-500" />
+                    <LoopingAnimatedIcon
+                      icon={HeartIcon}
+                      size={16}
+                      duration={2.0}
+                      delay={0.2}
+                      color="#f43f5e"
+                      prefersReducedMotion={prefersReducedMotion}
+                    />
                   </span>
                   <span className="text-2xl font-semibold tracking-tight tabular-nums">
                     {formattedCustomerCount}
@@ -747,7 +1166,14 @@ function VeloceHeroPreview({
                       </span>
                     ))}
                   </div>
-                  <ChevronRight className="size-3.5 text-zinc-400" />
+                  <LoopingAnimatedIcon
+                    icon={ChevronRightIcon}
+                    size={14}
+                    duration={1.8}
+                    delay={0.4}
+                    color="#a1a1aa"
+                    prefersReducedMotion={prefersReducedMotion}
+                  />
                 </div>
               </div>
             </motion.div>
@@ -756,7 +1182,7 @@ function VeloceHeroPreview({
       </section>
 
       {/* 3. Trusted Companies Infinite Marquee Section */}
-      <section className="mx-auto max-w-5xl pt-14 pb-6">
+      <section className="mx-auto max-w-[560px] @4xl:max-w-5xl pt-14 pb-6">
         <div className="text-center">
           <h3 className="text-xl @sm:text-2xl font-semibold tracking-tight">
             Trusted by{" "}
@@ -783,7 +1209,7 @@ function VeloceHeroPreview({
                   stroke="currentColor"
                   strokeWidth="3"
                   strokeLinecap="round"
-                  className="text-primary"
+                  className="text-[#f45d5d]"
                   initial={
                     prefersReducedMotion
                       ? { pathLength: 1, opacity: 1 }
@@ -845,16 +1271,16 @@ function VeloceHeroPreview({
             transition={
               prefersReducedMotion
                 ? undefined
-                : { duration: 24, repeat: Infinity, ease: "linear" }
+                : { duration: 36, repeat: Infinity, ease: "linear" }
             }
             className="flex w-max items-center"
           >
-            {[0, 1].map((dup) => (
+            {[0, 1, 2, 3].map((dup) => (
               <div
                 key={dup}
-                aria-hidden={dup === 1 || undefined}
+                aria-hidden={dup > 0 || undefined}
                 className={cn(
-                  "flex items-center gap-12 @sm:gap-16 pr-12 @sm:pr-16 select-none",
+                  "flex shrink-0 items-center gap-12 @sm:gap-16 pr-12 @sm:pr-16 select-none",
                   isDark ? "text-zinc-500" : "text-zinc-400",
                 )}
               >
@@ -904,16 +1330,16 @@ function VeloceHeroPreview({
       </section>
 
       {/* 4. Content Creation and Marketing Section */}
-      <section className="mx-auto max-w-5xl pt-16 pb-10">
+      <section className="mx-auto max-w-[560px] @4xl:max-w-5xl pt-16 pb-10">
         <div
           ref={contentGridRef}
-          className="relative grid grid-cols-1 @lg:grid-cols-12 gap-10 @lg:gap-8 items-center"
+          className="relative grid grid-cols-1 @4xl:grid-cols-12 gap-10 @4xl:gap-8 items-center"
         >
           {/* Dynamic Dashed Connectors */}
           {connectorCoords && (
             <svg
               aria-hidden
-              className="hidden @lg:block pointer-events-none absolute inset-0 h-full w-full z-0 overflow-visible"
+              className="hidden @4xl:block pointer-events-none absolute inset-0 h-full w-full z-0 overflow-visible"
             >
               {/* Top-left dashed arc: 80% card top-center -> Average Increase Sales left-center */}
               <path
@@ -975,97 +1401,151 @@ function VeloceHeroPreview({
           )}
 
           {/* Left Column: Portrait + Floating Metrics Cards */}
-          <div className="@lg:col-span-6 relative mx-auto w-full max-w-[440px] min-h-[380px] @sm:min-h-[420px] flex items-center justify-center">
+          <div className="@4xl:col-span-6 relative mx-auto w-full max-w-[440px] flex flex-col @4xl:block">
+            <div className="relative w-full min-h-[340px] @sm:min-h-[380px] @4xl:min-h-[420px] flex items-center justify-center">
 
-            {/* Center Portrait with Soft Bottom Fade */}
-            <motion.div
-              initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.94 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={
-                prefersReducedMotion
-                  ? { duration: 0 }
-                  : { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
-              }
-              className="relative z-0 w-56 @sm:w-64 h-80 @sm:h-96 overflow-hidden flex items-end justify-center"
-            >
-              <img
-                src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1795523190/veloce-marketer-removebg-preview-1795523189501.png"
-                alt="Content strategist portrait"
-                className="h-full w-full object-contain object-bottom [mask-image:linear-gradient(to_bottom,black_78%,transparent_100%)]"
-              />
-            </motion.div>
+              {/* Center Portrait with Soft Bottom Fade */}
+              <motion.div
+                initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.94 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, amount: 0.25 }}
+                transition={
+                  prefersReducedMotion
+                    ? { duration: 0 }
+                    : { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+                }
+                className="relative z-0 w-56 @sm:w-64 h-80 @sm:h-96 overflow-hidden flex items-end justify-center"
+              >
+                <img
+                  src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1795523190/veloce-marketer-removebg-preview-1795523189501.png"
+                  alt="Content strategist portrait"
+                  className="h-full w-full object-contain object-bottom [mask-image:linear-gradient(to_bottom,black_78%,transparent_100%)]"
+                />
+              </motion.div>
 
-            {/* Bottom-left Card: 80% Donut + 17K+ */}
-            <motion.div
-              ref={donutCardRef}
-              initial={prefersReducedMotion ? false : { opacity: 0, x: -20, y: 14 }}
-              whileInView={{ opacity: 1, x: 0, y: 0 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={
-                prefersReducedMotion
-                  ? { duration: 0 }
-                  : { duration: 0.75, delay: 0.15, ease: [0.16, 1, 0.3, 1] }
-              }
-              className={cn(
-                "absolute left-0 @sm:left-2 bottom-6 @sm:bottom-8 z-10 w-36 @sm:w-40 rounded-2xl p-4 text-center",
-                floatingSurface,
-              )}
-            >
-              <div className="relative mx-auto size-16 flex items-center justify-center">
-                <svg viewBox="0 0 64 64" className="size-16 -rotate-90" aria-hidden>
-                  <circle
-                    cx="32"
-                    cy="32"
-                    r="25"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="6"
-                    className={isDark ? "text-white/10" : "text-rose-100"}
-                  />
-                  <motion.circle
-                    cx="32"
-                    cy="32"
-                    r="25"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="6"
-                    strokeLinecap="round"
-                    className="text-rose-500"
-                    strokeDasharray={2 * Math.PI * 25}
-                    initial={
-                      prefersReducedMotion
-                        ? { strokeDashoffset: 2 * Math.PI * 25 * 0.2 }
-                        : { strokeDashoffset: 2 * Math.PI * 25 }
-                    }
-                    whileInView={{ strokeDashoffset: 2 * Math.PI * 25 * 0.2 }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={
-                      prefersReducedMotion
-                        ? { duration: 0 }
-                        : { duration: 1.1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }
-                    }
-                  />
-                </svg>
-                <span className="absolute text-[13px] font-semibold text-rose-500">
-                  80%
-                </span>
-              </div>
-
-              <p className="mt-2.5 text-lg font-bold tracking-tight leading-none">
-                17K+
-              </p>
-              <p
+              {/* Bottom-left Card: 80% Donut + 17K+ */}
+              <motion.div
+                ref={donutCardRef}
+                initial={prefersReducedMotion ? false : { opacity: 0, x: -20, y: 14 }}
+                whileInView={{ opacity: 1, x: 0, y: 0 }}
+                viewport={{ once: true, amount: 0.25 }}
+                transition={
+                  prefersReducedMotion
+                    ? { duration: 0 }
+                    : { duration: 0.75, delay: 0.15, ease: [0.16, 1, 0.3, 1] }
+                }
                 className={cn(
-                  "mt-1 text-[9px] leading-snug",
-                  isDark ? "text-zinc-400" : "text-zinc-500",
+                  "absolute left-0 @sm:left-2 bottom-6 @sm:bottom-8 z-10 w-36 @sm:w-40 rounded-2xl p-4 text-center",
+                  floatingSurface,
                 )}
               >
-                1,000K+ Contributions in the last year!
-              </p>
-            </motion.div>
+                <div className="relative mx-auto size-16 flex items-center justify-center">
+                  <svg viewBox="0 0 64 64" className="size-16 -rotate-90" aria-hidden>
+                    <circle
+                      cx="32"
+                      cy="32"
+                      r="25"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="6"
+                      className={isDark ? "text-white/10" : "text-rose-100"}
+                    />
+                    <motion.circle
+                      cx="32"
+                      cy="32"
+                      r="25"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="6"
+                      strokeLinecap="round"
+                      className="text-rose-500"
+                      strokeDasharray={2 * Math.PI * 25}
+                      initial={
+                        prefersReducedMotion
+                          ? { strokeDashoffset: 2 * Math.PI * 25 * 0.2 }
+                          : { strokeDashoffset: 2 * Math.PI * 25 }
+                      }
+                      whileInView={{ strokeDashoffset: 2 * Math.PI * 25 * 0.2 }}
+                      viewport={{ once: true, amount: 0.3 }}
+                      transition={
+                        prefersReducedMotion
+                          ? { duration: 0 }
+                          : { duration: 1.1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }
+                      }
+                    />
+                  </svg>
+                  <span className="absolute text-[13px] font-semibold text-rose-500">
+                    80%
+                  </span>
+                </div>
 
-            {/* Top-right Card: Average Increase Sales */}
+                <p className="mt-2.5 text-lg font-bold tracking-tight leading-none">
+                  17K+
+                </p>
+                <p
+                  className={cn(
+                    "mt-1 text-[9px] leading-snug",
+                    isDark ? "text-zinc-400" : "text-zinc-500",
+                  )}
+                >
+                  1,000K+ Contributions in the last year!
+                </p>
+              </motion.div>
+
+              {/* Bottom-right Card: Advertising Platform */}
+              <motion.div
+                initial={prefersReducedMotion ? false : { opacity: 0, x: 18, y: 12 }}
+                whileInView={{ opacity: 1, x: 0, y: 0 }}
+                viewport={{ once: true, amount: 0.25 }}
+                transition={
+                  prefersReducedMotion
+                    ? { duration: 0 }
+                    : { duration: 0.75, delay: 0.35, ease: [0.16, 1, 0.3, 1] }
+                }
+                className={cn(
+                  "absolute right-0 @sm:right-4 bottom-3 @sm:bottom-6 z-10 rounded-2xl px-3.5 py-2.5",
+                  floatingSurface,
+                )}
+              >
+                <p className="text-[9.5px] font-semibold text-center">
+                  Advertising Platform
+                </p>
+                <div className="mt-2 flex items-center gap-1.5">
+                  {/* Facebook */}
+                  <span className="flex size-6 items-center justify-center rounded-md bg-[#1877F2] text-white text-[12px] font-bold">
+                    f
+                  </span>
+                  {/* Instagram */}
+                  <span className="flex size-6 items-center justify-center rounded-md bg-gradient-to-tr from-[#F58529] via-[#DD2A7B] to-[#8134AF] text-white">
+                    <svg viewBox="0 0 24 24" className="size-3.5 stroke-current fill-none" strokeWidth="2" aria-hidden>
+                      <rect x="3" y="3" width="18" height="18" rx="5" />
+                      <circle cx="12" cy="12" r="4" />
+                      <circle cx="17.5" cy="6.5" r="1" className="fill-current stroke-none" />
+                    </svg>
+                  </span>
+                  {/* Twitter */}
+                  <span className="flex size-6 items-center justify-center rounded-md bg-[#1DA1F2] text-white">
+                    <svg viewBox="0 0 24 24" className="size-3.5 fill-current" aria-hidden>
+                      <path d="M22 5.9a8.2 8.2 0 0 1-2.36.65 4.12 4.12 0 0 0 1.8-2.27 8.2 8.2 0 0 1-2.6 1 4.1 4.1 0 0 0-7 3.74A11.64 11.64 0 0 1 3.4 4.7a4.1 4.1 0 0 0 1.27 5.47 4.07 4.07 0 0 1-1.86-.51v.05a4.1 4.1 0 0 0 3.29 4.02 4.1 4.1 0 0 1-1.85.07 4.1 4.1 0 0 0 3.83 2.85A8.23 8.23 0 0 1 2 18.4a11.62 11.62 0 0 0 6.29 1.84c7.55 0 11.68-6.25 11.68-11.67 0-.18 0-.35-.01-.53A8.34 8.34 0 0 0 22 5.9Z" />
+                    </svg>
+                  </span>
+                  {/* TikTok */}
+                  <span className="flex size-6 items-center justify-center rounded-md bg-zinc-950 text-white">
+                    <svg viewBox="0 0 24 24" className="size-3.5 fill-current" aria-hidden>
+                      <path d="M16.6 5.82s.51.5 0 0A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.33 2.76 5.7 5.69 5.7 3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3s-1.88.09-3.24-1.48Z" />
+                    </svg>
+                  </span>
+                  {/* Gmail */}
+                  <span className="flex size-6 items-center justify-center rounded-md bg-white border border-zinc-200 text-[#EA4335]">
+                    <svg viewBox="0 0 24 24" className="size-3.5 fill-current" aria-hidden>
+                      <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z" />
+                    </svg>
+                  </span>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Top-right Card: Average Increase Sales (Stacked on top on mobile & tablet <= 768px, floating top-right on desktop @4xl+) */}
             <motion.div
               ref={salesCardRef}
               initial={prefersReducedMotion ? false : { opacity: 0, x: 18, y: -12 }}
@@ -1077,7 +1557,7 @@ function VeloceHeroPreview({
                   : { duration: 0.75, delay: 0.25, ease: [0.16, 1, 0.3, 1] }
               }
               className={cn(
-                "absolute right-0 @sm:right-2 top-2 @sm:top-4 z-10 w-40 @sm:w-44 rounded-2xl p-3.5",
+                "order-first @4xl:order-none w-full @sm:max-w-[340px] @md:max-w-[360px] mx-auto mb-4 @4xl:mb-0 @4xl:mx-0 @4xl:absolute @4xl:right-2 @4xl:top-4 z-10 @4xl:w-44 rounded-2xl p-3.5",
                 floatingSurface,
               )}
             >
@@ -1091,94 +1571,59 @@ function VeloceHeroPreview({
                   <span>20</span>
                   <span>10</span>
                 </div>
-                <div className="relative flex-1 flex items-end justify-between gap-1 h-full border-b border-current/10 pb-0.5">
+                <div
+                  className="relative flex-1 flex items-end justify-between gap-1.5 @4xl:gap-1 h-full border-b border-current/10 pb-0.5"
+                  onMouseLeave={() => setHoveredSalesBar(null)}
+                >
                   {[
                     { h: 68, cls: isDark ? "bg-rose-500/25" : "bg-rose-100" },
                     { h: 52, cls: isDark ? "bg-rose-500/40" : "bg-rose-200" },
                     { h: 42, cls: isDark ? "bg-rose-500/55" : "bg-rose-200/90" },
                     { h: 94, cls: isDark ? "bg-rose-500/85" : "bg-rose-300" },
                     { h: 74, cls: isDark ? "bg-rose-500" : "bg-rose-400/85" },
-                  ].map((bar, idx) => (
-                    <motion.div
-                      key={idx}
-                      initial={
-                        prefersReducedMotion
-                          ? { height: `${bar.h}%` }
-                          : { height: "0%" }
-                      }
-                      whileInView={{ height: `${bar.h}%` }}
-                      viewport={{ once: true, amount: 0.3 }}
-                      transition={
-                        prefersReducedMotion
-                          ? { duration: 0 }
-                          : {
-                              duration: 0.7,
-                              delay: 0.4 + idx * 0.1,
-                              ease: [0.16, 1, 0.3, 1],
-                            }
-                      }
-                      className={cn("w-4 rounded-t-sm", bar.cls)}
-                    />
-                  ))}
+                  ].map((bar, idx) => {
+                    const isHovered = hoveredSalesBar === idx;
+                    const isAnyHovered = hoveredSalesBar !== null;
+                    return (
+                      <motion.div
+                        key={idx}
+                        onMouseEnter={() => setHoveredSalesBar(idx)}
+                        initial={
+                          prefersReducedMotion
+                            ? { height: `${bar.h}%` }
+                            : { height: "0%" }
+                        }
+                        whileInView={{ height: `${bar.h}%` }}
+                        viewport={{ once: true, amount: 0.3 }}
+                        transition={
+                          prefersReducedMotion
+                            ? { duration: 0 }
+                            : {
+                                duration: 0.7,
+                                delay: 0.4 + idx * 0.1,
+                                ease: [0.16, 1, 0.3, 1],
+                              }
+                        }
+                        className={cn(
+                          "flex-1 @4xl:flex-none @4xl:w-4 rounded-t-sm cursor-pointer transition-colors duration-200",
+                          isAnyHovered
+                            ? isHovered
+                              ? "bg-[#f45d5d]"
+                              : isDark
+                                ? "bg-white/10"
+                                : "bg-zinc-200/80"
+                            : bar.cls,
+                        )}
+                      />
+                    );
+                  })}
                 </div>
-              </div>
-            </motion.div>
-
-            {/* Bottom-right Card: Advertising Platform */}
-            <motion.div
-              initial={prefersReducedMotion ? false : { opacity: 0, x: 18, y: 12 }}
-              whileInView={{ opacity: 1, x: 0, y: 0 }}
-              viewport={{ once: true, amount: 0.25 }}
-              transition={
-                prefersReducedMotion
-                  ? { duration: 0 }
-                  : { duration: 0.75, delay: 0.35, ease: [0.16, 1, 0.3, 1] }
-              }
-              className={cn(
-                "absolute right-0 @sm:right-4 bottom-3 @sm:bottom-6 z-10 rounded-2xl px-3.5 py-2.5",
-                floatingSurface,
-              )}
-            >
-              <p className="text-[9.5px] font-semibold text-center">
-                Advertising Platform
-              </p>
-              <div className="mt-2 flex items-center gap-1.5">
-                {/* Facebook */}
-                <span className="flex size-6 items-center justify-center rounded-md bg-[#1877F2] text-white text-[12px] font-bold">
-                  f
-                </span>
-                {/* Instagram */}
-                <span className="flex size-6 items-center justify-center rounded-md bg-gradient-to-tr from-[#F58529] via-[#DD2A7B] to-[#8134AF] text-white">
-                  <svg viewBox="0 0 24 24" className="size-3.5 stroke-current fill-none" strokeWidth="2" aria-hidden>
-                    <rect x="3" y="3" width="18" height="18" rx="5" />
-                    <circle cx="12" cy="12" r="4" />
-                    <circle cx="17.5" cy="6.5" r="1" className="fill-current stroke-none" />
-                  </svg>
-                </span>
-                {/* Twitter */}
-                <span className="flex size-6 items-center justify-center rounded-md bg-[#1DA1F2] text-white">
-                  <svg viewBox="0 0 24 24" className="size-3.5 fill-current" aria-hidden>
-                    <path d="M22 5.9a8.2 8.2 0 0 1-2.36.65 4.12 4.12 0 0 0 1.8-2.27 8.2 8.2 0 0 1-2.6 1 4.1 4.1 0 0 0-7 3.74A11.64 11.64 0 0 1 3.4 4.7a4.1 4.1 0 0 0 1.27 5.47 4.07 4.07 0 0 1-1.86-.51v.05a4.1 4.1 0 0 0 3.29 4.02 4.1 4.1 0 0 1-1.85.07 4.1 4.1 0 0 0 3.83 2.85A8.23 8.23 0 0 1 2 18.4a11.62 11.62 0 0 0 6.29 1.84c7.55 0 11.68-6.25 11.68-11.67 0-.18 0-.35-.01-.53A8.34 8.34 0 0 0 22 5.9Z" />
-                  </svg>
-                </span>
-                {/* TikTok */}
-                <span className="flex size-6 items-center justify-center rounded-md bg-zinc-950 text-white">
-                  <svg viewBox="0 0 24 24" className="size-3.5 fill-current" aria-hidden>
-                    <path d="M16.6 5.82s.51.5 0 0A4.28 4.28 0 0 1 15.54 3h-3.09v12.4a2.59 2.59 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.33 2.76 5.7 5.69 5.7 3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3s-1.88.09-3.24-1.48Z" />
-                  </svg>
-                </span>
-                {/* Gmail */}
-                <span className="flex size-6 items-center justify-center rounded-md bg-white border border-zinc-200 text-[#EA4335]">
-                  <svg viewBox="0 0 24 24" className="size-3.5 fill-current" aria-hidden>
-                    <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z" />
-                  </svg>
-                </span>
               </div>
             </motion.div>
           </div>
 
           {/* Right Column: Heading + Subtitle + 4 Interactive Pill Cards */}
-          <div className="@lg:col-span-6">
+          <div className="@4xl:col-span-6">
             <motion.div
               initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1264,6 +1709,1867 @@ function VeloceHeroPreview({
           </div>
         </div>
       </section>
+
+      {/* 5. Business Planning and Development Section */}
+      <section className="mx-auto max-w-[560px] @4xl:max-w-5xl pt-16 pb-12">
+        <div className="grid grid-cols-1 @4xl:grid-cols-12 gap-10 @4xl:gap-8 items-center">
+          {/* Left Column: Heading + Subtitle + 2x2 Feature Cards */}
+          <div className="@4xl:col-span-6">
+            <motion.div
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : { duration: 0.75, ease: [0.16, 1, 0.3, 1] }
+              }
+            >
+              <h3 className="text-2xl @sm:text-[34px] font-semibold tracking-tight leading-[1.16]">
+                Business Planning
+                <br />
+                and Development
+              </h3>
+              <p
+                className={cn(
+                  "mt-3 max-w-md text-[11.5px] @sm:text-[12.5px] leading-relaxed",
+                  isDark ? "text-zinc-400" : "text-zinc-500",
+                )}
+              >
+                At <span className="font-medium text-[#f45d5d]">Codile</span>, we offer
+                comprehensive solutions designed to guide your business through every stage
+                of its journey.
+              </p>
+            </motion.div>
+
+            <div className="mt-7 grid grid-cols-1 @sm:grid-cols-2 gap-3.5">
+              {[
+                {
+                  title: "Roadmapping",
+                  description:
+                    "Our strategic roadmaps provide a roadmap for success, outlining the steps needed to reach your objectives.",
+                },
+                {
+                  title: "Financial Modeling",
+                  description:
+                    "Forecasts to evaluating investment opportunities, we provide insights that empower informed decision-making.",
+                },
+                {
+                  title: "Diversification",
+                  description:
+                    "Our team explores opportunities for market expansion and diversification, helping you reach new audiences.",
+                },
+                {
+                  title: "Operational Efficiency",
+                  description:
+                    "We assess your current processes and identify areas for improvement to enhance efficiency and reduce costs.",
+                },
+              ].map((card, idx) => {
+                const isCardHovered = hoveredPlanningCard === idx;
+                return (
+                  <motion.div
+                    key={card.title}
+                    onMouseEnter={() => setHoveredPlanningCard(idx)}
+                    onMouseLeave={() => setHoveredPlanningCard(null)}
+                    initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={
+                      prefersReducedMotion
+                        ? { duration: 0 }
+                        : {
+                            duration: 0.6,
+                            delay: 0.1 + idx * 0.08,
+                            ease: [0.16, 1, 0.3, 1],
+                          }
+                    }
+                    className={cn(
+                      "relative overflow-hidden rounded-2xl p-4 @sm:p-[18px] transition-all duration-300 hover:-translate-y-0.5 cursor-pointer",
+                      isDark
+                        ? "bg-white/[0.04] border border-white/[0.08] hover:bg-rose-500/[0.10] hover:border-rose-500/25"
+                        : "bg-[#f6f6f8] border border-black/[0.03] hover:bg-rose-50/85 hover:border-rose-200/70 hover:shadow-[0_8px_24px_rgb(244_93_93/0.08)]",
+                    )}
+                  >
+                    {/* Rising background dots on hover */}
+                    {isCardHovered && !prefersReducedMotion && (
+                      <div
+                        aria-hidden
+                        className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
+                      >
+                        {[
+                          { left: "8%", size: "size-[2.5px]", delay: 0, dur: 1.35 },
+                          { left: "16%", size: "size-[3px]", delay: 0.35, dur: 1.65 },
+                          { left: "24%", size: "size-[2px]", delay: 0.15, dur: 1.45 },
+                          { left: "32%", size: "size-[3px]", delay: 0.55, dur: 1.75 },
+                          { left: "41%", size: "size-[2.5px]", delay: 0.2, dur: 1.4 },
+                          { left: "49%", size: "size-[2px]", delay: 0.6, dur: 1.6 },
+                          { left: "58%", size: "size-[3px]", delay: 0.1, dur: 1.5 },
+                          { left: "66%", size: "size-[2.5px]", delay: 0.45, dur: 1.7 },
+                          { left: "74%", size: "size-[2px]", delay: 0.25, dur: 1.35 },
+                          { left: "82%", size: "size-[3px]", delay: 0.65, dur: 1.8 },
+                          { left: "90%", size: "size-[2.5px]", delay: 0.4, dur: 1.55 },
+                        ].map((dot, dIdx) => (
+                          <motion.span
+                            key={dIdx}
+                            style={{ left: dot.left, bottom: "-6px" }}
+                            initial={{ y: 0, opacity: 0 }}
+                            animate={{
+                              y: -135,
+                              opacity: [0, 0.95, 0.7, 0],
+                            }}
+                            transition={{
+                              duration: dot.dur,
+                              delay: dot.delay,
+                              repeat: Infinity,
+                              ease: "easeOut",
+                            }}
+                            className={cn(
+                              "absolute rounded-full",
+                              isDark ? "bg-rose-400/80" : "bg-[#f45d5d]/75",
+                              dot.size,
+                            )}
+                          />
+                        ))}
+                      </div>
+                    )}
+
+                    <div className="relative z-10">
+                      <div className="flex items-center gap-2.5">
+                        <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-[#f45d5d] text-white">
+                          <LoopingAnimatedIcon
+                            icon={CopyCheckIcon}
+                            size={12}
+                            duration={1}
+                            delay={idx * 0.2}
+                            color="#ffffff"
+                            prefersReducedMotion={prefersReducedMotion}
+                          />
+                        </span>
+                        <h4 className="text-[13px] @sm:text-[13.5px] font-semibold tracking-tight">
+                          {card.title}
+                        </h4>
+                      </div>
+                      <p
+                        className={cn(
+                          "mt-2.5 text-[10.5px] @sm:text-[11px] leading-[1.55]",
+                          isDark ? "text-zinc-400" : "text-zinc-500",
+                        )}
+                      >
+                        {card.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Right Column: Portrait + Floating Icon Pills + Verified Card + B2B Income Chart */}
+          <div
+            ref={planningVisualRef}
+            className="@4xl:col-span-6 relative mx-auto w-full max-w-[460px] min-h-[380px] @sm:min-h-[430px] flex flex-col items-center justify-end pt-6"
+          >
+            {/* Dynamic Dashed Connectors */}
+            {planningConnectors && (
+              <svg
+                aria-hidden
+                className="pointer-events-none absolute inset-0 h-full w-full z-0 overflow-visible"
+              >
+                {/* Top-left dashed arc: Podium icon top-center -> Verified card left-center */}
+                <path
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.25"
+                  strokeDasharray="4 4"
+                  className={isDark ? "text-white/20" : "text-zinc-300"}
+                  d={(() => {
+                    const { podiumX, podiumY, verifiedLeftX, verifiedMidY } =
+                      planningConnectors;
+                    const r = 14;
+                    return `M ${podiumX} ${podiumY} L ${podiumX} ${verifiedMidY + r} Q ${podiumX} ${verifiedMidY} ${podiumX + r} ${verifiedMidY} L ${verifiedLeftX} ${verifiedMidY}`;
+                  })()}
+                />
+                <circle
+                  cx={planningConnectors.podiumX + 3.5}
+                  cy={planningConnectors.verifiedMidY + 3.5}
+                  r="3"
+                  className={isDark ? "fill-white" : "fill-[#181826]"}
+                />
+
+                {/* Bottom-left dashed arc: Icon pills center -> down to 50% of B2B Income card -> curve right into B2B card */}
+                {planningConnectors.incomeLeftX > planningConnectors.podiumX + 16 && (
+                  <>
+                    <path
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.25"
+                      strokeDasharray="4 4"
+                      className={isDark ? "text-white/20" : "text-zinc-300"}
+                      d={(() => {
+                        const { podiumX, podiumY, incomeLeftX, incomeMidY } =
+                          planningConnectors;
+                        const r = 14;
+                        return `M ${podiumX} ${podiumY} L ${podiumX} ${incomeMidY - r} Q ${podiumX} ${incomeMidY} ${podiumX + r} ${incomeMidY} L ${incomeLeftX} ${incomeMidY}`;
+                      })()}
+                    />
+                    <circle
+                      cx={planningConnectors.podiumX + 3.5}
+                      cy={planningConnectors.incomeMidY - 3.5}
+                      r="3"
+                      className={isDark ? "fill-white" : "fill-[#181826]"}
+                    />
+                  </>
+                )}
+
+                {/* Vertical dashed line: Verified bottom-center -> B2B Income card top */}
+                {planningConnectors.incomeTopY > planningConnectors.verifiedBottomY + 8 && (
+                  <>
+                    <line
+                      x1={planningConnectors.verifiedMidX}
+                      y1={planningConnectors.verifiedBottomY}
+                      x2={planningConnectors.verifiedMidX}
+                      y2={planningConnectors.incomeTopY}
+                      stroke="currentColor"
+                      strokeWidth="1.25"
+                      strokeDasharray="4 4"
+                      className={isDark ? "text-white/20" : "text-zinc-300"}
+                    />
+                    <circle
+                      cx={planningConnectors.verifiedMidX}
+                      cy={
+                        (planningConnectors.verifiedBottomY +
+                          planningConnectors.incomeTopY) /
+                        2
+                      }
+                      r="3"
+                      className={isDark ? "fill-white" : "fill-[#181826]"}
+                    />
+                  </>
+                )}
+
+                {/* Right-edge dashed line extending from B2B Income card */}
+                <line
+                  x1={planningConnectors.incomeRightX}
+                  y1={planningConnectors.incomeMidY}
+                  x2={planningConnectors.containerWidth + 36}
+                  y2={planningConnectors.incomeMidY}
+                  stroke="currentColor"
+                  strokeWidth="1.25"
+                  strokeDasharray="4 4"
+                  className={isDark ? "text-white/20" : "text-zinc-300"}
+                />
+              </svg>
+            )}
+
+            {/* Center Portrait with Soft Bottom Fade */}
+            <motion.div
+              initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.94 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : { duration: 0.8, ease: [0.16, 1, 0.3, 1] }
+              }
+              className="relative z-0 w-72 @sm:w-80 h-[340px] @sm:h-[390px] overflow-hidden flex items-end justify-center mb-4 @sm:mb-6"
+            >
+              <img
+                src="https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1795523190/veloce-marketer-removebg-preview-1795523189501.png"
+                alt="Business planning consultant"
+                className="h-full w-full object-contain object-bottom [mask-image:linear-gradient(to_bottom,black_76%,transparent_100%)]"
+              />
+            </motion.div>
+
+            {/* Left Floating Icon Pills */}
+            <div className="absolute left-0 @sm:left-1 top-20 @sm:top-24 z-10 flex flex-col gap-3">
+              {/* Top Pill: Podium with Star */}
+              <motion.div
+                ref={podiumCardRef}
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.25 }}
+                transition={
+                  prefersReducedMotion
+                    ? { duration: 0 }
+                    : { duration: 0.7, delay: 0.15, ease: [0.16, 1, 0.3, 1] }
+                }
+                className={cn(
+                  "flex size-12 @sm:size-13 items-center justify-center rounded-2xl border shadow-[0_8px_24px_rgb(0_0_0/0.04)]",
+                  isDark
+                    ? "bg-rose-500/10 border-rose-500/20 text-rose-400"
+                    : "bg-[#fff5f5] border-rose-100/80 text-[#f45d5d]",
+                )}
+              >
+                <LoopingAnimatedIcon
+                  icon={TrophyIcon}
+                  size={20}
+                  duration={2.2}
+                  delay={0.15}
+                  color="#f45d5d"
+                  prefersReducedMotion={prefersReducedMotion}
+                />
+              </motion.div>
+
+              {/* Bottom Pill: Megaphone */}
+              <motion.div
+                initial={prefersReducedMotion ? false : { opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.25 }}
+                transition={
+                  prefersReducedMotion
+                    ? { duration: 0 }
+                    : { duration: 0.7, delay: 0.25, ease: [0.16, 1, 0.3, 1] }
+                }
+                className={cn(
+                  "flex size-12 @sm:size-13 items-center justify-center rounded-2xl border shadow-[0_8px_24px_rgb(0_0_0/0.04)]",
+                  isDark
+                    ? "bg-rose-500/10 border-rose-500/20 text-rose-400"
+                    : "bg-[#fff5f5] border-rose-100/80 text-[#f45d5d]",
+                )}
+              >
+                <LoopingAnimatedIcon
+                  icon={MegaphoneIcon}
+                  size={20}
+                  duration={2.2}
+                  delay={0.4}
+                  color="#f45d5d"
+                  prefersReducedMotion={prefersReducedMotion}
+                />
+              </motion.div>
+            </div>
+
+            {/* Top-Right Floating Card: Verified! */}
+            <motion.div
+              ref={verifiedCardRef}
+              initial={prefersReducedMotion ? false : { opacity: 0, y: -10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : { duration: 0.75, delay: 0.2, ease: [0.16, 1, 0.3, 1] }
+              }
+              className={cn(
+                "absolute -right-1 @sm:right-0 @md:right-4 top-14 @sm:top-10 @md:top-2 z-10 w-28 @sm:w-32 @md:w-36 rounded-2xl px-2.5 py-2.5 @sm:px-3 @sm:py-3.5 text-center",
+                floatingSurface,
+              )}
+            >
+              <div className="mx-auto flex size-9 items-center justify-center rounded-full bg-[#1ed700] text-white ring-4 ring-[#1ed700]/15">
+                <LoopingAnimatedIcon
+                  icon={CopyCheckIcon}
+                  size={16}
+                  duration={1}
+                  delay={0.3}
+                  color="#ffffff"
+                  prefersReducedMotion={prefersReducedMotion}
+                />
+              </div>
+              <p className="mt-2.5 text-[11.5px] @sm:text-[12px] font-semibold leading-tight">
+                Verified!
+              </p>
+              <p
+                className={cn(
+                  "mt-0.5 text-[8.5px] @sm:text-[9px]",
+                  isDark ? "text-zinc-400" : "text-zinc-500",
+                )}
+              >
+                <span className="font-semibold text-[#1ed700]">100%</span> Client Satisfied
+              </p>
+            </motion.div>
+
+            {/* Bottom Floating Card: B2B Income 2023 Area Chart */}
+            <motion.div
+              ref={incomeCardRef}
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : { duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }
+              }
+              className={cn(
+                "relative z-10 -mt-20 @sm:-mt-24 w-[82%] @sm:w-[84%] max-w-[370px] self-end rounded-2xl p-3.5 @sm:p-4",
+                floatingSurface,
+              )}
+            >
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span
+                    className={cn(
+                      "flex size-6 items-center justify-center rounded-lg",
+                      isDark
+                        ? "bg-rose-500/15 text-rose-400"
+                        : "bg-rose-50 text-[#f45d5d]",
+                    )}
+                  >
+                    <LoopingAnimatedIcon
+                      icon={ChartNoAxesColumnIcon}
+                      size={14}
+                      duration={2.0}
+                      delay={0.25}
+                      color="#f45d5d"
+                      prefersReducedMotion={prefersReducedMotion}
+                    />
+                  </span>
+                  <span className="text-[10.5px] @sm:text-[11.5px] font-semibold tracking-tight">
+                    B2B Income 2023
+                  </span>
+                </div>
+
+                {/* Monthly / Yearly Toggle */}
+                <div
+                  className={cn(
+                    "inline-flex items-center rounded-full p-0.5",
+                    isDark ? "bg-white/[0.06]" : "bg-zinc-100",
+                  )}
+                >
+                  {(["monthly", "yearly"] as const).map((period) => {
+                    const active = incomePeriod === period;
+                    return (
+                      <button
+                        key={period}
+                        type="button"
+                        onClick={() => setIncomePeriod(period)}
+                        className={cn(
+                          "rounded-full px-2.5 py-0.5 text-[8.5px] @sm:text-[9px] font-medium capitalize transition-all cursor-pointer",
+                          active
+                            ? "bg-[#f45d5d] text-white shadow-xs"
+                            : isDark
+                              ? "text-zinc-400 hover:text-zinc-200"
+                              : "text-zinc-500 hover:text-zinc-800",
+                        )}
+                      >
+                        {period}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Area Chart */}
+              <div className="mt-3 h-24 @sm:h-28 w-full">
+                <svg
+                  viewBox="0 0 320 90"
+                  preserveAspectRatio="none"
+                  className="h-full w-full overflow-visible"
+                  aria-label="B2B Income 2023 chart"
+                >
+                  <defs>
+                    <linearGradient id="veloce-b2b-area" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#f45d5d" stopOpacity="0.42" />
+                      <stop offset="100%" stopColor="#f45d5d" stopOpacity="0.02" />
+                    </linearGradient>
+                  </defs>
+
+                  {/* Subtle horizontal grid lines */}
+                  {[22, 46, 70].map((y) => (
+                    <line
+                      key={y}
+                      x1="0"
+                      y1={y}
+                      x2="320"
+                      y2={y}
+                      stroke="currentColor"
+                      strokeWidth="0.75"
+                      className={isDark ? "text-white/[0.07]" : "text-zinc-100"}
+                    />
+                  ))}
+
+                  {/* Area Fill */}
+                  <motion.path
+                    fill="url(#veloce-b2b-area)"
+                    initial={false}
+                    animate={{
+                      d:
+                        incomePeriod === "monthly"
+                          ? "M 0 74 L 14 70 L 24 62 L 36 65 L 48 56 L 60 59 L 68 48 L 78 52 L 90 68 L 102 64 L 112 72 L 122 50 L 132 54 L 142 36 L 152 24 L 160 32 L 172 52 L 182 40 L 194 64 L 208 58 L 222 52 L 236 62 L 248 55 L 260 44 L 274 52 L 288 30 L 302 22 L 314 14 L 320 18 L 320 90 L 0 90 Z"
+                          : "M 0 78 L 26 72 L 54 64 L 82 58 L 110 62 L 138 46 L 166 38 L 194 42 L 222 30 L 250 24 L 284 16 L 320 8 L 320 90 L 0 90 Z",
+                    }}
+                    transition={
+                      prefersReducedMotion
+                        ? { duration: 0 }
+                        : { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
+                    }
+                  />
+
+                  {/* Line Stroke */}
+                  <motion.path
+                    fill="none"
+                    stroke="#f45d5d"
+                    strokeWidth="1.4"
+                    strokeLinejoin="round"
+                    strokeLinecap="round"
+                    initial={false}
+                    animate={{
+                      d:
+                        incomePeriod === "monthly"
+                          ? "M 0 74 L 14 70 L 24 62 L 36 65 L 48 56 L 60 59 L 68 48 L 78 52 L 90 68 L 102 64 L 112 72 L 122 50 L 132 54 L 142 36 L 152 24 L 160 32 L 172 52 L 182 40 L 194 64 L 208 58 L 222 52 L 236 62 L 248 55 L 260 44 L 274 52 L 288 30 L 302 22 L 314 14 L 320 18"
+                          : "M 0 78 L 26 72 L 54 64 L 82 58 L 110 62 L 138 46 L 166 38 L 194 42 L 222 30 L 250 24 L 284 16 L 320 8",
+                    }}
+                    transition={
+                      prefersReducedMotion
+                        ? { duration: 0 }
+                        : { duration: 0.6, ease: [0.16, 1, 0.3, 1] }
+                    }
+                  />
+                </svg>
+              </div>
+
+              {/* X-Axis Months */}
+              <div
+                className={cn(
+                  "mt-1.5 flex items-center justify-between text-[7px] @sm:text-[8px] font-medium",
+                  isDark ? "text-zinc-500" : "text-zinc-400",
+                )}
+              >
+                {[
+                  "Jan",
+                  "Feb",
+                  "Mar",
+                  "Apr",
+                  "May",
+                  "Jun",
+                  "Jul",
+                  "Aug",
+                  "Sep",
+                  "Oct",
+                  "Nov",
+                  "Dec",
+                ].map((month) => (
+                  <span key={month}>{month}</span>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6. Crafting Solutions Tailored to You Section */}
+      <section className="mx-auto max-w-[560px] @4xl:max-w-5xl pt-16 pb-14">
+        {/* Centered Header */}
+        <motion.div
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={
+            prefersReducedMotion
+              ? { duration: 0 }
+              : { duration: 0.75, ease: [0.16, 1, 0.3, 1] }
+          }
+          className="text-center"
+        >
+          <h3 className="text-2xl @sm:text-[34px] font-semibold tracking-tight leading-[1.16]">
+            Crafting Solutions
+            <br />
+            Tailored to You
+          </h3>
+          <p
+            className={cn(
+              "mx-auto mt-3 max-w-md text-[11.5px] @sm:text-[12.5px] leading-relaxed",
+              isDark ? "text-zinc-400" : "text-zinc-500",
+            )}
+          >
+            At <span className="font-medium text-[#f45d5d]">Codile</span>, we take pride
+            in offering a diverse range of solutions meticulously crafted to meet your
+            unique needs.
+          </p>
+        </motion.div>
+
+        {/* Asymmetric 2-Column Bento Grid */}
+        <div className="mt-10 grid grid-cols-1 @4xl:grid-cols-2 gap-4 @sm:gap-5 items-stretch">
+          {/* LEFT COLUMN */}
+          <div className="flex flex-col gap-4 @sm:gap-5">
+            {/* Card 1: Subscription */}
+            <motion.div
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : { duration: 0.7, ease: [0.16, 1, 0.3, 1] }
+              }
+              className={cn(
+                "rounded-3xl p-5 @sm:p-6 overflow-hidden",
+                isDark
+                  ? "bg-white/[0.04] border border-white/[0.08]"
+                  : "bg-[#f6f6f8] border border-black/[0.03]",
+              )}
+            >
+              {/* Brand Icon Badge */}
+              <VeloceRadarIconBadge
+                isDark={isDark}
+                prefersReducedMotion={prefersReducedMotion}
+                delay={0}
+                variant="radio"
+              />
+
+              <h4 className="mt-4 text-[17px] @sm:text-[19px] font-semibold tracking-tight">
+                Subscription
+              </h4>
+              <p
+                className={cn(
+                  "mt-2 text-[11px] @sm:text-[11.5px] leading-relaxed",
+                  isDark ? "text-zinc-400" : "text-zinc-500",
+                )}
+              >
+                Time is valuable, and your needs are unique. That&apos;s why we&apos;ve
+                curated a subscription offering designed to enhance your experience and
+                simplify your life.
+              </p>
+
+              {/* 4 Stacked Pill Rows */}
+              <div className="mt-5 space-y-2.5">
+                {[
+                  {
+                    title: "Tailored Convenience",
+                    subtitle: "Customize your subscription",
+                    bar: "bg-[#f45d5d]",
+                  },
+                  {
+                    title: "Cost Savings and Value",
+                    subtitle: "Savings and added value with our subscription plans",
+                    bar: "bg-amber-400",
+                  },
+                  {
+                    title: "Priority Access",
+                    subtitle: "Subscribers are our priority, gain early access",
+                    bar: "bg-emerald-500",
+                  },
+                  {
+                    title: "Seamless Experience",
+                    subtitle: "Benefits without the administrative burdens.",
+                    bar: "bg-blue-500",
+                  },
+                ].map((item, idx) => (
+                  <motion.div
+                    key={item.title}
+                    initial={
+                      prefersReducedMotion
+                        ? false
+                        : { opacity: 0, y: -16, scale: 0.97 }
+                    }
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={
+                      prefersReducedMotion
+                        ? { duration: 0 }
+                        : {
+                            duration: 0.55,
+                            delay: 0.15 + idx * 0.18,
+                            ease: [0.16, 1, 0.3, 1],
+                          }
+                    }
+                    className={cn(
+                      "group relative flex items-center justify-between gap-3 rounded-xl px-3.5 py-2.5 transition-shadow duration-200 cursor-pointer",
+                      isDark
+                        ? "bg-white/[0.05] border border-white/[0.08] hover:bg-white/[0.08]"
+                        : "bg-white border border-black/[0.04] shadow-[0_2px_10px_rgb(0_0_0/0.025)] hover:shadow-[0_6px_18px_rgb(0_0_0/0.05)]",
+                    )}
+                    style={{ zIndex: 4 - idx }}
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <span className={cn("w-[3px] h-7 rounded-full shrink-0", item.bar)} />
+                      <div className="min-w-0">
+                        <p className="text-[11.5px] @sm:text-[12px] font-semibold tracking-tight truncate">
+                          {item.title}
+                        </p>
+                        <p
+                          className={cn(
+                            "text-[9.5px] @sm:text-[10px] truncate",
+                            isDark ? "text-zinc-400" : "text-zinc-500",
+                          )}
+                        >
+                          {item.subtitle}
+                        </p>
+                      </div>
+                    </div>
+                    <ChevronRight className="size-3.5 shrink-0 text-zinc-400 transition-transform group-hover:translate-x-0.5" />
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Card 3: Tracking & Record */}
+            <motion.div
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : { duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }
+              }
+              className={cn(
+                "relative flex-1 flex flex-col justify-between rounded-3xl p-5 @sm:p-6 pb-0 @sm:pb-0 overflow-hidden min-h-[260px]",
+                isDark
+                  ? "bg-white/[0.04] border border-white/[0.08]"
+                  : "bg-[#f6f6f8] border border-black/[0.03]",
+              )}
+            >
+              <div>
+                {/* Brand Icon Badge */}
+                <VeloceRadarIconBadge
+                  isDark={isDark}
+                  prefersReducedMotion={prefersReducedMotion}
+                  delay={0.4}
+                  variant="radar"
+                />
+
+                <h4 className="mt-4 text-[17px] @sm:text-[19px] font-semibold tracking-tight">
+                  Tracking & Record
+                </h4>
+                <p
+                  className={cn(
+                    "mt-2 text-[11px] @sm:text-[11.5px] leading-relaxed",
+                    isDark ? "text-zinc-400" : "text-zinc-500",
+                  )}
+                >
+                  pivotal role that precision in tracking and record management plays in
+                  enhancing operational efficiency, ensuring compliance, and driving
+                  informed decision-making.
+                </p>
+              </div>
+
+              {/* Bottom Tilted Mini-Cards Collage */}
+              <div className="relative mt-6 h-32 @sm:h-36 -mx-2 flex items-end justify-between gap-2 select-none">
+                {/* Soft bottom fade */}
+                <div
+                  aria-hidden
+                  className={cn(
+                    "pointer-events-none absolute inset-x-0 bottom-0 z-20 h-8 bg-gradient-to-t to-transparent",
+                    isDark ? "from-[#0b0d12]/80" : "from-[#f6f6f8]",
+                  )}
+                />
+
+                {/* 1. Left tilted 80% Donut Card */}
+                <div
+                  className={cn(
+                    "-ml-4 mb-1 w-24 @sm:w-28 shrink-0 -rotate-6 rounded-2xl p-3 text-center",
+                    floatingSurface,
+                  )}
+                >
+                  <div className="relative mx-auto size-12 flex items-center justify-center">
+                    <svg viewBox="0 0 48 48" className="size-12 -rotate-90" aria-hidden>
+                      <circle
+                        cx="24"
+                        cy="24"
+                        r="19"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="5"
+                        className={isDark ? "text-white/10" : "text-rose-100"}
+                      />
+                      <motion.circle
+                        cx="24"
+                        cy="24"
+                        r="19"
+                        fill="none"
+                        stroke="#f45d5d"
+                        strokeWidth="5"
+                        strokeLinecap="round"
+                        strokeDasharray={2 * Math.PI * 19}
+                        initial={
+                          prefersReducedMotion
+                            ? { strokeDashoffset: 2 * Math.PI * 19 * 0.2 }
+                            : { strokeDashoffset: 2 * Math.PI * 19 }
+                        }
+                        whileInView={{ strokeDashoffset: 2 * Math.PI * 19 * 0.2 }}
+                        viewport={{ once: true, amount: 0.3 }}
+                        transition={
+                          prefersReducedMotion
+                            ? { duration: 0 }
+                            : { duration: 1.1, delay: 0.25, ease: [0.16, 1, 0.3, 1] }
+                        }
+                      />
+                    </svg>
+                    <span className="absolute text-[10px] font-semibold text-[#f45d5d]">
+                      80%
+                    </span>
+                  </div>
+                </div>
+
+                {/* 2. Center-left tilted Segmentation Card */}
+                <div
+                  className={cn(
+                    "z-10 -mb-2 w-32 @sm:w-36 shrink-0 rotate-3 rounded-2xl p-3",
+                    floatingSurface,
+                  )}
+                >
+                  <div className="flex items-center gap-1.5">
+                    <span className="size-2 rounded-full bg-[#f45d5d]" />
+                    <span className="text-[9px] font-semibold tracking-tight">
+                      Segmentation
+                    </span>
+                  </div>
+                  <div
+                    className="mt-2.5 flex items-end justify-between gap-1.5 h-14"
+                    onMouseLeave={() => setHoveredSegBar(null)}
+                  >
+                    {[38, 52, 74, 48, 86, 65].map((h, i) => {
+                      const isHovered = hoveredSegBar === i;
+                      const isAnyHovered = hoveredSegBar !== null;
+                      return (
+                        <motion.div
+                          key={i}
+                          onMouseEnter={() => setHoveredSegBar(i)}
+                          initial={
+                            prefersReducedMotion
+                              ? { height: `${h}%` }
+                              : { height: "0%" }
+                          }
+                          whileInView={{ height: `${h}%` }}
+                          viewport={{ once: true, amount: 0.3 }}
+                          transition={
+                            prefersReducedMotion
+                              ? { duration: 0 }
+                              : {
+                                  duration: 0.65,
+                                  delay: 0.2 + i * 0.08,
+                                  ease: [0.16, 1, 0.3, 1],
+                                }
+                          }
+                          className={cn(
+                            "flex-1 rounded-t-sm cursor-pointer transition-colors duration-200",
+                            isAnyHovered
+                              ? isHovered
+                                ? "bg-[#f45d5d]"
+                                : isDark
+                                  ? "bg-white/10"
+                                  : "bg-zinc-200/80"
+                              : i >= 4
+                                ? "bg-[#f45d5d]/80"
+                                : isDark
+                                  ? "bg-rose-500/30"
+                                  : "bg-rose-200/80",
+                          )}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* 3. Center-right Google Ads Card */}
+                <div
+                  className={cn(
+                    "mb-1 w-28 @sm:w-32 shrink-0 rounded-2xl p-2.5",
+                    floatingSurface,
+                  )}
+                >
+                  <div className="flex items-center justify-between gap-1">
+                    <span className="flex size-5 items-center justify-center rounded-md bg-zinc-100 dark:bg-white/10 text-[10px] font-bold">
+                      <span className="text-[#4285F4]">G</span>
+                    </span>
+                    <span className="inline-flex items-center gap-0.5 rounded-full bg-emerald-500/10 px-1.5 py-0.5 text-[7px] font-semibold text-emerald-500">
+                      <Check className="size-2 stroke-[3]" />
+                      Verified
+                    </span>
+                  </div>
+                  <p className="mt-3 text-[10px] @sm:text-[11px] font-semibold tracking-tight truncate">
+                    Google Ads
+                  </p>
+                  <div className="mt-1.5 h-1.5 w-3/4 rounded-full bg-zinc-200/80 dark:bg-white/10" />
+                </div>
+
+                {/* 4. Far-right peek Average Increase Card */}
+                <div
+                  className={cn(
+                    "-mr-6 mb-2 hidden @sm:block w-24 shrink-0 rounded-2xl p-2.5",
+                    floatingSurface,
+                  )}
+                >
+                  <p className="text-[8px] font-semibold truncate">Average Incre...</p>
+                  <div
+                    className="mt-2 flex items-end gap-1 h-10"
+                    onMouseLeave={() => setHoveredAvgBar(null)}
+                  >
+                    {[40, 70, 55].map((h, i) => {
+                      const isHovered = hoveredAvgBar === i;
+                      const isAnyHovered = hoveredAvgBar !== null;
+                      return (
+                        <motion.div
+                          key={i}
+                          onMouseEnter={() => setHoveredAvgBar(i)}
+                          initial={
+                            prefersReducedMotion
+                              ? { height: `${h}%` }
+                              : { height: "0%" }
+                          }
+                          whileInView={{ height: `${h}%` }}
+                          viewport={{ once: true, amount: 0.3 }}
+                          transition={
+                            prefersReducedMotion
+                              ? { duration: 0 }
+                              : {
+                                  duration: 0.65,
+                                  delay: 0.3 + i * 0.09,
+                                  ease: [0.16, 1, 0.3, 1],
+                                }
+                          }
+                          className={cn(
+                            "flex-1 rounded-t-xs cursor-pointer transition-colors duration-200",
+                            isAnyHovered
+                              ? isHovered
+                                ? "bg-[#f45d5d]"
+                                : isDark
+                                  ? "bg-white/10"
+                                  : "bg-zinc-200/80"
+                              : "bg-rose-300/80",
+                          )}
+                        />
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* RIGHT COLUMN */}
+          <div className="flex flex-col gap-4 @sm:gap-5">
+            {/* Card 2: Advertising */}
+            <motion.div
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : { duration: 0.7, delay: 0.08, ease: [0.16, 1, 0.3, 1] }
+              }
+              className={cn(
+                "rounded-3xl p-5 @sm:p-6 overflow-hidden",
+                isDark
+                  ? "bg-white/[0.04] border border-white/[0.08]"
+                  : "bg-[#f6f6f8] border border-black/[0.03]",
+              )}
+            >
+              {/* Brand Icon Badge */}
+              <VeloceRadarIconBadge
+                isDark={isDark}
+                prefersReducedMotion={prefersReducedMotion}
+                delay={0.2}
+                variant="target"
+              />
+
+              <h4 className="mt-4 text-[17px] @sm:text-[19px] font-semibold tracking-tight">
+                Advertising
+              </h4>
+              <p
+                className={cn(
+                  "mt-2 text-[11px] @sm:text-[11.5px] leading-relaxed",
+                  isDark ? "text-zinc-400" : "text-zinc-500",
+                )}
+              >
+                captivates and resonates with your audience through our cutting-edge
+                advertising solutions at{" "}
+                <span className="font-medium text-[#f45d5d]">Codile</span>. In a world
+                flooded with information, it&apos;s not just about being seen; it&apos;s
+                about being remembered.
+              </p>
+
+              {/* 5 Square Icon Tiles */}
+              <div className="mt-5 grid grid-cols-5 gap-2 @sm:gap-2.5">
+                {[
+                  {
+                    key: "globe",
+                    icon: GlobeIcon,
+                    delay: 0,
+                    badge: "+",
+                    badgePos: "-bottom-0.5 -right-0.5 rounded-full",
+                  },
+                  {
+                    key: "coins",
+                    icon: CoinsIcon,
+                    delay: 0.2,
+                    badge: "$",
+                    badgePos: "-bottom-0.5 -right-0.5 rounded-sm",
+                  },
+                  {
+                    key: "wallet",
+                    icon: WalletIcon,
+                    delay: 0.4,
+                    badge: "+",
+                    badgePos: "-bottom-0.5 -left-0.5 rounded-full",
+                  },
+                  {
+                    key: "mail",
+                    icon: MailIcon,
+                    delay: 0.6,
+                    badge: "-",
+                    badgePos: "-bottom-0.5 -left-0.5 rounded-full",
+                  },
+                  {
+                    key: "heart",
+                    icon: HeartIcon,
+                    delay: 0.8,
+                    badge: "check",
+                    badgePos: "-bottom-0.5 -right-0.5 rounded-full",
+                  },
+                ].map((tile) => (
+                  <div
+                    key={tile.key}
+                    className={cn(
+                      "aspect-square rounded-2xl flex items-center justify-center transition-transform hover:-translate-y-0.5",
+                      isDark
+                        ? "bg-white/[0.05] border border-white/[0.08]"
+                        : "bg-white border border-black/[0.04] shadow-[0_4px_14px_rgb(0_0_0/0.03)]",
+                    )}
+                  >
+                    <div className="relative flex items-center justify-center">
+                      <LoopingAnimatedIcon
+                        icon={tile.icon}
+                        size={22}
+                        duration={2.2}
+                        delay={tile.delay}
+                        color="rgba(244, 93, 93, 0.72)"
+                        prefersReducedMotion={prefersReducedMotion}
+                      />
+                      <span
+                        className={cn(
+                          "absolute flex size-2.5 items-center justify-center bg-[#f45d5d] text-white text-[6.5px] font-bold",
+                          tile.badgePos,
+                        )}
+                      >
+                        {tile.badge === "check" ? (
+                          <Check className="size-1.5 stroke-[3]" />
+                        ) : (
+                          tile.badge
+                        )}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Card 4: Efficient Management */}
+            <motion.div
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : { duration: 0.7, delay: 0.16, ease: [0.16, 1, 0.3, 1] }
+              }
+              className={cn(
+                "relative flex-1 flex flex-col justify-between rounded-3xl p-5 @sm:p-6 pb-0 @sm:pb-0 overflow-hidden",
+                isDark
+                  ? "bg-white/[0.04] border border-white/[0.08]"
+                  : "bg-[#f6f6f8] border border-black/[0.03]",
+              )}
+            >
+              <div>
+                {/* Brand Icon Badge */}
+                <VeloceRadarIconBadge
+                  isDark={isDark}
+                  prefersReducedMotion={prefersReducedMotion}
+                  delay={0.6}
+                  variant="compass"
+                />
+
+                <h4 className="mt-4 text-[17px] @sm:text-[19px] font-semibold tracking-tight">
+                  Efficient Management
+                </h4>
+                <p
+                  className={cn(
+                    "mt-2 text-[11px] @sm:text-[11.5px] leading-relaxed",
+                    isDark ? "text-zinc-400" : "text-zinc-500",
+                  )}
+                >
+                  Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+                  accusantium doloremque laudantium.
+                </p>
+              </div>
+
+              {/* Bottom Inner Mockup + Floating Popovers */}
+              <div className="relative mt-6 pt-3">
+                {/* Main Inner List Card */}
+                <div
+                  className={cn(
+                    "mx-auto w-[92%] rounded-t-2xl border border-b-0 p-4 pb-6",
+                    isDark
+                      ? "bg-[#12151d] border-white/10"
+                      : "bg-white border-black/[0.05] shadow-[0_6px_24px_rgb(0_0_0/0.04)]",
+                  )}
+                >
+                  {/* Item 1 */}
+                  <div className="pb-3 border-b border-current/5">
+                    <div className="flex items-center gap-2">
+                      <span className="flex size-4 items-center justify-center rounded-md bg-rose-500/10 text-[#f45d5d]">
+                        <LoopingAnimatedIcon
+                          icon={ChartNoAxesColumnIcon}
+                          size={11}
+                          duration={2.0}
+                          delay={0.1}
+                          color="#f45d5d"
+                          prefersReducedMotion={prefersReducedMotion}
+                        />
+                      </span>
+                      <span className="text-[11px] font-semibold tracking-tight">
+                        Planning & Goals
+                      </span>
+                    </div>
+                    <p
+                      className={cn(
+                        "mt-1 text-[8.5px] leading-relaxed max-w-[75%]",
+                        isDark ? "text-zinc-400" : "text-zinc-500",
+                      )}
+                    >
+                      pivotal role that meticulous planning and well-defined goals
+                      steering organizations toward sustainable success.
+                    </p>
+                  </div>
+
+                  {/* Item 2 */}
+                  <div className="py-3 border-b border-current/5">
+                    <div className="flex items-center gap-2">
+                      <span className="flex size-4 items-center justify-center rounded-md bg-rose-500/10 text-[#f45d5d]">
+                        <svg viewBox="0 0 16 16" className="size-2.5 fill-current" aria-hidden>
+                          <circle cx="8" cy="8" r="6" fillOpacity="0.25" />
+                          <circle cx="8" cy="8" r="3" />
+                        </svg>
+                      </span>
+                      <span className="text-[11px] font-semibold tracking-tight">
+                        Resource Allocation and Optimization
+                      </span>
+                    </div>
+                    <p
+                      className={cn(
+                        "mt-1 text-[8.5px] leading-relaxed pl-6",
+                        isDark ? "text-zinc-400" : "text-zinc-500",
+                      )}
+                    >
+                      including personnel, time, and finances, achieve organizational
+                      goals.
+                    </p>
+                  </div>
+
+                  {/* Item 3 (faded) */}
+                  <div className="pt-3 opacity-55">
+                    <p className="text-[10.5px] font-semibold tracking-tight pl-6">
+                      ...p and Empowerment
+                    </p>
+                    <p
+                      className={cn(
+                        "mt-1 text-[8px] leading-relaxed pl-6",
+                        isDark ? "text-zinc-500" : "text-zinc-400",
+                      )}
+                    >
+                      nization culture by promoting open communication.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Top-Right Overlapping Radio Popover */}
+                <div
+                  className={cn(
+                    "absolute right-0 top-0 z-10 w-36 @sm:w-40 rounded-xl p-1.5 space-y-1",
+                    floatingSurface,
+                  )}
+                >
+                  {[0, 1, 2].map((idx) => {
+                    const selected = selectedMgmtOption === idx;
+                    return (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => setSelectedMgmtOption(idx)}
+                        className={cn(
+                          "relative z-10 flex w-full items-center justify-between gap-1.5 rounded-lg px-2 py-1 text-left transition-colors cursor-pointer",
+                          !selected && "hover:bg-black/[0.03] dark:hover:bg-white/[0.04]",
+                        )}
+                      >
+                        {selected && (
+                          <motion.span
+                            layoutId="veloce-mgmt-active-bg"
+                            transition={
+                              prefersReducedMotion
+                                ? { duration: 0 }
+                                : { type: "spring", stiffness: 360, damping: 32 }
+                            }
+                            className={cn(
+                              "absolute inset-0 -z-10 rounded-lg",
+                              isDark ? "bg-rose-500/15" : "bg-rose-50/90",
+                            )}
+                          />
+                        )}
+                        <div className="flex items-center gap-1.5 min-w-0">
+                          <span
+                            className={cn(
+                              "relative flex size-2.5 shrink-0 items-center justify-center rounded-full border transition-colors",
+                              selected
+                                ? "border-[#f45d5d]"
+                                : "border-zinc-300 dark:border-zinc-600",
+                            )}
+                          >
+                            {selected && (
+                              <motion.span
+                                layoutId="veloce-mgmt-active-dot"
+                                transition={
+                                  prefersReducedMotion
+                                    ? { duration: 0 }
+                                    : { type: "spring", stiffness: 400, damping: 30 }
+                                }
+                                className="absolute inset-0 flex items-center justify-center rounded-full bg-[#f45d5d]"
+                              >
+                                <span className="size-1 rounded-full bg-white" />
+                              </motion.span>
+                            )}
+                          </span>
+                          <div className="min-w-0">
+                            <p className="text-[7px] font-semibold truncate">
+                              Tailored Convenience
+                            </p>
+                            <p className="text-[5.5px] text-zinc-400 truncate">
+                              Customize your subscription
+                            </p>
+                          </div>
+                        </div>
+                        <ChevronRight className="size-2.5 shrink-0 text-zinc-400" />
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Bottom-Left Overlapping Create Form Popover */}
+                <div
+                  className={cn(
+                    "absolute left-0 bottom-2 z-10 w-40 @sm:w-44 rounded-xl p-2.5",
+                    floatingSurface,
+                  )}
+                >
+                  <div className="flex items-center gap-1.5">
+                    <span className="flex size-3.5 items-center justify-center rounded-sm bg-rose-500/10 text-[#f45d5d]">
+                      <LoopingAnimatedIcon
+                        icon={ChartNoAxesColumnIcon}
+                        size={9}
+                        duration={2.0}
+                        delay={0.35}
+                        color="#f45d5d"
+                        prefersReducedMotion={prefersReducedMotion}
+                      />
+                    </span>
+                    <span className="text-[8px] font-semibold tracking-tight">
+                      Create Planning & Goals!
+                    </span>
+                  </div>
+                  <p className="mt-1 text-[5.5px] text-zinc-400 leading-snug">
+                    Share your plans and objectives in a clear and concise manner.
+                  </p>
+                  <div
+                    className={cn(
+                      "mt-1.5 rounded-md border px-2 py-1 text-[6px] text-zinc-400",
+                      isDark
+                        ? "border-white/10 bg-white/[0.03]"
+                        : "border-zinc-200/80 bg-zinc-50/70",
+                    )}
+                  >
+                    Title here
+                  </div>
+                  <p className="mt-1.5 text-[6px] font-medium">Description</p>
+                  <div
+                    className={cn(
+                      "mt-0.5 h-6 rounded-md border px-2 py-1 text-[5.5px] text-zinc-400",
+                      isDark
+                        ? "border-white/10 bg-white/[0.03]"
+                        : "border-zinc-200/80 bg-zinc-50/70",
+                    )}
+                  >
+                    Write a description of your project...
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* 7. Achievements That Define Our Success Section */}
+      <section className="mx-auto max-w-[560px] @4xl:max-w-5xl pt-16 pb-14">
+        <motion.div
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={
+            prefersReducedMotion
+              ? { duration: 0 }
+              : { duration: 0.75, ease: [0.16, 1, 0.3, 1] }
+          }
+          className="text-center"
+        >
+          <h3 className="text-2xl @sm:text-[32px] font-semibold tracking-tight leading-[1.18]">
+            Achievements That Define Our Success!
+          </h3>
+          <p
+            className={cn(
+              "mx-auto mt-2.5 max-w-lg text-[11px] @sm:text-[12px] leading-relaxed",
+              isDark ? "text-zinc-400" : "text-zinc-500",
+            )}
+          >
+            Step into a world of accolades and achievements that underscore our
+            commitment to excellence at{" "}
+            <span className="font-medium text-[#f45d5d]">Codile.</span>
+          </p>
+        </motion.div>
+
+        <div className="mt-10 grid grid-cols-2 @sm:grid-cols-3 @4xl:grid-cols-6 gap-6 @sm:gap-6 items-start justify-items-center">
+          {[
+            {
+              year: "2019",
+              line1: "Excellence in",
+              line2: "Innovation Award",
+            },
+            {
+              year: "2020",
+              line1: "Pinnacle of Performance",
+              line2: "Recognition",
+            },
+            {
+              year: "2021",
+              line1: "Visionary Leadership",
+              line2: "Accolade",
+            },
+            {
+              year: "2022",
+              line1: "Outstanding Customer",
+              line2: "Experience Distinction",
+            },
+            {
+              year: "2023",
+              line1: "Masters of Team",
+              line2: "Collaboration Honor",
+            },
+            {
+              year: "2025",
+              line1: "Global Digital",
+              line2: "Excellence Award",
+            },
+          ].map((award, idx) => (
+            <motion.div
+              key={award.year}
+              initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0 }
+                  : {
+                      duration: 0.6,
+                      delay: 0.08 * idx,
+                      ease: [0.16, 1, 0.3, 1],
+                    }
+              }
+              className="group flex flex-col items-center text-center transition-transform duration-200 hover:-translate-y-0.5"
+            >
+              {/* Laurel Wreath + Year */}
+              <div className="relative flex h-24 w-32 items-center justify-center">
+                <svg
+                  viewBox="0 0 140 100"
+                  className={cn(
+                    "h-full w-full fill-current transition-colors",
+                    isDark
+                      ? "text-zinc-700 group-hover:text-zinc-500"
+                      : "text-zinc-300 group-hover:text-zinc-400",
+                  )}
+                  aria-hidden
+                >
+                  {/* Left Wreath Branch */}
+                  <path d="M40 13c-3 2-4 6-2 9 3-2 4-6 2-9zm-6 8c-4 1-6 5-4 9 4-1 6-5 4-9zm-5 9c-4 0-7 4-5 8 4 0 7-4 5-8zm-3 10c-4-1-8 2-7 7 4 1 8-2 7-7zm-1 11c-4-2-8 1-8 5 4 2 8-1 8-5zm2 10c-4-3-8-1-9 4 4 3 8 1 9-4zm5 10c-3-4-8-3-9 2 3 4 8 3 9-2zm7 8c-2-4-7-4-9 0 2 4 7 4 9 0zm10 6c-1-4-6-5-9-1 1 4 6 5 9 1zm11 3c0-4-5-6-8-3 0 4 5 6 8 3z" />
+                  <path d="M44 18c-3 1-5 4-4 7 3-1 5-4 4-7zm-5 8c-3 0-6 3-5 6 3 0 6-3 5-6zm-4 9c-3-1-6 2-5 5 3 1 6-2 5-5zm-2 9c-3-2-6 1-6 4 3 2 6-1 6-4zm1 9c-3-2-6 0-6 4 3 2 6 0 6-4zm4 9c-2-3-6-1-7 2 2 3 6 1 7-2zm6 7c-2-3-6-2-7 1 2 3 6 2 7-1zm8 5c-1-3-5-3-7 0 1 3 5 3 7 0z" />
+                  <path
+                    d="M42 16C25 34 26 68 58 84c4 2 9 4 14 5"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.2"
+                    strokeLinecap="round"
+                  />
+
+                  {/* Right Wreath Branch (mirrored) */}
+                  <g transform="translate(140, 0) scale(-1, 1)">
+                    <path d="M40 13c-3 2-4 6-2 9 3-2 4-6 2-9zm-6 8c-4 1-6 5-4 9 4-1 6-5 4-9zm-5 9c-4 0-7 4-5 8 4 0 7-4 5-8zm-3 10c-4-1-8 2-7 7 4 1 8-2 7-7zm-1 11c-4-2-8 1-8 5 4 2 8-1 8-5zm2 10c-4-3-8-1-9 4 4 3 8 1 9-4zm5 10c-3-4-8-3-9 2 3 4 8 3 9-2zm7 8c-2-4-7-4-9 0 2 4 7 4 9 0zm10 6c-1-4-6-5-9-1 1 4 6 5 9 1zm11 3c0-4-5-6-8-3 0 4 5 6 8 3z" />
+                    <path d="M44 18c-3 1-5 4-4 7 3-1 5-4 4-7zm-5 8c-3 0-6 3-5 6 3 0 6-3 5-6zm-4 9c-3-1-6 2-5 5 3 1 6-2 5-5zm-2 9c-3-2-6 1-6 4 3 2 6-1 6-4zm1 9c-3-2-6 0-6 4 3 2 6 0 6-4zm4 9c-2-3-6-1-7 2 2 3 6 1 7-2zm6 7c-2-3-6-2-7 1 2 3 6 2 7-1zm8 5c-1-3-5-3-7 0 1 3 5 3 7 0z" />
+                    <path
+                      d="M42 16C25 34 26 68 58 84c4 2 9 4 14 5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.2"
+                      strokeLinecap="round"
+                    />
+                  </g>
+                </svg>
+
+                <span
+                  className={cn(
+                    "absolute text-[15px] @sm:text-[16px] font-medium tracking-tight",
+                    isDark ? "text-zinc-500" : "text-zinc-400",
+                  )}
+                >
+                  {award.year}
+                </span>
+              </div>
+
+              {/* 2-line Award Title */}
+              <p
+                className={cn(
+                  "mt-2 text-[10px] @sm:text-[10.5px] font-medium leading-[1.38]",
+                  isDark ? "text-zinc-400" : "text-zinc-600",
+                )}
+              >
+                {award.line1}
+                <br />
+                {award.line2}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* 8. Frequently Ask Questions Section + Bottom CTA */}
+      <section className="mx-auto max-w-[560px] @4xl:max-w-5xl pt-16 pb-14">
+        <motion.div
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={
+            prefersReducedMotion
+              ? { duration: 0 }
+              : { duration: 0.75, ease: [0.16, 1, 0.3, 1] }
+          }
+          className="text-center"
+        >
+          <h3 className="text-2xl @sm:text-[34px] font-semibold tracking-tight leading-[1.16]">
+            Frequently
+            <br />
+            Ask Questions
+          </h3>
+        </motion.div>
+
+        {/* Accordion List */}
+        <div
+          className={cn(
+            "mx-auto mt-10 max-w-2xl divide-y border-b",
+            isDark
+              ? "divide-white/10 border-white/10"
+              : "divide-zinc-200/80 border-zinc-200/80",
+          )}
+        >
+          {[
+            {
+              question: "What Services Does Codile Offer?",
+              answer: (
+                <>
+                  Codile offers business planning, financial modeling, content
+                  creation, strategic marketing, and operational efficiency solutions
+                  tailored to help your business scale.
+                </>
+              ),
+            },
+            {
+              question: "How Can I Contact Customer Support?",
+              answer: (
+                <>
+                  Our customer support team is available{" "}
+                  <span
+                    className={cn(
+                      "font-medium",
+                      isDark ? "text-zinc-200" : "text-zinc-800",
+                    )}
+                  >
+                    9AM-5PM GMT+7
+                  </span>
+                  . You can reach us by{" "}
+                  <span
+                    className={cn(
+                      "font-medium",
+                      isDark ? "text-zinc-200" : "text-zinc-800",
+                    )}
+                  >
+                    codile@helpsupport.com
+                  </span>{" "}
+                  . For urgent matters, we recommend to call{" "}
+                  <span
+                    className={cn(
+                      "font-medium",
+                      isDark ? "text-zinc-200" : "text-zinc-800",
+                    )}
+                  >
+                    +6285292410704
+                  </span>
+                </>
+              ),
+            },
+            {
+              question: "What Sets Codile Apart From Competitors?",
+              answer: (
+                <>
+                  We combine data-driven strategy with hands-on creative execution,
+                  delivering measurable ROI and dedicated support at every stage of
+                  your growth.
+                </>
+              ),
+            },
+            {
+              question:
+                "Are There Any Ongoing Support Options After Service Implementation?",
+              answer: (
+                <>
+                  Yes, we offer ongoing support to ensure the continued success of our
+                  services. Our team is dedicated to providing post-implementation
+                  support, addressing any questions or concerns you may have.
+                </>
+              ),
+            },
+            {
+              question: "How Do I Get Started With Codile's Services?",
+              answer: (
+                <>
+                  Simply reach out through our contact form or schedule a consultation
+                  with our team to discuss your goals and receive a tailored roadmap.
+                </>
+              ),
+            },
+          ].map((faq, idx) => {
+            const isOpen = openFaqIndices.includes(idx);
+            return (
+              <div key={faq.question} className="py-4">
+                <button
+                  type="button"
+                  aria-expanded={isOpen}
+                  onClick={() =>
+                    setOpenFaqIndices((prev) =>
+                      prev.includes(idx)
+                        ? prev.filter((item) => item !== idx)
+                        : [...prev, idx],
+                    )
+                  }
+                  className="flex w-full items-center justify-between gap-4 text-left cursor-pointer group"
+                >
+                  <span className="text-[12.5px] @sm:text-[13.5px] font-medium tracking-tight">
+                    {faq.question}
+                  </span>
+                  <ChevronDown
+                    className={cn(
+                      "size-4 shrink-0 transition-transform duration-200",
+                      isDark ? "text-zinc-400" : "text-zinc-600",
+                      isOpen && "rotate-180",
+                    )}
+                  />
+                </button>
+
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      initial={
+                        prefersReducedMotion
+                          ? { opacity: 1, height: "auto" }
+                          : { opacity: 0, height: 0 }
+                      }
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={
+                        prefersReducedMotion
+                          ? { opacity: 0, height: 0 }
+                          : { opacity: 0, height: 0 }
+                      }
+                      transition={
+                        prefersReducedMotion
+                          ? { duration: 0 }
+                          : { duration: 0.25, ease: [0.16, 1, 0.3, 1] }
+                      }
+                      className="overflow-hidden"
+                    >
+                      <p
+                        className={cn(
+                          "mt-2 pr-6 text-[10.5px] @sm:text-[11.5px] leading-relaxed",
+                          isDark ? "text-zinc-400" : "text-zinc-500",
+                        )}
+                      >
+                        {faq.answer}
+                      </p>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Bottom CTA Card */}
+        <motion.div
+          initial={prefersReducedMotion ? false : { opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={
+            prefersReducedMotion
+              ? { duration: 0 }
+              : { duration: 0.7, ease: [0.16, 1, 0.3, 1] }
+          }
+          className={cn(
+            "mx-auto mt-8 max-w-2xl rounded-2xl px-6 py-5 @sm:px-7 @sm:py-6 flex flex-col @sm:flex-row @sm:items-center justify-between gap-4",
+            isDark
+              ? "bg-white/[0.04] border border-white/[0.08]"
+              : "bg-[#f6f6f8] border border-black/[0.03]",
+          )}
+        >
+          <div>
+            <p className="text-[10px] @sm:text-[10.5px] font-medium text-[#f45d5d]">
+              Do You Have Any Question
+            </p>
+            <h4 className="mt-0.5 text-lg @sm:text-[20px] font-semibold tracking-tight">
+              Let&apos;s Talk With Us!
+            </h4>
+          </div>
+
+          {/* Login: Right rounded-bg icon exits right while left rounded-bg icon enters left */}
+          <button
+            type="button"
+            className={cn(
+              "group relative overflow-hidden inline-flex items-center justify-center self-start @sm:self-auto rounded-full pl-5 pr-2.5 py-2 text-[11.5px] font-medium cursor-pointer transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] active:scale-95",
+              isDark
+                ? "bg-white text-zinc-950 hover:bg-zinc-100"
+                : "bg-zinc-950 text-white hover:bg-zinc-900",
+            )}
+          >
+            {/* Left entering rounded-bg icon */}
+            <span
+              aria-hidden
+              className="absolute left-2.5 flex size-5 items-center justify-center rounded-full bg-[#f45d5d] text-white -translate-x-10 opacity-0 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-0 group-hover:opacity-100"
+            >
+              <ArrowRight className="size-3" />
+            </span>
+
+            {/* Label shifts right cleanly to make room for left icon */}
+            <span className="relative z-10 pr-2.5 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-3.5">
+              Login
+            </span>
+
+            {/* Right exiting rounded-bg icon */}
+            <span
+              aria-hidden
+              className="flex size-5 items-center justify-center rounded-full bg-[#f45d5d] text-white translate-x-0 opacity-100 transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-12 group-hover:opacity-0"
+            >
+              <ArrowRight className="size-3" />
+            </span>
+          </button>
+        </motion.div>
+      </section>
+
+      {/* 9. Footer Section */}
+      <footer
+        className={cn(
+          "-mx-4 -mb-5 @sm:-mx-6 @lg:-mx-10 @lg:-mb-7 mt-8 px-4 @sm:px-6 @lg:px-10 pt-12 pb-8",
+          isDark
+            ? "bg-white/[0.02] border-t border-white/[0.06]"
+            : "bg-[#f7f7f9] border-t border-black/[0.03]",
+        )}
+      >
+        <div className="mx-auto max-w-[560px] @4xl:max-w-5xl">
+          <div className="grid grid-cols-1 @4xl:grid-cols-12 gap-10">
+            {/* Left Brand + Contact Info */}
+            <div className="@4xl:col-span-6">
+              <div className="flex items-center gap-2">
+                <span className="flex size-6 items-center justify-center rounded-md bg-[#f45d5d] text-white shrink-0">
+                  <svg viewBox="0 0 24 24" className="size-4 fill-current" aria-hidden>
+                    <path d="M4.5 5.5L12 19.5L19.5 5.5H15.8L12 12.8L8.2 5.5H4.5Z" />
+                  </svg>
+                </span>
+                <span className="text-[16px] font-semibold tracking-tight">
+                  Veloce
+                </span>
+              </div>
+
+              <p
+                className={cn(
+                  "mt-3.5 text-[10px] @sm:text-[10.5px]",
+                  isDark ? "text-zinc-500" : "text-zinc-400",
+                )}
+              >
+                Built for modern SaaS &amp; AI teams
+              </p>
+
+              <a
+                href=""
+                onClick={(e) => e.preventDefault()}
+                className="mt-2 inline-block text-lg @sm:text-[21px] font-medium tracking-tight hover:opacity-80 transition-opacity"
+              >
+                support@veloce.com
+              </a>
+            </div>
+
+            {/* Right 3 Link Columns */}
+            <div className="@4xl:col-span-6 grid grid-cols-3 gap-6 @sm:gap-8">
+              <div>
+                <h5 className="text-[11px] @sm:text-[11.5px] font-semibold mb-3">
+                  Pages
+                </h5>
+                <ul className="space-y-2">
+                  {["Home", "About", "Blog", "Contact"].map((item) => (
+                    <li key={item}>
+                      <button
+                        type="button"
+                        className={cn(
+                          "group inline-flex items-center gap-1.5 text-[10.5px] @sm:text-[11px] transition-colors cursor-pointer",
+                          isDark
+                            ? "text-zinc-500 hover:text-zinc-300"
+                            : "text-zinc-400 hover:text-zinc-700",
+                        )}
+                      >
+                        <ArrowRight className="size-3 shrink-0 opacity-65 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-[#f45d5d]" />
+                        <span>{item}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <h5 className="text-[11px] @sm:text-[11.5px] font-semibold mb-3">
+                  Socials
+                </h5>
+                <ul className="space-y-2">
+                  {[
+                    {
+                      name: "Instagram",
+                      icon: (
+                        <svg
+                          viewBox="0 0 24 24"
+                          className="size-3.5 shrink-0 stroke-current fill-none opacity-75 transition-colors group-hover:text-[#f45d5d]"
+                          strokeWidth="1.9"
+                          aria-hidden
+                        >
+                          <rect x="3" y="3" width="18" height="18" rx="5" />
+                          <circle cx="12" cy="12" r="4" />
+                          <circle cx="17.5" cy="6.5" r="1" className="fill-current stroke-none" />
+                        </svg>
+                      ),
+                    },
+                    {
+                      name: "Facebook",
+                      icon: (
+                        <svg
+                          viewBox="0 0 24 24"
+                          className="size-3.5 shrink-0 fill-current opacity-75 transition-colors group-hover:text-[#f45d5d]"
+                          aria-hidden
+                        >
+                          <path d="M13.5 21v-7.5h2.5l.4-3h-2.9V8.6c0-.9.3-1.5 1.5-1.5h1.6V4.4c-.3 0-1.2-.1-2.3-.1-2.3 0-3.8 1.4-3.8 4v2.2H8v3h2.5V21h3z" />
+                        </svg>
+                      ),
+                    },
+                    {
+                      name: "Twitter",
+                      icon: (
+                        <svg
+                          viewBox="0 0 24 24"
+                          className="size-3.5 shrink-0 fill-current opacity-75 transition-colors group-hover:text-[#f45d5d]"
+                          aria-hidden
+                        >
+                          <path d="M22 5.9a8.2 8.2 0 0 1-2.36.65 4.12 4.12 0 0 0 1.8-2.27 8.2 8.2 0 0 1-2.6 1 4.1 4.1 0 0 0-7 3.74A11.64 11.64 0 0 1 3.4 4.7a4.1 4.1 0 0 0 1.27 5.47 4.07 4.07 0 0 1-1.86-.51v.05a4.1 4.1 0 0 0 3.29 4.02 4.1 4.1 0 0 1-1.85.07 4.1 4.1 0 0 0 3.83 2.85A8.23 8.23 0 0 1 2 18.4a11.62 11.62 0 0 0 6.29 1.84c7.55 0 11.68-6.25 11.68-11.67 0-.18 0-.35-.01-.53A8.34 8.34 0 0 0 22 5.9Z" />
+                        </svg>
+                      ),
+                    },
+                  ].map((item) => (
+                    <li key={item.name}>
+                      <button
+                        type="button"
+                        className={cn(
+                          "group inline-flex items-center gap-1.5 text-[10.5px] @sm:text-[11px] transition-colors cursor-pointer",
+                          isDark
+                            ? "text-zinc-500 hover:text-zinc-300"
+                            : "text-zinc-400 hover:text-zinc-700",
+                        )}
+                      >
+                        {item.icon}
+                        <span>{item.name}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div>
+                <h5 className="text-[11px] @sm:text-[11.5px] font-semibold mb-3">
+                  Service
+                </h5>
+                <ul className="space-y-2">
+                  {[
+                    "Privacy & Policy",
+                    "Terms and Conditions",
+                    "FAQ's",
+                    "Help Center",
+                  ].map((item) => (
+                    <li key={item}>
+                      <button
+                        type="button"
+                        className={cn(
+                          "group inline-flex items-center gap-1.5 text-[10.5px] @sm:text-[11px] transition-colors cursor-pointer text-left",
+                          isDark
+                            ? "text-zinc-500 hover:text-zinc-300"
+                            : "text-zinc-400 hover:text-zinc-700",
+                        )}
+                      >
+                        <ArrowRight className="size-3 shrink-0 opacity-65 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-[#f45d5d]" />
+                        <span>{item}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Divider & Copyright Bar */}
+          <div
+            className={cn(
+              "mt-10 pt-5 border-t flex flex-col @sm:flex-row items-start @sm:items-center justify-between gap-3 text-[10px]",
+              isDark
+                ? "border-white/10 text-zinc-500"
+                : "border-zinc-200/80 text-zinc-400",
+            )}
+          >
+            <p>© 2026 Veloce. All rights reserved.</p>
+
+            <div className="flex items-center gap-5">
+              <button
+                type="button"
+                className={cn(
+                  "transition-colors cursor-pointer",
+                  isDark ? "hover:text-zinc-300" : "hover:text-zinc-700",
+                )}
+              >
+                Privacy policy
+              </button>
+              <button
+                type="button"
+                className={cn(
+                  "transition-colors cursor-pointer",
+                  isDark ? "hover:text-zinc-300" : "hover:text-zinc-700",
+                )}
+              >
+                Terms of service
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  const scroller = e.currentTarget.closest(".overflow-y-auto");
+                  if (scroller) {
+                    scroller.scrollTo({ top: 0, behavior: "smooth" });
+                  } else {
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  }
+                }}
+                className={cn(
+                  "transition-colors cursor-pointer",
+                  isDark ? "hover:text-zinc-300" : "hover:text-zinc-700",
+                )}
+              >
+                Go to top
+              </button>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
@@ -1313,7 +3619,7 @@ export function VeloceTemplateView() {
       }}
       pagesOverview={{
         subtitle:
-          "One landing page with four core sections designed for both light and dark themes.",
+          "One landing page with nine core sections designed for both light and dark themes.",
         items: [
           {
             id: "home",
@@ -1346,6 +3652,46 @@ export function VeloceTemplateView() {
             title: "Content Marketing",
             description:
               "Portrait showcase with animated donut, sales chart, ad platforms, and interactive checklist.",
+          },
+          {
+            id: "home",
+            number: "05",
+            path: "/#business-planning",
+            title: "Business Planning",
+            description:
+              "2x2 strategy cards paired with portrait, verified badge, and interactive B2B income area chart.",
+          },
+          {
+            id: "home",
+            number: "06",
+            path: "/#solutions",
+            title: "Crafting Solutions",
+            description:
+              "Asymmetric 4-card bento showcase for Subscription, Advertising, Tracking & Record, and Efficient Management.",
+          },
+          {
+            id: "home",
+            number: "07",
+            path: "/#achievements",
+            title: "Achievements",
+            description:
+              "Six annual laurel wreath accolades from 2019 to 2025 in a responsive grid.",
+          },
+          {
+            id: "home",
+            number: "08",
+            path: "/#faq",
+            title: "FAQ & Contact CTA",
+            description:
+              "Interactive multi-open FAQ accordion paired with a bottom Let's Talk With Us! banner.",
+          },
+          {
+            id: "home",
+            number: "09",
+            path: "/#footer",
+            title: "Footer",
+            description:
+              "Veloce brand footer with contact email, 3-column link directory, and Go to top action.",
           },
         ],
       }}

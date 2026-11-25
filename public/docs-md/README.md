@@ -2,8 +2,8 @@
 
 This directory contains auto-generated Markdown versions of all MDX documentation pages.
 
-**Generated at:** 2026-11-23T14:20:14.089Z
-**Total files:** 347
+**Generated at:** 2026-11-25T07:49:46.828Z
+**Total files:** 351
 
 ## Available Files
 
@@ -113,6 +113,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/mobile-mockup](/docs-md/nextjs-mobile-mockup.md) - Source: `[framework]\mobile-mockup\page.mdx`
 - [nextjs/modal](/docs-md/nextjs-modal.md) - Source: `[framework]\modal\page.mdx`
 - [nextjs/modern-scroll-stack](/docs-md/nextjs-modern-scroll-stack.md) - Source: `[framework]\modern-scroll-stack\page.mdx`
+- [nextjs/motion-components](/docs-md/nextjs-motion-components.md) - Source: `[framework]\motion-components\page.mdx`
 - [nextjs/navbar](/docs-md/nextjs-navbar.md) - Source: `[framework]\navbar\page.mdx`
 - [nextjs/navigation](/docs-md/nextjs-navigation.md) - Source: `[framework]\navigation\page.mdx`
 - [nextjs/network-graph](/docs-md/nextjs-network-graph.md) - Source: `[framework]\network-graph\page.mdx`
@@ -156,6 +157,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [nextjs/table](/docs-md/nextjs-table.md) - Source: `[framework]\table\page.mdx`
 - [nextjs/table-of-contents](/docs-md/nextjs-table-of-contents.md) - Source: `[framework]\table-of-contents\page.mdx`
 - [nextjs/tech-stack](/docs-md/nextjs-tech-stack.md) - Source: `[framework]\tech-stack\page.mdx`
+- [nextjs/templates/veloce](/docs-md/nextjs-templates-veloce.md) - Source: `[framework]\templates\veloce\page.mdx`
 - [nextjs/terminal](/docs-md/nextjs-terminal.md) - Source: `[framework]\terminal\page.mdx`
 - [nextjs/text-animation](/docs-md/nextjs-text-animation.md) - Source: `[framework]\text-animation\page.mdx`
 - [nextjs/theme-switcher](/docs-md/nextjs-theme-switcher.md) - Source: `[framework]\theme-switcher\page.mdx`
@@ -286,6 +288,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/mobile-mockup](/docs-md/reactjs-mobile-mockup.md) - Source: `[framework]\mobile-mockup\page.mdx`
 - [reactjs/modal](/docs-md/reactjs-modal.md) - Source: `[framework]\modal\page.mdx`
 - [reactjs/modern-scroll-stack](/docs-md/reactjs-modern-scroll-stack.md) - Source: `[framework]\modern-scroll-stack\page.mdx`
+- [reactjs/motion-components](/docs-md/reactjs-motion-components.md) - Source: `[framework]\motion-components\page.mdx`
 - [reactjs/navbar](/docs-md/reactjs-navbar.md) - Source: `[framework]\navbar\page.mdx`
 - [reactjs/navigation](/docs-md/reactjs-navigation.md) - Source: `[framework]\navigation\page.mdx`
 - [reactjs/network-graph](/docs-md/reactjs-network-graph.md) - Source: `[framework]\network-graph\page.mdx`
@@ -329,6 +332,7 @@ This directory contains auto-generated Markdown versions of all MDX documentatio
 - [reactjs/table](/docs-md/reactjs-table.md) - Source: `[framework]\table\page.mdx`
 - [reactjs/table-of-contents](/docs-md/reactjs-table-of-contents.md) - Source: `[framework]\table-of-contents\page.mdx`
 - [reactjs/tech-stack](/docs-md/reactjs-tech-stack.md) - Source: `[framework]\tech-stack\page.mdx`
+- [reactjs/templates/veloce](/docs-md/reactjs-templates-veloce.md) - Source: `[framework]\templates\veloce\page.mdx`
 - [reactjs/terminal](/docs-md/reactjs-terminal.md) - Source: `[framework]\terminal\page.mdx`
 - [reactjs/text-animation](/docs-md/reactjs-text-animation.md) - Source: `[framework]\text-animation\page.mdx`
 - [reactjs/theme-switcher](/docs-md/reactjs-theme-switcher.md) - Source: `[framework]\theme-switcher\page.mdx`
