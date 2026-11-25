@@ -1,78 +1,66 @@
 # ============================================
-# Stage 1: Dependencies Installation Stage
+# Avara UI: static export served by nginx
 # ============================================
+# next.config.ts uses output: "export", so `next build` writes out/ and never
+# produces .next/standalone or server.js. "Standalone mode" (the usual advice for
+# shrinking Next.js images) therefore does not apply: the final image ships only
+# the static files plus nginx, with no Node, no node_modules and no server.js.
+# If next.config.ts ever switches to output: "standalone", this file needs a
+# Node runner stage again (copy .next/standalone, .next/static and public).
 
 # IMPORTANT: Node.js Version Maintenance
-# This Dockerfile uses Node.js 22.23.4 (bookworm-slim), the patched 22.x from the Oct 2026
+# This Dockerfile uses Node.js 22.23.4 (alpine), the patched 22.x from the Oct 2026
 # security release (fixes CVE-2026-111497, a Brotli RCE, and other high-severity CVEs).
 # Keep it in step with node-version in .github/workflows/registry.yml.
 # To ensure security and compatibility, regularly update the NODE_VERSION ARG to the latest patched release.
-ARG NODE_VERSION=22.23.4-bookworm-slim
+# Node only runs in the build stages below; none of it is in the image that is served.
+ARG NODE_VERSION=22.23.4-alpine
 
+# ============================================
+# Stage 1: Install dependencies
+# ============================================
 FROM node:${NODE_VERSION} AS dependencies
 
-# Set working directory
+# Alpine uses musl, not glibc. libc6-compat lets any prebuilt glibc-only native
+# binary in node_modules still load (the usual Next.js-on-Alpine setup).
+RUN apk add --no-cache libc6-compat
+
 WORKDIR /app
 
-# Copy package-related files first to leverage Docker's caching mechanism
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* pnpm-workspace.yaml* .npmrc* ./
+# Only the manifests, so this layer (and the install below) is reused until
+# package.json or package-lock.json changes, not on every source edit.
+COPY package.json package-lock.json .npmrc* ./
 
-# Install project dependencies with frozen lockfile for reproducible builds
+# `npm ci` fails if the lockfile and package.json disagree, so builds are
+# reproducible. devDependencies are kept on purpose: the build needs them.
 RUN --mount=type=cache,target=/root/.npm \
-    --mount=type=cache,target=/usr/local/share/.cache/yarn \
-    --mount=type=cache,target=/root/.local/share/pnpm/store \
-  if [ -f package-lock.json ]; then \
-    npm ci --no-audit --no-fund; \
-  elif [ -f yarn.lock ]; then \
-    corepack enable yarn && yarn install --frozen-lockfile --production=false; \
-  elif [ -f pnpm-lock.yaml ]; then \
-    corepack enable pnpm && pnpm install --frozen-lockfile; \
-  else \
-    echo "No lockfile found." && exit 1; \
-  fi
+    npm ci --no-audit --no-fund
 
 # ============================================
-# Stage 2: Build Next.js application in standalone mode
+# Stage 2: Build the static export (out/)
 # ============================================
-
 FROM node:${NODE_VERSION} AS builder
 
-# Set working directory
+RUN apk add --no-cache libc6-compat
+
 WORKDIR /app
 
-# Copy project dependencies from dependencies stage
 COPY --from=dependencies /app/node_modules ./node_modules
-
-# Copy application source code
 COPY . .
 
 ENV NODE_ENV=production
-
-# Next.js collects completely anonymous telemetry data about general usage.
-# Learn more here: https://nextjs.org/telemetry
-# Uncomment the following line in case you want to disable telemetry during the build.
-# ENV NEXT_TELEMETRY_DISABLED=1
-
-# --------------------------------------------
-# Added for Avara UI (build-time settings)
-# --------------------------------------------
 ENV NEXT_TELEMETRY_DISABLED=1
 
-# Heap limit per Node process (MB), so `next build` stays inside a small VPS's RAM.
-# Measured peak is about 2.5 GB of real RAM with the webpack build worker enabled
-# in next.config.ts. "JavaScript heap out of memory" -> raise it; container
-# "Killed" or exit 137 -> lower it. Override: --build-arg NODE_MAX_OLD_SPACE=2048
-# 1536 was not enough: the build ran out of heap about 4 minutes into
-# `next build` (Easypanel, Nov 2026). 3072 needs a host with roughly 4 GB of
-# RAM or swap free while building.
-ARG NODE_MAX_OLD_SPACE=3072
-ENV NODE_OPTIONS=--max-old-space-size=${NODE_MAX_OLD_SPACE}
+# No NODE_OPTIONS / --max-old-space-size here: Node picks its own heap limit from
+# the host's (or container's) memory. If `next build` dies with "JavaScript heap
+# out of memory", set ENV NODE_OPTIONS=--max-old-space-size=<MB> in this stage.
 
 # NEXT_PUBLIC_* values are inlined into the bundle at build time, so they must
 # reach this stage as build args (Easypanel passes the service's environment
 # variables as --build-arg). Unset or empty means "absent".
+# They are declared here, in the builder, not in the final stage, so none of
+# them (the Google Fonts key included) appears in the shipped image's history.
 ARG NEXT_PUBLIC_SITE_URL
-ARG NEXT_PUBLIC_SITE_NAME
 ARG NEXT_PUBLIC_SITE_AUTHOR
 ARG NEXT_PUBLIC_GITHUB_URL
 ARG NEXT_PUBLIC_GITHUB_ORG_URL
@@ -92,7 +80,6 @@ ARG NEXT_PUBLIC_V0_ENDPOINT_ORIGIN
 ARG NEXT_PUBLIC_ALLOW_INDEXING
 ARG REGISTRY_BASE_URL
 ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL \
-    NEXT_PUBLIC_SITE_NAME=$NEXT_PUBLIC_SITE_NAME \
     NEXT_PUBLIC_SITE_AUTHOR=$NEXT_PUBLIC_SITE_AUTHOR \
     NEXT_PUBLIC_GITHUB_URL=$NEXT_PUBLIC_GITHUB_URL \
     NEXT_PUBLIC_GITHUB_ORG_URL=$NEXT_PUBLIC_GITHUB_ORG_URL \
@@ -112,78 +99,27 @@ ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL \
     NEXT_PUBLIC_ALLOW_INDEXING=$NEXT_PUBLIC_ALLOW_INDEXING \
     REGISTRY_BASE_URL=$REGISTRY_BASE_URL
 
-# Build Next.js application
-# If you want to speed up Docker rebuilds, you can cache the build artifacts
-# by adding: --mount=type=cache,target=/app/.next/cache
-# This caches the .next/cache directory across builds, but it also prevents
-# .next/cache/fetch-cache from being included in the final image, meaning
-# cached fetch responses from the build won't be available at runtime.
-RUN if [ -f package-lock.json ]; then \
-    npm run build; \
-  elif [ -f yarn.lock ]; then \
-    corepack enable yarn && yarn build; \
-  elif [ -f pnpm-lock.yaml ]; then \
-    corepack enable pnpm && pnpm build; \
-  else \
-    echo "No lockfile found." && exit 1; \
-  fi
+# .next/cache holds webpack's and Next's build cache. Keeping it in a BuildKit
+# cache mount makes rebuilds much faster, and it never lands in a layer. That is
+# safe here because the static export does not need .next/cache at runtime
+# (the nginx image only gets out/).
+RUN --mount=type=cache,target=/app/.next/cache \
+    npm run build
 
 # ============================================
-# Stage 3: Run Next.js application
+# Stage 3: Serve the static export with nginx (default build target)
 # ============================================
+# nginx-unprivileged runs as a non-root user (uid 101) and keeps its pid and temp
+# files under /tmp, so the container needs no root. Its default port is 8080;
+# docker/nginx.conf replaces the default server and listens on 3000 (any port
+# above 1024 works without root). This is the LAST stage, so it is what
+# `docker build` produces and what Easypanel (`docker buildx build`) deploys.
+FROM nginxinc/nginx-unprivileged:stable-alpine AS static
 
-FROM node:${NODE_VERSION} AS runner
-
-# Set working directory
-WORKDIR /app
-
-# Set production environment variables
-ENV NODE_ENV=production
-ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
-
-# Next.js collects completely anonymous telemetry data about general usage.
-# Learn more here: https://nextjs.org/telemetry
-# Uncomment the following line in case you want to disable telemetry during the run time.
-# ENV NEXT_TELEMETRY_DISABLED=1
-
-# Copy production assets
-COPY --from=builder --chown=node:node /app/public ./public
-
-# Set the correct permission for prerender cache
-RUN mkdir .next
-RUN chown node:node .next
-
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --chown=node:node /app/.next/standalone ./
-COPY --from=builder --chown=node:node /app/.next/static ./.next/static
-
-# If you want to persist the fetch cache generated during the build so that
-# cached responses are available immediately on startup, uncomment this line:
-# COPY --from=builder --chown=node:node /app/.next/cache ./.next/cache
-
-# Switch to non-root user for security best practices
-USER node
-
-# Expose port 3000 to allow HTTP traffic
-EXPOSE 3000
-
-# Start Next.js standalone server
-CMD ["node", "server.js"]
-
-# ============================================
-# Stage 4: Serve the static export with nginx (added for Avara UI)
-# ============================================
-# next.config.ts uses output: "export", so `next build` writes out/ and never
-# produces .next/standalone or server.js. Stage 3 above would fail on that COPY.
-# This stage is the LAST one, so it is the default build target, and BuildKit
-# (Easypanel uses `docker buildx build`) skips Stage 3 entirely. Do not build
-# with `--target runner` unless next.config.ts switches to output: "standalone".
-# nginx needs no Node at runtime, so the Node CVEs do not apply to what is served.
-FROM nginx:stable-alpine AS static
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/out /usr/share/nginx/html
+
 EXPOSE 3000
+
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD wget -q --spider http://127.0.0.1:3000/ || exit 1
