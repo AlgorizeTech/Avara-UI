@@ -3,7 +3,7 @@
   "name": "falling-tags-neon",
   "type": "registry:block",
   "title": "Falling Tags — Neon",
-  "description": "High-energy glowing cyberpunk badges with vibrant borders and neon glow shadows.",
+  "description": "The \"Neon\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

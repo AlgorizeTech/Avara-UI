@@ -3,7 +3,7 @@
   "name": "sonner-sonner",
   "type": "registry:block",
   "title": "Sonner",
-  "description": "Mount `<Toaster />` once, then call `toast()` from anywhere — no provider needed.",
+  "description": "The \"Sonner\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

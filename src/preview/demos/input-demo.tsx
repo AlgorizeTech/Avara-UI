@@ -80,7 +80,7 @@ export default function InputDemo({
 }) {
   if (variant === "password-strength") {
     return (
-      <div className="w-full flex flex-col items-center justify-center min-h-[400px] p-4 relative z-10">
+      <div className="w-full flex flex-col items-center justify-center p-4 relative z-10">
         <div className="w-full max-w-sm">
           <InputBlock
             variant="password-strength"
@@ -101,7 +101,7 @@ export default function InputDemo({
     const iconClass =
       inputSize === "sm" ? "w-3.5 h-3.5" : inputSize === "lg" ? "w-5 h-5" : "w-4 h-4";
     return (
-      <div className="w-full flex flex-col items-center justify-center min-h-[400px] p-4 relative z-10">
+      <div className="w-full flex flex-col items-center justify-center p-4 relative z-10">
         <div className="w-full max-w-sm flex flex-col gap-4">
           <InputBlock
             variant="pill"
@@ -152,7 +152,7 @@ export default function InputDemo({
   if (showAll) {
     const sizes: InputSize[] = ["sm", "md", "lg"];
     return (
-      <div className="w-full flex flex-col items-center justify-center min-h-[400px] relative z-10">
+      <div className="w-full flex flex-col items-center justify-center relative z-10">
         <div className="w-full max-w-sm flex flex-col gap-6">
           {showAll === "sizes"
             ? sizes.map((size) => (

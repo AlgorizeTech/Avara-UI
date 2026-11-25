@@ -6,45 +6,30 @@ url: https://avaraui.com/docs/nextjs/split-flap
 
 # Shadcn Split-Flap Display
 
-An authentic, physics-driven **Split-Flap Display** component (Solari board) simulating retro-mechanical flap cards, 3D perspective flips (`rotateX`), horizontal split creases, mechanical hinge notches, and realistic synthesized click sounds.
+A Solari-style split-flap display with 3D flips, split creases and synthesized click sounds.
 
 Ships with **2 distinct handcrafted variants**: vintage ivory electro-mechanical casing (matching retro Solari displays) and minimalist architectural frosted glass.
 
----
+## Installation
 
-## For AI agents
+Add the component by URL — no setup needed:
 
-**Ask before you pick.** This page has 2 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+```bash
+npx shadcn@latest add https://avaraui.com/r/split-flap.json
+```
 
-All 2 options as live previews: https://avaraui.com/view/split-flap
+Or register the @avara-ui registry once per project and add it by name:
 
-**When to use it.** A split-flap (Solari board) display with 3D flipping cards, a horizontal crease, hinge notches and synthesised click sounds, in two handcrafted casings: vintage ivory and minimalist architectural glass.
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/split-flap
+```
 
-**Gotchas:**
+Or the Motion build (same props, same file — install one):
 
-- Both are looks of the one `split-flap` item: install it once and set `variant` from the index.
-- The click sounds are synthesised with the Web Audio API, so no audio files are needed.
-
-### The 2 variants
-
-1. **Ivory, classic mechanical** (`ivory`): An embossed molded bezel with warm off-white flap cards and rust-orange type, like a retro Solari board.
-   - Live: https://avaraui.com/view/split-flap/ivory
-   - Best for: a retro, mechanical, travel or departures-board feel
-   - Avoid if: your brand is clean and modern
-   - Traits: molded bezel, warm off-white flaps, rust-orange type, click sounds
-   - Install: `npx shadcn@latest add @avara-ui/split-flap`
-   - Set these props: `{"variant":"ivory"}`
-   - Docs: https://avaraui.com/docs/nextjs/split-flap#split-flap-ivory
-2. **Minimalist architectural** (`minimalist`): A frosted-glass architectural frame with clean backdrop blur.
-   - Live: https://avaraui.com/view/split-flap/minimalist
-   - Best for: a modern, design-led brand that wants the flip effect without the vintage styling
-   - Avoid if: you want the nostalgic retro-mechanical look
-   - Traits: frosted glass frame, backdrop blur
-   - Install: `npx shadcn@latest add @avara-ui/split-flap`
-   - Set these props: `{"variant":"minimalist"}`
-   - Docs: https://avaraui.com/docs/nextjs/split-flap#split-flap-minimalist
-
-## Variants
+```bash
+npx shadcn@latest add https://avaraui.com/r/split-flap-motion.json
+```
 
 ### Split-Flap — Ivory (Classic Mechanical)
 
@@ -104,30 +89,61 @@ export default function MinimalistSplitFlapDemo() {
 }
 ```
 
----
+## About Shadcn Split-Flap Display
 
-## Installation
+**What it is.** **Shadcn Split-Flap Display** (`SplitFlap`) is a retro-mechanical Solari board display component with 3D `rotateX` flap flips, split creases, hinge notches, and optional synthesized Web Audio click sound effects.
 
-Add the component by URL — no setup needed:
+**How it is built.** `SplitFlap` cycles through `text` or `messages` at a configurable `interval`, animates each character tile independently with 3D perspective folds, and offers `"ivory"` and `"minimalist"` chassis variants.
 
-```bash
-npx shadcn@latest add https://avaraui.com/r/split-flap.json
-```
+**When to use it.** Use it for hero arrival boards, live status tickers, event schedules, and tactile retro-modern landing page displays.
 
-Or register the @avara-ui registry once per project and add it by name:
+## For AI agents
 
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/split-flap
-```
+**When to use**
 
-Or the Motion build (same props, same file — install one):
+- Hero arrival boards, live status tickers
+- Event schedules, tactile retro-modern landing page displays
 
-```bash
-npx shadcn@latest add https://avaraui.com/r/split-flap-motion.json
-```
+**When not to use**
 
----
+- A smooth numeric counter or stepper: use [Counter](https://avaraui.com/docs/nextjs/counter)
+- Typewriter-style headline text: use [Text Animation](https://avaraui.com/docs/nextjs/text-animation)
+
+**Agent notes**
+
+- `SplitFlap` accepts `variant` (`"ivory" | "minimalist"`), `text`, `messages` (`string[]`), `autoPlay`, `interval`, `sound`, and `size`.
+- Enable `sound={true}` to synthesize mechanical flap clicks using the Web Audio API with zero external audio assets.
+- Keep `messages` concise so character tiles fit cleanly across mobile and desktop viewports.
+
+**Ask before you pick.** This page has 2 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 2 options as live previews: https://avaraui.com/view/split-flap
+
+**When to use it.** A split-flap (Solari board) display with 3D flipping cards, a horizontal crease, hinge notches and synthesised click sounds, in two handcrafted casings: vintage ivory and minimalist architectural glass.
+
+**Gotchas:**
+
+- Both are looks of the one `split-flap` item: install it once and set `variant` from the index.
+- The click sounds are synthesised with the Web Audio API, so no audio files are needed.
+
+### The 2 variants
+
+1. **Ivory, classic mechanical** (`ivory`): An embossed molded bezel with warm off-white flap cards and rust-orange type, like a retro Solari board.
+   - Live: https://avaraui.com/view/split-flap/ivory
+   - Best for: a retro, mechanical, travel or departures-board feel
+   - Avoid if: your brand is clean and modern
+   - Traits: molded bezel, warm off-white flaps, rust-orange type, click sounds
+   - Install: `npx shadcn@latest add @avara-ui/split-flap`
+   - Set these props: `{"variant":"ivory"}`
+   - Docs: https://avaraui.com/docs/nextjs/split-flap#split-flap-ivory
+2. **Minimalist architectural** (`minimalist`): A frosted-glass architectural frame with clean backdrop blur.
+   - Live: https://avaraui.com/view/split-flap/minimalist
+   - Best for: a modern, design-led brand that wants the flip effect without the vintage styling
+   - Avoid if: you want the nostalgic retro-mechanical look
+   - Traits: frosted glass frame, backdrop blur
+   - Install: `npx shadcn@latest add @avara-ui/split-flap`
+   - Set these props: `{"variant":"minimalist"}`
+   - Docs: https://avaraui.com/docs/nextjs/split-flap#split-flap-minimalist
 
 ## Props Reference
 
@@ -145,6 +161,30 @@ npx shadcn@latest add https://avaraui.com/r/split-flap-motion.json
 | `sound` | `boolean` | `false` | Whether to play realistic mechanical split-flap click sounds via Web Audio API. Can also be toggled interactively in the toolbar. |
 | `color` | `string` | `theme default` | Text accent color applied to characters and numbers. Supports preset theme names (`"lavender"`, `"indigo"`, `"rose"`, `"emerald"`), custom hex codes, or `"default"` to reset to variant default. |
 | `speed` | `number` | `1` | Speed multiplier for the flip cascade animation (1 = normal, 1.5 = fast). |
+
+## Works with other components
+
+Pair `SplitFlap` with [Counter](https://avaraui.com/docs/nextjs/counter) for numeric countdowns, [Text Animation](https://avaraui.com/docs/nextjs/text-animation) for kinetic headlines, and [Glass Panel](https://avaraui.com/docs/nextjs/glass-panel) for frosted dashboard headers.
+
+## How do I build a Solari-style split-flap display in React?
+
+Render `SplitFlap` and pass `text` or a `messages` array. It animates each character with a 3D `rotateX` flip and cascades the flips across the board. Pick `variant="ivory"` for the retro mechanical casing or `variant="minimalist"` for frosted glass.
+
+## How do I cycle through multiple phrases?
+
+Pass an array of strings to `messages`, keep `autoPlay` on, and set the delay with `interval` in milliseconds. It defaults to `3000`. You can also give `text` pipe-separated strings such as `"HELLO | WORLD"` to cycle through them automatically.
+
+## Does the Split-Flap sound effect require audio files?
+
+No. With `sound={true}` it synthesizes mechanical flap clicks through the browser Web Audio API, so there is nothing to host or download. `sound` is `false` by default, and sound can also be toggled from the toolbar in the live demo.
+
+## How do I control the number of character slots and the flip speed?
+
+`columns` sets the number of flap slots. If you omit it, the board fits the longest message. `speed` multiplies the flip cascade, where `1` is normal and `1.5` is fast. `size` offers `"sm"`, `"md"` and `"lg"` flap cards.
+
+## Does SplitFlap need an animation library?
+
+It uses `gsap`, which is listed as the item's npm dependency, so the shadcn CLI installs it with the component. The sound uses the Web Audio API with no library. There are no `next/*` imports, so it also runs in Vite projects.
 
 ---
 

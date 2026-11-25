@@ -3,7 +3,7 @@
   "name": "animated-typography-word-flip",
   "type": "registry:block",
   "title": "Animated Typography — Word Flip",
-  "description": "The word slides up and out, then the next slides up in from below, as in the homepage hero.",
+  "description": "The \"Word Flip\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { motion, useInView, useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
 
 export interface BridgeBrand {
@@ -161,7 +160,48 @@ const HY = 160;
 const HUB = 88;
 const TILE = 52;
 const INK = "#242423";
-const GLIDE = [0.22, 1, 0.36, 1] as const;
+const GLIDE = "cubic-bezier(0.22, 1, 0.36, 1)";
+const POP = "cubic-bezier(0.34, 1.56, 0.64, 1)";
+
+/** True while the visitor asks the OS for reduced motion. */
+function useStill() {
+  const [still, setStill] = React.useState(false);
+  React.useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setStill(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+  return still;
+}
+
+/** True while at least `amount` of the element is on screen (with `once`, it stays true after the first time). */
+function useSeen(
+  ref: React.RefObject<Element | null>,
+  { once = false, amount = 0 }: { once?: boolean; amount?: number } = {},
+) {
+  const [seen, setSeen] = React.useState(false);
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry) return;
+        if (entry.isIntersecting) {
+          setSeen(true);
+          if (once) io.disconnect();
+        } else if (!once) {
+          setSeen(false);
+        }
+      },
+      { threshold: amount },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [ref, once, amount]);
+  return seen;
+}
 
 /** Tile centres: two straight columns, evenly spaced round the hub's height. */
 function spots(n: number) {
@@ -265,7 +305,7 @@ export const BrandBridge = React.forwardRef<HTMLDivElement, BrandBridgeProps>(
     },
     ref,
   ) {
-    const still = !!useReducedMotion();
+    const still = useStill();
     const uid = React.useId().replace(/:/g, "");
     const root = React.useRef<HTMLDivElement>(null);
     React.useImperativeHandle(ref, () => root.current!);
@@ -274,8 +314,8 @@ export const BrandBridge = React.forwardRef<HTMLDivElement, BrandBridgeProps>(
     const comets = React.useRef<(SVGPathElement | null)[]>([]);
     const wires = React.useRef<(SVGPathElement | null)[]>([]);
     const previews = React.useRef<(SVGPathElement | null)[]>([]);
-    const seen = useInView(root, { once: true, amount: 0.3 });
-    const visible = useInView(root, { amount: 0.05 });
+    const seen = useSeen(root, { once: true, amount: 0.3 });
+    const visible = useSeen(root, { amount: 0.05 });
     const shown = seen || still;
 
     const [isDark, setIsDark] = React.useState(false);
@@ -650,7 +690,6 @@ export const BrandBridge = React.forwardRef<HTMLDivElement, BrandBridgeProps>(
       : isDark
         ? "conic-gradient(from 0deg, #27272a, #3f3f46, #27272a)"
         : "conic-gradient(from 0deg, #e4e4e0, #c8c8c3, #e4e4e0)";
-    const lineAt = (i: number) => 0.55 + i * 0.07;
 
     return (
       <div
@@ -660,6 +699,12 @@ export const BrandBridge = React.forwardRef<HTMLDivElement, BrandBridgeProps>(
           className,
         )}
       >
+        <style>{`
+          @keyframes avara-bridge-spin { to { transform: rotate(360deg); } }
+          .avara-bridge-tile { --bridge-tap: 1; transform: translate(var(--bridge-x), var(--bridge-y)) scale(calc(var(--bridge-lit) * var(--bridge-tap))); }
+          .avara-bridge-tile:active { --bridge-tap: 0.92; }
+          @media (prefers-reduced-motion: reduce) { .avara-bridge-tile:active { --bridge-tap: 1; } }
+        `}</style>
         {/* The graphic */}
         <div
           className="relative overflow-hidden"
@@ -746,45 +791,38 @@ export const BrandBridge = React.forwardRef<HTMLDivElement, BrandBridgeProps>(
                 return (
                   <g key={b.id}>
                     {/* Unconnected: a faint dashed preview while hovered. */}
-                    <motion.path
+                    <path
                       ref={(el) => void (previews.current[i] = el)}
                       d={l.d}
                       fill="none"
                       stroke={ink}
                       strokeWidth={1.25}
-                      strokeDasharray="3 6"
                       strokeLinecap="round"
-                      initial={false}
-                      animate={{
-                        pathLength: !conn && lit ? 1 : 0,
+                      pathLength={1}
+                      style={{
+                        strokeDasharray: "1 1",
+                        strokeDashoffset: !conn && lit ? 0 : 1,
                         opacity: !conn && lit ? 0.35 : 0,
+                        transition: still
+                          ? "none"
+                          : `stroke-dashoffset 0.45s ${GLIDE}, opacity 0.45s ${GLIDE}`,
                       }}
-                      transition={{ duration: still ? 0 : 0.45, ease: GLIDE }}
                     />
-                    <motion.path
+                    <path
                       ref={(el) => void (wires.current[i] = el)}
                       d={l.d}
                       fill="none"
                       stroke={`url(#${uid}-g${i})`}
                       strokeLinecap="round"
-                      initial={still ? false : { pathLength: 0, opacity: 0 }}
-                      animate={
-                        shown
-                          ? {
-                              pathLength: conn ? 1 : 0,
-                              opacity: conn ? (dim ? 0.2 : lit ? 1 : 0.55) : 0,
-                              strokeWidth: lit ? 3 : 2,
-                            }
-                          : undefined
-                      }
-                      transition={{
-                        pathLength: {
-                          duration: still ? 0 : 0.8,
-                          ease: [0.4, 0, 0.2, 1],
-                          delay: seen && !still ? 0 : lineAt(i),
-                        },
-                        opacity: { duration: 0.3 },
-                        strokeWidth: { duration: 0.2 },
+                      pathLength={1}
+                      style={{
+                        strokeDasharray: "1 1",
+                        strokeDashoffset: shown && conn ? 0 : 1,
+                        opacity: shown && conn ? (dim ? 0.2 : lit ? 1 : 0.55) : 0,
+                        strokeWidth: lit ? 3 : 2,
+                        transition: still
+                          ? "none"
+                          : "stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s, stroke-width 0.2s",
                       }}
                     />
                     <path
@@ -803,27 +841,19 @@ export const BrandBridge = React.forwardRef<HTMLDivElement, BrandBridgeProps>(
             </svg>
 
             {/* The hub, in a rotating ring of the connected brands' colours. */}
-            <motion.div
+            <div
               className="absolute"
               style={{
                 left: HX - HUB / 2,
                 top: HY - HUB / 2,
                 width: HUB,
                 height: HUB,
-              }}
-              initial={
-                still ? false : { scale: 0.6, opacity: 0, filter: "blur(6px)" }
-              }
-              animate={
-                shown
-                  ? { scale: 1, opacity: 1, filter: "blur(0px)" }
-                  : undefined
-              }
-              transition={{
-                type: "spring",
-                stiffness: 300,
-                damping: 16,
-                delay: still ? 0 : 0.15,
+                opacity: shown ? 1 : 0,
+                transform: shown ? "scale(1)" : "scale(0.6)",
+                filter: shown ? "blur(0px)" : "blur(6px)",
+                transition: still
+                  ? "none"
+                  : `opacity 0.4s ease 0.15s, transform 0.6s ${POP} 0.15s, filter 0.5s ease 0.15s`,
               }}
             >
               <span
@@ -833,12 +863,15 @@ export const BrandBridge = React.forwardRef<HTMLDivElement, BrandBridgeProps>(
                 style={{ background: conic }}
               />
               <div className="relative size-full overflow-hidden rounded-2xl p-[1.5px] shadow-[0_0_12px_rgba(0,0,0,0.06)] dark:shadow-[0_0_12px_rgba(0,0,0,0.3)]">
-                <motion.span
+                <span
                   aria-hidden
                   className="absolute -inset-1/2"
-                  style={{ background: conic }}
-                  animate={still ? undefined : { rotate: 360 }}
-                  transition={{ duration: 8, ease: "linear", repeat: Infinity }}
+                  style={{
+                    background: conic,
+                    animation: still
+                      ? "none"
+                      : "avara-bridge-spin 8s linear infinite",
+                  }}
                 />
                 <div className="relative grid size-full place-items-center rounded-xl bg-white dark:bg-[#121215]">
                   <div className="grid size-[60px] place-items-center rounded-xl bg-[#242423]/[0.04] dark:bg-white/[0.06]">
@@ -846,7 +879,7 @@ export const BrandBridge = React.forwardRef<HTMLDivElement, BrandBridgeProps>(
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
 
             {/* Brand tiles */}
             {list.map((b, i) => {
@@ -855,7 +888,7 @@ export const BrandBridge = React.forwardRef<HTMLDivElement, BrandBridgeProps>(
               const lit = hover === i;
               const right = i >= Math.ceil(list.length / 2);
               return (
-                <motion.button
+                <button
                   key={b.id}
                   type="button"
                   aria-pressed={conn}
@@ -868,57 +901,43 @@ export const BrandBridge = React.forwardRef<HTMLDivElement, BrandBridgeProps>(
                   onPointerLeave={() => setHover((h) => (h === i ? null : h))}
                   onFocus={() => setHover(i)}
                   onBlur={() => setHover((h) => (h === i ? null : h))}
-                  className="group absolute grid cursor-pointer place-items-center rounded-xl bg-white dark:bg-zinc-900 outline-none ring-1 ring-black/[0.08] dark:ring-white/[0.1] shadow-[0_0_10px_rgba(0,0,0,0.06)] dark:shadow-[0_0_12px_rgba(0,0,0,0.35)] focus-visible:ring-2 focus-visible:ring-[#242423]/40 dark:focus-visible:ring-white/40"
-                  style={{
-                    left: l.x - TILE / 2,
-                    top: l.y - TILE / 2,
-                    width: TILE,
-                    height: TILE,
-                  }}
-                  initial={
-                    still
-                      ? false
-                      : {
-                          opacity: 0,
-                          scale: 0.5,
-                          x: right ? -40 : 40,
-                          filter: "blur(6px)",
-                        }
+                  className="avara-bridge-tile group absolute grid cursor-pointer place-items-center rounded-xl bg-white dark:bg-zinc-900 outline-none ring-1 ring-black/[0.08] dark:ring-white/[0.1] shadow-[0_0_10px_rgba(0,0,0,0.06)] dark:shadow-[0_0_12px_rgba(0,0,0,0.35)] focus-visible:ring-2 focus-visible:ring-[#242423]/40 dark:focus-visible:ring-white/40"
+                  style={
+                    {
+                      left: l.x - TILE / 2,
+                      top: l.y - TILE / 2,
+                      width: TILE,
+                      height: TILE,
+                      "--bridge-x": shown ? "0px" : right ? "-40px" : "40px",
+                      "--bridge-y": shown && lit ? "-3px" : "0px",
+                      "--bridge-lit": shown ? (lit ? 1.08 : 1) : 0.5,
+                      opacity: shown
+                        ? hover !== null && !lit
+                          ? 0.75
+                          : conn
+                            ? 1
+                            : 0.92
+                        : 0,
+                      filter: shown ? "blur(0px)" : "blur(6px)",
+                      transition: still
+                        ? "none"
+                        : `transform 0.5s ${POP}, opacity 0.25s, filter 0.4s ease`,
+                    } as React.CSSProperties
                   }
-                  animate={
-                    shown
-                      ? {
-                          opacity:
-                            hover !== null && !lit ? 0.75 : conn ? 1 : 0.92,
-                          scale: lit ? 1.08 : 1,
-                          x: 0,
-                          y: lit ? -3 : 0,
-                          filter: "blur(0px)",
-                        }
-                      : undefined
-                  }
-                  whileTap={still ? undefined : { scale: 0.92 }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 380,
-                    damping: 22,
-                    delay: seen && !still ? 0 : 0.25 + (i % 4) * 0.07,
-                    opacity: { duration: 0.25 },
-                  }}
                 >
-                  <motion.span
+                  <span
                     className="grid"
-                    animate={{
+                    style={{
                       filter: conn ? "grayscale(0)" : "grayscale(1)",
                       opacity: conn ? 1 : 0.55,
+                      transition: "filter 0.35s, opacity 0.35s",
                     }}
-                    transition={{ duration: 0.35 }}
                   >
                     <span className="grid transition-transform duration-300 [transition-timing-function:cubic-bezier(0.34,1.56,0.64,1)] group-hover:scale-110 group-hover:-rotate-6">
                       {b.logo}
                     </span>
-                  </motion.span>
-                </motion.button>
+                  </span>
+                </button>
               );
             })}
           </div>
@@ -926,26 +945,32 @@ export const BrandBridge = React.forwardRef<HTMLDivElement, BrandBridgeProps>(
 
         {/* Heading and line, centred under the graphic. */}
         <div className="px-8 pb-8 pt-2 text-center">
-          <motion.h3
-            initial={still ? false : { opacity: 0, y: 8, filter: "blur(4px)" }}
-            animate={
-              shown ? { opacity: 1, y: 0, filter: "blur(0px)" } : undefined
-            }
-            transition={{ duration: 0.5, ease: GLIDE, delay: still ? 0 : 0.35 }}
+          <h3
+            style={{
+              opacity: shown ? 1 : 0,
+              transform: shown ? "translateY(0)" : "translateY(8px)",
+              filter: shown ? "blur(0px)" : "blur(4px)",
+              transition: still
+                ? "none"
+                : `opacity 0.5s ${GLIDE} 0.35s, transform 0.5s ${GLIDE} 0.35s, filter 0.5s ${GLIDE} 0.35s`,
+            }}
             className="text-[20px] font-semibold tracking-tight"
           >
             {title}
-          </motion.h3>
-          <motion.p
-            initial={still ? false : { opacity: 0, y: 8, filter: "blur(4px)" }}
-            animate={
-              shown ? { opacity: 1, y: 0, filter: "blur(0px)" } : undefined
-            }
-            transition={{ duration: 0.5, ease: GLIDE, delay: still ? 0 : 0.43 }}
+          </h3>
+          <p
+            style={{
+              opacity: shown ? 1 : 0,
+              transform: shown ? "translateY(0)" : "translateY(8px)",
+              filter: shown ? "blur(0px)" : "blur(4px)",
+              transition: still
+                ? "none"
+                : `opacity 0.5s ${GLIDE} 0.43s, transform 0.5s ${GLIDE} 0.43s, filter 0.5s ${GLIDE} 0.43s`,
+            }}
             className="mx-auto mt-2 max-w-[340px] text-pretty text-[14px] leading-relaxed text-zinc-600 dark:text-zinc-400"
           >
             {description}
-          </motion.p>
+          </p>
         </div>
         <span role="status" aria-live="polite" className="sr-only">
           {said}

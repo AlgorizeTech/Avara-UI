@@ -3,7 +3,7 @@
   "name": "social-links-follow-row",
   "type": "registry:block",
   "title": "Social Links — Follow row",
-  "description": "The five networks a footer usually carries, as soft tiles that take the primary colour on hover.",
+  "description": "The \"Follow row\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

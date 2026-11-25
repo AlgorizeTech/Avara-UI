@@ -3,7 +3,7 @@
   "name": "wizard-wizard",
   "type": "registry:block",
   "title": "Wizard",
-  "description": "Compose `WizardProgress`, `WizardContainer` and one `WizardStep` per question — all state lives in context.",
+  "description": "The \"Wizard\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

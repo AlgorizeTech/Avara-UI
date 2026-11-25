@@ -143,6 +143,26 @@ type ShowcaseExample = {
   usage?: ShowcaseSnippet;
 };
 
+type PropsTableRow = {
+  name: string;
+  type: string;
+  default?: string;
+  description: unknown;
+  required?: boolean;
+};
+
+const mdxReact = {
+  Fragment: Symbol("Fragment"),
+  createElement(tag: unknown, _props: Record<string, unknown> | null, ...children: unknown[]): string {
+    const text = children
+      .flat(Infinity)
+      .filter((c) => c != null && c !== false)
+      .join("");
+    if (tag === "code") return `\`${text}\``;
+    return text;
+  },
+};
+
 /** Stands in for anything a page imports that the mirror has no use for: icons, components, helpers. */
 const placeholder: unknown = new Proxy(function () {}, {
   get: (_, key) => (key === Symbol.toPrimitive ? () => "" : placeholder),
@@ -168,7 +188,13 @@ function evaluatePage(statements: string[], expressions: string[]): unknown[] {
       alwaysStrict: false,
     },
   });
-  const values: Record<PropertyKey, unknown> = { ...PAGE_CONSTANTS, links, extractCode, extractMotionCode };
+  const values: Record<PropertyKey, unknown> = {
+    ...PAGE_CONSTANTS,
+    links,
+    extractCode,
+    extractMotionCode,
+    React: mdxReact,
+  };
   const scope = new Proxy(values, {
     has: () => true,
     get(target, key) {
@@ -183,6 +209,32 @@ function evaluatePage(statements: string[], expressions: string[]): unknown[] {
   });
   new Function("scope", `with (scope) {\n${outputText}\n}`)(scope);
   return values.__results as unknown[];
+}
+
+/**
+ * What `<Installation name="…">` renders, as Markdown: the command, which is all
+ * a reader needs, since the web component's dependency list is read from
+ * registry.json and the CLI installs those itself.
+ */
+function installMarkdown(name: string): string {
+  return (
+    "Add the component by URL — no setup needed:\n\n" +
+    "```bash\n" +
+    `npx shadcn@latest ${addArgsFor(name, "url")}\n` +
+    "```\n\n" +
+    `Or register the ${REGISTRY_NAMESPACE} registry once per project and add it by name:\n\n` +
+    "```bash\n" +
+    `npx shadcn@latest ${REGISTRY_ADD_ARGS}\n` +
+    `npx shadcn@latest ${addArgsFor(name, "namespace")}\n` +
+    "```" +
+    // Dual components: the same file, built on Motion instead of GSAP.
+    (MOTION_TWINS.has(name)
+      ? "\n\nOr the Motion build (same props, same file — install one):\n\n" +
+        "```bash\n" +
+        `npx shadcn@latest ${addArgsFor(`${name}-motion`, "url")}\n` +
+        "```"
+      : "")
+  );
 }
 
 /** An example as the page shows it: heading, summary, prop notes, then its Usage tab. */
@@ -227,6 +279,17 @@ function tableToMarkdown(table: string, restore: (text: string) => string): stri
   return [line(rows[0]), line(rows[0].map(() => "---")), ...rows.slice(1).map(line)].join("\n");
 }
 
+function propsTableToMarkdown(rows: PropsTableRow[]): string {
+  if (!rows.length) return "";
+  const cell = (v: unknown) => String(v ?? "").replace(/\s+/g, " ").trim().replace(/\|/g, "\\|");
+  const header = "| Prop | Type | Default | Required | Description |";
+  const sep = "| --- | --- | --- | --- | --- |";
+  const body = rows.map((r) =>
+    `| \`${cell(r.name)}\` | \`${cell(r.type)}\` | ${r.default ? `\`${cell(r.default)}\`` : "–"} | ${r.required ? "Yes" : "No"} | ${cell(r.description)} |`,
+  );
+  return [header, sep, ...body].join("\n");
+}
+
 /** A link wrapping a whole card holds headings and paragraphs; Markdown link text is one line. */
 const linkText = (text: string) =>
   text.replace(/<\/?[A-Za-z][^<>]*>/g, " ").replace(/\s+/g, " ").trim();
@@ -265,7 +328,7 @@ function convertMdxToMd(content: string, framework: Framework): string {
   mdContent = mdContent.replace(/^import\s+.*?\{[\s\S]*?\}\s+from\s+.*?;?\s*$/gm, '');
 
   // Each <ExampleShowcase> becomes its examples, once the exports have run.
-  const showcases: { marker: string; expression: string; level: number }[] = [];
+  const showcases: { marker: string; expression: string; level: number; installName?: string }[] = [];
   for (let index = mdContent.indexOf("<ExampleShowcase"); index >= 0; ) {
     const file = parseAt(mdContent, index);
     const first = file.statements[0];
@@ -281,20 +344,56 @@ function convertMdxToMd(content: string, framework: Framework): string {
     const examples = attribute("examples");
     const level = attribute("headingLevel")?.getText(file) === "{2}" ? 2 : 3;
     const marker = `\u0001${showcases.length}\u0001`;
+    // A page that shows the install steps in each preview's Get code sheet
+    // passes them as `installation={<Installation name="…" />}`.
+    const installation = attribute("installation");
+    const installName =
+      installation && ts.isJsxExpression(installation) && installation.expression
+        ? /<Installation\s+name="([^"]+)"/.exec(installation.expression.getText(file))?.[1]
+        : undefined;
     if (examples && ts.isJsxExpression(examples) && examples.expression) {
-      showcases.push({ marker, expression: examples.expression.getText(file), level });
+      showcases.push({ marker, expression: examples.expression.getText(file), level, installName });
     }
     mdContent = mdContent.slice(0, index) + marker + mdContent.slice(index + element.end);
     index = mdContent.indexOf("<ExampleShowcase", index);
   }
   const results = evaluatePage(statements, showcases.map((showcase) => showcase.expression));
-  showcases.forEach(({ marker, level }, position) => {
+  showcases.forEach(({ marker, level, installName }, position) => {
     const examples = results[position] as ShowcaseExample[];
+    const install = installName ? `## Installation\n\n${installMarkdown(installName)}\n\n` : "";
     mdContent = mdContent.replace(
       marker,
-      () => hold(examples.map((example) => exampleToMarkdown(example, level, framework)).join("\n\n")),
+      () => hold(install + examples.map((example) => exampleToMarkdown(example, level, framework)).join("\n\n")),
     );
   });
+
+  // Each <PropsTable props={[…]} /> becomes a Markdown table.
+  const propsTables: { marker: string; expression: string }[] = [];
+  for (let index = mdContent.indexOf("<PropsTable"); index >= 0; ) {
+    const file = parseAt(mdContent, index);
+    const first = file.statements[0];
+    const element = first && ts.isExpressionStatement(first) ? first.expression : undefined;
+    if (!element || !ts.isJsxSelfClosingElement(element)) {
+      index = mdContent.indexOf("<PropsTable", index + 1);
+      continue;
+    }
+    const propsAttr = element.attributes.properties.find(
+      (prop): prop is ts.JsxAttribute => ts.isJsxAttribute(prop) && prop.name.getText(file) === "props",
+    )?.initializer;
+    const marker = `\u0002${propsTables.length}\u0002`;
+    if (propsAttr && ts.isJsxExpression(propsAttr) && propsAttr.expression) {
+      propsTables.push({ marker, expression: propsAttr.expression.getText(file) });
+    }
+    mdContent = mdContent.slice(0, index) + marker + mdContent.slice(index + element.end);
+    index = mdContent.indexOf("<PropsTable", index);
+  }
+  if (propsTables.length) {
+    const tableResults = evaluatePage(statements, propsTables.map((t) => t.expression));
+    propsTables.forEach(({ marker }, position) => {
+      const rows = (tableResults[position] as PropsTableRow[]) ?? [];
+      mdContent = mdContent.replace(marker, () => hold(propsTableToMarkdown(rows)));
+    });
+  }
 
   // Resolve the site values the page prints through JSX expressions.
   mdContent = resolvePageConstants(mdContent);
@@ -340,6 +439,20 @@ function convertMdxToMd(content: string, framework: Framework): string {
     if (!block) throw new Error(`<AgentVariants slug="${pageSlug}"> has no variants file in src/agent/variants/`);
     return hold(agentBlockMarkdown(block, (target) => `${SITE_URL}${docsHref(framework, target)}`));
   });
+
+  // <AgentBrief name="…" [slug="…"]>...</AgentBrief> embeds the variants block when a variants file exists for that slug.
+  mdContent = mdContent.replace(
+    /<AgentBrief\b([^>]*)>([\s\S]*?)<\/AgentBrief>/g,
+    (_, attrs: string, inner: string) => {
+      const slugMatch = attrs.match(/slug="([^"]+)"/) ?? attrs.match(/name="([^"]+)"/);
+      const pageSlug = slugMatch?.[1];
+      const block = pageSlug ? agentBlockForSlug(pageSlug) : undefined;
+      if (!block) return inner;
+      const variantsMd = agentBlockMarkdown(block, (target) => `${SITE_URL}${docsHref(framework, target)}`)
+        .replace(/^## For AI agents\s*\n+/, "");
+      return `${inner.trimEnd()}\n\n${hold(variantsMd)}`;
+    },
+  );
 
   // Convert JSX components to markdown equivalents
 
@@ -411,23 +524,7 @@ function convertMdxToMd(content: string, framework: Framework): string {
   // installs those itself, so the command alone is enough here.
   mdContent = mdContent.replace(
     /<Installation\s+name="([^"]+)"[^>]*\/>/g,
-    (_, name: string) => hold(
-      'Add the component by URL — no setup needed:\n\n' +
-      '```bash\n' +
-      `npx shadcn@latest ${addArgsFor(name, "url")}\n` +
-      '```\n\n' +
-      `Or register the ${REGISTRY_NAMESPACE} registry once per project and add it by name:\n\n` +
-      '```bash\n' +
-      `npx shadcn@latest ${REGISTRY_ADD_ARGS}\n` +
-      `npx shadcn@latest ${addArgsFor(name, "namespace")}\n` +
-      '```' +
-      // Dual components: the same file, built on Motion instead of GSAP.
-      (MOTION_TWINS.has(name)
-        ? '\n\nOr the Motion build (same props, same file — install one):\n\n' +
-          '```bash\n' +
-          `npx shadcn@latest ${addArgsFor(`${name}-motion`, "url")}\n` +
-          '```'
-        : ''))
+    (_, name: string) => hold(installMarkdown(name)),
   );
   // <InstallGroup> only wraps several <Installation>s; drop the wrapper.
   mdContent = mdContent.replace(/<\/?InstallGroup>/g, '');

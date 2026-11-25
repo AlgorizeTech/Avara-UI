@@ -3,7 +3,7 @@
   "name": "toggle-group-segmented",
   "type": "registry:block",
   "title": "Toggle Group — Segmented",
-  "description": "A view switch: one highlight slides to the chosen item, which stays chosen when clicked again. The arrow keys move the choice.",
+  "description": "The \"Segmented\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

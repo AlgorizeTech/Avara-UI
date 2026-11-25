@@ -4,12 +4,11 @@ export const metadata = docsPageMetadata("memories-card");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractMotionCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Memories Card
 
-A premium, interactive card stack component featuring real-time 3D tilt physics, a dynamic "fan" background spread, and smooth swipe-to-next gestures. Perfect for showcasing travel memories, feature highlights, or curated photo galleries.
-
-Hover the front card for interactive 3D tilt physics, or drag/swipe it to send it to the back of the deck. This component supports full card metadata (badges, locations, dates, descriptions), minimalist image-only layouts by omitting optional fields, and real-time active index tracking via `onCardChange` to sync external captions, counters, or analytics.
+An interactive 3D-tilting photo card stack (`MemoriesCard`) with a fanned background deck, drag-to-cycle gestures, and `onCardChange` index tracking.
 
 export const memoriesData = `const memories: MemoryItem[] = [
   {
@@ -81,6 +80,7 @@ export default function TravelDeck() {
   name="memories-card"
   colorControl
   columns={1}
+  installation={<Installation name="memories-card" usage="below" />}
   examples={[
     {
       title: "Tracking the active card",
@@ -103,39 +103,35 @@ export default function TravelDeck() {
   ]}
 />
 
-## Installation
+## About Shadcn Memories Card
 
-<Installation name="memories-card" />
+**What it is.** `MemoriesCard` renders a fanned photo deck (`items: MemoryItem[]`) with 3D pointer tilt on the front card, drag-to-back cycling, optional metadata (`tag`, `location`, `date`, `description`), and `onCardChange(index)`. A "n / total" counter and a Reset button are built in.
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+**How it is built.** It ships matching GSAP and Motion builds with the same props: spring-based tilt of up to 14 degrees, a fan of at most four visible cards, and a front card the user drags sideways. Dragging past 80px sends it to the back of the deck. Install `memories-card` or `memories-card-motion`; both also use `lucide-react`.
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Fluid Animations">
-    <p>Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
-  </InfoCard>
-  <InfoCard title="Highly Customizable">
-    <p>Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
-  </InfoCard>
-  <InfoCard title="Responsive Design">
-    <p>Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `MemoriesCard` for travel/photo stories, curated highlights, and interactive galleries. For generic swipe-to-discard text cards, use <DocLink to="card-stack">Card Stack</DocLink>.
 
-## Best Practices & Guidelines
+## For AI agents
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Animation Performance">
-    <p>Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
-  </InfoCard>
-  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">State Management</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>
-  </div>
-</div>
+<AgentBrief name="memories-card">
+
+**When to use**
+
+- Photo-first fanned card decks with 3D tilt, drag-to-cycle, and `onCardChange` index callbacks
+
+**When not to use**
+
+- Non-photo swipe-to-discard decks: use <DocLink to="card-stack">Card Stack</DocLink>
+- Horizontal photo sliders: use <DocLink to="carousel">Carousel</DocLink>
+
+**Agent notes**
+
+- Named exports: `MemoriesCard` and the `MemoryItem` type from `@/components/custom/blocks/MemoriesCardBlock`. Required item fields are `id`, `title` and `image`; omit `tag`, `location`, `date` and `description` for image-only cards.
+- `onCardChange` receives the index of the new front card within your `items` array, and also fires with `0` when the built-in Reset button is pressed.
+- `items` seeds the deck once on mount. Changing the prop later does not update the cards, so remount with a `key` when the list changes.
+- The deck is pointer-driven: there is no keyboard shortcut for cycling, and motion does not read `prefers-reduced-motion`.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -183,7 +179,7 @@ Discover the key capabilities that make this component an excellent choice for m
           <code>undefined</code>
         </td>
         <td>
-          Callback function triggered on every card swipe gesture. It receives the new active card index (`number`), allowing you to dynamically sync external captions, counter indicators, or trigger custom analytics events.
+          Called when a swipe sends a card to the back, and with 0 when Reset is pressed. It receives the index of the new front card in your items array, so you can sync captions, counters or analytics.
         </td>
       </tr>
       <tr>
@@ -330,6 +326,31 @@ Discover the key capabilities that make this component an excellent choice for m
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Sync `onCardChange` with <DocLink to="counter">Counter</DocLink> or caption panels, or pair with <DocLink to="gallery">Gallery</DocLink> for full-grid photo browsing.
+- Use <DocLink to="card-stack">Card Stack</DocLink> when the deck holds text or UI cards rather than photos.
+- Use <DocLink to="carousel">Carousel</DocLink> when users should step through photos in a row with arrows.
+
+## How do I track which card is currently in front?
+
+Pass `onCardChange={(index) => ...}` to `MemoriesCard`. It fires with the 0-based index of the new front card, counted in your original `items` array, whenever a swipe sends a card to the back. Pressing the built-in Reset button fires it with `0`. Store the number in state to drive a caption.
+
+## How do users swipe through the Memories Card deck?
+
+They drag the front card sideways with a mouse or finger. Past 80px of travel the card flies off in that direction and lands at the back of the deck. A shorter drag springs back. Only the front card is draggable, and Reset restores the original order.
+
+## Can I cycle the Memories Card with the keyboard?
+
+Not currently. Cycling is pointer-only, with no arrow-key handler, and the cards are not focusable. The Reset button is a real button, and each photo has `alt` text from its `title`. If keyboard users need access, add your own previous and next buttons that remount the deck, or use <DocLink to="carousel">Carousel</DocLink>.
+
+## What happens if I change the items prop of MemoriesCard?
+
+Nothing visible. `MemoriesCard` copies `items` into state on first render and reorders that copy as people swipe. A later change to the prop is only used when Reset is pressed. To show a new list, give the component a new `key` so it remounts with the fresh `items`.
+
+## Should I install the GSAP or the Motion build of MemoriesCard?
+
+Either one. The `memories-card` build uses `gsap` and `memories-card-motion` uses `motion`. Both use `lucide-react` for icons, take the same props and install to the same file, so pick the animation library your project already ships. Install one, not both. Neither imports from `next/*`.
 
 <DocsJsonLd slug="memories-card" />
+<FaqJsonLd slug="memories-card" />

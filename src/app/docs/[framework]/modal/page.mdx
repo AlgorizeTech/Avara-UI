@@ -3,14 +3,12 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("modal");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
-import { Installation } from "@/components/site/installation";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Modal
 
-A versatile, accessible dialog component with built-in design variants. Choose from pre-configured variants (`standard`, `confirmation`, `form`, `fullscreen`, `glass`, `liquid-glass`) to instantly get complete layout, responsive sizing, and interactive buttons—or use composable subcomponents for custom dialogs.
-
-`Modal` manages all dialog complexities—portals, focus traps, backdrop dismissal, Escape key handling, body scroll locking, and smooth enter/exit animations.
+A controlled modal dialog (`Modal`) with pre-configured `standard`, `confirmation`, `form`, `fullscreen`, `glass`, and `liquid-glass` presets plus composable subcomponents.
 
 export const usageStandard = `"use client";
 
@@ -267,10 +265,11 @@ export default function LiquidGlassModal() {
 <ExampleShowcase minHeight={390} headingLevel={2}
   name="modal"
   columns={1}
+  installation={<Installation name="modal" usage="below" />}
   examples={[
     {
       title: "Standard",
-      subheading: "Complete modal layout with title, badge, body description, and action buttons.",
+      description: "Complete modal layout with title, badge, body description, and action buttons.",
       propNotes: [
         {
           lead: "Pass",
@@ -284,22 +283,9 @@ export default function LiquidGlassModal() {
       usage: usageStandard,
       code: extractCode("src/components/custom/blocks/ModalBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="modal" />
-
-## Examples
-
-<ExampleShowcase minHeight={360}
-  name="modal"
-  columns={1}
-  examples={[
     {
       title: "Form",
-      subheading: "Header and footer actions with custom form inputs as children.",
+      description: "Header and footer actions with custom form inputs as children.",
       propNotes: [
         {
           lead: "Pass",
@@ -314,7 +300,7 @@ export default function LiquidGlassModal() {
     },
     {
       title: "Confirmation",
-      subheading: "Compact centered delete confirmation dialog with danger badge.",
+      description: "Compact centered delete confirmation dialog with danger badge.",
       propNotes: [
         {
           lead: "Pass",
@@ -329,7 +315,7 @@ export default function LiquidGlassModal() {
     },
     {
       title: "Fullscreen",
-      subheading: "Wide layout with pinned header and multi-action responsive footer.",
+      description: "Wide layout with pinned header and multi-action responsive footer.",
       propNotes: [
         {
           lead: "Pass",
@@ -344,7 +330,7 @@ export default function LiquidGlassModal() {
     },
     {
       title: "Glass",
-      subheading: "Translucent frosted-glass treatment with backdrop blur.",
+      description: "Translucent frosted-glass treatment with backdrop blur.",
       propNotes: [
         {
           lead: "Pass",
@@ -359,7 +345,7 @@ export default function LiquidGlassModal() {
     },
     {
       title: "Liquid Glass",
-      subheading: "Fluid glassmorphism featuring real SVG displacement mapping, multi-layer specular highlights, and fluid reflections.",
+      description: "Fluid glassmorphism featuring real SVG displacement mapping, multi-layer specular highlights, and fluid reflections.",
       propNotes: [
         {
           lead: "Pass",
@@ -375,31 +361,36 @@ export default function LiquidGlassModal() {
   ]}
 />
 
-## Features
-Discover the Modal's flexible overlay features, designed for important user prompts with accessible focus management and animations.
+## About Shadcn Modal
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Variant Presets">
-    <p>Pre-styled variants (standard, confirmation, form, fullscreen, glass, liquid-glass) eliminate boilerplate styling.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with aria dialog roles, label connections, Escape dismissal, and body scroll locking.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Optimized sizing and wrapped action rows that adapt seamlessly across mobile, tablet, and desktop.</p>
-  </InfoCard>
-  <InfoCard title="Composable">
-    <p>Supports optional subcomponents (ModalHeader, ModalBody, ModalFooter) for fully custom layouts.</p>
-  </InfoCard>
-</div>
+**What it is.** `Modal` is a preset-driven modal dialog supporting `standard`, `confirmation`, `form`, `fullscreen`, `glass`, and `liquid-glass` layouts, plus a `custom` mode, alongside `ModalHeader`, `ModalBody`, and `ModalFooter` subcomponents for custom compositions.
 
-## Best Practices & Guidelines
+**How it is built.** It renders through a React portal with `role="dialog"` and `aria-modal="true"`, closes on `Escape`, the X button or a backdrop click, locks body scroll while open, and uses CSS enter and exit transitions. The open state is yours: `isOpen` and `onClose`. It does not trap or restore focus.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Pass <code>variant</code> with title, description, and button labels for fast implementation without manual styling. If you need complete layout freedom, use <code>ModalHeader</code>, <code>ModalBody</code>, and <code>ModalFooter</code> subcomponents directly.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `Modal` when you want ready-made layout presets (`confirmation`, `form`, `fullscreen`, `liquid-glass`). For lower-level composable dialog primitives without preset chrome, use <DocLink to="dialog">Dialog</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="modal">
+
+**When to use**
+
+- Opinionated modal presets (`standard`, `confirmation`, `form`, `fullscreen`, `glass`, `liquid-glass`) with built-in header/footer action wiring
+- Custom modal compositions using `ModalHeader`, `ModalBody`, and `ModalFooter`
+
+**When not to use**
+
+- Bare composable dialog primitives: use <DocLink to="dialog">Dialog</DocLink>
+- Edge-anchored slide-over sheets: use <DocLink to="drawer">Drawer</DocLink>
+
+**Agent notes**
+
+- Named exports from `@/components/custom/blocks/ModalBlock`: `Modal`, `ModalHeader`, `ModalBody`, `ModalFooter`, plus the `ModalProps` and `ModalVariant` types. There is no trigger component; keep `isOpen` in your own state and call `setIsOpen(false)` from `onClose`.
+- Pass `variant` + `title` + `description` + action labels for zero-boilerplate modals. With no `variant` and none of `title`, `description`, `confirmText` or `cancelText`, the modal is `custom` and renders only your children, so compose `ModalHeader`/`ModalBody`/`ModalFooter` yourself.
+- `confirmText` and `cancelText` buttons close the modal by default; pass `onConfirm`, `onCancel` or `onDelete` to run your own handler, and close it in that handler.
+- A non-string `title` needs `ariaLabel` (or a `ModalHeader`) to give the dialog an accessible name.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -464,10 +455,10 @@ Discover the Modal's flexible overlay features, designed for important user prom
           <code>{`"standard" | "confirmation" | "form" | "fullscreen" | "glass" | "liquid-glass" | "custom"`}</code>
         </td>
         <td>
-          <code>"standard"</code>
+          Derived
         </td>
         <td>
-          Pre-configured design variant. Automatically styles the layout, sizing, header icon, and action buttons.
+          Pre-configured design variant. When omitted it is <code>"standard"</code> if you pass <code>title</code>, <code>description</code>, <code>confirmText</code> or <code>cancelText</code>, and <code>"custom"</code> (children only) otherwise.
         </td>
       </tr>
       <tr>
@@ -603,7 +594,7 @@ Discover the Modal's flexible overlay features, designed for important user prom
           <code>undefined</code>
         </td>
         <td>
-          Callback when the confirm button is clicked. Defaults to <code>onClose</code>.
+          Callback when the confirm button is clicked. Defaults to closing the modal.
         </td>
       </tr>
       <tr>
@@ -620,7 +611,7 @@ Discover the Modal's flexible overlay features, designed for important user prom
           <code>undefined</code>
         </td>
         <td>
-          Callback when the cancel button is clicked. Defaults to <code>onClose</code>.
+          Callback when the cancel button is clicked. Defaults to closing the modal.
         </td>
       </tr>
       <tr>
@@ -676,6 +667,91 @@ Discover the Modal's flexible overlay features, designed for important user prom
       </tr>
       <tr>
         <td>
+          <code>Modal</code>
+        </td>
+        <td>
+          <code>onDelete</code>
+        </td>
+        <td>
+          <code>{`() => void`}</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Callback when the delete button is clicked. Defaults to closing the modal.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Modal</code>
+        </td>
+        <td>
+          <code>primaryCloseButton</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          Shows the X as a tinted primary chip instead of a bare icon.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Modal</code>
+        </td>
+        <td>
+          <code>closeButtonClassName</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Custom CSS classes for the X button.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>Modal</code>
+        </td>
+        <td>
+          <code>ariaLabel</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Labels the dialog directly. Use it when the title is not a string or not inside <code>ModalHeader</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ModalHeader</code>
+        </td>
+        <td>
+          <code>title</code>
+        </td>
+        <td>
+          <code>React.ReactNode</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Heading for the header. A string is wrapped in an <code>h2</code>. The header also supplies the dialog's accessible name.
+        </td>
+      </tr>
+      <tr>
+        <td>
           <code>ModalHeader / Body / Footer</code>
         </td>
         <td>
@@ -695,6 +771,31 @@ Discover the Modal's flexible overlay features, designed for important user prom
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Pair `variant="form"` with <DocLink to="input">Input</DocLink> and <DocLink to="select">Select</DocLink> children.
+- Use <DocLink to="dialog">Dialog</DocLink> when you want unstyled/minimal composable primitives, or <DocLink to="drawer">Drawer</DocLink> for slide-in panels.
+- Use a destructive <DocLink to="button">Button</DocLink> or <DocLink to="action-buttons">Action Button</DocLink> to open a `confirmation` modal.
+
+## When should I use Modal vs Dialog?
+
+Use `Modal` when you want built-in layout presets (`confirmation`, `form`, `fullscreen`, `glass`, `liquid-glass`) with pre-wired header and footer buttons driven by props. Use <DocLink to="dialog">Dialog</DocLink> when you want raw composable primitives (`DialogHeader`, `DialogContent`, `DialogFooter`) and your own markup.
+
+## How do I open and close a Modal?
+
+`Modal` is fully controlled. Keep a boolean in state, pass it as `isOpen`, and set it to `false` inside `onClose`. `onClose` fires after a 300ms exit transition, whether the user pressed the X, hit `Escape` or clicked the backdrop. Open it from any event by setting the state to `true`.
+
+## How do I build a delete confirmation with Modal?
+
+Set `variant="confirmation"` with a `title` and `description`. It shows a red icon with Cancel and Delete buttons, which you can relabel with `cancelText` and `confirmText`. The X is hidden for this variant. Run the deletion in `onConfirm`, then set `isOpen` to `false`.
+
+## Does Modal trap focus or announce itself to screen readers?
+
+Partly. The panel has `role="dialog"` and `aria-modal="true"`, named by a string `title`, `ariaLabel` or `ModalHeader`. It closes on `Escape`. It does not trap focus or return it to the trigger, so Tab can reach the page behind it. Add that yourself if you need strict keyboard containment.
+
+## Does the liquid-glass Modal variant load an external image?
+
+Yes. The `liquid-glass` variant uses a Cloudinary photo as the background behind its SVG displacement filter. `Modal` also renders a hidden 1px copy of that image whenever it is mounted. For a self-hosted setup, replace the URLs in `ModalBlock.tsx` with your own image. Other variants do not use it visibly.
 
 <DocsJsonLd slug="modal" />
+<FaqJsonLd slug="modal" />

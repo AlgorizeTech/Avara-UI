@@ -3,7 +3,7 @@
   "name": "range-date-picker-single-month-range-date-picker",
   "type": "registry:block",
   "title": "Range Date Picker — Single Month Range Date Picker",
-  "description": "Compact single month view for date range selection.",
+  "description": "The \"Single Month Range Date Picker\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

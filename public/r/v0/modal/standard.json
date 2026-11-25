@@ -3,7 +3,7 @@
   "name": "modal-standard",
   "type": "registry:block",
   "title": "Modal — Standard",
-  "description": "Complete modal layout with title, badge, body description, and action buttons.",
+  "description": "The \"Standard\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

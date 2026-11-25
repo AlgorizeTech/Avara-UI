@@ -1,16 +1,27 @@
 ---
 title: "Shadcn Half Star Rating"
-description: "Shadcn Half Star Rating. A sleek, customizable star rating component for Next.js applications that supports exact decimal ratings (e.g.."
+description: "Shadcn Half Star Rating. A zero-dependency star rating component (`HalfStars`) that fills each star to an exact decimal with a CSS clip."
 url: https://avaraui.com/docs/nextjs/half-stars
 ---
 
 # Shadcn Half Star Rating
 
-A sleek, customizable star rating component for Next.js applications that supports exact decimal ratings (e.g., 3.7 or 4.5) through SVG clip paths. It also supports interactive mode, allowing users to hover and click to set their own rating.
+A zero-dependency star rating component (`HalfStars`) that fills each star to an exact decimal with a CSS clip, and optionally lets visitors pick a rating by hovering and clicking.
 
-It provides an accurate fractional fill, allowing you to beautifully display user reviews, product ratings, and satisfaction scores without being limited to just full or half stars.
+## Installation
 
-Explore the different variations of the Half Stars component — each example shows a live preview with the exact code to copy. Hover and click any preview to set a rating.
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/half-stars.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/half-stars
+```
 
 ## Full stars
 
@@ -37,24 +48,7 @@ export default function FullStarRating() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/half-stars.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/half-stars
-```
-
-## Examples
-
-### Half stars
+## Half stars
 
 - Set `allowHalf` — the default — for 0.5 precision while `interactive` is on.
 
@@ -77,7 +71,7 @@ export default function HalfStarRating() {
 }
 ```
 
-### Continuous fractions
+## Continuous fractions
 
 - Pass `step={0.1}` for fine-grained ratings like 2.3 or 4.6. It overrides `allowHalf` entirely.
 
@@ -100,7 +94,7 @@ export default function PreciseRating() {
 }
 ```
 
-### Custom scale and colors
+## Custom scale and colors
 
 - `maxStars` changes how many stars make up the scale, 5 by default.
 - `activeColor` and `inactiveColor` take Tailwind **text colour classes**, not raw hex — e.g. `text-yellow-400`.
@@ -128,24 +122,31 @@ export default function TenStarRating() {
 }
 ```
 
-## Features
-Discover the Half Stars rating component's precise visual feedback, supporting fractional SVG rendering for accurate reviews.
+## About Shadcn Half Star Rating
 
-Supports exact decimal ratings (e.g., 4.2 or 3.7) by dynamically calculating SVG clip paths for pixel-perfect fills.
+**What it is.** `HalfStars` renders fractional star ratings (such as `3.7` or `4.5`) by clipping a filled SVG star to the fractional width, with optional interactive hover/click selection (`interactive`, `allowHalf`, `step`), custom `maxStars`, pixel `size`, and Tailwind color classes.
 
-Allow users to hover and click to submit their own ratings. Includes smooth animations and fractional steps.
+**How it is built.** Built with React and inline SVGs (zero external dependencies): an empty star in `inactiveColor` (`text-foreground/15` by default) sits under a filled star in `activeColor` (`text-primary` by default) that is clipped to the rating. It is controlled: you hold the rating and update it from `onRatingChange`.
 
-Easily change colors, sizes, and the maximum number of stars using standard Tailwind CSS utility classes.
+**When to use it.** Use `HalfStars` on product cards, review summaries, testimonials, and user rating forms.
 
-Built entirely with React and raw SVGs. No heavy external rating libraries required.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-If you are allowing user input via `interactive={true}`, it is recommended to set `allowHalf={true}` (step 0.5) or `step={1}` for standard reviews. Setting `step={0.1}` can make it difficult for users to intentionally click a precise score like 4.0 exactly.
+- Read-only fractional rating displays (`rating={4.3}`) or interactive star pickers (`interactive`, `onRatingChange`)
 
-### Color Contrast
+**When not to use**
 
-Ensure your `inactiveColor` provides enough contrast against your background so users can clearly see the empty stars. The default, `text-foreground/15`, follows the theme in light and dark mode.
+- Binary favorite/like toggles — use [Toggle](https://avaraui.com/docs/reactjs/toggle) or [Action Button](https://avaraui.com/docs/reactjs/action-buttons) (`StarButton`)
+
+**Agent notes**
+
+- Named export: `import { HalfStars } from "@/components/custom/blocks/HalfStarsBlock"`
+- `activeColor` and `inactiveColor` take Tailwind text color classes (e.g., `"text-yellow-400"`), not raw hex strings
+- Passing `step` (e.g. `0.1`) overrides `allowHalf`
+- Controlled: store the value in state and update it in `onRatingChange`, otherwise a click does not change what is shown. `onHoverChange` receives `0` when the pointer leaves.
+- Interactive mode is pointer-only: there is no keyboard handling or ARIA rating role, so add your own accessible control if you need one.
 
 ## Props Reference
 
@@ -183,6 +184,33 @@ interface HalfStarsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onC
   onHoverChange?: (rating: number) => void;
 }
 ```
+
+## Works with other components
+
+- Embed `HalfStars` inside [Card](https://avaraui.com/docs/reactjs/card) (`ProductCard`) layouts, or beside testimonials in a [Reviews](https://avaraui.com/docs/reactjs/reviews) section.
+- Pair interactive `HalfStars` with [Form](https://avaraui.com/docs/reactjs/form) for review submission dialogs.
+- [Book Appointment](https://avaraui.com/docs/reactjs/book-appointment) shows named scores out of 5 with `HalfStars`.
+- For a like or upvote toggle rather than a score, use [Action Button](https://avaraui.com/docs/reactjs/action-buttons) (`StarButton`).
+
+## How do I show a rating like 4.3 with partial stars in HalfStars?
+
+Pass the number as `rating`, for example `<HalfStars rating={4.3} />`. Each star is clipped to its share of the value, so the fifth star here fills to 30%. Values are clamped between 0 and `maxStars`, and `showText={false}` hides the "4.3 / 5" label.
+
+## How do I make HalfStars interactive and save the rating?
+
+Set `interactive` and keep the rating in state, updating it from `onRatingChange`. The component does not store a chosen value itself, so without that update the stars snap back after a click. Hover shows a preview rating, and `onHoverChange` reports it.
+
+## How should I configure step vs allowHalf for interactive ratings?
+
+`allowHalf` (on by default) picks in 0.5 steps, and `allowHalf={false}` picks whole stars. `step` overrides both, so `step={0.1}` allows tenths. For user-submitted ratings, whole or half stars are easier to click accurately than `0.1` precision.
+
+## How do I change the HalfStars colour and size?
+
+Use `activeColor` and `inactiveColor` with Tailwind text colour classes such as `text-yellow-400`, not hex values, because the stars use `currentColor`. `size` sets each star's width and height in pixels (24 by default), and `maxStars` changes the scale length from 5.
+
+## Is HalfStars keyboard accessible?
+
+Not in interactive mode. Picking a rating relies on mouse movement and clicks over each star, and the component adds no ARIA role or label. For a form, pair it with a labelled input or buttons for keyboard users. A read-only rating needs no interaction, and `showText` prints the number beside it.
 
 ---
 

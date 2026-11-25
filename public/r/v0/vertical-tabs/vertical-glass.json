@@ -3,7 +3,7 @@
   "name": "vertical-tabs-vertical-glass",
   "type": "registry:block",
   "title": "Tabs — Vertical glass",
-  "description": "Two frosted panels side by side.",
+  "description": "The \"Vertical glass\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

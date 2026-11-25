@@ -3,7 +3,7 @@
   "name": "card-quote-tiles",
   "type": "registry:block",
   "title": "Card — Quote tiles",
-  "description": "Pastel tiles with a small caps category, a bold quote and the photo dissolving into the tint from below.",
+  "description": "The \"Quote tiles\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -3,7 +3,7 @@
   "name": "input-simple-file-input",
   "type": "registry:block",
   "title": "Input — Simple file input",
-  "description": "For a form that just needs files attached: the `Input` block in file mode, with previews and removal built in.",
+  "description": "The \"Simple file input\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

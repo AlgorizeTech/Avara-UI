@@ -3,7 +3,7 @@
   "name": "user-graph-user-graph",
   "type": "registry:block",
   "title": "User Graph",
-  "description": "Click any orbit node to move the highlight and its label tooltip.",
+  "description": "The \"User graph\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

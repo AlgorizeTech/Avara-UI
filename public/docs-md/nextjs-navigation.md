@@ -1,16 +1,27 @@
 ---
 title: "Shadcn Navigation Menu"
-description: "A highly composable, accessible, and smoothly animated navigation menu built for modern React applications. Free shadcn/ui component for React and Tailwind CSS."
+description: "Shadcn Navigation Menu. A context-driven navigation bar (`NavigationMenu`, `NavigationMenuList`, `NavigationMenuItem`, `NavigationMenuTrigger`."
 url: https://avaraui.com/docs/nextjs/navigation
 ---
 
 # Shadcn Navigation Menu
 
-A highly composable, accessible, and smoothly animated navigation menu built for modern React applications.
+A context-driven navigation bar (`NavigationMenu`, `NavigationMenuList`, `NavigationMenuItem`, `NavigationMenuTrigger`, `NavigationMenuContent`, `NavigationMenuIndicator`) with an active sliding indicator.
 
-This `NavigationMenu` uses a strict context-driven composition pattern to share state across its sub-components. It features a smoothly sliding background indicator that tracks the active menu item and gracefully handles dropdown positioning.
+## Installation
 
-The menu is context-driven: `NavigationMenu` publishes the open item, `variant` and `color`, and the `Indicator` measures the active trigger and slides to it. That hierarchy — `Menu` > `List` > `Item` > `Trigger` / `Content` — is what makes the animation work, so keep it intact.
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/navigation-menu.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/navigation-menu
+```
 
 ## Minimal
 
@@ -139,35 +150,33 @@ function ListItem({
 }
 ```
 
-## Installation
+## About Shadcn Navigation Menu
 
-Add the component by URL — no setup needed:
+**What it is.** `NavigationMenu` (`NavigationMenuList`, `NavigationMenuItem`, `NavigationMenuTrigger`, `NavigationMenuContent`, `NavigationMenuIndicator`) provides animated site navigation with hover/click dropdown panels and a sliding active indicator.
 
-```bash
-npx shadcn@latest add https://avaraui.com/r/navigation-menu.json
-```
+**How it is built.** Context-driven hierarchy (`NavigationMenu` → `NavigationMenuList` → `NavigationMenuItem` → `NavigationMenuTrigger` / `NavigationMenuContent`). Each trigger measures itself when it becomes active, and `NavigationMenuIndicator` slides to that position with a CSS transition. Panels are centred under the `<nav>` element.
 
-Or register the @avara-ui registry once per project and add it by name:
+**When to use it.** Use `NavigationMenu` for top-level site headers and mega-menus. For desktop application command bars, use [Menubar](https://avaraui.com/docs/nextjs/menubar).
 
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/navigation-menu
-```
+## For AI agents
 
-## Features
-Explore the Navigation menu's accessible dropdown features, including hover-delays, animated viewports, and responsive collapsing.
+**When to use**
 
-Easily adapt the component's styling and behavior to fit your application's unique design system.
+- Top-level site navigation bars with animated dropdown viewports and sliding active indicators (`variant="default" | "minimal" | "glass"`)
 
-Built with accessibility in mind, ensuring all users can interact with your application effectively.
+**When not to use**
 
-Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+- Desktop File/Edit/View command bars — use [Menubar](https://avaraui.com/docs/nextjs/menubar)
+- Breadcrumb hierarchy trails — use [Breadcrumb](https://avaraui.com/docs/nextjs/breadcrumb)
 
-Optimized for maximum performance with minimal re-renders and efficient state management.
+**Agent notes**
 
-## Best Practices & Guidelines
-
-Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+- Installs via `navigation-menu` (`@/components/custom/blocks/NavigationMenu`)
+- Keep the `NavigationMenu` → `NavigationMenuList` → `NavigationMenuItem` → `NavigationMenuTrigger` / `NavigationMenuContent` hierarchy intact. Every `NavigationMenuItem` needs a unique `value`, and using these parts outside `NavigationMenu` throws.
+- `NavigationMenuIndicator` only slides to a `NavigationMenuTrigger`. A plain link item (an `<a>` inside a `NavigationMenuItem`) gets no indicator.
+- `color` accepts `"primary"`, `"indigo"`, `"rose"`, `"emerald"`, `"zinc"` or a hex string starting with `#`. Any other name falls back to `"primary"`.
+- Mark the current page with `active` on `NavigationMenuLink`, which also sets `aria-current="page"`.
+- The only npm dependency is `lucide-react`; the item also installs a small `navigation-menu-theme` helper file beside it.
 
 ## Props Reference
 
@@ -177,6 +186,36 @@ Follow standard design principles when implementing this component. Ensure prope
 | `NavigationMenu` | `color` | `"primary" \| "indigo" \| "rose" \| "emerald" \| "zinc" \| string` | `"primary"` | Applies the active color theme to the hover states, soft backgrounds, and the sliding indicator. Fully supports custom hex codes; unrecognised names fall back to `"primary"`. |
 | `NavigationMenuItem` | `value` | `string` | Required | A unique string identifier used by the internal context engine to link the `Trigger` to its specific `Content` dropdown. |
 | `NavigationMenuLink` | `active` | `boolean` | `false` | Manually forces the link into an active state, applying the soft background color of your currently selected theme. |
+
+## Works with other components
+
+- Pair `NavigationMenu` with [Navbar](https://avaraui.com/docs/nextjs/navbar) and [Theme Switcher](https://avaraui.com/docs/nextjs/theme-switcher) in site headers.
+- Use [Menubar](https://avaraui.com/docs/nextjs/menubar) for desktop File/Edit/View command bars instead of site navigation.
+- Add a [Breadcrumb](https://avaraui.com/docs/nextjs/breadcrumb) below the header to show where the current page sits.
+
+## How does variant="minimal" change NavigationMenu?
+
+`variant="minimal"` makes the pill container around `NavigationMenuList` transparent with no border or shadow. The dropdown panels keep their tinted background and shadow, and `NavigationMenuIndicator` still draws a soft highlight behind the active trigger rather than an underline.
+
+## How do I change the NavigationMenu accent color?
+
+Pass `color` to `NavigationMenu`. Use `"primary"`, `"indigo"`, `"rose"`, `"emerald"`, `"zinc"` or a hex string such as `"#0ea5e9"`. It tints the indicator, link hover and the default and minimal panels. Any other name falls back to `"primary"`, which follows your theme token.
+
+## How do I mark the current page in NavigationMenu?
+
+Set `active` on the matching `NavigationMenuLink`. It adds a soft accent background with semibold text, sets `data-active`, and adds `aria-current="page"` so screen readers announce the current link. `NavigationMenu` does not read the router, so you pass `active` yourself.
+
+## Does NavigationMenu work with touch and the keyboard?
+
+Hover opens a panel only for mouse pointers; on touch devices a tap on `NavigationMenuTrigger` toggles it. Focusing a trigger also opens its panel. The component has no Escape handler and no `aria-expanded`, so add those yourself if your design needs them.
+
+## Why does NavigationMenu throw a "must be used within" error?
+
+`NavigationMenuList`, `NavigationMenuTrigger`, `NavigationMenuContent` and `NavigationMenuIndicator` read context from the root and throw when rendered outside `NavigationMenu`. `NavigationMenuTrigger` and `NavigationMenuContent` also throw outside a `NavigationMenuItem`, which supplies the `value` that links them. Wrap the parts in the full hierarchy to fix it.
+
+## When should I pick NavigationMenu instead of Navbar?
+
+Choose `NavigationMenu` when you only need the pill bar with hover dropdown panels and a sliding indicator, and you supply your own header layout. It has no mobile slide-out drawer. Choose [Navbar](https://avaraui.com/docs/nextjs/navbar) when you want a complete header with a built-in mobile drawer.
 
 ---
 

@@ -3,16 +3,12 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("heart-signal");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
-import { Installation } from "@/components/site/installation";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Heart Signal
 
-A slow, ultra-smooth cardiac telemetry and pulse visualization component with 3 distinct animation variants (`ecg-line`, `pulse-heart`, and `cardiac-wave`), live BPM badge, and active theme color integration.
-
-`HeartSignal` brings health monitoring, fitness tracking, medical telemetry, and energetic UI headers to life with 60fps HTML5 Canvas rendering.
-
-<AgentVariants slug="heart-signal" />
+An HTML5 Canvas heartbeat visualizer (`HeartSignal`) with `ecg-line`, `pulse-heart`, and `cardiac-wave` variants, a BPM badge, and theme-aware colours. It animates the `bpm` you pass; it does not read a sensor.
 
 export const usageECG = `import { HeartSignal } from "@/components/custom/blocks/HeartSignalBlock";
 
@@ -56,7 +52,9 @@ export default function CardiacWaveDemo() {
   );
 }`;
 
-<ExampleShowcase minHeight={450} headingLevel={2}
+<ExampleShowcase
+  minHeight={380}
+  headingLevel={2}
   name="heart-signal"
   colorControl
   controls={[
@@ -64,6 +62,7 @@ export default function CardiacWaveDemo() {
     { name: "bpm", label: "Heart Rate (BPM)", min: 40, max: 180, step: 5, defaultValue: 75 },
   ]}
   columns={1}
+  installation={<Installation name="heart-signal" usage="below" />}
   examples={[
     {
       title: "Real-time EKG Waveform Monitor",
@@ -74,24 +73,6 @@ export default function CardiacWaveDemo() {
       usage: usageECG,
       code: extractCode("src/components/custom/blocks/HeartSignalBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="heart-signal" />
-
-## Animation Variants
-
-<ExampleShowcase minHeight={450}
-  name="heart-signal"
-  colorControl
-  controls={[
-    { name: "speed", label: "Animation Speed", min: 0.05, max: 1, step: 0.05, defaultValue: 0.25 },
-    { name: "bpm", label: "Heart Rate (BPM)", min: 40, max: 180, step: 5, defaultValue: 75 },
-  ]}
-  columns={1}
-  examples={[
     {
       title: "Anatomical Cardiac Heart Sweep",
       propNotes: [
@@ -111,22 +92,36 @@ export default function CardiacWaveDemo() {
   ]}
 />
 
-## Features
+## About Shadcn Heart Signal
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="3 Ultra-Smooth Animation Variants">
-    <p>Includes EKG Line Trace, Cardiac Heart Sweep, and Cardiac Wave visualizers.</p>
-  </InfoCard>
-  <InfoCard title="Slow & Calm Rhythm Flow">
-    <p>Features a relaxed, smooth heartbeat waveform flow perfect for clean medical dashboards.</p>
-  </InfoCard>
-  <InfoCard title="Dynamic Theme Adaptive">
-    <p>Automatically resolves active theme primary color (<code>bg-primary</code>) across Light and Dark modes.</p>
-  </InfoCard>
-  <InfoCard title="Full Width & Responsive Height">
-    <p>Scales fluidly to fill 100% of parent container width and height without expanding overflow.</p>
-  </InfoCard>
-</div>
+**What it is.** `HeartSignal` renders live cardiac telemetry visuals in three modes (`ecg-line` P-Q-R-S-T trace, `pulse-heart` anatomical sweep, and `cardiac-wave` multi-lead visualizer) with an optional BPM badge (showing your `bpm` value) and background grid.
+
+**How it is built.** Drawn on an HTML5 Canvas with `requestAnimationFrame`, resizing with its container. It resolves the theme's `--primary` colour (and re-reads it when the theme changes) and uses `useTheme` from `next-themes` to tell light from dark, so the registry item installs that package.
+
+**When to use it.** Use `HeartSignal` in health, fitness, medical telemetry dashboards, or status hero cards.
+
+## For AI agents
+
+<AgentBrief name="heart-signal">
+
+**When to use**
+
+- Health/fitness dashboards, vital-sign cards, and real-time telemetry headers (`ecg-line`, `pulse-heart`, `cardiac-wave`)
+
+**When not to use**
+
+- Standard time-series line/bar charts — use <DocLink to="chart">Chart</DocLink>
+- Simple live status badges — use <DocLink to="live-pulse-pill">Live Pulse Pill</DocLink>
+
+**Agent notes**
+
+- Named export: `import { HeartSignal } from "@/components/custom/blocks/HeartSignalBlock"`
+- Configure `bpm` (default `75`), `speed` (default `0.25`), `showBPM`, and `showGrid`
+- It is a visual only: `bpm` is a number you supply, not a measured value
+- The root is `w-full h-full` with a minimum height of 450px (540px from `sm`, 640px from `lg`); override with `className`
+- There is no `prefers-reduced-motion` handling, so render it conditionally for users who need less motion
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -151,7 +146,7 @@ export default function CardiacWaveDemo() {
         <td><code>bpm</code></td>
         <td><code>number</code></td>
         <td><code>75</code></td>
-        <td>Heart rate pulse frequency in Beats Per Minute.</td>
+        <td>Heart rate in beats per minute. It scales the animation rate and is the number shown in the badge.</td>
       </tr>
       <tr>
         <td><code>speed</code></td>
@@ -172,15 +167,46 @@ export default function CardiacWaveDemo() {
         <td>Renders medical telemetry grid background lines.</td>
       </tr>
       <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Merged onto the root, which has a minimum height of 450px (540px from <code>sm</code>, 640px from <code>lg</code>). Other <code>div</code> attributes are passed through.</td>
+      </tr>
+      <tr>
         <td><code>color</code></td>
         <td><code>string</code></td>
         <td><code>adaptive</code></td>
-        <td>Optional custom stroke & glow color. Matches active theme primary color by default.</td>
+        <td>Stroke and glow colour. Accepts <code>indigo</code>, <code>rose</code>, <code>emerald</code>, <code>zinc</code> or any CSS colour string. Unset, <code>"primary"</code> and <code>"default"</code> follow the theme's <code>--primary</code>.</td>
       </tr>
     </tbody>
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Pair `HeartSignal` inside <DocLink to="card">Card</DocLink> or <DocLink to="counter">Counter</DocLink> health metric tiles.
+- Combine with <DocLink to="live-pulse-pill">Live Pulse Pill</DocLink> to show live sensor/monitoring status.
+- Use <DocLink to="chart">Chart</DocLink> beside it for the history that a decorative waveform cannot show.
+
+## Does HeartSignal read real heart-rate data?
+
+No. `HeartSignal` draws a synthetic waveform from the `bpm` and `speed` you pass and prints your `bpm` in the badge. To show live readings, feed it the latest value from your sensor or API as `bpm`. It is a visual, not a medical instrument.
+
+## How do I change the HeartSignal beat rate?
+
+Change `bpm` and `speed`, which both scale how fast the trace moves, so raising either speeds it up. The defaults are `75` and `0.25`. Because `bpm` is also the number in the badge, set it to the value you want people to read.
+
+## How do I change the HeartSignal colour?
+
+Pass `color` as `indigo`, `rose`, `emerald`, `zinc` or any CSS colour string. Leave it unset, or use `"primary"`, to follow your theme's `--primary`, which the component re-reads when the theme switches. The stroke, glow and badge dot use that colour.
+
+## How do I resize HeartSignal or hide the badge and grid?
+
+It fills its container with a minimum height of 450px, 540px from `sm` and 640px from `lg`; override that with `className`. Set `showBPM={false}` to remove the badge and `showGrid={false}` to remove the background grid lines.
+
+## Does HeartSignal need Next.js, and does it respect reduced motion?
+
+It imports `useTheme` from `next-themes`, which the registry item installs, and has no `next/*` imports. In Vite, wrap the app in a next-themes `ThemeProvider` so dark mode is detected. The canvas runs continuously with no `prefers-reduced-motion` check, so render it conditionally if needed.
 
 <DocsJsonLd slug="heart-signal" />
+<FaqJsonLd slug="heart-signal" />

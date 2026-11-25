@@ -13,7 +13,9 @@ import { OtherFrameworkGuide } from './components/site/other-framework-guide';
 import { RegistryConfig } from './components/site/registry-config';
 import { PageIndex } from './components/site/page-index';
 import { InfoCard } from './components/site/info-card';
+import { AgentBrief } from './components/site/agent-brief';
 import { AgentVariants } from './components/site/agent-variants';
+import { PropsTable } from './components/site/props-table';
 import { SkillInstall } from './components/site/agent-skill-install';
 import {
   PackageManagerTabs as PMTabs,
@@ -349,7 +351,9 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     SkillInstall,
     PageIndex,
     InfoCard,
+    AgentBrief,
     AgentVariants,
+    PropsTable,
     PMTabs,
     PMTabContent,
     NPMTabContent,

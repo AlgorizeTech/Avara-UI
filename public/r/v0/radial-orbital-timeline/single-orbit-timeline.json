@@ -3,7 +3,7 @@
   "name": "radial-orbital-timeline-single-orbit-timeline",
   "type": "registry:block",
   "title": "Radial Orbital Timeline — Single Orbit Timeline",
-  "description": "Pass `orbitCount={1}` to render a clean single circular orbit ring.",
+  "description": "The \"Single Orbit Timeline\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

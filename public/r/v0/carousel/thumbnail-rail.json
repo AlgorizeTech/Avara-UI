@@ -3,7 +3,7 @@
   "name": "carousel-thumbnail-rail",
   "type": "registry:block",
   "title": "Carousel — Thumbnail rail",
-  "description": "`CustomCarousel` adds a clickable thumbnail strip.",
+  "description": "The \"Thumbnail rail\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

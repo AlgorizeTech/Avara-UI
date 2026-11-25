@@ -3,7 +3,7 @@
   "name": "scroll-split-cards-default",
   "type": "registry:block",
   "title": "Scroll Split Cards — Default",
-  "description": "The default scroll mode, with built-in spring physics. No speed props needed.",
+  "description": "The \"Default\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

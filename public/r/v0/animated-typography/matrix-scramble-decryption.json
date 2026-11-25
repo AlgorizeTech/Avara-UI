@@ -3,7 +3,7 @@
   "name": "animated-typography-matrix-scramble-decryption",
   "type": "registry:block",
   "title": "Animated Typography — Matrix Scramble Decryption",
-  "description": "Cyberpunk symbol scrambling effect resolving to crisp text.",
+  "description": "The \"Matrix Scramble Decryption\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

@@ -74,7 +74,7 @@ export default function CardDemo({
           : undefined
       }
       className={cn(
-        "w-full flex items-center justify-center min-h-[400px] relative z-10",
+        "w-full flex items-center justify-center relative z-10",
         layout === "project-showcase"
           ? "pt-[12px] pb-[12px] pl-[12px] pr-0 overflow-visible"
           : "p-4 overflow-hidden",

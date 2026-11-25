@@ -3,7 +3,7 @@
   "name": "gallery-motion-3d-pill-carousel",
   "type": "registry:block",
   "title": "Gallery — 3D Pill Carousel",
-  "description": "Layered diagonal pill-shaped cards with 3D depth, click-to-focus and keyboard navigation.",
+  "description": "The \"3D Pill Carousel\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

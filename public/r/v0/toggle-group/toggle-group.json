@@ -3,7 +3,7 @@
   "name": "toggle-group-toggle-group",
   "type": "registry:block",
   "title": "Toggle Group",
-  "description": "Single selection — exactly one item stays active at a time.",
+  "description": "The \"Toggle Group\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -3,7 +3,7 @@
   "name": "animated-typography-blur-swap",
   "type": "registry:block",
   "title": "Animated Typography — Blur Swap",
-  "description": "The outgoing word lifts away into a blur as the next sharpens out of one, as in the Hero Carousel headline.",
+  "description": "The \"Blur Swap\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

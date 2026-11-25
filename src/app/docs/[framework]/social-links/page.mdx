@@ -4,14 +4,11 @@ export const metadata = docsPageMetadata("social-links");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Social Links
 
-A row of brand marks that link out. Hand it the networks you have — X, GitHub, LinkedIn, YouTube, Instagram, Facebook, Discord, Dribbble, email — and it draws one tile per link, each with an accessible name, opening off-site links in a new tab.
-
-The marks are inline SVG rather than an icon-library import, so the component keeps working whichever icon package (or version of it) a project has installed. It is the social row in every <DocLink to="footer">Footer</DocLink> variant, and fits just as well on a profile card or under an author's name.
-
-<AgentVariants slug="social-links" />
+A row of inline-SVG brand tiles (`SocialLinks`, `SocialLink`) with expandable share-reveal variants, accessible labels, and safe external link handling.
 
 export const usageRow = `import { SocialLinks } from "@/components/custom/blocks/SocialLinksBlock";
 
@@ -127,14 +124,16 @@ export default function ExpandReplaceShareButton() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase
+  headingLevel={2}
   name="social-links"
   colorControl={false}
   columns={1}
+  installation={<Installation name="social-links" usage="below" />}
   examples={[
     {
       title: "Follow row",
-      subheading: "The five networks a footer usually carries, as soft tiles that take the primary colour on hover.",
+      description: "The five networks a footer usually carries, as soft tiles that take the primary colour on hover.",
       propNotes: [
         {
           prop: "links",
@@ -152,23 +151,9 @@ export default function ExpandReplaceShareButton() {
       code: extractCode("src/components/custom/blocks/SocialLinksBlock.tsx"),
       minHeight: 180,
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="social-links" />
-
-## Examples
-
-<ExampleShowcase
-  name="social-links"
-  colorControl={false}
-  columns={1}
-  examples={[
     {
       title: "Expand and replace share button (Trigger hides on hover)",
-      subheading: "Share trigger button hides on hover, with social link icons revealing directly from the trigger position in 4 directions.",
+      description: "Share trigger button hides on hover, with social link icons revealing directly from the trigger position in 4 directions.",
       propNotes: [
         {
           prop: "variant",
@@ -189,7 +174,7 @@ export default function ExpandReplaceShareButton() {
     },
     {
       title: "Expandable 4-directional share buttons",
-      subheading: "Icon-only share button trigger that animates social icons expanding smoothly in 4 directions: top, right, left, or bottom.",
+      description: "Icon-only share button trigger that animates social icons expanding smoothly in 4 directions: top, right, left, or bottom.",
       propNotes: [
         {
           prop: "variant",
@@ -210,7 +195,7 @@ export default function ExpandReplaceShareButton() {
     },
     {
       title: "Every network, outlined",
-      subheading: "All nine networks at the large size on the outline surface.",
+      description: "All nine networks at the large size on the outline surface.",
       propNotes: [
         {
           prop: "variant",
@@ -231,7 +216,7 @@ export default function ExpandReplaceShareButton() {
     },
     {
       title: "Author byline",
-      subheading: "Small ghost tiles under a name, with a label per link so a screen reader says whose profile it is.",
+      description: "Small ghost tiles under a name, with a label per link so a screen reader says whose profile it is.",
       propNotes: [
         {
           prop: "label",
@@ -251,22 +236,32 @@ export default function ExpandReplaceShareButton() {
   ]}
 />
 
-## Features
+## About Shadcn Social Links
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="No icon package">
-    <p>Brand marks are inline SVG. Lucide dropped its brand icons, so this never breaks when an icon library updates.</p>
-  </InfoCard>
-  <InfoCard title="Named for screen readers">
-    <p>Every tile carries an aria-label and title — the network's name by default, or whatever label you pass — and a visible focus ring.</p>
-  </InfoCard>
-  <InfoCard title="Safe off-site links">
-    <p>External links open in a new tab with noopener noreferrer. Email links stay in place, because a new tab for mailto is just an empty tab.</p>
-  </InfoCard>
-  <InfoCard title="Works with your router">
-    <p>Pass linkComponent={"{Link}"} from next/link when some hrefs are internal; a plain anchor is the default so it runs anywhere.</p>
-  </InfoCard>
-</div>
+**What it is.** `SocialLinks` (and single `SocialLink`) renders inline-SVG brand tiles for X, GitHub, LinkedIn, YouTube, Instagram, Facebook, Discord, Dribbble, and email across `tile`, `outline`, `ghost`, `expand-reveal`, and `expand-replace` variants.
+
+**How it is built.** Uses bundled inline SVGs (no icon-library dependency), adds `aria-label` and `title` per tile, and opens external links in a new tab with `rel="noopener noreferrer"` while leaving `mailto:` links in place.
+
+**When to use it.** Use `SocialLinks` in footers, author bylines, profile cards, and compact hover-to-share triggers.
+
+## For AI agents
+
+<AgentBrief name="social-links">
+
+**When to use**
+
+- Footer social rows (`variant="tile"`), author bylines (`variant="ghost"`), or hover-to-expand share buttons (`variant="expand-reveal"` / `"expand-replace"`)
+
+**When not to use**
+
+- OAuth sign-in buttons with text labels — use <DocLink to="button">Button</DocLink> (`variant="auth-social"`)
+
+**Agent notes**
+
+- Named exports: `SocialLinks`, `SocialLink` from `@/components/custom/blocks/SocialLinksBlock`
+- Pass `linkComponent={Link}` from `next/link` when routing internal links; `external` defaults to `true`
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -354,6 +349,30 @@ export default function ExpandReplaceShareButton() {
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Used inside <DocLink to="footer">Footer</DocLink> and <DocLink to="profile-card">Profile Card</DocLink> layouts.
+- Pair with <DocLink to="tooltip">Tooltip</DocLink> or <DocLink to="copy-button">Copy Button</DocLink> in author/profile headers.
+
+## How do I add social media icons to a React site?
+
+Pass a `links` array to `SocialLinks`, one entry per network, in the order you want them shown. It covers X, GitHub, LinkedIn, YouTube, Instagram, Facebook, Discord, Dribbble and email. Each is an inline SVG, so no icon font is loaded.
+
+## Does SocialLinks require Lucide or another icon package?
+
+No. All nine network marks are bundled as inline SVGs, so icon-library updates never break your social links. The only Lucide import is the `Mail` icon for the email link, so brand logos never depend on the package.
+
+## How do I use Next.js Link for internal social routes?
+
+Pass `linkComponent={Link}` from `next/link` and set `external={false}` when your `links` include internal URLs. The default element is a plain `a`, which keeps the component free of any `next/*` import so it also works in Vite.
+
+## How do I change the style and size of the icons?
+
+Use `variant` with `"tile"`, `"outline"` or `"ghost"`, which are a soft fill, a border, or nothing until hover. `size` accepts `"sm"`, `"md"` or `"lg"`, which render at 32, 40 or 48px. Other props are spread onto the row element.
+
+## Do social links open in a new tab safely?
+
+Yes. `external` defaults to `true`, which opens links in a new tab with `rel="noopener noreferrer"`. `mailto:` links are exempt from that behaviour. Set `external={false}` for same-tab navigation to pages on your own site.
 
 <DocsJsonLd slug="social-links" />
+<FaqJsonLd slug="social-links" />

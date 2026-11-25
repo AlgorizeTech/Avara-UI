@@ -3,11 +3,12 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("avatar-stack");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Avatar Stack
 
-An avatar stack: a row of overlapping faces — the "people who…" cue under a headline, beside a count, or next to a join button. It shows up to `max` faces, folds the rest into a "+N" disc, and takes an optional trailing `action` that shares the stack's size. On hover the faces fan apart a little, so the row answers the pointer without turning into a carousel.
+A row of overlapping avatars that folds extra faces into a +N disc, with an optional trailing action.
 
 Several sections used to hand-roll this row; <DocLink to="hero#fashion-hero">Fashion Hero</DocLink> uses this one.
 
@@ -255,10 +256,11 @@ export default function AvatarGroupDemo() {
   name="avatar-stack"
   colorControl={false}
   columns={1}
+  installation={<Installation name="avatar-stack" usage="below" />}
   examples={[
     {
       title: "Avatar Group (Shift on hover)",
-      subheading: "Overlapping faces that shift upward on a spring when hovered, with a tooltip that glides between them.",
+      description: "Overlapping faces that shift upward on a spring when hovered, with a tooltip that glides between them.",
       propNotes: [
         {
           prop: "variant",
@@ -276,23 +278,9 @@ export default function AvatarGroupDemo() {
       code: extractCode("src/components/custom/blocks/AvatarStackBlock.tsx"),
       minHeight: 170,
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="avatar-stack" />
-
-## Examples
-
-<ExampleShowcase
-  name="avatar-stack"
-  colorControl={false}
-  columns={1}
-  examples={[
     {
       title: "Without tooltip",
-      subheading: "A clean row of overlapping faces that zoom on hover, with no tooltip.",
+      description: "A clean row of overlapping faces that zoom on hover, with no tooltip.",
       propNotes: [
         {
           prop: "type",
@@ -306,7 +294,7 @@ export default function AvatarGroupDemo() {
     },
     {
       title: "With tooltip (Zoom on hover)",
-      subheading: "Hovering a face zooms it upward and shows its name in a tooltip.",
+      description: "Hovering a face zooms it upward and shows its name in a tooltip.",
       propNotes: [
         {
           prop: "type",
@@ -320,7 +308,7 @@ export default function AvatarGroupDemo() {
     },
     {
       title: "With tooltip arrow (Zoom on hover)",
-      subheading: "The same tooltip with a pointer arrow and a spring popup.",
+      description: "The same tooltip with a pointer arrow and a spring popup.",
       propNotes: [
         {
           prop: "type",
@@ -334,7 +322,7 @@ export default function AvatarGroupDemo() {
     },
     {
       title: "Spread on hover (Expand width)",
-      subheading: "Hovering the stack fans the faces out from the centre and lifts the hovered one, without zooming.",
+      description: "Hovering the stack fans the faces out from the centre and lifts the hovered one, without zooming.",
       propNotes: [
         {
           prop: "variant",
@@ -348,7 +336,7 @@ export default function AvatarGroupDemo() {
     },
     {
       title: "Spread with tooltip",
-      subheading: "The spread fan-out with a floating name tooltip above the hovered face.",
+      description: "The spread fan-out with a floating name tooltip above the hovered face.",
       propNotes: [
         {
           prop: "type",
@@ -362,7 +350,7 @@ export default function AvatarGroupDemo() {
     },
     {
       title: "Spread with tooltip arrow",
-      subheading: "The spread fan-out with a pointer-arrow tooltip.",
+      description: "The spread fan-out with a pointer-arrow tooltip.",
       propNotes: [
         {
           prop: "type",
@@ -376,7 +364,7 @@ export default function AvatarGroupDemo() {
     },
     {
       title: "With an action",
-      subheading: "Three faces with tooltips and a trailing + button.",
+      description: "Three faces with tooltips and a trailing + button.",
       propNotes: [
         {
           prop: "action",
@@ -390,7 +378,7 @@ export default function AvatarGroupDemo() {
     },
     {
       title: "Folded count",
-      subheading: "Six people, three shown; the rest fold into a clickable +3 disc.",
+      description: "Six people, three shown; the rest fold into a clickable +3 disc.",
       propNotes: [
         {
           prop: "max",
@@ -409,7 +397,7 @@ export default function AvatarGroupDemo() {
     },
     {
       title: "Sizes",
-      subheading: "sm, md and lg are 28, 36 and 44 pixels, each paired here with a different tooltip style.",
+      description: "sm, md and lg are 28, 36 and 44 pixels, each paired here with a different tooltip style.",
       propNotes: [
         {
           prop: "size",
@@ -427,23 +415,37 @@ export default function AvatarGroupDemo() {
   ]}
 />
 
-## Best Practices & Guidelines
+## About Shadcn Avatar Stack
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Optimal Avatar Count">
-    <p>Limit visible avatars to 3–5 items using the <code>max</code> prop. Folding excess avatars into a <code>+N</code> counter keeps your layout balanced, avoids horizontal overflow on mobile screens, and maintains clean visual hierarchy.</p>
-  </InfoCard>
-  <InfoCard title="Smooth Hover Motion">
-    <p>When enabling <code>spreadOnHover</code>, keep <code>spreadDistance</code> subtle (4–8px) and <code>transitionDuration</code> around 500ms. Pair with <code>translate="-30%"</code> to gently elevate the hovered avatar above its neighbors without jarring layout shifts.</p>
-  </InfoCard>
-  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Tooltip Accessibility & Text Alignment</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Always provide accessible <code>alt</code> or <code>name</code> attributes for every avatar. When a <code>designation</code> or subtitle is provided, tooltips automatically align text to the left; otherwise, titles stay cleanly centered for single-line labels.</p>
-  </div>
-  <InfoCard title="Ring Contrast & Background Matching">
-    <p>Ensure <code>ringClassName</code> matches the surface the avatars rest upon (defaults to <code>ring-background</code>). A matching border ring creates clean visual separation between overlapping faces in both light and dark modes.</p>
-  </InfoCard>
-</div>
+**What it is.** `AvatarStack` shows a row of overlapping avatars from an `avatars` array, folds the extra ones into a `+N` disc, and can end with a `+` action button. `AvatarGroup` is the composable version, where you place `Avatar` children yourself.
+
+**How it is built.** `variant` picks the hover style: `shift` lifts a face with a spring, `spread` fans the row apart, and `default` and `zoom` scale the hovered face up. `type` controls the tooltip, and `ringClassName` sets the gap colour between faces. It uses Radix Avatar and the Tooltip item from this library.
+
+**When to use it.** Use it for collaborator rows, social proof under a hero headline, active viewer indicators and team assignment pills.
+
+## For AI agents
+
+<AgentBrief name="avatar-stack">
+
+**When to use**
+
+- Collaborator rows, social proof under hero headlines
+- Active viewer indicators, team assignment pills
+
+**When not to use**
+
+- A single person with name, role and details: use <DocLink to="profile-card">Profile Card</DocLink>
+- Showing relationships between people or agents: use <DocLink to="user-graph">User Graph</DocLink>
+
+**Agent notes**
+
+- Named exports `AvatarStack` (also the default export), `AvatarGroup`, `Avatar`, `AvatarGroupTooltip`, `AvatarImage` and `AvatarFallback` from `@/components/custom/blocks/AvatarStackBlock`.
+- `AvatarStack` takes `avatars` (`{ src, alt?, name?, designation?, role?, tooltip?, fallback? }[]`), `variant` (`"default" | "shift" | "zoom" | "spread"`), `type` (`"default" | "tooltip" | "tooltip-arrow"`), `size` (`"sm" | "md" | "lg" | "xl"`), `max`, `onMoreClick`, `action` and `ringClassName`.
+- `max` folds the rest into a `+N` disc; `onMoreClick(restCount, hiddenAvatars, event)` runs when it is clicked. Without `max`, every avatar shows.
+- Set `ringClassName` (default `ring-background`) to the surface behind the stack so the gaps match.
+- Give each avatar a unique `src`, because the stack uses it as the React key.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -558,7 +560,7 @@ export default function AvatarGroupDemo() {
       <tr>
         <td><code>spreadOnHover</code></td>
         <td><code>boolean</code></td>
-        <td><code>true</code></td>
+        <td><code>true</code> for <code>spread</code>, otherwise <code>false</code></td>
         <td>Whether faces smoothly fan apart slightly when the stack is hovered.</td>
       </tr>
       <tr>
@@ -570,7 +572,7 @@ export default function AvatarGroupDemo() {
       <tr>
         <td><code>translate</code></td>
         <td><code>string | number</code></td>
-        <td><code>"-30%"</code></td>
+        <td><code>"-30%"</code> for <code>shift</code> and <code>spread</code>, otherwise none</td>
         <td>Vertical displacement of an avatar when hovered (e.g. <code>"-30%"</code>).</td>
       </tr>
       <tr>
@@ -582,7 +584,7 @@ export default function AvatarGroupDemo() {
       <tr>
         <td><code>liftOnHover</code></td>
         <td><code>boolean</code></td>
-        <td><code>true</code></td>
+        <td><code>true</code> except for <code>spread</code></td>
         <td>Whether the hovered face rises above neighbours and scales up slightly.</td>
       </tr>
       <tr>
@@ -601,6 +603,35 @@ export default function AvatarGroupDemo() {
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- <DocLink to="tooltip">Tooltip</DocLink> is the tooltip `AvatarStack` uses for its hover labels, so the two share one look.
+- <DocLink to="profile-card">Profile Card</DocLink> for the fuller person detail you show after a click on one face.
+- <DocLink to="user-graph">User Graph</DocLink> when the people need to be linked to agents or tools, not just listed.
+
+## How do I handle clicks on the `+N` overflow disc?
+
+Pass `onMoreClick`. It receives `(restCount, hiddenAvatars, event)`, where `hiddenAvatars` is the array of faces folded away, so you can open a modal, popover or team list. The disc only appears when `max` is lower than the number of avatars; without `onMoreClick` it does nothing.
+
+## How do I match the avatar border gap to a colored card?
+
+Set `ringClassName` to the surface behind the stack, for example `ring-card` or `ring-muted`. The default is `ring-background`. The same class colours the `+N` disc and the default action button, so on a tinted card all the gaps between faces stay consistent.
+
+## How do I add a trailing plus button to AvatarStack?
+
+Pass `action`. A function becomes the button's click handler, `{ onClick, label }` adds an accessible label (the default is "Join the community"), `true` renders the button with no handler, and a React element replaces the button entirely. The button is the same size as the avatars.
+
+## What is the difference between the shift, zoom and spread variants of AvatarStack?
+
+`shift` lifts the hovered face upward with a spring, using `AvatarGroup`. `spread` fans the whole row apart on hover and raises the hovered face. `default` and `zoom` scale the hovered face up by about 15% with no spread. `spread` and `shift` also default `translate` to `-30%`.
+
+## How do I show names and roles in AvatarStack tooltips?
+
+Add `name` to each item in `avatars`, plus `designation` or `role` for a second line. The tooltip falls back to `alt` or `tooltip` when there is no `name`. Turn tooltips off with `type="default"` or `showTooltip={false}`, and add an arrow with `type="tooltip-arrow"` (not in the `shift` variant).
+
+## What does AvatarStack depend on, and does it run in Vite?
+
+It runs in Vite and Next.js, with no `next/*` imports. The install adds `@radix-ui/react-avatar` and `lucide-react`, and pulls in the library's Tooltip and Avatar items plus a small `animate` helper that handles `prefers-reduced-motion` for the `shift` spring.
 
 <DocsJsonLd slug="avatar-stack" />
+<FaqJsonLd slug="avatar-stack" />

@@ -3,7 +3,7 @@
   "name": "card-stack-motion-infinite-loop",
   "type": "registry:block",
   "title": "Card Stack — Infinite Loop",
-  "description": "Continuous cyclical navigation where swiping cards seamlessly wraps around to the beginning with no header.",
+  "description": "The \"Infinite Loop\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

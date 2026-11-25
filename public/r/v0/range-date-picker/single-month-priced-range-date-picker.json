@@ -3,7 +3,7 @@
   "name": "range-date-picker-single-month-priced-range-date-picker",
   "type": "registry:block",
   "title": "Range Date Picker — Single Month Priced Range Date Picker",
-  "description": "Single calendar layout displaying dynamic rate prices ($100, $120) below date numbers.",
+  "description": "The \"Single Month Priced Range Date Picker\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

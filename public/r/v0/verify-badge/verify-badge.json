@@ -3,7 +3,7 @@
   "name": "verify-badge-verify-badge",
   "type": "registry:block",
   "title": "Verify Badge",
-  "description": "A verified marker sitting beside a display name.",
+  "description": "The \"Verify Badge\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

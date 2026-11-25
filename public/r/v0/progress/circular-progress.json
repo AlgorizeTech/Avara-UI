@@ -3,7 +3,7 @@
   "name": "progress-circular-progress",
   "type": "registry:block",
   "title": "Progress — Circular progress",
-  "description": "The same value, drawn as a ring.",
+  "description": "The \"Circular progress\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

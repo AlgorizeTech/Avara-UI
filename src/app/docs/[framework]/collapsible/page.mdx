@@ -4,16 +4,11 @@ export const metadata = docsPageMetadata("collapsible");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Collapsible
 
-An interactive component which expands/collapses a panel.
-
-Traditional collapsible components rely on Javascript (like `Element.scrollHeight`) to calculate the exact height of the content before animating it. This causes layout thrashing and stuttering.
-
-The `CollapsibleBlock` is **100% dependency-free** and utilizes a modern CSS grid trick (`grid-template-rows: 0fr` transitioning to `1fr`) to handle dynamic height animations natively in the browser. This guarantees perfect 60fps performance without writing any Javascript measuring logic.
-
-From a bare disclosure to a nested file tree — the same three parts every time.
+A dependency-free disclosure panel (`Collapsible`, `CollapsibleTrigger`, `CollapsibleContent`) animated via CSS Grid `0fr` → `1fr` transitions with free nesting.
 
 export const usageSettings = `import {
   Collapsible,
@@ -222,6 +217,7 @@ export default function FileTree() {
   name="collapsible"
   colorControl
   columns={1}
+  installation={<Installation name="collapsible" usage="below" />}
   examples={[
     {
       title: "Settings panel",
@@ -236,23 +232,9 @@ export default function FileTree() {
       usage: usageSettings,
       code: extractCode("src/components/custom/blocks/CollapsibleBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="collapsible" />
-
-## Examples
-
-<ExampleShowcase minHeight={290}
-  name="collapsible"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "File tree",
-      subheading: "Collapsibles nest freely; each level keeps its own open state.",
+      description: "Collapsibles nest freely; each level keeps its own open state.",
       propNotes: [
         {
           prop: "defaultOpen",
@@ -265,31 +247,34 @@ export default function FileTree() {
   ]}
 />
 
-## Features
-Discover the Collapsible component's accessible disclosure patterns and smooth height transitions for hiding detailed content.
+## About Shadcn Collapsible
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**What it is.** `Collapsible`, `CollapsibleTrigger`, and `CollapsibleContent` provide a composable expand/collapse disclosure panel that can be nested to any depth (for example, file trees and settings drawers).
 
-## Best Practices & Guidelines
+**How it is built.** `CollapsibleContent` switches between the Tailwind classes `grid-rows-[0fr]` and `grid-rows-[1fr]` with a 200 ms transition that also fades opacity, so no height is measured in JavaScript and no animation library is needed. It only depends on the shadcn `utils` helper (`cn`).
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `Collapsible` for single disclosures or nested file trees. For coordinated multi-item FAQ lists, use <DocLink to="accordion">Accordion</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="collapsible">
+
+**When to use**
+
+- Single expandable panels, advanced-settings disclosures, or nested file trees (`defaultOpen` per level)
+
+**When not to use**
+
+- Multi-item FAQ or exclusive-open sections — use <DocLink to="accordion">Accordion</DocLink>
+
+**Agent notes**
+
+- Named exports: `Collapsible`, `CollapsibleTrigger`, `CollapsibleContent` from `@/components/custom/blocks/CollapsibleBlock`
+- `CollapsibleTrigger` and `CollapsibleContent` read the root's context and throw if rendered outside a `Collapsible`.
+- Closed content stays mounted: `CollapsibleContent` only sets `aria-hidden` and collapses its height, so lazy-load heavy children yourself.
+- Style the open state with the `data-state="open"` / `"closed"` attribute that the root, trigger and content all carry; the trigger also sets `aria-expanded`.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -397,6 +382,34 @@ Discover the Collapsible component's accessible disclosure patterns and smooth h
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Pair `Collapsible` inside <DocLink to="card">Card</DocLink> or <DocLink to="sidebar">Sidebar</DocLink> navigation trees.
+- Use <DocLink to="accordion">Accordion</DocLink> when you want a styled multi-row FAQ list.
+
+## Can Collapsible panels be nested inside each other?
+
+Yes. Each `Collapsible` creates its own context and open state, from `defaultOpen` or the controlled `open` prop. A `CollapsibleTrigger` therefore only toggles its nearest parent `Collapsible`, so a file tree can expand a child folder without opening or closing its parent.
+
+## How do I control a Collapsible from my own state?
+
+Pass `open` together with `onOpenChange`. Once `open` is defined the component is controlled and never updates itself, so the panel only moves when your handler changes the value. Leave `open` undefined and set `defaultOpen` for the uncontrolled mode, where the root keeps its own state.
+
+## How do I change the trigger label or icon when the panel is open?
+
+Style from the `data-state` attribute. The trigger and the root both carry `data-state="open"` or `"closed"`, so a class such as `group-data-[state=open]:rotate-90` on a chevron inside a `group` trigger works without any state of your own. The trigger also sets `aria-expanded` for assistive technology.
+
+## What happens to the content when a Collapsible is closed?
+
+It stays in the DOM. `CollapsibleContent` keeps its children mounted and only collapses the grid row to `0fr`, fades opacity to 0 and sets `aria-hidden`. Inputs or links inside a closed panel can still receive keyboard focus, so avoid placing focusable controls there or render them conditionally.
+
+## What does the disabled prop do on Collapsible?
+
+It blocks toggling. With `disabled` on the root, the trigger renders as a disabled button at 50% opacity and `onOpenChange` is not called, even in controlled mode. The root and trigger also expose `data-disabled`, so you can style that state. It does not force the panel open or closed.
+
+## Does Collapsible need Next.js or extra packages?
+
+No. The file has no `next/*` imports and installs only through the shadcn `utils` registry item, with no npm dependencies of its own, so it works in Vite and any other React app. It is marked `"use client"`, which Next.js needs because it uses state and context.
 
 <DocsJsonLd slug="collapsible" />
+<FaqJsonLd slug="collapsible" />

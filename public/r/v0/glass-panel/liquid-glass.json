@@ -3,7 +3,7 @@
   "name": "glass-panel-liquid-glass",
   "type": "registry:block",
   "title": "Glass Panel — Liquid glass",
-  "description": "The same layout inside a liquid-glass refraction surface with pure white glass elements.",
+  "description": "The \"Liquid glass\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

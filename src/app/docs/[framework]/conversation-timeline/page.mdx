@@ -2,6 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 export const metadata = docsPageMetadata("conversation-timeline", {
   title: "Conversation Timeline",
@@ -10,9 +11,7 @@ export const metadata = docsPageMetadata("conversation-timeline", {
 
 # Shadcn Conversation Timeline
 
-A dense rail of thin marks, one per message, that expands into a labelled list on hover.
-
-At rest it is a compact stack of hairlines: a minimap of the whole conversation that takes almost no room beside a chat. Hover the rail (or Tab into it) and every row grows at once while the labels fade in; click any mark to select it. Only `height` animates, so the rail never resizes sideways. On touch devices, where there is no hover, it stays expanded.
+A compact message minimap rail (`ConversationTimeline`) that expands on hover or focus into a labelled checkpoint list without shifting layout width.
 
 export const usageDefault = `"use client";
 
@@ -176,10 +175,11 @@ export default function ChatWithMinimap() {
   name="conversation-timeline"
   colorControl
   columns={1}
+  installation={<Installation name="conversation-timeline" usage="below" />}
   examples={[
     {
       title: "Conversation Timeline",
-      subheading: "Hover the rail (or Tab into it) to expand every row at once. Then hover a specific row for its extra emphasis, and click a mark to select it.",
+      description: "Hover the rail (or Tab into it) to expand every row at once. Then hover a specific row for its extra emphasis, and click a mark to select it.",
       propNotes: [
         {
           prop: "checkpoints",
@@ -196,20 +196,6 @@ export default function ChatWithMinimap() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ConversationTimelineBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="conversation-timeline" />
-
-## Examples
-
-<ExampleShowcase minHeight={240}
-  name="conversation-timeline"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Left side",
       propNotes: [
@@ -231,7 +217,7 @@ export default function ChatWithMinimap() {
     },
     {
       title: "Paired with a chat",
-      subheading: "The rail as a minimap — clicking a mark scrolls that message into view, and clicking a message moves the mark.",
+      description: "The rail as a minimap — clicking a mark scrolls that message into view, and clicking a message moves the mark.",
       propNotes: [
         {
           prop: "onSelect",
@@ -265,7 +251,7 @@ export default function ChatWithMinimap() {
   examples={[
     {
       title: "Density",
-      subheading: "Drag the sliders, then hover the rail to see the new sizes.",
+      description: "Drag the sliders, then hover the rail to see the new sizes.",
       propNotes: [
         {
           prop: "rowHeight",
@@ -284,35 +270,35 @@ export default function ChatWithMinimap() {
   ]}
 />
 
-## Features
-Discover the Conversation Timeline's capabilities as a minimap for long conversations.
+## About Shadcn Conversation Timeline
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="One property animates">
-    <p>Only row <code>height</code> transitions; the mark length, gap and label width are fixed, so the rail never shifts sideways and hover can never nudge the marks.</p>
-  </InfoCard>
-  <InfoCard title="Scroll stays put">
-    <p>While rows grow from 10px to 24px the rail re-anchors to the row at the top every frame, so a scrolled list expands in place instead of jumping.</p>
-  </InfoCard>
-  <InfoCard title="Touch and keyboard">
-    <p>Without hover the rail stays expanded so labels remain reachable; focus expands it too, and every mark is a real button with an accessible name.</p>
-  </InfoCard>
-  <InfoCard title="Respects reduced motion">
-    <p>Every transition is dropped under <code>prefers-reduced-motion</code>; the rail simply snaps between its two states.</p>
-  </InfoCard>
-</div>
+**What it is.** `ConversationTimeline` renders a compact hairline minimap for long conversations that expands on hover or keyboard focus into a labelled list of checkpoints (`side="right" | "left"`, `showLabels`, `visibleCount`, `rowHeight`, `collapsedRowHeight`).
 
-## Best Practices & Guidelines
+**How it is built.** Animates only row `height` while re-anchoring scroll position each frame so a scrolled list expands in place without jumping, stays expanded on touch devices, and snaps cleanly under `prefers-reduced-motion`.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Keep labels short">
-    <p>Labels truncate at <code>labelWidth</code>. Use the first line of a message or a summary rather than the full text.</p>
-  </InfoCard>
-  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Leave room to expand</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">The rail's height grows from <code>visibleCount × collapsedRowHeight</code> to <code>visibleCount × rowHeight</code> on hover. Place it where that growth won't push other content around.</p>
-  </div>
-</div>
+**When to use it.** Use `ConversationTimeline` beside long AI or support chat threads so users can jump between turns. For document section outlines, use <DocLink to="table-of-contents">Table of Contents</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="conversation-timeline">
+
+**When to use**
+
+- Hover-expanding message minimap rails beside long <DocLink to="ai-chat">AI Chat</DocLink> or <DocLink to="chat">Chat</DocLink> threads
+
+**When not to use**
+
+- Document heading outlines — use <DocLink to="table-of-contents">Table of Contents</DocLink>
+- Chronological event feeds — use <DocLink to="timeline">Timeline</DocLink>
+
+**Agent notes**
+
+- Named export from `@/components/custom/blocks/ConversationTimelineBlock`
+- Pass `checkpoints` (`{ id, label, role? }[]`), `activeId`, and `onSelect(id)` to scroll or highlight the target message
+- The rail is controlled: it never scrolls the chat or sets `activeId` itself, so keep `activeId` in your own state
+- `role` and `sublabel` on a checkpoint are not rendered by the rail; only `label` is shown
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -369,7 +355,7 @@ Discover the Conversation Timeline's capabilities as a minimap for long conversa
         <td><code>visibleCount</code></td>
         <td><code>number</code></td>
         <td><code>10</code></td>
-        <td>Rows visible before scrolling; the rail's height is <code>visibleCount × rowHeight</code>.</td>
+        <td>Rows visible before scrolling. The rail's maximum height is <code>visibleCount × rowHeight</code> when expanded and <code>visibleCount × collapsedRowHeight</code> at rest.</td>
       </tr>
       <tr>
         <td><code>labelWidth</code></td>
@@ -435,6 +421,35 @@ Discover the Conversation Timeline's capabilities as a minimap for long conversa
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Pair `ConversationTimeline` beside <DocLink to="ai-chat">AI Chat</DocLink> or <DocLink to="chat">Chat</DocLink> threads to jump between messages.
+- Use <DocLink to="table-of-contents">Table of Contents</DocLink> instead when the rail should outline headings in a document.
+- Use <DocLink to="timeline">Timeline</DocLink> for a chronological event feed rather than a message minimap.
+
+## How does ConversationTimeline behave on touch devices?
+
+When the device reports `(hover: none)`, the rail starts expanded and stays that way, so labels stay readable and each row is tappable without a hover step. It follows the media query if it changes, so the layout adapts if the input device changes.
+
+## How do I scroll a chat to a message when I click its mark?
+
+Keep `activeId` in your own state and pass `setActiveId` as `onSelect`. The rail only reports the clicked `id` and never scrolls anything itself, so call `scrollIntoView` on that message's element in an effect when `activeId` changes, as the paired chat example does.
+
+## How do I show only the marks on small screens?
+
+Set `showLabels={false}`. The label column is removed and the rail shrinks to the mark width, which leaves the room to the chat. Each mark is still a button with an `aria-label` taken from the checkpoint's `label`. Drive the prop from a `matchMedia` check, as the chat example does.
+
+## Is ConversationTimeline keyboard accessible?
+
+Each mark is a real `<button>` that you can reach with `Tab` and activate with `Enter` or `Space`. Focusing any mark expands the whole rail, and moving focus out collapses it. The active mark gets `aria-current`. There is no arrow-key navigation between marks.
+
+## How do I control how many rows show and how dense the rail is?
+
+Use `visibleCount` for how many rows show before the rail scrolls (default `10`), `rowHeight` for the expanded row (`24`) and `collapsedRowHeight` for the resting row (`10`). Beyond `visibleCount`, the scrollbar is hidden and the top and bottom edges fade to hint at more rows.
+
+## Does ConversationTimeline respect reduced motion?
+
+Yes. When `prefers-reduced-motion: reduce` matches, the height and label transitions are set to `none`, so the rail snaps open and closed. The per-frame scroll re-anchoring is also skipped, and the scroll position is applied once instead. The preference is read live, so changing it takes effect without a reload.
 
 <DocsJsonLd slug="conversation-timeline" />
+<FaqJsonLd slug="conversation-timeline" />

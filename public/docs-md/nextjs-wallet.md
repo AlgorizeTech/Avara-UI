@@ -6,7 +6,22 @@ url: https://avaraui.com/docs/nextjs/wallet
 
 # Shadcn Wallet
 
-An interactive fintech cardholder wallet with three staggered cards, a physical thumb scoop, an enclosed pocket and a privacy balance toggle. Hovering glides the cards up in a spring-staggered sequence. One component for both themes: a crisp light palette by day and a deep violet finish at night.
+An interactive fintech cardholder wallet (`Wallet`) with three staggered spring cards, a physical thumb scoop, 3D card flip, and a balance privacy toggle.
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/wallet.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/wallet
+```
 
 ## Interactive Cardholder Wallet
 
@@ -102,38 +117,29 @@ export default function CustomWalletExample() {
 }
 ```
 
-## Installation
+## About Shadcn Wallet
 
-Add the component by URL — no setup needed:
+**What it is.** `Wallet` displays a physical-pocket cardholder with three staggered payment cards (`cards: WalletCardItem[]`), click-to-pull and 3D-flip inspection, and an optional `allowReveal` balance mask toggle.
 
-```bash
-npx shadcn@latest add https://avaraui.com/r/wallet.json
-```
+**How it is built.** Engineered with an enclosed pocket base so cards stay hidden at rest, tap-to-reveal support on touchscreens, and automatic light/dark palette switching.
 
-Or register the @avara-ui registry once per project and add it by name:
+**When to use it.** Use `Wallet` in fintech dashboards, billing/payment overviews, and interactive product demos. For swipeable card decks, use [Card Stack](https://avaraui.com/docs/nextjs/card-stack).
 
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/wallet
-```
+## For AI agents
 
-## Features
+**When to use**
 
-Hovering over the wallet smoothly slides out all 3 cards in a staggered spring sequence, allowing each card tier to reveal its currency and balance.
+- Fintech cardholder showcases with hover/tap card fanning, 3D card flip, and masked balance toggle
 
-Renders a clean, elegant light wallet with crisp borders in Light Mode and switches automatically to deep violet luxury tones in Dark Mode.
+**When not to use**
 
-Engineered with a solid pocket base ensuring cards are 100% hidden inside before hover and never poke through the bottom.
+- Generic swipeable card decks — use [Card Stack](https://avaraui.com/docs/nextjs/card-stack)
+- Checkout submit buttons — use [Action Button](https://avaraui.com/docs/nextjs/action-buttons) (`PaymentButton`)
 
-Users can toggle balance visibility with an animated eye icon button or auto-reveal the unmasked balance on hover.
+**Agent notes**
 
-## Best Practices & Guidelines
-
-On touchscreens without hover capability, tapping the wallet triggers the staggered cards reveal so mobile users have the identical tactile experience.
-
-Pass a custom `cards` array to customize the name, balance, currency, card number, and gradient classes for each of the 3 cards to match your company's product lineup.
-
-When cards are fanned out, hovering over an individual card raises it an extra 18px and adjusts scale to highlight that specific card.
+- Named exports: `Wallet`, `type WalletCardItem` from `@/components/custom/blocks/WalletBlock`
+- Pass `allowReveal` and `overallBalance` for the privacy eye toggle; pass custom `cards` to override card names, balances, and gradients
 
 ## Props Reference
 
@@ -177,6 +183,30 @@ When cards are fanned out, hovering over an individual card raises it an extra 1
 | `backSignatureLabel` | `string` | `"AUTHORIZED SIGNATURE"` | Label inside the back-face white signature strip. |
 | `backSubtitle` | `string` | `"GLOBAL SECURE ASSET CARD"` | Header text printed on the card back footer. |
 | `backNotice` | `string` | `"NOT VALID UNLESS SIGNED..."` | Legal disclaimer text printed on the card back footer. |
+
+## Works with other components
+
+- Pair `Wallet` with [Counter](https://avaraui.com/docs/nextjs/counter) balance metrics or [Action Button](https://avaraui.com/docs/nextjs/action-buttons) (`PaymentButton`) checkout triggers.
+
+## How do I build a fintech card wallet UI in React?
+
+Render `Wallet` and pass a `cards` array of `WalletCardItem` objects, each with a `name` and `balance`. The wallet shows three staggered cards in a pocket, lets users pull one out and flip it in 3D, and shows `overallBalance` on its face.
+
+## Does Wallet work on touch devices without hover?
+
+Yes. Tapping `Wallet` on touchscreens opens the staggered card fan, and tapping an individual card pulls it out and flips it in 3D. Prompts use `touchHint` and `touchOpenHint` on touch screens, and `hint` and `openHint` on pointer devices.
+
+## How do I mask or reveal the balance?
+
+`allowReveal` shows a Reveal and Conceal button and is `true` by default. Set `defaultRevealed` to start unmasked, or `autoRevealOnHover` to unmask while hovering. `maskedBalance` is the placeholder text, and `revealText` and `concealText` rename the button.
+
+## How do I style each card and the wallet colour?
+
+Each `WalletCardItem` takes `gradientLight` and `gradientDark` Tailwind gradient classes for the two themes, plus `hasChip`, `tag`, `currency`, `cardNumber`, `expiry`, `issuer` and `cvv`. `walletColor` tints the sleeve and pocket, and defaults to `var(--primary)`.
+
+## When should I use Wallet instead of SecureEnvelope?
+
+Use `Wallet` for several payment cards held in one pocket, with balances. Use [Secure Envelope](https://avaraui.com/docs/nextjs/secure-envelope) when you want one pass, ticket or voucher that slides out of a sleeve and flips. Pair `Wallet` with [Counter](https://avaraui.com/docs/nextjs/counter) for animated balances.
 
 ---
 

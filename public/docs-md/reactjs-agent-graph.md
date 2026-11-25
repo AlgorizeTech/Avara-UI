@@ -1,14 +1,29 @@
 ---
 title: "Shadcn Agent Graph"
-description: "Shadcn Agent Graph. A hierarchical multi-agent orchestration tree for visualizing AI agent workflows: shows a lead orchestrator branching into worker agents…"
+description: "A multi-agent orchestration tree: a lead agent, worker agents and sub-agents with status pills and token meters. Free shadcn/ui Agent Graph component."
 url: https://avaraui.com/docs/nextjs/agent-graph
 ---
 
 # Shadcn Agent Graph
 
-A hierarchical multi-agent orchestration tree for visualizing AI agent workflows: shows a lead orchestrator branching into worker agents and compact sub-agents, complete with status pills, token usage bars, tool integrations, and handoff trails.
+A multi-agent orchestration tree: a lead agent, worker agents and sub-agents with status pills and token meters.
 
 On desktop viewports, worker agents fan out horizontally with rounded orthogonal connectors; on narrow/mobile screens, the entire tree collapses into an indented vertical hierarchy.
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/agent-graph.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/agent-graph
+```
 
 ## Shaded Tree (Default)
 
@@ -161,24 +176,7 @@ export default function ShadedAgentWorkflowGraph() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/agent-graph.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/agent-graph
-```
-
-## Examples
-
-### Flat Tree (No Shade)
+## Flat Tree (No Shade)
 
 Pass `shade={false}` to the `tree` variant to remove the outer shaded backdrop and render clean single-surface cards.
 
@@ -197,7 +195,7 @@ export default function FlatAgentWorkflowGraph({ data }: { data: AgentGraphNode 
 }
 ```
 
-### Editorial (2-Column)
+## Editorial (2-Column)
 
 Two-column editorial workflow variant (`variant="editorial"`) with shaded cards by default; pass `shade={false}` for a flat look.
 
@@ -297,44 +295,33 @@ export default function EditorialAgentWorkflowGraph() {
 }
 ```
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern AI orchestration interfaces.
+## About Shadcn Agent Graph
 
-Control card depth with the `shade` prop — true for tiered layered bezels, or false for flat minimalist cards.
+**What it is.** `AgentGraph` draws a tree of AI agents: a root orchestrator, its worker agents and their sub-agents. Each card shows a status badge, the current message, a token meter, tool badges and a handoff line. Clicking a card opens a detail popover.
 
-Fans out horizontally into equal columns on desktop and collapses into an indented vertical tree on mobile.
+**How it is built.** You pass one nested `AgentGraphNode` as `data`. From the `md` breakpoint up, the root's children become grid columns joined by rounded SVG connectors; below it the tree collapses into an indented vertical list. `shade` switches between layered cards and flat cards, and `liveAnimation` plays a scripted orchestration loop. It needs no npm packages beyond the `utils` registry item.
 
-Displays animated working spinners, completion checks, and automatic high-usage token warnings.
-
-Highlights connected integrations and the latest agent-to-agent handoff summary directly below each worker card.
-
-## Props Reference
-
-| Prop | Type | Default | Description |
-| --- | --- | --- | --- |
-| `data` | `AgentGraphNode` | Required | Root orchestrator node containing nested `children` for workers and sub-agents. |
-| `variant` | `"tree" \| "editorial"` | `"tree"` | Layout variant for the agent graph (3-column engineering tree or 2-column editorial workflow). |
-| `animateIn` | `boolean` | `true` | Fades the graph in on mount. |
-| `shade` | `boolean` | `true` | Renders the outer shaded backdrop and tiered footer. Set `false` for a flat single-surface card. |
-| `liveAnimation` | `boolean` | `true` | Enables the live sequential orchestration handoff animation loop across the tree. |
-
-### AgentGraphNode Object
-
-| Property | Type | Default | Description |
-| --- | --- | --- | --- |
-| `id` | `string` | Required | Unique identifier for the node. |
-| `name` | `string` | Required | Display name of the agent or sub-agent. |
-| `model` | `string` | `undefined` | Optional model subtitle (e.g. `"Claude Opus"`). |
-| `status` | `"working" \| "done" \| "idle" \| "needs-you"` | Required | Controls the status badge and message styling. |
-| `message` | `string` | Required | Current task or status line shown inside the card. |
-| `tokensUsed` | `number` | Required | Tokens consumed so far. |
-| `tokensMax` | `number` | Required | Maximum token budget for the agent. |
-| `color` | `"blue" \| "purple" \| "cyan" \| "emerald" \| "amber"` | Required | Accent colour for the pixel icon, progress bar, and connector lines. |
-| `tools` | `("linear" \| "github" \| "notion" \| "vercel")[]` | `undefined` | Tool integration badges rendered in the card footer. |
-| `handoff` | `&#123; agent: string; summary: string &#125;` | `undefined` | Optional handoff target and truncated summary in the footer. |
-| `children` | `AgentGraphNode[]` | `undefined` | Nested worker or sub-agent nodes. |
+**When to use it.** Use it for agent observability consoles, multi-agent workflow builders, crew execution logs and architecture diagrams that show who hands work to whom.
 
 ## For AI agents
+
+**When to use**
+
+- AI agent observability consoles, multi-agent workflow builders
+- Crew execution logs, product architecture diagrams
+
+**When not to use**
+
+- A generic node-and-edge diagram you lay out yourself: use [Flowchart](https://avaraui.com/docs/reactjs/flowchart)
+- Live service topology and data-flow telemetry: use [Infrastructure Topology](https://avaraui.com/docs/reactjs/infrastructure-topology)
+
+**Agent notes**
+
+- Pass one root `AgentGraphNode` as `data`. Required node fields are `id`, `name`, `status`, `message`, `tokensUsed`, `tokensMax` and `color`; `children` nests workers and sub-agents.
+- `variant` is `"tree"` or `"editorial"` and only picks which built-in simulation runs. `shade` (boolean) switches layered cards for flat ones. The column layout follows how many children the root has.
+- With `liveAnimation` on (the default), nodes whose `id` matches the sample ids (`lead`, `researcher`, `web-search`, `coder`, `linter`, `test-runner`, `reviewer`, `docs-writer`, `editor`, `writer`, `fact-checker`, `seo`) get their status, tokens and message overwritten by the simulation, even with `liveAnimation={false}`. Give your own nodes different ids.
+- The token bar turns orange at 80% of `tokensMax` and red at 95%.
+- The popover buttons (Message, Pause, Stop, Resume, Approve, Decline) change local display state only; there are no callback props.
 
 **Ask before you pick.** This page has 3 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
 
@@ -373,6 +360,69 @@ All 3 options as live previews: https://avaraui.com/view/agent-graph
    - Install: `npx shadcn@latest add @avara-ui/agent-graph`
    - Set these props: `{"variant":"editorial","shade":true}`
    - Docs: https://avaraui.com/docs/nextjs/agent-graph#editorial-crew
+
+## Props Reference
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `data` | `AgentGraphNode` | Required | Root orchestrator node containing nested `children` for workers and sub-agents. |
+| `variant` | `"tree" \| "editorial"` | `"tree"` | Picks which built-in live simulation runs (engineering tree or editorial crew). The column count comes from the number of root children. |
+| `animateIn` | `boolean` | `true` | Fades the graph in on mount. |
+| `shade` | `boolean` | `true` | Renders the outer shaded backdrop and tiered footer. Set `false` for a flat single-surface card. |
+| `liveAnimation` | `boolean` | `true` | Plays the scripted handoff loop. It only drives nodes that use the sample ids, and stops when `false`. |
+| Other props | `HTMLAttributes<HTMLDivElement>` | `undefined` | Passed to the root `div`, including `className`. |
+
+### AgentGraphNode Object
+
+| Property | Type | Default | Description |
+| --- | --- | --- | --- |
+| `id` | `string` | Required | Unique identifier for the node. |
+| `name` | `string` | Required | Display name of the agent or sub-agent. |
+| `model` | `string` | `undefined` | Optional model subtitle (e.g. `"Claude Opus"`). |
+| `status` | `"working" \| "done" \| "idle" \| "needs-you" \| "failed" \| "paused"` | Required | Controls the status badge and message styling. `failed` is in the type but renders as idle. |
+| `message` | `string` | Required | Current task or status line shown inside the card. |
+| `tokensUsed` | `number` | Required | Tokens consumed so far. |
+| `tokensMax` | `number` | Required | Maximum token budget for the agent. |
+| `color` | `"blue" \| "purple" \| "cyan" \| "emerald" \| "amber"` | Required | Accent colour for the pixel icon, progress bar, and connector lines. |
+| `tools` | `("linear" \| "github" \| "notion" \| "vercel")[]` | `undefined` | Tool integration badges rendered in the card footer. |
+| `handoff` | `&#123; agent: string; summary: string &#125;` | `undefined` | Optional handoff target and truncated summary in the footer. |
+| `children` | `AgentGraphNode[]` | `undefined` | Nested worker or sub-agent nodes. |
+| `statusLabel` | `string` | `undefined` | Overrides the badge text (the tooltip for done and idle). Ignored for `needs-you`. |
+| `icon` | `ReactNode` | Pixel matrix | Replaces the 3x3 pixel icon in the card header. |
+| `iconPattern` | `number[]` | Built-in pattern | Nine opacities (0 to 1) for the pixel icon cells; values above 0.3 light a cell. |
+| `description` | `string` | `message` | Longer text in the click popover. |
+| `time` | `string` | `undefined` | Run time shown in the popover. |
+| `cost` | `string` | `undefined` | Cost shown in the popover. |
+
+## Works with other components
+
+- [User Graph](https://avaraui.com/docs/reactjs/user-graph) links a user to agents and integrations, so it can sit above the orchestrator `AgentGraph` shows.
+- [Flowchart](https://avaraui.com/docs/reactjs/flowchart) suits fixed pipelines you lay out yourself, where `AgentGraph` follows a parent and child tree.
+- [AI Chat](https://avaraui.com/docs/reactjs/ai-chat) pairs with it when the person watching the agents also talks to them.
+
+## When does the AgentGraph token meter change colour?
+
+The meter compares `tokensUsed` with `tokensMax`. From 80% the bar turns orange and the count turns amber, and from 95% the bar turns red. These thresholds are fixed in the component source rather than props, so edit `isHighUsage` and `isExtremeUsage` in the file if you need others.
+
+## Why do my AgentGraph statuses keep changing by themselves?
+
+`liveAnimation` defaults to `true` and runs a scripted loop that rewrites status, tokens and message for nodes using the sample ids such as `lead`, `researcher` or `editor`. Use your own `id` values, and set `liveAnimation={false}` to stop the loop. Nodes with other ids always show your data.
+
+## What is the difference between the tree and editorial variants of AgentGraph?
+
+Very little in layout. `variant` only chooses which built-in simulation plays: `"tree"` runs the engineering crew script and `"editorial"` runs the launch-post script. The columns come from how many `children` the root has, and `shade` handles layered versus flat cards.
+
+## Do the AgentGraph popover buttons call my code?
+
+No. Message, Pause, Stop, Resume, Approve and Decline only update the graph's own display state, such as showing "Paused by you". `AgentGraph` has no callback props for them, so wire real controls by editing the component or placing your own buttons beside it.
+
+## Can I open an AgentGraph card with the keyboard?
+
+Yes. Each card is a focusable `role="button"` that opens its popover on Enter or Space, and Escape closes it. The popover is not a labelled dialog, and the component does not read `prefers-reduced-motion`, so set `liveAnimation={false}` and `animateIn={false}` for a calmer graph.
+
+## Does AgentGraph work in Vite or need extra packages?
+
+It works in any React app. The file is a client component with no `next/*` imports and no npm dependencies, only the `cn` helper from the `utils` registry item. The connectors are inline SVG and the motion is CSS keyframes, so nothing else is installed.
 
 ---
 

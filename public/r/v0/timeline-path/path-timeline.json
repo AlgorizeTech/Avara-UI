@@ -3,7 +3,7 @@
   "name": "timeline-path-path-timeline",
   "type": "registry:block",
   "title": "Timeline Path — Path timeline",
-  "description": "A winding line that draws itself from stop to stop, with a glowing head and cards that light up on arrival.",
+  "description": "The \"Path timeline\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

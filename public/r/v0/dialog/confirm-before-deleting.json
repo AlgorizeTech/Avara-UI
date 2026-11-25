@@ -3,7 +3,7 @@
   "name": "dialog-confirm-before-deleting",
   "type": "registry:block",
   "title": "Dialog — Confirm before deleting",
-  "description": "The working version of that shape — the row is only removed once the dialog resolves.",
+  "description": "The \"Confirm before deleting\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

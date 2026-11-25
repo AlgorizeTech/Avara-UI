@@ -1,16 +1,27 @@
 ---
 title: "Shadcn Toggle"
-description: "A two-state button that can be either on or off. Free shadcn/ui Toggle component for React, Next.js and Tailwind CSS."
+description: "A two-state button (`Toggle`) for pressed/unpressed UI controls with `aria-pressed` and `data-state` synchronization. Free shadcn/ui Toggle component."
 url: https://avaraui.com/docs/nextjs/toggle
 ---
 
 # Shadcn Toggle
 
-A two-state button that can be either on or off.
+A two-state button (`Toggle`) for pressed/unpressed UI controls with `aria-pressed` and `data-state` synchronization.
 
-Toggles are primarily used to manage interface states (like text formatting in an editor or muting a track) rather than submitting form data. This `ToggleBlock` automatically manages the `data-state` and `aria-pressed` HTML attributes to ensure visual feedback and screen-reader accessibility are perfectly synced.
+## Installation
 
-Explore the different variations of the Toggle component — each example shows a live preview with the exact code to copy.
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/toggle.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/toggle
+```
 
 ## Sizes
 
@@ -37,24 +48,7 @@ export default function ToggleSizes() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/toggle.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/toggle
-```
-
-## Examples
-
-### With text
+## With text
 
 - `children` can hold an icon and a label together when the toggle drives a named action.
 
@@ -77,7 +71,7 @@ export default function MuteToggle() {
 }
 ```
 
-### Toolbar
+## Toolbar
 
 - `pressed` is per-toggle — a toolbar is just independent toggles side by side, not a group component.
 
@@ -119,7 +113,7 @@ export default function FormattingToolbar() {
 }
 ```
 
-### Disabled
+## Disabled
 
 - Set `disabled` to lock the toggle in whatever state it is currently in.
 
@@ -136,65 +130,30 @@ export default function DisabledToggle() {
 }
 ```
 
-## Usage
+## About Shadcn Toggle
 
-### Uncontrolled (Simple)
+**What it is.** A two-state `Toggle` button supporting `default` and `outline` variants, multiple sizes, icon-only or icon-plus-text children, and controlled (`pressed` / `onPressedChange`) or uncontrolled (`defaultPressed`) state.
 
-If you don't need to tightly bind the component to React state, you can let it manage its own internal state and just provide a `defaultPressed` value.
+**How it is built.** Manages `aria-pressed` and `data-state="on" | "off"` attributes automatically for accessible screen-reader announcements and clean state-driven styling.
 
-```tsx
-import { Toggle } from "@/components/custom/blocks/ToggleBlock";
-import { Star } from "lucide-react";
+**When to use it.** Use `Toggle` for standalone binary UI controls (mute, pin, star, bold). When multiple toggles share single- or multi-select group state, use [Toggle Group](https://avaraui.com/docs/nextjs/toggle-group).
 
-export default function SimpleToggle() {
-  return (
-    <Toggle defaultPressed aria-label="Toggle star">
-      <Star className="w-4 h-4" />
-    </Toggle>
-  );
-}
-```
+## For AI agents
 
-## Controlled (Advanced)
+**When to use**
 
-If you are building complex interfaces (like a Rich Text Editor), you should control the state directly using the pressed and onPressedChange prop
+- Independent two-state toolbar or preference buttons (icon-only or icon + label)
+- Controlled (`pressed` + `onPressedChange`) or uncontrolled (`defaultPressed`) pressed state
 
-```tsx
-import { useState } from "react";
-import { Toggle } from "@/components/custom/blocks/ToggleBlock";
-import { Bold } from "lucide-react";
+**When not to use**
 
-export default function Toolbar() {
-  const [isBold, setIsBold] = useState(false);
+- Mutually exclusive or coordinated button groups — use [Toggle Group](https://avaraui.com/docs/nextjs/toggle-group)
+- One-shot action triggers — use [Button](https://avaraui.com/docs/nextjs/button)
 
-  return (
-    <div className="flex gap-1 border p-1 rounded-md">
-      <Toggle
-        pressed={isBold}
-        onPressedChange={setIsBold}
-        aria-label="Toggle bold"
-      >
-        <Bold className="w-4 h-4" />
-      </Toggle>
-    </div>
-  );
-}
-```
+**Agent notes**
 
-## Features
-Explore the Toggle button's simple two-state functionality, perfect for on/off switches and boolean preferences with smooth transitions.
-
-Easily adapt the component's styling and behavior to fit your application's unique design system.
-
-Built with accessibility in mind, ensuring all users can interact with your application effectively.
-
-Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
-
-Optimized for maximum performance with minimal re-renders and efficient state management.
-
-## Best Practices & Guidelines
-
-Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+- Named export: `import { Toggle } from "@/components/custom/blocks/ToggleBlock"`
+- Always provide `aria-label` when rendering icon-only toggles
 
 ## Props Reference
 
@@ -206,6 +165,32 @@ Follow standard design principles when implementing this component. Ensure prope
 | `Toggle` | `variant` | `"default" \| "outline" \| "ghost"` | `"default"` | The visual style variant. `ghost` is highly recommended when clustering multiple toggles together in a toolbar. |
 | `Toggle` | `size` | `"sm" \| "md" \| "lg"` | `"md"` | Adjusts the height, horizontal padding, and text-size of the toggle button. |
 | `Toggle` | `className` | `string` | `undefined` | Standard Tailwind CSS overrides. |
+
+## Works with other components
+
+- Upgrade to [Toggle Group](https://avaraui.com/docs/nextjs/toggle-group) when toggles need coordinated single or multiple selection.
+- Pair icon-only `Toggle` controls with [Tooltip](https://avaraui.com/docs/nextjs/tooltip) for keyboard and hover labels.
+- Use [Button](https://avaraui.com/docs/nextjs/button) for one-off actions rather than persistent on/off state.
+
+## How do I make a toggle button with pressed state in React?
+
+Render `Toggle` and either let it manage itself with `defaultPressed`, which is `false` by default, or control it with `pressed` and `onPressedChange`. It keeps `aria-pressed` and `data-state` in sync, so assistive technology and your CSS can both read the state.
+
+## How do I control Toggle state externally?
+
+Pass `pressed` and `onPressedChange` for controlled React state. When `pressed` is provided, `Toggle` relies entirely on that value. Pass `defaultPressed` instead if you want the component to manage its own state internally.
+
+## Should I use Toggle or ToggleGroup?
+
+Use `Toggle` for independent binary states, such as muting audio or pinning an item. Use [Toggle Group](https://avaraui.com/docs/nextjs/toggle-group) when several items share one coordinated single-choice or multiple-choice value, such as text alignment or a view switcher.
+
+## Which Toggle variants and sizes are available?
+
+`variant` is `"default"`, `"outline"` or `"ghost"`, and `size` is `"sm"`, `"md"` or `"lg"`. The `ghost` variant works best when you cluster several toggles in a toolbar. Children can be an icon alone or an icon plus text.
+
+## How do I label an icon-only Toggle?
+
+Wrap it with [Tooltip](https://avaraui.com/docs/nextjs/tooltip) for a hover and keyboard label. Because the toggle exposes `aria-pressed`, screen readers announce its on or off state, but an icon-only control still needs an accessible name such as an `aria-label`.
 
 ---
 

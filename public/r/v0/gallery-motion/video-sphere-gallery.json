@@ -3,7 +3,7 @@
   "name": "gallery-motion-video-sphere-gallery",
   "type": "registry:block",
   "title": "Gallery — Video Sphere Gallery",
-  "description": "Videos and images drift along a rotating sphere with drag navigation, depth-based blur and a popup preview.",
+  "description": "The \"Video Sphere Gallery\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

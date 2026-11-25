@@ -3,20 +3,14 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("split-flap");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
-import { Installation } from "@/components/site/installation";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractMotionCode } from "@/lib/code";
 
 # Shadcn Split-Flap Display
 
-An authentic, physics-driven **Split-Flap Display** component (Solari board) simulating retro-mechanical flap cards, 3D perspective flips (`rotateX`), horizontal split creases, mechanical hinge notches, and realistic synthesized click sounds.
+A Solari-style split-flap display with 3D flips, split creases and synthesized click sounds.
 
 Ships with **2 distinct handcrafted variants**: vintage ivory electro-mechanical casing (matching retro Solari displays) and minimalist architectural frosted glass.
-
----
-
-<AgentVariants slug="split-flap" />
-
-## Variants
 
 export const usageIvory = `import SplitFlap from "@/components/custom/split-flap";
 
@@ -62,11 +56,12 @@ export default function MinimalistSplitFlapDemo() {
 <ExampleShowcase minHeight={330}
   name="split-flap"
   columns={1}
+  installation={<Installation name="split-flap" usage="below" />}
   examples={[
     {
       title: "Split-Flap — Ivory (Classic Mechanical)",
       id: "split-flap-ivory",
-      subheading:
+      description:
         "The iconic embossed cream electro-mechanical display with rust-coral slab-serif typography and tactile 3D perspective flap folds.",
       propNotes: [
         {
@@ -103,7 +98,7 @@ export default function MinimalistSplitFlapDemo() {
     {
       title: "Split-Flap — Minimalist Architectural",
       id: "split-flap-minimalist",
-      subheading:
+      description:
         "Ultra-clean frosted glass chassis with backdrop blur and slate-stone monospace typography that blends with light or dark mode.",
       propNotes: [
         {
@@ -132,13 +127,35 @@ export default function MinimalistSplitFlapDemo() {
   ]}
 />
 
----
+## About Shadcn Split-Flap Display
 
-## Installation
+**What it is.** **Shadcn Split-Flap Display** (`SplitFlap`) is a retro-mechanical Solari board display component with 3D `rotateX` flap flips, split creases, hinge notches, and optional synthesized Web Audio click sound effects.
 
-<Installation name="split-flap" />
+**How it is built.** `SplitFlap` cycles through `text` or `messages` at a configurable `interval`, animates each character tile independently with 3D perspective folds, and offers `"ivory"` and `"minimalist"` chassis variants.
 
----
+**When to use it.** Use it for hero arrival boards, live status tickers, event schedules, and tactile retro-modern landing page displays.
+
+## For AI agents
+
+<AgentBrief name="split-flap">
+
+**When to use**
+
+- Hero arrival boards, live status tickers
+- Event schedules, tactile retro-modern landing page displays
+
+**When not to use**
+
+- A smooth numeric counter or stepper: use <DocLink to="counter">Counter</DocLink>
+- Typewriter-style headline text: use <DocLink to="text-animation">Text Animation</DocLink>
+
+**Agent notes**
+
+- `SplitFlap` accepts `variant` (`"ivory" | "minimalist"`), `text`, `messages` (`string[]`), `autoPlay`, `interval`, `sound`, and `size`.
+- Enable `sound={true}` to synthesize mechanical flap clicks using the Web Audio API with zero external audio assets.
+- Keep `messages` concise so character tiles fit cleanly across mobile and desktop viewports.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -299,6 +316,29 @@ export default function MinimalistSplitFlapDemo() {
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+Pair `SplitFlap` with <DocLink to="counter">Counter</DocLink> for numeric countdowns, <DocLink to="text-animation">Text Animation</DocLink> for kinetic headlines, and <DocLink to="glass-panel">Glass Panel</DocLink> for frosted dashboard headers.
+
+## How do I build a Solari-style split-flap display in React?
+
+Render `SplitFlap` and pass `text` or a `messages` array. It animates each character with a 3D `rotateX` flip and cascades the flips across the board. Pick `variant="ivory"` for the retro mechanical casing or `variant="minimalist"` for frosted glass.
+
+## How do I cycle through multiple phrases?
+
+Pass an array of strings to `messages`, keep `autoPlay` on, and set the delay with `interval` in milliseconds. It defaults to `3000`. You can also give `text` pipe-separated strings such as `"HELLO | WORLD"` to cycle through them automatically.
+
+## Does the Split-Flap sound effect require audio files?
+
+No. With `sound={true}` it synthesizes mechanical flap clicks through the browser Web Audio API, so there is nothing to host or download. `sound` is `false` by default, and sound can also be toggled from the toolbar in the live demo.
+
+## How do I control the number of character slots and the flip speed?
+
+`columns` sets the number of flap slots. If you omit it, the board fits the longest message. `speed` multiplies the flip cascade, where `1` is normal and `1.5` is fast. `size` offers `"sm"`, `"md"` and `"lg"` flap cards.
+
+## Does SplitFlap need an animation library?
+
+It uses `gsap`, which is listed as the item's npm dependency, so the shadcn CLI installs it with the component. The sound uses the Web Audio API with no library. There are no `next/*` imports, so it also runs in Vite projects.
 
 <DocsJsonLd slug="split-flap" />
+<FaqJsonLd slug="split-flap" />

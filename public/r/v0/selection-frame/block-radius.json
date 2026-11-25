@@ -3,7 +3,7 @@
   "name": "selection-frame-block-radius",
   "type": "registry:block",
   "title": "Selection Frame — Block & radius",
-  "description": "Drag the sliders — the frame re-measures and redraws live.",
+  "description": "The \"Block & radius\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

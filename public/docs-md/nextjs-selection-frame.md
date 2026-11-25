@@ -12,6 +12,21 @@ The frame measures its child live with a `ResizeObserver`, so it always fits wha
 
 Explore the different variations of the Selection Frame — each example shows a live preview with the exact code to copy.
 
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/selection-frame.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/selection-frame
+```
+
 ## Selection Frame
 
 Wrap any span or block — the frame measures it and fits.
@@ -28,21 +43,6 @@ export default function Headline() {
     </SelectionFrame>
   );
 }
-```
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/selection-frame.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/selection-frame
 ```
 
 ## Examples
@@ -74,24 +74,31 @@ export default function FramedCard() {
 }
 ```
 
-## Features
-Discover the Selection Frame's capabilities for putting a design-tool spotlight on any element.
+## About Shadcn Selection Frame
 
-A `ResizeObserver` tracks the child, so the frame re-fits when text reflows, fonts load or the content changes.
+**What it is.** **Shadcn Selection Frame** (`SelectionFrame`) draws a Figma-style selection bounding box with corner handles and a customizable SVG stroke around any inline span or block element.
 
-The stroke is centred on the frame edge and each handle is centred on the true corner point, so nothing sits a fraction of a pixel off.
+**How it is built.** `SelectionFrame` tracks its child with a `ResizeObserver` so the SVG stroke and corner handles stay pixel-accurate across font loads and resizes, marks decorative SVG layers `aria-hidden` with `pointer-events: none`, and disables marching ants under `prefers-reduced-motion`.
 
-Marching ants are an indefinite loop, so both the march and the handle spring are disabled when the visitor prefers reduced motion.
+**When to use it.** Use it for design-tool callouts, highlighted hero phrases, interactive feature spotlights, and canvas editor demos.
 
-The SVG and handles are `aria-hidden` and ignore pointer events — your content stays exactly as readable and clickable as before.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-The stroke and handles are drawn outside the child by `padding` pixels (plus half a handle). Leave that much space around the wrapper — an `overflow-hidden` parent will clip the corners.
+- Design-tool callouts, highlighted hero phrases
+- Interactive feature spotlights, canvas editor demos
 
-### Use marching ants sparingly
+**When not to use**
 
-An endless animation pulls the eye. Reserve `animated` for the one element on screen you actually want people to look at.
+- Animated headline text: use [Animated Typography](https://avaraui.com/docs/nextjs/animated-typography)
+- Pointer-following effects: use [Cursor Animation](https://avaraui.com/docs/nextjs/cursor-animation)
+
+**Agent notes**
+
+- `SelectionFrame` wraps any inline or block child and supports `handles` (`"square" | "circle"`), `line` (`"solid" | "dashed" | "long"`), `dash`, `padding`, `radius`, `inline`, `animated`, and `color`.
+- Leave `padding` pixels of room around the wrapper and avoid `overflow-hidden` ancestors that could clip corner handles.
+- Decorative stroke and handles are `aria-hidden` and ignore pointer events.
 
 ## Props Reference
 
@@ -109,6 +116,30 @@ An endless animation pulls the eye. Reserve `animated` for the one element on sc
 | `padding` | `number` | `4` | Gap in pixels between the content and the frame. |
 | `inline` | `boolean` | `true` | Inline (for text spans) vs block-level. |
 | `className` | `string` | — | Extra classes for the outer wrapper — e.g. a width when `inline` is `false`. |
+
+## Works with other components
+
+Pair `SelectionFrame` with [Animated Typography](https://avaraui.com/docs/nextjs/animated-typography) for kinetic hero callouts, [Cursor Animation](https://avaraui.com/docs/nextjs/cursor-animation) for design-canvas pointer effects, and [Badge](https://avaraui.com/docs/nextjs/verify-badge) for annotated UI highlights.
+
+## How do I add a Figma-style selection box around text in React?
+
+Wrap the text or element in `SelectionFrame`. It draws a stroke with four corner handles around its child and keeps them fitted with a `ResizeObserver`, so the box follows the content when its size changes. By default it is `inline`, which suits spans inside a sentence.
+
+## Can I wrap block-level cards instead of inline text?
+
+Yes. Pass `inline={false}` so `SelectionFrame` behaves as a block container and takes its width from `className`. The default `inline` value is `true`, which is meant for text spans rather than cards or images.
+
+## Why are the corner handles clipped inside a card?
+
+The stroke and handles draw outside the child by `padding` pixels plus half a handle. If a parent has `overflow-hidden` they get cut off, so remove it on immediate parents or leave a little margin around `SelectionFrame`.
+
+## How do I change the handle shape, line style or colour?
+
+Use `handles` for `"square"` or `"circle"` and `line` for `"solid"`, `"dashed"` or `"long"`. Pass a `[dash, gap]` pair to `dash` for a custom pattern. `color` takes any CSS colour or theme variable and defaults to `var(--primary)`.
+
+## Can the frame animate, and does it respect reduced motion?
+
+Set `animated` to get marching-ants motion on `"dashed"` or `"long"` lines. The corner handles always animate in. All of that animation is disabled when the user has `prefers-reduced-motion` turned on.
 
 ---
 

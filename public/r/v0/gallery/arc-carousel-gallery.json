@@ -3,7 +3,7 @@
   "name": "gallery-arc-carousel-gallery",
   "type": "registry:block",
   "title": "Gallery — Arc Carousel Gallery",
-  "description": "A curved 3D carousel along a concave arc that drifts on its own and spins with momentum when dragged.",
+  "description": "The \"Arc Carousel Gallery\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

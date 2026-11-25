@@ -3,7 +3,7 @@
   "name": "timeline-cable-cable-timeline",
   "type": "registry:block",
   "title": "Timeline Cable — Cable timeline",
-  "description": "Cards on a centre playhead. Drag sideways or scroll the wheel over it to bring the next one forward.",
+  "description": "The \"Cable timeline\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

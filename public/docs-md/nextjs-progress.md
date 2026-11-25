@@ -1,46 +1,27 @@
 ---
 title: "Shadcn Progress"
-description: "A smoothly animated progress indicator for loading states, storage meters and step-by-step wizards. Free shadcn/ui component for React and Tailwind CSS."
+description: "Shadcn Progress. A composable progress suite (`Progress`, `ProgressField`, `MultiProgress`, `ProgressSegment`, `CircularProgress`) with count-up animations."
 url: https://avaraui.com/docs/nextjs/progress
 ---
 
 # Shadcn Progress
 
-A smoothly animated progress indicator for loading states, storage meters and step-by-step wizards. Every form fills from zero when it first appears, and any number it shows counts up alongside the fill.
+A composable progress suite (`Progress`, `ProgressField`, `MultiProgress`, `ProgressSegment`, `CircularProgress`) with count-up animations, threshold `stages`, and semantic `status` hues.
 
-It is split into composable pieces: the core `<Progress />` bar, the `<ProgressField />` wrapper for labels and percentage text, `<MultiProgress />` with `<ProgressSegment />` children for several values on one track, and `<CircularProgress />` for the same value as a ring.
+## Installation
 
-Colour carries state: `stages` changes the fill as thresholds are crossed, and `status` overrides it with the conventional success, warning and error hues so a failed job never looks like it is still running.
+Add the component by URL — no setup needed:
 
-## For AI agents
+```bash
+npx shadcn@latest add https://avaraui.com/r/progress.json
+```
 
-**Ask before you pick.** This page has 2 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+Or register the @avara-ui registry once per project and add it by name:
 
-All 2 options as live previews: https://avaraui.com/view/progress
-
-**When to use it.** An animated progress indicator for loading, storage meters and step-by-step wizards. Every form fills from zero when it first appears and its numbers count up with it. Two forms: a linear bar and a circular ring.
-
-**Gotchas:**
-
-- Both are parts of the one `progress` item (`Progress` and `CircularProgress`): install it once.
-- Statuses, an indeterminate bar, step progress (a small `max`) and stage colours are props or usage of these two forms, not separate designs.
-
-### The 2 variants
-
-1. **Linear bar** (`bar`): A bar that fills along a track, with a percentage bubble on hover; `value` and `max` are all it needs.
-   - Live: https://avaraui.com/view/progress/bar
-   - Best for: loading states, storage meters and form steps
-   - Avoid if: you want a compact ring that fits a small tile
-   - Traits: horizontal fill, hover percentage tooltip, optional label and readout
-   - Install: `npx shadcn@latest add @avara-ui/progress`
-   - Docs: https://avaraui.com/docs/nextjs/progress#progress
-2. **Circular ring** (`circular`): The value drawn as an animated ring with a centred percentage, replaceable with a count or an icon.
-   - Live: https://avaraui.com/view/progress/circular
-   - Best for: a goal or completion figure on a card or dashboard tile
-   - Avoid if: you want to show progress along a line
-   - Traits: ring, custom centre content, adjustable diameter and thickness
-   - Install: `npx shadcn@latest add @avara-ui/progress`
-   - Docs: https://avaraui.com/docs/nextjs/progress#circular-progress
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/progress
+```
 
 ## Progress
 
@@ -110,24 +91,7 @@ export default function CreditsRing() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/progress.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/progress
-```
-
-## Examples
-
-### Statuses
+## Statuses
 
 The four states side by side.
 
@@ -155,7 +119,7 @@ export default function SyncStatus() {
 }
 ```
 
-### Indeterminate
+## Indeterminate
 
 - Set `indeterminate` when the duration is unknown. A short bar slides along the track; `value` is ignored and reduced-motion users get a still, full bar.
 
@@ -172,7 +136,7 @@ export default function ScanningLibrary() {
 }
 ```
 
-### Step indicator
+## Step indicator
 
 - Set `showValue={false}` and give `max` a small number for wizard-style step progress.
 
@@ -197,7 +161,7 @@ export default function WizardProgress() {
 }
 ```
 
-### Stage colours
+## Stage colours
 
 Run it: neutral while starting, the brand colour from 10%, green at 100 — or red the moment it fails. The ring and the bar share one value, so they always agree.
 
@@ -250,20 +214,61 @@ export default function UploadProgress({
 }
 ```
 
-## Features
-Explore the Progress bar's features, including smooth value interpolation, indeterminate animations, and accessibility labels.
+## About Shadcn Progress
 
-Easily adapt the component's styling and behavior to fit your application's unique design system.
+**What it is.** A composable progress family (`Progress`, `ProgressField`, `MultiProgress`, `ProgressSegment`, `CircularProgress`) supporting linear bars, circular rings, multi-segment storage meters, threshold `stages`, and semantic `status` states (`active`, `success`, `warning`, `error`).
 
-Built with accessibility in mind, ensuring all users can interact with your application effectively.
+**How it is built.** Animates from zero on mount and tweens updates with synchronized number count-ups, while respecting `prefers-reduced-motion` (or disabling via `animate={false}`).
 
-Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+**When to use it.** Use `Progress` or `CircularProgress` for uploads, storage meters, and task completion. For unknown-duration spinners, use [Loader](https://avaraui.com/docs/nextjs/loader).
 
-Bars, segments and rings fill from zero on first paint and every readout counts up in step, on one shared easing. Respects `prefers-reduced-motion`; turn it off with `animate={false}`.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+- Determinate linear bars (`Progress`, `ProgressField`), rings (`CircularProgress`), and multi-segment tracks (`MultiProgress` + `ProgressSegment`)
+- Threshold-colored progress (`stages`) or semantic `status="active" | "success" | "warning" | "error"`
+
+**When not to use**
+
+- Unknown-duration spinners — use [Loader](https://avaraui.com/docs/nextjs/loader)
+- Multi-step form headers — use [Stepper](https://avaraui.com/docs/nextjs/stepper)
+
+**Agent notes**
+
+- Named exports from `@/components/custom/blocks/ProgressBlock`
+- Pass `children={(value, max) => ...}` on `CircularProgress` to animate custom center readouts alongside the arc
+- `color` defaults to `"primary"` (the theme `--primary`); named colors are `indigo`, `rose`, `emerald`, `amber`, `red` and `zinc`, and a custom color must be a hex string starting with `#`
+- `Progress`, `CircularProgress` and `ProgressSegment` render `role="progressbar"`; add `aria-label` yourself, since `ProgressField` does not link its label to the bar
+- `ProgressSegment` throws when rendered outside `MultiProgress`
+
+**Ask before you pick.** This page has 2 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 2 options as live previews: https://avaraui.com/view/progress
+
+**When to use it.** An animated progress indicator for loading, storage meters and step-by-step wizards. Every form fills from zero when it first appears and its numbers count up with it. Two forms: a linear bar and a circular ring.
+
+**Gotchas:**
+
+- Both are parts of the one `progress` item (`Progress` and `CircularProgress`): install it once.
+- Statuses, an indeterminate bar, step progress (a small `max`) and stage colours are props or usage of these two forms, not separate designs.
+
+### The 2 variants
+
+1. **Linear bar** (`bar`): A bar that fills along a track, with a percentage bubble on hover; `value` and `max` are all it needs.
+   - Live: https://avaraui.com/view/progress/bar
+   - Best for: loading states, storage meters and form steps
+   - Avoid if: you want a compact ring that fits a small tile
+   - Traits: horizontal fill, hover percentage tooltip, optional label and readout
+   - Install: `npx shadcn@latest add @avara-ui/progress`
+   - Docs: https://avaraui.com/docs/nextjs/progress#progress
+2. **Circular ring** (`circular`): The value drawn as an animated ring with a centred percentage, replaceable with a count or an icon.
+   - Live: https://avaraui.com/view/progress/circular
+   - Best for: a goal or completion figure on a card or dashboard tile
+   - Avoid if: you want to show progress along a line
+   - Traits: ring, custom centre content, adjustable diameter and thickness
+   - Install: `npx shadcn@latest add @avara-ui/progress`
+   - Docs: https://avaraui.com/docs/nextjs/progress#circular-progress
 
 ## Props Reference
 
@@ -272,7 +277,7 @@ Follow standard design principles when implementing this component. Ensure prope
 | `Progress` | `value` | `number` | `0` | The current progress value to display. |
 | `Progress` | `max` | `number` | `100` | The maximum possible value. Used internally to calculate the percentage fill. |
 | `Progress` | `variant` | `"default" \| "glass" \| "glow" \| "minimal"` | `"default"` | Determines the visual styling of the track background and the active indicator fill. |
-| `Progress` | `color` | `"indigo" \| "rose" \| "emerald" \| "zinc" \| string` | `"indigo"` | Applies the active color theme to the progress indicator. Fully supports custom hex codes. |
+| `Progress` | `color` | `"indigo" \| "rose" \| "emerald" \| "zinc" \| string` | `"primary"` | Applies the active color theme to the progress indicator. Accepts a named color or a custom hex code starting with `#`; the default and any unrecognised name follow the theme's `--primary`. |
 | `Progress` | `barSize` | `"sm" \| "md" \| "lg"` | `"md"` | Adjusts the vertical thickness (height) of the progress bar track and indicator. |
 | `Progress` | `indicatorClassName` | `string` | `undefined` | Optional Tailwind classes to append directly to the moving inner fill element. |
 | `Progress` | `stages` | `{ from: number; color: ProgressColor }[]` | `undefined` | Colour by threshold. `from` is a percentage; each stage's colour applies from that point until the next stage. Also on `CircularProgress`. |
@@ -301,6 +306,35 @@ Follow standard design principles when implementing this component. Ensure prope
 | `CircularProgress` | `showValue` | `boolean` | `true` | Draws the percentage in the middle of the ring. Ignored when `children` are supplied. |
 | `CircularProgress` | `children` | `ReactNode \| (value, max) => ReactNode` | `undefined` | Replaces the centred readout entirely — use it for a count, an icon, or a caption. As a function it receives `(value, max)` with the value counting up, so a custom centre animates with the arc. |
 | `CircularProgress` | `trackClassName` | `string` | `undefined` | Optional classes for the unfilled ring underneath the arc. |
+
+## Works with other components
+
+- Pair `Progress` with [File Upload](https://avaraui.com/docs/nextjs/file-upload) queues and [Card](https://avaraui.com/docs/nextjs/card) storage/quota panels.
+- Use [Loader](https://avaraui.com/docs/nextjs/loader) when task duration is unknown.
+
+## How do stages and status work together?
+
+`stages` (`{ from, color }[]`) colors the fill by threshold: the last stage whose `from` percentage has been reached wins, and the base `color` applies before the first. A non-`"active"` `status` overrides every stage with emerald, amber or red, and `ProgressField` adds a matching glyph.
+
+## How do I give Progress a custom color?
+
+Set `color` to a named theme (`"indigo"`, `"rose"`, `"emerald"`, `"amber"`, `"red"` or `"zinc"`) or a hex string beginning with `#`. The default is `"primary"`, which follows the theme's `--primary` token. Any other string, such as an `rgb()` value, falls back to that default.
+
+## How do I show progress when the duration is unknown?
+
+Set `indeterminate` on `Progress`. A short bar slides along the track, `value` is ignored, `aria-valuenow` is dropped and `aria-busy` is set. Users with `prefers-reduced-motion` get a still, full-width bar. For a spinner instead of a bar, use [Loader](https://avaraui.com/docs/nextjs/loader).
+
+## How do I build a multi-segment storage bar with MultiProgress?
+
+Nest `ProgressSegment` children inside `MultiProgress`, each with its own `value`, `color` and `label`. They all measure against the parent's `max`. A `gap` above `0` separates and rounds the segments. A segment rendered outside `MultiProgress` throws an error.
+
+## How do I replace the center text of CircularProgress?
+
+Pass `children`, either a node or a function `(value, max) => node` that receives the value as it counts up. This replaces the percentage, and `showValue` is then ignored. To keep the percentage but change its text, use `valueFormat`. `circleSize` sets the diameter in pixels.
+
+## Is Progress accessible and does it respect reduced motion?
+
+`Progress` renders `role="progressbar"` with `aria-valuemin`, `aria-valuemax` and `aria-valuenow`, plus an `aria-valuetext` such as `"45%, error"` when a status is set. Pass your own `aria-label`. Under `prefers-reduced-motion` the count-up tween is skipped and values snap to the target.
 
 ---
 

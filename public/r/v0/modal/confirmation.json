@@ -3,7 +3,7 @@
   "name": "modal-confirmation",
   "type": "registry:block",
   "title": "Modal — Confirmation",
-  "description": "Compact centered delete confirmation dialog with danger badge.",
+  "description": "The \"Confirmation\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

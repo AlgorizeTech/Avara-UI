@@ -3,7 +3,7 @@
   "name": "command-palette-inline",
   "type": "registry:block",
   "title": "Command Palette — Inline",
-  "description": "Always-open embedded command palette without a trigger bar or modal overlay — type immediately to filter items.",
+  "description": "The \"Inline\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

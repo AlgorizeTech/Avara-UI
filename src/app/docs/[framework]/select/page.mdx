@@ -4,16 +4,11 @@ export const metadata = docsPageMetadata("select");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Select
 
-A completely custom, headless-style dropdown component. Native HTML `<select>` elements are notoriously difficult to style consistently across browsers.
-
-This component solves that by using React state and clever absolute positioning to create a flawless, animated dropdown that perfectly matches the `InputBlock` visual variants. It has been supercharged to support **Multi-Select**, **Live Search Filtering**, and **Categorized Option Groups**.
-
-Explore the different variations of the Select component — each example shows a live preview with the exact code to copy.
-
-<AgentVariants slug="select" />
+A custom, animated dropdown component supporting single selection, multi-select tags, live search filtering, and categorized option groups.
 
 export const selectOptions = `import { Box, Code, Database, Paintbrush } from "lucide-react";
 
@@ -116,16 +111,18 @@ export default function MultiSelect() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase
+  headingLevel={2}
   name="select"
   colorControl
   colorLabel="Active Color"
   columns={1}
   minHeight={330}
+  installation={<Installation name="select" usage="below" />}
   examples={[
     {
       title: "Select",
-      subheading: "A labelled dropdown with helper text.",
+      description: "A labelled dropdown with helper text.",
       propNotes: [
         {
           lead: "Pass",
@@ -143,22 +140,6 @@ export default function MultiSelect() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/SelectBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="select" />
-
-## Examples
-
-<ExampleShowcase
-  name="select"
-  colorControl
-  colorLabel="Active Color"
-  columns={1}
-  minHeight={330}
-  examples={[
     {
       title: "Underlined",
       propNotes: [
@@ -202,31 +183,34 @@ export default function MultiSelect() {
   ]}
 />
 
-## Features
-Discover the Select component's accessible dropdown features, including keyboard navigation, search filtering, and custom rendering.
+## About Shadcn Select
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**What it is.** `SelectBlock` is a custom dropdown component matching `InputBlock` variants (`default`, `underlined`, etc.), with built-in support for icons, grouped options, sticky search filtering, and removable multi-select tags.
 
-## Best Practices & Guidelines
+**How it is built.** Driven by React state and positioned dropdown menus with keyboard navigation, outside-click dismissal, and theme-synced active accents.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `SelectBlock` when users pick one or more values from a structured `options` list. For free-text inputs with suggestions, use <DocLink to="input">Input</DocLink>; for a command-style modal picker, use <DocLink to="command">Command</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="select">
+
+**When to use**
+
+- Single or multi-select dropdowns with optional icons, option groups, and live search
+- Forms that need `SelectBlock` styling aligned with `InputBlock`
+
+**When not to use**
+
+- Free-text input with autocomplete hints — use <DocLink to="input">Input</DocLink> (`suggestions`)
+- Full keyboard command menu — use <DocLink to="command">Command</DocLink>
+
+**Agent notes**
+
+- Named export: `import { SelectBlock, type SelectOption } from "@/components/custom/blocks/SelectBlock"`
+- Controlled via `value` and `onChange`; pass `multiple` with a `string[]` value for removable tag chips
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -431,6 +415,31 @@ Discover the Select component's accessible dropdown features, including keyboard
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Pair `SelectBlock` with <DocLink to="input">Input</DocLink> and <DocLink to="form">Form</DocLink> for consistent field heights and `underlined` variants.
+- Place inside <DocLink to="dialog">Dialog</DocLink> or <DocLink to="drawer">Drawer</DocLink> filter panels.
+- Use <DocLink to="apple-select">Apple Select</DocLink> when you want a macOS-inspired wheel/pill selector aesthetic.
+
+## How do I build a multi-select dropdown with tags in React?
+
+Set `multiple` on `SelectBlock`, pass an array to `value` and handle the array in `onChange`. Selected options render as removable tags inside the input. Without `multiple`, `value` is a single string and picking another option replaces it.
+
+## How do I add a search box to the dropdown?
+
+Set `searchable` to `true`. A sticky search bar appears at the top of the menu and filters the `options` by their `label`. It is off by default, so short lists stay uncluttered. It works with both single and multiple selection.
+
+## How do I group options under headings?
+
+Give each item in `options` a `group` string next to its `label` and `value`. Options that share the same `group` are listed together. You can also pass an `icon` node on each option, such as a `lucide-react` icon.
+
+## How do I show a validation error on SelectBlock?
+
+Pass a string to `error`. The select turns red, adds an alert icon and replaces `helperText` with your message. Use `label` for the text above the field. `disabled` makes the control read-only with a faded style.
+
+## How is SelectBlock different from the Apple Select?
+
+`SelectBlock` is a form field that mirrors the `InputBlock` variants (`default`, `filled`, `underlined`, `glow`) and adds search, groups and multi-select. Use <DocLink to="apple-select">Apple Select</DocLink> when you want a macOS-inspired wheel or pill selector instead of a standard field.
 
 <DocsJsonLd slug="select" />
+<FaqJsonLd slug="select" />

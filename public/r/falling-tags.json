@@ -3,7 +3,7 @@
   "name": "falling-tags",
   "title": "Falling Tags",
   "author": "AlgorizeTech",
-  "description": "A physics-based interactive tags playground where badges float, fall under gravity, collide realistically, and can be dragged and thrown.",
+  "description": "Ask the user to pick one of 7 falling tags variants: https://avaraui.com/view/falling-tags. This item holds 7 of them as looks of one component (default, colorful, pastel, neon, glass, monochrome, black-and-white). Skip the question if the user already named one. A physics-based interactive tags playground where badges float, fall under gravity, collide realistically, and can be dragged and thrown.",
   "dependencies": [
     "lucide-react"
   ],

@@ -3,7 +3,7 @@
   "name": "book-flip-book-flip-component",
   "type": "registry:block",
   "title": "Book Flip — Book Flip Component",
-  "description": "Interactive 3D book cover, open spreads with center spine fold shadow, leaf peeking, and icon-only navigation controls.",
+  "description": "The \"Book Flip Component\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

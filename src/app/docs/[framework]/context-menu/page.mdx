@@ -4,16 +4,11 @@ export const metadata = docsPageMetadata("context-menu");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Context Menu
 
-Displays a menu to the user — such as a set of actions or functions — triggered by a right-click.
-
-Building a Context Menu is difficult because it involves intercepting the browser's native right-click event (`onContextMenu`) and rendering an overlay component precisely at the user's mouse coordinates without it getting clipped by CSS `overflow` properties.
-
-This `ContextMenuBlock` is a **100% dependency-free** solution. It uses React's `createPortal` to escape DOM limitations, and includes highly optimized boundary-collision logic to guarantee the menu never opens off the edge of the user's screen.
-
-Right-click (or long-press on touch) inside each dashed box. Try it near the edges — the boundary maths keeps the menu on screen.
+A portal-rendered right-click and long-press menu (`ContextMenu`, `ContextMenuTrigger`, `ContextMenuContent`, `ContextMenuItem`) with viewport collision clamping and shortcut hints.
 
 export const usageFull = `"use client";
 
@@ -100,10 +95,11 @@ export default function DocumentMenu() {
   name="context-menu"
   columns={1}
   colorControl
+  installation={<Installation name="context-menu" usage="below" />}
   examples={[
     {
       title: "Labels, shortcuts & disabled",
-      subheading: "`ContextMenuLabel` titles a group and `ContextMenuShortcut` right-aligns the hotkey.",
+      description: "`ContextMenuLabel` titles a group and `ContextMenuShortcut` right-aligns the hotkey.",
       propNotes: [
         {
           lead: "Set",
@@ -119,35 +115,36 @@ export default function DocumentMenu() {
   ]}
 />
 
-## Installation
+## About Shadcn Context Menu
 
-<Installation name="context-menu" />
+**What it is.** `ContextMenu` (`ContextMenuTrigger`, `ContextMenuContent`, `ContextMenuItem`, `ContextMenuLabel`, `ContextMenuSeparator`, `ContextMenuShortcut`) intercepts `onContextMenu`, a left click and a 500 ms touch long-press to open a cursor-positioned action menu.
 
-## Features
-Explore the ContextMenu's right-click features, including nested submenus, disabled states, and keyboard navigation.
+**How it is built.** Portals into `document.body` with `createPortal` (zero external dependencies) and clamps coordinates against viewport edges so menus never clip off-screen. It closes on `Escape`, an outside press, a scroll or an item click. The `ContextMenuShortcut` hint is display-only and does not bind a key.
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `ContextMenu` for right-click canvas, file-list, or row actions. For left-click dropdown panels, use <DocLink to="popover">Popover</DocLink>; for top application menus, use <DocLink to="menubar">Menubar</DocLink>.
 
-## Best Practices & Guidelines
+## For AI agents
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+<AgentBrief name="context-menu">
+
+**When to use**
+
+- Right-click and touch long-press menus on cards, rows, or canvas areas
+
+**When not to use**
+
+- Left-click trigger panels — use <DocLink to="popover">Popover</DocLink>
+- Persistent top-bar menus — use <DocLink to="menubar">Menubar</DocLink>
+
+**Agent notes**
+
+- Named exports from `@/components/custom/blocks/ContextMenuBlock`
+- The trigger also opens on a plain left click; pass your own `onClick` to `ContextMenuTrigger` to replace that handler
+- `ContextMenuShortcut` only renders a hint, so wire the real hotkey yourself
+- Set `color` on `ContextMenu` and `variant` (`"default"`, `"minimal"` or `"glass"`) on `ContextMenuContent`
+- Pass `disabled` on `ContextMenuItem` to dim the row and prevent `onClick`
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -177,7 +174,7 @@ Explore the ContextMenu's right-click features, including nested submenus, disab
           <code>"primary"</code>
         </td>
         <td>
-          Applies theme accent color to item hover states and trigger container focus/hover borders. Accepts preset named themes or valid hex strings.
+          Applies theme accent color to item hover states and trigger container focus/hover borders. Accepts the preset names or a custom string starting with <code>#</code>, <code>rgb</code> or <code>hsl</code>.
         </td>
       </tr>
       <tr>
@@ -196,6 +193,23 @@ Explore the ContextMenu's right-click features, including nested submenus, disab
         <td>
           Standard Tailwind CSS overrides for the boundary container that
           intercepts the right-click event.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>ContextMenuContent</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"default" | "minimal" | "glass"</code>
+        </td>
+        <td>
+          <code>"default"</code>
+        </td>
+        <td>
+          Surface style of the floating menu: solid popover, lightly blurred, or heavily blurred glass.
         </td>
       </tr>
       <tr>
@@ -310,6 +324,35 @@ Explore the ContextMenu's right-click features, including nested submenus, disab
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Pair `ContextMenu` with <DocLink to="table">Table</DocLink> rows or <DocLink to="folder">Folder</DocLink> cards for row and file actions.
+- Use <DocLink to="popover">Popover</DocLink> for a left-click panel and <DocLink to="menubar">Menubar</DocLink> for a persistent top menu.
+- Show hotkey hints next to items with <DocLink to="kbd">Kbd</DocLink> styling.
+
+## How does ContextMenu avoid clipping near screen edges?
+
+`ContextMenuContent` portals into `document.body` and measures itself after opening. If it would pass the right or bottom edge it shifts back inside, keeping a 12 to 16 px margin, and it never opens past the top or left edge. On screens under 640 px wide, a click in the right half opens it leftward.
+
+## Why does ContextMenu open on left click, and how do I limit it to right-click?
+
+`ContextMenuTrigger` has a built-in `onClick` that opens the menu at the click point. Because your props spread after it, passing your own `onClick`, even an empty function, replaces it. The menu then opens only from `onContextMenu` or a touch long-press.
+
+## How do I open ContextMenu on mobile?
+
+Press and hold inside `ContextMenuTrigger` for 500 ms with a single finger; the menu opens at that touch point. Lifting the finger or moving it before 500 ms cancels the timer, so normal scrolling still works. The native browser menu is suppressed on right-click with `preventDefault`.
+
+## What closes the ContextMenu?
+
+Pressing `Escape`, pressing the mouse or touching anywhere outside the menu, scrolling any element in the page, and clicking an enabled `ContextMenuItem` all close it. A `disabled` item ignores clicks, so the menu stays open. Right-clicking inside the open menu only suppresses the browser menu.
+
+## How do I change the ContextMenu color or surface style?
+
+Set `color` on `ContextMenu` to `"primary"`, `"indigo"`, `"rose"`, `"emerald"`, `"blue"` or `"zinc"`, or pass a hex, `rgb` or `hsl` string. It tints item hover and the trigger's hover border. Set `variant` on `ContextMenuContent` to `"default"`, `"minimal"` or `"glass"` for the surface.
+
+## Is ContextMenu keyboard accessible?
+
+Only partly. The menu has `role="menu"`, items have `role="menuitem"` and `Escape` closes it. But there is no arrow-key navigation, and the trigger is a plain `div` that is not focusable, so keyboard users cannot open it. Offer the same actions through visible buttons as well.
 
 <DocsJsonLd slug="context-menu" />
+<FaqJsonLd slug="context-menu" />

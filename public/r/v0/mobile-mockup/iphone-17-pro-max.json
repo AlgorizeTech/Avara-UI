@@ -3,7 +3,7 @@
   "name": "mobile-mockup-iphone-17-pro-max",
   "type": "registry:block",
   "title": "Mobile Mockup — iPhone 17 Pro Max",
-  "description": "The flagship frame — near-uniform bezel, a compact Dynamic Island and the flush Camera Control. Running this site's hero section as live children.",
+  "description": "The \"iPhone 17 Pro Max\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

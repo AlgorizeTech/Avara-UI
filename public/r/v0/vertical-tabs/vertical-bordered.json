@@ -3,7 +3,7 @@
   "name": "vertical-tabs-vertical-bordered",
   "type": "registry:block",
   "title": "Tabs — Vertical bordered",
-  "description": "One card around both halves, divided down the middle.",
+  "description": "The \"Vertical bordered\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

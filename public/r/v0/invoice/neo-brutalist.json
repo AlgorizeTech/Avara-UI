@@ -3,7 +3,7 @@
   "name": "invoice-neo-brutalist",
   "type": "registry:block",
   "title": "Invoice — Neo-Brutalist",
-  "description": "Bold 2px hard black borders, offset hard drop shadows, and high-contrast typography.",
+  "description": "The \"Neo-Brutalist\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

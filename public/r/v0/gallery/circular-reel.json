@@ -3,7 +3,7 @@
   "name": "gallery-circular-reel",
   "type": "registry:block",
   "title": "Gallery — Circular Reel",
-  "description": "A scroll-driven circular dial: each item sits on a segmented ring that turns with scroll and idles in a slow passive rotation.",
+  "description": "The \"Circular Reel\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

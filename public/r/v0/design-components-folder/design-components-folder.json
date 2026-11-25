@@ -3,7 +3,7 @@
   "name": "design-components-folder-design-components-folder",
   "type": "registry:block",
   "title": "Design Components Folder",
-  "description": "The cards fan out once the folder scrolls into view, then retract one at a time on hover.",
+  "description": "The \"Design components folder\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

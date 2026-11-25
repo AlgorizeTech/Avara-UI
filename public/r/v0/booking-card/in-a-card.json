@@ -3,7 +3,7 @@
   "name": "booking-card-in-a-card",
   "type": "registry:block",
   "title": "Booking Card — In a card",
-  "description": "Pick a day and a time, then press Book. The button stays busy while your `onBook` promise runs, then the confirmation draws itself in.",
+  "description": "The \"In a card\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -3,7 +3,7 @@
   "name": "carousel-fluid-glass-slider",
   "type": "registry:block",
   "title": "Carousel — Fluid glass slider",
-  "description": "`FluidGlassSlider` is a liquid glass distortion slider featuring dynamic cursor tracking, glassmorphism overlays, and smooth progress tracking.",
+  "description": "The \"Fluid glass slider\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

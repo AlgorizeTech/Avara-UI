@@ -3,7 +3,7 @@
   "name": "animated-typography-letter-bounce-word-rotator",
   "type": "registry:block",
   "title": "Animated Typography — Letter Bounce Word Rotator",
-  "description": "The word leaves letter by letter; the next springs in one letter at a time, as in the Hero's bounce title.",
+  "description": "The \"Letter Bounce Word Rotator\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

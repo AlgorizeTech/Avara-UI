@@ -3,7 +3,7 @@
   "name": "dialog-size-variations",
   "type": "registry:block",
   "title": "Dialog — Size variations",
-  "description": "Five widths, from a compact confirm up to a full-page surface.",
+  "description": "The \"Size variations\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

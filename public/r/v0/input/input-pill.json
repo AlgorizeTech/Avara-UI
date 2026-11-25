@@ -3,7 +3,7 @@
   "name": "input-input-pill",
   "type": "registry:block",
   "title": "Input — Pill badge",
-  "description": "Capsule-shaped fields featuring isolated left icon badges and smooth accent glow.",
+  "description": "The \"Pill badge\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

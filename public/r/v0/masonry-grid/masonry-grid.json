@@ -3,7 +3,7 @@
   "name": "masonry-grid-masonry-grid",
   "type": "registry:block",
   "title": "Masonry Grid",
-  "description": "The grid never measures anything — it flows your tiles through CSS columns.",
+  "description": "The \"Masonry grid\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

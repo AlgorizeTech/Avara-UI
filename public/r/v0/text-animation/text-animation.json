@@ -3,7 +3,7 @@
   "name": "text-animation-text-animation",
   "type": "registry:block",
   "title": "Text Animation",
-  "description": "The component splits the string and staggers each character with CSS animation delays.",
+  "description": "The \"Text animation\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

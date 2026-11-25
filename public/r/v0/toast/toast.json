@@ -3,7 +3,7 @@
   "name": "toast-toast",
   "type": "registry:block",
   "title": "Toast",
-  "description": "Wrap the app in `ToastProvider`, then call `toast()` from the `useToast` hook.",
+  "description": "The \"Toast\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

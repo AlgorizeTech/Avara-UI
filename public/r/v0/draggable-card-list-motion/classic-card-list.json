@@ -3,7 +3,7 @@
   "name": "draggable-card-list-motion-classic-card-list",
   "type": "registry:block",
   "title": "Draggable Card List — Classic Card List",
-  "description": "Reorderable cards with right-side drag grip handles, dynamic border hover color shift, and pastel bordered badges.",
+  "description": "The \"Classic Card List\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

@@ -3,7 +3,7 @@
   "name": "color-picker-360-color-wheel-studio-with-harmonies-shades",
   "type": "registry:block",
   "title": "Color Picker — 360° Color Wheel Studio with Harmonies & Shades",
-  "description": "Advanced 360° canvas spectrum wheel featuring real-time drag tracking, lightness & opacity sliders, live 5-step shades & tints, and 5-color harmony generator.",
+  "description": "The \"360° Color Wheel Studio with Harmonies & Shades\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

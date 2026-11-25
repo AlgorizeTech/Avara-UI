@@ -3,7 +3,7 @@
   "name": "video-player-modal-player",
   "type": "registry:block",
   "title": "Video Player — Modal player",
-  "description": "The default. A full-width 4K nature preview, glass CTA button and a centered dialog player.",
+  "description": "The \"Modal player\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

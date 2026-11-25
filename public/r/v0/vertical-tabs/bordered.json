@@ -3,7 +3,7 @@
   "name": "vertical-tabs-bordered",
   "type": "registry:block",
   "title": "Tabs — Bordered",
-  "description": "Rail and pane joined inside one outlined card, split by a single divider.",
+  "description": "The \"Bordered\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -1,35 +1,12 @@
 ---
 title: "Shadcn Folder"
-description: "Shadcn Folder. A tactile folder: skeleton cards (or your own photos) tuck behind a frosted-glass front pocket that tilts open in 3D."
+description: "Shadcn Folder. A tactile folder (`Folder`, `SkeletonCard`) with a 3D frosted-glass pocket, OKLCH color-derived shades, and fanned card previews on hover, tap."
 url: https://avaraui.com/docs/nextjs/folder
 ---
 
 # Shadcn Folder
 
-A tactile folder: skeleton cards (or your own photos) tuck behind a frosted-glass front pocket that tilts open in 3D, and the cards lift into a shallow arc on hover, tap or focus.
-
-Give it a `color` and the pocket, icon and cards all derive their shades from it. Pass `files` for real photos, or switch on `interactive` to make it a drag-and-drop upload target — that example lives on the [File Upload](https://avaraui.com/docs/nextjs/file-upload) page.
-
-## Folder
-
-Hover, tap or focus the folder to fan the cards out.
-
-- `peek` is how many skeleton cards to show when no `files` are given — `0` is an empty folder, `3` (default) is filled.
-- `size` is the folder width in pixels; height, tab, corner radius and card sizes all derive from it.
-- `color` defaults to a soft tint of `--primary` (lightness 0.88, chroma at 40%), so the folder — body, pocket, icon and the peeking cards — follows your theme preset and the colour picker above without going heavy. Pass any CSS colour to pin one.
-
-```tsx
-import { Folder } from "@/components/custom/blocks/FolderBlock";
-import { Image } from "lucide-react";
-
-// The folder takes a soft tint of the theme colour by default; pass `color` to pin one.
-// peek={0} → an empty folder; peek={3} (default) → filled
-export default function ProductShots() {
-  return (
-    <Folder label="Product shots" count="36 photos" icon={Image} peek={3} />
-  );
-}
-```
+A tactile folder (`Folder`, `SkeletonCard`) with a 3D frosted-glass pocket, OKLCH color-derived shades, and fanned card previews on hover, tap, or focus.
 
 ## Installation
 
@@ -52,9 +29,28 @@ Or the Motion build (same props, same file — install one):
 npx shadcn@latest add https://avaraui.com/r/folder-motion.json
 ```
 
-## Examples
+## Folder
 
-### Fan on hover
+Hover, tap or focus the folder to fan the cards out.
+
+- `peek` is how many skeleton cards to show when no `files` are given — `0` is an empty folder, `3` (default) is filled.
+- `size` is the folder width in pixels; height, tab, corner radius and card sizes all derive from it.
+- `color` defaults to a soft tint of `--primary` (lightness 0.88, chroma at 40%), so the folder — body, pocket, icon and the peeking cards — follows your theme preset and the colour picker above without going heavy. Pass any CSS colour to pin one.
+
+```tsx
+import { Folder } from "@/components/custom/blocks/FolderBlock";
+import { Image } from "lucide-react";
+
+// The folder takes a soft tint of the theme colour by default; pass `color` to pin one.
+// peek={0} → an empty folder; peek={3} (default) → filled
+export default function ProductShots() {
+  return (
+    <Folder label="Product shots" count="36 photos" icon={Image} peek={3} />
+  );
+}
+```
+
+## Fan on hover
 
 Hover a card for its name. Use the arrows — or drag a card sideways — to page through; the window wraps at either end.
 
@@ -82,7 +78,7 @@ export default function CaseFiles() {
 }
 ```
 
-### Icon
+## Icon
 
 Pick an icon — it and the pocket take their shades from the theme colour chosen at the top of the page.
 
@@ -131,7 +127,7 @@ export default function DesignAssets() {
 }
 ```
 
-### Photos
+## Photos
 
 Drag a photo sideways — or swipe it with a thumb — to page through; the arrows do the same.
 
@@ -156,24 +152,30 @@ export default function SummerTrip() {
 }
 ```
 
-## Features
-Discover the Folder's capabilities for presenting a group of files as one tactile object.
+## About Shadcn Folder
 
-The tab and body are a single rounded path, so the join never shows a notch and every corner — including the slant — is a true squircle.
+**What it is.** `Folder` renders a squircle folder with a frosted-glass front pocket, `peek` skeleton cards (or photo/file thumbnails via `files`), paging arrows when there is more than one item (the fan shows up to five cards at a time), and optional `interactive` drag-and-drop upload mode.
 
-Pocket, icon and skeleton cards are computed from `color` in OKLCH, so any base colour — near-black included — stays readable.
+**How it is built.** Derives pocket, icon, and card shades in OKLCH from `color` (defaulting to `--primary`), measures its nearest clipping ancestor to fit narrow containers, and respects `prefers-reduced-motion`. The default build uses GSAP; `folder-motion` is the same API on Motion.
 
-The fan measures its nearest clipping ancestor and tightens the gap — then drops a card — rather than overflowing on a narrow screen.
+**When to use it.** Use `Folder` for file collections, media albums, and playful upload targets. For dropzone upload queues, see [File Upload](https://avaraui.com/docs/nextjs/file-upload); for component-showcase folders, see [Components Folder](https://avaraui.com/docs/nextjs/design-components-folder).
 
-Hover opens it on desktop; a tap toggles it on touch; focus opens it from the keyboard. Every animation respects `prefers-reduced-motion`.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-The fan lifts cards roughly half the folder's height above it and the arrows sit just outside its width. Give the folder that space, and avoid `overflow-hidden` on its immediate parent.
+- Tactile folder previews with fanned skeleton/photo cards (`files`, `peek`, `icon`) or interactive file drop targets (`interactive`)
 
-### Do not double up the click
+**When not to use**
 
-An `interactive` folder spends its click on the file picker, so tap-to-toggle is off there. If an ancestor already handles clicks, pass `toggleOnClick={false}` and `focusable` so the fan stays keyboard-reachable.
+- Full multi-file upload queues with per-file progress — use [File Upload](https://avaraui.com/docs/nextjs/file-upload)
+
+**Agent notes**
+
+- Named exports: `Folder`, `SkeletonCard` from `@/components/custom/blocks/FolderBlock` (ships GSAP and Motion twin builds)
+- Avoid `overflow-hidden` on the immediate parent so the fanned cards have headroom above the folder
+- `files` takes `{ thumb?, name?, progress? }` objects; with no `files`, `peek` skeleton cards are shown.
+- Install `folder` (GSAP) or `folder-motion` (Motion), not both. Both pull in the Tooltip block and `lucide-react`.
 
 ## Props Reference
 
@@ -206,6 +208,36 @@ An `interactive` folder spends its click on the file picker, so tap-to-toggle is
 ### `SkeletonCard`
 
 Also exported. The placeholder "document" the folder draws for files without a `thumb` — reuse it anywhere you need a pretend file so the language stays consistent.
+
+## Works with other components
+
+- Use `interactive` mode as a playful drop target alongside [File Upload](https://avaraui.com/docs/nextjs/file-upload), which handles the upload queue.
+- Compare with [Components Folder](https://avaraui.com/docs/nextjs/design-components-folder) for multi-card showcase folders.
+- Card names in the fan are shown with the [Tooltip](https://avaraui.com/docs/nextjs/tooltip) block, which installs as a dependency.
+
+## Why shouldn't I put overflow-hidden on Folder's parent?
+
+When hovered or focused, `Folder` fans its cards roughly half the folder's height above the top edge and places paging arrows just outside its width; `overflow-hidden` on an immediate ancestor will clip them. Leave headroom above the folder.
+
+## How do I show my own photos in the Folder fan?
+
+Pass `files` with a `thumb` URL on each entry. Those cards render as photos clipped to the card corners, while entries without `thumb` render as skeleton cards. Add `name` to show a tooltip, and `onRemoveFile` to get an × on each open card that reports its index.
+
+## How do I turn Folder into a file drop target?
+
+Set `interactive` and handle `onFiles`, which receives the dropped or picked `File[]`. Clicking the folder opens the browser file picker, and `accept` and `multiple` go to the hidden input. Drive the pocket's progress bar with a `progress` value from 0 to 100.
+
+## How do I open the Folder fan on touch or with the keyboard?
+
+By default a tap, or Enter and Space on the focused folder, toggles the fan, and focus inside it also opens it. If an ancestor owns the click, set `toggleOnClick={false}` and add `focusable` so the fan still opens on focus. Pass `open` to force it.
+
+## How do I change the Folder colour?
+
+Pass `color` any CSS colour. Without it the folder uses `FOLDER_THEME_TINT`, a soft tint of your theme's `--primary`, so it follows theme presets. The pocket, icon and skeleton cards derive their shades from `color` in OKLCH, so one value restyles the whole folder.
+
+## Should I use the GSAP or the Motion build of Folder?
+
+Either. `folder` installs with `gsap` and `folder-motion` with `motion`, and both export `Folder` and `SkeletonCard` with the same props and `prefers-reduced-motion` handling. Neither imports `next/*`, so both run in Vite. Pick the library your project already ships and install one.
 
 ---
 

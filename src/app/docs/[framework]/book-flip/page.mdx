@@ -3,13 +3,12 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("book-flip");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Book Flip
 
 An interactive 3D **Book Flip** component simulating realistic book page turns, dynamic spine shifts, center fold shadows, leaf peeking, and bottom icon toolbar controls.
-
-## Variations
 
 export const usageDefault = `import BookFlip, { type PageFlipLeaf } from "@/components/custom/book-flip";
 
@@ -102,28 +101,56 @@ export default function BookFlipDemo() {
 <ExampleShowcase minHeight={410}
   name="book-flip"
   columns={1}
+  installation={<Installation name="book-flip" usage="below" />}
   examples={[
     {
       title: "Book Flip Component",
-      subheading: "Interactive 3D book cover, open spreads with center spine fold shadow, leaf peeking, and icon-only navigation controls.",
+      description: "Interactive 3D book cover, open spreads with center spine fold shadow, leaf peeking, and icon-only navigation controls.",
       usage: usageDefault,
       code: extractCode("src/components/custom/book-flip.tsx"),
     },
   ]}
 />
 
-## Installation
+## About Shadcn Book Flip
 
-<Installation name="book-flip" />
+**What it is.** `BookFlip` is a 3D book made of image leaves. It opens from a closed cover into a two-page spread, turns pages with a spine shadow and a hover peek, and has a toolbar with Previous, Reset, a turned-count badge and Next.
 
-## Features
+**How it is built.** Each entry in `pages` is a leaf with a `frontImage` and a `backImage`, drawn with CSS 3D transforms and `perspective`. The state is the number of turned leaves (`turnedIndex` or `defaultTurnedIndex`, where 0 is the closed cover), and `onPageChange` reports it. Arrow keys on the window and clicks on a page also turn leaves.
 
-- **3D Book Cover & Spread Transition**: Starts in single-cover mode and dynamically centers into a 2-page spread upon flipping leaves.
-- **Center Spine Crease Shadow**: Realistic crease fold shadow integrated on page surfaces.
-- **Keyboard Navigation**: Press Left Arrow (`←`) and Right Arrow (`→`) keys to flip through pages.
-- **Minimal Icon Toolbar**: Features `< Prev`, `Reset`, `X / Y` counter, and `Next >` icon-only controls.
+**When to use it.** Use it for digital lookbooks, interactive portfolios, photo albums and product catalogs where turning a page is part of the experience.
 
-## Props Reference: BookFlip
+**Features.**
+
+- **Cover to spread:** the book starts closed and shifts sideways to centre the two-page spread once a leaf turns, unless `spineShift` is `false`.
+- **Spine shadow and peek:** a crease shadow sits on the pages, and hovering a turnable leaf lifts it by `peekAngle` degrees.
+- **Keyboard:** the Left and Right arrow keys flip a page, with no focus needed (see the FAQ below).
+- **Toolbar:** labelled Previous Page, Reset Book and Next Page buttons around a turned count such as `2 / 8`; hide it with `showControls={false}`.
+
+## For AI agents
+
+<AgentBrief name="book-flip">
+
+**When to use**
+
+- Digital lookbooks, interactive portfolios, photo albums, and product catalogs where tactile page-turning elevates browsing
+
+**When not to use**
+
+- Browsing images in a swipeable slider: use <DocLink to="carousel">Carousel</DocLink>
+- Content that should open in an overlay: use <DocLink to="modal">Modal</DocLink>
+
+**Agent notes**
+
+- Import `BookFlip` (also the default export) from `@/components/custom/book-flip`, not from `blocks/`. Types `PageFlipLeaf` and `BookFlipHandle` are exported too.
+- `pages` is `PageFlipLeaf[]`: the first leaf's front is the front cover, the last leaf's back is the back cover, and each leaf has `frontImage` and `backImage` plus optional `frontTitle`, `backTitle`, subtitles, badges and gradient colours.
+- `turnedIndex` is a count of turned leaves from `0` to `pages.length`, not a page number. Use `turnedIndex` with `onPageChange` for controlled state or `defaultTurnedIndex` for uncontrolled.
+- A ref gives `{ next, prev, reset, goTo, getTurnedCount, getTotalLeaves }` for your own buttons.
+- Arrow-key listeners are on `window`, so two books on one page flip together.
+
+</AgentBrief>
+
+## Props Reference
 
 <div className="overflow-x-auto">
   <table>
@@ -202,10 +229,105 @@ export default function BookFlipDemo() {
         <td><code>3500</code></td>
         <td>Interval in milliseconds between automatic page flips.</td>
       </tr>
+      <tr>
+        <td><code>perspective</code></td>
+        <td><code>number</code></td>
+        <td><code>1400</code></td>
+        <td>3D perspective depth in pixels.</td>
+      </tr>
+      <tr>
+        <td><code>peekAngle</code></td>
+        <td><code>number</code></td>
+        <td><code>14</code></td>
+        <td>Degrees a leaf lifts when hovered.</td>
+      </tr>
+      <tr>
+        <td><code>turnAngle</code></td>
+        <td><code>number</code></td>
+        <td><code>180</code></td>
+        <td>Total turn angle of a flipped leaf in degrees.</td>
+      </tr>
+      <tr>
+        <td><code>duration</code></td>
+        <td><code>number</code></td>
+        <td><code>0.7</code></td>
+        <td>Flip duration in seconds.</td>
+      </tr>
+      <tr>
+        <td><code>easing</code></td>
+        <td><code>string</code></td>
+        <td><code>"cubic-bezier(0.4, 0, 0.2, 1)"</code></td>
+        <td>CSS easing for the flip.</td>
+      </tr>
+      <tr>
+        <td><code>shadowIntensity</code></td>
+        <td><code>number</code></td>
+        <td><code>0.35</code></td>
+        <td>Shadow strength from 0 to 1.</td>
+      </tr>
+      <tr>
+        <td><code>spineShift</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Shifts the book sideways so the open spread stays centred.</td>
+      </tr>
+      <tr>
+        <td><code>radius</code></td>
+        <td><code>string | number</code></td>
+        <td><code>"4px"</code></td>
+        <td>Page corner radius. A number is read as pixels.</td>
+      </tr>
+      <tr>
+        <td><code>pauseOnHover</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Pauses autoplay while the pointer is over the book.</td>
+      </tr>
+      <tr>
+        <td><code>interactive</code></td>
+        <td><code>boolean</code></td>
+        <td><code>true</code></td>
+        <td>Lets visitors click a page to turn it. When <code>false</code>, the pages ignore the pointer.</td>
+      </tr>
+      <tr>
+        <td><code>className / style</code></td>
+        <td><code>string / CSSProperties</code></td>
+        <td><code>undefined</code></td>
+        <td>Classes and inline style for the outer container.</td>
+      </tr>
     </tbody>
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- <DocLink to="modal">Modal</DocLink> for opening a full-screen catalog preview around the book.
+- <DocLink to="card">Card</DocLink> for editorial layouts that surround the book with copy.
+- <DocLink to="kbd">Kbd</DocLink> to show the Left and Right arrow shortcut hints next to the book.
+
+## Does BookFlip support keyboard navigation?
+
+Yes. The Left and Right arrow keys flip pages through a listener on `window`, so the book needs no focus. That also means arrows turn pages while a visitor types in a nearby input, and two books on one page flip together. The toolbar buttons have labels such as "Next Page".
+
+## Can I control the active page externally?
+
+Yes. Pass `turnedIndex` and update it in `onPageChange(turnedCount, totalLeaves)`. The value counts turned leaves, so `0` is the closed cover and `pages.length` is a fully turned book. Use `defaultTurnedIndex` for uncontrolled state. Autoplay only works in uncontrolled mode.
+
+## How should I structure the pages array in BookFlip?
+
+Each item is one physical leaf with two sides. The first leaf's `frontImage` is the front cover, a leaf's `backImage` shows on the left once it turns, and the last leaf's `backImage` is the back cover. Add `frontTitle`, `frontBadge` and `frontColor` for captions.
+
+## How do I flip BookFlip from my own buttons?
+
+Attach a ref to `BookFlip` and call it from your own buttons. The handle exposes `next()`, `prev()`, `reset()`, `goTo(index)`, `getTurnedCount()` and `getTotalLeaves()`, typed as `BookFlipHandle`. `goTo` clamps to the range 0 to `pages.length`, and it fires `onPageChange` like the built-in toolbar does.
+
+## Does BookFlip autoplay, and when does it pause?
+
+Set `autoplay` to turn a leaf every `autoplayInterval` milliseconds (3500 by default). It returns to the closed cover after the last leaf and pauses while the pointer is over the book, unless `pauseOnHover={false}`. Autoplay updates internal state only, so `onPageChange` does not fire for it.
+
+## How do I stop visitors clicking pages or hide the toolbar in BookFlip?
+
+Pass `interactive={false}` to stop clicks on pages from turning them, and `showControls={false}` to hide the toolbar. The Left and Right arrow keys still turn pages, so drive the book from your own buttons through the ref if you need full control.
 
 <DocsJsonLd slug="book-flip" />
+<FaqJsonLd slug="book-flip" />

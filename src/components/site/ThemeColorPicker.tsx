@@ -6,6 +6,8 @@ export interface ThemeColorPickerProps {
 	onChange: (color: string) => void;
 	label?: string;
 	className?: string;
+	/** Keeps the label for screen readers only, so just the swatch pill shows. */
+	hideLabel?: boolean;
 }
 
 /** Preset swatches, in display order. Ids must match `PRESET_HEX` in lib/accent. */
@@ -24,11 +26,16 @@ export function ThemeColorPicker({
 	onChange,
 	label = "Theme Color",
 	className,
+	hideLabel = false,
 }: ThemeColorPickerProps) {
 	return (
 		<div
 			className={cn("flex flex-col gap-2", className)}>
-			<label className="text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35">
+			<label
+				className={cn(
+					"text-[11px] font-semibold uppercase tracking-[0.08em] text-foreground/35",
+					hideLabel && "sr-only",
+				)}>
 				{label}
 			</label>
 			<div className="w-fit max-w-full flex flex-wrap items-center justify-start gap-x-1 gap-y-1.5 sm:gap-x-1.5 p-1 bg-foreground/[0.04] rounded-xl border border-foreground/[0.06]">

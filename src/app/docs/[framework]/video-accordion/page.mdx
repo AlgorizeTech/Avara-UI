@@ -3,11 +3,12 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("video-accordion");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Video Accordion
 
-A cinematic video accordion, an expanding gallery component animated with plain **CSS transitions** — no animation library. It keeps one panel visually dominant and plays its assigned video, while the rest seamlessly compress into an obscured track-rail and pause.
+An expanding video gallery in plain CSS: one panel plays while the others compress and pause.
 
 This layout is incredibly useful for portfolio reels, storytelling feature sections, and high-impact editorial landing pages. On mobile viewports, it intelligently re-flows into a vertically expanding stack automatically.
 
@@ -84,6 +85,7 @@ export default function ShortReel() {
   name="video-accordion"
   colorControl={false}
   columns={1}
+  installation={<Installation name="video-accordion" usage="below" />}
   examples={[
     {
       title: "Opened on load",
@@ -99,20 +101,6 @@ export default function ShortReel() {
       usage: usageDefaultActive,
       code: extractCode("src/components/custom/blocks/VideoAccordionBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="video-accordion" />
-
-## Examples
-
-<ExampleShowcase minHeight={360}
-  name="video-accordion"
-  colorControl={false}
-  columns={1}
-  examples={[
     {
       title: "Fewer panels",
       propNotes: [
@@ -128,35 +116,35 @@ export default function ShortReel() {
   ]}
 />
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+## About Shadcn Video Accordion
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Fluid Animations">
-    <p>Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
-  </InfoCard>
-  <InfoCard title="Highly Customizable">
-    <p>Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
-  </InfoCard>
-  <InfoCard title="Responsive Design">
-    <p>Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
-  </InfoCard>
-</div>
+**What it is.** **Shadcn Video Accordion** (`VideoAccordion`) is a multi-panel expanding video gallery where hovering or selecting a panel expands it smoothly and plays its video while sibling panels compress and pause.
 
-## Best Practices & Guidelines
+**How it is built.** Animated purely with CSS `flex-grow` transitions (no external animation library), `VideoAccordion` automatically redistributes space for any panel count and stacks vertically on mobile viewports.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Animation Performance">
-    <p>Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
-  </InfoCard>
-  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">State Management</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>
-  </div>
-</div>
+**When to use it.** Use it for portfolio reels, feature storytelling strips, editorial landing heroes, and interactive media showcases.
+
+## For AI agents
+
+<AgentBrief name="video-accordion">
+
+**When to use**
+
+- Portfolio reels, feature storytelling strips
+- Editorial landing heroes, interactive media showcases
+
+**When not to use**
+
+- A single video with playback controls: use <DocLink to="video-player">Video Player</DocLink>
+- Text-only expandable sections: use <DocLink to="accordion">Accordion</DocLink>
+
+**Agent notes**
+
+- `VideoAccordion` accepts `panels` (`AccordionPanel[]`) and optional `defaultActiveId`.
+- Omit `defaultActiveId` to start with all panels in their collapsed resting state; pass a panel ID to expand it on load.
+- Uses pure CSS transitions with automatic video play/pause synchronization per panel.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -319,6 +307,29 @@ Discover the key capabilities that make this component an excellent choice for m
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+Combine `VideoAccordion` with <DocLink to="video-player">Video Player</DocLink> for modal video heroes, <DocLink to="accordion">Accordion</DocLink> for text-based FAQs, and <DocLink to="gallery">Gallery</DocLink> for 3D media showcases.
+
+## How do I build an expanding video gallery in React?
+
+Pass a `panels` array to `VideoAccordion`. Each panel needs an `id`, `title`, `description` and `videoSrc`, which is an `.mp4` or `.webm` URL. Hovering or selecting a panel expands it and plays its video while the other panels compress and pause.
+
+## Does VideoAccordion require Motion or GSAP?
+
+No. Panel expansion and compression run on plain CSS `flex-grow` transitions, and space is redistributed for any number of panels. Nothing beyond the component file is needed, so it adds no animation library to your bundle.
+
+## How does VideoAccordion handle mobile viewports?
+
+On smaller screens the horizontal rail switches to a vertically expanding stack, so every video panel stays legible. You do not configure a breakpoint yourself, and the same `panels` array drives both layouts.
+
+## How do I choose which panel is open on load?
+
+Set `defaultActiveId` to the `id` of a panel. If you leave it out, the accordion starts with every panel collapsed. A panel's `description` is hidden while it is collapsed, so users only see the full text of the expanded one.
+
+## Why do I need a posterUrl on each panel?
+
+`posterUrl` is an optional fallback image that shows immediately while the video buffers, so the panel is never blank. It is optional but highly recommended, especially for large video files on slower connections.
 
 <DocsJsonLd slug="video-accordion" />
+<FaqJsonLd slug="video-accordion" />

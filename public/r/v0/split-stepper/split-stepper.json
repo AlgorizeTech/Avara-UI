@@ -3,7 +3,7 @@
   "name": "split-stepper-split-stepper",
   "type": "registry:block",
   "title": "Split Stepper",
-  "description": "Text on the scrolling side, `cardContent` on the sticky deck.",
+  "description": "The \"Split stepper\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

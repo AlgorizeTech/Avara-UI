@@ -3,7 +3,7 @@
   "name": "vertical-tabs-elevated",
   "type": "registry:block",
   "title": "Tabs — Elevated",
-  "description": "Every tab is its own card. The active one takes the accent; the rest stay flat.",
+  "description": "The \"Elevated\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

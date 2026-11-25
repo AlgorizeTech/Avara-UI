@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 /**
  * Prop, Type and Default read as plain monospace text, not chips: the name in
  * the ink, its type and default a step lighter. They are spans, not <code>,
@@ -21,7 +23,7 @@ export const PropsTable = ({
     name: string;
     type: string;
     default?: string;
-    description: string;
+    description: ReactNode;
     required?: boolean;
   }[];
 }) => (

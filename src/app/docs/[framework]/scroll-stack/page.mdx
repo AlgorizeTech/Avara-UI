@@ -3,17 +3,16 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("scroll-stack");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode, extractMotionCode } from "@/lib/code";
 
 # Shadcn Scroll Stack
 
-A premium collection of scroll-driven 3D card stacking layouts engineered exclusively with **GSAP's ScrollTrigger plugin**. As users scroll down the page, feature cards stick to the viewport while the next card slides up to cover them, creating a simulated 3D deck with silky 60fps performance across both light and dark modes.
+Scroll-driven 3D card stacks built with GSAP ScrollTrigger: cards stick while the next one slides up over them.
 
 Five independent scroll-driven layouts share this page, each with its own block file. **Scroll inside a preview box** to drive its ScrollTrigger timeline.
 
-<AgentVariants slug="scroll-stack" />
-
-## Fan stack
+## Fan Stack Cascade
 
 Overlapping cards in a tilted diagonal cascade, each with a photo hanging off its edge. As the stack scrolls into view the cards are dealt out of one pile into place, scrubbed by the scrollbar. It is built from small primitives, so a card holds whatever your data has.
 
@@ -21,10 +20,11 @@ Overlapping cards in a tilted diagonal cascade, each with a photo hanging off it
   name="fan-stack"
   colorControl
   columns={1}
+  installation={<Installation name="fan-stack" usage="below" />}
   examples={[
     {
       title: "Fan stack",
-      subheading: "Three numbered steps dealt from a pile into a cascade as you scroll.",
+      description: "Three numbered steps dealt from a pile into a cascade as you scroll.",
       propNotes: [
         {
           prop: "scrollerRef",
@@ -47,12 +47,6 @@ Overlapping cards in a tilted diagonal cascade, each with a photo hanging off it
     },
   ]}
 />
-
-The cascade is a container query, not a breakpoint: under 768px of width the cards become a sticky stack instead — each one sticks near the top and the next slides over it, its header left peeking. Drag the preview narrower to see it. Under `prefers-reduced-motion` the cascade simply shows, without the deal.
-
-### Installation
-
-<Installation name="fan-stack" />
 
 ## Simple stack
 
@@ -260,6 +254,7 @@ export default function GappedStack() {
   name="scroll-stack"
   colorControl
   columns={1}
+  installation={<Installation name="scroll-stack" showSetupPath={false} usage="below" />}
   examples={[
     {
       title: "Card gap",
@@ -284,11 +279,7 @@ export default function GappedStack() {
   ]}
 />
 
-### Installation
-
-<Installation name="scroll-stack" showSetupPath={false} />
-
-## Sticky stack
+## Sticky Card Stack
 
 export const stickyItems = `import { Palette, Smartphone, Sparkles } from "lucide-react";
 
@@ -399,10 +390,11 @@ export default function TunedStickyStack() {
   name="sticky-scroll-stack"
   colorControl
   columns={1}
+  installation={<Installation name="sticky-scroll-stack" showSetupPath={false} usage="below" />}
   examples={[
     {
       title: "Sticky stack",
-      subheading: "A headed section where each card sticks and the next overlaps it.",
+      description: "A headed section where each card sticks and the next overlaps it.",
       propNotes: [
         {
           prop: "contentType",
@@ -416,10 +408,6 @@ export default function TunedStickyStack() {
     },
   ]}
 />
-
-### Installation
-
-<Installation name="sticky-scroll-stack" showSetupPath={false} />
 
 ### More examples
 
@@ -631,10 +619,11 @@ export default function PinnedLeftStack() {
   name="split-scroll-stack"
   colorControl
   columns={1}
+  installation={<Installation name="split-scroll-stack" showSetupPath={false} usage="below" />}
   examples={[
     {
       title: "Pinned right",
-      subheading: "A two-column layout: the right column pins while the left scrolls its deck past it.",
+      description: "A two-column layout: the right column pins while the left scrolls its deck past it.",
       propNotes: [
         {
           prop: "stickySide",
@@ -649,10 +638,6 @@ export default function PinnedLeftStack() {
     },
   ]}
 />
-
-### Installation
-
-<Installation name="split-scroll-stack" showSetupPath={false} />
 
 ### More examples
 
@@ -753,11 +738,12 @@ export default function ProcessRail() {
   name="horizontal-scroll-stack"
   colorControl
   columns={1}
+  installation={<Installation name="horizontal-scroll-stack" showSetupPath={false} usage="below" />}
   examples={[
     {
       id: "horizontal-scroll-stack",
       title: "Horizontal Scroll Stack",
-      subheading: "The section pins and vertical scroll is translated into horizontal travel.",
+      description: "The section pins and vertical scroll is translated into horizontal travel.",
       propNotes: [
         {
           prop: "items",
@@ -770,10 +756,6 @@ export default function ProcessRail() {
     },
   ]}
 />
-
-### Installation
-
-<Installation name="horizontal-scroll-stack" showSetupPath={false} />
 
 export const usageHorizontalShort = `import { HorizontalRail } from "@/components/custom/blocks/HorizontalRailBlock";
 
@@ -812,35 +794,35 @@ export default function ProcessRailTrack() {
 
 <Installation name="horizontal-rail" showSetupPath={false} />
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+## About Shadcn Scroll Stack
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Fluid Animations">
-    <p>Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
-  </InfoCard>
-  <InfoCard title="Highly Customizable">
-    <p>Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
-  </InfoCard>
-  <InfoCard title="Responsive Design">
-    <p>Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
-  </InfoCard>
-</div>
+**What it is.** **Shadcn Scroll Stack** is a family of five independently installable scroll-driven card layout blocks: `FanStack`, `ScrollStack`, `StickyScrollStack`, `SplitScrollStack`, and `HorizontalScrollStack` (plus `HorizontalRail`).
 
-## Best Practices & Guidelines
+**How it is built.** Each block is tailored to its motion pattern — from container-query responsive tilted fan cascades to sticky overlap decks, two-column pinned split sections, and vertical-to-horizontal pinned rails — with automatic light and dark theme adaptation and `prefers-reduced-motion` support.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Animation Performance">
-    <p>Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
-  </InfoCard>
-  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">State Management</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>
-  </div>
-</div>
+**When to use it.** Use it for landing page feature tours, multi-step onboarding sequences, capability showcases, and narrative case-study sections.
+
+## For AI agents
+
+<AgentBrief name="scroll-stack">
+
+**When to use**
+
+- Landing page feature tours, multi-step onboarding sequences
+- Capability showcases, narrative case-study sections
+
+**When not to use**
+
+- A different scroll-stack style or a scroll-split layout: use <DocLink to="modern-scroll-stack">Modern Scroll Stack</DocLink>
+- A static bento grid with no scroll choreography: use <DocLink to="magic-bento">Magic Bento</DocLink>
+
+**Agent notes**
+
+- Install only the specific block needed (`fan-stack`, `scroll-stack`, `sticky-scroll-stack`, `split-scroll-stack`, `horizontal-scroll-stack`, or `horizontal-rail`).
+- Use `FanStack` for a tilted scroll-scrubbed cascade that collapses into a sticky stack below 768px container width.
+- Use `StickyScrollStack` with `headerMode` and `contentType` (`"list" | "image" | "split" | "custom"`) for headed vertical overlap sections, or `SplitScrollStack` with `stickySide="left" | "right"` for two-column layouts.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -1199,6 +1181,29 @@ Discover the key capabilities that make this component an excellent choice for m
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+Combine `ScrollStack` blocks with <DocLink to="modern-scroll-stack">Modern Scroll Stack</DocLink> for alternating color cards, <DocLink to="scroll-split-cards">Scroll Split Cards</DocLink> for split-panel reveals, and <DocLink to="magic-bento">Magic Bento</DocLink> for grid highlights.
+
+## Do I have to install all the Scroll Stack blocks?
+
+No. Each layout is its own registry item, for example `fan-stack`, `sticky-scroll-stack`, `split-scroll-stack` and `horizontal-scroll-stack`, so you install only the one you use. Each has its own block file and its own props, and you can mix different layouts on one page.
+
+## How does FanStack behave on smaller screens?
+
+`FanStack` uses a CSS container query rather than a viewport breakpoint. Below `768px` of container width it switches from the tilted cascade to a sticky vertical stack. Under `prefers-reduced-motion` it renders without the scroll-scrubbed deal animation.
+
+## How do I run a scroll stack inside a scrollable container instead of the page?
+
+Pass the scrolling element to `scrollerRef` on `FanStack`. It defaults to `window`, so you only need it when the stack sits inside a container that scrolls on its own, such as a modal body or a fixed-height panel.
+
+## How do I change the colour of FanStack cards?
+
+Set `tone` on `FanStackCard` to `"muted"`, `"light"` or `"accent"`. The card surface is tinted from `--primary`, so your theme drives it. If you leave `tone` unset, the cards step through the three tones in order.
+
+## How do I stop FanStack cards sliding under a fixed header?
+
+Raise `stickyTop`. Below `768px` it is the gap in px above the first stuck card, and it defaults to `16`. Use `scrub`, default `0.6`, to control how many seconds the cards take to catch up with the scrollbar. `0` locks them to it.
 
 <DocsJsonLd slug="scroll-stack" />
+<FaqJsonLd slug="scroll-stack" />

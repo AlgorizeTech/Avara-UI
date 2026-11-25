@@ -1,6 +1,7 @@
 import { docsPageMetadata } from "@/lib/docs-metadata";
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 export const metadata = docsPageMetadata("mobile-mockup", {
@@ -19,9 +20,9 @@ export const metadata = docsPageMetadata("mobile-mockup", {
 
 # Shadcn Mobile Mockups
 
-A collection of mobile device mockups for presenting your app designs, images or autoplaying videos in high-fidelity hardware frames. Eight models share one API: the iPhone 16 Pro and 17 Pro Max, iPhone 14 Pro Max, iPhone 12 Pro Max, iPhone 5, Samsung S24 Ultra, Google Pixel 8 and Google Pixel 10.
+Eight phone mockups that show your images or autoplaying video in hardware frames, with one shared API.
 
-Each device is its own exported component that wraps whatever you put inside it — a screenshot, a video or a live React tree. Every frame is pure CSS/SVG, so it stays crisp at any zoom. The screens below run this site's own hero section as live children.
+Each device is its own exported component that wraps whatever you put inside it — a screenshot, a video or a live React tree. Every frame is plain CSS with no bezel images, so it stays crisp at any zoom. The screens below run this site's own hero section as live children.
 
 export const usageIphone16 = `import { Iphone16ProMockup } from "@/components/custom/blocks/MobileMockupBlock";
 
@@ -191,10 +192,11 @@ export default function Pixel10Showcase() {
 <ExampleShowcase headingLevel={2}
   name="mobile-mockup"
   columns={1}
+  installation={<Installation name="mobile-mockup" usage="below" />}
   examples={[
     {
       title: "iPhone 16 Pro",
-      subheading:
+      description:
         "The modern flagship frame — sleek uniform bezel, flush seamless perimeter, and centered Dynamic Island. Running this site's hero section as live children.",
       propNotes: [
         {
@@ -208,22 +210,9 @@ export default function Pixel10Showcase() {
       usage: usageIphone16,
       code: extractCode("src/components/custom/blocks/MobileMockupBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="mobile-mockup" />
-
-## Examples
-
-<ExampleShowcase
-  name="mobile-mockup"
-  columns={1}
-  examples={[
     {
       title: "iPhone 17 Pro Max",
-      subheading:
+      description:
         "The flagship frame — near-uniform bezel, a compact Dynamic Island and the flush Camera Control. Running this site's hero section as live children.",
       propNotes: [
         {
@@ -238,7 +227,7 @@ export default function Pixel10Showcase() {
     },
     {
       title: "iPhone 14 Pro Max",
-      subheading: "A wider Dynamic Island and a chunkier bezel than the 17.",
+      description: "A wider Dynamic Island and a chunkier bezel than the 17.",
       propNotes: [
         {
           prop: "videoSrc",
@@ -251,7 +240,7 @@ export default function Pixel10Showcase() {
     },
     {
       title: "iPhone 12 Pro Max",
-      subheading: "Flat edges and a notch, at a 19.5:9 aspect ratio.",
+      description: "Flat edges and a notch, at a 19.5:9 aspect ratio.",
       propNotes: [
         {
           prop: "src",
@@ -264,7 +253,7 @@ export default function Pixel10Showcase() {
     },
     {
       title: "iPhone 5",
-      subheading: "The retro frame — thick bezels, a home button and a 16:9 screen.",
+      description: "The retro frame — thick bezels, a home button and a 16:9 screen.",
       propNotes: [
         {
           prop: "src",
@@ -277,7 +266,7 @@ export default function Pixel10Showcase() {
     },
     {
       title: "Samsung S24 Ultra",
-      subheading: "Squared-off corners and a centred punch-hole camera.",
+      description: "Squared-off corners and a centred punch-hole camera.",
       propNotes: [
         {
           prop: "className",
@@ -290,7 +279,7 @@ export default function Pixel10Showcase() {
     },
     {
       title: "Google Pixel 8",
-      subheading: "Heavily rounded corners and a 20:9 screen.",
+      description: "Heavily rounded corners and a 20:9 screen.",
       propNotes: [
         {
           prop: "src",
@@ -317,38 +306,37 @@ export default function Pixel10Showcase() {
   ]}
 />
 
-## Features
-Learn about the Mobile Mockup component's realistic device framing, perfect for presenting app screenshots with proper bezels.
+## About Shadcn Mobile Mockups
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="8 Unique Devices">
-    <p>Choose from a variety of iconic models, from the modern iPhone 16 Pro and iPhone 17 Pro Max through classic iPhones to Samsung Ultra and Google Pixel.</p>
-  </InfoCard>
-  <InfoCard title="Pure CSS/SVG">
-    <p>No heavy raster images used for the frames. Everything is built with perfectly scaled SVG and CSS for blazing fast performance.</p>
-  </InfoCard>
-  <InfoCard title="Media & React Ready">
-    <p>Easily pass static images, autoplaying looping videos, or full interactive React trees directly into the screen container.</p>
-  </InfoCard>
-  <InfoCard title="Theme Adapting">
-    <p>The hardware frames natively adapt their bezels, finishes, and shadows based on your app's current light or dark mode.</p>
-  </InfoCard>
-</div>
+**What it is.** **Shadcn Mobile Mockups** is a suite of eight CSS-only smartphone frames (`Iphone16ProMockup`, `Iphone17ProMaxMockup`, `Iphone14ProMaxMockup`, `Iphone12ProMaxMockup`, `Iphone5Mockup`, `SamsungS24UltraMockup`, `GooglePixel8Mockup` and `GooglePixel10Mockup`) that render images, looping videos, or live React children.
 
-## Best Practices & Guidelines
+**How it is built.** Each frame is a `forwardRef` component built from styled `div` elements at a fixed pixel size, so there are no bezel images and no npm dependency. Frame borders and rings come from theme tokens such as `border-border` and `ring-muted`, and the screen background is `bg-background`. Screens fill with `object-cover`.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Content Aspect Ratios">
-    <p>When passing screenshots as images, try to ensure they roughly match a vertical aspect ratio close to the frame you picked (16:9 on the iPhone 5, 19.5:9 on the iPhone 12/14/17 and Samsung, 20:9 on the Pixels) to prevent unnatural stretching or cropping inside the frame.</p>
-  </InfoCard>
-  <InfoCard title="Sizing Live Screens">
-    <p>Tailwind's responsive prefixes key off the viewport, not the frame. A section that uses <code>sm:</code> or <code>lg:</code> classes still renders at desktop sizes inside a 300px-wide mockup, so give an embedded screen a fixed type scale instead of reusing your page-level layout component.</p>
-  </InfoCard>
-  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Handling Overflow</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">If you are passing interactive React components inside the mockup instead of an image, ensure you add <code>overflow-y-auto</code> to your child wrapper if you want the screen content to be scrollable.</p>
-  </div>
-</div>
+**When to use it.** Use it for mobile app landing pages, interactive UI demos, app store feature sections, and responsive preview cards.
+
+## For AI agents
+
+<AgentBrief name="mobile-mockup">
+
+**When to use**
+
+- Mobile app landing pages, interactive UI demos
+- App store feature sections, responsive preview cards
+
+**When not to use**
+
+- A standalone video: use <DocLink to="video-player">Video Player</DocLink>
+- A working chat interface: use <DocLink to="chat">Chat</DocLink>
+
+**Agent notes**
+
+- All eight are named exports from `@/components/custom/blocks/MobileMockupBlock` and share one `MockupProps` type: `children`, `src`, `videoSrc`, `className`, plus any `div` attribute.
+- Pass `src` for a static screenshot, `videoSrc` for a muted looping video, or `children` for a live interactive React tree. If more than one is set, `videoSrc` wins, then `src`, and `children` is ignored.
+- Images and videos use `object-cover`, so a screenshot with a different aspect ratio is cropped to fill the screen, not letterboxed.
+- Give embedded React `children` fixed type sizes and `overflow-y-auto` if scrollable, since Tailwind viewport breakpoints key off the browser window rather than the frame.
+- `src` renders with a fixed `alt` of "Mockup". For a described screenshot, pass your own `<img alt="...">` as `children`.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -365,27 +353,56 @@ Learn about the Mobile Mockup component's realistic device framing, perfect for 
       <tr>
         <td><code>children</code></td>
         <td><code>ReactNode</code></td>
-        <td>Custom content to render inside the phone screen (useful for complex UIs).</td>
+        <td>Custom content for the phone screen (useful for complex UIs). Only rendered when neither <code>videoSrc</code> nor <code>src</code> is set.</td>
       </tr>
       <tr>
         <td><code>src</code></td>
         <td><code>string</code></td>
-        <td>Image URL to display in the screen (fills the whole screen).</td>
+        <td>Image URL that fills the screen with <code>object-cover</code>. Rendered with <code>alt="Mockup"</code>. Ignored when <code>videoSrc</code> is set.</td>
       </tr>
       <tr>
         <td><code>videoSrc</code></td>
         <td><code>string</code></td>
-        <td>Video URL to auto-play inside the screen (muted and looping).</td>
+        <td>Video URL that auto-plays inside the screen, muted, looping and inline, with no controls. Takes priority over <code>src</code> and <code>children</code>.</td>
       </tr>
       <tr>
         <td><code>className</code></td>
         <td><code>string</code></td>
-        <td>Additional CSS classes to apply to the mockup's outer wrapper.</td>
+        <td>Additional CSS classes for the outer wrapper, which has a fixed pixel width and height. Other <code>div</code> attributes are passed to it too.</td>
       </tr>
     </tbody>
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- <DocLink to="video-player">Video Player</DocLink> pairs with a mockup for app demo reels.
+- <DocLink to="chat">Chat</DocLink> fills a frame for mobile messenger previews.
+- <DocLink to="booking-card">Booking Card</DocLink> suits mobile checkout flows inside a frame.
+
+## Can I render interactive React components inside the device screen?
+
+Yes. Pass JSX as `children` instead of `src` or `videoSrc`, and add `overflow-y-auto` on your inner container if the embedded screen should scroll. `children` only renders when neither `src` nor `videoSrc` is set, because those two take priority over it.
+
+## Why do `sm:` or `lg:` classes inside `children` look oversized?
+
+Tailwind responsive breakpoints read the browser viewport rather than the phone frame, which is only about 280 to 340px wide. A `sm:` class therefore still fires on a desktop and can blow the layout out. Use fixed font and spacing classes inside embedded screens.
+
+## What happens if I pass src, videoSrc and children together?
+
+Only one is shown. The frame renders `videoSrc` first, then `src`, and uses `children` only when neither is set. The rest are ignored without a warning, so a leftover `src` can hide your live React screen. Pass one of the three per mockup.
+
+## How do I change the size of a mobile mockup?
+
+Each frame has a fixed pixel size, from 280 by 580 for `Iphone5Mockup` to 340 by 712 for `Iphone17ProMaxMockup`. A `className` such as `w-[260px]` reaches the outer wrapper, but the bezel, buttons and camera cut-outs are also pixel-sized. To shrink the whole device, add a transform class such as `scale-75`.
+
+## How do I add alt text to a screenshot in a mobile mockup?
+
+The `src` prop always renders `alt="Mockup"`, and there is no `alt` prop. When the screenshot carries meaning, skip `src` and pass your own image as a child: `<Iphone16ProMockup><img src="..." alt="Dashboard overview" className="w-full h-full object-cover" /></Iphone16ProMockup>`.
+
+## Does the mobile mockup work outside Next.js?
+
+Yes. The file has no `next/*` imports and no npm dependency beyond the `cn` helper from `@/lib/utils`. Each frame is a `forwardRef` `div`, so it works in Vite or any React app. Frame borders and rings use theme tokens such as `border-border` and `ring-muted`, so they follow your theme without extra props.
 
 <DocsJsonLd slug="mobile-mockup" />
+<FaqJsonLd slug="mobile-mockup" />

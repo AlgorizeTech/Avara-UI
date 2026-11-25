@@ -8,9 +8,24 @@ url: https://avaraui.com/docs/nextjs/animated-list
 
 A hyper-polished list component that staggers its children into view using 3D perspective transforms (no animation library), complete with a mouse-tracking glassmorphic spotlight hover effect.
 
-Standard list animations often feel rigid. By wrapping your notification or activity feeds in the `AnimatedList` container, the engine forces a `perspective` boundary and applies a high-end 3D flip-in sequence (`back.out` easing) to every direct child. Furthermore, the `AnimatedListItem` wrapper brings the component to life _after_ entry by tracking the user's cursor to render a subtle spotlight gradient glow.
+Standard list animations often feel rigid. By wrapping your notification or activity feeds in the `AnimatedList` container, the engine sets a `perspective` boundary and plays a staggered entrance (`slide-right` with `back.out(1.5)` easing by default, or the 3D `flip`) on every direct child. Furthermore, the `AnimatedListItem` wrapper brings the component to life _after_ entry by tracking the user's cursor to render a subtle spotlight gradient glow.
 
 Each list plays its entrance once it scrolls into view — use a preview's reload button to replay it. Hover a card afterwards for the cursor-tracking spotlight.
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/animated-list.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/animated-list
+```
 
 ## Animated list
 
@@ -109,24 +124,7 @@ export default function NotificationFeed() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/animated-list.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/animated-list
-```
-
-## Examples
-
-### Flip
+## Flip
 
 - Use `variant="flip"` to rotate each row in on the X axis against the container's 3D perspective — the signature entrance.
 
@@ -220,7 +218,7 @@ export default function FlipFeed() {
 }
 ```
 
-### Slide up
+## Slide up
 
 - Use `variant="slide-up"` to translate the rows in from an edge instead of rotating. `slide-left` and `slide-right` do the same from the sides.
 
@@ -314,7 +312,7 @@ export default function SlideUpFeed() {
 }
 ```
 
-### Pop
+## Pop
 
 - Use `variant="pop"` to scale each row in from small.
 - `ease="elastic.out(1, 0.5)"` adds the overshoot that makes the pop bounce.
@@ -409,7 +407,7 @@ export default function PopFeed() {
 }
 ```
 
-### Timing
+## Timing
 
 - `staggerDelay={0.35}` is the gap between children.
 - `duration={1.1}` is how long each one takes.
@@ -507,34 +505,71 @@ export default function TimedFeed() {
 }
 ```
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+## About Shadcn Animated List
 
-Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
+**What it is.** `AnimatedList` and `AnimatedListItem` make a staggered feed. Each direct child enters with one of five `variant` motions (`flip`, `slide-up`, `slide-left`, `slide-right`, `pop`), and each `AnimatedListItem` shows a cursor-tracking spotlight on hover.
 
-Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
+**How it is built.** `AnimatedList` sets a 1000px `perspective` and runs the entrance in a `requestAnimationFrame` loop, driven by `staggerDelay`, `duration`, `animationDelay` and an `ease` string. It parses GSAP-style ease names itself, so it has no animation dependency, and it imports nothing from `next/*`.
 
-Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
+**When to use it.** Use it for notification feeds, activity logs, onboarding checklists and live event streams that should arrive one row at a time.
 
-Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.
+- Notification feeds, activity logs
+- Onboarding checklists, live event streams
 
-### State Management
+**When not to use**
 
-When triggering animations via state changes, ensure you wrap state updates in `startTransition` or use lightweight stores to prevent React rendering bottlenecks during the animation tick.
+- Rows users must reorder by dragging: use [Draggable Card List](https://avaraui.com/docs/nextjs/draggable-card-list)
+- Dated milestones with status markers: use [Timeline](https://avaraui.com/docs/nextjs/timeline)
+
+**Agent notes**
+
+- Named exports `AnimatedList` and `AnimatedListItem` from `@/components/custom/blocks/AnimatedListBlock`. Put `AnimatedListItem` as a direct child: the entrance styles go on the list's direct children only.
+- `variant` is `"flip" | "slide-up" | "slide-left" | "slide-right" | "pop"` and defaults to `"slide-right"`.
+- Timing props are in seconds: `staggerDelay` (0.12), `animationDelay` (0), `duration` (0.6). `ease` defaults to `"back.out(1.5)"`.
+- The entrance runs once on mount and again when one of those props changes. A row added later stays hidden (`AnimatedListItem` starts at `opacity-0`), so remount the list with a new `key` after adding rows.
+- There is no reduced-motion check: pass `duration={0}` and `staggerDelay={0}` yourself for people who prefer less motion.
 
 ## Props Reference
 
 | Component | Prop | Type | Default | Description |
 | --- | --- | --- | --- | --- |
 | `AnimatedList` | `staggerDelay` | `number` | `0.12` | The amount of time (in seconds) to wait before animating the next consecutive child element in the list. |
-| `AnimatedList` | `animationDelay` | `number` | `0` | The total delay (in seconds) before the entire staggered 3D flip-in sequence begins. |
-| `AnimatedList` | `duration` | `number` | `0.8` | The total duration (in seconds) of the entry animation for a single list item. |
+| `AnimatedList` | `animationDelay` | `number` | `0` | The total delay (in seconds) before the staggered entrance begins. |
+| `AnimatedList` | `duration` | `number` | `0.6` | The total duration (in seconds) of the entry animation for a single list item. |
 | `AnimatedList` | `ease` | `string` | `"back.out(1.5)"` | The easing applied to the entrance animation, named the GSAP way (`"power4.out"`, `"elastic.out(1, 0.5)"`) and evaluated without the library; CSS keywords and `cubic-bezier()` work too. |
+| `AnimatedList` | `variant` | `"flip" \| "slide-up" \| "slide-left" \| "slide-right" \| "pop"` | `"slide-right"` | Entrance motion for each child. All variants also fade in from a small blur. |
+| `AnimatedList` | `...props` | `HTMLAttributes<HTMLDivElement>` | `undefined` | Passed to the list container, including `className`. |
 | `AnimatedListItem` | `...props` | `HTMLAttributes<HTMLDivElement>` | `undefined` | Accepts all native HTML div attributes. This component automatically handles its own `onMouseMove` and `onMouseLeave` events to drive the glassmorphic spotlight gradient under the hood. |
+
+## Works with other components
+
+- [Item](https://avaraui.com/docs/nextjs/item) for structured rows (media, title, description) to put inside each `AnimatedListItem`.
+- [Draggable Card List](https://avaraui.com/docs/nextjs/draggable-card-list) when people need to reorder the rows, which `AnimatedList` does not support.
+- [Timeline](https://avaraui.com/docs/nextjs/timeline) for dated, status-driven events on a vertical rail instead of a feed of cards.
+
+## Does AnimatedList require GSAP when using ease strings like `power4.out`?
+
+No. `AnimatedList` parses the ease string itself and installs no animation library. It understands GSAP names such as `power1` to `power4`, `sine`, `expo`, `circ`, `bounce`, `back`, `elastic` and `steps`, plus CSS keywords and `cubic-bezier()`. An unrecognised name falls back to `power1.out`.
+
+## How do I add the cursor-tracking hover spotlight?
+
+Wrap each row in `AnimatedListItem` inside `AnimatedList`; there is nothing to switch on. It tracks `onMouseMove` and draws a 600px white radial glow at 6% opacity under the pointer, which fades out on `onMouseLeave`. The glow is faint on light cards and clearer on dark ones.
+
+## Why are rows I add to AnimatedList later invisible?
+
+`AnimatedListItem` starts at `opacity-0` and only the entrance loop reveals it. That loop runs on mount and again when `staggerDelay`, `animationDelay`, `ease`, `duration` or `variant` change. A row appended afterwards is never animated in, so give the list a new `key` to replay the whole entrance.
+
+## How do I change the entrance direction of AnimatedList?
+
+Set `variant`. `slide-right` is the default and moves rows in 60px from the right, `slide-left` does the same from the left, `slide-up` rises 40px, `pop` scales up from 0.6, and `flip` tilts rows in on the X axis against the list's perspective. Every variant also fades in from a small blur.
+
+## How do I turn the AnimatedList entrance off for reduced motion?
+
+`AnimatedList` has no built-in `prefers-reduced-motion` check, so add one yourself. Read the media query in your component and pass `duration={0}` and `staggerDelay={0}` when it matches. Rows then appear almost at once instead of animating, and the spotlight hover still works.
 
 ---
 

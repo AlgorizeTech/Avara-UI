@@ -1,16 +1,27 @@
 ---
 title: "Shadcn Command"
-description: "A powerful, composable command menu palette for searching data and triggering quick actions. Free shadcn/ui Command component for React and Tailwind CSS."
+description: "Shadcn Command. A command menu with no `cmdk` dependency (`Command`, `CommandDialog`, `CommandInput`, `CommandList`, `CommandGroup`, `CommandItem`."
 url: https://avaraui.com/docs/nextjs/command
 ---
 
 # Shadcn Command
 
-A powerful, composable command menu palette for searching data and triggering quick actions.
+A command menu with no `cmdk` dependency (`Command`, `CommandDialog`, `CommandInput`, `CommandList`, `CommandGroup`, `CommandItem`, `CommandShortcut`) with keyboard navigation and automatic empty-group hiding.
 
-Most robust command palettes force you to install heavy third-party libraries like `cmdk`, which ship with massive virtualized lists and complex React state syncing. This `CommandBlock` achieves the exact same functionality using a **100% native, dependency-free DOM architecture**. It handles keyboard navigation (up/down/enter), automatic empty-state detection, and dialog trapping entirely through efficient native DOM events and modern CSS `:has()` rules.
+## Installation
 
-Type in any search box to filter — empty groups vanish on their own. `ArrowUp` / `ArrowDown` move the selection and `Enter` fires it.
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/command.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/command
+```
 
 ## Groups, separators & shortcuts
 
@@ -95,24 +106,7 @@ export default function CommandPalette() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/command.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/command
-```
-
-## Examples
-
-### Command dialog
+## Command dialog
 
 Swap `Command` for `CommandDialog` to get the ⌘K overlay — try the shortcut.
 
@@ -177,7 +171,7 @@ export default function QuickActions() {
 }
 ```
 
-### External filtering
+## External filtering
 
 - Set `shouldFilter={false}` to turn off the built-in filter when the results already come back filtered from an API.
 
@@ -221,20 +215,30 @@ export default function ExternalFiltering() {
 }
 ```
 
-## Features
-Learn about the Command palette's features, including fuzzy search, keyboard shortcuts, and nested group navigation.
+## About Shadcn Command
 
-Easily adapt the component's styling and behavior to fit your application's unique design system.
+**What it is.** `Command` (`CommandDialog`, `CommandInput`, `CommandList`, `CommandEmpty`, `CommandGroup`, `CommandItem`, `CommandSeparator`, `CommandShortcut`) provides searchable, keyboard-navigable command menus.
 
-Built with accessibility in mind, ensuring all users can interact with your application effectively.
+**How it is built.** Uses native DOM events and CSS `:has()` rules (zero `cmdk` dependency) to handle `ArrowUp`/`ArrowDown`/`Enter` navigation, empty-state detection, and auto-hiding empty groups. The only npm dependency is `lucide-react` for the search icon.
 
-Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+**When to use it.** Use `Command` when composing custom searchable action menus or `⌘K` dialogs. For opinionated Linear-style, nested drill-down, or Ask-AI palettes, use [Command Palette](https://avaraui.com/docs/reactjs/command-palette).
 
-Optimized for maximum performance with minimal re-renders and efficient state management.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+- Composable searchable command menus (`Command`) or `⌘K` modal overlays (`CommandDialog`) with `shouldFilter` toggle for API-backed search
+
+**When not to use**
+
+- Pre-styled Linear, nested drill-down, or Ask-AI palettes — use [Command Palette](https://avaraui.com/docs/reactjs/command-palette)
+
+**Agent notes**
+
+- Named exports from `@/components/custom/blocks/CommandBlock`
+- `CommandDialog` is strictly controlled (`open` + `onOpenChange`) and has no built-in `⌘K` binding; add your own `keydown` listener
+- Pass `shouldFilter={false}` when filtering results externally on a server
+- `CommandItem` matches the query against `value`, or the text of its children when `value` is omitted; `onSelect` receives that same string
 
 ## Props Reference
 
@@ -243,9 +247,38 @@ Follow standard design principles when implementing this component. Ensure prope
 | `CommandDialog` | `open` | `boolean` | Required | Controls the visibility of the modal dialog overlay. |
 | `CommandDialog` | `onOpenChange` | `(open: boolean) => void` | Required | Callback fired when the dialog is dismissed via a click-outside event or by pressing the Escape key. |
 | `CommandGroup` | `heading` | `string` | `undefined` | Optional text label displayed directly above the clustered items. The entire group automatically hides if all its items are filtered out. |
-| `CommandItem` | `value` | `string` | `undefined` | An explicit string used for fuzzy searching. If omitted, the component automatically falls back to searching the rendered `textContent` of the item. |
-| `CommandItem` | `onSelect` | `(value: string) => void` | `undefined` | Callback fired when the item is clicked with the mouse or activated via the Enter key during keyboard navigation. |
+| `CommandItem` | `value` | `string` | `undefined` | An explicit string matched against the search text (case-insensitive substring). If omitted, the text of the item's children is used instead. |
+| `CommandItem` | `onSelect` | `(value: string) => void` | `undefined` | Callback fired with the item's match string (`value`, or its text) when the item is clicked or activated via the Enter key during keyboard navigation. |
 | All Components | `className` | `string` | `undefined` | Standard Tailwind CSS overrides for customized styling, sizing, or spacing. |
+
+## Works with other components
+
+- Display [Kbd](https://avaraui.com/docs/reactjs/kbd) inside `CommandShortcut` or trigger buttons.
+- Compare with [Command Palette](https://avaraui.com/docs/reactjs/command-palette) for pre-styled Linear, nested, and Ask-AI variants.
+
+## How do I disable built-in filtering for server-side search?
+
+Pass `shouldFilter={false}` on `Command`. Every `CommandItem` then stays visible whatever is typed into `CommandInput`, so you render the results your API returned yourself. With the default `true`, each item hides unless its `value` or text contains the query.
+
+## How do I open the Command dialog with Cmd+K or Ctrl+K?
+
+`CommandDialog` ships no shortcut of its own. Register a `keydown` listener on `document` that toggles your own `open` state when `e.metaKey || e.ctrlKey` and `e.key === "k"`, then pass that state to `open`. The dialog closes itself through `onOpenChange` on Escape or a backdrop click.
+
+## How does keyboard navigation work in Command?
+
+`ArrowDown` and `ArrowUp` move the highlight through visible items and wrap at both ends, and `Enter` activates the highlighted item's `onSelect`. The first visible item is highlighted whenever the query changes. The highlighted row carries `data-selected="true"`, which you can style with `data-[selected=true]:` classes.
+
+## What does CommandItem search against, and is it fuzzy?
+
+It is not fuzzy. `CommandItem` does a case-insensitive substring match against `value`, or against the text of its children when `value` is omitted. Set `value` when the visible label differs from what people type, such as adding keywords. `onSelect` receives that same string.
+
+## Does Command use cmdk, and does it work in Vite?
+
+It does not use `cmdk`. Navigation and filtering are built from DOM events and CSS `:has()` rules, and the only npm dependency is `lucide-react`. The file has no `next/*` imports, so it installs the same way in Next.js and Vite projects.
+
+## When should I use Command instead of Command Palette?
+
+Use `Command` when you want to compose your own menu from `CommandInput`, `CommandList`, `CommandGroup` and `CommandItem`. Use [Command Palette](https://avaraui.com/docs/reactjs/command-palette) when you want a ready-made launcher with `linear`, `nested`, `inline` or `ai` variants and a built-in `Ctrl+K` trigger.
 
 ---
 

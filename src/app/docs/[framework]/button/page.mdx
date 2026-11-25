@@ -4,12 +4,11 @@ export const metadata = docsPageMetadata("button");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Button
 
-An animated glowing-border Button component engineered with a spinning conic-gradient line tracking the 4 edges of the button, smooth click ripple physics, loading states, and full theme synchronization.
-
-The glowing border animation continuously spins around the 4 sides of the button matching the form submitting engine animation.
+An animated Button component with a spinning conic-gradient border, click ripple physics, 3D press, loading states, and theme-synced variants.
 
 export const usageDefault = `import Button from "@/components/custom/blocks/Button";
 import { ArrowRightIcon, SettingsIcon } from "@/components/custom/blocks/Icons";
@@ -332,10 +331,13 @@ export default function AuthAndGlassButtonsDemo() {
   );
 };`;
 
-<ExampleShowcase minHeight={330} headingLevel={2}
+<ExampleShowcase
+  minHeight={260}
+  headingLevel={2}
   name="button"
   colorControl
   columns={1}
+  installation={<Installation name="button" usage="below" />}
   examples={[
     {
       title: "4-Side Spinning Glowing Line Animated Button",
@@ -344,20 +346,6 @@ export default function AuthAndGlassButtonsDemo() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/Button.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="button" />
-
-## Examples
-
-<ExampleShowcase minHeight={330}
-  name="button"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Dark Glass Parameter Control Panel Tiles",
       description: "Interactive dark glass control tiles for parameter panels (Color pickers, dropdown selects, sliders, and toggle switches).",
@@ -433,7 +421,15 @@ export default function AuthAndGlassButtonsDemo() {
   ]}
 />
 
-## Features
+## About Shadcn Button
+
+**What it is.** A versatile `Button` component with 20+ visual and motion variants — including a 4-side conic-gradient glowing outline, 3D raised press, sliding icons, vertical text roll, dark glass `shards-control` parameter tiles, auth/glass surfaces, and pricing CTAs.
+
+**How it is built.** Engineered with Tailwind CSS, CSS custom properties (`--primary`, `--button-color`), and GPU-friendly transforms. Continuous animations such as `slide-icon-loop` and `shards-control` effects automatically respect `prefers-reduced-motion`.
+
+**When to use it.** Use `Button` for standard triggers, CTAs, social sign-in buttons, icon-only toolbar actions, and interactive parameter tiles. For async progress, slide-to-confirm, or hold-to-confirm workflows, use <DocLink to="action-buttons">Action Button</DocLink>.
+
+**Features.**
 
 - **4-Side Animated Glowing Border**: Conic-gradient spinning line that continuously sweeps around the 4 edges of the button matching Form Engine submitting buttons.
 - **Interactive Sliding Icon Physics**: `variant="slide-icon"` provides a rounded background icon on the right that slides out to the right on hover, while a new rounded icon slides in smoothly from the left.
@@ -441,8 +437,29 @@ export default function AuthAndGlassButtonsDemo() {
 - **3D Press**: `variant="3d"` stacks a raised primary face over a darkened edge and a soft ground shadow. Hover lowers the face a step; pressing seats it on the edge, so the click reads as a real push.
 - **Vertical Text Roll Animation**: `variant="slide-text"` moves the button text smoothly upwards on hover while another text label rolls up smoothly into position from below.
 - **Ripple Click Physics**: Interactive radial ripple expansion on mouse click.
-- **Loading Spinners**: Built-in async state handling with interactive disabled states.
-- **Full Theme Color Syncing**: Automatically inherits site primary CSS variables (`var(--primary)`).
+
+## For AI agents
+
+<AgentBrief name="button">
+
+**When to use**
+
+- Standard actions, form submits, pricing CTAs, icon-only buttons, and social login triggers
+- Animated hover/press buttons (`variant="outline"`, `"3d"`, `"slide-icon"`, `"slide-text"`) or dark glass parameter tiles (`variant="shards-control"`)
+
+**When not to use**
+
+- Async progress, slide-to-confirm, or hold-to-confirm buttons — use <DocLink to="action-buttons">Action Button</DocLink>
+- One-click clipboard copy with copied confirmation — use <DocLink to="copy-button">Copy Button</DocLink>
+- Binary pressed/unpressed state controls — use <DocLink to="toggle">Toggle</DocLink>
+
+**Agent notes**
+
+- Default export: `import Button from "@/components/custom/blocks/Button"`
+- Pass `loading` for the built-in spinner and disabled state; omit `children` and pass `iconLeft` for an icon-only square button
+- `shards-control` tiles accept `controlType="color" | "select" | "slider" | "toggle"` and `effect="sparkle" | "orbit" | "beacon" | "shimmer"`
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -603,6 +620,40 @@ export default function AuthAndGlassButtonsDemo() {
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+
+## Works with other components
+
+- Pair `Button` as the trigger inside <DocLink to="dialog">Dialog</DocLink>, <DocLink to="popover">Popover</DocLink>, or <DocLink to="drawer">Drawer</DocLink>.
+- Combine `variant="pricing-*"` buttons with <DocLink to="card">Card</DocLink> or <DocLink to="pricing">Pricing</DocLink> tiers.
+- Use `variant="auth-social"` or `"glass-social"` inside <DocLink to="auth-forms">Auth Forms</DocLink>.
+
+## How do I create an icon-only Button?
+
+Pass your icon via `iconLeft` (or `iconRight`) and omit `children`. When no text children are provided, `Button` automatically collapses into a square icon target.
+
+## How do the shards-control parameter tiles work?
+
+Set `variant="shards-control"` along with `controlType` (`"color"`, `"select"`, `"slider"`, or `"toggle"`). You can attach an interactive completion animation with `effect` (`"sparkle"`, `"orbit"`, `"beacon"`, or `"shimmer"`) and control whether it plays once or loops via `effectMode`.
+
+## Does Button respect reduced-motion preferences?
+
+Yes. Continuous animations like `variant="slide-icon-loop"` and `shards-control` effects automatically pause or skip motion when `prefers-reduced-motion: reduce` is enabled.
+
+## Is Button accessible?
+
+Yes. It renders a native `<button>` and forwards its ref, so keyboard activation, focus and form submission work as usual. While `loading` is true it is disabled, and decorative layers such as the glowing border and ripples are hidden from assistive technology. Give icon-only buttons an `aria-label`.
+
+## Does Button need extra dependencies, and does it work without Next.js?
+
+No extra packages. It needs only React and the `cn` helper, with no `next/*` imports and no animation library, so it runs in Next.js, Vite and any other React app.
+
+## How do I change the Button colour?
+
+Pass `color` with a named preset such as `"indigo"` or `"rose"`, or any hex value. Leave it unset and the button follows your theme's `--primary` token, so it changes with your theme in light and dark mode.
+
+## How is Button different from Action Button?
+
+Button is the general-purpose trigger with 20+ visual variants. <DocLink to="action-buttons">Action Button</DocLink> wraps an async `action` with pending, success and failed states, plus slide-to-confirm and hold-to-confirm gestures. Use Button for plain triggers and Action Button when the click starts something slow or hard to undo.
 
 <DocsJsonLd slug="button" />
+<FaqJsonLd slug="button" />

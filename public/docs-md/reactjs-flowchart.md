@@ -6,11 +6,24 @@ url: https://avaraui.com/docs/nextjs/flowchart
 
 # Flowchart / Node Builder
 
-A declarative, highly sleek flowchart engine complete with custom responsive column channels, node action anchors, and custom vector streaming lines that draw themselves in with plain CSS animation.
-
-This engine separates data flow layout orchestration from canvas tracking. By combining declarative standard layout structures with pre-set micro connection vectors, pipelines render cross-device flawlessly without heavy calculations crashing client frame updates.
+A declarative flowchart: SVG routes that draw themselves in, absolutely positioned node cards, and a moving dashed stream on the active route.
 
 Click any node that sits on a route to make that route the active one — the moving stream switches to that SVG path.
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/flowchart.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/flowchart
+```
 
 ## Flowchart
 
@@ -85,24 +98,7 @@ export default function AutomationMap() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/flowchart.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/flowchart
-```
-
-## Examples
-
-### Linear pipeline
+## Linear pipeline
 
 - `initialActivePath="main-route"` streams that route on mount — the minimum composition is one route threaded through three nodes.
 
@@ -153,7 +149,7 @@ export default function LinearPipeline() {
 }
 ```
 
-### No active route
+## No active route
 
 - Set `initialActivePath={null}` to start every route idle and let the reader activate a branch by clicking a node.
 
@@ -232,7 +228,7 @@ export default function IdlePipeline() {
 }
 ```
 
-### AI Agent convergence
+## AI Agent convergence
 
 - `path="C ..."` smooth cubic bezier curves guide multi-agent inputs into a central orchestrator before streaming to code execution and artifacts.
 
@@ -320,13 +316,32 @@ export default function AgentPipeline() {
 }
 ```
 
-## Best Practices & Guidelines
+## About Flowchart / Node Builder
 
-Node positions come from Tailwind `left-[…]` / `top-[…]` classes and the routes are raw SVG coordinates, so the two are only aligned because you made them align. When you move a node, move the matching `M`/`L` coordinates with it.
+**What it is.** **Flowchart / Node Builder** (`FlowCanvas`, `FlowNode`, and `FlowConnection`) is a declarative SVG pipeline and node-diagram engine with CSS-animated streaming routes and clickable branch activation.
 
-### Split long routes into segments
+**How it is built.** The `Flowchart` root holds the active route in context, seeded by `initialActivePath`. `FlowCanvas` is the SVG layer that holds `FlowConnection` paths (`M`/`L` right angles or `C` curves), and `FlowNode` cards sit on top at fixed `left-[...]` and `top-[...]` positions. The default 900 by 400 canvas scales down to fit narrower containers, and the draw-in and stream use CSS animation.
 
-Several `FlowConnection`s can share the same `id`. Splitting a branch into per-hop segments lets the stream animation restart at each node instead of sweeping the whole diagram at once.
+**When to use it.** Use it for workflow automations, CI/CD pipelines, multi-agent convergence diagrams, and interactive system architecture maps.
+
+## For AI agents
+
+**When to use**
+
+- Workflow automations, CI/CD pipelines
+- Multi-agent convergence diagrams, interactive system architecture maps
+
+**When not to use**
+
+- Live service telemetry between infrastructure nodes: use [Infrastructure Topology](https://avaraui.com/docs/reactjs/infrastructure-topology)
+- An agent hierarchy with status and token meters: use [Agent Graph](https://avaraui.com/docs/reactjs/agent-graph)
+
+**Agent notes**
+
+- Compose `FlowCanvas` with `FlowConnection` (raw SVG `path` + `id`) and `FlowNode` (`connectedPaths` array).
+- Give every segment of one route the same `id`: they draw in together and all stream when that route is active.
+- Keep `FlowNode` Tailwind `left-[...]` / `top-[...]` positions synchronized with `FlowConnection` `M`/`L`/`C` coordinates. Nodes are 240 by 68 px on a 900 by 400 canvas.
+- Import `Flowchart`, `FlowCanvas`, `FlowConnection` and `FlowNode` from `@/components/custom/blocks/FlowchartBlock`.
 
 ## Props Reference
 
@@ -338,7 +353,7 @@ Several `FlowConnection`s can share the same `id`. Splitting a branch into per-h
 | `FlowNode` | `id` | `string` | Required | Unique identifier for the node. |
 | `FlowNode` | `title` | `string` | Required | Primary label on the node card. |
 | `FlowNode` | `description` | `string` | `undefined` | Secondary line under the title. |
-| `FlowNode` | `icon` | `React.ComponentType` | `undefined` | Icon rendered in the node's leading slot — any lucide icon works. |
+| `FlowNode` | `icon` | `React.ElementType` | `undefined` | Icon rendered in the node's leading slot — any lucide icon works. |
 | `FlowNode` | `connectedPaths` | `string[]` | `[]` | Route ids this node sits on. Clicking the node activates the first of them; a node on two routes acts as a branch point. |
 | `FlowConnection` | `id` | `string` | Required | Route this segment belongs to. Multiple segments may share one id. |
 | `FlowConnection` | `path` | `string` | Required | SVG path data — `M`/`L` for right angles, `C` for curves. |
@@ -346,6 +361,37 @@ Several `FlowConnection`s can share the same `id`. Splitting a branch into per-h
 | `FlowConnection` | `flowDash` | `string` | `"6 10"` | Dash pattern of the moving stream while the route is active. The loop length is one dash plus one gap, so any pattern cycles cleanly. |
 | `FlowConnection` | `glow` | `boolean` | `true` | The soft blurred halo under the active stream. |
 | `FlowConnection` | `drawDuration` | `number` | `1.2` | Seconds the draw-in takes on mount. The stream only starts once the line is drawn; under prefers-reduced-motion both are skipped. |
+
+## Works with other components
+
+- [Data Flow](https://avaraui.com/docs/reactjs/data-flow) uses `Flowchart` with `layout="fluid"` to draw curves between ordinary cards.
+- [Infrastructure Topology](https://avaraui.com/docs/reactjs/infrastructure-topology) shows live telemetry between infrastructure nodes where a flowchart shows a fixed route.
+- [Agent Graph](https://avaraui.com/docs/reactjs/agent-graph) covers agent hierarchies with status and token meters.
+- Put a flowchart beside an [API Playground](https://avaraui.com/docs/reactjs/api-playground) to document the endpoints a pipeline calls.
+
+## How do I show a route that has several segments?
+
+Give every `FlowConnection` on that route the same `id`, then list that `id` in the `connectedPaths` of each `FlowNode` it touches. The segments draw in together, and all of them stream while the route is active.
+
+## How do I start the flowchart with no route active?
+
+Pass `initialActivePath={null}`, which is also the default. Every route stays a resting line until the reader clicks a `FlowNode`, which activates the first id in its `connectedPaths`. Pass a route id instead to have that route stream on mount.
+
+## How do I line a FlowNode up with a FlowConnection path?
+
+Place the node with Tailwind `left-[...]` and `top-[...]` classes on its `className`, and write the path in the same 900 by 400 coordinate space. A `FlowNode` is 240 by 68 px, so a path ending at x 340 meets a node at `left-[340px]`.
+
+## How do I change the colour of the active route?
+
+Set `color` on `Flowchart` to `primary`, `blue`, `indigo`, `rose`, `emerald` or `zinc`. It tints the active stream, the node ring and the icon tile. The default `primary` follows your theme's `--primary` token, so the flowchart matches the rest of your app without an extra prop.
+
+## Can I use Flowchart outside a fixed 900 by 400 canvas?
+
+Yes. Set `layout="fluid"` on `Flowchart` to get only the context and a positioned box, then give `FlowCanvas` its own `viewBox` and draw connectors over your own cards and columns. In that mode the 900 by 400 grid is gone. [Data Flow](https://avaraui.com/docs/reactjs/data-flow) is built this way.
+
+## Does Flowchart respect reduced motion and work outside Next.js?
+
+Under `prefers-reduced-motion` the draw-in is skipped and the moving stream does not animate. The file has no `next/*` imports and no npm dependencies beyond React, so it installs into Vite as well. Nodes are clickable `div`s, so there is no keyboard activation.
 
 ---
 

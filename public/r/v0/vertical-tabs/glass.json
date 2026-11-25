@@ -3,7 +3,7 @@
   "name": "vertical-tabs-glass",
   "type": "registry:block",
   "title": "Tabs — Glass",
-  "description": "Frosted panels — needs a rich background to blur.",
+  "description": "The \"Glass\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

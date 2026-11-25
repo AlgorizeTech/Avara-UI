@@ -3,7 +3,7 @@
   "name": "input-input",
   "type": "registry:block",
   "title": "Input",
-  "description": "A labelled text field with helper text and a leading icon.",
+  "description": "The \"Input\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

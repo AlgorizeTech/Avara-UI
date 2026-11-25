@@ -1,14 +1,29 @@
 ---
 title: "Shadcn Flow Gallery"
-description: "Shadcn Flow Gallery. Horizontal and diagonal 3D cascading gallery stream with continuous auto-flow motion, drag inertia physics."
+description: "Shadcn Flow Gallery. A cascading image wall that streams diagonally or straight up and down, with continuous auto-flow, drag inertia, and a tilted."
 url: https://avaraui.com/docs/nextjs/flow-gallery
 ---
 
 # Shadcn Flow Gallery
 
-Horizontal and diagonal 3D cascading gallery stream with continuous auto-flow motion, drag inertia physics, and isometric perspective options.
+A cascading image wall that streams diagonally or straight up and down, with continuous auto-flow, drag inertia, and a tilted, skewed plane for the diagonal directions.
 
 Drag the stage or allow it to auto-flow continuously along the selected directional stream angle.
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/flow-gallery.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/flow-gallery
+```
 
 ## Top-Left to Bottom-Right Flow Stream
 
@@ -294,50 +309,69 @@ export default function FlowGalleryVerticalDownDemo() {
 }
 ```
 
-## Installation
+## About Shadcn Flow Gallery
 
-Add the component by URL — no setup needed:
+**What it is.** **Shadcn Flow Gallery** (`FlowGallery`) is an infinite diagonal or vertical cascading gallery stream with smooth drag inertia and 4 directional flow angles (`top-left`, `top-right`, `vertical-up`, `vertical-down`).
 
-```bash
-npx shadcn@latest add https://avaraui.com/r/flow-gallery.json
-```
+**How it is built.** Columns animate with `translate3d()` transforms written straight to the DOM, so React never re-renders per frame. The loop is paced by elapsed time, pauses when the stage is off-screen or the tab is hidden, and stops auto-flowing under `prefers-reduced-motion` (dragging still works). It has no npm dependencies.
 
-Or register the @avara-ui registry once per project and add it by name:
+**When to use it.** Use it for agency visual walls, moodboards, product showcase backdrops, and dynamic landing page galleries.
 
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/flow-gallery
-```
+## For AI agents
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+**When to use**
 
-Supports `top-left`, `top-right`, `vertical-up`, and `vertical-down` directional angles via simple props.
+- Agency visual walls, moodboards
+- Product showcase backdrops, dynamic landing page galleries
 
-Images cascade continuously with smooth velocity inertia and optional pause-on-hover.
+**When not to use**
 
-Interactive mouse and touch drag gestures along the stream axis with grab cursor feedback.
+- A fixed grid of screenshots: use [Image Wall](https://avaraui.com/docs/reactjs/image-wall)
+- A single-row horizontal slider: use [Squircle Carousel](https://avaraui.com/docs/reactjs/squircle-carousel)
 
-Supports Next Themes integration to transition stage background tones and radial depth vignette overlays.
+**Agent notes**
 
-## Best Practices & Guidelines
-
-Use square or near-square images around 320px wide. Cards render at 140px, so larger files only add decode time and memory.
-
-### Performance & GPU Acceleration
-
-Columns move with `translate3d()` written straight to the DOM, so React never re-renders while it flows. The loop pauses off-screen and honours `prefers-reduced-motion`.
+- `FlowGallery` is a named and default export. It accepts `items` (`FlowGalleryItem[]` with `id`, `imageUrl` and optional `title`, used as the `alt`) and `direction` (`"top-left" | "top-right" | "vertical-up" | "vertical-down"`), plus `speed`, `pauseOnHover`, `columns`, `reverseAlternatingColumns` and `footerCaption`.
+- Uses direct DOM `translate3d()` animation and pauses off-screen. Under `prefers-reduced-motion` the auto-flow stops but dragging still moves it.
+- The stage is `560px` tall by default; override the height with `className`. Cards are non-interactive images.
+- Prefer square or near-square images around `320px` wide (cards render at `140px`).
 
 ## Props Reference
 
 | Component | Prop | Type | Default | Description |
 | --- | --- | --- | --- | --- |
-| `FlowGallery` | `direction` | `"top-left" \| "top-right" \| "vertical-up" \| "vertical-down"` | `"top-left"` | Directional angle of the stream. Use `"vertical-down"` for straight downward flow from top to bottom. |
-| `FlowGallery` | `items` | `FlowGalleryItem[]` | `DEFAULT_ITEMS` | Array of image objects containing `{ id, title, imageUrl }` to display in the stream. |
+| `FlowGallery` | `direction` | `"top-left" \| "top-right" \| "vertical-up" \| "vertical-down"` | `"top-left"` | Directional angle of the stream. `"top-left"` and `"top-right"` tilt and skew the plane diagonally and flow downward; `"vertical-down"` flows straight down and `"vertical-up"` straight up. |
+| `FlowGallery` | `items` | `FlowGalleryItem[]` | `DEFAULT_ITEMS` | Array of image objects containing `{ id, imageUrl, title? }` to display in the stream. `title` becomes the image `alt` text. |
 | `FlowGallery` | `speed` | `number` | `3.5` | Continuous auto-flow speed in pixels per frame. |
 | `FlowGallery` | `pauseOnHover` | `boolean` | `true` | When set to true, automatically pauses the continuous auto-flow when hovering over the stage. |
 | `FlowGallery` | `columns` | `number` | `9` | Number of parallel columns flowing along the stream plane. |
-| `FlowGallery` | `className` | `string` | `undefined` | Custom Tailwind CSS classes to apply to the stage container. |
+| `FlowGallery` | `className` | `string` | `undefined` | Custom Tailwind CSS classes to apply to the stage container. The default height is `h-[560px]`. |
+| `FlowGallery` | `reverseAlternatingColumns` | `boolean` | `true` | Makes every second column flow the opposite way. Set it to `false` so all columns move together. |
+| `FlowGallery` | `footerCaption` | `string` | `""` | Small caption rendered under the stage. Nothing is rendered when it is empty. |
+
+## Works with other components
+
+Combine `FlowGallery` with [Image Wall](https://avaraui.com/docs/reactjs/image-wall) for 3D camera-panning photo walls, [Squircle Carousel](https://avaraui.com/docs/reactjs/squircle-carousel) for masked tile carousels, and [Marquee](https://avaraui.com/docs/reactjs/marquee) for linear infinite strips.
+
+## What image size should I use for FlowGallery?
+
+Use square or near-square images around `320px` wide. Each card renders at `140px` square with `object-fit: cover`, so 320px keeps them sharp on high-density screens, and larger files only add decode time and memory. Images use `loading="lazy"`, so `imageUrl` can point at any CDN.
+
+## Does FlowGallery pause when it is off-screen?
+
+Yes. The animation loop stops when the stage scrolls out of view (with a 120px margin) and when the browser tab is hidden, then resumes. With `prefers-reduced-motion: reduce` set, auto-flow stays off, but visitors can still drag the stage and it keeps its inertia.
+
+## How do I change the direction and speed of FlowGallery?
+
+Set `direction` to `"top-left"`, `"top-right"`, `"vertical-down"` or `"vertical-up"`, and `speed` to the pixels moved per frame (default `3.5`, normalised across refresh rates). Only `"vertical-up"` flows upward. By default alternate columns run backwards; set `reverseAlternatingColumns={false}` to unify them.
+
+## How do I use my own images in FlowGallery?
+
+Pass `items`, an array of `{ id, imageUrl, title? }` objects. The component repeats them down each column and staggers the starting image per column, so a short list still fills every column. The optional `title` becomes the `alt` text. Use `columns` to change how many columns are drawn.
+
+## Can visitors drag the FlowGallery, and do the cards link anywhere?
+
+Dragging works with pointer events and carries inertia that decays after release. `pauseOnHover` only holds the auto-flow while a mouse is over the stage. The cards are non-interactive images with `pointer-events: none`, so they do not link. The stage sets no `touch-action`; add `touch-none` via `className` if touch drags scroll the page.
 
 ---
 

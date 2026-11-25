@@ -3,7 +3,7 @@
   "name": "conversation-timeline-paired-with-a-chat",
   "type": "registry:block",
   "title": "Conversation Timeline — Paired with a chat",
-  "description": "The rail as a minimap — clicking a mark scrolls that message into view, and clicking a message moves the mark.",
+  "description": "The \"Paired with a chat\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

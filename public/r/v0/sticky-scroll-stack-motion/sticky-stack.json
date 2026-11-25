@@ -3,7 +3,7 @@
   "name": "sticky-scroll-stack-motion-sticky-stack",
   "type": "registry:block",
   "title": "Sticky Scroll Stack — Sticky stack",
-  "description": "A headed section where each card sticks and the next overlaps it.",
+  "description": "The \"Sticky stack\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

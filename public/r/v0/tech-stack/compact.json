@@ -3,7 +3,7 @@
   "name": "tech-stack-compact",
   "type": "registry:block",
   "title": "Tech Stack — Compact",
-  "description": "Marks only, the label centred between two hairlines — for a narrow column, like the centred Component Wall.",
+  "description": "The \"Compact\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

@@ -3,6 +3,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("chat");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Chat Application
@@ -10,8 +11,6 @@ import { extractCode } from "@/lib/code";
 A fully interactive, encapsulated chat interface. Features include search filtering, simulated typing/replies, dynamic unread badges, auto-scrolling, and a responsive mobile drawer sidebar.
 
 Every preview is live — pick a contact, search the list, or send a message and watch the simulated reply come back. `variant` changes the shell only; the conversation state, search and typing simulation are identical across all three.
-
-<AgentVariants slug="chat" />
 
 export const chatData = `const currentUser: CurrentUser = {
   avatar: "https://res.cloudinary.com/dodndg7ai/image/upload/f_webp,q_auto/v1790148864/80-1-1790148865111.jpg",
@@ -137,6 +136,7 @@ export default function LiquidGlassChat() {
   name="chat"
   colorControl
   columns={1}
+  installation={<Installation name="chat" usage="below" />}
   examples={[
     {
       title: "Chat application",
@@ -157,20 +157,6 @@ export default function LiquidGlassChat() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/Chat.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="chat" />
-
-## Examples
-
-<ExampleShowcase minHeight={530}
-  name="chat"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Minimal",
       propNotes: [
@@ -218,31 +204,38 @@ export default function LiquidGlassChat() {
   ]}
 />
 
-## Features
-Explore the Chat component's robust features, including message grouping, timestamping, and responsive layout structures.
+## About Shadcn Chat Application
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**What it is.** **Shadcn Chat Application** is a self-contained two-pane messenger UI, exported as `ChatApp` from `Chat.tsx`, with contact search, an All and Online filter, unread badges, a simulated typing reply, auto-scrolling, and mobile drawer navigation.
 
-## Best Practices & Guidelines
+**How it is built.** Pass `contactsData` and `currentUser` to `ChatApp`. Conversation switching, search filtering, and message state live in the component, with no backend, across the `"default"`, `"minimal"`, `"glass"` and `"liquid-glass"` shells. It installs only `lucide-react`, has no `next/*` imports, and is a fixed 750px tall.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use it for team messaging apps, customer support inboxes, creator DMs, and collaborative SaaS workspaces.
+
+## For AI agents
+
+<AgentBrief name="chat">
+
+**When to use**
+
+- Team messaging apps, customer support inboxes
+- Creator DMs, collaborative SaaS workspaces
+
+**When not to use**
+
+- Only the message primitives, assembled your own way: use <DocLink to="chat-bubble">Chat Bubble</DocLink>
+- An LLM assistant rather than a person-to-person inbox: use <DocLink to="ai-chat">AI Chat</DocLink>
+
+**Agent notes**
+
+- Import the default export: `import ChatApp, { type Contact, type CurrentUser } from "@/components/custom/blocks/Chat"`. There is no named `Chat` export.
+- `ChatApp` accepts `contactsData`, `currentUser` (`{ avatar, status, name? }`), `variant` (`"default" | "minimal" | "glass" | "liquid-glass"`), and `color`. It has no `className`, `onSend` or `onSelect` prop.
+- Every sent message gets the same canned reply, "That sounds perfect! Let's get it done.", after 2 seconds. To connect a real backend, edit `handleSendMessage` in the installed file.
+- `contactsData` is copied into state on mount, so later changes to the array are ignored.
+- Includes contact search filtering, unread count badges, simulated typing indicators, and responsive mobile drawer collapse.
+- Changing `variant` updates only the visual shell while keeping conversation state identical.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -316,7 +309,7 @@ Explore the Chat component's robust features, including message grouping, timest
           <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
         </td>
         <td>
-          <code>"indigo"</code>
+          <code>"primary"</code>
         </td>
         <td>
           Applies global color themes to the send button, typing indicators,
@@ -328,6 +321,29 @@ Explore the Chat component's robust features, including message grouping, timest
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Pair `ChatApp` with <DocLink to="chat-bubble">Chat Bubble</DocLink> for lower-level message primitives, <DocLink to="voice-note">Voice Note</DocLink> for audio replies, and <DocLink to="ai-chat">AI Chat</DocLink> for LLM assistant threads.
+
+## How does the contact sidebar behave on mobile screens?
+
+Below 640px the contact list becomes a 300px panel that slides over the thread. Picking a contact closes it, a menu button in the thread header reopens it, and a tap on the backdrop closes it. At 640px and wider it is a fixed column beside the thread, and resizing past that width reopens it.
+
+## Do the `minimal`, `glass` and `liquid-glass` variants change ChatApp props?
+
+No. `variant` only changes the shell styling, so `contactsData`, `currentUser`, search and messaging behave the same. `glass` is translucent and wants a colourful backdrop. `liquid-glass` draws its own refracted background inside the component, so you do not need to render `LiquidGlassSvgFilter` yourself.
+
+## How do I connect ChatApp to a real backend?
+
+`ChatApp` is a front-end shell. Messages are appended to state, and each one gets the same canned reply after 2 seconds with a typing indicator. Nothing is sent or saved, and there are no callback props. Edit `handleSendMessage` in the installed file to post to your API and append the real response.
+
+## How do contact search and the Online filter work in ChatApp?
+
+The search box filters contacts by name, ignoring case, using a substring match, so "ana" finds "Hannah". The All and Online tabs filter by each contact's `status`, and the two combine. Opening a conversation resets that contact's `unread` count to 0. Message text is not searched.
+
+## How do I show initials instead of an avatar in ChatApp?
+
+Leave `avatar` off a contact and pass `initials` plus `color`, a string of Tailwind classes such as `"bg-blue-100 text-blue-600"`. The fallback tile uses those classes. A green or grey dot on each avatar follows the contact's `status`, `"online"` or `"offline"`. `currentUser` takes an `avatar` URL and a `status`.
 
 <DocsJsonLd slug="chat" />
+<FaqJsonLd slug="chat" />

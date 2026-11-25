@@ -3,7 +3,7 @@
   "name": "progress-progress",
   "type": "registry:block",
   "title": "Progress",
-  "description": "The bare bar. Drag the slider above to move it; hover the bar for the readout.",
+  "description": "The \"Progress\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

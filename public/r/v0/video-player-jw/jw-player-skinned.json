@@ -3,7 +3,7 @@
   "name": "video-player-jw-jw-player-skinned",
   "type": "registry:block",
   "title": "Video Player (JW Player) — JW Player — skinned",
-  "description": "The same player with a colour preset applied to the control bar, menus, time slider and tooltips.",
+  "description": "The \"JW Player — skinned\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

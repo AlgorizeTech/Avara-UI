@@ -3,7 +3,7 @@
   "name": "selection-frame-animated",
   "type": "registry:block",
   "title": "Selection Frame — Animated",
-  "description": "Hit Reset on the preview to replay the handle pop-in.",
+  "description": "The \"Animated\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

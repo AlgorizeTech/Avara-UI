@@ -1,18 +1,33 @@
 ---
 title: "Shadcn Masonry Grid"
-description: "A high-performance masonry layout that tightly packs items of varying heights. Free shadcn/ui Masonry Grid component with GSAP and Motion builds."
+description: "A CSS multi-column masonry layout (`MasonryGrid`) with staggered blur-fade scroll entrances in both GSAP and Motion builds. Free shadcn/ui component."
 url: https://avaraui.com/docs/nextjs/masonry-grid
 ---
 
 # Shadcn Masonry Grid
 
-A high-performance masonry layout that tightly packs items of varying heights. Rather than relying on heavy JavaScript calculations or absolute positioning frameworks, this component utilizes standard CSS multi-column layout (`columns-N`) to flow items naturally.
+A CSS multi-column masonry layout (`MasonryGrid`) with staggered blur-fade scroll entrances in both GSAP and Motion builds.
 
-This premium iteration includes hardware-accelerated blur-fade entrances, layout animations for dynamic content reflows, and a scroll-triggered entrance sequence for high-end aesthetic presentation. It ships as a GSAP build and a Motion build with the same motion.
+## Installation
 
----
+Add the component by URL — no setup needed:
 
-The layout is plain CSS multi-column, so reflow is the browser's job and resizing is free — drag a preview's width handle to watch the columns recalculate.
+```bash
+npx shadcn@latest add https://avaraui.com/r/masonry-grid.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/masonry-grid
+```
+
+Or the Motion build (same props, same file — install one):
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/masonry-grid-motion.json
+```
 
 ## Masonry grid
 
@@ -117,30 +132,7 @@ export default function PhotoWall() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/masonry-grid.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/masonry-grid
-```
-
-Or the Motion build (same props, same file — install one):
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/masonry-grid-motion.json
-```
-
-## Examples
-
-### Column counts
+## Column counts
 
 - `columnsClassName` takes the raw Tailwind `columns-*` utilities, one per breakpoint — it is a class string, not a number.
 
@@ -241,7 +233,7 @@ export default function FourColumnWall() {
 }
 ```
 
-### Custom gap spacing
+## Custom gap spacing
 
 - `gapClassName="gap-6"` sets uniform spacing between tiles. The same value is converted to a matching `mb-*` for the vertical axis, so both directions stay in step.
 
@@ -340,7 +332,7 @@ export default function TighterWall() {
 }
 ```
 
-### Slower stagger
+## Slower stagger
 
 - `staggerDelay={0.25}` is the delay in seconds between each tile's blur-fade. Defaults to `0.08`.
 
@@ -440,7 +432,7 @@ export default function SlowStaggerWall() {
 }
 ```
 
-### Without the entrance
+## Without the entrance
 
 - Set `animateIn={false}` to render tiles in place with no motion — right for content already above the fold, or when you handle reduced-motion yourself.
 
@@ -540,21 +532,30 @@ export default function StaticWall() {
 }
 ```
 
-## Features
+## About Shadcn Masonry Grid
 
-Discover the Masonry Grid's dynamic layout features, seamlessly arranging varying-height elements without large vertical gaps.
+**What it is.** `MasonryGrid` flows variable-height items into responsive CSS columns (`columnsClassName`, `gapClassName`) with optional staggered blur-fade entrances (`staggerDelay`, `animateIn`).
 
-Uses standard CSS multi-column layouts rather than heavy JavaScript absolute positioning to pack items perfectly.
+**How it is built.** It uses native CSS multi-column layout (`columns-*` plus `break-inside-avoid` on each tile), so the browser does the column balancing and the grid never measures anything. The GSAP build (`masonry-grid`) and the Motion build (`masonry-grid-motion`) install to the same file path, play the entrance once when the grid scrolls into view, and animate tiles that move when `items` change.
 
-Total control over your UI. Just pass the raw data and a render function, and the grid handles the complex layout.
+**When to use it.** Use `MasonryGrid` for variable-height card walls, image feeds and testimonial grids. For fixed-grid bento layouts, use [Glass Panel](https://avaraui.com/docs/nextjs/glass-panel) or [Bento Showcase](https://avaraui.com/docs/nextjs/bento-showcase).
 
-Apple-style staggered blur-fade entrances on scroll, in a GSAP build and a Motion build that move the same way.
+## For AI agents
 
-Automatically reflows into the correct number of columns using Tailwind responsive utility classes.
+**When to use**
 
-## Best Practices & Guidelines
+- Variable-height photo, card, or testimonial walls using CSS multi-column flow (`columnsClassName`, `gapClassName`)
 
-Because CSS columns natively try to break content across columns, it is crucial that the wrapper `div` of your rendered item has `break-inside: avoid` (in Tailwind: `break-inside-avoid`). The headless component handles this on the outer container, but keep this in mind if you add complex nested layouts.
+**When not to use**
+
+- Fixed-row bento grids: use [Glass Panel](https://avaraui.com/docs/nextjs/glass-panel) or [Bento Showcase](https://avaraui.com/docs/nextjs/bento-showcase)
+
+**Agent notes**
+
+- Named export `MasonryGrid` from `@/components/custom/blocks/MasonryGridBlock`, generic over items that have a unique `id` (`string | number`). Install `masonry-grid` (GSAP) or `masonry-grid-motion` (Motion), not both.
+- Pass `animateIn={false}` for above-the-fold grids or when disabling entrance motion. With `animateIn` on, the grid starts at `opacity: 0` until it scrolls into view.
+- Give `gapClassName` a plain `gap-<n>` value (such as `"gap-6"`). It is rewritten to `mb-<n>` for the row spacing, so `gap-x-*` or `gap-y-*` would produce an invalid class.
+- Tiles fill column by column, top to bottom, not row by row.
 
 ## Props Reference
 
@@ -563,11 +564,37 @@ Because CSS columns natively try to break content across columns, it is crucial 
 | `items` | `T[]` | Required | An array of generic objects representing your data. Each item must contain a unique `id` for layout tracking. |
 | `renderItem` | `(item: T, index: number) => ReactNode` | Required | A function that receives the data item and its index, returning the React element to display. |
 | `columnsClassName` | `string` | `"columns-1 sm:columns-2 md:columns-3 lg:columns-4"` | The Tailwind `columns-*` utilities, one per breakpoint. It is a raw class string rather than a number, so every breakpoint is yours to set. |
-| `gapClassName` | `string` | `"gap-6"` | Tailwind CSS gap utility. Applied horizontally to the flex container and vertically to the columns. |
-| `animateIn` | `boolean` | `true` | Toggles the staggered, hardware-accelerated blur-fade entrance sequence. |
+| `gapClassName` | `string` | `"gap-6"` | Tailwind gap utility such as `gap-6`. Used as the column gap on the grid, and rewritten to `mb-6` on each tile for the vertical spacing. Use the plain `gap-N` form. |
+| `animateIn` | `boolean` | `true` | Toggles the staggered blur-fade entrance, which plays once when the grid scrolls into view. When `false` the tiles render in place. |
 | `staggerDelay` | `number` | `0.08` | The time (in seconds) to delay the entrance animation of each sequential item. |
 | `className` | `string` | `undefined` | Standard Tailwind classes applied to the outermost wrapper element. |
 | `...props` | `HTMLAttributes` | `undefined` | Accepts all standard HTML `<div>` attributes, excluding `children`. The Motion build also takes Motion props (`HTMLMotionProps`). |
+
+## Works with other components
+
+- Render [Card](https://avaraui.com/docs/nextjs/card) or [Tilted Card](https://avaraui.com/docs/nextjs/tilted-card) tiles inside `renderItem`.
+- Compare with [Image Wall](https://avaraui.com/docs/nextjs/image-wall) for a self-panning wall of screenshots instead of a static column layout.
+- Use [Bento Showcase](https://avaraui.com/docs/nextjs/bento-showcase) or [Glass Panel](https://avaraui.com/docs/nextjs/glass-panel) when you want fixed card positions rather than flowing columns.
+
+## How does MasonryGrid keep vertical and horizontal spacing equal?
+
+Pass a Tailwind gap utility to `gapClassName`, such as `"gap-6"`. The grid uses it as the column gap and rewrites `gap-` to `mb-` on each tile, so `gap-6` also gives `mb-6` between rows. Use the plain `gap-N` form, because `gap-x-4` would become the invalid `mb-x-4`.
+
+## How do I set the number of columns in MasonryGrid?
+
+Pass Tailwind `columns-*` utilities, one per breakpoint, to `columnsClassName`. The default is `"columns-1 sm:columns-2 md:columns-3 lg:columns-4"`. It is a class string rather than a number, so you can change any breakpoint, for example `"columns-2 lg:columns-5"`.
+
+## Why do MasonryGrid tiles read down each column instead of across?
+
+The grid uses CSS multi-column layout, which fills the first column top to bottom before starting the next. Item 2 sits below item 1, not beside it. That keeps columns balanced for mixed heights. If you need strict left-to-right order, a CSS grid with fixed row heights is a better fit.
+
+## Should I install the GSAP or the Motion build of MasonryGrid?
+
+Either. Both take the same props and install to the same file, so pick the library you already ship. `masonry-grid` uses `gsap` with its Flip plugin, and `masonry-grid-motion` uses `motion`. Install one, not both. Neither build checks `prefers-reduced-motion`, so pass `animateIn={false}` where it matters.
+
+## What does MasonryGrid do when items are added or removed?
+
+Tiles are keyed by `id`, and tiles that change position glide to their new column slot instead of jumping. The GSAP build does this with Flip and the Motion build with `layout`. In the GSAP build, tiles added after the first reveal also fade in on their own. Give every item a stable `id`.
 
 ---
 

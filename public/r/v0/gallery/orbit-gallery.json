@@ -3,7 +3,7 @@
   "name": "gallery-orbit-gallery",
   "type": "registry:block",
   "title": "Gallery — Orbit Gallery",
-  "description": "Revolving 3D circular photo orbit ring with upright cards and smooth hover pause.",
+  "description": "The \"Orbit Gallery\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

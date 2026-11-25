@@ -3,7 +3,7 @@
   "name": "timeline-steps-steps-timeline",
   "type": "registry:block",
   "title": "Timeline Steps — Steps timeline",
-  "description": "Numbered nodes on a rail that fills as you scroll the box. Click a node to bring that step into focus.",
+  "description": "The \"Steps timeline\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

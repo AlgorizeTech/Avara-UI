@@ -3,7 +3,7 @@
   "name": "vertical-tabs-horizontal-tabs",
   "type": "registry:block",
   "title": "Tabs — Horizontal tabs",
-  "description": "The default. The rail runs across the top and scrolls sideways when the tabs outgrow the width.",
+  "description": "The \"Horizontal tabs\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

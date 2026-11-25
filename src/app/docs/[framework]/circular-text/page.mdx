@@ -3,11 +3,12 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("circular-text");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Circular Text
 
-Circular text: words set on a circle, turning slowly, with room in the middle for a mark, a play button or a link. The ring is an SVG `textPath`, so it stays crisp at any size and the words are real text — screen readers get them once, from an sr-only copy, rather than letter by letter around the ring.
+Text set on a rotating SVG circle, with room in the middle for a mark, a play button or a link.
 
 The text repeats as many times as fit the circumference by default, so a short phrase fills the ring and a long one goes round once. Both <DocLink to="hero#collage-hero">Collage Hero</DocLink> and <DocLink to="hero#fashion-hero">Fashion Hero</DocLink> use it as their badge.
 
@@ -64,10 +65,11 @@ export default function SeeTheWork() {
   name="circular-text"
   colorControl
   columns={1}
+  installation={<Installation name="circular-text" usage="below" />}
   examples={[
     {
       title: "Video badge",
-      subheading: "A phrase on the ring and a play button in the middle, both in the theme colour. The ring turns once every 20 seconds and holds still under prefers-reduced-motion.",
+      description: "A phrase on the ring and a play button in the middle, both in the theme colour. The ring turns once every 20 seconds and holds still under prefers-reduced-motion.",
       propNotes: [
         {
           prop: "text",
@@ -90,23 +92,9 @@ export default function SeeTheWork() {
       code: extractCode("src/components/custom/blocks/CircularTextBlock.tsx"),
       minHeight: 200,
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="circular-text" />
-
-## Examples
-
-<ExampleShowcase
-  name="circular-text"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Stamps",
-      subheading: "Two marks with their own separators, one with the inner ring — the first puts the theme colour on the ring, the second on the centre dot.",
+      description: "Two marks with their own separators, one with the inner ring — the first puts the theme colour on the ring, the second on the centre dot.",
       propNotes: [
         {
           prop: "innerRing",
@@ -124,7 +112,7 @@ export default function SeeTheWork() {
     },
     {
       title: "As a link",
-      subheading: "Wrapped in an anchor, with the centre reacting to hover through a Tailwind group.",
+      description: "Wrapped in an anchor, with the centre reacting to hover through a Tailwind group.",
       propNotes: [
         {
           lead: "Set",
@@ -144,6 +132,38 @@ export default function SeeTheWork() {
     },
   ]}
 />
+
+## About Shadcn Circular Text
+
+**What it is.** **Shadcn Circular Text** (`CircularText`) sets text along a rotating SVG `textPath` circle around any centered `children` mark, play button, or icon link.
+
+**How it is built.** The ring is an SVG `textPath` that spins with a Tailwind `animate-[spin_...]` class, so the project needs Tailwind and nothing else: the item has no npm dependencies. Short phrases repeat automatically around the ring with `separator`, screen readers read a single `sr-only` copy rather than individual characters, and rotation stops under `prefers-reduced-motion` (or when `speed={0}`).
+
+**When to use it.** Use it for hero video badges, studio stamps, rotating CTA buttons, and editorial decorative seals.
+
+## For AI agents
+
+<AgentBrief name="circular-text">
+
+**When to use**
+
+- Hero video badges, studio stamps
+- Rotating CTA buttons, editorial decorative seals
+
+**When not to use**
+
+- A headline or paragraph of normal text: use <DocLink to="animated-typography">Animated Typography</DocLink>
+- A clickable call to action with its own states: use <DocLink to="button">Button</DocLink>
+
+**Agent notes**
+
+- `CircularText` is a named export (also the default) of `@/components/custom/blocks/CircularTextBlock`. It accepts `text`, `separator`, `repeat`, `size`, `fontSize`, `tracking`, `speed`, `direction` (`"clockwise" | "counterclockwise"`), `radius`, `innerRing`, and `color` (defaults to `var(--primary)`), plus standard `div` props such as `className`.
+- `fontSize` and `tracking` are relative to the ring, not pixels, so the same values look the same at any `size`.
+- Keep `text` short. About 30 characters, separator included, fit one turn at the defaults, and anything past the end of the path is not drawn.
+- Pass `color="currentColor"` inside an anchor or `group` link so the ring inherits hover and focus ink colors.
+- Accessible by default via an `sr-only` text copy and `prefers-reduced-motion` pause.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -228,6 +248,30 @@ export default function SeeTheWork() {
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Pair `CircularText` with <DocLink to="video-player">Video Player</DocLink> for rotating video CTA badges, <DocLink to="animated-typography">Animated Typography</DocLink> for kinetic headlines, and <DocLink to="button">Button</DocLink> for circular icon triggers.
+- See it as the badge in the <DocLink to="hero">Hero</DocLink> collection's collage and fashion layouts.
+
+## How do I make the ring inherit its parent link's hover color?
+
+Pass `color="currentColor"` so the ring text takes the colour of the nearest text-colour ancestor, such as an anchor with `text-primary`. Change that ancestor's colour on hover or focus and the ring follows. The default, `var(--primary)`, follows your theme preset but not the link's own hover state.
+
+## How do I put a button or icon in the middle of CircularText?
+
+Pass it as `children`. It is centred in the ring, and the SVG is `aria-hidden`, so a play button, logo or number there is what assistive tech reaches, along with one `sr-only` copy of `text`. To make the whole badge a link, wrap `CircularText` in an anchor.
+
+## How do I control how often the text repeats around the ring?
+
+Leave `repeat` unset and `CircularText` fits as many copies of `text` plus `separator` as the circumference allows, estimated from `fontSize` and `tracking`. Pass `repeat` to force an exact count. `separator` defaults to ` · `, and `radius` (out of 50) moves the text path inward or outward.
+
+## How do I resize CircularText and its lettering?
+
+`size` sets the outer diameter in pixels, 128 by default. `fontSize` (9.5) and `tracking` (0.18 em) are measured against the 100-unit ring, so they scale with `size` and the lettering keeps its proportions. To fit more text, lower `fontSize` or `tracking`; raising `size` only scales the whole ring.
+
+## How do I stop the ring from spinning?
+
+Set `speed={0}` to render a static stamp, which removes the spin animation entirely. `speed` is the number of seconds per full turn, so larger values turn slower. Visitors who enable `prefers-reduced-motion` get a still ring automatically, whatever `speed` is, and `direction` sets which way it turns.
 
 <DocsJsonLd slug="circular-text" />
+<FaqJsonLd slug="circular-text" />

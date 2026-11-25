@@ -3,7 +3,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("particle-canvas");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
-import { Installation } from "@/components/site/installation";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Particle Canvas
@@ -11,8 +11,6 @@ import { extractCode } from "@/lib/code";
 An ultra-responsive, high-performance 2D HTML Canvas component that converts text into thousands of interactive particles with fluid, organic repulsion physics matching your active theme color.
 
 Move your cursor or touch across the canvas to push particles away; they scatter organically and spring back smoothly to their original text positions when the pointer moves away.
-
-<AgentVariants slug="particle-canvas" />
 
 export const usageDefault = `"use client";
 
@@ -52,10 +50,11 @@ export default function WordmarkGlowDemo() {
 <ExampleShowcase minHeight={430} headingLevel={2}
   name="particle-canvas"
   columns={1}
+  installation={<Installation name="particle-canvas" usage="below" />}
   examples={[
     {
       title: "Text Particle Repel",
-      subheading: "Your text rasterised into thousands of dots that scatter away from the pointer and spring back.",
+      description: "Your text rasterised into thousands of dots that scatter away from the pointer and spring back.",
       propNotes: [
         {
           lead: "Use",
@@ -75,7 +74,7 @@ export default function WordmarkGlowDemo() {
     },
     {
       title: "Wordmark Glow Canvas",
-      subheading: "A giant bottom-anchored wordmark whose letters rise with a slow spring bounce on scroll, beside a pointer-tracking radial glow.",
+      description: "A giant bottom-anchored wordmark whose letters rise with a slow spring bounce on scroll, beside a pointer-tracking radial glow.",
       propNotes: [
         {
           lead: "Use",
@@ -97,40 +96,36 @@ export default function WordmarkGlowDemo() {
   ]}
 />
 
-## Installation
+## About Shadcn Particle Canvas
 
-<Installation name="particle-canvas" />
+**What it is.** **Shadcn Particle Canvas** (`ParticleCanvas`) is a 2D HTML Canvas text-to-particle component with cursor repulsion physics (`variant="repel"`) and a scroll-triggered spring wordmark banner (`variant="wordmark-glow"`).
 
-## Features
+**How it is built.** `ParticleCanvas` rasterizes `content` via an offscreen canvas, reads the theme's `--primary` CSS variable (so it follows light and dark mode), and automatically tunes `particleGap` and `particleSize` across Small, Medium, and Large viewports.
 
-Discover the key capabilities that make this component an excellent choice for modern interactive user interfaces.
+**When to use it.** Use it for interactive hero sections, agency landing footers, brand wordmark banners, and playful 404 or launch pages.
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Theme Adaptive">
-    <p>Automatically resolves and matches the active navigation item background color (<code>bg-primary</code>) across Light and Dark mode.</p>
-  </InfoCard>
-  <InfoCard title="Organic Physics">
-    <p>Cursor repulsion features staggered particle turbulence and spring-damped return physics for a fluid tactile feel.</p>
-  </InfoCard>
-  <InfoCard title="Multi-Device Breakpoints">
-    <p>Automatically scales particle parameters across Small (&lt;768px), Medium (768px-1023px), and Large (&ge;1024px) viewports.</p>
-  </InfoCard>
-  <InfoCard title="60 FPS Canvas">
-    <p>Built with an offscreen sampling engine and efficient 2D rendering loops for maximum performance.</p>
-  </InfoCard>
-</div>
+## For AI agents
 
-## Best Practices & Guidelines
+<AgentBrief name="particle-canvas">
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Canvas Breakpoint Scaling">
-    <p>Automatically adapts particle parameters based on screen size: <strong>Large (&gt;=1024px)</strong> uses <code>particleGap = 5px, particleSize = 2.5px</code>, <strong>MD (768px-1023px)</strong> uses <code>particleGap = 4px, particleSize = 2px</code>, and <strong>Small (&lt;768px)</strong> uses <code>particleGap = 3px, particleSize = 1.5px</code>.</p>
-  </InfoCard>
-  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Container Height & Layout</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Wrap the component in a fixed or responsive height container (e.g. <code>h-[650px]</code> or <code>h-screen</code>). The canvas automatically resizes to fill 100% of its parent element.</p>
-  </div>
-</div>
+**When to use**
+
+- Interactive hero sections, agency landing footers
+- Brand wordmark banners, playful 404 or launch pages
+
+**When not to use**
+
+- A pointer-following effect: use <DocLink to="cursor-animation">Cursor Animation</DocLink>
+- Ordinary animated headline text: use <DocLink to="animated-typography">Animated Typography</DocLink>
+
+**Agent notes**
+
+- `ParticleCanvas` accepts `content` (string), `variant` (`"repel" | "wordmark-glow"`), `particleSize`, `particleGap`, `speed`, and `className`.
+- Wrap `ParticleCanvas` in a sized container (for example `h-[650px]` or `h-[260px]`); the canvas fills 100% of its parent.
+- Particle size and gap are overridden below a 1024px container width; the colour follows the theme's `--primary` variable unless `color` is set.
+- `variant="wordmark-glow"` only reads `content`, `color`, `className` and `style`; `particleSize`, `particleGap`, `speed` and `interactive` apply to `repel` only.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -215,6 +210,33 @@ Discover the key capabilities that make this component an excellent choice for m
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+Pair `ParticleCanvas` with <DocLink to="cursor-animation">Cursor Animation</DocLink> for pointer effects over UI cards, <DocLink to="animated-typography">Animated Typography</DocLink> for kinetic headlines, and <DocLink to="ribbon-drift">Ribbon Drift</DocLink> for hero showcase backdrops.
+
+## How should I size the ParticleCanvas container?
+
+Give the parent an explicit height such as `h-[650px]`. The wrapper is `w-full h-full` with a `min-h-[600px]` default for `repel` (`min-h-[240px]` for `wordmark-glow`), so pass a smaller `min-h-[...]` through `className` for short banners. A `ResizeObserver` re-samples the particles when the container size changes.
+
+## Does ParticleCanvas follow light and dark mode?
+
+Yes. It reads the active theme's `--primary` CSS variable through `next-themes` and a `MutationObserver` on `class`, `style` and `data-theme`, then recolours the existing dots without resetting them. So it also follows the Themes page presets. Pass `color` to override that.
+
+## How do I change the ParticleCanvas particle color?
+
+Pass `color` with a preset name such as `"indigo"`, `"rose"` or `"emerald"`, or any CSS color string such as a hex value. Leaving it out, or passing `"primary"` or `"default"`, uses the theme's `--primary` color. In the `wordmark-glow` variant, `color` tints the cursor glow.
+
+## Why are my ParticleCanvas dots smaller or denser on mobile?
+
+`particleSize` and `particleGap` only apply when the container is 1024px wide or more. Under 768px the component uses a 1.5px dot and a gap of 3, and from 768px to 1023px a 2px dot and a gap of 4. The check uses the container width, not the viewport.
+
+## Do particleSize and particleGap work with the wordmark-glow variant?
+
+No. `variant="wordmark-glow"` renders a separate wordmark component that only reads `content`, `color`, `className` and `style`. It scales the text to the container width, between 16px and 340px, and its letters rise in one by one once scrolled into view. Reduced-motion users get them static.
+
+## How do I stop ParticleCanvas reacting to the pointer?
+
+Set `interactive={false}`. That disables the mouse and touch repulsion in the `repel` variant, so the dots stay on the text. The repel loop does not check `prefers-reduced-motion`, so turn `interactive` off, or skip the component, for users who need a calmer page.
 
 <DocsJsonLd slug="particle-canvas" />
+<FaqJsonLd slug="particle-canvas" />

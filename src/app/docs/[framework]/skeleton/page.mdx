@@ -4,14 +4,11 @@ export const metadata = docsPageMetadata("skeleton");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Skeleton
 
-A skeleton loader: a high-performance visual placeholder system used to reduce perceived loading times.
-
-While standard Tailwind gives you the `animate-pulse` class, modern applications rely on **Shimmer** effects (a sleek gradient sliding across the background). This component injects its own pure CSS `@keyframes` to achieve a gorgeous shimmer. It provides composite templates out of the box (like Cards and Profiles), but also exposes top-level props so you can strictly define custom widths, heights, and border radii.
-
-Explore the different variations of the Skeleton component — each example shows a live preview with the exact code to copy.
+A pure-CSS loading placeholder (`SkeletonBlock`) with `shimmer`, `pulse`, and `none` animations plus composite `card`, `profile`, `text`, `rect`, and `circle` presets.
 
 export const usageCard = `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock";
 
@@ -71,14 +68,15 @@ export default function CustomSkeleton() {
   );
 }`;
 
-<ExampleShowcase minHeight={290} headingLevel={2}
+<ExampleShowcase minHeight={260} headingLevel={2}
   name="skeleton"
   colorControl={false}
   columns={1}
+  installation={<Installation name="skeleton" usage="below" />}
   examples={[
     {
       title: "Card",
-      subheading: "A composite placeholder that mirrors a media card layout.",
+      description: "A composite placeholder that mirrors a media card layout.",
       propNotes: [
         {
           prop: "variant",
@@ -97,20 +95,6 @@ export default function CustomSkeleton() {
       usage: usageCard,
       code: extractCode("src/components/custom/blocks/SkeletonBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="skeleton" />
-
-## Examples
-
-<ExampleShowcase minHeight={290}
-  name="skeleton"
-  colorControl={false}
-  columns={1}
-  examples={[
     {
       title: "Profile",
       propNotes: [
@@ -219,31 +203,33 @@ export default function CustomSkeleton() {
 
 
 
-## Features
-Learn about the Skeleton component's loading placeholder features, featuring a subtle pulsing animation that reduces perceived wait times.
+## About Shadcn Skeleton
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**What it is.** `SkeletonBlock` provides ready-made composite placeholders (`card`, `profile`, `text`, `rect`, `circle`) and atomic `custom` shapes (`width`, `height`, `radius`) with `shimmer`, `pulse`, or `none` animations.
 
-## Best Practices & Guidelines
+**How it is built.** Injects pure CSS `@keyframes` for the sliding shimmer (no `globals.css` changes needed) and applies `width`, `height`, and `radius` inline so exact dimensions override utility classes.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `SkeletonBlock` while data is fetching to preserve layout geometry and prevent layout shifts. For compact spinners or indeterminate bars, use <DocLink to="loader">Loader</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="skeleton">
+
+**When to use**
+
+- Layout-preserving loading placeholders for cards, profiles, avatars, and text blocks (`shimmer`, `pulse`, `none`)
+
+**When not to use**
+
+- Inline spinners or indeterminate bars — use <DocLink to="loader">Loader</DocLink>
+- Percentage progress indicators — use <DocLink to="progress">Progress</DocLink>
+
+**Agent notes**
+
+- Named export: `import { SkeletonBlock } from "@/components/custom/blocks/SkeletonBlock"`
+- Use `animation="none"` for static placeholders under `prefers-reduced-motion`
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -354,6 +340,30 @@ Learn about the Skeleton component's loading placeholder features, featuring a s
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Mirror the geometry of <DocLink to="card">Card</DocLink>, <DocLink to="item">Item</DocLink>, and <DocLink to="data-table">Data Table</DocLink> rows while loading.
+- Pair with <DocLink to="loader">Loader</DocLink> for action button or overlay spinners.
+
+## How do I add a loading skeleton in React with Tailwind?
+
+Render `SkeletonBlock` with a `variant` that matches what is loading: `"card"`, `"profile"`, `"text"`, `"rect"` or `"circle"`. Swap it for the real content when your data arrives. `card` and `profile` output ready-made composite layouts with several placeholder shapes.
+
+## Do I need to add shimmer keyframes to globals.css?
+
+No. `SkeletonBlock` injects its own CSS `@keyframes` for the sliding shimmer, so nothing in your global stylesheet changes. It uses no animation library, which keeps it light on pages that show many placeholders at once.
+
+## How do I switch between shimmer and pulse animations?
+
+Set `animation` to `"shimmer"`, `"pulse"` or `"none"`. `shimmer` is the default and slides a gradient across the shape, `pulse` fades its opacity, and `none` leaves a static placeholder. Use `none` where you want no motion at all.
+
+## How do I make a skeleton with a custom size or shape?
+
+Use `variant="custom"` with `width`, `height` and `radius`. Each takes a number in pixels or a CSS string such as `"50%"` or `"100vh"`, and these inline values override Tailwind utility classes. A matching `width`, `height` and `radius` makes a perfect circle.
+
+## How do I make skeletons match my real layout?
+
+Give each `SkeletonBlock` the same dimensions as the content it stands in for, using `width`, `height` and `className` for margins or max-width. Matching the geometry of the final <DocLink to="card">Card</DocLink> or table row avoids layout shift when real data loads.
 
 <DocsJsonLd slug="skeleton" />
+<FaqJsonLd slug="skeleton" />

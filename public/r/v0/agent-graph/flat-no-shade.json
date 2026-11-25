@@ -3,7 +3,7 @@
   "name": "agent-graph-flat-no-shade",
   "type": "registry:block",
   "title": "Agent Graph — Flat Tree (No Shade)",
-  "description": "Pass `shade={false}` to the `tree` variant to remove the outer shaded backdrop and render clean single-surface cards.",
+  "description": "The \"Flat Tree (No Shade)\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

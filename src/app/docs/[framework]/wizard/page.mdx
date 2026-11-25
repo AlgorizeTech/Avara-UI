@@ -4,14 +4,11 @@ export const metadata = docsPageMetadata("wizard");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Progress Wizard
 
-A "Typeform" style multi-step wizard featuring buttery smooth vertical slide transitions powered by plain CSS transitions, native keyboard navigation, and an interactive progress bar.
-
-This component relies on the **Compound Component** pattern using React Context. This allows you to place the `WizardProgress` bar independently of the main `WizardContainer`, and nest complex forms inside the `WizardStep` blocks without passing deep props.
-
-Because every piece reads the wizard's state from context, you compose the flow yourself — drop the progress bar wherever you like, or leave it out. Press **Enter** inside any step to advance. It includes dynamic theme binding via the `color` prop (`"indigo"`, `"rose"`, `"emerald"`, `"zinc"`, `"blue"`, `"primary"`, or hex) to automatically style the progress bar, input focus rings, and action buttons.
+A Typeform-style compound multi-step wizard (`Wizard`, `WizardProgress`, `WizardContainer`, `WizardStep`, `WizardNavigation`) with vertical CSS slide transitions and Enter-key progression.
 
 export const wizardSteps = `        <WizardStep index={0}>
           <WizardTitle>1. What's your first name?</WizardTitle>
@@ -160,10 +157,11 @@ ${wizardSteps}
   name="wizard"
   colorControl
   columns={1}
+  installation={<Installation name="wizard" usage="below" />}
   examples={[
     {
       title: "Wizard",
-      subheading: "Compose `WizardProgress`, `WizardContainer` and one `WizardStep` per question — all state lives in context.",
+      description: "Compose `WizardProgress`, `WizardContainer` and one `WizardStep` per question — all state lives in context.",
       propNotes: [
         {
           lead: "Set",
@@ -187,20 +185,6 @@ ${wizardSteps}
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/WizardBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="wizard" />
-
-## Examples
-
-<ExampleShowcase minHeight={360}
-  name="wizard"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Starting step",
       propNotes: [
@@ -229,31 +213,33 @@ ${wizardSteps}
   ]}
 />
 
-## Features
-Learn about the Wizard component's multi-step capabilities, providing state management and validation for complex onboarding flows.
+## About Shadcn Progress Wizard
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Compound Components">
-    <p>Uses React Context to share state across child components, preventing messy prop drilling and enabling flexible layouts.</p>
-  </InfoCard>
-  <InfoCard title="Library-free Animations">
-    <p>Features premium, buttery smooth vertical sliding transitions built on CSS transitions — no animation library to install.</p>
-  </InfoCard>
-  <InfoCard title="Keyboard Navigation">
-    <p>Natively supports "Enter" key progression to submit forms and move to the next step instantly.</p>
-  </InfoCard>
-  <InfoCard title="Auto-Progress Bar">
-    <p>Automatically calculates completion percentage based on the number of active steps rendered.</p>
-  </InfoCard>
-</div>
+**What it is.** A compound multi-step flow (`Wizard`, `WizardProgress`, `WizardContainer`, `WizardStep`, `WizardTitle`, `WizardInput`, `WizardNavigation`) for one-question-at-a-time onboarding and surveys.
 
-## Best Practices & Guidelines
+**How it is built.** Shares current step index via React Context, animates vertical Y-offset slides with plain CSS transitions, advances on `Enter`, and themes controls via `color`.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="State Management">
-    <p>Since `WizardStep` components act as independent layout blocks, keep your actual form state (e.g., using React Hook Form or standard state) lifted up to the parent component wrapping the `WizardContainer`.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `Wizard` for focused Typeform-style onboarding or surveys. For horizontal numbered step headers, use <DocLink to="stepper">Stepper</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="wizard">
+
+**When to use**
+
+- One-question-at-a-time onboarding, intake, or survey flows with vertical slide transitions
+
+**When not to use**
+
+- Horizontal multi-field checkout/setup steps — use <DocLink to="stepper">Stepper</DocLink>
+- Single-screen forms — use <DocLink to="form">Form</DocLink>
+
+**Agent notes**
+
+- Named exports from `@/components/custom/blocks/WizardBlock`
+- Every `WizardStep` requires a 0-based `index` prop; `WizardProgress` is optional and can be omitted or placed anywhere inside `Wizard`
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -392,6 +378,30 @@ Learn about the Wizard component's multi-step capabilities, providing state mana
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Embed <DocLink to="radio-button">Radio Button</DocLink> or <DocLink to="select">Select</DocLink> inside `WizardStep` blocks for structured choices.
+- Pair `onComplete` with <DocLink to="sonner">Sonner</DocLink> or <DocLink to="dialog">Dialog</DocLink> completion feedback.
+
+## How do I build a Typeform-style one-question-at-a-time form in React?
+
+Compose `Wizard` with `WizardProgress`, a `WizardContainer` and one `WizardStep` per question, giving each step an `index`. Add `WizardTitle`, `WizardDescription` and `WizardInput`, then finish with `WizardNavigation`. Steps slide vertically as the user advances.
+
+## Where should I store form values across WizardStep panels?
+
+Lift your form state, plain `useState` or `react-hook-form`, into the parent component wrapping `Wizard`. `Wizard` manages the step index and transitions rather than field values, and `WizardInput` forwards native input props such as `onChange`.
+
+## How do I run code when the wizard finishes?
+
+Pass `onComplete` to `Wizard`. It fires when the user clicks Next or presses `Enter` on the final step. Use it to submit your form, then show <DocLink to="sonner">Sonner</DocLink> or a <DocLink to="dialog">Dialog</DocLink> as confirmation.
+
+## Can users move to the next question with the Enter key?
+
+Yes. The wizard advances on `Enter`, which suits typing-heavy forms where a pointer would slow people down. On the last step the same key triggers `onComplete`. `WizardInput` takes native attributes such as `autoFocus` and `type`.
+
+## How do I start on a later step or change the colour?
+
+Set `initialStep` to a zero-based index, which defaults to `0`. `color` themes the progress bar and active input borders, and accepts `"primary"`, `"indigo"`, `"blue"`, `"rose"`, `"emerald"`, `"zinc"` or a custom string. For horizontal numbered headers use <DocLink to="stepper">Stepper</DocLink>.
 
 <DocsJsonLd slug="wizard" />
+<FaqJsonLd slug="wizard" />

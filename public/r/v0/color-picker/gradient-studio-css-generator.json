@@ -3,7 +3,7 @@
   "name": "color-picker-gradient-studio-css-generator",
   "type": "registry:block",
   "title": "Color Picker — Gradient Studio & CSS Generator",
-  "description": "High-tech gradient studio featuring linear/radial/conic gradient modes, 2-stop or 3-stop color selectors, randomize generator, angle compass dial, and one-click CSS copy.",
+  "description": "The \"Gradient Studio & CSS Generator\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

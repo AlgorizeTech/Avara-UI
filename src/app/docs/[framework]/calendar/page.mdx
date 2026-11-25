@@ -4,14 +4,11 @@ export const metadata = docsPageMetadata("calendar");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Calendar
 
-A comprehensive, interactive calendar dashboard and date-picker system. Includes built-in event management, filtering, dynamic views (Month/Week/Day), and animated popover modals.
-
-`CalendarDashboard` is fully encapsulated — modals, event editing, filtering and exporting are all handled internally, so the only thing you pass in is the seed data and the look.
-
-<AgentVariants slug="calendar" />
+An encapsulated interactive calendar dashboard (`CalendarDashboard`) with Month/Week/Day views, event creation/editing modals, filtering, and `default`, `minimal`, `glass`, and `liquid-glass` surfaces.
 
 export const usageDefault = `import { CalendarDashboard } from "@/components/custom/blocks/Calendar";
 
@@ -100,14 +97,16 @@ export default function LiquidGlassCalendar() {
   );
 }`;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase
+  headingLevel={2}
   name="calendar"
   colorControl
   columns={1}
+  installation={<Installation name="calendar" usage="below" />}
   examples={[
     {
       title: "Calendar dashboard",
-      subheading: "Everything past the initial events is internal state.",
+      description: "Everything past the initial events is internal state.",
       propNotes: [
         {
           lead: "Seed",
@@ -125,20 +124,6 @@ export default function LiquidGlassCalendar() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/Calendar.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="calendar" />
-
-## Examples
-
-<ExampleShowcase
-  name="calendar"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Minimal",
       propNotes: [
@@ -184,31 +169,37 @@ export default function LiquidGlassCalendar() {
   ]}
 />
 
-## Features
-Discover the Calendar's date selection capabilities, supporting single dates, date ranges, and localization.
+## About Shadcn Calendar
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**What it is.** `CalendarDashboard` is a self-contained scheduling workspace. It has Month, Week and Day views, a sidebar that filters events by type (Pentest, Kick-Off) and platform (Google Meet, Slack, Discord), an add and edit event form, and a CSV export, in `default`, `minimal`, `glass` and `liquid-glass` variants.
 
-## Best Practices & Guidelines
+**How it is built.** It is a client component built on `react-day-picker`. Events live in its own state, seeded once from `mockEvents`, and nothing is saved or sent anywhere. The `color` prop themes the active accents, and the root copies the `dark` class from the page.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `CalendarDashboard` for a full event-management view or a scheduling demo. For form date fields, use <DocLink to="date-picker">Date Picker</DocLink> or <DocLink to="range-date-picker">Range Date Picker</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="calendar">
+
+**When to use**
+
+- Full-featured event scheduling dashboards with Month/Week/Day views and built-in event modals (`default`, `minimal`, `glass`, `liquid-glass`)
+
+**When not to use**
+
+- Single date form inputs — use <DocLink to="date-picker">Date Picker</DocLink>
+- Date range booking pickers — use <DocLink to="range-date-picker">Range Date Picker</DocLink>
+
+**Agent notes**
+
+- Named export: `import { CalendarDashboard } from "@/components/custom/blocks/Calendar"`; the file also exports `LiquidGlassSvgFilter`, which the `liquid-glass` variant needs rendered once on the page
+- `mockEvents` keys use un-padded `"YYYY-M-D"` (e.g. `"2026-4-5"`, not `"2026-04-05"`); each value is an array of `"pentest"` or `"kickoff"`
+- Seeded events get fixed titles, times (09:00, 11:00, 14:00, 16:00, 18:00 by array position) and platforms; edit them in the UI, not through props
+- There is no `onChange` or save callback: added, edited and deleted events exist only in component state
+- Keep `mockEvents` outside the component or memoised. A new object on every render re-seeds the events and discards what the user added
+- `CalendarDashboardProps` declares `className`, but the component does not apply it
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -265,14 +256,40 @@ Discover the Calendar's date selection capabilities, supporting single dates, da
           <code>"primary"</code>
         </td>
         <td>
-          Applies global color themes to active states, primary buttons, and
-          focus rings. Accepts valid hex codes.
+          Applies a color theme to active states, primary buttons, and
+          focus rings. Accepts hex codes and `rgb` or `hsl` strings. An
+          unknown name falls back to <code>"primary"</code>.
         </td>
       </tr>
     </tbody>
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Pair `variant="glass"` or `"liquid-glass"` with <DocLink to="glass-panel">Glass Panel</DocLink> surfaces.
+- Use <DocLink to="booking-card">Booking Card</DocLink> for compact day-and-time appointment slots.
+- Use <DocLink to="date-picker">Date Picker</DocLink> when a form only needs one date, not a whole schedule.
+
+## What date key format does CalendarDashboard mockEvents expect?
+
+`mockEvents` uses un-padded `"YYYY-M-D"` keys, such as `"2026-3-9"` rather than `"2026-03-09"`. Each key maps to an array of `"pentest"` or `"kickoff"`. The component pads the month and day itself when it builds events, so a padded key also works, but the un-padded form is the documented one.
+
+## Where do events added in CalendarDashboard get saved?
+
+Nowhere. Events live in React state, seeded from `mockEvents`, and the component has no `onChange` or persistence callback. A refresh returns to the seed. To store them, edit the file to call your API in `handleSaveEvent` and `deleteEvent`, and pass the loaded events back as `mockEvents`.
+
+## How do I switch between month, week and day views in the calendar?
+
+The header has Day, Week and Month buttons, and the calendar opens on Month. The view is internal state with no prop, so you cannot start on Week or Day without editing the file. The previous and next buttons move by one month, week or day to match the current view.
+
+## Can I export events from CalendarDashboard?
+
+Yes. The Export button downloads a `calendar_events.csv` with the columns ID, Title, Date, Time, Type and Platform, generated in the browser. It writes every event, including ones hidden by the sidebar type and platform filters.
+
+## Why does the liquid-glass variant need LiquidGlassSvgFilter?
+
+The `liquid-glass` layers use `filter: url(#glass-blur)`, an SVG displacement filter that `LiquidGlassSvgFilter` defines. Render `<LiquidGlassSvgFilter />` once next to `<CalendarDashboard variant="liquid-glass" />`, as the example does, and place the pair over an image or pattern so the distortion shows.
 
 <DocsJsonLd slug="calendar" />
+<FaqJsonLd slug="calendar" />

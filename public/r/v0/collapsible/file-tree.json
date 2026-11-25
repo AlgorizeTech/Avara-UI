@@ -3,7 +3,7 @@
   "name": "collapsible-file-tree",
   "type": "registry:block",
   "title": "Collapsible — File tree",
-  "description": "Collapsibles nest freely; each level keeps its own open state.",
+  "description": "The \"File tree\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

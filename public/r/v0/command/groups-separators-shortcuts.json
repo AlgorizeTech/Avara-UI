@@ -3,7 +3,7 @@
   "name": "command-groups-separators-shortcuts",
   "type": "registry:block",
   "title": "Command — Groups, separators & shortcuts",
-  "description": "`CommandSeparator` divides groups; `CommandShortcut` right-aligns the hotkey.",
+  "description": "The \"Groups, separators & shortcuts\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

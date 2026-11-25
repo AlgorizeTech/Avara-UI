@@ -3,7 +3,7 @@
   "name": "animated-typography-typewriter",
   "type": "registry:block",
   "title": "Animated Typography — Typewriter",
-  "description": "Types each word, holds it, deletes it and moves on behind a blinking caret, as in the Hero's typing title. The prefix re-centres as the word changes, just like the hero.",
+  "description": "The \"Typewriter\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],
