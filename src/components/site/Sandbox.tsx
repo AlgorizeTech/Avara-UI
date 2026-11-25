@@ -959,92 +959,6 @@ export type ResolvedShowcaseExample = Omit<ShowcaseExample, "usage" | "code"> & 
   code?: string;
 };
 
-/**
- * Example prose is authored as plain strings inside a JS array, so MDX never
- * parses it and its backticks used to reach the page literally. This renders
- * the small slice of markdown that prose actually uses — `code` and **bold** —
- * so a prop name reads as a prop name.
- */
-function renderInline(text?: string): React.ReactNode {
-  if (!text) return null;
-  return text.split(/(`[^`]+`|\*\*[^*]+\*\*)/g).map((part, i) => {
-    if (part.length > 2 && part.startsWith("`") && part.endsWith("`")) {
-      return (
-        <code
-          key={i}
-          className="rounded bg-primary/10 px-1.5 py-0.5 font-mono text-[0.85em] text-primary"
-        >
-          {part.slice(1, -1)}
-        </code>
-      );
-    }
-    if (part.length > 4 && part.startsWith("**") && part.endsWith("**")) {
-      return (
-        <strong key={i} className="font-semibold text-foreground/80">
-          {part.slice(2, -2)}
-        </strong>
-      );
-    }
-    return part ? <Fragment key={i}>{part}</Fragment> : null;
-  });
-}
-
-/**
- * Badge used for both halves of a prop reference — name and value alike.
- * Rendered with `data-badge`, which opts out of the global !important inline
- * <code> styling in globals.css; without it these classes never take effect.
- *
- * Inline rather than inline-block so a long badge wraps at word boundaries
- * like the surrounding text; `box-decoration-break: clone` repeats the pill
- * background and ring on each line it spans. Kept in step with BADGE in
- * installation.tsx.
- */
-const PROP_BADGE =
-  "inline rounded-md bg-primary/10 px-1.5 py-0.5 font-mono text-xs font-medium text-primary ring-1 ring-primary/20 [overflow-wrap:anywhere] [box-decoration-break:clone] [-webkit-box-decoration-break:clone]";
-
-/**
- * The prop cheat sheet. Runs on directly under the subheading — same text
- * block, no separate panel — so the reader picks up what each knob does while
- * still reading the intro, rather than treating it as a section to skip.
- *
- * The name and its value are badged so they stay findable inside the prose.
- */
-function PropNotes({ notes }: { notes: PropNote[] }) {
-  return (
-    <dl className="mt-2 flex flex-col gap-1.5">
-      {notes.map((note, i) => (
-        <div
-          key={`${note.prop}-${note.value ?? i}`}
-          className="text-sm leading-6 text-foreground/55"
-        >
-          {/* Inline, not flex: a long prop or value then wraps by word with the
-              prose instead of being squeezed and split mid-word on narrow screens. */}
-          <dt className="mr-1.5 inline">
-            {note.lead && <span className="mr-1">{note.lead}</span>}
-            <code data-badge className={PROP_BADGE}>
-              {note.prop}
-            </code>
-            {note.value !== undefined && (
-              <>
-                <span
-                  aria-hidden
-                  className="mx-1 font-mono text-xs text-foreground/40"
-                >
-                  =
-                </span>
-                <code data-badge className={PROP_BADGE}>
-                  {note.value}
-                </code>
-              </>
-            )}
-          </dt>
-          <dd className="inline">{renderInline(note.effect || (note as any).note || "")}</dd>
-        </div>
-      ))}
-    </dl>
-  );
-}
-
 const toPascalCase = (str: string) =>
   str
     .split("-")
@@ -1496,7 +1410,7 @@ function ExampleCard({
   maxHeight: number;
 }) {
   // `code` feeds the Code tab below, hidden for now — rename back to `code` with it.
-  const { title, subheading, propNotes, props, usage, code: _code } = example;
+  const { title, props, usage, code: _code } = example;
   const anchor = example.id ?? slugify(title);
   const Heading = headingLevel === 2 ? "h2" : "h3";
 
@@ -1561,7 +1475,7 @@ function ExampleCard({
     <section ref={rootRef} aria-labelledby={anchor} className="flex flex-col min-w-0">
       {controlCard && <div className="mb-6">{controlCard}</div>}
 
-      {/* Title + optional subheading */}
+      {/* Title only: subheading and propNotes stay in the data (agent docs, v0) but are not shown. */}
       <div>
       <div className="min-w-0">
         <Heading
@@ -1574,12 +1488,6 @@ function ExampleCard({
             <LinkIcon className="w-3.5 h-3.5 text-foreground/40 opacity-0 group-hover:opacity-100 transition-opacity" />
           </a>
         </Heading>
-        {subheading && (
-          <p className="mt-1 text-sm text-foreground/55">
-            {renderInline(subheading)}
-          </p>
-        )}
-        {!previewFirst && propNotes && propNotes.length > 0 && <PropNotes notes={propNotes} />}
       </div>
       </div>
 

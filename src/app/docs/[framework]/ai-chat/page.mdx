@@ -79,14 +79,6 @@ export default function Workspace() {
   ]}
 />
 
-What the screen does without any props:
-
-- **Model menu** sits in the prompt bar. Pro and Premium models wear a badge and play the same one-off flourish as the other chat.
-- **Prompt bar** also has Research, image and reasoning toggles, an effort slider, web search, file attachments (drag them in too) and voice dictation. The send button turns into a stop button while a reply is being written.
-- **Apps strip** under the bar lists Google Drive, Slack and more, with their real logos. They unlock on Pro; a linked app is named in a prompt as `@Slack` and arrives in `onSend` as `connectors`.
-- **Sidebar** holds history with rename and delete, Discover, Library and Templates. Library files you switch on travel with each prompt as `knowledge`.
-- **Header actions** copy a link, share, rename, export a chat as Markdown or clear it. **New chat** is also bound to ⌘/Ctrl + N while focus is inside the component.
-
 
 export const chatData = `const chatHistory: ChatThread[] = [
   { id: 1, title: "Help with React Components", date: "Today" },
