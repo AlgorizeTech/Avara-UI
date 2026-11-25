@@ -12,14 +12,17 @@
 # This Dockerfile uses Node.js 22.23.4 (alpine), the patched 22.x from the Oct 2026
 # security release (fixes CVE-2026-111497, a Brotli RCE, and other high-severity CVEs).
 # Keep it in step with node-version in .github/workflows/registry.yml.
-# To ensure security and compatibility, regularly update the NODE_VERSION ARG to the latest patched release.
+# To ensure security and compatibility, regularly update the NODE_IMAGE_TAG ARG to the latest patched release.
+# The ARG is deliberately not called NODE_VERSION: Easypanel passes every service
+# environment variable as a --build-arg, and a leftover NODE_VERSION=22 there
+# silently replaced this tag with Debian `node:22` (no `apk`, unpatched Node).
 # Node only runs in the build stages below; none of it is in the image that is served.
-ARG NODE_VERSION=22.23.4-alpine
+ARG NODE_IMAGE_TAG=22.23.4-alpine
 
 # ============================================
 # Stage 1: Install dependencies
 # ============================================
-FROM node:${NODE_VERSION} AS dependencies
+FROM node:${NODE_IMAGE_TAG} AS dependencies
 
 # Alpine uses musl, not glibc. libc6-compat lets any prebuilt glibc-only native
 # binary in node_modules still load (the usual Next.js-on-Alpine setup).
@@ -39,7 +42,7 @@ RUN --mount=type=cache,target=/root/.npm \
 # ============================================
 # Stage 2: Build the static export (out/)
 # ============================================
-FROM node:${NODE_VERSION} AS builder
+FROM node:${NODE_IMAGE_TAG} AS builder
 
 RUN apk add --no-cache libc6-compat
 
