@@ -3,7 +3,7 @@
   "name": "agent-graph-shaded-tree-default",
   "type": "registry:block",
   "title": "Agent Graph — Shaded Tree (Default)",
-  "description": "Tree variant featuring layered bevel card borders with shaded background and tinted tool/handoff footers.",
+  "description": "The \"Shaded Tree (Default)\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

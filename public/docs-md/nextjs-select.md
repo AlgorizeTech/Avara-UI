@@ -1,51 +1,27 @@
 ---
 title: "Shadcn Select"
-description: "Shadcn Select component. A completely custom, headless-style dropdown component."
+description: "Shadcn Select. A custom, animated dropdown component supporting single selection, multi-select tags, live search filtering, and categorized option groups."
 url: https://avaraui.com/docs/nextjs/select
 ---
 
 # Shadcn Select
 
-A completely custom, headless-style dropdown component. Native HTML `<select>` elements are notoriously difficult to style consistently across browsers.
+A custom, animated dropdown component supporting single selection, multi-select tags, live search filtering, and categorized option groups.
 
-This component solves that by using React state and clever absolute positioning to create a flawless, animated dropdown that perfectly matches the `InputBlock` visual variants. It has been supercharged to support **Multi-Select**, **Live Search Filtering**, and **Categorized Option Groups**.
+## Installation
 
-Explore the different variations of the Select component — each example shows a live preview with the exact code to copy.
+Add the component by URL — no setup needed:
 
-## For AI agents
+```bash
+npx shadcn@latest add https://avaraui.com/r/select.json
+```
 
-**Ask before you pick.** This page has 2 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+Or register the @avara-ui registry once per project and add it by name:
 
-All 2 options as live previews: https://avaraui.com/view/select
-
-**When to use it.** A custom dropdown that replaces the native `<select>`, matching the input styles, with optional search, grouping and multi-select, in two trigger styles: bordered and underlined.
-
-**When to use something else:**
-
-- [Input](https://avaraui.com/docs/nextjs/input): for free-text entry rather than choosing from a list.
-
-**Gotchas:**
-
-- Both are looks of the one `select` item: install it once and set `variant` from the index.
-- Searchable (`isSearchable`) and multi-select (`isMultiple`, with an array `value`) are props on either style.
-
-### The 2 variants
-
-1. **Bordered** (`default`): The default bordered trigger.
-   - Live: https://avaraui.com/view/select/default
-   - Best for: a standard form dropdown beside bordered inputs
-   - Avoid if: your form uses underlined fields
-   - Traits: bordered trigger, default look
-   - Install: `npx shadcn@latest add @avara-ui/select`
-   - Docs: https://avaraui.com/docs/nextjs/select#select
-2. **Underlined** (`underlined`): The trigger is reduced to a single baseline rule.
-   - Live: https://avaraui.com/view/select/underlined
-   - Best for: a minimal form that uses underlined inputs
-   - Avoid if: you mix it with bordered fields
-   - Traits: baseline rule
-   - Install: `npx shadcn@latest add @avara-ui/select`
-   - Set these props: `{"variant":"underlined"}`
-   - Docs: https://avaraui.com/docs/nextjs/select#underlined
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/select
+```
 
 ## Select
 
@@ -86,24 +62,7 @@ export default function BasicSelect() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/select.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/select
-```
-
-## Examples
-
-### Underlined
+## Underlined
 
 - Use `variant="underlined"` to reduce the trigger to a single baseline rule.
 
@@ -140,7 +99,7 @@ export default function UnderlinedSelect() {
 }
 ```
 
-### Searchable
+## Searchable
 
 - Set `searchable` to add a sticky filter bar at the top of the dropdown.
 
@@ -177,7 +136,7 @@ export default function SearchableSelect() {
 }
 ```
 
-### Multi-select
+## Multi-select
 
 - Set `multiple` and pass an array as `value` — selections render as removable tags in the trigger.
 
@@ -214,20 +173,63 @@ export default function MultiSelect() {
 }
 ```
 
-## Features
-Discover the Select component's accessible dropdown features, including keyboard navigation, search filtering, and custom rendering.
+## About Shadcn Select
 
-Easily adapt the component's styling and behavior to fit your application's unique design system.
+**What it is.** `SelectBlock` is a custom dropdown component matching `InputBlock` variants (`default`, `underlined`, etc.), with built-in support for icons, grouped options, sticky search filtering, and removable multi-select tags.
 
-Built with accessibility in mind, ensuring all users can interact with your application effectively.
+**How it is built.** Driven by React state and positioned dropdown menus with keyboard navigation, outside-click dismissal, and theme-synced active accents.
 
-Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+**When to use it.** Use `SelectBlock` when users pick one or more values from a structured `options` list. For free-text inputs with suggestions, use [Input](https://avaraui.com/docs/nextjs/input); for a command-style modal picker, use [Command](https://avaraui.com/docs/nextjs/command).
 
-Optimized for maximum performance with minimal re-renders and efficient state management.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+- Single or multi-select dropdowns with optional icons, option groups, and live search
+- Forms that need `SelectBlock` styling aligned with `InputBlock`
+
+**When not to use**
+
+- Free-text input with autocomplete hints — use [Input](https://avaraui.com/docs/nextjs/input) (`suggestions`)
+- Full keyboard command menu — use [Command](https://avaraui.com/docs/nextjs/command)
+
+**Agent notes**
+
+- Named export: `import { SelectBlock, type SelectOption } from "@/components/custom/blocks/SelectBlock"`
+- Controlled via `value` and `onChange`; pass `multiple` with a `string[]` value for removable tag chips
+
+**Ask before you pick.** This page has 2 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 2 options as live previews: https://avaraui.com/view/select
+
+**When to use it.** A custom dropdown that replaces the native `<select>`, matching the input styles, with optional search, grouping and multi-select, in two trigger styles: bordered and underlined.
+
+**When to use something else:**
+
+- [Input](https://avaraui.com/docs/nextjs/input): for free-text entry rather than choosing from a list.
+
+**Gotchas:**
+
+- Both are looks of the one `select` item: install it once and set `variant` from the index.
+- Searchable (`isSearchable`) and multi-select (`isMultiple`, with an array `value`) are props on either style.
+
+### The 2 variants
+
+1. **Bordered** (`default`): The default bordered trigger.
+   - Live: https://avaraui.com/view/select/default
+   - Best for: a standard form dropdown beside bordered inputs
+   - Avoid if: your form uses underlined fields
+   - Traits: bordered trigger, default look
+   - Install: `npx shadcn@latest add @avara-ui/select`
+   - Docs: https://avaraui.com/docs/nextjs/select#select
+2. **Underlined** (`underlined`): The trigger is reduced to a single baseline rule.
+   - Live: https://avaraui.com/view/select/underlined
+   - Best for: a minimal form that uses underlined inputs
+   - Avoid if: you mix it with bordered fields
+   - Traits: baseline rule
+   - Install: `npx shadcn@latest add @avara-ui/select`
+   - Set these props: `{"variant":"underlined"}`
+   - Docs: https://avaraui.com/docs/nextjs/select#underlined
 
 ## Props Reference
 
@@ -246,6 +248,32 @@ Follow standard design principles when implementing this component. Ensure prope
 | `error` | `string` | `undefined` | If provided, turns the select red, adds an alert icon, and replaces the helper text with the error message. |
 | `disabled` | `boolean` | `false` | Disables interactions and applies a faded, read-only style. |
 | `icon` | `ReactNode` | `undefined` | An optional React component to render inside the left edge of the trigger button. |
+
+## Works with other components
+
+- Pair `SelectBlock` with [Input](https://avaraui.com/docs/nextjs/input) and [Form](https://avaraui.com/docs/nextjs/form) for consistent field heights and `underlined` variants.
+- Place inside [Dialog](https://avaraui.com/docs/nextjs/dialog) or [Drawer](https://avaraui.com/docs/nextjs/drawer) filter panels.
+- Use [Apple Select](https://avaraui.com/docs/nextjs/apple-select) when you want a macOS-inspired wheel/pill selector aesthetic.
+
+## How do I build a multi-select dropdown with tags in React?
+
+Set `multiple` on `SelectBlock`, pass an array to `value` and handle the array in `onChange`. Selected options render as removable tags inside the input. Without `multiple`, `value` is a single string and picking another option replaces it.
+
+## How do I add a search box to the dropdown?
+
+Set `searchable` to `true`. A sticky search bar appears at the top of the menu and filters the `options` by their `label`. It is off by default, so short lists stay uncluttered. It works with both single and multiple selection.
+
+## How do I group options under headings?
+
+Give each item in `options` a `group` string next to its `label` and `value`. Options that share the same `group` are listed together. You can also pass an `icon` node on each option, such as a `lucide-react` icon.
+
+## How do I show a validation error on SelectBlock?
+
+Pass a string to `error`. The select turns red, adds an alert icon and replaces `helperText` with your message. Use `label` for the text above the field. `disabled` makes the control read-only with a faded style.
+
+## How is SelectBlock different from the Apple Select?
+
+`SelectBlock` is a form field that mirrors the `InputBlock` variants (`default`, `filled`, `underlined`, `glow`) and adds search, groups and multi-select. Use [Apple Select](https://avaraui.com/docs/nextjs/apple-select) when you want a macOS-inspired wheel or pill selector instead of a standard field.
 
 ---
 

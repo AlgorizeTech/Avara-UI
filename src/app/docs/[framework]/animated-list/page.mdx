@@ -3,13 +3,14 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("animated-list");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Animated List
 
 A hyper-polished list component that staggers its children into view using 3D perspective transforms (no animation library), complete with a mouse-tracking glassmorphic spotlight hover effect.
 
-Standard list animations often feel rigid. By wrapping your notification or activity feeds in the `AnimatedList` container, the engine forces a `perspective` boundary and applies a high-end 3D flip-in sequence (`back.out` easing) to every direct child. Furthermore, the `AnimatedListItem` wrapper brings the component to life _after_ entry by tracking the user's cursor to render a subtle spotlight gradient glow.
+Standard list animations often feel rigid. By wrapping your notification or activity feeds in the `AnimatedList` container, the engine sets a `perspective` boundary and plays a staggered entrance (`slide-right` with `back.out(1.5)` easing by default, or the 3D `flip`) on every direct child. Furthermore, the `AnimatedListItem` wrapper brings the component to life _after_ entry by tracking the user's cursor to render a subtle spotlight gradient glow.
 
 Each list plays its entrance once it scrolls into view — use a preview's reload button to replay it. Hover a card afterwards for the cursor-tracking spotlight.
 
@@ -189,10 +190,11 @@ export default function TimedFeed() {
   name="animated-list"
   colorControl={false}
   columns={1}
+  installation={<Installation name="animated-list" usage="below" />}
   examples={[
     {
       title: "Animated list",
-      subheading: "Wrap the feed in `AnimatedList` and each row in `AnimatedListItem` — the stagger, perspective and hover spotlight come with it.",
+      description: "Wrap the feed in `AnimatedList` and each row in `AnimatedListItem` — the stagger, perspective and hover spotlight come with it.",
       propNotes: [
         {
           lead: "Set",
@@ -205,20 +207,6 @@ export default function TimedFeed() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/AnimatedListBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="animated-list" />
-
-## Examples
-
-<ExampleShowcase minHeight={260}
-  name="animated-list"
-  colorControl={false}
-  columns={1}
-  examples={[
     {
       title: "Flip",
       propNotes: [
@@ -297,35 +285,37 @@ export default function TimedFeed() {
   ]}
 />
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+## About Shadcn Animated List
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Fluid Animations">
-    <p>Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
-  </InfoCard>
-  <InfoCard title="Highly Customizable">
-    <p>Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
-  </InfoCard>
-  <InfoCard title="Responsive Design">
-    <p>Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
-  </InfoCard>
-</div>
+**What it is.** `AnimatedList` and `AnimatedListItem` make a staggered feed. Each direct child enters with one of five `variant` motions (`flip`, `slide-up`, `slide-left`, `slide-right`, `pop`), and each `AnimatedListItem` shows a cursor-tracking spotlight on hover.
 
-## Best Practices & Guidelines
+**How it is built.** `AnimatedList` sets a 1000px `perspective` and runs the entrance in a `requestAnimationFrame` loop, driven by `staggerDelay`, `duration`, `animationDelay` and an `ease` string. It parses GSAP-style ease names itself, so it has no animation dependency, and it imports nothing from `next/*`.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Animation Performance">
-    <p>Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
-  </InfoCard>
-  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">State Management</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>
-  </div>
-</div>
+**When to use it.** Use it for notification feeds, activity logs, onboarding checklists and live event streams that should arrive one row at a time.
+
+## For AI agents
+
+<AgentBrief name="animated-list">
+
+**When to use**
+
+- Notification feeds, activity logs
+- Onboarding checklists, live event streams
+
+**When not to use**
+
+- Rows users must reorder by dragging: use <DocLink to="draggable-card-list">Draggable Card List</DocLink>
+- Dated milestones with status markers: use <DocLink to="timeline">Timeline</DocLink>
+
+**Agent notes**
+
+- Named exports `AnimatedList` and `AnimatedListItem` from `@/components/custom/blocks/AnimatedListBlock`. Put `AnimatedListItem` as a direct child: the entrance styles go on the list's direct children only.
+- `variant` is `"flip" | "slide-up" | "slide-left" | "slide-right" | "pop"` and defaults to `"slide-right"`.
+- Timing props are in seconds: `staggerDelay` (0.12), `animationDelay` (0), `duration` (0.6). `ease` defaults to `"back.out(1.5)"`.
+- The entrance runs once on mount and again when one of those props changes. A row added later stays hidden (`AnimatedListItem` starts at `opacity-0`), so remount the list with a new `key` after adding rows.
+- There is no reduced-motion check: pass `duration={0}` and `staggerDelay={0}` yourself for people who prefer less motion.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -373,8 +363,7 @@ Discover the key capabilities that make this component an excellent choice for m
           <code>0</code>
         </td>
         <td>
-          The total delay (in seconds) before the entire staggered 3D flip-in
-          sequence begins.
+          The total delay (in seconds) before the staggered entrance begins.
         </td>
       </tr>
       <tr>
@@ -388,7 +377,7 @@ Discover the key capabilities that make this component an excellent choice for m
           <code>number</code>
         </td>
         <td>
-          <code>0.8</code>
+          <code>0.6</code>
         </td>
         <td>
           The total duration (in seconds) of the entry animation for a
@@ -417,6 +406,40 @@ Discover the key capabilities that make this component an excellent choice for m
       </tr>
       <tr>
         <td>
+          <code>AnimatedList</code>
+        </td>
+        <td>
+          <code>variant</code>
+        </td>
+        <td>
+          <code>"flip" | "slide-up" | "slide-left" | "slide-right" | "pop"</code>
+        </td>
+        <td>
+          <code>"slide-right"</code>
+        </td>
+        <td>
+          Entrance motion for each child. All variants also fade in from a small blur.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>AnimatedList</code>
+        </td>
+        <td>
+          <code>...props</code>
+        </td>
+        <td>
+          <code>HTMLAttributes&lt;HTMLDivElement&gt;</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Passed to the list container, including <code>className</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
           <code>AnimatedListItem</code>
         </td>
         <td>
@@ -438,6 +461,31 @@ Discover the key capabilities that make this component an excellent choice for m
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- <DocLink to="item">Item</DocLink> for structured rows (media, title, description) to put inside each `AnimatedListItem`.
+- <DocLink to="draggable-card-list">Draggable Card List</DocLink> when people need to reorder the rows, which `AnimatedList` does not support.
+- <DocLink to="timeline">Timeline</DocLink> for dated, status-driven events on a vertical rail instead of a feed of cards.
+
+## Does AnimatedList require GSAP when using ease strings like `power4.out`?
+
+No. `AnimatedList` parses the ease string itself and installs no animation library. It understands GSAP names such as `power1` to `power4`, `sine`, `expo`, `circ`, `bounce`, `back`, `elastic` and `steps`, plus CSS keywords and `cubic-bezier()`. An unrecognised name falls back to `power1.out`.
+
+## How do I add the cursor-tracking hover spotlight?
+
+Wrap each row in `AnimatedListItem` inside `AnimatedList`; there is nothing to switch on. It tracks `onMouseMove` and draws a 600px white radial glow at 6% opacity under the pointer, which fades out on `onMouseLeave`. The glow is faint on light cards and clearer on dark ones.
+
+## Why are rows I add to AnimatedList later invisible?
+
+`AnimatedListItem` starts at `opacity-0` and only the entrance loop reveals it. That loop runs on mount and again when `staggerDelay`, `animationDelay`, `ease`, `duration` or `variant` change. A row appended afterwards is never animated in, so give the list a new `key` to replay the whole entrance.
+
+## How do I change the entrance direction of AnimatedList?
+
+Set `variant`. `slide-right` is the default and moves rows in 60px from the right, `slide-left` does the same from the left, `slide-up` rises 40px, `pop` scales up from 0.6, and `flip` tilts rows in on the X axis against the list's perspective. Every variant also fades in from a small blur.
+
+## How do I turn the AnimatedList entrance off for reduced motion?
+
+`AnimatedList` has no built-in `prefers-reduced-motion` check, so add one yourself. Read the media query in your component and pass `duration={0}` and `staggerDelay={0}` when it matches. Rows then appear almost at once instead of animating, and the spotlight hover still works.
 
 <DocsJsonLd slug="animated-list" />
+<FaqJsonLd slug="animated-list" />

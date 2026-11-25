@@ -4,10 +4,11 @@ export const metadata = docsPageMetadata("card-stack");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractMotionCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Card Stack
 
-A layered deck of cards featuring fluid drag-to-discard gestures, button-driven directional slide animations, and realistic depth perspective. Users can swipe cards left or right to review and discard them, with the next cards seamlessly stepping forward.
+A layered card deck (`CardStack`) with drag-to-discard swipes, previous and next buttons, optional looping, and a choice of GSAP or Motion builds.
 
 export const usageSwipe = `"use client";
 
@@ -276,10 +277,11 @@ export default function InfiniteLoopDemo() {
   name="card-stack"
   colorControl={false}
   columns={1}
+  installation={<Installation name="card-stack" usage="below" />}
   examples={[
     {
       title: "Swipe to Discard",
-      subheading: "Swipe or drag cards left or right to discard them. Cards behind smoothly step forward without back navigation, and the last card remains pinned in place.",
+      description: "Swipe or drag cards left or right to discard them. Cards behind smoothly step forward without back navigation, and the last card remains pinned in place.",
       propNotes: [
         {
           prop: "swipeToDismiss",
@@ -302,23 +304,9 @@ export default function InfiniteLoopDemo() {
       code: extractMotionCode("src/components/custom/blocks/CardStackBlock.tsx"),
       minHeight: 240,
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="card-stack" />
-
-## Examples
-
-<ExampleShowcase
-  name="card-stack"
-  colorControl={false}
-  columns={1}
-  examples={[
     {
       title: "Infinite Loop",
-      subheading: "Continuous cyclical navigation where swiping cards seamlessly wraps around to the beginning with no header.",
+      description: "Continuous cyclical navigation where swiping cards seamlessly wraps around to the beginning with no header.",
       propNotes: [
         {
           prop: "loop",
@@ -337,7 +325,7 @@ export default function InfiniteLoopDemo() {
     },
     {
       title: "With navigation buttons",
-      subheading: "Arrow button controls to slide cards forwards and backwards with disabled bounds at the ends.",
+      description: "Arrow button controls to slide cards forwards and backwards with disabled bounds at the ends.",
       propNotes: [
         {
           prop: "showNavigation",
@@ -356,7 +344,7 @@ export default function InfiniteLoopDemo() {
     },
     {
       title: "Left Slide Direction",
-      subheading: "Slide the top card out toward the left when progressing forward with button controls.",
+      description: "Slide the top card out toward the left when progressing forward with button controls.",
       propNotes: [
         {
           prop: "slideDirection",
@@ -370,6 +358,38 @@ export default function InfiniteLoopDemo() {
     },
   ]}
 />
+
+## About Shadcn Card Stack
+
+**What it is.** `CardStack` shows a deck of `CardStackItem` cards, each offset and tilted slightly behind the one in front. Drag the top card away with `swipeToDismiss`, step with the header arrows (`showNavigation`), wrap around with `loop`, and set the depth with `visibleCards`.
+
+**How it is built.** Cards settle into place with a spring and the top card tilts as you drag it. The GSAP build (`card-stack`) installs `gsap` and skips the motion under `prefers-reduced-motion`; the Motion build (`card-stack-motion`) installs `motion`. Neither imports `next/*`.
+
+**When to use it.** Use `CardStack` for swipeable onboarding decks, notification stacks, and card reviews. For a photo deck with 3D pointer tilt, use <DocLink to="memories-card">Memories Card</DocLink>; for scroll-driven card stacks, use <DocLink to="scroll-stack">Scroll Stack</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="card-stack">
+
+**When to use**
+
+- Swipe-to-discard or button-driven layered card decks (`swipeToDismiss`, `loop`, `showNavigation`)
+
+**When not to use**
+
+- Scroll-driven sticky card stacks — use <DocLink to="scroll-stack">Scroll Stack</DocLink>
+- Reorderable drag-and-drop lists — use <DocLink to="draggable-card-list">Draggable Card List</DocLink>
+
+**Agent notes**
+
+- Named exports: `CardStack`, `type CardStackItem` from `@/components/custom/blocks/CardStackBlock`; there is also a default export. The GSAP build (`card-stack`) and the Motion twin (`card-stack-motion`) install to the same path, so add only one
+- Every `CardStackItem` needs a unique `id` and a `title`; `description`, `category`, `date`, `meta`, `icon` (a node or an image URL string) and `href` are optional
+- Set `loop={true}` for infinite cycling; without `loop`, the final card stays pinned unless `canDismissLastCard` is true
+- `renderCard` receives `(item, offset, isTop)`, where `offset` is 0 for the front card and grows toward the back
+- Cards have a fixed height (about 200px) and clip overflow, so keep custom content short
+- `swipeToDismiss` is off by default, so the deck only moves from the header buttons until you enable it
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -406,7 +426,7 @@ export default function InfiniteLoopDemo() {
         <td><code>canDismissLastCard</code></td>
         <td><code>boolean</code></td>
         <td><code>false</code></td>
-        <td>Whether the last card in the stack can be swiped away/dismissed. Defaults to <code>false</code> so the final card stays in place.</td>
+        <td>Whether the last card can be swiped away, which shows a "Replay deck" panel. Defaults to <code>false</code> so the final card stays in place. Not needed when <code>loop</code> is set.</td>
       </tr>
       <tr>
         <td><code>showHeader</code></td>
@@ -418,7 +438,7 @@ export default function InfiniteLoopDemo() {
         <td><code>showNavigation</code></td>
         <td><code>boolean</code></td>
         <td><code>true</code></td>
-        <td>Whether to show header navigation arrow buttons. Set to <code>false</code> for pure swipe mode.</td>
+        <td>Whether to show header navigation arrow buttons. They sit inside the header, so turning <code>showHeader</code> off hides them too.</td>
       </tr>
       <tr>
         <td><code>visibleCards</code></td>
@@ -436,7 +456,7 @@ export default function InfiniteLoopDemo() {
         <td><code>loop</code></td>
         <td><code>boolean</code></td>
         <td><code>false</code></td>
-        <td>Whether navigation wraps around continuously or stops at the ends.</td>
+        <td>Whether buttons and swipes wrap around continuously or stop at the ends.</td>
       </tr>
       <tr>
         <td><code>defaultIndex</code></td>
@@ -460,7 +480,7 @@ export default function InfiniteLoopDemo() {
         <td><code>renderCard</code></td>
         <td><code>(item, offset, isTop) =&gt; ReactNode</code></td>
         <td>—</td>
-        <td>Custom render function to replace the default card body.</td>
+        <td>Custom render function to replace the default card body. The second argument is the card's depth, 0 for the front card.</td>
       </tr>
       <tr>
         <td><code>cardClassName</code></td>
@@ -472,6 +492,30 @@ export default function InfiniteLoopDemo() {
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Compare with <DocLink to="memories-card">Memories Card</DocLink> for 3D-tilting photo decks and <DocLink to="scroll-stack">Scroll Stack</DocLink> for scroll-linked decks.
+- Use <DocLink to="draggable-card-list">Draggable Card List</DocLink> when users should reorder a list rather than discard cards one by one.
+
+## How do I make CardStack cycle infinitely when swiping?
+
+Pass `loop={true}` to `CardStack`. Swiping or pressing the arrows past the last card then wraps back to the first item, and the previous and next buttons are never disabled. Without `loop`, the deck stops at the ends, and `canDismissLastCard` decides whether the final card can be swiped away.
+
+## How do I enable swipe to dismiss on CardStack?
+
+Set `swipeToDismiss` to `true`, and add `showHeader={false}` if you want a pure swipe deck. The front card then drags left or right and is discarded when released past 80px or faster than 280px per second; otherwise it springs back. `onDismiss(item, direction)` reports each discard.
+
+## How do I track which card is on top in CardStack?
+
+Pass `onCardChange`, which receives the new active index each time the front card changes, from the arrow buttons or a swipe. `defaultIndex` sets the starting card and is clamped to the item range. `onDismiss` adds the discarded item and its direction, `"left"` or `"right"`, for swipes only.
+
+## How do I render my own card content in CardStack?
+
+Pass `renderCard`, called as `renderCard(item, offset, isTop)`, to replace the default body. The wrapper still supplies the rounded, bordered surface and the drag behaviour, and `cardClassName` adds classes to it. `item` keeps any extra fields you add, since `CardStackItem` accepts arbitrary keys. Cards are about 200px tall and clip overflow.
+
+## Should I use the GSAP or the Motion build of CardStack?
+
+Pick the library your project already ships. `card-stack` uses `gsap` and checks `prefers-reduced-motion`, placing cards without animation when it is set. `card-stack-motion` uses `motion` and has no reduced-motion check of its own. Both take the same props and install to the same path, so add only one.
 
 <DocsJsonLd slug="card-stack" />
+<FaqJsonLd slug="card-stack" />

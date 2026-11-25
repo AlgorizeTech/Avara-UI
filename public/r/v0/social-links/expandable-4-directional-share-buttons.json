@@ -3,7 +3,7 @@
   "name": "social-links-expandable-4-directional-share-buttons",
   "type": "registry:block",
   "title": "Social Links — Expandable 4-directional share buttons",
-  "description": "Icon-only share button trigger that animates social icons expanding smoothly in 4 directions: top, right, left, or bottom.",
+  "description": "The \"Expandable 4-directional share buttons\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

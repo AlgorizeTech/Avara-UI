@@ -3,7 +3,7 @@
   "name": "piano-playable-synthesizer-piano",
   "type": "registry:block",
   "title": "Piano — Playable Synthesizer Piano",
-  "description": "Interactive playable piano keyboard powered by Web Audio API synthesizers. Play using mouse clicks or typing physical keyboard keys (`A-S-D-F-G-H-J-K-L-;` and `W-E-T-Y-U-O-P`).",
+  "description": "The \"Playable Synthesizer Piano\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

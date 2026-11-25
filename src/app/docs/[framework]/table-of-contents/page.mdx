@@ -5,12 +5,11 @@ export const metadata = docsPageMetadata("table-of-contents");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Table of Contents
 
-An interactive, responsive **Table of Contents** navigation block engineered to sit on the left side of long documents, articles, or documentation pages.
-
-Features a real-time scroll-spy, spring-animated section indicator, scroll progress bar, section search filter, and mobile navigation drawer.
+A responsive Table of Contents navigation block (`TableOfContentsBlock`) with scroll-spy tracking, spring active indicator, progress bar, section search, and mobile drawer.
 
 export const usageExample = `"use client";
 
@@ -79,10 +78,11 @@ export default function TableOfContentsDemo() {
   colorControl
   colorLabel="Accent Color"
   columns={1}
+  installation={<Installation name="table-of-contents" usage="below" />}
   examples={[
     {
       title: "Table of Contents (Left Side Navigation)",
-      subheading: "Sticky left-hand TOC navigation with automatic scroll-spy, progress indicator, and section filter.",
+      description: "Sticky left-hand TOC navigation with automatic scroll-spy, progress indicator, and section filter.",
       propNotes: [
         {
           prop: "headings",
@@ -104,26 +104,32 @@ export default function TableOfContentsDemo() {
   ]}
 />
 
-## Installation
+## About Shadcn Table of Contents
 
-<Installation name="table-of-contents" />
+**What it is.** `TableOfContentsBlock` renders a sticky outline sidebar (`items: TOCItem[]`) with scroll-spy highlighting, an optional scroll progress bar (`showProgress`), inline section filtering (`showSearch`), and a mobile drawer.
 
-## Features
+**How it is built.** Uses `IntersectionObserver` scroll-spy and a spring-eased active indicator pill (no animation library) with semantic `<nav>` landmarks and `aria-current`.
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Right-Side Sticky Panel">
-    <p>Positions the TOC navigation cleanly on the right column while main content flows on the left.</p>
-  </InfoCard>
-  <InfoCard title="Scroll-Spy Tracking">
-    <p>Automatically detects active viewport headings and animates the active indicator smoothly along a spring curve, with no animation library.</p>
-  </InfoCard>
-  <InfoCard title="Section Search Filter">
-    <p>Filter long document section headers instantly with an embedded search input.</p>
-  </InfoCard>
-  <InfoCard title="Mobile Dropdown Menu">
-    <p>Collapses into a sticky mobile bar with drawer navigation on smaller devices.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `TableOfContentsBlock` alongside long documentation pages, technical blogs, and multi-section guides.
+
+## For AI agents
+
+<AgentBrief name="table-of-contents">
+
+**When to use**
+
+- Sticky article/docs outline navigation with scroll-spy, progress indicator, and search filter
+
+**When not to use**
+
+- Multi-page app navigation — use <DocLink to="sidebar">Sidebar</DocLink> or <DocLink to="navigation">Navigation Menu</DocLink>
+
+**Agent notes**
+
+- Named exports: `TableOfContentsBlock`, `type TOCItem` from `@/components/custom/blocks/TableOfContentsBlock`
+- Toggle `showProgress` and `showSearch` props to enable the scroll progress bar and inline filter
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -241,6 +247,29 @@ export default function TableOfContentsDemo() {
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Pair `TableOfContentsBlock` with <DocLink to="breadcrumb">Breadcrumb</DocLink> and <DocLink to="scroll-area">Scroll Area</DocLink> on long documentation layouts.
+
+## How do I add a table of contents with scroll spy in React?
+
+Render `TableOfContentsBlock` with an `items` array whose `id` values match the DOM IDs of your sections. It uses an `IntersectionObserver` for scroll-spy, highlights the active heading with a spring indicator, and smooth-scrolls to a section when its entry is clicked.
+
+## Does TableOfContentsBlock work on mobile viewports?
+
+Yes. On small screens the sidebar outline becomes a mobile drawer so the page content keeps the full width. The sticky sidebar layout applies on larger screens. The same `items` and `headings` data drives both, so you configure nothing twice.
+
+## How do I turn off the progress bar or the search box?
+
+Set `showProgress={false}` to hide the reading progress bar and `showSearch={false}` to hide the inline section filter. Both default to `true`. Change the header text with `sidebarTitle`, which defaults to `"On this page"`.
+
+## How do I control the active heading myself?
+
+Pass `activeId` to override the scroll-spy highlight, and use `onSelectHeading` to handle clicks yourself. Without `onSelectHeading`, a click smooth-scrolls to the target. Each entry also has a `level` of `1`, `2` or `3` to set its indentation.
+
+## Can I build the outline from my own headings?
+
+Yes. Pass `headings` with `id`, `title` and `level`, instead of letting them derive from `items`. Items can also carry a `description`, a `codeSnippet` with a copy button and a `badge` such as "New", which suit documentation-style layouts.
 
 <DocsJsonLd slug="table-of-contents" />
+<FaqJsonLd slug="table-of-contents" />

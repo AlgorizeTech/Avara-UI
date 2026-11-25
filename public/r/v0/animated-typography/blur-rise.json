@@ -3,7 +3,7 @@
   "name": "animated-typography-blur-rise",
   "type": "registry:block",
   "title": "Animated Typography — Blur Rise",
-  "description": "The whole line rises out of a soft blur, as the Collage Hero heading does.",
+  "description": "The \"Blur Rise\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

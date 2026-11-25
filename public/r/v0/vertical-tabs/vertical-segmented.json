@@ -3,7 +3,7 @@
   "name": "vertical-tabs-vertical-segmented",
   "type": "registry:block",
   "title": "Tabs — Vertical segmented",
-  "description": "The track turns on its side and the raised surface travels vertically; segments keep their full width rather than sharing it.",
+  "description": "The \"Vertical segmented\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

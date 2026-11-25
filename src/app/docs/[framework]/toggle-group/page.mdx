@@ -4,16 +4,11 @@ export const metadata = docsPageMetadata("toggle-group");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Toggle Group
 
-A set of segmented, two-state buttons that can be toggled on or off, perfect for configuration settings and rich text editors.
-
-This component utilizes a React Context Provider to make composition incredibly easy. Instead of passing active states and `onClick` handlers to every single button, you simply wrap your `<ToggleGroupItem>` components inside the parent `<ToggleGroup>` and it handles all of the logic automatically.
-
-Explore the different variations of the Toggle Group — each example shows a live preview with the exact code to copy.
-
-<AgentVariants slug="toggle-group" />
+A set of segmented two-state buttons (`ToggleGroup`, `ToggleGroupItem`) supporting single or multiple selection in `default`, `outline`, `ghost`, and `segmented` variants.
 
 export const usageSingle = `"use client";
 
@@ -215,15 +210,18 @@ export default function DisabledGroup() {
   );
 }`;
 
-<ExampleShowcase minHeight={220} headingLevel={2}
+<ExampleShowcase
+  minHeight={220}
+  headingLevel={2}
   name="toggle-group"
   colorControl
   colorLabel="Active Color Theme"
   columns={1}
+  installation={<Installation name="toggle-group" usage="below" />}
   examples={[
     {
       title: "Toggle Group",
-      subheading: "Single selection — exactly one item stays active at a time.",
+      description: "Single selection — exactly one item stays active at a time.",
       propNotes: [
         {
           prop: "type",
@@ -241,21 +239,6 @@ export default function DisabledGroup() {
       usage: usageSingle,
       code: extractCode("src/components/custom/blocks/ToggleGroupBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="toggle-group" />
-
-## Examples
-
-<ExampleShowcase minHeight={220}
-  name="toggle-group"
-  colorControl
-  colorLabel="Active Color Theme"
-  columns={1}
-  examples={[
     {
       title: "Outline",
       propNotes: [
@@ -286,7 +269,7 @@ export default function DisabledGroup() {
     },
     {
       title: "Segmented",
-      subheading: "A view switch: one highlight slides to the chosen item, which stays chosen when clicked again. The arrow keys move the choice.",
+      description: "A view switch: one highlight slides to the chosen item, which stays chosen when clicked again. The arrow keys move the choice.",
       propNotes: [
         {
           lead: "Use",
@@ -347,43 +330,34 @@ export default function DisabledGroup() {
   ]}
 />
 
-## Usage
+## About Shadcn Toggle Group
 
-Use the `type` prop on the parent `<ToggleGroup>` to determine if the user can select only one option (`"single"`) or many options (`"multiple"`).
+**What it is.** A context-driven button group (`ToggleGroup` + `ToggleGroupItem`) supporting `type="single"` (string value) and `type="multiple"` (string array value) across `default`, `outline`, `ghost`, and sliding `segmented` variants.
 
-```tsx
-import { useState } from "react";
-import {
-  ToggleGroup,
-  ToggleGroupItem,
-} from "@/components/custom/blocks/ToggleGroupBlock";
-import { Bold, Italic, Underline } from "lucide-react";
+**How it is built.** Shares selection state, `variant`, `size`, and `disabled` from `ToggleGroup` context to every child `ToggleGroupItem`, with arrow-key navigation in `segmented` mode.
 
-export default function TextEditor() {
-  const [format, setFormat] = useState(["bold"]);
+**When to use it.** Use `ToggleGroup` for rich-text formatting toolbars, view switchers, and segmented option bars. For standalone binary toggles, use <DocLink to="toggle">Toggle</DocLink>.
 
-  return (
-    <div className="w-full p-4 border rounded-xl">
-      <ToggleGroup
-        onValueChange="{setFormat}"
-        type="multiple"
-        value="{format}"
-        variant="default"
-      >
-        <ToggleGroupItem aria-label="Toggle bold" value="bold">
-          <Bold className="w-4 h-4" />
-        </ToggleGroupItem>
-        <ToggleGroupItem aria-label="Toggle italic" value="italic">
-          <Italic className="w-4 h-4" />
-        </ToggleGroupItem>
-        <ToggleGroupItem aria-label="Toggle underline" value="underline">
-          <Underline className="w-4 h-4" />
-        </ToggleGroupItem>
-      </ToggleGroup>
-    </div>
-  );
-}
-```
+## For AI agents
+
+<AgentBrief name="toggle-group">
+
+**When to use**
+
+- Single-choice segmented view switchers (`variant="segmented"`, `type="single"`)
+- Multi-choice formatting toolbars (`type="multiple"`)
+
+**When not to use**
+
+- Standalone on/off buttons — use <DocLink to="toggle">Toggle</DocLink>
+- Full tab panels with associated content — use <DocLink to="vertical-tabs">Vertical Tabs</DocLink>
+
+**Agent notes**
+
+- Named exports: `ToggleGroup`, `ToggleGroupItem` from `@/components/custom/blocks/ToggleGroupBlock`
+- `type="single"` expects a `string` `value`; `type="multiple"` expects a `string[]` `value` (passing a bare string selects nothing)
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -576,6 +550,31 @@ export default function TextEditor() {
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Pair `ToggleGroup` with <DocLink to="tooltip">Tooltip</DocLink> for icon-only toolbar actions.
+- Use <DocLink to="toggle">Toggle</DocLink> when controls are independent rather than grouped.
+- Combine `variant="segmented"` with <DocLink to="data-table">Data Table</DocLink> or <DocLink to="chart">Chart</DocLink> view switchers.
+
+## How do I build a single-select segmented control in React?
+
+Use `ToggleGroup` with `type="single"` and `variant="segmented"`, then add a `ToggleGroupItem` with a unique `value` for each option. Control it with `value` and `onValueChange`, or give it `defaultValue` to leave state to the component.
+
+## Why does type="multiple" require a string array?
+
+With `type="multiple"`, `ToggleGroup` tracks several active keys at once, so `value` and `defaultValue` must be `string[]`. Passing a single string selects nothing. With `type="single"` the value is a plain string, and `"single"` is the default type.
+
+## How does variant="segmented" differ from default?
+
+`variant="segmented"` renders a pill track with a sliding active highlight, keeps one item selected when it is clicked again, and supports arrow-key navigation. It suits text-labelled view switches. The default variant wraps the items in a plain styled container.
+
+## How do I disable one item or the whole group?
+
+Set `disabled` on `ToggleGroup` to block interaction for every item, or on a single `ToggleGroupItem` to disable only that item. The item setting is independent of the group setting, and both default to `false`.
+
+## How do I change the colour or size of a ToggleGroup?
+
+Use `color` on the group, which accepts `"primary"`, `"indigo"`, `"rose"`, `"emerald"`, `"zinc"` or a custom string, and tints active items. `"primary"` follows your theme. `size` sets height, padding and text size for all items with `"sm"`, `"md"` or `"lg"`.
 
 <DocsJsonLd slug="toggle-group" />
+<FaqJsonLd slug="toggle-group" />

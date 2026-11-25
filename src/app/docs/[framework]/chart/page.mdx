@@ -3,13 +3,14 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("chart");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Chart
 
-A custom charting engine for React with no `recharts`, `chart.js` or `gsap`. Bars are responsive CSS flexbox, lines and areas are smooth bezier SVG paths, and pie and donut charts use SVG stroke-dasharray maths, so they never stretch into ovals.
+A chart component with no charting library: bar, line, pie and donut charts, plus legend and dashboard charts, with no recharts or chart.js.
 
-One `data` array of `{ label, value }` drives every chart type, and hovering a bar, point or slice shows its tooltip. Two further types, `donut-legend` and `stacked-bar`, show shares of a whole with a legend — the charts on the <DocLink to="book-appointment">Book Appointment</DocLink> page.
+One `data` array of `{ label, value }` drives the chart types, and hovering a bar, point or slice shows its tooltip. A line chart with `showArea` on is the area chart. Two further types, `donut-legend` and `stacked-bar`, show shares of a whole with a legend — the charts on the <DocLink to="book-appointment">Book Appointment</DocLink> page.
 
 export const chartData = `const revenue: ChartDataPoint[] = [
   { label: "Jan", value: 1200 },
@@ -285,10 +286,11 @@ export default function MetricsOverviewDemo() {
   name="chart"
   colorControl
   columns={1}
+  installation={<Installation name="chart" usage="below" />}
   examples={[
     {
       title: "Bar chart",
-      subheading: "Bars are pure HTML/CSS flexbox, so they always sit flat on the axis regardless of container size.",
+      description: "Bars are pure HTML/CSS flexbox, so they always sit flat on the axis regardless of container size.",
       propNotes: [
         {
           lead: "Pass",
@@ -312,21 +314,8 @@ export default function MetricsOverviewDemo() {
       usage: usageBar,
       code: extractCode("src/components/custom/blocks/ChartBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="chart" />
-
-## Examples
-
-<ExampleShowcase minHeight={310}
-  name="chart"
-  colorControl
-  columns={1}
-  examples={[
     {
+      minHeight: 310,
       title: "Line chart",
       propNotes: [
         {
@@ -345,6 +334,7 @@ export default function MetricsOverviewDemo() {
       usage: usageLine,
     },
     {
+      minHeight: 310,
       title: "Pie chart",
       propNotes: [
         {
@@ -359,6 +349,7 @@ export default function MetricsOverviewDemo() {
       usage: usagePie,
     },
     {
+      minHeight: 310,
       title: "Donut chart",
       propNotes: [
         {
@@ -372,6 +363,7 @@ export default function MetricsOverviewDemo() {
       usage: usageDonut,
     },
     {
+      minHeight: 310,
       title: "Donut with legend",
       propNotes: [
         {
@@ -391,6 +383,7 @@ export default function MetricsOverviewDemo() {
       usage: usageDonutLegend,
     },
     {
+      minHeight: 310,
       title: "Stacked bar",
       propNotes: [
         {
@@ -411,6 +404,7 @@ export default function MetricsOverviewDemo() {
       usage: usageStackedBar,
     },
     {
+      minHeight: 310,
       title: "Traffic sources gauge",
       propNotes: [
         {
@@ -430,6 +424,7 @@ export default function MetricsOverviewDemo() {
       usage: usageTrafficSources,
     },
     {
+      minHeight: 310,
       title: "Visitors by country",
       propNotes: [
         {
@@ -449,6 +444,7 @@ export default function MetricsOverviewDemo() {
       usage: usageVisitorsByCountry,
     },
     {
+      minHeight: 310,
       title: "Metrics overview tabs",
       propNotes: [
         {
@@ -465,31 +461,37 @@ export default function MetricsOverviewDemo() {
   ]}
 />
 
-## Features
-Explore the Chart component's data visualization capabilities, featuring responsive resizing, interactive tooltips, and smooth rendering.
+## About Shadcn Chart
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**What it is.** **Shadcn Chart** (`ChartBlock`) draws nine chart types from a `type` prop: `bar`, `line`, `pie`, `donut`, `donut-legend`, `stacked-bar`, `traffic-sources`, `visitors-by-country` and `metrics-overview`. Most read a single `data` array of `{ label, value }`; `metrics-overview` reads `metrics` tabs instead.
 
-## Best Practices & Guidelines
+**How it is built.** Built without `recharts`, `chart.js`, or `gsap`. Bars use responsive CSS flexbox, lines render smooth bezier SVG paths with an optional area fill, and pie and donut rings use SVG so they never stretch into ovals. The entrance animations are CSS keyframes. Installing it also adds `lucide-react` and the `popover` and `toggle-group` items, which the `metrics-overview` tabs use.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use it for analytics cards, revenue trends, category breakdowns, and appointment or SaaS reporting dashboards.
+
+## For AI agents
+
+<AgentBrief name="chart">
+
+**When to use**
+
+- Analytics cards, revenue trends
+- Category breakdowns, appointment or SaaS reporting dashboards
+
+**When not to use**
+
+- Editable, spreadsheet-style data: use <DocLink to="data-grid">Data Grid</DocLink>
+- Data plotted on a world map: use <DocLink to="data-maps">Data Maps</DocLink>
+
+**Agent notes**
+
+- `ChartBlock` takes `data` (`{ label, value }[]`), `type` (`"bar" | "line" | "pie" | "donut" | "donut-legend" | "stacked-bar" | "traffic-sources" | "visitors-by-country" | "metrics-overview"`), `valuePrefix`, `valueSuffix`, `height`, and `color`.
+- There is no `"area"` type. Use `type="line"`; `showArea` is on by default, and `showArea={false}` gives a bare line.
+- Width is 100% responsive. `height` defaults to 300 for `bar`, `line`, `pie` and `donut`; set it in pixels to prevent layout shift. The `traffic-sources`, `visitors-by-country` and `metrics-overview` cards ignore `height`.
+- Bar and line charts scale from 0 to the largest value, so there is no negative axis, and the axis shows rounded whole numbers with no formatter prop.
+- Zero external charting libraries (`recharts` / `chart.js` not required).
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -542,7 +544,8 @@ Explore the Chart component's data visualization capabilities, featuring respons
         </td>
         <td>
           Applies the active color theme to the bars, strokes, gradients, pie
-          slices, and tooltips. Accepts hex codes.
+          slices, and tooltips. Accepts hex codes or a CSS <code>var(...)</code>;
+          an unknown name falls back to <code>var(--primary)</code>.
         </td>
       </tr>
       <tr>
@@ -557,8 +560,9 @@ Explore the Chart component's data visualization capabilities, featuring respons
         </td>
         <td>
           Forces a fixed pixel height for the chart container to prevent layout
-          shifting. Width is always 100% responsive. The legend charts size to
-          their content unless it is set.
+          shifting. Width is always 100% responsive. <code>donut-legend</code>{" "}
+          and <code>stacked-bar</code> size to their content unless it is set;
+          the three card charts ignore it.
         </td>
       </tr>
       <tr>
@@ -570,8 +574,9 @@ Explore the Chart component's data visualization capabilities, featuring respons
         </td>
         <td>accent, teal, amber, rose, grey</td>
         <td>
-          <strong>Legend charts only:</strong> one colour per share, in order,
-          wrapping if there are more shares than colours. The first entry is
+          <strong>Legend and breakdown charts:</strong> one colour per share, in order,
+          wrapping if there are more shares than colours. A point's own{" "}
+          <code>color</code> wins. The first entry is
           <code>var(--primary)</code>, so the lead share follows your theme.
         </td>
       </tr>
@@ -652,16 +657,43 @@ Explore the Chart component's data visualization capabilities, featuring respons
       </tr>
       <tr>
         <td>
+          <code>valueSuffix</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>""</code>
+        </td>
+        <td>
+          Appends a string (like <code>"%"</code>) to the tooltip and Y-Axis
+          values.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>className</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>Classes for the outer wrapper.</td>
+      </tr>
+      <tr>
+        <td>
           <code>signUps</code>
         </td>
         <td>
           <code>number</code>
         </td>
         <td>
-          <code>undefined</code>
+          <code>412</code>
         </td>
         <td>
-          <strong>Traffic sources only:</strong> total sign-ups in the period, used to calculate and render the visit-to-sign-up conversion rate bar.
+          <strong>Traffic sources only:</strong> total sign-ups in the period, used to calculate and render the visit-to-sign-up conversion rate bar. Omitting it uses the built-in sample value.
         </td>
       </tr>
       <tr>
@@ -714,7 +746,7 @@ Explore the Chart component's data visualization capabilities, featuring respons
           <code>MetricTabItem[]</code>
         </td>
         <td>
-          Default 4 tabs (Users, Posts, Messages, Revenue)
+          Default 4 tabs (New users, Posts, Messages, Revenue)
         </td>
         <td>
           <strong>Metrics overview only:</strong> custom array of metric tabs with data series, labels, icons, currency codes, and delta change percentages.
@@ -724,6 +756,34 @@ Explore the Chart component's data visualization capabilities, featuring respons
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Combine `ChartBlock` with <DocLink to="data-grid">Data Grid</DocLink> for editable metrics tables, <DocLink to="data-maps">Data Maps</DocLink> for geographic breakdowns, and <DocLink to="card">Card</DocLink> for dashboard KPI panels.
+- Place it inside a <DocLink to="dashboard">Dashboard</DocLink> layout alongside tables and filters.
+
+## Does ChartBlock depend on Recharts or Chart.js?
+
+No. `ChartBlock` draws bars with HTML and CSS flexbox and lines, pies and donuts with SVG, so no charting library is needed. The registry item does add `lucide-react` and the `popover` and `toggle-group` items, which `metrics-overview` uses, and the file imports nothing from `next/*`.
+
+## How do I prevent vertical layout shift when charts load?
+
+Pass a fixed pixel `height`, for example `height={300}`, which is already the default for `bar`, `line`, `pie` and `donut`. Width stays 100% responsive. `donut-legend` and `stacked-bar` size to their content unless you set `height`, and the three card charts ignore it.
+
+## How do I make an area chart with ChartBlock?
+
+There is no `"area"` type. Use `type="line"`: `showArea` defaults to `true`, which fills a gradient under the smooth curve, and `showArea={false}` leaves a bare line. `showGrid` toggles the dashed gridlines. The curve is a bezier path, so there is no option for straight segments.
+
+## How do I show currency or units on ChartBlock values?
+
+Set `valuePrefix="$"` or `valueSuffix="%"`; both apply to the tooltip and the Y-axis. The axis shows rounded whole numbers with no thousands separators, and there is no formatter prop. In `metrics-overview`, give a tab `currency: "USD"` and its values are formatted with `Intl.NumberFormat`.
+
+## How do I set the colour of each share in a donut-legend or stacked-bar?
+
+Give a data point its own `color` to pin it, such as grey for an "Other" bucket. Other shares take `colors` in order, wrapping when there are more shares than colours. The default palette starts with `var(--primary)`, so the first share follows your theme. `color` sets the accent for the other chart types.
+
+## Is ChartBlock keyboard and screen-reader accessible?
+
+Partly. The `metrics-overview` columns are a focusable group: ArrowLeft, ArrowRight, Home and End read each value, and Escape clears it. `donut-legend` and `stacked-bar` are `role="img"` with a label. Bar and line tooltips appear on hover only, and the CSS entrance animations do not check `prefers-reduced-motion`.
 
 <DocsJsonLd slug="chart" />
+<FaqJsonLd slug="chart" />

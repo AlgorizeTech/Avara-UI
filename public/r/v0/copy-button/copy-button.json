@@ -3,7 +3,7 @@
   "name": "copy-button-copy-button",
   "type": "registry:block",
   "title": "Copy Button",
-  "description": "Click it — the icon pops to a check and the label swaps to `Copied!` for two seconds.",
+  "description": "The \"Copy Button\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

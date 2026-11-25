@@ -12,62 +12,20 @@ This upgraded `TimelineBlock` acts as a multi-tool for event visualization. It s
 
 Each item's `status` drives its own styling: `completed` fills the icon and solidifies the line above it, `current` pulses, and `upcoming` fades.
 
-## For AI agents
+## Installation
 
-**Ask before you pick.** This page has 5 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+Add the component by URL — no setup needed:
 
-All 5 options as live previews: https://avaraui.com/view/timeline
+```bash
+npx shadcn@latest add https://avaraui.com/r/timeline.json
+```
 
-**When to use it.** A vertical timeline for order statuses, company histories and event feeds, with action buttons and expandable detail, in five looks: three rail positions and two card surfaces.
+Or register the @avara-ui registry once per project and add it by name:
 
-**Gotchas:**
-
-- All five are looks of the one `timeline` item: install it once and set `layout` or `variant` from the index.
-- The center layout folds back to one column below 576px, as a container query that tracks the column the timeline sits in.
-- `glass` needs something behind the cards to frost.
-
-### The 5 variants
-
-1. **Left rail** (`left`): The default rail on the left with the cards to its right.
-   - Live: https://avaraui.com/view/timeline/left
-   - Best for: an order tracker or activity feed in a normal content column
-   - Avoid if: you want cards alternating on both sides
-   - Traits: left rail, default look
-   - Install: `npx shadcn@latest add @avara-ui/timeline`
-   - Set these props: `{"layout":"left"}`
-   - Docs: https://avaraui.com/docs/nextjs/timeline#timeline
-2. **Center rail** (`center`): Cards alternate either side of a central rail.
-   - Live: https://avaraui.com/view/timeline/center
-   - Best for: a company history or roadmap with room to spread out
-   - Avoid if: it must stay a single compact column
-   - Traits: alternating cards, folds to one column when narrow
-   - Install: `npx shadcn@latest add @avara-ui/timeline`
-   - Set these props: `{"layout":"center"}`
-   - Docs: https://avaraui.com/docs/nextjs/timeline#center-layout
-3. **Right rail** (`right`): The mirror of the left rail, with the rail on the right.
-   - Live: https://avaraui.com/view/timeline/right
-   - Best for: a timeline beside content that already sits on the left, or right-to-left layouts
-   - Avoid if: you want the standard left rail
-   - Traits: right rail
-   - Install: `npx shadcn@latest add @avara-ui/timeline`
-   - Set these props: `{"layout":"right"}`
-   - Docs: https://avaraui.com/docs/nextjs/timeline#right-layout
-4. **Minimal** (`minimal`): The card chrome is removed for a lighter feed, so the rail and type carry the structure.
-   - Live: https://avaraui.com/view/timeline/minimal
-   - Best for: a quiet changelog or activity feed
-   - Avoid if: you want each event to sit in its own card
-   - Traits: no card chrome
-   - Install: `npx shadcn@latest add @avara-ui/timeline`
-   - Set these props: `{"variant":"minimal"}`
-   - Docs: https://avaraui.com/docs/nextjs/timeline#minimal
-5. **Glass** (`glass`): The cards are frosted, so put something behind them.
-   - Live: https://avaraui.com/view/timeline/glass
-   - Best for: a timeline over a photo or gradient
-   - Avoid if: the background is plain
-   - Traits: frosted cards
-   - Install: `npx shadcn@latest add @avara-ui/timeline`
-   - Set these props: `{"variant":"glass"}`
-   - Docs: https://avaraui.com/docs/nextjs/timeline#glass
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/timeline
+```
 
 ## Timeline
 
@@ -141,21 +99,6 @@ const events: TimelineItemType[] = [
 export default function OrderTracker() {
   return <TimelineBlock items={events} layout="left" />;
 }
-```
-
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/timeline.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/timeline
 ```
 
 ### Requires Tailwind CSS v4
@@ -540,6 +483,87 @@ export default function StaticTimeline() {
 }
 ```
 
+## About Shadcn Timeline
+
+**What it is.** **Shadcn Timeline** (`TimelineBlock`) is a multi-layout vertical timeline with status-driven node styling (`completed`, `current`, `upcoming`), inline action buttons, and expandable detail content.
+
+**How it is built.** `TimelineBlock` uses Tailwind v4 container queries (`@container/timeline`, `@container/tlcard`) so `"center"`, `"left"`, and `"right"` layouts adapt to the container column width rather than the browser viewport.
+
+**When to use it.** Use it for order tracking feeds, project milestones, company changelogs, and onboarding checklists.
+
+## For AI agents
+
+**When to use**
+
+- Order tracking feeds, project milestones
+- Company changelogs, onboarding checklists
+
+**When not to use**
+
+- A scroll-driven, animated milestone story: use [Animated Timeline](https://avaraui.com/docs/nextjs/animated-timeline)
+- Stages arranged around a circle: use [Radial Orbital Timeline](https://avaraui.com/docs/nextjs/radial-orbital-timeline)
+
+**Agent notes**
+
+- `TimelineBlock` supports `layout` (`"left" | "center" | "right"`), `variant` (`"default" | "minimal" | "glass"`), `animate`, and `color`.
+- Each item in `items` uses `status` (`"completed" | "current" | "upcoming"`) to style the node, pulse state, and connecting rail.
+- Requires Tailwind CSS v4 container queries so `layout="center"` folds to single-column below 576px of container width.
+
+**Ask before you pick.** This page has 5 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 5 options as live previews: https://avaraui.com/view/timeline
+
+**When to use it.** A vertical timeline for order statuses, company histories and event feeds, with action buttons and expandable detail, in five looks: three rail positions and two card surfaces.
+
+**Gotchas:**
+
+- All five are looks of the one `timeline` item: install it once and set `layout` or `variant` from the index.
+- The center layout folds back to one column below 576px, as a container query that tracks the column the timeline sits in.
+- `glass` needs something behind the cards to frost.
+
+### The 5 variants
+
+1. **Left rail** (`left`): The default rail on the left with the cards to its right.
+   - Live: https://avaraui.com/view/timeline/left
+   - Best for: an order tracker or activity feed in a normal content column
+   - Avoid if: you want cards alternating on both sides
+   - Traits: left rail, default look
+   - Install: `npx shadcn@latest add @avara-ui/timeline`
+   - Set these props: `{"layout":"left"}`
+   - Docs: https://avaraui.com/docs/nextjs/timeline#timeline
+2. **Center rail** (`center`): Cards alternate either side of a central rail.
+   - Live: https://avaraui.com/view/timeline/center
+   - Best for: a company history or roadmap with room to spread out
+   - Avoid if: it must stay a single compact column
+   - Traits: alternating cards, folds to one column when narrow
+   - Install: `npx shadcn@latest add @avara-ui/timeline`
+   - Set these props: `{"layout":"center"}`
+   - Docs: https://avaraui.com/docs/nextjs/timeline#center-layout
+3. **Right rail** (`right`): The mirror of the left rail, with the rail on the right.
+   - Live: https://avaraui.com/view/timeline/right
+   - Best for: a timeline beside content that already sits on the left, or right-to-left layouts
+   - Avoid if: you want the standard left rail
+   - Traits: right rail
+   - Install: `npx shadcn@latest add @avara-ui/timeline`
+   - Set these props: `{"layout":"right"}`
+   - Docs: https://avaraui.com/docs/nextjs/timeline#right-layout
+4. **Minimal** (`minimal`): The card chrome is removed for a lighter feed, so the rail and type carry the structure.
+   - Live: https://avaraui.com/view/timeline/minimal
+   - Best for: a quiet changelog or activity feed
+   - Avoid if: you want each event to sit in its own card
+   - Traits: no card chrome
+   - Install: `npx shadcn@latest add @avara-ui/timeline`
+   - Set these props: `{"variant":"minimal"}`
+   - Docs: https://avaraui.com/docs/nextjs/timeline#minimal
+5. **Glass** (`glass`): The cards are frosted, so put something behind them.
+   - Live: https://avaraui.com/view/timeline/glass
+   - Best for: a timeline over a photo or gradient
+   - Avoid if: the background is plain
+   - Traits: frosted cards
+   - Install: `npx shadcn@latest add @avara-ui/timeline`
+   - Set these props: `{"variant":"glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/timeline#glass
+
 ## Props Reference
 
 | Component | Prop | Type | Default | Description |
@@ -562,6 +586,30 @@ export default function StaticTimeline() {
 | `TimelineItemType` | `icon` | `React.ElementType` | `undefined` | An optional Lucide (or custom SVG) icon to render inside the circular indicator node. If omitted, a clean solid dot is used. |
 | `TimelineItemType` | `content` | `ReactNode` | `undefined` | If provided, the entire event header becomes a clickable trigger that smoothly expands to reveal this detailed content. |
 | `TimelineItemType` | `action` | `ReactNode` | `undefined` | An optional slot for rendering buttons, links, or specific badges immediately below the header area. |
+
+## Works with other components
+
+Pair `TimelineBlock` with [Animated Timeline](https://avaraui.com/docs/nextjs/animated-timeline) for scroll-triggered sequences, [Radial Orbital Timeline](https://avaraui.com/docs/nextjs/radial-orbital-timeline) for circular roadmaps, and [Conversation Timeline](https://avaraui.com/docs/nextjs/conversation-timeline) for threaded activity logs.
+
+## How do I build a vertical timeline in React?
+
+Pass an `items` array to `TimelineBlock`. Each item needs an `id`, `title` and `date`, with optional `description`, `icon`, `status`, `content` and `action`. Choose the alignment with `layout`, which defaults to `"left"`, and the card style with `variant`.
+
+## Why does Timeline require Tailwind CSS v4?
+
+`TimelineBlock` relies on Tailwind CSS v4 container queries (`@container/timeline` and `@container/tlcard`) so the rail responds to the width of its parent column instead of the browser window. That keeps the timeline readable inside narrow cards, drawers and sidebars.
+
+## How do I mark events as completed, current or upcoming?
+
+Set `status` on each item. `completed` fills the vertical line, `current` adds a pulsing glow to the node, and `upcoming` styles the node as not yet reached. It defaults to `completed`, so set `current` and `upcoming` explicitly for order-tracking timelines.
+
+## Can I disable the staggered entrance animation?
+
+Yes. Pass `animate={false}` for timelines that are already visible above the fold or updated dynamically. By default `animate` is `true`, and the nodes run a staggered fade-and-slide entrance using the Web Animations API with no library.
+
+## How do I add expandable details or buttons to a timeline event?
+
+Give an item `content` and its whole header becomes a trigger that expands to reveal that node. Use `action` for buttons, links or badges placed under the header. A `layout="center"` timeline alternates entries on both sides of the line.
 
 ---
 

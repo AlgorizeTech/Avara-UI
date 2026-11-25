@@ -3,7 +3,7 @@
   "name": "vertical-tabs-vertical-tabs",
   "type": "registry:block",
   "title": "Tabs — Vertical tabs",
-  "description": "One prop moves the rail beside the pane. Nothing else about the API changes.",
+  "description": "The \"Vertical tabs\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

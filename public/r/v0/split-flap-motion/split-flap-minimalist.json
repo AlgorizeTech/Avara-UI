@@ -3,7 +3,7 @@
   "name": "split-flap-motion-split-flap-minimalist",
   "type": "registry:block",
   "title": "Split-Flap Display — Split-Flap — Minimalist Architectural",
-  "description": "Ultra-clean frosted glass chassis with backdrop blur and slate-stone monospace typography that blends with light or dark mode.",
+  "description": "The \"Split-Flap — Minimalist Architectural\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "tw-animate-css"

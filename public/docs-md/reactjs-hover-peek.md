@@ -1,14 +1,27 @@
 ---
 title: "Shadcn Hover Peek"
-description: "Shadcn Hover Peek. An editorial manifesto typography section with interactive word hovers that smoothly reveal a slow-zooming physical deck of 8 stacking…"
+description: "Shadcn Hover Peek. An editorial statement in which hovering a highlighted phrase drops a growing stack of tilted photos under the cursor."
 url: https://avaraui.com/docs/nextjs/hover-peek
 ---
 
 # Shadcn Hover Peek
 
-An editorial manifesto typography section with interactive word hovers that smoothly reveal a slow-zooming physical deck of 8 stacking nature images.
+An editorial statement in which hovering a highlighted phrase drops a growing stack of tilted photos under the cursor, then lets them fall away when the cursor leaves.
 
-When the user hovers over any highlighted bold phrase, a card viewport smoothly zooms in from the text center like a modal, progressively dropping 8 nature images one on top of another with organic alternating physical tilts and depth.
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/hover-peek.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/hover-peek
+```
 
 ## Hover Peek Section
 
@@ -84,20 +97,33 @@ export default function HoverPeekExample() {
 }
 ```
 
-## Installation
+## About Shadcn Hover Peek
 
-Add the component by URL — no setup needed:
+**What it is.** **Shadcn Hover Peek** (`HoverPeek`) is an editorial statement block where hovering a `**bold**` phrase stacks photos onto the cursor, one card every `stackInterval` milliseconds.
 
-```bash
-npx shadcn@latest add https://avaraui.com/r/hover-peek.json
-```
+**How it is built.** `HoverPeek` parses `**highlighted**` phrases inside `statement`, matches each phrase to a `HoverPeekHighlight` by `word` or `id`, and cycles that highlight's `images` onto a deck that follows the cursor. Cards pop in with alternating tilts and fall away when the cursor leaves.
 
-Or register the @avara-ui registry once per project and add it by name:
+**When to use it.** Use it for brand philosophy sections, editorial about pages, interactive case study intros, and storytelling hero blocks.
 
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/hover-peek
-```
+## For AI agents
+
+**When to use**
+
+- Brand philosophy sections, editorial about pages
+- Interactive case study intros, storytelling hero blocks
+
+**When not to use**
+
+- A deck of stacked cards: use [Card Stack](https://avaraui.com/docs/reactjs/card-stack)
+- An animated headline or rotating words: use [Animated Typography](https://avaraui.com/docs/reactjs/animated-typography)
+
+**Agent notes**
+
+- `HoverPeek` accepts `badge`, `statement` (markdown `**bold**` phrases), and `highlights` (`HoverPeekHighlight[]` mapping each `word` to an `images` array).
+- Each `**phrase**` in `statement` is matched to a `HoverPeekHighlight` by `word` or `id`, ignoring case. A phrase with no match reuses the images of the first highlight.
+- Any number of `images` works: they repeat in a loop and the deck keeps the latest 10 cards. Eight per highlight is a suggestion, not a limit.
+- Hover only: the phrases are plain `span`s (a click toggles the deck for touch), so there is no keyboard path. The root is a `min-h-screen` section; override with `className`.
+- Imports `resolveAccent` from `@/lib/accent`, which installs with the item.
 
 ## Props Reference
 
@@ -105,11 +131,37 @@ npx shadcn@latest add @avara-ui/hover-peek
 | --- | --- | --- | --- |
 | `badge` | `string` | `&quot;(Our Philosophy)&quot;` | Eyebrow label displayed above the typography statement. |
 | `statement` | `string` | `DEFAULT_STATEMENT` | The manifesto statement string. Words enclosed in `**word**` will be rendered as interactive highlights. |
-| `highlights` | `HoverPeekHighlight[]` | `DEFAULT_HOVER_PEEK_HIGHLIGHTS` | Array of highlight items, each with `id`, `word`, and an array of 8 nature images. |
-| `cardWidth` | `number` | `220` | Width of each image card in the floating stack popover. |
-| `cardHeight` | `number` | `280` | Height of each image card in the floating stack popover. |
-| `stackInterval` | `number` | `160` | Delay (in ms) between consecutive cards dropping onto the stack. |
-| `themeColor` | `string` | `undefined` | Custom theme accent color applied to the badge, active word, and underline decorations. |
+| `highlights` | `HoverPeekHighlight[]` | `DEFAULT_HOVER_PEEK_HIGHLIGHTS` | Array of `{ id, word, images }` items. Any number of image URLs works; they repeat while the deck builds. |
+| `cardWidth` | `number` | `200` | Width of each image card in pixels. Capped at 135px (65% of the value) below 640px of viewport width. |
+| `cardHeight` | `number` | `undefined` | Height of each image card in pixels. Defaults to `cardWidth`, so cards are square. Capped at 135px below 640px of viewport width. |
+| `stackInterval` | `number` | `280` | Milliseconds between cards dropping onto the stack while a phrase is hovered. |
+| `themeColor` | `string` | `undefined` | Accent colour for the badge and the underline of the active phrase. Accepts `lavender`, `indigo`, `rose`, `emerald`, `zinc` or any CSS colour; unset follows the theme. |
+
+## Works with other components
+
+- [Card Stack](https://avaraui.com/docs/reactjs/card-stack) is for a draggable deck that the reader controls.
+- [Animated Typography](https://avaraui.com/docs/reactjs/animated-typography) is for kinetic headlines without a photo reveal.
+- [Memories Card](https://avaraui.com/docs/reactjs/memories-card) is for photo album reveals.
+
+## How are bold words in statement linked to image decks in HoverPeek?
+
+Wrap a phrase in double asterisks inside `statement`, such as `**timeless craft**`, and add a `highlights` entry whose `word` or `id` is that phrase. Matching ignores case. A bold phrase with no matching entry falls back to the first highlight's images.
+
+## How many images should each HoverPeek highlight have?
+
+Any number. While the phrase is hovered, `HoverPeek` adds a card every `stackInterval` milliseconds and cycles through `images` in order, keeping the latest 10 cards on the deck. A small counter on the top card shows its position, such as 03 / 08.
+
+## How do I change the HoverPeek card size and stacking speed?
+
+Set `cardWidth` (200 by default) and `cardHeight`, which defaults to the same value so cards are square. `stackInterval` is the pause between cards in milliseconds, 280 by default, so a lower number stacks faster. Below 640px of viewport width the cards shrink to at most 135px.
+
+## Does HoverPeek work on touch screens or with a keyboard?
+
+Partly. A tap on a highlighted phrase toggles the deck, so touch works. The phrases are plain `span`s that cannot take keyboard focus, the photos are hidden from assistive technology with `aria-hidden`, and there is no `prefers-reduced-motion` check. Keep the statement readable without the images.
+
+## How do I set the HoverPeek accent colour?
+
+Pass `themeColor` as `lavender`, `indigo`, `rose`, `emerald`, `zinc` or any CSS colour. It colours the `badge` text and the underline of the phrase being hovered. Leave it unset to keep the theme's default text colours.
 
 ---
 

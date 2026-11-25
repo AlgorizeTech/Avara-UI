@@ -3,7 +3,7 @@
   "name": "image-wall-a-band-shuffled",
   "type": "registry:block",
   "title": "Image Wall — A band, shuffled",
-  "description": "A short strip: the camera pulls back so a few cards show, and visits them in a random order.",
+  "description": "The \"A band, shuffled\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

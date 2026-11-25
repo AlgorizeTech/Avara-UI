@@ -3,7 +3,7 @@
   "name": "fan-stack-motion-fan-stack",
   "type": "registry:block",
   "title": "Fan Stack",
-  "description": "Three numbered steps dealt from a pile into a cascade as you scroll.",
+  "description": "The \"Fan stack\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

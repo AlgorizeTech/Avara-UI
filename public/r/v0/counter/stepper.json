@@ -3,7 +3,7 @@
   "name": "counter-stepper",
   "type": "registry:block",
   "title": "Counter — Stepper",
-  "description": "An interactive quantity picker.",
+  "description": "The \"Stepper\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

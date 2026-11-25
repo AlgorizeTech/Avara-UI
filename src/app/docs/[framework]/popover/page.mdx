@@ -4,12 +4,11 @@ export const metadata = docsPageMetadata("popover");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Popover
 
-Displays rich, interactive content in a portal, triggered by a click. Where tooltips hold small text hints, a popover holds richer content like forms, grids and settings menus.
-
-`PopoverBlock` renders into `document.body` with `createPortal`, so parent constraints like `overflow-hidden` never clip it. `side` and `align` are preferences: the panel flips to the opposite side when the preferred one has no room, shifts back inside the viewport, and caps its own size to the screen. Pass `avoidCollisions={false}` to opt out. Click outside or press `Escape` to dismiss.
+A portal-rendered floating panel (`Popover`, `PopoverTrigger`, `PopoverContent`) with collision flipping, viewport clamping, and click-outside/`Escape` dismissal.
 
 export const usageMenu = `import {
   Popover,
@@ -110,6 +109,7 @@ export default function OffsetPopover() {
   name="popover"
   colorControl
   columns={1}
+  installation={<Installation name="popover" usage="below" />}
   examples={[
     {
       title: "Account menu",
@@ -124,20 +124,6 @@ export default function OffsetPopover() {
       usage: usageMenu,
       code: extractCode("src/components/custom/blocks/PopoverBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="popover" />
-
-## Examples
-
-<ExampleShowcase minHeight={290}
-  name="popover"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Offset",
       propNotes: [
@@ -160,31 +146,35 @@ export default function OffsetPopover() {
   ]}
 />
 
-## Features
-Discover the Popover's intelligent positioning engine that prevents collision with screen edges while displaying contextual content.
+## About Shadcn Popover
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**What it is.** `Popover`, `PopoverTrigger`, and `PopoverContent` display interactive menus, filters, or forms anchored to a trigger element.
 
-## Best Practices & Guidelines
+**How it is built.** Portals into `document.body` via `createPortal` so `overflow-hidden` ancestors never clip it, flips `side`/`align` automatically when space is tight (`avoidCollisions`), and dismisses on outside click or `Escape`.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `Popover` for click-triggered menus, settings panels, and inline pickers. For hover/focus text hints, use <DocLink to="tooltip">Tooltip</DocLink>; for blocking tasks, use <DocLink to="dialog">Dialog</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="popover">
+
+**When to use**
+
+- Click-triggered floating panels (account menus, filter controls, quick settings)
+
+**When not to use**
+
+- Hover/focus text hints — use <DocLink to="tooltip">Tooltip</DocLink>
+- Blocking modal confirmations — use <DocLink to="dialog">Dialog</DocLink>
+
+**Agent notes**
+
+- Named exports: `Popover`, `PopoverTrigger`, `PopoverContent` from `@/components/custom/blocks/PopoverBlock`
+- Set panel width via `className` on `PopoverContent`; tune gaps with `sideOffset` and `collisionPadding`
+- Open state is internal: `Popover` takes only `children`, with no `open` or `onOpenChange` prop
+- `PopoverTrigger` always renders its own `div` wrapper; the `asChild` prop is declared but not implemented, so nest your element inside it
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -317,6 +307,34 @@ Discover the Popover's intelligent positioning engine that prevents collision wi
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Pair `Popover` with <DocLink to="button">Button</DocLink> triggers and <DocLink to="color-picker">Color Picker</DocLink> or <DocLink to="date-picker">Date Picker</DocLink> panels.
+- Use <DocLink to="context-menu">Context Menu</DocLink> for right-click menus instead of left-click popovers.
+
+## Why won't PopoverContent get clipped inside overflow-hidden containers?
+
+`PopoverContent` renders into the trigger's `document.body` through `createPortal`, so ancestors with `overflow-hidden` cannot cut it off. It is positioned from the trigger's bounding box and kept inside the viewport with `collisionPadding` while `avoidCollisions` is on.
+
+## How do I control the Popover open state?
+
+You cannot through props: `Popover` accepts only `children` and keeps `open` in internal state. It toggles on a trigger click, `Enter` or `Space`, and closes on an outside `mousedown` or `touchstart`, or on `Escape`. Clicks inside `PopoverContent` do not close it.
+
+## How do I stop PopoverContent from flipping or moving on small screens?
+
+Pass `avoidCollisions={false}` to pin the panel to `side` and `align`, which also turns off viewport clamping and size capping. By default it flips to the opposite side when there is more room there, drops to above or below the trigger when neither horizontal side fits, and scrolls if still too tall.
+
+## How do I change the PopoverContent width?
+
+Pass a width class through `className`, for example `className="w-64"`. The default is `w-72`, limited by `max-w-[calc(100vw-1rem)]`, and the width stays a single class so your override applies at every breakpoint. Padding is `p-3`, rising to `lg:p-4`.
+
+## Is Popover keyboard accessible?
+
+Partly. `PopoverTrigger` is a `div` with `role="button"`, `tabIndex={0}`, `aria-haspopup="dialog"` and `aria-expanded`, and opens with `Enter` or `Space`. The panel has `role="dialog"` and closes on `Escape`, but focus is not moved or trapped, so use <DocLink to="dialog">Dialog</DocLink> for modal tasks.
+
+## Can PopoverTrigger use asChild with my own Button?
+
+No. `asChild` appears in the `PopoverTriggerProps` type but the component never reads it, so the trigger always renders its own `div`. Nest your element inside `PopoverTrigger`, as the demos do. It adds no npm dependencies and has no `next/*` imports.
 
 <DocsJsonLd slug="popover" />
+<FaqJsonLd slug="popover" />

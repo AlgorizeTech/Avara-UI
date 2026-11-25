@@ -3,7 +3,7 @@
   "name": "infrastructure-topology-pulse-pipeline",
   "type": "registry:block",
   "title": "Infrastructure Topology — Pulse Pipeline",
-  "description": "Clean grid-free ambient surface with 3-column pipeline layout, expanding core ripple waves, energy-beam pulses, and focus-isolating hover/click states.",
+  "description": "The \"Pulse Pipeline\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

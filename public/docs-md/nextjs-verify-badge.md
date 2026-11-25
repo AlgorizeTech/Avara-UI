@@ -1,16 +1,27 @@
 ---
 title: "Shadcn Verify Badge"
-description: "Shadcn Verify Badge. A versatile verified badge component that can be customized with various styles (blue, gold, dark, gray), sizes."
+description: "Shadcn Verify Badge. A crisp SVG verified badge (`VerifyBadge`) with customizable colors, four sizes (`sm`, `md`, `lg`, `xl`), hover shine."
 url: https://avaraui.com/docs/nextjs/verify-badge
 ---
 
 # Shadcn Verify Badge
 
-A versatile verified badge component that can be customized with various styles (blue, gold, dark, gray), sizes, and an optional subtle pulse animation for premium aesthetics.
+A crisp SVG verified badge (`VerifyBadge`) with customizable colors, four sizes (`sm`, `md`, `lg`, `xl`), hover shine, and optional pulse animation.
 
-It includes distinct customization options to match different areas of your application.
+## Installation
 
-Explore the different variations of the Verify Badge — each example shows a live preview with the exact code to copy. Hover a badge to see its shine effect.
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/verify-badge.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/verify-badge
+```
 
 ## Verify Badge
 
@@ -33,24 +44,7 @@ export default function ProfileName() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/verify-badge.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/verify-badge
-```
-
-## Examples
-
-### Sizes
+## Sizes
 
 - Use `size` to scale the badge and its icon together — `sm`, `md`, `lg` or `xl`.
 
@@ -69,7 +63,7 @@ export default function BadgeSizes() {
 }
 ```
 
-### Static
+## Static
 
 - Set `animate={false}` to drop the pulse for dense lists. It is off by default, so a row of badges stays calm unless you opt in.
 
@@ -88,7 +82,7 @@ export default function StaticBadge() {
 }
 ```
 
-### In context
+## In context
 
 - `size="sm"` is usually right inline with a name — the badge should not outweigh the text it verifies.
 
@@ -190,24 +184,28 @@ export default function NotificationCard() {
 }
 ```
 
-## Features
-Explore the Verify Badge's authentic design features, providing recognizable trust signals with subtle animated glows.
+## About Shadcn Verify Badge
 
-Uses standard SVG elements that scale perfectly to any size without losing quality.
+**What it is.** `VerifyBadge` is an inline SVG verification checkmark badge supporting custom `color` values, four sizes (`sm`, `md`, `lg`, `xl`), a subtle hover shine, and an optional `animate` pulse.
 
-Easily pass any custom hex color or use predefined themes to match your branding.
+**How it is built.** Built with resolution-independent inline SVGs and theme-aware defaults so badges stay sharp on any display and calm in dense lists (`animate` defaults to `false`).
 
-Built-in optional subtle pulse animations to draw attention to verified status.
+**When to use it.** Use `VerifyBadge` beside user names, creator profiles, organization headers, and verified account rows.
 
-Comes with 4 preset sizes (sm, md, lg, xl) that integrate seamlessly into any layout.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Always ensure that you add an `aria-label` or `title` to the badge so that screen readers can convey the "Verified" status to visually impaired users.
+- Verified account markers next to usernames (`size="sm"` / `"md"`) or profile headers (`size="lg"` / `"xl"`)
 
-### Proper Sizing
+**When not to use**
 
-Use the `sm` or `md` sizes when placing the badge directly next to standard text (like usernames). The `lg` and `xl` sizes are best reserved for profile headers or prominent display cards.
+- Generic status pills or counts — use [Live Pulse Pill](https://avaraui.com/docs/nextjs/live-pulse-pill) or [Table](https://avaraui.com/docs/nextjs/table) `TableBadge`
+
+**Agent notes**
+
+- Named export: `import { VerifyBadge } from "@/components/custom/blocks/VerifyBadgeBlock"`
+- Pass `aria-label` or `title` for screen-reader accessibility; `animate` defaults to `false`
 
 ## Props Reference
 
@@ -217,6 +215,31 @@ Use the `sm` or `md` sizes when placing the badge directly next to standard text
 | `VerifyBadge` | `size` | `"sm" \| "md" \| "lg" \| "xl"` | `"md"` | The physical dimensions and icon size of the badge. |
 | `VerifyBadge` | `animate` | `boolean` | `false` | If true, adds a continuous subtle pulse animation to the background. |
 | `VerifyBadge` | `...props` | `HTMLAttributes<HTMLDivElement>` | `undefined` | Accepts all native HTML div attributes (e.g., `className`, `id`) which are seamlessly forwarded to the root wrapper. |
+
+## Works with other components
+
+- Display beside names in [Profile Card](https://avaraui.com/docs/nextjs/profile-card), [Avatar Stack](https://avaraui.com/docs/nextjs/avatar-stack), and [Data Table](https://avaraui.com/docs/nextjs/data-table).
+- Pair with [Tooltip](https://avaraui.com/docs/nextjs/tooltip) to explain verification criteria on hover.
+
+## How do I add a verified checkmark badge next to a username?
+
+Render `VerifyBadge` beside the name. It is an inline SVG checkmark with a hover shine, so it stays sharp at any size. It accepts native div attributes such as `className` and `id`, and it follows your primary colour unless you set `color`.
+
+## Which size should I use next to usernames?
+
+Use `size="sm"` or `size="md"` inline with body text or display names so the badge complements rather than outweighs the label. Reserve `lg` and `xl` for profile headers. `"md"` is the default.
+
+## How do I change the colour of the verified badge?
+
+Pass any CSS colour to `color`, such as a hex value or a variable. The default is `var(--primary)`, so the badge follows your theme and restyles when theme presets change. There is no separate dark-mode prop to manage.
+
+## How do I make the badge pulse?
+
+Set `animate` to `true`. It adds a continuous, subtle pulse to the badge background and is `false` by default. The hover shine is always on. Use the pulse sparingly, for example on one featured profile, so it keeps drawing the eye.
+
+## How do I explain what verified means?
+
+Pair `VerifyBadge` with [Tooltip](https://avaraui.com/docs/nextjs/tooltip) to show a short explanation on hover and focus. It also fits next to names in [Profile Card](https://avaraui.com/docs/nextjs/profile-card), [Avatar Stack](https://avaraui.com/docs/nextjs/avatar-stack) and [Data Table](https://avaraui.com/docs/nextjs/data-table) rows.
 
 ---
 

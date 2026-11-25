@@ -3,12 +3,12 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("flow-gallery");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
-import { Installation } from "@/components/site/installation";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Flow Gallery
 
-Horizontal and diagonal 3D cascading gallery stream with continuous auto-flow motion, drag inertia physics, and isometric perspective options.
+A cascading image wall that streams diagonally or straight up and down, with continuous auto-flow, drag inertia, and a tilted, skewed plane for the diagonal directions.
 
 Drag the stage or allow it to auto-flow continuously along the selected directional stream angle.
 
@@ -133,6 +133,7 @@ export default function FlowGalleryVerticalDownDemo() {
   name="flow-gallery"
   colorControl={false}
   columns={1}
+  installation={<Installation name="flow-gallery" usage="below" />}
   examples={[
     {
       title: "Top-Left to Bottom-Right Flow Stream",
@@ -158,39 +159,36 @@ export default function FlowGalleryVerticalDownDemo() {
   ]}
 />
 
-## Installation
+## About Shadcn Flow Gallery
 
-<Installation name="flow-gallery" />
+**What it is.** **Shadcn Flow Gallery** (`FlowGallery`) is an infinite diagonal or vertical cascading gallery stream with smooth drag inertia and 4 directional flow angles (`top-left`, `top-right`, `vertical-up`, `vertical-down`).
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+**How it is built.** Columns animate with `translate3d()` transforms written straight to the DOM, so React never re-renders per frame. The loop is paced by elapsed time, pauses when the stage is off-screen or the tab is hidden, and stops auto-flowing under `prefers-reduced-motion` (dragging still works). It has no npm dependencies.
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="4 Directional Stream Angles">
-    <p>Supports <code>top-left</code>, <code>top-right</code>, <code>vertical-up</code>, and <code>vertical-down</code> directional angles via simple props.</p>
-  </InfoCard>
-  <InfoCard title="Continuous Infinite Auto-Flow">
-    <p>Images cascade continuously with smooth velocity inertia and optional pause-on-hover.</p>
-  </InfoCard>
-  <InfoCard title="Drag & Inertia Physics">
-    <p>Interactive mouse and touch drag gestures along the stream axis with grab cursor feedback.</p>
-  </InfoCard>
-  <InfoCard title="Light & Dark Theme Adaptation">
-    <p>Supports Next Themes integration to transition stage background tones and radial depth vignette overlays.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use it for agency visual walls, moodboards, product showcase backdrops, and dynamic landing page galleries.
 
-## Best Practices & Guidelines
+## For AI agents
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Image Resolution & Aspect Ratios">
-    <p>Use square or near-square images around 320px wide. Cards render at 140px, so larger files only add decode time and memory.</p>
-  </InfoCard>
-  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Performance & GPU Acceleration</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Columns move with <code>translate3d()</code> written straight to the DOM, so React never re-renders while it flows. The loop pauses off-screen and honours <code>prefers-reduced-motion</code>.</p>
-  </div>
-</div>
+<AgentBrief name="flow-gallery">
+
+**When to use**
+
+- Agency visual walls, moodboards
+- Product showcase backdrops, dynamic landing page galleries
+
+**When not to use**
+
+- A fixed grid of screenshots: use <DocLink to="image-wall">Image Wall</DocLink>
+- A single-row horizontal slider: use <DocLink to="squircle-carousel">Squircle Carousel</DocLink>
+
+**Agent notes**
+
+- `FlowGallery` is a named and default export. It accepts `items` (`FlowGalleryItem[]` with `id`, `imageUrl` and optional `title`, used as the `alt`) and `direction` (`"top-left" | "top-right" | "vertical-up" | "vertical-down"`), plus `speed`, `pauseOnHover`, `columns`, `reverseAlternatingColumns` and `footerCaption`.
+- Uses direct DOM `translate3d()` animation and pauses off-screen. Under `prefers-reduced-motion` the auto-flow stops but dragging still moves it.
+- The stage is `560px` tall by default; override the height with `className`. Cards are non-interactive images.
+- Prefer square or near-square images around `320px` wide (cards render at `140px`).
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -220,7 +218,7 @@ Discover the key capabilities that make this component an excellent choice for m
           <code>"top-left"</code>
         </td>
         <td>
-          Directional angle of the stream. Use <code>"vertical-down"</code> for straight downward flow from top to bottom.
+          Directional angle of the stream. <code>"top-left"</code> and <code>"top-right"</code> tilt and skew the plane diagonally and flow downward; <code>"vertical-down"</code> flows straight down and <code>"vertical-up"</code> straight up.
         </td>
       </tr>
       <tr>
@@ -237,7 +235,7 @@ Discover the key capabilities that make this component an excellent choice for m
           <code>DEFAULT_ITEMS</code>
         </td>
         <td>
-          Array of image objects containing <code>{`{ id, title, imageUrl }`}</code> to display in the stream.
+          Array of image objects containing <code>{`{ id, imageUrl, title? }`}</code> to display in the stream. <code>title</code> becomes the image <code>alt</code> text.
         </td>
       </tr>
       <tr>
@@ -305,13 +303,70 @@ Discover the key capabilities that make this component an excellent choice for m
           <code>undefined</code>
         </td>
         <td>
-          Custom Tailwind CSS classes to apply to the stage container.
+          Custom Tailwind CSS classes to apply to the stage container. The default height is <code>h-[560px]</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>FlowGallery</code>
+        </td>
+        <td>
+          <code>reverseAlternatingColumns</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>true</code>
+        </td>
+        <td>
+          Makes every second column flow the opposite way. Set it to <code>false</code> so all columns move together.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>FlowGallery</code>
+        </td>
+        <td>
+          <code>footerCaption</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>""</code>
+        </td>
+        <td>
+          Small caption rendered under the stage. Nothing is rendered when it is empty.
         </td>
       </tr>
     </tbody>
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+Combine `FlowGallery` with <DocLink to="image-wall">Image Wall</DocLink> for 3D camera-panning photo walls, <DocLink to="squircle-carousel">Squircle Carousel</DocLink> for masked tile carousels, and <DocLink to="marquee">Marquee</DocLink> for linear infinite strips.
+
+## What image size should I use for FlowGallery?
+
+Use square or near-square images around `320px` wide. Each card renders at `140px` square with `object-fit: cover`, so 320px keeps them sharp on high-density screens, and larger files only add decode time and memory. Images use `loading="lazy"`, so `imageUrl` can point at any CDN.
+
+## Does FlowGallery pause when it is off-screen?
+
+Yes. The animation loop stops when the stage scrolls out of view (with a 120px margin) and when the browser tab is hidden, then resumes. With `prefers-reduced-motion: reduce` set, auto-flow stays off, but visitors can still drag the stage and it keeps its inertia.
+
+## How do I change the direction and speed of FlowGallery?
+
+Set `direction` to `"top-left"`, `"top-right"`, `"vertical-down"` or `"vertical-up"`, and `speed` to the pixels moved per frame (default `3.5`, normalised across refresh rates). Only `"vertical-up"` flows upward. By default alternate columns run backwards; set `reverseAlternatingColumns={false}` to unify them.
+
+## How do I use my own images in FlowGallery?
+
+Pass `items`, an array of `{ id, imageUrl, title? }` objects. The component repeats them down each column and staggers the starting image per column, so a short list still fills every column. The optional `title` becomes the `alt` text. Use `columns` to change how many columns are drawn.
+
+## Can visitors drag the FlowGallery, and do the cards link anywhere?
+
+Dragging works with pointer events and carries inertia that decays after release. `pauseOnHover` only holds the auto-flow while a mouse is over the stage. The cards are non-interactive images with `pointer-events: none`, so they do not link. The stage sets no `touch-action`; add `touch-none` via `className` if touch drags scroll the page.
 
 <DocsJsonLd slug="flow-gallery" />
+<FaqJsonLd slug="flow-gallery" />

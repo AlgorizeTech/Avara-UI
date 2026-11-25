@@ -6,9 +6,24 @@ url: https://avaraui.com/docs/nextjs/chart
 
 # Shadcn Chart
 
-A custom charting engine for React with no `recharts`, `chart.js` or `gsap`. Bars are responsive CSS flexbox, lines and areas are smooth bezier SVG paths, and pie and donut charts use SVG stroke-dasharray maths, so they never stretch into ovals.
+A chart component with no charting library: bar, line, pie and donut charts, plus legend and dashboard charts, with no recharts or chart.js.
 
-One `data` array of `{ label, value }` drives every chart type, and hovering a bar, point or slice shows its tooltip. Two further types, `donut-legend` and `stacked-bar`, show shares of a whole with a legend — the charts on the [Book Appointment](https://avaraui.com/docs/reactjs/book-appointment) page.
+One `data` array of `{ label, value }` drives the chart types, and hovering a bar, point or slice shows its tooltip. A line chart with `showArea` on is the area chart. Two further types, `donut-legend` and `stacked-bar`, show shares of a whole with a legend — the charts on the [Book Appointment](https://avaraui.com/docs/reactjs/book-appointment) page.
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/chart.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/chart
+```
 
 ## Bar chart
 
@@ -59,24 +74,7 @@ export default function RevenueChart() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/chart.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/chart
-```
-
-## Examples
-
-### Line chart
+## Line chart
 
 - Set `type="line"` to draw a custom spline — smooth bezier curves instead of hard angles.
 - `showArea={false}` leaves the stroke bare, with nothing under it.
@@ -123,7 +121,7 @@ export default function RevenueLine() {
 }
 ```
 
-### Pie chart
+## Pie chart
 
 - Set `type="pie"` to render in a 1:1 container — so it never stretches into an oval — with each slice shaded from your `color`.
 
@@ -164,7 +162,7 @@ export default function RevenuePie() {
 }
 ```
 
-### Donut chart
+## Donut chart
 
 - Set `type="donut"` for the same geometry with the centre cut out.
 
@@ -203,7 +201,7 @@ export default function RevenueDonut() {
 }
 ```
 
-### Donut with legend
+## Donut with legend
 
 - Set `type="donut-legend"` for categorical shares: every segment gets its own colour from `colors` (the theme accent first), with a legend beside it. Hover a segment or its row and the other shares fade.
 - `centerLabel` captions the centre at rest, where the largest share reads; `hoverLabel` replaces it while a share is hovered.
@@ -235,7 +233,7 @@ export default function VisitReasons() {
 }
 ```
 
-### Stacked bar
+## Stacked bar
 
 - Set `type="stacked-bar"` for one horizontal bar split by share, legend below. Both legend types size to their content, so `height` is only needed if you want a fixed box.
 - Give a point its own `color` to pin one share — an "Other" bucket to grey, say — while the rest follow the palette.
@@ -261,7 +259,7 @@ export default function WeekSplit() {
 }
 ```
 
-### Traffic sources gauge
+## Traffic sources gauge
 
 - Set `type="traffic-sources"` for a semicircular tick-gauge breakdown of visitor channels with total counts and share percentages.
 - `signUps={412}` calculates and renders the visit-to-sign-up conversion rate meter.
@@ -292,7 +290,7 @@ export default function TrafficSourcesDemo() {
 }
 ```
 
-### Visitors by country
+## Visitors by country
 
 - Set `type="visitors-by-country"` for an interactive barcode breakdown with ISO country code badges and ranked shares.
 - `showCodes={true}` renders the 2-letter ISO country badges in the breakdown list.
@@ -323,7 +321,7 @@ export default function CountryVisitorsDemo() {
 }
 ```
 
-### Metrics overview tabs
+## Metrics overview tabs
 
 - Set `type="metrics-overview"` for an interactive multi-tab dashboard chart featuring pill track columns, animated active tab spring, total & average statistics, and a toggle between columns and smooth trend spline.
 
@@ -417,20 +415,33 @@ export default function MetricsOverviewDemo() {
 }
 ```
 
-## Features
-Explore the Chart component's data visualization capabilities, featuring responsive resizing, interactive tooltips, and smooth rendering.
+## About Shadcn Chart
 
-Easily adapt the component's styling and behavior to fit your application's unique design system.
+**What it is.** **Shadcn Chart** (`ChartBlock`) draws nine chart types from a `type` prop: `bar`, `line`, `pie`, `donut`, `donut-legend`, `stacked-bar`, `traffic-sources`, `visitors-by-country` and `metrics-overview`. Most read a single `data` array of `{ label, value }`; `metrics-overview` reads `metrics` tabs instead.
 
-Built with accessibility in mind, ensuring all users can interact with your application effectively.
+**How it is built.** Built without `recharts`, `chart.js`, or `gsap`. Bars use responsive CSS flexbox, lines render smooth bezier SVG paths with an optional area fill, and pie and donut rings use SVG so they never stretch into ovals. The entrance animations are CSS keyframes. Installing it also adds `lucide-react` and the `popover` and `toggle-group` items, which the `metrics-overview` tabs use.
 
-Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+**When to use it.** Use it for analytics cards, revenue trends, category breakdowns, and appointment or SaaS reporting dashboards.
 
-Optimized for maximum performance with minimal re-renders and efficient state management.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+- Analytics cards, revenue trends
+- Category breakdowns, appointment or SaaS reporting dashboards
+
+**When not to use**
+
+- Editable, spreadsheet-style data: use [Data Grid](https://avaraui.com/docs/reactjs/data-grid)
+- Data plotted on a world map: use [Data Maps](https://avaraui.com/docs/reactjs/data-maps)
+
+**Agent notes**
+
+- `ChartBlock` takes `data` (`{ label, value }[]`), `type` (`"bar" | "line" | "pie" | "donut" | "donut-legend" | "stacked-bar" | "traffic-sources" | "visitors-by-country" | "metrics-overview"`), `valuePrefix`, `valueSuffix`, `height`, and `color`.
+- There is no `"area"` type. Use `type="line"`; `showArea` is on by default, and `showArea={false}` gives a bare line.
+- Width is 100% responsive. `height` defaults to 300 for `bar`, `line`, `pie` and `donut`; set it in pixels to prevent layout shift. The `traffic-sources`, `visitors-by-country` and `metrics-overview` cards ignore `height`.
+- Bar and line charts scale from 0 to the largest value, so there is no negative axis, and the axis shows rounded whole numbers with no formatter prop.
+- Zero external charting libraries (`recharts` / `chart.js` not required).
 
 ## Props Reference
 
@@ -438,19 +449,50 @@ Follow standard design principles when implementing this component. Ensure prope
 | --- | --- | --- | --- |
 | `data` | `{ label: string, value: number, color?: string, code?: string }[]` | Required | An array of objects mapping string labels to numerical values. `color` pins one share's colour; `code` provides 2-letter ISO country codes. |
 | `type` | `"bar" \| "line" \| "pie" \| "donut" \| "donut-legend" \| "stacked-bar" \| "traffic-sources" \| "visitors-by-country" \| "metrics-overview"` | `"bar"` | Determines the core visualization architecture to render. |
-| `color` | `"indigo" \| "rose" \| "emerald" \| "amber" \| "blue" \| "zinc" \| string` | `"var(--primary)"` | Applies the active color theme to the bars, strokes, gradients, pie slices, and tooltips. Accepts hex codes. |
-| `height` | `number` | `300` | Forces a fixed pixel height for the chart container to prevent layout shifting. Width is always 100% responsive. The legend charts size to their content unless it is set. |
-| `colors` | `string[]` | accent, teal, amber, rose, grey | Legend charts only: one colour per share, in order, wrapping if there are more shares than colours. The first entry is `var(--primary)`, so the lead share follows your theme. |
+| `color` | `"indigo" \| "rose" \| "emerald" \| "amber" \| "blue" \| "zinc" \| string` | `"var(--primary)"` | Applies the active color theme to the bars, strokes, gradients, pie slices, and tooltips. Accepts hex codes or a CSS `var(...)`; an unknown name falls back to `var(--primary)`. |
+| `height` | `number` | `300` | Forces a fixed pixel height for the chart container to prevent layout shifting. Width is always 100% responsive. `donut-legend` and `stacked-bar` size to their content unless it is set; the three card charts ignore it. |
+| `colors` | `string[]` | accent, teal, amber, rose, grey | Legend and breakdown charts: one colour per share, in order, wrapping if there are more shares than colours. A point's own `color` wins. The first entry is `var(--primary)`, so the lead share follows your theme. |
 | `centerLabel` | `string` | `"largest"` | Donut with legend only: caption under the centre value at rest, where the largest share is shown. |
 | `hoverLabel` | `string` | `"share"` | Donut with legend only: caption while a share is hovered. |
 | `showGrid` | `boolean` | `true` | If true, renders dotted horizontal gridlines mapping 0% to 100% of the Y-Axis maximum. (Ignored on Pie/Donut). |
 | `showArea` | `boolean` | `true` | Line Chart Only: Toggles the gradient fill rendered beneath the bezier curve. |
 | `valuePrefix` | `string` | `""` | Prepends a string (like `"$"`) to the tooltip and Y-Axis values. |
-| `signUps` | `number` | `undefined` | Traffic sources only: total sign-ups in the period, used to calculate and render the visit-to-sign-up conversion rate bar. |
+| `valueSuffix` | `string` | `""` | Appends a string (like `"%"`) to the tooltip and Y-Axis values. |
+| `className` | `string` | `undefined` | Classes for the outer wrapper. |
+| `signUps` | `number` | `412` | Traffic sources only: total sign-ups in the period, used to calculate and render the visit-to-sign-up conversion rate bar. Omitting it uses the built-in sample value. |
 | `showCodes` | `boolean` | `true` | Visitors by country only: whether to render the 2-letter ISO country code badges in the breakdown list. |
 | `title` | `string` | `undefined` | Header title for card-based breakdown charts (e.g. "Traffic sources", "Visitors by country"). |
 | `caption` | `string` | `undefined` | Subheading or period caption under the title (e.g. "Today", "This week"). |
-| `metrics` | `MetricTabItem[]` | Default 4 tabs (Users, Posts, Messages, Revenue) | Metrics overview only: custom array of metric tabs with data series, labels, icons, currency codes, and delta change percentages. |
+| `metrics` | `MetricTabItem[]` | Default 4 tabs (New users, Posts, Messages, Revenue) | Metrics overview only: custom array of metric tabs with data series, labels, icons, currency codes, and delta change percentages. |
+
+## Works with other components
+
+- Combine `ChartBlock` with [Data Grid](https://avaraui.com/docs/reactjs/data-grid) for editable metrics tables, [Data Maps](https://avaraui.com/docs/reactjs/data-maps) for geographic breakdowns, and [Card](https://avaraui.com/docs/reactjs/card) for dashboard KPI panels.
+- Place it inside a [Dashboard](https://avaraui.com/docs/reactjs/dashboard) layout alongside tables and filters.
+
+## Does ChartBlock depend on Recharts or Chart.js?
+
+No. `ChartBlock` draws bars with HTML and CSS flexbox and lines, pies and donuts with SVG, so no charting library is needed. The registry item does add `lucide-react` and the `popover` and `toggle-group` items, which `metrics-overview` uses, and the file imports nothing from `next/*`.
+
+## How do I prevent vertical layout shift when charts load?
+
+Pass a fixed pixel `height`, for example `height={300}`, which is already the default for `bar`, `line`, `pie` and `donut`. Width stays 100% responsive. `donut-legend` and `stacked-bar` size to their content unless you set `height`, and the three card charts ignore it.
+
+## How do I make an area chart with ChartBlock?
+
+There is no `"area"` type. Use `type="line"`: `showArea` defaults to `true`, which fills a gradient under the smooth curve, and `showArea={false}` leaves a bare line. `showGrid` toggles the dashed gridlines. The curve is a bezier path, so there is no option for straight segments.
+
+## How do I show currency or units on ChartBlock values?
+
+Set `valuePrefix="$"` or `valueSuffix="%"`; both apply to the tooltip and the Y-axis. The axis shows rounded whole numbers with no thousands separators, and there is no formatter prop. In `metrics-overview`, give a tab `currency: "USD"` and its values are formatted with `Intl.NumberFormat`.
+
+## How do I set the colour of each share in a donut-legend or stacked-bar?
+
+Give a data point its own `color` to pin it, such as grey for an "Other" bucket. Other shares take `colors` in order, wrapping when there are more shares than colours. The default palette starts with `var(--primary)`, so the first share follows your theme. `color` sets the accent for the other chart types.
+
+## Is ChartBlock keyboard and screen-reader accessible?
+
+Partly. The `metrics-overview` columns are a focusable group: ArrowLeft, ArrowRight, Home and End read each value, and Escape clears it. `donut-legend` and `stacked-bar` are `role="img"` with a label. Bar and line tooltips appear on hover only, and the CSS entrance animations do not check `prefers-reduced-motion`.
 
 ---
 

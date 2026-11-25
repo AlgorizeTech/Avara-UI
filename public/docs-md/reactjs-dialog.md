@@ -1,14 +1,27 @@
 ---
 title: "Shadcn Dialog"
-description: "A window overlaid on the page or on another dialog, rendering the content underneath inert. Free shadcn/ui Dialog component for React, Next.js and Tailwind CSS."
+description: "Shadcn Dialog component. A modal window overlaid on the page (or another dialog) with scroll locking, Escape and backdrop dismissal, and nested portal stacking."
 url: https://avaraui.com/docs/nextjs/dialog
 ---
 
 # Shadcn Dialog
 
-A window overlaid on the page or on another dialog, rendering the content underneath inert. Popovers and dropdowns suit quick, non-blocking actions; reach for a Dialog when the user has to decide or finish a form without distractions.
+A modal window overlaid on the page (or another dialog) with scroll locking, Escape and backdrop dismissal, and nested portal stacking.
 
-`DialogBlock` handles the DOM logic for you: it renders into a React Portal, locks the body scrollbar while open, and dismisses on a background click or `Escape`. Dialogs also nest — render one inside another's content and the inner window portals above its parent, with `Escape` and backdrop clicks reaching only the top one.
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/dialog.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/dialog
+```
 
 ## Dialog
 
@@ -65,24 +78,7 @@ export default function ShareDialog() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/dialog.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/dialog
-```
-
-## Examples
-
-### Form dialog
+## Form dialog
 
 - `className` on `DialogContent` fine-tunes the width when no `size` step fits — drop any form markup into the body.
 
@@ -145,7 +141,7 @@ export default function EditProfileDialog() {
 }
 ```
 
-### Size variations
+## Size variations
 
 Five widths, from a compact confirm up to a full-page surface.
 
@@ -196,7 +192,7 @@ export default function DialogSizes() {
 }
 ```
 
-### Destructive confirm
+## Destructive confirm
 
 A confirmation shape: coloured title, clear consequence, two footer actions.
 
@@ -248,7 +244,7 @@ export default function DeleteAccountDialog() {
 }
 ```
 
-### Confirm before deleting
+## Confirm before deleting
 
 The working version of that shape — the row is only removed once the dialog resolves.
 
@@ -342,7 +338,7 @@ export default function ProjectList({
 }
 ```
 
-### Without close button
+## Without close button
 
 - Set `hideCloseButton` on `DialogContent` to remove the built-in X, when the user must pick one of your own actions.
 
@@ -388,7 +384,7 @@ export default function TermsDialog() {
 }
 ```
 
-### Controlled
+## Controlled
 
 - Pass `open` and `onOpenChange` to own the state, so you can keep the dialog up until async work finishes.
 - `onOpenChange` also fires on Escape and on a backdrop click — handle those or the dialog will not close.
@@ -446,7 +442,7 @@ export default function ControlledDialog() {
 }
 ```
 
-### Dialog inside a dialog
+## Dialog inside a dialog
 
 A small dialog opens on top of the one already on screen — and Escape or a backdrop click only reaches the topmost of the two.
 
@@ -539,20 +535,30 @@ export default function NestedDialog() {
 }
 ```
 
-## Features
-Discover the Dialog component's accessible modal features, including focus trapping, outside-click dismissal, and scroll locking.
+## About Shadcn Dialog
 
-Easily adapt the component's styling and behavior to fit your application's unique design system.
+**What it is.** A composable modal dialog system (`Dialog`, `DialogTrigger`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogDescription`, `DialogFooter`, `DialogClose`) for blocking confirmations, forms, and nested workflows.
 
-Built with accessibility in mind, ensuring all users can interact with your application effectively.
+**How it is built.** Renders into a React Portal on `document.body`, marks the panel `role="dialog"` with `aria-modal="true"`, locks body scroll while open, and handles `Escape` and backdrop dismissal, even when a second `Dialog` is nested inside an open `DialogContent`. It does not trap or restore focus. The only npm dependency is `lucide-react`.
 
-Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+**When to use it.** Reach for `Dialog` when the user must make a decision or complete a focused form without page distractions. For non-blocking contextual content, use [Popover](https://avaraui.com/docs/reactjs/popover), or use [Drawer](https://avaraui.com/docs/reactjs/drawer) for slide-in panels.
 
-Optimized for maximum performance with minimal re-renders and efficient state management.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+- Blocking confirmations, destructive action prompts, and focused modal forms
+- Nested modal flows where a secondary dialog opens on top of an existing one
+
+**When not to use**
+
+- Non-blocking hints or compact pickers — use [Popover](https://avaraui.com/docs/reactjs/popover)
+- Edge-anchored slide-over panels — use [Drawer](https://avaraui.com/docs/reactjs/drawer)
+
+**Agent notes**
+
+- Named exports from `@/components/custom/blocks/DialogBlock`: `Dialog`, `DialogTrigger`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogDescription`, `DialogFooter`, `DialogClose`
+- Use `open` + `onOpenChange` for controlled async confirmation (refuse dismissal while a request is in flight); use `size="sm" | "md" | "lg" | "xl" | "full"` on `DialogContent`
 
 ## Props Reference
 
@@ -564,6 +570,36 @@ Follow standard design principles when implementing this component. Ensure prope
 | `DialogContent` | `hideCloseButton` | `boolean` | `false` | If true, removes the built-in 'X' icon in the top right corner of the dialog content box. |
 | `DialogContent` | `size` | `"sm" \| "md" \| "lg" \| "xl" \| "full"` | `"md"` | Panel width: `sm` ~24rem, `md` ~32rem, `lg` ~42rem, `xl` ~56rem. `full` fills the viewport, drops the rounding, border and `max-height` cap the inset sizes use, and centres its content in an `md`-wide column in the middle of the screen (override with `className` for an edge-to-edge layout). |
 | All Components | `className` | `string` | `undefined` | Standard Tailwind CSS overrides for customized styling or spacing. On `DialogContent` it is merged after `size`, so a `max-w-*` class here wins — use it only when no step on the size scale fits. |
+
+## Works with other components
+
+- Trigger dialogs from [Button](https://avaraui.com/docs/reactjs/button) or [Action Button](https://avaraui.com/docs/reactjs/action-buttons).
+- Embed [Copy Button](https://avaraui.com/docs/reactjs/copy-button) (`CopyField`) for share-link modals, or [Input](https://avaraui.com/docs/reactjs/input) and [Select](https://avaraui.com/docs/reactjs/select) for form dialogs.
+- Pair with [Sonner](https://avaraui.com/docs/reactjs/sonner) or [Toast](https://avaraui.com/docs/reactjs/toast) to confirm completed actions after the dialog closes.
+
+## Can I nest a Dialog inside another Dialog?
+
+Render a second `Dialog` directly inside another `DialogContent`. The inner panel portals above its parent, and `Escape` or a backdrop click dismisses only the topmost dialog, because each open `DialogContent` takes a slot on a shared stack and only the last one reacts.
+
+## How do I prevent a Dialog from closing during an async action?
+
+Control the dialog with `open` and `onOpenChange`, and ignore `onOpenChange(false)` while your request is in flight. `Escape`, the backdrop and the X button all call it. Add `hideCloseButton` on `DialogContent` so users must choose one of your own footer actions.
+
+## How do I change the Dialog width?
+
+Pass `size` to `DialogContent`: `"sm"` (24rem), `"md"` (32rem, the default), `"lg"` (42rem), `"xl"` (56rem) or `"full"`. Use `className` with a `max-w-*` utility only when no step fits; it is merged after `size`, so it wins.
+
+## Does the Dialog trap focus or support asChild on DialogTrigger?
+
+Neither. `DialogContent` sets `role="dialog"` and `aria-modal="true"` but does not move, trap or restore focus, so put `autoFocus` on the first field you want focused. `DialogTrigger` accepts an `asChild` type but always renders its own `div` with `role="button"`; for a custom opener, control `open` yourself.
+
+## What keyboard and screen-reader support does the Dialog have?
+
+`Escape` closes the topmost dialog, and `DialogTrigger` opens on `Enter` or `Space` because it has `tabIndex={0}`. The built-in X button carries screen-reader text "Close". Body scroll is locked while a dialog is open. Entry animation uses Tailwind `animate-in` classes and is not gated on `prefers-reduced-motion`.
+
+## What is the difference between Dialog and Modal?
+
+[Modal](https://avaraui.com/docs/reactjs/modal) ships ready-made `variant` presets such as `confirmation`, `form` and `glass`. `Dialog` has no presets: you assemble `DialogTrigger`, `DialogContent`, `DialogHeader`, `DialogFooter` and the rest yourself, pick a `size`, and can stack dialogs. Choose `Dialog` when you want full control of the layout.
 
 ---
 

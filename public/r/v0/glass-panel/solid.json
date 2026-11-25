@@ -3,7 +3,7 @@
   "name": "glass-panel-solid",
   "type": "registry:block",
   "title": "Glass Panel — Solid",
-  "description": "The same layout with variant=\"solid\": plain cards with a shadow, no aurora.",
+  "description": "The \"Solid\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

@@ -2,6 +2,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 export const metadata = docsPageMetadata("apple-select", {
   title: "Apple Select",
@@ -10,9 +11,7 @@ export const metadata = docsPageMetadata("apple-select", {
 
 # Shadcn Apple Select
 
-Recreates the iOS text-selection look — a translucent highlight with a lollipop handle on either end — over any string you give it.
-
-The range is chosen by the author, not the reader: pass the full `text` and a `[start, end]` character range, and the component splits the string around it. It suits docs, onboarding tips and marketing copy that point at *part* of a sentence without a screenshot. The handles are decorative and hidden from assistive tech, and the text stays one uninterrupted string. It renders as a `<p>`, or inline with `as="span"`.
+An iOS-style text selection highlight (`AppleSelect`) with optional lollipop handles, entrance animation, and multi-line rounded fragment rendering.
 
 export const usageDefault = `import { AppleSelect } from "@/components/custom/blocks/AppleSelectBlock";
 
@@ -72,10 +71,11 @@ export default function MultilineSelection() {
   name="apple-select"
   colorControl
   columns={1}
+  installation={<Installation name="apple-select" usage="below" />}
   examples={[
     {
       title: "Apple Select",
-      subheading: "Pass the full `text` and the `[start, end]` character range to highlight.",
+      description: "Pass the full `text` and the `[start, end]` character range to highlight.",
       propNotes: [
         {
           prop: "selection",
@@ -87,20 +87,6 @@ export default function MultilineSelection() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/AppleSelectBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="apple-select" />
-
-## Examples
-
-<ExampleShowcase minHeight={220}
-  name="apple-select"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Without handles",
       propNotes: [
@@ -117,7 +103,7 @@ export default function MultilineSelection() {
     },
     {
       title: "Animated",
-      subheading: "Hit Reset on the preview to replay the entrance.",
+      description: "Hit Reset on the preview to replay the entrance.",
       propNotes: [
         {
           lead: "Set",
@@ -144,35 +130,35 @@ export default function MultilineSelection() {
   ]}
 />
 
-## Features
-Discover the Apple Select component's capabilities for pointing at part of a sentence with a native-feeling selection.
+## About Shadcn Apple Select
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Author-controlled">
-    <p>The range is a pair of numbers in code, so the same selection renders identically for every visitor — no screenshots, no drift.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>The handles are hidden from assistive tech and the highlighted span uses a semantic <code>mark</code>, so the sentence reads as one string.</p>
-  </InfoCard>
-  <InfoCard title="Inherits typography">
-    <p>Handles and highlight are sized in <code>em</code>, so they scale with whatever font size and weight you apply through <code>className</code>.</p>
-  </InfoCard>
-  <InfoCard title="Zero dependencies">
-    <p>Plain React and CSS — the optional entrance animation ships its own keyframes, so there is nothing to add to your global styles.</p>
-  </InfoCard>
-</div>
+**What it is.** `AppleSelect` renders a `text` string with one or more `selection` ranges drawn as an iOS-style highlight. Each range gets a translucent tint and, unless `handles={false}`, a lollipop handle at either end. It is a visual callout, not a real text selection.
 
-## Best Practices & Guidelines
+**How it is built.** It is plain React and CSS. The highlighted slice sits in a `<mark>` element tinted with `color-mix()`, `box-decoration-break: clone` keeps rounded corners on every wrapped line, and the handles are `aria-hidden`. `as` renders a `p` or a `span`, and `animate` adds a short fade and handle pop.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Land on word boundaries">
-    <p>Compute <code>selection</code> from the text (for example <code>text.indexOf("ability")</code>) rather than hard-coding magic numbers, so an edit to the copy cannot leave the highlight cutting through a word.</p>
-  </InfoCard>
-  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">It is not a real selection</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">The handles do not drag and the range does not copy. Use it to illustrate a selection, not to replace the browser's native one.</p>
-  </div>
-</div>
+**When to use it.** Use it in docs, onboarding tips and marketing copy to point at part of a sentence without a screenshot. For a form control, use <DocLink to="select">Select</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="apple-select">
+
+**When to use**
+
+- Illustrative iOS-style text selection callouts in hero copy, onboarding tips, or documentation
+
+**When not to use**
+
+- Interactive form dropdowns: use <DocLink to="select">Select</DocLink>
+- Animated headline typography: use <DocLink to="animated-typography">Animated Typography</DocLink>
+
+**Agent notes**
+
+- Named export: `import { AppleSelect } from "@/components/custom/blocks/AppleSelectBlock"`.
+- `text` (string) and `selection` are required. `selection` is `[start, end]` or an array of such pairs, with an exclusive `end` like `String.slice`. Compute offsets from `text.indexOf(...)` so copy edits stay aligned.
+- Out-of-range values are clamped, overlapping ranges merge and an empty range renders plain text.
+- `color` is any CSS colour (default `var(--primary)`), `handles` defaults to `true`, `animate` to `false` and `as` to `"p"`; use `as="span"` to sit inline.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -225,10 +211,44 @@ Discover the Apple Select component's capabilities for pointing at part of a sen
         <td><code>"p"</code></td>
         <td>The element to render. Use <code>"span"</code> to highlight a phrase inside a paragraph of your own; inline, it takes the surrounding line height.</td>
       </tr>
+      <tr>
+        <td><code>...props</code></td>
+        <td><code>HTMLAttributes&lt;HTMLElement&gt;</code></td>
+        <td><code>undefined</code></td>
+        <td>Passed to the rendered element, including <code>className</code> and <code>style</code>. <code>color</code> is the highlight colour, not the CSS text colour.</td>
+      </tr>
     </tbody>
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- <DocLink to="animated-typography">Animated Typography</DocLink> or <DocLink to="text-animation">Text Animation</DocLink> to animate the headline around a highlighted phrase in hero and feature callouts.
+- <DocLink to="select">Select</DocLink> when readers need to choose a value, since `AppleSelect` only displays a highlight.
+
+## Is AppleSelect interactive or draggable?
+
+No. `AppleSelect` is a decorative callout: the author sets the `[start, end]` range in code, and the handles cannot be dragged. Visitors can still select the text with the browser as usual. For an interactive choice, use <DocLink to="select">Select</DocLink>.
+
+## How do I highlight a phrase without counting characters in AppleSelect?
+
+Find the phrase with `text.indexOf(phrase)` and pass `[start, start + phrase.length]` as `selection`. Because `end` is exclusive, like `String.slice`, that range covers exactly the phrase, and it stays correct when you edit the copy around it.
+
+## Can AppleSelect highlight more than one phrase?
+
+Yes. Pass an array of ranges, such as `selection={[[4, 10], [20, 31]]}`. Each range gets its own highlight and handles. Overlapping ranges are merged into one, out-of-range values are clamped to the text length, and an empty range renders as plain text.
+
+## How do I use AppleSelect inside my own paragraph?
+
+Set `as="span"` so it renders inline and takes the surrounding line height, then place it in your paragraph. The component renders the whole `text` string, so pass only the phrase you want in that spot, with a `selection` range inside it.
+
+## How do I change the AppleSelect highlight colour?
+
+Pass `color` with any CSS colour, such as `"#8b5cf6"` or `"oklch(0.7 0.15 250)"`. It tints the highlight at 35% opacity and colours the handles. The default is `var(--primary)`, so it follows your theme tokens and changes with the Themes presets.
+
+## Does AppleSelect respect reduced motion and screen readers?
+
+Yes. The `animate` fade and handle pop only run when `prefers-reduced-motion` is `no-preference`; otherwise the selection simply appears. The handles are `aria-hidden`, and the highlighted text stays inside the sentence in a `<mark>` element, so the text reads normally.
 
 <DocsJsonLd slug="apple-select" />
+<FaqJsonLd slug="apple-select" />

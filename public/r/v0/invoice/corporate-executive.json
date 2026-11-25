@@ -3,7 +3,7 @@
   "name": "invoice-corporate-executive",
   "type": "registry:block",
   "title": "Invoice — Corporate Executive",
-  "description": "High-contrast solid header banner layout for formal B2B billing and corporate accounts.",
+  "description": "The \"Corporate Executive\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

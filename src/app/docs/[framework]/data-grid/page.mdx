@@ -3,15 +3,14 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("data-grid");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Data Grid
 
-A high-performance, fully keyboard-navigable data table with Excel-style inline editing.
+A keyboard-navigable data grid with Excel-style inline editing.
 
-Building an interactive spreadsheet is notoriously difficult. Most developers give up and install massive, 500kb third-party libraries just to get basic arrow-key navigation.
-
-This `DataGridBlock` is built **100% dependency-free**. It manages focus through a highly optimized internal roving coordinate state (`{row, col}`) rather than attaching thousands of DOM event listeners. It fully supports `ArrowUp/Down/Left/Right` navigation, `Tab` flow, `Enter` to edit/save, and instantly updates the underlying data array.
+`DataGridBlock` needs no grid library; its only npm dependency is `lucide-react`. It tracks the active cell as a `{ row, col }` coordinate, supports `ArrowUp/Down/Left/Right` navigation, `Tab` flow and `Enter` to edit and save, and passes the updated rows to `onChange`.
 
 Click any cell and drive the grid from the keyboard: arrows to move, `Tab` to flow, `Enter` (or a double-click) to edit, `Enter` again to save and drop to the next row.
 
@@ -78,6 +77,7 @@ export default function ReadOnlyGrid() {
   colorControl
   colorLabel="Focus Ring Color"
   columns={1}
+  installation={<Installation name="data-grid" usage="below" />}
   examples={[
     {
       title: "Data grid",
@@ -103,21 +103,6 @@ export default function ReadOnlyGrid() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/DataGridBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="data-grid" />
-
-## Examples
-
-<ExampleShowcase minHeight={420}
-  name="data-grid"
-  colorControl
-  colorLabel="Focus Ring Color"
-  columns={1}
-  examples={[
     {
       title: "Read only",
       propNotes: [
@@ -134,31 +119,37 @@ export default function ReadOnlyGrid() {
   ]}
 />
 
-## Features
-Explore the Data Grid's powerful features for displaying complex datasets, including virtualized scrolling, cell editing, and column resizing.
+## About Shadcn Data Grid
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**What it is.** **Shadcn Data Grid** (`DataGridBlock`) is a keyboard-navigable, Excel-style inline editing table with column definitions, roving cell focus, and configurable read-only mode.
 
-## Best Practices & Guidelines
+**How it is built.** Built around a `{ row, col }` roving coordinate state with no grid library, `DataGridBlock` handles arrow-key movement, `Tab` flow, `Enter` or double-click cell editing, and emits the updated row array via `onChange`.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use it for spreadsheet-like editors, bulk inventory tables, pricing matrices, and financial or operational dashboards where users edit cells directly in place.
+
+## For AI agents
+
+<AgentBrief name="data-grid">
+
+**When to use**
+
+- Spreadsheet-like editors, bulk inventory tables, pricing matrices, and financial or operational dashboards where users edit cells directly in place
+
+**When not to use**
+
+- A read-only table with sorting and filtering: use <DocLink to="data-table">Data Table</DocLink>
+- A simple static table: use <DocLink to="table">Table</DocLink>
+
+**Agent notes**
+
+- `DataGridBlock` accepts `columns` (`{ field, headerName }[]`), `data` (row objects), `onChange`, `readOnly`, and `color`.
+- Each `field` in `columns` must match a key on the row objects; arrow keys, `Tab`, `Enter`, and double-click editing work out of the box.
+- Pass `readOnly={true}` to disable editing while preserving keyboard cell navigation.
+- Pass `data` as a stable reference (state or a constant): the grid re-syncs whenever the `data` prop changes identity, so an array literal created in render resets edits.
+- The title row, description and `Export CSV` button render only when `title` or `description` is set.
+- It renders every row with no virtualization or pagination, and a column whose `field` is `"status"` is drawn as a coloured pill.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -244,8 +235,8 @@ Explore the Data Grid's powerful features for displaying complex datasets, inclu
           <code>"primary"</code>
         </td>
         <td>
-          The accent color applied to the active cell's focus ring and the
-          interactive drag handle. Fully supports custom hex codes.
+          The accent color applied to the active cell's focus ring, the
+          corner handle, the header tint and the export button. Accepts a preset name or a custom hex code.
         </td>
       </tr>
       <tr>
@@ -262,7 +253,7 @@ Explore the Data Grid's powerful features for displaying complex datasets, inclu
           <code>true</code>
         </td>
         <td>
-          If true, renders a sticky left-aligned column displaying the 1-based
+          If true, renders a left-hand column displaying the 1-based
           index of every row.
         </td>
       </tr>
@@ -333,7 +324,7 @@ Explore the Data Grid's powerful features for displaying complex datasets, inclu
           <code>true</code>
         </td>
         <td>
-          Whether to render the built-in &quot;Export CSV&quot; button in the header.
+          Whether to render the built-in &quot;Export CSV&quot; button in the header. The header only appears when <code>title</code> or <code>description</code> is set.
         </td>
       </tr>
       <tr>
@@ -347,10 +338,10 @@ Explore the Data Grid's powerful features for displaying complex datasets, inclu
           <code>string</code>
         </td>
         <td>
-          <code>&quot;data-grid.csv&quot;</code>
+          <code>undefined</code>
         </td>
         <td>
-          Custom file name for the downloaded CSV file.
+          Custom file name for the downloaded CSV file. Without it the name is the slugified <code>title</code> plus <code>.csv</code>, or <code>data-grid.csv</code> when there is no title.
         </td>
       </tr>
       <tr>
@@ -438,7 +429,7 @@ Explore the Data Grid's powerful features for displaying complex datasets, inclu
           <code>120</code>
         </td>
         <td>
-          The fixed and minimum width of the column. Can be a number (pixels) or
+          The minimum width of the column. Can be a number (pixels) or
           a CSS string (e.g., <code>"250px"</code>).
         </td>
       </tr>
@@ -458,7 +449,7 @@ Explore the Data Grid's powerful features for displaying complex datasets, inclu
         <td>
           Determines the underlying HTML input type rendered during inline
           editing. Setting this to <code>"number"</code> also applies a
-          monospaced font to the cell values for better numerical alignment.
+          monospaced font to the cell values and stores edits as numbers (an empty or invalid entry becomes <code>0</code>).
         </td>
       </tr>
       <tr>
@@ -484,6 +475,35 @@ Explore the Data Grid's powerful features for displaying complex datasets, inclu
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Combine `DataGridBlock` with <DocLink to="data-table">Data Table</DocLink> for filterable read-only reporting.
+- Use <DocLink to="table">Table</DocLink> for simple static tables.
+- Pair it with <DocLink to="toast">Toast</DocLink> to confirm cell saves from `onChange`.
+
+## What keyboard shortcuts does DataGridBlock support?
+
+Click a cell, then use the arrow keys to move and `Tab` or `Shift+Tab` to flow across rows. `Enter` or `F2` starts editing, as does typing a character, and `Enter` again saves and drops one row. `Tab` saves and moves right, `Escape` cancels an edit, and `Delete` or `Backspace` clears the cell.
+
+## Does DataGridBlock require external grid libraries?
+
+No grid library is needed. `DataGridBlock` handles cell focus and inline editing with its own `{ row, col }` state, and its only npm dependency is `lucide-react` for the export icon. The file has no `next/*` imports, so it works the same way in Next.js and Vite projects.
+
+## How do I get edited rows back into my state or API?
+
+Pass `onChange`. It receives the whole updated array after a save from `Enter`, `Tab` or clicking away, and after `Delete` clears a cell. Hold the rows in `useState` and pass the setter. Keep the `data` reference stable, because the grid resets its rows whenever that prop changes identity.
+
+## How do number columns behave when editing?
+
+Set `type: "number"` on the column. The editor becomes an `input type="number"`, the cell uses a monospaced font, and the saved value is stored as a number. An empty or invalid entry is saved as `0`, not as an empty cell, so validate it in `onChange` if blanks matter.
+
+## How do I lock one column but keep the rest editable?
+
+Set `readOnly: true` on that `GridColumn`. Its cells show dimmed, cannot be edited and are skipped by `Delete`, while other columns stay editable. The grid-level `readOnly` prop locks every column. In both cases, arrow-key navigation still works, so people can move through and read the cells.
+
+## How do I export DataGridBlock to CSV?
+
+Set a `title` or `description`, and the header shows an `Export CSV` button, enabled by default through `showExport`. It downloads every row and column with values in quotes. Use `exportFileName` to set the file name, which otherwise comes from the title, and `onExport` to react after the download.
 
 <DocsJsonLd slug="data-grid" />
+<FaqJsonLd slug="data-grid" />

@@ -3,7 +3,7 @@
   "name": "scroll-split-cards-slow-transition",
   "type": "registry:block",
   "title": "Scroll Split Cards — Slow Transition",
-  "description": "A slower profile for leisurely narrative pacing.",
+  "description": "The \"Slow Transition\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

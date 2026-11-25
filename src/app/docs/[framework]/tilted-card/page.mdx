@@ -4,14 +4,11 @@ export const metadata = docsPageMetadata("tilted-card");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Tilted Card
 
-A deeply interactive, parallax-driven 3D tilt component. It calculates the relative pointer coordinates and eases the card toward them through a small spring of its own (no animation library) to rotate it along the X and Y axes, mimicking a physical object held in space.
-
-It automatically injects a dynamic, radial glare layer over the content that tracks the light source based on your mouse position to complete the tactile illusion.
-
-Hover a card and move the pointer across it — rotation, scale and the radial glare all derive from the cursor's position inside the element.
+A dependency-free 3D pointer-tilt wrapper (`TiltedCard`) with spring-eased X/Y rotation, hover scale, and a cursor-tracking radial glare layer.
 
 export const cardSource = `// The card face — anything you render inside TiltedCard tilts with it.
 const accent = "var(--primary)";
@@ -133,10 +130,11 @@ export default function LiftOnHover() {
     { name: "scaleOnHover", label: "Scale On Hover", min: 1, max: 1.2, step: 0.01, defaultValue: 1.04 },
   ]}
   columns={1}
+  installation={<Installation name="tilted-card" usage="below" />}
   examples={[
     {
       title: "Interactive Tilted Card",
-      subheading: "Adjust tilt intensity, glare opacity, and hover scale using the interactive controls above to test different design approaches in real-time.",
+      description: "Adjust tilt intensity, glare opacity, and hover scale using the interactive controls above to test different design approaches in real-time.",
       propNotes: [
         {
           prop: "tiltIntensity",
@@ -155,20 +153,6 @@ export default function LiftOnHover() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/TiltedCardBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="tilted-card" />
-
-## Examples
-
-<ExampleShowcase minHeight={460}
-  name="tilted-card"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Stronger tilt",
       propNotes: [
@@ -238,35 +222,32 @@ export default function LiftOnHover() {
   ]}
 />
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+## About Shadcn Tilted Card
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Fluid Animations">
-    <p>Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
-  </InfoCard>
-  <InfoCard title="Highly Customizable">
-    <p>Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
-  </InfoCard>
-  <InfoCard title="Responsive Design">
-    <p>Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
-  </InfoCard>
-</div>
+**What it is.** `TiltedCard` wraps any card content with interactive 3D pointer-tracking tilt (`tiltIntensity`), hover lift (`scaleOnHover`), and a radial specular highlight (`glareOpacity`).
 
-## Best Practices & Guidelines
+**How it is built.** Runs a lightweight built-in spring loop (zero animation library dependency) that eases X/Y rotation and radial glare toward the pointer position.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Animation Performance">
-    <p>Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
-  </InfoCard>
-  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">State Management</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>
-  </div>
-</div>
+**When to use it.** Use `TiltedCard` for hero feature cards, membership passes, and product highlights. For multi-card grids without 3D tilt, use <DocLink to="card">Card</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="tilted-card">
+
+**When to use**
+
+- Interactive 3D hover-tilt wrappers around cards, badges, or media showcases (`tiltIntensity`, `glareOpacity`, `scaleOnHover`)
+
+**When not to use**
+
+- Static editorial or ecommerce cards — use <DocLink to="card">Card</DocLink>
+
+**Agent notes**
+
+- Named export: `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock"`
+- Keep `tiltIntensity` around `6`–`20` for natural perspective (values above ~25 start to shear); set `glareOpacity={0}` to disable glare
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -376,6 +357,29 @@ Discover the key capabilities that make this component an excellent choice for m
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Wrap <DocLink to="card">Card</DocLink> or <DocLink to="profile-card">Profile Card</DocLink> surfaces inside `TiltedCard` for interactive 3D hover tilt.
+
+## How do I add a 3D tilt hover effect to a card in React?
+
+Wrap your card markup in `TiltedCard`. Anything you render inside tilts with the pointer, with spring-eased rotation on the X and Y axes. It uses a small built-in spring loop, so no animation library is installed alongside it.
+
+## How do I control how far the card tilts?
+
+Set `tiltIntensity`, the maximum rotation in degrees when the pointer is at the very edge of the card. It defaults to `15`. Lower values give a subtle, premium feel, while higher values make the 3D effect much more dramatic.
+
+## How do I disable the radial glare layer on TiltedCard?
+
+Pass `glareOpacity={0}` to remove the specular highlight while keeping the 3D tilt and `scaleOnHover`. The default is `0.2`, and the value runs from `0` to `1`, so a higher number makes the cursor-tracking light brighter.
+
+## How do I remove or change the hover lift?
+
+`scaleOnHover` is the scale multiplier applied while the pointer is over the card, and it defaults to `1.02`. Set it to `1` to remove the lift and keep only the rotation. Use `className` to style the outermost perspective wrapper.
+
+## What can I put inside TiltedCard?
+
+Any content, such as a <DocLink to="card">Card</DocLink> or <DocLink to="profile-card">Profile Card</DocLink>. `TiltedCard` only supplies the 3D wrapper, perspective and glare, so your own children define the colours, images and layout inside it.
 
 <DocsJsonLd slug="tilted-card" />
+<FaqJsonLd slug="tilted-card" />

@@ -4,25 +4,20 @@ export const metadata = docsPageMetadata("table");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Table
 
-A set of composable table primitives. You write the rows; the component supplies the structure, spacing and theming.
+A set of composable, stateless table primitives (`Table`, `TableHead`, `TableRow`, `TableCell`) that map any API data shape directly into JSX.
 
-There is **no column config and no required row shape**. Whatever your API returns — nested objects, snake_case keys, `_id` instead of `id` — you map it straight into JSX. Nothing has to be flattened or transformed first.
-
-Every example below is live. Click a sortable header, expand a row, or hover the right edge of a row to reveal its actions.
-
-
-<AgentVariants slug="table" />
-
-<ExampleShowcase minHeight={410} headingLevel={2}
+<ExampleShowcase minHeight={360} headingLevel={2}
   name="table-soft"
   columns={1}
+  installation={<Installation name="table" usage="below" />}
   examples={[
     {
       title: "Soft variant",
-      subheading: "A plain read-only table in the admin-dashboard look: a rounded panel, a tinted header band, calm dividers and soft row hover.",
+      description: "A plain read-only table in the admin-dashboard look: a rounded panel, a tinted header band, calm dividers and soft row hover.",
       propNotes: [
         {
           lead: "Set",
@@ -42,8 +37,6 @@ Every example below is live. Click a sortable header, expand a row, or hover the
     },
   ]}
 />
-
-`Table` is the card. `TableContent` renders the scroll container and the `<table>` element. Everything else maps one-to-one onto the HTML table tags, so `colSpan`, `scope` and any other native attribute pass straight through.
 
 export const invoiceType = `type Invoice = {
   reference: string;
@@ -1112,19 +1105,6 @@ export default function EmptyTableDemo() {
       usage: usageBasic,
       code: extractCode("src/components/custom/blocks/TableBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="table" />
-
-## Examples
-
-<ExampleShowcase minHeight={360}
-  name="table"
-  columns={1}
-  examples={[
     {
       title: "Minimal",
       propNotes: [
@@ -1195,36 +1175,6 @@ export default function EmptyTableDemo() {
       props: { sortable: false, expandable: false },
       usage: usageActions,
     },
-  ]}
-/>
-
-<ExampleShowcase minHeight={360}
-  name="table-soft-comparison"
-  columns={1}
-  examples={[
-    {
-      title: "Comparison (soft)",
-      subheading: "The same soft table as a plan comparison: features down the side, plans across the top, ticks and limits centred under their headers.",
-      propNotes: [
-        {
-          prop: "align",
-          value: '"center"',
-          effect:
-            "on both `TableHead` and `TableCell` lines the ticks and values up under each plan.",
-        },
-      ],
-      usage: extractCode("src/preview/demos/table-soft-comparison-demo.tsx"),
-      code: extractCode("src/components/custom/blocks/TableBlock.tsx"),
-    },
-  ]}
-/>
-
-## Density
-
-<ExampleShowcase
-  name="table"
-  columns={1}
-  examples={[
     {
       title: "Sizes",
       propNotes: [
@@ -1242,34 +1192,56 @@ export default function EmptyTableDemo() {
   ]}
 />
 
-## Features
+<ExampleShowcase minHeight={360}
+  name="table-soft-comparison"
+  columns={1}
+  examples={[
+    {
+      title: "Comparison (soft)",
+      description: "The same soft table as a plan comparison: features down the side, plans across the top, ticks and limits centred under their headers.",
+      propNotes: [
+        {
+          prop: "align",
+          value: '"center"',
+          effect:
+            "on both `TableHead` and `TableCell` lines the ticks and values up under each plan.",
+        },
+      ],
+      usage: extractCode("src/preview/demos/table-soft-comparison-demo.tsx"),
+      code: extractCode("src/components/custom/blocks/TableBlock.tsx"),
+    },
+  ]}
+/>
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Any data shape">
-    <p>No column config and no required row shape. Nested objects, unusual key names and computed cells all work without a transformation step.</p>
-  </InfoCard>
-  <InfoCard title="Real table markup">
-    <p>Each primitive renders its native element, so colSpan, scope and aria attributes pass straight through and screen readers get a genuine table.</p>
-  </InfoCard>
-  <InfoCard title="Themed by context">
-    <p>Variant, size and colour are set once on Table and read by every descendant, so a cell dropped three levels deep still matches.</p>
-  </InfoCard>
-  <InfoCard title="Stateless by default">
-    <p>Sorting and expansion are controlled props. The table never reorders or hides your data on its own, so server-side sorting and paging drop in unchanged.</p>
-  </InfoCard>
-</div>
+## About Shadcn Table
 
-## Best Practices & Guidelines
+**What it is.** A composable suite of table primitives (`Table`, `TableContent`, `TableHeader`, `TableBody`, `TableFooter`, `TableHead`, `TableRow`, `TableCell`, `TableExpandedRow`, `TableEmpty`, `TableRowActions`, `TablePerson`, `TableBadge`) with `default`, `minimal`, and `soft` variants.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Reach for the Data Table instead">
-    <p>These primitives are deliberately stateless. If you need search, pagination, row selection and batch actions wired up for you, use the Data Table — it composes the very same primitives and adds a state provider.</p>
-  </InfoCard>
-  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Keep colSpan honest</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">TableEmpty and TableExpandedRow both need a colSpan that matches your real column count. Derive it from a variable rather than hard-coding it, so conditional columns cannot drift out of sync.</p>
-  </div>
-</div>
+**How it is built.** Each primitive renders native semantic `<table>`, `<thead>`, `<tbody>`, `<tr>`, `<th>`, and `<td>` markup while sharing `variant`, `size`, and theme tokens from context. Sorting and row expansion are controlled props so the table never mutates your data behind your back.
+
+**When to use it.** Use `Table` when you want full control over row JSX, server-side sorting, or custom cells without column definitions. When you want client-side search, multi-column sorting, pagination, and batch selection wired up automatically, use <DocLink to="data-table">Data Table</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="table">
+
+**When to use**
+
+- Read-only, comparison, or server-driven tables where rows map directly from any API shape into JSX
+- Expandable rows (`TableExpandToggle` + `TableExpandedRow`), hover/focus row actions (`TableRowActions`), or `variant="soft"` admin/comparison tables
+
+**When not to use**
+
+- Client-side search, filters, pagination, and batch row selection out of the box — use <DocLink to="data-table">Data Table</DocLink>
+- Spreadsheet-style inline cell editing — use <DocLink to="data-grid">Data Grid</DocLink>
+
+**Agent notes**
+
+- Named exports from `@/components/custom/blocks/TableBlock`
+- `TableEmpty` and `TableExpandedRow` require an accurate `colSpan` matching your visible column count
+- Sorting (`sortable`, `sortDirection`, `onSort`) is controlled and stateless
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -1369,6 +1341,31 @@ export default function EmptyTableDemo() {
 
 Every primitive also forwards its ref and accepts the native attributes of the element it renders.
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Upgrade to <DocLink to="data-table">Data Table</DocLink> when you need built-in search, filter tabs, pagination, and batch row selection.
+- Pair row actions with <DocLink to="dialog">Dialog</DocLink> for delete confirmations or <DocLink to="popover">Popover</DocLink> for quick filters.
+- Render <DocLink to="avatar-stack">Avatar Stack</DocLink> or <DocLink to="verify-badge">Verify Badge</DocLink> inside table cells.
+
+## When should I use Table vs Data Table?
+
+Use `Table` when you want stateless primitives that you map your own API data into. Move to <DocLink to="data-table">Data Table</DocLink> when you need built-in search, filter tabs, pagination and batch row selection. `Table` has no state of its own, so you control sorting and selection.
+
+## How do I add sortable column headers?
+
+Set `sortable` on `TableHead` and control `sortDirection` with `"asc"`, `"desc"` or `null`. The head renders as a sort button, shows a chevron and sets `aria-sort`. `onSort` fires on click, and you reorder the data yourself because the table never sorts rows.
+
+## How do I highlight selected rows or add an expandable row?
+
+Pass `selected` to `TableRow` to apply the selected background and `data-selected`. For details panels, render a `TableExpandedRow` with `open` and a `colSpan` matching your column count. It animates open and closed with a grid transition.
+
+## How do I keep TableEmpty and TableExpandedRow aligned?
+
+Both require a `colSpan`, so set it to the number of columns in your table. `TableEmpty` shows "No data available." by default. A `colSpan` that is too small leaves the empty or expanded cell narrower than the header row.
+
+## How do I switch the table style or density?
+
+Set `variant` to `"default"`, `"minimal"`, `"glass"` or `"soft"` on `Table`, and `size` to `"sm"`, `"md"` or `"lg"` for row density. `color` sets the accent for selected rows. `TableBody` can add a staggered entrance with `animate`, replayed by changing `animateKey`.
 
 <DocsJsonLd slug="table" />
+<FaqJsonLd slug="table" />

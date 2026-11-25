@@ -3,7 +3,7 @@
   "name": "stepper-stepper",
   "type": "registry:block",
   "title": "Stepper",
-  "description": "Per-step validation blocks Next, and the Review step can simulate a failed submit.",
+  "description": "The \"Stepper\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

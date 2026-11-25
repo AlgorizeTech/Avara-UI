@@ -3,7 +3,7 @@
   "name": "api-playground-api-playground",
   "type": "registry:block",
   "title": "API Playground",
-  "description": "A split-pane request builder.",
+  "description": "The \"API playground\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -3,7 +3,7 @@
   "name": "card-author-cards",
   "type": "registry:block",
   "title": "Card — Author cards",
-  "description": "Two to a row: a cover beside a title and intro, then the author and round actions. Each card stacks when it gets narrow.",
+  "description": "The \"Author cards\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -1,16 +1,27 @@
 ---
 title: "Shadcn Stepper"
-description: "Shadcn Stepper. A production-grade, highly animated multi-step stepper and wizard component built on plain CSS transitions and the Web Animations API — no…"
+description: "Shadcn Stepper. A decoupled multi-step tracker (`Stepper`) and sliding content container (`StepperContent`) built on CSS transitions and the Web Animations API."
 url: https://avaraui.com/docs/nextjs/stepper
 ---
 
 # Shadcn Stepper
 
-A production-grade, highly animated multi-step stepper and wizard component built on plain **CSS transitions and the Web Animations API** — no animation library. It splits the layout into two decoupled blocks: the visual progress tracker and the bidirectional sliding content payload.
+A decoupled multi-step tracker (`Stepper`) and sliding content container (`StepperContent`) built on CSS transitions and the Web Animations API.
 
-Unlike basic UI placeholders, this engine is designed to handle **real form state, per-step input validation, and asynchronous API submission handling** (including error states) with silky 60fps transitions.
+## Installation
 
-`Stepper` (the tracker) and `StepperContent` (the sliding payload) are decoupled — they only share the `steps` array and a `currentStep` number that you own, so `Stepper` also works alone as a progress header above content you lay out yourself. Validation, submission and error handling stay in your component.
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/stepper.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/stepper
+```
 
 ## Stepper
 
@@ -395,35 +406,30 @@ export default function OnboardingWizard() {
 }
 ```
 
-## Installation
+## About Shadcn Stepper
 
-Add the component by URL — no setup needed:
+**What it is.** `Stepper` (the visual progress bar/step indicators) and `StepperContent` (the bidirectional sliding step body) share a `steps` array and a zero-indexed `currentStep` number.
 
-```bash
-npx shadcn@latest add https://avaraui.com/r/stepper.json
-```
+**How it is built.** Built with plain CSS transitions and the Web Animations API (no animation library dependency). `Stepper` and `StepperContent` are decoupled so you can keep form state, per-step validation, and async submit handling in your own component.
 
-Or register the @avara-ui registry once per project and add it by name:
+**When to use it.** Use `Stepper` for multi-step checkout, onboarding, and setup flows with horizontal step indicators. For a Typeform-style vertical question wizard, use [Wizard](https://avaraui.com/docs/reactjs/wizard).
 
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/stepper
-```
+## For AI agents
 
-## Features
-Learn about the Stepper component's linear progression features, providing clear visual feedback for multi-step forms and processes.
+**When to use**
 
-Easily adapt the component's styling and behavior to fit your application's unique design system.
+- Multi-step forms and onboarding flows with a horizontal progress header (`Stepper`) and sliding panels (`StepperContent`)
+- Standalone progress headers (`Stepper` without `StepperContent`)
 
-Built with accessibility in mind, ensuring all users can interact with your application effectively.
+**When not to use**
 
-Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+- Full-screen Typeform-style vertical question flows — use [Wizard](https://avaraui.com/docs/reactjs/wizard)
+- Narrative feature decks — use [Split Stepper](https://avaraui.com/docs/reactjs/split-stepper)
 
-Optimized for maximum performance with minimal re-renders and efficient state management.
+**Agent notes**
 
-## Best Practices & Guidelines
-
-Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+- Named exports: `Stepper`, `StepperContent`, `type Step` from `@/components/custom/blocks/StepperBlock`
+- Omit `onStepChange` to render static non-clickable step indicators; pass a CSS color value (not a Tailwind class) to `color` so the active pulse ring renders
 
 ## Props Reference
 
@@ -460,6 +466,31 @@ The TypeScript interface defining the structure of each object in the `steps` ar
 | `description` | `string` | No | Optional secondary helper text displayed directly underneath the step title on larger screens. |
 | `icon` | `React.ElementType` | No | Optional Lucide React icon or custom SVG component rendered inside the step circle indicator instead of a default number. |
 | `content` | `React.ReactNode` | No | The JSX/UI payload (e.g., input forms, review summaries) rendered inside `StepperContent` when this step is active. |
+
+## Works with other components
+
+- Render [Input](https://avaraui.com/docs/reactjs/input), [Select](https://avaraui.com/docs/reactjs/select), and [Radio Button](https://avaraui.com/docs/reactjs/radio-button) inside `StepperContent` panels.
+- Pair final-step submission with [Sonner](https://avaraui.com/docs/reactjs/sonner) or [Alert](https://avaraui.com/docs/reactjs/alert).
+
+## How do I build a multi-step form wizard in React?
+
+Render `Stepper` for the progress header and `StepperContent` for the step body, and give both the same `steps` array and a zero-indexed `currentStep` that you keep in state. Increase or decrease `currentStep` from your own Back and Next buttons.
+
+## Do I have to use StepperContent with Stepper?
+
+No. `Stepper` is the header only and works on its own, and `StepperContent` is the sliding body that reads the same `steps` and `currentStep`. Pair them when you want each step's `content` to slide in and out, and skip it for a bare progress tracker.
+
+## How do I let users click a step to jump to it?
+
+Pass `onStepChange`. It fires with the clicked step's index when a user clicks a step circle in the header, and you set `currentStep` from it. If you omit it, the circles become static indicators and the user can only move with your own buttons.
+
+## What fields does a step object have?
+
+A step needs `id` and `title`. `description` is helper text under the title on larger screens, `icon` is an optional Lucide icon or SVG component shown instead of the number, and `content` is the node that `StepperContent` renders when that step is active.
+
+## How do I change the stepper colour and does it animate?
+
+Set `color` to any CSS colour or Tailwind background class. It colours the progress line, active and completed circles and the pulse ring, and defaults to `var(--primary)`. Movement uses CSS transitions and the Web Animations API, and `StepperContent` slides in both directions.
 
 ---
 

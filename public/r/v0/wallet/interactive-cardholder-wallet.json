@@ -3,7 +3,7 @@
   "name": "wallet-interactive-cardholder-wallet",
   "type": "registry:block",
   "title": "Wallet — Interactive Cardholder Wallet",
-  "description": "Hover to slide the cards out. Click a card to pull it high out of the wallet, then click again to 3D-flip it to its back face.",
+  "description": "The \"Interactive Cardholder Wallet\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

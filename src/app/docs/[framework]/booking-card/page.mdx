@@ -4,12 +4,11 @@ export const metadata = docsPageMetadata("booking-card");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Booking Card
 
-A booking panel that goes inside any card: one scrolling line of days and one of times, each with prev/next arrows, a button that reads the choice back before anyone confirms, and a confirmation that draws itself in over the form once the booking is made.
-
-`BookingCard` is a compound component that holds the chosen day and slot; `BookingCard.Days`, `BookingCard.Times`, `BookingCard.Submit` and `BookingCard.Confirmation` go inside it in any layout. It draws no surface of its own, so it sits as comfortably in a plain bordered card as in a slab from <DocLink to="glass-panel">Glass Panel</DocLink>. The <DocLink to="book-appointment">Book Appointment</DocLink> section is the same card on a full page.
+A surface-neutral compound appointment widget (`BookingCard`, `BookingCard.Days`, `BookingCard.Times`, `BookingCard.Submit`, `BookingCard.Confirmation`) with async booking confirmation.
 
 export const usageCard = `"use client";
 
@@ -95,13 +94,15 @@ export default function Booking() {
 }
 `;
 
-<ExampleShowcase headingLevel={2}
+<ExampleShowcase
+  headingLevel={2}
   name="booking-card"
   columns={1}
+  installation={<Installation name="booking-card" usage="below" />}
   examples={[
     {
       title: "In a card",
-      subheading: "Pick a day and a time, then press Book. The button stays busy while your `onBook` promise runs, then the confirmation draws itself in.",
+      description: "Pick a day and a time, then press Book. The button stays busy while your `onBook` promise runs, then the confirmation draws itself in.",
       propNotes: [
         {
           prop: "BookingCard",
@@ -123,22 +124,9 @@ export default function Booking() {
       code: extractCode("src/components/custom/blocks/BookingCardBlock.tsx"),
       minHeight: 320,
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="booking-card" />
-
-## Examples
-
-<ExampleShowcase
-  name="booking-card"
-  columns={1}
-  examples={[
     {
       title: "In a glass slab",
-      subheading: "The same card inside a GlassPanel from Glass Panel. Nothing inside the card changes — it is surface-neutral by design.",
+      description: "The same card inside a GlassPanel from Glass Panel. Nothing inside the card changes — it is surface-neutral by design.",
       propNotes: [
         {
           lead: "Wrap it in a",
@@ -153,7 +141,7 @@ export default function Booking() {
     },
     {
       title: "Liquid glass",
-      subheading: "The booking card rendered inside a liquid-glass refraction surface.",
+      description: "The booking card rendered inside a liquid-glass refraction surface.",
       propNotes: [
         {
           lead: "Set variant to",
@@ -169,24 +157,36 @@ export default function Booking() {
   ]}
 />
 
-Choosing a new day clears the slot, since availability changes with the day. The submit button is disabled until both are chosen, and once they are it reads the choice back — *Book now, Wed 25 at 9:00 AM* — so nobody confirms blind.
+## About Shadcn Booking Card
 
-## Features
+**What it is.** `BookingCard` is a compound component for picking a day and a time. Its parts are `BookingCard.Month`, `BookingCard.Days`, `BookingCard.Times`, `BookingCard.Submit` and `BookingCard.Confirmation`, all sharing one selection through React context. It draws no surface of its own, so it sits inside any card or panel.
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="One state, any layout">
-    <p>Days, slots and the button share one context. Stack them, put them side by side, split them across panels — the card does not care.</p>
-  </InfoCard>
-  <InfoCard title="A confirmation that shows what happened">
-    <p>When onBook resolves, a check draws itself over the form and the day, time and place rise in beneath it. Book another clears it. It holds still under prefers-reduced-motion.</p>
-  </InfoCard>
-  <InfoCard title="Keyboard and screen reader ready">
-    <p>Days and slots are radio groups with full date names; taken slots and closed days are disabled, not hidden; the busy button carries aria-busy and the confirmation is a status region.</p>
-  </InfoCard>
-  <InfoCard title="Honest about today">
-    <p>The default days are built on the client, so a server render never guesses the visitor's date. They start today and page forward a week at a time — the previous arrow never reaches into the past. Pass your own days array to offer a different range.</p>
-  </InfoCard>
-</div>
+**How it is built.** The default days are built on the client so the server never guesses the visitor's timezone. Choosing a new day clears the chosen time. Pressing Submit runs your `onBook`, and when it resolves the button turns green and the confirmation replaces the form. All motion is CSS and holds still under `prefers-reduced-motion`.
+
+**When to use it.** Use `BookingCard` inside any <DocLink to="card">Card</DocLink> or <DocLink to="glass-panel">Glass Panel</DocLink> for appointment pickers. For a full-page scheduling layout, see <DocLink to="book-appointment">Book Appointment</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="booking-card">
+
+**When to use**
+
+- Day + time-slot appointment pickers inside a card or glass panel (`BookingCard.Days`, `BookingCard.Times`, `BookingCard.Submit`, `BookingCard.Confirmation`)
+
+**When not to use**
+
+- Multi-day date ranges or hotel pricing: use <DocLink to="range-date-picker">Range Date Picker</DocLink>
+- Full Month/Week/Day event dashboards: use <DocLink to="calendar">Calendar</DocLink>
+
+**Agent notes**
+
+- Named export: `import { BookingCard } from "@/components/custom/blocks/BookingCardBlock"`. The parts are properties of `BookingCard`, not separate imports.
+- `onBook` receives `{ day: Date, slot: string }`. Resolving shows `BookingCard.Confirmation`; rejecting quietly returns to the form, so show your own error message.
+- Keep `BookingCard.Confirmation` a direct child of `BookingCard`: once booked, every other direct child is hidden and the confirmation takes its place.
+- Pass `slots` as `{ label, taken? }[]` to `BookingCard.Times`; slots stay disabled until a day is chosen.
+- Add `BookingCard.Month` for a month and year picker; without it, `BookingCard.Days` lists today plus `horizon` (60) days.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -300,7 +300,38 @@ Choosing a new day clears the slot, since availability changes with the day. The
         <td><code>children</code></td>
         <td><code>ReactNode</code></td>
         <td><code>&quot;Book now&quot;</code></td>
-        <td>Button text. Once a day and slot are chosen it reads back the choice, e.g. <em>Book now, Wed 25 at 9:00 AM</em>.</td>
+        <td>Button text. The button stays disabled until a day and slot are chosen, then shows <em>Booking</em> while <code>onBook</code> runs and <em>Booking complete</em> after.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+### BookingCard.Month
+
+Optional month and year picker. Without it, <code>BookingCard.Days</code> runs from today.
+
+<div className="overflow-x-auto my-4">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>count</code></td>
+        <td><code>number</code></td>
+        <td><code>24</code></td>
+        <td>How many months, starting with the current one, can be chosen. The rest of the grid is greyed out.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Classes for the month trigger.</td>
       </tr>
     </tbody>
   </table>
@@ -331,10 +362,63 @@ Choosing a new day clears the slot, since availability changes with the day. The
         <td>—</td>
         <td>Where, appended after the name.</td>
       </tr>
+      <tr>
+        <td><code>title</code></td>
+        <td><code>ReactNode</code></td>
+        <td><code>"You&apos;re booked"</code></td>
+        <td>Heading under the check badge.</td>
+      </tr>
+      <tr>
+        <td><code>description</code></td>
+        <td><code>ReactNode</code></td>
+        <td><code>"We sent the details to your inbox. See you soon."</code></td>
+        <td>Line under the heading.</td>
+      </tr>
+      <tr>
+        <td><code>onAddToCalendar</code></td>
+        <td><code>{"(booking: { day: Date; slot: string }) => void | Promise<void>"}</code></td>
+        <td><code>undefined</code></td>
+        <td>Called by the Add to calendar button. Return a promise to keep it loading until the event is added. Without it the button only plays its loading and added states.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Classes for the confirmation panel.</td>
+      </tr>
     </tbody>
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Wrap `BookingCard` inside <DocLink to="card">Card</DocLink> or <DocLink to="glass-panel">Glass Panel</DocLink>; its root is `rounded-[inherit]`, so the confirmation cover matches the outer corners.
+- See <DocLink to="book-appointment">Book Appointment</DocLink> for a full-page section built around `BookingCard`.
+- Use <DocLink to="calendar">Calendar</DocLink> instead when people need a full month view of existing events, not a single booking.
+
+## How does BookingCard handle async submission and errors?
+
+Return a promise from `onBook`. While it runs, `BookingCard.Submit` is disabled and sets `aria-busy`. On success the button turns green for about 1.3 seconds before the confirmation takes over. On a rejection the card quietly returns to the form with the choice kept, so show your own error text.
+
+## How do I mark days and time slots as unavailable in BookingCard?
+
+Pass `unavailable={(day) => ...}` to `BookingCard.Days` to strike out days, and set `taken: true` on a slot in `BookingCard.Times`. Both stay visible but cannot be selected. By default the days run from today for `horizon` days (60), or you can pass your own `days` array.
+
+## How do I add a month picker to BookingCard?
+
+Place `<BookingCard.Month />` above `BookingCard.Days`. It opens a month and year grid, `count` months wide (24 by default), and `Days` then lists only the chosen month, starting from today in the current one. Picking a month that does not contain the selected day clears that day and slot.
+
+## Why must BookingCard.Confirmation be a direct child of BookingCard?
+
+Once the booking succeeds, `BookingCard` hides every direct child except the confirmation and puts the confirmation in their place. If you nest `BookingCard.Confirmation` inside a wrapper, that wrapper is hidden with the form and the confirmation never shows. Headings and other parts can be siblings of it.
+
+## How do I add an Add to calendar action to BookingCard?
+
+The confirmation already has Change and Add to calendar buttons. Pass `onAddToCalendar` to `BookingCard.Confirmation`; it receives `{ day, slot }`, and returning a promise keeps the button on Adding until it settles. Change returns to the form with the day and time kept. Without the prop, the button only plays its states.
+
+## Is BookingCard accessible and does it respect reduced motion?
+
+Days and times are `role="radio"` buttons inside labelled radio groups, with the full date as each day's `aria-label`. The month grid is a dialog that closes on Escape, and the confirmation is a `role="status"` region that takes focus. A `prefers-reduced-motion` rule switches its CSS animations off.
 
 <DocsJsonLd slug="booking-card" />
+<FaqJsonLd slug="booking-card" />

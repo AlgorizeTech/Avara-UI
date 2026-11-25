@@ -5,14 +5,11 @@ export const metadata = docsPageMetadata("stepper");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Stepper
 
-A production-grade, highly animated multi-step stepper and wizard component built on plain **CSS transitions and the Web Animations API** — no animation library. It splits the layout into two decoupled blocks: the visual progress tracker and the bidirectional sliding content payload.
-
-Unlike basic UI placeholders, this engine is designed to handle **real form state, per-step input validation, and asynchronous API submission handling** (including error states) with silky 60fps transitions.
-
-`Stepper` (the tracker) and `StepperContent` (the sliding payload) are decoupled — they only share the `steps` array and a `currentStep` number that you own, so `Stepper` also works alone as a progress header above content you lay out yourself. Validation, submission and error handling stay in your component.
+A decoupled multi-step tracker (`Stepper`) and sliding content container (`StepperContent`) built on CSS transitions and the Web Animations API.
 
 export const stepperPanels = `// The three step bodies — swap them for your own fields.
 function Field({
@@ -438,10 +435,11 @@ export default function OnboardingWizard() {
   colorControl
   colorLabel="Accent Color"
   columns={1}
+  installation={<Installation name="stepper" usage="below" />}
   examples={[
     {
       title: "Stepper",
-      subheading: "Per-step validation blocks Next, and the Review step can simulate a failed submit.",
+      description: "Per-step validation blocks Next, and the Review step can simulate a failed submit.",
       propNotes: [
         {
           lead: "Pass",
@@ -472,35 +470,34 @@ export default function OnboardingWizard() {
   ]}
 />
 
-## Installation
+## About Shadcn Stepper
 
-<Installation name="stepper" />
+**What it is.** `Stepper` (the visual progress bar/step indicators) and `StepperContent` (the bidirectional sliding step body) share a `steps` array and a zero-indexed `currentStep` number.
 
-## Features
-Learn about the Stepper component's linear progression features, providing clear visual feedback for multi-step forms and processes.
+**How it is built.** Built with plain CSS transitions and the Web Animations API (no animation library dependency). `Stepper` and `StepperContent` are decoupled so you can keep form state, per-step validation, and async submit handling in your own component.
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `Stepper` for multi-step checkout, onboarding, and setup flows with horizontal step indicators. For a Typeform-style vertical question wizard, use <DocLink to="wizard">Wizard</DocLink>.
 
-## Best Practices & Guidelines
+## For AI agents
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+<AgentBrief name="stepper">
+
+**When to use**
+
+- Multi-step forms and onboarding flows with a horizontal progress header (`Stepper`) and sliding panels (`StepperContent`)
+- Standalone progress headers (`Stepper` without `StepperContent`)
+
+**When not to use**
+
+- Full-screen Typeform-style vertical question flows — use <DocLink to="wizard">Wizard</DocLink>
+- Narrative feature decks — use <DocLink to="split-stepper">Split Stepper</DocLink>
+
+**Agent notes**
+
+- Named exports: `Stepper`, `StepperContent`, `type Step` from `@/components/custom/blocks/StepperBlock`
+- Omit `onStepChange` to render static non-clickable step indicators; pass a CSS color value (not a Tailwind class) to `color` so the active pulse ring renders
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -743,6 +740,30 @@ The TypeScript interface defining the structure of each object in the <code>step
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Render <DocLink to="input">Input</DocLink>, <DocLink to="select">Select</DocLink>, and <DocLink to="radio-button">Radio Button</DocLink> inside `StepperContent` panels.
+- Pair final-step submission with <DocLink to="sonner">Sonner</DocLink> or <DocLink to="alert">Alert</DocLink>.
+
+## How do I build a multi-step form wizard in React?
+
+Render `Stepper` for the progress header and `StepperContent` for the step body, and give both the same `steps` array and a zero-indexed `currentStep` that you keep in state. Increase or decrease `currentStep` from your own Back and Next buttons.
+
+## Do I have to use StepperContent with Stepper?
+
+No. `Stepper` is the header only and works on its own, and `StepperContent` is the sliding body that reads the same `steps` and `currentStep`. Pair them when you want each step's `content` to slide in and out, and skip it for a bare progress tracker.
+
+## How do I let users click a step to jump to it?
+
+Pass `onStepChange`. It fires with the clicked step's index when a user clicks a step circle in the header, and you set `currentStep` from it. If you omit it, the circles become static indicators and the user can only move with your own buttons.
+
+## What fields does a step object have?
+
+A step needs `id` and `title`. `description` is helper text under the title on larger screens, `icon` is an optional Lucide icon or SVG component shown instead of the number, and `content` is the node that `StepperContent` renders when that step is active.
+
+## How do I change the stepper colour and does it animate?
+
+Set `color` to any CSS colour or Tailwind background class. It colours the progress line, active and completed circles and the pulse ring, and defaults to `var(--primary)`. Movement uses CSS transitions and the Web Animations API, and `StepperContent` slides in both directions.
 
 <DocsJsonLd slug="stepper" />
+<FaqJsonLd slug="stepper" />

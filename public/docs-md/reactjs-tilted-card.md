@@ -6,11 +6,22 @@ url: https://avaraui.com/docs/nextjs/tilted-card
 
 # Shadcn Tilted Card
 
-A deeply interactive, parallax-driven 3D tilt component. It calculates the relative pointer coordinates and eases the card toward them through a small spring of its own (no animation library) to rotate it along the X and Y axes, mimicking a physical object held in space.
+A dependency-free 3D pointer-tilt wrapper (`TiltedCard`) with spring-eased X/Y rotation, hover scale, and a cursor-tracking radial glare layer.
 
-It automatically injects a dynamic, radial glare layer over the content that tracks the light source based on your mouse position to complete the tactile illusion.
+## Installation
 
-Hover a card and move the pointer across it — rotation, scale and the radial glare all derive from the cursor's position inside the element.
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/tilted-card.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/tilted-card
+```
 
 ## Interactive Tilted Card
 
@@ -76,24 +87,7 @@ export default function AccessKeyCard() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/tilted-card.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/tilted-card
-```
-
-## Examples
-
-### Stronger tilt
+## Stronger tilt
 
 - `tiltIntensity={35}` is the maximum rotation in degrees on each axis, reached at the edge of the box. Defaults to `15`; past ~25 the perspective starts to shear.
 
@@ -151,7 +145,7 @@ export default function StrongTilt() {
 }
 ```
 
-### Subtle tilt
+## Subtle tilt
 
 - `tiltIntensity={6}` keeps the motion restrained for dense layouts where many cards move at once.
 
@@ -212,7 +206,7 @@ export default function SubtleTilt() {
 }
 ```
 
-### Stronger glare
+## Stronger glare
 
 - `glareOpacity={0.55}` is the peak alpha of the radial highlight that tracks the pointer.
 
@@ -270,7 +264,7 @@ export default function StrongGlare() {
 }
 ```
 
-### Without glare
+## Without glare
 
 - Set `glareOpacity={0}` to drop the reflection entirely — right when the card already carries its own lighting.
 
@@ -326,7 +320,7 @@ export default function NoGlare() {
 }
 ```
 
-### Lift on hover
+## Lift on hover
 
 - `scaleOnHover={1.12}` is how far the card comes toward the viewer on hover.
 
@@ -383,24 +377,28 @@ export default function LiftOnHover() {
 }
 ```
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+## About Shadcn Tilted Card
 
-Hardware-accelerated transitions that ensure smooth 60fps performance across devices.
+**What it is.** `TiltedCard` wraps any card content with interactive 3D pointer-tracking tilt (`tiltIntensity`), hover lift (`scaleOnHover`), and a radial specular highlight (`glareOpacity`).
 
-Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.
+**How it is built.** Runs a lightweight built-in spring loop (zero animation library dependency) that eases X/Y rotation and radial glare toward the pointer position.
 
-Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.
+**When to use it.** Use `TiltedCard` for hero feature cards, membership passes, and product highlights. For multi-card grids without 3D tilt, use [Card](https://avaraui.com/docs/reactjs/card).
 
-Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.
+- Interactive 3D hover-tilt wrappers around cards, badges, or media showcases (`tiltIntensity`, `glareOpacity`, `scaleOnHover`)
 
-### State Management
+**When not to use**
 
-When triggering animations via state changes, ensure you wrap state updates in `startTransition` or use lightweight stores to prevent React rendering bottlenecks during the animation tick.
+- Static editorial or ecommerce cards — use [Card](https://avaraui.com/docs/reactjs/card)
+
+**Agent notes**
+
+- Named export: `import { TiltedCard } from "@/components/custom/blocks/TiltedCardBlock"`
+- Keep `tiltIntensity` around `6`–`20` for natural perspective (values above ~25 start to shear); set `glareOpacity={0}` to disable glare
 
 ## Props Reference
 
@@ -411,6 +409,30 @@ When triggering animations via state changes, ensure you wrap state updates in `
 | `TiltedCard` | `glareOpacity` | `number` | `0.2` | The maximum opacity (from 0 to 1) of the mouse-tracking radial gradient light reflection. Set to 0 to disable the glare. |
 | `TiltedCard` | `scaleOnHover` | `number` | `1.02` | The transform scale multiplier applied to the entire component when the mouse enters the bounding box, creating a subtle lift effect. |
 | `TiltedCard` | `className` | `string` | `undefined` | Custom Tailwind CSS classes to apply to the outermost perspective wrapper. |
+
+## Works with other components
+
+- Wrap [Card](https://avaraui.com/docs/reactjs/card) or [Profile Card](https://avaraui.com/docs/reactjs/profile-card) surfaces inside `TiltedCard` for interactive 3D hover tilt.
+
+## How do I add a 3D tilt hover effect to a card in React?
+
+Wrap your card markup in `TiltedCard`. Anything you render inside tilts with the pointer, with spring-eased rotation on the X and Y axes. It uses a small built-in spring loop, so no animation library is installed alongside it.
+
+## How do I control how far the card tilts?
+
+Set `tiltIntensity`, the maximum rotation in degrees when the pointer is at the very edge of the card. It defaults to `15`. Lower values give a subtle, premium feel, while higher values make the 3D effect much more dramatic.
+
+## How do I disable the radial glare layer on TiltedCard?
+
+Pass `glareOpacity={0}` to remove the specular highlight while keeping the 3D tilt and `scaleOnHover`. The default is `0.2`, and the value runs from `0` to `1`, so a higher number makes the cursor-tracking light brighter.
+
+## How do I remove or change the hover lift?
+
+`scaleOnHover` is the scale multiplier applied while the pointer is over the card, and it defaults to `1.02`. Set it to `1` to remove the lift and keep only the rotation. Use `className` to style the outermost perspective wrapper.
+
+## What can I put inside TiltedCard?
+
+Any content, such as a [Card](https://avaraui.com/docs/reactjs/card) or [Profile Card](https://avaraui.com/docs/reactjs/profile-card). `TiltedCard` only supplies the 3D wrapper, perspective and glare, so your own children define the colours, images and layout inside it.
 
 ---
 

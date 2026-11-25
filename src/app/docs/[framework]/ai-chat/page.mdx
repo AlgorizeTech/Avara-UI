@@ -3,15 +3,14 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("ai-chat");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode, extractMotionCode } from "@/lib/code";
 
 # Shadcn AI Chat
 
-A premium LLM chat interface with conversation history, typing indicators, editable chat titles and a full prompt composer: a **+** menu for files and `@Mention` tools, a model picker, a Faster ↔ Smarter effort slider, and voice dictation with a live waveform.
+An LLM chat interface with history, editable titles, a prompt composer with @Mention tools, and a model picker.
 
 Every preview is live: send a prompt to see the simulated stream, rename a thread, or hit **New Chat**. `variant` changes the shell only, and everything else behaves identically in every variant.
-
-<AgentVariants slug="ai-chat" />
 
 ## Workspace chat
 
@@ -54,10 +53,11 @@ export default function Workspace() {
 <ExampleShowcase
   name="ai-chat-workspace"
   columns={1}
+  installation={<Installation name="ai-chat-workspace" showSetupPath={false} usage="below" />}
   examples={[
     {
       title: "Workspace",
-      subheading:
+      description:
         "Send a prompt to watch the steps run. Try Research, the effort slider, a file and the model menu beside the prompt bar.",
       propNotes: [
         {
@@ -78,10 +78,6 @@ export default function Workspace() {
     },
   ]}
 />
-
-### Install the workspace chat
-
-<Installation name="ai-chat-workspace" showSetupPath={false} />
 
 What the screen does without any props:
 
@@ -288,6 +284,7 @@ export default function LiquidGlassAssistant() {
   name="ai-chat"
   colorControl
   columns={1}
+  installation={<Installation name="ai-chat" usage="below" />}
   examples={[
     {
       title: "AI assistant",
@@ -316,10 +313,6 @@ export default function LiquidGlassAssistant() {
     },
   ]}
 />
-
-## Installation
-
-<Installation name="ai-chat" />
 
 ## Examples
 
@@ -441,31 +434,37 @@ Everything under the prompt is built in and works without any props:
 - **Effort** — a Faster ↔ Smarter slider with one stop per level. At the highest level the pill switches to a sparkle and the prompt bar glows with a scatter of twinkling specks. The simulated reply also takes a little longer the higher you go.
 - **Dictation** — the mic opens the microphone and drives a 22-bar waveform from the live audio level, while the Web Speech API writes what you say into the prompt. Without mic permission the wave runs an idle animation; without speech recognition the wave still shows so the button visibly responds. Tap again (or press Escape) to stop.
 
-## Features
-Explore the Ai-Chat interface features, including message streaming, typing indicators, and seamless integration with AI models.
+## About Shadcn AI Chat
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**What it is.** The `ai-chat` install is `AIChat`: a thread sidebar with rename and delete, a conversation view, and a prompt bar with a `+` tool menu, attachments, a model picker, an effort slider and voice dictation. The separate `ai-chat-workspace` install is `AIChatWorkspace`, a fuller screen with live steps, streamed replies, sources and a stop button.
 
-## Best Practices & Guidelines
+**How it is built.** Threads are grouped by each `chatHistory` item's `date` string, and `variant` swaps only the outer shell. `AIChat` calls `onSend` and `uploadFile` as hooks, and it always appends its own simulated reply. `AIChatWorkspace` takes a `generateReply` function that returns the reply text. GSAP drives the motion, with a Motion twin installed as `ai-chat-motion`.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use it for assistant and copilot front ends, research workspaces and prompt-driven product screens.
+
+## For AI agents
+
+<AgentBrief name="ai-chat">
+
+**When to use**
+
+- LLM assistants, copilot sidebars
+- Research workspaces, prompt-driven SaaS interfaces
+
+**When not to use**
+
+- Message bubbles inside a thread you build yourself: use <DocLink to="chat-bubble">Chat Bubble</DocLink>
+- A person-to-person messenger with contacts and unread badges: use <DocLink to="chat">Chat</DocLink>
+
+**Agent notes**
+
+- Install `ai-chat` for `AIChat` (default export of `Ai-chat`) or `ai-chat-workspace` for `AIChatWorkspace` (default export of `AiChatWorkspace`). Use `ai-chat-motion` for the Motion build of `AIChat`, never both.
+- `AIChat` composer features (`tools` for the `+` menu, `models`, `efforts`, drag-and-drop attachments, dictation) work with simulated defaults and no props.
+- `AIChat` only notifies you: `onSend` receives `{ content, attachments, model, effort, tools }` and the thread still shows a canned reply. To show your own model's answer, use `AIChatWorkspace` and pass `generateReply`.
+- Pass `uploadFile(file, onProgress, signal)` to replace the simulated upload on either component.
+- Seed data: `AIChat` takes `chatHistory` and `initialMessages`; `AIChatWorkspace` takes `chatHistory` and `messagesByThread`.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -732,6 +731,94 @@ Explore the Ai-Chat interface features, including message streaming, typing indi
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+### AIChatWorkspace
+
+<div className="overflow-x-auto">
+  <table>
+    <thead>
+      <tr>
+        <th>Prop</th>
+        <th>Type</th>
+        <th>Default</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>generateReply</code></td>
+        <td><code>(payload: WorkspaceSendPayload) =&gt; string | Promise&lt;string&gt;</code></td>
+        <td>Built-in stand-in</td>
+        <td>Your model. Return the reply text and it is streamed in.</td>
+      </tr>
+      <tr>
+        <td><code>onSend</code></td>
+        <td><code>(payload: WorkspaceSendPayload) =&gt; void</code></td>
+        <td><code>undefined</code></td>
+        <td>Fires each time a prompt goes out, with the thread id, attachments, model, effort, modes, connectors, knowledge and language.</td>
+      </tr>
+      <tr>
+        <td><code>chatHistory</code></td>
+        <td><code>WorkspaceThread[]</code></td>
+        <td><code>[]</code></td>
+        <td>Sidebar threads, grouped by their <code>date</code> string.</td>
+      </tr>
+      <tr>
+        <td><code>messagesByThread</code></td>
+        <td><code>Record&lt;string | number, WorkspaceMessage[]&gt;</code></td>
+        <td><code>[]</code></td>
+        <td>Seeds a thread's messages by id. A thread without an entry opens on a short greeting.</td>
+      </tr>
+      <tr>
+        <td><code>uploadFile</code></td>
+        <td><code>WorkspaceUploadHandler</code></td>
+        <td>Simulated</td>
+        <td>Real upload for attachments and Library files, same signature as <code>AIChat</code>.</td>
+      </tr>
+      <tr>
+        <td><code>brandName</code></td>
+        <td><code>string</code></td>
+        <td><code>"Vela"</code></td>
+        <td>Name beside the mark in the sidebar, footer note and upgrade copy.</td>
+      </tr>
+      <tr>
+        <td><code>defaultPlan</code></td>
+        <td><code>"free" | "pro"</code></td>
+        <td><code>"free"</code></td>
+        <td>On <code>"free"</code> the Upgrade pill shows and the connectors are locked.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+## Works with other components
+
+- <DocLink to="chat-bubble">Chat Bubble</DocLink> for message bubbles in a thread you render yourself, outside `AIChat`.
+- <DocLink to="voice-note">Voice Note</DocLink> when you want recorded audio messages rather than the composer's speech-to-text dictation.
+- <DocLink to="agent-graph">Agent Graph</DocLink> to show which agents are working behind the assistant's replies.
+
+## How do I show my own model's reply in AI Chat?
+
+Use `AIChatWorkspace` and pass `generateReply`, a function that receives the send payload and returns the reply text, which the workspace streams in. `AIChat` has no such prop: its `onSend` only reports the prompt, attachments, `model`, `effort` and `tools`, and the thread still gets a simulated answer.
+
+## What is the difference between `ai-chat` and `ai-chat-workspace`?
+
+`ai-chat` installs `AIChat`, a thread-plus-conversation shell with five `variant` looks and a simulated reply. `ai-chat-workspace` installs `AIChatWorkspace`, which opens on an empty screen and adds Research, web, image and reasoning modes, a Library, connectors, sources, a stop button and `generateReply`.
+
+## How do I replace the simulated file upload in AI Chat?
+
+Pass `uploadFile` as `(file, onProgress, signal) => Promise<void>`. Call `onProgress` with 0 to 100, resolve when the file is stored, and reject to mark the chip failed. `signal` aborts if the person removes the chip mid-upload. Without it, uploads are simulated. `accept` and `maxFiles` limit the picker.
+
+## How do I add my own tools to the AI Chat `+` menu?
+
+Pass `tools` as `{ id, label, description?, icon?, action? }[]`. A row with `action: "upload"` opens the file picker, and any other row writes `@Label` into the prompt. The tools a prompt names arrive in `onSend` as `tools`, in the order they appear in the text.
+
+## How do I change the AI Chat accent colour or model list?
+
+Set `color` to `"primary"` (the default, which follows your theme tokens), `"indigo"`, `"rose"`, `"emerald"`, `"zinc"` or a hex string. Set `models` and `efforts` to your own lists; a model with `pro: true` or `premium: true` gets a Pro or Premium badge, and `onModelChange` reports the choice.
+
+## Does AI Chat work in Vite and does it respect reduced motion?
+
+It runs in Vite as well as Next.js, since it has no `next/*` imports. It needs `gsap` and `lucide-react` from npm, or `motion` in the Motion build, and the `ui-liquid-glass` registry item. The Pro and Premium model flourishes are skipped when `prefers-reduced-motion: reduce` is set.
 
 <DocsJsonLd slug="ai-chat" />
+<FaqJsonLd slug="ai-chat" />

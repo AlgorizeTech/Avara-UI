@@ -3,7 +3,7 @@
   "name": "range-date-picker-dual-month-priced-range-date-picker",
   "type": "registry:block",
   "title": "Range Date Picker — Dual Month Priced Range Date Picker",
-  "description": "Side-by-side dual calendars displaying dynamic rate prices ($100, $120) below date numbers.",
+  "description": "The \"Dual Month Priced Range Date Picker\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

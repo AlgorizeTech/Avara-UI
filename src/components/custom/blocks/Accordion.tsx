@@ -280,12 +280,12 @@ const VARIANTS: Record<Exclude<AccordionVariant, "card-filled" | "brand-reveal">
     smooth: true,
   },
 
-  // "Inset": white cards with a hairline border and soft shadow; the open one holds the answer in a well.
+  // "Inset": white cards with a soft shadow; the open one holds the answer in a well.
   inset: {
     list: "flex flex-col gap-2.5",
     item: cn(
-      "rounded-[1.75rem] border border-[#F7F7F6] bg-card p-2 dark:border-border/60",
-      CARD_SHADOW,
+      "rounded-[1.75rem] bg-card p-2",
+      "shadow-[0_1px_2px_rgba(0,0,0,0.04),0_12px_32px_-16px_rgba(0,0,0,0.18)]",
       "transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
       "data-[state=open]:-translate-y-px",
       "has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring/60",

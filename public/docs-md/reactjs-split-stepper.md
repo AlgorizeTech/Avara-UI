@@ -1,16 +1,27 @@
 ---
 title: "Split-Stack Stepper"
-description: "A high-impact, interactive split-screen layout animated with plain CSS transitions — no animation library. Free shadcn/ui component for React and Tailwind CSS."
+description: "Shadcn Split-Stack Stepper. A split-screen narrative stepper (`SplitStepper`) pairing clickable step cards on one side with a sticky 3D-stacked card deck on…"
 url: https://avaraui.com/docs/nextjs/split-stepper
 ---
 
 # Split-Stack Stepper
 
-A high-impact, interactive split-screen layout animated with plain **CSS transitions** — no animation library. One side renders a narrative sequence of feature cards with glowing pill badges, while the opposite side maintains a sticky visual showcase container.
+A split-screen narrative stepper (`SplitStepper`) pairing clickable step cards on one side with a sticky 3D-stacked card deck on the other.
 
-Unlike basic tab replacements, this engine applies dynamic mathematical depth tweens via GreenSock to **stack previous visual cards on top of each other in a 3D deck format** as the user progresses through the narrative.
+## Installation
 
-`SplitStepper` orchestrates the responsive grid itself — you supply the narrative sequence and a JSX payload per card, and CSS transitions handle the stacking. Click any step in the scrolling column to watch the deck restack.
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/split-stepper.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/split-stepper
+```
 
 ## Split stepper
 
@@ -185,24 +196,7 @@ export default function ServicesSection() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/split-stepper.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/split-stepper
-```
-
-## Examples
-
-### Sticky on the left
+## Sticky on the left
 
 - Set `stickySide="left"` to mirror the layout, moving the card deck opposite the narrative. Defaults to `right`.
 
@@ -369,7 +363,7 @@ export default function ServicesSectionMirrored() {
 }
 ```
 
-### Deck depth
+## Deck depth
 
 - `cardOffset={16}` is the pixel Y-translation applied to each stacked card.
 - `cardDepthScale={0.05}` shrinks each deeper card by that fraction.
@@ -540,7 +534,7 @@ export default function DeepDeck() {
 }
 ```
 
-### Custom color
+## Custom color
 
 - `color` themes the active rail, badge and arrow. A hex is applied inline; a Tailwind class also works.
 
@@ -707,6 +701,30 @@ export default function BrandedSplitStepper() {
 }
 ```
 
+## About Split-Stack Stepper
+
+**What it is.** `SplitStepper` pairs a narrative list of step cards with a sticky 3D-stacked visual deck (`cardContent`), configurable `stickySide` (`"left"` or `"right"`), `cardOffset`, `cardDepthScale`, and theme `color`.
+
+**How it is built.** Animated with plain CSS transitions (no animation-library dependency) so clicking any narrative step restacks the sticky visual deck smoothly.
+
+**When to use it.** Use `SplitStepper` for product walkthroughs, onboarding feature tours, and workflow explainers. For scroll-triggered accordion rows, use [Scroll Accordion Showcase](https://avaraui.com/docs/reactjs/split-scroll-stepper).
+
+## For AI agents
+
+**When to use**
+
+- Split-screen product walkthroughs where clicking narrative steps restacks a sticky 3D card deck (`stickySide="left" | "right"`)
+
+**When not to use**
+
+- Scroll-activated accordion rows — use [Scroll Accordion Showcase](https://avaraui.com/docs/reactjs/split-scroll-stepper)
+- Linear form steppers — use [Stepper](https://avaraui.com/docs/reactjs/stepper)
+
+**Agent notes**
+
+- Named export: `import { SplitStepper } from "@/components/custom/blocks/SplitStepperBlock"`
+- Tune `cardOffset` (px Y-shift) and `cardDepthScale` (scale step) to control how stacked cards peek behind the active card
+
 ## Props Reference
 
 | Component / Interface | Prop | Type | Default | Description |
@@ -725,6 +743,31 @@ export default function BrandedSplitStepper() {
 | `SplitStep` | `tags` | `string[]` | `undefined` | An optional array of keyword strings rendered as interactive pill badges underneath the description. Glows with the active theme color when selected. |
 | `SplitStep` | `cardContent` | `React.ReactNode` | Required | The custom JSX/UI payload (e.g., analytics charts, terminals, mockups) rendered inside the sticky 3D card for this specific step. |
 | `SplitStep` | `color` | `string` | `"bg-zinc-900 text-white"` | Optional Tailwind background and border color classes applied to the specific showcase card surface (e.g., `"bg-[#090a14] border-indigo-500/20"`). |
+
+## Works with other components
+
+- Render [Card](https://avaraui.com/docs/reactjs/card) or [Chart](https://avaraui.com/docs/reactjs/chart) mockups inside each step's `cardContent`.
+- Compare with [Scroll Accordion Showcase](https://avaraui.com/docs/reactjs/split-scroll-stepper) for scroll-driven expansion instead of click-driven restacking.
+
+## How do I build a split-screen stepper with a sticky card deck in React?
+
+Pass a `steps` array to `SplitStepper`. Each step needs `id`, `stepNumber`, `title`, `description` and `cardContent`. The step cards form a clickable list on one side, and each step's `cardContent` appears in a sticky 3D-stacked deck on the other.
+
+## How do I flip the sticky deck to the left side?
+
+Set `stickySide="left"`. The default is `"right"`, which keeps the card deck sticky on the right and lets the clickable step list flow on the left. On narrow screens the layout is a responsive grid, so check both widths after you change it.
+
+## How do I put my own UI inside the stacked cards?
+
+Give each step a `cardContent` node, such as a chart, terminal or app mockup, and use the optional per-step `color` Tailwind classes to style the card surface. It defaults to `"bg-zinc-900 text-white"`. The deck's stacking is handled for you.
+
+## How do I react when the user changes step?
+
+Pass `onStepChange`. It receives the new step index whenever the user clicks a different narrative step. It does not fire on scroll, because the stepper is click-driven. Use it to sync analytics or other UI, and see [Scroll Accordion Showcase](https://avaraui.com/docs/reactjs/split-scroll-stepper) for the scroll-driven version.
+
+## How do I adjust the depth of the stacked cards?
+
+Use `cardOffset` and `cardDepthScale`. `cardOffset` is the Y-axis shift in pixels for each background card and defaults to `16`. `cardDepthScale` defaults to `0.05`, so each card further back shrinks by an extra 5%. The motion is plain CSS transitions, with no animation library.
 
 ---
 

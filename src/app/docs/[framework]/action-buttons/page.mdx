@@ -105,13 +105,9 @@ export default function Demo() {
 
 export const actionButtonsCode = extractMotionCode("src/components/custom/blocks/ActionButtons.tsx");
 
-{/* Fixed light/dark grey stage, so a site theme preset cannot repaint it. */}
-export const previewStage = "[--preview-stage:#fafafa] dark:[--preview-stage:#202023]";
-
 <ExampleShowcase minHeight={260}
   headingLevel={2}
   name="action-buttons"
-  className={previewStage}
   colorControl
   columns={1}
   installation={<Installation name="action-buttons" usage="below" />}

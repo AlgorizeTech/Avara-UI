@@ -58,9 +58,7 @@
         "navigation",
         "data-display"
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -808,9 +806,7 @@
         "marketing",
         "data-display"
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "utils"
       ],
@@ -2213,7 +2209,7 @@
       "type": "registry:component",
       "title": "Falling Tags",
       "author": "AlgorizeTech",
-      "description": "A physics-based interactive tags playground where badges float, fall under gravity, collide realistically, and can be dragged and thrown.",
+      "description": "Ask the user to pick one of 7 falling tags variants: https://avaraui.com/view/falling-tags. This item holds 7 of them as looks of one component (default, colorful, pastel, neon, glass, monochrome, black-and-white). Skip the question if the user already named one. A physics-based interactive tags playground where badges float, fall under gravity, collide realistically, and can be dragged and thrown.",
       "categories": [
         "marketing",
         "data-display"
@@ -4145,9 +4141,7 @@
         "marketing",
         "data-display"
       ],
-      "dependencies": [
-        "motion"
-      ],
+      "dependencies": [],
       "registryDependencies": [
         "https://avaraui.com/r/account-menu.json",
         "https://avaraui.com/r/button.json",
@@ -4318,8 +4312,7 @@
         "layout"
       ],
       "dependencies": [
-        "lucide-react",
-        "motion"
+        "lucide-react"
       ],
       "registryDependencies": [
         "utils"
@@ -4598,7 +4591,7 @@
       "type": "registry:component",
       "title": "Secure Envelope",
       "author": "AlgorizeTech",
-      "description": "An interactive classified security envelope & travel pass sleeve component featuring a secret card that glides out horizontally on hover and elevates gracefully onto the cover on click with 3D flip physics.",
+      "description": "Ask the user to pick one of 4 secure envelope variants: https://avaraui.com/view/secure-envelope. This item holds 4 of them as looks of one component (confidential-folder, smart-card, classic-voucher, train-ticket). Skip the question if the user already named one. An interactive classified security envelope & travel pass sleeve component featuring a secret card that glides out horizontally on hover and elevates gracefully onto the cover on click with 3D flip physics.",
       "categories": [
         "data-display",
         "marketing",

@@ -3,7 +3,7 @@
   "name": "animated-typography-color-wipe",
   "type": "registry:block",
   "title": "Animated Typography — Color Wipe",
-  "description": "An accent copy of the text is unclipped left to right over the foreground, the technique behind the Honeycomb Hero title.",
+  "description": "The \"Color Wipe\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

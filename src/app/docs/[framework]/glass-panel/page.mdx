@@ -4,14 +4,11 @@ export const metadata = docsPageMetadata("glass-panel");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Glass Panel
 
-A frosted surface in four shapes, and the aurora ground it sits on. `GlassBackdrop` washes three colours behind a 12-column bento grid and sets the surface for everything inside; `GlassPanel` is one glass recipe — blur, hairline border, inset highlight — whose `shape` encodes hierarchy: a `slab` for the hero, a `tile` for content, a `disc` for a single number, a `capsule` for chips.
-
-Switch the backdrop to `variant="solid"` and every panel becomes a plain card with an ordinary shadow — nothing inside them changes. <DocLink to="profile-page">Profile Page</DocLink>, <DocLink to="book-appointment">Book Appointment</DocLink> and <DocLink to="booking-card">Booking Card</DocLink> are all built on this pair.
-
-<AgentVariants slug="glass-panel" />
+A frosted-glass bento system (`GlassBackdrop`, `GlassPanel`, `useSurface`) with four shape hierarchies (`slab`, `tile`, `disc`, `capsule`) and `glass`, `solid`, and `liquid-glass` modes.
 
 export const usageShapes = `import { GlassBackdrop, GlassPanel } from "@/components/custom/blocks/GlassPanelBlock";
 
@@ -91,10 +88,11 @@ export default function LiquidGlass() {
   name="glass-panel"
   colorControl={false}
   columns={1}
+  installation={<Installation name="glass-panel" usage="below" />}
   examples={[
     {
       title: "Four shapes",
-      subheading: "The same recipe with four corner treatments. Radius is the only difference, so it reads as hierarchy.",
+      description: "The same recipe with four corner treatments. Radius is the only difference, so it reads as hierarchy.",
       propNotes: [
         {
           prop: "shape",
@@ -113,23 +111,9 @@ export default function LiquidGlass() {
       code: extractCode("src/components/custom/blocks/GlassPanelBlock.tsx"),
       minHeight: 240,
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="glass-panel" />
-
-## Examples
-
-<ExampleShowcase
-  name="glass-panel"
-  colorControl={false}
-  columns={1}
-  examples={[
     {
       title: "Bento layout",
-      subheading: "A slab, an interactive tile, three discs and a row of capsules on a custom aurora.",
+      description: "A slab, an interactive tile, three discs and a row of capsules on a custom aurora.",
       propNotes: [
         {
           prop: "aurora",
@@ -148,7 +132,7 @@ export default function LiquidGlass() {
     },
     {
       title: "Solid",
-      subheading: "The same layout with variant=\"solid\": plain cards with a shadow, no aurora.",
+      description: "The same layout with variant=\"solid\": plain cards with a shadow, no aurora.",
       propNotes: [
         {
           lead: "Set",
@@ -164,7 +148,7 @@ export default function LiquidGlass() {
     },
     {
       title: "Liquid glass",
-      subheading: "The same layout inside a liquid-glass refraction surface with pure white glass elements.",
+      description: "The same layout inside a liquid-glass refraction surface with pure white glass elements.",
       propNotes: [
         {
           lead: "Set",
@@ -181,22 +165,34 @@ export default function LiquidGlass() {
   ]}
 />
 
-## Features
+## About Shadcn Glass Panel
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="One recipe, four shapes">
-    <p>Blur, hairline border and inset highlight are identical on every panel. Only the radius changes, so shape carries meaning instead of decoration.</p>
-  </InfoCard>
-  <InfoCard title="Glass or solid, by context">
-    <p>The backdrop sets the surface once and every panel reads it. Flip a whole page from frosted to flat with one prop; override a single panel when needed.</p>
-  </InfoCard>
-  <InfoCard title="Dark mode built in">
-    <p>The aurora dims and the glass darkens under the dark class; the hairline and highlight keep their contrast on both.</p>
-  </InfoCard>
-  <InfoCard title="Nothing but Tailwind">
-    <p>No animation library, no portal. Spans, padding and inner layout are ordinary utility classes on the panel.</p>
-  </InfoCard>
-</div>
+**What it is.** `GlassBackdrop` renders an aurora (or `solid` / `liquid-glass`) 12-column bento grid, while `GlassPanel` renders translucent surfaces in four `shape` sizes (`slab`, `tile`, `disc`, `capsule`). `useSurface` exposes the active backdrop variant to child components.
+
+**How it is built.** Built with Tailwind CSS (no animation library or portal) and React Context, so switching `variant` on `GlassBackdrop` updates every nested `GlassPanel` automatically. The `liquid-glass` variant adds an SVG refraction filter from the `ui-liquid-glass` registry item.
+
+**When to use it.** Use `GlassPanel` for bento dashboards, profile pages, and booking cards. For standard bordered cards, use <DocLink to="card">Card</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="glass-panel">
+
+**When to use**
+
+- Frosted-glass, solid, or liquid-glass 12-column bento layouts (`GlassBackdrop` + `GlassPanel`)
+
+**When not to use**
+
+- Standard bordered cards without a 12-column aurora backdrop — use <DocLink to="card">Card</DocLink>
+
+**Agent notes**
+
+- Named exports: `GlassBackdrop`, `GlassPanel` from `@/components/custom/blocks/GlassPanelBlock`; `useSurface` from `@/components/custom/blocks/glass-panel-context`
+- Span panels with Tailwind grid utilities (e.g. `lg:col-span-8`); a single `GlassPanel` can override its parent's `variant`
+- `GlassPanel` is a plain `div`: `interactive` only adds a pointer cursor and hover lift, so add your own `onClick`, `role` and `tabIndex` for a real control
+- `aurora`, `bgImage`, `wrapperClassName` and `radius` on `GlassBackdrop` apply to specific variants only (see the prop notes)
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -223,25 +219,25 @@ export default function LiquidGlass() {
         <td><code>bgImage</code></td>
         <td><code>string</code></td>
         <td>—</td>
-        <td>Optional custom background image URL for <code>liquid-glass</code> variant.</td>
+        <td>Background image URL for the <code>liquid-glass</code> variant. Other variants ignore it.</td>
       </tr>
       <tr>
         <td><code>wrapperClassName</code></td>
         <td><code>string</code></td>
         <td>—</td>
-        <td>Classes for the inner <code>LiquidGlassWrapper</code> — controls ratio (defaults to 40% width centered on large screens).</td>
+        <td>Classes for the inner <code>LiquidGlassWrapper</code> in the <code>liquid-glass</code> variant — controls ratio (defaults to 40% width centered on large screens).</td>
       </tr>
       <tr>
         <td><code>radius</code></td>
         <td><code>string | number</code></td>
         <td>—</td>
-        <td>Dynamic rounding radius for backdrop and wrapper (e.g. <code>"1.5rem"</code>, <code>"var(--radius-3xl)"</code>).</td>
+        <td>Rounding radius for the <code>liquid-glass</code> image and wrapper (e.g. <code>"1.5rem"</code>, <code>"var(--radius-3xl)"</code>). A number means pixels.</td>
       </tr>
       <tr>
         <td><code>aurora</code></td>
         <td><code>[string, string, string]</code></td>
         <td>violet, sky, peach</td>
-        <td>Colours of the three blobs behind the glass. Ignored by <code>solid</code>.</td>
+        <td>Colours of the three blobs behind the glass. Ignored by <code>solid</code> and <code>liquid-glass</code>.</td>
       </tr>
       <tr>
         <td><code>gridClassName</code></td>
@@ -280,9 +276,15 @@ export default function LiquidGlass() {
       </tr>
       <tr>
         <td><code>variant</code></td>
-        <td><code>"glass" | "solid"</code></td>
+        <td><code>"glass" | "solid" | "liquid-glass"</code></td>
         <td>from <code>GlassBackdrop</code></td>
         <td>Override the backdrop's surface for this one panel.</td>
+      </tr>
+      <tr>
+        <td><code>radius</code></td>
+        <td><code>string | number</code></td>
+        <td>—</td>
+        <td>Overrides the corner radius set by <code>shape</code>. A number means pixels.</td>
       </tr>
       <tr>
         <td><code>interactive</code></td>
@@ -304,6 +306,30 @@ export default function LiquidGlass() {
 
 Returns the enclosing backdrop's `variant` (`"glass"` by default) so your own components can draw differently on each surface. It installs with the component in `glass-panel-context.ts`, next to `GlassPanelBlock.tsx`: `import { useSurface } from "@/components/custom/blocks/glass-panel-context";`.
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Powers <DocLink to="booking-card">Booking Card</DocLink>, <DocLink to="book-appointment">Book Appointment</DocLink>, and <DocLink to="profile-page">Profile Page</DocLink>.
+- Use <DocLink to="card">Card</DocLink> instead when you want an ordinary bordered card with no aurora.
+
+## What is the difference between the slab, tile, disc and capsule shapes?
+
+They set the corner treatment of a `GlassPanel`. `slab` is the largest radius for hero surfaces, `tile` (the default) suits everyday content, `disc` is a circle with a forced square aspect for a number or icon, and `capsule` is a fully rounded one-line chip.
+
+## How do I change the aurora colours behind GlassPanel?
+
+Pass `aurora` to `GlassBackdrop` as a tuple of three CSS colours for the top-left, top-right and bottom blobs. The defaults are violet, sky and peach. The glass panels blur whatever sits behind them, so they adapt. The `solid` and `liquid-glass` variants ignore `aurora`.
+
+## How do I use the liquid-glass variant with my own image?
+
+Set `variant="liquid-glass"` on `GlassBackdrop` and pass `bgImage` with your image URL. The panels sit in a refraction wrapper that is 40% wide and centred on large screens; change that with `wrapperClassName`, and the corners with `radius`. Text inside is white.
+
+## Is GlassPanel clickable and keyboard accessible?
+
+Not by itself. `GlassPanel` renders a `div`, and `interactive` only adds a pointer cursor and a small lift on hover, which is switched off under `prefers-reduced-motion`. For a real control, add `onClick`, `role="button"` and `tabIndex={0}` yourself, or put a button inside the panel.
+
+## How do child components adapt to glass, solid and liquid-glass modes?
+
+Call `useSurface()` from `@/components/custom/blocks/glass-panel-context` inside any child. It returns the enclosing `GlassBackdrop` `variant`, which is `"glass"`, `"solid"` or `"liquid-glass"`, and `"glass"` when there is no backdrop. Use it to draw your own elements differently on each surface.
 
 <DocsJsonLd slug="glass-panel" />
+<FaqJsonLd slug="glass-panel" />

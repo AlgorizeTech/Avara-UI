@@ -3,7 +3,7 @@
   "name": "social-links-expand-and-replace-share-button-trigger-hides-on-hover",
   "type": "registry:block",
   "title": "Social Links — Expand and replace share button (Trigger hides on hover)",
-  "description": "Share trigger button hides on hover, with social link icons revealing directly from the trigger position in 4 directions.",
+  "description": "The \"Expand and replace share button (Trigger hides on hover)\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -4,16 +4,11 @@ export const metadata = docsPageMetadata("file-upload");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode, extractMotionCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn File Upload
 
-A file upload suite that goes beyond a native `<input type="file">`. The dropzone reacts to drag events, progress shows exact percentages and time estimates, a failed file halts and offers an inline retry, thumbnails preview each file before the upload completes, and every file gets its own lane so one failure never blocks the others.
-
-The suite is two pieces you compose yourself: a `Dropzone` that hands you `File[]`, and an `UploadItem` that renders one entry of your own queue state. Drop real files into the first preview; its simulator randomly fails some at 89% so you can watch the retry resume.
-
-Three upload surfaces live on this page, and each installs separately: the `Dropzone` + `UploadItem` suite, the `Input` block's file mode for simple forms, and the `Folder` block as a playful drop target.
-
-<AgentVariants slug="file-upload" />
+A file upload suite featuring a drag-and-drop `Dropzone` + `UploadItem` queue, `InputBlock` file mode, and an interactive `Folder` drop target.
 
 export const usageDropzone = `"use client";
 
@@ -152,14 +147,12 @@ export default function UploadStates() {
   );
 }`;
 
-## Dropzone and upload queue
-
-The full suite: a `Dropzone` that hands you `File[]`, and an `UploadItem` for each row of your own queue state.
-
 <ExampleShowcase minHeight={290}
+  headingLevel={2}
   name="upload"
   colorControl={false}
   columns={1}
+  installation={<Installation name="upload" usage="below" />}
   examples={[
     {
       title: "Dropzone",
@@ -195,12 +188,6 @@ The full suite: a `Dropzone` that hands you `File[]`, and an `UploadItem` for ea
   ]}
 />
 
-### Install the upload suite
-
-<Installation name="upload" />
-
-The dropzone example animates its queue with a few lines of CSS in the example itself — no extra package. It is optional; `UploadItem` renders fine without it.
-
 export const usageFileInput = `"use client";
 
 import { InputBlock } from "@/components/custom/blocks/InputBlock";
@@ -220,19 +207,16 @@ export default function FileUploadInput() {
   );
 }`;
 
-## Simple file input
-
-For a form that just needs files attached, the `Input` block has a file mode with previews and removal built in. It has no dependency on the upload suite.
-
 <ExampleShowcase
   name="input"
   colorControl={false}
   colorLabel="Active Color"
   columns={1}
+  installation={<Installation name="input" usage="below" />}
   examples={[
     {
       title: "Simple file input",
-      subheading: "For a form that just needs files attached: the `Input` block in file mode, with previews and removal built in.",
+      description: "For a form that just needs files attached: the `Input` block in file mode, with previews and removal built in.",
       propNotes: [
         {
           lead: "Set",
@@ -252,10 +236,6 @@ For a form that just needs files attached, the `Input` block has a file mode wit
     },
   ]}
 />
-
-### Install the input block
-
-<Installation name="input" />
 
 export const usageFolder = `"use client";
 
@@ -303,18 +283,15 @@ export default function DropZone() {
   );
 }`;
 
-## Folder drop target
-
-The `Folder` block as an upload surface — a playful alternative to a dropzone for a handful of files.
-
 <ExampleShowcase minHeight={330}
   name="folder"
   colorControl={false}
   columns={1}
+  installation={<Installation name="folder" usage="below" />}
   examples={[
     {
       title: "Folder drop target",
-      subheading: "The `Folder` block as an upload surface: drop files on it or click to browse. Each dropped file becomes a card with its own progress bar.",
+      description: "The `Folder` block as an upload surface: drop files on it or click to browse. Each dropped file becomes a card with its own progress bar.",
       propNotes: [
         {
           lead: "Use",
@@ -338,39 +315,36 @@ The `Folder` block as an upload surface — a playful alternative to a dropzone 
   ]}
 />
 
-### Install the folder block
+## About Shadcn File Upload
 
-<Installation name="folder" />
+**What it is.** Three composable file-upload surfaces: the `Dropzone` + `UploadItem` upload queue (`upload`), `InputBlock type="file"` for simple forms (`input`), and an interactive `Folder` drop target (`folder`).
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+**How it is built.** `Dropzone` hands the dropped or picked files to `onFilesDrop` as a `File[]`, and each `UploadItem` renders a row for one `FileUploadState` in its `idle`, `uploading`, `paused`, `error` or `success` state. None of these components uploads anything or checks file size: you run the request and feed `progress` back in. `accept` is passed to the native file input, and `maxSize` only changes the helper text.
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Fluid Animations">
-    <p>Hardware-accelerated transitions that ensure smooth 60fps performance across devices.</p>
-  </InfoCard>
-  <InfoCard title="Highly Customizable">
-    <p>Exposes intuitive props for tailoring colors, sizes, and animation speeds to fit your brand.</p>
-  </InfoCard>
-  <InfoCard title="Responsive Design">
-    <p>Automatically adapts to mobile, tablet, and desktop viewports without horizontal scrolling issues.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with semantic HTML and ARIA labels where necessary to support screen readers and keyboard navigation.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `Dropzone` + `UploadItem` when uploads need per-file progress, retry, or thumbnails; use `InputBlock type="file"` for simple form attachments; use `Folder` for playful drag-and-drop targets.
 
-## Best Practices & Guidelines
+## For AI agents
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Animation Performance">
-    <p>Avoid placing too many heavy animated components on a single screen to prevent layout thrashing and maintain 60fps performance. Use intersection observers to pause off-screen animations.</p>
-  </InfoCard>
-  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">State Management</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">When triggering animations via state changes, ensure you wrap state updates in <code>startTransition</code> or use lightweight stores to prevent React rendering bottlenecks during the animation tick.</p>
-  </div>
-</div>
+<AgentBrief name="file-upload">
+
+**When to use**
+
+- Multi-file upload queues with per-file progress, thumbnails, and retry (`Dropzone` + `UploadItem` from `UploadBlock`)
+- Simple form file attachments (`InputBlock` with `type="file"`) or visual folder dropzones (`Folder` with `interactive`)
+
+**When not to use**
+
+- Plain text or password fields — use <DocLink to="input">Input</DocLink>
+
+**Agent notes**
+
+- `Dropzone` and `UploadItem` install via the `upload` registry item (`@/components/custom/blocks/UploadBlock`); `InputBlock` via `input`; `Folder` via `folder`
+- `maxSize` is specified in megabytes and only changes the helper text; validate size (and dropped file types) yourself in `onFilesDrop`
+- The components do not upload: create each `FileUploadState` (`id`, `file`, `progress`, `status`, optional `timeLeft`, `errorMessage`, `previewUrl`) and update `progress` and `status` as your request runs
+- `UploadItem` shows a Retry button for `"error"` and `"paused"` rows when `onRetry` is passed; nothing in it pauses an upload
+- `Folder` has a GSAP build (`folder`) and a Motion build (`folder-motion`); install one
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -400,8 +374,9 @@ Discover the key capabilities that make this component an excellent choice for m
           <strong>Required</strong>
         </td>
         <td>
-          Callback function triggered when the user successfully drops files
-          into the zone or selects them via the native file browser.
+          Callback function triggered when the user drops files into the zone or
+          selects them via the native file browser. Receives every file as
+          dropped, with no filtering.
         </td>
       </tr>
       <tr>
@@ -418,8 +393,8 @@ Discover the key capabilities that make this component an excellent choice for m
           <code>50</code>
         </td>
         <td>
-          The maximum allowed file size in Megabytes (MB). Displayed dynamically
-          in the helper text.
+          File size in Megabytes (MB) shown in the helper text ("up to 50 MB"). It
+          is display only; the component does not reject larger files.
         </td>
       </tr>
       <tr>
@@ -436,8 +411,9 @@ Discover the key capabilities that make this component an excellent choice for m
           <code>undefined</code>
         </td>
         <td>
-          Native HTML input accept string restricting file types (e.g.,{" "}
-          <code>"image/*,application/pdf"</code>).
+          Native HTML input accept string restricting the types offered by the
+          browse dialog (e.g., <code>"image/*,application/pdf"</code>). Files
+          dropped onto the zone are not filtered by it.
         </td>
       </tr>
       <tr>
@@ -588,6 +564,34 @@ Discover the key capabilities that make this component an excellent choice for m
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Pair `Dropzone` + `UploadItem` inside <DocLink to="form">Form</DocLink> or <DocLink to="dialog">Dialog</DocLink> upload modals.
+- See <DocLink to="input">Input</DocLink> for `InputBlock` text/password modes and <DocLink to="folder">Folder</DocLink> for standalone animated folder cards.
+
+## Does Dropzone upload files or check their size and type?
+
+No. `Dropzone` only collects files and calls `onFilesDrop` with a `File[]`. `accept` goes to the native file input and filters the browse dialog, but dropped files are not filtered. `maxSize` only changes the "up to N MB" helper text, so check `file.size` and `file.type` yourself.
+
+## How do I handle failed uploads and retries?
+
+Set an item's `status` to `"error"` and, if you like, an `errorMessage` (the row shows "Connection lost" otherwise). When you pass `onRetry` to `UploadItem`, a Retry button appears on `"error"` and `"paused"` rows and calls `onRetry(id)` for that file only, leaving other rows alone.
+
+## How do I show progress and time remaining on an UploadItem?
+
+Keep a `FileUploadState[]` in state and update each item's `progress` (0 to 100) from your upload request. The bar tweens to the new value. `timeLeft` is in seconds and renders as "12s left" or "1m 5s left"; leave it unset to see "Calculating...". `previewUrl` adds an image thumbnail.
+
+## Should I use Dropzone, InputBlock type="file" or Folder?
+
+Use `Dropzone` plus `UploadItem` (`upload`) when you need a per-file queue with progress. Use `InputBlock` with `type="file"` (`input`) for a form field that reports `File[]` through `onFilesChange`. Use `Folder` with `interactive` (`folder`) as a playful drop target. `Dropzone` always accepts several files; `InputBlock` needs `multiple`.
+
+## Can keyboard users open the file picker?
+
+Not by default. `Dropzone` and the `InputBlock` file zone are plain `div` elements with click handlers, without `tabIndex` or a role. For `Dropzone`, pass `tabIndex={0}`, `role="button"` and an `onKeyDown` that calls `e.currentTarget.click()` on Enter. An `interactive` `Folder` is focusable but has no key handler to open the picker.
+
+## How do I change the colours of the upload components?
+
+They use theme tokens, so a Themes preset restyles them. The `Dropzone` drag highlight and the `UploadItem` progress bar use `--primary`, while error rows use rose and success rows use emerald. `Dropzone` takes `className`, `Folder` takes `color`, and you can edit the installed file for anything else.
 
 <DocsJsonLd slug="file-upload" />
+<FaqJsonLd slug="file-upload" />

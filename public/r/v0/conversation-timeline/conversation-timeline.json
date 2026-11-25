@@ -3,7 +3,7 @@
   "name": "conversation-timeline-conversation-timeline",
   "type": "registry:block",
   "title": "Conversation Timeline",
-  "description": "Hover the rail (or Tab into it) to expand every row at once. Then hover a specific row for its extra emphasis, and click a mark to select it.",
+  "description": "The \"Conversation Timeline\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

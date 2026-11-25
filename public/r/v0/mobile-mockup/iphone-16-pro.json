@@ -3,7 +3,7 @@
   "name": "mobile-mockup-iphone-16-pro",
   "type": "registry:block",
   "title": "Mobile Mockup — iPhone 16 Pro",
-  "description": "The modern flagship frame — sleek uniform bezel, flush seamless perimeter, and centered Dynamic Island. Running this site's hero section as live children.",
+  "description": "The \"iPhone 16 Pro\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

@@ -3,7 +3,7 @@
   "name": "select-select",
   "type": "registry:block",
   "title": "Select",
-  "description": "A labelled dropdown with helper text.",
+  "description": "The \"Select\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

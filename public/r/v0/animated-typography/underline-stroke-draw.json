@@ -3,7 +3,7 @@
   "name": "animated-typography-underline-stroke-draw",
   "type": "registry:block",
   "title": "Animated Typography — Underline Stroke Draw",
-  "description": "Synchronized liquid SVG underline stroke drawing beneath text.",
+  "description": "The \"Underline Stroke Draw\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

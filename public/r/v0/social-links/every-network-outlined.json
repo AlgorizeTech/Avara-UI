@@ -3,7 +3,7 @@
   "name": "social-links-every-network-outlined",
   "type": "registry:block",
   "title": "Social Links — Every network, outlined",
-  "description": "All nine networks at the large size on the outline surface.",
+  "description": "The \"Every network, outlined\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

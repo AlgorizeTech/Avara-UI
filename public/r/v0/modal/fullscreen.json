@@ -3,7 +3,7 @@
   "name": "modal-fullscreen",
   "type": "registry:block",
   "title": "Modal — Fullscreen",
-  "description": "Wide layout with pinned header and multi-action responsive footer.",
+  "description": "The \"Fullscreen\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

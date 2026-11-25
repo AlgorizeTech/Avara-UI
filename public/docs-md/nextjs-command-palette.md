@@ -1,14 +1,27 @@
 ---
 title: "Command Palette"
-description: "Shadcn Command Palette. A fast, keyboard-first Command Palette with a search box trigger, instant filtering, hotkey badges, grouped sections."
+description: "Shadcn Command Palette. A keyboard-first `CommandPalette` with `linear`, `nested` drill-down, `inline`."
 url: https://avaraui.com/docs/nextjs/command-palette
 ---
 
 # Command Palette
 
-A fast, keyboard-first Command Palette with a search box trigger, instant filtering, hotkey badges, grouped sections, and a modal overlay.
+A keyboard-first `CommandPalette` with `linear`, `nested` drill-down, `inline`, and streaming `ai` variants triggered via search bar or `Ctrl+K`.
 
-Starts as a compact search bar (`Search anything... [Ctrl] [K]`) in your header that opens a centered modal over a dimmed overlay, or renders always-open inline on the page. Choose a look via the `variant` prop (`"linear"`, `"nested"`, `"inline"`, or `"ai"`).
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/command-palette.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/command-palette
+```
 
 ## Linear
 
@@ -39,24 +52,7 @@ export default function AppHeader() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/command-palette.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/command-palette
-```
-
-## Variants
-
-### Nested
+## Nested
 
 Contextual issue actions with drill-down sub-menus for Status, Assignee, Priority, and Project. Press Backspace or click ← to return.
 
@@ -96,7 +92,7 @@ export default function IssueCommandHeader() {
 }
 ```
 
-### Inline
+## Inline
 
 Always-open embedded command palette without a trigger bar or modal overlay — type immediately to filter items.
 
@@ -121,7 +117,7 @@ export default function InlineCommandPalette() {
 }
 ```
 
-### Ask AI
+## Ask AI
 
 Search or ask any question — displays a skeleton loader, streams the answer character by character with citations, and lists matching help center sources (or a support fallback).
 
@@ -149,6 +145,32 @@ export default function AskAiCommandPalette() {
 }
 ```
 
+## About Command Palette
+
+**What it is.** `CommandPalette` is a high-level command launcher shipping four `variant` presets: `linear` (header trigger + `Ctrl+K` modal), `nested` (contextual `contextId` pill + drill-down sub-menus), `inline` (always-open embedded palette), and `ai` (streaming AI answers with citations).
+
+**How it is built.** Handles the `Ctrl+K` / `⌘K` shortcut, filtering, nested sub-menu navigation (`Backspace` to go back) and the modal overlay in a single component. The only npm dependency is `lucide-react`. The `ai` variant is a front-end demo: its answers come from a built-in knowledge base, not a model.
+
+**When to use it.** Use `CommandPalette` when you want a ready-made `Ctrl+K` launcher or Ask-AI search modal. For low-level composable menu primitives, use [Command](https://avaraui.com/docs/nextjs/command).
+
+## For AI agents
+
+**When to use**
+
+- Ready-to-use `Ctrl+K` launchers (`linear`), contextual issue action menus (`nested`), embedded search (`inline`), or Ask-AI modals (`ai`)
+
+**When not to use**
+
+- Custom low-level command menu composition — use [Command](https://avaraui.com/docs/nextjs/command)
+
+**Agent notes**
+
+- Named export: `import { CommandPalette } from "@/components/custom/blocks/CommandPaletteBlock"`
+- Pass `contextId` with `variant="nested"` to show the active record badge beside the search input
+- Pass `groups` to supply your own commands; only the `linear` and `inline` variants read it, while `nested` and `ai` ignore it
+- `variant="ai"` does not call a model. Answers are canned entries matched by keyword, so connect your own backend if you need real answers
+- `onOpenChange` only fires in controlled mode (when `open` is set); use `defaultOpen` for uncontrolled use
+
 ## Props Reference
 
 | Prop | Type | Default | Description |
@@ -156,10 +178,10 @@ export default function AskAiCommandPalette() {
 | `variant` | `"linear" \| "nested" \| "inline" \| "ai"` | `"linear"` | Selects the command palette variant. `linear` renders the trigger + grouped modal; `nested` enables contextual issue actions with drill-down sub-menus; `inline` renders the palette always open directly on the page without a modal; `ai` adds suggested questions and streamed AI answers with sources. |
 | `open` | `boolean` | `undefined` | Controls the visibility of the command palette modal (controlled mode). |
 | `defaultOpen` | `boolean` | `false` | Sets the initial open state when using the component in uncontrolled mode. |
-| `onOpenChange` | `(open: boolean) => void` | `undefined` | Callback fired whenever the modal opens or closes via trigger click, backdrop click, Escape key, or `Ctrl+K` / `⌘K`. |
+| `onOpenChange` | `(open: boolean) => void` | `undefined` | Controlled mode only (when `open` is set): called with the next state on trigger click, backdrop click, Escape, or `Ctrl+K` / `⌘K`. Uncontrolled instances toggle internally and do not call it. |
 | `triggerPlaceholder` | `string` | `"Search anything..."` | Placeholder label displayed inside the initial search bar trigger button. |
 | `placeholder` | `string` | `"Search pages, projects and actions"` | Search input placeholder inside the open modal dialog (defaults to `"Type a command or search"` in the `nested` variant). |
-| `groups` | `CommandPaletteGroupType[]` | `DEFAULT_COMMAND_PALETTE_GROUPS` | Grouped sections and items (with icons, tags, shortcut keycaps, and keywords) displayed in the `linear` variant. |
+| `groups` | `CommandPaletteGroupType[]` | `DEFAULT_COMMAND_PALETTE_GROUPS` | Grouped sections and items (with icons, tags, shortcut keycaps, and keywords) displayed in the `linear` and `inline` variants. Ignored by `nested` and `ai`. |
 | `onSelect` | `(item: CommandPaletteItemType) => void` | `undefined` | Callback fired when an item is clicked or activated with the `Enter` key. |
 | `shortcuts` | `string[]` | `["Ctrl", "K"]` | Shortcut keycap badges rendered on the right of the trigger bar. Automatically displays `⌘` on macOS. |
 | `contextId` | `string` | `"AVA-214"` | Record/issue identifier badge rendered beside the search input in the `nested` variant. |
@@ -169,6 +191,36 @@ export default function AskAiCommandPalette() {
 | `color` | `string` | `undefined` | Optional custom accent color override (hex or CSS custom property). |
 | `triggerClassName` | `string` | `undefined` | Additional Tailwind CSS classes applied directly to the trigger search bar button. |
 | `className` | `string` | `undefined` | Standard Tailwind CSS overrides applied to the outer container. |
+
+## Works with other components
+
+- Embed `CommandPalette` inside [Navbar](https://avaraui.com/docs/nextjs/navbar) or [Sidebar](https://avaraui.com/docs/nextjs/sidebar) headers.
+- Pair `variant="ai"` with [AI Chat](https://avaraui.com/docs/nextjs/ai-chat) for a full conversation after the first answer.
+- Use [Command](https://avaraui.com/docs/nextjs/command) when you want to compose the menu from primitives instead.
+
+## How do I embed CommandPalette inline without a modal overlay?
+
+Set `variant="inline"`. The palette renders open inside your layout with no trigger bar, no backdrop and no `Ctrl+K` listener, and it fills up to `max-w-xl` of its container. Pass `groups` and `onSelect` as usual; `onOpenChange`, `open` and `shortcuts` have no effect in this variant.
+
+## How do I control CommandPalette's open state from my own button?
+
+Pass `open` and `onOpenChange`. Once `open` is defined the palette is controlled: it calls `onOpenChange(next)` on trigger click, backdrop click, Escape or `Ctrl+K`, and you must store the value. Leave `open` out and use `defaultOpen` if you want it to manage itself.
+
+## Can I change the CommandPalette shortcut from Ctrl+K?
+
+Not through props. The `shortcuts` prop only changes the keycap badges shown on the trigger, and on macOS a leading `"Ctrl"` displays as `⌘`. The listener on `window` always responds to `Ctrl` or `⌘` plus `K`, so changing the key means editing the component's source.
+
+## How do I add my own commands to the linear variant?
+
+Pass `groups`, an array of `{ heading, items }`. Each item takes `id` and `label`, plus optional `icon`, `tag`, `shortcuts`, `keywords`, `onSelect` and `disabled`. Typing filters on label, tag and keywords, and `Enter` skips disabled items. The component-level `onSelect` also receives the chosen item.
+
+## How do I keep the Status or Assignee a user picks in the nested variant?
+
+Pass both `nestedState` and `onNestedStateChange`, and store the value in React state, starting from `DEFAULT_NESTED_PALETTE_STATE`. When `nestedState` is set, it takes precedence over the palette's internal copy. Without `onNestedStateChange`, picking an option will not change the displayed values.
+
+## Does the Ask AI variant call a real AI model?
+
+No. `variant="ai"` is a front-end demo. It matches your question against a built-in `AI_KNOWLEDGE_BASE` by keyword, shows a skeleton for about a second, then types the canned answer with citations. Unmatched questions get a support fallback message. Wire your own backend to it if you need real answers.
 
 ---
 

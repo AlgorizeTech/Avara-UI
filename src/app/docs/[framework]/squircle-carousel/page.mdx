@@ -3,7 +3,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("squircle-carousel");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
-import { Installation } from "@/components/site/installation";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Squircle Carousel
@@ -47,6 +47,7 @@ export default function SquircleCarouselDemo() {
   name="squircle-carousel"
   colorControl={false}
   columns={1}
+  installation={<Installation name="squircle-carousel" usage="below" />}
   examples={[
     {
       title: "Interactive Squircle Grid Carousel",
@@ -56,39 +57,35 @@ export default function SquircleCarouselDemo() {
   ]}
 />
 
-## Installation
+## About Shadcn Squircle Carousel
 
-<Installation name="squircle-carousel" />
+**What it is.** **Shadcn Squircle Carousel** (`SquircleCarousel`) is a horizontal canvas carousel where images glide behind a mask of rounded squircle tiles with drag inertia physics.
 
-## Features
-Discover the key capabilities that make this component an excellent choice for modern, animated user interfaces.
+**How it is built.** Images are asynchronously preloaded into `HTMLImageElement` instances before canvas rendering to prevent flicker, with configurable `rows`, `gridGap`, `fadeWidthPercent`, and dynamic light/dark background adaptation.
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Squircle Grid Masking">
-    <p>Images flow seamlessly behind a matrix of rounded squircle tiles for an ultra-modern aesthetic.</p>
-  </InfoCard>
-  <InfoCard title="Drag & Inertia Physics">
-    <p>Interactive mouse and touch drag controls with grab cursor and smooth momentum deceleration.</p>
-  </InfoCard>
-  <InfoCard title="Responsive Stage Scaling">
-    <p>Automatically adapts height and squircle tile density across mobile, tablet, and desktop viewports.</p>
-  </InfoCard>
-  <InfoCard title="Light & Dark Theme Adaptation">
-    <p>Built with Next Themes integration to transition canvas backgrounds and edge gradient overlays dynamically.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use it for high-impact visual strips, creative studio hero banners, and tactile photography showcases.
 
-## Best Practices & Guidelines
+## For AI agents
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Animation Performance">
-    <p>Use high-resolution landscape images (1200x800 or larger) so that sub-crops render crisp fragments across all squircle columns.</p>
-  </InfoCard>
-  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">State Management</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Images are preloaded asynchronously into HTMLImageElement instances before canvas rendering to prevent flickering during drag gestures.</p>
-  </div>
-</div>
+<AgentBrief name="squircle-carousel">
+
+**When to use**
+
+- High-impact visual strips, creative studio hero banners
+- Tactile photography showcases
+
+**When not to use**
+
+- A diagonal or vertical cascading stream: use <DocLink to="flow-gallery">Flow Gallery</DocLink>
+- A 3D arc deck: use <DocLink to="curved-carousel">Curved Carousel</DocLink>
+
+**Agent notes**
+
+- `SquircleCarousel` accepts `items` (`SquircleCarouselItem[]` with `id`, `title`, `imageUrl`), `rows`, `gridGap`, and `fadeWidthPercent`.
+- Uses preloaded canvas rendering with mouse/touch drag and smooth momentum deceleration.
+- Prefer landscape images (`1200x800` or larger) so fragments across squircle columns stay crisp.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -210,6 +207,29 @@ Discover the key capabilities that make this component an excellent choice for m
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+Combine `SquircleCarousel` with <DocLink to="flow-gallery">Flow Gallery</DocLink> for diagonal photo streams, <DocLink to="curved-carousel">Curved Carousel</DocLink> for 3D arc decks, and <DocLink to="image-compare">Image Compare</DocLink> for before/after image sliders.
+
+## How do I build an image carousel with rounded squircle tiles?
+
+Pass an `items` array of `{ id, title, imageUrl }` objects to `SquircleCarousel`. The images are drawn on a canvas behind a grid of rounded tiles, and the user drags the stage left or right to scroll. If you omit `items`, built-in nature images are used.
+
+## How do I change the number of rows and the gap between tiles?
+
+Use `rows`, which defaults to `4`, for the number of horizontal tile rows, and `gridGap` for the spacing in pixels between tiles, which defaults to `8`. `fadeWidthPercent` sets the edge fade overlay width from `0` to `50`, and defaults to `36`.
+
+## Does SquircleCarousel have drag inertia and snapping?
+
+Yes. Dragging uses inertia physics, and the stage settles with snap behaviour once you release. Images are preloaded asynchronously into `HTMLImageElement` instances before the canvas draws them, so tiles do not pop in half-loaded while you drag.
+
+## How do I show the title, tags and buttons around the carousel?
+
+Set `showHeaderShell` to `true`. It is `false` by default, which renders just the squircle stage. With it on, the outer header metadata, title, tags, buttons and footer caption appear around the carousel. Use `className` to size or position the stage container.
+
+## Does SquircleCarousel need any extra packages?
+
+It lists `next-themes` as its npm dependency, which the shadcn CLI installs with the component. The component itself has no `next/*` imports. Drawing happens on a canvas, so no carousel or animation library is added.
 
 <DocsJsonLd slug="squircle-carousel" />
+<FaqJsonLd slug="squircle-carousel" />

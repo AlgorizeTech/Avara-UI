@@ -3,7 +3,7 @@
   "name": "carousel-image-carousel",
   "type": "registry:block",
   "title": "Carousel — Image carousel",
-  "description": "`ImageCarousel` handles arrows, dots, swipe and autoplay for you.",
+  "description": "The \"Image carousel\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

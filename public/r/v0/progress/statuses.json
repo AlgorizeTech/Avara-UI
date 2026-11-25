@@ -3,7 +3,7 @@
   "name": "progress-statuses",
   "type": "registry:block",
   "title": "Progress — Statuses",
-  "description": "The four states side by side.",
+  "description": "The \"Statuses\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

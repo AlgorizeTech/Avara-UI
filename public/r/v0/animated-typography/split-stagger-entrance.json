@@ -3,7 +3,7 @@
   "name": "animated-typography-split-stagger-entrance",
   "type": "registry:block",
   "title": "Animated Typography — Split Stagger Entrance",
-  "description": "Alternating letters slide in from top and bottom directions.",
+  "description": "The \"Split Stagger Entrance\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

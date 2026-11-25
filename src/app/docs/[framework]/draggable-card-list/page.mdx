@@ -3,15 +3,12 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("draggable-card-list");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractMotionCode } from "@/lib/code";
 
 # Shadcn Draggable Card List
 
-An interactive, fluid **Draggable Card List** component featuring spring-driven reordering (in a GSAP build and a Motion build that move identically), right-side grip handles, light pastel badges with borders, left accent bars, and dynamic hover border color shifts.
-
-<AgentVariants slug="draggable-card-list" />
-
-## Variations
+A reorderable card list with spring-driven dragging, grip handles and status badges, in GSAP and Motion builds.
 
 export const usageClassic = `import DraggableCardList, { type DraggableCardItem } from "@/components/custom/draggable-card-list";
 
@@ -125,17 +122,18 @@ export default function DraggableCardListModernDemo() {
   name="draggable-card-list"
   colorControl={false}
   columns={1}
+  installation={<Installation name="draggable-card-list" usage="below" />}
   examples={[
     {
       title: "Classic Card List",
-      subheading: "Reorderable cards with right-side drag grip handles, dynamic border hover color shift, and pastel bordered badges.",
+      description: "Reorderable cards with right-side drag grip handles, dynamic border hover color shift, and pastel bordered badges.",
       props: { variant: "classic" },
       usage: usageClassic,
       code: extractMotionCode("src/components/custom/draggable-card-list.tsx"),
     },
     {
       title: "Modern Ambient Tint Card List",
-      subheading: "Reorderable cards with subtle ambient gradient tones, glowing left accent bar, separated footer, floating grip handles, and dynamic hover border color shift.",
+      description: "Reorderable cards with subtle ambient gradient tones, glowing left accent bar, separated footer, floating grip handles, and dynamic hover border color shift.",
       props: { variant: "modern" },
       usage: usageModern,
       code: extractMotionCode("src/components/custom/draggable-card-list.tsx"),
@@ -143,19 +141,46 @@ export default function DraggableCardListModernDemo() {
   ]}
 />
 
-## Installation
+## About Shadcn Draggable Card List
 
-<Installation name="draggable-card-list" />
+**What it is.** **Shadcn Draggable Card List** (`DraggableCardList`) is a reorderable card list with grip handles (on the right by default, or the left with `dragHandlePosition`), optional status badges, and a hover border colour you set per card.
 
-## Features
+**How it is built.** Ships as a GSAP build (the default) and a Motion build on its `Reorder` engine — both lift, swap, and settle cards with spring physics and emit the updated item array via `onReorder`.
+
+**When to use it.** Use it for task backlogs, priority queues, playlist tracks, and roadmap boards where users reorder rich multi-line cards without accidental drags during text selection.
+
+**Features.**
 
 - **Butter-Smooth Spring Reordering**: Cards lift, swap and glide into place on springs. Ships as a GSAP build (the default) and a Motion build on its `Reorder` engine — pick either from the Code tab; both reorder on the same rules with the same springs.
 - **2 Distinct Card Variants**: Supports `"classic"` (clean cards with border hover shift) and `"modern"` (ambient gradient tone with glowing accent strip & separated footer).
-- **Dynamic Hover Border Shift**: Automatically highlights each card's border matching its individual accent color upon hover.
-- **Subtle Pastel Badges**: Lightweight semi-transparent badge backgrounds with subtle borders (`bg-amber-500/10 text-amber-700 border border-amber-500/30`).
-- **Right-Side Grip Handles**: Dedicated drag handles prevent accidental drag triggers on text selection.
+- **Per-Card Hover Border**: Each item's `hoverBorderColor` (a Tailwind `hover:border-*` class) sets the border colour on hover, and falls back to `hover:border-primary/80`.
+- **Pastel Badges**: Each item's `badge` text is styled by its `badgeStyle` class string, for example `bg-amber-500/10 text-amber-700 border border-amber-500/30`.
+- **Grip Handles**: The `"modern"` variant starts a drag only from the grip handle, so text stays selectable. The `"classic"` variant also drags from anywhere on the card and disables text selection.
 
-## Props Reference: DraggableCardList
+## For AI agents
+
+<AgentBrief name="draggable-card-list">
+
+**When to use**
+
+- Task backlogs, priority queues, playlist tracks, and roadmap boards where users reorder rich multi-line cards without accidental drags during text selection
+
+**When not to use**
+
+- A single static card: use <DocLink to="card">Card</DocLink>
+- Plain list rows that never reorder: use <DocLink to="item">Item</DocLink>
+
+**Agent notes**
+
+- `DraggableCardList` accepts `items` (`DraggableCardItem[]`), `variant` (`"classic" | "modern"`), `onReorder`, and `onToggleComplete`.
+- `"modern"` cards drag only by their grip handle; `"classic"` cards drag from the whole card or the handle. `dragHandlePosition` moves the handle to the `"left"`.
+- `items` seeds the list's own state, and `onReorder` receives the full re-ordered array on every swap during a drag, not only on drop.
+- Install the GSAP build (`draggable-card-list`) or the Motion build (`draggable-card-list-motion`), not both.
+- Use `variant="classic"` for clean bordered cards and `variant="modern"` for ambient gradient tints with a left accent bar.
+
+</AgentBrief>
+
+## Props Reference
 
 <div className="overflow-x-auto">
   <table>
@@ -222,10 +247,49 @@ export default function DraggableCardListModernDemo() {
         <td><code>true</code></td>
         <td>Toggles category badges on cards.</td>
       </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Classes for the outer container.</td>
+      </tr>
+      <tr>
+        <td><code>cardClassName</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Classes merged onto every card.</td>
+      </tr>
     </tbody>
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+Pair `DraggableCardList` with <DocLink to="card">Card</DocLink> for surrounding dashboard sections, <DocLink to="item">Item</DocLink> for compact non-draggable rows, and <DocLink to="toast">Toast</DocLink> to confirm saved order changes.
+
+## Which part of a card starts a drag in DraggableCardList?
+
+It depends on `variant`. A `"modern"` card starts a drag only from its grip handle, so its text stays selectable. A `"classic"` card drags from anywhere on the card, or the handle, and turns off text selection. `dragHandlePosition` places the handle on the `"right"` (default) or `"left"`.
+
+## How do I save the new order from DraggableCardList?
+
+Pass `onReorder`. It receives the whole re-ordered `DraggableCardItem[]`, and it fires on every swap while a card is being dragged, not once on release. Debounce your save call. `items` only seeds the list's internal state; passing a different array reference re-seeds it.
+
+## Does DraggableCardList support both GSAP and Motion?
+
+Yes. `draggable-card-list` is the GSAP build, with `gsap` and `lucide-react` as dependencies, and `draggable-card-list-motion` uses `motion`'s `Reorder`. Both install to `components/custom/draggable-card-list.tsx` with the same props, so pick one rather than both. Reordering follows the same rules in each: a card lifts, neighbours glide aside on springs, and it settles home on release.
+
+## How do I add completion checkboxes to DraggableCardList?
+
+Set `enableCheckboxes` and handle `onToggleComplete(id, completed)`. Each card then shows a circle button that flips its `completed` flag, strikes through the title and dims the card. Badges are on by default; hide them with `enableBadges={false}`, or style each with `badgeStyle`.
+
+## How do I set each card's colours in DraggableCardList?
+
+Set them per item. `accentColor` takes Tailwind gradient classes for the `"modern"` left bar, such as `from-amber-400 via-orange-500 to-yellow-500`. `hoverBorderColor` takes a `hover:border-*` class and `badgeStyle` the badge classes. Spell the full class names in your own source so Tailwind generates them.
+
+## Can I reorder DraggableCardList with the keyboard?
+
+No. Reordering uses pointer events only. The grip handle is a plain `div` with `aria-label="Drag to reorder"`, with no `tabIndex` or key handlers, so keyboard and screen-reader users cannot move cards. Provide separate move up and move down buttons if you need that.
 
 <DocsJsonLd slug="draggable-card-list" />
+<FaqJsonLd slug="draggable-card-list" />

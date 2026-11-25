@@ -3,13 +3,12 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("flowchart");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Flowchart / Node Builder
 
-A declarative, highly sleek flowchart engine complete with custom responsive column channels, node action anchors, and custom vector streaming lines that draw themselves in with plain CSS animation.
-
-This engine separates data flow layout orchestration from canvas tracking. By combining declarative standard layout structures with pre-set micro connection vectors, pipelines render cross-device flawlessly without heavy calculations crashing client frame updates.
+A declarative flowchart: SVG routes that draw themselves in, absolutely positioned node cards, and a moving dashed stream on the active route.
 
 Click any node that sits on a route to make that route the active one — the moving stream switches to that SVG path.
 
@@ -282,10 +281,11 @@ export default function AgentPipeline() {
 <ExampleShowcase minHeight={350} headingLevel={2}
   name="flowchart"
   columns={1}
+  installation={<Installation name="flowchart" usage="below" />}
   examples={[
     {
       title: "Flowchart",
-      subheading: "`FlowCanvas` holds the SVG routes; `FlowNode`s are positioned over it.",
+      description: "`FlowCanvas` holds the SVG routes; `FlowNode`s are positioned over it.",
       propNotes: [
         {
           prop: "connectedPaths",
@@ -302,19 +302,6 @@ export default function AgentPipeline() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/FlowchartBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="flowchart" />
-
-## Examples
-
-<ExampleShowcase minHeight={350}
-  name="flowchart"
-  columns={1}
-  examples={[
     {
       title: "Linear pipeline",
       propNotes: [
@@ -358,17 +345,36 @@ export default function AgentPipeline() {
   ]}
 />
 
-## Best Practices & Guidelines
+## About Flowchart / Node Builder
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Keep ports and paths in sync">
-    <p>Node positions come from Tailwind <code>left-[…]</code> / <code>top-[…]</code> classes and the routes are raw SVG coordinates, so the two are only aligned because you made them align. When you move a node, move the matching <code>M</code>/<code>L</code> coordinates with it.</p>
-  </InfoCard>
-  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">Split long routes into segments</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">Several <code>FlowConnection</code>s can share the same <code>id</code>. Splitting a branch into per-hop segments lets the stream animation restart at each node instead of sweeping the whole diagram at once.</p>
-  </div>
-</div>
+**What it is.** **Flowchart / Node Builder** (`FlowCanvas`, `FlowNode`, and `FlowConnection`) is a declarative SVG pipeline and node-diagram engine with CSS-animated streaming routes and clickable branch activation.
+
+**How it is built.** The `Flowchart` root holds the active route in context, seeded by `initialActivePath`. `FlowCanvas` is the SVG layer that holds `FlowConnection` paths (`M`/`L` right angles or `C` curves), and `FlowNode` cards sit on top at fixed `left-[...]` and `top-[...]` positions. The default 900 by 400 canvas scales down to fit narrower containers, and the draw-in and stream use CSS animation.
+
+**When to use it.** Use it for workflow automations, CI/CD pipelines, multi-agent convergence diagrams, and interactive system architecture maps.
+
+## For AI agents
+
+<AgentBrief name="flowchart">
+
+**When to use**
+
+- Workflow automations, CI/CD pipelines
+- Multi-agent convergence diagrams, interactive system architecture maps
+
+**When not to use**
+
+- Live service telemetry between infrastructure nodes: use <DocLink to="infrastructure-topology">Infrastructure Topology</DocLink>
+- An agent hierarchy with status and token meters: use <DocLink to="agent-graph">Agent Graph</DocLink>
+
+**Agent notes**
+
+- Compose `FlowCanvas` with `FlowConnection` (raw SVG `path` + `id`) and `FlowNode` (`connectedPaths` array).
+- Give every segment of one route the same `id`: they draw in together and all stream when that route is active.
+- Keep `FlowNode` Tailwind `left-[...]` / `top-[...]` positions synchronized with `FlowConnection` `M`/`L`/`C` coordinates. Nodes are 240 by 68 px on a 900 by 400 canvas.
+- Import `Flowchart`, `FlowCanvas`, `FlowConnection` and `FlowNode` from `@/components/custom/blocks/FlowchartBlock`.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -429,7 +435,7 @@ export default function AgentPipeline() {
       <tr>
         <td><code>FlowNode</code></td>
         <td><code>icon</code></td>
-        <td><code>React.ComponentType</code></td>
+        <td><code>React.ElementType</code></td>
         <td><code>undefined</code></td>
         <td>Icon rendered in the node's leading slot — any lucide icon works.</td>
       </tr>
@@ -486,6 +492,36 @@ export default function AgentPipeline() {
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- <DocLink to="data-flow">Data Flow</DocLink> uses `Flowchart` with `layout="fluid"` to draw curves between ordinary cards.
+- <DocLink to="infrastructure-topology">Infrastructure Topology</DocLink> shows live telemetry between infrastructure nodes where a flowchart shows a fixed route.
+- <DocLink to="agent-graph">Agent Graph</DocLink> covers agent hierarchies with status and token meters.
+- Put a flowchart beside an <DocLink to="api-playground">API Playground</DocLink> to document the endpoints a pipeline calls.
+
+## How do I show a route that has several segments?
+
+Give every `FlowConnection` on that route the same `id`, then list that `id` in the `connectedPaths` of each `FlowNode` it touches. The segments draw in together, and all of them stream while the route is active.
+
+## How do I start the flowchart with no route active?
+
+Pass `initialActivePath={null}`, which is also the default. Every route stays a resting line until the reader clicks a `FlowNode`, which activates the first id in its `connectedPaths`. Pass a route id instead to have that route stream on mount.
+
+## How do I line a FlowNode up with a FlowConnection path?
+
+Place the node with Tailwind `left-[...]` and `top-[...]` classes on its `className`, and write the path in the same 900 by 400 coordinate space. A `FlowNode` is 240 by 68 px, so a path ending at x 340 meets a node at `left-[340px]`.
+
+## How do I change the colour of the active route?
+
+Set `color` on `Flowchart` to `primary`, `blue`, `indigo`, `rose`, `emerald` or `zinc`. It tints the active stream, the node ring and the icon tile. The default `primary` follows your theme's `--primary` token, so the flowchart matches the rest of your app without an extra prop.
+
+## Can I use Flowchart outside a fixed 900 by 400 canvas?
+
+Yes. Set `layout="fluid"` on `Flowchart` to get only the context and a positioned box, then give `FlowCanvas` its own `viewBox` and draw connectors over your own cards and columns. In that mode the 900 by 400 grid is gone. <DocLink to="data-flow">Data Flow</DocLink> is built this way.
+
+## Does Flowchart respect reduced motion and work outside Next.js?
+
+Under `prefers-reduced-motion` the draw-in is skipped and the moving stream does not animate. The file has no `next/*` imports and no npm dependencies beyond React, so it installs into Vite as well. Nodes are clickable `div`s, so there is no keyboard activation.
 
 <DocsJsonLd slug="flowchart" />
+<FaqJsonLd slug="flowchart" />

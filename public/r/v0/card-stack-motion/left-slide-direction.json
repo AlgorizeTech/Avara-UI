@@ -3,7 +3,7 @@
   "name": "card-stack-motion-left-slide-direction",
   "type": "registry:block",
   "title": "Card Stack — Left Slide Direction",
-  "description": "Slide the top card out toward the left when progressing forward with button controls.",
+  "description": "The \"Left Slide Direction\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

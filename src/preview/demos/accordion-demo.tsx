@@ -217,7 +217,7 @@ export default function AccordionDemo({
 
   return (
     <div className="w-full p-4 md:p-8">
-      <div className="mx-auto w-full max-w-2xl">
+      <div className="mx-auto w-full max-w-2xl rounded-3xl bg-[#F5F5F4] p-4 sm:p-6 md:p-8 dark:bg-transparent">
         <Accordion
           key={`${variant}-${interaction}-${animation}-${expandIcon ?? "default"}`}
           accordionData={sampleData}

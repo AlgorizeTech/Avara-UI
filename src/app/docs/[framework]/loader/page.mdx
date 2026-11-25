@@ -4,16 +4,11 @@ export const metadata = docsPageMetadata("loader");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Loader
 
-A premium, dependency-free loading indicator component.
-
-Different parts of your UI require different types of loading states. A full-page data fetch might require an indeterminate `bar` or `pulse`, while a small button state might only fit a `sm` size `spinner` or `dots`, or an eye-catching `orbit` dual-ring spinner for prominent async states. This component consolidates 6 distinct, ultra-smooth animations into a single block.
-
-Explore the different variations of the Loader component — each example shows a live preview with the exact code to copy.
-
-<AgentVariants slug="loader" />
+A dependency-free loading indicator (`LoaderBlock`) consolidating `spinner`, `orbit`, `dots`, `pulse`, and `bar` animations with theme color syncing.
 
 export const usageSpinner = `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock";
 
@@ -56,6 +51,7 @@ export default function OrbitLoader() {
   name="loader"
   colorControl
   columns={1}
+  installation={<Installation name="loader" usage="below" />}
   examples={[
     {
       title: "Spinner",
@@ -76,20 +72,6 @@ export default function OrbitLoader() {
       usage: usageSpinner,
       code: extractCode("src/components/custom/blocks/LoaderBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="loader" />
-
-## Examples
-
-<ExampleShowcase minHeight={220}
-  name="loader"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: 'Orbit (Concentric Rings & Pulse) — variant="orbit"',
       propNotes: [
@@ -161,13 +143,35 @@ export default function OrbitLoader() {
   ]}
 />
 
-## Best Practices & Guidelines
+## About Shadcn Loader
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**What it is.** `LoaderBlock` provides `spinner`, `orbit` (also spelled `ring`), `dots`, `pulse` and `bar` loading indicators in four sizes (`sm` to `xl`), with an optional `text` line beneath.
+
+**How it is built.** Plain CSS and SVG animations with no npm dependency; the registry install adds only the `utils` helper and a small `loader-theme.ts` colour map. `color` takes a named key (`primary`, `indigo`, `rose`, `emerald`, `zinc`, `blue`, `amber` and a few more) or a `#hex` value. `primary` follows your theme token.
+
+**When to use it.** Use `LoaderBlock` for indeterminate loading states (inline buttons, card overlays, full-width bars). For determinate percentage bars or rings, use <DocLink to="progress">Progress</DocLink>; for content placeholders, use <DocLink to="skeleton">Skeleton</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="loader">
+
+**When to use**
+
+- Indeterminate loading indicators (`spinner`, `orbit`, `dots`, `pulse`, `bar`) across buttons, cards, and async panels
+
+**When not to use**
+
+- Determinate percentage or step progress: use <DocLink to="progress">Progress</DocLink>
+- Layout-matching content placeholders: use <DocLink to="skeleton">Skeleton</DocLink>
+
+**Agent notes**
+
+- Named export: `import { LoaderBlock } from "@/components/custom/blocks/LoaderBlock"`. Only `className` and `style` reach the wrapper; other props such as `role` or `aria-label` are not forwarded.
+- `variant="orbit"` (or `"ring"`) supports `direction="single" | "dual"` and `secondaryColor`. Only `"dual"` counter-rotates the inner ring.
+- `color` accepts a key from a fixed colour map or a string starting with `#`. Anything else, including `rgb()` or `hsl()`, falls back to `primary`.
+- The `bar` variant has a fixed width per `size`, and the loader has no built-in screen reader announcement, so wrap it in an element with `role="status"` when it matters.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -192,7 +196,7 @@ export default function OrbitLoader() {
         <td>
           <code>"spinner"</code>
         </td>
-        <td>The architectural style of the loading animation. <code>"orbit"</code> (and <code>"ring"</code>) renders the signature dual-ring concentric spinner with counter-rotating arc and pulsing core.</td>
+        <td>The loading animation. <code>"orbit"</code> and <code>"ring"</code> are the same concentric two-ring spinner with a pulsing core.</td>
       </tr>
       <tr>
         <td>
@@ -205,7 +209,7 @@ export default function OrbitLoader() {
           <code>"single"</code>
         </td>
         <td>
-          Rotation direction for concentric rings in <code>"orbit"</code> and <code>"ring"</code> variants. <code>"single"</code> spins both rings in the same direction; <code>"dual"</code> enables opposite counter-spinning.
+          Rotation direction for the rings in the <code>"orbit"</code> and <code>"ring"</code> variants. <code>"single"</code> spins both rings the same way; <code>"dual"</code> spins the inner ring the opposite way.
         </td>
       </tr>
       <tr>
@@ -222,7 +226,7 @@ export default function OrbitLoader() {
           <code>"#10b981"</code>
         </td>
         <td>
-          Accent color for the inner counter-rotating orbit in <code>"orbit"</code> and <code>"ring"</code> variants. Defaults to emerald (<code>#10b981</code>).
+          Colour of the inner ring in the <code>"orbit"</code> and <code>"ring"</code> variants. Defaults to emerald (<code>#10b981</code>), or indigo (<code>#6366f1</code>) when <code>color</code> is <code>"emerald"</code>.
         </td>
       </tr>
       <tr>
@@ -254,8 +258,7 @@ export default function OrbitLoader() {
           <code>"primary"</code>
         </td>
         <td>
-          Applies the active color theme to the SVG strokes, dots, and borders.
-          Accepts custom hex codes. Unrecognised values fall back to{" "}
+          Colours the strokes, dots and bar fill. Accepts the names shown plus lavender, violet, purple, cyan, teal, orange, red, pink, yellow and green, or a hex code starting with #. Unrecognised values fall back to{" "}
           <code>"primary"</code>, which follows your theme's{" "}
           <code>--primary</code> token.
         </td>
@@ -307,6 +310,35 @@ export default function OrbitLoader() {
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Pair `LoaderBlock` with <DocLink to="button">Button</DocLink>, <DocLink to="dialog">Dialog</DocLink>, or <DocLink to="data-table">Data Table</DocLink> loading overlays.
+- Use <DocLink to="skeleton">Skeleton</DocLink> instead when you want to preserve card/list layout geometry while data loads.
+- Switch to <DocLink to="progress">Progress</DocLink> once you know how far along the task is.
+
+## Which Loader variant should I use inline vs in hero cards?
+
+Use `spinner` or `dots` for inline text and small buttons, `pulse` for a quiet status indicator, `bar` for a strip along the top of a card, and `orbit` for a prominent, centred loading state. All of them are indeterminate, so none shows real progress.
+
+## How do I make the Loader orbit spin in opposite directions?
+
+Set `variant="orbit"` with `direction="dual"`. The outer ring keeps spinning clockwise while the inner ring runs the other way; the default `"single"` spins both the same way. Add `secondaryColor` to tint the inner ring, which is emerald unless `color` is `"emerald"`.
+
+## Can I use my own brand colour on LoaderBlock?
+
+Yes, with a hex value: `color="#e11d48"`. The loader uses any string starting with `#` as is, and looks other strings up in a fixed colour map. A name not in the map, or a format such as `rgb()` or `hsl()`, falls back to `primary`, which follows your theme's `--primary`.
+
+## Why does the bar variant ignore w-full?
+
+`className` is applied to the outer wrapper, while the track gets its own fixed width from `size`: `w-16`, `w-32`, `w-48` or `w-64`. So `w-full` on the wrapper does not stretch it. Pick the nearest `size`, or edit the `barSizeClasses` map in your copy of `LoaderBlock.tsx` for a different width.
+
+## Is the Loader announced to screen readers?
+
+Not by itself. It renders no `role`, `aria-label` or live region, and the animations do not check `prefers-reduced-motion`. The optional `text` is an ordinary `span`. Wrap `LoaderBlock` in an element with `role="status"`, and pass `text` so the state has a readable label.
+
+## How do I add text under the Loader or change its padding?
+
+Pass `text` for a caption that scales with `size` and pulses. Vertical padding defaults to `py-5` (20px), and `py` overrides it with a Tailwind class such as `"py-8"`, a number of pixels such as `10`, or a string such as `"30px"`. Use `py={0}` to remove the padding.
 
 <DocsJsonLd slug="loader" />
+<FaqJsonLd slug="loader" />

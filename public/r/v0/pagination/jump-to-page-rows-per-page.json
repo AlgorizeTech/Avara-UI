@@ -3,7 +3,7 @@
   "name": "pagination-jump-to-page-rows-per-page",
   "type": "registry:block",
   "title": "Pagination — Jump to page & rows per page",
-  "description": "Both controls are opt-in booleans; the page-size dropdown reports through `onPageSizeChange`.",
+  "description": "The \"Jump to page & rows per page\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

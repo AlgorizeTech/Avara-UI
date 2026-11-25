@@ -3,7 +3,7 @@
   "name": "timeline-ruler-ruler-timeline",
   "type": "registry:block",
   "title": "Timeline Ruler — Ruler timeline",
-  "description": "Labels slide past a wavy rail and the one at the bulge is detailed beside it. Click a label, press the round button, or use the wheel, arrow keys or a drag.",
+  "description": "The \"Ruler timeline\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

@@ -3,6 +3,7 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("fleet-tracker");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Fleet Tracker Map
@@ -10,8 +11,6 @@ import { extractCode } from "@/lib/code";
 An interactive, responsive fleet management dashboard featuring a synchronized sidebar and live map integration using React Leaflet.
 
 Every preview is live: click a vehicle in the sidebar to fly the map to its coordinates, or click a map marker to highlight it in the sidebar.
-
-<AgentVariants slug="fleet-tracker" />
 
 export const fleetData = `const fleet: Vehicle[] = [
   {
@@ -135,6 +134,7 @@ export default function IncidentMonitorMap() {
   name="fleet"
   colorControl
   columns={1}
+  installation={<Installation name="fleet-map" usage="below" />}
   examples={[
     {
       title: "Fleet tracker",
@@ -158,10 +158,6 @@ export default function IncidentMonitorMap() {
     },
   ]}
 />
-
-## Installation
-
-<Installation name="fleet-map" />
 
 ## Examples
 
@@ -205,12 +201,11 @@ export default function IncidentMonitorMap() {
 
 Eight minimalist OpenFreeMap Positron MapLibre GL map variants with floating KPI/list overlays, custom dot and price-pill markers, route polylines, delivery zone polygons, WebGL heatmaps, and GeoJSON incident clustering.
 
-<Installation name="maps" />
-
 <ExampleShowcase minHeight={480}
   name="maps"
   colorControl
   columns={1}
+  installation={<Installation name="maps" usage="below" />}
   examples={[
     {
       title: "Route Planner",
@@ -328,31 +323,37 @@ Eight minimalist OpenFreeMap Positron MapLibre GL map variants with floating KPI
   ]}
 />
 
-## Features
-Explore the Fleet Tracker map features, including live marker positioning, custom tooltips, and interactive geographic visualization.
+## About Shadcn Fleet Tracker Map
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**What it is.** **Shadcn Fleet Tracker Map** combines `FleetTracker` (the default export of `Fleet-map`, installed as `fleet-map`: a two-way synchronized vehicle list and React-Leaflet map in `default`, `minimal`, and `modern` layouts) with `Maps` (eight OpenFreeMap Positron MapLibre GL map variants).
 
-## Best Practices & Guidelines
+**How it is built.** Clicking a vehicle row in `FleetTracker` smoothly flies the map to its `[lat, lng]` coordinates, and clicking a map marker selects the corresponding sidebar entry. `Maps` adds MapLibre GL overlays for routes, delivery zones, heatmaps, and clusters, drawn from built-in sample data. Leaflet and MapLibre are loaded in the browser after mount, so neither needs `next/dynamic`.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use it for logistics dispatch consoles, delivery tracking portals, real-estate map search, and live incident monitoring dashboards.
+
+## For AI agents
+
+<AgentBrief name="fleet-tracker">
+
+**When to use**
+
+- Logistics dispatch consoles, delivery tracking portals
+- Real-estate map search, live incident monitoring dashboards
+
+**When not to use**
+
+- Country-level aggregates: use <DocLink to="data-maps">Data Maps</DocLink>
+- Sortable records with no map: use <DocLink to="data-table">Data Table</DocLink>
+
+**Agent notes**
+
+- Install `fleet-map` for `FleetTracker` (`import FleetTracker from "@/components/custom/blocks/Fleet-map"`; props `fleetData`, `variant`: `"default" | "minimal" | "modern"`, `color`, `zoom`, `tileUrl`, `darkTileUrl`, `tileApiKey`, `attribution`) or `maps` for the MapLibre GL variants.
+- `Maps` takes no data props. Its props are `variant`, `color`, `center` (`[lng, lat]`), `zoom`, `height` (default `480`), `className`, `lightStyleUrl` and `darkStyleUrl`; the stops, listings and zones are constants in the file.
+- `fleet-map` depends on `leaflet` and `react-leaflet`; `maps` depends on `maplibre-gl`.
+- Each `Vehicle` in `fleetData` needs `id`, `location`, `lat`, and `lng` (plus optional `status` and `speed`).
+- Selection between the sidebar list and map markers is synchronized bidirectionally.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -382,7 +383,7 @@ Explore the Fleet Tracker map features, including live marker positioning, custo
           <code>location</code> (string), and geographic coordinates (
           <code>lat</code>, <code>lng</code>). Optionally accepts{" "}
           <code>status</code> ("active" | "idle" | "maintenance") and{" "}
-          <code>speed</code>.
+          <code>speed</code> (a string such as <code>"45 mph"</code>).
         </td>
       </tr>
       <tr>
@@ -474,10 +475,51 @@ Explore the Fleet Tracker map features, including live marker positioning, custo
           Custom raster tile URL template for dark mode. If omitted, standard OpenStreetMap tiles are dynamically dark-graded.
         </td>
       </tr>
+      <tr>
+        <td>
+          <code>attribution</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          OpenStreetMap credit (CARTO credit when <code>tileApiKey</code> is set)
+        </td>
+        <td>
+          Attribution HTML passed to the tile layer.
+        </td>
+      </tr>
     </tbody>
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+Pair `FleetTracker` with <DocLink to="data-maps">Data Maps</DocLink> for country-level choropleth analytics, <DocLink to="data-table">Data Table</DocLink> for dispatch logs, and <DocLink to="live-pulse-pill">Live Pulse Pill</DocLink> for active telemetry badges.
+
+## What is the difference between `fleet-map` and `maps`?
+
+`fleet-map` installs `FleetTracker`: a vehicle list and a React-Leaflet map that you feed with `fleetData`. `maps` installs `Maps`: eight MapLibre GL variants (routes, delivery zones, heatmap, clustering and more) that run on sample data and take `variant`, `center`, `zoom` and style URLs. Install the one you need.
+
+## How does sidebar-to-map synchronization work?
+
+Clicking a vehicle in the sidebar flies the map to its `lat` and `lng` at the `zoom` level over about 1.5 seconds. Clicking a marker selects the same vehicle in the list. The search box filters the list by `id` or `location`. On narrow screens the list and map swap behind a toggle button.
+
+## How do I pass my own vehicles to FleetTracker?
+
+Give `fleetData` an array of `Vehicle` objects: `id` (string), `location` (string), `lat` and `lng` (numbers), plus an optional `status` of `"active"`, `"idle"` or `"maintenance"` and a `speed` display string such as `"45 mph"`. Update the array from your telemetry source and the list and markers follow.
+
+## Which map tiles does FleetTracker use, and can I change them?
+
+It uses OpenStreetMap raster tiles with no API key. Pass `tileUrl` and `darkTileUrl` to use another raster provider, or `tileApiKey` to switch to CARTO basemaps. Without `darkTileUrl`, dark mode inverts the light tiles with a CSS filter. The built-in layouts hide Leaflet's attribution control, so show your tile credit elsewhere.
+
+## Can I use my own data with the Maps variants?
+
+Not through props. `Maps` takes only `variant`, `color`, `center` as `[lng, lat]`, `zoom`, `height`, `className`, `lightStyleUrl` and `darkStyleUrl`. The stops, listings, zones and heat points are constants in the installed file, so edit those to show your own locations. Pass style URLs to replace the OpenFreeMap basemap.
+
+## Does the Fleet Tracker work with server rendering and Vite?
+
+Yes. `leaflet` and `react-leaflet` are imported in an effect after mount, not at module scope, so server rendering never touches the DOM and you need no `next/dynamic`. The file has no `next/*` imports. `Maps` mounts its WebGL map only near the viewport, which keeps pages with many maps under the browser's context limit.
 
 <DocsJsonLd slug="fleet-tracker" />
+<FaqJsonLd slug="fleet-tracker" />

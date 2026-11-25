@@ -136,5 +136,7 @@ Install the chosen variant's own `install` command from the index. Several looks
 - `brand-bridge`: 2 variants. All live: https://avaraui.com/view/brand-bridge
 - `profile-card`: 2 variants. All live: https://avaraui.com/view/profile-card
 - `radio-button`: 11 variants. All live: https://avaraui.com/view/radio-button
+- `secure-envelope`: 4 variants. All live: https://avaraui.com/view/secure-envelope
+- `falling-tags`: 7 variants. All live: https://avaraui.com/view/falling-tags
 
 An index entry with `choose: true` is the authority: it lists every variant and its live link.

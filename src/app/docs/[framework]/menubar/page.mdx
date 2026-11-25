@@ -4,14 +4,11 @@ export const metadata = docsPageMetadata("menubar");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Menubar
 
-A visually persistent, OS-style menu component that provides quick access to a consistent set of commands.
-
-Native application menus have complex, unwritten interaction rules. If you click to open "File", and then hover your mouse horizontally over "Edit", the "Edit" menu should instantly open while "File" closes. Building this from scratch is notoriously difficult. This `MenubarBlock` solves all of that natively in React using Context, providing a 100% dependency-free implementation.
-
-Click a trigger to open its menu, then hover the neighbours — they swap instantly, exactly like a native app.
+A dependency-free desktop-style menubar (`Menubar`, `MenubarMenu`, `MenubarTrigger`, `MenubarContent`) with hover-to-swap menu switching and application title-bar support.
 
 export const usageDefault = `"use client";
 
@@ -239,10 +236,11 @@ export default function AppWindow() {
   name="menubar"
   colorControl={false}
   columns={1}
+  installation={<Installation name="menubar" usage="below" />}
   examples={[
     {
       title: "Menubar",
-      subheading: "Nest `MenubarMenu` → `MenubarTrigger` + `MenubarContent`.",
+      description: "Nest `MenubarMenu` → `MenubarTrigger` + `MenubarContent`.",
       propNotes: [
         {
           prop: "value",
@@ -259,20 +257,6 @@ export default function AppWindow() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/MenubarBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="menubar" />
-
-## Examples
-
-<ExampleShowcase minHeight={290}
-  name="menubar"
-  colorControl={false}
-  columns={1}
-  examples={[
     {
       title: "Application menubar",
       propNotes: [
@@ -288,31 +272,35 @@ export default function AppWindow() {
   ]}
 />
 
-## Features
-Learn about the Menubar's desktop-style navigation features, supporting complex nested menus, radio groups, and checkboxes.
+## About Shadcn Menubar
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**What it is.** `Menubar` (`MenubarMenu`, `MenubarTrigger`, `MenubarContent`, `MenubarItem`, `MenubarSeparator`, `MenubarShortcut`, `MenubarLabel`) provides a persistent OS-style command bar. There are no checkbox, radio or submenu parts; mark a chosen row with an icon, as the application example does.
 
-## Best Practices & Guidelines
+**How it is built.** Plain React Context with no menu library. The bar tracks one open menu by `value`: click a trigger to open it, then hover the neighbouring triggers to swap. Escape or a mouse press outside closes it. `MenubarContent` nudges itself back inside the viewport and caps its height.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `Menubar` for desktop-style editors, IDEs, and application title bars. For marketing/site navigation, use <DocLink to="navigation">Navigation Menu</DocLink>; for right-click menus, use <DocLink to="context-menu">Context Menu</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="menubar">
+
+**When to use**
+
+- Persistent desktop-style File / Edit / View command bars in editors or web apps
+
+**When not to use**
+
+- Site header navigation: use <DocLink to="navigation">Navigation Menu</DocLink>
+- Right-click context menus: use <DocLink to="context-menu">Context Menu</DocLink>
+
+**Agent notes**
+
+- Named exports from `@/components/custom/blocks/MenubarBlock`: `Menubar`, `MenubarMenu`, `MenubarTrigger`, `MenubarContent`, `MenubarItem`, `MenubarSeparator`, `MenubarShortcut`, `MenubarLabel`. Nothing else exists, so do not import `MenubarCheckboxItem` or `MenubarSub`.
+- Every `MenubarMenu` requires a unique `value` prop so context can track the active dropdown. Open state is internal; there is no controlled `open` prop.
+- `MenubarItem` is a `button` that closes the menu after `onClick` runs.
+- Keyboard support is limited to Tab and Escape. There is no arrow-key navigation and no `role="menu"` markup.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -396,7 +384,7 @@ Learn about the Menubar's desktop-style navigation features, supporting complex 
           <code>onClick</code>
         </td>
         <td>
-          <code>{`() => void`}</code>
+          <code>{`(e: React.MouseEvent<HTMLButtonElement>) => void`}</code>
         </td>
         <td>
           Fires your custom action. The menu will{" "}
@@ -428,14 +416,42 @@ Learn about the Menubar's desktop-style navigation features, supporting complex 
           <code>string</code>
         </td>
         <td>
-          Every component supports custom Tailwind classes for easy styling
-          overrides.
+          Every component except <code>MenubarMenu</code> accepts custom Tailwind classes, and the others pass extra HTML attributes to their root element (<code>MenubarSeparator</code> takes only <code>className</code>).
         </td>
       </tr>
     </tbody>
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Pair `Menubar` with <DocLink to="resizable">Resizable</DocLink> panes and <DocLink to="kbd">Kbd</DocLink> shortcut hints in IDE/editor shells.
+- Use <DocLink to="context-menu">Context Menu</DocLink> for the right-click version of the same actions.
+- Use <DocLink to="navigation">Navigation Menu</DocLink> for site header links instead of command menus.
+
+## Why does each MenubarMenu need a value prop?
+
+`Menubar` keeps one `activeMenu` string in React Context, and each `MenubarMenu` registers its `value` there. The trigger compares them to know whether to highlight, and the content compares them to know whether to render. Two menus with the same `value` would open together, so keep each one unique.
+
+## What closes a Menubar menu?
+
+Clicking a `MenubarItem` closes it after your `onClick` runs. A mouse press anywhere outside the bar closes it, and so does the Escape key. Clicking the open trigger again toggles it shut. Closed menus are unmounted, so `MenubarContent` renders nothing until its trigger is clicked.
+
+## Does Menubar support arrow-key navigation?
+
+No. Triggers and items are native `button` elements, so Tab and Enter work, and Escape closes the open menu. There is no arrow-key movement, no typeahead, and no `role="menubar"` or `aria-expanded` markup. For strict ARIA menu behaviour, use a Radix-based menubar.
+
+## How do I fuse a Menubar into a window title bar?
+
+Pass `className` to `Menubar` to remove its chrome, for example `border-none bg-transparent shadow-none p-0` as the application example does, then place it inside your own header. Each `MenubarTrigger` is a plain button, so you can restyle triggers with `className` too.
+
+## Does the Menubar dropdown stay on screen near the edge of the window?
+
+Mostly. When a menu opens, `MenubarContent` measures itself and shifts sideways to stay 8px inside the viewport, then caps its height if it would run past the bottom. `align` can be `start`, `center` or `end`. It is not portaled, so an ancestor with `overflow-hidden` will still crop it.
+
+## Can I add checkbox, radio or submenu items to Menubar?
+
+Not as built-in parts. The block ships `MenubarItem`, `MenubarLabel`, `MenubarSeparator` and `MenubarShortcut` only. To show a selected option, hold the state yourself and render a check icon inside a `MenubarItem`, as the View menu in the application example does for the theme choice.
 
 <DocsJsonLd slug="menubar" />
+<FaqJsonLd slug="menubar" />

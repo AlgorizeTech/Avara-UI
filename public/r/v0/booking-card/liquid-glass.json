@@ -3,7 +3,7 @@
   "name": "booking-card-liquid-glass",
   "type": "registry:block",
   "title": "Booking Card — Liquid glass",
-  "description": "The booking card rendered inside a liquid-glass refraction surface.",
+  "description": "The \"Liquid glass\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

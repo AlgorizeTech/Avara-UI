@@ -1,57 +1,27 @@
 ---
 title: "Shadcn Scroll Area"
-description: "Augments native scroll functionality for custom, cross-browser styling. Free shadcn/ui Scroll Area component for React, Next.js and Tailwind CSS."
+description: "Shadcn Scroll Area. A cross-browser styled scroll container (`ScrollAreaBlock`) supporting vertical, horizontal (with mouse-wheel panning)."
 url: https://avaraui.com/docs/nextjs/scroll-area
 ---
 
 # Shadcn Scroll Area
 
-Augments native scroll functionality for custom, cross-browser styling.
+A cross-browser styled scroll container (`ScrollAreaBlock`) supporting vertical, horizontal (with mouse-wheel panning), and dual-axis scrollbars plus `minimal`, `glass`, and `autoHide` modes.
 
-This `ScrollAreaBlock` provides a beautiful, native-feeling scrollbar that works seamlessly across Webkit browsers (Chrome, Safari, Edge) and Firefox. It uses pure CSS and avoids heavy third-party dependencies while allowing deep theme integration.
+## Installation
 
-Give the block a height or width constraint and it takes over the scrollbar styling from there — same rendering in Webkit and Firefox.
+Add the component by URL — no setup needed:
 
-## For AI agents
+```bash
+npx shadcn@latest add https://avaraui.com/r/scroll-area.json
+```
 
-**Ask before you pick.** This page has 3 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+Or register the @avara-ui registry once per project and add it by name:
 
-All 3 options as live previews: https://avaraui.com/view/scroll-area
-
-**When to use it.** A scroll container with a custom, cross-browser scrollbar built in pure CSS, in three styles: the default, a slim minimal bar and a tinted glass bar.
-
-**Gotchas:**
-
-- All three are looks of the one `scroll-area` item: install it once and set `variant` from the index.
-- The container needs a height or width constraint, or there is nothing to scroll.
-- Direction is `orientation` (vertical, horizontal or both) and fading the bar out is `autoHide`: both are props on any style.
-
-### The 3 variants
-
-1. **Default** (`default`): The standard custom scrollbar, styled to match your theme.
-   - Live: https://avaraui.com/view/scroll-area/default
-   - Best for: a general scrollable panel, list or code area
-   - Avoid if: the space is dense and a slimmer bar would suit better
-   - Traits: default look, vertical, horizontal or both axes
-   - Install: `npx shadcn@latest add @avara-ui/scroll-area`
-   - Set these props: `{"variant":"default"}`
-   - Docs: https://avaraui.com/docs/nextjs/scroll-area#scroll-area
-2. **Minimal** (`minimal`): The thumb is slimmed down for dense interfaces.
-   - Live: https://avaraui.com/view/scroll-area/minimal
-   - Best for: tables, menus and dense UI where the scrollbar should take little room
-   - Avoid if: a thin bar would be hard to grab
-   - Traits: slim thumb
-   - Install: `npx shadcn@latest add @avara-ui/scroll-area`
-   - Set these props: `{"variant":"minimal"}`
-   - Docs: https://avaraui.com/docs/nextjs/scroll-area#minimal
-3. **Glass** (`glass`): The bar is tinted for use over frosted surfaces.
-   - Live: https://avaraui.com/view/scroll-area/glass
-   - Best for: scroll areas inside glass panels or over imagery
-   - Avoid if: the surface is plain and solid
-   - Traits: tinted bar for frosted backgrounds
-   - Install: `npx shadcn@latest add @avara-ui/scroll-area`
-   - Set these props: `{"variant":"glass"}`
-   - Docs: https://avaraui.com/docs/nextjs/scroll-area#glass
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/scroll-area
+```
 
 ## Scroll area
 
@@ -244,24 +214,7 @@ export default function MessageList() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/scroll-area.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/scroll-area
-```
-
-## Examples
-
-### Horizontal
+## Horizontal
 
 - Set `orientation="horizontal"` to apply the matching overflow utilities and move the bar to the bottom edge. The inner row needs `w-max` to overflow.
 - `wheelToHorizontal={true}` is on by default here: a mouse wheel pans the row left and right. Once the row hits either end the wheel scrolls the page again.
@@ -372,7 +325,7 @@ export default function ArtworkScroller() {
 }
 ```
 
-### Both axes
+## Both axes
 
 - Set `orientation="both"` to render and style a scrollbar on each axis.
 
@@ -507,7 +460,7 @@ export default function BoardScroller() {
 }
 ```
 
-### Minimal
+## Minimal
 
 - Set `variant="minimal"` to slim the thumb down for dense UI.
 
@@ -698,7 +651,7 @@ export default function MinimalScroller() {
 }
 ```
 
-### Glass
+## Glass
 
 - Set `variant="glass"` to tint the bar for use over frosted surfaces.
 
@@ -889,7 +842,7 @@ export default function GlassScroller() {
 }
 ```
 
-### Auto-hide
+## Auto-hide
 
 - Set `autoHide` to fade the thumb out until the container is hovered or scrolled.
 - `hideTrack` removes the groove behind the thumb entirely.
@@ -1082,20 +1035,67 @@ export default function AutoHideScroller() {
 }
 ```
 
-## Features
-Explore the Scroll Area's custom scrollbar features, providing a unified, stylized scrolling experience across all operating systems.
+## About Shadcn Scroll Area
 
-Easily adapt the component's styling and behavior to fit your application's unique design system.
+**What it is.** `ScrollAreaBlock` styles vertical, horizontal, and two-axis scrollbars consistently across WebKit and Firefox with `default`, `minimal`, and `glass` variants plus `autoHide` and `hideTrack`.
 
-Built with accessibility in mind, ensuring all users can interact with your application effectively.
+**How it is built.** Scopes scrollbar styling to a generated class so global page scrollbars are unaffected, and supports `wheelToHorizontal` so vertical mouse-wheel input pans horizontal rows cleanly until hitting an edge.
 
-Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+**When to use it.** Use `ScrollAreaBlock` inside fixed-height lists, chat threads, code viewers, and horizontal card rails.
 
-Optimized for maximum performance with minimal re-renders and efficient state management.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+- Bounded vertical, horizontal, or two-axis scroll containers with consistent cross-browser scrollbars (`default`, `minimal`, `glass`, `autoHide`)
+
+**When not to use**
+
+- Virtualized huge datasets — pair with a virtualizer if rendering thousands of rows
+
+**Agent notes**
+
+- Named export: `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock"`
+- Always pass a height/width constraint via `className` (and `w-max` on inner content for `orientation="horizontal"`)
+
+**Ask before you pick.** This page has 3 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 3 options as live previews: https://avaraui.com/view/scroll-area
+
+**When to use it.** A scroll container with a custom, cross-browser scrollbar built in pure CSS, in three styles: the default, a slim minimal bar and a tinted glass bar.
+
+**Gotchas:**
+
+- All three are looks of the one `scroll-area` item: install it once and set `variant` from the index.
+- The container needs a height or width constraint, or there is nothing to scroll.
+- Direction is `orientation` (vertical, horizontal or both) and fading the bar out is `autoHide`: both are props on any style.
+
+### The 3 variants
+
+1. **Default** (`default`): The standard custom scrollbar, styled to match your theme.
+   - Live: https://avaraui.com/view/scroll-area/default
+   - Best for: a general scrollable panel, list or code area
+   - Avoid if: the space is dense and a slimmer bar would suit better
+   - Traits: default look, vertical, horizontal or both axes
+   - Install: `npx shadcn@latest add @avara-ui/scroll-area`
+   - Set these props: `{"variant":"default"}`
+   - Docs: https://avaraui.com/docs/nextjs/scroll-area#scroll-area
+2. **Minimal** (`minimal`): The thumb is slimmed down for dense interfaces.
+   - Live: https://avaraui.com/view/scroll-area/minimal
+   - Best for: tables, menus and dense UI where the scrollbar should take little room
+   - Avoid if: a thin bar would be hard to grab
+   - Traits: slim thumb
+   - Install: `npx shadcn@latest add @avara-ui/scroll-area`
+   - Set these props: `{"variant":"minimal"}`
+   - Docs: https://avaraui.com/docs/nextjs/scroll-area#minimal
+3. **Glass** (`glass`): The bar is tinted for use over frosted surfaces.
+   - Live: https://avaraui.com/view/scroll-area/glass
+   - Best for: scroll areas inside glass panels or over imagery
+   - Avoid if: the surface is plain and solid
+   - Traits: tinted bar for frosted backgrounds
+   - Install: `npx shadcn@latest add @avara-ui/scroll-area`
+   - Set these props: `{"variant":"glass"}`
+   - Docs: https://avaraui.com/docs/nextjs/scroll-area#glass
 
 ## Props Reference
 
@@ -1107,6 +1107,30 @@ Follow standard design principles when implementing this component. Ensure prope
 | `ScrollAreaBlock` | `hideTrack` | `boolean` | `false` | If true, forces the background scroll track to be completely transparent, showing only the thumb. |
 | `ScrollAreaBlock` | `autoHide` | `boolean` | `false` | If true, the scrollbar thumb fades to transparent when the container is not being actively hovered. |
 | `ScrollAreaBlock` | `wheelToHorizontal` | `boolean` | `true` | `orientation="horizontal"` only. A mouse wheel pans the content sideways; trackpad swipes and shift+wheel keep their native behaviour, and the wheel is handed back to the page at either end. |
+
+## Works with other components
+
+- Embed `ScrollAreaBlock` inside [Resizable](https://avaraui.com/docs/nextjs/resizable), [Drawer](https://avaraui.com/docs/nextjs/drawer), and [Command](https://avaraui.com/docs/nextjs/command) lists.
+
+## How do I add a custom scrollbar with Tailwind and React?
+
+Wrap the content in `ScrollAreaBlock` and give it a bounded height or width, then choose a `variant` of `"default"`, `"minimal"` or `"glass"`. It styles vertical, horizontal and two-axis scrollbars the same way in WebKit browsers and Firefox.
+
+## Why isn't my horizontal ScrollAreaBlock scrolling?
+
+`orientation` defaults to `"vertical"`, so set `orientation="horizontal"` (or `"both"`) for sideways scrolling. The content inside must also be wider than the container, for example a flex row that does not wrap, or there is nothing to scroll.
+
+## How do I make the mouse wheel scroll sideways?
+
+`wheelToHorizontal` is `true` by default and only applies when `orientation="horizontal"`. A vertical wheel then pans the row sideways until it reaches an edge. Trackpad swipes and shift+wheel keep their normal behaviour, and you can pass `false` to turn it off.
+
+## How do I hide the scrollbar until the user hovers?
+
+Set `autoHide` so the thumb fades to transparent when the container is not hovered. Add `hideTrack` to make the background track fully transparent so only the thumb shows. Both props are `false` by default and work with any `variant`.
+
+## Will ScrollAreaBlock change my page's global scrollbar?
+
+No. Its scrollbar styling is scoped to a generated class on that one container, so the page scrollbar and other scrollers are untouched. Use `color` (`"indigo"`, `"rose"`, `"emerald"`, `"zinc"` or a custom colour string) to tint the thumb and its hover state.
 
 ---
 

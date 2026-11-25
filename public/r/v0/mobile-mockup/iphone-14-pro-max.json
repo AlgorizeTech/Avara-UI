@@ -3,7 +3,7 @@
   "name": "mobile-mockup-iphone-14-pro-max",
   "type": "registry:block",
   "title": "Mobile Mockup — iPhone 14 Pro Max",
-  "description": "A wider Dynamic Island and a chunkier bezel than the 17.",
+  "description": "The \"iPhone 14 Pro Max\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

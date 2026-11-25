@@ -3,7 +3,7 @@
   "name": "gallery-motion-moving-bento",
   "type": "registry:block",
   "title": "Gallery — Moving Bento",
-  "description": "A self-rearranging image bento with a dominant centre slot. Hovering holds the items still; clicking one brings it to the hero slot.",
+  "description": "The \"Moving Bento\" example from the Avara UI docs.",
   "dependencies": [
     "gsap",
     "lucide-react",

@@ -3,7 +3,7 @@
   "name": "terminal-terminal",
   "type": "registry:block",
   "title": "Terminal",
-  "description": "Mac-style window controls, a language badge and a copy button, all from one string.",
+  "description": "The \"Terminal\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

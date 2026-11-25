@@ -3,7 +3,7 @@
   "name": "tilted-card-interactive-tilted-card",
   "type": "registry:block",
   "title": "Tilted Card — Interactive Tilted Card",
-  "description": "Adjust tilt intensity, glare opacity, and hover scale using the interactive controls above to test different design approaches in real-time.",
+  "description": "The \"Interactive Tilted Card\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

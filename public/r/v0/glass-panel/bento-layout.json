@@ -3,7 +3,7 @@
   "name": "glass-panel-bento-layout",
   "type": "registry:block",
   "title": "Glass Panel — Bento layout",
-  "description": "A slab, an interactive tile, three discs and a row of capsules on a custom aurora.",
+  "description": "The \"Bento layout\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

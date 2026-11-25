@@ -3,7 +3,7 @@
   "name": "tech-stack-one-group",
   "type": "registry:block",
   "title": "Tech Stack — One group",
-  "description": "A single group holds still — a plain logo strip.",
+  "description": "The \"One group\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

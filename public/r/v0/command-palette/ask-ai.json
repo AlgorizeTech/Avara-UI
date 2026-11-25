@@ -3,7 +3,7 @@
   "name": "command-palette-ask-ai",
   "type": "registry:block",
   "title": "Command Palette — Ask AI",
-  "description": "Search or ask any question — displays a skeleton loader, streams the answer character by character with citations, and lists matching help center sources (or a support fallback).",
+  "description": "The \"Ask AI\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

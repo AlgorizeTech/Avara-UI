@@ -3,7 +3,7 @@
   "name": "secure-envelope",
   "title": "Secure Envelope",
   "author": "AlgorizeTech",
-  "description": "An interactive classified security envelope & travel pass sleeve component featuring a secret card that glides out horizontally on hover and elevates gracefully onto the cover on click with 3D flip physics.",
+  "description": "Ask the user to pick one of 4 secure envelope variants: https://avaraui.com/view/secure-envelope. This item holds 4 of them as looks of one component (confidential-folder, smart-card, classic-voucher, train-ticket). Skip the question if the user already named one. An interactive classified security envelope & travel pass sleeve component featuring a secret card that glides out horizontally on hover and elevates gracefully onto the cover on click with 3D flip physics.",
   "dependencies": [],
   "registryDependencies": [
     "utils"

@@ -4,13 +4,11 @@ export const metadata = docsPageMetadata("command-palette");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Command Palette
 
-A fast, keyboard-first Command Palette with a search box trigger, instant filtering, hotkey badges, grouped sections, and a modal overlay.
-
-Starts as a compact search bar (`Search anything... [Ctrl] [K]`) in your header that opens a centered modal over a dimmed overlay, or renders always-open inline on the page. Choose a look via the `variant` prop (`"linear"`, `"nested"`, `"inline"`, or `"ai"`).
+A keyboard-first `CommandPalette` with `linear`, `nested` drill-down, `inline`, and streaming `ai` variants triggered via search bar or `Ctrl+K`.
 
 export const usageLinear = `"use client";
 
@@ -104,10 +102,11 @@ export default function AskAiCommandPalette() {
   name="command-palette"
   colorControl={false}
   columns={1}
+  installation={<Installation name="command-palette" usage="below" />}
   examples={[
     {
       title: "Linear",
-      subheading: "Click the search box in the top right (or press Ctrl+K) to open the command palette modal over the dimmed overlay.",
+      description: "Click the search box in the top right (or press Ctrl+K) to open the command palette modal over the dimmed overlay.",
       propNotes: [
         {
           lead: "Pass",
@@ -125,23 +124,9 @@ export default function AskAiCommandPalette() {
       usage: usageLinear,
       code: extractCode("src/components/custom/blocks/CommandPaletteBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="command-palette" />
-
-## Variants
-
-<ExampleShowcase minHeight={350}
-  name="command-palette"
-  colorControl={false}
-  columns={1}
-  examples={[
     {
       title: "Nested",
-      subheading: "Contextual issue actions with drill-down sub-menus for Status, Assignee, Priority, and Project. Press Backspace or click ← to return.",
+      description: "Contextual issue actions with drill-down sub-menus for Status, Assignee, Priority, and Project. Press Backspace or click ← to return.",
       propNotes: [
         {
           lead: "Pass",
@@ -160,7 +145,7 @@ export default function AskAiCommandPalette() {
     },
     {
       title: "Inline",
-      subheading: "Always-open embedded command palette without a trigger bar or modal overlay — type immediately to filter items.",
+      description: "Always-open embedded command palette without a trigger bar or modal overlay — type immediately to filter items.",
       propNotes: [
         {
           lead: "Pass",
@@ -174,7 +159,7 @@ export default function AskAiCommandPalette() {
     },
     {
       title: "Ask AI",
-      subheading: "Search or ask any question — displays a skeleton loader, streams the answer character by character with citations, and lists matching help center sources (or a support fallback).",
+      description: "Search or ask any question — displays a skeleton loader, streams the answer character by character with citations, and lists matching help center sources (or a support fallback).",
       propNotes: [
         {
           lead: "Pass",
@@ -188,6 +173,36 @@ export default function AskAiCommandPalette() {
     },
   ]}
 />
+
+## About Command Palette
+
+**What it is.** `CommandPalette` is a high-level command launcher shipping four `variant` presets: `linear` (header trigger + `Ctrl+K` modal), `nested` (contextual `contextId` pill + drill-down sub-menus), `inline` (always-open embedded palette), and `ai` (streaming AI answers with citations).
+
+**How it is built.** Handles the `Ctrl+K` / `⌘K` shortcut, filtering, nested sub-menu navigation (`Backspace` to go back) and the modal overlay in a single component. The only npm dependency is `lucide-react`. The `ai` variant is a front-end demo: its answers come from a built-in knowledge base, not a model.
+
+**When to use it.** Use `CommandPalette` when you want a ready-made `Ctrl+K` launcher or Ask-AI search modal. For low-level composable menu primitives, use <DocLink to="command">Command</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="command-palette">
+
+**When to use**
+
+- Ready-to-use `Ctrl+K` launchers (`linear`), contextual issue action menus (`nested`), embedded search (`inline`), or Ask-AI modals (`ai`)
+
+**When not to use**
+
+- Custom low-level command menu composition — use <DocLink to="command">Command</DocLink>
+
+**Agent notes**
+
+- Named export: `import { CommandPalette } from "@/components/custom/blocks/CommandPaletteBlock"`
+- Pass `contextId` with `variant="nested"` to show the active record badge beside the search input
+- Pass `groups` to supply your own commands; only the `linear` and `inline` variants read it, while `nested` and `ai` ignore it
+- `variant="ai"` does not call a model. Answers are canned entries matched by keyword, so connect your own backend if you need real answers
+- `onOpenChange` only fires in controlled mode (when `open` is set); use `defaultOpen` for uncontrolled use
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -224,7 +239,7 @@ export default function AskAiCommandPalette() {
         <td><code>onOpenChange</code></td>
         <td><code>{`(open: boolean) => void`}</code></td>
         <td><code>undefined</code></td>
-        <td>Callback fired whenever the modal opens or closes via trigger click, backdrop click, Escape key, or <code>Ctrl+K</code> / <code>⌘K</code>.</td>
+        <td>Controlled mode only (when <code>open</code> is set): called with the next state on trigger click, backdrop click, Escape, or <code>Ctrl+K</code> / <code>⌘K</code>. Uncontrolled instances toggle internally and do not call it.</td>
       </tr>
       <tr>
         <td><code>triggerPlaceholder</code></td>
@@ -242,7 +257,7 @@ export default function AskAiCommandPalette() {
         <td><code>groups</code></td>
         <td><code>CommandPaletteGroupType[]</code></td>
         <td><code>DEFAULT_COMMAND_PALETTE_GROUPS</code></td>
-        <td>Grouped sections and items (with icons, tags, shortcut keycaps, and keywords) displayed in the <code>linear</code> variant.</td>
+        <td>Grouped sections and items (with icons, tags, shortcut keycaps, and keywords) displayed in the <code>linear</code> and <code>inline</code> variants. Ignored by <code>nested</code> and <code>ai</code>.</td>
       </tr>
       <tr>
         <td><code>onSelect</code></td>
@@ -302,4 +317,35 @@ export default function AskAiCommandPalette() {
   </table>
 </div>
 
+## Works with other components
+
+- Embed `CommandPalette` inside <DocLink to="navbar">Navbar</DocLink> or <DocLink to="sidebar">Sidebar</DocLink> headers.
+- Pair `variant="ai"` with <DocLink to="ai-chat">AI Chat</DocLink> for a full conversation after the first answer.
+- Use <DocLink to="command">Command</DocLink> when you want to compose the menu from primitives instead.
+
+## How do I embed CommandPalette inline without a modal overlay?
+
+Set `variant="inline"`. The palette renders open inside your layout with no trigger bar, no backdrop and no `Ctrl+K` listener, and it fills up to `max-w-xl` of its container. Pass `groups` and `onSelect` as usual; `onOpenChange`, `open` and `shortcuts` have no effect in this variant.
+
+## How do I control CommandPalette's open state from my own button?
+
+Pass `open` and `onOpenChange`. Once `open` is defined the palette is controlled: it calls `onOpenChange(next)` on trigger click, backdrop click, Escape or `Ctrl+K`, and you must store the value. Leave `open` out and use `defaultOpen` if you want it to manage itself.
+
+## Can I change the CommandPalette shortcut from Ctrl+K?
+
+Not through props. The `shortcuts` prop only changes the keycap badges shown on the trigger, and on macOS a leading `"Ctrl"` displays as `⌘`. The listener on `window` always responds to `Ctrl` or `⌘` plus `K`, so changing the key means editing the component's source.
+
+## How do I add my own commands to the linear variant?
+
+Pass `groups`, an array of `{ heading, items }`. Each item takes `id` and `label`, plus optional `icon`, `tag`, `shortcuts`, `keywords`, `onSelect` and `disabled`. Typing filters on label, tag and keywords, and `Enter` skips disabled items. The component-level `onSelect` also receives the chosen item.
+
+## How do I keep the Status or Assignee a user picks in the nested variant?
+
+Pass both `nestedState` and `onNestedStateChange`, and store the value in React state, starting from `DEFAULT_NESTED_PALETTE_STATE`. When `nestedState` is set, it takes precedence over the palette's internal copy. Without `onNestedStateChange`, picking an option will not change the displayed values.
+
+## Does the Ask AI variant call a real AI model?
+
+No. `variant="ai"` is a front-end demo. It matches your question against a built-in `AI_KNOWLEDGE_BASE` by keyword, shows a skeleton for about a second, then types the canned answer with citations. Unmatched questions get a support fallback message. Wire your own backend to it if you need real answers.
+
 <DocsJsonLd slug="command-palette" />
+<FaqJsonLd slug="command-palette" />

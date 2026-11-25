@@ -3,15 +3,14 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("curved-carousel");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Curved Carousel
 
-An interactive, 100% full-width 3D curved arc carousel featuring left-to-right oscillating auto-sway motion, smooth Motion spring physics, perspective depth cards, and dynamic site theme color binding.
+A full-width 3D curved arc carousel with an oscillating sway or a continuous marquee motion, perspective depth cards and theme-colored card borders.
 
-`CurvedCarousel` transforms standard image galleries into an immersive, fanned 3D arc deck with customizable speed, touch/drag controls, and dark mode support.
-
-<AgentVariants slug="curved-carousel" />
+`CurvedCarousel` turns an array of images into a fanned 3D arc deck with adjustable speed and light and dark theme support.
 
 export const usageArcSweep = `import { CurvedCarousel, type CurvedCarouselCard } from "@/components/custom/blocks/CurvedCarouselBlock";
 
@@ -77,6 +76,7 @@ export default function InfiniteMarqueeDemo() {
   name="curved-carousel"
   colorControl
   columns={1}
+  installation={<Installation name="curved-carousel" usage="below" />}
   examples={[
     {
       title: "3D Curved Arc Sway Deck",
@@ -110,38 +110,38 @@ export default function InfiniteMarqueeDemo() {
   ]}
 />
 
-## Installation
+## About Shadcn Curved Carousel
 
-<Installation name="curved-carousel" />
+**What it is.** **Shadcn Curved Carousel** (`CurvedCarousel`) is a full-width 3D curved arc deck available in oscillating `arc-sweep` and continuous `infinite-marquee` motion modes.
 
-## Features
+**How it is built.** `CurvedCarousel` updates card transforms from a 20 ms `setInterval`, using calculated 3D rotations to fan `CurvedCarouselCard` items along a perspective arc. It has no animation library or npm dependency, and the `color` prop sets the card border (`var(--primary)` by default). It is a display only: no drag, click or hover interaction, and no `prefers-reduced-motion` check.
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
-  <div className="p-4 rounded-xl border border-border bg-muted/50">
-    <h3 data-toc-skip className="font-semibold text-foreground mb-1">Oscillating Auto-Sway</h3>
-    <p className="text-sm text-muted-foreground">Cards automatically sway left and right in a continuous, smooth oscillating loop.</p>
-  </div>
-  <div className="p-4 rounded-xl border border-border bg-muted/50">
-    <h3 data-toc-skip className="font-semibold text-foreground mb-1">3D Curved Arc Geometry</h3>
-    <p className="text-sm text-muted-foreground">Calculates precise 3D Y-rotation, Z-rotation, and Y-translation to form a realistic curved arc deck.</p>
-  </div>
-  <div className="p-4 rounded-xl border border-border bg-muted/50">
-    <h3 data-toc-skip className="font-semibold text-foreground mb-1">100% Theme Color Engine</h3>
-    <p className="text-sm text-muted-foreground">Binds directly to site primary CSS variable <code>var(--primary)</code> or explicit color swatches.</p>
-  </div>
-  <div className="p-4 rounded-xl border border-border bg-muted/50">
-    <h3 data-toc-skip className="font-semibold text-foreground mb-1">Fluid Responsive & Touch</h3>
-    <p className="text-sm text-muted-foreground">Fully responsive container sizing with click-to-center navigation and hover pause controls.</p>
-  </div>
-</div>
+**When to use it.** Use it for hero visual strips, product showcases, editorial photo essays, and interactive portfolio decks.
 
-## Best Practices & Guidelines
+## For AI agents
 
-<div className="space-y-3 my-6">
-  <InfoCard title="When to Use">
-    <p>Use <code>CurvedCarousel</code> on hero sections, portfolio showcases, product galleries, or brand story cards to capture high user engagement with fluid 3D motion.</p>
-  </InfoCard>
-</div>
+<AgentBrief name="curved-carousel">
+
+**When to use**
+
+- Hero visual strips, product showcases
+- Editorial photo essays, interactive portfolio decks
+
+**When not to use**
+
+- A flat, swipeable slider: use <DocLink to="carousel">Carousel</DocLink>
+- A continuous logo or testimonial ticker: use <DocLink to="marquee">Marquee</DocLink>
+
+**Agent notes**
+
+- `CurvedCarousel` accepts `items` (`CurvedCarouselCard[]` with `id`, `title`, `code`, `image`) and `variant` (`"arc-sweep" | "infinite-marquee"`).
+- `variant="arc-sweep"` oscillates left and right, while `variant="infinite-marquee"` scrolls continuously right-to-left along a concave 3D arc.
+- `color` only sets the card border colour: `"primary"` uses `var(--primary)`, and any other CSS colour string is used as is.
+- Each card needs `id`, `title`, `code` and `image`; `title` becomes the image `alt`, and `code` is required by the type but not rendered.
+- Lists shorter than the track are repeated automatically, so a handful of items still fills the arc.
+- The carousel is display-only, with no drag, swipe, click or hover behaviour. Its caption text is fixed in the source.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -178,7 +178,7 @@ export default function InfiniteMarqueeDemo() {
         <td>
           <code>Preset Array</code>
         </td>
-        <td>Array of objects containing <code>id</code>, <code>title</code>, <code>code</code>, and <code>image</code>.</td>
+        <td>Array of objects containing <code>id</code>, <code>title</code> (used as the image <code>alt</code>), <code>code</code> (typed as required, not rendered), and <code>image</code> (URL).</td>
       </tr>
       <tr>
         <td>
@@ -190,7 +190,7 @@ export default function InfiniteMarqueeDemo() {
         <td>
           <code>true</code>
         </td>
-        <td>Enables or disables continuous automatic left-to-right sway animation.</td>
+        <td>Turns the automatic motion on or off for both variants. When <code>false</code> the cards stay still.</td>
       </tr>
       <tr>
         <td>
@@ -202,7 +202,7 @@ export default function InfiniteMarqueeDemo() {
         <td>
           <code>1</code>
         </td>
-        <td>Oscillation sway step speed multiplier.</td>
+        <td>Speed multiplier for the sway (<code>arc-sweep</code>) and the scroll (<code>infinite-marquee</code>).</td>
       </tr>
       <tr>
         <td>
@@ -214,7 +214,7 @@ export default function InfiniteMarqueeDemo() {
         <td>
           <code>"primary"</code>
         </td>
-        <td>Applies dynamic theme color palettes (<code>"primary" | "indigo" | "rose" | "emerald" | "zinc"</code> or custom hex).</td>
+        <td>Border color of the cards: a preset name (<code>"primary"</code> uses <code>var(--primary)</code>) or any CSS color string such as a hex code.</td>
       </tr>
       <tr>
         <td>
@@ -232,6 +232,35 @@ export default function InfiniteMarqueeDemo() {
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Combine `CurvedCarousel` with <DocLink to="gallery">Gallery</DocLink> for multi-mode 3D media views.
+- Use <DocLink to="carousel">Carousel</DocLink> when users need to swipe through a standard slider.
+- Use <DocLink to="marquee">Marquee</DocLink> for flat infinite logo and card strips.
+
+## What is the difference between arc-sweep and infinite-marquee?
+
+`arc-sweep` lays the cards around a giant wheel (padded to 24 when you pass fewer) and rocks it between -10 and +10 degrees, so the arc sways left and right. `infinite-marquee` instead scrolls a row of cards continuously right to left, bending them into a concave 3D curve.
+
+## Does CurvedCarousel adapt to my site's theme color?
+
+Partly. The `color` prop sets the card border: `"primary"` uses `var(--primary)`, so it follows your theme, and `"indigo"`, `"rose"`, `"emerald"` or `"zinc"` pick fixed colors. Any other string, such as a hex code, is used as the border color directly. The container background follows the light or dark theme.
+
+## How do I use my own images in CurvedCarousel?
+
+Pass `items` as an array of `{ id, title, code, image }`. `image` is the URL and `title` becomes the `alt` text. `code` is required by the type but never rendered. With fewer cards than the arc needs, the list repeats automatically, so even four or five images fill the deck.
+
+## How do I stop or slow down the CurvedCarousel motion?
+
+Set `autoPlay={false}` to freeze both variants, or lower `speed` below its default of `1` to slow them down; values above `1` speed them up. There is no pause on hover and no restart control, so wire `autoPlay` to your own state if you want one.
+
+## Can users drag or swipe CurvedCarousel?
+
+No. The component has no pointer, touch or click handlers, and in the marquee variant the cards carry `pointer-events-none`. It is an auto-playing display, so use <DocLink to="carousel">Carousel</DocLink> when visitors must navigate between slides themselves.
+
+## Does CurvedCarousel need Motion, GSAP or other dependencies?
+
+No. The registry item has no npm dependencies. It uses React state and a 20 ms `setInterval` to update CSS transforms, and plain `<img>` tags instead of `next/image`, so it installs the same way in Next.js and Vite. It does not check `prefers-reduced-motion`.
 
 <DocsJsonLd slug="curved-carousel" />
+<FaqJsonLd slug="curved-carousel" />

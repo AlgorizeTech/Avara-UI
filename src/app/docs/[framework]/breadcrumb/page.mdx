@@ -4,16 +4,11 @@ export const metadata = docsPageMetadata("breadcrumb");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Breadcrumb
 
-A navigational aid that helps users understand their current location within a website's hierarchy.
-
-This component features four distinct visual variants, seamless color theming, and **built-in automatic path truncation**. If the user's path is too deep, it automatically collapses the middle items behind a clickable ellipsis (`...`) button.
-
-You describe the trail as an `items` array; the component handles dividers, the active item and truncation.
-
-<AgentVariants slug="breadcrumb" />
+A hierarchical breadcrumb trail (`BreadcrumbBlock`) and a composable animated version (`BreadcrumbFlowBlock`), both with middle-path truncation and router link support.
 
 export const usageDefault = `import { BreadcrumbBlock, type BreadcrumbItem } from "@/components/custom/blocks/BreadcrumbBlock";
 
@@ -63,10 +58,11 @@ export default function DeepBreadcrumb() {
 <ExampleShowcase minHeight={300} headingLevel={2}
   name="breadcrumb-flow"
   columns={1}
+  installation={<Installation name="breadcrumb-flow" showSetupPath={false} usage="below" />}
   examples={[
     {
       title: "Flow breadcrumb",
-      subheading: "Composed from parts. Items fade in and out as the route changes and the rest slide into place; past `maxItems` the middle collapses behind an ellipsis.",
+      description: "Composed from parts. Items fade in and out as the route changes and the rest slide into place; past `maxItems` the middle collapses behind an ellipsis.",
       propNotes: [
         {
           lead: "Give each",
@@ -84,16 +80,11 @@ export default function DeepBreadcrumb() {
   ]}
 />
 
-### Install the flow breadcrumb
-
-<Installation name="breadcrumb-flow" showSetupPath={false} />
-
-### Breadcrumb with items
-
 <ExampleShowcase minHeight={160} headingLevel={2}
   name="breadcrumb"
   colorControl
   columns={1}
+  installation={<Installation name="breadcrumb" usage="below" />}
   examples={[
     {
       title: "Breadcrumb",
@@ -119,20 +110,6 @@ export default function DeepBreadcrumb() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/BreadcrumbBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="breadcrumb" />
-
-## Examples
-
-<ExampleShowcase minHeight={160}
-  name="breadcrumb"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "With icons",
       propNotes: [
@@ -162,31 +139,36 @@ export default function DeepBreadcrumb() {
   ]}
 />
 
-## Features
-Explore the Breadcrumb navigation features, including collapsible items, custom separators, and SEO-friendly structure.
+## About Shadcn Breadcrumb
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**What it is.** Two ways to show where a page sits in a hierarchy. `BreadcrumbBlock` renders an `items` array in one of four `variant` styles, with optional Lucide icons and `maxItems` truncation. `BreadcrumbFlowBlock.tsx` exports separate parts (`Breadcrumb`, `BreadcrumbList`, `BreadcrumbItem` and more) that fade and slide as the route changes.
 
-## Best Practices & Guidelines
+**How it is built.** `BreadcrumbBlock` renders the last item as plain text with `aria-current="page"`, collapses long paths behind a `...` button, and takes a `linkComponent` such as `Link` from `next/link`. The flow parts animate with the Web Animations API and CSS transitions, skip that motion under `prefers-reduced-motion`, and neither build needs GSAP or Motion: both install only `lucide-react` and the `utils` item.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `BreadcrumbBlock` when the trail comes from data. Use the flow parts when the trail changes without a page reload and you want items to animate in and out.
+
+## For AI agents
+
+<AgentBrief name="breadcrumb">
+
+**When to use**
+
+- Hierarchical page trails: `BreadcrumbBlock` from an `items` array, or the `BreadcrumbFlowBlock` parts for animated transitions
+
+**When not to use**
+
+- Top-level site navigation bars — use <DocLink to="navigation">Navigation Menu</DocLink>
+- Multi-step form progress — use <DocLink to="stepper">Stepper</DocLink>
+
+**Agent notes**
+
+- `BreadcrumbBlock` installs via `breadcrumb`; the flow parts (`Breadcrumb`, `BreadcrumbList`, `BreadcrumbItem`, `BreadcrumbLink`, `BreadcrumbPage`, `BreadcrumbSeparator`) install via `breadcrumb-flow` from `BreadcrumbFlowBlock`
+- Both files export a `BreadcrumbItem` with a different shape (a data type in one, a component in the other), so import each from the file you mean
+- On `BreadcrumbBlock`, pass `linkComponent={Link}` from `next/link`; on the flow parts, pass `render` to `BreadcrumbLink`
+- The last `BreadcrumbBlock` item renders as plain text even if it has an `href`
+- In the flow parts, every `BreadcrumbItem` needs a stable `key`, such as the page id, or it cannot animate
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -240,11 +222,12 @@ Explore the Breadcrumb navigation features, including collapsible items, custom 
           <code>"indigo" | "rose" | "emerald" | "zinc" | string</code>
         </td>
         <td>
-          <code>"indigo"</code>
+          <code>"primary"</code>
         </td>
         <td>
-          Applies global color themes to the active text and hover states.
-          Accepts valid hex codes (e.g. <code>"#00FF00"</code>).
+          Applies a color theme to the active text and hover states. The default
+          uses your <code>primary</code> theme token; an unknown name falls back
+          to it. Accepts hex codes (e.g. <code>"#00FF00"</code>).
         </td>
       </tr>
       <tr>
@@ -258,8 +241,9 @@ Explore the Breadcrumb navigation features, including collapsible items, custom 
           <code>4</code>
         </td>
         <td>
-          The maximum number of links to display before automatically truncating
-          the middle of the path.
+          The most slots shown, the <code>...</code> button included, before the
+          middle of the path collapses. A collapsed trail shows the first item,
+          the button, then the last <code>maxItems - 2</code> items.
         </td>
       </tr>
       <tr>
@@ -324,6 +308,34 @@ Explore the Breadcrumb navigation features, including collapsible items, custom 
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Place `BreadcrumbBlock` above <DocLink to="table-of-contents">Table of Contents</DocLink>, <DocLink to="data-table">Data Table</DocLink>, or <DocLink to="sidebar">Sidebar</DocLink> content headers.
+- Pair it with the <DocLink to="navbar">Navbar</DocLink>: the navbar holds the top-level sections and the breadcrumb shows where you are inside one.
+
+## How do I use Next.js Link with BreadcrumbBlock or BreadcrumbLink?
+
+On `BreadcrumbBlock`, pass `linkComponent={Link}` with `Link` from `next/link`; it defaults to a plain `a`. On the flow parts, give `BreadcrumbLink` a `render` function that spreads the received props onto your router's `Link`. Neither file imports from `next/*`, so Vite and other routers work too.
+
+## How does maxItems collapse a long BreadcrumbBlock path?
+
+When `items` is longer than `maxItems` (default 4), `BreadcrumbBlock` shows the first item, a `...` button, then the last `maxItems - 2` items. Clicking the button expands the full trail, and it stays expanded afterwards. The button carries the label "Show hidden breadcrumbs".
+
+## How do I change the BreadcrumbBlock color to match my brand?
+
+Set `color` to `"indigo"`, `"rose"`, `"emerald"` or `"zinc"`, or pass any hex string such as `"#00FF00"`. It tints the current page and the link hover state. The default, `"primary"`, follows your theme token, so a theme preset restyles it automatically. Use `variant` for the look: `"classic"`, `"slash"`, `"solid"` or `"ghost"`.
+
+## When should I use the flow parts instead of BreadcrumbBlock?
+
+Use the `breadcrumb-flow` parts when the trail changes in place, such as drilling into folders without a reload. Give each `BreadcrumbItem` the page id as `key` and new items fade in, removed ones fade out, and the rest slide across. `BreadcrumbBlock` is simpler when you already have an `items` array.
+
+## Is the breadcrumb keyboard and screen-reader accessible?
+
+Both render a `nav` landmark labelled "Breadcrumb" and mark the current page with `aria-current="page"`. The flow ellipsis is a button with `aria-expanded`: Enter, Space or ArrowDown opens its list, ArrowDown moves focus in, and Escape closes it. The flow motion is skipped under `prefers-reduced-motion`.
+
+## Which dependencies does the breadcrumb install?
+
+Both items install `lucide-react` and the `utils` helper that provides `cn`, and nothing else. The `breadcrumb` item also ships a small `breadcrumb-theme.ts` file for the color themes. There is no GSAP or Motion build, since the flow animation uses the Web Animations API.
 
 <DocsJsonLd slug="breadcrumb" />
+<FaqJsonLd slug="breadcrumb" />

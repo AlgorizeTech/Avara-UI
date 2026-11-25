@@ -4,14 +4,11 @@ export const metadata = docsPageMetadata("sonner");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Sonner Toast
 
-An opinionated, dependency-free toast component that mimics the famous "Sonner" library aesthetic.
-
-Traditional toast notifications stack in a massive, screen-blocking vertical list. This `SonnerBlock` stacks new notifications _on top_ of old ones, scaling older toasts down and pushing them backwards in 3D space to keep your UI clean. Hovering over the stack automatically expands it so users can read previous notifications.
-
-Click the trigger buttons to spawn toasts, then hover the floating stack to expand it.
+A Sonner-inspired toast system: mount `<Toaster />` once, call `toast()` from anywhere, and hover the 3D stack to expand it.
 
 export const usageDefault = `"use client";
 
@@ -273,14 +270,17 @@ export default function PositionDemo() {
   );
 }`;
 
-<ExampleShowcase minHeight={320} headingLevel={2}
+<ExampleShowcase
+  minHeight={320}
+  headingLevel={2}
   name="sonner"
   colorControl
   columns={1}
+  installation={<Installation name="sonner" usage="below" />}
   examples={[
     {
       title: "Sonner",
-      subheading: "Mount `<Toaster />` once, then call `toast()` from anywhere — no provider needed.",
+      description: "Mount `<Toaster />` once, then call `toast()` from anywhere — no provider needed.",
       propNotes: [
         {
           prop: "children",
@@ -292,20 +292,6 @@ export default function PositionDemo() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/SonnerBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="sonner" />
-
-## Examples
-
-<ExampleShowcase minHeight={320}
-  name="sonner"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Types",
       propNotes: [
@@ -384,31 +370,35 @@ export default function PositionDemo() {
   ]}
 />
 
-## Features
-Explore the Sonner toast notification features, including stacked layouts, swipe-to-dismiss, and promise-based loading states.
+## About Shadcn Sonner Toast
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**What it is.** `SonnerBlock` provides `<Toaster />` and an imperative `toast()` API (`toast.success`, `toast.error`, `toast.info`) with 3D-scaled stacking, hover-to-expand, inline `action` buttons, and six viewport positions.
 
-## Best Practices & Guidelines
+**How it is built.** A module-level store (`sonner-store`) holds the toasts and `<Toaster />` subscribes to it, so `toast()` works from any component or helper without a provider. The only npm dependency is `lucide-react` for icons. Older toasts scale down behind the newest one and fan out on hover; the store keeps at most five.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `Sonner` when you want a lightweight, imperative `toast()` function with 3D stacking. If you want `glow` or `glass` card variants scoped via React Context, use <DocLink to="toast">Toast</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="sonner">
+
+**When to use**
+
+- Imperative `toast()` / `toast.success()` / `toast.error()` notifications without a React Context provider
+- Stacked corner notifications with hover-to-expand and inline Undo/action buttons
+
+**When not to use**
+
+- Provider-scoped `glow` or `glass` toast variants — use <DocLink to="toast">Toast</DocLink>
+- Persistent inline page banners — use <DocLink to="alert">Alert</DocLink>
+
+**Agent notes**
+
+- Import `Toaster` from `@/components/custom/blocks/SonnerBlock` and `toast` from `@/components/custom/blocks/sonner-store`; `toast` is not exported from `SonnerBlock`.
+- Mount `<Toaster position="bottom-right" />` once in your layout; pass `duration: Infinity` to keep a toast open until dismissed.
+- `toast()` returns the toast id; `toast.dismiss(id)` removes one and `toast.clear()` removes all.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -549,6 +539,35 @@ Explore the Sonner toast notification features, including stacked layouts, swipe
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Pair `toast()` with <DocLink to="copy-button">Copy Button</DocLink>, <DocLink to="data-table">Data Table</DocLink> batch actions, or <DocLink to="dialog">Dialog</DocLink> submissions.
+- Use <DocLink to="alert">Alert</DocLink> instead when a message should remain inline on the page.
+- Switch to <DocLink to="toast">Toast</DocLink> if you want `glow` or `glass` toast variants.
+
+## Do I need a Provider for Sonner?
+
+No. Mount `<Toaster />` once in your layout and import `toast` from `sonner-store` wherever you need it, including plain helper functions outside React components. The store lives at module level and `<Toaster />` subscribes to it, so there is no context to wrap around your tree.
+
+## How do I keep the Sonner stack expanded or a toast persistent?
+
+Pass `expand` to `<Toaster expand />` and the stack stays fanned out instead of collapsing into the 3D pile on hover. For a single toast that never auto-dismisses, pass `duration: Infinity` in its options; otherwise the default is 4000 milliseconds.
+
+## How do I add an Undo button to a Sonner toast?
+
+Pass `action: { label: "Undo", onClick }` in the options of `toast()`. The toast renders a button with that label, and clicking it runs your `onClick` and then dismisses the toast. A toast takes one action button, and it can sit beside an optional `description`.
+
+## How many toasts can Sonner show at once?
+
+The store keeps the five newest toasts and drops older ones. While the stack is collapsed only the front three are visible, scaled down slightly behind the newest. Hovering the stack, or setting `expand` on `<Toaster />`, lays all of them out as a readable list.
+
+## How do I dismiss Sonner toasts from code?
+
+`toast()` and its `success`, `error` and `info` shorthands return the toast id. Pass that id to `toast.dismiss(id)` to remove one toast, or call `toast.clear()` to empty the whole stack, as the Position example does before moving the `<Toaster />`.
+
+## How is Sonner different from the Toast component?
+
+Sonner uses an imperative `toast()` function and a module-level store, so it needs no provider and offers `default`, `success`, `error` and `info` types. <DocLink to="toast">Toast</DocLink> uses a `ToastProvider` with `useToast`, and adds `glow`, `glass` and `minimal` variants plus a `warning` type.
 
 <DocsJsonLd slug="sonner" />
+<FaqJsonLd slug="sonner" />

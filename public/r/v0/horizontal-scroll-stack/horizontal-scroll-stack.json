@@ -3,7 +3,7 @@
   "name": "horizontal-scroll-stack-horizontal-scroll-stack",
   "type": "registry:block",
   "title": "Horizontal Scroll Stack",
-  "description": "The section pins and vertical scroll is translated into horizontal travel.",
+  "description": "The \"Horizontal Scroll Stack\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

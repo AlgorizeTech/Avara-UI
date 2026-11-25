@@ -3,11 +3,12 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("user-graph");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn User Graph
 
-An interactive multi-tiered User & AI Agent Hierarchy Network Graph built for Next.js and React. It features an interactive orbiting tool cluster around the main user node, SVG connecting curves, specialized sub-agent team nodes, app integration badges, and full light mode design.
+An interactive hierarchy graph linking a user to AI agents, orbiting tools and app integrations.
 
 Three tiers stack top to bottom: an orbit of channel nodes around the user, the orchestrator, and the specialist sub-agents with their app badges. Below 640px the SVG hierarchy swaps itself for a vertical timeline — the component measures its own container, so it adapts inside the preview, not just at the window edge.
 
@@ -94,10 +95,11 @@ export default function UserGraphDemo() {
   colorControl
   columns={1}
   minHeight={570}
+  installation={<Installation name="user-graph" usage="below" />}
   examples={[
     {
       title: "User graph",
-      subheading: "Click any orbit node to move the highlight and its label tooltip.",
+      description: "Click any orbit node to move the highlight and its label tooltip.",
       propNotes: [
         {
           prop: "className",
@@ -111,36 +113,35 @@ export default function UserGraphDemo() {
   ]}
 />
 
-## Installation
+## About Shadcn User Graph
 
-<Installation name="user-graph" />
+**What it is.** **Shadcn User Graph** (`UserGraph`) is an interactive multi-tiered hierarchy diagram linking a central user and orbiting channel tools down through an orchestrator to specialized sub-agent nodes.
 
-## Features
+**How it is built.** Using SVG cubic bezier curves with animated pulse highlights and container-width measurement, `UserGraph` displays the full three-tier diagram on wider containers and automatically collapses into a vertical timeline below 640px.
 
-Discover the key capabilities of the User Graph hierarchy tree:
+**When to use it.** Use it for AI assistant architecture diagrams, omnichannel routing overviews, and team/agent delegation maps.
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Orbit Tool Cluster">
-    <p>Interactive orbiting ring featuring 10 integrated channels including Voice, Telegram, Email, and MCP plugins.</p>
-  </InfoCard>
-  <InfoCard title="Dynamic SVG Curves">
-    <p>Cubic bezier SVG connecting paths with glowing animated pulses highlighting selected agent hierarchy paths.</p>
-  </InfoCard>
-  <InfoCard title="Specialized Sub-Agents">
-    <p>Dedicated team nodes for Sales, Marketing, Support, Accounting, and Data Analytics with online status badges.</p>
-  </InfoCard>
-  <InfoCard title="Light Mode First">
-    <p>Crafted with high-contrast slate and white light theme aesthetics, full dark mode support, and smooth responsiveness.</p>
-  </InfoCard>
-</div>
+## For AI agents
 
-## Best Practices & Guidelines
+<AgentBrief name="user-graph">
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Hierarchy Organization">
-    <p>Ensure nodes are grouped logically into User, Orchestrator, and Sub-Agent tiers so the hierarchy flows naturally from top to bottom.</p>
-  </InfoCard>
-</div>
+**When to use**
+
+- AI assistant architecture diagrams, omnichannel routing overviews
+- Team/agent delegation maps
+
+**When not to use**
+
+- An agent hierarchy with status pills and token meters: use <DocLink to="agent-graph">Agent Graph</DocLink>
+- Avatars orbiting in rings: use <DocLink to="network-graph">Network Graph</DocLink>
+
+**Agent notes**
+
+- `UserGraph` renders an orbiting `OrbitTool` cluster around the user node, an orchestrator tier, and `SubAgent` team cards.
+- Clicking any orbit node moves the active highlight path and updates its label tooltip.
+- Adapts automatically to a vertical timeline when the container width drops below 640px.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -195,6 +196,29 @@ Discover the key capabilities of the User Graph hierarchy tree:
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+Pair `UserGraph` with <DocLink to="agent-graph">Agent Graph</DocLink> for multi-agent workflow trees, <DocLink to="network-graph">Network Graph</DocLink> for radial orbit rings, and <DocLink to="infrastructure-topology">Infrastructure Topology</DocLink> for service pipelines.
+
+## How do I build an AI agent hierarchy diagram in React?
+
+Render `UserGraph` and pass `orbitTools`, an `orchestrator` object and `subAgents`. It draws three tiers connected by SVG curves: the user with orbiting channel nodes, the orchestrator, and the specialist sub-agents. With no props it shows built-in sample data.
+
+## Can I customize the orbiting channel tools and sub-agents?
+
+Yes. `orbitTools` is an array of `{ id, name, icon }` where `icon` is any React component, and the ring re-balances for any length. Each entry of `subAgents` carries `title`, `role`, `avatarUrl`, `status`, its `apps` badges, and `percentX` and `svgX` positions.
+
+## How does UserGraph adapt on mobile or narrow sidebars?
+
+It measures its own container width and switches from the SVG hierarchy tree to a vertical timeline layout below `640px`. That means it responds to the width of the column it sits in, so a narrow sidebar triggers the compact layout even on a wide screen.
+
+## How do I choose which channel node is highlighted?
+
+Set `defaultSelectedTool` to the `id` of an entry in `orbitTools`. It defaults to `"phone"`. After the first render, clicking another orbit node takes over the highlight. `color` tints the avatar ring, the selected node and the ambient glow.
+
+## When should I use UserGraph instead of Agent Graph or Network Graph?
+
+Use `UserGraph` for a user, orchestrator and specialist-agent hierarchy. Pick <DocLink to="agent-graph">Agent Graph</DocLink> for multi-agent workflow trees and <DocLink to="network-graph">Network Graph</DocLink> for radial orbit rings of many nodes. `UserGraph` is the only one of the three built around a central user with channel tools.
 
 <DocsJsonLd slug="user-graph" />
+<FaqJsonLd slug="user-graph" />

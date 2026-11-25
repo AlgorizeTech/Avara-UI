@@ -3,15 +3,14 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("data-maps");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Data Maps
 
-A React-Leaflet choropleth map for visualizing geographic data, user distributions and global trends. It paints country polygons from world GeoJSON, so there are no raster tiles to load, and it defers Leaflet until after mount, so it renders correctly whether or not your framework prerenders.
+A React-Leaflet choropleth world map for geographic data, painted from GeoJSON with no raster tiles.
 
 It has hover tooltips, solid-fill and density-dot variants, flag badges and trend indicators, and it follows your site's light or dark mode. Hover any highlighted country for its data card.
-
-<AgentVariants slug="data-maps" />
 
 export const mapDataSource = `const mapData: DataPoint[] = [
   { id: "CHN", name: "China", flag: "🇨🇳", active: 13.7, activeTrend: "up", new: 0.1, newTrend: "down" },
@@ -98,6 +97,7 @@ export default function ColoredMap() {
   colorControl
   colorLabel="Accent Color"
   columns={1}
+  installation={<Installation name="data-maps" usage="below" />}
   examples={[
     {
       title: "Filled regions",
@@ -119,21 +119,6 @@ export default function ColoredMap() {
       usage: usageFill,
       code: extractCode("src/components/custom/blocks/DataMapsBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="data-maps" />
-
-## Examples
-
-<ExampleShowcase minHeight={330}
-  name="data-maps"
-  colorControl
-  colorLabel="Accent Color"
-  columns={1}
-  examples={[
     {
       title: "Density dots",
       propNotes: [
@@ -172,35 +157,37 @@ export default function ColoredMap() {
   ]}
 />
 
-## Features
-Learn about the Data Maps component's geographic visualization features, mapping interactive data points onto vector country paths.
+## About Shadcn Data Maps
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="SSR Compatible">
-    <p>Uses Next.js dynamic imports to safely load Leaflet client-side without hydration errors.</p>
-  </InfoCard>
-  <InfoCard title="Lightweight Vectors">
-    <p>Fetches clean GeoJSON data on the fly instead of relying on heavy raster map tiles.</p>
-  </InfoCard>
-  <InfoCard title="Dual Variants">
-    <p>Supports both solid polygon fills and modern pulsing dots for geographic emphasis.</p>
-  </InfoCard>
-  <InfoCard title="Rich Hover Cards">
-    <p>Elegant tooltips with country flags, data metrics, and up/down trend indicators.</p>
-  </InfoCard>
-</div>
+**What it is.** **Shadcn Data Maps** (`DataMaps`, exported from `DataMapsBlock.tsx`) is a React-Leaflet choropleth and density-dot world map that renders country polygons from GeoJSON without raster map tiles.
 
-## Best Practices & Guidelines
+**How it is built.** `DataMaps` loads Leaflet with a dynamic `import()` after client mount and fetches the country GeoJSON at runtime, but the file also imports `useMap` from `react-leaflet` at the top, which touches `window` when it loads. In Next.js render it from a client-only boundary; a Vite SPA needs nothing extra. It matches ISO-3 country codes from `dataPoints`, and supports `"fill"` polygon shading, `"dots"` pulsing centroid markers, and optional `zoomable` controls.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Dynamic Imports">
-    <p>Leaflet reads the browser's <code>window</code> at import time, so the component defers loading it until after mount. <ForFramework only="nextjs">That is why any component wrapping <code>react-leaflet</code> must stay off the server — this one already does, so you can render it directly without a <code>{"{ ssr: false }"}</code> wrapper of your own.</ForFramework><ForFramework only="reactjs">A Vite SPA has no server render, so there is nothing to opt out of — import and render it directly.</ForFramework></p>
-  </InfoCard>
-  <div className="rounded-xl border border-primary/15 bg-primary/5 p-4">
-    <h3 data-toc-skip className="font-sans text-[14px] font-semibold text-primary mb-1">GeoJSON Caching</h3>
-    <p className="text-[13px] leading-relaxed text-foreground/50">By default, the map fetches the world map GeoJSON from a remote CDN. For production environments, it is highly recommended to download the <code>custom.geo.json</code> file and host it locally in your <code>public</code> directory to reduce latency.</p>
-  </div>
-</div>
+**When to use it.** Use it for global user distribution dashboards, regional revenue maps, latency/traffic heatmaps, and market expansion overviews.
+
+## For AI agents
+
+<AgentBrief name="data-maps">
+
+**When to use**
+
+- Global user distribution dashboards, regional revenue maps
+- Latency/traffic heatmaps, market expansion overviews
+
+**When not to use**
+
+- Data that is not geographic: use <DocLink to="chart">Chart</DocLink>
+- Live vehicle positions on a map: use <DocLink to="fleet-tracker">Fleet Tracker</DocLink>
+
+**Agent notes**
+
+- Import `DataMaps` (the file is `DataMapsBlock.tsx`) and the `DataPoint` type. It accepts `dataPoints` (`{ id, name, active, activeTrend, new, newTrend, color }[]` with ISO-3 country `id`), `variant` (`"fill" | "dots"`), `zoomable`, `scrollWheelZoom`, `minZoom`, `maxZoom`, `center`, `zoom`, `highlightColor`, `defaultColor`, `mapGeoJsonUrl` and `mapId`. There is no `color` prop.
+- The map fills its parent (`h-full`, minimum 250 px, 400 px from `sm`), so give the parent an explicit height.
+- Leave `scrollWheelZoom` off inside scrollable pages so the map does not intercept page scroll.
+- Not SSR-safe on its own in Next.js: wrap it in `next/dynamic` with `ssr: false` or another client-only boundary, because `react-leaflet` is imported at the top of the file.
+- Install `leaflet`, `react-leaflet` and `geojson`. At runtime it fetches the GeoJSON from `mapGeoJsonUrl` and flag images from flagcdn.com.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -281,7 +268,7 @@ Learn about the Data Maps component's geographic visualization features, mapping
           <code>2</code>
         </td>
         <td>
-          The initial zoom level of the map.
+          The initial zoom level of the map. When <code>zoomable</code> is false, a container narrower than 640px lowers it to <code>1</code>, and narrower than 450px to <code>0</code>.
         </td>
       </tr>
       <tr>
@@ -312,10 +299,95 @@ Learn about the Data Maps component's geographic visualization features, mapping
           <code>string</code>
         </td>
         <td>
-          <code>#cbd5e1</code>
+          <code>var(--map-default-fill)</code>
         </td>
         <td>
-          The fill color for non-highlighted countries.
+          The fill color for non-highlighted countries. The default is a theme-aware mix of <code>--foreground</code> and <code>--muted</code>.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataMaps</code>
+        </td>
+        <td>
+          <code>zoomable</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          Adds the zoom control (bottom right), double-click, touch, box and keyboard zoom.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataMaps</code>
+        </td>
+        <td>
+          <code>scrollWheelZoom</code>
+        </td>
+        <td>
+          <code>boolean</code>
+        </td>
+        <td>
+          <code>false</code>
+        </td>
+        <td>
+          Also binds the mouse wheel. Only has an effect when <code>zoomable</code> is true.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataMaps</code>
+        </td>
+        <td>
+          <code>minZoom / maxZoom</code>
+        </td>
+        <td>
+          <code>number</code>
+        </td>
+        <td>
+          <code>1 / 8</code>
+        </td>
+        <td>
+          Lowest and highest zoom level the reader can reach.
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataMaps</code>
+        </td>
+        <td>
+          <code>mapGeoJsonUrl</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>raw.githubusercontent.com/johan/world.geo.json/master/countries.geo.json</code>
+        </td>
+        <td>
+          URL of the world GeoJSON fetched at runtime. Each feature needs its ISO-3 code as <code>id</code> (or <code>properties.id</code> / <code>properties.ISO_A3</code>).
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <code>DataMaps</code>
+        </td>
+        <td>
+          <code>mapId</code>
+        </td>
+        <td>
+          <code>string</code>
+        </td>
+        <td>
+          <code>undefined</code>
+        </td>
+        <td>
+          Stable React key for the underlying Leaflet map. Give each map on a page its own value; changing it remounts the map.
         </td>
       </tr>
     </tbody>
@@ -384,7 +456,7 @@ Learn about the Data Maps component's geographic visualization features, mapping
           <code>undefined</code>
         </td>
         <td>
-          An optional emoji or text to display next to the country name (e.g., 🇺🇸).
+          Accepted by the type, but the hover card does not render it. It shows a flag image from flagcdn.com chosen by <code>id</code> instead.
         </td>
       </tr>
       <tr>
@@ -476,6 +548,35 @@ Learn about the Data Maps component's geographic visualization features, mapping
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Pair `DataMaps` with <DocLink to="chart">Chart</DocLink> for country-level breakdowns.
+- Use <DocLink to="fleet-tracker">Fleet Tracker Map</DocLink> for live vehicle and street-level maps.
+- Add <DocLink to="table">Table</DocLink> beside it for ranked regional leaderboards.
+
+## Does DataMaps work with Next.js server rendering?
+
+Not by itself. `DataMaps` loads Leaflet after mount, but it also imports `useMap` from `react-leaflet` at the top of the file, and that package touches `window` as soon as it loads. In Next.js, render it through `next/dynamic` with `ssr: false`. A client-only Vite app needs no wrapper.
+
+## Can I host the world GeoJSON myself?
+
+Yes. By default the map fetches `countries.geo.json` from raw.githubusercontent.com when it mounts. Serve your own copy, for example from `public`, and pass its URL as `mapGeoJsonUrl`. Each feature must carry its ISO-3 code as `id`, `properties.id` or `properties.ISO_A3`. If the request fails, the map stays on its loading placeholder.
+
+## What does the DataMaps hover card show?
+
+Hovering a country in `dataPoints` shows its `name`, a flag image from flagcdn.com, an `Active:` row when `active` is set and a `New:` row when `new` is set. A green or red arrow follows a value when its trend is `"up"` or `"down"`. The `flag` field is not rendered.
+
+## How do I color countries individually on DataMaps?
+
+Set `highlightColor` for the shared accent, `defaultColor` for countries without data, and `color` on a single `DataPoint` to override the accent for that country. Any CSS color works, including `var(--primary)`. Hovering any country tints it with its own color or the accent at 70% opacity.
+
+## How do I make DataMaps zoomable without hijacking page scroll?
+
+Set `zoomable` to add the zoom buttons, double-click, pinch and keyboard zoom, and bound them with `minZoom` and `maxZoom`. Leave `scrollWheelZoom` off so the wheel keeps scrolling the page. Without `zoomable`, the map picks its zoom from the container width: `0` under 450px, `1` under 640px, otherwise `zoom`.
+
+## What does variant="dots" change in DataMaps?
+
+It stops filling country polygons and places a pulsing marker at the center of each matched country instead, using `color` or `highlightColor`. A badge in the bottom-right corner shows how many countries are selected. The hover card still comes from the country polygon underneath, so tooltips behave as in `fill`.
 
 <DocsJsonLd slug="data-maps" />
+<FaqJsonLd slug="data-maps" />

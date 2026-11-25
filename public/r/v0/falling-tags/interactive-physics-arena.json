@@ -3,7 +3,7 @@
   "name": "falling-tags-interactive-physics-arena",
   "type": "registry:block",
   "title": "Falling Tags — Interactive physics arena",
-  "description": "Watch the tags float into view, drop and tumble into a natural pile. Click and throw any tag with your mouse or finger.",
+  "description": "The \"Interactive physics arena\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

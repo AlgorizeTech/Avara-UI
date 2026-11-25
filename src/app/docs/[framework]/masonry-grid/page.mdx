@@ -4,16 +4,11 @@ export const metadata = docsPageMetadata("masonry-grid");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractMotionCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Masonry Grid
 
-A high-performance masonry layout that tightly packs items of varying heights. Rather than relying on heavy JavaScript calculations or absolute positioning frameworks, this component utilizes standard CSS multi-column layout (`columns-N`) to flow items naturally.
-
-This premium iteration includes hardware-accelerated blur-fade entrances, layout animations for dynamic content reflows, and a scroll-triggered entrance sequence for high-end aesthetic presentation. It ships as a GSAP build and a Motion build with the same motion.
-
----
-
-The layout is plain CSS multi-column, so reflow is the browser's job and resizing is free — drag a preview's width handle to watch the columns recalculate.
+A CSS multi-column masonry layout (`MasonryGrid`) with staggered blur-fade scroll entrances in both GSAP and Motion builds.
 
 export const masonryShared = `import { ArrowUpRight } from "lucide-react";
 
@@ -227,10 +222,11 @@ export default function StaticWall() {
   name="masonry-grid"
   colorControl
   columns={1}
+  installation={<Installation name="masonry-grid" usage="below" />}
   examples={[
     {
       title: "Masonry grid",
-      subheading: "The grid never measures anything — it flows your tiles through CSS columns.",
+      description: "The grid never measures anything — it flows your tiles through CSS columns.",
       propNotes: [
         {
           lead: "Pass",
@@ -248,20 +244,6 @@ export default function StaticWall() {
       usage: usageDefault,
       code: extractMotionCode("src/components/custom/blocks/MasonryGridBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="masonry-grid" />
-
-## Examples
-
-<ExampleShowcase minHeight={510}
-  name="masonry-grid"
-  colorControl
-  columns={1}
-  examples={[
     {
       title: "Column counts",
       propNotes: [
@@ -317,32 +299,34 @@ export default function StaticWall() {
   ]}
 />
 
-## Features
+## About Shadcn Masonry Grid
 
-Discover the Masonry Grid's dynamic layout features, seamlessly arranging varying-height elements without large vertical gaps.
+**What it is.** `MasonryGrid` flows variable-height items into responsive CSS columns (`columnsClassName`, `gapClassName`) with optional staggered blur-fade entrances (`staggerDelay`, `animateIn`).
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Pure CSS Layout">
-    <p>Uses standard CSS multi-column layouts rather than heavy JavaScript absolute positioning to pack items perfectly.</p>
-  </InfoCard>
-  <InfoCard title="Headless Design">
-    <p>Total control over your UI. Just pass the raw data and a render function, and the grid handles the complex layout.</p>
-  </InfoCard>
-  <InfoCard title="Staggered Entrances">
-    <p>Apple-style staggered blur-fade entrances on scroll, in a GSAP build and a Motion build that move the same way.</p>
-  </InfoCard>
-  <InfoCard title="Fluid Resizing">
-    <p>Automatically reflows into the correct number of columns using Tailwind responsive utility classes.</p>
-  </InfoCard>
-</div>
+**How it is built.** It uses native CSS multi-column layout (`columns-*` plus `break-inside-avoid` on each tile), so the browser does the column balancing and the grid never measures anything. The GSAP build (`masonry-grid`) and the Motion build (`masonry-grid-motion`) install to the same file path, play the entrance once when the grid scrolls into view, and animate tiles that move when `items` change.
 
-## Best Practices & Guidelines
+**When to use it.** Use `MasonryGrid` for variable-height card walls, image feeds and testimonial grids. For fixed-grid bento layouts, use <DocLink to="glass-panel">Glass Panel</DocLink> or <DocLink to="bento-showcase">Bento Showcase</DocLink>.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Break-Inside-Avoid">
-    <p>Because CSS columns natively try to break content across columns, it is crucial that the wrapper `div` of your rendered item has `break-inside: avoid` (in Tailwind: `break-inside-avoid`). The headless component handles this on the outer container, but keep this in mind if you add complex nested layouts.</p>
-  </InfoCard>
-</div>
+## For AI agents
+
+<AgentBrief name="masonry-grid">
+
+**When to use**
+
+- Variable-height photo, card, or testimonial walls using CSS multi-column flow (`columnsClassName`, `gapClassName`)
+
+**When not to use**
+
+- Fixed-row bento grids: use <DocLink to="glass-panel">Glass Panel</DocLink> or <DocLink to="bento-showcase">Bento Showcase</DocLink>
+
+**Agent notes**
+
+- Named export `MasonryGrid` from `@/components/custom/blocks/MasonryGridBlock`, generic over items that have a unique `id` (`string | number`). Install `masonry-grid` (GSAP) or `masonry-grid-motion` (Motion), not both.
+- Pass `animateIn={false}` for above-the-fold grids or when disabling entrance motion. With `animateIn` on, the grid starts at `opacity: 0` until it scrolls into view.
+- Give `gapClassName` a plain `gap-<n>` value (such as `"gap-6"`). It is rewritten to `mb-<n>` for the row spacing, so `gap-x-*` or `gap-y-*` would produce an invalid class.
+- Tiles fill column by column, top to bottom, not row by row.
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -414,8 +398,7 @@ Discover the Masonry Grid's dynamic layout features, seamlessly arranging varyin
           <code>"gap-6"</code>
         </td>
         <td>
-          Tailwind CSS gap utility. Applied horizontally to the flex container
-          and vertically to the columns.
+          Tailwind gap utility such as <code>gap-6</code>. Used as the column gap on the grid, and rewritten to <code>mb-6</code> on each tile for the vertical spacing. Use the plain <code>gap-N</code> form.
         </td>
       </tr>
       <tr>
@@ -429,8 +412,7 @@ Discover the Masonry Grid's dynamic layout features, seamlessly arranging varyin
           <code>true</code>
         </td>
         <td>
-          Toggles the staggered, hardware-accelerated blur-fade entrance
-          sequence.
+          Toggles the staggered blur-fade entrance, which plays once when the grid scrolls into view. When <code>false</code> the tiles render in place.
         </td>
       </tr>
       <tr>
@@ -482,6 +464,31 @@ Discover the Masonry Grid's dynamic layout features, seamlessly arranging varyin
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Render <DocLink to="card">Card</DocLink> or <DocLink to="tilted-card">Tilted Card</DocLink> tiles inside `renderItem`.
+- Compare with <DocLink to="image-wall">Image Wall</DocLink> for a self-panning wall of screenshots instead of a static column layout.
+- Use <DocLink to="bento-showcase">Bento Showcase</DocLink> or <DocLink to="glass-panel">Glass Panel</DocLink> when you want fixed card positions rather than flowing columns.
+
+## How does MasonryGrid keep vertical and horizontal spacing equal?
+
+Pass a Tailwind gap utility to `gapClassName`, such as `"gap-6"`. The grid uses it as the column gap and rewrites `gap-` to `mb-` on each tile, so `gap-6` also gives `mb-6` between rows. Use the plain `gap-N` form, because `gap-x-4` would become the invalid `mb-x-4`.
+
+## How do I set the number of columns in MasonryGrid?
+
+Pass Tailwind `columns-*` utilities, one per breakpoint, to `columnsClassName`. The default is `"columns-1 sm:columns-2 md:columns-3 lg:columns-4"`. It is a class string rather than a number, so you can change any breakpoint, for example `"columns-2 lg:columns-5"`.
+
+## Why do MasonryGrid tiles read down each column instead of across?
+
+The grid uses CSS multi-column layout, which fills the first column top to bottom before starting the next. Item 2 sits below item 1, not beside it. That keeps columns balanced for mixed heights. If you need strict left-to-right order, a CSS grid with fixed row heights is a better fit.
+
+## Should I install the GSAP or the Motion build of MasonryGrid?
+
+Either. Both take the same props and install to the same file, so pick the library you already ship. `masonry-grid` uses `gsap` with its Flip plugin, and `masonry-grid-motion` uses `motion`. Install one, not both. Neither build checks `prefers-reduced-motion`, so pass `animateIn={false}` where it matters.
+
+## What does MasonryGrid do when items are added or removed?
+
+Tiles are keyed by `id`, and tiles that change position glide to their new column slot instead of jumping. The GSAP build does this with Flip and the Motion build with `layout`. In the GSAP build, tiles added after the first reveal also fade in on their own. Give every item a stable `id`.
 
 <DocsJsonLd slug="masonry-grid" />
+<FaqJsonLd slug="masonry-grid" />

@@ -4,16 +4,11 @@ export const metadata = docsPageMetadata("scroll-area");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Scroll Area
 
-Augments native scroll functionality for custom, cross-browser styling.
-
-This `ScrollAreaBlock` provides a beautiful, native-feeling scrollbar that works seamlessly across Webkit browsers (Chrome, Safari, Edge) and Firefox. It uses pure CSS and avoids heavy third-party dependencies while allowing deep theme integration.
-
-Give the block a height or width constraint and it takes over the scrollbar styling from there — same rendering in Webkit and Firefox.
-
-<AgentVariants slug="scroll-area" />
+A cross-browser styled scroll container (`ScrollAreaBlock`) supporting vertical, horizontal (with mouse-wheel panning), and dual-axis scrollbars plus `minimal`, `glass`, and `autoHide` modes.
 
 export const scrollAccent = `// The accent the preview themes its badges and pills with.
 const accent = {
@@ -495,10 +490,11 @@ export default function AutoHideScroller() {
   colorControl
   colorLabel="Accent Color"
   columns={1}
+  installation={<Installation name="scroll-area" usage="below" />}
   examples={[
     {
       title: "Scroll area",
-      subheading: "The styled scrollbar is scoped to a generated class, so global scrollbars are untouched.",
+      description: "The styled scrollbar is scoped to a generated class, so global scrollbars are untouched.",
       propNotes: [
         {
           prop: "className",
@@ -510,21 +506,6 @@ export default function AutoHideScroller() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/ScrollAreaBlock.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="scroll-area" />
-
-## Examples
-
-<ExampleShowcase minHeight={420}
-  name="scroll-area"
-  colorControl
-  colorLabel="Accent Color"
-  columns={1}
-  examples={[
     {
       title: "Horizontal",
       propNotes: [
@@ -608,31 +589,32 @@ export default function AutoHideScroller() {
   ]}
 />
 
-## Features
-Explore the Scroll Area's custom scrollbar features, providing a unified, stylized scrolling experience across all operating systems.
+## About Shadcn Scroll Area
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**What it is.** `ScrollAreaBlock` styles vertical, horizontal, and two-axis scrollbars consistently across WebKit and Firefox with `default`, `minimal`, and `glass` variants plus `autoHide` and `hideTrack`.
 
-## Best Practices & Guidelines
+**How it is built.** Scopes scrollbar styling to a generated class so global page scrollbars are unaffected, and supports `wheelToHorizontal` so vertical mouse-wheel input pans horizontal rows cleanly until hitting an edge.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `ScrollAreaBlock` inside fixed-height lists, chat threads, code viewers, and horizontal card rails.
+
+## For AI agents
+
+<AgentBrief name="scroll-area">
+
+**When to use**
+
+- Bounded vertical, horizontal, or two-axis scroll containers with consistent cross-browser scrollbars (`default`, `minimal`, `glass`, `autoHide`)
+
+**When not to use**
+
+- Virtualized huge datasets — pair with a virtualizer if rendering thousands of rows
+
+**Agent notes**
+
+- Named export: `import { ScrollAreaBlock } from "@/components/custom/blocks/ScrollAreaBlock"`
+- Always pass a height/width constraint via `className` (and `w-max` on inner content for `orientation="horizontal"`)
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -761,6 +743,29 @@ Explore the Scroll Area's custom scrollbar features, providing a unified, styliz
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Embed `ScrollAreaBlock` inside <DocLink to="resizable">Resizable</DocLink>, <DocLink to="drawer">Drawer</DocLink>, and <DocLink to="command">Command</DocLink> lists.
+
+## How do I add a custom scrollbar with Tailwind and React?
+
+Wrap the content in `ScrollAreaBlock` and give it a bounded height or width, then choose a `variant` of `"default"`, `"minimal"` or `"glass"`. It styles vertical, horizontal and two-axis scrollbars the same way in WebKit browsers and Firefox.
+
+## Why isn't my horizontal ScrollAreaBlock scrolling?
+
+`orientation` defaults to `"vertical"`, so set `orientation="horizontal"` (or `"both"`) for sideways scrolling. The content inside must also be wider than the container, for example a flex row that does not wrap, or there is nothing to scroll.
+
+## How do I make the mouse wheel scroll sideways?
+
+`wheelToHorizontal` is `true` by default and only applies when `orientation="horizontal"`. A vertical wheel then pans the row sideways until it reaches an edge. Trackpad swipes and shift+wheel keep their normal behaviour, and you can pass `false` to turn it off.
+
+## How do I hide the scrollbar until the user hovers?
+
+Set `autoHide` so the thumb fades to transparent when the container is not hovered. Add `hideTrack` to make the background track fully transparent so only the thumb shows. Both props are `false` by default and work with any `variant`.
+
+## Will ScrollAreaBlock change my page's global scrollbar?
+
+No. Its scrollbar styling is scoped to a generated class on that one container, so the page scrollbar and other scrollers are untouched. Use `color` (`"indigo"`, `"rose"`, `"emerald"`, `"zinc"` or a custom colour string) to tint the thumb and its hover state.
 
 <DocsJsonLd slug="scroll-area" />
+<FaqJsonLd slug="scroll-area" />

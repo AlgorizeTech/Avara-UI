@@ -1,16 +1,27 @@
 ---
 title: "Shadcn Resizable"
-description: "A high-performance system for building resizable panel layouts, complete with keyboard accessibility and nested group support. Free shadcn/ui component."
+description: "Shadcn Resizable. A 60fps resizable split-panel system (`ResizablePanelGroup`, `ResizablePanel`, `ResizableHandle`) with nested groups, min/max constraints."
 url: https://avaraui.com/docs/nextjs/resizable
 ---
 
 # Shadcn Resizable
 
-A high-performance system for building resizable panel layouts, complete with keyboard accessibility and nested group support.
+A 60fps resizable split-panel system (`ResizablePanelGroup`, `ResizablePanel`, `ResizableHandle`) with nested groups, min/max constraints, and keyboard ARIA separator stepping.
 
-Most UI frameworks rely on massive, complex external libraries to handle the math of dragging panels. This `ResizableBlock` uses a sophisticated direct-DOM manipulation engine instead. By directly writing to `element.style.flex`, it bypasses the React render cycle during drag operations, resulting in **zero-latency, 60fps butter-smooth resizing** without sacrificing declarative React composition.
+## Installation
 
-Drag any handle to resize. Click a handle to focus it, then use the arrow keys — the engine ships with the ARIA separator semantics and keyboard stepping already wired.
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/resizable.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/resizable
+```
 
 ## Resizable layout
 
@@ -145,24 +156,7 @@ export default function StudioLayout() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/resizable.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/resizable
-```
-
-## Examples
-
-### Horizontal split
+## Horizontal split
 
 - `defaultSize` on each panel is a percentage of the group — two panels at 40 and 60 fill it.
 - `withHandle` on the handle renders the visible grip in the middle of the divider.
@@ -205,7 +199,7 @@ export default function HorizontalSplit() {
 }
 ```
 
-### Vertical split
+## Vertical split
 
 - Set `direction="vertical"` to stack the panels and turn the handle into a horizontal bar.
 
@@ -249,7 +243,7 @@ export default function VerticalSplit() {
 }
 ```
 
-### Size constraints
+## Size constraints
 
 - `minSize={15}` and `maxSize` are percentages of the group; the drag clamps to them so a panel can never escape its bounds.
 
@@ -293,20 +287,28 @@ export default function ConstrainedSidebar() {
 }
 ```
 
-## Features
-Learn about the Resizable component's panel layout capabilities, supporting drag handles, collapsible panes, and nested groups.
+## About Shadcn Resizable
 
-Easily adapt the component's styling and behavior to fit your application's unique design system.
+**What it is.** `ResizablePanelGroup`, `ResizablePanel`, and `ResizableHandle` compose horizontal, vertical, and nested split-pane layouts with `defaultSize`, `minSize`, `maxSize`, and optional `withHandle` grips.
 
-Built with accessibility in mind, ensuring all users can interact with your application effectively.
+**How it is built.** Updates `element.style.flex` directly during pointer drag to bypass React re-renders for 60fps resizing, and wires `role="separator"` keyboard arrow stepping out of the box.
 
-Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+**When to use it.** Use `Resizable` for IDE panes, code playgrounds, split previews, and adjustable sidebars.
 
-Optimized for maximum performance with minimal re-renders and efficient state management.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+- User-resizable split panes (`direction="horizontal" | "vertical"`) and nested IDE/dashboard layouts
+
+**When not to use**
+
+- Static bento/card grids — use [Masonry Grid](https://avaraui.com/docs/nextjs/masonry-grid) or [Glass Panel](https://avaraui.com/docs/nextjs/glass-panel)
+
+**Agent notes**
+
+- Named exports: `ResizablePanelGroup`, `ResizablePanel`, `ResizableHandle` from `@/components/custom/blocks/ResizableBlock`
+- `defaultSize`, `minSize`, and `maxSize` are percentages of the enclosing group
 
 ## Props Reference
 
@@ -318,6 +320,30 @@ Follow standard design principles when implementing this component. Ensure prope
 | `ResizablePanel` | `maxSize` | `number` | `100` | The maximum allowed size (percentage) the panel can be grown to. |
 | `ResizableHandle` | `withHandle` | `boolean` | `false` | If true, renders a small visual grip icon in the center of the separator track. |
 | All Components | `className` | `string` | `undefined` | Standard Tailwind CSS overrides. Useful for adding specific background colors or padding to panels. |
+
+## Works with other components
+
+- Combine `ResizablePanel` panes with [Scroll Area](https://avaraui.com/docs/nextjs/scroll-area), [Terminal](https://avaraui.com/docs/nextjs/terminal), and [Custom Code Block](https://avaraui.com/docs/nextjs/custom-code-block) for IDE/playground layouts.
+
+## How do I make a resizable split panel layout in React?
+
+Wrap `ResizablePanel` children in a `ResizablePanelGroup` and put a `ResizableHandle` between each pair of panels. Set `direction` to `"horizontal"` or `"vertical"` on the group, then give each panel a `defaultSize` as a percentage of the parent.
+
+## How do I set minimum and maximum panel sizes?
+
+Pass `minSize` and `maxSize` to `ResizablePanel` as percentages of the parent. They default to `0` and `100`, so set `minSize` on sidebars and editors you never want dragged shut. The handle stops at those limits while the user drags.
+
+## Can I nest Resizable panels for an IDE-style layout?
+
+Yes. Put a `ResizablePanelGroup` inside a `ResizablePanel` and give the inner group the opposite `direction`, for example a vertical editor and terminal split inside a horizontal sidebar split. Each panel keeps its own `defaultSize`, `minSize` and `maxSize` values.
+
+## Does Resizable support keyboard resizing?
+
+Yes. `ResizableHandle` renders with `role="separator"` and steps with the arrow keys, so panels can be resized without a mouse. Add `withHandle` to draw a small grip icon in the centre of the separator so users can see where to grab.
+
+## Why does dragging a Resizable panel stay smooth?
+
+During a pointer drag it writes `element.style.flex` directly instead of updating React state, which bypasses re-renders and keeps resizing at 60fps. Its only npm dependency is `lucide-react` for the grip icon, and it has no `next/*` imports, so it also runs in Vite.
 
 ---
 

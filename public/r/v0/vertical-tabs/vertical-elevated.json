@@ -3,7 +3,7 @@
   "name": "vertical-tabs-vertical-elevated",
   "type": "registry:block",
   "title": "Tabs — Vertical elevated",
-  "description": "A stack of cards, the active one filled and raised.",
+  "description": "The \"Vertical elevated\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

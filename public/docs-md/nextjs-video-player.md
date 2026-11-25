@@ -16,55 +16,24 @@ Three independent components live on this page, and each installs on its own:
 
 Reach for the first unless you need adaptive streaming, DRM or a shared control bar across providers — it adds no player dependency at all. Looking for audio? The [Audio Player](https://avaraui.com/docs/nextjs/audio-player) has its own page.
 
-## For AI agents
-
-**Ask before you pick.** This page has 4 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
-
-All 4 options as live previews: https://avaraui.com/view/video-player
-
-**When to use it.** A video for a landing page or section. Choose how it plays: opened in a modal or in place with the built-in player, or through the Plyr or JW Player library.
-
-**Gotchas:**
-
-- The built-in `video-player` item also plays a self-hosted file (`source: "video"`) and can embed directly with no thumbnail (`playbackMode: "direct"`). Those are props, not separate designs.
-- JW Player loads JW's library script. The default points at JW's public docs library; replace it with your own player before shipping.
-
-### The 4 variants
-
-1. **Video hero, plays in a modal** (`modal`): A thumbnail with a glassmorphism call to action that opens the video in a centred dialog.
-   - Live: https://avaraui.com/view/video-player/modal
-   - Best for: a landing-page hero where the video should not push content around
-   - Avoid if: you want the video to play where it sits on the page
-   - Traits: thumbnail and glow, modal dialog, Esc closes, focus returns to the button, dialog size md to full
-   - Install: `npx shadcn@latest add @avara-ui/video-player`
-   - Set these props: `{"playbackMode":"modal"}`
-   - Docs: https://avaraui.com/docs/nextjs/video-player#modal-player
-2. **Video hero, plays inline** (`inline`): The player replaces the poster in place; nothing covers the page and body scrolling is untouched.
-   - Live: https://avaraui.com/view/video-player/inline
-   - Best for: a video mid-page, inside a scrolling column or a carousel slide
-   - Avoid if: you want a focused, full-attention viewing dialog
-   - Traits: plays in the card, no overlay, no scroll lock
-   - Install: `npx shadcn@latest add @avara-ui/video-player`
-   - Set these props: `{"playbackMode":"inline"}`
-   - Docs: https://avaraui.com/docs/nextjs/video-player#inline-player
-3. **Plyr player** (`plyr`): One accessible, skinnable control bar in front of HTML5 files, YouTube or Vimeo.
-   - Live: https://avaraui.com/view/video-player/plyr
-   - Best for: one consistent control bar across self-hosted video, YouTube and Vimeo
-   - Avoid if: you want no extra library (the built-in player needs none)
-   - Traits: Plyr library, HTML5, YouTube, Vimeo, colourable controls, choose which controls show
-   - Install: `npx shadcn@latest add @avara-ui/video-player-plyr`
-   - Docs: https://avaraui.com/docs/nextjs/video-player#plyr-youtube
-4. **JW Player** (`jw`): A video player built on JW Player, with colour skin presets and a native fallback if the library is unavailable.
-   - Live: https://avaraui.com/view/video-player/jw
-   - Best for: a site that already uses JW Player for streaming or playlists
-   - Avoid if: you have no JW Player library or licence
-   - Traits: JW Player library, skin presets, playlist or file source, native fallback
-   - Install: `npx shadcn@latest add @avara-ui/video-player-jw`
-   - Docs: https://avaraui.com/docs/nextjs/video-player#jw-player-skinned
-
 ## YouTube & native video
 
 Click the CTA in any preview to start playback. In `modal` mode `Esc` closes the dialog and focus returns to the play button.
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/video-player.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/video-player
+```
 
 ### Modal player
 
@@ -196,24 +165,24 @@ export default function NativeModalHero() {
 }
 ```
 
-### Install the video player
+## Plyr player
+
+[Plyr](https://plyr.io) puts one accessible control bar in front of HTML5 files, YouTube and Vimeo, so all three look and behave identically. It installs the `plyr` package and is imported dynamically inside an effect, which keeps the component server-renderable.
+
+## Installation
 
 Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest add https://avaraui.com/r/video-player.json
+npx shadcn@latest add https://avaraui.com/r/video-player-plyr.json
 ```
 
 Or register the @avara-ui registry once per project and add it by name:
 
 ```bash
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/video-player
+npx shadcn@latest add @avara-ui/video-player-plyr
 ```
-
-## Plyr player
-
-[Plyr](https://plyr.io) puts one accessible control bar in front of HTML5 files, YouTube and Vimeo, so all three look and behave identically. It installs the `plyr` package and is imported dynamically inside an effect, which keeps the component server-renderable.
 
 ### Plyr — HTML5
 
@@ -264,24 +233,24 @@ export default function PlyrYouTubeHero() {
 }
 ```
 
-### Install the Plyr player
+## JW Player
+
+[JW Player](https://jwplayer.com) is a licensed, remotely hosted library rather than an npm package, so `JwPlayer` loads it from a `libraryUrl` you supply and falls back to a native `<video>` if it is unavailable. The previews below run on JW's public documentation library — see the setup note under Installation before shipping.
+
+## Installation
 
 Add the component by URL — no setup needed:
 
 ```bash
-npx shadcn@latest add https://avaraui.com/r/video-player-plyr.json
+npx shadcn@latest add https://avaraui.com/r/video-player-jw.json
 ```
 
 Or register the @avara-ui registry once per project and add it by name:
 
 ```bash
 npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/video-player-plyr
+npx shadcn@latest add @avara-ui/video-player-jw
 ```
-
-## JW Player
-
-[JW Player](https://jwplayer.com) is a licensed, remotely hosted library rather than an npm package, so `JwPlayer` loads it from a `libraryUrl` you supply and falls back to a native `<video>` if it is unavailable. The previews below run on JW's public documentation library — see the setup note under Installation before shipping.
 
 ### JW Player — default skin
 
@@ -358,21 +327,6 @@ export default function BrandedJwHero() {
 }
 ```
 
-### Install the JW player
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/video-player-jw.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/video-player-jw
-```
-
 ### JW Player setup
 
 `JwPlayer` has no npm dependency: JW ships a licensed library from its own CDN, and the component loads it at runtime.
@@ -383,33 +337,74 @@ npx shadcn@latest add @avara-ui/video-player-jw
 
 If the library fails to load, the component renders a native `<video>` with the poster and a visible warning rather than a black box — so a licence problem degrades instead of breaking the page.
 
-## Features
+## About Shadcn Video Player
 
-Open in a dialog, swap the player into the card in place, or render it directly on load — one prop, no layout rewrite.
+**What it is.** **Shadcn Video Player** provides three independently installable video components sharing one hero shell: `VideoPlayer` (zero-dependency YouTube/HTML5 poster hero), `PlyrPlayer` (unified Plyr bar across HTML5, YouTube, and Vimeo), and `JwPlayer` (JW Player skin presets with native `<video>` fallback).
 
-YouTube embeds, native HTML5 video, Plyr and JW Player — sharing one hero card, one title treatment and one glow treatment.
+**How it is built.** `VideoPlayer` supports `modal`, `inline`, and `direct` `playbackMode` values, deferring iframe/video loading until interaction in `modal` and `inline` modes so LCP stays fast. `PlyrPlayer` dynamically imports `plyr` client-side, while `JwPlayer` loads your `libraryUrl` at runtime.
 
-In modal and inline mode nothing but the poster loads until a click, so an embed never lands on your Largest Contentful Paint.
+**When to use it.** Use `VideoPlayer` for lightweight landing-page heroes and docs walkthroughs, `PlyrPlayer` for a unified skinnable bar across providers, and `JwPlayer` for existing JW deployments.
 
- 16:9, ultrawide 21:9, classic 4:3 and square 1:1, forwarded to Plyr and JW in their own ratio formats so the frame never jumps.
+## For AI agents
 
-The play CTA is a real button, the modal is a labelled dialog, `Esc` closes it, the page behind it stops scrolling, and focus returns to the trigger.
+**When to use**
 
-Play buttons and progress fills read `--theme-color`, falling back to your `--primary`, so the players match the rest of the page.
+- `VideoPlayer` for lightweight landing-page heroes and docs walkthroughs, `PlyrPlayer` for a unified skinnable bar across providers, and `JwPlayer` for existing JW deployments
 
-## Best Practices & Guidelines
+**When not to use**
 
-Use `modal` above the fold, where the video is the page's main call to action. Use `inline` mid-page — an overlay that hijacks the whole viewport from a card the reader scrolled past reads as an interruption. Use `direct` when the video is the content, such as a documentation walkthrough.
+- Audio-only playback: use [Audio Player](https://avaraui.com/docs/nextjs/audio-player)
+- A strip of expanding video panels: use [Video Accordion](https://avaraui.com/docs/nextjs/video-accordion)
 
-### Autoplay is a request, not a guarantee
+**Agent notes**
 
-Browsers block autoplay with sound. `autoPlay` only applies to `playbackMode="direct"`, and the native player mutes itself when it is set. In `modal` and `inline` the click is the gesture, so playback starts on its own and the component adds `autoplay=1` to the embed URL for you.
+- Install `video-player` for `VideoPlayer` (`playbackMode`: `"modal" | "inline" | "direct"`, `source`: `"youtube" | "video"`), `video-player-plyr` for `PlyrPlayer`, or `video-player-jw` for `JwPlayer`.
+- Match `thumbnailUrl` to `aspectRatio` (`"16/9" | "21/9" | "4/3" | "1/1"`) so the poster and `<video>` frame align cleanly.
+- Replace the default `libraryUrl` on `JwPlayer` with your own JW Dashboard library URL before shipping to production.
 
-Give `thumbnailUrl` a resolution that matches your `aspectRatio`. It is the poster, the LCP candidate and — for `source="video"` — the `<video>` element's own `poster`, so a mismatched crop shows up in all three places.
+**Ask before you pick.** This page has 4 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
 
-Before anything has played, the title and subtitle sit at the foot of the frame and stay there — nothing is happening yet, so they are free to introduce the video, and nobody should have to hover to learn what they are about to watch. Once playback starts the picture is the point, so the copy moves to a top bar that only appears on hover, the way YouTube does. It never returns to the bottom, because pausing does not undo having started. This applies to the players we draw the chrome for — the native `<video>`, Plyr and JW. A YouTube or Vimeo embed already paints its own title bar, so nothing is layered on top of it.
+All 4 options as live previews: https://avaraui.com/view/video-player
 
-Start with `VideoPlayer` — it ships no player library. Move to Plyr when you need one consistent, skinnable control bar across YouTube, Vimeo and self-hosted files. Move to JW Player when you are already on JW's platform for adaptive streaming, DRM or analytics.
+**When to use it.** A video for a landing page or section. Choose how it plays: opened in a modal or in place with the built-in player, or through the Plyr or JW Player library.
+
+**Gotchas:**
+
+- The built-in `video-player` item also plays a self-hosted file (`source: "video"`) and can embed directly with no thumbnail (`playbackMode: "direct"`). Those are props, not separate designs.
+- JW Player loads JW's library script. The default points at JW's public docs library; replace it with your own player before shipping.
+
+### The 4 variants
+
+1. **Video hero, plays in a modal** (`modal`): A thumbnail with a glassmorphism call to action that opens the video in a centred dialog.
+   - Live: https://avaraui.com/view/video-player/modal
+   - Best for: a landing-page hero where the video should not push content around
+   - Avoid if: you want the video to play where it sits on the page
+   - Traits: thumbnail and glow, modal dialog, Esc closes, focus returns to the button, dialog size md to full
+   - Install: `npx shadcn@latest add @avara-ui/video-player`
+   - Set these props: `{"playbackMode":"modal"}`
+   - Docs: https://avaraui.com/docs/nextjs/video-player#modal-player
+2. **Video hero, plays inline** (`inline`): The player replaces the poster in place; nothing covers the page and body scrolling is untouched.
+   - Live: https://avaraui.com/view/video-player/inline
+   - Best for: a video mid-page, inside a scrolling column or a carousel slide
+   - Avoid if: you want a focused, full-attention viewing dialog
+   - Traits: plays in the card, no overlay, no scroll lock
+   - Install: `npx shadcn@latest add @avara-ui/video-player`
+   - Set these props: `{"playbackMode":"inline"}`
+   - Docs: https://avaraui.com/docs/nextjs/video-player#inline-player
+3. **Plyr player** (`plyr`): One accessible, skinnable control bar in front of HTML5 files, YouTube or Vimeo.
+   - Live: https://avaraui.com/view/video-player/plyr
+   - Best for: one consistent control bar across self-hosted video, YouTube and Vimeo
+   - Avoid if: you want no extra library (the built-in player needs none)
+   - Traits: Plyr library, HTML5, YouTube, Vimeo, colourable controls, choose which controls show
+   - Install: `npx shadcn@latest add @avara-ui/video-player-plyr`
+   - Docs: https://avaraui.com/docs/nextjs/video-player#plyr-youtube
+4. **JW Player** (`jw`): A video player built on JW Player, with colour skin presets and a native fallback if the library is unavailable.
+   - Live: https://avaraui.com/view/video-player/jw
+   - Best for: a site that already uses JW Player for streaming or playlists
+   - Avoid if: you have no JW Player library or licence
+   - Traits: JW Player library, skin presets, playlist or file source, native fallback
+   - Install: `npx shadcn@latest add @avara-ui/video-player-jw`
+   - Docs: https://avaraui.com/docs/nextjs/video-player#jw-player-skinned
 
 ## Props Reference
 
@@ -472,6 +467,30 @@ Start with `VideoPlayer` — it ships no player library. Move to Plyr when you n
 | `title` / `subtitle` | `string` | `"Enterprise-grade video delivery"` / … | Laid over the frame: at the foot until the video is first played (clear of JW's control bar), then a hover-only bar at the top. |
 | `showOverlay` | `boolean` | `true` | Whether the title/subtitle overlay renders at all. |
 | `onReady` | `() => void` | `undefined` | Fires on JW's `ready` event. A failed load or setup falls back to the native player instead. |
+
+## Works with other components
+
+Pair `VideoPlayer` with [Audio Player](https://avaraui.com/docs/nextjs/audio-player) for podcast and audio tracks, [Video Accordion](https://avaraui.com/docs/nextjs/video-accordion) for expanding multi-video reels, and [Modal](https://avaraui.com/docs/nextjs/modal) for custom dialog overlays.
+
+## How do I add a video hero with a play button modal in React?
+
+Render `VideoPlayer` with a `videoUrl`, a `thumbnailUrl`, a `title` and a `playButtonLabel`. With the default `playbackMode="modal"`, clicking the glass play button opens the video in a centred dialog. Choose `source="youtube"` for an embed or `"video"` for a file.
+
+## Which playbackMode should I use?
+
+Use `modal` for above-the-fold hero videos, `inline` when the card sits mid-page inside a column or carousel, and `direct` when the player itself should load immediately, such as a documentation walkthrough. `"modal"` is the default.
+
+## Does VideoPlayer impact initial page load performance?
+
+Not in `modal` and `inline` modes. Only the thumbnail poster loads until the user clicks play, so the video embed stays out of your page's Largest Contentful Paint. The `direct` mode loads the player immediately on purpose.
+
+## How do I play Vimeo or audio files with Plyr?
+
+Use `PlyrPlayer` instead. Set `provider` to `"html5"`, `"youtube"` or `"vimeo"`, and `src` to a media file or video URL. All three providers get the same control bar and keyboard shortcuts, and `mediaType="audio"` drops the video frame for audio-only files.
+
+## How do I change the video size, ratio or modal width?
+
+`aspectRatio` accepts `"16/9"`, `"21/9"`, `"4/3"` or `"1/1"` and applies to the card and the modal frame. `modalSize` is `"md"`, `"lg"`, `"xl"` or `"full"` and is read only in `modal` mode. `enableGlow` toggles the blurred gradient behind the card.
 
 ---
 

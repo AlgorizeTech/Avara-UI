@@ -6,7 +6,22 @@ url: https://avaraui.com/docs/nextjs/secure-envelope
 
 # Shadcn Secure Envelope
 
-An interactive classified envelope sleeve and travel pass: a secret card glides out on hover, lifts onto the cover on click and flips in 3D to show its back. It suits online tickets, travel passes, security dossiers, vouchers and VIP cards.
+An interactive envelope sleeve and 3D-flipping pass (`SecureEnvelope`) with `confidential-folder`, `smart-card`, and `train-ticket` designs in `step-flip` or `auto-flip` modes.
+
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/secure-envelope.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/secure-envelope
+```
 
 ## Confidential Folder (Slide-Out Sleeve / Stay Hungry Variant)
 
@@ -39,24 +54,7 @@ export default function ConfidentialFolderExample() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/secure-envelope.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/secure-envelope
-```
-
-## More Examples
-
-### Biometric NFC SmartCard (Quantum Vault Variant)
+## Biometric NFC SmartCard (Quantum Vault Variant)
 
 A biometric identity smartcard in an encrypted key vault sleeve, with a chip, NFC glyph and clearance badge.
 
@@ -85,7 +83,7 @@ export default function CyberSmartCardExample() {
 }
 ```
 
-### Auto Flip (Classic Voucher / Classified)
+## Auto Flip (Classic Voucher / Classified)
 
 The first click slides the card out and flips it in place to its back; the second flips it back and returns it inside.
 
@@ -112,7 +110,7 @@ export default function AutoFlipSecureEnvelopeExample() {
 }
 ```
 
-### Train Online Ticket (Hyperbolt Express Variant)
+## Train Online Ticket (Hyperbolt Express Variant)
 
 A high-speed rail ticket with passenger details, a vertical barcode and a tear-off stub, in a bullet-train sleeve.
 
@@ -142,23 +140,80 @@ export default function TrainOnlineTicketExample() {
 }
 ```
 
-## Features
+## About Shadcn Secure Envelope
 
-Rich variety of real-world templates including Hyperbolt European train tickets, classic classified dossiers, and biometric NFC smartcards with EMV microchips and full light/dark theme adaptivity.
+**What it is.** `SecureEnvelope` renders an interactive sleeve with an SVG thumb scoop and a double-sided card (`confidential-folder`, `smart-card`, `train-ticket`, or classic voucher) that glides out, lands on the sleeve, and flips 180° in 3D.
 
-When clicked, the document slides out horizontally past the sleeve edge, elevates in front on the z-axis, and glides back down with a gentle tilt onto the front cover.
+**How it is built.** Supports `step-flip` (3-click open → flip → close) and `auto-flip` (immediate slide + flip), full keyboard control (`Tab`, `Enter`/`Space`, `Escape`), and touch tap triggers.
 
-Engineered with a clean, subpixel-sharp SVG inward scoop notch along the right edge, exposing the card inside exactly like a high-end physical envelope sleeve.
+**When to use it.** Use `SecureEnvelope` for digital rail/event tickets, VIP access passes, security dossiers, and interactive reward vouchers.
 
-Features seamless 180-degree in-place 3D card flips with true perspective, preserved backface visibility, and dynamic theme adaptivity.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-`SecureEnvelope` supports keyboard navigation: focus it with `Tab` and trigger the opening/closing animation using `Enter` or `Space`, or close with `Escape`.
+- Interactive sleeved passes, tickets, NFC smartcards, and classified dossiers with 3D front/back flip
 
-On touch devices where hover is unavailable, tapping the folder launches the smooth opening flight sequence immediately.
+**When not to use**
 
-Pass `cardDesign="smart-card"` with custom clearance levels, holder name, and department for cybersecurity credentials, VIP access badges, and identity portals.
+- Multi-card fintech wallets — use [Wallet](https://avaraui.com/docs/reactjs/wallet)
+- File/photo folders — use [Folder](https://avaraui.com/docs/reactjs/folder)
+
+**Agent notes**
+
+- Named exports: `SecureEnvelope`, `type SecureEnvelopeData` from `@/components/custom/blocks/SecureEnvelopeBlock`
+- Choose `cardDesign` (`"confidential-folder" | "smart-card" | "train-ticket"`) and `interactionMode` (`"step-flip" | "auto-flip"`)
+
+**Ask before you pick.** This page has 4 variants. If the user has not named one and has not asked you to choose for them, ask which they want before you install anything or write code, and show every option with its live link. If they ask you to choose, pick from each variant's best-for and avoid-if lines against their brief, and say why. If the user named a variant, use it and do not ask.
+
+All 4 options as live previews: https://avaraui.com/view/secure-envelope
+
+**When to use it.** An interactive sleeve with a double-sided card that slides out, lands on the sleeve and flips in 3D. Four designs: a confidential dossier folder, a biometric smartcard, a classic voucher and a rail ticket.
+
+**When to use something else:**
+
+- [Wallet](https://avaraui.com/docs/reactjs/wallet): you need a stack of several payment cards, not one flipping pass.
+- [Folder](https://avaraui.com/docs/reactjs/folder): you are showing files or photos in a folder, not a single pass.
+
+**Gotchas:**
+
+- All four are the one `secure-envelope` item: install it once and set `cardDesign` from the index.
+- `interactionMode` is how it moves, not a design: `step-flip` takes three clicks (slide out, flip, return) and `auto-flip` slides and flips on the first click.
+- Each design reads its own fields from `data` (for example `holderName` for the smartcard, `passengerName` for the ticket), so pass the fields for the design you picked.
+
+### The 4 variants
+
+1. **Confidential folder** (`confidential-folder`): A manila dossier folder with a CONFIDENTIAL stamp and a hot pink card that slides out of it.
+   - Live: https://avaraui.com/view/secure-envelope/confidential-folder
+   - Best for: a security dossier or classified-file reveal; a bold, playful hero moment
+   - Avoid if: you want a serious payment or ticket look
+   - Traits: manila folder, stamp badge, step-flip, slide-out card
+   - Install: `npx shadcn@latest add @avara-ui/secure-envelope`
+   - Set these props: `{"cardDesign":"confidential-folder"}`
+   - Docs: https://avaraui.com/docs/nextjs/secure-envelope#confidential-folder-slide-out-sleeve-stay-hungry-variant
+2. **Biometric smartcard** (`smart-card`): An identity smartcard in an encrypted key-vault sleeve, with a chip, NFC glyph and clearance badge.
+   - Live: https://avaraui.com/view/secure-envelope/smart-card
+   - Best for: a VIP access pass or digital ID; a security or fintech product page
+   - Avoid if: you want a lighthearted look
+   - Traits: smartcard, chip and NFC glyph, clearance badge, step-flip
+   - Install: `npx shadcn@latest add @avara-ui/secure-envelope`
+   - Set these props: `{"cardDesign":"smart-card"}`
+   - Docs: https://avaraui.com/docs/nextjs/secure-envelope#biometric-nfc-smartcard-quantum-vault-variant
+3. **Classic voucher** (`classic-voucher`): A reward voucher in a sleeve: the first click slides it out and flips it, the second returns it.
+   - Live: https://avaraui.com/view/secure-envelope/classic-voucher
+   - Best for: a reward or discount voucher; a membership offer
+   - Avoid if: you need passenger or seat details
+   - Traits: voucher, auto-flip, default design
+   - Install: `npx shadcn@latest add @avara-ui/secure-envelope`
+   - Docs: https://avaraui.com/docs/nextjs/secure-envelope#auto-flip-classic-voucher-classified
+4. **Rail ticket** (`train-ticket`): A high-speed rail ticket with passenger details, a vertical barcode and a tear-off stub.
+   - Live: https://avaraui.com/view/secure-envelope/train-ticket
+   - Best for: travel, event or transport ticketing; a booking confirmation
+   - Avoid if: there is no route, seat or passenger to show
+   - Traits: ticket, barcode, tear-off stub, step-flip
+   - Install: `npx shadcn@latest add @avara-ui/secure-envelope`
+   - Set these props: `{"cardDesign":"train-ticket"}`
+   - Docs: https://avaraui.com/docs/nextjs/secure-envelope#train-online-ticket-hyperbolt-express-variant
 
 ## Props Reference
 
@@ -184,6 +239,30 @@ Pass `cardDesign="smart-card"` with custom clearance levels, holder name, and de
 | `cardVariant` | `"adaptive" \| "ivory"` | `"adaptive"` | Switches between dynamic dual-theme adaptivity (light in Light Mode, dark in Dark Mode) and classic physical ivory cardstock. |
 | `defaultOpen` | `boolean` | `false` | Whether the folder opens directly in its elevated resting state. |
 | `onOpenChange` | `(open: boolean) => void` | `undefined` | Callback fired whenever the card opens or returns inside the sleeve. |
+
+## Works with other components
+
+- Compare with [Wallet](https://avaraui.com/docs/reactjs/wallet) for multi-card fintech pockets or [Card](https://avaraui.com/docs/reactjs/card) for static boarding passes.
+
+## How do I choose the card design in SecureEnvelope?
+
+Set `cardDesign` to `"confidential-folder"`, `"smart-card"` or `"train-ticket"`. Leaving it as the default `"classified"` gives the classic voucher. Each design reads its own fields from `data`, so pass the fields that match the design you picked.
+
+## What is the difference between step-flip and auto-flip?
+
+`step-flip` splits the interaction into three clicks: slide out, flip 180° to the back, then return inside. `auto-flip` slides out and flips to the back on the first click and returns inside on the second. `auto-flip` is the default `interactionMode`.
+
+## How do I fill in the train ticket details?
+
+Pass a `SecureEnvelopeData` object in `data` with fields such as `passengerName`, `routeText`, `seatNumber`, `trainNumber`, `date`, `departureTime`, `trainCompany`, `slogan` and `barcodeNumber`. Any field you omit falls back to the built-in sample value shown in the props table.
+
+## Can SecureEnvelope be used with a keyboard or on touch screens?
+
+Yes. Tab focuses the envelope, and `Enter`, `Space` and `Escape` drive the open, flip and close steps. On touch screens a tap does the same as a click. No gesture library is needed for either input.
+
+## When should I use SecureEnvelope instead of Wallet or Card?
+
+Choose `SecureEnvelope` for a single pass that slides out of a sleeve and flips, such as a rail ticket, VIP pass, dossier or voucher. Use [Wallet](https://avaraui.com/docs/reactjs/wallet) for a pocket of several payment cards and [Card](https://avaraui.com/docs/reactjs/card) for static content.
 
 ---
 

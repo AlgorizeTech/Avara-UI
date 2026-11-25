@@ -3,7 +3,7 @@
   "name": "audio-player-audio-hero",
   "type": "registry:block",
   "title": "Audio Player — Audio hero",
-  "description": "Artwork, transport, scrubber and volume in a full hero card. Built on a plain `<audio>` element.",
+  "description": "The \"Audio hero\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"

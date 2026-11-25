@@ -4,12 +4,11 @@ export const metadata = docsPageMetadata("drawer");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
 import { extractCode } from "@/lib/code";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 
 # Shadcn Drawer
 
-A highly animated, responsive drawer component. Built entirely from scratch, with plain CSS transitions for butter-smooth entering and exiting animations — no animation library. It supports sliding in from all four screen edges (top, bottom, left, right) and safely locks the background document from scrolling while open.
-
-The drawer is always controlled — you own `open` and pass `onOpenChange`.
+A controlled slide-in drawer (`Drawer`, `DrawerContent`) supporting all four screen edges (`top`, `bottom`, `left`, `right`) with body scroll locking and plain CSS transitions.
 
 export const usageDefault = `"use client";
 
@@ -164,6 +163,7 @@ export default function OnboardingDrawer() {
   name="drawer"
   columns={1}
   minHeight={360}
+  installation={<Installation name="drawer" usage="below" />}
   examples={[
     {
       title: "Drawer",
@@ -183,20 +183,6 @@ export default function OnboardingDrawer() {
       usage: usageDefault,
       code: extractCode("src/components/custom/blocks/Drawer.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="drawer" />
-
-## Examples
-
-<ExampleShowcase
-  name="drawer"
-  columns={1}
-  minHeight={360}
-  examples={[
     {
       title: "Bottom sheet",
       propNotes: [
@@ -226,31 +212,36 @@ export default function OnboardingDrawer() {
   ]}
 />
 
-## Features
-Learn about the Drawer component's touch-friendly swiping gestures, snap points, and smooth slide-in animations.
+## About Shadcn Drawer
 
-<div className="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6 not-prose">
-  <InfoCard title="Customizable">
-    <p>Easily adapt the component's styling and behavior to fit your application's unique design system.</p>
-  </InfoCard>
-  <InfoCard title="Accessible">
-    <p>Built with accessibility in mind, ensuring all users can interact with your application effectively.</p>
-  </InfoCard>
-  <InfoCard title="Responsive">
-    <p>Fully responsive design that looks and works great across desktop, tablet, and mobile devices.</p>
-  </InfoCard>
-  <InfoCard title="Performant">
-    <p>Optimized for maximum performance with minimal re-renders and efficient state management.</p>
-  </InfoCard>
-</div>
+**What it is.** `Drawer` and `DrawerContent` slide a panel in from `top`, `bottom`, `left`, or `right` edges, locking background document scroll while open.
 
-## Best Practices & Guidelines
+**How it is built.** Animated with CSS keyframes and transitions that the component injects in a `<style>` tag, so there is no animation library. It renders into a portal on `document.body` and is strictly controlled via `open` and `onOpenChange`, which fires on a `DrawerOverlay` click, `Escape` and the built-in close button. The only npm dependency is `lucide-react`.
 
-<div className="flex flex-col gap-4 my-6 not-prose">
-  <InfoCard title="Usage Guidelines">
-    <p>Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.</p>
-  </InfoCard>
-</div>
+**When to use it.** Use `Drawer` for navigation sheets, filter panels, mobile bottom sheets, and cart sidebars. For centered blocking dialogs, use <DocLink to="dialog">Dialog</DocLink> or <DocLink to="modal">Modal</DocLink>.
+
+## For AI agents
+
+<AgentBrief name="drawer">
+
+**When to use**
+
+- Edge-anchored slide-over panels (`side="right" | "left" | "top" | "bottom"`) for filters, carts, or mobile sheets
+
+**When not to use**
+
+- Centered blocking dialogs — use <DocLink to="dialog">Dialog</DocLink> or <DocLink to="modal">Modal</DocLink>
+- Small trigger-anchored menus — use <DocLink to="popover">Popover</DocLink>
+
+**Agent notes**
+
+- Named exports from `@/components/custom/blocks/Drawer`
+- Always controlled: both `open` and `onOpenChange` are required (there is no uncontrolled mode)
+- Render `<DrawerOverlay />` before `<DrawerContent>`; without it there is no backdrop and outside clicks do nothing
+- Other exports: `DrawerHeader`, `DrawerTitle`, `DrawerDescription`, `DrawerFooter`, and a small `Button` (`variant` `"default" | "outline"`)
+- `DrawerContent` does not set `role` or `aria-modal`; pass them as props if you need them
+
+</AgentBrief>
 
 ## Props Reference
 
@@ -315,6 +306,34 @@ Learn about the Drawer component's touch-friendly swiping gestures, snap points,
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- Trigger `Drawer` from <DocLink to="button">Button</DocLink> or <DocLink to="navbar">Navbar</DocLink> mobile menu icons.
+- Embed <DocLink to="cart">Cart</DocLink> or <DocLink to="form">Form</DocLink> filters inside `DrawerContent`.
+
+## Does Drawer have an uncontrolled mode?
+
+No. `Drawer` is always controlled: you pass both `open` and `onOpenChange`, usually from a `useState` in the parent. There is no `defaultOpen` and no trigger component, so any button, menu icon or effect can open it by setting the state to `true`.
+
+## How do I close the Drawer when the user clicks outside it?
+
+Render `<DrawerOverlay />` inside `Drawer`, before `DrawerContent`. Clicking it calls `onOpenChange(false)`. The layer itself ignores pointer events, so without `DrawerOverlay` there is no dimmed backdrop and clicks fall through to the page. `Escape` and the built-in close button also call `onOpenChange(false)`.
+
+## What sizes does Drawer use, and how do I change them?
+
+Left and right drawers are `400px` wide, capped at `85vw`. Top and bottom drawers are full width, capped at `85vh`, or `80vh` from the `sm` breakpoint up. Pass `className` to `DrawerContent` to override width or height; it is merged after the defaults.
+
+## Does Drawer trap focus or set dialog ARIA roles?
+
+No. It closes on `Escape`, locks body scroll, and its close button has `aria-label="Close drawer"`, but `DrawerContent` sets no `role`, `aria-modal` or focus trap. Because it spreads extra props onto its `div`, you can pass `role="dialog"` and `aria-modal="true"` yourself. It does not check `prefers-reduced-motion`.
+
+## Does Drawer work outside Next.js?
+
+Yes. The file has no `next/*` imports and its only npm dependency is `lucide-react`. The slide animation comes from CSS keyframes inside a `<style>` tag the drawer renders, so you need no Tailwind animation plugin. It installs as a single file, `components/custom/blocks/Drawer.tsx`.
+
+## When should I use Drawer instead of Dialog?
+
+Use `Drawer` for panels that slide from a screen edge, such as filters, carts and mobile sheets. <DocLink to="dialog">Dialog</DocLink> is centred, offers `defaultOpen` and a `DialogTrigger`, and can nest. `Drawer` is controlled only and has no stack handling for nested panels, so it suits one panel at a time.
 
 <DocsJsonLd slug="drawer" />
+<FaqJsonLd slug="drawer" />

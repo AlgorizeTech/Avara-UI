@@ -3,7 +3,7 @@
   "name": "qr-code-qr-generator",
   "type": "registry:block",
   "title": "Shadcn QR Code — QR generator",
-  "description": "Type a value, pick an error-correction level, and export as PNG or PDF.",
+  "description": "The \"QR generator\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "qrcode.react",

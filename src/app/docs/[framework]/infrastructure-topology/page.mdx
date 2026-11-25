@@ -3,13 +3,12 @@ import { docsPageMetadata } from "@/lib/docs-metadata";
 export const metadata = docsPageMetadata("infrastructure-topology");
 
 import { ExampleShowcaseV2 as ExampleShowcase } from "@/components/site/ExampleShowcaseV2";
+import { DocsJsonLd, FaqJsonLd } from "@/components/seo/DocsJsonLd";
 import { extractCode } from "@/lib/code";
 
 # Shadcn Infrastructure Topology
 
-An interactive, fluid **Infrastructure Topology** component simulating live data flows across microservices, central neural mesh core routers, connected SVG beam pipelines, and real-time telemetry metrics.
-
-<AgentVariants slug="infrastructure-topology" />
+An animated **Infrastructure Topology** diagram: service nodes joined to a central core by SVG pipelines with travelling packets or beams. Every label and metric is a prop; nothing is fetched.
 
 export const usageOrbit = `import InfrastructureTopology from "@/components/custom/infrastructure-topology";
 
@@ -54,10 +53,11 @@ export default function InfrastructureTopologyPulseDemo() {
   name="infrastructure-topology"
   colorControl={false}
   columns={1}
+  installation={<Installation name="infrastructure-topology" usage="below" />}
   examples={[
     {
       title: "Orbital Mesh",
-      subheading: "Modern glassmorphic topology with curved Bezier pipelines, travelling glowing packet orbs, counter-rotating orbital core rings, and click-to-inspect route highlighting.",
+      description: "Modern glassmorphic topology with curved Bezier pipelines, travelling glowing packet orbs, counter-rotating orbital core rings, and click-to-inspect route highlighting.",
       propNotes: [
         {
           lead: "Pass",
@@ -79,23 +79,10 @@ export default function InfrastructureTopologyPulseDemo() {
       usage: usageOrbit,
       code: extractCode("src/components/custom/infrastructure-topology.tsx"),
     },
-  ]}
-/>
-
-## Installation
-
-<Installation name="infrastructure-topology" />
-
-## Examples
-
-<ExampleShowcase minHeight={530}
-  name="infrastructure-topology"
-  colorControl={false}
-  columns={1}
-  examples={[
     {
+      minHeight: 530,
       title: "Pulse Pipeline",
-      subheading: "Clean grid-free ambient surface with 3-column pipeline layout, expanding core ripple waves, energy-beam pulses, and focus-isolating hover/click states.",
+      description: "Clean grid-free ambient surface with 3-column pipeline layout, expanding core ripple waves, energy-beam pulses, and focus-isolating hover/click states.",
       propNotes: [
         {
           lead: "Pass",
@@ -119,7 +106,40 @@ export default function InfrastructureTopologyPulseDemo() {
   ]}
 />
 
-## Props Reference: InfrastructureTopology
+## About Shadcn Infrastructure Topology
+
+**What it is.** **Shadcn Infrastructure Topology** (`InfrastructureTopology`) draws data flowing between up to five service nodes and a central mesh router or edge gateway, in two visual modes: `"orbit"` and `"pulse"`. The values are whatever you pass in; it does not connect to real services.
+
+**How it is built.** `InfrastructureTopology` measures each node and draws an SVG curve to the core, re-measuring on resize. The orbit variant adds travelling packet orbs and counter-rotating rings, and the pulse variant adds beam pulses and ripple waves. Hover or click a node to highlight its route. It needs only `lucide-react`.
+
+**When to use it.** Use it for cloud architecture diagrams, edge gateway telemetry panels, DevOps status pages, and AI infrastructure product showcases.
+
+## For AI agents
+
+<AgentBrief name="infrastructure-topology">
+
+**When to use**
+
+- Cloud architecture diagrams, edge gateway telemetry panels
+- DevOps status pages, AI infrastructure product showcases
+
+**When not to use**
+
+- A custom diagram you position yourself: use <DocLink to="flowchart">Flowchart</DocLink>
+- An agent or crew hierarchy: use <DocLink to="agent-graph">Agent Graph</DocLink>
+
+**Agent notes**
+
+- Default export from `@/components/custom/infrastructure-topology`. It supports `variant` (`"orbit" | "pulse"`), `headerTitle`, `headerSubtitle`, `statusBadge`, `bandwidthBadge`, `centerTitle`, `centerSubtitle`, `nodes`, `metrics`, `animated`, `interactive` and `className`.
+- `centerTitle`, `centerSubtitle` and `metrics` are rendered only by the `"pulse"` variant; the orbit hub shows an icon.
+- `centerColor` is declared in the types but not read by the component, so it has no visual effect. The hub follows the theme's `--primary`.
+- Each `TopologyNode` needs `id`, `title`, `subtitle`, `badgeText`, `icon`, `color`, `strokeColor` and a `position` of `"top-left"`, `"bottom-left"`, `"top-right"`, `"middle-right"` or `"bottom-right"`.
+- Use `variant="orbit"` for glassmorphic Bezier pipelines with orbiting rings, or `variant="pulse"` for a 3-column ambient pipeline with core ripple waves.
+- Hovering or clicking nodes isolates and highlights active connected routes.
+
+</AgentBrief>
+
+## Props Reference
 
 <div className="overflow-x-auto">
   <table>
@@ -166,48 +186,84 @@ export default function InfrastructureTopologyPulseDemo() {
         <td><code>centerTitle</code></td>
         <td><code>string</code></td>
         <td><code>"NEURAL MESH"</code></td>
-        <td>Title of the central core router node.</td>
+        <td>Title of the central core router node. Shown by the <code>pulse</code> variant only.</td>
       </tr>
       <tr>
         <td><code>centerSubtitle</code></td>
         <td><code>string</code></td>
         <td><code>"CORE ROUTER · V4.2"</code></td>
-        <td>Subtitle of the central core router node.</td>
+        <td>Subtitle of the central core router node. Shown by the <code>pulse</code> variant only.</td>
       </tr>
       <tr>
         <td><code>centerColor</code></td>
         <td><code>"cyan" | "emerald" | "indigo" | "rose" | "purple"</code></td>
         <td><code>"cyan"</code></td>
-        <td>Theme color palette of the central core router.</td>
+        <td>Declared in the props type but not read by the component, so it currently has no effect. The core takes the theme's <code>--primary</code> colour.</td>
       </tr>
       <tr>
         <td><code>nodes</code></td>
         <td><code>TopologyNode[]</code></td>
         <td><code>DEFAULT_NODES</code></td>
-        <td>Array of peripheral service node objects.</td>
+        <td>Array of <code>{"{ id, title, subtitle, badgeText, badgeVariant?, icon, color, strokeColor, position }"}</code> objects. <code>position</code> is one of five slots: <code>top-left</code>, <code>bottom-left</code>, <code>top-right</code>, <code>middle-right</code>, <code>bottom-right</code>.</td>
       </tr>
       <tr>
         <td><code>metrics</code></td>
         <td><code>MetricItem[]</code></td>
         <td><code>DEFAULT_METRICS</code></td>
-        <td>Array of telemetry metric pill objects.</td>
+        <td>Array of <code>{"{ id, label, value, icon, color? }"}</code> pills along the bottom. Shown by the <code>pulse</code> variant only.</td>
       </tr>
       <tr>
         <td><code>animated</code></td>
         <td><code>boolean</code></td>
         <td><code>true</code></td>
-        <td>Toggles SVG connection beam laser animations.</td>
+        <td>Toggles the travelling packets, beams, rotating rings and ripples.</td>
       </tr>
       <tr>
         <td><code>interactive</code></td>
         <td><code>boolean</code></td>
         <td><code>true</code></td>
-        <td>Toggles hover route highlighting animations.</td>
+        <td>Toggles route highlighting on hover, and selecting a route by clicking a node.</td>
+      </tr>
+      <tr>
+        <td><code>className</code></td>
+        <td><code>string</code></td>
+        <td><code>undefined</code></td>
+        <td>Classes merged onto the root container.</td>
       </tr>
     </tbody>
   </table>
 </div>
 
-import { DocsJsonLd } from "@/components/seo/DocsJsonLd";
+## Works with other components
+
+- <DocLink to="flowchart">Flowchart / Node Builder</DocLink> is for custom node-and-edge diagrams you position yourself.
+- <DocLink to="agent-graph">Agent Graph</DocLink> shows multi-agent hierarchies with status and token meters.
+- <DocLink to="live-pulse-pill">Live Pulse Pill</DocLink> suits a status header near the diagram.
+- <DocLink to="chart">Chart</DocLink> covers the real time-series data that this diagram only illustrates.
+
+## How do I use my own services in InfrastructureTopology?
+
+Pass `nodes`, an array of objects with `id`, `title`, `subtitle`, `badgeText`, `icon`, `color`, `strokeColor` and a `position` slot. There are five slots, `top-left`, `bottom-left`, `top-right`, `middle-right` and `bottom-right`, so two nodes in one slot overlap. Change the bottom pills with `metrics`.
+
+## Why don't centerTitle and metrics show in the InfrastructureTopology orbit variant?
+
+Only the `pulse` variant renders `centerTitle`, `centerSubtitle` and the `metrics` pills. The `orbit` variant draws a hub with an icon and rotating rings instead. Pick `variant="pulse"` when you want the core labelled and the telemetry row shown beneath the diagram.
+
+## How do I highlight a route in InfrastructureTopology?
+
+Hover a service node, or click it to pin its route. The route's line thickens and brightens, and in the orbit variant its packets speed up and the header subtitle changes to the active route's title. Hover wins over a pinned node. Set `interactive={false}` to switch both off.
+
+## Can I turn off the InfrastructureTopology animation?
+
+Set `animated={false}` to stop the travelling packets, beams, rotating rings and ripples while keeping the layout. The component has no `prefers-reduced-motion` check, so pass `animated` from your own media-query logic if users need less motion.
+
+## Is InfrastructureTopology keyboard accessible?
+
+Partly. Each service node is a real `button` with an `aria-label` set to its `title`, so it takes focus and Enter or Space pins its route. Hover highlighting does not trigger on focus. The animated connectors are decorative SVG with no text alternative.
+
+## How do I change the InfrastructureTopology colours?
+
+The core, rings, status badge and header accents follow your theme's `--primary`. Each node's own look comes from `color` (`blue`, `rose`, `purple`, `amber` or `emerald`) and `strokeColor` (the pipeline colour). `centerColor` is in the types but is not used yet.
 
 <DocsJsonLd slug="infrastructure-topology" />
+<FaqJsonLd slug="infrastructure-topology" />

@@ -1,14 +1,27 @@
 ---
 title: "Shadcn Table of Contents"
-description: "Shadcn Table of Contents. An interactive, responsive Table of Contents navigation block engineered to sit on the left side of long documents, articles."
+description: "Shadcn Table of Contents. A responsive Table of Contents navigation block (`TableOfContentsBlock`) with scroll-spy tracking, spring active indicator."
 url: https://avaraui.com/docs/nextjs/table-of-contents
 ---
 
 # Shadcn Table of Contents
 
-An interactive, responsive **Table of Contents** navigation block engineered to sit on the left side of long documents, articles, or documentation pages.
+A responsive Table of Contents navigation block (`TableOfContentsBlock`) with scroll-spy tracking, spring active indicator, progress bar, section search, and mobile drawer.
 
-Features a real-time scroll-spy, spring-animated section indicator, scroll progress bar, section search filter, and mobile navigation drawer.
+## Installation
+
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/table-of-contents.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/table-of-contents
+```
 
 ## Table of Contents (Left Side Navigation)
 
@@ -80,30 +93,28 @@ export default function TableOfContentsDemo() {
 }
 ```
 
-## Installation
+## About Shadcn Table of Contents
 
-Add the component by URL — no setup needed:
+**What it is.** `TableOfContentsBlock` renders a sticky outline sidebar (`items: TOCItem[]`) with scroll-spy highlighting, an optional scroll progress bar (`showProgress`), inline section filtering (`showSearch`), and a mobile drawer.
 
-```bash
-npx shadcn@latest add https://avaraui.com/r/table-of-contents.json
-```
+**How it is built.** Uses `IntersectionObserver` scroll-spy and a spring-eased active indicator pill (no animation library) with semantic `<nav>` landmarks and `aria-current`.
 
-Or register the @avara-ui registry once per project and add it by name:
+**When to use it.** Use `TableOfContentsBlock` alongside long documentation pages, technical blogs, and multi-section guides.
 
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/table-of-contents
-```
+## For AI agents
 
-## Features
+**When to use**
 
-Positions the TOC navigation cleanly on the right column while main content flows on the left.
+- Sticky article/docs outline navigation with scroll-spy, progress indicator, and search filter
 
-Automatically detects active viewport headings and animates the active indicator smoothly along a spring curve, with no animation library.
+**When not to use**
 
-Filter long document section headers instantly with an embedded search input.
+- Multi-page app navigation — use [Sidebar](https://avaraui.com/docs/reactjs/sidebar) or [Navigation Menu](https://avaraui.com/docs/reactjs/navigation)
 
-Collapses into a sticky mobile bar with drawer navigation on smaller devices.
+**Agent notes**
+
+- Named exports: `TableOfContentsBlock`, `type TOCItem` from `@/components/custom/blocks/TableOfContentsBlock`
+- Toggle `showProgress` and `showSearch` props to enable the scroll progress bar and inline filter
 
 ## Props Reference
 
@@ -123,6 +134,30 @@ Collapses into a sticky mobile bar with drawer navigation on smaller devices.
 | `TOCItem` | `description` | `string` | — | Body paragraph content associated with the section. |
 | `TOCItem` | `codeSnippet` | `string` | — | Code snippet displayed inside the section card with a copy-to-clipboard button. |
 | `TOCItem` | `badge` | `string` | — | Badge label shown next to the section title (e.g., "New", "Updated"). |
+
+## Works with other components
+
+- Pair `TableOfContentsBlock` with [Breadcrumb](https://avaraui.com/docs/reactjs/breadcrumb) and [Scroll Area](https://avaraui.com/docs/reactjs/scroll-area) on long documentation layouts.
+
+## How do I add a table of contents with scroll spy in React?
+
+Render `TableOfContentsBlock` with an `items` array whose `id` values match the DOM IDs of your sections. It uses an `IntersectionObserver` for scroll-spy, highlights the active heading with a spring indicator, and smooth-scrolls to a section when its entry is clicked.
+
+## Does TableOfContentsBlock work on mobile viewports?
+
+Yes. On small screens the sidebar outline becomes a mobile drawer so the page content keeps the full width. The sticky sidebar layout applies on larger screens. The same `items` and `headings` data drives both, so you configure nothing twice.
+
+## How do I turn off the progress bar or the search box?
+
+Set `showProgress={false}` to hide the reading progress bar and `showSearch={false}` to hide the inline section filter. Both default to `true`. Change the header text with `sidebarTitle`, which defaults to `"On this page"`.
+
+## How do I control the active heading myself?
+
+Pass `activeId` to override the scroll-spy highlight, and use `onSelectHeading` to handle clicks yourself. Without `onSelectHeading`, a click smooth-scrolls to the target. Each entry also has a `level` of `1`, `2` or `3` to set its indentation.
+
+## Can I build the outline from my own headings?
+
+Yes. Pass `headings` with `id`, `title` and `level`, instead of letting them derive from `items`. Items can also carry a `description`, a `codeSnippet` with a copy button and a `badge` such as "New", which suit documentation-style layouts.
 
 ---
 

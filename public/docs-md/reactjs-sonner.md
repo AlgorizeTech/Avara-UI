@@ -1,16 +1,27 @@
 ---
 title: "Shadcn Sonner Toast"
-description: "An opinionated, dependency-free toast component that mimics the famous \"Sonner\" library aesthetic. Free shadcn/ui component for React and Tailwind CSS."
+description: "A Sonner-inspired toast system: mount `<Toaster />` once, call `toast()` from anywhere, and hover the 3D stack to expand it. Free shadcn/ui component."
 url: https://avaraui.com/docs/nextjs/sonner
 ---
 
 # Shadcn Sonner Toast
 
-An opinionated, dependency-free toast component that mimics the famous "Sonner" library aesthetic.
+A Sonner-inspired toast system: mount `<Toaster />` once, call `toast()` from anywhere, and hover the 3D stack to expand it.
 
-Traditional toast notifications stack in a massive, screen-blocking vertical list. This `SonnerBlock` stacks new notifications _on top_ of old ones, scaling older toasts down and pushing them backwards in 3D space to keep your UI clean. Hovering over the stack automatically expands it so users can read previous notifications.
+## Installation
 
-Click the trigger buttons to spawn toasts, then hover the floating stack to expand it.
+Add the component by URL — no setup needed:
+
+```bash
+npx shadcn@latest add https://avaraui.com/r/sonner.json
+```
+
+Or register the @avara-ui registry once per project and add it by name:
+
+```bash
+npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
+npx shadcn@latest add @avara-ui/sonner
+```
 
 ## Sonner
 
@@ -48,24 +59,7 @@ export default function SaveButton() {
 }
 ```
 
-## Installation
-
-Add the component by URL — no setup needed:
-
-```bash
-npx shadcn@latest add https://avaraui.com/r/sonner.json
-```
-
-Or register the @avara-ui registry once per project and add it by name:
-
-```bash
-npx shadcn@latest registry add @avara-ui=https://avaraui.com/r/{name}.json
-npx shadcn@latest add @avara-ui/sonner
-```
-
-## Examples
-
-### Types
+## Types
 
 - Use `toast.success` `toast.error` and `toast.info` for the semantic icon and colour. They take the same arguments as `toast()`.
 
@@ -110,7 +104,7 @@ export default function ToastTypes() {
 }
 ```
 
-### With action
+## With action
 
 - Pass `action` as `{ label, onClick }` to add an inline button — the usual home for Undo.
 
@@ -146,7 +140,7 @@ export default function UndoToast() {
 }
 ```
 
-### Stacking
+## Stacking
 
 - `position` on the Toaster decides where they pile up; newer toasts sit on top and older ones recede until hovered.
 
@@ -180,7 +174,7 @@ export default function StackDemo() {
 }
 ```
 
-### Always expanded
+## Always expanded
 
 - Set `expand` on the Toaster to keep the stack open instead of collapsing it to a pile.
 
@@ -214,7 +208,7 @@ export default function ExpandedStack() {
 }
 ```
 
-### Duration
+## Duration
 
 - `duration` is the auto-dismiss delay in milliseconds. Pass `Infinity` and the toast stays up until dismissed.
 
@@ -263,7 +257,7 @@ export default function ToastDuration() {
 }
 ```
 
-### Position
+## Position
 
 - `position` anchors the stack to any of the six edges — `top-left` through `bottom-right`.
 
@@ -319,20 +313,31 @@ export default function PositionDemo() {
 }
 ```
 
-## Features
-Explore the Sonner toast notification features, including stacked layouts, swipe-to-dismiss, and promise-based loading states.
+## About Shadcn Sonner Toast
 
-Easily adapt the component's styling and behavior to fit your application's unique design system.
+**What it is.** `SonnerBlock` provides `<Toaster />` and an imperative `toast()` API (`toast.success`, `toast.error`, `toast.info`) with 3D-scaled stacking, hover-to-expand, inline `action` buttons, and six viewport positions.
 
-Built with accessibility in mind, ensuring all users can interact with your application effectively.
+**How it is built.** A module-level store (`sonner-store`) holds the toasts and `<Toaster />` subscribes to it, so `toast()` works from any component or helper without a provider. The only npm dependency is `lucide-react` for icons. Older toasts scale down behind the newest one and fan out on hover; the store keeps at most five.
 
-Fully responsive design that looks and works great across desktop, tablet, and mobile devices.
+**When to use it.** Use `Sonner` when you want a lightweight, imperative `toast()` function with 3D stacking. If you want `glow` or `glass` card variants scoped via React Context, use [Toast](https://avaraui.com/docs/reactjs/toast).
 
-Optimized for maximum performance with minimal re-renders and efficient state management.
+## For AI agents
 
-## Best Practices & Guidelines
+**When to use**
 
-Follow standard design principles when implementing this component. Ensure proper contrast, spacing, and context within your layout.
+- Imperative `toast()` / `toast.success()` / `toast.error()` notifications without a React Context provider
+- Stacked corner notifications with hover-to-expand and inline Undo/action buttons
+
+**When not to use**
+
+- Provider-scoped `glow` or `glass` toast variants — use [Toast](https://avaraui.com/docs/reactjs/toast)
+- Persistent inline page banners — use [Alert](https://avaraui.com/docs/reactjs/alert)
+
+**Agent notes**
+
+- Import `Toaster` from `@/components/custom/blocks/SonnerBlock` and `toast` from `@/components/custom/blocks/sonner-store`; `toast` is not exported from `SonnerBlock`.
+- Mount `<Toaster position="bottom-right" />` once in your layout; pass `duration: Infinity` to keep a toast open until dismissed.
+- `toast()` returns the toast id; `toast.dismiss(id)` removes one and `toast.clear()` removes all.
 
 ## Props Reference
 
@@ -345,6 +350,36 @@ Follow standard design principles when implementing this component. Ensure prope
 | `toast()` | `options.duration` | `number` | `4000` | How long (in milliseconds) before the toast auto-dismisses. Pass `Infinity` to disable auto-dismiss. |
 | `toast()` | `options.action` | `{ label: string, onClick: () => void }` | `undefined` | Provides an actionable button inside the toast. |
 | `toast()` | `options.type` | `"default" \| "success" \| "error" \| "info"` | `"default"` | Determines the color scheme and accompanying icon. Alternatively, use the shorthand methods: `toast.success()`, `toast.error()`, etc. |
+
+## Works with other components
+
+- Pair `toast()` with [Copy Button](https://avaraui.com/docs/reactjs/copy-button), [Data Table](https://avaraui.com/docs/reactjs/data-table) batch actions, or [Dialog](https://avaraui.com/docs/reactjs/dialog) submissions.
+- Use [Alert](https://avaraui.com/docs/reactjs/alert) instead when a message should remain inline on the page.
+- Switch to [Toast](https://avaraui.com/docs/reactjs/toast) if you want `glow` or `glass` toast variants.
+
+## Do I need a Provider for Sonner?
+
+No. Mount `<Toaster />` once in your layout and import `toast` from `sonner-store` wherever you need it, including plain helper functions outside React components. The store lives at module level and `<Toaster />` subscribes to it, so there is no context to wrap around your tree.
+
+## How do I keep the Sonner stack expanded or a toast persistent?
+
+Pass `expand` to `<Toaster expand />` and the stack stays fanned out instead of collapsing into the 3D pile on hover. For a single toast that never auto-dismisses, pass `duration: Infinity` in its options; otherwise the default is 4000 milliseconds.
+
+## How do I add an Undo button to a Sonner toast?
+
+Pass `action: { label: "Undo", onClick }` in the options of `toast()`. The toast renders a button with that label, and clicking it runs your `onClick` and then dismisses the toast. A toast takes one action button, and it can sit beside an optional `description`.
+
+## How many toasts can Sonner show at once?
+
+The store keeps the five newest toasts and drops older ones. While the stack is collapsed only the front three are visible, scaled down slightly behind the newest. Hovering the stack, or setting `expand` on `<Toaster />`, lays all of them out as a readable list.
+
+## How do I dismiss Sonner toasts from code?
+
+`toast()` and its `success`, `error` and `info` shorthands return the toast id. Pass that id to `toast.dismiss(id)` to remove one toast, or call `toast.clear()` to empty the whole stack, as the Position example does before moving the `<Toaster />`.
+
+## How is Sonner different from the Toast component?
+
+Sonner uses an imperative `toast()` function and a module-level store, so it needs no provider and offers `default`, `success`, `error` and `info` types. [Toast](https://avaraui.com/docs/reactjs/toast) uses a `ToastProvider` with `useToast`, and adds `glow`, `glass` and `minimal` variants plus a `warning` type.
 
 ---
 

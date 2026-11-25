@@ -3,7 +3,7 @@
   "name": "marquee-speed",
   "type": "registry:block",
   "title": "Marquee — Speed",
-  "description": "`speed` is a duration for one full pass, not a pixels-per-second rate, so the same value moves faster with fewer items.",
+  "description": "The \"Speed\" example from the Avara UI docs.",
   "dependencies": [
     "tw-animate-css"
   ],

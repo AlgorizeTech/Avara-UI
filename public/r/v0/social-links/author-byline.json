@@ -3,7 +3,7 @@
   "name": "social-links-author-byline",
   "type": "registry:block",
   "title": "Social Links — Author byline",
-  "description": "Small ghost tiles under a name, with a label per link so a screen reader says whose profile it is.",
+  "description": "The \"Author byline\" example from the Avara UI docs.",
   "dependencies": [
     "lucide-react",
     "tw-animate-css"
